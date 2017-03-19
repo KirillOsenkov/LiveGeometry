@@ -1,0 +1,16 @@
+body
+{
+}
+P
+{
+	font-size: 10pt;
+	margin: 6px 0px 6px 0px;
+	line-height: 16pt;
+	font-family: Verdana, Arial;
+}
+H1
+{
+	font-size: 20pt;
+	border-bottom: #669999 1px solid;
+	font-family: Arial;
+}

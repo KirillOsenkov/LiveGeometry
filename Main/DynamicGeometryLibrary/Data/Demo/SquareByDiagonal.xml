@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Drawing>
+  <Viewport Left="-8.5729166666" Top="11.6562500001" Right="18.0104166667" Bottom="-1.4270833332" />
+  <Styles>
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="1" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FFE0C56C" Fill="#FFF2F2CB" Name="2" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="3" Size="10" StrokeWidth="1" />
+    <LineStyle Color="#FF000000" Name="4" StrokeWidth="1" />
+    <ShapeStyle Color="#FF000000" Fill="#FFFFFFBB" Name="5" StrokeWidth="1" />
+    <TextStyle Bold="false" Color="#FFB59207" FontFamily="Arial" FontSize="30" Italic="false" Name="6" />
+    <TextStyle Bold="false" Color="#FF000000" FontFamily="Arial" FontSize="10" Italic="false" Name="7" />
+    <LineStyle Color="#FFDCBAAC" Name="8" StrokeWidth="1" />
+  </Styles>
+  <Figures>
+    <Label Name="Label1" Style="6" Text="Square by its diagonal" X="1.4166666667" Y="11.0624999999" />
+    <Hyperlink Name="Link1" Url="http://www.osenkov.com/geometry/demo/Pentagon.xml" Text="Next: Pentagon" X="3" Y="1" />
+    <FreePoint Name="FreePoint4" Style="1" X="7.4166666667" Y="6.3750000001" />
+    <FreePoint Name="FreePoint1" Style="1" X="2.0416666667" Y="6.3750000001" />
+    <MidPoint Name="MidPoint5" Style="2">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+    </MidPoint>
+    <Circle Name="Circle9" Style="8">
+      <Dependency Name="MidPoint5" />
+      <Dependency Name="FreePoint4" />
+    </Circle>
+    <Segment Name="Segment3" Style="4">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine7" Style="8">
+      <Dependency Name="Segment3" />
+      <Dependency Name="MidPoint5" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="IntersectionPoint11" Style="2" Algorithm="IntersectLineAndCircle2">
+      <Dependency Name="PerpendicularLine7" />
+      <Dependency Name="Circle9" />
+    </IntersectionPoint>
+    <Segment Name="Segment19" Style="4">
+      <Dependency Name="IntersectionPoint11" />
+      <Dependency Name="FreePoint1" />
+    </Segment>
+    <Segment Name="Segment17" Style="4">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="IntersectionPoint11" />
+    </Segment>
+    <IntersectionPoint Name="IntersectionPoint10" Style="2" Algorithm="IntersectLineAndCircle1">
+      <Dependency Name="PerpendicularLine7" />
+      <Dependency Name="Circle9" />
+    </IntersectionPoint>
+    <Segment Name="Segment15" Style="4">
+      <Dependency Name="IntersectionPoint10" />
+      <Dependency Name="FreePoint4" />
+    </Segment>
+    <Segment Name="Segment13" Style="4">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="IntersectionPoint10" />
+    </Segment>
+    <Polygon Name="Polygon162" Style="5">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="IntersectionPoint11" />
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="IntersectionPoint10" />
+    </Polygon>
+  </Figures>
+</Drawing>

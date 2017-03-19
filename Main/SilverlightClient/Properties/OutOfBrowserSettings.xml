@@ -1,0 +1,8 @@
+<OutOfBrowserSettings ShortName="Live Geometry" EnableGPUAcceleration="True" ShowInstallMenuItem="True">
+  <OutOfBrowserSettings.Blurb>A computer model of plane geometry that allows you to create interactive ruler and compass constructions and experiment with them.
+http://livegeometry.codeplex.com</OutOfBrowserSettings.Blurb>
+  <OutOfBrowserSettings.WindowSettings>
+    <WindowSettings Title="Live Geometry" />
+  </OutOfBrowserSettings.WindowSettings>
+  <OutOfBrowserSettings.Icons />
+</OutOfBrowserSettings>

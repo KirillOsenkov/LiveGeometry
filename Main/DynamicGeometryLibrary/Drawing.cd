@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="Drawing is a set of figures that is grouped into a logical document">
+    <Position X="5.031" Y="1.146" Height="0.406" Width="2.21" />
+  </Comment>
+  <Comment CommentText="A drawing references additional services/facilities.">
+    <Position X="8.646" Y="1.01" Height="0.552" Width="1.596" />
+  </Comment>
+  <Comment CommentText="A Drawing can be hosted on a Canvas - when Drawing.Canvas is set, all the figures from the drawing are added to the Canvas (OnAttachToCanvas)">
+    <Position X="10.469" Y="1.76" Height="0.677" Width="2.679" />
+  </Comment>
+  <Comment CommentText="This is a figure that any Drawing contains: a visual representation for the coordinate system. This figure is a CompositeFigure consisting of two Axes, GridLinesCollection and AxisLabelsCollection.">
+    <Position X="10.469" Y="2.531" Height="0.719" Width="3.242" />
+  </Comment>
+  <Comment CommentText="CoordinateSystem is a logical model that tracks coordinate conversions and such. It is visually represented on screen by a CartesianGrid object.">
+    <Position X="10.459" Y="3.333" Height="0.583" Width="2.794" />
+  </Comment>
+  <Comment CommentText="Behavior is a State/Strategy design pattern that encapsulates a user input handler (an entity that deals with user input and processes it in a certain way). A Drawing references an instance of a class that derives from Behavior. There can be various behaviors and a Drawings behavior can be changed at runtime.&#xD;&#xA;&#xD;&#xA;In fact, when a tool is selected in the toolbar, the current drawing is assigned a FigureCreator - a special kind of Behavior that handles Mouse and Keyboard to create a figure and add it to the drawing.&#xD;&#xA;&#xD;&#xA;Every figure (such as FreePoint, ParallelLine, Circle, etc) has a corresponding FreePointCreator, ParallelLineCreator, CircleCreator etc. A FigureCreator also provides the icon and tooltip for the toolbar button for the figure.">
+    <Position X="10.458" Y="4.24" Height="2.938" Width="3.21" />
+  </Comment>
+  <Comment CommentText="A figure is a central data-type of dynamic geometry. It models any logical geometric figure. It doesn't have a visual representation and can link to its presentatioin (e.g. a WPF Shape).">
+    <Position X="2.531" Y="0.604" Height="1.01" Width="1.971" />
+  </Comment>
+  <Comment CommentText="ActionManager is an unlimited Undo/Redo buffer that also tracks transactions (Command design pattern).">
+    <Position X="6.823" Y="9.396" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="FigureList is a central type that models figure collections.&#xD;&#xA;It's a base for CompositeFigure and RootFigureList.">
+    <Position X="4.633" Y="11.098" Height="1.01" Width="1.7" />
+  </Comment>
+  <Class Name="DynamicGeometry.Drawing">
+    <Position X="5" Y="1.75" Width="2.25" />
+    <Members>
+      <Method Name="ClearLockedFigures" Hidden="true" />
+      <Method Name="Drawing" Hidden="true" />
+      <Field Name="mBehavior" Hidden="true" />
+      <Field Name="mCanvas" Hidden="true" />
+      <Method Name="mCanvas_SizeChanged" Hidden="true" />
+      <Method Name="RaiseConstructionFeedback" Hidden="true" />
+      <Method Name="RaiseConstructionStepComplete" Hidden="true" />
+      <Method Name="RaiseDocumentOpenRequested" Hidden="true" />
+      <Method Name="RaiseSelectionChanged" Hidden="true" />
+      <Method Name="RaiseSizeChanged" Hidden="true" />
+      <Method Name="RaiseStatusNotification" Hidden="true" />
+      <Method Name="SetDefaultBehavior" Hidden="true" />
+      <Method Name="ToString" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="DynamicGeometry.Drawing.SelectionChangedEventArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Drawing.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DynamicGeometry.Drawing.DeleteExecutedEventArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Drawing.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DynamicGeometry.Drawing.DisplayPropertiesEventArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Drawing.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DynamicGeometry.Drawing.ConstructionStepCompleteEventArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Drawing.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DynamicGeometry.Drawing.ConstructionStepStartedEventArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Drawing.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DynamicGeometry.Drawing.ConstructionFeedbackEventArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Drawing.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DynamicGeometry.Drawing.DocumentOpenRequestedEventArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Drawing.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="DynamicGeometry.Drawing.FigureCoordinatesChangedEventArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Drawing.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <AssociationLine Name="ActionManager" Type="GuiLabs.Undo.ActionManager">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.164" Y="0.387" Height="0.16" Width="1.326" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="CoordinateSystem" Type="DynamicGeometry.CoordinateSystem" FixedToPoint="true">
+      <Path>
+        <Point X="7.25" Y="3.75" />
+        <Point X="8.75" Y="3.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IGKEAbgEACAAAlEGCBIABcwAAIQJcIFEiEYAyEBxCAQ=</HashCode>
+      <FileName>Drawing.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ActionManager" />
+      <Property Name="Canvas" />
+      <Property Name="Behavior" />
+      <Property Name="CoordinateSystem" />
+      <Property Name="CoordinateGrid" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="System.Windows.Controls.Canvas" Collapsed="true">
+    <Position X="8.75" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="DynamicGeometry.CoordinateSystem" Collapsed="true">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>WAAAEAIIAQAEABAAAAMgQCAAIEAIAAOEABAigIgAEAI=</HashCode>
+      <FileName>Figures\Coordinates\CoordinateSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DynamicGeometry.Behavior">
+    <Position X="8.75" Y="4.25" Width="1.5" />
+    <Members>
+      <Method Name="AbortAndSetDefaultTool" Hidden="true" />
+      <Method Name="Coordinates" Hidden="true" />
+      <Method Name="CreateIcon" Hidden="true" />
+      <Method Name="CreatePointAtCurrentPosition" Hidden="true" />
+      <Property Name="CursorTolerance" Hidden="true" />
+      <Property Name="Drawing" Hidden="true" />
+      <Field Name="mDrawing" Hidden="true" />
+      <Method Name="mDrawing_OnAttachToCanvas" Hidden="true" />
+      <Method Name="mDrawing_OnDetachFromCanvas" Hidden="true" />
+      <Property Name="PropertyBag" Hidden="true" />
+      <Method Name="ToLogical" Hidden="true" />
+      <Method Name="ToPhysical" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>GQIAAQASAABAkFACAAgAIIQCoDMgEkoAAYhAAqGAGA4=</HashCode>
+      <FileName>Behaviors\Behavior.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DynamicGeometry.CartesianGrid" Collapsed="true">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QBAACAAAQABAAAAEAAAAAEAAAgAAAAAIgAAASAAAEQA=</HashCode>
+      <FileName>Figures\Coordinates\CartesianGrid.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DynamicGeometry.FigureList">
+    <Position X="2.5" Y="8" Width="2" />
+    <Members>
+      <Property Name="Drawing" Hidden="true" />
+      <Method Name="FigureList" Hidden="true" />
+      <Field Name="mDrawing" Hidden="true" />
+      <Property Name="this" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAIAAAIAAABAAAAACAAABAAAABAAAAEAAAAAAMAQAgA=</HashCode>
+      <FileName>Figures\Lists\FigureList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GuiLabs.Undo.ActionManager" Collapsed="true">
+    <Position X="7.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="DynamicGeometry.IFigure">
+    <Position X="2.5" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAJgAABIAICAEgAAAAQCAAAAAAFJBJAEgIEAABI=</HashCode>
+      <FileName>Figures\IFigure.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DynamicGeometry.IFigureList" Collapsed="true">
+    <Position X="2.5" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Lists\IFigureList.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.4" />
+</ClassDiagram>

@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Drawing Name="Wireframe">
+  <Figures>
+    <FreePoint Name="FreePoint10" X="1.68" Y="3.31" />
+    <FreePoint Name="FreePoint7" X="5.07" Y="4.45" />
+    <MidPoint Name="MidPoint19">
+      <Dependency Name="FreePoint7" />
+      <Dependency Name="FreePoint10" />
+    </MidPoint>
+    <MidPoint Name="MidPoint30">
+      <Dependency Name="MidPoint19" />
+      <Dependency Name="FreePoint10" />
+    </MidPoint>
+    <MidPoint Name="MidPoint56">
+      <Dependency Name="MidPoint30" />
+      <Dependency Name="FreePoint10" />
+    </MidPoint>
+    <MidPoint Name="MidPoint54">
+      <Dependency Name="MidPoint19" />
+      <Dependency Name="MidPoint30" />
+    </MidPoint>
+    <MidPoint Name="MidPoint28">
+      <Dependency Name="FreePoint7" />
+      <Dependency Name="MidPoint19" />
+    </MidPoint>
+    <MidPoint Name="MidPoint52">
+      <Dependency Name="MidPoint28" />
+      <Dependency Name="MidPoint19" />
+    </MidPoint>
+    <MidPoint Name="MidPoint50">
+      <Dependency Name="FreePoint7" />
+      <Dependency Name="MidPoint28" />
+    </MidPoint>
+    <Segment Name="Segment9">
+      <Dependency Name="FreePoint7" />
+      <Dependency Name="FreePoint10" />
+    </Segment>
+    <FreePoint Name="FreePoint4" X="4.45" Y="0.70" />
+    <MidPoint Name="MidPoint20">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint7" />
+    </MidPoint>
+    <MidPoint Name="MidPoint26">
+      <Dependency Name="MidPoint20" />
+      <Dependency Name="FreePoint7" />
+    </MidPoint>
+    <MidPoint Name="MidPoint48">
+      <Dependency Name="MidPoint26" />
+      <Dependency Name="FreePoint7" />
+    </MidPoint>
+    <MidPoint Name="MidPoint46">
+      <Dependency Name="MidPoint20" />
+      <Dependency Name="MidPoint26" />
+    </MidPoint>
+    <MidPoint Name="MidPoint24">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="MidPoint20" />
+    </MidPoint>
+    <MidPoint Name="MidPoint44">
+      <Dependency Name="MidPoint24" />
+      <Dependency Name="MidPoint20" />
+    </MidPoint>
+    <MidPoint Name="MidPoint42">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="MidPoint24" />
+    </MidPoint>
+    <Segment Name="Segment6">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint7" />
+    </Segment>
+    <FreePoint Name="FreePoint1" X="5.41" Y="3.22" />
+    <MidPoint Name="MidPoint18">
+      <Dependency Name="FreePoint10" />
+      <Dependency Name="FreePoint1" />
+    </MidPoint>
+    <Segment Name="Segment90">
+      <Dependency Name="MidPoint18" />
+      <Dependency Name="MidPoint20" />
+    </Segment>
+    <MidPoint Name="MidPoint34">
+      <Dependency Name="MidPoint18" />
+      <Dependency Name="FreePoint1" />
+    </MidPoint>
+    <Segment Name="Segment86">
+      <Dependency Name="MidPoint34" />
+      <Dependency Name="MidPoint24" />
+    </Segment>
+    <MidPoint Name="MidPoint64">
+      <Dependency Name="MidPoint34" />
+      <Dependency Name="FreePoint1" />
+    </MidPoint>
+    <Segment Name="Segment84">
+      <Dependency Name="MidPoint64" />
+      <Dependency Name="MidPoint42" />
+    </Segment>
+    <MidPoint Name="MidPoint62">
+      <Dependency Name="MidPoint18" />
+      <Dependency Name="MidPoint34" />
+    </MidPoint>
+    <Segment Name="Segment88">
+      <Dependency Name="MidPoint62" />
+      <Dependency Name="MidPoint44" />
+    </Segment>
+    <MidPoint Name="MidPoint32">
+      <Dependency Name="FreePoint10" />
+      <Dependency Name="MidPoint18" />
+    </MidPoint>
+    <Segment Name="Segment94">
+      <Dependency Name="MidPoint26" />
+      <Dependency Name="MidPoint32" />
+    </Segment>
+    <MidPoint Name="MidPoint60">
+      <Dependency Name="MidPoint32" />
+      <Dependency Name="MidPoint18" />
+    </MidPoint>
+    <Segment Name="Segment92">
+      <Dependency Name="MidPoint60" />
+      <Dependency Name="MidPoint46" />
+    </Segment>
+    <MidPoint Name="MidPoint58">
+      <Dependency Name="FreePoint10" />
+      <Dependency Name="MidPoint32" />
+    </MidPoint>
+    <Segment Name="Segment96">
+      <Dependency Name="MidPoint58" />
+      <Dependency Name="MidPoint48" />
+    </Segment>
+    <MidPoint Name="MidPoint17">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+    </MidPoint>
+    <Segment Name="Segment76">
+      <Dependency Name="MidPoint17" />
+      <Dependency Name="MidPoint19" />
+    </Segment>
+    <MidPoint Name="MidPoint36">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="MidPoint17" />
+    </MidPoint>
+    <Segment Name="Segment72">
+      <Dependency Name="MidPoint36" />
+      <Dependency Name="MidPoint30" />
+    </Segment>
+    <MidPoint Name="MidPoint68">
+      <Dependency Name="MidPoint36" />
+      <Dependency Name="MidPoint17" />
+    </MidPoint>
+    <Segment Name="Segment74">
+      <Dependency Name="MidPoint68" />
+      <Dependency Name="MidPoint54" />
+    </Segment>
+    <MidPoint Name="MidPoint66">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="MidPoint36" />
+    </MidPoint>
+    <Segment Name="Segment70">
+      <Dependency Name="MidPoint66" />
+      <Dependency Name="MidPoint56" />
+    </Segment>
+    <MidPoint Name="MidPoint22">
+      <Dependency Name="MidPoint17" />
+      <Dependency Name="FreePoint4" />
+    </MidPoint>
+    <Segment Name="Segment80">
+      <Dependency Name="MidPoint22" />
+      <Dependency Name="MidPoint28" />
+    </Segment>
+    <MidPoint Name="MidPoint40">
+      <Dependency Name="MidPoint22" />
+      <Dependency Name="FreePoint4" />
+    </MidPoint>
+    <Segment Name="Segment82">
+      <Dependency Name="MidPoint40" />
+      <Dependency Name="MidPoint50" />
+    </Segment>
+    <MidPoint Name="MidPoint38">
+      <Dependency Name="MidPoint17" />
+      <Dependency Name="MidPoint22" />
+    </MidPoint>
+    <Segment Name="Segment78">
+      <Dependency Name="MidPoint38" />
+      <Dependency Name="MidPoint52" />
+    </Segment>
+    <Segment Name="Segment16">
+      <Dependency Name="FreePoint10" />
+      <Dependency Name="FreePoint1" />
+    </Segment>
+    <Segment Name="Segment3">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+    </Segment>
+  </Figures>
+</Drawing>

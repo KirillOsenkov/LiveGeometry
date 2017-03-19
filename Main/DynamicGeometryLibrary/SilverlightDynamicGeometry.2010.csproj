@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{12C65F68-BDF8-4C3C-A7C0-4366A72D887F}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DynamicGeometry</RootNamespace>
+    <AssemblyName>DynamicGeometry</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GuiLabs.Undo.Silverlight">
+      <HintPath>References\GuiLabs.Undo.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Controls, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions\Actions.cs" />
+    <Compile Include="Actions\AddFigureAction.cs" />
+    <Compile Include="Actions\AddItemAction.cs" />
+    <Compile Include="Actions\GeometryAction.cs" />
+    <Compile Include="Actions\MoveAction.cs" />
+    <Compile Include="Actions\PasteAction.cs" />
+    <Compile Include="Actions\RemoveFigureAction.cs" />
+    <Compile Include="Actions\RemoveFiguresAction.cs" />
+    <Compile Include="Actions\RemoveItemAction.cs" />
+    <Compile Include="Actions\ReplaceFigureAction.cs" />
+    <Compile Include="Actions\SetPropertyAction.cs" />
+    <Compile Include="Behaviors\Behavior.cs" />
+    <Compile Include="Behaviors\Behavior.Design.cs" />
+    <Compile Include="Behaviors\BehaviorCategories.cs" />
+    <Compile Include="Behaviors\Dragger.cs" />
+    <Compile Include="Behaviors\FigureCreator.cs" />
+    <Compile Include="Behaviors\FigureSelector.cs" />
+    <Compile Include="Controls\ColorPicker.cs" />
+    <Compile Include="Controls\ColorPicker\ColorSpace.cs" />
+    <Compile Include="Controls\ColorPicker\HSV.cs" />
+    <Compile Include="Controls\ColorPicker\SelectedColorEventArgs.cs" />
+    <Compile Include="Controls\Common\NumericExtensions.cs" />
+    <Compile Include="Controls\Common\TypeConverters.cs" />
+    <Compile Include="Controls\Controls.Toolkit\Common\LengthConverter.cs" />
+    <Compile Include="Controls\Controls.Toolkit\WrapPanel\OrientedSize.cs" />
+    <Compile Include="Controls\Controls.Toolkit\WrapPanel\WrapPanel.cs" />
+    <None Include="Data\Demo\CircumscribedCircle.xml" />
+    <None Include="Data\Demo\Demo.xml" />
+    <None Include="Data\Demo\LocusSample.xml" />
+    <None Include="Data\Demo\Parabola.xml" />
+    <None Include="Data\Demo\Pentagon.xml" />
+    <None Include="Data\Demo\QuadrilateralMidpoints.xml" />
+    <None Include="Data\Demo\SomethingComplex.xml" />
+    <None Include="Data\Demo\SquareByDiagonal.xml" />
+    <None Include="Data\Demo\SquareBySide.xml" />
+    <None Include="Data\Demo\SquareInSquare.xml" />
+    <None Include="Data\Demo\Wireframe.xml" />
+    <None Include="Drawing.cd" />
+    <Compile Include="Drawing.cs" />
+    <Compile Include="Expressions\Binder.cs" />
+    <Compile Include="Expressions\CompileError.cs" />
+    <Compile Include="Expressions\CompileResult.cs" />
+    <Compile Include="Expressions\DrawingExpression.cs" />
+    <Compile Include="Expressions\ExpressionTreeCompiler.cs" />
+    <Compile Include="Expressions\Functions.cs" />
+    <Compile Include="Expressions\ICompilerService.cs" />
+    <Compile Include="Expressions\IExpressionTreeEvaluatorProvider.cs" />
+    <Compile Include="Expressions\Parser\Compiler.cs" />
+    <Compile Include="Expressions\Parser\Node.cs" />
+    <Compile Include="Expressions\Parser\NodeType.cs" />
+    <Compile Include="Expressions\Parser\ParseResult.cs" />
+    <Compile Include="Expressions\Parser\Parser.cs" />
+    <Compile Include="Expressions\Parser\Scanner.cs" />
+    <Compile Include="Expressions\Parser\ScanResult.cs" />
+    <Compile Include="Expressions\Parser\Token.cs" />
+    <Compile Include="Expressions\Parser\TokenType.cs" />
+    <Compile Include="Expressions\Parser\TreeBuilder.cs" />
+    <Compile Include="Extensibility\MEFHost.cs" />
+    <Compile Include="Extensibility\OrderAttribute.cs" />
+    <Compile Include="Figures\Circles\Arc.cs" />
+    <Compile Include="Figures\Circles\ArcBase.cs" />
+    <Compile Include="Figures\Circles\ArcCreator.cs" />
+    <Compile Include="Figures\Circles\Circle.cs" />
+    <Compile Include="Figures\Circles\CircleBase.cs" />
+    <Compile Include="Figures\Circles\CircleByEquation.cs" />
+    <Compile Include="Figures\Circles\CircleByEquationCreator.cs" />
+    <Compile Include="Figures\Circles\CircleByRadius.cs" />
+    <Compile Include="Figures\Circles\CircleByRadiusCreator.cs" />
+    <Compile Include="Figures\Circles\CircleCreator.cs" />
+    <Compile Include="Figures\Circles\Ellipse.cs" />
+    <Compile Include="Figures\Circles\EllipseBase.cs" />
+    <Compile Include="Figures\Circles\EllipseCreator.cs" />
+    <Compile Include="Figures\Circles\ICircle.cs" />
+    <Compile Include="Figures\Circles\IEllipse.cs" />
+    <Compile Include="Figures\Controls\AngleArc.cs" />
+    <Compile Include="Figures\Controls\AngleMeasurement.cs" />
+    <Compile Include="Figures\Controls\AngleMeasurementCreator.cs" />
+    <Compile Include="Figures\Controls\AreaMeasurement.cs" />
+    <Compile Include="Figures\Controls\AreaMeasurementCreator.cs" />
+    <Compile Include="Figures\Controls\ControlBase.cs" />
+    <Compile Include="Figures\Controls\DistanceMeasurement.cs" />
+    <Compile Include="Figures\Controls\DistanceMeasurementCreator.cs" />
+    <Compile Include="Figures\Controls\Hyperlink.cs" />
+    <Compile Include="Figures\Controls\Label.cs" />
+    <Compile Include="Figures\Controls\LabelBase.cs" />
+    <Compile Include="Figures\Controls\LabelCreator.cs" />
+    <Compile Include="Figures\Controls\LabelWithOffset.cs" />
+    <Compile Include="Figures\Controls\PointLabel.cs" />
+    <Compile Include="Figures\Controls\ShowHideControl.cs" />
+    <Compile Include="Figures\Coordinates\AxisLabelsCollection.cs" />
+    <Compile Include="Figures\Coordinates\CartesianGrid.cs" />
+    <Compile Include="Figures\Coordinates\CoordinateSystem.cs" />
+    <Compile Include="Figures\Coordinates\GridLinesCollection.cs" />
+    <Compile Include="Figures\Coordinates\RectangularGridLinesCollection.cs" />
+    <Compile Include="Figures\Factory.cs" />
+    <Compile Include="Figures\FigureBase.cs" />
+    <Compile Include="Figures\IFigure.cs" />
+    <Compile Include="Figures\IFigureExtensions.cs" />
+    <Compile Include="Figures\ILinearFigure.cs" />
+    <Compile Include="Figures\ILinearFigureExtensions.cs" />
+    <Compile Include="Figures\IMovable.cs" />
+    <Compile Include="Figures\Lines\AngleBisector.cs" />
+    <Compile Include="Figures\Lines\AngleBisectorCreator.cs" />
+    <Compile Include="Figures\Lines\Axis.cs" />
+    <Compile Include="Figures\Lines\ILine.cs" />
+    <Compile Include="Figures\Lines\ILineEquation.cs" />
+    <Compile Include="Figures\Lines\LineBase.cs" />
+    <Compile Include="Figures\Lines\LineByEquation.cs" />
+    <Compile Include="Figures\Lines\LineByEquationCreator.cs" />
+    <Compile Include="Figures\Lines\LineCreator.cs" />
+    <Compile Include="Figures\Lines\LineTwoPoints.cs" />
+    <Compile Include="Figures\Lines\ParallelLine.cs" />
+    <Compile Include="Figures\Lines\ParallelLineCreator.cs" />
+    <Compile Include="Figures\Lines\PerpendicularLine.cs" />
+    <Compile Include="Figures\Lines\PerpendicularLineCreator.cs" />
+    <Compile Include="Figures\Lines\Ray.cs" />
+    <Compile Include="Figures\Lines\RayCreator.cs" />
+    <Compile Include="Figures\Lines\Segment.cs" />
+    <Compile Include="Figures\Lines\SegmentBisector.cs" />
+    <Compile Include="Figures\Lines\SegmentBisectorCreator.cs" />
+    <Compile Include="Figures\Lines\SegmentCreator.cs" />
+    <Compile Include="Figures\Lines\Vector.cs" />
+    <Compile Include="Figures\Lines\VectorCreator.cs" />
+    <Compile Include="Figures\Lists\CollectionWithEvents.cs" />
+    <Compile Include="Figures\Lists\CompositeFigure.cs" />
+    <Compile Include="Figures\Lists\DependencyAlgorithms.cs" />
+    <Compile Include="Figures\Lists\DependencyList.cs" />
+    <Compile Include="Figures\Lists\FigureList.cs" />
+    <Compile Include="Figures\Lists\IFigureListExtensions.cs" />
+    <Compile Include="Figures\Lists\ISupportRemoveDependency.cs" />
+    <Compile Include="Figures\Lists\RootFigureList.cs" />
+    <Compile Include="Figures\Points\DilatedPoint.cs" />
+    <Compile Include="Figures\Points\FreePoint.cs" />
+    <Compile Include="Figures\Points\FreePointCreator.cs" />
+    <Compile Include="Figures\Points\Intersection\IntersectionAlgorithms.cs" />
+    <Compile Include="Figures\Points\Intersection\IntersectionPoint.cs" />
+    <Compile Include="Figures\Points\IPoint.cs" />
+    <Compile Include="Figures\Points\JoinTwoSegmentsCreator.cs" />
+    <Compile Include="Figures\Points\MidPoint.cs" />
+    <Compile Include="Figures\Points\MidPointCreator.cs" />
+    <Compile Include="Figures\Points\PointBase.cs" />
+    <Compile Include="Figures\Points\PointByCoordinates.cs" />
+    <Compile Include="Figures\Points\PointOnFigure\PointOnFigure.cs" />
+    <Compile Include="Figures\Points\ReflectedPoint.cs" />
+    <Compile Include="Figures\Points\ReflectionCreator.cs" />
+    <Compile Include="Figures\Points\RotatedPoint.cs" />
+    <Compile Include="Figures\Points\TranslatedPoint.cs" />
+    <Compile Include="Figures\Shapes\Arrow.cs" />
+    <Compile Include="Figures\Shapes\Bezier.cs" />
+    <Compile Include="Figures\Shapes\BezierCreator.cs" />
+    <Compile Include="Figures\Shapes\CoordinatesShapeBase.cs" />
+    <Compile Include="Figures\Shapes\Curve.cs" />
+    <Compile Include="Figures\Shapes\FunctionGraph\FunctionGraph.cs" />
+    <Compile Include="Figures\Shapes\FunctionGraph\FunctionGraphCreator.cs" />
+    <Compile Include="Figures\Shapes\Locus.cs" />
+    <Compile Include="Figures\Shapes\LocusCreator.cs" />
+    <Compile Include="Figures\Shapes\Polygon.cs" />
+    <Compile Include="Figures\Shapes\PolygonBase.cs" />
+    <Compile Include="Figures\Shapes\PolygonCreator.cs" />
+    <Compile Include="Figures\Shapes\Polyline.cs" />
+    <Compile Include="Figures\Shapes\PolylineCreator.cs" />
+    <Compile Include="Figures\Shapes\RegularPolygon.cs" />
+    <Compile Include="Figures\Shapes\RegularPolygonCreator.cs" />
+    <Compile Include="Figures\Shapes\ShapeBase.cs" />
+    <Compile Include="Figures\Shapes\ShapeCreator.cs" />
+    <Compile Include="Figures\Shapes\SquareCreator.cs" />
+    <Compile Include="Figures\Shapes\TriangleCreator.cs" />
+    <Compile Include="Figures\Transformations\DilationCreator.cs" />
+    <Compile Include="Figures\Transformations\RotationCreator.cs" />
+    <Compile Include="Figures\Transformations\Transformer.cs" />
+    <Compile Include="Figures\Transformations\TranslationCreator.cs" />
+    <Compile Include="Figures\Values\INumber.cs" />
+    <Compile Include="Figures\Values\Number.cs" />
+    <Compile Include="Figures\ZOrder.cs" />
+    <Compile Include="Macros\MacroDefiner.cs" />
+    <Compile Include="Macros\MacroInputSelector.cs" />
+    <Compile Include="Macros\MacroResultSelector.cs" />
+    <Compile Include="Macros\MacroSerializer.cs" />
+    <Compile Include="Macros\ToolStorage.cs" />
+    <Compile Include="Macros\UserDefinedTool.cs" />
+    <Compile Include="Math.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyGrid\Attributes\ComplexTypeState.cs" />
+    <Compile Include="PropertyGrid\Attributes\DomainAttribute.cs" />
+    <Compile Include="PropertyGrid\Attributes\PropertyGridComplexTypeStateAttribute.cs" />
+    <Compile Include="PropertyGrid\Attributes\PropertyGridEventAttribute.cs" />
+    <Compile Include="PropertyGrid\Attributes\PropertyGridFocusAttribute.cs" />
+    <Compile Include="PropertyGrid\Attributes\PropertyGridNameAttribute.cs" />
+    <Compile Include="PropertyGrid\Attributes\PropertyGridPreferredEditorAttribute.cs" />
+    <Compile Include="PropertyGrid\Attributes\PropertyGridVisibleAttribute.cs" />
+    <Compile Include="PropertyGrid\Editors\BasePropertyEditorFactory.cs" />
+    <Compile Include="PropertyGrid\Editors\IValueEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\IValueEditorFactory.cs" />
+    <Compile Include="PropertyGrid\Editors\LabeledPropertyEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\ReadOnlyValuePropertyEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\SelectorPropertyEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\BooleanEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\BrushEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\ColorEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\ComplexTypeEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\DoubleEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\EnumEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\EnumRadioButtonEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\ExpressionEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\FontFamilyEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\IntEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\PolarMultyEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\SliderEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\Types\StringEditor.cs" />
+    <Compile Include="PropertyGrid\Editors\ValidationResult.cs" />
+    <Compile Include="PropertyGrid\INotifyPropertyChanging.cs" />
+    <Compile Include="PropertyGrid\IOperationDescription.cs" />
+    <Compile Include="PropertyGrid\IOperationProvider.cs" />
+    <Compile Include="PropertyGrid\IPropertyGridContentProvider.cs" />
+    <Compile Include="PropertyGrid\IPropertyGridHost.cs" />
+    <Compile Include="PropertyGrid\IValueProvider.cs" />
+    <Compile Include="PropertyGrid\MethodCallerButton.cs" />
+    <Compile Include="PropertyGrid\PropertyGrid.cs" />
+    <Compile Include="PropertyGrid\ReflectionHelper.cs" />
+    <Compile Include="PropertyGrid\ValidationException.cs" />
+    <Compile Include="PropertyGrid\ValueDiscoveryStrategy.cs" />
+    <None Include="readme.txt" />
+    <Compile Include="Serialization\DGFReader.cs" />
+    <Compile Include="Serialization\DrawingDeserializer.cs" />
+    <Compile Include="Serialization\DrawingSerializer.cs" />
+    <Compile Include="Serialization\DrawingUpdater.cs" />
+    <Compile Include="Serialization\IniFile.cs" />
+    <Compile Include="Serialization\Serializer.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Styles\FigureStyle.cs" />
+    <Compile Include="Styles\BackgroundStyle.cs" />
+    <Compile Include="Styles\IFigureStyle.cs" />
+    <Compile Include="Styles\LineStyle.cs" />
+    <Compile Include="Styles\PointStyle.cs" />
+    <Compile Include="Styles\ShapeStyle.cs" />
+    <None Include="Styles\StyleDiagram.cd" />
+    <Compile Include="Styles\StyleManager.cs" />
+    <Compile Include="Styles\StylePicker.cs" />
+    <Compile Include="Styles\TextStyle.cs" />
+    <Compile Include="UI\BehaviorOrderer.cs" />
+    <Compile Include="UI\CommandSystem\Command.cs" />
+    <Compile Include="UI\CommandSystem\CompositeCommandObserver.cs" />
+    <Compile Include="UI\CommandSystem\ICommand.cs" />
+    <Compile Include="UI\CommandSystem\ICommandObserver.cs" />
+    <Compile Include="UI\DrawingControl.Commands.cs" />
+    <Compile Include="UI\DrawingControl.cs" />
+    <Compile Include="UI\DrawingControl.LoadDrawing.cs" />
+    <Compile Include="UI\DrawingControl.Undo.cs" />
+    <Compile Include="UI\DrawingHost.cs" />
+    <Compile Include="UI\FigureExplorer.cs" />
+    <Compile Include="UI\IconBuilder.cs" />
+    <Compile Include="UI\Ribbon\BehaviorToolButton.cs" />
+    <Compile Include="UI\Ribbon\ButtonGrid.cs" />
+    <Compile Include="UI\Ribbon\CommandToolButton.cs" />
+    <Compile Include="UI\Ribbon\Ribbon.cs" />
+    <Compile Include="UI\Ribbon\TabPanel.cs" />
+    <Compile Include="UI\Ribbon\ToolButton.cs" />
+    <Compile Include="UI\StatusBar.cs" />
+    <Compile Include="Utilities.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

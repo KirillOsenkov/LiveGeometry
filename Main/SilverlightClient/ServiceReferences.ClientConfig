@@ -1,0 +1,16 @@
+﻿<configuration>
+  <system.serviceModel>
+    <bindings>
+      <basicHttpBinding>
+        <binding name="LiveGeometrySoap" maxBufferSize="2147483647" maxReceivedMessageSize="2147483647">
+          <security mode="None" />
+        </binding>
+      </basicHttpBinding>
+    </bindings>
+    <client>
+      <endpoint address="http://guilabs.de/web/livegeometry.asmx" binding="basicHttpBinding"
+          bindingConfiguration="LiveGeometrySoap" contract="LiveGeometryWebServices.LiveGeometrySoap"
+          name="LiveGeometrySoap" />
+    </client>
+  </system.serviceModel>
+</configuration>

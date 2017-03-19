@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicGeometry", "DynamicGeometry\DynamicGeometry.csproj", "{C8694CE9-C8FC-4A2D-94FE-0FB9AC01D16C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DG", "DG\DG.csproj", "{F9F035AA-90C7-4FC9-93E3-A5DCF00774B2}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vstfdevdiv:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = DG\\DG.csproj
+		SccProjectName1 = DG
+		SccLocalPath1 = DG
+		SccProjectUniqueName2 = DynamicGeometry\\DynamicGeometry.csproj
+		SccProjectName2 = DynamicGeometry
+		SccLocalPath2 = DynamicGeometry
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C8694CE9-C8FC-4A2D-94FE-0FB9AC01D16C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8694CE9-C8FC-4A2D-94FE-0FB9AC01D16C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8694CE9-C8FC-4A2D-94FE-0FB9AC01D16C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8694CE9-C8FC-4A2D-94FE-0FB9AC01D16C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9F035AA-90C7-4FC9-93E3-A5DCF00774B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9F035AA-90C7-4FC9-93E3-A5DCF00774B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9F035AA-90C7-4FC9-93E3-A5DCF00774B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F035AA-90C7-4FC9-93E3-A5DCF00774B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

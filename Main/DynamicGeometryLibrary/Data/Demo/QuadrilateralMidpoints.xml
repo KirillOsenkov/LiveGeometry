@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Drawing>
+  <Viewport Left="-3.8845486113" Top="7.2410300925" Right="14.5760995369" Bottom="-1.8446180557" />
+  <Styles>
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="1" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="2" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="3" Size="10" StrokeWidth="1" />
+    <LineStyle Color="#FF046CFF" Name="4" StrokeWidth="1" />
+    <ShapeStyle Color="#FF000000" Fill="#FFFFFF00" Name="5" StrokeWidth="1" />
+    <TextStyle Bold="false" Color="#FF2795BC" FontFamily="Comic Sans MS" FontSize="50" Italic="false" Name="6" />
+    <TextStyle Bold="false" Color="#FF2E46E0" FontFamily="Comic Sans MS" FontSize="16" Italic="false" Name="7" />
+    <TextStyle Bold="false" Color="#FF12607B" FontFamily="Arial" FontSize="12" Italic="false" Name="8" />
+    <LineStyle Color="#FF000001" Name="9" StrokeWidth="1" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="FreePoint10" Style="1" X="3.6603009258" Y="4.6006944443" />
+    <FreePoint Name="FreePoint7" Style="1" X="8.33333333320002" Y="3.544560185" />
+    <MidPoint Name="MidPoint16" Style="1">
+      <Dependency Name="FreePoint7" />
+      <Dependency Name="FreePoint10" />
+    </MidPoint>
+    <FreePoint Name="FreePoint4" Style="1" X="5.0636574073" Y="1.5190972221" />
+    <MidPoint Name="MidPoint15" Style="1">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint7" />
+    </MidPoint>
+    <FreePoint Name="FreePoint1" Style="1" X="1.9097222222" Y="3.0092592591" />
+    <MidPoint Name="MidPoint14" Style="1">
+      <Dependency Name="FreePoint10" />
+      <Dependency Name="FreePoint1" />
+    </MidPoint>
+    <MidPoint Name="MidPoint13" Style="1">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+    </MidPoint>
+    <Label Name="Label1" Style="6" Text="Quadrilateral midpoints" X="0.6111111111" Y="7.2459490741" />
+    <Label Name="Label2" Style="7" Text="For any quadrilateral, if you connect its midpoints, \nyou will always get a parallelogramm. \nMove the yellow points around to see this rule in action." X="1.582175926" Y="6.0289351852" />
+    <Hyperlink Name="Link1" Url="http://www.osenkov.com/geometry/demo/SquareBySide.xml" Text="Next: Square by side" X="3" Y="-1" />
+    <Segment Name="Segment9" Style="9">
+      <Dependency Name="FreePoint7" />
+      <Dependency Name="FreePoint10" />
+    </Segment>
+    <Segment Name="Segment22" Style="9">
+      <Dependency Name="MidPoint16" />
+      <Dependency Name="MidPoint15" />
+    </Segment>
+    <Segment Name="Segment6" Style="9">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint7" />
+    </Segment>
+    <Segment Name="Segment20" Style="4">
+      <Dependency Name="MidPoint14" />
+      <Dependency Name="MidPoint16" />
+    </Segment>
+    <Segment Name="Segment24" Style="4">
+      <Dependency Name="MidPoint15" />
+      <Dependency Name="MidPoint13" />
+    </Segment>
+    <Segment Name="Segment18" Style="4">
+      <Dependency Name="MidPoint13" />
+      <Dependency Name="MidPoint14" />
+    </Segment>
+    <Segment Name="Segment12" Style="9">
+      <Dependency Name="FreePoint10" />
+      <Dependency Name="FreePoint1" />
+    </Segment>
+    <Segment Name="Segment3" Style="9">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+    </Segment>
+    <AngleMeasurement Name="AngleMeasurement85" Style="8" OffsetX="0.290166770199998" OffsetY="-0.0984339576999997">
+      <Dependency Name="MidPoint14" />
+      <Dependency Name="MidPoint13" />
+      <Dependency Name="MidPoint16" />
+    </AngleMeasurement>
+    <AngleArc Name="AngleArc86" Style="4">
+      <Dependency Name="MidPoint14" />
+      <Dependency Name="MidPoint13" />
+      <Dependency Name="MidPoint16" />
+    </AngleArc>
+    <AngleMeasurement Name="AngleMeasurement89" Style="8" OffsetX="-0.5497685185" OffsetY="0.289351851800001">
+      <Dependency Name="MidPoint15" />
+      <Dependency Name="MidPoint16" />
+      <Dependency Name="MidPoint13" />
+    </AngleMeasurement>
+    <AngleArc Name="AngleArc90" Style="4">
+      <Dependency Name="MidPoint15" />
+      <Dependency Name="MidPoint16" />
+      <Dependency Name="MidPoint13" />
+    </AngleArc>
+    <AngleMeasurement Name="AngleMeasurement93" Style="8" OffsetX="0.0723379629999958" OffsetY="0.462962962999999">
+      <Dependency Name="MidPoint13" />
+      <Dependency Name="MidPoint15" />
+      <Dependency Name="MidPoint14" />
+    </AngleMeasurement>
+    <AngleArc Name="AngleArc94" Style="4">
+      <Dependency Name="MidPoint13" />
+      <Dependency Name="MidPoint15" />
+      <Dependency Name="MidPoint14" />
+    </AngleArc>
+    <AngleMeasurement Name="AngleMeasurement97" Style="8" OffsetX="-0.2459490741" OffsetY="-0.318287037">
+      <Dependency Name="MidPoint16" />
+      <Dependency Name="MidPoint14" />
+      <Dependency Name="MidPoint15" />
+    </AngleMeasurement>
+    <AngleArc Name="AngleArc98" Style="4">
+      <Dependency Name="MidPoint16" />
+      <Dependency Name="MidPoint14" />
+      <Dependency Name="MidPoint15" />
+    </AngleArc>
+    <DistanceMeasurement Name="DistanceMeasurement99" Style="8" OffsetX="0" OffsetY="0">
+      <Dependency Name="MidPoint14" />
+      <Dependency Name="MidPoint16" />
+    </DistanceMeasurement>
+    <DistanceMeasurement Name="DistanceMeasurement100" Style="8" OffsetX="-0.3038194445" OffsetY="0.0868055555000002">
+      <Dependency Name="MidPoint16" />
+      <Dependency Name="MidPoint15" />
+    </DistanceMeasurement>
+    <DistanceMeasurement Name="DistanceMeasurement101" Style="8" OffsetX="-0.130208333400001" OffsetY="0.217013888899997">
+      <Dependency Name="MidPoint15" />
+      <Dependency Name="MidPoint13" />
+    </DistanceMeasurement>
+    <DistanceMeasurement Name="DistanceMeasurement102" Style="8" OffsetX="0.0434027777999995" OffsetY="0.1591435186">
+      <Dependency Name="MidPoint13" />
+      <Dependency Name="MidPoint14" />
+    </DistanceMeasurement>
+  </Figures>
+</Drawing>

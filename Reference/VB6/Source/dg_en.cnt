@@ -1,0 +1,65 @@
+:Base dg_en.hlp>main
+:Title DG Dynamic Geometry Package
+1 Introduction
+2 Contents=TOPIC_CONTENTS
+2 What is DG?=TOPIC_OVERVIEW
+2 Examples of usage=TOPIC_EX_CONTENTS
+2 Construction examples
+3 Constructing a triangle=TOPIC_EX_TRIANGLE
+3 Constructing an equilateral triangle by its side=TOPIC_EX_EQUITR
+3 Circumscribing a circle around a triangle=TOPIC_EX_CIRCUM
+3 Constructing a square by its side=TOPIC_EX_SQUARE
+3 Constructing a right triangle=TOPIC_EX_RIGHTTR
+2 Analytic point examples
+3 Dividing a segment into three equal parts=TOPIC_EX_TRIPOINT
+3 Pentagon center of gravity=TOPIC_EX_PENTAGONCG
+3 Angle trisection=TOPIC_EX_TRISECTION
+3 Squaring the circle=TOPIC_EX_SQUARINGCIRCLE
+2 Dynamic locus examples
+3 Drawing a parabola=TOPIC_EX_PARABOLA
+3 Drawing an arbitrary function plot=TOPIC_EX_PLOT
+2 Measurement examples
+3 Measuring distances, angles and areas=TOPIC_EX_MEASURE1
+3 Inserting dynamic expressions into the label text=TOPIC_EX_MEASURE2
+2 Macro example
+3 Creating a "Circumscribed circle" macro=TOPIC_EX_MACRO1
+1 Main features
+2 Construction of basic geometric objects=TOPIC_BASICCONSTRUCTION
+2 Editing and deleting objects=TOPIC_EDITING
+2 Labels: a tool for comments and measurements=TOPIC_LABELS
+2 Measurements and calculator=TOPIC_MEASUREMENTS
+2 Expression formatting syntax=TOPIC_INTERFACE_EXPRESSION
+2 Analytic geometry: coordinate system and equations=TOPIC_ANALYTIC
+2 Locus of a point and dynamic locus: constructing curves=TOPIC_LOCI
+2 Macros: recording a part of the construction for future playback=TOPIC_MACROSMAIN
+2 Step-by-step construction playback=TOPIC_DEMO
+2 Buttons: creating interactive drawings and hyperlinks=TOPIC_BUTTONS
+1 Interface description
+2 Main window=TOPIC_INTERFACE_MAIN
+2 Menu=TOPIC_INTERFACE_MENU
+2 Main toolbar=TOPIC_INTERFACE_MAINBAR
+2 Geometric toolbar=TOPIC_INTERFACE_TOOLBAR
+2 Dialog windows=TOPIC_INTERFACE_DIALOGS
+2 List of dialogs
+3 Options=TOPIC_INTERFACE_SETTINGS
+3 Construction playback options=TOPIC_INTERFACE_DEMO
+3 Point properties=TOPIC_INTERFACE_POINTPROPS
+3 Figure properties=TOPIC_INTERFACE_FIGUREPROPS
+3 Label properties=TOPIC_INTERFACE_LABELPROPS
+3 Button properties=TOPIC_INTERFACE_BUTTONPROPS
+3 Measurement properties=TOPIC_INTERFACE_MEASUREPROPS
+3 Other object properties=TOPIC_INTERFACE_STATICPROPS
+3 Drawing properties=TOPIC_INTERFACE_DRAWINGPROPS
+3 "Create a macro"=TOPIC_INTERFACE_MACROCREATE
+3 "Macro result selection"=TOPIC_INTERFACE_MACROSELECTRESULTS
+3 "Finish creating a macro"=TOPIC_INTERFACE_MACROSAVE
+3 "Organize macros"=TOPIC_INTERFACE_MACROORGANIZE
+3 Analytic point=TOPIC_INTERFACE_CREATEPOINT
+3 Analytic line=TOPIC_INTERFACE_CREATELINE
+3 Analytic circle=TOPIC_INTERFACE_CREATECIRCLE
+3 Point list=TOPIC_INTERFACE_POINTLIST
+3 Figure list=TOPIC_INTERFACE_FIGURELIST
+1 Miscellaneous
+2 Tips=TOPIC_TIPSANDTRICKS
+2 Useful formulas=TOPIC_FORMULAS
+2 About DG team=TOPIC_ABOUT

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://livegeometry.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://livegeometry.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://livegeometry.com/">
+      <s:element name="SendErrorReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="error" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendErrorReportResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SendErrorReportResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendTabulaErrorReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="error" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendTabulaErrorReportResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SendTabulaErrorReportResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="SendErrorReportSoapIn">
+    <wsdl:part name="parameters" element="tns:SendErrorReport" />
+  </wsdl:message>
+  <wsdl:message name="SendErrorReportSoapOut">
+    <wsdl:part name="parameters" element="tns:SendErrorReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendTabulaErrorReportSoapIn">
+    <wsdl:part name="parameters" element="tns:SendTabulaErrorReport" />
+  </wsdl:message>
+  <wsdl:message name="SendTabulaErrorReportSoapOut">
+    <wsdl:part name="parameters" element="tns:SendTabulaErrorReportResponse" />
+  </wsdl:message>
+  <wsdl:portType name="LiveGeometrySoap">
+    <wsdl:operation name="SendErrorReport">
+      <wsdl:input message="tns:SendErrorReportSoapIn" />
+      <wsdl:output message="tns:SendErrorReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendTabulaErrorReport">
+      <wsdl:input message="tns:SendTabulaErrorReportSoapIn" />
+      <wsdl:output message="tns:SendTabulaErrorReportSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LiveGeometrySoap" type="tns:LiveGeometrySoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SendErrorReport">
+      <soap:operation soapAction="http://livegeometry.com/SendErrorReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendTabulaErrorReport">
+      <soap:operation soapAction="http://livegeometry.com/SendTabulaErrorReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="LiveGeometrySoap12" type="tns:LiveGeometrySoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SendErrorReport">
+      <soap12:operation soapAction="http://livegeometry.com/SendErrorReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendTabulaErrorReport">
+      <soap12:operation soapAction="http://livegeometry.com/SendTabulaErrorReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LiveGeometry">
+    <wsdl:port name="LiveGeometrySoap" binding="tns:LiveGeometrySoap">
+      <soap:address location="http://guilabs.de/web/livegeometry.asmx" />
+    </wsdl:port>
+    <wsdl:port name="LiveGeometrySoap12" binding="tns:LiveGeometrySoap12">
+      <soap12:address location="http://guilabs.de/web/livegeometry.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Drawing>
+  <Viewport Left="-9.9687499998" Top="10.09375" Right="16.6145833335" Bottom="-2.9895833333" />
+  <Styles>
+    <PointStyle Color="#FF000000" Fill="#FF00B2FF" Name="1" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FF000000" Fill="#FF2AFF00" Name="2" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="3" Size="10" StrokeWidth="1" />
+    <LineStyle Color="#FF000000" Name="4" StrokeWidth="1" />
+    <ShapeStyle Color="#FF000000" Fill="#FFFFFF00" Name="5" StrokeWidth="1" />
+    <TextStyle Bold="false" Color="#FF2476B4" FontFamily="Comic Sans MS" FontSize="42" Italic="false" Name="6" />
+    <TextStyle Bold="false" Color="#FF0C0E4F" FontFamily="Comic Sans MS" FontSize="17" Italic="false" Name="7" />
+  </Styles>
+  <Figures>
+    <Hyperlink Name="Link1" Url="http://www.osenkov.com/geometry/demo/Parabola.xml" Text="Next: Parabola" X="3" Y="-1" />
+    <FreePoint Name="FreePoint10" Style="3" X="1.8750000001" Y="0.5208333333" />
+    <FreePoint Name="FreePoint13" Style="3" X="0.1041666668" Y="0.5208333332" />
+    <FreePoint Name="FreePoint16" Style="3" X="6.2708333335" Y="5.0625" />
+    <CircleByRadius Name="CircleByRadius15" Style="4">
+      <Dependency Name="FreePoint10" />
+      <Dependency Name="FreePoint13" />
+      <Dependency Name="FreePoint16" />
+    </CircleByRadius>
+    <PointOnFigure Name="PointOnFigure17" Style="1" X="4.5158802561364" Y="4.82587711315595" Parameter="3.27561585517462">
+      <Dependency Name="CircleByRadius15" />
+    </PointOnFigure>
+    <FreePoint Name="FreePoint20" Style="3" X="12.8333333335" Y="2.875" />
+    <MidPoint Name="MidPoint19" Style="2">
+      <Dependency Name="PointOnFigure17" />
+      <Dependency Name="FreePoint20" />
+    </MidPoint>
+    <Locus Name="Locus22">
+      <Dependency Name="MidPoint19" />
+      <Dependency Name="PointOnFigure17" />
+    </Locus>
+    <Label Name="Label318" Style="6" Text="Locus sample" X="-8.4791666666" Y="9.25" />
+    <Label Name="Label319" Style="7" Text="A locus is a trace that a point leaves while some other point&#xD;is moving along a certain path.&#xD;&#xD;In this example, we have a blue point moving along a circle. &#xD;The midpoint of the segment (green) describes a locus.&#xD;&#xD;To create a locus, first click the point that describes the locus &#xD;and then click a point that moves along a figure. The first point&#xD;must depend on the second point in some way." X="-8.4374999997" Y="7.6666666667" />
+    <Segment Name="Segment323" Style="4">
+      <Dependency Name="PointOnFigure17" />
+      <Dependency Name="FreePoint20" />
+    </Segment>
+    <Label Name="Label324" Style="7" Text="Radius" X="0.5000000001" Y="1.2708333333" />
+    <Segment Name="Segment326" Style="4">
+      <Dependency Name="FreePoint13" />
+      <Dependency Name="FreePoint10" />
+    </Segment>
+  </Figures>
+</Drawing>

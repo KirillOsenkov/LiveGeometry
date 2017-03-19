@@ -1,0 +1,36 @@
+[General]
+FileFormatVersion=1.0.292
+Name=asdf
+Description=sdf
+GivenCount=2
+FigurePointCount=0
+ResultCount=1
+SGCount=0
+
+[Given1]
+Type=0
+Info=Укажите точку.
+
+[Given2]
+Type=0
+Info=Укажите точку.
+
+[Figure1]
+FillColor=14745599
+DrawWidth=1
+FigureName=Отрезок3
+FigureType=1
+FigureTypeString=Segment
+ForeColor=0
+NumberOfChildren=0
+NumberOfPoints=2
+Visible=True
+Desc=Отрезок, соединяющий точки E и F.
+ZOrder=0
+Points0=-1
+Points1=-2
+AuxPoints(1).X=418.999986694609
+AuxPoints(1).Y=241.00000445551
+AuxPoints(2).X=724.999975999968
+AuxPoints(2).Y=402.000022913793
+

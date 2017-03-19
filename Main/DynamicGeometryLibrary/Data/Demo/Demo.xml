@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Drawing>
+  <Viewport Left="-13.84375" Top="5.1354166667" Right="12.7395833333" Bottom="-7.9479166666" />
+  <Styles>
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="1" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FF373612" Fill="#FFFBFB79" Name="2" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FFFDFDFD" Fill="#FFFFFEFE" Name="3" Size="3" StrokeWidth="0.1" />
+    <LineStyle Color="#FF000000" Name="4" StrokeWidth="1" />
+    <ShapeStyle Color="#FF000000" Fill="#FFFAFF00" Name="5" StrokeWidth="1" />
+    <TextStyle Bold="true" Color="#FF86BE14" FontFamily="Comic Sans MS" FontSize="52" Italic="false" Name="6" />
+    <TextStyle Bold="false" Color="#FF9CB04B" FontFamily="Comic Sans MS" FontSize="21" Italic="false" Name="7" />
+    <ShapeStyle Color="#FF000000" Fill="#FF76FFFA" Name="8" StrokeWidth="1" />
+    <ShapeStyle Color="#FF000000" Fill="#FF7BFF47" Name="9" StrokeWidth="1" />
+    <ShapeStyle Color="#FF000000" Fill="#FFFF743B" Name="10" StrokeWidth="1" />
+  </Styles>
+  <Figures>
+    <Label Name="Label1" Style="6" Text="Live Geometry" X="-8.125" Y="4.9166666667" />
+    <Label Name="Label2" Style="7" Text="Click the links to explore &#xD;the sample drawings." X="-6.9583333333" Y="2.5833333334" />
+    <Hyperlink Name="Link1" Url="http://www.osenkov.com/geometry/demo/CircumscribedCircle.xml" Text="Circumscribed circle" X="1" Y="3" />
+    <Hyperlink Name="Link2" Url="http://www.osenkov.com/geometry/demo/QuadrilateralMidpoints.xml" Text="Quadrilateral midpoints" X="1" Y="2" />
+    <Hyperlink Name="Link3" Url="http://www.osenkov.com/geometry/demo/SquareBySide.xml" Text="Square by Side" X="1" Y="1" />
+    <Hyperlink Name="Link4" Url="http://www.osenkov.com/geometry/demo/SquareInSquare.xml" Text="Square in Square" X="1" Y="0" />
+    <Hyperlink Name="Link5" Url="http://www.osenkov.com/geometry/demo/SquareByDiagonal.xml" Text="Square by Diagonal" X="1" Y="-1" />
+    <Hyperlink Name="Link6" Url="http://www.osenkov.com/geometry/demo/Pentagon.xml" Text="Pentagon" X="1" Y="-2" />
+    <Hyperlink Name="Link7" Url="http://www.osenkov.com/geometry/demo/LocusSample.xml" Text="Locus sample" X="1" Y="-3" />
+    <Hyperlink Name="Link8" Url="http://www.osenkov.com/geometry/demo/Parabola.xml" Text="Parabola" X="1" Y="-4" />
+    <Hyperlink Name="Link9" Url="http://www.osenkov.com/geometry/demo/Wireframe.xml" Text="Wireframe" X="1" Y="-5" />
+    <Hyperlink Name="Link10" Url="http://www.osenkov.com/geometry/demo/SomethingComplex.xml" Text="Something complex" X="1" Y="-6" />
+    <FreePoint Name="FreePoint71" Style="3" X="-3.2083333333" Y="0.2500000001" />
+    <FreePoint Name="FreePoint74" Style="3" X="-1.4791666667" Y="0.2500000001" />
+    <FreePoint Name="FreePoint77" Style="3" X="-1.5833333333" Y="0.8333333334" />
+    <FreePoint Name="FreePoint80" Style="3" X="-0.0208333332999998" Y="-0.125" />
+    <FreePoint Name="FreePoint83" Style="3" X="-1.5625" Y="-1.0833333333" />
+    <FreePoint Name="FreePoint86" Style="3" X="-1.4791666667" Y="-0.4791666666" />
+    <FreePoint Name="FreePoint89" Style="3" X="-3.25" Y="-0.4791666666" />
+    <FreePoint Name="FreePoint92" Style="3" X="-2.9583333333" Y="-0.1458333333" />
+    <Polygon Name="Polygon95" Style="5">
+      <Dependency Name="FreePoint71" />
+      <Dependency Name="FreePoint74" />
+      <Dependency Name="FreePoint77" />
+      <Dependency Name="FreePoint80" />
+      <Dependency Name="FreePoint83" />
+      <Dependency Name="FreePoint86" />
+      <Dependency Name="FreePoint89" />
+      <Dependency Name="FreePoint92" />
+    </Polygon>
+    <Segment Name="Segment96" Style="4">
+      <Dependency Name="FreePoint71" />
+      <Dependency Name="FreePoint74" />
+    </Segment>
+    <Segment Name="Segment97" Style="4">
+      <Dependency Name="FreePoint74" />
+      <Dependency Name="FreePoint77" />
+    </Segment>
+    <Segment Name="Segment98" Style="4">
+      <Dependency Name="FreePoint77" />
+      <Dependency Name="FreePoint80" />
+    </Segment>
+    <Segment Name="Segment99" Style="4">
+      <Dependency Name="FreePoint80" />
+      <Dependency Name="FreePoint83" />
+    </Segment>
+    <Segment Name="Segment100" Style="4">
+      <Dependency Name="FreePoint83" />
+      <Dependency Name="FreePoint86" />
+    </Segment>
+    <Segment Name="Segment101" Style="4">
+      <Dependency Name="FreePoint86" />
+      <Dependency Name="FreePoint89" />
+    </Segment>
+    <Segment Name="Segment102" Style="4">
+      <Dependency Name="FreePoint89" />
+      <Dependency Name="FreePoint92" />
+    </Segment>
+    <Segment Name="Segment103" Style="4">
+      <Dependency Name="FreePoint92" />
+      <Dependency Name="FreePoint71" />
+    </Segment>
+    <FreePoint Name="FreePoint104" Style="2" X="-4.8125" Y="-2.7708333333" />
+    <FreePoint Name="FreePoint105" Style="2" X="-4.5" Y="-4.1458333333" />
+    <Segment Name="Segment116" Style="4">
+      <Dependency Name="FreePoint104" />
+      <Dependency Name="FreePoint105" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine117" Visible="false" Style="4">
+      <Dependency Name="Segment116" />
+      <Dependency Name="FreePoint105" />
+    </PerpendicularLine>
+    <Circle Name="Circle118" Visible="false" Style="4">
+      <Dependency Name="FreePoint105" />
+      <Dependency Name="FreePoint104" />
+    </Circle>
+    <IntersectionPoint Name="IntersectionPoint119" Visible="false" Style="1" Algorithm="IntersectLineAndCircle2">
+      <Dependency Name="PerpendicularLine117" />
+      <Dependency Name="Circle118" />
+    </IntersectionPoint>
+    <MidPoint Name="MidPoint120" Visible="false" Style="1">
+      <Dependency Name="IntersectionPoint119" />
+      <Dependency Name="FreePoint104" />
+    </MidPoint>
+    <ReflectedPoint Name="ReflectedPoint121" Visible="false" Style="1">
+      <Dependency Name="FreePoint105" />
+      <Dependency Name="MidPoint120" />
+    </ReflectedPoint>
+    <Polygon Name="Polygon122" Style="8">
+      <Dependency Name="FreePoint104" />
+      <Dependency Name="ReflectedPoint121" />
+      <Dependency Name="IntersectionPoint119" />
+      <Dependency Name="FreePoint105" />
+    </Polygon>
+    <Segment Name="Segment123" Style="4">
+      <Dependency Name="FreePoint104" />
+      <Dependency Name="ReflectedPoint121" />
+    </Segment>
+    <Segment Name="Segment124" Style="4">
+      <Dependency Name="ReflectedPoint121" />
+      <Dependency Name="IntersectionPoint119" />
+    </Segment>
+    <Segment Name="Segment125" Style="4">
+      <Dependency Name="IntersectionPoint119" />
+      <Dependency Name="FreePoint105" />
+    </Segment>
+    <FreePoint Name="FreePoint126" Style="2" X="-6.5208333333" Y="-3.7291666667" />
+    <Segment Name="Segment137" Style="4">
+      <Dependency Name="FreePoint105" />
+      <Dependency Name="FreePoint126" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine138" Visible="false" Style="4">
+      <Dependency Name="Segment137" />
+      <Dependency Name="FreePoint126" />
+    </PerpendicularLine>
+    <Circle Name="Circle139" Visible="false" Style="4">
+      <Dependency Name="FreePoint126" />
+      <Dependency Name="FreePoint105" />
+    </Circle>
+    <IntersectionPoint Name="IntersectionPoint140" Visible="false" Style="1" Algorithm="IntersectLineAndCircle2">
+      <Dependency Name="PerpendicularLine138" />
+      <Dependency Name="Circle139" />
+    </IntersectionPoint>
+    <MidPoint Name="MidPoint141" Visible="false" Style="1">
+      <Dependency Name="IntersectionPoint140" />
+      <Dependency Name="FreePoint105" />
+    </MidPoint>
+    <ReflectedPoint Name="ReflectedPoint142" Visible="false" Style="1">
+      <Dependency Name="FreePoint126" />
+      <Dependency Name="MidPoint141" />
+    </ReflectedPoint>
+    <Polygon Name="Polygon143" Style="10">
+      <Dependency Name="FreePoint105" />
+      <Dependency Name="ReflectedPoint142" />
+      <Dependency Name="IntersectionPoint140" />
+      <Dependency Name="FreePoint126" />
+    </Polygon>
+    <Segment Name="Segment144" Style="4">
+      <Dependency Name="FreePoint105" />
+      <Dependency Name="ReflectedPoint142" />
+    </Segment>
+    <Segment Name="Segment145" Style="4">
+      <Dependency Name="ReflectedPoint142" />
+      <Dependency Name="IntersectionPoint140" />
+    </Segment>
+    <Segment Name="Segment146" Style="4">
+      <Dependency Name="IntersectionPoint140" />
+      <Dependency Name="FreePoint126" />
+    </Segment>
+    <Segment Name="Segment179" Style="4">
+      <Dependency Name="FreePoint126" />
+      <Dependency Name="FreePoint104" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine180" Visible="false" Style="4">
+      <Dependency Name="Segment179" />
+      <Dependency Name="FreePoint104" />
+    </PerpendicularLine>
+    <Circle Name="Circle181" Visible="false" Style="4">
+      <Dependency Name="FreePoint104" />
+      <Dependency Name="FreePoint126" />
+    </Circle>
+    <IntersectionPoint Name="IntersectionPoint182" Visible="false" Style="1" Algorithm="IntersectLineAndCircle2">
+      <Dependency Name="PerpendicularLine180" />
+      <Dependency Name="Circle181" />
+    </IntersectionPoint>
+    <MidPoint Name="MidPoint183" Visible="false" Style="1">
+      <Dependency Name="IntersectionPoint182" />
+      <Dependency Name="FreePoint126" />
+    </MidPoint>
+    <ReflectedPoint Name="ReflectedPoint184" Visible="false" Style="1">
+      <Dependency Name="FreePoint104" />
+      <Dependency Name="MidPoint183" />
+    </ReflectedPoint>
+    <Polygon Name="Polygon185" Style="9">
+      <Dependency Name="FreePoint126" />
+      <Dependency Name="ReflectedPoint184" />
+      <Dependency Name="IntersectionPoint182" />
+      <Dependency Name="FreePoint104" />
+    </Polygon>
+    <Segment Name="Segment186" Style="4">
+      <Dependency Name="FreePoint126" />
+      <Dependency Name="ReflectedPoint184" />
+    </Segment>
+    <Segment Name="Segment187" Style="4">
+      <Dependency Name="ReflectedPoint184" />
+      <Dependency Name="IntersectionPoint182" />
+    </Segment>
+    <Segment Name="Segment188" Style="4">
+      <Dependency Name="IntersectionPoint182" />
+      <Dependency Name="FreePoint104" />
+    </Segment>
+  </Figures>
+</Drawing>

@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Drawing>
+  <Viewport Left="-6.9895833333" Top="9.7812499999" Right="19.59375" Bottom="-3.3020833334" />
+  <Styles>
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="1" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="2" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="3" Size="10" StrokeWidth="1" />
+    <LineStyle Color="#FF000000" Name="4" StrokeWidth="1" />
+    <ShapeStyle Color="#FF000000" Fill="#FFEBC5F5" Name="5" StrokeWidth="1" />
+    <TextStyle Bold="false" Color="#FF8F22D6" FontFamily="Verdana" FontSize="35" Italic="false" Name="6" />
+    <TextStyle Bold="false" Color="#FF880AA3" FontFamily="Verdana" FontSize="17" Italic="false" Name="7" />
+    <LineStyle Color="#FFCDCCCC" Name="8" StrokeWidth="0.6" />
+    <LineStyle Color="#FF9F1AC8" Name="9" StrokeWidth="1.8" />
+    <LineStyle Color="#FF9F1AC8" Name="10" StrokeWidth="4.6" />
+  </Styles>
+  <Figures>
+    <Label Name="Label1" Style="6" Text="Constructing a square given its side" X="-5.6458333333" Y="9.3333333333" />
+    <Label Name="Label2" Style="7" Text="Starting with two yellow points, the following tools have been used: \nSegment, Perpendicular, Circle, Intersection Point, \nParallel, Parallel, Intersection Point, Segment, Segment, Segment" X="-5.1458333333" Y="8.1458333333" />
+    <Hyperlink Name="Link1" Url="http://www.osenkov.com/geometry/demo/SquareInSquare.xml" Text="Next: Square in square" X="3" Y="-1" />
+    <FreePoint Name="FreePoint1" Style="1" X="6.625" Y="1.5416666667" />
+    <FreePoint Name="FreePoint4" Style="1" X="4.625" Y="2.5416666667" />
+    <Circle Name="Circle8" Style="8">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint1" />
+    </Circle>
+    <Segment Name="Segment3" Style="10">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine6" Style="8">
+      <Dependency Name="Segment3" />
+      <Dependency Name="FreePoint4" />
+    </PerpendicularLine>
+    <ParallelLine Name="ParallelLine16" Style="8">
+      <Dependency Name="PerpendicularLine6" />
+      <Dependency Name="FreePoint1" />
+    </ParallelLine>
+    <IntersectionPoint Name="IntersectionPoint9" Style="1" Algorithm="IntersectLineAndCircle1">
+      <Dependency Name="PerpendicularLine6" />
+      <Dependency Name="Circle8" />
+    </IntersectionPoint>
+    <ParallelLine Name="ParallelLine14" Style="8">
+      <Dependency Name="Segment3" />
+      <Dependency Name="IntersectionPoint9" />
+    </ParallelLine>
+    <IntersectionPoint Name="IntersectionPoint17" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ParallelLine16" />
+      <Dependency Name="ParallelLine14" />
+    </IntersectionPoint>
+    <Segment Name="Segment21" Style="9">
+      <Dependency Name="IntersectionPoint17" />
+      <Dependency Name="IntersectionPoint9" />
+    </Segment>
+    <Segment Name="Segment19" Style="9">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="IntersectionPoint17" />
+    </Segment>
+    <Segment Name="Segment1" Style="9">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="IntersectionPoint9" />
+    </Segment>
+    <Polygon Name="Polygon199" Style="5">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="IntersectionPoint9" />
+      <Dependency Name="IntersectionPoint17" />
+      <Dependency Name="FreePoint1" />
+    </Polygon>
+  </Figures>
+</Drawing>

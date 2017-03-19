@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Drawing Name="Something complex">
+  <Figures>
+    <FreePoint Name="FreePoint1" X="3" Y="4" />
+    <FreePoint Name="FreePoint4" X="6" Y="3" />
+    <Segment Name="Segment3">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine80">
+      <Dependency Name="Segment3" />
+      <Dependency Name="FreePoint1" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine78">
+      <Dependency Name="Segment3" />
+      <Dependency Name="FreePoint4" />
+    </PerpendicularLine>
+    <MidPoint Name="MidPoint5">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+    </MidPoint>
+    <PerpendicularLine Name="PerpendicularLine7">
+      <Dependency Name="Segment3" />
+      <Dependency Name="MidPoint5" />
+    </PerpendicularLine>
+    <Circle Name="Circle9">
+      <Dependency Name="MidPoint5" />
+      <Dependency Name="FreePoint4" />
+    </Circle>
+    <IntersectionPoint Name="IntersectionPoint10" Algorithm="IntersectLineAndCircle1">
+      <Dependency Name="PerpendicularLine7" />
+      <Dependency Name="Circle9" />
+    </IntersectionPoint>
+    <ParallelLine Name="ParallelLine82">
+      <Dependency Name="Segment3" />
+      <Dependency Name="IntersectionPoint10" />
+    </ParallelLine>
+    <IntersectionPoint Name="IntersectionPoint88" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ParallelLine82" />
+      <Dependency Name="PerpendicularLine80" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="IntersectionPoint85" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ParallelLine82" />
+      <Dependency Name="PerpendicularLine78" />
+    </IntersectionPoint>
+    <Segment Name="Segment13">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="IntersectionPoint10" />
+    </Segment>
+    <ParallelLine Name="ParallelLine90">
+      <Dependency Name="Segment13" />
+      <Dependency Name="IntersectionPoint88" />
+    </ParallelLine>
+    <Segment Name="Segment15">
+      <Dependency Name="IntersectionPoint10" />
+      <Dependency Name="FreePoint4" />
+    </Segment>
+    <ParallelLine Name="ParallelLine92">
+      <Dependency Name="Segment15" />
+      <Dependency Name="IntersectionPoint85" />
+    </ParallelLine>
+    <IntersectionPoint Name="IntersectionPoint97" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ParallelLine92" />
+      <Dependency Name="ParallelLine90" />
+    </IntersectionPoint>
+    <ParallelLine Name="ParallelLine125">
+      <Dependency Name="ParallelLine82" />
+      <Dependency Name="IntersectionPoint97" />
+    </ParallelLine>
+    <IntersectionPoint Name="IntersectionPoint11" Algorithm="IntersectLineAndCircle2">
+      <Dependency Name="PerpendicularLine7" />
+      <Dependency Name="Circle9" />
+    </IntersectionPoint>
+    <ParallelLine Name="ParallelLine84">
+      <Dependency Name="Segment3" />
+      <Dependency Name="IntersectionPoint11" />
+    </ParallelLine>
+    <IntersectionPoint Name="IntersectionPoint87" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ParallelLine84" />
+      <Dependency Name="PerpendicularLine80" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="IntersectionPoint86" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ParallelLine84" />
+      <Dependency Name="PerpendicularLine78" />
+    </IntersectionPoint>
+    <Segment Name="Segment17">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="IntersectionPoint11" />
+    </Segment>
+    <ParallelLine Name="ParallelLine94">
+      <Dependency Name="Segment17" />
+      <Dependency Name="IntersectionPoint86" />
+    </ParallelLine>
+    <IntersectionPoint Name="IntersectionPoint98" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ParallelLine94" />
+      <Dependency Name="ParallelLine92" />
+    </IntersectionPoint>
+    <ParallelLine Name="ParallelLine113">
+      <Dependency Name="PerpendicularLine78" />
+      <Dependency Name="IntersectionPoint98" />
+    </ParallelLine>
+    <Segment Name="Segment19">
+      <Dependency Name="IntersectionPoint11" />
+      <Dependency Name="FreePoint1" />
+    </Segment>
+    <ParallelLine Name="ParallelLine96">
+      <Dependency Name="Segment19" />
+      <Dependency Name="IntersectionPoint87" />
+    </ParallelLine>
+    <IntersectionPoint Name="IntersectionPoint102" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ParallelLine96" />
+      <Dependency Name="ParallelLine90" />
+    </IntersectionPoint>
+    <ParallelLine Name="ParallelLine120">
+      <Dependency Name="PerpendicularLine80" />
+      <Dependency Name="IntersectionPoint102" />
+    </ParallelLine>
+    <IntersectionPoint Name="IntersectionPoint101" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ParallelLine96" />
+      <Dependency Name="PerpendicularLine7" />
+    </IntersectionPoint>
+    <ParallelLine Name="ParallelLine115">
+      <Dependency Name="ParallelLine84" />
+      <Dependency Name="IntersectionPoint101" />
+    </ParallelLine>
+  </Figures>
+</Drawing>

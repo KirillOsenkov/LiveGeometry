@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DynamicGeometry.FigureStyle" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAkAEIACAAAQAggAMkAAAABAAAAAAABI=</HashCode>
+      <FileName>Styles\FigureStyle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DynamicGeometry.LineStyle">
+    <Position X="4.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQACAAACAAAAAAAAIQAAAABAAgAAAAoA=</HashCode>
+      <FileName>Styles\LineStyle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DynamicGeometry.TextStyle">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAARAAAAAAgCAGAIAgAgAAAAAIAAAAABAAgAAAAgE=</HashCode>
+      <FileName>Styles\TextStyle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DynamicGeometry.ShapeStyle">
+    <Position X="3" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQACEAAAAAAAAAAAAAAAAAAAICAAAABAAAAAAAAA=</HashCode>
+      <FileName>Styles\ShapeStyle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DynamicGeometry.PointStyle">
+    <Position X="1.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAIAAAAAAAAAIAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Styles\PointStyle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DynamicGeometry.BackgroundStyle">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAEAAAAAAAEAAAAAEAAAAAIAAAAABAgAAAAAAA=</HashCode>
+      <FileName>Styles\BackgroundStyle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

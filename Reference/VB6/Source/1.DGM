@@ -1,0 +1,53 @@
+[General]
+FileFormatVersion=1.0.292
+Name=1
+Description=
+GivenCount=2
+FigurePointCount=0
+ResultCount=2
+SGCount=0
+
+[Given1]
+Type=0
+Info=Укажите точку.
+
+[Given2]
+Type=3
+Info=Укажите прямую, луч или отрезок.
+
+[Figure1]
+FillColor=14745599
+DrawWidth=1
+FigureName=Параллельная прямая1
+FigureType=4
+FigureTypeString=Parallel line
+ForeColor=0
+NumberOfChildren=0
+NumberOfPoints=1
+Visible=True
+Desc=Прямая, параллельная прямой Прямая1, и проходящей через точку A.
+ZOrder=0
+Parents0=-2
+Points0=-1
+AuxPoints(1).X=1269
+AuxPoints(1).Y=402.95700663369
+AuxPoints(2).Y=292.608387221584
+
+[Figure2]
+FillColor=14745599
+DrawWidth=1
+FigureName=Перпендикулярная прямая1
+FigureType=5
+FigureTypeString=Perpendicular line
+ForeColor=0
+NumberOfChildren=0
+NumberOfPoints=1
+Visible=True
+Desc=Прямая, перпендикулярная прямой Прямая1 и проходящая через точку A.
+ZOrder=0
+Parents0=-2
+Points0=-1
+AuxPoints(1).X=505.043706320538
+AuxPoints(2).X=433.391017277531
+AuxPoints(2).Y=824
+

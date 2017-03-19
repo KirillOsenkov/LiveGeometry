@@ -1,0 +1,64 @@
+:Base DG_Uk.hlp>main
+:Title Пакет динамічної геометрії DG
+1 Введення
+2 Зміст=TOPIC_CONTENTS
+2 Що таке DG?=TOPIC_OVERVIEW
+2 Приклади=TOPIC_EX_CONTENTS
+2 Приклади побудувань
+3 Побудова трикутника=TOPIC_EX_TRIANGLE
+3 Побудова рівностороннього трикутника за його стороною=TOPIC_EX_EQUITR
+3 Побудова описаного навколо трикутника кола=TOPIC_EX_CIRCUM
+3 Побудова квадрата за двома вершинами=TOPIC_EX_SQUARE
+3 Побудова прямокутного трикутника=TOPIC_EX_RIGHTTR
+2 Приклади завдання точки аналітично
+3 Ділення відрізка на три частини=TOPIC_EX_TRIPOINT
+3 Центр мас п'ятикутника=TOPIC_EX_PENTAGONCG
+3 Трисекція кута=TOPIC_EX_TRISECTION
+3 Квадратура круга=TOPIC_EX_SQUARINGCIRCLE
+2 Приклади використання динамічного сліду
+3 Побудова параболи=TOPIC_EX_PARABOLA
+3 Побудова графіка довільної функції=TOPIC_EX_PLOT
+2 Приклади вимірювань
+3 Вимірювання відстаней, кутів і площ=TOPIC_EX_MEASURE1
+3 Вставка динамічних виразів в текст надпису=TOPIC_EX_MEASURE2
+2 Приклад макросу
+3 Створення макросу "Описане коло"=TOPIC_EX_MACRO1
+1 Основні можливості програми
+2 Побудування основних геометричних фігур=TOPIC_BASICCONSTRUCTION
+2 Редагування та вилучення об'єктів=TOPIC_EDITING
+2 Надписи: коментарі та засоби вимірювань=TOPIC_LABELS
+2 Вимірювання і калькулятор=TOPIC_MEASUREMENTS
+2 Правила запису формул в DG=TOPIC_INTERFACE_EXPRESSION
+2 Аналітична геометрія: система координат та рівняння=TOPIC_ANALYTIC
+2 Слід точки при русі та динамічний слід: побудування кривих та ГМТ=TOPIC_LOCI
+2 Макроси: запис частин побудови для подальшого використання=TOPIC_MACROSMAIN
+2 Покрокове відтворювання побудови=TOPIC_DEMO
+2 Кнопки: створення інтерактивних рисунків і гіперпосилань=TOPIC_BUTTONS
+1 Опис інтерфейсу
+2 Головне вікно=TOPIC_INTERFACE_MAIN
+2 Меню=TOPIC_INTERFACE_MENU
+2 Стандартна панель інструментів=TOPIC_INTERFACE_MAINBAR
+2 Панель геометричних інструментів=TOPIC_INTERFACE_TOOLBAR
+2 Діалогові вікна=TOPIC_INTERFACE_DIALOGS
+2 Список діалогових вікон
+3 Опції=TOPIC_INTERFACE_SETTINGS
+3 Налаштування відтворення побудови=TOPIC_INTERFACE_DEMO
+3 Властивості точки=TOPIC_INTERFACE_POINTPROPS
+3 Властивості фігури=TOPIC_INTERFACE_FIGUREPROPS
+3 Властивості надпису=TOPIC_INTERFACE_LABELPROPS
+3 Властивості кнопки=TOPIC_INTERFACE_BUTTONPROPS
+3 Властивості вимірювань=TOPIC_INTERFACE_MEASUREPROPS
+3 Властивості інших об'єктів=TOPIC_INTERFACE_STATICPROPS
+3 Властивості рисунка=TOPIC_INTERFACE_DRAWINGPROPS
+3 "Створення макросу"=TOPIC_INTERFACE_MACROCREATE
+3 "Вибір результуючих об'єктів"=TOPIC_INTERFACE_MACROSELECTRESULTS
+3 "Завершення створення макросу"=TOPIC_INTERFACE_MACROSAVE
+3 "Упорядкувати макроси"=TOPIC_INTERFACE_MACROORGANIZE
+3 Завдання точки аналітично=TOPIC_INTERFACE_CREATEPOINT
+3 Завдання прямої її рівнянням=TOPIC_INTERFACE_CREATELINE
+3 Завдання кола його рівнянням=TOPIC_INTERFACE_CREATECIRCLE
+3 Список точок=TOPIC_INTERFACE_POINTLIST
+3 Список фігур=TOPIC_INTERFACE_FIGURELIST
+1 Різне
+2 Корисні поради=TOPIC_TIPS_APPEARANCE
+2 Про авторів=TOPIC_ABOUT

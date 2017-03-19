@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Drawing>
+  <Viewport Left="-11.9704861111" Top="6.5538194444" Right="10.1822916666" Bottom="-4.3489583333" />
+  <Styles>
+    <PointStyle Color="#FFB2A12F" Fill="#FFFFFF00" Name="1" Size="10" StrokeWidth="1.8" />
+    <PointStyle Color="#FF969494" Fill="#FFE3E1E1" Name="2" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FF000000" Fill="#FF00E5FF" Name="3" Size="10" StrokeWidth="1" />
+    <LineStyle Color="#FF000000" Name="4" StrokeWidth="1" />
+    <ShapeStyle Color="#FFEDFEFC" Fill="#FFEBF5FF" Name="5" StrokeWidth="0.1" />
+    <TextStyle Bold="false" Color="#FFF40707" FontFamily="Comic Sans MS" FontSize="50" Italic="false" Name="6" />
+    <TextStyle Bold="false" Color="#FFB56102" FontFamily="Comic Sans MS" FontSize="20" Italic="false" Name="7" />
+    <LineStyle Color="#FF8EC3F8" Name="8" StrokeWidth="5.4" />
+    <LineStyle Color="#FF6FBEE0" Name="9" StrokeWidth="1.4" />
+    <LineStyle Color="#FFB1B1B1" Name="10" StrokeWidth="1" />
+  </Styles>
+  <Figures>
+    <Label Name="Label1" Style="6" Text="Circumscribed circle" X="-11.125" Y="6.2048611111" />
+    <Label Name="Label2" Style="7" Text="Drag the yellow points to see how the circle changes. \nThe gray points are the midpoints of the triangle's sides. \nThe center of the circle is the intersection of the side bisectors." X="-11.0590277778" Y="4.9166666667" />
+    <Hyperlink Name="Link1" Url="http://www.osenkov.com/geometry/demo/QuadrilateralMidpoints.xml" Text="Next: Quadrilateral midpoints" X="-5" Y="-3" />
+    <FreePoint Name="FreePoint1" Style="1" X="-2.9340277778" Y="-0.4791666667" />
+    <FreePoint Name="FreePoint7" Style="1" X="1.4236111111" Y="-1.25" />
+    <FreePoint Name="FreePoint4" Style="1" X="0.4166666666" Y="2.7951388889" />
+    <MidPoint Name="MidPoint11" Style="2">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint7" />
+    </MidPoint>
+    <Segment Name="Segment6" Style="9">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint7" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine13" Style="10">
+      <Dependency Name="Segment6" />
+      <Dependency Name="MidPoint11" />
+    </PerpendicularLine>
+    <MidPoint Name="MidPoint10" Style="2">
+      <Dependency Name="FreePoint7" />
+      <Dependency Name="FreePoint1" />
+    </MidPoint>
+    <Segment Name="Segment9" Style="9">
+      <Dependency Name="FreePoint7" />
+      <Dependency Name="FreePoint1" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine15" Style="10">
+      <Dependency Name="Segment9" />
+      <Dependency Name="MidPoint10" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="IntersectionPoint16" Style="3" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine15" />
+      <Dependency Name="PerpendicularLine13" />
+    </IntersectionPoint>
+    <Circle Name="Circle18" Style="8">
+      <Dependency Name="IntersectionPoint16" />
+      <Dependency Name="FreePoint7" />
+    </Circle>
+    <Segment Name="Segment3" Style="9">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+    </Segment>
+    <Polygon Name="Polygon69" Style="5">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint7" />
+    </Polygon>
+    <Segment Name="Segment70" Style="9">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint7" />
+    </Segment>
+    <Segment Name="Segment71" Style="9">
+      <Dependency Name="FreePoint7" />
+      <Dependency Name="FreePoint1" />
+    </Segment>
+  </Figures>
+</Drawing>

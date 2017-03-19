@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Drawing>
+  <Viewport Left="-7.65625" Top="9.65625" Right="18.9270833333" Bottom="-3.4270833333" />
+  <Styles>
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="1" Size="14" StrokeWidth="1" />
+    <PointStyle Color="#FF000000" Fill="#FF22FF00" Name="2" Size="14" StrokeWidth="1" />
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="3" Size="10" StrokeWidth="1" />
+    <LineStyle Color="#FF000000" Name="4" StrokeWidth="1" />
+    <ShapeStyle Color="#FF000000" Fill="#FFE0FEDA" Name="5" StrokeWidth="1" />
+    <TextStyle Bold="false" Color="#FF0B7E29" FontFamily="Comic Sans MS" FontSize="50" Italic="false" Name="6" />
+    <TextStyle Bold="false" Color="#FF4A993D" FontFamily="Comic Sans MS" FontSize="16" Italic="false" Name="7" />
+    <ShapeStyle Color="#FF000000" Fill="#FFB5F9A8" Name="8" StrokeWidth="1" />
+  </Styles>
+  <Figures>
+    <Label Name="Label1" Style="6" Text="A square in a square" X="0.6875" Y="9.7500000001" />
+    <Label Name="Label2" Style="7" Text="You can drag the green point as well!" X="2.9791666666" Y="8.2708333333" />
+    <Hyperlink Name="Link1" Url="http://www.osenkov.com/geometry/demo/SquareByDiagonal.xml" Text="Next: Square by diagonal" X="3" Y="-1" />
+    <FreePoint Name="FreePoint127" Style="1" X="2.9166666666" Y="1.4375" />
+    <FreePoint Name="FreePoint128" Style="1" X="7.8541666666" Y="0.5" />
+    <Segment Name="Segment129" Visible="false" Style="4">
+      <Dependency Name="FreePoint127" />
+      <Dependency Name="FreePoint128" />
+    </Segment>
+    <Circle Name="Circle130" Visible="false" Style="4">
+      <Dependency Name="FreePoint128" />
+      <Dependency Name="FreePoint127" />
+    </Circle>
+    <PerpendicularLine Name="PerpendicularLine131" Visible="false" Style="4">
+      <Dependency Name="Segment129" />
+      <Dependency Name="FreePoint128" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="IntersectionPoint132" Visible="false" Style="1" Algorithm="IntersectCircleAndLine2">
+      <Dependency Name="Circle130" />
+      <Dependency Name="PerpendicularLine131" />
+    </IntersectionPoint>
+    <MidPoint Name="MidPoint133" Visible="false" Style="1">
+      <Dependency Name="IntersectionPoint132" />
+      <Dependency Name="FreePoint127" />
+    </MidPoint>
+    <ReflectedPoint Name="ReflectedPoint134" Visible="false" Style="1">
+      <Dependency Name="FreePoint128" />
+      <Dependency Name="MidPoint133" />
+    </ReflectedPoint>
+    <Segment Name="Segment135" Visible="false" Style="4">
+      <Dependency Name="FreePoint128" />
+      <Dependency Name="IntersectionPoint132" />
+    </Segment>
+    <Segment Name="Segment136" Visible="false" Style="4">
+      <Dependency Name="IntersectionPoint132" />
+      <Dependency Name="ReflectedPoint134" />
+    </Segment>
+    <Segment Name="Segment137" Visible="false" Style="4">
+      <Dependency Name="ReflectedPoint134" />
+      <Dependency Name="FreePoint127" />
+    </Segment>
+    <Polygon Name="Polygon138" Style="5">
+      <Dependency Name="FreePoint127" />
+      <Dependency Name="FreePoint128" />
+      <Dependency Name="IntersectionPoint132" />
+      <Dependency Name="ReflectedPoint134" />
+    </Polygon>
+    <PointOnFigure Name="PointOnFigure143" Style="2" X="3.97387254900047" Y="1.23676470587333" Parameter="0.214117647068449">
+      <Dependency Name="Segment129" />
+    </PointOnFigure>
+    <CircleByRadius Name="CircleByRadius149" Visible="false" Style="4">
+      <Dependency Name="FreePoint127" />
+      <Dependency Name="PointOnFigure143" />
+      <Dependency Name="FreePoint128" />
+    </CircleByRadius>
+    <CircleByRadius Name="CircleByRadius153" Visible="false" Style="4">
+      <Dependency Name="FreePoint127" />
+      <Dependency Name="PointOnFigure143" />
+      <Dependency Name="IntersectionPoint132" />
+    </CircleByRadius>
+    <CircleByRadius Name="CircleByRadius157" Visible="false" Style="4">
+      <Dependency Name="FreePoint127" />
+      <Dependency Name="PointOnFigure143" />
+      <Dependency Name="ReflectedPoint134" />
+    </CircleByRadius>
+    <IntersectionPoint Name="IntersectionPoint158" Visible="false" Style="1" Algorithm="IntersectCircleAndLine1">
+      <Dependency Name="CircleByRadius149" />
+      <Dependency Name="Segment135" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="IntersectionPoint159" Visible="false" Style="1" Algorithm="IntersectCircleAndLine1">
+      <Dependency Name="CircleByRadius153" />
+      <Dependency Name="Segment136" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="IntersectionPoint160" Visible="false" Style="1" Algorithm="IntersectCircleAndLine1">
+      <Dependency Name="CircleByRadius157" />
+      <Dependency Name="Segment137" />
+    </IntersectionPoint>
+    <Segment Name="Segment172" Visible="false" Style="4">
+      <Dependency Name="IntersectionPoint159" />
+      <Dependency Name="IntersectionPoint160" />
+    </Segment>
+    <Segment Name="Segment173" Visible="false" Style="4">
+      <Dependency Name="IntersectionPoint160" />
+      <Dependency Name="PointOnFigure143" />
+    </Segment>
+    <Polygon Name="Polygon169" Style="8">
+      <Dependency Name="PointOnFigure143" />
+      <Dependency Name="IntersectionPoint158" />
+      <Dependency Name="IntersectionPoint159" />
+      <Dependency Name="IntersectionPoint160" />
+    </Polygon>
+    <Segment Name="Segment170" Visible="false" Style="4">
+      <Dependency Name="PointOnFigure143" />
+      <Dependency Name="IntersectionPoint158" />
+    </Segment>
+  </Figures>
+</Drawing>

@@ -1,0 +1,443 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8EA52CF6-4307-40FE-8E43-DCA7AB155CA6}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>DynamicGeometry</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+    <RootNamespace>DynamicGeometry</RootNamespace>
+    <StartupObject>
+    </StartupObject>
+    <MyType>Windows</MyType>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>DynamicGeometry.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>DynamicGeometry.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Document\DGDocument.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Appearance\AppearanceFactory.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Appearance\IAppearanceFactory.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Circle\DGCircle.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Circle\DGCircleByRadius.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Circle\IDGCircle.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\DGObject.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\FigureTypeAttribute.vb" />
+    <Compile Include="Figures\IDGObject.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\IFigure.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Library\FigureLibrary.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Library\FigureTypeAttribute.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Line\Appearance\ILineAppearance.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Line\Appearance\LineAppearance.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Line\DGRay.vb" />
+    <Compile Include="Figures\Line\DGLine.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Line\DGLine2Points.vb" />
+    <Compile Include="Figures\Line\IDGLine.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Line\Segment\DGSegment.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Lists\FigureList.vb" />
+    <Compile Include="Figures\Lists\FigureListNavigator.vb" />
+    <Compile Include="Figures\Lists\GeometryObjectList.vb" />
+    <Compile Include="Figures\Lists\IFigureList.vb" />
+    <Compile Include="Figures\Lists\VisualObjectList.vb" />
+    <Compile Include="Figures\Point\Appearance\IPointAppearance.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Point\Appearance\PointAppearance.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Point\Basepoint\DGBasePoint.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Point\Dependent\DGMidPoint.vb" />
+    <Compile Include="Figures\Point\DGPoint.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Point\IDGPoint.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Types\FigureCategoryList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Types\FigureType.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Types\FigureTypeList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Types\IFigureType.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Types\Strings\FigureCategoryStrings.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Figures\Types\Strings\FigureTypeStrings.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Document\IDGDocument.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Document\Viewport\CoordinateSystem.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Document\Viewport\ICoordinateSystem.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Document\Viewport\ICoordinateTransformer.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Document\Viewport\IPlane.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Document\Viewport\Plane.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Facade.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\AbstractAction.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\ActionCenter\ActionCenter.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\ActionCenter\History\IActionHistory.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\ActionCenter\History\SimpleHistory.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\ActionCenter\History\SimpleHistoryNode.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\ActionCenter\History\TreeHistory.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\ActionCenter\IActionFactory.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\DGAction.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\Figure Actions\AddFigureAction.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\Figure Actions\MovePointAction.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\IAction.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\MultiAction.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Actions\ToggleAction.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Behaviours\Dragger.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Behaviours\IBehaviour.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Behaviours\InteractiveBehavior.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Behaviours\Object creators\Circle creators\CircleByRadiusCreator.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Behaviours\Object creators\Circle creators\CircleCreator.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Behaviours\Object creators\FigureCreator.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Behaviours\Object creators\IFigureCreator.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Behaviours\Object creators\Line creators\RayCreator.vb" />
+    <Compile Include="Interaction\Behaviours\Object creators\Line creators\LineCreator.vb" />
+    <Compile Include="Interaction\Behaviours\Object creators\Line creators\SegmentCreator.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Behaviours\Object creators\ObjectCreator.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Behaviours\Object creators\Point creators\BasePointCreator.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Behaviours\Object creators\Point creators\MidPointCreator.vb" />
+    <Compile Include="Interaction\Commands\Command types\CommandStrings.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Commands\Command types\Edit\CommandEditRedo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Commands\Command types\Edit\CommandEditUndo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Commands\Command types\Tool\CommandToolBase.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Commands\Command types\Tool\CommandToolCircle.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Commands\Command types\Tool\CommandToolCircleByRadius.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Commands\Command types\Tool\CommandToolPoint.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Commands\Command types\Tool\CommandToolSegment.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Commands\Command types\Tool\CommandToolMidPoint.vb" />
+    <Compile Include="Interaction\Commands\Command types\Tool\CommandToolRay.vb" />
+    <Compile Include="Interaction\Commands\Command types\Tool\Mode\CommandModeDrag.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Commands\Command types\Tool\CommandToolLine.vb" />
+    <Compile Include="Interaction\Commands\Command.vb" />
+    <Compile Include="Interaction\Commands\CommandFactory.vb" />
+    <Compile Include="Interaction\Commands\DGCommand.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Commands\DGCommandFactory.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Commands\ICommand.vb" />
+    <Compile Include="Interaction\Commands\ICommandFactory.vb" />
+    <Compile Include="Interaction\Interface In\DocumentEventNotifications.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Interface In\IDocumentEventNotifications.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Interface Out\IUIPrescriptionEvents.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interaction\Interface Out\UIPrescriptionEvents.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Math\DGMath.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Points\IPointShape.vb" />
+    <Compile Include="Points\ISnap.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Points\PixelInfo\IPixelList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Points\PixelInfo\IPixelPair.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Points\PixelInfo\PixelPair.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Points\PixelInfo\PointPixel.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Points\PixelInfo\RectangleAdapter.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Points\CartesianPoint.vb" />
+    <Compile Include="Points\PointShape.vb" />
+    <Compile Include="Points\Structure\Math\IMathPoint.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Points\Structure\Math\MathPoint.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Temp.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View\DGView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\IDGView.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Content Include="Docs\Creating new figures.htm" />
+    <Content Include="DynamicGeometryDocs.css" />
+    <Content Include="Interaction\Interface In\Interface In.htm" />
+    <Content Include="Interaction\Interface Out\Interface Out.htm" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DGView.resx">
+      <DependentUpon>DGView.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Canvas\Canvas.csproj">
+      <Project>{A78F386A-C679-4FBB-A93C-BF9F5A93AC4B}</Project>
+      <Name>Canvas</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

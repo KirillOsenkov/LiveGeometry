@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Drawing>
+  <Viewport Left="-8.1354166668" Top="10.4895833333" Right="18.4479166665" Bottom="-2.59375" />
+  <Styles>
+    <PointStyle Color="#FF000000" Fill="#FFFFFF00" Name="1" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FF000000" Fill="#FFEFB155" Name="2" Size="10" StrokeWidth="1" />
+    <PointStyle Color="#FF000000" Fill="#FFC4CF8D" Name="3" Size="10" StrokeWidth="1" />
+    <LineStyle Color="#FF000000" Name="4" StrokeWidth="1" />
+    <ShapeStyle Color="#FF000000" Fill="#FFFFFF00" Name="5" StrokeWidth="1" />
+    <TextStyle Bold="false" Color="#FF3E729F" FontFamily="Comic Sans MS" FontSize="35" Italic="false" Name="6" />
+    <TextStyle Bold="false" Color="#FF000000" FontFamily="Arial" FontSize="10" Italic="false" Name="7" />
+    <LineStyle Color="#FF8B5117" Name="8" StrokeWidth="1" />
+  </Styles>
+  <Figures>
+    <Hyperlink Name="Link1" Url="http://www.osenkov.com/geometry/demo/Wireframe.xml" Text="Next: Wireframe" X="3" Y="-1" />
+    <FreePoint Name="FreePoint107" Style="1" X="0" Y="0" />
+    <FreePoint Name="FreePoint110" Style="1" X="9" Y="0" />
+    <FreePoint Name="FreePoint114" Style="1" X="4.7916666665" Y="1.4791666666" />
+    <Segment Name="Segment109" Style="4">
+      <Dependency Name="FreePoint107" />
+      <Dependency Name="FreePoint110" />
+    </Segment>
+    <PointOnFigure Name="PointOnFigure111" Style="3" X="2.13235748697573" Y="0" Parameter="0.23692860966397">
+      <Dependency Name="Segment109" />
+    </PointOnFigure>
+    <Segment Name="Segment116" Style="8">
+      <Dependency Name="FreePoint114" />
+      <Dependency Name="PointOnFigure111" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine113" Style="8">
+      <Dependency Name="Segment109" />
+      <Dependency Name="PointOnFigure111" />
+    </PerpendicularLine>
+    <MidPoint Name="MidPoint117" Style="2">
+      <Dependency Name="FreePoint114" />
+      <Dependency Name="PointOnFigure111" />
+    </MidPoint>
+    <PerpendicularLine Name="PerpendicularLine119" Style="8">
+      <Dependency Name="Segment116" />
+      <Dependency Name="MidPoint117" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="IntersectionPoint120" Style="2" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine119" />
+      <Dependency Name="PerpendicularLine113" />
+    </IntersectionPoint>
+    <Locus Name="Locus122">
+      <Dependency Name="IntersectionPoint120" />
+      <Dependency Name="PointOnFigure111" />
+    </Locus>
+    <Label Name="Label348" Style="6" Text="Constructing a parabola with ruler and compass" X="-3.2500000001" Y="10.2291666666" />
+  </Figures>
+</Drawing>

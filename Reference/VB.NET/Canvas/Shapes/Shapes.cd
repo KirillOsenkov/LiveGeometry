@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Microsoft Sans Serif" Size="8.4" />
+  <Class Name="GuiLabs.Canvas.Shapes.ShapeList">
+    <Position X="5.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Shapes\ShapeList.cs</FileName>
+      <HashCode>AAAAASRAAAkAhkEBAAgAAAAAAIBAEgQkgJAAEAiAAgA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GuiLabs.Canvas.Shapes.Shape">
+    <Position X="2" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Shapes\Shape.cs</FileName>
+      <HashCode>AAAAASAAAAAAAgEAQAAAAAAAAIAAAAAAgAAAEAAAAgA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Method Name="RaiseNeedRedraw" Hidden="true" />
+      <Method Name="RaiseSizeChanged" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GuiLabs.Canvas.Shapes.RectShape">
+    <Position X="1" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Shapes\RectShape.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GuiLabs.Canvas.Shapes.ShapeWithMouseEvents">
+    <Position X="2.75" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <FileName>Shapes\ShapeWithMouseEvents.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAEQAAAAAAAgACAAAEAIAAAAQABCAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+</ClassDiagram>

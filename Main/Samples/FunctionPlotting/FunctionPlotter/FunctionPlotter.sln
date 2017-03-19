@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionPlotter", "FunctionPlotter.csproj", "{1F444D53-0B24-43D0-B9C1-079DD1DBE0C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightPlayer.2010", "..\..\..\SilverlightPlayer\SilverlightPlayer.2010.csproj", "{292F579F-2DA4-4DBA-911F-C67152333D22}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs07
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = FunctionPlotter.csproj
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = ..\\..\\..\\SilverlightPlayer\\SilverlightPlayer.2010.csproj
+		SccProjectName2 = ../../../SilverlightPlayer
+		SccLocalPath2 = ..\\..\\..\\SilverlightPlayer
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F444D53-0B24-43D0-B9C1-079DD1DBE0C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F444D53-0B24-43D0-B9C1-079DD1DBE0C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F444D53-0B24-43D0-B9C1-079DD1DBE0C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F444D53-0B24-43D0-B9C1-079DD1DBE0C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{292F579F-2DA4-4DBA-911F-C67152333D22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{292F579F-2DA4-4DBA-911F-C67152333D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{292F579F-2DA4-4DBA-911F-C67152333D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{292F579F-2DA4-4DBA-911F-C67152333D22}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

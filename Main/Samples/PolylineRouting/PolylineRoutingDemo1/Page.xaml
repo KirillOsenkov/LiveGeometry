@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="PolylineRoutingDemo1.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="600" Height="300">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Canvas 
+            x:Name="canvas1" 
+            Grid.Row="0"
+            Grid.Column="0"
+            Background="White" 
+            MinWidth="100" 
+            MinHeight="100"
+            SizeChanged="canvas1_SizeChanged"
+            >
+        </Canvas>
+
+    </Grid>
+</UserControl>

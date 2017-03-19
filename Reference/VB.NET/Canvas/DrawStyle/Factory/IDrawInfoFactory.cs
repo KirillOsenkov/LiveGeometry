@@ -1,0 +1,22 @@
+using System;
+using System.Drawing;
+
+namespace GuiLabs.Canvas.DrawStyle
+{
+	public interface IDrawInfoFactory
+	{
+		ILineStyleInfo ProduceNewLineStyleInfo(
+			Color theColor, int theWidth);
+		IFillStyleInfo ProduceNewFillStyleInfo(
+			Color theColor);
+		IFontStyleInfo ProduceNewFontStyleInfo(
+			string FamilyName, 
+			float size, 
+			System.Drawing.FontStyle theStyle);
+		IPicture ProduceNewPicture(
+			System.Drawing.Image image);
+		IPicture ProduceNewTransparentPicture(
+			System.Drawing.Image image,
+			System.Drawing.Color transparentColor);
+	}
+}

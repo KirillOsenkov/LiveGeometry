@@ -1,0 +1,589 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{292F579F-2DA4-4DBA-911F-C67152333D22}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>LiveGeometry</RootNamespace>
+    <AssemblyName>LiveGeometryPlayer</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>LiveGeometryPlayer.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>LiveGeometry.LiveGeometryPlayerApp</SilverlightAppEntry>
+    <TestPageFileName>TestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <UsePlatformExtensions>false</UsePlatformExtensions>
+    <EnableOutOfBrowser>false</EnableOutOfBrowser>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DG>..\DynamicGeometryLibrary\</DG>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;PLAYER</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;PLAYER</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GuiLabs.Undo.Silverlight">
+      <HintPath>..\DynamicGeometryLibrary\References\GuiLabs.Undo.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Browser" />
+    <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\DynamicGeometryLibrary\Figures\Points\ReflectionCreator.cs">
+      <Link>Figures\Points\ReflectionCreator.cs</Link>
+    </Compile>
+    <Compile Include="Application.cs" />
+    <Compile Include="Demo.cs" />
+    <Compile Include="Downloader.cs" />
+    <Compile Include="Page.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(DG)Actions\Actions.cs">
+      <Link>Actions\Actions.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Actions\AddFigureAction.cs">
+      <Link>Actions\AddFigureAction.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Actions\AddItemAction.cs">
+      <Link>Actions\AddItemAction.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Actions\GeometryAction.cs">
+      <Link>Actions\GeometryAction.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Actions\MoveAction.cs">
+      <Link>Actions\MoveAction.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Actions\RemoveFigureAction.cs">
+      <Link>Actions\RemoveFigureAction.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Actions\RemoveFiguresAction.cs">
+      <Link>Actions\RemoveFiguresAction.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Actions\RemoveItemAction.cs">
+      <Link>Actions\RemoveItemAction.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Actions\ReplaceFigureAction.cs">
+      <Link>Actions\ReplaceFigureAction.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Actions\SetPropertyAction.cs">
+      <Link>Actions\SetPropertyAction.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Behaviors\Behavior.cs">
+      <Link>Behaviors\Behavior.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Behaviors\BehaviorCategories.cs">
+      <Link>Behaviors\BehaviorCategories.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Behaviors\Dragger.cs">
+      <Link>Behaviors\Dragger.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Behaviors\FigureSelector.cs">
+      <Link>Behaviors\FigureSelector.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Drawing.cs">
+      <Link>Drawing.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\Binder.cs">
+      <Link>Expressions\Binder.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\CompileError.cs">
+      <Link>Expressions\CompileError.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\CompileResult.cs">
+      <Link>Expressions\CompileResult.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\DrawingExpression.cs">
+      <Link>Expressions\DrawingExpression.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\ExpressionTreeCompiler.cs">
+      <Link>Expressions\ExpressionTreeCompiler.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\Functions.cs">
+      <Link>Expressions\Functions.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\ICompilerService.cs">
+      <Link>Expressions\ICompilerService.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\IExpressionTreeEvaluatorProvider.cs">
+      <Link>Expressions\IExpressionTreeEvaluatorProvider.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\Parser\Compiler.cs">
+      <Link>Expressions\Parser\Compiler.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\Parser\Node.cs">
+      <Link>Expressions\Parser\Node.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\Parser\NodeType.cs">
+      <Link>Expressions\Parser\NodeType.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\Parser\ParseResult.cs">
+      <Link>Expressions\Parser\ParseResult.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\Parser\Parser.cs">
+      <Link>Expressions\Parser\Parser.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\Parser\Scanner.cs">
+      <Link>Expressions\Parser\Scanner.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\Parser\ScanResult.cs">
+      <Link>Expressions\Parser\ScanResult.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\Parser\Token.cs">
+      <Link>Expressions\Parser\Token.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\Parser\TokenType.cs">
+      <Link>Expressions\Parser\TokenType.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Expressions\Parser\TreeBuilder.cs">
+      <Link>Expressions\Parser\TreeBuilder.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Extensibility\MEFHost.cs">
+      <Link>Extensibility\MEFHost.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Extensibility\OrderAttribute.cs">
+      <Link>Extensibility\OrderAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Circles\Arc.cs">
+      <Link>Figures\Circles\Arc.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Circles\ArcBase.cs">
+      <Link>Figures\Circles\ArcBase.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Circles\Circle.cs">
+      <Link>Figures\Circles\Circle.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Circles\CircleBase.cs">
+      <Link>Figures\Circles\CircleBase.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Circles\CircleByEquation.cs">
+      <Link>Figures\Circles\CircleByEquation.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Circles\CircleByRadius.cs">
+      <Link>Figures\Circles\CircleByRadius.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Circles\Ellipse.cs">
+      <Link>Figures\Circles\Ellipse.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Circles\EllipseBase.cs">
+      <Link>Figures\Circles\EllipseBase.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Circles\ICircle.cs">
+      <Link>Figures\Circles\ICircle.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Circles\IEllipse.cs">
+      <Link>Figures\Circles\IEllipse.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Controls\AngleArc.cs">
+      <Link>Figures\Controls\AngleArc.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Controls\AngleMeasurement.cs">
+      <Link>Figures\Controls\AngleMeasurement.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Controls\AreaMeasurement.cs">
+      <Link>Figures\Controls\AreaMeasurement.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Controls\ControlBase.cs">
+      <Link>Figures\Controls\ControlBase.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Controls\DistanceMeasurement.cs">
+      <Link>Figures\Controls\DistanceMeasurement.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Controls\Hyperlink.cs">
+      <Link>Figures\Controls\Hyperlink.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Controls\Label.cs">
+      <Link>Figures\Controls\Label.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Controls\LabelBase.cs">
+      <Link>Figures\Controls\LabelBase.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Controls\LabelWithOffset.cs">
+      <Link>Figures\Controls\LabelWithOffset.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Controls\PointLabel.cs">
+      <Link>Figures\Controls\PointLabel.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Controls\ShowHideControl.cs">
+      <Link>Figures\Controls\ShowHideControl.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Coordinates\AxisLabelsCollection.cs">
+      <Link>Figures\Coordinates\AxisLabelsCollection.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Coordinates\CartesianGrid.cs">
+      <Link>Figures\Coordinates\CartesianGrid.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Coordinates\CoordinateSystem.cs">
+      <Link>Figures\Coordinates\CoordinateSystem.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Coordinates\GridLinesCollection.cs">
+      <Link>Figures\Coordinates\GridLinesCollection.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Coordinates\RectangularGridLinesCollection.cs">
+      <Link>Figures\Coordinates\RectangularGridLinesCollection.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Factory.cs">
+      <Link>Figures\Factory.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\FigureBase.cs">
+      <Link>Figures\FigureBase.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\IFigure.cs">
+      <Link>Figures\IFigure.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\IFigureExtensions.cs">
+      <Link>Figures\IFigureExtensions.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\ILinearFigure.cs">
+      <Link>Figures\ILinearFigure.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\ILinearFigureExtensions.cs">
+      <Link>Figures\ILinearFigureExtensions.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\IMovable.cs">
+      <Link>Figures\IMovable.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\AngleBisector.cs">
+      <Link>Figures\Lines\AngleBisector.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\Axis.cs">
+      <Link>Figures\Lines\Axis.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\ILine.cs">
+      <Link>Figures\Lines\ILine.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\ILineEquation.cs">
+      <Link>Figures\Lines\ILineEquation.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\LineBase.cs">
+      <Link>Figures\Lines\LineBase.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\LineByEquation.cs">
+      <Link>Figures\Lines\LineByEquation.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\LineTwoPoints.cs">
+      <Link>Figures\Lines\LineTwoPoints.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\ParallelLine.cs">
+      <Link>Figures\Lines\ParallelLine.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\PerpendicularLine.cs">
+      <Link>Figures\Lines\PerpendicularLine.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\Ray.cs">
+      <Link>Figures\Lines\Ray.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\Segment.cs">
+      <Link>Figures\Lines\Segment.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\SegmentBisector.cs">
+      <Link>Figures\Lines\SegmentBisector.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lines\Vector.cs">
+      <Link>Figures\Lines\Vector.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lists\CollectionWithEvents.cs">
+      <Link>Figures\Lists\CollectionWithEvents.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lists\CompositeFigure.cs">
+      <Link>Figures\Lists\CompositeFigure.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lists\DependencyAlgorithms.cs">
+      <Link>Figures\Lists\DependencyAlgorithms.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lists\DependencyList.cs">
+      <Link>Figures\Lists\DependencyList.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lists\FigureList.cs">
+      <Link>Figures\Lists\FigureList.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lists\IFigureListExtensions.cs">
+      <Link>Figures\Lists\IFigureListExtensions.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lists\ISupportRemoveDependency.cs">
+      <Link>Figures\Lists\ISupportRemoveDependency.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Lists\RootFigureList.cs">
+      <Link>Figures\Lists\RootFigureList.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Points\DilatedPoint.cs">
+      <Link>Figures\Points\DilatedPoint.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Points\FreePoint.cs">
+      <Link>Figures\Points\FreePoint.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Points\Intersection\IntersectionAlgorithms.cs">
+      <Link>Figures\Points\Intersection\IntersectionAlgorithms.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Points\Intersection\IntersectionPoint.cs">
+      <Link>Figures\Points\Intersection\IntersectionPoint.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Points\IPoint.cs">
+      <Link>Figures\Points\IPoint.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Points\MidPoint.cs">
+      <Link>Figures\Points\MidPoint.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Points\PointBase.cs">
+      <Link>Figures\Points\PointBase.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Points\PointByCoordinates.cs">
+      <Link>Figures\Points\PointByCoordinates.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Points\PointOnFigure\PointOnFigure.cs">
+      <Link>Figures\Points\PointOnFigure\PointOnFigure.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Points\ReflectedPoint.cs">
+      <Link>Figures\Points\ReflectedPoint.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Points\RotatedPoint.cs">
+      <Link>Figures\Points\RotatedPoint.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Points\TranslatedPoint.cs">
+      <Link>Figures\Points\TranslatedPoint.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Shapes\Arrow.cs">
+      <Link>Figures\Shapes\Arrow.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Shapes\Bezier.cs">
+      <Link>Figures\Shapes\Bezier.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Shapes\CoordinatesShapeBase.cs">
+      <Link>Figures\Shapes\CoordinatesShapeBase.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Shapes\Curve.cs">
+      <Link>Figures\Shapes\Curve.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Shapes\FunctionGraph\FunctionGraph.cs">
+      <Link>Figures\Shapes\FunctionGraph\FunctionGraph.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Shapes\Locus.cs">
+      <Link>Figures\Shapes\Locus.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Shapes\Polygon.cs">
+      <Link>Figures\Shapes\Polygon.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Shapes\PolygonBase.cs">
+      <Link>Figures\Shapes\PolygonBase.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Shapes\Polyline.cs">
+      <Link>Figures\Shapes\Polyline.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Shapes\RegularPolygon.cs">
+      <Link>Figures\Shapes\RegularPolygon.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\Shapes\ShapeBase.cs">
+      <Link>Figures\Shapes\ShapeBase.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Figures\ZOrder.cs">
+      <Link>Figures\ZOrder.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Math.cs">
+      <Link>Math.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\Attributes\ComplexTypeState.cs">
+      <Link>PropertyGrid\Attributes\ComplexTypeState.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\Attributes\DomainAttribute.cs">
+      <Link>PropertyGrid\Attributes\DomainAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\Attributes\PropertyGridComplexTypeStateAttribute.cs">
+      <Link>PropertyGrid\Attributes\PropertyGridComplexTypeStateAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\Attributes\PropertyGridEventAttribute.cs">
+      <Link>PropertyGrid\Attributes\PropertyGridEventAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\Attributes\PropertyGridFocusAttribute.cs">
+      <Link>PropertyGrid\Attributes\PropertyGridFocusAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\Attributes\PropertyGridNameAttribute.cs">
+      <Link>PropertyGrid\Attributes\PropertyGridNameAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\Attributes\PropertyGridPreferredEditorAttribute.cs">
+      <Link>PropertyGrid\Attributes\PropertyGridPreferredEditorAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\Attributes\PropertyGridVisibleAttribute.cs">
+      <Link>PropertyGrid\Attributes\PropertyGridVisibleAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\Editors\BasePropertyEditorFactory.cs">
+      <Link>PropertyGrid\Editors\BasePropertyEditorFactory.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\Editors\IValueEditor.cs">
+      <Link>PropertyGrid\Editors\IValueEditor.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\Editors\IValueEditorFactory.cs">
+      <Link>PropertyGrid\Editors\IValueEditorFactory.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\Editors\ValidationResult.cs">
+      <Link>PropertyGrid\Editors\ValidationResult.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\INotifyPropertyChanging.cs">
+      <Link>PropertyGrid\INotifyPropertyChanging.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\IOperationDescription.cs">
+      <Link>PropertyGrid\IOperationDescription.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\IOperationProvider.cs">
+      <Link>PropertyGrid\IOperationProvider.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\IPropertyGridContentProvider.cs">
+      <Link>PropertyGrid\IPropertyGridContentProvider.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\IPropertyGridHost.cs">
+      <Link>PropertyGrid\IPropertyGridHost.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\IValueProvider.cs">
+      <Link>PropertyGrid\IValueProvider.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\ReflectionHelper.cs">
+      <Link>PropertyGrid\ReflectionHelper.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)PropertyGrid\ValueDiscoveryStrategy.cs">
+      <Link>PropertyGrid\ValueDiscoveryStrategy.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Serialization\DGFReader.cs">
+      <Link>Serialization\DGFReader.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Serialization\DrawingDeserializer.cs">
+      <Link>Serialization\DrawingDeserializer.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Serialization\IniFile.cs">
+      <Link>Serialization\IniFile.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Serialization\Serializer.cs">
+      <Link>Serialization\Serializer.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Settings.cs">
+      <Link>Settings.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Styles\BackgroundStyle.cs">
+      <Link>Styles\BackgroundStyle.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Styles\FigureStyle.cs">
+      <Link>Styles\FigureStyle.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Styles\IFigureStyle.cs">
+      <Link>Styles\IFigureStyle.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Styles\LineStyle.cs">
+      <Link>Styles\LineStyle.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Styles\PointStyle.cs">
+      <Link>Styles\PointStyle.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Styles\ShapeStyle.cs">
+      <Link>Styles\ShapeStyle.cs</Link>
+    </Compile>
+    <None Include="$(DG)Styles\StyleDiagram.cd">
+      <Link>Styles\StyleDiagram.cd</Link>
+    </None>
+    <Compile Include="$(DG)Styles\StyleManager.cs">
+      <Link>Styles\StyleManager.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Styles\TextStyle.cs">
+      <Link>Styles\TextStyle.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)UI\CommandSystem\Command.cs">
+      <Link>UI\CommandSystem\Command.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)UI\CommandSystem\CompositeCommandObserver.cs">
+      <Link>UI\CommandSystem\CompositeCommandObserver.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)UI\CommandSystem\ICommand.cs">
+      <Link>UI\CommandSystem\ICommand.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)UI\CommandSystem\ICommandObserver.cs">
+      <Link>UI\CommandSystem\ICommandObserver.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)UI\DrawingControl.Commands.cs">
+      <Link>UI\DrawingControl.Commands.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)UI\DrawingControl.cs">
+      <Link>UI\DrawingControl.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)UI\DrawingControl.LoadDrawing.cs">
+      <Link>UI\DrawingControl.LoadDrawing.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)UI\DrawingControl.Undo.cs">
+      <Link>UI\DrawingControl.Undo.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)UI\FigureExplorer.cs">
+      <Link>UI\FigureExplorer.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)UI\IconBuilder.cs">
+      <Link>UI\IconBuilder.cs</Link>
+    </Compile>
+    <Compile Include="$(DG)Utilities.cs">
+      <Link>Utilities.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\OutOfBrowserSettings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\Demo\" />
+    <Folder Include="Figures\Transformations\" />
+    <Folder Include="Figures\Values\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

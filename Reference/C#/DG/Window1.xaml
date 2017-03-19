@@ -1,0 +1,41 @@
+﻿<Window x:Class="DynamicGeometry.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Window1" Height="351" Width="479">
+    <DockPanel Background="DarkGray">
+        <Menu Name="menu1" DockPanel.Dock="Top">
+            <MenuItem Header="File"></MenuItem>
+            <MenuItem Header="Edit"></MenuItem>
+            <MenuItem Header="View"></MenuItem>
+            <MenuItem Header="Options"></MenuItem>
+            <TextBox>Hi</TextBox>
+            <MenuItem Header="Help"></MenuItem>
+        </Menu>
+        <ToolBarTray DockPanel.Dock="Top" Name="toolBarTray1">
+            <ToolBar Name="toolBar1">
+                <ToolBar.ItemTemplate>
+                    <DataTemplate>
+                        <Button Click="Button_Click" Tag="{Binding}">
+                            <Image Source="{Binding Path=Icon}" />
+                        </Button>
+                    </DataTemplate>
+                </ToolBar.ItemTemplate>
+            </ToolBar>
+        </ToolBarTray>
+        <TabControl Name="tabControl1">
+            <TabItem Header="asdf">
+                <Canvas 
+                    ClipToBounds="True" 
+                    Name="canvas1"
+                    Background="White">
+                    <!--<Canvas.Background>
+                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                            <GradientStop Color="White" Offset="0" />
+                            <GradientStop Color="FloralWhite" Offset="1" />
+                        </LinearGradientBrush>
+                    </Canvas.Background>-->
+                </Canvas>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

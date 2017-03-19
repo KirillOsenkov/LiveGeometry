@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="PolylineRouting.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Canvas 
+            x:Name="canvas1" 
+            Grid.Row="0"
+            Grid.Column="0"
+            Background="White" 
+            MinWidth="100" 
+            MinHeight="100"
+            SizeChanged="canvas1_SizeChanged"
+            >
+        </Canvas>
+        <StackPanel
+            x:Name="propertyBrowser"
+            Grid.Row="0"
+            Grid.Column="0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel 
+                Grid.Row="0"
+                Grid.Column="1"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right">
+                <Button x:Name="ZoomIn" Content="Zoom In" Click="ZoomIn_Click" ></Button>
+                <Button x:Name="ZoomOut" Content="Zoom Out" Click="ZoomOut_Click"></Button>
+            </StackPanel>
+            <TextBlock 
+                Grid.Row="0" 
+                Grid.Column="0" 
+                Grid.RowSpan="2">Select all (Ctrl+A) and Ctrl+C to copy to clipboard:</TextBlock>
+            <TextBox
+                Grid.Column="0"
+                Grid.Row="1"
+                x:Name="text"
+                AcceptsReturn="True"/>
+            <Button
+                Click="Button_Click"
+                Padding="4"
+                Grid.Row="1"
+                Grid.Column="1"
+                Content="Load this configuration" />
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UI>
+
+<MainWindow>
+
+<MainMenu>
+<MenuItem>
+<Name>File</Name>
+<MenuItem>
+<Name>New</Name>
+<Command>File.New</Command>
+</MenuItem>
+</MenuItem>
+</MainMenu>
+
+<ToolBar>
+<ToolBarButton>
+<Name>Drag points</Name>
+<Command>Cursor.Drag</Command>
+</ToolBarButton>
+</ToolBar>
+
+</MainWindow>
+
+<DocumentWindow>
+<MainMenu>
+<MenuItem>
+<Name>Edit</Name>
+<MenuItem>
+<Name>Undo</Name>
+<Command>Edit.Undo</Command>
+</MenuItem>
+</MenuItem>
+</MainMenu>
+</DocumentWindow>
+
+</UI>

@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="DGArc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgarc.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGBisector" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgbisector.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGCircle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgcircle.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGCircleByRadius" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgcirclebyradius.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGDLocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgdlocus.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGIntersect" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgintersect.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGInvert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dginvert.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGLine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgline.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGLineParallel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dglineparallel.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGLinePerpendicular" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dglineperpendicular.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGMeasureAngle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgmeasureangle.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGMeasureArea" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgmeasurearea.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGMeasureDistance" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgmeasuredistance.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGMidPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgmidpoint.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGNew" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgnew.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGOpen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgopen.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgpoint.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGPointer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgpointer.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGPointOnFigure" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgpointonfigure.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGPolygon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgpolygon.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGRay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgray.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGRedo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgredo.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGSave" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgsave.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGSegment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgsegment.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGSimmPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgsimmpoint.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGSimmPointByLine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgsimmpointbyline.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGToolDynamicLocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgtooldynamiclocus.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGToolPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgtoolpoint.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGToolPolygon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgtoolpolygon.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGUndo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgundo.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWArc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwarc.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWBisector" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwbisector.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWCircle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwcircle.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWCircleByRadius" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwcirclebyradius.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWDLocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwdlocus.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWIntersect" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwintersect.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWInvert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwinvert.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWLine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwline.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWLineParallel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwlineparallel.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWLinePerpendicular" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwlineperpendicular.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWMeasureAngle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwmeasureangle.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWMeasureArea" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwmeasurearea.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWMeasureDistance" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwmeasuredistance.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWMidPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwmidpoint.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWNew" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwnew.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWOpen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwopen.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwpoint.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWPointer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwpointer.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWPointOnFigure" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwpointonfigure.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWPolygon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwpolygon.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWRay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwray.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWRedo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwredo.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWSave" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwsave.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWSegment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwsegment.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWSimmPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwsimmpoint.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWSimmPointByLine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwsimmpointbyline.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWToolDynamicLocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwtooldynamiclocus.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWToolPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwtoolpoint.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWToolPolygon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwtoolpolygon.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DGWUndo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\bitmaps\geometry toolbar\dgwundo.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

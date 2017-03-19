@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolylineRouting", "PolylineRouting.csproj", "{B23BF400-FCD6-45FA-AF32-A4FAF2DC4DC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolylineRoutingConsole", "PolylineRoutingConsole\PolylineRoutingConsole.csproj", "{C7C1D537-4434-4D72-95CA-5C8F7BC30C92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolylineRoutingDemo1", "PolylineRoutingDemo1\PolylineRoutingDemo1.csproj", "{B49724D5-AB79-4D3D-B5B7-548CA346A8D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightDynamicGeometry.2010", "..\..\DynamicGeometryLibrary\SilverlightDynamicGeometry.2010.csproj", "{12C65F68-BDF8-4C3C-A7C0-4366A72D887F}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs07.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = PolylineRouting.csproj
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = PolylineRoutingConsole\\PolylineRoutingConsole.csproj
+		SccProjectName2 = PolylineRoutingConsole
+		SccLocalPath2 = PolylineRoutingConsole
+		SccProjectUniqueName3 = PolylineRoutingDemo1\\PolylineRoutingDemo1.csproj
+		SccProjectName3 = PolylineRoutingDemo1
+		SccLocalPath3 = PolylineRoutingDemo1
+		SccProjectUniqueName4 = ..\\..\\DynamicGeometryLibrary\\SilverlightDynamicGeometry.2010.csproj
+		SccProjectName4 = ../../DynamicGeometryLibrary
+		SccLocalPath4 = ..\\..\\DynamicGeometryLibrary
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B23BF400-FCD6-45FA-AF32-A4FAF2DC4DC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B23BF400-FCD6-45FA-AF32-A4FAF2DC4DC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B23BF400-FCD6-45FA-AF32-A4FAF2DC4DC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B23BF400-FCD6-45FA-AF32-A4FAF2DC4DC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7C1D537-4434-4D72-95CA-5C8F7BC30C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7C1D537-4434-4D72-95CA-5C8F7BC30C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7C1D537-4434-4D72-95CA-5C8F7BC30C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7C1D537-4434-4D72-95CA-5C8F7BC30C92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B49724D5-AB79-4D3D-B5B7-548CA346A8D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B49724D5-AB79-4D3D-B5B7-548CA346A8D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B49724D5-AB79-4D3D-B5B7-548CA346A8D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B49724D5-AB79-4D3D-B5B7-548CA346A8D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12C65F68-BDF8-4C3C-A7C0-4366A72D887F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12C65F68-BDF8-4C3C-A7C0-4366A72D887F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12C65F68-BDF8-4C3C-A7C0-4366A72D887F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12C65F68-BDF8-4C3C-A7C0-4366A72D887F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
