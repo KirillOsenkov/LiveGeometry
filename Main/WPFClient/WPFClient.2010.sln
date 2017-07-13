@@ -6,17 +6,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFClient.2010", "WPFClient.2010.csproj", "{F9F035AA-90C7-4FC9-93E3-A5DCF00774B2}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs07
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\DynamicGeometryLibrary\\DynamicGeometry.2010.csproj
-		SccProjectName1 = ../DynamicGeometryLibrary
-		SccLocalPath1 = ..\\DynamicGeometryLibrary
-		SccProjectUniqueName2 = WPFClient.2010.csproj
-		SccLocalPath2 = .
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86

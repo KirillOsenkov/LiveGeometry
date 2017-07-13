@@ -13,18 +13,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicGeometry.2010", "..\DynamicGeometryLibrary\DynamicGeometry.2010.csproj", "{C8694CE9-C8FC-4A2D-94FE-0FB9AC01D16C}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs07
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = DynamicGeometryTests\\DynamicGeometryTests.csproj
-		SccProjectName1 = DynamicGeometryTests
-		SccLocalPath1 = DynamicGeometryTests
-		SccProjectUniqueName2 = ..\\DynamicGeometryLibrary\\DynamicGeometry.2010.csproj
-		SccProjectName2 = ../DynamicGeometryLibrary
-		SccLocalPath2 = ..\\DynamicGeometryLibrary
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Tests.vsmdi
 	EndGlobalSection

@@ -20,10 +20,6 @@
     <CreateTestPage>true</CreateTestPage>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
     <UsePlatformExtensions>false</UsePlatformExtensions>
     <EnableOutOfBrowser>false</EnableOutOfBrowser>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
