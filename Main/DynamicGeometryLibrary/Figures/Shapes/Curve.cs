@@ -117,7 +117,7 @@ namespace DynamicGeometry
                 {
                     return base.Center;
                 }
-                return logicalPoints[(int)System.Math.Floor((logicalPoints.Count)/2)];
+                return logicalPoints[(int)System.Math.Floor((double)(logicalPoints.Count)/2)];
             }
         }
 

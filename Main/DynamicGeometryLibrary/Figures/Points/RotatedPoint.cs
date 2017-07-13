@@ -18,14 +18,13 @@ namespace DynamicGeometry
 
         //[PropertyGridVisible]
         [PropertyGridName("About Center ")]
-        public IPoint Center
+        public new IPoint Center
         {
             get
             {
                 return (Dependencies.Count >= 2) ? Dependencies.ElementAt(1) as IPoint : null;
             }
         }
-
 
         double angle;
         [PropertyGridVisible]

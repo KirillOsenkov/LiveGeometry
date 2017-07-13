@@ -252,6 +252,7 @@
     <Compile Include="Serialization\DGFReader.cs" />
     <Compile Include="Serialization\DrawingDeserializer.cs" />
     <Compile Include="Serialization\DrawingSerializer.cs" />
+    <Compile Include="Serialization\DrawingUpdater.cs" />
     <Compile Include="Serialization\IniFile.cs" />
     <Compile Include="Serialization\Serializer.cs" />
     <Compile Include="Settings.cs" />

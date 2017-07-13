@@ -19,7 +19,7 @@ namespace DynamicGeometry
 
         //[PropertyGridVisible]
         [PropertyGridName("About Point ")]
-        public IPoint Center
+        public new IPoint Center
         {
             get
             {
