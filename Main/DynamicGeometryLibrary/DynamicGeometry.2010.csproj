@@ -64,6 +64,9 @@
     <Compile Include="Controls\ColorPicker\ColorSpace.cs" />
     <Compile Include="Controls\ColorPicker\HSV.cs" />
     <Compile Include="Controls\ColorPicker\SelectedColorEventArgs.cs" />
+    <Compile Include="Figures\Shapes\DependentPolygonBase.cs" />
+    <Compile Include="Figures\Shapes\PolygonIntersection.cs" />
+    <Compile Include="Figures\Shapes\PolygonIntersectionCreator.cs" />
     <None Include="Drawing.cd" />
     <Compile Include="Drawing.cs" />
     <Compile Include="Expressions\Binder.cs" />

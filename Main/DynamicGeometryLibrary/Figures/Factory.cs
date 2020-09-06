@@ -496,5 +496,11 @@ namespace DynamicGeometry
             var result = new RegularPolygon() { Drawing = drawing, Dependencies = dependencies };
             return result;
         }
+
+        public static PolygonIntersection CreatePolygonIntersection(Drawing drawing, IList<IFigure> dependencies) 
+        {
+            var result = new PolygonIntersection { Drawing = drawing, Dependencies = dependencies };
+            return result;
+        }
     }
 }

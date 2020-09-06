@@ -1,16 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
-using System.Xml;
 
 namespace DynamicGeometry
 {
-    public class RegularPolygon : CompositeFigure, IShapeWithInterior
+    public class RegularPolygon : DependentPolygonBase
     {
-        private readonly List<PointBase> vertices;
-        private readonly List<Segment> sides;
-        private readonly Polygon polygon;
-
         private int numberOfSides = 5;
         [PropertyGridVisible]
         [PropertyGridName("Number of sides")]
@@ -27,16 +21,8 @@ namespace DynamicGeometry
                     return;
                 }
                 numberOfSides = value;
-                Recreate();
+                Recreate(numberOfSides);
             }
-        }
-
-        public RegularPolygon()
-        {
-            polygon = new Polygon();
-            vertices = new List<PointBase>();
-            sides = new List<Segment>();
-            Children.Add(polygon);
         }
 
         public override Point Center
@@ -49,26 +35,11 @@ namespace DynamicGeometry
             get { return this.Dependencies.Point(1); }
         }
 
-        public double Area
-        {
-            get
-            {
-                return polygon.Area;
-            }
-        }
-        public void Recreate()
-        {
-            AdjustVerticesList();
-            AdjustSides();
-            AdjustPolygon();
-            Recalculate();
-        }
-
         public override void Recalculate()
         {
             if (sides.Count != NumberOfSides)
             {
-                Recreate();
+                Recreate(NumberOfSides);
                 return;
             }
 
@@ -88,56 +59,42 @@ namespace DynamicGeometry
 
                 vertices[i].MoveTo(new Point(X, Y));
             }
+
             this.UpdateVisual();
         }
 
-        private void AdjustPolygon()
+        protected override void AdjustPolygon()
         {
-            List<IFigure> allVertices = new List<IFigure>();
-            allVertices.Add(this.Dependencies[1]);
-            allVertices.AddRange(this.vertices.Cast<IFigure>());
-            polygon.Dependencies = allVertices;
+            base.AdjustPolygon();
+            polygon.Dependencies.Insert(0, this.Dependencies[1]);
         }
 
-        private void AdjustSides()
+        protected override void AdjustVerticesList(int sideCount)
         {
-            if (sides.Count < NumberOfSides)
+            if (vertices.Count < sideCount - 1)
             {
-                for (int i = 0; i < NumberOfSides - sides.Count; i++)
+                int requiredNumber = sideCount - vertices.Count - 1;
+                for (int i = 0; i < requiredNumber; i++)
                 {
-                    AddSide();
+                    AddVertex();
                 }
             }
-            else if (sides.Count > NumberOfSides)
+            else if (vertices.Count >= sideCount)
             {
-                for (int i = 0; i < sides.Count - NumberOfSides; i++)
+                int requiredNumber = vertices.Count - sideCount;
+                for (int i = 0; i <= requiredNumber; i++)
                 {
-                    RemoveSide();
+                    RemoveVertex();
                 }
             }
         }
 
-        private void RemoveSide()
-        {
-            var index = sides.Count - 1;
-            if (index > 2)
-            {
-                sides[index - 1].Dependencies[1] = this.Dependencies[1];
-            }
-            var side = sides[index];
-            sides.RemoveLast();
-            Children.Remove(side);
-            if (Drawing != null)
-            {
-                side.OnRemovingFromCanvas(Drawing.Canvas);
-            }
-        }
-
-        private void AddSide()
+        protected override void AddSide(int sideCount)
         {
             var side = new Segment();
             side.Drawing = Drawing;
             var index = sides.Count;
+            var NumberOfSides = sideCount;
             if (index > 2)
             {
                 sides[index - 1].Dependencies[1] = vertices[index - 1];
@@ -154,6 +111,7 @@ namespace DynamicGeometry
             {
                 side.Dependencies = new[] { vertices[index - 1], vertices[index] };
             }
+
             sides.Add(side);
             Children.Add(side);
             if (Drawing != null)
@@ -161,65 +119,6 @@ namespace DynamicGeometry
                 side.OnAddingToCanvas(Drawing.Canvas);
             }
         }
-
-        private void AdjustVerticesList()
-        {
-            if (vertices.Count < NumberOfSides - 1)
-            {
-                int requiredNumber = NumberOfSides - vertices.Count - 1;
-                for (int i = 0; i < requiredNumber; i++)
-                {
-                    AddVertex();
-                }
-            }
-            else if (vertices.Count >= NumberOfSides)
-            {
-                int requiredNumber = vertices.Count - NumberOfSides;
-                for (int i = 0; i <= requiredNumber; i++)
-                {
-                    RemoveVertex();
-                }
-            }
-        }
-
-        private void RemoveVertex()
-        {
-            var vertex = vertices[vertices.Count - 1];
-            vertices.RemoveLast();
-            Children.Remove(vertex);
-            if (Drawing != null)
-            {
-                vertex.OnRemovingFromCanvas(Drawing.Canvas);
-            }
-        }
-
-        private void AddVertex()
-        {
-            var vertex = new PointBase();
-            vertex.Drawing = Drawing;
-            vertices.Add(vertex);
-            Children.Add(vertex);
-            if (Drawing != null)
-            {
-                vertex.OnAddingToCanvas(Drawing.Canvas);
-            }
-        }
-
-#if !PLAYER
-
-        public override void WriteXml(XmlWriter writer)
-        {
-            if (!Visible)
-            {
-                writer.WriteAttributeString("Visible", "false");
-            }
-            if (polygon.Style != null)
-            {
-                writer.WriteAttributeString("Style", polygon.Style.Name);
-            }
-        }
-
-#endif
 
         public override string ToString()
         {

@@ -300,6 +300,11 @@ namespace DynamicGeometry
             return (figures.ElementAt(index) as ILine).Coordinates;
         }
 
+        public static Point[] Polygon(this IEnumerable<IFigure> figures, int index)
+        {
+            return (figures.ElementAt(index) as PolygonBase).VertexCoordinates;
+        }
+
         public static void WriteAttributeDouble(this System.Xml.XmlWriter writer, string attributeName, double value)
         {
             writer.WriteAttributeString(attributeName, value.ToStringInvariant());
