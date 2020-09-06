@@ -93,7 +93,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return base.Selected;
+                return base.Selected || Children.Any(c => c.Selected);
             }
             set
             {

@@ -168,10 +168,10 @@ namespace DynamicGeometry
         {
             IFigure bestFoundSoFar = null;
 
-            foreach (var item in this.Where(f => filter(f)))
+            foreach (var item in this)
             {
                 IFigure found = item.HitTest(point);
-                if (found != null)
+                if (found != null && filter(found))
                 {
                     if (bestFoundSoFar == null || bestFoundSoFar.ZIndex <= found.ZIndex)
                     {

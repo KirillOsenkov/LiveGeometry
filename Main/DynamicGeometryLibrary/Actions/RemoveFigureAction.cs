@@ -32,7 +32,10 @@ namespace DynamicGeometry
 
             foreach (var item in Deleted)
             {
-                Drawing.Figures.Remove(item);
+                if (!Drawing.Figures.Remove(item))
+                {
+                    item.UnregisterFromDependencies();
+                }
             }
 
             Drawing.RaiseSelectionChanged(new Drawing.SelectionChangedEventArgs());

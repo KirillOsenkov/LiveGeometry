@@ -48,7 +48,7 @@ namespace DynamicGeometry
         public static readonly DependencyList PointPointPointPoint = Create<IPoint, IPoint, IPoint, IPoint>();
         public static readonly DependencyList PointPointPointPointPoint = Create<IPoint, IPoint, IPoint, IPoint, IPoint>();
         public static readonly DependencyList LinePoint = Create<ILine, IPoint>();
-        public static readonly DependencyList PolygonPolygon = Create<PolygonBase, PolygonBase>();
+        public static readonly DependencyList PolygonPolygon = Create<IPolygon, IPolygon>();
 
         public DependencyList(params Type[] types)
         {

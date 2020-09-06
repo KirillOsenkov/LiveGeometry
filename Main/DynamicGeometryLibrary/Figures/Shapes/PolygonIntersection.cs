@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace DynamicGeometry
 {
-    public class PolygonIntersection : DependentPolygonBase
+    public class PolygonIntersection : DependentPolygonBase, IPolygon
     {
         public override void Recalculate()
         {
@@ -33,7 +33,7 @@ namespace DynamicGeometry
 
             if (index > 2)
             {
-                sides[0].Dependencies[0] = vertices[index - 1];
+                sides[0].Dependencies[0] = vertices[NumberOfSides - 1];
             }
 
             if (index == 0)
@@ -50,6 +50,28 @@ namespace DynamicGeometry
             if (Drawing != null)
             {
                 side.OnAddingToCanvas(Drawing.Canvas);
+            }
+
+            side.RegisterWithDependencies();
+        }
+
+        protected override void RemoveSide()
+        {
+            var index = sides.Count - 1;
+            if (index > 2)
+            {
+                sides[0].Dependencies[0] = vertices[vertices.Count - 1];
+            }
+
+            var side = sides[index];
+
+            side.UnregisterFromDependencies();
+
+            sides.RemoveLast();
+            Children.Remove(side);
+            if (Drawing != null)
+            {
+                side.OnRemovingFromCanvas(Drawing.Canvas);
             }
         }
 
@@ -84,6 +106,11 @@ namespace DynamicGeometry
             }
 
             return list.ToArray();
+        }
+
+        public override string ToString()
+        {
+            return $"Intersection of {Dependencies[0]} and {Dependencies[1]}";
         }
     }
 }

@@ -418,24 +418,24 @@ namespace DynamicGeometry
         protected virtual IFigure LookForExpectedDependencyUnderCursor(Point coordinates)
         {
             return Drawing.Figures.HitTest(coordinates, f =>
+            {
+                if (f == null || !f.Visible || !f.IsHitTestVisible)
                 {
-                    if (f == null || !f.Visible || !f.IsHitTestVisible)
-                    {
-                        return false;
-                    }
+                    return false;
+                }
 
-                    if (!GetExpectedDependencyType().IsAssignableFrom(f.GetType()))
-                    {
-                        return false;
-                    }
+                if (!GetExpectedDependencyType().IsAssignableFrom(f.GetType()))
+                {
+                    return false;
+                }
 
-                    if (!TempResults.IsEmpty() && TempResults.Contains(f))
-                    {
-                        return false;
-                    }
+                if (!TempResults.IsEmpty() && TempResults.Contains(f))
+                {
+                    return false;
+                }
 
-                    return true;
-                });
+                return true;
+            });
         }
 
         #endregion

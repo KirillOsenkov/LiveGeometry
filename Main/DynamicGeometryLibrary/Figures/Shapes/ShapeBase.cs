@@ -74,7 +74,7 @@ namespace DynamicGeometry
 
         public bool AllowMove()
         {
-            return !this.Locked;
+            return !this.Locked && this.Dependencies.IsEmpty();
         }
 
         public virtual void MoveToCore(Point newLocation)

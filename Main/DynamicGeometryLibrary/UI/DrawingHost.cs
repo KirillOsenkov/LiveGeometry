@@ -100,9 +100,9 @@ namespace DynamicGeometry
             {
                 return;
             }
-            
+
             guard = true;
-            
+
             foreach (var deselected in e.RemovedItems)
             {
                 IFigure deselectedFigure = deselected as IFigure;
@@ -122,7 +122,7 @@ namespace DynamicGeometry
             }
 
             CurrentDrawing.RaiseSelectionChanged(CurrentDrawing.GetSelectedFigures());
-            
+
             guard = false;
         }
 
@@ -360,7 +360,7 @@ namespace DynamicGeometry
 
         private void mCurrentDrawing_Status(string status)
         {
-                ShowHint(status);
+            ShowHint(status);
         }
 
         public virtual void ShowHint(string text)

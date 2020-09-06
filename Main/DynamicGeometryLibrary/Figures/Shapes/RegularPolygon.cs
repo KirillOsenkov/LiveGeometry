@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace DynamicGeometry
 {
-    public class RegularPolygon : DependentPolygonBase
+    public class RegularPolygon : DependentPolygonBase, IPolygon
     {
         private int numberOfSides = 5;
         [PropertyGridVisible]
@@ -20,8 +21,10 @@ namespace DynamicGeometry
                 {
                     return;
                 }
+
                 numberOfSides = value;
                 Recreate(numberOfSides);
+                this.RecalculateAllDependents();
             }
         }
 
@@ -63,10 +66,10 @@ namespace DynamicGeometry
             this.UpdateVisual();
         }
 
-        protected override void AdjustPolygon()
+        protected override void CollectPolygonDependencies(Action<IFigure> callback)
         {
-            base.AdjustPolygon();
-            polygon.Dependencies.Insert(0, this.Dependencies[1]);
+            callback(this.Dependencies[1]);
+            base.CollectPolygonDependencies(callback);
         }
 
         protected override void AdjustVerticesList(int sideCount)
@@ -117,6 +120,28 @@ namespace DynamicGeometry
             if (Drawing != null)
             {
                 side.OnAddingToCanvas(Drawing.Canvas);
+            }
+
+            side.RegisterWithDependencies();
+        }
+
+        protected override void RemoveSide()
+        {
+            var index = sides.Count - 1;
+            if (index > 2)
+            {
+                sides[index - 1].Dependencies[1] = this.Dependencies[1];
+            }
+
+            var side = sides[index];
+
+            side.UnregisterFromDependencies();
+
+            sides.RemoveLast();
+            Children.Remove(side);
+            if (Drawing != null)
+            {
+                side.OnRemovingFromCanvas(Drawing.Canvas);
             }
         }
 

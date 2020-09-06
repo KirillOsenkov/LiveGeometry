@@ -8,16 +8,17 @@ namespace DynamicGeometry
     public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
     {
         private static bool mSuppress;
-        public static bool SuppressAutoLabelPoints {
+        public static bool SuppressAutoLabelPoints
+        {
             get
             {
                 return mSuppress;
             }
             set
             {
-             mSuppress = value;   
+                mSuppress = value;
             }
-            }
+        }
 
         public override string GenerateFigureName(List<string> blacklist)
         {
@@ -55,8 +56,8 @@ namespace DynamicGeometry
             base.OnAddingToDrawing(drawing);
 
             // Make sure this is in the drawing's figure list before labeling.
-            if (Settings.Instance.AutoLabelPoints && 
-                         Drawing.Figures.Contains(this) && 
+            if (Settings.Instance.AutoLabelPoints &&
+                         Drawing.Figures.Contains(this) &&
                          IsHitTestVisible &&
                          !SuppressAutoLabelPoints &&
                          Visible) ShowName = true;
@@ -206,7 +207,7 @@ namespace DynamicGeometry
         {
             if (Label == null)
             {
-                Label = Factory.CreatePointLabel(Drawing, new [] { this });
+                Label = Factory.CreatePointLabel(Drawing, new[] { this });
                 Label.ShowCoordinates = false;
                 Drawing.Figures.Add(Label);
             }

@@ -28,7 +28,7 @@ namespace DynamicGeometry
             {
                 return false;
             }
-            
+
             // first do the cheap pre-test without going deep
             if (figure.DirectlyDependsOn(possibleDependency))
             {
@@ -62,7 +62,7 @@ namespace DynamicGeometry
             {
                 return false;
             }
-            
+
             return figure.Dependencies.Contains(possibleDependency);
         }
 
@@ -262,6 +262,24 @@ namespace DynamicGeometry
             return !figure.Drawing.Figures.Contains(name);
         }
 
+        public static bool ContainsRecursively(this IEnumerable<IFigure> list, IFigure figure)
+        {
+            foreach (var item in list)
+            {
+                if (item == figure)
+                {
+                    return true;
+                }
+
+                if (item is CompositeFigure composite && composite.Children.ContainsRecursively(figure))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static void CheckConsistency(this IEnumerable<IFigure> list)
         {
             foreach (var figure in list)
@@ -270,7 +288,7 @@ namespace DynamicGeometry
                 {
                     foreach (var dependency in figure.Dependencies)
                     {
-                        if (!list.Contains(dependency))
+                        if (!list.ContainsRecursively(dependency))
                         {
                             throw new Exception(
                                 "Consistency check failed: dependency {0} of figure {1} expected in the FigureList"
@@ -288,7 +306,7 @@ namespace DynamicGeometry
                 {
                     foreach (var dependent in figure.Dependents)
                     {
-                        if (!list.Contains(dependent))
+                        if (!list.ContainsRecursively(dependent))
                         {
                             throw new Exception(
                                 "Consistency check failed: dependent {0} of figure {1} expected in the FigureList"

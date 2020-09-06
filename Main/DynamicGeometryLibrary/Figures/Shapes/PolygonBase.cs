@@ -8,6 +8,8 @@ namespace DynamicGeometry
         Point[] VertexCoordinates { get; }
     }
 
+    public interface IPolygon : IPolygonalChain { }
+
     public abstract class PolygonBase : ShapeBase<System.Windows.Shapes.Polygon>, IPolygonalChain, IShapeWithInterior
     {
         /// <summary>
@@ -68,13 +70,7 @@ namespace DynamicGeometry
             return isInside ? this : null;
         }
 
-        public double Area
-        {
-            get
-            {
-                return VertexCoordinates.Area();
-            }
-        }
+        public double Area => VertexCoordinates.Area();
 
         public double Perimeter
         {
@@ -90,13 +86,7 @@ namespace DynamicGeometry
             }
         }
 
-        public override Point Center
-        {
-            get
-            {
-                return VertexCoordinates.Midpoint();
-            }
-        }
+        public override Point Center => VertexCoordinates.Midpoint();
 
         protected override System.Windows.Shapes.Polygon CreateShape()
         {

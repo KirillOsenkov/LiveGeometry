@@ -40,9 +40,13 @@ namespace DynamicGeometry
             found = Drawing.Figures.HitTest(offsetFromFigureLeftTopCorner);
 
             IMovable oneMovable = found as IMovable;
-            if (oneMovable != null)
+            if (oneMovable != null && (found.Locked || oneMovable.AllowMove()))
             {
-                if (!found.Locked)
+                if (found.Locked)
+                {
+                    isLocked = true;
+                }
+                else if (oneMovable.AllowMove())
                 {
                     if (oneMovable is IPoint)
                     {
@@ -70,12 +74,8 @@ namespace DynamicGeometry
                         isLocked = true;
                     }
                 }
-                else
-                {
-                    isLocked = true;
-                }
             }
-            else if (found != null && !found.Locked)
+            else if (found != null)
             {
                 if (!found.Locked)
                 {

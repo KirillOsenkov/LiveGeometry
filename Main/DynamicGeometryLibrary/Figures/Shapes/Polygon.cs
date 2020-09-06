@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace DynamicGeometry
 {
-    public partial class Polygon : PolygonBase
+    public partial class Polygon : PolygonBase, IPolygon
     {
 #if !PLAYER && !TABULA
 

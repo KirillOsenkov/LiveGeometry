@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Xml;
 
 namespace DynamicGeometry
 {
-    public class DependentPolygonBase : CompositeFigure, IShapeWithInterior
+    public class DependentPolygonBase : CompositeFigure, IShapeWithInterior, IPolygonalChain
     {
         protected readonly List<PointBase> vertices = new List<PointBase>();
         protected readonly List<Segment> sides = new List<Segment>();
@@ -27,14 +29,28 @@ namespace DynamicGeometry
             }
         }
 
-        protected virtual void AdjustPolygon()
+        protected virtual void CollectPolygonDependencies(Action<IFigure> collector)
         {
+            foreach (var item in vertices)
+            {
+                collector(item);
+            }
+
+            collector(this);
+        }
+
+        protected void AdjustPolygon()
+        {
+            polygon.UnregisterFromDependencies();
             List<IFigure> allVertices = new List<IFigure>();
-            allVertices.AddRange(this.vertices.Cast<IFigure>());
+            CollectPolygonDependencies(allVertices.Add);
             polygon.Dependencies = allVertices;
+            polygon.RegisterWithDependencies();
         }
 
         public double Area => polygon.Area;
+
+        public Point[] VertexCoordinates => vertices.Select(v => v.Coordinates).ToArray();
 
         private void AdjustSides(int sideCount)
         {
@@ -58,21 +74,8 @@ namespace DynamicGeometry
             }
         }
 
-        private void RemoveSide()
+        protected virtual void RemoveSide()
         {
-            var index = sides.Count - 1;
-            if (index > 2)
-            {
-                sides[index - 1].Dependencies[1] = this.Dependencies[1];
-            }
-
-            var side = sides[index];
-            sides.RemoveLast();
-            Children.Remove(side);
-            if (Drawing != null)
-            {
-                side.OnRemovingFromCanvas(Drawing.Canvas);
-            }
         }
 
         protected virtual void AddSide(int sideCount)
@@ -86,6 +89,7 @@ namespace DynamicGeometry
         protected void RemoveVertex()
         {
             var vertex = vertices[vertices.Count - 1];
+            vertex.UnregisterFromDependencies();
             vertices.RemoveLast();
             Children.Remove(vertex);
             if (Drawing != null)
@@ -97,6 +101,8 @@ namespace DynamicGeometry
         protected void AddVertex()
         {
             var vertex = new PointBase();
+            vertex.Dependencies.Add(this);
+            vertex.RegisterWithDependencies();
             vertex.Drawing = Drawing;
             vertices.Add(vertex);
             Children.Add(vertex);
