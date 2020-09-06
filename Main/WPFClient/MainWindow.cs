@@ -26,7 +26,7 @@ namespace DynamicGeometry
             LayoutRoot.Children.Add(DrawingHost);
             InitializeCommands();
             ViewDemoButton.IsEnabled = false;
-            ThreadPool.QueueUserWorkItem(_ => DownloadDemoFile());
+            //ThreadPool.QueueUserWorkItem(_ => DownloadDemoFile());
         }
 
         private void AddBehaviors()
