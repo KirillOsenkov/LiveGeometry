@@ -1,101 +1,58 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 
 namespace DynamicGeometry
 {
-    public class PolygonIntersection : DependentPolygonBase, IPolygon
+    public class PolygonIntersection : CompositeFigure
     {
         public override void Recalculate()
         {
             var first = this.Dependencies.Polygon(0);
             var second = this.Dependencies.Polygon(1);
 
-            var intersection = Intersect(first, second);
+            var intersections = Intersect(first, second);
 
-            Recreate(intersection.Length, recalculate: false);
+            ClearChildren();
 
-            for (int i = 0; i < vertices.Count; i++)
+            foreach (var intersection in intersections)
             {
-                vertices[i].MoveTo(intersection[i]);
+                var vertices = new List<PointBase>(intersection.Length);
+
+                foreach (var vertex in intersection)
+                {
+                    var point = new PointBase();
+                    point.MoveToCore(vertex);
+                    point.Dependencies.Add(this);
+                    vertices.Add(point);
+                    AddChild(point);
+                }
+
+                for (int i = 0; i < intersection.Length; i++)
+                {
+                    var side = new Segment();
+                    if (i == 0)
+                    {
+                        side.Dependencies.Add(vertices[intersection.Length - 1], vertices[0]);
+                    }
+                    else
+                    {
+                        side.Dependencies.Add(vertices[i - 1], vertices[i]);
+                    }
+
+                    AddChild(side);
+                }
+
+                var polygon = new Polygon();
+                polygon.Dependencies.AddRange(vertices);
+                AddChild(polygon);
             }
 
             UpdateVisual();
         }
 
-        protected override void AddSide(int sideCount)
-        {
-            var side = new Segment();
-            side.Drawing = Drawing;
-
-            var index = sides.Count;
-            var NumberOfSides = sideCount;
-
-            if (index > 2)
-            {
-                sides[0].Dependencies[0] = vertices[NumberOfSides - 1];
-            }
-
-            if (index == 0)
-            {
-                side.Dependencies = new[] { vertices[NumberOfSides - 1], vertices[0] };
-            }
-            else
-            {
-                side.Dependencies = new[] { vertices[index - 1], vertices[index] };
-            }
-
-            sides.Add(side);
-            Children.Add(side);
-            if (Drawing != null)
-            {
-                side.OnAddingToCanvas(Drawing.Canvas);
-            }
-
-            side.RegisterWithDependencies();
-        }
-
-        protected override void RemoveSide()
-        {
-            var index = sides.Count - 1;
-            if (index > 2)
-            {
-                sides[0].Dependencies[0] = vertices[vertices.Count - 1];
-            }
-
-            var side = sides[index];
-
-            side.UnregisterFromDependencies();
-
-            sides.RemoveLast();
-            Children.Remove(side);
-            if (Drawing != null)
-            {
-                side.OnRemovingFromCanvas(Drawing.Canvas);
-            }
-        }
-
-        protected override void AdjustVerticesList(int sideCount)
-        {
-            if (vertices.Count < sideCount)
-            {
-                int requiredNumber = sideCount - vertices.Count;
-                for (int i = 0; i < requiredNumber; i++)
-                {
-                    AddVertex();
-                }
-            }
-            else if (vertices.Count > sideCount)
-            {
-                int requiredNumber = vertices.Count - sideCount;
-                for (int i = 0; i < requiredNumber; i++)
-                {
-                    RemoveVertex();
-                }
-            }
-        }
-
-        public Point[] Intersect(Point[] first, Point[] second)
+        public Point[][] Intersect(Point[] first, Point[] second)
         {
             var list = new List<Point>();
 
@@ -105,7 +62,7 @@ namespace DynamicGeometry
                 list.Add(mid);
             }
 
-            return list.ToArray();
+            return new[] { list.ToArray() };
         }
 
         public override string ToString()

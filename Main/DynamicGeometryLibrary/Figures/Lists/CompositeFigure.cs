@@ -17,12 +17,67 @@ namespace DynamicGeometry
             Children = new CollectionWithEvents<IFigure>();
         }
 
+        public virtual void ClearChildren()
+        {
+            foreach (var child in Children.Reverse())
+            {
+                RemoveChild(child);
+            }
+        }
+
+        public virtual void AddChild(IFigure figure)
+        {
+            figure.RegisterWithDependencies();
+            Children.Add(figure);
+            if (drawing != null)
+            {
+                figure.Drawing = drawing;
+                figure.OnAddingToDrawing(drawing);
+                if (drawing.Canvas != null)
+                {
+                    figure.OnAddingToCanvas(drawing.Canvas);
+                }
+            }
+        }
+
+        public virtual void RemoveChild(IFigure figure)
+        {
+            if (drawing != null)
+            {
+                if (drawing.Canvas != null)
+                {
+                    figure.OnRemovingFromCanvas(drawing.Canvas);
+                }
+
+                figure.OnRemovingFromDrawing(drawing);
+                figure.Drawing = null;
+            }
+
+            Children.Remove(figure);
+            figure.UnregisterFromDependencies();
+        }
+
         public override void OnAddingToDrawing(Drawing drawing)
         {
             base.OnAddingToDrawing(drawing);
             foreach (var item in Children)
             {
                 item.OnAddingToDrawing(drawing);
+            }
+        }
+
+        private Canvas canvas;
+        protected Canvas Canvas 
+        {
+            get => canvas;
+            set
+            {
+                if (canvas == value)
+                {
+                    return;
+                }
+
+                canvas = value;
             }
         }
 
@@ -37,10 +92,13 @@ namespace DynamicGeometry
 
         public override void OnAddingToCanvas(Canvas newContainer)
         {
+            Canvas = newContainer;
+
             foreach (var figure in Children)
             {
                 figure.OnAddingToCanvas(newContainer);
             }
+
             base.OnAddingToCanvas(newContainer);
         }
 
@@ -50,6 +108,8 @@ namespace DynamicGeometry
             {
                 figure.OnRemovingFromCanvas(leavingContainer);
             }
+
+            Canvas = null;
         }
 
         public override void Recalculate()

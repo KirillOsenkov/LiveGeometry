@@ -91,7 +91,12 @@ namespace DynamicGeometry
             var vertex = vertices[vertices.Count - 1];
             vertex.UnregisterFromDependencies();
             vertices.RemoveLast();
+
+            var drawing = vertex.Drawing;
+            var action = new RemoveFigureAction(drawing, vertex);
+            action.Execute();
             Children.Remove(vertex);
+
             if (Drawing != null)
             {
                 vertex.OnRemovingFromCanvas(Drawing.Canvas);

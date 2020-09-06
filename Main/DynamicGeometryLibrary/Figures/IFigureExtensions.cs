@@ -76,10 +76,17 @@ namespace DynamicGeometry
             {
                 dependent.RecalculateAndUpdateVisual();
             }
+
+            figure.Drawing.Figures.CheckConsistency();
         }
 
         public static void RecalculateAndUpdateVisual(this IFigure figure)
         {
+            if (figure.Drawing == null)
+            {
+                return;
+            }
+
             figure.UpdateExistence();
             figure.Recalculate();
             figure.UpdateVisual();

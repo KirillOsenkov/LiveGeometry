@@ -47,8 +47,7 @@ namespace DynamicGeometry
 
             foreach (var item in figure.Dependents)
             {
-                ISupportRemoveDependency customDependencyRemover = item as ISupportRemoveDependency;
-                if (customDependencyRemover != null 
+                if (item is ISupportRemoveDependency customDependencyRemover
                     && customDependencyRemover.CanRemoveDependency(figure))
                 {
                     list.Remove(item);

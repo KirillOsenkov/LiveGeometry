@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using GuiLabs.Undo;
 
@@ -32,16 +33,26 @@ namespace DynamicGeometry
         {
             if (toRecalculate != null)
             {
+                var list = toRecalculate.ToList();
+
                 foreach (var figure in toRecalculate)
                 {
-                    figure.RecalculateAndUpdateVisual();
+                    // need to check because Recalculate() of a previous figure (polygon) might have deleted this one from the drawing
+                    if (figure.Drawing != null)
+                    {
+                        figure.RecalculateAndUpdateVisual();
+                    }
+                    else
+                    {
+                        list.Remove(figure);
+                    }
                 }
 
                 if (drawing != null)
                 {
                     drawing.RaiseFigureCoordinatesChanged(
                         new Drawing.FigureCoordinatesChangedEventArgs(
-                            toRecalculate));
+                            list));
                 }
             }
         }

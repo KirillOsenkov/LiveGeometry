@@ -100,8 +100,12 @@ namespace DynamicGeometry
             var NumberOfSides = sideCount;
             if (index > 2)
             {
-                sides[index - 1].Dependencies[1] = vertices[index - 1];
+                var firstSide = sides[index - 1];
+                firstSide.UnregisterFromDependencies();
+                firstSide.Dependencies[1] = vertices[index - 1];
+                firstSide.RegisterWithDependencies();
             }
+
             if (index == 0)
             {
                 side.Dependencies = new[] { this.Dependencies[1], vertices[0] };
@@ -130,7 +134,10 @@ namespace DynamicGeometry
             var index = sides.Count - 1;
             if (index > 2)
             {
-                sides[index - 1].Dependencies[1] = this.Dependencies[1];
+                var firstSide = sides[index - 1];
+                firstSide.UnregisterFromDependencies();
+                firstSide.Dependencies[1] = this.Dependencies[1];
+                firstSide.RegisterWithDependencies();
             }
 
             var side = sides[index];
@@ -138,7 +145,13 @@ namespace DynamicGeometry
             side.UnregisterFromDependencies();
 
             sides.RemoveLast();
+
+            var drawing = Drawing;
+            var action = new RemoveFigureAction(drawing, side);
+            action.Execute();
+
             Children.Remove(side);
+
             if (Drawing != null)
             {
                 side.OnRemovingFromCanvas(Drawing.Canvas);
