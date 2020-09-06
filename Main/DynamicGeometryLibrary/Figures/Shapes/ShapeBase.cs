@@ -72,7 +72,7 @@ namespace DynamicGeometry
             UpdateVisual();
         }
 
-        public bool AllowMove()
+        public virtual bool AllowMove()
         {
             return !this.Locked && this.Dependencies.IsEmpty();
         }

@@ -30,23 +30,16 @@ namespace DynamicGeometry
         [PropertyGridVisible]
         public double Parameter { get; set; }
 
-        public override double X
-        {
-            get
-            {
-                return base.X;
-            }
-        }
+        public override double X => base.X;
 
-        public override double Y
-        {
-            get
-            {
-                return base.Y;
-            }
-        }
+        public override double Y => base.Y;
 
         public bool UseHitTestingForExistence = true;   // Broadens usefullness of PointOnFigure. Used in Tabula.
+
+        public override bool AllowMove()
+        {
+            return !Locked;
+        }
 
         public ILinearFigure LinearFigure
         {
