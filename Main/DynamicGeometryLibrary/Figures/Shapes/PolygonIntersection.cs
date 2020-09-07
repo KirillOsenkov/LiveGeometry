@@ -7,16 +7,70 @@ namespace DynamicGeometry
 {
     public class PolygonIntersection : CompositeFigure
     {
+        private Point[][] intersections;
+
+        public static bool AreEqual(Point[][] left, Point[][] right)
+        {
+            if ((left == null) != (right == null))
+            {
+                return false;
+            }
+
+            if (left.Length != right.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < left.Length; i++)
+            {
+                if (!AreEqual(left[i], right[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool AreEqual(Point[] left, Point[] right)
+        {
+            if ((left == null) != (right == null))
+            {
+                return false;
+            }
+
+            if (left.Length != right.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < left.Length; i++)
+            {
+                if (left[i] != right[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public override void Recalculate()
         {
             var first = this.Dependencies.Polygon(0);
             var second = this.Dependencies.Polygon(1);
 
-            var intersections = Intersect(first, second);
+            var newIntersections = Intersect(first, second);
+            if (AreEqual(intersections, newIntersections))
+            {
+                return;
+            }
+
+            intersections = newIntersections;
 
             ClearChildren();
 
-            foreach (var intersection in intersections)
+            foreach (var intersection in newIntersections)
             {
                 var vertices = new List<PointBase>(intersection.Length);
 
