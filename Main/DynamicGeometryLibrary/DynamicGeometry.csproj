@@ -17,4 +17,8 @@
     <Compile Remove="PropertyGrid\PropertyGridUtilities.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ExPlat\XP.Geometry\XP.Geometry.csproj" />
+  </ItemGroup>
+
 </Project>

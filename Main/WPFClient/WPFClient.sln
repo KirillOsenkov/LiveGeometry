@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFClient", "WPFClient.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicGeometry", "..\DynamicGeometryLibrary\DynamicGeometry.csproj", "{C8694CE9-C8FC-4A2D-94FE-0FB9AC01D16C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XP", "XP", "{27927BB5-E4DC-4FA9-81F0-B7AB25F4138C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XP.Geometry", "..\..\..\ExPlat\XP.Geometry\XP.Geometry.csproj", "{CC8C1937-9D5E-47D7-95CE-CFA9D76161B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,8 +23,15 @@ Global
 		{F9F035AA-90C7-4FC9-93E3-A5DCF00774B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9F035AA-90C7-4FC9-93E3-A5DCF00774B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9F035AA-90C7-4FC9-93E3-A5DCF00774B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC8C1937-9D5E-47D7-95CE-CFA9D76161B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC8C1937-9D5E-47D7-95CE-CFA9D76161B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC8C1937-9D5E-47D7-95CE-CFA9D76161B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC8C1937-9D5E-47D7-95CE-CFA9D76161B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CC8C1937-9D5E-47D7-95CE-CFA9D76161B7} = {27927BB5-E4DC-4FA9-81F0-B7AB25F4138C}
 	EndGlobalSection
 EndGlobal

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using XP;
 
 namespace DynamicGeometry
 {
@@ -111,13 +112,17 @@ namespace DynamicGeometry
 
         public Point[][] Intersect(Point[] first, Point[] second)
         {
-            var list = new List<Point>();
-
-            for (int i = 0; i < first.Length && i < second.Length; i++)
-            {
-                var mid = Math.Midpoint(first[i], second[i]);
-                list.Add(mid);
-            }
+            GbPolyg gbPolyg1 = new GbPolyg();
+            GbPolyg gbPolyg2 = new GbPolyg();
+            foreach (Point point in first)
+                gbPolyg1.Add((point.X, point.Y));
+            foreach (Point point in second)
+                gbPolyg2.Add((point.X, point.Y));
+            Polyg polyg1 = gbPolyg1.Polyg();
+            Polyg polyg2 = gbPolyg2.Polyg();
+            List<Point> list = new List<Point>();
+            foreach (Pt pt in polyg1.PolygIntersect(polyg2))
+                list.Add(new Point(pt.x, pt.y));
 
             return new[] { list.ToArray() };
         }
