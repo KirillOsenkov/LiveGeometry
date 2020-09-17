@@ -21,7 +21,7 @@ namespace DynamicGeometry
             return polygon;
         }
 
-        Brush mBackground = new SolidColorBrush(Colors.Yellow);
+        Brush mBackground = new SolidColorBrush(Color.FromArgb(100, 255, 255, 200));
         [PropertyGridVisible]
         public Brush Background
         {

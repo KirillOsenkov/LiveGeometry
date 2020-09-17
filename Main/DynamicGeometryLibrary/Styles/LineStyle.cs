@@ -21,7 +21,7 @@ namespace DynamicGeometry
             return line;
         }
 
-        Color mColor = Colors.Black;
+        Color mColor = Color.FromArgb(100, 0, 0, 0);
         [PropertyGridVisible]
         [PropertyGridName("Stroke Color")]
         public Color Color

@@ -56,6 +56,7 @@ namespace DynamicGeometry
                         return style;
                     }
                 }
+
                 return null;
             }
         }
@@ -89,23 +90,39 @@ namespace DynamicGeometry
                 }
             }
         }
+
         protected int numDefaultStyles;
         public virtual void AddDefaultStyles()
         {
-            var freePointStyle = new PointStyle();
+            var freePointStyle = new PointStyle()
+            {
+                Fill = new SolidColorBrush(Color.FromArgb(255, 255, 255, 100))
+            };
             var pointOnFigureStyle = new PointStyle()
-                {
-                    Fill = new SolidColorBrush(Color.FromArgb(255, 0, 255, 0))
-                };
+            {
+                Fill = new SolidColorBrush(Color.FromArgb(255, 0, 255, 0))
+            };
             var dependentPointStyle = new PointStyle()
-                {
-                    Fill = new SolidColorBrush(Color.FromArgb(255, 192, 192, 192))
-                };
+            {
+                Name = "DependentPointStyle",
+                Fill = new SolidColorBrush(Color.FromArgb(200, 192, 192, 192))
+            };
             var lineStyle = new LineStyle();
+            var lineStyle2 = new LineStyle()
+            {
+                Name = "OtherLine",
+                Color = Color.FromArgb(200, 0, 0, 255)
+            };
             var shapeWithLineStyle = new ShapeStyle();
             var shapeStyle = new ShapeStyle()
             {
                 Color = Colors.Transparent
+            };
+            var shapeStyle2 = new ShapeStyle()
+            {
+                Name = "OtherShape",
+                Color = Colors.Transparent,
+                Fill = new SolidColorBrush(Color.FromArgb(100, 200, 255, 200))
             };
             var hyperLinkStyle = new TextStyle()
             {
@@ -123,19 +140,29 @@ namespace DynamicGeometry
                 FontFamily = new FontFamily("Segoe UI")
             };
 
-            (new IFigureStyle[]
-            { 
+            var newStyles = new IFigureStyle[]
+            {
                 freePointStyle,
                 pointOnFigureStyle,
                 dependentPointStyle,
                 lineStyle,
+                lineStyle2,
                 shapeStyle,
+                shapeStyle2,
                 shapeWithLineStyle,
                 textStyle,
                 headerStyle,
                 hyperLinkStyle,
-            }).ForEach(list.Add);
-            numDefaultStyles = 9;
+            };
+
+            list.AddRange(newStyles);
+
+            numDefaultStyles = newStyles.Length;
+        }
+
+        public IFigureStyle GetStyle(string name)
+        {
+            return GetAllStyles().Where(s => s.Name == name).FirstOrDefault();
         }
 
         public IEnumerable<IFigureStyle> GetSupportedStyles(IFigure figure)
@@ -226,6 +253,5 @@ namespace DynamicGeometry
                 transaction.Commit();
             }
         }
-
     }
 }

@@ -22,7 +22,7 @@ namespace DynamicGeometry
             return polygon;
         }
 
-        Brush mFill = new SolidColorBrush(Colors.Yellow);
+        Brush mFill = new SolidColorBrush(Color.FromArgb(100, 255, 255, 200));
         [PropertyGridVisible]
         public Brush Fill
         {

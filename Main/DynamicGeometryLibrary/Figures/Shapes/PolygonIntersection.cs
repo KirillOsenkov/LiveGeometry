@@ -81,6 +81,11 @@ namespace DynamicGeometry
                     point.Dependencies.Add(this);
                     vertices.Add(point);
                     AddChild(point);
+                    var style = Drawing.StyleManager.GetStyle("DependentPointStyle");
+                    if (style != null)
+                    {
+                        point.Style = style;
+                    }
                 }
 
                 for (int i = 0; i < intersection.Length; i++)
@@ -96,11 +101,21 @@ namespace DynamicGeometry
                     }
 
                     AddChild(side);
+                    var style = Drawing.StyleManager.GetStyle("OtherLine");
+                    if (style != null)
+                    {
+                        side.Style = style;
+                    }
                 }
 
                 var polygon = new Polygon();
                 polygon.Dependencies.AddRange(vertices);
                 AddChild(polygon);
+                var polygonStyle = Drawing.StyleManager.GetStyle("OtherShape");
+                if (polygonStyle != null)
+                {
+                    polygon.Style = polygonStyle;
+                }
             }
 
             UpdateVisual();
