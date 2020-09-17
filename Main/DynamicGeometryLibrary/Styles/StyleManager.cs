@@ -165,6 +165,15 @@ namespace DynamicGeometry
             return GetAllStyles().Where(s => s.Name == name).FirstOrDefault();
         }
 
+        public void SetStyleIfAvailable(IFigure figure, string styleName)
+        {
+            var style = GetStyle(styleName);
+            if (style != null)
+            {
+                figure.Style = style;
+            }
+        }
+
         public IEnumerable<IFigureStyle> GetSupportedStyles(IFigure figure)
         {
             return GetSupportedStyles(figure.GetType());
