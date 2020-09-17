@@ -489,6 +489,24 @@ namespace DynamicGeometry
 
         #endregion
 
+        public override bool IsInInitialState
+        {
+            get
+            {
+                if (!FoundDependencies.IsEmpty())
+                {
+                    return false;
+                }
+
+                if (Transaction != null && Transaction.HasActions())
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
         #region KeyDown
 
         public override void KeyDown(object sender, System.Windows.Input.KeyEventArgs e)

@@ -191,6 +191,14 @@ namespace DynamicGeometry
             Started();
         }
 
+        public virtual bool IsInInitialState 
+        {
+            get
+            {
+                return true;
+            }
+        }
+
 #if !PLAYER
 
         protected void AbortAndSetDefaultTool()

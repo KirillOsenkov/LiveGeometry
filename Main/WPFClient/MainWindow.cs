@@ -461,7 +461,16 @@ namespace DynamicGeometry
                     DeleteSelection();
                     break;
                 case System.Windows.Input.Key.Escape:
-                    DrawingHost.CurrentDrawing.Behavior.Restart();
+                    if (DrawingHost.CurrentDrawing.Behavior.IsInInitialState)
+                    {
+                        DrawingHost.CurrentDrawing.SetDefaultBehavior();
+                    }
+                    else
+                    {
+                        DrawingHost.CurrentDrawing.Behavior.Restart();
+                    }
+
+                    e.Handled = true;
                     break;
             }
         }
