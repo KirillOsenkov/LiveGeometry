@@ -179,7 +179,6 @@ namespace DynamicGeometry
             };
 
             PropertyGrid = new PropertyGrid();
-            MEFHost.Instance.SatisfyImportsOnce(PropertyGrid);
             PropertyGrid.Margin = new Thickness(4);
             propertyGridScrollViewer.Content = PropertyGrid;
             PropertyGrid.VisibilityChanged += PropertyGrid_VisibilityChanged;

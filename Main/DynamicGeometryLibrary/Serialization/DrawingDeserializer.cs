@@ -145,7 +145,7 @@ namespace DynamicGeometry
 
         private IFigureStyle ReadStyle(XElement styleNode)
         {
-            return MEFHost.Instance.SerializationService.Read<IFigureStyle>(styleNode);
+            return SerializationService.Instance.Read<IFigureStyle>(styleNode);
         }
 
         private IValueDiscoveryStrategy valueDiscovery = new IncludeByDefaultValueDiscoveryStrategy();
@@ -216,13 +216,11 @@ namespace DynamicGeometry
                 if (mFigureTypes == null)
                 {
                     mFigureTypes = new Dictionary<string, Type>();
-                    foreach (var assembly in MEFHost.Instance.Assemblies)
+                    var assembly = typeof(DrawingDeserializer).Assembly;
+                    foreach (var type in assembly.GetTypes()
+                        .Where(t => typeof(IFigure).IsAssignableFrom(t)))
                     {
-                        foreach (var type in assembly.GetTypes()
-                            .Where(t => typeof(IFigure).IsAssignableFrom(t)))
-                        {
-                            mFigureTypes.Add(type.Name, type);
-                        }
+                        mFigureTypes.Add(type.Name, type);
                     }
                 }
 

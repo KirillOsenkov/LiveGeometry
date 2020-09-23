@@ -14,6 +14,15 @@ using System.Windows.Threading;
 using GuiLabs.Undo;
 using System.Threading;
 
+[assembly: ThemeInfo(
+    ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
+                                     //(used if a resource is not found in the page, 
+                                     // or application resource dictionaries)
+    ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
+                                              //(used if a resource is not found in the page, 
+                                              // app, or any theme specific resource dictionaries)
+)]
+
 namespace DynamicGeometry
 {
     public partial class MainWindow : Window
@@ -232,12 +241,12 @@ namespace DynamicGeometry
             {
                 switch (System.IO.Path.GetExtension(path))
                 {
-                    case "." + dxfExtension:
-                        HandleExceptions(() =>
-                            DrawingHost.DrawingControl.Drawing = (new DXFDrawingDeserializer().ReadDrawing(path, DrawingHost.DrawingControl))
-                        );
+                    //case "." + dxfExtension:
+                    //    HandleExceptions(() =>
+                    //        DrawingHost.DrawingControl.Drawing = (new DXFDrawingDeserializer().ReadDrawing(path, DrawingHost.DrawingControl))
+                    //    );
 
-                        break;
+                    //    break;
                     default:
                         HandleExceptions(() =>
                             DrawingHost.DrawingControl.Drawing = Drawing.Load(path, DrawingHost.DrawingControl)

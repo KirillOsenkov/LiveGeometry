@@ -240,7 +240,7 @@ namespace DynamicGeometry
 
         public static CompileResult CompileExpression(this Drawing drawing, string expression)
         {
-            return MEFHost.Instance.CompilerService.CompileExpression(drawing, expression, f => true);
+            return Compiler.Instance.CompileExpression(drawing, expression, f => true);
         }
 
 #if !PLAYER

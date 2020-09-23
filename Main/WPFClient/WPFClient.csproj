@@ -11,4 +11,8 @@
     <ProjectReference Include="..\DynamicGeometryLibrary\DynamicGeometry.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="converters\**\*" />
+  </ItemGroup>
+
 </Project>

@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicGeometry", "..\DynamicGeometryLibrary\DynamicGeometry.csproj", "{C8694CE9-C8FC-4A2D-94FE-0FB9AC01D16C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFClient", "WPFClient.csproj", "{F9F035AA-90C7-4FC9-93E3-A5DCF00774B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicGeometry", "..\DynamicGeometryLibrary\DynamicGeometry.csproj", "{C8694CE9-C8FC-4A2D-94FE-0FB9AC01D16C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

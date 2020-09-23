@@ -71,7 +71,7 @@ namespace DynamicGeometry
 
         protected void PlotFunction(string function)
         {
-            var result = MEFHost.Instance.CompilerService.CompileFunction(Drawing, function);
+            var result = Compiler.Instance.CompileFunction(Drawing, function);
             Func<double, double> func = result.Function;
             if (func != null)
             {

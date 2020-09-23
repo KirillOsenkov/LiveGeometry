@@ -14,7 +14,7 @@
 
             if (!string.IsNullOrEmpty(source))
             {
-                var compileResult = MEFHost.Instance.CompilerService.CompileExpression(
+                var compileResult = Compiler.Instance.CompileExpression(
                     expression.ParentFigure.Drawing,
                     source,
                     f => !f.DependsOn(expression.ParentFigure));

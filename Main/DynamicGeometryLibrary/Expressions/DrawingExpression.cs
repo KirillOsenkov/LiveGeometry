@@ -45,7 +45,7 @@ namespace DynamicGeometry
 
         public void Recalculate()
         {
-            var result = MEFHost.Instance.CompilerService.CompileExpression(
+            var result = Compiler.Instance.CompileExpression(
                  ParentFigure.Drawing,
                  Text,
                  f => !f.DependsOn(ParentFigure));

@@ -4,6 +4,8 @@ namespace DynamicGeometry
 {
     public class Compiler : ICompilerService
     {
+        public static Compiler Instance { get; } = new Compiler();
+
         public IExpressionTreeEvaluatorProvider ExpressionTreeEvaluatorProvider { get; set; } = new ExpressionTreeCompiler();
 
         public CompileResult CompileFunction(Drawing drawing, string functionText)

@@ -98,7 +98,7 @@ namespace DynamicGeometry
             var values = IncludeByDefaultValueDiscoveryStrategy.Instance
                     .GetValues(this)
                     .Where(v => v.Name != "Name")
-                    .Select(v => MEFHost.Instance.SerializationService.Write(v).ToString());
+                    .Select(v => SerializationService.Instance.Write(v).ToString());
             var result = string.Join(" ", values.ToArray());
             return result;
         }

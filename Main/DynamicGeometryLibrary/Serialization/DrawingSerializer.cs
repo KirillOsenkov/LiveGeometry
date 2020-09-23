@@ -125,7 +125,7 @@ namespace DynamicGeometry
             var values = valueDiscovery.GetValues(style);
             foreach (var value in values)
             {
-                var serialized = MEFHost.Instance.SerializationService.Write(value);
+                var serialized = SerializationService.Instance.Write(value);
                 if (serialized != null)
                 {
                     writer.WriteAttributeString(value.Name, serialized.ToString());

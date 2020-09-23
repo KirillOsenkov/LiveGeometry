@@ -82,7 +82,7 @@ namespace DynamicGeometry
 
         public CompileResult Compile()
         {
-            var result = MEFHost.Instance.CompilerService.CompileFunction(Drawing, FunctionText);
+            var result = Compiler.Instance.CompileFunction(Drawing, FunctionText);
             if (result.IsSuccess)
             {
                 SetFunction(result);

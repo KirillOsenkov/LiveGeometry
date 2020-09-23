@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -245,31 +244,10 @@ namespace DynamicGeometry
                 .Select(p => CreatePropertyEditorControl(p, editableObject, ActionManager))
                 .Where(c => c != null).ToArray();
             var currentMethods = GetCallableMethods(editableObject);
-            currentMethods = currentMethods.Concat(GetExtensionMethods(editableObject));
             var currentMethodButtons = currentMethods
                 .Select(m => CreateMethodCallerControl(m, editableObject)).ToArray();
 
             return currentEditors.Concat(currentMethodButtons).ToArray();
-        }
-
-        [ImportMany]
-        public IEnumerable<IOperationProvider> ExtensionOperations { get; set; }
-
-        private IEnumerable<IOperationDescription> GetExtensionMethods(object editableObject)
-        {
-            if (ExtensionOperations == null)
-            {
-                yield break;
-            }
-
-            foreach (var item in ExtensionOperations)
-            {
-                var operation = item.ProvideOperation(editableObject);
-                if (operation != null)
-                {
-                    yield return operation;
-                }
-            }
         }
 
         protected virtual IEnumerable<IValueProvider> GetEditableProperties<T>(T editableObject)

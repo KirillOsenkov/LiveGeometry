@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -33,11 +32,20 @@ namespace DynamicGeometry
         }
     }
 
-    [Export(typeof(ISerializationService))]
     public class SerializationService : ISerializationService
     {
-        [ImportMany]
-        public IEnumerable<ISerializer> Serializers { get; set; }
+        public static SerializationService Instance { get; } = new SerializationService();
+
+        public IEnumerable<ISerializer> Serializers { get; set; } = CollectSerializers();
+
+        private static IEnumerable<ISerializer> CollectSerializers()
+        {
+            var assembly = typeof(SerializationService).Assembly;
+            var types = assembly.GetTypes();
+            var implementations = types.Where(t => t.HasInterface<ISerializer>());
+            var instances = implementations.Select(t => Activator.CreateInstance(t));
+            return instances.OfType<ISerializer>().ToArray();
+        }
 
         private Dictionary<Type, ISerializer> serializerCache = new Dictionary<Type, ISerializer>();
 
@@ -95,7 +103,6 @@ namespace DynamicGeometry
         }
     }
 
-    [Export(typeof(ISerializer))]
     public class ComplexTypeSerializer : ISerializer
     {
         public object Write(IValueProvider value)
@@ -107,7 +114,7 @@ namespace DynamicGeometry
             var values = discoveryStrategy.GetValues(instance);
             foreach (var property in values)
             {
-                object serialized = MEFHost.Instance.SerializationService.Write(property);
+                object serialized = SerializationService.Instance.Write(property);
 
                 if (serialized is string)
                 {
@@ -143,14 +150,14 @@ namespace DynamicGeometry
                 XAttribute attribute = serialized.Attribute(property.Name);
                 if (attribute != null)
                 {
-                    MEFHost.Instance.SerializationService.Read(property, attribute.Value);
+                    SerializationService.Instance.Read(property, attribute.Value);
                     continue;
                 }
 
                 XElement subElement = serialized.Element(property.Name);
                 if (subElement != null)
                 {
-                    MEFHost.Instance.SerializationService.Read(property, subElement);
+                    SerializationService.Instance.Read(property, subElement);
                     continue;
                 }
             }
@@ -160,15 +167,12 @@ namespace DynamicGeometry
 
         private Type FindDerivedType(Type type, string name)
         {
-            var assemblies = MEFHost.Instance.Assemblies;
-            foreach (var assembly in assemblies)
+            var assembly = typeof(ComplexTypeSerializer).Assembly;
+            foreach (var candidate in assembly.GetTypes())
             {
-                foreach (var candidate in assembly.GetTypes())
+                if (name == candidate.Name && type.IsAssignableFrom(candidate))
                 {
-                    if (name == candidate.Name && type.IsAssignableFrom(candidate))
-                    {
-                        return candidate;
-                    }
+                    return candidate;
                 }
             }
 
@@ -234,7 +238,6 @@ namespace DynamicGeometry
         }
     }
 
-    [Export(typeof(ISerializer))]
     public class StringSerializer : SerializerBase<string>
     {
         public override string FromString(string str)
@@ -248,7 +251,6 @@ namespace DynamicGeometry
         }
     }
 
-    [Export(typeof(ISerializer))]
     public class FontFamilySerializer : SerializerBase<FontFamily>
     {
         public override FontFamily FromString(string str)
@@ -262,7 +264,6 @@ namespace DynamicGeometry
         }
     }
 
-    [Export(typeof(ISerializer))]
     public class BoolSerializer : SerializerBase<bool>
     {
         public override bool FromString(string str)
@@ -276,7 +277,6 @@ namespace DynamicGeometry
         }
     }
 
-    [Export(typeof(ISerializer))]
     public class ColorSerializer : SerializerBase<Color>
     {
         public override string ToString(Color value)
@@ -290,7 +290,6 @@ namespace DynamicGeometry
         }
     }
 
-    [Export(typeof(ISerializer))]
     public class BrushSerializer : ISerializer
     {
         public object Write(IValueProvider value)
@@ -338,14 +337,13 @@ namespace DynamicGeometry
 
         public double Priority
         {
-            get 
+            get
             {
-                return 1.0; 
+                return 1.0;
             }
         }
     }
 
-    [Export(typeof(ISerializer))]
     public class SimpleTypeSerializer : ISerializer
     {
         public object Write(IValueProvider value)
