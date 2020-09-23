@@ -249,7 +249,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return Drawing.Canvas;
+                return Drawing?.Canvas;
             }
         }
 

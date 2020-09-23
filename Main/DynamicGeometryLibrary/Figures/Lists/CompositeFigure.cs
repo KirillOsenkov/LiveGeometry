@@ -66,21 +66,6 @@ namespace DynamicGeometry
             }
         }
 
-        private Canvas canvas;
-        protected Canvas Canvas 
-        {
-            get => canvas;
-            set
-            {
-                if (canvas == value)
-                {
-                    return;
-                }
-
-                canvas = value;
-            }
-        }
-
         public override void OnRemovingFromDrawing(Drawing drawing)
         {
             base.OnRemovingFromDrawing(drawing);
@@ -92,8 +77,6 @@ namespace DynamicGeometry
 
         public override void OnAddingToCanvas(Canvas newContainer)
         {
-            Canvas = newContainer;
-
             foreach (var figure in Children)
             {
                 figure.OnAddingToCanvas(newContainer);
@@ -104,12 +87,12 @@ namespace DynamicGeometry
 
         public override void OnRemovingFromCanvas(Canvas leavingContainer)
         {
+            base.OnRemovingFromCanvas(leavingContainer);
+
             foreach (var figure in Children)
             {
                 figure.OnRemovingFromCanvas(leavingContainer);
             }
-
-            Canvas = null;
         }
 
         public override void Recalculate()
