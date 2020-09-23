@@ -1,12 +1,10 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace DynamicGeometry
 {
-    [Export(typeof(IExpressionTreeEvaluatorProvider))]
     public class ExpressionTreeInterpreter : IExpressionTreeEvaluatorProvider
     {
         private object parameterValue = null;

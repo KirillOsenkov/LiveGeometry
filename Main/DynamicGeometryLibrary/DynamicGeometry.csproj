@@ -10,4 +10,8 @@
     <PackageReference Include="GuiLabs.Undo" Version="1.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Expressions\Irony\**\*" />
+  </ItemGroup>
+
 </Project>

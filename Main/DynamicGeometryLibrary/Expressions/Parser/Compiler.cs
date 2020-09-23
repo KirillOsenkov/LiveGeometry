@@ -1,13 +1,10 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 
 namespace DynamicGeometry
 {
-    [Export(typeof(ICompilerService))]
     public class Compiler : ICompilerService
     {
-        [Import]
-        public IExpressionTreeEvaluatorProvider ExpressionTreeEvaluatorProvider { get; set; }
+        public IExpressionTreeEvaluatorProvider ExpressionTreeEvaluatorProvider { get; set; } = new ExpressionTreeCompiler();
 
         public CompileResult CompileFunction(Drawing drawing, string functionText)
         {
