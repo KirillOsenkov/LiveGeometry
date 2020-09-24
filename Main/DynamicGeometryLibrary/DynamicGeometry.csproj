@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <Compile Remove="Expressions\Irony\**\*" />
-    <Compile Remove="Controls\TabControl\**\*" />
     <Compile Remove="Controls\Controls.Toolkit\**\*" />
     <Compile Remove="PropertyGrid\PropertyGridUtilities.cs" />
   </ItemGroup>
