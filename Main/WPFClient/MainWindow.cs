@@ -4,15 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Printing;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using GuiLabs.Undo;
-using System.Threading;
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
@@ -451,6 +450,12 @@ namespace DynamicGeometry
         protected override void OnKeyUp(System.Windows.Input.KeyEventArgs e)
         {
             base.OnKeyUp(e);
+
+            var focused = Keyboard.FocusedElement;
+            if (focused is TextBox)
+            {
+                return;
+            }
 
             switch (e.Key)
             {
