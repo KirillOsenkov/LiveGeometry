@@ -42,9 +42,23 @@ namespace DynamicGeometry
         {
             var assembly = typeof(SerializationService).Assembly;
             var types = assembly.GetTypes();
-            var implementations = types.Where(t => t.HasInterface<ISerializer>());
-            var instances = implementations.Select(t => Activator.CreateInstance(t));
-            return instances.OfType<ISerializer>().ToArray();
+            var implementations = types.Where(t => 
+                t.IsClass && 
+                !t.IsAbstract &&
+                t.HasInterface<ISerializer>() &&
+                t != typeof(SerializationService));
+
+            var instances = new List<ISerializer>();
+            foreach (var type in implementations)
+            {
+                var instance = Activator.CreateInstance(type);
+                if (instance is ISerializer serializer)
+                {
+                    instances.Add(serializer);
+                }
+            }
+
+            return instances;
         }
 
         private Dictionary<Type, ISerializer> serializerCache = new Dictionary<Type, ISerializer>();
