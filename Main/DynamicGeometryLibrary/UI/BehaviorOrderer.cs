@@ -71,9 +71,9 @@ namespace DynamicGeometry
                     categoryOrder = new Dictionary<string, int>();
                     var fields = typeof(BehaviorCategories).GetFields();
                     int index = 0;
-                    foreach (var field in fields)
+                    foreach (var fieldInfo in fields)
                     {
-                        categoryOrder.Add(field.Name, index++);
+                        categoryOrder.Add(fieldInfo.Name, index++);
                     }
                 }
                 return categoryOrder;
