@@ -26,6 +26,26 @@ namespace DynamicGeometry
             }
         }
 
+        public static IEnumerable<IFigure> AllDependents(this IFigure figure)
+        {
+            var hashset = new HashSet<IFigure>();
+            CollectAllDependents(figure, hashset);
+            return hashset;
+        }
+
+        public static void CollectAllDependents(this IFigure figure, HashSet<IFigure> collector)
+        {
+            if (!collector.Add(figure))
+            {
+                return;
+            }
+
+            foreach (var dependent in figure.Dependents)
+            {
+                CollectAllDependents(dependent, collector);
+            }
+        }
+
         public static IEnumerable<IFigure> GetAllFiguresRecursive(
             this IEnumerable<IFigure> figureList)
         {

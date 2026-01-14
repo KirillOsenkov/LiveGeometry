@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 
 namespace DynamicGeometry
@@ -57,8 +58,13 @@ namespace DynamicGeometry
                 {
                     return false;
                 }
-                else if (FoundDependencies.Count == 1 && !((f is PointOnFigure) && f.Dependents.Contains(FoundDependencies[0])))
+                else if (FoundDependencies.Count == 1)
                 {
+                    if (f is PointOnFigure && f.AllDependents().Contains(FoundDependencies[0]))
+                    {
+                        return true;
+                    }
+
                     return false;
                 }
 
