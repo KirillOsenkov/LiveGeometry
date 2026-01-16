@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Drawing Version="0" Creator="System.Windows.Application">
+  <Viewport Left="-19.9895833333" Top="9.15625" Right="20.0104166667" Bottom="-9.14125" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#64000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#C8C0C0C0" IsFilled="true" Color="#64000000" StrokeWidth="1" Name="DependentPointStyle" />
+    <LineStyle Color="#64000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#C80000FF" StrokeWidth="1" Name="OtherLine" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#64C8FFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="OtherShape" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#64000000" StrokeWidth="1" Name="5" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-18.4166666666" Y="-4.11" />
+    <FreePoint Name="B" Style="1" X="-12.9583333333" Y="6.4525" />
+    <Segment Name="Segment1" Style="3">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <FreePoint Name="C" Style="1" X="2.0208333333" Y="6.1816666667" />
+    <Segment Name="Segment2" Style="3">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <FreePoint Name="D" Style="1" X="0.2604166667" Y="-3.7766666667" />
+    <Segment Name="Segment3" Style="3">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="Segment4" Style="3">
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </Segment>
+    <MidPoint Name="E" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="F" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="G" Style="1">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <MidPoint Name="H" Style="1">
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <Segment Name="Segment5" Style="3">
+      <Dependency Name="E" />
+      <Dependency Name="H" />
+    </Segment>
+    <Segment Name="Segment6" Style="3">
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+    </Segment>
+    <MidPoint Name="L" Style="1">
+      <Dependency Name="G" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="M" Style="1">
+      <Dependency Name="C" />
+      <Dependency Name="E" />
+    </MidPoint>
+    <MidPoint Name="N" Style="1">
+      <Dependency Name="E" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="O" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <MidPoint Name="P" Style="1">
+      <Dependency Name="F" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <MidPoint Name="Q" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="H" />
+    </MidPoint>
+    <MidPoint Name="R" Style="1">
+      <Dependency Name="H" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <MidPoint Name="S" Style="1">
+      <Dependency Name="D" />
+      <Dependency Name="G" />
+    </MidPoint>
+    <MidPoint Name="T" Style="1">
+      <Dependency Name="G" />
+      <Dependency Name="L" />
+    </MidPoint>
+    <MidPoint Name="U" Style="1">
+      <Dependency Name="L" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="V" Style="1">
+      <Dependency Name="C" />
+      <Dependency Name="M" />
+    </MidPoint>
+    <MidPoint Name="W" Style="1">
+      <Dependency Name="M" />
+      <Dependency Name="E" />
+    </MidPoint>
+    <MidPoint Name="X" Style="1">
+      <Dependency Name="E" />
+      <Dependency Name="N" />
+    </MidPoint>
+    <MidPoint Name="Y" Style="1">
+      <Dependency Name="N" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="Z" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="O" />
+    </MidPoint>
+    <MidPoint Name="A1" Style="1">
+      <Dependency Name="O" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <MidPoint Name="B1" Style="1">
+      <Dependency Name="F" />
+      <Dependency Name="P" />
+    </MidPoint>
+    <MidPoint Name="C1" Style="1">
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <MidPoint Name="D1" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="Q" />
+    </MidPoint>
+    <MidPoint Name="E1" Style="1">
+      <Dependency Name="Q" />
+      <Dependency Name="H" />
+    </MidPoint>
+    <MidPoint Name="F1" Style="1">
+      <Dependency Name="H" />
+      <Dependency Name="R" />
+    </MidPoint>
+    <Segment Name="Segment7" Style="3">
+      <Dependency Name="W" />
+      <Dependency Name="F1" />
+    </Segment>
+    <Segment Name="Segment8" Style="3">
+      <Dependency Name="M" />
+      <Dependency Name="R" />
+    </Segment>
+    <Segment Name="Segment9" Style="3">
+      <Dependency Name="X" />
+      <Dependency Name="E1" />
+    </Segment>
+    <Segment Name="Segment10" Style="3">
+      <Dependency Name="N" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Segment Name="Segment11" Style="3">
+      <Dependency Name="Y" />
+      <Dependency Name="D1" />
+    </Segment>
+    <Segment Name="Segment12" Style="3">
+      <Dependency Name="Z" />
+      <Dependency Name="U" />
+    </Segment>
+    <Segment Name="Segment13" Style="3">
+      <Dependency Name="O" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="Segment14" Style="3">
+      <Dependency Name="A1" />
+      <Dependency Name="T" />
+    </Segment>
+    <MidPoint Name="I" Style="1">
+      <Dependency Name="G" />
+      <Dependency Name="S" />
+    </MidPoint>
+    <MidPoint Name="J" Style="1">
+      <Dependency Name="S" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <MidPoint Name="K" Style="1">
+      <Dependency Name="D" />
+      <Dependency Name="R" />
+    </MidPoint>
+    <Segment Name="Segment15" Style="3">
+      <Dependency Name="V" />
+      <Dependency Name="K" />
+    </Segment>
+    <Segment Name="Segment16" Style="3">
+      <Dependency Name="B1" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment17" Style="3">
+      <Dependency Name="P" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="Segment18" Style="3">
+      <Dependency Name="C1" />
+      <Dependency Name="J" />
+    </Segment>
+    <MidPoint Name="G1" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="Y" />
+    </MidPoint>
+    <MidPoint Name="H1" Style="1">
+      <Dependency Name="Y" />
+      <Dependency Name="N" />
+    </MidPoint>
+    <MidPoint Name="I1" Style="1">
+      <Dependency Name="N" />
+      <Dependency Name="X" />
+    </MidPoint>
+    <MidPoint Name="J1" Style="1">
+      <Dependency Name="X" />
+      <Dependency Name="E" />
+    </MidPoint>
+    <MidPoint Name="K1" Style="1">
+      <Dependency Name="E" />
+      <Dependency Name="W" />
+    </MidPoint>
+    <MidPoint Name="L1" Style="1">
+      <Dependency Name="W" />
+      <Dependency Name="M" />
+    </MidPoint>
+    <MidPoint Name="M1" Style="1">
+      <Dependency Name="M" />
+      <Dependency Name="V" />
+    </MidPoint>
+    <MidPoint Name="N1" Style="1">
+      <Dependency Name="V" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="O1" Style="1">
+      <Dependency Name="C" />
+      <Dependency Name="U" />
+    </MidPoint>
+    <MidPoint Name="P1" Style="1">
+      <Dependency Name="U" />
+      <Dependency Name="L" />
+    </MidPoint>
+    <MidPoint Name="Q1" Style="1">
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </MidPoint>
+    <MidPoint Name="R1" Style="1">
+      <Dependency Name="T" />
+      <Dependency Name="G" />
+    </MidPoint>
+    <MidPoint Name="S1" Style="1">
+      <Dependency Name="G" />
+      <Dependency Name="I" />
+    </MidPoint>
+    <MidPoint Name="T1" Style="1">
+      <Dependency Name="I" />
+      <Dependency Name="S" />
+    </MidPoint>
+    <MidPoint Name="U1" Style="1">
+      <Dependency Name="S" />
+      <Dependency Name="J" />
+    </MidPoint>
+    <MidPoint Name="V1" Style="1">
+      <Dependency Name="J" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <MidPoint Name="W1" Style="1">
+      <Dependency Name="D" />
+      <Dependency Name="K" />
+    </MidPoint>
+    <MidPoint Name="X1" Style="1">
+      <Dependency Name="K" />
+      <Dependency Name="R" />
+    </MidPoint>
+    <MidPoint Name="Y1" Style="1">
+      <Dependency Name="R" />
+      <Dependency Name="F1" />
+    </MidPoint>
+    <MidPoint Name="Z1" Style="1">
+      <Dependency Name="F1" />
+      <Dependency Name="H" />
+    </MidPoint>
+    <MidPoint Name="A2" Style="1">
+      <Dependency Name="H" />
+      <Dependency Name="E1" />
+    </MidPoint>
+    <MidPoint Name="B2" Style="1">
+      <Dependency Name="E1" />
+      <Dependency Name="Q" />
+    </MidPoint>
+    <MidPoint Name="C2" Style="1">
+      <Dependency Name="Q" />
+      <Dependency Name="D1" />
+    </MidPoint>
+    <MidPoint Name="D2" Style="1">
+      <Dependency Name="D1" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <Segment Name="Segment19" Style="3">
+      <Dependency Name="G1" />
+      <Dependency Name="D2" />
+    </Segment>
+    <Segment Name="Segment20" Style="3">
+      <Dependency Name="H1" />
+      <Dependency Name="C2" />
+    </Segment>
+    <Segment Name="Segment21" Style="3">
+      <Dependency Name="I1" />
+      <Dependency Name="B2" />
+    </Segment>
+    <Segment Name="Segment22" Style="3">
+      <Dependency Name="J1" />
+      <Dependency Name="A2" />
+    </Segment>
+    <Segment Name="Segment23" Style="3">
+      <Dependency Name="K1" />
+      <Dependency Name="Z1" />
+    </Segment>
+    <Segment Name="Segment24" Style="3">
+      <Dependency Name="L1" />
+      <Dependency Name="Y1" />
+    </Segment>
+    <Segment Name="Segment25" Style="3">
+      <Dependency Name="M1" />
+      <Dependency Name="X1" />
+    </Segment>
+    <Segment Name="Segment26" Style="3">
+      <Dependency Name="N1" />
+      <Dependency Name="W1" />
+    </Segment>
+    <MidPoint Name="E2" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="Z" />
+    </MidPoint>
+    <MidPoint Name="F2" Style="1">
+      <Dependency Name="Z" />
+      <Dependency Name="O" />
+    </MidPoint>
+    <MidPoint Name="G2" Style="1">
+      <Dependency Name="O" />
+      <Dependency Name="A1" />
+    </MidPoint>
+    <MidPoint Name="H2" Style="1">
+      <Dependency Name="A1" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <MidPoint Name="I2" Style="1">
+      <Dependency Name="F" />
+      <Dependency Name="B1" />
+    </MidPoint>
+    <MidPoint Name="J2" Style="1">
+      <Dependency Name="B1" />
+      <Dependency Name="P" />
+    </MidPoint>
+    <MidPoint Name="K2" Style="1">
+      <Dependency Name="P" />
+      <Dependency Name="C1" />
+    </MidPoint>
+    <MidPoint Name="L2" Style="1">
+      <Dependency Name="C1" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <Segment Name="Segment27" Style="3">
+      <Dependency Name="E2" />
+      <Dependency Name="O1" />
+    </Segment>
+    <Segment Name="Segment28" Style="3">
+      <Dependency Name="F2" />
+      <Dependency Name="P1" />
+    </Segment>
+    <Segment Name="Segment29" Style="3">
+      <Dependency Name="Q1" />
+      <Dependency Name="G2" />
+    </Segment>
+    <Segment Name="Segment30" Style="3">
+      <Dependency Name="H2" />
+      <Dependency Name="R1" />
+    </Segment>
+    <Segment Name="Segment31" Style="3">
+      <Dependency Name="S1" />
+      <Dependency Name="I2" />
+    </Segment>
+    <Segment Name="Segment32" Style="3">
+      <Dependency Name="J2" />
+      <Dependency Name="T1" />
+    </Segment>
+    <Segment Name="Segment33" Style="3">
+      <Dependency Name="K2" />
+      <Dependency Name="U1" />
+    </Segment>
+    <Segment Name="Segment34" Style="3">
+      <Dependency Name="V1" />
+      <Dependency Name="L2" />
+    </Segment>
+  </Figures>
+</Drawing>
