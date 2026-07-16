@@ -1,6 +1,8 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 
@@ -22,7 +24,8 @@ public class App : Application
             {
                 Title = "Live Geometry",
                 Content = new MainView(),
-                WindowState = WindowState.Maximized
+                WindowState = WindowState.Maximized,
+                Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://LiveGeometry/Assets/DG.ico")))
             };
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleView)
