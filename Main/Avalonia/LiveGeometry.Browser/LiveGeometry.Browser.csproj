@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- The geometry library is consumed via reflection (Behavior.LoadBehaviors,
+         serializer/figure discovery over assembly.GetTypes()), so the IL trimmer
+         must keep it intact or the published app crashes at startup. -->
+    <TrimmerRootAssembly Include="DynamicGeometry.Avalonia" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia.Browser" Version="12.1.0" />
   </ItemGroup>
 
