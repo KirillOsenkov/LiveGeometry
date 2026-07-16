@@ -1,10 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Layout;
-using Avalonia.Interactivity;
-using Avalonia.Media;
-
-namespace DynamicGeometry
+﻿namespace DynamicGeometry
 {
     [StyleFor(typeof(IPoint))]
     public class PointStyle : ShapeStyle

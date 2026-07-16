@@ -1,8 +1,4 @@
-﻿using Avalonia.Controls;
-using Avalonia.Media;
-
-
-namespace DynamicGeometry
+﻿namespace DynamicGeometry
 {
     public class PolarEditorFactory : BaseValueEditorFactory<PolarEditor>
     {

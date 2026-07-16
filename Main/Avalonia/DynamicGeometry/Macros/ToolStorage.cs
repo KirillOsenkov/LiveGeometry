@@ -1,16 +1,4 @@
-﻿using System;
-using System.Net;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Layout;
-using Avalonia.Interactivity;
-using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Media;
-using Avalonia.Animation;
-using Avalonia.Controls.Shapes;
-
-namespace DynamicGeometry
+﻿namespace DynamicGeometry
 {
     public class ToolStorage
     {

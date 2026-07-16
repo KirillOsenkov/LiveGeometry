@@ -5,9 +5,6 @@ using System.Linq;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Layout;
-using Avalonia.Interactivity;
-using Avalonia.Controls;
 
 namespace DynamicGeometry
 {

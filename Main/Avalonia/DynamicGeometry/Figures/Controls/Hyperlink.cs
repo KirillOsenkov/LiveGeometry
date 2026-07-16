@@ -1,9 +1,8 @@
-﻿using System.Net;
+﻿using System;
+using System.Net.Http;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Layout;
 using Avalonia.Interactivity;
-using Avalonia.Controls;
 using Avalonia.Media;
 
 namespace DynamicGeometry
@@ -43,11 +42,10 @@ namespace DynamicGeometry
             Shape = CreateShape();
             ZIndex = (int)ZOrder.Labels;
             Shape.Click += Shape_Click;
-            internet.DownloadStringCompleted += internet_DownloadStringCompleted;
             Enabled = true;
         }
 
-        WebClient internet = new WebClient();
+        static readonly HttpClient internet = new HttpClient();
 
         private string mUrl = null;
         [PropertyGridVisible]
@@ -61,7 +59,7 @@ namespace DynamicGeometry
             {
                 mUrl = value;
                 Shape.IsEnabled = false;
-                internet.DownloadStringAsync(new System.Uri(value));
+                DownloadAsync(value);
             }
         }
 
@@ -79,24 +77,20 @@ namespace DynamicGeometry
 
         string fileText = null;
 
-        void internet_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        async void DownloadAsync(string url)
         {
-            if (e.Cancelled || e.Error != null)
+            try
             {
-                if (e.Cancelled)
+                var result = await internet.GetStringAsync(url);
+                fileText = Utilities.StripByteOrderMark(result);
+                if (Enabled)
                 {
-                    Shape.Content = "Cancelled";
+                    Shape.IsEnabled = true;
                 }
-                if (e.Error != null)
-                {
-                    Shape.Content = "Error: " + e.Error.ToString();
-                }
-                return;
             }
-            fileText = Utilities.StripByteOrderMark(e.Result);
-            if (Enabled)
+            catch (Exception ex)
             {
-                Shape.IsEnabled = true;
+                Shape.Content = "Error: " + ex.ToString();
             }
         }
 

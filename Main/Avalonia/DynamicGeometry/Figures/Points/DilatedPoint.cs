@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Avalonia.Controls.Shapes;
-using System;
 
 namespace DynamicGeometry
 {

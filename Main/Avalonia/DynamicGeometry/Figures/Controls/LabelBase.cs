@@ -1,10 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Layout;
-using Avalonia.Interactivity;
 using Avalonia.Controls;
 using Avalonia.Media;
 using System.Xml.Linq;

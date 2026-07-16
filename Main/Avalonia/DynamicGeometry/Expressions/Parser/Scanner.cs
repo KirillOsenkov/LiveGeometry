@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DynamicGeometry
+﻿namespace DynamicGeometry
 {
     public class Scanner
     {

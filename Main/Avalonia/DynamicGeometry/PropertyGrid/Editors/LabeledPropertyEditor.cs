@@ -3,7 +3,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Interactivity;
-using Avalonia.Controls;
 using GuiLabs.Undo;
 
 namespace DynamicGeometry
@@ -38,9 +37,6 @@ namespace DynamicGeometry
             }
         }
 
-#if !SILVERLIGHT
-        new 
-#endif
         protected virtual void Focus()
         {
 

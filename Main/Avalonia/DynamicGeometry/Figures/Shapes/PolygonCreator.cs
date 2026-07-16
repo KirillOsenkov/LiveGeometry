@@ -3,12 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Layout;
-using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
 
 namespace DynamicGeometry
 {

@@ -1,7 +1,4 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Layout;
-using Avalonia.Interactivity;
 using System.Xml.Linq;
 
 namespace DynamicGeometry

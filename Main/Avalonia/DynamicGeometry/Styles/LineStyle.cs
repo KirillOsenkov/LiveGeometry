@@ -1,9 +1,4 @@
-﻿using System.Linq;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Layout;
-using Avalonia.Interactivity;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 
 namespace DynamicGeometry

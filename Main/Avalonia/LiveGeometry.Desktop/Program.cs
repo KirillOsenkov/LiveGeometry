@@ -1,6 +1,5 @@
 using System;
 using Avalonia;
-using LiveGeometry;
 
 namespace LiveGeometry.Desktop;
 

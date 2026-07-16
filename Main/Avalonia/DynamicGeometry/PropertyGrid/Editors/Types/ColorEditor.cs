@@ -1,7 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Layout;
-using Avalonia.Interactivity;
+﻿using Avalonia.Layout;
 using Avalonia.Media;
 using ColorPicker = SilverlightContrib.Controls.ColorPicker;
 using SilverlightContrib.Controls;

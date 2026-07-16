@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 
 namespace DynamicGeometry
 {

@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace DynamicGeometry
+﻿namespace DynamicGeometry
 {
     public abstract partial class BaseValueEditorFactory<T> : IValueEditorFactory
         where T : IValueEditor, new()

@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace DynamicGeometry
+﻿namespace DynamicGeometry
 {
     public interface IValueEditorFactory
     {

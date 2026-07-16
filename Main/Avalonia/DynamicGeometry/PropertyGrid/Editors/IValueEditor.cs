@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using GuiLabs.Undo;
+﻿using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {

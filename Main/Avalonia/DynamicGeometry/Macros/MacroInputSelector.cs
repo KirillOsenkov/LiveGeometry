@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace DynamicGeometry
+﻿namespace DynamicGeometry
 {
     [Ignore]
     public class MacroInputSelector : FigureSelector

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DynamicGeometry
+﻿namespace DynamicGeometry
 {
     public enum NodeType
     {

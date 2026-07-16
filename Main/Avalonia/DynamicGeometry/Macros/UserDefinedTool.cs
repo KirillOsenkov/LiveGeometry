@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Avalonia.Input;
 using System.Xml.Linq;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Layout;
-using Avalonia.Interactivity;
 
 namespace DynamicGeometry
 {
