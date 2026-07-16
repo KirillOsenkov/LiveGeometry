@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - livegeometry
+name: Build and deploy Avalonia Browser (WASM) app to Azure Web App - livegeometry
 
 on:
   push:
@@ -23,17 +23,21 @@ jobs:
         with:
           dotnet-version: '10.x'
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Install wasm-tools workload
+        # Required because LiveGeometry.Browser sets WasmBuildNative=true
+        # (links the SkiaSharp/HarfBuzz native libraries into the runtime).
+        run: dotnet workload install wasm-tools
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        # Publish output is a self-contained static site: web.config at the root
+        # (IIS MIME maps, compression, SPA fallback) plus wwwroot/ with the app.
+        run: dotnet publish Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj -c Release -o "${{ github.workspace }}/publish"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: publish
 
   deploy:
     runs-on: windows-latest
