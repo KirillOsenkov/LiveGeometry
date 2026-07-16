@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>DynamicGeometry.Avalonia</AssemblyName>
+    <RootNamespace>DynamicGeometry</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="12.1.0" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="12.1.0" />
+    <PackageReference Include="GuiLabs.MathParser" Version="1.0.9" />
+    <PackageReference Include="GuiLabs.Undo" Version="1.0.2" />
+  </ItemGroup>
+
+</Project>

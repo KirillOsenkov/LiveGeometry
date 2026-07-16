@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="DynamicGeometry/DynamicGeometry.csproj" />
+  <Project Path="LiveGeometry.Browser/LiveGeometry.Browser.csproj" />
+  <Project Path="LiveGeometry.Desktop/LiveGeometry.Desktop.csproj" />
+  <Project Path="LiveGeometry/LiveGeometry.csproj" />
+</Solution>
