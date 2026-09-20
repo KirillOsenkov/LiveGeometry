@@ -37,6 +37,37 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// A trash can to the left of the caption, both in the "careful" color.
+        /// </summary>
+        static object CreateDestructiveContent(string name)
+        {
+            var trashCan = new Avalonia.Controls.Shapes.Path()
+            {
+                // lid with handle, tapered body, two ribs - on a 14x14 grid
+                Data = Avalonia.Media.Geometry.Parse(
+                    "M2.5,4 H11.5 M5.5,4 V2.5 H8.5 V4 M3.5,4 L4.2,12 H9.8 L10.5,4 M6,6.2 V9.8 M8,6.2 V9.8"),
+                Stroke = RibbonTheme.Destructive,
+                StrokeThickness = 1.2,
+                StrokeLineCap = Avalonia.Media.PenLineCap.Round,
+                StrokeJoin = Avalonia.Media.PenLineJoin.Round,
+                Width = 14,
+                Height = 14,
+                Margin = new Avalonia.Thickness(0, 0, 6, 0),
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+            };
+            var caption = new TextBlock()
+            {
+                Text = name,
+                Foreground = RibbonTheme.Destructive,
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+            };
+            var result = new StackPanel() { Orientation = Avalonia.Layout.Orientation.Horizontal };
+            result.Children.Add(trashCan);
+            result.Children.Add(caption);
+            return result;
+        }
+
         public object Target { get; set; }
         public PropertyGrid ParameterGrid { get; set; }
 
@@ -57,7 +88,9 @@ namespace DynamicGeometry
                     var parameters = operationDescription.Parameters;
                     if (parameters.IsEmpty())
                     {
-                        this.Content = name;
+                        this.Content = operationDescription.GetAttribute<PropertyGridDestructiveAttribute>() != null
+                            ? CreateDestructiveContent(name)
+                            : name;
                     }
                     else
                     {

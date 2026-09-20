@@ -56,6 +56,7 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridName("Delete this tool button")]
+            [PropertyGridDestructive]
             public void Delete()
             {
                 Parent.AbortAndSetDefaultTool();

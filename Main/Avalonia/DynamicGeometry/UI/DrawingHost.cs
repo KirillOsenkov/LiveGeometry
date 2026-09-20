@@ -196,13 +196,21 @@ namespace DynamicGeometry
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Top,
                 MinWidth = 200.0,
-                Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 233)),
                 Visibility = Visibility.Collapsed
             };
 
             PropertyGrid = new PropertyGrid();
-            PropertyGrid.Margin = new Thickness(4);
-            propertyGridScrollViewer.Content = PropertyGrid;
+
+            // the same surface as the tools strip of the ribbon
+            propertyGridScrollViewer.Content = new Border()
+            {
+                Background = RibbonTheme.Background,
+                BorderBrush = RibbonTheme.TabLine,
+                BorderThickness = new Thickness(1),
+                CornerRadius = new CornerRadius(6),
+                Padding = new Thickness(14, 10, 14, 12),
+                Child = PropertyGrid
+            };
             PropertyGrid.VisibilityChanged += PropertyGrid_VisibilityChanged;
 
             propertyGridScrollViewer.ZIndex = (int)ZOrder.StatusBar;

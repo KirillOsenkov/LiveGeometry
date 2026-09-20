@@ -70,7 +70,7 @@ namespace DynamicGeometry
         private FrameworkElement GetGlyph(IFigureStyle s)
         {
             var content = s.GetSampleGlyph();
-            content.Margin = new Thickness(10);
+            content.Margin = new Thickness(8);
             var result = new Grid();
             result.Children.Add(content);
             result.Tag = s;

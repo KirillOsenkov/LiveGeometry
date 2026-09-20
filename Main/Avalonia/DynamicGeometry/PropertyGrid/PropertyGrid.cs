@@ -15,6 +15,8 @@ namespace DynamicGeometry
         public PropertyGrid()
         {
             ValueDiscoveryStrategy = new IncludeByDefaultValueDiscoveryStrategy();
+            PropertyGridTheme.Apply(this);
+            Grid.SetIsSharedSizeScope(this, true);
         }
 
         public IValueDiscoveryStrategy ValueDiscoveryStrategy { get; set; }
@@ -180,10 +182,87 @@ namespace DynamicGeometry
             {
                 return;
             }
-            foreach (var control in controls)
+            foreach (var control in Arrange(controls))
             {
                 this.Children.Add(control);
             }
+        }
+
+        /// <summary>
+        /// Plain editors and buttons stay in their order. Members that carry the same
+        /// <see cref="PropertyGridGroupAttribute"/> are boxed together (editors, then their
+        /// buttons in a row), and destructive buttons go last, below a divider.
+        /// </summary>
+        static IEnumerable<UIElement> Arrange(IEnumerable<UIElement> controls)
+        {
+            var result = new List<UIElement>();
+            var groups = new List<(string Name, StackPanel Editors, WrapPanel Buttons)>();
+            var destructive = new List<UIElement>();
+
+            foreach (var control in controls)
+            {
+                var button = control as MethodCallerButton;
+                IMetadataDescription metadata = button != null
+                    ? button.OperationDescription
+                    : (control as IValueEditor)?.Value;
+
+                if (button != null && metadata?.GetAttribute<PropertyGridDestructiveAttribute>() != null)
+                {
+                    destructive.Add(control);
+                    continue;
+                }
+
+                string groupName = metadata?.GetAttribute<PropertyGridGroupAttribute>()?.Name;
+                if (groupName == null)
+                {
+                    result.Add(control);
+                    continue;
+                }
+
+                var group = groups.FirstOrDefault(g => g.Name == groupName);
+                if (group.Name == null)
+                {
+                    group = (groupName, new StackPanel(), new WrapPanel() { Margin = new Thickness(0, 4, 0, 0) });
+                    groups.Add(group);
+
+                    var content = new StackPanel();
+                    content.Children.Add(group.Editors);
+                    content.Children.Add(group.Buttons);
+                    result.Add(new Border()
+                    {
+                        BorderBrush = RibbonTheme.Separator,
+                        BorderThickness = new Thickness(1),
+                        CornerRadius = new CornerRadius(6),
+                        Background = RibbonTheme.GroupBackground,
+                        Padding = new Thickness(8, 6, 8, 6),
+                        Margin = new Thickness(-8, 8, -8, 4),
+                        Child = content
+                    });
+                }
+
+                if (button != null)
+                {
+                    button.Margin = new Thickness(0, 2, 6, 2);
+                    group.Buttons.Children.Add(button);
+                }
+                else
+                {
+                    group.Editors.Children.Add(control);
+                }
+            }
+
+            if (destructive.Count > 0)
+            {
+                result.Add(new Border()
+                {
+                    Height = 1,
+                    Background = RibbonTheme.Separator,
+                    Margin = new Thickness(-8, 12, -8, 8)
+                });
+                result.AddRange(destructive);
+            }
+
+            return result;
         }
 
         protected virtual void AddHeader()
@@ -214,8 +293,9 @@ namespace DynamicGeometry
             return new TextBlock()
             {
                 Text = title,
-                FontSize = 20,
-                Margin = new Thickness(0, 0, 0, 8),
+                FontSize = 15,
+                FontWeight = FontWeight.SemiBold,
+                Margin = new Thickness(0, 0, 0, 10),
                 Foreground = new SolidColorBrush(Settings.PropertyGridTitleColor),
                 IsHitTestVisible = false
             };

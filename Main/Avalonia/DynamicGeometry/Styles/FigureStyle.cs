@@ -153,7 +153,8 @@ namespace DynamicGeometry
         }
 
         [PropertyGridVisible]
-        [PropertyGridName("Delete This Style")]
+        [PropertyGridName("Delete this style")]
+        [PropertyGridDestructive]
         public void Delete()
         {
             StyleManager.Remove(this);

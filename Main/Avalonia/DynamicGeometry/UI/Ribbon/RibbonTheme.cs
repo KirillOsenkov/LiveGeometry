@@ -23,6 +23,9 @@ public static class RibbonTheme
     public static readonly IBrush TabHeaderText = new SolidColorBrush(Color.FromRgb(0x2B, 0x30, 0x38));
     public static readonly IBrush TabHeaderTextSelected = new SolidColorBrush(Color.FromRgb(0x00, 0x00, 0x00));
 
+    public static readonly IBrush GroupBackground = new SolidColorBrush(Color.FromRgb(0xFC, 0xFC, 0xFD));
+    public static readonly IBrush Destructive = new SolidColorBrush(Color.FromRgb(0xB3, 0x26, 0x1E));
+
     public static readonly IBrush HintBackground = new SolidColorBrush(Color.FromRgb(0xFF, 0xFD, 0xE8));
     public static readonly IBrush HintBorder = new SolidColorBrush(Color.FromRgb(0xD9, 0xD2, 0x9A));
 

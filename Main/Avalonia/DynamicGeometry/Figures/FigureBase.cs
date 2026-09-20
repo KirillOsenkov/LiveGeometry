@@ -145,6 +145,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Style")]
+        [PropertyGridGroup("Style")]
         [PropertyGridCustomValueProvider(typeof(StylePropertyValueProvider))]
         public IFigureStyle StyleDisplay
         {
@@ -238,6 +239,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Delete")]
+        [PropertyGridDestructive]
         public virtual void DeleteDisplay()
         {
             Actions.Remove(this);
@@ -367,6 +369,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Edit style")]
+        [PropertyGridGroup("Style")]
         public void EditStyleButton()
         {
             var drawingHost = Canvas.Parent as DrawingHost;
@@ -384,6 +387,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Create new style")]
+        [PropertyGridGroup("Style")]
         public void CreateNewStyle()
         {
             Drawing.ActionManager.SetProperty(

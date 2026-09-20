@@ -88,6 +88,17 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
 - **Right button / hover** go through `Behavior.MouseRightClick` and `Behavior.GetCursor`
   (virtual, per tool). Tool letter shortcuts live in `UI/BehaviorShortcuts.cs` (also feeds the
   toolbar tooltips); plain-key handling (letters, arrows, +/-, H) is in `MainView.HandlePlainKey`.
+- **Side panel (property grid) look**: the surface is a Border in `DrawingHost.CreatePropertyGrid`
+  using `RibbonTheme` colors; the editors are restyled by scoped Avalonia styles in
+  `PropertyGrid/PropertyGridTheme.cs` (no per-editor styling code). The Fluent theme paints
+  hover/selected states on the template's ContentPresenter, so overrides must target that part.
+  Rows share the label column width via `SharedSizeGroup`. Layout is declarative:
+  `[PropertyGridGroup("Name")]` on properties/methods boxes them together (editors, then their
+  buttons in a row); `[PropertyGridDestructive]` on a method puts its button last, under a
+  divider, with a trash can (`PropertyGrid.Arrange`, `MethodCallerButton`).
+- **`Style` and `Setter` are ambiguous in the library**: `DynamicGeometry.Style`/`Setter` are the
+  WPF shims and shadow Avalonia's. For real Avalonia styles alias them
+  (`using AvaloniaStyle = Avalonia.Styling.Style;`).
 - **Keyboard focus drifts into tool panels.** A tool's PropertyBag panel (e.g. "Point by
   coordinates") takes focus into its TextBox after every construction step, so neither the canvas
   KeyDown nor `MainView_KeyUp` (which skips TextBox focus) sees keys then. Anything that must

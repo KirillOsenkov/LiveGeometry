@@ -14,13 +14,15 @@ namespace DynamicGeometry
             this.ColumnDefinitions.Add(new ColumnDefinition()
             {
                 Width = GridLength.Auto,
-                MinWidth = 60
+                MinWidth = 60,
+                // all rows of a property grid share the width of the label column
+                SharedSizeGroup = "PropertyGridLabel"
             });
             this.ColumnDefinitions.Add(new ColumnDefinition());
             this.HorizontalAlignment = HorizontalAlignment.Stretch;
             Label = new TextBlock();
-            Label.VerticalAlignment = VerticalAlignment.Top;
-            Label.Margin = new Thickness(4, 4, 8, 4);
+            Label.VerticalAlignment = VerticalAlignment.Center;
+            Label.Margin = new Thickness(2, 0, 12, 0);
             Label.SetValue(Grid.ColumnProperty, 0);
             var editor = CreateEditor();
             editor.SetValue(Grid.ColumnProperty, 1);
