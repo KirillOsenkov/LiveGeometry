@@ -8,6 +8,7 @@ namespace DynamicGeometry
         private int numberOfSides = 5;
         [PropertyGridVisible]
         [PropertyGridName("Number of sides")]
+        [Domain(3, 500)]
         public int NumberOfSides
         {
             get

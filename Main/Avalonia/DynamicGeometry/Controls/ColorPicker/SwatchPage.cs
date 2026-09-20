@@ -42,7 +42,8 @@ public class SwatchPage : ColorPage
         }
     }
 
-    double swatchSize = 16;
+    // 15 + 1 of spacing: the 14 columns come to the same 224 as the rest of the picker
+    double swatchSize = 15;
     public double SwatchSize
     {
         get => swatchSize;
@@ -53,7 +54,7 @@ public class SwatchPage : ColorPage
         }
     }
 
-    double spacing = 0;
+    double spacing = 1;
 
     /// <summary>Gap between neighboring swatches</summary>
     public double Spacing
@@ -66,13 +67,26 @@ public class SwatchPage : ColorPage
         }
     }
 
-    double swatchCornerRadius = 0;
+    double swatchCornerRadius = 2.5;
     public double SwatchCornerRadius
     {
         get => swatchCornerRadius;
         set
         {
             swatchCornerRadius = value;
+            Rebuild();
+        }
+    }
+
+    IBrush swatchBorderBrush = null;
+
+    /// <summary>Outline of every swatch (1 px); null for none.</summary>
+    public IBrush SwatchBorderBrush
+    {
+        get => swatchBorderBrush;
+        set
+        {
+            swatchBorderBrush = value;
             Rebuild();
         }
     }
@@ -123,8 +137,11 @@ public class SwatchPage : ColorPage
         {
             Width = SwatchSize,
             Height = SwatchSize,
-            Margin = new Thickness(Spacing / 2),
+            // the whole gap on one side: half a pixel on each would blur at 100% scaling
+            Margin = new Thickness(0, 0, Spacing, Spacing),
             CornerRadius = new CornerRadius(SwatchCornerRadius),
+            BorderBrush = SwatchBorderBrush,
+            BorderThickness = new Thickness(SwatchBorderBrush != null ? 1 : 0),
             Background = named.Color.A == 0 ? ColorText.CheckerboardBrush : new SolidColorBrush(named.Color),
             Cursor = new Cursor(StandardCursorType.Hand)
         };
@@ -136,8 +153,8 @@ public class SwatchPage : ColorPage
         var border = (Border)swatch;
 
         // a dark ring with a white one inside it: reads on any swatch color and on any neighbor
-        border.BorderBrush = isSelected ? Brushes.Black : null;
-        border.BorderThickness = new Thickness(isSelected ? 2 : 0);
+        border.BorderBrush = isSelected ? Brushes.Black : SwatchBorderBrush;
+        border.BorderThickness = new Thickness(isSelected ? 2 : (SwatchBorderBrush != null ? 1 : 0));
         border.BoxShadow = isSelected
             ? new BoxShadows(new BoxShadow() { IsInset = true, Spread = 3.5, Color = Colors.White })
             : default;

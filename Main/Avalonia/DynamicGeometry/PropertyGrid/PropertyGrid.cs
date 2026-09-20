@@ -195,7 +195,10 @@ namespace DynamicGeometry
         /// </summary>
         static IEnumerable<UIElement> Arrange(IEnumerable<UIElement> controls)
         {
+            // in this order: plain fields, group boxes, plain buttons, destructive buttons
             var result = new List<UIElement>();
+            var groupBoxes = new List<UIElement>();
+            var plainButtons = new List<UIElement>();
             var groups = new List<(string Name, StackPanel Editors, WrapPanel Buttons)>();
             var destructive = new List<UIElement>();
 
@@ -215,7 +218,7 @@ namespace DynamicGeometry
                 string groupName = metadata?.GetAttribute<PropertyGridGroupAttribute>()?.Name;
                 if (groupName == null)
                 {
-                    result.Add(control);
+                    (button != null ? plainButtons : result).Add(control);
                     continue;
                 }
 
@@ -228,7 +231,7 @@ namespace DynamicGeometry
                     var content = new StackPanel();
                     content.Children.Add(group.Editors);
                     content.Children.Add(group.Buttons);
-                    result.Add(new Border()
+                    groupBoxes.Add(new Border()
                     {
                         BorderBrush = RibbonTheme.Separator,
                         BorderThickness = new Thickness(1),
@@ -250,6 +253,9 @@ namespace DynamicGeometry
                     group.Editors.Children.Add(control);
                 }
             }
+
+            result.AddRange(groupBoxes);
+            result.AddRange(plainButtons);
 
             if (destructive.Count > 0)
             {

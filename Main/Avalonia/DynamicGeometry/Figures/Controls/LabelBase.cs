@@ -201,7 +201,8 @@ namespace DynamicGeometry
         }
 
         private int mDecimalsToShow = 2;
-        [PropertyGridName("Decimals (0-10)")]
+        [PropertyGridName("Decimals")]
+        [Domain(0, 10)]
         [PropertyGridVisible]
         public virtual int DecimalsToShow
         {
