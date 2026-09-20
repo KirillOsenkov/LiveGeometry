@@ -38,6 +38,7 @@ namespace DynamicGeometry
 
         bool mIsFilled = true;
         [PropertyGridVisible]
+        [PropertyGridName("Filled")]
         public bool IsFilled
         {
             get

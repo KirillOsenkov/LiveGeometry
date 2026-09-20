@@ -294,7 +294,7 @@ namespace DynamicGeometry
     {
         public override string ToString(Color value)
         {
-            return value.ToString();
+            return ColorText.ToArgbHex(value);
         }
 
         public override Color FromString(string str)
@@ -311,7 +311,27 @@ namespace DynamicGeometry
             SolidColorBrush solidColorBrush = brush as SolidColorBrush;
             if (solidColorBrush != null)
             {
-                return solidColorBrush.Color.ToString();
+                return ColorText.ToArgbHex(solidColorBrush.Color);
+            }
+
+            // the same shape ParseBrush reads (which is what WPF's XAML writer used to produce)
+            var gradient = brush as LinearGradientBrush;
+            if (gradient != null)
+            {
+                var invariant = System.Globalization.CultureInfo.InvariantCulture;
+                var element = new XElement(
+                    "LinearGradientBrush",
+                    new XAttribute("StartPoint", string.Format(invariant, "{0},{1}", gradient.StartPoint.Point.X, gradient.StartPoint.Point.Y)),
+                    new XAttribute("EndPoint", string.Format(invariant, "{0},{1}", gradient.EndPoint.Point.X, gradient.EndPoint.Point.Y)));
+                foreach (var stop in gradient.GradientStops)
+                {
+                    element.Add(new XElement(
+                        "GradientStop",
+                        new XAttribute("Color", ColorText.ToArgbHex(stop.Color)),
+                        new XAttribute("Offset", stop.Offset.ToString(invariant))));
+                }
+
+                return element;
             }
 
             return null;

@@ -1,44 +1,30 @@
-﻿using Avalonia.Layout;
+using Avalonia.Controls;
 using Avalonia.Media;
-using ColorPicker = SilverlightContrib.Controls.ColorPicker;
-using SilverlightContrib.Controls;
 
 namespace DynamicGeometry
 {
     public class BrushEditorFactory
         : BaseValueEditorFactory<BrushEditor, Brush> { }
 
-    public class BrushEditor : LabeledValueEditor, IValueEditor
+    public class BrushEditor : ExpandingPickerEditor, IValueEditor
     {
-        public ColorPicker Picker { get; set; }
+        public BrushPickerView Picker { get; private set; }
 
-        protected override UIElement CreateEditor()
+        protected override Control CreatePicker()
         {
-            Picker = new ColorPicker();
-            Picker.SelectedColorChanging += ColorChanged;
-            Picker.VerticalAlignment = VerticalAlignment.Top;
+            Picker = new BrushPickerView();
+            Picker.BrushChanged += brush => Commit(brush);
             return Picker;
         }
 
-        void ColorChanged(object sender, SelectedColorEventArgs e)
+        protected override void UpdatePicker()
         {
-            SetValue(new SolidColorBrush(e.SelectedColor));
+            Picker.Brush = GetValue<Brush>();
         }
 
-        public override void UpdateEditor()
+        protected override IBrush GetChipBrush()
         {
-            var brush = GetValue<Brush>();
-            SolidColorBrush solidColorBrush = brush as SolidColorBrush;
-            if (solidColorBrush != null)
-            {
-                Picker.SelectedColor = solidColorBrush.Color;
-            }
-            else
-            {
-                Picker.SelectedColor = Colors.Black;
-            }
-
-            Picker.IsHitTestVisible = Value.CanSetValue;
+            return GetValue<Brush>();
         }
     }
 }

@@ -96,6 +96,22 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   `[PropertyGridGroup("Name")]` on properties/methods boxes them together (editors, then their
   buttons in a row); `[PropertyGridDestructive]` on a method puts its button last, under a
   divider, with a trash can (`PropertyGrid.Arrange`, `MethodCallerButton`).
+- **Color/brush picking** lives in `DynamicGeometry/Controls/ColorPicker/` and is layered so the
+  parts can be swapped: `ColorPalette` (which colors, in what order and how many columns -
+  `WebColors` is the hand-arranged 14x10 map from the Helix picker, `ArrangeByHue` computes one) ->
+  `ColorPage` (one way to pick: `SwatchPage`, `SpectrumPage`; `SwatchPage` has
+  `SwatchSize`/`Spacing`/`SwatchCornerRadius` and virtual `CreateSwatch`/`ShowSelected`/`CreateLayout`)
+  -> `ColorPickerView` (page switcher + sample + name/hex box) -> `BrushPickerView` (Solid |
+  Gradient; a `GradientStopBar` with any number of draggable stops, click to add, drag away to
+  remove; the one color picker edits the selected stop). In the property grid they appear through
+  `ExpandingPickerEditor` (a chip that unfolds the picker under its row, one at a time).
+- **Colors in files are always `#AARRGGBB`** (`ColorText.ToArgbHex`). Never `Color.ToString()`:
+  Avalonia writes the *name* of a known color, and builds before 2026-09 did exactly that, so
+  `ToColor()` accepts names too - 6-9 letter names used to be parsed as hex and threw.
+  A gradient fill is a child element of the style (`<Fill><LinearGradientBrush>`), not an attribute.
+- **The library's own types shadow framework ones**: `Math`, `Ellipse`, `Polygon`, `Path`...
+  In a file-scoped-namespace file a `using X = ...;` alias does NOT win over a type of the
+  enclosing namespace - write `System.Math.Max`, `Avalonia.Controls.Shapes.Ellipse` in full.
 - **`Style` and `Setter` are ambiguous in the library**: `DynamicGeometry.Style`/`Setter` are the
   WPF shims and shadow Avalonia's. For real Avalonia styles alias them
   (`using AvaloniaStyle = Avalonia.Styling.Style;`).

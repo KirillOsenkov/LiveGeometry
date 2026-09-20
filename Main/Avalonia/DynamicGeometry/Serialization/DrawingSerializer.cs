@@ -90,7 +90,7 @@ namespace DynamicGeometry
             var backgroundBrush = drawing.Canvas.Background as SolidColorBrush;
             if (backgroundBrush != null && backgroundBrush.Color != Colors.White)
             {
-                writer.WriteAttributeString("Color", backgroundBrush.Color.ToString());
+                writer.WriteAttributeString("Color", ColorText.ToArgbHex(backgroundBrush.Color));
             }
 
             if (drawing.CoordinateGrid.Locked)
@@ -122,13 +122,28 @@ namespace DynamicGeometry
         {
             writer.WriteStartElement(GetStyleElementName(style));
             var values = valueDiscovery.GetValues(style);
+
+            // Simple values are attributes; structured ones (a gradient brush) are child
+            // elements named after the property, and have to come after all attributes.
+            var elements = new List<KeyValuePair<string, System.Xml.Linq.XElement>>();
             foreach (var value in values)
             {
                 var serialized = SerializationService.Instance.Write(value);
-                if (serialized != null)
+                if (serialized is System.Xml.Linq.XElement element)
+                {
+                    elements.Add(new KeyValuePair<string, System.Xml.Linq.XElement>(value.Name, element));
+                }
+                else if (serialized != null)
                 {
                     writer.WriteAttributeString(value.Name, serialized.ToString());
                 }
+            }
+
+            foreach (var pair in elements)
+            {
+                writer.WriteStartElement(pair.Key);
+                pair.Value.WriteTo(writer);
+                writer.WriteEndElement();
             }
 
             writer.WriteEndElement();

@@ -537,6 +537,15 @@ namespace DynamicGeometry
             {
                 return Colors.Black;
             }
+
+            // Avalonia's Color.ToString() writes the name of a known color ("Yellow"), so
+            // drawings saved by earlier builds contain names; names of 6 to 9 letters would
+            // otherwise be taken for hex digits below.
+            if (ColorPalette.ColorsByName.TryGetValue(s, out var named))
+            {
+                return named;
+            }
+
             if (s.Length == 7)
             {
                 return Color.FromArgb(

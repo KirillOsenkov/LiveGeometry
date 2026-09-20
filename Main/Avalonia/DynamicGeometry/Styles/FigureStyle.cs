@@ -5,6 +5,7 @@ using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
+    [PropertyGridName("Edit style")]
     public abstract partial class FigureStyle : IFigureStyle
     {
         string name = "";

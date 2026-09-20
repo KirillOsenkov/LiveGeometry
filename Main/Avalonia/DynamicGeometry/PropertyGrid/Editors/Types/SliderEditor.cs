@@ -20,10 +20,14 @@ namespace DynamicGeometry
         protected override UIElement CreateEditor()
         {
             Slider = new Slider();
+            Slider.VerticalAlignment = VerticalAlignment.Center;
+            Slider.MinWidth = 110;
+            Slider.Margin = new Avalonia.Thickness(8, 0, 0, 0);
             Slider.ValueChanged += Slider_ValueChanged;
 
             TextBox = new TextBox();
-            TextBox.MinWidth = 40;
+            TextBox.MinWidth = 44;
+            TextBox.VerticalAlignment = VerticalAlignment.Center;
             TextBox.TextChanged += TextBox_TextChanged;
 
             Panel = new Grid();

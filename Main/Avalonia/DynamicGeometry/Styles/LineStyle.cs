@@ -21,7 +21,7 @@ namespace DynamicGeometry
 
         Color mColor = Color.FromArgb(100, 0, 0, 0);
         [PropertyGridVisible]
-        [PropertyGridName("Stroke Color")]
+        [PropertyGridName("Stroke color")]
         public Color Color
         {
             get
