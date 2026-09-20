@@ -105,6 +105,9 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   Gradient; a `GradientStopBar` with any number of draggable stops, click to add, drag away to
   remove; the one color picker edits the selected stop). In the property grid they appear through
   `ExpandingPickerEditor` (a chip that unfolds the picker under its row, one at a time).
+- **Numbers with a range** (`[Domain(min, max)]` doubles: stroke width, point size, font size) are
+  edited by `SliderEditor`: text box + `Controls/UpDownControl` (repeat buttons, also Up/Down keys
+  and the wheel over the box; `UpDownControl.Step` lands on whole steps and clamps) + slider.
 - **Colors in files are always `#AARRGGBB`** (`ColorText.ToArgbHex`). Never `Color.ToString()`:
   Avalonia writes the *name* of a known color, and builds before 2026-09 did exactly that, so
   `ToColor()` accepts names too - 6-9 letter names used to be parsed as hex and threw.

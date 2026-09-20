@@ -26,18 +26,46 @@ namespace DynamicGeometry
             Slider.ValueChanged += Slider_ValueChanged;
 
             TextBox = new TextBox();
-            TextBox.MinWidth = 44;
+            // fixed, so that the row doesn't shift as the number gets longer or shorter
+            TextBox.Width = 52;
             TextBox.VerticalAlignment = VerticalAlignment.Center;
+            // square on the right, where the up/down buttons are attached
+            TextBox.CornerRadius = new Avalonia.CornerRadius(4, 0, 0, 4);
             TextBox.TextChanged += TextBox_TextChanged;
+
+            // the slider is for sweeping through the range, these are for exact single steps
+            UpDown = new UpDownControl();
+            UpDown.VerticalAlignment = VerticalAlignment.Center;
+            TextBox.SizeChanged += (s, e) => UpDown.Height = TextBox.Bounds.Height;
+            UpDown.Up += () => StepValue(up: true);
+            UpDown.Down += () => StepValue(up: false);
+            UpDown.AttachTo(TextBox);
 
             Panel = new Grid();
             Panel.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+            Panel.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             Panel.ColumnDefinitions.Add(new ColumnDefinition());
             Panel.Children.Add(TextBox);
-            Grid.SetColumn(Slider, 1);
+            Grid.SetColumn(UpDown, 1);
+            Panel.Children.Add(UpDown);
+            Grid.SetColumn(Slider, 2);
             Panel.Children.Add(Slider);
             Panel.HorizontalAlignment = HorizontalAlignment.Stretch;
             return Panel;
+        }
+
+        public UpDownControl UpDown { get; set; }
+
+        void StepValue(bool up)
+        {
+            if (Value == null || !Value.CanSetValue)
+            {
+                return;
+            }
+
+            // whole numbers, unless the whole range is only a few units wide
+            double step = Slider.Maximum - Slider.Minimum > 10 ? 1 : 0.1;
+            Slider.Value = UpDownControl.Step(Slider.Value, up, step, Slider.Minimum, Slider.Maximum);
         }
 
         bool guard = false;
