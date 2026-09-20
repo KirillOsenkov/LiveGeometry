@@ -38,7 +38,32 @@ public abstract class ExpandingPickerEditor : LabeledValueEditor
 
         RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
         RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+
+        // Added first, so it is behind the label, the chip and the picker. It is as wide as
+        // the property grid's group boxes (they reach 8 into the side padding as well).
+        Grid.SetRowSpan(frame, 2);
+        Grid.SetColumnSpan(frame, 2);
+        Children.Add(frame);
         return chip;
+    }
+
+    /// <summary>
+    /// Shown while unfolded: ties the row and its picker together and sets them apart from
+    /// the rows above and below.
+    /// </summary>
+    readonly Border frame = new Border()
+    {
+        BorderBrush = RibbonTheme.Separator,
+        BorderThickness = new Thickness(1),
+        CornerRadius = new CornerRadius(6),
+        Background = RibbonTheme.GroupBackground,
+        Margin = new Thickness(-8, 0, -8, 0),
+        IsVisible = false
+    };
+
+    /// <summary>Tell the picker what it is sitting on (its tabs blend into that).</summary>
+    protected virtual void SetPickerSurface(IBrush surface)
+    {
     }
 
     /// <summary>The big editor, created the first time the row is unfolded.</summary>
@@ -63,6 +88,7 @@ public abstract class ExpandingPickerEditor : LabeledValueEditor
             if (value && picker == null)
             {
                 picker = CreatePicker();
+                SetPickerSurface(RibbonTheme.GroupBackground);
                 picker.Margin = new Thickness(0, 4, 0, 8);
                 Grid.SetRow(picker, 1);
                 Grid.SetColumnSpan(picker, 2);
@@ -86,6 +112,11 @@ public abstract class ExpandingPickerEditor : LabeledValueEditor
             }
 
             picker.IsVisible = value;
+            frame.IsVisible = value;
+
+            // room around the frame, and inside it above the label and chip
+            Margin = value ? new Thickness(0, 6, 0, 6) : default;
+            RowDefinitions[0].MinHeight = value ? 34 : 0;
         }
     }
 

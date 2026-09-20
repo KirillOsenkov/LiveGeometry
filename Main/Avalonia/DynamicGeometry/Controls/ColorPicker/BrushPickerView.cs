@@ -92,6 +92,17 @@ public class BrushPickerView : Decorator
         angleText.Text = "0°";
     }
 
+    /// <summary>The background the picker sits on, so that the tabs can blend into it.</summary>
+    public IBrush Surface
+    {
+        get => kinds.Surface;
+        set
+        {
+            kinds.Surface = value;
+            colorPicker.Surface = value;
+        }
+    }
+
     /// <summary>Turn off to offer solid colors only.</summary>
     public bool EnableGradients
     {

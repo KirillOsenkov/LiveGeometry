@@ -74,6 +74,13 @@ public class ColorPickerView : Decorator
 
     public IReadOnlyList<ColorPage> Pages => pages;
 
+    /// <summary>The background the picker sits on, so that the page tabs can blend into it.</summary>
+    public IBrush Surface
+    {
+        get => switcher.Surface;
+        set => switcher.Surface = value;
+    }
+
     public void AddPage(ColorPage page)
     {
         pages.Add(page);

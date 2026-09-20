@@ -104,7 +104,12 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   -> `ColorPickerView` (page switcher + sample + name/hex box) -> `BrushPickerView` (Solid |
   Gradient; a `GradientStopBar` with any number of draggable stops, click to add, drag away to
   remove; the one color picker edits the selected stop). In the property grid they appear through
-  `ExpandingPickerEditor` (a chip that unfolds the picker under its row, one at a time).
+  `ExpandingPickerEditor` (a chip that unfolds the picker under its row, one at a time, inside a
+  frame that groups row + picker). The Solid|Gradient and Swatches|Spectrum strips are
+  `SegmentSwitcher`s, drawn with the ribbon's `TabOutline`; whoever hosts a picker sets its
+  `Surface` to the background it sits on so the selected tab blends into it.
+- **The Write tool turns a CRLF file into LF.** After rewriting an existing CRLF file with Write
+  (rather than Edit), set CRLF again with Helix `set_file_format`.
 - **Numbers with a range** (`[Domain(min, max)]` doubles: stroke width, point size, font size) are
   edited by `SliderEditor`: text box + `Controls/UpDownControl` (repeat buttons, also Up/Down keys
   and the wheel over the box; `UpDownControl.Step` lands on whole steps and clamps) + slider.

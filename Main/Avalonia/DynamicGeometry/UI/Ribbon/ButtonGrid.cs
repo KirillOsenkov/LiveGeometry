@@ -43,7 +43,7 @@ namespace DynamicGeometry
                 // so the header is wider than the tab body by the flare on both sides.
                 Grid.SetRowSpan(tabOutline, 2);
 
-                double side = TabOutline.Flare + 5;
+                double side = TabOutline.DefaultFlare + 5;
                 iconHolder.Margin = new Thickness(side, 6, side, 0);
                 textBlock.Margin = new Thickness(side, 1, side, 5);
                 textBlock.FontWeight = FontWeight.Medium;
