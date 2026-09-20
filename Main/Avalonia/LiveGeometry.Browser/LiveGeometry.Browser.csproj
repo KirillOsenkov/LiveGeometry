@@ -16,6 +16,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="web.config" />
+    <None Remove="web.config" />
+    <None Include="web.config" />
+  </ItemGroup>
+
+  <!-- Hand-written IIS config (precompressed brotli + cache headers) replacing the SDK's
+       default Wasm.web.config. It belongs at the publish root, next to wwwroot/, not
+       inside it. Copied explicitly because the wasm publish pipeline drops a web.config
+       Content item from the files it copies. -->
+  <Target Name="CopyCustomWebConfig" AfterTargets="Publish">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\web.config" DestinationFolder="$(PublishDir)" />
+  </Target>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia.Browser" Version="12.1.0" />
   </ItemGroup>
 
