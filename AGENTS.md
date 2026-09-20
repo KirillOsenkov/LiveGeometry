@@ -88,8 +88,15 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
 - **Right button / hover** go through `Behavior.MouseRightClick` and `Behavior.GetCursor`
   (virtual, per tool). Tool letter shortcuts live in `UI/BehaviorShortcuts.cs` (also feeds the
   toolbar tooltips); plain-key handling (letters, arrows, +/-, H) is in `MainView.HandlePlainKey`.
+- **Keyboard focus drifts into tool panels.** A tool's PropertyBag panel (e.g. "Point by
+  coordinates") takes focus into its TextBox after every construction step, so neither the canvas
+  KeyDown nor `MainView_KeyUp` (which skips TextBox focus) sees keys then. Anything that must
+  always work (Escape) belongs in the `MainView_KeyDown` tunnel handler.
 - **Toolbar look** is centralized in `UI/Ribbon/RibbonTheme.cs`; `ButtonGrid` draws the
-  hover/pressed/checked plate. An on/off `Command` exposes `IsChecked` (a `Func<bool>`), which
+  hover/pressed/checked plate. `Ribbon` and `TabPanel` replace the Fluent TabControl/TabItem
+  templates with their own (in code): the header row has a bottom line *behind* the headers and
+  the selected group header paints a tab shape over it (`TabOutline`, laid out wider than the
+  header by its flare via negative margin). Group headers show the icon of the group's active tool. An on/off `Command` exposes `IsChecked` (a `Func<bool>`), which
   its button re-reads after any toggle is clicked - don't go back to `CheckBox` icons.
 - **Browser has no system fonts.** Text renders only because `Avalonia.Fonts.Inter` is embedded
   (`.WithInterFont()`); font names stored in drawings (Arial etc.) fall back to it.

@@ -192,24 +192,6 @@ namespace DynamicGeometry
             found = null;
         }
 
-        protected override Cursor GetCursor(Point coordinates)
-        {
-            var figure = Drawing.Figures.HitTest(coordinates);
-            if (figure == null)
-            {
-                return ArrowCursor;
-            }
-
-            var movable = figure as IMovable;
-            if (movable != null && !figure.Locked && movable.AllowMove())
-            {
-                // free points, points on figures, labels: the thing itself moves
-                return MoveCursor;
-            }
-
-            return HandCursor;
-        }
-
 #if !PLAYER
 
         /// <summary>

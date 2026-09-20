@@ -96,7 +96,8 @@ namespace DynamicGeometry
             var text = new TextBlock()
             {
                 Text = "y=mx+b",
-                FontWeight = FontWeights.Bold,
+                FontSize = 13,
+                Foreground = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.Black),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };

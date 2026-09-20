@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Templates;
 
 namespace DynamicGeometry
 {
@@ -8,6 +10,19 @@ namespace DynamicGeometry
     {
         // Avalonia matches theme templates by concrete type; keep using the TabItem template.
         protected override System.Type StyleKeyOverride => typeof(TabItem);
+
+        public TabPanel()
+        {
+            // Just the header: selection and hover are drawn by the header itself
+            // (ButtonGrid/TabOutline), not by the theme's underline and hover plate.
+            Template = new FuncControlTemplate<TabItem>((tabItem, scope) =>
+                new ContentPresenter()
+                {
+                    Name = "PART_ContentPresenter",
+                    [!ContentPresenter.ContentProperty] = tabItem[!HeaderProperty],
+                    [!ContentPresenter.ContentTemplateProperty] = tabItem[!HeaderTemplateProperty]
+                }.RegisterInNameScope(scope));
+        }
 
         public string Category { get; set; }
 
@@ -43,6 +58,11 @@ namespace DynamicGeometry
         protected override void OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
+            if (change.Property == IsSelectedProperty && HeaderContent != null)
+            {
+                HeaderContent.IsChecked = (bool)change.NewValue;
+            }
+
             if (change.Property == IsSelectedProperty
                 && (bool)change.NewValue
                 && Settings.UpdateSelectedBehaviorOnTabChange)

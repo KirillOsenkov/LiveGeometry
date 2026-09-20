@@ -12,8 +12,7 @@ namespace DynamicGeometry
         public static double DefaultUnitLength = 48;
         public static double DefaultToolbarFontSize = 11;
         public static Color PropertyGridTitleColor = Colors.Green;
-        // Off: ten tabs with icons don't fit a narrow window, and the icons repeat in the tool row.
-        public static bool ShowIconInTabPanelHeader = false;
+        public static bool ShowIconInTabPanelHeader = true;
         public static bool UpdateSelectedBehaviorOnTabChange = true;
         public static bool ShowStyleNameInStylePicker = false;
         public static bool ScaleTextWithDrawing = false;

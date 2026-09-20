@@ -62,7 +62,7 @@ namespace DynamicGeometry
                 .BuildIcon()
                 .Polygon(
                     Factory.CreateDefaultFillBrush(),
-                    new SolidColorBrush(Colors.Black),
+                    IconBuilder.ShapeOutlineBrush,
                     new Point(0.2, 0.9),
                     new Point(0.5, 0.1),
                     new Point(0.9, 0.9))

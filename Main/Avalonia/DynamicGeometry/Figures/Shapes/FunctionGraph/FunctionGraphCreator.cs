@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Input;
+using Avalonia.Media;
 using System.ComponentModel;
 
 namespace DynamicGeometry
@@ -114,7 +115,8 @@ namespace DynamicGeometry
             var text = new TextBlock()
             {
                 Text = "y=f(x)",
-                FontWeight = FontWeights.Bold,
+                FontSize = 13,
+                Foreground = new SolidColorBrush(Colors.Black),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };

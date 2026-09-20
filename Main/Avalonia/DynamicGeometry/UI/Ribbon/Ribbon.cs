@@ -2,7 +2,8 @@
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Media;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Templates;
 
 namespace DynamicGeometry
 {
@@ -16,10 +17,54 @@ namespace DynamicGeometry
         public Ribbon(DrawingHost drawingHost)
         {
             DrawingHost = drawingHost;
-            Background = RibbonTheme.Background;
-            BorderBrush = RibbonTheme.BottomBorder;
-            BorderThickness = new Thickness(0, 0, 0, 1);
-            Padding = new Thickness(4, 0, 4, 3);
+            Template = CreateTemplate();
+        }
+
+        /// <summary>
+        /// Our own template instead of the theme's: a row of group headers with a line along
+        /// its bottom, and the tools of the selected group below. The line is behind the
+        /// headers, so that the selected one (see <see cref="TabOutline"/>) can paint over it
+        /// and open into the tools.
+        /// </summary>
+        static IControlTemplate CreateTemplate()
+        {
+            return new FuncControlTemplate<TabControl>((tabControl, scope) =>
+            {
+                var headers = new ItemsPresenter()
+                {
+                    Name = "PART_ItemsPresenter",
+                    Margin = new Thickness(6, 4, 6, 0),
+                    [!ItemsPresenter.ItemsPanelProperty] = tabControl[!ItemsPanelProperty]
+                }.RegisterInNameScope(scope);
+
+                var headerRow = new Panel() { Background = RibbonTheme.HeaderRowBackground };
+                headerRow.Children.Add(new Border()
+                {
+                    BorderBrush = RibbonTheme.TabLine,
+                    BorderThickness = new Thickness(0, 0, 0, 1)
+                });
+                headerRow.Children.Add(headers);
+                DockPanel.SetDock(headerRow, Dock.Top);
+
+                var tools = new Border()
+                {
+                    Background = RibbonTheme.Background,
+                    BorderBrush = RibbonTheme.BottomBorder,
+                    BorderThickness = new Thickness(0, 0, 0, 1),
+                    Padding = new Thickness(6, 3, 6, 3),
+                    Child = new ContentPresenter()
+                    {
+                        Name = "PART_SelectedContentHost",
+                        [!ContentPresenter.ContentProperty] = tabControl[!SelectedContentProperty],
+                        [!ContentPresenter.ContentTemplateProperty] = tabControl[!SelectedContentTemplateProperty]
+                    }.RegisterInNameScope(scope)
+                };
+
+                var root = new DockPanel();
+                root.Children.Add(headerRow);
+                root.Children.Add(tools);
+                return root;
+            });
         }
 
         public BehaviorToolButton AddToolButton(Behavior behavior)
@@ -87,9 +132,7 @@ namespace DynamicGeometry
             {
                 Category = category,
                 Panel = new WrapPanel(),
-                HeaderContent = new ButtonGrid(Settings.ShowIconInTabPanelHeader ? button.CloneIcon() : null, category, true),
-                MinHeight = 34,
-                Padding = new Thickness(9, 0, 9, 0)
+                HeaderContent = new ButtonGrid(Settings.ShowIconInTabPanelHeader ? button.CloneIcon() : null, category, isTabHeader: true)
             };
             Items.Add(result);
             return result;

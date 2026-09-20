@@ -104,7 +104,8 @@ namespace DynamicGeometry
             var text = new TextBlock()
             {
                 Text = "x²+y²=r²",
-                FontWeight = FontWeights.Bold,
+                FontSize = 13,
+                Foreground = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.Black),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };

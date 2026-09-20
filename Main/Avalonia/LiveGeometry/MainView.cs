@@ -57,7 +57,7 @@ public class MainView : UserControl
         DrawingHost.DrawingControl.Focusable = true;
         DrawingHost.DrawingControl.PointerPressed += (s, e) => DrawingHost.DrawingControl.Focus();
 
-
+        AddHandler(KeyDownEvent, MainView_KeyDown, RoutingStrategies.Tunnel);
         AddHandler(KeyUpEvent, MainView_KeyUp, RoutingStrategies.Tunnel);
 
         AttachedToVisualTree += (s, e) =>
@@ -403,18 +403,37 @@ public class MainView : UserControl
             case Key.Delete:
                 DeleteSelection();
                 break;
-            case Key.Escape:
-                if (DrawingHost.CurrentDrawing.Behavior.IsInInitialState)
-                {
-                    DrawingHost.CurrentDrawing.SetDefaultBehavior();
-                }
-                else
-                {
-                    DrawingHost.CurrentDrawing.Behavior.Restart();
-                }
-
-                e.Handled = true;
-                break;
         }
+    }
+
+    /// <summary>
+    /// Escape aborts the construction in progress; with nothing in progress it goes back to
+    /// the default tool. Handled here, on the way down and regardless of focus: tools with an
+    /// input panel (Point by coordinates...) keep pulling the focus into their text box, where
+    /// neither the canvas nor the KeyUp handler below would ever see the key.
+    /// </summary>
+    private void MainView_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key != Key.Escape || DrawingHost.CurrentDrawing == null)
+        {
+            return;
+        }
+
+        var behavior = DrawingHost.CurrentDrawing.Behavior;
+        if (behavior.IsInInitialState)
+        {
+            DrawingHost.CurrentDrawing.SetDefaultBehavior();
+        }
+        else
+        {
+            behavior.Restart();
+
+            // back to how the tool looks when freshly picked
+            DrawingHost.ShowHint(behavior.HintText);
+            DrawingHost.ShowProperties(behavior.PropertyBag);
+        }
+
+        DrawingHost.DrawingControl.Focus();
+        e.Handled = true;
     }
 }

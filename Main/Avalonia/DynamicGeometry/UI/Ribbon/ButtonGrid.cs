@@ -7,8 +7,8 @@ namespace DynamicGeometry
 {
     /// <summary>
     /// Icon + caption. As a tool button: icon above the caption on a rounded plate that
-    /// reacts to hover/press and shows the checked state. As a tab header: a small icon to
-    /// the left of the caption, no plate (the tab strip draws its own selection).
+    /// reacts to hover/press and shows the checked state. As a group (tab) header: the same
+    /// layout, and instead of the plate a <see cref="TabOutline"/> that draws the tab shape.
     /// </summary>
     public class ButtonGrid : Grid
     {
@@ -34,21 +34,30 @@ namespace DynamicGeometry
 
             if (isTabHeader)
             {
-                ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                textBlock.FontSize = Settings.DefaultToolbarFontSize + 1;
-                textBlock.Margin = new Thickness(2, 0, 0, 0);
-                Grid.SetColumn(textBlock, 1);
+                RowDefinitions.Add(new RowDefinition());
+                RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                ColumnDefinitions.Add(new ColumnDefinition());
+                MinWidth = RibbonTheme.ButtonMinWidth;
 
-                // the full-size tool icon, shrunk
-                var scaler = new LayoutTransformControl()
-                {
-                    LayoutTransform = new ScaleTransform(RibbonTheme.HeaderIconScale, RibbonTheme.HeaderIconScale),
-                    Child = iconHolder,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-                Children.Add(scaler);
+                // The tab's feet flare outwards, and drawing outside of one's bounds gets clipped,
+                // so the header is wider than the tab body by the flare on both sides.
+                Grid.SetRowSpan(tabOutline, 2);
+
+                double side = TabOutline.Flare + 5;
+                iconHolder.Margin = new Thickness(side, 6, side, 0);
+                textBlock.Margin = new Thickness(side, 1, side, 5);
+                textBlock.FontWeight = FontWeight.Medium;
+                Grid.SetRow(textBlock, 1);
+
+                Children.Add(tabOutline);
+                Children.Add(iconHolder);
                 Children.Add(textBlock);
+
+                // the grid itself must be hit-testable over its whole area
+                Background = Brushes.Transparent;
+                PointerEntered += (s, e) => tabOutline.IsHovered = true;
+                PointerExited += (s, e) => tabOutline.IsHovered = false;
+                UpdatePlate();
             }
             else
             {
@@ -101,6 +110,13 @@ namespace DynamicGeometry
 
         void UpdatePlate()
         {
+            if (isTabHeader)
+            {
+                textBlock.Foreground = isChecked ? RibbonTheme.TabHeaderTextSelected : RibbonTheme.TabHeaderText;
+                tabOutline.IsSelected = isChecked;
+                return;
+            }
+
             // never fully transparent-null: the plate is what makes the whole button clickable
             if (isChecked)
             {
@@ -117,6 +133,7 @@ namespace DynamicGeometry
         }
 
         Border plate = new Border();
+        TabOutline tabOutline = new TabOutline();
         Grid iconHolder = new Grid();
 
         public double IconTextGap

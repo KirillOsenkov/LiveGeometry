@@ -282,6 +282,32 @@ static void Shot(IntPtr h, string path, bool fromScreen)
     }
 
     Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));
+
+    // --region x,y,w,h [--zoom n]: a magnified crop, for judging pixel-level detail
+    int regionIndex = Array.IndexOf(Environment.GetCommandLineArgs(), "--region");
+    if (regionIndex > 0)
+    {
+        var commandLine = Environment.GetCommandLineArgs();
+        var numbers = commandLine[regionIndex + 1].Split(',').Select(int.Parse).ToArray();
+        int zoomIndex = Array.IndexOf(commandLine, "--zoom");
+        int zoom = zoomIndex > 0 ? int.Parse(commandLine[zoomIndex + 1]) : 4;
+        using var crop = new Bitmap(numbers[2] * zoom, numbers[3] * zoom, PixelFormat.Format32bppArgb);
+        using (var cropGraphics = Graphics.FromImage(crop))
+        {
+            cropGraphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            cropGraphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+            cropGraphics.DrawImage(
+                bmp,
+                new Rectangle(0, 0, crop.Width, crop.Height),
+                new Rectangle(numbers[0], numbers[1], numbers[2], numbers[3]),
+                GraphicsUnit.Pixel);
+        }
+
+        crop.Save(path, ImageFormat.Png);
+        Console.WriteLine($"saved {path}: region {commandLine[regionIndex + 1]} magnified x{zoom}");
+        return;
+    }
+
     bmp.Save(path, ImageFormat.Png);
     Console.WriteLine($"saved {path} {w}x{ht} (window at {r.Left},{r.Top}; image pixels == click coordinates)");
 }

@@ -228,7 +228,21 @@ namespace DynamicGeometry
             var result = AddPolygon((IEnumerable<Point>)points);
             result.Fill = fill;
             result.Stroke = stroke;
+            result.StrokeThickness = 1;
+            result.StrokeJoin = PenLineJoin.Round;
             return this;
+        }
+
+        /// <summary>
+        /// Outline for icons of shapes filled with the default pale yellow, which on its own
+        /// all but disappears on a light toolbar.
+        /// </summary>
+        public static Brush ShapeOutlineBrush
+        {
+            get
+            {
+                return new SolidColorBrush(Color.FromRgb(0xA8, 0x7B, 0x05));
+            }
         }
 
         public IconBuilder Polygon(IEnumerable<Point> points)
