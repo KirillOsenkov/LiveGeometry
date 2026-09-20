@@ -21,10 +21,21 @@ public class MainView : UserControl
     MenuItem UndoButton;
     MenuItem RedoButton;
     MenuItem ClearButton;
+    Behavior[] Behaviors = Array.Empty<Behavior>();
 
     static readonly FilePickerFileType LgfFileType = new("Live Geometry drawing")
     {
         Patterns = new[] { "*.lgf" }
+    };
+
+    static readonly FilePickerFileType AnyDrawingFileType = new("All drawings")
+    {
+        Patterns = new[] { "*.lgf", "*.dgf" }
+    };
+
+    static readonly FilePickerFileType DgfFileType = new("DG 1.x drawing")
+    {
+        Patterns = new[] { "*.dgf" }
     };
 
     public MainView()
@@ -64,6 +75,7 @@ public class MainView : UserControl
     private void AddBehaviors()
     {
         var behaviors = Behavior.LoadBehaviors(typeof(Dragger).Assembly);
+        Behaviors = behaviors.ToArray();
         Behavior.Default = behaviors.First(b => b is Dragger);
         foreach (var behavior in behaviors)
         {
@@ -159,7 +171,7 @@ public class MainView : UserControl
             var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
                 Title = "Open drawing",
-                FileTypeFilter = new[] { LgfFileType, FilePickerFileTypes.All }
+                FileTypeFilter = new[] { AnyDrawingFileType, LgfFileType, DgfFileType, FilePickerFileTypes.All }
             });
 
             var file = files?.FirstOrDefault();
@@ -168,19 +180,45 @@ public class MainView : UserControl
                 return;
             }
 
-            string text;
+            byte[] bytes;
             using (var stream = await file.OpenReadAsync())
-            using (var reader = new StreamReader(stream))
+            using (var memory = new MemoryStream())
             {
-                text = await reader.ReadToEndAsync();
+                await stream.CopyToAsync(memory);
+                bytes = memory.ToArray();
             }
 
-            text = Utilities.StripByteOrderMark(text);
+            if (file.Name.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase))
+            {
+                // drawings of the original VB6 DG: INI-like text in the Windows ANSI code page
+                var lines = DecodeLegacyText(bytes).Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+                HandleExceptions(() => DrawingHost.DrawingControl.LoadDrawingFromDGF(lines, file.Name));
+                return;
+            }
+
+            var text = Utilities.StripByteOrderMark(new System.Text.UTF8Encoding().GetString(bytes));
             HandleExceptions(() => DrawingHost.DrawingControl.LoadDrawing(text, file.Name));
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// VB6 wrote .dgf files in the system ANSI code page, which for DG's audience was
+    /// mostly Cyrillic (1251). Valid UTF-8 is taken as is.
+    /// </summary>
+    static string DecodeLegacyText(byte[] bytes)
+    {
+        try
+        {
+            return new System.Text.UTF8Encoding(false, throwOnInvalidBytes: true).GetString(bytes);
+        }
+        catch (System.Text.DecoderFallbackException)
+        {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            return System.Text.Encoding.GetEncoding(1251).GetString(bytes);
         }
     }
 
@@ -269,6 +307,64 @@ public class MainView : UserControl
 
     #endregion
 
+    const double KeyboardPanPixels = 48;
+
+    /// <summary>
+    /// Keys without modifiers: tool letters, arrows to pan, +/- to zoom, H to see everything.
+    /// </summary>
+    bool HandlePlainKey(Key key)
+    {
+        var drawing = DrawingHost.CurrentDrawing;
+        if (drawing == null)
+        {
+            return false;
+        }
+
+        var toolType = BehaviorShortcuts.GetTool(key);
+        if (toolType != null)
+        {
+            var tool = Behaviors.FirstOrDefault(b => b.GetType() == toolType);
+            if (tool == null)
+            {
+                return false;
+            }
+
+            drawing.Behavior = tool;
+            return true;
+        }
+
+        var coordinateSystem = drawing.CoordinateSystem;
+        switch (key)
+        {
+            case Key.Left: Pan(KeyboardPanPixels, 0); return true;
+            case Key.Right: Pan(-KeyboardPanPixels, 0); return true;
+            case Key.Up: Pan(0, KeyboardPanPixels); return true;
+            case Key.Down: Pan(0, -KeyboardPanPixels); return true;
+            case Key.Add:
+            case Key.OemPlus:
+                coordinateSystem.ZoomIn();
+                return true;
+            case Key.Subtract:
+            case Key.OemMinus:
+                coordinateSystem.ZoomOut();
+                return true;
+            case Key.H:
+                HandleExceptions(() => coordinateSystem.ZoomExtend());
+                return true;
+        }
+
+        return false;
+
+        void Pan(double physicalX, double physicalY)
+        {
+            // the same undoable move that dragging the empty canvas does
+            var offset = new Avalonia.Point(
+                coordinateSystem.ToLogical(physicalX),
+                -coordinateSystem.ToLogical(physicalY));
+            Actions.Move(drawing, new IMovable[] { coordinateSystem }, offset, null);
+        }
+    }
+
     private void MainView_KeyUp(object sender, KeyEventArgs e)
     {
         var focused = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
@@ -278,6 +374,12 @@ public class MainView : UserControl
         }
 
         bool ctrl = (e.KeyModifiers & KeyModifiers.Control) != 0;
+        if (e.KeyModifiers == KeyModifiers.None && HandlePlainKey(e.Key))
+        {
+            e.Handled = true;
+            return;
+        }
+
         switch (e.Key)
         {
             case Key.Z:

@@ -14,6 +14,20 @@ namespace DynamicGeometry
             buttonGrid.IconTextGap = IconTextGap;
             Content = buttonGrid;
             buttonGrid.PointerPressed += buttonGrid_MouseLeftButtonDown;
+
+            var shortcut = BehaviorShortcuts.GetShortcut(behavior);
+            var tip = behavior.Name + (shortcut != null ? "  (" + shortcut + ")" : "");
+            if (!string.IsNullOrEmpty(behavior.HintText))
+            {
+                tip += "\n" + behavior.HintText;
+            }
+
+            Avalonia.Controls.ToolTip.SetTip(this, new Avalonia.Controls.TextBlock()
+            {
+                Text = tip,
+                MaxWidth = 320,
+                TextWrapping = Avalonia.Media.TextWrapping.Wrap
+            });
         }
 
         public override FrameworkElement CloneIcon()

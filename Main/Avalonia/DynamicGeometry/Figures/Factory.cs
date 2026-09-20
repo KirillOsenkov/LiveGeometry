@@ -79,7 +79,7 @@ namespace DynamicGeometry
 
         public static Avalonia.Controls.Shapes.Polygon CreatePolygonShape()
         {
-            return new Avalonia.Controls.Shapes.Polygon()
+            return new PolygonShape()
             {
                 Fill = CreateDefaultFillBrush()
             };
@@ -490,7 +490,7 @@ namespace DynamicGeometry
 
         public static Avalonia.Controls.Shapes.Polyline CreatePolylineShape()
         {
-            return new Avalonia.Controls.Shapes.Polyline()
+            return new PolylineShape()
             {
                 Stroke = new SolidColorBrush(Colors.Black),
                 StrokeThickness = 1,

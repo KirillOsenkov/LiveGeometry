@@ -26,11 +26,45 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// A point label can be dragged around its point (like in the original VB6 DG),
+        /// even though it depends on the point.
+        /// </summary>
+        public override bool AllowMove()
+        {
+            return !Locked;
+        }
+
+        /// <summary>
+        /// Keeps the label in orbit around its point: the center of the label may not get
+        /// further from the point than the label's larger dimension plus the point radius.
+        /// A long label (name + coordinates) gets a proportionally bigger orbit.
+        /// </summary>
+        /// <param name="newPosition">Desired top-left corner of the label, logical</param>
+        public Point ClampPosition(Point newPosition)
+        {
+            var width = selection.Bounds.Width;
+            var height = selection.Bounds.Height;
+            if (width == 0 || height == 0)
+            {
+                // not measured yet (e.g. while loading): nothing to base the radius on
+                return newPosition;
+            }
+
+            var halfSize = new Point(ToLogical(width) / 2, -ToLogical(height) / 2);
+            var radius = ToLogical(
+                System.Math.Max(width, height)
+                + GetPoint().Shape.Bounds.Width / 2
+                + Math.CursorTolerance);
+            var fromPoint = newPosition.Plus(halfSize).Minus(Point(0));
+            fromPoint = fromPoint.TrimToMaxLength(radius);
+            return Point(0).Plus(fromPoint).Minus(halfSize);
+        }
+
         public override void MoveToCore(Point newPosition)
         {
-            Point newOffset = newPosition.Minus(Point(0));
-            newOffset = newOffset.TrimToMaxLength(ToLogical(100));
-            Offset = newOffset;
+            newPosition = ClampPosition(newPosition);
+            Offset = newPosition.Minus(Point(0));
             base.MoveToCore(newPosition);
         }
 

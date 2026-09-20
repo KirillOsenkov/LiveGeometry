@@ -75,8 +75,38 @@ namespace DynamicGeometry
         Collapsed
     }
 
+    /// <summary>
+    /// WPF's PointCollection is a Freezable: writing an element re-renders the shape.
+    /// Avalonia's Polygon/Polyline only rebuild their geometry when the Points property is
+    /// assigned a different list, and the geometry copies the points, so in-place writes
+    /// are never seen. These let a figure keep its allocation-free point cache and just
+    /// say "the points changed".
+    /// </summary>
+    public class PolygonShape : Avalonia.Controls.Shapes.Polygon
+    {
+        public void PointsChanged() => InvalidateGeometry();
+    }
+
+    /// <inheritdoc cref="PolygonShape"/>
+    public class PolylineShape : Avalonia.Controls.Shapes.Polyline
+    {
+        public void PointsChanged() => InvalidateGeometry();
+    }
+
     public static class WpfCompatExtensions
     {
+        extension(Avalonia.Controls.Shapes.Polygon polygon)
+        {
+            /// <summary>Call after mutating Points in place.</summary>
+            public void PointsChanged() => (polygon as PolygonShape)?.PointsChanged();
+        }
+
+        extension(Avalonia.Controls.Shapes.Polyline polyline)
+        {
+            /// <summary>Call after mutating Points in place.</summary>
+            public void PointsChanged() => (polyline as PolylineShape)?.PointsChanged();
+        }
+
         extension(Control control)
         {
             public Visibility Visibility

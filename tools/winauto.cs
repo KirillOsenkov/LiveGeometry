@@ -408,9 +408,10 @@ static void SendKeysSyntax(string keys)
 
     void Press(char c)
     {
-        if (held.Count > 0 && char.IsLetterOrDigit(c))
+        if (char.IsAsciiLetterOrDigit(c) && (held.Count > 0 || !char.IsAsciiLetterUpper(c)))
         {
-            // with a modifier held we need a real virtual key (Ctrl+S), not a unicode packet
+            // A real virtual key, not a unicode packet: shortcuts (Ctrl+S, or a plain "w"
+            // handled in KeyDown/KeyUp) only see virtual keys. Assumes a Latin layout.
             ushort vk = char.ToUpperInvariant(c);
             Key(vk, false); Key(vk, true);
         }

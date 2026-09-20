@@ -140,6 +140,16 @@ namespace DynamicGeometry
             if (!moving.IsEmpty())
             {
                 var offset = currentCoordinates.Minus(oldCoordinates);
+                if (moving.Count == 1 && moving[0] is PointLabel pointLabel)
+                {
+                    // A point label is confined to an orbit around its point, so a relative
+                    // move would drift away from the cursor once the limit is hit. Move it
+                    // to where the cursor wants it (as far as allowed) and record exactly
+                    // that, so that undo restores the precise position.
+                    var desired = currentCoordinates.Minus(offsetFromFigureLeftTopCorner);
+                    offset = pointLabel.ClampPosition(desired).Minus(pointLabel.Coordinates);
+                }
+
                 Actions.Move(Drawing, moving, offset, toRecalculate);
             }
 
@@ -182,7 +192,95 @@ namespace DynamicGeometry
             found = null;
         }
 
+        protected override Cursor GetCursor(Point coordinates)
+        {
+            var figure = Drawing.Figures.HitTest(coordinates);
+            if (figure == null)
+            {
+                return ArrowCursor;
+            }
+
+            var movable = figure as IMovable;
+            if (movable != null && !figure.Locked && movable.AllowMove())
+            {
+                // free points, points on figures, labels: the thing itself moves
+                return MoveCursor;
+            }
+
+            return HandCursor;
+        }
+
 #if !PLAYER
+
+        /// <summary>
+        /// Context menu for the figure under the cursor, like the point and figure menus
+        /// of the original DG.
+        /// </summary>
+        public override void MouseRightClick(object sender, MouseButtonEventArgs e)
+        {
+            var figure = Drawing.Figures.HitTest(Coordinates(e, false, false, false));
+            var menu = new Avalonia.Controls.ContextMenu();
+
+            void Add(string header, System.Action action, bool? isChecked = null)
+            {
+                var item = new Avalonia.Controls.MenuItem() { Header = header };
+                if (isChecked != null)
+                {
+                    item.ToggleType = Avalonia.Controls.MenuItemToggleType.CheckBox;
+                    item.IsChecked = isChecked.Value;
+                }
+
+                item.Click += (s, args) => action();
+                menu.Items.Add(item);
+            }
+
+            void Set(object target, string property, object value)
+            {
+                Actions.SetProperty(Drawing.ActionManager, new PropertyValue(property, target), value);
+            }
+
+            if (figure == null)
+            {
+                Add("Zoom to fit", () => Drawing.CoordinateSystem.ZoomExtend());
+                Add("Select all", () =>
+                {
+                    Drawing.SelectAll();
+                    Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
+                });
+            }
+            else
+            {
+                if (!figure.Selected)
+                {
+                    Drawing.Figures.ClearSelection();
+                    figure.Selected = true;
+                    Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
+                }
+
+                var point = figure as PointBase ?? (figure as PointLabel)?.Dependencies.FirstOrDefault() as PointBase;
+                if (point != null)
+                {
+                    Add("Show name", () => Set(point, "ShowName", !point.ShowName), point.ShowName);
+                    Add("Show coordinates", () => Set(point, "ShowCoordinates", !point.ShowCoordinates), point.ShowCoordinates);
+                    menu.Items.Add(new Avalonia.Controls.Separator());
+                }
+
+                Add("Hide", () =>
+                {
+                    Set(figure, "Visible", false);
+                    figure.Selected = false;
+                    Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
+                });
+                Add(figure.Locked ? "Unlock" : "Lock", () => Set(figure, "Locked", !figure.Locked));
+                if (!(figure is PointLabel))
+                {
+                    menu.Items.Add(new Avalonia.Controls.Separator());
+                    Add("Delete", () => Drawing.DeleteSelection());
+                }
+            }
+
+            menu.Open(ParentCanvas);
+        }
 
         public override void KeyDown(object sender, KeyEventArgs e)
         {
@@ -234,7 +332,9 @@ namespace DynamicGeometry
             var polygon = builder.AddPolygon(
                     points.Select(p => new Point(p.X / 32, p.Y / 32)));
             polygon.Fill = new SolidColorBrush(Colors.White);
-            polygon.Stroke = new SolidColorBrush(Colors.Black);
+            polygon.Stroke = new SolidColorBrush(Color.FromRgb(0x30, 0x36, 0x40));
+            polygon.StrokeThickness = 1.5;
+            polygon.StrokeJoin = PenLineJoin.Round;
             return builder.Canvas;
         }
 

@@ -57,6 +57,8 @@ namespace DynamicGeometry
                 vertexCoordinates[i] = vertices[i].Coordinates;
                 points[i] = coordinateSystem.ToPhysical(vertexCoordinates[i]);
             }
+
+            Shape.PointsChanged();
         }
 
         protected override int DefaultZOrder()

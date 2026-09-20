@@ -74,13 +74,34 @@ namespace DynamicGeometry
             Grid.SetRow(propertyGridScrollViewer, 1);
             Grid.SetRow(StatusBar, 1);
 
-            CommandToggleGrid = new Command(ToggleGrid, CartesianGrid.GetIcon(), "Grid", BehaviorCategories.Coordinates);
-            CommandToggleOrtho = new Command(ToggleOrtho, new CheckBox(), "Ortho", BehaviorCategories.Selection);
-            CommandToggleSnapToGrid = new Command(ToggleSnapToGrid, new CheckBox(), "Snap to grid", BehaviorCategories.Selection);
-            CommandToggleSnapToPoint = new Command(ToggleSnapToPoint, new CheckBox(), "Snap to point", BehaviorCategories.Selection);
-            CommandToggleLabelNewPoints = new Command(ToggleLabelNewPoints, new CheckBox(), "Label New Points", BehaviorCategories.Points);
-            CommandTogglePolar = new Command(TogglePolar, new CheckBox(), "Polar", BehaviorCategories.Selection);
-            CommandToggleSnapToCenter = new Command(ToggleSnapToCenter, new CheckBox(), "Snap to Center", BehaviorCategories.Selection);
+            CommandToggleGrid = new Command(ToggleGrid, CartesianGrid.GetIcon(), "Grid", BehaviorCategories.Coordinates)
+            {
+                IsChecked = () => CurrentDrawing != null && CurrentDrawing.CoordinateGrid.Visible
+            };
+            CommandToggleOrtho = new Command(ToggleOrtho, ToggleIcons.Ortho(), "Ortho", BehaviorCategories.Selection)
+            {
+                IsChecked = () => Settings.Instance.EnableOrtho
+            };
+            CommandToggleSnapToGrid = new Command(ToggleSnapToGrid, ToggleIcons.SnapToGrid(), "Snap to grid", BehaviorCategories.Selection)
+            {
+                IsChecked = () => Settings.Instance.EnableSnapToGrid
+            };
+            CommandToggleSnapToPoint = new Command(ToggleSnapToPoint, ToggleIcons.SnapToPoint(), "Snap to point", BehaviorCategories.Selection)
+            {
+                IsChecked = () => Settings.Instance.EnableSnapToPoint
+            };
+            CommandToggleLabelNewPoints = new Command(ToggleLabelNewPoints, ToggleIcons.LabelNewPoints(), "Label new points", BehaviorCategories.Points)
+            {
+                IsChecked = () => Settings.Instance.AutoLabelPoints
+            };
+            CommandTogglePolar = new Command(TogglePolar, ToggleIcons.Polar(), "Polar", BehaviorCategories.Selection)
+            {
+                IsChecked = () => Settings.Instance.EnablePolar
+            };
+            CommandToggleSnapToCenter = new Command(ToggleSnapToCenter, ToggleIcons.SnapToCenter(), "Snap to center", BehaviorCategories.Selection)
+            {
+                IsChecked = () => Settings.Instance.EnableSnapToCenter
+            };
             CommandShowFigureExplorer = new Command(ToggleFigureExplorer, new CheckBox() { IsChecked = FigureExplorer.Visible }, "Figure List", BehaviorCategories.Drawing);
         }
 

@@ -80,6 +80,7 @@ namespace DynamicGeometry
             pointCache[4] = ToPhysical(VertexCoordinates[4]);
             pointCache[5] = ToPhysical(VertexCoordinates[5]);
             pointCache[6] = ToPhysical(VertexCoordinates[6]);
+            Shape.PointsChanged();
         }
     }
 }

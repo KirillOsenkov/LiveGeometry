@@ -23,6 +23,41 @@ being true. Things derivable from the code or git history don't belong here.
   state. Leave changes in the working tree, no need to report them.
 - Scripting is C# file-based apps (`dotnet run file.cs`). No Python on this machine.
 
+## Code style
+
+Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific to that codebase.
+
+- **Apply these rules to new code only.** Keep diffs minimal - don't reformat or rename existing
+  code as a drive-by. Most of `DynamicGeometry/` is decades-old WPF/Silverlight-era code with
+  block namespaces and LF endings; it stays that way unless a cleanup is explicitly asked for.
+- **New files: CRLF line endings, file-scoped namespaces.** Existing files keep what they have.
+  The Write tool emits LF: after creating a file, fix it with the Helix MCP
+  (`get_file_info` / `set_file_format lineEnding=CRLF`; needs `start_ide` first). Never grep
+  for `\r`. `stop_mcp` before building.
+- **Never edit workspace files from the shell** (sed/perl/heredocs). Read/Edit/Write or Helix tools.
+- **Backwards compatibility is not a concern** inside the repo: every caller is in-tree, so
+  change all call sites rather than keep a worse shape. The exception here is the `.lgf` file
+  format - users have saved drawings, so old files must keep loading.
+- **Always brace** single-statement `if`s, even one-liners.
+- **No two consecutive blank lines.** One blank between members, none at the top of a block,
+  none before `}`.
+- **Blank line after a block** - control-flow statements and member/type declarations alike -
+  unless it is the last thing in its enclosing block.
+- **Before finishing a file**, sort usings and remove unused ones.
+- **Avoid `sealed`. Avoid `internal`. Prefer `public`.** Only with a concrete reason.
+- **No abbreviations in identifiers** (`operation`, not `op`). Exceptions: `sb`, `ex`, `sw`.
+- **No `Async` suffix on async methods.**
+- **More than 4 parameters: one per line**, in declarations and at call sites.
+- **Name literal arguments at call sites**: `overwrite: true`, `parent: null`, `radius: 0.32` -
+  a bare `true`/`null`/number in an argument list is opaque. Self-describing expressions don't
+  need it. (Runs of x/y coordinates, as in `IconBuilder` calls, are fine bare.)
+- **MSBuild conditions: no quotes** around property names or `true`/`false`:
+  `Condition="$(Configuration) == Debug"`. Quote only values that can be empty or contain spaces.
+- **No global.json.** The repo must build with whatever new-enough .NET SDK is installed.
+- Build with `dotnet build` / `dotnet publish` here (unlike Helix, there is no WPF markup
+  compilation in the Avalonia solution). Pass `-bl` and read the binlog with the binlog MCP
+  tools when a build misbehaves, instead of parsing console output.
+
 ## Build and run
 
 - Desktop: `dotnet build Main/Avalonia/LiveGeometry.Desktop/LiveGeometry.Desktop.csproj`, then
@@ -45,6 +80,17 @@ being true. Things derivable from the code or git history don't belong here.
   to return the base type.
 - **Input**: all WPF-style mouse events funnel through `DynamicGeometry/Behaviors/Behavior.cs`
   (pointer adapters live there). Avalonia has no static Keyboard; modifiers come from event args.
+- **Mutating a collection in place does not redraw in Avalonia** the way a WPF Freezable did.
+  `Polygon/Polyline.Points` only rebuild geometry when the property gets a different list.
+  Figures keep their allocation-free point cache and call `Shape.PointsChanged()`
+  (`PolygonShape`/`PolylineShape` in `WpfCompat.cs`, created by `Factory`). Suspect the same
+  thing whenever something "renders once and then never updates".
+- **Right button / hover** go through `Behavior.MouseRightClick` and `Behavior.GetCursor`
+  (virtual, per tool). Tool letter shortcuts live in `UI/BehaviorShortcuts.cs` (also feeds the
+  toolbar tooltips); plain-key handling (letters, arrows, +/-, H) is in `MainView.HandlePlainKey`.
+- **Toolbar look** is centralized in `UI/Ribbon/RibbonTheme.cs`; `ButtonGrid` draws the
+  hover/pressed/checked plate. An on/off `Command` exposes `IsChecked` (a `Func<bool>`), which
+  its button re-reads after any toggle is clicked - don't go back to `CheckBox` icons.
 - **Browser has no system fonts.** Text renders only because `Avalonia.Fonts.Inter` is embedded
   (`.WithInterFont()`); font names stored in drawings (Arial etc.) fall back to it.
 - **web.config**: `LiveGeometry.Browser/web.config` is hand-written (serves the precompressed
@@ -82,6 +128,28 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
 Web smoke test (run before deploying changes that touch file I/O, clipboard, fonts, or anything
 reflection-based): publish Release, `serve` its wwwroot, `webauto start http://localhost:5005/`,
 `console --errors` must show no `CRASH:`, draw a segment via the Lines tab, `shot`, `stop`.
+
+  - `winauto keys` sends real virtual keys for lowercase ASCII letters/digits (needed for the
+    single-letter shortcuts); other characters go as Unicode packets, which KeyDown-based
+    shortcuts never see. A context menu is its own top-level window: while one is open,
+    `shot LiveGeometry.Desktop` captures the menu, not the main window.
+
+## VB6 parity backlog
+
+Done (2026-09): point labels draggable in an orbit around the point, right-click (cancel /
+back to Drag / close polygon / context menu), hover cursors, Shift = snap to grid, tool letters,
+arrows/+/-/H, opening `.dgf` files (cp1251 fallback). Deliberately out of scope for now:
+Calculator, step-by-step construction playback.
+
+Still missing compared to VB6, roughly by value: symmetric point (about a point) and inverted
+point (in a circle) tools; tracing locus of a point ("Create locus" on a point); "snap free point
+to figure" / "release point" from the context menu; "Choose point/figure" disambiguation for
+overlapping figures; double-click opens properties (here: double-click = zoom to fit); measurement
+label dragging constraints; point shape/size per point and name color; line dash styles per
+figure; Show/Hide, message, sound and launch buttons; live cursor coordinates in the status bar;
+rulers; undo/redo captions naming the action; unsaved-changes prompt; recent files; export
+(BMP/WMF/EMF -> here PNG would do) and print; "tool select once" option; settings persistence;
+languages (en/ru/uk/de).
 
 ## Not yet verified in the browser
 

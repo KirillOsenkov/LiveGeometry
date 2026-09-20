@@ -525,6 +525,25 @@ namespace DynamicGeometry
 
         #endregion
 
+        #region Cursor
+
+        /// <summary>
+        /// A cross means "a click here creates something new", a hand means "a click here
+        /// picks the existing figure under the cursor".
+        /// </summary>
+        protected override Avalonia.Input.Cursor GetCursor(Point coordinates)
+        {
+            // the preview of the figure being constructed ends under the cursor: not a target
+            var figure = Drawing.Figures.HitTest(coordinates, f =>
+                f.Visible
+                && f.IsHitTestVisible
+                && f != IntermediateFigure
+                && !TempResults.Contains(f));
+            return figure != null ? HandCursor : CrossCursor;
+        }
+
+        #endregion
+
         #region Adjust point coordinates
 
         protected virtual Point AdjustCurrentCoordinates(Point newPosition)

@@ -1,9 +1,16 @@
-﻿using Avalonia.Controls;
+using System.Collections.Generic;
+using Avalonia.Controls;
 
 namespace DynamicGeometry
 {
     public class CommandToolButton : ToolButton
     {
+        /// <summary>
+        /// Toggles can switch each other off (Ortho and Polar), so after any of them
+        /// is clicked all of them re-read their state.
+        /// </summary>
+        static readonly List<CommandToolButton> toggles = new List<CommandToolButton>();
+
         public CommandToolButton(Command command)
         {
             Command = command;
@@ -16,12 +23,27 @@ namespace DynamicGeometry
             }
             Content = buttonGrid;
             buttonGrid.PointerPressed += Content_MouseLeftButtonDown;
+
+            if (command.IsChecked != null)
+            {
+                toggles.Add(this);
+                AttachedToVisualTree += (s, e) => UpdateCheckedState();
+            }
         }
 
         private void Content_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Click();
             ToggleCheckBox();
+            foreach (var toggle in toggles)
+            {
+                toggle.UpdateCheckedState();
+            }
+        }
+
+        void UpdateCheckedState()
+        {
+            buttonGrid.IsChecked = Command.IsChecked();
         }
 
         private void ToggleCheckBox()

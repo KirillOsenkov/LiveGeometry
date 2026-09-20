@@ -91,6 +91,8 @@ namespace DynamicGeometry
                 vertexCoordinates[i] = vertices[i].Coordinates;
                 points[i] = coordinateSystem.ToPhysical(vertexCoordinates[i]);
             }
+
+            Shape.PointsChanged();
         }
 
         public override IFigure HitTest(Avalonia.Point point)

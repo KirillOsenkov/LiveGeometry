@@ -61,6 +61,12 @@ namespace DynamicGeometry
         public string Name { get; set; }
         public string Category { get; set; }
 
+        /// <summary>
+        /// For an on/off command: reads the current state, so that its button can show it.
+        /// Null for a plain command.
+        /// </summary>
+        public Func<bool> IsChecked { get; set; }
+
         public virtual void Execute()
         {
             if (Implementation != null)

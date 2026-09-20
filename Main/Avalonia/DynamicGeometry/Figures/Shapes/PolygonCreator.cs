@@ -27,6 +27,24 @@ namespace DynamicGeometry
             base.Click(coordinates);
         }
 
+        /// <summary>
+        /// Like in the original DG, a right-click closes the polygon once it has enough
+        /// vertices (the point following the cursor doesn't count).
+        /// </summary>
+        public override void MouseRightClick(object sender, MouseButtonEventArgs e)
+        {
+            if (FoundDependencies.Count >= FoundDependenciesMinimum + 1
+                && FoundDependencies.All(f => f is IPoint))
+            {
+                RemoveIntermediateFigureIfNecessary();
+                RemoveTempPointIfNecessary();
+                AddFiguresAndRestart();
+                return;
+            }
+
+            base.MouseRightClick(sender, e);
+        }
+
         protected override DependencyList InitExpectedDependencies()
         {
             return null;

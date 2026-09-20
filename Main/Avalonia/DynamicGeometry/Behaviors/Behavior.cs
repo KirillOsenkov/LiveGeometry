@@ -153,6 +153,7 @@ namespace DynamicGeometry
                     mParentCanvas.PointerReleased -= PointerReleasedHandler;
                     mParentCanvas.KeyDown -= SafeKeyDown;
                     mParentCanvas.KeyUp -= SafeKeyUp;
+                    mParentCanvas.Cursor = null;
                 }
                 mParentCanvas = value;
                 if (mParentCanvas != null)
@@ -219,12 +220,29 @@ namespace DynamicGeometry
 
         // Adapters translating Avalonia pointer events onto the WPF-shaped
         // MouseDown/MouseMove/MouseUp/MouseWheel virtuals that behaviors override.
+        public static bool IsShiftPressed()
+        {
+            return (currentModifiers & KeyModifiers.Shift) == KeyModifiers.Shift;
+        }
+
         void PointerPressedHandler(object sender, PointerPressedEventArgs e)
         {
             currentModifiers = e.KeyModifiers;
-            if (e.GetCurrentPoint(mParentCanvas).Properties.IsLeftButtonPressed)
+            var properties = e.GetCurrentPoint(mParentCanvas).Properties;
+            if (properties.IsLeftButtonPressed)
             {
                 SafeMouseDown(sender, e);
+            }
+            else if (properties.IsRightButtonPressed)
+            {
+                try
+                {
+                    MouseRightClick(sender, e);
+                }
+                catch (Exception ex)
+                {
+                    HandleException(ex);
+                }
             }
         }
 
@@ -232,7 +250,72 @@ namespace DynamicGeometry
         {
             currentModifiers = e.KeyModifiers;
             SafeMouseMove(sender, e);
+            if (!errorHappened && !e.GetCurrentPoint(mParentCanvas).Properties.IsLeftButtonPressed)
+            {
+                UpdateCursor(e);
+            }
         }
+
+        /// <summary>
+        /// Like in the original DG: a right-click gets you out of whatever you're doing.
+        /// In the middle of a construction it cancels the construction, otherwise it
+        /// switches back to the default (drag) tool.
+        /// </summary>
+        public virtual void MouseRightClick(object sender, MouseButtonEventArgs e)
+        {
+#if !PLAYER
+            if (IsInInitialState)
+            {
+                AbortAndSetDefaultTool();
+            }
+            else
+            {
+                Restart();
+            }
+#endif
+        }
+
+        #region Cursor
+
+        protected static readonly Cursor ArrowCursor = new Cursor(StandardCursorType.Arrow);
+        protected static readonly Cursor CrossCursor = new Cursor(StandardCursorType.Cross);
+        protected static readonly Cursor HandCursor = new Cursor(StandardCursorType.Hand);
+        protected static readonly Cursor MoveCursor = new Cursor(StandardCursorType.SizeAll);
+        protected static readonly Cursor NoCursor = new Cursor(StandardCursorType.No);
+
+        void UpdateCursor(PointerEventArgs e)
+        {
+            if (mParentCanvas == null || Drawing == null)
+            {
+                return;
+            }
+
+            Cursor cursor;
+            try
+            {
+                cursor = GetCursor(Coordinates(e, false, false, false));
+            }
+            catch (Exception)
+            {
+                cursor = ArrowCursor;
+            }
+
+            if (mParentCanvas.Cursor != cursor)
+            {
+                mParentCanvas.Cursor = cursor;
+            }
+        }
+
+        /// <summary>
+        /// The cursor tells what a click at this place would do.
+        /// </summary>
+        /// <param name="coordinates">Logical coordinates under the mouse</param>
+        protected virtual Cursor GetCursor(Point coordinates)
+        {
+            return ArrowCursor;
+        }
+
+        #endregion
 
         void PointerReleasedHandler(object sender, PointerReleasedEventArgs e)
         {
@@ -392,6 +475,13 @@ namespace DynamicGeometry
 
         protected virtual Point Coordinates(MouseEventArgs e)
         {
+            // Like in the original DG, holding Shift snaps to the grid without having to
+            // turn the setting on.
+            if (IsShiftPressed() && !Settings.Instance.EnableSnapToGrid)
+            {
+                return Coordinates(e, false, true, false);
+            }
+
             return Coordinates(e, Settings.Instance.EnableSnapToPoint, Settings.Instance.EnableSnapToGrid, Settings.Instance.EnableSnapToCenter);
         }
 

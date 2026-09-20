@@ -16,24 +16,10 @@ namespace DynamicGeometry
         public Ribbon(DrawingHost drawingHost)
         {
             DrawingHost = drawingHost;
-            Background = new LinearGradientBrush()
-            {
-                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-                GradientStops = new GradientStopCollection()
-                {
-                    new GradientStop()
-                    {
-                        Offset = 0.9,
-                        Color = Colors.White
-                    },
-                    new GradientStop()
-                    {
-                        Offset = 1,
-                        Color = Color.FromArgb(255, 230, 230, 230)
-                    }
-                }
-            };
+            Background = RibbonTheme.Background;
+            BorderBrush = RibbonTheme.BottomBorder;
+            BorderThickness = new Thickness(0, 0, 0, 1);
+            Padding = new Thickness(4, 0, 4, 3);
         }
 
         public BehaviorToolButton AddToolButton(Behavior behavior)
@@ -101,7 +87,9 @@ namespace DynamicGeometry
             {
                 Category = category,
                 Panel = new WrapPanel(),
-                HeaderContent = (Settings.ShowIconInTabPanelHeader) ? new ButtonGrid(button.CloneIcon(), category) : new ButtonGrid(null, category)
+                HeaderContent = new ButtonGrid(Settings.ShowIconInTabPanelHeader ? button.CloneIcon() : null, category, true),
+                MinHeight = 34,
+                Padding = new Thickness(9, 0, 9, 0)
             };
             Items.Add(result);
             return result;
@@ -118,6 +106,21 @@ namespace DynamicGeometry
         {
             button.DrawingHost = DrawingHost;
             var panel = GetTabPanelByCategory(button, category);
+
+            // a thin divider between the tools of a tab and the option toggles that follow
+            var last = panel.Panel.Children.LastOrDefault();
+            if (button is CommandToolButton && last is BehaviorToolButton)
+            {
+                panel.Panel.Children.Add(new Avalonia.Controls.Shapes.Rectangle()
+                {
+                    Width = 1,
+                    Height = 44, // a WrapPanel doesn't stretch its children
+                    Fill = RibbonTheme.Separator,
+                    Margin = new Thickness(6, 0, 6, 0),
+                    VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+                });
+            }
+
             panel.Panel.Children.Add(button);
             button.ParentPanel = panel;
         }
