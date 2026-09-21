@@ -44,6 +44,7 @@ try
     {
         case "list": List(); break;
         case "cursor": PrintCursor(); break;
+        case "wheel": Wheel(Resolve(args[1]), int.Parse(args[2]), int.Parse(args[3]), int.Parse(args[4])); break;
         case "tree": Tree(Resolve(args[1])); break;
         case "menu": Menu(Resolve(args[1])); break;
         case "invoke": PostMessage(Resolve(args[1]), 0x0111 /*WM_COMMAND*/, new IntPtr(int.Parse(args[2])), IntPtr.Zero); break;
@@ -359,6 +360,21 @@ static void Button(uint flags)
     input.u.mi.dwFlags = flags;
     SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
     Thread.Sleep(30);
+}
+
+// notches > 0 rolls the wheel away from the user (zoom in)
+static void Wheel(IntPtr h, int x, int y, int notches)
+{
+    Focus(h);
+    MoveTo(h, x, y);
+    for (int i = 0; i < Math.Abs(notches); i++)
+    {
+        var input = new INPUT { type = 0 };
+        input.u.mi.dwFlags = 0x0800 /*WHEEL*/;
+        input.u.mi.mouseData = unchecked((uint)(Math.Sign(notches) * 120));
+        SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+        Thread.Sleep(40);
+    }
 }
 
 static void Click(IntPtr h, int x, int y, string kind)

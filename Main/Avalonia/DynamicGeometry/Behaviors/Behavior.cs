@@ -549,17 +549,17 @@ namespace DynamicGeometry
             }
         }
 
+        const double WheelZoomFactor = 1.2;
+
         public virtual void MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (Drawing != null)
             {
-                if (e.Delta.Y > 0)
+                // around the cursor; a touchpad sends many small deltas, a wheel notch is 1
+                if (e.Delta.Y != 0)
                 {
-                    Drawing.CoordinateSystem.ZoomIn();
-                }
-                else if (e.Delta.Y < 0)
-                {
-                    Drawing.CoordinateSystem.ZoomOut();
+                    var factor = System.Math.Pow(WheelZoomFactor, e.Delta.Y);
+                    Drawing.CoordinateSystem.Zoom(factor, e.GetPosition(ParentCanvas));
                 }
             }
         }

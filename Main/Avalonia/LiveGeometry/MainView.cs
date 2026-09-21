@@ -69,6 +69,9 @@ public class MainView : UserControl
             }
 
             Focus();
+
+            // once the canvas has a size, or the drawing would be laid out in a 0x0 viewport
+            Avalonia.Threading.Dispatcher.UIThread.Post(OpenStartupFile, Avalonia.Threading.DispatcherPriority.Loaded);
         };
     }
 
@@ -134,8 +137,23 @@ public class MainView : UserControl
         AddItem(edit, "Select all", SelectAll_Click, new KeyGesture(Key.A, KeyModifiers.Control));
         AddItem(edit, "Clear", Clear_Click, null);
 
+        // plain keys: handled in HandlePlainKey, the gestures here only show them in the menu
+        AddItem(view, "Zoom in", (s, e) => ChangeView(c => c.ZoomIn()), new KeyGesture(Key.OemPlus));
+        AddItem(view, "Zoom out", (s, e) => ChangeView(c => c.ZoomOut()), new KeyGesture(Key.OemMinus));
+        AddItem(view, "Zoom to fit", (s, e) => ChangeView(c => c.ZoomExtend()), new KeyGesture(Key.H));
+        AddItem(view, "Center", (s, e) => ChangeView(c => c.CenterContent()), new KeyGesture(Key.Home));
+        view.Items.Add(new Separator());
         AddItem(view, "Settings", SettingsButton_Click, null);
         AddItem(view, "Figure List", FigureListButton_Click, null);
+    }
+
+    void ChangeView(Action<CoordinateSystem> change)
+    {
+        var drawing = DrawingHost.CurrentDrawing;
+        if (drawing != null)
+        {
+            HandleExceptions(() => change(drawing.CoordinateSystem));
+        }
     }
 
     MenuItem AddItem(MenuItem parent, string header, EventHandler<RoutedEventArgs> onClick, KeyGesture gesture)
@@ -206,21 +224,44 @@ public class MainView : UserControl
                 bytes = memory.ToArray();
             }
 
-            if (file.Name.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase))
-            {
-                // drawings of the original VB6 DG: INI-like text in the Windows ANSI code page
-                var lines = DecodeLegacyText(bytes).Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
-                HandleExceptions(() => DrawingHost.DrawingControl.LoadDrawingFromDGF(lines, file.Name));
-                return;
-            }
-
-            var text = Utilities.StripByteOrderMark(new System.Text.UTF8Encoding().GetString(bytes));
-            HandleExceptions(() => DrawingHost.DrawingControl.LoadDrawing(text, file.Name));
+            OpenDrawing(file.Name, bytes);
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
+    }
+
+    /// <summary>
+    /// A drawing to open at startup: the desktop head puts the file from its command line here
+    /// </summary>
+    public static string StartupFile { get; set; }
+
+    void OpenStartupFile()
+    {
+        var path = StartupFile;
+        StartupFile = null;
+        if (string.IsNullOrEmpty(path))
+        {
+            return;
+        }
+
+        HandleExceptions(() => OpenDrawing(Path.GetFileName(path), File.ReadAllBytes(path)));
+    }
+
+    /// <param name="name">File name; the extension tells the format</param>
+    public void OpenDrawing(string name, byte[] bytes)
+    {
+        if (name.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase))
+        {
+            // drawings of the original VB6 DG: INI-like text in the Windows ANSI code page
+            var lines = DecodeLegacyText(bytes).Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            HandleExceptions(() => DrawingHost.DrawingControl.LoadDrawingFromDGF(lines, name));
+            return;
+        }
+
+        var text = Utilities.StripByteOrderMark(new System.Text.UTF8Encoding().GetString(bytes));
+        HandleExceptions(() => DrawingHost.DrawingControl.LoadDrawing(text, name));
     }
 
     /// <summary>
@@ -368,6 +409,9 @@ public class MainView : UserControl
                 return true;
             case Key.H:
                 HandleExceptions(() => coordinateSystem.ZoomExtend());
+                return true;
+            case Key.Home:
+                HandleExceptions(() => coordinateSystem.CenterContent());
                 return true;
         }
 

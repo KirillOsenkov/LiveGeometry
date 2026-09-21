@@ -61,7 +61,10 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
 ## Build and run
 
 - Desktop: `dotnet build Main/Avalonia/LiveGeometry.Desktop/LiveGeometry.Desktop.csproj`, then
-  run `bin/Debug/net10.0/LiveGeometry.Desktop.exe`. Fastest loop; use it for feature work.
+  run `bin/Debug/net10.0/LiveGeometry.Desktop.exe [drawing.lgf|.dgf]`. Fastest loop; use it for
+  feature work. A drawing can be hand-written as XML (`docs/*.lgf` are examples: styles, then
+  figures by type name with `<Dependency Name=...>` children; a point's name shows through a
+  separate `PointLabel` figure that depends on it) and opened from the command line to check it.
 - Browser: needs the `wasm-tools` workload (`WasmBuildNative=true` links Skia/HarfBuzz; without
   it Skia throws DllNotFoundException). Do a full bin/obj clean when native assets change.
 - Browser publish: `dotnet publish Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj -c Release -o <dir>`.
@@ -88,6 +91,13 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
 - **Right button / hover** go through `Behavior.MouseRightClick` and `Behavior.GetCursor`
   (virtual, per tool). Tool letter shortcuts live in `UI/BehaviorShortcuts.cs` (also feeds the
   toolbar tooltips); plain-key handling (letters, arrows, +/-, H) is in `MainView.HandlePlainKey`.
+- **The view** (`Figures/Coordinates/CoordinateSystem.cs`) is an origin in pixels plus `UnitLength`
+  (pixels per unit). Everything goes through `Zoom(factor, focus)` (the point under `focus` stays
+  put: the cursor for the wheel, the canvas middle for +/- and the menu), `Fit`/`SetView`
+  (`ZoomExtend` = zoom to fit with a pixel margin, `CenterContent` = Home, `SetViewport` for files)
+  and the resize handler, which keeps the middle of the canvas in the middle. "Content" for fit is
+  `TryGetContentBounds`: points, whole ellipses, labels - not lines. Labels have a fixed *pixel*
+  size, so fit re-measures and refits a few times. `winauto wheel <t> x y <notches>` tests the wheel.
 - **Cursor philosophy** (`Behavior.GetCursor`): cross = a new *free* point appears here; hand =
   the click picks something already there - a figure the tool needs, an existing point, or a
   place defined by figures (intersection, midpoint); arrow = everything else, including a new
@@ -103,7 +113,8 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   feeds the same answer to `Behaviors/ClickPreview` on hover: a 0.4-opacity ghost point, a halo
   on the source figures, equal-halves ticks for a midpoint. A tool that needs a figure rather than a point gets a halo
   on the figure a click would pick (`Behavior.GetFigureToPick`, `FigureCreator.FindFigureToPick`;
-  halos exist for lines, circles/ellipses, arcs and polygons - add a case to
+  an existing point the click would take counts too and gets a disc behind it;
+  halos exist for points, lines, circles/ellipses, arcs and polygons - add a case to
   `ClickPreview.CreateHalo` for anything else). The preview is plain canvas visuals,
   never figures. Hit testing uses the *snapped* coordinates, so with snap to grid on the grid
   wins. Typed coordinates always give a free point. A point must never be placed on the figure

@@ -549,7 +549,19 @@ namespace DynamicGeometry
 
         protected override IFigure GetFigureToPick(MouseEventArgs e)
         {
-            return hoverFigure;
+            if (hoverFigure != null)
+            {
+                return hoverFigure;
+            }
+
+            // an existing point the click would take
+            var point = hoverPlacement != null ? hoverPlacement.ExistingPoint : null;
+            if (point != null && FoundDependencies.Contains(point) && !CanReuseDependency)
+            {
+                return null;
+            }
+
+            return point;
         }
 
         #endregion
@@ -668,6 +680,15 @@ namespace DynamicGeometry
 
             if (ExpectingAPoint())
             {
+                // a point the tool already has: the click is ignored
+                if (hoverPlacement != null
+                    && hoverPlacement.ExistingPoint != null
+                    && FoundDependencies.Contains(hoverPlacement.ExistingPoint)
+                    && !CanReuseDependency)
+                {
+                    return ArrowCursor;
+                }
+
                 return GetCursor(hoverPlacement);
             }
 

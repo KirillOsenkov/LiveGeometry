@@ -24,6 +24,9 @@ public class ClickPreview
     public static double MinSegmentLengthForTicks = 40;
 
     public static IBrush HaloBrush = new SolidColorBrush(Color.FromArgb(0x20, 0x3B, 0x8E, 0xEA));
+    // a point is small, so its halo is a little wider and stronger than a line's
+    public static double PointHaloWidth = 5;
+    public static IBrush PointHaloBrush = new SolidColorBrush(Color.FromArgb(0x48, 0x3B, 0x8E, 0xEA));
     public static IBrush TickBrush = new SolidColorBrush(Color.FromRgb(0x2F, 0x7B, 0xD6));
 
     readonly List<Control> visuals = new List<Control>();
@@ -179,6 +182,21 @@ public class ClickPreview
                 Data = arc.Shape.Data
             };
             SetHaloStroke(halo, arc.Shape);
+        }
+        else if (figure is PointBase point)
+        {
+            // a disc behind the point; an outline this thin and pale would not be seen
+            var source = point.Shape;
+            var diameter = source.Width + 2 * PointHaloWidth;
+            var center = point.Drawing.CoordinateSystem.ToPhysical(point.Coordinates);
+            halo = new AvaloniaShapes.Ellipse()
+            {
+                Width = diameter,
+                Height = diameter,
+                Fill = PointHaloBrush,
+                ZIndex = source.ZIndex - 1
+            };
+            halo.CenterAt(center);
         }
         else if (figure is PolygonBase polygon)
         {
