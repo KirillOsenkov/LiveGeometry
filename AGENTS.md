@@ -103,6 +103,15 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   their own points by up to a pixel, always down-right. Lines are exact now and point shapes have
   `UseLayoutRounding = false`. Anything new that must line up with figures: same two rules. To
   check alignment, `winauto shot ... --region x,y,60,60 --zoom 16` around a point.
+- **Dashes**: `LineStyle.Dash` is a `LineDash` enum (`Styles/LineDash.cs`: Solid, Dash, Dot,
+  DashDot, DashDotDot - the VB6 DrawStyle 0-4, which `DGFReader` maps onto it). Inherited by shape
+  and point styles, so circles, arcs and polygons dash too. Saved as `Dash="DashDot"` by the
+  generic `EnumSerializer` (any enum property of a style or figure now round-trips by name; an
+  unknown name keeps the default). The pattern is put on in `LineStyle.OnApplied`, not through a
+  setter, because `StrokeDashArray` counts in stroke widths and a selected figure is thicker.
+  Anything that applies a style to a shape by hand (sample glyphs) must call `OnApplied` too.
+  To drive a native file dialog from winauto: `list` shows it as a `#32770` window of the app;
+  `text hwnd:0x.. <path>` then `keys hwnd:0x.. "{ENTER}"`.
 - **Default point styles are by kind** (`StyleManager.AddDefaultStyles` / `AssignDefaultStyle`):
   `FreePoint` (yellow), `PointOnFigure` (green) - the draggable ones, size 10 - and
   `IntersectionPoint` (blue), `Midpoint` (orange), `DependentPointStyle` (gray, every other

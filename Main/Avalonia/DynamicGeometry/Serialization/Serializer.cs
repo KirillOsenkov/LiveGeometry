@@ -290,6 +290,45 @@ namespace DynamicGeometry
         }
     }
 
+    /// <summary>
+    /// Any enum, by the name of the value. A name this build doesn't know (a drawing from a
+    /// newer version) leaves the property at its default instead of failing the whole file.
+    /// </summary>
+    public class EnumSerializer : ISerializer
+    {
+        public object Write(IValueProvider value)
+        {
+            return value.GetValue<object>().ToString();
+        }
+
+        public void Read(IValueProvider value, string serialized)
+        {
+            object result;
+            if (Enum.TryParse(value.Type, serialized, ignoreCase: true, result: out result))
+            {
+                value.SetValue(result);
+            }
+        }
+
+        public void Read(IValueProvider value, XElement serialized)
+        {
+            Read(value, serialized.Value);
+        }
+
+        public bool CanSerialize(IValueProvider value)
+        {
+            return value.Type.IsEnum;
+        }
+
+        public double Priority
+        {
+            get
+            {
+                return 1.5;
+            }
+        }
+    }
+
     public class ColorSerializer : SerializerBase<Color>
     {
         public override string ToString(Color value)

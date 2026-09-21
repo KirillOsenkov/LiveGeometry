@@ -52,18 +52,19 @@ namespace DynamicGeometry
             }
         }
 
-        DoubleCollection strokeDashArray;
-        [Ignore]
-        public DoubleCollection StrokeDashArray
+        LineDash dash = LineDash.Solid;
+        [PropertyGridVisible]
+        [PropertyGridName("Dash")]
+        public LineDash Dash
         {
             get
             {
-                return strokeDashArray;
+                return dash;
             }
             set
             {
-                strokeDashArray = value;
-                OnPropertyChanged("StrokeDashArray");
+                dash = value;
+                OnPropertyChanged("Dash");
             }
         }
 
@@ -82,36 +83,18 @@ namespace DynamicGeometry
             var widthSetter = new Setter(Shape.StrokeThicknessProperty, width);
             existingStyle.Setters.Add(widthSetter);
 
-            // TODO: There is a known bug in Silverlight 2/3/4 where setting
-            // StrokeDashArray via a Style results in an ArgumentException
-            // Apply workaround in OnApplied()
-#if !SILVERLIGHT
-            if (!StrokeDashArray.IsEmpty())
-            {
-                var strokeDashArraySetter = new Setter(Shape.StrokeDashArrayProperty, StrokeDashArray);
-                existingStyle.Setters.Add(strokeDashArraySetter);
-            }
-#endif
         }
 
+        /// <summary>
+        /// The dash pattern goes on here and not through a setter: it depends on the width the
+        /// shape ended up with (a selected figure is drawn thicker).
+        /// </summary>
         public override void OnApplied(IFigure figure, FrameworkElement element)
         {
-            var line = element as Line;
-            
-            if (StrokeDashArray.IsEmpty())
+            var shape = element as Shape;
+            if (shape != null)
             {
-                if (line != null)
-                {
-                    line.StrokeDashArray = null;
-                }
-                return;
-            }
-
-            if (line != null)
-            {
-                var collection = new DoubleCollection();
-                collection.AddRange(this.StrokeDashArray);
-                line.StrokeDashArray = collection;
+                shape.StrokeDashArray = LineDashes.GetDashArray(Dash, shape.StrokeThickness);
             }
         }
     }

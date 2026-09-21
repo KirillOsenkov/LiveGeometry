@@ -130,6 +130,63 @@ namespace DynamicGeometry
                 Name = "OtherLine",
                 Color = Color.FromArgb(200, 0, 0, 255)
             };
+            var thickLineStyle = new LineStyle()
+            {
+                Name = "ThickLine",
+                Color = Color.FromArgb(230, 0, 0, 0),
+                StrokeWidth = 2.5
+            };
+            var redLineStyle = new LineStyle()
+            {
+                Name = "RedLine",
+                Color = Color.FromArgb(255, 216, 59, 59),
+                StrokeWidth = 1.5
+            };
+            var greenLineStyle = new LineStyle()
+            {
+                Name = "GreenLine",
+                Color = Color.FromArgb(255, 46, 158, 79),
+                StrokeWidth = 1.5
+            };
+
+            // auxiliary constructions: there, but stepping back
+            var dashedLineStyle = new LineStyle()
+            {
+                Name = "DashedLine",
+                Color = Color.FromArgb(255, 110, 110, 110),
+                StrokeWidth = 1.25,
+                Dash = LineDash.Dash
+            };
+            var dottedLineStyle = new LineStyle()
+            {
+                Name = "DottedLine",
+                Color = Color.FromArgb(255, 110, 110, 110),
+                StrokeWidth = 1.5,
+                Dash = LineDash.Dot
+            };
+
+            // an outline with a hint of the same color inside: made for circles, fine for polygons
+            var blueOutlineStyle = new ShapeStyle()
+            {
+                Name = "BlueOutline",
+                Color = Color.FromArgb(255, 47, 123, 214),
+                StrokeWidth = 1.5,
+                Fill = new SolidColorBrush(Color.FromArgb(28, 47, 123, 214))
+            };
+            var orangeOutlineStyle = new ShapeStyle()
+            {
+                Name = "OrangeOutline",
+                Color = Color.FromArgb(255, 224, 138, 0),
+                StrokeWidth = 1.5,
+                Fill = new SolidColorBrush(Color.FromArgb(28, 224, 138, 0))
+            };
+            var purpleOutlineStyle = new ShapeStyle()
+            {
+                Name = "PurpleOutline",
+                Color = Color.FromArgb(255, 136, 84, 208),
+                StrokeWidth = 1.5,
+                Fill = new SolidColorBrush(Color.FromArgb(28, 136, 84, 208))
+            };
             var shapeWithLineStyle = new ShapeStyle();
             var shapeStyle = new ShapeStyle()
             {
@@ -166,9 +223,17 @@ namespace DynamicGeometry
                 dependentPointStyle,
                 lineStyle,
                 lineStyle2,
+                thickLineStyle,
+                redLineStyle,
+                greenLineStyle,
+                dashedLineStyle,
+                dottedLineStyle,
                 shapeStyle,
                 shapeStyle2,
                 shapeWithLineStyle,
+                blueOutlineStyle,
+                orangeOutlineStyle,
+                purpleOutlineStyle,
                 textStyle,
                 headerStyle,
                 hyperLinkStyle,

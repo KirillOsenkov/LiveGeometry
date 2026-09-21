@@ -650,28 +650,7 @@ namespace DynamicGeometry
             {
                 fillColor = Colors.Transparent;
             }
-            DoubleCollection strokeDashArray = null;
-            if (drawStyle != null && drawStyle != 0)
-            {
-                strokeDashArray = new DoubleCollection();
-                switch (drawStyle)
-                {
-                    case 1:
-                        strokeDashArray.Add(15 / drawWidth, 6 / drawWidth);
-                        break;
-                    case 2:
-                        strokeDashArray.Add(3 / drawWidth, 3 / drawWidth);
-                        break;
-                    case 3:
-                        strokeDashArray.Add(10 / drawWidth, 4 / drawWidth, 2 / drawWidth, 4 / drawWidth);
-                        break;
-                    case 4:
-                        strokeDashArray.Add(10 / drawWidth, 4 / drawWidth, 2 / drawWidth, 4 / drawWidth, 2 / drawWidth, 4 / drawWidth);
-                        break;
-                    default:
-                        break;
-                }
-            }
+            var dash = LineDashes.FromVB6DrawStyle(drawStyle ?? 0);
 
             IFigureStyle style;
 
@@ -686,7 +665,7 @@ namespace DynamicGeometry
                     Fill = new SolidColorBrush(fillColor),
                     Color = foreColor,
                     StrokeWidth = drawWidth,
-                    StrokeDashArray = strokeDashArray
+                    Dash = dash
                 };
             }
             else
@@ -699,7 +678,7 @@ namespace DynamicGeometry
                 {
                     Color = foreColor,
                     StrokeWidth = drawWidth,
-                    StrokeDashArray = strokeDashArray
+                    Dash = dash
                 };
             }
 

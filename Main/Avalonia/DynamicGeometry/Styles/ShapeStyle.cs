@@ -18,6 +18,7 @@ namespace DynamicGeometry
                 new Point(20, 20)
             };
             polygon.Apply(this.GetWpfStyle());
+            OnApplied(null, polygon);
             polygon.Tag = this;
             return polygon;
         }
