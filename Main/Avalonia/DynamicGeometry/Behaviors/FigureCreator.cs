@@ -117,6 +117,7 @@ namespace DynamicGeometry
             ExpectedDependencies = InitExpectedDependencies();
             FoundDependencies.Clear();
             hoverPlacement = null;
+            hoverFigure = null;
         }
 
         public override void Stopping()
@@ -525,6 +526,32 @@ namespace DynamicGeometry
             return hoverPlacement;
         }
 
+        IFigure hoverFigure;
+
+        /// <summary>
+        /// When the tool needs a figure and not a point: the one a click here would take
+        /// </summary>
+        protected virtual IFigure FindFigureToPick(Point unconstrainedCoordinates)
+        {
+            if (GetExpectedDependencyType() == null || ExpectingAPoint())
+            {
+                return null;
+            }
+
+            var figure = LookForExpectedDependencyUnderCursor(unconstrainedCoordinates);
+            if (figure != null && FoundDependencies.Contains(figure) && !CanReuseDependency)
+            {
+                return null;
+            }
+
+            return figure;
+        }
+
+        protected override IFigure GetFigureToPick(MouseEventArgs e)
+        {
+            return hoverFigure;
+        }
+
         #endregion
 
         #region MouseDown, MouseMove, MouseUp
@@ -547,7 +574,9 @@ namespace DynamicGeometry
         {
             Point newPosition = Coordinates(e);
             newPosition = AdjustCurrentCoordinates(newPosition);
-            hoverPlacement = FindPointPlacement(Coordinates(e, false, false, false), newPosition);
+            var unconstrainedCoordinates = Coordinates(e, false, false, false);
+            hoverPlacement = FindPointPlacement(unconstrainedCoordinates, newPosition);
+            hoverFigure = FindFigureToPick(unconstrainedCoordinates);
 
             if (TempPoint != null)
             {
@@ -626,18 +655,23 @@ namespace DynamicGeometry
         #region Cursor
 
         /// <summary>
-        /// A cross means "a click here creates something new", a hand means "a click here
-        /// picks the existing figure under the cursor".
+        /// See <see cref="Behavior.GetCursor(Point)"/>. When the tool needs a point the cursor
+        /// follows what the click would make of it; when it needs a figure (a line to be
+        /// perpendicular to) it is a hand over a suitable one.
         /// </summary>
         protected override Avalonia.Input.Cursor GetCursor(Point coordinates)
         {
-            // the preview of the figure being constructed ends under the cursor: not a target
-            var figure = Drawing.Figures.HitTest(coordinates, f =>
-                f.Visible
-                && f.IsHitTestVisible
-                && f != IntermediateFigure
-                && !TempResults.Contains(f));
-            return figure != null ? HandCursor : CrossCursor;
+            if (GetExpectedDependencyType() == null)
+            {
+                return ArrowCursor;
+            }
+
+            if (ExpectingAPoint())
+            {
+                return GetCursor(hoverPlacement);
+            }
+
+            return hoverFigure != null ? HandCursor : ArrowCursor;
         }
 
         #endregion

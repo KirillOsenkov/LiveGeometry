@@ -88,6 +88,12 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
 - **Right button / hover** go through `Behavior.MouseRightClick` and `Behavior.GetCursor`
   (virtual, per tool). Tool letter shortcuts live in `UI/BehaviorShortcuts.cs` (also feeds the
   toolbar tooltips); plain-key handling (letters, arrows, +/-, H) is in `MainView.HandlePlainKey`.
+- **Cursor philosophy** (`Behavior.GetCursor`): cross = a new *free* point appears here; hand =
+  the click picks something already there - a figure the tool needs, an existing point, or a
+  place defined by figures (intersection, midpoint); arrow = everything else, including a new
+  point sliding along a figure and clicks that do nothing. For points it is derived from the
+  `PointPlacement` (`Behavior.GetCursor(PointPlacement)`), so cursor, preview and click agree.
+  `winauto cursor` prints the cursor showing now (screenshots don't include it).
 - **What a click makes of a point** is decided in one place, `Behaviors/PointPlacement.Find`
   (existing point / free / on a figure / intersection of the nearest crossing pair / midpoint
   when the cursor is within `MidpointReach` of a segment's middle, or anywhere on it with "Snap
@@ -95,7 +101,10 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   `FindExistingMidpoint`, which the Midpoint tool checks too). The Point tool and every `FigureCreator`
   (`FindPointPlacement`, `CreatePointForClick`) use it for the click, and `Behavior.GetClickPreview`
   feeds the same answer to `Behaviors/ClickPreview` on hover: a 0.4-opacity ghost point, a halo
-  on the source figures, equal-halves ticks for a midpoint. The preview is plain canvas visuals,
+  on the source figures, equal-halves ticks for a midpoint. A tool that needs a figure rather than a point gets a halo
+  on the figure a click would pick (`Behavior.GetFigureToPick`, `FigureCreator.FindFigureToPick`;
+  halos exist for lines, circles/ellipses, arcs and polygons - add a case to
+  `ClickPreview.CreateHalo` for anything else). The preview is plain canvas visuals,
   never figures. Hit testing uses the *snapped* coordinates, so with snap to grid on the grid
   wins. Typed coordinates always give a free point. A point must never be placed on the figure
   being constructed (`FigureCreator.CanPlacePointOn`), that would be a dependency cycle.

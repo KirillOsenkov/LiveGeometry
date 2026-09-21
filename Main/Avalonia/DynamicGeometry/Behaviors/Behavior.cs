@@ -281,7 +281,11 @@ namespace DynamicGeometry
 
             try
             {
-                clickPreview.Show(Drawing, GetClickPreview(e), ClickPreviewPointStyle);
+                clickPreview.Show(
+                    Drawing,
+                    GetClickPreview(e),
+                    GetFigureToPick(e),
+                    ClickPreviewPointStyle);
             }
             catch (Exception)
             {
@@ -294,6 +298,15 @@ namespace DynamicGeometry
         /// intersection or in the middle of a segment. Null for anything else.
         /// </summary>
         protected virtual PointPlacement GetClickPreview(MouseEventArgs e)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// The figure (not a point) a click here would pick for the tool, e.g. the line to be
+        /// perpendicular to. Null if there is none.
+        /// </summary>
+        protected virtual IFigure GetFigureToPick(MouseEventArgs e)
         {
             return null;
         }
@@ -362,12 +375,36 @@ namespace DynamicGeometry
         }
 
         /// <summary>
-        /// The cursor tells what a click at this place would do.
+        /// The cursor tells what a click at this place would do:
+        /// a cross - a new free point appears here;
+        /// a hand - the click picks something that is already there, a figure or a place
+        /// defined by figures (an intersection, a midpoint);
+        /// an arrow - everything else, including a new point that slides along a figure.
         /// </summary>
         /// <param name="coordinates">Logical coordinates under the mouse</param>
         protected virtual Cursor GetCursor(Point coordinates)
         {
             return ArrowCursor;
+        }
+
+        protected static Cursor GetCursor(PointPlacement placement)
+        {
+            if (placement == null)
+            {
+                return ArrowCursor;
+            }
+
+            switch (placement.Kind)
+            {
+                case PointPlacementKind.Free:
+                    return CrossCursor;
+                case PointPlacementKind.Existing:
+                case PointPlacementKind.Intersection:
+                case PointPlacementKind.Midpoint:
+                    return HandCursor;
+                default:
+                    return ArrowCursor;
+            }
         }
 
         #endregion

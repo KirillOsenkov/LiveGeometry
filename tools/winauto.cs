@@ -43,6 +43,7 @@ try
     switch (args[0].ToLowerInvariant())
     {
         case "list": List(); break;
+        case "cursor": PrintCursor(); break;
         case "tree": Tree(Resolve(args[1])); break;
         case "menu": Menu(Resolve(args[1])); break;
         case "invoke": PostMessage(Resolve(args[1]), 0x0111 /*WM_COMMAND*/, new IntPtr(int.Parse(args[2])), IntPtr.Zero); break;
@@ -487,7 +488,33 @@ static void SendKeysSyntax(string keys)
     Release();
 }
 
+// Screenshots don't include the mouse cursor; this names the one that is showing now.
+static void PrintCursor()
+{
+    var info = new CURSORINFO() { cbSize = Marshal.SizeOf<CURSORINFO>() };
+    GetCursorInfo(ref info);
+    var known = new (int id, string name)[]
+    {
+        (32512, "arrow"), (32513, "ibeam"), (32514, "wait"), (32515, "cross"), (32646, "sizeall"),
+        (32648, "no"), (32649, "hand"), (32650, "appstarting"), (32651, "help")
+    };
+
+    foreach (var (id, name) in known)
+    {
+        if (LoadCursor(IntPtr.Zero, new IntPtr(id)) == info.hCursor)
+        {
+            Console.WriteLine(name);
+            return;
+        }
+    }
+
+    Console.WriteLine("other:0x" + info.hCursor.ToString("X"));
+}
+
 // ---------------------------------------------------------------- interop
+
+[DllImport("user32.dll")] static extern bool GetCursorInfo(ref CURSORINFO info);
+[DllImport("user32.dll")] static extern IntPtr LoadCursor(IntPtr instance, IntPtr name);
 
 [DllImport("user32.dll")] static extern bool SetProcessDpiAwarenessContext(IntPtr value);
 [DllImport("user32.dll")] static extern bool EnumWindows(EnumWindowsProc callback, IntPtr lParam);
@@ -523,6 +550,9 @@ delegate bool EnumWindowsProc(IntPtr h, IntPtr lParam);
 
 [StructLayout(LayoutKind.Sequential)]
 struct RECT { public int Left, Top, Right, Bottom; }
+
+[StructLayout(LayoutKind.Sequential)]
+struct CURSORINFO { public int cbSize, flags; public IntPtr hCursor; public int x, y; }
 
 [StructLayout(LayoutKind.Sequential)]
 struct MOUSEINPUT { public int dx, dy; public uint mouseData, dwFlags, time; public IntPtr dwExtraInfo; }

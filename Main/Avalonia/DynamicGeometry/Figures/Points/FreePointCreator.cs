@@ -135,9 +135,16 @@ namespace DynamicGeometry
             return PointPlacement.Find(Drawing, Coordinates(e), Settings.Instance.EnableSnapToCenter);
         }
 
+        PointPlacement hoverPlacement;
+
+        public override void MouseMove(object sender, MouseEventArgs e)
+        {
+            hoverPlacement = FindPointPlacement(e);
+        }
+
         protected override PointPlacement GetClickPreview(MouseEventArgs e)
         {
-            return FindPointPlacement(e);
+            return hoverPlacement;
         }
 
         protected override IFigureStyle ClickPreviewPointStyle
@@ -153,10 +160,15 @@ namespace DynamicGeometry
             }
         }
 
-        // there already is a point here: a click doesn't put another one on top of it
         protected override Cursor GetCursor(Avalonia.Point coordinates)
         {
-            return Drawing.Figures.HitTest<IPoint>(coordinates) != null ? ArrowCursor : CrossCursor;
+            // there already is a point here: a click doesn't put another one on top of it
+            if (hoverPlacement != null && hoverPlacement.Kind == PointPlacementKind.Existing)
+            {
+                return ArrowCursor;
+            }
+
+            return GetCursor(hoverPlacement);
         }
 
         public override FrameworkElement CreateIcon()

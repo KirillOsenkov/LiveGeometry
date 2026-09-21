@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -7,9 +8,10 @@ using AvaloniaShapes = Avalonia.Controls.Shapes;
 namespace DynamicGeometry;
 
 /// <summary>
-/// Shows, while the mouse hovers, what a click would make of the point under it
+/// Shows, while the mouse hovers, what a click would do. For a point
 /// (a <see cref="PointPlacement"/>): a faint point where the real one is going to be, a halo on
 /// the figures it will depend on and, for a midpoint, a tick on each half of the segment.
+/// For a tool that needs a figure: a halo on the figure the click would pick.
 /// These are plain visuals on the canvas, not figures: they can't be hit, saved or undone.
 /// </summary>
 public class ClickPreview
@@ -21,30 +23,48 @@ public class ClickPreview
     // shorter than this on screen and the ticks would crowd the ghost point
     public static double MinSegmentLengthForTicks = 40;
 
-    public static IBrush HaloBrush = new SolidColorBrush(Color.FromArgb(0x60, 0x3B, 0x8E, 0xEA));
+    public static IBrush HaloBrush = new SolidColorBrush(Color.FromArgb(0x20, 0x3B, 0x8E, 0xEA));
     public static IBrush TickBrush = new SolidColorBrush(Color.FromRgb(0x2F, 0x7B, 0xD6));
 
     readonly List<Control> visuals = new List<Control>();
     Canvas canvas;
     AvaloniaShapes.Shape ghost;
-    PointPlacement shown;
+    IReadOnlyList<IFigure> shownSources;
+    PointPlacementKind? shownKind;
     Point shownOrigin;
     Point shownUnit;
 
-    public void Show(Drawing drawing, PointPlacement placement, IFigureStyle pointStyle)
+    /// <param name="placement">The point a click would create, or null</param>
+    /// <param name="pickedFigure">The figure a click would pick (a tool that needs a line
+    /// over a line), or null. Only looked at when there is no point to show.</param>
+    public void Show(
+        Drawing drawing,
+        PointPlacement placement,
+        IFigure pickedFigure,
+        IFigureStyle pointStyle)
     {
-        if (drawing == null || drawing.Canvas == null || placement == null || !placement.IsDependent)
+        if (placement != null && !placement.IsDependent)
+        {
+            placement = null;
+        }
+
+        if (drawing == null || drawing.Canvas == null || (placement == null && pickedFigure == null))
         {
             Clear();
             return;
         }
 
+        IReadOnlyList<IFigure> sources = placement != null ? placement.Sources : new[] { pickedFigure };
+
         // the halos and ticks are in pixels, so they are only good for the view they were made in
         var coordinateSystem = drawing.CoordinateSystem;
         var origin = coordinateSystem.ToPhysical(new Point(0, 0));
         var unit = coordinateSystem.ToPhysical(new Point(1, 1));
+        var kind = placement != null ? placement.Kind : (PointPlacementKind?)null;
         bool canReuse = canvas == drawing.Canvas
-            && placement.HasSameSources(shown)
+            && kind == shownKind
+            && shownSources != null
+            && sources.SequenceEqual(shownSources)
             && origin == shownOrigin
             && unit == shownUnit;
 
@@ -54,23 +74,30 @@ public class ClickPreview
             canvas = drawing.Canvas;
             shownOrigin = origin;
             shownUnit = unit;
+            shownKind = kind;
+            shownSources = sources;
 
-            foreach (var source in placement.Sources)
+            foreach (var source in sources)
             {
                 Add(CreateHalo(source));
             }
 
-            if (placement.Kind == PointPlacementKind.Midpoint)
+            if (kind == PointPlacementKind.Midpoint)
             {
-                AddTicks(coordinateSystem, (Segment)placement.Sources[0]);
+                AddTicks(coordinateSystem, (Segment)sources[0]);
             }
 
-            ghost = CreateGhost(pointStyle);
-            Add(ghost);
+            if (placement != null)
+            {
+                ghost = CreateGhost(pointStyle);
+                Add(ghost);
+            }
         }
 
-        shown = placement;
-        ghost.CenterAt(coordinateSystem.ToPhysical(placement.Coordinates));
+        if (ghost != null)
+        {
+            ghost.CenterAt(coordinateSystem.ToPhysical(placement.Coordinates));
+        }
     }
 
     public void Clear()
@@ -86,7 +113,8 @@ public class ClickPreview
         visuals.Clear();
         canvas = null;
         ghost = null;
-        shown = null;
+        shownSources = null;
+        shownKind = null;
     }
 
     void Add(Control visual)
@@ -151,6 +179,14 @@ public class ClickPreview
                 Data = arc.Shape.Data
             };
             SetHaloStroke(halo, arc.Shape);
+        }
+        else if (figure is PolygonBase polygon)
+        {
+            halo = new AvaloniaShapes.Polygon()
+            {
+                Points = polygon.Shape.Points.ToList()
+            };
+            SetHaloStroke(halo, polygon.Shape);
         }
 
         return halo;

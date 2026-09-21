@@ -68,15 +68,36 @@ namespace DynamicGeometry
             return segment;
         }
 
+        PointPlacement segmentPlacement;
+        bool isOverBisectedSegment;
+
+        public override void MouseMove(object sender, MouseEventArgs e)
+        {
+            base.MouseMove(sender, e);
+            var segment = FindSegmentToBisect(e);
+            isOverBisectedSegment = segment != null && HasMidpointAlready(segment);
+            segmentPlacement = segment != null && !isOverBisectedSegment ? PointPlacement.Midpoint(segment) : null;
+        }
+
         protected override PointPlacement GetClickPreview(MouseEventArgs e)
         {
-            var segment = FindSegmentToBisect(e);
-            if (segment != null)
+            if (isOverBisectedSegment)
             {
-                return HasMidpointAlready(segment) ? null : PointPlacement.Midpoint(segment);
+                return null;
             }
 
-            return base.GetClickPreview(e);
+            return segmentPlacement ?? base.GetClickPreview(e);
+        }
+
+        protected override Avalonia.Input.Cursor GetCursor(Avalonia.Point coordinates)
+        {
+            // a click on a segment that has its midpoint does nothing
+            if (isOverBisectedSegment)
+            {
+                return ArrowCursor;
+            }
+
+            return segmentPlacement != null ? HandCursor : base.GetCursor(coordinates);
         }
 
         public override string Name
