@@ -144,6 +144,17 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   and expect `Content-Encoding: br` and `Cache-Control: public, max-age=31536000, immutable`.
   A malformed web.config takes the whole site down (HTTP 500).
 
+## Deployment and caching
+
+- A push to main takes about 8 minutes to go live (GitHub Actions: build ~5, deploy ~3); the
+  files flip at the very end. Until then every reload, cached or not, gets the previous version.
+  The commit shown at the right end of the menu bar (`BuildVersion`, also logged to the console at
+  startup) tells which build is on screen.
+- Caching was verified end to end (2026-09-20): entry files are `no-cache` with an ETag that
+  changes on every deploy, a request with the old ETag gets 200, and a browser holding the
+  previous version picks up the new one on a plain reload. If something looks stale, check the
+  commit stamp and the Actions run before suspecting the cache.
+
 ## UI automation (tools/)
 
 Screenshots are PNGs; image pixels are the click coordinates in both tools.

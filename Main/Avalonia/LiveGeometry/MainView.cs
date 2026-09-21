@@ -89,8 +89,26 @@ public class MainView : UserControl
         Content = LayoutRoot;
 
         Menu menu = new Menu();
-        LayoutRoot.Children.Add(menu);
-        DockPanel.SetDock(menu, Dock.Top);
+
+        // The build (git commit) at the far right of the menu bar, so that it is obvious
+        // which version is on screen - e.g. whether a fresh deployment has arrived yet.
+        var build = new TextBlock()
+        {
+            Text = BuildVersion.Short,
+            FontSize = 11,
+            Opacity = 0.55,
+            Margin = new Avalonia.Thickness(8, 0, 10, 0),
+            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+        };
+        ToolTip.SetTip(build, BuildVersion.Full);
+        Console.WriteLine("Live Geometry " + BuildVersion.Full);
+
+        var menuBar = new DockPanel();
+        DockPanel.SetDock(build, Dock.Right);
+        menuBar.Children.Add(build);
+        menuBar.Children.Add(menu);
+        LayoutRoot.Children.Add(menuBar);
+        DockPanel.SetDock(menuBar, Dock.Top);
 
         MenuItem file = new MenuItem() { Header = "File" };
         MenuItem edit = new MenuItem() { Header = "Edit" };
