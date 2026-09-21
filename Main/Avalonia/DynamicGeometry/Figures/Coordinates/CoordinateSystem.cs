@@ -497,12 +497,15 @@ namespace DynamicGeometry
 
         public void MoveTo(Point position)
         {
-            var old = origin.SnapToIntegers();
-            position = ToPhysical(position).SnapToIntegers();
-            if (old == position)
+            // Exactly, no rounding to whole pixels: a drag arrives as many small steps (half a
+            // pixel each on a 200% display) and every one of them was rounded up to a full
+            // pixel, so the plane ran ahead of the cursor - twice as fast on a slow drag.
+            position = ToPhysical(position);
+            if (position == origin)
             {
                 return;
             }
+
             Origin = position;
         }
 

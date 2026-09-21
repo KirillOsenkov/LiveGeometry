@@ -20,7 +20,7 @@ namespace DynamicGeometry
         public void PositionOnXAxis(double x, CoordinateSystem coordinateSystem)
         {
             SetLabelText(TextBlock, x);
-            double width = TextBlock.ActualWidth;
+            double width = MeasureLabel().Width;
             var coordinates = coordinateSystem
                 .ToPhysical(new Point(x, 0))
                 .OffsetX(-width / 2);
@@ -34,12 +34,21 @@ namespace DynamicGeometry
         public void PositionOnYAxis(double y, CoordinateSystem coordinateSystem)
         {
             SetLabelText(TextBlock, y);
-            double width = TextBlock.ActualWidth;
-            double height = TextBlock.ActualHeight;
+            var size = MeasureLabel();
+            double width = size.Width;
+            double height = size.Height;
             var coordinates = coordinateSystem
                 .ToPhysical(new Point(0, y))
                 .Plus(new Point(-width - 2, -height / 2));
             MoveLabel(TextBlock, coordinates);
+        }
+
+        // The laid out size is of the previous text, or nothing at all for a label that was
+        // just created: measure the text that is there now.
+        Size MeasureLabel()
+        {
+            TextBlock.Measure(Size.Infinity);
+            return TextBlock.DesiredSize;
         }
 
         private void MoveLabel(TextBlock label, Point coordinates)

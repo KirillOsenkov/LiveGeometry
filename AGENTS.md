@@ -96,7 +96,11 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   put: the cursor for the wheel, the canvas middle for +/- and the menu), `Fit`/`SetView`
   (`ZoomExtend` = zoom to fit with a pixel margin, `CenterContent` = Home, `SetViewport` for files)
   and the resize handler, which keeps the middle of the canvas in the middle. "Content" for fit is
-  `TryGetContentBounds`: points, whole ellipses, labels - not lines. Labels have a fixed *pixel*
+  `TryGetContentBounds`: points, whole ellipses, labels - not lines. Panning (`MoveTo`) must not
+  round the origin: a drag is many sub-pixel steps (0.5 px at 200% scaling) and rounding each one
+  made the plane run up to twice as fast as the cursor. When testing pans with winauto, start the
+  drag on an empty spot (a drag that starts on a figure moves the figure, and the grid "stays
+  behind"), use many steps (`drag <t> x1 y1 x2 y2 300`), and compare against the axis numbers. Labels have a fixed *pixel*
   size, so fit re-measures and refits a few times. `winauto wheel <t> x y <notches>` tests the wheel.
 - **No pixel snapping of figure geometry.** The WPF code rounded line endpoints to pixel centers
   (`Round() + 0.5` in `Utilities.Set(Line, PointPair)`); points weren't snapped, so lines missed
