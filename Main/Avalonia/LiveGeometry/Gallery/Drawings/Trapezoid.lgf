@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-7.8891737516" Top="30.3032748778" Right="27.5015122371" Bottom="-23.3725988717" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <PointStyle Size="8" Fill="#FFFF4F4F" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="10" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000080" StrokeWidth="0.7" Name="11" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000080" StrokeWidth="0.7" Name="12" />
+    <LineStyle Color="#FF0000A0" StrokeWidth="2" Name="13" />
+    <LineStyle Color="#FFFF0000" StrokeWidth="1" Name="14" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Name="15" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="16" />
+    <LineStyle Color="#FF008000" StrokeWidth="1" Name="17" />
+    <LineStyle Color="#FF008000" StrokeWidth="1" Name="18" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="19" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="20" />
+    <LineStyle Color="#FF008000" StrokeWidth="1" Name="21" />
+    <LineStyle Color="#FF008000" StrokeWidth="1" Name="22" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="23" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="24" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="25" />
+    <LineStyle Color="#FF008040" StrokeWidth="1" Name="26" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="27" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="28" />
+    <LineStyle Color="#FF008000" StrokeWidth="1" Name="29" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="30" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="31" />
+    <LineStyle Color="#FF008040" StrokeWidth="1" Name="32" />
+    <LineStyle Color="#FF008000" StrokeWidth="1" Name="33" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="34" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="35" />
+    <LineStyle Color="#FF008040" StrokeWidth="1" Name="36" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="37" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="38" />
+    <LineStyle Color="#FF008040" StrokeWidth="1" Name="39" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="40" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="41" />
+    <LineStyle Color="#FF0000A0" StrokeWidth="2" Name="42" />
+    <LineStyle Color="#FF0000A0" StrokeWidth="2" Name="43" />
+    <LineStyle Color="#FF0000A0" StrokeWidth="2" Name="44" />
+    <LineStyle Color="#FFFF0000" StrokeWidth="2" Name="45" />
+    <LineStyle Color="#FFFF0000" StrokeWidth="2" Name="46" />
+    <LineStyle Color="#FFFF0000" StrokeWidth="2" Name="47" />
+    <LineStyle Color="#FFFF0000" StrokeWidth="2" Name="48" />
+    <TextStyle FontSize="23.8" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="49" />
+    <TextStyle FontSize="20.4" Color="#FF000051" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="50" />
+    <TextStyle FontSize="20.4" Color="#FF00592D" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="51" />
+    <TextStyle FontSize="23.8" Color="#FF000051" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="52" />
+    <TextStyle FontSize="23.8" Color="#FF00592D" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="53" />
+    <TextStyle FontSize="23.8" Color="#FF970000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="54" />
+    <TextStyle FontSize="20.4" Color="#FF970000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="55" />
+    <TextStyle FontSize="20.4" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="56" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-3.5390685989" Y="-14.3774661829" />
+    <FreePoint Name="B" Style="1" X="23.3725988717" Y="-14.3774661829" />
+    <FreePoint Name="C" Style="1" X="3.1699005076" Y="-0.1144622958" />
+    <Segment Name="Segment45" Style="13">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <ParallelLine Name="ParallelLine46" Visible="false" Style="14">
+      <Dependency Name="Segment45" />
+      <Dependency Name="C" />
+    </ParallelLine>
+    <PointOnFigure Name="D" Style="2" X="14.5249273745" Y="-0.1144622958" Parameter="0.421936949068836">
+      <Dependency Name="ParallelLine46" />
+    </PointOnFigure>
+    <MidPoint Name="E" Style="3">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <Segment Name="Segment47" Style="17">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="Segment48" Style="18">
+      <Dependency Name="C" />
+      <Dependency Name="E" />
+    </Segment>
+    <IntersectionPoint Name="F" Style="10" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Segment47" />
+      <Dependency Name="Segment48" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="_G" Visible="false" Style="20" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Segment47" />
+      <Dependency Name="Segment48" />
+    </IntersectionPoint>
+    <Segment Name="Segment49" Style="21">
+      <Dependency Name="E" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="Segment50" Style="22">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Segment>
+    <IntersectionPoint Name="G" Style="10" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Segment49" />
+      <Dependency Name="Segment50" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="_H" Visible="false" Style="24" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Segment49" />
+      <Dependency Name="Segment50" />
+    </IntersectionPoint>
+    <MidPoint Name="H" Style="3">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <Segment Name="Segment51" Style="26">
+      <Dependency Name="A" />
+      <Dependency Name="H" />
+    </Segment>
+    <IntersectionPoint Name="I" Style="10" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Segment51" />
+      <Dependency Name="Segment50" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="_J" Visible="false" Style="28" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Segment51" />
+      <Dependency Name="Segment50" />
+    </IntersectionPoint>
+    <Segment Name="Segment52" Style="29">
+      <Dependency Name="H" />
+      <Dependency Name="B" />
+    </Segment>
+    <IntersectionPoint Name="J" Style="10" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Segment52" />
+      <Dependency Name="Segment47" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="_K" Visible="false" Style="31" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Segment52" />
+      <Dependency Name="Segment47" />
+    </IntersectionPoint>
+    <Ray Name="Ray53" Style="32">
+      <Dependency Name="B" />
+      <Dependency Name="D" />
+    </Ray>
+    <Ray Name="Ray54" Style="33">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Ray>
+    <IntersectionPoint Name="K" Style="10" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Ray53" />
+      <Dependency Name="Ray54" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="_L" Visible="false" Style="35" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Ray53" />
+      <Dependency Name="Ray54" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="LineTwoPoints55" Style="36">
+      <Dependency Name="F" />
+      <Dependency Name="I" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="L" Style="3" Algorithm="IntersectLineAndLine">
+      <Dependency Name="LineTwoPoints55" />
+      <Dependency Name="Segment45" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="_M" Visible="false" Style="38" Algorithm="IntersectLineAndLine">
+      <Dependency Name="LineTwoPoints55" />
+      <Dependency Name="Segment45" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="LineTwoPoints56" Style="39">
+      <Dependency Name="G" />
+      <Dependency Name="J" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="M" Style="3" Algorithm="IntersectLineAndLine">
+      <Dependency Name="LineTwoPoints56" />
+      <Dependency Name="Segment45" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="_N" Visible="false" Style="41" Algorithm="IntersectLineAndLine">
+      <Dependency Name="LineTwoPoints56" />
+      <Dependency Name="Segment45" />
+    </IntersectionPoint>
+    <Segment Name="Segment57" Style="42">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="Segment58" Style="43">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment59" Style="44">
+      <Dependency Name="B" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="Segment60" Style="45">
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="Segment61" Style="46">
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+    </Segment>
+    <DistanceMeasurement Name="DistanceMeasurement62" Style="7" OffsetX="-0.8847671497" OffsetY="-0.442383574899999">
+      <Dependency Name="A" />
+      <Dependency Name="L" />
+    </DistanceMeasurement>
+    <DistanceMeasurement Name="DistanceMeasurement63" Style="7" OffsetX="-0.294922383200001" OffsetY="-0.6635753623">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </DistanceMeasurement>
+    <DistanceMeasurement Name="DistanceMeasurement64" Style="7" OffsetX="0" OffsetY="-0.442383574800001">
+      <Dependency Name="M" />
+      <Dependency Name="B" />
+    </DistanceMeasurement>
+    <Segment Name="Segment65" Style="47">
+      <Dependency Name="F" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment66" Style="48">
+      <Dependency Name="J" />
+      <Dependency Name="G" />
+    </Segment>
+    <PointLabel Name="PointLabel80" Style="7" OffsetX="-1.54834251195872" OffsetY="2.32251376804745" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="PointLabel81" Style="7" OffsetX="0.847901851846171" OffsetY="2.24878317214745" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="PointLabel82" Style="7" OffsetX="-1.17968953295872" OffsetY="2.61743615124745" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="C" />
+    </PointLabel>
+    <PointLabel Name="PointLabel83" Style="7" OffsetX="-0.479248872763618" OffsetY="2.61743615124745" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="D" />
+    </PointLabel>
+    <PointLabel Name="PointLabel84" Style="7" OffsetX="-0.368652979048937" OffsetY="2.61743615124745" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="E" />
+    </PointLabel>
+    <PointLabel Name="PointLabel85" Style="7" OffsetX="-0.479248872763618" OffsetY="2.61743615124745" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="H" />
+    </PointLabel>
+    <PointLabel Name="PointLabel86" Style="7" OffsetX="-0.331787681144043" OffsetY="2.61743615124745" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="L" />
+    </PointLabel>
+    <PointLabel Name="PointLabel87" Style="7" OffsetX="-0.626710064383191" OffsetY="2.61743615124745" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="M" />
+    </PointLabel>
+    <PointLabel Name="PointLabel88" Style="7" OffsetX="-0.331787681144043" OffsetY="2.54370555543766" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="F" />
+    </PointLabel>
+    <PointLabel Name="PointLabel89" Style="7" OffsetX="-0.479248872763618" OffsetY="2.54370555543766" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="G" />
+    </PointLabel>
+    <PointLabel Name="PointLabel90" Style="7" OffsetX="-0.552979468524468" OffsetY="2.39624436383766" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="I" />
+    </PointLabel>
+    <PointLabel Name="PointLabel91" Style="7" OffsetX="0.184326489565743" OffsetY="2.32251376793766" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="J" />
+    </PointLabel>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="A Trapezoid Surprise" DecimalsToShow="2" X="26.602" Y="-0.114" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="ABDC is a trapezoid with bases AB and CD. E\nand H are the midpoints of the bases.\n\nDraw the diagonals and the lines from the\nmidpoints, as shown. Lines through the\ncrossing points cut the base AB into three\nequal parts: AL = LM = MB.\n\nDrag the vertices - it always works." DecimalsToShow="2" X="26.602" Y="-2.133" />
+  </Figures>
+</Drawing>

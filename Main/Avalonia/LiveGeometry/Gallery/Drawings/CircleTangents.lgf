@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-4.9583333333" Top="7.5625" Right="5.0416666667" Bottom="-7.6041666667" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF3E3EC1" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FFFF0000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <LineStyle Color="#FF0066FF" StrokeWidth="2" Name="10" />
+    <LineStyle Color="#FFFF0000" StrokeWidth="2" Name="11" />
+    <LineStyle Color="#FF808080" StrokeWidth="1" Name="12" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-2.0833333333" Y="0.9791666667" />
+    <FreePoint Name="B" Style="1" X="-3.8020833333" Y="1.71875" />
+    <Circle Name="Circle39" Style="11">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Circle>
+    <FreePoint Name="C" Style="1" X="4.125" Y="0.9791666667" />
+    <MidPoint Name="D" Style="3">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <Circle Name="Circle41" Style="12">
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="E" Style="3" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="Circle41" />
+      <Dependency Name="Circle39" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="F" Style="3" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="Circle41" />
+      <Dependency Name="Circle39" />
+    </IntersectionPoint>
+    <Ray Name="Ray43" Style="10">
+      <Dependency Name="C" />
+      <Dependency Name="E" />
+    </Ray>
+    <Ray Name="Ray45" Style="10">
+      <Dependency Name="C" />
+      <Dependency Name="F" />
+    </Ray>
+    <Segment Name="Segment47" Style="12">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <PointLabel Name="PointLabel48" Style="7" OffsetX="-0.312499999999999" OffsetY="0.572916666633333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="PointLabel49" Style="7" OffsetX="0.1041666667" OffsetY="0.552083333333333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="C" />
+    </PointLabel>
+    <PointLabel Name="PointLabel50" Style="7" OffsetX="-0.135416666666667" OffsetY="0.614583333333333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="D" />
+    </PointLabel>
+    <PointLabel Name="PointLabel51" Style="7" OffsetX="-0.104166666666667" OffsetY="0.739583333333335" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="E" />
+    </PointLabel>
+    <PointLabel Name="PointLabel52" Style="7" OffsetX="-0.15625" OffsetY="-0.156249999966667" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="F" />
+    </PointLabel>
+    <PointLabel Name="PointLabel53" Style="7" OffsetX="-0.114583333333333" OffsetY="0.739583333333333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="B" />
+    </PointLabel>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Tangents to a Circle" DecimalsToShow="2" X="5.076" Y="1.719" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="How do you draw the tangents from a point C to\na circle with center A?\n\nFind the midpoint D of AC and draw the circle\ncentered at D through C. It crosses the first\ncircle at E and F - the points of tangency. It\nworks because an angle inscribed in a\nsemicircle is a right angle.\n\nDrag C." DecimalsToShow="2" X="5.076" Y="1.124" />
+  </Figures>
+</Drawing>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-4.9895833333" Top="7.5729166667" Right="5.0104166667" Bottom="-7.59375" Grid="false" />
+  <Styles>
+    <PointStyle Size="15" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#5DFFFF96" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FF58C8D9" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <ShapeStyle Fill="#7100F7FF" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="10" />
+    <ShapeStyle Fill="#9975FF6C" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="11" />
+    <ShapeStyle Fill="#7C7AE4FF" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="12" />
+    <ShapeStyle Fill="#417EA8FF" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="13" />
+    <LineStyle Color="#FF000000" StrokeWidth="2" Name="14" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-2.0729166667" Y="0.8229166667" />
+    <FreePoint Name="B" Style="1" X="3.3854166667" Y="-1.78125" />
+    <FreePoint Name="C" Style="1" X="-0.0520833333" Y="-3.2395833333" />
+    <Polygon Name="Polygon130" Style="11">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Segment Name="Segment131" Style="14">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment132" Style="14">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment133" Style="14">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </Segment>
+    <Circle Name="Circle135" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Circle>
+    <Circle Name="Circle137" Visible="false" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="D" Visible="false" Style="1" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="Circle137" />
+      <Dependency Name="Circle135" />
+    </IntersectionPoint>
+    <Polygon Name="Polygon143" Style="12">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </Polygon>
+    <Segment Name="Segment144" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="Segment145" Style="4">
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </Segment>
+    <Circle Name="Circle147" Visible="false" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Circle>
+    <Circle Name="Circle149" Visible="false" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Circle>
+    <IntersectionPoint Name="E" Visible="false" Style="1" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="Circle149" />
+      <Dependency Name="Circle147" />
+    </IntersectionPoint>
+    <Polygon Name="Polygon155" Style="12">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Segment Name="Segment156" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="Segment157" Style="4">
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+    </Segment>
+    <Circle Name="Circle159" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Circle>
+    <Circle Name="Circle161" Visible="false" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="F" Visible="false" Style="1" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="Circle161" />
+      <Dependency Name="Circle159" />
+    </IntersectionPoint>
+    <Polygon Name="Polygon174" Style="12">
+      <Dependency Name="F" />
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Segment Name="Segment175" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="Segment176" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="F" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine178" Visible="false" Style="4">
+      <Dependency Name="Segment131" />
+      <Dependency Name="D" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine180" Visible="false" Style="4">
+      <Dependency Name="Segment145" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine182" Visible="false" Style="4">
+      <Dependency Name="Segment175" />
+      <Dependency Name="C" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine184" Visible="false" Style="4">
+      <Dependency Name="Segment133" />
+      <Dependency Name="F" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine186" Visible="false" Style="4">
+      <Dependency Name="Segment132" />
+      <Dependency Name="E" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine188" Visible="false" Style="4">
+      <Dependency Name="Segment157" />
+      <Dependency Name="B" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="G" Style="2" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine180" />
+      <Dependency Name="PerpendicularLine178" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="H" Style="2" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine184" />
+      <Dependency Name="PerpendicularLine182" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I" Style="2" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine188" />
+      <Dependency Name="PerpendicularLine186" />
+    </IntersectionPoint>
+    <Polygon Name="Polygon194" Style="5">
+      <Dependency Name="H" />
+      <Dependency Name="G" />
+      <Dependency Name="I" />
+    </Polygon>
+    <Segment Name="Segment195" Style="4">
+      <Dependency Name="H" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="Segment196" Style="4">
+      <Dependency Name="G" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment197" Style="4">
+      <Dependency Name="I" />
+      <Dependency Name="H" />
+    </Segment>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Napoleon's Theorem" DecimalsToShow="2" X="4.165" Y="0.823" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Build an equilateral triangle on each side of\nany triangle. Connect the centers of the three\nnew triangles.\n\nYou always get another equilateral triangle!\nThe theorem is named after Napoleon Bonaparte,\nwho loved geometry - though nobody knows\nwhether he really proved it.\n\nDrag the yellow vertices." DecimalsToShow="2" X="4.165" Y="0.335" />
+  </Figures>
+</Drawing>

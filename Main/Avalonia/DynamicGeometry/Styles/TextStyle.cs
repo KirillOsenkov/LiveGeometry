@@ -115,7 +115,17 @@ namespace DynamicGeometry
             existingStyle.Setters.Add(new Setter(TextBlock.ForegroundProperty, new SolidColorBrush(Color)));
             if (FontFamily != null && !FontFamily.Name.IsEmpty())
             {
-                existingStyle.Setters.Add(new Setter(TextBlock.FontFamilyProperty, FontFamily));
+                // A drawing names fonts of the machine it was made on (Segoe UI, Arial); the
+                // browser has none of them, and what a missing font falls back to by itself
+                // there is Noto Mono - and so are FontFamily.Default and the font manager's
+                // default. The app's own font (embedded Inter) is what the theme puts on the
+                // window and text inherits, so a font that isn't there is simply not set.
+                bool isInstalled = FontManager.Current.TryGetGlyphTypeface(new Typeface(FontFamily), out var resolved)
+                    && string.Equals(resolved.FamilyName, FontFamily.Name, System.StringComparison.OrdinalIgnoreCase);
+                if (isInstalled)
+                {
+                    existingStyle.Setters.Add(new Setter(TextBlock.FontFamilyProperty, FontFamily));
+                }
             }
             existingStyle.Setters.Add(new Setter(TextBlock.FontStyleProperty, Italic ? FontStyles.Italic : FontStyles.Normal));
             existingStyle.Setters.Add(new Setter(TextBlock.FontWeightProperty, Bold ? FontWeights.Bold : FontWeights.Normal));

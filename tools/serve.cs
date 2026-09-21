@@ -46,6 +46,13 @@ while (true)
         {
             var relative = Uri.UnescapeDataString(context.Request.Url.AbsolutePath).TrimStart('/');
             var path = Path.GetFullPath(Path.Combine(root, relative.Length == 0 ? "index.html" : relative));
+
+            // the same fallback as web.config: a route of the app (/gallery/morley) is not a file
+            if (!File.Exists(path) && Path.GetExtension(path).Length == 0)
+            {
+                path = Path.Combine(root, "index.html");
+            }
+
             if (!path.StartsWith(root, StringComparison.OrdinalIgnoreCase) || !File.Exists(path))
             {
                 context.Response.StatusCode = 404;

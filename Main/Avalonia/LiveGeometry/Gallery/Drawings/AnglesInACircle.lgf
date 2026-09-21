@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-5.0833333333" Top="7.5" Right="4.9166666667" Bottom="-7.6666666667" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <LineStyle Color="#FFAAAAAA" StrokeWidth="1" Name="ThinLine" />
+    <ShapeStyle IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Offset="0" Color="#FFFFFFAA" />
+          <GradientStop Offset="1" Color="#00FFFFFF" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <PointStyle Size="15" Fill="#FF33FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="10" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="O" Style="1" X="-0.0208333333" Y="-2.5625" />
+    <FreePoint Name="CirclePoint" Style="1" X="2.75" Y="-5.2916666667" />
+    <Circle Name="Circle8" Locked="true" Style="4">
+      <Dependency Name="O" />
+      <Dependency Name="CirclePoint" />
+    </Circle>
+    <PointOnFigure Name="A" Style="1" X="-3.87258301323222" Y="-2.02408337814026" Parameter="3.00270763808645">
+      <Dependency Name="Circle8" />
+    </PointOnFigure>
+    <PointOnFigure Name="C" Style="1" X="3.36285599172288" Y="-0.645076049153704" Parameter="0.515549007458979">
+      <Dependency Name="Circle8" />
+    </PointOnFigure>
+    <PointOnFigure Name="B" Style="10" X="-0.381820670011214" Y="1.30990961137725" Parameter="1.66374803581901">
+      <Dependency Name="Circle8" />
+    </PointOnFigure>
+    <Segment Name="Segment10" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment12" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="AC" Style="ThinLine">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <AngleArc Name="AngleArc14" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </AngleArc>
+    <AngleMeasurement Name="AngleMeasurement15" Style="7" OffsetX="-0.249999999999998" OffsetY="-0.479166666599998">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </AngleMeasurement>
+    <Polygon Name="Polygon20" Style="5">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <PointLabel Name="PointLabel24" Style="7" OffsetX="-0.229166666699998" OffsetY="0.739583333333333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="PointLabel25" Style="7" OffsetX="-0.104166666666667" OffsetY="0.79166666666667" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="PointLabel26" Style="7" OffsetX="-0.135416666666666" OffsetY="0.739583333333334" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="C" />
+    </PointLabel>
+    <PointLabel Name="PointLabel27" Style="7" OffsetX="-0.197916666733333" OffsetY="0.697916666633333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="O" />
+    </PointLabel>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Inscribed Angle" DecimalsToShow="2" X="4.63" Y="1.31" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A and C are fixed on the circle. Drag B along\nthe circle: angle ABC doesn't change!\n\nAll inscribed angles that intercept the same\narc are congruent, and each is half of the\ncentral angle AOC.\n\nNow move A and C so that AC is a diameter. The\nangle becomes exactly 90°." DecimalsToShow="2" X="4.63" Y="0.518" />
+  </Figures>
+</Drawing>

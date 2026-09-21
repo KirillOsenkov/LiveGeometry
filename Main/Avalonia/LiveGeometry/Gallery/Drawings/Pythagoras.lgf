@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-7.9950867182" Top="16.0942200334" Right="12.8921775481" Bottom="-15.5847974371" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <PointStyle Size="6" Fill="#FFFFFFFF" IsFilled="true" Color="#FF400040" StrokeWidth="0.7" Name="10" />
+    <LineStyle Color="#FF000000" StrokeWidth="2" Name="11" />
+    <PointStyle Size="6" Fill="#FFFFFFFF" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="12" />
+    <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="13" />
+    <PointStyle Size="6" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Name="14" />
+    <TextStyle FontSize="34" Color="#FFF4CACA" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="15" />
+    <TextStyle FontSize="34" Color="#FFB9C0FF" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="16" />
+    <TextStyle FontSize="30.6" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="17" />
+    <TextStyle FontSize="17" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="18" />
+    <ShapeStyle Fill="#80EA8895" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="19" />
+    <ShapeStyle Fill="#806A79FF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="20" />
+    <ShapeStyle Fill="#FFE1E4FF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="21" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="1.9698789422" Y="-2.5737724046" />
+    <FreePoint Name="C" Style="1" X="4.5807869754" Y="0.9944685742" />
+    <Segment Name="Segment14" Style="11">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine15" Visible="false" Style="4">
+      <Dependency Name="Segment14" />
+      <Dependency Name="C" />
+    </PerpendicularLine>
+    <PointOnFigure Name="B" Style="2" X="0.367443855726543" Y="4.07740256412433" Parameter="-1.1807899591721">
+      <Dependency Name="PerpendicularLine15" />
+    </PointOnFigure>
+    <FreePoint Name="D" Visible="false" Style="10" X="-4.855109" Y="4.722817" />
+    <FreePoint Name="E" Visible="false" Style="10" X="-4.2527852038" Y="4.8238003564" />
+    <Segment Name="Segment16" Style="11">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <CircleByRadius Name="CircleByRadius17" Visible="false" Style="13">
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+    </CircleByRadius>
+    <IntersectionPoint Name="F" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="Segment16" />
+      <Dependency Name="CircleByRadius17" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="G" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="Segment16" />
+      <Dependency Name="CircleByRadius17" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="H" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="Segment14" />
+      <Dependency Name="CircleByRadius17" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="Segment14" />
+      <Dependency Name="CircleByRadius17" />
+    </IntersectionPoint>
+    <MidPoint Name="J" Visible="false" Style="14">
+      <Dependency Name="I" />
+      <Dependency Name="G" />
+    </MidPoint>
+    <ReflectedPoint Name="K" Visible="false" Style="14">
+      <Dependency Name="C" />
+      <Dependency Name="J" />
+    </ReflectedPoint>
+    <Segment Name="Segment18" Style="11">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine19" Visible="false" Style="4">
+      <Dependency Name="Segment18" />
+      <Dependency Name="B" />
+    </PerpendicularLine>
+    <Circle Name="Circle20" Visible="false" Style="13">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="L" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="PerpendicularLine19" />
+      <Dependency Name="Circle20" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="M" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="PerpendicularLine19" />
+      <Dependency Name="Circle20" />
+    </IntersectionPoint>
+    <MidPoint Name="N" Visible="false" Style="14">
+      <Dependency Name="M" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <ReflectedPoint Name="O" Visible="false" Style="14">
+      <Dependency Name="B" />
+      <Dependency Name="N" />
+    </ReflectedPoint>
+    <PerpendicularLine Name="PerpendicularLine21" Visible="false" Style="4">
+      <Dependency Name="Segment14" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <Circle Name="Circle22" Visible="false" Style="13">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Circle>
+    <IntersectionPoint Name="P" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="PerpendicularLine21" />
+      <Dependency Name="Circle22" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="Q" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="PerpendicularLine21" />
+      <Dependency Name="Circle22" />
+    </IntersectionPoint>
+    <MidPoint Name="R" Visible="false" Style="14">
+      <Dependency Name="P" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <ReflectedPoint Name="S" Visible="false" Style="14">
+      <Dependency Name="A" />
+      <Dependency Name="R" />
+    </ReflectedPoint>
+    <Circle Name="Circle23" Visible="false" Style="13">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Circle>
+    <PerpendicularLine Name="PerpendicularLine24" Visible="false" Style="4">
+      <Dependency Name="Segment16" />
+      <Dependency Name="C" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="T" Visible="false" Style="14" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle23" />
+      <Dependency Name="PerpendicularLine24" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="U" Visible="false" Style="14" Algorithm="IntersectEllipseAndLine2">
+      <Dependency Name="Circle23" />
+      <Dependency Name="PerpendicularLine24" />
+    </IntersectionPoint>
+    <MidPoint Name="V" Visible="false" Style="14">
+      <Dependency Name="B" />
+      <Dependency Name="U" />
+    </MidPoint>
+    <ReflectedPoint Name="W" Visible="false" Style="14">
+      <Dependency Name="C" />
+      <Dependency Name="V" />
+    </ReflectedPoint>
+    <Segment Name="Segment25" Style="4">
+      <Dependency Name="I" />
+      <Dependency Name="K" />
+    </Segment>
+    <Segment Name="Segment26" Style="4">
+      <Dependency Name="K" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="Segment27" Style="4">
+      <Dependency Name="O" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="Segment28" Style="4">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="Segment29" Style="4">
+      <Dependency Name="M" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment30" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="Segment31" Style="4">
+      <Dependency Name="P" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="Segment32" Style="4">
+      <Dependency Name="S" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment33" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="W" />
+    </Segment>
+    <Segment Name="Segment34" Style="4">
+      <Dependency Name="W" />
+      <Dependency Name="U" />
+    </Segment>
+    <Segment Name="Segment35" Style="4">
+      <Dependency Name="U" />
+      <Dependency Name="C" />
+    </Segment>
+    <DistanceMeasurement Name="DistanceMeasurement36" Style="7" OffsetX="0.174060535500009" OffsetY="1.21842374900001">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </DistanceMeasurement>
+    <DistanceMeasurement Name="DistanceMeasurement37" Style="7" OffsetX="-1.78412048950001" OffsetY="1.3489691506">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </DistanceMeasurement>
+    <DistanceMeasurement Name="DistanceMeasurement38" Style="7" OffsetX="-0.6527270083" OffsetY="1.3924842844">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </DistanceMeasurement>
+    <Polygon Name="Polygon44" Style="19">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="M" />
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </Polygon>
+    <Polygon Name="Polygon45" Style="20">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="W" />
+      <Dependency Name="U" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Polygon Name="Polygon46" Style="20">
+      <Dependency Name="A" />
+      <Dependency Name="P" />
+      <Dependency Name="S" />
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </Polygon>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Pythagorean Theorem" DecimalsToShow="2" X="6.001" Y="4.824" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="In a right triangle the square on the\nhypotenuse has the same area as the two\nsquares on the legs together: a² + b² = c².\n\nRight now the legs are [AC] and [BC], and the\nhypotenuse is [ab].\nc² = [ab^2]\na² + b² = [AC^2+BC^2]\n\nDrag the yellow points - the two numbers\nalways agree." DecimalsToShow="2" X="6.001" Y="3.936">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Label>
+  </Figures>
+</Drawing>

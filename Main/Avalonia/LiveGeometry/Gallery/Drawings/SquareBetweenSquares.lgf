@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-5" Top="9.0312500001" Right="4.59375" Bottom="-7.6354166666" Grid="false" />
+  <Styles>
+    <PointStyle Size="15" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFF2A2A" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#80FFFF00" IsFilled="true" Color="#00000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <ShapeStyle Fill="#8000FFEE" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="9" />
+    <ShapeStyle Fill="#801AFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="10" />
+    <LineStyle Color="#FF828282" StrokeWidth="1" Name="11" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-2.3958333333" Y="2.9166666667" />
+    <FreePoint Name="E" Style="1" X="-4" Y="3.6458333334" />
+    <Segment Name="Segment14" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+    </Segment>
+    <Circle Name="Circle15" Visible="false" Style="4">
+      <Dependency Name="E" />
+      <Dependency Name="A" />
+    </Circle>
+    <PerpendicularLine Name="PerpendicularLine16" Visible="false" Style="4">
+      <Dependency Name="Segment14" />
+      <Dependency Name="E" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="B" Visible="false" Style="3" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle15" />
+      <Dependency Name="PerpendicularLine16" />
+    </IntersectionPoint>
+    <MidPoint Name="C" Visible="false" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <ReflectedPoint Name="D" Visible="false" Style="3">
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+    </ReflectedPoint>
+    <Segment Name="Segment17" Style="4">
+      <Dependency Name="E" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment18" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="Segment19" Style="4">
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </Segment>
+    <Polygon Name="Polygon20" Style="10">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+      <Dependency Name="B" />
+      <Dependency Name="D" />
+    </Polygon>
+    <FreePoint Name="F" Style="1" X="3.8541666667" Y="-3.375" />
+    <FreePoint Name="J" Style="1" X="0.4375" Y="-4.3958333333" />
+    <Segment Name="Segment28" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="J" />
+    </Segment>
+    <Circle Name="Circle29" Visible="false" Style="4">
+      <Dependency Name="J" />
+      <Dependency Name="F" />
+    </Circle>
+    <PerpendicularLine Name="PerpendicularLine30" Visible="false" Style="4">
+      <Dependency Name="Segment28" />
+      <Dependency Name="J" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="G" Visible="false" Style="3" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle29" />
+      <Dependency Name="PerpendicularLine30" />
+    </IntersectionPoint>
+    <MidPoint Name="H" Visible="false" Style="1">
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <ReflectedPoint Name="I" Visible="false" Style="3">
+      <Dependency Name="J" />
+      <Dependency Name="H" />
+    </ReflectedPoint>
+    <Segment Name="Segment31" Style="4">
+      <Dependency Name="J" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="Segment32" Style="4">
+      <Dependency Name="G" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment33" Style="4">
+      <Dependency Name="I" />
+      <Dependency Name="F" />
+    </Segment>
+    <Polygon Name="Polygon34" Style="5">
+      <Dependency Name="F" />
+      <Dependency Name="J" />
+      <Dependency Name="G" />
+      <Dependency Name="I" />
+    </Polygon>
+    <Segment Name="Segment36" Style="11">
+      <Dependency Name="E" />
+      <Dependency Name="J" />
+    </Segment>
+    <Segment Name="Segment38" Style="11">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="Segment40" Style="11">
+      <Dependency Name="B" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="Segment42" Style="11">
+      <Dependency Name="D" />
+      <Dependency Name="I" />
+    </Segment>
+    <MidPoint Name="K" Visible="false" Style="3">
+      <Dependency Name="B" />
+      <Dependency Name="G" />
+    </MidPoint>
+    <MidPoint Name="L" Visible="false" Style="3">
+      <Dependency Name="D" />
+      <Dependency Name="I" />
+    </MidPoint>
+    <MidPoint Name="M" Visible="false" Style="2">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <MidPoint Name="N" Visible="false" Style="2">
+      <Dependency Name="E" />
+      <Dependency Name="J" />
+    </MidPoint>
+    <Polygon Name="Polygon59" Style="6">
+      <Dependency Name="N" />
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </Polygon>
+    <Segment Name="Segment60" Style="4">
+      <Dependency Name="N" />
+      <Dependency Name="K" />
+    </Segment>
+    <Segment Name="Segment61" Style="4">
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="Segment62" Style="4">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="Segment63" Style="4">
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+    </Segment>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Square Between Squares" DecimalsToShow="2" X="5.398" Y="3.646" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Take any two squares (red and green). Connect\ntheir matching corners with four gray segments\nand mark the midpoints.\n\nThe midpoints form another square (yellow)!\nIts size is halfway between the two.\n\nDrag the yellow points to move and turn the\nsquares." DecimalsToShow="2" X="5.398" Y="2.681" />
+  </Figures>
+</Drawing>

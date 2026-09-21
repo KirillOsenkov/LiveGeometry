@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-4.1927083333" Top="5.234375" Right="4.1406250001" Bottom="-8.6545138889" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFF6D6D" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="40" Color="#FF7406A3" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="8" />
+    <ShapeStyle Fill="#FFFF8800" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="9" />
+    <ShapeStyle Fill="#FFFFF700" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="10" />
+    <ShapeStyle Fill="#FF11FF00" IsFilled="true" Color="#00000000" StrokeWidth="1" Name="11" />
+    <ShapeStyle Fill="#FFC06DFF" IsFilled="true" Color="#00000000" StrokeWidth="1" Name="12" />
+    <ShapeStyle Fill="#FF0099FF" IsFilled="true" Color="#00000000" StrokeWidth="1" Name="13" />
+    <ShapeStyle Fill="#FF00FFE5" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="14" />
+    <LineStyle Color="#FF860095" StrokeWidth="5" Name="15" />
+    <LineStyle Color="#FF2A0EB8" StrokeWidth="5" Name="16" />
+    <LineStyle Color="#FF009196" StrokeWidth="5" Name="17" />
+    <LineStyle Color="#FF047700" StrokeWidth="5" Name="18" />
+    <LineStyle Color="#FF777303" StrokeWidth="5" Name="19" />
+    <LineStyle Color="#FF885109" StrokeWidth="5" Name="20" />
+    <LineStyle Color="#FF8E0606" StrokeWidth="5" Name="21" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-3.4374999999" Y="3.5416666666" />
+    <FreePoint Name="B" Style="1" X="2.8472222223" Y="3.8020833333" />
+    <Segment Name="Segment49" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine51" Visible="false" Style="4">
+      <Dependency Name="Segment49" />
+      <Dependency Name="B" />
+    </PerpendicularLine>
+    <Circle Name="Circle53" Visible="false" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="C" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle53" />
+      <Dependency Name="PerpendicularLine51" />
+    </IntersectionPoint>
+    <MidPoint Name="D" Visible="false" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <ReflectedPoint Name="E" Visible="false" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="D" />
+    </ReflectedPoint>
+    <CircleArc Name="CircleArc56" Style="15">
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </CircleArc>
+    <PointOnFigure Name="F" Visible="false" Style="1" X="3.26830531201539" Y="-6.36005523049464" Parameter="1.61695906430011">
+      <Dependency Name="PerpendicularLine51" />
+    </PointOnFigure>
+    <Circle Name="Circle61" Visible="false" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="C" />
+    </Circle>
+    <Segment Name="Segment62" Visible="false" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="F" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine63" Visible="false" Style="4">
+      <Dependency Name="Segment62" />
+      <Dependency Name="F" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="G" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle61" />
+      <Dependency Name="PerpendicularLine63" />
+    </IntersectionPoint>
+    <MidPoint Name="H" Visible="false" Style="1">
+      <Dependency Name="C" />
+      <Dependency Name="G" />
+    </MidPoint>
+    <ReflectedPoint Name="I" Visible="false" Style="1">
+      <Dependency Name="F" />
+      <Dependency Name="H" />
+    </ReflectedPoint>
+    <CircleArc Name="CircleArc64" Style="16">
+      <Dependency Name="I" />
+      <Dependency Name="G" />
+      <Dependency Name="C" />
+    </CircleArc>
+    <LineTwoPoints Name="LineTwoPoints66" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="J" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="LineTwoPoints66" />
+      <Dependency Name="PerpendicularLine63" />
+    </IntersectionPoint>
+    <Circle Name="Circle71" Visible="false" Style="4">
+      <Dependency Name="J" />
+      <Dependency Name="G" />
+    </Circle>
+    <Segment Name="Segment72" Visible="false" Style="4">
+      <Dependency Name="G" />
+      <Dependency Name="J" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine73" Visible="false" Style="4">
+      <Dependency Name="Segment72" />
+      <Dependency Name="J" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="K" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle71" />
+      <Dependency Name="PerpendicularLine73" />
+    </IntersectionPoint>
+    <MidPoint Name="L" Visible="false" Style="1">
+      <Dependency Name="G" />
+      <Dependency Name="K" />
+    </MidPoint>
+    <ReflectedPoint Name="M" Visible="false" Style="1">
+      <Dependency Name="J" />
+      <Dependency Name="L" />
+    </ReflectedPoint>
+    <CircleArc Name="CircleArc74" Style="17">
+      <Dependency Name="M" />
+      <Dependency Name="K" />
+      <Dependency Name="G" />
+    </CircleArc>
+    <Circle Name="Circle79" Visible="false" Style="4">
+      <Dependency Name="E" />
+      <Dependency Name="K" />
+    </Circle>
+    <Segment Name="Segment80" Visible="false" Style="4">
+      <Dependency Name="K" />
+      <Dependency Name="E" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine81" Visible="false" Style="4">
+      <Dependency Name="Segment80" />
+      <Dependency Name="E" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="N" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle79" />
+      <Dependency Name="PerpendicularLine81" />
+    </IntersectionPoint>
+    <MidPoint Name="O" Visible="false" Style="1">
+      <Dependency Name="K" />
+      <Dependency Name="N" />
+    </MidPoint>
+    <ReflectedPoint Name="P" Visible="false" Style="1">
+      <Dependency Name="E" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <CircleArc Name="CircleArc82" Style="18">
+      <Dependency Name="P" />
+      <Dependency Name="N" />
+      <Dependency Name="K" />
+    </CircleArc>
+    <Circle Name="Circle87" Visible="false" Style="4">
+      <Dependency Name="I" />
+      <Dependency Name="N" />
+    </Circle>
+    <Segment Name="Segment88" Visible="false" Style="4">
+      <Dependency Name="N" />
+      <Dependency Name="I" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine89" Visible="false" Style="4">
+      <Dependency Name="Segment88" />
+      <Dependency Name="I" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="Q" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle87" />
+      <Dependency Name="PerpendicularLine89" />
+    </IntersectionPoint>
+    <MidPoint Name="R" Visible="false" Style="1">
+      <Dependency Name="N" />
+      <Dependency Name="Q" />
+    </MidPoint>
+    <ReflectedPoint Name="S" Visible="false" Style="1">
+      <Dependency Name="I" />
+      <Dependency Name="R" />
+    </ReflectedPoint>
+    <CircleArc Name="CircleArc90" Style="19">
+      <Dependency Name="S" />
+      <Dependency Name="Q" />
+      <Dependency Name="N" />
+    </CircleArc>
+    <Circle Name="Circle95" Visible="false" Style="4">
+      <Dependency Name="M" />
+      <Dependency Name="Q" />
+    </Circle>
+    <Segment Name="Segment96" Visible="false" Style="4">
+      <Dependency Name="Q" />
+      <Dependency Name="M" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine97" Visible="false" Style="4">
+      <Dependency Name="Segment96" />
+      <Dependency Name="M" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="T" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle95" />
+      <Dependency Name="PerpendicularLine97" />
+    </IntersectionPoint>
+    <MidPoint Name="U" Visible="false" Style="1">
+      <Dependency Name="Q" />
+      <Dependency Name="T" />
+    </MidPoint>
+    <ReflectedPoint Name="V" Visible="false" Style="1">
+      <Dependency Name="M" />
+      <Dependency Name="U" />
+    </ReflectedPoint>
+    <CircleArc Name="CircleArc98" Style="20">
+      <Dependency Name="V" />
+      <Dependency Name="T" />
+      <Dependency Name="Q" />
+    </CircleArc>
+    <Circle Name="Circle103" Visible="false" Style="4">
+      <Dependency Name="P" />
+      <Dependency Name="T" />
+    </Circle>
+    <Segment Name="Segment104" Visible="false" Style="4">
+      <Dependency Name="T" />
+      <Dependency Name="P" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine105" Visible="false" Style="4">
+      <Dependency Name="Segment104" />
+      <Dependency Name="P" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="W" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle103" />
+      <Dependency Name="PerpendicularLine105" />
+    </IntersectionPoint>
+    <MidPoint Name="X" Visible="false" Style="1">
+      <Dependency Name="T" />
+      <Dependency Name="W" />
+    </MidPoint>
+    <ReflectedPoint Name="Y" Visible="false" Style="1">
+      <Dependency Name="P" />
+      <Dependency Name="X" />
+    </ReflectedPoint>
+    <CircleArc Name="CircleArc106" Style="21">
+      <Dependency Name="Y" />
+      <Dependency Name="W" />
+      <Dependency Name="T" />
+    </CircleArc>
+    <Polygon Name="Polygon120" Style="12">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Segment Name="Segment121" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment122" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="E" />
+    </Segment>
+    <Polygon Name="Polygon138" Style="13">
+      <Dependency Name="G" />
+      <Dependency Name="I" />
+      <Dependency Name="C" />
+      <Dependency Name="F" />
+    </Polygon>
+    <Segment Name="Segment139" Style="4">
+      <Dependency Name="G" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment140" Visible="false" Style="4">
+      <Dependency Name="I" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment141" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+    </Segment>
+    <Polygon Name="Polygon157" Style="14">
+      <Dependency Name="K" />
+      <Dependency Name="M" />
+      <Dependency Name="G" />
+      <Dependency Name="J" />
+    </Polygon>
+    <Segment Name="Segment158" Style="4">
+      <Dependency Name="K" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="Segment159" Visible="false" Style="4">
+      <Dependency Name="M" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="Segment160" Style="4">
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+    </Segment>
+    <Polygon Name="Polygon177" Style="11">
+      <Dependency Name="E" />
+      <Dependency Name="N" />
+      <Dependency Name="P" />
+      <Dependency Name="K" />
+    </Polygon>
+    <Segment Name="Segment178" Style="4">
+      <Dependency Name="E" />
+      <Dependency Name="N" />
+    </Segment>
+    <Segment Name="Segment179" Style="4">
+      <Dependency Name="N" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="Segment180" Style="4">
+      <Dependency Name="P" />
+      <Dependency Name="K" />
+    </Segment>
+    <Polygon Name="Polygon194" Style="10">
+      <Dependency Name="N" />
+      <Dependency Name="I" />
+      <Dependency Name="Q" />
+      <Dependency Name="S" />
+    </Polygon>
+    <Segment Name="Segment195" Style="4">
+      <Dependency Name="I" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Segment Name="Segment196" Style="4">
+      <Dependency Name="Q" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="Segment197" Style="4">
+      <Dependency Name="S" />
+      <Dependency Name="N" />
+    </Segment>
+    <Polygon Name="Polygon211" Style="9">
+      <Dependency Name="Q" />
+      <Dependency Name="M" />
+      <Dependency Name="T" />
+      <Dependency Name="V" />
+    </Polygon>
+    <Segment Name="Segment212" Style="4">
+      <Dependency Name="M" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="Segment213" Style="4">
+      <Dependency Name="T" />
+      <Dependency Name="V" />
+    </Segment>
+    <Segment Name="Segment214" Style="4">
+      <Dependency Name="V" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Polygon Name="Polygon231" Style="6">
+      <Dependency Name="P" />
+      <Dependency Name="W" />
+      <Dependency Name="Y" />
+      <Dependency Name="T" />
+    </Polygon>
+    <Segment Name="Segment232" Style="4">
+      <Dependency Name="P" />
+      <Dependency Name="W" />
+    </Segment>
+    <Segment Name="Segment233" Style="4">
+      <Dependency Name="W" />
+      <Dependency Name="Y" />
+    </Segment>
+    <Segment Name="Segment234" Style="4">
+      <Dependency Name="Y" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="Segment236" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="Segment238" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="Segment240" Style="4">
+      <Dependency Name="E" />
+      <Dependency Name="K" />
+    </Segment>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Fibonacci Spiral" DecimalsToShow="2" X="5.219" Y="3.802" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="1, 1, 2, 3, 5, 8, 13... Each Fibonacci number\nis the sum of the two before it.\n\nSquares with these side lengths fit together\nperfectly, and a quarter circle in each square\nmakes a spiral. You can find it in seashells,\nsunflowers and pinecones.\n\nDrag the yellow points to turn and resize it." DecimalsToShow="2" X="5.219" Y="2.583" />
+  </Figures>
+</Drawing>

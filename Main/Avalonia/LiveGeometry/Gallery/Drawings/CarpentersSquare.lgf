@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-4.9791666667" Top="7.4583333333" Right="5.0208333333" Bottom="-7.7083333333" Grid="false" />
+  <Styles>
+    <PointStyle Size="15" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FFAE9518" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <LineStyle Color="#FF955D08" StrokeWidth="2" Name="10" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="2" X="-2.6666666667" Y="1.0416666667" />
+    <FreePoint Name="B" Style="2" X="2.1458333333" Y="1.0625" />
+    <MidPoint Name="C" Visible="false" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <CircleArc Name="Arc" Visible="false" Style="10">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </CircleArc>
+    <PointOnFigure Name="D" Style="1" X="1.60895083430949" Y="2.5672548867292" Parameter="0.681126551447003">
+      <Dependency Name="Arc" />
+    </PointOnFigure>
+    <Ray Name="Ray212" Visible="false" Style="4">
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </Ray>
+    <Ray Name="Ray214" Visible="false" Style="4">
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </Ray>
+    <Ray Name="Ray216" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Ray>
+    <PointOnFigure Name="E" Visible="false" Style="1" X="2.95007476589197" Y="1.06598156463768" Parameter="1.16711510287625">
+      <Dependency Name="Ray216" />
+    </PointOnFigure>
+    <CircleByRadius Name="CircleByRadius219" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+      <Dependency Name="D" />
+    </CircleByRadius>
+    <IntersectionPoint Name="F" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="CircleByRadius219" />
+      <Dependency Name="Ray212" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="G" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="CircleByRadius219" />
+      <Dependency Name="Ray214" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine221" Visible="false" Style="4">
+      <Dependency Name="Ray212" />
+      <Dependency Name="F" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine223" Visible="false" Style="4">
+      <Dependency Name="Ray214" />
+      <Dependency Name="G" />
+    </PerpendicularLine>
+    <CircleByRadius Name="CircleByRadius226" Visible="false" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+      <Dependency Name="G" />
+    </CircleByRadius>
+    <CircleByRadius Name="CircleByRadius229" Visible="false" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+    </CircleByRadius>
+    <CircleByRadius Name="CircleByRadius232" Visible="false" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+      <Dependency Name="D" />
+    </CircleByRadius>
+    <IntersectionPoint Name="I" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="CircleByRadius232" />
+      <Dependency Name="Ray214" />
+    </IntersectionPoint>
+    <ParallelLine Name="ParallelLine234" Visible="false" Style="4">
+      <Dependency Name="Ray212" />
+      <Dependency Name="I" />
+    </ParallelLine>
+    <IntersectionPoint Name="K" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ParallelLine234" />
+      <Dependency Name="PerpendicularLine221" />
+    </IntersectionPoint>
+    <Segment Name="Segment270" Style="4">
+      <Dependency Name="D" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="Segment274" Style="4">
+      <Dependency Name="K" />
+      <Dependency Name="F" />
+    </Segment>
+    <CircleByRadius Name="CircleByRadius280" Visible="false" Style="4">
+      <Dependency Name="D" />
+      <Dependency Name="I" />
+      <Dependency Name="D" />
+    </CircleByRadius>
+    <Polygon Name="Polygon305" Style="6">
+      <Dependency Name="F" />
+      <Dependency Name="D" />
+      <Dependency Name="G" />
+      <Dependency Name="J" />
+      <Dependency Name="L" />
+      <Dependency Name="K" />
+    </Polygon>
+    <Segment Name="Segment306" Style="4">
+      <Dependency Name="G" />
+      <Dependency Name="J" />
+    </Segment>
+    <Segment Name="Segment307" Style="4">
+      <Dependency Name="J" />
+      <Dependency Name="L" />
+    </Segment>
+    <IntersectionPoint Name="J" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ParallelLine282" />
+      <Dependency Name="PerpendicularLine223" />
+    </IntersectionPoint>
+    <Segment Name="Segment308" Style="4">
+      <Dependency Name="L" />
+      <Dependency Name="K" />
+    </Segment>
+    <IntersectionPoint Name="L" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ParallelLine282" />
+      <Dependency Name="ParallelLine234" />
+    </IntersectionPoint>
+    <ParallelLine Name="ParallelLine282" Visible="false" Style="4">
+      <Dependency Name="Segment270" />
+      <Dependency Name="H" />
+    </ParallelLine>
+    <IntersectionPoint Name="H" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine2">
+      <Dependency Name="CircleByRadius280" />
+      <Dependency Name="Segment269" />
+    </IntersectionPoint>
+    <Segment Name="Segment269" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="D" />
+    </Segment>
+    <ShowHideControl Name="Hint" Show="false" Text="Hint" X="-4" Y="-5">
+      <Dependency Name="Arc" />
+    </ShowHideControl>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Carpenter's Square" DecimalsToShow="2" X="4.403" Y="2.567" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A carpenter's square is a tool with a perfect\nright angle. Slide it so that its two arms\nalways touch two fixed nails.\n\nWhat path does the corner follow? Drag it and\nguess, then check &quot;Hint&quot;." DecimalsToShow="2" X="4.403" Y="1.659" />
+  </Figures>
+</Drawing>

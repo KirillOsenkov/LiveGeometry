@@ -59,6 +59,21 @@ namespace DynamicGeometry
 #endif
             updater.UpdateIfNecessary(drawing);
             drawing.Recalculate();
+
+            // Files don't record which version of the library wrote them, so a drawing that is
+            // known to be that old has to say so (tools/gallerize.cs adds this). Saving it
+            // writes the upgraded algorithms and not the attribute.
+            if (element.ReadString("IntersectionOrder") == "Legacy")
+            {
+                // in the order of construction: what comes later is built on what was fixed
+                foreach (var intersection in drawing.Figures.OfType<IntersectionPoint>().ToArray())
+                {
+                    if (intersection.UpgradeLegacyCircleAndLineOrder())
+                    {
+                        drawing.Recalculate();
+                    }
+                }
+            }
             //drawing.CoordinateSystem.MoveTo(drawing.Figures.OfType<IPoint>().Midpoint().Minus());
         }
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-4.1493055556" Top="6.3541666667" Right="4.1840277778" Bottom="-6.2847222222" Grid="true" />
+  <Styles>
+    <PointStyle Size="20" Fill="#FFFFEF00" IsFilled="true" Color="#FFA05C21" StrokeWidth="2" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FFF6A372" StrokeWidth="4" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FFFF3C00" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FunctionGraph Name="FunctionGraph139" Style="4" Function="C.Y*sin(x)">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </FunctionGraph>
+    <FreePoint Name="A" Visible="false" Style="1" X="1.5798611111" Y="0" />
+    <FreePoint Name="B" Visible="false" Style="1" X="1.5972222222" Y="5.7291666667" />
+    <LineTwoPoints Name="Ray142" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </LineTwoPoints>
+    <PointOnFigure Name="C" Style="1" X="1.582913226985" Y="1.00719824270203" Parameter="0.175801875088787">
+      <Dependency Name="Ray142" />
+    </PointOnFigure>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Sine Wave: Amplitude" DecimalsToShow="2" X="2.697" Y="5.729" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="y = [C.Y] · sin(x)\n\nDrag the yellow point up and down to change\nthe number in front of the sine, the\namplitude: how tall the wave is. What happens\nwhen it is negative? When it is zero?" DecimalsToShow="2" X="2.697" Y="5.042">
+      <Dependency Name="C" />
+    </Label>
+  </Figures>
+</Drawing>

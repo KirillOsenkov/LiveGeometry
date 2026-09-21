@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-8.9541660515" Top="12.653377509" Right="7.640427403" Bottom="-12.5150892302" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF132CAA" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FF3A3DAE" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <PointStyle Size="7" Fill="#FFFFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Name="10" />
+    <PointStyle Size="7" Fill="#FFFFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Name="11" />
+    <PointStyle Size="7" Fill="#FFFFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Name="12" />
+    <LineStyle Color="#FF0000FF" StrokeWidth="2" Name="13" />
+    <PointStyle Size="6" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Name="14" />
+    <LineStyle Color="#FF0000FF" StrokeWidth="2" Name="15" />
+    <PointStyle Size="6" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Name="16" />
+    <LineStyle Color="#FF0000FF" StrokeWidth="2" Name="17" />
+    <PointStyle Size="6" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Name="18" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="19" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="20" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="21" />
+    <TextStyle FontSize="27.2" Color="#FF0000A0" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="22" />
+    <TextStyle FontSize="20.4" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="23" />
+    <TextStyle FontSize="20.4" Color="#FF0000FF" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="24" />
+    <ShapeStyle Fill="#FFEEF4FD" IsFilled="true" Color="#FFEEF4FD" StrokeWidth="1" Name="25" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-6.2864046426" Y="-2.5294710428" />
+    <FreePoint Name="B" Style="1" X="4.2926486846" Y="2.2760466451" />
+    <FreePoint Name="C" Style="1" X="2.8060496876" Y="-8.7870156579" />
+    <Segment Name="Segment14" Style="13">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <PointOnFigure Name="D" Style="2" X="3.47480462205214" Y="-3.81023475046423" Parameter="0.550144365897117">
+      <Dependency Name="Segment14" />
+    </PointOnFigure>
+    <Segment Name="Segment15" Style="15">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </Segment>
+    <PointOnFigure Name="E" Style="2" X="-2.46985741887992" Y="-5.15606818156606" Parameter="0.580251152756009">
+      <Dependency Name="Segment15" />
+    </PointOnFigure>
+    <Segment Name="Segment16" Style="17">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PointOnFigure Name="F" Style="2" X="-0.637396874912154" Y="0.0365815052963225" Parameter="0.533980460535498">
+      <Dependency Name="Segment16" />
+    </PointOnFigure>
+    <Segment Name="Segment17" Style="19">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="Segment18" Style="20">
+      <Dependency Name="F" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment19" Style="21">
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </Segment>
+    <Polygon Name="Polygon23" Style="25">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <PointLabel Name="PointLabel24" IsHitTestVisible="false" Style="9" OffsetX="-0.207432418180544" OffsetY="1.22730847423489" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="PointLabel25" IsHitTestVisible="false" Style="9" OffsetX="0.0172860348678352" OffsetY="1.22730847423489" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="PointLabel26" IsHitTestVisible="false" Style="9" OffsetX="0.103716209119456" OffsetY="-0.259290522665113" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="C" />
+    </PointLabel>
+    <PointLabel Name="PointLabel27" IsHitTestVisible="false" Style="9" OffsetX="0.570439149971077" OffsetY="0.639583289334886" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="D" />
+    </PointLabel>
+    <PointLabel Name="PointLabel28" IsHitTestVisible="false" Style="9" OffsetX="-0.691441393883787" OffsetY="-0.224718453065115" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="E" />
+    </PointLabel>
+    <PointLabel Name="PointLabel29" IsHitTestVisible="false" Style="9" OffsetX="-0.155574313635408" OffsetY="1.22730847423489" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="F" />
+    </PointLabel>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Ceva's Theorem" DecimalsToShow="2" X="6.417" Y="2.276" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Points D, E and F lie on the sides of triangle\nABC. When do the segments AD, BE and CF pass\nthrough a single point?\n\nExactly when this product of ratios equals 1:\nAF/FB · BD/DC · CE/EA = [AF/FB*BD/DC*CE/EA]\n\nDrag D, E and F until the three segments meet,\nand watch the number." DecimalsToShow="2" X="6.417" Y="0.948">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+    </Label>
+  </Figures>
+</Drawing>

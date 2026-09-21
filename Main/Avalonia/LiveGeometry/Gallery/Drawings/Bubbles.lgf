@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-4.9895833333" Top="8.3229166667" Right="5.0104166667" Bottom="-8.34375" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FF90FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="40" Color="#FFFF4D00" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="20" Color="#FF7B3D06" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <ShapeStyle Fill="#FFF7FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="9" />
+    <ShapeStyle Fill="#FF00FFDD" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="10" />
+    <ShapeStyle Fill="#FF80D8FF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="11" />
+    <ShapeStyle Fill="#FFE789FF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="12" />
+    <ShapeStyle Fill="#FFFF7474" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="13" />
+    <ShapeStyle Fill="#FFA163FF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="14" />
+    <ShapeStyle Fill="#FFFFAF5E" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="15" />
+    <ShapeStyle Fill="#FFB9FFB4" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="16" />
+    <ShapeStyle Fill="#FFCCCCCC" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="17" />
+    <ShapeStyle Fill="#FFFFE9A3" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="18" />
+    <ShapeStyle Fill="#FF6795FF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="19" />
+    <ShapeStyle Fill="#FFFF6767" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="20" />
+    <LineStyle Color="#FF939393" StrokeWidth="1" Name="21" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="0.916666666600001" Y="1.8125" />
+    <FreePoint Name="B" Style="1" X="3.0625" Y="4.8333333333" />
+    <FreePoint Name="C" Style="1" X="4.2291666666" Y="1.2083333333" />
+    <Segment Name="Segment151" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <AngleBisector Name="AngleBisector147" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector143" Visible="false" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </AngleBisector>
+    <IntersectionPoint Name="D" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector147" />
+      <Dependency Name="AngleBisector143" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine153" Visible="false" Style="4">
+      <Dependency Name="Segment151" />
+      <Dependency Name="D" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="E" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine153" />
+      <Dependency Name="Segment151" />
+    </IntersectionPoint>
+    <Circle Name="Circle155" Style="9">
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+    </Circle>
+    <FreePoint Name="F" Style="1" X="-1.5833333333" Y="4.625" />
+    <Segment Name="Segment12" Visible="false" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="B" />
+    </Segment>
+    <AngleBisector Name="AngleBisector13" Visible="false" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector14" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </AngleBisector>
+    <IntersectionPoint Name="G" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector13" />
+      <Dependency Name="AngleBisector14" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine15" Visible="false" Style="4">
+      <Dependency Name="Segment12" />
+      <Dependency Name="G" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="H" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine15" />
+      <Dependency Name="Segment12" />
+    </IntersectionPoint>
+    <Circle Name="Circle16" Style="6">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+    </Circle>
+    <FreePoint Name="I" Style="1" X="-3" Y="1.3125" />
+    <Segment Name="Segment32" Visible="false" Style="4">
+      <Dependency Name="I" />
+      <Dependency Name="F" />
+    </Segment>
+    <AngleBisector Name="AngleBisector33" Visible="false" Style="4">
+      <Dependency Name="I" />
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector34" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+      <Dependency Name="I" />
+    </AngleBisector>
+    <IntersectionPoint Name="J" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector33" />
+      <Dependency Name="AngleBisector34" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine35" Visible="false" Style="4">
+      <Dependency Name="Segment32" />
+      <Dependency Name="J" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="K" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine35" />
+      <Dependency Name="Segment32" />
+    </IntersectionPoint>
+    <Circle Name="Circle36" Style="10">
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+    </Circle>
+    <FreePoint Name="L" Style="1" X="-1.2708333334" Y="-1.375" />
+    <Segment Name="Segment42" Visible="false" Style="4">
+      <Dependency Name="L" />
+      <Dependency Name="I" />
+    </Segment>
+    <AngleBisector Name="AngleBisector43" Visible="false" Style="4">
+      <Dependency Name="L" />
+      <Dependency Name="A" />
+      <Dependency Name="I" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector44" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="I" />
+      <Dependency Name="L" />
+    </AngleBisector>
+    <IntersectionPoint Name="M" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector43" />
+      <Dependency Name="AngleBisector44" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine45" Visible="false" Style="4">
+      <Dependency Name="Segment42" />
+      <Dependency Name="M" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="N" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine45" />
+      <Dependency Name="Segment42" />
+    </IntersectionPoint>
+    <Circle Name="Circle46" Style="11">
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+    </Circle>
+    <FreePoint Name="O" Style="1" X="1.1666666667" Y="-2.2291666667" />
+    <Segment Name="Segment52" Visible="false" Style="4">
+      <Dependency Name="O" />
+      <Dependency Name="L" />
+    </Segment>
+    <AngleBisector Name="AngleBisector53" Visible="false" Style="4">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+      <Dependency Name="L" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector54" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="L" />
+      <Dependency Name="O" />
+    </AngleBisector>
+    <IntersectionPoint Name="P" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector53" />
+      <Dependency Name="AngleBisector54" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine55" Visible="false" Style="4">
+      <Dependency Name="Segment52" />
+      <Dependency Name="P" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="Q" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine55" />
+      <Dependency Name="Segment52" />
+    </IntersectionPoint>
+    <Circle Name="Circle56" Style="12">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </Circle>
+    <Segment Name="Segment62" Visible="false" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="O" />
+    </Segment>
+    <AngleBisector Name="AngleBisector63" Visible="false" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector64" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+      <Dependency Name="C" />
+    </AngleBisector>
+    <IntersectionPoint Name="R" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector63" />
+      <Dependency Name="AngleBisector64" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine65" Visible="false" Style="4">
+      <Dependency Name="Segment62" />
+      <Dependency Name="R" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="S" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine65" />
+      <Dependency Name="Segment62" />
+    </IntersectionPoint>
+    <Circle Name="Circle66" Style="13">
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+    </Circle>
+    <FreePoint Name="T" Style="1" X="-1.9583333333" Y="-4.6458333333" />
+    <Segment Name="Segment72" Visible="false" Style="4">
+      <Dependency Name="T" />
+      <Dependency Name="L" />
+    </Segment>
+    <AngleBisector Name="AngleBisector73" Visible="false" Style="4">
+      <Dependency Name="T" />
+      <Dependency Name="O" />
+      <Dependency Name="L" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector74" Visible="false" Style="4">
+      <Dependency Name="O" />
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </AngleBisector>
+    <IntersectionPoint Name="U" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector73" />
+      <Dependency Name="AngleBisector74" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine75" Visible="false" Style="4">
+      <Dependency Name="Segment72" />
+      <Dependency Name="U" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="V" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine75" />
+      <Dependency Name="Segment72" />
+    </IntersectionPoint>
+    <Circle Name="Circle76" Style="14">
+      <Dependency Name="U" />
+      <Dependency Name="V" />
+    </Circle>
+    <FreePoint Name="W" Style="1" X="2.8541666667" Y="-5.4583333333" />
+    <Segment Name="Segment82" Visible="false" Style="4">
+      <Dependency Name="W" />
+      <Dependency Name="T" />
+    </Segment>
+    <AngleBisector Name="AngleBisector83" Visible="false" Style="4">
+      <Dependency Name="W" />
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector84" Visible="false" Style="4">
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+      <Dependency Name="W" />
+    </AngleBisector>
+    <IntersectionPoint Name="X" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector83" />
+      <Dependency Name="AngleBisector84" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine85" Visible="false" Style="4">
+      <Dependency Name="Segment82" />
+      <Dependency Name="X" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="Y" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine85" />
+      <Dependency Name="Segment82" />
+    </IntersectionPoint>
+    <Circle Name="Circle86" Style="6">
+      <Dependency Name="X" />
+      <Dependency Name="Y" />
+    </Circle>
+    <FreePoint Name="Z" Style="1" X="4.25" Y="-2.4166666667" />
+    <Segment Name="Segment92" Visible="false" Style="4">
+      <Dependency Name="Z" />
+      <Dependency Name="W" />
+    </Segment>
+    <AngleBisector Name="AngleBisector93" Visible="false" Style="4">
+      <Dependency Name="Z" />
+      <Dependency Name="O" />
+      <Dependency Name="W" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector94" Visible="false" Style="4">
+      <Dependency Name="O" />
+      <Dependency Name="W" />
+      <Dependency Name="Z" />
+    </AngleBisector>
+    <IntersectionPoint Name="A1" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector93" />
+      <Dependency Name="AngleBisector94" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine95" Visible="false" Style="4">
+      <Dependency Name="Segment92" />
+      <Dependency Name="A1" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="B1" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine95" />
+      <Dependency Name="Segment92" />
+    </IntersectionPoint>
+    <Circle Name="Circle96" Style="15">
+      <Dependency Name="A1" />
+      <Dependency Name="B1" />
+    </Circle>
+    <Segment Name="Segment102" Visible="false" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="Z" />
+    </Segment>
+    <AngleBisector Name="AngleBisector103" Visible="false" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="O" />
+      <Dependency Name="Z" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector104" Visible="false" Style="4">
+      <Dependency Name="O" />
+      <Dependency Name="Z" />
+      <Dependency Name="C" />
+    </AngleBisector>
+    <IntersectionPoint Name="C1" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector103" />
+      <Dependency Name="AngleBisector104" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine105" Visible="false" Style="4">
+      <Dependency Name="Segment102" />
+      <Dependency Name="C1" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="D1" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine105" />
+      <Dependency Name="Segment102" />
+    </IntersectionPoint>
+    <Circle Name="Circle106" Style="16">
+      <Dependency Name="C1" />
+      <Dependency Name="D1" />
+    </Circle>
+    <FreePoint Name="G1" Style="1" X="-4.4583333333" Y="-3.25" />
+    <Segment Name="Segment112" Visible="false" Style="4">
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </Segment>
+    <AngleBisector Name="AngleBisector113" Visible="false" Style="4">
+      <Dependency Name="L" />
+      <Dependency Name="G1" />
+      <Dependency Name="T" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector114" Visible="false" Style="4">
+      <Dependency Name="G1" />
+      <Dependency Name="T" />
+      <Dependency Name="L" />
+    </AngleBisector>
+    <IntersectionPoint Name="E1" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector113" />
+      <Dependency Name="AngleBisector114" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine115" Visible="false" Style="4">
+      <Dependency Name="Segment112" />
+      <Dependency Name="E1" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="F1" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine115" />
+      <Dependency Name="Segment112" />
+    </IntersectionPoint>
+    <Circle Name="Circle116" Style="17">
+      <Dependency Name="E1" />
+      <Dependency Name="F1" />
+    </Circle>
+    <Segment Name="Segment122" Visible="false" Style="4">
+      <Dependency Name="L" />
+      <Dependency Name="G1" />
+    </Segment>
+    <AngleBisector Name="AngleBisector123" Visible="false" Style="4">
+      <Dependency Name="L" />
+      <Dependency Name="I" />
+      <Dependency Name="G1" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector124" Visible="false" Style="4">
+      <Dependency Name="I" />
+      <Dependency Name="G1" />
+      <Dependency Name="L" />
+    </AngleBisector>
+    <IntersectionPoint Name="H1" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector123" />
+      <Dependency Name="AngleBisector124" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine125" Visible="false" Style="4">
+      <Dependency Name="Segment122" />
+      <Dependency Name="H1" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="I1" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine125" />
+      <Dependency Name="Segment122" />
+    </IntersectionPoint>
+    <Circle Name="Circle126" Style="18">
+      <Dependency Name="H1" />
+      <Dependency Name="I1" />
+    </Circle>
+    <FreePoint Name="J1" Style="1" X="-4.3958333333" Y="3.2083333333" />
+    <AngleBisector Name="AngleBisector135" Visible="false" Style="4">
+      <Dependency Name="J1" />
+      <Dependency Name="I" />
+      <Dependency Name="F" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector136" Visible="false" Style="4">
+      <Dependency Name="I" />
+      <Dependency Name="F" />
+      <Dependency Name="J1" />
+    </AngleBisector>
+    <IntersectionPoint Name="K1" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector135" />
+      <Dependency Name="AngleBisector136" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine137" Visible="false" Style="4">
+      <Dependency Name="Segment134" />
+      <Dependency Name="K1" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="L1" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine137" />
+      <Dependency Name="Segment134" />
+    </IntersectionPoint>
+    <Circle Name="Circle138" Style="19">
+      <Dependency Name="K1" />
+      <Dependency Name="L1" />
+    </Circle>
+    <Segment Name="Segment134" Style="21">
+      <Dependency Name="J1" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="Segment15" Style="21">
+      <Dependency Name="F" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment17" Style="21">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment19" Style="21">
+      <Dependency Name="C" />
+      <Dependency Name="Z" />
+    </Segment>
+    <Segment Name="Segment21" Style="21">
+      <Dependency Name="Z" />
+      <Dependency Name="W" />
+    </Segment>
+    <Segment Name="Segment23" Style="21">
+      <Dependency Name="W" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="Segment25" Style="21">
+      <Dependency Name="T" />
+      <Dependency Name="G1" />
+    </Segment>
+    <Segment Name="Segment27" Style="21">
+      <Dependency Name="G1" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment29" Style="21">
+      <Dependency Name="I" />
+      <Dependency Name="J1" />
+    </Segment>
+    <Segment Name="Segment31" Style="21">
+      <Dependency Name="F" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment33" Style="21">
+      <Dependency Name="I" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="Segment35" Style="21">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="Segment37" Style="21">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="Segment39" Style="21">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment41" Style="21">
+      <Dependency Name="A" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="Segment43" Style="21">
+      <Dependency Name="L" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment45" Style="21">
+      <Dependency Name="L" />
+      <Dependency Name="G1" />
+    </Segment>
+    <Segment Name="Segment47" Style="21">
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="Segment49" Style="21">
+      <Dependency Name="L" />
+      <Dependency Name="O" />
+    </Segment>
+    <Segment Name="Segment51" Style="21">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="Segment53" Style="21">
+      <Dependency Name="O" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment55" Style="21">
+      <Dependency Name="O" />
+      <Dependency Name="Z" />
+    </Segment>
+    <Segment Name="Segment57" Style="21">
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="Segment59" Style="21">
+      <Dependency Name="O" />
+      <Dependency Name="W" />
+    </Segment>
+    <Label Name="Label60" IsHitTestVisible="false" Style="8" Text="The circles are actually inscribed into adjacent\ntriangles that triangulate a part of the plane." X="-4.4166666667" Y="-5.9" />
+    <ShowHideControl Name="ShowHide1" Show="false" Text="Hint" X="-4.292" Y="-4.5">
+      <Dependency Name="Segment134" />
+      <Dependency Name="Segment15" />
+      <Dependency Name="Segment17" />
+      <Dependency Name="Segment19" />
+      <Dependency Name="Segment21" />
+      <Dependency Name="Segment23" />
+      <Dependency Name="Segment25" />
+      <Dependency Name="Segment27" />
+      <Dependency Name="Segment29" />
+      <Dependency Name="Segment31" />
+      <Dependency Name="Segment33" />
+      <Dependency Name="Segment35" />
+      <Dependency Name="Segment37" />
+      <Dependency Name="Segment39" />
+      <Dependency Name="Segment41" />
+      <Dependency Name="Segment43" />
+      <Dependency Name="Segment45" />
+      <Dependency Name="Segment47" />
+      <Dependency Name="Segment49" />
+      <Dependency Name="Segment51" />
+      <Dependency Name="Segment53" />
+      <Dependency Name="Segment55" />
+      <Dependency Name="Segment57" />
+      <Dependency Name="Segment59" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="F" />
+      <Dependency Name="I" />
+      <Dependency Name="L" />
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+      <Dependency Name="W" />
+      <Dependency Name="Z" />
+      <Dependency Name="G1" />
+      <Dependency Name="J1" />
+      <Dependency Name="Label60" />
+    </ShowHideControl>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Bubbles" DecimalsToShow="2" X="6.311" Y="4.833" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Grab any yellow point and the bubbles roll\naround, squeezing and growing - but they never\noverlap. How are they made?\n\nCheck &quot;Hint&quot; to see the trick." DecimalsToShow="2" X="6.311" Y="3.545" />
+  </Figures>
+</Drawing>

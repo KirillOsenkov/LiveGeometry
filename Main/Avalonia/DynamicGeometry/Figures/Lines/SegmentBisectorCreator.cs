@@ -32,14 +32,14 @@ namespace DynamicGeometry
 
         public override string Name
         {
-            get { return "Segment Bisector"; }
+            get { return "Perpendicular Bisector"; }
         }
 
         public override string HintText
         {
             get
             {
-                return "Click two points or a segment to create a bisector line.";
+                return "Click two points or a segment to create the perpendicular bisector.";
             }
         }
 

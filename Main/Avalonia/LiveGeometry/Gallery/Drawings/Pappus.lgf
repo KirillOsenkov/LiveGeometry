@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-5.0833333333" Top="9.5416666667" Right="4.9166666667" Bottom="-5.625" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FF2D9911" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <PointStyle Size="15" Fill="#FFFF0000" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="10" />
+    <PointStyle Size="15" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="11" />
+    <PointStyle Size="15" Fill="#FF1AFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="12" />
+    <PointStyle Size="15" Fill="#FF8C8C49" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="13" />
+    <PointStyle Size="15" Fill="#FF498942" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="14" />
+    <PointStyle Size="15" Fill="#FF904B4B" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="15" />
+    <LineStyle Color="#FF088532" StrokeWidth="3" Name="16" />
+    <LineStyle Color="#FF24E81E" StrokeWidth="3" Name="17" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-3.7916666667" Y="4.1875" />
+    <FreePoint Name="B" Style="1" X="3.7604166667" Y="1.9479166667" />
+    <LineTwoPoints Name="LineTwoPoints37" Style="16">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </LineTwoPoints>
+    <FreePoint Name="C" Style="1" X="-3.6145833333" Y="-2.9479166667" />
+    <FreePoint Name="D" Style="1" X="3.3854166667" Y="-2.9895833333" />
+    <LineTwoPoints Name="LineTwoPoints39" Style="16">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </LineTwoPoints>
+    <PointOnFigure Name="E" Style="10" X="-2.22203031974768" Y="3.72202163505276" Parameter="0.207841502491162">
+      <Dependency Name="LineTwoPoints37" />
+    </PointOnFigure>
+    <PointOnFigure Name="F" Style="11" X="0.0176798565902634" Y="3.05783172070623" Parameter="0.504410022389844">
+      <Dependency Name="LineTwoPoints37" />
+    </PointOnFigure>
+    <PointOnFigure Name="G" Style="12" X="1.74366638980195" Y="2.54598743845559" Parameter="0.732954446095856">
+      <Dependency Name="LineTwoPoints37" />
+    </PointOnFigure>
+    <PointOnFigure Name="H" Style="10" X="-2.09380388249171" Y="-2.95696892532128" Parameter="0.217254207258328">
+      <Dependency Name="LineTwoPoints39" />
+    </PointOnFigure>
+    <PointOnFigure Name="I" Style="11" X="-0.676071375816953" Y="-2.96540780927608" Parameter="0.419787422497578">
+      <Dependency Name="LineTwoPoints39" />
+    </PointOnFigure>
+    <PointOnFigure Name="J" Style="12" X="0.594220918215801" Y="-2.97296907291894" Parameter="0.601257750216543">
+      <Dependency Name="LineTwoPoints39" />
+    </PointOnFigure>
+    <Segment Name="Segment41" Style="4">
+      <Dependency Name="E" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment43" Style="4">
+      <Dependency Name="I" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="Segment45" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="H" />
+    </Segment>
+    <Segment Name="Segment47" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="J" />
+    </Segment>
+    <Segment Name="Segment49" Style="4">
+      <Dependency Name="E" />
+      <Dependency Name="J" />
+    </Segment>
+    <Segment Name="Segment51" Style="4">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+    </Segment>
+    <IntersectionPoint Name="K" Style="15" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Segment45" />
+      <Dependency Name="Segment41" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="L" Style="13" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Segment51" />
+      <Dependency Name="Segment49" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="M" Style="14" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Segment47" />
+      <Dependency Name="Segment43" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="LineTwoPoints53" Style="17">
+      <Dependency Name="K" />
+      <Dependency Name="M" />
+    </LineTwoPoints>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Pappus's Theorem" DecimalsToShow="2" X="5.138" Y="4.188" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Pick three points on one line and three on\nanother, and connect them crosswise.\n\nThe three places where the connecting segments\ncross always lie on one straight line. Pappus\nof Alexandria found this about 1,700 years\nago.\n\nDrag any yellow point." DecimalsToShow="2" X="5.138" Y="3.326" />
+  </Figures>
+</Drawing>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-4.9791666667" Top="7.5833333333" Right="5.0208333333" Bottom="-7.5833333333" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#8EC8F2FF" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FF3193BC" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <LineStyle Color="#FF0A9313" StrokeWidth="3" Name="10" />
+    <LineStyle Color="#FF0088FF" StrokeWidth="1" Name="11" />
+    <LineStyle Color="#FF979797" StrokeWidth="1" Name="12" />
+    <PointStyle Size="15" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="13" />
+    <LineStyle Color="#FF0088FF" StrokeWidth="2" Name="14" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-3.3541666667" Y="-2.8541666666" />
+    <FreePoint Name="B" Style="1" X="0.03125" Y="0.677083333400001" />
+    <FreePoint Name="C" Style="1" X="2" Y="-5.125" />
+    <Segment Name="Segment215" Visible="false" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment216" Visible="false" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </Segment>
+    <MidPoint Name="D" Visible="false" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="E" Visible="false" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <PerpendicularLine Name="PerpendicularLine220" Visible="false" Style="4">
+      <Dependency Name="Segment215" />
+      <Dependency Name="E" />
+    </PerpendicularLine>
+    <LineTwoPoints Name="LineTwoPoints230" Style="11">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="LineTwoPoints232" Style="11">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="LineTwoPoints234" Style="11">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </LineTwoPoints>
+    <Segment Name="Segment214" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine218" Visible="false" Style="4">
+      <Dependency Name="Segment214" />
+      <Dependency Name="D" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="F" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine220" />
+      <Dependency Name="PerpendicularLine218" />
+    </IntersectionPoint>
+    <Circle Name="Circle222" Style="14">
+      <Dependency Name="F" />
+      <Dependency Name="B" />
+    </Circle>
+    <PointOnFigure Name="G" Style="13" X="2.48283233381968" Y="-0.564102922753453" Parameter="0.66954015447972">
+      <Dependency Name="Circle222" />
+    </PointOnFigure>
+    <PerpendicularLine Name="PerpendicularLine228" Visible="false" Style="12">
+      <Dependency Name="Segment216" />
+      <Dependency Name="G" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine226" Visible="false" Style="12">
+      <Dependency Name="Segment215" />
+      <Dependency Name="G" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine224" Visible="false" Style="12">
+      <Dependency Name="Segment214" />
+      <Dependency Name="G" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="H" Style="2" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine228" />
+      <Dependency Name="LineTwoPoints230" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I" Style="2" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine224" />
+      <Dependency Name="LineTwoPoints234" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="J" Style="2" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine226" />
+      <Dependency Name="LineTwoPoints232" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="LineTwoPoints236" Style="10">
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+    </LineTwoPoints>
+    <Polygon Name="Polygon241" Style="5">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <PointLabel Name="PointLabel243" Style="7" OffsetX="-0.2916666667" OffsetY="0.656249999933334" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="PointLabel244" Style="7" OffsetX="-0.0312500000333333" OffsetY="0.614583333333333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="PointLabel245" Style="7" OffsetX="-0.0833333333000001" OffsetY="0.739583333333333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="C" />
+    </PointLabel>
+    <PointLabel Name="PointLabel246" Style="7" OffsetX="-0.135416666666666" OffsetY="0.791666666666667" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="G" />
+    </PointLabel>
+    <Segment Name="Segment249" Style="12">
+      <Dependency Name="G" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment251" Style="12">
+      <Dependency Name="G" />
+      <Dependency Name="J" />
+    </Segment>
+    <Segment Name="Segment253" Style="12">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+    </Segment>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Simson Line" DecimalsToShow="2" X="3.597" Y="0.677" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Triangle ABC is inscribed in a circle, and G\nis another point on the same circle. Drop\nperpendiculars from G to the three sides\n(extended if needed).\n\nThe three feet (green) always lie on one line:\nthe Simson line, named after Robert Simson.\n\nDrag G around the circle and watch the line\nswing." DecimalsToShow="2" X="3.597" Y="-0.019" />
+  </Figures>
+</Drawing>

@@ -22,8 +22,13 @@ public class MainToolbar : DockPanel
         Margin = new Thickness(8, 4, 6, 0)
     };
 
+    // where buttons are added: the strip itself or the group that is open
+    Panel current;
+
     public MainToolbar()
     {
+        current = buttons;
+
         // The same gray as the ribbon's header row right under it, and no line between them:
         // the two read as one band, so the window has two grays and not three.
         Background = RibbonTheme.HeaderRowBackground;
@@ -41,18 +46,54 @@ public class MainToolbar : DockPanel
     {
         var button = new MainToolbarButton(icon, action);
         ToolTip.SetTip(button, shortcut != null ? name + " (" + shortcut + ")" : name);
-        buttons.Children.Add(button);
+        current.Children.Add(button);
         return button;
     }
 
     public void AddSeparator()
     {
-        buttons.Children.Add(new Border()
+        current.Children.Add(new Border()
         {
             Width = 1,
             Margin = new Thickness(5, 5, 5, 5),
             Background = RibbonTheme.TabLine
         });
+    }
+
+    public TextBlock AddText(FontWeight weight, double minWidth = 0)
+    {
+        var text = new TextBlock()
+        {
+            FontSize = 13,
+            FontWeight = weight,
+            Foreground = RibbonTheme.Text,
+            MinWidth = minWidth,
+            TextAlignment = TextAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(6, 0, 6, 0)
+        };
+        current.Children.Add(text);
+        return text;
+    }
+
+    /// <summary>
+    /// What is added from now on goes into a group of its own, to be shown and hidden together
+    /// </summary>
+    public Panel BeginGroup()
+    {
+        var group = new StackPanel()
+        {
+            Orientation = Orientation.Horizontal,
+            Spacing = buttons.Spacing
+        };
+        buttons.Children.Add(group);
+        current = group;
+        return group;
+    }
+
+    public void EndGroup()
+    {
+        current = buttons;
     }
 
     /// <summary>A button that follows a command: runs it, and is disabled when it is</summary>
@@ -63,7 +104,6 @@ public class MainToolbar : DockPanel
         button.EnabledChanged(command.Enabled);
         return button;
     }
-
 }
 
 public class MainToolbarButton : Border, ICommandObserver
@@ -155,6 +195,10 @@ public static class MainToolbarIcons
     static readonly IBrush diskOutline = new SolidColorBrush(Color.FromRgb(0x2A, 0x5D, 0xB0));
     static readonly IBrush diskLabel = new SolidColorBrush(Color.FromRgb(0xE8, 0xEE, 0xF9));
     static readonly IBrush arrow = new SolidColorBrush(Color.FromRgb(0x2F, 0x7B, 0xD6));
+    static readonly IBrush tileBlue = new SolidColorBrush(Color.FromRgb(0xBF, 0xDC, 0xFF));
+    static readonly IBrush tileYellow = new SolidColorBrush(Color.FromRgb(0xFF, 0xE7, 0xA3));
+    static readonly IBrush tileGreen = new SolidColorBrush(Color.FromRgb(0xC4, 0xEB, 0xC8));
+    static readonly IBrush tilePink = new SolidColorBrush(Color.FromRgb(0xFF, 0xCF, 0xDD));
 
     public static Control New()
     {
@@ -179,6 +223,26 @@ public static class MainToolbarIcons
             Shape("M6,3 H13 V7.5 H6 Z", paper, diskOutline),
             Shape("M10.8,4 V6.5", null, diskOutline, thickness: 1.4),
             Shape("M5.5,11 H14.5 V17 H5.5 Z", diskLabel, diskOutline));
+    }
+
+    /// <summary>Tiles, in the pastels of the gallery</summary>
+    public static Control Gallery()
+    {
+        return Icon(
+            Shape("M3.5,3.5 H9 V9 H3.5 Z", tileBlue, outline),
+            Shape("M11,3.5 H16.5 V9 H11 Z", tileYellow, outline),
+            Shape("M3.5,11 H9 V16.5 H3.5 Z", tileGreen, outline),
+            Shape("M11,11 H16.5 V16.5 H11 Z", tilePink, outline));
+    }
+
+    public static Control Previous()
+    {
+        return Icon(Shape("M12.5,4.5 L7,10 L12.5,15.5", null, arrow, thickness: 2.2));
+    }
+
+    public static Control Next()
+    {
+        return Icon(Shape("M7.5,4.5 L13,10 L7.5,15.5", null, arrow, thickness: 2.2));
     }
 
     public static Control Undo()

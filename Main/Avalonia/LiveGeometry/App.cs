@@ -34,6 +34,8 @@ public class App : Application
                 Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://LiveGeometry/Assets/DG.ico")))
             };
 
+            AddressBar.Current.TitleChanged += title => window.Title = title;
+
             if (MainWindowCreated != null)
             {
                 MainWindowCreated(window);

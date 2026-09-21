@@ -223,7 +223,11 @@ namespace DynamicGeometry
         public override void ReadXml(XElement element)
         {
             base.ReadXml(element);
-            DecimalsToShow = (int)element.ReadDouble("DecimalsToShow");
+            // files from before the attribute existed: the default, not 0
+            if (element.Attribute("DecimalsToShow") != null)
+            {
+                DecimalsToShow = (int)element.ReadDouble("DecimalsToShow");
+            }
         }
 
         public override void WriteXml(XmlWriter writer)

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-8.1354166668" Top="24.1069444444" Right="18.4479166665" Bottom="-16.2111111111" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FFEFB155" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC4CF8D" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="5" />
+    <TextStyle FontSize="40" Color="#FF9F4E3E" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <LineStyle Color="#FF8B5117" StrokeWidth="1" Name="8" />
+    <TextStyle FontSize="18" Color="#FFFF4400" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <LineStyle Color="#FFFF6E00" StrokeWidth="3" Name="10" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-6.5293402779" Y="-10.0637152778" />
+    <FreePoint Name="B" Style="1" X="15.4019097221" Y="-10.0637152777" />
+    <FreePoint Name="F" Style="1" X="5.7654513887" Y="-5.9100694444" />
+    <Segment Name="Segment109" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PointOnFigure Name="C" Style="3" X="-2.9848958335" Y="-10.0637152777838" Parameter="0.161616161614135">
+      <Dependency Name="Segment109" />
+    </PointOnFigure>
+    <Segment Name="Segment116" Style="8">
+      <Dependency Name="F" />
+      <Dependency Name="C" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine113" Style="8">
+      <Dependency Name="Segment109" />
+      <Dependency Name="C" />
+    </PerpendicularLine>
+    <MidPoint Name="D" Style="2">
+      <Dependency Name="F" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <PerpendicularLine Name="PerpendicularLine119" Style="8">
+      <Dependency Name="Segment116" />
+      <Dependency Name="D" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="E" Style="2" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine119" />
+      <Dependency Name="PerpendicularLine113" />
+    </IntersectionPoint>
+    <Locus Name="Locus122" Style="10">
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointLabel Name="PointLabel25" Style="9" OffsetX="-0.149131944500001" OffsetY="1.64982638893333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="F" />
+    </PointLabel>
+    <PointLabel Name="PointLabel26" Style="7" OffsetX="-0.2911458333" OffsetY="1.59444444443333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="PointLabel27" Style="7" OffsetX="-0.225347222233333" OffsetY="1.59444444453333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="PointLabel28" Style="7" OffsetX="-0.3465277778" OffsetY="1.59444444443333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="C" />
+    </PointLabel>
+    <PointLabel Name="PointLabel29" Style="7" OffsetX="-0.246180555566667" OffsetY="1.42829861103333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="D" />
+    </PointLabel>
+    <PointLabel Name="PointLabel30" Style="7" OffsetX="0.228124999933334" OffsetY="1.42829861113333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="E" />
+    </PointLabel>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Parabola" DecimalsToShow="2" X="18.034" Y="-5.91" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A parabola is the set of points that are\nequally far from a point (the focus F) and a\nline (the directrix AB).\n\nC runs along the line. E is where the\nperpendicular at C meets the perpendicular\nbisector of CF, so EC = EF. As C moves, E\ntraces the parabola.\n\nDrag C, then move F closer to the line." DecimalsToShow="2" X="18.034" Y="-7.555" />
+  </Figures>
+</Drawing>

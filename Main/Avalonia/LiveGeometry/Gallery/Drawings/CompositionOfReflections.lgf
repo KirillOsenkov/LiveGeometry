@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-8.3237998364" Top="11.8321782798" Right="8.186216368" Bottom="-13.2080129635" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF25AA68" StrokeWidth="2" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="36" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <PointStyle Size="10" Fill="#FFFFFFFF" IsFilled="true" Color="#FFA28423" StrokeWidth="1" Name="10" />
+    <LineStyle Color="#FF8585FF" StrokeWidth="5" Name="11" />
+    <PointStyle Size="9" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0B3A3A" StrokeWidth="0.7" Name="12" />
+    <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FF00FF00" StrokeWidth="1" Name="13" />
+    <LineStyle Color="#FF48A3A3" StrokeWidth="1" Name="14" />
+    <LineStyle Color="#FF478CD9" StrokeWidth="1" Name="15" />
+    <TextStyle FontSize="27.2" Color="#FFE3CFCF" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="16" />
+    <TextStyle FontSize="20.4" Color="#FFFFFFFF" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="17" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="Point1" Style="10" X="4.9530048613" Y="1.4102305508" />
+    <FreePoint Name="Point2" Style="10" X="-1.9261685571" Y="-1.2726470824" />
+    <FreePoint Name="Point3" Style="1" X="-1.0318760128" Y="5.0905883297" />
+    <Segment Name="Segment68" Visible="false" Style="11">
+      <Dependency Name="Point1" />
+      <Dependency Name="Point2" />
+    </Segment>
+    <ReflectedPoint Name="ReflectedPoint1" Style="12">
+      <Dependency Name="Point3" />
+      <Dependency Name="Segment68" />
+    </ReflectedPoint>
+    <FreePoint Name="Point5" Style="10" X="4.869186" Y="-0.662941" />
+    <Segment Name="Segment69" Visible="false" Style="11">
+      <Dependency Name="Point5" />
+      <Dependency Name="Point2" />
+    </Segment>
+    <ReflectedPoint Name="ReflectedPoint2" Style="12">
+      <Dependency Name="ReflectedPoint1" />
+      <Dependency Name="Segment69" />
+    </ReflectedPoint>
+    <FreePoint Name="Point7" Visible="false" Style="10" X="-13.464553" Y="8.023868" />
+    <FreePoint Name="Point8" Visible="false" Style="10" X="-12.550152" Y="7.932428" />
+    <PointByCoordinates Name="ArcEndPoint9" Visible="false" Style="12" X="Point2.X + (ReflectedPoint2.X - Point2.X) * Point7Point8 / Point2ReflectedPoint2" Y="Point2.Y + (ReflectedPoint2.Y - Point2.Y) * Point7Point8 / Point2ReflectedPoint2">
+      <Dependency Name="Point2" />
+      <Dependency Name="ReflectedPoint2" />
+      <Dependency Name="Point7" />
+      <Dependency Name="Point8" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ArcEndPoint10" Visible="false" Style="12" X="Point2.X + (Point3.X - Point2.X) * Point7Point8 / Point2Point3" Y="Point2.Y + (Point3.Y - Point2.Y) * Point7Point8 / Point2Point3">
+      <Dependency Name="Point2" />
+      <Dependency Name="Point3" />
+      <Dependency Name="Point7" />
+      <Dependency Name="Point8" />
+    </PointByCoordinates>
+    <CircleArc Name="CircleArc70" Style="11">
+      <Dependency Name="Point2" />
+      <Dependency Name="ArcEndPoint9" />
+      <Dependency Name="ArcEndPoint10" />
+    </CircleArc>
+    <PointByCoordinates Name="ArcEndPoint11" Visible="false" Style="12" X="Point2.X + (Point5.X - Point2.X) * Point8Point7 / Point2Point5" Y="Point2.Y + (Point5.Y - Point2.Y) * Point8Point7 / Point2Point5">
+      <Dependency Name="Point2" />
+      <Dependency Name="Point5" />
+      <Dependency Name="Point8" />
+      <Dependency Name="Point7" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ArcEndPoint12" Visible="false" Style="12" X="Point2.X + (Point1.X - Point2.X) * Point8Point7 / Point2Point1" Y="Point2.Y + (Point1.Y - Point2.Y) * Point8Point7 / Point2Point1">
+      <Dependency Name="Point2" />
+      <Dependency Name="Point1" />
+      <Dependency Name="Point8" />
+      <Dependency Name="Point7" />
+    </PointByCoordinates>
+    <CircleArc Name="CircleArc71" Style="11">
+      <Dependency Name="Point2" />
+      <Dependency Name="ArcEndPoint11" />
+      <Dependency Name="ArcEndPoint12" />
+    </CircleArc>
+    <AngleMeasurement Name="AngleMeasurement72" Style="7" OffsetX="1.9261685573" OffsetY="0.9286884114">
+      <Dependency Name="Point2" />
+      <Dependency Name="Point5" />
+      <Dependency Name="Point1" />
+    </AngleMeasurement>
+    <AngleMeasurement Name="AngleMeasurement73" Style="7" OffsetX="-1.0662718798" OffsetY="2.2013354939">
+      <Dependency Name="Point2" />
+      <Dependency Name="ReflectedPoint2" />
+      <Dependency Name="Point3" />
+    </AngleMeasurement>
+    <Segment Name="Segment74" Style="14">
+      <Dependency Name="ReflectedPoint2" />
+      <Dependency Name="Point2" />
+    </Segment>
+    <Segment Name="Segment75" Style="14">
+      <Dependency Name="Point2" />
+      <Dependency Name="Point3" />
+    </Segment>
+    <Segment Name="Segment76" Style="15">
+      <Dependency Name="Point3" />
+      <Dependency Name="ReflectedPoint1" />
+    </Segment>
+    <Segment Name="Segment77" Style="15">
+      <Dependency Name="ReflectedPoint1" />
+      <Dependency Name="ReflectedPoint2" />
+    </Segment>
+    <LineTwoPoints Name="LineTwoPoints78" Style="4">
+      <Dependency Name="Point1" />
+      <Dependency Name="Point2" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="LineTwoPoints79" Style="4">
+      <Dependency Name="Point5" />
+      <Dependency Name="Point2" />
+    </LineTwoPoints>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Two Reflections" DecimalsToShow="2" X="7.163" Y="8.024" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Reflect a point across one line, then reflect\nthe image across a second line.\n\nThe result is the same as one rotation around\nthe point where the lines cross - by twice the\nangle between them.\n\nDrag the points and compare the two angles." DecimalsToShow="2" X="7.163" Y="6.643" />
+  </Figures>
+</Drawing>

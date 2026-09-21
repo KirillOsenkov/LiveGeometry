@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-12.9210755985" Top="12.9713521573" Right="-0.8547014987" Bottom="-5.3293152274" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFF0000" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FF0000FF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="5" />
+    <TextStyle FontSize="40" Color="#FFFF0000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
+    <TextStyle FontSize="16" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <LineStyle Color="#FF000000" StrokeWidth="5" Name="8" />
+    <PointStyle Size="10" Fill="#FFFFA500" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="9" />
+    <PointStyle Size="10" Fill="#FF800080" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="10" />
+    <PointStyle Size="10" Fill="#FF008000" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="11" />
+    <PointStyle Size="10" Fill="#FF000000" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="12" />
+    <ShapeStyle Fill="#FFD5E3E3" IsFilled="true" Color="#FF8A8A8A" StrokeWidth="3" Name="14" />
+    <LineStyle Color="#FF8A8A8A" StrokeWidth="1" Name="15" />
+    <TextStyle FontSize="22" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="13" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="D" Style="1" X="-5.7315276974" Y="6.0834636087" />
+    <FreePoint Name="F" Style="3" X="-5.4298683449" Y="3.0417318043" />
+    <FreePoint Name="E" Style="2" X="-6.8627502693" Y="4.6757199637" />
+    <Polygon Name="Polygon41" Style="14">
+      <Dependency Name="D" />
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Segment Name="Segment42" Style="4">
+      <Dependency Name="D" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="Segment43" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="Segment44" Style="4">
+      <Dependency Name="E" />
+      <Dependency Name="D" />
+    </Segment>
+    <FreePoint Name="G" Style="12" X="-11.0357046455" Y="3.5696356712" />
+    <LineTwoPoints Name="LineTwoPoints45" Style="4">
+      <Dependency Name="G" />
+      <Dependency Name="D" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="LineTwoPoints46" Style="4">
+      <Dependency Name="G" />
+      <Dependency Name="E" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="LineTwoPoints47" Style="4">
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+    </LineTwoPoints>
+    <PointOnFigure Name="A" Style="1" X="-2.64790295251824" Y="7.54489713708687" Parameter="1.58135781951738">
+      <Dependency Name="LineTwoPoints45" />
+    </PointOnFigure>
+    <PointOnFigure Name="B" Style="3" X="-4.05561718561852" Y="2.91231801799324" Parameter="1.24514650189382">
+      <Dependency Name="LineTwoPoints47" />
+    </PointOnFigure>
+    <PointOnFigure Name="C" Style="2" X="-5.13849887814866" Y="5.13275045292631" Parameter="1.4131967991276">
+      <Dependency Name="LineTwoPoints46" />
+    </PointOnFigure>
+    <Polygon Name="Polygon50" Style="14">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Segment Name="Segment51" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment52" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment53" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </Segment>
+    <LineTwoPoints Name="LineTwoPoints54" Style="15">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="LineTwoPoints55" Style="15">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="LineTwoPoints56" Style="15">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="LineTwoPoints57" Style="15">
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="LineTwoPoints58" Style="15">
+      <Dependency Name="D" />
+      <Dependency Name="F" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="LineTwoPoints59" Style="15">
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="H" Style="9" Algorithm="IntersectLineAndLine">
+      <Dependency Name="LineTwoPoints57" />
+      <Dependency Name="LineTwoPoints54" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I" Style="10" Algorithm="IntersectLineAndLine">
+      <Dependency Name="LineTwoPoints58" />
+      <Dependency Name="LineTwoPoints55" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="J" Style="11" Algorithm="IntersectLineAndLine">
+      <Dependency Name="LineTwoPoints59" />
+      <Dependency Name="LineTwoPoints56" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="LineTwoPoints62" Style="8">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </LineTwoPoints>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Desargues' Theorem" DecimalsToShow="2" X="-1.641" Y="7.545" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Two triangles are &quot;in perspective from a\npoint&quot; when the lines through matching\nvertices all meet in one point - like a shape\nand its shadow.\n\nThen the matching sides, extended, meet in\nthree points that always lie on one line.\n\nDrag the vertices. Drawing by Chris Burrows." DecimalsToShow="2" X="-1.641" Y="6.916" />
+  </Figures>
+</Drawing>

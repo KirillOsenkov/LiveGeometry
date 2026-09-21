@@ -4,8 +4,10 @@ using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using DynamicGeometry;
+using Drawing = DynamicGeometry.Drawing;
 
 namespace LiveGeometry;
 
@@ -54,6 +56,16 @@ public class MainView : UserControl
         DrawingHost.DrawingControl.Focusable = true;
         DrawingHost.DrawingControl.PointerPressed += (s, e) => DrawingHost.DrawingControl.Focus();
 
+        // a drawing of the gallery that nobody touched yet keeps filling the window
+        DrawingHost.DrawingControl.SizeChanged += (s, e) =>
+        {
+            var drawing = DrawingHost.CurrentDrawing;
+            if (CurrentSample != null && drawing != null && !drawing.ActionManager.CanUndo)
+            {
+                HandleExceptions(() => GalleryDrawing.Fit(drawing, CurrentSample.Plane));
+            }
+        };
+
         AddHandler(KeyDownEvent, MainView_KeyDown, RoutingStrategies.Tunnel);
         AddHandler(KeyUpEvent, MainView_KeyUp, RoutingStrategies.Tunnel);
 
@@ -83,13 +95,10 @@ public class MainView : UserControl
         }
     }
 
-    private void InitializeComponent()
+    // The build (git commit) at the far right of the toolbar, so that it is obvious
+    // which version is on screen - e.g. whether a fresh deployment has arrived yet.
+    static Control CreateBuildStamp()
     {
-        Focusable = true;
-        Content = LayoutRoot;
-
-        // The build (git commit) at the far right of the toolbar, so that it is obvious
-        // which version is on screen - e.g. whether a fresh deployment has arrived yet.
         var build = new TextBlock()
         {
             Text = BuildVersion.Short,
@@ -99,18 +108,48 @@ public class MainView : UserControl
             VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
         };
         ToolTip.SetTip(build, BuildVersion.Full);
+        return build;
+    }
+
+    private void InitializeComponent()
+    {
+        Focusable = true;
         Console.WriteLine("Live Geometry " + BuildVersion.Full);
+
+        // Two pages, one showing: the gallery (the start page) and the editor.
+        Gallery = new GalleryView(CreateBuildStamp());
+        Gallery.NewDrawingRequested += () => HandleExceptions(() => ShowNewDrawing(push: true));
+        Gallery.ContinueDrawingRequested += () => HandleExceptions(() => ShowOwnDrawing(push: true));
+        Gallery.ItemRequested += item => HandleExceptions(() => ShowSample(item, push: true));
+        LayoutRoot.IsVisible = false;
+
+        var pages = new Panel();
+        pages.Children.Add(LayoutRoot);
+        pages.Children.Add(Gallery);
+        Content = pages;
 
         // No menu: the few document commands are a toolbar, everything else is the keyboard
         // (see MainView_KeyUp and HandlePlainKey), the mouse wheel and the context menu.
         var toolbar = new MainToolbar();
-        toolbar.AddAtRight(build);
+        toolbar.AddAtRight(CreateBuildStamp());
+        toolbar.AddButton(MainToolbarIcons.Gallery(), "Gallery", shortcut: null, () => HandleExceptions(() => ShowGallery(push: true)));
+        toolbar.AddSeparator();
         toolbar.AddButton(MainToolbarIcons.New(), "New", "Ctrl+N", NewDrawing);
         toolbar.AddButton(MainToolbarIcons.Open(), "Open", "Ctrl+O", OpenDrawingFromFile);
         toolbar.AddButton(MainToolbarIcons.Save(), "Save", "Ctrl+S", SaveDrawingToFile);
         toolbar.AddSeparator();
         toolbar.AddButton(MainToolbarIcons.Undo(), "Ctrl+Z", DrawingHost.DrawingControl.CommandUndo);
         toolbar.AddButton(MainToolbarIcons.Redo(), "Ctrl+Y", DrawingHost.DrawingControl.CommandRedo);
+
+        // only while a drawing of the gallery is open: previous / next through the gallery
+        TourGroup = toolbar.BeginGroup();
+        toolbar.AddSeparator();
+        toolbar.AddButton(MainToolbarIcons.Previous(), "Previous drawing", "Page Up", () => HandleExceptions(() => ShowNeighborSample(-1)));
+        TourPosition = toolbar.AddText(FontWeight.Normal, minWidth: 52);
+        toolbar.AddButton(MainToolbarIcons.Next(), "Next drawing", "Page Down", () => HandleExceptions(() => ShowNeighborSample(1)));
+        TourTitle = toolbar.AddText(FontWeight.SemiBold);
+        toolbar.EndGroup();
+        TourGroup.IsVisible = false;
 
         LayoutRoot.Children.Add(toolbar);
         DockPanel.SetDock(toolbar, Dock.Top);
@@ -139,7 +178,182 @@ public class MainView : UserControl
         }
     }
 
-    void NewDrawing() => HandleExceptions(() => DrawingHost.Clear());
+    void NewDrawing() => HandleExceptions(() => ShowNewDrawing(push: true));
+
+    #region Pages
+
+    // Where the app is: the gallery, a drawing of the gallery ("the tour": previous / next in
+    // the toolbar, edits are thrown away without asking) or a drawing of the user's own.
+    // Every change goes through one of the Show methods, which also keep the address bar
+    // current; `push` is false when the address bar is where the change came from.
+
+    const string GalleryPath = "/";
+    const string OwnDrawingPath = "/drawing";
+    const string AppTitle = "Live Geometry";
+
+    GalleryView Gallery;
+    Panel TourGroup;
+    TextBlock TourPosition;
+    TextBlock TourTitle;
+
+    /// <summary>The drawing of the gallery that is open, null for a drawing of the user's own</summary>
+    GalleryItem CurrentSample;
+
+    /// <summary>
+    /// The user's own drawing, kept (with its undo history) while they look around the gallery
+    /// </summary>
+    Drawing OwnDrawing;
+
+    void Navigate(string path, bool push)
+    {
+        var item = GalleryCatalog.FindByPath(path);
+        if (item != null)
+        {
+            ShowSample(item, push);
+        }
+        else if (string.Equals(path.TrimEnd('/'), OwnDrawingPath, StringComparison.OrdinalIgnoreCase))
+        {
+            ShowOwnDrawing(push);
+        }
+        else
+        {
+            ShowGallery(push);
+            if (path != GalleryPath && path != GalleryCatalog.PathPrefix.TrimEnd('/'))
+            {
+                AddressBar.Current.Replace(GalleryPath, AppTitle);
+            }
+        }
+    }
+
+    void Publish(string path, string title, bool push)
+    {
+        if (push)
+        {
+            AddressBar.Current.Push(path, title);
+        }
+        else
+        {
+            AddressBar.Current.Replace(path, title);
+        }
+    }
+
+    void ShowGallery(bool push)
+    {
+        var drawing = DrawingHost.CurrentDrawing;
+        if (CurrentSample != null)
+        {
+            // nothing of the user's to keep; and the editor shouldn't show it when it comes back
+            CurrentSample = null;
+            DrawingHost.Clear();
+        }
+        else if (drawing != null && drawing.Figures.Any(figure => !(figure is CartesianGrid)))
+        {
+            OwnDrawing = drawing;
+        }
+
+        Gallery.CanContinueDrawing = OwnDrawing != null;
+        Gallery.IsVisible = true;
+        LayoutRoot.IsVisible = false;
+        UpdateTour();
+        Publish(GalleryPath, AppTitle, push);
+    }
+
+    void ShowEditor()
+    {
+        Gallery.IsVisible = false;
+        LayoutRoot.IsVisible = true;
+
+        // the canvas must know its size before a drawing is fitted into it
+        UpdateLayout();
+        DrawingHost.DrawingControl.Focus();
+    }
+
+    void ShowNewDrawing(bool push)
+    {
+        ShowEditor();
+        CurrentSample = null;
+        OwnDrawing = null;
+        DrawingHost.Clear();
+        UpdateTour();
+        Publish(OwnDrawingPath, AppTitle, push);
+    }
+
+    /// <summary>Back to the drawing the user left for the gallery; a new one if there is none</summary>
+    void ShowOwnDrawing(bool push)
+    {
+        if (OwnDrawing == null)
+        {
+            ShowNewDrawing(push);
+            return;
+        }
+
+        ShowEditor();
+        CurrentSample = null;
+        var control = DrawingHost.DrawingControl;
+        if (control.Drawing != OwnDrawing)
+        {
+            // the same order as DrawingControl.Clear: on the canvas first, then the current one
+            control.Background = Avalonia.Media.Brushes.White;
+            OwnDrawing.Canvas = control;
+            control.Drawing = OwnDrawing;
+            OwnDrawing.Recalculate();
+        }
+
+        UpdateTour();
+        Publish(OwnDrawingPath, AppTitle, push);
+    }
+
+    void ShowSample(GalleryItem item, bool push)
+    {
+        ShowEditor();
+        var control = DrawingHost.DrawingControl;
+        if (OwnDrawing == null && CurrentSample == null && control.Drawing != null && control.Drawing.Figures.Any(figure => !(figure is CartesianGrid)))
+        {
+            OwnDrawing = control.Drawing;
+        }
+
+        CurrentSample = item;
+        control.LoadDrawing(item.LoadText(), item.FileName);
+        GalleryDrawing.Fit(control.Drawing, item.Plane);
+        UpdateTour();
+        Publish(item.Path, item.Title + " - " + AppTitle, push);
+    }
+
+    void ShowNeighborSample(int step)
+    {
+        if (CurrentSample == null)
+        {
+            return;
+        }
+
+        var items = GalleryCatalog.Items;
+        int index = (GalleryCatalog.IndexOf(CurrentSample) + step + items.Count) % items.Count;
+        ShowSample(items[index], push: true);
+    }
+
+    /// <summary>
+    /// The drawing in the editor is the user's now (opened from a file, or a drawing of the
+    /// gallery that they saved)
+    /// </summary>
+    void BecomeOwnDrawing()
+    {
+        CurrentSample = null;
+        OwnDrawing = null;
+        UpdateTour();
+        Publish(OwnDrawingPath, AppTitle, push: true);
+    }
+
+    void UpdateTour()
+    {
+        TourGroup.IsVisible = CurrentSample != null;
+        if (CurrentSample != null)
+        {
+            TourPosition.Text = (GalleryCatalog.IndexOf(CurrentSample) + 1) + " / " + GalleryCatalog.Items.Count;
+            TourTitle.Text = CurrentSample.Title;
+        }
+    }
+
+    #endregion
 
     async void OpenDrawingFromFile()
     {
@@ -179,12 +393,16 @@ public class MainView : UserControl
     /// </summary>
     public static string StartupFile { get; set; }
 
+    /// <summary>The first page: the file from the command line, else what the address says</summary>
     void OpenStartupFile()
     {
+        AddressBar.Current.PathChanged += path => HandleExceptions(() => Navigate(path, push: false));
+
         var path = StartupFile;
         StartupFile = null;
         if (string.IsNullOrEmpty(path))
         {
+            HandleExceptions(() => Navigate(AddressBar.Current.Path, push: false));
             return;
         }
 
@@ -194,6 +412,9 @@ public class MainView : UserControl
     /// <param name="name">File name; the extension tells the format</param>
     public void OpenDrawing(string name, byte[] bytes)
     {
+        ShowEditor();
+        BecomeOwnDrawing();
+
         if (name.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase))
         {
             // drawings of the original VB6 DG: INI-like text in the Windows ANSI code page
@@ -231,7 +452,7 @@ public class MainView : UserControl
             var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "Save drawing",
-                SuggestedFileName = "drawing.lgf",
+                SuggestedFileName = CurrentSample != null ? CurrentSample.FileName : "drawing.lgf",
                 DefaultExtension = "lgf",
                 FileTypeChoices = new[] { LgfFileType }
             });
@@ -246,6 +467,12 @@ public class MainView : UserControl
             using (var writer = new StreamWriter(stream))
             {
                 await writer.WriteAsync(text);
+            }
+
+            // a saved drawing of the gallery is the user's own from here on
+            if (CurrentSample != null)
+            {
+                BecomeOwnDrawing();
             }
         }
         catch (Exception ex)
@@ -350,6 +577,12 @@ public class MainView : UserControl
             case Key.Home:
                 HandleExceptions(() => coordinateSystem.CenterContent());
                 return true;
+            case Key.PageUp:
+                HandleExceptions(() => ShowNeighborSample(-1));
+                return CurrentSample != null;
+            case Key.PageDown:
+                HandleExceptions(() => ShowNeighborSample(1));
+                return CurrentSample != null;
         }
 
         return false;
@@ -366,6 +599,12 @@ public class MainView : UserControl
 
     private void MainView_KeyUp(object sender, KeyEventArgs e)
     {
+        if (Gallery.IsVisible)
+        {
+            shortcutKeyDown = Key.None;
+            return;
+        }
+
         var focused = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
         if (focused is TextBox)
         {
@@ -422,6 +661,19 @@ public class MainView : UserControl
     /// </summary>
     private void MainView_KeyDown(object sender, KeyEventArgs e)
     {
+        if (Gallery.IsVisible)
+        {
+            // there is no drawing to undo, select or save
+            if (e.KeyModifiers == KeyModifiers.Control && (e.Key == Key.N || e.Key == Key.O))
+            {
+                HandleControlShortcut(e.Key);
+                shortcutKeyDown = e.Key;
+                e.Handled = true;
+            }
+
+            return;
+        }
+
         if (DrawingHost.CurrentDrawing == null)
         {
             return;

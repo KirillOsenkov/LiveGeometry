@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-4.9895833333" Top="7.5729166667" Right="5.0104166667" Bottom="-7.59375" Grid="false" />
+  <Styles>
+    <PointStyle Size="15" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#3E08FF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="40" Color="#FF498813" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="B" Style="1" X="3.0729166667" Y="-4.1354166666" />
+    <FreePoint Name="A" Style="1" X="-3.1562499999" Y="-3.9479166666" />
+    <Segment Name="Segment28" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Segment>
+    <Circle Name="Circle29" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Circle>
+    <PerpendicularLine Name="PerpendicularLine30" Visible="false" Style="4">
+      <Dependency Name="Segment28" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="D" Style="3" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle29" />
+      <Dependency Name="PerpendicularLine30" />
+    </IntersectionPoint>
+    <MidPoint Name="C1" Visible="false" Style="1">
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <ReflectedPoint Name="C" Style="3">
+      <Dependency Name="A" />
+      <Dependency Name="C1" />
+    </ReflectedPoint>
+    <Segment Name="Segment31" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="Segment32" Style="4">
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment33" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Segment>
+    <Polygon Name="Polygon34" Style="5">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+    </Polygon>
+    <PointOnFigure Name="E" Style="1" X="-0.990291576297559" Y="-4.01311273955194" Parameter="0.652287610922977">
+      <Dependency Name="Segment28" />
+    </PointOnFigure>
+    <CircleByRadius Name="CircleByRadius37" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+      <Dependency Name="B" />
+    </CircleByRadius>
+    <CircleByRadius Name="CircleByRadius40" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+    </CircleByRadius>
+    <CircleByRadius Name="CircleByRadius43" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+      <Dependency Name="D" />
+    </CircleByRadius>
+    <IntersectionPoint Name="H" Style="3" Algorithm="IntersectEllipseAndLine2">
+      <Dependency Name="CircleByRadius43" />
+      <Dependency Name="Segment31" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="G" Style="3" Algorithm="IntersectEllipseAndLine2">
+      <Dependency Name="CircleByRadius40" />
+      <Dependency Name="Segment32" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="F" Style="3" Algorithm="IntersectEllipseAndLine2">
+      <Dependency Name="CircleByRadius37" />
+      <Dependency Name="Segment33" />
+    </IntersectionPoint>
+    <Polygon Name="Polygon60" Style="5">
+      <Dependency Name="H" />
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Segment Name="Segment61" Style="4">
+      <Dependency Name="H" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="Segment62" Style="4">
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="Segment63" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="Segment64" Style="4">
+      <Dependency Name="E" />
+      <Dependency Name="H" />
+    </Segment>
+    <PointLabel Name="PointLabel65" IsHitTestVisible="false" Style="8" OffsetX="-0.21875" OffsetY="-0.083333333333333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="PointLabel66" IsHitTestVisible="false" Style="8" OffsetX="-0.0729166665333341" OffsetY="-0.145833333333333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="PointLabel67" IsHitTestVisible="false" Style="8" OffsetX="-0.0104166667666661" OffsetY="0.656250000033332" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="C" />
+    </PointLabel>
+    <PointLabel Name="PointLabel68" IsHitTestVisible="false" Style="8" OffsetX="-0.0877392684152571" OffsetY="0.692165339474258" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="D" />
+    </PointLabel>
+    <PointLabel Name="PointLabel69" IsHitTestVisible="false" Style="8" OffsetX="-0.1354166666" OffsetY="-0.0833333332333339" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="E" />
+    </PointLabel>
+    <PointLabel Name="PointLabel70" IsHitTestVisible="false" Style="8" OffsetX="0.176538499190696" OffsetY="0.675000144218544" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="F" />
+    </PointLabel>
+    <PointLabel Name="PointLabel71" IsHitTestVisible="false" Style="8" OffsetX="-0.132896914142917" OffsetY="0.684930249443583" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="G" />
+    </PointLabel>
+    <PointLabel Name="PointLabel72" IsHitTestVisible="false" Style="8" OffsetX="-0.399497450283102" OffsetY="0.572007712892806" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="H" />
+    </PointLabel>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Square in a Square" DecimalsToShow="2" X="3.82" Y="-3.948" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="In square ABCD mark points E, F, G and H at\nthe same distance from the corners: AE = BF =\nCG = DH.\n\nEFGH is a square too, and the four corner\ntriangles are congruent right triangles. This\npicture is the heart of a famous proof of the\nPythagorean theorem.\n\nDrag E along the side." DecimalsToShow="2" X="3.82" Y="-4.415" />
+  </Figures>
+</Drawing>

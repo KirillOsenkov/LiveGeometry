@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-5.0833333333" Top="8.0208333333" Right="4.9166666667" Bottom="-7.1458333333" Grid="false" />
+  <Styles>
+    <PointStyle Size="15" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <LineStyle Color="#FF949494" StrokeWidth="1" Name="9" />
+    <LineStyle Color="#FF003CFF" StrokeWidth="1" Name="10" />
+    <LineStyle Color="#FF00B11F" StrokeWidth="1" Name="11" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Style="1" X="-4.21875" Y="7.0104166667" />
+    <FreePoint Name="B" Visible="false" Style="1" X="-4.21875" Y="-6.6979166667" />
+    <Segment Name="Segment39" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PointOnFigure Name="C" Style="2" X="-4.21875" Y="4.6041666667" Parameter="0.175531914892763">
+      <Dependency Name="Segment39" />
+    </PointOnFigure>
+    <PointOnFigure Name="D" Style="2" X="-4.21875" Y="2.2291666667" Parameter="0.348784194527179">
+      <Dependency Name="Segment39" />
+    </PointOnFigure>
+    <PointOnFigure Name="E" Style="2" X="-4.21875" Y="1.0833333333" Parameter="0.432370820671454">
+      <Dependency Name="Segment39" />
+    </PointOnFigure>
+    <PerpendicularLine Name="PerpendicularLine41" Style="4">
+      <Dependency Name="Segment39" />
+      <Dependency Name="C" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine43" Style="4">
+      <Dependency Name="Segment39" />
+      <Dependency Name="D" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine45" Style="4">
+      <Dependency Name="Segment39" />
+      <Dependency Name="E" />
+    </PerpendicularLine>
+    <PointOnFigure Name="F" Style="1" X="-0.5416666667" Y="1.0833333333" Parameter="-0.268237082063133">
+      <Dependency Name="PerpendicularLine45" />
+    </PointOnFigure>
+    <PerpendicularLine Name="PerpendicularLine57" Style="4">
+      <Dependency Name="PerpendicularLine45" />
+      <Dependency Name="F" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="G" Style="3" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine57" />
+      <Dependency Name="PerpendicularLine43" />
+    </IntersectionPoint>
+    <Circle Name="Circle59" Style="11">
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+    </Circle>
+    <Circle Name="Circle61" Style="11">
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+    </Circle>
+    <IntersectionPoint Name="H" Style="3" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="Circle61" />
+      <Dependency Name="Circle59" />
+    </IntersectionPoint>
+    <Segment Name="Segment63" Style="4">
+      <Dependency Name="H" />
+      <Dependency Name="F" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine65" Style="10">
+      <Dependency Name="Segment63" />
+      <Dependency Name="H" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="I" Style="3" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine65" />
+      <Dependency Name="PerpendicularLine41" />
+    </IntersectionPoint>
+    <Circle Name="Circle67" Style="9">
+      <Dependency Name="I" />
+      <Dependency Name="F" />
+    </Circle>
+    <IntersectionPoint Name="J" Style="3" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle67" />
+      <Dependency Name="PerpendicularLine43" />
+    </IntersectionPoint>
+    <Polygon Name="Polygon73" Style="5">
+      <Dependency Name="F" />
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+    </Polygon>
+    <Segment Name="Segment74" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment75" Style="4">
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+    </Segment>
+    <Segment Name="Segment76" Style="4">
+      <Dependency Name="J" />
+      <Dependency Name="F" />
+    </Segment>
+    <ShowHideControl Name="Hint" Show="false" Text="Show solution" X="-4.68" Y="-1.3958333333">
+      <Dependency Name="PerpendicularLine57" />
+      <Dependency Name="G" />
+      <Dependency Name="Circle59" />
+      <Dependency Name="Circle61" />
+      <Dependency Name="H" />
+      <Dependency Name="Segment63" />
+      <Dependency Name="PerpendicularLine65" />
+      <Dependency Name="I" />
+      <Dependency Name="Circle67" />
+      <Dependency Name="J" />
+      <Dependency Name="Label79" />
+    </ShowHideControl>
+    <Label Name="Label79" IsHitTestVisible="false" Style="8" Text="Place the first point (yellow) anywhere on the bottom\nline. Rotate the bottom line 60 degrees around the\nyellow point (rotated line is shown in blue).\n\nTo do this:\n1. Draw a vertical line perpendicular to the bottom\n    line and intersect it with the second line.\n2. From the two vertical points, draw two green\n    circles as shown.\n3. Intersect the two green circles to get an\n    equilateral triangle.\n4. Draw the blue line perpendicular to the triangle \n    side.\n\nNow that you have the blue line, intersect it with the\ntop line. You have the second vertex of your desired\ntriangle. Now, to get the third vertex, draw the gray\ncircle and intersect it with the second line." X="-4.5833333333" Y="-3" />
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Triangle on Three Lines" DecimalsToShow="2" X="2.09" Y="7.01" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Here are three parallel lines. Can you\nconstruct an equilateral triangle with one\nvertex on each line?\n\nDrag the yellow point: the triangle follows.\nThink about how it is done, then check &quot;Show\nsolution&quot;." DecimalsToShow="2" X="2.09" Y="5.365" />
+  </Figures>
+</Drawing>

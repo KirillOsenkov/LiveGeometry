@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-5.4375" Top="7.625" Right="4.5625" Bottom="-7.5416666667" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FF1B7B78" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <ShapeStyle Fill="#5B92FFED" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="10" />
+    <LineStyle Color="#FF1C7A84" StrokeWidth="2" Name="11" />
+    <LineStyle Color="#97ABABAB" StrokeWidth="1" Name="12" />
+    <LineStyle Color="#FF1100FF" StrokeWidth="1" Name="13" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-0.5833333334" Y="1" />
+    <FreePoint Name="B" Style="1" X="2.4375" Y="1" />
+    <Circle Name="Circle113" Style="11">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Circle>
+    <Segment Name="Segment115" Style="13">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine117" Style="13">
+      <Dependency Name="Segment115" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="C" Style="3" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="PerpendicularLine117" />
+      <Dependency Name="Circle113" />
+    </IntersectionPoint>
+    <MidPoint Name="D" Style="3">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <Circle Name="Circle154" Style="13">
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </Circle>
+    <IntersectionPoint Name="E" Style="1" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="Circle154" />
+      <Dependency Name="PerpendicularLine117" />
+    </IntersectionPoint>
+    <Circle Name="Circle156" Style="12">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+    </Circle>
+    <IntersectionPoint Name="F" Style="3" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="Circle156" />
+      <Dependency Name="Circle113" />
+    </IntersectionPoint>
+    <Circle Name="Circle158" Style="12">
+      <Dependency Name="F" />
+      <Dependency Name="B" />
+    </Circle>
+    <IntersectionPoint Name="G" Style="3" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="Circle158" />
+      <Dependency Name="Circle113" />
+    </IntersectionPoint>
+    <Circle Name="Circle160" Style="12">
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+    </Circle>
+    <IntersectionPoint Name="H" Style="3" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="Circle160" />
+      <Dependency Name="Circle113" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I" Style="3" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="Circle156" />
+      <Dependency Name="Circle113" />
+    </IntersectionPoint>
+    <Polygon Name="Polygon184" Style="10">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </Polygon>
+    <Segment Name="Segment185" Style="11">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+    </Segment>
+    <Segment Name="Segment186" Style="11">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment187" Style="11">
+      <Dependency Name="I" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment188" Style="11">
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="Segment189" Style="11">
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+    </Segment>
+    <PointLabel Name="PointLabel190" Style="7" OffsetX="0.239583333333333" OffsetY="0.239583333333333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="D" />
+    </PointLabel>
+    <PointLabel Name="PointLabel191" Style="7" OffsetX="0.1458333334" OffsetY="0.0312500000333333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="PointLabel192" Style="7" OffsetX="0.197916666666667" OffsetY="0.260416666633334" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="PointLabel193" Style="7" OffsetX="0.0833333332999999" OffsetY="0.614583333333334" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="C" />
+    </PointLabel>
+    <PointLabel Name="PointLabel194" Style="7" OffsetX="0.0833333333333334" OffsetY="0.656250000033333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="E" />
+    </PointLabel>
+    <PointLabel Name="PointLabel195" Style="7" OffsetX="0.0104166667" OffsetY="-0.0937499999666662" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="F" />
+    </PointLabel>
+    <PointLabel Name="PointLabel196" Style="7" OffsetX="-0.0520833333333333" OffsetY="0.739583333333332" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="I" />
+    </PointLabel>
+    <PointLabel Name="PointLabel197" Style="7" OffsetX="-0.406249999966667" OffsetY="0.156249999933333" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="G" />
+    </PointLabel>
+    <PointLabel Name="PointLabel198" Style="7" OffsetX="-0.239583333366666" OffsetY="0.656249999933334" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="H" />
+    </PointLabel>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Regular Pentagon" DecimalsToShow="2" X="2.8" Y="1" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A regular pentagon built with compass and\nstraightedge only:\n\n1. Draw radius AB and the radius AC\nperpendicular to it.\n2. D is the midpoint of AC.\n3. The circle centered at D through B meets\nline AC at E.\n4. BE is the side length: step it around the\ncircle with the compass.\n\nDrag A and B." DecimalsToShow="2" X="2.8" Y="0.773" />
+  </Figures>
+</Drawing>

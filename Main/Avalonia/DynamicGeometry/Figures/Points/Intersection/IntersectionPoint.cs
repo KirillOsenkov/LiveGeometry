@@ -56,6 +56,48 @@ namespace DynamicGeometry
 
         Func<IFigure, IFigure, Point> Algorithm;
 
+        /// <summary>
+        /// Math.GetIntersectionOfCircleAndLine once changed which of the two intersections comes
+        /// first when the line passes through the center of the circle ("New code - preserves
+        /// order"). In a drawing from before that, this point is the other one of the two:
+        /// squares built with a perpendicular and a circle end up on the wrong side of their
+        /// segment. Takes the other algorithm if that is the case here.
+        /// </summary>
+        /// <returns>Whether anything changed</returns>
+        public bool UpgradeLegacyCircleAndLineOrder()
+        {
+            var line = Dependencies.OfType<ILine>().FirstOrDefault();
+            var ellipse = Dependencies.OfType<IEllipse>().FirstOrDefault();
+            if (line == null || ellipse == null || Algorithm == null)
+            {
+                return false;
+            }
+
+            var name = Algorithm.Method.Name;
+            bool isFirst = name.EndsWith("1");
+            if (!isFirst && !name.EndsWith("2"))
+            {
+                return false;
+            }
+
+            // the same test, with the same rounding, as the branch that changed
+            var center = ellipse.Center;
+            var projection = Math.GetProjectionPoint(center, line.Coordinates);
+            if (!center.Exists() || !projection.Exists() || center.Distance(projection).Round(4) != 0)
+            {
+                return false;
+            }
+
+            var other = typeof(IntersectionAlgorithms).GetMethod(name.Substring(0, name.Length - 1) + (isFirst ? "2" : "1"));
+            if (other == null)
+            {
+                return false;
+            }
+
+            Algorithm = (Func<IFigure, IFigure, Point>)Delegate.CreateDelegate(typeof(Func<IFigure, IFigure, Point>), other);
+            return true;
+        }
+
         public override void Recalculate()
         {
             // first assume we exist

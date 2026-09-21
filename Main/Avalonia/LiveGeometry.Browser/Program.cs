@@ -9,6 +9,7 @@ internal sealed partial class Program
     {
         try
         {
+            AddressBar.Current = new LiveGeometry.Browser.BrowserAddressBar();
             await BuildAvaloniaApp()
                 .WithInterFont()
                 .StartBrowserAppAsync("out");

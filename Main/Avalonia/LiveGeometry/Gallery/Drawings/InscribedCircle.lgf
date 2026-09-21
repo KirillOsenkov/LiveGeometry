@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-2.375" Top="-0.0416666667" Right="7.625" Bottom="-15.2083333333" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF6363EB" StrokeWidth="3" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="40" Color="#FF112CB4" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="18" Color="#FF7934B7" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <LineStyle Color="#FF57C242" StrokeWidth="1" Name="9" />
+    <LineStyle Color="#FFA7A7A7" StrokeWidth="1" Name="10" />
+    <LineStyle Color="#FF9AA320" StrokeWidth="3" Name="11" />
+    <LineStyle Color="#FFEB4444" StrokeWidth="3" Name="12" />
+    <LineStyle Color="#FF20A38D" StrokeWidth="3" Name="13" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-1.7083333333" Y="-8.6875" />
+    <FreePoint Name="B" Style="1" X="6.5416666667" Y="-5.875" />
+    <Segment Name="Segment8" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <FreePoint Name="C" Style="1" X="5.625" Y="-12.2083333333" />
+    <Segment Name="Segment10" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment12" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <AngleBisector Name="AngleBisector14" Style="9">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector16" Style="9">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector23" Style="9">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </AngleBisector>
+    <IntersectionPoint Name="D" Style="3" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector16" />
+      <Dependency Name="AngleBisector14" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine25" Style="10">
+      <Dependency Name="Segment12" />
+      <Dependency Name="D" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="E" Style="2" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine25" />
+      <Dependency Name="Segment12" />
+    </IntersectionPoint>
+    <Circle Name="Circle27" Style="12">
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+    </Circle>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Inscribed Circle" DecimalsToShow="2" X="7.758" Y="-5.875" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Every triangle has exactly one circle that\ntouches all three sides: its incircle.\n\nThe green lines are the angle bisectors. They\nalways meet in a single point, the incenter\n(gray) - the center of the incircle. A\nperpendicular from the incenter to a side\ngives the green point where the circle\ntouches.\n\nDrag the yellow vertices: the circle always\nfits." DecimalsToShow="2" X="7.758" Y="-6.635" />
+  </Figures>
+</Drawing>

@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-5.0366300366" Top="8.3333333334" Right="5.9523809524" Bottom="-8.3333333334" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-3.2462225275" Y="2.8920558608" />
+    <FreePoint Name="B" Style="1" X="0.7598443223" Y="1.3147893772" />
+    <FreePoint Name="C" Style="1" X="0.8012820513" Y="-3.456959707" />
+    <FreePoint Name="D" Style="1" X="-2.9990842491" Y="-1.6254578755" />
+    <MidPoint Name="MidPoint1911" Visible="false" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <MidPoint Name="MidPoint2811" Visible="false" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="MidPoint1911" />
+    </MidPoint>
+    <MidPoint Name="MidPoint5211" Visible="false" Style="1">
+      <Dependency Name="MidPoint2811" />
+      <Dependency Name="MidPoint1911" />
+    </MidPoint>
+    <MidPoint Name="MidPoint1711" Visible="false" Style="1">
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="MidPoint2211" Visible="false" Style="1">
+      <Dependency Name="MidPoint1711" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="MidPoint3811" Visible="false" Style="1">
+      <Dependency Name="MidPoint1711" />
+      <Dependency Name="MidPoint2211" />
+    </MidPoint>
+    <MidPoint Name="MidPoint5011" Visible="false" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="MidPoint2811" />
+    </MidPoint>
+    <MidPoint Name="MidPoint4011" Visible="false" Style="1">
+      <Dependency Name="MidPoint2211" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="MidPoint3011" Visible="false" Style="1">
+      <Dependency Name="MidPoint1911" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <MidPoint Name="MidPoint5611" Visible="false" Style="1">
+      <Dependency Name="MidPoint3011" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <MidPoint Name="MidPoint3611" Visible="false" Style="1">
+      <Dependency Name="D" />
+      <Dependency Name="MidPoint1711" />
+    </MidPoint>
+    <MidPoint Name="MidPoint6611" Visible="false" Style="1">
+      <Dependency Name="D" />
+      <Dependency Name="MidPoint3611" />
+    </MidPoint>
+    <MidPoint Name="MidPoint5411" Visible="false" Style="1">
+      <Dependency Name="MidPoint1911" />
+      <Dependency Name="MidPoint3011" />
+    </MidPoint>
+    <MidPoint Name="MidPoint6811" Visible="false" Style="1">
+      <Dependency Name="MidPoint3611" />
+      <Dependency Name="MidPoint1711" />
+    </MidPoint>
+    <MidPoint Name="MidPoint2011" Visible="false" Style="1">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="MidPoint2611" Visible="false" Style="1">
+      <Dependency Name="MidPoint2011" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="MidPoint4811" Visible="false" Style="1">
+      <Dependency Name="MidPoint2611" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="MidPoint1811" Visible="false" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <MidPoint Name="MidPoint3211" Visible="false" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="MidPoint1811" />
+    </MidPoint>
+    <MidPoint Name="MidPoint5811" Visible="false" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="MidPoint3211" />
+    </MidPoint>
+    <MidPoint Name="MidPoint4611" Visible="false" Style="1">
+      <Dependency Name="MidPoint2011" />
+      <Dependency Name="MidPoint2611" />
+    </MidPoint>
+    <MidPoint Name="MidPoint6011" Visible="false" Style="1">
+      <Dependency Name="MidPoint3211" />
+      <Dependency Name="MidPoint1811" />
+    </MidPoint>
+    <MidPoint Name="MidPoint2411" Visible="false" Style="1">
+      <Dependency Name="C" />
+      <Dependency Name="MidPoint2011" />
+    </MidPoint>
+    <MidPoint Name="MidPoint4411" Visible="false" Style="1">
+      <Dependency Name="MidPoint2411" />
+      <Dependency Name="MidPoint2011" />
+    </MidPoint>
+    <MidPoint Name="MidPoint3411" Visible="false" Style="1">
+      <Dependency Name="MidPoint1811" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <MidPoint Name="MidPoint6211" Visible="false" Style="1">
+      <Dependency Name="MidPoint1811" />
+      <Dependency Name="MidPoint3411" />
+    </MidPoint>
+    <MidPoint Name="MidPoint4211" Visible="false" Style="1">
+      <Dependency Name="C" />
+      <Dependency Name="MidPoint2411" />
+    </MidPoint>
+    <MidPoint Name="MidPoint6411" Visible="false" Style="1">
+      <Dependency Name="MidPoint3411" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <Segment Name="Segment911" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="Segment611" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment9011" Style="4">
+      <Dependency Name="MidPoint1811" />
+      <Dependency Name="MidPoint2011" />
+    </Segment>
+    <Segment Name="Segment8611" Style="4">
+      <Dependency Name="MidPoint3411" />
+      <Dependency Name="MidPoint2411" />
+    </Segment>
+    <Segment Name="Segment8411" Style="4">
+      <Dependency Name="MidPoint6411" />
+      <Dependency Name="MidPoint4211" />
+    </Segment>
+    <Segment Name="Segment8811" Style="4">
+      <Dependency Name="MidPoint6211" />
+      <Dependency Name="MidPoint4411" />
+    </Segment>
+    <Segment Name="Segment9411" Style="4">
+      <Dependency Name="MidPoint2611" />
+      <Dependency Name="MidPoint3211" />
+    </Segment>
+    <Segment Name="Segment9211" Style="4">
+      <Dependency Name="MidPoint6011" />
+      <Dependency Name="MidPoint4611" />
+    </Segment>
+    <Segment Name="Segment9611" Style="4">
+      <Dependency Name="MidPoint5811" />
+      <Dependency Name="MidPoint4811" />
+    </Segment>
+    <Segment Name="Segment7611" Style="4">
+      <Dependency Name="MidPoint1711" />
+      <Dependency Name="MidPoint1911" />
+    </Segment>
+    <Segment Name="Segment7211" Style="4">
+      <Dependency Name="MidPoint3611" />
+      <Dependency Name="MidPoint3011" />
+    </Segment>
+    <Segment Name="Segment7411" Style="4">
+      <Dependency Name="MidPoint6811" />
+      <Dependency Name="MidPoint5411" />
+    </Segment>
+    <Segment Name="Segment7011" Style="4">
+      <Dependency Name="MidPoint6611" />
+      <Dependency Name="MidPoint5611" />
+    </Segment>
+    <Segment Name="Segment8011" Style="4">
+      <Dependency Name="MidPoint2211" />
+      <Dependency Name="MidPoint2811" />
+    </Segment>
+    <Segment Name="Segment8211" Style="4">
+      <Dependency Name="MidPoint4011" />
+      <Dependency Name="MidPoint5011" />
+    </Segment>
+    <Segment Name="Segment7811" Style="4">
+      <Dependency Name="MidPoint3811" />
+      <Dependency Name="MidPoint5211" />
+    </Segment>
+    <Segment Name="Segment1611" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="Segment311" Style="4">
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+    </Segment>
+    <FreePoint Name="E" Style="1" X="0.2746108059" Y="4.3920558608" />
+    <FreePoint Name="F" Style="1" X="4.1244276556" Y="3.1793727106" />
+    <MidPoint Name="MidPoint19111" Visible="false" Style="1">
+      <Dependency Name="E" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <MidPoint Name="MidPoint28111" Visible="false" Style="1">
+      <Dependency Name="E" />
+      <Dependency Name="MidPoint19111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint52111" Visible="false" Style="1">
+      <Dependency Name="MidPoint28111" />
+      <Dependency Name="MidPoint19111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint17111" Visible="false" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <MidPoint Name="MidPoint22111" Visible="false" Style="1">
+      <Dependency Name="MidPoint17111" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <MidPoint Name="MidPoint38111" Visible="false" Style="1">
+      <Dependency Name="MidPoint17111" />
+      <Dependency Name="MidPoint22111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint50111" Visible="false" Style="1">
+      <Dependency Name="E" />
+      <Dependency Name="MidPoint28111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint40111" Visible="false" Style="1">
+      <Dependency Name="MidPoint22111" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <MidPoint Name="MidPoint30111" Visible="false" Style="1">
+      <Dependency Name="MidPoint19111" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <MidPoint Name="MidPoint56111" Visible="false" Style="1">
+      <Dependency Name="MidPoint30111" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <MidPoint Name="MidPoint36111" Visible="false" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="MidPoint17111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint66111" Visible="false" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="MidPoint36111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint54111" Visible="false" Style="1">
+      <Dependency Name="MidPoint19111" />
+      <Dependency Name="MidPoint30111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint68111" Visible="false" Style="1">
+      <Dependency Name="MidPoint36111" />
+      <Dependency Name="MidPoint17111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint20111" Visible="false" Style="1">
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </MidPoint>
+    <MidPoint Name="MidPoint26111" Visible="false" Style="1">
+      <Dependency Name="MidPoint20111" />
+      <Dependency Name="E" />
+    </MidPoint>
+    <MidPoint Name="MidPoint48111" Visible="false" Style="1">
+      <Dependency Name="MidPoint26111" />
+      <Dependency Name="E" />
+    </MidPoint>
+    <MidPoint Name="MidPoint18111" Visible="false" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="MidPoint32111" Visible="false" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="MidPoint18111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint58111" Visible="false" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="MidPoint32111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint46111" Visible="false" Style="1">
+      <Dependency Name="MidPoint20111" />
+      <Dependency Name="MidPoint26111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint60111" Visible="false" Style="1">
+      <Dependency Name="MidPoint32111" />
+      <Dependency Name="MidPoint18111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint24111" Visible="false" Style="1">
+      <Dependency Name="F" />
+      <Dependency Name="MidPoint20111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint44111" Visible="false" Style="1">
+      <Dependency Name="MidPoint24111" />
+      <Dependency Name="MidPoint20111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint34111" Visible="false" Style="1">
+      <Dependency Name="MidPoint18111" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="MidPoint62111" Visible="false" Style="1">
+      <Dependency Name="MidPoint18111" />
+      <Dependency Name="MidPoint34111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint42111" Visible="false" Style="1">
+      <Dependency Name="F" />
+      <Dependency Name="MidPoint24111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint64111" Visible="false" Style="1">
+      <Dependency Name="MidPoint34111" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <Segment Name="Segment9111" Style="4">
+      <Dependency Name="E" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="Segment6111" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="Segment90111" Style="4">
+      <Dependency Name="MidPoint18111" />
+      <Dependency Name="MidPoint20111" />
+    </Segment>
+    <Segment Name="Segment86111" Style="4">
+      <Dependency Name="MidPoint34111" />
+      <Dependency Name="MidPoint24111" />
+    </Segment>
+    <Segment Name="Segment84111" Style="4">
+      <Dependency Name="MidPoint64111" />
+      <Dependency Name="MidPoint42111" />
+    </Segment>
+    <Segment Name="Segment88111" Style="4">
+      <Dependency Name="MidPoint62111" />
+      <Dependency Name="MidPoint44111" />
+    </Segment>
+    <Segment Name="Segment94111" Style="4">
+      <Dependency Name="MidPoint26111" />
+      <Dependency Name="MidPoint32111" />
+    </Segment>
+    <Segment Name="Segment92111" Style="4">
+      <Dependency Name="MidPoint60111" />
+      <Dependency Name="MidPoint46111" />
+    </Segment>
+    <Segment Name="Segment96111" Style="4">
+      <Dependency Name="MidPoint58111" />
+      <Dependency Name="MidPoint48111" />
+    </Segment>
+    <Segment Name="Segment76111" Style="4">
+      <Dependency Name="MidPoint17111" />
+      <Dependency Name="MidPoint19111" />
+    </Segment>
+    <Segment Name="Segment72111" Style="4">
+      <Dependency Name="MidPoint36111" />
+      <Dependency Name="MidPoint30111" />
+    </Segment>
+    <Segment Name="Segment74111" Style="4">
+      <Dependency Name="MidPoint68111" />
+      <Dependency Name="MidPoint54111" />
+    </Segment>
+    <Segment Name="Segment70111" Style="4">
+      <Dependency Name="MidPoint66111" />
+      <Dependency Name="MidPoint56111" />
+    </Segment>
+    <Segment Name="Segment80111" Style="4">
+      <Dependency Name="MidPoint22111" />
+      <Dependency Name="MidPoint28111" />
+    </Segment>
+    <Segment Name="Segment82111" Style="4">
+      <Dependency Name="MidPoint40111" />
+      <Dependency Name="MidPoint50111" />
+    </Segment>
+    <Segment Name="Segment78111" Style="4">
+      <Dependency Name="MidPoint38111" />
+      <Dependency Name="MidPoint52111" />
+    </Segment>
+    <Segment Name="Segment16111" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment3111" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </Segment>
+    <FreePoint Name="G" Style="1" X="3.8003663004" Y="-1.076007326" />
+    <MidPoint Name="MidPoint191111" Visible="false" Style="1">
+      <Dependency Name="F" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="MidPoint281111" Visible="false" Style="1">
+      <Dependency Name="F" />
+      <Dependency Name="MidPoint191111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint521111" Visible="false" Style="1">
+      <Dependency Name="MidPoint281111" />
+      <Dependency Name="MidPoint191111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint171111" Visible="false" Style="1">
+      <Dependency Name="C" />
+      <Dependency Name="G" />
+    </MidPoint>
+    <MidPoint Name="MidPoint221111" Visible="false" Style="1">
+      <Dependency Name="MidPoint171111" />
+      <Dependency Name="G" />
+    </MidPoint>
+    <MidPoint Name="MidPoint381111" Visible="false" Style="1">
+      <Dependency Name="MidPoint171111" />
+      <Dependency Name="MidPoint221111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint501111" Visible="false" Style="1">
+      <Dependency Name="F" />
+      <Dependency Name="MidPoint281111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint401111" Visible="false" Style="1">
+      <Dependency Name="MidPoint221111" />
+      <Dependency Name="G" />
+    </MidPoint>
+    <MidPoint Name="MidPoint301111" Visible="false" Style="1">
+      <Dependency Name="MidPoint191111" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="MidPoint561111" Visible="false" Style="1">
+      <Dependency Name="MidPoint301111" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="MidPoint361111" Visible="false" Style="1">
+      <Dependency Name="C" />
+      <Dependency Name="MidPoint171111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint661111" Visible="false" Style="1">
+      <Dependency Name="C" />
+      <Dependency Name="MidPoint361111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint541111" Visible="false" Style="1">
+      <Dependency Name="MidPoint191111" />
+      <Dependency Name="MidPoint301111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint681111" Visible="false" Style="1">
+      <Dependency Name="MidPoint361111" />
+      <Dependency Name="MidPoint171111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint201111" Visible="false" Style="1">
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <MidPoint Name="MidPoint261111" Visible="false" Style="1">
+      <Dependency Name="MidPoint201111" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <MidPoint Name="MidPoint481111" Visible="false" Style="1">
+      <Dependency Name="MidPoint261111" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <MidPoint Name="MidPoint181111" Visible="false" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="MidPoint321111" Visible="false" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="MidPoint181111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint581111" Visible="false" Style="1">
+      <Dependency Name="B" />
+      <Dependency Name="MidPoint321111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint461111" Visible="false" Style="1">
+      <Dependency Name="MidPoint201111" />
+      <Dependency Name="MidPoint261111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint601111" Visible="false" Style="1">
+      <Dependency Name="MidPoint321111" />
+      <Dependency Name="MidPoint181111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint241111" Visible="false" Style="1">
+      <Dependency Name="G" />
+      <Dependency Name="MidPoint201111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint441111" Visible="false" Style="1">
+      <Dependency Name="MidPoint241111" />
+      <Dependency Name="MidPoint201111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint341111" Visible="false" Style="1">
+      <Dependency Name="MidPoint181111" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="MidPoint621111" Visible="false" Style="1">
+      <Dependency Name="MidPoint181111" />
+      <Dependency Name="MidPoint341111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint421111" Visible="false" Style="1">
+      <Dependency Name="G" />
+      <Dependency Name="MidPoint241111" />
+    </MidPoint>
+    <MidPoint Name="MidPoint641111" Visible="false" Style="1">
+      <Dependency Name="MidPoint341111" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <Segment Name="Segment91111" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment61111" Style="4">
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="Segment901111" Style="4">
+      <Dependency Name="MidPoint181111" />
+      <Dependency Name="MidPoint201111" />
+    </Segment>
+    <Segment Name="Segment861111" Style="4">
+      <Dependency Name="MidPoint341111" />
+      <Dependency Name="MidPoint241111" />
+    </Segment>
+    <Segment Name="Segment841111" Style="4">
+      <Dependency Name="MidPoint641111" />
+      <Dependency Name="MidPoint421111" />
+    </Segment>
+    <Segment Name="Segment881111" Style="4">
+      <Dependency Name="MidPoint621111" />
+      <Dependency Name="MidPoint441111" />
+    </Segment>
+    <Segment Name="Segment941111" Style="4">
+      <Dependency Name="MidPoint261111" />
+      <Dependency Name="MidPoint321111" />
+    </Segment>
+    <Segment Name="Segment921111" Style="4">
+      <Dependency Name="MidPoint601111" />
+      <Dependency Name="MidPoint461111" />
+    </Segment>
+    <Segment Name="Segment961111" Style="4">
+      <Dependency Name="MidPoint581111" />
+      <Dependency Name="MidPoint481111" />
+    </Segment>
+    <Segment Name="Segment761111" Style="4">
+      <Dependency Name="MidPoint171111" />
+      <Dependency Name="MidPoint191111" />
+    </Segment>
+    <Segment Name="Segment721111" Style="4">
+      <Dependency Name="MidPoint361111" />
+      <Dependency Name="MidPoint301111" />
+    </Segment>
+    <Segment Name="Segment741111" Style="4">
+      <Dependency Name="MidPoint681111" />
+      <Dependency Name="MidPoint541111" />
+    </Segment>
+    <Segment Name="Segment701111" Style="4">
+      <Dependency Name="MidPoint661111" />
+      <Dependency Name="MidPoint561111" />
+    </Segment>
+    <Segment Name="Segment801111" Style="4">
+      <Dependency Name="MidPoint221111" />
+      <Dependency Name="MidPoint281111" />
+    </Segment>
+    <Segment Name="Segment821111" Style="4">
+      <Dependency Name="MidPoint401111" />
+      <Dependency Name="MidPoint501111" />
+    </Segment>
+    <Segment Name="Segment781111" Style="4">
+      <Dependency Name="MidPoint381111" />
+      <Dependency Name="MidPoint521111" />
+    </Segment>
+    <Segment Name="Segment161111" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment31111" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="G" />
+    </Segment>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Wireframe Cube" DecimalsToShow="2" X="5.631" Y="4.392" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A cube you can turn - built from nothing but\nsegments and midpoints.\n\nDrag the yellow points to rotate and stretch\nit." DecimalsToShow="2" X="5.631" Y="3.45" />
+  </Figures>
+</Drawing>

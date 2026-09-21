@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-10.3849058151" Top="15.7436059779" Right="10.3584478776" Bottom="-15.7171471227" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF2882BE" StrokeWidth="3" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF8800FF" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FF0091FF" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <PointStyle Size="4" Fill="#FFFFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Name="10" />
+    <PointStyle Size="4" Fill="#00FFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Name="11" />
+    <LineStyle Color="#FF848E93" StrokeWidth="1" Name="12" />
+    <PointStyle Size="4" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Name="13" />
+    <TextStyle FontSize="27.2" Color="#FF0000FF" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="14" />
+    <ShapeStyle Fill="#FFCCCCFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="15" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-4.8533448304" Y="1.8714881959" />
+    <FreePoint Name="B" Style="1" X="-6.2794503968" Y="-12.5192134284" />
+    <FreePoint Name="C" Style="1" X="8.1112512275" Y="-7.3333750052" />
+    <PointByCoordinates Name="E" Visible="false" Style="11" X="(B.X) + (COS((XANG(B,C)) + ((ANG(C,B,A)) / (3))))" Y="(B.Y) + (SIN((XANG(B,C)) + ((ANG(C,B,A)) / (3))))">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D" Visible="false" Style="11" X="(B.X) + (COS((XANG(B,C)) + (((2) * (ANG(C,B,A))) / (3))))" Y="(B.Y) + (SIN((XANG(B,C)) + (((2) * (ANG(C,B,A))) / (3))))">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F" Visible="false" Style="11" X="(C.X) + (COS((XANG(C,A)) + ((ANG(A,C,B)) / (3))))" Y="(C.Y) + (SIN((XANG(C,A)) + ((ANG(A,C,B)) / (3))))">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="G" Visible="false" Style="11" X="(C.X) + (COS((XANG(C,A)) + (((2) * (ANG(A,C,B))) / (3))))" Y="(C.Y) + (SIN((XANG(C,A)) + (((2) * (ANG(A,C,B))) / (3))))">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="H" Visible="false" Style="11" X="(A.X) + (COS((XANG(A,B)) + ((ANG(B,A,C)) / (3))))" Y="(A.Y) + (SIN((XANG(A,B)) + ((ANG(B,A,C)) / (3))))">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="I" Visible="false" Style="11" X="(A.X) + (COS((XANG(A,B)) + (((2) * (ANG(B,A,C))) / (3))))" Y="(A.Y) + (SIN((XANG(A,B)) + (((2) * (ANG(B,A,C))) / (3))))">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Ray Name="Ray14" Style="12">
+      <Dependency Name="A" />
+      <Dependency Name="I" />
+    </Ray>
+    <Ray Name="Ray15" Style="12">
+      <Dependency Name="C" />
+      <Dependency Name="F" />
+    </Ray>
+    <IntersectionPoint Name="J" Style="13" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Ray14" />
+      <Dependency Name="Ray15" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="_K" Visible="false" Style="13" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Ray14" />
+      <Dependency Name="Ray15" />
+    </IntersectionPoint>
+    <Ray Name="Ray16" Style="12">
+      <Dependency Name="A" />
+      <Dependency Name="H" />
+    </Ray>
+    <Ray Name="Ray17" Style="12">
+      <Dependency Name="B" />
+      <Dependency Name="D" />
+    </Ray>
+    <IntersectionPoint Name="K" Style="13" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Ray16" />
+      <Dependency Name="Ray17" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="_L" Visible="false" Style="13" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Ray16" />
+      <Dependency Name="Ray17" />
+    </IntersectionPoint>
+    <Ray Name="Ray18" Style="12">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+    </Ray>
+    <Ray Name="Ray19" Style="12">
+      <Dependency Name="C" />
+      <Dependency Name="G" />
+    </Ray>
+    <IntersectionPoint Name="L" Style="13" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Ray18" />
+      <Dependency Name="Ray19" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="_M" Visible="false" Style="13" Algorithm="IntersectLineAndLine">
+      <Dependency Name="Ray18" />
+      <Dependency Name="Ray19" />
+    </IntersectionPoint>
+    <Segment Name="Segment20" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment21" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment22" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="Segment23" Style="4">
+      <Dependency Name="J" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="Segment24" Style="4">
+      <Dependency Name="L" />
+      <Dependency Name="K" />
+    </Segment>
+    <Segment Name="Segment25" Style="4">
+      <Dependency Name="K" />
+      <Dependency Name="J" />
+    </Segment>
+    <Polygon Name="Polygon27" Style="15">
+      <Dependency Name="J" />
+      <Dependency Name="L" />
+      <Dependency Name="K" />
+      <Dependency Name="J" />
+    </Polygon>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Morley's Miracle" DecimalsToShow="2" X="10.874" Y="1.871" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Split each angle of a triangle into three\nequal parts. The trisectors next to each side\nmeet in three points - and those points always\nform an equilateral triangle, no matter what\ntriangle you start with!\n\nFrank Morley discovered this in 1899. It is so\nunexpected that it is known as Morley's\nmiracle.\n\nDrag the yellow vertices and try to break it." DecimalsToShow="2" X="10.874" Y="0.145" />
+  </Figures>
+</Drawing>

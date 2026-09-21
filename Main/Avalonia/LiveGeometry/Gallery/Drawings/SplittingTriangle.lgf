@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-5.3125" Top="7.5416666667" Right="4.6875" Bottom="-7.625" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <ShapeStyle Fill="#FF66FF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="10" />
+    <ShapeStyle Fill="#FF00FFFF" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="11" />
+    <ShapeStyle Fill="#FF00CCFF" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="12" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-3.40625" Y="-0.9895833334" />
+    <FreePoint Name="B" Style="1" X="2.3229166667" Y="2.34375" />
+    <Segment Name="Segment64" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <FreePoint Name="C" Style="1" X="2.7604166667" Y="-3.6354166667" />
+    <Segment Name="Segment66" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment68" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <MidPoint Name="D" Style="3">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="E" Style="3">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="F" Style="3">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <Segment Name="Segment72" Style="4">
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="Segment74" Style="4">
+      <Dependency Name="E" />
+      <Dependency Name="D" />
+    </Segment>
+    <Polygon Name="Polygon80" Style="11">
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Polygon Name="Polygon87" Style="12">
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Polygon Name="Polygon94" Style="10">
+      <Dependency Name="D" />
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Polygon Name="Polygon100" Style="5">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+      <Dependency Name="F" />
+    </Polygon>
+    <Segment Name="Segment70" Style="4">
+      <Dependency Name="D" />
+      <Dependency Name="F" />
+    </Segment>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Midsegments of a Triangle" DecimalsToShow="2" X="3.908" Y="2.344" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Connect the midpoints of the sides of a\ntriangle. The three midsegments split it into\nfour smaller triangles.\n\nAll four are congruent - the same shape and\nsize - so each has exactly one quarter of the\narea, and sides half as long as the original.\n\nDrag the yellow vertices." DecimalsToShow="2" X="3.908" Y="1.626" />
+  </Figures>
+</Drawing>

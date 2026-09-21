@@ -73,6 +73,8 @@ namespace DynamicGeometry
 
         public virtual void Clear()
         {
+            // a drawing from a file can bring a background of its own
+            this.Background = new SolidColorBrush(Colors.White);
             Drawing = new Drawing(this);
         }
 

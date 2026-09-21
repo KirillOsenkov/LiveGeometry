@@ -156,10 +156,14 @@ namespace DynamicGeometry
         /// Zoom to fit: everything visible, as large as possible. An empty drawing goes back
         /// to the default view.
         /// </summary>
-        public void ZoomExtend()
+        /// <param name="alsoShow">
+        /// A part of the plane to keep in view whatever is in it: graphs and lines have no
+        /// bounds of their own
+        /// </param>
+        public void ZoomExtend(Rect? alsoShow = null)
         {
             Rect bounds;
-            if (!TryGetContentBounds(out bounds))
+            if (!TryGetBoundsToShow(out bounds, alsoShow))
             {
                 SetView(new Point(), Settings.DefaultUnitLength);
                 return;
@@ -169,10 +173,22 @@ namespace DynamicGeometry
 
             // text keeps its size in pixels, so in logical units a label grows as the view
             // zooms out: measure again at the new zoom until it settles
-            for (int i = 0; i < 3 && TryGetContentBounds(out bounds); i++)
+            for (int i = 0; i < 3 && TryGetBoundsToShow(out bounds, alsoShow); i++)
             {
                 Fit(bounds, fitMarginPixels, maxFitUnitLength);
             }
+        }
+
+        bool TryGetBoundsToShow(out Rect bounds, Rect? alsoShow)
+        {
+            bool hasContent = TryGetContentBounds(out bounds);
+            if (alsoShow != null)
+            {
+                bounds = hasContent ? bounds.Union(alsoShow.Value) : alsoShow.Value;
+                return true;
+            }
+
+            return hasContent;
         }
 
         /// <summary>
@@ -188,7 +204,8 @@ namespace DynamicGeometry
         /// The logical box around everything of a finite size that is showing: points, circles,
         /// arcs, labels. Lines, rays and graphs don't end, so they don't count.
         /// </summary>
-        public bool TryGetContentBounds(out Rect bounds)
+        /// <param name="include">Which figures count; all of them by default</param>
+        public bool TryGetContentBounds(out Rect bounds, Func<IFigure, bool> include = null)
         {
             double minX = double.MaxValue;
             double minY = double.MaxValue;
@@ -210,7 +227,7 @@ namespace DynamicGeometry
 
             foreach (var figure in Drawing.Figures)
             {
-                if (!figure.Visible || !figure.Exists)
+                if (!figure.Visible || !figure.Exists || (include != null && !include(figure)))
                 {
                     continue;
                 }
@@ -218,6 +235,14 @@ namespace DynamicGeometry
                 if (figure is IPoint point)
                 {
                     Include(point.Coordinates);
+                }
+                else if (figure is Segment || figure is IPolygonalChain || figure is Bezier)
+                {
+                    // the corners count even when the points themselves are hidden
+                    foreach (var vertex in figure.Dependencies.OfType<IPoint>())
+                    {
+                        Include(vertex.Coordinates);
+                    }
                 }
                 else if (figure is IEllipse ellipse)
                 {
@@ -228,7 +253,10 @@ namespace DynamicGeometry
                 }
                 else if (figure is ControlBase control)
                 {
-                    var size = control.Shape.Bounds.Size;
+                    // measured here and now: right after loading a drawing there was no layout
+                    // pass yet, and the bounds of a label whose text just changed are stale
+                    control.Shape.Measure(Size.Infinity);
+                    var size = control.Shape.DesiredSize;
                     var topLeft = control.Coordinates;
                     Include(topLeft);
                     Include(new Point(topLeft.X + ToLogical(size.Width), topLeft.Y - ToLogical(size.Height)));

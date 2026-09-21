@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-4.1579861111" Top="6.3107638889" Right="4.1753472222" Bottom="-6.328125" Grid="true" />
+  <Styles>
+    <PointStyle Size="15" Fill="#FFFFFF00" IsFilled="true" Color="#FFFF7700" StrokeWidth="2" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF0099FF" StrokeWidth="4" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FF0033FF" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Style="1" X="0.1979166667" Y="-0.0104166667" />
+    <FreePoint Name="B" Visible="false" Style="1" X="3.8628472222" Y="-0.0086805556" />
+    <LineTwoPoints Name="Ray8" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </LineTwoPoints>
+    <PointOnFigure Name="C" Style="1" X="1.04996131991329" Y="-0.010013045360458" Parameter="0.232485893064091">
+      <Dependency Name="Ray8" />
+    </PointOnFigure>
+    <FunctionGraph Name="FunctionGraph9" Style="4" Function="sin(x*C.X)">
+      <Dependency Name="C" />
+    </FunctionGraph>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Sine Wave: Frequency" DecimalsToShow="2" X="4.303" Y="-0.009" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="y = sin([C.X] · x)\n\nDrag the yellow point left and right to change\nthe number next to x, the frequency: how\ntightly the waves are packed. The height of\nthe wave never changes." DecimalsToShow="2" X="4.303" Y="-0.284">
+      <Dependency Name="C" />
+    </Label>
+  </Figures>
+</Drawing>

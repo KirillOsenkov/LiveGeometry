@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-4.9895833333" Top="7.5729166667" Right="5.0104166667" Bottom="-7.59375" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FFFF7700" StrokeWidth="2" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="40" Color="#FFE06122" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
+    <LineStyle Color="#FFB2B2B2" StrokeWidth="1" Name="10" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-3.5520833333" Y="-2.8229166667" />
+    <FreePoint Name="B" Style="1" X="2.3645833333" Y="-4.3020833333" />
+    <Segment Name="Segment8" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Circle Name="Circle10" Visible="false" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Circle>
+    <Circle Name="Circle12" Visible="false" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="C" Visible="false" Style="1" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="Circle12" />
+      <Dependency Name="Circle10" />
+    </IntersectionPoint>
+    <CircleArc Name="CircleArc15" Style="4">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </CircleArc>
+    <CircleArc Name="CircleArc18" Style="4">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </CircleArc>
+    <CircleArc Name="CircleArc21" Style="4">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </CircleArc>
+    <PointOnFigure Name="D" Style="1" X="2.144289302218" Y="-0.644224343924305" Parameter="0.365303678375183">
+      <Dependency Name="CircleArc15" />
+    </PointOnFigure>
+    <Segment Name="Segment23" Style="10">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine25" Style="10">
+      <Dependency Name="Segment23" />
+      <Dependency Name="D" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine27" Style="10">
+      <Dependency Name="Segment23" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <DistanceMeasurement Name="DistanceMeasurement28" Style="7" OffsetX="0" OffsetY="0">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </DistanceMeasurement>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Reuleaux Triangle" DecimalsToShow="2" X="3.075" Y="-0.644" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A circle is not the only shape with the same\nwidth in every direction. This one is made of\nthree 60° arcs, each centered at the opposite\ncorner.\n\nRoll it between two parallel lines and they\nnever move apart. That is why it can drill\n(almost) square holes, and why some coins have\nthis shape." DecimalsToShow="2" X="3.075" Y="-1.088" />
+  </Figures>
+</Drawing>

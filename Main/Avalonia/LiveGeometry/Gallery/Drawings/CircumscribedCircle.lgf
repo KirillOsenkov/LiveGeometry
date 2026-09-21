@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-12.3858506944" Top="19.5630787036" Right="9.7669270833" Bottom="-17.3582175925" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FFB2A12F" StrokeWidth="1.8" Name="1" />
+    <PointStyle Size="10" Fill="#FFE3E1E1" IsFilled="true" Color="#FF969494" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FF00E5FF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFEBF5FF" IsFilled="true" Color="#FFEDFEFC" StrokeWidth="0.1" Name="5" />
+    <TextStyle FontSize="40" Color="#FF8800FF" FontFamily="Segoe UI Light" Bold="false" Italic="false" Underline="false" Name="6" />
+    <TextStyle FontSize="20" Color="#FF004C6D" FontFamily="Segoe UI Light" Bold="false" Italic="false" Underline="false" Name="7" />
+    <LineStyle Color="#FF8EC3F8" StrokeWidth="5.4" Name="8" />
+    <LineStyle Color="#FF6FBEE0" StrokeWidth="1.4" Name="9" />
+    <LineStyle Color="#FFB1B1B1" StrokeWidth="1" Name="10" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="FreePoint1" Style="1" X="-7.0553385417" Y="-4.8280526621" />
+    <FreePoint Name="FreePoint7" Style="1" X="3.9748987268" Y="-4.8280526621" />
+    <FreePoint Name="FreePoint4" Style="1" X="0.5135271991" Y="9.3404947916" />
+    <MidPoint Name="MidPoint11" Style="2">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint7" />
+    </MidPoint>
+    <Segment Name="Segment6" Style="9">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint7" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine13" Style="10">
+      <Dependency Name="Segment6" />
+      <Dependency Name="MidPoint11" />
+    </PerpendicularLine>
+    <MidPoint Name="MidPoint10" Style="2">
+      <Dependency Name="FreePoint7" />
+      <Dependency Name="FreePoint1" />
+    </MidPoint>
+    <Segment Name="Segment9" Style="9">
+      <Dependency Name="FreePoint7" />
+      <Dependency Name="FreePoint1" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine15" Style="10">
+      <Dependency Name="Segment9" />
+      <Dependency Name="MidPoint10" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="IntersectionPoint16" Style="3" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine15" />
+      <Dependency Name="PerpendicularLine13" />
+    </IntersectionPoint>
+    <Circle Name="Circle18" Style="8">
+      <Dependency Name="IntersectionPoint16" />
+      <Dependency Name="FreePoint7" />
+    </Circle>
+    <Segment Name="Segment3" Style="9">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+    </Segment>
+    <Polygon Name="Polygon69" Style="5">
+      <Dependency Name="FreePoint1" />
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint7" />
+    </Polygon>
+    <Segment Name="Segment70" Style="9">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint7" />
+    </Segment>
+    <Segment Name="Segment71" Style="9">
+      <Dependency Name="FreePoint7" />
+      <Dependency Name="FreePoint1" />
+    </Segment>
+    <MidPoint Name="A" Style="2">
+      <Dependency Name="FreePoint4" />
+      <Dependency Name="FreePoint1" />
+    </MidPoint>
+    <PerpendicularLine Name="PerpendicularLine48" Style="10">
+      <Dependency Name="Segment3" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Circumscribed Circle" DecimalsToShow="2" X="6.695" Y="9.34" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Every triangle has exactly one circle through\nall three vertices: its circumcircle.\n\nThe gray points are the midpoints of the\nsides, and the gray lines are the\nperpendicular bisectors. They always meet in\none point, the circumcenter - the center of\nthe circle.\n\nDrag the yellow vertices. When does the center\nleave the triangle?" DecimalsToShow="2" X="6.695" Y="7.64" />
+  </Figures>
+</Drawing>

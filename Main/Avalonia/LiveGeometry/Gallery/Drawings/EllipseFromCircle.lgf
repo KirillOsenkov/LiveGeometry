@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing IntersectionOrder="Legacy">
+  <Viewport Left="-4.9895833333" Top="7.5729166667" Right="5.0104166667" Bottom="-7.59375" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
+    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
+    <LineStyle Color="#FFA1A1A1" StrokeWidth="1" Name="9" />
+    <LineStyle Color="#FF0066FF" StrokeWidth="3" Name="10" />
+    <LineStyle Color="#FF00B3FF" StrokeWidth="3" Name="11" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="1" X="-3.84375" Y="0.46875" />
+    <FreePoint Name="B" Style="1" X="3.3645833334" Y="1.40625" />
+    <Segment Name="Segment8" Style="9">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <MidPoint Name="C" Visible="false" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <Circle Name="Circle10" Style="10">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Circle>
+    <PointOnFigure Name="D" Style="1" X="-1.22775506319373" Y="4.43510783337558" Parameter="1.84614759139992">
+      <Dependency Name="Circle10" />
+    </PointOnFigure>
+    <PerpendicularLine Name="PerpendicularLine12" Visible="false" Style="4">
+      <Dependency Name="Segment8" />
+      <Dependency Name="D" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="E" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PerpendicularLine12" />
+      <Dependency Name="Segment8" />
+    </IntersectionPoint>
+    <Segment Name="Segment15" Style="9">
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+    </Segment>
+    <PointOnFigure Name="F" Style="1" X="-1.04392431415701" Y="3.02165362965799" Parameter="0.396390616474535">
+      <Dependency Name="Segment15" />
+    </PointOnFigure>
+    <Locus Name="Locus16" Style="11">
+      <Dependency Name="F" />
+      <Dependency Name="D" />
+    </Locus>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Ellipse from a Circle" DecimalsToShow="2" X="4.23" Y="4.435" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Squash a circle and you get an ellipse.\n\nFrom a point on the circle drop a\nperpendicular to the axis and cut it in a\nfixed ratio. As the point runs around the\ncircle, the cut point traces an ellipse.\n\nDrag the points to change how much the circle\nis squashed." DecimalsToShow="2" X="4.23" Y="3.894" />
+  </Figures>
+</Drawing>
