@@ -26,6 +26,16 @@ namespace DynamicGeometry
 
     public abstract class Measurement : LabelWithOffset
     {
+        /// <summary>
+        /// A measurement depends on what it measures, and a dependent figure normally can't be
+        /// dragged (its parents move instead). But all that dragging a measurement changes is the
+        /// offset of the label from its anchor - so it can, like in the original DG.
+        /// </summary>
+        public override bool AllowMove()
+        {
+            return !Locked;
+        }
+
         //private int mDecimalsToShow = 2;
         //[PropertyGridName("Decimals (0-10)")]
         //[PropertyGridVisible]

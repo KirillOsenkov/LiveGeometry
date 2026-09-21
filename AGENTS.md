@@ -107,6 +107,21 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   their own points by up to a pixel, always down-right. Lines are exact now and point shapes have
   `UseLayoutRounding = false`. Anything new that must line up with figures: same two rules. To
   check alignment, `winauto shot ... --region x,y,60,60 --zoom 16` around a point.
+- **Right angles**: `Figures/Lines/RightAngleMark.cs` draws the two-sides-of-a-square sign. It is
+  a passive visual owned by figures that are perpendicular by construction (`PerpendicularLine`
+  at the foot, when the foot is on the base figure; `SegmentBisector` at the midpoint), gray and
+  translucent, switchable per figure ("Right angle mark", saved as `RightAngleMark="false"`).
+  Both figures derive from `PerpendicularLineBase`, which owns the mark. Which of the four
+  corners it sits in is *stored* (`RightAngleMark.Corner`, 0-3 counterclockwise from the base
+  line's P1->P2 direction, saved as `RightAngleCorner`), chosen once when the line first shows up
+  and never derived from the geometry again - deriving it made the mark flip-flop on rounding.
+  A click on the mark with the Drag tool moves it to the next corner (undoable; the mark has a
+  transparent square as its click area and marks the press handled so the Dragger never sees it). It
+  hides when an `AngleArc` sits at the same vertex, because a measured angle of 90° (within
+  0.005°, i.e. exactly when the label reads "90°") draws the same sign itself in its own style
+  instead of an arc. Deliberately not an auto-created angle figure.
+- **Measurement labels are draggable** (`Measurement.AllowMove`): a drag only changes the label's
+  `Offset` from its anchor, although the figure has dependencies.
 - **Dashes**: `LineStyle.Dash` is a `LineDash` enum (`Styles/LineDash.cs`: Solid, Dash, Dot,
   DashDot, DashDotDot - the VB6 DrawStyle 0-4, which `DGFReader` maps onto it). Inherited by shape
   and point styles, so circles, arcs and polygons dash too. Saved as `Dash="DashDot"` by the
