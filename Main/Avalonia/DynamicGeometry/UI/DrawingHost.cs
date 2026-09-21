@@ -327,9 +327,10 @@ namespace DynamicGeometry
             return Ribbon.AddToolButton(behavior);
         }
 
-        public CommandToolButton AddToolbarButton(Command command)
+        /// <param name="first">Before the tools of its tab instead of after them</param>
+        public CommandToolButton AddToolbarButton(Command command, bool first = false)
         {
-            return Ribbon.AddToolButton(command);
+            return Ribbon.AddToolButton(command, first);
         }
 
         public void RemoveToolButton(Behavior behavior)

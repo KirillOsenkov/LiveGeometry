@@ -37,50 +37,86 @@ namespace DynamicGeometry
                 line = parentLine.OnScreenCoordinates;
             }
 
-            Point p1 = line.P1;
-            Point p2 = line.P2;
-            double d = p1.Distance(p2);
-            var size = ToLogical((Style as LineStyle).StrokeWidth) + .5;
-            double arrowLength = size;// ToLogical(16);
-            double arrowWidth = size;// 1.0 / 3;
-            double shaftWidth = arrowWidth / 3;
-            Point triangleBase = new Point(
-                p2.X + (p1.X - p2.X) * arrowLength / d,
-                p2.Y + (p1.Y - p2.Y) * arrowLength / d);
+            // All in pixels: an arrow is a line with a head, as wide as its style says and with a
+            // head that goes with that width - the same at any zoom.
+            Point tail = ToPhysical(line.P1);
+            Point tip = ToPhysical(line.P2);
+            double length = tail.Distance(tip);
 
-            // TODO: need to measure performance - I don't know what's 
-            // faster - creating a new collection or emptying and
-            // refilling the existing collection.
-            // Gut feeling is that emptying and refilling should be faster
-            // but I need to measure to confirm that.
-            VertexCoordinates[0] = new Point(
-                    triangleBase.X + (p2.Y - triangleBase.Y) * arrowWidth,
-                    triangleBase.Y + (triangleBase.X - p2.X) * arrowWidth);
-            VertexCoordinates[1] = p2;
-            VertexCoordinates[2] = new Point(
-                triangleBase.X + (triangleBase.Y - p2.Y) * arrowWidth,
-                triangleBase.Y + (p2.X - triangleBase.X) * arrowWidth);
-            VertexCoordinates[3] = new Point(
-                triangleBase.X + (triangleBase.Y - p2.Y) * shaftWidth,
-                triangleBase.Y + (p2.X - triangleBase.X) * shaftWidth);
-            VertexCoordinates[4] = new Point(
-                p1.X + (triangleBase.Y - p2.Y) * shaftWidth,
-                p1.Y + (p2.X - triangleBase.X) * shaftWidth);
-            VertexCoordinates[5] = new Point(
-                    p1.X + (p2.Y - triangleBase.Y) * shaftWidth,
-                    p1.Y + (triangleBase.X - p2.X) * shaftWidth);
-            VertexCoordinates[6] = new Point(
-                    triangleBase.X + (p2.Y - triangleBase.Y) * shaftWidth,
-                    triangleBase.Y + (triangleBase.X - p2.X) * shaftWidth);
+            var lineStyle = Style as LineStyle;
+            double width = lineStyle != null ? lineStyle.StrokeWidth : 1;
+            if (Selected && Settings.ChangeLineAppearanceWhenSelected)
+            {
+                width += 3;
+            }
 
-            pointCache[0] = ToPhysical(VertexCoordinates[0]);
-            pointCache[1] = ToPhysical(VertexCoordinates[1]);
-            pointCache[2] = ToPhysical(VertexCoordinates[2]);
-            pointCache[3] = ToPhysical(VertexCoordinates[3]);
-            pointCache[4] = ToPhysical(VertexCoordinates[4]);
-            pointCache[5] = ToPhysical(VertexCoordinates[5]);
-            pointCache[6] = ToPhysical(VertexCoordinates[6]);
+            double halfShaft = System.Math.Max(width / 2, 0.5);
+            double headLength = System.Math.Min(HeadLength + HeadGrowth * width, length);
+            double halfHead = HeadHalfWidth + HeadGrowth / 2 * width;
+
+            var along = length > 1e-9 ? (tip - tail) / length : new Point(1, 0);
+            var across = new Point(-along.Y, along.X);
+
+            // the head points at the end point, it doesn't hide under it
+            var endPoint = parentLine != null && parentLine.Dependencies.Count > 1
+                ? parentLine.Dependencies[1] as PointBase
+                : null;
+            if (endPoint != null && endPoint.Visible && endPoint.Shape != null)
+            {
+                double pointRadius = endPoint.Shape.Width / 2;
+                if (pointRadius > 0 && length > pointRadius + headLength)
+                {
+                    tip -= along * pointRadius;
+                }
+            }
+
+            var headBase = tip - along * headLength;
+
+            pointCache[0] = headBase + across * halfHead;
+            pointCache[1] = tip;
+            pointCache[2] = headBase - across * halfHead;
+            pointCache[3] = headBase - across * halfShaft;
+            pointCache[4] = tail - across * halfShaft;
+            pointCache[5] = tail + across * halfShaft;
+            pointCache[6] = headBase + across * halfShaft;
+
+            // the polygon's hit testing works on logical vertices
+            for (int i = 0; i < 7; i++)
+            {
+                VertexCoordinates[i] = ToLogical(pointCache[i]);
+            }
+
             Shape.PointsChanged();
+        }
+
+        /// <summary>Of the head of a hairline arrow, in pixels; both grow with the line width</summary>
+        public const double HeadLength = 11;
+        public const double HeadHalfWidth = 4;
+        public const double HeadGrowth = 3;
+
+        /// <summary>
+        /// One solid color for the shaft and the head, and no outline: the color of the line
+        /// style. A vector from an older drawing has a polygon style with a transparent
+        /// outline; that one keeps its fill.
+        /// </summary>
+        public override void ApplyStyle()
+        {
+            base.ApplyStyle();
+
+            Avalonia.Media.IBrush brush = null;
+            var lineStyle = Style as LineStyle;
+            if (lineStyle != null && lineStyle.Color.A > 0)
+            {
+                brush = new Avalonia.Media.SolidColorBrush(lineStyle.Color);
+            }
+            else if (Style is ShapeStyle shapeStyle)
+            {
+                brush = shapeStyle.Fill;
+            }
+
+            Shape.Fill = brush ?? Avalonia.Media.Brushes.Black;
+            Shape.Stroke = null;
+            Shape.StrokeDashArray = null;
         }
     }
 }

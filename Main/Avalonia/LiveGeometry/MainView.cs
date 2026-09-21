@@ -118,7 +118,7 @@ public class MainView : UserControl
 
     void InitializeCommands()
     {
-        DrawingHost.AddToolbarButton(DrawingHost.CommandToggleGrid);
+        DrawingHost.AddToolbarButton(DrawingHost.CommandToggleGrid, first: true);
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleOrtho);
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleSnapToGrid);
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleSnapToPoint);

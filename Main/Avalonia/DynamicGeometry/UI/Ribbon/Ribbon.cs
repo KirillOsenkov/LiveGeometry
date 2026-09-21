@@ -190,11 +190,48 @@ namespace DynamicGeometry
             return result;
         }
 
-        public CommandToolButton AddToolButton(Command command)
+        public CommandToolButton AddToolButton(Command command, bool first = false)
         {
             var button = new CommandToolButton(command);
-            AddToolButton(button, command.Category);
+            if (first)
+            {
+                AddFirstToolButton(button, command.Category);
+            }
+            else
+            {
+                AddToolButton(button, command.Category);
+            }
+
             return button;
+        }
+
+        /// <summary>
+        /// A command that leads its tab (the grid switch under Coordinates): before the tools,
+        /// with the same thin divider in between.
+        /// </summary>
+        void AddFirstToolButton(ToolButton button, string category)
+        {
+            button.DrawingHost = DrawingHost;
+            var panel = GetTabPanelByCategory(button, category);
+            if (panel.Panel.Children.Count > 0)
+            {
+                panel.Panel.Children.Insert(0, CreateDivider());
+            }
+
+            panel.Panel.Children.Insert(0, button);
+            button.ParentPanel = panel;
+        }
+
+        static Control CreateDivider()
+        {
+            return new Avalonia.Controls.Shapes.Rectangle()
+            {
+                Width = 1,
+                Height = 44, // a WrapPanel doesn't stretch its children
+                Fill = RibbonTheme.Separator,
+                Margin = new Thickness(6, 0, 6, 0),
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+            };
         }
 
         public void AddToolButton(ToolButton button, string category)
@@ -206,14 +243,7 @@ namespace DynamicGeometry
             var last = panel.Panel.Children.LastOrDefault();
             if (button is CommandToolButton && last is BehaviorToolButton)
             {
-                panel.Panel.Children.Add(new Avalonia.Controls.Shapes.Rectangle()
-                {
-                    Width = 1,
-                    Height = 44, // a WrapPanel doesn't stretch its children
-                    Fill = RibbonTheme.Separator,
-                    Margin = new Thickness(6, 0, 6, 0),
-                    VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
-                });
+                panel.Panel.Children.Add(CreateDivider());
             }
 
             panel.Panel.Children.Add(button);

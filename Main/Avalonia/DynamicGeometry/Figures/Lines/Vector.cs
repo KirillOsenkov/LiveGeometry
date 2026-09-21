@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Avalonia.Media;
@@ -38,6 +39,16 @@ namespace DynamicGeometry
 
         public override void OnAddingToCanvas(Canvas newContainer)
         {
+            // The arrow is a polygon, and left to itself (which is what the base call does to a
+            // child without a style) it would get the default polygon style: a pale translucent
+            // fill without an outline. A vector is a line.
+            if (Arrow.Style == null && Drawing != null)
+            {
+                Arrow.Style = Drawing.StyleManager
+                    .GetStyles<LineStyle>()
+                    .FirstOrDefault(s => s.GetType() == typeof(LineStyle));
+            }
+
             base.OnAddingToCanvas(newContainer);
             Arrow.EnsureStyleAssigned();
         }

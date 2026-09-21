@@ -11,8 +11,12 @@ namespace DynamicGeometry
         {
             Shape = CreateShape();
             pathSegments = new PathSegmentCollection();
+            // open: in Avalonia a PathFigure is closed unless told otherwise (in WPF it was the
+            // other way round), which drew a line from the end of a graph back to its start
             pathFigure = new PathFigure()
             {
+                IsClosed = false,
+                IsFilled = false,
                 Segments = pathSegments
             };
             Shape.Data = new PathGeometry()

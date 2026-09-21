@@ -102,6 +102,15 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   drag on an empty spot (a drag that starts on a figure moves the figure, and the grid "stays
   behind"), use many steps (`drag <t> x1 y1 x2 y2 300`), and compare against the axis numbers. Labels have a fixed *pixel*
   size, so fit re-measures and refits a few times. `winauto wheel <t> x y <notches>` tests the wheel.
+- **Vectors**: `Vector` = an invisible `Segment` + an `Arrow` (a 7-point polygon: shaft + head).
+  The arrow is computed in pixels (`Arrow.HeadLength/HeadHalfWidth/HeadGrowth`, shaft = the
+  style's stroke width), is filled with the *line* color, has no outline, and stops at the rim
+  of its end point. `Vector.OnAddingToCanvas` gives it the default `LineStyle` before the base
+  call, otherwise the polygon default (pale translucent fill) wins; vectors in older files keep
+  their polygon style and get its fill.
+- **`PathFigure.IsClosed` defaults to true in Avalonia** (false in WPF), and `IsFilled` to true.
+  Every hand-built `PathFigure` must set both; a forgotten one draws a line from the end of the
+  path back to its start (it did, for function graphs and loci, in `Curve`).
 - **No pixel snapping of figure geometry.** The WPF code rounded line endpoints to pixel centers
   (`Round() + 0.5` in `Utilities.Set(Line, PointPair)`); points weren't snapped, so lines missed
   their own points by up to a pixel, always down-right. Lines are exact now and point shapes have
