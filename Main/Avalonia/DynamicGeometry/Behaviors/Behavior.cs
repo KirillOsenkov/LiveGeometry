@@ -147,6 +147,8 @@ namespace DynamicGeometry
             {
                 if (mParentCanvas != null)
                 {
+                    clickPreview.Clear();
+                    mParentCanvas.PointerExited -= PointerExitedHandler;
                     mParentCanvas.PointerWheelChanged -= PointerWheelHandler;
                     mParentCanvas.PointerPressed -= PointerPressedHandler;
                     mParentCanvas.PointerMoved -= PointerMovedHandler;
@@ -158,6 +160,7 @@ namespace DynamicGeometry
                 mParentCanvas = value;
                 if (mParentCanvas != null)
                 {
+                    mParentCanvas.PointerExited += PointerExitedHandler;
                     mParentCanvas.PointerWheelChanged += PointerWheelHandler;
                     mParentCanvas.PointerPressed += PointerPressedHandler;
                     mParentCanvas.PointerMoved += PointerMovedHandler;
@@ -228,6 +231,7 @@ namespace DynamicGeometry
         void PointerPressedHandler(object sender, PointerPressedEventArgs e)
         {
             currentModifiers = e.KeyModifiers;
+            clickPreview.Clear();
             var properties = e.GetCurrentPoint(mParentCanvas).Properties;
             if (properties.IsLeftButtonPressed)
             {
@@ -254,7 +258,58 @@ namespace DynamicGeometry
             {
                 UpdateCursor(e);
             }
+
+            UpdateClickPreview(e);
         }
+
+        void PointerExitedHandler(object sender, PointerEventArgs e)
+        {
+            clickPreview.Clear();
+        }
+
+        #region Click preview
+
+        readonly ClickPreview clickPreview = new ClickPreview();
+
+        void UpdateClickPreview(PointerEventArgs e)
+        {
+            if (errorHappened || mParentCanvas == null || Drawing == null)
+            {
+                clickPreview.Clear();
+                return;
+            }
+
+            try
+            {
+                clickPreview.Show(Drawing, GetClickPreview(e), ClickPreviewPointStyle);
+            }
+            catch (Exception)
+            {
+                clickPreview.Clear();
+            }
+        }
+
+        /// <summary>
+        /// What a click here would do, if it is a point worth announcing: one on a figure, at an
+        /// intersection or in the middle of a segment. Null for anything else.
+        /// </summary>
+        protected virtual PointPlacement GetClickPreview(MouseEventArgs e)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// The style the previewed point is going to get
+        /// </summary>
+        protected virtual IFigureStyle ClickPreviewPointStyle
+        {
+            get
+            {
+                return Drawing.StyleManager.GetStyles<PointStyle>().FirstOrDefault();
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Like in the original DG: a right-click gets you out of whatever you're doing.
@@ -329,6 +384,7 @@ namespace DynamicGeometry
         void PointerWheelHandler(object sender, PointerWheelEventArgs e)
         {
             currentModifiers = e.KeyModifiers;
+            clickPreview.Clear();
             MouseWheel(sender, e);
         }
 

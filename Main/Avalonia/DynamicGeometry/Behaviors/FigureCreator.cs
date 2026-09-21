@@ -69,7 +69,19 @@ namespace DynamicGeometry
 
                 if (xresult.IsSuccess && yresult.IsSuccess)
                 {
-                    this.parent.AddDependency(new Point(double.Parse(X, CultureInfo.InvariantCulture), double.Parse(Y, CultureInfo.InvariantCulture)));
+                    var point = new Point(double.Parse(X, CultureInfo.InvariantCulture), double.Parse(Y, CultureInfo.InvariantCulture));
+                    this.parent.ClickedUnconstrainedCoordinates = point;
+
+                    // typed coordinates mean a free point exactly there, whatever happens to pass through
+                    this.parent.canPlacePointsOnFigures = false;
+                    try
+                    {
+                        this.parent.AddDependency(point);
+                    }
+                    finally
+                    {
+                        this.parent.canPlacePointsOnFigures = true;
+                    }
                 }
             }
         }
@@ -104,6 +116,7 @@ namespace DynamicGeometry
             Transaction = Transaction.Create(Drawing.ActionManager, false);
             ExpectedDependencies = InitExpectedDependencies();
             FoundDependencies.Clear();
+            hoverPlacement = null;
         }
 
         public override void Stopping()
@@ -354,7 +367,7 @@ namespace DynamicGeometry
 
                 if (underMouse == null && ExpectingAPoint())
                 {
-                    underMouse = CreatePointAtCurrentPosition(coordinates);
+                    underMouse = CreatePointForClick(coordinates);
                 }
                 else if (ExpectingAPoint() && !usePointsUnderMouse)
                 {
@@ -438,6 +451,82 @@ namespace DynamicGeometry
 
         #endregion
 
+        #region Point placement
+
+        bool canPlacePointsOnFigures = true;
+        PointPlacement hoverPlacement;
+
+        /// <summary>
+        /// What a click gives when the tool needs a point: an existing point, or a new one that
+        /// is free, on a figure, at an intersection or (with snap to midpoint) in the middle of
+        /// a segment. Null if the tool doesn't need a point now.
+        /// </summary>
+        /// <param name="unconstrainedCoordinates">Where the cursor is</param>
+        /// <param name="coordinates">The same after snapping</param>
+        protected virtual PointPlacement FindPointPlacement(Point unconstrainedCoordinates, Point coordinates)
+        {
+            if (!ExpectingAPoint())
+            {
+                return null;
+            }
+
+            if (!usePointsUnderMouse || !canPlacePointsOnFigures)
+            {
+                return PointPlacement.Free(coordinates);
+            }
+
+            var existing = LookForExpectedDependencyUnderCursor(unconstrainedCoordinates) as IPoint;
+            if (existing != null)
+            {
+                return PointPlacement.Existing(existing);
+            }
+
+            return PointPlacement.Find(
+                Drawing,
+                coordinates,
+                Settings.Instance.EnableSnapToCenter,
+                CanPlacePointOn);
+        }
+
+        /// <summary>
+        /// The figure being constructed follows the cursor, so it is always under it:
+        /// the new point must not end up depending on it.
+        /// </summary>
+        protected virtual bool CanPlacePointOn(IFigure figure)
+        {
+            if (figure == IntermediateFigure || TempResults.Contains(figure))
+            {
+                return false;
+            }
+
+            return TempPoint == null || !figure.DependsOn(TempPoint);
+        }
+
+        IFigure CreatePointForClick(Point coordinates)
+        {
+            var placement = FindPointPlacement(ClickedUnconstrainedCoordinates, coordinates);
+            if (placement != null && placement.ExistingPoint != null)
+            {
+                return placement.ExistingPoint;
+            }
+
+            if (placement == null || !placement.IsDependent)
+            {
+                return CreatePointAtCurrentPosition(coordinates);
+            }
+
+            var result = placement.Create(Drawing);
+            Actions.Add(Drawing, result);
+            return result;
+        }
+
+        protected override PointPlacement GetClickPreview(MouseEventArgs e)
+        {
+            return hoverPlacement;
+        }
+
+        #endregion
+
         #region MouseDown, MouseMove, MouseUp
 
         protected Point MouseDownCoordinates;
@@ -456,13 +545,22 @@ namespace DynamicGeometry
 
         public override void MouseMove(object sender, MouseEventArgs e)
         {
+            Point newPosition = Coordinates(e);
+            newPosition = AdjustCurrentCoordinates(newPosition);
+            hoverPlacement = FindPointPlacement(Coordinates(e, false, false, false), newPosition);
+
             if (TempPoint != null)
             {
-                Point newPosition = Coordinates(e);
-                newPosition = AdjustCurrentCoordinates(newPosition);
+                // the figure being drawn ends where the click would put the point, not at the cursor
+                if (hoverPlacement != null)
+                {
+                    newPosition = hoverPlacement.Coordinates;
+                }
+
                 (TempPoint as IMovable).MoveTo(newPosition);
                 Drawing.Recalculate();
             }
+
             Drawing.RaiseConstructionFeedback(new Drawing.ConstructionFeedbackEventArgs()
             {
                 FigureTypeNeeded = GetExpectedDependencyType(),

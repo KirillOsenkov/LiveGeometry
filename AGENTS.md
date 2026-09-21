@@ -88,6 +88,17 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
 - **Right button / hover** go through `Behavior.MouseRightClick` and `Behavior.GetCursor`
   (virtual, per tool). Tool letter shortcuts live in `UI/BehaviorShortcuts.cs` (also feeds the
   toolbar tooltips); plain-key handling (letters, arrows, +/-, H) is in `MainView.HandlePlainKey`.
+- **What a click makes of a point** is decided in one place, `Behaviors/PointPlacement.Find`
+  (existing point / free / on a figure / intersection of the nearest crossing pair / midpoint
+  when the cursor is within `MidpointReach` of a segment's middle, or anywhere on it with "Snap
+  to center" on; a midpoint that already exists for the two points is reused, never duplicated -
+  `FindExistingMidpoint`, which the Midpoint tool checks too). The Point tool and every `FigureCreator`
+  (`FindPointPlacement`, `CreatePointForClick`) use it for the click, and `Behavior.GetClickPreview`
+  feeds the same answer to `Behaviors/ClickPreview` on hover: a 0.4-opacity ghost point, a halo
+  on the source figures, equal-halves ticks for a midpoint. The preview is plain canvas visuals,
+  never figures. Hit testing uses the *snapped* coordinates, so with snap to grid on the grid
+  wins. Typed coordinates always give a free point. A point must never be placed on the figure
+  being constructed (`FigureCreator.CanPlacePointOn`), that would be a dependency cycle.
 - **Side panel (property grid) look**: the surface is a Border in `DrawingHost.CreatePropertyGrid`
   using `RibbonTheme` colors; the editors are restyled by scoped Avalonia styles in
   `PropertyGrid/PropertyGridTheme.cs` (no per-editor styling code). The Fluent theme paints

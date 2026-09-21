@@ -111,42 +111,52 @@ namespace DynamicGeometry
 
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var coordinates = Coordinates(e);
-            var list = Drawing.Figures.HitTestMany(coordinates);
-            var figureList = list.Where(f => f is ILinearFigure).ToArray();
-
+            var placement = FindPointPlacement(e);
             IFigure created = null;
 
-            if (!figureList.IsEmpty())
+            if (placement.Kind == PointPlacementKind.Free)
             {
-                if (figureList.Length == 2
-                    && IntersectionAlgorithms.CanIntersect(figureList[0], figureList[1]))
-                {
-                    created = Factory.CreateIntersectionPoint(
-                        Drawing,
-                        figureList[0],
-                        figureList[1],
-                        coordinates);
-                    Actions.Add(Drawing, created);
-                }
-                else if (figureList.Length == 1 && PointOnFigure.CanBeOnFigure(figureList[0]))
-                {
-                    created = Factory.CreatePointOnFigure(
-                        Drawing,
-                        figureList[0],
-                        coordinates);
-                    Actions.Add(Drawing, created);
-                }
+                created = CreatePointAtCurrentPosition(placement.Coordinates);
             }
-            else
+            else if (placement.IsDependent)
             {
-                created = CreatePointAtCurrentPosition(coordinates);
+                created = placement.Create(Drawing);
+                Actions.Add(Drawing, created);
             }
 
             if (created != null && dialog != null && dialog.Style != null)
             {
                 created.Style = dialog.Style;
             }
+        }
+
+        PointPlacement FindPointPlacement(MouseEventArgs e)
+        {
+            return PointPlacement.Find(Drawing, Coordinates(e), Settings.Instance.EnableSnapToCenter);
+        }
+
+        protected override PointPlacement GetClickPreview(MouseEventArgs e)
+        {
+            return FindPointPlacement(e);
+        }
+
+        protected override IFigureStyle ClickPreviewPointStyle
+        {
+            get
+            {
+                if (dialog != null && dialog.Style != null)
+                {
+                    return dialog.Style;
+                }
+
+                return base.ClickPreviewPointStyle;
+            }
+        }
+
+        // there already is a point here: a click doesn't put another one on top of it
+        protected override Cursor GetCursor(Avalonia.Point coordinates)
+        {
+            return Drawing.Figures.HitTest<IPoint>(coordinates) != null ? ArrowCursor : CrossCursor;
         }
 
         public override FrameworkElement CreateIcon()
