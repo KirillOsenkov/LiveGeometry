@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 
 namespace DynamicGeometry
@@ -54,18 +55,45 @@ namespace DynamicGeometry
 
     public class AngleMeasurement : AngleMeasurementBase
     {
+        /// <summary>
+        /// The arc that was created together with this label: same vertex, same two sides.
+        /// Null if it has been deleted.
+        /// </summary>
+        AngleArc FindArc()
+        {
+            return AngleArc.FindCompanion(this) as AngleArc;
+        }
+
+        /// <summary>
+        /// The arcs belong to the <see cref="AngleArc"/>, a figure of its own. They can be set
+        /// from the label too: with no arcs there is nothing left of the arc to click on.
+        /// </summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Arcs")]
+        [Domain(0, 3)]
+        public int ArcCount
+        {
+            get
+            {
+                var arc = FindArc();
+                return arc != null ? arc.ArcCount : 0;
+            }
+            set
+            {
+                var arc = FindArc();
+                if (arc != null)
+                {
+                    arc.ArcCount = value;
+                }
+            }
+        }
+
         [PropertyGridVisible]
         [PropertyGridName("Convert to opposite angle")]
         public void ConvertToOpposite()
         {
-            IList<IFigure> dependencies = Dependencies as IList<IFigure>;
-            if (dependencies != null)
-            {
-                var t = dependencies[1];
-                dependencies[1] = dependencies[2];
-                dependencies[2] = t;
-            }
-            this.RecalculateAndUpdateVisual();
+            // the arc goes along
+            AngleArc.ConvertToOpposite(this);
         }
     }
 

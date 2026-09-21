@@ -18,9 +18,6 @@ public class MainView : UserControl
     DockPanel LayoutRoot = new DockPanel();
     DrawingHost DrawingHost = new DrawingHost();
 
-    MenuItem UndoButton;
-    MenuItem RedoButton;
-    MenuItem ClearButton;
     Behavior[] Behaviors = Array.Empty<Behavior>();
 
     static readonly FilePickerFileType LgfFileType = new("Live Geometry drawing")
@@ -91,9 +88,7 @@ public class MainView : UserControl
         Focusable = true;
         Content = LayoutRoot;
 
-        Menu menu = new Menu();
-
-        // The build (git commit) at the far right of the menu bar, so that it is obvious
+        // The build (git commit) at the far right of the toolbar, so that it is obvious
         // which version is on screen - e.g. whether a fresh deployment has arrived yet.
         var build = new TextBlock()
         {
@@ -106,66 +101,19 @@ public class MainView : UserControl
         ToolTip.SetTip(build, BuildVersion.Full);
         Console.WriteLine("Live Geometry " + BuildVersion.Full);
 
-        var menuBar = new DockPanel();
-        DockPanel.SetDock(build, Dock.Right);
-        menuBar.Children.Add(build);
-        menuBar.Children.Add(menu);
-        LayoutRoot.Children.Add(menuBar);
-        DockPanel.SetDock(menuBar, Dock.Top);
+        // No menu: the few document commands are a toolbar, everything else is the keyboard
+        // (see MainView_KeyUp and HandlePlainKey), the mouse wheel and the context menu.
+        var toolbar = new MainToolbar();
+        toolbar.AddAtRight(build);
+        toolbar.AddButton(MainToolbarIcons.New(), "New", "Ctrl+N", NewDrawing);
+        toolbar.AddButton(MainToolbarIcons.Open(), "Open", "Ctrl+O", OpenDrawingFromFile);
+        toolbar.AddButton(MainToolbarIcons.Save(), "Save", "Ctrl+S", SaveDrawingToFile);
+        toolbar.AddSeparator();
+        toolbar.AddButton(MainToolbarIcons.Undo(), "Ctrl+Z", DrawingHost.DrawingControl.CommandUndo);
+        toolbar.AddButton(MainToolbarIcons.Redo(), "Ctrl+Y", DrawingHost.DrawingControl.CommandRedo);
 
-        MenuItem file = new MenuItem() { Header = "File" };
-        MenuItem edit = new MenuItem() { Header = "Edit" };
-        MenuItem view = new MenuItem() { Header = "View" };
-
-        menu.Items.Add(file);
-        menu.Items.Add(edit);
-        menu.Items.Add(view);
-
-        ClearButton = AddItem(file, "_New", ClearButton_Click, new KeyGesture(Key.N, KeyModifiers.Control));
-        file.Items.Add(new Separator());
-        AddItem(file, "_Open…", Open_Click, new KeyGesture(Key.O, KeyModifiers.Control));
-        AddItem(file, "_Save…", Save_Click, new KeyGesture(Key.S, KeyModifiers.Control));
-
-        UndoButton = AddItem(edit, "Undo", Undo_Click, new KeyGesture(Key.Z, KeyModifiers.Control));
-        RedoButton = AddItem(edit, "Redo", Redo_Click, new KeyGesture(Key.Y, KeyModifiers.Control));
-        edit.Items.Add(new Separator());
-        AddItem(edit, "Copy", Copy_Click, new KeyGesture(Key.C, KeyModifiers.Control));
-        AddItem(edit, "Paste", Paste_Click, new KeyGesture(Key.V, KeyModifiers.Control));
-        AddItem(edit, "Delete", Delete_Click, new KeyGesture(Key.Delete));
-        AddItem(edit, "Lock", Lock_Click, null);
-        edit.Items.Add(new Separator());
-        AddItem(edit, "Select all", SelectAll_Click, new KeyGesture(Key.A, KeyModifiers.Control));
-        AddItem(edit, "Clear", Clear_Click, null);
-
-        // plain keys: handled in HandlePlainKey, the gestures here only show them in the menu
-        AddItem(view, "Zoom in", (s, e) => ChangeView(c => c.ZoomIn()), new KeyGesture(Key.OemPlus));
-        AddItem(view, "Zoom out", (s, e) => ChangeView(c => c.ZoomOut()), new KeyGesture(Key.OemMinus));
-        AddItem(view, "Zoom to fit", (s, e) => ChangeView(c => c.ZoomExtend()), new KeyGesture(Key.H));
-        AddItem(view, "Center", (s, e) => ChangeView(c => c.CenterContent()), new KeyGesture(Key.Home));
-        view.Items.Add(new Separator());
-        AddItem(view, "Settings", SettingsButton_Click, null);
-        AddItem(view, "Figure List", FigureListButton_Click, null);
-    }
-
-    void ChangeView(Action<CoordinateSystem> change)
-    {
-        var drawing = DrawingHost.CurrentDrawing;
-        if (drawing != null)
-        {
-            HandleExceptions(() => change(drawing.CoordinateSystem));
-        }
-    }
-
-    MenuItem AddItem(MenuItem parent, string header, EventHandler<RoutedEventArgs> onClick, KeyGesture gesture)
-    {
-        var item = new MenuItem() { Header = header };
-        if (gesture != null)
-        {
-            item.InputGesture = gesture;
-        }
-        item.Click += (s, e) => onClick(s, e);
-        parent.Items.Add(item);
-        return item;
+        LayoutRoot.Children.Add(toolbar);
+        DockPanel.SetDock(toolbar, Dock.Top);
     }
 
     void InitializeCommands()
@@ -191,15 +139,9 @@ public class MainView : UserControl
         }
     }
 
-    private void Undo_Click(object sender, RoutedEventArgs e) => DrawingHost.DrawingControl.Undo();
+    void NewDrawing() => HandleExceptions(() => DrawingHost.Clear());
 
-    private void Redo_Click(object sender, RoutedEventArgs e) => DrawingHost.DrawingControl.Redo();
-
-    private void ClearButton_Click(object sender, RoutedEventArgs e) => DrawingHost.Clear();
-
-    private void Clear_Click(object sender, RoutedEventArgs e) => HandleExceptions(() => DrawingHost.Clear());
-
-    private async void Open_Click(object sender, RoutedEventArgs e)
+    async void OpenDrawingFromFile()
     {
         try
         {
@@ -281,7 +223,7 @@ public class MainView : UserControl
         }
     }
 
-    private async void Save_Click(object sender, RoutedEventArgs e)
+    async void SaveDrawingToFile()
     {
         try
         {
@@ -312,22 +254,17 @@ public class MainView : UserControl
         }
     }
 
-    private void Copy_Click(object sender, RoutedEventArgs e) => HandleExceptions(() => DrawingHost.CurrentDrawing.Copy());
+    void Copy() => HandleExceptions(() => DrawingHost.CurrentDrawing.Copy());
 
-    private void Paste_Click(object sender, RoutedEventArgs e) => HandleExceptions(() => DrawingHost.CurrentDrawing.Paste());
-
-    private void Delete_Click(object sender, RoutedEventArgs e) => DeleteSelection();
+    void Paste() => HandleExceptions(() => DrawingHost.CurrentDrawing.Paste());
 
     private void DeleteSelection() => HandleExceptions(() => DrawingHost.CurrentDrawing.DeleteSelection());
 
-    private void Lock_Click(object sender, RoutedEventArgs e) => HandleExceptions(() => DrawingHost.CurrentDrawing.LockSelected());
-
-    private void SelectAll_Click(object sender, RoutedEventArgs e) => SelectAll();
-
     private void SelectAll() => HandleExceptions(() => DrawingHost.CurrentDrawing.SelectAll());
 
-    private void FigureListButton_Click(object sender, RoutedEventArgs e) =>
-        HandleExceptions(() => DrawingHost.CommandShowFigureExplorer.Execute());
+    // Had a menu item until the menu went away; no way to reach them for now:
+    // "Lock" (Drawing.LockSelected), "Figure List" (DrawingHost.CommandShowFigureExplorer)
+    // and the settings page below.
 
     #region Settings
 
@@ -435,37 +372,46 @@ public class MainView : UserControl
             return;
         }
 
-        bool ctrl = (e.KeyModifiers & KeyModifiers.Control) != 0;
+        // the letter of a Ctrl shortcut, let go after Ctrl: not a tool letter
+        if (e.Key == shortcutKeyDown)
+        {
+            shortcutKeyDown = Key.None;
+            return;
+        }
+
         if (e.KeyModifiers == KeyModifiers.None && HandlePlainKey(e.Key))
         {
             e.Handled = true;
             return;
         }
 
-        switch (e.Key)
+        if (e.Key == Key.Delete)
         {
-            case Key.Z:
-                if (ctrl)
-                {
-                    DrawingHost.DrawingControl.Undo();
-                }
-                break;
-            case Key.Y:
-                if (ctrl)
-                {
-                    DrawingHost.DrawingControl.Redo();
-                }
-                break;
-            case Key.A:
-                if (ctrl)
-                {
-                    SelectAll();
-                }
-                break;
-            case Key.Delete:
-                DeleteSelection();
-                break;
+            DeleteSelection();
         }
+    }
+
+    Key shortcutKeyDown = Key.None;
+
+    /// <summary>
+    /// Ctrl+letter, on the way down. (On the way up the state of Ctrl depends on which of the
+    /// two keys was let go first, and a bare "S" is the Segment tool.)
+    /// </summary>
+    bool HandleControlShortcut(Key key)
+    {
+        switch (key)
+        {
+            case Key.Z: DrawingHost.DrawingControl.Undo(); return true;
+            case Key.Y: DrawingHost.DrawingControl.Redo(); return true;
+            case Key.A: SelectAll(); return true;
+            case Key.N: NewDrawing(); return true;
+            case Key.O: OpenDrawingFromFile(); return true;
+            case Key.S: SaveDrawingToFile(); return true;
+            case Key.C: Copy(); return true;
+            case Key.V: Paste(); return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -476,7 +422,25 @@ public class MainView : UserControl
     /// </summary>
     private void MainView_KeyDown(object sender, KeyEventArgs e)
     {
-        if (e.Key != Key.Escape || DrawingHost.CurrentDrawing == null)
+        if (DrawingHost.CurrentDrawing == null)
+        {
+            return;
+        }
+
+        if (e.KeyModifiers == KeyModifiers.Control)
+        {
+            // in a text box Ctrl+C, V, Z, A are the text box's own
+            var focused = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
+            if (!(focused is TextBox) && HandleControlShortcut(e.Key))
+            {
+                shortcutKeyDown = e.Key;
+                e.Handled = true;
+            }
+
+            return;
+        }
+
+        if (e.Key != Key.Escape)
         {
             return;
         }

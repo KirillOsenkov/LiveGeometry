@@ -17,6 +17,7 @@ sealed class Program
             MainView.StartupFile = System.IO.Path.GetFullPath(args[0]);
         }
 
+        App.MainWindowCreated = WindowPlacementPersistence.Attach;
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
 

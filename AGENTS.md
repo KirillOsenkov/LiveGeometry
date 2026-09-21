@@ -120,6 +120,17 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   hides when an `AngleArc` sits at the same vertex, because a measured angle of 90° (within
   0.005°, i.e. exactly when the label reads "90°") draws the same sign itself in its own style
   instead of an arc. Deliberately not an auto-created angle figure.
+- **Angle marks**: an angle is two figures - `AngleMeasurement` (the number) and `AngleArc` (the
+  mark), same three dependencies. `AngleArc.ArcCount` 0-3 draws nothing, ), )) or ))) (saved as
+  `Arcs`, default 1; spacing = stroke width + 2 px like VB6) and `Size` is the radius (`Radius`,
+  default 16). The label's panel has the same "Arcs" box and forwards to its arc
+  (`AngleMeasurement.FindArc`), because with 0 arcs there is little left to click. The pair is
+  found by `AngleArc.FindCompanion`; "Convert to opposite angle" on either goes through
+  `AngleArc.ConvertToOpposite(figure)`, which swaps the sides of both. `AngleArc.HitTest` covers
+  the whole band from the first arc to the last (the base class only knows the first radius). The path keeps
+  its first `PathFigure` even for "nothing" (no segments): Avalonia doesn't repaint a path whose
+  figure list became empty. `DGFReader.ReadMeasureAngle` creates the arc from VB6's DrawStyle /
+  AuxInfo(2) - not tested, there is no sample .dgf with an angle in the repo.
 - **Measurement labels are draggable** (`Measurement.AllowMove`): a drag only changes the label's
   `Offset` from its anchor, although the figure has dependencies.
 - **Dashes**: `LineStyle.Dash` is a `LineDash` enum (`Styles/LineDash.cs`: Solid, Dash, Dot,
@@ -194,6 +205,12 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
 - **`Style` and `Setter` are ambiguous in the library**: `DynamicGeometry.Style`/`Setter` are the
   WPF shims and shadow Avalonia's. For real Avalonia styles alias them
   (`using AvaloniaStyle = Avalonia.Styling.Style;`).
+- **No menu.** The strip at the top is `LiveGeometry/MainToolbar.cs`: New, Open, Save, Undo, Redo
+  (icons are drawn in code, `MainToolbarIcons`, 20x20 grid; Undo/Redo follow `DrawingControl.
+  CommandUndo/CommandRedo` as command observers) plus the build stamp. Everything else is keys:
+  Ctrl+N/O/S/Z/Y/A/C/V are handled on key *down* (`MainView.HandleControlShortcut`; on key up
+  Ctrl may already be released and a bare S is the Segment tool), plain keys in `HandlePlainKey`.
+  Lost their menu entry and are unreachable for now: Lock, Figure List, the settings page.
 - **Keyboard focus drifts into tool panels.** A tool's PropertyBag panel (e.g. "Point by
   coordinates") takes focus into its TextBox after every construction step, so neither the canvas
   KeyDown nor `MainView_KeyUp` (which skips TextBox focus) sees keys then. Anything that must
@@ -226,6 +243,19 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   previous version picks up the new one on a plain reload. If something looks stale, check the
   commit stamp and the Actions run before suspecting the cache.
 
+## Running instances
+
+Always build into the normal `bin/` - no scratch output folders. Kirill rarely has the app running
+and doesn't keep state in it that matters, so a `LiveGeometry.Desktop` process that locks `bin/` is
+almost certainly a leftover test instance, and killing it is fine (his words: in 90% of cases).
+Only if a build actually fails on a lock, enumerate and clean up:
+
+`Get-Process LiveGeometry.Desktop | Select Id, StartTime, MainWindowTitle, Path` (pwsh), then
+`(Get-Process -Id N).CloseMainWindow()` and, if it is still there a few seconds later,
+`Stop-Process -Id N`. Alt+F4 through winauto can miss (it goes to whatever window of the app has
+focus, e.g. a popup), so check that the process is really gone. Target test windows by `pid:`/`hwnd:`
+rather than by process name when more than one could exist.
+
 ## UI automation (tools/)
 
 Screenshots are PNGs; image pixels are the click coordinates in both tools.
@@ -234,7 +264,13 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
   `list`, `tree <t>`, `menu <t>`, `invoke <t> <menuId>`, `shot <t> out.png`, `click <t> x y [right|double]`,
   `drag <t> x1 y1 x2 y2`, `keys <t> "^s"`, `text`, `focus`, `place <t> x y w h`.
   Target = process name | `pid:N` | `hwnd:0x..` | `title:substr`.
-  - Both apps start maximized on a 4K/200% monitor: `place <t> 100 100 1500 1000` first.
+  - The VB6 app starts maximized on a 4K/200% monitor: `place <t> 100 100 1500 1000` first. The
+    Avalonia desktop app remembers its window (`LiveGeometry.Desktop/WindowPlacementPersistence.cs`,
+    Get/SetWindowPlacement as in Helix; `%LOCALAPPDATA%\LiveGeometry\MainWindowPosition.txt` =
+    flags,showCmd,min x,y,max x,y,left,top,width,height). It is left at 100,100 1700x1100 for
+    testing - `place` is only needed again if someone resized it. Close test instances with
+    `(Get-Process -Id N).CloseMainWindow()`: that goes through the normal close path, which is
+    what saves the placement (and it is more reliable than Alt+F4).
   - VB6 has a native menu: `menu Geometry` lists every command with its id and `invoke` runs one
     without touching the mouse (49 = Segment, 56 = Circle, 46 = Point...). Its status bar shows
     the current tool's prompt. VB6 is DPI-unaware; `shot` compensates.

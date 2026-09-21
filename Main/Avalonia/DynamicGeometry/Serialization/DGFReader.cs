@@ -388,6 +388,26 @@ namespace DynamicGeometry
             }
 
             AddLabelFigure(section, angle);
+
+            // DG kept the mark in the same figure: DrawStyle 0 is no mark, otherwise 1 to 3 arcs
+            // (the values repeat after 3); AuxInfo(2) is their radius in pixels.
+            int drawStyle = section.TryReadInt("DrawStyle") ?? 1;
+            var arc = Factory.CreateAngleArc(drawing, new[] { vertex, point1, point2 });
+            arc.ArcCount = drawStyle <= 0 ? 0 : (drawStyle - 1) % 3 + 1;
+            var radius = section.TryReadDouble("AuxInfo(2)");
+            if (radius != null && radius >= 10)
+            {
+                arc.Size = System.Math.Min(radius.Value, 100);
+            }
+
+            arc.Visible = angle.Visible;
+            arc.Style = drawing.StyleManager.FindExistingOrAddNew(new ShapeStyle()
+            {
+                Color = section.ReadColor("ForeColor"),
+                StrokeWidth = System.Math.Max(section.TryReadDouble("DrawWidth") ?? 1.0, 0.1),
+                IsFilled = false
+            });
+            Actions.Add(drawing, arc);
         }
 
         void ReadIntersectionPoint(IniFile.Section section)
