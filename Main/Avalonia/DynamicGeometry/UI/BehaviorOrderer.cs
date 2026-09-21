@@ -12,9 +12,10 @@ namespace DynamicGeometry
 
         public static string GetCategory(Behavior behavior)
         {
+            // the tools the user defines go where "Define figure" is: there is no Custom tab
             if (behavior is UserDefinedTool)
             {
-                return BehaviorCategories.Custom;
+                return BehaviorCategories.Misc;
             }
 
             var result = BehaviorCategories.Misc;

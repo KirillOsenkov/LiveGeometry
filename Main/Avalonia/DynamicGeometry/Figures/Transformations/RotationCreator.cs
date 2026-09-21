@@ -5,7 +5,7 @@ using Avalonia.Media;
 
 namespace DynamicGeometry
 {
-    [Category(BehaviorCategories.Transformations)]
+    [Category(BehaviorCategories.Transform)]
     [Order(2)]
     public class RotationCreator : FigureCreator
     {

@@ -205,7 +205,13 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
 - **`Style` and `Setter` are ambiguous in the library**: `DynamicGeometry.Style`/`Setter` are the
   WPF shims and shadow Avalonia's. For real Avalonia styles alias them
   (`using AvaloniaStyle = Avalonia.Styling.Style;`).
-- **No menu.** The strip at the top is `LiveGeometry/MainToolbar.cs`: New, Open, Save, Undo, Redo
+- **No menu.** New, Open, Save | Undo, Redo are one row (`LiveGeometry/MainToolbar.cs`) above
+  the ribbon, in the *same gray as the ribbon's header row* and with no line between the two, so
+  they read as one band (two grays in the window, not three); the build stamp is at its right.
+  Tried and rejected: its own lighter strip (three grays), buttons right-aligned inside the
+  header row (collide with the last tabs at ~850 px), a two-row block at the left of the header
+  row (small targets). `Ribbon.HeaderStart`/`HeaderEnd` slots exist from those experiments and
+  are unused. The buttons:
   (icons are drawn in code, `MainToolbarIcons`, 20x20 grid; Undo/Redo follow `DrawingControl.
   CommandUndo/CommandRedo` as command observers) plus the build stamp. Everything else is keys:
   Ctrl+N/O/S/Z/Y/A/C/V are handled on key *down* (`MainView.HandleControlShortcut`; on key up
@@ -219,7 +225,9 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   hover/pressed/checked plate. `Ribbon` and `TabPanel` replace the Fluent TabControl/TabItem
   templates with their own (in code): the header row has a bottom line *behind* the headers and
   the selected group header paints a tab shape over it (`TabOutline`, laid out wider than the
-  header by its flare via negative margin). Group headers show the icon of the group's active tool. An on/off `Command` exposes `IsChecked` (a `Func<bool>`), which
+  header by its flare via negative margin). To bring the group headers closer together, change
+  `ButtonGrid.HeaderOverlap` (neighboring headers share their flare zones - only the selected
+  one draws feet), not the padding inside the tab. Group headers show the icon of the group's active tool. An on/off `Command` exposes `IsChecked` (a `Func<bool>`), which
   its button re-reads after any toggle is clicked - don't go back to `CheckBox` icons.
 - **Browser has no system fonts.** Text renders only because `Avalonia.Fonts.Inter` is embedded
   (`.WithInterFont()`); font names stored in drawings (Arial etc.) fall back to it.

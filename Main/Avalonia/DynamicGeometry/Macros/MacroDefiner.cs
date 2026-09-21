@@ -7,8 +7,8 @@ using Avalonia.Media;
 
 namespace DynamicGeometry
 {
-    [Category(BehaviorCategories.Custom)]
-    [Order(1)]
+    [Category(BehaviorCategories.Misc)]
+    [Order(10)]
     public class MacroDefiner : Behavior
     {
         public MacroDefiner()

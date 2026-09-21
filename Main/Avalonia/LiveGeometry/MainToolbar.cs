@@ -19,12 +19,14 @@ public class MainToolbar : DockPanel
     {
         Orientation = Orientation.Horizontal,
         Spacing = 2,
-        Margin = new Thickness(6, 3, 6, 3)
+        Margin = new Thickness(8, 4, 6, 0)
     };
 
     public MainToolbar()
     {
-        Background = RibbonTheme.Background;
+        // The same gray as the ribbon's header row right under it, and no line between them:
+        // the two read as one band, so the window has two grays and not three.
+        Background = RibbonTheme.HeaderRowBackground;
         Children.Add(buttons);
     }
 
@@ -43,6 +45,16 @@ public class MainToolbar : DockPanel
         return button;
     }
 
+    public void AddSeparator()
+    {
+        buttons.Children.Add(new Border()
+        {
+            Width = 1,
+            Margin = new Thickness(5, 5, 5, 5),
+            Background = RibbonTheme.TabLine
+        });
+    }
+
     /// <summary>A button that follows a command: runs it, and is disabled when it is</summary>
     public MainToolbarButton AddButton(Control icon, string shortcut, Command command)
     {
@@ -52,15 +64,6 @@ public class MainToolbar : DockPanel
         return button;
     }
 
-    public void AddSeparator()
-    {
-        buttons.Children.Add(new Border()
-        {
-            Width = 1,
-            Margin = new Thickness(5, 4, 5, 4),
-            Background = RibbonTheme.Separator
-        });
-    }
 }
 
 public class MainToolbarButton : Border, ICommandObserver
@@ -110,7 +113,8 @@ public class MainToolbarButton : Border, ICommandObserver
 
     void UpdateBackground(bool isOver)
     {
-        Background = isPressed ? RibbonTheme.ButtonPressed : (isOver ? RibbonTheme.ButtonHover : Brushes.Transparent);
+        // on the header row, which is darker than the tools strip: the hover plate is lighter
+        Background = isPressed ? RibbonTheme.ButtonPressed : (isOver ? RibbonTheme.GroupBackground : Brushes.Transparent);
     }
 
     public void EnabledChanged(bool newEnabledState)

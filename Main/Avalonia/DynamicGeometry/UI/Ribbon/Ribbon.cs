@@ -26,14 +26,60 @@ namespace DynamicGeometry
         /// headers, so that the selected one (see <see cref="TabOutline"/>) can paint over it
         /// and open into the tools.
         /// </summary>
-        static IControlTemplate CreateTemplate()
+        readonly Border headerStartHost = new Border()
+        {
+            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+        };
+
+        readonly Border headerEndHost = new Border()
+        {
+            HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right,
+            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+            IsHitTestVisible = false
+        };
+
+        /// <summary>
+        /// Goes before the group headers, in the same row (the application puts its document
+        /// buttons there: one strip less than a toolbar of their own). Always fully visible;
+        /// in a narrow window it is the headers that run out of room.
+        /// </summary>
+        public Control HeaderStart
+        {
+            get
+            {
+                return headerStartHost.Child;
+            }
+            set
+            {
+                headerStartHost.Child = value;
+            }
+        }
+
+        /// <summary>
+        /// Something unimportant for the far right of the header row (the build stamp).
+        /// It is behind the headers, which cover it when the window is narrow.
+        /// </summary>
+        public Control HeaderEnd
+        {
+            get
+            {
+                return headerEndHost.Child;
+            }
+            set
+            {
+                headerEndHost.Child = value;
+            }
+        }
+
+        IControlTemplate CreateTemplate()
         {
             return new FuncControlTemplate<TabControl>((tabControl, scope) =>
             {
                 var headers = new ItemsPresenter()
                 {
                     Name = "PART_ItemsPresenter",
-                    Margin = new Thickness(6, 4, 6, 0),
+                    // the headers overlap each other, so the first one sticks out to the left
+                    Margin = new Thickness(6 + ButtonGrid.HeaderOverlap, 4, 6 + ButtonGrid.HeaderOverlap, 0),
                     [!ItemsPresenter.ItemsPanelProperty] = tabControl[!ItemsPanelProperty]
                 }.RegisterInNameScope(scope);
 
@@ -43,7 +89,13 @@ namespace DynamicGeometry
                     BorderBrush = RibbonTheme.TabLine,
                     BorderThickness = new Thickness(0, 0, 0, 1)
                 });
-                headerRow.Children.Add(headers);
+                headerRow.Children.Add(headerEndHost);
+
+                var startAndHeaders = new DockPanel();
+                DockPanel.SetDock(headerStartHost, Dock.Left);
+                startAndHeaders.Children.Add(headerStartHost);
+                startAndHeaders.Children.Add(headers);
+                headerRow.Children.Add(startAndHeaders);
                 DockPanel.SetDock(headerRow, Dock.Top);
 
                 var tools = new Border()

@@ -44,6 +44,11 @@ namespace DynamicGeometry
                 Grid.SetRowSpan(tabOutline, 2);
 
                 double side = TabOutline.DefaultFlare + 5;
+
+                // Between two tab bodies there are two flares, which is a lot of nothing. Only
+                // the selected tab draws its feet, so neighbors can share that room: the
+                // headers overlap by most of a flare. The padding inside the tab stays.
+                Margin = new Thickness(-HeaderOverlap, 0, -HeaderOverlap, 0);
                 iconHolder.Margin = new Thickness(side, 6, side, 0);
                 textBlock.Margin = new Thickness(side, 1, side, 5);
                 textBlock.FontWeight = FontWeight.Medium;
@@ -89,6 +94,9 @@ namespace DynamicGeometry
 
             this.Icon = icon;
         }
+
+        /// <summary>How far a tab header reaches into each of its neighbors</summary>
+        public const double HeaderOverlap = 4;
 
         readonly bool isTabHeader;
         bool isHovered;
