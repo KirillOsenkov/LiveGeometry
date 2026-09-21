@@ -281,11 +281,12 @@ namespace DynamicGeometry
 
             try
             {
+                var placement = GetClickPreview(e);
                 clickPreview.Show(
                     Drawing,
-                    GetClickPreview(e),
+                    placement,
                     GetFigureToPick(e),
-                    ClickPreviewPointStyle);
+                    placement != null ? GetClickPreviewPointStyle(placement) : null);
             }
             catch (Exception)
             {
@@ -314,12 +315,25 @@ namespace DynamicGeometry
         /// <summary>
         /// The style the previewed point is going to get
         /// </summary>
-        protected virtual IFigureStyle ClickPreviewPointStyle
+        protected virtual IFigureStyle GetClickPreviewPointStyle(PointPlacement placement)
         {
-            get
+            string name = StyleManager.FreePointStyleName;
+            switch (placement.Kind)
             {
-                return Drawing.StyleManager.GetStyles<PointStyle>().FirstOrDefault();
+                case PointPlacementKind.OnFigure:
+                    name = StyleManager.PointOnFigureStyleName;
+                    break;
+                case PointPlacementKind.Intersection:
+                    name = StyleManager.IntersectionPointStyleName;
+                    break;
+                case PointPlacementKind.Midpoint:
+                    name = StyleManager.MidpointStyleName;
+                    break;
             }
+
+            // a drawing from an older file has no styles by kind
+            return Drawing.StyleManager.GetStyle(name)
+                ?? Drawing.StyleManager.GetStyles<PointStyle>().FirstOrDefault();
         }
 
         #endregion

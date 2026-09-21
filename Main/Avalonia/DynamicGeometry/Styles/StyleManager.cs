@@ -94,18 +94,35 @@ namespace DynamicGeometry
         protected int numDefaultStyles;
         public virtual void AddDefaultStyles()
         {
+            // The look tells how a point behaves: the two kinds that can be dragged are full
+            // size and warm/bright, the constructed ones are a little smaller and cooler.
             var freePointStyle = new PointStyle()
             {
+                Name = FreePointStyleName,
                 Fill = new SolidColorBrush(Color.FromArgb(255, 255, 255, 100))
             };
             var pointOnFigureStyle = new PointStyle()
             {
-                Fill = new SolidColorBrush(Color.FromArgb(255, 0, 255, 0))
+                Name = PointOnFigureStyleName,
+                Fill = new SolidColorBrush(Color.FromArgb(255, 124, 227, 139))
+            };
+            var intersectionPointStyle = new PointStyle()
+            {
+                Name = IntersectionPointStyleName,
+                Size = 8,
+                Fill = new SolidColorBrush(Color.FromArgb(255, 111, 211, 247))
+            };
+            var midpointStyle = new PointStyle()
+            {
+                Name = MidpointStyleName,
+                Size = 8,
+                Fill = new SolidColorBrush(Color.FromArgb(255, 255, 180, 90))
             };
             var dependentPointStyle = new PointStyle()
             {
-                Name = "DependentPointStyle",
-                Fill = new SolidColorBrush(Color.FromArgb(200, 192, 192, 192))
+                Name = DependentPointStyleName,
+                Size = 8,
+                Fill = new SolidColorBrush(Color.FromArgb(255, 208, 208, 208))
             };
             var lineStyle = new LineStyle();
             var lineStyle2 = new LineStyle()
@@ -144,6 +161,8 @@ namespace DynamicGeometry
             {
                 freePointStyle,
                 pointOnFigureStyle,
+                intersectionPointStyle,
+                midpointStyle,
                 dependentPointStyle,
                 lineStyle,
                 lineStyle2,
@@ -202,10 +221,52 @@ namespace DynamicGeometry
             return null;
         }
 
+        public const string FreePointStyleName = "FreePoint";
+        public const string PointOnFigureStyleName = "PointOnFigure";
+        public const string IntersectionPointStyleName = "IntersectionPoint";
+        public const string MidpointStyleName = "Midpoint";
+
+        // older drawings and PolygonIntersection know it under this name
+        public const string DependentPointStyleName = "DependentPointStyle";
+
         public virtual IFigureStyle AssignDefaultStyle(IFigure figure)
         {
+            // A drawing from a file brings its own styles; if it doesn't have the one for this
+            // kind of point (older files don't), the first point style does, as before.
+            var byKind = figure is IPoint ? GetStyle(GetDefaultPointStyleName(figure)) : null;
+            if (byKind != null && byKind.GetType().SupportsFigureType(figure.GetType()))
+            {
+                return byKind;
+            }
+
             var supportedStyles = GetSupportedStyles(figure);
             return supportedStyles.FirstOrDefault();
+        }
+
+        static string GetDefaultPointStyleName(IFigure point)
+        {
+            // PointOnFigure is a FreePoint, so it goes first
+            if (point is PointOnFigure)
+            {
+                return PointOnFigureStyleName;
+            }
+
+            if (point is FreePoint)
+            {
+                return FreePointStyleName;
+            }
+
+            if (point is IntersectionPoint)
+            {
+                return IntersectionPointStyleName;
+            }
+
+            if (point is MidPoint)
+            {
+                return MidpointStyleName;
+            }
+
+            return DependentPointStyleName;
         }
 
         public IFigureStyle CreateNewStyle(IFigure figure)

@@ -98,6 +98,18 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   and the resize handler, which keeps the middle of the canvas in the middle. "Content" for fit is
   `TryGetContentBounds`: points, whole ellipses, labels - not lines. Labels have a fixed *pixel*
   size, so fit re-measures and refits a few times. `winauto wheel <t> x y <notches>` tests the wheel.
+- **No pixel snapping of figure geometry.** The WPF code rounded line endpoints to pixel centers
+  (`Round() + 0.5` in `Utilities.Set(Line, PointPair)`); points weren't snapped, so lines missed
+  their own points by up to a pixel, always down-right. Lines are exact now and point shapes have
+  `UseLayoutRounding = false`. Anything new that must line up with figures: same two rules. To
+  check alignment, `winauto shot ... --region x,y,60,60 --zoom 16` around a point.
+- **Default point styles are by kind** (`StyleManager.AddDefaultStyles` / `AssignDefaultStyle`):
+  `FreePoint` (yellow), `PointOnFigure` (green) - the draggable ones, size 10 - and
+  `IntersectionPoint` (blue), `Midpoint` (orange), `DependentPointStyle` (gray, every other
+  constructed point) at size 8. Looked up by *name*; a drawing from a file brings its own styles,
+  and when the named one is missing (older files) the first point style is used. The click
+  preview ghost uses the same lookup. The Point tool's panel style overrides the kind only once
+  the user picks something other than the first style.
 - **Cursor philosophy** (`Behavior.GetCursor`): cross = a new *free* point appears here; hand =
   the click picks something already there - a figure the tool needs, an existing point, or a
   place defined by figures (intersection, midpoint); arrow = everything else, including a new

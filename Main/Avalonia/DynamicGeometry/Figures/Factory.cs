@@ -19,7 +19,11 @@ namespace DynamicGeometry
                 Height = size,
                 Fill = new SolidColorBrush(Colors.Yellow),
                 Stroke = new SolidColorBrush(Colors.Black),
-                StrokeThickness = 0.5
+                StrokeThickness = 0.5,
+
+                // Layout rounding snaps a control to whole pixels, but the lines through the
+                // point are geometry and aren't snapped: the point would sit up to a pixel off them.
+                UseLayoutRounding = false
             };
 
             return ellipse;
@@ -34,7 +38,8 @@ namespace DynamicGeometry
                 //Fill = new SolidColorBrush(Color.FromArgb(255, 240, 240, 240)),
                 Fill = CreateDefaultFillBrush(),
                 Stroke = new SolidColorBrush(Colors.Black),
-                StrokeThickness = 0.5
+                StrokeThickness = 0.5,
+                UseLayoutRounding = false
             };
 
             return ellipse;

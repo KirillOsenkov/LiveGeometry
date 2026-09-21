@@ -643,10 +643,13 @@ namespace DynamicGeometry
 
         public static void Set(this Avalonia.Controls.Shapes.Line line, PointPair coordinates)
         {
-            line.X1 = coordinates.P1.X.Round() + 0.5;
-            line.Y1 = coordinates.P1.Y.Round() + 0.5;
-            line.X2 = coordinates.P2.X.Round() + 0.5;
-            line.Y2 = coordinates.P2.Y.Round() + 0.5;
+            // Exact, not snapped to the middle of a pixel as the WPF version did: points aren't
+            // snapped, so a snapped line missed the centers of its own points by up to a pixel,
+            // always down and to the right (a midpoint looked off its segment).
+            line.X1 = coordinates.P1.X;
+            line.Y1 = coordinates.P1.Y;
+            line.X2 = coordinates.P2.X;
+            line.Y2 = coordinates.P2.Y;
         }
 
         public static string ToStringInvariant(this double number)

@@ -124,9 +124,28 @@ namespace DynamicGeometry
                 Actions.Add(Drawing, created);
             }
 
-            if (created != null && dialog != null && dialog.Style != null)
+            var chosenStyle = ChosenStyle;
+            if (created != null && chosenStyle != null)
             {
-                created.Style = dialog.Style;
+                created.Style = chosenStyle;
+            }
+        }
+
+        /// <summary>
+        /// The style picked in the tool's panel. While it is still the first one (the panel's
+        /// initial pick) nothing was chosen and every kind of point gets its own default style.
+        /// </summary>
+        IFigureStyle ChosenStyle
+        {
+            get
+            {
+                if (dialog == null || dialog.Style == null)
+                {
+                    return null;
+                }
+
+                var initial = Drawing.StyleManager.GetStyles<PointStyle>().FirstOrDefault();
+                return dialog.Style == initial ? null : dialog.Style;
             }
         }
 
@@ -147,17 +166,9 @@ namespace DynamicGeometry
             return hoverPlacement;
         }
 
-        protected override IFigureStyle ClickPreviewPointStyle
+        protected override IFigureStyle GetClickPreviewPointStyle(PointPlacement placement)
         {
-            get
-            {
-                if (dialog != null && dialog.Style != null)
-                {
-                    return dialog.Style;
-                }
-
-                return base.ClickPreviewPointStyle;
-            }
+            return ChosenStyle ?? base.GetClickPreviewPointStyle(placement);
         }
 
         protected override Cursor GetCursor(Avalonia.Point coordinates)
