@@ -20,15 +20,18 @@ public class GalleryView : DockPanel
     public event Action ContinueDrawingRequested = delegate { };
     public event Action<GalleryItem> ItemRequested = delegate { };
 
-    // around the color wheel in steps of the golden angle: neighbors never look alike
-    const double hueStep = 137.5;
-    const double newDrawingHue = 215;
-    const double continueDrawingHue = 40;
+    static readonly Color newDrawingPlate = Color.Parse("#E6EFFB");
+    static readonly Color continueDrawingPlate = Color.Parse("#FBF1DC");
 
     static readonly IBrush accent = new SolidColorBrush(Color.FromRgb(0x2F, 0x7B, 0xD6));
-    static readonly IBrush secondaryText = new SolidColorBrush(Color.FromRgb(0x5B, 0x64, 0x72));
+    static readonly IBrush brandText = new SolidColorBrush(Color.FromRgb(0x6B, 0x74, 0x82));
 
-    readonly TileGridPanel startTiles = new TileGridPanel() { TileAspect = 0.56 };
+    readonly StackPanel startTiles = new StackPanel()
+    {
+        Orientation = Orientation.Horizontal,
+        Spacing = 18,
+        VerticalAlignment = VerticalAlignment.Top
+    };
     readonly TileGridPanel galleryTiles = new TileGridPanel();
     readonly GalleryTile continueTile;
 
@@ -36,16 +39,28 @@ public class GalleryView : DockPanel
     {
         Background = Brushes.White;
 
-        var header = CreateHeader(buildStamp);
-        SetDock(header, Dock.Top);
-        Children.Add(header);
-
-        startTiles.Children.Add(new GalleryTile(PlusPicture(), "New Drawing", newDrawingHue, () => NewDrawingRequested()));
-        continueTile = new GalleryTile(PencilPicture(), "Back to My Drawing", continueDrawingHue, () => ContinueDrawingRequested())
+        startTiles.Children.Add(new GalleryTile(PlusPicture(), "New Drawing", newDrawingPlate, () => NewDrawingRequested())
         {
+            Width = StartTileWidth,
+            Height = StartTileHeight
+        });
+        continueTile = new GalleryTile(PencilPicture(), "My Drawing", continueDrawingPlate, () => ContinueDrawingRequested())
+        {
+            Width = StartTileWidth,
+            Height = StartTileHeight,
             IsVisible = false
         };
         startTiles.Children.Add(continueTile);
+
+        // the start row: the tiles at the left, the name of the app in the room to their right
+        var startRow = new Grid()
+        {
+            ColumnDefinitions = new ColumnDefinitions("Auto,*")
+        };
+        startRow.Children.Add(startTiles);
+        var brand = CreateBrand();
+        Grid.SetColumn(brand, 1);
+        startRow.Children.Add(brand);
 
         for (int i = 0; i < GalleryCatalog.Items.Count; i++)
         {
@@ -54,7 +69,7 @@ public class GalleryView : DockPanel
             var tile = new GalleryTile(
                 picture,
                 item.Title,
-                i * hueStep,
+                Pastels.At(i),
                 () =>
                 {
                     picture.IsAnimated = false;
@@ -70,32 +85,40 @@ public class GalleryView : DockPanel
             MaxWidth = 1500,
             Margin = new Thickness(32, 24, 32, 40)
         };
-        content.Children.Add(startTiles);
+        content.Children.Add(startRow);
         content.Children.Add(new TextBlock()
         {
             Text = "Gallery",
             FontSize = 24,
             FontWeight = FontWeight.SemiBold,
             Foreground = RibbonTheme.Text,
-            Margin = new Thickness(2, 30, 0, 2)
-        });
-        content.Children.Add(new TextBlock()
-        {
-            Text = "Every picture is alive. Open one, drag the yellow points and watch what changes - and what never does.",
-            FontSize = 15,
-            Foreground = secondaryText,
-            TextWrapping = TextWrapping.Wrap,
-            Margin = new Thickness(2, 0, 0, 16)
+            Margin = new Thickness(2, 30, 0, 12)
         });
         content.Children.Add(galleryTiles);
 
-        Children.Add(new ScrollViewer()
+        var page = new Panel();
+        page.Children.Add(new ScrollViewer()
         {
             HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
             Content = content
         });
+
+        // the build stamp in the corner, as on the editor's toolbar
+        if (buildStamp != null)
+        {
+            buildStamp.HorizontalAlignment = HorizontalAlignment.Right;
+            buildStamp.VerticalAlignment = VerticalAlignment.Top;
+            buildStamp.Margin = new Thickness(0, 6, 22, 0);
+            page.Children.Add(buildStamp);
+        }
+
+        Children.Add(page);
     }
+
+    // square, about the height of the brand next to them
+    const double StartTileWidth = 120;
+    const double StartTileHeight = 120;
 
     /// <summary>
     /// Whether there is a drawing of the user's own to go back to (the editor keeps it while
@@ -107,42 +130,34 @@ public class GalleryView : DockPanel
         set => continueTile.IsVisible = value;
     }
 
-    // the same band as the editor's toolbar, so that switching between the two is quiet
-    static Control CreateHeader(Control buildStamp)
+    /// <summary>The icon and the name, floating on a soft shadow</summary>
+    static Control CreateBrand()
     {
-        var header = new DockPanel()
+        var brand = new StackPanel()
         {
-            Background = RibbonTheme.HeaderRowBackground,
-            Height = 44
+            Orientation = Orientation.Horizontal,
+            Spacing = 20,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            Effect = new DropShadowEffect()
+            {
+                Color = Colors.Black,
+                Opacity = 0.32,
+                BlurRadius = 26,
+                OffsetX = 0,
+                OffsetY = 6
+            }
         };
-
-        if (buildStamp != null)
-        {
-            SetDock(buildStamp, Dock.Right);
-            header.Children.Add(buildStamp);
-        }
-
-        header.Children.Add(new TextBlock()
+        brand.Children.Add(AppIcon.Create(size: 68));
+        brand.Children.Add(new TextBlock()
         {
             Text = "Live Geometry",
-            FontSize = 18,
+            FontSize = 38,
             FontWeight = FontWeight.SemiBold,
-            Foreground = RibbonTheme.Text,
-            VerticalAlignment = VerticalAlignment.Center,
-            Margin = new Thickness(34, 0, 0, 0)
+            Foreground = brandText,
+            VerticalAlignment = VerticalAlignment.Center
         });
-
-        var line = new Border()
-        {
-            Height = 1,
-            Background = RibbonTheme.TabLine,
-            VerticalAlignment = VerticalAlignment.Bottom
-        };
-
-        var panel = new Panel();
-        panel.Children.Add(header);
-        panel.Children.Add(line);
-        return panel;
+        return brand;
     }
 
     static Control PlusPicture()
@@ -188,9 +203,9 @@ public class GalleryView : DockPanel
         {
             Child = canvas,
             Stretch = Stretch.Uniform,
-            MaxWidth = 84,
-            MaxHeight = 84,
-            Margin = new Thickness(16),
+            MaxWidth = 56,
+            MaxHeight = 56,
+            Margin = new Thickness(8, 10, 8, 2),
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };

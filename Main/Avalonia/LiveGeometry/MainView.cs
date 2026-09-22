@@ -116,17 +116,17 @@ public partial class MainView : UserControl
         Focusable = true;
         Console.WriteLine("Live Geometry " + BuildVersion.Full);
 
-        // Two pages, one showing: the gallery (the start page) and the editor.
-        Gallery = new GalleryView(CreateBuildStamp());
-        Gallery.NewDrawingRequested += () => HandleExceptions(() => ShowNewDrawing(push: true));
-        Gallery.ContinueDrawingRequested += () => HandleExceptions(() => ShowOwnDrawing(push: true));
-        Gallery.ItemRequested += item => HandleExceptions(() => ShowSample(item, push: true));
-        LayoutRoot.IsVisible = false;
-
-        var pages = new Panel();
+        // Two pages, one showing: the gallery (the start page) and the editor. Started with a
+        // file (or a batch job) the editor is up from the first frame and the gallery, with its
+        // 47 tiles, isn't even built until the Gallery button is pressed.
         pages.Children.Add(LayoutRoot);
-        pages.Children.Add(Gallery);
         Content = pages;
+        bool startsInEditor = StartupFile != null || CheckFolder != null || ModernizeFolder != null;
+        LayoutRoot.IsVisible = startsInEditor;
+        if (!startsInEditor)
+        {
+            EnsureGallery();
+        }
 
         // No menu: the few document commands are a toolbar, everything else is the keyboard
         // (see MainView_KeyUp and HandlePlainKey), the mouse wheel and the context menu.
@@ -191,7 +191,26 @@ public partial class MainView : UserControl
     const string OwnDrawingPath = "/drawing";
     const string AppTitle = "Live Geometry";
 
+    readonly Panel pages = new Panel();
+
+    /// <summary>Null until first shown</summary>
     GalleryView Gallery;
+
+    bool IsGalleryShowing => Gallery != null && Gallery.IsVisible;
+
+    void EnsureGallery()
+    {
+        if (Gallery != null)
+        {
+            return;
+        }
+
+        Gallery = new GalleryView(CreateBuildStamp());
+        Gallery.NewDrawingRequested += () => HandleExceptions(() => ShowNewDrawing(push: true));
+        Gallery.ContinueDrawingRequested += () => HandleExceptions(() => ShowOwnDrawing(push: true));
+        Gallery.ItemRequested += item => HandleExceptions(() => ShowSample(item, push: true));
+        pages.Children.Add(Gallery);
+    }
     Panel TourGroup;
     TextBlock TourPosition;
     TextBlock TourTitle;
@@ -251,6 +270,7 @@ public partial class MainView : UserControl
             OwnDrawing = drawing;
         }
 
+        EnsureGallery();
         Gallery.CanContinueDrawing = OwnDrawing != null;
         Gallery.IsVisible = true;
         LayoutRoot.IsVisible = false;
@@ -260,7 +280,11 @@ public partial class MainView : UserControl
 
     void ShowEditor()
     {
-        Gallery.IsVisible = false;
+        if (Gallery != null)
+        {
+            Gallery.IsVisible = false;
+        }
+
         LayoutRoot.IsVisible = true;
 
         // the canvas must know its size before a drawing is fitted into it
@@ -611,7 +635,7 @@ public partial class MainView : UserControl
 
     private void MainView_KeyUp(object sender, KeyEventArgs e)
     {
-        if (Gallery.IsVisible)
+        if (IsGalleryShowing)
         {
             shortcutKeyDown = Key.None;
             return;
@@ -673,7 +697,7 @@ public partial class MainView : UserControl
     /// </summary>
     private void MainView_KeyDown(object sender, KeyEventArgs e)
     {
-        if (Gallery.IsVisible)
+        if (IsGalleryShowing)
         {
             // there is no drawing to undo, select or save
             if (e.KeyModifiers == KeyModifiers.Control && (e.Key == Key.N || e.Key == Key.O))

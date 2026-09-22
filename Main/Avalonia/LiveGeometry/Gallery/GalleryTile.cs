@@ -21,14 +21,19 @@ public class GalleryTile : Border
     readonly IBrush hoverBorder;
     bool isPressed;
 
-    /// <param name="hue">0-360; the plate is a very pale tint of it</param>
-    public GalleryTile(Control picture, string caption, double hue, Action action)
+    /// <param name="plate">A near-white tint (see <see cref="Pastels"/>); the border and the
+    /// hover states are the same hue, a little deeper</param>
+    public GalleryTile(Control picture, string caption, Color plate, Action action)
     {
         this.action = action;
-        background = new SolidColorBrush(FromHsv(hue, saturation: 0.07, value: 0.995));
-        hoverBackground = new SolidColorBrush(FromHsv(hue, saturation: 0.13, value: 0.99));
-        border = new SolidColorBrush(FromHsv(hue, saturation: 0.16, value: 0.90));
-        hoverBorder = new SolidColorBrush(FromHsv(hue, saturation: 0.45, value: 0.78));
+        ToHsv(plate, out double hue, out double saturation, out double value);
+
+        // a gray plate keeps a hint of color in its border so that it still reads as a plate
+        double tint = System.Math.Max(saturation, 0.03);
+        background = new SolidColorBrush(plate);
+        hoverBackground = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 1.8, 1), value));
+        border = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 2.2, 1), value * 0.91));
+        hoverBorder = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 5, 1), value * 0.8));
 
         CornerRadius = new CornerRadius(10);
         BorderThickness = new Thickness(1.5);
@@ -81,6 +86,39 @@ public class GalleryTile : Border
     {
         Background = isOver ? hoverBackground : background;
         BorderBrush = isOver ? hoverBorder : border;
+    }
+
+    public static void ToHsv(Color color, out double hue, out double saturation, out double value)
+    {
+        double r = color.R / 255.0;
+        double g = color.G / 255.0;
+        double b = color.B / 255.0;
+        double max = Math.Max(r, Math.Max(g, b));
+        double min = Math.Min(r, Math.Min(g, b));
+        double delta = max - min;
+        value = max;
+        saturation = max == 0 ? 0 : delta / max;
+        if (delta == 0)
+        {
+            hue = 0;
+        }
+        else if (max == r)
+        {
+            hue = 60 * (((g - b) / delta) % 6);
+        }
+        else if (max == g)
+        {
+            hue = 60 * ((b - r) / delta + 2);
+        }
+        else
+        {
+            hue = 60 * ((r - g) / delta + 4);
+        }
+
+        if (hue < 0)
+        {
+            hue += 360;
+        }
     }
 
     public static Color FromHsv(double hue, double saturation, double value)
