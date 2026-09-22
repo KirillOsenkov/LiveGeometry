@@ -367,9 +367,13 @@ Learned from `Reference/VB6/Source` while making the CD library load (`DGFReader
 - Buttons: type 0 show/hide, 1 message box, 2 sound, 3 open another drawing. Only 0 becomes a
   figure; a show/hide button's list may reference the others.
 - DG's angle bisector (`Math.bas GetBisector`) is the *interior* bisector and a whole line;
-  ours is oriented (counterclockwise from side 1 to side 2) and a ray. The reader orders the
-  sides for the interior one and sets `AngleBisector.IsLine` ("Whole line" in the property
-  grid, saved as `Line="true"`).
+  the reader sets `AngleBisector.Interior` and `IsLine` ("Whole line", saved as `Line="true"`).
+  `Interior` ("Inside the angle", saved as `Interior="true"`) halves the angle under 180°
+  whichever way round the sides are; off, the bisector halves the angle counterclockwise from
+  side 1 to side 2, which swings outside a triangle dragged the other way round. New
+  bisectors are interior; a file without the attribute gets the oriented one it was saved
+  with. Morley's trisectors are expressions and get the same effect from
+  `SGN(pi - OANG(...)) * ANG(...)` - `OANG` is the counterclockwise angle in [0, 2pi).
 - A point on a figure is placed by moving it to its saved X,Y in one `MoveTo` (setting X then Y
   projects twice from off the figure and lands elsewhere); `AuxInfo(1)` (t on a line, clockwise
   angle on a circle) is ignored.

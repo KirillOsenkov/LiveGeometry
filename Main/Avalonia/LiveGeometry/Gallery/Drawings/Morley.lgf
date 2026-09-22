@@ -25,32 +25,32 @@
     <FreePoint Name="A" Style="1" X="-4.8533448304" Y="1.8714881959" />
     <FreePoint Name="B" Style="1" X="-6.2794503968" Y="-12.5192134284" />
     <FreePoint Name="C" Style="1" X="8.1112512275" Y="-7.3333750052" />
-    <PointByCoordinates Name="E" Visible="false" Style="11" X="(B.X) + (COS((XANG(B,C)) + ((ANG(C,B,A)) / (3))))" Y="(B.Y) + (SIN((XANG(B,C)) + ((ANG(C,B,A)) / (3))))">
+    <PointByCoordinates Name="E" Visible="false" Style="11" X="(B.X) + (COS((XANG(B,C)) + ((SGN(3.14159265358979 - OANG(C,B,A)) * ANG(C,B,A)) / (3))))" Y="(B.Y) + (SIN((XANG(B,C)) + ((SGN(3.14159265358979 - OANG(C,B,A)) * ANG(C,B,A)) / (3))))">
       <Dependency Name="B" />
       <Dependency Name="C" />
       <Dependency Name="A" />
     </PointByCoordinates>
-    <PointByCoordinates Name="D" Visible="false" Style="11" X="(B.X) + (COS((XANG(B,C)) + (((2) * (ANG(C,B,A))) / (3))))" Y="(B.Y) + (SIN((XANG(B,C)) + (((2) * (ANG(C,B,A))) / (3))))">
+    <PointByCoordinates Name="D" Visible="false" Style="11" X="(B.X) + (COS((XANG(B,C)) + (((2) * (SGN(3.14159265358979 - OANG(C,B,A)) * ANG(C,B,A))) / (3))))" Y="(B.Y) + (SIN((XANG(B,C)) + (((2) * (SGN(3.14159265358979 - OANG(C,B,A)) * ANG(C,B,A))) / (3))))">
       <Dependency Name="B" />
       <Dependency Name="C" />
       <Dependency Name="A" />
     </PointByCoordinates>
-    <PointByCoordinates Name="F" Visible="false" Style="11" X="(C.X) + (COS((XANG(C,A)) + ((ANG(A,C,B)) / (3))))" Y="(C.Y) + (SIN((XANG(C,A)) + ((ANG(A,C,B)) / (3))))">
+    <PointByCoordinates Name="F" Visible="false" Style="11" X="(C.X) + (COS((XANG(C,A)) + ((SGN(3.14159265358979 - OANG(A,C,B)) * ANG(A,C,B)) / (3))))" Y="(C.Y) + (SIN((XANG(C,A)) + ((SGN(3.14159265358979 - OANG(A,C,B)) * ANG(A,C,B)) / (3))))">
       <Dependency Name="C" />
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="G" Visible="false" Style="11" X="(C.X) + (COS((XANG(C,A)) + (((2) * (ANG(A,C,B))) / (3))))" Y="(C.Y) + (SIN((XANG(C,A)) + (((2) * (ANG(A,C,B))) / (3))))">
+    <PointByCoordinates Name="G" Visible="false" Style="11" X="(C.X) + (COS((XANG(C,A)) + (((2) * (SGN(3.14159265358979 - OANG(A,C,B)) * ANG(A,C,B))) / (3))))" Y="(C.Y) + (SIN((XANG(C,A)) + (((2) * (SGN(3.14159265358979 - OANG(A,C,B)) * ANG(A,C,B))) / (3))))">
       <Dependency Name="C" />
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="H" Visible="false" Style="11" X="(A.X) + (COS((XANG(A,B)) + ((ANG(B,A,C)) / (3))))" Y="(A.Y) + (SIN((XANG(A,B)) + ((ANG(B,A,C)) / (3))))">
+    <PointByCoordinates Name="H" Visible="false" Style="11" X="(A.X) + (COS((XANG(A,B)) + ((SGN(3.14159265358979 - OANG(B,A,C)) * ANG(B,A,C)) / (3))))" Y="(A.Y) + (SIN((XANG(A,B)) + ((SGN(3.14159265358979 - OANG(B,A,C)) * ANG(B,A,C)) / (3))))">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="C" />
     </PointByCoordinates>
-    <PointByCoordinates Name="I" Visible="false" Style="11" X="(A.X) + (COS((XANG(A,B)) + (((2) * (ANG(B,A,C))) / (3))))" Y="(A.Y) + (SIN((XANG(A,B)) + (((2) * (ANG(B,A,C))) / (3))))">
+    <PointByCoordinates Name="I" Visible="false" Style="11" X="(A.X) + (COS((XANG(A,B)) + (((2) * (SGN(3.14159265358979 - OANG(B,A,C)) * ANG(B,A,C))) / (3))))" Y="(A.Y) + (SIN((XANG(A,B)) + (((2) * (SGN(3.14159265358979 - OANG(B,A,C)) * ANG(B,A,C))) / (3))))">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="C" />

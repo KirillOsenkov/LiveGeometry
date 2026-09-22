@@ -35,12 +35,12 @@
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-    <AngleBisector Name="AngleBisector147" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector147" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="C" />
       <Dependency Name="B" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector143" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector143" Visible="false" Style="4">
       <Dependency Name="C" />
       <Dependency Name="B" />
       <Dependency Name="A" />
@@ -66,12 +66,12 @@
       <Dependency Name="F" />
       <Dependency Name="B" />
     </Segment>
-    <AngleBisector Name="AngleBisector13" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector13" Visible="false" Style="4">
       <Dependency Name="F" />
       <Dependency Name="A" />
       <Dependency Name="B" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector14" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector14" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="F" />
@@ -97,12 +97,12 @@
       <Dependency Name="I" />
       <Dependency Name="F" />
     </Segment>
-    <AngleBisector Name="AngleBisector33" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector33" Visible="false" Style="4">
       <Dependency Name="I" />
       <Dependency Name="A" />
       <Dependency Name="F" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector34" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector34" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="F" />
       <Dependency Name="I" />
@@ -128,12 +128,12 @@
       <Dependency Name="L" />
       <Dependency Name="I" />
     </Segment>
-    <AngleBisector Name="AngleBisector43" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector43" Visible="false" Style="4">
       <Dependency Name="L" />
       <Dependency Name="A" />
       <Dependency Name="I" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector44" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector44" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="I" />
       <Dependency Name="L" />
@@ -159,12 +159,12 @@
       <Dependency Name="O" />
       <Dependency Name="L" />
     </Segment>
-    <AngleBisector Name="AngleBisector53" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector53" Visible="false" Style="4">
       <Dependency Name="O" />
       <Dependency Name="A" />
       <Dependency Name="L" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector54" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector54" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="L" />
       <Dependency Name="O" />
@@ -189,12 +189,12 @@
       <Dependency Name="C" />
       <Dependency Name="O" />
     </Segment>
-    <AngleBisector Name="AngleBisector63" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector63" Visible="false" Style="4">
       <Dependency Name="C" />
       <Dependency Name="A" />
       <Dependency Name="O" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector64" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector64" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="O" />
       <Dependency Name="C" />
@@ -220,12 +220,12 @@
       <Dependency Name="T" />
       <Dependency Name="L" />
     </Segment>
-    <AngleBisector Name="AngleBisector73" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector73" Visible="false" Style="4">
       <Dependency Name="T" />
       <Dependency Name="O" />
       <Dependency Name="L" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector74" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector74" Visible="false" Style="4">
       <Dependency Name="O" />
       <Dependency Name="L" />
       <Dependency Name="T" />
@@ -251,12 +251,12 @@
       <Dependency Name="W" />
       <Dependency Name="T" />
     </Segment>
-    <AngleBisector Name="AngleBisector83" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector83" Visible="false" Style="4">
       <Dependency Name="W" />
       <Dependency Name="O" />
       <Dependency Name="T" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector84" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector84" Visible="false" Style="4">
       <Dependency Name="O" />
       <Dependency Name="T" />
       <Dependency Name="W" />
@@ -282,12 +282,12 @@
       <Dependency Name="Z" />
       <Dependency Name="W" />
     </Segment>
-    <AngleBisector Name="AngleBisector93" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector93" Visible="false" Style="4">
       <Dependency Name="Z" />
       <Dependency Name="O" />
       <Dependency Name="W" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector94" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector94" Visible="false" Style="4">
       <Dependency Name="O" />
       <Dependency Name="W" />
       <Dependency Name="Z" />
@@ -312,12 +312,12 @@
       <Dependency Name="C" />
       <Dependency Name="Z" />
     </Segment>
-    <AngleBisector Name="AngleBisector103" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector103" Visible="false" Style="4">
       <Dependency Name="C" />
       <Dependency Name="O" />
       <Dependency Name="Z" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector104" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector104" Visible="false" Style="4">
       <Dependency Name="O" />
       <Dependency Name="Z" />
       <Dependency Name="C" />
@@ -343,12 +343,12 @@
       <Dependency Name="L" />
       <Dependency Name="T" />
     </Segment>
-    <AngleBisector Name="AngleBisector113" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector113" Visible="false" Style="4">
       <Dependency Name="L" />
       <Dependency Name="G1" />
       <Dependency Name="T" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector114" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector114" Visible="false" Style="4">
       <Dependency Name="G1" />
       <Dependency Name="T" />
       <Dependency Name="L" />
@@ -373,12 +373,12 @@
       <Dependency Name="L" />
       <Dependency Name="G1" />
     </Segment>
-    <AngleBisector Name="AngleBisector123" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector123" Visible="false" Style="4">
       <Dependency Name="L" />
       <Dependency Name="I" />
       <Dependency Name="G1" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector124" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector124" Visible="false" Style="4">
       <Dependency Name="I" />
       <Dependency Name="G1" />
       <Dependency Name="L" />
@@ -400,12 +400,12 @@
       <Dependency Name="I1" />
     </Circle>
     <FreePoint Name="J1" Style="1" X="-4.3958333333" Y="3.2083333333" />
-    <AngleBisector Name="AngleBisector135" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector135" Visible="false" Style="4">
       <Dependency Name="J1" />
       <Dependency Name="I" />
       <Dependency Name="F" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector136" Visible="false" Style="4">
+    <AngleBisector Interior="true" Name="AngleBisector136" Visible="false" Style="4">
       <Dependency Name="I" />
       <Dependency Name="F" />
       <Dependency Name="J1" />

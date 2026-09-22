@@ -35,17 +35,17 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Segment>
-    <AngleBisector Name="AngleBisector14" Style="9">
+    <AngleBisector Interior="true" Name="AngleBisector14" Style="9">
       <Dependency Name="A" />
       <Dependency Name="C" />
       <Dependency Name="B" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector16" Style="9">
+    <AngleBisector Interior="true" Name="AngleBisector16" Style="9">
       <Dependency Name="C" />
       <Dependency Name="B" />
       <Dependency Name="A" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector23" Style="9">
+    <AngleBisector Interior="true" Name="AngleBisector23" Style="9">
       <Dependency Name="B" />
       <Dependency Name="A" />
       <Dependency Name="C" />

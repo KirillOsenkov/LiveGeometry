@@ -519,22 +519,14 @@ namespace DynamicGeometry
 
         void ReadAngleBisector(IniFile.Section section)
         {
-            // DG's bisector (Math.bas GetBisector) always halves the interior angle; ours halves
-            // the angle counterclockwise from the first side to the second, so the sides go in
-            // the order that makes it the interior one
+            // DG's bisector (Math.bas GetBisector) always halves the interior angle, and was a
+            // whole line, with intersections on both sides of the vertex
             var vertex = GetPoint(section, 1);
             var side1 = GetPoint(section, 0);
             var side2 = GetPoint(section, 2);
-            if (Math.OAngle(side1.Coordinates, vertex.Coordinates, side2.Coordinates) > Math.PI)
-            {
-                var temp = side1;
-                side1 = side2;
-                side2 = temp;
-            }
-
-            // and DG's bisector was a whole line, with intersections on both sides of the vertex
             var figure = Factory.CreateAngleBisector(
                 drawing, new[] { vertex, side1, side2 });
+            figure.Interior = true;
             figure.IsLine = true;
             SetFigureStyle(section, figure);
             AddFigure(section, figure);

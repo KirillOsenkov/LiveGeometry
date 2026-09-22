@@ -24,8 +24,8 @@ namespace DynamicGeometry
                 double result = 0;
                 if (dependencies != null)
                 {
-                   
-                    result = (Flipped) ? 
+
+                    result = (Flipped) ?
                         Math.OAngle(
                         dependencies.Point(2),
                         dependencies.Point(0),
@@ -34,10 +34,40 @@ namespace DynamicGeometry
                         dependencies.Point(1),
                         dependencies.Point(0),
                         dependencies.Point(2)).ToDegrees();
+                    if (Interior && result > 180)
+                    {
+                        result = 360 - result;
+                    }
                 }
                 return result;
             }
         }
+
+        /// <summary>
+        /// Halves the angle under 180° between the sides, whichever way round they are. Off,
+        /// the bisector halves the angle counterclockwise from the first side to the second, so
+        /// it swings outside a triangle whose vertices get dragged the other way round. On for
+        /// new bisectors; files from before have it off, as they were.
+        /// </summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Inside the angle")]
+        public bool Interior
+        {
+            get
+            {
+                return interior;
+            }
+            set
+            {
+                interior = value;
+                if (Drawing != null)
+                {
+                    this.RecalculateAllDependents();
+                }
+            }
+        }
+
+        bool interior = true;
 
         /// <summary>
         /// Extends the bisector in both directions (which is what DG's bisector was): the
@@ -109,6 +139,7 @@ namespace DynamicGeometry
         {
             base.ReadXml(element);
             isLine = element.ReadBool("Line", false);
+            interior = element.ReadBool("Interior", false);
         }
 
         public override void WriteXml(System.Xml.XmlWriter writer)
@@ -118,8 +149,17 @@ namespace DynamicGeometry
             {
                 writer.WriteAttributeBool("Line", true);
             }
+
+            if (Interior)
+            {
+                writer.WriteAttributeBool("Interior", true);
+            }
         }
 
+        /// <summary>
+        /// The bisector of the other angle the two sides make (the one over 180°): the same
+        /// line, pointing the other way. Inside-the-angle mode has no other angle, so it goes.
+        /// </summary>
         [PropertyGridVisible]
         [PropertyGridName("Convert to opposite angle")]
         public void ConvertToOpposite()
@@ -131,6 +171,7 @@ namespace DynamicGeometry
                 dependencies[1] = dependencies[2];
                 dependencies[2] = t;
             }
+            interior = false;
             this.RecalculateAllDependents();
             Drawing.RaiseSelectionChanged(this);
         }
@@ -159,10 +200,20 @@ namespace DynamicGeometry
             var dependencies = GetDependencies();
             if (dependencies != null)
             {
-                coordinates.P1 = dependencies.Point(0);
-                coordinates.P2 = (Flipped) ?
-                    Math.GetAngleBisectorPoint(dependencies.Point(0), dependencies.Point(2), dependencies.Point(1)) :
-                    Math.GetAngleBisectorPoint(dependencies.Point(0), dependencies.Point(1), dependencies.Point(2));
+                var vertex = dependencies.Point(0);
+                var side1 = dependencies.Point(Flipped ? 2 : 1);
+                var side2 = dependencies.Point(Flipped ? 1 : 2);
+
+                // the halfway direction counterclockwise from side 1 to side 2; inside the angle
+                // means the other way round when that sweep is the long way
+                var halfway = Math.GetAngleBisectorPoint(vertex, side1, side2);
+                if (Interior && halfway.Exists() && Math.OAngle(side1, vertex, side2) > Math.PI)
+                {
+                    halfway = vertex.Minus(halfway.Minus(vertex));
+                }
+
+                coordinates.P1 = vertex;
+                coordinates.P2 = halfway;
                 Exists = coordinates.P2.Exists();
             }
             else
