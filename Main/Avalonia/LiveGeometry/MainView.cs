@@ -97,17 +97,33 @@ public partial class MainView : UserControl
 
     // The build (git commit) at the far right of the toolbar, so that it is obvious
     // which version is on screen - e.g. whether a fresh deployment has arrived yet.
+    const string RepositoryUrl = "https://github.com/KirillOsenkov/LiveGeometry";
+
+    static readonly IBrush linkBrush = new SolidColorBrush(Color.FromRgb(0x2F, 0x7B, 0xD6));
+
+    // A link to the repository, styled like one (blue, underlined on hover).
     static Control CreateBuildStamp()
     {
         var build = new TextBlock()
         {
             Text = BuildVersion.Short,
             FontSize = 11,
-            Opacity = 0.55,
+            Foreground = linkBrush,
+            Background = Brushes.Transparent, // hit-testable between the letters too
+            Cursor = new Cursor(StandardCursorType.Hand),
             Margin = new Avalonia.Thickness(8, 0, 10, 0),
             VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
         };
-        ToolTip.SetTip(build, BuildVersion.Full);
+        ToolTip.SetTip(build, BuildVersion.Full + "\n" + RepositoryUrl);
+        build.PointerEntered += (s, e) => build.TextDecorations = TextDecorations.Underline;
+        build.PointerExited += (s, e) => build.TextDecorations = null;
+        build.PointerReleased += (s, e) =>
+        {
+            if (e.InitialPressMouseButton == MouseButton.Left)
+            {
+                TopLevel.GetTopLevel(build)?.Launcher.LaunchUriAsync(new Uri(RepositoryUrl));
+            }
+        };
         return build;
     }
 
