@@ -22,6 +22,10 @@ sealed class Program
             MainView.CheckFolder = System.IO.Path.GetFullPath(args[1]);
             MainView.CheckOutputFolder = System.IO.Path.GetFullPath(args[2]);
         }
+        else if (args.Length == 2 && args[0] == "--modernize")
+        {
+            MainView.ModernizeFolder = System.IO.Path.GetFullPath(args[1]);
+        }
 
         App.MainWindowCreated = WindowPlacementPersistence.Attach;
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);

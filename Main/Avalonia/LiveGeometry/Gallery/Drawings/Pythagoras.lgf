@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing IntersectionOrder="Legacy">
+<Drawing>
   <Viewport Left="-7.9950867182" Top="16.0942200334" Right="12.8921775481" Bottom="-15.5847974371" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
@@ -52,19 +52,19 @@
       <Dependency Name="E" />
       <Dependency Name="C" />
     </CircleByRadius>
-    <IntersectionPoint Name="F" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="F" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="Segment16" />
       <Dependency Name="CircleByRadius17" />
     </IntersectionPoint>
-    <IntersectionPoint Name="G" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="G" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="Segment16" />
       <Dependency Name="CircleByRadius17" />
     </IntersectionPoint>
-    <IntersectionPoint Name="H" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="H" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="Segment14" />
       <Dependency Name="CircleByRadius17" />
     </IntersectionPoint>
-    <IntersectionPoint Name="I" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="I" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="Segment14" />
       <Dependency Name="CircleByRadius17" />
     </IntersectionPoint>
@@ -88,11 +88,11 @@
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Circle>
-    <IntersectionPoint Name="L" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
+    <IntersectionPoint Name="L" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
       <Dependency Name="PerpendicularLine19" />
       <Dependency Name="Circle20" />
     </IntersectionPoint>
-    <IntersectionPoint Name="M" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="M" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine19" />
       <Dependency Name="Circle20" />
     </IntersectionPoint>
@@ -112,11 +112,11 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Circle>
-    <IntersectionPoint Name="P" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
+    <IntersectionPoint Name="P" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
       <Dependency Name="PerpendicularLine21" />
       <Dependency Name="Circle22" />
     </IntersectionPoint>
-    <IntersectionPoint Name="Q" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="Q" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine21" />
       <Dependency Name="Circle22" />
     </IntersectionPoint>
@@ -136,11 +136,11 @@
       <Dependency Name="Segment16" />
       <Dependency Name="C" />
     </PerpendicularLine>
-    <IntersectionPoint Name="T" Visible="false" Style="14" Algorithm="IntersectEllipseAndLine1">
+    <IntersectionPoint Name="T" Visible="false" Style="14" Algorithm="IntersectEllipseAndLine2">
       <Dependency Name="Circle23" />
       <Dependency Name="PerpendicularLine24" />
     </IntersectionPoint>
-    <IntersectionPoint Name="U" Visible="false" Style="14" Algorithm="IntersectEllipseAndLine2">
+    <IntersectionPoint Name="U" Visible="false" Style="14" Algorithm="IntersectEllipseAndLine1">
       <Dependency Name="Circle23" />
       <Dependency Name="PerpendicularLine24" />
     </IntersectionPoint>

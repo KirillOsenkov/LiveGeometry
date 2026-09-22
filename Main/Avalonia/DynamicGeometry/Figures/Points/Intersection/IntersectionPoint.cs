@@ -56,6 +56,9 @@ namespace DynamicGeometry
 
         Func<IFigure, IFigure, Point> Algorithm;
 
+        /// <summary>The name of the intersection algorithm, as saved in the Algorithm attribute</summary>
+        public string AlgorithmName => Algorithm?.Method.Name;
+
         /// <summary>
         /// Math.GetIntersectionOfCircleAndLine once changed which of the two intersections comes
         /// first when the line passes through the center of the circle ("New code - preserves

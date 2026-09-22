@@ -404,6 +404,12 @@ public partial class MainView : UserControl
             return;
         }
 
+        if (ModernizeFolder != null)
+        {
+            RunModernize(ModernizeFolder);
+            return;
+        }
+
         var path = StartupFile;
         StartupFile = null;
         if (string.IsNullOrEmpty(path))

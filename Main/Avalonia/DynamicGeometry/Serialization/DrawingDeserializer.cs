@@ -61,7 +61,7 @@ namespace DynamicGeometry
             drawing.Recalculate();
 
             // Files don't record which version of the library wrote them, so a drawing that is
-            // known to be that old has to say so (tools/gallerize.cs adds this). Saving it
+            // known to be that old has to say so (the gallery drawings from the phone do). Saving it
             // writes the upgraded algorithms and not the attribute.
             if (element.ReadString("IntersectionOrder") == "Legacy")
             {

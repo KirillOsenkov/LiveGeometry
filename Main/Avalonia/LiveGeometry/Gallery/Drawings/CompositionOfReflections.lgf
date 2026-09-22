@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing IntersectionOrder="Legacy">
+<Drawing>
   <Viewport Left="-8.3237998364" Top="11.8321782798" Right="8.186216368" Bottom="-13.2080129635" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />

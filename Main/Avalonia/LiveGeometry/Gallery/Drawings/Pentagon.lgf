@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing IntersectionOrder="Legacy">
+<Drawing>
   <Viewport Left="-5.4375" Top="7.625" Right="4.5625" Bottom="-7.5416666667" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
@@ -34,7 +34,7 @@
       <Dependency Name="Segment115" />
       <Dependency Name="A" />
     </PerpendicularLine>
-    <IntersectionPoint Name="C" Style="3" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="C" Style="3" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine117" />
       <Dependency Name="Circle113" />
     </IntersectionPoint>
@@ -46,7 +46,7 @@
       <Dependency Name="D" />
       <Dependency Name="B" />
     </Circle>
-    <IntersectionPoint Name="E" Style="1" Algorithm="IntersectEllipseAndLine1">
+    <IntersectionPoint Name="E" Style="1" Algorithm="IntersectEllipseAndLine2">
       <Dependency Name="Circle154" />
       <Dependency Name="PerpendicularLine117" />
     </IntersectionPoint>

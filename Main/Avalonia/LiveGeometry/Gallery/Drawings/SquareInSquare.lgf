@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing IntersectionOrder="Legacy">
+<Drawing>
   <Viewport Left="-4.9895833333" Top="7.5729166667" Right="5.0104166667" Bottom="-7.59375" Grid="false" />
   <Styles>
     <PointStyle Size="15" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
@@ -29,7 +29,7 @@
       <Dependency Name="Segment28" />
       <Dependency Name="A" />
     </PerpendicularLine>
-    <IntersectionPoint Name="D" Style="3" Algorithm="IntersectEllipseAndLine1">
+    <IntersectionPoint Name="D" Style="3" Algorithm="IntersectEllipseAndLine2">
       <Dependency Name="Circle29" />
       <Dependency Name="PerpendicularLine30" />
     </IntersectionPoint>
@@ -77,15 +77,15 @@
       <Dependency Name="E" />
       <Dependency Name="D" />
     </CircleByRadius>
-    <IntersectionPoint Name="H" Style="3" Algorithm="IntersectEllipseAndLine2">
+    <IntersectionPoint Name="H" Style="3" Algorithm="IntersectEllipseAndLine1">
       <Dependency Name="CircleByRadius43" />
       <Dependency Name="Segment31" />
     </IntersectionPoint>
-    <IntersectionPoint Name="G" Style="3" Algorithm="IntersectEllipseAndLine2">
+    <IntersectionPoint Name="G" Style="3" Algorithm="IntersectEllipseAndLine1">
       <Dependency Name="CircleByRadius40" />
       <Dependency Name="Segment32" />
     </IntersectionPoint>
-    <IntersectionPoint Name="F" Style="3" Algorithm="IntersectEllipseAndLine2">
+    <IntersectionPoint Name="F" Style="3" Algorithm="IntersectEllipseAndLine1">
       <Dependency Name="CircleByRadius37" />
       <Dependency Name="Segment33" />
     </IntersectionPoint>

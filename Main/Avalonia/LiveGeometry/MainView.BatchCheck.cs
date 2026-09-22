@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Media.Imaging;
 using DynamicGeometry;
@@ -21,6 +23,8 @@ public partial class MainView
     public static string CheckFolder { get; set; }
 
     public static string CheckOutputFolder { get; set; }
+
+    public static string ModernizeFolder { get; set; }
 
     readonly List<string> checkMessages = new List<string>();
 
@@ -100,6 +104,53 @@ public partial class MainView
 
         File.AppendAllText(reportPath, report.ToString());
         Console.WriteLine("checked " + files.Length + " files");
+        Environment.Exit(0);
+    }
+
+    /// <summary>
+    /// "--modernize &lt;folder&gt;": a one-off for drawings marked IntersectionOrder="Legacy":
+    /// loads each (which swaps the intersections the old circle/line order got wrong), writes
+    /// the swapped Algorithm attributes into the file and drops the mark. Nothing else in the
+    /// file changes.
+    /// </summary>
+    async void RunModernize(string folder)
+    {
+        ShowEditor();
+        int changedFiles = 0;
+        foreach (var file in Directory.GetFiles(folder, "*.lgf"))
+        {
+            var document = XDocument.Load(file, LoadOptions.PreserveWhitespace);
+            if ((string)document.Root.Attribute("IntersectionOrder") != "Legacy")
+            {
+                continue;
+            }
+
+            OpenDrawing(Path.GetFileName(file), File.ReadAllBytes(file));
+            await Task.Delay(50);
+            var byName = DrawingHost.CurrentDrawing.Figures.OfType<IntersectionPoint>().ToDictionary(p => p.Name);
+            int swapped = 0;
+            foreach (var element in document.Root.Element("Figures").Elements("IntersectionPoint"))
+            {
+                var point = byName[(string)element.Attribute("Name")];
+                if (point.AlgorithmName != (string)element.Attribute("Algorithm"))
+                {
+                    element.SetAttributeValue("Algorithm", point.AlgorithmName);
+                    swapped++;
+                }
+            }
+
+            document.Root.Attribute("IntersectionOrder").Remove();
+            var settings = new XmlWriterSettings() { Indent = true, Encoding = new UTF8Encoding(false), NewLineChars = "\r\n" };
+            using (var writer = XmlWriter.Create(file, settings))
+            {
+                document.Save(writer);
+            }
+
+            Console.WriteLine(Path.GetFileName(file) + ": " + swapped + " intersections swapped");
+            changedFiles++;
+        }
+
+        Console.WriteLine("modernized " + changedFiles + " files");
         Environment.Exit(0);
     }
 

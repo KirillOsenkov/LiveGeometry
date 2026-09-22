@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing IntersectionOrder="Legacy">
+<Drawing>
   <Viewport Left="-4.8541666667" Top="6.4791666667" Right="5.1458333333" Bottom="-8.6875" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
@@ -64,11 +64,11 @@
       <Dependency Name="LineTwoPoints319" />
       <Dependency Name="B" />
     </PerpendicularLine>
-    <IntersectionPoint Name="F" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="F" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine335" />
       <Dependency Name="CircleByRadius329" />
     </IntersectionPoint>
-    <IntersectionPoint Name="G" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="G" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine337" />
       <Dependency Name="CircleByRadius333" />
     </IntersectionPoint>
@@ -132,7 +132,7 @@
       <Dependency Name="LineTwoPoints319" />
       <Dependency Name="I" />
     </PerpendicularLine>
-    <IntersectionPoint Name="K" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine2">
+    <IntersectionPoint Name="K" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
       <Dependency Name="CircleByRadius346" />
       <Dependency Name="PerpendicularLine343" />
     </IntersectionPoint>
@@ -157,7 +157,7 @@
       <Dependency Name="LineTwoPoints319" />
       <Dependency Name="H3" />
     </PerpendicularLine>
-    <IntersectionPoint Name="J" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine2">
+    <IntersectionPoint Name="J" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
       <Dependency Name="CircleByRadius349" />
       <Dependency Name="PerpendicularLine341" />
     </IntersectionPoint>
@@ -188,7 +188,7 @@
       <Dependency Name="E" />
       <Dependency Name="M" />
     </CircleByRadius>
-    <IntersectionPoint Name="O" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="O" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine361" />
       <Dependency Name="CircleByRadius357" />
     </IntersectionPoint>
@@ -213,7 +213,7 @@
       <Dependency Name="E" />
       <Dependency Name="L" />
     </CircleByRadius>
-    <IntersectionPoint Name="N" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="N" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine359" />
       <Dependency Name="CircleByRadius354" />
     </IntersectionPoint>
@@ -244,7 +244,7 @@
       <Dependency Name="E" />
       <Dependency Name="Q" />
     </CircleByRadius>
-    <IntersectionPoint Name="S" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="S" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine374" />
       <Dependency Name="CircleByRadius367" />
     </IntersectionPoint>
@@ -269,7 +269,7 @@
       <Dependency Name="E" />
       <Dependency Name="P" />
     </CircleByRadius>
-    <IntersectionPoint Name="R" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="R" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine372" />
       <Dependency Name="CircleByRadius370" />
     </IntersectionPoint>
@@ -300,7 +300,7 @@
       <Dependency Name="LineTwoPoints376" />
       <Dependency Name="U" />
     </PerpendicularLine>
-    <IntersectionPoint Name="W" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine2">
+    <IntersectionPoint Name="W" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
       <Dependency Name="CircleByRadius383" />
       <Dependency Name="PerpendicularLine380" />
     </IntersectionPoint>
@@ -325,7 +325,7 @@
       <Dependency Name="LineTwoPoints376" />
       <Dependency Name="T" />
     </PerpendicularLine>
-    <IntersectionPoint Name="V" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine2">
+    <IntersectionPoint Name="V" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
       <Dependency Name="CircleByRadius386" />
       <Dependency Name="PerpendicularLine378" />
     </IntersectionPoint>

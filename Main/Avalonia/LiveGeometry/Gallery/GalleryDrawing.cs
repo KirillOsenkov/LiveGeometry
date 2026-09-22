@@ -13,7 +13,7 @@ namespace LiveGeometry;
 /// <summary>
 /// What the drawings of the gallery have in common: a heading and an explanation, which are
 /// two labels named "Title" and "Description" that can't be clicked (so that they are never
-/// in the way of dragging). tools/gallerize.cs writes them.
+/// in the way of dragging).
 /// </summary>
 public static class GalleryDrawing
 {
