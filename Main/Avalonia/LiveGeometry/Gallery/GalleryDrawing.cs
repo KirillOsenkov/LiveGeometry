@@ -21,7 +21,9 @@ public static class GalleryDrawing
     // between the figure and the text, and between the heading and the explanation
     const double gapPixels = 40;
     const double lineGapPixels = 6;
-    const int fitRounds = 4;
+
+    // the text never squeezes the figure below this share of the canvas
+    const double figureShare = 0.4;
 
     /// <summary>For a thumbnail: text is unreadable at that size and the geometry gets all the room</summary>
     public static void HideText(Drawing drawing)
@@ -34,9 +36,11 @@ public static class GalleryDrawing
 
     /// <summary>
     /// Zoom to fit, with the text put where it can't cover the figure: to the right of it in a
-    /// wide window, under it in a tall one. A label has a size in pixels and a place in the
-    /// coordinates of the drawing, so where "next to the figure" is depends on the zoom, which
-    /// depends on how much room the text takes: a few rounds settle it.
+    /// wide window, under it in a tall one. The text has a size in pixels whatever the zoom,
+    /// so the figure gets the canvas minus the text, and the zoom follows from that directly
+    /// (iterating "place the text, zoom to fit" instead runs away once the text needs more
+    /// than its share: every round zooms out a little more). In a window too small for both,
+    /// the figure keeps a share of the canvas and the text runs off the edge.
     /// </summary>
     /// <param name="plane">See <see cref="GetPlane"/></param>
     public static void Fit(Drawing drawing, Rect? plane)
@@ -50,43 +54,96 @@ public static class GalleryDrawing
             return;
         }
 
-        bool isWide = drawing.Canvas.Bounds.Width >= drawing.Canvas.Bounds.Height;
-        for (int i = 0; i < fitRounds; i++)
+        bool hasFigure = coordinateSystem.TryGetContentBounds(out var figure, include: f => f != title && f != description);
+        if (plane != null)
         {
-            bool hasFigure = coordinateSystem.TryGetContentBounds(out var figure, include: f => f != title && f != description);
-            if (plane != null)
-            {
-                figure = hasFigure ? figure.Union(plane.Value) : plane.Value;
-            }
-            else if (!hasFigure)
-            {
-                break;
-            }
-
-            var titleSize = Measure(title);
-            var descriptionSize = Measure(description);
-            double gap = coordinateSystem.ToLogical(gapPixels);
-            double titleHeight = coordinateSystem.ToLogical(titleSize.Height + lineGapPixels);
-            double textHeight = titleHeight + coordinateSystem.ToLogical(descriptionSize.Height);
-
-            // the y axis points up: Rect.Bottom is the top of the figure
-            double x;
-            double y;
-            if (isWide)
-            {
-                x = figure.Right + gap;
-                y = figure.Center.Y + System.Math.Max(figure.Height, textHeight) / 2;
-            }
-            else
-            {
-                x = figure.X;
-                y = figure.Y - gap;
-            }
-
-            title.MoveTo(new Point(x, y));
-            description.MoveTo(new Point(x, y - titleHeight));
-            coordinateSystem.ZoomExtend(plane);
+            figure = hasFigure ? figure.Union(plane.Value) : plane.Value;
         }
+        else if (!hasFigure)
+        {
+            coordinateSystem.ZoomExtend();
+            return;
+        }
+
+        // everything in pixels first
+        double canvasWidth = drawing.Canvas.Bounds.Width;
+        double canvasHeight = drawing.Canvas.Bounds.Height;
+        var titleSize = Measure(title);
+        var descriptionSize = Measure(description);
+        double textWidth = System.Math.Max(titleSize.Width, descriptionSize.Width);
+        double titleHeight = titleSize.Height + lineGapPixels;
+        double textHeight = titleHeight + descriptionSize.Height;
+        double margin = CoordinateSystem.FitMarginPixels;
+
+        bool isWide = canvasWidth >= canvasHeight;
+        double roomWidth = 0;
+        double roomHeight = 0;
+        if (isWide)
+        {
+            roomWidth = canvasWidth - 2 * margin - gapPixels - textWidth;
+            roomHeight = canvasHeight - 2 * margin;
+            if (roomWidth < figureShare * canvasWidth)
+            {
+                // the text would leave the figure a sliver: under it instead
+                isWide = false;
+            }
+        }
+
+        if (!isWide)
+        {
+            roomWidth = canvasWidth - 2 * margin;
+            roomHeight = System.Math.Max(canvasHeight - 2 * margin - gapPixels - textHeight, figureShare * canvasHeight);
+        }
+
+        // the zoom that fills the room; a figure with no size keeps the zoom it has
+        double unitLength = coordinateSystem.UnitLength;
+        if (figure.Width > 0 || figure.Height > 0)
+        {
+            unitLength = System.Math.Min(
+                figure.Width > 0 ? roomWidth / figure.Width : double.MaxValue,
+                figure.Height > 0 ? roomHeight / figure.Height : double.MaxValue);
+            unitLength = System.Math.Min(unitLength, CoordinateSystem.MaxFitUnitLength);
+        }
+
+        unitLength = CoordinateSystem.ClampUnitLength(unitLength);
+
+        // now in logical units: where the text goes, and the box around figure and text that
+        // is to sit in the middle of the canvas (the y axis points up: Rect.Bottom is the top)
+        double gap = gapPixels / unitLength;
+        Rect block;
+        Point textTopLeft;
+        if (isWide)
+        {
+            double blockHeight = System.Math.Max(figure.Height, textHeight / unitLength);
+            double top = figure.Center.Y + blockHeight / 2;
+            textTopLeft = new Point(figure.Right + gap, top);
+            block = new Rect(figure.X, top - blockHeight, figure.Width + gap + textWidth / unitLength, blockHeight);
+        }
+        else
+        {
+            textTopLeft = new Point(figure.X, figure.Y - gap);
+            double bottom = textTopLeft.Y - textHeight / unitLength;
+            double blockWidth = System.Math.Max(figure.Width, textWidth / unitLength);
+            block = new Rect(figure.X, bottom, blockWidth, figure.Bottom - bottom);
+        }
+
+        title.MoveTo(textTopLeft);
+        description.MoveTo(new Point(textTopLeft.X, textTopLeft.Y - titleHeight / unitLength));
+
+        // centered - unless the block is too big for the canvas: then it starts at the margin,
+        // so that the figure stays in view and it is the end of the text that runs off
+        var center = block.Center;
+        if (block.Width * unitLength > canvasWidth - 2 * margin)
+        {
+            center = center.WithX(block.X + (canvasWidth / 2 - margin) / unitLength);
+        }
+
+        if (block.Height * unitLength > canvasHeight - 2 * margin)
+        {
+            center = center.WithY(block.Bottom - (canvasHeight / 2 - margin) / unitLength);
+        }
+
+        coordinateSystem.SetView(center, unitLength);
     }
 
     /// <summary>

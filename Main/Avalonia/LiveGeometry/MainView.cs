@@ -56,16 +56,6 @@ public partial class MainView : UserControl
         DrawingHost.DrawingControl.Focusable = true;
         DrawingHost.DrawingControl.PointerPressed += (s, e) => DrawingHost.DrawingControl.Focus();
 
-        // a drawing of the gallery that nobody touched yet keeps filling the window
-        DrawingHost.DrawingControl.SizeChanged += (s, e) =>
-        {
-            var drawing = DrawingHost.CurrentDrawing;
-            if (CurrentSample != null && drawing != null && !drawing.ActionManager.CanUndo)
-            {
-                HandleExceptions(() => GalleryDrawing.Fit(drawing, CurrentSample.Plane));
-            }
-        };
-
         AddHandler(KeyDownEvent, MainView_KeyDown, RoutingStrategies.Tunnel);
         AddHandler(KeyUpEvent, MainView_KeyUp, RoutingStrategies.Tunnel);
 
@@ -373,8 +363,39 @@ public partial class MainView : UserControl
         CurrentSample = item;
         control.LoadDrawing(item.LoadText(), item.FileName);
         GalleryDrawing.Fit(control.Drawing, item.Plane);
+        KeepFitted(control.Drawing);
         UpdateTour();
         Publish(item.Path, item.Title + " - " + AppTitle, push);
+    }
+
+    Drawing fittedDrawing;
+
+    /// <summary>
+    /// A drawing of the gallery that nobody touched yet keeps filling the window. Through the
+    /// drawing's own event, not the canvas's: the coordinate system handles that one too (it
+    /// keeps the middle in the middle), and it subscribed first, so this runs after it.
+    /// </summary>
+    void KeepFitted(Drawing drawing)
+    {
+        if (fittedDrawing != null)
+        {
+            fittedDrawing.SizeChanged -= FittedDrawing_SizeChanged;
+        }
+
+        fittedDrawing = drawing;
+        if (fittedDrawing != null)
+        {
+            fittedDrawing.SizeChanged += FittedDrawing_SizeChanged;
+        }
+    }
+
+    void FittedDrawing_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        var drawing = (Drawing)sender;
+        if (CurrentSample != null && drawing == DrawingHost.CurrentDrawing && !drawing.ActionManager.CanUndo)
+        {
+            HandleExceptions(() => GalleryDrawing.Fit(drawing, CurrentSample.Plane));
+        }
     }
 
     void ShowNeighborSample(int step)

@@ -238,8 +238,14 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   in the `GalleryTitle`/`GalleryText` styles (copy from any drawing here), set `Grid`, list it
   in the catalog. Each has two unclickable labels, `Title` and `Description` (may contain live
   `[AB^2]` expressions - then list the points as dependencies). Their *position is computed at open time*
-  by `GalleryDrawing.Fit`: right of the figure in a wide canvas, below it in a tall one, iterated
-  with zoom-to-fit because labels are sized in pixels; refitted on resize until the first edit.
+  by `GalleryDrawing.Fit`: right of the figure in a wide canvas, below it in a tall one. Labels
+  are sized in pixels, so the figure gets the canvas minus the text and the zoom is computed
+  from that in one go - never iterate "place text, zoom to fit": it runs away (zooms out a
+  little more per round) once the text needs more than its share, which is what collapsed
+  Inscribed Circle in small windows. The figure keeps at least 40% of the canvas; if the text
+  doesn't fit it runs off the edge. Refitted on resize until the first edit, through
+  `Drawing.SizeChanged` (`MainView.KeepFitted`) and not the canvas's event: the coordinate
+  system's own resize handler shifts the origin, and it has to run first.
   Drawings with `Grid="true"` (graphs) keep their file viewport in view (`GalleryItem.Plane`),
   because graphs and lines have no bounds.
 - **Tiles are live drawings**, not bitmaps (`DrawingThumbnail`): a `Drawing` on its own 560x380

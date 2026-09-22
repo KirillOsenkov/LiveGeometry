@@ -56,13 +56,13 @@ namespace DynamicGeometry
         public const double MaxUnitLength = 1000;
         const double zoomFactor = 1.2;
 
-        // what "zoom to fit" leaves free around the drawing
-        const double fitMarginPixels = 40;
+        /// <summary>What "zoom to fit" leaves free around the drawing</summary>
+        public const double FitMarginPixels = 40;
 
-        // "zoom to fit" on a tiny drawing (two points next to each other) stops here
-        const double maxFitUnitLength = 200;
+        /// <summary>"Zoom to fit" on a tiny drawing (two points next to each other) stops here</summary>
+        public const double MaxFitUnitLength = 200;
 
-        static double ClampUnitLength(double value)
+        public static double ClampUnitLength(double value)
         {
             return M.Max(MinUnitLength, M.Min(MaxUnitLength, value));
         }
@@ -92,7 +92,7 @@ namespace DynamicGeometry
         /// <summary>
         /// Puts the logical point into the middle of the canvas at the given zoom.
         /// </summary>
-        void SetView(Point logicalCenter, double newUnitLength)
+        public void SetView(Point logicalCenter, double newUnitLength)
         {
             var middle = PhysicalSize.Scale(0.5);
             unitLength = newUnitLength;
@@ -169,13 +169,13 @@ namespace DynamicGeometry
                 return;
             }
 
-            Fit(bounds, fitMarginPixels, maxFitUnitLength);
+            Fit(bounds, FitMarginPixels, MaxFitUnitLength);
 
             // text keeps its size in pixels, so in logical units a label grows as the view
             // zooms out: measure again at the new zoom until it settles
             for (int i = 0; i < 3 && TryGetBoundsToShow(out bounds, alsoShow); i++)
             {
-                Fit(bounds, fitMarginPixels, maxFitUnitLength);
+                Fit(bounds, FitMarginPixels, MaxFitUnitLength);
             }
         }
 
