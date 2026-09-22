@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="0" Creator="LiveGeometry.App">
+  <Viewport Left="-13.0811678756" Top="5.3485688557" Right="8.5610917721" Bottom="-4.1030117249" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
+    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
+    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
+    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
+    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
+    <LineStyle Color="#64000000" StrokeWidth="1" Dash="Solid" Name="1" />
+    <LineStyle Color="#C80000FF" StrokeWidth="1" Dash="Solid" Name="OtherLine" />
+    <LineStyle Color="#E6000000" StrokeWidth="2.5" Dash="Solid" Name="ThickLine" />
+    <LineStyle Color="#FFD83B3B" StrokeWidth="1.5" Dash="Solid" Name="RedLine" />
+    <LineStyle Color="#FF2E9E4F" StrokeWidth="1.5" Dash="Solid" Name="GreenLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dash" Name="DashedLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dot" Name="DottedLine" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="2" />
+    <ShapeStyle Fill="#64C8FFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="OtherShape" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="3" />
+    <ShapeStyle Fill="#1C2F7BD6" IsFilled="true" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Solid" Name="BlueOutline" />
+    <ShapeStyle Fill="#1CE08A00" IsFilled="true" Color="#FFE08A00" StrokeWidth="1.5" Dash="Solid" Name="OrangeOutline" />
+    <ShapeStyle Fill="#1C8854D0" IsFilled="true" Color="#FF8854D0" StrokeWidth="1.5" Dash="Solid" Name="PurpleOutline" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
+    <PointStyle Size="8" Fill="#FFFFFF80" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="7" />
+    <PointStyle Size="6" Fill="#FFC0FFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="8" />
+    <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FFFF8040" StrokeWidth="2" Dash="Solid" Name="9" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="10" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="11" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FF8000FF" StrokeWidth="0.7" Dash="Solid" Name="12" />
+    <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="13" />
+    <PointStyle Size="4" Fill="#00FFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="14" />
+    <PointStyle Size="4" Fill="#00FFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="15" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Dot" Name="16" />
+    <TextStyle FontSize="20.4" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="17" />
+    <TextStyle FontSize="23.8" Color="#FFFF0000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="18" />
+    <TextStyle FontSize="17" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="19" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="20" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="7" X="-3" Y="-1.9" />
+    <FreePoint Name="B" Style="7" X="-2.1" Y="2.8" />
+    <FreePoint Name="C" Style="7" X="0.8" Y="2.1" />
+    <FreePoint Name="D" Style="7" X="2.2" Y="4" />
+    <FreePoint Name="E" Style="7" X="3.9" Y="2.2" />
+    <FreePoint Name="F" Style="7" X="4.908026" Y="0.780522" />
+    <FreePoint Name="G" Style="8" X="0.878622" Y="-0.117515" />
+    <FreePoint Name="H" Style="8" X="4.3" Y="-1" />
+    <Circle Name="Circle1" Style="9">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+    </Circle>
+    <Ray Name="Ray1" Visible="false" Style="10">
+      <Dependency Name="G" />
+      <Dependency Name="A" />
+    </Ray>
+    <IntersectionPoint Name="I" Style="11" Algorithm="IntersectEllipseAndLine2">
+      <Dependency Name="Circle1" />
+      <Dependency Name="Ray1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="J" Visible="false" Style="11" Algorithm="IntersectEllipseAndLine2">
+      <Dependency Name="Circle1" />
+      <Dependency Name="Ray1" />
+    </IntersectionPoint>
+    <Ray Name="Ray2" Visible="false" Style="10">
+      <Dependency Name="G" />
+      <Dependency Name="B" />
+    </Ray>
+    <IntersectionPoint Name="K" Style="11" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="Ray2" />
+      <Dependency Name="Circle1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="L" Visible="false" Style="11" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="Ray2" />
+      <Dependency Name="Circle1" />
+    </IntersectionPoint>
+    <Ray Name="Ray3" Visible="false" Style="10">
+      <Dependency Name="G" />
+      <Dependency Name="C" />
+    </Ray>
+    <IntersectionPoint Name="M" Style="11" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="Ray3" />
+      <Dependency Name="Circle1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="N" Visible="false" Style="11" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="Ray3" />
+      <Dependency Name="Circle1" />
+    </IntersectionPoint>
+    <Ray Name="Ray4" Visible="false" Style="10">
+      <Dependency Name="G" />
+      <Dependency Name="D" />
+    </Ray>
+    <IntersectionPoint Name="O" Style="11" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="Ray4" />
+      <Dependency Name="Circle1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="P" Visible="false" Style="11" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="Ray4" />
+      <Dependency Name="Circle1" />
+    </IntersectionPoint>
+    <Ray Name="Ray5" Visible="false" Style="10">
+      <Dependency Name="G" />
+      <Dependency Name="E" />
+    </Ray>
+    <IntersectionPoint Name="Q" Style="11" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="Ray5" />
+      <Dependency Name="Circle1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="R" Visible="false" Style="11" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="Ray5" />
+      <Dependency Name="Circle1" />
+    </IntersectionPoint>
+    <Ray Name="Ray6" Visible="false" Style="10">
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+    </Ray>
+    <IntersectionPoint Name="S" Style="11" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="Ray6" />
+      <Dependency Name="Circle1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="T" Visible="false" Style="11" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="Ray6" />
+      <Dependency Name="Circle1" />
+    </IntersectionPoint>
+    <FreePoint Name="U" Style="11" X="-9.161552" Y="-0.882772" />
+    <PointByCoordinates Name="V" Visible="false" Style="12" X="(U.X) + (SQR(((((((AI) ^ (2)) + ((BK) ^ (2))) + ((CM) ^ (2))) + ((DO) ^ (2))) + ((EQ) ^ (2))) + ((FS) ^ (2))))" Y="U.Y">
+      <Dependency Name="U" />
+      <Dependency Name="A" />
+      <Dependency Name="I" />
+      <Dependency Name="B" />
+      <Dependency Name="K" />
+      <Dependency Name="C" />
+      <Dependency Name="M" />
+      <Dependency Name="D" />
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="Q" />
+      <Dependency Name="F" />
+      <Dependency Name="S" />
+    </PointByCoordinates>
+    <Segment Name="Segment1" Style="10">
+      <Dependency Name="U" />
+      <Dependency Name="V" />
+    </Segment>
+    <PerpendicularLine Name="PerpendicularLine1" Visible="false" Style="10" RightAngleCorner="0">
+      <Dependency Name="Segment1" />
+      <Dependency Name="V" />
+    </PerpendicularLine>
+    <Circle Name="Circle2" Visible="false" Style="13">
+      <Dependency Name="V" />
+      <Dependency Name="U" />
+    </Circle>
+    <IntersectionPoint Name="W" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="PerpendicularLine1" />
+      <Dependency Name="Circle2" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="X" Visible="false" Style="15" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="PerpendicularLine1" />
+      <Dependency Name="Circle2" />
+    </IntersectionPoint>
+    <MidPoint Name="Y" Visible="false" Style="15">
+      <Dependency Name="X" />
+      <Dependency Name="U" />
+    </MidPoint>
+    <ReflectedPoint Name="Z" Visible="false" Style="15">
+      <Dependency Name="V" />
+      <Dependency Name="Y" />
+    </ReflectedPoint>
+    <Segment Name="Segment2" Style="10">
+      <Dependency Name="Z" />
+      <Dependency Name="X" />
+    </Segment>
+    <Segment Name="Segment3" Style="10">
+      <Dependency Name="X" />
+      <Dependency Name="V" />
+    </Segment>
+    <Segment Name="Segment4" Style="10">
+      <Dependency Name="U" />
+      <Dependency Name="Z" />
+    </Segment>
+    <Segment Name="Segment5" Style="16">
+      <Dependency Name="A" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="Segment6" Style="16">
+      <Dependency Name="B" />
+      <Dependency Name="K" />
+    </Segment>
+    <Segment Name="Segment7" Style="16">
+      <Dependency Name="C" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="Segment8" Style="16">
+      <Dependency Name="D" />
+      <Dependency Name="O" />
+    </Segment>
+    <Segment Name="Segment9" Style="16">
+      <Dependency Name="E" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Segment Name="Segment10" Style="16">
+      <Dependency Name="F" />
+      <Dependency Name="S" />
+    </Segment>
+    <Label Name="Label1" Style="17" DecimalsToShow="2" Text="Area: [sqr(ai^2+bk^2+cm^2+od^2+qe^2+fs^2)] cm²" X="-9.2952693796225" Y="-1.16009729246984">
+      <Dependency Name="A" />
+      <Dependency Name="I" />
+      <Dependency Name="B" />
+      <Dependency Name="K" />
+      <Dependency Name="C" />
+      <Dependency Name="M" />
+      <Dependency Name="O" />
+      <Dependency Name="D" />
+      <Dependency Name="Q" />
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+      <Dependency Name="S" />
+    </Label>
+    <Label Name="Label2" Style="18" DecimalsToShow="2" Text="A circle that best fits given points\nusing quadratic approximation\n(approximate solution)." X="-9.42080411821819" Y="4.89894839801155" />
+    <Label Name="Label3" Style="19" DecimalsToShow="2" Text="Find a circle for which\nthe area of this square\nis minimal" X="-9.29266424886047" Y="-2.0280128879099" />
+    <Polygon Name="Polygon1" Style="20">
+      <Dependency Name="U" />
+      <Dependency Name="Z" />
+      <Dependency Name="X" />
+      <Dependency Name="V" />
+      <Dependency Name="U" />
+    </Polygon>
+  </Figures>
+</Drawing>

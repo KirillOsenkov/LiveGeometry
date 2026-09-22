@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="0" Creator="LiveGeometry.App">
+  <Viewport Left="-8.7435055082" Top="4.9566890442" Right="9.2979029558" Bottom="-2.9223323085" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
+    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
+    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
+    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
+    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
+    <LineStyle Color="#64000000" StrokeWidth="1" Dash="Solid" Name="1" />
+    <LineStyle Color="#C80000FF" StrokeWidth="1" Dash="Solid" Name="OtherLine" />
+    <LineStyle Color="#E6000000" StrokeWidth="2.5" Dash="Solid" Name="ThickLine" />
+    <LineStyle Color="#FFD83B3B" StrokeWidth="1.5" Dash="Solid" Name="RedLine" />
+    <LineStyle Color="#FF2E9E4F" StrokeWidth="1.5" Dash="Solid" Name="GreenLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dash" Name="DashedLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dot" Name="DottedLine" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="2" />
+    <ShapeStyle Fill="#64C8FFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="OtherShape" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="3" />
+    <ShapeStyle Fill="#1C2F7BD6" IsFilled="true" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Solid" Name="BlueOutline" />
+    <ShapeStyle Fill="#1CE08A00" IsFilled="true" Color="#FFE08A00" StrokeWidth="1.5" Dash="Solid" Name="OrangeOutline" />
+    <ShapeStyle Fill="#1C8854D0" IsFilled="true" Color="#FF8854D0" StrokeWidth="1.5" Dash="Solid" Name="PurpleOutline" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
+    <PointStyle Size="7" Fill="#FFFFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="7" />
+    <LineStyle Color="#FF808080" StrokeWidth="1" Dash="Solid" Name="8" />
+    <PointStyle Size="4" Fill="#FFFFFFFF" IsFilled="true" Color="#FFFF00FF" StrokeWidth="0.7" Dash="Solid" Name="9" />
+    <LineStyle Color="#FF808080" StrokeWidth="1" Dash="Dot" Name="10" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="11" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Dot" Name="12" />
+    <ShapeStyle Fill="#FFC0C0C0" IsFilled="true" Color="#FF808080" StrokeWidth="1" Dash="Solid" Name="13" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="7" X="-4.27" Y="-0.22" />
+    <FreePoint Name="B" Style="7" X="-1.031876" Y="4.577296" />
+    <FreePoint Name="C" Style="7" X="-1.52" Y="-2.55" />
+    <FreePoint Name="D" Style="7" X="4.83" Y="-0.3" />
+    <Segment Name="Segment1" Style="8">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PointOnFigure Name="E" Style="9" X="-2.4920223730949034" Y="2.414082251835109" Parameter="0.5490764488651751">
+      <Dependency Name="Segment1" />
+    </PointOnFigure>
+    <Segment Name="Segment2" Style="8">
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </Segment>
+    <PointOnFigure Name="F" Style="9" X="2.3251288115158504" Y="1.784144773466547" Parameter="0.4273156219074149">
+      <Dependency Name="Segment2" />
+    </PointOnFigure>
+    <Segment Name="Segment3" Style="8">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <PointOnFigure Name="G" Style="9" X="-1.317953476306457" Y="0.4001630326205916" Parameter="0.586075415891161">
+      <Dependency Name="Segment3" />
+    </PointOnFigure>
+    <Segment Name="Segment4" Style="8">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="Segment5" Style="8">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="Segment6" Style="10">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="Segment7" Style="11">
+      <Dependency Name="E" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="Segment8" Style="11">
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="Segment9" Style="12">
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </Segment>
+    <Polygon Name="Polygon1" Style="13">
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+      <Dependency Name="E" />
+    </Polygon>
+  </Figures>
+</Drawing>

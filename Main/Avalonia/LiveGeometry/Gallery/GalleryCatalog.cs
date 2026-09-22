@@ -87,6 +87,22 @@ public static class GalleryCatalog
         Item("cavalieri-principle", "Cavalieri's Principle"),
         Item("circle-tangents", "Tangents to a Circle"),
         Item("pentagon", "Regular Pentagon"),
+
+        // from the DG 1.0 CD library: the fun end of the gallery
+        Item("rose", "A Rose"),
+        Item("castle", "Castle"),
+        Item("sierpinski", "Sierpinski Triangle"),
+        Item("spiral", "Spiral"),
+        Item("steiners-problem", "Steiner's Problem"),
+        Item("picks-theorem", "Pick's Theorem", "PickTheorem"),
+        Item("ellipse-evolute", "Ellipse and Its Evolute"),
+        Item("icosahedron", "Icosahedron"),
+        Item("tetrahedron", "Tetrahedron"),
+        Item("best-fit-circle", "Best-Fit Circle"),
+        Item("measuring-distance", "Measuring Across a Lake"),
+        Item("complex-numbers", "Complex Multiplication"),
+        Item("conic-through-five-points", "Conic Through Five Points", "Pascal"),
+        Item("falling-ladder", "The Falling Ladder", "Ladder"),
     };
 
     /// <param name="fileName">Without extension; by default the slug in PascalCase</param>

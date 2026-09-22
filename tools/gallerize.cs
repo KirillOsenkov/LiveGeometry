@@ -1,27 +1,30 @@
 #:property Nullable=disable
 #:property PublishAot=false
 
-// gallerize - turns the drawings of the old Windows Phone app into the drawings of the gallery
-// (Main/Avalonia/LiveGeometry/Gallery/Drawings). The phone drawings were laid out for a portrait
-// screen, with the text above and below the figure; here the window is landscape and of any
-// size, so the text goes to the right of the figure, where it can never overlap it (a label is
-// anchored at its top left corner and has a fixed size in pixels).
+// gallerize - turns old drawings into the drawings of the gallery
+// (Main/Avalonia/LiveGeometry/Gallery/Drawings). Two sources: the Windows Phone app's .lgf
+// (laid out for a portrait screen, with the text above and below the figure) and drawings of the
+// DG 1.0 CD library, converted from .dgf by `LiveGeometry.Desktop.exe --check` and kept in
+// Gallery/Sources. Here the window is landscape and of any size, so the text goes to the right
+// of the figure, where it can never overlap it (a label is anchored at its top left corner and
+// has a fixed size in pixels).
 //
-//   dotnet run tools/gallerize.cs -- <folder with the original .lgf> <output folder>
+//   dotnet run tools/gallerize.cs -- <phone .lgf folder> <Gallery/Sources folder> <output folder>
 //
 // For each drawing listed below: drops the old heading and explanation labels, writes new ones
 // (American school terminology, for a 13 year old), turns the grid off unless the drawing is
 // about coordinates, unlocks the view and drops the phone's background. Everything else -
-// figures, styles, coordinates - is kept as it was. The output is meant to be committed; run
-// this again only to change all drawings at once.
+// figures, styles, coordinates - is kept as it was, apart from a `tweak` of the XML where a
+// drawing needed one. The output is meant to be committed; run this again only to change all
+// drawings at once.
 
 using System.Globalization;
 using System.Text;
 using System.Xml.Linq;
 
-if (args.Length < 2)
+if (args.Length < 3)
 {
-    Console.WriteLine("usage: gallerize <source folder> <output folder>");
+    Console.WriteLine("usage: gallerize <phone .lgf folder> <Gallery/Sources folder> <output folder>");
     return 1;
 }
 
@@ -134,14 +137,112 @@ var drawings = new List<Sample>
     new("Pentagon", "Regular Pentagon",
         "A regular pentagon built with compass and straightedge only:\n\n1. Draw radius AB and the radius AC perpendicular to it.\n2. D is the midpoint of AC.\n3. The circle centered at D through B meets line AC at E.\n4. BE is the side length: step it around the circle with the compass.\n\nDrag A and B.",
         remove: ["Label199", "Label200"]),
+
+    // from the DG 1.0 CD library (Gallery/Sources); these were converted by today's reader,
+    // so their intersections are right as they are - no IntersectionOrder="Legacy"
+    new("Rose", "A Rose",
+        "Every petal, leaf and the stem is a Bézier curve: a smooth curve steered by a few control points. Twenty-seven of them make this rose.\n\nThis is how fonts, logos and cartoon characters are drawn on computers.\n\nDrag any point and reshape the flower.",
+        fromCD: true,
+        remove: ["Label1", "Label2", "Label3"]),
+    new("Castle", "Castle",
+        "Mountains, a tree, a castle on a hill - all of it built from polygons and circles, just like a real drawing program.\n\nEvery corner is a point you can drag. Move the mountains, grow the tree, or give the castle another tower.",
+        fromCD: true),
+    new("Sierpinski", "Sierpinski Triangle",
+        "Take a triangle, connect the midpoints of its sides, and you get four smaller triangles. Leave the middle one empty and repeat with the other three - again and again.\n\nThe result is a fractal: it looks the same however closely you zoom in. This one has five levels.\n\nDrag the three corners.",
+        fromCD: true,
+        remove: ["Label1"]),
+    new("Spiral", "Spiral",
+        "Point B is placed by a rule: its distance from the center is A's x-coordinate and its angle is A's y-coordinate. As A slides along the segment, B sweeps out a spiral.\n\nDrag the ends of the segment to wind the spiral tighter or looser.",
+        fromCD: true,
+        remove: ["Label1"]),
+    new("SteinersProblem", "Steiner's Problem",
+        "Four towns A, B, C and D want to build one shared airport E. Where should it go so that the total length of the four roads is as small as possible?\n\nRoads right now: [dist(E,A)+dist(E,B)+dist(E,C)+dist(E,D)]\n\nDrag E around and find the smallest number. Then look where E ended up - can you see the rule? Try a dented (non-convex) quadrilateral too.",
+        fromCD: true,
+        remove: ["Label1", "Label2", "Label3", "Label4", "Label5", "Label6", "Label7", "Label8"],
+        dependencies: ["A", "B", "C", "D", "E"]),
+    new("PickTheorem", "Pick's Theorem",
+        "The corners of this polygon sit on grid points. Count the grid points inside it (I) and on its boundary (B). Then the area is\n\nArea = I + B/2 − 1\n\nRight now the area is [area(a,b,c,d,e,f,g,h)].\n\nTurn on Snap to grid and drag the corners to new grid points - the formula keeps working.",
+        fromCD: true,
+        remove: ["Label1", "Label2", "Label3", "Label4"],
+        dependencies: ["A", "B", "C", "D", "E", "F", "G", "H"],
+        grid: true,
+        tweak: drawing => SetPlane(drawing, left: -6.5, bottom: -4.5, right: 5.5, top: 3.5)),
+    new("EllipseEvolute", "Ellipse and Its Evolute",
+        "Point L runs around an ellipse. At every position there is a circle that hugs the curve best, and M is its center.\n\nAs L travels, M traces the star-shaped curve inside: the evolute of the ellipse.\n\nDrag the yellow point to move L. Drag a and b to reshape the ellipse.",
+        fromCD: true,
+        remove: ["Label1", "Label2", "Label3", "Label4"],
+        grid: true,
+        tweak: drawing => SetPlane(drawing, left: -5.5, bottom: -4.6, right: 5.5, top: 3.6)),
+    new("Icosahedron", "Icosahedron",
+        "Twenty triangles, twelve corners, thirty edges: the icosahedron is the biggest of the five Platonic solids. A 20-sided die has this shape.\n\nThis is a flat drawing of it, so dragging a corner squashes the solid instead of turning it - try it.",
+        fromCD: true,
+        remove: ["Label1"]),
+    new("Tetrahedron", "Tetrahedron",
+        "The simplest solid: four corners, four triangular faces, six edges. It is a pyramid with a triangle for a base.\n\nDrag the corners to look at it from another side.",
+        fromCD: true),
+    new("BestFitCircle", "Best-Fit Circle",
+        "Eight points that almost lie on a circle. Which circle fits them best?\n\nThis one is chosen so that the gaps between the points and the circle are as small as possible overall - the sum of their squares is the area of the square in the corner: [sqr(ai^2+bk^2+cm^2+od^2+qe^2+fs^2)].\n\nDrag the points. Move one far away and see how much the circle cares.",
+        fromCD: true,
+        remove: ["Label1", "Label2", "Label3"],
+        dependencies: ["A", "I", "B", "K", "C", "M", "O", "D", "Q", "E", "F", "S"]),
+    new("MeasuringDistance", "Measuring Across a Lake",
+        "How far is it from A to B when a lake is in the way and you can't walk straight across?\n\nCheck \"Help 1\" and \"Help 2\" for the trick, and \"Show\" for the answer. It uses similar triangles - the same idea surveyors used before there were satellites.\n\nDrag A and B.",
+        fromCD: true,
+        remove: ["Label1", "Label2", "Label3", "Label4", "Label5", "Label6", "Label7"],
+        tweak: drawing =>
+        {
+            // the check boxes were in a column of text far to the left; under the lake now
+            var figures = drawing.Element("Figures");
+            MoveFigure(figures, "ShowHideControl1", -5, -0.6);
+            MoveFigure(figures, "ShowHideControl2", -3, -0.6);
+            MoveFigure(figures, "ShowHideControl3", -1, -0.6);
+        }),
+    new("ComplexNumbers", "Complex Multiplication",
+        "Think of the arrows as complex numbers: A = [A.X] + [A.Y]i and B = [B.X] + [B.Y]i.\n\nC is their product. Its angle is the sum of the two angles ([deg(ang(a,o,x))]° + [deg(ang(b,o,x))]° = [deg(ang(c,o,x))]°), and its length is the product of the two lengths ([AO] · [OB] = [OC]).\n\nMultiplying by a complex number rotates and stretches. Drag A and B.",
+        fromCD: true,
+        remove: ["Label1", "Label2", "Label3", "Label4", "Label5", "Label6", "Label7", "Label8"],
+        dependencies: ["A", "B", "C", "O", "X"],
+        grid: true,
+        tweak: drawing => SetPlane(drawing, left: -2, bottom: -2.5, right: 6.5, top: 3.5)),
+    new("Pascal", "Conic Through Five Points",
+        "Any five points (no three on a line) determine exactly one conic section - an ellipse, a parabola or a hyperbola.\n\nThe red curve is that conic, drawn with a straightedge only: as M slides along the line, Pascal's theorem places the point A on the curve.\n\nDrag the five points and watch the ellipse become a hyperbola.",
+        fromCD: true,
+        remove: ["Label1", "Label2", "Label3"]),
+    new("Ladder", "The Falling Ladder",
+        "A ladder leans against a wall with a bucket of paint hanging on it. The ladder slips: its top slides down the wall, its foot slides out along the ground.\n\nWhat path does the bucket follow? Drag the top of the ladder down and see the curve.\n\nThen slide the bucket to the middle of the ladder. Now what shape is the path?",
+        fromCD: true,
+        remove: ["Label1", "Label2", "Label3", "Label4"],
+        tweak: drawing =>
+        {
+            var figures = drawing.Element("Figures");
+
+            // the ladder was a fifth of the house: five times longer, leaning at an angle, the
+            // bucket near the top (the middle is what the text asks for next)
+            SetParameter(figures, "Ladder length", -1.26);
+            SetParameter(figures, "Drag me!", 0.3);
+            SetParameter(figures, "The bucket", 0.2);
+
+            // the slider for the length of the ladder ran across the house: above it
+            MoveFigure(figures, "C", -2.9, 25.5);
+            MoveFigure(figures, "D", 7.77, 25.5);
+
+            // the curve the bucket draws, which the original asked the user to construct
+            var bucket = figures.Elements("PointOnFigure").First(e => (string)e.Attribute("Name") == "The bucket");
+            bucket.AddAfterSelf(new XElement("Locus",
+                new XAttribute("Name", "BucketPath"),
+                new XAttribute("Style", "GalleryLocus"),
+                new XElement("Dependency", new XAttribute("Name", "The bucket")),
+                new XElement("Dependency", new XAttribute("Name", "Drag me!"))));
+        }),
 };
 
-var source = args[0];
-var output = args[1];
+var phoneSource = args[0];
+var cdSource = args[1];
+var output = args[2];
 Directory.CreateDirectory(output);
 foreach (var sample in drawings)
 {
-    var document = XDocument.Load(Path.Combine(source, sample.File + ".lgf"));
+    var document = XDocument.Load(Path.Combine(sample.FromCD ? cdSource : phoneSource, sample.File + ".lgf"));
     Convert(document.Root, sample);
     var settings = new System.Xml.XmlWriterSettings() { Indent = true, Encoding = new UTF8Encoding(false), NewLineChars = "\r\n" };
     using (var writer = System.Xml.XmlWriter.Create(Path.Combine(output, sample.File + ".lgf"), settings))
@@ -181,7 +282,15 @@ static void Convert(XElement drawing, Sample sample)
     // Whether a line passes through a center takes the geometry to tell (the center can be a
     // midpoint of two points of the line), so the reader does it: DrawingDeserializer, on
     // this attribute. Files don't record which version wrote them.
-    drawing.SetAttributeValue("IntersectionOrder", "Legacy");
+    if (!sample.FromCD)
+    {
+        drawing.SetAttributeValue("IntersectionOrder", "Legacy");
+    }
+
+    if (sample.Tweak != null)
+    {
+        sample.Tweak(drawing);
+    }
 
     var viewport = drawing.Element("Viewport");
     viewport.SetAttributeValue("Grid", sample.Grid ? "true" : "false");
@@ -193,6 +302,10 @@ static void Convert(XElement drawing, Sample sample)
     styles.Elements("BackgroundStyle").Remove();
     styles.Add(TextStyle("GalleryTitle", fontSize: 30, color: "#FF1F4E8C", bold: true));
     styles.Add(TextStyle("GalleryText", fontSize: 16, color: "#FF2B3038", bold: false));
+    styles.Add(new XElement("LineStyle",
+        new XAttribute("Color", "#FFE0362B"),
+        new XAttribute("StrokeWidth", "2.5"),
+        new XAttribute("Name", "GalleryLocus")));
 
     // to the right of everything that has coordinates of its own
     var points = figures.Elements()
@@ -209,6 +322,30 @@ static void Convert(XElement drawing, Sample sample)
 
     figures.Add(Label("Title", "GalleryTitle", sample.Title, x, top, null));
     figures.Add(Label("Description", "GalleryText", Wrap(sample.Description, 46), x, top - titleHeight, sample.Dependencies));
+}
+
+/// <summary>Where a point on a figure sits along it</summary>
+static void SetParameter(XElement figures, string pointName, double parameter)
+{
+    var point = figures.Elements("PointOnFigure").First(e => (string)e.Attribute("Name") == pointName);
+    point.SetAttributeValue("Parameter", parameter.ToString(CultureInfo.InvariantCulture));
+}
+
+/// <summary>The part of the plane a drawing on the grid shows (see GalleryDrawing.GetPlane)</summary>
+static void SetPlane(XElement drawing, double left, double bottom, double right, double top)
+{
+    var viewport = drawing.Element("Viewport");
+    viewport.SetAttributeValue("Left", left.ToString(CultureInfo.InvariantCulture));
+    viewport.SetAttributeValue("Bottom", bottom.ToString(CultureInfo.InvariantCulture));
+    viewport.SetAttributeValue("Right", right.ToString(CultureInfo.InvariantCulture));
+    viewport.SetAttributeValue("Top", top.ToString(CultureInfo.InvariantCulture));
+}
+
+static void MoveFigure(XElement figures, string name, double x, double y)
+{
+    var figure = figures.Elements().First(e => (string)e.Attribute("Name") == name);
+    figure.SetAttributeValue("X", x.ToString(CultureInfo.InvariantCulture));
+    figure.SetAttributeValue("Y", y.ToString(CultureInfo.InvariantCulture));
 }
 
 static double? Number(XElement element, string attribute)
@@ -285,7 +422,9 @@ class Sample
         string description,
         string[] remove = null,
         string[] dependencies = null,
-        bool grid = false)
+        bool grid = false,
+        bool fromCD = false,
+        Action<XElement> tweak = null)
     {
         File = file;
         Title = title;
@@ -293,6 +432,8 @@ class Sample
         Remove = remove ?? [];
         Dependencies = dependencies;
         Grid = grid;
+        FromCD = fromCD;
+        Tweak = tweak;
     }
 
     public string File;
@@ -301,4 +442,8 @@ class Sample
     public string[] Remove;
     public string[] Dependencies;
     public bool Grid;
+    public bool FromCD;
+
+    /// <summary>A change to the Drawing element before the text is added</summary>
+    public Action<XElement> Tweak;
 }

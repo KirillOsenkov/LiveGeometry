@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="0" Creator="LiveGeometry.App">
+  <Viewport Left="-19.3879174054" Top="4.0435726196" Right="17.6701228319" Bottom="-12.1403683902" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
+    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
+    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
+    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
+    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
+    <LineStyle Color="#64000000" StrokeWidth="1" Dash="Solid" Name="1" />
+    <LineStyle Color="#C80000FF" StrokeWidth="1" Dash="Solid" Name="OtherLine" />
+    <LineStyle Color="#E6000000" StrokeWidth="2.5" Dash="Solid" Name="ThickLine" />
+    <LineStyle Color="#FFD83B3B" StrokeWidth="1.5" Dash="Solid" Name="RedLine" />
+    <LineStyle Color="#FF2E9E4F" StrokeWidth="1.5" Dash="Solid" Name="GreenLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dash" Name="DashedLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dot" Name="DottedLine" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="2" />
+    <ShapeStyle Fill="#64C8FFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="OtherShape" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="3" />
+    <ShapeStyle Fill="#1C2F7BD6" IsFilled="true" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Solid" Name="BlueOutline" />
+    <ShapeStyle Fill="#1CE08A00" IsFilled="true" Color="#FFE08A00" StrokeWidth="1.5" Dash="Solid" Name="OrangeOutline" />
+    <ShapeStyle Fill="#1C8854D0" IsFilled="true" Color="#FF8854D0" StrokeWidth="1.5" Dash="Solid" Name="PurpleOutline" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
+    <PointStyle Size="4" Fill="#FFFFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="7" />
+    <PointStyle Size="30" Fill="#FFFFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="8" />
+    <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="9" />
+    <PointStyle Size="4" Fill="#FFFFFFFF" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Dash="Solid" Name="10" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="11" />
+    <PointStyle Size="4" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="12" />
+    <LineStyle Color="#FF400040" StrokeWidth="3" Dash="Solid" Name="13" />
+    <LineStyle Color="#FF000000" StrokeWidth="3" Dash="Solid" Name="14" />
+    <ShapeStyle Fill="#80FFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="15" />
+    <ShapeStyle Fill="#80FF0080" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="16" />
+    <ShapeStyle Fill="#80FF8080" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="17" />
+    <ShapeStyle Fill="#80FF0000" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="18" />
+    <ShapeStyle Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="6" Dash="Solid" Name="19" />
+    <ShapeStyle Fill="#FFA8A58C" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="20" />
+    <ShapeStyle Fill="#FF400040" IsFilled="true" Color="#FF000000" StrokeWidth="3" Dash="Solid" Name="21" />
+    <ShapeStyle Fill="#FFA6A79A" IsFilled="true" Color="#FF000000" StrokeWidth="2" Dash="Solid" Name="22" />
+    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="23" />
+    <ShapeStyle Fill="#FF7E8062" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="24" />
+    <ShapeStyle Fill="#FF000000" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="25" />
+    <ShapeStyle Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="26" />
+    <ShapeStyle Fill="#FF994D00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="27" />
+    <ShapeStyle Fill="#FF5E2F00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="28" />
+    <ShapeStyle Fill="#FF800040" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="29" />
+    <ShapeStyle Fill="#FF009500" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="30" />
+    <ShapeStyle Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="31" />
+    <ShapeStyle Fill="#FF008000" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="32" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Style="7" X="-2.209273" Y="-3.22792" />
+    <FreePoint Name="B" Visible="false" Style="7" X="-2.791357" Y="-3.22792" />
+    <FreePoint Name="C" Visible="false" Style="8" X="1.230314" Y="-3.181586" />
+    <FreePoint Name="E" Visible="false" Style="7" X="6.389694" Y="-0.879709" />
+    <FreePoint Name="F" Visible="false" Style="7" X="6.574902" Y="-2.917003" />
+    <FreePoint Name="G" Visible="false" Style="7" X="4.167192" Y="-2.837627" />
+    <FreePoint Name="D" Visible="false" Style="7" X="4.061358" Y="-0.720959" />
+    <FreePoint Name="H" Visible="false" Style="7" X="4.987401" Y="1.342793" />
+    <FreePoint Name="I" Visible="false" Style="7" X="5.013859" Y="1.184043" />
+    <FreePoint Name="L" Visible="false" Style="7" X="8.532821" Y="-2.890544" />
+    <FreePoint Name="J" Visible="false" Style="7" X="6.204485" Y="0.575501" />
+    <FreePoint Name="M" Visible="false" Style="7" X="8.374071" Y="0.522584" />
+    <FreePoint Name="K" Visible="false" Style="7" X="7.209903" Y="3.274254" />
+    <FreePoint Name="N" Visible="false" Style="7" X="6.918861" Y="-0.085958" />
+    <FreePoint Name="O" Visible="false" Style="7" X="7.553862" Y="-0.085958" />
+    <FreePoint Name="P" Visible="false" Style="7" X="7.606779" Y="-0.720959" />
+    <FreePoint Name="Q" Visible="false" Style="7" X="7.024695" Y="-0.747417" />
+    <FreePoint Name="R" Visible="false" Style="7" X="7.474487" Y="-1.699918" />
+    <FreePoint Name="S" Visible="false" Style="7" X="8.215321" Y="-1.726376" />
+    <FreePoint Name="T" Visible="false" Style="7" X="8.215321" Y="-2.440752" />
+    <FreePoint Name="U" Visible="false" Style="7" X="7.500945" Y="-2.414294" />
+    <FreePoint Name="V" Visible="false" Style="7" X="4.855109" Y="-1.620543" />
+    <FreePoint Name="W" Visible="false" Style="7" X="5.913444" Y="-1.620543" />
+    <FreePoint Name="X" Visible="false" Style="7" X="5.96636" Y="-2.282002" />
+    <FreePoint Name="Y" Visible="false" Style="7" X="4.960943" Y="-2.30846" />
+    <FreePoint Name="Z" Visible="false" Style="7" X="7.315737" Y="1.184043" />
+    <FreePoint Name="A1" Visible="false" Style="7" X="7.42157" Y="0.813626" />
+    <FreePoint Name="B1" Visible="false" Style="7" X="9.141363" Y="2.586336" />
+    <FreePoint Name="C1" Visible="false" Style="7" X="-1.415522" Y="5.09988" />
+    <FreePoint Name="D1" Visible="false" Style="7" X="-2.57969" Y="1.025293" />
+    <FreePoint Name="E1" Visible="false" Style="7" X="8.374071" Y="0.522584" />
+    <FreePoint Name="F1" Visible="false" Style="7" X="8.532821" Y="-2.917003" />
+    <FreePoint Name="G1" Visible="false" Style="7" X="6.601361" Y="-2.890544" />
+    <FreePoint Name="H1" Visible="false" Style="7" X="-2.685523" Y="1.131126" />
+    <FreePoint Name="I1" Visible="false" Style="7" X="6.204485" Y="0.549043" />
+    <FreePoint Name="J1" Visible="false" Style="7" X="4.061358" Y="-0.773875" />
+    <FreePoint Name="K1" Visible="false" Style="7" X="6.389694" Y="-0.906167" />
+    <FreePoint Name="L1" Visible="false" Style="7" X="6.548444" Y="-2.890544" />
+    <FreePoint Name="M1" Visible="false" Style="7" X="4.140733" Y="-2.917003" />
+    <FreePoint Name="N1" Visible="false" Style="7" X="0.48948" Y="-0.509292" />
+    <FreePoint Name="O1" Visible="false" Style="7" X="4.987401" Y="1.342793" />
+    <FreePoint Name="P1" Visible="false" Style="7" X="-3.532191" Y="6.55509" />
+    <FreePoint Name="Q1" Visible="false" Style="7" X="4.987401" Y="1.316335" />
+    <FreePoint Name="R1" Visible="false" Style="7" X="4.0349" Y="-0.747417" />
+    <FreePoint Name="S1" Visible="false" Style="7" X="6.416152" Y="-0.879709" />
+    <FreePoint Name="T1" Visible="false" Style="7" X="7.183445" Y="3.274254" />
+    <FreePoint Name="U1" Visible="false" Style="7" X="6.178027" Y="0.575501" />
+    <FreePoint Name="V1" Visible="false" Style="7" X="8.400529" Y="0.549043" />
+    <FreePoint Name="W1" Visible="false" Style="7" X="-9.564697" Y="-2.758252" />
+    <FreePoint Name="X1" Visible="false" Style="7" X="-9.114905" Y="-1.276584" />
+    <FreePoint Name="Y1" Visible="false" Style="7" X="-8.162404" Y="0.09925" />
+    <FreePoint Name="Z1" Visible="false" Style="7" X="-7.58032" Y="1.104668" />
+    <FreePoint Name="A2" Visible="false" Style="7" X="-6.971777" Y="1.580919" />
+    <FreePoint Name="B2" Visible="false" Style="7" X="-6.654277" Y="0.972376" />
+    <FreePoint Name="C2" Visible="false" Style="7" X="-6.098652" Y="0.496126" />
+    <FreePoint Name="D2" Visible="false" Style="7" X="-5.886985" Y="0.046334" />
+    <FreePoint Name="E2" Visible="false" Style="7" X="-5.728235" Y="-0.562209" />
+    <FreePoint Name="F2" Visible="false" Style="7" X="-5.64886" Y="-0.562209" />
+    <FreePoint Name="G2" Visible="false" Style="7" X="-5.278442" Y="-1.435334" />
+    <FreePoint Name="H2" Visible="false" Style="7" X="-5.040317" Y="-1.885127" />
+    <FreePoint Name="I2" Visible="false" Style="7" X="-4.643442" Y="-2.229085" />
+    <FreePoint Name="J2" Visible="false" Style="7" X="-4.114275" Y="-2.573044" />
+    <FreePoint Name="K2" Visible="false" Style="7" X="-3.796774" Y="-2.784711" />
+    <FreePoint Name="L2" Visible="false" Style="7" X="-7.395111" Y="-2.731794" />
+    <FreePoint Name="M2" Visible="false" Style="7" X="-6.230943" Y="-1.276584" />
+    <FreePoint Name="N2" Visible="false" Style="7" X="-5.80761" Y="0.046334" />
+    <FreePoint Name="O2" Visible="false" Style="7" X="-5.437193" Y="1.263418" />
+    <FreePoint Name="P2" Visible="false" Style="7" X="-4.749275" Y="1.633835" />
+    <FreePoint Name="Q2" Visible="false" Style="7" X="-3.981983" Y="0.972376" />
+    <FreePoint Name="R2" Visible="false" Style="7" X="-3.505732" Y="0.549043" />
+    <FreePoint Name="S2" Visible="false" Style="7" X="-2.923649" Y="-0.562209" />
+    <FreePoint Name="T2" Visible="false" Style="7" X="-2.73844" Y="-1.488251" />
+    <FreePoint Name="U2" Visible="false" Style="7" X="-2.341565" Y="-1.779293" />
+    <FreePoint Name="V2" Visible="false" Style="7" X="-2.103439" Y="-2.334919" />
+    <FreePoint Name="W2" Visible="false" Style="7" X="-1.653647" Y="-2.811169" />
+    <FreePoint Name="X2" Visible="false" Style="7" X="-1.150938" Y="-2.784711" />
+    <FreePoint Name="Y2" Visible="false" Style="7" X="-0.780521" Y="-0.033041" />
+    <FreePoint Name="Z2" Visible="false" Style="7" X="-0.410104" Y="-1.382418" />
+    <FreePoint Name="A3" Visible="false" Style="7" X="0.013229" Y="-0.879709" />
+    <FreePoint Name="B3" Visible="false" Style="7" X="-0.383646" Y="-1.699918" />
+    <FreePoint Name="C3" Visible="false" Style="7" X="-0.304271" Y="-2.864086" />
+    <FreePoint Name="D3" Visible="false" Style="7" X="-0.859896" Y="-1.726376" />
+    <FreePoint Name="E3" Visible="false" Style="7" X="-1.838856" Y="-1.620543" />
+    <FreePoint Name="F3" Visible="false" Style="7" X="-1.997606" Y="-0.959084" />
+    <FreePoint Name="G3" Visible="false" Style="7" X="-1.812397" Y="-0.191792" />
+    <FreePoint Name="H3" Visible="false" Style="7" X="-1.309689" Y="0.337376" />
+    <FreePoint Name="I3" Visible="false" Style="7" X="-0.383646" Y="0.443209" />
+    <FreePoint Name="J3" Visible="false" Style="7" X="0.277813" Y="0.019875" />
+    <FreePoint Name="K3" Visible="false" Style="7" X="0.621772" Y="-1.329501" />
+    <FreePoint Name="L3" Visible="false" Style="7" X="0.17198" Y="-1.752835" />
+    <FreePoint Name="M3" Visible="false" Style="7" X="1.415522" Y="-2.837627" />
+    <FreePoint Name="N3" Visible="false" Style="7" X="-1.71" Y="5.31" />
+    <FreePoint Name="O3" Visible="false" Style="7" X="-30.097491" Y="-2.475738" />
+    <FreePoint Name="P3" Visible="false" Style="7" X="-29.516227" Y="17.53634" />
+    <FreePoint Name="Q3" Visible="false" Style="7" X="28.693177" Y="17.53634" />
+    <FreePoint Name="R3" Visible="false" Style="7" X="28.94229" Y="-3.223077" />
+    <FreePoint Name="S3" Visible="false" Style="7" X="-30.346604" Y="-19.747572" />
+    <FreePoint Name="T3" Visible="false" Style="7" X="30.187855" Y="-20.16276" />
+    <FreePoint Name="U3" Visible="false" Style="7" X="3.505733" Y="-4.530962" />
+    <FreePoint Name="W3" Visible="false" Style="7" X="2.659065" Y="-4.557421" />
+    <FreePoint Name="V3" Visible="false" Style="7" X="0.357188" Y="-2.493669" />
+    <FreePoint Name="X3" Visible="false" Style="7" X="0.992189" Y="-2.282002" />
+    <FreePoint Name="Y3" Visible="false" Style="7" X="1.706564" Y="-2.573044" />
+    <FreePoint Name="Z3" Visible="false" Style="7" X="2.500315" Y="-2.440752" />
+    <FreePoint Name="A4" Visible="false" Style="7" X="3.003024" Y="-2.520127" />
+    <FreePoint Name="B4" Visible="false" Style="7" X="3.585108" Y="-2.573044" />
+    <FreePoint Name="C4" Visible="false" Style="7" X="-4.802192" Y="-4.874921" />
+    <FreePoint Name="D4" Visible="false" Style="7" X="-2.844273" Y="-4.980755" />
+    <Circle Name="Circle1" Visible="false" Style="9">
+      <Dependency Name="C4" />
+      <Dependency Name="D4" />
+    </Circle>
+    <PointOnFigure Name="E4" Visible="false" Style="10" X="-3.2874977999433375" Y="-3.629790835546617" Parameter="0.688032666422645">
+      <Dependency Name="Circle1" />
+    </PointOnFigure>
+    <LineTwoPoints Name="LineTwoPoints1" Visible="false" Style="11">
+      <Dependency Name="C4" />
+      <Dependency Name="D4" />
+    </LineTwoPoints>
+    <PerpendicularLine Name="PerpendicularLine1" Visible="false" Style="11" RightAngleCorner="0">
+      <Dependency Name="LineTwoPoints1" />
+      <Dependency Name="E4" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="F4" Visible="false" Style="12" Algorithm="IntersectLineAndLine">
+      <Dependency Name="LineTwoPoints1" />
+      <Dependency Name="PerpendicularLine1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="_G4" Visible="false" Style="12" Algorithm="IntersectLineAndLine">
+      <Dependency Name="LineTwoPoints1" />
+      <Dependency Name="PerpendicularLine1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="G4" Visible="false" Style="12" Algorithm="IntersectLineAndLine">
+      <Dependency Name="LineTwoPoints1" />
+      <Dependency Name="PerpendicularLine1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="_H4" Visible="false" Style="12" Algorithm="IntersectLineAndLine">
+      <Dependency Name="LineTwoPoints1" />
+      <Dependency Name="PerpendicularLine1" />
+    </IntersectionPoint>
+    <MidPoint Name="H4" Visible="false" Style="12">
+      <Dependency Name="E4" />
+      <Dependency Name="G4" />
+    </MidPoint>
+    <FreePoint Name="I4" Visible="false" Style="7" X="-4.0349" Y="-3.895962" />
+    <FreePoint Name="J4" Visible="false" Style="7" X="-5.013859" Y="-4.874921" />
+    <FreePoint Name="K4" Visible="false" Style="7" X="-5.172609" Y="-3.895962" />
+    <FreePoint Name="L4" Visible="false" Style="7" X="-5.992818" Y="-4.795546" />
+    <FreePoint Name="M4" Visible="false" Style="7" X="-6.28386" Y="-4.160545" />
+    <FreePoint Name="N4" Visible="false" Style="7" X="-2.42094" Y="-5.033671" />
+    <FreePoint Name="O4" Visible="false" Style="7" X="-1.44198" Y="-5.192421" />
+    <FreePoint Name="P4" Visible="false" Style="7" X="-1.150938" Y="-5.06013" />
+    <FreePoint Name="Q4" Visible="false" Style="7" X="-1.785939" Y="-5.06013" />
+    <FreePoint Name="R4" Visible="false" Style="7" X="-3.743858" Y="-3.816587" />
+    <FreePoint Name="S4" Visible="false" Style="7" X="-0.066146" Y="-4.23992" />
+    <FreePoint Name="T4" Visible="false" Style="7" X="-10.464281" Y="-2.758252" />
+    <FreePoint Name="U4" Visible="false" Style="7" X="-17.337557" Y="-2.600426" />
+    <FreePoint Name="V4" Visible="false" Style="7" X="-17.75941" Y="-11.365602" />
+    <FreePoint Name="W4" Visible="false" Style="7" X="16.035733" Y="-11.178112" />
+    <FreePoint Name="X4" Visible="false" Style="7" X="15.098281" Y="-3.02228" />
+    <FreePoint Name="Y4" Visible="false" Style="7" X="-0.621771" Y="-0.271167" />
+    <FreePoint Name="Z4" Visible="false" Style="7" X="0.039688" Y="-1.250126" />
+    <FreePoint Name="A5" Visible="false" Style="7" X="-1.071563" Y="-1.355959" />
+    <FreePoint Name="B5" Visible="false" Style="7" X="-1.150938" Y="-1.541168" />
+    <FreePoint Name="C5" Visible="false" Style="7" X="0.886355" Y="1.104668" />
+    <FreePoint Name="F5" Visible="false" Style="7" X="-0.171979" Y="-7.996755" />
+    <Segment Name="Segment1" Style="13">
+      <Dependency Name="D" />
+      <Dependency Name="H" />
+    </Segment>
+    <Segment Name="Segment2" Style="14">
+      <Dependency Name="H" />
+      <Dependency Name="E" />
+    </Segment>
+    <Circle Name="Circle2" Style="15">
+      <Dependency Name="Z" />
+      <Dependency Name="A1" />
+    </Circle>
+    <LineTwoPoints Name="LineTwoPoints2" Style="11">
+      <Dependency Name="L2" />
+      <Dependency Name="M3" />
+    </LineTwoPoints>
+    <Circle Name="Circle3" Style="16">
+      <Dependency Name="Y2" />
+      <Dependency Name="Y4" />
+    </Circle>
+    <Circle Name="Circle4" Style="17">
+      <Dependency Name="A3" />
+      <Dependency Name="Z4" />
+    </Circle>
+    <Circle Name="Circle5" Style="18">
+      <Dependency Name="A5" />
+      <Dependency Name="B5" />
+    </Circle>
+    <Polygon Name="Polygon1" Style="19">
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Polygon Name="Polygon2" Style="20">
+      <Dependency Name="D" />
+      <Dependency Name="H" />
+      <Dependency Name="E" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Polygon Name="Polygon3" Style="21">
+      <Dependency Name="J" />
+      <Dependency Name="M" />
+      <Dependency Name="L" />
+      <Dependency Name="F" />
+      <Dependency Name="J" />
+    </Polygon>
+    <Polygon Name="Polygon4" Style="22">
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+      <Dependency Name="M" />
+      <Dependency Name="J" />
+    </Polygon>
+    <Polygon Name="Polygon5" Style="23">
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+      <Dependency Name="N" />
+    </Polygon>
+    <Polygon Name="Polygon6" Style="23">
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+      <Dependency Name="R" />
+    </Polygon>
+    <Polygon Name="Polygon7" Style="23">
+      <Dependency Name="V" />
+      <Dependency Name="W" />
+      <Dependency Name="X" />
+      <Dependency Name="Y" />
+      <Dependency Name="V" />
+    </Polygon>
+    <Polygon Name="Polygon8" Style="24">
+      <Dependency Name="J" />
+      <Dependency Name="M" />
+      <Dependency Name="L" />
+      <Dependency Name="F" />
+      <Dependency Name="J" />
+    </Polygon>
+    <Polygon Name="Polygon9" Style="25">
+      <Dependency Name="I1" />
+      <Dependency Name="E1" />
+      <Dependency Name="F1" />
+      <Dependency Name="G1" />
+      <Dependency Name="I1" />
+    </Polygon>
+    <Polygon Name="Polygon10" Style="26">
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+      <Dependency Name="N" />
+    </Polygon>
+    <Polygon Name="Polygon11" Style="26">
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+      <Dependency Name="R" />
+    </Polygon>
+    <Polygon Name="Polygon12" Style="25">
+      <Dependency Name="J1" />
+      <Dependency Name="K1" />
+      <Dependency Name="L1" />
+      <Dependency Name="M1" />
+      <Dependency Name="J1" />
+    </Polygon>
+    <Polygon Name="Polygon13" Style="25">
+      <Dependency Name="Q1" />
+      <Dependency Name="R1" />
+      <Dependency Name="S1" />
+      <Dependency Name="Q1" />
+    </Polygon>
+    <Polygon Name="Polygon14" Style="25">
+      <Dependency Name="T1" />
+      <Dependency Name="U1" />
+      <Dependency Name="V1" />
+      <Dependency Name="T1" />
+    </Polygon>
+    <Polygon Name="Polygon15" Style="27">
+      <Dependency Name="W1" />
+      <Dependency Name="X1" />
+      <Dependency Name="Y1" />
+      <Dependency Name="Z1" />
+      <Dependency Name="A2" />
+      <Dependency Name="B2" />
+      <Dependency Name="C2" />
+      <Dependency Name="D2" />
+      <Dependency Name="E2" />
+      <Dependency Name="F2" />
+      <Dependency Name="G2" />
+      <Dependency Name="H2" />
+      <Dependency Name="I2" />
+      <Dependency Name="J2" />
+      <Dependency Name="K2" />
+      <Dependency Name="W1" />
+    </Polygon>
+    <Polygon Name="Polygon16" Style="28">
+      <Dependency Name="L2" />
+      <Dependency Name="M2" />
+      <Dependency Name="N2" />
+      <Dependency Name="O2" />
+      <Dependency Name="P2" />
+      <Dependency Name="Q2" />
+      <Dependency Name="R2" />
+      <Dependency Name="S2" />
+      <Dependency Name="T2" />
+      <Dependency Name="U2" />
+      <Dependency Name="V2" />
+      <Dependency Name="W2" />
+      <Dependency Name="L2" />
+    </Polygon>
+    <Polygon Name="Polygon17" Style="29">
+      <Dependency Name="X2" />
+      <Dependency Name="Y2" />
+      <Dependency Name="Z2" />
+      <Dependency Name="A3" />
+      <Dependency Name="B3" />
+      <Dependency Name="C3" />
+      <Dependency Name="X2" />
+    </Polygon>
+    <Polygon Name="Polygon18" Style="30">
+      <Dependency Name="D3" />
+      <Dependency Name="E3" />
+      <Dependency Name="F3" />
+      <Dependency Name="G3" />
+      <Dependency Name="H3" />
+      <Dependency Name="I3" />
+      <Dependency Name="J3" />
+      <Dependency Name="N1" />
+      <Dependency Name="K3" />
+      <Dependency Name="L3" />
+      <Dependency Name="B3" />
+      <Dependency Name="D3" />
+    </Polygon>
+    <Polygon Name="Polygon19" Style="31">
+      <Dependency Name="C3" />
+      <Dependency Name="V3" />
+      <Dependency Name="X3" />
+      <Dependency Name="Y3" />
+      <Dependency Name="Z3" />
+      <Dependency Name="A4" />
+      <Dependency Name="B4" />
+      <Dependency Name="M1" />
+      <Dependency Name="C3" />
+    </Polygon>
+    <Polygon Name="Polygon20" Style="32">
+      <Dependency Name="U4" />
+      <Dependency Name="V4" />
+      <Dependency Name="W4" />
+      <Dependency Name="X4" />
+      <Dependency Name="U4" />
+    </Polygon>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Castle" DecimalsToShow="2" X="37.452" Y="17.536" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Mountains, a tree, a castle on a hill - all of\nit built from polygons and circles, just like\na real drawing program.\n\nEvery corner is a point you can drag. Move the\nmountains, grow the tree, or give the castle\nanother tower." DecimalsToShow="2" X="37.452" Y="12.996" />
+  </Figures>
+</Drawing>

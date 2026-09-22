@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="0" Creator="LiveGeometry.App">
+  <Viewport Left="-12.1160880203" Top="5.357137334" Right="10.2198591703" Bottom="-4.3973896031" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
+    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
+    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
+    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
+    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
+    <LineStyle Color="#64000000" StrokeWidth="1" Dash="Solid" Name="1" />
+    <LineStyle Color="#C80000FF" StrokeWidth="1" Dash="Solid" Name="OtherLine" />
+    <LineStyle Color="#E6000000" StrokeWidth="2.5" Dash="Solid" Name="ThickLine" />
+    <LineStyle Color="#FFD83B3B" StrokeWidth="1.5" Dash="Solid" Name="RedLine" />
+    <LineStyle Color="#FF2E9E4F" StrokeWidth="1.5" Dash="Solid" Name="GreenLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dash" Name="DashedLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dot" Name="DottedLine" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="2" />
+    <ShapeStyle Fill="#64C8FFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="OtherShape" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="3" />
+    <ShapeStyle Fill="#1C2F7BD6" IsFilled="true" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Solid" Name="BlueOutline" />
+    <ShapeStyle Fill="#1CE08A00" IsFilled="true" Color="#FFE08A00" StrokeWidth="1.5" Dash="Solid" Name="OrangeOutline" />
+    <ShapeStyle Fill="#1C8854D0" IsFilled="true" Color="#FF8854D0" StrokeWidth="1.5" Dash="Solid" Name="PurpleOutline" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
+    <PointStyle Size="8" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="7" />
+    <PointStyle Size="8" Fill="#FFFF0000" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="8" />
+    <PointStyle Size="8" Fill="#FF00FFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="9" />
+    <PointStyle Size="8" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="10" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="11" />
+    <TextStyle FontSize="27.2" Color="#FF00C100" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="12" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A2" Style="7" X="-5.304901" Y="-3.929066" />
+    <FreePoint Name="B1" Style="8" X="-0.092604" Y="4.114275" />
+    <FreePoint Name="C3" Style="9" X="5.64886" Y="-3.929066" />
+    <FreePoint Name="D1" Style="8" X="-0.039687" Y="-3.320524" />
+    <FreePoint Name="E4" Style="10" X="-2.92" Y="-2.29" />
+    <FreePoint Name="F3" Style="9" X="-1.997606" Y="-0.171979" />
+    <FreePoint Name="G4" Style="10" X="-0.066146" Y="1.706564" />
+    <FreePoint Name="H4" Style="10" X="3.214691" Y="-2.182814" />
+    <FreePoint Name="I2" Style="7" X="1.891773" Y="-0.145521" />
+    <FreePoint Name="J1" Style="8" X="-0.80698" Y="-0.754063" />
+    <FreePoint Name="K2" Style="7" X="-0.039687" Y="-1.997606" />
+    <FreePoint Name="L3" Style="9" X="0.833438" Y="-0.754063" />
+    <Segment Name="Segment1" Style="11">
+      <Dependency Name="A2" />
+      <Dependency Name="B1" />
+    </Segment>
+    <Segment Name="Segment2" Style="11">
+      <Dependency Name="B1" />
+      <Dependency Name="C3" />
+    </Segment>
+    <Segment Name="Segment3" Style="11">
+      <Dependency Name="C3" />
+      <Dependency Name="A2" />
+    </Segment>
+    <Segment Name="Segment4" Style="11">
+      <Dependency Name="A2" />
+      <Dependency Name="D1" />
+    </Segment>
+    <Segment Name="Segment5" Style="11">
+      <Dependency Name="A2" />
+      <Dependency Name="E4" />
+    </Segment>
+    <Segment Name="Segment6" Style="11">
+      <Dependency Name="A2" />
+      <Dependency Name="F3" />
+    </Segment>
+    <Segment Name="Segment7" Style="11">
+      <Dependency Name="F3" />
+      <Dependency Name="B1" />
+    </Segment>
+    <Segment Name="Segment8" Style="11">
+      <Dependency Name="B1" />
+      <Dependency Name="G4" />
+    </Segment>
+    <Segment Name="Segment9" Style="11">
+      <Dependency Name="G4" />
+      <Dependency Name="F3" />
+    </Segment>
+    <Segment Name="Segment10" Style="11">
+      <Dependency Name="F3" />
+      <Dependency Name="E4" />
+    </Segment>
+    <Segment Name="Segment11" Style="11">
+      <Dependency Name="E4" />
+      <Dependency Name="D1" />
+    </Segment>
+    <Segment Name="Segment12" Style="11">
+      <Dependency Name="D1" />
+      <Dependency Name="C3" />
+    </Segment>
+    <Segment Name="Segment13" Style="11">
+      <Dependency Name="C3" />
+      <Dependency Name="H4" />
+    </Segment>
+    <Segment Name="Segment14" Style="11">
+      <Dependency Name="B1" />
+      <Dependency Name="I2" />
+    </Segment>
+    <Segment Name="Segment15" Style="11">
+      <Dependency Name="I2" />
+      <Dependency Name="C3" />
+    </Segment>
+    <Segment Name="Segment16" Style="11">
+      <Dependency Name="G4" />
+      <Dependency Name="I2" />
+    </Segment>
+    <Segment Name="Segment17" Style="11">
+      <Dependency Name="I2" />
+      <Dependency Name="H4" />
+    </Segment>
+    <Segment Name="Segment18" Style="11">
+      <Dependency Name="H4" />
+      <Dependency Name="D1" />
+    </Segment>
+    <Segment Name="Segment19" Style="11">
+      <Dependency Name="E4" />
+      <Dependency Name="J1" />
+    </Segment>
+    <Segment Name="Segment20" Style="11">
+      <Dependency Name="J1" />
+      <Dependency Name="F3" />
+    </Segment>
+    <Segment Name="Segment21" Style="11">
+      <Dependency Name="J1" />
+      <Dependency Name="K2" />
+    </Segment>
+    <Segment Name="Segment22" Style="11">
+      <Dependency Name="K2" />
+      <Dependency Name="L3" />
+    </Segment>
+    <Segment Name="Segment23" Style="11">
+      <Dependency Name="L3" />
+      <Dependency Name="J1" />
+    </Segment>
+    <Segment Name="Segment24" Style="11">
+      <Dependency Name="K2" />
+      <Dependency Name="D1" />
+    </Segment>
+    <Segment Name="Segment25" Style="11">
+      <Dependency Name="K2" />
+      <Dependency Name="H4" />
+    </Segment>
+    <Segment Name="Segment26" Style="11">
+      <Dependency Name="E4" />
+      <Dependency Name="K2" />
+    </Segment>
+    <Segment Name="Segment27" Style="11">
+      <Dependency Name="G4" />
+      <Dependency Name="J1" />
+    </Segment>
+    <Segment Name="Segment28" Style="11">
+      <Dependency Name="G4" />
+      <Dependency Name="L3" />
+    </Segment>
+    <Segment Name="Segment29" Style="11">
+      <Dependency Name="H4" />
+      <Dependency Name="L3" />
+    </Segment>
+    <Segment Name="Segment30" Style="11">
+      <Dependency Name="I2" />
+      <Dependency Name="L3" />
+    </Segment>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Icosahedron" DecimalsToShow="2" X="7.193" Y="4.114" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Twenty triangles, twelve corners, thirty\nedges: the icosahedron is the biggest of the\nfive Platonic solids. A 20-sided die has this\nshape.\n\nThis is a flat drawing of it, so dragging a\ncorner squashes the solid instead of turning\nit - try it." DecimalsToShow="2" X="7.193" Y="3.149" />
+  </Figures>
+</Drawing>

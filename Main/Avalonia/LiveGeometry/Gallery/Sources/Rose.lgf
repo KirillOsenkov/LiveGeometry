@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="0" Creator="LiveGeometry.App">
+  <Viewport Left="-17.9304515589" Top="3.8362526708" Right="6.8278850057" Bottom="-6.9761771257" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
+    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
+    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
+    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
+    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
+    <LineStyle Color="#64000000" StrokeWidth="1" Dash="Solid" Name="1" />
+    <LineStyle Color="#C80000FF" StrokeWidth="1" Dash="Solid" Name="OtherLine" />
+    <LineStyle Color="#E6000000" StrokeWidth="2.5" Dash="Solid" Name="ThickLine" />
+    <LineStyle Color="#FFD83B3B" StrokeWidth="1.5" Dash="Solid" Name="RedLine" />
+    <LineStyle Color="#FF2E9E4F" StrokeWidth="1.5" Dash="Solid" Name="GreenLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dash" Name="DashedLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dot" Name="DottedLine" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="2" />
+    <ShapeStyle Fill="#64C8FFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="OtherShape" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="3" />
+    <ShapeStyle Fill="#1C2F7BD6" IsFilled="true" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Solid" Name="BlueOutline" />
+    <ShapeStyle Fill="#1CE08A00" IsFilled="true" Color="#FFE08A00" StrokeWidth="1.5" Dash="Solid" Name="OrangeOutline" />
+    <ShapeStyle Fill="#1C8854D0" IsFilled="true" Color="#FF8854D0" StrokeWidth="1.5" Dash="Solid" Name="PurpleOutline" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
+    <PointStyle Size="3" Fill="#FF000000" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="7" />
+    <PointStyle Size="2" Fill="#FF000000" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="8" />
+    <PointStyle Size="2" Fill="#FF000000" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="9" />
+    <LineStyle Color="#FFC0C0C0" StrokeWidth="1" Dash="Solid" Name="10" />
+    <TextStyle FontSize="17" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="11" />
+    <TextStyle FontSize="30.599999999999998" Color="#FF808040" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="12" />
+    <LineStyle Color="#FFFF0000" StrokeWidth="3" Dash="Solid" Name="13" />
+    <LineStyle Color="#FF008000" StrokeWidth="4" Dash="Solid" Name="14" />
+    <LineStyle Color="#FF00AE00" StrokeWidth="7" Dash="Solid" Name="15" />
+    <LineStyle Color="#FF00AE00" StrokeWidth="3" Dash="Solid" Name="16" />
+    <LineStyle Color="#FF00A600" StrokeWidth="3" Dash="Solid" Name="17" />
+    <LineStyle Color="#FF008000" StrokeWidth="3" Dash="Solid" Name="18" />
+    <LineStyle Color="#FF009100" StrokeWidth="2" Dash="Solid" Name="19" />
+    <LineStyle Color="#FF008000" StrokeWidth="2" Dash="Solid" Name="20" />
+    <LineStyle Color="#FF00A800" StrokeWidth="3" Dash="Solid" Name="21" />
+    <LineStyle Color="#FF00B300" StrokeWidth="2" Dash="Solid" Name="22" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="7" X="-1.005418" Y="1.93146" />
+    <FreePoint Name="B" Style="7" X="-1.534585" Y="2.09021" />
+    <FreePoint Name="C" Style="7" X="-1.61396" Y="1.45521" />
+    <FreePoint Name="D" Style="7" X="-1.087198" Y="1.635608" />
+    <FreePoint Name="L3" Style="8" X="-0.476251" Y="1.77271" />
+    <FreePoint Name="F" Style="9" X="-0.820209" Y="1.428751" />
+    <FreePoint Name="G" Style="9" X="-1.322918" Y="1.428751" />
+    <ReflectedPoint Name="H" Style="8">
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+    </ReflectedPoint>
+    <FreePoint Name="I" Style="9" X="-1.957919" Y="2.275419" />
+    <FreePoint Name="J" Style="9" X="-1.005418" Y="2.09021" />
+    <ReflectedPoint Name="K" Style="8">
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+    </ReflectedPoint>
+    <FreePoint Name="L" Style="9" X="-0.555626" Y="0.926043" />
+    <FreePoint Name="M" Style="9" X="-1.719793" Y="1.534585" />
+    <FreePoint Name="N" Style="9" X="-0.476251" Y="1.666877" />
+    <FreePoint Name="O" Style="9" X="-0.3175" Y="1.217085" />
+    <FreePoint Name="P" Style="9" X="-0.291042" Y="0.47625" />
+    <FreePoint Name="Q" Style="9" X="-0.820209" Y="0.343959" />
+    <FreePoint Name="R" Style="9" X="-1.746252" Y="1.852085" />
+    <FreePoint Name="S" Style="9" X="-2.037294" Y="1.402293" />
+    <FreePoint Name="T" Style="9" X="-1.957919" Y="0.714376" />
+    <FreePoint Name="U" Style="9" X="-1.640418" Y="0.502709" />
+    <FreePoint Name="V" Style="9" X="-1.905002" Y="1.719793" />
+    <FreePoint Name="W" Style="9" X="-2.354794" Y="2.222502" />
+    <FreePoint Name="X" Style="9" X="-3.413128" Y="-0.396875" />
+    <FreePoint Name="Y" Style="9" X="-1.666877" Y="0.608542" />
+    <FreePoint Name="Z" Style="9" X="-0.740834" Y="2.037294" />
+    <FreePoint Name="A1" Style="9" X="-0.341553" Y="2.862313" />
+    <FreePoint Name="B1" Style="9" X="0.661459" Y="0.820209" />
+    <FreePoint Name="C1" Style="9" X="-0.396875" Y="1.402293" />
+    <FreePoint Name="D1" Style="9" X="0" Y="1.481668" />
+    <FreePoint Name="E1" Style="9" X="0.3175" Y="1.349376" />
+    <FreePoint Name="F1" Style="9" X="0.661459" Y="1.031876" />
+    <FreePoint Name="G1" Style="9" X="0.185208" Y="0.370417" />
+    <ReflectedPoint Name="H1" Style="8">
+      <Dependency Name="F1" />
+      <Dependency Name="G1" />
+    </ReflectedPoint>
+    <FreePoint Name="I1" Style="9" X="-0.476251" Y="-0.264584" />
+    <FreePoint Name="J1" Style="9" X="-0.687917" Y="-0.079375" />
+    <ReflectedPoint Name="K1" Visible="false" Style="8">
+      <Dependency Name="I1" />
+      <Dependency Name="J1" />
+    </ReflectedPoint>
+    <FreePoint Name="L1" Style="9" X="-0.476251" Y="0.264584" />
+    <FreePoint Name="M1" Style="9" X="-0.476251" Y="-0.079375" />
+    <FreePoint Name="N1" Style="9" X="-3.06917" Y="0.052917" />
+    <FreePoint Name="O1" Style="9" X="-0.502709" Y="-0.873126" />
+    <FreePoint Name="P1" Style="9" X="-0.793751" Y="0.343959" />
+    <FreePoint Name="Q1" Style="9" X="-1.375835" Y="0.423334" />
+    <FreePoint Name="R1" Style="9" X="-1.084793" Y="0.211667" />
+    <FreePoint Name="S1" Style="9" X="-2.248961" Y="0.343959" />
+    <FreePoint Name="T1" Style="9" X="-3.360212" Y="-0.873126" />
+    <FreePoint Name="U1" Style="9" X="0.026458" Y="-1.375835" />
+    <FreePoint Name="V1" Style="9" X="-0.396875" Y="-0.185209" />
+    <FreePoint Name="W1" Style="9" X="-0.608542" Y="-0.370417" />
+    <FreePoint Name="X1" Style="9" X="-0.661459" Y="-0.449792" />
+    <FreePoint Name="Y1" Style="9" X="-0.926043" Y="-0.238125" />
+    <FreePoint Name="Z1" Style="9" X="0.396875" Y="1.031876" />
+    <FreePoint Name="A2" Style="9" X="1.243543" Y="0.952501" />
+    <FreePoint Name="B2" Style="9" X="0.47625" Y="-0.899584" />
+    <FreePoint Name="C2" Style="9" X="-0.132292" Y="-0.343959" />
+    <FreePoint Name="D2" Style="9" X="0.47625" Y="-0.343959" />
+    <FreePoint Name="E2" Style="9" X="-0.185209" Y="0.185208" />
+    <FreePoint Name="F2" Style="9" X="-0.211667" Y="-0.238125" />
+    <FreePoint Name="G2" Style="9" X="-1.45521" Y="-0.820209" />
+    <FreePoint Name="H2" Style="9" X="-2.936878" Y="-0.926043" />
+    <FreePoint Name="I2" Style="9" X="-1.666877" Y="-2.037294" />
+    <FreePoint Name="J2" Style="9" X="-2.566461" Y="-2.381252" />
+    <FreePoint Name="K2" Style="9" X="-0.878227" Y="-0.902609" />
+    <FreePoint Name="L2" Style="9" X="-0.645393" Y="-2.881695" />
+    <FreePoint Name="M2" Style="9" X="-0.412559" Y="-4.773467" />
+    <FreePoint Name="N2" Style="9" X="-0.55808" Y="-6.461511" />
+    <FreePoint Name="O2" Style="9" X="-1.137709" Y="-0.873126" />
+    <FreePoint Name="P2" Style="9" X="-2.672294" Y="-1.084793" />
+    <FreePoint Name="Q2" Style="9" X="-1.719793" Y="-2.196044" />
+    <FreePoint Name="R2" Style="9" X="-0.476251" Y="-0.714376" />
+    <FreePoint Name="S2" Style="9" X="0.555626" Y="-0.793751" />
+    <FreePoint Name="T2" Style="9" X="0.132292" Y="-1.719793" />
+    <FreePoint Name="U2" Style="9" X="0.767292" Y="-1.825627" />
+    <FreePoint Name="V2" Style="9" X="-0.793751" Y="-0.820209" />
+    <FreePoint Name="W2" Style="9" X="0.211667" Y="-0.873126" />
+    <FreePoint Name="X2" Style="9" X="-1.402102" Y="-1.193651" />
+    <FreePoint Name="Y2" Style="9" X="-0.732706" Y="-1.659318" />
+    <FreePoint Name="Z2" Style="9" X="-0.907331" Y="-1.921256" />
+    <FreePoint Name="A3" Style="9" X="-0.732706" Y="-2.241402" />
+    <FreePoint Name="B3" Style="9" X="-0.296143" Y="-3.318258" />
+    <FreePoint Name="C3" Style="9" X="-0.437766" Y="-3.078791" />
+    <FreePoint Name="D3" Style="9" X="-0.645393" Y="-3.783925" />
+    <FreePoint Name="E3" Style="9" X="-0.587185" Y="-4.3078" />
+    <FreePoint Name="F3" Style="9" X="-0.587185" Y="-4.802572" />
+    <FreePoint Name="G3" Style="9" X="-0.703601" Y="-3.260049" />
+    <FreePoint Name="H3" Style="9" X="-0.55808" Y="-4.715259" />
+    <FreePoint Name="I3" Style="9" X="-0.849122" Y="-4.831676" />
+    <FreePoint Name="J3" Style="9" X="-0.55808" Y="-5.151822" />
+    <FreePoint Name="K3" Style="9" X="-0.616289" Y="-5.704802" />
+    <ReflectedPoint Name="E" Style="8">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </ReflectedPoint>
+    <Segment Name="Segment1" Style="10">
+      <Dependency Name="F" />
+      <Dependency Name="H" />
+    </Segment>
+    <Segment Name="Segment2" Style="10">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="Segment3" Style="10">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="Segment4" Style="10">
+      <Dependency Name="I" />
+      <Dependency Name="K" />
+    </Segment>
+    <Segment Name="Segment5" Style="10">
+      <Dependency Name="F1" />
+      <Dependency Name="H1" />
+    </Segment>
+    <Segment Name="Segment6" Style="10">
+      <Dependency Name="D1" />
+      <Dependency Name="E1" />
+    </Segment>
+    <Segment Name="Segment7" Style="10">
+      <Dependency Name="K1" />
+      <Dependency Name="I1" />
+    </Segment>
+    <Segment Name="Segment8" Style="10">
+      <Dependency Name="Y" />
+      <Dependency Name="N1" />
+    </Segment>
+    <Segment Name="Segment9" Style="10">
+      <Dependency Name="P1" />
+      <Dependency Name="O1" />
+    </Segment>
+    <Segment Name="Segment10" Style="10">
+      <Dependency Name="X" />
+      <Dependency Name="Y" />
+    </Segment>
+    <Segment Name="Segment11" Style="10">
+      <Dependency Name="W" />
+      <Dependency Name="V" />
+    </Segment>
+    <Segment Name="Segment12" Style="10">
+      <Dependency Name="A1" />
+      <Dependency Name="Z" />
+    </Segment>
+    <Segment Name="Segment13" Style="10">
+      <Dependency Name="V1" />
+      <Dependency Name="U1" />
+    </Segment>
+    <Segment Name="Segment14" Style="10">
+      <Dependency Name="S1" />
+      <Dependency Name="T1" />
+    </Segment>
+    <Segment Name="Segment15" Style="10">
+      <Dependency Name="B2" />
+      <Dependency Name="C2" />
+    </Segment>
+    <Segment Name="Segment16" Style="10">
+      <Dependency Name="D2" />
+      <Dependency Name="C2" />
+    </Segment>
+    <Segment Name="Segment17" Style="10">
+      <Dependency Name="A2" />
+      <Dependency Name="Z1" />
+    </Segment>
+    <Segment Name="Segment18" Style="10">
+      <Dependency Name="H2" />
+      <Dependency Name="G2" />
+    </Segment>
+    <Segment Name="Segment19" Style="10">
+      <Dependency Name="J2" />
+      <Dependency Name="I2" />
+    </Segment>
+    <Segment Name="Segment20" Style="10">
+      <Dependency Name="Q2" />
+      <Dependency Name="J2" />
+    </Segment>
+    <Segment Name="Segment21" Style="10">
+      <Dependency Name="P2" />
+      <Dependency Name="O2" />
+    </Segment>
+    <Segment Name="Segment22" Style="10">
+      <Dependency Name="R2" />
+      <Dependency Name="S2" />
+    </Segment>
+    <Segment Name="Segment23" Style="10">
+      <Dependency Name="T2" />
+      <Dependency Name="U2" />
+    </Segment>
+    <Segment Name="Segment24" Style="10">
+      <Dependency Name="L2" />
+      <Dependency Name="C3" />
+    </Segment>
+    <Segment Name="Segment25" Style="10">
+      <Dependency Name="B3" />
+      <Dependency Name="D3" />
+    </Segment>
+    <Segment Name="Segment26" Style="10">
+      <Dependency Name="L" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="Segment27" Style="10">
+      <Dependency Name="L" />
+      <Dependency Name="L1" />
+    </Segment>
+    <Segment Name="Segment28" Style="10">
+      <Dependency Name="L1" />
+      <Dependency Name="E2" />
+    </Segment>
+    <Segment Name="Segment29" Style="10">
+      <Dependency Name="E2" />
+      <Dependency Name="G1" />
+    </Segment>
+    <Label Name="Label1" Style="11" DecimalsToShow="2" Text="cx = 3 * (x1 - x0)\nbx = 3 * (x2 - x1) - cx\nax = x3 - x0 - bx - cx\n\ncy = 3 * (y1 - y0)\nby = 3 * (y2 - y1) - cy\nay = y3 - y0 - by - cy\n\nx(t) = ax * t ^ 3 + bx * t ^ 2 + cx * t + x0\ny(t) = ay * t ^ 3 + by * t ^ 2 + cy * t + y0\n\nt є (0; 1)" X="-12.33921665627" Y="-0.288636646930293" />
+    <Label Name="Label2" Style="12" DecimalsToShow="2" Text="A Bezier curve" X="-11.9062616858746" Y="3.31932143969837" />
+    <Label Name="Label3" Style="11" DecimalsToShow="2" Text="Algebraic curve of the 3rd order, given by\nparametric equations x=x(t); y=y(t), where x(t) and y(t) \nare 3 degree polynomials.\n(x0,y0),(x3,y3) - startpoint and endpoint of a curve (t=0 and t=1)\n(x1,y1),(x2,y2) - tangent directions at the endpoints" X="-12.3440984600236" Y="2.34362176657442" />
+    <Bezier Name="Bezier1" Style="13">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Bezier>
+    <Bezier Name="Bezier2" Style="13">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+    </Bezier>
+    <Bezier Name="Bezier3" Style="13">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+    </Bezier>
+    <Bezier Name="Bezier4" Style="13">
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </Bezier>
+    <Bezier Name="Bezier5" Style="13">
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </Bezier>
+    <Bezier Name="Bezier6" Style="13">
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </Bezier>
+    <Bezier Name="Bezier7" Style="13">
+      <Dependency Name="V" />
+      <Dependency Name="W" />
+      <Dependency Name="X" />
+      <Dependency Name="Y" />
+    </Bezier>
+    <Bezier Name="Bezier8" Style="13">
+      <Dependency Name="Z" />
+      <Dependency Name="A1" />
+      <Dependency Name="B1" />
+      <Dependency Name="C1" />
+    </Bezier>
+    <Bezier Name="Bezier9" Style="13">
+      <Dependency Name="D1" />
+      <Dependency Name="E1" />
+      <Dependency Name="F1" />
+      <Dependency Name="G1" />
+    </Bezier>
+    <Bezier Name="Bezier10" Style="13">
+      <Dependency Name="G1" />
+      <Dependency Name="H1" />
+      <Dependency Name="I1" />
+      <Dependency Name="J1" />
+    </Bezier>
+    <Bezier Name="Bezier11" Style="13">
+      <Dependency Name="J1" />
+      <Dependency Name="K1" />
+      <Dependency Name="L1" />
+      <Dependency Name="M1" />
+    </Bezier>
+    <Bezier Name="Bezier12" Style="13">
+      <Dependency Name="Y" />
+      <Dependency Name="N1" />
+      <Dependency Name="O1" />
+      <Dependency Name="P1" />
+    </Bezier>
+    <Bezier Name="Bezier13" Style="13">
+      <Dependency Name="Y" />
+      <Dependency Name="Q1" />
+      <Dependency Name="R1" />
+      <Dependency Name="P1" />
+    </Bezier>
+    <Bezier Name="Bezier14" Style="13">
+      <Dependency Name="S1" />
+      <Dependency Name="T1" />
+      <Dependency Name="U1" />
+      <Dependency Name="V1" />
+    </Bezier>
+    <Bezier Name="Bezier15" Style="13">
+      <Dependency Name="W1" />
+      <Dependency Name="X1" />
+      <Dependency Name="Y1" />
+      <Dependency Name="I1" />
+    </Bezier>
+    <Bezier Name="Bezier16" Style="13">
+      <Dependency Name="Z1" />
+      <Dependency Name="A2" />
+      <Dependency Name="B2" />
+      <Dependency Name="C2" />
+    </Bezier>
+    <Bezier Name="Bezier17" Style="13">
+      <Dependency Name="C2" />
+      <Dependency Name="D2" />
+      <Dependency Name="E2" />
+      <Dependency Name="F2" />
+    </Bezier>
+    <Bezier Name="Bezier18" Style="14">
+      <Dependency Name="G2" />
+      <Dependency Name="H2" />
+      <Dependency Name="I2" />
+      <Dependency Name="J2" />
+    </Bezier>
+    <Bezier Name="Bezier19" Style="15">
+      <Dependency Name="K2" />
+      <Dependency Name="L2" />
+      <Dependency Name="M2" />
+      <Dependency Name="N2" />
+    </Bezier>
+    <Bezier Name="Bezier20" Style="16">
+      <Dependency Name="O2" />
+      <Dependency Name="P2" />
+      <Dependency Name="Q2" />
+      <Dependency Name="J2" />
+    </Bezier>
+    <Bezier Name="Bezier21" Style="17">
+      <Dependency Name="R2" />
+      <Dependency Name="S2" />
+      <Dependency Name="T2" />
+      <Dependency Name="U2" />
+    </Bezier>
+    <Bezier Name="Bezier22" Style="18">
+      <Dependency Name="V2" />
+      <Dependency Name="W2" />
+      <Dependency Name="T2" />
+      <Dependency Name="U2" />
+    </Bezier>
+    <Bezier Name="Bezier23" Style="14">
+      <Dependency Name="O2" />
+      <Dependency Name="X2" />
+      <Dependency Name="Y2" />
+      <Dependency Name="Z2" />
+    </Bezier>
+    <Bezier Name="Bezier24" Style="19">
+      <Dependency Name="A3" />
+      <Dependency Name="L2" />
+      <Dependency Name="B3" />
+      <Dependency Name="C3" />
+    </Bezier>
+    <Bezier Name="Bezier25" Style="20">
+      <Dependency Name="C3" />
+      <Dependency Name="D3" />
+      <Dependency Name="E3" />
+      <Dependency Name="F3" />
+    </Bezier>
+    <Bezier Name="Bezier26" Style="21">
+      <Dependency Name="G3" />
+      <Dependency Name="D3" />
+      <Dependency Name="H3" />
+      <Dependency Name="I3" />
+    </Bezier>
+    <Bezier Name="Bezier27" Style="22">
+      <Dependency Name="I3" />
+      <Dependency Name="J3" />
+      <Dependency Name="K3" />
+      <Dependency Name="N2" />
+    </Bezier>
+  </Figures>
+</Drawing>

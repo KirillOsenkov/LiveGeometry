@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="0" Creator="LiveGeometry.App">
+  <Viewport Left="-2" Top="3.5" Right="6.5" Bottom="-2.5" Grid="true" Axes="true" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
+    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
+    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
+    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
+    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
+    <LineStyle Color="#64000000" StrokeWidth="1" Dash="Solid" Name="1" />
+    <LineStyle Color="#C80000FF" StrokeWidth="1" Dash="Solid" Name="OtherLine" />
+    <LineStyle Color="#E6000000" StrokeWidth="2.5" Dash="Solid" Name="ThickLine" />
+    <LineStyle Color="#FFD83B3B" StrokeWidth="1.5" Dash="Solid" Name="RedLine" />
+    <LineStyle Color="#FF2E9E4F" StrokeWidth="1.5" Dash="Solid" Name="GreenLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dash" Name="DashedLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dot" Name="DottedLine" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="2" />
+    <ShapeStyle Fill="#64C8FFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="OtherShape" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="3" />
+    <ShapeStyle Fill="#1C2F7BD6" IsFilled="true" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Solid" Name="BlueOutline" />
+    <ShapeStyle Fill="#1CE08A00" IsFilled="true" Color="#FFE08A00" StrokeWidth="1.5" Dash="Solid" Name="OrangeOutline" />
+    <ShapeStyle Fill="#1C8854D0" IsFilled="true" Color="#FF8854D0" StrokeWidth="1.5" Dash="Solid" Name="PurpleOutline" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
+    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="7" />
+    <PointStyle Size="2" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="8" />
+    <PointStyle Size="2" Fill="#FFC0C0C0" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="9" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="10" />
+    <LineStyle Color="#FF0000FF" StrokeWidth="1" Dash="Solid" Name="11" />
+    <TextStyle FontSize="23.8" Color="#FF000080" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="12" />
+    <TextStyle FontSize="20.4" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="13" />
+    <TextStyle FontSize="23.8" Color="#FF000077" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="14" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="O" Style="7" X="0" Y="0" />
+    <FreePoint Name="A" Style="8" X="1.839999" Y="1.370612" />
+    <FreePoint Name="B" Style="8" X="1.918231" Y="-0.754063" />
+    <PointByCoordinates Name="C" Style="9" X="a.x*b.x-a.y*b.y" Y="a.y*b.x+a.x*b.y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <FreePoint Name="X" Visible="false" Style="7" X="6" Y="0" />
+    <Segment Name="Segment1" Style="10">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="Segment2" Style="10">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Segment3" Style="11">
+      <Dependency Name="O" />
+      <Dependency Name="C" />
+    </Segment>
+    <Vector Name="Vector1" Style="10">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </Vector>
+    <Vector Name="Vector2" Style="10">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+    </Vector>
+    <Vector Name="Vector3" Style="10">
+      <Dependency Name="O" />
+      <Dependency Name="C" />
+    </Vector>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Complex Multiplication" DecimalsToShow="2" X="6.72" Y="1.371" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Think of the arrows as complex numbers: A =\n[A.X] + [A.Y]i and B = [B.X] + [B.Y]i.\n\nC is their product. Its angle is the sum of\nthe two angles ([deg(ang(a,o,x))]° +\n[deg(ang(b,o,x))]° = [deg(ang(c,o,x))]°), and\nits length is the product of the two lengths\n([AO] · [OB] = [OC]).\n\nMultiplying by a complex number rotates and\nstretches. Drag A and B." DecimalsToShow="2" X="6.72" Y="0.921">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="O" />
+      <Dependency Name="X" />
+    </Label>
+  </Figures>
+</Drawing>

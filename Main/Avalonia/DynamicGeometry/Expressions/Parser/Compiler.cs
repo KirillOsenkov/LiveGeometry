@@ -54,13 +54,24 @@ namespace DynamicGeometry
 
             ExpressionTreeBuilder builder = new ExpressionTreeBuilder();
             builder.SetContext(drawing, isFigureAllowed);
-            var expressionTree = builder.CreateExpression(ast, result);
-            if (expressionTree == null || !result.Errors.IsEmpty())
+            try
             {
-                return result;
+                var expressionTree = builder.CreateExpression(ast, result);
+                if (expressionTree == null || !result.Errors.IsEmpty())
+                {
+                    return result;
+                }
+
+                Func<double> function = ExpressionTreeEvaluatorProvider.InterpretExpression(expressionTree);
+                result.Expression = function;
             }
-            Func<double> function = ExpressionTreeEvaluatorProvider.InterpretExpression(expressionTree);
-            result.Expression = function;
+            catch (Exception ex)
+            {
+                // an expression the builder can't make sense of (a function of an expression
+                // where it expects a point, say) is an error of the label, not of the drawing
+                result.AddError(ex.InnerException?.Message ?? ex.Message);
+            }
+
             return result;
         }
 

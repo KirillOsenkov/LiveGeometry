@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="0" Creator="LiveGeometry.App">
+  <Viewport Left="-13.1985798988" Top="5.1574531592" Right="9.5392158892" Bottom="-4.7725685951" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
+    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
+    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
+    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
+    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
+    <LineStyle Color="#64000000" StrokeWidth="1" Dash="Solid" Name="1" />
+    <LineStyle Color="#C80000FF" StrokeWidth="1" Dash="Solid" Name="OtherLine" />
+    <LineStyle Color="#E6000000" StrokeWidth="2.5" Dash="Solid" Name="ThickLine" />
+    <LineStyle Color="#FFD83B3B" StrokeWidth="1.5" Dash="Solid" Name="RedLine" />
+    <LineStyle Color="#FF2E9E4F" StrokeWidth="1.5" Dash="Solid" Name="GreenLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dash" Name="DashedLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dot" Name="DottedLine" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="2" />
+    <ShapeStyle Fill="#64C8FFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="OtherShape" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="3" />
+    <ShapeStyle Fill="#1C2F7BD6" IsFilled="true" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Solid" Name="BlueOutline" />
+    <ShapeStyle Fill="#1CE08A00" IsFilled="true" Color="#FFE08A00" StrokeWidth="1.5" Dash="Solid" Name="OrangeOutline" />
+    <ShapeStyle Fill="#1C8854D0" IsFilled="true" Color="#FF8854D0" StrokeWidth="1.5" Dash="Solid" Name="PurpleOutline" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
+    <PointStyle Size="4" Fill="#FFB0B0B0" IsFilled="true" Color="#FF00FF00" StrokeWidth="0.7" Dash="Solid" Name="7" />
+    <PointStyle Size="4" Fill="#FFB0B0B0" IsFilled="true" Color="#FF00FFFF" StrokeWidth="0.7" Dash="Solid" Name="8" />
+    <LineStyle Color="#FF00FFFF" StrokeWidth="1" Dash="Solid" Name="9" />
+    <TextStyle FontSize="23.8" Color="#FF80FFFF" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="10" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="Point1" Style="7" X="4.008442" Y="1.812398" />
+    <FreePoint Name="Point2" Style="7" X="-4.114275" Y="-4.299484" />
+    <FreePoint Name="Point3" Style="7" X="-4.709588" Y="3.730629" />
+    <MidPoint Name="MiddlePoint1" Visible="false" Style="8">
+      <Dependency Name="Point3" />
+      <Dependency Name="Point2" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint2" Visible="false" Style="8">
+      <Dependency Name="Point2" />
+      <Dependency Name="Point1" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint3" Visible="false" Style="8">
+      <Dependency Name="Point1" />
+      <Dependency Name="Point3" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint4" Visible="false" Style="8">
+      <Dependency Name="Point3" />
+      <Dependency Name="MiddlePoint1" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint5" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint1" />
+      <Dependency Name="MiddlePoint3" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint6" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint3" />
+      <Dependency Name="Point3" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint7" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint3" />
+      <Dependency Name="Point1" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint8" Visible="false" Style="8">
+      <Dependency Name="Point1" />
+      <Dependency Name="MiddlePoint2" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint9" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint2" />
+      <Dependency Name="MiddlePoint3" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint10" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint1" />
+      <Dependency Name="MiddlePoint2" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint11" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint2" />
+      <Dependency Name="Point2" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint12" Visible="false" Style="8">
+      <Dependency Name="Point2" />
+      <Dependency Name="MiddlePoint1" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint13" Visible="false" Style="8">
+      <Dependency Name="Point3" />
+      <Dependency Name="MiddlePoint4" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint14" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint4" />
+      <Dependency Name="MiddlePoint6" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint15" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint6" />
+      <Dependency Name="Point3" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint16" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint6" />
+      <Dependency Name="MiddlePoint5" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint17" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint5" />
+      <Dependency Name="MiddlePoint3" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint18" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint3" />
+      <Dependency Name="MiddlePoint6" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint19" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint4" />
+      <Dependency Name="MiddlePoint1" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint20" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint1" />
+      <Dependency Name="MiddlePoint5" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint21" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint5" />
+      <Dependency Name="MiddlePoint4" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint22" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint1" />
+      <Dependency Name="MiddlePoint12" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint23" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint12" />
+      <Dependency Name="Point2" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint24" Visible="false" Style="8">
+      <Dependency Name="Point2" />
+      <Dependency Name="MiddlePoint11" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint25" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint11" />
+      <Dependency Name="MiddlePoint12" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint26" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint12" />
+      <Dependency Name="MiddlePoint10" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint27" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint10" />
+      <Dependency Name="MiddlePoint1" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint28" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint10" />
+      <Dependency Name="MiddlePoint2" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint29" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint2" />
+      <Dependency Name="MiddlePoint11" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint30" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint11" />
+      <Dependency Name="MiddlePoint10" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint31" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint3" />
+      <Dependency Name="MiddlePoint9" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint32" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint9" />
+      <Dependency Name="MiddlePoint7" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint33" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint7" />
+      <Dependency Name="MiddlePoint3" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint34" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint9" />
+      <Dependency Name="MiddlePoint2" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint35" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint2" />
+      <Dependency Name="MiddlePoint8" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint36" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint8" />
+      <Dependency Name="MiddlePoint9" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint37" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint7" />
+      <Dependency Name="MiddlePoint8" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint38" Visible="false" Style="8">
+      <Dependency Name="MiddlePoint8" />
+      <Dependency Name="Point1" />
+    </MidPoint>
+    <MidPoint Name="MiddlePoint39" Visible="false" Style="8">
+      <Dependency Name="Point1" />
+      <Dependency Name="MiddlePoint7" />
+    </MidPoint>
+    <Segment Name="Segment1" Style="9">
+      <Dependency Name="Point1" />
+      <Dependency Name="Point2" />
+    </Segment>
+    <Segment Name="Segment2" Style="9">
+      <Dependency Name="Point2" />
+      <Dependency Name="Point3" />
+    </Segment>
+    <Segment Name="Segment3" Style="9">
+      <Dependency Name="Point3" />
+      <Dependency Name="Point1" />
+    </Segment>
+    <Segment Name="Segment4" Style="9">
+      <Dependency Name="MiddlePoint3" />
+      <Dependency Name="MiddlePoint1" />
+    </Segment>
+    <Segment Name="Segment5" Style="9">
+      <Dependency Name="MiddlePoint1" />
+      <Dependency Name="MiddlePoint2" />
+    </Segment>
+    <Segment Name="Segment6" Style="9">
+      <Dependency Name="MiddlePoint2" />
+      <Dependency Name="MiddlePoint3" />
+    </Segment>
+    <Segment Name="Segment7" Style="9">
+      <Dependency Name="MiddlePoint6" />
+      <Dependency Name="MiddlePoint4" />
+    </Segment>
+    <Segment Name="Segment8" Style="9">
+      <Dependency Name="MiddlePoint4" />
+      <Dependency Name="MiddlePoint5" />
+    </Segment>
+    <Segment Name="Segment9" Style="9">
+      <Dependency Name="MiddlePoint5" />
+      <Dependency Name="MiddlePoint6" />
+    </Segment>
+    <Segment Name="Segment10" Style="9">
+      <Dependency Name="MiddlePoint7" />
+      <Dependency Name="MiddlePoint9" />
+    </Segment>
+    <Segment Name="Segment11" Style="9">
+      <Dependency Name="MiddlePoint9" />
+      <Dependency Name="MiddlePoint8" />
+    </Segment>
+    <Segment Name="Segment12" Style="9">
+      <Dependency Name="MiddlePoint8" />
+      <Dependency Name="MiddlePoint7" />
+    </Segment>
+    <Segment Name="Segment13" Style="9">
+      <Dependency Name="MiddlePoint10" />
+      <Dependency Name="MiddlePoint12" />
+    </Segment>
+    <Segment Name="Segment14" Style="9">
+      <Dependency Name="MiddlePoint12" />
+      <Dependency Name="MiddlePoint11" />
+    </Segment>
+    <Segment Name="Segment15" Style="9">
+      <Dependency Name="MiddlePoint11" />
+      <Dependency Name="MiddlePoint10" />
+    </Segment>
+    <Segment Name="Segment16" Style="9">
+      <Dependency Name="MiddlePoint15" />
+      <Dependency Name="MiddlePoint13" />
+    </Segment>
+    <Segment Name="Segment17" Style="9">
+      <Dependency Name="MiddlePoint13" />
+      <Dependency Name="MiddlePoint14" />
+    </Segment>
+    <Segment Name="Segment18" Style="9">
+      <Dependency Name="MiddlePoint14" />
+      <Dependency Name="MiddlePoint15" />
+    </Segment>
+    <Segment Name="Segment19" Style="9">
+      <Dependency Name="MiddlePoint18" />
+      <Dependency Name="MiddlePoint16" />
+    </Segment>
+    <Segment Name="Segment20" Style="9">
+      <Dependency Name="MiddlePoint16" />
+      <Dependency Name="MiddlePoint17" />
+    </Segment>
+    <Segment Name="Segment21" Style="9">
+      <Dependency Name="MiddlePoint17" />
+      <Dependency Name="MiddlePoint18" />
+    </Segment>
+    <Segment Name="Segment22" Style="9">
+      <Dependency Name="MiddlePoint21" />
+      <Dependency Name="MiddlePoint19" />
+    </Segment>
+    <Segment Name="Segment23" Style="9">
+      <Dependency Name="MiddlePoint19" />
+      <Dependency Name="MiddlePoint20" />
+    </Segment>
+    <Segment Name="Segment24" Style="9">
+      <Dependency Name="MiddlePoint20" />
+      <Dependency Name="MiddlePoint21" />
+    </Segment>
+    <Segment Name="Segment25" Style="9">
+      <Dependency Name="MiddlePoint27" />
+      <Dependency Name="MiddlePoint22" />
+    </Segment>
+    <Segment Name="Segment26" Style="9">
+      <Dependency Name="MiddlePoint26" />
+      <Dependency Name="MiddlePoint27" />
+    </Segment>
+    <Segment Name="Segment27" Style="9">
+      <Dependency Name="MiddlePoint22" />
+      <Dependency Name="MiddlePoint26" />
+    </Segment>
+    <Segment Name="Segment28" Style="9">
+      <Dependency Name="MiddlePoint25" />
+      <Dependency Name="MiddlePoint23" />
+    </Segment>
+    <Segment Name="Segment29" Style="9">
+      <Dependency Name="MiddlePoint23" />
+      <Dependency Name="MiddlePoint24" />
+    </Segment>
+    <Segment Name="Segment30" Style="9">
+      <Dependency Name="MiddlePoint24" />
+      <Dependency Name="MiddlePoint25" />
+    </Segment>
+    <Segment Name="Segment31" Style="9">
+      <Dependency Name="MiddlePoint30" />
+      <Dependency Name="MiddlePoint29" />
+    </Segment>
+    <Segment Name="Segment32" Style="9">
+      <Dependency Name="MiddlePoint29" />
+      <Dependency Name="MiddlePoint28" />
+    </Segment>
+    <Segment Name="Segment33" Style="9">
+      <Dependency Name="MiddlePoint28" />
+      <Dependency Name="MiddlePoint30" />
+    </Segment>
+    <Segment Name="Segment34" Style="9">
+      <Dependency Name="MiddlePoint31" />
+      <Dependency Name="MiddlePoint32" />
+    </Segment>
+    <Segment Name="Segment35" Style="9">
+      <Dependency Name="MiddlePoint32" />
+      <Dependency Name="MiddlePoint33" />
+    </Segment>
+    <Segment Name="Segment36" Style="9">
+      <Dependency Name="MiddlePoint33" />
+      <Dependency Name="MiddlePoint31" />
+    </Segment>
+    <Segment Name="Segment37" Style="9">
+      <Dependency Name="MiddlePoint34" />
+      <Dependency Name="MiddlePoint35" />
+    </Segment>
+    <Segment Name="Segment38" Style="9">
+      <Dependency Name="MiddlePoint35" />
+      <Dependency Name="MiddlePoint36" />
+    </Segment>
+    <Segment Name="Segment39" Style="9">
+      <Dependency Name="MiddlePoint36" />
+      <Dependency Name="MiddlePoint34" />
+    </Segment>
+    <Segment Name="Segment40" Style="9">
+      <Dependency Name="MiddlePoint37" />
+      <Dependency Name="MiddlePoint38" />
+    </Segment>
+    <Segment Name="Segment41" Style="9">
+      <Dependency Name="MiddlePoint38" />
+      <Dependency Name="MiddlePoint39" />
+    </Segment>
+    <Segment Name="Segment42" Style="9">
+      <Dependency Name="MiddlePoint39" />
+      <Dependency Name="MiddlePoint37" />
+    </Segment>
+    <Label Name="Label1" Style="10" DecimalsToShow="2" Text="Sierpinski gasket" X="-7.67292419756364" Y="4.68312959644402" />
+  </Figures>
+</Drawing>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="0" Creator="LiveGeometry.App">
+  <Viewport Left="-170.1580965579" Top="87.107374094" Right="113.0699445268" Bottom="-36.5836219734" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
+    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
+    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
+    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
+    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
+    <LineStyle Color="#64000000" StrokeWidth="1" Dash="Solid" Name="1" />
+    <LineStyle Color="#C80000FF" StrokeWidth="1" Dash="Solid" Name="OtherLine" />
+    <LineStyle Color="#E6000000" StrokeWidth="2.5" Dash="Solid" Name="ThickLine" />
+    <LineStyle Color="#FFD83B3B" StrokeWidth="1.5" Dash="Solid" Name="RedLine" />
+    <LineStyle Color="#FF2E9E4F" StrokeWidth="1.5" Dash="Solid" Name="GreenLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dash" Name="DashedLine" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dot" Name="DottedLine" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="2" />
+    <ShapeStyle Fill="#64C8FFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="OtherShape" />
+    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="3" />
+    <ShapeStyle Fill="#1C2F7BD6" IsFilled="true" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Solid" Name="BlueOutline" />
+    <ShapeStyle Fill="#1CE08A00" IsFilled="true" Color="#FFE08A00" StrokeWidth="1.5" Dash="Solid" Name="OrangeOutline" />
+    <ShapeStyle Fill="#1C8854D0" IsFilled="true" Color="#FF8854D0" StrokeWidth="1.5" Dash="Solid" Name="PurpleOutline" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
+    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
+    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
+    <PointStyle Size="4" Fill="#FF000000" IsFilled="true" Color="#FFFFFFFF" StrokeWidth="0.7" Dash="Solid" Name="7" />
+    <LineStyle Color="#FF00FFFF" StrokeWidth="1" Dash="Solid" Name="8" />
+    <PointStyle Size="4" Fill="#FF000000" IsFilled="true" Color="#FFFFFF00" StrokeWidth="0.7" Dash="Solid" Name="9" />
+    <PointStyle Size="4" Fill="#FF000000" IsFilled="true" Color="#FF00FFFF" StrokeWidth="0.7" Dash="Solid" Name="10" />
+    <LineStyle Color="#FF00FF00" StrokeWidth="1" Dash="Solid" Name="11" />
+    <TextStyle FontSize="27.2" Color="#FF00FF00" FontFamily="Arial" Bold="false" Italic="false" Underline="true" Name="12" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="C" Style="7" X="97.248113" Y="45.899068" />
+    <FreePoint Name="D" Style="7" X="-0.230838" Y="-30.701885" />
+    <Segment Name="Segment1" Style="8">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <PointOnFigure Name="A" Style="9" X="70.92167859913593" Y="25.21121751012171" Parameter="0.27007301710565257">
+      <Dependency Name="Segment1" />
+    </PointOnFigure>
+    <FreePoint Name="E" Style="10" X="70.703407" Y="5.559923" />
+    <PointByCoordinates Name="B" Style="10" X="(A.X) * (COS(A.Y))" Y="(A.X) * (SIN(A.Y))">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <Locus Name="Locus1" Style="11">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Locus>
+    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Spiral" DecimalsToShow="2" X="111.955" Y="45.899" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Point B is placed by a rule: its distance from\nthe center is A's x-coordinate and its angle\nis A's y-coordinate. As A slides along the\nsegment, B sweeps out a spiral.\n\nDrag the ends of the segment to wind the\nspiral tighter or looser." DecimalsToShow="2" X="111.955" Y="36.707" />
+  </Figures>
+</Drawing>

@@ -22,6 +22,7 @@
     <PointStyle Size="15" Fill="#FF33FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="10" />
     <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
     <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
   </Styles>
   <Figures>
     <FreePoint Name="O" Style="1" X="-0.0208333333" Y="-2.5625" />

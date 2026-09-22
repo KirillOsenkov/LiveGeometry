@@ -114,6 +114,11 @@ namespace DynamicGeometry
             string longestSuffix = "";
             foreach (var name in names)
             {
+                if (string.IsNullOrEmpty(name))
+                {
+                    continue;
+                }
+
                 if (twoPoints.StartsWith(name, StringComparison.OrdinalIgnoreCase) && name.Length > longestPrefix.Length)
                 {
                     longestPrefix = name;

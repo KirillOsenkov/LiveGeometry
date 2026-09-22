@@ -75,6 +75,30 @@ namespace DynamicGeometry
             }
 
             processedSections.Add(title, section);
+            try
+            {
+                ProcessSectionCore(section);
+            }
+            catch (Exception ex) when (!(ex is DGFSectionException))
+            {
+                // which section of the file, for the message and for debugging
+                throw new DGFSectionException(
+                    "[" + title + "] " + (section["FigureTypeString"] ?? section["Type"] ?? "") + ": " + ex.Message,
+                    ex);
+            }
+        }
+
+        public class DGFSectionException : Exception
+        {
+            public DGFSectionException(string message, Exception inner)
+                : base(message, inner)
+            {
+            }
+        }
+
+        void ProcessSectionCore(IniFile.Section section)
+        {
+            string title = section.Title;
             if (title == "General")
             {
                 ProcessGeneral(section);
@@ -157,7 +181,13 @@ namespace DynamicGeometry
             foreach (int dependency in ReadIndices(section, dependencyType))
             {
                 EnsureSectionProcessed(dependencyType + dependency.ToString());
-                dependencies.Add((IFigure)container[dependency]);
+                var figure = (IFigure)container[dependency];
+
+                // a message, sound or "open file" button (types 1-3) has no figure here
+                if (figure != null)
+                {
+                    dependencies.Add(figure);
+                }
             }
         }
 
@@ -320,9 +350,9 @@ namespace DynamicGeometry
 
         void ReadAnalyticCircle(IniFile.Section section)
         {
-            double a = section.ReadDouble("AuxInfo(1)");
-            double b = section.ReadDouble("AuxInfo(2)");
-            double c = section.ReadDouble("AuxInfo(3)");
+            double a = GetAuxInfo(section, 1);
+            double b = GetAuxInfo(section, 2);
+            double c = GetAuxInfo(section, 3);
 
             double x = -a / 2;
             double y = -b / 2;
@@ -339,11 +369,12 @@ namespace DynamicGeometry
 
         void ReadAnalyticLineGeneral(IniFile.Section section)
         {
+            // a x + b y + c = 0; a coefficient that is 0 isn't written
             var figure = Factory.CreateLineByEquation(
                 drawing,
-                section["AuxInfo(1)"],
-                section["AuxInfo(2)"],
-                section["AuxInfo(3)"]);
+                GetAuxInfo(section, 1).ToStringInvariant(),
+                GetAuxInfo(section, 2).ToStringInvariant(),
+                GetAuxInfo(section, 3).ToStringInvariant());
             SetFigureStyle(section, figure);
             AddFigure(section, figure);
         }
@@ -382,11 +413,7 @@ namespace DynamicGeometry
                     vertex,
                     point1,
                     point2});
-            if (section["AuxPoint(6)"] != null)
-            {
-                angle.Offset = drawing.CoordinateSystem.ToLogical(GetAuxPoint(section, 6));
-            }
-
+            angle.Offset = ReadLabelOffset(section);
             AddLabelFigure(section, angle);
 
             // DG kept the mark in the same figure: DrawStyle 0 is no mark, otherwise 1 to 3 arcs
@@ -492,11 +519,23 @@ namespace DynamicGeometry
 
         void ReadAngleBisector(IniFile.Section section)
         {
+            // DG's bisector (Math.bas GetBisector) always halves the interior angle; ours halves
+            // the angle counterclockwise from the first side to the second, so the sides go in
+            // the order that makes it the interior one
+            var vertex = GetPoint(section, 1);
+            var side1 = GetPoint(section, 0);
+            var side2 = GetPoint(section, 2);
+            if (Math.OAngle(side1.Coordinates, vertex.Coordinates, side2.Coordinates) > Math.PI)
+            {
+                var temp = side1;
+                side1 = side2;
+                side2 = temp;
+            }
+
+            // and DG's bisector was a whole line, with intersections on both sides of the vertex
             var figure = Factory.CreateAngleBisector(
-                drawing, new[] {
-                    GetPoint(section, 1),
-                    GetPoint(section, 0),
-                    GetPoint(section, 2)});
+                drawing, new[] { vertex, side1, side2 });
+            figure.IsLine = true;
             SetFigureStyle(section, figure);
             AddFigure(section, figure);
         }
@@ -533,9 +572,11 @@ namespace DynamicGeometry
 
         void ReadPointOnFigure(IniFile.Section section)
         {
+            // AuxInfo(1) is DG's parameter, but its meaning differs by figure (t along a line,
+            // a clockwise angle on a circle); AddFigurePoint moves the point to its saved
+            // coordinates, which projects it onto the figure and sets the parameter from that
             var point = Factory.CreatePointOnFigure(
                 drawing, GetParent(section, 0), new Point());
-            point.Parameter = -GetAuxInfo(section, 1);
             AddFigure(section, point);
             AddFigurePoint(section, point, 0);
         }
@@ -544,8 +585,20 @@ namespace DynamicGeometry
         {
             var pointSection1 = sectionLookup["Point" + section["Points" + index.ToString()]];
             point.Name = pointSection1["Name"];
-            point.X = pointSection1.ReadDouble("X");
-            point.Y = pointSection1.ReadDouble("Y");
+
+            // in one go: X and Y one after the other would project a point on a figure onto
+            // it twice, from two places that are both off the figure, and it lands elsewhere
+            var saved = new Point(pointSection1.ReadDouble("X"), pointSection1.ReadDouble("Y"));
+            if (point is PointOnFigure)
+            {
+                point.MoveTo(saved);
+            }
+            else
+            {
+                point.X = saved.X;
+                point.Y = saved.Y;
+            }
+
             SetPointStyle(pointSection1, point);
             var pointIndex = GetPointIndex(section, index);
             points[pointIndex] = point;
@@ -555,10 +608,7 @@ namespace DynamicGeometry
         {
             var figure = Factory.CreateDistanceMeasurement(
                 drawing, GetPointList(section, 2));
-            if (section["AuxPoint(6)"] != null)
-            {
-                figure.Offset = drawing.CoordinateSystem.ToLogical(GetAuxPoint(section, 6));
-            }
+            figure.Offset = ReadLabelOffset(section);
             AddLabelFigure(section, figure);
         }
 
@@ -803,15 +853,28 @@ namespace DynamicGeometry
             return figures[parentIndex];
         }
 
+        /// <summary>
+        /// Where the user dragged the number of a measurement: AuxPoints(6) is the shift from
+        /// its default place, in pixels (Geometry.bas, dsMeasureDistance)
+        /// </summary>
+        Point ReadLabelOffset(IniFile.Section section)
+        {
+            var pixels = GetAuxPoint(section, 6);
+            var coordinateSystem = drawing.CoordinateSystem;
+            return new Point(coordinateSystem.ToLogical(pixels.X), -coordinateSystem.ToLogical(pixels.Y));
+        }
+
+        // VB6 (modFileIO.bas) writes an AuxInfo or AuxPoint only when it isn't 0: absent means 0
+
         double GetAuxInfo(IniFile.Section section, int index)
         {
-            return section.ReadDouble("AuxInfo(" + index.ToString() + ")");
+            return section.TryReadDouble("AuxInfo(" + index.ToString() + ")") ?? 0;
         }
 
         Point GetAuxPoint(IniFile.Section section, int index)
         {
-            double x = section.ReadDouble("AuxPoints(" + index.ToString() + ").X");
-            double y = section.ReadDouble("AuxPoints(" + index.ToString() + ").Y");
+            double x = section.TryReadDouble("AuxPoints(" + index.ToString() + ").X") ?? 0;
+            double y = section.TryReadDouble("AuxPoints(" + index.ToString() + ").Y") ?? 0;
             return new Point(x, y);
         }
 
@@ -819,7 +882,10 @@ namespace DynamicGeometry
         {
             var type = section.ReadInt("Type");
             var parentFigure = section["ParentFigure"];
-            if (!parentFigure.IsEmpty())
+
+            // Type is the DrawState that made the point: 0 (dsPoint) is a free point. Older
+            // files write ParentFigure=0 for those too, which is not "Figure0".
+            if (type != 0 && !parentFigure.IsEmpty())
             {
                 EnsureSectionProcessed("Figure" + parentFigure);
                 return;

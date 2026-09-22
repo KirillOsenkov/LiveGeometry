@@ -62,12 +62,19 @@ public partial class MainView
                 await Task.Delay(120);
 
                 var figures = drawing.Figures.Where(f => !(f is CartesianGrid)).ToArray();
-                var missing = figures.Where(f => !f.Exists).Select(f => f.GetType().Name + " " + f.Name).ToArray();
+                // the figures that fail on their own (their dependencies are fine): the
+                // rest just inherit that
+                var missing = figures
+                    .Where(f => !f.Exists && f.Dependencies.All(d => d.Exists))
+                    .Select(f => f.GetType().Name + " " + f.Name + Describe(f) + " <- " + string.Join(",", f.Dependencies.Select(d => d.Name)))
+                    .ToArray();
                 var counts = figures.GroupBy(f => f.GetType().Name).OrderByDescending(g => g.Count()).Select(g => g.Key + "x" + g.Count());
                 report.AppendLine("  figures: " + figures.Length + " (" + string.Join(" ", counts) + ")");
                 if (missing.Length > 0)
                 {
-                    report.AppendLine("  NOT EXISTING: " + string.Join(", ", missing));
+                    report.AppendLine("  NOT EXISTING (" + figures.Count(f => !f.Exists) + " in all): " + string.Join("; ", missing));
+                    report.AppendLine("  points: " + string.Join(" ", figures.OfType<IPoint>().Select(p =>
+                        p.Name + (p.Exists ? "(" + p.Coordinates.X.ToString("0.##") + "," + p.Coordinates.Y.ToString("0.##") + ")" : "(-)"))));
                 }
 
                 foreach (var message in checkMessages)
@@ -79,8 +86,11 @@ public partial class MainView
                 var size = new PixelSize((int)control.Bounds.Width, (int)control.Bounds.Height);
                 using var bitmap = new RenderTargetBitmap(size, new Avalonia.Vector(96, 96));
                 bitmap.Render(control);
-                var pngName = relative.Replace('\\', '_').Replace('/', '_') + ".png";
-                bitmap.Save(Path.Combine(outputFolder, pngName), new PngBitmapEncoderOptions());
+                var outputName = relative.Replace('\\', '_').Replace('/', '_');
+                bitmap.Save(Path.Combine(outputFolder, outputName + ".png"), new PngBitmapEncoderOptions());
+
+                // and the drawing in today's format: how a .dgf gets converted
+                File.WriteAllText(Path.Combine(outputFolder, Path.ChangeExtension(outputName, ".lgf")), drawing.SaveAsText());
             }
             catch (Exception ex)
             {
@@ -91,5 +101,17 @@ public partial class MainView
         File.AppendAllText(reportPath, report.ToString());
         Console.WriteLine("checked " + files.Length + " files");
         Environment.Exit(0);
+    }
+
+    static string Describe(IFigure figure)
+    {
+        if (figure is PointByCoordinates point)
+        {
+            return " X=\"" + point.XExpression.Text + "\" Y=\"" + point.YExpression.Text + "\""
+                + (point.XExpression.IsValid ? "" : " (X invalid)")
+                + (point.YExpression.IsValid ? "" : " (Y invalid)");
+        }
+
+        return "";
     }
 }

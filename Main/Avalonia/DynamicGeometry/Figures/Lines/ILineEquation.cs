@@ -117,19 +117,12 @@ namespace DynamicGeometry
                     return new PointPair();
                 }
 
-                if (a == 0)
-                {
-                    var cb = -c / b;
-                    return new PointPair(0, cb, 1, cb);
-                }
-
-                if (b == 0)
-                {
-                    var ca = -c / a;
-                    return new PointPair(ca, 0, ca, 1);
-                }
-
-                return new PointPair(0, -c / b, -c / a, 0);
+                // the point of the line nearest to the origin, and a step along it ((-b, a) is
+                // the direction); the two intercepts would coincide for a line through the origin
+                var scale = c / (a * a + b * b);
+                var x = -a * scale;
+                var y = -b * scale;
+                return new PointPair(x, y, x - b, y + a);
             }
         }
 

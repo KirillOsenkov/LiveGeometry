@@ -18,6 +18,7 @@
     <ShapeStyle Fill="#35EE00FF" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="14" />
     <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
     <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
   </Styles>
   <Figures>
     <FreePoint Name="A" Style="1" X="-2.1770833333" Y="-1.3645833334" />

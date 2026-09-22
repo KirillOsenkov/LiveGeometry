@@ -19,6 +19,7 @@
     <TextStyle FontSize="22" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="13" />
     <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
     <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
   </Styles>
   <Figures>
     <FreePoint Name="D" Style="1" X="-5.7315276974" Y="6.0834636087" />

@@ -56,13 +56,20 @@ namespace DynamicGeometry
 
         public static string WriteUsingXmlWriter(Action<XmlWriter> writerConsumer)
         {
-            var sb = new StringBuilder();
-            using (var w = XmlWriter.Create(sb, XmlSettings))
+            // through a writer that says UTF-8: with a plain StringBuilder the declaration
+            // would say utf-16, and the file it ends up in is UTF-8 - strict XML parsers refuse that
+            var text = new Utf8StringWriter();
+            using (var w = XmlWriter.Create(text, XmlSettings))
             {
                 writerConsumer(w);
             }
 
-            return sb.ToString();
+            return text.ToString();
+        }
+
+        class Utf8StringWriter : StringWriter
+        {
+            public override Encoding Encoding => Encoding.UTF8;
         }
 
         void Write(Drawing drawing, XmlWriter writer)
