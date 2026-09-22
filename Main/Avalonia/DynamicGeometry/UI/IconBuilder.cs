@@ -276,10 +276,15 @@ namespace DynamicGeometry
             return polyline;
         }
 
-        public IconBuilder Text(Color color, double x1, double y1, string text)
+        public IconBuilder Text(Color color, double x1, double y1, string text, double fontSize = 0)
         {
             TextBlock textblock = new TextBlock();
             textblock.Text = text;
+            if (fontSize > 0)
+            {
+                textblock.FontSize = fontSize;
+            }
+
             Canvas.Children.Add(textblock);
             textblock.SetValue(Canvas.LeftProperty, x1 * Canvas.Width);
             textblock.SetValue(Canvas.TopProperty, y1 * Canvas.Height);

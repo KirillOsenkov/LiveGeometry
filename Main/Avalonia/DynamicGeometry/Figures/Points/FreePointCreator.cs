@@ -10,7 +10,8 @@ namespace DynamicGeometry
     [Order(1)]
     public class FreePointCreator : Behavior
     {
-        [PropertyGridName("Point by coordinates")]
+        /// <summary>The tool's panel: the style for new points</summary>
+        [PropertyGridName("Point")]
         public class Dialog
         {
             public Dialog(FreePointCreator parent)
@@ -19,18 +20,7 @@ namespace DynamicGeometry
                 this.style = parent.Drawing.StyleManager.GetStyles<PointStyle>().FirstOrDefault();
             }
 
-            FreePointCreator parent;
-
-            [PropertyGridVisible]
-            [PropertyGridFocus]
-            [PropertyGridEvent("KeyDown", "X_KeyDown")]
-            [PropertyGridName("X = ")]
-            public string X { get; set; }
-
-            [PropertyGridVisible]
-            [PropertyGridEvent("KeyDown", "Y_KeyDown")]
-            [PropertyGridName("Y = ")]
-            public string Y { get; set; }
+            protected FreePointCreator parent;
 
             private IFigureStyle style;
             [PropertyGridVisible]
@@ -48,6 +38,27 @@ namespace DynamicGeometry
                     pointShape.Apply(style.GetWpfStyle());
                 }
             }
+        }
+
+        /// <summary>The same with the coordinates to type, when that is switched on</summary>
+        [PropertyGridName("Point by coordinates")]
+        public class CoordinatesDialog : Dialog
+        {
+            public CoordinatesDialog(FreePointCreator parent)
+                : base(parent)
+            {
+            }
+
+            [PropertyGridVisible]
+            [PropertyGridFocus]
+            [PropertyGridEvent("KeyDown", "X_KeyDown")]
+            [PropertyGridName("X = ")]
+            public string X { get; set; }
+
+            [PropertyGridVisible]
+            [PropertyGridEvent("KeyDown", "Y_KeyDown")]
+            [PropertyGridName("Y = ")]
+            public string Y { get; set; }
 
             internal void X_KeyDown(object sender, KeyEventArgs e)
             {
@@ -101,10 +112,18 @@ namespace DynamicGeometry
         {
             get
             {
-                if (dialog == null)
+                // the kind of panel follows the setting; the chosen style survives a switch
+                bool withCoordinates = Settings.Instance.EnablePointByCoordinates;
+                if (dialog == null || (dialog is CoordinatesDialog) != withCoordinates)
                 {
-                    dialog = new Dialog(this);
+                    var previous = dialog;
+                    dialog = withCoordinates ? new CoordinatesDialog(this) : new Dialog(this);
+                    if (previous != null && previous.Style != null)
+                    {
+                        dialog.Style = previous.Style;
+                    }
                 }
+
                 return dialog;
             }
         }

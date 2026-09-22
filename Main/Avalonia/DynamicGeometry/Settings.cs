@@ -43,6 +43,12 @@ namespace DynamicGeometry
         public virtual bool EnableSnapToGrid { get; set; }
         public virtual bool EnableSnapToPoint { get; set; }
         public virtual bool EnableSnapToCenter { get; set; }
+
+        /// <summary>
+        /// Whether a tool that needs a point offers the panel to type its coordinates. Off by
+        /// default: it is a niche way to place a point and was in the way of every segment.
+        /// </summary>
+        public virtual bool EnablePointByCoordinates { get; set; }
         public virtual bool HideHints { get; set; }
         public virtual Math.lengthUnit DistanceUnit { get; set; } // Used by Measurement subclasses.  Not yet implemented throughout.
 

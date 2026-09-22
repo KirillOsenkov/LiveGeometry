@@ -284,7 +284,11 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
 - **Keyboard focus drifts into tool panels.** A tool's PropertyBag panel (e.g. "Point by
   coordinates") takes focus into its TextBox after every construction step, so neither the canvas
   KeyDown nor `MainView_KeyUp` (which skips TextBox focus) sees keys then. Anything that must
-  always work (Escape) belongs in the `MainView_KeyDown` tunnel handler.
+  always work (Escape) belongs in the `MainView_KeyDown` tunnel handler. The "Point by
+  coordinates" panel (X/Y boxes of `FigureCreator.Dialog`, `ShapeCreator.ShapeDialog`,
+  `FreePointCreator.CoordinatesDialog`) only exists while the "Point by coordinates" toggle on
+  the Coordinates tab is on (`Settings.EnablePointByCoordinates`, off by default); the Point
+  tool's panel is then just its style row.
 - **Toolbar look** is centralized in `UI/Ribbon/RibbonTheme.cs`; `ButtonGrid` draws the
   hover/pressed/checked plate. `Ribbon` and `TabPanel` replace the Fluent TabControl/TabItem
   templates with their own (in code): the header row has a bottom line *behind* the headers and

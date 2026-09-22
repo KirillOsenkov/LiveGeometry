@@ -37,6 +37,7 @@ namespace DynamicGeometry
         public Command CommandToggleLabelNewPoints { get; set; }
         public Command CommandTogglePolar { get; set; }
         public Command CommandToggleSnapToCenter { get; set; }
+        public Command CommandTogglePointByCoordinates { get; set; }
         public Command CommandShowFigureExplorer { get; set; }
 
         public DrawingHost()
@@ -101,6 +102,10 @@ namespace DynamicGeometry
             CommandToggleSnapToCenter = new Command(ToggleSnapToCenter, ToggleIcons.SnapToCenter(), "Snap to center", BehaviorCategories.Selection)
             {
                 IsChecked = () => Settings.Instance.EnableSnapToCenter
+            };
+            CommandTogglePointByCoordinates = new Command(TogglePointByCoordinates, ToggleIcons.PointByCoordinates(), "Point by coordinates", BehaviorCategories.Coordinates)
+            {
+                IsChecked = () => Settings.Instance.EnablePointByCoordinates
             };
             CommandShowFigureExplorer = new Command(ToggleFigureExplorer, new CheckBox() { IsChecked = FigureExplorer.Visible }, "Figure List", BehaviorCategories.Drawing);
         }
@@ -274,6 +279,17 @@ namespace DynamicGeometry
         public void ToggleSnapToCenter()
         {
             Settings.Instance.EnableSnapToCenter = !Settings.Instance.EnableSnapToCenter;
+        }
+
+        public void TogglePointByCoordinates()
+        {
+            Settings.Instance.EnablePointByCoordinates = !Settings.Instance.EnablePointByCoordinates;
+
+            // the panel of the current tool appears or goes right away
+            if (CurrentDrawing != null && CurrentDrawing.Behavior != null)
+            {
+                ShowProperties(CurrentDrawing.Behavior.PropertyBag);
+            }
         }
 
         protected void CreateCanvas()

@@ -102,7 +102,7 @@ namespace DynamicGeometry
         {
             get
             {
-                if (ExpectingAPoint())
+                if (Settings.Instance.EnablePointByCoordinates && ExpectingAPoint())
                 {
                     return new ShapeDialog(this);
                 }

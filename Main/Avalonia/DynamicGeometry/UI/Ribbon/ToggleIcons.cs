@@ -76,4 +76,18 @@ public static class ToggleIcons
             .Text(Colors.Black, 0.5, 0.08, text: "A")
             .Canvas;
     }
+
+    /// <summary>The panel for typing a point's coordinates: a point with x and y read off the axes</summary>
+    public static FrameworkElement PointByCoordinates()
+    {
+        return IconBuilder.BuildIcon()
+            .Line(guide, 0.28, 0.78, 0.96, 0.78)
+            .Line(guide, 0.28, 0.96, 0.28, 0.06)
+            .Line(accent, 0.28, 0.36, 0.7, 0.36)
+            .Line(accent, 0.7, 0.78, 0.7, 0.36)
+            .Point(0.7, 0.36)
+            .Text(Colors.Black, 0.58, 0.72, text: "x", fontSize: 10)
+            .Text(Colors.Black, 0.04, 0.2, text: "y", fontSize: 10)
+            .Canvas;
+    }
 }

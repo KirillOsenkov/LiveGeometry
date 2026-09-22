@@ -192,6 +192,7 @@ public partial class MainView : UserControl
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleSnapToCenter);
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleLabelNewPoints);
         DrawingHost.AddToolbarButton(DrawingHost.CommandTogglePolar);
+        DrawingHost.AddToolbarButton(DrawingHost.CommandTogglePointByCoordinates);
     }
 
     public void HandleExceptions(Action code)
