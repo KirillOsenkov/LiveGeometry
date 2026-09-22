@@ -2,8 +2,6 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Media;
 using DynamicGeometry;
 using Drawing = DynamicGeometry.Drawing;
 using Label = DynamicGeometry.Label;
@@ -24,8 +22,6 @@ public static class GalleryDrawing
     const double gapPixels = 40;
     const double lineGapPixels = 6;
     const int fitRounds = 4;
-
-    static readonly IBrush textPlate = new SolidColorBrush(Color.FromArgb(0xEB, 0xFF, 0xFF, 0xFF));
 
     /// <summary>For a thumbnail: text is unreadable at that size and the geometry gets all the room</summary>
     public static void HideText(Drawing drawing)
@@ -54,18 +50,7 @@ public static class GalleryDrawing
             return;
         }
 
-        // lines, graphs and the grid have no end: there is no place they can't reach
-        foreach (var label in new[] { title, description })
-        {
-            if (label.Shape is Border plate)
-            {
-                plate.Background = textPlate;
-                plate.Padding = new Thickness(10, 4, 10, 6);
-                plate.CornerRadius = new CornerRadius(6);
-            }
-        }
-
-        bool isWide =drawing.Canvas.Bounds.Width >= drawing.Canvas.Bounds.Height;
+        bool isWide = drawing.Canvas.Bounds.Width >= drawing.Canvas.Bounds.Height;
         for (int i = 0; i < fitRounds; i++)
         {
             bool hasFigure = coordinateSystem.TryGetContentBounds(out var figure, include: f => f != title && f != description);
