@@ -91,5 +91,38 @@ namespace DynamicGeometry
         {
             return degrees.ToRadians();
         }
+
+        // the rest of what the VB6 evaluator (modEvaluator.bas) had, for its .dgf files;
+        // Sin, Cos, Abs, Round, Sqrt... come from System.Math by name
+
+        public static double OAng(Point a, Point b, Point c)
+        {
+            return Math.OAngle(a, b, c);
+        }
+
+        public static double Int(double number)
+        {
+            return System.Math.Floor(number);
+        }
+
+        public static double Sgn(double number)
+        {
+            return System.Math.Sign(number);
+        }
+
+        public static double Lg(double number)
+        {
+            return System.Math.Log10(number);
+        }
+
+        public static double ToDeg(double radians)
+        {
+            return radians.ToDegrees();
+        }
+
+        public static double ToRad(double degrees)
+        {
+            return degrees.ToRadians();
+        }
     }
 }

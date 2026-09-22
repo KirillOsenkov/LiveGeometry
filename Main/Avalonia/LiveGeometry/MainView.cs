@@ -15,7 +15,7 @@ namespace LiveGeometry;
 /// The shared Live Geometry main view, used by both the Browser and Desktop heads.
 /// Ported from Main/WPFClient/MainWindow.cs.
 /// </summary>
-public class MainView : UserControl
+public partial class MainView : UserControl
 {
     DockPanel LayoutRoot = new DockPanel();
     DrawingHost DrawingHost = new DrawingHost();
@@ -397,6 +397,12 @@ public class MainView : UserControl
     void OpenStartupFile()
     {
         AddressBar.Current.PathChanged += path => HandleExceptions(() => Navigate(path, push: false));
+
+        if (CheckFolder != null)
+        {
+            RunCheck(CheckFolder, CheckOutputFolder);
+            return;
+        }
 
         var path = StartupFile;
         StartupFile = null;

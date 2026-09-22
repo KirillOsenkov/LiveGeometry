@@ -20,8 +20,15 @@ namespace DynamicGeometry
 
             while (i <= last)
             {
-                string currentLine = lines[i];
+                string currentLine = lines[i].Trim();
                 int currentLineLength = currentLine.Length;
+                if (currentLineLength == 0)
+                {
+                    // the blank line between sections, and a trailing one
+                    i++;
+                    continue;
+                }
+
                 if (currentLine[0] == '[')
                 {
                     if (currentLineLength < 3)

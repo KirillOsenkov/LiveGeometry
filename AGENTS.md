@@ -311,6 +311,17 @@ Only if a build actually fails on a lock, enumerate and clean up:
 focus, e.g. a popup), so check that the process is really gone. Target test windows by `pid:`/`hwnd:`
 rather than by process name when more than one could exist.
 
+## Batch-checking drawings
+
+`LiveGeometry.Desktop.exe --check <folder> <out>` (`MainView.BatchCheck.cs`) opens every
+`.lgf`/`.dgf` under the folder in the real editor, zooms to fit, saves `<out>/<relative path>.png`
+and appends to `<out>/report.txt`: figure counts, `NOT EXISTING: ...` (figures whose construction
+failed - hidden second intersections are often legitimately absent), load errors. It exits when
+done. Contact sheets of the PNGs (a System.Drawing script) are the fastest way to eyeball hundreds
+of files. The VB6 CD library (`C:\Dropbox\Projects\DG 1\DG CD Version 1.0\Library\English`,
+221 files, read-only) was triaged this way on 2026-09-21: 208 load, 13 throw (unsupported
+expressions like `[R1,R2]` distance syntax, some figure types), ~25 have missing figures.
+
 ## UI automation (tools/)
 
 Screenshots are PNGs; image pixels are the click coordinates in both tools.

@@ -16,6 +16,12 @@ sealed class Program
         {
             MainView.StartupFile = System.IO.Path.GetFullPath(args[0]);
         }
+        else if (args.Length == 3 && args[0] == "--check")
+        {
+            // load every drawing under a folder and write a picture and a report of each
+            MainView.CheckFolder = System.IO.Path.GetFullPath(args[1]);
+            MainView.CheckOutputFolder = System.IO.Path.GetFullPath(args[2]);
+        }
 
         App.MainWindowCreated = WindowPlacementPersistence.Attach;
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
