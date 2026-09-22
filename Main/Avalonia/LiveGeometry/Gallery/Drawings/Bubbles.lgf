@@ -563,6 +563,6 @@
       <Dependency Name="Label60" />
     </ShowHideControl>
     <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Bubbles" DecimalsToShow="2" X="6.311" Y="4.833" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Grab any yellow point and the bubbles roll\naround, squeezing and growing - but they never\noverlap. How are they made?\n\nCheck &quot;Hint&quot; to see the trick." DecimalsToShow="2" X="6.311" Y="3.545" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Drag the bubbles around. They squeeze\nand grow, but they never overlap.\nHow are they made?\n\nCheck &quot;Hint&quot; to see the trick." DecimalsToShow="2" X="6.311" Y="3.545" />
   </Figures>
 </Drawing>

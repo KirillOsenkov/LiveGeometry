@@ -140,8 +140,10 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   its first `PathFigure` even for "nothing" (no segments): Avalonia doesn't repaint a path whose
   figure list became empty. `DGFReader.ReadMeasureAngle` creates the arc from VB6's DrawStyle /
   AuxInfo(2) - not tested, there is no sample .dgf with an angle in the repo.
-- **Measurement labels are draggable** (`Measurement.AllowMove`): a drag only changes the label's
-  `Offset` from its anchor, although the figure has dependencies.
+- **Any figure is draggable**: dragging a dependent figure finds its root free points and moves
+  those, so gallery text can say "drag the circle" even when the points it is built on are
+  hidden (Bubbles). Measurement labels are the exception (`Measurement.AllowMove`): a drag only
+  changes the label's `Offset` from its anchor, although the figure has dependencies.
 - **Dashes**: `LineStyle.Dash` is a `LineDash` enum (`Styles/LineDash.cs`: Solid, Dash, Dot,
   DashDot, DashDotDot - the VB6 DrawStyle 0-4, which `DGFReader` maps onto it). Inherited by shape
   and point styles, so circles, arcs and polygons dash too. Saved as `Dash="DashDot"` by the
