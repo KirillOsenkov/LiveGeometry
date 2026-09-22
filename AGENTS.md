@@ -270,8 +270,14 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   header row (collide with the last tabs at ~850 px), a two-row block at the left of the header
   row (small targets). `Ribbon.HeaderStart`/`HeaderEnd` slots exist from those experiments and
   are unused. The buttons:
-  (icons are drawn in code, `MainToolbarIcons`, 20x20 grid; Undo/Redo follow `DrawingControl.
-  CommandUndo/CommandRedo` as command observers) plus the build stamp. Everything else is keys:
+  (icons are drawn in code, `MainToolbarIcons`, 20x20 grid drawn at 24 px; Undo/Redo follow
+  `DrawingControl.CommandUndo/CommandRedo` as command observers) plus the build stamp.
+  `MainToolbar` lays its three parts out itself: buttons left, stamp right, and the tour group
+  (◀ n/N ▶ + title, bigger; `MainToolbarGroup`) in the room between: the arrows are centered
+  there and the title hangs off their right, so the arrows don't move with the title; only
+  when the title wouldn't fit whole do the arrows move left, as far as it needs. When the
+  group doesn't fit beside the buttons at all it wraps to a second row, left-aligned; when
+  only the stamp doesn't fit, the stamp is hidden. Everything else is keys:
   Ctrl+N/O/S/Z/Y/A/C/V are handled on key *down* (`MainView.HandleControlShortcut`; on key up
   Ctrl may already be released and a bare S is the Segment tool), plain keys in `HandlePlainKey`.
   Lost their menu entry and are unreachable for now: Lock, Figure List, the settings page.

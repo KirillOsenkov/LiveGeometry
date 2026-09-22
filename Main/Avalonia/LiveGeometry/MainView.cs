@@ -157,13 +157,25 @@ public partial class MainView : UserControl
         toolbar.AddButton(MainToolbarIcons.Undo(), "Ctrl+Z", DrawingHost.DrawingControl.CommandUndo);
         toolbar.AddButton(MainToolbarIcons.Redo(), "Ctrl+Y", DrawingHost.DrawingControl.CommandRedo);
 
-        // only while a drawing of the gallery is open: previous / next through the gallery
-        TourGroup = toolbar.BeginGroup();
-        toolbar.AddSeparator();
-        toolbar.AddButton(MainToolbarIcons.Previous(), "Previous drawing", "Page Up", () => HandleExceptions(() => ShowNeighborSample(-1)));
-        TourPosition = toolbar.AddText(FontWeight.Normal, minWidth: 52);
-        toolbar.AddButton(MainToolbarIcons.Next(), "Next drawing", "Page Down", () => HandleExceptions(() => ShowNeighborSample(1)));
-        TourTitle = toolbar.AddText(FontWeight.SemiBold);
+        // only while a drawing of the gallery is open: previous / next through the gallery,
+        // in the middle of the room the toolbar has left, and bigger than the document buttons
+        TourGroup = toolbar.BeginCenteredGroup();
+        toolbar.AddButton(
+            MainToolbarIcons.Previous(),
+            "Previous drawing",
+            "Page Up",
+            () => HandleExceptions(() => ShowNeighborSample(-1)),
+            iconSize: TourIconSize,
+            inset: TourArrowInset);
+        TourPosition = toolbar.AddText(FontWeight.Normal, minWidth: 44, fontSize: TourFontSize);
+        toolbar.AddButton(
+            MainToolbarIcons.Next(),
+            "Next drawing",
+            "Page Down",
+            () => HandleExceptions(() => ShowNeighborSample(1)),
+            iconSize: TourIconSize,
+            inset: TourArrowInset);
+        TourTitle = toolbar.AddTrailingText(FontWeight.SemiBold, fontSize: TourFontSize);
         toolbar.EndGroup();
         TourGroup.IsVisible = false;
 
@@ -227,6 +239,11 @@ public partial class MainView : UserControl
         Gallery.ItemRequested += item => HandleExceptions(() => ShowSample(item, push: true));
         pages.Children.Add(Gallery);
     }
+
+    const double TourIconSize = 32;
+    const double TourFontSize = 17;
+    const double TourArrowInset = 1; // the chevrons have room enough inside their own icon
+
     Panel TourGroup;
     TextBlock TourPosition;
     TextBlock TourTitle;
@@ -388,7 +405,7 @@ public partial class MainView : UserControl
         TourGroup.IsVisible = CurrentSample != null;
         if (CurrentSample != null)
         {
-            TourPosition.Text = (GalleryCatalog.IndexOf(CurrentSample) + 1) + " / " + GalleryCatalog.Items.Count;
+            TourPosition.Text = (GalleryCatalog.IndexOf(CurrentSample) + 1) + "/" + GalleryCatalog.Items.Count;
             TourTitle.Text = CurrentSample.Title;
         }
     }

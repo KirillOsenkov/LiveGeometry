@@ -34,7 +34,9 @@ namespace DynamicGeometry
         protected override FrameworkElement CreateShape()
         {
             Checkbox = new CheckBox();
-            Checkbox.Background = new SolidColorBrush(Color.FromArgb(255, 230, 230, 230));
+
+            // no plate of its own on the canvas; the theme paints the hover
+            Checkbox.Background = Brushes.Transparent;
             Checkbox.Foreground = Brushes.Black;
             Checkbox.IsCheckedChanged += (s, e) =>
             {

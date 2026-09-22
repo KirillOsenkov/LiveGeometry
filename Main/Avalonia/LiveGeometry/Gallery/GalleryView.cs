@@ -136,17 +136,7 @@ public class GalleryView : DockPanel
         var brand = new StackPanel()
         {
             Orientation = Orientation.Horizontal,
-            Spacing = 20,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center,
-            Effect = new DropShadowEffect()
-            {
-                Color = Colors.Black,
-                Opacity = 0.32,
-                BlurRadius = 26,
-                OffsetX = 0,
-                OffsetY = 6
-            }
+            Spacing = 20
         };
         brand.Children.Add(AppIcon.Create(size: 68));
         brand.Children.Add(new TextBlock()
@@ -157,7 +147,35 @@ public class GalleryView : DockPanel
             Foreground = brandText,
             VerticalAlignment = VerticalAlignment.Center
         });
-        return brand;
+
+        // shrinks on a narrow window instead of running off the edge; the margin keeps it
+        // off the tiles at its left
+        var fitted = new Viewbox()
+        {
+            Child = brand,
+            StretchDirection = StretchDirection.DownOnly,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+
+        // The shadow is cut off at the bounds of the element that carries it, so that element
+        // is a frame with room for the blur all around; the negative margin gives the room
+        // back, the frame takes no more space in the layout than the brand.
+        const double blurRoom = 40;
+        return new Border()
+        {
+            Child = fitted,
+            Padding = new Thickness(blurRoom),
+            Margin = new Thickness(36 - blurRoom, -blurRoom, 12 - blurRoom, -blurRoom),
+            Effect = new DropShadowEffect()
+            {
+                Color = Colors.Black,
+                Opacity = 0.32,
+                BlurRadius = 26,
+                OffsetX = 0,
+                OffsetY = 6
+            }
+        };
     }
 
     static Control PlusPicture()

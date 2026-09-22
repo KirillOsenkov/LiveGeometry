@@ -12,8 +12,11 @@ namespace LiveGeometry;
 /// <summary>
 /// The strip at the very top: the few things that are about the document and not about geometry
 /// (new, open, save, undo, redo). Icons only, the names and shortcuts are in the tooltips.
+/// Three parts, laid out by hand: the buttons at the left, something small at the right (the
+/// build stamp, dropped when there is no room for it) and the centered group in between. When
+/// the window is too narrow for the group beside the buttons, it wraps to a row of its own.
 /// </summary>
-public class MainToolbar : DockPanel
+public class MainToolbar : Panel
 {
     readonly StackPanel buttons = new StackPanel()
     {
@@ -24,6 +27,19 @@ public class MainToolbar : DockPanel
 
     // where buttons are added: the strip itself or the group that is open
     Panel current;
+
+    Control rightControl;
+    double rightWidth; // as last measured; kept while it is hidden
+
+    // the group between the buttons and the right control
+    MainToolbarGroup centered;
+
+    // decided by the measure pass for the arrange pass
+    bool wrapped;
+    double firstRowHeight;
+
+    // between a wrapped group and the ribbon under it
+    const double WrappedRowGap = 4;
 
     public MainToolbar()
     {
@@ -38,13 +54,113 @@ public class MainToolbar : DockPanel
     /// <summary>Something small at the far right (the build stamp)</summary>
     public void AddAtRight(Control control)
     {
-        SetDock(control, Dock.Right);
-        Children.Insert(0, control);
+        rightControl = control;
+        Children.Add(control);
     }
 
-    public MainToolbarButton AddButton(Control icon, string name, string shortcut, Action action)
+    protected override Size MeasureOverride(Size availableSize)
     {
-        var button = new MainToolbarButton(icon, action);
+        var unbounded = new Size(double.PositiveInfinity, double.PositiveInfinity);
+        buttons.Measure(unbounded);
+        double width = buttons.DesiredSize.Width;
+        double height = buttons.DesiredSize.Height;
+
+        // the group beside the buttons if all of it fits there (the stamp may have to go),
+        // else on a row of its own, where the trailing text still gets cut short if it must
+        bool hasCentered = centered != null && centered.IsVisible;
+        double centeredWidth = 0;
+        wrapped = false;
+        if (hasCentered)
+        {
+            centered.Measure(unbounded);
+            centeredWidth = centered.DesiredSize.Width;
+            wrapped = width + centeredWidth > availableSize.Width;
+        }
+
+        if (!wrapped)
+        {
+            width += centeredWidth;
+            height = System.Math.Max(height, centered?.DesiredSize.Height ?? 0);
+        }
+
+        double rightRoom = 0;
+        if (rightControl != null)
+        {
+            // a hidden control measures as nothing, so its width is remembered from when it
+            // was visible; it never changes
+            if (rightControl.IsVisible)
+            {
+                rightControl.Measure(unbounded);
+                rightWidth = rightControl.DesiredSize.Width;
+            }
+
+            bool fits = width + rightWidth <= availableSize.Width;
+            rightControl.IsVisible = fits;
+            if (fits)
+            {
+                rightRoom = rightWidth;
+                width += rightWidth;
+                height = System.Math.Max(height, rightControl.DesiredSize.Height);
+            }
+        }
+
+        firstRowHeight = height;
+
+        // once more with the room it will really get, so that the trailing text lays itself
+        // out to fit (measured unbounded it would just run off the edge)
+        if (hasCentered)
+        {
+            double room = wrapped
+                ? availableSize.Width
+                : System.Math.Max(0, availableSize.Width - buttons.DesiredSize.Width - rightRoom);
+            centered.IsLeftAligned = wrapped;
+            centered.Measure(new Size(room, double.PositiveInfinity));
+            if (wrapped)
+            {
+                width = System.Math.Max(width, centered.DesiredSize.Width);
+                height += centered.DesiredSize.Height + WrappedRowGap;
+            }
+        }
+
+        return new Size(width, height);
+    }
+
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+        double left = buttons.DesiredSize.Width;
+        buttons.Arrange(new Rect(0, 0, left, firstRowHeight));
+
+        double right = finalSize.Width;
+        if (rightControl != null && rightControl.IsVisible)
+        {
+            right -= rightWidth;
+            rightControl.Arrange(new Rect(right, 0, rightWidth, firstRowHeight));
+        }
+
+        if (centered != null)
+        {
+            if (wrapped)
+            {
+                centered.Arrange(new Rect(0, firstRowHeight, finalSize.Width, centered.DesiredSize.Height));
+            }
+            else
+            {
+                centered.Arrange(new Rect(left, 0, System.Math.Max(0, right - left), firstRowHeight));
+            }
+        }
+
+        return finalSize;
+    }
+
+    public MainToolbarButton AddButton(
+        Control icon,
+        string name,
+        string shortcut,
+        Action action,
+        double iconSize = MainToolbarButton.IconSize,
+        double inset = MainToolbarButton.DefaultInset)
+    {
+        var button = new MainToolbarButton(icon, action, iconSize, inset);
         ToolTip.SetTip(button, shortcut != null ? name + " (" + shortcut + ")" : name);
         current.Children.Add(button);
         return button;
@@ -60,35 +176,48 @@ public class MainToolbar : DockPanel
         });
     }
 
-    public TextBlock AddText(FontWeight weight, double minWidth = 0)
+    public TextBlock AddText(FontWeight weight, double minWidth = 0, double fontSize = 13)
     {
         var text = new TextBlock()
         {
-            FontSize = 13,
+            FontSize = fontSize,
             FontWeight = weight,
             Foreground = RibbonTheme.Text,
             MinWidth = minWidth,
             TextAlignment = TextAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center,
-            Margin = new Thickness(6, 0, 6, 0)
+            VerticalAlignment = VerticalAlignment.Center
         };
         current.Children.Add(text);
         return text;
     }
 
     /// <summary>
-    /// What is added from now on goes into a group of its own, to be shown and hidden together
+    /// What is added from now on goes into a group of its own, to be shown and hidden together,
+    /// in the room between the buttons and whatever is at the right (see
+    /// <see cref="MainToolbarGroup"/> for where exactly).
     /// </summary>
-    public Panel BeginGroup()
+    public Panel BeginCenteredGroup()
     {
-        var group = new StackPanel()
+        centered = new MainToolbarGroup(buttons.Spacing);
+        Children.Add(centered);
+        current = centered.Middle;
+        return centered;
+    }
+
+    /// <summary>Text to the right of the centered group, cut short when there is no room</summary>
+    public TextBlock AddTrailingText(FontWeight weight, double fontSize)
+    {
+        var text = new TextBlock()
         {
-            Orientation = Orientation.Horizontal,
-            Spacing = buttons.Spacing
+            FontSize = fontSize,
+            FontWeight = weight,
+            Foreground = RibbonTheme.Text,
+            TextTrimming = TextTrimming.CharacterEllipsis,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(6, 0, 6, 0)
         };
-        buttons.Children.Add(group);
-        current = group;
-        return group;
+        centered.Trailing.Children.Add(text);
+        return text;
     }
 
     public void EndGroup()
@@ -106,22 +235,118 @@ public class MainToolbar : DockPanel
     }
 }
 
+/// <summary>
+/// The toolbar's middle group: a few buttons (<see cref="Middle"/>) with text trailing them
+/// (<see cref="Trailing"/>). The buttons are centered in the width of the group as long as the
+/// text still fits whole to their right; then they move left just as far as the text needs,
+/// and only when even that is not enough is the text cut short. So the buttons stay put from
+/// one text to the next until room really runs out. <see cref="IsLeftAligned"/> packs
+/// everything to the left instead (for a row of its own).
+/// </summary>
+public class MainToolbarGroup : Panel
+{
+    public StackPanel Middle { get; }
+    public Panel Trailing { get; }
+
+    bool isLeftAligned;
+    double trailingNaturalWidth;
+
+    public MainToolbarGroup(double spacing)
+    {
+        Middle = new StackPanel()
+        {
+            Orientation = Orientation.Horizontal,
+            Spacing = spacing,
+            Margin = new Thickness(6, 2, 6, 0)
+        };
+        // not a StackPanel: that would hand the text unlimited width and it could never trim
+        Trailing = new Panel()
+        {
+            Margin = new Thickness(0, 2, 6, 0)
+        };
+        Children.Add(Middle);
+        Children.Add(Trailing);
+    }
+
+    public bool IsLeftAligned
+    {
+        get => isLeftAligned;
+        set
+        {
+            if (isLeftAligned != value)
+            {
+                isLeftAligned = value;
+                InvalidateMeasure();
+            }
+        }
+    }
+
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        var unbounded = new Size(double.PositiveInfinity, double.PositiveInfinity);
+        Middle.Measure(unbounded);
+        Trailing.Measure(unbounded);
+        trailingNaturalWidth = Trailing.DesiredSize.Width;
+
+        // the text is measured again with what it will get, so that it trims itself
+        if (!double.IsPositiveInfinity(availableSize.Width))
+        {
+            Place(availableSize.Width, out _, out double trailingWidth);
+            Trailing.Measure(new Size(trailingWidth, double.PositiveInfinity));
+        }
+
+        return new Size(
+            Middle.DesiredSize.Width + trailingNaturalWidth,
+            System.Math.Max(Middle.DesiredSize.Height, Trailing.DesiredSize.Height));
+    }
+
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+        Place(finalSize.Width, out double left, out double trailingWidth);
+        double middleWidth = Middle.DesiredSize.Width;
+        Middle.Arrange(new Rect(left, 0, middleWidth, finalSize.Height));
+        Trailing.Arrange(new Rect(left + middleWidth, 0, trailingWidth, finalSize.Height));
+        return finalSize;
+    }
+
+    /// <summary>Where the middle starts, and how much the text after it gets</summary>
+    void Place(double width, out double left, out double trailingWidth)
+    {
+        double middleWidth = Middle.DesiredSize.Width;
+        double centeredLeft = (width - middleWidth) / 2;
+        double leftForWholeText = width - middleWidth - trailingNaturalWidth;
+        left = isLeftAligned ? 0 : System.Math.Max(0, System.Math.Min(centeredLeft, leftForWholeText));
+        trailingWidth = System.Math.Max(0, width - left - middleWidth);
+    }
+}
+
 public class MainToolbarButton : Border, ICommandObserver
 {
+    /// <summary>How big the icons are drawn (their grid is <see cref="MainToolbarIcons.Size"/>)</summary>
+    public const double IconSize = 24;
+
+    /// <summary>The plate around the icon (a little more at the sides)</summary>
+    public const double DefaultInset = 5;
+
     readonly Action action;
     bool isPressed;
 
-    public MainToolbarButton(Control icon, Action action)
+    public MainToolbarButton(
+        Control icon,
+        Action action,
+        double iconSize = IconSize,
+        double inset = DefaultInset)
     {
         this.action = action;
-        Width = 34;
-        Height = 30;
+        Width = iconSize + 2 * inset + 4;
+        Height = iconSize + 2 * inset;
         CornerRadius = RibbonTheme.ButtonCornerRadius;
         Background = Brushes.Transparent;
+        VerticalAlignment = VerticalAlignment.Center;
         Child = new Viewbox()
         {
-            Width = MainToolbarIcons.Size,
-            Height = MainToolbarIcons.Size,
+            Width = iconSize,
+            Height = iconSize,
             Child = icon
         };
 
@@ -235,14 +460,15 @@ public static class MainToolbarIcons
             Shape("M11,11 H16.5 V16.5 H11 Z", tilePink, outline));
     }
 
+    // the chevrons sit a little towards the count between them
     public static Control Previous()
     {
-        return Icon(Shape("M12.5,4.5 L7,10 L12.5,15.5", null, arrow, thickness: 2.2));
+        return Icon(Shape("M13.5,4.5 L8,10 L13.5,15.5", null, arrow, thickness: 2.2));
     }
 
     public static Control Next()
     {
-        return Icon(Shape("M7.5,4.5 L13,10 L7.5,15.5", null, arrow, thickness: 2.2));
+        return Icon(Shape("M6.5,4.5 L12,10 L6.5,15.5", null, arrow, thickness: 2.2));
     }
 
     public static Control Undo()
