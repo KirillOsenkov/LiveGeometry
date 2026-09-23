@@ -169,6 +169,9 @@ namespace DynamicGeometry
             AddButtonDependencies(section, dependencies, "Point", points);
             AddButtonDependencies(section, dependencies, "SG", staticGraphics);
 
+            // both directions: the button's own list is what it shows and hides (and what is
+            // saved); AddDependencies only registers it as a dependent of each figure
+            button.Dependencies = dependencies;
             button.AddDependencies(dependencies);
         }
 

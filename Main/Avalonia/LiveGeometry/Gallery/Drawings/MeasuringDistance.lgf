@@ -135,9 +135,27 @@
       <Dependency Name="C" />
       <Dependency Name="J" />
     </Polygon>
-    <ShowHideControl Name="ShowHideControl1" Style="21" Show="false" Text="Help 1" X="-5" Y="-0.6" />
-    <ShowHideControl Name="ShowHideControl2" Style="21" Show="false" Text="Help 2" X="-3" Y="-0.6" />
-    <ShowHideControl Name="ShowHideControl3" Style="21" Show="false" Text="Show" X="-1" Y="-0.6" />
+    <ShowHideControl Name="ShowHideControl1" Style="21" Show="false" Text="Help 1" X="-5" Y="-0.6">
+      <Dependency Name="K" />
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+    </ShowHideControl>
+    <ShowHideControl Name="ShowHideControl2" Style="21" Show="false" Text="Help 2" X="-3" Y="-0.6">
+      <Dependency Name="Segment11" />
+      <Dependency Name="Segment13" />
+      <Dependency Name="Segment12" />
+      <Dependency Name="Segment14" />
+    </ShowHideControl>
+    <ShowHideControl Name="ShowHideControl3" Style="21" Show="false" Text="Show" X="-1" Y="-0.6">
+      <Dependency Name="Segment11" />
+      <Dependency Name="Segment13" />
+      <Dependency Name="Segment12" />
+      <Dependency Name="Segment14" />
+      <Dependency Name="Segment15" />
+      <Dependency Name="K" />
+      <Dependency Name="N" />
+      <Dependency Name="M" />
+    </ShowHideControl>
     <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Measuring Across a Lake" DecimalsToShow="2" X="2.426" Y="2.765" />
     <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="How far is it from A to B when a lake is in\nthe way and you can't walk straight across?\n\nCheck &quot;Help 1&quot; and &quot;Help 2&quot; for the trick, and\n&quot;Show&quot; for the answer. It uses similar\ntriangles - the same idea surveyors used\nbefore there were satellites.\n\nDrag A and B." DecimalsToShow="2" X="2.426" Y="2.268" />
   </Figures>

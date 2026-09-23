@@ -54,6 +54,7 @@ public static class GalleryCatalog
 
     public static IReadOnlyList<GalleryItem> Items { get; } = new[]
     {
+        Item("continuous-deformations", "Continuous Deformations"),
         Item("bubbles", "Bubbles"),
         Item("inscribed-circle", "Inscribed Circle"),
         Item("morley", "Morley's Miracle"),

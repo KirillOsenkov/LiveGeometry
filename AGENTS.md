@@ -249,7 +249,11 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   the hand-edited drawings and bring back `IntersectionOrder="Legacy"`. To add another CD
   drawing: `--check` it, take the `.lgf`, drop the old labels, add `Title`/`Description` labels
   in the `GalleryTitle`/`GalleryText` styles (copy from any drawing here), set `Grid`, list it
-  in the catalog. Each has two unclickable labels, `Title` and `Description` (may contain live
+  in the catalog (done that way for Continuous Deformations, 2026-09-22, with its pastel
+  colors darkened in place, F started at the middle of its segment, and 15 more points on the
+  segment with a locus each - colored from the circle's magenta to the curve's blue, 1 px at
+  0.7 alpha - behind a "Show all the steps" `ShowHideControl`, on by default; it is the
+  first tile of the gallery). Each has two unclickable labels, `Title` and `Description` (may contain live
   `[AB^2]` expressions - then list the points as dependencies). Their *position is computed at open time*
   by `GalleryDrawing.Fit`: right of the figure in a wide canvas, below it in a tall one. Labels
   are sized in pixels, so the figure gets the canvas minus the text and the zoom is computed
@@ -376,7 +380,7 @@ and `.lgf` (the conversion) and appends to `<out>/report.txt`: figure counts, `N
 (only the *root* failures - figures whose dependencies all exist - plus a dump of every point),
 load errors. It exits when done. `dotnet tools/contactsheet.cs -- <png folder> <out.png>
 [columns] [tile width]` tiles the PNGs into one image: the fastest way to eyeball a whole
-folder (all 47 gallery drawings fit on one 4-column sheet). The VB6 CD library
+folder (all 48 gallery drawings fit on one 4-column sheet). The VB6 CD library
 (`C:\Dropbox\Projects\DG 1\DG CD Version 1.0\Library\English`, 221 files, read-only) all loads
 as of 2026-09-21; what is still "missing" there is second intersections that fall outside a
 segment or ray, and sides of a polygon that don't cross - legitimately absent.
@@ -390,7 +394,10 @@ Learned from `Reference/VB6/Source` while making the CD library load (`DGFReader
   `ParentFigure=0` for those (which is *not* Figure0). Every dependent point has `Type != 0`.
 - `ParentFigure` of a point and figure indices are 0-based; Points, Labels, Buttons 1-based.
 - Buttons: type 0 show/hide, 1 message box, 2 sound, 3 open another drawing. Only 0 becomes a
-  figure; a show/hide button's list may reference the others.
+  figure; a show/hide button's list may reference the others. The list goes into the
+  `ShowHideControl`'s own `Dependencies` (what it shows and hides, and what the `.lgf` saves);
+  `AddDependencies` alone only registers the dependents side, which is how the lake drawing's
+  boxes came to do nothing until 2026-09-22 (96 CD drawings have such buttons).
 - DG's angle bisector (`Math.bas GetBisector`) is the *interior* bisector and a whole line;
   the reader sets `AngleBisector.Interior` and `IsLine` ("Whole line", saved as `Line="true"`).
   `Interior` ("Inside the angle", saved as `Interior="true"`) halves the angle under 180°
