@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using System.Xml.Linq;
@@ -51,6 +52,7 @@ namespace DynamicGeometry
                 }
             }
             ReadViewport(drawing, element);
+            ReadScenes(drawing, element);
             DrawingUpdater updater;
 #if TABULA
             updater = new TABDrawingUpdater();
@@ -142,6 +144,23 @@ namespace DynamicGeometry
             else
             {
                 drawing.Background = null; // white
+            }
+        }
+
+        /// <summary>The suggested views, in the same Left/Top/Right/Bottom form as the viewport</summary>
+        static void ReadScenes(Drawing drawing, XElement element)
+        {
+            drawing.Scenes.Clear();
+            foreach (var sceneNode in element.Elements("Scene"))
+            {
+                double left = sceneNode.ReadDouble("Left");
+                double right = sceneNode.ReadDouble("Right");
+                double bottom = sceneNode.ReadDouble("Bottom");
+                double top = sceneNode.ReadDouble("Top");
+                if (right > left && top > bottom)
+                {
+                    drawing.Scenes.Add(new Rect(left, bottom, right - left, top - bottom));
+                }
             }
         }
 

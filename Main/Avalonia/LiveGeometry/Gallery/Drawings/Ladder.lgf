@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Drawing Version="0" Creator="LiveGeometry.App">
   <Viewport Left="-51.9052325854" Top="25.1810963902" Right="74.1644025366" Bottom="-29.8758770732" Grid="false" />
+  <Scene Left="-25" Top="41" Right="27" Bottom="-3" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
     <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
@@ -42,18 +43,29 @@
     <TextStyle FontSize="20.4" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="23" />
     <TextStyle FontSize="17" Color="#FF808080" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="24" />
     <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="25" />
-    <ShapeStyle Fill="#FF35D812" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="26" />
+    <ShapeStyle Fill="#FF4CAF50" IsFilled="true" Color="#FF2E7D32" StrokeWidth="1" Dash="Solid" Name="26" />
     <ShapeStyle Fill="#FF00FFFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="27" />
     <ShapeStyle Fill="#FFE3A31C" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="28" />
     <ShapeStyle Fill="#FF80FFFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="29" />
     <ShapeStyle Fill="#FFFFFFFF" IsFilled="true" Color="#FFFFFFFF" StrokeWidth="1" Dash="Solid" Name="30" />
+    <ShapeStyle Fill="#FFC0392B" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="Roof" />
     <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
     <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
     <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" Visible="false" Style="7" X="-6.178027" Y="-2.368023" />
-    <FreePoint Name="B" Visible="false" Style="7" X="2.738441" Y="-2.368023" />
+    <PointByCoordinates Name="GroundRayStart" Visible="false" Style="7" X="-100" Y="-2.368023" />
+    <PointByCoordinates Name="GroundRayDirection" Visible="false" Style="7" X="-99" Y="-2.368023" />
+    <Ray Name="GroundRay" Visible="false" Style="11">
+      <Dependency Name="GroundRayStart" />
+      <Dependency Name="GroundRayDirection" />
+    </Ray>
+    <PointOnFigure Name="A" Style="PointOnFigure" X="-6.178027" Y="-2.368023" Parameter="93.821973">
+      <Dependency Name="GroundRay" />
+    </PointOnFigure>
+    <PointByCoordinates Name="B" Visible="false" Style="7" X="A.X + 8.916468" Y="A.Y">
+      <Dependency Name="A" />
+    </PointByCoordinates>
     <LineTwoPoints Name="LineTwoPoints1" Style="8">
       <Dependency Name="A" />
       <Dependency Name="B" />
@@ -62,17 +74,17 @@
       <Dependency Name="LineTwoPoints1" />
       <Dependency Name="A" />
     </PerpendicularLine>
-    <FreePoint Name="C" Visible="false" Style="10" X="-2.9" Y="25.5" />
-    <FreePoint Name="D" Visible="false" Style="10" X="7.77" Y="25.5" />
-    <LineTwoPoints Name="LineTwoPoints2" Visible="false" Style="11">
-      <Dependency Name="C" />
-      <Dependency Name="D" />
-    </LineTwoPoints>
-    <PointOnFigure Name="Ladder length" Style="12" X="-0.2513540000000001" Y="4.008442" Parameter="-1.26">
-      <Dependency Name="LineTwoPoints2" />
-    </PointOnFigure>
-    <PointOnFigure Name="E" Visible="false" Style="12" X="5.662089" Y="4.008442" Parameter="0.8027294914177144">
-      <Dependency Name="LineTwoPoints2" />
+    <PointByCoordinates Name="E" Visible="false" Style="12" X="A.X + 11.84" Y="RoofTop.Y + 3">
+      <Dependency Name="A" />
+      <Dependency Name="RoofTop" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LadderMax" Visible="false" Style="12" X="E.X - (H.Y - A.Y)" Y="E.Y">
+      <Dependency Name="E" />
+      <Dependency Name="H" />
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointOnFigure Name="Ladder length" Style="PointOnFigure" X="-16.34" Y="34.9" Parameter="0.116">
+      <Dependency Name="Segment7" />
     </PointOnFigure>
     <CircleByRadius Name="CircleByRadius1" Visible="false" Style="13">
       <Dependency Name="Ladder length" />
@@ -91,7 +103,7 @@
       <Dependency Name="T" />
       <Dependency Name="A" />
     </Segment>
-    <PointOnFigure Name="Drag me!" Style="7" X="-6.178026999999999" Y="3.2276640000000003" Parameter="0.3">
+    <PointOnFigure Name="Drag me!" Style="PointOnFigure" X="-6.178026999999999" Y="3.2276640000000003" Parameter="0.3">
       <Dependency Name="Segment1" />
     </PointOnFigure>
     <CircleByRadius Name="CircleByRadius2" Visible="false" Style="13">
@@ -107,24 +119,38 @@
       <Dependency Name="CircleByRadius2" />
       <Dependency Name="LineTwoPoints1" />
     </IntersectionPoint>
-    <PointOnFigure Name="H" Style="12" X="-6.1780269999999975" Y="22.534013" Parameter="-2.79281392587289">
-      <Dependency Name="PerpendicularLine1" />
+    <PointByCoordinates Name="HeightUp" Visible="false" Style="12" X="A.X" Y="A.Y + 1">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <Ray Name="HeightRay" Visible="false" Style="11">
+      <Dependency Name="A" />
+      <Dependency Name="HeightUp" />
+    </Ray>
+    <PointOnFigure Name="H" Style="PointOnFigure" X="-6.178027" Y="22.534013" Parameter="24.902036">
+      <Dependency Name="HeightRay" />
     </PointOnFigure>
     <PerpendicularLine Name="PerpendicularLine2" Visible="false" Style="11" RightAngleCorner="0">
       <Dependency Name="PerpendicularLine1" />
       <Dependency Name="H" />
     </PerpendicularLine>
-    <PointOnFigure Name="I" Style="12" X="-23.470141" Y="22.534013" Parameter="1.9393457140203947">
-      <Dependency Name="PerpendicularLine2" />
-    </PointOnFigure>
+    <PointByCoordinates Name="I" Visible="false" Style="12" X="J.X" Y="H.Y">
+      <Dependency Name="J" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
     <PerpendicularLine Name="PerpendicularLine3" Visible="false" Style="11" RightAngleCorner="0">
       <Dependency Name="PerpendicularLine2" />
       <Dependency Name="I" />
     </PerpendicularLine>
-    <IntersectionPoint Name="J" Style="7" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine3" />
-      <Dependency Name="LineTwoPoints1" />
-    </IntersectionPoint>
+    <PointByCoordinates Name="WidthLeft" Visible="false" Style="7" X="A.X - 1" Y="A.Y">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <Ray Name="WidthRay" Visible="false" Style="11">
+      <Dependency Name="A" />
+      <Dependency Name="WidthLeft" />
+    </Ray>
+    <PointOnFigure Name="J" Style="PointOnFigure" X="-23.470141" Y="-2.368023" Parameter="17.292114">
+      <Dependency Name="WidthRay" />
+    </PointOnFigure>
     <IntersectionPoint Name="_K" Visible="false" Style="7" Algorithm="IntersectLineAndLine">
       <Dependency Name="PerpendicularLine3" />
       <Dependency Name="LineTwoPoints1" />
@@ -153,10 +179,26 @@
       <Dependency Name="PerpendicularLine4" />
       <Dependency Name="LineTwoPoints1" />
     </IntersectionPoint>
-    <FreePoint Name="O" Visible="false" Style="10" X="-10" Y="4" />
-    <FreePoint Name="P" Visible="false" Style="10" X="-7" Y="4" />
-    <FreePoint Name="Q" Visible="false" Style="10" X="-7" Y="1" />
-    <FreePoint Name="R" Visible="false" Style="10" X="-10" Y="1" />
+    <PointByCoordinates Name="O" Visible="false" Style="10" X="J.X + (A.X - J.X) / 3" Y="A.Y + (H.Y - A.Y) * 2 / 3">
+      <Dependency Name="A" />
+      <Dependency Name="J" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P" Visible="false" Style="10" X="J.X + (A.X - J.X) * 2 / 3" Y="A.Y + (H.Y - A.Y) * 2 / 3">
+      <Dependency Name="A" />
+      <Dependency Name="J" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Q" Visible="false" Style="10" X="J.X + (A.X - J.X) * 2 / 3" Y="A.Y + (H.Y - A.Y) / 3">
+      <Dependency Name="A" />
+      <Dependency Name="J" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R" Visible="false" Style="10" X="J.X + (A.X - J.X) / 3" Y="A.Y + (H.Y - A.Y) / 3">
+      <Dependency Name="A" />
+      <Dependency Name="J" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
     <Segment Name="Segment2" Style="16">
       <Dependency Name="Drag me!" />
       <Dependency Name="F" />
@@ -364,7 +406,7 @@
       <Dependency Name="U1" />
     </MidPoint>
     <Segment Name="Segment7" Style="20">
-      <Dependency Name="Ladder length" />
+      <Dependency Name="LadderMax" />
       <Dependency Name="E" />
     </Segment>
     <Ray Name="Ray1" Visible="false" Style="11">
@@ -382,12 +424,16 @@
       <Dependency Name="A" />
       <Dependency Name="J" />
     </Polygon>
+    <PointByCoordinates Name="GroundLeft" Visible="false" Style="7" X="-1000" Y="-2.368023" />
+    <PointByCoordinates Name="GroundRight" Visible="false" Style="7" X="1000" Y="-2.368023" />
+    <PointByCoordinates Name="GroundFarRight" Visible="false" Style="7" X="1000" Y="-1000" />
+    <PointByCoordinates Name="GroundFarLeft" Visible="false" Style="7" X="-1000" Y="-1000" />
     <Polygon Name="Polygon2" Style="26">
-      <Dependency Name="K" />
-      <Dependency Name="J" />
-      <Dependency Name="N" />
-      <Dependency Name="M" />
-      <Dependency Name="K" />
+      <Dependency Name="GroundLeft" />
+      <Dependency Name="GroundRight" />
+      <Dependency Name="GroundFarRight" />
+      <Dependency Name="GroundFarLeft" />
+      <Dependency Name="GroundLeft" />
     </Polygon>
     <Polygon Name="Polygon3" Style="27">
       <Dependency Name="O" />
@@ -402,6 +448,27 @@
       <Dependency Name="H" />
       <Dependency Name="A" />
       <Dependency Name="J" />
+    </Polygon>
+    <PointByCoordinates Name="RoofBase" Visible="false" Style="7" X="(J.X + A.X) / 2" Y="H.Y">
+      <Dependency Name="J" />
+      <Dependency Name="A" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="RoofUp" Visible="false" Style="7" X="RoofBase.X" Y="RoofBase.Y + 1">
+      <Dependency Name="RoofBase" />
+    </PointByCoordinates>
+    <Ray Name="RoofRay" Visible="false" Style="11">
+      <Dependency Name="RoofBase" />
+      <Dependency Name="RoofUp" />
+    </Ray>
+    <PointOnFigure Name="RoofTop" Style="PointOnFigure" X="-14.824084" Y="29.534013" Parameter="7">
+      <Dependency Name="RoofRay" />
+    </PointOnFigure>
+    <Polygon Name="Roof" Style="Roof">
+      <Dependency Name="I" />
+      <Dependency Name="RoofTop" />
+      <Dependency Name="H" />
+      <Dependency Name="I" />
     </Polygon>
     <Polygon Name="Polygon5" Style="29">
       <Dependency Name="Q" />
@@ -453,6 +520,6 @@
       <Dependency Name="Z1" />
     </Polygon>
     <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="The Falling Ladder" DecimalsToShow="2" X="13.121" Y="25.5" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A ladder leans against a wall with a bucket of\npaint hanging on it. The ladder slips: its top\nslides down the wall, its foot slides out\nalong the ground.\n\nWhat path does the bucket follow? Drag the top\nof the ladder down and see the curve.\n\nThen slide the bucket to the middle of the\nladder. Now what shape is the path?" DecimalsToShow="2" X="13.121" Y="22.156" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A ladder leans on a wall, with a bucket of\npaint hanging on it. It slips: the top slides\ndown the wall, the foot slides out.\n\nWhat path does the bucket follow? Drag the\nladder's top down and see. Then slide the\nbucket to the middle: what shape is it now?\n\nThe other green points move the house, resize\nit and raise its roof." DecimalsToShow="2" X="13.121" Y="22.156" />
   </Figures>
 </Drawing>

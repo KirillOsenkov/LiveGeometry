@@ -80,6 +80,16 @@ namespace DynamicGeometry
             writer.WriteAttributeDouble("Version", drawing.Version);
             writer.WriteAttributeString("Creator", Avalonia.Application.Current.ToString());
             WriteCoordinateSystem(drawing, writer);
+            foreach (var scene in drawing.Scenes)
+            {
+                writer.WriteStartElement("Scene");
+                writer.WriteAttributeDouble("Left", scene.X);
+                writer.WriteAttributeDouble("Top", scene.Bottom);
+                writer.WriteAttributeDouble("Right", scene.Right);
+                writer.WriteAttributeDouble("Bottom", scene.Y);
+                writer.WriteEndElement();
+            }
+
             WriteStyles(drawing, writer);
             WriteFigureList(figures, writer);
             writer.WriteEndElement();

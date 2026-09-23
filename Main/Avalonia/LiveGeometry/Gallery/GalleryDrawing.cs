@@ -48,26 +48,40 @@ public static class GalleryDrawing
         var coordinateSystem = drawing.CoordinateSystem;
         var title = drawing.Figures[TitleName] as Label;
         var description = drawing.Figures[DescriptionName] as Label;
+        double canvasWidth = drawing.Canvas.Bounds.Width;
+        double canvasHeight = drawing.Canvas.Bounds.Height;
+        bool hasScene = drawing.Scenes.Count > 0;
         if (title == null || description == null)
         {
-            coordinateSystem.ZoomExtend(plane);
+            if (hasScene)
+            {
+                drawing.ShowScene(drawing.ChooseScene(canvasWidth, canvasHeight).Value);
+            }
+            else
+            {
+                coordinateSystem.ZoomExtend(plane);
+            }
+
             return;
         }
 
-        bool hasFigure = coordinateSystem.TryGetContentBounds(out var figure, include: f => f != title && f != description);
-        if (plane != null)
+        // a drawing with scenes shows the scene, not its content (ground goes on forever)
+        Rect figure = default;
+        if (!hasScene)
         {
-            figure = hasFigure ? figure.Union(plane.Value) : plane.Value;
-        }
-        else if (!hasFigure)
-        {
-            coordinateSystem.ZoomExtend();
-            return;
+            bool hasFigure = coordinateSystem.TryGetContentBounds(out figure, include: f => f != title && f != description);
+            if (plane != null)
+            {
+                figure = hasFigure ? figure.Union(plane.Value) : plane.Value;
+            }
+            else if (!hasFigure)
+            {
+                coordinateSystem.ZoomExtend();
+                return;
+            }
         }
 
         // everything in pixels first
-        double canvasWidth = drawing.Canvas.Bounds.Width;
-        double canvasHeight = drawing.Canvas.Bounds.Height;
         var titleSize = Measure(title);
         var descriptionSize = Measure(description);
         double textWidth = System.Math.Max(titleSize.Width, descriptionSize.Width);
@@ -93,6 +107,13 @@ public static class GalleryDrawing
         {
             roomWidth = canvasWidth - 2 * margin;
             roomHeight = System.Math.Max(canvasHeight - 2 * margin - gapPixels - textHeight, figureShare * canvasHeight);
+        }
+
+        // the scene nearest in shape to the room: landscape or portrait
+        if (hasScene)
+        {
+            figure = drawing.ChooseScene(roomWidth, roomHeight).Value;
+            drawing.ActiveScene = figure;
         }
 
         // the zoom that fills the room; a figure with no size keeps the zoom it has

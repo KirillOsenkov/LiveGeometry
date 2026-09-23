@@ -51,10 +51,7 @@ namespace DynamicGeometry
             set
             {
                 background = value ?? new SolidColorBrush(Colors.White);
-                if (Canvas != null)
-                {
-                    Canvas.Background = background;
-                }
+                ApplyBackground();
             }
         }
 
@@ -64,9 +61,103 @@ namespace DynamicGeometry
             return brush is SolidColorBrush solid && solid.Color == Colors.White;
         }
 
+        /// <summary>
+        /// Suggested views, in logical coordinates: what the drawing wants to show when it is
+        /// opened (a landscape one and maybe a portrait one), for drawings whose content has no
+        /// useful bounds - a scene with ground that goes on forever. Whoever fits the drawing
+        /// picks the one nearest in shape to the room it has (<see cref="ChooseScene"/>).
+        /// </summary>
+        public List<Rect> Scenes { get; } = new List<Rect>();
+
+        Rect? activeScene;
+
+        /// <summary>
+        /// The scene that was fitted, if any: a gradient paper spans it rather than the canvas
+        /// and is solid beyond it, so the sky doesn't get lighter when the view is zoomed out.
+        /// </summary>
+        public Rect? ActiveScene
+        {
+            get
+            {
+                return activeScene;
+            }
+            set
+            {
+                activeScene = value;
+                ApplyBackground();
+            }
+        }
+
+        /// <summary>The scene nearest in shape to a room of this size; null without scenes</summary>
+        public Rect? ChooseScene(double roomWidth, double roomHeight)
+        {
+            if (Scenes.Count == 0 || roomWidth <= 0 || roomHeight <= 0)
+            {
+                return null;
+            }
+
+            double room = System.Math.Log(roomWidth / roomHeight);
+            return Scenes.OrderBy(scene => System.Math.Abs(System.Math.Log(scene.Width / scene.Height) - room)).First();
+        }
+
+        /// <summary>Fits the scene into the canvas edge to edge and makes it the active one</summary>
+        public void ShowScene(Rect scene)
+        {
+            ActiveScene = scene;
+            CoordinateSystem.FitScene(scene);
+        }
+
+        void ApplyBackground()
+        {
+            if (Canvas != null)
+            {
+                Canvas.Background = PlaceBackground(background);
+            }
+        }
+
+        /// <summary>
+        /// A gradient's relative start and end are relative to the active scene, not to the
+        /// canvas: the brush the canvas gets has them in pixels, and pads with the end colors.
+        /// </summary>
+        Brush PlaceBackground(Brush brush)
+        {
+            if (activeScene == null || CoordinateSystem == null || !(brush is LinearGradientBrush gradient))
+            {
+                return brush;
+            }
+
+            var scene = activeScene.Value;
+            var topLeft = CoordinateSystem.ToPhysical(new Point(scene.X, scene.Bottom)); // y up: Bottom is the top edge
+            var bottomRight = CoordinateSystem.ToPhysical(new Point(scene.Right, scene.Y));
+            var placed = new LinearGradientBrush()
+            {
+                StartPoint = new RelativePoint(Place(gradient.StartPoint), RelativeUnit.Absolute),
+                EndPoint = new RelativePoint(Place(gradient.EndPoint), RelativeUnit.Absolute),
+                SpreadMethod = GradientSpreadMethod.Pad
+            };
+            foreach (var stop in gradient.GradientStops)
+            {
+                placed.GradientStops.Add(new GradientStop(stop.Color, stop.Offset));
+            }
+
+            return placed;
+
+            Point Place(RelativePoint point)
+            {
+                if (point.Unit == RelativeUnit.Absolute)
+                {
+                    return point.Point;
+                }
+
+                return new Point(
+                    topLeft.X + point.Point.X * (bottomRight.X - topLeft.X),
+                    topLeft.Y + point.Point.Y * (bottomRight.Y - topLeft.Y));
+            }
+        }
+
         void Drawing_OnAttachToCanvas(Canvas canvas)
         {
-            canvas.Background = background;
+            canvas.Background = PlaceBackground(background);
             canvas.SizeChanged += mCanvas_SizeChanged;
             UpdateClip(canvas);
             foreach (var figure in Figures)
@@ -593,6 +684,12 @@ namespace DynamicGeometry
 
         public void Recalculate()
         {
+            // the paper is pinned to the scene, so it moves with the view
+            if (activeScene != null)
+            {
+                ApplyBackground();
+            }
+
             foreach (var figure in Figures)
             {
                 figure.RecalculateAndUpdateVisual();

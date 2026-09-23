@@ -226,8 +226,17 @@ public class DrawingThumbnail : Viewbox
 
             // the tile shows through: the drawing's paper, if it has one, is the tile's plate
             surface.Background = null;
-            drawing.CoordinateSystem.ZoomExtend(item.Plane);
-            drawing.CoordinateSystem.Zoom(zoomAfterFit, new Point(SurfaceWidth / 2, SurfaceHeight / 2));
+            var scene = drawing.ChooseScene(SurfaceWidth, SurfaceHeight);
+            if (scene != null)
+            {
+                drawing.ShowScene(scene.Value);
+            }
+            else
+            {
+                drawing.CoordinateSystem.ZoomExtend(item.Plane);
+                drawing.CoordinateSystem.Zoom(zoomAfterFit, new Point(SurfaceWidth / 2, SurfaceHeight / 2));
+            }
+
             Drawing = drawing;
             Loaded(drawing);
         }

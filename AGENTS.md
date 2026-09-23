@@ -216,9 +216,9 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   `Color="#AARRGGBB"` (white left out), a gradient as a `<Background><LinearGradientBrush>`
   child. `.dgf`: `PaperColor1`/`PaperColor2`/`GradientPaper` of `[General]`, top to bottom. A
   gallery tile takes a drawing's paper as its plate (pastel only for white ones) and turns its
-  caption white on a dark plate. Gallery drawings with paper of their own: Castle, Rose,
-  Sierpinski and Spiral (their DG originals, except that the Castle got a nicer sky; the two
-  dark ones have white text styles) and Pascal (a faint tint). The lake drawing's gray gradient
+  caption white on a dark plate. Gallery drawings with paper of their own: Castle (a sky),
+  Rose, Sierpinski and Spiral (their DG originals; the two dark ones have white text styles)
+  and Pascal (a faint tint). The lake drawing's gray gradient
   was dropped. Point sizes in the gallery are standard (10 for a draggable point, 8 otherwise;
   the DG conversions had 2-4 px dots): `dotnet tools/pointsizes.cs -- <folder> [--apply]`
   lists and raises undersized point styles. The Rose's 90 control points are the exception,
@@ -265,6 +265,27 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   system's own resize handler shifts the origin, and it has to run first.
   Drawings with `Grid="true"` (graphs) keep their file viewport in view (`GalleryItem.Plane`),
   because graphs and lines have no bounds.
+- **Scenes** (`<Scene Left Top Right Bottom />` under `<Drawing>`, 1 or 2, `Drawing.Scenes`) are
+  opt-in suggested views for the few drawings whose content has no useful bounds - ground
+  that goes on forever (Castle, The Falling Ladder). Only where they exist: the gallery fit
+  and the tile show the scene nearest in shape to the room (`Drawing.ChooseScene`, landscape
+  vs portrait) instead of the content bounds; every other drawing is fitted as before. The
+  fitted one is `Drawing.ActiveScene`, and a gradient paper then spans the scene, not the
+  canvas, solid beyond it (`Drawing.PlaceBackground`, re-pinned on every view change), so the
+  sky stays put when the view moves. In a tall layout the text goes below the scene, i.e. on
+  the ground - keep that green calm (#4CAF50) so text reads on it.
+- **The Castle** is hand-made (2026-09-22; the DG original was dropped): the scratch generator
+  wrote fixed points as `PointByCoordinates` with constant coordinates, so a polygon has no
+  free point to move and dragging it does nothing; the only things that move are sliders
+  (`PointOnFigure` on hidden rays: tower height and castle width; for each mountain and the
+  tree a foot sliding along the ground line and a top sliding up a vertical ray from that
+  foot) and two free points (sun, cloud). Same recipe for any drawing that must not fall
+  apart when a kid drags the wrong thing; The Falling Ladder got it too: the house's
+  bottom-right corner A slides along the ground (moves the house), the other corners are
+  sliders on rays from A (width to the left, height upwards), the roof top slides up from
+  the roof's base, the window is the middle third of the house, and the ladder-length slider
+  runs on a segment whose length is the house height, so the ladder can't outgrow the wall
+  (its length keeps its fraction of that when the house is resized). The ground goes on forever.
 - **Tiles are live drawings**, not bitmaps (`DrawingThumbnail`): a `Drawing` on its own 560x380
   canvas inside a Viewbox, no Behavior attached, text hidden, loaded one per idle tick. Hovering
   makes the draggable points drift (`IsAnimated`). A load error of a tile goes to the console as

@@ -89,6 +89,12 @@ namespace DynamicGeometry
             SetView(logicalBounds.Center, ClampUnitLength(newUnitLength));
         }
 
+        /// <summary>A suggested view of the drawing, edge to edge (see <see cref="Drawing.Scenes"/>)</summary>
+        public void FitScene(Rect scene)
+        {
+            Fit(scene, marginPixels: 0);
+        }
+
         /// <summary>
         /// Puts the logical point into the middle of the canvas at the given zoom.
         /// </summary>
