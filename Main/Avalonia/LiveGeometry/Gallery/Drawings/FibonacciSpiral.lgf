@@ -378,7 +378,7 @@
       <Dependency Name="E" />
       <Dependency Name="K" />
     </Segment>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Fibonacci Spiral" DecimalsToShow="2" X="5.219" Y="3.802" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="1, 1, 2, 3, 5, 8, 13... Each Fibonacci number\nis the sum of the two before it.\n\nSquares with these side lengths fit together\nperfectly, and a quarter circle in each square\nmakes a spiral. You can find it in seashells,\nsunflowers and pinecones.\n\nDrag the yellow points to turn and resize it." DecimalsToShow="2" X="5.219" Y="2.583" />
+    <Label Name="Title" Style="GalleryTitle" Text="Fibonacci Spiral" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="1, 1, 2, 3, 5, 8, 13... Each Fibonacci number is the sum of the two before it.\n\nSquares with these side lengths fit together perfectly, and a quarter circle in each square makes a spiral. You can find it in seashells, sunflowers and pinecones.\n\nDrag the yellow points to turn and resize it." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

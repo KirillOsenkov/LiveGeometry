@@ -132,7 +132,7 @@
     <PointLabel Name="PointLabel198" Style="7" OffsetX="-0.239583333366666" OffsetY="0.656249999933334" ShowName="true" ShowCoordinates="false">
       <Dependency Name="H" />
     </PointLabel>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Regular Pentagon" DecimalsToShow="2" X="2.8" Y="1" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A regular pentagon built with compass and\nstraightedge only:\n\n1. Draw radius AB and the radius AC\nperpendicular to it.\n2. D is the midpoint of AC.\n3. The circle centered at D through B meets\nline AC at E.\n4. BE is the side length: step it around the\ncircle with the compass.\n\nDrag A and B." DecimalsToShow="2" X="2.8" Y="0.773" />
+    <Label Name="Title" Style="GalleryTitle" Text="Regular Pentagon" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A regular pentagon built with compass and straightedge only:\n\n1. Draw radius AB and the radius AC perpendicular to it.\n2. D is the midpoint of AC.\n3. The circle centered at D through B meets line AC at E.\n4. BE is the side length: step it around the circle with the compass.\n\nDrag A and B." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

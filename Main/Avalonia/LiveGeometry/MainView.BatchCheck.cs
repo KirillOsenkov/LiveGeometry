@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -50,6 +51,10 @@ public partial class MainView
             .OrderBy(f => f)
             .ToArray();
         ShowEditor();
+
+        // as the gallery would show them: without the tools on a small screen
+        ribbonChoice = !IsSmallScreen;
+        UpdateRibbon();
         foreach (var file in files)
         {
             var relative = Path.GetRelativePath(folder, file);
@@ -62,7 +67,11 @@ public partial class MainView
                 OpenDrawing(Path.GetFileName(file), File.ReadAllBytes(file));
                 await Task.Delay(50);
                 var drawing = DrawingHost.CurrentDrawing;
-                drawing.CoordinateSystem.ZoomExtend();
+                if (!GalleryDrawing.HasCaption(drawing))
+                {
+                    // a captioned drawing was laid out for the window on opening
+                    drawing.CoordinateSystem.ZoomExtend();
+                }
                 await Task.Delay(120);
 
                 var figures = drawing.Figures.Where(f => !(f is CartesianGrid)).ToArray();
@@ -152,6 +161,104 @@ public partial class MainView
 
         Console.WriteLine("modernized " + changedFiles + " files");
         Environment.Exit(0);
+    }
+
+    public static string RecaptionFolder { get; set; }
+
+    // explanations whose single line breaks are meant: a numbered list, a formula on a line of its own
+    static readonly HashSet<string> structuredCaptions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        "BestFitCircle.lgf", "Ceva.lgf", "ParabolaGraph.lgf", "Pentagon.lgf", "Pythagoras.lgf", "SteinersProblem.lgf"
+    };
+
+    static readonly Regex formulaLine = new Regex(@"^(\d+\.\s|\[|\S+ = |\S+ \+ \S+ = )");
+
+    /// <summary>
+    /// "--recaption &lt;folder&gt;": a one-off that moved the gallery captions onto the screen
+    /// (2026-09-23). The Title and Description labels of every drawing get the pin, offsets
+    /// and column width that <see cref="GalleryDrawing.Fit"/> gives them in this window
+    /// (which should be a landscape one), instead of X and Y, become clickable, and the
+    /// explanations lose the line breaks that wrapped them by hand for a fixed width - the
+    /// column wraps them now. Nothing else in the file changes.
+    /// </summary>
+    async void RunRecaption(string folder)
+    {
+        ShowEditor();
+        int changedFiles = 0;
+        foreach (var file in Directory.GetFiles(folder, "*.lgf"))
+        {
+            var document = XDocument.Load(file, LoadOptions.PreserveWhitespace);
+            var labels = document.Root.Element("Figures").Elements("Label")
+                .Where(e => (string)e.Attribute("Name") == GalleryDrawing.TitleName || (string)e.Attribute("Name") == GalleryDrawing.DescriptionName)
+                .ToArray();
+            if (labels.Length != 2)
+            {
+                continue;
+            }
+
+            var fileName = Path.GetFileName(file);
+            var descriptionElement = labels.First(e => (string)e.Attribute("Name") == GalleryDrawing.DescriptionName);
+            descriptionElement.SetAttributeValue("Text", Unwrap((string)descriptionElement.Attribute("Text"), structuredCaptions.Contains(fileName)));
+
+            // laid out here, then written back
+            using (var stream = new MemoryStream())
+            {
+                document.Save(stream);
+                OpenDrawing(fileName, stream.ToArray());
+            }
+
+            await Task.Delay(50);
+            var drawing = DrawingHost.CurrentDrawing;
+            foreach (var element in labels)
+            {
+                var label = (Label)drawing.Figures[(string)element.Attribute("Name")];
+                element.Attribute("X")?.Remove();
+                element.Attribute("Y")?.Remove();
+
+                // clickable again: a pinned label is dragged by its offset, which is how a
+                // caption too long for a phone is pulled up to be read
+                element.Attribute("IsHitTestVisible")?.Remove();
+                element.SetAttributeValue("Pin", label.Pin.ToString());
+                element.SetAttributeValue("OffsetX", label.PinOffset.X.ToStringInvariant());
+                element.SetAttributeValue("OffsetY", label.PinOffset.Y.ToStringInvariant());
+                element.SetAttributeValue("WrapWidth", label.WrapWidth.ToStringInvariant());
+                element.SetAttributeValue("Backdrop", "true");
+            }
+
+            var settings = new XmlWriterSettings() { Indent = true, Encoding = new UTF8Encoding(false), NewLineChars = "\r\n" };
+            using (var writer = XmlWriter.Create(file, settings))
+            {
+                document.Save(writer);
+            }
+
+            changedFiles++;
+        }
+
+        Console.WriteLine("recaptioned " + changedFiles + " files");
+        Environment.Exit(0);
+    }
+
+    /// <summary>
+    /// Joins the lines of a paragraph with spaces; a blank line still separates paragraphs.
+    /// In a structured text a line after one ending with a colon, a numbered item and a
+    /// formula (something = ...) stay on their own line.
+    /// </summary>
+    static string Unwrap(string text, bool structured)
+    {
+        var lines = text.Split(new[] { @"\n" }, StringSplitOptions.None);
+        var sb = new StringBuilder(lines[0]);
+        for (int i = 1; i < lines.Length; i++)
+        {
+            var line = lines[i];
+            var previous = lines[i - 1];
+            bool hardBreak = line.Length == 0
+                || previous.Length == 0
+                || (structured && (previous.EndsWith(":") || formulaLine.IsMatch(line)));
+            sb.Append(hardBreak ? @"\n" : " ");
+            sb.Append(line);
+        }
+
+        return sb.ToString();
     }
 
     static string Describe(IFigure figure)

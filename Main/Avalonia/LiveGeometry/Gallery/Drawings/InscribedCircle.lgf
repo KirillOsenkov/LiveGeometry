@@ -66,7 +66,7 @@
       <Dependency Name="D" />
       <Dependency Name="E" />
     </Circle>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Inscribed Circle" DecimalsToShow="2" X="7.758" Y="-5.875" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Every triangle has exactly one circle that\ntouches all three sides: its incircle.\n\nThe green lines are the angle bisectors. They\nalways meet in a single point, the incenter\n(gray) - the center of the incircle. A\nperpendicular from the incenter to a side\ngives the green point where the circle\ntouches.\n\nDrag the yellow vertices: the circle always\nfits." DecimalsToShow="2" X="7.758" Y="-6.635" />
+    <Label Name="Title" Style="GalleryTitle" Text="Inscribed Circle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Every triangle has exactly one circle that touches all three sides: its incircle.\n\nThe green lines are the angle bisectors. They always meet in a single point, the incenter (gray) - the center of the incircle. A perpendicular from the incenter to a side gives the green point where the circle touches.\n\nDrag the yellow vertices: the circle always fits." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

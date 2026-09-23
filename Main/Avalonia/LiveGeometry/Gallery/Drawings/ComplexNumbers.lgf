@@ -68,8 +68,8 @@
       <Dependency Name="O" />
       <Dependency Name="C" />
     </Vector>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Complex Multiplication" DecimalsToShow="2" X="6.72" Y="1.371" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Think of the arrows as complex numbers: A =\n[A.X] + [A.Y]i and B = [B.X] + [B.Y]i.\n\nC is their product. Its angle is the sum of\nthe two angles ([deg(ang(a,o,x))]° +\n[deg(ang(b,o,x))]° = [deg(ang(c,o,x))]°), and\nits length is the product of the two lengths\n([AO] · [OB] = [OC]).\n\nMultiplying by a complex number rotates and\nstretches. Drag A and B." DecimalsToShow="2" X="6.72" Y="0.921">
+    <Label Name="Title" Style="GalleryTitle" Text="Complex Multiplication" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Think of the arrows as complex numbers: A = [A.X] + [A.Y]i and B = [B.X] + [B.Y]i.\n\nC is their product. Its angle is the sum of the two angles ([deg(ang(a,o,x))]° + [deg(ang(b,o,x))]° = [deg(ang(c,o,x))]°), and its length is the product of the two lengths ([AO] · [OB] = [OC]).\n\nMultiplying by a complex number rotates and stretches. Drag A and B." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="C" />

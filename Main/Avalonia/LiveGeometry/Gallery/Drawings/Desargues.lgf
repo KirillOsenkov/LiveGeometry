@@ -121,7 +121,7 @@
       <Dependency Name="H" />
       <Dependency Name="I" />
     </LineTwoPoints>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Desargues' Theorem" DecimalsToShow="2" X="-1.641" Y="7.545" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Two triangles are &quot;in perspective from a\npoint&quot; when the lines through matching\nvertices all meet in one point - like a shape\nand its shadow.\n\nThen the matching sides, extended, meet in\nthree points that always lie on one line.\n\nDrag the vertices. Drawing by Chris Burrows." DecimalsToShow="2" X="-1.641" Y="6.916" />
+    <Label Name="Title" Style="GalleryTitle" Text="Desargues' Theorem" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Two triangles are &quot;in perspective from a point&quot; when the lines through matching vertices all meet in one point - like a shape and its shadow.\n\nThen the matching sides, extended, meet in three points that always lie on one line.\n\nDrag the vertices. Drawing by Chris Burrows." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

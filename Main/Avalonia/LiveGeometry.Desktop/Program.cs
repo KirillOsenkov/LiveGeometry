@@ -26,6 +26,15 @@ sealed class Program
         {
             MainView.ModernizeFolder = System.IO.Path.GetFullPath(args[1]);
         }
+        else if (args.Length == 2 && args[0] == "--recaption")
+        {
+            MainView.RecaptionFolder = System.IO.Path.GetFullPath(args[1]);
+        }
+        else if (args.Length == 2 && args[0] == "--gallery")
+        {
+            // straight to a drawing of the gallery, as the browser's /gallery/<slug> would
+            MainView.StartupPath = "/gallery/" + args[1];
+        }
 
         App.MainWindowCreated = WindowPlacementPersistence.Attach;
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);

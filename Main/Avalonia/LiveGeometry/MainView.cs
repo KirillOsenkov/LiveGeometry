@@ -141,7 +141,7 @@ public partial class MainView : UserControl
         // its 48 tiles, isn't even built until the Gallery button is pressed.
         pages.Children.Add(LayoutRoot);
         Content = pages;
-        bool startsInEditor = StartupFile != null || CheckFolder != null || ModernizeFolder != null || IsDrawingPath(AddressBar.Current.Path);
+        bool startsInEditor = StartupFile != null || CheckFolder != null || ModernizeFolder != null || RecaptionFolder != null || IsDrawingPath(AddressBar.Current.Path);
         LayoutRoot.IsVisible = startsInEditor;
         if (!startsInEditor)
         {
@@ -551,6 +551,9 @@ public partial class MainView : UserControl
     /// </summary>
     public static string StartupFile { get; set; }
 
+    /// <summary>A page to open at startup instead of the one the address bar says ("--gallery slug")</summary>
+    public static string StartupPath { get; set; }
+
     /// <summary>The first page: the file from the command line, else what the address says</summary>
     void OpenStartupFile()
     {
@@ -568,11 +571,17 @@ public partial class MainView : UserControl
             return;
         }
 
+        if (RecaptionFolder != null)
+        {
+            RunRecaption(RecaptionFolder);
+            return;
+        }
+
         var path = StartupFile;
         StartupFile = null;
         if (string.IsNullOrEmpty(path))
         {
-            HandleExceptions(() => Navigate(AddressBar.Current.Path, push: false));
+            HandleExceptions(() => Navigate(StartupPath ?? AddressBar.Current.Path, push: false));
             return;
         }
 
@@ -594,7 +603,17 @@ public partial class MainView : UserControl
         }
 
         var text = Utilities.StripByteOrderMark(new System.Text.UTF8Encoding().GetString(bytes));
-        HandleExceptions(() => DrawingHost.DrawingControl.LoadDrawing(text, name));
+        HandleExceptions(() =>
+        {
+            DrawingHost.DrawingControl.LoadDrawing(text, name);
+
+            // a drawing with a caption (one of the gallery, saved) is laid out for this window
+            var drawing = DrawingHost.CurrentDrawing;
+            if (GalleryDrawing.HasCaption(drawing))
+            {
+                GalleryDrawing.Fit(drawing, GalleryDrawing.GetPlane(text));
+            }
+        });
     }
 
     /// <summary>

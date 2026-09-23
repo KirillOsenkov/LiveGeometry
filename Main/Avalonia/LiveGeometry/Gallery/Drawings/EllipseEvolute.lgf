@@ -102,7 +102,7 @@
       <Dependency Name="H" />
       <Dependency Name="b" />
     </Segment>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Ellipse and Its Evolute" DecimalsToShow="2" X="4.947" Y="0" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Point L runs around an ellipse. At every\nposition there is a circle that hugs the curve\nbest, and M is its center.\n\nAs L travels, M traces the star-shaped curve\ninside: the evolute of the ellipse.\n\nDrag the yellow point to move L. Drag a and b\nto reshape the ellipse." DecimalsToShow="2" X="4.947" Y="-0.48" />
+    <Label Name="Title" Style="GalleryTitle" Text="Ellipse and Its Evolute" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Point L runs around an ellipse. At every position there is a circle that hugs the curve best, and M is its center.\n\nAs L travels, M traces the star-shaped curve inside: the evolute of the ellipse.\n\nDrag the yellow point to move L. Drag a and b to reshape the ellipse." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

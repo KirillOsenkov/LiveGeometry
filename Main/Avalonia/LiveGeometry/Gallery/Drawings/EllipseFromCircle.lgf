@@ -54,7 +54,7 @@
       <Dependency Name="F" />
       <Dependency Name="D" />
     </Locus>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Ellipse from a Circle" DecimalsToShow="2" X="4.23" Y="4.435" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Squash a circle and you get an ellipse.\n\nFrom a point on the circle drop a\nperpendicular to the axis and cut it in a\nfixed ratio. As the point runs around the\ncircle, the cut point traces an ellipse.\n\nDrag the points to change how much the circle\nis squashed." DecimalsToShow="2" X="4.23" Y="3.894" />
+    <Label Name="Title" Style="GalleryTitle" Text="Ellipse from a Circle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Squash a circle and you get an ellipse.\n\nFrom a point on the circle drop a perpendicular to the axis and cut it in a fixed ratio. As the point runs around the circle, the cut point traces an ellipse.\n\nDrag the points to change how much the circle is squashed." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

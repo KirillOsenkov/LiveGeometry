@@ -119,7 +119,7 @@
       <Dependency Name="Label79" />
     </ShowHideControl>
     <Label Name="Label79" IsHitTestVisible="false" Style="8" Text="Place the first point (yellow) anywhere on the bottom\nline. Rotate the bottom line 60 degrees around the\nyellow point (rotated line is shown in blue).\n\nTo do this:\n1. Draw a vertical line perpendicular to the bottom\n    line and intersect it with the second line.\n2. From the two vertical points, draw two green\n    circles as shown.\n3. Intersect the two green circles to get an\n    equilateral triangle.\n4. Draw the blue line perpendicular to the triangle \n    side.\n\nNow that you have the blue line, intersect it with the\ntop line. You have the second vertex of your desired\ntriangle. Now, to get the third vertex, draw the gray\ncircle and intersect it with the second line." X="-4.5833333333" Y="-3" />
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Triangle on Three Lines" DecimalsToShow="2" X="2.09" Y="7.01" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Here are three parallel lines. Can you\nconstruct an equilateral triangle with one\nvertex on each line?\n\nDrag the yellow point: the triangle follows.\nThink about how it is done, then check &quot;Show\nsolution&quot;." DecimalsToShow="2" X="2.09" Y="5.365" />
+    <Label Name="Title" Style="GalleryTitle" Text="Triangle on Three Lines" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="89.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Here are three parallel lines. Can you construct an equilateral triangle with one vertex on each line?\n\nDrag the yellow point: the triangle follows. Think about how it is done, then check &quot;Show solution&quot;." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="137.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

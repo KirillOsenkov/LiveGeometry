@@ -343,7 +343,7 @@
       <Dependency Name="V" />
       <Dependency Name="W" />
     </LineTwoPoints>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Cavalieri's Principle" DecimalsToShow="2" X="5.659" Y="-0.979" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="The area of a triangle is ½ · base · height.\nWhy doesn't it matter where the top is?\n\nThink of the triangle as a stack of thin\nslices. Slide the top sideways: every slice\nmoves but keeps its length, so the area stays\nthe same.\n\nDrag the top vertex." DecimalsToShow="2" X="5.659" Y="-1.788" />
+    <Label Name="Title" Style="GalleryTitle" Text="Cavalieri's Principle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="The area of a triangle is ½ · base · height. Why doesn't it matter where the top is?\n\nThink of the triangle as a stack of thin slices. Slide the top sideways: every slice moves but keeps its length, so the area stays the same.\n\nDrag the top vertex." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

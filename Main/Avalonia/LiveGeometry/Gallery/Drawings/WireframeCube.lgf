@@ -574,7 +574,7 @@
       <Dependency Name="C" />
       <Dependency Name="G" />
     </Segment>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Wireframe Cube" DecimalsToShow="2" X="5.631" Y="4.392" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A cube you can turn - built from nothing but\nsegments and midpoints.\n\nDrag the yellow points to rotate and stretch\nit." DecimalsToShow="2" X="5.631" Y="3.45" />
+    <Label Name="Title" Style="GalleryTitle" Text="Wireframe Cube" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="100" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A cube you can turn - built from nothing but segments and midpoints.\n\nDrag the yellow points to rotate and stretch it." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="148" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

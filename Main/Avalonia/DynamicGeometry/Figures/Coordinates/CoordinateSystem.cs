@@ -100,12 +100,20 @@ namespace DynamicGeometry
         /// </summary>
         public void SetView(Point logicalCenter, double newUnitLength)
         {
-            var middle = PhysicalSize.Scale(0.5);
+            SetView(logicalCenter, newUnitLength, PhysicalSize.Scale(0.5));
+        }
+
+        /// <summary>
+        /// Puts the logical point under the given pixel at the given zoom: the middle of the
+        /// room that is left beside a caption, for instance.
+        /// </summary>
+        public void SetView(Point logicalPoint, double newUnitLength, Point physicalPoint)
+        {
             unitLength = newUnitLength;
             scale = unitLength / Settings.DefaultUnitLength;
             origin = SnapOrigin(new Point(
-                middle.X - logicalCenter.X * unitLength,
-                middle.Y + logicalCenter.Y * unitLength));
+                physicalPoint.X - logicalPoint.X * unitLength,
+                physicalPoint.Y + logicalPoint.Y * unitLength));
             Recalculate();
         }
 
@@ -234,6 +242,12 @@ namespace DynamicGeometry
             foreach (var figure in Drawing.Figures)
             {
                 if (!figure.Visible || !figure.Exists || (include != null && !include(figure)))
+                {
+                    continue;
+                }
+
+                // a pinned label is on the screen, not in the plane: nothing to fit
+                if (figure is Label label && label.Pin != LabelPin.None)
                 {
                     continue;
                 }

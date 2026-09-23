@@ -28,8 +28,8 @@
     <FunctionGraph Name="FunctionGraph9" Style="4" Function="sin(x*C.X)">
       <Dependency Name="C" />
     </FunctionGraph>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Sine Wave: Frequency" DecimalsToShow="2" X="4.303" Y="-0.009" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="y = sin([C.X] · x)\n\nDrag the yellow point left and right to change\nthe number next to x, the frequency: how\ntightly the waves are packed. The height of\nthe wave never changes." DecimalsToShow="2" X="4.303" Y="-0.284">
+    <Label Name="Title" Style="GalleryTitle" Text="Sine Wave: Frequency" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="78.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="y = sin([C.X] · x)\n\nDrag the yellow point left and right to change the number next to x, the frequency: how tightly the waves are packed. The height of the wave never changes." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="126.75" WrapWidth="400" Backdrop="true">
       <Dependency Name="C" />
     </Label>
   </Figures>

@@ -229,8 +229,8 @@
       <Dependency Name="C" />
       <Dependency Name="A" />
     </Polygon>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Pythagorean Theorem" DecimalsToShow="2" X="6.001" Y="4.824" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="In a right triangle the square on the\nhypotenuse has the same area as the two\nsquares on the legs together: a² + b² = c².\n\nRight now the legs are [AC] and [BC], and the\nhypotenuse is [ab].\nc² = [ab^2]\na² + b² = [AC^2+BC^2]\n\nDrag the yellow points - the two numbers\nalways agree." DecimalsToShow="2" X="6.001" Y="3.936">
+    <Label Name="Title" Style="GalleryTitle" Text="Pythagorean Theorem" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="25.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="In a right triangle the square on the hypotenuse has the same area as the two squares on the legs together: a² + b² = c².\n\nRight now the legs are [AC] and [BC], and the hypotenuse is [ab].\nc² = [ab^2]\na² + b² = [AC^2+BC^2]\n\nDrag the yellow points - the two numbers always agree." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="73.5" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="C" />

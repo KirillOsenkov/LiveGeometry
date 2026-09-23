@@ -132,7 +132,7 @@
       <Dependency Name="G" />
       <Dependency Name="H" />
     </Segment>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Simson Line" DecimalsToShow="2" X="3.597" Y="0.677" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Triangle ABC is inscribed in a circle, and G\nis another point on the same circle. Drop\nperpendiculars from G to the three sides\n(extended if needed).\n\nThe three feet (green) always lie on one line:\nthe Simson line, named after Robert Simson.\n\nDrag G around the circle and watch the line\nswing." DecimalsToShow="2" X="3.597" Y="-0.019" />
+    <Label Name="Title" Style="GalleryTitle" Text="Simson Line" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Triangle ABC is inscribed in a circle, and G is another point on the same circle. Drop perpendiculars from G to the three sides (extended if needed).\n\nThe three feet (green) always lie on one line: the Simson line, named after Robert Simson.\n\nDrag G around the circle and watch the line swing." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

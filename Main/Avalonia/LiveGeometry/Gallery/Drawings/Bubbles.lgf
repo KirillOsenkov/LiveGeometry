@@ -562,7 +562,7 @@
       <Dependency Name="J1" />
       <Dependency Name="Label60" />
     </ShowHideControl>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Bubbles" DecimalsToShow="2" X="6.311" Y="4.833" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Drag the bubbles around. They squeeze\nand grow, but they seem to want to avoid\noverlapping. How are they made?\n\nCheck &quot;Hint&quot; to see the trick." DecimalsToShow="2" X="6.311" Y="3.545" />
+    <Label Name="Title" Style="GalleryTitle" Text="Bubbles" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="89.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Drag the bubbles around. They squeeze and grow, but they seem to want to avoid overlapping. How are they made?\n\nCheck &quot;Hint&quot; to see the trick." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="137.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

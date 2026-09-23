@@ -168,7 +168,7 @@
       <Dependency Name="M" />
       <Dependency Name="N" />
     </Segment>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Square Between Squares" DecimalsToShow="2" X="5.398" Y="3.646" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Take any two squares (pink and green) and\nconnect their matching corners with four\ngray segments.\n\nPick a point on one segment, and the points\nthe same fraction of the way along the other\nthree. They form another square (yellow)!\n\nSlide the green point from the pink square to\nthe green one. Drag the yellow points to move\nand turn the squares." DecimalsToShow="2" X="5.398" Y="2.681" />
+    <Label Name="Title" Style="GalleryTitle" Text="Square Between Squares" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Take any two squares (pink and green) and connect their matching corners with four gray segments.\n\nPick a point on one segment, and the points the same fraction of the way along the other three. They form another square (yellow)!\n\nSlide the green point from the pink square to the green one. Drag the yellow points to move and turn the squares." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

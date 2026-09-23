@@ -519,7 +519,7 @@
       <Dependency Name="B2" />
       <Dependency Name="Z1" />
     </Polygon>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="The Falling Ladder" DecimalsToShow="2" X="13.121" Y="25.5" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A ladder leans on a wall, with a bucket of\npaint hanging on it. It slips: the top slides\ndown the wall, the foot slides out.\n\nWhat path does the bucket follow? Drag the\nladder's top down and see. Then slide the\nbucket to the middle: what shape is it now?\n\nThe other green points move the house, resize\nit and raise its roof." DecimalsToShow="2" X="13.121" Y="22.156" />
+    <Label Name="Title" Style="GalleryTitle" Text="The Falling Ladder" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A ladder leans on a wall, with a bucket of paint hanging on it. It slips: the top slides down the wall, the foot slides out.\n\nWhat path does the bucket follow? Drag the ladder's top down and see. Then slide the bucket to the middle: what shape is it now?\n\nThe other green points move the house, resize it and raise its roof." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

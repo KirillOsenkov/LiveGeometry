@@ -217,7 +217,7 @@
       <Dependency Name="StepLocus14" />
       <Dependency Name="StepLocus15" />
     </ShowHideControl>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Continuous Deformations" DecimalsToShow="2" X="9" Y="4" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A formula moves every point D of the pink\ncircle to a new place E. As D runs around\nthe circle, E draws the blue curve.\n\nPoint F sits on the segment from D to E.\nIts path, the purple curve, is a shape\nhalfway between the two.\n\nDrag F along its segment to morph the\ncircle into the blue curve and back. The\nthin curves are the steps in between.\nDrag A to resize the circle, or C to move it." DecimalsToShow="2" X="9" Y="2" />
+    <Label Name="Title" Style="GalleryTitle" Text="Continuous Deformations" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A formula moves every point D of the pink circle to a new place E. As D runs around the circle, E draws the blue curve.\n\nPoint F sits on the segment from D to E. Its path, the purple curve, is a shape halfway between the two.\n\nDrag F along its segment to morph the circle into the blue curve and back. The thin curves are the steps in between. Drag A to resize the circle, or C to move it." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

@@ -135,7 +135,7 @@
     <PointLabel Name="PointLabel72" IsHitTestVisible="false" Style="8" OffsetX="-0.399497450283102" OffsetY="0.572007712892806" ShowName="true" ShowCoordinates="false">
       <Dependency Name="H" />
     </PointLabel>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Square in a Square" DecimalsToShow="2" X="3.82" Y="-3.948" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="In square ABCD mark points E, F, G and H at\nthe same distance from the corners: AE = BF =\nCG = DH.\n\nEFGH is a square too, and the four corner\ntriangles are congruent right triangles. This\npicture is the heart of a famous proof of the\nPythagorean theorem.\n\nDrag E along the side." DecimalsToShow="2" X="3.82" Y="-4.415" />
+    <Label Name="Title" Style="GalleryTitle" Text="Square in a Square" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="In square ABCD mark points E, F, G and H at the same distance from the corners: AE = BF = CG = DH.\n\nEFGH is a square too, and the four corner triangles are congruent right triangles. This picture is the heart of a famous proof of the Pythagorean theorem.\n\nDrag E along the side." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

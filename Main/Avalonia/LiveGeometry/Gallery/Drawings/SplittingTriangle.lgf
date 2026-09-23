@@ -78,7 +78,7 @@
       <Dependency Name="D" />
       <Dependency Name="F" />
     </Segment>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Midsegments of a Triangle" DecimalsToShow="2" X="3.908" Y="2.344" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Connect the midpoints of the sides of a\ntriangle. The three midsegments split it into\nfour smaller triangles.\n\nAll four are congruent - the same shape and\nsize - so each has exactly one quarter of the\narea, and sides half as long as the original.\n\nDrag the yellow vertices." DecimalsToShow="2" X="3.908" Y="1.626" />
+    <Label Name="Title" Style="GalleryTitle" Text="Midsegments of a Triangle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Connect the midpoints of the sides of a triangle. The three midsegments split it into four smaller triangles.\n\nAll four are congruent - the same shape and size - so each has exactly one quarter of the area, and sides half as long as the original.\n\nDrag the yellow vertices." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

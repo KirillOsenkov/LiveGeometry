@@ -49,8 +49,8 @@
       <Dependency Name="E" />
       <Dependency Name="F" />
     </FunctionGraph>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Graph of a Parabola" DecimalsToShow="2" X="3.37" Y="-2.01" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="y = a·x² + b\na = [E.X]\nb = [F.X]\n\nThe two points under the x-axis are sliders.\nThe blue one is a: it makes the parabola\nnarrower, wider, or flips it upside down. The\ngreen one is b: it moves the parabola up and\ndown." DecimalsToShow="2" X="3.37" Y="-2.248">
+    <Label Name="Title" Style="GalleryTitle" Text="Graph of a Parabola" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="y = a·x² + b\na = [E.X]\nb = [F.X]\n\nThe two points under the x-axis are sliders. The blue one is a: it makes the parabola narrower, wider, or flips it upside down. The green one is b: it moves the parabola up and down." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true">
       <Dependency Name="E" />
       <Dependency Name="F" />
     </Label>

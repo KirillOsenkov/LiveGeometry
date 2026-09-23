@@ -69,7 +69,7 @@
       <Dependency Name="A" />
       <Dependency Name="D" />
     </DistanceMeasurement>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Reuleaux Triangle" DecimalsToShow="2" X="3.075" Y="-0.644" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A circle is not the only shape with the same\nwidth in every direction. This one is made of\nthree 60° arcs, each centered at the opposite\ncorner.\n\nRoll it between two parallel lines and they\nnever move apart. That is why it can drill\n(almost) square holes, and why some coins have\nthis shape." DecimalsToShow="2" X="3.075" Y="-1.088" />
+    <Label Name="Title" Style="GalleryTitle" Text="Reuleaux Triangle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="68.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A circle is not the only shape with the same width in every direction. This one is made of three 60° arcs, each centered at the opposite corner.\n\nRoll it between two parallel lines and they never move apart. That is why it can drill (almost) square holes, and why some coins have this shape." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="116.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

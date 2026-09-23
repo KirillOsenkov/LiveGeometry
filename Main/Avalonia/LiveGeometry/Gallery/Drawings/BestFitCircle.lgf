@@ -213,8 +213,8 @@
       <Dependency Name="V" />
       <Dependency Name="U" />
     </Polygon>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Best-Fit Circle" DecimalsToShow="2" X="6.596" Y="4" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Eight points that almost lie on a circle.\nWhich circle fits them best?\n\nThis one is chosen so that the gaps between\nthe points and the circle are as small as\npossible overall - the sum of their squares is\nthe area of the square in the corner:\n[sqr(ai^2+bk^2+cm^2+od^2+qe^2+fs^2)].\n\nDrag the points. Move one far away and see how\nmuch the circle cares." DecimalsToShow="2" X="6.596" Y="2.945">
+    <Label Name="Title" Style="GalleryTitle" Text="Best-Fit Circle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="25.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Eight points that almost lie on a circle. Which circle fits them best?\n\nThis one is chosen so that the gaps between the points and the circle are as small as possible overall - the sum of their squares is the area of the square in the corner:\n[sqr(ai^2+bk^2+cm^2+od^2+qe^2+fs^2)].\n\nDrag the points. Move one far away and see how much the circle cares." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="73.5" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />
       <Dependency Name="I" />
       <Dependency Name="B" />

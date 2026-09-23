@@ -366,7 +366,7 @@
       <Dependency Name="MiddlePoint39" />
       <Dependency Name="MiddlePoint37" />
     </Segment>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Sierpinski Triangle" DecimalsToShow="2" X="5.55" Y="3.731" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Take a triangle, connect the midpoints of its\nsides, and you get four smaller triangles.\nLeave the middle one empty and repeat with the\nother three - again and again.\n\nThe result is a fractal: it looks the same\nhowever closely you zoom in. This one has five\nlevels.\n\nDrag the three corners." DecimalsToShow="2" X="5.55" Y="2.767" />
+    <Label Name="Title" Style="GalleryTitle" Text="Sierpinski Triangle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Take a triangle, connect the midpoints of its sides, and you get four smaller triangles. Leave the middle one empty and repeat with the other three - again and again.\n\nThe result is a fractal: it looks the same however closely you zoom in. This one has five levels.\n\nDrag the three corners." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

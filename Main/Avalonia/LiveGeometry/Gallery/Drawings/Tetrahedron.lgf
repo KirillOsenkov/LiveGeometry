@@ -90,7 +90,7 @@
       <Dependency Name="G" />
       <Dependency Name="E" />
     </Polygon>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Tetrahedron" DecimalsToShow="2" X="6.198" Y="4.577" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="The simplest solid: four corners, four\ntriangular faces, six edges. It is a pyramid\nwith a triangle for a base.\n\nDrag the corners to look at it from another\nside." DecimalsToShow="2" X="6.198" Y="3.722" />
+    <Label Name="Title" Style="GalleryTitle" Text="Tetrahedron" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="100" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="The simplest solid: four corners, four triangular faces, six edges. It is a pyramid with a triangle for a base.\n\nDrag the corners to look at it from another side." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="148" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

@@ -435,7 +435,7 @@
       <Dependency Name="Crown" />
       <Dependency Name="CrownRim" />
     </Circle>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Castle" DecimalsToShow="2" X="11" Y="9" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A landscape drawn with polygons and circles,\nlike a page from a coloring book.\n\nThe green points slide: make the tower taller\nand the castle wider, raise the mountains and\nthe tree, or walk them along the ground. The\nsun and the cloud go wherever you drag them." DecimalsToShow="2" X="11" Y="7" />
+    <Label Name="Title" Style="GalleryTitle" Text="Castle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="68.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A landscape drawn with polygons and circles, like a page from a coloring book.\n\nThe green points slide: make the tower taller and the castle wider, raise the mountains and the tree, or walk them along the ground. The sun and the cloud go wherever you drag them." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="116.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

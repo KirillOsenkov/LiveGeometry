@@ -137,7 +137,7 @@
       <Dependency Name="G" />
       <Dependency Name="F" />
     </AngleMeasurement>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Varignon's Theorem" DecimalsToShow="2" X="4.632" Y="2.448" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Connect the midpoints of the sides of any\nquadrilateral and you always get a\nparallelogram: opposite sides are equal and\nparallel, opposite angles are equal.\n\nIt even works when the quadrilateral crosses\nitself. Pierre Varignon proved it around 1700.\n\nDrag the yellow vertices." DecimalsToShow="2" X="4.632" Y="1.773" />
+    <Label Name="Title" Style="GalleryTitle" Text="Varignon's Theorem" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Connect the midpoints of the sides of any quadrilateral and you always get a parallelogram: opposite sides are equal and parallel, opposite angles are equal.\n\nIt even works when the quadrilateral crosses itself. Pierre Varignon proved it around 1700.\n\nDrag the yellow vertices." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

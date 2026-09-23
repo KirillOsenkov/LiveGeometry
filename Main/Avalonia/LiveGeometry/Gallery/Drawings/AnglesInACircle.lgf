@@ -79,7 +79,7 @@
     <PointLabel Name="PointLabel27" Style="7" OffsetX="-0.197916666733333" OffsetY="0.697916666633333" ShowName="true" ShowCoordinates="false">
       <Dependency Name="O" />
     </PointLabel>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Inscribed Angle" DecimalsToShow="2" X="4.63" Y="1.31" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A and C are fixed on the circle. Drag B along\nthe circle: angle ABC doesn't change!\n\nAll inscribed angles that intercept the same\narc are congruent, and each is half of the\ncentral angle AOC.\n\nNow move A and C so that AC is a diameter. The\nangle becomes exactly 90°." DecimalsToShow="2" X="4.63" Y="0.518" />
+    <Label Name="Title" Style="GalleryTitle" Text="Inscribed Angle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A and C are fixed on the circle. Drag B along the circle: angle ABC doesn't change!\n\nAll inscribed angles that intercept the same arc are congruent, and each is half of the central angle AOC.\n\nNow move A and C so that AC is a diameter. The angle becomes exactly 90°." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

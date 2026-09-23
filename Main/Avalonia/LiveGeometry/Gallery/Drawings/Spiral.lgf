@@ -61,7 +61,7 @@
     <Label IsHitTestVisible="false" Name="PentagonHint" Style="TargetText" Text="pentagons" DecimalsToShow="2" X="103" Y="49.7" />
     <PointByCoordinates Name="HexagonTarget" Style="Target" X="98.68421" Y="32.129968" />
     <Label IsHitTestVisible="false" Name="HexagonHint" Style="TargetText" Text="hexagons" DecimalsToShow="2" X="103" Y="37.1" />
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Spiral" DecimalsToShow="2" X="111.955" Y="45.899" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Point B is placed by a rule: its distance from\nthe center is A's x-coordinate and its angle\nis A's y-coordinate. As A slides along the\nsegment, B sweeps out a spiral.\n\nThe curve is drawn through 60 points, so\nonly the height of the segment matters: it\nsets how far the angle turns from one point\nto the next. A turn of 90° makes squares,\n120° triangles, 72° pentagons and 60°\nhexagons - drag the top end onto an orange\nring and see." DecimalsToShow="2" X="111.955" Y="36.707" />
+    <Label Name="Title" Style="GalleryTitle" Text="Spiral" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Point B is placed by a rule: its distance from the center is A's x-coordinate and its angle is A's y-coordinate. As A slides along the segment, B sweeps out a spiral.\n\nThe curve is drawn through 60 points, so only the height of the segment matters: it sets how far the angle turns from one point to the next. A turn of 90° makes squares, 120° triangles, 72° pentagons and 60° hexagons - drag the top end onto an orange ring and see." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

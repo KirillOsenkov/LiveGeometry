@@ -29,8 +29,8 @@
     <PointOnFigure Name="C" Style="1" X="1.582913226985" Y="1.00719824270203" Parameter="0.175801875088787">
       <Dependency Name="Ray142" />
     </PointOnFigure>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Sine Wave: Amplitude" DecimalsToShow="2" X="2.697" Y="5.729" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="y = [C.Y] · sin(x)\n\nDrag the yellow point up and down to change\nthe number in front of the sine, the\namplitude: how tall the wave is. What happens\nwhen it is negative? When it is zero?" DecimalsToShow="2" X="2.697" Y="5.042">
+    <Label Name="Title" Style="GalleryTitle" Text="Sine Wave: Amplitude" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="78.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="y = [C.Y] · sin(x)\n\nDrag the yellow point up and down to change the number in front of the sine, the amplitude: how tall the wave is. What happens when it is negative? When it is zero?" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="126.75" WrapWidth="400" Backdrop="true">
       <Dependency Name="C" />
     </Label>
   </Figures>

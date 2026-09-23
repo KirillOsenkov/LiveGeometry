@@ -273,18 +273,46 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   colors darkened in place, F started at the middle of its segment, and 15 more points on the
   segment with a locus each - colored from the circle's magenta to the curve's blue, 1 px at
   0.7 alpha - behind a "Show all the steps" `ShowHideControl`, on by default; it is the
-  first tile of the gallery). Each has two unclickable labels, `Title` and `Description` (may contain live
-  `[AB^2]` expressions - then list the points as dependencies). Their *position is computed at open time*
-  by `GalleryDrawing.Fit`: right of the figure in a wide canvas, below it in a tall one. Labels
-  are sized in pixels, so the figure gets the canvas minus the text and the zoom is computed
-  from that in one go - never iterate "place text, zoom to fit": it runs away (zooms out a
-  little more per round) once the text needs more than its share, which is what collapsed
+  first tile of the gallery). Each has two labels, `Title` and `Description` (may contain live
+  `[AB^2]` expressions - then list the points as dependencies), together "the caption". The
+  caption is *pinned to the screen* (see "Pinned labels" below): the files carry
+  `Pin`/`OffsetX`/`OffsetY`/`WrapWidth`/`Backdrop` and no X/Y, and `GalleryDrawing.Fit`
+  recomputes them at open time: a 400 px column at the right in a wide canvas (`TopRight`,
+  wider only for a heading that needs it, and only if that leaves the figure 40% of the
+  width), a strip at the bottom in a tall one (`BottomLeft`, canvas width minus margins).
+  Labels are sized in pixels, so the figure gets the canvas minus the text and the zoom is
+  computed from that in one go - never iterate "place text, zoom to fit": it runs away (zooms
+  out a little more per round) once the text needs more than its share, which is what collapsed
   Inscribed Circle in small windows. The figure keeps at least 40% of the canvas; if the text
-  doesn't fit it runs off the edge. Refitted on resize until the first edit, through
+  doesn't fit it runs off the bottom, and the reader drags the caption up (a pinned label is
+  dragged by its offset). Refitted on resize until the first edit, through
   `Drawing.SizeChanged` (`MainView.KeepFitted`) and not the canvas's event: the coordinate
-  system's own resize handler shifts the origin, and it has to run first.
+  system's own resize handler shifts the origin, and it has to run first. A file with a
+  caption opened from disk (`MainView.OpenDrawing`) is fitted the same way. The explanations
+  have no hand line breaks any more (the column wraps them; a blank line still separates
+  paragraphs, and six "structured" ones keep formula and list lines: see
+  `MainView.BatchCheck.RunRecaption`, the one-off `--recaption <folder>` that converted them,
+  2026-09-23; rerunning it is harmless). On an iPhone in portrait (canvas about 390x565) the
+  long explanations (Continuous Deformations, Complex Multiplication, Pentagon, Steiner) run
+  off the bottom.
   Drawings with `Grid="true"` (graphs) keep their file viewport in view (`GalleryItem.Plane`),
   because graphs and lines have no bounds.
+- **Pinned labels** (`Label.Pin`, `Figures/Controls/LabelPin.cs`): a label is either a place
+  in the plane (X/Y, the default) or pinned to a corner of the canvas: `PinOffset` is the
+  distance in pixels from that corner to the *same* corner of the label, so a right-pinned
+  label keeps its right edge and a bottom-pinned one its bottom while the plane zooms and
+  pans under it. `Coordinates` always tell where it is in the plane right now
+  (`UpdateVisual` sets them), so hit testing, dragging (`MoveToCore` turns the new place into
+  an offset; undo works) and the property grid ("Pinned to", radio buttons; switching keeps
+  the label where it is on screen) need nothing special. `WrapWidth` (px, 0 = none) gives the
+  TextBlock a fixed width and wrapping, so two labels of one column line up at the left;
+  `Backdrop` puts a plate of the paper's color (solid papers only) with an 8 px padding behind
+  the text. Pinned labels draw at `ZOrder.Controls`, above figures; zoom to fit ignores them;
+  thumbnails hide them (`GalleryDrawing.HideText`). Saved as `Pin="TopRight" OffsetX OffsetY
+  WrapWidth Backdrop`. `Label.MeasureSize` invalidates the Border before measuring: its measure
+  stays valid when only the TextBlock inside changed, and it answered with the old size (the
+  caption ran off the right edge). Dragging any label moves the label, not the figures its
+  expressions name (`Label.AllowMove`, like measurements).
 - **Scenes** (`<Scene Left Top Right Bottom />` under `<Drawing>`, 1 or 2, `Drawing.Scenes`) are
   opt-in suggested views for the few drawings whose content has no useful bounds - ground
   that goes on forever (Castle, The Falling Ladder). Only where they exist: the gallery fit
@@ -427,7 +455,10 @@ rather than by process name when more than one could exist.
 ## Batch-checking drawings
 
 `LiveGeometry.Desktop.exe --check <folder> <out>` (`MainView.BatchCheck.cs`) opens every
-`.lgf`/`.dgf` under the folder in the real editor, zooms to fit, saves `<out>/<relative path>.png`
+`.lgf`/`.dgf` under the folder in the real editor, zooms to fit (a captioned drawing is laid
+out by `GalleryDrawing.Fit` instead, with the ribbon folded when the window is small - so the
+sheet shows the gallery layout at whatever size the window was last closed at: `place` it,
+close it, then run the check), saves `<out>/<relative path>.png`
 and `.lgf` (the conversion) and appends to `<out>/report.txt`: figure counts, `NOT EXISTING`
 (only the *root* failures - figures whose dependencies all exist - plus a dump of every point),
 load errors. It exits when done. `dotnet tools/contactsheet.cs -- <png folder> <out.png>
@@ -484,6 +515,14 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
     testing - `place` is only needed again if someone resized it. Close test instances with
     `(Get-Process -Id N).CloseMainWindow()`: that goes through the normal close path, which is
     what saves the placement (and it is more reliable than Alt+F4).
+    `LiveGeometry.Desktop.exe --gallery <slug>` opens a gallery drawing the way the browser's
+    `/gallery/<slug>` does (tour group, caption fit, ribbon folded on a small window) - a file
+    on the command line opens as the user's own drawing instead. An iPhone 13 Pro in
+    portrait gives Safari a 390x645 viewport, of which the two toolbar rows take 82 and the
+    canvas gets 390x563 (measured on a screenshot, 2026-09-23); landscape is about 844x310
+    with a 844x250 canvas (estimated). For the browser build that is `webauto start <url>
+    390 645`; for the desktop app at 200% scaling `place <t> 100 100 780 1352` (the chrome
+    and toolbar take 110 DIPs) and `1688 800` for landscape.
   - VB6 has a native menu: `menu Geometry` lists every command with its id and `invoke` runs one
     without touching the mouse (49 = Segment, 56 = Circle, 46 = Point...). Its status bar shows
     the current tool's prompt. VB6 is DPI-unaware; `shot` compensates.

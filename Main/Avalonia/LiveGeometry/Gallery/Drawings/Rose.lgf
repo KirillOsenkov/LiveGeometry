@@ -434,7 +434,7 @@
       <Dependency Name="K3" />
       <Dependency Name="N2" />
     </Bezier>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="A Rose" DecimalsToShow="2" X="3.034" Y="2.862" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Every petal, leaf and the stem is a Bézier\ncurve: a smooth curve steered by a few control\npoints. Twenty-seven of them make this rose.\n\nThis is how fonts, logos and cartoon\ncharacters are drawn on computers.\n\nDrag any point and reshape the flower." DecimalsToShow="2" X="3.034" Y="1.743" />
+    <Label Name="Title" Style="GalleryTitle" Text="A Rose" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Every petal, leaf and the stem is a Bézier curve: a smooth curve steered by a few control points. Twenty-seven of them make this rose.\n\nThis is how fonts, logos and cartoon characters are drawn on computers.\n\nDrag any point and reshape the flower." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

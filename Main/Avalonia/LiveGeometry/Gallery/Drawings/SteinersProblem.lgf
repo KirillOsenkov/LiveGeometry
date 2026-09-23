@@ -102,8 +102,8 @@
       <Dependency Name="A" />
       <Dependency Name="D" />
     </Polygon>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Steiner's Problem" DecimalsToShow="2" X="3.337" Y="3.006" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Four towns A, B, C and D want to build one\nshared airport E. Where should it go so that\nthe total length of the four roads is as small\nas possible?\n\nRoads right now:\n[dist(E,A)+dist(E,B)+dist(E,C)+dist(E,D)]\n\nDrag E around and find the smallest number.\nThen look where E ended up - can you see the\nrule? Try a dented (non-convex) quadrilateral\ntoo." DecimalsToShow="2" X="3.337" Y="2.059">
+    <Label Name="Title" Style="GalleryTitle" Text="Steiner's Problem" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Four towns A, B, C and D want to build one shared airport E. Where should it go so that the total length of the four roads is as small as possible?\n\nRoads right now:\n[dist(E,A)+dist(E,B)+dist(E,C)+dist(E,D)]\n\nDrag E around and find the smallest number. Then look where E ended up - can you see the rule? Try a dented (non-convex) quadrilateral too." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="C" />

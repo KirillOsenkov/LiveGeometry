@@ -257,7 +257,7 @@
     <PointLabel Name="PointLabel91" Style="7" OffsetX="0.184326489565743" OffsetY="2.32251376793766" ShowName="true" ShowCoordinates="false">
       <Dependency Name="J" />
     </PointLabel>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="A Trapezoid Surprise" DecimalsToShow="2" X="26.602" Y="-0.114" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="ABDC is a trapezoid with bases AB and CD. E\nand H are the midpoints of the bases.\n\nDraw the diagonals and the lines from the\nmidpoints, as shown. Lines through the\ncrossing points cut the base AB into three\nequal parts: AL = LM = MB.\n\nDrag the vertices - it always works." DecimalsToShow="2" X="26.602" Y="-2.133" />
+    <Label Name="Title" Style="GalleryTitle" Text="A Trapezoid Surprise" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="ABDC is a trapezoid with bases AB and CD. E and H are the midpoints of the bases.\n\nDraw the diagonals and the lines from the midpoints, as shown. Lines through the crossing points cut the base AB into three equal parts: AL = LM = MB.\n\nDrag the vertices - it always works." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

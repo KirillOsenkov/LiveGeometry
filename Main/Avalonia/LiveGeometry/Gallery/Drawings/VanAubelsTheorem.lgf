@@ -224,7 +224,7 @@
       <Dependency Name="C" />
       <Dependency Name="D" />
     </Polygon>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Van Aubel's Theorem" DecimalsToShow="2" X="1.727" Y="1.542" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Start with any quadrilateral and build a\nsquare on each side. Connect the centers of\nopposite squares.\n\nThe two segments are always perpendicular and\nhave the same length - even when the\nquadrilateral is a complete mess.\n\nDrag the yellow vertices and see." DecimalsToShow="2" X="1.727" Y="1.133" />
+    <Label Name="Title" Style="GalleryTitle" Text="Van Aubel's Theorem" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Start with any quadrilateral and build a square on each side. Connect the centers of opposite squares.\n\nThe two segments are always perpendicular and have the same length - even when the quadrilateral is a complete mess.\n\nDrag the yellow vertices and see." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

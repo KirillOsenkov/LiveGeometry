@@ -110,7 +110,7 @@
       <Dependency Name="A" />
       <Dependency Name="M" />
     </Locus>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Conic Through Five Points" DecimalsToShow="2" X="6.28" Y="1.2" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Any five points (no three on a line) determine\nexactly one conic section - an ellipse, a\nparabola or a hyperbola.\n\nThe red curve is that conic, drawn with a\nstraightedge only: as M slides along the line,\nPascal's theorem places the point A on the\ncurve.\n\nDrag the five points and watch the ellipse\nbecome a hyperbola." DecimalsToShow="2" X="6.28" Y="0.775" />
+    <Label Name="Title" Style="GalleryTitle" Text="Conic Through Five Points" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Any five points (no three on a line) determine exactly one conic section - an ellipse, a parabola or a hyperbola.\n\nThe red curve is that conic, drawn with a straightedge only: as M slides along the line, Pascal's theorem places the point A on the curve.\n\nDrag the five points and watch the ellipse become a hyperbola." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

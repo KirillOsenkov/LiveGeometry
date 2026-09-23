@@ -91,8 +91,8 @@
     <PointLabel Name="PointLabel29" IsHitTestVisible="false" Style="9" OffsetX="-0.155574313635408" OffsetY="1.22730847423489" ShowName="true" ShowCoordinates="false">
       <Dependency Name="F" />
     </PointLabel>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Ceva's Theorem" DecimalsToShow="2" X="6.417" Y="2.276" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Points D, E and F lie on the sides of triangle\nABC. When do the segments AD, BE and CF pass\nthrough a single point?\n\nExactly when this product of ratios equals 1:\nAF/FB · BD/DC · CE/EA = [AF/FB*BD/DC*CE/EA]\n\nDrag D, E and F until the three segments meet,\nand watch the number." DecimalsToShow="2" X="6.417" Y="0.948">
+    <Label Name="Title" Style="GalleryTitle" Text="Ceva's Theorem" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Points D, E and F lie on the sides of triangle ABC. When do the segments AD, BE and CF pass through a single point?\n\nExactly when this product of ratios equals 1:\nAF/FB · BD/DC · CE/EA = [AF/FB*BD/DC*CE/EA]\n\nDrag D, E and F until the three segments meet, and watch the number." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="C" />

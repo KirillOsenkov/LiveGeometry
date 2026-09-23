@@ -114,7 +114,7 @@
       <Dependency Name="Point5" />
       <Dependency Name="Point2" />
     </LineTwoPoints>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Two Reflections" DecimalsToShow="2" X="7.163" Y="8.024" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Reflect a point across one line, then reflect\nthe image across a second line.\n\nThe result is the same as one rotation around\nthe point where the lines cross - by twice the\nangle between them.\n\nDrag the points and compare the two angles." DecimalsToShow="2" X="7.163" Y="6.643" />
+    <Label Name="Title" Style="GalleryTitle" Text="Two Reflections" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Reflect a point across one line, then reflect the image across a second line.\n\nThe result is the same as one rotation around the point where the lines cross - by twice the angle between them.\n\nDrag the points and compare the two angles." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

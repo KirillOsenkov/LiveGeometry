@@ -133,7 +133,7 @@
       <Dependency Name="K" />
       <Dependency Name="J" />
     </Polygon>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Morley's Miracle" DecimalsToShow="2" X="10.874" Y="1.871" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Split each angle of a triangle into three\nequal parts. The trisectors next to each side\nmeet in three points - and those points always\nform an equilateral triangle, no matter what\ntriangle you start with!\n\nFrank Morley discovered this in 1899. It is so\nunexpected that it is known as Morley's\nmiracle.\n\nDrag the yellow vertices and try to break it." DecimalsToShow="2" X="10.874" Y="0.145" />
+    <Label Name="Title" Style="GalleryTitle" Text="Morley's Miracle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Split each angle of a triangle into three equal parts. The trisectors next to each side meet in three points - and those points always form an equilateral triangle, no matter what triangle you start with!\n\nFrank Morley discovered this in 1899. It is so unexpected that it is known as Morley's miracle.\n\nDrag the yellow vertices and try to break it." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

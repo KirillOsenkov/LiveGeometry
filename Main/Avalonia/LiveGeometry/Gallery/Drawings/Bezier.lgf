@@ -35,7 +35,7 @@
       <Dependency Name="C" />
       <Dependency Name="D" />
     </Segment>
-    <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Bézier Curve" DecimalsToShow="2" X="5.59" Y="3.917" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="A Bézier curve is controlled by four points:\ntwo endpoints and two handles. Each handle\nsets the direction in which the curve leaves\nits endpoint.\n\nEvery letter on this screen is drawn with\nBézier curves. They are named after Pierre\nBézier, who designed car bodies with them in\nthe 1960s.\n\nDrag the points to bend the curve." DecimalsToShow="2" X="5.59" Y="2.982" />
+    <Label Name="Title" Style="GalleryTitle" Text="Bézier Curve" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A Bézier curve is controlled by four points: two endpoints and two handles. Each handle sets the direction in which the curve leaves its endpoint.\n\nEvery letter on this screen is drawn with Bézier curves. They are named after Pierre Bézier, who designed car bodies with them in the 1960s.\n\nDrag the points to bend the curve." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>
