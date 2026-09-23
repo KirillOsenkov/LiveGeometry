@@ -466,7 +466,7 @@ namespace DynamicGeometry
         /// <param name="coordinates">The same after snapping</param>
         protected virtual PointPlacement FindPointPlacement(Point unconstrainedCoordinates, Point coordinates)
         {
-            if (!ExpectingAPoint())
+            if (!ExpectingAPoint() || FindFigureInsteadOfPoint(unconstrainedCoordinates) != null)
             {
                 return null;
             }
@@ -533,6 +533,12 @@ namespace DynamicGeometry
         /// </summary>
         protected virtual IFigure FindFigureToPick(Point unconstrainedCoordinates)
         {
+            var insteadOfPoint = FindFigureInsteadOfPoint(unconstrainedCoordinates);
+            if (insteadOfPoint != null)
+            {
+                return insteadOfPoint;
+            }
+
             if (GetExpectedDependencyType() == null || ExpectingAPoint())
             {
                 return null;
@@ -545,6 +551,17 @@ namespace DynamicGeometry
             }
 
             return figure;
+        }
+
+        /// <summary>
+        /// A figure that a click takes although the tool is expecting a point: the Distance
+        /// tool measures a segment, Circle by Radius takes one as the radius. Null by default.
+        /// The hover preview (no ghost point, a halo on the figure, a hand) and the tool's
+        /// own click handling must agree, so both go through this.
+        /// </summary>
+        protected virtual IFigure FindFigureInsteadOfPoint(Point unconstrainedCoordinates)
+        {
+            return null;
         }
 
         protected override IFigure GetFigureToPick(MouseEventArgs e)
@@ -676,6 +693,11 @@ namespace DynamicGeometry
             if (GetExpectedDependencyType() == null)
             {
                 return ArrowCursor;
+            }
+
+            if (FindFigureInsteadOfPoint(coordinates) != null)
+            {
+                return HandCursor;
             }
 
             if (ExpectingAPoint())

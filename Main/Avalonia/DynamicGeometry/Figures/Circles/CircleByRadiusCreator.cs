@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using Avalonia;
 
 namespace DynamicGeometry
 {
@@ -33,6 +35,59 @@ namespace DynamicGeometry
             return null;
         }
 
+        // A segment (anything with a length) can stand for the two radius points: the first
+        // click on one with no point on top of it takes it, and the next click is the center.
+
+        bool RadiusIsAFigure
+        {
+            get { return FoundDependencies.Count > 0 && !(FoundDependencies[0] is IPoint); }
+        }
+
+        protected override IFigure FindFigureInsteadOfPoint(Point unconstrainedCoordinates)
+        {
+            if (FoundDependencies.Count > 0)
+            {
+                return null;
+            }
+
+            var underMouse = Drawing.Figures.HitTest(unconstrainedCoordinates, f => f is ILengthProvider);
+            if (underMouse != null && Drawing.Figures.HitTest<IPoint>(unconstrainedCoordinates) == null)
+            {
+                return underMouse;
+            }
+
+            return null;
+        }
+
+        protected override Type GetExpectedDependencyType()
+        {
+            if (TempPoint == null && RadiusIsAFigure && FoundDependencies.Count == 2)
+            {
+                return null;
+            }
+
+            return base.GetExpectedDependencyType();
+        }
+
+        protected override void AddDependency(Point coordinates)
+        {
+            var radius = FindFigureInsteadOfPoint(ClickedUnconstrainedCoordinates);
+            if (radius == null)
+            {
+                base.AddDependency(coordinates);
+                return;
+            }
+
+            Drawing.RaiseConstructionStepStarted();
+            FoundDependencies.Add(radius);
+
+            // the center follows the cursor, with the circle already around it
+            CreateTempPoint(coordinates);
+            CreateTempResults();
+            AdvertiseNextDependency();
+            Drawing.Figures.CheckConsistency();
+        }
+
         public override string Name
         {
             get
@@ -45,7 +100,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return "Click (and release) two points (start and end of a radius) and then click the circle center.";
+                return "Click two points (the ends of a radius) or a segment, then click the circle center.";
             }
         }
 
