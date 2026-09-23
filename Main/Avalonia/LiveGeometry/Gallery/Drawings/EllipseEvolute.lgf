@@ -1,108 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Drawing Version="1" Creator="LiveGeometry.App">
-  <Viewport Left="-5.5" Top="3.6" Right="5.5" Bottom="-4.6" Grid="true" Axes="true" />
+  <Viewport Left="-5.6" Top="3.8" Right="5.6" Bottom="-3.8" Grid="true" Axes="true" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
     <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
     <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
     <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
     <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
-    <LineStyle Color="#64000000" StrokeWidth="1" Dash="Solid" Name="1" />
-    <LineStyle Color="#C80000FF" StrokeWidth="1" Dash="Solid" Name="OtherLine" />
-    <LineStyle Color="#E6000000" StrokeWidth="2.5" Dash="Solid" Name="ThickLine" />
-    <LineStyle Color="#FFD83B3B" StrokeWidth="1.5" Dash="Solid" Name="RedLine" />
-    <LineStyle Color="#FF2E9E4F" StrokeWidth="1.5" Dash="Solid" Name="GreenLine" />
-    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dash" Name="DashedLine" />
-    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dot" Name="DottedLine" />
-    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="2" />
-    <ShapeStyle Fill="#64C8FFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="OtherShape" />
-    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="3" />
-    <ShapeStyle Fill="#1C2F7BD6" IsFilled="true" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Solid" Name="BlueOutline" />
-    <ShapeStyle Fill="#1CE08A00" IsFilled="true" Color="#FFE08A00" StrokeWidth="1.5" Dash="Solid" Name="OrangeOutline" />
-    <ShapeStyle Fill="#1C8854D0" IsFilled="true" Color="#FF8854D0" StrokeWidth="1.5" Dash="Solid" Name="PurpleOutline" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
-    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
-    <PointStyle Size="10" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="7" />
-    <LineStyle Color="#FF000000" StrokeWidth="2" Dash="Solid" Name="8" />
-    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Dash="Solid" Name="9" />
-    <PointStyle Size="10" Fill="#FFFFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="10" />
-    <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="11" />
-    <PointStyle Size="10" Fill="#FFFFFFFF" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Dash="Solid" Name="12" />
-    <PointStyle Size="8" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="13" />
-    <LineStyle Color="#FFB5AAF2" StrokeWidth="2" Dash="Solid" Name="14" />
-    <LineStyle Color="#FFBEE1B9" StrokeWidth="2" Dash="Solid" Name="15" />
-    <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FFD8D8D8" StrokeWidth="1" Dash="Solid" Name="16" />
-    <TextStyle FontSize="27.2" Color="#FF000080" FontFamily="Arial" Bold="false" Italic="false" Underline="true" Name="17" />
-    <TextStyle FontSize="18.7" Color="#FF000000" FontFamily="Comic Sans MS" Bold="false" Italic="false" Underline="false" Name="18" />
+    <PointStyle Size="14" Fill="#FFFFEF00" IsFilled="true" Color="#FFA05C21" StrokeWidth="2" Dash="Solid" Name="Runner" />
+    <PointStyle Size="12" Fill="#FF7CE38B" IsFilled="true" Color="#FF2E7D32" StrokeWidth="2" Dash="Solid" Name="Handle" />
+    <PointStyle Size="9" Fill="#FF7A62D9" IsFilled="true" Color="#FF4A3A99" StrokeWidth="1.5" Dash="Solid" Name="OnEllipse" />
+    <PointStyle Size="9" Fill="#FF3FA34D" IsFilled="true" Color="#FF256B30" StrokeWidth="1.5" Dash="Solid" Name="Center" />
+    <LineStyle Color="#FF7A62D9" StrokeWidth="2.5" Dash="Solid" Name="Ellipse" />
+    <LineStyle Color="#FF3FA34D" StrokeWidth="2.5" Dash="Solid" Name="Evolute" />
+    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dot" Name="Radius" />
+    <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="Hidden" />
+    <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FFB8B8B8" StrokeWidth="3" Dash="Solid" Name="Dial" />
+    <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dash" Name="Osculating" />
+    <TextStyle FontSize="17" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="Name" />
     <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
     <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
     <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" Visible="false" Style="7" X="0" Y="0" />
-    <PointByCoordinates Name="S" Visible="false" Style="7" X="(2) * (3.14159265358979)" Y="0" />
-    <Segment Name="Segment1" Style="8">
-      <Dependency Name="A" />
-      <Dependency Name="S" />
-    </Segment>
-    <PointOnFigure Name="C" Style="9" X="0.5847820285894956" Y="0" Parameter="0.09307095048132437">
-      <Dependency Name="Segment1" />
-    </PointOnFigure>
-    <FreePoint Name="D" Visible="false" Style="10" X="-1" Y="-2" />
-    <FreePoint Name="E" Visible="false" Style="10" X="0" Y="-2" />
-    <FreePoint Name="F" Visible="false" Style="10" X="-1" Y="-4" />
-    <FreePoint Name="G" Visible="false" Style="10" X="0" Y="-4" />
-    <LineTwoPoints Name="LineTwoPoints1" Visible="false" Style="11">
-      <Dependency Name="D" />
-      <Dependency Name="E" />
-    </LineTwoPoints>
-    <PointOnFigure Name="a" Style="12" X="4.178559" Y="-2" Parameter="5.178559">
-      <Dependency Name="LineTwoPoints1" />
-    </PointOnFigure>
-    <LineTwoPoints Name="LineTwoPoints2" Visible="false" Style="11">
-      <Dependency Name="F" />
-      <Dependency Name="G" />
-    </LineTwoPoints>
-    <PointOnFigure Name="b" Style="12" X="2.522999" Y="-4" Parameter="3.522999">
-      <Dependency Name="LineTwoPoints2" />
-    </PointOnFigure>
-    <FreePoint Name="J" Visible="false" Style="10" X="0" Y="-2" />
-    <FreePoint Name="K" Visible="false" Style="10" X="0" Y="-4" />
-    <PointByCoordinates Name="L" Style="13" X="(a.X) * (COS(C.X))" Y="(b.X) * (SIN(C.X))">
-      <Dependency Name="a" />
-      <Dependency Name="C" />
-      <Dependency Name="b" />
+    <FreePoint Name="P0" Visible="false" Style="FreePoint" X="-4.4" Y="2.7" />
+    <PointByCoordinates Name="P1" Visible="false" Style="DependentPointStyle" X="P0.X + 0.75" Y="P0.Y">
+      <Dependency Name="P0" />
     </PointByCoordinates>
-    <PointByCoordinates Name="M" Style="13" X="(COS(C.X)) * ((a.X) - (((((a.X) ^ (2)) * ((SIN(C.X)) ^ (2))) + (((b.X) ^ (2)) * ((COS(C.X)) ^ (2)))) / (a.X)))" Y="(SIN(C.X)) * ((b.X) - (((((a.X) ^ (2)) * ((SIN(C.X)) ^ (2))) + (((b.X) ^ (2)) * ((COS(C.X)) ^ (2)))) / (b.X)))">
-      <Dependency Name="C" />
+    <Circle Name="Dial" Style="Dial">
+      <Dependency Name="P0" />
+      <Dependency Name="P1" />
+    </Circle>
+    <PointOnFigure Name="T" Style="Runner" X="-3.781" Y="3.1235" Parameter="0.6">
+      <Dependency Name="Dial" />
+    </PointOnFigure>
+    <FreePoint Name="O" Visible="false" Style="FreePoint" X="0" Y="0" />
+    <FreePoint Name="X1" Visible="false" Style="FreePoint" X="1" Y="0" />
+    <FreePoint Name="Y1" Visible="false" Style="FreePoint" X="0" Y="1" />
+    <LineTwoPoints Name="XAxis" Visible="false" Style="Hidden">
+      <Dependency Name="O" />
+      <Dependency Name="X1" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="YAxis" Visible="false" Style="Hidden">
+      <Dependency Name="O" />
+      <Dependency Name="Y1" />
+    </LineTwoPoints>
+    <PointOnFigure Name="a" Style="Handle" X="4" Y="0" Parameter="4">
+      <Dependency Name="XAxis" />
+    </PointOnFigure>
+    <PointOnFigure Name="b" Style="Handle" X="0" Y="3" Parameter="3">
+      <Dependency Name="YAxis" />
+    </PointOnFigure>
+    <PointByCoordinates Name="L" Style="OnEllipse" X="a.X * (T.X - P0.X) / 0.75" Y="b.Y * (T.Y - P0.Y) / 0.75">
       <Dependency Name="a" />
       <Dependency Name="b" />
+      <Dependency Name="T" />
+      <Dependency Name="P0" />
     </PointByCoordinates>
-    <FreePoint Name="O" Visible="false" Style="10" X="0" Y="-2" />
-    <FreePoint Name="H" Visible="false" Style="10" X="0" Y="-4" />
-    <PointByCoordinates Name="N" Visible="false" Style="7" X="(0) + (0)" Y="0" />
-    <Locus Name="Locus1" Style="14">
+    <PointByCoordinates Name="M" Style="Center" X="(a.X ^ 2 - b.Y ^ 2) / a.X * ((T.X - P0.X) / 0.75) ^ 3" Y="(b.Y ^ 2 - a.X ^ 2) / b.Y * ((T.Y - P0.Y) / 0.75) ^ 3">
+      <Dependency Name="a" />
+      <Dependency Name="b" />
+      <Dependency Name="T" />
+      <Dependency Name="P0" />
+    </PointByCoordinates>
+    <Locus Name="EllipseLocus" Style="Ellipse">
       <Dependency Name="L" />
-      <Dependency Name="C" />
+      <Dependency Name="T" />
     </Locus>
-    <Locus Name="Locus2" Style="15">
+    <Locus Name="EvoluteLocus" Style="Evolute">
       <Dependency Name="M" />
-      <Dependency Name="C" />
+      <Dependency Name="T" />
     </Locus>
-    <Circle Name="Circle1" Style="16">
+    <Circle Name="Osculating" Style="Osculating">
       <Dependency Name="M" />
       <Dependency Name="L" />
     </Circle>
-    <Segment Name="Segment2" Style="11">
-      <Dependency Name="O" />
+    <Segment Name="Radius" Style="Radius">
+      <Dependency Name="M" />
+      <Dependency Name="L" />
+    </Segment>
+    <PointLabel Name="aName" IsHitTestVisible="false" Style="Name" OffsetX="8" OffsetY="4" ShowName="true" ShowCoordinates="false">
       <Dependency Name="a" />
-    </Segment>
-    <Segment Name="Segment3" Style="11">
-      <Dependency Name="H" />
+    </PointLabel>
+    <PointLabel Name="bName" IsHitTestVisible="false" Style="Name" OffsetX="10" OffsetY="-22" ShowName="true" ShowCoordinates="false">
       <Dependency Name="b" />
-    </Segment>
+    </PointLabel>
+    <PointLabel Name="LName" IsHitTestVisible="false" Style="Name" OffsetX="8" OffsetY="-24" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="L" />
+    </PointLabel>
+    <PointLabel Name="MName" IsHitTestVisible="false" Style="Name" OffsetX="8" OffsetY="4" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="M" />
+    </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Ellipse and Its Evolute" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Point L runs around an ellipse. At every position there is a circle that hugs the curve best, and M is its center.\n\nAs L travels, M traces the star-shaped curve inside: the evolute of the ellipse.\n\nDrag the yellow point to move L. Drag a and b to reshape the ellipse." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="The yellow point runs around the little circle, and its angle - from 0 to 2π - drives point L around the ellipse: L = (a · cos θ, b · sin θ).\n\nAt every position there is a circle that hugs the ellipse best, drawn dashed, and M is its center. As L travels, M traces the four-pointed star inside: the evolute of the ellipse.\n\nDrag the yellow point around its circle. Drag the green points a and b, the half-width and the half-height of the ellipse, to reshape it." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

@@ -575,6 +575,6 @@
       <Dependency Name="G" />
     </Segment>
     <Label Name="Title" Style="GalleryTitle" Text="Wireframe Cube" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="100" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A cube you can turn - built from nothing but segments and midpoints.\n\nDrag the yellow points to rotate and stretch it." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="148" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="The cube's edges are segments split into 8 equal parts. Each face is like a chessboard, 8x8 squares. Stretching a segment stretches each of the 8 parts proportionally." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="148" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

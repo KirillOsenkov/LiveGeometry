@@ -339,6 +339,13 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   amplitude between two hidden points at A.Y/2 and 1.5·A.Y on the post, whose distance is
   |A.Y| and whose midpoint is A itself, so the number sits by the handle above the crest,
   the one place the wave never crosses (at the post's midpoint it did).
+- **Ellipse and Its Evolute** (redone 2026-09-23): the parameter is the angle of the yellow
+  runner T on a small circle ("dial", center P0, radius 0.75) at the top left - a
+  `PointOnFigure` on a circle has the absolute angle as its parameter, so the locus runs
+  0..2π. No trig in the expressions: cos θ = (T.X − P0.X)/0.75 and sin θ likewise, so L =
+  (a·cos θ, b·sin θ) and the evolute M = ((a²−b²)/a·cos³θ, (b²−a²)/b·sin³θ). The half-axes
+  a and b are `PointOnFigure`s on hidden lines along the axes (a.X and b.Y are the values),
+  so the handles sit on the ellipse itself. Both loci are driven by T.
 - **5 Platonic Solids** (2026-09-23, replacing the Tetrahedron and Icosahedron drawings) is
   generated: `dotnet tools/platonic.cs -- Main/Avalonia/LiveGeometry/Gallery/Drawings/PlatonicSolids.lgf`
   (`--alpha` for a translucent variant with the back faces showing through; the gallery
