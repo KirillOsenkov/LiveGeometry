@@ -22,7 +22,7 @@ public class MainToolbar : Panel
     {
         Orientation = Orientation.Horizontal,
         Spacing = 2,
-        Margin = new Thickness(8, 4, 6, 0)
+        Margin = new Thickness(8, 4, 6, 2)
     };
 
     // where buttons are added: the strip itself or the group that is open
@@ -41,21 +41,95 @@ public class MainToolbar : Panel
     // between a wrapped group and the ribbon under it
     const double WrappedRowGap = 4;
 
+    // the ribbon's tint, a shade darker than its header row
+    static readonly IBrush StripBackground = new SolidColorBrush(Color.FromRgb(0xDD, 0xE0, 0xE3));
+
+    // along the bottom edge, like the line under the ribbon's group headers: the tab of the
+    // open ribbon (below) swings up out of it, and it is what the strip ends in when the ribbon
+    // is folded and the canvas is right under it
+    readonly Border bottomLine = new Border()
+    {
+        Height = 1,
+        Background = RibbonTheme.TabLine
+    };
+
+    // The button that stands for the ribbon: while the ribbon is open it is drawn as a tab
+    // opening into the ribbon's header row, in the same shape as the selected group header.
+    // Its fill is the tools strip's light gray, turning into the header row's gray along the
+    // last stretch, so that the tab seems to open into the row it sits on.
+    MainToolbarButton tabButton;
+    bool isTabOpen;
+    bool showTab; // decided by the measure pass: not when the group has wrapped
+    const double TabGap = 2; // between the button's plate and the tab's outline
+
+    readonly TabOutline tab = new TabOutline()
+    {
+        IsSelected = true,
+        Surface = new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(((ISolidColorBrush)RibbonTheme.Background).Color, 0),
+                new GradientStop(((ISolidColorBrush)RibbonTheme.Background).Color, 0.9),
+                new GradientStop(((ISolidColorBrush)RibbonTheme.HeaderRowBackground).Color, 1)
+            }
+        }
+    };
+
     public MainToolbar()
     {
         current = buttons;
 
-        // The same gray as the ribbon's header row right under it, and no line between them:
-        // the two read as one band, so the window has two grays and not three.
-        Background = RibbonTheme.HeaderRowBackground;
+        // A notch darker and more neutral than the ribbon's header row right under it; the line
+        // between the two is what the tab of the open ribbon opens through.
+        Background = StripBackground;
+        Children.Add(bottomLine);
+        Children.Add(tab);
         Children.Add(buttons);
     }
+
+    /// <summary>The button that is drawn as a tab while <see cref="IsTabOpen"/></summary>
+    public void SetTabButton(MainToolbarButton button)
+    {
+        tabButton = button;
+        InvalidateMeasure();
+    }
+
+    /// <summary>
+    /// Whether the tab button opens into what is under the strip. When the strip has wrapped
+    /// to two rows the tab would have to span both, so the button shows its checked plate
+    /// instead.
+    /// </summary>
+    public bool IsTabOpen
+    {
+        get => isTabOpen;
+        set
+        {
+            if (isTabOpen != value)
+            {
+                isTabOpen = value;
+                InvalidateMeasure();
+            }
+        }
+    }
+
+    /// <summary>
+    /// The centered group and the right control are inset from the top by this much, so that
+    /// they are centered on the same line as each other (the buttons have their own margin).
+    /// </summary>
+    public const double RowTopInset = 2;
 
     /// <summary>Something small at the far right (the build stamp)</summary>
     public void AddAtRight(Control control)
     {
-        rightControl = control;
-        Children.Add(control);
+        rightControl = new Border()
+        {
+            Padding = new Thickness(0, RowTopInset, 0, 0),
+            Child = control
+        };
+        Children.Add(rightControl);
     }
 
     protected override Size MeasureOverride(Size availableSize)
@@ -122,6 +196,16 @@ public class MainToolbar : Panel
             }
         }
 
+        bottomLine.Measure(unbounded);
+        height += bottomLine.Height;
+
+        showTab = isTabOpen && tabButton != null && !wrapped;
+        if (tabButton != null)
+        {
+            tabButton.IsChecked = isTabOpen && !showTab;
+        }
+
+        tab.Measure(unbounded);
         return new Size(width, height);
     }
 
@@ -147,6 +231,25 @@ public class MainToolbar : Panel
             {
                 centered.Arrange(new Rect(left, 0, System.Math.Max(0, right - left), firstRowHeight));
             }
+        }
+
+        bottomLine.Arrange(new Rect(0, finalSize.Height - bottomLine.Height, finalSize.Width, bottomLine.Height));
+
+        // a little bigger than the button (its hover plate would paint over the outline), wider
+        // still by the flare of its feet, and down over the bottom line
+        if (showTab)
+        {
+            var button = tabButton.Bounds;
+            double top = buttons.Bounds.Y + button.Y - TabGap;
+            tab.Arrange(new Rect(
+                buttons.Bounds.X + button.X - TabGap - tab.Flare,
+                top,
+                button.Width + 2 * (TabGap + tab.Flare),
+                finalSize.Height - top));
+        }
+        else
+        {
+            tab.Arrange(new Rect());
         }
 
         return finalSize;
@@ -257,12 +360,12 @@ public class MainToolbarGroup : Panel
         {
             Orientation = Orientation.Horizontal,
             Spacing = spacing,
-            Margin = new Thickness(6, 2, 6, 0)
+            Margin = new Thickness(6, MainToolbar.RowTopInset, 6, 0)
         };
         // not a StackPanel: that would hand the text unlimited width and it could never trim
         Trailing = new Panel()
         {
-            Margin = new Thickness(0, 2, 6, 0)
+            Margin = new Thickness(0, MainToolbar.RowTopInset, 6, 0)
         };
         Children.Add(Middle);
         Children.Add(Trailing);
@@ -330,6 +433,7 @@ public class MainToolbarButton : Border, ICommandObserver
 
     readonly Action action;
     bool isPressed;
+    bool isChecked;
 
     public MainToolbarButton(
         Control icon,
@@ -342,6 +446,10 @@ public class MainToolbarButton : Border, ICommandObserver
         Height = iconSize + 2 * inset;
         CornerRadius = RibbonTheme.ButtonCornerRadius;
         Background = Brushes.Transparent;
+
+        // always there (transparent), so that the icon doesn't shift when the button is checked
+        BorderThickness = new Thickness(1);
+        BorderBrush = Brushes.Transparent;
         VerticalAlignment = VerticalAlignment.Center;
         Child = new Viewbox()
         {
@@ -376,10 +484,32 @@ public class MainToolbarButton : Border, ICommandObserver
         };
     }
 
+    /// <summary>For an on/off button: the same blue plate as a checked toggle in the ribbon</summary>
+    public bool IsChecked
+    {
+        get => isChecked;
+        set
+        {
+            if (isChecked != value)
+            {
+                isChecked = value;
+                UpdateBackground(isOver: IsPointerOver);
+            }
+        }
+    }
+
     void UpdateBackground(bool isOver)
     {
+        if (isChecked && !isPressed)
+        {
+            Background = RibbonTheme.ButtonChecked;
+            BorderBrush = RibbonTheme.ButtonCheckedBorder;
+            return;
+        }
+
         // on the header row, which is darker than the tools strip: the hover plate is lighter
         Background = isPressed ? RibbonTheme.ButtonPressed : (isOver ? RibbonTheme.GroupBackground : Brushes.Transparent);
+        BorderBrush = Brushes.Transparent;
     }
 
     public void EnabledChanged(bool newEnabledState)

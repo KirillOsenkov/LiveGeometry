@@ -59,6 +59,9 @@ public partial class MainView : UserControl
         AddHandler(KeyDownEvent, MainView_KeyDown, RoutingStrategies.Tunnel);
         AddHandler(KeyUpEvent, MainView_KeyUp, RoutingStrategies.Tunnel);
 
+        // a phone turned on its side is a different screen
+        SizeChanged += (s, e) => UpdateRibbon();
+
         AttachedToVisualTree += (s, e) =>
         {
             var topLevel = TopLevel.GetTopLevel(this);
@@ -85,36 +88,46 @@ public partial class MainView : UserControl
         }
     }
 
-    // The build (git commit) at the far right of the toolbar, so that it is obvious
-    // which version is on screen - e.g. whether a fresh deployment has arrived yet.
+    // A link to the repository at the far right of the toolbar; its tooltip is the build (git
+    // commit) on screen - e.g. whether a fresh deployment has arrived yet. A faint Octocat
+    // rather than the raw commit hash, which meant nothing to the kids the app is for.
     const string RepositoryUrl = "https://github.com/KirillOsenkov/LiveGeometry";
 
-    static readonly IBrush linkBrush = new SolidColorBrush(Color.FromRgb(0x2F, 0x7B, 0xD6));
+    const double OctocatSize = 16;
+    const double OctocatOpacity = 0.4;
 
-    // A link to the repository, styled like one (blue, underlined on hover).
+    // the GitHub mark (the "mark-github" octicon, on a 16 x 16 grid)
+    const string OctocatPath = "M8,0 C3.58,0 0,3.58 0,8 c0,3.54 2.29,6.53 5.47,7.59 c0.4,0.07 0.55,-0.17 0.55,-0.38 c0,-0.19 -0.01,-0.82 -0.01,-1.49 c-2.01,0.37 -2.53,-0.49 -2.69,-0.94 c-0.09,-0.23 -0.48,-0.94 -0.82,-1.13 c-0.28,-0.15 -0.68,-0.52 -0.01,-0.53 c0.63,-0.01 1.08,0.58 1.23,0.82 c0.72,1.21 1.87,0.87 2.33,0.66 c0.07,-0.52 0.28,-0.87 0.51,-1.07 c-1.78,-0.2 -3.64,-0.89 -3.64,-3.95 c0,-0.87 0.31,-1.59 0.82,-2.15 c-0.08,-0.2 -0.36,-1.02 0.08,-2.12 c0,0 0.67,-0.21 2.2,0.82 c0.64,-0.18 1.32,-0.27 2,-0.27 c0.68,0 1.36,0.09 2,0.27 c1.53,-1.04 2.2,-0.82 2.2,-0.82 c0.44,1.1 0.16,1.92 0.08,2.12 c0.51,0.56 0.82,1.27 0.82,2.15 c0,3.07 -1.87,3.75 -3.65,3.95 c0.29,0.25 0.54,0.73 0.54,1.48 c0,1.07 -0.01,1.93 -0.01,2.2 c0,0.21 0.15,0.46 0.55,0.38 A8.013,8.013 0 0 0 16,8 c0,-4.42 -3.58,-8 -8,-8 z";
+
     static Control CreateBuildStamp()
     {
-        var build = new TextBlock()
+        var octocat = new Border()
         {
-            Text = BuildVersion.Short,
-            FontSize = 11,
-            Foreground = linkBrush,
-            Background = Brushes.Transparent, // hit-testable between the letters too
+            Background = Brushes.Transparent, // hit-testable around the cat too
             Cursor = new Cursor(StandardCursorType.Hand),
+            Opacity = OctocatOpacity,
             Margin = new Avalonia.Thickness(8, 0, 10, 0),
-            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+            Child = new Avalonia.Controls.Shapes.Path()
+            {
+                Data = Geometry.Parse(OctocatPath),
+                Fill = RibbonTheme.Text,
+                Stretch = Stretch.Uniform,
+                Width = OctocatSize,
+                Height = OctocatSize
+            }
         };
-        ToolTip.SetTip(build, BuildVersion.Full + "\n" + RepositoryUrl);
-        build.PointerEntered += (s, e) => build.TextDecorations = TextDecorations.Underline;
-        build.PointerExited += (s, e) => build.TextDecorations = null;
-        build.PointerReleased += (s, e) =>
+        ToolTip.SetTip(octocat, BuildVersion.Full + "\n" + RepositoryUrl);
+        octocat.PointerEntered += (s, e) => octocat.Opacity = 1;
+        octocat.PointerExited += (s, e) => octocat.Opacity = OctocatOpacity;
+        octocat.PointerReleased += (s, e) =>
         {
             if (e.InitialPressMouseButton == MouseButton.Left)
             {
-                TopLevel.GetTopLevel(build)?.Launcher.LaunchUriAsync(new Uri(RepositoryUrl));
+                TopLevel.GetTopLevel(octocat)?.Launcher.LaunchUriAsync(new Uri(RepositoryUrl));
             }
         };
-        return build;
+        return octocat;
     }
 
     private void InitializeComponent()
@@ -136,8 +149,16 @@ public partial class MainView : UserControl
 
         // No menu: the few document commands are a toolbar, everything else is the keyboard
         // (see MainView_KeyUp and HandlePlainKey), the mouse wheel and the context menu.
-        var toolbar = new MainToolbar();
+        var toolbar = Toolbar;
         toolbar.AddAtRight(CreateBuildStamp());
+        ToolboxButton = toolbar.AddButton(
+            AppIcon.Create(BrandIconSize),
+            "Tools",
+            RibbonShortcut,
+            ToggleRibbon,
+            iconSize: BrandIconSize,
+            inset: MainToolbarButton.DefaultInset - (BrandIconSize - MainToolbarButton.IconSize) / 2);
+        toolbar.SetTabButton(ToolboxButton);
         toolbar.AddButton(MainToolbarIcons.Gallery(), "Gallery", shortcut: null, () => HandleExceptions(() => ShowGallery(push: true)));
         toolbar.AddSeparator();
         toolbar.AddButton(MainToolbarIcons.New(), "New", "Ctrl+N", NewDrawing);
@@ -171,7 +192,49 @@ public partial class MainView : UserControl
 
         LayoutRoot.Children.Add(toolbar);
         DockPanel.SetDock(toolbar, Dock.Top);
+        UpdateRibbon();
     }
+
+    #region Ribbon
+
+    // The ribbon can be folded away behind the first button of the toolbar, to leave a small
+    // screen to the drawing. It starts folded when a drawing of the gallery is opened on a small
+    // screen (one is there to look, and the tabs wouldn't fit anyway) and open everywhere else;
+    // once the user has pressed the button, their choice holds for the rest of the session.
+
+    readonly MainToolbar Toolbar = new MainToolbar();
+    const string RibbonShortcut = "Ctrl+F1";
+
+    /// <summary>
+    /// The app's own mark, in the top left corner where a logo goes, doubling as the toggle. A
+    /// little bigger than the document icons, in a button of the same height.
+    /// </summary>
+    MainToolbarButton ToolboxButton;
+    const double BrandIconSize = 28;
+
+    /// <summary>Null until the user toggles the ribbon themselves</summary>
+    bool? ribbonChoice;
+
+    const double SmallScreenWidth = 700;
+    const double SmallScreenHeight = 500;
+
+    bool IsSmallScreen => Bounds.Width > 0 && (Bounds.Width < SmallScreenWidth || Bounds.Height < SmallScreenHeight);
+
+    void ToggleRibbon()
+    {
+        ribbonChoice = !DrawingHost.Ribbon.IsVisible;
+        UpdateRibbon();
+    }
+
+    void UpdateRibbon()
+    {
+        bool visible = ribbonChoice ?? !(CurrentSample != null && IsSmallScreen);
+        DrawingHost.Ribbon.IsVisible = visible;
+        Toolbar.IsTabOpen = visible;
+        ToolTip.SetTip(ToolboxButton, (visible ? "Hide the tools" : "Show the tools") + " (" + RibbonShortcut + ")");
+    }
+
+    #endregion
 
     void InitializeCommands()
     {
@@ -311,15 +374,17 @@ public partial class MainView : UserControl
 
         LayoutRoot.IsVisible = true;
 
-        // the canvas must know its size before a drawing is fitted into it
+        // the canvas must know its size before a drawing is fitted into it, and the ribbon
+        // (folded or not, which the callers have decided by setting CurrentSample) is part of it
+        UpdateRibbon();
         UpdateLayout();
         DrawingHost.DrawingControl.Focus();
     }
 
     void ShowNewDrawing(bool push)
     {
-        ShowEditor();
         CurrentSample = null;
+        ShowEditor();
         OwnDrawing = null;
         DrawingHost.Clear();
         UpdateTour();
@@ -335,8 +400,8 @@ public partial class MainView : UserControl
             return;
         }
 
-        ShowEditor();
         CurrentSample = null;
+        ShowEditor();
         var control = DrawingHost.DrawingControl;
         if (control.Drawing != OwnDrawing)
         {
@@ -353,7 +418,6 @@ public partial class MainView : UserControl
 
     void ShowSample(GalleryItem item, bool push)
     {
-        ShowEditor();
         var control = DrawingHost.DrawingControl;
         if (OwnDrawing == null && CurrentSample == null && control.Drawing != null && control.Drawing.Figures.Any(figure => !(figure is CartesianGrid)))
         {
@@ -361,6 +425,7 @@ public partial class MainView : UserControl
         }
 
         CurrentSample = item;
+        ShowEditor();
         control.LoadDrawing(item.LoadText(), item.FileName);
         GalleryDrawing.Fit(control.Drawing, item.Plane);
         KeepFitted(control.Drawing);
@@ -430,6 +495,9 @@ public partial class MainView : UserControl
             TourPosition.Text = (GalleryCatalog.IndexOf(CurrentSample) + 1) + "/" + GalleryCatalog.Items.Count;
             TourTitle.Text = CurrentSample.Title;
         }
+
+        // the ribbon's default depends on the same thing
+        UpdateRibbon();
     }
 
     #endregion
@@ -503,8 +571,8 @@ public partial class MainView : UserControl
     /// <param name="name">File name; the extension tells the format</param>
     public void OpenDrawing(string name, byte[] bytes)
     {
-        ShowEditor();
         BecomeOwnDrawing();
+        ShowEditor();
 
         if (name.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase))
         {
@@ -739,6 +807,7 @@ public partial class MainView : UserControl
             case Key.S: SaveDrawingToFile(); return true;
             case Key.C: Copy(); return true;
             case Key.V: Paste(); return true;
+            case Key.F1: ToggleRibbon(); return true; // as in Office
         }
 
         return false;

@@ -272,8 +272,10 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   are hidden, measures labels itself (`Measure`, their Bounds are stale right after a load), and
   takes an optional rect to keep in view.
 - **No menu.** New, Open, Save | Undo, Redo are one row (`LiveGeometry/MainToolbar.cs`) above
-  the ribbon, in the *same gray as the ribbon's header row* and with no line between the two, so
-  they read as one band (two grays in the window, not three); the build stamp is at its right.
+  the ribbon, in the ribbon's blue-gray tint a shade darker than its header row (#DDE0E3; a
+  neutral gray was tried and read colder next to the blue plates), with the header row's kind
+  of line along its bottom; at its right a faint Octocat links to the repository, and its
+  tooltip is the build (the commit hash itself meant nothing to kids).
   Tried and rejected: its own lighter strip (three grays), buttons right-aligned inside the
   header row (collide with the last tabs at ~850 px), a two-row block at the left of the header
   row (small targets). `Ribbon.HeaderStart`/`HeaderEnd` slots exist from those experiments and
@@ -285,7 +287,16 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   there and the title hangs off their right, so the arrows don't move with the title; only
   when the title wouldn't fit whole do the arrows move left, as far as it needs. When the
   group doesn't fit beside the buttons at all it wraps to a second row, left-aligned; when
-  only the stamp doesn't fit, the stamp is hidden. Everything else is keys:
+  only the stamp doesn't fit, the stamp is hidden. The first button is the app's mark
+  (`AppIcon`, the logo in the corner) and folds the whole ribbon away (Ctrl+F1,
+  `MainView.UpdateRibbon`): folded by default when a gallery
+  drawing opens on a small screen (under 700x500), open otherwise; once pressed, the user's
+  choice holds for the session. While the ribbon is open the mark is drawn as a tab
+  (`TabOutline`, the selected group header's shape) opening through the strip's bottom line
+  into the header row, filled with the tools strip's gray that turns into the header row's
+  gray at the bottom (`MainToolbar.IsTabOpen`); when the tour group has wrapped to a second
+  row the tab would span both, so the button shows the blue checked plate instead. Everything
+  else is keys:
   Ctrl+N/O/S/Z/Y/A/C/V are handled on key *down* (`MainView.HandleControlShortcut`; on key up
   Ctrl may already be released and a bare S is the Segment tool), plain keys in `HandlePlainKey`.
   Lost their menu entry and are unreachable for now: Lock, Figure List, the settings page.
@@ -324,8 +335,8 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
 
 - A push to main takes about 8 minutes to go live (GitHub Actions: build ~5, deploy ~3); the
   files flip at the very end. Until then every reload, cached or not, gets the previous version.
-  The commit shown at the right end of the menu bar (`BuildVersion`, also logged to the console at
-  startup) tells which build is on screen.
+  The commit in the tooltip of the Octocat at the right end of the toolbar (`BuildVersion`, also
+  logged to the console at startup) tells which build is on screen.
 - Caching was verified end to end (2026-09-20): entry files are `no-cache` with an ETag that
   changes on every deploy, a request with the old ETag gets 200, and a browser holding the
   previous version picks up the new one on a plain reload. If something looks stale, check the
