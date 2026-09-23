@@ -228,7 +228,8 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   was dropped. Point sizes in the gallery are standard (10 for a draggable point, 8 otherwise;
   the DG conversions had 2-4 px dots): `dotnet tools/pointsizes.cs -- <folder> [--apply]`
   lists and raises undersized point styles. The Rose's 90 control points are the exception,
-  at 8 px in the standard yellow - at 10 and black they swallowed the flower.
+  at 5 px (styles 7/8/9; the by-kind styles for new points stay standard) - at 10 and black
+  they swallowed the flower.
 - **The library's own types shadow framework ones**: `Math`, `Ellipse`, `Polygon`, `Path`...
   In a file-scoped-namespace file a `using X = ...;` alias does NOT win over a type of the
   enclosing namespace - write `System.Math.Max`, `Avalonia.Controls.Shapes.Ellipse` in full.

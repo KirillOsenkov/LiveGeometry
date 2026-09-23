@@ -30,9 +30,9 @@
     <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
     <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
     <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
-    <PointStyle Size="8" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="7" />
-    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="8" />
-    <PointStyle Size="8" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="9" />
+    <PointStyle Size="5" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="7" />
+    <PointStyle Size="5" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="8" />
+    <PointStyle Size="5" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="9" />
     <LineStyle Color="#FFC0C0C0" StrokeWidth="1" Dash="Solid" Name="10" />
     <TextStyle FontSize="17" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="11" />
     <TextStyle FontSize="30.599999999999998" Color="#FF808040" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="12" />
