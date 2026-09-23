@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using DynamicGeometry;
@@ -35,7 +39,8 @@ public class GalleryView : DockPanel
     readonly TileGridPanel galleryTiles = new TileGridPanel();
     readonly GalleryTile continueTile;
 
-    public GalleryView(Control buildStamp)
+    /// <param name="arrange">The arrange mode: see <see cref="Arrange_PointerPressed"/></param>
+    public GalleryView(Control buildStamp, bool arrange = false)
     {
         Background = Brushes.White;
 
@@ -75,6 +80,7 @@ public class GalleryView : DockPanel
                     picture.IsAnimated = false;
                     ItemRequested(item);
                 });
+            tile.Tag = item;
             tile.PointerEntered += (s, e) => picture.IsAnimated = true;
             tile.PointerExited += (s, e) => picture.IsAnimated = false;
 
@@ -84,6 +90,7 @@ public class GalleryView : DockPanel
                 if (!DynamicGeometry.Drawing.IsWhite(drawing.Background))
                 {
                     tile.SetPlate(drawing.Background);
+                    tilesWithPaper.Add(tile);
                 }
             };
             galleryTiles.Children.Add(tile);
@@ -97,13 +104,21 @@ public class GalleryView : DockPanel
         content.Children.Add(startRow);
         content.Children.Add(new TextBlock()
         {
-            Text = "Gallery",
-            FontSize = 24,
+            Text = arrange
+                ? "Arrange the gallery: drag a tile into place. Every drop rewrites the order in GalleryCatalog.cs; rebuild to see it in the app."
+                : "Gallery",
+            FontSize = arrange ? 16 : 24,
             FontWeight = FontWeight.SemiBold,
-            Foreground = RibbonTheme.Text,
+            Foreground = arrange ? accent : RibbonTheme.Text,
             Margin = new Thickness(2, 30, 0, 12)
         });
         content.Children.Add(galleryTiles);
+        if (arrange)
+        {
+            galleryTiles.AddHandler(PointerPressedEvent, Arrange_PointerPressed, RoutingStrategies.Tunnel);
+            galleryTiles.PointerMoved += Arrange_PointerMoved;
+            galleryTiles.PointerReleased += Arrange_PointerReleased;
+        }
 
         var page = new Panel();
         page.Children.Add(new ScrollViewer()
@@ -128,6 +143,81 @@ public class GalleryView : DockPanel
     // square, about the height of the brand next to them
     const double StartTileWidth = 120;
     const double StartTileHeight = 120;
+
+    #region Arrange mode
+
+    // A way to reorder the gallery by hand ("LiveGeometry.Desktop.exe --arrange"): a tile is
+    // dragged and takes the place of whatever tile the pointer is over, the grid reordering
+    // as it goes; a drop writes the order into the catalog's source. The pointer is captured
+    // on press, so the tiles never see a click and nothing opens.
+
+    GalleryTile dragged;
+    readonly HashSet<GalleryTile> tilesWithPaper = new HashSet<GalleryTile>();
+
+    void Arrange_PointerPressed(object sender, PointerPressedEventArgs e)
+    {
+        if (!e.GetCurrentPoint(galleryTiles).Properties.IsLeftButtonPressed)
+        {
+            return;
+        }
+
+        dragged = TileAt(e.GetPosition(galleryTiles));
+        if (dragged == null)
+        {
+            return;
+        }
+
+        dragged.Opacity = 0.5;
+        e.Pointer.Capture(galleryTiles);
+        e.Handled = true;
+    }
+
+    void Arrange_PointerMoved(object sender, PointerEventArgs e)
+    {
+        if (dragged == null)
+        {
+            return;
+        }
+
+        var target = TileAt(e.GetPosition(galleryTiles));
+        if (target == null || target == dragged)
+        {
+            return;
+        }
+
+        var tiles = galleryTiles.Children;
+        tiles.Move(tiles.IndexOf(dragged), tiles.IndexOf(target));
+
+        // the pastels go by position, as they will after the rebuild
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            if (tiles[i] is GalleryTile tile && !tilesWithPaper.Contains(tile))
+            {
+                tile.SetPlate(Pastels.At(i));
+            }
+        }
+    }
+
+    void Arrange_PointerReleased(object sender, PointerReleasedEventArgs e)
+    {
+        if (dragged == null)
+        {
+            return;
+        }
+
+        dragged.Opacity = 1;
+        dragged = null;
+        e.Pointer.Capture(null);
+        var order = galleryTiles.Children.OfType<GalleryTile>().Select(tile => (GalleryItem)tile.Tag);
+        Console.WriteLine("gallery order written to " + GalleryCatalog.SaveOrder(order));
+    }
+
+    GalleryTile TileAt(Point position)
+    {
+        return galleryTiles.Children.OfType<GalleryTile>().FirstOrDefault(tile => tile.Bounds.Contains(position));
+    }
+
+    #endregion
 
     /// <summary>
     /// Whether there is a drawing of the user's own to go back to (the editor keeps it while

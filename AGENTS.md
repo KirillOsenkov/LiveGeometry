@@ -535,6 +535,11 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
     testing - `place` is only needed again if someone resized it. Close test instances with
     `(Get-Process -Id N).CloseMainWindow()`: that goes through the normal close path, which is
     what saves the placement (and it is more reliable than Alt+F4).
+    `LiveGeometry.Desktop.exe --arrange` opens the gallery with its tiles draggable: a tile
+    takes the place of the tile under the pointer as it goes, and every drop rewrites the
+    `Items` block of `GalleryCatalog.cs` in the new order (`GalleryCatalog.SaveOrder`, by
+    `[CallerFilePath]`; the drawings keep their lines, comments between them go). Rebuild to
+    see it in the app; the running window already shows it.
     `LiveGeometry.Desktop.exe --gallery <slug>` opens a gallery drawing the way the browser's
     `/gallery/<slug>` does (tour group, caption fit, ribbon folded on a small window) - a file
     on the command line opens as the user's own drawing instead. An iPhone 13 Pro in

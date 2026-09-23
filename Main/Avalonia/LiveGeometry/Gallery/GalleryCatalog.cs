@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace LiveGeometry;
 
@@ -56,13 +58,12 @@ public static class GalleryCatalog
     {
         Item("continuous-deformations", "Continuous Deformations"),
         Item("bubbles", "Bubbles"),
+        Item("pythagoras", "Pythagorean Theorem"),
+        Item("circumscribed-circle", "Circumscribed Circle"),
         Item("inscribed-circle", "Inscribed Circle"),
         Item("morley", "Morley's Miracle"),
-        Item("pythagoras", "Pythagorean Theorem"),
-        Item("sine-amplitude", "Sine Wave: Amplitude", "SinScaleY"),
-        Item("sine-frequency", "Sine Wave: Frequency", "SinScaleX"),
+        Item("castle", "Castle"),
         Item("squares-around-rhombus", "Squares Around a Rhombus"),
-        Item("circumscribed-circle", "Circumscribed Circle"),
         Item("carpenters-square", "Carpenter's Square"),
         Item("fibonacci-spiral", "Fibonacci Spiral"),
         Item("square-between-squares", "Square Between Squares"),
@@ -72,28 +73,28 @@ public static class GalleryCatalog
         Item("triangle-on-3-lines", "Triangle on Three Lines", "TriangleOn3Lines"),
         Item("wireframe-cube", "Wireframe Cube"),
         Item("simson-line", "Simson Line"),
+        Item("pentagon", "Regular Pentagon"),
         Item("ceva", "Ceva's Theorem"),
         Item("angles-in-a-circle", "Inscribed Angle"),
+        Item("spiral", "Spiral"),
         Item("splitting-triangle", "Midsegments of a Triangle"),
         Item("parabola", "Parabola"),
         Item("ellipse-from-circle", "Ellipse from a Circle"),
+        Item("sine-amplitude", "Sine Wave: Amplitude", "SinScaleY"),
+        Item("sine-frequency", "Sine Wave: Frequency", "SinScaleX"),
         Item("pappus", "Pappus's Theorem"),
         Item("trapezoid", "A Trapezoid Surprise"),
         Item("quadrilateral-midpoints", "Varignon's Theorem"),
+        Item("falling-ladder", "The Falling Ladder", "Ladder"),
         Item("square-in-square", "Square in a Square"),
         Item("composition-of-reflections", "Two Reflections"),
+        Item("sierpinski", "Sierpinski Triangle"),
         Item("napoleons-theorem", "Napoleon's Theorem"),
         Item("parabola-graph", "Graph of a Parabola"),
         Item("reuleaux-triangle", "Reuleaux Triangle"),
         Item("cavalieri-principle", "Cavalieri's Principle"),
         Item("circle-tangents", "Tangents to a Circle"),
-        Item("pentagon", "Regular Pentagon"),
-
-        // from the DG 1.0 CD library: the fun end of the gallery
         Item("rose", "A Rose"),
-        Item("castle", "Castle"),
-        Item("sierpinski", "Sierpinski Triangle"),
-        Item("spiral", "Spiral"),
         Item("steiners-problem", "Steiner's Problem"),
         Item("picks-theorem", "Pick's Theorem", "PickTheorem"),
         Item("ellipse-evolute", "Ellipse and Its Evolute"),
@@ -103,8 +104,38 @@ public static class GalleryCatalog
         Item("measuring-distance", "Measuring Across a Lake"),
         Item("complex-numbers", "Complex Multiplication"),
         Item("conic-through-five-points", "Conic Through Five Points", "Pascal"),
-        Item("falling-ladder", "The Falling Ladder", "Ladder"),
     };
+
+    /// <summary>
+    /// Rewrites the Items block of this source file in the given order, for the gallery's
+    /// arrange mode: every drawing keeps its own line, comments and blank lines between them
+    /// go. Returns the path written. Desktop only: it needs the source tree.
+    /// </summary>
+    public static string SaveOrder(IEnumerable<GalleryItem> order)
+    {
+        var sourcePath = SourcePath();
+        var text = File.ReadAllText(sourcePath);
+        var lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None).ToList();
+        int start = lines.FindIndex(line => line.Contains("Items { get; } = new[]")) + 2;
+        int end = lines.FindIndex(start, line => line.Trim() == "};");
+        var itemLines = lines
+            .Skip(start)
+            .Take(end - start)
+            .Select(line => (line, match: Regex.Match(line, "Item\\(\"([^\"]+)\"")))
+            .Where(pair => pair.match.Success)
+            .ToDictionary(pair => pair.match.Groups[1].Value, pair => pair.line);
+        var block = order.Select(item => itemLines[item.Slug]).ToList();
+        lines.RemoveRange(start, end - start);
+        lines.InsertRange(start, block);
+        File.WriteAllText(sourcePath, string.Join("\r\n", lines));
+        return sourcePath;
+    }
+
+    // this file: the attribute names the file of the call, which is why it is called from here
+    static string SourcePath([CallerFilePath] string path = null)
+    {
+        return path;
+    }
 
     /// <param name="fileName">Without extension; by default the slug in PascalCase</param>
     static GalleryItem Item(string slug, string title, string fileName = null)

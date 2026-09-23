@@ -34,6 +34,11 @@ sealed class Program
         {
             MainView.SpaceLabelsFolder = System.IO.Path.GetFullPath(args[1]);
         }
+        else if (args.Length == 1 && args[0] == "--arrange")
+        {
+            // reorder the gallery by dragging its tiles; the catalog's source is rewritten
+            MainView.ArrangeGallery = true;
+        }
         else if (args.Length == 2 && args[0] == "--gallery")
         {
             // straight to a drawing of the gallery, as the browser's /gallery/<slug> would

@@ -287,7 +287,7 @@ public partial class MainView : UserControl
             return;
         }
 
-        Gallery = new GalleryView(CreateBuildStamp());
+        Gallery = new GalleryView(CreateBuildStamp(), ArrangeGallery);
         Gallery.NewDrawingRequested += () => HandleExceptions(() => ShowNewDrawing(push: true));
         Gallery.ContinueDrawingRequested += () => HandleExceptions(() => ShowOwnDrawing(push: true));
         Gallery.ItemRequested += item => HandleExceptions(() => ShowSample(item, push: true));
@@ -553,6 +553,9 @@ public partial class MainView : UserControl
 
     /// <summary>A page to open at startup instead of the one the address bar says ("--gallery slug")</summary>
     public static string StartupPath { get; set; }
+
+    /// <summary>"--arrange": the gallery's tiles can be dragged into a new order (see GalleryView)</summary>
+    public static bool ArrangeGallery { get; set; }
 
     /// <summary>The first page: the file from the command line, else what the address says</summary>
     void OpenStartupFile()
