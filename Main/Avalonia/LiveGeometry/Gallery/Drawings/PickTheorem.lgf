@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Drawing Version="0" Creator="LiveGeometry.App">
-  <Viewport Left="-6.5" Top="3.5" Right="5.5" Bottom="-4.5" Grid="true" Axes="true" />
+  <Viewport Left="-6.5" Top="3.5" Right="5.5" Bottom="-4.5" Grid="true" Axes="true" GridStep="1" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
     <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />

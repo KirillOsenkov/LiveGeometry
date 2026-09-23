@@ -123,6 +123,11 @@ namespace DynamicGeometry
                 writer.WriteAttributeBool("Axes", drawing.CoordinateGrid.ShowAxes);
             }
 
+            if (drawing.CoordinateSystem.GridStep > 0)
+            {
+                writer.WriteAttributeDouble("GridStep", drawing.CoordinateSystem.GridStep);
+            }
+
             if (background is System.Xml.Linq.XElement gradient)
             {
                 writer.WriteStartElement("Background");

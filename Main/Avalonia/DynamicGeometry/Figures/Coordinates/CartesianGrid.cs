@@ -36,6 +36,12 @@ namespace DynamicGeometry
                 Name = "GridStyle",
                 StrokeWidth = 0.5
             };
+            LineStyle minorGridStyle = new LineStyle()
+            {
+                Color = Color.FromRgb(0xEC, 0xEC, 0xEC),
+                Name = "MinorGridStyle",
+                StrokeWidth = 0.5
+            };
             TextStyle labelsStyle = new TextStyle()
             {
                 Color = Color.FromArgb(255, 128, 128, 255),
@@ -58,7 +64,7 @@ namespace DynamicGeometry
             XAxisLine.Name = "XAxisLine";
             YAxisLine.Name = "YAxisLine";
             AxisLabels = new AxisLabelsCollection() { Drawing = Drawing };
-            GridLines = new RectangularGridLinesCollection() { Drawing = Drawing };
+            GridLines = new RectangularGridLinesCollection() { Drawing = Drawing, MinorStyle = minorGridStyle };
 
             //XAxisLine.Arrow.Style = arrowStyle;
             XAxisLine.Line.Style = axisStyle;

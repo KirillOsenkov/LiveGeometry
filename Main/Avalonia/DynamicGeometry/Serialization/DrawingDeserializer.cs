@@ -122,6 +122,7 @@ namespace DynamicGeometry
             {
                 drawing.CoordinateGrid.ShowAxes = viewportNode.ReadBool("Axes", true);
             }
+            drawing.CoordinateSystem.GridStep = viewportNode.ReadDouble("GridStep");
             drawing.CoordinateSystem.SetViewport(minX, maxX, minY, maxY);
             string styleName = viewportNode.ReadString("Style");    // Don't know who uses this.  I don't. - David
             if (!styleName.IsEmpty() && drawing.StyleManager != null)

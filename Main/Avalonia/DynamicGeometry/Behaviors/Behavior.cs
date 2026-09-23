@@ -605,11 +605,12 @@ namespace DynamicGeometry
             {
                 if (snapToPoint)
                 {
-                    result = Math.GetSnapToPointPosition(Settings.Instance.SnapGridSpacing, result, new List<Point>(Drawing.Figures.Where(f => f.Visible).ToPoints()), Settings.Instance.EnableSnapToGrid);
+                    result = Math.GetSnapToPointPosition(Drawing.CoordinateSystem.MajorGridStep, result, new List<Point>(Drawing.Figures.Where(f => f.Visible).ToPoints()), Settings.Instance.EnableSnapToGrid);
                 }
                 else if (snapToGrid)
                 {
-                    result = Math.GetSnapToGridPosition(Settings.Instance.SnapGridSpacing, result);
+                    // the labeled lines, whatever the zoom made of them
+                    result = Math.GetSnapToGridPosition(Drawing.CoordinateSystem.MajorGridStep, result);
                 }
             }
             return result;

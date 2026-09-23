@@ -352,30 +352,140 @@ namespace DynamicGeometry
             return result;
         }
 
+        /// <summary>The x of every labeled grid line in view</summary>
         public IEnumerable<double> GetVisibleXPoints()
         {
-            for (var x = M.Ceiling(MinimalVisibleX); x <= M.Floor(MaximalVisibleX); x++)
-            {
-                yield return x;
-            }
+            return GridValues(MinimalVisibleX, MaximalVisibleX, MajorGridStep);
         }
 
+        /// <summary>The y of every labeled grid line in view</summary>
         public IEnumerable<double> GetVisibleYPoints()
         {
-            for (var y = M.Ceiling(MinimalVisibleY); y <= M.Floor(MaximalVisibleY); y++)
+            return GridValues(MinimalVisibleY, MaximalVisibleY, MajorGridStep);
+        }
+
+        /// <summary>The x of every finer grid line in view, the labeled ones left out</summary>
+        public IEnumerable<double> GetMinorXPoints()
+        {
+            return MinorGridValues(MinimalVisibleX, MaximalVisibleX);
+        }
+
+        /// <summary>The y of every finer grid line in view, the labeled ones left out</summary>
+        public IEnumerable<double> GetMinorYPoints()
+        {
+            return MinorGridValues(MinimalVisibleY, MaximalVisibleY);
+        }
+
+        static IEnumerable<double> GridValues(double min, double max, double step)
+        {
+            long first = (long)M.Ceiling(min / step);
+            long last = (long)M.Floor(max / step);
+            for (long index = first; index <= last; index++)
             {
-                yield return y;
+                yield return GridValue(index, step);
             }
         }
 
-        public IEnumerable<Point> GetVisiblePoints()
+        IEnumerable<double> MinorGridValues(double min, double max)
         {
-            IEnumerable<double> XPoints = GetVisibleXPoints();
-            IEnumerable<double> YPoints = GetVisibleYPoints();
-            for (int i = 0; i < XPoints.Count(); i++)
+            ChooseGridStep(out double step, out int subdivisions);
+            if (subdivisions == 1)
             {
-                yield return new Point(XPoints.ElementAt(i), YPoints.ElementAt(i));
-            } 
+                yield break;
+            }
+
+            step /= subdivisions;
+            long first = (long)M.Ceiling(min / step);
+            long last = (long)M.Floor(max / step);
+            for (long index = first; index <= last; index++)
+            {
+                if (index % subdivisions != 0)
+                {
+                    yield return GridValue(index, step);
+                }
+            }
+        }
+
+        // index * step without the floating point dust: 3 * 0.2 is 0.6000000000000001,
+        // and the label would print it
+        static double GridValue(long index, double step)
+        {
+            return M.Round(index * step, 10);
+        }
+
+        #endregion
+
+        #region Grid step
+
+        /// <summary>Labeled grid lines come no closer than this, in pixels</summary>
+        public const double MinimumMajorGridSpacing = 40;
+
+        /// <summary>
+        /// The finer lines between the labeled ones are left out when they would be closer
+        /// than this, in pixels
+        /// </summary>
+        public const double MinimumMinorGridSpacing = 10;
+
+        /// <summary>
+        /// The grid never goes finer than this, in units, whatever the zoom: a drawing that
+        /// counts unit squares (Pick's theorem) sets 1. Zero, the default, lets the zoom
+        /// decide. Saved as GridStep on the Viewport.
+        /// </summary>
+        public double GridStep { get; set; }
+
+        /// <summary>
+        /// The distance between the labeled grid lines, in units: 1, 2 or 5 times a power of
+        /// ten, the smallest that keeps them <see cref="MinimumMajorGridSpacing"/> apart at
+        /// the current zoom. Shift-snapping lands on these lines.
+        /// </summary>
+        public double MajorGridStep
+        {
+            get
+            {
+                ChooseGridStep(out double step, out _);
+                return step;
+            }
+        }
+
+        /// <param name="subdivisions">
+        /// How many parts the finer lines cut a step into: 5 (a step of 1 or 5), 4 (a step of
+        /// 2), or 1 when there is no room for finer lines
+        /// </param>
+        void ChooseGridStep(out double step, out int subdivisions)
+        {
+            double minimum = MinimumMajorGridSpacing / unitLength;
+            double decade = M.Pow(10, M.Floor(M.Log10(minimum)));
+            if (decade >= minimum)
+            {
+                step = decade;
+                subdivisions = 5;
+            }
+            else if (2 * decade >= minimum)
+            {
+                step = 2 * decade;
+                subdivisions = 4;
+            }
+            else if (5 * decade >= minimum)
+            {
+                step = 5 * decade;
+                subdivisions = 5;
+            }
+            else
+            {
+                step = 10 * decade;
+                subdivisions = 5;
+            }
+
+            if (GridStep > 0 && step < GridStep)
+            {
+                step = GridStep;
+            }
+
+            double minorStep = step / subdivisions;
+            if (minorStep * unitLength < MinimumMinorGridSpacing || (GridStep > 0 && minorStep < GridStep))
+            {
+                subdivisions = 1;
+            }
         }
 
         #endregion

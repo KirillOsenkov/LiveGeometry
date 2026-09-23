@@ -102,6 +102,15 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   drag on an empty spot (a drag that starts on a figure moves the figure, and the grid "stays
   behind"), use many steps (`drag <t> x1 y1 x2 y2 300`), and compare against the axis numbers. Labels have a fixed *pixel*
   size, so fit re-measures and refits a few times. `winauto wheel <t> x y <notches>` tests the wheel.
+- **The grid adapts to the zoom** (`CoordinateSystem`, "Grid step" region): the labeled lines
+  are 1, 2 or 5 times a power of ten apart, the smallest step that keeps them
+  `MinimumMajorGridSpacing` (40 px) apart; between them a fainter tier (`MinorStyle` of
+  `RectangularGridLinesCollection`) cuts a step into 5 (4 for a step of 2) when those would
+  be at least `MinimumMinorGridSpacing` (10 px) apart. Both in DIPs. Shift-snapping lands on
+  the labeled step (`MajorGridStep`), not on a fixed 1. A drawing that must keep its unit
+  squares whatever the zoom says `<Viewport GridStep="1">` (`CoordinateSystem.GridStep`, a
+  floor for the step; Pick's Theorem has it). Values come from an integer index times the
+  step, rounded to 10 decimals, so labels never read 0.6000000000000001.
 - **Vectors**: `Vector` = an invisible `Segment` + an `Arrow` (a 7-point polygon: shaft + head).
   The arrow is computed in pixels (`Arrow.HeadLength/HeadHalfWidth/HeadGrowth`, shaft = the
   style's stroke width), is filled with the *line* color, has no outline, and stops at the rim
