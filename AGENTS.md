@@ -176,8 +176,11 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   on the figure a click would pick (`Behavior.GetFigureToPick`, `FigureCreator.FindFigureToPick`;
   an existing point the click would take counts too and gets a disc behind it;
   halos exist for points, lines, circles/ellipses, arcs and polygons - add a case to
-  `ClickPreview.CreateHalo` for anything else). The preview is plain canvas visuals,
-  never figures. Hit testing uses the *snapped* coordinates, so with snap to grid on the grid
+  `ClickPreview.CreateHalo` for anything else). A tool that takes either a point or a
+  figure (Distance: two points, or a segment to measure) overrides `FindPointPlacement`,
+  `FindFigureToPick` and `GetCursor` with the same test its `MouseDown` uses
+  (`DistanceMeasurementCreator.FindFigureToMeasure`), so over a segment there is a halo
+  and a hand and no ghost point. The preview is plain canvas visuals, never figures. Hit testing uses the *snapped* coordinates, so with snap to grid on the grid
   wins. Typed coordinates always give a free point. A point must never be placed on the figure
   being constructed (`FigureCreator.CanPlacePointOn`), that would be a dependency cycle.
 - **Side panel (property grid) look**: the surface is a Border in `DrawingHost.CreatePropertyGrid`

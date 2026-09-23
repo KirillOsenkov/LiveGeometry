@@ -20,11 +20,25 @@ namespace DynamicGeometry
             yield return result;
         }
 
+        /// <summary>
+        /// A segment (anything with a length) under the cursor with no point on top of it:
+        /// a click measures it instead of putting a point on it.
+        /// </summary>
+        IFigure FindFigureToMeasure(Point coordinates)
+        {
+            var underMouse = Drawing.Figures.HitTest(coordinates, f => f is ILengthProvider && !f.DependsOn(TempPoint));
+            if (underMouse != null && Drawing.Figures.HitTest<IPoint>(coordinates) == null)
+            {
+                return underMouse;
+            }
+
+            return null;
+        }
+
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var underMouse = Drawing.Figures.HitTest(Coordinates(e),f => f is ILengthProvider && !f.DependsOn(TempPoint));
-            if (underMouse != null
-                && Drawing.Figures.HitTest<IPoint>(Coordinates(e)) == null)
+            var underMouse = FindFigureToMeasure(Coordinates(e));
+            if (underMouse != null)
             {
                 FoundDependencies.Clear();
                 FoundDependencies.Add(underMouse);
@@ -34,6 +48,34 @@ namespace DynamicGeometry
                 return;
             }
             base.MouseDown(sender, e);
+        }
+
+        // the hover preview tells the same story as the click: over a segment there is no
+        // ghost point, the segment itself lights up and the cursor is a hand
+
+        protected override PointPlacement FindPointPlacement(Point unconstrainedCoordinates, Point coordinates)
+        {
+            if (FindFigureToMeasure(unconstrainedCoordinates) != null)
+            {
+                return null;
+            }
+
+            return base.FindPointPlacement(unconstrainedCoordinates, coordinates);
+        }
+
+        protected override IFigure FindFigureToPick(Point unconstrainedCoordinates)
+        {
+            return FindFigureToMeasure(unconstrainedCoordinates) ?? base.FindFigureToPick(unconstrainedCoordinates);
+        }
+
+        protected override Avalonia.Input.Cursor GetCursor(Point coordinates)
+        {
+            if (FindFigureToMeasure(coordinates) != null)
+            {
+                return HandCursor;
+            }
+
+            return base.GetCursor(coordinates);
         }
 
         public override string Name
