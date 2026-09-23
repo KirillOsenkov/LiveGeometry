@@ -241,13 +241,11 @@ public partial class MainView : UserControl
     {
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleGrid, first: true);
         DrawingHost.AddToolbarButton(DrawingHost.CommandDrawingBackground, first: true);
-        DrawingHost.AddToolbarButton(DrawingHost.CommandToggleOrtho);
-        DrawingHost.AddToolbarButton(DrawingHost.CommandToggleSnapToGrid);
-        DrawingHost.AddToolbarButton(DrawingHost.CommandToggleSnapToPoint);
-        DrawingHost.AddToolbarButton(DrawingHost.CommandToggleSnapToCenter);
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleLabelNewPoints);
-        DrawingHost.AddToolbarButton(DrawingHost.CommandTogglePolar);
         DrawingHost.AddToolbarButton(DrawingHost.CommandTogglePointByCoordinates);
+
+        // Not on the ribbon for now: Ortho, Polar, Snap to grid / point / center
+        // (DrawingHost.CommandToggle*). Their settings still work (Shift = snap to grid).
     }
 
     public void HandleExceptions(Action code)

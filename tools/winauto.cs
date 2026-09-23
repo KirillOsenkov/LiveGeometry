@@ -13,7 +13,7 @@
 //   dotnet tools/winauto.cs -- invoke <target> <menuId>              (WM_COMMAND, no focus needed)
 //   dotnet tools/winauto.cs -- shot   <target> <out.png> [--screen]
 //   dotnet tools/winauto.cs -- click  <target> <x> <y> [left|right|double|middle]
-//   dotnet tools/winauto.cs -- drag   <target> <x1> <y1> <x2> <y2> [steps]
+//   dotnet tools/winauto.cs -- drag   <target> <x1> <y1> <x2> <y2> [steps] [--shift]  (Shift held throughout)
 //   dotnet tools/winauto.cs -- move   <target> <x> <y>
 //   dotnet tools/winauto.cs -- keys   <target> <sendkeys-syntax>     e.g. "^s" "{ENTER}" "%f" "{DOWN 3}"
 //   dotnet tools/winauto.cs -- text   <target> <literal text>
@@ -52,7 +52,7 @@ try
         case "focus": Focus(Resolve(args[1])); break;
         case "click": Click(Resolve(args[1]), int.Parse(args[2]), int.Parse(args[3]), args.Length > 4 ? args[4] : "left"); break;
         case "move": { var h = Resolve(args[1]); Focus(h); MoveTo(h, int.Parse(args[2]), int.Parse(args[3])); break; }
-        case "drag": Drag(Resolve(args[1]), int.Parse(args[2]), int.Parse(args[3]), int.Parse(args[4]), int.Parse(args[5]), args.Length > 6 ? int.Parse(args[6]) : 12); break;
+        case "drag": Drag(Resolve(args[1]), int.Parse(args[2]), int.Parse(args[3]), int.Parse(args[4]), int.Parse(args[5]), args.Length > 6 && !args[6].StartsWith("--") ? int.Parse(args[6]) : 12, args.Contains("--shift")); break;
         case "keys": { Focus(Resolve(args[1])); SendKeysSyntax(args[2]); break; }
         case "text": { Focus(Resolve(args[1])); foreach (var c in args[2]) Unicode(c); break; }
         case "place": { var h = Resolve(args[1]); ShowWindow(h, 9); MoveWindow(h, int.Parse(args[2]), int.Parse(args[3]), int.Parse(args[4]), int.Parse(args[5]), true); break; }
@@ -390,10 +390,11 @@ static void Click(IntPtr h, int x, int y, string kind)
     }
 }
 
-static void Drag(IntPtr h, int x1, int y1, int x2, int y2, int steps)
+static void Drag(IntPtr h, int x1, int y1, int x2, int y2, int steps, bool shift)
 {
     Focus(h);
     MoveTo(h, x1, y1);
+    if (shift) Key(0x10, false);
     Button(0x0002);
     for (int i = 1; i <= steps; i++)
     {
@@ -402,6 +403,7 @@ static void Drag(IntPtr h, int x1, int y1, int x2, int y2, int steps)
 
     Thread.Sleep(50);
     Button(0x0004);
+    if (shift) Key(0x10, true);
 }
 
 static void Key(ushort vk, bool up)

@@ -87,7 +87,7 @@
       <Dependency Name="A" />
     </Polygon>
     <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Pick's Theorem" DecimalsToShow="2" X="5.08" Y="2" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="The corners of this polygon sit on grid\npoints. Count the grid points inside it (I)\nand on its boundary (B). Then the area is\n\nArea = I + B/2 − 1\n\nRight now the area is [area(a,b,c,d,e,f,g,h)].\n\nTurn on Snap to grid and drag the corners to\nnew grid points - the formula keeps working." DecimalsToShow="2" X="5.08" Y="1.325">
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="The corners of this polygon sit on grid\npoints. Count the grid points inside it (I)\nand on its boundary (B). Then the area is\n\nArea = I + B/2 − 1\n\nRight now the area is [area(a,b,c,d,e,f,g,h)].\n\nHold Shift and drag the corners to new grid\npoints - the formula keeps working." DecimalsToShow="2" X="5.08" Y="1.325">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="C" />

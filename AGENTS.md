@@ -355,6 +355,10 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   Ctrl+N/O/S/Z/Y/A/C/V are handled on key *down* (`MainView.HandleControlShortcut`; on key up
   Ctrl may already be released and a bare S is the Segment tool), plain keys in `HandlePlainKey`.
   Lost their menu entry and are unreachable for now: Lock, Figure List, the settings page.
+  Taken off the Selection tab (2026-09-23, obscure for the audience; the commands and
+  settings are still there in `DrawingHost`): Ortho, Polar, Snap to grid, Snap to point,
+  Snap to center. Shift while dragging or clicking still snaps to the grid (Pick's theorem
+  says so), and a click near the middle of a segment still makes a midpoint.
 - **Keyboard focus drifts into tool panels.** A tool's PropertyBag panel (e.g. "Point by
   coordinates") takes focus into its TextBox after every construction step, so neither the canvas
   KeyDown nor `MainView_KeyUp` (which skips TextBox focus) sees keys then. Anything that must
