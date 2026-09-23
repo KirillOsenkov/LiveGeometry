@@ -238,7 +238,11 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   Drawing". Paths: `/` gallery, `/gallery/<slug>`, `/drawing`; `AddressBar` is the abstraction,
   `BrowserAddressBar` + `main.js` do pushState/popstate, so Back works and links can be shared.
   `index.html` needs `<base href="/">` for that (all routes serve it; `web.config` and
-  `tools/serve.cs` fall back to it). All page changes go through `MainView.Show*`.
+  `tools/serve.cs` fall back to it). All page changes go through `MainView.Show*`. Started
+  at the address of a drawing (a shared link), `MainView` comes up in the editor and the
+  gallery isn't built at all (`IsDrawingPath` in the constructor; the address is readable
+  synchronously since `main.js` registers its imports before the runtime starts) - it used
+  to flash the gallery, tiles loading and all, before the drawing appeared.
 - **Gallery drawings** are embedded `.lgf` (`Gallery/Drawings`, order and titles in
   `GalleryCatalog`) and are *the* source: edit them directly (by hand as XML, or open, edit,
   save). They were forked once (2026-09-21) from the Windows Phone samples and from DG 1.0 CD

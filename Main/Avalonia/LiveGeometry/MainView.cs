@@ -136,11 +136,12 @@ public partial class MainView : UserControl
         Console.WriteLine("Live Geometry " + BuildVersion.Full);
 
         // Two pages, one showing: the gallery (the start page) and the editor. Started with a
-        // file (or a batch job) the editor is up from the first frame and the gallery, with its
-        // 47 tiles, isn't even built until the Gallery button is pressed.
+        // file (or a batch job), or at the address of a drawing (a shared link to one of the
+        // gallery, or /drawing), the editor is up from the first frame and the gallery, with
+        // its 48 tiles, isn't even built until the Gallery button is pressed.
         pages.Children.Add(LayoutRoot);
         Content = pages;
-        bool startsInEditor = StartupFile != null || CheckFolder != null || ModernizeFolder != null;
+        bool startsInEditor = StartupFile != null || CheckFolder != null || ModernizeFolder != null || IsDrawingPath(AddressBar.Current.Path);
         LayoutRoot.IsVisible = startsInEditor;
         if (!startsInEditor)
         {
@@ -311,6 +312,17 @@ public partial class MainView : UserControl
     /// </summary>
     Drawing OwnDrawing;
 
+    static bool IsOwnDrawingPath(string path)
+    {
+        return path != null && string.Equals(path.TrimEnd('/'), OwnDrawingPath, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>Whether the path shows the editor rather than the gallery</summary>
+    static bool IsDrawingPath(string path)
+    {
+        return GalleryCatalog.FindByPath(path) != null || IsOwnDrawingPath(path);
+    }
+
     void Navigate(string path, bool push)
     {
         var item = GalleryCatalog.FindByPath(path);
@@ -318,7 +330,7 @@ public partial class MainView : UserControl
         {
             ShowSample(item, push);
         }
-        else if (string.Equals(path.TrimEnd('/'), OwnDrawingPath, StringComparison.OrdinalIgnoreCase))
+        else if (IsOwnDrawingPath(path))
         {
             ShowOwnDrawing(push);
         }
