@@ -965,6 +965,7 @@ namespace DynamicGeometry
             var showGrid = section.ReadBool("ShowGrid", Settings.Instance.ShowGrid);
 
             drawing.CoordinateGrid.Visible = showAxes || showGrid;
+            drawing.Background = ReadPaper(section);
 
             var pointCount = section.ReadInt("PointCount");
             points = new PointBase[pointCount + 1];
@@ -980,6 +981,45 @@ namespace DynamicGeometry
 
             var staticGraphicCount = section.ReadInt("StaticGraphicCount");
             staticGraphics = new IFigure[staticGraphicCount + 1];
+        }
+
+        /// <summary>
+        /// The paper of a DG drawing: PaperColor1, or with GradientPaper a top-to-bottom
+        /// gradient from PaperColor1 to PaperColor2 (modDrawAux.bas Gradient, Vertical=False
+        /// steps down the rows). A negative color is a Windows system color: white here.
+        /// </summary>
+        static Brush ReadPaper(IniFile.Section section)
+        {
+            if (section["PaperColor1"] == null)
+            {
+                return null;
+            }
+
+            var top = ReadPaperColor(section, "PaperColor1");
+            if (section.ReadBool("GradientPaper", false) && section["PaperColor2"] != null)
+            {
+                var bottom = ReadPaperColor(section, "PaperColor2");
+                if (bottom != top)
+                {
+                    return new LinearGradientBrush()
+                    {
+                        StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                        EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+                        GradientStops =
+                        {
+                            new GradientStop(top, 0),
+                            new GradientStop(bottom, 1)
+                        }
+                    };
+                }
+            }
+
+            return new SolidColorBrush(top);
+        }
+
+        static Color ReadPaperColor(IniFile.Section section, string key)
+        {
+            return section.ReadInt(key) < 0 ? Colors.White : section.ReadColor(key);
         }
     }
 }

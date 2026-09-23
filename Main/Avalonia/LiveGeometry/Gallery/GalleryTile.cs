@@ -15,34 +15,30 @@ namespace LiveGeometry;
 public class GalleryTile : Border
 {
     readonly Action action;
-    readonly IBrush background;
-    readonly IBrush hoverBackground;
-    readonly IBrush border;
-    readonly IBrush hoverBorder;
+    IBrush background;
+    IBrush hoverBackground;
+    IBrush border;
+    IBrush hoverBorder;
     bool isPressed;
+    bool isOver;
 
     /// <param name="plate">A near-white tint (see <see cref="Pastels"/>); the border and the
     /// hover states are the same hue, a little deeper</param>
-    public GalleryTile(Control picture, string caption, Color plate, Action action)
+    readonly TextBlock caption;
+
+    public GalleryTile(Control picture, string text, Color plate, Action action)
     {
         this.action = action;
-        ToHsv(plate, out double hue, out double saturation, out double value);
-
-        // a gray plate keeps a hint of color in its border so that it still reads as a plate
-        double tint = System.Math.Max(saturation, 0.03);
-        background = new SolidColorBrush(plate);
-        hoverBackground = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 1.8, 1), value));
-        border = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 2.2, 1), value * 0.91));
-        hoverBorder = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 5, 1), value * 0.8));
+        SetPlate(plate);
 
         CornerRadius = new CornerRadius(10);
         BorderThickness = new Thickness(1.5);
         Cursor = new Cursor(StandardCursorType.Hand);
         ClipToBounds = true;
 
-        var text = new TextBlock()
+        caption = new TextBlock()
         {
-            Text = caption,
+            Text = text,
             FontSize = 14,
             FontWeight = FontWeight.SemiBold,
             Foreground = RibbonTheme.Text,
@@ -50,19 +46,24 @@ public class GalleryTile : Border
             TextTrimming = TextTrimming.CharacterEllipsis,
             Margin = new Thickness(10, 2, 10, 10)
         };
-        DockPanel.SetDock(text, Dock.Bottom);
+        DockPanel.SetDock(caption, Dock.Bottom);
 
         var layout = new DockPanel();
-        layout.Children.Add(text);
+        layout.Children.Add(caption);
         layout.Children.Add(picture);
         Child = layout;
-        Update(isOver: false);
+        Update();
 
-        PointerEntered += (s, e) => Update(isOver: true);
+        PointerEntered += (s, e) =>
+        {
+            isOver = true;
+            Update();
+        };
         PointerExited += (s, e) =>
         {
             isPressed = false;
-            Update(isOver: false);
+            isOver = false;
+            Update();
         };
         PointerPressed += (s, e) =>
         {
@@ -82,10 +83,66 @@ public class GalleryTile : Border
         };
     }
 
-    void Update(bool isOver)
+    /// <summary>A solid plate; the border and the hover states are derived from it</summary>
+    public void SetPlate(Color plate)
+    {
+        ToHsv(plate, out double hue, out double saturation, out double value);
+
+        // a gray plate keeps a hint of color in its border so that it still reads as a plate
+        double tint = System.Math.Max(saturation, 0.03);
+        background = new SolidColorBrush(plate);
+        hoverBackground = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 1.8, 1), value));
+        border = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 2.2, 1), value * 0.91));
+        hoverBorder = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 5, 1), value * 0.8));
+        Update();
+    }
+
+    /// <summary>
+    /// The plate is a drawing's paper: a solid color as above, a gradient as it is (hovering
+    /// only changes the border, which follows the gradient's end).
+    /// </summary>
+    public void SetPlate(IBrush paper)
+    {
+        if (paper is ISolidColorBrush solid)
+        {
+            SetPlate(solid.Color);
+            return;
+        }
+
+        if (paper is ILinearGradientBrush gradient && gradient.GradientStops.Count > 0)
+        {
+            SetPlate(gradient.GradientStops[gradient.GradientStops.Count - 1].Color);
+            background = paper;
+            hoverBackground = paper;
+            Update();
+        }
+    }
+
+    void Update()
     {
         Background = isOver ? hoverBackground : background;
         BorderBrush = isOver ? hoverBorder : border;
+
+        // the caption sits on the bottom of the plate, where a gradient has ended
+        if (caption != null)
+        {
+            caption.Foreground = IsDark(BottomColor(background)) ? Brushes.White : RibbonTheme.Text;
+        }
+    }
+
+    static Color BottomColor(IBrush brush)
+    {
+        if (brush is ILinearGradientBrush gradient && gradient.GradientStops.Count > 0)
+        {
+            return gradient.GradientStops[gradient.GradientStops.Count - 1].Color;
+        }
+
+        return brush is ISolidColorBrush solid ? solid.Color : Colors.White;
+    }
+
+    static bool IsDark(Color color)
+    {
+        return 0.2126 * color.R + 0.7152 * color.G + 0.0722 * color.B < 128;
     }
 
     public static void ToHsv(Color color, out double hue, out double saturation, out double value)

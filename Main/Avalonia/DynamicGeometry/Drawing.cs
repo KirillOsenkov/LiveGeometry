@@ -9,6 +9,7 @@ using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
+    [PropertyGridName("Drawing")]
     public partial class Drawing
     {
 
@@ -34,8 +35,38 @@ namespace DynamicGeometry
 
         public double Version { get; set; }
 
+        Brush background = new SolidColorBrush(Colors.White);
+
+        /// <summary>
+        /// The paper: a solid color or a gradient, white by default. Part of the drawing (saved
+        /// with it, undoable through the property grid), painted onto whatever canvas shows it.
+        /// </summary>
+        [PropertyGridVisible]
+        public Brush Background
+        {
+            get
+            {
+                return background;
+            }
+            set
+            {
+                background = value ?? new SolidColorBrush(Colors.White);
+                if (Canvas != null)
+                {
+                    Canvas.Background = background;
+                }
+            }
+        }
+
+        /// <summary>Whether the paper is the default, plain white (which files leave out)</summary>
+        public static bool IsWhite(Brush brush)
+        {
+            return brush is SolidColorBrush solid && solid.Color == Colors.White;
+        }
+
         void Drawing_OnAttachToCanvas(Canvas canvas)
         {
+            canvas.Background = background;
             canvas.SizeChanged += mCanvas_SizeChanged;
             UpdateClip(canvas);
             foreach (var figure in Figures)

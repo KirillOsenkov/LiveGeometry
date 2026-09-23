@@ -26,6 +26,9 @@ namespace DynamicGeometry
 
         public string Category { get; set; }
 
+        /// <summary>How many command buttons lead the tab, before the divider and the tools</summary>
+        public int LeadingCount { get; set; }
+
         BehaviorToolButton selectedToolButton;
         public BehaviorToolButton SelectedToolButton
         {

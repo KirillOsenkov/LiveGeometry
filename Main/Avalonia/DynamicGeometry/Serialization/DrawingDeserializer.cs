@@ -131,13 +131,17 @@ namespace DynamicGeometry
                     drawing.Canvas.Apply(wpfStyle);
                 }
             }
+            else if (viewportNode.Element("Background")?.Elements().FirstOrDefault() is XElement gradient)
+            {
+                drawing.Background = BrushSerializer.ParseBrush(gradient);
+            }
             else if (viewportNode.ReadString("Color") != null)
             {
-                drawing.Canvas.Background = new SolidColorBrush(viewportNode.ReadString("Color").ToColor());
+                drawing.Background = new SolidColorBrush(viewportNode.ReadString("Color").ToColor());
             }
-            else 
+            else
             {
-                drawing.Canvas.Background = Brushes.White;
+                drawing.Background = null; // white
             }
         }
 

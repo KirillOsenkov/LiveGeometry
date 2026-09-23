@@ -38,6 +38,7 @@ namespace DynamicGeometry
         public Command CommandTogglePolar { get; set; }
         public Command CommandToggleSnapToCenter { get; set; }
         public Command CommandTogglePointByCoordinates { get; set; }
+        public Command CommandDrawingBackground { get; set; }
         public Command CommandShowFigureExplorer { get; set; }
 
         public DrawingHost()
@@ -107,7 +108,19 @@ namespace DynamicGeometry
             {
                 IsChecked = () => Settings.Instance.EnablePointByCoordinates
             };
+            CommandDrawingBackground = new Command(ToggleDrawingProperties, ToggleIcons.Background(), "Background", BehaviorCategories.Coordinates);
             CommandShowFigureExplorer = new Command(ToggleFigureExplorer, new CheckBox() { IsChecked = FigureExplorer.Visible }, "Figure List", BehaviorCategories.Drawing);
+        }
+
+        /// <summary>The drawing's own properties (its paper) in the side panel; again to put them away</summary>
+        public void ToggleDrawingProperties()
+        {
+            if (CurrentDrawing == null)
+            {
+                return;
+            }
+
+            ShowProperties(PropertyGrid.Selection == CurrentDrawing ? null : CurrentDrawing);
         }
 
         protected void CreateFigureExplorer()

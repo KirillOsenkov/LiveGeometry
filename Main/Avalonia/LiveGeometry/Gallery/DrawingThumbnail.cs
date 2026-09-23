@@ -48,6 +48,9 @@ public class DrawingThumbnail : Viewbox
 
     public Drawing Drawing { get; private set; }
 
+    /// <summary>The drawing is on the surface (the tile takes its paper from it)</summary>
+    public event Action<Drawing> Loaded = delegate { };
+
     // Drawings are loaded one at a time when the UI thread has nothing better to do: the
     // gallery shows up at once and fills in, first tile first.
     static readonly Queue<DrawingThumbnail> queue = new Queue<DrawingThumbnail>();
@@ -221,11 +224,12 @@ public class DrawingThumbnail : Viewbox
 
             GalleryDrawing.HideText(drawing);
 
-            // the tile shows through
+            // the tile shows through: the drawing's paper, if it has one, is the tile's plate
             surface.Background = null;
             drawing.CoordinateSystem.ZoomExtend(item.Plane);
             drawing.CoordinateSystem.Zoom(zoomAfterFit, new Point(SurfaceWidth / 2, SurfaceHeight / 2));
             Drawing = drawing;
+            Loaded(drawing);
         }
         catch (Exception ex)
         {

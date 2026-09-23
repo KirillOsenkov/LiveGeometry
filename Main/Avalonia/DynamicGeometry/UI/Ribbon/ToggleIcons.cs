@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Media;
 
 namespace DynamicGeometry;
@@ -74,6 +75,27 @@ public static class ToggleIcons
         return IconBuilder.BuildIcon()
             .Point(0.36, 0.64)
             .Text(Colors.Black, 0.5, 0.08, text: "A")
+            .Canvas;
+    }
+
+    /// <summary>The paper of the drawing: a sheet with a gradient on it</summary>
+    public static FrameworkElement Background()
+    {
+        var paper = new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(Colors.White, 0),
+                new GradientStop(Color.FromRgb(0xBF, 0xDC, 0xFF), 1)
+            }
+        };
+        return IconBuilder.BuildIcon()
+            .Polygon(paper, new SolidColorBrush(guide), new Point(0.12, 0.1), new Point(0.88, 0.1), new Point(0.88, 0.9), new Point(0.12, 0.9))
+            .Line(accent, 0.3, 0.68, 0.7, 0.32)
+            .Point(0.3, 0.68)
+            .Point(0.7, 0.32)
             .Canvas;
     }
 

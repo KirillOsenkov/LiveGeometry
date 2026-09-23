@@ -239,6 +239,7 @@ public partial class MainView : UserControl
     void InitializeCommands()
     {
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleGrid, first: true);
+        DrawingHost.AddToolbarButton(DrawingHost.CommandDrawingBackground, first: true);
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleOrtho);
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleSnapToGrid);
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleSnapToPoint);
@@ -405,8 +406,8 @@ public partial class MainView : UserControl
         var control = DrawingHost.DrawingControl;
         if (control.Drawing != OwnDrawing)
         {
-            // the same order as DrawingControl.Clear: on the canvas first, then the current one
-            control.Background = Avalonia.Media.Brushes.White;
+            // the same order as DrawingControl.Clear: on the canvas first (which brings the
+            // drawing's own paper along), then the current one
             OwnDrawing.Canvas = control;
             control.Drawing = OwnDrawing;
             OwnDrawing.Recalculate();

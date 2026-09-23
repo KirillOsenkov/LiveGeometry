@@ -207,18 +207,20 @@ namespace DynamicGeometry
 
         /// <summary>
         /// A command that leads its tab (the grid switch under Coordinates): before the tools,
-        /// with the same thin divider in between.
+        /// after the leading commands already there, with one thin divider between the run of
+        /// them and the tools.
         /// </summary>
         void AddFirstToolButton(ToolButton button, string category)
         {
             button.DrawingHost = DrawingHost;
             var panel = GetTabPanelByCategory(button, category);
-            if (panel.Panel.Children.Count > 0)
+            if (panel.LeadingCount == 0 && panel.Panel.Children.Count > 0)
             {
                 panel.Panel.Children.Insert(0, CreateDivider());
             }
 
-            panel.Panel.Children.Insert(0, button);
+            panel.Panel.Children.Insert(panel.LeadingCount, button);
+            panel.LeadingCount++;
             button.ParentPanel = panel;
         }
 

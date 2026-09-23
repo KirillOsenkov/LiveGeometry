@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Drawing Version="0" Creator="LiveGeometry.App">
-  <Viewport Left="-11.3513902861" Top="5.2629651118" Right="8.8382061468" Bottom="-3.5542102054" Grid="false" />
+  <Viewport Left="-11.3513902861" Top="5.2629651118" Right="8.8382061468" Bottom="-3.5542102054" Grid="false">
+    <Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFF8FEFF" Offset="0" />
+        <GradientStop Color="#FFFAE6E6" Offset="1" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
     <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />

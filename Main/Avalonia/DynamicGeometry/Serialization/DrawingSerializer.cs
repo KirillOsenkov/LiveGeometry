@@ -94,21 +94,30 @@ namespace DynamicGeometry
             writer.WriteAttributeDouble("Right", drawing.CoordinateSystem.MaximalVisibleX);
             writer.WriteAttributeDouble("Bottom", drawing.CoordinateSystem.MinimalVisibleY);
 
-            var backgroundBrush = drawing.Canvas.Background as SolidColorBrush;
-            if (backgroundBrush != null && backgroundBrush.Color != Colors.White)
+            // the paper: a solid color is the Color attribute (white, the default, is left out),
+            // a gradient is a Background child element, as a gradient fill of a style is
+            var background = Drawing.IsWhite(drawing.Background) ? null : BrushSerializer.WriteBrush(drawing.Background);
+            if (background is string color)
             {
-                writer.WriteAttributeString("Color", ColorText.ToArgbHex(backgroundBrush.Color));
+                writer.WriteAttributeString("Color", color);
             }
 
             if (drawing.CoordinateGrid.Locked)
             {
                 writer.WriteAttributeBool("Locked", true);
             }
-            
+
             if (drawing.CoordinateGrid.Visible)
             {
                 writer.WriteAttributeBool("Grid", true);
                 writer.WriteAttributeBool("Axes", drawing.CoordinateGrid.ShowAxes);
+            }
+
+            if (background is System.Xml.Linq.XElement gradient)
+            {
+                writer.WriteStartElement("Background");
+                gradient.WriteTo(writer);
+                writer.WriteEndElement();
             }
 
             writer.WriteEndElement();

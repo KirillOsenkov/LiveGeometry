@@ -346,7 +346,12 @@ namespace DynamicGeometry
     {
         public object Write(IValueProvider value)
         {
-            object brush = value.GetValue<object>();
+            return WriteBrush(value.GetValue<object>() as Brush);
+        }
+
+        /// <summary>A color as text, a gradient as an element; null for anything else</summary>
+        public static object WriteBrush(Brush brush)
+        {
             SolidColorBrush solidColorBrush = brush as SolidColorBrush;
             if (solidColorBrush != null)
             {
@@ -389,7 +394,7 @@ namespace DynamicGeometry
             value.SetValue(ParseBrush(serialized));
         }
 
-        static Brush ParseBrush(XElement element)
+        public static Brush ParseBrush(XElement element)
         {
             switch (element.Name.LocalName)
             {

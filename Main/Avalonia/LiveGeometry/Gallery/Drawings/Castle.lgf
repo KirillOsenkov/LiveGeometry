@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Drawing Version="0" Creator="LiveGeometry.App">
-  <Viewport Left="-19.3879174054" Top="4.0435726196" Right="17.6701228319" Bottom="-12.1403683902" Grid="false" />
+  <Viewport Left="-19.3879174054" Top="4.0435726196" Right="17.6701228319" Bottom="-12.1403683902" Grid="false">
+    <Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF8AC5FF" Offset="0" />
+        <GradientStop Color="#FF0080FF" Offset="1" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
     <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
@@ -49,8 +56,8 @@
     <ShapeStyle Fill="#FF009500" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="30" />
     <ShapeStyle Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="31" />
     <ShapeStyle Fill="#FF008000" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="32" />
-    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+    <TextStyle FontSize="30" Color="#FFFFFFFF" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FFFFFFFF" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
     <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
   </Styles>
   <Figures>

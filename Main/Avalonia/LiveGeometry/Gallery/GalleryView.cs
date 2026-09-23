@@ -77,6 +77,15 @@ public class GalleryView : DockPanel
                 });
             tile.PointerEntered += (s, e) => picture.IsAnimated = true;
             tile.PointerExited += (s, e) => picture.IsAnimated = false;
+
+            // a drawing with paper of its own shows it on its tile instead of the pastel
+            picture.Loaded += drawing =>
+            {
+                if (!DynamicGeometry.Drawing.IsWhite(drawing.Background))
+                {
+                    tile.SetPlate(drawing.Background);
+                }
+            };
             galleryTiles.Children.Add(tile);
         }
 

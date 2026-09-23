@@ -158,8 +158,7 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   `IntersectionPoint` (blue), `Midpoint` (orange), `DependentPointStyle` (gray, every other
   constructed point) at size 8. Looked up by *name*; a drawing from a file brings its own styles,
   and when the named one is missing (older files) the first point style is used. The click
-  preview ghost uses the same lookup. The Point tool's panel style overrides the kind only once
-  the user picks something other than the first style.
+  preview ghost uses the same lookup.
 - **Cursor philosophy** (`Behavior.GetCursor`): cross = a new *free* point appears here; hand =
   the click picks something already there - a figure the tool needs, an existing point, or a
   place defined by figures (intersection, midpoint); arrow = everything else, including a new
@@ -210,6 +209,16 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   Avalonia writes the *name* of a known color, and builds before 2026-09 did exactly that, so
   `ToColor()` accepts names too - 6-9 letter names used to be parsed as hex and threw.
   A gradient fill is a child element of the style (`<Fill><LinearGradientBrush>`), not an attribute.
+- **The paper** is `Drawing.Background` (solid or gradient, white by default), pushed onto
+  whatever canvas the drawing is attached to; edited in the side panel through the "Background"
+  button on the Coordinates tab (`DrawingHost.ToggleDrawingProperties` shows the drawing itself
+  in the property grid, undoable like any property). Saved on `<Viewport>`: a solid color as
+  `Color="#AARRGGBB"` (white left out), a gradient as a `<Background><LinearGradientBrush>`
+  child. `.dgf`: `PaperColor1`/`PaperColor2`/`GradientPaper` of `[General]`, top to bottom. A
+  gallery tile takes a drawing's paper as its plate (pastel only for white ones) and turns its
+  caption white on a dark plate. Gallery drawings with paper of their own: Castle, Rose,
+  Sierpinski and Spiral (their DG originals; the two dark ones have white text styles) and
+  Pascal (a faint tint). The lake drawing's gray gradient was dropped.
 - **The library's own types shadow framework ones**: `Math`, `Ellipse`, `Polygon`, `Path`...
   In a file-scoped-namespace file a `using X = ...;` alias does NOT win over a type of the
   enclosing namespace - write `System.Math.Max`, `Avalonia.Controls.Shapes.Ellipse` in full.
@@ -307,7 +316,7 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   coordinates" panel (X/Y boxes of `FigureCreator.Dialog`, `ShapeCreator.ShapeDialog`,
   `FreePointCreator.CoordinatesDialog`) only exists while the "Point by coordinates" toggle on
   the Coordinates tab is on (`Settings.EnablePointByCoordinates`, off by default); the Point
-  tool's panel is then just its style row.
+  tool has no panel otherwise (it had a style picker; new points get the style of their kind).
 - **Toolbar look** is centralized in `UI/Ribbon/RibbonTheme.cs`; `ButtonGrid` draws the
   hover/pressed/checked plate. `Ribbon` and `TabPanel` replace the Fluent TabControl/TabItem
   templates with their own (in code): the header row has a bottom line *behind* the headers and
@@ -361,8 +370,9 @@ rather than by process name when more than one could exist.
 `.lgf`/`.dgf` under the folder in the real editor, zooms to fit, saves `<out>/<relative path>.png`
 and `.lgf` (the conversion) and appends to `<out>/report.txt`: figure counts, `NOT EXISTING`
 (only the *root* failures - figures whose dependencies all exist - plus a dump of every point),
-load errors. It exits when done. Contact sheets of the PNGs (a System.Drawing script) are the
-fastest way to eyeball hundreds of files. The VB6 CD library
+load errors. It exits when done. `dotnet tools/contactsheet.cs -- <png folder> <out.png>
+[columns] [tile width]` tiles the PNGs into one image: the fastest way to eyeball a whole
+folder (all 47 gallery drawings fit on one 4-column sheet). The VB6 CD library
 (`C:\Dropbox\Projects\DG 1\DG CD Version 1.0\Library\English`, 221 files, read-only) all loads
 as of 2026-09-21; what is still "missing" there is second intersections that fall outside a
 segment or ray, and sides of a polygon that don't cross - legitimately absent.

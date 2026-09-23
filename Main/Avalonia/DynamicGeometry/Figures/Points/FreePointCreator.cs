@@ -1,8 +1,5 @@
 ﻿using System.ComponentModel;
-using System.Linq;
-using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Controls.Shapes;
 
 namespace DynamicGeometry
 {
@@ -10,44 +7,19 @@ namespace DynamicGeometry
     [Order(1)]
     public class FreePointCreator : Behavior
     {
-        /// <summary>The tool's panel: the style for new points</summary>
-        [PropertyGridName("Point")]
-        public class Dialog
-        {
-            public Dialog(FreePointCreator parent)
-            {
-                this.parent = parent;
-                this.style = parent.Drawing.StyleManager.GetStyles<PointStyle>().FirstOrDefault();
-            }
-
-            protected FreePointCreator parent;
-
-            private IFigureStyle style;
-            [PropertyGridVisible]
-            public IFigureStyle Style
-            {
-                get
-                {
-                    return this.style;
-                }
-                set
-                {
-                    this.style = value;
-                    Canvas canvas = this.parent.Icon as Canvas;
-                    var pointShape = canvas.Children[0] as Shape;
-                    pointShape.Apply(style.GetWpfStyle());
-                }
-            }
-        }
-
-        /// <summary>The same with the coordinates to type, when that is switched on</summary>
+        /// <summary>
+        /// The tool's panel, only while "Point by coordinates" is switched on: the coordinates
+        /// to type. Otherwise the tool has no panel (each kind of point gets its default style).
+        /// </summary>
         [PropertyGridName("Point by coordinates")]
-        public class CoordinatesDialog : Dialog
+        public class CoordinatesDialog
         {
             public CoordinatesDialog(FreePointCreator parent)
-                : base(parent)
             {
+                this.parent = parent;
             }
+
+            readonly FreePointCreator parent;
 
             [PropertyGridVisible]
             [PropertyGridFocus]
@@ -106,24 +78,18 @@ namespace DynamicGeometry
             }
         }
 
-        Dialog dialog;
+        CoordinatesDialog dialog;
 
         public override object PropertyBag
         {
             get
             {
-                // the kind of panel follows the setting; the chosen style survives a switch
-                bool withCoordinates = Settings.Instance.EnablePointByCoordinates;
-                if (dialog == null || (dialog is CoordinatesDialog) != withCoordinates)
+                if (!Settings.Instance.EnablePointByCoordinates)
                 {
-                    var previous = dialog;
-                    dialog = withCoordinates ? new CoordinatesDialog(this) : new Dialog(this);
-                    if (previous != null && previous.Style != null)
-                    {
-                        dialog.Style = previous.Style;
-                    }
+                    return null;
                 }
 
+                dialog ??= new CoordinatesDialog(this);
                 return dialog;
             }
         }
@@ -131,40 +97,13 @@ namespace DynamicGeometry
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
             var placement = FindPointPlacement(e);
-            IFigure created = null;
-
             if (placement.Kind == PointPlacementKind.Free)
             {
-                created = CreatePointAtCurrentPosition(placement.Coordinates);
+                CreatePointAtCurrentPosition(placement.Coordinates);
             }
             else if (placement.IsDependent)
             {
-                created = placement.Create(Drawing);
-                Actions.Add(Drawing, created);
-            }
-
-            var chosenStyle = ChosenStyle;
-            if (created != null && chosenStyle != null)
-            {
-                created.Style = chosenStyle;
-            }
-        }
-
-        /// <summary>
-        /// The style picked in the tool's panel. While it is still the first one (the panel's
-        /// initial pick) nothing was chosen and every kind of point gets its own default style.
-        /// </summary>
-        IFigureStyle ChosenStyle
-        {
-            get
-            {
-                if (dialog == null || dialog.Style == null)
-                {
-                    return null;
-                }
-
-                var initial = Drawing.StyleManager.GetStyles<PointStyle>().FirstOrDefault();
-                return dialog.Style == initial ? null : dialog.Style;
+                Actions.Add(Drawing, placement.Create(Drawing));
             }
         }
 
@@ -183,11 +122,6 @@ namespace DynamicGeometry
         protected override PointPlacement GetClickPreview(MouseEventArgs e)
         {
             return hoverPlacement;
-        }
-
-        protected override IFigureStyle GetClickPreviewPointStyle(PointPlacement placement)
-        {
-            return ChosenStyle ?? base.GetClickPreviewPointStyle(placement);
         }
 
         protected override Cursor GetCursor(Avalonia.Point coordinates)
