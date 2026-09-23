@@ -498,7 +498,11 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   (the given segment and the sides by stroke-dashoffset, the rings likewise with a pen
   riding the rim by `offset-path`, discs and the gradient triangle fading in), with a progress bar that `main.js` feeds from a
   `withResourceLoader` wrapper counting fetches (the loader's `onDownloadResourceProgress`
-  is on the module config, which the .NET 10 host builder doesn't expose). `?splash` on
+  is on the module config, which the .NET 10 host builder doesn't expose). The wrapper
+  hands back a Response only for assemblies, the wasm and ICU data; the runtime's own
+  JavaScript modules and its config must be left to the default loading - returning a
+  Response for `dotnetjs` left the live site spinning on the splash forever (2026-09-23).
+  A change to `main.js` needs the publish smoke test below before deploying. `?splash` on
   the url shows the splash without starting the app, for working on it: serve the source
   `wwwroot` with `tools/serve.cs` and open `http://localhost:<port>/index.html?splash`.
   It animates regardless of `prefers-reduced-motion` (deliberately no rule for it: the

@@ -15,6 +15,13 @@ const progressBar = globalThis.document.getElementById('splash-progress-bar');
 let downloadsBegun = 0;
 let downloadsDone = 0;
 function loadResource(type, name, uri) {
+    // the runtime's own JavaScript modules must be imported by url, not handed over as
+    // a Response (with one, the app never came up); the same for the config it reads
+    // first. Only the assemblies, the wasm and the ICU data are fetched and counted.
+    if (type !== "assembly" && type !== "pdb" && type !== "dotnetwasm" && type !== "globalization") {
+        return undefined;
+    }
+
     downloadsBegun++;
     const response = fetch(uri);
     response.then(() => {
