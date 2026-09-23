@@ -53,19 +53,44 @@ namespace DynamicGeometry
                 StrokeJoin = Avalonia.Media.PenLineJoin.Round,
                 Width = 14,
                 Height = 14,
-                Margin = new Avalonia.Thickness(0, 0, 6, 0),
                 VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
             };
+            return CreateContent(trashCan, name, RibbonTheme.Destructive);
+        }
+
+        /// <summary>
+        /// An icon to the left of the caption.
+        /// </summary>
+        static object CreateContent(Control icon, string name, Avalonia.Media.IBrush foreground)
+        {
+            icon.Margin = new Avalonia.Thickness(0, 0, 6, 0);
             var caption = new TextBlock()
             {
                 Text = name,
-                Foreground = RibbonTheme.Destructive,
+                Foreground = foreground,
                 VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
             };
             var result = new StackPanel() { Orientation = Avalonia.Layout.Orientation.Horizontal };
-            result.Children.Add(trashCan);
+            result.Children.Add(icon);
             result.Children.Add(caption);
             return result;
+        }
+
+        object CreateContent(IOperationDescription operation)
+        {
+            string name = operation.DisplayName;
+            if (operation.GetAttribute<PropertyGridDestructiveAttribute>() != null)
+            {
+                return CreateDestructiveContent(name);
+            }
+
+            var iconAttribute = operation.GetAttribute<PropertyGridIconAttribute>();
+            if (iconAttribute != null)
+            {
+                return CreateContent(PropertyGridIcons.Create(iconAttribute.Icon), name, RibbonTheme.Text);
+            }
+
+            return name;
         }
 
         public object Target { get; set; }
@@ -88,9 +113,7 @@ namespace DynamicGeometry
                     var parameters = operationDescription.Parameters;
                     if (parameters.IsEmpty())
                     {
-                        this.Content = operationDescription.GetAttribute<PropertyGridDestructiveAttribute>() != null
-                            ? CreateDestructiveContent(name)
-                            : name;
+                        this.Content = CreateContent(operationDescription);
                     }
                     else
                     {

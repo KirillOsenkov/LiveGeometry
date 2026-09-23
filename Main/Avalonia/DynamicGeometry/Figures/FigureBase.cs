@@ -368,8 +368,9 @@ namespace DynamicGeometry
 #if !PLAYER
 
         [PropertyGridVisible]
-        [PropertyGridName("Edit style")]
+        [PropertyGridName("Edit this style")]
         [PropertyGridGroup("Style")]
+        [PropertyGridIcon(PropertyGridIcon.Pencil)]
         public void EditStyleButton()
         {
             var drawingHost = Canvas.Parent as DrawingHost;
@@ -388,6 +389,7 @@ namespace DynamicGeometry
         [PropertyGridVisible]
         [PropertyGridName("Create new style")]
         [PropertyGridGroup("Style")]
+        [PropertyGridIcon(PropertyGridIcon.Plus)]
         public void CreateNewStyle()
         {
             Drawing.ActionManager.SetProperty(

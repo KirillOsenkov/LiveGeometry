@@ -49,7 +49,7 @@ public class DrawingThumbnail : Viewbox
     public Drawing Drawing { get; private set; }
 
     /// <summary>The drawing is on the surface (the tile takes its paper from it)</summary>
-    public event Action<Drawing> Loaded = delegate { };
+    public event Action<Drawing> DrawingLoaded = delegate { };
 
     // Drawings are loaded one at a time when the UI thread has nothing better to do: the
     // gallery shows up at once and fills in, first tile first.
@@ -238,7 +238,7 @@ public class DrawingThumbnail : Viewbox
             }
 
             Drawing = drawing;
-            Loaded(drawing);
+            DrawingLoaded(drawing);
         }
         catch (Exception ex)
         {

@@ -187,7 +187,10 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   Rows share the label column width via `SharedSizeGroup`. Layout is declarative:
   `[PropertyGridGroup("Name")]` on properties/methods boxes them together (editors, then their
   buttons in a row); `[PropertyGridDestructive]` on a method puts its button last, under a
-  divider, with a trash can (`PropertyGrid.Arrange`, `MethodCallerButton`).
+  divider, with a trash can (`PropertyGrid.Arrange`, `MethodCallerButton`);
+  `[PropertyGridIcon(PropertyGridIcon.Pencil)]` puts a small drawn icon (`PropertyGridIcons`,
+  14 px, same grid as the trash can) in front of the caption - "Edit this style" has the
+  pencil, "Create new style" the plus.
 - **Color/brush picking** lives in `DynamicGeometry/Controls/ColorPicker/` and is layered so the
   parts can be swapped: `ColorPalette` (which colors, in what order and how many columns -
   `WebColors` is the hand-arranged 14x10 map from the Helix picker, `ArrangeByHue` computes one) ->
