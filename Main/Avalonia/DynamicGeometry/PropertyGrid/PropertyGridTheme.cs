@@ -41,6 +41,11 @@ public static class PropertyGridTheme
             {
                 new AvaloniaSetter(TextBox.FontSizeProperty, FontSize),
                 new AvaloniaSetter(TextBox.MinHeightProperty, 26.0),
+
+                // a long text (a caption, an error) wraps instead of stretching the panel
+                // across the window
+                new AvaloniaSetter(TextBox.MaxWidthProperty, 480.0),
+                new AvaloniaSetter(TextBox.TextWrappingProperty, TextWrapping.Wrap),
                 new AvaloniaSetter(TextBox.PaddingProperty, new Thickness(6, 4, 6, 3)),
                 new AvaloniaSetter(TextBox.MarginProperty, new Thickness(0, 2, 0, 2)),
                 new AvaloniaSetter(TextBox.BackgroundProperty, inputBackground),

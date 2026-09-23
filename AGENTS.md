@@ -426,6 +426,15 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   settings are still there in `DrawingHost`): Ortho, Polar, Snap to grid, Snap to point,
   Snap to center. Shift while dragging or clicking still snaps to the grid (Pick's theorem
   says so), and a click near the middle of a segment still makes a midpoint.
+- **Every exception is shown** (`MainView.CurrentDomain_FirstChanceException`, as in Helix
+  and the structured log viewer): the message goes to the status bar ("Error: ...") and the
+  whole text to the side panel as an `ExceptionReport` page ("Something went wrong": Error,
+  Details), also printed to the console. Reported on the UI thread; exceptions the report
+  itself throws are dropped (`reportingException`), the same text thrown again only
+  refreshes the status bar, and OperationCanceled/Aggregate/TargetInvocation are ignored.
+  Add to `IsBenign` when a framework exception turns out to be noise. Text boxes of the
+  property grid wrap at 480 px (`PropertyGridTheme`), so a caption or a stack trace doesn't
+  stretch the panel across the window.
 - **Keyboard focus drifts into tool panels.** A tool's PropertyBag panel (e.g. "Point by
   coordinates") takes focus into its TextBox after every construction step, so neither the canvas
   KeyDown nor `MainView_KeyUp` (which skips TextBox focus) sees keys then. Anything that must

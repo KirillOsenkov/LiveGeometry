@@ -6,6 +6,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using DynamicGeometry;
 using Drawing = DynamicGeometry.Drawing;
 
@@ -46,11 +47,8 @@ public partial class MainView : UserControl
 
         // The geometry library surfaces errors through the WPF-style MessageBox shim.
         MessageBox.Handler = text => DrawingHost.ShowHint(text);
-        DrawingHost.UnhandledException += (s, e) =>
-        {
-            Console.WriteLine("LiveGeometry error: " + e.Exception);
-            DrawingHost.ShowHint(e.Exception.Message);
-        };
+        DrawingHost.UnhandledException += (s, e) => ReportException(e.Exception);
+        AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
 
         // Give the drawing canvas keyboard focus so behaviors receive Escape/Delete/etc.
         DrawingHost.DrawingControl.Focusable = true;
@@ -259,6 +257,74 @@ public partial class MainView : UserControl
             MessageBox.Show(e.Message);
         }
     }
+
+    #region Exceptions
+
+    // Every exception thrown anywhere, at the moment it is thrown (as in Helix and the
+    // structured log viewer): the message goes to the status bar and the whole text to the
+    // side panel, so that a problem the code swallows is still seen. Reported on the UI
+    // thread; while a report is on its way, exceptions it may throw itself are dropped, and
+    // the same exception thrown again and again (on every mouse move, say) only refreshes
+    // the status bar.
+
+    bool reportingException;
+    string lastExceptionText;
+
+    void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+    {
+        var exception = e.Exception;
+        if (reportingException || exception == null || IsBenign(exception))
+        {
+            return;
+        }
+
+        reportingException = true;
+        try
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                try
+                {
+                    ReportException(exception);
+                }
+                finally
+                {
+                    reportingException = false;
+                }
+            });
+        }
+        catch
+        {
+            reportingException = false;
+        }
+    }
+
+    static bool IsBenign(Exception exception)
+    {
+        return exception is OperationCanceledException
+            || exception is AggregateException
+            || exception is System.Reflection.TargetInvocationException;
+    }
+
+    /// <summary>The message in the status bar, the whole text in the side panel</summary>
+    public void ReportException(Exception exception)
+    {
+        var text = exception.ToString();
+        bool isNew = text != lastExceptionText;
+        lastExceptionText = text;
+        if (isNew)
+        {
+            Console.WriteLine("LiveGeometry error: " + text);
+        }
+
+        DrawingHost.ShowHint("Error: " + exception.Message);
+        if (isNew && DrawingHost.CurrentDrawing != null)
+        {
+            DrawingHost.ShowProperties(new ExceptionReport(exception));
+        }
+    }
+
+    #endregion
 
     void NewDrawing() => HandleExceptions(() => ShowNewDrawing(push: true));
 
