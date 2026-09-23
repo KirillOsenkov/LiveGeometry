@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1" Top="9" Right="10.5" Bottom="-1" Grid="true" Axes="true" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
+    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
+    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
+    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
+    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
+    <LineStyle Color="#FF2F7BD6" StrokeWidth="2.5" Dash="Solid" Name="Line" />
+    <LineStyle Color="#FFD83B3B" StrokeWidth="1.25" Dash="Dash" Name="Gap" />
+    <ShapeStyle Fill="#38D83B3B" IsFilled="true" Color="#70D83B3B" StrokeWidth="1" Dash="Solid" Name="Square" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="FreePoint" X="0.6" Y="1.9" />
+    <FreePoint Name="B" Style="FreePoint" X="1.5" Y="1.9" />
+    <FreePoint Name="C" Style="FreePoint" X="2.1" Y="2.9" />
+    <FreePoint Name="D" Style="FreePoint" X="3.1" Y="2.5" />
+    <FreePoint Name="E" Style="FreePoint" X="3.5" Y="4.6" />
+    <FreePoint Name="F" Style="FreePoint" X="4.3" Y="3.7" />
+    <FreePoint Name="G" Style="FreePoint" X="5.5" Y="5.2" />
+    <FreePoint Name="H" Style="FreePoint" X="5.9" Y="4.6" />
+    <FreePoint Name="I" Style="FreePoint" X="6.7" Y="6.3" />
+    <FreePoint Name="J" Style="FreePoint" X="7.5" Y="7.4" />
+    <FreePoint Name="K" Style="FreePoint" X="8.4" Y="8.1" />
+    <FreePoint Name="L" Style="FreePoint" X="8.9" Y="7.3" />
+    <PointByCoordinates Name="Mean" Visible="false" Style="DependentPointStyle" X="(A.X + B.X + C.X + D.X + E.X + F.X + G.X + H.X + I.X + J.X + K.X + L.X) / 12" Y="(A.Y + B.Y + C.Y + D.Y + E.Y + F.Y + G.Y + H.Y + I.Y + J.Y + K.Y + L.Y) / 12">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Sums" Visible="false" Style="DependentPointStyle" X="A.X * A.Y + B.X * B.Y + C.X * C.Y + D.X * D.Y + E.X * E.Y + F.X * F.Y + G.X * G.Y + H.X * H.Y + I.X * I.Y + J.X * J.Y + K.X * K.Y + L.X * L.Y" Y="A.X * A.X + B.X * B.X + C.X * C.X + D.X * D.X + E.X * E.X + F.X * F.X + G.X * G.X + H.X * H.X + I.X * I.X + J.X * J.X + K.X * K.X + L.X * L.X">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Fit" Visible="false" Style="DependentPointStyle" X="(Sums.X - 12 * Mean.X * Mean.Y) / (Sums.Y - 12 * Mean.X * Mean.X)" Y="Mean.Y - (Sums.X - 12 * Mean.X * Mean.Y) / (Sums.Y - 12 * Mean.X * Mean.X) * Mean.X">
+      <Dependency Name="Mean" />
+      <Dependency Name="Sums" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LineLeft" Visible="false" Style="DependentPointStyle" X="0" Y="Fit.X * 0 + Fit.Y">
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LineRight" Visible="false" Style="DependentPointStyle" X="10" Y="Fit.X * 10 + Fit.Y">
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <LineTwoPoints Name="Line" Style="Line">
+      <Dependency Name="LineLeft" />
+      <Dependency Name="LineRight" />
+    </LineTwoPoints>
+    <PointByCoordinates Name="AFoot" Visible="false" Style="DependentPointStyle" X="A.X" Y="Fit.X * A.X + Fit.Y">
+      <Dependency Name="A" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="AFootAcross" Visible="false" Style="DependentPointStyle" X="A.X + (A.Y - (Fit.X * A.X + Fit.Y))" Y="Fit.X * A.X + Fit.Y">
+      <Dependency Name="A" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="AAcross" Visible="false" Style="DependentPointStyle" X="A.X + (A.Y - (Fit.X * A.X + Fit.Y))" Y="A.Y">
+      <Dependency Name="A" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <Polygon Name="ASquare" Style="Square">
+      <Dependency Name="A" />
+      <Dependency Name="AFoot" />
+      <Dependency Name="AFootAcross" />
+      <Dependency Name="AAcross" />
+      <Dependency Name="A" />
+    </Polygon>
+    <Segment Name="AGap" Style="Gap">
+      <Dependency Name="A" />
+      <Dependency Name="AFoot" />
+    </Segment>
+    <PointByCoordinates Name="BFoot" Visible="false" Style="DependentPointStyle" X="B.X" Y="Fit.X * B.X + Fit.Y">
+      <Dependency Name="B" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BFootAcross" Visible="false" Style="DependentPointStyle" X="B.X + (B.Y - (Fit.X * B.X + Fit.Y))" Y="Fit.X * B.X + Fit.Y">
+      <Dependency Name="B" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BAcross" Visible="false" Style="DependentPointStyle" X="B.X + (B.Y - (Fit.X * B.X + Fit.Y))" Y="B.Y">
+      <Dependency Name="B" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <Polygon Name="BSquare" Style="Square">
+      <Dependency Name="B" />
+      <Dependency Name="BFoot" />
+      <Dependency Name="BFootAcross" />
+      <Dependency Name="BAcross" />
+      <Dependency Name="B" />
+    </Polygon>
+    <Segment Name="BGap" Style="Gap">
+      <Dependency Name="B" />
+      <Dependency Name="BFoot" />
+    </Segment>
+    <PointByCoordinates Name="CFoot" Visible="false" Style="DependentPointStyle" X="C.X" Y="Fit.X * C.X + Fit.Y">
+      <Dependency Name="C" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CFootAcross" Visible="false" Style="DependentPointStyle" X="C.X + (C.Y - (Fit.X * C.X + Fit.Y))" Y="Fit.X * C.X + Fit.Y">
+      <Dependency Name="C" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CAcross" Visible="false" Style="DependentPointStyle" X="C.X + (C.Y - (Fit.X * C.X + Fit.Y))" Y="C.Y">
+      <Dependency Name="C" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <Polygon Name="CSquare" Style="Square">
+      <Dependency Name="C" />
+      <Dependency Name="CFoot" />
+      <Dependency Name="CFootAcross" />
+      <Dependency Name="CAcross" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Segment Name="CGap" Style="Gap">
+      <Dependency Name="C" />
+      <Dependency Name="CFoot" />
+    </Segment>
+    <PointByCoordinates Name="DFoot" Visible="false" Style="DependentPointStyle" X="D.X" Y="Fit.X * D.X + Fit.Y">
+      <Dependency Name="D" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="DFootAcross" Visible="false" Style="DependentPointStyle" X="D.X + (D.Y - (Fit.X * D.X + Fit.Y))" Y="Fit.X * D.X + Fit.Y">
+      <Dependency Name="D" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="DAcross" Visible="false" Style="DependentPointStyle" X="D.X + (D.Y - (Fit.X * D.X + Fit.Y))" Y="D.Y">
+      <Dependency Name="D" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <Polygon Name="DSquare" Style="Square">
+      <Dependency Name="D" />
+      <Dependency Name="DFoot" />
+      <Dependency Name="DFootAcross" />
+      <Dependency Name="DAcross" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Segment Name="DGap" Style="Gap">
+      <Dependency Name="D" />
+      <Dependency Name="DFoot" />
+    </Segment>
+    <PointByCoordinates Name="EFoot" Visible="false" Style="DependentPointStyle" X="E.X" Y="Fit.X * E.X + Fit.Y">
+      <Dependency Name="E" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="EFootAcross" Visible="false" Style="DependentPointStyle" X="E.X + (E.Y - (Fit.X * E.X + Fit.Y))" Y="Fit.X * E.X + Fit.Y">
+      <Dependency Name="E" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="EAcross" Visible="false" Style="DependentPointStyle" X="E.X + (E.Y - (Fit.X * E.X + Fit.Y))" Y="E.Y">
+      <Dependency Name="E" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <Polygon Name="ESquare" Style="Square">
+      <Dependency Name="E" />
+      <Dependency Name="EFoot" />
+      <Dependency Name="EFootAcross" />
+      <Dependency Name="EAcross" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Segment Name="EGap" Style="Gap">
+      <Dependency Name="E" />
+      <Dependency Name="EFoot" />
+    </Segment>
+    <PointByCoordinates Name="FFoot" Visible="false" Style="DependentPointStyle" X="F.X" Y="Fit.X * F.X + Fit.Y">
+      <Dependency Name="F" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FFootAcross" Visible="false" Style="DependentPointStyle" X="F.X + (F.Y - (Fit.X * F.X + Fit.Y))" Y="Fit.X * F.X + Fit.Y">
+      <Dependency Name="F" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FAcross" Visible="false" Style="DependentPointStyle" X="F.X + (F.Y - (Fit.X * F.X + Fit.Y))" Y="F.Y">
+      <Dependency Name="F" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <Polygon Name="FSquare" Style="Square">
+      <Dependency Name="F" />
+      <Dependency Name="FFoot" />
+      <Dependency Name="FFootAcross" />
+      <Dependency Name="FAcross" />
+      <Dependency Name="F" />
+    </Polygon>
+    <Segment Name="FGap" Style="Gap">
+      <Dependency Name="F" />
+      <Dependency Name="FFoot" />
+    </Segment>
+    <PointByCoordinates Name="GFoot" Visible="false" Style="DependentPointStyle" X="G.X" Y="Fit.X * G.X + Fit.Y">
+      <Dependency Name="G" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GFootAcross" Visible="false" Style="DependentPointStyle" X="G.X + (G.Y - (Fit.X * G.X + Fit.Y))" Y="Fit.X * G.X + Fit.Y">
+      <Dependency Name="G" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GAcross" Visible="false" Style="DependentPointStyle" X="G.X + (G.Y - (Fit.X * G.X + Fit.Y))" Y="G.Y">
+      <Dependency Name="G" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <Polygon Name="GSquare" Style="Square">
+      <Dependency Name="G" />
+      <Dependency Name="GFoot" />
+      <Dependency Name="GFootAcross" />
+      <Dependency Name="GAcross" />
+      <Dependency Name="G" />
+    </Polygon>
+    <Segment Name="GGap" Style="Gap">
+      <Dependency Name="G" />
+      <Dependency Name="GFoot" />
+    </Segment>
+    <PointByCoordinates Name="HFoot" Visible="false" Style="DependentPointStyle" X="H.X" Y="Fit.X * H.X + Fit.Y">
+      <Dependency Name="H" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="HFootAcross" Visible="false" Style="DependentPointStyle" X="H.X + (H.Y - (Fit.X * H.X + Fit.Y))" Y="Fit.X * H.X + Fit.Y">
+      <Dependency Name="H" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="HAcross" Visible="false" Style="DependentPointStyle" X="H.X + (H.Y - (Fit.X * H.X + Fit.Y))" Y="H.Y">
+      <Dependency Name="H" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <Polygon Name="HSquare" Style="Square">
+      <Dependency Name="H" />
+      <Dependency Name="HFoot" />
+      <Dependency Name="HFootAcross" />
+      <Dependency Name="HAcross" />
+      <Dependency Name="H" />
+    </Polygon>
+    <Segment Name="HGap" Style="Gap">
+      <Dependency Name="H" />
+      <Dependency Name="HFoot" />
+    </Segment>
+    <PointByCoordinates Name="IFoot" Visible="false" Style="DependentPointStyle" X="I.X" Y="Fit.X * I.X + Fit.Y">
+      <Dependency Name="I" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="IFootAcross" Visible="false" Style="DependentPointStyle" X="I.X + (I.Y - (Fit.X * I.X + Fit.Y))" Y="Fit.X * I.X + Fit.Y">
+      <Dependency Name="I" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="IAcross" Visible="false" Style="DependentPointStyle" X="I.X + (I.Y - (Fit.X * I.X + Fit.Y))" Y="I.Y">
+      <Dependency Name="I" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <Polygon Name="ISquare" Style="Square">
+      <Dependency Name="I" />
+      <Dependency Name="IFoot" />
+      <Dependency Name="IFootAcross" />
+      <Dependency Name="IAcross" />
+      <Dependency Name="I" />
+    </Polygon>
+    <Segment Name="IGap" Style="Gap">
+      <Dependency Name="I" />
+      <Dependency Name="IFoot" />
+    </Segment>
+    <PointByCoordinates Name="JFoot" Visible="false" Style="DependentPointStyle" X="J.X" Y="Fit.X * J.X + Fit.Y">
+      <Dependency Name="J" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="JFootAcross" Visible="false" Style="DependentPointStyle" X="J.X + (J.Y - (Fit.X * J.X + Fit.Y))" Y="Fit.X * J.X + Fit.Y">
+      <Dependency Name="J" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="JAcross" Visible="false" Style="DependentPointStyle" X="J.X + (J.Y - (Fit.X * J.X + Fit.Y))" Y="J.Y">
+      <Dependency Name="J" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <Polygon Name="JSquare" Style="Square">
+      <Dependency Name="J" />
+      <Dependency Name="JFoot" />
+      <Dependency Name="JFootAcross" />
+      <Dependency Name="JAcross" />
+      <Dependency Name="J" />
+    </Polygon>
+    <Segment Name="JGap" Style="Gap">
+      <Dependency Name="J" />
+      <Dependency Name="JFoot" />
+    </Segment>
+    <PointByCoordinates Name="KFoot" Visible="false" Style="DependentPointStyle" X="K.X" Y="Fit.X * K.X + Fit.Y">
+      <Dependency Name="K" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="KFootAcross" Visible="false" Style="DependentPointStyle" X="K.X + (K.Y - (Fit.X * K.X + Fit.Y))" Y="Fit.X * K.X + Fit.Y">
+      <Dependency Name="K" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="KAcross" Visible="false" Style="DependentPointStyle" X="K.X + (K.Y - (Fit.X * K.X + Fit.Y))" Y="K.Y">
+      <Dependency Name="K" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <Polygon Name="KSquare" Style="Square">
+      <Dependency Name="K" />
+      <Dependency Name="KFoot" />
+      <Dependency Name="KFootAcross" />
+      <Dependency Name="KAcross" />
+      <Dependency Name="K" />
+    </Polygon>
+    <Segment Name="KGap" Style="Gap">
+      <Dependency Name="K" />
+      <Dependency Name="KFoot" />
+    </Segment>
+    <PointByCoordinates Name="LFoot" Visible="false" Style="DependentPointStyle" X="L.X" Y="Fit.X * L.X + Fit.Y">
+      <Dependency Name="L" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LFootAcross" Visible="false" Style="DependentPointStyle" X="L.X + (L.Y - (Fit.X * L.X + Fit.Y))" Y="Fit.X * L.X + Fit.Y">
+      <Dependency Name="L" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LAcross" Visible="false" Style="DependentPointStyle" X="L.X + (L.Y - (Fit.X * L.X + Fit.Y))" Y="L.Y">
+      <Dependency Name="L" />
+      <Dependency Name="Fit" />
+    </PointByCoordinates>
+    <Polygon Name="LSquare" Style="Square">
+      <Dependency Name="L" />
+      <Dependency Name="LFoot" />
+      <Dependency Name="LFootAcross" />
+      <Dependency Name="LAcross" />
+      <Dependency Name="L" />
+    </Polygon>
+    <Segment Name="LGap" Style="Gap">
+      <Dependency Name="L" />
+      <Dependency Name="LFoot" />
+    </Segment>
+    <Label Name="Title" Style="GalleryTitle" Text="Line of Best Fit" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Twelve points that lie roughly along a line, like measurements from an experiment. The blue line fits them best: of all the lines you could draw, it makes the red squares, one on each point's gap to the line, as small as possible in total area. The gap is measured straight up or down - how far off the line's guess for y is - not the shortest distance to the line. Statisticians call it the least-squares line, or linear regression, and use it to read a trend out of scattered data and to predict what comes next.\n\ny = [Fit.X] · x + [Fit.Y]\nTotal area of the squares: [(A.Y - Fit.X * A.X - Fit.Y)^2 + (B.Y - Fit.X * B.X - Fit.Y)^2 + (C.Y - Fit.X * C.X - Fit.Y)^2 + (D.Y - Fit.X * D.X - Fit.Y)^2 + (E.Y - Fit.X * E.X - Fit.Y)^2 + (F.Y - Fit.X * F.X - Fit.Y)^2 + (G.Y - Fit.X * G.X - Fit.Y)^2 + (H.Y - Fit.X * H.X - Fit.Y)^2 + (I.Y - Fit.X * I.X - Fit.Y)^2 + (J.Y - Fit.X * J.X - Fit.Y)^2 + (K.Y - Fit.X * K.X - Fit.Y)^2 + (L.Y - Fit.X * L.X - Fit.Y)^2]\n\nDrag any point and watch the line follow. Move one far away: how much does the line care?" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+      <Dependency Name="Fit" />
+    </Label>
+  </Figures>
+</Drawing>

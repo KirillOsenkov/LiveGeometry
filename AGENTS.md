@@ -341,6 +341,14 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   amplitude between two hidden points at A.Y/2 and 1.5·A.Y on the post, whose distance is
   |A.Y| and whose midpoint is A itself, so the number sits by the handle above the crest,
   the one place the wave never crosses (at the post's midpoint it did).
+- **Line of Best Fit** (2026-09-23, replacing Best-Fit Circle; generated: `dotnet
+  tools/bestfit.cs -- <the .lgf>`): twelve free points, the least-squares line as a live
+  expression of them, the vertical gap from each point to the line and the translucent
+  square on it (its area is the squared residual), the equation and the total area in the
+  text. The arithmetic sits in three hidden points whose coordinates are numbers: `Mean`
+  (mean x, mean y), `Sums` (Σxy, Σx²), `Fit` (slope, intercept) - hidden points are the
+  library's variables. The line is a `LineTwoPoints` through two hidden points at x = 0
+  and 10, not a segment to far-off points: segment ends count for zoom to fit, lines don't.
 - **Fibonacci Spiral** (redone 2026-09-23, generated: `dotnet tools/fibonacci.cs -- <the
   .lgf>`): the squares 13, 8, 5, 3, 2, 1, 1 tiled into a 21x13 rectangle, a quarter arc in
   each, a number in each (point labels of hidden points named "13"... "1" and "1 " with a
