@@ -96,7 +96,9 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   put: the cursor for the wheel, the canvas middle for +/- and the menu), `Fit`/`SetView`
   (`ZoomExtend` = zoom to fit with a pixel margin, `CenterContent` = Home, `SetViewport` for files)
   and the resize handler, which keeps the middle of the canvas in the middle. "Content" for fit is
-  `TryGetContentBounds`: points, whole ellipses, labels - not lines. Panning (`MoveTo`) must not
+  `TryGetContentBounds`: points, whole ellipses (but a circular arc only its own extent: its
+  ends and the compass points on it - the big arc of the Fibonacci spiral has a radius of
+  13 units), labels - not lines. Panning (`MoveTo`) must not
   round the origin: a drag is many sub-pixel steps (0.5 px at 200% scaling) and rounding each one
   made the plane run up to twice as fast as the cursor. When testing pans with winauto, start the
   drag on an empty spot (a drag that starts on a figure moves the figure, and the grid "stays
@@ -339,6 +341,16 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   amplitude between two hidden points at A.Y/2 and 1.5·A.Y on the post, whose distance is
   |A.Y| and whose midpoint is A itself, so the number sits by the handle above the crest,
   the one place the wave never crosses (at the post's midpoint it did).
+- **Fibonacci Spiral** (redone 2026-09-23, generated: `dotnet tools/fibonacci.cs -- <the
+  .lgf>`): the squares 13, 8, 5, 3, 2, 1, 1 tiled into a 21x13 rectangle, a quarter arc in
+  each, a number in each (point labels of hidden points named "13"... "1" and "1 " with a
+  space, since names must be unique). A (bottom) and B (top) are the left edge of the big
+  square and every corner is `A + x·right + y·up` with `up = AB/13`, as a `PointByCoordinates`
+  expression, so the tiling can't come apart. The previous drawing was the golden spiral
+  (sides shrinking by φ, the second square's size from a hand-placed slider, so the seventh
+  didn't fit) and its text claimed Fibonacci sides and nautilus shells; the text now says
+  what is true (the ratio is close to the golden ratio; sunflowers and pinecones show the
+  numbers as counts of spirals).
 - **Ellipse and Its Evolute** (redone 2026-09-23): the parameter is the angle of the yellow
   runner T on a small circle ("dial", center P0, radius 0.75) at the top left - a
   `PointOnFigure` on a circle has the absolute angle as its parameter, so the locus runs

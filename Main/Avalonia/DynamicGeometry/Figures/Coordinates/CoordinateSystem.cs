@@ -264,9 +264,27 @@ namespace DynamicGeometry
                         Include(vertex.Coordinates);
                     }
                 }
+                else if (figure is IArc arc && arc.SemiMajor.EqualsWithPrecision(arc.SemiMinor))
+                {
+                    // a circular arc reaches its ends and whichever of the four compass points
+                    // lie on it - not the whole circle, which for the big arc of a spiral is
+                    // many times the drawing
+                    Include(arc.BeginLocation);
+                    Include(arc.EndLocation);
+                    var center = arc.Center;
+                    double radius = arc.SemiMajor;
+                    for (int quarter = 0; quarter < 4; quarter++)
+                    {
+                        double angle = quarter * M.PI / 2;
+                        if (Math.IsAngleBetweenAngles(angle, arc.StartAngle, arc.EndAngle, arc.Clockwise))
+                        {
+                            Include(new Point(center.X + radius * M.Cos(angle), center.Y + radius * M.Sin(angle)));
+                        }
+                    }
+                }
                 else if (figure is IEllipse ellipse)
                 {
-                    // the box of the whole ellipse, turned or not, even for an arc of it
+                    // the box of the whole ellipse, turned or not, even for an arc of one
                     var reach = M.Max(ellipse.SemiMajor, ellipse.SemiMinor);
                     Include(ellipse.Center.Plus(new Point(reach, reach)));
                     Include(ellipse.Center.Minus(new Point(reach, reach)));
