@@ -23,19 +23,19 @@
     <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
     <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
     <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
-    <PointStyle Size="4" Fill="#FFB0B0B0" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="7" />
+    <PointStyle Size="10" Fill="#FFB0B0B0" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="7" />
     <LineStyle Color="#FF808080" StrokeWidth="1" Dash="Solid" Name="8" />
     <LineStyle Color="#FFEFC265" StrokeWidth="4" Dash="Solid" Name="9" />
-    <PointStyle Size="4" Fill="#FFB0B0B0" IsFilled="true" Color="#FF484848" StrokeWidth="0.7" Dash="Solid" Name="10" />
+    <PointStyle Size="10" Fill="#FFB0B0B0" IsFilled="true" Color="#FF484848" StrokeWidth="0.7" Dash="Solid" Name="10" />
     <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="11" />
-    <PointStyle Size="4" Fill="#FFB0B0B0" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="12" />
+    <PointStyle Size="10" Fill="#FFB0B0B0" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="12" />
     <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="13" />
-    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="14" />
-    <PointStyle Size="4" Fill="#FFB0B0B0" IsFilled="true" Color="#FF00FFFF" StrokeWidth="0.7" Dash="Solid" Name="15" />
+    <PointStyle Size="8" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="14" />
+    <PointStyle Size="8" Fill="#FFB0B0B0" IsFilled="true" Color="#FF00FFFF" StrokeWidth="0.7" Dash="Solid" Name="15" />
     <LineStyle Color="#FFDAA33A" StrokeWidth="5" Dash="Solid" Name="16" />
     <PointStyle Size="30" Fill="#FFC0C0FF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="17" />
-    <PointStyle Size="4" Fill="#FFFFFFFF" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Dash="Solid" Name="18" />
-    <PointStyle Size="4" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="19" />
+    <PointStyle Size="10" Fill="#FFFFFFFF" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Dash="Solid" Name="18" />
+    <PointStyle Size="8" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="19" />
     <LineStyle Color="#FFC0C0C0" StrokeWidth="1" Dash="Solid" Name="20" />
     <TextStyle FontSize="18.7" Color="#FF000000" FontFamily="Comic Sans MS" Bold="false" Italic="false" Underline="false" Name="21" />
     <TextStyle FontSize="27.2" Color="#FF0000FF" FontFamily="Arial" Bold="false" Italic="false" Underline="true" Name="22" />

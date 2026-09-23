@@ -12,9 +12,9 @@
     <TextStyle FontSize="40" Color="#FF0091FF" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
     <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
     <PointStyle Size="4" Fill="#FFFFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Name="10" />
-    <PointStyle Size="4" Fill="#00FFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Name="11" />
+    <PointStyle Size="8" Fill="#00FFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Name="11" />
     <LineStyle Color="#FF848E93" StrokeWidth="1" Name="12" />
-    <PointStyle Size="4" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Name="13" />
+    <PointStyle Size="8" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Name="13" />
     <TextStyle FontSize="27.2" Color="#FF0000FF" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="14" />
     <ShapeStyle Fill="#FFCCCCFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="15" />
     <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />

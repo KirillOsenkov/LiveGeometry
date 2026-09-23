@@ -217,8 +217,12 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   child. `.dgf`: `PaperColor1`/`PaperColor2`/`GradientPaper` of `[General]`, top to bottom. A
   gallery tile takes a drawing's paper as its plate (pastel only for white ones) and turns its
   caption white on a dark plate. Gallery drawings with paper of their own: Castle, Rose,
-  Sierpinski and Spiral (their DG originals; the two dark ones have white text styles) and
-  Pascal (a faint tint). The lake drawing's gray gradient was dropped.
+  Sierpinski and Spiral (their DG originals, except that the Castle got a nicer sky; the two
+  dark ones have white text styles) and Pascal (a faint tint). The lake drawing's gray gradient
+  was dropped. Point sizes in the gallery are standard (10 for a draggable point, 8 otherwise;
+  the DG conversions had 2-4 px dots): `dotnet tools/pointsizes.cs -- <folder> [--apply]`
+  lists and raises undersized point styles. The Rose's 90 control points are the exception,
+  at 8 px in the standard yellow - at 10 and black they swallowed the flower.
 - **The library's own types shadow framework ones**: `Math`, `Ellipse`, `Polygon`, `Path`...
   In a file-scoped-namespace file a `using X = ...;` alias does NOT win over a type of the
   enclosing namespace - write `System.Math.Max`, `Avalonia.Controls.Shapes.Ellipse` in full.

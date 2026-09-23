@@ -23,10 +23,10 @@
     <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
     <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
     <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
-    <PointStyle Size="4" Fill="#FF000000" IsFilled="true" Color="#FFFFFFFF" StrokeWidth="0.7" Dash="Solid" Name="7" />
+    <PointStyle Size="10" Fill="#FF000000" IsFilled="true" Color="#FFFFFFFF" StrokeWidth="0.7" Dash="Solid" Name="7" />
     <LineStyle Color="#FF00FFFF" StrokeWidth="1" Dash="Solid" Name="8" />
-    <PointStyle Size="4" Fill="#FF000000" IsFilled="true" Color="#FFFFFF00" StrokeWidth="0.7" Dash="Solid" Name="9" />
-    <PointStyle Size="4" Fill="#FF000000" IsFilled="true" Color="#FF00FFFF" StrokeWidth="0.7" Dash="Solid" Name="10" />
+    <PointStyle Size="10" Fill="#FF000000" IsFilled="true" Color="#FFFFFF00" StrokeWidth="0.7" Dash="Solid" Name="9" />
+    <PointStyle Size="10" Fill="#FF000000" IsFilled="true" Color="#FF00FFFF" StrokeWidth="0.7" Dash="Solid" Name="10" />
     <LineStyle Color="#FF00FF00" StrokeWidth="1" Dash="Solid" Name="11" />
     <TextStyle FontSize="27.2" Color="#FF00FF00" FontFamily="Arial" Bold="false" Italic="false" Underline="true" Name="12" />
     <TextStyle FontSize="30" Color="#FFFFFFFF" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />

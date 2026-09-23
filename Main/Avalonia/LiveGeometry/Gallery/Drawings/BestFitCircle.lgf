@@ -23,15 +23,15 @@
     <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
     <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
     <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
-    <PointStyle Size="8" Fill="#FFFFFF80" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="7" />
-    <PointStyle Size="6" Fill="#FFC0FFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="8" />
+    <PointStyle Size="10" Fill="#FFFFFF80" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="7" />
+    <PointStyle Size="10" Fill="#FFC0FFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="8" />
     <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FFFF8040" StrokeWidth="2" Dash="Solid" Name="9" />
     <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="10" />
-    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="11" />
-    <PointStyle Size="4" Fill="#FFC0C0C0" IsFilled="true" Color="#FF8000FF" StrokeWidth="0.7" Dash="Solid" Name="12" />
+    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="11" />
+    <PointStyle Size="8" Fill="#FFC0C0C0" IsFilled="true" Color="#FF8000FF" StrokeWidth="0.7" Dash="Solid" Name="12" />
     <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="13" />
-    <PointStyle Size="4" Fill="#00FFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="14" />
-    <PointStyle Size="4" Fill="#00FFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="15" />
+    <PointStyle Size="8" Fill="#00FFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="0.7" Dash="Solid" Name="14" />
+    <PointStyle Size="8" Fill="#00FFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Dash="Solid" Name="15" />
     <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Dot" Name="16" />
     <TextStyle FontSize="20.4" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="17" />
     <TextStyle FontSize="23.8" Color="#FFFF0000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="18" />

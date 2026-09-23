@@ -23,7 +23,7 @@
     <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
     <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
     <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
-    <PointStyle Size="4" Fill="#FFB0B0B0" IsFilled="true" Color="#FF484848" StrokeWidth="0.7" Dash="Solid" Name="7" />
+    <PointStyle Size="10" Fill="#FFB0B0B0" IsFilled="true" Color="#FF484848" StrokeWidth="0.7" Dash="Solid" Name="7" />
     <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="8" />
     <TextStyle FontSize="17" Color="#FFFFFFFF" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="9" />
     <TextStyle FontSize="20.4" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="10" />
