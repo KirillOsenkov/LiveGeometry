@@ -329,6 +329,16 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   the height of the segment is all that matters, x only scales it. Changing `StepCount`
   moves the rings. In a tall layout the text goes below the scene, i.e. on
   the ground - keep that green calm (#4CAF50) so text reads on it.
+- **The Sine Wave** (2026-09-23, from the two phone drawings, one slider each) graphs
+  `A.Y * sin(F.X * x)`: F slides on a visible track at y = -3, A on an invisible vertical
+  line through the first crest, x = pi/(2·F.X), whose two points are `PointByCoordinates`
+  with that expression - so the amplitude handle rides the crest whatever the frequency,
+  and keeps its height (its parameter on the line) when the crest moves. A dashed segment
+  from the axis to the handle shows the height. Each slider shows its number as a
+  `DistanceMeasurement`: the frequency from the track's start on the y axis to F; the
+  amplitude between two hidden points at A.Y/2 and 1.5·A.Y on the post, whose distance is
+  |A.Y| and whose midpoint is A itself, so the number sits by the handle above the crest,
+  the one place the wave never crosses (at the post's midpoint it did).
 - **The Castle** is hand-made (2026-09-22; the DG original was dropped): the scratch generator
   wrote fixed points as `PointByCoordinates` with constant coordinates, so a polygon has no
   free point to move and dragging it does nothing; the only things that move are sliders
@@ -482,7 +492,7 @@ and `.lgf` (the conversion) and appends to `<out>/report.txt`: figure counts, `N
 (only the *root* failures - figures whose dependencies all exist - plus a dump of every point),
 load errors. It exits when done. `dotnet tools/contactsheet.cs -- <png folder> <out.png>
 [columns] [tile width]` tiles the PNGs into one image: the fastest way to eyeball a whole
-folder (all 48 gallery drawings fit on one 4-column sheet). The VB6 CD library
+folder (all 47 gallery drawings fit on one 4-column sheet). The VB6 CD library
 (`C:\Dropbox\Projects\DG 1\DG CD Version 1.0\Library\English`, 221 files, read-only) all loads
 as of 2026-09-21; what is still "missing" there is second intersections that fall outside a
 segment or ray, and sides of a polygon that don't cross - legitimately absent.

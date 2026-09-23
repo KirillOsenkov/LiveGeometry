@@ -138,7 +138,7 @@ public partial class MainView : UserControl
         // Two pages, one showing: the gallery (the start page) and the editor. Started with a
         // file (or a batch job), or at the address of a drawing (a shared link to one of the
         // gallery, or /drawing), the editor is up from the first frame and the gallery, with
-        // its 48 tiles, isn't even built until the Gallery button is pressed.
+        // its tiles, isn't even built until the Gallery button is pressed.
         pages.Children.Add(LayoutRoot);
         Content = pages;
         bool startsInEditor = StartupFile != null || CheckFolder != null || ModernizeFolder != null || RecaptionFolder != null || SpaceLabelsFolder != null || IsDrawingPath(AddressBar.Current.Path);

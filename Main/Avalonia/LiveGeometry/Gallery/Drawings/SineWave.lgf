@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.2" Top="4.6" Right="4.2" Bottom="-4.6" Grid="true" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
+    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
+    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
+    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
+    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
+    <PointStyle Size="14" Fill="#FFFFEF00" IsFilled="true" Color="#FFA05C21" StrokeWidth="2" Dash="Solid" Name="Amplitude" />
+    <PointStyle Size="14" Fill="#FF7CE38B" IsFilled="true" Color="#FF2E7D32" StrokeWidth="2" Dash="Solid" Name="Frequency" />
+    <LineStyle Color="#FFF6A372" StrokeWidth="4" Dash="Solid" Name="Wave" />
+    <LineStyle Color="#FFB8B8B8" StrokeWidth="3" Dash="Solid" Name="Track" />
+    <LineStyle Color="#FF8A8A8A" StrokeWidth="1.25" Dash="Dash" Name="Guide" />
+    <TextStyle FontSize="16" Color="#FF5A5A5A" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="Measure" />
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="T1" Visible="false" Style="FreePoint" X="0" Y="-3" />
+    <FreePoint Name="T2" Visible="false" Style="FreePoint" X="4" Y="-3" />
+    <Segment Name="Track" Style="Track">
+      <Dependency Name="T1" />
+      <Dependency Name="T2" />
+    </Segment>
+    <PointOnFigure Name="F" Style="Frequency" X="1" Y="-3" Parameter="0.25">
+      <Dependency Name="Track" />
+    </PointOnFigure>
+    <DistanceMeasurement Name="FrequencyValue" Style="Measure" DecimalsToShow="2" OffsetX="-14" OffsetY="10">
+      <Dependency Name="T1" />
+      <Dependency Name="F" />
+    </DistanceMeasurement>
+    <PointByCoordinates Name="P1" Visible="false" Style="DependentPointStyle" X="pi / (2 * F.X)" Y="0">
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2" Visible="false" Style="DependentPointStyle" X="pi / (2 * F.X)" Y="1">
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <LineTwoPoints Name="Post" Visible="false" Style="Guide">
+      <Dependency Name="P1" />
+      <Dependency Name="P2" />
+    </LineTwoPoints>
+    <PointOnFigure Name="A" Style="Amplitude" X="1.5707963268" Y="1" Parameter="1">
+      <Dependency Name="Post" />
+    </PointOnFigure>
+    <Segment Name="Guide" Style="Guide">
+      <Dependency Name="P1" />
+      <Dependency Name="A" />
+    </Segment>
+    <PointByCoordinates Name="Q1" Visible="false" Style="DependentPointStyle" X="pi / (2 * F.X)" Y="A.Y / 2">
+      <Dependency Name="F" />
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Q2" Visible="false" Style="DependentPointStyle" X="pi / (2 * F.X)" Y="1.5 * A.Y">
+      <Dependency Name="F" />
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <DistanceMeasurement Name="AmplitudeValue" Style="Measure" DecimalsToShow="2" OffsetX="12" OffsetY="-26">
+      <Dependency Name="Q1" />
+      <Dependency Name="Q2" />
+    </DistanceMeasurement>
+    <FunctionGraph Name="Wave" Style="Wave" Function="A.Y * sin(F.X * x)">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </FunctionGraph>
+    <Label Name="Title" Style="GalleryTitle" Text="Sine Wave" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="78.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="y = [A.Y] · sin([F.X] · x)\n\nThe yellow point rides on the crest of the wave. Drag it up and down to change the number in front of the sine, the amplitude: how tall the wave is. What happens when it is negative? When it is zero?\n\nThe green point on the track at the bottom changes the number next to x, the frequency: how tightly the waves are packed.\n\nThe number beside each slider is the one in the equation." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="126.75" WrapWidth="400" Backdrop="true">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </Label>
+  </Figures>
+</Drawing>

@@ -15,6 +15,9 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// A sample every couple of pixels: at one per 10 px a sine of frequency 3 was a zigzag
+        /// </summary>
         int StepCount
         {
             get
@@ -23,7 +26,7 @@ namespace DynamicGeometry
                 {
                     return 0;
                 }
-                return (int)Drawing.CoordinateSystem.PhysicalSize.X / 10;
+                return (int)Drawing.CoordinateSystem.PhysicalSize.X / 2;
             }
         }
 
