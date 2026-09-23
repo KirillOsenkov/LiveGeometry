@@ -73,22 +73,22 @@
       <Dependency Name="B" />
       <Dependency Name="C" />
     </Polygon>
-    <PointLabel Name="PointLabel24" IsHitTestVisible="false" Style="9" OffsetX="-3.9" OffsetY="-23.2" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel24" IsHitTestVisible="false" Style="9" OffsetX="-2.1" OffsetY="-33" ShowName="true" ShowCoordinates="false">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel25" IsHitTestVisible="false" Style="9" OffsetX="0.3" OffsetY="-23.2" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel25" IsHitTestVisible="false" Style="9" OffsetX="4.5" OffsetY="-31.8" ShowName="true" ShowCoordinates="false">
       <Dependency Name="B" />
     </PointLabel>
-    <PointLabel Name="PointLabel26" IsHitTestVisible="false" Style="9" OffsetX="2" OffsetY="4.9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel26" IsHitTestVisible="false" Style="9" OffsetX="3.5" OffsetY="8.3" ShowName="true" ShowCoordinates="false">
       <Dependency Name="C" />
     </PointLabel>
     <PointLabel Name="PointLabel27" IsHitTestVisible="false" Style="9" OffsetX="10.8" OffsetY="-12.1" ShowName="true" ShowCoordinates="false">
       <Dependency Name="D" />
     </PointLabel>
-    <PointLabel Name="PointLabel28" IsHitTestVisible="false" Style="9" OffsetX="-13.1" OffsetY="4.2" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel28" IsHitTestVisible="false" Style="9" OffsetX="-14.7" OffsetY="7.3" ShowName="true" ShowCoordinates="false">
       <Dependency Name="E" />
     </PointLabel>
-    <PointLabel Name="PointLabel29" IsHitTestVisible="false" Style="9" OffsetX="-2.9" OffsetY="-23.2" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel29" IsHitTestVisible="false" Style="9" OffsetX="-1.5" OffsetY="-33" ShowName="true" ShowCoordinates="false">
       <Dependency Name="F" />
     </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Ceva's Theorem" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />

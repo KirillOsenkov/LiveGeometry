@@ -108,16 +108,16 @@
       <Dependency Name="B" />
       <Dependency Name="C" />
     </Polygon>
-    <PointLabel Name="PointLabel243" Style="7" OffsetX="-11" OffsetY="-24.7" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel243" Style="7" OffsetX="-14.2" OffsetY="-32.7" ShowName="true" ShowCoordinates="false">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel244" Style="7" OffsetX="-1.2" OffsetY="-23.1" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel244" Style="7" OffsetX="2.3" OffsetY="-32.7" ShowName="true" ShowCoordinates="false">
       <Dependency Name="B" />
     </PointLabel>
-    <PointLabel Name="PointLabel245" Style="7" OffsetX="-3.1" OffsetY="-27.8" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel245" Style="7" OffsetX="-2.2" OffsetY="-33" ShowName="true" ShowCoordinates="false">
       <Dependency Name="C" />
     </PointLabel>
-    <PointLabel Name="PointLabel246" Style="7" OffsetX="-5.1" OffsetY="-29.8" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel246" Style="7" OffsetX="-4.7" OffsetY="-35.5" ShowName="true" ShowCoordinates="false">
       <Dependency Name="G" />
     </PointLabel>
     <Segment Name="Segment249" Style="12">

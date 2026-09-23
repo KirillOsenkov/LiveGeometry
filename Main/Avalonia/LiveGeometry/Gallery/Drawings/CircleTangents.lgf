@@ -54,22 +54,22 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Segment>
-    <PointLabel Name="PointLabel48" Style="7" OffsetX="-11.1" OffsetY="-20.4" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel48" Style="7" OffsetX="-17.6" OffsetY="-31.1" ShowName="true" ShowCoordinates="false">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel49" Style="7" OffsetX="3.7" OffsetY="-19.6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel49" Style="7" OffsetX="9" OffsetY="-23.9" ShowName="true" ShowCoordinates="false">
       <Dependency Name="C" />
     </PointLabel>
-    <PointLabel Name="PointLabel50" Style="7" OffsetX="-4.8" OffsetY="-21.9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel50" Style="7" OffsetX="-2.9" OffsetY="-33" ShowName="true" ShowCoordinates="false">
       <Dependency Name="D" />
     </PointLabel>
-    <PointLabel Name="PointLabel51" Style="7" OffsetX="-3.7" OffsetY="-26.3" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel51" Style="7" OffsetX="-3.2" OffsetY="-33" ShowName="true" ShowCoordinates="false">
       <Dependency Name="E" />
     </PointLabel>
-    <PointLabel Name="PointLabel52" Style="7" OffsetX="-5.6" OffsetY="5.6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel52" Style="7" OffsetX="-5.8" OffsetY="9" ShowName="true" ShowCoordinates="false">
       <Dependency Name="F" />
     </PointLabel>
-    <PointLabel Name="PointLabel53" Style="7" OffsetX="-4.1" OffsetY="-26.3" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel53" Style="7" OffsetX="-3.6" OffsetY="-33" ShowName="true" ShowCoordinates="false">
       <Dependency Name="B" />
     </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Tangents to a Circle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />

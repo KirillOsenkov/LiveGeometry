@@ -111,28 +111,28 @@
       <Dependency Name="E" />
       <Dependency Name="H" />
     </Segment>
-    <PointLabel Name="PointLabel65" IsHitTestVisible="false" Style="8" OffsetX="-7.1" OffsetY="2.7" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel65" IsHitTestVisible="false" Style="8" OffsetX="-7.8" OffsetY="11.5" ShowName="true" ShowCoordinates="false">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel66" IsHitTestVisible="false" Style="8" OffsetX="-2.4" OffsetY="4.7" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel66" IsHitTestVisible="false" Style="8" OffsetX="-1.2" OffsetY="11.5" ShowName="true" ShowCoordinates="false">
       <Dependency Name="B" />
     </PointLabel>
-    <PointLabel Name="PointLabel67" IsHitTestVisible="false" Style="8" OffsetX="-0.3" OffsetY="-21.3" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel67" IsHitTestVisible="false" Style="8" OffsetX="5.5" OffsetY="-31.1" ShowName="true" ShowCoordinates="false">
       <Dependency Name="C" />
     </PointLabel>
-    <PointLabel Name="PointLabel68" IsHitTestVisible="false" Style="8" OffsetX="-2.9" OffsetY="-22.5" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel68" IsHitTestVisible="false" Style="8" OffsetX="0.7" OffsetY="-33" ShowName="true" ShowCoordinates="false">
       <Dependency Name="D" />
     </PointLabel>
-    <PointLabel Name="PointLabel69" IsHitTestVisible="false" Style="8" OffsetX="-4.4" OffsetY="2.7" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel69" IsHitTestVisible="false" Style="8" OffsetX="-4.2" OffsetY="11.5" ShowName="true" ShowCoordinates="false">
       <Dependency Name="E" />
     </PointLabel>
-    <PointLabel Name="PointLabel70" IsHitTestVisible="false" Style="8" OffsetX="5.7" OffsetY="-21.9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel70" IsHitTestVisible="false" Style="8" OffsetX="8.9" OffsetY="-25" ShowName="true" ShowCoordinates="false">
       <Dependency Name="F" />
     </PointLabel>
-    <PointLabel Name="PointLabel71" IsHitTestVisible="false" Style="8" OffsetX="-4.3" OffsetY="-22.2" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel71" IsHitTestVisible="false" Style="8" OffsetX="-2.2" OffsetY="-33" ShowName="true" ShowCoordinates="false">
       <Dependency Name="G" />
     </PointLabel>
-    <PointLabel Name="PointLabel72" IsHitTestVisible="false" Style="8" OffsetX="-13" OffsetY="-18.6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel72" IsHitTestVisible="false" Style="8" OffsetX="-21.4" OffsetY="-27.2" ShowName="true" ShowCoordinates="false">
       <Dependency Name="H" />
     </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Square in a Square" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />

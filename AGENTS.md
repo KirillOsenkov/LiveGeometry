@@ -369,6 +369,12 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   stay exactly where they were on the desktop; the log printed the zoom per file (6 to 41
   px/unit - the DG conversions had them in all sorts of units). Anything new that measures
   something in the plane but places text should keep its distance in pixels the same way.
+  A point label lives in an orbit (`PointLabel.ClampPosition`, applied on every move): no
+  further from the point than about its own size, and no edge or corner of its text box
+  nearer to the point's rim than `PointLabel.Clearance` (4 px) - the box, not the glyphs, so
+  the letters sit a little further out than that. `--space-labels <folder>` (one-off,
+  2026-09-23, harmless to rerun) pushed every label of the gallery that sat on its point out
+  along its own direction and wrote the offsets back; 55 labels in 9 files.
 - **Saved `.lgf` declare `encoding="utf-8"`** now (`DrawingSerializer.Utf8StringWriter`);
   builds before 2026-09-21 wrote `utf-16` into a UTF-8 file, which our own loader tolerates but
   `XDocument.Load` does not. `LineByEquation` in general form gets its two points from the

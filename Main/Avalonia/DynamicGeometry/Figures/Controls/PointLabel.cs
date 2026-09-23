@@ -43,10 +43,15 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>The least room between the point's rim and the text, in pixels</summary>
+        public const double Clearance = 4;
+
         /// <summary>
         /// Keeps the label in orbit around its point: the center of the label may not get
-        /// further from the point than the label's larger dimension plus the point radius.
-        /// A long label (name + coordinates) gets a proportionally bigger orbit.
+        /// further from the point than the label's larger dimension plus the point radius
+        /// (a long label - name and coordinates - gets a proportionally bigger orbit), and
+        /// no edge or corner of the text may come closer to the point than
+        /// <see cref="Clearance"/>.
         /// </summary>
         /// <param name="newPosition">Desired top-left corner of the label, logical</param>
         public Point ClampPosition(Point newPosition)
@@ -62,12 +67,70 @@ namespace DynamicGeometry
             // in pixels: the orbit is about the size of the text, whatever the zoom
             var point = ToPhysical(Anchor);
             var halfSize = new Point(width / 2, height / 2);
-            var radius = System.Math.Max(width, height)
-                + GetPoint().Shape.Bounds.Width / 2
-                + Math.CursorTolerance;
+            var pointRadius = GetPoint().Shape.Bounds.Width / 2;
+            var radius = System.Math.Max(width, height) + pointRadius + Math.CursorTolerance;
             var fromPoint = ToPhysical(newPosition).Plus(halfSize).Minus(point);
             fromPoint = fromPoint.TrimToMaxLength(radius);
+            fromPoint = PushClear(fromPoint, halfSize, pointRadius + Clearance);
             return ToLogical(point.Plus(fromPoint).Minus(halfSize));
+        }
+
+        /// <summary>
+        /// Moves the center of a box out along its own direction from the origin until no part
+        /// of the box is nearer to the origin than the minimum.
+        /// </summary>
+        static Point PushClear(Point center, Point halfSize, double minimum)
+        {
+            if (center.X == 0 && center.Y == 0)
+            {
+                // right on the point: above it, where a new label goes
+                center = new Point(0, -1);
+            }
+
+            if (Gap(center, halfSize) >= minimum)
+            {
+                return center;
+            }
+
+            // the gap grows with the scale: bisect between "as it is" and "far enough"
+            double low = 1;
+            double high = 2;
+            while (Gap(center.Scale(high), halfSize) < minimum)
+            {
+                high *= 2;
+            }
+
+            for (int i = 0; i < 20; i++)
+            {
+                double middle = (low + high) / 2;
+                if (Gap(center.Scale(middle), halfSize) < minimum)
+                {
+                    low = middle;
+                }
+                else
+                {
+                    high = middle;
+                }
+            }
+
+            return center.Scale(high);
+        }
+
+        /// <summary>The distance from the origin to the nearest point of a box</summary>
+        static double Gap(Point center, Point halfSize)
+        {
+            double dx = System.Math.Max(System.Math.Abs(center.X) - halfSize.X, 0);
+            double dy = System.Math.Max(System.Math.Abs(center.Y) - halfSize.Y, 0);
+            return System.Math.Sqrt(dx * dx + dy * dy);
+        }
+
+        /// <summary>
+        /// Puts the label where the orbit rule allows, starting from where it is: for labels
+        /// from files that were placed on top of their point.
+        /// </summary>
+        public void SpaceFromPoint()
+        {
+            MoveTo(Coordinates);
         }
 
         public override void MoveToCore(Point newPosition)

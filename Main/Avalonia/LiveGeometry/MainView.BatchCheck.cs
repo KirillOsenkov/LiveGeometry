@@ -198,6 +198,63 @@ public partial class MainView
         Environment.Exit(0);
     }
 
+    public static string SpaceLabelsFolder { get; set; }
+
+    /// <summary>
+    /// "--space-labels &lt;folder&gt;": a one-off (2026-09-23) that moved every point label
+    /// that sat on its point out to the orbit rule's clearance (<see cref="PointLabel.SpaceFromPoint"/>),
+    /// along its own direction from the point, and wrote the new offsets into the file.
+    /// Nothing else in the file changes. Harmless to rerun.
+    /// </summary>
+    async void RunSpaceLabels(string folder)
+    {
+        ShowEditor();
+        int changedFiles = 0;
+        foreach (var file in Directory.GetFiles(folder, "*.lgf"))
+        {
+            var document = XDocument.Load(file, LoadOptions.PreserveWhitespace);
+            var elements = document.Root.Element("Figures").Elements("PointLabel").ToArray();
+            if (elements.Length == 0)
+            {
+                continue;
+            }
+
+            OpenDrawing(Path.GetFileName(file), File.ReadAllBytes(file));
+            await Task.Delay(100);
+            var drawing = DrawingHost.CurrentDrawing;
+            int moved = 0;
+            foreach (var element in elements)
+            {
+                var label = (PointLabel)drawing.Figures[(string)element.Attribute("Name")];
+                var before = label.Offset;
+                label.SpaceFromPoint();
+                if (label.Offset.Minus(before).Length() > 0.5)
+                {
+                    element.SetAttributeValue("OffsetX", System.Math.Round(label.Offset.X, 1).ToStringInvariant());
+                    element.SetAttributeValue("OffsetY", System.Math.Round(label.Offset.Y, 1).ToStringInvariant());
+                    moved++;
+                }
+            }
+
+            if (moved == 0)
+            {
+                continue;
+            }
+
+            var settings = new XmlWriterSettings() { Indent = true, Encoding = new UTF8Encoding(false), NewLineChars = "\r\n" };
+            using (var writer = XmlWriter.Create(file, settings))
+            {
+                document.Save(writer);
+            }
+
+            Console.WriteLine(Path.GetFileName(file) + ": " + moved + " of " + elements.Length + " labels moved");
+            changedFiles++;
+        }
+
+        Console.WriteLine("spaced labels in " + changedFiles + " files");
+        Environment.Exit(0);
+    }
+
     public static string RecaptionFolder { get; set; }
 
     // explanations whose single line breaks are meant: a numbered list, a formula on a line of its own

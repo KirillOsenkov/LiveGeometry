@@ -30,6 +30,10 @@ sealed class Program
         {
             MainView.RecaptionFolder = System.IO.Path.GetFullPath(args[1]);
         }
+        else if (args.Length == 2 && args[0] == "--space-labels")
+        {
+            MainView.SpaceLabelsFolder = System.IO.Path.GetFullPath(args[1]);
+        }
         else if (args.Length == 2 && args[0] == "--gallery")
         {
             // straight to a drawing of the gallery, as the browser's /gallery/<slug> would

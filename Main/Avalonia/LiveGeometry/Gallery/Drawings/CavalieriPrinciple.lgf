@@ -112,7 +112,7 @@
     <PointOnFigure Name="a" Visible="false" Style="1" X="-0.0776302083088423" Y="-6.7187499996" Parameter="0.546250000010185">
       <Dependency Name="LineTwoPoints319" />
     </PointOnFigure>
-    <PointLabel Name="PointLabel491" Style="7" OffsetX="-12.4" OffsetY="0.4" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel491" Style="7" OffsetX="-13.2" OffsetY="1.6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="a" />
     </PointLabel>
     <LineTwoPoints Name="LineTwoPoints339" Visible="false" Locked="true" Style="4">

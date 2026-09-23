@@ -67,16 +67,16 @@
       <Dependency Name="B" />
       <Dependency Name="C" />
     </Polygon>
-    <PointLabel Name="PointLabel24" Style="7" OffsetX="-7.2" OffsetY="-23.3" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel24" Style="7" OffsetX="-8.2" OffsetY="-33" ShowName="true" ShowCoordinates="false">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel25" Style="7" OffsetX="-3.3" OffsetY="-24.9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel25" Style="7" OffsetX="-1.7" OffsetY="-35.5" ShowName="true" ShowCoordinates="false">
       <Dependency Name="B" />
     </PointLabel>
-    <PointLabel Name="PointLabel26" Style="7" OffsetX="-4.3" OffsetY="-23.3" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel26" Style="7" OffsetX="-3.1" OffsetY="-33" ShowName="true" ShowCoordinates="false">
       <Dependency Name="C" />
     </PointLabel>
-    <PointLabel Name="PointLabel27" Style="7" OffsetX="-6.2" OffsetY="-22" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel27" Style="7" OffsetX="-5.3" OffsetY="-33" ShowName="true" ShowCoordinates="false">
       <Dependency Name="O" />
     </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Inscribed Angle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
