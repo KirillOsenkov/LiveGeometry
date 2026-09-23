@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing>
+<Drawing Version="1">
   <Viewport Left="-5.4375" Top="7.625" Right="4.5625" Bottom="-7.5416666667" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
@@ -105,31 +105,31 @@
       <Dependency Name="F" />
       <Dependency Name="G" />
     </Segment>
-    <PointLabel Name="PointLabel190" Style="7" OffsetX="0.239583333333333" OffsetY="0.239583333333333" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel190" Style="7" OffsetX="5.7" OffsetY="-5.7" ShowName="true" ShowCoordinates="false">
       <Dependency Name="D" />
     </PointLabel>
-    <PointLabel Name="PointLabel191" Style="7" OffsetX="0.1458333334" OffsetY="0.0312500000333333" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel191" Style="7" OffsetX="3.5" OffsetY="-0.7" ShowName="true" ShowCoordinates="false">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel192" Style="7" OffsetX="0.197916666666667" OffsetY="0.260416666633334" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel192" Style="7" OffsetX="4.7" OffsetY="-6.2" ShowName="true" ShowCoordinates="false">
       <Dependency Name="B" />
     </PointLabel>
-    <PointLabel Name="PointLabel193" Style="7" OffsetX="0.0833333332999999" OffsetY="0.614583333333334" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel193" Style="7" OffsetX="2" OffsetY="-14.6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="C" />
     </PointLabel>
-    <PointLabel Name="PointLabel194" Style="7" OffsetX="0.0833333333333334" OffsetY="0.656250000033333" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel194" Style="7" OffsetX="2" OffsetY="-15.6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="E" />
     </PointLabel>
-    <PointLabel Name="PointLabel195" Style="7" OffsetX="0.0104166667" OffsetY="-0.0937499999666662" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel195" Style="7" OffsetX="0.2" OffsetY="2.2" ShowName="true" ShowCoordinates="false">
       <Dependency Name="F" />
     </PointLabel>
-    <PointLabel Name="PointLabel196" Style="7" OffsetX="-0.0520833333333333" OffsetY="0.739583333333332" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel196" Style="7" OffsetX="-1.2" OffsetY="-17.6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="I" />
     </PointLabel>
-    <PointLabel Name="PointLabel197" Style="7" OffsetX="-0.406249999966667" OffsetY="0.156249999933333" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel197" Style="7" OffsetX="-9.7" OffsetY="-3.7" ShowName="true" ShowCoordinates="false">
       <Dependency Name="G" />
     </PointLabel>
-    <PointLabel Name="PointLabel198" Style="7" OffsetX="-0.239583333366666" OffsetY="0.656249999933334" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel198" Style="7" OffsetX="-5.7" OffsetY="-15.6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="H" />
     </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Regular Pentagon" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />

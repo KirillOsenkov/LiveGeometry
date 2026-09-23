@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing>
+<Drawing Version="1">
   <Viewport Left="-4.9791666667" Top="7.5833333333" Right="5.0208333333" Bottom="-7.5833333333" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
@@ -108,16 +108,16 @@
       <Dependency Name="B" />
       <Dependency Name="C" />
     </Polygon>
-    <PointLabel Name="PointLabel243" Style="7" OffsetX="-0.2916666667" OffsetY="0.656249999933334" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel243" Style="7" OffsetX="-11" OffsetY="-24.7" ShowName="true" ShowCoordinates="false">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel244" Style="7" OffsetX="-0.0312500000333333" OffsetY="0.614583333333333" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel244" Style="7" OffsetX="-1.2" OffsetY="-23.1" ShowName="true" ShowCoordinates="false">
       <Dependency Name="B" />
     </PointLabel>
-    <PointLabel Name="PointLabel245" Style="7" OffsetX="-0.0833333333000001" OffsetY="0.739583333333333" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel245" Style="7" OffsetX="-3.1" OffsetY="-27.8" ShowName="true" ShowCoordinates="false">
       <Dependency Name="C" />
     </PointLabel>
-    <PointLabel Name="PointLabel246" Style="7" OffsetX="-0.135416666666666" OffsetY="0.791666666666667" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel246" Style="7" OffsetX="-5.1" OffsetY="-29.8" ShowName="true" ShowCoordinates="false">
       <Dependency Name="G" />
     </PointLabel>
     <Segment Name="Segment249" Style="12">

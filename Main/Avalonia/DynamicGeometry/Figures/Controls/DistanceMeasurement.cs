@@ -11,11 +11,12 @@ namespace DynamicGeometry
 
     public class DistanceMeasurement : Measurement, ILengthProvider
     {
-
-        public override void MoveToCore(Point newPosition)
+        public override Point Anchor
         {
-            Offset = newPosition.Minus(Midpoint());
-            base.MoveToCore(newPosition);
+            get
+            {
+                return Midpoint();
+            }
         }
 
         public Point Midpoint()
@@ -57,8 +58,6 @@ namespace DynamicGeometry
 
         public override void UpdateVisual()
         {
-            var p = Midpoint().Plus(Offset);
-            MoveToCore(p);
             base.UpdateVisual();
 
             //Text = Math.Round(Distance,DecimalsToShow).ToString();

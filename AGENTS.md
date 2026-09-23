@@ -348,14 +348,27 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
 - **Old files and circle-line intersections**: `Math.GetIntersectionOfCircleAndLine` at some point
   swapped P1/P2 for a line through the center ("New code - preserves order"). Drawings from before
   (all the phone ones) pick the other intersection, so squares built with perpendicular + circle
-  flip inward. Files carry no usable version, so the fix is opt-in: `<Drawing
+  flip inward. Files carried no usable version then, so the fix is opt-in: `<Drawing
   IntersectionOrder="Legacy">` makes `DrawingDeserializer` swap the algorithm of every
   intersection whose line passes through the center (`IntersectionPoint.
   UpgradeLegacyCircleAndLineOrder`, numeric test, in construction order). The gallery drawings
-  had this done to them for good (`LiveGeometry.Desktop.exe --modernize <folder>` rewrites the
-  swapped `Algorithm` attributes and drops the mark; 47 intersections in 9 files) and no file in
-  the repo carries the mark now; the code stays for old files from elsewhere. Also: a label
-  without `DecimalsToShow` now gets the default 2, not 0.
+  had this done to them for good (`LiveGeometry.Desktop.exe --modernize <folder>` writes into
+  a file what loading it upgrades; 47 intersections in 9 files) and no file in the repo
+  carries the mark now; the code stays for old files from elsewhere. Also: a label without
+  `DecimalsToShow` now gets the default 2, not 0.
+- **Label offsets are pixels, and files have a version now.** A `LabelWithOffset` (point
+  labels, distance/angle/area measurements) sits at `Offset` pixels from its `Anchor` in the
+  plane (the point, the segment's middle, the vertex), so the gap keeps its size at every
+  zoom; in units of the plane it shrank onto the point on a phone and drifted away zoomed in.
+  The base class does the placing (`PlaceFromOffset`, `MoveToCore`, `UpdateVisual`);
+  subclasses give the anchor and set the text. `<Drawing Version="1">`
+  (`Settings.CurrentDrawingVersion`) says the offsets are pixels; a file without it is
+  upgraded on load, after the viewport, at the zoom it opens at (`UpgradeOffsetFromUnits`) -
+  the best guess for where the author had it, since files don't say. The gallery files were
+  converted by `--modernize` at the desktop gallery fit (1700x1100 window), so their labels
+  stay exactly where they were on the desktop; the log printed the zoom per file (6 to 41
+  px/unit - the DG conversions had them in all sorts of units). Anything new that measures
+  something in the plane but places text should keep its distance in pixels the same way.
 - **Saved `.lgf` declare `encoding="utf-8"`** now (`DrawingSerializer.Utf8StringWriter`);
   builds before 2026-09-21 wrote `utf-16` into a UTF-8 file, which our own loader tolerates but
   `XDocument.Load` does not. `LineByEquation` in general form gets its two points from the
@@ -492,7 +505,8 @@ Learned from `Reference/VB6/Source` while making the CD library load (`DGFReader
 - A point on a figure is placed by moving it to its saved X,Y in one `MoveTo` (setting X then Y
   projects twice from off the figure and lands elsewhere); `AuxInfo(1)` (t on a line, clockwise
   angle on a circle) is ignored.
-- `AuxPoints(6)` of a measurement is the label's shift from its default place, in pixels.
+- `AuxPoints(6)` of a measurement is the label's shift from its default place, in pixels, y
+  down - taken as our `Offset` as it is.
 - Intersection points are picked by the saved coordinates of both solution points, so the
   Legacy circle/line order problem does not apply to `.dgf`.
 - The VB6 expression language has more than ours: `[A,B]` distance with a comma, comparison and

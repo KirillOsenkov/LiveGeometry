@@ -35,6 +35,14 @@ namespace DynamicGeometry
             return !Locked;
         }
 
+        public override Point Anchor
+        {
+            get
+            {
+                return Point(0);
+            }
+        }
+
         /// <summary>
         /// Keeps the label in orbit around its point: the center of the label may not get
         /// further from the point than the label's larger dimension plus the point radius.
@@ -51,21 +59,20 @@ namespace DynamicGeometry
                 return newPosition;
             }
 
-            var halfSize = new Point(ToLogical(width) / 2, -ToLogical(height) / 2);
-            var radius = ToLogical(
-                System.Math.Max(width, height)
+            // in pixels: the orbit is about the size of the text, whatever the zoom
+            var point = ToPhysical(Anchor);
+            var halfSize = new Point(width / 2, height / 2);
+            var radius = System.Math.Max(width, height)
                 + GetPoint().Shape.Bounds.Width / 2
-                + Math.CursorTolerance);
-            var fromPoint = newPosition.Plus(halfSize).Minus(Point(0));
+                + Math.CursorTolerance;
+            var fromPoint = ToPhysical(newPosition).Plus(halfSize).Minus(point);
             fromPoint = fromPoint.TrimToMaxLength(radius);
-            return Point(0).Plus(fromPoint).Minus(halfSize);
+            return ToLogical(point.Plus(fromPoint).Minus(halfSize));
         }
 
         public override void MoveToCore(Point newPosition)
         {
-            newPosition = ClampPosition(newPosition);
-            Offset = newPosition.Minus(Point(0));
-            base.MoveToCore(newPosition);
+            base.MoveToCore(ClampPosition(newPosition));
         }
 
         protected override int DefaultZOrder()
@@ -80,29 +87,18 @@ namespace DynamicGeometry
                 return;
             }
 
-            var textWasEmpty = false;
-
-            if (Text.IsEmpty())
-            {
-                textWasEmpty = true;
-            }
-
-            var coords = Point(0);
-            MoveToCore(coords.Plus(Offset));
-            base.UpdateVisual();
+            var textWasEmpty = Text.IsEmpty();
             UpdateText();
-
             if (textWasEmpty && !Text.IsEmpty())
             {
-                selection.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                // a new label: centered under its point, just clear of it
+                var size = MeasureSize();
                 Offset = new Point(
-                    ToLogical(-selection.DesiredSize.Width / 2),
-                    ToLogical(selection.DesiredSize.Height
-                        + GetPoint().Shape.ActualHeight / 2
-                        + Math.CursorTolerance));
-                MoveToCore(coords.Plus(Offset));
-                base.UpdateVisual();
+                    -size.Width / 2,
+                    -(size.Height + GetPoint().Shape.ActualHeight / 2 + Math.CursorTolerance));
             }
+
+            base.UpdateVisual();
         }
 
         private void UpdateText()

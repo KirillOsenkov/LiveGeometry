@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing>
+<Drawing Version="1">
   <Viewport Left="-5.0833333333" Top="9.5416666667" Right="4.9166666667" Bottom="-5.625" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />

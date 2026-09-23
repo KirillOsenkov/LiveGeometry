@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing>
+<Drawing Version="1">
   <Viewport Left="-4.9583333333" Top="7.5625" Right="5.0416666667" Bottom="-7.6041666667" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
@@ -54,22 +54,22 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Segment>
-    <PointLabel Name="PointLabel48" Style="7" OffsetX="-0.312499999999999" OffsetY="0.572916666633333" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel48" Style="7" OffsetX="-11.1" OffsetY="-20.4" ShowName="true" ShowCoordinates="false">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel49" Style="7" OffsetX="0.1041666667" OffsetY="0.552083333333333" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel49" Style="7" OffsetX="3.7" OffsetY="-19.6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="C" />
     </PointLabel>
-    <PointLabel Name="PointLabel50" Style="7" OffsetX="-0.135416666666667" OffsetY="0.614583333333333" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel50" Style="7" OffsetX="-4.8" OffsetY="-21.9" ShowName="true" ShowCoordinates="false">
       <Dependency Name="D" />
     </PointLabel>
-    <PointLabel Name="PointLabel51" Style="7" OffsetX="-0.104166666666667" OffsetY="0.739583333333335" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel51" Style="7" OffsetX="-3.7" OffsetY="-26.3" ShowName="true" ShowCoordinates="false">
       <Dependency Name="E" />
     </PointLabel>
-    <PointLabel Name="PointLabel52" Style="7" OffsetX="-0.15625" OffsetY="-0.156249999966667" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel52" Style="7" OffsetX="-5.6" OffsetY="5.6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="F" />
     </PointLabel>
-    <PointLabel Name="PointLabel53" Style="7" OffsetX="-0.114583333333333" OffsetY="0.739583333333333" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel53" Style="7" OffsetX="-4.1" OffsetY="-26.3" ShowName="true" ShowCoordinates="false">
       <Dependency Name="B" />
     </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Tangents to a Circle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />

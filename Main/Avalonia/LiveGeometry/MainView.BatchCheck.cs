@@ -117,10 +117,15 @@ public partial class MainView
     }
 
     /// <summary>
-    /// "--modernize &lt;folder&gt;": a one-off for drawings marked IntersectionOrder="Legacy":
-    /// loads each (which swaps the intersections the old circle/line order got wrong), writes
-    /// the swapped Algorithm attributes into the file and drops the mark. Nothing else in the
-    /// file changes.
+    /// "--modernize &lt;folder&gt;": writes into a file what loading it upgrades, so that the
+    /// file itself is current. Two upgrades so far, each a one-off for the gallery: drawings
+    /// marked IntersectionOrder="Legacy" get the swapped Algorithm attributes of the
+    /// intersections the old circle/line order got wrong, and the mark dropped (2026-09-22);
+    /// drawings before Version 1 get the offsets of their point labels and measurements in
+    /// pixels - at the zoom this window shows the drawing at, which for a captioned drawing
+    /// is the gallery's fit, so the labels stay exactly where they were on the desktop
+    /// (2026-09-23; the window should be a landscape one) - and Version="1". Nothing else in
+    /// the file changes.
     /// </summary>
     async void RunModernize(string folder)
     {
@@ -129,33 +134,63 @@ public partial class MainView
         foreach (var file in Directory.GetFiles(folder, "*.lgf"))
         {
             var document = XDocument.Load(file, LoadOptions.PreserveWhitespace);
-            if ((string)document.Root.Attribute("IntersectionOrder") != "Legacy")
+            bool legacyOrder = (string)document.Root.Attribute("IntersectionOrder") == "Legacy";
+            bool unitOffsets = document.Root.ReadDouble("Version") < 1;
+            if (!legacyOrder && !unitOffsets)
             {
                 continue;
             }
 
             OpenDrawing(Path.GetFileName(file), File.ReadAllBytes(file));
             await Task.Delay(50);
-            var byName = DrawingHost.CurrentDrawing.Figures.OfType<IntersectionPoint>().ToDictionary(p => p.Name);
-            int swapped = 0;
-            foreach (var element in document.Root.Element("Figures").Elements("IntersectionPoint"))
+            var drawing = DrawingHost.CurrentDrawing;
+            var figures = document.Root.Element("Figures");
+            var changes = new List<string>();
+            if (legacyOrder)
             {
-                var point = byName[(string)element.Attribute("Name")];
-                if (point.AlgorithmName != (string)element.Attribute("Algorithm"))
+                var byName = drawing.Figures.OfType<IntersectionPoint>().ToDictionary(p => p.Name);
+                int swapped = 0;
+                foreach (var element in figures.Elements("IntersectionPoint"))
                 {
-                    element.SetAttributeValue("Algorithm", point.AlgorithmName);
-                    swapped++;
+                    var point = byName[(string)element.Attribute("Name")];
+                    if (point.AlgorithmName != (string)element.Attribute("Algorithm"))
+                    {
+                        element.SetAttributeValue("Algorithm", point.AlgorithmName);
+                        swapped++;
+                    }
                 }
+
+                document.Root.Attribute("IntersectionOrder").Remove();
+                changes.Add(swapped + " intersections swapped");
             }
 
-            document.Root.Attribute("IntersectionOrder").Remove();
+            if (unitOffsets)
+            {
+                double unitLength = drawing.CoordinateSystem.UnitLength;
+                int converted = 0;
+                foreach (var element in figures.Elements())
+                {
+                    if (drawing.Figures[(string)element.Attribute("Name")] is LabelWithOffset && element.Attribute("OffsetX") != null)
+                    {
+                        var x = element.ReadDouble("OffsetX") * unitLength;
+                        var y = -element.ReadDouble("OffsetY") * unitLength;
+                        element.SetAttributeValue("OffsetX", System.Math.Round(x, 1).ToStringInvariant());
+                        element.SetAttributeValue("OffsetY", System.Math.Round(y, 1).ToStringInvariant());
+                        converted++;
+                    }
+                }
+
+                document.Root.SetAttributeValue("Version", "1");
+                changes.Add(converted + " label offsets to pixels at " + unitLength.ToString("0.#") + " px/unit");
+            }
+
             var settings = new XmlWriterSettings() { Indent = true, Encoding = new UTF8Encoding(false), NewLineChars = "\r\n" };
             using (var writer = XmlWriter.Create(file, settings))
             {
                 document.Save(writer);
             }
 
-            Console.WriteLine(Path.GetFileName(file) + ": " + swapped + " intersections swapped");
+            Console.WriteLine(Path.GetFileName(file) + ": " + string.Join(", ", changes));
             changedFiles++;
         }
 

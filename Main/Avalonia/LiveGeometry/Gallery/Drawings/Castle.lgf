@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="0" Creator="LiveGeometry.App">
+<Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-10.5" Top="10.5" Right="10.5" Bottom="0" Grid="false">
     <Background>
       <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">

@@ -43,16 +43,16 @@ namespace DynamicGeometry
             }
         }
 
-        public override void MoveToCore(Point newPosition)
+        public override Point Anchor
         {
-            Offset = newPosition.Minus(Origin);
-            base.MoveToCore(newPosition);
+            get
+            {
+                return Origin;
+            }
         }
 
         public override void UpdateVisual()
         {
-            var p = Origin.Plus(Offset);
-            MoveToCore(p);
             base.UpdateVisual();
             var areaText = Math.Round(Measure,DecimalsToShow).ToString();
             if (Units == Math.lengthUnit.Inches) Text = areaText + "in²";

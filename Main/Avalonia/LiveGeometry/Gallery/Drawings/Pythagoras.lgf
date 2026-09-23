@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing>
+<Drawing Version="1">
   <Viewport Left="-7.9950867182" Top="16.0942200334" Right="12.8921775481" Bottom="-15.5847974371" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
@@ -196,15 +196,15 @@
       <Dependency Name="U" />
       <Dependency Name="C" />
     </Segment>
-    <DistanceMeasurement Name="DistanceMeasurement36" Style="7" OffsetX="0.174060535500009" OffsetY="1.21842374900001">
+    <DistanceMeasurement Name="DistanceMeasurement36" Style="7" OffsetX="3.5" OffsetY="-24.4">
       <Dependency Name="B" />
       <Dependency Name="C" />
     </DistanceMeasurement>
-    <DistanceMeasurement Name="DistanceMeasurement37" Style="7" OffsetX="-1.78412048950001" OffsetY="1.3489691506">
+    <DistanceMeasurement Name="DistanceMeasurement37" Style="7" OffsetX="-35.7" OffsetY="-27">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </DistanceMeasurement>
-    <DistanceMeasurement Name="DistanceMeasurement38" Style="7" OffsetX="-0.6527270083" OffsetY="1.3924842844">
+    <DistanceMeasurement Name="DistanceMeasurement38" Style="7" OffsetX="-13.1" OffsetY="-27.8">
       <Dependency Name="A" />
       <Dependency Name="C" />
     </DistanceMeasurement>

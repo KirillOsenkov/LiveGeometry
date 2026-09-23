@@ -852,11 +852,10 @@ namespace DynamicGeometry
         /// Where the user dragged the number of a measurement: AuxPoints(6) is the shift from
         /// its default place, in pixels (Geometry.bas, dsMeasureDistance)
         /// </summary>
+        // pixels, y down - the same as ours
         Point ReadLabelOffset(IniFile.Section section)
         {
-            var pixels = GetAuxPoint(section, 6);
-            var coordinateSystem = drawing.CoordinateSystem;
-            return new Point(coordinateSystem.ToLogical(pixels.X), -coordinateSystem.ToLogical(pixels.Y));
+            return GetAuxPoint(section, 6);
         }
 
         // VB6 (modFileIO.bas) writes an AuxInfo or AuxPoint only when it isn't 0: absent means 0

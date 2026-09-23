@@ -114,19 +114,6 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>
-        /// The size the text takes right now - laid out here and now, because Bounds are stale
-        /// right after the text changed or the label was created. The shape is a Border around
-        /// the TextBlock, and its own measure stays valid when the text or the width inside it
-        /// changed, so it is invalidated first: without that it answered with the old size.
-        /// </summary>
-        public Size MeasureSize()
-        {
-            Shape.InvalidateMeasure();
-            Shape.Measure(Size.Infinity);
-            return Shape.DesiredSize;
-        }
-
         bool backdrop;
 
         /// <summary>

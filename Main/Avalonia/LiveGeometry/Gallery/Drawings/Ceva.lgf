@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing>
+<Drawing Version="1">
   <Viewport Left="-8.9541660515" Top="12.653377509" Right="7.640427403" Bottom="-12.5150892302" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
@@ -73,22 +73,22 @@
       <Dependency Name="B" />
       <Dependency Name="C" />
     </Polygon>
-    <PointLabel Name="PointLabel24" IsHitTestVisible="false" Style="9" OffsetX="-0.207432418180544" OffsetY="1.22730847423489" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel24" IsHitTestVisible="false" Style="9" OffsetX="-3.9" OffsetY="-23.2" ShowName="true" ShowCoordinates="false">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel25" IsHitTestVisible="false" Style="9" OffsetX="0.0172860348678352" OffsetY="1.22730847423489" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel25" IsHitTestVisible="false" Style="9" OffsetX="0.3" OffsetY="-23.2" ShowName="true" ShowCoordinates="false">
       <Dependency Name="B" />
     </PointLabel>
-    <PointLabel Name="PointLabel26" IsHitTestVisible="false" Style="9" OffsetX="0.103716209119456" OffsetY="-0.259290522665113" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel26" IsHitTestVisible="false" Style="9" OffsetX="2" OffsetY="4.9" ShowName="true" ShowCoordinates="false">
       <Dependency Name="C" />
     </PointLabel>
-    <PointLabel Name="PointLabel27" IsHitTestVisible="false" Style="9" OffsetX="0.570439149971077" OffsetY="0.639583289334886" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel27" IsHitTestVisible="false" Style="9" OffsetX="10.8" OffsetY="-12.1" ShowName="true" ShowCoordinates="false">
       <Dependency Name="D" />
     </PointLabel>
-    <PointLabel Name="PointLabel28" IsHitTestVisible="false" Style="9" OffsetX="-0.691441393883787" OffsetY="-0.224718453065115" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel28" IsHitTestVisible="false" Style="9" OffsetX="-13.1" OffsetY="4.2" ShowName="true" ShowCoordinates="false">
       <Dependency Name="E" />
     </PointLabel>
-    <PointLabel Name="PointLabel29" IsHitTestVisible="false" Style="9" OffsetX="-0.155574313635408" OffsetY="1.22730847423489" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel29" IsHitTestVisible="false" Style="9" OffsetX="-2.9" OffsetY="-23.2" ShowName="true" ShowCoordinates="false">
       <Dependency Name="F" />
     </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Ceva's Theorem" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />

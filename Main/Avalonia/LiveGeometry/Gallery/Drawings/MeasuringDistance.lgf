@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="0" Creator="LiveGeometry.App">
+<Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-16.8616975568" Top="5.6063140213" Right="3.6609390892" Bottom="-3.3563062015" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />

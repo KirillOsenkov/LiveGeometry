@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing>
+<Drawing Version="1">
   <Viewport Left="-5.0833333333" Top="7.5" Right="4.9166666667" Bottom="-7.6666666667" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
@@ -57,7 +57,7 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </AngleArc>
-    <AngleMeasurement Name="AngleMeasurement15" Style="7" OffsetX="-0.249999999999998" OffsetY="-0.479166666599998">
+    <AngleMeasurement Name="AngleMeasurement15" Style="7" OffsetX="-7.9" OffsetY="15.1">
       <Dependency Name="B" />
       <Dependency Name="A" />
       <Dependency Name="C" />
@@ -67,16 +67,16 @@
       <Dependency Name="B" />
       <Dependency Name="C" />
     </Polygon>
-    <PointLabel Name="PointLabel24" Style="7" OffsetX="-0.229166666699998" OffsetY="0.739583333333333" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel24" Style="7" OffsetX="-7.2" OffsetY="-23.3" ShowName="true" ShowCoordinates="false">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel25" Style="7" OffsetX="-0.104166666666667" OffsetY="0.79166666666667" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel25" Style="7" OffsetX="-3.3" OffsetY="-24.9" ShowName="true" ShowCoordinates="false">
       <Dependency Name="B" />
     </PointLabel>
-    <PointLabel Name="PointLabel26" Style="7" OffsetX="-0.135416666666666" OffsetY="0.739583333333334" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel26" Style="7" OffsetX="-4.3" OffsetY="-23.3" ShowName="true" ShowCoordinates="false">
       <Dependency Name="C" />
     </PointLabel>
-    <PointLabel Name="PointLabel27" Style="7" OffsetX="-0.197916666733333" OffsetY="0.697916666633333" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel27" Style="7" OffsetX="-6.2" OffsetY="-22" ShowName="true" ShowCoordinates="false">
       <Dependency Name="O" />
     </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Inscribed Angle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />

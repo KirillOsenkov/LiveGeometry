@@ -76,6 +76,20 @@ namespace DynamicGeometry
                     }
                 }
             }
+
+            // Version 1 (2026-09-23): the offset of a label from what it labels is in pixels,
+            // not units of the plane. Here, after the viewport, so that the conversion happens
+            // at the zoom the file opens at. Saving writes the pixels and the new version.
+            if (drawing.Version < 1)
+            {
+                foreach (var label in drawing.Figures.OfType<LabelWithOffset>())
+                {
+                    label.UpgradeOffsetFromUnits();
+                }
+
+                drawing.Version = Settings.CurrentDrawingVersion;
+                drawing.Recalculate();
+            }
             //drawing.CoordinateSystem.MoveTo(drawing.Figures.OfType<IPoint>().Midpoint().Minus());
         }
 

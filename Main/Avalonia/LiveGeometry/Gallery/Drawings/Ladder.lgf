@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="0" Creator="LiveGeometry.App">
+<Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-51.9052325854" Top="25.1810963902" Right="74.1644025366" Bottom="-29.8758770732" Grid="false" />
   <Scene Left="-25" Top="41" Right="27" Bottom="-3" />
   <Styles>
@@ -413,7 +413,7 @@
       <Dependency Name="A" />
       <Dependency Name="Drag me!" />
     </Ray>
-    <DistanceMeasurement Name="DistanceMeasurement1" Style="4" DecimalsToShow="2" OffsetX="0" OffsetY="0">
+    <DistanceMeasurement Name="DistanceMeasurement1" Style="4" DecimalsToShow="2" OffsetX="0" OffsetY="-0">
       <Dependency Name="Ladder length" />
       <Dependency Name="E" />
     </DistanceMeasurement>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing>
+<Drawing Version="1">
   <Viewport Left="-4.8541666667" Top="6.4791666667" Right="5.1458333333" Bottom="-8.6875" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
@@ -106,13 +106,13 @@
     <PointOnFigure Name="h" Visible="false" Style="1" X="1.1041666666" Y="-3.81776494577065" Parameter="0.494565217443479">
       <Dependency Name="Altitude" />
     </PointOnFigure>
-    <PointLabel Name="PointLabel490" Style="7" OffsetX="0.19791666656641" OffsetY="0.197916666734959" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel490" Style="7" OffsetX="7.9" OffsetY="-7.9" ShowName="true" ShowCoordinates="false">
       <Dependency Name="h" />
     </PointLabel>
     <PointOnFigure Name="a" Visible="false" Style="1" X="-0.0776302083088423" Y="-6.7187499996" Parameter="0.546250000010185">
       <Dependency Name="LineTwoPoints319" />
     </PointOnFigure>
-    <PointLabel Name="PointLabel491" Style="7" OffsetX="-0.312499999966895" OffsetY="-0.0104166666650407" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel491" Style="7" OffsetX="-12.4" OffsetY="0.4" ShowName="true" ShowCoordinates="false">
       <Dependency Name="a" />
     </PointLabel>
     <LineTwoPoints Name="LineTwoPoints339" Visible="false" Locked="true" Style="4">

@@ -16,7 +16,8 @@ namespace DynamicGeometry
         public static bool UpdateSelectedBehaviorOnTabChange = true;
         public static bool ShowStyleNameInStylePicker = false;
         public static bool ScaleTextWithDrawing = false;
-        public static double CurrentDrawingVersion = 0;
+        /// <summary>What a saved drawing says it is; 1 = label offsets in pixels (DrawingDeserializer upgrades older files)</summary>
+        public static double CurrentDrawingVersion = 1;
 
         /// <summary>
         /// Should the orientation of a PointOnFigure on an elliptical figure remain fixed or should it be relative to the orientation of the figure?

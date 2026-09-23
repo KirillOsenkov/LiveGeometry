@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing>
+<Drawing Version="1">
   <Viewport Left="-8.3237998364" Top="11.8321782798" Right="8.186216368" Bottom="-13.2080129635" Grid="false" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
@@ -80,12 +80,12 @@
       <Dependency Name="ArcEndPoint11" />
       <Dependency Name="ArcEndPoint12" />
     </CircleArc>
-    <AngleMeasurement Name="AngleMeasurement72" Style="7" OffsetX="1.9261685573" OffsetY="0.9286884114">
+    <AngleMeasurement Name="AngleMeasurement72" Style="7" OffsetX="49.7" OffsetY="-24">
       <Dependency Name="Point2" />
       <Dependency Name="Point5" />
       <Dependency Name="Point1" />
     </AngleMeasurement>
-    <AngleMeasurement Name="AngleMeasurement73" Style="7" OffsetX="-1.0662718798" OffsetY="2.2013354939">
+    <AngleMeasurement Name="AngleMeasurement73" Style="7" OffsetX="-27.5" OffsetY="-56.8">
       <Dependency Name="Point2" />
       <Dependency Name="ReflectedPoint2" />
       <Dependency Name="Point3" />

@@ -36,17 +36,16 @@ namespace DynamicGeometry
             }
         }
 
-        public override void MoveToCore(Point newPosition)
+        public override Point Anchor
         {
-            Point newOffset = newPosition.Minus(Point(0));
-            Offset = newOffset;
-            base.MoveToCore(newPosition);
+            get
+            {
+                return Point(0);
+            }
         }
 
         public override void UpdateVisual()
         {
-            var p = Point(0).Plus(Offset);
-            MoveToCore(p);
             base.UpdateVisual();
             var text = Math.Round(Measure, DecimalsToShow).ToString();
             Text = (Radians) ? text + " rad" : text + "°";
@@ -106,8 +105,12 @@ namespace DynamicGeometry
 
         public override void UpdateVisual()
         {
-            var p = Point(0).Plus(Offset);
-            MoveToCore(p);
+            if (Dependencies.IsEmpty())
+            {
+                return;
+            }
+
+            Coordinates = PlaceFromOffset();
             Shape.CenterAt(ToPhysical(Coordinates));
             Text = Math
                 .OHAngle(Point(0), Point(1))
