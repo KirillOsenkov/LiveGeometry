@@ -1,54 +1,15 @@
-﻿/* HTML styles for the splash screen */
+/* The splash screen (index.html): Euclid's first construction drawing itself while the
+   runtime downloads. Avalonia adds splash-close when the app is up. */
 .avalonia-splash {
     position: absolute;
     height: 100%;
     width: 100%;
-    background: white;
-    font-family: 'Outfit', sans-serif;
+    background: radial-gradient(circle at 50% 40%, #FFFFFF 0%, #EEF4FC 60%, #E3ECF9 100%);
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
     justify-content: center;
     align-items: center;
     display: flex;
     pointer-events: none;
-}
-
-/* Light theme styles */
-@media (prefers-color-scheme: light) {
-    .avalonia-splash {
-        background: white;
-    }
-
-    .avalonia-splash h2 {
-        color: #1b2a4e;
-    }
-
-    .avalonia-splash a {
-        color: #0D6EFD;
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    .avalonia-splash {
-        background: #1b2a4e;
-    }
-
-    .avalonia-splash h2 {
-        color: white;
-    }
-
-    .avalonia-splash a {
-        color: white;
-    }
-}
-
-.avalonia-splash h2 {
-    font-weight: 400;
-    font-size: 1.5rem;
-}
-
-.avalonia-splash a {
-    text-decoration: none;
-    font-size: 2.5rem;
-    display: block;   
 }
 
 .avalonia-splash.splash-close {
@@ -56,3 +17,207 @@
     display: none;
     opacity: 0;
 }
+
+.splash-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.avalonia-splash h2 {
+    margin: 0;
+    font-weight: 500;
+    font-size: 1.35rem;
+    color: #1F4E8C;
+    letter-spacing: 0.01em;
+}
+
+.splash-progress {
+    width: 220px;
+    height: 5px;
+    margin-top: 8px;
+    border-radius: 3px;
+    background: #DCE4EF;
+    overflow: hidden;
+}
+
+.splash-progress-bar {
+    width: 0;
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #2F7BD6, #7CE38B);
+    transition: width 300ms ease-out;
+}
+
+/* The construction. One 7.5 s loop, everything timed in percentages of it:
+     0- 4  the two points appear
+     4- 9  the segment between them is drawn (the given one)
+    10-30  the compass swings the first circle (the ring draws, a pen rides its rim)
+    32-52  the second circle
+    54-58  the crossing point appears
+    59-73  the two sides are drawn from it
+    73-81  the triangle fills
+    92-100 everything fades, and it starts over */
+.euclid {
+    display: block;
+    overflow: visible;
+}
+
+.euclid .scene {
+    animation: splash-scene 7.5s linear infinite;
+}
+
+.euclid .dot {
+    fill: #FFEF00;
+    stroke: #A05C21;
+    stroke-width: 2;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: splash-pop 7.5s ease-out infinite;
+}
+
+.euclid .dot-c {
+    animation-name: splash-pop-c;
+}
+
+.euclid .ring {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 628.4;
+    stroke-dashoffset: 628.4;
+}
+
+.euclid .ring-a {
+    stroke: #2F7BD6;
+    animation: splash-ring-a 7.5s ease-in-out infinite;
+}
+
+.euclid .ring-b {
+    stroke: #E08A00;
+    animation: splash-ring-b 7.5s ease-in-out infinite;
+}
+
+.euclid .disc {
+    opacity: 0;
+}
+
+.euclid .disc-a {
+    animation: splash-disc-a 7.5s linear infinite;
+}
+
+.euclid .disc-b {
+    animation: splash-disc-b 7.5s linear infinite;
+}
+
+/* the pen: a dot riding the rim as the ring draws, on the same path the stroke follows
+   (an SVG circle's stroke starts at the right and goes clockwise) */
+.euclid .pen {
+    fill: #1F4E8C;
+    opacity: 0;
+}
+
+.euclid .pen-a {
+    offset-path: path("M210,140 A100,100 0 1,1 10,140 A100,100 0 1,1 210,140");
+    animation: splash-pen-a 7.5s ease-in-out infinite;
+}
+
+.euclid .pen-b {
+    offset-path: path("M310,140 A100,100 0 1,1 110,140 A100,100 0 1,1 310,140");
+    animation: splash-pen-b 7.5s ease-in-out infinite;
+}
+
+.euclid .base, .euclid .sides {
+    fill: none;
+    stroke: #1F4E8C;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.euclid .base {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: splash-base 7.5s ease-in-out infinite;
+}
+
+.euclid .sides {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: splash-sides 7.5s ease-in-out infinite;
+}
+
+.euclid .tri {
+    fill: url(#splash-tri);
+    opacity: 0;
+    animation: splash-tri 7.5s ease-out infinite;
+}
+
+@keyframes splash-scene {
+    0%, 92% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes splash-pop {
+    0% { transform: scale(0); }
+    4%, 100% { transform: scale(1); }
+}
+
+@keyframes splash-pop-c {
+    0%, 54% { transform: scale(0); }
+    58%, 100% { transform: scale(1); }
+}
+
+@keyframes splash-base {
+    0%, 4% { stroke-dashoffset: 100; }
+    9%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes splash-ring-a {
+    0%, 10% { stroke-dashoffset: 628.4; }
+    30%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes splash-ring-b {
+    0%, 32% { stroke-dashoffset: 628.4; }
+    52%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes splash-disc-a {
+    0%, 26% { opacity: 0; }
+    32%, 100% { opacity: 1; }
+}
+
+@keyframes splash-disc-b {
+    0%, 48% { opacity: 0; }
+    54%, 100% { opacity: 1; }
+}
+
+@keyframes splash-pen-a {
+    0%, 9% { offset-distance: 0%; opacity: 0; }
+    10% { offset-distance: 0%; opacity: 1; }
+    30% { offset-distance: 100%; opacity: 1; }
+    31%, 100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes splash-pen-b {
+    0%, 31% { offset-distance: 0%; opacity: 0; }
+    32% { offset-distance: 0%; opacity: 1; }
+    52% { offset-distance: 100%; opacity: 1; }
+    53%, 100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes splash-sides {
+    0%, 59% { stroke-dashoffset: 200; }
+    73%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes splash-tri {
+    0%, 73% { opacity: 0; }
+    81%, 100% { opacity: 0.85; }
+}
+
+/* No prefers-reduced-motion rule on purpose: it is only an opt-in media query, and
+   with the Windows "Animation effects" setting off (as on the dev machine) it would
+   leave the splash a still picture. A few seconds of a compass is fine. */

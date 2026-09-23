@@ -493,6 +493,17 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   `FontManager.DefaultFontFamily` too - renders as Noto Mono in the browser. So `TextStyle` sets
   the font a drawing names (Arial, Segoe UI) only when it really resolves, and naming "Inter"
   in a drawing doesn't work (embedded, not installed).
+- **The splash** (`wwwroot/index.html` + `app.css`, shown until Avalonia adds `splash-close`)
+  is Euclid's first construction drawing itself: a 7.5 s CSS animation loop on inline SVG
+  (the given segment and the sides by stroke-dashoffset, the rings likewise with a pen
+  riding the rim by `offset-path`, discs and the gradient triangle fading in), with a progress bar that `main.js` feeds from a
+  `withResourceLoader` wrapper counting fetches (the loader's `onDownloadResourceProgress`
+  is on the module config, which the .NET 10 host builder doesn't expose). `?splash` on
+  the url shows the splash without starting the app, for working on it: serve the source
+  `wwwroot` with `tools/serve.cs` and open `http://localhost:<port>/index.html?splash`.
+  It animates regardless of `prefers-reduced-motion` (deliberately no rule for it: the
+  query follows the Windows "Animation effects" setting, off on this machine, and a
+  still splash looked stuck).
 - **web.config**: `LiveGeometry.Browser/web.config` is hand-written (serves the precompressed
   `.br` files, sets immutable caching on fingerprinted assets, `no-cache` on entry files). The
   wasm SDK drops a project web.config from publish, so the csproj copies it with an explicit

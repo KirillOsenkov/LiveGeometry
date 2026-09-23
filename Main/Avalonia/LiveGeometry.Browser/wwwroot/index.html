@@ -24,8 +24,47 @@
 
 <body style="margin: 0; overflow: hidden">
 <div id="out">
+    <!-- The splash: shown until the app has started (Avalonia adds splash-close then).
+         While the runtime downloads, Euclid's first construction draws itself in a loop:
+         a circle about each of two points, and the equilateral triangle on them. Pure
+         CSS animation on SVG (app.css); the bar under it is fed by the runtime's
+         download progress (main.js). Open the page with ?splash to look at it without
+         the app starting. -->
     <div class="avalonia-splash">
-        <h2>Loading Live Geometry…</h2>
+        <div class="splash-card">
+            <svg class="euclid" viewBox="0 0 320 250" width="320" height="250" aria-hidden="true">
+                <defs>
+                    <linearGradient id="splash-tri" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#7CE38B" />
+                        <stop offset="1" stop-color="#6FD3F7" />
+                    </linearGradient>
+                    <radialGradient id="splash-a" cx="0.5" cy="0.5" r="0.5">
+                        <stop offset="0.6" stop-color="#2F7BD6" stop-opacity="0.04" />
+                        <stop offset="1" stop-color="#2F7BD6" stop-opacity="0.22" />
+                    </radialGradient>
+                    <radialGradient id="splash-b" cx="0.5" cy="0.5" r="0.5">
+                        <stop offset="0.6" stop-color="#E08A00" stop-opacity="0.04" />
+                        <stop offset="1" stop-color="#E08A00" stop-opacity="0.22" />
+                    </radialGradient>
+                </defs>
+                <g class="scene">
+                    <circle class="disc disc-a" cx="110" cy="140" r="100" fill="url(#splash-a)" />
+                    <circle class="disc disc-b" cx="210" cy="140" r="100" fill="url(#splash-b)" />
+                    <circle class="ring ring-a" cx="110" cy="140" r="100" />
+                    <circle class="ring ring-b" cx="210" cy="140" r="100" />
+                    <polygon class="tri" points="110,140 160,53.4 210,140" />
+                    <path class="base" d="M110,140 L210,140" />
+                    <path class="sides" d="M110,140 L160,53.4 L210,140" />
+                    <circle class="pen pen-a" r="4" />
+                    <circle class="pen pen-b" r="4" />
+                    <circle class="dot dot-a" cx="110" cy="140" r="6" />
+                    <circle class="dot dot-b" cx="210" cy="140" r="6" />
+                    <circle class="dot dot-c" cx="160" cy="53.4" r="6" />
+                </g>
+            </svg>
+            <h2>Loading Live Geometry…</h2>
+            <div class="splash-progress"><div class="splash-progress-bar" id="splash-progress-bar"></div></div>
+        </div>
     </div>
 </div>
 <script type='module' src="./main.js"></script>
