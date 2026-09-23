@@ -45,7 +45,12 @@ public static class PropertyGridTheme
                 new AvaloniaSetter(TextBox.MarginProperty, new Thickness(0, 2, 0, 2)),
                 new AvaloniaSetter(TextBox.BackgroundProperty, inputBackground),
                 new AvaloniaSetter(TextBox.BorderBrushProperty, RibbonTheme.TabLine),
-                new AvaloniaSetter(TextBox.CornerRadiusProperty, inputCornerRadius)
+                new AvaloniaSetter(TextBox.CornerRadiusProperty, inputCornerRadius),
+
+                // selected text: the same light blue as a checked plate, and the text stays
+                // dark on it (the theme's default is a saturated blue with white text)
+                new AvaloniaSetter(TextBox.SelectionBrushProperty, RibbonTheme.ButtonChecked),
+                new AvaloniaSetter(TextBox.SelectionForegroundBrushProperty, RibbonTheme.Text)
             }
         });
 
@@ -86,13 +91,16 @@ public static class PropertyGridTheme
             }
         });
 
-        // the style picker: a row of swatches instead of a tall list
+        // the style picker: rows of swatches instead of a tall list. The panel's scroll viewer
+        // measures with unlimited width, so without a cap the row would never wrap and a
+        // drawing with many styles made the panel run across the whole window.
         styles.Add(new AvaloniaStyle(x => x.OfType<ListBox>())
         {
             Setters =
             {
                 new AvaloniaSetter(ListBox.BackgroundProperty, Brushes.Transparent),
                 new AvaloniaSetter(ListBox.MarginProperty, new Thickness(0, 2, 0, 2)),
+                new AvaloniaSetter(ListBox.MaxWidthProperty, 340.0),
                 new AvaloniaSetter(ListBox.ItemsPanelProperty, new FuncTemplate<Panel>(() => new WrapPanel()))
             }
         });
