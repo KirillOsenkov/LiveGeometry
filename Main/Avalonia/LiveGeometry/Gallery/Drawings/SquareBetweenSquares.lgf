@@ -6,7 +6,7 @@
     <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
     <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
     <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
-    <ShapeStyle Fill="#FFFF2A2A" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
+    <ShapeStyle Fill="#FFF5B8C8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
     <ShapeStyle Fill="#80FFFF00" IsFilled="true" Color="#00000000" StrokeWidth="1" Name="6" />
     <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
     <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
@@ -122,22 +122,30 @@
       <Dependency Name="D" />
       <Dependency Name="I" />
     </Segment>
-    <MidPoint Name="K" Visible="false" Style="3">
+    <PointOnFigure Name="M" Style="2" X="0.7291666667" Y="-0.2291666667" Parameter="0.5">
+      <Dependency Name="Segment38" />
+    </PointOnFigure>
+    <PointByCoordinates Name="K" Visible="false" Style="3" X="B.X + (G.X - B.X) * dist(A, M) / dist(A, F)" Y="B.Y + (G.Y - B.Y) * dist(A, M) / dist(A, F)">
       <Dependency Name="B" />
       <Dependency Name="G" />
-    </MidPoint>
-    <MidPoint Name="L" Visible="false" Style="3">
+      <Dependency Name="A" />
+      <Dependency Name="M" />
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L" Visible="false" Style="3" X="D.X + (I.X - D.X) * dist(A, M) / dist(A, F)" Y="D.Y + (I.Y - D.Y) * dist(A, M) / dist(A, F)">
       <Dependency Name="D" />
       <Dependency Name="I" />
-    </MidPoint>
-    <MidPoint Name="M" Visible="false" Style="2">
       <Dependency Name="A" />
+      <Dependency Name="M" />
       <Dependency Name="F" />
-    </MidPoint>
-    <MidPoint Name="N" Visible="false" Style="2">
+    </PointByCoordinates>
+    <PointByCoordinates Name="N" Visible="false" Style="3" X="E.X + (J.X - E.X) * dist(A, M) / dist(A, F)" Y="E.Y + (J.Y - E.Y) * dist(A, M) / dist(A, F)">
       <Dependency Name="E" />
       <Dependency Name="J" />
-    </MidPoint>
+      <Dependency Name="A" />
+      <Dependency Name="M" />
+      <Dependency Name="F" />
+    </PointByCoordinates>
     <Polygon Name="Polygon59" Style="6">
       <Dependency Name="N" />
       <Dependency Name="K" />
@@ -161,6 +169,6 @@
       <Dependency Name="N" />
     </Segment>
     <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Square Between Squares" DecimalsToShow="2" X="5.398" Y="3.646" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Take any two squares (red and green). Connect\ntheir matching corners with four gray segments\nand mark the midpoints.\n\nThe midpoints form another square (yellow)!\nIts size is halfway between the two.\n\nDrag the yellow points to move and turn the\nsquares." DecimalsToShow="2" X="5.398" Y="2.681" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Take any two squares (pink and green) and\nconnect their matching corners with four\ngray segments.\n\nPick a point on one segment, and the points\nthe same fraction of the way along the other\nthree. They form another square (yellow)!\n\nSlide the green point from the pink square to\nthe green one. Drag the yellow points to move\nand turn the squares." DecimalsToShow="2" X="5.398" Y="2.681" />
   </Figures>
 </Drawing>
