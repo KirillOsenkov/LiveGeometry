@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Drawing Version="0" Creator="LiveGeometry.App">
   <Viewport Left="-170.1580965579" Top="87.107374094" Right="113.0699445268" Bottom="-36.5836219734" Grid="false" Color="#FF404040" />
+  <Scene Left="-108" Top="112" Right="150" Bottom="-108" />
   <Styles>
     <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
     <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
@@ -29,12 +30,14 @@
     <PointStyle Size="10" Fill="#FF000000" IsFilled="true" Color="#FF00FFFF" StrokeWidth="0.7" Dash="Solid" Name="10" />
     <LineStyle Color="#FF00FF00" StrokeWidth="1" Dash="Solid" Name="11" />
     <TextStyle FontSize="27.2" Color="#FF00FF00" FontFamily="Arial" Bold="false" Italic="false" Underline="true" Name="12" />
+    <PointStyle Size="16" Fill="#30FFA726" IsFilled="true" Color="#FFFFA726" StrokeWidth="2" Dash="Solid" Name="Target" />
+    <TextStyle FontSize="14" Color="#FFFFA726" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="TargetText" />
     <TextStyle FontSize="30" Color="#FFFFFFFF" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
     <TextStyle FontSize="16" Color="#FFE6E6EE" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
     <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
   </Styles>
   <Figures>
-    <FreePoint Name="C" Style="7" X="97.248113" Y="45.899068" />
+    <FreePoint Name="C" Style="7" X="98.68421" Y="65.037929" />
     <FreePoint Name="D" Style="7" X="-0.230838" Y="-30.701885" />
     <Segment Name="Segment1" Style="8">
       <Dependency Name="C" />
@@ -43,7 +46,6 @@
     <PointOnFigure Name="A" Style="9" X="70.92167859913593" Y="25.21121751012171" Parameter="0.27007301710565257">
       <Dependency Name="Segment1" />
     </PointOnFigure>
-    <FreePoint Name="E" Style="10" X="70.703407" Y="5.559923" />
     <PointByCoordinates Name="B" Style="10" X="(A.X) * (COS(A.Y))" Y="(A.X) * (SIN(A.Y))">
       <Dependency Name="A" />
     </PointByCoordinates>
@@ -51,7 +53,15 @@
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Locus>
+    <PointByCoordinates Name="TriangleTarget" Style="Target" X="98.68421" Y="94.961821" />
+    <Label IsHitTestVisible="false" Name="TriangleHint" Style="TargetText" Text="triangles" DecimalsToShow="2" X="103" Y="100" />
+    <PointByCoordinates Name="SquareTarget" Style="Target" X="98.68421" Y="63.545895" />
+    <Label IsHitTestVisible="false" Name="SquareHint" Style="TargetText" Text="squares" DecimalsToShow="2" X="103" Y="68.5" />
+    <PointByCoordinates Name="PentagonTarget" Style="Target" X="98.68421" Y="44.696339" />
+    <Label IsHitTestVisible="false" Name="PentagonHint" Style="TargetText" Text="pentagons" DecimalsToShow="2" X="103" Y="49.7" />
+    <PointByCoordinates Name="HexagonTarget" Style="Target" X="98.68421" Y="32.129968" />
+    <Label IsHitTestVisible="false" Name="HexagonHint" Style="TargetText" Text="hexagons" DecimalsToShow="2" X="103" Y="37.1" />
     <Label IsHitTestVisible="false" Name="Title" Style="GalleryTitle" Text="Spiral" DecimalsToShow="2" X="111.955" Y="45.899" />
-    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Point B is placed by a rule: its distance from\nthe center is A's x-coordinate and its angle\nis A's y-coordinate. As A slides along the\nsegment, B sweeps out a spiral.\n\nDrag the ends of the segment to wind the\nspiral tighter or looser." DecimalsToShow="2" X="111.955" Y="36.707" />
+    <Label IsHitTestVisible="false" Name="Description" Style="GalleryText" Text="Point B is placed by a rule: its distance from\nthe center is A's x-coordinate and its angle\nis A's y-coordinate. As A slides along the\nsegment, B sweeps out a spiral.\n\nThe curve is drawn through 60 points, so\nonly the height of the segment matters: it\nsets how far the angle turns from one point\nto the next. A turn of 90° makes squares,\n120° triangles, 72° pentagons and 60°\nhexagons - drag the top end onto an orange\nring and see." DecimalsToShow="2" X="111.955" Y="36.707" />
   </Figures>
 </Drawing>

@@ -272,7 +272,14 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   vs portrait) instead of the content bounds; every other drawing is fitted as before. The
   fitted one is `Drawing.ActiveScene`, and a gradient paper then spans the scene, not the
   canvas, solid beyond it (`Drawing.PlaceBackground`, re-pinned on every view change), so the
-  sky stays put when the view moves. In a tall layout the text goes below the scene, i.e. on
+  sky stays put when the view moves. The Spiral has one too: a locus has no bounds, and its
+  disk would otherwise be cut off.
+- **The Spiral's polygons**: a `Locus` samples its driver in `Locus.StepCount` = 60 steps, so
+  B's angle advances by (C.Y - D.Y)/60 per sample; at 90° the polyline is a square spiral, at
+  120° a triangle one (DG sampled 400 points, so the original file's "calibration" doesn't
+  carry over). The orange rings ("Drag to here") sit at D.Y + 60·2π/n for n = 3, 4, 5, 6;
+  the height of the segment is all that matters, x only scales it. Changing `StepCount`
+  moves the rings. In a tall layout the text goes below the scene, i.e. on
   the ground - keep that green calm (#4CAF50) so text reads on it.
 - **The Castle** is hand-made (2026-09-22; the DG original was dropped): the scratch generator
   wrote fixed points as `PointByCoordinates` with constant coordinates, so a polygon has no
