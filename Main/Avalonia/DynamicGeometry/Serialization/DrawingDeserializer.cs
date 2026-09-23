@@ -131,7 +131,10 @@ namespace DynamicGeometry
             double minY = viewportNode.ReadDouble("Bottom");
             double maxY = viewportNode.ReadDouble("Top");
             drawing.CoordinateGrid.Locked = viewportNode.ReadBool("Locked", false);
-            drawing.CoordinateGrid.Visible = viewportNode.ReadBool("Grid", Settings.Instance.ShowGrid);
+            // a file that doesn't say has no grid: the serializer only writes Grid when it is
+            // on. (It used to default to the global setting, which the last drawing shown
+            // had set - so a gallery tile loaded after a graph got a grid.)
+            drawing.CoordinateGrid.Visible = viewportNode.ReadBool("Grid", false);
             if (drawing.CoordinateGrid.Visible)
             {
                 drawing.CoordinateGrid.ShowAxes = viewportNode.ReadBool("Axes", true);

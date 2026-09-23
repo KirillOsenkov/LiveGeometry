@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.5" Top="3.2" Right="4.5" Bottom="-3.4" Grid="false" />
+  <Styles>
+    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
+    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
+    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
+    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
+    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
+    <TextStyle FontSize="17" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="Name" />
+    <ShapeStyle IsFilled="true" Color="#FF7B4C41" StrokeWidth="1" Dash="Solid" Name="TetrahedronFace0">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFB26F5E" />
+          <GradientStop Offset="1" Color="#FFA56657" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF7B4C41" StrokeWidth="1" Dash="Solid" Name="TetrahedronFace1">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFEEA28F" />
+          <GradientStop Offset="1" Color="#FFD38472" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF415A7A" StrokeWidth="1" Dash="Solid" Name="CubeFace0">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FF97BEF3" />
+          <GradientStop Offset="1" Color="#FF81AAE0" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF415A7A" StrokeWidth="1" Dash="Solid" Name="CubeFace1">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FF749DD4" />
+          <GradientStop Offset="1" Color="#FF6388BA" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF415A7A" StrokeWidth="1" Dash="Solid" Name="CubeFace2">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FF5E82B1" />
+          <GradientStop Offset="1" Color="#FF5778A3" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF41694C" StrokeWidth="1" Dash="Solid" Name="OctahedronFace0">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FF5E986F" />
+          <GradientStop Offset="1" Color="#FF578C66" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF41694C" StrokeWidth="1" Dash="Solid" Name="OctahedronFace1">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FF68A77A" />
+          <GradientStop Offset="1" Color="#FF5B926A" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF41694C" StrokeWidth="1" Dash="Solid" Name="OctahedronFace2">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FF5E986F" />
+          <GradientStop Offset="1" Color="#FF578C66" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF41694C" StrokeWidth="1" Dash="Solid" Name="OctahedronFace3">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FF92D3A4" />
+          <GradientStop Offset="1" Color="#FF75B888" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF625076" StrokeWidth="1" Dash="Solid" Name="DodecahedronFace0">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FF8E75AB" />
+          <GradientStop Offset="1" Color="#FF836B9E" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF625076" StrokeWidth="1" Dash="Solid" Name="DodecahedronFace1">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FF8E75AB" />
+          <GradientStop Offset="1" Color="#FF836B9E" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF625076" StrokeWidth="1" Dash="Solid" Name="DodecahedronFace2">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFCBAFEC" />
+          <GradientStop Offset="1" Color="#FFB598D7" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF625076" StrokeWidth="1" Dash="Solid" Name="DodecahedronFace3">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FF8E75AB" />
+          <GradientStop Offset="1" Color="#FF836B9E" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF625076" StrokeWidth="1" Dash="Solid" Name="DodecahedronFace4">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFC8ACE9" />
+          <GradientStop Offset="1" Color="#FFAC8FCF" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF625076" StrokeWidth="1" Dash="Solid" Name="DodecahedronFace5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFA083C1" />
+          <GradientStop Offset="1" Color="#FF8C73A9" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF7D6638" StrokeWidth="1" Dash="Solid" Name="IcosahedronFace0">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFB59451" />
+          <GradientStop Offset="1" Color="#FFA7884B" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF7D6638" StrokeWidth="1" Dash="Solid" Name="IcosahedronFace1">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFB59451" />
+          <GradientStop Offset="1" Color="#FFA7884B" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF7D6638" StrokeWidth="1" Dash="Solid" Name="IcosahedronFace2">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFC19D56" />
+          <GradientStop Offset="1" Color="#FFA8894B" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF7D6638" StrokeWidth="1" Dash="Solid" Name="IcosahedronFace3">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFC9A35A" />
+          <GradientStop Offset="1" Color="#FFB08F4F" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF7D6638" StrokeWidth="1" Dash="Solid" Name="IcosahedronFace4">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFF4CE84" />
+          <GradientStop Offset="1" Color="#FFDAB366" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF7D6638" StrokeWidth="1" Dash="Solid" Name="IcosahedronFace5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFB59451" />
+          <GradientStop Offset="1" Color="#FFA7884B" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF7D6638" StrokeWidth="1" Dash="Solid" Name="IcosahedronFace6">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFF8D288" />
+          <GradientStop Offset="1" Color="#FFDFB86C" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF7D6638" StrokeWidth="1" Dash="Solid" Name="IcosahedronFace7">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFB59451" />
+          <GradientStop Offset="1" Color="#FFA7884B" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF7D6638" StrokeWidth="1" Dash="Solid" Name="IcosahedronFace8">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFF7D187" />
+          <GradientStop Offset="1" Color="#FFDEB76A" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle IsFilled="true" Color="#FF7D6638" StrokeWidth="1" Dash="Solid" Name="IcosahedronFace9">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Offset="0" Color="#FFC7A259" />
+          <GradientStop Offset="1" Color="#FFAE8D4E" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
+    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
+    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="Tetrahedron0" Visible="false" Style="DependentPointStyle" X="-2.9" Y="2.65" />
+    <PointByCoordinates Name="Tetrahedron1" Visible="false" Style="DependentPointStyle" X="-2.5779" Y="1.1099" />
+    <PointByCoordinates Name="Tetrahedron2" Visible="false" Style="DependentPointStyle" X="-3.8275" Y="1.4339" />
+    <PointByCoordinates Name="Tetrahedron3" Visible="false" Style="DependentPointStyle" X="-2.2946" Y="1.6063" />
+    <Polygon Name="TetrahedronFace0" Style="TetrahedronFace0">
+      <Dependency Name="Tetrahedron3" />
+      <Dependency Name="Tetrahedron0" />
+      <Dependency Name="Tetrahedron1" />
+      <Dependency Name="Tetrahedron3" />
+    </Polygon>
+    <Polygon Name="TetrahedronFace1" Style="TetrahedronFace1">
+      <Dependency Name="Tetrahedron1" />
+      <Dependency Name="Tetrahedron0" />
+      <Dependency Name="Tetrahedron2" />
+      <Dependency Name="Tetrahedron1" />
+    </Polygon>
+    <PointByCoordinates Name="Tetrahedron" Visible="false" Style="DependentPointStyle" X="-2.9" Y="0.45" />
+    <PointLabel Name="TetrahedronName" IsHitTestVisible="false" Style="Name" OffsetX="-52.3" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="Tetrahedron" />
+    </PointLabel>
+    <PointByCoordinates Name="Cube0" Visible="false" Style="DependentPointStyle" X="-0.8956" Y="-0.528" />
+    <PointByCoordinates Name="Cube1" Visible="false" Style="DependentPointStyle" X="-0.1418" Y="-0.95" />
+    <PointByCoordinates Name="Cube2" Visible="false" Style="DependentPointStyle" X="-0.8956" Y="0.6434" />
+    <PointByCoordinates Name="Cube3" Visible="false" Style="DependentPointStyle" X="-0.1418" Y="0.2215" />
+    <PointByCoordinates Name="Cube4" Visible="false" Style="DependentPointStyle" X="0.1418" Y="-0.2215" />
+    <PointByCoordinates Name="Cube5" Visible="false" Style="DependentPointStyle" X="0.8956" Y="-0.6434" />
+    <PointByCoordinates Name="Cube6" Visible="false" Style="DependentPointStyle" X="0.1418" Y="0.95" />
+    <PointByCoordinates Name="Cube7" Visible="false" Style="DependentPointStyle" X="0.8956" Y="0.528" />
+    <Polygon Name="CubeFace0" Style="CubeFace0">
+      <Dependency Name="Cube7" />
+      <Dependency Name="Cube6" />
+      <Dependency Name="Cube2" />
+      <Dependency Name="Cube3" />
+      <Dependency Name="Cube7" />
+    </Polygon>
+    <Polygon Name="CubeFace1" Style="CubeFace1">
+      <Dependency Name="Cube3" />
+      <Dependency Name="Cube2" />
+      <Dependency Name="Cube0" />
+      <Dependency Name="Cube1" />
+      <Dependency Name="Cube3" />
+    </Polygon>
+    <Polygon Name="CubeFace2" Style="CubeFace2">
+      <Dependency Name="Cube7" />
+      <Dependency Name="Cube3" />
+      <Dependency Name="Cube1" />
+      <Dependency Name="Cube5" />
+      <Dependency Name="Cube7" />
+    </Polygon>
+    <PointByCoordinates Name="Cube" Visible="false" Style="DependentPointStyle" X="0" Y="-1.25" />
+    <PointLabel Name="CubeName" IsHitTestVisible="false" Style="Name" OffsetX="-19" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="Cube" />
+    </PointLabel>
+    <PointByCoordinates Name="Octahedron0" Visible="false" Style="DependentPointStyle" X="3.8047" Y="1.8802" />
+    <PointByCoordinates Name="Octahedron1" Visible="false" Style="DependentPointStyle" X="1.9953" Y="1.5198" />
+    <PointByCoordinates Name="Octahedron2" Visible="false" Style="DependentPointStyle" X="2.9" Y="2.65" />
+    <PointByCoordinates Name="Octahedron3" Visible="false" Style="DependentPointStyle" X="2.9" Y="0.75" />
+    <PointByCoordinates Name="Octahedron4" Visible="false" Style="DependentPointStyle" X="3.381" Y="1.3611" />
+    <PointByCoordinates Name="Octahedron5" Visible="false" Style="DependentPointStyle" X="2.419" Y="2.0389" />
+    <Polygon Name="OctahedronFace0" Style="OctahedronFace0">
+      <Dependency Name="Octahedron3" />
+      <Dependency Name="Octahedron0" />
+      <Dependency Name="Octahedron4" />
+      <Dependency Name="Octahedron3" />
+    </Polygon>
+    <Polygon Name="OctahedronFace1" Style="OctahedronFace1">
+      <Dependency Name="Octahedron4" />
+      <Dependency Name="Octahedron0" />
+      <Dependency Name="Octahedron2" />
+      <Dependency Name="Octahedron4" />
+    </Polygon>
+    <Polygon Name="OctahedronFace2" Style="OctahedronFace2">
+      <Dependency Name="Octahedron4" />
+      <Dependency Name="Octahedron1" />
+      <Dependency Name="Octahedron3" />
+      <Dependency Name="Octahedron4" />
+    </Polygon>
+    <Polygon Name="OctahedronFace3" Style="OctahedronFace3">
+      <Dependency Name="Octahedron2" />
+      <Dependency Name="Octahedron1" />
+      <Dependency Name="Octahedron4" />
+      <Dependency Name="Octahedron2" />
+    </Polygon>
+    <PointByCoordinates Name="Octahedron" Visible="false" Style="DependentPointStyle" X="2.9" Y="0.45" />
+    <PointLabel Name="OctahedronName" IsHitTestVisible="false" Style="Name" OffsetX="-47.5" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="Octahedron" />
+    </PointLabel>
+    <PointByCoordinates Name="Dodecahedron0" Visible="false" Style="DependentPointStyle" X="-3.6141" Y="-2.1118" />
+    <PointByCoordinates Name="Dodecahedron1" Visible="false" Style="DependentPointStyle" X="-3.2031" Y="-2.4597" />
+    <PointByCoordinates Name="Dodecahedron2" Visible="false" Style="DependentPointStyle" X="-3.6141" Y="-1.0808" />
+    <PointByCoordinates Name="Dodecahedron3" Visible="false" Style="DependentPointStyle" X="-3.2031" Y="-1.4288" />
+    <PointByCoordinates Name="Dodecahedron4" Visible="false" Style="DependentPointStyle" X="-2.5969" Y="-1.9712" />
+    <PointByCoordinates Name="Dodecahedron5" Visible="false" Style="DependentPointStyle" X="-2.1859" Y="-2.3192" />
+    <PointByCoordinates Name="Dodecahedron6" Visible="false" Style="DependentPointStyle" X="-2.5969" Y="-0.9403" />
+    <PointByCoordinates Name="Dodecahedron7" Visible="false" Style="DependentPointStyle" X="-2.1859" Y="-1.2882" />
+    <PointByCoordinates Name="Dodecahedron8" Visible="false" Style="DependentPointStyle" X="-3.2325" Y="-1.7371" />
+    <PointByCoordinates Name="Dodecahedron9" Visible="false" Style="DependentPointStyle" X="-3.2144" Y="-2.5775" />
+    <PointByCoordinates Name="Dodecahedron10" Visible="false" Style="DependentPointStyle" X="-3.85" Y="-1.7062" />
+    <PointByCoordinates Name="Dodecahedron11" Visible="false" Style="DependentPointStyle" X="-2.5675" Y="-2.3001" />
+    <PointByCoordinates Name="Dodecahedron12" Visible="false" Style="DependentPointStyle" X="-3.2144" Y="-0.9093" />
+    <PointByCoordinates Name="Dodecahedron13" Visible="false" Style="DependentPointStyle" X="-3.596" Y="-1.9212" />
+    <PointByCoordinates Name="Dodecahedron14" Visible="false" Style="DependentPointStyle" X="-3.2325" Y="-1.0999" />
+    <PointByCoordinates Name="Dodecahedron15" Visible="false" Style="DependentPointStyle" X="-2.5856" Y="-2.4907" />
+    <PointByCoordinates Name="Dodecahedron16" Visible="false" Style="DependentPointStyle" X="-2.204" Y="-1.4788" />
+    <PointByCoordinates Name="Dodecahedron17" Visible="false" Style="DependentPointStyle" X="-2.5675" Y="-1.6629" />
+    <PointByCoordinates Name="Dodecahedron18" Visible="false" Style="DependentPointStyle" X="-2.5856" Y="-0.8225" />
+    <PointByCoordinates Name="Dodecahedron19" Visible="false" Style="DependentPointStyle" X="-1.95" Y="-1.6938" />
+    <Polygon Name="DodecahedronFace0" Style="DodecahedronFace0">
+      <Dependency Name="Dodecahedron13" />
+      <Dependency Name="Dodecahedron10" />
+      <Dependency Name="Dodecahedron0" />
+      <Dependency Name="Dodecahedron9" />
+      <Dependency Name="Dodecahedron1" />
+      <Dependency Name="Dodecahedron13" />
+    </Polygon>
+    <Polygon Name="DodecahedronFace1" Style="DodecahedronFace1">
+      <Dependency Name="Dodecahedron5" />
+      <Dependency Name="Dodecahedron11" />
+      <Dependency Name="Dodecahedron1" />
+      <Dependency Name="Dodecahedron9" />
+      <Dependency Name="Dodecahedron15" />
+      <Dependency Name="Dodecahedron5" />
+    </Polygon>
+    <Polygon Name="DodecahedronFace2" Style="DodecahedronFace2">
+      <Dependency Name="Dodecahedron3" />
+      <Dependency Name="Dodecahedron12" />
+      <Dependency Name="Dodecahedron2" />
+      <Dependency Name="Dodecahedron10" />
+      <Dependency Name="Dodecahedron13" />
+      <Dependency Name="Dodecahedron3" />
+    </Polygon>
+    <Polygon Name="DodecahedronFace3" Style="DodecahedronFace3">
+      <Dependency Name="Dodecahedron17" />
+      <Dependency Name="Dodecahedron11" />
+      <Dependency Name="Dodecahedron5" />
+      <Dependency Name="Dodecahedron19" />
+      <Dependency Name="Dodecahedron7" />
+      <Dependency Name="Dodecahedron17" />
+    </Polygon>
+    <Polygon Name="DodecahedronFace4" Style="DodecahedronFace4">
+      <Dependency Name="Dodecahedron18" />
+      <Dependency Name="Dodecahedron12" />
+      <Dependency Name="Dodecahedron3" />
+      <Dependency Name="Dodecahedron17" />
+      <Dependency Name="Dodecahedron7" />
+      <Dependency Name="Dodecahedron18" />
+    </Polygon>
+    <Polygon Name="DodecahedronFace5" Style="DodecahedronFace5">
+      <Dependency Name="Dodecahedron3" />
+      <Dependency Name="Dodecahedron13" />
+      <Dependency Name="Dodecahedron1" />
+      <Dependency Name="Dodecahedron11" />
+      <Dependency Name="Dodecahedron17" />
+      <Dependency Name="Dodecahedron3" />
+    </Polygon>
+    <PointByCoordinates Name="Dodecahedron" Visible="false" Style="DependentPointStyle" X="-2.9" Y="-2.95" />
+    <PointLabel Name="DodecahedronName" IsHitTestVisible="false" Style="Name" OffsetX="-57" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="Dodecahedron" />
+    </PointLabel>
+    <PointByCoordinates Name="Icosahedron0" Visible="false" Style="DependentPointStyle" X="2.544" Y="-1.9518" />
+    <PointByCoordinates Name="Icosahedron1" Visible="false" Style="DependentPointStyle" X="2.4489" Y="-2.5404" />
+    <PointByCoordinates Name="Icosahedron2" Visible="false" Style="DependentPointStyle" X="1.95" Y="-1.6706" />
+    <PointByCoordinates Name="Icosahedron3" Visible="false" Style="DependentPointStyle" X="3.256" Y="-2.4029" />
+    <PointByCoordinates Name="Icosahedron4" Visible="false" Style="DependentPointStyle" X="2.4489" Y="-0.9956" />
+    <PointByCoordinates Name="Icosahedron5" Visible="false" Style="DependentPointStyle" X="2.3901" Y="-1.9494" />
+    <PointByCoordinates Name="Icosahedron6" Visible="false" Style="DependentPointStyle" X="2.544" Y="-0.9971" />
+    <PointByCoordinates Name="Icosahedron7" Visible="false" Style="DependentPointStyle" X="3.3511" Y="-2.4044" />
+    <PointByCoordinates Name="Icosahedron8" Visible="false" Style="DependentPointStyle" X="3.4099" Y="-1.4506" />
+    <PointByCoordinates Name="Icosahedron9" Visible="false" Style="DependentPointStyle" X="3.256" Y="-1.4482" />
+    <PointByCoordinates Name="Icosahedron10" Visible="false" Style="DependentPointStyle" X="3.3511" Y="-0.8596" />
+    <PointByCoordinates Name="Icosahedron11" Visible="false" Style="DependentPointStyle" X="3.85" Y="-1.7294" />
+    <Polygon Name="IcosahedronFace0" Style="IcosahedronFace0">
+      <Dependency Name="Icosahedron3" />
+      <Dependency Name="Icosahedron1" />
+      <Dependency Name="Icosahedron7" />
+      <Dependency Name="Icosahedron3" />
+    </Polygon>
+    <Polygon Name="IcosahedronFace1" Style="IcosahedronFace1">
+      <Dependency Name="Icosahedron11" />
+      <Dependency Name="Icosahedron3" />
+      <Dependency Name="Icosahedron7" />
+      <Dependency Name="Icosahedron11" />
+    </Polygon>
+    <Polygon Name="IcosahedronFace2" Style="IcosahedronFace2">
+      <Dependency Name="Icosahedron2" />
+      <Dependency Name="Icosahedron1" />
+      <Dependency Name="Icosahedron5" />
+      <Dependency Name="Icosahedron2" />
+    </Polygon>
+    <Polygon Name="IcosahedronFace3" Style="IcosahedronFace3">
+      <Dependency Name="Icosahedron10" />
+      <Dependency Name="Icosahedron9" />
+      <Dependency Name="Icosahedron11" />
+      <Dependency Name="Icosahedron10" />
+    </Polygon>
+    <Polygon Name="IcosahedronFace4" Style="IcosahedronFace4">
+      <Dependency Name="Icosahedron4" />
+      <Dependency Name="Icosahedron2" />
+      <Dependency Name="Icosahedron5" />
+      <Dependency Name="Icosahedron4" />
+    </Polygon>
+    <Polygon Name="IcosahedronFace5" Style="IcosahedronFace5">
+      <Dependency Name="Icosahedron5" />
+      <Dependency Name="Icosahedron1" />
+      <Dependency Name="Icosahedron3" />
+      <Dependency Name="Icosahedron5" />
+    </Polygon>
+    <Polygon Name="IcosahedronFace6" Style="IcosahedronFace6">
+      <Dependency Name="Icosahedron10" />
+      <Dependency Name="Icosahedron4" />
+      <Dependency Name="Icosahedron9" />
+      <Dependency Name="Icosahedron10" />
+    </Polygon>
+    <Polygon Name="IcosahedronFace7" Style="IcosahedronFace7">
+      <Dependency Name="Icosahedron9" />
+      <Dependency Name="Icosahedron3" />
+      <Dependency Name="Icosahedron11" />
+      <Dependency Name="Icosahedron9" />
+    </Polygon>
+    <Polygon Name="IcosahedronFace8" Style="IcosahedronFace8">
+      <Dependency Name="Icosahedron9" />
+      <Dependency Name="Icosahedron4" />
+      <Dependency Name="Icosahedron5" />
+      <Dependency Name="Icosahedron9" />
+    </Polygon>
+    <Polygon Name="IcosahedronFace9" Style="IcosahedronFace9">
+      <Dependency Name="Icosahedron5" />
+      <Dependency Name="Icosahedron3" />
+      <Dependency Name="Icosahedron9" />
+      <Dependency Name="Icosahedron5" />
+    </Polygon>
+    <PointByCoordinates Name="Icosahedron" Visible="false" Style="DependentPointStyle" X="2.9" Y="-2.95" />
+    <PointLabel Name="IcosahedronName" IsHitTestVisible="false" Style="Name" OffsetX="-52.3" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="Icosahedron" />
+    </PointLabel>
+    <Label Name="Title" Style="GalleryTitle" Text="5 Platonic Solids" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="78.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A Platonic solid is a shape whose faces are all the same regular polygon, with the same number of them meeting at every corner. There are exactly five - the ancient Greeks proved that no sixth one is possible.\n\nTetrahedron: 4 triangles. Cube: 6 squares. Octahedron: 8 triangles. Dodecahedron: 12 pentagons. Icosahedron: 20 triangles.\n\nRole-playing dice come in exactly these five shapes." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="126.75" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

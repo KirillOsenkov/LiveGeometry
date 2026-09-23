@@ -339,6 +339,15 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   amplitude between two hidden points at A.Y/2 and 1.5·A.Y on the post, whose distance is
   |A.Y| and whose midpoint is A itself, so the number sits by the handle above the crest,
   the one place the wave never crosses (at the post's midpoint it did).
+- **5 Platonic Solids** (2026-09-23, replacing the Tetrahedron and Icosahedron drawings) is
+  generated: `dotnet tools/platonic.cs -- Main/Avalonia/LiveGeometry/Gallery/Drawings/PlatonicSolids.lgf`
+  (`--alpha` for a translucent variant with the back faces showing through; the gallery
+  has the opaque one). Each solid is rotated (`Tilt` per solid), projected orthographically,
+  scaled to 1.9 units, and its faces found as the supporting planes of its vertices; front
+  faces only, painted back to front as polygons of hidden `PointByCoordinates`, each with
+  its own `ShapeStyle` whose gradient fill is the solid's color lit by a lamp at the upper
+  left (`Shade`). The names are `PointLabel`s of hidden points named after the solids,
+  centered by a pixel offset of 9.5 px per letter. Regenerate rather than edit the file.
 - **The Castle** is hand-made (2026-09-22; the DG original was dropped): the scratch generator
   wrote fixed points as `PointByCoordinates` with constant coordinates, so a polygon has no
   free point to move and dragging it does nothing; the only things that move are sliders
@@ -501,7 +510,7 @@ and `.lgf` (the conversion) and appends to `<out>/report.txt`: figure counts, `N
 (only the *root* failures - figures whose dependencies all exist - plus a dump of every point),
 load errors. It exits when done. `dotnet tools/contactsheet.cs -- <png folder> <out.png>
 [columns] [tile width]` tiles the PNGs into one image: the fastest way to eyeball a whole
-folder (all 47 gallery drawings fit on one 4-column sheet). The VB6 CD library
+folder (all 46 gallery drawings fit on one 4-column sheet). The VB6 CD library
 (`C:\Dropbox\Projects\DG 1\DG CD Version 1.0\Library\English`, 221 files, read-only) all loads
 as of 2026-09-21; what is still "missing" there is second intersections that fall outside a
 segment or ray, and sides of a polygon that don't cross - legitimately absent.
