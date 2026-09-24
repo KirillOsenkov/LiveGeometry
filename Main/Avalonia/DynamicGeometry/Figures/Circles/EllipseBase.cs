@@ -113,12 +113,10 @@ namespace DynamicGeometry
             var logicalWidth = LogicalWidth();
             var major = ToPhysical(SemiMajor * 2 + logicalWidth);
             var minor = ToPhysical(SemiMinor * 2 + logicalWidth);
-            double angle = -Inclination.ToDegrees();
-            RotateTransform rotation = new RotateTransform();
-            rotation.CenterX = major / 2;
-            rotation.CenterY = minor / 2;
-            rotation.Angle = angle;
-            Shape.RenderTransform = rotation;
+            // Avalonia rotates about RenderTransformOrigin, the middle of the shape by default;
+            // the CenterX/CenterY that WPF needed on the transform would shift a tilted
+            // ellipse off its center.
+            Shape.RenderTransform = new RotateTransform(-Inclination.ToDegrees());
             Shape.Width = major;
             Shape.Height = minor;
             Shape.CenterAt(center);

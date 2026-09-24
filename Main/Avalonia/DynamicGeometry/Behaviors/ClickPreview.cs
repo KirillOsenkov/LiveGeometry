@@ -82,7 +82,11 @@ public class ClickPreview
 
             foreach (var source in sources)
             {
-                Add(CreateHalo(source));
+                // a hidden figure's shape is never updated, so a halo made from it would be stale
+                if (source.Visible)
+                {
+                    Add(CreateHalo(source));
+                }
             }
 
             if (kind == PointPlacementKind.Midpoint)

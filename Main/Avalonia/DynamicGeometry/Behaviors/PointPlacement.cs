@@ -122,14 +122,22 @@ public class PointPlacement
             return Midpoint(segment);
         }
 
-        var figure = (ILinearFigure)linear[0];
+        return OnFigure((ILinearFigure)linear[0], coordinates);
+    }
+
+    /// <summary>
+    /// A new point on the figure, where it comes nearest to the coordinates; free there if
+    /// the figure has no such point.
+    /// </summary>
+    public static PointPlacement OnFigure(ILinearFigure figure, Point coordinates)
+    {
         var onFigure = figure.GetPointFromParameter(figure.GetNearestParameterFromPoint(coordinates));
         if (!onFigure.Exists())
         {
             return Free(coordinates);
         }
 
-        return new PointPlacement(PointPlacementKind.OnFigure, onFigure, new[] { linear[0] });
+        return new PointPlacement(PointPlacementKind.OnFigure, onFigure, new IFigure[] { figure });
     }
 
     /// <summary>In cursor tolerances: how near the middle of a segment counts as "the midpoint"</summary>

@@ -37,7 +37,8 @@ namespace DynamicGeometry
         {
             get
             {
-                return Math.Distance(Point(0), Point(2));
+                // as for Ellipse: the third point's distance from the long axis
+                return Math.GetDistanceToLine(Point(2), new PointPair(Point(0), Point(1)));
             }
         }
 

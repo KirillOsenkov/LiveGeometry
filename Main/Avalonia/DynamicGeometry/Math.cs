@@ -824,6 +824,15 @@ namespace DynamicGeometry
             return result;
         }
 
+        /// <summary>
+        /// How far the point is from the line, measured along the perpendicular (from P1
+        /// when the line has no direction).
+        /// </summary>
+        public static double GetDistanceToLine(Point point, PointPair line)
+        {
+            return Distance(point, GetProjectionPoint(point, line));
+        }
+
         public static Point GetProjectionPoint(Point p, PointPair line)
         {
             Point result = new Point();

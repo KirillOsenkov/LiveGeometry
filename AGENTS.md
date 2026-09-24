@@ -121,6 +121,21 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   used to write `Settings.ShowGrid` and `new Drawing()` read it back, so every load - each
   gallery tile included - left the global at that file's state and the next new drawing
   came up with a grid it never asked for.
+- **Ellipses** (`Figures/Circles/Ellipse.cs`, `EllipseCreator`): center, the end of the long
+  axis, the end of the short axis. The third point sets the short semi-axis by its *distance
+  from the long axis* (`Math.GetDistanceToLine`; `EllipseArcBase` the same), not by its
+  distance from the center as before 2026-09-23, so a point on the short axis is on the
+  ellipse. The tool puts a free third click there: once the first two points are known it
+  adds a hidden segment (the long semi-axis) and a hidden `PerpendicularLine` through the
+  center, and the third point becomes a `PointOnFigure` on that line
+  (`EllipseCreator.FindPointPlacement`, so the hover ghost and the preview ellipse show it);
+  a third click on an existing point or another figure keeps that and the two helpers are
+  removed again. The perpendicular's second point is the rotated axis, so the point's
+  parameter is a fraction of the long semi-axis and scaling the long axis scales the short
+  one with it. `ClickPreview` doesn't halo hidden sources: a hidden line's shape is never
+  updated. `EllipseBase.UpdateVisual` puts no CenterX/CenterY on its `RotateTransform`:
+  Avalonia rotates about `RenderTransformOrigin` (the middle by default), and the WPF-era
+  centering shifted every tilted ellipse off its center (until 2026-09-23).
 - **Vectors**: `Vector` = an invisible `Segment` + an `Arrow` (a 7-point polygon: shaft + head).
   The arrow is computed in pixels (`Arrow.HeadLength/HeadHalfWidth/HeadGrowth`, shaft = the
   style's stroke width), is filled with the *line* color, has no outline, and stops at the rim
