@@ -17,6 +17,24 @@ namespace DynamicGeometry
             Children.Add(polygon);
         }
 
+        /// <summary>
+        /// A click on any child selects the whole figure, so the property grid shows this
+        /// composite and its style is the one the user edits: it is the polygon's style (the
+        /// one WriteXml saves). Without this the composite kept a style of its own that
+        /// nothing painted with, and changing it did nothing.
+        /// </summary>
+        public override IFigureStyle Style
+        {
+            get
+            {
+                return polygon.Style;
+            }
+            set
+            {
+                polygon.Style = value;
+            }
+        }
+
         public virtual void Recreate(int sideCount, bool recalculate = true)
         {
             AdjustVerticesList(sideCount);
