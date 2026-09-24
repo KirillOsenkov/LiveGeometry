@@ -23,19 +23,25 @@ public partial class MainView : UserControl
 
     Behavior[] Behaviors = Array.Empty<Behavior>();
 
+    // The browser's picker (File System Access API) takes a type only as a MIME type with its
+    // extensions; Avalonia drops a type without MimeTypes there, so the save dialog offered
+    // no .lgf at all.
     static readonly FilePickerFileType LgfFileType = new("Live Geometry drawing")
     {
-        Patterns = new[] { "*.lgf" }
+        Patterns = new[] { "*.lgf" },
+        MimeTypes = new[] { "application/xml" }
     };
 
     static readonly FilePickerFileType AnyDrawingFileType = new("All drawings")
     {
-        Patterns = new[] { "*.lgf", "*.dgf" }
+        Patterns = new[] { "*.lgf", "*.dgf" },
+        MimeTypes = new[] { "application/xml", "text/plain" }
     };
 
     static readonly FilePickerFileType DgfFileType = new("DG 1.x drawing")
     {
-        Patterns = new[] { "*.dgf" }
+        Patterns = new[] { "*.dgf" },
+        MimeTypes = new[] { "text/plain" }
     };
 
     public MainView()
@@ -278,6 +284,9 @@ public partial class MainView : UserControl
             return;
         }
 
+        // the exception's own trace is filled in as it unwinds, and in the browser it can
+        // stay empty; here, at the throw, the stack still has the throw site on it
+        var stackTrace = string.IsNullOrEmpty(exception.StackTrace) ? Environment.StackTrace : null;
         reportingException = true;
         try
         {
@@ -285,7 +294,7 @@ public partial class MainView : UserControl
             {
                 try
                 {
-                    ReportException(exception);
+                    ReportException(exception, stackTrace);
                 }
                 finally
                 {
@@ -303,13 +312,17 @@ public partial class MainView : UserControl
     {
         return exception is OperationCanceledException
             || exception is AggregateException
-            || exception is System.Reflection.TargetInvocationException;
+            || exception is System.Reflection.TargetInvocationException
+            // the browser's file picker throws on cancel (Avalonia catches it and answers null)
+            || exception.GetType().Name == "JSException" && exception.Message.StartsWith("AbortError", StringComparison.Ordinal);
     }
 
     /// <summary>The message in the status bar, the whole text in the side panel</summary>
-    public void ReportException(Exception exception)
+    /// <param name="stackTrace">The stack at the throw, for an exception whose own trace is empty</param>
+    public void ReportException(Exception exception, string stackTrace = null)
     {
-        var text = exception.ToString();
+        var report = new ExceptionReport(exception, stackTrace);
+        var text = report.Details;
         bool isNew = text != lastExceptionText;
         lastExceptionText = text;
         if (isNew)
@@ -320,7 +333,7 @@ public partial class MainView : UserControl
         DrawingHost.ShowHint("Error: " + exception.Message);
         if (isNew && DrawingHost.CurrentDrawing != null)
         {
-            DrawingHost.ShowProperties(new ExceptionReport(exception));
+            DrawingHost.ShowProperties(report);
         }
     }
 
@@ -726,11 +739,13 @@ public partial class MainView : UserControl
                 return;
             }
 
-            var text = DrawingHost.CurrentDrawing.SaveAsText();
-            using (var stream = await file.OpenWriteAsync())
-            using (var writer = new StreamWriter(stream))
+            // bytes straight into the stream: the browser's file stream only has WriteAsync,
+            // and a StreamWriter flushes synchronously when disposed
+            var bytes = new System.Text.UTF8Encoding(false).GetBytes(DrawingHost.CurrentDrawing.SaveAsText());
+            await using (var stream = await file.OpenWriteAsync())
             {
-                await writer.WriteAsync(text);
+                await stream.WriteAsync(bytes);
+                await stream.FlushAsync();
             }
 
             // a saved drawing of the gallery is the user's own from here on

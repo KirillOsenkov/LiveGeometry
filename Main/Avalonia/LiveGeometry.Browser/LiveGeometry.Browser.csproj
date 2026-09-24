@@ -13,6 +13,9 @@
          serializer/figure discovery over assembly.GetTypes()), so the IL trimmer
          must keep it intact or the published app crashes at startup. -->
     <TrimmerRootAssembly Include="DynamicGeometry.Avalonia" />
+    <!-- The property grid reads pages of the shared UI by reflection too (ExceptionReport):
+         a property nothing referenced in code was trimmed and its row silently missing. -->
+    <TrimmerRootAssembly Include="LiveGeometry" />
   </ItemGroup>
 
   <ItemGroup>

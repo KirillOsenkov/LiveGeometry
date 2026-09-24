@@ -468,9 +468,27 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   Details), also printed to the console. Reported on the UI thread; exceptions the report
   itself throws are dropped (`reportingException`), the same text thrown again only
   refreshes the status bar, and OperationCanceled/Aggregate/TargetInvocation are ignored.
-  Add to `IsBenign` when a framework exception turns out to be noise. Text boxes of the
+  Add to `IsBenign` when a framework exception turns out to be noise (the browser's file
+  picker throws `JSException` "AbortError..." on cancel, which Avalonia turns into null).
+  A `JSException` has no .NET stack, so the handler captures `Environment.StackTrace` at
+  the throw for the report. Text boxes of the
   property grid wrap at 480 px (`PropertyGridTheme`), so a caption or a stack trace doesn't
-  stretch the panel across the window.
+  stretch the panel across the window. `LiveGeometry` is a trimmer root assembly like the
+  library, since 2026-09-23: the property grid reads `ExceptionReport` by reflection, and
+  its Error row, referenced by nothing in code, was trimmed away in the browser
+  (`[DynamicallyAccessedMembers]` on the class did not keep it).
+- **Files in the browser** (`MainView.SaveDrawingToFile`/`OpenDrawingFromFile`): the File
+  System Access API takes a file type only as a MIME type with its extensions, and Avalonia
+  drops a `FilePickerFileType` without `MimeTypes` - the save dialog offered no .lgf until
+  the types got `application/xml` (.lgf) and `text/plain` (.dgf). The stream from
+  `OpenWriteAsync` has only `WriteAsync`; a `StreamWriter` flushes synchronously on dispose
+  and threw "Browser supports only WriteAsync", so the text is written as bytes with
+  `WriteAsync`/`FlushAsync`. To test saving headless (no native dialog): `webauto eval` a
+  fake `globalThis.showSaveFilePicker` returning a handle with `kind`, `name`, `getFile`,
+  `queryPermission`, `requestPermission`, `createWritable` (`write`/`close`/`seek`/
+  `truncate`) *before the first picker use* - Avalonia's picker polyfill captures the
+  global when its storage module is first imported, later replacements are ignored - then
+  click Save and read back the bytes; throw a `DOMException(..., "AbortError")` for cancel.
 - **Keyboard focus drifts into tool panels.** A tool's PropertyBag panel (e.g. "Point by
   coordinates") takes focus into its TextBox after every construction step, so neither the canvas
   KeyDown nor `MainView_KeyUp` (which skips TextBox focus) sees keys then. Anything that must
@@ -660,5 +678,6 @@ languages (en/ru/uk/de).
 
 ## Not yet verified in the browser
 
-.lgf open/save through the browser storage provider, PNG export, printing, demo download, and
-the `Hyperlink` figure's use of `WebClient`.
+PNG export, printing, demo download, and the `Hyperlink` figure's use of `WebClient`.
+Saving through the browser storage provider works (2026-09-23); opening has only been checked
+as far as the picker (see "Files in the browser").

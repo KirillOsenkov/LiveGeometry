@@ -10,12 +10,16 @@ namespace LiveGeometry;
 [PropertyGridName("Something went wrong")]
 public class ExceptionReport
 {
-    public ExceptionReport(Exception exception)
+    /// <param name="stackTrace">The stack at the throw, shown when the exception's own trace is empty</param>
+    public ExceptionReport(Exception exception, string stackTrace = null)
     {
         Exception = exception;
+        StackTrace = stackTrace;
     }
 
     public Exception Exception { get; }
+
+    public string StackTrace { get; }
 
     [PropertyGridVisible]
     [PropertyGridName("Error")]
@@ -23,5 +27,21 @@ public class ExceptionReport
 
     [PropertyGridVisible]
     [PropertyGridName("Details")]
-    public string Details => Exception.ToString();
+    public string Details
+    {
+        get
+        {
+            // a JSException prints only its message: add whatever stack there is
+            var text = Exception.ToString();
+            foreach (var stack in new[] { Exception.StackTrace, StackTrace })
+            {
+                if (!string.IsNullOrEmpty(stack) && !text.Contains(stack))
+                {
+                    text += Environment.NewLine + stack;
+                }
+            }
+
+            return text;
+        }
+    }
 }
