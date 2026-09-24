@@ -5,6 +5,8 @@ using Avalonia.Media;
 
 namespace DynamicGeometry
 {
+    // Off the ribbon: the intersection doesn't work. The figure stays so old files load.
+    [Ignore]
     [Category(BehaviorCategories.Shapes)]
     [Order(4)]
     public class PolygonIntersectionCreator : FigureCreator
