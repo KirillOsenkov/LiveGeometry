@@ -9,6 +9,7 @@ internal sealed partial class Program
     {
         try
         {
+            App.UseInvariantCulture();
             AddressBar.Current = new LiveGeometry.Browser.BrowserAddressBar();
             await BuildAvaloniaApp()
                 .WithInterFont()

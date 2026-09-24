@@ -4,6 +4,14 @@
     <TargetFramework>net10.0-browser</TargetFramework>
     <OutputType>Exe</OutputType>
     <WasmBuildNative>true</WasmBuildNative>
+    <!-- The app runs under the invariant culture (App.UseInvariantCulture): numbers are
+         written and read with a point everywhere. Without ICU there is nothing else a
+         browser's language could change, and the ICU data is not downloaded at all. -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- Avalonia makes a CultureInfo from a font's language id (1033) when it loads a
+         glyph typeface; in invariant mode that throws CultureNotFoundException unless
+         any culture name is allowed (it then just carries invariant data). -->
+    <PredefinedCulturesOnly>false</PredefinedCulturesOnly>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>

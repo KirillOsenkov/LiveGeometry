@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Avalonia.Media;
 
 namespace DynamicGeometry
@@ -91,12 +92,13 @@ namespace DynamicGeometry
                 {
                     return null;
                 }
-                return double.Parse(value);
+                return double.Parse(value, CultureInfo.InvariantCulture);
             }
 
             public double ReadDouble(string key)
             {
-                return double.Parse(this[key]);
+                // DG wrote its files with a point as the decimal separator
+                return double.Parse(this[key], CultureInfo.InvariantCulture);
             }
 
             public string Title { get; set; }

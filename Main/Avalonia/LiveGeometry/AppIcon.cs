@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -47,10 +48,12 @@ public static class AppIcon
         canvas.Children.Add(Shape("M6,9 Q15,5 24,9 V12 H6 Z", marble, stoneOutline));
         canvas.Children.Add(Shape("M3,4 H27 V9 H3 Z", marble, stoneOutline));
 
-        // fluting
+        // fluting. Path data is parsed with a point as the decimal separator, whatever the
+        // user's culture: formatted in it, "17,5" read as two numbers and crashed the app
+        // at startup in every browser set to German, Russian and the like.
         for (double x = 11.5; x < 22; x += 3.5)
         {
-            canvas.Children.Add(Shape($"M{x},13.5 V50.5", null, flute, thickness: 1.2));
+            canvas.Children.Add(Shape(FormattableString.Invariant($"M{x},13.5 V50.5"), null, flute, thickness: 1.2));
         }
 
         // set square: a right triangle with a triangular window, leaning on the column
@@ -77,7 +80,7 @@ public static class AppIcon
             length = System.Math.Min(length, room);
             if (length >= 1)
             {
-                canvas.Children.Add(Shape($"M33,{y} H{33 + length}", null, tick, thickness: 1.1));
+                canvas.Children.Add(Shape(FormattableString.Invariant($"M33,{y} H{33 + length}"), null, tick, thickness: 1.1));
             }
         }
 

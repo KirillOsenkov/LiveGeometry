@@ -11,6 +11,8 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        App.UseInvariantCulture();
+
         // "LiveGeometry.Desktop.exe drawing.lgf", which is also what a file association runs
         if (args.Length > 0 && System.IO.File.Exists(args[0]))
         {

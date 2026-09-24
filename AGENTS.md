@@ -485,6 +485,16 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   settings are still there in `DrawingHost`): Ortho, Polar, Snap to grid, Snap to point,
   Snap to center. Shift while dragging or clicking still snaps to the grid (Pick's theorem
   says so), and a click near the middle of a segment still makes a midpoint.
+- **The app runs under the invariant culture** (`App.UseInvariantCulture`, first thing in
+  both `Main`s; the Browser project also builds with `InvariantGlobalization`, so no ICU
+  data is downloaded). Numbers use a point everywhere: the expression language, `.lgf` and
+  `.dgf` files, Avalonia path markup, labels. Until 2026-09-24 the culture came from the
+  browser's language, and `AppIcon` formatted `$"M{x},13.5"` with it: "M17,5,13.5" made
+  `Geometry.Parse` throw `InvalidDataException: Invalid double value` at startup for every
+  user whose browser used a decimal comma (German, Russian...). The spots that format or
+  parse numbers for a parser (`AppIcon`, the angle tool icon, expression literals,
+  `IniFile`) say `InvariantCulture` explicitly all the same. To test a culture:
+  `webauto stop`, then `webauto start <url> 1280 800 --lang de-DE`.
 - **Every exception is shown** (`MainView.CurrentDomain_FirstChanceException`, as in Helix
   and the structured log viewer): the message goes to the status bar ("Error: ...") and the
   whole text to the side panel as an `ExceptionReport` page ("Something went wrong": Error,

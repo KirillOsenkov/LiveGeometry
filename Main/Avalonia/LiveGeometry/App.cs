@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -15,6 +16,21 @@ public class App : Application
     /// (the desktop head restores the window position here).
     /// </summary>
     public static Action<Window> MainWindowCreated { get; set; }
+
+    /// <summary>
+    /// First thing in every head's Main. Numbers are written and read with a point
+    /// everywhere - the expression language, the files, Avalonia's path markup, labels -
+    /// and the UI is English, so the user's culture has nothing to say. With it in charge,
+    /// a browser set to German formatted 17.5 as "17,5" into the app icon's path data and
+    /// the app died at startup.
+    /// </summary>
+    public static void UseInvariantCulture()
+    {
+        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+        CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+        CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
+    }
 
     public override void Initialize()
     {

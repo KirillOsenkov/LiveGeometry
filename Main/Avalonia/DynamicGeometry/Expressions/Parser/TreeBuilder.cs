@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -62,7 +63,8 @@ namespace DynamicGeometry
                 case NodeType.Variable:
                     return CreateIdentifierExpression(root);
                 case NodeType.Constant:
-                    return CreateLiteralExpression(Convert.ToDouble(root.Token.Text));
+                    // the language writes decimals with a point, whatever the user's culture
+                    return CreateLiteralExpression(double.Parse(root.Token.Text, CultureInfo.InvariantCulture));
                 case NodeType.FunctionCall:
                     return CreateCallExpression(root);
                 case NodeType.PropertyAccess:

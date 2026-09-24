@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using Avalonia;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
@@ -50,7 +51,9 @@ namespace DynamicGeometry
             builder.Line(centerX, centerY, 0.8, 0.2)
                 .Line(centerX, centerY, 1, centerY);
 
+            // path data takes a point as the decimal separator whatever the user's culture
             var pathData = string.Format(
+                CultureInfo.InvariantCulture,
                 "m 0,{0} v-4 a {1},{1} 0 0 1 {2},0 v4 z m {4},-5 a 6,6 0 0 1 {3},0 z",
                 size, (size - 4) / 2, size - 4, size / 2, (size - 4) / 4 - 1);
             var path = new Path

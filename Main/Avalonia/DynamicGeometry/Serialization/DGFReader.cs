@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Avalonia;
 using Avalonia.Media;
 
@@ -956,10 +957,10 @@ namespace DynamicGeometry
                 var bottom = values[1];
                 var right = values[2];
                 var top = values[3];
-                var minX = double.Parse(left);
-                var minY = double.Parse(bottom);
-                var maxX = double.Parse(right);
-                var maxY = double.Parse(top);
+                var minX = double.Parse(left, CultureInfo.InvariantCulture);
+                var minY = double.Parse(bottom, CultureInfo.InvariantCulture);
+                var maxX = double.Parse(right, CultureInfo.InvariantCulture);
+                var maxY = double.Parse(top, CultureInfo.InvariantCulture);
                 drawing.CoordinateSystem.SetViewport(minX, maxX, minY, maxY);
             }
 
