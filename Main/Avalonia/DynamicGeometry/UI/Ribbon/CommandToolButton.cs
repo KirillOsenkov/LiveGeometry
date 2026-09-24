@@ -29,12 +29,23 @@ namespace DynamicGeometry
                 toggles.Add(this);
                 AttachedToVisualTree += (s, e) => UpdateCheckedState();
             }
+
+            if (command.Shortcut != null)
+            {
+                ToolTip.SetTip(this, command.Name + "  (" + command.Shortcut + ")");
+            }
         }
 
         private void Content_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Click();
             ToggleCheckBox();
+            UpdateToggles();
+        }
+
+        /// <summary>Every toggle re-reads its state: after a click, or a key that toggles (G)</summary>
+        public static void UpdateToggles()
+        {
             foreach (var toggle in toggles)
             {
                 toggle.UpdateCheckedState();

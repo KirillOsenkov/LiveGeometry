@@ -963,8 +963,8 @@ namespace DynamicGeometry
                 drawing.CoordinateSystem.SetViewport(minX, maxX, minY, maxY);
             }
 
-            var showAxes = section.ReadBool("ShowAxes", Settings.Instance.ShowGrid);
-            var showGrid = section.ReadBool("ShowGrid", Settings.Instance.ShowGrid);
+            var showAxes = section.ReadBool("ShowAxes", false);
+            var showGrid = section.ReadBool("ShowGrid", false);
 
             drawing.CoordinateGrid.Visible = showAxes || showGrid;
             drawing.Background = ReadPaper(section);

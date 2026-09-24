@@ -850,6 +850,9 @@ public partial class MainView : UserControl
             case Key.OemMinus:
                 coordinateSystem.ZoomOut();
                 return true;
+            case Key.G:
+                DrawingHost.ToggleGrid();
+                return true;
             case Key.H:
                 HandleExceptions(() => coordinateSystem.ZoomExtend());
                 return true;

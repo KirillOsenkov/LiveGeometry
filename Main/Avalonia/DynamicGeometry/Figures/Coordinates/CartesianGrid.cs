@@ -101,7 +101,6 @@ namespace DynamicGeometry
                     YAxisLine.Visible = value;
                 }
                 GridLines.Visible = value;
-                Settings.Instance.ShowGrid = value;
                 if (value && this.Drawing != null)
                 {
                     UpdateVisual();

@@ -90,7 +90,10 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   thing whenever something "renders once and then never updates".
 - **Right button / hover** go through `Behavior.MouseRightClick` and `Behavior.GetCursor`
   (virtual, per tool). Tool letter shortcuts live in `UI/BehaviorShortcuts.cs` (also feeds the
-  toolbar tooltips); plain-key handling (letters, arrows, +/-, H) is in `MainView.HandlePlainKey`.
+  toolbar tooltips); plain-key handling (letters, arrows, +/-, G, H) is in `MainView.HandlePlainKey`.
+  G toggles the grid (2026-09-23; VB6 had it on Distance, which has no letter now) through
+  `DrawingHost.ToggleGrid`, which calls `CommandToolButton.UpdateToggles` so the ribbon
+  button follows; `Command.Shortcut` puts the letter in a command button's tooltip.
 - **The view** (`Figures/Coordinates/CoordinateSystem.cs`) is an origin in pixels plus `UnitLength`
   (pixels per unit). Everything goes through `Zoom(factor, focus)` (the point under `focus` stays
   put: the cursor for the wheel, the canvas middle for +/- and the menu), `Fit`/`SetView`
@@ -112,7 +115,12 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   the labeled step (`MajorGridStep`), not on a fixed 1. A drawing that must keep its unit
   squares whatever the zoom says `<Viewport GridStep="1">` (`CoordinateSystem.GridStep`, a
   floor for the step; Pick's Theorem has it). Values come from an integer index times the
-  step, rounded to 10 decimals, so labels never read 0.6000000000000001.
+  step, rounded to 10 decimals, so labels never read 0.6000000000000001. Whether the grid
+  shows is the drawing's own (`CoordinateGrid.Visible`): a new drawing starts without one
+  and a file says. There is no global setting any more (2026-09-23): `CartesianGrid.Visible`
+  used to write `Settings.ShowGrid` and `new Drawing()` read it back, so every load - each
+  gallery tile included - left the global at that file's state and the next new drawing
+  came up with a grid it never asked for.
 - **Vectors**: `Vector` = an invisible `Segment` + an `Arrow` (a 7-point polygon: shaft + head).
   The arrow is computed in pixels (`Arrow.HeadLength/HeadHalfWidth/HeadGrowth`, shaft = the
   style's stroke width), is filled with the *line* color, has no outline, and stops at the rim

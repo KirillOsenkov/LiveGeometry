@@ -28,7 +28,8 @@ namespace DynamicGeometry
             Canvas = canvas;
 
             CoordinateSystem = new CoordinateSystem(this);
-            CoordinateGrid = new CartesianGrid() { Drawing = this, Visible = Settings.Instance.ShowGrid };
+            // the grid is the drawing's own: a new drawing starts without one, a file says
+            CoordinateGrid = new CartesianGrid() { Drawing = this, Visible = false };
             Figures.Add(CoordinateGrid);
             Version = Settings.CurrentDrawingVersion;
         }

@@ -78,7 +78,8 @@ namespace DynamicGeometry
 
             CommandToggleGrid = new Command(ToggleGrid, CartesianGrid.GetIcon(), "Grid", BehaviorCategories.Coordinates)
             {
-                IsChecked = () => CurrentDrawing != null && CurrentDrawing.CoordinateGrid.Visible
+                IsChecked = () => CurrentDrawing != null && CurrentDrawing.CoordinateGrid.Visible,
+                Shortcut = "G"
             };
             CommandToggleOrtho = new Command(ToggleOrtho, ToggleIcons.Ortho(), "Ortho", BehaviorCategories.Selection)
             {
@@ -249,6 +250,9 @@ namespace DynamicGeometry
         public void ToggleGrid()
         {
             CurrentDrawing.CoordinateGrid.Visible = !CurrentDrawing.CoordinateGrid.Visible;
+
+            // the G key comes through here too, and the ribbon button must follow
+            CommandToolButton.UpdateToggles();
         }
 
         public void ToggleFigureExplorer()

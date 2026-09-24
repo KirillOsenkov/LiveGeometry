@@ -67,6 +67,9 @@ namespace DynamicGeometry
         /// </summary>
         public Func<bool> IsChecked { get; set; }
 
+        /// <summary>The key that runs it, for the tooltip ("G" for the grid); null for none</summary>
+        public string Shortcut { get; set; }
+
         public virtual void Execute()
         {
             if (Implementation != null)

@@ -6,7 +6,8 @@ namespace DynamicGeometry;
 
 /// <summary>
 /// Single-letter tool shortcuts - the same letters the original VB6 DG used, for the
-/// tools that still exist.
+/// tools that still exist. Except G: VB6 had it on Distance, here it toggles the grid
+/// (MainView.HandlePlainKey), which is reached for far more often.
 /// </summary>
 public static class BehaviorShortcuts
 {
@@ -27,7 +28,6 @@ public static class BehaviorShortcuts
         { Key.T, typeof(ReflectionCreator) },
         { Key.D, typeof(LocusCreator) },
         { Key.W, typeof(PolygonCreator) },
-        { Key.G, typeof(DistanceMeasurementCreator) },
         { Key.J, typeof(AngleMeasurementCreator) },
         { Key.K, typeof(AreaMeasurementCreator) },
     };
