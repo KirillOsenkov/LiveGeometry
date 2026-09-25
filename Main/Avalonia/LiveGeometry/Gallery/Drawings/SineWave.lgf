@@ -31,10 +31,10 @@
       <Dependency Name="T1" />
       <Dependency Name="F" />
     </DistanceMeasurement>
-    <PointByCoordinates Name="P1" Visible="false" Style="DependentPointStyle" X="pi / (2 * F.X)" Y="0">
+    <PointByCoordinates Name="P1" Visible="false" Style="DependentPointStyle" X="pi / (2 * F.X + 0.0002)" Y="0">
       <Dependency Name="F" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P2" Visible="false" Style="DependentPointStyle" X="pi / (2 * F.X)" Y="1">
+    <PointByCoordinates Name="P2" Visible="false" Style="DependentPointStyle" X="pi / (2 * F.X + 0.0002)" Y="1">
       <Dependency Name="F" />
     </PointByCoordinates>
     <LineTwoPoints Name="Post" Visible="false" Style="Guide">
@@ -48,11 +48,11 @@
       <Dependency Name="P1" />
       <Dependency Name="A" />
     </Segment>
-    <PointByCoordinates Name="Q1" Visible="false" Style="DependentPointStyle" X="pi / (2 * F.X)" Y="A.Y / 2">
+    <PointByCoordinates Name="Q1" Visible="false" Style="DependentPointStyle" X="pi / (2 * F.X + 0.0002)" Y="A.Y / 2">
       <Dependency Name="F" />
       <Dependency Name="A" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Q2" Visible="false" Style="DependentPointStyle" X="pi / (2 * F.X)" Y="1.5 * A.Y">
+    <PointByCoordinates Name="Q2" Visible="false" Style="DependentPointStyle" X="pi / (2 * F.X + 0.0002)" Y="1.5 * A.Y">
       <Dependency Name="F" />
       <Dependency Name="A" />
     </PointByCoordinates>

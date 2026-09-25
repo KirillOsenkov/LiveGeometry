@@ -409,12 +409,23 @@ namespace DynamicGeometry
             var x = center.X - element.Width / 2;
             var y = center.Y - element.Height / 2;
 #endif
+            // a place that isn't one would make the layout pass throw and take the app down
+            if (!x.IsValidValue() || !y.IsValidValue())
+            {
+                return;
+            }
+
             Canvas.SetLeft(element, x);
             Canvas.SetTop(element, y);
         }
 
         public static void MoveTo(this FrameworkElement element, Point center)
         {
+            if (!center.Exists())
+            {
+                return;
+            }
+
             Canvas.SetLeft(element, center.X);
             Canvas.SetTop(element, center.Y);
         }

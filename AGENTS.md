@@ -142,6 +142,13 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   of its end point. `Vector.OnAddingToCanvas` gives it the default `LineStyle` before the base
   call, otherwise the polygon default (pale translucent fill) wins; vectors in older files keep
   their polygon style and get its fill.
+- **A point with an infinite coordinate does not exist** (`Math.Exists(Point)` rejects NaN
+  and infinity; `IsValidValue` for a double). Avalonia's layout throws "Invalid Arrange
+  rectangle" for a canvas child placed at infinity, unhandled: the desktop app dies and the
+  browser app freezes on the spot (the Sine Wave at frequency 0, whose crest is at
+  pi / (2 * 0), did that until 2026-09-24). `CenterAt`/`MoveTo` in `Utilities` also refuse a
+  non-finite place. Anything new that positions a control from figure coordinates must not
+  hand it NaN or infinity.
 - **`PathFigure.IsClosed` defaults to true in Avalonia** (false in WPF), and `IsFilled` to true.
   Every hand-built `PathFigure` must set both; a forgotten one draws a line from the end of the
   path back to its start (it did, for function graphs and loci, in `Curve`).
@@ -356,9 +363,13 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   the ground - keep that green calm (#4CAF50) so text reads on it.
 - **The Sine Wave** (2026-09-23, from the two phone drawings, one slider each) graphs
   `A.Y * sin(F.X * x)`: F slides on a visible track at y = -3, A on an invisible vertical
-  line through the first crest, x = pi/(2·F.X), whose two points are `PointByCoordinates`
-  with that expression - so the amplitude handle rides the crest whatever the frequency,
-  and keeps its height (its parameter on the line) when the crest moves. A dashed segment
+  line through the first crest, x = pi/(2·F.X + 0.0002), whose two points are
+  `PointByCoordinates` with that expression - so the amplitude handle rides the crest
+  whatever the frequency, and keeps its height (its parameter on the line) when the crest
+  moves. The 0.0002 (a hundredth of a pixel at frequency 1) keeps the crest finite at the
+  left end of the track, frequency 0: without it the post was at pi/0, the handle, the
+  wave and the caption all ceased to exist, and before 2026-09-24 the app crashed (see
+  "A point with an infinite coordinate"). Now frequency 0 shows a flat wave. A dashed segment
   from the axis to the handle shows the height. Each slider shows its number as a
   `DistanceMeasurement`: the frequency from the track's start on the y axis to F; the
   amplitude between two hidden points at A.Y/2 and 1.5·A.Y on the post, whose distance is

@@ -216,9 +216,14 @@ namespace DynamicGeometry
             return x + y;
         }
 
+        /// <summary>
+        /// Finite coordinates. An infinite one (pi / (2 * F.X) with F.X = 0, the Sine Wave's
+        /// crest at frequency 0) is as much "no point" as NaN: pushed to a canvas it made
+        /// Avalonia throw "Invalid Arrange rectangle" and took the app down.
+        /// </summary>
         public static bool Exists(this Point p)
         {
-            return !double.IsNaN(p.X) && !double.IsNaN(p.Y);
+            return p.X.IsValidValue() && p.Y.IsValidValue();
         }
 
         public static bool IsValidPositiveValue(this double value)
