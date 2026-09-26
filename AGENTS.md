@@ -71,6 +71,43 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   Output is `<dir>/web.config` + `<dir>/wwwroot/`. CI (`.github/workflows/main_livegeometry.yml`)
   does exactly this and deploys to Azure App Service (IIS).
 
+## The ribbon
+
+Tools are `Behavior` subclasses found by reflection (`Behavior.LoadBehaviors`): `[Category]`
+names the tab, `[Order]` the place in it, `[Ignore]` keeps one off the ribbon; the button shows
+`Name`, the tooltip adds the letter from `UI/BehaviorShortcuts.cs`, the status bar shows
+`HintText`. Tab order is the order of the constants in `BehaviorCategories`; tools the user
+defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommands`. Tab by tab
+(letter in parentheses):
+
+- **Selection**: Drag (Q) - drags points and figures; also the tool every construction
+  returns to.
+- **Points**: Point (P) - free, on a figure, or at an intersection; Midpoint (M) - two points
+  or a segment; Label new points (toggle).
+- **Lines**: Segment (S), Ray (Y), Line (L) - two points each; Parallel (N) and Perpendicular
+  (E) - a line then a point; Perpendicular Bisector - two points or a segment; Angle Bisector
+  (B) - vertex then two side points, or an angle measurement; Join segments - a point between
+  two segments joins their other ends; Polyline - points, double-click or click an existing
+  point to finish.
+- **Circles**: Circle (C) - center then a point on it; By Radius (R) - two points, a segment or
+  a distance, then the center; Ellipse - center, end of the long axis, end of the short axis;
+  Circular Arc (A) - center, start, end (counterclockwise); Elliptical Arc - center, semi-major,
+  semi-minor, begin angle, end angle.
+- **Shapes**: Triangle - 3 points; Square - two adjacent vertices; Polygon (W) - points, click
+  the first again to close; Regular polygon - center then a vertex. (Polygon intersection
+  exists but is `[Ignore]`d.)
+- **Coordinates**: Background and Grid (G) (commands); Function - an expression in x; Line - by
+  slope and intercept expressions; Circle - by center and radius expressions; Vector - two
+  points; Point by coordinates (toggle: gives the point tools an X/Y panel).
+- **Transform**: Reflection (T) - source figure, then a mirror (point, line, segment, ray, or a
+  circle for a point source); Rotation - source, center, angle (a figure with an angle or a
+  typed value); Translation - source, distance, direction (see "TranslatedPoint"); Dilation -
+  source, center, factor (a figure with a length or a typed value).
+- **Measure**: Distance - two points or a segment; Angle (J) - vertex then two side points;
+  Area (K) - a polygon, ellipse, circle or list of points.
+- **Misc**: Bezier - four points; Locus (D) - a point that depends on a point on a figure;
+  Text - a label at the click; Define figure - records a construction as a new tool.
+
 ## Avalonia and framework traps
 
 - **Trimming only happens on Release publish**, never in `dotnet run`. The geometry library is
