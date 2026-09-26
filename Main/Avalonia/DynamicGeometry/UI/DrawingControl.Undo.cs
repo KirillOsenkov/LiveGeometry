@@ -70,6 +70,8 @@ namespace DynamicGeometry
                 ConstructionInProgress = false;
                 UpdateUndoRedo();
                 Drawing.ClearStatus();
+                // a tool whose panel belongs to a step of the construction has none now
+                Drawing.RaiseDisplayProperties(Drawing.Behavior?.PropertyBag);
             }
             else
             {

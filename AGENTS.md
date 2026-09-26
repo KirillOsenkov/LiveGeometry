@@ -309,8 +309,20 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   A file with none of those is the old format (typed values as attributes, roles by
   position, Direction in radians); `UpgradeLegacyValues`, called by the deserializer,
   gives the typed values auxiliary Numbers. `Transformer.CreateTranslatedFigure` takes the
-  two sources, shared by every point of a translated figure. In the Translation tool a
-  vector picked as the second figure ends the construction (it is both quantities).
+  two sources, shared by every point of a translated figure.
+- **The Translation tool is stepwise** (`TranslationCreator`, 2026-09-26): source figure,
+  then magnitude, then direction, then - when something was left free - a click that
+  places the point. The side panel shows only the step at hand (`PropertyBag` is the
+  step's `ValueStep`: an up/down number box (`UpDownEditor`, chosen by
+  `[PropertyGridPreferredEditor("UpDown")]`), OK (Enter too) and, for a point source and at
+  most once, Free), remembers the last values for the session, and goes away when the
+  construction ends: `DrawingControl` re-shows the behavior's `PropertyBag` on "construction
+  complete" as well, and the creator clears its panel in `Stopping` because that event is
+  raised before `Started` resets the state. A click on a figure during a value step takes
+  it (a vector at the magnitude step gives both and ends the construction); a click on
+  empty paper does nothing. The riding point of the placement step is the real
+  `TranslatedPoint` as a temp result, moved by `MoveTo` on every mouse move; the click
+  stores the place and the final one is created there.
 - **Rows that are editable only sometimes** (`PropertyGrid/ConditionalPropertyValue.cs`):
   `[PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]` on the property,
   and the figure implements `IConditionalProperties` (`CanEdit(name)`, `Caption(name,
