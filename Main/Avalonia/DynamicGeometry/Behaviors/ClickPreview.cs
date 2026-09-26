@@ -210,6 +210,11 @@ public class ClickPreview
             };
             SetHaloStroke(halo, polygon.Shape);
         }
+        else if (figure is Slider slider)
+        {
+            // the track stands for the whole (a slider taken as a radius)
+            halo = (AvaloniaShapes.Shape)CreateHalo(slider.Track);
+        }
         else if (figure is LabelBase label)
         {
             // a plate behind the text (a distance measurement taken as a radius)

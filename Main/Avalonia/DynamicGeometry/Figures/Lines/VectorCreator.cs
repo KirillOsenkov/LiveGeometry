@@ -5,7 +5,7 @@ using Avalonia.Media;
 
 namespace DynamicGeometry
 {
-    [Category(BehaviorCategories.Coordinates)]
+    [Category(BehaviorCategories.Lines)]
     [Order(4)]
     public class VectorCreator : FigureCreator
     {

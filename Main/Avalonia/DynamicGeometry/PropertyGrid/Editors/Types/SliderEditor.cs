@@ -13,13 +13,13 @@ namespace DynamicGeometry
 
     public class SliderEditor : LabeledValueEditor, IValueEditor
     {
-        public Slider Slider { get; set; }
+        public Avalonia.Controls.Slider Slider { get; set; }
         public TextBox TextBox { get; set; }
         public Grid Panel { get; set; }
 
         protected override UIElement CreateEditor()
         {
-            Slider = new Slider();
+            Slider = new Avalonia.Controls.Slider();
             Slider.VerticalAlignment = VerticalAlignment.Center;
             Slider.MinWidth = 110;
             Slider.Margin = new Avalonia.Thickness(8, 0, 0, 0);

@@ -20,7 +20,7 @@ public class BrushPickerView : Decorator
     readonly SegmentSwitcher kinds = new SegmentSwitcher() { Margin = new Thickness(0, 0, 0, 6) };
     readonly StackPanel gradientPanel = new StackPanel() { Margin = new Thickness(0, 0, 0, 8) };
     readonly GradientStopBar stopBar = new GradientStopBar();
-    readonly Slider angleSlider = new Slider() { Minimum = 0, Maximum = 360, TickFrequency = 15, IsSnapToTickEnabled = true };
+    readonly Avalonia.Controls.Slider angleSlider = new Avalonia.Controls.Slider() { Minimum = 0, Maximum = 360, TickFrequency = 15, IsSnapToTickEnabled = true };
     readonly TextBlock angleText = new TextBlock() { Width = 34, TextAlignment = TextAlignment.Right, VerticalAlignment = VerticalAlignment.Center };
     readonly ColorPickerView colorPicker;
 
@@ -70,7 +70,7 @@ public class BrushPickerView : Decorator
         stopBar.StopsChanged += RaiseBrushChanged;
         angleSlider.PropertyChanged += (s, e) =>
         {
-            if (e.Property == Slider.ValueProperty)
+            if (e.Property == Avalonia.Controls.Slider.ValueProperty)
             {
                 angleText.Text = ((int)angleSlider.Value) + "°";
                 RaiseBrushChanged();

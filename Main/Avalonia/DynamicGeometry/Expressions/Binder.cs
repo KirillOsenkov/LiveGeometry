@@ -89,6 +89,12 @@ namespace DynamicGeometry
             var candidate = Drawing.Figures[figureName];
             if (candidate == null)
             {
+                // the indexer looks inside a composite figure (a slider) and not at it, and a
+                // slider "a" must not be taken for the point "A" by the lenient search below
+                candidate = Drawing.Figures.FirstOrDefault(f => f != null && f.Name == figureName);
+            }
+            if (candidate == null)
+            {
                 candidate = Drawing.Figures
                     .Where(f => f != null 
                         && !f.Name.IsEmpty() 

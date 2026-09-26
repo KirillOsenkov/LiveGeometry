@@ -5,7 +5,7 @@ using System.Linq;
 namespace DynamicGeometry
 {
     [Category(BehaviorCategories.Lines)]
-    [Order(6)]
+    [Order(7)]
     public class SegmentBisectorCreator : FigureCreator
     {
         protected override DependencyList InitExpectedDependencies()

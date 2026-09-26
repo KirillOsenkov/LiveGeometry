@@ -39,7 +39,10 @@ namespace DynamicGeometry
 
             found = Drawing.Figures.HitTest(offsetFromFigureLeftTopCorner);
 
-            IMovable oneMovable = found as IMovable;
+            // a figure with parts (a slider) says which of them the press takes
+            IMovable oneMovable = found is IMovableParts parts
+                ? parts.FindMovablePart(offsetFromFigureLeftTopCorner)
+                : found as IMovable;
             if (oneMovable != null && (found.Locked || oneMovable.AllowMove()))
             {
                 if (found.Locked)
@@ -167,7 +170,7 @@ namespace DynamicGeometry
                 && moving.Count == 1
                 && moving[0] is IPoint
                 && found != null
-                && found == moving[0])
+                && (found == moving[0] || found is IMovableParts))
             {
                 oldCoordinates = moving[0].Coordinates;
             }

@@ -4,6 +4,7 @@ using Avalonia.Controls.Shapes;
 namespace DynamicGeometry
 {
     [StyleFor(typeof(ILinearFigure))]
+    [StyleFor(typeof(Slider))]
     public class LineStyle : FigureStyle
     {
         public override FrameworkElement GetSampleGlyph()

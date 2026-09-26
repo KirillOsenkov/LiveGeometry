@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace DynamicGeometry
 {
     [Category(BehaviorCategories.Lines)]
-    [Order(7)]
+    [Order(8)]
     public class AngleBisectorCreator : FigureCreator
     {
         protected override DependencyList InitExpectedDependencies()

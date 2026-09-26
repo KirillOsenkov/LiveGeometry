@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace DynamicGeometry
 {
     [Category(BehaviorCategories.Lines)]
-    [Order(4)]
+    [Order(5)]
     public class ParallelLineCreator : FigureCreator
     {
         protected override IEnumerable<IFigure> CreateFigures()

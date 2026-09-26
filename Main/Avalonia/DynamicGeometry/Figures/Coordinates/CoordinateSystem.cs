@@ -264,6 +264,11 @@ namespace DynamicGeometry
                         Include(vertex.Coordinates);
                     }
                 }
+                else if (figure is Slider slider)
+                {
+                    Include(slider.Anchor.Coordinates);
+                    Include(slider.Knob.Coordinates);
+                }
                 else if (figure is IArc arc && arc.SemiMajor.EqualsWithPrecision(arc.SemiMinor))
                 {
                     // a circular arc reaches its ends and whichever of the four compass points

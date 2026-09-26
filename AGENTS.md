@@ -84,8 +84,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   returns to.
 - **Points**: Point (P) - free, on a figure, or at an intersection; Midpoint (M) - two points
   or a segment; Label new points (toggle).
-- **Lines**: Segment (S), Ray (Y), Line (L) - two points each; Parallel (N) and Perpendicular
-  (E) - a line then a point; Perpendicular Bisector - two points or a segment; Angle Bisector
+- **Lines**: Segment (S), Ray (Y), Line (L), Vector - two points each; Parallel (N) and
+  Perpendicular (E) - a line then a point; Perpendicular Bisector - two points or a segment; Angle Bisector
   (B) - vertex then two side points, or an angle measurement; Join segments - a point between
   two segments joins their other ends; Polyline - points, double-click or click an existing
   point to finish.
@@ -97,14 +97,16 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the first again to close; Regular polygon - center then a vertex. (Polygon intersection
   exists but is `[Ignore]`d.)
 - **Coordinates**: Background and Grid (G) (commands); Function - an expression in x; Line - by
-  slope and intercept expressions; Circle - by center and radius expressions; Vector - two
-  points; Point by coordinates (toggle: gives the point tools an X/Y panel).
+  slope and intercept expressions; Circle - by center and radius expressions; Point by
+  coordinates (toggle: gives the point tools an X/Y panel).
 - **Transform**: Reflection (T) - source figure, then a mirror (point, line, segment, ray, or a
   circle for a point source); Rotation - source, center, angle (a figure with an angle or a
   typed value); Translation - source, distance, direction (see "TranslatedPoint"); Dilation -
   source, center, factor (a figure with a length or a typed value).
 - **Measure**: Distance - two points or a segment; Angle (J) - vertex then two side points;
-  Area (K) - a polygon, ellipse, circle or list of points.
+  Area (K) - a polygon, ellipse, circle or list of points; Slider - where it sits, then where
+  its knob starts (or press, drag, release): a number with a handle, taken wherever a tool
+  asks for a length or an angle, named in expressions (a, b, c).
 - **Misc**: Bezier - four points; Locus (D) - a point that depends on a point on a figure;
   Text - a label at the click; Define figure - records a construction as a new tool.
 
@@ -259,11 +261,24 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   construction, opened at the first click (`FigureCreator.EnsureTransaction`), so an edit made
   in that panel between constructions is an undo step of its own.
 - **Numbers are figures** (`Figures/Values/Number.cs`): roots with no shape, named n1, n2...,
-  usable in expressions by name, a length and an angle at once. There is no tool that makes one
-  yet; a typed value in the Translation tool becomes one. `Auxiliary` (any figure) marks one
+  usable in expressions by name, a length and an angle at once. No tool makes a bare one (the
+  Slider is a Number with a handle); a typed value in the Translation tool becomes one. `Auxiliary` (any figure) marks one
   created on demand for another: it is removed with its last dependent and comes back on undo.
   Every deletion goes through `RemoveFigureAction`, one figure per action inside a transaction,
   so undo restores labels and a polygon loses a vertex rather than dying.
+- **Sliders** (`Figures/Values/Slider.cs`) are one `CompositeFigure` whose parts are library
+  figures: a `FreePoint` anchor, a `TranslatedPoint` knob kept on the horizontal through it
+  (free distance, direction a Number saying 0, clamped at the anchor), the `Segment` track, a
+  caption label "a = 2.00" a fixed few pixels above the anchor. The drawing and the file see
+  one figure (`<Slider X Y Value>`), and no part is ever handed out: `HitTest` answers with the
+  slider, so a tool can't come to depend on the knob. The value is the track's length:
+  `INumber` (expressions say `a`), `ILengthProvider` (By Radius, Dilation, Translation),
+  `IAngleProvider` in degrees (Rotation). Dragging goes by parts (`IMovableParts`, which the
+  Dragger asks): the knob changes the value, the anchor and anything else move the whole. The
+  parts carry names no expression can say ("slider knob"): `Figures[name]` looks *inside*
+  composites and not at them, which is also why `Binder.ResolveFigure` matches top-level names
+  exactly before its case-insensitive pass (a slider `a` next to a point `A`). Default names
+  are lowercase letters, skipping e, x, y and the ones that read as digits.
 - **TranslatedPoint** (`Figures/Points/TranslatedPoint.cs`): distance and direction are each
   *tied* to a figure (vector, length/angle provider, `ILine` as it points, a Number) or *free*
   (the parameter dragging changes). Roles are stored by index into the dependency list, never

@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace DynamicGeometry
 {
     [Category(BehaviorCategories.Lines)]
-    [Order(5)]
+    [Order(6)]
     public class PerpendicularLineCreator : FigureCreator
     {
         protected override IEnumerable<IFigure> CreateFigures()
