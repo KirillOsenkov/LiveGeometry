@@ -106,7 +106,7 @@ namespace DynamicGeometry
                 return;
             }
 
-            Drawing.RaiseConstructionStepStarted();
+            StartConstruction();
             var ends = FindRadiusEnds(radius);
             if (ends != null)
             {

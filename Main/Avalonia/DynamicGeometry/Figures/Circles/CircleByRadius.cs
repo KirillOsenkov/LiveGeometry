@@ -26,5 +26,16 @@ namespace DynamicGeometry
                 return Point(0).Distance(Point(1));
             }
         }
+
+        // the radius points, when the radius is two points and not a figure's length
+        protected override IPoint RadiusPivot
+        {
+            get { return Dependencies.Count > 2 ? Dependencies[0] as IPoint : null; }
+        }
+
+        protected override IPoint RadiusEnd
+        {
+            get { return Dependencies.Count > 2 ? Dependencies[1] as IPoint : null; }
+        }
     }
 }

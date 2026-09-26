@@ -22,7 +22,7 @@ namespace DynamicGeometry
                 }
             }
 
-            Drawing.RaiseConstructionStepStarted();
+            StartConstruction();
 
             if (GetExpectedDependencyType() != null)
             {

@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using Avalonia.Media;
 namespace DynamicGeometry
 {
-    public class Vector : CompositeFigure, ILengthProvider
+    public class Vector : CompositeFigure, ILengthProvider, IFixableLength
     {
         public Vector()
         {
@@ -113,7 +113,11 @@ namespace DynamicGeometry
             get { return Line.Coordinates; }
         }
 
+        // the length lives on the segment inside; so do Fix length and Free length
         [PropertyGridVisible]
+        [PropertyGridGroup("Length")]
+        [PropertyGridPreferredEditor("UpDown")]
+        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public double Length
         {
             get
@@ -124,6 +128,36 @@ namespace DynamicGeometry
             {
                 Line.Length = value;
             }
+        }
+
+        public bool CanEdit(string propertyName)
+        {
+            return Line.CanEdit(propertyName);
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Fix length")]
+        [PropertyGridGroup("Length")]
+        [PropertyGridIcon(PropertyGridIcon.Lock)]
+        public void FixLength()
+        {
+            Line.FixLength();
+            Drawing.RaiseDisplayProperties(this);
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Free length")]
+        [PropertyGridGroup("Length")]
+        [PropertyGridIcon(PropertyGridIcon.Unlock)]
+        public void FreeLength()
+        {
+            Line.FreeLength();
+            Drawing.RaiseDisplayProperties(this);
         }
 
         [PropertyGridVisible]

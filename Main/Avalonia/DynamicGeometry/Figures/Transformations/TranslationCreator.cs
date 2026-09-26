@@ -166,7 +166,7 @@ namespace DynamicGeometry
                 case Step.Source:
                     if (underMouse != null)
                     {
-                        Drawing.RaiseConstructionStepStarted();
+                        StartConstruction();
                         FoundDependencies.Add(underMouse);
                         Advance(Step.Distance);
                     }

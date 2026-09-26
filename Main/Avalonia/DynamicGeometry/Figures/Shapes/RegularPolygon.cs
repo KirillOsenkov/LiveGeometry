@@ -3,8 +3,95 @@ using Avalonia;
 
 namespace DynamicGeometry
 {
-    public class RegularPolygon : DependentPolygonBase, IPolygon
+    public class RegularPolygon : DependentPolygonBase, IPolygon, IFixableLength
     {
+        #region Side
+
+        IPoint CenterPoint
+        {
+            get { return (IPoint)Dependencies[0]; }
+        }
+
+        IPoint VertexPoint
+        {
+            get { return (IPoint)Dependencies[1]; }
+        }
+
+        double RadiusToSide
+        {
+            get { return 2 * System.Math.Sin(Math.PI / NumberOfSides); }
+        }
+
+        /// <summary>
+        /// The side, which is the vertex's distance from the center scaled by the number of
+        /// sides. Set, it moves the vertex or changes its fixed distance
+        /// (<see cref="LengthConstraint.SetDistance"/>).
+        /// </summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Side")]
+        [PropertyGridGroup("Side")]
+        [PropertyGridPreferredEditor("UpDown")]
+        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
+        public double Length
+        {
+            get
+            {
+                return Center.Distance(Vertex) * RadiusToSide;
+            }
+            set
+            {
+                LengthConstraint.SetDistance(VertexPoint, CenterPoint, value / RadiusToSide);
+            }
+        }
+
+        public bool CanEdit(string propertyName)
+        {
+            bool isFixed = LengthConstraint.FixedEnd(VertexPoint, CenterPoint) != null;
+            switch (propertyName)
+            {
+                case "Length":
+                    return isFixed || LengthConstraint.CanStretch(VertexPoint, CenterPoint);
+                case "FixLength":
+                    return !isFixed && LengthConstraint.CanStretch(VertexPoint, CenterPoint);
+                case "FreeLength":
+                    return isFixed;
+                default:
+                    return true;
+            }
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return propertyName == "Length" ? "Side" : defaultCaption;
+        }
+
+        /// <summary>The polygon keeps its size: the vertex stays at its distance from the center</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Fix length")]
+        [PropertyGridGroup("Side")]
+        [PropertyGridIcon(PropertyGridIcon.Lock)]
+        public void FixLength()
+        {
+            LengthConstraint.Fix(VertexPoint, CenterPoint);
+            Drawing.RaiseDisplayProperties(this);
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Free length")]
+        [PropertyGridGroup("Side")]
+        [PropertyGridIcon(PropertyGridIcon.Unlock)]
+        public void FreeLength()
+        {
+            var fixedEnd = LengthConstraint.FixedEnd(VertexPoint, CenterPoint);
+            if (fixedEnd != null)
+            {
+                LengthConstraint.Free(fixedEnd);
+                Drawing.RaiseDisplayProperties(this);
+            }
+        }
+
+        #endregion
+
         private int numberOfSides = 5;
         [PropertyGridVisible]
         [PropertyGridName("Number of sides")]

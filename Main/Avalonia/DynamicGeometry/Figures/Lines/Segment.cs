@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using GuiLabs.Undo;
-
 namespace DynamicGeometry
 {
-    public class Segment : LineBase, ILengthProvider, ILine, IConditionalProperties
+    public class Segment : LineBase, ILengthProvider, ILine, IFixableLength
     {
         /// <summary>
         /// Setting it on a segment with a fixed length (<see cref="FixLength"/>) changes that
@@ -23,42 +20,45 @@ namespace DynamicGeometry
             }
             set
             {
-                var fixedEnd = FixedEnd();
-                if (fixedEnd != null)
+                int end = LengthEnd();
+                if (end >= 0)
                 {
-                    fixedEnd.Distance = value;
-                    return;
-                }
-
-                var length = Length;
-                var end = EndToStretch();
-                if (value == length || end < 0)
-                {
-                    return;
-                }
-
-                var pointToMove = (IMovable)Dependencies[end];
-                var factor = value / length;
-                var newLoc = Math.GetDilationPoint(Point(end), Point(1 - end), factor);
-                pointToMove.MoveTo(newLoc);
-                (pointToMove as IFigure).RecalculateAndUpdateVisual();
-                List<IFigure> dependents = DependencyAlgorithms.FindDescendants(f => f.Dependents, (pointToMove as IFigure).AsEnumerable());
-                dependents.Reverse();
-                foreach (var dependent in dependents)
-                {
-                    dependent.RecalculateAndUpdateVisual();
+                    LengthConstraint.SetDistance(End(end), End(1 - end), value);
                 }
             }
         }
 
-        /// <summary>
-        /// The index of the end a new length moves, -1 when neither can go where the length
-        /// says: a free point can, and so can a point that slides along this very segment's
-        /// line (a translated point from the other end with a free distance). A point on
-        /// some other figure would only get near, and an end the other end is built on
-        /// (a fixed-length segment: the far end follows) would take the whole segment along.
-        /// </summary>
+        IPoint End(int index)
+        {
+            return (IPoint)Dependencies[index];
+        }
+
+        /// <summary>The end holding a fixed length from the other, or null (see <see cref="LengthConstraint.FixedEnd"/>)</summary>
+        TranslatedPoint FixedEnd()
+        {
+            int end = FixedEndIndex();
+            return end >= 0 ? (TranslatedPoint)Dependencies[end] : null;
+        }
+
+        int FixedEndIndex()
+        {
+            return IndexOfEnd((end, pivot) => LengthConstraint.FixedEnd(end, pivot) != null);
+        }
+
+        /// <summary>The end a new length moves (see <see cref="LengthConstraint.CanStretch"/>), the second preferred; -1 when neither can</summary>
         int EndToStretch()
+        {
+            return IndexOfEnd(LengthConstraint.CanStretch);
+        }
+
+        /// <summary>The end that answers for the length: the fixed one, else the one that can be stretched</summary>
+        int LengthEnd()
+        {
+            int fixedEnd = FixedEndIndex();
+            return fixedEnd >= 0 ? fixedEnd : EndToStretch();
+        }
+
+        int IndexOfEnd(System.Func<IFigure, IFigure, bool> qualifies)
         {
             if (Dependencies == null || Dependencies.Count < 2)
             {
@@ -67,7 +67,7 @@ namespace DynamicGeometry
 
             for (int end = 1; end >= 0; end--)
             {
-                if (CanTakeLength(Dependencies[end], Dependencies[1 - end]))
+                if (qualifies(Dependencies[end], Dependencies[1 - end]))
                 {
                     return end;
                 }
@@ -76,54 +76,16 @@ namespace DynamicGeometry
             return -1;
         }
 
-        static bool CanTakeLength(IFigure point, IFigure otherEnd)
-        {
-            if (point.Locked || otherEnd.DependsOn(point))
-            {
-                return false;
-            }
-
-            if (point is FreePoint)
-            {
-                return true;
-            }
-
-            return point is TranslatedPoint translated
-                && translated.IsDistanceFree
-                && !translated.IsDirectionFree
-                && translated.Source == otherEnd;
-        }
-
-        /// <summary>
-        /// The end that holds the segment's length: a translated point from the other end
-        /// whose distance is a Number. Null for a segment without a fixed length.
-        /// </summary>
-        TranslatedPoint FixedEnd()
-        {
-            for (int end = 1; end >= 0; end--)
-            {
-                if (Dependencies.Count > 1
-                    && Dependencies[end] is TranslatedPoint translated
-                    && translated.Source == Dependencies[1 - end]
-                    && translated.DistanceSource is Number)
-                {
-                    return translated;
-                }
-            }
-
-            return null;
-        }
-
         public bool CanEdit(string propertyName)
         {
             switch (propertyName)
             {
                 case "Length":
-                    return FixedEnd() != null || EndToStretch() >= 0;
+                    return LengthEnd() >= 0;
                 case "FixLength":
-                    return FixedEnd() == null && EndToStretch() >= 0;
+                    return FixedEndIndex() < 0 && EndToStretch() >= 0;
                 case "FreeLength":
-                    return FixedEnd() != null;
+                    return FixedEndIndex() >= 0;
                 default:
                     return true;
             }
@@ -136,13 +98,7 @@ namespace DynamicGeometry
 
 #if !PLAYER && !TABULA
 
-        /// <summary>
-        /// The segment keeps its length from now on: the end that could take a new length
-        /// (see <see cref="EndToStretch"/>) becomes a translated point from the other end, at
-        /// the current length held by a Number, direction free - so it drags around the other
-        /// end and the other end carries it along. An end already sliding along the segment's
-        /// line just has its distance fixed. Nothing moves.
-        /// </summary>
+        /// <summary>The segment keeps its length from now on (<see cref="LengthConstraint.Fix"/>)</summary>
         [PropertyGridVisible]
         [PropertyGridName("Fix length")]
         [PropertyGridGroup("Length")]
@@ -150,38 +106,14 @@ namespace DynamicGeometry
         public void FixLength()
         {
             int end = EndToStretch();
-            if (end < 0)
+            if (end >= 0)
             {
-                return;
+                LengthConstraint.Fix(End(end), End(1 - end));
+                Drawing.RaiseDisplayProperties(this);
             }
-
-            var point = Dependencies[end];
-            if (point is TranslatedPoint sliding)
-            {
-                Drawing.ActionManager.SetProperty(sliding, "FreeDistance", false);
-            }
-            else
-            {
-                var pivot = (IPoint)Dependencies[1 - end];
-                using (Transaction.Create(Drawing.ActionManager, false))
-                {
-                    var length = Number.CreateAuxiliary(Drawing, Length);
-                    Actions.Add(Drawing, length);
-                    var fixedEnd = Factory.CreateTranslatedPoint(Drawing, pivot, length, directionSource: null);
-                    // the free direction: where the end is now
-                    fixedEnd.MoveTo(((IPoint)point).Coordinates);
-                    Actions.ReplacePoint((PointBase)point, fixedEnd);
-                }
-            }
-
-            Drawing.RaiseDisplayProperties(this);
         }
 
-        /// <summary>
-        /// The opposite of <see cref="FixLength"/>: the end holding the length becomes a free
-        /// point where it is (its Number goes with it), or, when its direction is fixed too,
-        /// keeps sliding along the line with the distance free.
-        /// </summary>
+        /// <summary>The opposite of <see cref="FixLength"/> (<see cref="LengthConstraint.Free"/>)</summary>
         [PropertyGridVisible]
         [PropertyGridName("Free length")]
         [PropertyGridGroup("Length")]
@@ -189,22 +121,11 @@ namespace DynamicGeometry
         public void FreeLength()
         {
             var fixedEnd = FixedEnd();
-            if (fixedEnd == null)
+            if (fixedEnd != null)
             {
-                return;
+                LengthConstraint.Free(fixedEnd);
+                Drawing.RaiseDisplayProperties(this);
             }
-
-            if (fixedEnd.IsDirectionFree)
-            {
-                var free = Factory.CreateFreePoint(Drawing, fixedEnd.Coordinates);
-                Actions.ReplacePoint(fixedEnd, free);
-            }
-            else
-            {
-                Drawing.ActionManager.SetProperty(fixedEnd, "FreeDistance", true);
-            }
-
-            Drawing.RaiseDisplayProperties(this);
         }
 
 #endif

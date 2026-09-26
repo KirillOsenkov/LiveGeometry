@@ -106,6 +106,11 @@ namespace DynamicGeometry
         /// <summary>
         /// Transaction is necessary if, for example, you're adding a segment and its two endpoints in one click-drag-release motion.
         /// Both points and the segment will be created, and we want Undo to remove both the points and the segment in one swoop.
+        /// It spans one construction: opened by <see cref="StartConstruction"/> at the first
+        /// step, committed when the figures are added. While the tool waits for the next
+        /// construction there is none, so an edit made then (in the panel that follows a new
+        /// segment, say) is an undo step of its own and not part of the next figure. (It used
+        /// to be opened when the tool started, which lumped those edits into the next figure.)
         /// </summary>
         protected Transaction Transaction { get; set; }
 
@@ -114,11 +119,29 @@ namespace DynamicGeometry
         public override void Started()
         {
             this.ConstructionComplete = true;
-            Transaction = Transaction.Create(Drawing.ActionManager, false);
             ExpectedDependencies = InitExpectedDependencies();
             FoundDependencies.Clear();
             hoverPlacement = null;
             hoverFigure = null;
+        }
+
+        /// <summary>
+        /// The first step of a construction: from here on what the tool records is one undo
+        /// step, until the figures are added or the construction is abandoned.
+        /// </summary>
+        protected void StartConstruction()
+        {
+            EnsureTransaction();
+            Drawing.RaiseConstructionStepStarted();
+        }
+
+        /// <summary>Before anything of a construction is recorded - the point a click makes comes first</summary>
+        protected void EnsureTransaction()
+        {
+            if (Transaction == null)
+            {
+                Transaction = Transaction.Create(Drawing.ActionManager, false);
+            }
         }
 
         public override void Stopping()
@@ -151,6 +174,9 @@ namespace DynamicGeometry
 
         protected virtual void AddFiguresAndRestart()
         {
+            // a tool that goes straight from a click to its figures (Distance on a segment)
+            // has had no first step
+            EnsureTransaction();
             RemoveTempResultsIfNecessary();
             var figures = CreateFigures().ToList();
             foreach (var figure in figures)
@@ -169,6 +195,27 @@ namespace DynamicGeometry
                 ConstructionComplete = true
             });
             Restart();
+            ShowCreatedFigure(figures);
+        }
+
+        /// <summary>
+        /// Right after a figure with a length is made (a segment, a vector, a square's base
+        /// side, a regular polygon): the side panel shows just its length and Fix length
+        /// (<see cref="LengthPanel"/>), and the status bar says so - instead of a length box
+        /// on every tool.
+        /// </summary>
+        protected virtual void ShowCreatedFigure(IList<IFigure> figures)
+        {
+            var withLength = figures.OfType<IFixableLength>().FirstOrDefault();
+            // nothing to offer when no point can move (built on existing dependent points)
+            if (withLength == null || !withLength.CanEdit("Length"))
+            {
+                return;
+            }
+
+            var what = withLength.Caption("Length", "Length").ToLowerInvariant();
+            Drawing.RaiseDisplayProperties(new LengthPanel(withLength));
+            Drawing.RaiseStatusNotification(withLength.Name + ": set its " + what + " in the panel, or fix it.");
         }
 
         #endregion
@@ -356,6 +403,7 @@ namespace DynamicGeometry
         protected virtual void AddDependency(Point coordinates)
         {
             IFigure underMouse = null;
+            EnsureTransaction();
 
             if (GetExpectedDependencyType() != null)
             {
@@ -383,7 +431,7 @@ namespace DynamicGeometry
                 }
             }
 
-            Drawing.RaiseConstructionStepStarted();
+            StartConstruction();
             RemoveIntermediateFigureIfNecessary();
             RemoveTempResultsIfNecessary();
 

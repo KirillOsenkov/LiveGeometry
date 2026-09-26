@@ -345,14 +345,29 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   or a translated point sliding along this segment's own line, and the other end isn't
   built on it (a fixed-length segment's far end would just follow). Otherwise read-only.
   The same interface vetoes *buttons* by method name (`PropertyGrid.GetCallableMethods`).
-- **Fix length / Free length** are verbs on a segment, next to "Convert to line"
-  (`Segment.FixLength`/`FreeLength`, 2026-09-26; only the applicable one shows). Fix
-  length turns the end that could take a new length (same rule as above) into a
-  `TranslatedPoint` from the other end with an auxiliary Number at the current length and
-  a free direction; nothing moves, the end turns green, and the Length row then edits the
-  Number (`Segment.FixedEnd`). Free length puts a `FreePoint` back where the fixed end is
-  (the Number goes with it). A sliding end (translated, distance free) is fixed or freed
-  by toggling its `FreeDistance` instead. The swap is `Actions.ReplacePoint`: add the
+- **Fix length / Free length** are verbs on a segment, a vector, a regular polygon and the
+  circles (`IFixableLength`: `Length`, `FixLength`, `FreeLength`; the rules and the surgery
+  are in `Figures/Lines/LengthConstraint.cs` for any end kept at a distance from a pivot -
+  a segment's end from the other end, the polygon's vertex from its center, the vector's
+  through its inner segment, a circle's rim point from its center or the two radius points
+  (`CircleBase.RadiusPivot`/`RadiusEnd`, null for a circle by equation or a radius taken
+  from a figure - then the Radius row is read-only and no verb shows); the captions come
+  from `IConditionalProperties.Caption` ("Side", "Radius", "Fix radius"); 2026-09-26; only
+  the applicable verb shows). Fix length turns
+  the end that could take a new length (same rule as above) into a `TranslatedPoint` from
+  the pivot with an auxiliary Number at the current distance and a free direction; nothing
+  moves, the end turns green, and the Length (or Side) row then edits the Number. Free
+  length puts a `FreePoint` back where the fixed end is (the Number goes with it). A
+  sliding end (translated, distance free) is fixed or freed by toggling its `FreeDistance`
+  instead. **Right after such a figure is made** the side panel shows a `LengthPanel`
+  (`FigureCreator.ShowCreatedFigure`): just the length and the verb, forwarded to the
+  figure, plus a line in the status bar - the tools have no length box; a square's panel
+  is its base side's. Not shown when nothing can move (a figure built on existing
+  dependent points: `CanEdit("Length")` is false). A creator's undo transaction spans one construction, opened at
+  the first click (`FigureCreator.EnsureTransaction`, before the point that click makes)
+  and committed with the figures - not the tool's lifetime as before 2026-09-26 - so an
+  edit made in that panel between constructions is an undo step of its own.
+  The swap is `Actions.ReplacePoint`: add the
   replacement, regraft dependents, hand over the point's name label (which
   `ReplaceFigureAction` skips on purpose), remove the old point, give the new one the old
   name - one transaction, undo restores the old point with its Number. Undo of a *drag* of

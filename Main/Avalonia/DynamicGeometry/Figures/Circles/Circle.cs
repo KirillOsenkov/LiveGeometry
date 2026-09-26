@@ -14,6 +14,16 @@ namespace DynamicGeometry
             get { return Center.Distance(Point(1)); }
         }
 
+        protected override IPoint RadiusPivot
+        {
+            get { return (IPoint)Dependencies[0]; }
+        }
+
+        protected override IPoint RadiusEnd
+        {
+            get { return (IPoint)Dependencies[1]; }
+        }
+
         public override double Inclination
         {
             get
