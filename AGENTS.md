@@ -303,8 +303,7 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   an angle provider). Property grid: Magnitude / Direction (degrees) rows editable when free
   or held by a Number, read-only with the source's name otherwise; "Free magnitude" /
   "Free direction" checkboxes convert (a freed Number is retired, not deleted, so undo
-  brings the same one back; freeing both is disabled) - `TranslatedPointQuantityValue` is
-  the custom value provider that makes rows conditionally editable. A point with a free
+  brings the same one back; freeing both is disabled). A point with a free
   quantity takes the green `PointOnFigure` style. File: `MagnitudeSource="n1"` /
   `DirectionSource="..."` for tied, `FreeDirection="true" Direction="30"` for free (degrees).
   A file with none of those is the old format (typed values as attributes, roles by
@@ -312,6 +311,15 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   gives the typed values auxiliary Numbers. `Transformer.CreateTranslatedFigure` takes the
   two sources, shared by every point of a translated figure. In the Translation tool a
   vector picked as the second figure ends the construction (it is both quantities).
+- **Rows that are editable only sometimes** (`PropertyGrid/ConditionalPropertyValue.cs`):
+  `[PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]` on the property,
+  and the figure implements `IConditionalProperties` (`CanEdit(name)`, `Caption(name,
+  default)`). A read-only text row is grayed (`StringEditor` disables the box). Used by
+  `TranslatedPoint` (Magnitude/Direction/Free rows) and `Segment.Length`: setting a
+  segment's length stretches it once (not a constraint) by moving the second end away from
+  the first, or the first if the second can't; an end can take it when it is a free point
+  or a translated point sliding along this segment's own line, and the other end isn't
+  built on it (a fixed-length segment's far end would just follow). Otherwise read-only.
 - **The library's own types shadow framework ones**: `Math`, `Ellipse`, `Polygon`, `Path`...
   In a file-scoped-namespace file a `using X = ...;` alias does NOT win over a type of the
   enclosing namespace - write `System.Math.Max`, `Avalonia.Controls.Shapes.Ellipse` in full.

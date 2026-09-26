@@ -16,7 +16,7 @@ namespace DynamicGeometry
     /// (signed, so it passes through the source to the other side). Both free would be a free
     /// point on a leash; the property grid doesn't allow it.
     /// </summary>
-    public class TranslatedPoint : PointBase, IPoint
+    public class TranslatedPoint : PointBase, IPoint, IConditionalProperties
     {
         /// <summary>
         /// One of the two quantities: the index of its source in the dependency list (-1 when
@@ -152,7 +152,7 @@ namespace DynamicGeometry
         const int ShownDecimals = 4;
 
         [PropertyGridVisible]
-        [PropertyGridCustomValueProvider(typeof(TranslatedPointQuantityValue))]
+        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public double Magnitude
         {
             get
@@ -167,7 +167,7 @@ namespace DynamicGeometry
 
         /// <summary>In degrees, counterclockwise from the x axis</summary>
         [PropertyGridVisible]
-        [PropertyGridCustomValueProvider(typeof(TranslatedPointQuantityValue))]
+        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public double Direction
         {
             get
@@ -207,7 +207,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Free magnitude")]
-        [PropertyGridCustomValueProvider(typeof(TranslatedPointQuantityValue))]
+        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public bool FreeMagnitude
         {
             get
@@ -229,7 +229,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Free direction")]
-        [PropertyGridCustomValueProvider(typeof(TranslatedPointQuantityValue))]
+        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public bool FreeDirection
         {
             get
@@ -270,11 +270,11 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>The figure a value row is tied to, when it is not a Number: shown in the row's caption</summary>
-        public IFigure TiedTo(string propertyName)
+        /// <summary>A value row tied to a figure other than a Number says which</summary>
+        public string Caption(string propertyName, string defaultCaption)
         {
             var source = propertyName == "Magnitude" ? MagnitudeSource : propertyName == "Direction" ? DirectionSource : null;
-            return source is Number ? null : source;
+            return source == null || source is Number ? defaultCaption : defaultCaption + " = " + source.Name;
         }
 
         /// <summary>
@@ -544,31 +544,5 @@ namespace DynamicGeometry
         }
 
         #endregion
-    }
-
-    /// <summary>
-    /// The property grid rows of a translated point: whether a row can be edited depends on
-    /// what the quantity is tied to, and a row tied to a figure other than a Number says which.
-    /// </summary>
-    public class TranslatedPointQuantityValue : PropertyValue
-    {
-        TranslatedPoint Point
-        {
-            get { return (TranslatedPoint)Parent; }
-        }
-
-        public override bool CanSetValue
-        {
-            get { return base.CanSetValue && Point.CanEdit(Property.Name); }
-        }
-
-        public override string DisplayName
-        {
-            get
-            {
-                var tiedTo = Point.TiedTo(Property.Name);
-                return tiedTo == null ? base.DisplayName : base.DisplayName + " = " + tiedTo.Name;
-            }
-        }
     }
 }

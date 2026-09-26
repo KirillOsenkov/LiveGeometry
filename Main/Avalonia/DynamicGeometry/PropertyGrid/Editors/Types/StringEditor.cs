@@ -34,7 +34,8 @@ namespace DynamicGeometry
         public override void UpdateEditor()
         {
             TextBox.Text = (GetValue() ?? "").ToString();
-            TextBox.IsReadOnly = !Value.CanSetValue;
+            // grayed, like the other editors: a read-only box looks the same as a live one
+            TextBox.IsEnabled = Value.CanSetValue;
         }
     }
 }
