@@ -210,6 +210,22 @@ public class ClickPreview
             };
             SetHaloStroke(halo, polygon.Shape);
         }
+        else if (figure is LabelBase label)
+        {
+            // a plate behind the text (a distance measurement taken as a radius)
+            var source = label.Shape;
+            halo = new AvaloniaShapes.Rectangle()
+            {
+                Width = source.Bounds.Width + HaloWidth,
+                Height = source.Bounds.Height + HaloWidth,
+                RadiusX = HaloWidth / 2,
+                RadiusY = HaloWidth / 2,
+                Fill = HaloBrush,
+                ZIndex = source.ZIndex - 1
+            };
+            Canvas.SetLeft(halo, Canvas.GetLeft(source) - HaloWidth / 2);
+            Canvas.SetTop(halo, Canvas.GetTop(source) - HaloWidth / 2);
+        }
 
         return halo;
     }

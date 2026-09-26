@@ -35,8 +35,10 @@ namespace DynamicGeometry
             return null;
         }
 
-        // A segment (anything with a length) can stand for the two radius points: the first
-        // click on one with no point on top of it takes it, and the next click is the center.
+        // Anything with a length can stand for the two radius points: the first click on one
+        // with no point on top of it takes it, and the next click is the center. A segment, a
+        // vector or a distance measurement is unwrapped into its two points (see
+        // FindRadiusEnds); anything else with a length is the radius itself.
 
         bool RadiusIsAFigure
         {
@@ -50,10 +52,36 @@ namespace DynamicGeometry
                 return null;
             }
 
-            var underMouse = Drawing.Figures.HitTest(unconstrainedCoordinates, f => f is ILengthProvider);
+            var underMouse = Drawing.Figures.HitTest(
+                unconstrainedCoordinates,
+                f => f is ILengthProvider && f.Visible && f.IsHitTestVisible);
             if (underMouse != null && Drawing.Figures.HitTest<IPoint>(unconstrainedCoordinates) == null)
             {
                 return underMouse;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// The two points a figure with a length is built on, when it is: a segment or a vector
+        /// (two point dependencies), or a distance measurement of two points or of such a
+        /// figure. The circle then depends on the points, as if they had been clicked, and
+        /// outlives the figure. Null for a polyline, an arc or a label with an expression: those
+        /// are the radius themselves.
+        /// </summary>
+        static IList<IPoint> FindRadiusEnds(IFigure figure)
+        {
+            if (figure is DistanceMeasurement measurement && measurement.Dependencies[0] is ILengthProvider measured)
+            {
+                return FindRadiusEnds(measured);
+            }
+
+            if (figure.Dependencies.Count == 2
+                && figure.Dependencies[0] is IPoint first
+                && figure.Dependencies[1] is IPoint second)
+            {
+                return new[] { first, second };
             }
 
             return null;
@@ -79,7 +107,15 @@ namespace DynamicGeometry
             }
 
             Drawing.RaiseConstructionStepStarted();
-            FoundDependencies.Add(radius);
+            var ends = FindRadiusEnds(radius);
+            if (ends != null)
+            {
+                FoundDependencies.AddRange(ends);
+            }
+            else
+            {
+                FoundDependencies.Add(radius);
+            }
 
             // the center follows the cursor, with the circle already around it
             CreateTempPoint(coordinates);
@@ -100,7 +136,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return "Click two points (the ends of a radius) or a segment, then click the circle center.";
+                return "Click two points (the ends of a radius), a segment or a distance, then click the circle center.";
             }
         }
 
