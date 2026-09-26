@@ -7,7 +7,8 @@ namespace DynamicGeometry
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert to Polyline")]
+        [PropertyGridName("Convert to polyline")]
+        [PropertyGridIcon(PropertyGridIcon.Polyline)]
         public void ConvertToPolyline()
         {
             List<IFigure> newPolyLinePoints = new List<IFigure>();

@@ -46,6 +46,7 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridName("Add line")]
+            [PropertyGridIcon(PropertyGridIcon.Plus)]
             public void AddLine()
             {
                 parent.AddLine(m, b);

@@ -364,6 +364,13 @@ namespace DynamicGeometry
                     && m.IsPublic
                     && m.HasAttribute<PropertyGridVisibleAttribute>());
 
+            // a figure can veto a button by name the way it vetoes editing a row
+            // (a segment shows Fix length or Free length, whichever applies)
+            if (editableObject is IConditionalProperties conditions)
+            {
+                allMethods = allMethods.Where(m => conditions.CanEdit(m.Name));
+            }
+
             var result = allMethods.Select(m => (IOperationDescription)MethodDescription.Create(m));
 
             return result;
@@ -454,6 +461,7 @@ namespace DynamicGeometry
         public string MessageText { get; set; }
 
         [PropertyGridVisible]
+        [PropertyGridIcon(PropertyGridIcon.Check)]
         public void OK()
         {
             PropertyGrid.Show(null, null);

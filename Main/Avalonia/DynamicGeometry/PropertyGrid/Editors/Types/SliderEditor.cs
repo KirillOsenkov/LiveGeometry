@@ -69,9 +69,20 @@ namespace DynamicGeometry
         }
 
         bool guard = false;
+
+        // what the editor itself put in the box last: TextChanged arrives late, through the
+        // dispatcher, and parsing a rounded display back would change the value
+        string shownText;
+
+        void Show(double value)
+        {
+            shownText = value.Round(Settings.DisplayDecimals).ToStringInvariant();
+            TextBox.Text = shownText;
+        }
+
         void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (guard)
+            if (guard || TextBox.Text == shownText)
             {
                 return;
             }
@@ -104,7 +115,7 @@ namespace DynamicGeometry
             }
 
             guard = true;
-            TextBox.Text = value.Round(1).ToStringInvariant();
+            Show(value);
             SetValue((object)value);
             guard = false;
         }
@@ -123,7 +134,7 @@ namespace DynamicGeometry
             Slider.Value = value;
             Slider.IsEnabled = Value.CanSetValue;
             TextBox.IsEnabled = Slider.IsEnabled;
-            TextBox.Text = value.Round(1).ToStringInvariant();
+            Show(value);
             guard = false;
         }
     }

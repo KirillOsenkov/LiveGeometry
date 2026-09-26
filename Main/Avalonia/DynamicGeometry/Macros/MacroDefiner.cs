@@ -40,6 +40,7 @@ namespace DynamicGeometry
             MacroDefiner Parent;
 
             [PropertyGridVisible]
+            [PropertyGridIcon(PropertyGridIcon.Check)]
             public void Done()
             {
                 Parent.Inputs = Parent.behavior.GetSelection();
@@ -52,6 +53,7 @@ namespace DynamicGeometry
             }
 
             [PropertyGridVisible]
+            [PropertyGridIcon(PropertyGridIcon.Cross)]
             public void Cancel()
             {
                 Parent.AbortAndSetDefaultTool();
@@ -72,6 +74,7 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridName("Done - create a tool")]
+            [PropertyGridIcon(PropertyGridIcon.Check)]
             public void Done()
             {
                 Parent.Results = Parent.behavior.GetSelection();
@@ -80,6 +83,7 @@ namespace DynamicGeometry
             }
 
             [PropertyGridVisible]
+            [PropertyGridIcon(PropertyGridIcon.Cross)]
             public void Cancel()
             {
                 Parent.AbortAndSetDefaultTool();

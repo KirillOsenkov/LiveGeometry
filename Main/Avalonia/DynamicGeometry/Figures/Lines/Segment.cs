@@ -1,15 +1,19 @@
 ﻿using System.Collections.Generic;
+using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
     public class Segment : LineBase, ILengthProvider, ILine, IConditionalProperties
     {
         /// <summary>
-        /// Setting it stretches the segment once, to that length, by moving an end away from
-        /// the other: the second end if it can take it, else the first. Not a constraint -
-        /// dragging changes the length again. Read-only when neither end can take it.
+        /// Setting it on a segment with a fixed length (<see cref="FixLength"/>) changes that
+        /// length. Otherwise it stretches the segment once, to that length, by moving an end
+        /// away from the other: the second end if it can take it, else the first - not a
+        /// constraint, dragging changes the length again. Read-only when neither applies.
         /// </summary>
         [PropertyGridVisible]
+        [PropertyGridGroup("Length")]
+        [PropertyGridPreferredEditor("UpDown")]
         [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public double Length
         {
@@ -19,6 +23,13 @@ namespace DynamicGeometry
             }
             set
             {
+                var fixedEnd = FixedEnd();
+                if (fixedEnd != null)
+                {
+                    fixedEnd.Distance = value;
+                    return;
+                }
+
                 var length = Length;
                 var end = EndToStretch();
                 if (value == length || end < 0)
@@ -43,7 +54,7 @@ namespace DynamicGeometry
         /// <summary>
         /// The index of the end a new length moves, -1 when neither can go where the length
         /// says: a free point can, and so can a point that slides along this very segment's
-        /// line (a translated point from the other end with a free magnitude). A point on
+        /// line (a translated point from the other end with a free distance). A point on
         /// some other figure would only get near, and an end the other end is built on
         /// (a fixed-length segment: the far end follows) would take the whole segment along.
         /// </summary>
@@ -78,20 +89,125 @@ namespace DynamicGeometry
             }
 
             return point is TranslatedPoint translated
-                && translated.IsMagnitudeFree
+                && translated.IsDistanceFree
                 && !translated.IsDirectionFree
                 && translated.Source == otherEnd;
         }
 
+        /// <summary>
+        /// The end that holds the segment's length: a translated point from the other end
+        /// whose distance is a Number. Null for a segment without a fixed length.
+        /// </summary>
+        TranslatedPoint FixedEnd()
+        {
+            for (int end = 1; end >= 0; end--)
+            {
+                if (Dependencies.Count > 1
+                    && Dependencies[end] is TranslatedPoint translated
+                    && translated.Source == Dependencies[1 - end]
+                    && translated.DistanceSource is Number)
+                {
+                    return translated;
+                }
+            }
+
+            return null;
+        }
+
         public bool CanEdit(string propertyName)
         {
-            return propertyName != "Length" || EndToStretch() >= 0;
+            switch (propertyName)
+            {
+                case "Length":
+                    return FixedEnd() != null || EndToStretch() >= 0;
+                case "FixLength":
+                    return FixedEnd() == null && EndToStretch() >= 0;
+                case "FreeLength":
+                    return FixedEnd() != null;
+                default:
+                    return true;
+            }
         }
 
         public string Caption(string propertyName, string defaultCaption)
         {
             return defaultCaption;
         }
+
+#if !PLAYER && !TABULA
+
+        /// <summary>
+        /// The segment keeps its length from now on: the end that could take a new length
+        /// (see <see cref="EndToStretch"/>) becomes a translated point from the other end, at
+        /// the current length held by a Number, direction free - so it drags around the other
+        /// end and the other end carries it along. An end already sliding along the segment's
+        /// line just has its distance fixed. Nothing moves.
+        /// </summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Fix length")]
+        [PropertyGridGroup("Length")]
+        [PropertyGridIcon(PropertyGridIcon.Lock)]
+        public void FixLength()
+        {
+            int end = EndToStretch();
+            if (end < 0)
+            {
+                return;
+            }
+
+            var point = Dependencies[end];
+            if (point is TranslatedPoint sliding)
+            {
+                Drawing.ActionManager.SetProperty(sliding, "FreeDistance", false);
+            }
+            else
+            {
+                var pivot = (IPoint)Dependencies[1 - end];
+                using (Transaction.Create(Drawing.ActionManager, false))
+                {
+                    var length = Number.CreateAuxiliary(Drawing, Length);
+                    Actions.Add(Drawing, length);
+                    var fixedEnd = Factory.CreateTranslatedPoint(Drawing, pivot, length, directionSource: null);
+                    // the free direction: where the end is now
+                    fixedEnd.MoveTo(((IPoint)point).Coordinates);
+                    Actions.ReplacePoint((PointBase)point, fixedEnd);
+                }
+            }
+
+            Drawing.RaiseDisplayProperties(this);
+        }
+
+        /// <summary>
+        /// The opposite of <see cref="FixLength"/>: the end holding the length becomes a free
+        /// point where it is (its Number goes with it), or, when its direction is fixed too,
+        /// keeps sliding along the line with the distance free.
+        /// </summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Free length")]
+        [PropertyGridGroup("Length")]
+        [PropertyGridIcon(PropertyGridIcon.Unlock)]
+        public void FreeLength()
+        {
+            var fixedEnd = FixedEnd();
+            if (fixedEnd == null)
+            {
+                return;
+            }
+
+            if (fixedEnd.IsDirectionFree)
+            {
+                var free = Factory.CreateFreePoint(Drawing, fixedEnd.Coordinates);
+                Actions.ReplacePoint(fixedEnd, free);
+            }
+            else
+            {
+                Drawing.ActionManager.SetProperty(fixedEnd, "FreeDistance", true);
+            }
+
+            Drawing.RaiseDisplayProperties(this);
+        }
+
+#endif
 
         public override double GetNearestParameterFromPoint(Avalonia.Point point)
         {
@@ -134,6 +250,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Convert to line")]
+        [PropertyGridIcon(PropertyGridIcon.Line)]
         public void ConvertToLine()
         {
             LineTwoPoints.Convert(this, Factory.CreateLineTwoPoints(this.Drawing, this.Dependencies));
@@ -141,6 +258,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Convert to ray")]
+        [PropertyGridIcon(PropertyGridIcon.Ray)]
         public void ConvertToRay()
         {
             LineTwoPoints.Convert(this, Factory.CreateRay(this.Drawing, this.Dependencies));

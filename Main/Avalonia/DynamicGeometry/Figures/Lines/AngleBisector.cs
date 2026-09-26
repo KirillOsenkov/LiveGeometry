@@ -162,6 +162,7 @@ namespace DynamicGeometry
         /// </summary>
         [PropertyGridVisible]
         [PropertyGridName("Convert to opposite angle")]
+        [PropertyGridIcon(PropertyGridIcon.Angle)]
         public void ConvertToOpposite()
         {
             IFigure[] dependencies = Dependencies as IFigure[];

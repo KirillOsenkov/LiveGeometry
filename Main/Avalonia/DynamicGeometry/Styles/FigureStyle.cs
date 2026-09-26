@@ -142,6 +142,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Done")]
+        [PropertyGridIcon(PropertyGridIcon.Check)]
         public void DoneButton()
         {
             if (CurrentEditInfo.PropertyGrid != null && CurrentEditInfo.ParentObject != null)

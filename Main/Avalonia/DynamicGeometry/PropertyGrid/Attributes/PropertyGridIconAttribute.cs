@@ -5,7 +5,20 @@ namespace DynamicGeometry;
 public enum PropertyGridIcon
 {
     Pencil,
-    Plus
+    Plus,
+    Lock,
+    Unlock,
+    Check,
+    Cross,
+    Segment,
+    Ray,
+    Line,
+    Reverse,
+    Angle,
+    Arc,
+    CircleSegment,
+    Sector,
+    Polyline
 }
 
 /// <summary>

@@ -239,19 +239,19 @@ namespace DynamicGeometry
 
         /// <summary>
         /// The sources are shared by every point of a translated figure: one Number for a
-        /// typed magnitude, whatever the source is.
+        /// typed distance, whatever the source is.
         /// </summary>
         public static List<IFigure> CreateTranslatedFigure(
             Drawing drawing,
             IFigure source,
-            IFigure magnitudeSource,
+            IFigure distanceSource,
             IFigure directionSource)
         {
             Check.NotNull(source, "source");
             List<IFigure> result = new List<IFigure>();
             if (source is IPoint)
             {
-                var translatedPoint = Factory.CreateTranslatedPoint(drawing, (IPoint)source, magnitudeSource, directionSource);
+                var translatedPoint = Factory.CreateTranslatedPoint(drawing, (IPoint)source, distanceSource, directionSource);
                 translatedPoint.Visible = source.Visible;
                 result.Add(translatedPoint);
             }
@@ -260,11 +260,11 @@ namespace DynamicGeometry
                 var dependencies = new List<IFigure>();
                 foreach (var dependency in source.Dependencies)
                 {
-                    var translatedDependency = CreateTranslatedFigure(drawing, dependency, magnitudeSource, directionSource);
+                    var translatedDependency = CreateTranslatedFigure(drawing, dependency, distanceSource, directionSource);
                     if (translatedDependency.IsEmpty())
                     {
-                        throw "translatedDependency is empty. dependency = {0}, magnitude = {1}, direction = {2}"
-                            .Format(dependency, magnitudeSource, directionSource)
+                        throw "translatedDependency is empty. dependency = {0}, distance = {1}, direction = {2}"
+                            .Format(dependency, distanceSource, directionSource)
                             .AsException();
                     }
                     result.AddRange(translatedDependency);

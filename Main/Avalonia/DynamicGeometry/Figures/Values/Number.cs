@@ -6,7 +6,7 @@ namespace DynamicGeometry
 {
     /// <summary>
     /// A number in the drawing: a figure without a shape that other figures depend on the way
-    /// they depend on a segment's length. It is what a typed value becomes (the magnitude of a
+    /// they depend on a segment's length. It is what a typed value becomes (the distance of a
     /// translation), so that it can be edited later, shared by several figures and named in an
     /// expression. Provides itself as a length (in units) and as an angle (in degrees). One
     /// created on demand for a single figure is <see cref="FigureBase.Auxiliary"/> and leaves

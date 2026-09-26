@@ -26,6 +26,7 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridName("Go")]
+            [PropertyGridIcon(PropertyGridIcon.Check)]
             public void Go()
             {
                 if (parent.FoundDependencies.Count >= 2)

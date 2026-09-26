@@ -8,11 +8,11 @@ using Avalonia.Controls.Shapes;
 namespace DynamicGeometry
 {
     /// <summary>
-    /// A point at a magnitude and a direction from its source point. Each of the two is either
+    /// A point at a distance and a direction from its source point. Each of the two is either
     /// tied to a figure it depends on - a vector (both at once), anything with a length or an
     /// angle, a <see cref="Number"/> holding a typed value - or free: then it is the parameter
     /// that dragging the point changes, kept in the file. A point with a free direction slides
-    /// on the circle around its source, one with a free magnitude on the line through it
+    /// on the circle around its source, one with a free distance on the line through it
     /// (signed, so it passes through the source to the other side). Both free would be a free
     /// point on a leash; the property grid doesn't allow it.
     /// </summary>
@@ -20,7 +20,7 @@ namespace DynamicGeometry
     {
         /// <summary>
         /// One of the two quantities: the index of its source in the dependency list (-1 when
-        /// free), the parameter used while free (magnitude in units, direction in radians) and
+        /// free), the parameter used while free (distance in units, direction in radians) and
         /// the Number that held it before it was freed, so that fixing it again - undo included -
         /// brings the same one back under the same name.
         /// </summary>
@@ -31,7 +31,7 @@ namespace DynamicGeometry
             public Number Retired;
         }
 
-        readonly Quantity magnitudeQuantity = new Quantity();
+        readonly Quantity distanceQuantity = new Quantity();
         readonly Quantity directionQuantity = new Quantity();
 
         public IPoint Source
@@ -42,13 +42,13 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>A vector, a length provider or a Number; null while the magnitude is free</summary>
-        public IFigure MagnitudeSource
+        /// <summary>A vector, a length provider or a Number; null while the distance is free</summary>
+        public IFigure DistanceSource
         {
-            get { return SourceOf(magnitudeQuantity); }
+            get { return SourceOf(distanceQuantity); }
         }
 
-        /// <summary>A vector, an angle provider or a Number; null while the direction is free</summary>
+        /// <summary>A vector, a line (its oriented direction), an angle provider or a Number; null while the direction is free</summary>
         public IFigure DirectionSource
         {
             get { return SourceOf(directionQuantity); }
@@ -60,9 +60,9 @@ namespace DynamicGeometry
             return index >= 0 && index < Dependencies.Count ? Dependencies[index] : null;
         }
 
-        public bool IsMagnitudeFree
+        public bool IsDistanceFree
         {
-            get { return magnitudeQuantity.SourceIndex < 0; }
+            get { return distanceQuantity.SourceIndex < 0; }
         }
 
         public bool IsDirectionFree
@@ -73,30 +73,30 @@ namespace DynamicGeometry
         /// <summary>Dragging changes something: this is a draggable point, styled like one</summary>
         public bool HasFreedom
         {
-            get { return IsMagnitudeFree || IsDirectionFree; }
+            get { return IsDistanceFree || IsDirectionFree; }
         }
 
         /// <summary>
-        /// The dependencies: the source point, then the magnitude source and the direction
+        /// The dependencies: the source point, then the distance source and the direction
         /// source when there are any (one entry when a vector is both). A null source leaves
         /// that quantity free, at whatever value it has.
         /// </summary>
-        public void SetSources(IPoint source, IFigure magnitudeSource, IFigure directionSource)
+        public void SetSources(IPoint source, IFigure distanceSource, IFigure directionSource)
         {
             var dependencies = new List<IFigure>() { source };
-            magnitudeQuantity.SourceIndex = -1;
+            distanceQuantity.SourceIndex = -1;
             directionQuantity.SourceIndex = -1;
-            if (magnitudeSource != null)
+            if (distanceSource != null)
             {
-                magnitudeQuantity.SourceIndex = dependencies.Count;
-                dependencies.Add(magnitudeSource);
+                distanceQuantity.SourceIndex = dependencies.Count;
+                dependencies.Add(distanceSource);
             }
 
             if (directionSource != null)
             {
-                if (directionSource == magnitudeSource)
+                if (directionSource == distanceSource)
                 {
-                    directionQuantity.SourceIndex = magnitudeQuantity.SourceIndex;
+                    directionQuantity.SourceIndex = distanceQuantity.SourceIndex;
                 }
                 else
                 {
@@ -108,14 +108,14 @@ namespace DynamicGeometry
             Dependencies = dependencies;
         }
 
-        double MagnitudeValue
+        double DistanceValue
         {
             get
             {
-                var source = MagnitudeSource;
+                var source = DistanceSource;
                 if (source is Vector vector)
                 {
-                    return vector.Magnitude;
+                    return vector.Length;
                 }
 
                 if (source is ILengthProvider length)
@@ -123,7 +123,7 @@ namespace DynamicGeometry
                     return length.Length;
                 }
 
-                return magnitudeQuantity.Parameter;
+                return distanceQuantity.Parameter;
             }
         }
 
@@ -137,6 +137,12 @@ namespace DynamicGeometry
                     return vector.Direction;
                 }
 
+                // a segment, ray or line: the way it points, from its first point to its second
+                if (source is ILine line)
+                {
+                    return Math.GetAngle(line.Coordinates.P1, line.Coordinates.P2);
+                }
+
                 if (source is IAngleProvider angle)
                 {
                     return angle.Angle;
@@ -148,31 +154,30 @@ namespace DynamicGeometry
 
         #region Property grid
 
-        // a dragged parameter has all the digits of a double; the grid shows a few
-        const int ShownDecimals = 4;
-
         [PropertyGridVisible]
+        [PropertyGridPreferredEditor("UpDown")]
         [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
-        public double Magnitude
+        public double Distance
         {
             get
             {
-                return System.Math.Round(MagnitudeValue, ShownDecimals);
+                return DistanceValue;
             }
             set
             {
-                SetQuantity(magnitudeQuantity, value);
+                SetQuantity(distanceQuantity, value);
             }
         }
 
         /// <summary>In degrees, counterclockwise from the x axis</summary>
         [PropertyGridVisible]
+        [PropertyGridPreferredEditor("UpDown")]
         [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public double Direction
         {
             get
             {
-                return System.Math.Round(DirectionRadians.ToDegrees(), ShownDecimals);
+                return DirectionRadians.ToDegrees();
             }
             set
             {
@@ -206,23 +211,23 @@ namespace DynamicGeometry
         }
 
         [PropertyGridVisible]
-        [PropertyGridName("Free magnitude")]
+        [PropertyGridName("Free distance")]
         [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
-        public bool FreeMagnitude
+        public bool FreeDistance
         {
             get
             {
-                return IsMagnitudeFree;
+                return IsDistanceFree;
             }
             set
             {
                 if (value)
                 {
-                    Free(magnitudeQuantity, MagnitudeValue);
+                    Free(distanceQuantity, DistanceValue);
                 }
                 else
                 {
-                    Fix(magnitudeQuantity, MagnitudeValue);
+                    Fix(distanceQuantity, DistanceValue);
                 }
             }
         }
@@ -257,14 +262,14 @@ namespace DynamicGeometry
         {
             switch (propertyName)
             {
-                case "Magnitude":
-                    return IsMagnitudeFree || MagnitudeSource is Number;
+                case "Distance":
+                    return IsDistanceFree || DistanceSource is Number;
                 case "Direction":
                     return IsDirectionFree || DirectionSource is Number;
-                case "FreeMagnitude":
-                    return IsMagnitudeFree || !IsDirectionFree;
+                case "FreeDistance":
+                    return IsDistanceFree || !IsDirectionFree;
                 case "FreeDirection":
-                    return IsDirectionFree || !IsMagnitudeFree;
+                    return IsDirectionFree || !IsDistanceFree;
                 default:
                     return true;
             }
@@ -273,7 +278,7 @@ namespace DynamicGeometry
         /// <summary>A value row tied to a figure other than a Number says which</summary>
         public string Caption(string propertyName, string defaultCaption)
         {
-            var source = propertyName == "Magnitude" ? MagnitudeSource : propertyName == "Direction" ? DirectionSource : null;
+            var source = propertyName == "Distance" ? DistanceSource : propertyName == "Direction" ? DirectionSource : null;
             return source == null || source is Number ? defaultCaption : defaultCaption + " = " + source.Name;
         }
 
@@ -291,7 +296,7 @@ namespace DynamicGeometry
             }
 
             var source = Dependencies[index];
-            var other = quantity == magnitudeQuantity ? directionQuantity : magnitudeQuantity;
+            var other = quantity == distanceQuantity ? directionQuantity : distanceQuantity;
             quantity.Parameter = currentValue;
             quantity.SourceIndex = -1;
             if (other.SourceIndex != index)
@@ -344,9 +349,9 @@ namespace DynamicGeometry
             UpdateVisual();
             this.RecalculateAllDependents();
             UpdateStyleForFreedom();
-            RaisePropertyChanged("Magnitude");
+            RaisePropertyChanged("Distance");
             RaisePropertyChanged("Direction");
-            RaisePropertyChanged("FreeMagnitude");
+            RaisePropertyChanged("FreeDistance");
             RaisePropertyChanged("FreeDirection");
         }
 
@@ -382,7 +387,7 @@ namespace DynamicGeometry
 
         /// <summary>
         /// The free quantity follows the cursor: the direction as the angle from the source, the
-        /// magnitude as the projection onto the line through the source, signed.
+        /// distance as the projection onto the line through the source, signed.
         /// </summary>
         public override void MoveToCore(Point newPosition)
         {
@@ -399,13 +404,13 @@ namespace DynamicGeometry
                 RaisePropertyChanged("Direction");
             }
 
-            if (IsMagnitudeFree)
+            if (IsDistanceFree)
             {
                 double direction = DirectionRadians;
-                magnitudeQuantity.Parameter =
+                distanceQuantity.Parameter =
                     (newPosition.X - origin.X) * System.Math.Cos(direction)
                     + (newPosition.Y - origin.Y) * System.Math.Sin(direction);
-                RaisePropertyChanged("Magnitude");
+                RaisePropertyChanged("Distance");
             }
 
             Recalculate();
@@ -427,7 +432,7 @@ namespace DynamicGeometry
                 return;
             }
 
-            Coordinates = Math.GetTranslationPoint(source.Coordinates, MagnitudeValue, DirectionRadians);
+            Coordinates = Math.GetTranslationPoint(source.Coordinates, DistanceValue, DirectionRadians);
             Exists = Coordinates.Exists();
         }
 
@@ -442,33 +447,33 @@ namespace DynamicGeometry
         public override void ReadXml(XElement element)
         {
             base.ReadXml(element);
-            var magnitudeSource = element.ReadString("MagnitudeSource");
+            var distanceSource = element.ReadString("DistanceSource");
             var directionSource = element.ReadString("DirectionSource");
-            bool newFormat = magnitudeSource != null
+            bool newFormat = distanceSource != null
                 || directionSource != null
-                || element.Attribute("FreeMagnitude") != null
+                || element.Attribute("FreeDistance") != null
                 || element.Attribute("FreeDirection") != null;
             if (newFormat)
             {
-                magnitudeQuantity.SourceIndex = IndexOfDependency(magnitudeSource);
+                distanceQuantity.SourceIndex = IndexOfDependency(distanceSource);
                 directionQuantity.SourceIndex = IndexOfDependency(directionSource);
-                magnitudeQuantity.Parameter = element.ReadDouble("Magnitude");
+                distanceQuantity.Parameter = element.ReadDouble("Distance");
                 directionQuantity.Parameter = element.ReadDouble("Direction").ToRadians();
             }
             else
             {
                 if (Dependencies.Count > 1 && Dependencies[1] is Vector)
                 {
-                    magnitudeQuantity.SourceIndex = 1;
+                    distanceQuantity.SourceIndex = 1;
                     directionQuantity.SourceIndex = 1;
                 }
                 else
                 {
-                    magnitudeQuantity.SourceIndex = Dependencies.Count > 1 && Dependencies[1] is ILengthProvider ? 1 : -1;
+                    distanceQuantity.SourceIndex = Dependencies.Count > 1 && Dependencies[1] is ILengthProvider ? 1 : -1;
                     directionQuantity.SourceIndex = Dependencies.Count > 2 && Dependencies[2] is IAngleProvider ? 2 : -1;
                 }
 
-                magnitudeQuantity.Parameter = element.ReadDouble("Magnitude");
+                distanceQuantity.Parameter = element.ReadDouble("Magnitude");
                 directionQuantity.Parameter = element.ReadDouble("Direction");
                 needsLegacyUpgrade = HasFreedom;
             }
@@ -506,9 +511,9 @@ namespace DynamicGeometry
             }
 
             needsLegacyUpgrade = false;
-            if (IsMagnitudeFree)
+            if (IsDistanceFree)
             {
-                Fix(magnitudeQuantity, MagnitudeValue);
+                Fix(distanceQuantity, DistanceValue);
             }
 
             if (IsDirectionFree)
@@ -520,15 +525,15 @@ namespace DynamicGeometry
         public override void WriteXml(XmlWriter writer)
         {
             base.WriteXml(writer);
-            var magnitudeSource = MagnitudeSource;
-            if (magnitudeSource != null)
+            var distanceSource = DistanceSource;
+            if (distanceSource != null)
             {
-                writer.WriteAttributeString("MagnitudeSource", magnitudeSource.Name);
+                writer.WriteAttributeString("DistanceSource", distanceSource.Name);
             }
             else
             {
-                writer.WriteAttributeBool("FreeMagnitude", true);
-                writer.WriteAttributeDouble("Magnitude", magnitudeQuantity.Parameter);
+                writer.WriteAttributeBool("FreeDistance", true);
+                writer.WriteAttributeDouble("Distance", distanceQuantity.Parameter);
             }
 
             var directionSource = DirectionSource;

@@ -50,6 +50,7 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridName("Add circle")]
+            [PropertyGridIcon(PropertyGridIcon.Plus)]
             public void AddCircle()
             {
                 var xresult = parent.Drawing.CompileExpression(X);

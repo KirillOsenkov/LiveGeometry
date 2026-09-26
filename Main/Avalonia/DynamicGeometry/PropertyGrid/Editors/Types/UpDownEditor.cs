@@ -64,11 +64,13 @@ public class UpDownEditor : LabeledValueEditor, IValueEditor
         ShowValue(next);
     }
 
-    bool guard;
+    // what the editor itself put in the box last: TextChanged arrives late, through the
+    // dispatcher, and parsing a rounded display back would change the value
+    string shownText;
 
     void TextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (guard)
+        if (TextBox.Text == shownText)
         {
             return;
         }
@@ -81,14 +83,14 @@ public class UpDownEditor : LabeledValueEditor, IValueEditor
 
     void ShowValue(double value)
     {
-        guard = true;
-        TextBox.Text = System.Math.Round(value, 4).ToStringInvariant();
-        guard = false;
+        shownText = System.Math.Round(value, Settings.DisplayDecimals).ToStringInvariant();
+        TextBox.Text = shownText;
     }
 
     public override void UpdateEditor()
     {
         ShowValue(GetValue<double>());
         TextBox.IsEnabled = Value.CanSetValue;
+        UpDown.IsEnabled = Value.CanSetValue;
     }
 }

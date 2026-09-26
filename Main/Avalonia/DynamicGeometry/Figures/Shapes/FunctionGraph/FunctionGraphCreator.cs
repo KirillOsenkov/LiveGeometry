@@ -42,6 +42,7 @@ namespace DynamicGeometry
             }
 
             [PropertyGridVisible]
+            [PropertyGridIcon(PropertyGridIcon.Check)]
             public void Plot()
             {
                 parent.PlotFunction(Func);
@@ -49,6 +50,7 @@ namespace DynamicGeometry
             }
 
             [PropertyGridVisible]
+            [PropertyGridIcon(PropertyGridIcon.Cross)]
             public void Cancel()
             {
                 parent.AbortAndSetDefaultTool();

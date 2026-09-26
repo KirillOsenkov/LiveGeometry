@@ -51,6 +51,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Convert to line")]
+        [PropertyGridIcon(PropertyGridIcon.Line)]
         public void ConvertToLine()
         {
             LineTwoPoints.Convert(this, Factory.CreateLineTwoPoints(this.Drawing, this.Dependencies));
@@ -58,6 +59,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Convert to segment")]
+        [PropertyGridIcon(PropertyGridIcon.Segment)]
         public void ConvertToSegment()
         {
             LineTwoPoints.Convert(this, Factory.CreateSegment(this.Drawing, this.Dependencies));
@@ -65,6 +67,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Reverse")]
+        [PropertyGridIcon(PropertyGridIcon.Reverse)]
         public void Reverse()
         {
             LineTwoPoints.Convert(this, Factory.CreateRay(this.Drawing, this.Dependencies.Reverse().ToList()));

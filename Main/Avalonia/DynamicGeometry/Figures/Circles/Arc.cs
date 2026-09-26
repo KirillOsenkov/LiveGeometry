@@ -29,14 +29,16 @@ namespace DynamicGeometry
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert To Segment")]
+        [PropertyGridName("Convert to segment")]
+        [PropertyGridIcon(PropertyGridIcon.CircleSegment)]
         public virtual void ConvertToEllipseSegment()
         {
             EllipseArc.Convert(this, Factory.CreateEllipseSegment(this.Drawing, this.Dependencies));
         }
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert To Sector")]
+        [PropertyGridName("Convert to sector")]
+        [PropertyGridIcon(PropertyGridIcon.Sector)]
         public void ConvertToEllipseSector()
         {
             EllipseArc.Convert(this, Factory.CreateEllipseSector(this.Drawing, this.Dependencies));
@@ -52,14 +54,16 @@ namespace DynamicGeometry
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert To Segment")]
+        [PropertyGridName("Convert to segment")]
+        [PropertyGridIcon(PropertyGridIcon.CircleSegment)]
         public virtual void ConvertToCircleSegment()
         {
             EllipseArc.Convert(this, Factory.CreateCircleSegment(this.Drawing, this.Dependencies));
         }
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert To Sector")]
+        [PropertyGridName("Convert to sector")]
+        [PropertyGridIcon(PropertyGridIcon.Sector)]
         public void ConvertToSector()
         {
             EllipseArc.Convert(this, Factory.CreateCircleSector(this.Drawing, this.Dependencies));
@@ -95,14 +99,16 @@ namespace DynamicGeometry
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert To Arc")]
+        [PropertyGridName("Convert to arc")]
+        [PropertyGridIcon(PropertyGridIcon.Arc)]
         public void ConvertToArc()
         {
             EllipseArc.Convert(this, Factory.CreateArc(this.Drawing, this.Dependencies));
         }
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert To Sector")]
+        [PropertyGridName("Convert to sector")]
+        [PropertyGridIcon(PropertyGridIcon.Sector)]
         public void ConvertToSector()
         {
             EllipseArc.Convert(this, Factory.CreateCircleSector(this.Drawing, this.Dependencies));
@@ -188,14 +194,16 @@ namespace DynamicGeometry
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert To Arc")]
+        [PropertyGridName("Convert to arc")]
+        [PropertyGridIcon(PropertyGridIcon.Arc)]
         public void ConvertToEllipseArc()
         {
             EllipseArc.Convert(this, Factory.CreateEllipseArc(this.Drawing, this.Dependencies));
         }
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert To Sector")]
+        [PropertyGridName("Convert to sector")]
+        [PropertyGridIcon(PropertyGridIcon.Sector)]
         public void ConvertToEllipseSector()
         {
             EllipseArc.Convert(this, Factory.CreateEllipseSector(this.Drawing, this.Dependencies));
@@ -252,14 +260,16 @@ namespace DynamicGeometry
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert To Arc")]
+        [PropertyGridName("Convert to arc")]
+        [PropertyGridIcon(PropertyGridIcon.Arc)]
         public void ConvertToArc()
         {
             EllipseArc.Convert(this, Factory.CreateArc(this.Drawing, this.Dependencies));
         }
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert To Segment")]
+        [PropertyGridName("Convert to segment")]
+        [PropertyGridIcon(PropertyGridIcon.CircleSegment)]
         public virtual void ConvertToCircleSegment()
         {
             EllipseArc.Convert(this, Factory.CreateCircleSegment(this.Drawing, this.Dependencies));
@@ -326,14 +336,16 @@ namespace DynamicGeometry
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert To Arc")]
+        [PropertyGridName("Convert to arc")]
+        [PropertyGridIcon(PropertyGridIcon.Arc)]
         public void ConvertToEllipseArc()
         {
             EllipseArc.Convert(this, Factory.CreateEllipseArc(this.Drawing, this.Dependencies));
         }
 
         [PropertyGridVisible]
-        [PropertyGridName("Convert To Segment")]
+        [PropertyGridName("Convert to segment")]
+        [PropertyGridIcon(PropertyGridIcon.CircleSegment)]
         public virtual void ConvertToEllipseSegment()
         {
             EllipseArc.Convert(this, Factory.CreateEllipseSegment(this.Drawing, this.Dependencies));

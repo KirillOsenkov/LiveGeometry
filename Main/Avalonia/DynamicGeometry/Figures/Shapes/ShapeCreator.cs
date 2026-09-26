@@ -57,6 +57,7 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridName("Add point")]
+            [PropertyGridIcon(PropertyGridIcon.Plus)]
             public void AddPoint()
             {
                 var xresult = parent.Drawing.CompileExpression(X);
@@ -85,6 +86,7 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridName("Close figure")]
+            [PropertyGridIcon(PropertyGridIcon.Check)]
             public void CloseFigure()
             {
                 if (this.parent.FoundDependencies.Count > 3)

@@ -62,6 +62,7 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridName("Add point")]
+            [PropertyGridIcon(PropertyGridIcon.Plus)]
             public void AddPoint()
             {
                 var xresult = parent.Drawing.CompileExpression(X);

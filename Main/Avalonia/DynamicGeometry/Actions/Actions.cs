@@ -65,6 +65,44 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// Puts <paramref name="replacement"/> in the drawing in place of <paramref name="point"/>:
+        /// same name, same dependents - its name label included, which
+        /// <see cref="ReplaceFigureAction"/> leaves alone - in one undo step. What the old point
+        /// was built on goes with it when nothing else uses it (an auxiliary Number). The
+        /// replacement should already be where the point is, so that nothing moves.
+        /// </summary>
+        public static void ReplacePoint(PointBase point, PointBase replacement)
+        {
+            var drawing = point.Drawing;
+            using (Transaction.Create(drawing.ActionManager, false))
+            {
+                replacement.Visible = point.Visible;
+                Add(drawing, replacement);
+                var label = point.Label;
+                ReplaceWithExisting(point, replacement);
+                if (label != null)
+                {
+                    ReplaceDependency(label, point, replacement);
+                    var handOver = new CallMethodAction(
+                        () =>
+                        {
+                            point.Label = null;
+                            replacement.Label = label;
+                        },
+                        () =>
+                        {
+                            replacement.Label = null;
+                            point.Label = label;
+                        });
+                    drawing.ActionManager.RecordAction(handOver);
+                }
+
+                Remove(point);
+                SetProperty(drawing.ActionManager, new PropertyValue("Name", replacement), point.Name);
+            }
+        }
+
         public static void Move(Drawing drawing, IEnumerable<IMovable> moving, Point offset, IEnumerable<IFigure> toRecalculate)
         {
             if (drawing.ActionManager == null)

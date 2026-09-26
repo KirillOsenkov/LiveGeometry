@@ -210,6 +210,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Convert to opposite angle")]
+        [PropertyGridIcon(PropertyGridIcon.Angle)]
         public void ConvertToOpposite()
         {
             ConvertToOpposite(this);

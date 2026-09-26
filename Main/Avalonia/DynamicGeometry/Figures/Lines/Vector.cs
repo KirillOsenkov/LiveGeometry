@@ -113,18 +113,12 @@ namespace DynamicGeometry
             get { return Line.Coordinates; }
         }
 
-        public double Magnitude
-        {
-            get { return Line.Length; }
-        }
-
         [PropertyGridVisible]
-        [PropertyGridName("Magnitude")]
         public double Length
         {
-            get 
-            { 
-                return Magnitude; 
+            get
+            {
+                return Line.Length;
             }
             set
             {

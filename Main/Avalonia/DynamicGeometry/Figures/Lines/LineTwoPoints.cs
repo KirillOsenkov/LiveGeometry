@@ -22,6 +22,7 @@
 
         [PropertyGridVisible]
         [PropertyGridName("Convert to ray")]
+        [PropertyGridIcon(PropertyGridIcon.Ray)]
         public void ConvertToRay()
         {
             LineTwoPoints.Convert(this, Factory.CreateRay(this.Drawing, this.Dependencies));
@@ -29,6 +30,7 @@
 
         [PropertyGridVisible]
         [PropertyGridName("Convert to segment")]
+        [PropertyGridIcon(PropertyGridIcon.Segment)]
         public void ConvertToSegment()
         {
             LineTwoPoints.Convert(this, Factory.CreateSegment(this.Drawing, this.Dependencies));

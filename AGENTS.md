@@ -232,17 +232,27 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   using `RibbonTheme` colors; the editors are restyled by scoped Avalonia styles in
   `PropertyGrid/PropertyGridTheme.cs` (no per-editor styling code). The Fluent theme paints
   hover/selected states on the template's ContentPresenter, so overrides must target that part.
-  Rows share the label column width via `SharedSizeGroup`. An editor never sets a value equal
-  to the current one (`LabeledValueEditor.SetValue`): Avalonia raises a TextBox's TextChanged
-  through the dispatcher, after the editor's guard is gone, so until 2026-09-26 showing a
-  figure recorded one same-value undo step per text row, and the first Ctrl+Z after
-  selecting something did nothing visible. Layout is declarative:
+  Rows share the label column width via `SharedSizeGroup`. Numbers are *shown* with
+  `Settings.DisplayDecimals` (2; also the default of a label's `DecimalsToShow`) by every
+  editor (`DoubleEditor`, `UpDownEditor`, `SliderEditor`); values keep their digits and a
+  typed number is taken as typed. Avalonia raises a TextBox's TextChanged through the
+  dispatcher, after the editor's guard is gone, so each text editor remembers the text it
+  put in the box itself (`StringEditor.ShownText`) and ignores a TextChanged carrying it -
+  otherwise showing a figure recorded a set per text row (until 2026-09-26 the first Ctrl+Z
+  after selecting something did nothing visible), and with rounding it would write the
+  rounded value back. `LabeledValueEditor.SetValue` also skips a value equal to the current
+  one. Layout is declarative:
   `[PropertyGridGroup("Name")]` on properties/methods boxes them together (editors, then their
   buttons in a row); `[PropertyGridDestructive]` on a method puts its button last, under a
   divider, with a trash can (`PropertyGrid.Arrange`, `MethodCallerButton`);
   `[PropertyGridIcon(PropertyGridIcon.Pencil)]` puts a small drawn icon (`PropertyGridIcons`,
-  14 px, same grid as the trash can) in front of the caption - "Edit this style" has the
-  pencil, "Create new style" the plus.
+  14 px, same grid as the trash can) in front of the caption. Every verb button has one
+  (2026-09-26): pencil and plus for the style buttons and the "Add ..." panel buttons,
+  a gold padlock closed/open for Fix length/Free length and the Translation panel's
+  Free, a green check for OK/Go/Done/Plot/Close figure, a cross for Cancel, and glyphs
+  for the conversions: segment (two yellow dots), ray (dot and arrowhead), line (two
+  arrowheads), reverse (two arrows), angle (two rays and a green arc), arc, circular
+  segment and sector (sky-blue fill), polyline (a zigzag).
 - **Color/brush picking** lives in `DynamicGeometry/Controls/ColorPicker/` and is layered so the
   parts can be swapped: `ColorPalette` (which colors, in what order and how many columns -
   `WebColors` is the hand-arranged 14x10 map from the Helix picker, `ArrangeByHue` computes one) ->
@@ -294,24 +304,26 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   neither, and the key reached it twice, so undoing took two steps). The Dragger
   ignores Numbers among the roots of a dragged figure (they have no place to go). There is
   no tool that makes a Number yet; a typed value in the Translation tool becomes one.
-- **TranslatedPoint** (`Figures/Points/TranslatedPoint.cs`) is the point at a magnitude and
+- **TranslatedPoint** (`Figures/Points/TranslatedPoint.cs`) is the point at a distance and
   a direction from its source. Each quantity is either *tied* to a figure it depends on (a
-  vector for both, a length or angle provider, a Number for a typed value) or *free*: the
+  vector for both, a length provider; for the direction also any `ILine` - segment, ray,
+  line - taken the way it points, from its first point to its second, or an angle
+  provider; a Number for a typed value) or *free*: the
   parameter dragging changes, kept in the file. Free direction = slides on the circle
-  around the source; free magnitude = on the line through it, signed. Roles are stored by
+  around the source; free distance = on the line through it, signed. Roles are stored by
   index into the dependency list, never inferred from types (a `Label` is both a length and
-  an angle provider). Property grid: Magnitude / Direction (degrees) rows editable when free
-  or held by a Number, read-only with the source's name otherwise; "Free magnitude" /
+  an angle provider). Property grid: Distance / Direction (degrees) rows editable when free
+  or held by a Number, read-only with the source's name otherwise; "Free distance" /
   "Free direction" checkboxes convert (a freed Number is retired, not deleted, so undo
   brings the same one back; freeing both is disabled). A point with a free
-  quantity takes the green `PointOnFigure` style. File: `MagnitudeSource="n1"` /
+  quantity takes the green `PointOnFigure` style. File: `DistanceSource="n1"` /
   `DirectionSource="..."` for tied, `FreeDirection="true" Direction="30"` for free (degrees).
   A file with none of those is the old format (typed values as attributes, roles by
   position, Direction in radians); `UpgradeLegacyValues`, called by the deserializer,
   gives the typed values auxiliary Numbers. `Transformer.CreateTranslatedFigure` takes the
   two sources, shared by every point of a translated figure.
 - **The Translation tool is stepwise** (`TranslationCreator`, 2026-09-26): source figure,
-  then magnitude, then direction, then - when something was left free - a click that
+  then distance, then direction, then - when something was left free - a click that
   places the point. The side panel shows only the step at hand (`PropertyBag` is the
   step's `ValueStep`: an up/down number box (`UpDownEditor`, chosen by
   `[PropertyGridPreferredEditor("UpDown")]`), OK (Enter too) and, for a point source and at
@@ -319,7 +331,7 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   construction ends: `DrawingControl` re-shows the behavior's `PropertyBag` on "construction
   complete" as well, and the creator clears its panel in `Stopping` because that event is
   raised before `Started` resets the state. A click on a figure during a value step takes
-  it (a vector at the magnitude step gives both and ends the construction); a click on
+  it (a vector at the distance step gives both and ends the construction); a click on
   empty paper does nothing. The riding point of the placement step is the real
   `TranslatedPoint` as a temp result, moved by `MoveTo` on every mouse move; the click
   stores the place and the final one is created there.
@@ -327,11 +339,25 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   `[PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]` on the property,
   and the figure implements `IConditionalProperties` (`CanEdit(name)`, `Caption(name,
   default)`). A read-only text row is grayed (`StringEditor` disables the box). Used by
-  `TranslatedPoint` (Magnitude/Direction/Free rows) and `Segment.Length`: setting a
+  `TranslatedPoint` (Distance/Direction/Free rows) and `Segment.Length`: setting a
   segment's length stretches it once (not a constraint) by moving the second end away from
   the first, or the first if the second can't; an end can take it when it is a free point
   or a translated point sliding along this segment's own line, and the other end isn't
   built on it (a fixed-length segment's far end would just follow). Otherwise read-only.
+  The same interface vetoes *buttons* by method name (`PropertyGrid.GetCallableMethods`).
+- **Fix length / Free length** are verbs on a segment, next to "Convert to line"
+  (`Segment.FixLength`/`FreeLength`, 2026-09-26; only the applicable one shows). Fix
+  length turns the end that could take a new length (same rule as above) into a
+  `TranslatedPoint` from the other end with an auxiliary Number at the current length and
+  a free direction; nothing moves, the end turns green, and the Length row then edits the
+  Number (`Segment.FixedEnd`). Free length puts a `FreePoint` back where the fixed end is
+  (the Number goes with it). A sliding end (translated, distance free) is fixed or freed
+  by toggling its `FreeDistance` instead. The swap is `Actions.ReplacePoint`: add the
+  replacement, regraft dependents, hand over the point's name label (which
+  `ReplaceFigureAction` skips on purpose), remove the old point, give the new one the old
+  name - one transaction, undo restores the old point with its Number. Undo of a *drag* of
+  a constrained point is by offset and lands only near the old parameter, as for a
+  `PointOnFigure`.
 - **The library's own types shadow framework ones**: `Math`, `Ellipse`, `Polygon`, `Path`...
   In a file-scoped-namespace file a `using X = ...;` alias does NOT win over a type of the
   enclosing namespace - write `System.Math.Max`, `Avalonia.Controls.Shapes.Ellipse` in full.

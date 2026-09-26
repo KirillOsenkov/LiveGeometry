@@ -20,6 +20,13 @@ namespace DynamicGeometry
         public static double CurrentDrawingVersion = 1;
 
         /// <summary>
+        /// How many decimals a number is shown with: the default of a label's DecimalsToShow,
+        /// and what the property grid's editors display. Only the display - values keep their
+        /// precision, and a typed number is taken as typed.
+        /// </summary>
+        public static int DisplayDecimals = 2;
+
+        /// <summary>
         /// Should the orientation of a PointOnFigure on an elliptical figure remain fixed or should it be relative to the orientation of the figure?
         /// </summary>
         public static bool PointsOnEllipticalsUseAbsoluteAngle = true;

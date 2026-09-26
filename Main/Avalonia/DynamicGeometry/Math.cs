@@ -1711,14 +1711,14 @@ namespace DynamicGeometry
             return new PointPair(point1, point2);
         }
 
-        public static Point GetTranslationPoint(Point p, double magnitude, double direction)
+        public static Point GetTranslationPoint(Point p, double distance, double direction)
         {
             Point result = new Point(p.X, p.Y);
 
-            if (magnitude == 0) return p;   // Rotate a point 0 degrees - no change.
+            if (distance == 0) return p;   // Rotate a point 0 degrees - no change.
 
-            var dx = magnitude * M.Cos(direction);
-            var dy = magnitude * M.Sin(direction);
+            var dx = distance * M.Cos(direction);
+            var dy = distance * M.Sin(direction);
             result += new Avalonia.Vector(dx, dy);
 
             return result;

@@ -9,9 +9,10 @@ using Avalonia.Media;
 namespace DynamicGeometry
 {
     /// <summary>
-    /// Translation, one thing per step: the figure to translate, then the magnitude, then
+    /// Translation, one thing per step: the figure to translate, then the distance, then
     /// the direction. Each of the two is a figure clicked on the canvas (a segment or
-    /// anything with a length, an angle; a vector gives both at once), a number typed in
+    /// anything with a length; a segment, ray, line or angle, the line taken the way it
+    /// points; a vector gives both at once), a number typed in
     /// the side panel and confirmed with OK, or - when the source is a single point - left
     /// Free, so that the point can be dragged; then one more click places it. The panel
     /// shows only the step at hand and goes away when the point is made.
@@ -23,23 +24,23 @@ namespace DynamicGeometry
         enum Step
         {
             Source,
-            Magnitude,
+            Distance,
             Direction,
             Placement
         }
 
         Step step;
-        IFigure magnitudeSource;
+        IFigure distanceSource;
         IFigure directionSource;
-        bool magnitudeFree;
+        bool distanceFree;
         bool directionFree;
-        double typedMagnitude;
+        double typedDistance;
         double typedDirection;
         Point? placement;
         ValueStep panel;
 
         // the next translation is likely the same as the last
-        static double lastMagnitude = 1;
+        static double lastDistance = 1;
         static double lastDirection = 0;
 
         #region The panel of a step
@@ -79,12 +80,14 @@ namespace DynamicGeometry
             }
 
             [PropertyGridVisible]
+            [PropertyGridIcon(PropertyGridIcon.Check)]
             public void OK()
             {
                 parent.Accept(Value);
             }
 
             [PropertyGridVisible]
+            [PropertyGridIcon(PropertyGridIcon.Unlock)]
             public void Free()
             {
                 parent.LeaveFree();
@@ -106,13 +109,13 @@ namespace DynamicGeometry
 
             public string Caption(string propertyName, string defaultCaption)
             {
-                return isDirection ? "Direction (degrees)" : "Magnitude";
+                return isDirection ? "Direction (degrees)" : "Distance";
             }
 
             // the title of the panel
             public override string ToString()
             {
-                return isDirection ? "Translation: direction" : "Translation: magnitude";
+                return isDirection ? "Translation: direction" : "Translation: distance";
             }
         }
 
@@ -129,9 +132,9 @@ namespace DynamicGeometry
         {
             base.Started();
             step = Step.Source;
-            magnitudeSource = null;
+            distanceSource = null;
             directionSource = null;
-            magnitudeFree = false;
+            distanceFree = false;
             directionFree = false;
             placement = null;
             panel = null;
@@ -165,21 +168,21 @@ namespace DynamicGeometry
                     {
                         Drawing.RaiseConstructionStepStarted();
                         FoundDependencies.Add(underMouse);
-                        Advance(Step.Magnitude);
+                        Advance(Step.Distance);
                     }
 
                     break;
 
-                case Step.Magnitude:
+                case Step.Distance:
                     if (underMouse is Vector)
                     {
-                        magnitudeSource = underMouse;
+                        distanceSource = underMouse;
                         directionSource = underMouse;
                         Finish();
                     }
                     else if (underMouse != null)
                     {
-                        magnitudeSource = underMouse;
+                        distanceSource = underMouse;
                         Advance(Step.Direction);
                     }
 
@@ -201,13 +204,13 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>OK in the panel: the typed value is the magnitude or the direction of this step</summary>
+        /// <summary>OK in the panel: the typed value is the distance or the direction of this step</summary>
         void Accept(double value)
         {
-            if (step == Step.Magnitude)
+            if (step == Step.Distance)
             {
-                typedMagnitude = value;
-                lastMagnitude = value;
+                typedDistance = value;
+                lastDistance = value;
                 Advance(Step.Direction);
             }
             else if (step == Step.Direction)
@@ -221,9 +224,9 @@ namespace DynamicGeometry
         /// <summary>Free in the panel: this step's quantity is the one dragging will change</summary>
         void LeaveFree()
         {
-            if (step == Step.Magnitude)
+            if (step == Step.Distance)
             {
-                magnitudeFree = true;
+                distanceFree = true;
                 Advance(Step.Direction);
             }
             else if (step == Step.Direction)
@@ -238,12 +241,12 @@ namespace DynamicGeometry
             step = next;
             switch (next)
             {
-                case Step.Magnitude:
-                    panel = new ValueStep(this, isDirection: false, canFree: CanFree, value: lastMagnitude);
+                case Step.Distance:
+                    panel = new ValueStep(this, isDirection: false, canFree: CanFree, value: lastDistance);
                     break;
                 case Step.Direction:
                     // one freedom at most: a point free in both would just follow the mouse
-                    panel = new ValueStep(this, isDirection: true, canFree: CanFree && !magnitudeFree, value: lastDirection);
+                    panel = new ValueStep(this, isDirection: true, canFree: CanFree && !distanceFree, value: lastDirection);
                     break;
                 default:
                     panel = null;
@@ -256,7 +259,7 @@ namespace DynamicGeometry
         /// <summary>Both values known: the point is made, or placed by one more click when something is free</summary>
         void Finish()
         {
-            if (magnitudeFree || directionFree)
+            if (distanceFree || directionFree)
             {
                 Advance(Step.Placement);
                 CreateTempResults();
@@ -291,10 +294,11 @@ namespace DynamicGeometry
             {
                 case Step.Source:
                     return Transformer.CanBeTransformSource(figure);
-                case Step.Magnitude:
+                case Step.Distance:
                     return figure is Vector || figure is ILengthProvider;
                 case Step.Direction:
-                    return figure is IAngleProvider;
+                    // a line points from its first point to its second: that is its angle
+                    return figure is IAngleProvider || figure is ILine || figure is Vector;
                 default:
                     return false;
             }
@@ -312,7 +316,7 @@ namespace DynamicGeometry
             {
                 case Step.Source:
                     return typeof(IFigure);
-                case Step.Magnitude:
+                case Step.Distance:
                     return typeof(ILengthProvider);
                 case Step.Direction:
                     return typeof(IAngleProvider);
@@ -342,12 +346,12 @@ namespace DynamicGeometry
         {
             var source = Source;
             Check.NotNull(source);
-            var magnitude = magnitudeSource;
+            var distance = distanceSource;
             var direction = directionSource;
-            if (magnitude == null && !magnitudeFree)
+            if (distance == null && !distanceFree)
             {
-                magnitude = Number.CreateAuxiliary(Drawing, typedMagnitude);
-                yield return magnitude;
+                distance = Number.CreateAuxiliary(Drawing, typedDistance);
+                yield return distance;
             }
 
             if (direction == null && !directionFree)
@@ -356,7 +360,7 @@ namespace DynamicGeometry
                 yield return direction;
             }
 
-            var results = Transformer.CreateTranslatedFigure(Drawing, source, magnitude, direction);
+            var results = Transformer.CreateTranslatedFigure(Drawing, source, distance, direction);
             Check.NoNullElements(results);
             if (placement != null && results.LastOrDefault() is TranslatedPoint placed)
             {
@@ -383,12 +387,12 @@ namespace DynamicGeometry
         {
             switch (step)
             {
-                case Step.Magnitude:
-                    return "Click a segment or a vector for the magnitude, or type it and press OK."
+                case Step.Distance:
+                    return "Click a segment or a vector for the distance, or type it and press OK."
                         + (CanFree ? " Free leaves it to be dragged." : "");
                 case Step.Direction:
-                    return "Click a figure with an angle for the direction, or type it and press OK."
-                        + (CanFree && !magnitudeFree ? " Free leaves it to be dragged." : "");
+                    return "Click a segment, line, vector or angle for the direction, or type it and press OK."
+                        + (CanFree && !distanceFree ? " Free leaves it to be dragged." : "");
                 case Step.Placement:
                     return "Click where the point goes.";
                 default:

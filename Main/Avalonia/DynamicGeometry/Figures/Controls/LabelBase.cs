@@ -214,7 +214,7 @@ namespace DynamicGeometry
             }
         }
 
-        private int mDecimalsToShow = 2;
+        private int mDecimalsToShow = Settings.DisplayDecimals;
         [PropertyGridName("Decimals")]
         [Domain(0, 10)]
         [PropertyGridVisible]

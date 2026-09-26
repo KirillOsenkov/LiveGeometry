@@ -2,7 +2,7 @@ namespace DynamicGeometry;
 
 /// <summary>
 /// A figure whose property grid rows are editable or not depending on its state (a
-/// segment's Length only when an end can move; a translated point's Magnitude only when it
+/// segment's Length only when an end can move; a translated point's Distance only when it
 /// is free or held by a Number), and whose captions may say why.
 /// </summary>
 public interface IConditionalProperties
