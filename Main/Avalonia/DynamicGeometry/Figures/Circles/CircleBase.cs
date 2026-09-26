@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Collections.Generic;
+using Avalonia;
 
 namespace DynamicGeometry
 {
@@ -47,6 +48,12 @@ namespace DynamicGeometry
                     LengthConstraint.SetDistance(RadiusEnd, RadiusPivot, value);
                 }
             }
+        }
+
+        /// <summary>A measurement of the radius sits between the two radius points</summary>
+        public IList<IFigure> MeasuredFigures
+        {
+            get { return RadiusEnd == null ? null : new IFigure[] { RadiusPivot, RadiusEnd }; }
         }
 
         public bool CanEdit(string propertyName)

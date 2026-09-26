@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -133,6 +134,11 @@ namespace DynamicGeometry
         public bool CanEdit(string propertyName)
         {
             return Line.CanEdit(propertyName);
+        }
+
+        public IList<IFigure> MeasuredFigures
+        {
+            get { return new IFigure[] { this }; }
         }
 
         public string Caption(string propertyName, string defaultCaption)

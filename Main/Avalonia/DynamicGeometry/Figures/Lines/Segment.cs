@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace DynamicGeometry
 {
     public class Segment : LineBase, ILengthProvider, ILine, IFixableLength
@@ -31,6 +33,11 @@ namespace DynamicGeometry
         IPoint End(int index)
         {
             return (IPoint)Dependencies[index];
+        }
+
+        public IList<IFigure> MeasuredFigures
+        {
+            get { return new IFigure[] { this }; }
         }
 
         /// <summary>The end holding a fixed length from the other, or null (see <see cref="LengthConstraint.FixedEnd"/>)</summary>

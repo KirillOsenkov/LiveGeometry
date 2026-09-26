@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Avalonia;
 
 namespace DynamicGeometry
@@ -42,6 +43,12 @@ namespace DynamicGeometry
             {
                 LengthConstraint.SetDistance(VertexPoint, CenterPoint, value / RadiusToSide);
             }
+        }
+
+        // the sides are the polygon's own children, nothing in the drawing to measure
+        public IList<IFigure> MeasuredFigures
+        {
+            get { return null; }
         }
 
         public bool CanEdit(string propertyName)

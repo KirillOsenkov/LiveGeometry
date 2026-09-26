@@ -360,10 +360,16 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   length puts a `FreePoint` back where the fixed end is (the Number goes with it). A
   sliding end (translated, distance free) is fixed or freed by toggling its `FreeDistance`
   instead. **Right after such a figure is made** the side panel shows a `LengthPanel`
-  (`FigureCreator.ShowCreatedFigure`): just the length and the verb, forwarded to the
-  figure, plus a line in the status bar - the tools have no length box; a square's panel
-  is its base side's. Not shown when nothing can move (a figure built on existing
-  dependent points: `CanEdit("Length")` is false). A creator's undo transaction spans one construction, opened at
+  (`FigureCreator.ShowCreatedFigure`): the length, a Show checkbox that puts a
+  `DistanceMeasurement` on the figure or takes it off (`IFixableLength.MeasuredFigures`
+  says what it measures: the segment itself, a circle's two radius points; null for the
+  regular polygon, whose sides are its own children, so no checkbox), the verb, and Done,
+  which just closes the panel - plus a line in the status bar. The tools have no length
+  box; a square's panel is its base side's. Not shown when nothing can move (a figure
+  built on existing dependent points: `CanEdit("Length")` is false). The Show setter
+  changes the figure list directly, like the point's Free toggles: the grid records the
+  property set as the undo step and the undo library refuses an action recorded from
+  inside another. A creator's undo transaction spans one construction, opened at
   the first click (`FigureCreator.EnsureTransaction`, before the point that click makes)
   and committed with the figures - not the tool's lifetime as before 2026-09-26 - so an
   edit made in that panel between constructions is an undo step of its own.

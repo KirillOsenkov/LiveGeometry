@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using GuiLabs.Undo;
 
@@ -14,6 +15,12 @@ public interface IFixableLength : IFigure, IConditionalProperties
     void FixLength();
 
     void FreeLength();
+
+    /// <summary>
+    /// What a distance measurement showing this length depends on (the segment itself, a
+    /// circle's center and rim point); null when there is no figure to hang one on.
+    /// </summary>
+    IList<IFigure> MeasuredFigures { get; }
 }
 
 /// <summary>
@@ -23,6 +30,32 @@ public interface IFixableLength : IFigure, IConditionalProperties
 /// </summary>
 public static class LengthConstraint
 {
+    /// <summary>A new distance measurement of the figure's length, not yet in the drawing; null when it has none</summary>
+    public static DistanceMeasurement CreateMeasurement(IFixableLength figure)
+    {
+        var measured = figure.MeasuredFigures;
+        return measured == null ? null : Factory.CreateDistanceMeasurement(figure.Drawing, measured);
+    }
+
+    /// <summary>
+    /// The distance measurement already showing the figure's length, or null: one on the
+    /// same figures, or - for a segment - on its two points, which is what the Distance
+    /// tool makes.
+    /// </summary>
+    public static DistanceMeasurement FindMeasurement(IFixableLength figure)
+    {
+        var measured = figure.MeasuredFigures;
+        if (measured == null)
+        {
+            return null;
+        }
+
+        var ends = measured.Count == 1 && measured[0] is Segment segment ? segment.Dependencies : null;
+        return figure.Drawing.Figures
+            .OfType<DistanceMeasurement>()
+            .FirstOrDefault(m => m.Dependencies.SequenceEqual(measured) || (ends != null && m.Dependencies.SequenceEqual(ends)));
+    }
+
     /// <summary>
     /// Whether the end can be moved to a new distance from the pivot: a free point the pivot
     /// isn't built on (else the pivot would follow and the distance stay), or a translated

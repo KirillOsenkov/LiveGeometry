@@ -28,6 +28,34 @@ public class LengthPanel : IConditionalProperties, ICustomMethodProvider
         set { figure.Length = value; }
     }
 
+    /// <summary>
+    /// A distance measurement on the figure, added or removed. The grid records the
+    /// property set as the undo step, and this setter runs inside it - so the drawing is
+    /// changed directly (the undo library refuses an action recorded from within another);
+    /// undo sets the property back, which removes or re-adds the measurement.
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
+    public bool Show
+    {
+        get
+        {
+            return LengthConstraint.FindMeasurement(figure) != null;
+        }
+        set
+        {
+            var existing = LengthConstraint.FindMeasurement(figure);
+            if (value && existing == null)
+            {
+                figure.Drawing.Figures.Add(LengthConstraint.CreateMeasurement(figure));
+            }
+            else if (!value && existing != null)
+            {
+                figure.Drawing.Figures.Remove(existing);
+            }
+        }
+    }
+
     [PropertyGridName("Fix length")]
     [PropertyGridIcon(PropertyGridIcon.Lock)]
     public void FixLength()
@@ -44,13 +72,21 @@ public class LengthPanel : IConditionalProperties, ICustomMethodProvider
         ShowAgain();
     }
 
+    /// <summary>Closes the panel; the figure stays as it is</summary>
+    [PropertyGridIcon(PropertyGridIcon.Check)]
+    public void Done()
+    {
+        figure.Drawing.RaiseDisplayProperties(null);
+        figure.Drawing.ClearStatus();
+    }
+
     // the figure shows its own grid after the verb; this panel comes back on top of that
     void ShowAgain()
     {
         figure.Drawing.RaiseDisplayProperties(this);
     }
 
-    /// <summary>The verb that applies, captioned by the figure ("Fix radius")</summary>
+    /// <summary>The verb that applies, captioned by the figure ("Fix radius"), then Done</summary>
     public IEnumerable<IOperationDescription> GetMethods()
     {
         foreach (var name in new[] { "FixLength", "FreeLength" })
@@ -60,10 +96,18 @@ public class LengthPanel : IConditionalProperties, ICustomMethodProvider
                 yield return new CaptionedMethod(MethodDescription.Get<LengthPanel>(name), figure);
             }
         }
+
+        yield return MethodDescription.Get<LengthPanel>("Done");
     }
 
     public bool CanEdit(string propertyName)
     {
+        // no figure to hang a measurement on (a regular polygon's sides are its own children)
+        if (propertyName == "Show")
+        {
+            return figure.MeasuredFigures != null;
+        }
+
         return figure.CanEdit(propertyName);
     }
 
