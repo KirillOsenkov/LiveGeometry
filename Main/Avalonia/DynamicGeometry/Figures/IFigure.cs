@@ -55,6 +55,12 @@ namespace DynamicGeometry
         int ZIndex { get; set; }
         bool Visible { get; set; }
 
+        /// <summary>
+        /// Created on demand for another figure (a Number holding a typed value): removed
+        /// along with its last dependent.
+        /// </summary>
+        bool Auxiliary { get; set; }
+
         string GenerateFigureName();
 
         /// <param name="blacklist">A list of names to exclude. Can be null.</param>

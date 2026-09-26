@@ -91,13 +91,6 @@ namespace DynamicGeometry
             }
         }
 
-        public static void RemoveMany(Drawing drawing, IEnumerable<IFigure> figures)
-        {
-            // TODO: switch to using RemoveFigure multiple times
-            var action = new RemoveFiguresAction(drawing, figures);
-            drawing.ActionManager.RecordAction(action);
-        }
-
         public static void AddItem<T>(ActionManager actionManager, ICollection<T> list, T item)
         {
             AddItemAction<T> action = new AddItemAction<T>(list.Add, i => list.Remove(i), item);

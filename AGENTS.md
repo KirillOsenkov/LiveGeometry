@@ -232,7 +232,11 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   using `RibbonTheme` colors; the editors are restyled by scoped Avalonia styles in
   `PropertyGrid/PropertyGridTheme.cs` (no per-editor styling code). The Fluent theme paints
   hover/selected states on the template's ContentPresenter, so overrides must target that part.
-  Rows share the label column width via `SharedSizeGroup`. Layout is declarative:
+  Rows share the label column width via `SharedSizeGroup`. An editor never sets a value equal
+  to the current one (`LabeledValueEditor.SetValue`): Avalonia raises a TextBox's TextChanged
+  through the dispatcher, after the editor's guard is gone, so until 2026-09-26 showing a
+  figure recorded one same-value undo step per text row, and the first Ctrl+Z after
+  selecting something did nothing visible. Layout is declarative:
   `[PropertyGridGroup("Name")]` on properties/methods boxes them together (editors, then their
   buttons in a row); `[PropertyGridDestructive]` on a method puts its button last, under a
   divider, with a trash can (`PropertyGrid.Arrange`, `MethodCallerButton`);
@@ -275,6 +279,39 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
   lists and raises undersized point styles. The Rose's 90 control points are the exception,
   at 5 px (styles 7/8/9; the by-kind styles for new points stay standard) - at 10 and black
   they swallowed the flower.
+- **Numbers are figures** (`Figures/Values/Number.cs`, 2026-09-25): a `Number` is a root in
+  the dependency graph with no shape and no hit test, a `Value` the property grid edits
+  (undoable, recalculates dependents), a length (units) and an angle (degrees; `Angle` gives
+  radians like every angle provider). Named n1, n2, n3. An expression names one by that
+  name (`[n1*2]`, `TreeBuilder.CreateIdentifierExpression`) and the label depends on it.
+  Saved as `<Number Name="n1" Value="3" Auxiliary="true" />`. `Auxiliary` (on every
+  figure, `IFigure.Auxiliary`) marks one created on demand for another figure: it is
+  removed with its last dependent (`RemoveFigureAction.FindOrphanedAuxiliaries`) and comes
+  back on undo. Every deletion goes through `RemoveFigureAction`: the Delete key
+  (`Drawing.DeleteSelection`) removes the selected figures one by one in a transaction, so
+  point labels come back on undo and a polygon loses a vertex rather than dying, like the
+  grid's Delete button (until 2026-09-25 it had a bulk action of its own that did
+  neither, and the key reached it twice, so undoing took two steps). The Dragger
+  ignores Numbers among the roots of a dragged figure (they have no place to go). There is
+  no tool that makes a Number yet; a typed value in the Translation tool becomes one.
+- **TranslatedPoint** (`Figures/Points/TranslatedPoint.cs`) is the point at a magnitude and
+  a direction from its source. Each quantity is either *tied* to a figure it depends on (a
+  vector for both, a length or angle provider, a Number for a typed value) or *free*: the
+  parameter dragging changes, kept in the file. Free direction = slides on the circle
+  around the source; free magnitude = on the line through it, signed. Roles are stored by
+  index into the dependency list, never inferred from types (a `Label` is both a length and
+  an angle provider). Property grid: Magnitude / Direction (degrees) rows editable when free
+  or held by a Number, read-only with the source's name otherwise; "Free magnitude" /
+  "Free direction" checkboxes convert (a freed Number is retired, not deleted, so undo
+  brings the same one back; freeing both is disabled) - `TranslatedPointQuantityValue` is
+  the custom value provider that makes rows conditionally editable. A point with a free
+  quantity takes the green `PointOnFigure` style. File: `MagnitudeSource="n1"` /
+  `DirectionSource="..."` for tied, `FreeDirection="true" Direction="30"` for free (degrees).
+  A file with none of those is the old format (typed values as attributes, roles by
+  position, Direction in radians); `UpgradeLegacyValues`, called by the deserializer,
+  gives the typed values auxiliary Numbers. `Transformer.CreateTranslatedFigure` takes the
+  two sources, shared by every point of a translated figure. In the Translation tool a
+  vector picked as the second figure ends the construction (it is both quantities).
 - **The library's own types shadow framework ones**: `Math`, `Ellipse`, `Polygon`, `Path`...
   In a file-scoped-namespace file a `using X = ...;` alias does NOT win over a type of the
   enclosing namespace - write `System.Math.Max`, `Avalonia.Controls.Shapes.Ellipse` in full.

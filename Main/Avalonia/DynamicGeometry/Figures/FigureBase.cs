@@ -180,6 +180,8 @@ namespace DynamicGeometry
         [PropertyGridVisible]
         public virtual bool Locked { get; set; }
 
+        public bool Auxiliary { get; set; }
+
         public virtual void WriteXml(XmlWriter writer)
         {
             if (!Visible)
@@ -189,6 +191,10 @@ namespace DynamicGeometry
             if (Locked)
             {
                 writer.WriteAttributeString("Locked", "true");
+            }
+            if (Auxiliary)
+            {
+                writer.WriteAttributeBool("Auxiliary", true);
             }
             if (Style != null)
             {
@@ -204,6 +210,7 @@ namespace DynamicGeometry
         {
             Visible = element.ReadBool("Visible", true);
             Locked = element.ReadBool("Locked", false);
+            Auxiliary = element.ReadBool("Auxiliary", false);
             IsHitTestVisible = element.ReadBool("IsHitTestVisible", true);
             var styleAttribute = element.Attribute("Style");
             if (styleAttribute != null

@@ -79,7 +79,10 @@ namespace DynamicGeometry
             {
                 if (!found.Locked)
                 {
-                    roots = DependencyAlgorithms.FindRoots(f => f.Dependencies, found);
+                    // a Number has no place to move; the drag goes to the points
+                    roots = DependencyAlgorithms.FindRoots(f => f.Dependencies, found)
+                        .Where(root => !(root is INumber))
+                        .ToArray();
                     if (roots.All(root => root is IMovable))
                     {
                         if (roots.All(root => ((IMovable)root).AllowMove()))

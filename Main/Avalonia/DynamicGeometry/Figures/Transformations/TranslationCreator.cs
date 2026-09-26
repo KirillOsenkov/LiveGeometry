@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 
@@ -90,6 +92,17 @@ namespace DynamicGeometry
             return false;
         }
 
+        /// <summary>A vector is the magnitude and the direction at once: nothing left to pick</summary>
+        protected override Type GetExpectedDependencyType()
+        {
+            if (FoundDependencies.Count > 1 && FoundDependencies[1] is Vector)
+            {
+                return null;
+            }
+
+            return base.GetExpectedDependencyType();
+        }
+
         protected override void AddFoundDependency(IFigure figure)
         {
             if (figure != null)
@@ -98,17 +111,52 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// The magnitude is the second figure picked (a vector gives the direction too), the
+        /// direction the third; what wasn't picked comes from the panel as a Number of its
+        /// own, so that it can be edited later, and goes into the drawing before the points.
+        /// </summary>
         protected override IEnumerable<IFigure> CreateFigures()
         {
             var source = FoundDependencies[0];
             Check.NotNull(source);
-            var dependenciesSubset = new List<IFigure>(FoundDependencies.Without(source));
+            IFigure magnitudeSource = null;
+            IFigure directionSource = null;
+            foreach (var picked in FoundDependencies.Skip(1))
+            {
+                if (picked is Vector)
+                {
+                    magnitudeSource = picked;
+                    directionSource = picked;
+                }
+                else if (magnitudeSource == null)
+                {
+                    magnitudeSource = picked;
+                }
+                else if (directionSource == null)
+                {
+                    directionSource = picked;
+                }
+            }
+
+            var typed = (TranslationDialog)PropertyBag;
+            if (magnitudeSource == null)
+            {
+                magnitudeSource = Number.CreateAuxiliary(Drawing, typed.magnitude);
+                yield return magnitudeSource;
+            }
+
+            if (directionSource == null)
+            {
+                directionSource = Number.CreateAuxiliary(Drawing, typed.direction);
+                yield return directionSource;
+            }
+
             var results = Transformer.CreateTranslatedFigure(
                 Drawing,
                 source,
-                dependenciesSubset,
-                dialog.magnitude,
-                dialog.direction);
+                magnitudeSource,
+                directionSource);
 
             Check.NotNull(results);
             Check.NoNullElements(results);

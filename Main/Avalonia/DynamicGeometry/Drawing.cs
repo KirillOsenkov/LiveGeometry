@@ -737,9 +737,36 @@ namespace DynamicGeometry
             return DrawingSerializer.SaveDrawing(this);
         }
 
+        /// <summary>
+        /// Each selected figure is removed the way the property grid's Delete button removes
+        /// one (<see cref="RemoveFigureAction"/>: dependents go with it, a polygon loses the
+        /// vertex instead of dying, point labels come back on undo, an auxiliary Number goes
+        /// with its last user), all in one undo step.
+        /// </summary>
         public void DeleteSelection()
         {
-            Actions.RemoveMany(this, this.GetSelectedFigures().Where(f => !(f is CartesianGrid)).TopologicalSort(f => f.Dependents).Where(f => !(f is PointLabel)));
+            var figures = this.GetSelectedFigures()
+                .Where(f => !(f is CartesianGrid) && !(f is PointLabel))
+                .ToArray();
+            // the Delete key reaches here twice (the tool on key down, the window on key up):
+            // the second time there is nothing selected
+            if (figures.Length == 0)
+            {
+                return;
+            }
+
+            // not delayed: each removal happens now, so that a figure that went as a
+            // dependent of an earlier one is seen to be gone and not removed a second time
+            using (Transaction.Create(ActionManager, false))
+            {
+                foreach (var figure in figures)
+                {
+                    if (Figures.Contains(figure))
+                    {
+                        Actions.Remove(figure);
+                    }
+                }
+            }
         }
 
 #endif

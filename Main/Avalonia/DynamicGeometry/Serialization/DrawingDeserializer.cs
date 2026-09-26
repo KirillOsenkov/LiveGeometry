@@ -77,6 +77,13 @@ namespace DynamicGeometry
                 }
             }
 
+            // A typed magnitude or direction of a translated point used to be an attribute of
+            // the point; it is a Number the point depends on now (2026-09-25)
+            foreach (var translated in drawing.Figures.OfType<TranslatedPoint>().ToArray())
+            {
+                translated.UpgradeLegacyValues();
+            }
+
             // Version 1 (2026-09-23): the offset of a label from what it labels is in pixels,
             // not units of the plane. Here, after the viewport, so that the conversion happens
             // at the zoom the file opens at. Saving writes the pixels and the new version.

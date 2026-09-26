@@ -21,9 +21,11 @@ namespace DynamicGeometry
         {
             CustomDependencyRemovers = new List<IAction>();
 
-            Deleted = Figure.AsEnumerable<IFigure>()
-                .TopologicalSort(GetRemovableDependencies)
-                .ToArray();
+            var deleted = Figure.AsEnumerable<IFigure>()
+                .TopologicalSort(GetRemovableDependencies);
+            // after their dependents, so that undo brings them back first
+            deleted.AddRange(FindOrphanedAuxiliaries(deleted));
+            Deleted = deleted.ToArray();
 
             foreach (var item in CustomDependencyRemovers)
             {
@@ -56,6 +58,35 @@ namespace DynamicGeometry
             }
 
             return list;
+        }
+
+        /// <summary>
+        /// A figure created on demand for another one (a Number holding a typed length) is
+        /// auxiliary: it goes when its last user goes. Transitively, in case an auxiliary
+        /// figure has auxiliary dependencies of its own.
+        /// </summary>
+        public static List<IFigure> FindOrphanedAuxiliaries(IEnumerable<IFigure> dying)
+        {
+            var gone = new HashSet<IFigure>(dying);
+            var orphans = new List<IFigure>();
+            var toVisit = new Queue<IFigure>(dying);
+            while (toVisit.Count > 0)
+            {
+                var figure = toVisit.Dequeue();
+                foreach (var dependency in figure.Dependencies)
+                {
+                    if (dependency.Auxiliary
+                        && !gone.Contains(dependency)
+                        && dependency.Dependents.All(gone.Contains))
+                    {
+                        gone.Add(dependency);
+                        orphans.Add(dependency);
+                        toVisit.Enqueue(dependency);
+                    }
+                }
+            }
+
+            return orphans;
         }
 
         protected override void UnExecuteCore()

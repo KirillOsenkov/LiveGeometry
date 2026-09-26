@@ -142,6 +142,14 @@ namespace DynamicGeometry
             }
             value = validation.Value;
 
+            // Avalonia raises a TextBox's TextChanged through the dispatcher, after UpdateEditor
+            // has set the text and let go of the guard: without this, showing a figure in the
+            // grid recorded one undo step per text row, setting what was already set
+            if (Value != null && Equals(Value.GetValue<object>(), value))
+            {
+                return;
+            }
+
             if (Value != null && Value.CanSetValue)
             {
                 guard = true;

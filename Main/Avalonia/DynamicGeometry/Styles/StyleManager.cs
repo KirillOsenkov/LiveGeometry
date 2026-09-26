@@ -331,6 +331,12 @@ namespace DynamicGeometry
                 return MidpointStyleName;
             }
 
+            // draggable along its circle or line, like a point on a figure
+            if (point is TranslatedPoint translated && translated.HasFreedom)
+            {
+                return PointOnFigureStyleName;
+            }
+
             return DependentPointStyleName;
         }
 

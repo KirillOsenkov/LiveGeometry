@@ -95,12 +95,28 @@ namespace DynamicGeometry
             }
 
             var parameter = Binder.Resolve(text);
-            if (parameter == null)
+            if (parameter != null)
             {
-                Status.AddUnknownIdentifierError(text);
+                return parameter;
             }
 
-            return parameter;
+            // a Number in the drawing, by its name: the expression then depends on it
+            if (Binder.ResolveFigure(text) is INumber number)
+            {
+                if (!Binder.IsFigureAllowed(number))
+                {
+                    Status.AddDependencyCycleError(text);
+                    return null;
+                }
+
+                Status.Dependencies.Add(number);
+                return Expression.Property(
+                    Expression.Constant(number, typeof(INumber)),
+                    typeof(INumber).GetProperty("Value"));
+            }
+
+            Status.AddUnknownIdentifierError(text);
+            return null;
         }
 
         public Expression ResolveTwoPoints(string twoPoints)

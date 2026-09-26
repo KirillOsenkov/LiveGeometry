@@ -237,21 +237,21 @@ namespace DynamicGeometry
             return result;
         }
 
-        public static List<IFigure> CreateTranslatedFigure(Drawing drawing, IFigure source, List<IFigure> dependenciesSubset, double magnitude, double direction)
+        /// <summary>
+        /// The sources are shared by every point of a translated figure: one Number for a
+        /// typed magnitude, whatever the source is.
+        /// </summary>
+        public static List<IFigure> CreateTranslatedFigure(
+            Drawing drawing,
+            IFigure source,
+            IFigure magnitudeSource,
+            IFigure directionSource)
         {
             Check.NotNull(source, "source");
             List<IFigure> result = new List<IFigure>();
             if (source is IPoint)
             {
-                var list = new List<IFigure>() { source };
-                list.AddRange(dependenciesSubset);
-                var translatedPoint = Factory.CreateTranslatedPoint(drawing, list, magnitude, direction);
-                if (translatedPoint == null)
-                {
-                    throw "translatedPoint is null. source = {0}, magnitude = {1}, direction = {2}"
-                        .Format(source, magnitude, direction)
-                        .AsException();
-                }
+                var translatedPoint = Factory.CreateTranslatedPoint(drawing, (IPoint)source, magnitudeSource, directionSource);
                 translatedPoint.Visible = source.Visible;
                 result.Add(translatedPoint);
             }
@@ -260,17 +260,11 @@ namespace DynamicGeometry
                 var dependencies = new List<IFigure>();
                 foreach (var dependency in source.Dependencies)
                 {
-                    var translatedDependency = CreateTranslatedFigure(drawing, dependency, dependenciesSubset, magnitude, direction);
-                    if (translatedDependency == null)
-                    {
-                        throw "translatedDependency is null. dependency = {0}, center = {1}, direction = {2}"
-                            .Format(dependency, magnitude, direction)
-                            .AsException();
-                    }
+                    var translatedDependency = CreateTranslatedFigure(drawing, dependency, magnitudeSource, directionSource);
                     if (translatedDependency.IsEmpty())
                     {
-                        throw "translatedDependency is empty. dependency = {0}, center = {1}, direction = {2}"
-                            .Format(dependency, magnitude, direction)
+                        throw "translatedDependency is empty. dependency = {0}, magnitude = {1}, direction = {2}"
+                            .Format(dependency, magnitudeSource, directionSource)
                             .AsException();
                     }
                     result.AddRange(translatedDependency);

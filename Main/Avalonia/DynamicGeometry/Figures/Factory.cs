@@ -172,9 +172,17 @@ namespace DynamicGeometry
             return new SegmentBisector() { Drawing = drawing, Dependencies = dependencies };
         }
 
-        public static TranslatedPoint CreateTranslatedPoint(Drawing drawing, IList<IFigure> dependencies, double magnitude, double direction)
+        /// <param name="magnitudeSource">A vector, a length provider or a Number; null leaves the magnitude free</param>
+        /// <param name="directionSource">A vector, an angle provider or a Number; null leaves the direction free</param>
+        public static TranslatedPoint CreateTranslatedPoint(
+            Drawing drawing,
+            IPoint source,
+            IFigure magnitudeSource,
+            IFigure directionSource)
         {
-            return new TranslatedPoint() { Drawing = drawing, Dependencies = dependencies, Magnitude = magnitude, Direction = direction };
+            var result = new TranslatedPoint() { Drawing = drawing };
+            result.SetSources(source, magnitudeSource, directionSource);
+            return result;
         }
 
         public static Ray CreateRay(Drawing drawing, IList<IFigure> dependencies)
