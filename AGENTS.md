@@ -282,7 +282,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Setting a segment's length stretches it once** (not a constraint); **Fix length** makes the
   constraint: the end becomes a `TranslatedPoint` from the pivot with an auxiliary `Number` at
   the current distance and a free direction (`IFixableLength`, `Figures/Lines/LengthConstraint.cs`;
-  segments, vectors, regular polygons, circles). Right after such a figure is made the side
+  segments, vectors, regular polygons, circles). An end on a line that runs through the pivot
+  takes the line as its direction instead (the Number signed along it, so the end is fully
+  determined) and Free makes it a point on the line again; an end on any other figure can't be
+  stretched or fixed at all. Right after such a figure is made the side
   panel shows a `LengthPanel` (`FigureCreator.ShowCreatedFigure`); the tools themselves have no
   length box. The swap is `Actions.ReplacePoint`, which hands over the point's name label
   (`ReplaceFigureAction` skips it on purpose). A creator's undo transaction spans one

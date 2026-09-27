@@ -78,7 +78,11 @@ namespace DynamicGeometry
             using (Transaction.Create(drawing.ActionManager, false))
             {
                 replacement.Visible = point.Visible;
+                // the replacement takes over the point's label, if any: "Label new points" must
+                // not give it one of its own, neither now nor on redo
+                SuppressAutoLabelPoints(drawing, suppress: true);
                 Add(drawing, replacement);
+                SuppressAutoLabelPoints(drawing, suppress: false);
                 var label = point.Label;
                 ReplaceWithExisting(point, replacement);
                 if (label != null)
@@ -101,6 +105,14 @@ namespace DynamicGeometry
                 Remove(point);
                 SetProperty(drawing.ActionManager, new PropertyValue("Name", replacement), point.Name);
             }
+        }
+
+        /// <summary>Recorded, so that redo and undo pass through the same state</summary>
+        static void SuppressAutoLabelPoints(Drawing drawing, bool suppress)
+        {
+            drawing.ActionManager.RecordAction(new CallMethodAction(
+                () => PointBase.SuppressAutoLabelPoints = suppress,
+                () => PointBase.SuppressAutoLabelPoints = !suppress));
         }
 
         public static void Move(Drawing drawing, IEnumerable<IMovable> moving, Point offset, IEnumerable<IFigure> toRecalculate)
