@@ -44,6 +44,11 @@ namespace DynamicGeometry
             return new Tuple<double, double>(0, base.GetParameterDomain().Item2);
         }
 
+        protected override string NameFromDependencies()
+        {
+            return NameFromPoints();
+        }
+
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]

@@ -266,7 +266,9 @@ namespace DynamicGeometry
             {
                 return true;
             }
-            return !figure.Drawing.Figures.Contains(name);
+            // its own name is available to a figure that looks for a new one (segment AB,
+            // renamed when a point is, may well stay AB)
+            return !figure.Drawing.Figures.Any(f => f != figure && f.Name == name);
         }
 
         public static bool ContainsRecursively(this IEnumerable<IFigure> list, IFigure figure)

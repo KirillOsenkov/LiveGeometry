@@ -10,6 +10,11 @@ namespace DynamicGeometry
         public BezierSegment BezierShape { get; set; }
         Math.BezierInfo Info;
 
+        protected override string NameFromDependencies()
+        {
+            return NameFromPoints(maxCount: 4);
+        }
+
         public override void Recalculate()
         {
             var p0 = Point(0);

@@ -21,6 +21,13 @@ namespace DynamicGeometry
 
         public override string GenerateFigureName(List<string> blacklist)
         {
+            // a hidden helper (the square's midpoint) mustn't take a letter from the points on
+            // screen: the square would be ABCE
+            if (!Visible)
+            {
+                return base.GenerateFigureName(blacklist);
+            }
+
             var alphabet = Settings.Instance.PointAlphabet;
             for (int i = 0; ; i++)
             {

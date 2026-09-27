@@ -17,6 +17,10 @@ namespace DynamicGeometry
         IFigure Clone();
 
         string Name { get; set; }
+
+        /// <summary>Nobody has named the figure (see <see cref="FigureBase.HasDefaultName"/>)</summary>
+        bool HasDefaultName { get; }
+
         bool Exists { get; set; }
         bool Selected { get; set; }
         bool Enabled { get; set; }

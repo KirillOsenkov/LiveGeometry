@@ -166,6 +166,11 @@ namespace DynamicGeometry
             return Tuple.Create(0.0, 1.0);
         }
 
+        protected override string NameFromDependencies()
+        {
+            return NameFromPoints();
+        }
+
         public override string ToString()
         {
             // I think it is confusing to the user when the title of the property grid for a segment is different than the name.

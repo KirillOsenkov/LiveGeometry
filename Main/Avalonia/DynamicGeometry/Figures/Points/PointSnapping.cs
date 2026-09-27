@@ -52,14 +52,13 @@ public static class PointSnapping
 
     /// <summary>
     /// How a menu names a figure to snap to: "line AB", "segment AB", "ray AB", "circle C" -
-    /// the default names (LineTwoPoints1) mean nothing to a reader. A name the user gave, or
-    /// a figure not built on its points alone, is called by its name.
+    /// a default name alone (AB, Circle1) doesn't say what kind of figure it is. A name the
+    /// user gave, or a figure not built on its points alone, is called by its name.
     /// </summary>
     public static string Describe(IFigure figure)
     {
         var dependencies = figure.Dependencies;
-        bool defaultName = figure.Name == null || figure.Name.StartsWith(figure.GetType().Name);
-        if (!defaultName || dependencies.Count != 2 || !(dependencies[0] is IPoint first))
+        if (!figure.HasDefaultName || dependencies.Count != 2 || !(dependencies[0] is IPoint first))
         {
             return figure.Name;
         }

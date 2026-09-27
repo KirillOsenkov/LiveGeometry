@@ -4,6 +4,14 @@ namespace DynamicGeometry
 {
     public partial class Polygon : PolygonBase, IPolygon
     {
+        /// <summary>Triangle ABC, square ABCD; one with more vertices than that is numbered</summary>
+        public const int MaxVerticesInName = 10;
+
+        protected override string NameFromDependencies()
+        {
+            return NameFromPoints(MaxVerticesInName);
+        }
+
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]

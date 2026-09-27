@@ -77,6 +77,13 @@ namespace DynamicGeometry
                 }
             }
 
+            // Every figure used to be numbered by its type (Segment1); one nobody renamed takes
+            // the name of its points now (2026-09-27)
+            foreach (var figure in drawing.Figures.ToArray())
+            {
+                (figure as FigureBase)?.UpdateDefaultName();
+            }
+
             // A typed distance or direction of a translated point used to be an attribute of
             // the point; it is a Number the point depends on now (2026-09-25)
             foreach (var translated in drawing.Figures.OfType<TranslatedPoint>().ToArray())

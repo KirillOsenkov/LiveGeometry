@@ -245,6 +245,16 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   figures. Hit testing uses the *snapped* coordinates. Typed coordinates always give a free
   point. A point must never be placed on the figure being constructed
   (`FigureCreator.CanPlacePointOn`), that would be a dependency cycle.
+- **Figures are named after their points** (`FigureBase.NameFromDependencies`): segment, ray,
+  line through two points and vector AB, polygon ABC (up to 10 vertices), polyline, Bezier
+  ABCD; a clash gets a number (line AB next to segment AB is AB2). Everything else is numbered
+  by type (Circle1); hidden points too, so a helper doesn't take a letter from the points on
+  screen. `HasDefaultName` (nobody typed a name) is not stored: a name that reads like the
+  default is the default, old `Segment1` included, and loading renames those. A default name
+  follows its points - renamed, replaced, joined, a vertex deleted - and undo needs nothing
+  special, since it restores the cause. The grid's Name box (`NameEditor`) refuses an empty
+  name and one another figure has (case matters: slider `a` next to point `A`); the setter
+  itself would take the name from the other figure, and turns an empty one into the default.
 - **Snapping and releasing points** (`Figures/Points/PointSnapping.cs`) swap a point for another
   kind where it is through `Actions.ReplacePoint` (name, label, dependents, lock, a chosen style
   go along). Snap: a free point onto a figure through it - "Snap to line AB" in the grid when

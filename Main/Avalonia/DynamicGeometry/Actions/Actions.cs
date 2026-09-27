@@ -58,9 +58,14 @@ namespace DynamicGeometry
                 Actions.Add(drawing, newFigure);
                 Actions.ReplaceWithExisting(existingFigure, newFigure);
                 Actions.Remove(existingFigure);
-                if (newFigure is PointBase && existingFigure is PointBase)
+                if (newFigure is PointBase && existingFigure is PointBase || !existingFigure.HasDefaultName)
                 {
                     Actions.SetProperty(drawing.ActionManager, new PropertyValue("Name", newFigure), existingFigure.Name);
+                }
+                else if (newFigure.HasDefaultName)
+                {
+                    // segment AB converted to a line is line AB: AB2 while both were there
+                    Actions.SetProperty(drawing.ActionManager, new PropertyValue("Name", newFigure), newFigure.GenerateFigureName());
                 }
             }
         }

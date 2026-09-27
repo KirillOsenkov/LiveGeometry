@@ -12,6 +12,12 @@ namespace DynamicGeometry
             this.mDependencies.CollectionChanged += mDependencies_CollectionChanged;
         }
 
+        // one converted from a polygon ends where it starts: ABCA
+        protected override string NameFromDependencies()
+        {
+            return NameFromPoints(Polygon.MaxVerticesInName + 1);
+        }
+
         /// <summary>
         /// Just for caching purposes, to avoid array allocations on a hotpath
         /// </summary>

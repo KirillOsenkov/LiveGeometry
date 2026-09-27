@@ -37,6 +37,12 @@ public abstract class PerpendicularLineBase : LineTwoPoints
     /// <param name="pointAcross">A point on this line that tells which side the mark starts on</param>
     protected abstract bool TryGetRightAngle(out Point vertex, out PointPair baseLine, out Point pointAcross);
 
+    // the perpendicular bisector of AB doesn't run through A and B: not "AB"
+    protected override string NameFromDependencies()
+    {
+        return null;
+    }
+
     [PropertyGridVisible]
     [PropertyGridName("Right angle mark")]
     public bool ShowRightAngle

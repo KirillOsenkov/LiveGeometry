@@ -421,6 +421,11 @@ namespace DynamicGeometry
                     return;
                 }
 
+                // the preview goes before a new point takes a name: its points hold letters (a
+                // square's other two vertices), and the click's point would be G of square DGEF
+                RemoveIntermediateFigureIfNecessary();
+                RemoveTempResultsIfNecessary();
+
                 if (underMouse == null && ExpectingAPoint())
                 {
                     underMouse = CreatePointForClick(coordinates);

@@ -32,7 +32,106 @@ namespace DynamicGeometry
 
         public virtual string GenerateFigureName(List<string> blacklist)
         {
-            return this.GenerateNewName();
+            // a composite's parts are numbered: only the composite takes the name of its points
+            var stem = Drawing != null && Drawing.Figures.Contains(this) ? NameFromDependencies() : null;
+            if (stem == null)
+            {
+                return this.GenerateNewName();
+            }
+
+            // segment AB and line AB side by side: AB and AB2
+            for (int i = 1; ; i++)
+            {
+                var candidate = i == 1 ? stem : stem + i;
+                if (this.NameAvailable(candidate) && (blacklist == null || !blacklist.Contains(candidate)))
+                {
+                    return candidate;
+                }
+            }
+        }
+
+        /// <summary>
+        /// The name the figure takes from what it is built on - segment AB, triangle ABC - or
+        /// null for a figure numbered by its type (Circle1)
+        /// </summary>
+        protected virtual string NameFromDependencies()
+        {
+            return null;
+        }
+
+        /// <summary>The names of the dependencies run together (AB, ABC), if they are all named points</summary>
+        protected string NameFromPoints(int maxCount = 2)
+        {
+            if (Dependencies.Count == 0 || Dependencies.Count > maxCount)
+            {
+                return null;
+            }
+
+            var sb = new System.Text.StringBuilder();
+            foreach (var dependency in Dependencies)
+            {
+                if (!(dependency is IPoint) || string.IsNullOrEmpty(dependency.Name))
+                {
+                    return null;
+                }
+
+                sb.Append(dependency.Name);
+            }
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Nobody has named the figure: it is called what the library calls it (AB after its
+        /// points, Circle1 after its type), and a name taken from its points follows them when
+        /// one of them is renamed or replaced. Not stored in files: a name that reads like the
+        /// default is the default (<see cref="IsDefaultName"/>).
+        /// </summary>
+        public bool HasDefaultName { get; private set; }
+
+        /// <summary>
+        /// The name from the points (AB, or AB2 when AB was taken) or from the type (Segment1,
+        /// which every figure was called until 2026-09-27)
+        /// </summary>
+        bool IsDefaultName(string name)
+        {
+            return IsStemAndNumber(name, NameFromDependencies()) || IsStemAndNumber(name, GetType().Name);
+        }
+
+        static bool IsStemAndNumber(string name, string stem)
+        {
+            if (stem == null || !name.StartsWith(stem, StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            for (int i = stem.Length; i < name.Length; i++)
+            {
+                if (!char.IsDigit(name[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>A default name follows the points the figure is built on</summary>
+        public void UpdateDefaultName()
+        {
+            if (!HasDefaultName
+                || Drawing == null
+                || NameFromDependencies() == null
+                || !Drawing.Figures.Contains(this))
+            {
+                return;
+            }
+
+            var name = GenerateFigureName(null);
+            if (name != mName)
+            {
+                Name = name;
+            }
         }
 
         protected Drawing drawing;
@@ -93,6 +192,7 @@ namespace DynamicGeometry
         protected string mName;
         [PropertyGridVisible]
         [PropertyGridDisallowMultiEdit]
+        [PropertyGridPreferredEditor("Name")]
         public virtual string Name
         {
             get
@@ -101,6 +201,14 @@ namespace DynamicGeometry
             }
             set
             {
+                // an empty name would not load: files refer to figures by name (the grid's
+                // NameEditor refuses one; this is for everything else)
+                if (string.IsNullOrEmpty(value))
+                {
+                    value = GenerateFigureName();
+                }
+
+                HasDefaultName = IsDefaultName(value);
                 mName = value;
                 if (Drawing != null && Drawing.Figures.Contains(this))
                 {
@@ -110,6 +218,11 @@ namespace DynamicGeometry
                     }
                 }
                 RaisePropertyChanged("Name");
+
+                foreach (var dependent in Dependents.OfType<FigureBase>().ToArray())
+                {
+                    dependent.UpdateDefaultName();
+                }
             }
         }
 
@@ -294,6 +407,7 @@ namespace DynamicGeometry
                 {
                     suppressDependencyListChangeNotification = false;
                     OnDependenciesChanged();
+                    UpdateDefaultName();
                 }
             }
         }
@@ -305,6 +419,7 @@ namespace DynamicGeometry
             if (!suppressDependencyListChangeNotification)
             {
                 OnDependenciesChanged();
+                UpdateDefaultName();
             }
         }
 

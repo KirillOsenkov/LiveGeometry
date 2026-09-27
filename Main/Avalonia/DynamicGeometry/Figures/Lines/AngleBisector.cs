@@ -7,6 +7,12 @@ namespace DynamicGeometry
     {
         PointPair coordinates;
 
+        // built on the angle's points, not through them: not "ABC"
+        protected override string NameFromDependencies()
+        {
+            return null;
+        }
+
         public override PointPair Coordinates
         {
             get
