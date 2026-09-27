@@ -62,7 +62,7 @@ try
         {
             int langIndex = Array.IndexOf(args, "--lang");
             string lang = langIndex >= 0 && langIndex + 1 < args.Length ? args[langIndex + 1] : null;
-            var positional = args.Where((a, i) => i != langIndex && i != langIndex + 1).ToArray();
+            var positional = args.Where((a, i) => langIndex < 0 || (i != langIndex && i != langIndex + 1)).ToArray();
             await Start(
                 positional.Length > 1 ? positional[1] : "about:blank",
                 positional.Length > 3 ? int.Parse(positional[2]) : 1280,

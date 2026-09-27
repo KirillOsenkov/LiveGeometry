@@ -3,7 +3,7 @@
 namespace DynamicGeometry
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method,
-        AllowMultiple = true, 
+        AllowMultiple = false,
         Inherited = true)]
     public class PropertyGridPreferredEditorAttribute : Attribute
     {

@@ -122,6 +122,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   on the class did not keep its rows). A trimming break shows up as a white screen and a
   `CRASH: ...` console line (`Program.cs` prints those). Anything new that is reached only by
   reflection outside those assemblies needs its own root.
+- **Inherited attributes come twice in the browser**: Mono's `inherit: true` lookup on a
+  property declared in a base class (`Circle.Length` from `CircleBase`) adds the base
+  property's attributes again. With `AllowMultiple = true` they aren't deduplicated and
+  `Attribute.GetCustomAttribute` throws AmbiguousMatchException; CoreCLR (desktop) returns
+  one. An attribute read singly must say `AllowMultiple = false`.
 - **StyleKeyOverride**: a subclass of a templated Avalonia control (TabControl, TabItem, ListBox,
   Button, UserControl, ColorPicker...) renders invisible unless it overrides `StyleKeyOverride`
   to return the base type.
