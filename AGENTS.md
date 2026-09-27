@@ -82,7 +82,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 
 - **Selection**: Drag (Q) - drags points and figures (with Alt a point snaps onto figures and
   lets go of them, see "Snapping and releasing points"); also the tool every construction
-  returns to.
+  returns to. Figure List (toggle): see "The Figure List".
 - **Points**: Point (P) - free, on a figure, or at an intersection; Midpoint (M) - two points
   or a segment; Intersection (I) - two figures that cross, the click on the second picks the
   nearer crossing (`PointPlacement.Intersection`, shared with the Point tool); Label new
@@ -284,6 +284,17 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   target built on the point and one that shares a dependent with it (segment EF: F onto E
   would give a segment EE, and undo's ReplaceDependency would swap its ends). Swaps happen
   only when Alt first applies and at the drop; the whole drag is one undo transaction.
+- **The Figure List** (`UI/FigureExplorer.cs`, left column of `DrawingHost` with a splitter):
+  top-level figures but the grid and point labels, by `Title`, with the ribbon icon of the
+  tool that makes each (`UI/FigureIcons.cs`: figure type -> tool, walking base types; a new
+  figure kind wants an entry). Hidden and `Auxiliary` figures are faded. Its selection *is*
+  the drawing's (`Selected` + one `RaiseSelectionChanged`); arrows in the left margin go from
+  the keyboard's row to its dependencies. It rebuilds on `ActionManager.CollectionChanged`
+  (posted, coalesced), never between `ConstructionStepStarted` and a complete step: temporary
+  figures of a tool are never recorded and its real steps sit in its transaction. Undoing a
+  deletion puts each figure back at its old index (`RemoveFigureAction.Indices`), so it
+  doesn't jump to the end of the list. Several figures selected show as a `FigureSelection`
+  in the property grid (common properties + Delete).
 - **Cursor philosophy** (`Behavior.GetCursor`): cross = a new *free* point appears here; hand =
   the click picks something already there - a figure the tool needs, an existing point, or a
   place defined by figures (intersection, midpoint); arrow = everything else, including a new
@@ -409,8 +420,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   whose tooltip is the build. The first button is the app's mark and folds the ribbon (Ctrl+F1,
   `MainView.UpdateRibbon`): folded by default when a gallery drawing opens on a small screen
   (under 700x500), open otherwise; once pressed, the user's choice holds for the session.
-  Everything else is keys. Lost their menu entry and are unreachable for now: Lock, Figure List,
-  the settings page. Not on the Selection tab (obscure for the audience; the commands and
+  Everything else is keys. Lost their menu entry and are unreachable for now: Lock, the
+  settings page. Not on the Selection tab (obscure for the audience; the commands and
   settings are still there in `DrawingHost`): Ortho, Polar, Snap to grid, Snap to point, Snap to
   center. Shift while dragging or clicking still snaps to the grid, and a click near the middle
   of a segment still makes a midpoint.

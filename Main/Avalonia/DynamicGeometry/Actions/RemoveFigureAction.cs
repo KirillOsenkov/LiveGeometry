@@ -17,6 +17,10 @@ namespace DynamicGeometry
         private IFigure[] Deleted;
         private IList<IAction> CustomDependencyRemovers;
 
+        // where each deleted figure was in the drawing's list, so that undo puts it back
+        // there (the Figure List, the saved file) and not at the end; -1 if it wasn't there
+        private int[] Indices;
+
         protected override void ExecuteCore()
         {
             CustomDependencyRemovers = new List<IAction>();
@@ -32,9 +36,16 @@ namespace DynamicGeometry
                 item.Execute();
             }
 
-            foreach (var item in Deleted)
+            Indices = new int[Deleted.Length];
+            for (int i = 0; i < Deleted.Length; i++)
             {
-                if (!Drawing.Figures.Remove(item))
+                var item = Deleted[i];
+                Indices[i] = Drawing.Figures.IndexOf(item);
+                if (Indices[i] >= 0)
+                {
+                    Drawing.Figures.RemoveAt(Indices[i]);
+                }
+                else
                 {
                     item.UnregisterFromDependencies();
                 }
@@ -95,9 +106,17 @@ namespace DynamicGeometry
             PointBase.SuppressAutoLabelPoints = true;
             try
             {
-                foreach (var item in Deleted.Reverse())
+                for (int i = Deleted.Length - 1; i >= 0; i--)
                 {
-                    Drawing.Figures.Add(item);
+                    var index = Indices[i];
+                    if (index >= 0 && index <= Drawing.Figures.Count)
+                    {
+                        Drawing.Figures.Insert(index, Deleted[i]);
+                    }
+                    else
+                    {
+                        Drawing.Figures.Add(Deleted[i]);
+                    }
                 }
 
                 foreach (var item in CustomDependencyRemovers.Reverse())

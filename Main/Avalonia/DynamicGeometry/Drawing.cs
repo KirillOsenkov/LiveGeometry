@@ -745,7 +745,13 @@ namespace DynamicGeometry
         /// </summary>
         public void DeleteSelection()
         {
-            var figures = this.GetSelectedFigures()
+            Delete(this.GetSelectedFigures());
+        }
+
+        /// <summary>Several figures in one undo step, as <see cref="DeleteSelection"/> does</summary>
+        public void Delete(IEnumerable<IFigure> figuresToDelete)
+        {
+            var figures = figuresToDelete
                 .Where(f => !(f is CartesianGrid) && !(f is PointLabel))
                 .ToArray();
             // the Delete key reaches here twice (the tool on key down, the window on key up):

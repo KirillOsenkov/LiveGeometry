@@ -99,6 +99,39 @@ public static class ToggleIcons
             .Canvas;
     }
 
+    /// <summary>
+    /// The Figure List: a sheet of rows, each a little figure (a point, a segment, a circle)
+    /// before its name, the middle one selected
+    /// </summary>
+    public static FrameworkElement FigureList()
+    {
+        var builder = IconBuilder.BuildIcon()
+            .Polygon(new SolidColorBrush(Colors.White), new SolidColorBrush(guide), new Point(0.1, 0.08), new Point(0.9, 0.08), new Point(0.9, 0.92), new Point(0.1, 0.92))
+            .Polygon(new SolidColorBrush(Color.FromRgb(0xD2, 0xE7, 0xFF)), new SolidColorBrush(Color.FromRgb(0x6F, 0xAE, 0xEC)), new Point(0.15, 0.39), new Point(0.85, 0.39), new Point(0.85, 0.61), new Point(0.15, 0.61))
+            .Line(strokeThickness: 2, guide, 0.42, 0.25, 0.8, 0.25)
+            .Line(strokeThickness: 2, Color.FromRgb(0x4A, 0x55, 0x68), 0.42, 0.5, 0.74, 0.5)
+            .Line(strokeThickness: 2, guide, 0.42, 0.75, 0.78, 0.75)
+            .Line(strokeThickness: 1.5, accent, 0.2, 0.57, 0.33, 0.43);
+        Dot(builder, 0.265, 0.25, diameter: 6, Brushes.Gold, Brushes.Black);
+        Dot(builder, 0.265, 0.75, diameter: 7, Brushes.Transparent, new SolidColorBrush(Color.FromRgb(0x2E, 0xA0, 0x43)));
+        return builder.Canvas;
+    }
+
+    static void Dot(IconBuilder builder, double x, double y, double diameter, IBrush fill, IBrush stroke)
+    {
+        var dot = new Avalonia.Controls.Shapes.Ellipse()
+        {
+            Width = diameter,
+            Height = diameter,
+            Fill = fill,
+            Stroke = stroke,
+            StrokeThickness = 1.2
+        };
+        Avalonia.Controls.Canvas.SetLeft(dot, builder.Canvas.Width * x - diameter / 2);
+        Avalonia.Controls.Canvas.SetTop(dot, builder.Canvas.Height * y - diameter / 2);
+        builder.Canvas.Children.Add(dot);
+    }
+
     /// <summary>The panel for typing a point's coordinates: a point with x and y read off the axes</summary>
     public static FrameworkElement PointByCoordinates()
     {

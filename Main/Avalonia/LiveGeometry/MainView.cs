@@ -248,6 +248,7 @@ public partial class MainView : UserControl
         DrawingHost.AddToolbarButton(DrawingHost.CommandDrawingBackground, first: true);
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleLabelNewPoints);
         DrawingHost.AddToolbarButton(DrawingHost.CommandTogglePointByCoordinates);
+        DrawingHost.AddToolbarButton(DrawingHost.CommandToggleFigureExplorer);
 
         // Not on the ribbon for now: Ortho, Polar, Snap to grid / point / center
         // (DrawingHost.CommandToggle*). Their settings still work (Shift = snap to grid).
@@ -767,11 +768,15 @@ public partial class MainView : UserControl
 
     private void DeleteSelection() => HandleExceptions(() => DrawingHost.CurrentDrawing.DeleteSelection());
 
-    private void SelectAll() => HandleExceptions(() => DrawingHost.CurrentDrawing.SelectAll());
+    private void SelectAll() => HandleExceptions(() =>
+    {
+        var drawing = DrawingHost.CurrentDrawing;
+        drawing.SelectAll();
+        drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
+    });
 
     // Had a menu item until the menu went away; no way to reach them for now:
-    // "Lock" (Drawing.LockSelected), "Figure List" (DrawingHost.CommandShowFigureExplorer)
-    // and the settings page below.
+    // "Lock" (Drawing.LockSelected) and the settings page below.
 
     #region Settings
 
@@ -890,6 +895,12 @@ public partial class MainView : UserControl
 
         var focused = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
         if (focused is TextBox)
+        {
+            return;
+        }
+
+        // up and down the Figure List, not panning the canvas
+        if (DrawingHost.FigureExplorer.IsKeyboardFocusWithin && FigureExplorer.IsNavigationKey(e.Key))
         {
             return;
         }

@@ -39,7 +39,12 @@ namespace DynamicGeometry
         public Command CommandToggleSnapToCenter { get; set; }
         public Command CommandTogglePointByCoordinates { get; set; }
         public Command CommandDrawingBackground { get; set; }
-        public Command CommandShowFigureExplorer { get; set; }
+        public Command CommandToggleFigureExplorer { get; set; }
+
+        GridSplitter figureExplorerSplitter;
+
+        /// <summary>The width the Figure List had when it was put away, to come back with</summary>
+        double figureExplorerWidth = 240;
 
         public DrawingHost()
         {
@@ -50,10 +55,12 @@ namespace DynamicGeometry
 
         protected virtual void SetupLayout()
         {
+            // the Figure List | its splitter | the canvas, with the side panel and the status bar over the canvas
             this.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             this.RowDefinitions.Add(new RowDefinition());
-            this.ColumnDefinitions.Add(new ColumnDefinition());
+            this.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0), MaxWidth = 600 });
             this.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+            this.ColumnDefinitions.Add(new ColumnDefinition());
 
             CreateRibbon();
             CreateCanvas();
@@ -62,19 +69,23 @@ namespace DynamicGeometry
             CreateFigureExplorer();
 
             this.Children.Add(Ribbon);
+            this.Children.Add(FigureExplorer);
+            this.Children.Add(figureExplorerSplitter);
             this.Children.Add(DrawingControl);
             this.Children.Add(propertyGridScrollViewer);
             this.Children.Add(StatusBar);
-            this.Children.Add(FigureExplorer);
 
-            FigureExplorer.Visible = Settings.Instance.ShowFigureExplorer;
-
-            Grid.SetColumnSpan(Ribbon, 2);
-            Grid.SetColumn(FigureExplorer, 1);
+            Grid.SetColumnSpan(Ribbon, 3);
             Grid.SetRow(FigureExplorer, 1);
-            Grid.SetRow(DrawingControl, 1);
-            Grid.SetRow(propertyGridScrollViewer, 1);
-            Grid.SetRow(StatusBar, 1);
+            Grid.SetRow(figureExplorerSplitter, 1);
+            Grid.SetColumn(figureExplorerSplitter, 1);
+            foreach (var control in new Control[] { DrawingControl, propertyGridScrollViewer, StatusBar })
+            {
+                Grid.SetRow(control, 1);
+                Grid.SetColumn(control, 2);
+            }
+
+            ShowFigureExplorer(Settings.Instance.ShowFigureExplorer);
 
             CommandToggleGrid = new Command(ToggleGrid, CartesianGrid.GetIcon(), "Grid", BehaviorCategories.Coordinates)
             {
@@ -110,7 +121,10 @@ namespace DynamicGeometry
                 IsChecked = () => Settings.Instance.EnablePointByCoordinates
             };
             CommandDrawingBackground = new Command(ToggleDrawingProperties, ToggleIcons.Background(), "Background", BehaviorCategories.Coordinates);
-            CommandShowFigureExplorer = new Command(ToggleFigureExplorer, new CheckBox() { IsChecked = FigureExplorer.Visible }, "Figure List", BehaviorCategories.Drawing);
+            CommandToggleFigureExplorer = new Command(ToggleFigureExplorer, ToggleIcons.FigureList(), "Figure List", BehaviorCategories.Selection)
+            {
+                IsChecked = () => FigureExplorer.IsVisible
+            };
         }
 
         /// <summary>The drawing's own properties (its paper) in the side panel; again to put them away</summary>
@@ -126,75 +140,13 @@ namespace DynamicGeometry
 
         protected void CreateFigureExplorer()
         {
-            FigureExplorer = new FigureExplorer()
+            FigureExplorer = new FigureExplorer();
+            figureExplorerSplitter = new GridSplitter()
             {
-                MinWidth = 200,
-                MaxWidth = 400
+                Width = 4,
+                ResizeDirection = GridResizeDirection.Columns,
+                Background = RibbonTheme.HeaderRowBackground
             };
-            FigureExplorer.SelectionChanged += FigureExplorer_SelectionChanged;
-        }
-
-        bool guard = false; // to prevent reentrancy
-        void FigureExplorer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (guard)
-            {
-                return;
-            }
-
-            guard = true;
-
-            foreach (var deselected in e.RemovedItems)
-            {
-                IFigure deselectedFigure = deselected as IFigure;
-                if (deselectedFigure != null)
-                {
-                    deselectedFigure.Selected = false;
-                }
-            }
-
-            foreach (var selected in e.AddedItems)
-            {
-                IFigure selectedFigure = selected as IFigure;
-                if (selectedFigure != null)
-                {
-                    selectedFigure.Selected = true;
-                }
-            }
-
-            CurrentDrawing.RaiseSelectionChanged(CurrentDrawing.GetSelectedFigures());
-
-            guard = false;
-        }
-
-        void drawing_SelectionChanged(object sender, Drawing.SelectionChangedEventArgs e)
-        {
-            SyncFigureExplorerSelection();
-        }
-
-        private void SyncFigureExplorerSelection()
-        {
-            if (guard)
-            {
-                return;
-            }
-            guard = true;
-
-            // Temporary Solution.  This causes figure's name change to show in FigureExplorer. - D.H.
-            // Same temporary solution is used in ToggleFigureExplorer.
-            if (FigureExplorer.Visible)
-            {
-                FigureExplorer.ItemsSource = null;
-                FigureExplorer.ItemsSource = CurrentDrawing.Figures;
-            }
-            // End Temporary Solution
-
-            FigureExplorer.SelectedItem = null;
-            foreach (var selectedFigure in CurrentDrawing.GetSelectedFigures())
-            {
-                FigureExplorer.SelectedItems.Add(selectedFigure);
-            }
-            guard = false;
         }
 
         protected virtual void CreateStatusBar()
@@ -257,18 +209,30 @@ namespace DynamicGeometry
 
         public void ToggleFigureExplorer()
         {
-            if (FigureExplorer.Visible)
+            ShowFigureExplorer(!FigureExplorer.IsVisible);
+        }
+
+        /// <summary>The Figure List in the first column, as wide as it was last, or the column closed</summary>
+        void ShowFigureExplorer(bool visible)
+        {
+            var column = ColumnDefinitions[0];
+            // (not laid out yet at startup)
+            if (!visible && FigureExplorer.IsVisible && column.ActualWidth > 0)
             {
-                FigureExplorer.Visible = false;
+                figureExplorerWidth = column.ActualWidth;
             }
-            else
+
+            Settings.Instance.ShowFigureExplorer = visible;
+            FigureExplorer.IsVisible = visible;
+            figureExplorerSplitter.IsVisible = visible;
+            column.MinWidth = visible ? 120 : 0;
+            column.Width = new GridLength(visible ? figureExplorerWidth : 0);
+            if (visible)
             {
-                // Temporary Solution.  This causes figure's name change to should show in FigureExplorer. - D.H.
-                // Same temporary solution is used in SyncFigureExplorerSelection().
-                FigureExplorer.ItemsSource = null;
-                FigureExplorer.ItemsSource = CurrentDrawing.Figures;
-                FigureExplorer.Visible = true;
+                FigureExplorer.Refresh();
             }
+
+            CommandToolButton.UpdateToggles();
         }
 
         public void ToggleOrtho()
@@ -339,9 +303,8 @@ namespace DynamicGeometry
             drawing.BehaviorChanged += mCurrentDrawing_BehaviorChanged;
             drawing.DisplayProperties += mCurrentDrawing_DisplayProperties;
             drawing.UnhandledException += UnhandledException;
-            drawing.SelectionChanged += drawing_SelectionChanged;
             drawing.FigureCoordinatesChanged += mCurrentDrawing_FigureCoordinatesChanged;
-            FigureExplorer.ItemsSource = drawing.Figures;
+            FigureExplorer.Drawing = drawing;
         }
 
         protected virtual void DrawingControl_DrawingDetach(Drawing drawing)
@@ -351,9 +314,8 @@ namespace DynamicGeometry
             drawing.BehaviorChanged -= mCurrentDrawing_BehaviorChanged;
             drawing.DisplayProperties -= mCurrentDrawing_DisplayProperties;
             drawing.UnhandledException -= UnhandledException;
-            drawing.SelectionChanged -= drawing_SelectionChanged;
             drawing.FigureCoordinatesChanged -= mCurrentDrawing_FigureCoordinatesChanged;
-            FigureExplorer.ItemsSource = null;
+            FigureExplorer.Drawing = null;
             ShowProperties(null);
         }
 
@@ -465,7 +427,7 @@ namespace DynamicGeometry
             }
             else if (selection.Length > 1)
             {
-                ShowProperties(selection);
+                ShowProperties(new FigureSelection(CurrentDrawing, selection, PropertyGrid.ValueDiscoveryStrategy));
             }
             else
             {
