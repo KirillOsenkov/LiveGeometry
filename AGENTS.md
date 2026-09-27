@@ -183,7 +183,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Keyboard focus drifts into tool panels.** A tool's PropertyBag panel (e.g. "Point by
   coordinates") takes focus into its TextBox after every construction step, so neither the canvas
   KeyDown nor `MainView_KeyUp` (which skips TextBox focus) sees keys then. Anything that must
-  always work (Escape) belongs in the `MainView_KeyDown` tunnel handler. Ctrl shortcuts are
+  always work (Escape) belongs in the `MainView_KeyDown` tunnel handler. When the focused
+  control leaves the tree (a panel rebuilt around its button), Avalonia focuses nothing and
+  keys go to the window alone, past MainView; `MainView.TopLevel_KeyDown` catches that,
+  refocuses the canvas and forwards the key. Ctrl shortcuts are
   handled on key *down* (`MainView.HandleControlShortcut`): on key up Ctrl may already be
   released and a bare S is the Segment tool. Plain keys: `MainView.HandlePlainKey`; tool letters:
   `UI/BehaviorShortcuts.cs` (also feeds the tooltips).

@@ -72,6 +72,7 @@ public partial class MainView : UserControl
             if (topLevel != null)
             {
                 DynamicGeometry.Clipboard.SystemClipboard = topLevel.Clipboard;
+                topLevel.AddHandler(KeyDownEvent, TopLevel_KeyDown, RoutingStrategies.Tunnel);
             }
 
             Focus();
@@ -996,5 +997,44 @@ public partial class MainView : UserControl
 
         DrawingHost.DrawingControl.Focus();
         e.Handled = true;
+    }
+
+    /// <summary>
+    /// A key pressed while nothing has the focus. That is the state after the focused control
+    /// is taken out of the tree (the Fix length button, when the length panel is rebuilt
+    /// around it): Avalonia gives the focus to no one, and a key then goes to the window
+    /// alone, past MainView and the canvas - Escape, tool letters, Ctrl shortcuts all dead.
+    /// Gives the focus back to the canvas (to this view on the gallery) and sends the key
+    /// on from there.
+    /// </summary>
+    private void TopLevel_KeyDown(object sender, KeyEventArgs e)
+    {
+        var topLevel = (TopLevel)sender;
+        if (topLevel.FocusManager?.GetFocusedElement() != null)
+        {
+            return;
+        }
+
+        Control target = DrawingHost.DrawingControl;
+        if (!target.Focus())
+        {
+            target = this;
+            if (!target.Focus())
+            {
+                return;
+            }
+        }
+
+        var forwarded = new KeyEventArgs()
+        {
+            RoutedEvent = e.RoutedEvent,
+            Key = e.Key,
+            KeyModifiers = e.KeyModifiers,
+            PhysicalKey = e.PhysicalKey,
+            KeySymbol = e.KeySymbol,
+            KeyDeviceType = e.KeyDeviceType
+        };
+        target.RaiseEvent(forwarded);
+        e.Handled = forwarded.Handled;
     }
 }
