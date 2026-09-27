@@ -296,8 +296,8 @@ namespace DynamicGeometry
 
         public virtual IFigureStyle AssignDefaultStyle(IFigure figure)
         {
-            // A drawing from a file brings its own styles; if it doesn't have the one for this
-            // kind of point (older files don't), the first point style does, as before.
+            // A drawing from a file gets the named styles it lacks (AddWithDefaults); if its own
+            // style of that name isn't a point style, the first point style does, as before.
             var byKind = figure is IPoint ? GetStyle(GetDefaultPointStyleName(figure)) : null;
             if (byKind != null && byKind.GetType().SupportsFigureType(figure.GetType()))
             {
@@ -376,6 +376,43 @@ namespace DynamicGeometry
         public virtual void Add(IFigureStyle style)
         {
             list.Add(style);
+        }
+
+        /// <summary>A fresh set of the styles a new drawing starts with, names included</summary>
+        public static List<IFigureStyle> CreateDefaultStyles()
+        {
+            // unnamed defaults get their names ("1", "2"...) on the way into a manager
+            return new StyleManager(drawing: null).list.ToList();
+        }
+
+        /// <summary>
+        /// A drawing's own styles (from a file, which carries only the ones its figures use)
+        /// completed with the default styles it lacks by name, in the order of a new drawing:
+        /// the style picker, the style of each kind of new point and the first line or shape
+        /// style (which new figures take) are then those of a new drawing, unless the drawing
+        /// has its own under the same name. Styles with names of their own come last.
+        /// </summary>
+        public void AddWithDefaults(IList<IFigureStyle> own)
+        {
+            var taken = new HashSet<IFigureStyle>();
+            foreach (var defaultStyle in CreateDefaultStyles())
+            {
+                var replacement = own.FirstOrDefault(s => s.Name == defaultStyle.Name);
+                if (replacement != null)
+                {
+                    taken.Add(replacement);
+                }
+
+                list.Add(replacement ?? defaultStyle);
+            }
+
+            foreach (var style in own)
+            {
+                if (!taken.Contains(style))
+                {
+                    list.Add(style);
+                }
+            }
         }
 
         public virtual void Remove(IFigureStyle style)

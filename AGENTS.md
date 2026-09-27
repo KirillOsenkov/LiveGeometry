@@ -237,8 +237,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   showing now (screenshots don't include it).
 - **Default point styles are by kind** (`StyleManager.AssignDefaultStyle`, looked up by name):
   the draggable kinds (`FreePoint` yellow, `PointOnFigure` green) at size 10, constructed ones
-  at 8. A drawing from a file brings its own styles; when the named one is missing (older
-  files) the first point style is used. Gallery point sizes follow the same standard:
+  at 8. A drawing from a file brings its own styles, and loading adds the defaults it lacks
+  by name (see "Styles in files"). Gallery point sizes follow the same standard:
   `dotnet tools/pointsizes.cs -- <folder> [--apply]` lists and raises undersized styles. The
   Rose's 90 control points stay at 5 px on purpose (at 10 they swallow the flower).
 - **Touching is decided with a relative tolerance** (`Math.TangencyTolerance`, 1e-9 of the size
@@ -388,6 +388,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (`IntersectionPoint.UpgradeLegacyCircleAndLineOrder`). No file in the repo carries the mark
   (`LiveGeometry.Desktop.exe --modernize <folder>` writes into a file what loading it upgrades);
   the code stays for old files from elsewhere.
+- **Styles in files**: only the styles the figures name are saved (`DrawingSerializer.Write`
+  writes the figures aside first and collects their `Style` attributes - a figure may name
+  another's style, a vector its arrow's), `Name` first. Loading lays the styles out in a new
+  drawing's order, a file's style taking the place of the default of the same name, others
+  after (`StyleManager.AddWithDefaults`). The order matters: new lines and shapes take the
+  first line or shape style.
 - **Saved files declare `encoding="utf-8"`**; files from older builds say `utf-16`, which our
   own loader tolerates but `XDocument.Load` does not.
 - **`TranslatedPoint`** without `DistanceSource`/`DirectionSource`/`FreeDistance`/`FreeDirection`

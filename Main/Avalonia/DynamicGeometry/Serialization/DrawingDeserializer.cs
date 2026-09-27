@@ -199,11 +199,9 @@ namespace DynamicGeometry
                 return;
             }
 
-            foreach (var styleNode in stylesNode.Elements())
-            {
-                var style = ReadStyle(styleNode);
-                drawing.StyleManager.Add(style);
-            }
+            // a file has only the styles its figures use; the rest are the defaults
+            var own = stylesNode.Elements().Select(ReadStyle).Where(s => s != null).ToList();
+            drawing.StyleManager.AddWithDefaults(own);
         }
 
         private IFigureStyle ReadStyle(XElement styleNode)

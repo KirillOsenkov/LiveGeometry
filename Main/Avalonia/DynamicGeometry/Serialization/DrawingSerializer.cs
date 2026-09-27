@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using Avalonia.Media;
 
 namespace DynamicGeometry
@@ -91,8 +92,21 @@ namespace DynamicGeometry
                 writer.WriteEndElement();
             }
 
-            WriteStyles(drawing, writer);
-            WriteFigureList(figures, writer);
+            // the figures first, aside, to see which styles they name: only those are written
+            // (a figure may name another's style - a vector its arrow's); loading adds back the
+            // default ones (StyleManager.AddWithDefaults)
+            var figureList = new XDocument();
+            using (var figureWriter = figureList.CreateWriter())
+            {
+                WriteFigureList(figures, figureWriter);
+            }
+
+            var usedStyles = new HashSet<string>(figureList
+                .Descendants()
+                .Attributes("Style")
+                .Select(a => a.Value));
+            WriteStyles(drawing, usedStyles, writer);
+            figureList.Root.WriteTo(writer);
             writer.WriteEndElement();
             writer.WriteEndDocument();
         }
@@ -139,10 +153,10 @@ namespace DynamicGeometry
             writer.WriteEndElement();
         }
 
-        public virtual void WriteStyles(Drawing drawing, XmlWriter writer)
+        public virtual void WriteStyles(Drawing drawing, ISet<string> usedStyles, XmlWriter writer)
         {
             writer.WriteStartElement("Styles");
-            foreach (var style in drawing.StyleManager.GetAllStyles())
+            foreach (var style in drawing.StyleManager.GetAllStyles().Where(s => usedStyles.Contains(s.Name)))
             {
                 WriteStyle(style, writer);
             }
