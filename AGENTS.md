@@ -247,8 +247,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   through `CaptionedMethod`), a submenu in the context menu when more. Release ("Free point"):
   a point on a figure, an intersection point or a midpoint. Alt while dragging (read live, on
   every move) releases a tied point and makes the free one snap to what
-  `PointPlacement.FindSnap` finds - what the Point tool would make there, minus existing points
-  and second midpoints; a snap lets go at `Dragger.StickyReach` times the reach. Swaps happen
+  `PointPlacement.FindSnap` finds - what the Point tool would make there (no second midpoints);
+  a snap lets go at `Dragger.StickyReach` times the reach. Over another point it sits on top
+  of it and the drop *joins* it (`PointSnapping.Join`: its dependents rewired to the target,
+  itself removed). No un-join (which dependents would go back?): undo. `CanJoin` refuses a
+  target built on the point and one that shares a dependent with it (segment EF: F onto E
+  would give a segment EE, and undo's ReplaceDependency would swap its ends). Swaps happen
   only when Alt first applies and at the drop; the whole drag is one undo transaction.
 - **Cursor philosophy** (`Behavior.GetCursor`): cross = a new *free* point appears here; hand =
   the click picks something already there - a figure the tool needs, an existing point, or a

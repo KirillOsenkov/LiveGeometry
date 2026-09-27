@@ -99,18 +99,30 @@ public class PointPlacement
 
     /// <summary>
     /// Where a point dragged with Alt snaps (<see cref="PointSnapping"/>): what a click of the
-    /// Point tool would make here, but never a point that is already there - points aren't
-    /// merged - and never a second midpoint of a segment (the point slides along it
-    /// instead). Null when there is nothing to snap to.
+    /// Point tool would make here - an existing point first (to be joined), then a figure, a
+    /// crossing, a midpoint - but never a second midpoint of a segment (the point slides
+    /// along it instead). Null when there is nothing to snap to.
     /// </summary>
     /// <param name="canUse">Says which figures the point may go onto (not those built on it)</param>
-    public static PointPlacement FindSnap(Drawing drawing, Point coordinates, Predicate<IFigure> canUse)
+    /// <param name="canJoin">Says which points it may be joined into</param>
+    public static PointPlacement FindSnap(
+        Drawing drawing,
+        Point coordinates,
+        Predicate<IFigure> canUse,
+        Predicate<IPoint> canJoin)
     {
         var underCursor = drawing.Figures.HitTestMany(coordinates)
-            .Where(f => f.IsHitTestVisible && !(f is IPoint) && canUse(f))
+            .Where(f => f.IsHitTestVisible && canUse(f))
             .Reverse()
             .ToArray();
-        var result = FindOnFigures(drawing, underCursor, coordinates, snapToMidpoint: false, reuseMidpoint: false);
+        var target = underCursor.OfType<IPoint>().FirstOrDefault(p => canJoin(p));
+        if (target != null)
+        {
+            return Existing(target);
+        }
+
+        var figures = underCursor.Where(f => !(f is IPoint)).ToArray();
+        var result = FindOnFigures(drawing, figures, coordinates, snapToMidpoint: false, reuseMidpoint: false);
 
         // a crossing that already has its point (an end of the segment, an intersection
         // point): slide along the figure instead, as at a segment's existing midpoint

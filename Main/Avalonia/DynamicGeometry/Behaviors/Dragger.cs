@@ -258,9 +258,9 @@ namespace DynamicGeometry
         /// <summary>
         /// With Alt held, a dragged point is a free point that snaps (<see cref="PointSnapping"/>):
         /// one tied to figures is released first, and <see cref="snap"/> says where it goes -
-        /// onto a figure, an intersection or the middle of a segment, whatever the Point tool
-        /// would make there. Returns the free point, or null when Alt doesn't apply (not held,
-        /// not a point, a locked one).
+        /// into another point, onto a figure, an intersection or the middle of a segment,
+        /// whatever the Point tool would make there. Returns the free point, or null when Alt
+        /// doesn't apply (not held, not a point, a locked one).
         /// </summary>
         FreePoint PointToSnap(Point cursor)
         {
@@ -286,7 +286,11 @@ namespace DynamicGeometry
                 return null;
             }
 
-            snap = PointPlacement.FindSnap(Drawing, cursor, figure => !figure.DependsOn(free));
+            snap = PointPlacement.FindSnap(
+                Drawing,
+                cursor,
+                figure => !figure.DependsOn(free),
+                target => PointSnapping.CanJoin(free, target));
             if (snap == null && previous != null)
             {
                 snap = Stick(previous, cursor);
@@ -324,6 +328,15 @@ namespace DynamicGeometry
         protected override PointPlacement GetClickPreview(MouseEventArgs e)
         {
             return snap;
+        }
+
+        /// <summary>
+        /// Over a point to join, the dragged point sits right on it and the halo goes on that
+        /// point; nothing is joined before the drop
+        /// </summary>
+        protected override IFigure GetFigureToPick(MouseEventArgs e)
+        {
+            return snap?.ExistingPoint;
         }
 
         #endregion

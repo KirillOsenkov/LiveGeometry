@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using GuiLabs.Undo;
 
 namespace DynamicGeometry;
 
@@ -7,8 +8,8 @@ namespace DynamicGeometry;
 /// Turns a point into another kind of point where it is, keeping its name, label and what is
 /// built on it (<see cref="Actions.ReplacePoint"/>, one undo step): a free point snapped onto a
 /// figure, and a point tied to figures - on a figure, at an intersection, a midpoint - released
-/// into a free point. The property grid, the context menu and the Alt-drag of the
-/// <see cref="Dragger"/> all come here.
+/// into a free point. A point dragged onto another point joins it (<see cref="Join"/>). The
+/// property grid, the context menu and the Alt-drag of the <see cref="Dragger"/> all come here.
 /// </summary>
 public static class PointSnapping
 {
@@ -88,12 +89,61 @@ public static class PointSnapping
         return onFigure;
     }
 
-    /// <summary>The point becomes what the placement says (on a figure, an intersection, a midpoint)</summary>
-    public static PointBase Snap(PointBase point, PointPlacement placement)
+    /// <summary>
+    /// The point becomes what the placement says (on a figure, an intersection, a midpoint),
+    /// or joins the existing point it names
+    /// </summary>
+    public static IPoint Snap(PointBase point, PointPlacement placement)
     {
+        if (placement.ExistingPoint != null)
+        {
+            Join(point, placement.ExistingPoint);
+            return placement.ExistingPoint;
+        }
+
         var snapped = (PointBase)placement.Create(point.Drawing);
         Replace(point, snapped);
         return snapped;
+    }
+
+    /// <summary>
+    /// Whether the point can be joined into the target: not one built on it (a loop), and no
+    /// figure uses both, which would then use the target twice (a segment between them).
+    /// </summary>
+    public static bool CanJoin(PointBase point, IPoint target)
+    {
+        return target != point
+            && !target.DependsOn(point)
+            && !point.Dependents.Any(d => !(d is PointLabel) && d.Dependencies.Contains(target));
+    }
+
+    /// <summary>
+    /// The point joins the target: what was built on it is built on the target from now on,
+    /// and the point goes, its name and label with it. One undo step. There is no way back
+    /// but undo: taking the point out again would have to guess which of the target's
+    /// dependents were its own.
+    /// </summary>
+    public static void Join(PointBase point, IPoint target)
+    {
+        var drawing = point.Drawing;
+        bool selected = point.Selected;
+        using (Transaction.Create(drawing.ActionManager, false))
+        {
+            foreach (var dependent in point.Dependents.Where(d => !(d is PointLabel)).ToArray())
+            {
+                Actions.ReplaceDependency(dependent, point, target);
+            }
+
+            Actions.Remove(point);
+        }
+
+        drawing.Recalculate();
+        if (selected)
+        {
+            point.Selected = false;
+            target.Selected = true;
+            drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
+        }
     }
 
     /// <summary>
