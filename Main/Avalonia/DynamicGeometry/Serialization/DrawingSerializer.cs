@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using Avalonia.Media;
@@ -152,7 +153,9 @@ namespace DynamicGeometry
         public virtual void WriteStyle(IFigureStyle style, XmlWriter writer)
         {
             writer.WriteStartElement(GetStyleElementName(style));
-            var values = valueDiscovery.GetValues(style);
+            // the name first, so a file reads as a list of named styles; the rest stay in the
+            // order reflection gives (the style's own properties, then its base classes')
+            var values = valueDiscovery.GetValues(style).OrderBy(v => v.Name == "Name" ? 0 : 1);
 
             // Simple values are attributes; structured ones (a gradient brush) are child
             // elements named after the property, and have to come after all attributes.
