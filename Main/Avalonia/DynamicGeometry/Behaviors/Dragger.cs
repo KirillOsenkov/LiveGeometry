@@ -155,6 +155,16 @@ namespace DynamicGeometry
                     var desired = currentCoordinates.Minus(offsetFromFigureLeftTopCorner);
                     offset = pointLabel.ClampPosition(desired).Minus(pointLabel.Coordinates);
                 }
+                else if (moving.Count == 1 && moving[0] is PointOnFigure pointOnFigure)
+                {
+                    // The same for a point on a figure, which stops at the end of a segment or
+                    // ray: record where it lands (as MoveToCore puts it), not where the cursor
+                    // went, or every step past the end adds to what undo moves back.
+                    var figure = pointOnFigure.LinearFigure;
+                    var landing = figure.GetPointFromParameter(
+                        figure.GetNearestParameterFromPoint(pointOnFigure.Coordinates.Plus(offset)));
+                    offset = landing.Minus(pointOnFigure.Coordinates);
+                }
 
                 Actions.Move(Drawing, moving, offset, toRecalculate);
             }

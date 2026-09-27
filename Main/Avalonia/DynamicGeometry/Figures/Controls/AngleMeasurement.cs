@@ -44,6 +44,15 @@ namespace DynamicGeometry
             }
         }
 
+        public override void UpdateExistence()
+        {
+            base.UpdateExistence();
+            if (Exists && !AngleArc.HasSides(this))
+            {
+                Exists = false;
+            }
+        }
+
         public override void UpdateVisual()
         {
             base.UpdateVisual();

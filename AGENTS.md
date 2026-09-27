@@ -195,7 +195,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Every exception is shown** (`MainView.CurrentDomain_FirstChanceException`): status bar plus
   an `ExceptionReport` page in the side panel, also printed to the console. Add to `IsBenign`
   when a framework exception turns out to be noise (the browser's file picker throws
-  `JSException` "AbortError..." on cancel). A `JSException` has no .NET stack, so the handler
+  `JSException` "AbortError..." on cancel). So never use a caught exception as a test (decode
+  as UTF-8 and catch, as `DecodeLegacyText` once did): check instead. `--check` runs print
+  every one, and should print none. A `JSException` has no .NET stack, so the handler
   captures `Environment.StackTrace` at the throw. Text boxes of the property grid wrap at
   480 px (`PropertyGridTheme`), so a stack trace doesn't stretch the panel across the window.
 
@@ -318,7 +320,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Drag tool moves it to the next corner. It hides when an `AngleArc` sits at the same vertex,
   because a measured angle of exactly 90° draws the same sign itself.
 - **An angle is two figures**, `AngleMeasurement` (the number) and `AngleArc` (the mark, 0-3
-  arcs), paired by `AngleArc.FindCompanion`. `DGFReader.ReadMeasureAngle` creates the arc from
+  arcs), paired by `AngleArc.FindCompanion`. Neither exists while a side has no length (a
+  point dragged onto the vertex, `AngleArc.HasSides`): not existing hides a shape and shows it
+  again later (`ShapeBase.Exists`), where setting `Shape.Visibility` by hand is forever. `DGFReader.ReadMeasureAngle` creates the arc from
   VB6's DrawStyle / AuxInfo(2) - not tested, there is no sample .dgf with an angle in the repo.
 - **Dashes**: `LineStyle.Dash` is put on in `LineStyle.OnApplied`, not through a setter, because
   `StrokeDashArray` counts in stroke widths and a selected figure is thicker. Anything that

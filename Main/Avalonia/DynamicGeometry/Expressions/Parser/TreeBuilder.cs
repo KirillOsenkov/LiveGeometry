@@ -249,6 +249,13 @@ namespace DynamicGeometry
             List<IPoint> points = new List<IPoint>();
             foreach (var node in arguments)
             {
+                // an argument that is an expression, not a name (VB6 drawings have those)
+                if (node.Token == null)
+                {
+                    Status.AddError(string.Format("'{0}' takes the names of points", method.Name));
+                    return null;
+                }
+
                 string pointName = node.Token.Text;
                 var point = ResolvePoint(pointName);
                 if (point == null)

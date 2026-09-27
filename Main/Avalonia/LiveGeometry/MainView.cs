@@ -711,15 +711,15 @@ public partial class MainView : UserControl
     /// </summary>
     static string DecodeLegacyText(byte[] bytes)
     {
-        try
+        // checked, not tried: a DecoderFallbackException, even caught, is reported as an error
+        // (CurrentDomain_FirstChanceException) for every file with Cyrillic in it
+        if (System.Text.Unicode.Utf8.IsValid(bytes))
         {
-            return new System.Text.UTF8Encoding(false, throwOnInvalidBytes: true).GetString(bytes);
+            return new System.Text.UTF8Encoding(false).GetString(bytes);
         }
-        catch (System.Text.DecoderFallbackException)
-        {
-            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-            return System.Text.Encoding.GetEncoding(1251).GetString(bytes);
-        }
+
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        return System.Text.Encoding.GetEncoding(1251).GetString(bytes);
     }
 
     async void SaveDrawingToFile()

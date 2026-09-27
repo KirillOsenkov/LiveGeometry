@@ -299,7 +299,7 @@ namespace DynamicGeometry
             var distance2 = center.Distance(Point(2));
             if (distance1 == 0 || distance2 == 0)
             {
-                Shape.Visibility = Visibility.Collapsed;
+                // no angle, and not existing (UpdateExistence), which hides the shape
                 return;
             }
 
@@ -370,6 +370,27 @@ namespace DynamicGeometry
             //{
             //    Shape.Visibility = Visibility.Visible;
             //}
+        }
+
+        public override void UpdateExistence()
+        {
+            base.UpdateExistence();
+            if (Exists && !HasSides(this))
+            {
+                Exists = false;
+            }
+        }
+
+        /// <summary>
+        /// An angle (the arc or the number) exists only while both sides have a length: with a
+        /// point of a side dragged onto the vertex there is no angle. Not existing also hides
+        /// the shape until the point moves off again (ShapeBase.Exists), and makes whatever is
+        /// built on the angle not exist either.
+        /// </summary>
+        public static bool HasSides(IFigure angleFigure)
+        {
+            var vertex = angleFigure.Point(0);
+            return vertex.Distance(angleFigure.Point(1)) != 0 && vertex.Distance(angleFigure.Point(2)) != 0;
         }
     }
 }
