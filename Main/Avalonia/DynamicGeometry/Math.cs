@@ -1074,7 +1074,10 @@ namespace DynamicGeometry
         public static bool IsPointOnSegment(PointPair line, Point point, double epsilon)
         {
             var projection = GetProjection(point, line);
-            return projection.DistanceToLine < epsilon && projection.IsWithinSegment();
+            var slack = EndTolerance(line);
+            return projection.DistanceToLine < epsilon
+                && projection.Ratio >= -slack
+                && projection.Ratio <= 1 + slack;
         }
 
         /// <summary>
@@ -1397,6 +1400,34 @@ namespace DynamicGeometry
             return result;
         }
 
+        /// <summary>
+        /// How far apart two lengths near <paramref name="scale"/> may be and still count as
+        /// equal when deciding whether figures touch. A line tangent to a circle by construction
+        /// (or two circles) comes out a hair apart or a hair overlapping, at random as the
+        /// figures move, and without this the touching point blinks in and out of existence.
+        /// Relative, because the rounding error grows with the size of the numbers.
+        /// </summary>
+        public static double TangencyTolerance(double scale)
+        {
+            return 1e-9 * M.Max(1, scale);
+        }
+
+        static double Magnitude(Point point)
+        {
+            return M.Max(M.Abs(point.X), M.Abs(point.Y));
+        }
+
+        /// <summary>
+        /// How far past its ends a point may be and still be on a segment (or before the start
+        /// of a ray), as a fraction of its length. An intersection that falls exactly on an end
+        /// (a circle through the end of the segment) comes out a hair inside or outside, and
+        /// without this it blinks in and out as the figures move; see <see cref="TangencyTolerance"/>.
+        /// </summary>
+        public static double EndTolerance(PointPair line)
+        {
+            return TangencyTolerance(M.Max(Magnitude(line.P1), Magnitude(line.P2))) / line.Length;
+        }
+
         /// <returns>Intersections - inbound first, outbound second based on the order of points in line.</returns>
         public static PointPair GetIntersectionOfCircleAndLine(
             Point center,
@@ -1404,45 +1435,35 @@ namespace DynamicGeometry
             PointPair line)
         {
             var result = Math.InfinitePointPair;
-            var p = GetProjectionPoint(center, line);
-            var h = center.Distance(p).Round(4);
-            radius = radius.Round(4);
-
-            if ((h - radius).IsWithinEpsilon())
+            var dx = line.P2.X - line.P1.X;
+            var dy = line.P2.Y - line.P1.Y;
+            var lengthSquared = dx * dx + dy * dy;
+            if (lengthSquared == 0)
             {
-                result.P1 = p;
-                result.P2 = p;
-            }
-            else if (h > 0 && h < radius)
-            {
-                var s = ((radius - h) * (radius + h)).SquareRoot();
-                s = s / line.Length;
-                result.P1 = result.P1.WithX(p.X - (line.P2.X - line.P1.X) * s);
-                result.P1 = result.P1.WithY(p.Y - (line.P2.Y - line.P1.Y) * s);
-                result.P2 = result.P2.WithX(2 * p.X - result.P1.X);
-                result.P2 = result.P2.WithY(2 * p.Y - result.P1.Y);
-            }
-            else if (h == 0)
-            {
-                var a = line.P1.Distance(line.P2);
-                if (a != 0)
-                {
-                    var s = radius / a;
-
-                    // Original code - does not preserve inbound/outbound order.
-                    //result.P1.X = center.X + (line.P2.X - line.P1.X) * s;
-                    //result.P1.Y = center.Y + (line.P2.Y - line.P1.Y) * s;
-                    //result.P2.X = 2 * center.X - result.P1.X;
-                    //result.P2.Y = 2 * center.Y - result.P1.Y;
-
-                    // New code - preserves order.
-                    result.P2 = result.P2.WithX(center.X + (line.P2.X - line.P1.X) * s);
-                    result.P2 = result.P2.WithY(center.Y + (line.P2.Y - line.P1.Y) * s);
-                    result.P1 = result.P1.WithX(2 * center.X - result.P2.X);
-                    result.P1 = result.P1.WithY(2 * center.Y - result.P2.Y);
-                }
+                return result;
             }
 
+            // the foot of the perpendicular from the center, and the distance to it
+            var t = ((center.X - line.P1.X) * dx + (center.Y - line.P1.Y) * dy) / lengthSquared;
+            var p = new Point(line.P1.X + dx * t, line.P1.Y + dy * t);
+            var h = center.Distance(p);
+
+            var tolerance = TangencyTolerance(M.Max(radius, Magnitude(center)));
+            if (h > radius + tolerance)
+            {
+                return result;
+            }
+
+            // touching: the foot itself, exactly - no square root of a rounding error, which
+            // would shake whatever is built on the point
+            double s = 0;
+            if (h < radius - tolerance)
+            {
+                s = ((radius - h) * (radius + h)).SquareRoot() / lengthSquared.SquareRoot();
+            }
+
+            result.P1 = new Point(p.X - dx * s, p.Y - dy * s);
+            result.P2 = new Point(p.X + dx * s, p.Y + dy * s);
             return result;
         }
 
@@ -1569,96 +1590,52 @@ namespace DynamicGeometry
             double radius2)
         {
             var result = Math.InfinitePointPair;
-            var x1 = center1.X;
-            var y1 = center1.Y;
-            var x2 = center2.X;
-            var y2 = center2.Y;
-
-            var r3 = center1.Distance(center2);
-            if (r3 == 0)
+            var dx = center2.X - center1.X;
+            var dy = center2.Y - center1.Y;
+            var distance = center1.Distance(center2);
+            if (distance == 0)
             {
                 return result;
             }
 
-            if ((y1 - y2).IsWithinEpsilon())
+            var tolerance = TangencyTolerance(M.Max(M.Max(radius1, radius2), M.Max(Magnitude(center1), Magnitude(center2))));
+            var outerTouch = distance - (radius1 + radius2);
+            var innerTouch = distance - M.Abs(radius1 - radius2);
+            if (outerTouch > tolerance || innerTouch < -tolerance)
             {
-                if (radius1 + radius1 > r3 + Epsilon
-                 && radius1 + r3 > radius2 + Epsilon
-                 && radius2 + r3 > radius1 + Epsilon
-                 && x1 != x2)
+                return result;
+            }
+
+            // along the line of centers from center1 to the chord, and half the chord; a touch
+            // is exact, as with a line (GetIntersectionOfCircleAndLine)
+            var along = ((radius1 - radius2) * (radius1 + radius2) + distance * distance) / (2 * distance);
+            double halfChord = 0;
+            if (outerTouch < -tolerance && innerTouch > tolerance)
+            {
+                halfChord = ((radius1 - along) * (radius1 + along)).SquareRoot();
+                if (double.IsNaN(halfChord))
                 {
-                    var x3 = (radius1.Sqr() + r3.Sqr() - radius2.Sqr()) / (2 * r3);
-                    var tsqr = (radius1.Sqr() - x3.Sqr()).SquareRoot();
-                    result.P1 = result.P1.WithX(x1 + (x2 - x1) * x3 / r3);
-                    result.P1 = result.P1.WithY(y1 - tsqr);
-                    result.P2 = result.P2.WithX(result.P1.X);
-                    result.P2 = result.P2.WithY(y1 + tsqr);
-                    if (x2 < x1)
-                    {
-                        var t = result.P1.Y;
-                        result.P1 = result.P1.WithY(result.P2.Y);
-                        result.P2 = result.P2.WithY(t);
-                    }
+                    halfChord = 0;
                 }
-                else if ((radius1 + radius2 - r3).IsWithinEpsilon())
-                {
-                    result.P1 = result.P1.WithX(x1 + M.Sign(x2 - x1) * radius1);
-                    result.P1 = result.P1.WithY(y1);
-                    result.P2 = result.P1;
-                }
-                else if ((radius1 + r3 - radius2).Abs() <= Epsilon
-                    || (r3 + radius2 - radius1).Abs() <= Epsilon)
-                {
-                    result.P1 = result.P1.WithX(x1 + M.Sign(x2 - x1) * M.Sign(radius1 - radius2) * radius1);
-                    result.P1 = result.P1.WithY(y1);
-                    result.P2 = result.P1;
-                }
-                return result;
+            }
+            else if (outerTouch >= -tolerance)
+            {
+                // touching from outside: radius1 along the way to center2
+                along = radius1;
+            }
+            else
+            {
+                // one inside the other: the touching point is on the far side of the smaller
+                along = radius1 >= radius2 ? radius1 : -radius1;
             }
 
-            if ((radius1 + radius2 - r3).Abs() <= Epsilon)
-            {
-                r3 = radius1 / r3;
-                result.P1 = result.P1.WithX(x1 + (x2 - x1) * r3);
-                result.P1 = result.P1.WithY(y1 + (y2 - y1) * r3);
-                result.P2 = result.P1;
-                return result;
-            }
+            var ux = dx / distance;
+            var uy = dy / distance;
+            var foot = new Point(center1.X + ux * along, center1.Y + uy * along);
 
-            if ((radius1 + r3 - radius2).Abs() <= Epsilon
-                || (radius2 + r3 - radius1).Abs() <= Epsilon)
-            {
-                r3 = radius1 / r3 * M.Sign(radius1 - radius2);
-                result.P1 = result.P1.WithX(x1 + (x2 - x1) * r3);
-                result.P1 = result.P1.WithY(y1 + (y2 - y1) * r3);
-                result.P2 = result.P1;
-                return result;
-            }
-
-            var k = -(x2 - x1) / (y2 - y1);
-            var b = ((radius1 - radius2) * (radius1 + radius2)
-                    + (x2 - x1) * (x2 + x1)
-                    + (y2 - y1) * (y2 + y1))
-                / (2 * (y2 - y1));
-            var ea = k * k + 1;
-            var eb = 2 * (k * b - x1 - k * y1);
-            var ec = x1.Sqr() + b.Sqr() - 2 * b * y1 + y1.Sqr() - radius1.Sqr();
-            var roots = SolveSquareEquation(ea, eb, ec);
-            if (roots == null || roots.Count != 2)
-            {
-                return result;
-            }
-            result.P1 = result.P1.WithX(roots[0]);
-            result.P1 = result.P1.WithY(roots[0] * k + b);
-            result.P2 = result.P2.WithX(roots[1]);
-            result.P2 = result.P2.WithY(roots[1] * k + b);
-
-            if (y2 > y1)
-            {
-                var t = result.P1;
-                result.P1 = result.P2;
-                result.P2 = t;
-            }
+            // P1 to the right of the way from center1 to center2, P2 to the left
+            result.P1 = new Point(foot.X + uy * halfChord, foot.Y - ux * halfChord);
+            result.P2 = new Point(foot.X - uy * halfChord, foot.Y + ux * halfChord);
             return result;
         }
 

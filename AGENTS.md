@@ -239,6 +239,16 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   files) the first point style is used. Gallery point sizes follow the same standard:
   `dotnet tools/pointsizes.cs -- <folder> [--apply]` lists and raises undersized styles. The
   Rose's 90 control points stay at 5 px on purpose (at 10 they swallow the flower).
+- **Touching is decided with a relative tolerance** (`Math.TangencyTolerance`, 1e-9 of the size
+  of the numbers): a line and a circle, or two circles, that touch by construction come out a
+  hair apart or overlapping at random, and the point there would blink as the figures move. A
+  touch gives the exact foot point (no square root of a rounding error to shake what is built
+  on it). Ends of segments and the start of a ray get the same allowance (`Math.EndTolerance`).
+  Never round coordinates or lengths to decide existence - the old 4-digit rounding in
+  `GetIntersectionOfCircleAndLine` made every such intersection 1e-5 off and flip at rounding
+  boundaries. The P1/P2 order of both intersections is part of the file format (`Algorithm`
+  ...1/...2): circle and line, P1 first along the line; two circles, P1 to the right of
+  center1 -> center2.
 - **Any figure is draggable**: dragging a dependent figure moves its root free points, so gallery
   text can say "drag the circle" even when the points it is built on are hidden. Labels are the
   exception (`AllowMove`): a drag moves the label, not what it measures or names.

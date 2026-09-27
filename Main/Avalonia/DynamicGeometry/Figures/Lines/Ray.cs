@@ -29,12 +29,9 @@ namespace DynamicGeometry
         {
             var hit = base.HitTest(point) != null;
             var line = Coordinates;
-            var basement = Math.GetProjectionPoint(point, Coordinates);
-            var inside = 
-                   ((line.P1.X < line.P2.X && basement.X >= line.P1.X)
-                   || (line.P1.X >= line.P2.X && basement.X <= line.P1.X))
-                && ((line.P1.Y < line.P2.Y && basement.Y >= line.P1.Y)
-                   || (line.P1.Y >= line.P2.Y && basement.Y <= line.P1.Y));
+
+            // the start is on the ray however the rounding of a point there went
+            var inside = Math.GetProjection(point, line).Ratio >= -Math.EndTolerance(line);
             if (hit && inside)
             {
                 return this;
