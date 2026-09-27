@@ -260,6 +260,11 @@ namespace DynamicGeometry
                 {
                     Add("Show name", () => Set(point, "ShowName", !point.ShowName), point.ShowName);
                     Add("Show coordinates", () => Set(point, "ShowCoordinates", !point.ShowCoordinates), point.ShowCoordinates);
+                    if (point is PointOnFigure onFigure)
+                    {
+                        Add("Free point", onFigure.Release);
+                    }
+
                     menu.Items.Add(new Avalonia.Controls.Separator());
                 }
 

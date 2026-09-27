@@ -70,7 +70,9 @@ namespace DynamicGeometry
         /// same name, same dependents - its name label included, which
         /// <see cref="ReplaceFigureAction"/> leaves alone - in one undo step. What the old point
         /// was built on goes with it when nothing else uses it (an auxiliary Number). The
-        /// replacement should already be where the point is, so that nothing moves.
+        /// replacement should already be where the point is, so that nothing moves. It keeps
+        /// the point's visibility, lock and a style the user chose; a default style follows the
+        /// replacement's kind.
         /// </summary>
         public static void ReplacePoint(PointBase point, PointBase replacement)
         {
@@ -78,6 +80,12 @@ namespace DynamicGeometry
             using (Transaction.Create(drawing.ActionManager, false))
             {
                 replacement.Visible = point.Visible;
+                replacement.Locked = point.Locked;
+                if (point.Style != null && point.Style != drawing.StyleManager.AssignDefaultStyle(point))
+                {
+                    replacement.Style = point.Style;
+                }
+
                 // the replacement takes over the point's label, if any: "Label new points" must
                 // not give it one of its own, neither now nor on redo
                 SuppressAutoLabelPoints(drawing, suppress: true);

@@ -606,7 +606,7 @@ Deliberately out of scope for now: Calculator, step-by-step construction playbac
 
 Still missing compared to VB6, roughly by value: symmetric point (about a point) and inverted
 point (in a circle) tools; tracing locus of a point ("Create locus" on a point); "snap free point
-to figure" / "release point" from the context menu; "Choose point/figure" disambiguation for
+to figure" from the context menu (the opposite, "Free point", is `PointOnFigure.Release`); "Choose point/figure" disambiguation for
 overlapping figures; double-click opens properties (here: double-click = zoom to fit); measurement
 label dragging constraints; point shape/size per point and name color; line dash styles per
 figure; Show/Hide, message, sound and launch buttons; live cursor coordinates in the status bar;
