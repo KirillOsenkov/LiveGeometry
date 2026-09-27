@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace DynamicGeometry
 {
@@ -44,9 +45,10 @@ namespace DynamicGeometry
             return new Tuple<double, double>(0, base.GetParameterDomain().Item2);
         }
 
-        protected override string NameFromDependencies()
+        // A first: ray AB starts at A and isn't ray BA
+        protected override IReadOnlyList<string> NamesFromDependencies()
         {
-            return NameFromPoints();
+            return NamesFromPoints(PointOrder.Fixed);
         }
 
         protected override string Kind

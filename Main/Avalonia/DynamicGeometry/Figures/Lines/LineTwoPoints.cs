@@ -1,4 +1,6 @@
-﻿namespace DynamicGeometry
+﻿using System.Collections.Generic;
+
+namespace DynamicGeometry
 {
     public class LineTwoPoints : LineBase, ILine
     {
@@ -10,9 +12,9 @@
             }
         }
 
-        protected override string NameFromDependencies()
+        protected override IReadOnlyList<string> NamesFromDependencies()
         {
-            return NameFromPoints();
+            return NamesFromPoints(PointOrder.Reversible);
         }
 
         protected override string Kind

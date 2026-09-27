@@ -7,9 +7,9 @@ namespace DynamicGeometry
         /// <summary>Triangle ABC, square ABCD; one with more vertices than that is numbered</summary>
         public const int MaxVerticesInName = 10;
 
-        protected override string NameFromDependencies()
+        protected override IReadOnlyList<string> NamesFromDependencies()
         {
-            return NameFromPoints(MaxVerticesInName);
+            return NamesFromPoints(PointOrder.Cyclic, MaxVerticesInName);
         }
 
         protected override string Kind

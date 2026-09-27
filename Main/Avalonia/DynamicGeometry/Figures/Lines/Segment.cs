@@ -166,9 +166,9 @@ namespace DynamicGeometry
             return Tuple.Create(0.0, 1.0);
         }
 
-        protected override string NameFromDependencies()
+        protected override IReadOnlyList<string> NamesFromDependencies()
         {
-            return NameFromPoints();
+            return NamesFromPoints(PointOrder.Reversible);
         }
 
         protected override string Kind

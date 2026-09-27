@@ -73,7 +73,8 @@ public static class PointSnapping
             var kind = figure is Segment ? "segment" : figure is Ray ? "ray" : figure is LineTwoPoints ? "line" : null;
             if (kind != null)
             {
-                return kind + " " + first.Name + second.Name;
+                // the default name: the points in order (line AB, not BA)
+                return kind + " " + figure.Name;
             }
         }
 

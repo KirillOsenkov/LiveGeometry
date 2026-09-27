@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using Avalonia;
 using GuiLabs.Undo;
@@ -13,9 +14,9 @@ namespace DynamicGeometry
         }
 
         // one converted from a polygon ends where it starts: ABCA
-        protected override string NameFromDependencies()
+        protected override IReadOnlyList<string> NamesFromDependencies()
         {
-            return NameFromPoints(Polygon.MaxVerticesInName + 1);
+            return NamesFromPoints(PointOrder.Reversible, Polygon.MaxVerticesInName + 1);
         }
 
         protected override string Kind

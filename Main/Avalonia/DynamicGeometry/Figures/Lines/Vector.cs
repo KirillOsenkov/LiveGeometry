@@ -38,9 +38,10 @@ namespace DynamicGeometry
             Line.Dependencies = Dependencies;
         }
 
-        protected override string NameFromDependencies()
+        // from A to B: vector BA points the other way
+        protected override IReadOnlyList<string> NamesFromDependencies()
         {
-            return NameFromPoints();
+            return NamesFromPoints(PointOrder.Fixed);
         }
 
         protected override string Kind

@@ -51,34 +51,110 @@ namespace DynamicGeometry
         }
 
         /// <summary>
-        /// The name the figure takes from what it is built on - segment AB, triangle ABC - or
-        /// null for a figure numbered by its type (Circle1)
+        /// The names the figure can take from what it is built on - segment AB or BA, triangle
+        /// ABC or BCA... - the one it takes first; null for a figure numbered by its type (Circle1)
         /// </summary>
-        protected virtual string NameFromDependencies()
+        protected virtual IReadOnlyList<string> NamesFromDependencies()
         {
             return null;
         }
 
-        /// <summary>The names of the dependencies run together (AB, ABC), if they are all named points</summary>
-        protected string NameFromPoints(int maxCount = 2)
+        string NameFromDependencies()
+        {
+            var names = NamesFromDependencies();
+            return names != null && names.Count > 0 ? names[0] : null;
+        }
+
+        /// <summary>How the points of a figure may be read and still name it</summary>
+        protected enum PointOrder
+        {
+            /// <summary>As they are: ray AB is not ray BA</summary>
+            Fixed,
+
+            /// <summary>Either way: segment BA is segment AB</summary>
+            Reversible,
+
+            /// <summary>From any vertex, either way round: triangle CBA is triangle ABC</summary>
+            Cyclic
+        }
+
+        /// <summary>
+        /// The names of the dependencies run together, if they are all named points, in every
+        /// order that names the same figure; the one that comes first alphabetically (in the
+        /// order points are named) first: ABCE rather than ECBA.
+        /// </summary>
+        protected IReadOnlyList<string> NamesFromPoints(PointOrder order, int maxCount = 2)
         {
             if (Dependencies.Count == 0 || Dependencies.Count > maxCount)
             {
                 return null;
             }
 
-            var sb = new System.Text.StringBuilder();
-            foreach (var dependency in Dependencies)
+            var names = new string[Dependencies.Count];
+            for (int i = 0; i < names.Length; i++)
             {
-                if (!(dependency is IPoint) || string.IsNullOrEmpty(dependency.Name))
+                if (!(Dependencies[i] is IPoint) || string.IsNullOrEmpty(Dependencies[i].Name))
                 {
                     return null;
                 }
 
-                sb.Append(dependency.Name);
+                names[i] = Dependencies[i].Name;
             }
 
-            return sb.ToString();
+            var readings = new List<string[]>() { names };
+            if (order != PointOrder.Fixed)
+            {
+                readings.Add(Enumerable.Reverse(names).ToArray());
+            }
+
+            if (order == PointOrder.Cyclic)
+            {
+                foreach (var reading in readings.ToArray())
+                {
+                    for (int start = 1; start < reading.Length; start++)
+                    {
+                        readings.Add(reading.Skip(start).Concat(reading.Take(start)).ToArray());
+                    }
+                }
+            }
+
+            readings.Sort(CompareReadings);
+            return readings.Select(reading => string.Concat(reading)).Distinct().ToList();
+        }
+
+        static int CompareReadings(string[] first, string[] second)
+        {
+            for (int i = 0; i < first.Length; i++)
+            {
+                int result = ComparePointNames(first[i], second[i]);
+                if (result != 0)
+                {
+                    return result;
+                }
+            }
+
+            return 0;
+        }
+
+        /// <summary>In the order points get their names: A to Z, then A1 to Z1</summary>
+        static int ComparePointNames(string first, string second)
+        {
+            var (firstLetters, firstNumber) = SplitNumber(first);
+            var (secondLetters, secondNumber) = SplitNumber(second);
+            int result = firstNumber.CompareTo(secondNumber);
+            return result != 0 ? result : string.CompareOrdinal(firstLetters, secondLetters);
+        }
+
+        static (string Letters, long Number) SplitNumber(string name)
+        {
+            int digits = name.Length;
+            while (digits > 0 && char.IsDigit(name[digits - 1]))
+            {
+                digits--;
+            }
+
+            long.TryParse(name.Substring(digits), out long number);
+            return (name.Substring(0, digits), number);
         }
 
         /// <summary>
@@ -90,12 +166,14 @@ namespace DynamicGeometry
         public bool HasDefaultName { get; private set; }
 
         /// <summary>
-        /// The name from the points (AB, or AB2 when AB was taken) or from the type (Segment1,
-        /// which every figure was called until 2026-09-27)
+        /// The name from the points in any order that names the figure (AB, BA, or AB2 when AB
+        /// was taken) or from the type (Segment1, which every figure was called until 2026-09-27)
         /// </summary>
         bool IsDefaultName(string name)
         {
-            return IsStemAndNumber(name, NameFromDependencies()) || IsStemAndNumber(name, GetType().Name);
+            var names = NamesFromDependencies();
+            return names != null && names.Any(stem => IsStemAndNumber(name, stem))
+                || IsStemAndNumber(name, GetType().Name);
         }
 
         static bool IsStemAndNumber(string name, string stem)

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 using Avalonia;
@@ -38,7 +39,7 @@ public abstract class PerpendicularLineBase : LineTwoPoints
     protected abstract bool TryGetRightAngle(out Point vertex, out PointPair baseLine, out Point pointAcross);
 
     // the perpendicular bisector of AB doesn't run through A and B: not "AB"
-    protected override string NameFromDependencies()
+    protected override IReadOnlyList<string> NamesFromDependencies()
     {
         return null;
     }

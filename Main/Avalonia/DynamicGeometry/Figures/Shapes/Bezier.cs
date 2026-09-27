@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Collections.Generic;
+using Avalonia;
 using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 
@@ -10,9 +11,10 @@ namespace DynamicGeometry
         public BezierSegment BezierShape { get; set; }
         Math.BezierInfo Info;
 
-        protected override string NameFromDependencies()
+        // the same curve either way
+        protected override IReadOnlyList<string> NamesFromDependencies()
         {
-            return NameFromPoints(maxCount: 4);
+            return NamesFromPoints(PointOrder.Reversible, maxCount: 4);
         }
 
         protected override string Kind

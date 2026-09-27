@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DynamicGeometry
@@ -8,7 +9,7 @@ namespace DynamicGeometry
         PointPair coordinates;
 
         // built on the angle's points, not through them: not "ABC"
-        protected override string NameFromDependencies()
+        protected override IReadOnlyList<string> NamesFromDependencies()
         {
             return null;
         }

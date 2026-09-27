@@ -119,6 +119,8 @@ namespace DynamicGeometry
                 numberOfSides = value;
                 Recreate(numberOfSides);
                 this.RecalculateAllDependents();
+                // the title says it: 5-gon
+                RaisePropertyChanged(nameof(NumberOfSides));
             }
         }
 

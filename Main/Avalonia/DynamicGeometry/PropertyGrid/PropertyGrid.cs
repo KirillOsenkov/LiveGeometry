@@ -105,11 +105,9 @@ namespace DynamicGeometry
         {
             FindAndUpdatePropertyEditor(e.PropertyName);
 
-            // the title is the name ("Segment AB"): renaming the figure, or one of its points, renames it
-            if (e.PropertyName == "Name")
-            {
-                UpdateHeader();
-            }
+            // the title may say what changed: the name ("Segment AB", also when a point is
+            // renamed), the number of sides of a regular polygon ("5-gon")
+            UpdateHeader();
         }
 
         /// <summary>What a tool panel's command found wrong, under the row it is about</summary>
