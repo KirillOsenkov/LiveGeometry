@@ -340,6 +340,7 @@ namespace DynamicGeometry
             drawing.DisplayProperties += mCurrentDrawing_DisplayProperties;
             drawing.UnhandledException += UnhandledException;
             drawing.SelectionChanged += drawing_SelectionChanged;
+            drawing.FigureCoordinatesChanged += mCurrentDrawing_FigureCoordinatesChanged;
             FigureExplorer.ItemsSource = drawing.Figures;
         }
 
@@ -351,6 +352,7 @@ namespace DynamicGeometry
             drawing.DisplayProperties -= mCurrentDrawing_DisplayProperties;
             drawing.UnhandledException -= UnhandledException;
             drawing.SelectionChanged -= drawing_SelectionChanged;
+            drawing.FigureCoordinatesChanged -= mCurrentDrawing_FigureCoordinatesChanged;
             FigureExplorer.ItemsSource = null;
             ShowProperties(null);
         }
@@ -419,6 +421,18 @@ namespace DynamicGeometry
         protected virtual void mCurrentDrawing_SelectionChanged(object sender, Drawing.SelectionChangedEventArgs e)
         {
             ShowSelectionProperties();
+        }
+
+        // a segment's length in the grid follows a drag of its end: at once, then at most
+        // every 300 ms while the drag goes on, the last position always included (undoing a
+        // point drag replays every mouse step of it)
+        void mCurrentDrawing_FigureCoordinatesChanged(object sender, Drawing.FigureCoordinatesChangedEventArgs e)
+        {
+            Throttle.Schedule(
+                PropertyGrid,
+                grid => Avalonia.Threading.Dispatcher.UIThread.Post(grid.RefreshNumbers),
+                TimeSpan.FromMilliseconds(300),
+                ThrottleOptions.RunOnceImmediatelyIfFree);
         }
 
         private void mCurrentDrawing_Status(string status)

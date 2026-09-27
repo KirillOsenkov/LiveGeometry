@@ -134,6 +134,30 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// Figures moved (a drag, undo): the numbers shown are read again, since some follow
+        /// from where things are (a segment's length, a circle's radius) and raise no change
+        /// of their own. Only numbers - a move changes no text, color or choice - and never
+        /// the box being typed in.
+        /// </summary>
+        public void RefreshNumbers()
+        {
+            if (CurrentEditors == null)
+            {
+                return;
+            }
+
+            foreach (var editor in CurrentEditors)
+            {
+                if (editor is IValueEditor valueEditor
+                    && valueEditor.Value?.Type == typeof(double)
+                    && !editor.IsKeyboardFocusWithin)
+                {
+                    valueEditor.Value.RaiseValueChanged();
+                }
+            }
+        }
+
         private void Show(object newSelection)
         {
             Selection = newSelection;
