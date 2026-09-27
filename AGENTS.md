@@ -293,7 +293,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (posted, coalesced), never between `ConstructionStepStarted` and a complete step: temporary
   figures of a tool are never recorded and its real steps sit in its transaction. Undoing a
   deletion puts each figure back at its old index (`RemoveFigureAction.Indices`), so it
-  doesn't jump to the end of the list. Several figures selected show as a `FigureSelection`
+  doesn't jump to the end of the list; `Actions.ReplacePoint` puts the replacement in the
+  old point's place (`MoveBefore`: with what it is built on that came later, such as its
+  Number, to keep dependency order; `Figures.Move` doesn't touch the canvas). Several figures selected show as a `FigureSelection`
   in the property grid (common properties + Delete).
 - **Cursor philosophy** (`Behavior.GetCursor`): cross = a new *free* point appears here; hand =
   the click picks something already there - a figure the tool needs, an existing point, or a

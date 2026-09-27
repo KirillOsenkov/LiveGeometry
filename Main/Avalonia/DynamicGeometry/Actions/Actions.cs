@@ -1,5 +1,6 @@
 ﻿using GuiLabs.Undo;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 
 namespace DynamicGeometry
@@ -115,8 +116,63 @@ namespace DynamicGeometry
                     drawing.ActionManager.RecordAction(handOver);
                 }
 
+                // in the point's place in the list (the Figure List, the file), not at the end
+                MoveBefore(drawing, replacement, point);
                 Remove(point);
                 SetProperty(drawing.ActionManager, new PropertyValue("Name", replacement), point.Name);
+            }
+        }
+
+        /// <summary>
+        /// Moves <paramref name="figure"/> in the drawing's list to just before
+        /// <paramref name="before"/>, together with what it is built on that comes after that
+        /// place (a Number made for it), so that the list stays in dependency order. Nothing
+        /// is taken off the canvas: a move is not a removal and an insertion to the list.
+        /// </summary>
+        static void MoveBefore(Drawing drawing, IFigure figure, IFigure before)
+        {
+            var figures = drawing.Figures;
+            int target = figures.IndexOf(before);
+            if (target < 0 || figures.IndexOf(figure) <= target)
+            {
+                return;
+            }
+
+            var moving = new HashSet<IFigure>();
+            Collect(figure);
+            var order = figures.Where(moving.Contains).ToArray();
+            var oldIndices = new int[order.Length];
+            drawing.ActionManager.RecordAction(new CallMethodAction(
+                () =>
+                {
+                    for (int i = 0; i < order.Length; i++)
+                    {
+                        oldIndices[i] = figures.IndexOf(order[i]);
+                        figures.Move(oldIndices[i], target + i);
+                    }
+                },
+                () =>
+                {
+                    for (int i = order.Length - 1; i >= 0; i--)
+                    {
+                        figures.Move(target + i, oldIndices[i]);
+                    }
+                }));
+
+            void Collect(IFigure item)
+            {
+                if (!moving.Add(item))
+                {
+                    return;
+                }
+
+                foreach (var dependency in item.Dependencies)
+                {
+                    if (figures.IndexOf(dependency) > target)
+                    {
+                        Collect(dependency);
+                    }
+                }
             }
         }
 
