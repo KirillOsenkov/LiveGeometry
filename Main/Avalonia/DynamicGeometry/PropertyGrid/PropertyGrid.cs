@@ -365,10 +365,14 @@ namespace DynamicGeometry
                     && m.HasAttribute<PropertyGridVisibleAttribute>());
 
             // a figure can veto a button by name the way it vetoes editing a row
-            // (a segment shows Fix length or Free length, whichever applies)
+            // (a segment shows Fix length or Free length, whichever applies), and caption it
+            // ("Snap to Segment1")
             if (editableObject is IConditionalProperties conditions)
             {
-                allMethods = allMethods.Where(m => conditions.CanEdit(m.Name));
+                return allMethods
+                    .Where(m => conditions.CanEdit(m.Name))
+                    .Select(m => (IOperationDescription)new CaptionedMethod(MethodDescription.Create(m), conditions))
+                    .ToArray();
             }
 
             var result = allMethods.Select(m => (IOperationDescription)MethodDescription.Create(m));

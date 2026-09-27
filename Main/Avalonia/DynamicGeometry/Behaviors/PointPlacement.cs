@@ -93,10 +93,55 @@ public class PointPlacement
             return Existing(existing);
         }
 
+        return FindOnFigures(drawing, underCursor, coordinates, snapToMidpoint, reuseMidpoint: true)
+            ?? Free(coordinates);
+    }
+
+    /// <summary>
+    /// Where a point dragged with Alt snaps (<see cref="PointSnapping"/>): what a click of the
+    /// Point tool would make here, but never a point that is already there - points aren't
+    /// merged - and never a second midpoint of a segment (the point slides along it
+    /// instead). Null when there is nothing to snap to.
+    /// </summary>
+    /// <param name="canUse">Says which figures the point may go onto (not those built on it)</param>
+    public static PointPlacement FindSnap(Drawing drawing, Point coordinates, Predicate<IFigure> canUse)
+    {
+        var underCursor = drawing.Figures.HitTestMany(coordinates)
+            .Where(f => f.IsHitTestVisible && !(f is IPoint) && canUse(f))
+            .Reverse()
+            .ToArray();
+        var result = FindOnFigures(drawing, underCursor, coordinates, snapToMidpoint: false, reuseMidpoint: false);
+
+        // a crossing that already has its point (an end of the segment, an intersection
+        // point): slide along the figure instead, as at a segment's existing midpoint
+        if (result != null
+            && result.Kind == PointPlacementKind.Intersection
+            && drawing.Figures.HitTestMany(result.Coordinates).Any(f => f is IPoint && f.IsHitTestVisible && canUse(f)))
+        {
+            var onFigure = OnFigure((ILinearFigure)result.Sources[0], coordinates);
+            result = onFigure.Kind == PointPlacementKind.OnFigure ? onFigure : null;
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// An intersection, a midpoint or a point on one of the figures; null if none of them
+    /// can hold a point.
+    /// </summary>
+    /// <param name="reuseMidpoint">An existing midpoint of the segment is the answer; else the
+    /// point goes onto the segment</param>
+    static PointPlacement FindOnFigures(
+        Drawing drawing,
+        IFigure[] underCursor,
+        Point coordinates,
+        bool snapToMidpoint,
+        bool reuseMidpoint)
+    {
         var linear = underCursor.Where(PointOnFigure.CanBeOnFigure).ToArray();
         if (linear.Length == 0)
         {
-            return Free(coordinates);
+            return null;
         }
 
         var intersection = FindIntersection(linear, coordinates, maxDistance: 3 * drawing.CoordinateSystem.CursorTolerance);
@@ -114,15 +159,19 @@ public class PointPlacement
         if (segment != null)
         {
             var existingMidpoint = FindExistingMidpoint(segment.Dependencies[0], segment.Dependencies[1]);
-            if (existingMidpoint != null)
+            if (existingMidpoint == null)
+            {
+                return Midpoint(segment);
+            }
+
+            if (reuseMidpoint)
             {
                 return Existing(existingMidpoint);
             }
-
-            return Midpoint(segment);
         }
 
-        return OnFigure((ILinearFigure)linear[0], coordinates);
+        var onFigure = OnFigure((ILinearFigure)linear[0], coordinates);
+        return onFigure.Kind == PointPlacementKind.OnFigure ? onFigure : null;
     }
 
     /// <summary>

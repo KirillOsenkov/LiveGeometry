@@ -4,6 +4,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Media;
+using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
@@ -19,8 +20,20 @@ namespace DynamicGeometry
         protected Point coordinatesOnMouseDown;
         bool startedMoving = false;
 
+        // A point drag is one undo step, with the releases and the snap of an Alt-drag in it
+        Transaction dragTransaction;
+
+        // Where the point dragged with Alt goes if dropped now; null while it is free
+        PointPlacement snap;
+
+        /// <summary>In cursor tolerances: how far a snapped point may be pulled before it lets go</summary>
+        public static double StickyReach = 2;
+
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
+            // a drag whose release never arrived
+            EndDrag();
+
 #if !SILVERLIGHT
             if (e.ClickCount == 2)
             {
@@ -142,11 +155,21 @@ namespace DynamicGeometry
                     return;
                 }
                 startedMoving = true;
+                if (found is IPoint && !found.Locked && !moving.IsEmpty())
+                {
+                    dragTransaction = Transaction.Create(Drawing.ActionManager, false);
+                }
             }
             if (!moving.IsEmpty())
             {
                 var offset = currentCoordinates.Minus(oldCoordinates);
-                if (moving.Count == 1 && moving[0] is PointLabel pointLabel)
+                var snapping = PointToSnap(currentCoordinates);
+                if (snapping != null)
+                {
+                    var target = snap != null ? snap.Coordinates : currentCoordinates;
+                    offset = target.Minus(snapping.Coordinates);
+                }
+                else if (moving.Count == 1 && moving[0] is PointLabel pointLabel)
                 {
                     // A point label is confined to an orbit around its point, so a relative
                     // move would drift away from the cursor once the limit is hit. Move it
@@ -197,6 +220,12 @@ namespace DynamicGeometry
 
         public override void MouseUp(object sender, MouseButtonEventArgs e)
         {
+            if (snap != null && IsAltPressed() && found is FreePoint dragged)
+            {
+                PointSnapping.Snap(dragged, snap);
+            }
+
+            EndDrag();
             if (Coordinates(e) == coordinatesOnMouseDown)
             {
                 UpdateSelection();
@@ -207,6 +236,97 @@ namespace DynamicGeometry
             moving = null;
             found = null;
         }
+
+        public override void Stopping()
+        {
+            EndDrag();
+            base.Stopping();
+        }
+
+        void EndDrag()
+        {
+            snap = null;
+            if (dragTransaction != null)
+            {
+                dragTransaction.Commit();
+                dragTransaction = null;
+            }
+        }
+
+        #region Alt-drag: snapping and releasing points
+
+        /// <summary>
+        /// With Alt held, a dragged point is a free point that snaps (<see cref="PointSnapping"/>):
+        /// one tied to figures is released first, and <see cref="snap"/> says where it goes -
+        /// onto a figure, an intersection or the middle of a segment, whatever the Point tool
+        /// would make there. Returns the free point, or null when Alt doesn't apply (not held,
+        /// not a point, a locked one).
+        /// </summary>
+        FreePoint PointToSnap(Point cursor)
+        {
+            var previous = snap;
+            snap = null;
+            if (!IsAltPressed() || !(found is PointBase point) || found.Locked || dragTransaction == null)
+            {
+                return null;
+            }
+
+            FreePoint free;
+            if (PointSnapping.CanRelease(point))
+            {
+                free = PointSnapping.Release(point);
+                DragInstead(free);
+            }
+            else if (point is FreePoint freePoint && moving.Count == 1 && moving[0] == point)
+            {
+                free = freePoint;
+            }
+            else
+            {
+                return null;
+            }
+
+            snap = PointPlacement.FindSnap(Drawing, cursor, figure => !figure.DependsOn(free));
+            if (snap == null && previous != null)
+            {
+                snap = Stick(previous, cursor);
+            }
+
+            return free;
+        }
+
+        /// <summary>The point that replaced the one pressed on is what the drag moves now</summary>
+        void DragInstead(PointBase point)
+        {
+            found = point;
+            moving = new List<IMovable>() { (IMovable)point };
+            toRecalculate = DependencyAlgorithms.FindDescendants(f => f.Dependents, point.AsEnumerable<IFigure>());
+            toRecalculate.Reverse();
+        }
+
+        /// <summary>
+        /// A snapped point lets go only at <see cref="StickyReach"/> times the reach that took
+        /// it, so that it doesn't flicker on and off at the edge
+        /// </summary>
+        PointPlacement Stick(PointPlacement previous, Point cursor)
+        {
+            // an intersection or a midpoint stays put: nothing it is made of is built on the dragged point
+            var placement = previous.Kind == PointPlacementKind.OnFigure
+                ? PointPlacement.OnFigure((ILinearFigure)previous.Sources[0], cursor)
+                : previous;
+            var reach = StickyReach * Drawing.CoordinateSystem.CursorTolerance;
+            return placement.Kind != PointPlacementKind.Free && placement.Coordinates.Distance(cursor) <= reach
+                ? placement
+                : null;
+        }
+
+        /// <summary>The halo and the faint point of the snap, while dragging with Alt</summary>
+        protected override PointPlacement GetClickPreview(MouseEventArgs e)
+        {
+            return snap;
+        }
+
+        #endregion
 
 #if !PLAYER
 
@@ -260,11 +380,7 @@ namespace DynamicGeometry
                 {
                     Add("Show name", () => Set(point, "ShowName", !point.ShowName), point.ShowName);
                     Add("Show coordinates", () => Set(point, "ShowCoordinates", !point.ShowCoordinates), point.ShowCoordinates);
-                    if (point is PointOnFigure onFigure)
-                    {
-                        Add("Free point", onFigure.Release);
-                    }
-
+                    AddSnapItems(menu, point, Add);
                     menu.Items.Add(new Avalonia.Controls.Separator());
                 }
 
@@ -283,6 +399,39 @@ namespace DynamicGeometry
             }
 
             menu.Open(ParentCanvas);
+        }
+
+        /// <summary>
+        /// As in the original DG: "Snap to" the figure through the point (a submenu when there
+        /// are several), and "Free point" for a point tied to figures
+        /// </summary>
+        static void AddSnapItems(
+            Avalonia.Controls.ContextMenu menu,
+            PointBase point,
+            System.Action<string, System.Action, bool?> add)
+        {
+            var figures = point is FreePoint ? PointSnapping.FiguresToSnapTo(point) : new IFigure[0];
+            if (figures.Count == 1)
+            {
+                add("Snap to " + PointSnapping.Describe(figures[0]), () => PointSnapping.SnapTo(point, figures[0]), null);
+            }
+            else if (figures.Count > 1)
+            {
+                var snapTo = new Avalonia.Controls.MenuItem() { Header = "Snap to figure" };
+                foreach (var figure in figures)
+                {
+                    var item = new Avalonia.Controls.MenuItem() { Header = PointSnapping.Describe(figure) };
+                    item.Click += (s, args) => PointSnapping.SnapTo(point, figure);
+                    snapTo.Items.Add(item);
+                }
+
+                menu.Items.Add(snapTo);
+            }
+
+            if (PointSnapping.CanRelease(point))
+            {
+                add("Free point", () => PointSnapping.Release(point), null);
+            }
         }
 
         public override void KeyDown(object sender, KeyEventArgs e)

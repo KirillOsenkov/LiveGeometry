@@ -82,22 +82,13 @@ namespace DynamicGeometry
             return figure is ILinearFigure;
         }
 
-        /// <summary>
-        /// Detaches the point from its figure: it becomes a free point where it is, and what is
-        /// built on it stays built on it (<see cref="Actions.ReplacePoint"/>, one undo step).
-        /// The free point takes over the selection, so the property grid shows it.
-        /// </summary>
+        /// <summary>Detaches the point from its figure (<see cref="PointSnapping.Release"/>)</summary>
         [PropertyGridVisible]
         [PropertyGridName("Free point")]
         [PropertyGridIcon(PropertyGridIcon.Unlock)]
         public void Release()
         {
-            var drawing = Drawing;
-            var free = Factory.CreateFreePoint(drawing, Coordinates);
-            Actions.ReplacePoint(this, free);
-            Selected = false;
-            free.Selected = true;
-            drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
+            PointSnapping.Release(this);
         }
     }
 }

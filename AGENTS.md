@@ -80,7 +80,8 @@ names the tab, `[Order]` the place in it, `[Ignore]` keeps one off the ribbon; t
 defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommands`. Tab by tab
 (letter in parentheses):
 
-- **Selection**: Drag (Q) - drags points and figures; also the tool every construction
+- **Selection**: Drag (Q) - drags points and figures (with Alt a point snaps onto figures and
+  lets go of them, see "Snapping and releasing points"); also the tool every construction
   returns to.
 - **Points**: Point (P) - free, on a figure, or at an intersection; Midpoint (M) - two points
   or a segment; Intersection (I) - two figures that cross, the click on the second picks the
@@ -239,6 +240,16 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   figures. Hit testing uses the *snapped* coordinates. Typed coordinates always give a free
   point. A point must never be placed on the figure being constructed
   (`FigureCreator.CanPlacePointOn`), that would be a dependency cycle.
+- **Snapping and releasing points** (`Figures/Points/PointSnapping.cs`) swap a point for another
+  kind where it is through `Actions.ReplacePoint` (name, label, dependents, lock, a chosen style
+  go along). Snap: a free point onto a figure through it - "Snap to line AB" in the grid when
+  there is exactly one (`FreePoint` is `IConditionalProperties`; the grid captions buttons
+  through `CaptionedMethod`), a submenu in the context menu when more. Release ("Free point"):
+  a point on a figure, an intersection point or a midpoint. Alt while dragging (read live, on
+  every move) releases a tied point and makes the free one snap to what
+  `PointPlacement.FindSnap` finds - what the Point tool would make there, minus existing points
+  and second midpoints; a snap lets go at `Dragger.StickyReach` times the reach. Swaps happen
+  only when Alt first applies and at the drop; the whole drag is one undo transaction.
 - **Cursor philosophy** (`Behavior.GetCursor`): cross = a new *free* point appears here; hand =
   the click picks something already there - a figure the tool needs, an existing point, or a
   place defined by figures (intersection, midpoint); arrow = everything else, including a new
@@ -551,7 +562,7 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
 - `tools/winauto.cs` - any desktop window (the VB6 app, the Avalonia desktop app).
   `list`, `tree <t>`, `menu <t>`, `invoke <t> <menuId>`, `shot <t> out.png`, `click <t> x y [right|double]`,
   `move <t> x y` (hover, for click previews and `cursor`),
-  `drag <t> x1 y1 x2 y2 [steps]`, `wheel <t> x y <notches>`, `keys <t> "^s"`, `text`, `focus`,
+  `drag <t> x1 y1 x2 y2 [steps] [--shift] [--alt]`, `wheel <t> x y <notches>`, `keys <t> "^s"`, `text`, `focus`,
   `cursor`, `place <t> x y w h`. Target = process name | `pid:N` | `hwnd:0x..` | `title:substr`.
   - The VB6 app starts maximized on a 4K/200% monitor: `place <t> 100 100 1500 1000` first. The
     Avalonia desktop app remembers its window (`LiveGeometry.Desktop/WindowPlacementPersistence.cs`,
@@ -577,7 +588,10 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
   - Avalonia has no native menus or child windows: screenshot, then click by coordinates. A
     native file dialog shows in `list` as a `#32770` window of the app: `text hwnd:0x.. <path>`
     then `keys hwnd:0x.. "{ENTER}"`. A context menu is its own top-level window: while one is
-    open, `shot LiveGeometry.Desktop` captures the menu, not the main window.
+    open, `shot LiveGeometry.Desktop` captures the menu, not the main window (and `list`
+    doesn't show it). It opens at the cursor, so click its items by main-window coordinates:
+    right-click point + the item's place in the menu shot, with `hwnd:` of the main window
+    (by `pid:` a click can land on the main window's system menu).
   - After a figure with a length is made (segment, square, circle...) the length panel opens
     at the right of the canvas (about x 1270-1670, y 405-770 at 1700x1100) and swallows clicks
     there; the next click on the canvas closes it. Take a shot after each construction, or keep
@@ -605,8 +619,7 @@ reflection-based): publish Release, `serve` its wwwroot, `webauto start http://l
 Deliberately out of scope for now: Calculator, step-by-step construction playback.
 
 Still missing compared to VB6, roughly by value: symmetric point (about a point) and inverted
-point (in a circle) tools; tracing locus of a point ("Create locus" on a point); "snap free point
-to figure" from the context menu (the opposite, "Free point", is `PointOnFigure.Release`); "Choose point/figure" disambiguation for
+point (in a circle) tools; tracing locus of a point ("Create locus" on a point); "Choose point/figure" disambiguation for
 overlapping figures; double-click opens properties (here: double-click = zoom to fit); measurement
 label dragging constraints; point shape/size per point and name color; line dash styles per
 figure; Show/Hide, message, sound and launch buttons; live cursor coordinates in the status bar;

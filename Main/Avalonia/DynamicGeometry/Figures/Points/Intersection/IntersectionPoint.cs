@@ -54,6 +54,15 @@ namespace DynamicGeometry
             return result;
         }
 
+        /// <summary>Lets go of the two figures: a free point where it is (<see cref="PointSnapping.Release"/>)</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Free point")]
+        [PropertyGridIcon(PropertyGridIcon.Unlock)]
+        public void Release()
+        {
+            PointSnapping.Release(this);
+        }
+
         Func<IFigure, IFigure, Point> Algorithm;
 
         /// <summary>The name of the intersection algorithm, as saved in the Algorithm attribute</summary>

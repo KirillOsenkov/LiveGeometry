@@ -15,5 +15,14 @@ namespace DynamicGeometry
                 (Point(0).X + Point(1).X) / 2,
                 (Point(0).Y + Point(1).Y) / 2);
         }
+
+        /// <summary>Lets go of the two points: a free point where it is (<see cref="PointSnapping.Release"/>)</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Free point")]
+        [PropertyGridIcon(PropertyGridIcon.Unlock)]
+        public void Release()
+        {
+            PointSnapping.Release(this);
+        }
     }
 }

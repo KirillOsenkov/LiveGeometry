@@ -228,6 +228,11 @@ namespace DynamicGeometry
             return (currentModifiers & KeyModifiers.Shift) == KeyModifiers.Shift;
         }
 
+        public static bool IsAltPressed()
+        {
+            return (currentModifiers & KeyModifiers.Alt) == KeyModifiers.Alt;
+        }
+
         void PointerPressedHandler(object sender, PointerPressedEventArgs e)
         {
             currentModifiers = e.KeyModifiers;
@@ -430,6 +435,10 @@ namespace DynamicGeometry
             {
                 SafeMouseUp(sender, e);
             }
+
+            // what the press did may have changed what a click here does (a dragged point
+            // dropped onto a figure no longer shows the halo of its snap)
+            UpdateClickPreview(e);
         }
 
         void PointerWheelHandler(object sender, PointerWheelEventArgs e)

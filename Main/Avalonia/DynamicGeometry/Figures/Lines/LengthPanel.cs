@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace DynamicGeometry;
@@ -119,53 +118,5 @@ public class LengthPanel : IConditionalProperties, ICustomMethodProvider
     public override string ToString()
     {
         return figure.Name;
-    }
-
-    /// <summary>A method button whose caption the figure decides</summary>
-    class CaptionedMethod : IOperationDescription
-    {
-        readonly MethodDescription method;
-        readonly IConditionalProperties captions;
-
-        public CaptionedMethod(MethodDescription method, IConditionalProperties captions)
-        {
-            this.method = method;
-            this.captions = captions;
-        }
-
-        public string DisplayName
-        {
-            get { return captions.Caption(method.Name, method.DisplayName); }
-        }
-
-        public string Name
-        {
-            get { return method.Name; }
-        }
-
-        public object Parent
-        {
-            get { return method.Parent; }
-        }
-
-        public IEnumerable<IValueProvider> Parameters
-        {
-            get { return method.Parameters; }
-        }
-
-        public void Invoke(object target, IEnumerable<object> arguments)
-        {
-            method.Invoke(target, arguments);
-        }
-
-        public T GetAttribute<T>() where T : Attribute
-        {
-            return method.GetAttribute<T>();
-        }
-
-        public IEnumerable<T> GetAttributes<T>() where T : Attribute
-        {
-            return method.GetAttributes<T>();
-        }
     }
 }
