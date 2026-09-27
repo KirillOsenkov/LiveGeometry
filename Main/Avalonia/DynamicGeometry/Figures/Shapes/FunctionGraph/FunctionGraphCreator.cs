@@ -12,8 +12,10 @@ namespace DynamicGeometry
     public class FunctionGraphCreator : Behavior
     {
         [PropertyGridName("Function graph")]
-        public class Dialog
+        public class Dialog : INotifyPropertyChanged
         {
+            public event PropertyChangedEventHandler PropertyChanged;
+
             public Dialog(FunctionGraphCreator parent)
             {
                 this.parent = parent;
@@ -45,8 +47,13 @@ namespace DynamicGeometry
             [PropertyGridIcon(PropertyGridIcon.Check)]
             public void Plot()
             {
-                parent.PlotFunction(Func);
-                Func = "";
+                // a function that doesn't compile stays in the box to be fixed (the status bar
+                // says what's wrong); a plotted one leaves room for the next
+                if (parent.PlotFunction(Func))
+                {
+                    Func = "";
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Func)));
+                }
             }
 
             [PropertyGridVisible]
@@ -71,7 +78,8 @@ namespace DynamicGeometry
 
         protected Dialog PropertyDialog;
 
-        protected void PlotFunction(string function)
+        /// <returns>Whether the function compiled and its graph was added</returns>
+        protected bool PlotFunction(string function)
         {
             var result = Compiler.Instance.CompileFunction(Drawing, function);
             Func<double, double> func = result.Function;
@@ -82,11 +90,11 @@ namespace DynamicGeometry
                 graph.FunctionText = function;
                 Actions.Add(Drawing, graph);
                 Drawing.ClearStatus();
+                return true;
             }
-            else
-            {
-                Drawing.RaiseStatusNotification(result.ToString());
-            }
+
+            Drawing.RaiseStatusNotification(result.ToString());
+            return false;
         }
 
         protected virtual FunctionGraph CreateFunctionGraph()
