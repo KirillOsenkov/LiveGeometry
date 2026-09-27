@@ -537,6 +537,10 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
     native file dialog shows in `list` as a `#32770` window of the app: `text hwnd:0x.. <path>`
     then `keys hwnd:0x.. "{ENTER}"`. A context menu is its own top-level window: while one is
     open, `shot LiveGeometry.Desktop` captures the menu, not the main window.
+  - After a figure with a length is made (segment, square, circle...) the length panel opens
+    at the right of the canvas (about x 1270-1670, y 405-770 at 1700x1100) and swallows clicks
+    there; the next click on the canvas closes it. Take a shot after each construction, or keep
+    test clicks left of x 1250.
   - `winauto keys` sends real virtual keys for lowercase ASCII letters/digits (needed for the
     single-letter shortcuts); other characters go as Unicode packets, which KeyDown-based
     shortcuts never see.
