@@ -13,7 +13,6 @@ namespace DynamicGeometry
         {
             TextBox = new TextBox();
             TextBox.TextChanged += StringPropertyEditor_TextChanged;
-            TextBox.AcceptsReturn = true;
             return TextBox;
         }
 
@@ -52,6 +51,9 @@ namespace DynamicGeometry
 
         public override void UpdateEditor()
         {
+            // one line unless the property asks for more: a line break in an expression (a
+            // function, a coordinate) only breaks it, and Enter belongs to the panel's button
+            TextBox.AcceptsReturn = Value.GetAttribute<PropertyGridMultilineAttribute>() != null;
             Show((GetValue() ?? "").ToString());
             // grayed, like the other editors: a read-only box looks the same as a live one
             TextBox.IsEnabled = Value.CanSetValue;

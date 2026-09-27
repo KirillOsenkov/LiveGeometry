@@ -266,7 +266,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   and their buttons together, `[PropertyGridDestructive]` puts a button last under a divider,
   `[PropertyGridIcon]` puts a drawn icon (`PropertyGridIcons`) in front of a caption (every verb
   button has one - give a new verb one too), `[PropertyGridPreferredEditor("UpDown")]` picks the
-  editor, `[Domain(min, max)]` on a double gives a `SliderEditor`. Rows that are editable only
+  editor, `[Domain(min, max)]` on a double gives a `SliderEditor`. String boxes are one line
+  (Enter is the panel's: Plot, Add point) unless the property says `[PropertyGridMultiline]`
+  (label text). Rows that are editable only
   sometimes: `[PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]` on the
   property and `IConditionalProperties` on the figure (`CanEdit`, `Caption`); the same interface
   vetoes buttons by method name. A property setter that changes the figure list (the length

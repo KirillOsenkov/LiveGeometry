@@ -66,6 +66,7 @@ namespace DynamicGeometry
         protected string text;
         [PropertyGridVisible]
         [PropertyGridFocus]
+        [PropertyGridMultiline]
         public virtual string Text
         {
             get
