@@ -14,6 +14,11 @@ namespace DynamicGeometry
             return DependencyList.PointPointPoint;
         }
 
+        // the length of one side means nothing for a triangle
+        protected override void ShowCreatedFigure(IList<IFigure> figures)
+        {
+        }
+
         protected override IEnumerable<IFigure> CreateFigures()
         {
             yield return Factory.CreatePolygon(Drawing, FoundDependencies);

@@ -12,37 +12,80 @@ namespace DynamicGeometry
     public class PolygonCreator : ShapeCreator
     {
         protected int FoundDependenciesMinimum = 3; // Includes TempPoint
+
+        /// <summary>Enough vertices to close (the point following the cursor doesn't count)</summary>
+        bool CanClose
+        {
+            get
+            {
+                return FoundDependencies.Count >= FoundDependenciesMinimum + 1 // Add 1 for TempPoint
+                    && FoundDependencies.All(f => f is IPoint);
+            }
+        }
+
+        /// <summary>Makes the polygon from the vertices so far, if there are enough</summary>
+        bool TryClose()
+        {
+            if (!CanClose)
+            {
+                return false;
+            }
+
+            RemoveIntermediateFigureIfNecessary();
+            RemoveTempPointIfNecessary();
+            AddFiguresAndRestart();
+            return true;
+        }
+
         protected override void Click(Point coordinates)
         {
             var point = Drawing.Figures.HitTest<IPoint>(coordinates);
-            if (point != null
-                && FoundDependencies.Count >= FoundDependenciesMinimum + 1 // Add 1 for TempPoint
-                && FoundDependencies.Contains(point))
+            if (point != null && FoundDependencies.Contains(point) && TryClose())
             {
-                RemoveIntermediateFigureIfNecessary();
-                RemoveTempPointIfNecessary();
-                AddFiguresAndRestart();
                 return;
             }
+
             base.Click(coordinates);
         }
 
         /// <summary>
         /// Like in the original DG, a right-click closes the polygon once it has enough
-        /// vertices (the point following the cursor doesn't count).
+        /// vertices; so does Enter.
         /// </summary>
         public override void MouseRightClick(object sender, MouseButtonEventArgs e)
         {
-            if (FoundDependencies.Count >= FoundDependenciesMinimum + 1
-                && FoundDependencies.All(f => f is IPoint))
+            if (TryClose())
             {
-                RemoveIntermediateFigureIfNecessary();
-                RemoveTempPointIfNecessary();
-                AddFiguresAndRestart();
                 return;
             }
 
             base.MouseRightClick(sender, e);
+        }
+
+        public override void KeyDown(object sender, Avalonia.Input.KeyEventArgs e)
+        {
+            if (e.Key == Avalonia.Input.Key.Enter && TryClose())
+            {
+                e.Handled = true;
+                return;
+            }
+
+            base.KeyDown(sender, e);
+        }
+
+        public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+        {
+            if (CanClose)
+            {
+                return "Press Enter when done, or click more points.";
+            }
+
+            return base.ConstructionHintText(args);
+        }
+
+        // the length of one side means nothing for a polygon
+        protected override void ShowCreatedFigure(IList<IFigure> figures)
+        {
         }
 
         protected override DependencyList InitExpectedDependencies()
@@ -106,7 +149,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return "Click points to construct a polygon. Click the first point again to close the polygon.";
+                return "Click points to construct a polygon. Press Enter (or click the first point again) to close it.";
             }
         }
 

@@ -95,8 +95,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   a distance, then the center; Ellipse - center, end of the long axis, end of the short axis;
   Circular Arc (A) - center, start, end (counterclockwise); Elliptical Arc - center, semi-major,
   semi-minor, begin angle, end angle.
-- **Shapes**: Triangle - 3 points; Square - two adjacent vertices; Polygon (W) - points, click
-  the first again to close; Regular polygon - center then a vertex. (Polygon intersection
+- **Shapes**: Triangle - 3 points; Square - two adjacent vertices; Polygon (W) - points, then
+  Enter, a right-click or a click on a vertex closes it; Regular polygon - center then a vertex.
+  Triangle and Polygon show no length panel (a side's length means nothing for them). (Polygon intersection
   exists but is `[Ignore]`d.)
 - **Coordinates**: Background and Grid (G) (commands); Function - an expression in x; Line - by
   slope and intercept expressions; Circle - by center and radius expressions; Point by
