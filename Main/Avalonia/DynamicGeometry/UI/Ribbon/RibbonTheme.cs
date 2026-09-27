@@ -29,6 +29,11 @@ public static class RibbonTheme
     public static readonly IBrush HintBackground = new SolidColorBrush(Color.FromRgb(0xFF, 0xFD, 0xE8));
     public static readonly IBrush HintBorder = new SolidColorBrush(Color.FromRgb(0xD9, 0xD2, 0x9A));
 
+    // what is wrong with the text in a box, right under it (StringEditor.ErrorText)
+    public static readonly IBrush ErrorBackground = new SolidColorBrush(Color.FromRgb(0xFD, 0xEC, 0xEC));
+    public static readonly IBrush ErrorBorder = new SolidColorBrush(Color.FromRgb(0xD9, 0x3B, 0x3B));
+    public static readonly IBrush ErrorText = new SolidColorBrush(Color.FromRgb(0x9B, 0x1C, 0x1C));
+
     public static readonly CornerRadius ButtonCornerRadius = new CornerRadius(5);
     public const double ButtonMinWidth = 52;
 }

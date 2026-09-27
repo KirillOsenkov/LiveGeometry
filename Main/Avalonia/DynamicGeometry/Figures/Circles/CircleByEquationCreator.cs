@@ -10,7 +10,7 @@ namespace DynamicGeometry
     public class CircleByEquationCreator : Behavior
     {
         [PropertyGridName("Circle equation")]
-        public class Dialog
+        public class Dialog : ToolPanel
         {
             public Dialog(CircleByEquationCreator parent)
             {
@@ -53,9 +53,9 @@ namespace DynamicGeometry
             [PropertyGridIcon(PropertyGridIcon.Plus)]
             public void AddCircle()
             {
-                var xresult = parent.Drawing.CompileExpression(X);
-                var yresult = parent.Drawing.CompileExpression(Y);
-                var rresult = parent.Drawing.CompileExpression(R);
+                var xresult = Compile(parent.Drawing, nameof(X), X);
+                var yresult = Compile(parent.Drawing, nameof(Y), Y);
+                var rresult = Compile(parent.Drawing, nameof(R), R);
 
                 if (xresult.IsSuccess && yresult.IsSuccess && rresult.IsSuccess)
                 {

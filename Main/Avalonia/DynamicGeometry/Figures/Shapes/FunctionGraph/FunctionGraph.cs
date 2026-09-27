@@ -62,6 +62,7 @@ namespace DynamicGeometry
         string mFunctionText;
         [PropertyGridVisible]
         [PropertyGridName("f(x) = ")]
+        [PropertyGridPreferredEditor("Function")]
         public string FunctionText
         {
             get
@@ -70,16 +71,10 @@ namespace DynamicGeometry
             }
             set
             {
+                // the grid's editor only sets a function that compiles, and shows what is
+                // wrong with one that doesn't (FunctionEditor)
                 mFunctionText = value;
-                var result = Compile();
-                if (result.IsSuccess)
-                {
-                    Drawing.ClearStatus();
-                }
-                else
-                {
-                    Drawing.RaiseStatusNotification(result.ToString());
-                };
+                Compile();
             }
         }
 

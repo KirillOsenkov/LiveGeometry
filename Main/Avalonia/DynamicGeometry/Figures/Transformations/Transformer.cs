@@ -6,8 +6,8 @@ namespace DynamicGeometry
     {
         public static bool CanBeTransformSource(IFigure figure)
         {
-            // Not yet supported
-            if (figure is CircleByEquation || figure is LineByEquation || figure is FunctionGraph || figure is Locus)
+            // Not yet supported (a line at an angle would transform its angle as if it were a point)
+            if (figure is CircleByEquation || figure is LineByEquation || figure is LineAtAngle || figure is FunctionGraph || figure is Locus)
             {
                 return false;
             }

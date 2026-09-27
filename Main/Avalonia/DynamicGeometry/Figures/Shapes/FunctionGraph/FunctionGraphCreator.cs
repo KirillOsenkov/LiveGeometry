@@ -1,9 +1,8 @@
-﻿using System;
+﻿using System.ComponentModel;
 using Avalonia.Controls;
-using Avalonia.Layout;
 using Avalonia.Input;
+using Avalonia.Layout;
 using Avalonia.Media;
-using System.ComponentModel;
 
 namespace DynamicGeometry
 {
@@ -12,7 +11,7 @@ namespace DynamicGeometry
     public class FunctionGraphCreator : Behavior
     {
         [PropertyGridName("Function graph")]
-        public class Dialog : INotifyPropertyChanged
+        public class Dialog : ToolPanel, INotifyPropertyChanged
         {
             public event PropertyChangedEventHandler PropertyChanged;
 
@@ -47,10 +46,13 @@ namespace DynamicGeometry
             [PropertyGridIcon(PropertyGridIcon.Check)]
             public void Plot()
             {
-                // a function that doesn't compile stays in the box to be fixed (the status bar
-                // says what's wrong); a plotted one leaves room for the next
-                if (parent.PlotFunction(Func))
+                // a function that doesn't compile stays in the box to be fixed, with what's
+                // wrong under it; a plotted one leaves room for the next
+                var result = Compiler.Instance.CompileFunction(parent.Drawing, Func);
+                ReportError(nameof(Func), result.GetErrorText(whenEmpty: EmptyFunctionError));
+                if (result.IsSuccess)
                 {
+                    parent.PlotFunction(Func);
                     Func = "";
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Func)));
                 }
@@ -78,23 +80,15 @@ namespace DynamicGeometry
 
         protected Dialog PropertyDialog;
 
-        /// <returns>Whether the function compiled and its graph was added</returns>
-        protected bool PlotFunction(string function)
-        {
-            var result = Compiler.Instance.CompileFunction(Drawing, function);
-            Func<double, double> func = result.Function;
-            if (func != null)
-            {
-                var graph = CreateFunctionGraph();
-                graph.Drawing = Drawing;
-                graph.FunctionText = function;
-                Actions.Add(Drawing, graph);
-                Drawing.ClearStatus();
-                return true;
-            }
+        public const string EmptyFunctionError = "Type an expression in x, such as sin(x).";
 
-            Drawing.RaiseStatusNotification(result.ToString());
-            return false;
+        /// <summary>Adds the graph of a function that compiles</summary>
+        protected void PlotFunction(string function)
+        {
+            var graph = CreateFunctionGraph();
+            graph.Drawing = Drawing;
+            graph.FunctionText = function;
+            Actions.Add(Drawing, graph);
         }
 
         protected virtual FunctionGraph CreateFunctionGraph()

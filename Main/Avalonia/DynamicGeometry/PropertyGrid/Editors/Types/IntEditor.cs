@@ -11,7 +11,7 @@ namespace DynamicGeometry
 
         protected override UIElement CreateEditor()
         {
-            base.CreateEditor();
+            CreateTextBox();
             TextBox.AcceptsReturn = false;
             TextBox.Width = 52;
             TextBox.VerticalAlignment = VerticalAlignment.Center;

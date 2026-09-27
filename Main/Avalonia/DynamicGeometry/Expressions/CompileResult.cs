@@ -42,6 +42,20 @@ namespace DynamicGeometry
             AddError(string.Format("Could not find method '{0}'", functionName));
         }
 
+        /// <summary>
+        /// What to show under the box the text came from: null when it compiled. An empty
+        /// text compiles to nothing without an error, so it gets <paramref name="whenEmpty"/>.
+        /// </summary>
+        public string GetErrorText(string whenEmpty = "Type a number or an expression.")
+        {
+            if (IsSuccess)
+            {
+                return null;
+            }
+
+            return Errors.IsEmpty() ? whenEmpty : ToString();
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -68,7 +82,7 @@ namespace DynamicGeometry
 
         public void AddFigureIsNotAPointError(string longestPrefix)
         {
-            AddError(string.Format("Figure '{0}' is not a point."));
+            AddError(string.Format("Figure '{0}' is not a point.", longestPrefix));
         }
 
         public void AddIncorrectNumberOfArgumentsError(System.Reflection.MethodInfo method, int actualNumberOfArguments)

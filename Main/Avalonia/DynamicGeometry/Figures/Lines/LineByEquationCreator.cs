@@ -1,8 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Avalonia.Controls;
-using Avalonia.Layout;
 using Avalonia.Input;
+using Avalonia.Layout;
 
 namespace DynamicGeometry
 {
@@ -11,7 +12,7 @@ namespace DynamicGeometry
     public class LineByEquationCreator : Behavior
     {
         [PropertyGridName("y = mx + b")]
-        public class Dialog
+        public class Dialog : ToolPanel
         {
             public Dialog(LineByEquationCreator parent)
             {
@@ -49,7 +50,12 @@ namespace DynamicGeometry
             [PropertyGridIcon(PropertyGridIcon.Plus)]
             public void AddLine()
             {
-                parent.AddLine(m, b);
+                var mresult = Compile(parent.Drawing, nameof(m), m);
+                var bresult = Compile(parent.Drawing, nameof(b), b);
+                if (mresult.IsSuccess && bresult.IsSuccess)
+                {
+                    parent.AddLine(m, b, mresult.Dependencies.Union(bresult.Dependencies).ToList());
+                }
             }
         }
 
@@ -67,19 +73,14 @@ namespace DynamicGeometry
             }
         }
 
-        public virtual void AddLine(string m, string b)
+        /// <summary>Adds the line of a slope and an intercept that compile</summary>
+        public virtual void AddLine(string m, string b, IList<IFigure> dependencies)
         {
-            var mresult = Drawing.CompileExpression(m);
-            var bresult = Drawing.CompileExpression(b);
-
-            if (mresult.IsSuccess && bresult.IsSuccess)
-            {
-                var line = Factory.CreateLineByEquation(Drawing, mresult.Dependencies.Union(bresult.Dependencies).ToList());
-                var equation = new SlopeInterseptLineEquation(line, m, b);
-                line.Equation = equation;
-                equation.Recalculate();
-                Actions.Add(Drawing, line);
-            }
+            var line = Factory.CreateLineByEquation(Drawing, dependencies);
+            var equation = new SlopeInterseptLineEquation(line, m, b);
+            line.Equation = equation;
+            equation.Recalculate();
+            Actions.Add(Drawing, line);
         }
 
         public override string Name

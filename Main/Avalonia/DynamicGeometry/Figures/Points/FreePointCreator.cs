@@ -12,7 +12,7 @@ namespace DynamicGeometry
         /// to type. Otherwise the tool has no panel (each kind of point gets its default style).
         /// </summary>
         [PropertyGridName("Point by coordinates")]
-        public class CoordinatesDialog
+        public class CoordinatesDialog : ToolPanel
         {
             public CoordinatesDialog(FreePointCreator parent)
             {
@@ -68,8 +68,8 @@ namespace DynamicGeometry
             [PropertyGridIcon(PropertyGridIcon.Plus)]
             public void AddPoint()
             {
-                var xresult = parent.Drawing.CompileExpression(X);
-                var yresult = parent.Drawing.CompileExpression(Y);
+                var xresult = Compile(parent.Drawing, nameof(X), X);
+                var yresult = Compile(parent.Drawing, nameof(Y), Y);
 
                 if (xresult.IsSuccess && yresult.IsSuccess)
                 {

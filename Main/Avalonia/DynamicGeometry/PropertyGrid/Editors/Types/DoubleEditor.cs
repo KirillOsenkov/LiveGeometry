@@ -27,7 +27,11 @@
             {
                 result.IsValid = true;
                 result.Value = doubleResult;
-            };
+            }
+            else
+            {
+                result.Error = "Type a number.";
+            }
             return result;
         }
     }

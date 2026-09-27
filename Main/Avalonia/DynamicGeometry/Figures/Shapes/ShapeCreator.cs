@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
 using Avalonia;
 using Avalonia.Input;
 
@@ -8,7 +7,7 @@ namespace DynamicGeometry
     public abstract class ShapeCreator : FigureCreator
     {
         [PropertyGridName("Point by coordinates")]
-        public class ShapeDialog
+        public class ShapeDialog : ToolPanel
         {
             public ShapeDialog(ShapeCreator parent)
             {
@@ -60,13 +59,18 @@ namespace DynamicGeometry
             [PropertyGridIcon(PropertyGridIcon.Plus)]
             public void AddPoint()
             {
-                var xresult = parent.Drawing.CompileExpression(X);
-                var yresult = parent.Drawing.CompileExpression(Y);
+                var xresult = Compile(parent.Drawing, nameof(X), X);
+                var yresult = Compile(parent.Drawing, nameof(Y), Y);
 
                 if (xresult.IsSuccess && yresult.IsSuccess)
                 {
-                    double x = double.Parse(X, CultureInfo.CurrentUICulture);
-                    double y = double.Parse(Y, CultureInfo.CurrentUICulture);
+                    // an expression (A.X + 3) gives its value now: the vertex is free
+                    double x = Evaluate(nameof(X), xresult);
+                    double y = Evaluate(nameof(Y), yresult);
+                    if (!new Point(x, y).Exists())
+                    {
+                        return;
+                    }
 
                     FreePoint first = (FreePoint)this.parent.FoundDependencies.FirstOrDefault(f => f is FreePoint);
                     if (first == null || !(first.X == x && first.Y == y))

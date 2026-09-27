@@ -75,6 +75,11 @@ namespace DynamicGeometry
             {
                 supportsHost.PropertyGrid = this;
             }
+
+            if (instance is ToolPanel panel)
+            {
+                panel.PropertyError += SelectionPropertyError;
+            }
         }
 
         void UnsubscribeFromPropertyChangeNotifications(object instance)
@@ -89,11 +94,28 @@ namespace DynamicGeometry
             {
                 supportsHost.PropertyGrid = null;
             }
+
+            if (instance is ToolPanel panel)
+            {
+                panel.PropertyError -= SelectionPropertyError;
+            }
         }
 
         void SelectionPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             FindAndUpdatePropertyEditor(e.PropertyName);
+        }
+
+        /// <summary>What a tool panel's command found wrong, under the row it is about</summary>
+        void SelectionPropertyError(string propertyName, string error)
+        {
+            var editor = CurrentEditors?
+                .OfType<StringEditor>()
+                .FirstOrDefault(e => e.Value?.Name == propertyName);
+            if (editor != null)
+            {
+                editor.ErrorText = error;
+            }
         }
 
         void FindAndUpdatePropertyEditor(string propertyName)
@@ -121,7 +143,7 @@ namespace DynamicGeometry
 
         public void Show(object newSelection, ActionManager actionManager)
         {
-            ActionManager = actionManager;
+            ActionManager = PropertyGridNoUndoAttribute.IsOn(newSelection) ? null : actionManager;
             Selection = newSelection;
         }
 
@@ -323,12 +345,15 @@ namespace DynamicGeometry
 
         public IEnumerable<IValueProvider> CurrentProperties { get; set; }
 
+        public IEnumerable<UIElement> CurrentEditors { get; set; }
+
         public IEnumerable<UIElement> CreateObjectControls<T>(T editableObject)
         {
             CurrentProperties = GetEditableProperties(editableObject).ToArray();
             var currentEditors = CurrentProperties
                 .Select(p => CreatePropertyEditorControl(p, editableObject, ActionManager))
                 .Where(c => c != null).ToArray();
+            CurrentEditors = currentEditors;
             var currentMethods = GetCallableMethods(editableObject);
             var currentMethodButtons = currentMethods
                 .Select(m => CreateMethodCallerControl(m, editableObject)).ToArray();

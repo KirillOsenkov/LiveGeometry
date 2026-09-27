@@ -89,7 +89,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   points (toggle).
 - **Lines**: Segment (S), Ray (Y), Line (L), Vector - two points each; Parallel (N) and
   Perpendicular (E) - a line then a point; Perpendicular Bisector - two points or a segment; Angle Bisector
-  (B) - vertex then two side points, or an angle measurement. Join segments (a point between
+  (B) - vertex then two side points, or an angle measurement; Line at Angle - a point, at the
+  angle in the tool's panel (0 until changed, so a horizontal line is one click), or click an
+  angle measurement, its arc or a slider first to tie the angle to it. Join segments (a point between
   two segments joins their other ends) and Polyline (points, double-click or click an
   existing point to finish) exist but are `[Ignore]`d as rarely used.
 - **Circles**: Circle (C) - center then a point on it; By Radius (R) - two points, a segment or
@@ -152,7 +154,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **TextChanged arrives late**: Avalonia raises a TextBox's TextChanged through the dispatcher,
   after a programmatic-set guard is gone. Text editors of the property grid remember the text
   they put in the box (`StringEditor.ShownText`) and ignore a TextChanged carrying it;
-  otherwise showing a figure records a property set per text row.
+  otherwise showing a figure records a property set per text row. Only until the user's first
+  edit: after that the same text is theirs (typed and deleted back to empty must reach the
+  property). A commit (Enter, leaving the box) applies the text itself rather than trust the
+  pending TextChanged, since a panel's Enter handler (Add point) reads the property next.
 - **Stale Bounds after a load**: zoom to fit measures labels itself (`Measure`) because their
   Bounds are stale right after a load. `Label.MeasureSize` invalidates the Border before
   measuring: its measure stays valid when only the TextBlock inside changed, and answers with
@@ -293,7 +298,17 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   property and `IConditionalProperties` on the figure (`CanEdit`, `Caption`); the same interface
   vetoes buttons by method name. A property setter that changes the figure list (the length
   panel's Show, the point's Free toggles) does so directly: the grid records the property set as
-  the undo step and the undo library refuses an action recorded from inside another.
+  the undo step and the undo library refuses an action recorded from inside another. A tool's
+  panel that holds settings, not drawing state, says `[PropertyGridNoUndo]`: otherwise typing in
+  it between constructions is an undo step that undoes nothing visible.
+- **Typed text that is wrong is said under its box**, never in the status bar
+  (`StringEditor.ErrorText`: a pink plate attached to the box, widening the row up to the
+  480 px a box may take). Only on commit - Enter or leaving the box - never while typing, and
+  it goes when the text is edited. Two sources: an editor's own `Validate` (`ExpressionEditor`,
+  `FunctionEditor` on `[PropertyGridPreferredEditor("Function")]`, `DoubleEditor`), and a tool
+  panel's command: panels derive from `ToolPanel` and check each row with `Compile`/`Evaluate`
+  (`ReportError` for anything else), which the grid routes to that row's editor. An empty box
+  compiles to nothing without an error: `CompileResult.GetErrorText` supplies one.
 - **Setting a segment's length stretches it once** (not a constraint); **Fix length** makes the
   constraint: the end becomes a `TranslatedPoint` from the pivot with an auxiliary `Number` at
   the current distance and a free direction (`IFixableLength`, `Figures/Lines/LengthConstraint.cs`;

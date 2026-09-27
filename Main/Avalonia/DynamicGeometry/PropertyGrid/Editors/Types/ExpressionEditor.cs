@@ -3,35 +3,27 @@
     public class DrawingExpressionEditorFactory
         : BaseValueEditorFactory<ExpressionEditor, DrawingExpression> { }
 
+    /// <summary>
+    /// An expression of a figure (a coordinate of a point by coordinates): each keystroke that
+    /// makes a valid expression applies it; what is wrong shows under the box on commit
+    /// </summary>
     public class ExpressionEditor : StringEditor
     {
         protected override ValidationResult Validate(object value)
         {
-            ValidationResult result = new ValidationResult();
             string source = value.ToString();
-
             DrawingExpression expression = Value as DrawingExpression;
+            var compileResult = Compiler.Instance.CompileExpression(
+                expression.ParentFigure.Drawing,
+                source,
+                f => !f.DependsOn(expression.ParentFigure));
 
-            if (!string.IsNullOrEmpty(source))
+            return new ValidationResult()
             {
-                var compileResult = Compiler.Instance.CompileExpression(
-                    expression.ParentFigure.Drawing,
-                    source,
-                    f => !f.DependsOn(expression.ParentFigure));
-
-                if (compileResult.IsSuccess)
-                {
-                    result.IsValid = true;
-                    result.Value = source;
-                    expression.ParentFigure.Drawing.ClearStatus();
-                }
-                else
-                {
-                    result.Error = compileResult.ToString();
-                    expression.ParentFigure.Drawing.RaiseStatusNotification(result.Error);
-                }
+                IsValid = compileResult.IsSuccess,
+                Value = source,
+                Error = compileResult.GetErrorText()
             };
-            return result;
         }
     }
 }

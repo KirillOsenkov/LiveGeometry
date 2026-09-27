@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Avalonia;
 using Avalonia.Input;
@@ -13,7 +12,8 @@ namespace DynamicGeometry
         #region Dialog
 
         [PropertyGridName("Point by coordinates")]
-        public class Dialog
+        [PropertyGridNoUndo]
+        public class Dialog : ToolPanel
         {
             public Dialog(FigureCreator parent)
             {
@@ -65,12 +65,18 @@ namespace DynamicGeometry
             [PropertyGridIcon(PropertyGridIcon.Plus)]
             public void AddPoint()
             {
-                var xresult = parent.Drawing.CompileExpression(X);
-                var yresult = parent.Drawing.CompileExpression(Y);
+                var xresult = Compile(parent.Drawing, nameof(X), X);
+                var yresult = Compile(parent.Drawing, nameof(Y), Y);
 
                 if (xresult.IsSuccess && yresult.IsSuccess)
                 {
-                    var point = new Point(double.Parse(X, CultureInfo.InvariantCulture), double.Parse(Y, CultureInfo.InvariantCulture));
+                    // an expression (A.X + 3) gives its value now: the point is free, not tied to A
+                    var point = new Point(Evaluate(nameof(X), xresult), Evaluate(nameof(Y), yresult));
+                    if (!point.Exists())
+                    {
+                        return;
+                    }
+
                     this.parent.ClickedUnconstrainedCoordinates = point;
 
                     // typed coordinates mean a free point exactly there, whatever happens to pass through

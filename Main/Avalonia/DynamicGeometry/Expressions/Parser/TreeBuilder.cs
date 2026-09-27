@@ -229,8 +229,11 @@ namespace DynamicGeometry
                 return null;
             }
 
+            // a function of a number (sin, sqrt); anything else takes points (dist, ang) - and
+            // a wrong number of arguments is an error, not an exception out of Expression.Call
             var arguments = root.Children;
-            if (arguments.Count == 1)
+            var parameters = method.GetParameters();
+            if (arguments.Count == 1 && parameters.Length == 1 && parameters[0].ParameterType == typeof(double))
             {
                 var argument = CreateExpressionCore(arguments[0]);
                 if (argument == null)
@@ -246,11 +249,18 @@ namespace DynamicGeometry
 
         Expression CreatePointFunctionCallExpression(MethodInfo method, IEnumerable<Node> arguments)
         {
+            if (method.Name != "Area" && method.GetParameters().Length != arguments.Count())
+            {
+                Status.AddIncorrectNumberOfArgumentsError(method, arguments.Count());
+                return null;
+            }
+
             List<IPoint> points = new List<IPoint>();
             foreach (var node in arguments)
             {
-                // an argument that is an expression, not a name (VB6 drawings have those)
-                if (node.Token == null)
+                // an argument that is an expression or a number, not a name (VB6 drawings have
+                // those)
+                if (node.Token == null || node.Token.Kind != TokenType.Identifier)
                 {
                     Status.AddError(string.Format("'{0}' takes the names of points", method.Name));
                     return null;
@@ -268,12 +278,6 @@ namespace DynamicGeometry
             if (method.Name == "Area")
             {
                 return Expression.Call(method, Expression.Constant(points.ToArray()));
-            }
-
-            if (method.GetParameters().Length != points.Count)
-            {
-                Status.AddIncorrectNumberOfArgumentsError(method, arguments.Count());
-                return null;
             }
 
             List<Expression> pointArguments = new List<Expression>();
