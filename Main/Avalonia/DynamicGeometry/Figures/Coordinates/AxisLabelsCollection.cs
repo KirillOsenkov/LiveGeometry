@@ -17,6 +17,22 @@ namespace DynamicGeometry
 
         public TextBlock TextBlock { get; set; }
 
+        FontWeight? plainWeight;
+
+        /// <summary>
+        /// Bold for the whole numbers among fractional ones (0.2, 0.4... 1, 1.2), so they
+        /// stand out; otherwise the weight the axis style gives
+        /// </summary>
+        public void SetEmphasis(bool bold)
+        {
+            plainWeight ??= TextBlock.FontWeight;
+            var weight = bold ? FontWeight.Bold : plainWeight.Value;
+            if (TextBlock.FontWeight != weight)
+            {
+                TextBlock.FontWeight = weight;
+            }
+        }
+
         public void PositionOnXAxis(double x, CoordinateSystem coordinateSystem)
         {
             SetLabelText(TextBlock, x);
@@ -142,9 +158,13 @@ namespace DynamicGeometry
                 RemoveExcessElements(List, List.Count - count);
             }
 
+            // the values are rounded (CoordinateSystem.GridValue), so whole numbers are exact
+            bool fractional = CoordinateSystem.MajorGridStep < 1;
             int current = 0;
             foreach (var coordinate in newPoints)
             {
+                // before positioning: bold text is wider, and labels are centered by width
+                List[current].SetEmphasis(fractional && coordinate == System.Math.Round(coordinate));
                 if (isX)
                 {
                     List[current++].PositionOnXAxis(coordinate, CoordinateSystem);

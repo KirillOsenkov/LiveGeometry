@@ -213,7 +213,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   rounding each one makes the plane run faster than the cursor. Labels have a fixed *pixel*
   size, so fit re-measures and refits a few times.
 - **The grid step adapts to the zoom** (`CoordinateSystem`, "Grid step" region): 1, 2 or 5 times
-  a power of ten, with a fainter minor tier between. Shift-snapping lands on the labeled step
+  a power of ten, with a fainter minor tier between. Below a step of 1 the whole-number axis
+  labels are bold (`AxisLabel.SetEmphasis`). Shift-snapping lands on the labeled step
   (`MajorGridStep`), not on a fixed 1; `<Viewport GridStep="1">` floors the step for a drawing
   that must keep its unit squares (Pick's Theorem). Whether the grid shows is the drawing's own
   (`CoordinateGrid.Visible`): a new drawing starts without one and a file says. There is no
