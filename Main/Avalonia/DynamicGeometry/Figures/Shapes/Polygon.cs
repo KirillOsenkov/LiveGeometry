@@ -12,6 +12,26 @@ namespace DynamicGeometry
             return NameFromPoints(MaxVerticesInName);
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                switch (Dependencies.Count)
+                {
+                    case 3:
+                        return "Triangle";
+                    case 4:
+                        return Quadrilaterals.Classify(Point(0), Point(1), Point(2), Point(3));
+                    case 5:
+                        return "Pentagon";
+                    case 6:
+                        return "Hexagon";
+                    default:
+                        return "Polygon";
+                }
+            }
+        }
+
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]

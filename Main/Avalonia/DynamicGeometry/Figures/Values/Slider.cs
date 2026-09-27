@@ -153,10 +153,19 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         }
     }
 
-    /// <summary>The property grid's title; a composite dumps its parts by default</summary>
+    /// <summary>A composite dumps its parts by default</summary>
     public override string ToString()
     {
         return Name;
+    }
+
+    /// <summary>The property grid's title: "Slider a"</summary>
+    protected override string Kind
+    {
+        get
+        {
+            return "Slider";
+        }
     }
 
     /// <summary>The caption shows the name</summary>

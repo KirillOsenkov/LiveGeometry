@@ -2,6 +2,14 @@
 {
     public class LineByEquation : LineBase, ILine
     {
+        protected override string Kind
+        {
+            get
+            {
+                return "Line";
+            }
+        }
+
         public override PointPair OnScreenCoordinates
         {
             get

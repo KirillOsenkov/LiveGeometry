@@ -15,6 +15,14 @@
             return NameFromPoints();
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Line";
+            }
+        }
+
         public static void Convert(ILine oldLine, ILine newLine)
         {
             var drawing = oldLine.Drawing;

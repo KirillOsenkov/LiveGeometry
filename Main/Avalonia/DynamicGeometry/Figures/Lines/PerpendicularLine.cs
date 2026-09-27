@@ -4,6 +4,14 @@ namespace DynamicGeometry
 {
     public class PerpendicularLine : PerpendicularLineBase
     {
+        protected override string Kind
+        {
+            get
+            {
+                return "Perpendicular line";
+            }
+        }
+
         public override PointPair Coordinates
         {
             get

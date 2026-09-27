@@ -7,7 +7,7 @@ namespace DynamicGeometry;
 /// regular polygon, a circle): just its length and Fix length or Free length, forwarded to
 /// the figure, so that "a segment of length 2" is draw, type 2, click Fix - without a
 /// length box on every tool. Captions come from the figure (Side, Radius, Fix radius);
-/// the title is the figure's name. The figure's own grid has the same rows.
+/// the title is the figure's ("Segment AB"). The figure's own grid has the same rows.
 /// </summary>
 public class LengthPanel : IConditionalProperties, ICustomMethodProvider
 {
@@ -117,6 +117,6 @@ public class LengthPanel : IConditionalProperties, ICustomMethodProvider
 
     public override string ToString()
     {
-        return figure.Name;
+        return figure.Title;
     }
 }

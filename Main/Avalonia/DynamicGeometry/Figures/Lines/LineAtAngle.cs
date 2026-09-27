@@ -15,6 +15,14 @@ public class LineAtAngle : LineBase, ILine, IConditionalProperties
         return new LineAtAngle() { Drawing = drawing, Dependencies = new List<IFigure>() { point, angleSource } };
     }
 
+    protected override string Kind
+    {
+        get
+        {
+            return "Line";
+        }
+    }
+
     public IFigure AngleSource
     {
         get { return Dependencies.Count > 1 ? Dependencies[1] : null; }

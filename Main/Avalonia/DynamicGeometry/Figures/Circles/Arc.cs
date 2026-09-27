@@ -50,6 +50,13 @@ namespace DynamicGeometry
 
     public partial class CircleArc : CircleArcBase
     {
+        protected override string Kind
+        {
+            get
+            {
+                return "Arc";
+            }
+        }
 
 #if !PLAYER && !TABULA
 

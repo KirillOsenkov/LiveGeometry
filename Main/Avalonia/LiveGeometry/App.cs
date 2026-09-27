@@ -6,6 +6,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
+using Avalonia.Threading;
 
 namespace LiveGeometry;
 
@@ -36,6 +37,12 @@ public class App : Application
     {
         Styles.Add(new FluentTheme());
         RequestedThemeVariant = ThemeVariant.Light;
+
+        // An exception that gets out of an event handler or a posted job would end the app
+        // (the desktop window disappears, the browser page freezes) and take the drawing with
+        // it. It has been shown already, at the throw (MainView.CurrentDomain_FirstChanceException):
+        // here it is only kept from going any further.
+        Dispatcher.UIThread.UnhandledException += (s, e) => e.Handled = true;
     }
 
     public override void OnFrameworkInitializationCompleted()

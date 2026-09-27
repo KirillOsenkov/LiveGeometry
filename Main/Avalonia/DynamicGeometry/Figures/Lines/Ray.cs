@@ -49,6 +49,14 @@ namespace DynamicGeometry
             return NameFromPoints();
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Ray";
+            }
+        }
+
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]

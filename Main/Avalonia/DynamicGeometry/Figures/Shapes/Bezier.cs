@@ -15,6 +15,14 @@ namespace DynamicGeometry
             return NameFromPoints(maxCount: 4);
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Bezier curve";
+            }
+        }
+
         public override void Recalculate()
         {
             var p0 = Point(0);

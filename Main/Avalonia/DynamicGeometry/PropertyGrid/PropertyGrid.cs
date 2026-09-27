@@ -104,6 +104,12 @@ namespace DynamicGeometry
         void SelectionPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             FindAndUpdatePropertyEditor(e.PropertyName);
+
+            // the title is the name ("Segment AB"): renaming the figure, or one of its points, renames it
+            if (e.PropertyName == "Name")
+            {
+                UpdateHeader();
+            }
         }
 
         /// <summary>What a tool panel's command found wrong, under the row it is about</summary>
@@ -142,10 +148,14 @@ namespace DynamicGeometry
         /// </summary>
         public void RefreshNumbers()
         {
-            if (CurrentEditors == null)
+            // posted from a throttle (DrawingHost): by now the grid may show nothing
+            if (Selection == null || CurrentEditors == null)
             {
                 return;
             }
+
+            // what a quadrilateral is called depends on where its vertices are
+            UpdateHeader();
 
             foreach (var editor in CurrentEditors)
             {
@@ -209,6 +219,11 @@ namespace DynamicGeometry
         void UpdateContents()
         {
             this.Children.Clear();
+
+            // the editors of what was shown before must not be refreshed after it's gone (a
+            // refresh posted on a move can arrive after the grid was emptied or changed)
+            CurrentProperties = null;
+            CurrentEditors = null;
             if (Selection == null)
             {
                 return;
@@ -330,6 +345,12 @@ namespace DynamicGeometry
 
         public void UpdateHeader()
         {
+            // a refresh can come after the grid was emptied (it is posted to the dispatcher)
+            if (Selection == null || !(Header is TextBlock))
+            {
+                return;
+            }
+
             string title = Title;
             if (string.IsNullOrEmpty(title))
             {
@@ -357,7 +378,7 @@ namespace DynamicGeometry
 
         protected static string GetTitleString(object editableObject)
         {
-            var result = editableObject.ToString();
+            var result = editableObject is IFigure figure ? figure.Title : editableObject.ToString();
             var type = editableObject.GetType();
             var attribute = type.GetAttribute<PropertyGridNameAttribute>();
             if (attribute != null)

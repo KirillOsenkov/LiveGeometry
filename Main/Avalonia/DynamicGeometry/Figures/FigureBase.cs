@@ -189,6 +189,44 @@ namespace DynamicGeometry
             return Name;
         }
 
+        /// <summary>
+        /// What the figure is, in a word or two ("Segment", "Triangle"), for <see cref="Title"/>;
+        /// null where no word fits
+        /// </summary>
+        protected virtual string Kind
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// "Segment AB", "Triangle ABC": the kind in front of the name, for the property grid -
+        /// unless the name says it already (Circle1, Bezier3, SegmentBisector2)
+        /// </summary>
+        public string Title
+        {
+            get
+            {
+                // without a kind, what the figure says of itself ("Coordinate grid", "6-gon")
+                var kind = Kind;
+                if (kind == null || string.IsNullOrEmpty(Name))
+                {
+                    return ToString();
+                }
+
+                var name = Name.Replace(" ", "");
+                if (name.StartsWith(kind.Replace(" ", ""), StringComparison.OrdinalIgnoreCase)
+                    || name.StartsWith(GetType().Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return Name;
+                }
+
+                return kind + " " + Name;
+            }
+        }
+
         protected string mName;
         [PropertyGridVisible]
         [PropertyGridDisallowMultiEdit]

@@ -18,6 +18,14 @@ namespace DynamicGeometry
             return NameFromPoints(Polygon.MaxVerticesInName + 1);
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Polyline";
+            }
+        }
+
         /// <summary>
         /// Just for caching purposes, to avoid array allocations on a hotpath
         /// </summary>

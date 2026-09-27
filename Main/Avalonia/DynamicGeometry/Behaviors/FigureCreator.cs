@@ -221,7 +221,7 @@ namespace DynamicGeometry
 
             var what = withLength.Caption("Length", "Length").ToLowerInvariant();
             Drawing.RaiseDisplayProperties(new LengthPanel(withLength));
-            Drawing.RaiseStatusNotification(withLength.Name + ": set its " + what + " in the panel, or fix it.");
+            Drawing.RaiseStatusNotification(withLength.Title + ": set its " + what + " in the panel, or fix it.");
         }
 
         #endregion

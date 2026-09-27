@@ -2,6 +2,14 @@
 {
     public class ParallelLine : LineTwoPoints
     {
+        protected override string Kind
+        {
+            get
+            {
+                return "Parallel line";
+            }
+        }
+
         public override PointPair Coordinates
         {
             get

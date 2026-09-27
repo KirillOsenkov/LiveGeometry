@@ -57,6 +57,14 @@ namespace DynamicGeometry
             }
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Point";
+            }
+        }
+
         public override void OnAddingToDrawing(Drawing drawing)
         {
             base.OnAddingToDrawing(drawing);

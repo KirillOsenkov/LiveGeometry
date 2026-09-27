@@ -209,7 +209,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   when a framework exception turns out to be noise (the browser's file picker throws
   `JSException` "AbortError..." on cancel). So never use a caught exception as a test (decode
   as UTF-8 and catch, as `DecodeLegacyText` once did): check instead. `--check` runs print
-  every one, and should print none. A `JSException` has no .NET stack, so the handler
+  every one, and should print none. One that escapes an event handler or a posted job is
+  then swallowed (`Dispatcher.UIThread.UnhandledException` in `App.Initialize`), so a bug
+  shows as an error report and the app keeps going. Not tried on the layout exceptions of
+  "A point with an infinite coordinate", which may come back on every layout pass: still
+  never hand layout NaN or infinity. A `JSException` has no .NET stack, so the handler
   captures `Environment.StackTrace` at the throw. Text boxes of the property grid wrap at
   480 px (`PropertyGridTheme`), so a stack trace doesn't stretch the panel across the window.
 
@@ -255,6 +259,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   special, since it restores the cause. The grid's Name box (`NameEditor`) refuses an empty
   name and one another figure has (case matters: slider `a` next to point `A`); the setter
   itself would take the name from the other figure, and turns an empty one into the default.
+  The grid's title is `Title`: the figure's `Kind` in front of the name ("Triangle ABC",
+  "Point A"), left off when the name says it already (Circle1, Bezier3) or there is no kind.
+  A polygon's kind is by vertex count (Triangle, Pentagon, Hexagon, else Polygon); four
+  vertices go through `Quadrilaterals.Classify` (Square, Rectangle, Rhombus, Parallelogram,
+  Kite, Trapezoid) with a rounding-only tolerance: a shape dragged to look square by eye
+  stays a Quadrilateral. The title is refreshed on every move (`PropertyGrid.RefreshNumbers`).
+  `ToString()` stays the bare name: messages and dumps use it.
 - **Snapping and releasing points** (`Figures/Points/PointSnapping.cs`) swap a point for another
   kind where it is through `Actions.ReplacePoint` (name, label, dependents, lock, a chosen style
   go along). Snap: a free point onto a figure through it - "Snap to line AB" in the grid when

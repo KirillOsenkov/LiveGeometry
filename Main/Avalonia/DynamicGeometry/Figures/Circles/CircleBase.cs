@@ -5,6 +5,13 @@ namespace DynamicGeometry
 {
     public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
     {
+        protected override string Kind
+        {
+            get
+            {
+                return "Circle";
+            }
+        }
 
         public abstract double Radius
         {

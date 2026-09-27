@@ -4,6 +4,14 @@ namespace DynamicGeometry
 {
     public class SegmentBisector : PerpendicularLineBase
     {
+        protected override string Kind
+        {
+            get
+            {
+                return "Perpendicular bisector";
+            }
+        }
+
         PointPair coordinates;
 
         public override PointPair Coordinates

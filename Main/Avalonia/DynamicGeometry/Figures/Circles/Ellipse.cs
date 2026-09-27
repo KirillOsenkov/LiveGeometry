@@ -4,6 +4,14 @@ namespace DynamicGeometry
 {
     public class Ellipse : EllipseBase, IShapeWithInterior
     {
+        protected override string Kind
+        {
+            get
+            {
+                return "Ellipse";
+            }
+        }
+
         public override Point Center
         {
             get { return Point(0); }

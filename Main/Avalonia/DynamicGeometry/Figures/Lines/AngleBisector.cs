@@ -13,6 +13,14 @@ namespace DynamicGeometry
             return null;
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Angle bisector";
+            }
+        }
+
         public override PointPair Coordinates
         {
             get

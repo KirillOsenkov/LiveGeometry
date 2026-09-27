@@ -21,6 +21,9 @@ namespace DynamicGeometry
         /// <summary>Nobody has named the figure (see <see cref="FigureBase.HasDefaultName"/>)</summary>
         bool HasDefaultName { get; }
 
+        /// <summary>"Segment AB": what the property grid calls the figure (see <see cref="FigureBase.Title"/>)</summary>
+        string Title { get; }
+
         bool Exists { get; set; }
         bool Selected { get; set; }
         bool Enabled { get; set; }

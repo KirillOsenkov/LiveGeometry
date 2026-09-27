@@ -43,6 +43,14 @@ namespace DynamicGeometry
             return NameFromPoints();
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Vector";
+            }
+        }
+
         public override void OnAddingToCanvas(Canvas newContainer)
         {
             // The arrow is a polygon, and left to itself (which is what the base call does to a
