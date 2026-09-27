@@ -385,7 +385,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   load, after the viewport, at the zoom it opens at (`UpgradeOffsetFromUnits`) - the best guess,
   since files don't say. Anything new that places text by something in the plane should keep
   its distance in pixels the same way. A point label is also kept in an orbit around its point
-  (`PointLabel.ClampPosition`).
+  (`PointLabel.ClampPosition`); up close, what is kept clear is the box of the letters (from
+  the `TextLine` ink metrics), not the line box, so a name can touch the point's outline.
 - **`<Drawing IntersectionOrder="Legacy">`**: `Math.GetIntersectionOfCircleAndLine` once swapped
   P1/P2 for a line through the center, and files carried no version then, so old drawings (the
   phone ones) that pick the other intersection opt in to a swap on load

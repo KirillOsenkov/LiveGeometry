@@ -43,15 +43,17 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>The least room between the point's rim and the text, in pixels</summary>
-        public const double Clearance = 4;
+        /// <summary>
+        /// The least room between the point's rim and the letters, in pixels: none, the name
+        /// may touch the point's outline
+        /// </summary>
+        public const double Clearance = 0;
 
         /// <summary>
         /// Keeps the label in orbit around its point: the center of the label may not get
         /// further from the point than the label's larger dimension plus the point radius
         /// (a long label - name and coordinates - gets a proportionally bigger orbit), and
-        /// no edge or corner of the text may come closer to the point than
-        /// <see cref="Clearance"/>.
+        /// no part of the letters may come closer to the point than <see cref="Clearance"/>.
         /// </summary>
         /// <param name="newPosition">Desired top-left corner of the label, logical</param>
         public Point ClampPosition(Point newPosition)
@@ -71,8 +73,41 @@ namespace DynamicGeometry
             var radius = System.Math.Max(width, height) + pointRadius + Math.CursorTolerance;
             var fromPoint = ToPhysical(newPosition).Plus(halfSize).Minus(point);
             fromPoint = fromPoint.TrimToMaxLength(radius);
-            fromPoint = PushClear(fromPoint, halfSize, pointRadius + Clearance);
+
+            // the letters are kept clear, not the line box around them
+            var ink = GetInkBounds(width, height);
+            var inkShift = ink.Center.Minus(halfSize);
+            var inkHalfSize = new Point(ink.Width / 2, ink.Height / 2);
+            fromPoint = PushClear(fromPoint.Plus(inkShift), inkHalfSize, pointRadius + Clearance).Minus(inkShift);
             return ToLogical(point.Plus(fromPoint).Minus(halfSize));
+        }
+
+        /// <summary>
+        /// Where the letters are in the label, in pixels from its top left corner: the line box
+        /// has room above capitals and below the baseline, and a little at the sides. The whole
+        /// label if the text doesn't say (more than one line, nothing measured yet).
+        /// </summary>
+        Rect GetInkBounds(double width, double height)
+        {
+            var whole = new Rect(0, 0, width, height);
+            var lines = TextBlock.TextLayout?.TextLines;
+            if (lines == null || lines.Count != 1)
+            {
+                return whole;
+            }
+
+            var line = lines[0];
+            var bottom = line.Height + line.OverhangAfter;
+            var left = line.Start + line.OverhangLeading;
+            var right = line.Start + line.WidthIncludingTrailingWhitespace - line.OverhangTrailing;
+            var ink = new Rect(left, bottom - line.Extent, right - left, line.Extent)
+                .Translate(new Avalonia.Vector(TextBlock.Padding.Left, TextBlock.Padding.Top));
+            if (!(ink.Width > 0 && ink.Height > 0) || !whole.Contains(ink.Center))
+            {
+                return whole;
+            }
+
+            return ink;
         }
 
         /// <summary>
