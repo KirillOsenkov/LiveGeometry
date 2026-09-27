@@ -137,45 +137,63 @@ namespace DynamicGeometry
             IFigure figure2,
             Point hintPoint)
         {
+            var algorithms = GetAlgorithms(figure1, figure2);
+            if (algorithms.Length == 0)
+            {
+                return null;
+            }
+
+            if (algorithms.Length == 1)
+            {
+                return algorithms[0];
+            }
+
+            return PickCloserIntersectionPoint(algorithms[0], algorithms[1], figure1, figure2, hintPoint);
+        }
+
+        /// <summary>
+        /// Every point where the two figures can cross, one algorithm each: one for two lines,
+        /// two for a line and an ellipse or two circles, none for figures that can't be
+        /// intersected (two ellipses are not supported).
+        /// </summary>
+        public static Func<IFigure, IFigure, Point>[] GetAlgorithms(IFigure figure1, IFigure figure2)
+        {
             if (figure1 is ILine)
             {
                 if (figure2 is ILine)
                 {
-                    return IntersectionAlgorithms.IntersectLineAndLine;
+                    return new Func<IFigure, IFigure, Point>[] { IntersectionAlgorithms.IntersectLineAndLine };
                 }
                 else if (figure2 is IEllipse)
                 {
-                    return PickCloserIntersectionPoint(
+                    return new Func<IFigure, IFigure, Point>[]
+                    {
                         IntersectionAlgorithms.IntersectLineAndEllipse1,
-                        IntersectionAlgorithms.IntersectLineAndEllipse2,
-                        figure1,
-                        figure2,
-                        hintPoint);
+                        IntersectionAlgorithms.IntersectLineAndEllipse2
+                    };
                 }
             }
             else if (figure1 is IEllipse)
             {
                 if (figure2 is ILine)
                 {
-                    return PickCloserIntersectionPoint(
+                    return new Func<IFigure, IFigure, Point>[]
+                    {
                         IntersectionAlgorithms.IntersectEllipseAndLine1,
-                        IntersectionAlgorithms.IntersectEllipseAndLine2,
-                        figure1,
-                        figure2,
-                        hintPoint);
+                        IntersectionAlgorithms.IntersectEllipseAndLine2
+                    };
                 }
                 else if (figure1 is ICircle && figure2 is ICircle)
                 {
-                    // The intersection of two ellipses is not supported yet (if ever).  Only two circles.
-                    return PickCloserIntersectionPoint(
+                    return new Func<IFigure, IFigure, Point>[]
+                    {
                         IntersectionAlgorithms.IntersectCircleAndCircle1,
-                        IntersectionAlgorithms.IntersectCircleAndCircle2,
-                        figure1,
-                        figure2,
-                        hintPoint);
+                        IntersectionAlgorithms.IntersectCircleAndCircle2
+                    };
                 }
             }
-            return null;
+
+            return new Func<IFigure, IFigure, Point>[0];
         }
 
         public static Func<IFigure, IFigure, Point> PickCloserIntersectionPoint(

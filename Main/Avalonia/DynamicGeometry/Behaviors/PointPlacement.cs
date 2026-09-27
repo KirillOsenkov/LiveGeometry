@@ -171,31 +171,43 @@ public class PointPlacement
         {
             for (int j = i + 1; j < figures.Length; j++)
             {
-                var first = figures[i];
-                var second = figures[j];
-                if (!IntersectionAlgorithms.CanIntersect(first, second))
+                var intersection = Intersection(figures[i], figures[j], coordinates);
+                if (intersection == null)
                 {
                     continue;
                 }
 
-                var algorithm = IntersectionPoint.DoubleDispatchIntersectionAlgorithm(first, second, coordinates);
-                if (algorithm == null)
-                {
-                    continue;
-                }
-
-                var point = algorithm(first, second);
-                if (!point.Exists() || first.HitTest(point) == null || second.HitTest(point) == null)
-                {
-                    continue;
-                }
-
-                var distance = point.Distance(coordinates);
+                var distance = intersection.Coordinates.Distance(coordinates);
                 if (distance <= bestDistance)
                 {
                     bestDistance = distance;
-                    best = new PointPlacement(PointPlacementKind.Intersection, point, new[] { first, second });
+                    best = intersection;
                 }
+            }
+        }
+
+        return best;
+    }
+
+    /// <summary>
+    /// Where the two figures cross nearest to the coordinates, of the crossings that are on
+    /// both (a segment may hold only one of the two where a circle meets its line). Null if
+    /// they don't cross, or can't be intersected at all.
+    /// </summary>
+    public static PointPlacement Intersection(IFigure first, IFigure second, Point coordinates)
+    {
+        PointPlacement best = null;
+        foreach (var algorithm in IntersectionPoint.GetAlgorithms(first, second))
+        {
+            var point = algorithm(first, second);
+            if (!point.Exists() || first.HitTest(point) == null || second.HitTest(point) == null)
+            {
+                continue;
+            }
+
+            if (best == null || point.Distance(coordinates) < best.Coordinates.Distance(coordinates))
+            {
+                best = new PointPlacement(PointPlacementKind.Intersection, point, new[] { first, second });
             }
         }
 

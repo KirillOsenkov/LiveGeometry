@@ -83,12 +83,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Selection**: Drag (Q) - drags points and figures; also the tool every construction
   returns to.
 - **Points**: Point (P) - free, on a figure, or at an intersection; Midpoint (M) - two points
-  or a segment; Label new points (toggle).
+  or a segment; Intersection (I) - two figures that cross, the click on the second picks the
+  nearer crossing (`PointPlacement.Intersection`, shared with the Point tool); Label new
+  points (toggle).
 - **Lines**: Segment (S), Ray (Y), Line (L), Vector - two points each; Parallel (N) and
   Perpendicular (E) - a line then a point; Perpendicular Bisector - two points or a segment; Angle Bisector
-  (B) - vertex then two side points, or an angle measurement; Join segments - a point between
-  two segments joins their other ends; Polyline - points, double-click or click an existing
-  point to finish.
+  (B) - vertex then two side points, or an angle measurement. Join segments (a point between
+  two segments joins their other ends) and Polyline (points, double-click or click an
+  existing point to finish) exist but are `[Ignore]`d as rarely used.
 - **Circles**: Circle (C) - center then a point on it; By Radius (R) - two points, a segment or
   a distance, then the center; Ellipse - center, end of the long axis, end of the short axis;
   Circular Arc (A) - center, start, end (counterclockwise); Elliptical Arc - center, semi-major,
@@ -525,6 +527,7 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
 
 - `tools/winauto.cs` - any desktop window (the VB6 app, the Avalonia desktop app).
   `list`, `tree <t>`, `menu <t>`, `invoke <t> <menuId>`, `shot <t> out.png`, `click <t> x y [right|double]`,
+  `move <t> x y` (hover, for click previews and `cursor`),
   `drag <t> x1 y1 x2 y2 [steps]`, `wheel <t> x y <notches>`, `keys <t> "^s"`, `text`, `focus`,
   `cursor`, `place <t> x y w h`. Target = process name | `pid:N` | `hwnd:0x..` | `title:substr`.
   - The VB6 app starts maximized on a 4K/200% monitor: `place <t> 100 100 1500 1000` first. The

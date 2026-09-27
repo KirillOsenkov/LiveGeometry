@@ -3,6 +3,8 @@ using System.ComponentModel;
 
 namespace DynamicGeometry
 {
+    // Off the ribbon: rarely used. Polylines in files still load (the figure stays).
+    [Ignore]
     [Category(BehaviorCategories.Lines)]
     [Order(12)]
     public class PolylineCreator : PolygonCreator

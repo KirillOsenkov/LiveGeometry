@@ -25,6 +25,7 @@ public static class BehaviorShortcuts
         { Key.R, typeof(CircleByRadiusCreator) },
         { Key.A, typeof(CircleArcCreator) },
         { Key.M, typeof(MidpointCreator) },
+        { Key.I, typeof(IntersectionCreator) },
         { Key.T, typeof(ReflectionCreator) },
         { Key.D, typeof(LocusCreator) },
         { Key.W, typeof(PolygonCreator) },

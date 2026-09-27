@@ -4,6 +4,8 @@ using System.Linq;
 
 namespace DynamicGeometry
 {
+    // Off the ribbon: rarely used. Kept for when it earns its place back.
+    [Ignore]
     [Category(BehaviorCategories.Lines)]
     [Order(11)]
     public class JoinTwoSegmentsCreator : Behavior
