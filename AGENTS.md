@@ -243,7 +243,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   of the numbers): a line and a circle, or two circles, that touch by construction come out a
   hair apart or overlapping at random, and the point there would blink as the figures move. A
   touch gives the exact foot point (no square root of a rounding error to shake what is built
-  on it). Ends of segments and the start of a ray get the same allowance (`Math.EndTolerance`).
+  on it). Ends of segments and the start of a ray get the same allowance (`Math.EndTolerance`),
+  ends of arcs an angle one across 0 = 2pi (`IsAngleBetweenAngles`); lines are parallel by the
+  sine of their angle, not by a determinant that shrinks with their lengths.
   Never round coordinates or lengths to decide existence - the old 4-digit rounding in
   `GetIntersectionOfCircleAndLine` made every such intersection 1e-5 off and flip at rounding
   boundaries. The P1/P2 order of both intersections is part of the file format (`Algorithm`

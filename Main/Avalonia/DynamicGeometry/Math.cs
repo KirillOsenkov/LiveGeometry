@@ -1258,7 +1258,11 @@ namespace DynamicGeometry
             double a2, double b2, double c2)
         {
             var d = a1 * b2 - a2 * b1;
-            if (d.IsWithinEpsilon())
+
+            // parallel by the sine of the angle between the lines, not by the determinant, which
+            // grows with their lengths: two short lines at a right angle passed for parallel
+            var lengths = M.Sqrt(a1 * a1 + b1 * b1) * M.Sqrt(a2 * a2 + b2 * b2);
+            if (M.Abs(d) <= Epsilon * lengths)
             {
                 return Math.InfinitePoint;
             }
@@ -1721,8 +1725,10 @@ namespace DynamicGeometry
 
         public static bool IsAngleBetweenAngles(double a, double a1, double a2, bool clockwise)
         {
-            if ((a - a1).IsWithinEpsilon()) return true;
-            if ((a - a2).IsWithinEpsilon()) return true;
+            // at an end, also across 0 = 2pi: a point a hair below an arc that starts at 0
+            // comes out just under 2pi
+            if (M.Abs(M.IEEERemainder(a - a1, 2 * PI)) < Epsilon) return true;
+            if (M.Abs(M.IEEERemainder(a - a2, 2 * PI)) < Epsilon) return true;
             if ((a2 - a1).IsWithinEpsilon()) return false;
             if (clockwise)
             {
