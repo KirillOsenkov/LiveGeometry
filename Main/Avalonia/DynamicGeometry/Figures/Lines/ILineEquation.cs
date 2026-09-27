@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace DynamicGeometry
@@ -6,6 +7,7 @@ namespace DynamicGeometry
     public interface ILineEquation
     {
         PointPair LineCoordinates { get; }
+        IEnumerable<DrawingExpression> Expressions { get; }
         void Write(XmlWriter writer);
         void Recalculate();
     }
@@ -73,6 +75,15 @@ namespace DynamicGeometry
             Intersept.Recalculate();
         }
 
+        [PropertyGridVisible(false)]
+        public IEnumerable<DrawingExpression> Expressions
+        {
+            get
+            {
+                return new[] { Slope, Intersept };
+            }
+        }
+
         [PropertyGridVisible]
         [PropertyGridName("m = ")]
         public DrawingExpression Slope { get; private set; }
@@ -131,6 +142,15 @@ namespace DynamicGeometry
             A.Recalculate();
             B.Recalculate();
             C.Recalculate();
+        }
+
+        [PropertyGridVisible(false)]
+        public IEnumerable<DrawingExpression> Expressions
+        {
+            get
+            {
+                return new[] { A, B, C };
+            }
         }
 
         [PropertyGridVisible]

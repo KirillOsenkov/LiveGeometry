@@ -1,7 +1,18 @@
 ﻿namespace DynamicGeometry
 {
-    public class LineByEquation : LineBase, ILine
+    public class LineByEquation : LineBase, ILine, IRenamableExpressions
     {
+        public void RenameInExpressions(ExpressionRenamer renamer)
+        {
+            if (Equation != null)
+            {
+                foreach (var expression in Equation.Expressions)
+                {
+                    expression.RenameInExpression(renamer);
+                }
+            }
+        }
+
         protected override string Kind
         {
             get

@@ -270,6 +270,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Kite, Trapezoid) with a rounding-only tolerance: a shape dragged to look square by eye
   stays a Quadrilateral. The title is refreshed on every move (`PropertyGrid.RefreshNumbers`).
   `ToString()` stays the bare name: messages and dumps use it.
+- **Expressions follow renames**. Compiled expressions hold the figures themselves, but their
+  *text* (saved, edited) holds names. `FigureBase.Name` collects a rename wave (the figure,
+  the default names that follow it, one that had to give up the name) and at the end of the
+  outermost set rewrites every `IRenamableExpressions` in the dependents closure: label
+  `[...]` parts, function graphs, `DrawingExpression`s (point by coordinates, line and circle
+  by equation). `ExpressionRenamer` reads names as `ExpressionTreeBuilder` binds them, under
+  the old names (A.X, AB as two points, the points of ang/dist/area, a Number) and swaps them
+  all at once; two points whose new names run together would read differently (PB next to a
+  point named PB) become `dist(P, B)`. Only the text changes, and not through undo: undoing the rename renames back.
 - **Snapping and releasing points** (`Figures/Points/PointSnapping.cs`) swap a point for another
   kind where it is through `Actions.ReplacePoint` (name, label, dependents, lock, a chosen style
   go along). Snap: a free point onto a figure through it - "Snap to line AB" in the grid when

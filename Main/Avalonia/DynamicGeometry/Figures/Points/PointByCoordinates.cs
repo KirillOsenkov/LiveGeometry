@@ -1,11 +1,17 @@
 ﻿namespace DynamicGeometry
 {
-    public class PointByCoordinates : PointBase, IPoint
+    public class PointByCoordinates : PointBase, IPoint, IRenamableExpressions
     {
         public PointByCoordinates()
         {
             XExpression = new DrawingExpression(this) { Name = "X = " };
             YExpression = new DrawingExpression(this) { Name = "Y = " };
+        }
+
+        public void RenameInExpressions(ExpressionRenamer renamer)
+        {
+            XExpression.RenameInExpression(renamer);
+            YExpression.RenameInExpression(renamer);
         }
 
         [PropertyGridVisible]

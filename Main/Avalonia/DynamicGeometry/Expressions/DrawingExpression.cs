@@ -83,6 +83,12 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>The text follows renamed figures; the compiled value holds the figures already</summary>
+        public void RenameInExpression(ExpressionRenamer renamer)
+        {
+            Text = renamer.Rewrite(Text, isFunction: false);
+        }
+
         public override string ToString()
         {
             return Text;

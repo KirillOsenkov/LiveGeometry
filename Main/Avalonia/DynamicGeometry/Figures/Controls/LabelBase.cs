@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace DynamicGeometry
 {
-    public abstract partial class LabelBase : ControlBase
+    public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     {
         protected Border selection = new Border();
         public TextBlock TextBlock { get; set; }
@@ -180,6 +180,28 @@ namespace DynamicGeometry
             }
 
             ProcessedText = sb.ToString();
+        }
+
+        /// <summary>
+        /// The names in the [...] parts follow renamed figures. Only the text changes: the
+        /// compiled parts already hold the figures, and recompiling here, in the middle of a
+        /// rename, would re-register the dependencies being walked.
+        /// </summary>
+        public void RenameInExpressions(ExpressionRenamer renamer)
+        {
+            if (!ShouldProcessText || text.IsEmpty())
+            {
+                return;
+            }
+
+            var renamed = squareBrackets.Replace(text, match => match.Value.Length < 3
+                ? match.Value
+                : "[" + renamer.Rewrite(match.Value.Substring(1, match.Value.Length - 2), isFunction: false) + "]");
+            if (renamed != text)
+            {
+                text = renamed;
+                RaisePropertyChanged("Text");
+            }
         }
 
         void ProcessMatch(Match match)

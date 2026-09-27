@@ -324,21 +324,84 @@ namespace DynamicGeometry
                     value = GenerateFigureName();
                 }
 
-                HasDefaultName = IsDefaultName(value);
-                mName = value;
-                if (Drawing != null && Drawing.Figures.Contains(this))
+                bool outermost = renameWave == null;
+                if (outermost)
                 {
-                    foreach (var f in Drawing.Figures.Where(f => f.Name == value).Where(f => f != this))
+                    renameWave = new Dictionary<IFigure, string>();
+                }
+
+                try
+                {
+                    if (!string.IsNullOrEmpty(mName) && mName != value && !renameWave.ContainsKey(this))
                     {
-                        f.Name = f.GenerateFigureName(new List<string>() {this.Name});    // Rename figure with duplicate name.
+                        renameWave.Add(this, mName);
+                    }
+
+                    HasDefaultName = IsDefaultName(value);
+                    mName = value;
+                    if (Drawing != null && Drawing.Figures.Contains(this))
+                    {
+                        foreach (var f in Drawing.Figures.Where(f => f.Name == value).Where(f => f != this))
+                        {
+                            f.Name = f.GenerateFigureName(new List<string>() {this.Name});    // Rename figure with duplicate name.
+                        }
+                    }
+                    RaisePropertyChanged("Name");
+
+                    foreach (var dependent in Dependents.OfType<FigureBase>().ToArray())
+                    {
+                        dependent.UpdateDefaultName();
                     }
                 }
-                RaisePropertyChanged("Name");
-
-                foreach (var dependent in Dependents.OfType<FigureBase>().ToArray())
+                finally
                 {
-                    dependent.UpdateDefaultName();
+                    if (outermost)
+                    {
+                        var wave = renameWave;
+                        renameWave = null;
+                        RenameInExpressions(wave);
+                    }
                 }
+            }
+        }
+
+        /// <summary>
+        /// The figures renamed by the rename under way, with the names they had: the one renamed,
+        /// the figures named after it (segment AB follows point A), one that had to give up the
+        /// new name. Null between renames.
+        /// </summary>
+        [ThreadStatic]
+        static Dictionary<IFigure, string> renameWave;
+
+        /// <summary>
+        /// After a wave of renames, the expressions that name those figures say the new names
+        /// (<see cref="ExpressionRenamer"/>), in everything built on them. Not recorded for undo,
+        /// like the default names: undoing the rename renames back, and the text follows again.
+        /// </summary>
+        static void RenameInExpressions(Dictionary<IFigure, string> wave)
+        {
+            var renamed = wave
+                .Where(pair => pair.Key.Name != pair.Value)
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
+            var drawing = renamed.Keys.FirstOrDefault(figure => figure.Drawing != null)?.Drawing;
+            if (drawing == null)
+            {
+                return;
+            }
+
+            var holders = DependencyAlgorithms
+                .FindDescendants(f => f.Dependents, renamed.Keys)
+                .OfType<IRenamableExpressions>()
+                .ToArray();
+            if (holders.Length == 0)
+            {
+                return;
+            }
+
+            var renamer = new ExpressionRenamer(drawing, renamed);
+            foreach (var holder in holders)
+            {
+                holder.RenameInExpressions(renamer);
             }
         }
 

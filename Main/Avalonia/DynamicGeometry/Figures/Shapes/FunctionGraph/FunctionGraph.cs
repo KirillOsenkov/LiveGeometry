@@ -5,7 +5,7 @@ using Avalonia.Media;
 
 namespace DynamicGeometry
 {
-    public class FunctionGraph : Curve, ILinearFigure
+    public class FunctionGraph : Curve, ILinearFigure, IRenamableExpressions
     {
         public FunctionGraph()
         {
@@ -75,6 +75,17 @@ namespace DynamicGeometry
                 // wrong with one that doesn't (FunctionEditor)
                 mFunctionText = value;
                 Compile();
+            }
+        }
+
+        /// <summary>The text follows renamed figures; the compiled function holds the figures already</summary>
+        public void RenameInExpressions(ExpressionRenamer renamer)
+        {
+            var renamed = renamer.Rewrite(mFunctionText, isFunction: true);
+            if (renamed != mFunctionText)
+            {
+                mFunctionText = renamed;
+                RaisePropertyChanged(nameof(FunctionText));
             }
         }
 

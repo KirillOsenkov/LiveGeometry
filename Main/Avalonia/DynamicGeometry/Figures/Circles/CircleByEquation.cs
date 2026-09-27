@@ -2,8 +2,15 @@
 
 namespace DynamicGeometry
 {
-    public class CircleByEquation : CircleBase, ICircle, IShapeWithInterior
+    public class CircleByEquation : CircleBase, ICircle, IShapeWithInterior, IRenamableExpressions
     {
+        public void RenameInExpressions(ExpressionRenamer renamer)
+        {
+            X?.RenameInExpression(renamer);
+            Y?.RenameInExpression(renamer);
+            R?.RenameInExpression(renamer);
+        }
+
         [PropertyGridVisible(false)]
         public override Point Center
         {
