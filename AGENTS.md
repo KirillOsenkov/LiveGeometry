@@ -338,7 +338,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Twemoji font (`Main/Avalonia/Fonts`, CC-BY, credited in the Emoji tab) with Inter named as
   the fallback: the browser has no system fonts, and a character neither has is not offered
   (`EmojiFont.CanDraw`). The font is 1.5 MB and loaded on first use (`EmojiFont.Open`: a file
-  beside the desktop exe, a fetch of `fonts/` in the browser, brotli via web.config). The
+  beside the desktop exe, a fetch of `fonts/` in the browser, brotli via web.config and cached
+  as immutable: a different font must get a different file name). The
   style's editor has Shape | Emoji tabs (`IPropertyGridTabs`: the tab shown is what the style
   is; picking Shape drops the character, undoably; a row on two tabs, Size, gets an editor on
   each). The Emoji tab searches `Emoji/Emoji.txt`
