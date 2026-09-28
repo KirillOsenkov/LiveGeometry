@@ -68,6 +68,19 @@ namespace DynamicGeometry
         /// <summary>The name of the intersection algorithm, as saved in the Algorithm attribute</summary>
         public string AlgorithmName => Algorithm?.Method.Name;
 
+        /// <summary>Of the crossings of its two figures, the one nearest the point (a file's saved coordinates)</summary>
+        public void PickNearest(Point hint)
+        {
+            SetAlgorithm(DoubleDispatchIntersectionAlgorithm(Dependencies[0], Dependencies[1], hint));
+        }
+
+        /// <summary>One of <see cref="GetAlgorithms"/> for its two figures</summary>
+        public void SetAlgorithm(Func<IFigure, IFigure, Point> algorithm)
+        {
+            Algorithm = algorithm;
+            this.RecalculateAndUpdateVisual();
+        }
+
         /// <summary>
         /// Math.GetIntersectionOfCircleAndLine once changed which of the two intersections comes
         /// first when the line passes through the center of the circle ("New code - preserves

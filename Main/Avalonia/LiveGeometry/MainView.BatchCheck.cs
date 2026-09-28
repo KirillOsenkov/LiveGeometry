@@ -47,7 +47,9 @@ public partial class MainView
         File.WriteAllText(reportPath, "");
         var report = new StringBuilder();
         var files = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories)
-            .Where(f => f.EndsWith(".lgf", StringComparison.OrdinalIgnoreCase) || f.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase))
+            .Where(f => f.EndsWith(".lgf", StringComparison.OrdinalIgnoreCase)
+                || f.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase)
+                || f.EndsWith(".ggb", StringComparison.OrdinalIgnoreCase))
             .OrderBy(f => f)
             .ToArray();
         ShowEditor();

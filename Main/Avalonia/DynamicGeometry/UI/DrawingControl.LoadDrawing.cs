@@ -71,6 +71,25 @@ namespace DynamicGeometry
             LoadDrawingFromDGF(lines, "");
         }
 
+        /// <summary>A GeoGebra worksheet; points get labels only where the file shows them</summary>
+        public void LoadDrawingFromGeoGebra(XElement worksheet, string fileName)
+        {
+            PointBase.SuppressAutoLabelPoints = true;
+            try
+            {
+                Clear();
+                Drawing.AddFromGeoGebra(worksheet);
+                Drawing.ActionManager.Clear();
+                Drawing.Name = fileName;
+            }
+            catch (Exception ex)
+            {
+                Drawing.RaiseError(this, ex);
+            }
+
+            PointBase.SuppressAutoLabelPoints = false;
+        }
+
         public void ShowOperationDuration(Action code)
         {
             var duration = Utilities.ElapsedTime(code);

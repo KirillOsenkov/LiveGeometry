@@ -34,14 +34,20 @@ public partial class MainView : UserControl
 
     static readonly FilePickerFileType AnyDrawingFileType = new("All drawings")
     {
-        Patterns = new[] { "*.lgf", "*.dgf" },
-        MimeTypes = new[] { "application/xml", "text/plain" }
+        Patterns = new[] { "*.lgf", "*.dgf", "*.ggb" },
+        MimeTypes = new[] { "application/xml", "text/plain", "application/vnd.geogebra.file" }
     };
 
     static readonly FilePickerFileType DgfFileType = new("DG 1.x drawing")
     {
         Patterns = new[] { "*.dgf" },
         MimeTypes = new[] { "text/plain" }
+    };
+
+    static readonly FilePickerFileType GgbFileType = new("GeoGebra worksheet")
+    {
+        Patterns = new[] { "*.ggb" },
+        MimeTypes = new[] { "application/vnd.geogebra.file" }
     };
 
     public MainView()
@@ -612,7 +618,7 @@ public partial class MainView : UserControl
             var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
                 Title = "Open drawing",
-                FileTypeFilter = new[] { AnyDrawingFileType, LgfFileType, DgfFileType, FilePickerFileTypes.All }
+                FileTypeFilter = new[] { AnyDrawingFileType, LgfFileType, DgfFileType, GgbFileType, FilePickerFileTypes.All }
             });
 
             var file = files?.FirstOrDefault();
@@ -699,6 +705,13 @@ public partial class MainView : UserControl
             // drawings of the original VB6 DG: INI-like text in the Windows ANSI code page
             var lines = DecodeLegacyText(bytes).Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
             HandleExceptions(() => DrawingHost.DrawingControl.LoadDrawingFromDGF(lines, name));
+            return;
+        }
+
+        if (name.EndsWith(".ggb", StringComparison.OrdinalIgnoreCase))
+        {
+            // a GeoGebra worksheet: a zip with the construction as geogebra.xml inside
+            HandleExceptions(() => DrawingHost.DrawingControl.LoadDrawingFromGeoGebra(GeoGebraReader.ReadWorksheet(bytes), name));
             return;
         }
 

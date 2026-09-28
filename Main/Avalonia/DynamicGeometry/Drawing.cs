@@ -743,6 +743,17 @@ namespace DynamicGeometry
                 RaiseStatusNotification(reader.GetErrorReport());
             }
         }
+
+        /// <summary>A GeoGebra worksheet (the geogebra.xml of a .ggb); what couldn't be read is said in the status</summary>
+        public void AddFromGeoGebra(XElement worksheet)
+        {
+            var reader = new GeoGebraReader();
+            reader.ReadDrawing(this, worksheet);
+            if (!reader.IsSuccess)
+            {
+                RaiseStatusNotification(reader.GetErrorReport());
+            }
+        }
 #endif
 #if !PLAYER
 

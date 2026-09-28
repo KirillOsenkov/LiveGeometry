@@ -197,7 +197,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (`write`/`close`/`seek`/`truncate`) *before the first picker use* - Avalonia's picker
   polyfill captures the global when its storage module is first imported, later replacements
   are ignored - then click Save and read back the bytes; throw a
-  `DOMException(..., "AbortError")` for cancel.
+  `DOMException(..., "AbortError")` for cancel. Opening headless works the same way: copy the
+  file into the served `wwwroot`, `eval` a `globalThis.showOpenFilePicker` returning one
+  handle whose `getFile` gives a `File` built from `fetch('/name.ggb')`, then `key O ctrl`.
 - **Keyboard focus drifts into tool panels.** A tool's PropertyBag panel (e.g. "Point by
   coordinates") takes focus into its TextBox after every construction step, so neither the canvas
   KeyDown nor `MainView_KeyUp` (which skips TextBox focus) sees keys then. Anything that must
@@ -548,6 +550,26 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Ladder; a locus: Spiral). Where they exist, fit and tile show the scene nearest in shape to
   the room instead of the content bounds, and a gradient paper spans the scene, not the canvas.
 - **`.dgf` paper**: `PaperColor1`/`PaperColor2`/`GradientPaper` of `[General]`, top to bottom.
+
+## GeoGebra files (.ggb)
+
+`Serialization/GeoGebraReader.cs` opens GeoGebra worksheets (Open dialog, command line,
+`--check`): a `.ggb` is a zip with `geogebra.xml` inside. The construction is free elements
+(`<element type="point">` with `<coords x y z>`, homogeneous: divide by z) and
+`<command name="Segment"><input a0="A" a1="B"/><output a0="f"/>` with the outputs' elements
+(style, show, coords) following the command. Each known command becomes the figure that
+stands for it here, with hidden helpers where the shapes differ (a circle through three
+points is the circle around the crossing of two bisectors, an ellipse by foci is center and
+axis ends as points by coordinates, a regular polygon is a plain polygon of rotated points so
+that its vertices keep the file's names, tangents from a point go through the Thales circle);
+an inline command in an input (`Point[Circle[S, 3]]`) is built hidden. Unknown commands and
+element types (conics other than circles, pen strokes, buttons, checkboxes, lists) are
+reported in the status and left out, along with what is built on them. GeoGebra's expression
+language is translated only where it overlaps ours (`x(A)` is `A.X`, `°`, `Name[A]` in texts);
+a point whose expression doesn't translate becomes a free point where it was. Names drop the
+underscore (`A_1` is `A1`; `Q'` stays). Figures in GeoGebra's default colors keep our default
+styles for their kind, other colors come along. The view is the file's (same zoom, same
+middle). Only one sample `.ggb` has been tried (outside the repo).
 
 ## Gallery
 
