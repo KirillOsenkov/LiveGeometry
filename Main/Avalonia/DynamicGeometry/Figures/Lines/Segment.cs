@@ -1,9 +1,101 @@
+using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Linq;
+using Avalonia.Controls;
 
 namespace DynamicGeometry
 {
     public class Segment : LineBase, ILengthProvider, ILine, IFixableLength
     {
+        #region Decoration
+
+        SegmentDecoration decoration;
+        SegmentDecorationMark decorationMark;
+
+        /// <summary>The mark at the middle: ticks, chevrons or a wave (<see cref="SegmentDecorationMark"/>)</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Mark")]
+        [PropertyGridPreferredEditor("SegmentDecoration")]
+        public SegmentDecoration Decoration
+        {
+            get
+            {
+                return decoration;
+            }
+            set
+            {
+                decoration = value;
+                if (Drawing != null)
+                {
+                    UpdateVisual();
+                }
+
+                RaisePropertyChanged("Decoration");
+            }
+        }
+
+        // not a field initializer: virtual members get called from the base constructor
+        SegmentDecorationMark Mark
+        {
+            get
+            {
+                if (decorationMark == null)
+                {
+                    decorationMark = new SegmentDecorationMark();
+                }
+
+                return decorationMark;
+            }
+        }
+
+        public override void UpdateVisual()
+        {
+            base.UpdateVisual();
+            if (decoration == SegmentDecoration.None || !IsShown)
+            {
+                decorationMark?.Hide();
+                return;
+            }
+
+            // in the segment's own stroke, as it is drawn now (thicker when selected)
+            var coordinates = OnScreenCoordinates;
+            Mark.Show(ToPhysical(coordinates.P1), ToPhysical(coordinates.P2), Shape.Stroke, Shape.StrokeThickness, decoration);
+        }
+
+        public override void OnAddingToCanvas(Canvas newContainer)
+        {
+            base.OnAddingToCanvas(newContainer);
+            Mark.OnAddingToCanvas(newContainer);
+        }
+
+        public override void OnRemovingFromCanvas(Canvas leavingContainer)
+        {
+            base.OnRemovingFromCanvas(leavingContainer);
+            Mark.OnRemovingFromCanvas(leavingContainer);
+        }
+
+        public override void ReadXml(XElement element)
+        {
+            base.ReadXml(element);
+            var name = element.ReadString("Decoration");
+            if (name != null && Enum.TryParse(name, out SegmentDecoration read))
+            {
+                decoration = read;
+            }
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
+            if (decoration != SegmentDecoration.None)
+            {
+                writer.WriteAttributeString("Decoration", decoration.ToString());
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Setting it on a segment with a fixed length (<see cref="FixLength"/>) changes that
         /// length. Otherwise it stretches the segment once, to that length, by moving an end

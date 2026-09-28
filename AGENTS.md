@@ -460,6 +460,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Vectors** are an invisible `Segment` plus an `Arrow` polygon sized in pixels, filled with the
   line color. `Vector.OnAddingToCanvas` sets the default `LineStyle` before the base call,
   otherwise the polygon default (pale fill) wins.
+- **Segment marks** (`Segment.Decoration`, `Figures/Lines/SegmentDecoration.cs`): one to
+  three ticks across the middle, one to three chevrons along it (pointing from the first point
+  to the second), or a wave - the school notation for equal and parallel sides. A passive
+  visual like the right angle mark (`SegmentDecorationMark`: a Path the segment adds to the
+  canvas, in the segment's own stroke as drawn, sized in pixels, not hit-testable), chosen in
+  the grid through a row of swatches (`SegmentDecorationEditor`, drawn by the same geometry),
+  saved as `Decoration="TwoTicks"`. Only segments: a polygon's sides aren't figures here. The
+  wave is ours; GeoGebra's file has ticks and arrows (`decoration type` 1-6, mapped on import),
+  its line start/end caps are not read.
 - **Right angle marks** (`Figures/Lines/RightAngleMark.cs`) are a passive visual owned by
   `PerpendicularLineBase` (perpendicular line, segment bisector), deliberately not an angle
   figure. Which corner the mark sits in is *stored* (`Corner`), chosen once and never derived

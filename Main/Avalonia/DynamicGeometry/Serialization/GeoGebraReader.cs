@@ -2115,6 +2115,13 @@ public class GeoGebraReader
         {
             figure.Visible = visible;
         }
+
+        // <decoration type="2"/>: the ticks or chevrons at the middle of a segment
+        var decoration = element.Element("decoration");
+        if (figure is Segment segment && decoration != null)
+        {
+            segment.Decoration = SegmentDecorationMark.FromGeoGebra((int)decoration.ReadDouble("type"));
+        }
     }
 
     void ApplyPointElement(XElement element, PointBase point)
