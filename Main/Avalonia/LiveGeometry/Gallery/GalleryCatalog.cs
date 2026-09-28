@@ -102,7 +102,7 @@ public static class GalleryCatalog
         Item("measuring-distance", "Measuring Across a Lake"),
         Item("complex-numbers", "Complex Multiplication"),
         Item("conic-through-five-points", "Conic Through Five Points", "Pascal"),
-        Item("hanging-rope", "The Hanging Rope"),
+        Item("catenary", "Catenary"),
     };
 
     /// <summary>

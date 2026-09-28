@@ -106,7 +106,7 @@
     <PointLabel Name="LabelB" Style="PointName" OffsetX="8" OffsetY="-22" ShowName="true" ShowCoordinates="false">
       <Dependency Name="B" />
     </PointLabel>
-    <Label Name="Title" Style="GalleryTitle" Text="The Hanging Rope" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="GalleryTitle" Text="Catenary" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
     <Label Name="Description" Style="GalleryText" Text="A rope [rope] long hangs from A and B, which are [AB] apart. It sags into a catenary, y = a·cosh((x − x₀)/a) + c: the curve of any chain or cable hanging under its own weight. It looks like a parabola, but it isn't one.\n\nDrag A and B, or the knob of the rope's slider. The dashed line is the shortest way from A to B: a rope shorter than that can't reach, and the curve is gone." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />
       <Dependency Name="B" />
