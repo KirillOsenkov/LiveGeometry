@@ -298,10 +298,10 @@ namespace DynamicGeometry
                 if (name.StartsWith(kind.Replace(" ", ""), StringComparison.OrdinalIgnoreCase)
                     || name.StartsWith(GetType().Name, StringComparison.OrdinalIgnoreCase))
                 {
-                    return Name;
+                    return NameDisplay.Format(Name);
                 }
 
-                return kind + " " + Name;
+                return kind + " " + NameDisplay.Format(Name);
             }
         }
 

@@ -326,7 +326,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
                 return;
             }
 
-            Text = slider.Name + " = " + Math.Round(slider.Value, DecimalsToShow).ToString();
+            Text = NameDisplay.Format(slider.Name) + " = " + Math.Round(slider.Value, DecimalsToShow).ToString();
             var size = MeasureSize();
             double pointRadius = slider.Anchor.Shape.Width / 2;
             Offset = new Point(-pointRadius, -(size.Height + pointRadius + Math.CursorTolerance));

@@ -276,6 +276,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Kite, Trapezoid) with a rounding-only tolerance: a shape dragged to look square by eye
   stays a Quadrilateral. The title is refreshed on every move (`PropertyGrid.RefreshNumbers`).
   `ToString()` stays the bare name: messages and dumps use it.
+- **A name's index is a subscript on screen** (`Figures/NameDisplay.cs`): `A_1` draws as A₁
+  on the canvas (point labels, slider captions) and in `Title` (the grid's header, the
+  Figure List), as GeoGebra and TeX read an underscore; the trailing digits of a name
+  without one (`A1`, our own default names after Z, `n1`, `Circle1`) draw as a subscript too.
+  The name itself stays as typed everywhere else - files, expressions (`A_1.X` parses, `_` is
+  a letter to the scanner), the Name box. What follows an underscore is the run of letters
+  and digits, or anything in braces; Unicode has the ten subscript digits and a few letters
+  (aeoxhklmnpst), and a part it can't write stays as typed. The browser's embedded Inter
+  font has the subscript glyphs.
 - **Expressions follow renames**. Compiled expressions hold the figures themselves, but their
   *text* (saved, edited) holds names. `FigureBase.Name` collects a rename wave (the figure,
   the default names that follow it, one that had to give up the name) and at the end of the
@@ -566,10 +575,19 @@ an inline command in an input (`Point[Circle[S, 3]]`) is built hidden. Unknown c
 element types (conics other than circles, pen strokes, buttons, checkboxes, lists) are
 reported in the status and left out, along with what is built on them. GeoGebra's expression
 language is translated only where it overlaps ours (`x(A)` is `A.X`, `°`, `Name[A]` in texts);
-a point whose expression doesn't translate becomes a free point where it was. Names drop the
-underscore (`A_1` is `A1`; `Q'` stays). Figures in GeoGebra's default colors keep our default
-styles for their kind, other colors come along. The view is the file's (same zoom, same
-middle). Only one sample `.ggb` has been tried (outside the repo).
+a point whose expression doesn't translate becomes a free point where it was. Names come as
+they are (`A_1`, `Q'`; only `A_{12}` loses its braces, which no expression could parse). The
+drawing keeps GeoGebra's look, on purpose: every
+element carries its color, point size, thickness (stroke width is thickness/2), line opacity
+and fill alpha, and the file's defaults are GeoGebra's (blue free points, gray dependent ones
+and lines). A point is 2 × `pointSize` across with a rim a shade darker; `pointStyle` cross
+and plus are drawn as the characters, ring and hollow diamond as unfilled shapes; a dynamic
+color (`dynamicr/g/b`) wins over the static one; a pattern fill (`fillType` hatch, dots...)
+becomes a translucent fill. Point names are in the point's color, at GeoGebra's place (the
+baseline starts a radius to the upper right, plus `labelOffset`); `labelMode` 1 and 2 show
+the coordinates. Not carried over: segment end styles and decorations (arrows, ticks),
+captions. The view is the file's (same zoom, same middle). Two sample `.ggb` files have been
+tried (outside the repo: a tool sampler and a style sampler).
 
 ## Gallery
 

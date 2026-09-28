@@ -204,8 +204,8 @@ namespace DynamicGeometry
             var text = "";
             if (ShowName)
             {
-                var nameText = Dependencies.ElementAt(0).Name;
-                text = nameText;
+                // A_1 shows as A₁
+                text = NameDisplay.Format(Dependencies.ElementAt(0).Name);
             }
             if (ShowCoordinates)
             {

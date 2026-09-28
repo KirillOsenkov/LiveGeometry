@@ -428,12 +428,14 @@ public class GeoGebraReader
         // GeoGebra's point is the start of the first line's baseline; ours is the top-left corner
         double fontSize = ReadFontSize(element);
         label.MoveTo(new Point(place.X, place.Y + fontSize / unitLength));
-        label.Style = drawing.StyleManager.FindExistingOrAddNew(new TextStyle()
+
+        // a text with a background color gets a plate (of the paper's color: close enough)
+        var background = element.Element("bgColor");
+        if (background != null && background.ReadDouble("alpha") > 0)
         {
-            FontSize = fontSize,
-            Color = ReadObjectColor(element) ?? Colors.Black,
-            FontFamily = new FontFamily("Arial")
-        });
+            label.Backdrop = true;
+        }
+
         return label;
     }
 
@@ -701,17 +703,26 @@ public class GeoGebraReader
     string TranslateExpression(string text)
     {
         text = text.Trim();
-        text = coordinateFunction.Replace(text, m => TranslateName(m.Groups[2].Value) + "." + m.Groups[1].Value.ToUpperInvariant());
+        text = coordinateFunction.Replace(text, m => NormalizeName(m.Groups[2].Value) + "." + m.Groups[1].Value.ToUpperInvariant());
         text = degrees.Replace(text, m => "(" + m.Groups[1].Value + " * pi / 180)");
         text = text.Replace("²", "^2").Replace("³", "^3").Replace("π", "pi").Replace("ℯ", "e");
         text = Regex.Replace(text, @"\b(Distance|Angle)\s*[\[(]([^\]\)]*)[\])]", m =>
         {
-            var arguments = m.Groups[2].Value.Split(',').Select(a => TranslateName(a.Trim())).ToArray();
+            var arguments = m.Groups[2].Value.Split(',').Select(a => NormalizeName(a.Trim())).ToArray();
             return (m.Groups[1].Value == "Distance" ? "dist(" : "deg(ang(") + string.Join(", ", arguments) + (m.Groups[1].Value == "Distance" ? ")" : "))");
         });
         text = implicitMultiplication.Replace(text, m => m.Groups[1].Value + " * ");
-        text = Regex.Replace(text, @"([A-Za-z][A-Za-z0-9]*)_\{?(\d+)\}?", m => m.Groups[1].Value + m.Groups[2].Value);
+        text = NormalizeName(text);
         return text;
+    }
+
+    /// <summary>
+    /// A_{12} is A_12 here: the braces would not parse in an expression, and the name shows
+    /// as A₁₂ either way (<see cref="NameDisplay"/>). A_1 stays as it is.
+    /// </summary>
+    static string NormalizeName(string label)
+    {
+        return Regex.Replace(label, @"_\{([A-Za-z0-9]+)\}", "_$1");
     }
 
     bool Compiles(string expression)
@@ -1343,20 +1354,15 @@ public class GeoGebraReader
         return figure;
     }
 
+    /// <summary>The figure takes the file's name as it is: A_1 shows as A₁ here too (<see cref="NameDisplay"/>)</summary>
     void Register(string label, IFigure figure)
     {
         figures[label] = figure;
-        var name = TranslateName(label);
+        var name = NormalizeName(label);
         if (figure.Name != name)
         {
             figure.Name = name;
         }
-    }
-
-    /// <summary>A_1 is A1 here (the file shows it as a subscript too); A_{12} is A12</summary>
-    static string TranslateName(string label)
-    {
-        return Regex.Replace(label, @"_\{?([^}]*)\}?", "$1");
     }
 
     /// <summary>A figure by its GeoGebra name, or an inline command, or nothing for a number</summary>
@@ -1556,15 +1562,37 @@ public class GeoGebraReader
         string type = (string)element.Attribute("type");
         bool visible = show != null ? show.ReadBool("object", true) : type != "numeric" && type != "angle";
         bool showLabel = show != null && show.ReadBool("label", false);
+        if (!(figure is INumber) || figure is Slider)
+        {
+            // first: a point's label is placed by its size (a plain number has no shape to style)
+            ApplyStyle(element, figure);
+        }
+
         if (figure is PointBase point)
         {
             ApplyPointElement(element, point);
+            // labelMode: 0 name, 1 name and value, 2 value, 3 caption, 9 caption and value
+            var labelMode = element.Element("labelMode");
+            int mode = labelMode != null ? (int)labelMode.ReadDouble("val") : 0;
             point.Visible = visible;
-            point.ShowName = visible && showLabel;
-            var labelOffset = element.Element("labelOffset");
-            if (labelOffset != null && point.Label != null)
+            point.ShowName = visible && showLabel && mode != 2;
+            point.ShowCoordinates = visible && showLabel && (mode == 1 || mode == 2 || mode == 9);
+            if (point.Label != null)
             {
-                point.Label.Offset = new Point(labelOffset.ReadDouble("x"), labelOffset.ReadDouble("y"));
+                // GeoGebra writes the name in the point's color
+                var color = ReadObjectColor(element);
+                if (color != null)
+                {
+                    point.Label.Style = TextStyleFor(color.Value, defaultFontSize);
+                }
+
+                // GeoGebra starts the name's baseline a point's radius to the upper right of
+                // the point, plus labelOffset; ours is the top-left corner of the text
+                var labelOffset = element.Element("labelOffset");
+                double offsetX = labelOffset != null ? labelOffset.ReadDouble("x") : 0;
+                double offsetY = labelOffset != null ? labelOffset.ReadDouble("y") : 0;
+                double radius = point.Style is PointStyle pointStyle ? pointStyle.Size / 2 : 5;
+                point.Label.Offset = new Point(radius + offsetX, -radius + offsetY - defaultFontSize);
             }
         }
         else if (figure is AngleMeasurement angle)
@@ -1576,14 +1604,6 @@ public class GeoGebraReader
         {
             figure.Visible = visible;
         }
-
-        if (figure is INumber && !(figure is Slider))
-        {
-            // a plain number has no shape; nothing to style
-            return;
-        }
-
-        ApplyStyle(element, figure);
     }
 
     void ApplyPointElement(XElement element, PointBase point)
@@ -1638,6 +1658,19 @@ public class GeoGebraReader
 
             var show = element.Element("show");
             arc.Visible = show == null || show.ReadBool("object", true);
+            var color = ReadObjectColor(element);
+            if (color != null)
+            {
+                var (stroke, width, dash) = ReadStroke(element, color.Value);
+                arc.Style = drawing.StyleManager.FindExistingOrAddNew(new ShapeStyle()
+                {
+                    Color = stroke,
+                    StrokeWidth = width,
+                    Dash = dash,
+                    IsFilled = false
+                });
+            }
+
             var decoration = element.Element("decoration");
             if (decoration != null)
             {
@@ -1672,65 +1705,75 @@ public class GeoGebraReader
 
     #region Styles
 
-    // GeoGebra's own defaults: a figure in those keeps our default look for its kind, so that a
-    // drawing nobody colored looks native here (a free point yellow and draggable, a line black)
-    static readonly Color[] defaultColors =
+    // The drawing keeps GeoGebra's look, since it was made in it: every element carries its
+    // color, size, thickness and opacities, and their defaults (blue free points, gray
+    // dependent ones and lines, a polygon filled a tenth) are what the file says too.
+
+    /// <summary>The stroke of a line or an outline: the object's color at the line's opacity, thickness/2 pixels wide, dashed by type</summary>
+    static (Color, double, LineDash) ReadStroke(XElement element, Color color)
     {
-        Color.FromRgb(21, 101, 192),   // free points and polygons
-        Color.FromRgb(110, 109, 115),  // dependent points and lines
-        Color.FromRgb(77, 77, 255),    // older free points
-        Color.FromRgb(0, 0, 0),
-        Color.FromRgb(97, 97, 97),
-        Color.FromRgb(68, 68, 68),
-        Color.FromRgb(153, 51, 0),     // older lines
-        Color.FromRgb(0, 100, 0)       // older dependent points
-    };
+        var lineStyle = element.Element("lineStyle");
+        double thickness = lineStyle != null ? lineStyle.ReadDouble("thickness") : 5;
+        double width = System.Math.Max(thickness / 2, 0.5);
+        int type = lineStyle != null ? (int)lineStyle.ReadDouble("type") : 0;
+        var dash = type == 10 || type == 15 ? LineDash.Dash : type == 20 ? LineDash.Dot : type == 30 ? LineDash.DashDot : LineDash.Solid;
+        double opacity = lineStyle != null && lineStyle.Attribute("opacity") != null ? lineStyle.ReadDouble("opacity") / 255 : 1;
+        var stroke = Color.FromArgb((byte)(255 * opacity), color.R, color.G, color.B);
+        return (stroke, width, dash);
+    }
+
+    /// <summary>
+    /// The fill: the object's color at objColor's alpha (0 for lines and points, 0.1 for a
+    /// polygon). A pattern fill (fillType 1 hatch, 2 crosshatch, 3 chessboard, 4 dots...) has
+    /// no alpha and no counterpart here: a translucent fill of the color stands in for it.
+    /// </summary>
+    static (Color, bool) ReadFill(XElement element, Color color)
+    {
+        var objectColor = element.Element("objColor");
+        double alpha = objectColor != null ? objectColor.ReadDouble("alpha") : 0;
+        if (objectColor != null && objectColor.ReadDouble("fillType") > 0 && alpha == 0)
+        {
+            alpha = 0.4;
+        }
+
+        return (Color.FromArgb((byte)(255 * System.Math.Min(1, alpha)), color.R, color.G, color.B), alpha > 0);
+    }
+
+    IFigureStyle TextStyleFor(Color color, double fontSize)
+    {
+        return drawing.StyleManager.FindExistingOrAddNew(new TextStyle()
+        {
+            Color = color,
+            FontSize = fontSize,
+            FontFamily = new FontFamily("Arial")
+        });
+    }
 
     void ApplyStyle(XElement element, IFigure figure)
     {
         var color = ReadObjectColor(element);
-        if (color == null || defaultColors.Contains(color.Value))
+        if (color == null)
         {
             return;
         }
 
-        var lineStyle = element.Element("lineStyle");
-        double thickness = lineStyle != null ? lineStyle.ReadDouble("thickness") : 5;
-        double width = System.Math.Max(thickness / 2.5, 0.5);
-        int type = lineStyle != null ? (int)lineStyle.ReadDouble("type") : 0;
-        var dash = type == 10 || type == 15 ? LineDash.Dash : type == 20 ? LineDash.Dot : type == 30 ? LineDash.DashDot : LineDash.Solid;
-        double opacity = lineStyle != null && lineStyle.Attribute("opacity") != null ? lineStyle.ReadDouble("opacity") / 255 : 1;
-        var stroke = Color.FromArgb((byte)(255 * opacity), color.Value.R, color.Value.G, color.Value.B);
-        var objectColor = element.Element("objColor");
-        double fillAlpha = objectColor != null ? objectColor.ReadDouble("alpha") : 0;
-        var fill = Color.FromArgb((byte)(255 * System.Math.Min(1, fillAlpha)), color.Value.R, color.Value.G, color.Value.B);
-
+        var (stroke, width, dash) = ReadStroke(element, color.Value);
+        var (fill, filled) = ReadFill(element, color.Value);
         IFigureStyle style;
         if (figure is IPoint)
         {
-            var sizeElement = element.Element("pointSize");
-            double size = sizeElement != null ? sizeElement.ReadDouble("val") : 5;
-            var shapeElement = element.Element("pointStyle");
-            int shape = shapeElement != null ? (int)shapeElement.ReadDouble("val") : 0;
-            style = new PointStyle()
-            {
-                Fill = new SolidColorBrush(color.Value),
-                Color = Colors.Black,
-                StrokeWidth = 0.7,
-                Size = System.Math.Max(3, size * 2),
-                Shape = shape == 4 || shape == 5 ? PointShape.Diamond : shape >= 6 ? PointShape.Triangle : PointShape.Circle
-            };
+            style = ReadPointStyle(element, color.Value);
         }
         else if (figure is LabelBase)
         {
-            style = new TextStyle() { Color = color.Value, FontSize = ReadFontSize(element), FontFamily = new FontFamily("Arial") };
+            style = TextStyleFor(color.Value, ReadFontSize(element));
         }
         else if (figure is IShapeWithInterior || figure is Bezier)
         {
             style = new ShapeStyle()
             {
                 Fill = new SolidColorBrush(fill),
-                IsFilled = fillAlpha > 0,
+                IsFilled = filled,
                 Color = stroke,
                 StrokeWidth = width,
                 Dash = dash
@@ -1739,6 +1782,19 @@ public class GeoGebraReader
         else if (figure is ILinearFigure || figure is Vector || figure is Slider)
         {
             style = new LineStyle() { Color = stroke, StrokeWidth = width, Dash = dash };
+            if (figure is Slider slider)
+            {
+                // GeoGebra's slider is a gray bar with a dark knob
+                var knob = drawing.StyleManager.FindExistingOrAddNew(new PointStyle()
+                {
+                    Fill = new SolidColorBrush(color.Value),
+                    Color = Darker(color.Value),
+                    StrokeWidth = 1,
+                    Size = 10
+                });
+                slider.Knob.Style = knob;
+                slider.Anchor.Style = knob;
+            }
         }
         else
         {
@@ -1748,10 +1804,72 @@ public class GeoGebraReader
         figure.Style = drawing.StyleManager.FindExistingOrAddNew(style);
     }
 
+    /// <summary>
+    /// A GeoGebra point is 2 * pointSize across in its color, with a rim a shade darker.
+    /// pointStyle: 0 dot, 1 cross, 2 ring, 3 plus, 4 diamond, 5 hollow diamond, 6-9 triangles
+    /// pointing up, down, right, left, 10 a dot without the rim. A cross and a plus are
+    /// drawn as the characters, the ring and the hollow diamond as unfilled shapes.
+    /// </summary>
+    static PointStyle ReadPointStyle(XElement element, Color color)
+    {
+        var sizeElement = element.Element("pointSize");
+        double size = sizeElement != null ? sizeElement.ReadDouble("val") : 5;
+        var shapeElement = element.Element("pointStyle");
+        int shape = shapeElement != null ? (int)shapeElement.ReadDouble("val") : 0;
+        var style = new PointStyle()
+        {
+            Fill = new SolidColorBrush(color),
+            Color = Darker(color),
+            StrokeWidth = 1,
+            Shape = shape == 4 || shape == 5 ? PointShape.Diamond : shape >= 6 && shape <= 9 ? PointShape.Triangle : PointShape.Circle
+        };
+        switch (shape)
+        {
+            case 1:
+                style.Character = "×";
+                break;
+            case 3:
+                style.Character = "+";
+                break;
+            case 2:
+            case 5:
+                style.IsFilled = false;
+                style.Color = color;
+                style.StrokeWidth = System.Math.Max(1.5, size / 2.5);
+                break;
+            case 10:
+                style.StrokeWidth = 0;
+                break;
+        }
+
+        // the size after the character: a style keeps one size for the shape and one for the character
+        style.Size = System.Math.Max(3, size * 2) + (style.Character != null ? 6 : 0);
+        return style;
+    }
+
+    static Color Darker(Color color)
+    {
+        return Color.FromRgb((byte)(color.R * 0.7), (byte)(color.G * 0.7), (byte)(color.B * 0.7));
+    }
+
+    /// <summary>The object's color; a dynamic color (fractions in dynamicr/g/b, what the object shows right now) wins over the static one</summary>
     static Color? ReadObjectColor(XElement element)
     {
         var color = element.Element("objColor");
-        return color != null ? ReadColor(color, alpha: 255) : null;
+        if (color == null)
+        {
+            return null;
+        }
+
+        if (color.Attribute("dynamicr") != null)
+        {
+            return Color.FromRgb(
+                (byte)(255 * color.ReadDouble("dynamicr")),
+                (byte)(255 * color.ReadDouble("dynamicg")),
+                (byte)(255 * color.ReadDouble("dynamicb")));
+        }
+
+        return ReadColor(color, alpha: 255);
     }
 
     static Color ReadColor(XElement element, byte alpha)
