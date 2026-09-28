@@ -231,6 +231,10 @@ namespace DynamicGeometry
         void UpdateContents()
         {
             this.Children.Clear();
+            if (HeaderHost != null)
+            {
+                HeaderHost.Child = null;
+            }
 
             // the editors of what was shown before must not be refreshed after it's gone (a
             // refresh posted on a move can arrive after the grid was emptied or changed)
@@ -352,8 +356,21 @@ namespace DynamicGeometry
                 title = GetTitleString(Selection);
             }
             Header = GetTitleControl(title);
-            this.Children.Add(Header);
+            if (HeaderHost != null)
+            {
+                HeaderHost.Child = Header;
+            }
+            else
+            {
+                this.Children.Add(Header);
+            }
         }
+
+        /// <summary>
+        /// Where the title goes instead of above the rows: a place of the host's that stays put
+        /// while the rows scroll (the side panel, with its close cross). Null: the first row.
+        /// </summary>
+        public Decorator HeaderHost { get; set; }
 
         public void UpdateHeader()
         {

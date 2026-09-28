@@ -362,6 +362,17 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   otherwise - test `Transaction != null` too, since "construction complete" re-reads it
   before the found figures are cleared); one shown all along holding a setting (Line at
   Angle) doesn't take focus.
+- **The side panel** (`DrawingHost.CreatePropertyGrid`) is one rounded surface: a fixed
+  header row (the grid's title, put there through `PropertyGrid.HeaderHost`, and the ×)
+  over a scroll viewer with the rows. Nested grids (complex types, method parameters) have
+  no `HeaderHost` and keep their title as the first row.
+- **Closing the side panel** (its ×, or a press on empty chrome: the ribbon's empty
+  strip, the toolbar beside its buttons, the Figure List below its rows) goes through
+  `DrawingHost.CloseSidePanel`. A tool's own panel (same type as the tool's `PropertyBag`)
+  can be the only way on with that tool, so closing it puts the tool down (Drag, as
+  Escape); anything else is only hidden. "Empty" is decided in `MainView.IsEmptyChrome`:
+  from the hit visual up to the ribbon/toolbar/list through plain layout types only (exact
+  types: a toolbar button is a `Border` subclass).
 - **Typed text that is wrong is said under its box**, never in the status bar
   (`StringEditor.ErrorText`: a pink plate attached to the box, widening the row up to the
   480 px a box may take). Only on commit - Enter or leaving the box - never while typing, and

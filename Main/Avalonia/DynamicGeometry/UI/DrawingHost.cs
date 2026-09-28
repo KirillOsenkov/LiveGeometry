@@ -30,6 +30,9 @@ namespace DynamicGeometry
 
         protected ScrollViewer propertyGridScrollViewer;
 
+        /// <summary>The side panel: the title of the property grid and a close cross, the rows scrolling under them</summary>
+        Border sidePanel;
+
         public Command CommandToggleGrid { get; set; }
         public Command CommandToggleOrtho { get; set; }
         public Command CommandToggleSnapToGrid { get; set; }
@@ -72,14 +75,14 @@ namespace DynamicGeometry
             this.Children.Add(FigureExplorer);
             this.Children.Add(figureExplorerSplitter);
             this.Children.Add(DrawingControl);
-            this.Children.Add(propertyGridScrollViewer);
+            this.Children.Add(sidePanel);
             this.Children.Add(StatusBar);
 
             Grid.SetColumnSpan(Ribbon, 3);
             Grid.SetRow(FigureExplorer, 1);
             Grid.SetRow(figureExplorerSplitter, 1);
             Grid.SetColumn(figureExplorerSplitter, 1);
-            foreach (var control in new Control[] { DrawingControl, propertyGridScrollViewer, StatusBar })
+            foreach (var control in new Control[] { DrawingControl, sidePanel, StatusBar })
             {
                 Grid.SetRow(control, 1);
                 Grid.SetColumn(control, 2);
@@ -159,39 +162,135 @@ namespace DynamicGeometry
 
         protected void CreatePropertyGrid()
         {
+            // the title and the close cross stay put above the rows, which scroll under them
+            var title = new Decorator();
+            PropertyGrid = new PropertyGrid() { HeaderHost = title };
+            PropertyGrid.VisibilityChanged += PropertyGrid_VisibilityChanged;
+
+            var header = new DockPanel() { Margin = new Thickness(14, 10, 8, 0) };
+            var closeButton = CreateCloseButton();
+            DockPanel.SetDock(closeButton, Dock.Right);
+            header.Children.Add(closeButton);
+            header.Children.Add(title);
+
             propertyGridScrollViewer = new ScrollViewer()
             {
                 HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Auto,
                 VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Auto,
-                Margin = new Thickness(8),
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Top,
-                MinWidth = 200.0,
-                Visibility = Visibility.Collapsed
+                Content = new Border()
+                {
+                    Padding = new Thickness(14, 0, 14, 12),
+                    Child = PropertyGrid
+                }
             };
 
-            PropertyGrid = new PropertyGrid();
+            var layout = new DockPanel();
+            DockPanel.SetDock(header, Dock.Top);
+            layout.Children.Add(header);
+            layout.Children.Add(propertyGridScrollViewer);
 
             // the same surface as the tools strip of the ribbon
-            propertyGridScrollViewer.Content = new Border()
+            sidePanel = new Border()
             {
                 Background = RibbonTheme.Background,
                 BorderBrush = RibbonTheme.TabLine,
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(6),
-                Padding = new Thickness(14, 10, 14, 12),
-                Child = PropertyGrid
+                ClipToBounds = true, // the rows scroll under the rounded corners
+                MinWidth = 200.0,
+                Margin = new Thickness(8),
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Top,
+                Visibility = Visibility.Collapsed,
+                ZIndex = (int)ZOrder.StatusBar,
+                Child = layout
             };
-            PropertyGrid.VisibilityChanged += PropertyGrid_VisibilityChanged;
-
-            propertyGridScrollViewer.ZIndex = (int)ZOrder.StatusBar;
 
             PropertyGrid.ValueDiscoveryStrategy = new ExcludeByDefaultValueDiscoveryStrategy();
         }
 
         private void PropertyGrid_VisibilityChanged(object sender, EventArgs e)
         {
-            propertyGridScrollViewer.Visibility = PropertyGrid.Visibility;
+            sidePanel.Visibility = PropertyGrid.Visibility;
+        }
+
+        static readonly IBrush CloseCrossBrush = new SolidColorBrush(Color.FromRgb(0xB4, 0xBA, 0xC4));
+
+        /// <summary>A small faint cross that puts the side panel away (<see cref="CloseSidePanel"/>)</summary>
+        Control CreateCloseButton()
+        {
+            var cross = new Avalonia.Controls.Shapes.Path()
+            {
+                Data = Geometry.Parse("M0,0 L8,8 M8,0 L0,8"),
+                Stroke = CloseCrossBrush,
+                StrokeThickness = 1.5,
+                StrokeLineCap = PenLineCap.Round,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            var button = new Border()
+            {
+                Width = 20,
+                Height = 20,
+                CornerRadius = new CornerRadius(4),
+                Background = Brushes.Transparent, // hit-testable around the cross too
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = new Thickness(8, -2, 0, 0),
+                Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand),
+                Child = cross
+            };
+            ToolTip.SetTip(button, "Close");
+            button.PointerEntered += (s, e) =>
+            {
+                button.Background = RibbonTheme.ButtonHover;
+                cross.Stroke = RibbonTheme.Text;
+            };
+            button.PointerExited += (s, e) =>
+            {
+                button.Background = Brushes.Transparent;
+                cross.Stroke = CloseCrossBrush;
+            };
+            button.PointerReleased += (s, e) =>
+            {
+                if (e.InitialPressMouseButton == Avalonia.Input.MouseButton.Left)
+                {
+                    CloseSidePanel();
+                }
+            };
+            return button;
+        }
+
+        public bool IsSidePanelShown
+        {
+            get
+            {
+                return sidePanel.IsVisible;
+            }
+        }
+
+        /// <summary>
+        /// Puts the side panel away (its cross, a click on empty chrome). A tool's own panel can be
+        /// the only way on with that tool (Function, the angle of a rotation, the dialogs of
+        /// Define figure), so closing it puts the tool down too: back to Drag, a construction in
+        /// progress abandoned, as with Escape; picking the tool again brings the panel back.
+        /// Anything else (a figure's properties, the length panel) is just hidden, and comes back
+        /// with a click on the figure. A tool's panel is told by its type: some tools make a new
+        /// one each time they are asked.
+        /// </summary>
+        public void CloseSidePanel()
+        {
+            var drawing = CurrentDrawing;
+            var shown = PropertyGrid.Selection;
+            var behavior = drawing?.Behavior;
+            if (shown != null
+                && behavior != null
+                && behavior != Behavior.Default
+                && behavior.PropertyBag?.GetType() == shown.GetType())
+            {
+                drawing.SetDefaultBehavior();
+            }
+
+            ShowProperties(null);
         }
 
         public void ToggleLabelNewPoints()

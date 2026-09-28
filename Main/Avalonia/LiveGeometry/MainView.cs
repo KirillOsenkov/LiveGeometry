@@ -62,6 +62,7 @@ public partial class MainView : UserControl
 
         AddHandler(KeyDownEvent, MainView_KeyDown, RoutingStrategies.Tunnel);
         AddHandler(KeyUpEvent, MainView_KeyUp, RoutingStrategies.Tunnel);
+        AddHandler(PointerPressedEvent, MainView_PointerPressed, RoutingStrategies.Tunnel, handledEventsToo: true);
 
         // a phone turned on its side is a different screen
         SizeChanged += (s, e) => UpdateRibbon();
@@ -925,6 +926,65 @@ public partial class MainView : UserControl
     }
 
     Key shortcutKeyDown = Key.None;
+
+    #region Empty chrome
+
+    /// <summary>
+    /// A press on the chrome where there is nothing to press - the empty stretch of the ribbon,
+    /// the toolbar right of its buttons, the Figure List below its rows - puts the side panel
+    /// away (<see cref="DrawingHost.CloseSidePanel"/>). On a phone the panel can cover most of
+    /// the screen, with no empty bit of canvas left to click.
+    /// </summary>
+    void MainView_PointerPressed(object sender, PointerPressedEventArgs e)
+    {
+        if (DrawingHost.IsSidePanelShown && e.Source is Avalonia.Visual source && IsEmptyChrome(source))
+        {
+            HandleExceptions(DrawingHost.CloseSidePanel);
+        }
+    }
+
+    /// <summary>
+    /// From what was hit up to the ribbon, the toolbar or the Figure List through nothing but
+    /// layout: a button, a tab, a row, the splitter or a scroll bar on the way is something to press
+    /// </summary>
+    bool IsEmptyChrome(Avalonia.Visual visual)
+    {
+        for (var current = visual; current != null; current = Avalonia.VisualTree.VisualExtensions.GetVisualParent(current))
+        {
+            if (current == DrawingHost.Ribbon || current == Toolbar || current == DrawingHost.FigureExplorer)
+            {
+                return true;
+            }
+
+            if (!IsLayoutOnly(current))
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>Parts that only lay out or draw; subclasses (a toolbar button is a Border) are more than that</summary>
+    static bool IsLayoutOnly(Avalonia.Visual visual)
+    {
+        var type = visual.GetType();
+        return type == typeof(Border)
+            || type == typeof(Panel)
+            || type == typeof(StackPanel)
+            || type == typeof(DockPanel)
+            || type == typeof(WrapPanel)
+            || type == typeof(Grid)
+            || type == typeof(TextBlock)
+            || type == typeof(Avalonia.Controls.Presenters.ContentPresenter)
+            || type == typeof(Avalonia.Controls.Presenters.ItemsPresenter)
+            || type == typeof(Avalonia.Controls.Presenters.ScrollContentPresenter)
+            || type == typeof(ScrollViewer)
+            || type == typeof(MainToolbarGroup)
+            || visual is Avalonia.Controls.Shapes.Shape;
+    }
+
+    #endregion
 
     /// <summary>
     /// Ctrl+letter, on the way down. (On the way up the state of Ctrl depends on which of the
