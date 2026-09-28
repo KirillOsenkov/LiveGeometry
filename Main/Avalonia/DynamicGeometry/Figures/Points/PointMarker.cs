@@ -124,7 +124,7 @@ public class PointMarker : Shape
     {
         [PointShape.Triangle] = 1.3,
         [PointShape.Square] = 1.2,
-        [PointShape.Diamond] = 1.3,
+        [PointShape.Diamond] = 1.25,
         [PointShape.Pentagon] = 1.15,
         [PointShape.Hexagon] = 1.1
     };
@@ -143,18 +143,17 @@ public class PointMarker : Shape
         double radius = System.Math.Max(0, System.Math.Min(width, height) / 2 - StrokeThickness / 2);
         return Kind switch
         {
-            PointShape.Triangle => RegularPolygon(center, radius * Reach[Kind], sides: 3, startAngle: -90, squeeze: 1),
-            PointShape.Square => RegularPolygon(center, radius * Reach[Kind], sides: 4, startAngle: 45, squeeze: 1),
-            PointShape.Diamond => RegularPolygon(center, radius * Reach[Kind], sides: 4, startAngle: -90, squeeze: 0.75),
-            PointShape.Pentagon => RegularPolygon(center, radius * Reach[Kind], sides: 5, startAngle: -90, squeeze: 1),
-            PointShape.Hexagon => RegularPolygon(center, radius * Reach[Kind], sides: 6, startAngle: 0, squeeze: 1),
+            PointShape.Triangle => RegularPolygon(center, radius * Reach[Kind], sides: 3, startAngle: -90),
+            PointShape.Square => RegularPolygon(center, radius * Reach[Kind], sides: 4, startAngle: 45),
+            PointShape.Diamond => RegularPolygon(center, radius * Reach[Kind], sides: 4, startAngle: -90),
+            PointShape.Pentagon => RegularPolygon(center, radius * Reach[Kind], sides: 5, startAngle: -90),
+            PointShape.Hexagon => RegularPolygon(center, radius * Reach[Kind], sides: 6, startAngle: 0),
             _ => new EllipseGeometry(new Rect(center.X - radius, center.Y - radius, 2 * radius, 2 * radius))
         };
     }
 
     /// <param name="startAngle">Where the first corner is, in degrees clockwise from the right (y down)</param>
-    /// <param name="squeeze">The width in heights (a diamond is narrower than it is tall)</param>
-    static Geometry RegularPolygon(Point center, double radius, int sides, double startAngle, double squeeze)
+    static Geometry RegularPolygon(Point center, double radius, int sides, double startAngle)
     {
         var figure = new PathFigure()
         {
@@ -166,7 +165,7 @@ public class PointMarker : Shape
         {
             double angle = (startAngle + 360.0 * i / sides) * System.Math.PI / 180;
             var corner = new Point(
-                center.X + radius * squeeze * System.Math.Cos(angle),
+                center.X + radius * System.Math.Cos(angle),
                 center.Y + radius * System.Math.Sin(angle));
             if (i == 0)
             {
