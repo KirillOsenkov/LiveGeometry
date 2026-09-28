@@ -302,7 +302,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (posted, coalesced), never between `ConstructionStepStarted` and a complete step: temporary
   figures of a tool are never recorded and its real steps sit in its transaction. Undoing a
   deletion puts each figure back at its old index (`RemoveFigureAction.Indices`), so it
-  doesn't jump to the end of the list; `Actions.ReplacePoint` puts the replacement in the
+  doesn't jump to the end of the list. A hidden figure that is selected is shown ghosted
+  (`ShapeBase.IsGhost`, half opacity, shape not hit-testable) until unselected; `Visible`
+  stays false, so no hit test, snap or drag sees it (they all ask `Visible`;
+  `HitTestShape` refuses hidden figures too). Only figures directly in the drawing: a
+  composite's parts (a vector's hidden segment) never ghost, so a hidden composite shows
+  nothing. `UpdateVisual` overrides that skip hidden figures test `IsShown` instead, or
+  the ghost sits at a stale place. `Actions.ReplacePoint` puts the replacement in the
   old point's place (`MoveBefore`: with what it is built on that came later, such as its
   Number, to keep dependency order; `Figures.Move` doesn't touch the canvas). Several figures selected show as a `FigureSelection`
   in the property grid (common properties + Delete).

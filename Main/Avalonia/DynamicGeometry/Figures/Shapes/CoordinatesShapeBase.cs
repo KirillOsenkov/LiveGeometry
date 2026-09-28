@@ -12,7 +12,7 @@ namespace DynamicGeometry
 
         public override void UpdateVisual()
         {
-            if (!Visible || !Exists)
+            if (!IsShown)
             {
                 return;
             }

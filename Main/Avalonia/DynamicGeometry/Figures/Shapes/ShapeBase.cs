@@ -109,7 +109,13 @@ namespace DynamicGeometry
             {
                 return null;
             }
-            
+
+            // a hidden figure shown while selected (IsGhost) is still hidden
+            if (!Visible)
+            {
+                return null;
+            }
+
             var oldHitTestVisible = Shape.IsHitTestVisible;
             Shape.IsHitTestVisible = true;
 
@@ -177,6 +183,7 @@ namespace DynamicGeometry
             {
                 base.Selected = value;
                 UpdateShapeAppearance();
+                UpdateShapeVisibility();
             }
         }
 
@@ -193,12 +200,78 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>How much of a hidden figure shows while it is selected (<see cref="IsGhost"/>)</summary>
+        public const double GhostOpacity = 0.5;
+
+        bool ghost;
+        bool hitTestVisibleBeforeGhost;
+
+        /// <summary>
+        /// A hidden figure that is selected (picked in the Figure List, say) shows faintly, so
+        /// that one sees what was picked, and goes again when it is unselected. It stays hidden to
+        /// everything else: nothing hits it, nothing snaps to it or drags it, since all of that
+        /// asks <see cref="Visible"/>, which it isn't. Only a figure of the drawing itself: the
+        /// parts of a composite follow their own rules (a vector's segment is never shown).
+        /// </summary>
+        protected bool IsGhost
+        {
+            get
+            {
+                return ghost;
+            }
+        }
+
+        /// <summary>Whether the shape is on the canvas and wants its geometry kept up to date</summary>
+        protected bool IsShown
+        {
+            get
+            {
+                return Exists && (Visible || ghost);
+            }
+        }
+
         protected void UpdateShapeVisibility()
         {
-            bool needsToBeVisible = Exists && Visible;
-            if (Shape != null && (Shape.Visibility == Visibility.Visible) != needsToBeVisible)
+            if (Shape == null)
+            {
+                return;
+            }
+
+            bool wasGhost = ghost;
+            ghost = !Visible
+                && Selected
+                && Exists
+                && Drawing != null
+                && Drawing.Figures.Contains(this);
+
+            bool needsToBeVisible = IsShown;
+            if ((Shape.Visibility == Visibility.Visible) != needsToBeVisible)
             {
                 Shape.Visibility = needsToBeVisible ? Visibility.Visible : Visibility.Collapsed;
+            }
+
+            if (ghost == wasGhost)
+            {
+                return;
+            }
+
+            // a control (a check box, a link) of a label mustn't take clicks either
+            if (ghost)
+            {
+                hitTestVisibleBeforeGhost = Shape.IsHitTestVisible;
+                Shape.IsHitTestVisible = false;
+                Shape.Opacity = GhostOpacity;
+
+                // a hidden figure isn't kept in place while it is hidden
+                if (Drawing != null && Drawing.Canvas != null)
+                {
+                    UpdateVisual();
+                }
+            }
+            else
+            {
+                Shape.IsHitTestVisible = hitTestVisibleBeforeGhost;
+                Shape.Opacity = 1;
             }
         }
 

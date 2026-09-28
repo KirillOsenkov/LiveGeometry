@@ -20,7 +20,7 @@ namespace DynamicGeometry
 
         public override void UpdateVisual()
         {
-            if (Exists && Visible)
+            if (IsShown)
             {
                 Shape.Set(ToPhysical(OnScreenCoordinates));
                 Shape.Visibility = Visibility.Visible;
