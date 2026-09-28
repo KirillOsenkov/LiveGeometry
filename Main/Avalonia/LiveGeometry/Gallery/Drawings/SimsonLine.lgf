@@ -133,6 +133,6 @@
       <Dependency Name="H" />
     </Segment>
     <Label Name="Title" Style="GalleryTitle" Text="Simson Line" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Triangle ABC is inscribed in a circle, and G is another point on the same circle. Drop perpendiculars from G to the three sides (extended if needed).\n\nThe three feet (green) always lie on one line: the Simson line, named after Robert Simson.\n\nDrag G around the circle and watch the line swing." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Triangle ABC is inscribed in a circle, and G is another point on the same circle. Drop perpendiculars from G to the three sides (extended if needed).\n\nThe three feet (green) always lie on one line: the Simson line. It is named after Robert Simson, though William Wallace was the first to publish it, in 1799.\n\nDrag G around the circle and watch the line swing." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

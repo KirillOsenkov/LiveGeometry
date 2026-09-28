@@ -50,7 +50,7 @@
       <Dependency Name="F" />
     </FunctionGraph>
     <Label Name="Title" Style="GalleryTitle" Text="Graph of a Parabola" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="y = a·x² + b\na = [E.X]\nb = [F.X]\n\nThe two points under the x-axis are sliders. The blue one is a: it makes the parabola narrower, wider, or flips it upside down. The green one is b: it moves the parabola up and down." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true">
+    <Label Name="Description" Style="GalleryText" Text="y = a·x² + c\na = [E.X]\nc = [F.X]\n\nThe two points under the x-axis are sliders. The blue one is a: it makes the parabola narrower, wider, or flips it upside down. The green one is c: it moves the parabola up and down." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true">
       <Dependency Name="E" />
       <Dependency Name="F" />
     </Label>

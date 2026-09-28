@@ -157,6 +157,6 @@
       <Dependency Name="M" />
     </ShowHideControl>
     <Label Name="Title" Style="GalleryTitle" Text="Measuring Across a Lake" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="How far is it from A to B when a lake is in the way and you can't walk straight across?\n\nCheck &quot;Help 1&quot; and &quot;Help 2&quot; for the trick, and &quot;Show&quot; for the answer. It uses similar triangles - the same idea surveyors used before there were satellites.\n\nDrag A and B." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="How far is it from A to B when a lake is in the way and you can't walk straight across?\n\nCheck &quot;Help 1&quot; and &quot;Help 2&quot; for the trick, and &quot;Show&quot; for the answer. It uses congruent triangles — the same idea surveyors used before there were satellites.\n\nDrag A and B." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

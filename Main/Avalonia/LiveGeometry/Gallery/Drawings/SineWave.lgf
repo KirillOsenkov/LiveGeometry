@@ -65,7 +65,7 @@
       <Dependency Name="F" />
     </FunctionGraph>
     <Label Name="Title" Style="GalleryTitle" Text="Sine Wave" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="78.75" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="y = [A.Y] · sin([F.X] · x)\n\nThe yellow point rides on the crest of the wave. Drag it up and down to change the number in front of the sine, the amplitude: how tall the wave is. What happens when it is negative? When it is zero?\n\nThe green point on the track at the bottom changes the number next to x, the frequency: how tightly the waves are packed.\n\nThe number beside each slider is the one in the equation." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="126.75" WrapWidth="400" Backdrop="true">
+    <Label Name="Description" Style="GalleryText" Text="y = [A.Y] · sin([F.X] · x)\n\nThe yellow point rides on the crest of the wave. Drag it up and down to change the number in front of the sine, the amplitude: how tall the wave is. What happens when it is negative? When it is zero?\n\nThe green point on the track at the bottom changes the number next to x: the bigger it is, the more tightly the waves are packed and the shorter the period, the distance from one crest to the next.\n\nThe number beside each slider is the one in the equation." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="126.75" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />
       <Dependency Name="F" />
     </Label>

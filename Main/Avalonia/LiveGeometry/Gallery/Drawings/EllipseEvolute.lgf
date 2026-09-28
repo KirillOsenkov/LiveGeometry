@@ -92,6 +92,6 @@
       <Dependency Name="M" />
     </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Ellipse and Its Evolute" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="The yellow point runs around the little circle, and its angle - from 0 to 2π - drives point L around the ellipse: L = (a · cos θ, b · sin θ).\n\nAt every position there is a circle that hugs the ellipse best, drawn dashed, and M is its center. As L travels, M traces the four-pointed star inside: the evolute of the ellipse.\n\nDrag the yellow point around its circle. Drag the green points a and b, the half-width and the half-height of the ellipse, to reshape it." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="The yellow point runs around the little circle, and its angle — from 0 to 2π — drives point L around the ellipse: L = (a · cos θ, b · sin θ).\n\nAt every position there is a circle that hugs the ellipse best, drawn dashed, and M is its center. As L travels, M traces the four-pointed star: the evolute of the ellipse. Make the ellipse long and thin and the star pokes out through it.\n\nDrag the yellow point around its circle. Drag the green points a and b, the half-width and the half-height of the ellipse, to reshape it." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

@@ -80,6 +80,6 @@
       <Dependency Name="O" />
     </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Inscribed Angle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A and C are fixed on the circle. Drag B along the circle: angle ABC doesn't change!\n\nAll inscribed angles that intercept the same arc are congruent, and each is half of the central angle AOC.\n\nNow move A and C so that AC is a diameter. The angle becomes exactly 90°." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Drag B along the circle: as long as it stays on the same side of AC, angle ABC doesn't change!\n\nAll inscribed angles that intercept the same arc are congruent, and each is half of the central angle AOC that intercepts that arc. Cross B over to the other side and the angle becomes 180° minus what it was.\n\nNow move A and C so that AC is a diameter. The angle becomes exactly 90°." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

@@ -170,6 +170,6 @@
       <Dependency Name="H" />
     </Segment>
     <Label Name="Title" Style="GalleryTitle" Text="Napoleon's Theorem" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Build an equilateral triangle on each side of any triangle. Connect the centers of the three new triangles.\n\nYou always get another equilateral triangle! The theorem is named after Napoleon Bonaparte, who loved geometry - though nobody knows whether he really proved it.\n\nDrag the yellow vertices." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Build an equilateral triangle outward on each side of any triangle. Connect the centers of the three new triangles.\n\nYou always get another equilateral triangle! The theorem is named after Napoleon Bonaparte, who loved geometry — though nobody knows whether he really proved it.\n\nDrag the yellow vertices." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

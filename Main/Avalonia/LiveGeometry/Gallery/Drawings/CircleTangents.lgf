@@ -73,6 +73,6 @@
       <Dependency Name="B" />
     </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Tangents to a Circle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="How do you draw the tangents from a point C to a circle with center A?\n\nFind the midpoint D of AC and draw the circle centered at D through C. It crosses the first circle at E and F - the points of tangency. It works because an angle inscribed in a semicircle is a right angle.\n\nDrag C." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="How do you draw the tangents from a point C to a circle with center A?\n\nFind the midpoint D of AC and draw the circle centered at D through C. It crosses the first circle at E and F — the points of tangency. It works because an angle inscribed in a semicircle is a right angle.\n\nDrag C." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

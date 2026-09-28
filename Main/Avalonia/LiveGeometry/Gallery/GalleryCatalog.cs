@@ -97,7 +97,7 @@ public static class GalleryCatalog
         Item("steiners-problem", "Steiner's Problem"),
         Item("picks-theorem", "Pick's Theorem", "PickTheorem"),
         Item("ellipse-evolute", "Ellipse and Its Evolute"),
-        Item("platonic-solids", "5 Platonic Solids", "PlatonicSolids"),
+        Item("platonic-solids", "The Five Platonic Solids", "PlatonicSolids"),
         Item("line-of-best-fit", "Line of Best Fit"),
         Item("measuring-distance", "Measuring Across a Lake"),
         Item("complex-numbers", "Complex Multiplication"),

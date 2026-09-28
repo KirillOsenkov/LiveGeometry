@@ -1,7 +1,7 @@
 #:property Nullable=disable
 #:property PublishAot=false
 
-// platonic - writes the "5 Platonic Solids" gallery drawing: the five solids projected onto
+// platonic - writes the "The Five Platonic Solids" gallery drawing: the five solids projected onto
 // the plane as fixed polygons (PointByCoordinates with constant coordinates, nothing to drag),
 // one face per polygon with its own shaded style, painted back to front, a name under each.
 //
@@ -138,8 +138,8 @@ text.AppendLine("    <LineStyle Color=\"#FFE0362B\" StrokeWidth=\"2.5\" Name=\"G
 text.AppendLine("  </Styles>");
 text.AppendLine("  <Figures>");
 text.Append(figures);
-text.AppendLine("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"5 Platonic Solids\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"78.75\" WrapWidth=\"400\" Backdrop=\"true\" />");
-text.AppendLine("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"A Platonic solid is a shape whose faces are all the same regular polygon, with the same number of them meeting at every corner. There are exactly five - the ancient Greeks proved that no sixth one is possible.\\n\\nTetrahedron: 4 triangles. Cube: 6 squares. Octahedron: 8 triangles. Dodecahedron: 12 pentagons. Icosahedron: 20 triangles.\\n\\nRole-playing dice come in exactly these five shapes.\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"126.75\" WrapWidth=\"400\" Backdrop=\"true\" />");
+text.AppendLine("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"The Five Platonic Solids\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"78.75\" WrapWidth=\"400\" Backdrop=\"true\" />");
+text.AppendLine("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"A Platonic solid is a shape whose faces are all the same regular polygon, with the same number of them meeting at every corner. There are exactly five — the ancient Greeks proved that no sixth one is possible.\\n\\nTetrahedron: 4 triangles. Cube: 6 squares. Octahedron: 8 triangles. Dodecahedron: 12 pentagons. Icosahedron: 20 triangles.\\n\\nFive of the dice in a role-playing game set — the d4, d6, d8, d12 and d20 — have exactly these shapes.\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"126.75\" WrapWidth=\"400\" Backdrop=\"true\" />");
 text.AppendLine("  </Figures>");
 text.Append("</Drawing>");
 File.WriteAllText(args[0], text.ToString().Replace("\r\n", "\n").Replace("\n", "\r\n"), new UTF8Encoding(false));

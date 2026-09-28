@@ -78,6 +78,6 @@
       <Dependency Name="A" />
     </PerpendicularLine>
     <Label Name="Title" Style="GalleryTitle" Text="Circumscribed Circle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Every triangle has exactly one circle through all three vertices: its circumcircle.\n\nThe gray points are the midpoints of the sides, and the gray lines are the perpendicular bisectors. They always meet in one point, the circumcenter - the center of the circle.\n\nDrag the yellow vertices. When does the center leave the triangle?" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Every triangle has exactly one circle through all three vertices: its circumcircle.\n\nThe gray points are the midpoints of the sides, and the gray lines are the perpendicular bisectors. They always meet in one point, the circumcenter — the center of the circle.\n\nDrag the yellow vertices. When does the center leave the triangle?" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

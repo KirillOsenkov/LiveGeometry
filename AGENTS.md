@@ -588,7 +588,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the console as `Gallery: <file>: ...` - the quickest way to check all drawings at once.
 - **Generated drawings** - regenerate rather than edit the file: Line of Best Fit
   (`dotnet tools/bestfit.cs -- <the .lgf>`), Fibonacci Spiral (`tools/fibonacci.cs`),
-  5 Platonic Solids (`tools/platonic.cs`, `--alpha` for a translucent variant). Hidden
+  The Five Platonic Solids (`tools/platonic.cs`, `--alpha` for a translucent variant). Captions
+  of these three live in their tools too: change both. Hidden
   `PointByCoordinates` whose coordinates are expressions are the library's variables.
 - **Drawings that must not fall apart** when a kid drags the wrong thing (Castle, The Falling
   Ladder): fixed points are `PointByCoordinates` with constant coordinates (a polygon of those
