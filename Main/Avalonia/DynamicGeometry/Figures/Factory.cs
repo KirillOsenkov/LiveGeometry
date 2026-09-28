@@ -13,7 +13,7 @@ namespace DynamicGeometry
 
         public static Shape CreatePointShape()
         {
-            Avalonia.Controls.Shapes.Ellipse ellipse = new Avalonia.Controls.Shapes.Ellipse()
+            var marker = new PointMarker()
             {
                 Width = size,
                 Height = size,
@@ -26,12 +26,12 @@ namespace DynamicGeometry
                 UseLayoutRounding = false
             };
 
-            return ellipse;
+            return marker;
         }
 
         public static Shape CreateDependentPointShape()
         {
-            Avalonia.Controls.Shapes.Ellipse ellipse = new Avalonia.Controls.Shapes.Ellipse()
+            var marker = new PointMarker()
             {
                 Width = size,
                 Height = size,
@@ -42,7 +42,7 @@ namespace DynamicGeometry
                 UseLayoutRounding = false
             };
 
-            return ellipse;
+            return marker;
         }
 
         public static LinearGradientBrush CreateLinearGradient(Color source, Color target, double angle)

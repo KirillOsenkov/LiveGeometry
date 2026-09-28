@@ -1,3 +1,7 @@
+using System;
+using System.IO;
+using System.Net.Http;
+using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
@@ -11,6 +15,7 @@ internal sealed partial class Program
         {
             App.UseInvariantCulture();
             AddressBar.Current = new LiveGeometry.Browser.BrowserAddressBar();
+            DynamicGeometry.EmojiFont.Open = OpenEmojiFont;
             await BuildAvaloniaApp()
                 .WithInterFont()
                 .StartBrowserAppAsync("out");
@@ -28,4 +33,13 @@ internal sealed partial class Program
 
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>();
+
+    /// <summary>The emoji font, fetched from the site the first time a character is drawn</summary>
+    static async Task<Stream> OpenEmojiFont()
+    {
+        var document = JSHost.GlobalThis.GetPropertyAsJSObject("document");
+        var address = new Uri(new Uri(document.GetPropertyAsString("baseURI")), "fonts/Twemoji.Mozilla.ttf");
+        using var client = new HttpClient();
+        return new MemoryStream(await client.GetByteArrayAsync(address));
+    }
 }

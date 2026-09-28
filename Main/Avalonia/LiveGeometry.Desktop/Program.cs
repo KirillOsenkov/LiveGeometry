@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using Avalonia;
 
 namespace LiveGeometry.Desktop;
@@ -47,6 +49,8 @@ sealed class Program
             MainView.StartupPath = "/gallery/" + args[1];
         }
 
+        DynamicGeometry.EmojiFont.Open = () => Task.FromResult<Stream>(
+            File.OpenRead(Path.Combine(AppContext.BaseDirectory, "Fonts", "Twemoji.Mozilla.ttf")));
         App.MainWindowCreated = WindowPlacementPersistence.Attach;
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }

@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- the emoji a point style can pick by name, made by tools/emoji.cs -->
+    <EmbeddedResource Include="Emoji\Emoji.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="12.1.0" />
     <PackageReference Include="GuiLabs.MathParser" Version="1.0.9" />
     <PackageReference Include="GuiLabs.Undo" Version="1.0.2" />

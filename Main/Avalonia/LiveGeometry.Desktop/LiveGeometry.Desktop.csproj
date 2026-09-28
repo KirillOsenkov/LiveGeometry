@@ -15,4 +15,9 @@
     <ProjectReference Include="..\LiveGeometry\LiveGeometry.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- the emoji font, read on first use (EmojiFont) -->
+    <None Include="..\Fonts\Twemoji.Mozilla.ttf" Link="Fonts\Twemoji.Mozilla.ttf" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

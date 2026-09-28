@@ -14,6 +14,9 @@
     <PredefinedCulturesOnly>false</PredefinedCulturesOnly>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- the emoji font: the SDK compresses .otf but not .ttf, and brotli takes it from
+         1.5 MB to 0.6 MB (web.config serves the .br) -->
+    <CompressionIncludePatterns>**/*.ttf</CompressionIncludePatterns>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,6 +42,11 @@
   <Target Name="CopyCustomWebConfig" AfterTargets="Publish">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\web.config" DestinationFolder="$(PublishDir)" />
   </Target>
+
+  <ItemGroup>
+    <!-- the emoji font, fetched on first use (EmojiFont), not part of the startup download -->
+    <Content Include="..\Fonts\Twemoji.Mozilla.ttf" Link="wwwroot\fonts\Twemoji.Mozilla.ttf" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Browser" Version="12.1.0" />

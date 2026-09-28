@@ -149,6 +149,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   browser app freezes on the spot. `CenterAt`/`MoveTo` in `Utilities` also refuse a non-finite
   place. Anything new that positions a control from figure coordinates must not hand it NaN
   or infinity.
+- **`Shape.Render` is sealed** (Avalonia 12): a Shape can't draw anything but its geometry.
+  `PointMarker` draws a character through an `EmojiGlyph` visual child it measures and arranges
+  itself; with no geometry, `Shape.ArrangeOverride` returns size 0 and the shape collapses to
+  the middle of its place, so the override returns the final size then.
+- **A `FontFamily` in a collection that isn't registered yet** ("fonts:Emoji#...") makes text
+  layout throw *while rendering*, which ends the desktop app. `EmojiFont.Family` is the default
+  family until the font has loaded.
 - **`RotateTransform`**: no CenterX/CenterY - Avalonia rotates about `RenderTransformOrigin`
   (the middle by default), and WPF-style centering shifts a tilted ellipse off its center.
 - **TextChanged arrives late**: Avalonia raises a TextBox's TextChanged through the dispatcher,
@@ -323,6 +330,20 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   by name (see "Styles in files"). Gallery point sizes follow the same standard:
   `dotnet tools/pointsizes.cs -- <folder> [--apply]` lists and raises undersized styles. The
   Rose's 90 control points stay at 5 px on purpose (at 10 they swallow the flower).
+- **Point shapes and emoji** (`PointStyle.Shape` / `Character`; `Size` is the shape's or the
+  character's, whichever shows: the style keeps both in memory and the file only the one in
+  use, so `Character` must be read before `Size`, which declaration order does): every point
+  is a `PointMarker` (circle, triangle, square, diamond, pentagon, hexagon; the polygons reach
+  past the circle by eye so they look as big), or one character instead, in the embedded
+  Twemoji font (`Main/Avalonia/Fonts`, CC-BY, credited in the Emoji tab) with Inter named as
+  the fallback: the browser has no system fonts, and a character neither has is not offered
+  (`EmojiFont.CanDraw`). The font is 1.5 MB and loaded on first use (`EmojiFont.Open`: a file
+  beside the desktop exe, a fetch of `fonts/` in the browser, brotli via web.config). The
+  style's editor has Shape | Emoji tabs (`IPropertyGridTabs`: the tab shown is what the style
+  is; picking Shape drops the character, undoably; a row on two tabs, Size, gets an editor on
+  each). The Emoji tab searches `Emoji/Emoji.txt`
+  (CLDR names and subgroups of the single-character emoji the font has): regenerate it with
+  `dotnet tools/emoji.cs -- <emoji-test.txt> <font> <Emoji.txt>` when the font changes.
 - **Touching is decided with a relative tolerance** (`Math.TangencyTolerance`, 1e-9 of the size
   of the numbers): a line and a circle, or two circles, that touch by construction come out a
   hair apart or overlapping at random, and the point there would blink as the figures move. A

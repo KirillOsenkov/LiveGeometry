@@ -104,6 +104,7 @@ namespace DynamicGeometry
         void SelectionPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             FindAndUpdatePropertyEditor(e.PropertyName);
+            FollowObjectTab();
 
             // the title may say what changed: the name ("Segment AB", also when a point is
             // renamed), the number of sides of a regular polygon ("5-gon")
@@ -240,6 +241,8 @@ namespace DynamicGeometry
             // refresh posted on a move can arrive after the grid was emptied or changed)
             CurrentProperties = null;
             CurrentEditors = null;
+            tabSwitcher = null;
+            tabPages.Clear();
             if (Selection == null)
             {
                 return;
@@ -259,10 +262,134 @@ namespace DynamicGeometry
             {
                 return;
             }
+
+            if (Selection is IPropertyGridTabs tabs)
+            {
+                AddTabs(tabs, controls);
+                return;
+            }
+
             foreach (var control in Arrange(controls))
             {
                 this.Children.Add(control);
             }
+        }
+
+        SegmentSwitcher tabSwitcher;
+        readonly Dictionary<string, Control> tabPages = new Dictionary<string, Control>();
+
+        // the object's own tab as last seen: when it changes (undo, a pick), the grid follows
+        string shownObjectTab;
+
+        /// <summary>
+        /// The strip of tabs, the page of the current one, then what is on every tab (Done)
+        /// </summary>
+        void AddTabs(IPropertyGridTabs tabs, IEnumerable<UIElement> controls)
+        {
+            tabSwitcher = new SegmentSwitcher()
+            {
+                Margin = new Thickness(0, 0, 0, 8)
+            };
+            tabPages.Clear();
+            var pages = new Panel();
+
+            // a row on more than one tab gets an editor of its own on each
+            var placed = new HashSet<UIElement>();
+            var copies = new List<UIElement>();
+            foreach (var tab in tabs.Tabs)
+            {
+                var page = new StackPanel();
+                var members = new List<UIElement>();
+                foreach (var control in controls.Where(c => tabs.GetTabs(GetMemberName(c)).Contains(tab)))
+                {
+                    if (placed.Add(control))
+                    {
+                        members.Add(control);
+                        continue;
+                    }
+
+                    var copy = CreateCopy(control);
+                    if (copy != null)
+                    {
+                        copies.Add(copy);
+                        members.Add(copy);
+                    }
+                }
+
+                foreach (var control in Arrange(members))
+                {
+                    page.Children.Add(control);
+                }
+
+                tabPages[tab] = page;
+                pages.Children.Add(page);
+                tabSwitcher.Add(tab, tab);
+            }
+
+            tabSwitcher.Selected += tab =>
+            {
+                ShowTab((string)tab);
+                tabs.OnTabSelected((string)tab, ActionManager);
+                shownObjectTab = tabs.CurrentTab;
+            };
+
+            this.Children.Add(tabSwitcher);
+            this.Children.Add(pages);
+            foreach (var control in Arrange(controls.Where(c => tabs.GetTabs(GetMemberName(c)).Count == 0)))
+            {
+                this.Children.Add(control);
+            }
+
+            CurrentEditors = CurrentEditors.Concat(copies).ToArray();
+            shownObjectTab = tabs.CurrentTab;
+            ShowTab(shownObjectTab);
+        }
+
+        void ShowTab(string tab)
+        {
+            tabSwitcher.Current = tab;
+            foreach (var page in tabPages)
+            {
+                page.Value.IsVisible = page.Key == tab;
+            }
+        }
+
+        /// <summary>The object changed: if what it is now belongs on another tab, show that one</summary>
+        void FollowObjectTab()
+        {
+            if (Selection is not IPropertyGridTabs tabs || tabSwitcher == null)
+            {
+                return;
+            }
+
+            var tab = tabs.CurrentTab;
+            if (tab != shownObjectTab)
+            {
+                shownObjectTab = tab;
+                ShowTab(tab);
+            }
+        }
+
+        /// <summary>Another editor of the same property, or another button of the same method</summary>
+        UIElement CreateCopy(UIElement control)
+        {
+            if (control is MethodCallerButton button)
+            {
+                return CreateMethodCallerControl(button.OperationDescription, button.Target);
+            }
+
+            var value = (control as IValueEditor)?.Value;
+            return value == null ? null : CreatePropertyEditorControl(value, Selection, ActionManager);
+        }
+
+        static string GetMemberName(UIElement control)
+        {
+            if (control is MethodCallerButton button)
+            {
+                return button.OperationDescription?.Name;
+            }
+
+            return (control as IValueEditor)?.Value?.Name;
         }
 
         /// <summary>
