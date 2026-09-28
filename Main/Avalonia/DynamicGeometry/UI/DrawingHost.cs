@@ -366,7 +366,7 @@ namespace DynamicGeometry
 
         protected virtual void mCurrentDrawing_DisplayProperties(object sender, Drawing.DisplayPropertiesEventArgs e)
         {
-            ShowProperties(e.Object);
+            ShowProperties(e.Object, e.FocusProperty);
         }
 
         protected virtual void mCurrentDrawing_BehaviorChanged(Behavior newBehavior)
@@ -435,11 +435,12 @@ namespace DynamicGeometry
             }
         }
 
-        public virtual void ShowProperties(object selection)
+        /// <param name="focusProperty">The property whose editor takes the keyboard; null for none</param>
+        public virtual void ShowProperties(object selection, string focusProperty = null)
         {
             try
             {
-                PropertyGrid.Show(selection, CurrentDrawing.ActionManager);
+                PropertyGrid.Show(selection, CurrentDrawing.ActionManager, focusProperty);
             }
             catch (Exception ex)
             {

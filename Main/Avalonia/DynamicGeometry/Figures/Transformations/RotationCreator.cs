@@ -38,7 +38,8 @@ namespace DynamicGeometry
 
         protected RotationDialog dialog;
 
-        public override object PropertyBag
+        /// <summary>The typed angle, kept from one rotation to the next</summary>
+        RotationDialog Dialog
         {
             get
             {
@@ -47,6 +48,19 @@ namespace DynamicGeometry
                     dialog = new RotationDialog(this);
                 }
                 return dialog;
+            }
+        }
+
+        /// <summary>
+        /// Only at the step that asks for the angle: shown from the start, it took the keyboard
+        /// while the source and the center were still to be clicked. "Construction complete" is
+        /// raised before the found figures are cleared, but after the transaction is gone.
+        /// </summary>
+        public override object PropertyBag
+        {
+            get
+            {
+                return Transaction != null && FoundDependencies.Count == 2 ? Dialog : null;
             }
         }
 
@@ -109,7 +123,7 @@ namespace DynamicGeometry
                 FoundDependencies[0],
                 FoundDependencies[1],
                 angleProvider,
-                this.dialog.angle);
+                Dialog.angle);
 
             Check.NotNull(results);
             Check.NoNullElements(results);

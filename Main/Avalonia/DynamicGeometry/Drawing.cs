@@ -292,15 +292,19 @@ namespace DynamicGeometry
         public class DisplayPropertiesEventArgs : EventArgs
         {
             public object Object { get; set; }
+
+            /// <summary>The property whose editor takes the keyboard, this once; null for none</summary>
+            public string FocusProperty { get; set; }
         }
 
         public event EventHandler<DisplayPropertiesEventArgs> DisplayProperties;
 
-        public void RaiseDisplayProperties(object objectWithProperties)
+        /// <param name="focusProperty">The property to type into right away (a new label's text)</param>
+        public void RaiseDisplayProperties(object objectWithProperties, string focusProperty = null)
         {
             if (DisplayProperties != null)
             {
-                DisplayProperties(this, new DisplayPropertiesEventArgs() { Object = objectWithProperties });
+                DisplayProperties(this, new DisplayPropertiesEventArgs() { Object = objectWithProperties, FocusProperty = focusProperty });
             }
         }
 

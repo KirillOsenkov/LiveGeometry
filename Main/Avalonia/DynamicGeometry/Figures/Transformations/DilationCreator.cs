@@ -22,7 +22,7 @@ namespace DynamicGeometry
             [PropertyGridVisible]
             [PropertyGridFocus]
             [PropertyGridName("Factor = ")]
-            public double factor { get; set; }
+            public double factor { get; set; } = 2; // 0 would squash the figure into the center
 
             [PropertyGridVisible]
             [PropertyGridName("Go")]
@@ -38,7 +38,8 @@ namespace DynamicGeometry
 
         DilationDialog dialog;
 
-        public override object PropertyBag
+        /// <summary>The typed factor, kept from one dilation to the next</summary>
+        DilationDialog Dialog
         {
             get
             {
@@ -47,6 +48,19 @@ namespace DynamicGeometry
                     dialog = new DilationDialog(this);
                 }
                 return dialog;
+            }
+        }
+
+        /// <summary>
+        /// Only at the step that asks for the factor: shown from the start, it took the keyboard
+        /// while the source and the center were still to be clicked. "Construction complete" is
+        /// raised before the found figures are cleared, but after the transaction is gone.
+        /// </summary>
+        public override object PropertyBag
+        {
+            get
+            {
+                return Transaction != null && FoundDependencies.Count == 2 ? Dialog : null;
             }
         }
 
@@ -110,7 +124,7 @@ namespace DynamicGeometry
                FoundDependencies[1],
                segment1,
                null,
-               this.dialog.factor);
+               Dialog.factor);
 
             Check.NotNull(results);
             Check.NoNullElements(results);

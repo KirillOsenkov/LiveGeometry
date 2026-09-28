@@ -353,7 +353,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   panel's Show, the point's Free toggles) does so directly: the grid records the property set as
   the undo step and the undo library refuses an action recorded from inside another. A tool's
   panel that holds settings, not drawing state, says `[PropertyGridNoUndo]`: otherwise typing in
-  it between constructions is an undo step that undoes nothing visible.
+  it between constructions is an undo step that undoes nothing visible. `[PropertyGridFocus]`
+  (the editor takes the keyboard whenever it appears) is for tool panels only; a figure's
+  row that should take it just once, when the figure is created (a new label's text), is
+  named by `RaiseDisplayProperties(figure, focusProperty:)`, otherwise selecting the figure
+  anywhere (canvas, Figure List) steals the keys. A tool panel with a focused row appears
+  only at the step that asks for it (Rotation, Dilation, Translation: `PropertyBag` is null
+  otherwise - test `Transaction != null` too, since "construction complete" re-reads it
+  before the found figures are cleared); one shown all along holding a setting (Line at
+  Angle) doesn't take focus.
 - **Typed text that is wrong is said under its box**, never in the status bar
   (`StringEditor.ErrorText`: a pink plate attached to the box, widening the row up to the
   480 px a box may take). Only on commit - Enter or leaving the box - never while typing, and

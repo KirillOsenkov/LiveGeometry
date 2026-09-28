@@ -173,10 +173,24 @@ namespace DynamicGeometry
 
         public ActionManager ActionManager { get; set; }
 
-        public void Show(object newSelection, ActionManager actionManager)
+        /// <param name="focusProperty">
+        /// The property whose editor takes the keyboard, this once (a new label's text), besides
+        /// those marked <see cref="PropertyGridFocusAttribute"/>; null for none
+        /// </param>
+        public void Show(object newSelection, ActionManager actionManager, string focusProperty = null)
         {
             ActionManager = PropertyGridNoUndoAttribute.IsOn(newSelection) ? null : actionManager;
             Selection = newSelection;
+            if (focusProperty != null && CurrentEditors != null)
+            {
+                var editor = CurrentEditors
+                    .OfType<LabeledValueEditor>()
+                    .FirstOrDefault(e => e.Value?.Name == focusProperty);
+                if (editor != null)
+                {
+                    editor.FocusWhenLoaded = true;
+                }
+            }
         }
 
         public void Show(IEnumerable<object> objects, ActionManager actionManager)

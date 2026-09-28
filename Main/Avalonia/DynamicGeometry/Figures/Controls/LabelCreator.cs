@@ -17,7 +17,7 @@ namespace DynamicGeometry
             var drawing = Drawing;
             AbortAndSetDefaultTool();
             drawing.RaiseStatusNotification("");
-            drawing.RaiseDisplayProperties(label);
+            drawing.RaiseDisplayProperties(label, focusProperty: nameof(label.Text));
         }
 
         public override string Name

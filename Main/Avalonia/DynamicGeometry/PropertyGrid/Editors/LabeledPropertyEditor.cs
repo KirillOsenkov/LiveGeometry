@@ -31,9 +31,12 @@ namespace DynamicGeometry
             this.Loaded += LabeledPropertyEditor_Loaded;
         }
 
+        /// <summary>Takes the keyboard when it appears, as if its property said <see cref="PropertyGridFocusAttribute"/></summary>
+        public bool FocusWhenLoaded { get; set; }
+
         void LabeledPropertyEditor_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Value != null && Value.GetAttribute<PropertyGridFocusAttribute>() != null)
+            if (FocusWhenLoaded || Value != null && Value.GetAttribute<PropertyGridFocusAttribute>() != null)
             {
                 Focus();
             }

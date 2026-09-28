@@ -31,8 +31,9 @@ public class LineAtAngleCreator : FigureCreator
 
         readonly LineAtAngleCreator parent;
 
+        // not [PropertyGridFocus]: the panel is back after every line, and the angle rarely
+        // changes; taking the keyboard each time killed the tool letters and Delete
         [PropertyGridVisible]
-        [PropertyGridFocus]
         [PropertyGridPreferredEditor("UpDown")]
         [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public double Angle

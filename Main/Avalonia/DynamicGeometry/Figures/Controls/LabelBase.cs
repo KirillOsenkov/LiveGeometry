@@ -64,8 +64,9 @@ namespace DynamicGeometry
         }
 
         protected string text;
+        // not [PropertyGridFocus]: only a new label takes the keyboard (LabelCreator); one that
+        // is merely selected (on the canvas, in the Figure List) would steal the keys from there
         [PropertyGridVisible]
-        [PropertyGridFocus]
         [PropertyGridMultiline]
         public virtual string Text
         {
