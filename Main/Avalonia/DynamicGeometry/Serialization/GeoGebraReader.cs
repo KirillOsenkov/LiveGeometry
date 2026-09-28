@@ -49,10 +49,16 @@ public class GeoGebraReader
         }
     }
 
+    /// <summary>One line for the status bar: the list itself can run long, and goes to the console</summary>
     public string GetErrorReport()
     {
-        return "GeoGebra file: " + messages.Count + " thing" + (messages.Count == 1 ? "" : "s") + " left out" + Environment.NewLine
-            + string.Join(Environment.NewLine, messages);
+        return "Some features of this GeoGebra drawing are not supported in Live Geometry.";
+    }
+
+    /// <summary>What was left out, one line each</summary>
+    public string Details
+    {
+        get { return string.Join(Environment.NewLine, messages); }
     }
 
     readonly List<string> messages = new List<string>();
@@ -269,7 +275,7 @@ public class GeoGebraReader
                 figure = ReadText(element, expression);
                 break;
             case "line":
-                figure = ReadFreeLine(element);
+                figure = ReadFreeLine(element, expression);
                 break;
             case "conic":
                 figure = ReadFreeConic(element);
@@ -839,8 +845,17 @@ public class GeoGebraReader
     }
 
     /// <summary>A line with no construction: a x + b y + c = 0 from its coords, static</summary>
-    IFigure ReadFreeLine(XElement element)
+    IFigure ReadFreeLine(XElement element, XElement expression)
     {
+        if (expression != null)
+        {
+            var live = LiveLineByEquation((string)expression.Attribute("exp"));
+            if (live != null)
+            {
+                return live;
+            }
+        }
+
         var coordinates = element.Element("coords");
         if (coordinates == null)
         {
@@ -852,6 +867,54 @@ public class GeoGebraReader
             coordinates.ReadDouble("x").ToStringInvariant(),
             coordinates.ReadDouble("y").ToStringInvariant(),
             coordinates.ReadDouble("z").ToStringInvariant());
+        Actions.Add(drawing, line);
+        return line;
+    }
+
+    static readonly Regex variableX = new Regex(@"(?<![\w.'])x(?![\w(])");
+    static readonly Regex variableY = new Regex(@"(?<![\w.'])y(?![\w(])");
+
+    /// <summary>
+    /// A line typed as an equation, live: x = x(P), y = 2, y = m x + b, x = k y + c. The
+    /// side with the variable is read off by substitution (its value at 0 and at 1), so
+    /// only a linear one comes out right; anything else is null and the caller takes the
+    /// saved coefficients.
+    /// </summary>
+    LineByEquation LiveLineByEquation(string text)
+    {
+        int equals = text.IndexOf('=');
+        if (equals < 0)
+        {
+            return null;
+        }
+
+        string left = text.Substring(0, equals).Trim();
+        string right = TranslateExpression(text.Substring(equals + 1));
+        if (left != "x" && left != "y")
+        {
+            return null;
+        }
+
+        var variable = left == "x" ? variableY : variableX;
+        var other = left == "x" ? variableX : variableY;
+        if (other.IsMatch(right))
+        {
+            return null;
+        }
+
+        bool constant = !variable.IsMatch(right);
+        string at0 = constant ? "(" + right + ")" : "(" + variable.Replace(right, "(0)") + ")";
+        string at1 = "(" + variable.Replace(right, "(1)") + ")";
+        string slope = constant ? "0" : at1 + " - " + at0;
+        if (!Compiles(at0) || !Compiles(at1))
+        {
+            return null;
+        }
+
+        // y = m x + b is the slope form; x = k y + c is x - k y - c = 0
+        var line = left == "y"
+            ? Factory.CreateLineByEquation(drawing, slope, at0)
+            : Factory.CreateLineByEquation(drawing, "1", constant ? "0" : "-(" + slope + ")", "-" + at0);
         Actions.Add(drawing, line);
         return line;
     }
@@ -1086,6 +1149,11 @@ public class GeoGebraReader
 
         string name = (string)command.Attribute("name");
         var inputs = command.Element("input")?.Attributes().Select(a => a.Value).ToArray() ?? Array.Empty<string>();
+        if (!InputsWereRead(name, inputs))
+        {
+            return;
+        }
+
         var results = CreateCommand(name, inputs, outputs);
         if (results == null)
         {
@@ -1102,9 +1170,45 @@ public class GeoGebraReader
         }
     }
 
+    /// <summary>
+    /// Whether every input names something that was read - a figure, an inline command, a
+    /// number or an expression - so that a command built on one that wasn't (an unsupported
+    /// command's output, a list) is skipped with a word instead of failing halfway through.
+    /// </summary>
+    bool InputsWereRead(string name, string[] inputs)
+    {
+        foreach (var input in inputs)
+        {
+            if (ResolveArgument(input) == null && !CanBeNumber(input))
+            {
+                Report("Skipped " + name + "[" + string.Join(", ", inputs) + "]: '" + input + "' was not read");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool CanBeNumber(string text)
+    {
+        text = text.Trim();
+        if (IsIdentifier(text))
+        {
+            // a bare name is a figure or nothing: "E" would compile as the constant e
+            return false;
+        }
+
+        return text == "°" || Compiles(TranslateExpression(text));
+    }
+
     /// <summary>Command[args] written inline as an argument of another command: built hidden, named after nothing</summary>
     IFigure RunInlineCommand(string name, string[] inputs)
     {
+        if (!InputsWereRead(name, inputs))
+        {
+            return null;
+        }
+
         var results = CreateCommand(name, inputs, Array.Empty<string>());
         var result = results?.FirstOrDefault(r => r != null);
         if (result == null)

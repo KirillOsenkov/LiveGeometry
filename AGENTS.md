@@ -575,8 +575,10 @@ points is the circle around the crossing of two bisectors, an ellipse by foci is
 axis ends as points by coordinates, a regular polygon is a plain polygon of rotated points so
 that its vertices keep the file's names, tangents from a point go through the Thales circle);
 an inline command in an input (`Point[Circle[S, 3]]`) is built hidden. Unknown commands and
-element types (conics other than circles, pen strokes, buttons, checkboxes, lists) are
-reported in the status and left out, along with what is built on them. GeoGebra's expression
+element types (conics other than circles, pen strokes, buttons, checkboxes, lists) are left
+out, along with what is built on them: the status says only that some features aren't
+supported, the list of what exactly goes to the console (`GeoGebra: ...` lines, which is
+what a `--check` run shows). GeoGebra's expression
 language is translated only where it overlaps ours (`x(A)` is `A.X`, `°`, `Name[A]` in texts);
 a point whose expression doesn't translate becomes a free point where it was. Names come as
 they are (`A_1`, `Q'`; only `A_{12}` loses its braces, which no expression could parse). The
@@ -593,8 +595,11 @@ captions. The view is the file's (same zoom, same middle). A number typed into a
 O]`) becomes an auxiliary `Number`, or a hidden auxiliary `Label` evaluating `[expression]`
 when it depends on figures (a label is a length and an angle provider); a point given by an
 expression (`A + (0, 1)`, `t B + (1 - t) A`) becomes a `PointByCoordinates` through a small
-vector-arithmetic translator (`TranslateTerm`). GeoGebra's angles are radians in expressions and
-degrees in texts. Real-world files to test against: any material on geogebra.org downloads
+vector-arithmetic translator (`TranslateTerm`). A line typed as an equation (`x = x(P)`,
+`y = m x + b`) is a live `LineByEquation` (the variable side read off by substitution at 0 and
+1); one the reader can't read that way takes the saved coefficients, static. GeoGebra's angles
+are radians in expressions and degrees in texts. `PointIn[region]` becomes a free point: it can
+be dragged out of the region, where what is built on it may stop existing. Real-world files to test against: any material on geogebra.org downloads
 as `.ggb` from `https://www.geogebra.org/material/download/format/file/id/<id>` (the id is the
 tail of a `geogebra.org/m/<id>` link; a 403 means the author didn't allow it), and GitHub has
 small sets (`kovzol/gg-art-doc` `ggb/`, `evenjung/geogebra`). Of 58 such files, the classic

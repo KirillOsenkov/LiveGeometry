@@ -744,13 +744,17 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>A GeoGebra worksheet (the geogebra.xml of a .ggb); what couldn't be read is said in the status</summary>
+        /// <summary>
+        /// A GeoGebra worksheet (the geogebra.xml of a .ggb). That something couldn't be read
+        /// is said in the status; what exactly goes to the console, the list can be long.
+        /// </summary>
         public void AddFromGeoGebra(XElement worksheet)
         {
             var reader = new GeoGebraReader();
             reader.ReadDrawing(this, worksheet);
             if (!reader.IsSuccess)
             {
+                Console.WriteLine("GeoGebra: " + reader.Details.Replace(Environment.NewLine, Environment.NewLine + "GeoGebra: "));
                 RaiseStatusNotification(reader.GetErrorReport());
             }
         }
