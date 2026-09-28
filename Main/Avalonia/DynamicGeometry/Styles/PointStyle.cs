@@ -77,7 +77,7 @@ namespace DynamicGeometry
         /// gets its old size back (and undo needs nothing but the character).
         /// </summary>
         [PropertyGridVisible]
-        [Domain(3, 100)]
+        [Domain(3, 300)]
         public double Size
         {
             get
