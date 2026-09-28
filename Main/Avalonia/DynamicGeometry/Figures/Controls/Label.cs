@@ -207,6 +207,19 @@ namespace DynamicGeometry
             return !Locked;
         }
 
+        /// <summary>Moves a pinned label on the screen, by pixels: it scrolls along with the view</summary>
+        public void ScrollPinned(Avalonia.Vector pixels)
+        {
+            if (pin == LabelPin.None || !HasCanvas)
+            {
+                return;
+            }
+
+            var size = MeasureSize();
+            PinOffset = OffsetFrom(pin, PinnedTopLeft(size) + pixels, size);
+            UpdateVisual();
+        }
+
         /// <summary>Dragging a pinned label changes its offset from the corner, not its place in the plane</summary>
         public override void MoveToCore(Point newLocation)
         {

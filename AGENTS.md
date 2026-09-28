@@ -13,28 +13,25 @@ being true. Things derivable from the code or git history don't belong here.
   - `LiveGeometry.Browser/` - WASM head (net10.0-browser), deployed to https://livegeometry.com.
 - `Main/DynamicGeometryLibrary`, `Main/WPFClient`, `Main/Silverlight*` - the older WPF/Silverlight
   generation. Reference only.
-- `Reference/VB6/Source/` - source of the original VB6 app ("DG"). A built copy lives outside the
-  repo at `C:\Dropbox\Projects\DG 1\Source\Geometry.exe` (process name `Geometry`).
+- `Reference/VB6/Source/` - source of the original VB6 app ("DG"). A built copy may exist outside
+  the repo (process name `Geometry`).
 - `tools/` - file-based C# tools (`dotnet run tools/x.cs -- args`), see below.
 
 ## Working rules
 
-- Kirill reviews and commits everything himself: never commit, push, or otherwise change git
+- The maintainer reviews and commits everything: never commit, push, or otherwise change git
   state. Leave changes in the working tree, no need to report them.
-- Scripting is C# file-based apps (`dotnet run file.cs`). No Python on this machine.
+- Scripting is C# file-based apps (`dotnet run file.cs`). Don't assume Python is installed.
 
 ## Code style
-
-Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific to that codebase.
 
 - **Apply these rules to new code only.** Keep diffs minimal - don't reformat or rename existing
   code as a drive-by. Most of `DynamicGeometry/` is decades-old WPF/Silverlight-era code with
   block namespaces and LF endings; it stays that way unless a cleanup is explicitly asked for.
 - **New files: CRLF line endings, file-scoped namespaces.** Existing files keep what they have.
   The Write tool emits LF: after creating a file, or rewriting an existing CRLF file with Write
-  rather than Edit, fix it with the Helix MCP (`get_file_info` / `set_file_format
-  lineEnding=CRLF`; needs `start_ide` first). Never grep for `\r`. `stop_mcp` before building.
-- **Never edit workspace files from the shell** (sed/perl/heredocs). Read/Edit/Write or Helix tools.
+  rather than Edit, convert its line endings with an editor tool. Never grep for `\r`.
+- **Never edit workspace files from the shell** (sed/perl/heredocs). Use the editing tools.
 - **Backwards compatibility is not a concern** inside the repo: every caller is in-tree, so
   change all call sites rather than keep a worse shape. The exception here is the `.lgf` file
   format - users have saved drawings, so old files must keep loading.
@@ -54,8 +51,8 @@ Same conventions as the Helix repo (`C:\Ide\AGENTS.md`), minus what is specific 
 - **MSBuild conditions: no quotes** around property names or `true`/`false`:
   `Condition="$(Configuration) == Debug"`. Quote only values that can be empty or contain spaces.
 - **No global.json.** The repo must build with whatever new-enough .NET SDK is installed.
-- Build with `dotnet build` / `dotnet publish` here (unlike Helix, there is no WPF markup
-  compilation in the Avalonia solution). Pass `-bl` and read the binlog with the binlog MCP
+- Build with `dotnet build` / `dotnet publish` (there is no WPF markup compilation in the
+  Avalonia solution). Pass `-bl` and read the binlog with the binlog MCP
   tools when a build misbehaves, instead of parsing console output.
 
 ## Build and run
@@ -499,7 +496,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   before deploying. `?splash` on the url shows the splash without starting the app: serve the
   source `wwwroot` with `tools/serve.cs` and open `http://localhost:<port>/index.html?splash`.
   It animates regardless of `prefers-reduced-motion` on purpose: the query follows the Windows
-  "Animation effects" setting, off on this machine, and a still splash looks stuck.
+  "Animation effects" setting, which many machines have off, and a still splash looks stuck.
 - **web.config**: `LiveGeometry.Browser/web.config` is hand-written (serves the precompressed
   `.br` files, sets immutable caching on fingerprinted assets, `no-cache` on entry files). The
   wasm SDK drops a project web.config from publish, so the csproj copies it with an explicit
@@ -577,7 +574,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   right in a wide canvas, a strip at the bottom in a tall one. Labels are sized in pixels, so
   the figure gets the canvas minus the text and the zoom is computed from that in one go -
   never iterate "place text, zoom to fit": it runs away once the text needs more than its
-  share. If the text doesn't fit it runs off the bottom and the reader drags it up. Refitted on
+  share. If the text doesn't fit it runs off the bottom and the reader drags it up: labels of
+  a gallery drawing can't be dragged (`Drawing.FixedLabels`, not saved, off once the drawing is
+  the user's own), a drag on one pans the view, and one that starts on the caption scrolls the
+  pinned labels along (`PinnedLabelScroll`, by pixels, so undo brings both back). Not
+  `Locked`: a point counts as locked when anything built on it is, captions included. Refitted on
   resize until the first edit, through `Drawing.SizeChanged` (`MainView.KeepFitted`) and not the
   canvas's event: the coordinate system's own resize handler shifts the origin and has to run
   first. A file with a caption opened from disk is fitted the same way. Explanations have no
@@ -610,9 +611,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 
 ## Running instances
 
-Always build into the normal `bin/` - no scratch output folders. Kirill rarely has the app running
-and doesn't keep state in it that matters, so a `LiveGeometry.Desktop` process that locks `bin/` is
-almost certainly a leftover test instance, and killing it is fine (his words: in 90% of cases).
+Always build into the normal `bin/` - no scratch output folders. The maintainer rarely has the app
+running and doesn't keep state in it that matters, so a `LiveGeometry.Desktop` process that locks
+`bin/` is almost certainly a leftover test instance, and killing it is fine in most cases.
 Only if a build actually fails on a lock, enumerate and clean up:
 
 `Get-Process LiveGeometry.Desktop | Select Id, StartTime, MainWindowTitle, Path` (pwsh), then
@@ -632,9 +633,8 @@ and `.lgf` (the conversion) and appends to `<out>/report.txt`: figure counts, `N
 (only the *root* failures - figures whose dependencies all exist - plus a dump of every point),
 load errors. It exits when done. `dotnet tools/contactsheet.cs -- <png folder> <out.png>
 [columns] [tile width]` tiles the PNGs into one image: the fastest way to eyeball a whole
-folder (the whole gallery fits on one 4-column sheet). The VB6 CD library
-(`C:\Dropbox\Projects\DG 1\DG CD Version 1.0\Library\English`, 221 files, read-only) all
-loads; what the report still calls "missing" there is second intersections that fall outside
+folder (the whole gallery fits on one 4-column sheet). The VB6 CD library (221 files, kept
+outside the repo, read-only) all loads; what the report still calls "missing" there is second intersections that fall outside
 a segment or ray, and sides of a polygon that don't cross - legitimately absent.
 
 ## .dgf (DG 1.0) reader facts
@@ -678,9 +678,9 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
   `move <t> x y` (hover, for click previews and `cursor`),
   `drag <t> x1 y1 x2 y2 [steps] [--shift] [--alt]`, `wheel <t> x y <notches>`, `keys <t> "^s"`, `text`, `focus`,
   `cursor`, `place <t> x y w h`. Target = process name | `pid:N` | `hwnd:0x..` | `title:substr`.
-  - The VB6 app starts maximized on a 4K/200% monitor: `place <t> 100 100 1500 1000` first. The
-    Avalonia desktop app remembers its window (`LiveGeometry.Desktop/WindowPlacementPersistence.cs`,
-    `%LOCALAPPDATA%\LiveGeometry\MainWindowPosition.txt`). It is left at 100,100 1700x1100 for
+  - The VB6 app starts maximized: `place <t> 100 100 1500 1000` first. The Avalonia desktop app
+    remembers its window (`LiveGeometry.Desktop/WindowPlacementPersistence.cs`, a
+    `MainWindowPosition.txt` in the user's local app data). It is left at 100,100 1700x1100 for
     testing - `place` is only needed again if someone resized it. Close test instances with
     `(Get-Process -Id N).CloseMainWindow()`: that goes through the normal close path, which is
     what saves the placement (and it is more reliable than Alt+F4).

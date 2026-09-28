@@ -70,6 +70,16 @@ namespace DynamicGeometry
         /// </summary>
         public List<Rect> Scenes { get; } = new List<Rect>();
 
+        /// <summary>
+        /// Labels can't be dragged: a drag on one moves the view, as on the paper, and one on a
+        /// pinned label (a caption) takes the pinned labels along, so text and figure scroll
+        /// together. For the drawings of the gallery, where a thumb on the text of a phone means
+        /// scrolling to read the rest. Not saved. Not <see cref="IFigure.Locked"/> either: a
+        /// point counts as locked when anything built on it is, and a caption with live numbers
+        /// is built on its points.
+        /// </summary>
+        public bool FixedLabels { get; set; }
+
         Rect? activeScene;
 
         /// <summary>

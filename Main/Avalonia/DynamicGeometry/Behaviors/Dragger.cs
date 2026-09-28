@@ -52,6 +52,19 @@ namespace DynamicGeometry
 
             found = Drawing.Figures.HitTest(offsetFromFigureLeftTopCorner);
 
+            // labels that can't be dragged are paper: the drag moves the view, and one that
+            // starts on a caption takes the captions along (Drawing.FixedLabels)
+            PinnedLabelScroll captions = null;
+            if (Drawing.FixedLabels && found is LabelBase)
+            {
+                if (found is Label { Pin: not LabelPin.None })
+                {
+                    captions = new PinnedLabelScroll(Drawing);
+                }
+
+                found = null;
+            }
+
             // a figure with parts (a slider) says which of them the press takes
             IMovable oneMovable = found is IMovableParts parts
                 ? parts.FindMovablePart(offsetFromFigureLeftTopCorner)
@@ -130,6 +143,11 @@ namespace DynamicGeometry
             if (moving.IsEmpty() && !isLocked && !Drawing.CoordinateGrid.Locked)
             {
                 moving.Add(Drawing.CoordinateSystem);
+                if (captions != null)
+                {
+                    moving.Add(captions);
+                }
+
                 //var allFigures = Drawing.Figures.GetAllFiguresRecursive();
                 //roots = DependencyAlgorithms.FindRoots(f => f.Dependencies, allFigures);
                 //moving.AddRange(roots.OfType<IMovable>());

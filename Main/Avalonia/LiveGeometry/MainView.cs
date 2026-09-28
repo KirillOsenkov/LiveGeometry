@@ -520,6 +520,9 @@ public partial class MainView : UserControl
         CurrentSample = item;
         ShowEditor();
         control.LoadDrawing(item.LoadText(), item.FileName);
+
+        // a reader drags the figure, not the text: on a phone a thumb on the caption scrolls
+        control.Drawing.FixedLabels = true;
         GalleryDrawing.Fit(control.Drawing, item.Plane);
         KeepFitted(control.Drawing);
         UpdateTour();
@@ -574,6 +577,12 @@ public partial class MainView : UserControl
     /// </summary>
     void BecomeOwnDrawing()
     {
+        if (DrawingHost.CurrentDrawing != null)
+        {
+            // the user's own drawing: labels are theirs to move again
+            DrawingHost.CurrentDrawing.FixedLabels = false;
+        }
+
         CurrentSample = null;
         OwnDrawing = null;
         UpdateTour();
