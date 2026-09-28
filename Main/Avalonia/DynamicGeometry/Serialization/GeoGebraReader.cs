@@ -1479,13 +1479,14 @@ public class GeoGebraReader
         return center;
     }
 
+    /// <summary>Semicircle[A, B]: the half above the way from A to B, which is the arc counterclockwise from B to A</summary>
     IFigure SemicircleCommand(string[] inputs)
     {
         var points = Points(inputs, count: 2);
         var center = Factory.CreateMidPoint(drawing, points);
         center.Visible = false;
         Add(center);
-        return Add(Factory.CreateArc(drawing, new[] { center, points[0], points[1] }));
+        return Add(Factory.CreateArc(drawing, new[] { center, points[1], points[0] }));
     }
 
     /// <summary>CircularArc[center, A, B]: counterclockwise from A towards B, which is the same here</summary>
@@ -2188,7 +2189,30 @@ public class GeoGebraReader
                 int type = (int)decoration.ReadDouble("type");
                 arc.ArcCount = type == 1 ? 2 : type == 2 ? 3 : 1;
             }
+
+            PlaceAngleValue(element, angle, arc.Size);
         }
+    }
+
+    /// <summary>
+    /// Where GeoGebra writes the value (DrawAngle.update): the text's baseline starts at the
+    /// point arcSize / 1.7 along the bisector from the vertex, 3 px to the left and 5 px down,
+    /// plus the file's labelOffset. Ours hangs off the vertex by the offset of its top-left
+    /// corner in pixels, y down.
+    /// </summary>
+    void PlaceAngleValue(XElement element, AngleMeasurement angle, double arcSize)
+    {
+        var vertex = angle.Point(0);
+        double from = Math.GetAngle(vertex, angle.Point(1));
+        double sweep = Math.OAngle(angle.Point(1), vertex, angle.Point(2));
+        double bisector = from + sweep / 2;
+        double radius = arcSize / 1.7;
+        var labelOffset = element.Element("labelOffset");
+        double extraX = labelOffset != null ? labelOffset.ReadDouble("x") : 0;
+        double extraY = labelOffset != null ? labelOffset.ReadDouble("y") : 0;
+        angle.Offset = new Point(
+            System.Math.Cos(bisector) * radius - 3 + extraX,
+            -System.Math.Sin(bisector) * radius + 5 - ReadFontSize(element) + extraY);
     }
 
     static Point ReadCoordinates(XElement element)
