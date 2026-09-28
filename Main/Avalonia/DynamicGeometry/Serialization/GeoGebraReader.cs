@@ -310,19 +310,12 @@ public class GeoGebraReader
         var coordinates = ReadCoordinates(element);
         if (expression != null)
         {
-            // (a + x(B), 2) - a point whose coordinates are expressions
+            // (a + x(B), 2), A + (0, 1), t B + (1 - t) A: a point whose coordinates are expressions
             var text = (string)expression.Attribute("exp");
-            var pair = SplitPoint(text);
-            if (pair != null)
+            var point = PointByExpression(text);
+            if (point != null)
             {
-                var x = TranslateExpression(pair.Value.Item1);
-                var y = TranslateExpression(pair.Value.Item2);
-                if (Compiles(x) && Compiles(y))
-                {
-                    var point = Factory.CreatePointByCoordinates(drawing, x, y);
-                    Actions.Add(drawing, point);
-                    return point;
-                }
+                return point;
             }
 
             Report("Point " + (string)element.Attribute("label") + " = " + text + ": expression not understood, a free point instead");
@@ -331,6 +324,220 @@ public class GeoGebraReader
         var free = Factory.CreateFreePoint(drawing, coordinates);
         Actions.Add(drawing, free);
         return free;
+    }
+
+    /// <summary>A point by coordinates from a GeoGebra point expression, or null when it doesn't translate</summary>
+    PointByCoordinates PointByExpression(string text)
+    {
+        var vector = TranslateVector(text);
+        if (vector == null || !Compiles(vector.Value.Item1) || !Compiles(vector.Value.Item2))
+        {
+            return null;
+        }
+
+        var point = Factory.CreatePointByCoordinates(drawing, vector.Value.Item1, vector.Value.Item2);
+        Actions.Add(drawing, point);
+        return point;
+    }
+
+    /// <summary>
+    /// A GeoGebra expression whose value is a point, as our two coordinate expressions: a
+    /// literal (a, b), a point by name, sums and differences of those, and a scalar times
+    /// one; anything else is null. (A term that is a plain scalar is left to the caller.)
+    /// </summary>
+    (string, string)? TranslateVector(string text)
+    {
+        var term = TranslateTerm(text.Trim());
+        return term != null && term.Value.Y != null ? (term.Value.X, term.Value.Y) : null;
+    }
+
+    /// <summary>A scalar (X only) or a vector (X and Y) of our expression language</summary>
+    struct Term
+    {
+        public string X;
+        public string Y;
+    }
+
+    Term? TranslateTerm(string text)
+    {
+        text = text.Trim();
+        if (text.Length == 0)
+        {
+            return null;
+        }
+
+        // sums and differences at the top level, minding a leading sign
+        var parts = SplitTopLevel(text, '+', '-');
+        if (parts.Count > 1)
+        {
+            Term? sum = null;
+            foreach (var (sign, part) in parts)
+            {
+                var term = TranslateTerm(part);
+                if (term == null)
+                {
+                    return null;
+                }
+
+                sum = sum == null ? Signed(term.Value, sign) : Combine(sum.Value, Signed(term.Value, sign));
+                if (sum == null)
+                {
+                    return null;
+                }
+            }
+
+            return sum;
+        }
+
+        var factors = SplitTopLevel(text, '*', '/');
+        if (factors.Count > 1)
+        {
+            Term? product = null;
+            foreach (var (sign, part) in factors)
+            {
+                var factor = TranslateTerm(part);
+                if (factor == null)
+                {
+                    return null;
+                }
+
+                if (product == null)
+                {
+                    product = factor;
+                    continue;
+                }
+
+                string operation = sign == '/' ? " / " : " * ";
+                if (factor.Value.Y == null)
+                {
+                    product = Scale(product.Value, factor.Value.X, operation);
+                }
+                else if (product.Value.Y == null && sign != '/')
+                {
+                    product = Scale(factor.Value, product.Value.X, operation);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            return product;
+        }
+
+        if (text.StartsWith("-"))
+        {
+            var negated = TranslateTerm(text.Substring(1));
+            return negated != null ? Signed(negated.Value, '-') : null;
+        }
+
+        if (text.StartsWith("(") && text.EndsWith(")"))
+        {
+            var pair = SplitPoint(text);
+            if (pair != null)
+            {
+                var x = TranslateTerm(pair.Value.Item1);
+                var y = TranslateTerm(pair.Value.Item2);
+                if (x == null || y == null || x.Value.Y != null || y.Value.Y != null)
+                {
+                    return null;
+                }
+
+                return new Term() { X = x.Value.X, Y = y.Value.X };
+            }
+
+            var inner = TranslateTerm(text.Substring(1, text.Length - 2));
+            return inner == null ? null : new Term() { X = "(" + inner.Value.X + ")", Y = inner.Value.Y == null ? null : "(" + inner.Value.Y + ")" };
+        }
+
+        // a point by name is a vector; anything else is a scalar of our language
+        if (IsIdentifier(text.Replace("'", "")) && ResolveArgument(text) is IPoint point && IsIdentifier(point.Name))
+        {
+            return new Term() { X = point.Name + ".X", Y = point.Name + ".Y" };
+        }
+
+        var scalar = TranslateExpression(text);
+        return Compiles(scalar) ? new Term() { X = scalar } : null;
+    }
+
+    static Term Signed(Term term, char sign)
+    {
+        if (sign != '-')
+        {
+            return term;
+        }
+
+        return new Term() { X = "-(" + term.X + ")", Y = term.Y == null ? null : "-(" + term.Y + ")" };
+    }
+
+    /// <summary>Two vectors or two scalars add; a vector and a scalar don't</summary>
+    static Term? Combine(Term a, Term b)
+    {
+        if ((a.Y == null) != (b.Y == null))
+        {
+            return null;
+        }
+
+        return new Term() { X = a.X + " + " + b.X, Y = a.Y == null ? null : a.Y + " + " + b.Y };
+    }
+
+    static Term Scale(Term term, string scalar, string operation)
+    {
+        return new Term()
+        {
+            X = "(" + term.X + ")" + operation + "(" + scalar + ")",
+            Y = term.Y == null ? null : "(" + term.Y + ")" + operation + "(" + scalar + ")"
+        };
+    }
+
+    /// <summary>
+    /// The operands at the top level of an expression, each with the operator in front of it
+    /// (the first with '+', or '-' for a leading minus); one entry when there is no such
+    /// operator outside the brackets.
+    /// </summary>
+    static List<(char, string)> SplitTopLevel(string text, char first, char second)
+    {
+        var parts = new List<(char, string)>();
+        int depth = 0;
+        int start = 0;
+        char sign = '+';
+        for (int i = 0; i < text.Length; i++)
+        {
+            char c = text[i];
+            if (c == '(' || c == '[' || c == '{')
+            {
+                depth++;
+            }
+            else if (c == ')' || c == ']' || c == '}')
+            {
+                depth--;
+            }
+            else if (depth == 0 && (c == first || c == second) && i > 0 && !IsOperator(text[i - 1]))
+            {
+                parts.Add((sign, text.Substring(start, i - start)));
+                sign = c;
+                start = i + 1;
+            }
+            else if (depth == 0 && i == 0 && c == second)
+            {
+                // a leading minus: the sign of the first operand
+                sign = c;
+                start = 1;
+            }
+        }
+
+        parts.Add((sign, text.Substring(start)));
+        if (parts.Count == 1 && sign == '+')
+        {
+            return parts;
+        }
+
+        return parts.Count == 1 && start == 1 ? new List<(char, string)>() { ('+', text) } : parts;
+    }
+
+    static bool IsOperator(char c)
+    {
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '(' || c == ',';
     }
 
     /// <summary>"(a, b)" into its two halves, minding the parentheses inside</summary>
@@ -385,13 +592,26 @@ public class GeoGebraReader
             double y = sliderElement.ReadDouble("y");
             slider.Position = sliderElement.ReadBool("absoluteScreenLocation", false) ? ToLogical(new Point(x, y)) : new Point(x, y);
             Actions.Add(drawing, slider);
+            if (isAngle)
+            {
+                angleNumbers.Add(slider);
+            }
+
             return slider;
         }
 
         var number = new Number() { Drawing = drawing, Value = value };
         Actions.Add(drawing, number);
+        if (isAngle)
+        {
+            angleNumbers.Add(number);
+        }
+
         return number;
     }
+
+    // the Numbers that stand for angles: GeoGebra's expressions have them in radians, ours hold degrees
+    readonly HashSet<IFigure> angleNumbers = new HashSet<IFigure>();
 
     IFigure ReadText(XElement element, XElement expression)
     {
@@ -400,12 +620,21 @@ public class GeoGebraReader
             return null;
         }
 
-        var text = TranslateText((string)expression.Attribute("exp"));
+        // placed by ApplyElement, from the element's startPoint
+        return CreateText((string)expression.Attribute("exp"));
+    }
+
+    Label CreateText(string expression)
+    {
         var label = Factory.CreateLabel(drawing);
         Actions.Add(drawing, label);
-        label.Text = text;
+        label.Text = TranslateText(expression);
+        return label;
+    }
 
-        // the text's place: its own coordinates, or a point it hangs on
+    /// <summary>Where the element puts a text: its own coordinates, or a point it hangs on</summary>
+    void PlaceText(XElement element, Label label)
+    {
         var startPoint = element.Element("startPoint");
         Point place = new Point();
         if (startPoint != null)
@@ -435,8 +664,6 @@ public class GeoGebraReader
         {
             label.Backdrop = true;
         }
-
-        return label;
     }
 
     double ReadFontSize(XElement element)
@@ -480,6 +707,13 @@ public class GeoGebraReader
             var figure = ResolveArgument(trimmed);
             if (figure != null)
             {
+                // Text[t]: another text's words
+                if (figure is Label other)
+                {
+                    sb.Append(other.Text);
+                    continue;
+                }
+
                 var value = ValueExpressionOf(figure);
                 if (value != null)
                 {
@@ -510,12 +744,16 @@ public class GeoGebraReader
         return sb.ToString();
     }
 
-    /// <summary>What an expression of ours says for a figure's value, if it has one: a Number by name, a segment's length, a polygon's area</summary>
-    string ValueExpressionOf(IFigure figure)
+    /// <summary>
+    /// What an expression of ours says for a figure's value, if it has one: a Number by name,
+    /// a segment's length, a polygon's area. An angle in degrees for a text (what GeoGebra
+    /// prints), in radians inside an expression (what GeoGebra computes with).
+    /// </summary>
+    string ValueExpressionOf(IFigure figure, bool degrees = true)
     {
         if (figure is INumber && IsIdentifier(figure.Name))
         {
-            return figure.Name;
+            return angleNumbers.Contains(figure) && !degrees ? "rad(" + figure.Name + ")" : figure.Name;
         }
 
         if (figure is DistanceMeasurement distance && distance.Dependencies.Count == 2 && distance.Dependencies.All(d => d is IPoint && IsIdentifier(d.Name)))
@@ -530,7 +768,8 @@ public class GeoGebraReader
 
         if (figure is AngleMeasurementBase angle && angle.Dependencies.All(d => IsIdentifier(d.Name)))
         {
-            return "deg(ang(" + angle.Dependencies[1].Name + ", " + angle.Dependencies[0].Name + ", " + angle.Dependencies[2].Name + "))";
+            var radians = "oang(" + angle.Dependencies[1].Name + ", " + angle.Dependencies[0].Name + ", " + angle.Dependencies[2].Name + ")";
+            return degrees ? "deg(" + radians + ")" : radians;
         }
 
         if (figure is Polygon polygon && polygon.Dependencies.Count <= 10 && polygon.Dependencies.All(d => d is IPoint && IsIdentifier(d.Name)))
@@ -695,25 +934,122 @@ public class GeoGebraReader
     static readonly Regex degrees = new Regex(@"(\d+(?:\.\d+)?)\s*°");
     static readonly Regex implicitMultiplication = new Regex(@"(\d)\s*(?=[A-Za-z(])");
 
+    static readonly Regex identifier = new Regex(@"(?<![\w.'])([A-Za-z_Ͱ-Ͽ][\w']*)(?!\s*[\(\[])");
+
     /// <summary>
     /// GeoGebra's expression language into ours, as far as they overlap: x(A) is A.X, a
     /// degree sign a factor, the powers written as superscripts as ^, a Distance or Angle
-    /// command the function, the underscore of A_1 dropped as in the names.
+    /// command the function, a figure with a value (a segment, an angle) its value, an angle
+    /// in radians as GeoGebra computes with it.
     /// </summary>
     string TranslateExpression(string text)
     {
         text = text.Trim();
         text = coordinateFunction.Replace(text, m => NormalizeName(m.Groups[2].Value) + "." + m.Groups[1].Value.ToUpperInvariant());
-        text = degrees.Replace(text, m => "(" + m.Groups[1].Value + " * pi / 180)");
-        text = text.Replace("²", "^2").Replace("³", "^3").Replace("π", "pi").Replace("ℯ", "e");
-        text = Regex.Replace(text, @"\b(Distance|Angle)\s*[\[(]([^\]\)]*)[\])]", m =>
-        {
-            var arguments = m.Groups[2].Value.Split(',').Select(a => NormalizeName(a.Trim())).ToArray();
-            return (m.Groups[1].Value == "Distance" ? "dist(" : "deg(ang(") + string.Join(", ", arguments) + (m.Groups[1].Value == "Distance" ? ")" : "))");
-        });
+
+        // rad(45), not 45 * pi / 180: with points P and I in the drawing "pi" reads as their distance
+        text = degrees.Replace(text, m => "rad(" + m.Groups[1].Value + ")");
+        text = text.Replace("²", "^2").Replace("³", "^3").Replace("π", Math.PI.ToString("R", CultureInfo.InvariantCulture)).Replace("ℯ", "e");
+        text = ReplaceValueCommands(text);
         text = implicitMultiplication.Replace(text, m => m.Groups[1].Value + " * ");
         text = NormalizeName(text);
+        text = identifier.Replace(text, m =>
+        {
+            // a name of a figure with a value that isn't a Number (a segment, an angle
+            // measurement, an angle slider) reads as its value
+            var name = m.Groups[1].Value;
+            if (name == "pi" || name == "e" || name == "x" || name == "y")
+            {
+                return name;
+            }
+
+            if (figures.TryGetValue(name, out var figure) || polygonSides.ContainsKey(name))
+            {
+                figure = figure ?? ResolveArgument(name);
+                var value = ValueExpressionOf(figure, degrees: false);
+                if (value != null && value != name)
+                {
+                    return value;
+                }
+            }
+
+            return name;
+        });
         return text;
+    }
+
+    static readonly Regex valueCommand = new Regex(@"\b(Distance|Length|Angle|Area)\s*\[");
+
+    /// <summary>
+    /// Distance[A, B], Length[f], Length[Segment[A, B]], Angle[A, B, C], Area[poly] inside an
+    /// expression become what our language says for the value, the brackets matched
+    /// properly (an argument may be a command with brackets of its own).
+    /// </summary>
+    string ReplaceValueCommands(string text)
+    {
+        for (var match = valueCommand.Match(text); match.Success; match = valueCommand.Match(text))
+        {
+            int open = match.Index + match.Length - 1;
+            int close = MatchingBracket(text, open);
+            if (close < 0)
+            {
+                return text;
+            }
+
+            var arguments = SplitArguments(text.Substring(open + 1, close - open - 1)).Select(NormalizeName).ToArray();
+            string value = null;
+            switch (match.Groups[1].Value)
+            {
+                case "Distance" when arguments.Length == 2:
+                    value = "dist(" + arguments[0] + ", " + arguments[1] + ")";
+                    break;
+                case "Angle" when arguments.Length == 3:
+                    value = "oang(" + arguments[0] + ", " + arguments[1] + ", " + arguments[2] + ")";
+                    break;
+                case "Length":
+                case "Area":
+                    if (arguments.Length == 1)
+                    {
+                        var figure = ResolveArgument(arguments[0]);
+                        value = figure != null ? ValueExpressionOf(figure, degrees: false) : null;
+                    }
+
+                    break;
+            }
+
+            if (value == null)
+            {
+                return text;
+            }
+
+            text = text.Substring(0, match.Index) + "(" + value + ")" + text.Substring(close + 1);
+        }
+
+        return text;
+    }
+
+    /// <summary>The index of the bracket closing the one at open, or -1</summary>
+    static int MatchingBracket(string text, int open)
+    {
+        int depth = 0;
+        for (int i = open; i < text.Length; i++)
+        {
+            char c = text[i];
+            if (c == '[' || c == '(' || c == '{')
+            {
+                depth++;
+            }
+            else if (c == ']' || c == ')' || c == '}')
+            {
+                depth--;
+                if (depth == 0)
+                {
+                    return i;
+                }
+            }
+        }
+
+        return -1;
     }
 
     /// <summary>
@@ -810,7 +1146,10 @@ public class GeoGebraReader
             case "Semicircle":
                 return One(SemicircleCommand(inputs));
             case "CircularArc":
+            case "CircleArc":
                 return One(ArcCommand(inputs, Factory.CreateArc));
+            case "Centroid":
+                return One(CentroidCommand(inputs));
             case "CircularSector":
             case "CircleSector":
                 return One(ArcCommand(inputs, Factory.CreateCircleSector));
@@ -849,6 +1188,8 @@ public class GeoGebraReader
                 return One(DistanceCommand(inputs));
             case "Area":
                 return One(Add(Factory.CreateAreaMeasurement(drawing, new[] { Resolve(inputs[0]) })));
+            case "Text":
+                return One(CreateText(inputs[0]));
             case "Mirror":
             case "Reflect":
                 return One(Last(Transformer.CreateReflectedFigure(drawing, Resolve(inputs[0]), Resolve(inputs[1]))));
@@ -1310,8 +1651,12 @@ public class GeoGebraReader
         var source = Resolve(inputs[0]);
         IFigure center = inputs.Length > 2 ? PointOf(inputs[2]) : OriginPoint();
         var angle = ResolveArgument(inputs[1]);
-        double degrees = angle == null ? ParseAngle(inputs[1]) : 0;
-        return Last(Transformer.CreateRotatedFigure(drawing, source, center, angle is IAngleProvider ? angle : null, degrees));
+        if (!(angle is IAngleProvider))
+        {
+            angle = NumberArgument(inputs[1], isAngle: true);
+        }
+
+        return Last(Transformer.CreateRotatedFigure(drawing, source, center, angle, angle: 0));
     }
 
     IFigure TranslateCommand(string[] inputs)
@@ -1331,9 +1676,26 @@ public class GeoGebraReader
     {
         var source = Resolve(inputs[0]);
         IFigure center = inputs.Length > 2 ? PointOf(inputs[2]) : OriginPoint();
-        var factor = ResolveArgument(inputs[1]);
-        double value = factor == null ? ParseNumber(inputs[1]) : 0;
-        return Last(Transformer.CreateDilatedFigure(drawing, source, center, factor is ILengthProvider ? factor : null, lengthProvider2: null, value));
+        var factor = LengthProvider(inputs[1]);
+        return Last(Transformer.CreateDilatedFigure(drawing, source, center, factor, lengthProvider2: null, factor: 0));
+    }
+
+    /// <summary>Centroid[polygon]: the mean of the vertices, a point by coordinates</summary>
+    IFigure CentroidCommand(string[] inputs)
+    {
+        var polygon = Resolve(inputs[0]);
+        var vertices = polygon.Dependencies.OfType<IPoint>().ToList();
+        if (vertices.Count == 0 || vertices.Any(v => !IsIdentifier(v.Name)))
+        {
+            Report("Centroid[" + inputs[0] + "]: no vertices to average");
+            return null;
+        }
+
+        string count = vertices.Count.ToString(CultureInfo.InvariantCulture);
+        return Add(Factory.CreatePointByCoordinates(
+            drawing,
+            "(" + string.Join(" + ", vertices.Select(v => v.Name + ".X")) + ") / " + count,
+            "(" + string.Join(" + ", vertices.Select(v => v.Name + ".Y")) + ") / " + count));
     }
 
     IPoint OriginPoint()
@@ -1393,6 +1755,31 @@ public class GeoGebraReader
             }
 
             return created;
+        }
+
+        // the axes are figures in GeoGebra: hidden lines by equation here
+        if (argument == "xAxis" || argument == "yAxis")
+        {
+            var axis = argument == "xAxis"
+                ? Factory.CreateLineByEquation(drawing, "0", "1", "0")
+                : Factory.CreateLineByEquation(drawing, "1", "0", "0");
+            axis.Visible = false;
+            Add(axis);
+            figures[argument] = axis;
+            return axis;
+        }
+
+        // (a, b): a point by coordinates, hidden
+        if (SplitPoint(argument) != null)
+        {
+            var point = PointByExpression(argument);
+            if (point != null)
+            {
+                point.Visible = false;
+                figures[argument] = point;
+            }
+
+            return point;
         }
 
         return null;
@@ -1469,30 +1856,44 @@ public class GeoGebraReader
             throw new InvalidDataException("'" + argument + "' has no length");
         }
 
-        return Add(Number.CreateAuxiliary(drawing, ParseNumber(argument)));
+        return NumberArgument(argument, isAngle: false);
     }
 
-    static double ParseNumber(string text)
+    /// <summary>
+    /// A number typed into a command - 3, 45°, 0.2 * a, -α - as a figure with that value: a
+    /// Number when it is constant, a hidden label evaluating the expression when it depends
+    /// on figures (a label is a length and an angle provider). Angles are radians in
+    /// GeoGebra's expressions; a Number holds degrees, a label's value is what it says.
+    /// </summary>
+    IFigure NumberArgument(string text, bool isAngle)
     {
         text = text.Trim();
-        if (double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out double value))
+        if (text == "°")
         {
-            return value;
+            // Rotate[A, °, B]: an angle nobody typed
+            text = "0";
         }
 
-        throw new InvalidDataException("'" + text + "' is not a number");
-    }
-
-    /// <summary>45° or 0.785 (radians) in degrees</summary>
-    static double ParseAngle(string text)
-    {
-        text = text.Trim();
-        if (text.EndsWith("°"))
+        var expression = TranslateExpression(text);
+        var compiled = string.IsNullOrWhiteSpace(expression) ? null : drawing.CompileExpression(expression);
+        if (compiled == null || !compiled.IsSuccess)
         {
-            return ParseNumber(text.Substring(0, text.Length - 1));
+            throw new InvalidDataException("'" + text + "' is not a number");
         }
 
-        return ParseNumber(text).ToDegrees();
+        if (compiled.Dependencies.Count == 0)
+        {
+            double value = compiled.Expression();
+            return Add(Number.CreateAuxiliary(drawing, isAngle ? value.ToDegrees() : value));
+        }
+
+        var label = Factory.CreateLabel(drawing);
+        label.Visible = false;
+        label.Auxiliary = true;
+        Add(label);
+        label.DecimalsToShow = 10;
+        label.Text = "[" + expression + "]";
+        return label;
     }
 
     /// <summary>Command[a, b] or Command(a, b) into its name and arguments</summary>
@@ -1599,6 +2000,11 @@ public class GeoGebraReader
         {
             ApplyAngleElement(element, angle);
             angle.Visible = visible;
+        }
+        else if (figure is Label text)
+        {
+            PlaceText(element, text);
+            text.Visible = visible;
         }
         else
         {

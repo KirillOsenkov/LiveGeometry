@@ -294,6 +294,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the old names (A.X, AB as two points, the points of ang/dist/area, a Number) and swaps them
   all at once; two points whose new names run together would read differently (PB next to a
   point named PB) become `dist(P, B)`. Only the text changes, and not through undo: undoing the rename renames back.
+  A trap of the same rule: `pi` reads as the distance between points P and I when both exist
+  (`ResolveTwoPoints` runs before the constants), so generated expressions say `rad(45)` or
+  the digits of π rather than `pi`.
 - **Snapping and releasing points** (`Figures/Points/PointSnapping.cs`) swap a point for another
   kind where it is through `Actions.ReplacePoint` (name, label, dependents, lock, a chosen style
   go along). Snap: a free point onto a figure through it - "Snap to line AB" in the grid when
@@ -586,8 +589,18 @@ color (`dynamicr/g/b`) wins over the static one; a pattern fill (`fillType` hatc
 becomes a translucent fill. Point names are in the point's color, at GeoGebra's place (the
 baseline starts a radius to the upper right, plus `labelOffset`); `labelMode` 1 and 2 show
 the coordinates. Not carried over: segment end styles and decorations (arrows, ticks),
-captions. The view is the file's (same zoom, same middle). Two sample `.ggb` files have been
-tried (outside the repo: a tool sampler and a style sampler).
+captions. The view is the file's (same zoom, same middle). A number typed into a command (`Circle[A, 3]`, `Rotate[P, 45°, O]`, `Dilate[P, 0.2 * a,
+O]`) becomes an auxiliary `Number`, or a hidden auxiliary `Label` evaluating `[expression]`
+when it depends on figures (a label is a length and an angle provider); a point given by an
+expression (`A + (0, 1)`, `t B + (1 - t) A`) becomes a `PointByCoordinates` through a small
+vector-arithmetic translator (`TranslateTerm`). GeoGebra's angles are radians in expressions and
+degrees in texts. Real-world files to test against: any material on geogebra.org downloads
+as `.ggb` from `https://www.geogebra.org/material/download/format/file/id/<id>` (the id is the
+tail of a `geogebra.org/m/<id>` link; a 403 means the author didn't allow it), and GitHub has
+small sets (`kovzol/gg-art-doc` `ggb/`, `evenjung/geogebra`). Of 58 such files, the classic
+constructions (bisectors, circumcircles, nine-point circles, Pythagoras proofs, transformations)
+come through whole; what is left out is `If[...]`, lists and `Sequence`, `LocusEquation`, images,
+buttons and checkboxes, 3D, custom tools.
 
 ## Gallery
 
