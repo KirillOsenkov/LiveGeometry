@@ -183,13 +183,14 @@ namespace DynamicGeometry
                 return;
             }
 
-            Fit(bounds, FitMarginPixels, MaxFitUnitLength);
+            double margin = FitMarginPixels + GetPointReach();
+            Fit(bounds, margin, MaxFitUnitLength);
 
             // text keeps its size in pixels, so in logical units a label grows as the view
             // zooms out: measure again at the new zoom until it settles
             for (int i = 0; i < 3 && TryGetBoundsToShow(out bounds, alsoShow); i++)
             {
-                Fit(bounds, FitMarginPixels, MaxFitUnitLength);
+                Fit(bounds, margin, MaxFitUnitLength);
             }
         }
 
@@ -314,6 +315,29 @@ namespace DynamicGeometry
 
             bounds = new Rect(minX, minY, maxX - minX, maxY - minY);
             return true;
+        }
+
+        /// <summary>
+        /// How far the biggest visible point reaches out from its place, in pixels: an emoji can
+        /// be 100 px across, and fitting only its center would cut half of it off at the edge
+        /// </summary>
+        /// <param name="include">Which figures count; all of them by default</param>
+        public double GetPointReach(Func<IFigure, bool> include = null)
+        {
+            double reach = 0;
+            foreach (var figure in Drawing.Figures)
+            {
+                if (figure is PointBase point
+                    && point.Visible
+                    && point.Exists
+                    && (include == null || include(figure))
+                    && point.Shape.Width.IsValidValue())
+                {
+                    reach = M.Max(reach, point.Shape.Width / 2);
+                }
+            }
+
+            return reach;
         }
 
         //private double mScale = 1.0;

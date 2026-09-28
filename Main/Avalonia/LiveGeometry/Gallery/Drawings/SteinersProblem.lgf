@@ -32,20 +32,24 @@
     <TextStyle FontSize="20.4" Color="#FF000080" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="13" />
     <TextStyle FontSize="20.4" Color="#FF005500" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="14" />
     <TextStyle FontSize="20.4" Color="#FF820000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="15" />
-    <ShapeStyle Fill="#80FFFFEC" IsFilled="true" Color="#FFC6FFC6" StrokeWidth="1" Dash="Solid" Name="16" />
-    <ShapeStyle Fill="#80FFFFC1" IsFilled="true" Color="#FFC6FFC6" StrokeWidth="1" Dash="Solid" Name="17" />
+    <ShapeStyle Fill="#80BEF187" IsFilled="true" Color="#FFC6FFC6" StrokeWidth="1" Dash="Solid" Name="16" />
+    <ShapeStyle Fill="#FF5CB889" IsFilled="true" Color="#FFC6FFC6" StrokeWidth="1" Dash="Solid" Name="17" />
     <ShapeStyle Fill="#80FFFF97" IsFilled="true" Color="#FFC6FFC6" StrokeWidth="1" Dash="Solid" Name="18" />
-    <ShapeStyle Fill="#80FFFF57" IsFilled="true" Color="#FFC6FFC6" StrokeWidth="1" Dash="Solid" Name="19" />
+    <ShapeStyle Fill="#FFC7F1C7" IsFilled="true" Color="#FFC6FFC6" StrokeWidth="1" Dash="Solid" Name="19" />
     <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
     <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
     <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+    <PointStyle Name="Town" Character="🏨" Size="50" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000080" StrokeWidth="0.7" Dash="Solid" />
+    <PointStyle Name="Airport" Character="🛫" Size="50" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000080" StrokeWidth="0.7" Dash="Solid" />
+    <LineStyle Name="Road" Color="#FFA9A9A9" StrokeWidth="24" Dash="Solid" />
+    <LineStyle Name="RoadMarking" Color="#FFF5F5F5" StrokeWidth="2" Dash="Dash" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" Style="7" X="-9.948343" Y="0.402167" />
-    <FreePoint Name="B" Style="7" X="-3.661837" Y="3.00567" />
-    <FreePoint Name="C" Style="7" X="1.822294" Y="1.109585" />
-    <FreePoint Name="D" Style="7" X="-3.377542" Y="-4.882228" />
-    <FreePoint Name="E" Style="7" X="-2.403636" Y="0.581344" />
+    <FreePoint Name="A" Style="Town" X="-6" Y="1" />
+    <FreePoint Name="B" Style="Town" X="-2" Y="4" />
+    <FreePoint Name="C" Style="Town" X="6" Y="2" />
+    <FreePoint Name="D" Style="Town" X="0" Y="-4" />
+    <FreePoint Name="E" Style="Airport" X="0" Y="0" />
     <Segment Name="Segment1" Style="8">
       <Dependency Name="A" />
       <Dependency Name="B" />
@@ -62,19 +66,19 @@
       <Dependency Name="D" />
       <Dependency Name="A" />
     </Segment>
-    <Segment Name="Segment5" Style="9">
+    <Segment Name="Segment5" Style="Road">
       <Dependency Name="E" />
       <Dependency Name="B" />
     </Segment>
-    <Segment Name="Segment6" Style="9">
+    <Segment Name="Segment6" Style="Road">
       <Dependency Name="E" />
       <Dependency Name="C" />
     </Segment>
-    <Segment Name="Segment7" Style="9">
+    <Segment Name="Segment7" Style="Road">
       <Dependency Name="E" />
       <Dependency Name="D" />
     </Segment>
-    <Segment Name="Segment8" Style="9">
+    <Segment Name="Segment8" Style="Road">
       <Dependency Name="E" />
       <Dependency Name="A" />
     </Segment>
@@ -102,6 +106,22 @@
       <Dependency Name="A" />
       <Dependency Name="D" />
     </Polygon>
+    <Segment Name="AE2" Style="RoadMarking">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="BE2" Style="RoadMarking">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="CE2" Style="RoadMarking">
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="DE2" Style="RoadMarking">
+      <Dependency Name="E" />
+      <Dependency Name="D" />
+    </Segment>
     <Label Name="Title" Style="GalleryTitle" Text="Steiner's Problem" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
     <Label Name="Description" Style="GalleryText" Text="Four towns A, B, C and D want to build one shared airport E. Where should it go so that the total length of the four roads is as small as possible?\n\nRoads right now:\n[dist(E,A)+dist(E,B)+dist(E,C)+dist(E,D)]\n\nDrag E around and find the smallest number. Then look where E ended up - can you see the rule? Try a dented (non-convex) quadrilateral too." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />

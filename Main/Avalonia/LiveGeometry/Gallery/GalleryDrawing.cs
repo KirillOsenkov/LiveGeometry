@@ -161,6 +161,11 @@ public static class GalleryDrawing
             figure = drawing.ChooseScene(room.Width, room.Height).Value;
             drawing.ActiveScene = figure;
         }
+        else
+        {
+            // a big point (an emoji) would stick out of the room by half its size
+            room = room.Deflate(coordinateSystem.GetPointReach(include: f => f != title && f != description));
+        }
 
         // the zoom that fills the room; a figure with no size keeps the zoom it has
         double unitLength = coordinateSystem.UnitLength;

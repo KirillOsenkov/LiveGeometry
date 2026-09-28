@@ -245,7 +245,9 @@ namespace DynamicGeometry
         public override void WriteXml(System.Xml.XmlWriter writer)
         {
             base.WriteXml(writer);
-            writer.WriteAttributeString("Text", Text.Replace("\n", "").Replace("\r", @"\n"));
+            // any line break, \r\n or a bare \n (what a TextBox gives back), as the two characters \n
+            var escaped = Text.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", @"\n");
+            writer.WriteAttributeString("Text", escaped);
             if (pin == LabelPin.None)
             {
                 var coordinates = Coordinates;
