@@ -81,13 +81,21 @@ public class GalleryView : DockPanel
             tile.PointerEntered += (s, e) => picture.IsAnimated = true;
             tile.PointerExited += (s, e) => picture.IsAnimated = false;
 
-            // a drawing with paper of its own shows it on its tile instead of the pastel
+            // a drawing with paper of its own shows it on its tile instead of the pastel, as
+            // the theme on screen resolves it (a Dark override of the paper counts)
             picture.DrawingLoaded += drawing =>
             {
                 if (drawing.OwnBackground != null)
                 {
-                    tile.SetPlate(drawing.OwnBackground);
+                    tile.SetPlate(drawing.Background);
                     tilesWithPaper.Add(tile);
+                }
+            };
+            AppTheme.CurrentChanged += () =>
+            {
+                if (picture.Drawing?.OwnBackground != null)
+                {
+                    tile.SetPlate(picture.Drawing.Background);
                 }
             };
             galleryTiles.Children.Add(tile);

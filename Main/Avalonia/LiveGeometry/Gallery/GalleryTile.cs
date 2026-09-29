@@ -17,6 +17,13 @@ public class GalleryTile : Border
     static readonly IBrush DarkCaption = new SolidColorBrush(Color.FromRgb(0x2B, 0x30, 0x38));
 
     readonly Action action;
+
+    // what the plate was given: a pastel (darkened under the dark theme) or a drawing's paper
+    // (shown as it is, a gradient kept whole)
+    Color plate;
+    bool plateIsPaper;
+    IBrush paperGradient;
+
     IBrush background;
     IBrush hoverBackground;
     IBrush border;
@@ -32,6 +39,7 @@ public class GalleryTile : Border
     {
         this.action = action;
         SetPlate(plate);
+        AppTheme.CurrentChanged += Derive;
 
         CornerRadius = new CornerRadius(10);
         BorderThickness = new Thickness(1.5);
@@ -84,39 +92,74 @@ public class GalleryTile : Border
         };
     }
 
-    /// <summary>A solid plate; the border and the hover states are derived from it</summary>
-    public void SetPlate(Color plate)
+    /// <summary>A pastel plate, as the light theme shows it; the dark theme shows it deepened</summary>
+    public void SetPlate(Color pastel)
     {
-        ToHsv(plate, out double hue, out double saturation, out double value);
-
-        // a gray plate keeps a hint of color in its border so that it still reads as a plate
-        double tint = System.Math.Max(saturation, 0.03);
-        background = new SolidColorBrush(plate);
-        hoverBackground = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 1.8, 1), value));
-        border = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 2.2, 1), value * 0.91));
-        hoverBorder = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 5, 1), value * 0.8));
-        Update();
+        plate = pastel;
+        plateIsPaper = false;
+        paperGradient = null;
+        Derive();
     }
 
     /// <summary>
-    /// The plate is a drawing's paper: a solid color as above, a gradient as it is (hovering
-    /// only changes the border, which follows the gradient's end).
+    /// The plate is a drawing's paper (as the theme on screen resolves it): a solid color as
+    /// it is, a gradient as it is (hovering only changes the border, which follows the
+    /// gradient's end).
     /// </summary>
     public void SetPlate(IBrush paper)
     {
         if (paper is ISolidColorBrush solid)
         {
-            SetPlate(solid.Color);
-            return;
+            plate = solid.Color;
+            plateIsPaper = true;
+            paperGradient = null;
+            Derive();
+        }
+        else if (paper is ILinearGradientBrush gradient && gradient.GradientStops.Count > 0)
+        {
+            plate = gradient.GradientStops[gradient.GradientStops.Count - 1].Color;
+            plateIsPaper = true;
+            paperGradient = paper;
+            Derive();
+        }
+    }
+
+    /// <summary>The border and the hover states from the plate: deeper than a light plate, lighter than a dark one</summary>
+    void Derive()
+    {
+        var color = plateIsPaper || !IsDark(AppTheme.Current.Page) ? plate : Deepen(plate);
+        ToHsv(color, out double hue, out double saturation, out double value);
+
+        // a gray plate keeps a hint of color in its border so that it still reads as a plate
+        double tint = System.Math.Max(saturation, 0.03);
+        Color hover;
+        if (IsDark(color))
+        {
+            hover = FromHsv(hue, System.Math.Min(tint * 1.4, 1), System.Math.Min(value * 1.18 + 0.02, 1));
+            border = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 1.6, 1), System.Math.Min(value * 1.5 + 0.04, 1)));
+            hoverBorder = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 2.5, 1), System.Math.Min(value * 1.9 + 0.06, 1)));
+        }
+        else
+        {
+            hover = FromHsv(hue, System.Math.Min(tint * 1.8, 1), value);
+            border = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 2.2, 1), value * 0.91));
+            hoverBorder = new SolidColorBrush(FromHsv(hue, System.Math.Min(tint * 5, 1), value * 0.8));
         }
 
-        if (paper is ILinearGradientBrush gradient && gradient.GradientStops.Count > 0)
-        {
-            SetPlate(gradient.GradientStops[gradient.GradientStops.Count - 1].Color);
-            background = paper;
-            hoverBackground = paper;
-            Update();
-        }
+        background = paperGradient ?? new SolidColorBrush(color);
+        hoverBackground = paperGradient ?? new SolidColorBrush(hover);
+        Update();
+    }
+
+    /// <summary>
+    /// A pastel for the dark theme: the same hue, deep instead of pale, with a little more
+    /// saturation so that it still reads as a color (a gray stays gray)
+    /// </summary>
+    static Color Deepen(Color pastel)
+    {
+        ToHsv(pastel, out double hue, out double saturation, out _);
+        double deepSaturation = saturation < 0.05 ? saturation : System.Math.Min(System.Math.Max(saturation * 2.2, 0.16), 1);
+        return FromHsv(hue, deepSaturation, 0.24);
     }
 
     void Update()
@@ -125,7 +168,7 @@ public class GalleryTile : Border
         BorderBrush = isOver ? hoverBorder : border;
 
         // the caption sits on the bottom of the plate, where a gradient has ended: it goes by
-        // the plate, not by the theme (the pastels are light under any theme)
+        // the plate (a drawing's own paper is what it is under any theme)
         if (caption != null)
         {
             caption.Foreground = IsDark(BottomColor(background)) ? Brushes.White : DarkCaption;
