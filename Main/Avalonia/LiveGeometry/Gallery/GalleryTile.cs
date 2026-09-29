@@ -92,6 +92,20 @@ public class GalleryTile : Border
         };
     }
 
+    bool isCompact;
+
+    /// <summary>A small tile (those of the start row): the caption smaller and closer to the edges</summary>
+    public bool IsCompact
+    {
+        get => isCompact;
+        set
+        {
+            isCompact = value;
+            caption.FontSize = value ? 13 : 14;
+            caption.Margin = value ? new Thickness(4, 0, 4, 8) : new Thickness(10, 2, 10, 10);
+        }
+    }
+
     /// <summary>A pastel plate, as the light theme shows it; the dark theme shows it deepened</summary>
     public void SetPlate(Color pastel)
     {

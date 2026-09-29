@@ -789,6 +789,12 @@ buttons and checkboxes, 3D, custom tools.
   serve it; `web.config` and `tools/serve.cs` fall back to it). All page changes go through
   `MainView.Show*`. Started at a drawing's address the gallery isn't built at all (the address
   is readable synchronously since `main.js` registers its imports before the runtime starts).
+  The gallery page starts with a row of small tiles (`GalleryView.CreateStartTile`): New,
+  Open (the editor's Open dialog; the page has no toolbar, so this and Ctrl+O are the ways
+  to a file from there) and, while there is a drawing to go back to, My Drawing. They are
+  92 wide so that all three fit across a phone 360 wide; the brand beside them gets what
+  room is left, which on a phone with three tiles is none. A caption longer than
+  "My Drawing" would be cut short.
 - **Gallery drawings** are embedded `.lgf` (`Gallery/Drawings`, order and titles in
   `GalleryCatalog`) and are *the* source: edit them directly. They were forked once from the
   Windows Phone samples and the DG 1.0 CD library; `tools/gallerize.cs` made that fork and must

@@ -443,6 +443,7 @@ public partial class MainView : UserControl
 
         Gallery = new GalleryView(CreateCorner(), ArrangeGallery);
         Gallery.NewDrawingRequested += () => HandleExceptions(() => ShowNewDrawing(push: true));
+        Gallery.OpenDrawingRequested += OpenDrawingFromFile;
         Gallery.ContinueDrawingRequested += () => HandleExceptions(() => ShowOwnDrawing(push: true));
         Gallery.ItemRequested += item => HandleExceptions(() => ShowSample(item, push: true));
         pages.Children.Add(Gallery);

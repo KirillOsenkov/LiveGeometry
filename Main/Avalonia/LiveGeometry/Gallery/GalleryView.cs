@@ -15,22 +15,25 @@ using Ellipse = Avalonia.Controls.Shapes.Ellipse;
 namespace LiveGeometry;
 
 /// <summary>
-/// The start page: "New Drawing" and the drawings of the gallery as tiles. Has no ribbon and no
-/// canvas of its own - <see cref="MainView"/> shows either this or the editor.
+/// The start page: New, Open, My Drawing (while there is one to go back to) and the drawings
+/// of the gallery as tiles. Has no ribbon and no canvas of its own - <see cref="MainView"/>
+/// shows either this or the editor.
 /// </summary>
 public class GalleryView : DockPanel
 {
     public event Action NewDrawingRequested = delegate { };
+    public event Action OpenDrawingRequested = delegate { };
     public event Action ContinueDrawingRequested = delegate { };
     public event Action<GalleryItem> ItemRequested = delegate { };
 
     static readonly Color newDrawingPlate = Color.Parse("#E6EFFB");
+    static readonly Color openDrawingPlate = Color.Parse("#E4F4E6");
     static readonly Color continueDrawingPlate = Color.Parse("#FBF1DC");
 
     readonly StackPanel startTiles = new StackPanel()
     {
         Orientation = Orientation.Horizontal,
-        Spacing = 18,
+        Spacing = StartTileSpacing,
         VerticalAlignment = VerticalAlignment.Top
     };
     readonly TileGridPanel galleryTiles = new TileGridPanel();
@@ -41,17 +44,10 @@ public class GalleryView : DockPanel
     {
         this.BindTheme(BackgroundProperty, nameof(AppTheme.Page));
 
-        startTiles.Children.Add(new GalleryTile(PlusPicture(), "New Drawing", newDrawingPlate, () => NewDrawingRequested())
-        {
-            Width = StartTileWidth,
-            Height = StartTileHeight
-        });
-        continueTile = new GalleryTile(PencilPicture(), "My Drawing", continueDrawingPlate, () => ContinueDrawingRequested())
-        {
-            Width = StartTileWidth,
-            Height = StartTileHeight,
-            IsVisible = false
-        };
+        startTiles.Children.Add(CreateStartTile(PlusPicture(), "New", newDrawingPlate, () => NewDrawingRequested()));
+        startTiles.Children.Add(CreateStartTile(FolderPicture(), "Open", openDrawingPlate, () => OpenDrawingRequested()));
+        continueTile = CreateStartTile(PencilPicture(), "My Drawing", continueDrawingPlate, () => ContinueDrawingRequested());
+        continueTile.IsVisible = false;
         startTiles.Children.Add(continueTile);
 
         // the start row: the tiles at the left, the name of the app in the room to their right
@@ -146,9 +142,21 @@ public class GalleryView : DockPanel
         Children.Add(page);
     }
 
-    // square, about the height of the brand next to them
-    const double StartTileWidth = 120;
-    const double StartTileHeight = 120;
+    // Three of them fit across the narrowest phone (360 wide, less the margins of the page),
+    // where the brand gives up its place; "My Drawing" is as long as a caption gets
+    const double StartTileSize = 92;
+    const double StartTileSpacing = 10;
+    const double StartPictureSize = 44;
+
+    static GalleryTile CreateStartTile(Control picture, string text, Color plate, Action action)
+    {
+        return new GalleryTile(picture, text, plate, action)
+        {
+            Width = StartTileSize,
+            Height = StartTileSize,
+            IsCompact = true
+        };
+    }
 
     #region Arrange mode
 
@@ -299,6 +307,29 @@ public class GalleryView : DockPanel
             });
     }
 
+    /// <summary>The folder of the toolbar's Open, in its colors</summary>
+    static Control FolderPicture()
+    {
+        var outline = new SolidColorBrush(Color.FromRgb(0xA8, 0x7B, 0x05));
+        return Picture(
+            new Path()
+            {
+                Data = Geometry.Parse("M10,18 H33 L40,27 H70 V66 H10 Z"),
+                Fill = new SolidColorBrush(Color.FromRgb(0xF2, 0xB6, 0x32)),
+                Stroke = outline,
+                StrokeThickness = 2.5,
+                StrokeJoin = PenLineJoin.Round
+            },
+            new Path()
+            {
+                Data = Geometry.Parse("M10,66 L20,38 H79 L70,66 Z"),
+                Fill = new SolidColorBrush(Color.FromRgb(0xFA, 0xD5, 0x65)),
+                Stroke = outline,
+                StrokeThickness = 2.5,
+                StrokeJoin = PenLineJoin.Round
+            });
+    }
+
     static Control PencilPicture()
     {
         var wood = new SolidColorBrush(Color.FromRgb(0xF2, 0xB6, 0x32));
@@ -329,9 +360,9 @@ public class GalleryView : DockPanel
         {
             Child = canvas,
             Stretch = Stretch.Uniform,
-            MaxWidth = 56,
-            MaxHeight = 56,
-            Margin = new Thickness(8, 10, 8, 2),
+            MaxWidth = StartPictureSize,
+            MaxHeight = StartPictureSize,
+            Margin = new Thickness(6, 8, 6, 0),
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
