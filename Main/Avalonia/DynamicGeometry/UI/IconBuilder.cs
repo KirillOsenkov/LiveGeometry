@@ -47,10 +47,10 @@ namespace DynamicGeometry
             return this;
         }
 
-        public IconBuilder Point(double x, double y, Brush fill)
+        /// <summary>A point filled in a color of the theme (<c>nameof(AppTheme.PointOnFigureFill)</c>), rimmed in ink</summary>
+        public IconBuilder Point(double x, double y, string fillThemeColor)
         {
-            var point = AddPoint(x, y, fillThemeColor: null);
-            point.Fill = fill;
+            AddPoint(x, y, fillThemeColor);
             return this;
         }
 

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Avalonia;
-using Avalonia.Media;
 
 namespace DynamicGeometry;
 
@@ -122,12 +121,11 @@ public class IntersectionCreator : FigureCreator
     {
         // a diagonal through the center crosses the circle at 1:30 and 7:30,
         // 0.35 * cos 45° = 0.2475 away from the center each way
-        var intersectionFill = new SolidColorBrush(Color.FromArgb(255, 111, 211, 247));
         return IconBuilder.BuildIcon()
             .Circle(0.5, 0.5, 0.35)
             .Line(0, 1, 1, 0)
-            .Point(0.7475, 0.2525, intersectionFill)
-            .Point(0.2525, 0.7475, intersectionFill)
+            .Point(0.7475, 0.2525, nameof(AppTheme.IntersectionPointFill))
+            .Point(0.2525, 0.7475, nameof(AppTheme.IntersectionPointFill))
             .Canvas;
     }
 }

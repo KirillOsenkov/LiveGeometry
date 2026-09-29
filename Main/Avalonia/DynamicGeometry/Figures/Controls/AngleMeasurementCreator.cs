@@ -59,9 +59,9 @@ namespace DynamicGeometry
             var path = new Path
             {
                 StrokeThickness = 1,
-                Fill = new SolidColorBrush(Color.Parse("#33FF33")),
                 Data = Geometry.Parse(pathData)
             };
+            path.BindTheme(Shape.FillProperty, nameof(AppTheme.AngleFill));
             path.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
             builder.Canvas.Children.Add(path);
 

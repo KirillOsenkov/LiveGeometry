@@ -53,6 +53,12 @@ public class AppTheme : INotifyPropertyChanged
         TextFaint = Color.Parse("#B4BAC4"),
         IconOutline = Color.Parse("#3A4250"),
         ShapeOutline = Color.Parse("#A87B05"),
+        SourceFill = Color.Parse("#FFFF00"),
+        ImageFill = Color.Parse("#80FF80"),
+        RulerFill = Color.Parse("#FFFF00"),
+        AngleFill = Color.Parse("#33FF33"),
+        AreaFill = Color.Parse("#FFD6D6"),
+        AreaHatch = Color.Parse("#C8606E"),
         Guide = Color.Parse("#8A94A6"),
         Accent = Color.Parse("#2F7BD6"),
         Destructive = Color.Parse("#B3261E"),
@@ -94,6 +100,12 @@ public class AppTheme : INotifyPropertyChanged
         TextFaint = Color.Parse("#6B7482"),
         IconOutline = Color.Parse("#D0D6DF"),
         ShapeOutline = Color.Parse("#D9B44A"),
+        SourceFill = Color.Parse("#B8962E"),
+        ImageFill = Color.Parse("#4E9A5E"),
+        RulerFill = Color.Parse("#A88E32"),
+        AngleFill = Color.Parse("#3F8F4E"),
+        AreaFill = Color.Parse("#6E4A50"),
+        AreaHatch = Color.Parse("#C88A94"),
         Guide = Color.Parse("#7A8595"),
         Accent = Color.Parse("#5AA0F2"),
         Destructive = Color.Parse("#F0736A"),
@@ -317,6 +329,42 @@ public class AppTheme : INotifyPropertyChanged
     [PropertyGridVisible]
     [PropertyGridGroup("Icons")]
     public Color ShapeOutline { get => shapeOutline; set => Set(ref shapeOutline, value); }
+
+    /// <summary>In the icons of the transformations: the figure that is transformed...</summary>
+    Color sourceFill;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color SourceFill { get => sourceFill; set => Set(ref sourceFill, value); }
+
+    /// <summary>...and its image</summary>
+    Color imageFill;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color ImageFill { get => imageFill; set => Set(ref imageFill, value); }
+
+    /// <summary>The ruler of the Distance tool (and so the Measure tab)</summary>
+    Color rulerFill;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color RulerFill { get => rulerFill; set => Set(ref rulerFill, value); }
+
+    /// <summary>The protractor of the Angle tool</summary>
+    Color angleFill;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color AngleFill { get => angleFill; set => Set(ref angleFill, value); }
+
+    /// <summary>The hatched pentagon of the Area tool...</summary>
+    Color areaFill;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color AreaFill { get => areaFill; set => Set(ref areaFill, value); }
+
+    /// <summary>...and its hatching</summary>
+    Color areaHatch;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color AreaHatch { get => areaHatch; set => Set(ref areaHatch, value); }
 
     /// <summary>Faint construction lines in an icon (a grid, an axis)</summary>
     Color guide;

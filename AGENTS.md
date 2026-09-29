@@ -536,7 +536,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Light or Dark for Fluent's sake, added to `All`. Tool icons draw their lines in `Ink`
   (`IconBuilder` binds them, and takes a theme color's name where a `Color` was passed);
   the drawn chrome icons (`MainToolbarIcons`, `PropertyGridIcons`) use a sentinel brush that
-  `Shape` rebinds to `IconOutline`; fills stay the colors of the things drawn. The sun/moon
+  `Shape` rebinds to `IconOutline`. A tool icon's fills are theme colors too: the Paper group
+  for what a figure would look like (points, `ShapeFill` for every polygon icon), and the
+  Icons group for what is only a picture (`SourceFill`/`ImageFill` of the transformations,
+  `RulerFill`, `AngleFill`, `AreaFill`/`AreaHatch`) - no literal brush in a `CreateIcon`,
+  or the theme can't reach it. The sun/moon
   beside the Octocat (both pages) flips between light and dark, and landing on what the system
   says stores `System` again. On Windows the title bar goes dark too
   (`LiveGeometry.Desktop/WindowFrameTheme.cs`: the DWM attribute, and then a non-client
@@ -736,7 +740,9 @@ buttons and checkboxes, 3D, custom tools.
 - **Gallery and routes** (`LiveGeometry/Gallery/`, `MainView` "Pages" region): three states -
   gallery, a gallery drawing (`CurrentSample`: tour group in the toolbar, Page Up/Down, edits
   dropped silently, Save = save as and the drawing becomes the user's own), the user's own
-  drawing (parked in `OwnDrawing` with its undo history while they look around). Paths `/`,
+  drawing (parked in `OwnDrawing` with its undo history while they look around; the name of
+  the file it came from or was saved to, `OwnFileName`, sits alone in the tour group's
+  place, centered, and in the page title - nothing for a new drawing). Paths `/`,
   `/gallery/<slug>`, `/drawing`; `AddressBar` is the abstraction, `BrowserAddressBar` +
   `main.js` do pushState/popstate. `index.html` needs `<base href="/">` for that (all routes
   serve it; `web.config` and `tools/serve.cs` fall back to it). All page changes go through

@@ -446,11 +446,14 @@ public class MainToolbarGroup : Panel
         return finalSize;
     }
 
-    /// <summary>Where the middle starts, and how much the text after it gets</summary>
+    /// <summary>
+    /// Where the middle starts, and how much the text after it gets; with the middle hidden
+    /// (a file's name alone) the text itself is centered
+    /// </summary>
     void Place(double width, out double left, out double trailingWidth)
     {
         double middleWidth = Middle.DesiredSize.Width;
-        double centeredLeft = (width - middleWidth) / 2;
+        double centeredLeft = middleWidth > 0 ? (width - middleWidth) / 2 : (width - trailingNaturalWidth) / 2;
         double leftForWholeText = width - middleWidth - trailingNaturalWidth;
         left = isLeftAligned ? 0 : System.Math.Max(0, System.Math.Min(centeredLeft, leftForWholeText));
         trailingWidth = System.Math.Max(0, width - left - middleWidth);

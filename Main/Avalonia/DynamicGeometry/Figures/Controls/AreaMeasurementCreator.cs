@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Media;
 
 namespace DynamicGeometry
 {
@@ -101,12 +100,12 @@ namespace DynamicGeometry
             var builder = IconBuilder
                 .BuildIcon()
                 .Polygon(
-                    new SolidColorBrush(Color.FromArgb(255, 255, 214, 214)),
+                    nameof(AppTheme.AreaFill),
                     nameof(AppTheme.Ink),
                     pentagon);
 
             // hatching: the parts of the lines x + y = c that are inside the pentagon
-            var hatchColor = Color.FromArgb(255, 200, 96, 110);
+            var hatchColor = nameof(AppTheme.AreaHatch);
             for (double c = 0.55; c < 1.7; c += 0.2)
             {
                 var ends = new List<Point>();

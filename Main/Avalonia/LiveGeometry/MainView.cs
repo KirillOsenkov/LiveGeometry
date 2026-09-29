@@ -243,10 +243,11 @@ public partial class MainView : UserControl
         toolbar.AddSeparator();
         toolbar.AddButton(MainToolbarIcons.Settings(), "Settings", shortcut: null, ToggleSettings);
 
-        // only while a drawing of the gallery is open: previous / next through the gallery,
-        // in the middle of the room the toolbar has left, and bigger than the document buttons
+        // while a drawing of the gallery is open: previous / next through the gallery and its
+        // title, in the middle of the room the toolbar has left, and bigger than the document
+        // buttons; while a drawing from a file is open, the file's name alone
         TourGroup = toolbar.BeginCenteredGroup();
-        toolbar.AddButton(
+        TourPrevious = toolbar.AddButton(
             MainToolbarIcons.Previous(),
             "Previous drawing",
             "Page Up",
@@ -254,7 +255,7 @@ public partial class MainView : UserControl
             iconSize: TourIconSize,
             inset: TourArrowInset);
         TourPosition = toolbar.AddText(FontWeight.Normal, minWidth: 44, fontSize: TourFontSize);
-        toolbar.AddButton(
+        TourNext = toolbar.AddButton(
             MainToolbarIcons.Next(),
             "Next drawing",
             "Page Down",
@@ -449,7 +450,9 @@ public partial class MainView : UserControl
     const double TourArrowInset = 1; // the chevrons have room enough inside their own icon
 
     Panel TourGroup;
+    MainToolbarButton TourPrevious;
     TextBlock TourPosition;
+    MainToolbarButton TourNext;
     TextBlock TourTitle;
 
     /// <summary>The drawing of the gallery that is open, null for a drawing of the user's own</summary>
@@ -459,6 +462,15 @@ public partial class MainView : UserControl
     /// The user's own drawing, kept (with its undo history) while they look around the gallery
     /// </summary>
     Drawing OwnDrawing;
+
+    /// <summary>
+    /// The name of the file the user's own drawing came from or was last saved to (with its
+    /// extension), null for a new drawing
+    /// </summary>
+    string OwnFileName;
+
+    /// <summary>The page title of the user's own drawing: the file's name, when it has one</summary>
+    string OwnTitle => OwnFileName != null ? OwnFileName + " - " + AppTitle : AppTitle;
 
     static bool IsOwnDrawingPath(string path)
     {
@@ -547,9 +559,10 @@ public partial class MainView : UserControl
         CurrentSample = null;
         ShowEditor();
         OwnDrawing = null;
+        OwnFileName = null;
         DrawingHost.Clear();
         UpdateTour();
-        Publish(OwnDrawingPath, AppTitle, push);
+        Publish(OwnDrawingPath, OwnTitle, push);
     }
 
     /// <summary>Back to the drawing the user left for the gallery; a new one if there is none</summary>
@@ -574,7 +587,7 @@ public partial class MainView : UserControl
         }
 
         UpdateTour();
-        Publish(OwnDrawingPath, AppTitle, push);
+        Publish(OwnDrawingPath, OwnTitle, push);
     }
 
     void ShowSample(GalleryItem item, bool push)
@@ -641,9 +654,9 @@ public partial class MainView : UserControl
 
     /// <summary>
     /// The drawing in the editor is the user's now (opened from a file, or a drawing of the
-    /// gallery that they saved)
+    /// gallery that they saved), from the named file
     /// </summary>
-    void BecomeOwnDrawing()
+    void BecomeOwnDrawing(string fileName)
     {
         if (DrawingHost.CurrentDrawing != null)
         {
@@ -653,17 +666,26 @@ public partial class MainView : UserControl
 
         CurrentSample = null;
         OwnDrawing = null;
+        OwnFileName = fileName;
         UpdateTour();
-        Publish(OwnDrawingPath, AppTitle, push: true);
+        Publish(OwnDrawingPath, OwnTitle, push: true);
     }
 
     void UpdateTour()
     {
-        TourGroup.IsVisible = CurrentSample != null;
-        if (CurrentSample != null)
+        bool isSample = CurrentSample != null;
+        TourGroup.IsVisible = isSample || OwnFileName != null;
+        TourPrevious.IsVisible = isSample;
+        TourPosition.IsVisible = isSample;
+        TourNext.IsVisible = isSample;
+        if (isSample)
         {
             TourPosition.Text = (GalleryCatalog.IndexOf(CurrentSample) + 1) + "/" + GalleryCatalog.Items.Count;
             TourTitle.Text = CurrentSample.Title;
+        }
+        else
+        {
+            TourTitle.Text = OwnFileName;
         }
 
         // the ribbon's default depends on the same thing
@@ -765,7 +787,7 @@ public partial class MainView : UserControl
     /// <param name="name">File name; the extension tells the format</param>
     public void OpenDrawing(string name, byte[] bytes)
     {
-        BecomeOwnDrawing();
+        BecomeOwnDrawing(name);
         ShowEditor();
 
         if (name.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase))
@@ -841,10 +863,17 @@ public partial class MainView : UserControl
                 await stream.FlushAsync();
             }
 
-            // a saved drawing of the gallery is the user's own from here on
+            // a saved drawing of the gallery is the user's own from here on; a drawing of
+            // their own goes by its new name
             if (CurrentSample != null)
             {
-                BecomeOwnDrawing();
+                BecomeOwnDrawing(file.Name);
+            }
+            else
+            {
+                OwnFileName = file.Name;
+                UpdateTour();
+                AddressBar.Current.Replace(OwnDrawingPath, OwnTitle);
             }
         }
         catch (Exception ex)

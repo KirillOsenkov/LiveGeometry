@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Avalonia;
-using Avalonia.Media;
 
 namespace DynamicGeometry
 {
@@ -39,7 +38,7 @@ namespace DynamicGeometry
         {
             return IconBuilder.BuildIcon()
                 .Polygon(
-                    new SolidColorBrush(Color.FromArgb(255, 128, 255, 128)),
+                    nameof(AppTheme.ShapeFill),
                     nameof(AppTheme.Ink),
                     new Point(0.68, 0.98),
                     new Point(1.01, 0.63),

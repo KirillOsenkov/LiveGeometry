@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using Avalonia;
 using Avalonia.Input;
-using Avalonia.Media;
 
 namespace DynamicGeometry;
 
@@ -131,7 +130,7 @@ public class SliderCreator : Behavior
         return IconBuilder.BuildIcon()
             .Line(0.1, 0.65, 0.9, 0.65)
             .Point(0.1, 0.65)
-            .Point(0.6, 0.65, new SolidColorBrush(Color.FromArgb(255, 124, 227, 139)))
+            .Point(0.6, 0.65, nameof(AppTheme.PointOnFigureFill))
             .Canvas;
     }
 }
