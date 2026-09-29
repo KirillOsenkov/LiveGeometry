@@ -15,7 +15,9 @@ public abstract class ExpandingPickerEditor : LabeledValueEditor
 {
     static ExpandingPickerEditor expanded;
 
-    readonly Border chipFill = new Border();
+    // rounded as the inside of the chip's border (its radius less its thickness): a square
+    // fill reaches into the corners, over the border where it turns
+    readonly Border chipFill = new Border() { CornerRadius = new CornerRadius(3) };
     Control picker;
 
     protected override UIElement CreateEditor()
