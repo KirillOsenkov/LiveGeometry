@@ -504,7 +504,25 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Coordinates tab (`DrawingHost.ToggleDrawingProperties` puts the drawing itself in the property
   grid). A gallery tile takes a drawing's paper as its plate and turns its caption white on a
   dark one.
-- **No menu.** New, Open, Save | Undo, Redo are one row (`LiveGeometry/MainToolbar.cs`) above the
+- **Export** (`MainView.Export.cs`, the button after Save; its menu is a `MenuFlyout`): Save
+  as .png, Save as .svg, Copy image - the canvas as it is on screen at that moment, same view,
+  same size, without the side panel and the status bar (siblings over the canvas, not in it;
+  a selection's highlight is in it). `ViewportImage` makes both: the PNG has the pixels of the
+  screen (layout size × the screen's scaling; the clipboard gets the same picture), the SVG is
+  in layout units and is what Skia writes (`SKSvgCanvas`) when Avalonia draws the canvas onto
+  it (`DrawingContextHelper.RenderAsync`), so anything that draws on screen is in it with no
+  code per figure. Skia writes text as `<text>` in a font, and a viewer without that font -
+  every viewer, for Inter and the emoji - draws its own: `SvgTextOutlines` replaces each
+  `<text>` by the outlines of its glyphs and a color emoji by its COLR layers in their CPAL
+  colors (version 0 tables, which Twemoji has), so the file needs no font. The glyphs are
+  looked up by character (cmap), not taken from the shaped run: a ligature or contextual
+  alternate would come out as its plain letters. A text whose font isn't found stays
+  `<text>`. Skia's `font-weight` is one step too light from 500 on ("600" is a bold 700):
+  `ReadWeight` undoes that, look at it again when SkiaSharp changes. Fonts are found by the
+  family name Skia wrote: the emoji font, Avalonia's `fonts:Inter` collection, then the
+  installed ones; a new embedded font wants an entry in `FontFaces.OpenEmbedded`. To check
+  an SVG, open it in headless Edge (`webauto start file:///...svg`) next to the PNG.
+- **No menu.** New, Open, Save, Export | Undo, Redo are one row (`LiveGeometry/MainToolbar.cs`) above the
   ribbon, with the tour group (◀ n/N ▶ + title) between them and the Octocat at the right,
   whose tooltip is the build. The first button is the app's mark and folds the ribbon (Ctrl+F1,
   `MainView.UpdateRibbon`): folded by default when a gallery drawing opens on a small screen
@@ -952,12 +970,13 @@ point (in a circle) tools; tracing locus of a point ("Create locus" on a point);
 overlapping figures; double-click opens properties (here: double-click = zoom to fit); measurement
 label dragging constraints; point shape/size per point and name color; line dash styles per
 figure; Show/Hide, message, sound and launch buttons; live cursor coordinates in the status bar;
-rulers; undo/redo captions naming the action; unsaved-changes prompt; recent files; export
-(BMP/WMF/EMF -> here PNG would do) and print; "tool select once" option; settings persistence;
-languages (en/ru/uk/de).
+rulers; undo/redo captions naming the action; unsaved-changes prompt; recent files; print;
+"tool select once" option; settings persistence; languages (en/ru/uk/de).
 
 ## Not yet verified in the browser
 
-PNG export, printing, demo download, and the `Hyperlink` figure's use of `WebClient`.
-Saving through the browser storage provider works; opening has only been checked as far as
-the picker (see "Files in the browser").
+Printing, demo download, and the `Hyperlink` figure's use of `WebClient`.
+Saving through the browser storage provider works (drawings, and PNG and SVG pictures);
+opening has only been checked as far as the picker (see "Files in the browser"). Copy image
+finishes without an error in headless Edge, but reading the clipboard back is denied there:
+what a paste gives was only checked on the desktop.

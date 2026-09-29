@@ -628,6 +628,18 @@ public static class MainToolbarIcons
             Shape("M5.5,11 H14.5 V17 H5.5 Z", diskLabel, diskOutline));
     }
 
+    /// <summary>A picture on its way out: the canvas as an image, to a file or the clipboard</summary>
+    public static Control Export()
+    {
+        return Icon(
+            Shape("M2.5,3.5 H15.5 V14.5 H2.5 Z", paper, null),
+            Shape("M6.2,5.6 A1.5,1.5 0 1 1 6.19,5.6 Z", folderBack, null),
+            Shape("M2.5,14.5 V12.5 L6.5,8.5 L9.5,11.5 L11.5,9.5 L15.5,13.5 V14.5 Z", green, null),
+            Shape("M2.5,3.5 H15.5 V14.5 H2.5 Z", null, outline),
+            Shape("M14.5,10.5 A4,4 0 1 1 14.49,10.5 Z", diskBody, null),
+            Shape("M12.3,14.5 H16.5 M14.7,12.6 L16.6,14.5 L14.7,16.4", null, Brushes.White, thickness: 1.6));
+    }
+
     /// <summary>Tiles, in the pastels of the gallery</summary>
     public static Control Gallery()
     {

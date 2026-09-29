@@ -35,6 +35,9 @@ public static class EmojiFont
 
     static GlyphTypeface emojiTypeface;
 
+    /// <summary>The font itself, null until it is loaded: the SVG export draws its characters as outlines</summary>
+    public static GlyphTypeface Typeface => emojiTypeface;
+
     /// <summary>
     /// The emoji font or the text font has every character of the text (an FE0F asks for the
     /// emoji look and needs none), so it looks the same everywhere. False until the font is

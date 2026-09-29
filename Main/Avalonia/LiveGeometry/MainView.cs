@@ -237,6 +237,7 @@ public partial class MainView : UserControl
         toolbar.AddButton(MainToolbarIcons.New(), "New", "Ctrl+N", NewDrawing);
         toolbar.AddButton(MainToolbarIcons.Open(), "Open", "Ctrl+O", OpenDrawingFromFile);
         toolbar.AddButton(MainToolbarIcons.Save(), "Save", "Ctrl+S", SaveDrawingToFile);
+        ExportButton = toolbar.AddButton(MainToolbarIcons.Export(), "Export", shortcut: null, ShowExportMenu);
         toolbar.AddSeparator();
         toolbar.AddButton(MainToolbarIcons.Undo(), "Ctrl+Z", DrawingHost.DrawingControl.CommandUndo);
         toolbar.AddButton(MainToolbarIcons.Redo(), "Ctrl+Y", DrawingHost.DrawingControl.CommandRedo);
