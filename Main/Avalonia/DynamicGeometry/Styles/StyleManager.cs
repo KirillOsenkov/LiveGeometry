@@ -122,7 +122,7 @@ namespace DynamicGeometry
             var dependentPointStyle = ThemedPoint(DependentPointStyleName, size: 8, theme => theme.DependentPointFill);
 
             var lineStyle = new LineStyle() { Name = LineStyleName };
-            lineStyle.BindToTheme(nameof(LineStyle.Color), theme => AppTheme.WithAlpha(theme.Ink, 100));
+            lineStyle.BindToTheme(nameof(LineStyle.Color), theme => theme.Line);
             var lineStyle2 = new LineStyle()
             {
                 Name = "OtherLine",
@@ -165,6 +165,14 @@ namespace DynamicGeometry
                 Dash = LineDash.Dot
             };
             dottedLineStyle.SetOverride(AppTheme.Dark.Name, nameof(LineStyle.Color), Color.FromArgb(255, 158, 158, 158));
+
+            // a bar rather than a line: what the knob of a slider runs along
+            var sliderTrackStyle = new LineStyle()
+            {
+                Name = SliderTrackStyleName,
+                StrokeWidth = 6
+            };
+            sliderTrackStyle.BindToTheme(nameof(LineStyle.Color), theme => theme.SliderTrack);
 
             // an outline with a hint of the same color inside: made for circles, fine for polygons
             var blueOutlineStyle = new ShapeStyle()
@@ -247,6 +255,7 @@ namespace DynamicGeometry
                 greenLineStyle,
                 dashedLineStyle,
                 dottedLineStyle,
+                sliderTrackStyle,
                 shapeStyle,
                 shapeStyle2,
                 shapeWithLineStyle,
@@ -359,6 +368,7 @@ namespace DynamicGeometry
         public const string MidpointStyleName = "Midpoint";
         public const string DependentPointStyleName = "DependentPoint";
         public const string LineStyleName = "Line";
+        public const string SliderTrackStyleName = "SliderTrack";
         public const string ShapeStyleName = "Shape";
         public const string OutlinedShapeStyleName = "OutlinedShape";
         public const string TextStyleName = "Text";
@@ -406,7 +416,10 @@ namespace DynamicGeometry
         {
             // A drawing from a file gets the named styles it lacks (AddWithDefaults); if its own
             // style of that name isn't a point style, the first point style does, as before.
-            var byKind = figure is IPoint ? GetStyle(GetDefaultPointStyleName(figure)) : null;
+            // Likewise a slider: its track's style, else the first line style.
+            var byKind = figure is IPoint ? GetStyle(GetDefaultPointStyleName(figure))
+                : figure is Slider ? GetStyle(SliderTrackStyleName)
+                : null;
             if (byKind != null && byKind.GetType().SupportsFigureType(figure.GetType()))
             {
                 return byKind;

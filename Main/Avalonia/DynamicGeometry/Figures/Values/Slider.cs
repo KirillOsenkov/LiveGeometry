@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 using Avalonia;
+using Avalonia.Controls;
 
 namespace DynamicGeometry;
 
@@ -202,6 +203,14 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         {
             Track.Style = value;
         }
+    }
+
+    public override void OnAddingToCanvas(Canvas newContainer)
+    {
+        // before the parts take the styles of their kinds: the track is a segment and would
+        // take the default line, which the slider would then pass for its own
+        EnsureStyleAssigned();
+        base.OnAddingToCanvas(newContainer);
     }
 
     #endregion

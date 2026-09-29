@@ -128,7 +128,13 @@ public class SliderCreator : Behavior
     public override FrameworkElement CreateIcon()
     {
         return IconBuilder.BuildIcon()
-            .Line(0.1, 0.65, 0.9, 0.65)
+            .Line(
+                strokeThickness: 4,
+                nameof(AppTheme.SliderTrack),
+                0.1,
+                0.65,
+                0.9,
+                0.65)
             .Point(0.1, 0.65)
             .Point(0.6, 0.65, nameof(AppTheme.PointOnFigureFill))
             .Canvas;

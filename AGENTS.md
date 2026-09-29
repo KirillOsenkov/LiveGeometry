@@ -460,7 +460,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   parts carry names no expression can say ("slider knob"): `Figures[name]` looks *inside*
   composites and not at them, which is also why `Binder.ResolveFigure` matches top-level names
   exactly before its case-insensitive pass (a slider `a` next to a point `A`). Default names
-  are lowercase letters, skipping e, x, y and the ones that read as digits.
+  are lowercase letters, skipping e, x, y and the ones that read as digits. The slider's
+  style is its track's, by default `SliderTrack`: a bar 6 wide in the theme's `SliderTrack`
+  gray, narrower than the points at its ends so that they cover them. `Slider.OnAddingToCanvas`
+  assigns it before the parts are added, or the track, a segment, takes the default line first.
 - **TranslatedPoint** (`Figures/Points/TranslatedPoint.cs`): distance and direction are each
   *tied* to a figure (vector, length/angle provider, `ILine` as it points, a Number) or *free*
   (the parameter dragging changes). Roles are stored by index into the dependency list, never
@@ -602,8 +605,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the theme on screen, else a copy with the override applied); `GetWpfStyle` and the
   `Apply` extension do that, so figures and sample glyphs need nothing. The default styles
   (`StyleManager.AddDefaultStyles`, the grid's own in `CartesianGrid`) take their colors from
-  the theme's Paper group (`AppTheme.Paper`, `Ink`, the point fills, `ShapeFill`, `Axis`,
-  `GridMajor`/`GridMinor`) through `BindToTheme`: base from Light, an override from every
+  the theme's Paper group (`AppTheme.Paper`, `Ink`, `Line` - the default line, translucent
+  black in Light and an opaque light gray in Dark, where a translucent one came out too dim -
+  `SliderTrack`, the point fills, `ShapeFill`, `Axis`, `GridMajor`/`GridMinor`) through `BindToTheme`: base from Light, an override from every
   other theme, read again when a theme color is tweaked (`AppTheme.ColorsChanged` ->
   `Drawing.RefreshTheme`). Chosen colors that read on both papers (a red line, a blue
   outline) stay literal; a gray helper line gets a literal Dark override. A drawing's paper is
@@ -703,7 +707,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   intersection point drawn green); only a custom style is carried as an element. The default
   names are the constants in `StyleManager` (`FreePoint`, `PointOnFigure`,
   `IntersectionPoint`, `Midpoint`, `DependentPoint` - `DependentPointStyle` in older files,
-  `Line`, `Shape`, `OutlinedShape`, `Text`, `Heading`, `Hyperlink`, and the palette ones like
+  `Line`, `SliderTrack`, `Shape`, `OutlinedShape`, `Text`, `Heading`, `Hyperlink`, and the palette ones like
   `RedLine`). Saved are the styles the figures name (`DrawingSerializer.Write` writes the
   figures aside first and collects their `Style` attributes - a figure may name another's
   style, a vector its arrow's) and a default the drawing changed; a default as a new drawing

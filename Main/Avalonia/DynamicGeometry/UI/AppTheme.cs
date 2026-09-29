@@ -88,6 +88,8 @@ public class AppTheme : INotifyPropertyChanged
         ErrorText = Color.Parse("#9B1C1C"),
         Paper = Color.Parse("#FFFFFF"),
         Ink = Color.Parse("#000000"),
+        Line = Color.Parse("#64000000"),
+        SliderTrack = Color.Parse("#C0C0C0"),
         FreePointFill = Color.Parse("#FFFF64"),
         PointOnFigureFill = Color.Parse("#7CE38B"),
         IntersectionPointFill = Color.Parse("#6FD3F7"),
@@ -135,6 +137,8 @@ public class AppTheme : INotifyPropertyChanged
         ErrorText = Color.Parse("#F2A0A0"),
         Paper = Color.Parse("#2B2B2B"),
         Ink = Color.Parse("#D0D0D0"),
+        Line = Color.Parse("#D3D3D3"),
+        SliderTrack = Color.Parse("#606060"),
         FreePointFill = Color.Parse("#F5C542"),
         PointOnFigureFill = Color.Parse("#6BCF7F"),
         IntersectionPointFill = Color.Parse("#4FC3F7"),
@@ -441,6 +445,18 @@ public class AppTheme : INotifyPropertyChanged
     [PropertyGridVisible]
     [PropertyGridGroup("Paper")]
     public Color Ink { get => ink; set => Set(ref ink, value); }
+
+    /// <summary>The line of a new drawing (the Line style): segments, lines, circles</summary>
+    Color line;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color Line { get => line; set => Set(ref line, value); }
+
+    /// <summary>The bar a slider's knob runs along (the SliderTrack style), and in the Slider tool's icon</summary>
+    Color sliderTrack;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color SliderTrack { get => sliderTrack; set => Set(ref sliderTrack, value); }
 
     Color freePointFill;
     [PropertyGridVisible]
