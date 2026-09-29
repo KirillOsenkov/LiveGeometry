@@ -61,6 +61,7 @@ public static class GalleryCatalog
         Item("pythagoras", "Pythagorean Theorem"),
         Item("circumscribed-circle", "Circumscribed Circle"),
         Item("inscribed-circle", "Inscribed Circle"),
+        Item("circle-touching-three-lines", "Circle Touching Three Lines"),
         Item("morley", "Morley's Miracle"),
         Item("castle", "Castle"),
         Item("squares-around-rhombus", "Squares Around a Rhombus"),

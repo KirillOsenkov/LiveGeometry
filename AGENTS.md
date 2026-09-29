@@ -757,7 +757,8 @@ buttons and checkboxes, 3D, custom tools.
   `Grid`, list it in the catalog, and `--rewrite` the folder. Drawings with `Grid="true"`
   (graphs) keep their file viewport in view (`GalleryItem.Plane`), because graphs and lines
   have no bounds. All 47 were rewritten on 2026-09-29 (`--rewrite`: loaded and saved again,
-  the file's viewport kept): no copies of defaults, no `Style` on a figure with its kind's
+  the file's viewport and the caption's pin, offsets and width kept, since opening lays both
+  out for the window at hand): no copies of defaults, no `Style` on a figure with its kind's
   default, no attributes at their defaults, default names of figures as the loader gives them
   (`AB` for `Segment8`). Rerunning `--rewrite` on the folder changes nothing, so a generated
   drawing (below) can be normalized the same way after regenerating.

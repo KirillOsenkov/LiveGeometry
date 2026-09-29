@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-20.9374999999" Top="5.2812500002" Right="19.0625000001" Bottom="-10.6979166664" />
+  <Styles>
+    <LineStyle Name="GreenLine" Color="#FF2E9E4F" />
+    <ShapeStyle Name="PurpleOutline" Fill="#1C8854D0" Color="#FF8854D0" StrokeWidth="3" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" X="-11.499999999899998" Y="-6.166666666499999" />
+    <FreePoint Name="B" X="-13.53125" Y="-1.1562499997000004" />
+    <Ray Name="AB" Style="RedLine">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Ray>
+    <FreePoint Name="C" X="-5.4791666666" Y="-6.1979166664" />
+    <FreePoint Name="D" X="-3.375" Y="-2.0937499998" />
+    <Ray Name="CD" Style="RedLine">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Ray>
+    <Segment Name="AC" Style="RedLine">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <AngleBisector Name="AngleBisector1" Style="DashedLine">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </AngleBisector>
+    <AngleBisector Name="AngleBisector2" Style="DashedLine">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </AngleBisector>
+    <IntersectionPoint Name="E" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AngleBisector1" />
+      <Dependency Name="AngleBisector2" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="PerpendicularLine1" Style="GreenLine" RightAngleCorner="2">
+      <Dependency Name="AB" />
+      <Dependency Name="E" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine2" Style="GreenLine" RightAngleCorner="0">
+      <Dependency Name="AC" />
+      <Dependency Name="E" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="PerpendicularLine3" Style="GreenLine" RightAngleCorner="1">
+      <Dependency Name="CD" />
+      <Dependency Name="E" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="F" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AB" />
+      <Dependency Name="PerpendicularLine1" />
+    </IntersectionPoint>
+    <Circle Name="Circle1" Style="PurpleOutline">
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+    </Circle>
+    <Label Name="Title" Style="GalleryTitle" Text="Circle Touching Three Lines" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Open up a triangle: keep one side and let the other two be rays that don't have to meet. A circle still touches all three.\n\nAs in the inscribed circle, the dashed angle bisectors meet at the center, equally far from all three lines. The green perpendiculars show where the circle touches.\n\nDrag the yellow points. When the rays cross, this is the inscribed circle. Spread them apart and their lines cross on the other side: the circle touches that triangle from outside, as its excircle." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

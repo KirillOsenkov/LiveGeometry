@@ -214,6 +214,7 @@ public partial class MainView
     /// and what saving leaves out (copies of the defaults, the style of a figure's kind,
     /// attributes at their defaults). The file's own viewport is kept: a captioned drawing
     /// is laid out for this window on opening, and its viewport is not what the file means.
+    /// Neither is where that put the caption (<see cref="KeepCaptionLayout"/>).
     /// Made for the gallery (2026-09-29); harmless to rerun.
     /// </summary>
     async void RunRewrite(string folder)
@@ -240,6 +241,8 @@ public partial class MainView
                 }
             }
 
+            KeepCaptionLayout(original, rewritten);
+
             // through a stream, so that the declaration says utf-8 (a StringBuilder makes it say utf-16)
             var settings = new XmlWriterSettings() { Indent = true, Encoding = new UTF8Encoding(false), NewLineChars = "\r\n" };
             string text;
@@ -263,6 +266,40 @@ public partial class MainView
 
         Console.WriteLine("rewrote " + changedFiles + " files");
         Environment.Exit(0);
+    }
+
+    static readonly string[] captionLayoutAttributes = { "Pin", "OffsetX", "OffsetY", "WrapWidth", "Backdrop" };
+
+    /// <summary>
+    /// The caption's pin, offsets and width are those of the window the drawing was opened in
+    /// (<see cref="GalleryDrawing.Fit"/> decides them again on every opening): what the file
+    /// had is kept, or a rewrite in a window of another size would change every drawing.
+    /// </summary>
+    static void KeepCaptionLayout(XDocument original, XDocument rewritten)
+    {
+        foreach (var name in new[] { GalleryDrawing.TitleName, GalleryDrawing.DescriptionName })
+        {
+            var originalLabel = FindLabel(original, name);
+            var rewrittenLabel = FindLabel(rewritten, name);
+            if (originalLabel == null || rewrittenLabel == null)
+            {
+                continue;
+            }
+
+            foreach (var attribute in captionLayoutAttributes)
+            {
+                var value = (string)originalLabel.Attribute(attribute);
+                if (value != null)
+                {
+                    rewrittenLabel.SetAttributeValue(attribute, value);
+                }
+            }
+        }
+    }
+
+    static XElement FindLabel(XDocument document, string name)
+    {
+        return document.Root.Element("Figures")?.Elements("Label").FirstOrDefault(e => (string)e.Attribute("Name") == name);
     }
 
     public static string SpaceLabelsFolder { get; set; }
