@@ -538,9 +538,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the drawn chrome icons (`MainToolbarIcons`, `PropertyGridIcons`) use a sentinel brush that
   `Shape` rebinds to `IconOutline`; fills stay the colors of the things drawn. The sun/moon
   beside the Octocat (both pages) flips between light and dark, and landing on what the system
-  says stores `System` again. Out of the theme for now: the canvas (white paper), the gallery's
-  pastel tiles (captions go by the plate), the drawings' styles. On Windows the title bar is
-  asked to go dark too (`LiveGeometry.Desktop/WindowFrameTheme.cs`).
+  says stores `System` again. On Windows the title bar goes dark too
+  (`LiveGeometry.Desktop/WindowFrameTheme.cs`: the DWM attribute, and then a non-client
+  activation cycle plus a frame-changed `SetWindowPos`, since Windows 10 keeps painting the
+  old shade until the next activation otherwise). `winauto shot` doesn't show the frame at
+  all (PrintWindow): to check it, `shot ... --screen`.
 - **Drawings follow the theme through their styles.** A `FigureStyle` has its values (how it
   looks under Light, the base theme) and may hold *overrides* for another theme: the
   properties that differ, with their values (`Overrides`, `SetOverride`). Whoever draws with a
@@ -856,7 +858,8 @@ Learned from `Reference/VB6/Source` while making the CD library load (`DGFReader
 Screenshots are PNGs; image pixels are the click coordinates in both tools.
 
 - `tools/winauto.cs` - any desktop window (the VB6 app, the Avalonia desktop app).
-  `list`, `tree <t>`, `menu <t>`, `invoke <t> <menuId>`, `shot <t> out.png`, `click <t> x y [right|double]`,
+  `list`, `tree <t>`, `menu <t>`, `invoke <t> <menuId>`, `shot <t> out.png [--screen]` (the
+  window's own rendering, or what is on the screen there - the only way to see the title bar), `click <t> x y [right|double]`,
   `move <t> x y` (hover, for click previews and `cursor`),
   `drag <t> x1 y1 x2 y2 [steps] [--shift] [--alt]`, `wheel <t> x y <notches>`, `keys <t> "^s"`, `text`, `focus`,
   `cursor`, `place <t> x y w h`. Target = process name | `pid:N` | `hwnd:0x..` | `title:substr`.
