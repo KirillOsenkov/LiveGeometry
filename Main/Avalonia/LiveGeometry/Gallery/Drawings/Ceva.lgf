@@ -5,9 +5,15 @@
     <LineStyle Name="13" Color="#FF0000FF" StrokeWidth="2" />
     <LineStyle Name="15" Color="#FF0000FF" StrokeWidth="2" />
     <LineStyle Name="17" Color="#FF0000FF" StrokeWidth="2" />
-    <LineStyle Name="19" Color="#FF000000" />
-    <LineStyle Name="20" Color="#FF000000" />
-    <LineStyle Name="21" Color="#FF000000" />
+    <LineStyle Name="19" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
+    <LineStyle Name="20" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
+    <LineStyle Name="21" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
     <ShapeStyle Name="25" Fill="#FFEEF4FD" Color="#FFEEF4FD" />
   </Styles>
   <Figures>

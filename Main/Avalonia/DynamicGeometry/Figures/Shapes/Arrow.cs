@@ -103,13 +103,15 @@ namespace DynamicGeometry
         {
             base.ApplyStyle();
 
+            // as the style looks under the theme on screen
             Avalonia.Media.IBrush brush = null;
-            var lineStyle = Style as LineStyle;
+            var resolved = Style?.Resolve();
+            var lineStyle = resolved as LineStyle;
             if (lineStyle != null && lineStyle.Color.A > 0)
             {
                 brush = new Avalonia.Media.SolidColorBrush(lineStyle.Color);
             }
-            else if (Style is ShapeStyle shapeStyle)
+            else if (resolved is ShapeStyle shapeStyle)
             {
                 brush = shapeStyle.Fill;
             }

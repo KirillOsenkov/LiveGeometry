@@ -5,14 +5,18 @@
     <PointStyle Name="7" Fill="#FF3FD6D6" />
     <LineStyle Name="8" Color="#FF808080" />
     <ShapeStyle Name="9" Fill="#00FFFFFF" Color="#FFE040E0" StrokeWidth="3" />
-    <PointStyle Name="10" Fill="#FFF070F0" Color="#FFA000A0" />
+    <PointStyle Name="10" Fill="#FFF070F0" Color="#FFA000A0">
+      <Dark Color="#FFFF63FF" />
+    </PointStyle>
     <PointStyle Name="11" Size="8" Fill="#FF8CC4F0" Color="#FF5050E0" />
     <LineStyle Name="12" Color="#FFB8B8B8" />
     <PointStyle Name="13" Fill="#FFD48CFF" Color="#FFAF43E0" />
     <LineStyle Name="14" Color="#FF5050E0" StrokeWidth="2.5" />
     <LineStyle Name="15" Color="#FFAF43E0" StrokeWidth="2" />
     <LineStyle Name="16" Color="#FF8C8C8C" />
-    <TextStyle Name="Checkbox" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" />
+    <TextStyle Name="Checkbox" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
+      <Dark Color="#FFB5BBC6" />
+    </TextStyle>
     <LineStyle Name="Step1" Color="#B3D741E0" />
     <LineStyle Name="Step2" Color="#B3CE42E0" />
     <LineStyle Name="Step3" Color="#B3C543E0" />

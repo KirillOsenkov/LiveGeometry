@@ -5,7 +5,9 @@
     <LineStyle Name="4" Color="#FF25AA68" StrokeWidth="2" />
     <PointStyle Name="10" Fill="#FFFFFFFF" Color="#FFA28423" />
     <LineStyle Name="11" Color="#FF8585FF" StrokeWidth="5" />
-    <PointStyle Name="12" Size="9" Fill="#FFFFFFFF" Color="#FF0B3A3A" StrokeWidth="0.7" />
+    <PointStyle Name="12" Size="9" Fill="#FFFFFFFF" Color="#FF0B3A3A" StrokeWidth="0.7">
+      <Dark Color="#FF9BECEC" />
+    </PointStyle>
     <LineStyle Name="14" Color="#FF48A3A3" />
     <LineStyle Name="15" Color="#FF478CD9" />
   </Styles>

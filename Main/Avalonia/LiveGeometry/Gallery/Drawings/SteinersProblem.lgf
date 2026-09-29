@@ -2,13 +2,19 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-15.8613023898" Top="6.9010319844" Right="12.4809038348" Bottom="-5.4765408903" />
   <Styles>
-    <LineStyle Name="8" Color="#FF000000" StrokeWidth="3" />
+    <LineStyle Name="8" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
     <ShapeStyle Name="16" Fill="#80BEF187" Color="#FFC6FFC6" />
     <ShapeStyle Name="17" Fill="#FF5CB889" Color="#FFC6FFC6" />
     <ShapeStyle Name="18" Fill="#80FFFF97" Color="#FFC6FFC6" />
     <ShapeStyle Name="19" Fill="#FFC7F1C7" Color="#FFC6FFC6" />
-    <PointStyle Name="Town" Character="🏨" Size="50" Fill="#FFC0C0C0" Color="#FF000080" StrokeWidth="0.7" />
-    <PointStyle Name="Airport" Character="🛫" Size="50" Fill="#FFC0C0C0" Color="#FF000080" StrokeWidth="0.7" />
+    <PointStyle Name="Town" Character="🏨" Size="50" Fill="#FFC0C0C0" Color="#FF000080" StrokeWidth="0.7">
+      <Dark Color="#FF7070FF" />
+    </PointStyle>
+    <PointStyle Name="Airport" Character="🛫" Size="50" Fill="#FFC0C0C0" Color="#FF000080" StrokeWidth="0.7">
+      <Dark Color="#FF7070FF" />
+    </PointStyle>
     <LineStyle Name="Road" Color="#FFA9A9A9" StrokeWidth="24" />
     <LineStyle Name="RoadMarking" Color="#FFF5F5F5" StrokeWidth="2" Dash="Dash" />
   </Styles>

@@ -2,20 +2,48 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-4.9895833333" Top="8.3229166667" Right="5.0104166667" Bottom="-8.34375" />
   <Styles>
-    <LineStyle Name="4" Color="#FF000000" />
-    <ShapeStyle Name="6" Fill="#FF90FF00" Color="#FF000000" />
-    <TextStyle Name="8" FontSize="20" Color="#FF7B3D06" FontFamily="Segoe UI" />
-    <ShapeStyle Name="9" Fill="#FFF7FF00" Color="#FF000000" />
-    <ShapeStyle Name="10" Fill="#FF00FFDD" Color="#FF000000" />
-    <ShapeStyle Name="11" Fill="#FF80D8FF" Color="#FF000000" />
-    <ShapeStyle Name="12" Fill="#FFE789FF" Color="#FF000000" />
-    <ShapeStyle Name="13" Fill="#FFFF7474" Color="#FF000000" />
-    <ShapeStyle Name="14" Fill="#FFA163FF" Color="#FF000000" />
-    <ShapeStyle Name="15" Fill="#FFFFAF5E" Color="#FF000000" />
-    <ShapeStyle Name="16" Fill="#FFB9FFB4" Color="#FF000000" />
-    <ShapeStyle Name="17" Fill="#FFCCCCCC" Color="#FF000000" />
-    <ShapeStyle Name="18" Fill="#FFFFE9A3" Color="#FF000000" />
-    <ShapeStyle Name="19" Fill="#FF6795FF" Color="#FF000000" />
+    <LineStyle Name="4" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
+    <ShapeStyle Name="6" Fill="#FF90FF00" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <TextStyle Name="8" FontSize="20" Color="#FF7B3D06" FontFamily="Segoe UI">
+      <Dark Color="#FFF8B376" />
+    </TextStyle>
+    <ShapeStyle Name="9" Fill="#FFF7FF00" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="10" Fill="#FF00FFDD" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="11" Fill="#FF80D8FF" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="12" Fill="#FFE789FF" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="13" Fill="#FFFF7474" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="14" Fill="#FFA163FF" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="15" Fill="#FFFFAF5E" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="16" Fill="#FFB9FFB4" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="17" Fill="#FFCCCCCC" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="18" Fill="#FFFFE9A3" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="19" Fill="#FF6795FF" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
     <LineStyle Name="21" Color="#FF939393" />
   </Styles>
   <Figures>

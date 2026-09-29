@@ -2,7 +2,9 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-5.0366300366" Top="8.3333333334" Right="5.9523809524" Bottom="-8.3333333334" />
   <Styles>
-    <LineStyle Name="4" Color="#FF000000" />
+    <LineStyle Name="4" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
   </Styles>
   <Figures>
     <FreePoint Name="A" X="-3.2462225275" Y="2.8920558608" />

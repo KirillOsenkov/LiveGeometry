@@ -2,7 +2,9 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-5.3125" Top="7.5416666667" Right="4.6875" Bottom="-7.625" />
   <Styles>
-    <LineStyle Name="4" Color="#FF000000" />
+    <LineStyle Name="4" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
     <ShapeStyle Name="5" Fill="#FFFFFF00" Color="#00FFFFFF" />
     <ShapeStyle Name="10" Fill="#FF66FF00" Color="#00FFFFFF" />
     <ShapeStyle Name="11" Fill="#FF00FFFF" Color="#00FFFFFF" />

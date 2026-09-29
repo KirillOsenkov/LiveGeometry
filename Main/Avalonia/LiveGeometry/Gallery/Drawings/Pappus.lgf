@@ -2,14 +2,30 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-5.0833333333" Top="9.5416666667" Right="4.9166666667" Bottom="-5.625" />
   <Styles>
-    <LineStyle Name="4" Color="#FF000000" />
-    <PointStyle Name="10" Size="15" Fill="#FFFF0000" Color="#FF000000" />
-    <PointStyle Name="11" Size="15" Fill="#FFFFFF00" Color="#FF000000" />
-    <PointStyle Name="12" Size="15" Fill="#FF1AFF00" Color="#FF000000" />
-    <PointStyle Name="13" Size="15" Fill="#FF8C8C49" Color="#FF000000" />
-    <PointStyle Name="14" Size="15" Fill="#FF498942" Color="#FF000000" />
-    <PointStyle Name="15" Size="15" Fill="#FF904B4B" Color="#FF000000" />
-    <LineStyle Name="16" Color="#FF088532" StrokeWidth="3" />
+    <LineStyle Name="4" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
+    <PointStyle Name="10" Size="15" Fill="#FFFF0000" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
+    <PointStyle Name="11" Size="15" Fill="#FFFFFF00" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
+    <PointStyle Name="12" Size="15" Fill="#FF1AFF00" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
+    <PointStyle Name="13" Size="15" Fill="#FF8C8C49" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
+    <PointStyle Name="14" Size="15" Fill="#FF498942" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
+    <PointStyle Name="15" Size="15" Fill="#FF904B4B" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
+    <LineStyle Name="16" Color="#FF088532" StrokeWidth="3">
+      <Dark Color="#FF73F79F" />
+    </LineStyle>
     <LineStyle Name="17" Color="#FF24E81E" StrokeWidth="3" />
   </Styles>
   <Figures>

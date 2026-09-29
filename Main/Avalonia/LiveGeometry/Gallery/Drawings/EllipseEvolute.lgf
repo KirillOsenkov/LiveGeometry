@@ -3,16 +3,24 @@
   <Viewport Left="-5.6" Top="3.8" Right="5.6" Bottom="-3.8" Grid="true" Axes="true" />
   <Styles>
     <PointStyle Name="Runner" Size="14" Fill="#FFFFEF00" Color="#FFA05C21" StrokeWidth="2" />
-    <PointStyle Name="Handle" Size="12" Fill="#FF7CE38B" Color="#FF2E7D32" StrokeWidth="2" />
+    <PointStyle Name="Handle" Size="12" Fill="#FF7CE38B" Color="#FF2E7D32" StrokeWidth="2">
+      <Dark Color="#FF8AD48E" />
+    </PointStyle>
     <PointStyle Name="OnEllipse" Size="9" Fill="#FF7A62D9" Color="#FF4A3A99" StrokeWidth="1.5" />
-    <PointStyle Name="Center" Size="9" Fill="#FF3FA34D" Color="#FF256B30" StrokeWidth="1.5" />
+    <PointStyle Name="Center" Size="9" Fill="#FF3FA34D" Color="#FF256B30" StrokeWidth="1.5">
+      <Dark Color="#FF90D99B" />
+    </PointStyle>
     <LineStyle Name="Ellipse" Color="#FF7A62D9" StrokeWidth="2.5" />
     <LineStyle Name="Evolute" Color="#FF3FA34D" StrokeWidth="2.5" />
     <LineStyle Name="Radius" Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dot" />
-    <LineStyle Name="Hidden" Color="#FF000000" />
+    <LineStyle Name="Hidden" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
     <ShapeStyle Name="Dial" Fill="#00FFFFFF" Color="#FFB8B8B8" StrokeWidth="3" />
     <ShapeStyle Name="Osculating" Fill="#00FFFFFF" Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dash" />
-    <TextStyle Name="Name" FontSize="17" Color="#FF2B3038" FontFamily="Segoe UI" />
+    <TextStyle Name="Name" FontSize="17" Color="#FF2B3038" FontFamily="Segoe UI">
+      <Dark Color="#FFB5BBC6" />
+    </TextStyle>
   </Styles>
   <Figures>
     <FreePoint Name="P0" Visible="false" X="-4.4" Y="2.7" />

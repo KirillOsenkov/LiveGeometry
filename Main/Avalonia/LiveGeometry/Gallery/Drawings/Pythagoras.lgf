@@ -2,13 +2,25 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-7.9950867182" Top="16.0942200334" Right="12.8921775481" Bottom="-15.5847974371" />
   <Styles>
-    <LineStyle Name="4" Color="#FF000000" />
-    <PointStyle Name="10" Fill="#FFFFFFFF" Color="#FF400040" StrokeWidth="0.7" />
-    <LineStyle Name="11" Color="#FF000000" StrokeWidth="2" />
-    <ShapeStyle Name="13" Fill="#00FFFFFF" Color="#FF000000" />
+    <LineStyle Name="4" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
+    <PointStyle Name="10" Fill="#FFFFFFFF" Color="#FF400040" StrokeWidth="0.7">
+      <Dark Color="#FFFF8AFF" />
+    </PointStyle>
+    <LineStyle Name="11" Color="#FF000000" StrokeWidth="2">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
+    <ShapeStyle Name="13" Fill="#00FFFFFF" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
     <PointStyle Name="14" Size="8" Fill="#FFFFFFFF" Color="#FF0000FF" StrokeWidth="0.7" />
-    <ShapeStyle Name="19" Fill="#80EA8895" Color="#FF000000" />
-    <ShapeStyle Name="20" Fill="#806A79FF" Color="#FF000000" />
+    <ShapeStyle Name="19" Fill="#80EA8895" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="20" Fill="#806A79FF" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
   </Styles>
   <Figures>
     <FreePoint Name="A" X="1.9698789422" Y="-2.5737724046" />

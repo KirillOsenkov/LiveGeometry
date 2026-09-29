@@ -25,6 +25,9 @@ public partial class MainView
 
     public static string CheckOutputFolder { get; set; }
 
+    /// <summary>"--check ... --dark": the pictures under the dark theme instead of the light one</summary>
+    public static bool CheckDark { get; set; }
+
     public static string ModernizeFolder { get; set; }
 
     readonly List<string> checkMessages = new List<string>();
@@ -54,8 +57,8 @@ public partial class MainView
             .ToArray();
         ShowEditor();
 
-        // the pictures compare across runs and machines: always the light theme
-        AppTheme.Apply(AppTheme.Light.Name);
+        // the pictures compare across runs and machines: the light theme unless asked for dark
+        AppTheme.Apply(CheckDark ? AppTheme.Dark.Name : AppTheme.Light.Name);
 
         // as the gallery would show them: without the tools on a small screen
         ribbonChoice = !IsSmallScreen;

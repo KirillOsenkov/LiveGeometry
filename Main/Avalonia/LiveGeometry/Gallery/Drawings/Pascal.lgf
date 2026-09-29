@@ -9,6 +9,12 @@
     </Background>
   </Viewport>
   <Styles>
+    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1F4E8C" />
+    </TextStyle>
+    <TextStyle Name="GalleryText" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
+      <Dark Color="#FF2B3038" />
+    </TextStyle>
     <PointStyle Name="7" Fill="#FFFFFFFF" Color="#FF000000" StrokeWidth="0.7" />
     <LineStyle Name="8" Color="#FF0000FF" />
     <PointStyle Name="9" Fill="#FFFFFFFF" Color="#FF0000FF" StrokeWidth="0.7" />

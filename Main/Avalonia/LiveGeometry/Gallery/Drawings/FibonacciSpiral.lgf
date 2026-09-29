@@ -2,21 +2,49 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-6" Top="4" Right="6.5" Bottom="-4" />
   <Styles>
-    <TextStyle Name="Number" FontSize="15" Color="#FF2B3038" FontFamily="Segoe UI" />
-    <ShapeStyle Name="Square1" Fill="#FFC06DFF" Color="#FF000000" />
-    <LineStyle Name="Arc1" Color="#FF860095" StrokeWidth="5" />
-    <ShapeStyle Name="Square2" Fill="#FF0099FF" Color="#FF000000" />
+    <TextStyle Name="Number" FontSize="15" Color="#FF2B3038" FontFamily="Segoe UI">
+      <Dark Color="#FFB5BBC6" />
+    </TextStyle>
+    <ShapeStyle Name="Square1" Fill="#FFC06DFF" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <LineStyle Name="Arc1" Color="#FF860095" StrokeWidth="5">
+      <Dark Color="#FFF068FF" />
+    </LineStyle>
+    <ShapeStyle Name="Square2" Fill="#FF0099FF" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
     <LineStyle Name="Arc2" Color="#FF2A0EB8" StrokeWidth="5" />
-    <ShapeStyle Name="Square3" Fill="#FF00FFE5" Color="#FF000000" />
-    <LineStyle Name="Arc3" Color="#FF009196" StrokeWidth="5" />
-    <ShapeStyle Name="Square4" Fill="#FF11FF00" Color="#FF000000" />
-    <LineStyle Name="Arc4" Color="#FF047700" StrokeWidth="5" />
-    <ShapeStyle Name="Square5" Fill="#FFFFF700" Color="#FF000000" />
-    <LineStyle Name="Arc5" Color="#FF777303" StrokeWidth="5" />
-    <ShapeStyle Name="Square6" Fill="#FFFF8800" Color="#FF000000" />
-    <LineStyle Name="Arc6" Color="#FF885109" StrokeWidth="5" />
-    <ShapeStyle Name="Square7" Fill="#FFFF6D6D" Color="#FF000000" />
-    <LineStyle Name="Arc7" Color="#FF8E0606" StrokeWidth="5" />
+    <ShapeStyle Name="Square3" Fill="#FF00FFE5" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <LineStyle Name="Arc3" Color="#FF009196" StrokeWidth="5">
+      <Dark Color="#FF67FAFF" />
+    </LineStyle>
+    <ShapeStyle Name="Square4" Fill="#FF11FF00" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <LineStyle Name="Arc4" Color="#FF047700" StrokeWidth="5">
+      <Dark Color="#FF78FF74" />
+    </LineStyle>
+    <ShapeStyle Name="Square5" Fill="#FFFFF700" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <LineStyle Name="Arc5" Color="#FF777303" StrokeWidth="5">
+      <Dark Color="#FFFCF776" />
+    </LineStyle>
+    <ShapeStyle Name="Square6" Fill="#FFFF8800" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <LineStyle Name="Arc6" Color="#FF885109" StrokeWidth="5">
+      <Dark Color="#FFF6BD72" />
+    </LineStyle>
+    <ShapeStyle Name="Square7" Fill="#FFFF6D6D" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <LineStyle Name="Arc7" Color="#FF8E0606" StrokeWidth="5">
+      <Dark Color="#FFF96E6E" />
+    </LineStyle>
   </Styles>
   <Figures>
     <FreePoint Name="A" X="-5" Y="-3.25" />

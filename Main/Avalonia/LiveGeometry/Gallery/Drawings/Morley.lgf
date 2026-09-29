@@ -6,7 +6,9 @@
     <PointStyle Name="11" Size="8" Fill="#00FFFFFF" Color="#FF0000FF" StrokeWidth="0.7" />
     <LineStyle Name="12" Color="#FF848E93" />
     <PointStyle Name="13" Size="8" Fill="#FFFFFFFF" Color="#FF0000FF" StrokeWidth="0.7" />
-    <ShapeStyle Name="15" Fill="#FFCCCCFF" Color="#FF000000" />
+    <ShapeStyle Name="15" Fill="#FFCCCCFF" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
   </Styles>
   <Figures>
     <FreePoint Name="A" X="-4.8533448304" Y="1.8714881959" />

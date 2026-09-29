@@ -3,27 +3,49 @@
   <Viewport Left="-51.9052325854" Top="25.1810963902" Right="74.1644025366" Bottom="-29.8758770732" />
   <Scene Left="-25" Top="41" Right="27" Bottom="-3" />
   <Styles>
-    <PointStyle Name="7" Fill="#FFB0B0B0" Color="#FF000000" StrokeWidth="0.7" />
+    <PointStyle Name="7" Fill="#FFB0B0B0" Color="#FF000000" StrokeWidth="0.7">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
     <LineStyle Name="8" Color="#FF808080" />
     <LineStyle Name="9" Color="#FFEFC265" StrokeWidth="4" />
-    <PointStyle Name="10" Fill="#FFB0B0B0" Color="#FF484848" StrokeWidth="0.7" />
-    <LineStyle Name="11" Color="#FF000000" />
+    <PointStyle Name="10" Fill="#FFB0B0B0" Color="#FF484848" StrokeWidth="0.7">
+      <Dark Color="#FFB4B4B4" />
+    </PointStyle>
+    <LineStyle Name="11" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
     <PointStyle Name="12" Fill="#FFB0B0B0" Color="#FF0000FF" StrokeWidth="0.7" />
-    <ShapeStyle Name="13" Fill="#00FFFFFF" Color="#FF000000" />
-    <PointStyle Name="14" Size="8" Fill="#FFC0C0C0" Color="#FF000000" StrokeWidth="0.7" />
+    <ShapeStyle Name="13" Fill="#00FFFFFF" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <PointStyle Name="14" Size="8" Fill="#FFC0C0C0" Color="#FF000000" StrokeWidth="0.7">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
     <PointStyle Name="15" Size="8" Fill="#FFB0B0B0" Color="#FF00FFFF" StrokeWidth="0.7" />
     <LineStyle Name="16" Color="#FFDAA33A" StrokeWidth="5" />
     <PointStyle Name="17" Character="🪣" Size="30" Fill="#FFC0C0FF" Color="#FF0000FF" StrokeWidth="0.7" />
     <PointStyle Name="18" Fill="#FFFFFFFF" Color="#FFFF0000" StrokeWidth="0.7" />
     <PointStyle Name="19" Size="8" Fill="#FFFFFFFF" Color="#FF0000FF" StrokeWidth="0.7" />
     <LineStyle Name="20" Color="#FFC0C0C0" />
-    <ShapeStyle Name="25" Fill="#FFFFFF00" Color="#FF000000" />
-    <ShapeStyle Name="26" Fill="#FF4CAF50" Color="#FF2E7D32" />
-    <ShapeStyle Name="27" Fill="#FF00FFFF" Color="#FF000000" />
-    <ShapeStyle Name="28" Fill="#FFE3A31C" Color="#FF000000" />
-    <ShapeStyle Name="29" Fill="#FF80FFFF" Color="#FF000000" />
+    <ShapeStyle Name="25" Fill="#FFFFFF00" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="26" Fill="#FF4CAF50" Color="#FF2E7D32">
+      <Dark Color="#FF8AD48E" />
+    </ShapeStyle>
+    <ShapeStyle Name="27" Fill="#FF00FFFF" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="28" Fill="#FFE3A31C" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
+    <ShapeStyle Name="29" Fill="#FF80FFFF" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
     <ShapeStyle Name="30" Fill="#FFFFFFFF" Color="#FFFFFFFF" />
-    <ShapeStyle Name="Roof" Fill="#FFC0392B" Color="#FF000000" />
+    <ShapeStyle Name="Roof" Fill="#FFC0392B" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </ShapeStyle>
   </Styles>
   <Figures>
     <PointByCoordinates Name="GroundRayStart" Visible="false" Style="7" X="-100" Y="-2.368023" />

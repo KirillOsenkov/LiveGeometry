@@ -2,12 +2,18 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-4.9895833333" Top="7.5729166667" Right="5.0104166667" Bottom="-7.59375" />
   <Styles>
-    <PointStyle Name="1" Size="15" Fill="#FFFFFF00" Color="#FF000000" />
-    <LineStyle Name="4" Color="#FF000000" />
+    <PointStyle Name="1" Size="15" Fill="#FFFFFF00" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
+    <LineStyle Name="4" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
     <ShapeStyle Name="5" Fill="#5DFFFF96" Color="#00FFFFFF" />
     <ShapeStyle Name="11" Fill="#9975FF6C" Color="#00FFFFFF" />
     <ShapeStyle Name="12" Fill="#7C7AE4FF" Color="#00FFFFFF" />
-    <LineStyle Name="14" Color="#FF000000" StrokeWidth="2" />
+    <LineStyle Name="14" Color="#FF000000" StrokeWidth="2">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
   </Styles>
   <Figures>
     <FreePoint Name="A" Style="1" X="-2.0729166667" Y="0.8229166667" />

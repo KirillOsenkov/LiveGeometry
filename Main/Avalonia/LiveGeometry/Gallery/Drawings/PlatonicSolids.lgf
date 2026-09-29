@@ -2,7 +2,9 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-4.5" Top="3.2" Right="4.5" Bottom="-3.4" />
   <Styles>
-    <TextStyle Name="Name" FontSize="17" Color="#FF2B3038" FontFamily="Segoe UI" />
+    <TextStyle Name="Name" FontSize="17" Color="#FF2B3038" FontFamily="Segoe UI">
+      <Dark Color="#FFB5BBC6" />
+    </TextStyle>
     <ShapeStyle Name="TetrahedronFace0" Color="#FF7B4C41">
       <Fill>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -50,6 +52,7 @@
           <GradientStop Color="#FF578C66" Offset="1" />
         </LinearGradientBrush>
       </Fill>
+      <Dark Color="#FF9CC2A7" />
     </ShapeStyle>
     <ShapeStyle Name="OctahedronFace1" Color="#FF41694C">
       <Fill>
@@ -58,6 +61,7 @@
           <GradientStop Color="#FF5B926A" Offset="1" />
         </LinearGradientBrush>
       </Fill>
+      <Dark Color="#FF9CC2A7" />
     </ShapeStyle>
     <ShapeStyle Name="OctahedronFace2" Color="#FF41694C">
       <Fill>
@@ -66,6 +70,7 @@
           <GradientStop Color="#FF578C66" Offset="1" />
         </LinearGradientBrush>
       </Fill>
+      <Dark Color="#FF9CC2A7" />
     </ShapeStyle>
     <ShapeStyle Name="OctahedronFace3" Color="#FF41694C">
       <Fill>
@@ -74,6 +79,7 @@
           <GradientStop Color="#FF75B888" Offset="1" />
         </LinearGradientBrush>
       </Fill>
+      <Dark Color="#FF9CC2A7" />
     </ShapeStyle>
     <ShapeStyle Name="DodecahedronFace0" Color="#FF625076">
       <Fill>

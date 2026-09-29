@@ -2,10 +2,18 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-8.1354166668" Top="24.1069444444" Right="18.4479166665" Bottom="-16.2111111111" />
   <Styles>
-    <PointStyle Name="2" Fill="#FFEFB155" Color="#FF000000" />
-    <PointStyle Name="3" Fill="#FFC4CF8D" Color="#FF000000" />
-    <LineStyle Name="4" Color="#FF000000" />
-    <LineStyle Name="8" Color="#FF8B5117" />
+    <PointStyle Name="2" Fill="#FFEFB155" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
+    <PointStyle Name="3" Fill="#FFC4CF8D" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
+    <LineStyle Name="4" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
+    <LineStyle Name="8" Color="#FF8B5117">
+      <Dark Color="#FFE9B179" />
+    </LineStyle>
     <TextStyle Name="9" FontSize="18" Color="#FFFF4400" FontFamily="Segoe UI" />
     <LineStyle Name="10" Color="#FFFF6E00" StrokeWidth="3" />
   </Styles>

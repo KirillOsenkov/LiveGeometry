@@ -567,8 +567,17 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   opening of the style). The paper works the same: `Drawing.Overrides` holds the paper chosen
   for another theme, "Theme's paper" under Dark stores a null override (that theme's paper).
   `GalleryTitle` (a Dark override in the splash's blue), `GalleryText` (the chrome's text
-  color) and `GalleryLocus` are defaults too. Not yet: Dark overrides for the gallery
-  drawings' own styles (the old opaque black lines and text among them), and the pastel tiles.
+  color) and `GalleryLocus` are defaults too. The gallery drawings' own styles got their
+  Dark overrides from `dotnet tools/darken.cs -- <folder> [--apply]` (2026-09-29): a stroke,
+  text or fill darker than lightness 0.35 is lightened to the same hue at 0.82 - 0.4 ×
+  lightness (black lands on the ink), a drawing with a paper of its own is left alone, and a
+  style that has a `<Dark>` already is never touched, so it is safe to rerun after adding a
+  drawing. The three drawings with a light paper of their own (Castle, Pascal, Rose) carry
+  `GalleryTitle`/`GalleryText` copies whose Dark override is the light color, so the caption
+  stays dark on their paper. `--check <folder> <out> --dark` renders the pictures under the
+  dark theme; a contact sheet of the gallery in each theme is the way to review. Anything
+  that reads a style's color itself rather than through `Apply` must resolve it first
+  (`Arrow.ApplyStyle`). Not yet: the gallery's pastel tiles under the dark theme.
 - **Settings between runs** (`LiveGeometry/SettingsStore.cs`): `Get`/`Set` by key, the desktop
   head keeping them as `key=value` lines in `%LocalAppData%\LiveGeometry\Settings.txt`
   (`FileSettingsStore`), the browser in `localStorage` under `LiveGeometry.<key>`

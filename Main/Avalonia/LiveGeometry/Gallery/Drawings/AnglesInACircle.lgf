@@ -2,7 +2,9 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-5.0833333333" Top="7.5" Right="4.9166666667" Bottom="-7.6666666667" />
   <Styles>
-    <LineStyle Name="4" Color="#FF000000" />
+    <LineStyle Name="4" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
     <LineStyle Name="ThinLine" Color="#FFAAAAAA" />
     <ShapeStyle Name="5" Color="#00FFFFFF">
       <Fill>
@@ -12,7 +14,9 @@
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
-    <PointStyle Name="10" Size="15" Fill="#FF33FF00" Color="#FF000000" />
+    <PointStyle Name="10" Size="15" Fill="#FF33FF00" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
   </Styles>
   <Figures>
     <FreePoint Name="O" X="-0.0208333333" Y="-2.5625" />

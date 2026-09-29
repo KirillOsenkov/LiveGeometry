@@ -2,10 +2,16 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-2" Top="3.5" Right="6.5" Bottom="-2.5" Grid="true" Axes="true" />
   <Styles>
-    <PointStyle Name="7" Fill="#FFC0C0C0" Color="#FF000000" StrokeWidth="0.7" />
-    <PointStyle Name="8" Fill="#FFC0C0C0" Color="#FF000000" StrokeWidth="0.7" />
+    <PointStyle Name="7" Fill="#FFC0C0C0" Color="#FF000000" StrokeWidth="0.7">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
+    <PointStyle Name="8" Fill="#FFC0C0C0" Color="#FF000000" StrokeWidth="0.7">
+      <Dark Color="#FFD1D1D1" />
+    </PointStyle>
     <PointStyle Name="9" Size="8" Fill="#FFC0C0C0" Color="#FF0000FF" StrokeWidth="0.7" />
-    <LineStyle Name="10" Color="#FF000000" />
+    <LineStyle Name="10" Color="#FF000000">
+      <Dark Color="#FFD1D1D1" />
+    </LineStyle>
     <LineStyle Name="11" Color="#FF0000FF" />
   </Styles>
   <Figures>

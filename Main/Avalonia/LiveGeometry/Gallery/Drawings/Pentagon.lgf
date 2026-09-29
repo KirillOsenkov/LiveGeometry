@@ -3,7 +3,9 @@
   <Viewport Left="-5.4375" Top="7.625" Right="4.5625" Bottom="-7.5416666667" />
   <Styles>
     <ShapeStyle Name="10" Fill="#5B92FFED" Color="#00FFFFFF" />
-    <LineStyle Name="11" Color="#FF1C7A84" StrokeWidth="2" />
+    <LineStyle Name="11" Color="#FF1C7A84" StrokeWidth="2">
+      <Dark Color="#FF7EDAE4" />
+    </LineStyle>
     <LineStyle Name="12" Color="#97ABABAB" />
     <LineStyle Name="13" Color="#FF1100FF" />
   </Styles>
