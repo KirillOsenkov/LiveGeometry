@@ -72,6 +72,9 @@ public class GeoGebraReader
     // here a side becomes a hidden segment the first time something asks for it
     readonly Dictionary<string, (IPoint, IPoint)> polygonSides = new Dictionary<string, (IPoint, IPoint)>();
 
+    // the vertices of the polygon a side belongs to: its name is written outside the polygon
+    readonly Dictionary<string, List<IPoint>> polygonOfSide = new Dictionary<string, List<IPoint>>();
+
     // the view the file was saved in: pixels per unit and where the origin is, for pixel
     // things (a slider on the screen, a text's height)
     double unitLength = Settings.DefaultUnitLength;
@@ -1436,6 +1439,7 @@ public class GeoGebraReader
             if (outputIndex < outputs.Length && !string.IsNullOrEmpty(outputs[outputIndex]))
             {
                 polygonSides[outputs[outputIndex]] = (vertices[i], vertices[(i + 1) % vertices.Count]);
+                polygonOfSide[outputs[outputIndex]] = vertices;
             }
 
             result.Add(null);
@@ -2087,7 +2091,15 @@ public class GeoGebraReader
         string label = (string)element.Attribute("label");
         if (!figures.TryGetValue(label, out var figure))
         {
-            return;
+            // a polygon draws its sides itself, but not what a side shows besides its line:
+            // such a side is a segment from the start, in view and under the file's name
+            if (!polygonSides.ContainsKey(label) || !ShowsMoreThanItsLine(element))
+            {
+                return;
+            }
+
+            figure = ResolveArgument(label);
+            Register(label, figure);
         }
 
         // a number (a distance, an angle's value) is in the view only when the file says so
@@ -2162,6 +2174,11 @@ public class GeoGebraReader
                     named.NameLabel.Style = TextStyleFor(color.Value, defaultFontSize);
                 }
 
+                if (polygonOfSide.TryGetValue(label, out var vertices))
+                {
+                    named.NameLabel.KeepOutside(vertices.Select(vertex => vertex.Coordinates).ToList());
+                }
+
                 var labelOffset = element.Element("labelOffset");
                 if (labelOffset != null)
                 {
@@ -2170,6 +2187,20 @@ public class GeoGebraReader
                 }
             }
         }
+    }
+
+    /// <summary>Whether the element is in view with its name beside it, or with ticks or chevrons on it</summary>
+    static bool ShowsMoreThanItsLine(XElement element)
+    {
+        var show = element.Element("show");
+        if (show == null || !show.ReadBool("object", true))
+        {
+            return false;
+        }
+
+        var decoration = element.Element("decoration");
+        return show.ReadBool("label", false)
+            || (decoration != null && decoration.ReadDouble("type") != 0);
     }
 
     void ApplyPointElement(XElement element, PointBase point)

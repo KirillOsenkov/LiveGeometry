@@ -768,7 +768,11 @@ stands for it here, with hidden helpers where the shapes differ (a circle throug
 points is the circle around the crossing of two bisectors, an ellipse by foci is center and
 axis ends as points by coordinates, a regular polygon is a plain polygon of rotated points so
 that its vertices keep the file's names, tangents from a point go through the Thales circle);
-an inline command in an input (`Point[Circle[S, 3]]`) is built hidden. Unknown commands and
+an inline command in an input (`Point[Circle[S, 3]]`) is built hidden. A polygon's sides are
+outputs of the `Polygon` command and objects of their own in GeoGebra; here the polygon draws
+them, and a side becomes a segment only when needed: hidden, the first time a command takes
+it (`polygonSides`), or in view and under the file's name when its element shows a name or a
+decoration (`ApplyElement`), the name outside the polygon (`FigureLabel.KeepOutside`). Unknown commands and
 element types (conics other than circles, pen strokes, buttons, checkboxes, lists) are left
 out, along with what is built on them: the status says only that some features aren't
 supported, the list of what exactly goes to the console (`GeoGebra: ...` lines, which is
