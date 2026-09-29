@@ -58,8 +58,17 @@ namespace DynamicGeometry
             {
                 return;
             }
+
+            // The tool that is on already (its tab was opened, which picks it): the press took
+            // the keyboard out of its panel's box, and what is typed next would pick tools by
+            // their letters. Shown again, the box takes the keyboard back.
+            bool isCurrent = DrawingHost.CurrentDrawing.Behavior == ParentBehavior;
             DrawingHost.CurrentDrawing.Behavior = ParentBehavior;
             ParentPanel.SelectedToolButton = this;
+            if (isCurrent && ParentBehavior.PropertyBag != null)
+            {
+                DrawingHost.ShowProperties(ParentBehavior.PropertyBag);
+            }
         }
 
         void behavior_PropertyChanged(object sender, PropertyChangedEventArgs e)

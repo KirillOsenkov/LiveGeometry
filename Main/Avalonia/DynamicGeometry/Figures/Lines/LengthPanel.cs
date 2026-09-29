@@ -73,7 +73,7 @@ public class LengthPanel : IConditionalProperties, ICustomMethodProvider
 
     /// <summary>Closes the panel; the figure stays as it is</summary>
     [PropertyGridIcon(PropertyGridIcon.Check)]
-    public void Done()
+    public void OK()
     {
         figure.Drawing.RaiseDisplayProperties(null);
         figure.Drawing.ClearStatus();
@@ -85,7 +85,7 @@ public class LengthPanel : IConditionalProperties, ICustomMethodProvider
         figure.Drawing.RaiseDisplayProperties(this);
     }
 
-    /// <summary>The verb that applies, captioned by the figure ("Fix radius"), then Done</summary>
+    /// <summary>The verb that applies, captioned by the figure ("Fix radius"), then OK</summary>
     public IEnumerable<IOperationDescription> GetMethods()
     {
         foreach (var name in new[] { "FixLength", "FreeLength" })
@@ -96,7 +96,7 @@ public class LengthPanel : IConditionalProperties, ICustomMethodProvider
             }
         }
 
-        yield return MethodDescription.Get<LengthPanel>("Done");
+        yield return MethodDescription.Get<LengthPanel>("OK");
     }
 
     public bool CanEdit(string propertyName)

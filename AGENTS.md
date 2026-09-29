@@ -406,6 +406,21 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Escape); anything else is only hidden. "Empty" is decided in `MainView.IsEmptyChrome`:
   from the hit visual up to the ribbon/toolbar/list through plain layout types only (exact
   types: a toolbar button is a `Border` subclass).
+- **The button that accepts a panel says OK**, unless a verb says more (Plot, Add point,
+  Close figure, Create tool), and **no panel has a Cancel**: the × of the side panel is
+  that (`DrawingHost.CloseSidePanel` puts the tool down when the panel is the tool's own,
+  which goes by `PropertyBag` - so a tool with a panel per step, like Define figure, must
+  answer with the panel of the step at hand).
+- **Enter in a tool panel's box is the panel's button** (OK, Plot, Add point). Each panel
+  wires that itself: `[PropertyGridEvent("KeyDown", ...)]` on the property and a handler
+  that calls the method. Nothing does it for a new panel, which is how Rotation and Dilation
+  went without. The editor commits the text first (its own handler is on the text box, the
+  panel's on the editor around it). A number box that says "Type a number." has kept the old
+  value, so the handler looks at `StringEditor.ErrorText` before it goes on. Left alone on
+  purpose: the length panel, where Enter applies the length and OK only closes. A press
+  on the button of the tool that is on already (opening a tab picks its tool) takes the
+  keyboard from the panel's box; `BehaviorToolButton.Click` shows the panel again, which
+  gives it back. `winauto keys` swallows parentheses: test with `x*x`, not `sin(x)`.
 - **Typed text that is wrong is said under its box**, never in the status bar
   (`StringEditor.ErrorText`: a pink plate attached to the box, widening the row up to the
   480 px a box may take). Only on commit - Enter or leaving the box - never while typing, and

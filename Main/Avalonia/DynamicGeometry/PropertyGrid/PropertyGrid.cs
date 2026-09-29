@@ -282,7 +282,7 @@ namespace DynamicGeometry
         string shownObjectTab;
 
         /// <summary>
-        /// The strip of tabs, the page of the current one, then what is on every tab (Done)
+        /// The strip of tabs, the page of the current one, then what is on every tab (OK)
         /// </summary>
         void AddTabs(IPropertyGridTabs tabs, IEnumerable<UIElement> controls)
         {

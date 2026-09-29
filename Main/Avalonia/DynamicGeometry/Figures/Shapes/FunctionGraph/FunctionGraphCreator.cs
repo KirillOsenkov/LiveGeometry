@@ -57,8 +57,7 @@ namespace DynamicGeometry
                 }
             }
 
-            [PropertyGridVisible]
-            [PropertyGridIcon(PropertyGridIcon.Cross)]
+            /// <summary>Escape, a click on the canvas; no button, the panel's cross does the same</summary>
             public void Cancel()
             {
                 parent.AbortAndSetDefaultTool();

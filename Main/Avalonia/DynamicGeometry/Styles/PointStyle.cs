@@ -143,7 +143,7 @@ namespace DynamicGeometry
                     return emojiTab;
                 case "Size":
                     return tabs;
-                case "DoneButton":
+                case "FinishEditing":
                 case "Delete":
                     return belowTabs;
                 default:

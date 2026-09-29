@@ -18,7 +18,7 @@ namespace DynamicGeometry
 
         public override void Started()
         {
-            selectInputsDialog = new SelectInputsDialog(this);
+            dialog = new SelectInputsDialog(this);
             behavior = new MacroInputSelector() { Drawing = Drawing };
         }
 
@@ -41,22 +41,16 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridIcon(PropertyGridIcon.Check)]
-            public void Done()
+            public void OK()
             {
                 Parent.Inputs = Parent.behavior.GetSelection();
                 Parent.behavior = new MacroResultSelector(Parent.Drawing, Parent.Inputs);
                 var dialog = new SelectResultsDialog(Parent);
+                Parent.dialog = dialog;
                 if (PropertyGrid != null)
                 {
                     PropertyGrid.Show(dialog, null);
                 }
-            }
-
-            [PropertyGridVisible]
-            [PropertyGridIcon(PropertyGridIcon.Cross)]
-            public void Cancel()
-            {
-                Parent.AbortAndSetDefaultTool();
             }
 
             public PropertyGrid PropertyGrid { get; set; }
@@ -73,19 +67,12 @@ namespace DynamicGeometry
             MacroDefiner Parent;
 
             [PropertyGridVisible]
-            [PropertyGridName("Done - create a tool")]
+            [PropertyGridName("Create tool")]
             [PropertyGridIcon(PropertyGridIcon.Check)]
-            public void Done()
+            public void CreateTool()
             {
                 Parent.Results = Parent.behavior.GetSelection();
                 Parent.CreateTool();
-                Parent.AbortAndSetDefaultTool();
-            }
-
-            [PropertyGridVisible]
-            [PropertyGridIcon(PropertyGridIcon.Cross)]
-            public void Cancel()
-            {
                 Parent.AbortAndSetDefaultTool();
             }
         }
@@ -93,7 +80,11 @@ namespace DynamicGeometry
         public IList<IFigure> Inputs { get; set; }
         public IList<IFigure> Results { get; set; }
 
-        SelectInputsDialog selectInputsDialog;
+        /// <summary>
+        /// The panel of the step at hand: the inputs, then the results. It is what the tool
+        /// says its panel is, so that closing it (the cross) puts the tool down at either step.
+        /// </summary>
+        object dialog;
 
         FigureSelector behavior;
 
@@ -101,11 +92,12 @@ namespace DynamicGeometry
         {
             get
             {
-                if (selectInputsDialog == null)
+                if (dialog == null)
                 {
-                    selectInputsDialog = new SelectInputsDialog(this);
+                    dialog = new SelectInputsDialog(this);
                 }
-                return selectInputsDialog;
+
+                return dialog;
             }
         }
 

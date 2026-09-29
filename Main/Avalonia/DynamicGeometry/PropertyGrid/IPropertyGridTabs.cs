@@ -15,7 +15,7 @@ public interface IPropertyGridTabs
 
     /// <summary>
     /// The tabs a property or a button is on, by member name (a size can be on two); none:
-    /// below the tabs, whichever is shown (Done)
+    /// below the tabs, whichever is shown (OK)
     /// </summary>
     IReadOnlyList<string> GetTabs(string memberName);
 

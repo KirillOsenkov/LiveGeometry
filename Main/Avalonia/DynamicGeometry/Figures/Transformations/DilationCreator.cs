@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Avalonia;
+using Avalonia.Input;
 
 namespace DynamicGeometry
 {
@@ -20,13 +21,27 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridFocus]
+            [PropertyGridEvent("KeyDown", "Factor_KeyDown")]
             [PropertyGridName("Factor = ")]
             public double factor { get; set; } = 2; // 0 would squash the figure into the center
 
+            /// <summary>Enter is OK, unless what was typed is no number (the box says so, and the factor is still the old one)</summary>
+            public void Factor_KeyDown(object sender, KeyEventArgs e)
+            {
+                if (e.Key == Key.Enter)
+                {
+                    if (!(sender is StringEditor editor) || string.IsNullOrEmpty(editor.ErrorText))
+                    {
+                        OK();
+                    }
+
+                    e.Handled = true;
+                }
+            }
+
             [PropertyGridVisible]
-            [PropertyGridName("Go")]
             [PropertyGridIcon(PropertyGridIcon.Check)]
-            public void Go()
+            public void OK()
             {
                 if (parent.FoundDependencies.Count >= 2)
                 {

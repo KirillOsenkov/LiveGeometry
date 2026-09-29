@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Avalonia;
+using Avalonia.Input;
 
 namespace DynamicGeometry
 {
@@ -20,13 +21,27 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridFocus]
+            [PropertyGridEvent("KeyDown", "Angle_KeyDown")]
             [PropertyGridName("Angle = ")]
             public double angle { get; set; }
 
+            /// <summary>Enter is OK, unless what was typed is no number (the box says so, and the angle is still the old one)</summary>
+            public void Angle_KeyDown(object sender, KeyEventArgs e)
+            {
+                if (e.Key == Key.Enter)
+                {
+                    if (!(sender is StringEditor editor) || string.IsNullOrEmpty(editor.ErrorText))
+                    {
+                        OK();
+                    }
+
+                    e.Handled = true;
+                }
+            }
+
             [PropertyGridVisible]
-            [PropertyGridName("Go")]
             [PropertyGridIcon(PropertyGridIcon.Check)]
-            public void Go()
+            public void OK()
             {
                 if (parent.FoundDependencies.Count > 1)
                 {

@@ -305,7 +305,7 @@ namespace DynamicGeometry
             return result;
         }
 
-        // Below is code necessary to implement a "Done" button that displays in the property grid when editing a style.
+        // Below is code necessary to implement an "OK" button that displays in the property grid when editing a style.
 
         EditInfo mCurrentEditInfo;
         [Ignore]
@@ -333,9 +333,9 @@ namespace DynamicGeometry
         }
 
         [PropertyGridVisible]
-        [PropertyGridName("Done")]
+        [PropertyGridName("OK")]
         [PropertyGridIcon(PropertyGridIcon.Check)]
-        public void DoneButton()
+        public void FinishEditing()
         {
             if (CurrentEditInfo.PropertyGrid != null && CurrentEditInfo.ParentObject != null)
             {
@@ -352,7 +352,7 @@ namespace DynamicGeometry
         public void Delete()
         {
             StyleManager.Remove(this);
-            DoneButton();
+            FinishEditing();
         }
 
 #endif
