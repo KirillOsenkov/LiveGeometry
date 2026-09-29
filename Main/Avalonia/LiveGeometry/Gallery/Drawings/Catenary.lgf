@@ -1,96 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1">
-  <Viewport Left="-8" Top="6.5" Right="8" Bottom="-7" Grid="false" />
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-8" Top="6.5" Right="8" Bottom="-7" />
   <Scene Left="-8" Top="6.5" Right="8" Bottom="-7" />
   <Styles>
-    <PointStyle Name="FreePoint" Size="12" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" />
-    <PointStyle Name="PointOnFigure" Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" />
-    <PointStyle Name="DependentPointStyle" Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" />
-    <LineStyle Name="Line" Color="#64000000" StrokeWidth="1" Dash="Solid" />
+    <PointStyle Name="FreePoint" Size="12" Fill="#FFFFFF64" />
     <LineStyle Name="Straight" Color="#FF8A8A8A" StrokeWidth="1.25" Dash="Dash" />
-    <LineStyle Name="Rope" Color="#FF9A6B3A" StrokeWidth="4" Dash="Solid" />
-    <TextStyle Name="PointName" FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" />
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" />
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" />
+    <LineStyle Name="Rope" Color="#FF9A6B3A" StrokeWidth="4" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" Style="FreePoint" X="-5" Y="3" />
-    <FreePoint Name="B" Style="FreePoint" X="5" Y="2" />
-    <Slider Name="rope" Style="Line" X="-7" Y="5.5" Value="14" />
+    <FreePoint Name="A" X="-5" Y="3" />
+    <FreePoint Name="B" X="5" Y="2" />
+    <Slider Name="rope" X="-7" Y="5.5" Value="14" />
     <Segment Name="AB" Style="Straight">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-
-    <!-- The catenary y = a cosh((x - x0)/a) + c through A and B with arc length "rope".
-         With h, v the offsets from A to B and s = sqrt(rope^2 - v^2), a solves
-         2a sinh(h/2a) = s: with xi = |h|/2a that is sinh(xi) = r xi, r = s/|h|, which has no
-         closed form. xi is found numerically: sqrt(6(r - 1)) is above the root (sinh xi is at
-         least xi + xi^3/6), three steps of xi -> asinh(r xi) bring it down while staying
-         above, and Newton from above then closes in without overshooting. A rope shorter than
-         AB gives r < 1 and a square root of a negative number: nothing exists, no curve. -->
-    <PointByCoordinates Name="Offsets" Visible="false" Style="DependentPointStyle" X="B.X - A.X" Y="B.Y - A.Y">
+    <PointByCoordinates Name="Offsets" Visible="false" X="B.X - A.X" Y="B.Y - A.Y">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Ratio" Visible="false" Style="DependentPointStyle" X="sqrt(rope * rope - Offsets.Y * Offsets.Y) / abs(Offsets.X)" Y="sqrt(rope * rope - Offsets.Y * Offsets.Y)">
+    <PointByCoordinates Name="Ratio" Visible="false" X="sqrt(rope * rope - Offsets.Y * Offsets.Y) / abs(Offsets.X)" Y="sqrt(rope * rope - Offsets.Y * Offsets.Y)">
       <Dependency Name="Offsets" />
       <Dependency Name="rope" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Guess0" Visible="false" Style="DependentPointStyle" X="sqrt(6 * (Ratio.X - 1))" Y="0">
+    <PointByCoordinates Name="Guess0" Visible="false" X="sqrt(6 * (Ratio.X - 1))" Y="0">
       <Dependency Name="Ratio" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Guess1" Visible="false" Style="DependentPointStyle" X="asinh(Ratio.X * Guess0.X)" Y="0">
+    <PointByCoordinates Name="Guess1" Visible="false" X="asinh(Ratio.X * Guess0.X)" Y="0">
       <Dependency Name="Ratio" />
       <Dependency Name="Guess0" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Guess2" Visible="false" Style="DependentPointStyle" X="asinh(Ratio.X * Guess1.X)" Y="0">
+    <PointByCoordinates Name="Guess2" Visible="false" X="asinh(Ratio.X * Guess1.X)" Y="0">
       <Dependency Name="Ratio" />
       <Dependency Name="Guess1" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Guess3" Visible="false" Style="DependentPointStyle" X="asinh(Ratio.X * Guess2.X)" Y="0">
+    <PointByCoordinates Name="Guess3" Visible="false" X="asinh(Ratio.X * Guess2.X)" Y="0">
       <Dependency Name="Ratio" />
       <Dependency Name="Guess2" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Newton1" Visible="false" Style="DependentPointStyle" X="Guess3.X - (sinh(Guess3.X) - Ratio.X * Guess3.X) / (cosh(Guess3.X) - Ratio.X)" Y="0">
+    <PointByCoordinates Name="Newton1" Visible="false" X="Guess3.X - (sinh(Guess3.X) - Ratio.X * Guess3.X) / (cosh(Guess3.X) - Ratio.X)" Y="0">
       <Dependency Name="Ratio" />
       <Dependency Name="Guess3" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Newton2" Visible="false" Style="DependentPointStyle" X="Newton1.X - (sinh(Newton1.X) - Ratio.X * Newton1.X) / (cosh(Newton1.X) - Ratio.X)" Y="0">
+    <PointByCoordinates Name="Newton2" Visible="false" X="Newton1.X - (sinh(Newton1.X) - Ratio.X * Newton1.X) / (cosh(Newton1.X) - Ratio.X)" Y="0">
       <Dependency Name="Ratio" />
       <Dependency Name="Newton1" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Newton3" Visible="false" Style="DependentPointStyle" X="Newton2.X - (sinh(Newton2.X) - Ratio.X * Newton2.X) / (cosh(Newton2.X) - Ratio.X)" Y="0">
+    <PointByCoordinates Name="Newton3" Visible="false" X="Newton2.X - (sinh(Newton2.X) - Ratio.X * Newton2.X) / (cosh(Newton2.X) - Ratio.X)" Y="0">
       <Dependency Name="Ratio" />
       <Dependency Name="Newton2" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Newton4" Visible="false" Style="DependentPointStyle" X="Newton3.X - (sinh(Newton3.X) - Ratio.X * Newton3.X) / (cosh(Newton3.X) - Ratio.X)" Y="0">
+    <PointByCoordinates Name="Newton4" Visible="false" X="Newton3.X - (sinh(Newton3.X) - Ratio.X * Newton3.X) / (cosh(Newton3.X) - Ratio.X)" Y="0">
       <Dependency Name="Ratio" />
       <Dependency Name="Newton3" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Newton5" Visible="false" Style="DependentPointStyle" X="Newton4.X - (sinh(Newton4.X) - Ratio.X * Newton4.X) / (cosh(Newton4.X) - Ratio.X)" Y="0">
+    <PointByCoordinates Name="Newton5" Visible="false" X="Newton4.X - (sinh(Newton4.X) - Ratio.X * Newton4.X) / (cosh(Newton4.X) - Ratio.X)" Y="0">
       <Dependency Name="Ratio" />
       <Dependency Name="Newton4" />
     </PointByCoordinates>
-    <!-- X: a, Y: x0, where the curve is lowest -->
-    <PointByCoordinates Name="Params" Visible="false" Style="DependentPointStyle" X="abs(Offsets.X) / (2 * Newton5.X)" Y="(A.X + B.X) / 2 - abs(Offsets.X) / (2 * Newton5.X) * asinh(Offsets.X * Offsets.Y / (abs(Offsets.X) * Ratio.Y))">
+    <PointByCoordinates Name="Params" Visible="false" X="abs(Offsets.X) / (2 * Newton5.X)" Y="(A.X + B.X) / 2 - abs(Offsets.X) / (2 * Newton5.X) * asinh(Offsets.X * Offsets.Y / (abs(Offsets.X) * Ratio.Y))">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="Offsets" />
       <Dependency Name="Ratio" />
       <Dependency Name="Newton5" />
     </PointByCoordinates>
-    <!-- X: c -->
-    <PointByCoordinates Name="Lift" Visible="false" Style="DependentPointStyle" X="A.Y - Params.X * cosh((A.X - Params.Y) / Params.X)" Y="0">
+    <PointByCoordinates Name="Lift" Visible="false" X="A.Y - Params.X * cosh((A.X - Params.Y) / Params.X)" Y="0">
       <Dependency Name="A" />
       <Dependency Name="Params" />
     </PointByCoordinates>
-
-    <!-- T runs from A to B; P is the rope above or below it, and traces the rope -->
-    <PointOnFigure Name="T" Visible="false" Style="PointOnFigure" X="0" Y="2.5" Parameter="0.5">
+    <PointOnFigure Name="T" Visible="false" X="0" Y="2.5" Parameter="0.5">
       <Dependency Name="AB" />
     </PointOnFigure>
-    <PointByCoordinates Name="P" Visible="false" Style="DependentPointStyle" X="T.X" Y="Params.X * cosh((T.X - Params.Y) / Params.X) + Lift.X">
+    <PointByCoordinates Name="P" Visible="false" X="T.X" Y="Params.X * cosh((T.X - Params.Y) / Params.X) + Lift.X">
       <Dependency Name="T" />
       <Dependency Name="Params" />
       <Dependency Name="Lift" />
@@ -99,18 +81,17 @@
       <Dependency Name="P" />
       <Dependency Name="T" />
     </Locus>
-
-    <PointLabel Name="LabelA" Style="PointName" OffsetX="-14" OffsetY="-22" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelA" OffsetX="-14" OffsetY="-22" ShowName="true" ShowCoordinates="false">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="LabelB" Style="PointName" OffsetX="8" OffsetY="-22" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelB" OffsetX="8" OffsetY="-22" ShowName="true" ShowCoordinates="false">
       <Dependency Name="B" />
     </PointLabel>
-    <Label Name="Title" Style="GalleryTitle" Text="Catenary" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A rope of length [rope] hangs from A and B, which are [AB] apart. It sags into a catenary, y = a·cosh((x − x₀)/a) + c: the curve of any chain or cable hanging under its own weight. It looks like a parabola, but it isn't one.\n\nDrag A and B, or the knob of the rope's slider. The dashed line is the shortest way from A to B: a rope shorter than that can't reach, and the curve is gone." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true">
-      <Dependency Name="A" />
-      <Dependency Name="B" />
+    <Label Name="Title" Style="GalleryTitle" Text="Catenary" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A rope of length [rope] hangs from A and B, which are [AB] apart. It sags into a catenary, y = a·cosh((x − x₀)/a) + c: the curve of any chain or cable hanging under its own weight. It looks like a parabola, but it isn't one.\n\nDrag A and B, or the knob of the rope's slider. The dashed line is the shortest way from A to B: a rope shorter than that can't reach, and the curve is gone." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true">
       <Dependency Name="rope" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
     </Label>
   </Figures>
 </Drawing>

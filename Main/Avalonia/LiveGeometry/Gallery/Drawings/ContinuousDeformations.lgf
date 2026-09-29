@@ -1,67 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Drawing Version="1" Creator="LiveGeometry.App">
-  <Viewport Left="-11.3739822911" Top="4.5988854169" Right="8.7625285423" Bottom="-4.1216920612" Grid="false" />
+  <Viewport Left="-11.3739822911" Top="4.5988854169" Right="8.7625285423" Bottom="-4.1216920612" />
   <Styles>
-    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
-    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
-    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
-    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
-    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
-    <LineStyle Color="#64000000" StrokeWidth="1" Dash="Solid" Name="1" />
-    <LineStyle Color="#C80000FF" StrokeWidth="1" Dash="Solid" Name="OtherLine" />
-    <LineStyle Color="#E6000000" StrokeWidth="2.5" Dash="Solid" Name="ThickLine" />
-    <LineStyle Color="#FFD83B3B" StrokeWidth="1.5" Dash="Solid" Name="RedLine" />
-    <LineStyle Color="#FF2E9E4F" StrokeWidth="1.5" Dash="Solid" Name="GreenLine" />
-    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dash" Name="DashedLine" />
-    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dot" Name="DottedLine" />
-    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="2" />
-    <ShapeStyle Fill="#64C8FFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="OtherShape" />
-    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="3" />
-    <ShapeStyle Fill="#1C2F7BD6" IsFilled="true" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Solid" Name="BlueOutline" />
-    <ShapeStyle Fill="#1CE08A00" IsFilled="true" Color="#FFE08A00" StrokeWidth="1.5" Dash="Solid" Name="OrangeOutline" />
-    <ShapeStyle Fill="#1C8854D0" IsFilled="true" Color="#FF8854D0" StrokeWidth="1.5" Dash="Solid" Name="PurpleOutline" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
-    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
-    <PointStyle Size="10" Fill="#FF3FD6D6" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="7" />
-    <LineStyle Color="#FF808080" StrokeWidth="1" Dash="Solid" Name="8" />
-    <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FFE040E0" StrokeWidth="3" Dash="Solid" Name="9" />
-    <PointStyle Size="10" Fill="#FFF070F0" IsFilled="true" Color="#FFA000A0" StrokeWidth="1" Dash="Solid" Name="10" />
-    <PointStyle Size="8" Fill="#FF8CC4F0" IsFilled="true" Color="#FF5050E0" StrokeWidth="1" Dash="Solid" Name="11" />
-    <LineStyle Color="#FFB8B8B8" StrokeWidth="1" Dash="Solid" Name="12" />
-    <PointStyle Size="10" Fill="#FFD48CFF" IsFilled="true" Color="#FFAF43E0" StrokeWidth="1" Dash="Solid" Name="13" />
-    <LineStyle Color="#FF5050E0" StrokeWidth="2.5" Dash="Solid" Name="14" />
-    <LineStyle Color="#FFAF43E0" StrokeWidth="2" Dash="Solid" Name="15" />
-    <LineStyle Color="#FF8C8C8C" StrokeWidth="1" Dash="Solid" Name="16" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="Checkbox" />
-    <LineStyle Color="#B3D741E0" StrokeWidth="1" Dash="Solid" Name="Step1" />
-    <LineStyle Color="#B3CE42E0" StrokeWidth="1" Dash="Solid" Name="Step2" />
-    <LineStyle Color="#B3C543E0" StrokeWidth="1" Dash="Solid" Name="Step3" />
-    <LineStyle Color="#B3BC44E0" StrokeWidth="1" Dash="Solid" Name="Step4" />
-    <LineStyle Color="#B3B345E0" StrokeWidth="1" Dash="Solid" Name="Step5" />
-    <LineStyle Color="#B3AA46E0" StrokeWidth="1" Dash="Solid" Name="Step6" />
-    <LineStyle Color="#B3A147E0" StrokeWidth="1" Dash="Solid" Name="Step7" />
-    <LineStyle Color="#B39848E0" StrokeWidth="1" Dash="Solid" Name="Step8" />
-    <LineStyle Color="#B38F49E0" StrokeWidth="1" Dash="Solid" Name="Step9" />
-    <LineStyle Color="#B3864AE0" StrokeWidth="1" Dash="Solid" Name="Step10" />
-    <LineStyle Color="#B37D4BE0" StrokeWidth="1" Dash="Solid" Name="Step11" />
-    <LineStyle Color="#B3744CE0" StrokeWidth="1" Dash="Solid" Name="Step12" />
-    <LineStyle Color="#B36B4DE0" StrokeWidth="1" Dash="Solid" Name="Step13" />
-    <LineStyle Color="#B3624EE0" StrokeWidth="1" Dash="Solid" Name="Step14" />
-    <LineStyle Color="#B3594FE0" StrokeWidth="1" Dash="Solid" Name="Step15" />
-    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
-    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+    <PointStyle Name="7" Fill="#FF3FD6D6" />
+    <LineStyle Name="8" Color="#FF808080" />
+    <ShapeStyle Name="9" Fill="#00FFFFFF" Color="#FFE040E0" StrokeWidth="3" />
+    <PointStyle Name="10" Fill="#FFF070F0" Color="#FFA000A0" />
+    <PointStyle Name="11" Size="8" Fill="#FF8CC4F0" Color="#FF5050E0" />
+    <LineStyle Name="12" Color="#FFB8B8B8" />
+    <PointStyle Name="13" Fill="#FFD48CFF" Color="#FFAF43E0" />
+    <LineStyle Name="14" Color="#FF5050E0" StrokeWidth="2.5" />
+    <LineStyle Name="15" Color="#FFAF43E0" StrokeWidth="2" />
+    <LineStyle Name="16" Color="#FF8C8C8C" />
+    <TextStyle Name="Checkbox" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" />
+    <LineStyle Name="Step1" Color="#B3D741E0" />
+    <LineStyle Name="Step2" Color="#B3CE42E0" />
+    <LineStyle Name="Step3" Color="#B3C543E0" />
+    <LineStyle Name="Step4" Color="#B3BC44E0" />
+    <LineStyle Name="Step5" Color="#B3B345E0" />
+    <LineStyle Name="Step6" Color="#B3AA46E0" />
+    <LineStyle Name="Step7" Color="#B3A147E0" />
+    <LineStyle Name="Step8" Color="#B39848E0" />
+    <LineStyle Name="Step9" Color="#B38F49E0" />
+    <LineStyle Name="Step10" Color="#B3864AE0" />
+    <LineStyle Name="Step11" Color="#B37D4BE0" />
+    <LineStyle Name="Step12" Color="#B3744CE0" />
+    <LineStyle Name="Step13" Color="#B36B4DE0" />
+    <LineStyle Name="Step14" Color="#B3624EE0" />
+    <LineStyle Name="Step15" Color="#B3594FE0" />
   </Styles>
   <Figures>
     <FreePoint Name="G" Visible="false" Style="7" X="-7" Y="3" />
     <FreePoint Name="H" Visible="false" Style="7" X="-4" Y="3" />
-    <Ray Name="Ray1" Visible="false" Style="8">
+    <Ray Name="GH" Visible="false" Style="8">
       <Dependency Name="G" />
       <Dependency Name="H" />
     </Ray>
     <PointOnFigure Name="A" Style="7" X="-5.053546" Y="3" Parameter="0.648818">
-      <Dependency Name="Ray1" />
+      <Dependency Name="GH" />
     </PointOnFigure>
     <FreePoint Name="B" Visible="false" Style="7" X="-7" Y="3" />
     <FreePoint Name="C" Style="7" X="3.320524" Y="2.235732" />
@@ -76,12 +52,12 @@
     <PointByCoordinates Name="E" Style="11" X="(D.X) * (COS(D.Y))" Y="(D.Y) * (SIN(D.X))">
       <Dependency Name="D" />
     </PointByCoordinates>
-    <Segment Name="Segment1" Style="12">
+    <Segment Name="DE" Style="12">
       <Dependency Name="E" />
       <Dependency Name="D" />
     </Segment>
-    <PointOnFigure Name="F" Style="13" X="0.4375" Y="0.038" Parameter="0.5">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="F" Style="13" X="0.43742337268940323" Y="0.037734494830241605" Parameter="0.5">
+      <Dependency Name="DE" />
     </PointOnFigure>
     <Locus Name="Locus1" Style="14">
       <Dependency Name="E" />
@@ -91,112 +67,112 @@
       <Dependency Name="F" />
       <Dependency Name="D" />
     </Locus>
-    <Segment Name="Segment2" Style="16">
+    <Segment Name="AB" Style="16">
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Segment>
-    <PointOnFigure Name="S1" Visible="false" Style="DependentPointStyle" X="4.003" Y="3.308" Parameter="0.0625">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S1" Visible="false" Style="DependentPoint" X="-3.1279109252065718" Y="-3.232232107358895" Parameter="0.0625">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus1" Visible="false" Style="Step1">
+    <Locus Name="StepLocus1" Style="Step1">
       <Dependency Name="S1" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S2" Visible="false" Style="DependentPointStyle" X="3.493" Y="2.841" Parameter="0.125">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S2" Visible="false" Style="DependentPoint" X="-2.6185774540785753" Y="-2.7650940213318753" Parameter="0.125">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus2" Visible="false" Style="Step2">
+    <Locus Name="StepLocus2" Style="Step2">
       <Dependency Name="S2" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S3" Visible="false" Style="DependentPointStyle" X="2.984" Y="2.373" Parameter="0.1875">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S3" Visible="false" Style="DependentPoint" X="-2.109243982950579" Y="-2.2979559353048558" Parameter="0.1875">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus3" Visible="false" Style="Step3">
+    <Locus Name="StepLocus3" Style="Step3">
       <Dependency Name="S3" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S4" Visible="false" Style="DependentPointStyle" X="2.475" Y="1.906" Parameter="0.25">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S4" Visible="false" Style="DependentPoint" X="-1.5999105118225825" Y="-1.8308178492778364" Parameter="0.25">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus4" Visible="false" Style="Step4">
+    <Locus Name="StepLocus4" Style="Step4">
       <Dependency Name="S4" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S5" Visible="false" Style="DependentPointStyle" X="1.966" Y="1.439" Parameter="0.3125">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S5" Visible="false" Style="DependentPoint" X="-1.090577040694586" Y="-1.363679763250817" Parameter="0.3125">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus5" Visible="false" Style="Step5">
+    <Locus Name="StepLocus5" Style="Step5">
       <Dependency Name="S5" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S6" Visible="false" Style="DependentPointStyle" X="1.456" Y="0.972" Parameter="0.375">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S6" Visible="false" Style="DependentPoint" X="-0.5812435695665896" Y="-0.8965416772237975" Parameter="0.375">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus6" Visible="false" Style="Step6">
+    <Locus Name="StepLocus6" Style="Step6">
       <Dependency Name="S6" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S7" Visible="false" Style="DependentPointStyle" X="0.947" Y="0.505" Parameter="0.4375">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S7" Visible="false" Style="DependentPoint" X="-0.0719100984385932" Y="-0.42940359119677796" Parameter="0.4375">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus7" Visible="false" Style="Step7">
+    <Locus Name="StepLocus7" Style="Step7">
       <Dependency Name="S7" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S8" Visible="false" Style="DependentPointStyle" X="0.438" Y="0.038" Parameter="0.5">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S8" Visible="false" Style="DependentPoint" X="0.43742337268940323" Y="0.037734494830241605" Parameter="0.5">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus8" Visible="false" Style="Step8">
+    <Locus Name="StepLocus8" Style="Step8">
       <Dependency Name="S8" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S9" Visible="false" Style="DependentPointStyle" X="-0.072" Y="-0.429" Parameter="0.5625">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S9" Visible="false" Style="DependentPoint" X="0.9467568438174001" Y="0.5048725808572607" Parameter="0.5625">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus9" Visible="false" Style="Step9">
+    <Locus Name="StepLocus9" Style="Step9">
       <Dependency Name="S9" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S10" Visible="false" Style="DependentPointStyle" X="-0.581" Y="-0.896" Parameter="0.625">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S10" Visible="false" Style="DependentPoint" X="1.456090314945396" Y="0.9720106668842803" Parameter="0.625">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus10" Visible="false" Style="Step10">
+    <Locus Name="StepLocus10" Style="Step10">
       <Dependency Name="S10" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S11" Visible="false" Style="DependentPointStyle" X="-1.09" Y="-1.363" Parameter="0.6875">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S11" Visible="false" Style="DependentPoint" X="1.965423786073392" Y="1.4391487529112998" Parameter="0.6875">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus11" Visible="false" Style="Step11">
+    <Locus Name="StepLocus11" Style="Step11">
       <Dependency Name="S11" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S12" Visible="false" Style="DependentPointStyle" X="-1.6" Y="-1.831" Parameter="0.75">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S12" Visible="false" Style="DependentPoint" X="2.474757257201389" Y="1.9062868389383194" Parameter="0.75">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus12" Visible="false" Style="Step12">
+    <Locus Name="StepLocus12" Style="Step12">
       <Dependency Name="S12" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S13" Visible="false" Style="DependentPointStyle" X="-2.109" Y="-2.298" Parameter="0.8125">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S13" Visible="false" Style="DependentPoint" X="2.984090728329386" Y="2.373424924965339" Parameter="0.8125">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus13" Visible="false" Style="Step13">
+    <Locus Name="StepLocus13" Style="Step13">
       <Dependency Name="S13" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S14" Visible="false" Style="DependentPointStyle" X="-2.618" Y="-2.765" Parameter="0.875">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S14" Visible="false" Style="DependentPoint" X="3.493424199457382" Y="2.8405630109923585" Parameter="0.875">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus14" Visible="false" Style="Step14">
+    <Locus Name="StepLocus14" Style="Step14">
       <Dependency Name="S14" />
       <Dependency Name="D" />
     </Locus>
-    <PointOnFigure Name="S15" Visible="false" Style="DependentPointStyle" X="-3.128" Y="-3.232" Parameter="0.9375">
-      <Dependency Name="Segment1" />
+    <PointOnFigure Name="S15" Visible="false" Style="DependentPoint" X="4.002757670585378" Y="3.307701097019378" Parameter="0.9375">
+      <Dependency Name="DE" />
     </PointOnFigure>
-    <Locus Name="StepLocus15" Visible="false" Style="Step15">
+    <Locus Name="StepLocus15" Style="Step15">
       <Dependency Name="S15" />
       <Dependency Name="D" />
     </Locus>
@@ -217,7 +193,7 @@
       <Dependency Name="StepLocus14" />
       <Dependency Name="StepLocus15" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Continuous Deformations" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A formula moves every point D of the pink circle to a new place E. As D runs around the circle, E draws the blue curve.\n\nPoint F sits on the segment from D to E. Its path, the purple curve, is a shape in between the two.\n\nDrag F along its segment to morph the circle into the blue curve and back. The thin curves are the steps in between. Drag A to resize the circle, or C to move it." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="GalleryTitle" Text="Continuous Deformations" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A formula moves every point D of the pink circle to a new place E. As D runs around the circle, E draws the blue curve.\n\nPoint F sits on the segment from D to E. Its path, the purple curve, is a shape in between the two.\n\nDrag F along its segment to morph the circle into the blue curve and back. The thin curves are the steps in between. Drag A to resize the circle, or C to move it." Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

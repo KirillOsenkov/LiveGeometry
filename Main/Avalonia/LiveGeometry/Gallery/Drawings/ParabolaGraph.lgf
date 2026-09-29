@@ -1,47 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1">
-  <Viewport Left="-4.9895833333" Top="7.5729166667" Right="5.0104166667" Bottom="-7.59375" Grid="true" />
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-4.9895833333" Top="7.5729166667" Right="5.0104166667" Bottom="-7.59375" Grid="true" Axes="true" />
   <Styles>
-    <PointStyle Size="15" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
-    <PointStyle Size="15" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
-    <PointStyle Size="15" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
-    <LineStyle Color="#FFFF4848" StrokeWidth="3" Name="4" />
-    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
-    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
-    <TextStyle FontSize="40" Color="#FF298A9F" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
-    <PointStyle Size="15" Fill="#FF00FFE5" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="10" />
-    <LineStyle Color="#FF4897FF" StrokeWidth="2" Name="11" />
-    <TextStyle FontSize="40" Color="#FF299F31" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="12" />
-    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
-    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+    <PointStyle Name="1" Size="15" Fill="#FFFFFF00" Color="#FF000000" />
+    <PointStyle Name="2" Size="15" Fill="#FF00FF00" Color="#FF000000" />
+    <LineStyle Name="4" Color="#FFFF4848" StrokeWidth="3" />
+    <PointStyle Name="10" Size="15" Fill="#FF00FFE5" Color="#FF000000" />
+    <LineStyle Name="11" Color="#FF4897FF" StrokeWidth="2" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" Locked="true" Visible="false" Style="1" X="0.0104166667" Y="-2.0104166667" />
-    <FreePoint Name="B" Locked="true" Visible="false" Style="1" X="2.9895833333" Y="-2.0104166667" />
-    <FreePoint Name="C" Locked="true" Visible="false" Style="1" X="0.0104166667" Y="-3.9895833333" />
-    <FreePoint Name="D" Locked="true" Visible="false" Style="1" X="2.96875" Y="-3.9895833333" />
-    <LineTwoPoints Name="LineTwoPoints24" Visible="false" Style="4">
+    <FreePoint Name="A" Visible="false" Locked="true" Style="1" X="0.0104166667" Y="-2.0104166667" />
+    <FreePoint Name="B" Visible="false" Locked="true" Style="1" X="2.9895833333" Y="-2.0104166667" />
+    <FreePoint Name="C" Visible="false" Locked="true" Style="1" X="0.0104166667" Y="-3.9895833333" />
+    <FreePoint Name="D" Visible="false" Locked="true" Style="1" X="2.96875" Y="-3.9895833333" />
+    <LineTwoPoints Name="AB" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </LineTwoPoints>
-    <LineTwoPoints Name="LineTwoPoints26" Visible="false" Style="4">
+    <LineTwoPoints Name="CD" Visible="false" Style="4">
       <Dependency Name="C" />
       <Dependency Name="D" />
     </LineTwoPoints>
-    <PointOnFigure Name="E" Style="10" X="0.9895833333" Y="-2.0104166667" Parameter="0.328671328656306">
-      <Dependency Name="LineTwoPoints24" />
+    <PointOnFigure Name="E" Style="10" X="0.9895833333000003" Y="-2.0104166667" Parameter="0.328671328656306">
+      <Dependency Name="AB" />
     </PointOnFigure>
     <PointOnFigure Name="F" Style="2" X="0.0104166667" Y="-3.9895833333" Parameter="0">
-      <Dependency Name="LineTwoPoints26" />
+      <Dependency Name="CD" />
     </PointOnFigure>
-    <Segment Name="Segment28" Style="11">
+    <Segment Name="AE" Style="11">
       <Dependency Name="A" />
       <Dependency Name="E" />
     </Segment>
-    <Segment Name="Segment30" Style="11">
+    <Segment Name="CF" Style="11">
       <Dependency Name="C" />
       <Dependency Name="F" />
     </Segment>
@@ -49,8 +39,8 @@
       <Dependency Name="E" />
       <Dependency Name="F" />
     </FunctionGraph>
-    <Label Name="Title" Style="GalleryTitle" Text="Graph of a Parabola" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="y = a·x² + c\na = [E.X]\nc = [F.X]\n\nThe two points under the x-axis are sliders. The blue one is a: it makes the parabola narrower, wider, or flips it upside down. The green one is c: it moves the parabola up and down." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true">
+    <Label Name="Title" Style="GalleryTitle" Text="Graph of a Parabola" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="y = a·x² + c\na = [E.X]\nc = [F.X]\n\nThe two points under the x-axis are sliders. The blue one is a: it makes the parabola narrower, wider, or flips it upside down. The green one is c: it moves the parabola up and down." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true">
       <Dependency Name="E" />
       <Dependency Name="F" />
     </Label>

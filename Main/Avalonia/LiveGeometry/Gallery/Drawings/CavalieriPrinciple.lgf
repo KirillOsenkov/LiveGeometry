@@ -1,48 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1">
-  <Viewport Left="-4.8541666667" Top="6.4791666667" Right="5.1458333333" Bottom="-8.6875" Grid="false" />
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-4.8541666667" Top="6.4791666667" Right="5.1458333333" Bottom="-8.6875" />
   <Styles>
-    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
-    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
-    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
-    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
-    <ShapeStyle Fill="#80FFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="5" />
-    <ShapeStyle Fill="#6E99FFFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
-    <TextStyle FontSize="40" Color="#FF48B5BC" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
-    <LineStyle Color="#6E999999" StrokeWidth="5" Name="10" />
-    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
-    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+    <LineStyle Name="4" Color="#FF000000" />
+    <ShapeStyle Name="5" Fill="#80FFFF00" Color="#FF000000" />
+    <ShapeStyle Name="6" Fill="#6E99FFFF" Color="#FF000000" />
+    <LineStyle Name="10" Color="#6E999999" StrokeWidth="5" />
   </Styles>
   <Figures>
-    <FreePoint Name="X" Visible="false" Locked="true" Style="1" X="-3.3125" Y="-0.9791666667" />
-    <FreePoint Name="Y" Visible="false" Locked="true" Style="1" X="2.625" Y="-0.9791666667" />
-    <LineTwoPoints Name="LineTwoPoints392" Visible="false" Locked="true" Style="4">
+    <FreePoint Name="X" Visible="false" Locked="true" X="-3.3125" Y="-0.9791666667" />
+    <FreePoint Name="Y" Visible="false" Locked="true" X="2.625" Y="-0.9791666667" />
+    <LineTwoPoints Name="XY" Visible="false" Locked="true" Style="4">
       <Dependency Name="X" />
       <Dependency Name="Y" />
     </LineTwoPoints>
-    <PointOnFigure Name="C" Style="1" X="1.1041666666" Y="-0.9791666667" Parameter="0.743859649111579">
-      <Dependency Name="LineTwoPoints392" />
+    <PointOnFigure Name="C" Style="FreePoint" X="1.1041666666000003" Y="-0.9791666667" Parameter="0.743859649111579">
+      <Dependency Name="XY" />
     </PointOnFigure>
-    <FreePoint Name="A2" Visible="false" Style="1" X="-3.34374999999999" Y="-6.71874999959999" />
-    <FreePoint Name="B" Visible="false" Style="1" X="2.63541666660001" Y="-6.7187499996" />
-    <LineTwoPoints Name="LineTwoPoints319" Visible="false" Locked="true" Style="4">
+    <FreePoint Name="A2" Visible="false" X="-3.34374999999999" Y="-6.71874999959999" />
+    <FreePoint Name="B" Visible="false" X="2.63541666660001" Y="-6.7187499996" />
+    <LineTwoPoints Name="BA2" Visible="false" Locked="true" Style="4">
       <Dependency Name="A2" />
       <Dependency Name="B" />
     </LineTwoPoints>
-    <LineTwoPoints Name="LineTwoPoints321" Visible="false" Locked="true" Style="4">
+    <LineTwoPoints Name="CA2" Visible="false" Locked="true" Style="4">
       <Dependency Name="A2" />
       <Dependency Name="C" />
     </LineTwoPoints>
-    <LineTwoPoints Name="LineTwoPoints323" Visible="false" Locked="true" Style="4">
+    <LineTwoPoints Name="BC" Visible="false" Locked="true" Style="4">
       <Dependency Name="C" />
       <Dependency Name="B" />
     </LineTwoPoints>
-    <FreePoint Name="D" Visible="false" Style="1" X="3.2187500001" Y="-7.67708333309999" />
-    <FreePoint Name="E" Visible="false" Style="1" X="4.3645833334" Y="-7.71874999979998" />
-    <LineTwoPoints Name="LineTwoPoints325" Visible="false" Style="4">
+    <FreePoint Name="D" Visible="false" X="3.2187500001" Y="-7.67708333309999" />
+    <FreePoint Name="E" Visible="false" X="4.3645833334" Y="-7.71874999979998" />
+    <LineTwoPoints Name="DE" Visible="false" Style="4">
       <Dependency Name="D" />
       <Dependency Name="E" />
     </LineTwoPoints>
@@ -56,95 +47,95 @@
       <Dependency Name="E" />
       <Dependency Name="B" />
     </CircleByRadius>
-    <PerpendicularLine Name="PerpendicularLine335" Visible="false" Style="4">
-      <Dependency Name="LineTwoPoints319" />
+    <PerpendicularLine Name="PerpendicularLine335" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="BA2" />
       <Dependency Name="A2" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine337" Visible="false" Style="4">
-      <Dependency Name="LineTwoPoints319" />
+    <PerpendicularLine Name="PerpendicularLine337" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="BA2" />
       <Dependency Name="B" />
     </PerpendicularLine>
-    <IntersectionPoint Name="F" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse1">
+    <IntersectionPoint Name="F" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine335" />
       <Dependency Name="CircleByRadius329" />
     </IntersectionPoint>
-    <IntersectionPoint Name="G" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse1">
+    <IntersectionPoint Name="G" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine337" />
       <Dependency Name="CircleByRadius333" />
     </IntersectionPoint>
-    <LineTwoPoints Name="LineTwoPoints401" Visible="false" Locked="true" Style="4">
+    <LineTwoPoints Name="FA2" Visible="false" Locked="true" Style="4">
       <Dependency Name="F" />
       <Dependency Name="A2" />
     </LineTwoPoints>
-    <LineTwoPoints Name="LineTwoPoints403" Visible="false" Locked="true" Style="4">
+    <LineTwoPoints Name="BG" Visible="false" Locked="true" Style="4">
       <Dependency Name="G" />
       <Dependency Name="B" />
     </LineTwoPoints>
-    <Polygon Name="Polygon424" Style="5">
+    <Polygon Name="BCA2" Style="5">
       <Dependency Name="A2" />
       <Dependency Name="C" />
       <Dependency Name="B" />
     </Polygon>
-    <Polygon Name="Polygon435" Locked="true" Style="6">
+    <Polygon Name="BGFA2" Locked="true" Style="6">
       <Dependency Name="A2" />
       <Dependency Name="F" />
       <Dependency Name="G" />
       <Dependency Name="B" />
     </Polygon>
-    <PerpendicularLine Name="PerpendicularLine485" Visible="false" Style="4">
-      <Dependency Name="LineTwoPoints319" />
+    <PerpendicularLine Name="PerpendicularLine485" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="BA2" />
       <Dependency Name="C" />
     </PerpendicularLine>
-    <IntersectionPoint Name="Z" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
+    <IntersectionPoint Name="Z" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndLine">
       <Dependency Name="PerpendicularLine485" />
-      <Dependency Name="LineTwoPoints319" />
+      <Dependency Name="BA2" />
     </IntersectionPoint>
     <Segment Name="Altitude" Style="10">
       <Dependency Name="C" />
       <Dependency Name="Z" />
     </Segment>
-    <PointOnFigure Name="h" Visible="false" Style="1" X="1.1041666666" Y="-3.81776494577065" Parameter="0.494565217443479">
+    <PointOnFigure Name="h" Visible="false" Style="FreePoint" X="1.1041666665999956" Y="-3.8177649457706546" Parameter="0.494565217443479">
       <Dependency Name="Altitude" />
     </PointOnFigure>
-    <PointLabel Name="PointLabel490" Style="7" OffsetX="7.9" OffsetY="-7.9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel490" OffsetX="7.9" OffsetY="-7.9" ShowName="true" ShowCoordinates="false">
       <Dependency Name="h" />
     </PointLabel>
-    <PointOnFigure Name="a" Visible="false" Style="1" X="-0.0776302083088423" Y="-6.7187499996" Parameter="0.546250000010185">
-      <Dependency Name="LineTwoPoints319" />
+    <PointOnFigure Name="a" Visible="false" Style="FreePoint" X="-0.07763020830884226" Y="-6.7187499995999955" Parameter="0.546250000010185">
+      <Dependency Name="BA2" />
     </PointOnFigure>
-    <PointLabel Name="PointLabel491" Style="7" OffsetX="-13.2" OffsetY="1.6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel491" OffsetX="-13.2" OffsetY="1.6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="a" />
     </PointLabel>
-    <LineTwoPoints Name="LineTwoPoints339" Visible="false" Locked="true" Style="4">
+    <LineTwoPoints Name="FG" Visible="false" Locked="true" Style="4">
       <Dependency Name="F" />
       <Dependency Name="G" />
     </LineTwoPoints>
-    <IntersectionPoint Name="I" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
-      <Dependency Name="LineTwoPoints339" />
-      <Dependency Name="LineTwoPoints323" />
+    <IntersectionPoint Name="I" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndLine">
+      <Dependency Name="FG" />
+      <Dependency Name="BC" />
     </IntersectionPoint>
     <CircleByRadius Name="CircleByRadius346" Visible="false" Style="4">
       <Dependency Name="D" />
       <Dependency Name="E" />
       <Dependency Name="I" />
     </CircleByRadius>
-    <PerpendicularLine Name="PerpendicularLine343" Visible="false" Style="4">
-      <Dependency Name="LineTwoPoints319" />
+    <PerpendicularLine Name="PerpendicularLine343" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="BA2" />
       <Dependency Name="I" />
     </PerpendicularLine>
-    <IntersectionPoint Name="K" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+    <IntersectionPoint Name="K" Visible="false" Style="FreePoint" Algorithm="IntersectEllipseAndLine1">
       <Dependency Name="CircleByRadius346" />
       <Dependency Name="PerpendicularLine343" />
     </IntersectionPoint>
-    <LineTwoPoints Name="LineTwoPoints419" Visible="false" Style="4">
+    <LineTwoPoints Name="IK" Visible="false" Style="4">
       <Dependency Name="K" />
       <Dependency Name="I" />
     </LineTwoPoints>
-    <IntersectionPoint Name="H3" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
-      <Dependency Name="LineTwoPoints339" />
-      <Dependency Name="LineTwoPoints321" />
+    <IntersectionPoint Name="H3" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndLine">
+      <Dependency Name="FG" />
+      <Dependency Name="CA2" />
     </IntersectionPoint>
-    <LineTwoPoints Name="LineTwoPoints447" Visible="false" Style="4">
+    <LineTwoPoints Name="IH3" Visible="false" Style="4">
       <Dependency Name="I" />
       <Dependency Name="H3" />
     </LineTwoPoints>
@@ -153,34 +144,34 @@
       <Dependency Name="E" />
       <Dependency Name="H3" />
     </CircleByRadius>
-    <PerpendicularLine Name="PerpendicularLine341" Visible="false" Style="4">
-      <Dependency Name="LineTwoPoints319" />
+    <PerpendicularLine Name="PerpendicularLine341" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="BA2" />
       <Dependency Name="H3" />
     </PerpendicularLine>
-    <IntersectionPoint Name="J" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+    <IntersectionPoint Name="J" Visible="false" Style="FreePoint" Algorithm="IntersectEllipseAndLine1">
       <Dependency Name="CircleByRadius349" />
       <Dependency Name="PerpendicularLine341" />
     </IntersectionPoint>
-    <Polygon Name="Polygon446" Style="6">
+    <Polygon Name="IKJH3" Style="6">
       <Dependency Name="H3" />
       <Dependency Name="J" />
       <Dependency Name="K" />
       <Dependency Name="I" />
     </Polygon>
-    <LineTwoPoints Name="LineTwoPoints405" Visible="false" Style="4">
+    <LineTwoPoints Name="JH3" Visible="false" Style="4">
       <Dependency Name="J" />
       <Dependency Name="H3" />
     </LineTwoPoints>
-    <LineTwoPoints Name="LineTwoPoints351" Visible="false" Style="4">
+    <LineTwoPoints Name="JK" Visible="false" Style="4">
       <Dependency Name="J" />
       <Dependency Name="K" />
     </LineTwoPoints>
-    <IntersectionPoint Name="M" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
-      <Dependency Name="LineTwoPoints351" />
-      <Dependency Name="LineTwoPoints323" />
+    <IntersectionPoint Name="M" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndLine">
+      <Dependency Name="JK" />
+      <Dependency Name="BC" />
     </IntersectionPoint>
-    <PerpendicularLine Name="PerpendicularLine361" Visible="false" Style="4">
-      <Dependency Name="LineTwoPoints351" />
+    <PerpendicularLine Name="PerpendicularLine361" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="JK" />
       <Dependency Name="M" />
     </PerpendicularLine>
     <CircleByRadius Name="CircleByRadius357" Visible="false" Style="4">
@@ -188,24 +179,24 @@
       <Dependency Name="E" />
       <Dependency Name="M" />
     </CircleByRadius>
-    <IntersectionPoint Name="O" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse1">
+    <IntersectionPoint Name="O" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine361" />
       <Dependency Name="CircleByRadius357" />
     </IntersectionPoint>
-    <LineTwoPoints Name="LineTwoPoints417" Visible="false" Style="4">
+    <LineTwoPoints Name="MO" Visible="false" Style="4">
       <Dependency Name="O" />
       <Dependency Name="M" />
     </LineTwoPoints>
-    <IntersectionPoint Name="L" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
-      <Dependency Name="LineTwoPoints351" />
-      <Dependency Name="LineTwoPoints321" />
+    <IntersectionPoint Name="L" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndLine">
+      <Dependency Name="JK" />
+      <Dependency Name="CA2" />
     </IntersectionPoint>
-    <LineTwoPoints Name="LineTwoPoints459" Visible="false" Style="4">
+    <LineTwoPoints Name="LM" Visible="false" Style="4">
       <Dependency Name="M" />
       <Dependency Name="L" />
     </LineTwoPoints>
-    <PerpendicularLine Name="PerpendicularLine359" Visible="false" Style="4">
-      <Dependency Name="LineTwoPoints351" />
+    <PerpendicularLine Name="PerpendicularLine359" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="JK" />
       <Dependency Name="L" />
     </PerpendicularLine>
     <CircleByRadius Name="CircleByRadius354" Visible="false" Style="4">
@@ -213,30 +204,30 @@
       <Dependency Name="E" />
       <Dependency Name="L" />
     </CircleByRadius>
-    <IntersectionPoint Name="N" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse1">
+    <IntersectionPoint Name="N" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine359" />
       <Dependency Name="CircleByRadius354" />
     </IntersectionPoint>
-    <Polygon Name="Polygon458" Style="6">
+    <Polygon Name="LMON" Style="6">
       <Dependency Name="L" />
       <Dependency Name="N" />
       <Dependency Name="O" />
       <Dependency Name="M" />
     </Polygon>
-    <LineTwoPoints Name="LineTwoPoints407" Visible="false" Style="4">
+    <LineTwoPoints Name="LN" Visible="false" Style="4">
       <Dependency Name="N" />
       <Dependency Name="L" />
     </LineTwoPoints>
-    <LineTwoPoints Name="LineTwoPoints363" Visible="false" Style="4">
+    <LineTwoPoints Name="NO" Visible="false" Style="4">
       <Dependency Name="N" />
       <Dependency Name="O" />
     </LineTwoPoints>
-    <IntersectionPoint Name="Q" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
-      <Dependency Name="LineTwoPoints363" />
-      <Dependency Name="LineTwoPoints323" />
+    <IntersectionPoint Name="Q" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndLine">
+      <Dependency Name="NO" />
+      <Dependency Name="BC" />
     </IntersectionPoint>
-    <PerpendicularLine Name="PerpendicularLine374" Visible="false" Style="4">
-      <Dependency Name="LineTwoPoints363" />
+    <PerpendicularLine Name="PerpendicularLine374" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="NO" />
       <Dependency Name="Q" />
     </PerpendicularLine>
     <CircleByRadius Name="CircleByRadius367" Visible="false" Style="4">
@@ -244,24 +235,24 @@
       <Dependency Name="E" />
       <Dependency Name="Q" />
     </CircleByRadius>
-    <IntersectionPoint Name="S" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse1">
+    <IntersectionPoint Name="S" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine374" />
       <Dependency Name="CircleByRadius367" />
     </IntersectionPoint>
-    <LineTwoPoints Name="LineTwoPoints415" Visible="false" Style="4">
+    <LineTwoPoints Name="QS" Visible="false" Style="4">
       <Dependency Name="S" />
       <Dependency Name="Q" />
     </LineTwoPoints>
-    <IntersectionPoint Name="P" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
-      <Dependency Name="LineTwoPoints363" />
-      <Dependency Name="LineTwoPoints321" />
+    <IntersectionPoint Name="P" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndLine">
+      <Dependency Name="NO" />
+      <Dependency Name="CA2" />
     </IntersectionPoint>
-    <LineTwoPoints Name="LineTwoPoints471" Visible="false" Style="4">
+    <LineTwoPoints Name="PQ" Visible="false" Style="4">
       <Dependency Name="Q" />
       <Dependency Name="P" />
     </LineTwoPoints>
-    <PerpendicularLine Name="PerpendicularLine372" Visible="false" Style="4">
-      <Dependency Name="LineTwoPoints363" />
+    <PerpendicularLine Name="PerpendicularLine372" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="NO" />
       <Dependency Name="P" />
     </PerpendicularLine>
     <CircleByRadius Name="CircleByRadius370" Visible="false" Style="4">
@@ -269,50 +260,50 @@
       <Dependency Name="E" />
       <Dependency Name="P" />
     </CircleByRadius>
-    <IntersectionPoint Name="R" Visible="false" Style="1" Algorithm="IntersectLineAndEllipse1">
+    <IntersectionPoint Name="R" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PerpendicularLine372" />
       <Dependency Name="CircleByRadius370" />
     </IntersectionPoint>
-    <Polygon Name="Polygon470" Style="6">
+    <Polygon Name="PQSR" Style="6">
       <Dependency Name="P" />
       <Dependency Name="R" />
       <Dependency Name="S" />
       <Dependency Name="Q" />
     </Polygon>
-    <LineTwoPoints Name="LineTwoPoints409" Visible="false" Style="4">
+    <LineTwoPoints Name="PR" Visible="false" Style="4">
       <Dependency Name="R" />
       <Dependency Name="P" />
     </LineTwoPoints>
-    <LineTwoPoints Name="LineTwoPoints376" Visible="false" Style="4">
+    <LineTwoPoints Name="RS" Visible="false" Style="4">
       <Dependency Name="R" />
       <Dependency Name="S" />
     </LineTwoPoints>
-    <IntersectionPoint Name="U" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
-      <Dependency Name="LineTwoPoints376" />
-      <Dependency Name="LineTwoPoints323" />
+    <IntersectionPoint Name="U" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndLine">
+      <Dependency Name="RS" />
+      <Dependency Name="BC" />
     </IntersectionPoint>
     <CircleByRadius Name="CircleByRadius383" Visible="false" Style="4">
       <Dependency Name="D" />
       <Dependency Name="E" />
       <Dependency Name="U" />
     </CircleByRadius>
-    <PerpendicularLine Name="PerpendicularLine380" Visible="false" Style="4">
-      <Dependency Name="LineTwoPoints376" />
+    <PerpendicularLine Name="PerpendicularLine380" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="RS" />
       <Dependency Name="U" />
     </PerpendicularLine>
-    <IntersectionPoint Name="W" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+    <IntersectionPoint Name="W" Visible="false" Style="FreePoint" Algorithm="IntersectEllipseAndLine1">
       <Dependency Name="CircleByRadius383" />
       <Dependency Name="PerpendicularLine380" />
     </IntersectionPoint>
-    <LineTwoPoints Name="LineTwoPoints413" Visible="false" Style="4">
+    <LineTwoPoints Name="UW" Visible="false" Style="4">
       <Dependency Name="W" />
       <Dependency Name="U" />
     </LineTwoPoints>
-    <IntersectionPoint Name="T" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
-      <Dependency Name="LineTwoPoints376" />
-      <Dependency Name="LineTwoPoints321" />
+    <IntersectionPoint Name="T" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndLine">
+      <Dependency Name="RS" />
+      <Dependency Name="CA2" />
     </IntersectionPoint>
-    <LineTwoPoints Name="LineTwoPoints483" Visible="false" Style="4">
+    <LineTwoPoints Name="TU" Visible="false" Style="4">
       <Dependency Name="U" />
       <Dependency Name="T" />
     </LineTwoPoints>
@@ -321,29 +312,29 @@
       <Dependency Name="E" />
       <Dependency Name="T" />
     </CircleByRadius>
-    <PerpendicularLine Name="PerpendicularLine378" Visible="false" Style="4">
-      <Dependency Name="LineTwoPoints376" />
+    <PerpendicularLine Name="PerpendicularLine378" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="RS" />
       <Dependency Name="T" />
     </PerpendicularLine>
-    <IntersectionPoint Name="V" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
+    <IntersectionPoint Name="V" Visible="false" Style="FreePoint" Algorithm="IntersectEllipseAndLine1">
       <Dependency Name="CircleByRadius386" />
       <Dependency Name="PerpendicularLine378" />
     </IntersectionPoint>
-    <Polygon Name="Polygon482" Style="6">
+    <Polygon Name="TUWV" Style="6">
       <Dependency Name="T" />
       <Dependency Name="V" />
       <Dependency Name="W" />
       <Dependency Name="U" />
     </Polygon>
-    <LineTwoPoints Name="LineTwoPoints411" Visible="false" Style="4">
+    <LineTwoPoints Name="TV" Visible="false" Style="4">
       <Dependency Name="V" />
       <Dependency Name="T" />
     </LineTwoPoints>
-    <LineTwoPoints Name="LineTwoPoints390" Visible="false" Style="4">
+    <LineTwoPoints Name="VW" Visible="false" Style="4">
       <Dependency Name="V" />
       <Dependency Name="W" />
     </LineTwoPoints>
-    <Label Name="Title" Style="GalleryTitle" Text="Cavalieri's Principle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="The area of a triangle is ½ · base · height. Why doesn't it matter where the top is?\n\nThink of the triangle as a stack of thin slices. Slide the top sideways: every slice moves but keeps its length, so the area stays the same.\n\nDrag the top vertex." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="GalleryTitle" Text="Cavalieri's Principle" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="The area of a triangle is ½ · base · height. Why doesn't it matter where the top is?\n\nThink of the triangle as a stack of thin slices. Slide the top sideways: every slice moves but keeps its length, so the area stays the same.\n\nDrag the top vertex." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

@@ -566,8 +566,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   as in Light" button drops the theme's overrides (shown once there are some, on the next
   opening of the style). The paper works the same: `Drawing.Overrides` holds the paper chosen
   for another theme, "Theme's paper" under Dark stores a null override (that theme's paper).
-  Not yet: the gallery drawings (they carry copies of old numbered defaults) and its
-  pastel tiles.
+  `GalleryTitle` (a Dark override in the splash's blue), `GalleryText` (the chrome's text
+  color) and `GalleryLocus` are defaults too. Not yet: Dark overrides for the gallery
+  drawings' own styles (the old opaque black lines and text among them), and the pastel tiles.
 - **Settings between runs** (`LiveGeometry/SettingsStore.cs`): `Get`/`Set` by key, the desktop
   head keeping them as `key=value` lines in `%LocalAppData%\LiveGeometry\Settings.txt`
   (`FileSettingsStore`), the browser in `localStorage` under `LiveGeometry.<key>`
@@ -643,8 +644,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   style taking the place of the default of the same name unless it looks the same in Light
   (files from before the themes carry every default they use: those are dropped for the
   default itself, which follows the theme), others after (`StyleManager.AddWithDefaults`).
+  A file style under any name that looks like what a default used to be (the numbered
+  copies of the phone and CD drawings: the yellow, green and gray 10 px points with a black
+  rim, the 18 and 40 pt black Segoe UI text; `StyleManager.LegacyDefaults`) is dropped too,
+  and its name resolves to the default (`aliases`). Not the old opaque black line: the
+  default line is translucent, and every old drawing would turn gray; those stay file styles
+  (`dotnet tools/stylecensus.cs -- <folder>` lists what a folder's files carry, by values).
   The order matters: new lines and shapes take the first line or shape style. Labels leave
-  out `DecimalsToShow` at the default.
+  out `DecimalsToShow` at the default. `LiveGeometry.Desktop.exe --rewrite <folder>` loads
+  and saves every drawing of a folder, keeping each file's viewport.
 - **Saved files declare `encoding="utf-8"`**; files from older builds say `utf-16`, which our
   own loader tolerates but `XDocument.Load` does not.
 - **`TranslatedPoint`** without `DistanceSource`/`DirectionSource`/`FreeDistance`/`FreeDirection`
@@ -722,9 +730,14 @@ buttons and checkboxes, 3D, custom tools.
   Windows Phone samples and the DG 1.0 CD library; `tools/gallerize.cs` made that fork and must
   not be rerun (it would overwrite the hand-edited drawings). To add another CD drawing:
   `--check` it (below), take the `.lgf`, drop the old labels, add `Title`/`Description` labels
-  in the `GalleryTitle`/`GalleryText` styles (copy from any drawing here), set `Grid`, list it
-  in the catalog. Drawings with `Grid="true"` (graphs) keep their file viewport in view
-  (`GalleryItem.Plane`), because graphs and lines have no bounds.
+  in the `GalleryTitle`/`GalleryText` styles (defaults, so the file needn't carry them), set
+  `Grid`, list it in the catalog, and `--rewrite` the folder. Drawings with `Grid="true"`
+  (graphs) keep their file viewport in view (`GalleryItem.Plane`), because graphs and lines
+  have no bounds. All 47 were rewritten on 2026-09-29 (`--rewrite`: loaded and saved again,
+  the file's viewport kept): no copies of defaults, no `Style` on a figure with its kind's
+  default, no attributes at their defaults, default names of figures as the loader gives them
+  (`AB` for `Segment8`). Rerunning `--rewrite` on the folder changes nothing, so a generated
+  drawing (below) can be normalized the same way after regenerating.
 - **The caption** (`Title` + `Description`, which may contain live expressions - then list the
   points as dependencies) is pinned to the screen; the files carry no X/Y and
   `GalleryDrawing.Fit` recomputes pin, offsets and wrap width at open time: a column at the

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Drawing Version="1" Creator="LiveGeometry.App">
-  <Viewport Left="-10.5" Top="10.5" Right="10.5" Bottom="0" Grid="false">
+  <Viewport Left="-10.5" Top="10.5" Right="10.5" Bottom="0">
     <Background>
       <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="#FF4F97E6" Offset="0" />
@@ -11,52 +11,44 @@
   <Scene Left="-10.5" Top="10.5" Right="10.5" Bottom="0" />
   <Scene Left="-6" Top="12.5" Right="6" Bottom="0" />
   <Styles>
-    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
-    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
-    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
-    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
-    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
-    <LineStyle Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Guide" />
-    <LineStyle Color="#FF37474F" StrokeWidth="2" Dash="Solid" Name="Pole" />
-    <ShapeStyle Fill="#FF4CAF50" IsFilled="true" Color="#FF2E7D32" StrokeWidth="2" Dash="Solid" Name="Grass" />
-    <ShapeStyle Fill="#FFA1887F" IsFilled="true" Color="#FF5D4037" StrokeWidth="2" Dash="Solid" Name="FarMountain" />
-    <ShapeStyle Fill="#FF8D6E63" IsFilled="true" Color="#FF5D4037" StrokeWidth="2" Dash="Solid" Name="Mountain" />
-    <ShapeStyle Fill="#FFCFD8DC" IsFilled="true" Color="#FF37474F" StrokeWidth="2" Dash="Solid" Name="Stone" />
-    <ShapeStyle Fill="#FFB0BEC5" IsFilled="true" Color="#FF37474F" StrokeWidth="2" Dash="Solid" Name="TowerStone" />
-    <ShapeStyle Fill="#FF6D4C41" IsFilled="true" Color="#FF3E2723" StrokeWidth="2" Dash="Solid" Name="Door" />
-    <ShapeStyle Fill="#FF81D4FA" IsFilled="true" Color="#FF37474F" StrokeWidth="1.5" Dash="Solid" Name="Window" />
-    <ShapeStyle Fill="#FFE53935" IsFilled="true" Color="#FFB71C1C" StrokeWidth="1.5" Dash="Solid" Name="Flag" />
-    <ShapeStyle Fill="#FFFFD93B" IsFilled="true" Color="#FFE0A800" StrokeWidth="2" Dash="Solid" Name="Sun" />
-    <ShapeStyle Fill="#FFFFFFFF" IsFilled="true" Color="#FF90A4AE" StrokeWidth="1.5" Dash="Solid" Name="Cloud" />
-    <ShapeStyle Fill="#FF66BB6A" IsFilled="true" Color="#FF2E7D32" StrokeWidth="2" Dash="Solid" Name="Leaves" />
-    <ShapeStyle Fill="#FF795548" IsFilled="true" Color="#FF4E342E" StrokeWidth="2" Dash="Solid" Name="Trunk" />
-    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
-    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+    <LineStyle Name="Guide" />
+    <LineStyle Name="Pole" Color="#FF37474F" StrokeWidth="2" />
+    <ShapeStyle Name="Grass" Fill="#FF4CAF50" Color="#FF2E7D32" StrokeWidth="2" />
+    <ShapeStyle Name="FarMountain" Fill="#FFA1887F" Color="#FF5D4037" StrokeWidth="2" />
+    <ShapeStyle Name="Mountain" Fill="#FF8D6E63" Color="#FF5D4037" StrokeWidth="2" />
+    <ShapeStyle Name="Stone" Fill="#FFCFD8DC" Color="#FF37474F" StrokeWidth="2" />
+    <ShapeStyle Name="TowerStone" Fill="#FFB0BEC5" Color="#FF37474F" StrokeWidth="2" />
+    <ShapeStyle Name="Door" Fill="#FF6D4C41" Color="#FF3E2723" StrokeWidth="2" />
+    <ShapeStyle Name="Window" Fill="#FF81D4FA" Color="#FF37474F" StrokeWidth="1.5" />
+    <ShapeStyle Name="Flag" Fill="#FFE53935" Color="#FFB71C1C" StrokeWidth="1.5" />
+    <ShapeStyle Name="Sun" Fill="#FFFFD93B" Color="#FFE0A800" StrokeWidth="2" />
+    <ShapeStyle Name="Cloud" Fill="#FFFFFFFF" Color="#FF90A4AE" StrokeWidth="1.5" />
+    <ShapeStyle Name="Leaves" Fill="#FF66BB6A" Color="#FF2E7D32" StrokeWidth="2" />
+    <ShapeStyle Name="Trunk" Fill="#FF795548" Color="#FF4E342E" StrokeWidth="2" />
   </Styles>
   <Figures>
-    <FreePoint Name="Sun" Style="FreePoint" X="7.2" Y="6.8" />
-    <PointByCoordinates Name="SunRim" Visible="false" Style="DependentPointStyle" X="Sun.X + 0.9" Y="Sun.Y">
+    <FreePoint Name="Sun" X="7.2" Y="6.8" />
+    <PointByCoordinates Name="SunRim" Visible="false" X="Sun.X + 0.9" Y="Sun.Y">
       <Dependency Name="Sun" />
     </PointByCoordinates>
     <Circle Name="SunDisc" Style="Sun">
       <Dependency Name="Sun" />
       <Dependency Name="SunRim" />
     </Circle>
-    <FreePoint Name="Cloud" Style="FreePoint" X="-6.4" Y="6.6" />
-    <PointByCoordinates Name="CloudRim" Visible="false" Style="DependentPointStyle" X="Cloud.X + 0.8" Y="Cloud.Y">
+    <FreePoint Name="Cloud" X="-6.4" Y="6.6" />
+    <PointByCoordinates Name="CloudRim" Visible="false" X="Cloud.X + 0.8" Y="Cloud.Y">
       <Dependency Name="Cloud" />
     </PointByCoordinates>
-    <PointByCoordinates Name="CloudRight" Visible="false" Style="DependentPointStyle" X="Cloud.X + 1" Y="Cloud.Y - 0.1">
+    <PointByCoordinates Name="CloudRight" Visible="false" X="Cloud.X + 1" Y="Cloud.Y - 0.1">
       <Dependency Name="Cloud" />
     </PointByCoordinates>
-    <PointByCoordinates Name="CloudRightRim" Visible="false" Style="DependentPointStyle" X="Cloud.X + 1.6" Y="Cloud.Y - 0.1">
+    <PointByCoordinates Name="CloudRightRim" Visible="false" X="Cloud.X + 1.6" Y="Cloud.Y - 0.1">
       <Dependency Name="Cloud" />
     </PointByCoordinates>
-    <PointByCoordinates Name="CloudLeft" Visible="false" Style="DependentPointStyle" X="Cloud.X - 1" Y="Cloud.Y - 0.1">
+    <PointByCoordinates Name="CloudLeft" Visible="false" X="Cloud.X - 1" Y="Cloud.Y - 0.1">
       <Dependency Name="Cloud" />
     </PointByCoordinates>
-    <PointByCoordinates Name="CloudLeftRim" Visible="false" Style="DependentPointStyle" X="Cloud.X - 1.6" Y="Cloud.Y - 0.1">
+    <PointByCoordinates Name="CloudLeftRim" Visible="false" X="Cloud.X - 1.6" Y="Cloud.Y - 0.1">
       <Dependency Name="Cloud" />
     </PointByCoordinates>
     <Circle Name="CloudRightPuff" Style="Cloud">
@@ -71,10 +63,10 @@
       <Dependency Name="Cloud" />
       <Dependency Name="CloudRim" />
     </Circle>
-    <PointByCoordinates Name="GroundLeft" Visible="false" Style="DependentPointStyle" X="-1000" Y="0" />
-    <PointByCoordinates Name="GroundRight" Visible="false" Style="DependentPointStyle" X="1000" Y="0" />
-    <PointByCoordinates Name="GroundFarRight" Visible="false" Style="DependentPointStyle" X="1000" Y="-1000" />
-    <PointByCoordinates Name="GroundFarLeft" Visible="false" Style="DependentPointStyle" X="-1000" Y="-1000" />
+    <PointByCoordinates Name="GroundLeft" Visible="false" X="-1000" Y="0" />
+    <PointByCoordinates Name="GroundRight" Visible="false" X="1000" Y="0" />
+    <PointByCoordinates Name="GroundFarRight" Visible="false" X="1000" Y="-1000" />
+    <PointByCoordinates Name="GroundFarLeft" Visible="false" X="-1000" Y="-1000" />
     <Polygon Name="Ground" Style="Grass">
       <Dependency Name="GroundLeft" />
       <Dependency Name="GroundRight" />
@@ -82,29 +74,29 @@
       <Dependency Name="GroundFarLeft" />
       <Dependency Name="GroundLeft" />
     </Polygon>
-    <PointByCoordinates Name="GroundRayStart" Visible="false" Style="DependentPointStyle" X="-100" Y="0" />
-    <PointByCoordinates Name="GroundRayDirection" Visible="false" Style="DependentPointStyle" X="-99" Y="0" />
+    <PointByCoordinates Name="GroundRayStart" Visible="false" X="-100" Y="0" />
+    <PointByCoordinates Name="GroundRayDirection" Visible="false" X="-99" Y="0" />
     <Ray Name="GroundRay" Visible="false" Style="Guide">
       <Dependency Name="GroundRayStart" />
       <Dependency Name="GroundRayDirection" />
     </Ray>
-    <PointOnFigure Name="FarFoot" Style="PointOnFigure" X="5.5" Y="0" Parameter="105.5">
+    <PointOnFigure Name="FarFoot" X="5.5" Y="0" Parameter="105.5">
       <Dependency Name="GroundRay" />
     </PointOnFigure>
-    <PointByCoordinates Name="FarPeakUp" Visible="false" Style="DependentPointStyle" X="FarFoot.X" Y="1">
+    <PointByCoordinates Name="FarPeakUp" Visible="false" X="FarFoot.X" Y="1">
       <Dependency Name="FarFoot" />
     </PointByCoordinates>
     <Ray Name="FarPeakRay" Visible="false" Style="Guide">
       <Dependency Name="FarFoot" />
       <Dependency Name="FarPeakUp" />
     </Ray>
-    <PointOnFigure Name="FarPeak" Style="PointOnFigure" X="5.5" Y="3.4" Parameter="3.4">
+    <PointOnFigure Name="FarPeak" X="5.5" Y="3.4" Parameter="3.4">
       <Dependency Name="FarPeakRay" />
     </PointOnFigure>
-    <PointByCoordinates Name="FarLeft" Visible="false" Style="DependentPointStyle" X="FarFoot.X - 3.25" Y="0">
+    <PointByCoordinates Name="FarLeft" Visible="false" X="FarFoot.X - 3.25" Y="0">
       <Dependency Name="FarFoot" />
     </PointByCoordinates>
-    <PointByCoordinates Name="FarRight" Visible="false" Style="DependentPointStyle" X="FarFoot.X + 3.25" Y="0">
+    <PointByCoordinates Name="FarRight" Visible="false" X="FarFoot.X + 3.25" Y="0">
       <Dependency Name="FarFoot" />
     </PointByCoordinates>
     <Polygon Name="FarMountain" Style="FarMountain">
@@ -113,23 +105,23 @@
       <Dependency Name="FarRight" />
       <Dependency Name="FarLeft" />
     </Polygon>
-    <PointOnFigure Name="MountainFoot" Style="PointOnFigure" X="-6.25" Y="0" Parameter="93.75">
+    <PointOnFigure Name="MountainFoot" X="-6.25" Y="0" Parameter="93.75">
       <Dependency Name="GroundRay" />
     </PointOnFigure>
-    <PointByCoordinates Name="PeakUp" Visible="false" Style="DependentPointStyle" X="MountainFoot.X" Y="1">
+    <PointByCoordinates Name="PeakUp" Visible="false" X="MountainFoot.X" Y="1">
       <Dependency Name="MountainFoot" />
     </PointByCoordinates>
     <Ray Name="PeakRay" Visible="false" Style="Guide">
       <Dependency Name="MountainFoot" />
       <Dependency Name="PeakUp" />
     </Ray>
-    <PointOnFigure Name="Peak" Style="PointOnFigure" X="-6.25" Y="4.5" Parameter="4.5">
+    <PointOnFigure Name="Peak" X="-6.25" Y="4.5" Parameter="4.5">
       <Dependency Name="PeakRay" />
     </PointOnFigure>
-    <PointByCoordinates Name="MountainLeft" Visible="false" Style="DependentPointStyle" X="MountainFoot.X - 3.25" Y="0">
+    <PointByCoordinates Name="MountainLeft" Visible="false" X="MountainFoot.X - 3.25" Y="0">
       <Dependency Name="MountainFoot" />
     </PointByCoordinates>
-    <PointByCoordinates Name="MountainRight" Visible="false" Style="DependentPointStyle" X="MountainFoot.X + 3.25" Y="0">
+    <PointByCoordinates Name="MountainRight" Visible="false" X="MountainFoot.X + 3.25" Y="0">
       <Dependency Name="MountainFoot" />
     </PointByCoordinates>
     <Polygon Name="Mountain" Style="Mountain">
@@ -138,96 +130,96 @@
       <Dependency Name="MountainRight" />
       <Dependency Name="MountainLeft" />
     </Polygon>
-    <PointByCoordinates Name="L" Visible="false" Style="DependentPointStyle" X="-1" Y="0" />
-    <PointByCoordinates Name="RBase" Visible="false" Style="DependentPointStyle" X="1.5" Y="0" />
-    <PointByCoordinates Name="RDirection" Visible="false" Style="DependentPointStyle" X="2.5" Y="0" />
+    <PointByCoordinates Name="L" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="RBase" Visible="false" X="1.5" Y="0" />
+    <PointByCoordinates Name="RDirection" Visible="false" X="2.5" Y="0" />
     <Ray Name="RRay" Visible="false" Style="Guide">
       <Dependency Name="RBase" />
       <Dependency Name="RDirection" />
     </Ray>
-    <PointOnFigure Name="R" Style="PointOnFigure" X="4" Y="0" Parameter="2.5">
+    <PointOnFigure Name="R" X="4" Y="0" Parameter="2.5">
       <Dependency Name="RRay" />
     </PointOnFigure>
-    <PointByCoordinates Name="BodyTopRight" Visible="false" Style="DependentPointStyle" X="R.X" Y="3.2">
+    <PointByCoordinates Name="BodyTopRight" Visible="false" X="R.X" Y="3.2">
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon4A" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 9 / 9" Y="3.2">
+    <PointByCoordinates Name="Merlon4A" Visible="false" X="L.X + (R.X - L.X) * 9 / 9" Y="3.2">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon4B" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 9 / 9" Y="3.8">
+    <PointByCoordinates Name="Merlon4B" Visible="false" X="L.X + (R.X - L.X) * 9 / 9" Y="3.8">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon4C" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 8 / 9" Y="3.8">
+    <PointByCoordinates Name="Merlon4C" Visible="false" X="L.X + (R.X - L.X) * 8 / 9" Y="3.8">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon4D" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 8 / 9" Y="3.2">
+    <PointByCoordinates Name="Merlon4D" Visible="false" X="L.X + (R.X - L.X) * 8 / 9" Y="3.2">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon3A" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 7 / 9" Y="3.2">
+    <PointByCoordinates Name="Merlon3A" Visible="false" X="L.X + (R.X - L.X) * 7 / 9" Y="3.2">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon3B" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 7 / 9" Y="3.8">
+    <PointByCoordinates Name="Merlon3B" Visible="false" X="L.X + (R.X - L.X) * 7 / 9" Y="3.8">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon3C" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 6 / 9" Y="3.8">
+    <PointByCoordinates Name="Merlon3C" Visible="false" X="L.X + (R.X - L.X) * 6 / 9" Y="3.8">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon3D" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 6 / 9" Y="3.2">
+    <PointByCoordinates Name="Merlon3D" Visible="false" X="L.X + (R.X - L.X) * 6 / 9" Y="3.2">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon2A" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 5 / 9" Y="3.2">
+    <PointByCoordinates Name="Merlon2A" Visible="false" X="L.X + (R.X - L.X) * 5 / 9" Y="3.2">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon2B" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 5 / 9" Y="3.8">
+    <PointByCoordinates Name="Merlon2B" Visible="false" X="L.X + (R.X - L.X) * 5 / 9" Y="3.8">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon2C" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 4 / 9" Y="3.8">
+    <PointByCoordinates Name="Merlon2C" Visible="false" X="L.X + (R.X - L.X) * 4 / 9" Y="3.8">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon2D" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 4 / 9" Y="3.2">
+    <PointByCoordinates Name="Merlon2D" Visible="false" X="L.X + (R.X - L.X) * 4 / 9" Y="3.2">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon1A" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 3 / 9" Y="3.2">
+    <PointByCoordinates Name="Merlon1A" Visible="false" X="L.X + (R.X - L.X) * 3 / 9" Y="3.2">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon1B" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 3 / 9" Y="3.8">
+    <PointByCoordinates Name="Merlon1B" Visible="false" X="L.X + (R.X - L.X) * 3 / 9" Y="3.8">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon1C" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 2 / 9" Y="3.8">
+    <PointByCoordinates Name="Merlon1C" Visible="false" X="L.X + (R.X - L.X) * 2 / 9" Y="3.8">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon1D" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 2 / 9" Y="3.2">
+    <PointByCoordinates Name="Merlon1D" Visible="false" X="L.X + (R.X - L.X) * 2 / 9" Y="3.2">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon0A" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 1 / 9" Y="3.2">
+    <PointByCoordinates Name="Merlon0A" Visible="false" X="L.X + (R.X - L.X) * 1 / 9" Y="3.2">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon0B" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 1 / 9" Y="3.8">
+    <PointByCoordinates Name="Merlon0B" Visible="false" X="L.X + (R.X - L.X) * 1 / 9" Y="3.8">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon0C" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 0 / 9" Y="3.8">
+    <PointByCoordinates Name="Merlon0C" Visible="false" X="L.X + (R.X - L.X) * 0 / 9" Y="3.8">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Merlon0D" Visible="false" Style="DependentPointStyle" X="L.X + (R.X - L.X) * 0 / 9" Y="3.2">
+    <PointByCoordinates Name="Merlon0D" Visible="false" X="L.X + (R.X - L.X) * 0 / 9" Y="3.2">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
@@ -257,36 +249,36 @@
       <Dependency Name="Merlon0D" />
       <Dependency Name="L" />
     </Polygon>
-    <PointByCoordinates Name="TBase" Visible="false" Style="DependentPointStyle" X="-1.8" Y="4" />
-    <PointByCoordinates Name="TDirection" Visible="false" Style="DependentPointStyle" X="-1.8" Y="5" />
+    <PointByCoordinates Name="TBase" Visible="false" X="-1.8" Y="4" />
+    <PointByCoordinates Name="TDirection" Visible="false" X="-1.8" Y="5" />
     <Ray Name="TRay" Visible="false" Style="Guide">
       <Dependency Name="TBase" />
       <Dependency Name="TDirection" />
     </Ray>
-    <PointOnFigure Name="T" Style="PointOnFigure" X="-1.8" Y="6" Parameter="2">
+    <PointOnFigure Name="T" X="-1.8" Y="6" Parameter="2">
       <Dependency Name="TRay" />
     </PointOnFigure>
-    <PointByCoordinates Name="TowerFootLeft" Visible="false" Style="DependentPointStyle" X="-2.6" Y="0" />
-    <PointByCoordinates Name="TowerFootRight" Visible="false" Style="DependentPointStyle" X="-1" Y="0" />
-    <PointByCoordinates Name="Tower1" Visible="false" Style="DependentPointStyle" X="-1" Y="T.Y">
+    <PointByCoordinates Name="TowerFootLeft" Visible="false" X="-2.6" Y="0" />
+    <PointByCoordinates Name="TowerFootRight" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="Tower1" Visible="false" X="-1" Y="T.Y">
       <Dependency Name="T" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Tower2" Visible="false" Style="DependentPointStyle" X="-1" Y="T.Y + 0.5">
+    <PointByCoordinates Name="Tower2" Visible="false" X="-1" Y="T.Y + 0.5">
       <Dependency Name="T" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Tower3" Visible="false" Style="DependentPointStyle" X="-1.5" Y="T.Y + 0.5">
+    <PointByCoordinates Name="Tower3" Visible="false" X="-1.5" Y="T.Y + 0.5">
       <Dependency Name="T" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Tower4" Visible="false" Style="DependentPointStyle" X="-1.5" Y="T.Y">
+    <PointByCoordinates Name="Tower4" Visible="false" X="-1.5" Y="T.Y">
       <Dependency Name="T" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Tower5" Visible="false" Style="DependentPointStyle" X="-2.1" Y="T.Y">
+    <PointByCoordinates Name="Tower5" Visible="false" X="-2.1" Y="T.Y">
       <Dependency Name="T" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Tower6" Visible="false" Style="DependentPointStyle" X="-2.1" Y="T.Y + 0.5">
+    <PointByCoordinates Name="Tower6" Visible="false" X="-2.1" Y="T.Y + 0.5">
       <Dependency Name="T" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Tower7" Visible="false" Style="DependentPointStyle" X="-2.6" Y="T.Y + 0.5">
+    <PointByCoordinates Name="Tower7" Visible="false" X="-2.6" Y="T.Y + 0.5">
       <Dependency Name="T" />
     </PointByCoordinates>
     <Polygon Name="Tower" Style="TowerStone">
@@ -301,17 +293,17 @@
       <Dependency Name="Tower7" />
       <Dependency Name="TowerFootLeft" />
     </Polygon>
-    <PointByCoordinates Name="PoleTop" Visible="false" Style="DependentPointStyle" X="-1.8" Y="T.Y + 1.7">
+    <PointByCoordinates Name="PoleTop" Visible="false" X="-1.8" Y="T.Y + 1.7">
       <Dependency Name="T" />
     </PointByCoordinates>
     <Segment Name="Pole" Style="Pole">
       <Dependency Name="T" />
       <Dependency Name="PoleTop" />
     </Segment>
-    <PointByCoordinates Name="FlagTip" Visible="false" Style="DependentPointStyle" X="-0.9" Y="T.Y + 1.4">
+    <PointByCoordinates Name="FlagTip" Visible="false" X="-0.9" Y="T.Y + 1.4">
       <Dependency Name="T" />
     </PointByCoordinates>
-    <PointByCoordinates Name="FlagBottom" Visible="false" Style="DependentPointStyle" X="-1.8" Y="T.Y + 1.1">
+    <PointByCoordinates Name="FlagBottom" Visible="false" X="-1.8" Y="T.Y + 1.1">
       <Dependency Name="T" />
     </PointByCoordinates>
     <Polygon Name="Flag" Style="Flag">
@@ -320,23 +312,23 @@
       <Dependency Name="FlagBottom" />
       <Dependency Name="PoleTop" />
     </Polygon>
-    <PointByCoordinates Name="DoorLeft" Visible="false" Style="DependentPointStyle" X="(L.X + R.X) / 2 - 0.45" Y="0">
+    <PointByCoordinates Name="DoorLeft" Visible="false" X="(L.X + R.X) / 2 - 0.45" Y="0">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="DoorRight" Visible="false" Style="DependentPointStyle" X="(L.X + R.X) / 2 + 0.45" Y="0">
+    <PointByCoordinates Name="DoorRight" Visible="false" X="(L.X + R.X) / 2 + 0.45" Y="0">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="DoorTopRight" Visible="false" Style="DependentPointStyle" X="(L.X + R.X) / 2 + 0.45" Y="1.1">
+    <PointByCoordinates Name="DoorTopRight" Visible="false" X="(L.X + R.X) / 2 + 0.45" Y="1.1">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="DoorTopLeft" Visible="false" Style="DependentPointStyle" X="(L.X + R.X) / 2 - 0.45" Y="1.1">
+    <PointByCoordinates Name="DoorTopLeft" Visible="false" X="(L.X + R.X) / 2 - 0.45" Y="1.1">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="DoorArch" Visible="false" Style="DependentPointStyle" X="(L.X + R.X) / 2" Y="1.1">
+    <PointByCoordinates Name="DoorArch" Visible="false" X="(L.X + R.X) / 2" Y="1.1">
       <Dependency Name="L" />
       <Dependency Name="R" />
     </PointByCoordinates>
@@ -351,16 +343,16 @@
       <Dependency Name="DoorArch" />
       <Dependency Name="DoorTopRight" />
     </Circle>
-    <PointByCoordinates Name="Window1A" Visible="false" Style="DependentPointStyle" X="L.X + 0.5" Y="1.8">
+    <PointByCoordinates Name="Window1A" Visible="false" X="L.X + 0.5" Y="1.8">
       <Dependency Name="L" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Window1B" Visible="false" Style="DependentPointStyle" X="L.X + 1.1" Y="1.8">
+    <PointByCoordinates Name="Window1B" Visible="false" X="L.X + 1.1" Y="1.8">
       <Dependency Name="L" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Window1C" Visible="false" Style="DependentPointStyle" X="L.X + 1.1" Y="2.4">
+    <PointByCoordinates Name="Window1C" Visible="false" X="L.X + 1.1" Y="2.4">
       <Dependency Name="L" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Window1D" Visible="false" Style="DependentPointStyle" X="L.X + 0.5" Y="2.4">
+    <PointByCoordinates Name="Window1D" Visible="false" X="L.X + 0.5" Y="2.4">
       <Dependency Name="L" />
     </PointByCoordinates>
     <Polygon Name="Window1" Style="Window">
@@ -370,16 +362,16 @@
       <Dependency Name="Window1D" />
       <Dependency Name="Window1A" />
     </Polygon>
-    <PointByCoordinates Name="Window2A" Visible="false" Style="DependentPointStyle" X="R.X - 1.1" Y="1.8">
+    <PointByCoordinates Name="Window2A" Visible="false" X="R.X - 1.1" Y="1.8">
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Window2B" Visible="false" Style="DependentPointStyle" X="R.X - 0.5" Y="1.8">
+    <PointByCoordinates Name="Window2B" Visible="false" X="R.X - 0.5" Y="1.8">
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Window2C" Visible="false" Style="DependentPointStyle" X="R.X - 0.5" Y="2.4">
+    <PointByCoordinates Name="Window2C" Visible="false" X="R.X - 0.5" Y="2.4">
       <Dependency Name="R" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Window2D" Visible="false" Style="DependentPointStyle" X="R.X - 1.1" Y="2.4">
+    <PointByCoordinates Name="Window2D" Visible="false" X="R.X - 1.1" Y="2.4">
       <Dependency Name="R" />
     </PointByCoordinates>
     <Polygon Name="Window2" Style="Window">
@@ -389,30 +381,30 @@
       <Dependency Name="Window2D" />
       <Dependency Name="Window2A" />
     </Polygon>
-    <PointOnFigure Name="TreeFoot" Style="PointOnFigure" X="7.6" Y="0" Parameter="107.6">
+    <PointOnFigure Name="TreeFoot" X="7.599999999999994" Y="0" Parameter="107.6">
       <Dependency Name="GroundRay" />
     </PointOnFigure>
-    <PointByCoordinates Name="TreeUp" Visible="false" Style="DependentPointStyle" X="TreeFoot.X" Y="1">
+    <PointByCoordinates Name="TreeUp" Visible="false" X="TreeFoot.X" Y="1">
       <Dependency Name="TreeFoot" />
     </PointByCoordinates>
     <Ray Name="TreeRay" Visible="false" Style="Guide">
       <Dependency Name="TreeFoot" />
       <Dependency Name="TreeUp" />
     </Ray>
-    <PointOnFigure Name="Tree" Style="PointOnFigure" X="7.6" Y="3.2" Parameter="3.2">
+    <PointOnFigure Name="Tree" X="7.599999999999994" Y="3.2" Parameter="3.2">
       <Dependency Name="TreeRay" />
     </PointOnFigure>
-    <PointByCoordinates Name="TrunkLeft" Visible="false" Style="DependentPointStyle" X="TreeFoot.X - 0.3" Y="0">
+    <PointByCoordinates Name="TrunkLeft" Visible="false" X="TreeFoot.X - 0.3" Y="0">
       <Dependency Name="TreeFoot" />
     </PointByCoordinates>
-    <PointByCoordinates Name="TrunkRight" Visible="false" Style="DependentPointStyle" X="TreeFoot.X + 0.3" Y="0">
+    <PointByCoordinates Name="TrunkRight" Visible="false" X="TreeFoot.X + 0.3" Y="0">
       <Dependency Name="TreeFoot" />
     </PointByCoordinates>
-    <PointByCoordinates Name="TrunkTopRight" Visible="false" Style="DependentPointStyle" X="TreeFoot.X + 0.3" Y="Tree.Y * 0.55">
+    <PointByCoordinates Name="TrunkTopRight" Visible="false" X="TreeFoot.X + 0.3" Y="Tree.Y * 0.55">
       <Dependency Name="TreeFoot" />
       <Dependency Name="Tree" />
     </PointByCoordinates>
-    <PointByCoordinates Name="TrunkTopLeft" Visible="false" Style="DependentPointStyle" X="TreeFoot.X - 0.3" Y="Tree.Y * 0.55">
+    <PointByCoordinates Name="TrunkTopLeft" Visible="false" X="TreeFoot.X - 0.3" Y="Tree.Y * 0.55">
       <Dependency Name="TreeFoot" />
       <Dependency Name="Tree" />
     </PointByCoordinates>
@@ -423,11 +415,11 @@
       <Dependency Name="TrunkTopLeft" />
       <Dependency Name="TrunkLeft" />
     </Polygon>
-    <PointByCoordinates Name="Crown" Visible="false" Style="DependentPointStyle" X="TreeFoot.X" Y="Tree.Y * 0.72">
+    <PointByCoordinates Name="Crown" Visible="false" X="TreeFoot.X" Y="Tree.Y * 0.72">
       <Dependency Name="TreeFoot" />
       <Dependency Name="Tree" />
     </PointByCoordinates>
-    <PointByCoordinates Name="CrownRim" Visible="false" Style="DependentPointStyle" X="TreeFoot.X + Tree.Y * 0.3" Y="Tree.Y * 0.72">
+    <PointByCoordinates Name="CrownRim" Visible="false" X="TreeFoot.X + Tree.Y * 0.3" Y="Tree.Y * 0.72">
       <Dependency Name="TreeFoot" />
       <Dependency Name="Tree" />
     </PointByCoordinates>
@@ -435,7 +427,7 @@
       <Dependency Name="Crown" />
       <Dependency Name="CrownRim" />
     </Circle>
-    <Label Name="Title" Style="GalleryTitle" Text="Castle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="68.25" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A landscape drawn with polygons and circles, like a page from a coloring book.\n\nThe green points slide: make the tower taller and the castle wider, raise the mountains and the tree, or walk them along the ground. The sun and the cloud go wherever you drag them." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="116.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="GalleryTitle" Text="Castle" Pin="TopRight" OffsetX="16" OffsetY="68.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A landscape drawn with polygons and circles, like a page from a coloring book.\n\nThe green points slide: make the tower taller and the castle wider, raise the mountains and the tree, or walk them along the ground. The sun and the cloud go wherever you drag them." Pin="TopRight" OffsetX="16" OffsetY="116.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

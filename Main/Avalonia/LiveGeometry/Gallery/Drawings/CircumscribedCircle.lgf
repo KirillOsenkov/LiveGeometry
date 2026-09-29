@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1">
-  <Viewport Left="-12.3858506944" Top="19.5630787036" Right="9.7669270833" Bottom="-17.3582175925" Grid="false" />
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-12.3858506944" Top="19.5630787036" Right="9.7669270833" Bottom="-17.3582175925" />
   <Styles>
-    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FFB2A12F" StrokeWidth="1.8" Name="1" />
-    <PointStyle Size="10" Fill="#FFE3E1E1" IsFilled="true" Color="#FF969494" StrokeWidth="1" Name="2" />
-    <PointStyle Size="10" Fill="#FF00E5FF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
-    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
-    <ShapeStyle Fill="#FFEBF5FF" IsFilled="true" Color="#FFEDFEFC" StrokeWidth="0.1" Name="5" />
-    <TextStyle FontSize="40" Color="#FF8800FF" FontFamily="Segoe UI Light" Bold="false" Italic="false" Underline="false" Name="6" />
-    <TextStyle FontSize="20" Color="#FF004C6D" FontFamily="Segoe UI Light" Bold="false" Italic="false" Underline="false" Name="7" />
-    <LineStyle Color="#FF8EC3F8" StrokeWidth="5.4" Name="8" />
-    <LineStyle Color="#FF6FBEE0" StrokeWidth="1.4" Name="9" />
-    <LineStyle Color="#FFB1B1B1" StrokeWidth="1" Name="10" />
-    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
-    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+    <PointStyle Name="1" Fill="#FFFFFF00" Color="#FFB2A12F" StrokeWidth="1.8" />
+    <PointStyle Name="2" Fill="#FFE3E1E1" Color="#FF969494" />
+    <PointStyle Name="3" Fill="#FF00E5FF" Color="#FF000000" />
+    <ShapeStyle Name="5" Fill="#FFEBF5FF" Color="#FFEDFEFC" StrokeWidth="0.1" />
+    <LineStyle Name="8" Color="#FF8EC3F8" StrokeWidth="5.4" />
+    <LineStyle Name="9" Color="#FF6FBEE0" StrokeWidth="1.4" />
+    <LineStyle Name="10" Color="#FFB1B1B1" />
   </Styles>
   <Figures>
     <FreePoint Name="FreePoint1" Style="1" X="-7.0553385417" Y="-4.8280526621" />
@@ -24,24 +18,24 @@
       <Dependency Name="FreePoint4" />
       <Dependency Name="FreePoint7" />
     </MidPoint>
-    <Segment Name="Segment6" Style="9">
+    <Segment Name="FreePoint4FreePoint7" Style="9">
       <Dependency Name="FreePoint4" />
       <Dependency Name="FreePoint7" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine13" Style="10">
-      <Dependency Name="Segment6" />
+    <PerpendicularLine Name="PerpendicularLine13" Style="10" RightAngleCorner="2">
+      <Dependency Name="FreePoint4FreePoint7" />
       <Dependency Name="MidPoint11" />
     </PerpendicularLine>
     <MidPoint Name="MidPoint10" Style="2">
       <Dependency Name="FreePoint7" />
       <Dependency Name="FreePoint1" />
     </MidPoint>
-    <Segment Name="Segment9" Style="9">
+    <Segment Name="FreePoint1FreePoint7" Style="9">
       <Dependency Name="FreePoint7" />
       <Dependency Name="FreePoint1" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine15" Style="10">
-      <Dependency Name="Segment9" />
+    <PerpendicularLine Name="PerpendicularLine15" Style="10" RightAngleCorner="3">
+      <Dependency Name="FreePoint1FreePoint7" />
       <Dependency Name="MidPoint10" />
     </PerpendicularLine>
     <IntersectionPoint Name="IntersectionPoint16" Style="3" Algorithm="IntersectLineAndLine">
@@ -52,20 +46,20 @@
       <Dependency Name="IntersectionPoint16" />
       <Dependency Name="FreePoint7" />
     </Circle>
-    <Segment Name="Segment3" Style="9">
+    <Segment Name="FreePoint1FreePoint4" Style="9">
       <Dependency Name="FreePoint1" />
       <Dependency Name="FreePoint4" />
     </Segment>
-    <Polygon Name="Polygon69" Style="5">
+    <Polygon Name="FreePoint1FreePoint4FreePoint7" Style="5">
       <Dependency Name="FreePoint1" />
       <Dependency Name="FreePoint4" />
       <Dependency Name="FreePoint7" />
     </Polygon>
-    <Segment Name="Segment70" Style="9">
+    <Segment Name="FreePoint4FreePoint72" Style="9">
       <Dependency Name="FreePoint4" />
       <Dependency Name="FreePoint7" />
     </Segment>
-    <Segment Name="Segment71" Style="9">
+    <Segment Name="FreePoint1FreePoint72" Style="9">
       <Dependency Name="FreePoint7" />
       <Dependency Name="FreePoint1" />
     </Segment>
@@ -73,11 +67,11 @@
       <Dependency Name="FreePoint4" />
       <Dependency Name="FreePoint1" />
     </MidPoint>
-    <PerpendicularLine Name="PerpendicularLine48" Style="10">
-      <Dependency Name="Segment3" />
+    <PerpendicularLine Name="PerpendicularLine48" Style="10" RightAngleCorner="3">
+      <Dependency Name="FreePoint1FreePoint4" />
       <Dependency Name="A" />
     </PerpendicularLine>
-    <Label Name="Title" Style="GalleryTitle" Text="Circumscribed Circle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Every triangle has exactly one circle through all three vertices: its circumcircle.\n\nThe gray points are the midpoints of the sides, and the gray lines are the perpendicular bisectors. They always meet in one point, the circumcenter — the center of the circle.\n\nDrag the yellow vertices. When does the center leave the triangle?" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="GalleryTitle" Text="Circumscribed Circle" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Every triangle has exactly one circle through all three vertices: its circumcircle.\n\nThe gray points are the midpoints of the sides, and the gray lines are the perpendicular bisectors. They always meet in one point, the circumcenter — the center of the circle.\n\nDrag the yellow vertices. When does the center leave the triangle?" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

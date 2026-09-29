@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1">
-  <Viewport Left="-4.9895833333" Top="7.5729166667" Right="5.0104166667" Bottom="-7.59375" Grid="false" />
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-4.9895833333" Top="7.5729166667" Right="5.0104166667" Bottom="-7.59375" />
   <Styles>
-    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
-    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
-    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
-    <LineStyle Color="#FFFF7700" StrokeWidth="2" Name="4" />
-    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
-    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
-    <TextStyle FontSize="40" Color="#FFE06122" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
-    <LineStyle Color="#FFB2B2B2" StrokeWidth="1" Name="10" />
-    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
-    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+    <LineStyle Name="4" Color="#FFFF7700" StrokeWidth="2" />
+    <LineStyle Name="10" Color="#FFB2B2B2" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" Style="1" X="-3.5520833333" Y="-2.8229166667" />
-    <FreePoint Name="B" Style="1" X="2.3645833333" Y="-4.3020833333" />
-    <Segment Name="Segment8" Visible="false" Style="4">
+    <FreePoint Name="A" X="-3.5520833333" Y="-2.8229166667" />
+    <FreePoint Name="B" X="2.3645833333" Y="-4.3020833333" />
+    <Segment Name="AB" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
@@ -31,7 +20,7 @@
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Circle>
-    <IntersectionPoint Name="C" Visible="false" Style="1" Algorithm="IntersectCircleAndCircle1">
+    <IntersectionPoint Name="C" Visible="false" Style="FreePoint" Algorithm="IntersectCircleAndCircle1">
       <Dependency Name="Circle12" />
       <Dependency Name="Circle10" />
     </IntersectionPoint>
@@ -50,26 +39,26 @@
       <Dependency Name="A" />
       <Dependency Name="B" />
     </CircleArc>
-    <PointOnFigure Name="D" Style="1" X="2.144289302218" Y="-0.644224343924305" Parameter="0.365303678375183">
+    <PointOnFigure Name="D" Style="FreePoint" X="2.1442523193944036" Y="-0.6442384887492643" Parameter="0.365303678375183">
       <Dependency Name="CircleArc15" />
     </PointOnFigure>
-    <Segment Name="Segment23" Style="10">
+    <Segment Name="AD" Style="10">
       <Dependency Name="A" />
       <Dependency Name="D" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine25" Style="10">
-      <Dependency Name="Segment23" />
+    <PerpendicularLine Name="PerpendicularLine25" Style="10" RightAngleCorner="1">
+      <Dependency Name="AD" />
       <Dependency Name="D" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine27" Style="10">
-      <Dependency Name="Segment23" />
+    <PerpendicularLine Name="PerpendicularLine27" Style="10" RightAngleCorner="0">
+      <Dependency Name="AD" />
       <Dependency Name="A" />
     </PerpendicularLine>
-    <DistanceMeasurement Name="DistanceMeasurement28" Style="7" OffsetX="0" OffsetY="-0">
+    <DistanceMeasurement Name="DistanceMeasurement28" OffsetX="0" OffsetY="-0">
       <Dependency Name="A" />
       <Dependency Name="D" />
     </DistanceMeasurement>
-    <Label Name="Title" Style="GalleryTitle" Text="Reuleaux Triangle" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="68.25" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A circle is not the only shape with the same width in every direction. This one is made of three 60° arcs, each centered at the opposite corner.\n\nRoll it between two parallel lines and they never move apart. That is why it can drill (almost) square holes. Some coins are shapes of constant width too, like the British 50p, with seven sides: a machine measuring across them gets the same answer every way." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="116.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="GalleryTitle" Text="Reuleaux Triangle" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A circle is not the only shape with the same width in every direction. This one is made of three 60° arcs, each centered at the opposite corner.\n\nRoll it between two parallel lines and they never move apart. That is why it can drill (almost) square holes. Some coins are shapes of constant width too, like the British 50p, with seven sides: a machine measuring across them gets the same answer every way." Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

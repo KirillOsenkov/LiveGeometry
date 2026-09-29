@@ -50,6 +50,11 @@ namespace DynamicGeometry
             get
             {
                 index = CanonicalName(index);
+                if (aliases.TryGetValue(index, out var target))
+                {
+                    index = target;
+                }
+
                 foreach (var style in list)
                 {
                     if (style.Name == index)
@@ -203,6 +208,31 @@ namespace DynamicGeometry
             var textStyle = ThemedText(TextStyleName, fontSize: 18);
             var headerStyle = ThemedText(HeadingStyleName, fontSize: 40);
 
+            // the caption of a drawing of the gallery: a heading in the splash's blue, the
+            // explanation in the chrome's text color, the locus of a "drag to here" ring
+            var galleryTitleStyle = new TextStyle()
+            {
+                Name = GalleryTitleStyleName,
+                FontSize = 30,
+                Color = Color.FromRgb(0x1F, 0x4E, 0x8C),
+                FontFamily = new FontFamily("Segoe UI"),
+                Bold = true
+            };
+            galleryTitleStyle.SetOverride(AppTheme.Dark.Name, nameof(TextStyle.Color), Color.FromRgb(0x9C, 0xC4, 0xF0));
+            var galleryTextStyle = new TextStyle()
+            {
+                Name = GalleryTextStyleName,
+                FontSize = 16,
+                FontFamily = new FontFamily("Segoe UI")
+            };
+            galleryTextStyle.BindToTheme(nameof(TextStyle.Color), theme => theme.Text);
+            var galleryLocusStyle = new LineStyle()
+            {
+                Name = GalleryLocusStyleName,
+                Color = Color.FromRgb(0xE0, 0x36, 0x2B),
+                StrokeWidth = 2.5
+            };
+
             var newStyles = new IFigureStyle[]
             {
                 freePointStyle,
@@ -226,6 +256,9 @@ namespace DynamicGeometry
                 textStyle,
                 headerStyle,
                 hyperLinkStyle,
+                galleryTitleStyle,
+                galleryTextStyle,
+                galleryLocusStyle
             };
 
             list.AddRange(newStyles);
@@ -331,9 +364,43 @@ namespace DynamicGeometry
         public const string TextStyleName = "Text";
         public const string HeadingStyleName = "Heading";
         public const string HyperlinkStyleName = "Hyperlink";
+        public const string GalleryTitleStyleName = "GalleryTitle";
+        public const string GalleryTextStyleName = "GalleryText";
+        public const string GalleryLocusStyleName = "GalleryLocus";
 
         /// <summary>What files from before 2026-09-29 call the dependent point style</summary>
         public const string LegacyDependentPointStyleName = "DependentPointStyle";
+
+        /// <summary>
+        /// What the defaults looked like in files from before the named defaults (the phone
+        /// and CD drawings carry numbered copies): a file style that looks like one of these
+        /// is taken for the default it stands for, which follows the theme. The old opaque
+        /// black line is not among them - the default line is translucent now, and every
+        /// old drawing would turn gray.
+        /// </summary>
+        static IEnumerable<(IFigureStyle Prototype, string Name)> LegacyDefaults()
+        {
+            var black = Color.FromRgb(0, 0, 0);
+            yield return (LegacyPoint(Color.FromRgb(0xFF, 0xFF, 0x00)), FreePointStyleName);
+            yield return (LegacyPoint(Color.FromRgb(0x00, 0xFF, 0x00)), PointOnFigureStyleName);
+            yield return (LegacyPoint(Color.FromRgb(0xC0, 0xC0, 0xC0)), DependentPointStyleName);
+            yield return (new TextStyle() { FontSize = 18, Color = black, FontFamily = new FontFamily("Segoe UI") }, TextStyleName);
+            yield return (new TextStyle() { FontSize = 40, Color = black, FontFamily = new FontFamily("Segoe UI") }, HeadingStyleName);
+
+            static PointStyle LegacyPoint(Color fill)
+            {
+                return new PointStyle()
+                {
+                    Size = 10,
+                    Fill = new SolidColorBrush(fill),
+                    Color = Color.FromRgb(0, 0, 0),
+                    StrokeWidth = 1
+                };
+            }
+        }
+
+        /// <summary>The names a file's styles went by that stand for a default now (see <see cref="AddWithDefaults"/>)</summary>
+        readonly Dictionary<string, string> aliases = new Dictionary<string, string>();
 
         public virtual IFigureStyle AssignDefaultStyle(IFigure figure)
         {
@@ -434,11 +501,14 @@ namespace DynamicGeometry
         /// has its own under the same name. Styles with names of their own come last. A file's
         /// copy of a default that looks the same in Light (files from before the themes carry
         /// every default they use) is dropped for the default itself, which follows the theme;
-        /// the figures find it under the name.
+        /// the figures find it under the name. So is a copy under another name of what a
+        /// default used to look like (<see cref="LegacyDefaults"/>): the figures find the
+        /// default under the old name.
         /// </summary>
         public void AddWithDefaults(IList<IFigureStyle> own)
         {
             var taken = new HashSet<IFigureStyle>();
+            aliases.Clear();
             foreach (var style in own)
             {
                 if (style.Name == LegacyDependentPointStyleName)
@@ -462,9 +532,20 @@ namespace DynamicGeometry
                 list.Add(replacement ?? defaultStyle);
             }
 
+            var legacyDefaults = LegacyDefaults().ToArray();
             foreach (var style in own)
             {
-                if (!taken.Contains(style))
+                if (taken.Contains(style))
+                {
+                    continue;
+                }
+
+                var legacy = legacyDefaults.FirstOrDefault(candidate => LooksLikeInLight(style, candidate.Prototype));
+                if (legacy.Name != null)
+                {
+                    aliases[style.Name] = legacy.Name;
+                }
+                else
                 {
                     list.Add(style);
                 }

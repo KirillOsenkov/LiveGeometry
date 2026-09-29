@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Drawing Version="1" Creator="LiveGeometry.App">
-  <Viewport Left="-17.9304515589" Top="3.8362526708" Right="6.8278850057" Bottom="-6.9761771257" Grid="false">
+  <Viewport Left="-17.9304515589" Top="3.8362526708" Right="6.8278850057" Bottom="-6.9761771257">
     <Background>
       <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="#FFFFFFFF" Offset="0" />
@@ -9,46 +9,20 @@
     </Background>
   </Viewport>
   <Styles>
-    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
-    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
-    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
-    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
-    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
-    <LineStyle Color="#64000000" StrokeWidth="1" Dash="Solid" Name="1" />
-    <LineStyle Color="#C80000FF" StrokeWidth="1" Dash="Solid" Name="OtherLine" />
-    <LineStyle Color="#E6000000" StrokeWidth="2.5" Dash="Solid" Name="ThickLine" />
-    <LineStyle Color="#FFD83B3B" StrokeWidth="1.5" Dash="Solid" Name="RedLine" />
-    <LineStyle Color="#FF2E9E4F" StrokeWidth="1.5" Dash="Solid" Name="GreenLine" />
-    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dash" Name="DashedLine" />
-    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dot" Name="DottedLine" />
-    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="2" />
-    <ShapeStyle Fill="#64C8FFC8" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Dash="Solid" Name="OtherShape" />
-    <ShapeStyle Fill="#64FFFFC8" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="3" />
-    <ShapeStyle Fill="#1C2F7BD6" IsFilled="true" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Solid" Name="BlueOutline" />
-    <ShapeStyle Fill="#1CE08A00" IsFilled="true" Color="#FFE08A00" StrokeWidth="1.5" Dash="Solid" Name="OrangeOutline" />
-    <ShapeStyle Fill="#1C8854D0" IsFilled="true" Color="#FF8854D0" StrokeWidth="1.5" Dash="Solid" Name="PurpleOutline" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="4" />
-    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="5" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="6" />
-    <PointStyle Size="5" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="7" />
-    <PointStyle Size="5" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="8" />
-    <PointStyle Size="5" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="9" />
-    <LineStyle Color="#FFC0C0C0" StrokeWidth="1" Dash="Solid" Name="10" />
-    <TextStyle FontSize="17" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="11" />
-    <TextStyle FontSize="30.599999999999998" Color="#FF808040" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="12" />
-    <LineStyle Color="#FFFF0000" StrokeWidth="3" Dash="Solid" Name="13" />
-    <LineStyle Color="#FF008000" StrokeWidth="4" Dash="Solid" Name="14" />
-    <LineStyle Color="#FF00AE00" StrokeWidth="7" Dash="Solid" Name="15" />
-    <LineStyle Color="#FF00AE00" StrokeWidth="3" Dash="Solid" Name="16" />
-    <LineStyle Color="#FF00A600" StrokeWidth="3" Dash="Solid" Name="17" />
-    <LineStyle Color="#FF008000" StrokeWidth="3" Dash="Solid" Name="18" />
-    <LineStyle Color="#FF009100" StrokeWidth="2" Dash="Solid" Name="19" />
-    <LineStyle Color="#FF008000" StrokeWidth="2" Dash="Solid" Name="20" />
-    <LineStyle Color="#FF00A800" StrokeWidth="3" Dash="Solid" Name="21" />
-    <LineStyle Color="#FF00B300" StrokeWidth="2" Dash="Solid" Name="22" />
-    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
-    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+    <PointStyle Name="7" Size="5" Fill="#FFFFFF64" />
+    <PointStyle Name="8" Size="5" Fill="#FFD0D0D0" />
+    <PointStyle Name="9" Size="5" Fill="#FFFFFF64" />
+    <LineStyle Name="10" Color="#FFC0C0C0" />
+    <LineStyle Name="13" Color="#FFFF0000" StrokeWidth="3" />
+    <LineStyle Name="14" Color="#FF008000" StrokeWidth="4" />
+    <LineStyle Name="15" Color="#FF00AE00" StrokeWidth="7" />
+    <LineStyle Name="16" Color="#FF00AE00" StrokeWidth="3" />
+    <LineStyle Name="17" Color="#FF00A600" StrokeWidth="3" />
+    <LineStyle Name="18" Color="#FF008000" StrokeWidth="3" />
+    <LineStyle Name="19" Color="#FF009100" StrokeWidth="2" />
+    <LineStyle Name="20" Color="#FF008000" StrokeWidth="2" />
+    <LineStyle Name="21" Color="#FF00A800" StrokeWidth="3" />
+    <LineStyle Name="22" Color="#FF00B300" StrokeWidth="2" />
   </Styles>
   <Figures>
     <FreePoint Name="A" Style="7" X="-1.005418" Y="1.93146" />
@@ -156,285 +130,285 @@
       <Dependency Name="B" />
       <Dependency Name="A" />
     </ReflectedPoint>
-    <Segment Name="Segment1" Style="10">
+    <Segment Name="FH" Style="10">
       <Dependency Name="F" />
       <Dependency Name="H" />
     </Segment>
-    <Segment Name="Segment2" Style="10">
+    <Segment Name="BE" Style="10">
       <Dependency Name="B" />
       <Dependency Name="E" />
     </Segment>
-    <Segment Name="Segment3" Style="10">
+    <Segment Name="CD" Style="10">
       <Dependency Name="C" />
       <Dependency Name="D" />
     </Segment>
-    <Segment Name="Segment4" Style="10">
+    <Segment Name="IK" Style="10">
       <Dependency Name="I" />
       <Dependency Name="K" />
     </Segment>
-    <Segment Name="Segment5" Style="10">
+    <Segment Name="F1H1" Style="10">
       <Dependency Name="F1" />
       <Dependency Name="H1" />
     </Segment>
-    <Segment Name="Segment6" Style="10">
+    <Segment Name="D1E1" Style="10">
       <Dependency Name="D1" />
       <Dependency Name="E1" />
     </Segment>
-    <Segment Name="Segment7" Style="10">
+    <Segment Name="I1K1" Style="10">
       <Dependency Name="K1" />
       <Dependency Name="I1" />
     </Segment>
-    <Segment Name="Segment8" Style="10">
+    <Segment Name="YN1" Style="10">
       <Dependency Name="Y" />
       <Dependency Name="N1" />
     </Segment>
-    <Segment Name="Segment9" Style="10">
+    <Segment Name="O1P1" Style="10">
       <Dependency Name="P1" />
       <Dependency Name="O1" />
     </Segment>
-    <Segment Name="Segment10" Style="10">
+    <Segment Name="XY" Style="10">
       <Dependency Name="X" />
       <Dependency Name="Y" />
     </Segment>
-    <Segment Name="Segment11" Style="10">
+    <Segment Name="VW" Style="10">
       <Dependency Name="W" />
       <Dependency Name="V" />
     </Segment>
-    <Segment Name="Segment12" Style="10">
+    <Segment Name="ZA1" Style="10">
       <Dependency Name="A1" />
       <Dependency Name="Z" />
     </Segment>
-    <Segment Name="Segment13" Style="10">
+    <Segment Name="U1V1" Style="10">
       <Dependency Name="V1" />
       <Dependency Name="U1" />
     </Segment>
-    <Segment Name="Segment14" Style="10">
+    <Segment Name="S1T1" Style="10">
       <Dependency Name="S1" />
       <Dependency Name="T1" />
     </Segment>
-    <Segment Name="Segment15" Style="10">
+    <Segment Name="B2C2" Style="10">
       <Dependency Name="B2" />
       <Dependency Name="C2" />
     </Segment>
-    <Segment Name="Segment16" Style="10">
+    <Segment Name="C2D2" Style="10">
       <Dependency Name="D2" />
       <Dependency Name="C2" />
     </Segment>
-    <Segment Name="Segment17" Style="10">
+    <Segment Name="Z1A2" Style="10">
       <Dependency Name="A2" />
       <Dependency Name="Z1" />
     </Segment>
-    <Segment Name="Segment18" Style="10">
+    <Segment Name="G2H2" Style="10">
       <Dependency Name="H2" />
       <Dependency Name="G2" />
     </Segment>
-    <Segment Name="Segment19" Style="10">
+    <Segment Name="I2J2" Style="10">
       <Dependency Name="J2" />
       <Dependency Name="I2" />
     </Segment>
-    <Segment Name="Segment20" Style="10">
+    <Segment Name="J2Q2" Style="10">
       <Dependency Name="Q2" />
       <Dependency Name="J2" />
     </Segment>
-    <Segment Name="Segment21" Style="10">
+    <Segment Name="O2P2" Style="10">
       <Dependency Name="P2" />
       <Dependency Name="O2" />
     </Segment>
-    <Segment Name="Segment22" Style="10">
+    <Segment Name="R2S2" Style="10">
       <Dependency Name="R2" />
       <Dependency Name="S2" />
     </Segment>
-    <Segment Name="Segment23" Style="10">
+    <Segment Name="T2U2" Style="10">
       <Dependency Name="T2" />
       <Dependency Name="U2" />
     </Segment>
-    <Segment Name="Segment24" Style="10">
+    <Segment Name="L2C3" Style="10">
       <Dependency Name="L2" />
       <Dependency Name="C3" />
     </Segment>
-    <Segment Name="Segment25" Style="10">
+    <Segment Name="B3D3" Style="10">
       <Dependency Name="B3" />
       <Dependency Name="D3" />
     </Segment>
-    <Segment Name="Segment26" Style="10">
+    <Segment Name="LP" Style="10">
       <Dependency Name="L" />
       <Dependency Name="P" />
     </Segment>
-    <Segment Name="Segment27" Style="10">
+    <Segment Name="LL1" Style="10">
       <Dependency Name="L" />
       <Dependency Name="L1" />
     </Segment>
-    <Segment Name="Segment28" Style="10">
+    <Segment Name="L1E2" Style="10">
       <Dependency Name="L1" />
       <Dependency Name="E2" />
     </Segment>
-    <Segment Name="Segment29" Style="10">
+    <Segment Name="G1E2" Style="10">
       <Dependency Name="E2" />
       <Dependency Name="G1" />
     </Segment>
-    <Bezier Name="Bezier1" Style="13">
+    <Bezier Name="ABCD" Style="13">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="C" />
       <Dependency Name="D" />
     </Bezier>
-    <Bezier Name="Bezier2" Style="13">
+    <Bezier Name="AEFG" Style="13">
       <Dependency Name="A" />
       <Dependency Name="E" />
       <Dependency Name="F" />
       <Dependency Name="G" />
     </Bezier>
-    <Bezier Name="Bezier3" Style="13">
+    <Bezier Name="GHIJ" Style="13">
       <Dependency Name="G" />
       <Dependency Name="H" />
       <Dependency Name="I" />
       <Dependency Name="J" />
     </Bezier>
-    <Bezier Name="Bezier4" Style="13">
+    <Bezier Name="JKLM" Style="13">
       <Dependency Name="J" />
       <Dependency Name="K" />
       <Dependency Name="L" />
       <Dependency Name="M" />
     </Bezier>
-    <Bezier Name="Bezier5" Style="13">
+    <Bezier Name="NOPQ" Style="13">
       <Dependency Name="N" />
       <Dependency Name="O" />
       <Dependency Name="P" />
       <Dependency Name="Q" />
     </Bezier>
-    <Bezier Name="Bezier6" Style="13">
+    <Bezier Name="RSTU" Style="13">
       <Dependency Name="R" />
       <Dependency Name="S" />
       <Dependency Name="T" />
       <Dependency Name="U" />
     </Bezier>
-    <Bezier Name="Bezier7" Style="13">
+    <Bezier Name="VWXY" Style="13">
       <Dependency Name="V" />
       <Dependency Name="W" />
       <Dependency Name="X" />
       <Dependency Name="Y" />
     </Bezier>
-    <Bezier Name="Bezier8" Style="13">
+    <Bezier Name="ZA1B1C1" Style="13">
       <Dependency Name="Z" />
       <Dependency Name="A1" />
       <Dependency Name="B1" />
       <Dependency Name="C1" />
     </Bezier>
-    <Bezier Name="Bezier9" Style="13">
+    <Bezier Name="D1E1F1G1" Style="13">
       <Dependency Name="D1" />
       <Dependency Name="E1" />
       <Dependency Name="F1" />
       <Dependency Name="G1" />
     </Bezier>
-    <Bezier Name="Bezier10" Style="13">
+    <Bezier Name="G1H1I1J1" Style="13">
       <Dependency Name="G1" />
       <Dependency Name="H1" />
       <Dependency Name="I1" />
       <Dependency Name="J1" />
     </Bezier>
-    <Bezier Name="Bezier11" Style="13">
+    <Bezier Name="J1K1L1M1" Style="13">
       <Dependency Name="J1" />
       <Dependency Name="K1" />
       <Dependency Name="L1" />
       <Dependency Name="M1" />
     </Bezier>
-    <Bezier Name="Bezier12" Style="13">
+    <Bezier Name="YN1O1P1" Style="13">
       <Dependency Name="Y" />
       <Dependency Name="N1" />
       <Dependency Name="O1" />
       <Dependency Name="P1" />
     </Bezier>
-    <Bezier Name="Bezier13" Style="13">
+    <Bezier Name="YQ1R1P1" Style="13">
       <Dependency Name="Y" />
       <Dependency Name="Q1" />
       <Dependency Name="R1" />
       <Dependency Name="P1" />
     </Bezier>
-    <Bezier Name="Bezier14" Style="13">
+    <Bezier Name="S1T1U1V1" Style="13">
       <Dependency Name="S1" />
       <Dependency Name="T1" />
       <Dependency Name="U1" />
       <Dependency Name="V1" />
     </Bezier>
-    <Bezier Name="Bezier15" Style="13">
+    <Bezier Name="I1Y1X1W1" Style="13">
       <Dependency Name="W1" />
       <Dependency Name="X1" />
       <Dependency Name="Y1" />
       <Dependency Name="I1" />
     </Bezier>
-    <Bezier Name="Bezier16" Style="13">
+    <Bezier Name="Z1A2B2C2" Style="13">
       <Dependency Name="Z1" />
       <Dependency Name="A2" />
       <Dependency Name="B2" />
       <Dependency Name="C2" />
     </Bezier>
-    <Bezier Name="Bezier17" Style="13">
+    <Bezier Name="C2D2E2F2" Style="13">
       <Dependency Name="C2" />
       <Dependency Name="D2" />
       <Dependency Name="E2" />
       <Dependency Name="F2" />
     </Bezier>
-    <Bezier Name="Bezier18" Style="14">
+    <Bezier Name="G2H2I2J2" Style="14">
       <Dependency Name="G2" />
       <Dependency Name="H2" />
       <Dependency Name="I2" />
       <Dependency Name="J2" />
     </Bezier>
-    <Bezier Name="Bezier19" Style="15">
+    <Bezier Name="K2L2M2N2" Style="15">
       <Dependency Name="K2" />
       <Dependency Name="L2" />
       <Dependency Name="M2" />
       <Dependency Name="N2" />
     </Bezier>
-    <Bezier Name="Bezier20" Style="16">
+    <Bezier Name="J2Q2P2O2" Style="16">
       <Dependency Name="O2" />
       <Dependency Name="P2" />
       <Dependency Name="Q2" />
       <Dependency Name="J2" />
     </Bezier>
-    <Bezier Name="Bezier21" Style="17">
+    <Bezier Name="R2S2T2U2" Style="17">
       <Dependency Name="R2" />
       <Dependency Name="S2" />
       <Dependency Name="T2" />
       <Dependency Name="U2" />
     </Bezier>
-    <Bezier Name="Bezier22" Style="18">
+    <Bezier Name="U2T2W2V2" Style="18">
       <Dependency Name="V2" />
       <Dependency Name="W2" />
       <Dependency Name="T2" />
       <Dependency Name="U2" />
     </Bezier>
-    <Bezier Name="Bezier23" Style="14">
+    <Bezier Name="O2X2Y2Z2" Style="14">
       <Dependency Name="O2" />
       <Dependency Name="X2" />
       <Dependency Name="Y2" />
       <Dependency Name="Z2" />
     </Bezier>
-    <Bezier Name="Bezier24" Style="19">
+    <Bezier Name="A3L2B3C3" Style="19">
       <Dependency Name="A3" />
       <Dependency Name="L2" />
       <Dependency Name="B3" />
       <Dependency Name="C3" />
     </Bezier>
-    <Bezier Name="Bezier25" Style="20">
+    <Bezier Name="C3D3E3F3" Style="20">
       <Dependency Name="C3" />
       <Dependency Name="D3" />
       <Dependency Name="E3" />
       <Dependency Name="F3" />
     </Bezier>
-    <Bezier Name="Bezier26" Style="21">
+    <Bezier Name="G3D3H3I3" Style="21">
       <Dependency Name="G3" />
       <Dependency Name="D3" />
       <Dependency Name="H3" />
       <Dependency Name="I3" />
     </Bezier>
-    <Bezier Name="Bezier27" Style="22">
+    <Bezier Name="N2K3J3I3" Style="22">
       <Dependency Name="I3" />
       <Dependency Name="J3" />
       <Dependency Name="K3" />
       <Dependency Name="N2" />
     </Bezier>
-    <Label Name="Title" Style="GalleryTitle" Text="A Rose" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="The petals, the leaves and the stem are all Bézier curves: smooth curves steered by a few control points. Twenty-seven of them make this rose.\n\nThis is how fonts, logos and cartoon characters are drawn on computers.\n\nDrag any point and reshape the flower." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="GalleryTitle" Text="A Rose" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="The petals, the leaves and the stem are all Bézier curves: smooth curves steered by a few control points. Twenty-seven of them make this rose.\n\nThis is how fonts, logos and cartoon characters are drawn on computers.\n\nDrag any point and reshape the flower." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

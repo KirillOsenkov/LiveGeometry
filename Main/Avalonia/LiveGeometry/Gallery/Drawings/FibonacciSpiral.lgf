@@ -1,95 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1">
-  <Viewport Left="-6" Top="4" Right="6.5" Bottom="-4" Grid="false" />
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-6" Top="4" Right="6.5" Bottom="-4" />
   <Styles>
-    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
-    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
-    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
-    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
-    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
-    <TextStyle FontSize="15" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="Number" />
-    <ShapeStyle Fill="#FFC06DFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="Square1" />
-    <LineStyle Color="#FF860095" StrokeWidth="5" Dash="Solid" Name="Arc1" />
-    <ShapeStyle Fill="#FF0099FF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="Square2" />
-    <LineStyle Color="#FF2A0EB8" StrokeWidth="5" Dash="Solid" Name="Arc2" />
-    <ShapeStyle Fill="#FF00FFE5" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="Square3" />
-    <LineStyle Color="#FF009196" StrokeWidth="5" Dash="Solid" Name="Arc3" />
-    <ShapeStyle Fill="#FF11FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="Square4" />
-    <LineStyle Color="#FF047700" StrokeWidth="5" Dash="Solid" Name="Arc4" />
-    <ShapeStyle Fill="#FFFFF700" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="Square5" />
-    <LineStyle Color="#FF777303" StrokeWidth="5" Dash="Solid" Name="Arc5" />
-    <ShapeStyle Fill="#FFFF8800" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="Square6" />
-    <LineStyle Color="#FF885109" StrokeWidth="5" Dash="Solid" Name="Arc6" />
-    <ShapeStyle Fill="#FFFF6D6D" IsFilled="true" Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="Square7" />
-    <LineStyle Color="#FF8E0606" StrokeWidth="5" Dash="Solid" Name="Arc7" />
-    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
-    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+    <TextStyle Name="Number" FontSize="15" Color="#FF2B3038" FontFamily="Segoe UI" />
+    <ShapeStyle Name="Square1" Fill="#FFC06DFF" Color="#FF000000" />
+    <LineStyle Name="Arc1" Color="#FF860095" StrokeWidth="5" />
+    <ShapeStyle Name="Square2" Fill="#FF0099FF" Color="#FF000000" />
+    <LineStyle Name="Arc2" Color="#FF2A0EB8" StrokeWidth="5" />
+    <ShapeStyle Name="Square3" Fill="#FF00FFE5" Color="#FF000000" />
+    <LineStyle Name="Arc3" Color="#FF009196" StrokeWidth="5" />
+    <ShapeStyle Name="Square4" Fill="#FF11FF00" Color="#FF000000" />
+    <LineStyle Name="Arc4" Color="#FF047700" StrokeWidth="5" />
+    <ShapeStyle Name="Square5" Fill="#FFFFF700" Color="#FF000000" />
+    <LineStyle Name="Arc5" Color="#FF777303" StrokeWidth="5" />
+    <ShapeStyle Name="Square6" Fill="#FFFF8800" Color="#FF000000" />
+    <LineStyle Name="Arc6" Color="#FF885109" StrokeWidth="5" />
+    <ShapeStyle Name="Square7" Fill="#FFFF6D6D" Color="#FF000000" />
+    <LineStyle Name="Arc7" Color="#FF8E0606" StrokeWidth="5" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" Style="FreePoint" X="-5" Y="-3.25" />
-    <FreePoint Name="B" Style="FreePoint" X="-5" Y="3.25" />
-    <PointByCoordinates Name="P0_0" Visible="false" Style="DependentPointStyle" X="A.X + 0 * (B.Y - A.Y) / 13 + 0 * (B.X - A.X) / 13" Y="A.Y - 0 * (B.X - A.X) / 13 + 0 * (B.Y - A.Y) / 13">
+    <FreePoint Name="A" X="-5" Y="-3.25" />
+    <FreePoint Name="B" X="-5" Y="3.25" />
+    <PointByCoordinates Name="P0_0" Visible="false" X="A.X + 0 * (B.Y - A.Y) / 13 + 0 * (B.X - A.X) / 13" Y="A.Y - 0 * (B.X - A.X) / 13 + 0 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P13_0" Visible="false" Style="DependentPointStyle" X="A.X + 13 * (B.Y - A.Y) / 13 + 0 * (B.X - A.X) / 13" Y="A.Y - 13 * (B.X - A.X) / 13 + 0 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P13_0" Visible="false" X="A.X + 13 * (B.Y - A.Y) / 13 + 0 * (B.X - A.X) / 13" Y="A.Y - 13 * (B.X - A.X) / 13 + 0 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P13_13" Visible="false" Style="DependentPointStyle" X="A.X + 13 * (B.Y - A.Y) / 13 + 13 * (B.X - A.X) / 13" Y="A.Y - 13 * (B.X - A.X) / 13 + 13 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P13_13" Visible="false" X="A.X + 13 * (B.Y - A.Y) / 13 + 13 * (B.X - A.X) / 13" Y="A.Y - 13 * (B.X - A.X) / 13 + 13 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P0_13" Visible="false" Style="DependentPointStyle" X="A.X + 0 * (B.Y - A.Y) / 13 + 13 * (B.X - A.X) / 13" Y="A.Y - 0 * (B.X - A.X) / 13 + 13 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P0_13" Visible="false" X="A.X + 0 * (B.Y - A.Y) / 13 + 13 * (B.X - A.X) / 13" Y="A.Y - 0 * (B.X - A.X) / 13 + 13 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P13_5" Visible="false" Style="DependentPointStyle" X="A.X + 13 * (B.Y - A.Y) / 13 + 5 * (B.X - A.X) / 13" Y="A.Y - 13 * (B.X - A.X) / 13 + 5 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P13_5" Visible="false" X="A.X + 13 * (B.Y - A.Y) / 13 + 5 * (B.X - A.X) / 13" Y="A.Y - 13 * (B.X - A.X) / 13 + 5 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P21_5" Visible="false" Style="DependentPointStyle" X="A.X + 21 * (B.Y - A.Y) / 13 + 5 * (B.X - A.X) / 13" Y="A.Y - 21 * (B.X - A.X) / 13 + 5 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P21_5" Visible="false" X="A.X + 21 * (B.Y - A.Y) / 13 + 5 * (B.X - A.X) / 13" Y="A.Y - 21 * (B.X - A.X) / 13 + 5 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P21_13" Visible="false" Style="DependentPointStyle" X="A.X + 21 * (B.Y - A.Y) / 13 + 13 * (B.X - A.X) / 13" Y="A.Y - 21 * (B.X - A.X) / 13 + 13 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P21_13" Visible="false" X="A.X + 21 * (B.Y - A.Y) / 13 + 13 * (B.X - A.X) / 13" Y="A.Y - 21 * (B.X - A.X) / 13 + 13 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P16_0" Visible="false" Style="DependentPointStyle" X="A.X + 16 * (B.Y - A.Y) / 13 + 0 * (B.X - A.X) / 13" Y="A.Y - 16 * (B.X - A.X) / 13 + 0 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P16_0" Visible="false" X="A.X + 16 * (B.Y - A.Y) / 13 + 0 * (B.X - A.X) / 13" Y="A.Y - 16 * (B.X - A.X) / 13 + 0 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P21_0" Visible="false" Style="DependentPointStyle" X="A.X + 21 * (B.Y - A.Y) / 13 + 0 * (B.X - A.X) / 13" Y="A.Y - 21 * (B.X - A.X) / 13 + 0 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P21_0" Visible="false" X="A.X + 21 * (B.Y - A.Y) / 13 + 0 * (B.X - A.X) / 13" Y="A.Y - 21 * (B.X - A.X) / 13 + 0 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P16_5" Visible="false" Style="DependentPointStyle" X="A.X + 16 * (B.Y - A.Y) / 13 + 5 * (B.X - A.X) / 13" Y="A.Y - 16 * (B.X - A.X) / 13 + 5 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P16_5" Visible="false" X="A.X + 16 * (B.Y - A.Y) / 13 + 5 * (B.X - A.X) / 13" Y="A.Y - 16 * (B.X - A.X) / 13 + 5 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P16_3" Visible="false" Style="DependentPointStyle" X="A.X + 16 * (B.Y - A.Y) / 13 + 3 * (B.X - A.X) / 13" Y="A.Y - 16 * (B.X - A.X) / 13 + 3 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P16_3" Visible="false" X="A.X + 16 * (B.Y - A.Y) / 13 + 3 * (B.X - A.X) / 13" Y="A.Y - 16 * (B.X - A.X) / 13 + 3 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P13_3" Visible="false" Style="DependentPointStyle" X="A.X + 13 * (B.Y - A.Y) / 13 + 3 * (B.X - A.X) / 13" Y="A.Y - 13 * (B.X - A.X) / 13 + 3 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P13_3" Visible="false" X="A.X + 13 * (B.Y - A.Y) / 13 + 3 * (B.X - A.X) / 13" Y="A.Y - 13 * (B.X - A.X) / 13 + 3 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P15_3" Visible="false" Style="DependentPointStyle" X="A.X + 15 * (B.Y - A.Y) / 13 + 3 * (B.X - A.X) / 13" Y="A.Y - 15 * (B.X - A.X) / 13 + 3 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P15_3" Visible="false" X="A.X + 15 * (B.Y - A.Y) / 13 + 3 * (B.X - A.X) / 13" Y="A.Y - 15 * (B.X - A.X) / 13 + 3 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P15_5" Visible="false" Style="DependentPointStyle" X="A.X + 15 * (B.Y - A.Y) / 13 + 5 * (B.X - A.X) / 13" Y="A.Y - 15 * (B.X - A.X) / 13 + 5 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P15_5" Visible="false" X="A.X + 15 * (B.Y - A.Y) / 13 + 5 * (B.X - A.X) / 13" Y="A.Y - 15 * (B.X - A.X) / 13 + 5 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P15_4" Visible="false" Style="DependentPointStyle" X="A.X + 15 * (B.Y - A.Y) / 13 + 4 * (B.X - A.X) / 13" Y="A.Y - 15 * (B.X - A.X) / 13 + 4 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P15_4" Visible="false" X="A.X + 15 * (B.Y - A.Y) / 13 + 4 * (B.X - A.X) / 13" Y="A.Y - 15 * (B.X - A.X) / 13 + 4 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="P16_4" Visible="false" Style="DependentPointStyle" X="A.X + 16 * (B.Y - A.Y) / 13 + 4 * (B.X - A.X) / 13" Y="A.Y - 16 * (B.X - A.X) / 13 + 4 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="P16_4" Visible="false" X="A.X + 16 * (B.Y - A.Y) / 13 + 4 * (B.X - A.X) / 13" Y="A.Y - 16 * (B.X - A.X) / 13 + 4 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
@@ -177,56 +169,56 @@
       <Dependency Name="P15_3" />
       <Dependency Name="P16_4" />
     </CircleArc>
-    <PointByCoordinates Name="13" Visible="false" Style="DependentPointStyle" X="A.X + 6.5 * (B.Y - A.Y) / 13 + 6.5 * (B.X - A.X) / 13" Y="A.Y - 6.5 * (B.X - A.X) / 13 + 6.5 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="13" Visible="false" X="A.X + 6.5 * (B.Y - A.Y) / 13 + 6.5 * (B.X - A.X) / 13" Y="A.Y - 6.5 * (B.X - A.X) / 13 + 6.5 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Number1" IsHitTestVisible="false" Style="Number" OffsetX="-8" OffsetY="-10" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Number1" Style="Number" OffsetX="-8" OffsetY="-10" ShowName="true" ShowCoordinates="false">
       <Dependency Name="13" />
     </PointLabel>
-    <PointByCoordinates Name="8" Visible="false" Style="DependentPointStyle" X="A.X + 17 * (B.Y - A.Y) / 13 + 9 * (B.X - A.X) / 13" Y="A.Y - 17 * (B.X - A.X) / 13 + 9 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="8" Visible="false" X="A.X + 17 * (B.Y - A.Y) / 13 + 9 * (B.X - A.X) / 13" Y="A.Y - 17 * (B.X - A.X) / 13 + 9 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Number2" IsHitTestVisible="false" Style="Number" OffsetX="-4" OffsetY="-10" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Number2" Style="Number" OffsetX="-4" OffsetY="-10" ShowName="true" ShowCoordinates="false">
       <Dependency Name="8" />
     </PointLabel>
-    <PointByCoordinates Name="5" Visible="false" Style="DependentPointStyle" X="A.X + 18.5 * (B.Y - A.Y) / 13 + 2.5 * (B.X - A.X) / 13" Y="A.Y - 18.5 * (B.X - A.X) / 13 + 2.5 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="5" Visible="false" X="A.X + 18.5 * (B.Y - A.Y) / 13 + 2.5 * (B.X - A.X) / 13" Y="A.Y - 18.5 * (B.X - A.X) / 13 + 2.5 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Number3" IsHitTestVisible="false" Style="Number" OffsetX="-4" OffsetY="-10" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Number3" Style="Number" OffsetX="-4" OffsetY="-10" ShowName="true" ShowCoordinates="false">
       <Dependency Name="5" />
     </PointLabel>
-    <PointByCoordinates Name="3" Visible="false" Style="DependentPointStyle" X="A.X + 14.5 * (B.Y - A.Y) / 13 + 1.5 * (B.X - A.X) / 13" Y="A.Y - 14.5 * (B.X - A.X) / 13 + 1.5 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="3" Visible="false" X="A.X + 14.5 * (B.Y - A.Y) / 13 + 1.5 * (B.X - A.X) / 13" Y="A.Y - 14.5 * (B.X - A.X) / 13 + 1.5 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Number4" IsHitTestVisible="false" Style="Number" OffsetX="-4" OffsetY="-10" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Number4" Style="Number" OffsetX="-4" OffsetY="-10" ShowName="true" ShowCoordinates="false">
       <Dependency Name="3" />
     </PointLabel>
-    <PointByCoordinates Name="2" Visible="false" Style="DependentPointStyle" X="A.X + 14 * (B.Y - A.Y) / 13 + 4 * (B.X - A.X) / 13" Y="A.Y - 14 * (B.X - A.X) / 13 + 4 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="2" Visible="false" X="A.X + 14 * (B.Y - A.Y) / 13 + 4 * (B.X - A.X) / 13" Y="A.Y - 14 * (B.X - A.X) / 13 + 4 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Number5" IsHitTestVisible="false" Style="Number" OffsetX="-4" OffsetY="-10" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Number5" Style="Number" OffsetX="-4" OffsetY="-10" ShowName="true" ShowCoordinates="false">
       <Dependency Name="2" />
     </PointLabel>
-    <PointByCoordinates Name="1" Visible="false" Style="DependentPointStyle" X="A.X + 15.5 * (B.Y - A.Y) / 13 + 4.5 * (B.X - A.X) / 13" Y="A.Y - 15.5 * (B.X - A.X) / 13 + 4.5 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="1" Visible="false" X="A.X + 15.5 * (B.Y - A.Y) / 13 + 4.5 * (B.X - A.X) / 13" Y="A.Y - 15.5 * (B.X - A.X) / 13 + 4.5 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Number6" IsHitTestVisible="false" Style="Number" OffsetX="-4" OffsetY="-10" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Number6" Style="Number" OffsetX="-4" OffsetY="-10" ShowName="true" ShowCoordinates="false">
       <Dependency Name="1" />
     </PointLabel>
-    <PointByCoordinates Name="1 " Visible="false" Style="DependentPointStyle" X="A.X + 15.5 * (B.Y - A.Y) / 13 + 3.5 * (B.X - A.X) / 13" Y="A.Y - 15.5 * (B.X - A.X) / 13 + 3.5 * (B.Y - A.Y) / 13">
+    <PointByCoordinates Name="1 " Visible="false" X="A.X + 15.5 * (B.Y - A.Y) / 13 + 3.5 * (B.X - A.X) / 13" Y="A.Y - 15.5 * (B.X - A.X) / 13 + 3.5 * (B.Y - A.Y) / 13">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Number7" IsHitTestVisible="false" Style="Number" OffsetX="-4" OffsetY="-10" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Number7" Style="Number" OffsetX="-4" OffsetY="-10" ShowName="true" ShowCoordinates="false">
       <Dependency Name="1 " />
     </PointLabel>
-    <Label Name="Title" Style="GalleryTitle" Text="Fibonacci Spiral" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="1, 1, 2, 3, 5, 8, 13: each Fibonacci number is the sum of the two before it. Squares with these sides fit together into a rectangle — every new square is exactly as wide as the two before it side by side.\n\nA quarter circle in each square, corner to corner, makes a spiral. Every quarter turn it grows by about the same factor, close to 1.618, the golden ratio. A snail shell grows by a steady factor too, which is why it keeps the same shape as it grows.\n\nCount the spirals of seeds on a sunflower head or of scales on a pinecone: you usually get two neighbors in the Fibonacci sequence, like 8 and 13 on a pinecone or 34 and 55 on a sunflower.\n\nDrag the yellow points to turn and resize it." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="GalleryTitle" Text="Fibonacci Spiral" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="1, 1, 2, 3, 5, 8, 13: each Fibonacci number is the sum of the two before it. Squares with these sides fit together into a rectangle — every new square is exactly as wide as the two before it side by side.\n\nA quarter circle in each square, corner to corner, makes a spiral. Every quarter turn it grows by about the same factor, close to 1.618, the golden ratio. A snail shell grows by a steady factor too, which is why it keeps the same shape as it grows.\n\nCount the spirals of seeds on a sunflower head or of scales on a pinecone: you usually get two neighbors in the Fibonacci sequence, like 8 and 13 on a pinecone or 34 and 55 on a sunflower.\n\nDrag the yellow points to turn and resize it." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

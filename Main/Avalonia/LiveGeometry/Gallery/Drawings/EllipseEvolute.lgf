@@ -2,41 +2,33 @@
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-5.6" Top="3.8" Right="5.6" Bottom="-3.8" Grid="true" Axes="true" />
   <Styles>
-    <PointStyle Size="10" Fill="#FFFFFF64" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="FreePoint" />
-    <PointStyle Size="10" Fill="#FF7CE38B" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="PointOnFigure" />
-    <PointStyle Size="8" Fill="#FF6FD3F7" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="IntersectionPoint" />
-    <PointStyle Size="8" Fill="#FFFFB45A" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="Midpoint" />
-    <PointStyle Size="8" Fill="#FFD0D0D0" IsFilled="true" Color="#64000000" StrokeWidth="1" Dash="Solid" Name="DependentPointStyle" />
-    <PointStyle Size="14" Fill="#FFFFEF00" IsFilled="true" Color="#FFA05C21" StrokeWidth="2" Dash="Solid" Name="Runner" />
-    <PointStyle Size="12" Fill="#FF7CE38B" IsFilled="true" Color="#FF2E7D32" StrokeWidth="2" Dash="Solid" Name="Handle" />
-    <PointStyle Size="9" Fill="#FF7A62D9" IsFilled="true" Color="#FF4A3A99" StrokeWidth="1.5" Dash="Solid" Name="OnEllipse" />
-    <PointStyle Size="9" Fill="#FF3FA34D" IsFilled="true" Color="#FF256B30" StrokeWidth="1.5" Dash="Solid" Name="Center" />
-    <LineStyle Color="#FF7A62D9" StrokeWidth="2.5" Dash="Solid" Name="Ellipse" />
-    <LineStyle Color="#FF3FA34D" StrokeWidth="2.5" Dash="Solid" Name="Evolute" />
-    <LineStyle Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dot" Name="Radius" />
-    <LineStyle Color="#FF000000" StrokeWidth="1" Dash="Solid" Name="Hidden" />
-    <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FFB8B8B8" StrokeWidth="3" Dash="Solid" Name="Dial" />
-    <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dash" Name="Osculating" />
-    <TextStyle FontSize="17" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="Name" />
-    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
-    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+    <PointStyle Name="Runner" Size="14" Fill="#FFFFEF00" Color="#FFA05C21" StrokeWidth="2" />
+    <PointStyle Name="Handle" Size="12" Fill="#FF7CE38B" Color="#FF2E7D32" StrokeWidth="2" />
+    <PointStyle Name="OnEllipse" Size="9" Fill="#FF7A62D9" Color="#FF4A3A99" StrokeWidth="1.5" />
+    <PointStyle Name="Center" Size="9" Fill="#FF3FA34D" Color="#FF256B30" StrokeWidth="1.5" />
+    <LineStyle Name="Ellipse" Color="#FF7A62D9" StrokeWidth="2.5" />
+    <LineStyle Name="Evolute" Color="#FF3FA34D" StrokeWidth="2.5" />
+    <LineStyle Name="Radius" Color="#FF6E6E6E" StrokeWidth="1.25" Dash="Dot" />
+    <LineStyle Name="Hidden" Color="#FF000000" />
+    <ShapeStyle Name="Dial" Fill="#00FFFFFF" Color="#FFB8B8B8" StrokeWidth="3" />
+    <ShapeStyle Name="Osculating" Fill="#00FFFFFF" Color="#FF6E6E6E" StrokeWidth="1.5" Dash="Dash" />
+    <TextStyle Name="Name" FontSize="17" Color="#FF2B3038" FontFamily="Segoe UI" />
   </Styles>
   <Figures>
-    <FreePoint Name="P0" Visible="false" Style="FreePoint" X="-4.4" Y="2.7" />
-    <PointByCoordinates Name="P1" Visible="false" Style="DependentPointStyle" X="P0.X + 0.75" Y="P0.Y">
+    <FreePoint Name="P0" Visible="false" X="-4.4" Y="2.7" />
+    <PointByCoordinates Name="P1" Visible="false" X="P0.X + 0.75" Y="P0.Y">
       <Dependency Name="P0" />
     </PointByCoordinates>
     <Circle Name="Dial" Style="Dial">
       <Dependency Name="P0" />
       <Dependency Name="P1" />
     </Circle>
-    <PointOnFigure Name="T" Style="Runner" X="-3.781" Y="3.1235" Parameter="0.6">
+    <PointOnFigure Name="T" Style="Runner" X="-3.7809982888177416" Y="3.123481855046277" Parameter="0.6">
       <Dependency Name="Dial" />
     </PointOnFigure>
-    <FreePoint Name="O" Visible="false" Style="FreePoint" X="0" Y="0" />
-    <FreePoint Name="X1" Visible="false" Style="FreePoint" X="1" Y="0" />
-    <FreePoint Name="Y1" Visible="false" Style="FreePoint" X="0" Y="1" />
+    <FreePoint Name="O" Visible="false" X="0" Y="0" />
+    <FreePoint Name="X1" Visible="false" X="1" Y="0" />
+    <FreePoint Name="Y1" Visible="false" X="0" Y="1" />
     <LineTwoPoints Name="XAxis" Visible="false" Style="Hidden">
       <Dependency Name="O" />
       <Dependency Name="X1" />
@@ -79,19 +71,19 @@
       <Dependency Name="M" />
       <Dependency Name="L" />
     </Segment>
-    <PointLabel Name="aName" IsHitTestVisible="false" Style="Name" OffsetX="8" OffsetY="4" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="aName" Style="Name" OffsetX="8" OffsetY="4" ShowName="true" ShowCoordinates="false">
       <Dependency Name="a" />
     </PointLabel>
-    <PointLabel Name="bName" IsHitTestVisible="false" Style="Name" OffsetX="10" OffsetY="-22" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="bName" Style="Name" OffsetX="10" OffsetY="-22" ShowName="true" ShowCoordinates="false">
       <Dependency Name="b" />
     </PointLabel>
-    <PointLabel Name="LName" IsHitTestVisible="false" Style="Name" OffsetX="8" OffsetY="-24" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LName" Style="Name" OffsetX="8" OffsetY="-24" ShowName="true" ShowCoordinates="false">
       <Dependency Name="L" />
     </PointLabel>
-    <PointLabel Name="MName" IsHitTestVisible="false" Style="Name" OffsetX="8" OffsetY="4" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="MName" Style="Name" OffsetX="8" OffsetY="4" ShowName="true" ShowCoordinates="false">
       <Dependency Name="M" />
     </PointLabel>
-    <Label Name="Title" Style="GalleryTitle" Text="Ellipse and Its Evolute" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="The yellow point runs around the little circle, and its angle — from 0 to 2π — drives point L around the ellipse: L = (a · cos θ, b · sin θ).\n\nAt every position there is a circle that hugs the ellipse best, drawn dashed, and M is its center. As L travels, M traces the four-pointed star: the evolute of the ellipse. Make the ellipse long and thin and the star pokes out through it.\n\nDrag the yellow point around its circle. Drag the green points a and b, the half-width and the half-height of the ellipse, to reshape it." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="GalleryTitle" Text="Ellipse and Its Evolute" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="The yellow point runs around the little circle, and its angle — from 0 to 2π — drives point L around the ellipse: L = (a · cos θ, b · sin θ).\n\nAt every position there is a circle that hugs the ellipse best, drawn dashed, and M is its center. As L travels, M traces the four-pointed star: the evolute of the ellipse. Make the ellipse long and thin and the star pokes out through it.\n\nDrag the yellow point around its circle. Drag the green points a and b, the half-width and the half-height of the ellipse, to reshape it." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

@@ -1,41 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1">
-  <Viewport Left="-5.1041666667" Top="8.1041666667" Right="4.8958333333" Bottom="-7.0625" Grid="false" />
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-5.1041666667" Top="8.1041666667" Right="4.8958333333" Bottom="-7.0625" />
   <Styles>
-    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
-    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
-    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
-    <LineStyle Color="#FF000000" StrokeWidth="3" Name="4" />
-    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
-    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
-    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
-    <LineStyle Color="#FF8A8A8A" StrokeWidth="1" Name="10" />
-    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
-    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+    <LineStyle Name="4" Color="#FF000000" StrokeWidth="3" />
+    <LineStyle Name="10" Color="#FF8A8A8A" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" Style="1" X="-3.9375" Y="-1.4375" />
-    <FreePoint Name="B" Style="1" X="-3.375" Y="3.9166666667" />
-    <FreePoint Name="C" Style="1" X="4.09375" Y="0.6979166667" />
-    <FreePoint Name="D" Style="1" X="1.4583333333" Y="-3.875" />
-    <Bezier Name="Bezier80" Style="4">
+    <FreePoint Name="A" X="-3.9375" Y="-1.4375" />
+    <FreePoint Name="B" X="-3.375" Y="3.9166666667" />
+    <FreePoint Name="C" X="4.09375" Y="0.6979166667" />
+    <FreePoint Name="D" X="1.4583333333" Y="-3.875" />
+    <Bezier Name="ABCD" Style="4">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="C" />
       <Dependency Name="D" />
     </Bezier>
-    <Segment Name="Segment82" Style="10">
+    <Segment Name="AB" Style="10">
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Segment>
-    <Segment Name="Segment84" Style="10">
+    <Segment Name="CD" Style="10">
       <Dependency Name="C" />
       <Dependency Name="D" />
     </Segment>
-    <Label Name="Title" Style="GalleryTitle" Text="Bézier Curve" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="This Bézier curve (a cubic one, the most common kind) is controlled by four points: two endpoints and two handles. Each handle sets the direction in which the curve leaves its endpoint.\n\nEvery letter on this screen is drawn with Bézier curves. They are named after Pierre Bézier, who designed car bodies with them in the 1960s.\n\nDrag the points to bend the curve." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="GalleryTitle" Text="Bézier Curve" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="This Bézier curve (a cubic one, the most common kind) is controlled by four points: two endpoints and two handles. Each handle sets the direction in which the curve leaves its endpoint.\n\nEvery letter on this screen is drawn with Bézier curves. They are named after Pierre Bézier, who designed car bodies with them in the 1960s.\n\nDrag the points to bend the curve." Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

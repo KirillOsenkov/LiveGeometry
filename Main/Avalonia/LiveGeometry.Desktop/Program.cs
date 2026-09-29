@@ -31,6 +31,11 @@ sealed class Program
         {
             MainView.ModernizeFolder = System.IO.Path.GetFullPath(args[1]);
         }
+        else if (args.Length == 2 && args[0] == "--rewrite")
+        {
+            // every drawing of a folder loaded and saved again, in today's format
+            MainView.RewriteFolder = System.IO.Path.GetFullPath(args[1]);
+        }
         else if (args.Length == 2 && args[0] == "--recaption")
         {
             MainView.RecaptionFolder = System.IO.Path.GetFullPath(args[1]);

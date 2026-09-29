@@ -1,49 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1">
-  <Viewport Left="-7.9950867182" Top="16.0942200334" Right="12.8921775481" Bottom="-15.5847974371" Grid="false" />
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-7.9950867182" Top="16.0942200334" Right="12.8921775481" Bottom="-15.5847974371" />
   <Styles>
-    <PointStyle Size="10" Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="1" />
-    <PointStyle Size="10" Fill="#FF00FF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="2" />
-    <PointStyle Size="10" Fill="#FFC0C0C0" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="3" />
-    <LineStyle Color="#FF000000" StrokeWidth="1" Name="4" />
-    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#00FFFFFF" StrokeWidth="1" Name="5" />
-    <ShapeStyle Fill="#FFFFFF00" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="6" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="7" />
-    <TextStyle FontSize="40" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="8" />
-    <TextStyle FontSize="18" Color="#FF000000" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="9" />
-    <PointStyle Size="10" Fill="#FFFFFFFF" IsFilled="true" Color="#FF400040" StrokeWidth="0.7" Name="10" />
-    <LineStyle Color="#FF000000" StrokeWidth="2" Name="11" />
-    <PointStyle Size="6" Fill="#FFFFFFFF" IsFilled="true" Color="#FFFF0000" StrokeWidth="0.7" Name="12" />
-    <ShapeStyle Fill="#00FFFFFF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="13" />
-    <PointStyle Size="8" Fill="#FFFFFFFF" IsFilled="true" Color="#FF0000FF" StrokeWidth="0.7" Name="14" />
-    <TextStyle FontSize="34" Color="#FFF4CACA" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="15" />
-    <TextStyle FontSize="34" Color="#FFB9C0FF" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="16" />
-    <TextStyle FontSize="30.6" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="17" />
-    <TextStyle FontSize="17" Color="#FF000000" FontFamily="Arial" Bold="false" Italic="false" Underline="false" Name="18" />
-    <ShapeStyle Fill="#80EA8895" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="19" />
-    <ShapeStyle Fill="#806A79FF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="20" />
-    <ShapeStyle Fill="#FFE1E4FF" IsFilled="true" Color="#FF000000" StrokeWidth="1" Name="21" />
-    <TextStyle FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true" Italic="false" Underline="false" Name="GalleryTitle" />
-    <TextStyle FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI" Bold="false" Italic="false" Underline="false" Name="GalleryText" />
-    <LineStyle Color="#FFE0362B" StrokeWidth="2.5" Name="GalleryLocus" />
+    <LineStyle Name="4" Color="#FF000000" />
+    <PointStyle Name="10" Fill="#FFFFFFFF" Color="#FF400040" StrokeWidth="0.7" />
+    <LineStyle Name="11" Color="#FF000000" StrokeWidth="2" />
+    <ShapeStyle Name="13" Fill="#00FFFFFF" Color="#FF000000" />
+    <PointStyle Name="14" Size="8" Fill="#FFFFFFFF" Color="#FF0000FF" StrokeWidth="0.7" />
+    <ShapeStyle Name="19" Fill="#80EA8895" Color="#FF000000" />
+    <ShapeStyle Name="20" Fill="#806A79FF" Color="#FF000000" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" Style="1" X="1.9698789422" Y="-2.5737724046" />
-    <FreePoint Name="C" Style="1" X="4.5807869754" Y="0.9944685742" />
-    <Segment Name="Segment14" Style="11">
+    <FreePoint Name="A" X="1.9698789422" Y="-2.5737724046" />
+    <FreePoint Name="C" X="4.5807869754" Y="0.9944685742" />
+    <Segment Name="AC" Style="11">
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine15" Visible="false" Style="4">
-      <Dependency Name="Segment14" />
+    <PerpendicularLine Name="PerpendicularLine15" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="AC" />
       <Dependency Name="C" />
     </PerpendicularLine>
-    <PointOnFigure Name="B" Style="2" X="0.367443855726543" Y="4.07740256412433" Parameter="-1.1807899591721">
+    <PointOnFigure Name="B" X="0.3674438557265338" Y="4.077402564124336" Parameter="-1.1807899591721">
       <Dependency Name="PerpendicularLine15" />
     </PointOnFigure>
     <FreePoint Name="D" Visible="false" Style="10" X="-4.855109" Y="4.722817" />
     <FreePoint Name="E" Visible="false" Style="10" X="-4.2527852038" Y="4.8238003564" />
-    <Segment Name="Segment16" Style="11">
+    <Segment Name="BC" Style="11">
       <Dependency Name="B" />
       <Dependency Name="C" />
     </Segment>
@@ -53,19 +36,19 @@
       <Dependency Name="C" />
     </CircleByRadius>
     <IntersectionPoint Name="F" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
-      <Dependency Name="Segment16" />
+      <Dependency Name="BC" />
       <Dependency Name="CircleByRadius17" />
     </IntersectionPoint>
     <IntersectionPoint Name="G" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
-      <Dependency Name="Segment16" />
+      <Dependency Name="BC" />
       <Dependency Name="CircleByRadius17" />
     </IntersectionPoint>
     <IntersectionPoint Name="H" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
-      <Dependency Name="Segment14" />
+      <Dependency Name="AC" />
       <Dependency Name="CircleByRadius17" />
     </IntersectionPoint>
     <IntersectionPoint Name="I" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
-      <Dependency Name="Segment14" />
+      <Dependency Name="AC" />
       <Dependency Name="CircleByRadius17" />
     </IntersectionPoint>
     <MidPoint Name="J" Visible="false" Style="14">
@@ -76,12 +59,12 @@
       <Dependency Name="C" />
       <Dependency Name="J" />
     </ReflectedPoint>
-    <Segment Name="Segment18" Style="11">
+    <Segment Name="AB" Style="11">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine19" Visible="false" Style="4">
-      <Dependency Name="Segment18" />
+    <PerpendicularLine Name="PerpendicularLine19" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="AB" />
       <Dependency Name="B" />
     </PerpendicularLine>
     <Circle Name="Circle20" Visible="false" Style="13">
@@ -104,8 +87,8 @@
       <Dependency Name="B" />
       <Dependency Name="N" />
     </ReflectedPoint>
-    <PerpendicularLine Name="PerpendicularLine21" Visible="false" Style="4">
-      <Dependency Name="Segment14" />
+    <PerpendicularLine Name="PerpendicularLine21" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="AC" />
       <Dependency Name="A" />
     </PerpendicularLine>
     <Circle Name="Circle22" Visible="false" Style="13">
@@ -132,8 +115,8 @@
       <Dependency Name="C" />
       <Dependency Name="B" />
     </Circle>
-    <PerpendicularLine Name="PerpendicularLine24" Visible="false" Style="4">
-      <Dependency Name="Segment16" />
+    <PerpendicularLine Name="PerpendicularLine24" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="BC" />
       <Dependency Name="C" />
     </PerpendicularLine>
     <IntersectionPoint Name="T" Visible="false" Style="14" Algorithm="IntersectEllipseAndLine2">
@@ -152,92 +135,101 @@
       <Dependency Name="C" />
       <Dependency Name="V" />
     </ReflectedPoint>
-    <Segment Name="Segment25" Style="4">
+    <Segment Name="IK" Style="4">
       <Dependency Name="I" />
       <Dependency Name="K" />
     </Segment>
-    <Segment Name="Segment26" Style="4">
+    <Segment Name="GK" Style="4">
       <Dependency Name="K" />
       <Dependency Name="G" />
     </Segment>
-    <Segment Name="Segment27" Style="4">
+    <Segment Name="MO" Style="4">
       <Dependency Name="O" />
       <Dependency Name="M" />
     </Segment>
-    <Segment Name="Segment28" Style="4">
+    <Segment Name="AO" Style="4">
       <Dependency Name="O" />
       <Dependency Name="A" />
     </Segment>
-    <Segment Name="Segment29" Style="4">
+    <Segment Name="BM" Style="4">
       <Dependency Name="M" />
       <Dependency Name="B" />
     </Segment>
-    <Segment Name="Segment30" Style="4">
+    <Segment Name="AP" Style="4">
       <Dependency Name="A" />
       <Dependency Name="P" />
     </Segment>
-    <Segment Name="Segment31" Style="4">
+    <Segment Name="PS" Style="4">
       <Dependency Name="P" />
       <Dependency Name="S" />
     </Segment>
-    <Segment Name="Segment32" Style="4">
+    <Segment Name="CS" Style="4">
       <Dependency Name="S" />
       <Dependency Name="C" />
     </Segment>
-    <Segment Name="Segment33" Style="4">
+    <Segment Name="BW" Style="4">
       <Dependency Name="B" />
       <Dependency Name="W" />
     </Segment>
-    <Segment Name="Segment34" Style="4">
+    <Segment Name="UW" Style="4">
       <Dependency Name="W" />
       <Dependency Name="U" />
     </Segment>
-    <Segment Name="Segment35" Style="4">
+    <Segment Name="CU" Style="4">
       <Dependency Name="U" />
       <Dependency Name="C" />
     </Segment>
-    <AreaMeasurement Name="HypotenuseArea" Style="7" OffsetX="-24" OffsetY="-12">
+    <AreaMeasurement Name="HypotenuseArea" OffsetX="-24" OffsetY="-12">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="M" />
       <Dependency Name="O" />
     </AreaMeasurement>
-    <AreaMeasurement Name="LegAreaBC" Style="7" OffsetX="-24" OffsetY="-12">
+    <AreaMeasurement Name="LegAreaBC" OffsetX="-24" OffsetY="-12">
       <Dependency Name="C" />
       <Dependency Name="B" />
       <Dependency Name="W" />
       <Dependency Name="U" />
     </AreaMeasurement>
-    <AreaMeasurement Name="LegAreaAC" Style="7" OffsetX="-24" OffsetY="-12">
+    <AreaMeasurement Name="LegAreaAC" OffsetX="-24" OffsetY="-12">
       <Dependency Name="A" />
       <Dependency Name="P" />
       <Dependency Name="S" />
       <Dependency Name="C" />
     </AreaMeasurement>
-    <Polygon Name="Polygon44" Style="19">
+    <Polygon Name="AABMO" Style="19">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="M" />
       <Dependency Name="O" />
       <Dependency Name="A" />
     </Polygon>
-    <Polygon Name="Polygon45" Style="20">
+    <Polygon Name="BCCUW" Style="20">
       <Dependency Name="C" />
       <Dependency Name="B" />
       <Dependency Name="W" />
       <Dependency Name="U" />
       <Dependency Name="C" />
     </Polygon>
-    <Polygon Name="Polygon46" Style="20">
+    <Polygon Name="AACSP" Style="20">
       <Dependency Name="A" />
       <Dependency Name="P" />
       <Dependency Name="S" />
       <Dependency Name="C" />
       <Dependency Name="A" />
     </Polygon>
-    <Label Name="Title" Style="GalleryTitle" Text="Pythagorean Theorem" DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="25.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="In a right triangle the square on the hypotenuse has the same area as the two squares on the legs together: a² + b² = c².\n\nThe number in each square is its area. Right now the legs are [AC] and [BC], and the hypotenuse is [ab].\nc² = [ab^2]\na² + b² = [AC^2+BC^2]\n\nDrag the yellow points — the two numbers always agree." DecimalsToShow="2" Pin="TopRight" OffsetX="16" OffsetY="73.5" WrapWidth="400" Backdrop="true">
+    <Label Name="Title" Style="GalleryTitle" Text="Pythagorean Theorem" Pin="TopRight" OffsetX="16" OffsetY="25.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="In a right triangle the square on the hypotenuse has the same area as the two squares on the legs together: a² + b² = c².\n\nThe number in each square is its area. Right now the legs are [AC] and [BC], and the hypotenuse is [ab].\nc² = [ab^2]\na² + b² = [AC^2+BC^2]\n\nDrag the yellow points — the two numbers always agree." Pin="TopRight" OffsetX="16" OffsetY="73.5" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+      <Dependency Name="C" />
       <Dependency Name="B" />
       <Dependency Name="C" />
     </Label>

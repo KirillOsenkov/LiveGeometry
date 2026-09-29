@@ -203,6 +203,65 @@ public partial class MainView
         Environment.Exit(0);
     }
 
+    public static string RewriteFolder { get; set; }
+
+    /// <summary>
+    /// "--rewrite &lt;folder&gt;": every drawing loaded and saved again, so that the file is
+    /// in today's format - what loading upgrades (default names, a figure's default name)
+    /// and what saving leaves out (copies of the defaults, the style of a figure's kind,
+    /// attributes at their defaults). The file's own viewport is kept: a captioned drawing
+    /// is laid out for this window on opening, and its viewport is not what the file means.
+    /// Made for the gallery (2026-09-29); harmless to rerun.
+    /// </summary>
+    async void RunRewrite(string folder)
+    {
+        ShowEditor();
+        AppTheme.Apply(AppTheme.Light.Name);
+        int changedFiles = 0;
+        foreach (var file in Directory.GetFiles(folder, "*.lgf").OrderBy(f => f))
+        {
+            var before = File.ReadAllText(file);
+            OpenDrawing(Path.GetFileName(file), File.ReadAllBytes(file));
+            await Task.Delay(50);
+            var drawing = DrawingHost.CurrentDrawing;
+
+            var rewritten = XDocument.Parse(drawing.SaveAsText());
+            var original = XDocument.Parse(before);
+            var viewport = rewritten.Root.Element("Viewport");
+            var originalViewport = original.Root.Element("Viewport");
+            if (viewport != null && originalViewport != null)
+            {
+                foreach (var side in new[] { "Left", "Top", "Right", "Bottom" })
+                {
+                    viewport.SetAttributeValue(side, (string)originalViewport.Attribute(side));
+                }
+            }
+
+            // through a stream, so that the declaration says utf-8 (a StringBuilder makes it say utf-16)
+            var settings = new XmlWriterSettings() { Indent = true, Encoding = new UTF8Encoding(false), NewLineChars = "\r\n" };
+            string text;
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = XmlWriter.Create(stream, settings))
+                {
+                    rewritten.Save(writer);
+                }
+
+                text = Encoding.UTF8.GetString(stream.ToArray());
+            }
+
+            if (text != before)
+            {
+                File.WriteAllText(file, text, new UTF8Encoding(false));
+                Console.WriteLine(Path.GetFileName(file) + ": rewritten");
+                changedFiles++;
+            }
+        }
+
+        Console.WriteLine("rewrote " + changedFiles + " files");
+        Environment.Exit(0);
+    }
+
     public static string SpaceLabelsFolder { get; set; }
 
     /// <summary>
