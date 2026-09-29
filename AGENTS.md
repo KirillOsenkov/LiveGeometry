@@ -100,14 +100,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Enter, a right-click or a click on a vertex closes it; Regular polygon - center then a vertex.
   Triangle and Polygon show no length panel (a side's length means nothing for them). (Polygon intersection
   exists but is `[Ignore]`d.)
-- **Coordinates**: Background and Grid (G) (commands); Function - an expression in x; Line - by
-  slope and intercept expressions; Circle - by center and radius expressions; Point by
-  coordinates (toggle: gives the point tools an X/Y panel).
 - **Transform** (the tools are verbs, as the tab is; the classes stay `ReflectionCreator`...):
   Reflect (T) - source figure, then a mirror (point, line, segment, ray, or a
   circle for a point source); Rotate - source, center, angle (a figure with an angle or a
   typed value); Translate - source, distance, direction (see "TranslatedPoint"); Dilate -
-  source, center, factor (a figure with a length or a typed value).
+  source, center, factor (a figure with a length or a typed value). Last of the tabs that
+  draw with figures alone; the two after it work with numbers.
+- **Coordinates**: Background and Grid (G) (commands); Function - an expression in x; Line - by
+  slope and intercept expressions; Circle - by center and radius expressions; Point by
+  coordinates (toggle: gives the point tools an X/Y panel).
 - **Measure**: Distance - two points or a segment; Angle (J) - vertex then two side points;
   Area (K) - a polygon, ellipse, circle or list of points; Slider - where it sits, then where
   its knob starts (or press, drag, release): a number with a handle, taken wherever a tool
