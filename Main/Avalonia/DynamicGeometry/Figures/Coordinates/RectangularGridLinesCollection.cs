@@ -145,8 +145,25 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>The lines take their styles again (the theme changed)</summary>
         public override void ApplyStyle()
         {
+            Reapply(Lines, Style);
+            Reapply(MinorLines, MinorStyle);
+        }
+
+        static void Reapply(List<Line> lines, IFigureStyle style)
+        {
+            if (style == null)
+            {
+                return;
+            }
+
+            var wpfStyle = style.GetWpfStyle();
+            foreach (var line in lines)
+            {
+                line.Apply(wpfStyle);
+            }
         }
     }
 }

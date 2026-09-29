@@ -36,30 +36,76 @@ namespace DynamicGeometry
 
         public double Version { get; set; }
 
-        Brush background = new SolidColorBrush(Colors.White);
+        Brush background;
 
         /// <summary>
-        /// The paper: a solid color or a gradient, white by default. Part of the drawing (saved
-        /// with it, undoable through the property grid), painted onto whatever canvas shows it.
+        /// The paper: a solid color or a gradient of the drawing's own, or the theme's paper
+        /// (null, which files leave out). Part of the drawing (saved with it, undoable through
+        /// the property grid), painted onto whatever canvas shows it.
         /// </summary>
         [PropertyGridVisible]
         public Brush Background
         {
             get
             {
-                return background;
+                return background ?? new SolidColorBrush(AppTheme.Current.Paper);
             }
             set
             {
-                background = value ?? new SolidColorBrush(Colors.White);
+                background = value;
                 ApplyBackground();
             }
         }
 
-        /// <summary>Whether the paper is the default, plain white (which files leave out)</summary>
+        /// <summary>The paper the drawing chose, null for the theme's</summary>
+        public Brush OwnBackground
+        {
+            get
+            {
+                return background;
+            }
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Theme's paper")]
+        [PropertyGridIcon(PropertyGridIcon.Paper)]
+        public void UseThemePaper()
+        {
+            Background = null;
+        }
+
+        /// <summary>
+        /// Whether a paper read from a file is plain white: the readers of foreign formats take
+        /// that as no paper of the drawing's own, so the theme's shows
+        /// </summary>
         public static bool IsWhite(Brush brush)
         {
             return brush is SolidColorBrush solid && solid.Color == Colors.White;
+        }
+
+        /// <summary>
+        /// Whether the paper is painted onto the canvas at all: a gallery tile shows through
+        /// instead, its plate being the drawing's paper or a pastel
+        /// </summary>
+        public bool PaintsPaper { get; set; } = true;
+
+        /// <summary>
+        /// The theme on screen changed, or a color of a theme: the paper, the styles built from
+        /// the theme and every figure are drawn again as the theme now says
+        /// </summary>
+        public void RefreshTheme(bool colorsChanged)
+        {
+            if (colorsChanged)
+            {
+                StyleManager.RefreshTheme();
+                CoordinateGrid.RefreshTheme();
+            }
+
+            ApplyBackground();
+            foreach (var figure in Figures)
+            {
+                figure.ApplyStyle();
+            }
         }
 
         /// <summary>
@@ -122,7 +168,7 @@ namespace DynamicGeometry
         {
             if (Canvas != null)
             {
-                Canvas.Background = PlaceBackground(background);
+                Canvas.Background = PaintsPaper ? PlaceBackground(Background) : null;
             }
         }
 
@@ -168,7 +214,7 @@ namespace DynamicGeometry
 
         void Drawing_OnAttachToCanvas(Canvas canvas)
         {
-            canvas.Background = PlaceBackground(background);
+            canvas.Background = PaintsPaper ? PlaceBackground(Background) : null;
             canvas.SizeChanged += mCanvas_SizeChanged;
             UpdateClip(canvas);
             foreach (var figure in Figures)

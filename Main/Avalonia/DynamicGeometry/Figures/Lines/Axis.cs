@@ -23,11 +23,12 @@ namespace DynamicGeometry
             return null;
         }
 
+        /// <summary>The theme's axis color, as on screen now</summary>
         public static Color Color
         {
             get
             {
-                return Color.FromArgb(255, 128, 128, 255);
+                return AppTheme.Current.Axis;
             }
         }
     }

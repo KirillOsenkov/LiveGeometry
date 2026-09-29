@@ -541,6 +541,26 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   says stores `System` again. Out of the theme for now: the canvas (white paper), the gallery's
   pastel tiles (captions go by the plate), the drawings' styles. On Windows the title bar is
   asked to go dark too (`LiveGeometry.Desktop/WindowFrameTheme.cs`).
+- **Drawings follow the theme through their styles.** A `FigureStyle` has its values (how it
+  looks under Light, the base theme) and may hold *overrides* for another theme: the
+  properties that differ, with their values (`Overrides`, `SetOverride`). Whoever draws with a
+  style resolves it first (`IFigureStyle.Resolve`: the style itself without an override for
+  the theme on screen, else a copy with the override applied); `GetWpfStyle` and the
+  `Apply` extension do that, so figures and sample glyphs need nothing. The default styles
+  (`StyleManager.AddDefaultStyles`, the grid's own in `CartesianGrid`) take their colors from
+  the theme's Paper group (`AppTheme.Paper`, `Ink`, the point fills, `ShapeFill`, `Axis`,
+  `GridMajor`/`GridMinor`) through `BindToTheme`: base from Light, an override from every
+  other theme, read again when a theme color is tweaked (`AppTheme.ColorsChanged` ->
+  `Drawing.RefreshTheme`). Chosen colors that read on both papers (a red line, a blue
+  outline) stay literal; a gray helper line gets a literal Dark override. A drawing's paper is
+  the theme's unless it has one of its own (`Drawing.OwnBackground`, null for the theme's;
+  files leave it out; the readers of foreign formats take white as none). A theme switch
+  (`AppTheme.CurrentChanged`) re-applies every figure's style and the paper
+  (`Drawing.RefreshTheme`, hooked by `DrawingControl` and the gallery's `DrawingThumbnail`,
+  which doesn't paint the paper: `Drawing.PaintsPaper`). The tool icons draw their points,
+  fills and lines from the same Paper group, so they show the figures as the theme would.
+  Not yet: overrides in files, a style edit landing in the current theme's values, the
+  gallery drawings (they carry their own copies of old defaults) and its pastel tiles.
 - **Settings between runs** (`LiveGeometry/SettingsStore.cs`): `Get`/`Set` by key, the desktop
   head keeping them as `key=value` lines in `%LocalAppData%\LiveGeometry\Settings.txt`
   (`FileSettingsStore`), the browser in `localStorage` under `LiveGeometry.<key>`

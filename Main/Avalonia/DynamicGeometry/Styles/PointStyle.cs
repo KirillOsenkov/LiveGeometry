@@ -10,7 +10,7 @@ namespace DynamicGeometry
         {
             var point = Factory.CreatePointShape();
             point.Apply(this.GetWpfStyle());
-            OnApplied(null, point);
+            Resolve().OnApplied(null, point);
 
             // an emoji wants to be big on the canvas, but the row of styles is for telling them apart
             if (Character != null)

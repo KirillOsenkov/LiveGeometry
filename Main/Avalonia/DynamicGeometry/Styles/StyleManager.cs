@@ -92,50 +92,37 @@ namespace DynamicGeometry
         }
 
         protected int numDefaultStyles;
+
+        /// <summary>
+        /// The styles of a new drawing. Their colors are the theme's (the paper group of
+        /// <see cref="AppTheme"/>): the base value from the Light theme, an override from every
+        /// other, so the same style draws right on either paper; the chosen colors (a red line,
+        /// a blue outline) read on both and are literal, with a Dark override where they don't.
+        /// </summary>
         public virtual void AddDefaultStyles()
         {
             // The look tells how a point behaves: the two kinds that can be dragged are full
             // size and warm/bright, the constructed ones are a little smaller and cooler.
-            var freePointStyle = new PointStyle()
-            {
-                Name = FreePointStyleName,
-                Fill = new SolidColorBrush(Color.FromArgb(255, 255, 255, 100))
-            };
-            var pointOnFigureStyle = new PointStyle()
-            {
-                Name = PointOnFigureStyleName,
-                Fill = new SolidColorBrush(Color.FromArgb(255, 124, 227, 139))
-            };
-            var intersectionPointStyle = new PointStyle()
-            {
-                Name = IntersectionPointStyleName,
-                Size = 8,
-                Fill = new SolidColorBrush(Color.FromArgb(255, 111, 211, 247))
-            };
-            var midpointStyle = new PointStyle()
-            {
-                Name = MidpointStyleName,
-                Size = 8,
-                Fill = new SolidColorBrush(Color.FromArgb(255, 255, 180, 90))
-            };
-            var dependentPointStyle = new PointStyle()
-            {
-                Name = DependentPointStyleName,
-                Size = 8,
-                Fill = new SolidColorBrush(Color.FromArgb(255, 208, 208, 208))
-            };
+            var freePointStyle = ThemedPoint(FreePointStyleName, size: 10, theme => theme.FreePointFill);
+            var pointOnFigureStyle = ThemedPoint(PointOnFigureStyleName, size: 10, theme => theme.PointOnFigureFill);
+            var intersectionPointStyle = ThemedPoint(IntersectionPointStyleName, size: 8, theme => theme.IntersectionPointFill);
+            var midpointStyle = ThemedPoint(MidpointStyleName, size: 8, theme => theme.MidpointFill);
+            var dependentPointStyle = ThemedPoint(DependentPointStyleName, size: 8, theme => theme.DependentPointFill);
+
             var lineStyle = new LineStyle();
+            lineStyle.BindToTheme(nameof(LineStyle.Color), theme => AppTheme.WithAlpha(theme.Ink, 100));
             var lineStyle2 = new LineStyle()
             {
                 Name = "OtherLine",
                 Color = Color.FromArgb(200, 0, 0, 255)
             };
+            lineStyle2.SetOverride(AppTheme.Dark.Name, nameof(LineStyle.Color), Color.FromArgb(200, 122, 155, 255));
             var thickLineStyle = new LineStyle()
             {
                 Name = "ThickLine",
-                Color = Color.FromArgb(230, 0, 0, 0),
                 StrokeWidth = 2.5
             };
+            thickLineStyle.BindToTheme(nameof(LineStyle.Color), theme => AppTheme.WithAlpha(theme.Ink, 230));
             var redLineStyle = new LineStyle()
             {
                 Name = "RedLine",
@@ -157,6 +144,7 @@ namespace DynamicGeometry
                 StrokeWidth = 1.25,
                 Dash = LineDash.Dash
             };
+            dashedLineStyle.SetOverride(AppTheme.Dark.Name, nameof(LineStyle.Color), Color.FromArgb(255, 158, 158, 158));
             var dottedLineStyle = new LineStyle()
             {
                 Name = "DottedLine",
@@ -164,6 +152,7 @@ namespace DynamicGeometry
                 StrokeWidth = 1.5,
                 Dash = LineDash.Dot
             };
+            dottedLineStyle.SetOverride(AppTheme.Dark.Name, nameof(LineStyle.Color), Color.FromArgb(255, 158, 158, 158));
 
             // an outline with a hint of the same color inside: made for circles, fine for polygons
             var blueOutlineStyle = new ShapeStyle()
@@ -188,31 +177,23 @@ namespace DynamicGeometry
                 Fill = new SolidColorBrush(Color.FromArgb(28, 136, 84, 208))
             };
             var shapeWithLineStyle = new ShapeStyle();
+            shapeWithLineStyle.BindToTheme(nameof(ShapeStyle.Fill), theme => new SolidColorBrush(theme.ShapeFill));
+            shapeWithLineStyle.BindToTheme(nameof(ShapeStyle.Color), theme => AppTheme.WithAlpha(theme.Ink, 100));
             var shapeStyle = new ShapeStyle()
             {
                 Color = Colors.Transparent
             };
+            shapeStyle.BindToTheme(nameof(ShapeStyle.Fill), theme => new SolidColorBrush(theme.ShapeFill));
             var shapeStyle2 = new ShapeStyle()
             {
                 Name = "OtherShape",
                 Color = Colors.Transparent,
                 Fill = new SolidColorBrush(Color.FromArgb(100, 200, 255, 200))
             };
-            var hyperLinkStyle = new TextStyle()
-            {
-                FontSize = 18,
-                FontFamily = new FontFamily("Segoe UI")
-            };
-            var textStyle = new TextStyle()
-            {
-                FontSize = 18,
-                FontFamily = new FontFamily("Segoe UI")
-            };
-            var headerStyle = new TextStyle()
-            {
-                FontSize = 40,
-                FontFamily = new FontFamily("Segoe UI")
-            };
+            shapeStyle2.SetOverride(AppTheme.Dark.Name, nameof(ShapeStyle.Fill), new SolidColorBrush(Color.FromArgb(100, 128, 200, 128)));
+            var hyperLinkStyle = ThemedText(fontSize: 18);
+            var textStyle = ThemedText(fontSize: 18);
+            var headerStyle = ThemedText(fontSize: 40);
 
             var newStyles = new IFigureStyle[]
             {
@@ -242,6 +223,40 @@ namespace DynamicGeometry
             list.AddRange(newStyles);
 
             numDefaultStyles = newStyles.Length;
+        }
+
+        /// <summary>A point style filled with a theme color, rimmed with the theme's ink</summary>
+        static PointStyle ThemedPoint(string name, double size, Func<AppTheme, Color> fill)
+        {
+            var style = new PointStyle()
+            {
+                Name = name,
+                Size = size
+            };
+            style.BindToTheme(nameof(PointStyle.Fill), theme => new SolidColorBrush(fill(theme)));
+            style.BindToTheme(nameof(PointStyle.Color), theme => AppTheme.WithAlpha(theme.Ink, 100));
+            return style;
+        }
+
+        /// <summary>A text style in the theme's ink</summary>
+        static TextStyle ThemedText(double fontSize)
+        {
+            var style = new TextStyle()
+            {
+                FontSize = fontSize,
+                FontFamily = new FontFamily("Segoe UI")
+            };
+            style.BindToTheme(nameof(TextStyle.Color), theme => theme.Ink);
+            return style;
+        }
+
+        /// <summary>A theme color was tweaked: the styles built from the theme read it again</summary>
+        public void RefreshTheme()
+        {
+            foreach (var style in list)
+            {
+                (style as FigureStyle)?.RefreshFromTheme();
+            }
         }
 
         public IFigureStyle GetStyle(string name)

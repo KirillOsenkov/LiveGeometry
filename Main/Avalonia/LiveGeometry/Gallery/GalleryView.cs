@@ -84,9 +84,9 @@ public class GalleryView : DockPanel
             // a drawing with paper of its own shows it on its tile instead of the pastel
             picture.DrawingLoaded += drawing =>
             {
-                if (!DynamicGeometry.Drawing.IsWhite(drawing.Background))
+                if (drawing.OwnBackground != null)
                 {
-                    tile.SetPlate(drawing.Background);
+                    tile.SetPlate(drawing.OwnBackground);
                     tilesWithPaper.Add(tile);
                 }
             };

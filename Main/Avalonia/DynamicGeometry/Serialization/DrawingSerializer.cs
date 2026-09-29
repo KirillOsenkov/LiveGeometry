@@ -119,9 +119,10 @@ namespace DynamicGeometry
             writer.WriteAttributeDouble("Right", drawing.CoordinateSystem.MaximalVisibleX);
             writer.WriteAttributeDouble("Bottom", drawing.CoordinateSystem.MinimalVisibleY);
 
-            // the paper: a solid color is the Color attribute (white, the default, is left out),
-            // a gradient is a Background child element, as a gradient fill of a style is
-            var background = Drawing.IsWhite(drawing.Background) ? null : BrushSerializer.WriteBrush(drawing.Background);
+            // the paper: a solid color is the Color attribute (the theme's paper, the default,
+            // is left out), a gradient is a Background child element, as a gradient fill of a
+            // style is
+            var background = drawing.OwnBackground == null ? null : BrushSerializer.WriteBrush(drawing.OwnBackground);
             if (background is string color)
             {
                 writer.WriteAttributeString("Color", color);

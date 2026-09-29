@@ -145,7 +145,9 @@ public class GeoGebraReader
         var background = view.Element("bgColor");
         if (background != null)
         {
-            drawing.Background = new SolidColorBrush(ReadColor(background, alpha: 255));
+            // GeoGebra always says a color; its white is our "no paper of its own"
+            var paper = new SolidColorBrush(ReadColor(background, alpha: 255));
+            drawing.Background = Drawing.IsWhite(paper) ? null : paper;
         }
     }
 

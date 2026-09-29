@@ -225,6 +225,7 @@ public class DrawingThumbnail : Viewbox
             GalleryDrawing.HideText(drawing);
 
             // the tile shows through: the drawing's paper, if it has one, is the tile's plate
+            drawing.PaintsPaper = false;
             surface.Background = null;
             var scene = drawing.ChooseScene(SurfaceWidth, SurfaceHeight);
             if (scene != null)
@@ -239,6 +240,10 @@ public class DrawingThumbnail : Viewbox
 
             Drawing = drawing;
             DrawingLoaded(drawing);
+
+            // the figures follow the theme like the editor's do (the tiles live as long as the gallery)
+            AppTheme.CurrentChanged += () => drawing.RefreshTheme(colorsChanged: false);
+            AppTheme.ColorsChanged += () => drawing.RefreshTheme(colorsChanged: true);
         }
         catch (Exception ex)
         {

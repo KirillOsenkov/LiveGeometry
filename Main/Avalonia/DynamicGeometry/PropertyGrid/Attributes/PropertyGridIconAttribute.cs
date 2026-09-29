@@ -19,7 +19,8 @@ public enum PropertyGridIcon
     CircleSegment,
     Sector,
     Polyline,
-    Copy
+    Copy,
+    Paper
 }
 
 /// <summary>

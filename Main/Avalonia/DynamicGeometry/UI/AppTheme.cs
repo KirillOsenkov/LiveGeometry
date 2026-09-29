@@ -51,8 +51,8 @@ public class AppTheme : INotifyPropertyChanged
         TextEmphasis = Color.Parse("#000000"),
         TextMuted = Color.Parse("#6B7482"),
         TextFaint = Color.Parse("#B4BAC4"),
-        Ink = Color.Parse("#000000"),
         IconOutline = Color.Parse("#3A4250"),
+        ShapeOutline = Color.Parse("#A87B05"),
         Guide = Color.Parse("#8A94A6"),
         Accent = Color.Parse("#2F7BD6"),
         Destructive = Color.Parse("#B3261E"),
@@ -60,7 +60,18 @@ public class AppTheme : INotifyPropertyChanged
         HintBorder = Color.Parse("#D9D29A"),
         ErrorBackground = Color.Parse("#FDECEC"),
         ErrorBorder = Color.Parse("#D93B3B"),
-        ErrorText = Color.Parse("#9B1C1C")
+        ErrorText = Color.Parse("#9B1C1C"),
+        Paper = Color.Parse("#FFFFFF"),
+        Ink = Color.Parse("#000000"),
+        FreePointFill = Color.Parse("#FFFF64"),
+        PointOnFigureFill = Color.Parse("#7CE38B"),
+        IntersectionPointFill = Color.Parse("#6FD3F7"),
+        MidpointFill = Color.Parse("#FFB45A"),
+        DependentPointFill = Color.Parse("#D0D0D0"),
+        ShapeFill = Color.Parse("#64FFFFC8"),
+        Axis = Color.Parse("#8080FF"),
+        GridMajor = Color.Parse("#D3D3D3"),
+        GridMinor = Color.Parse("#ECECEC")
     };
 
     public static AppTheme Dark { get; } = new AppTheme("Dark", ThemeVariant.Dark)
@@ -81,8 +92,8 @@ public class AppTheme : INotifyPropertyChanged
         TextEmphasis = Color.Parse("#FFFFFF"),
         TextMuted = Color.Parse("#98A2B3"),
         TextFaint = Color.Parse("#6B7482"),
-        Ink = Color.Parse("#E6EAF0"),
         IconOutline = Color.Parse("#D0D6DF"),
+        ShapeOutline = Color.Parse("#D9B44A"),
         Guide = Color.Parse("#7A8595"),
         Accent = Color.Parse("#5AA0F2"),
         Destructive = Color.Parse("#F0736A"),
@@ -90,7 +101,18 @@ public class AppTheme : INotifyPropertyChanged
         HintBorder = Color.Parse("#6E6A45"),
         ErrorBackground = Color.Parse("#4A2A2A"),
         ErrorBorder = Color.Parse("#D95050"),
-        ErrorText = Color.Parse("#F2A0A0")
+        ErrorText = Color.Parse("#F2A0A0"),
+        Paper = Color.Parse("#2B2B2B"),
+        Ink = Color.Parse("#D0D0D0"),
+        FreePointFill = Color.Parse("#F5C542"),
+        PointOnFigureFill = Color.Parse("#6BCF7F"),
+        IntersectionPointFill = Color.Parse("#4FC3F7"),
+        MidpointFill = Color.Parse("#F0A050"),
+        DependentPointFill = Color.Parse("#8E949C"),
+        ShapeFill = Color.Parse("#46D8CC96"),
+        Axis = Color.Parse("#8C8CFF"),
+        GridMajor = Color.Parse("#4A4A4A"),
+        GridMinor = Color.Parse("#383838")
     };
 
     /// <summary>Every theme there is, in the order a list offers them</summary>
@@ -147,6 +169,12 @@ public class AppTheme : INotifyPropertyChanged
 
     /// <summary>Raised after the theme on screen changed, for whatever can't be bound to a resource</summary>
     public static event Action CurrentChanged;
+
+    /// <summary>
+    /// Raised after a color of any theme was set (tweaked in the property grid), for what
+    /// holds copies of theme colors (the default styles of a drawing)
+    /// </summary>
+    public static event Action ColorsChanged;
 
     static bool listening;
 
@@ -267,17 +295,17 @@ public class AppTheme : INotifyPropertyChanged
     [PropertyGridGroup("Text")]
     public Color TextFaint { get => textFaint; set => Set(ref textFaint, value); }
 
-    /// <summary>The lines of the tool icons, drawn as figures are on the paper</summary>
-    Color ink;
-    [PropertyGridVisible]
-    [PropertyGridGroup("Icons")]
-    public Color Ink { get => ink; set => Set(ref ink, value); }
-
     /// <summary>The outlines of the drawn chrome icons (toolbar, property grid buttons)</summary>
     Color iconOutline;
     [PropertyGridVisible]
     [PropertyGridGroup("Icons")]
     public Color IconOutline { get => iconOutline; set => Set(ref iconOutline, value); }
+
+    /// <summary>The outline around the default fill in the tool icons of shapes, which on its own would sink into the ribbon</summary>
+    Color shapeOutline;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color ShapeOutline { get => shapeOutline; set => Set(ref shapeOutline, value); }
 
     /// <summary>Faint construction lines in an icon (a grid, an axis)</summary>
     Color guide;
@@ -321,6 +349,67 @@ public class AppTheme : INotifyPropertyChanged
     [PropertyGridGroup("Notes")]
     public Color ErrorText { get => errorText; set => Set(ref errorText, value); }
 
+    // The paper and what a new drawing draws on it: the default styles are built from these
+    // (StyleManager.AddDefaultStyles, CartesianGrid), and so are the tool icons, which show
+    // the figures as they would look.
+
+    Color paper;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color Paper { get => paper; set => Set(ref paper, value); }
+
+    /// <summary>Lines, text and the rims of points, on the paper and in the tool icons</summary>
+    Color ink;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color Ink { get => ink; set => Set(ref ink, value); }
+
+    Color freePointFill;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color FreePointFill { get => freePointFill; set => Set(ref freePointFill, value); }
+
+    Color pointOnFigureFill;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color PointOnFigureFill { get => pointOnFigureFill; set => Set(ref pointOnFigureFill, value); }
+
+    Color intersectionPointFill;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color IntersectionPointFill { get => intersectionPointFill; set => Set(ref intersectionPointFill, value); }
+
+    Color midpointFill;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color MidpointFill { get => midpointFill; set => Set(ref midpointFill, value); }
+
+    Color dependentPointFill;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color DependentPointFill { get => dependentPointFill; set => Set(ref dependentPointFill, value); }
+
+    /// <summary>The translucent fill of a new polygon or circle</summary>
+    Color shapeFill;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color ShapeFill { get => shapeFill; set => Set(ref shapeFill, value); }
+
+    Color axis;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color Axis { get => axis; set => Set(ref axis, value); }
+
+    Color gridMajor;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color GridMajor { get => gridMajor; set => Set(ref gridMajor, value); }
+
+    Color gridMinor;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Paper")]
+    public Color GridMinor { get => gridMinor; set => Set(ref gridMinor, value); }
+
     #endregion
 
     void Set(ref Color field, Color value, [CallerMemberName] string key = null)
@@ -331,6 +420,13 @@ public class AppTheme : INotifyPropertyChanged
         // reads it again
         Resources[key] = new ImmutableSolidColorBrush(value);
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(key));
+        ColorsChanged?.Invoke();
+    }
+
+    /// <summary>The color with another alpha: a rim or a line that lets the paper through</summary>
+    public static Color WithAlpha(Color color, byte alpha)
+    {
+        return Color.FromArgb(alpha, color.R, color.G, color.B);
     }
 
     /// <summary>The color properties, in the order declared</summary>

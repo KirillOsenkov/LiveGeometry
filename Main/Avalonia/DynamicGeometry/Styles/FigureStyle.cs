@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using GuiLabs.Undo;
@@ -48,10 +49,102 @@ namespace DynamicGeometry
         [Ignore]
         public StyleManager StyleManager { get; set; }
 
+        #region Themes
+
+        // A style has its values, which are how it looks under the base theme (Light), and
+        // for another theme may hold other values for some of its properties (a Dark override:
+        // a darker fill, a lighter ink). Whoever draws with the style resolves it first
+        // (Resolve): the style itself when the theme on screen has no override, else a copy
+        // with the override's values set. The default styles of a drawing take their colors
+        // from the theme's paper group (BindToTheme): the base value from the Light theme, an
+        // override from every other, kept current when a theme color is tweaked.
+
+        /// <summary>By theme name, the properties that differ under that theme, with their values</summary>
+        [Ignore]
+        public Dictionary<string, Dictionary<string, object>> Overrides { get; private set; } = new Dictionary<string, Dictionary<string, object>>();
+
+        Dictionary<string, Func<AppTheme, object>> themeBindings;
+
+        /// <summary>Under the named theme, the property has this value</summary>
+        public void SetOverride(string theme, string property, object value)
+        {
+            if (!Overrides.TryGetValue(theme, out var values))
+            {
+                values = new Dictionary<string, object>();
+                Overrides[theme] = values;
+            }
+
+            values[property] = value;
+            OnPropertyChanged(property);
+        }
+
+        /// <summary>The property takes its value from every theme's colors: a default style's ink or fill</summary>
+        public void BindToTheme(string property, Func<AppTheme, object> value)
+        {
+            themeBindings ??= new Dictionary<string, Func<AppTheme, object>>();
+            themeBindings[property] = value;
+            RefreshFromTheme();
+        }
+
+        /// <summary>Reads the bound properties from the themes again (a theme color was tweaked)</summary>
+        public void RefreshFromTheme()
+        {
+            if (themeBindings == null)
+            {
+                return;
+            }
+
+            var type = GetType();
+            foreach (var binding in themeBindings)
+            {
+                foreach (var theme in AppTheme.All)
+                {
+                    var value = binding.Value(theme);
+                    if (theme == AppTheme.Light)
+                    {
+                        // the setter raises PropertyChanged, and the figures repaint
+                        type.GetProperty(binding.Key).SetValue(this, value);
+                    }
+                    else
+                    {
+                        SetOverride(theme.Name, binding.Key, value);
+                    }
+                }
+            }
+        }
+
+        public IFigureStyle Resolve()
+        {
+            return Resolve(AppTheme.Current.Name);
+        }
+
+        /// <summary>The style as it looks under the theme: itself without an override for it</summary>
+        public IFigureStyle Resolve(string theme)
+        {
+            if (!Overrides.TryGetValue(theme, out var values) || values.Count == 0)
+            {
+                return this;
+            }
+
+            var result = (FigureStyle)MemberwiseClone();
+            result.PropertyChanged = null; // the copy's setters must not repaint the original's figures
+            result.Overrides = new Dictionary<string, Dictionary<string, object>>();
+            result.themeBindings = null;
+            var type = GetType();
+            foreach (var pair in values)
+            {
+                type.GetProperty(pair.Key).SetValue(result, pair.Value);
+            }
+
+            return result;
+        }
+
+        #endregion
+
         public Style GetWpfStyle(IFigure figure)
         {
             Style result = new Style(typeof(FrameworkElement));
-            ApplyToWpfStyle(result, figure);
+            ((FigureStyle)Resolve()).ApplyToWpfStyle(result, figure);
             return result;
         }
 
@@ -66,10 +159,19 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>A copy with the same values and overrides, but no name and no ties to the theme: it is the user's own now</summary>
         public virtual IFigureStyle Clone()
         {
-            var result = (IFigureStyle)this.MemberwiseClone();
+            var result = (FigureStyle)this.MemberwiseClone();
+            result.PropertyChanged = null;
             result.Name = "";
+            result.themeBindings = null;
+            result.Overrides = new Dictionary<string, Dictionary<string, object>>();
+            foreach (var pair in Overrides)
+            {
+                result.Overrides[pair.Key] = new Dictionary<string, object>(pair.Value);
+            }
+
             return result;
         }
 

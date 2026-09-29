@@ -40,33 +40,39 @@ namespace DynamicGeometry
             return new IconBuilder(size);
         }
 
+        /// <summary>A free point as the theme draws it: its fill, rimmed in ink</summary>
         public IconBuilder Point(double x, double y)
         {
-            Shape point = Factory.CreatePointShape();
-            Canvas.Children.Add(point);
-            Canvas.SetLeft(point, Canvas.Width * x - point.Width / 2);
-            Canvas.SetTop(point, Canvas.Height * y - point.Height / 2);
+            AddPoint(x, y, nameof(AppTheme.FreePointFill));
             return this;
         }
 
         public IconBuilder Point(double x, double y, Brush fill)
         {
-            Shape point = Factory.CreatePointShape();
-            Canvas.Children.Add(point);
-            Canvas.SetLeft(point, Canvas.Width * x - point.Width / 2);
-            Canvas.SetTop(point, Canvas.Height * y - point.Height / 2);
+            var point = AddPoint(x, y, fillThemeColor: null);
             point.Fill = fill;
             return this;
         }
 
         public IconBuilder TransparentPoint(double x, double y, double transparency)
         {
+            AddPoint(x, y, nameof(AppTheme.FreePointFill)).Opacity = transparency;
+            return this;
+        }
+
+        Shape AddPoint(double x, double y, string fillThemeColor)
+        {
             Shape point = Factory.CreatePointShape();
-            point.Opacity = transparency;
+            point.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
+            if (fillThemeColor != null)
+            {
+                point.BindTheme(Shape.FillProperty, fillThemeColor);
+            }
+
             Canvas.Children.Add(point);
             Canvas.SetLeft(point, Canvas.Width * x - point.Width / 2);
             Canvas.SetTop(point, Canvas.Height * y - point.Height / 2);
-            return this;
+            return point;
         }
 
         public IconBuilder TransparentLine(double x1, double y1, double x2, double y2, double transparency)
@@ -83,10 +89,7 @@ namespace DynamicGeometry
 
         public IconBuilder DependentPoint(double x, double y)
         {
-            Shape point = Factory.CreateDependentPointShape();
-            Canvas.Children.Add(point);
-            Canvas.SetLeft(point, Canvas.Width * x - point.Width / 2);
-            Canvas.SetTop(point, Canvas.Height * y - point.Height / 2);
+            AddPoint(x, y, nameof(AppTheme.DependentPointFill));
             return this;
         }
 
@@ -276,21 +279,10 @@ namespace DynamicGeometry
             return this;
         }
 
-        /// <summary>
-        /// Outline for icons of shapes filled with the default pale yellow, which on its own
-        /// all but disappears on a light toolbar.
-        /// </summary>
-        public static Brush ShapeOutlineBrush
-        {
-            get
-            {
-                return new SolidColorBrush(Color.FromRgb(0xA8, 0x7B, 0x05));
-            }
-        }
-
+        /// <summary>A polygon in the theme's default fill, as a new polygon is drawn</summary>
         public IconBuilder Polygon(IEnumerable<Point> points)
         {
-            AddPolygon(points);
+            AddPolygon(points).BindTheme(Shape.FillProperty, nameof(AppTheme.ShapeFill));
             return this;
         }
 

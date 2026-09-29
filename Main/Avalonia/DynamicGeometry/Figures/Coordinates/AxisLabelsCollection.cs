@@ -186,6 +186,21 @@ namespace DynamicGeometry
             List.RemoveRange(List.Count - count, count);
         }
 
+        /// <summary>The labels take the style again (the theme changed)</summary>
+        public void ApplyStyle()
+        {
+            if (Collection.Style == null)
+            {
+                return;
+            }
+
+            var style = Collection.Style.GetWpfStyle();
+            foreach (var item in List)
+            {
+                item.TextBlock.Apply(style);
+            }
+        }
+
         void AddMissingElements(List<AxisLabel> List, int count)
         {
             var style = Collection.Style.GetWpfStyle();
@@ -261,7 +276,8 @@ namespace DynamicGeometry
 
         public override void ApplyStyle()
         {
-
+            XAxisLabels.ApplyStyle();
+            YAxisLabels.ApplyStyle();
         }
     }
 }

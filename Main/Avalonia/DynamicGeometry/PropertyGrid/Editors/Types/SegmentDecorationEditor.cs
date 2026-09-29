@@ -52,12 +52,12 @@ public class SegmentDecorationEditor : SelectorValueEditor
             Data = geometry,
             Width = SwatchWidth,
             Height = SwatchHeight,
-            Stroke = Brushes.Black,
             StrokeThickness = 1.5,
             StrokeLineCap = PenLineCap.Round,
             StrokeJoin = PenLineJoin.Round,
             Margin = new Thickness(4, 8)
         };
+        path.BindTheme(AvaloniaShapes.Shape.StrokeProperty, nameof(AppTheme.Ink));
         var result = new Grid() { Tag = decoration };
         result.Children.Add(path);
         ToolTip.SetTip(result, Caption(decoration));

@@ -142,7 +142,7 @@ public class ClickPreview
         if (pointStyle != null)
         {
             result.Apply(pointStyle.GetWpfStyle());
-            pointStyle.OnApplied(null, result); // the shape or the emoji
+            pointStyle.Resolve().OnApplied(null, result); // the shape or the emoji
         }
 
         result.Opacity = GhostOpacity;

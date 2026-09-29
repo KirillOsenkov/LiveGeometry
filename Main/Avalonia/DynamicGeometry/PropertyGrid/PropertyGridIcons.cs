@@ -58,6 +58,11 @@ public static class PropertyGridIcons
                 return Icon(Shape("M7,12 L3,3.8 A7.5,7.5 0 0 1 11,3.8 Z", sky, outline, thickness: 1.2));
             case PropertyGridIcon.Polyline:
                 return Icon(Shape("M2,11 L5,4 L8.5,10 L12,3", null, outline, thickness: 1.4));
+            case PropertyGridIcon.Paper:
+                // a sheet with its top right corner folded over
+                return Icon(
+                    Shape("M3.5,2.5 H8.5 L11.5,5.5 V12.5 H3.5 Z", null, outline, thickness: 1.3),
+                    Shape("M8.5,2.5 V5.5 H11.5", null, outline, thickness: 1.3));
             case PropertyGridIcon.Copy:
                 // two sheets, the front one over the lower right of the back one
                 return Icon(

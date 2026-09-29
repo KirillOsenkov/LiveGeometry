@@ -175,7 +175,7 @@ namespace DynamicGeometry
             }
             else
             {
-                drawing.Background = null; // white
+                drawing.Background = null; // the theme's paper
             }
         }
 

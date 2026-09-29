@@ -21,6 +21,9 @@ namespace DynamicGeometry
         IFigureStyle Clone();
         IEnumerable<IFigureStyle> GetCompatibleStyles();
         void OnApplied(IFigure figure, FrameworkElement element);
+
+        /// <summary>The style as it looks under the theme on screen (see <see cref="FigureStyle.Resolve(string)"/>)</summary>
+        IFigureStyle Resolve();
 #if !PLAYER
         FigureStyle.EditInfo CurrentEditInfo { get; set; }
 #endif
@@ -68,9 +71,10 @@ namespace DynamicGeometry
 
         public static void Apply(this IFigure figure, FrameworkElement element, IFigureStyle figureStyle)
         {
-            var wpfStyle = figureStyle.GetWpfStyle(figure);
+            var resolved = figureStyle.Resolve();
+            var wpfStyle = resolved.GetWpfStyle(figure);
             element.Apply(wpfStyle);
-            figureStyle.OnApplied(figure, element);
+            resolved.OnApplied(figure, element);
         }
     }
 }

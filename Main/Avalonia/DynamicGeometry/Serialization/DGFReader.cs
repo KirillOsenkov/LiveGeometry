@@ -1017,7 +1017,8 @@ namespace DynamicGeometry
                 }
             }
 
-            return new SolidColorBrush(top);
+            // DG's default paper is white; here that is the theme's paper
+            return top == Colors.White ? null : new SolidColorBrush(top);
         }
 
         static Color ReadPaperColor(IniFile.Section section, string key)

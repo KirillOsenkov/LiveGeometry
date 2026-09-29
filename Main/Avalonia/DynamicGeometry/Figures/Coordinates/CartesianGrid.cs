@@ -15,39 +15,37 @@ namespace DynamicGeometry
         AxisLabelsCollection AxisLabels { get; set; }
         GridLinesCollection GridLines { get; set; }
 
+        // the grid's own styles, in the theme's colors (not in the drawing's style list)
+        readonly LineStyle axisStyle = new LineStyle()
+        {
+            Name = "AxisStyle",
+            StrokeWidth = 1
+        };
+
+        readonly LineStyle gridStyle = new LineStyle()
+        {
+            Name = "GridStyle",
+            StrokeWidth = 0.5
+        };
+
+        readonly LineStyle minorGridStyle = new LineStyle()
+        {
+            Name = "MinorGridStyle",
+            StrokeWidth = 0.5
+        };
+
+        readonly TextStyle labelsStyle = new TextStyle()
+        {
+            FontSize = 12.0,
+            Name = "LabelsStyle"
+        };
+
         public CartesianGrid()
         {
-            //ShapeStyle arrowStyle = new ShapeStyle()
-            //{
-            //    Color = Color.FromArgb(255, 128, 128, 255),
-            //    Fill = new SolidColorBrush(Color.FromArgb(255, 128, 128, 255)),
-            //    StrokeWidth = 1,
-            //    Name = "ArrowStyle"
-            //};
-            LineStyle axisStyle = new LineStyle()
-            {
-                Color = Color.FromArgb(255, 128, 128, 255),
-                Name = "AxisStyle",
-                StrokeWidth = 1
-            };
-            LineStyle gridStyle = new LineStyle()
-            {
-                Color = Colors.LightGray,
-                Name = "GridStyle",
-                StrokeWidth = 0.5
-            };
-            LineStyle minorGridStyle = new LineStyle()
-            {
-                Color = Color.FromRgb(0xEC, 0xEC, 0xEC),
-                Name = "MinorGridStyle",
-                StrokeWidth = 0.5
-            };
-            TextStyle labelsStyle = new TextStyle()
-            {
-                Color = Color.FromArgb(255, 128, 128, 255),
-                FontSize = 12.0,
-                Name = "LabelsStyle"
-            };
+            axisStyle.BindToTheme(nameof(LineStyle.Color), theme => theme.Axis);
+            gridStyle.BindToTheme(nameof(LineStyle.Color), theme => theme.GridMajor);
+            minorGridStyle.BindToTheme(nameof(LineStyle.Color), theme => theme.GridMinor);
+            labelsStyle.BindToTheme(nameof(TextStyle.Color), theme => theme.Axis);
 
             OriginPoint = Factory.CreatePointByCoordinates(Drawing, () => 0, () => 0);
             XUnitPoint = Factory.CreatePointByCoordinates(Drawing, () => 1, () => 0);
@@ -82,6 +80,15 @@ namespace DynamicGeometry
                 AxisLabels,
                 GridLines
                 );
+        }
+
+        /// <summary>A theme color was tweaked: the grid's styles read it again</summary>
+        public void RefreshTheme()
+        {
+            axisStyle.RefreshFromTheme();
+            gridStyle.RefreshFromTheme();
+            minorGridStyle.RefreshFromTheme();
+            labelsStyle.RefreshFromTheme();
         }
 
         private bool visible = false;

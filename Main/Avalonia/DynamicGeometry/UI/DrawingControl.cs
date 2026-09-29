@@ -46,7 +46,10 @@ namespace DynamicGeometry
 
         public DrawingControl()
         {
-            this.Background = new SolidColorBrush(Colors.White);
+            // the paper, until a drawing paints its own over it
+            this.BindTheme(BackgroundProperty, nameof(AppTheme.Paper));
+            AppTheme.CurrentChanged += () => Drawing?.RefreshTheme(colorsChanged: false);
+            AppTheme.ColorsChanged += () => Drawing?.RefreshTheme(colorsChanged: true);
             this.SizeChanged += DrawingControl_SizeChanged;
 
             CommandUndo = new Command(Undo, null, "Undo", "Drawing");
@@ -73,7 +76,7 @@ namespace DynamicGeometry
 
         public virtual void Clear()
         {
-            // the new drawing brings the white paper back with it
+            // the new drawing brings the theme's paper back with it
             Drawing = new Drawing(this);
         }
 

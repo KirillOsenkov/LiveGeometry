@@ -15,7 +15,7 @@ namespace DynamicGeometry
             line.Y1 = 20;
             line.Y2 = 0;
             line.Apply(this.GetWpfStyle());
-            OnApplied(null, line);
+            Resolve().OnApplied(null, line);
             line.Tag = this;
             return line;
         }
