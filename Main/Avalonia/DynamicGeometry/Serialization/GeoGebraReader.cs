@@ -2122,6 +2122,27 @@ public class GeoGebraReader
         {
             segment.Decoration = SegmentDecorationMark.FromGeoGebra((int)decoration.ReadDouble("type"));
         }
+
+        // the name next to a line or a circle, in the figure's color, nudged as the file says
+        if ((figure is LineBase || figure is CircleBase) && figure is FigureBase named)
+        {
+            named.HasNameLabel = visible && showLabel;
+            if (named.NameLabel != null)
+            {
+                var color = ReadObjectColor(element);
+                if (color != null)
+                {
+                    named.NameLabel.Style = TextStyleFor(color.Value, defaultFontSize);
+                }
+
+                var labelOffset = element.Element("labelOffset");
+                if (labelOffset != null)
+                {
+                    named.NameLabel.UpdateVisual();
+                    named.NameLabel.Offset += new Point(labelOffset.ReadDouble("x"), labelOffset.ReadDouble("y"));
+                }
+            }
+        }
     }
 
     void ApplyPointElement(XElement element, PointBase point)

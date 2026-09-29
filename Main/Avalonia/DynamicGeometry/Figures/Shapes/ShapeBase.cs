@@ -157,6 +157,10 @@ namespace DynamicGeometry
             {
                 mVisible = value;
                 UpdateShapeVisibility();
+                if (NameLabel != null && Drawing != null)
+                {
+                    NameLabel.UpdateVisual();
+                }
             }
         }
 

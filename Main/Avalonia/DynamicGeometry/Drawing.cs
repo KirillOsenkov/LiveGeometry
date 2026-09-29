@@ -781,7 +781,7 @@ namespace DynamicGeometry
         public void Delete(IEnumerable<IFigure> figuresToDelete)
         {
             var figures = figuresToDelete
-                .Where(f => !(f is CartesianGrid) && !(f is PointLabel))
+                .Where(f => !(f is CartesianGrid) && !(f is PointLabel) && !(f is FigureLabel))
                 .ToArray();
             // the Delete key reaches here twice (the tool on key down, the window on key up):
             // the second time there is nothing selected

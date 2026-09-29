@@ -230,6 +230,41 @@ namespace DynamicGeometry
             this.GenerateNewNameIfNecessary(drawing, null);
         }
 
+        /// <summary>The label writing the figure's name next to it, while it shows one (<see cref="FigureLabel"/>)</summary>
+        public FigureLabel NameLabel { get; set; }
+
+        /// <summary>
+        /// Whether the figure writes its name next to itself. Setting it adds or removes the
+        /// label directly, like a point's ShowName: the property set is the undo step. The
+        /// figures that offer it in the grid (lines, circles) expose it as "Show name".
+        /// </summary>
+        public bool HasNameLabel
+        {
+            get
+            {
+                return NameLabel != null;
+            }
+            set
+            {
+                if (value == (NameLabel != null) || Drawing == null)
+                {
+                    return;
+                }
+
+                if (value)
+                {
+                    NameLabel = Factory.CreateFigureLabel(Drawing, this);
+                    Drawing.Figures.Add(NameLabel);
+                }
+                else
+                {
+                    var label = NameLabel;
+                    NameLabel = null;
+                    Drawing.Figures.Remove(label);
+                }
+            }
+        }
+
         public virtual void OnRemovingFromDrawing(Drawing drawing)
         {
         }
@@ -347,6 +382,10 @@ namespace DynamicGeometry
                         }
                     }
                     RaisePropertyChanged("Name");
+                    if (NameLabel != null && Drawing != null)
+                    {
+                        NameLabel.UpdateVisual();
+                    }
 
                     foreach (var dependent in Dependents.OfType<FigureBase>().ToArray())
                     {

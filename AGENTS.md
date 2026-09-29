@@ -460,6 +460,17 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Vectors** are an invisible `Segment` plus an `Arrow` polygon sized in pixels, filled with the
   line color. `Vector.OnAddingToCanvas` sets the default `LineStyle` before the base call,
   otherwise the polygon default (pale fill) wins.
+- **Names of lines and circles** (`Figures/Controls/FigureLabel.cs`): "Show name" on a line,
+  ray, segment or circle (`LineBase`/`CircleBase.ShowName`, over `FigureBase.HasNameLabel`)
+  adds a `FigureLabel` the way a point's name is a `PointLabel`: a label depending on the
+  figure, `Offset` pixels from an anchor on it - a segment's middle, the upper left of a
+  circle, and for a line or ray a point of its visible part `EdgeInset` pixels in from the
+  window's edge (the end nearer the top for a line, the far end for a ray), so the name stays
+  on screen and moves along the line as the view pans. The setter adds and removes the label
+  directly (the property set is the undo step); the label links itself back on undo
+  (`OnAddingToDrawing`), hides with its figure, follows renames (`FigureBase.Name`), and stays
+  out of the Figure List and of Delete like a point label. GeoGebra's `<show label>` on those
+  figures turns it on, in the figure's color.
 - **Segment marks** (`Segment.Decoration`, `Figures/Lines/SegmentDecoration.cs`): one to
   three ticks across the middle, one to three chevrons along it (pointing from the first point
   to the second), or a wave - the school notation for equal and parallel sides. A passive

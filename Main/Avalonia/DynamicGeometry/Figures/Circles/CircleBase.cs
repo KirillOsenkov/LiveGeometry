@@ -18,6 +18,15 @@ namespace DynamicGeometry
             get;
         }
 
+        /// <summary>The name written next to the circle (<see cref="FigureLabel"/>)</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Show name")]
+        public bool ShowName
+        {
+            get { return HasNameLabel; }
+            set { HasNameLabel = value; }
+        }
+
         #region Setting and fixing the radius
 
         /// <summary>

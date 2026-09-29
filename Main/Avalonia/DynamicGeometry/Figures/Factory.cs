@@ -280,6 +280,11 @@ namespace DynamicGeometry
             return new PointLabel() { Drawing = drawing, Dependencies = dependencies };
         }
 
+        public static FigureLabel CreateFigureLabel(Drawing drawing, IFigure figure)
+        {
+            return new FigureLabel() { Drawing = drawing, Dependencies = new[] { figure } };
+        }
+
         public static Label CreateLabel(Drawing drawing, IList<IFigure> dependencies)
         {
             return new Label() { Drawing = drawing, Dependencies = dependencies };

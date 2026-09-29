@@ -36,6 +36,15 @@ namespace DynamicGeometry
             get { return new PointPair(Point(0), Point(1)); }
         }
 
+        /// <summary>The name written next to the line (<see cref="FigureLabel"/>)</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Show name")]
+        public bool ShowName
+        {
+            get { return HasNameLabel; }
+            set { HasNameLabel = value; }
+        }
+
         public override Point Center
         {
             get
