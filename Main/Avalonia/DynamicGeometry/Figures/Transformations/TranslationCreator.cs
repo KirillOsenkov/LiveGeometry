@@ -374,7 +374,7 @@ namespace DynamicGeometry
 
         public override string Name
         {
-            get { return "Translation"; }
+            get { return "Translate"; }
         }
 
         public override string HintText

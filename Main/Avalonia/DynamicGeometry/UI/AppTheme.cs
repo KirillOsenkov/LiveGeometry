@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -53,8 +54,26 @@ public class AppTheme : INotifyPropertyChanged
         TextFaint = Color.Parse("#B4BAC4"),
         IconOutline = Color.Parse("#3A4250"),
         ShapeOutline = Color.Parse("#A87B05"),
-        SourceFill = Color.Parse("#FFFF00"),
-        ImageFill = Color.Parse("#80FF80"),
+        SourceFill = new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(0.067, 0.25, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0.933, 0.75, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(Color.Parse("#FFFBD7"), 0),
+                new GradientStop(Color.Parse("#ECEC45"), 1)
+            }
+        },
+        ImageFill = new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(0.1464, 0.1464, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0.8536, 0.8536, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(Color.Parse("#E0FEFF"), 0),
+                new GradientStop(Color.Parse("#4EE7FF"), 1)
+            }
+        },
         RulerFill = Color.Parse("#FFFF00"),
         AngleFill = Color.Parse("#33FF33"),
         AreaFill = Color.Parse("#FFD6D6"),
@@ -100,8 +119,8 @@ public class AppTheme : INotifyPropertyChanged
         TextFaint = Color.Parse("#6B7482"),
         IconOutline = Color.Parse("#D0D6DF"),
         ShapeOutline = Color.Parse("#D9B44A"),
-        SourceFill = Color.Parse("#B8962E"),
-        ImageFill = Color.Parse("#4E9A5E"),
+        SourceFill = new SolidColorBrush(Color.Parse("#B8962E")),
+        ImageFill = new SolidColorBrush(Color.Parse("#4E9A5E")),
         RulerFill = Color.Parse("#A88E32"),
         AngleFill = Color.Parse("#3F8F4E"),
         AreaFill = Color.Parse("#6E4A50"),
@@ -330,17 +349,17 @@ public class AppTheme : INotifyPropertyChanged
     [PropertyGridGroup("Icons")]
     public Color ShapeOutline { get => shapeOutline; set => Set(ref shapeOutline, value); }
 
-    /// <summary>In the icons of the transformations: the figure that is transformed...</summary>
-    Color sourceFill;
+    /// <summary>In the icons of the transformations: the figure that is transformed (a brush: it may be a gradient)...</summary>
+    Brush sourceFill;
     [PropertyGridVisible]
     [PropertyGridGroup("Icons")]
-    public Color SourceFill { get => sourceFill; set => Set(ref sourceFill, value); }
+    public Brush SourceFill { get => sourceFill; set => Set(ref sourceFill, value); }
 
     /// <summary>...and its image</summary>
-    Color imageFill;
+    Brush imageFill;
     [PropertyGridVisible]
     [PropertyGridGroup("Icons")]
-    public Color ImageFill { get => imageFill; set => Set(ref imageFill, value); }
+    public Brush ImageFill { get => imageFill; set => Set(ref imageFill, value); }
 
     /// <summary>The ruler of the Distance tool (and so the Measure tab)</summary>
     Color rulerFill;
@@ -482,20 +501,29 @@ public class AppTheme : INotifyPropertyChanged
         ColorsChanged?.Invoke();
     }
 
+    /// <summary>A fill that may be a gradient: the resource is the brush itself, which every icon bound to the key shares</summary>
+    void Set(ref Brush field, Brush value, [CallerMemberName] string key = null)
+    {
+        field = value;
+        Resources[key] = value.ToImmutable();
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(key));
+        ColorsChanged?.Invoke();
+    }
+
     /// <summary>The color with another alpha: a rim or a line that lets the paper through</summary>
     public static Color WithAlpha(Color color, byte alpha)
     {
         return Color.FromArgb(alpha, color.R, color.G, color.B);
     }
 
-    /// <summary>The color properties, in the order declared</summary>
+    /// <summary>The color properties (and the fills that are brushes), in the order declared</summary>
     public static IEnumerable<PropertyInfo> ColorProperties
     {
         get
         {
             return typeof(AppTheme)
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(property => property.PropertyType == typeof(Color));
+                .Where(property => property.PropertyType == typeof(Color) || property.PropertyType == typeof(Brush));
         }
     }
 
@@ -521,12 +549,64 @@ public class AppTheme : INotifyPropertyChanged
         var properties = ColorProperties.ToArray();
         for (int i = 0; i < properties.Length; i++)
         {
-            var color = (Color)properties[i].GetValue(this);
+            string value = ToCode(properties[i].GetValue(this));
             string separator = i < properties.Length - 1 ? "," : "";
-            sb.AppendLine($"    {properties[i].Name} = Color.Parse(\"{ColorText.ToHex(color)}\"){separator}");
+            sb.AppendLine($"    {properties[i].Name} = {value}{separator}");
         }
 
         sb.AppendLine("};");
         return sb.ToString();
+    }
+
+    /// <summary>A color or a brush as the expression that makes it, indented as a line of the initializer</summary>
+    static string ToCode(object value)
+    {
+        if (value is Color color)
+        {
+            return ToCode(color);
+        }
+
+        if (value is ISolidColorBrush solid)
+        {
+            return $"new SolidColorBrush({ToCode(solid.Color)})";
+        }
+
+        if (value is not ILinearGradientBrush gradient)
+        {
+            return "null";
+        }
+
+        var sb = new StringBuilder();
+        sb.AppendLine("new LinearGradientBrush()");
+        sb.AppendLine("    {");
+        sb.AppendLine($"        StartPoint = {ToCode(gradient.StartPoint)},");
+        sb.AppendLine($"        EndPoint = {ToCode(gradient.EndPoint)},");
+        sb.AppendLine("        GradientStops =");
+        sb.AppendLine("        {");
+        for (int i = 0; i < gradient.GradientStops.Count; i++)
+        {
+            var stop = gradient.GradientStops[i];
+            string separator = i < gradient.GradientStops.Count - 1 ? "," : "";
+            sb.AppendLine($"            new GradientStop({ToCode(stop.Color)}, {ToCode(stop.Offset)}){separator}");
+        }
+
+        sb.AppendLine("        }");
+        sb.Append("    }");
+        return sb.ToString();
+    }
+
+    static string ToCode(Color color)
+    {
+        return $"Color.Parse(\"{ColorText.ToHex(color)}\")";
+    }
+
+    static string ToCode(RelativePoint point)
+    {
+        return $"new RelativePoint({ToCode(point.Point.X)}, {ToCode(point.Point.Y)}, RelativeUnit.{point.Unit})";
+    }
+
+    static string ToCode(double number)
+    {
+        return number.ToString("0.####", CultureInfo.InvariantCulture);
     }
 }

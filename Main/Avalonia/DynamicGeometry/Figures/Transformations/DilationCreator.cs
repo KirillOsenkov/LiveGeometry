@@ -150,7 +150,7 @@ namespace DynamicGeometry
 
         public override string Name
         {
-            get { return "Dilation"; }
+            get { return "Dilate"; }
         }
 
         public override string HintText

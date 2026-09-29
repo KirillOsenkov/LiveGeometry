@@ -102,9 +102,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Coordinates**: Background and Grid (G) (commands); Function - an expression in x; Line - by
   slope and intercept expressions; Circle - by center and radius expressions; Point by
   coordinates (toggle: gives the point tools an X/Y panel).
-- **Transform**: Reflection (T) - source figure, then a mirror (point, line, segment, ray, or a
-  circle for a point source); Rotation - source, center, angle (a figure with an angle or a
-  typed value); Translation - source, distance, direction (see "TranslatedPoint"); Dilation -
+- **Transform** (the tools are verbs, as the tab is; the classes stay `ReflectionCreator`...):
+  Reflect (T) - source figure, then a mirror (point, line, segment, ray, or a
+  circle for a point source); Rotate - source, center, angle (a figure with an angle or a
+  typed value); Translate - source, distance, direction (see "TranslatedPoint"); Dilate -
   source, center, factor (a figure with a length or a typed value).
 - **Measure**: Distance - two points or a segment; Angle (J) - vertex then two side points;
   Area (K) - a polygon, ellipse, circle or list of points; Slider - where it sits, then where
@@ -391,7 +392,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   row that should take it just once, when the figure is created (a new label's text), is
   named by `RaiseDisplayProperties(figure, focusProperty:)`, otherwise selecting the figure
   anywhere (canvas, Figure List) steals the keys. A tool panel with a focused row appears
-  only at the step that asks for it (Rotation, Dilation, Translation: `PropertyBag` is null
+  only at the step that asks for it (Rotate, Dilate, Translate: `PropertyBag` is null
   otherwise - test `Transaction != null` too, since "construction complete" re-reads it
   before the found figures are cleared); one shown all along holding a setting (Line at
   Angle) doesn't take focus.
@@ -413,7 +414,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   answer with the panel of the step at hand).
 - **Enter in a tool panel's box is the panel's button** (OK, Plot, Add point). Each panel
   wires that itself: `[PropertyGridEvent("KeyDown", ...)]` on the property and a handler
-  that calls the method. Nothing does it for a new panel, which is how Rotation and Dilation
+  that calls the method. Nothing does it for a new panel, which is how Rotate and Dilate
   went without. The editor commits the text first (its own handler is on the text box, the
   panel's on the editor around it). A number box that says "Type a number." has kept the old
   value, so the handler looks at `StringEditor.ErrorText` before it goes on. Left alone on
@@ -443,7 +444,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   in that panel between constructions is an undo step of its own.
 - **Numbers are figures** (`Figures/Values/Number.cs`): roots with no shape, named n1, n2...,
   usable in expressions by name, a length and an angle at once. No tool makes a bare one (the
-  Slider is a Number with a handle); a typed value in the Translation tool becomes one. `Auxiliary` (any figure) marks one
+  Slider is a Number with a handle); a typed value in the Translate tool becomes one. `Auxiliary` (any figure) marks one
   created on demand for another: it is removed with its last dependent and comes back on undo.
   Every deletion goes through `RemoveFigureAction`, one figure per action inside a transaction,
   so undo restores labels and a polygon loses a vertex rather than dying.
@@ -453,8 +454,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   caption label "a = 2.00" a fixed few pixels above the anchor. The drawing and the file see
   one figure (`<Slider X Y Value>`), and no part is ever handed out: `HitTest` answers with the
   slider, so a tool can't come to depend on the knob. The value is the track's length:
-  `INumber` (expressions say `a`), `ILengthProvider` (By Radius, Dilation, Translation),
-  `IAngleProvider` in degrees (Rotation). Dragging goes by parts (`IMovableParts`, which the
+  `INumber` (expressions say `a`), `ILengthProvider` (By Radius, Dilate, Translate),
+  `IAngleProvider` in degrees (Rotate). Dragging goes by parts (`IMovableParts`, which the
   Dragger asks): the knob changes the value, the anchor and anything else move the whole. The
   parts carry names no expression can say ("slider knob"): `Figures[name]` looks *inside*
   composites and not at them, which is also why `Binder.ResolveFigure` matches top-level names
@@ -464,7 +465,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   *tied* to a figure (vector, length/angle provider, `ILine` as it points, a Number) or *free*
   (the parameter dragging changes). Roles are stored by index into the dependency list, never
   inferred from types (a `Label` is both a length and an angle provider). A point with a free
-  quantity takes the green `PointOnFigure` style. The Translation tool is stepwise (source,
+  quantity takes the green `PointOnFigure` style. The Translate tool is stepwise (source,
   distance, direction, placement); its panel is cleared in `Stopping` because that event is
   raised before `Started` resets the state, and `DrawingControl` re-shows a behavior's
   `PropertyBag` on "construction complete" as well.
@@ -584,7 +585,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   for what a figure would look like (points, `ShapeFill` for every polygon icon), and the
   Icons group for what is only a picture (`SourceFill`/`ImageFill` of the transformations,
   `RulerFill`, `AngleFill`, `AreaFill`/`AreaHatch`) - no literal brush in a `CreateIcon`,
-  or the theme can't reach it. The sun/moon
+  or the theme can't reach it. `SourceFill` and `ImageFill` are a `Brush`, not a `Color`, so
+  the grid gives them the brush editor and they can be gradients; to make another fill one,
+  change its type and its two initializers (a property bound to it must take a brush, and
+  `ObserveTheme` hands out solid colors only). The sun/moon
   beside the Octocat (both pages) flips between light and dark, and landing on what the system
   says stores `System` again. On Windows the title bar goes dark too
   (`LiveGeometry.Desktop/WindowFrameTheme.cs`: the DWM attribute, and then a non-client
