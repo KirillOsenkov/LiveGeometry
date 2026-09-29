@@ -14,9 +14,6 @@
     <LineStyle Name="14" Color="#FF5050E0" StrokeWidth="2.5" />
     <LineStyle Name="15" Color="#FFAF43E0" StrokeWidth="2" />
     <LineStyle Name="16" Color="#FF8C8C8C" />
-    <TextStyle Name="Checkbox" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
-      <Dark Color="#FFB5BBC6" />
-    </TextStyle>
     <LineStyle Name="Step1" Color="#B3D741E0" />
     <LineStyle Name="Step2" Color="#B3CE42E0" />
     <LineStyle Name="Step3" Color="#B3C543E0" />
@@ -180,7 +177,7 @@
       <Dependency Name="S15" />
       <Dependency Name="D" />
     </Locus>
-    <ShowHideControl Name="ShowSteps" Style="Checkbox" Show="true" Text="Show all the steps" X="-7.2" Y="2.4">
+    <ShowHideControl Name="ShowSteps" Style="GalleryText" Show="true" Text="Show all the steps" X="-7.2" Y="2.4">
       <Dependency Name="StepLocus1" />
       <Dependency Name="StepLocus2" />
       <Dependency Name="StepLocus3" />

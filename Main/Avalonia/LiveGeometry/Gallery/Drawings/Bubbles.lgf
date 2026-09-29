@@ -542,7 +542,7 @@
       <Dependency Name="W" />
     </Segment>
     <Label Name="Label60" Visible="false" Style="8" Text="The circles are actually inscribed into adjacent\ntriangles that triangulate a part of the plane." X="-4.4166666667" Y="-5.9" />
-    <ShowHideControl Name="ShowHide1" Show="false" Text="Hint" X="-4.292" Y="-4.5">
+    <ShowHideControl Name="ShowHide1" Style="GalleryText" Show="false" Text="Hint" X="-4.292" Y="-4.5">
       <Dependency Name="FJ1" />
       <Dependency Name="BF2" />
       <Dependency Name="BC" />

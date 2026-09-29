@@ -14,7 +14,9 @@
     <LineStyle Name="21" Color="#FF000000">
       <Dark Color="#FFD1D1D1" />
     </LineStyle>
-    <ShapeStyle Name="25" Fill="#FFEEF4FD" Color="#FFEEF4FD" />
+    <ShapeStyle Name="25" Fill="#FFEEF4FD" Color="#FFEEF4FD">
+      <Dark Fill="#FF3C4A5C" Color="#FF3C4A5C" />
+    </ShapeStyle>
   </Styles>
   <Figures>
     <FreePoint Name="A" X="-6.2864046426" Y="-2.5294710428" />

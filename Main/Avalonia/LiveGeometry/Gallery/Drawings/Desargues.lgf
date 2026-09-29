@@ -26,7 +26,9 @@
     <PointStyle Name="12" Fill="#FF000000" Color="#FF000000">
       <Dark Fill="#FFD1D1D1" Color="#FFD1D1D1" />
     </PointStyle>
-    <ShapeStyle Name="14" Fill="#FFD5E3E3" Color="#FF8A8A8A" StrokeWidth="3" />
+    <ShapeStyle Name="14" Fill="#FFD5E3E3" Color="#FF8A8A8A" StrokeWidth="3">
+      <Dark Fill="#FF3C5C5C" />
+    </ShapeStyle>
     <LineStyle Name="15" Color="#FF8A8A8A" />
   </Styles>
   <Figures>

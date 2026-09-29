@@ -4,6 +4,7 @@ using Avalonia.Media;
 namespace DynamicGeometry
 {
     [StyleFor(typeof(LabelBase))]
+    [StyleFor(typeof(ShowHideControl))]
     public class TextStyle : FigureStyle
     {
         public override FrameworkElement GetSampleGlyph()

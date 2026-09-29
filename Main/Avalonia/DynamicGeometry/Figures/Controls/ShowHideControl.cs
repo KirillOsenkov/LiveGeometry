@@ -1,14 +1,46 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using System.Xml.Linq;
 using Avalonia.Media;
+using System.Xml.Linq;
 
 namespace DynamicGeometry
 {
     public class ShowHideControl : ControlBase
     {
         public CheckBox Checkbox { get; set; }
+
+        // Fluent's check box template colors the caption by state through these resources,
+        // over the control's own Foreground
+        static readonly string[] captionResourceKeys =
+        {
+            "CheckBoxForegroundUnchecked",
+            "CheckBoxForegroundUncheckedPointerOver",
+            "CheckBoxForegroundUncheckedPressed",
+            "CheckBoxForegroundChecked",
+            "CheckBoxForegroundCheckedPointerOver",
+            "CheckBoxForegroundCheckedPressed",
+            "CheckBoxForegroundIndeterminate",
+            "CheckBoxForegroundIndeterminatePointerOver",
+            "CheckBoxForegroundIndeterminatePressed"
+        };
+
+        /// <summary>The caption in the text style, in every state (hovered, pressed, checked)</summary>
+        public override void ApplyStyle()
+        {
+            if (Style == null)
+            {
+                return;
+            }
+
+            this.Apply(Checkbox, Style);
+            foreach (var key in captionResourceKeys)
+            {
+                Checkbox.Resources[key] = Checkbox.Foreground;
+            }
+
+            base.ApplyStyle();
+        }
 
         public override void ReadXml(XElement element)
         {
@@ -37,7 +69,6 @@ namespace DynamicGeometry
 
             // no plate of its own on the canvas; the theme paints the hover
             Checkbox.Background = Brushes.Transparent;
-            Checkbox.Foreground = Brushes.Black;
             Checkbox.IsCheckedChanged += (s, e) =>
             {
                 if (Checkbox.IsChecked == true)

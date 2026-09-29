@@ -146,7 +146,7 @@
       <Dependency Name="L" />
       <Dependency Name="K" />
     </Segment>
-    <ShowHideControl Name="Hint" Show="false" Text="Hint" X="-4" Y="-5">
+    <ShowHideControl Name="Hint" Style="GalleryText" Show="false" Text="Hint" X="-4" Y="-5">
       <Dependency Name="Arc" />
     </ShowHideControl>
     <Label Name="Title" Style="GalleryTitle" Text="Carpenter's Square" Pin="TopRight" OffsetX="16" OffsetY="78.75" WrapWidth="400" Backdrop="true" />

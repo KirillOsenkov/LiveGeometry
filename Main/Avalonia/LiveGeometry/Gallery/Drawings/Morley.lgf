@@ -7,7 +7,7 @@
     <LineStyle Name="12" Color="#FF848E93" />
     <PointStyle Name="13" Size="8" Fill="#FFFFFFFF" Color="#FF0000FF" StrokeWidth="0.7" />
     <ShapeStyle Name="15" Fill="#FFCCCCFF" Color="#FF000000">
-      <Dark Color="#FFD1D1D1" />
+      <Dark Fill="#FF3C3C5C" Color="#FFD1D1D1" />
     </ShapeStyle>
   </Styles>
   <Figures>

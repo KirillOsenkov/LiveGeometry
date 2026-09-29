@@ -579,7 +579,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   stays dark on their paper. `--check <folder> <out> --dark` renders the pictures under the
   dark theme; a contact sheet of the gallery in each theme is the way to review. Anything
   that reads a style's color itself rather than through `Apply` must resolve it first
-  (`Arrow.ApplyStyle`). The gallery's tiles keep their one list of pastels: under the dark
+  (`Arrow.ApplyStyle`). A show/hide check box takes a text style like a label
+  (`ShowHideControl.ApplyStyle`, `Text` by default, `GalleryText` in the gallery) and pins
+  Fluent's per-state caption resources to that color, or the hover would repaint the
+  caption in Fluent's own. The gallery's tiles keep their one list of pastels: under the dark
   theme a tile deepens its pastel (`GalleryTile.Deepen`: same hue, value 0.24) and derives
   a lighter border from a dark plate; a drawing's own paper on a tile is the paper as the
   theme resolves it. A tile follows `AppTheme.CurrentChanged` on its own.
