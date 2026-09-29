@@ -49,6 +49,7 @@ namespace DynamicGeometry
         {
             get
             {
+                index = CanonicalName(index);
                 foreach (var style in list)
                 {
                     if (style.Name == index)
@@ -59,6 +60,12 @@ namespace DynamicGeometry
 
                 return null;
             }
+        }
+
+        /// <summary>The name a style goes by now, for the names older files use</summary>
+        public static string CanonicalName(string name)
+        {
+            return name == LegacyDependentPointStyleName ? DependentPointStyleName : name;
         }
 
         public IEnumerable<IFigureStyle> GetAllStyles()
@@ -109,7 +116,7 @@ namespace DynamicGeometry
             var midpointStyle = ThemedPoint(MidpointStyleName, size: 8, theme => theme.MidpointFill);
             var dependentPointStyle = ThemedPoint(DependentPointStyleName, size: 8, theme => theme.DependentPointFill);
 
-            var lineStyle = new LineStyle();
+            var lineStyle = new LineStyle() { Name = LineStyleName };
             lineStyle.BindToTheme(nameof(LineStyle.Color), theme => AppTheme.WithAlpha(theme.Ink, 100));
             var lineStyle2 = new LineStyle()
             {
@@ -176,11 +183,12 @@ namespace DynamicGeometry
                 StrokeWidth = 1.5,
                 Fill = new SolidColorBrush(Color.FromArgb(28, 136, 84, 208))
             };
-            var shapeWithLineStyle = new ShapeStyle();
+            var shapeWithLineStyle = new ShapeStyle() { Name = OutlinedShapeStyleName };
             shapeWithLineStyle.BindToTheme(nameof(ShapeStyle.Fill), theme => new SolidColorBrush(theme.ShapeFill));
             shapeWithLineStyle.BindToTheme(nameof(ShapeStyle.Color), theme => AppTheme.WithAlpha(theme.Ink, 100));
             var shapeStyle = new ShapeStyle()
             {
+                Name = ShapeStyleName,
                 Color = Colors.Transparent
             };
             shapeStyle.BindToTheme(nameof(ShapeStyle.Fill), theme => new SolidColorBrush(theme.ShapeFill));
@@ -191,9 +199,9 @@ namespace DynamicGeometry
                 Fill = new SolidColorBrush(Color.FromArgb(100, 200, 255, 200))
             };
             shapeStyle2.SetOverride(AppTheme.Dark.Name, nameof(ShapeStyle.Fill), new SolidColorBrush(Color.FromArgb(100, 128, 200, 128)));
-            var hyperLinkStyle = ThemedText(fontSize: 18);
-            var textStyle = ThemedText(fontSize: 18);
-            var headerStyle = ThemedText(fontSize: 40);
+            var hyperLinkStyle = ThemedText(HyperlinkStyleName, fontSize: 18);
+            var textStyle = ThemedText(TextStyleName, fontSize: 18);
+            var headerStyle = ThemedText(HeadingStyleName, fontSize: 40);
 
             var newStyles = new IFigureStyle[]
             {
@@ -239,10 +247,11 @@ namespace DynamicGeometry
         }
 
         /// <summary>A text style in the theme's ink</summary>
-        static TextStyle ThemedText(double fontSize)
+        static TextStyle ThemedText(string name, double fontSize)
         {
             var style = new TextStyle()
             {
+                Name = name,
                 FontSize = fontSize,
                 FontFamily = new FontFamily("Segoe UI")
             };
@@ -261,7 +270,14 @@ namespace DynamicGeometry
 
         public IFigureStyle GetStyle(string name)
         {
-            return GetAllStyles().Where(s => s.Name == name).FirstOrDefault();
+            return this[name];
+        }
+
+        /// <summary>Whether the style is what a new drawing has under that name, unchanged: a file needn't carry it</summary>
+        public static bool IsUnchangedDefault(IFigureStyle style, IList<IFigureStyle> defaults)
+        {
+            var original = defaults.FirstOrDefault(candidate => candidate.Name == style.Name);
+            return original != null && original.GetType() == style.GetType() && original.GetSignature() == style.GetSignature();
         }
 
         public void SetStyleIfAvailable(IFigure figure, string styleName)
@@ -301,13 +317,23 @@ namespace DynamicGeometry
             return null;
         }
 
+        // The names of the default styles. A figure whose style is the default of its kind is
+        // written without one, and a file names a default it doesn't carry (the loader adds
+        // the defaults it lacks): the names are part of the file format.
         public const string FreePointStyleName = "FreePoint";
         public const string PointOnFigureStyleName = "PointOnFigure";
         public const string IntersectionPointStyleName = "IntersectionPoint";
         public const string MidpointStyleName = "Midpoint";
+        public const string DependentPointStyleName = "DependentPoint";
+        public const string LineStyleName = "Line";
+        public const string ShapeStyleName = "Shape";
+        public const string OutlinedShapeStyleName = "OutlinedShape";
+        public const string TextStyleName = "Text";
+        public const string HeadingStyleName = "Heading";
+        public const string HyperlinkStyleName = "Hyperlink";
 
-        // older drawings and PolygonIntersection know it under this name
-        public const string DependentPointStyleName = "DependentPointStyle";
+        /// <summary>What files from before 2026-09-29 call the dependent point style</summary>
+        public const string LegacyDependentPointStyleName = "DependentPointStyle";
 
         public virtual IFigureStyle AssignDefaultStyle(IFigure figure)
         {
@@ -405,17 +431,32 @@ namespace DynamicGeometry
         /// completed with the default styles it lacks by name, in the order of a new drawing:
         /// the style picker, the style of each kind of new point and the first line or shape
         /// style (which new figures take) are then those of a new drawing, unless the drawing
-        /// has its own under the same name. Styles with names of their own come last.
+        /// has its own under the same name. Styles with names of their own come last. A file's
+        /// copy of a default that looks the same in Light (files from before the themes carry
+        /// every default they use) is dropped for the default itself, which follows the theme;
+        /// the figures find it under the name.
         /// </summary>
         public void AddWithDefaults(IList<IFigureStyle> own)
         {
             var taken = new HashSet<IFigureStyle>();
+            foreach (var style in own)
+            {
+                if (style.Name == LegacyDependentPointStyleName)
+                {
+                    style.Name = DependentPointStyleName;
+                }
+            }
+
             foreach (var defaultStyle in CreateDefaultStyles())
             {
                 var replacement = own.FirstOrDefault(s => s.Name == defaultStyle.Name);
                 if (replacement != null)
                 {
                     taken.Add(replacement);
+                    if (LooksLikeInLight(replacement, defaultStyle))
+                    {
+                        replacement = null;
+                    }
                 }
 
                 list.Add(replacement ?? defaultStyle);
@@ -428,6 +469,15 @@ namespace DynamicGeometry
                     list.Add(style);
                 }
             }
+        }
+
+        static bool LooksLikeInLight(IFigureStyle style, IFigureStyle other)
+        {
+            return style is FigureStyle a
+                && other is FigureStyle b
+                && a.GetType() == b.GetType()
+                && a.Overrides.Count == 0
+                && a.GetBaseSignature() == b.GetBaseSignature();
         }
 
         public virtual void Remove(IFigureStyle style)

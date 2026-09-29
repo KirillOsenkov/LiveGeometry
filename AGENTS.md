@@ -559,8 +559,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (`Drawing.RefreshTheme`, hooked by `DrawingControl` and the gallery's `DrawingThumbnail`,
   which doesn't paint the paper: `Drawing.PaintsPaper`). The tool icons draw their points,
   fills and lines from the same Paper group, so they show the figures as the theme would.
-  Not yet: overrides in files, a style edit landing in the current theme's values, the
-  gallery drawings (they carry their own copies of old defaults) and its pastel tiles.
+  **The property grid edits what is on screen**: under the base theme (Light) a style's
+  property itself, under any other theme its override for that theme
+  (`ThemedValue.ForCurrentTheme` wraps the value the grid edits; `IThemeOverridable` is
+  what a style and a drawing's paper implement), and undo puts the override back. A "Same
+  as in Light" button drops the theme's overrides (shown once there are some, on the next
+  opening of the style). The paper works the same: `Drawing.Overrides` holds the paper chosen
+  for another theme, "Theme's paper" under Dark stores a null override (that theme's paper).
+  Not yet: the gallery drawings (they carry copies of old numbered defaults) and its
+  pastel tiles.
 - **Settings between runs** (`LiveGeometry/SettingsStore.cs`): `Get`/`Set` by key, the desktop
   head keeping them as `key=value` lines in `%LocalAppData%\LiveGeometry\Settings.txt`
   (`FileSettingsStore`), the browser in `localStorage` under `LiveGeometry.<key>`
@@ -615,12 +622,29 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (`IntersectionPoint.UpgradeLegacyCircleAndLineOrder`). No file in the repo carries the mark
   (`LiveGeometry.Desktop.exe --modernize <folder>` writes into a file what loading it upgrades);
   the code stays for old files from elsewhere.
-- **Styles in files**: only the styles the figures name are saved (`DrawingSerializer.Write`
-  writes the figures aside first and collects their `Style` attributes - a figure may name
-  another's style, a vector its arrow's), `Name` first. Loading lays the styles out in a new
-  drawing's order, a file's style taking the place of the default of the same name, others
-  after (`StyleManager.AddWithDefaults`). The order matters: new lines and shapes take the
-  first line or shape style.
+- **Styles in files** (since 2026-09-29): a figure on the default style of its kind (a free
+  point on `FreePoint`, a segment on `Line`) has no `Style` attribute, and gets it on loading
+  (`EnsureStyleAssigned`); one on another default names it (`Style="PointOnFigure"` on an
+  intersection point drawn green); only a custom style is carried as an element. The default
+  names are the constants in `StyleManager` (`FreePoint`, `PointOnFigure`,
+  `IntersectionPoint`, `Midpoint`, `DependentPoint` - `DependentPointStyle` in older files,
+  `Line`, `Shape`, `OutlinedShape`, `Text`, `Heading`, `Hyperlink`, and the palette ones like
+  `RedLine`). Saved are the styles the figures name (`DrawingSerializer.Write` writes the
+  figures aside first and collects their `Style` attributes - a figure may name another's
+  style, a vector its arrow's) and a default the drawing changed; a default as a new drawing
+  has it is left out (`StyleManager.IsUnchangedDefault`). `Name` comes first, and an
+  attribute at the value a fresh style has (`IsFilled="true"`, `Dash="Solid"`) is left out; a
+  missing one reads as that value. What differs under another theme is a child element
+  named after the theme, its attributes (and gradient elements) the properties as in the
+  style's own element: `<LineStyle Name="RedLine" Color="#FFD83B3B" StrokeWidth="1.5"><Dark
+  Color="#FF00BFFF" /></LineStyle>`. The paper's is the same on `<Viewport>`: `<Dark
+  Color="..." />`, `<Dark><Background>gradient</Background></Dark>`, or an empty `<Dark />`
+  for that theme's own paper. Loading lays the styles out in a new drawing's order, a file's
+  style taking the place of the default of the same name unless it looks the same in Light
+  (files from before the themes carry every default they use: those are dropped for the
+  default itself, which follows the theme), others after (`StyleManager.AddWithDefaults`).
+  The order matters: new lines and shapes take the first line or shape style. Labels leave
+  out `DecimalsToShow` at the default.
 - **Saved files declare `encoding="utf-8"`**; files from older builds say `utf-16`, which our
   own loader tolerates but `XDocument.Load` does not.
 - **`TranslatedPoint`** without `DistanceSource`/`DirectionSource`/`FreeDistance`/`FreeDirection`

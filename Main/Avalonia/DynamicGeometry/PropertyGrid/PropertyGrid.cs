@@ -613,6 +613,8 @@ namespace DynamicGeometry
 
         static UIElement CreatePropertyEditorControl(IValueProvider p, object obj, ActionManager actionManager)
         {
+            // a style's color under the dark theme is its Dark override: that is what is edited
+            p = ThemedValue.ForCurrentTheme(p);
             var factory = SelectProperFactory(p);
             if (factory != null)
             {

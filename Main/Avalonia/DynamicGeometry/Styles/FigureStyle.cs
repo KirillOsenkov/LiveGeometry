@@ -7,7 +7,7 @@ using GuiLabs.Undo;
 namespace DynamicGeometry
 {
     [PropertyGridName("Edit style")]
-    public abstract partial class FigureStyle : IFigureStyle
+    public abstract partial class FigureStyle : IFigureStyle, IThemeOverridable, IConditionalProperties
     {
         string name = "";
         //[PropertyGridVisible]
@@ -76,6 +76,44 @@ namespace DynamicGeometry
 
             values[property] = value;
             OnPropertyChanged(property);
+        }
+
+        public void ClearOverrides(string theme)
+        {
+            if (Overrides.Remove(theme, out var values))
+            {
+                foreach (var property in values.Keys)
+                {
+                    OnPropertyChanged(property);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The button that drops the theme's own values (shown under a theme that has some):
+        /// the style looks as it does under the base theme again
+        /// </summary>
+        [PropertyGridVisible]
+        [PropertyGridIcon(PropertyGridIcon.Cross)]
+        public void SameAsBaseTheme()
+        {
+            ClearOverrides(AppTheme.Current.Name);
+        }
+
+        public virtual bool CanEdit(string propertyName)
+        {
+            if (propertyName == nameof(SameAsBaseTheme))
+            {
+                var theme = AppTheme.Current;
+                return !AppTheme.IsBase(theme) && Overrides.TryGetValue(theme.Name, out var values) && values.Count > 0;
+            }
+
+            return true;
+        }
+
+        public virtual string Caption(string propertyName, string defaultCaption)
+        {
+            return propertyName == nameof(SameAsBaseTheme) ? "Same as in " + AppTheme.Base.Name : defaultCaption;
         }
 
         /// <summary>The property takes its value from every theme's colors: a default style's ink or fill</summary>
@@ -195,14 +233,46 @@ namespace DynamicGeometry
         {
         }
 
+        /// <summary>The values, then each theme's overrides: two styles that look the same under every theme have the same signature</summary>
         public virtual string GetSignature()
+        {
+            var result = GetBaseSignature();
+            foreach (var theme in Overrides.Keys.OrderBy(name => name))
+            {
+                foreach (var value in OverrideValues(theme))
+                {
+                    result += " " + theme + "." + value.Name + "=" + SerializationService.Instance.Write(value);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>The values under the base theme alone: how the style looks in Light</summary>
+        public string GetBaseSignature()
         {
             var values = IncludeByDefaultValueDiscoveryStrategy.Instance
                     .GetValues(this)
                     .Where(v => v.Name != "Name")
                     .Select(v => SerializationService.Instance.Write(v)?.ToString()); // a null string (no character) writes nothing
-            var result = string.Join(" ", values.ToArray());
-            return result;
+            return string.Join(" ", values.ToArray());
+        }
+
+        /// <summary>The theme's overrides as values, in the order of the properties</summary>
+        public IEnumerable<ThemedValue> OverrideValues(string theme)
+        {
+            if (!Overrides.TryGetValue(theme, out var values))
+            {
+                yield break;
+            }
+
+            foreach (var property in IncludeByDefaultValueDiscoveryStrategy.Instance.GetValues(this))
+            {
+                if (values.ContainsKey(property.Name))
+                {
+                    yield return new ThemedValue(property, this, theme);
+                }
+            }
         }
 
 #if !PLAYER

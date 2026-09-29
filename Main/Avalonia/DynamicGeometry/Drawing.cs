@@ -10,7 +10,7 @@ using GuiLabs.Undo;
 namespace DynamicGeometry
 {
     [PropertyGridName("Drawing")]
-    public partial class Drawing
+    public partial class Drawing : IThemeOverridable, IConditionalProperties
     {
 
         public Drawing(Canvas canvas)
@@ -40,15 +40,23 @@ namespace DynamicGeometry
 
         /// <summary>
         /// The paper: a solid color or a gradient of the drawing's own, or the theme's paper
-        /// (null, which files leave out). Part of the drawing (saved with it, undoable through
-        /// the property grid), painted onto whatever canvas shows it.
+        /// (null, which files leave out). Under a theme other than the base one, the paper the
+        /// drawing chose for that theme, if it did (<see cref="Overrides"/>). Part of the
+        /// drawing (saved with it, undoable through the property grid), painted onto whatever
+        /// canvas shows it.
         /// </summary>
         [PropertyGridVisible]
         public Brush Background
         {
             get
             {
-                return background ?? new SolidColorBrush(AppTheme.Current.Paper);
+                var own = background;
+                if (Overrides.TryGetValue(AppTheme.Current.Name, out var values) && values.TryGetValue(nameof(Background), out var overridden))
+                {
+                    own = (Brush)overridden;
+                }
+
+                return own ?? new SolidColorBrush(AppTheme.Current.Paper);
             }
             set
             {
@@ -57,7 +65,7 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>The paper the drawing chose, null for the theme's</summary>
+        /// <summary>The paper the drawing chose (under the base theme), null for the theme's</summary>
         public Brush OwnBackground
         {
             get
@@ -66,12 +74,68 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// By theme name, the paper the drawing chose for that theme (the one property that
+        /// can differ, <see cref="Background"/>; null for the theme's paper)
+        /// </summary>
+        public Dictionary<string, Dictionary<string, object>> Overrides { get; } = new Dictionary<string, Dictionary<string, object>>();
+
+        public void SetOverride(string theme, string property, object value)
+        {
+            if (!Overrides.TryGetValue(theme, out var values))
+            {
+                values = new Dictionary<string, object>();
+                Overrides[theme] = values;
+            }
+
+            values[property] = value;
+            ApplyBackground();
+        }
+
+        public void ClearOverrides(string theme)
+        {
+            Overrides.Remove(theme);
+            ApplyBackground();
+        }
+
+        /// <summary>The theme's own paper: under the base theme no paper of the drawing's own, under another an override saying so</summary>
         [PropertyGridVisible]
         [PropertyGridName("Theme's paper")]
         [PropertyGridIcon(PropertyGridIcon.Paper)]
         public void UseThemePaper()
         {
-            Background = null;
+            if (AppTheme.IsBase(AppTheme.Current))
+            {
+                Background = null;
+            }
+            else
+            {
+                SetOverride(AppTheme.Current.Name, nameof(Background), null);
+            }
+        }
+
+        /// <summary>Drops the paper chosen for the theme on screen: the base theme's again</summary>
+        [PropertyGridVisible]
+        [PropertyGridIcon(PropertyGridIcon.Cross)]
+        public void SameAsBaseTheme()
+        {
+            ClearOverrides(AppTheme.Current.Name);
+        }
+
+        public bool CanEdit(string propertyName)
+        {
+            if (propertyName == nameof(SameAsBaseTheme))
+            {
+                var theme = AppTheme.Current;
+                return !AppTheme.IsBase(theme) && Overrides.TryGetValue(theme.Name, out var values) && values.Count > 0;
+            }
+
+            return true;
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return propertyName == nameof(SameAsBaseTheme) ? "Same paper as in " + AppTheme.Base.Name : defaultCaption;
         }
 
         /// <summary>

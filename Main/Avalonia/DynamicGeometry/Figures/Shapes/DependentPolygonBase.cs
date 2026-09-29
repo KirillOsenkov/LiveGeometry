@@ -134,7 +134,7 @@ namespace DynamicGeometry
                 vertex.OnAddingToCanvas(Drawing.Canvas);
             }
 
-            Drawing.StyleManager.SetStyleIfAvailable(vertex, "DependentPointStyle");
+            Drawing.StyleManager.SetStyleIfAvailable(vertex, StyleManager.DependentPointStyleName);
         }
 
 #if !PLAYER

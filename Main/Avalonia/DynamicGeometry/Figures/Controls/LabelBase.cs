@@ -271,7 +271,10 @@ namespace DynamicGeometry
         public override void WriteXml(XmlWriter writer)
         {
             base.WriteXml(writer);
-            writer.WriteAttributeDouble("DecimalsToShow", (double)DecimalsToShow);
+            if (DecimalsToShow != Settings.DisplayDecimals)
+            {
+                writer.WriteAttributeDouble("DecimalsToShow", (double)DecimalsToShow);
+            }
         }
 
     }

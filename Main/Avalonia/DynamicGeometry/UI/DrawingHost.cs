@@ -54,6 +54,16 @@ namespace DynamicGeometry
             Behavior.NewBehaviorCreated += Behavior_NewBehaviorCreated;
             Behavior.BehaviorDeleted += Behavior_BehaviorDeleted;
             SetupLayout();
+
+            // the side panel is built for the theme it opened under: the style swatches are
+            // drawn for it, and an edit goes to that theme's values (ThemedValue)
+            AppTheme.CurrentChanged += () =>
+            {
+                if (PropertyGrid.Selection != null && CurrentDrawing != null)
+                {
+                    ShowProperties(PropertyGrid.Selection);
+                }
+            };
         }
 
         protected virtual void SetupLayout()

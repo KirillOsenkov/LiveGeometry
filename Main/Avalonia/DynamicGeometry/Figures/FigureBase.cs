@@ -527,7 +527,9 @@ namespace DynamicGeometry
             {
                 writer.WriteAttributeBool("Auxiliary", true);
             }
-            if (Style != null)
+            // the style of its kind goes without saying (a free point on FreePoint): a figure
+            // without one gets it on loading (EnsureStyleAssigned)
+            if (Style != null && Drawing != null && Style != Drawing.StyleManager.AssignDefaultStyle(this))
             {
                 writer.WriteAttributeString("Style", Style.Name);
             }

@@ -79,7 +79,7 @@ namespace DynamicGeometry
                     point.Dependencies.Add(this);
                     vertices.Add(point);
                     AddChild(point);
-                    Drawing.StyleManager.SetStyleIfAvailable(point, "DependentPointStyle");
+                    Drawing.StyleManager.SetStyleIfAvailable(point, StyleManager.DependentPointStyleName);
                 }
 
                 for (int i = 0; i < intersection.Length; i++)

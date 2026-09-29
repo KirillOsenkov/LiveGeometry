@@ -118,6 +118,17 @@ public class AppTheme : INotifyPropertyChanged
     /// <summary>Every theme there is, in the order a list offers them</summary>
     public static IReadOnlyList<AppTheme> All { get; } = new[] { Light, Dark };
 
+    /// <summary>
+    /// The theme whose values a style and a paper hold as their own; every other theme's are
+    /// overrides on top of them
+    /// </summary>
+    public static AppTheme Base => Light;
+
+    public static bool IsBase(AppTheme theme)
+    {
+        return theme == Base;
+    }
+
     public static readonly CornerRadius ButtonCornerRadius = new CornerRadius(5);
     public const double ButtonMinWidth = 52;
 

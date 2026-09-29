@@ -121,7 +121,8 @@ namespace DynamicGeometry
 
             // the paper: a solid color is the Color attribute (the theme's paper, the default,
             // is left out), a gradient is a Background child element, as a gradient fill of a
-            // style is
+            // style is; the paper chosen for another theme is a child element named after the
+            // theme, with the same Color or Background inside (empty: that theme's paper)
             var background = drawing.OwnBackground == null ? null : BrushSerializer.WriteBrush(drawing.OwnBackground);
             if (background is string color)
             {
@@ -151,15 +152,49 @@ namespace DynamicGeometry
                 writer.WriteEndElement();
             }
 
+            foreach (var theme in AppTheme.All)
+            {
+                if (drawing.Overrides.TryGetValue(theme.Name, out var values) && values.TryGetValue(nameof(Drawing.Background), out var paper))
+                {
+                    writer.WriteStartElement(theme.Name);
+                    var themed = paper == null ? null : BrushSerializer.WriteBrush((Brush)paper);
+                    if (themed is string themedColor)
+                    {
+                        writer.WriteAttributeString("Color", themedColor);
+                    }
+                    else if (themed is System.Xml.Linq.XElement themedGradient)
+                    {
+                        writer.WriteStartElement("Background");
+                        themedGradient.WriteTo(writer);
+                        writer.WriteEndElement();
+                    }
+
+                    writer.WriteEndElement();
+                }
+            }
+
             writer.WriteEndElement();
         }
 
+        /// <summary>
+        /// The styles the figures name, and a default style the drawing changed (a figure on
+        /// the default style of its kind doesn't name it); a default as a new drawing has it
+        /// is left out, the loader adds it back
+        /// </summary>
         public virtual void WriteStyles(Drawing drawing, ISet<string> usedStyles, XmlWriter writer)
         {
+            var defaults = StyleManager.CreateDefaultStyles();
             writer.WriteStartElement("Styles");
-            foreach (var style in drawing.StyleManager.GetAllStyles().Where(s => usedStyles.Contains(s.Name)))
+            foreach (var style in drawing.StyleManager.GetAllStyles())
             {
-                WriteStyle(style, writer);
+                bool isDefaultName = defaults.Any(candidate => candidate.Name == style.Name);
+                bool write = isDefaultName
+                    ? !StyleManager.IsUnchangedDefault(style, defaults)
+                    : usedStyles.Contains(style.Name);
+                if (write)
+                {
+                    WriteStyle(style, writer);
+                }
             }
 
             writer.WriteEndElement();
@@ -168,12 +203,37 @@ namespace DynamicGeometry
         public virtual void WriteStyle(IFigureStyle style, XmlWriter writer)
         {
             writer.WriteStartElement(GetStyleElementName(style));
-            // the name first, so a file reads as a list of named styles; the rest stay in the
-            // order reflection gives (the style's own properties, then its base classes')
-            var values = valueDiscovery.GetValues(style).OrderBy(v => v.Name == "Name" ? 0 : 1);
 
-            // Simple values are attributes; structured ones (a gradient brush) are child
-            // elements named after the property, and have to come after all attributes.
+            // the name first, so a file reads as a list of named styles; the rest stay in the
+            // order reflection gives (the style's own properties, then its base classes'), and
+            // a value a fresh style has anyway (a solid dash, a filled shape) is left out
+            var fresh = (IFigureStyle)Activator.CreateInstance(style.GetType());
+            var values = valueDiscovery.GetValues(style)
+                .OrderBy(v => v.Name == "Name" ? 0 : 1)
+                .Where(v => v.Name == "Name" || !IsFreshValue(v, fresh));
+            WriteValues(values, writer);
+
+            // what differs under another theme, in a child element named after it
+            if (style is FigureStyle figureStyle)
+            {
+                foreach (var theme in AppTheme.All)
+                {
+                    var overrides = figureStyle.OverrideValues(theme.Name).ToArray();
+                    if (overrides.Length > 0)
+                    {
+                        writer.WriteStartElement(theme.Name);
+                        WriteValues(overrides, writer);
+                        writer.WriteEndElement();
+                    }
+                }
+            }
+
+            writer.WriteEndElement();
+        }
+
+        /// <summary>Simple values as attributes; structured ones (a gradient brush) as child elements named after the property, after all attributes</summary>
+        void WriteValues(IEnumerable<IValueProvider> values, XmlWriter writer)
+        {
             var elements = new List<KeyValuePair<string, System.Xml.Linq.XElement>>();
             foreach (var value in values)
             {
@@ -194,8 +254,14 @@ namespace DynamicGeometry
                 pair.Value.WriteTo(writer);
                 writer.WriteEndElement();
             }
+        }
 
-            writer.WriteEndElement();
+        static bool IsFreshValue(IValueProvider value, IFigureStyle fresh)
+        {
+            var freshValue = PropertyDiscoveryStrategy.CreateValueProvider(fresh, value.Name);
+            return Equals(
+                SerializationService.Instance.Write(value)?.ToString(),
+                SerializationService.Instance.Write(freshValue)?.ToString());
         }
 
         IValueDiscoveryStrategy valueDiscovery = new IncludeByDefaultValueDiscoveryStrategy();

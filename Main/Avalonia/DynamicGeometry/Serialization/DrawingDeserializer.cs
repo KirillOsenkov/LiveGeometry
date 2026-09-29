@@ -177,6 +177,28 @@ namespace DynamicGeometry
             {
                 drawing.Background = null; // the theme's paper
             }
+
+            // the paper chosen for another theme: a child element named after the theme, with
+            // the same Color or Background inside; empty for that theme's own paper
+            foreach (var themeNode in viewportNode.Elements())
+            {
+                if (AppTheme.ByName(themeNode.Name.LocalName) == null)
+                {
+                    continue;
+                }
+
+                Brush paper = null;
+                if (themeNode.Element("Background")?.Elements().FirstOrDefault() is XElement themedGradient)
+                {
+                    paper = BrushSerializer.ParseBrush(themedGradient);
+                }
+                else if (themeNode.ReadString("Color") != null)
+                {
+                    paper = new SolidColorBrush(themeNode.ReadString("Color").ToColor());
+                }
+
+                drawing.SetOverride(themeNode.Name.LocalName, nameof(Drawing.Background), paper);
+            }
         }
 
         /// <summary>The suggested views, in the same Left/Top/Right/Bottom form as the viewport</summary>
@@ -213,7 +235,48 @@ namespace DynamicGeometry
 
         private IFigureStyle ReadStyle(XElement styleNode)
         {
-            return SerializationService.Instance.Read<IFigureStyle>(styleNode);
+            var style = SerializationService.Instance.Read<IFigureStyle>(styleNode);
+
+            // what differs under another theme: a child element named after the theme, its
+            // attributes and elements the properties as in the style's own element
+            if (style is FigureStyle figureStyle)
+            {
+                var type = figureStyle.GetType();
+                foreach (var themeNode in styleNode.Elements())
+                {
+                    string theme = themeNode.Name.LocalName;
+                    if (AppTheme.ByName(theme) == null)
+                    {
+                        continue;
+                    }
+
+                    foreach (var attribute in themeNode.Attributes())
+                    {
+                        var value = OverrideValue(figureStyle, type, theme, attribute.Name.LocalName);
+                        if (value != null)
+                        {
+                            SerializationService.Instance.Read(value, attribute.Value);
+                        }
+                    }
+
+                    foreach (var propertyNode in themeNode.Elements())
+                    {
+                        var value = OverrideValue(figureStyle, type, theme, propertyNode.Name.LocalName);
+                        if (value != null)
+                        {
+                            SerializationService.Instance.Read(value, propertyNode);
+                        }
+                    }
+                }
+            }
+
+            return style;
+        }
+
+        static ThemedValue OverrideValue(FigureStyle style, Type type, string theme, string property)
+        {
+            var propertyInfo = type.GetProperty(property);
+            return propertyInfo == null ? null : new ThemedValue(new PropertyValue(propertyInfo, style), style, theme);
         }
 
         private IValueDiscoveryStrategy valueDiscovery = new IncludeByDefaultValueDiscoveryStrategy();

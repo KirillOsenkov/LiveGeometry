@@ -154,7 +154,7 @@ public partial class MainView : UserControl
     /// <summary>A small faint picture that comes to life under the pointer; the corner of both pages holds a couple</summary>
     static Border CreateCornerButton(Control picture, Action action)
     {
-        var button = new Border()
+        var button = new CornerButton()
         {
             Background = Brushes.Transparent, // hit-testable around the picture too
             Cursor = new Cursor(StandardCursorType.Hand),
@@ -173,6 +173,12 @@ public partial class MainView : UserControl
             }
         };
         return button;
+    }
+
+    /// <summary>A type of its own, so that a press on it is a press on a button and not on empty chrome (<see cref="IsLayoutOnly"/>)</summary>
+    class CornerButton : Border
+    {
+        protected override Type StyleKeyOverride => typeof(Border);
     }
 
     /// <summary>The theme button and the build stamp, for the corner of either page</summary>
