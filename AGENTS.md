@@ -187,7 +187,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   parser still says `InvariantCulture` explicitly; a `$"M{x},13.5"` under a decimal-comma
   culture makes `Geometry.Parse` throw. To test a culture: `webauto stop`, then
   `webauto start <url> 1280 800 --lang de-DE`.
-- **Files in the browser** (`MainView.SaveDrawingToFile`/`OpenDrawingFromFile`): the File
+- **Files in the browser** (`MainView.SaveDrawingAs`/`OpenDrawingFromFile`): the File
   System Access API takes a file type only as a MIME type with its extensions, and Avalonia
   drops a `FilePickerFileType` without `MimeTypes`. The stream from `OpenWriteAsync` has only
   `WriteAsync`; a `StreamWriter` flushes synchronously on dispose and throws, so the text is
@@ -504,7 +504,18 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Coordinates tab (`DrawingHost.ToggleDrawingProperties` puts the drawing itself in the property
   grid). A gallery tile takes a drawing's paper as its plate and turns its caption white on a
   dark one.
+- **Save writes the drawing's own file again, without a dialog** (`MainView.SaveDrawing`),
+  when it has one: `OwnFile`, the .lgf it was read from (the Open dialog, the command line)
+  or last saved to. A new drawing, a drawing of the gallery and one read from a GeoGebra or
+  DG file have none and get Save as (`SaveDrawingAs`, also the first item of the Export
+  menu), whose file is the drawing's from then on. A file that failed to load is not kept
+  (`Drawing.Name` is set only by a load that went through), or Save would write the ruins
+  over it. In the browser the first Save of an opened file makes the browser ask for
+  permission to write; a browser without the File System Access API gives files to read
+  only, and Save falls back to Save as there (`IsReadOnlyFile`; not tried in a real
+  Firefox). There is no unsaved-changes prompt and no mark of a changed drawing.
 - **Export** (`MainView.Export.cs`, the button after Save; its menu is a `MenuFlyout`): Save
+  as .lgf (see above), then Save
   as .png, Save as .svg, Copy image - the canvas as it is on screen at that moment, same view,
   same size, without the side panel and the status bar (siblings over the canvas, not in it;
   a selection's highlight is in it). `ViewportImage` makes both: the PNG has the pixels of the
@@ -769,7 +780,7 @@ buttons and checkboxes, 3D, custom tools.
 
 - **Gallery and routes** (`LiveGeometry/Gallery/`, `MainView` "Pages" region): three states -
   gallery, a gallery drawing (`CurrentSample`: tour group in the toolbar, Page Up/Down, edits
-  dropped silently, Save = save as and the drawing becomes the user's own), the user's own
+  dropped silently, Save asks for a file and the drawing becomes the user's own), the user's own
   drawing (parked in `OwnDrawing` with its undo history while they look around; the name of
   the file it came from or was saved to, `OwnFileName`, sits alone in the tour group's
   place, centered, and in the page title - nothing for a new drawing). Paths `/`,

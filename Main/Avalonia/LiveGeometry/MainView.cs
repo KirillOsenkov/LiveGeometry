@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -236,7 +237,7 @@ public partial class MainView : UserControl
         toolbar.AddSeparator();
         toolbar.AddButton(MainToolbarIcons.New(), "New", "Ctrl+N", NewDrawing);
         toolbar.AddButton(MainToolbarIcons.Open(), "Open", "Ctrl+O", OpenDrawingFromFile);
-        toolbar.AddButton(MainToolbarIcons.Save(), "Save", "Ctrl+S", SaveDrawingToFile);
+        toolbar.AddButton(MainToolbarIcons.Save(), "Save", "Ctrl+S", SaveDrawing);
         ExportButton = toolbar.AddButton(MainToolbarIcons.Export(), "Export", shortcut: null, ShowExportMenu);
         toolbar.AddSeparator();
         toolbar.AddButton(MainToolbarIcons.Undo(), "Ctrl+Z", DrawingHost.DrawingControl.CommandUndo);
@@ -387,7 +388,8 @@ public partial class MainView : UserControl
             || exception is AggregateException
             || exception is System.Reflection.TargetInvocationException
             // the browser's file picker throws on cancel (Avalonia catches it and answers null)
-            || exception.GetType().Name == "JSException" && exception.Message.StartsWith("AbortError", StringComparison.Ordinal);
+            || exception.GetType().Name == "JSException" && exception.Message.StartsWith("AbortError", StringComparison.Ordinal)
+            || IsReadOnlyFile(exception);
     }
 
     /// <summary>The message in the status bar, the whole text in the side panel</summary>
@@ -469,6 +471,13 @@ public partial class MainView : UserControl
     /// extension), null for a new drawing
     /// </summary>
     string OwnFileName;
+
+    /// <summary>
+    /// The .lgf file the user's own drawing was read from or last saved to: Save writes it
+    /// again without asking. Null for a new drawing and for one that came from another
+    /// format (GeoGebra, DG), which Save has to ask a name for.
+    /// </summary>
+    IStorageFile OwnFile;
 
     /// <summary>The page title of the user's own drawing: the file's name, when it has one</summary>
     string OwnTitle => OwnFileName != null ? OwnFileName + " - " + AppTitle : AppTitle;
@@ -561,6 +570,7 @@ public partial class MainView : UserControl
         ShowEditor();
         OwnDrawing = null;
         OwnFileName = null;
+        OwnFile = null;
         DrawingHost.Clear();
         UpdateTour();
         Publish(OwnDrawingPath, OwnTitle, push);
@@ -657,7 +667,8 @@ public partial class MainView : UserControl
     /// The drawing in the editor is the user's now (opened from a file, or a drawing of the
     /// gallery that they saved), from the named file
     /// </summary>
-    void BecomeOwnDrawing(string fileName)
+    /// <param name="file">The file for Save to write again, null to have it ask</param>
+    void BecomeOwnDrawing(string fileName, IStorageFile file)
     {
         if (DrawingHost.CurrentDrawing != null)
         {
@@ -668,6 +679,7 @@ public partial class MainView : UserControl
         CurrentSample = null;
         OwnDrawing = null;
         OwnFileName = fileName;
+        OwnFile = file;
         UpdateTour();
         Publish(OwnDrawingPath, OwnTitle, push: true);
     }
@@ -720,7 +732,22 @@ public partial class MainView : UserControl
                 bytes = memory.ToArray();
             }
 
-            OpenDrawing(file.Name, bytes);
+            OpenDrawing(file.Name, bytes, file);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
+
+    /// <summary>A drawing from the command line</summary>
+    async void OpenDrawingFromPath(string path)
+    {
+        try
+        {
+            // the file as the storage provider knows it, for Save to write it again
+            var file = await TopLevel.GetTopLevel(this).StorageProvider.TryGetFileFromPathAsync(Path.GetFullPath(path));
+            OpenDrawing(Path.GetFileName(path), File.ReadAllBytes(path), file);
         }
         catch (Exception ex)
         {
@@ -782,13 +809,14 @@ public partial class MainView : UserControl
             return;
         }
 
-        HandleExceptions(() => OpenDrawing(Path.GetFileName(path), File.ReadAllBytes(path)));
+        OpenDrawingFromPath(path);
     }
 
     /// <param name="name">File name; the extension tells the format</param>
-    public void OpenDrawing(string name, byte[] bytes)
+    /// <param name="file">Where the bytes are from, if Save may write there again; only an .lgf is written again</param>
+    public void OpenDrawing(string name, byte[] bytes, IStorageFile file = null)
     {
-        BecomeOwnDrawing(name);
+        BecomeOwnDrawing(name, file: null);
         ShowEditor();
 
         if (name.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase))
@@ -810,9 +838,16 @@ public partial class MainView : UserControl
         HandleExceptions(() =>
         {
             DrawingHost.DrawingControl.LoadDrawing(text, name);
+            var drawing = DrawingHost.CurrentDrawing;
+
+            // a file that failed to load has not given the drawing its name: Save must not
+            // write what is left of it over the file
+            if (drawing.Name == name)
+            {
+                OwnFile = file;
+            }
 
             // a drawing with a caption (one of the gallery, saved) is laid out for this window
-            var drawing = DrawingHost.CurrentDrawing;
             if (GalleryDrawing.HasCaption(drawing))
             {
                 GalleryDrawing.Fit(drawing, GalleryDrawing.GetPlane(text));
@@ -837,15 +872,55 @@ public partial class MainView : UserControl
         return System.Text.Encoding.GetEncoding(1251).GetString(bytes);
     }
 
-    async void SaveDrawingToFile()
+    /// <summary>
+    /// Save: a drawing that has its .lgf file (<see cref="OwnFile"/>) is written there again,
+    /// without a dialog. Anything else - a new drawing, one of the gallery, one read from a
+    /// GeoGebra or DG file - has no file of this format yet and asks for one.
+    /// </summary>
+    async void SaveDrawing()
+    {
+        var file = OwnFile;
+        if (CurrentSample != null || file == null)
+        {
+            SaveDrawingAs();
+            return;
+        }
+
+        try
+        {
+            await WriteDrawing(file);
+            DrawingHost.ShowHint("Saved " + file.Name);
+        }
+        catch (Exception ex) when (IsReadOnlyFile(ex))
+        {
+            SaveDrawingAs();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// A browser without the File System Access API (Firefox, Safari) opens a file to read
+    /// and has nothing to write it with: there Save is a download under a name, every time
+    /// </summary>
+    static bool IsReadOnlyFile(Exception exception)
+    {
+        return exception.GetType().Name == "JSException" && exception.Message.Contains("not a writeable file");
+    }
+
+    /// <summary>Save as: asks where to, and that file is the drawing's from then on</summary>
+    async void SaveDrawingAs()
     {
         try
         {
+            var name = CurrentSample != null ? CurrentSample.FileName : OwnFileName;
             var topLevel = TopLevel.GetTopLevel(this);
             var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "Save drawing",
-                SuggestedFileName = CurrentSample != null ? CurrentSample.FileName : "drawing.lgf",
+                SuggestedFileName = Path.ChangeExtension(name ?? "drawing", "lgf"),
                 DefaultExtension = "lgf",
                 FileTypeChoices = new[] { LgfFileType }
             });
@@ -855,31 +930,39 @@ public partial class MainView : UserControl
                 return;
             }
 
-            // bytes straight into the stream: the browser's file stream only has WriteAsync,
-            // and a StreamWriter flushes synchronously when disposed
-            var bytes = new System.Text.UTF8Encoding(false).GetBytes(DrawingHost.CurrentDrawing.SaveAsText());
-            await using (var stream = await file.OpenWriteAsync())
-            {
-                await stream.WriteAsync(bytes);
-                await stream.FlushAsync();
-            }
+            await WriteDrawing(file);
 
             // a saved drawing of the gallery is the user's own from here on; a drawing of
             // their own goes by its new name
             if (CurrentSample != null)
             {
-                BecomeOwnDrawing(file.Name);
+                BecomeOwnDrawing(file.Name, file);
             }
             else
             {
                 OwnFileName = file.Name;
+                OwnFile = file;
                 UpdateTour();
                 AddressBar.Current.Replace(OwnDrawingPath, OwnTitle);
             }
+
+            DrawingHost.ShowHint("Saved " + file.Name);
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
+        }
+    }
+
+    async Task WriteDrawing(IStorageFile file)
+    {
+        // bytes straight into the stream: the browser's file stream only has WriteAsync,
+        // and a StreamWriter flushes synchronously when disposed
+        var bytes = new System.Text.UTF8Encoding(false).GetBytes(DrawingHost.CurrentDrawing.SaveAsText());
+        await using (var stream = await file.OpenWriteAsync())
+        {
+            await stream.WriteAsync(bytes);
+            await stream.FlushAsync();
         }
     }
 
@@ -1119,7 +1202,7 @@ public partial class MainView : UserControl
             case Key.A: SelectAll(); return true;
             case Key.N: NewDrawing(); return true;
             case Key.O: OpenDrawingFromFile(); return true;
-            case Key.S: SaveDrawingToFile(); return true;
+            case Key.S: SaveDrawing(); return true;
             case Key.C: Copy(); return true;
             case Key.V: Paste(); return true;
             case Key.F1: ToggleRibbon(); return true; // as in Office

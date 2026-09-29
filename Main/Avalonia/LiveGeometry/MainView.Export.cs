@@ -11,7 +11,8 @@ namespace LiveGeometry;
 
 /// <summary>
 /// The Export button of the toolbar: the canvas as it is on screen at the moment - the same
-/// view, the same size - saved as a picture or put on the clipboard.
+/// view, the same size - saved as a picture or put on the clipboard. And Save as, the
+/// drawing under another name, which is here since Save stopped asking for one.
 /// </summary>
 public partial class MainView
 {
@@ -46,6 +47,7 @@ public partial class MainView
             menu.Items.Add(item);
         }
 
+        Add("Save as .lgf", SaveDrawingAs);
         Add("Save as .png", SaveAsPng);
         Add("Save as .svg", SaveAsSvg);
         menu.Items.Add(new Separator());
@@ -108,7 +110,7 @@ public partial class MainView
                 return;
             }
 
-            // as in SaveDrawingToFile: the browser's file stream only has WriteAsync
+            // as in WriteDrawing: the browser's file stream only has WriteAsync
             await using (var stream = await file.OpenWriteAsync())
             {
                 await stream.WriteAsync(bytes);
