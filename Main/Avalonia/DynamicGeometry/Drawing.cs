@@ -50,13 +50,7 @@ namespace DynamicGeometry
         {
             get
             {
-                var own = background;
-                if (Overrides.TryGetValue(AppTheme.Current.Name, out var values) && values.TryGetValue(nameof(Background), out var overridden))
-                {
-                    own = (Brush)overridden;
-                }
-
-                return own ?? new SolidColorBrush(AppTheme.Current.Paper);
+                return GetOwnBackground(AppTheme.Current) ?? new SolidColorBrush(AppTheme.Current.Paper);
             }
             set
             {
@@ -72,6 +66,17 @@ namespace DynamicGeometry
             {
                 return background;
             }
+        }
+
+        /// <summary>The paper the drawing has under the theme, null for the theme's own</summary>
+        public Brush GetOwnBackground(AppTheme theme)
+        {
+            if (Overrides.TryGetValue(theme.Name, out var values) && values.TryGetValue(nameof(Background), out var overridden))
+            {
+                return (Brush)overridden;
+            }
+
+            return background;
         }
 
         /// <summary>
@@ -230,6 +235,13 @@ namespace DynamicGeometry
 
         void ApplyBackground()
         {
+            // the grid's colors go by the paper it is on
+            if (CoordinateGrid != null)
+            {
+                CoordinateGrid.RefreshTheme();
+                CoordinateGrid.ApplyStyle();
+            }
+
             if (Canvas != null)
             {
                 Canvas.Background = PaintsPaper ? PlaceBackground(Background) : null;

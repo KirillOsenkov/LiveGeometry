@@ -563,7 +563,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   files leave it out; the readers of foreign formats take white as none). A theme switch
   (`AppTheme.CurrentChanged`) re-applies every figure's style and the paper
   (`Drawing.RefreshTheme`, hooked by `DrawingControl` and the gallery's `DrawingThumbnail`,
-  which doesn't paint the paper: `Drawing.PaintsPaper`). The tool icons draw their points,
+  which doesn't paint the paper: `Drawing.PaintsPaper`). The canvas's own binding to the
+  theme's paper is at `BindingPriority.Style`, below the value the drawing sets: at the same
+  priority the binding pushes the theme's paper over a drawing's own on every switch. The
+  grid's colors go by the paper it is on (`CartesianGrid.GetColor`): on a solid paper of the
+  drawing's own, those of the theme whose paper is nearest in lightness, shifted by as much
+  as the paper differs from that theme's. The tool icons draw their points,
   fills and lines from the same Paper group, so they show the figures as the theme would.
   **The property grid edits what is on screen**: under the base theme (Light) a style's
   property itself, under any other theme its override for that theme
@@ -719,7 +724,14 @@ color (`dynamicr/g/b`) wins over the static one; a pattern fill (`fillType` hatc
 becomes a translucent fill. Point names are in the point's color, at GeoGebra's place (the
 baseline starts a radius to the upper right, plus `labelOffset`); `labelMode` 1 and 2 show
 the coordinates. Not carried over: segment end styles and decorations (arrows, ticks),
-captions. The view is the file's (same zoom, same middle). A number typed into a command (`Circle[A, 3]`, `Rotate[P, 45°, O]`, `Dilate[P, 0.2 * a,
+captions. The view is the file's (same zoom, same middle). GeoGebra's colors are made for a
+white paper, so a worksheet stays light under the dark theme (`GeoGebraReader.KeepLightLook`):
+its paper there is `#C0C0C0` (a Dark override; a worksheet with a paper of its own has that
+under every theme), and the drawing's default styles are pinned to their Light look
+(`FigureStyle.KeepBaseLook`: no theme bindings, each Dark override saying the Light value, so
+that a saved `.lgf` keeps them - a default without overrides would be swapped for the
+theme's on loading), which is what an element without a color and anything drawn later
+gets. A number typed into a command (`Circle[A, 3]`, `Rotate[P, 45°, O]`, `Dilate[P, 0.2 * a,
 O]`) becomes an auxiliary `Number`, or a hidden auxiliary `Label` evaluating `[expression]`
 when it depends on figures (a label is a length and an angle provider); a point given by an
 expression (`A + (0, 1)`, `t B + (1 - t) A`) becomes a `PointByCoordinates` through a small

@@ -1,5 +1,7 @@
 ﻿using System;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Media;
 
 namespace DynamicGeometry
@@ -46,8 +48,9 @@ namespace DynamicGeometry
 
         public DrawingControl()
         {
-            // the paper, until a drawing paints its own over it
-            this.BindTheme(BackgroundProperty, nameof(AppTheme.Paper));
+            // the paper, until a drawing paints its own over it: bound below the value a
+            // drawing sets, or a switch of theme would paint the theme's paper over that again
+            this.Bind(BackgroundProperty, this.GetResourceObservable(nameof(AppTheme.Paper)), BindingPriority.Style);
             AppTheme.CurrentChanged += () => Drawing?.RefreshTheme(colorsChanged: false);
             AppTheme.ColorsChanged += () => Drawing?.RefreshTheme(colorsChanged: true);
             this.SizeChanged += DrawingControl_SizeChanged;

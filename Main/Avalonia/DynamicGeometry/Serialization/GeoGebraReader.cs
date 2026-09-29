@@ -89,6 +89,7 @@ public class GeoGebraReader
         }
 
         ReadView(worksheet.Element("euclidianView"));
+        KeepLightLook();
         var construction = worksheet.Element("construction");
         if (construction == null)
         {
@@ -148,6 +149,30 @@ public class GeoGebraReader
             // GeoGebra always says a color; its white is our "no paper of its own"
             var paper = new SolidColorBrush(ReadColor(background, alpha: 255));
             drawing.Background = Drawing.IsWhite(paper) ? null : paper;
+        }
+    }
+
+    /// <summary>The paper of a worksheet under the dark theme</summary>
+    public static readonly Color DarkPaper = Color.FromRgb(0xC0, 0xC0, 0xC0);
+
+    /// <summary>
+    /// The elements carry GeoGebra's colors, which were chosen for a white paper (dark blue,
+    /// black, brown) and get lost on the dark theme's. So a worksheet on white keeps a light
+    /// paper under the dark theme, a gray that doesn't blind; one with a paper of its own has
+    /// it under every theme. What is drawn on it looks as under the light theme: the default
+    /// styles (an element that says no color, what gets drawn later), and the grid, which
+    /// goes by the paper on its own (<see cref="CartesianGrid"/>).
+    /// </summary>
+    void KeepLightLook()
+    {
+        foreach (var style in drawing.StyleManager.GetAllStyles().OfType<FigureStyle>())
+        {
+            style.KeepBaseLook();
+        }
+
+        if (drawing.OwnBackground == null)
+        {
+            drawing.SetOverride(AppTheme.Dark.Name, nameof(Drawing.Background), new SolidColorBrush(DarkPaper));
         }
     }
 

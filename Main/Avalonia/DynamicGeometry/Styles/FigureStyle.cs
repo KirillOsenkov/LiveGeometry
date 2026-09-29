@@ -151,6 +151,26 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// The style looks under every theme as it does under the base one and no longer
+        /// follows the themes' colors: for a drawing whose paper stays light under every theme
+        /// (a GeoGebra worksheet). Each override says the base value, so that a file keeps the
+        /// style that way (<see cref="StyleManager.AddWithDefaults"/> takes a default without
+        /// overrides for the theme's own).
+        /// </summary>
+        public void KeepBaseLook()
+        {
+            themeBindings = null;
+            var type = GetType();
+            foreach (var theme in Overrides.Keys.ToArray())
+            {
+                foreach (var property in Overrides[theme].Keys.ToArray())
+                {
+                    SetOverride(theme, property, type.GetProperty(property).GetValue(this));
+                }
+            }
+        }
+
         public IFigureStyle Resolve()
         {
             return Resolve(AppTheme.Current.Name);

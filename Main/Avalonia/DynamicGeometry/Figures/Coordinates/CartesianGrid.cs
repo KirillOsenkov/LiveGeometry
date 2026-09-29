@@ -40,12 +40,47 @@ namespace DynamicGeometry
             Name = "LabelsStyle"
         };
 
+        /// <summary>
+        /// A color of the grid under the theme. The theme's colors are made for the theme's
+        /// paper; on a solid paper of the drawing's own the grid takes those of the theme
+        /// whose paper is nearest to it in lightness, shifted by as much as the paper differs
+        /// from that theme's. So a GeoGebra worksheet, light gray under the dark theme, has
+        /// the light theme's grid there, as much darker as its paper is.
+        /// </summary>
+        Color GetColor(AppTheme theme, System.Func<AppTheme, Color> color)
+        {
+            if (!(Drawing?.GetOwnBackground(theme) is SolidColorBrush paper))
+            {
+                return color(theme);
+            }
+
+            var nearest = AppTheme.All
+                .OrderBy(candidate => System.Math.Abs(Lightness(candidate.Paper) - Lightness(paper.Color)))
+                .First();
+            var made = color(nearest);
+            return Color.FromArgb(
+                made.A,
+                Shift(made.R, nearest.Paper.R, paper.Color.R),
+                Shift(made.G, nearest.Paper.G, paper.Color.G),
+                Shift(made.B, nearest.Paper.B, paper.Color.B));
+        }
+
+        static int Lightness(Color color)
+        {
+            return color.R + color.G + color.B;
+        }
+
+        static byte Shift(byte value, byte from, byte to)
+        {
+            return (byte)System.Math.Clamp(value + to - from, 0, 255);
+        }
+
         public CartesianGrid()
         {
-            axisStyle.BindToTheme(nameof(LineStyle.Color), theme => theme.Axis);
-            gridStyle.BindToTheme(nameof(LineStyle.Color), theme => theme.GridMajor);
-            minorGridStyle.BindToTheme(nameof(LineStyle.Color), theme => theme.GridMinor);
-            labelsStyle.BindToTheme(nameof(TextStyle.Color), theme => theme.Axis);
+            axisStyle.BindToTheme(nameof(LineStyle.Color), theme => GetColor(theme, t => t.Axis));
+            gridStyle.BindToTheme(nameof(LineStyle.Color), theme => GetColor(theme, t => t.GridMajor));
+            minorGridStyle.BindToTheme(nameof(LineStyle.Color), theme => GetColor(theme, t => t.GridMinor));
+            labelsStyle.BindToTheme(nameof(TextStyle.Color), theme => GetColor(theme, t => t.Axis));
 
             OriginPoint = Factory.CreatePointByCoordinates(Drawing, () => 0, () => 0);
             XUnitPoint = Factory.CreatePointByCoordinates(Drawing, () => 1, () => 0);
@@ -82,7 +117,7 @@ namespace DynamicGeometry
                 );
         }
 
-        /// <summary>A theme color was tweaked: the grid's styles read it again</summary>
+        /// <summary>A theme color was tweaked, or the paper is another: the grid's styles read their colors again</summary>
         public void RefreshTheme()
         {
             axisStyle.RefreshFromTheme();
