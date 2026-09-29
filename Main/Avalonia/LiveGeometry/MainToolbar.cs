@@ -598,7 +598,20 @@ public static class MainToolbarIcons
     static readonly IBrush diskBody = new SolidColorBrush(Color.FromRgb(0x4C, 0x8B, 0xF5));
     static readonly IBrush diskOutline = new SolidColorBrush(Color.FromRgb(0x2A, 0x5D, 0xB0));
     static readonly IBrush diskLabel = new SolidColorBrush(Color.FromRgb(0xE8, 0xEE, 0xF9));
-    static readonly IBrush tileBlue = new SolidColorBrush(Color.FromRgb(0xBF, 0xDC, 0xFF));
+    static readonly IBrush steel = new LinearGradientBrush()
+    {
+        StartPoint = new RelativePoint(0.5, 0, RelativeUnit.Relative),
+        EndPoint = new RelativePoint(0.5, 1, RelativeUnit.Relative),
+        GradientStops =
+        {
+            new GradientStop(Color.FromRgb(0xF4, 0xF7, 0xFB), 0),
+            new GradientStop(Color.FromRgb(0x8A, 0x96, 0xA8), 1)
+        }
+    };
+
+    static readonly IBrush steelOutline = new SolidColorBrush(Color.FromRgb(0x4F, 0x59, 0x6B));
+    static readonly IBrush steelHighlight = new SolidColorBrush(Color.FromArgb(0x70, 0xFF, 0xFF, 0xFF));
+    static readonly IBrush tileBlue =new SolidColorBrush(Color.FromRgb(0xBF, 0xDC, 0xFF));
     static readonly IBrush tileYellow = new SolidColorBrush(Color.FromRgb(0xFF, 0xE7, 0xA3));
     static readonly IBrush tileGreen = new SolidColorBrush(Color.FromRgb(0xC4, 0xEB, 0xC8));
     static readonly IBrush tilePink = new SolidColorBrush(Color.FromRgb(0xFF, 0xCF, 0xDD));
@@ -675,34 +688,69 @@ public static class MainToolbarIcons
             Shape("M12,4 L16,8 L12,12", null, arrow, thickness: 2));
     }
 
-    /// <summary>A gear: the settings page</summary>
+    /// <summary>
+    /// A gear of steel, lit from above: the settings page. Its hub is a hole, with a faint
+    /// light ring around it.
+    /// </summary>
     public static Control Settings()
     {
-        // eight teeth around a ring, drawn as one outline
-        var teeth = new System.Text.StringBuilder();
-        const double outer = 8.6, inner = 6.6, hub = 2.6, center = 10;
-        for (int i = 0; i < 8; i++)
+        var gear = Gear(
+            teeth: 8,
+            outer: 8.7,
+            root: 6.5,
+            topHalf: 0.17,
+            baseHalf: 0.25);
+        return Icon(
+            Shape(gear + Ring(radius: 3), steel, steelOutline, thickness: 1.1),
+            Shape(Ring(radius: 4.4), null, steelHighlight, thickness: 0.8));
+    }
+
+    /// <summary>
+    /// The outline of a gear around the middle of the grid, a tooth pointing up: tops and
+    /// roots are arcs of their circles, the flanks straight
+    /// </summary>
+    /// <param name="topHalf">Half of the angle a tooth takes of the outer circle</param>
+    /// <param name="baseHalf">Half of the angle it takes of the root circle</param>
+    static string Gear(
+        int teeth,
+        double outer,
+        double root,
+        double topHalf,
+        double baseHalf)
+    {
+        const double center = 10;
+        double step = 2 * System.Math.PI / teeth;
+
+        // even-odd, so that a ring added to the outline is a hole
+        var sb = new System.Text.StringBuilder("F0 ");
+        for (int i = 0; i < teeth; i++)
         {
-            double angle = i * System.Math.PI / 4;
-            double toothHalf = System.Math.PI / 20;
-            double gapHalf = System.Math.PI / 8 - toothHalf;
-            teeth.Append(i == 0 ? "M" : "L");
-            teeth.Append(PolarPoint(center, inner, angle - gapHalf - toothHalf));
-            teeth.Append(" L").Append(PolarPoint(center, outer, angle - toothHalf));
-            teeth.Append(" L").Append(PolarPoint(center, outer, angle + toothHalf));
-            teeth.Append(" L").Append(PolarPoint(center, inner, angle + toothHalf + gapHalf));
+            double angle = i * step - System.Math.PI / 2;
+            sb.Append(i == 0 ? "M" : "L").Append(PolarPoint(center, root, angle - baseHalf));
+            sb.Append(" L").Append(PolarPoint(center, outer, angle - topHalf));
+            sb.Append(Arc(outer)).Append(PolarPoint(center, outer, angle + topHalf));
+            sb.Append(" L").Append(PolarPoint(center, root, angle + baseHalf));
+            sb.Append(Arc(root)).Append(PolarPoint(center, root, angle + step - baseHalf)).Append(' ');
         }
 
-        teeth.Append(" Z");
-        return Icon(
-            Shape(teeth.ToString(), null, outline, thickness: 1.5),
-            Shape(string.Format(
-                System.Globalization.CultureInfo.InvariantCulture,
-                "M{0},{1} m-{2},0 a{2},{2} 0 1 0 {3},0 a{2},{2} 0 1 0 -{3},0",
-                center,
-                center,
-                hub,
-                2 * hub), null, outline, thickness: 1.5));
+        sb.Append("Z ");
+        return sb.ToString();
+    }
+
+    static string Arc(double radius)
+    {
+        return string.Format(System.Globalization.CultureInfo.InvariantCulture, " A{0},{0} 0 0 1 ", radius);
+    }
+
+    /// <summary>A circle around the middle of the grid</summary>
+    static string Ring(double radius)
+    {
+        return string.Format(
+            System.Globalization.CultureInfo.InvariantCulture,
+            "M{0},10 a{1},{1} 0 1 0 {2},0 a{1},{1} 0 1 0 -{2},0 Z ",
+            10 - radius,
+            radius,
+            2 * radius);
     }
 
     /// <summary>A crescent moon: the dark theme is a click away</summary>
