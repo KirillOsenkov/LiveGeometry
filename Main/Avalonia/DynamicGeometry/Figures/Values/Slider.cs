@@ -311,6 +311,9 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     /// </summary>
     public class SliderCaption : LabelWithOffset
     {
+        // pixels between the points and the text's line box, which has air of its own under the letters
+        const double gap = 1;
+
         readonly Slider slider;
 
         public SliderCaption(Slider slider)
@@ -338,7 +341,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
             Text = NameDisplay.Format(slider.Name) + " = " + Math.Round(slider.Value, DecimalsToShow).ToString();
             var size = MeasureSize();
             double pointRadius = slider.Anchor.Shape.Width / 2;
-            Offset = new Point(-pointRadius, -(size.Height + pointRadius + Math.CursorTolerance));
+            Offset = new Point(-pointRadius, -(size.Height + pointRadius + gap));
             base.UpdateVisual();
         }
     }

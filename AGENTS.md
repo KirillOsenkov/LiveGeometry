@@ -91,8 +91,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   angle measurement, its arc or a slider first to tie the angle to it. Join segments (a point between
   two segments joins their other ends) and Polyline (points, double-click or click an
   existing point to finish) exist but are `[Ignore]`d as rarely used.
-- **Circles**: Circle (C) - center then a point on it; By Radius (R) - two points, a segment or
-  a distance, then the center; Ellipse - center, end of the long axis, end of the short axis;
+- **Circles**: Circle (C) - center then a point on it; By Radius (R) - two points, a segment, a
+  distance or a slider, then the center; a first click on empty paper makes a slider for the
+  radius (see "Sliders"); Ellipse - center, end of the long axis, end of the short axis;
   Circular Arc (A) - center, start, end (counterclockwise); Elliptical Arc - center, semi-major,
   semi-minor, begin angle, end angle.
 - **Shapes**: Triangle - 3 points; Square - two adjacent vertices; Polygon (W) - points, then
@@ -464,6 +465,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   style is its track's, by default `SliderTrack`: a bar 6 wide in the theme's `SliderTrack`
   gray, narrower than the points at its ends so that they cover them. `Slider.OnAddingToCanvas`
   assigns it before the parts are added, or the track, a segment, takes the default line first.
+  Placing one (anchor click, knob follows the cursor, second click or the release of a drag)
+  is `PendingSlider`, which the Slider tool and By Radius share: By Radius starts one when its
+  first click would make a *free* point, adds it inside the construction's transaction (undo
+  takes the circle and its slider together) and goes on to the center. That is decided in
+  `Click`, so typed coordinates, which come in through `AddDependency`, still make a point;
+  two new free points for a radius are made with the Point tool first. A `FigureCreator`
+  that finishes something on mouse up must not call the base `MouseUp` afterwards: with a
+  point following the cursor the base takes the release for the next click.
 - **TranslatedPoint** (`Figures/Points/TranslatedPoint.cs`): distance and direction are each
   *tied* to a figure (vector, length/angle provider, `ILine` as it points, a Number) or *free*
   (the parameter dragging changes). Roles are stored by index into the dependency list, never

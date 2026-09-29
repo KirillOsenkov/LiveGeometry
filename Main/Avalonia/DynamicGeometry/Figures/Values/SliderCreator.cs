@@ -15,37 +15,32 @@ namespace DynamicGeometry;
 public class SliderCreator : Behavior
 {
     // in the drawing between the clicks, not recorded, so that its knob can follow the cursor
-    Slider pending;
-    Point anchorClick;
+    readonly PendingSlider pending = new PendingSlider();
 
     // Escape and right-click restart the tool (MainView, Behavior.MouseRightClick): the slider
     // being placed goes, and the construction is over for the undo button
     public override void Stopping()
     {
-        if (pending != null)
+        if (pending.Exists)
         {
-            RemovePending();
+            pending.Cancel();
             RaiseConstructionComplete();
         }
     }
 
     public override bool IsInInitialState
     {
-        get { return pending == null; }
+        get { return !pending.Exists; }
     }
 
     public override void MouseDown(object sender, MouseButtonEventArgs e)
     {
         var coordinates = Coordinates(e);
-        if (pending == null)
+        if (!pending.Exists)
         {
-            anchorClick = coordinates;
-            pending = new Slider() { Drawing = Drawing, Position = coordinates };
-            Drawing.ActionManager.ExecuteImmediatelyWithoutRecording = true;
-            Actions.Add(Drawing, pending);
-            Drawing.ActionManager.ExecuteImmediatelyWithoutRecording = false;
+            pending.Start(Drawing, coordinates);
             Drawing.RaiseConstructionStepStarted();
-            Drawing.RaiseStatusNotification("Click where the knob starts.");
+            Drawing.RaiseStatusNotification("Click where the slider ends.");
             return;
         }
 
@@ -54,33 +49,21 @@ public class SliderCreator : Behavior
 
     public override void MouseMove(object sender, MouseEventArgs e)
     {
-        if (pending != null)
-        {
-            pending.Value = ValueAt(Coordinates(e));
-        }
+        pending.Follow(Coordinates(e));
     }
 
     public override void MouseUp(object sender, MouseButtonEventArgs e)
     {
         var coordinates = Coordinates(e);
-        if (pending != null && coordinates.Distance(anchorClick) > 3 * CursorTolerance)
+        if (pending.IsDragged(coordinates))
         {
             Finish(coordinates);
         }
     }
 
-    /// <summary>How far to the right of the anchor the cursor is; the knob can't go left of it</summary>
-    double ValueAt(Point coordinates)
-    {
-        return System.Math.Max(0, coordinates.X - pending.Position.X);
-    }
-
     void Finish(Point coordinates)
     {
-        var slider = pending;
-        var value = ValueAt(coordinates);
-        RemovePending();
-        slider.Value = value;
+        var slider = pending.Finish(coordinates);
         Actions.Add(Drawing, slider);
         RaiseConstructionComplete();
         Drawing.RaiseDisplayProperties(slider);
@@ -95,21 +78,10 @@ public class SliderCreator : Behavior
         });
     }
 
-    void RemovePending()
-    {
-        if (pending != null)
-        {
-            Drawing.ActionManager.ExecuteImmediatelyWithoutRecording = true;
-            Actions.Remove(pending);
-            Drawing.ActionManager.ExecuteImmediatelyWithoutRecording = false;
-            pending = null;
-        }
-    }
-
     /// <summary>A cross where the slider would appear, an arrow while the knob follows the cursor</summary>
     protected override Cursor GetCursor(Point coordinates)
     {
-        return pending == null ? CrossCursor : ArrowCursor;
+        return pending.Exists ? ArrowCursor : CrossCursor;
     }
 
     public override string Name
@@ -121,7 +93,7 @@ public class SliderCreator : Behavior
     {
         get
         {
-            return "Click where the slider goes, then where its knob starts. Drag the knob to change the number; click the slider where a tool asks for a length or an angle.";
+            return "Click where the slider starts, then where it ends. Drag the knob at its end to change the number; click the slider where a tool asks for a length or an angle.";
         }
     }
 

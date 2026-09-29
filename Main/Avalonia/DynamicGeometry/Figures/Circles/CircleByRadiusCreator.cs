@@ -47,7 +47,7 @@ namespace DynamicGeometry
 
         protected override IFigure FindFigureInsteadOfPoint(Point unconstrainedCoordinates)
         {
-            if (FoundDependencies.Count > 0)
+            if (FoundDependencies.Count > 0 || slider.Exists)
             {
                 return null;
             }
@@ -107,6 +107,12 @@ namespace DynamicGeometry
             }
 
             StartConstruction();
+            TakeRadius(radius, coordinates);
+        }
+
+        /// <summary>The radius is this figure's length (or the distance between its two points); the center is next</summary>
+        void TakeRadius(IFigure radius, Point coordinates)
+        {
             var ends = FindRadiusEnds(radius);
             if (ends != null)
             {
@@ -124,6 +130,103 @@ namespace DynamicGeometry
             Drawing.Figures.CheckConsistency();
         }
 
+        #region A slider for the radius
+
+        // A first click on empty paper, where a free point would appear, starts a slider
+        // instead, placed as the Slider tool places one: the click is its anchor, the knob
+        // follows the cursor, the second click (or the release of a press and drag) says
+        // where the knob starts. The slider is then the radius, and the center is next.
+        // Typed coordinates (Point by coordinates) still give a point: they come in through
+        // AddDependency, not through Click.
+
+        readonly PendingSlider slider = new PendingSlider();
+
+        bool StartsSlider(Point coordinates)
+        {
+            if (FoundDependencies.Count > 0)
+            {
+                return false;
+            }
+
+            var placement = FindPointPlacement(ClickedUnconstrainedCoordinates, coordinates);
+            return placement != null && placement.Kind == PointPlacementKind.Free;
+        }
+
+        protected override void Click(Point coordinates)
+        {
+            if (slider.Exists)
+            {
+                FinishSlider(coordinates);
+            }
+            else if (StartsSlider(coordinates))
+            {
+                StartConstruction();
+                ConstructionComplete = false;
+                slider.Start(Drawing, coordinates);
+                Drawing.RaiseStatusNotification("Click where the slider ends: its length is the radius.");
+            }
+            else
+            {
+                base.Click(coordinates);
+            }
+        }
+
+        void FinishSlider(Point coordinates)
+        {
+            // recorded in the construction's transaction: undo takes the circle and its slider
+            var radius = slider.Finish(coordinates);
+            Actions.Add(Drawing, radius);
+            TakeRadius(radius, coordinates);
+        }
+
+        public override void MouseMove(object sender, MouseEventArgs e)
+        {
+            base.MouseMove(sender, e);
+            slider.Follow(Coordinates(e));
+        }
+
+        public override void MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!slider.Exists)
+            {
+                base.MouseUp(sender, e);
+                return;
+            }
+
+            // not the base: once the slider is there the center follows the cursor, and the
+            // base would take this release for the click that places it
+            IsMouseButtonDown = false;
+            var coordinates = Coordinates(e);
+            if (slider.IsDragged(coordinates))
+            {
+                FinishSlider(coordinates);
+            }
+        }
+
+        /// <summary>No ghost point while the knob follows the cursor</summary>
+        protected override PointPlacement FindPointPlacement(Point unconstrainedCoordinates, Point coordinates)
+        {
+            return slider.Exists ? null : base.FindPointPlacement(unconstrainedCoordinates, coordinates);
+        }
+
+        protected override Avalonia.Input.Cursor GetCursor(Point coordinates)
+        {
+            return slider.Exists ? ArrowCursor : base.GetCursor(coordinates);
+        }
+
+        public override bool IsInInitialState
+        {
+            get { return !slider.Exists && base.IsInInitialState; }
+        }
+
+        public override void Stopping()
+        {
+            slider.Cancel();
+            base.Stopping();
+        }
+
+        #endregion
+
         public override string Name
         {
             get
@@ -136,8 +239,15 @@ namespace DynamicGeometry
         {
             get
             {
-                return "Click two points (the ends of a radius), a segment or a distance, then click the circle center.";
+                return "Click two points (the ends of a radius), a segment, a distance or a slider - or empty paper, to make a slider for the radius. Then click the circle center.";
             }
+        }
+
+        public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+        {
+            // the point that follows the cursor is among the found ones
+            bool radiusIsKnown = RadiusIsAFigure || FoundDependencies.Count == 3;
+            return radiusIsKnown ? "Click the circle center." : "Click the other end of the radius.";
         }
 
         public override FrameworkElement CreateIcon()
