@@ -14,6 +14,8 @@ namespace LiveGeometry;
 /// </summary>
 public class GalleryTile : Border
 {
+    static readonly IBrush DarkCaption = new SolidColorBrush(Color.FromRgb(0x2B, 0x30, 0x38));
+
     readonly Action action;
     IBrush background;
     IBrush hoverBackground;
@@ -41,7 +43,6 @@ public class GalleryTile : Border
             Text = text,
             FontSize = 14,
             FontWeight = FontWeight.SemiBold,
-            Foreground = RibbonTheme.Text,
             HorizontalAlignment = HorizontalAlignment.Center,
             TextTrimming = TextTrimming.CharacterEllipsis,
             Margin = new Thickness(10, 2, 10, 10)
@@ -123,10 +124,11 @@ public class GalleryTile : Border
         Background = isOver ? hoverBackground : background;
         BorderBrush = isOver ? hoverBorder : border;
 
-        // the caption sits on the bottom of the plate, where a gradient has ended
+        // the caption sits on the bottom of the plate, where a gradient has ended: it goes by
+        // the plate, not by the theme (the pastels are light under any theme)
         if (caption != null)
         {
-            caption.Foreground = IsDark(BottomColor(background)) ? Brushes.White : RibbonTheme.Text;
+            caption.Foreground = IsDark(BottomColor(background)) ? Brushes.White : DarkCaption;
         }
     }
 

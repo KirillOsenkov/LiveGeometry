@@ -16,14 +16,53 @@ public class TabOutline : Control
 {
     public const double DefaultFlare = 6;
 
+    /// <summary>The surface the tab opens into: the selected tab is filled with it. The theme's <see cref="AppTheme.Background"/> unless told otherwise.</summary>
+    public static readonly StyledProperty<IBrush> SurfaceProperty =
+        AvaloniaProperty.Register<TabOutline, IBrush>(nameof(Surface));
+
+    /// <summary>The line around the selected tab</summary>
+    public static readonly StyledProperty<IBrush> LineProperty =
+        AvaloniaProperty.Register<TabOutline, IBrush>(nameof(Line));
+
+    /// <summary>The plate under a hovered tab that isn't selected</summary>
+    public static readonly StyledProperty<IBrush> HoverPlateProperty =
+        AvaloniaProperty.Register<TabOutline, IBrush>(nameof(HoverPlate));
+
+    static TabOutline()
+    {
+        AffectsRender<TabOutline>(SurfaceProperty, LineProperty, HoverPlateProperty);
+    }
+
+    public TabOutline()
+    {
+        this.BindTheme(SurfaceProperty, nameof(AppTheme.Background));
+        this.BindTheme(LineProperty, nameof(AppTheme.TabLine));
+        this.BindTheme(HoverPlateProperty, nameof(AppTheme.ButtonHover));
+    }
+
     /// <summary>How far the feet of the tab curve outwards; also the inset of the tab body</summary>
     public double Flare { get; set; } = DefaultFlare;
 
     /// <summary>Radius of the two top corners</summary>
     public double TopRadius { get; set; } = 7;
 
-    /// <summary>The surface the tab opens into: the selected tab is filled with it.</summary>
-    public IBrush Surface { get; set; } = RibbonTheme.Background;
+    public IBrush Surface
+    {
+        get => GetValue(SurfaceProperty);
+        set => SetValue(SurfaceProperty, value);
+    }
+
+    public IBrush Line
+    {
+        get => GetValue(LineProperty);
+        set => SetValue(LineProperty, value);
+    }
+
+    public IBrush HoverPlate
+    {
+        get => GetValue(HoverPlateProperty);
+        set => SetValue(HoverPlateProperty, value);
+    }
 
     bool isSelected;
     public bool IsSelected
@@ -61,14 +100,14 @@ public class TabOutline : Control
             if (isHovered)
             {
                 var plate = new Rect(Flare + 2, 2, width - 2 * Flare - 4, height - 5);
-                context.DrawRectangle(RibbonTheme.ButtonHover, pen: null, plate, TopRadius - 2, TopRadius - 2);
+                context.DrawRectangle(HoverPlate, pen: null, plate, TopRadius - 2, TopRadius - 2);
             }
 
             return;
         }
 
         context.DrawGeometry(Surface, pen: null, CreateTab(width, height, isClosed: true));
-        context.DrawGeometry(brush: null, new Pen(RibbonTheme.TabLine, thickness: 1), CreateTab(width, height, isClosed: false));
+        context.DrawGeometry(brush: null, new Pen(Line, thickness: 1), CreateTab(width, height, isClosed: false));
     }
 
     StreamGeometry CreateTab(double width, double height, bool isClosed)

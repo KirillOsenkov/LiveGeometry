@@ -15,6 +15,7 @@ internal sealed partial class Program
         {
             App.UseInvariantCulture();
             AddressBar.Current = new LiveGeometry.Browser.BrowserAddressBar();
+            SettingsStore.Current = new LiveGeometry.Browser.BrowserSettingsStore();
             DynamicGeometry.EmojiFont.Open = OpenEmojiFont;
             await BuildAvaloniaApp()
                 .WithInterFont()

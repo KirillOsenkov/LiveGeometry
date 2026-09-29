@@ -435,16 +435,17 @@ namespace DynamicGeometry
                     var content = new StackPanel();
                     content.Children.Add(group.Editors);
                     content.Children.Add(group.Buttons);
-                    groupBoxes.Add(new Border()
+                    var box = new Border()
                     {
-                        BorderBrush = RibbonTheme.Separator,
                         BorderThickness = new Thickness(1),
                         CornerRadius = new CornerRadius(6),
-                        Background = RibbonTheme.GroupBackground,
                         Padding = new Thickness(8, 6, 8, 6),
                         Margin = new Thickness(-8, 8, -8, 4),
                         Child = content
-                    });
+                    };
+                    box.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.Separator));
+                    box.BindTheme(Border.BackgroundProperty, nameof(AppTheme.GroupBackground));
+                    groupBoxes.Add(box);
                 }
 
                 if (button != null)
@@ -463,12 +464,13 @@ namespace DynamicGeometry
 
             if (destructive.Count > 0)
             {
-                result.Add(new Border()
+                var divider = new Border()
                 {
                     Height = 1,
-                    Background = RibbonTheme.Separator,
                     Margin = new Thickness(-8, 12, -8, 8)
-                });
+                };
+                divider.BindTheme(Border.BackgroundProperty, nameof(AppTheme.Separator));
+                result.Add(divider);
                 result.AddRange(destructive);
             }
 
@@ -519,15 +521,16 @@ namespace DynamicGeometry
 
         static UIElement GetTitleControl(string title)
         {
-            return new TextBlock()
+            var text = new TextBlock()
             {
                 Text = title,
                 FontSize = 15,
                 FontWeight = FontWeight.SemiBold,
                 Margin = new Thickness(0, 0, 0, 10),
-                Foreground = new SolidColorBrush(Settings.PropertyGridTitleColor),
                 IsHitTestVisible = false
             };
+            text.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
+            return text;
         }
 
         public string Title { get; set; }

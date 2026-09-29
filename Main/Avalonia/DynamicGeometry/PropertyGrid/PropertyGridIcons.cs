@@ -14,7 +14,8 @@ public static class PropertyGridIcons
 {
     public const double Size = 14;
 
-    static readonly IBrush outline = new SolidColorBrush(Color.FromRgb(0x3A, 0x42, 0x50));
+    /// <summary>Stands for the theme's <see cref="AppTheme.IconOutline"/>: <see cref="Shape"/> binds it</summary>
+    static readonly IBrush outline = new SolidColorBrush(Colors.Black);
     static readonly IBrush wood = new SolidColorBrush(Color.FromRgb(0xF2, 0xB6, 0x32));
     static readonly IBrush woodOutline = new SolidColorBrush(Color.FromRgb(0xA8, 0x7B, 0x05));
     static readonly IBrush sharpened = new SolidColorBrush(Color.FromRgb(0xF7, 0xE6, 0xC4));
@@ -57,6 +58,11 @@ public static class PropertyGridIcons
                 return Icon(Shape("M7,12 L3,3.8 A7.5,7.5 0 0 1 11,3.8 Z", sky, outline, thickness: 1.2));
             case PropertyGridIcon.Polyline:
                 return Icon(Shape("M2,11 L5,4 L8.5,10 L12,3", null, outline, thickness: 1.4));
+            case PropertyGridIcon.Copy:
+                // two sheets, the front one over the lower right of the back one
+                return Icon(
+                    Shape("M2.5,9.5 V2.5 H8.5", null, outline, thickness: 1.3),
+                    Shape("M5.5,5.5 H11.5 V12.5 H5.5 Z", null, outline, thickness: 1.3));
             default:
                 return null;
         }
@@ -140,7 +146,7 @@ public static class PropertyGridIcons
 
     static Path Shape(string data, IBrush fill, IBrush stroke, double thickness = 1)
     {
-        return new Path()
+        var path = new Path()
         {
             Data = Geometry.Parse(data),
             Fill = fill,
@@ -149,5 +155,18 @@ public static class PropertyGridIcons
             StrokeJoin = PenLineJoin.Round,
             StrokeLineCap = PenLineCap.Round
         };
+
+        // the outline follows the theme; the fills are the colors of the things drawn
+        if (stroke == outline)
+        {
+            path.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, nameof(AppTheme.IconOutline));
+        }
+
+        if (fill == outline)
+        {
+            path.BindTheme(Avalonia.Controls.Shapes.Shape.FillProperty, nameof(AppTheme.IconOutline));
+        }
+
+        return path;
     }
 }

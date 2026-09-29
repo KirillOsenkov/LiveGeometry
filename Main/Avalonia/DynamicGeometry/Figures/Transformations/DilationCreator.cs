@@ -169,14 +169,14 @@ namespace DynamicGeometry
             return IconBuilder.BuildIcon()
                 .Polygon(
                     new SolidColorBrush(Color.FromArgb(255, 128, 255, 128)),
-                    new SolidColorBrush(Colors.Black),
+                    nameof(AppTheme.Ink),
                     new Point(0.1, 0.9),
                     new Point(0.9, 0.9),
                     new Point(0.9, 0.1),
                     new Point(0.1, 0.1))
                 .Polygon(
                     new SolidColorBrush(Colors.Yellow),
-                    new SolidColorBrush(Colors.Black),
+                    nameof(AppTheme.Ink),
                     new Point(0.1, 0.9),
                     new Point(0.5, 0.9),
                     new Point(0.5, 0.5),

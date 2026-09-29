@@ -83,12 +83,14 @@ namespace DynamicGeometry
                     [!ItemsPresenter.ItemsPanelProperty] = tabControl[!ItemsPanelProperty]
                 }.RegisterInNameScope(scope);
 
-                var headerRow = new Panel() { Background = RibbonTheme.HeaderRowBackground };
-                headerRow.Children.Add(new Border()
+                var headerRow = new Panel();
+                headerRow.BindTheme(Panel.BackgroundProperty, nameof(AppTheme.HeaderRow));
+                var headerLine = new Border()
                 {
-                    BorderBrush = RibbonTheme.TabLine,
                     BorderThickness = new Thickness(0, 0, 0, 1)
-                });
+                };
+                headerLine.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.TabLine));
+                headerRow.Children.Add(headerLine);
                 headerRow.Children.Add(headerEndHost);
 
                 var startAndHeaders = new DockPanel();
@@ -100,8 +102,6 @@ namespace DynamicGeometry
 
                 var tools = new Border()
                 {
-                    Background = RibbonTheme.Background,
-                    BorderBrush = RibbonTheme.BottomBorder,
                     BorderThickness = new Thickness(0, 0, 0, 1),
                     Padding = new Thickness(6, 3, 6, 3),
                     Child = new ContentPresenter()
@@ -111,6 +111,8 @@ namespace DynamicGeometry
                         [!ContentPresenter.ContentTemplateProperty] = tabControl[!SelectedContentTemplateProperty]
                     }.RegisterInNameScope(scope)
                 };
+                tools.BindTheme(Border.BackgroundProperty, nameof(AppTheme.Background));
+                tools.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.Separator));
 
                 var root = new DockPanel();
                 root.Children.Add(headerRow);
@@ -226,14 +228,15 @@ namespace DynamicGeometry
 
         static Control CreateDivider()
         {
-            return new Avalonia.Controls.Shapes.Rectangle()
+            var divider = new Avalonia.Controls.Shapes.Rectangle()
             {
                 Width = 1,
                 Height = 44, // a WrapPanel doesn't stretch its children
-                Fill = RibbonTheme.Separator,
                 Margin = new Thickness(6, 0, 6, 0),
                 VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
             };
+            divider.BindTheme(Avalonia.Controls.Shapes.Shape.FillProperty, nameof(AppTheme.Separator));
+            return divider;
         }
 
         public void AddToolButton(ToolButton button, string category)

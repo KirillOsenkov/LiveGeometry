@@ -147,9 +147,9 @@ namespace DynamicGeometry
             figureExplorerSplitter = new GridSplitter()
             {
                 Width = 4,
-                ResizeDirection = GridResizeDirection.Columns,
-                Background = RibbonTheme.HeaderRowBackground
+                ResizeDirection = GridResizeDirection.Columns
             };
+            figureExplorerSplitter.BindTheme(GridSplitter.BackgroundProperty, nameof(AppTheme.HeaderRow));
         }
 
         protected virtual void CreateStatusBar()
@@ -192,8 +192,6 @@ namespace DynamicGeometry
             // the same surface as the tools strip of the ribbon
             sidePanel = new Border()
             {
-                Background = RibbonTheme.Background,
-                BorderBrush = RibbonTheme.TabLine,
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(6),
                 ClipToBounds = true, // the rows scroll under the rounded corners
@@ -205,6 +203,8 @@ namespace DynamicGeometry
                 ZIndex = (int)ZOrder.StatusBar,
                 Child = layout
             };
+            sidePanel.BindTheme(Border.BackgroundProperty, nameof(AppTheme.Background));
+            sidePanel.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.TabLine));
 
             PropertyGrid.ValueDiscoveryStrategy = new ExcludeByDefaultValueDiscoveryStrategy();
         }
@@ -214,15 +214,12 @@ namespace DynamicGeometry
             sidePanel.Visibility = PropertyGrid.Visibility;
         }
 
-        static readonly IBrush CloseCrossBrush = new SolidColorBrush(Color.FromRgb(0xB4, 0xBA, 0xC4));
-
         /// <summary>A small faint cross that puts the side panel away (<see cref="CloseSidePanel"/>)</summary>
         Control CreateCloseButton()
         {
             var cross = new Avalonia.Controls.Shapes.Path()
             {
                 Data = Geometry.Parse("M0,0 L8,8 M8,0 L0,8"),
-                Stroke = CloseCrossBrush,
                 StrokeThickness = 1.5,
                 StrokeLineCap = PenLineCap.Round,
                 HorizontalAlignment = HorizontalAlignment.Center,
@@ -240,15 +237,16 @@ namespace DynamicGeometry
                 Child = cross
             };
             ToolTip.SetTip(button, "Close");
+            cross.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, nameof(AppTheme.TextFaint));
             button.PointerEntered += (s, e) =>
             {
-                button.Background = RibbonTheme.ButtonHover;
-                cross.Stroke = RibbonTheme.Text;
+                button.BindTheme(Border.BackgroundProperty, nameof(AppTheme.ButtonHover));
+                cross.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, nameof(AppTheme.Text));
             };
             button.PointerExited += (s, e) =>
             {
-                button.Background = Brushes.Transparent;
-                cross.Stroke = CloseCrossBrush;
+                button.BindTheme(Border.BackgroundProperty, key: null, whenNone: Brushes.Transparent);
+                cross.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, nameof(AppTheme.TextFaint));
             };
             button.PointerReleased += (s, e) =>
             {

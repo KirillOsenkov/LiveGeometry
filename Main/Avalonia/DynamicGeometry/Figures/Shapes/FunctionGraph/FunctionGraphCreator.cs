@@ -2,7 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
-using Avalonia.Media;
 
 namespace DynamicGeometry
 {
@@ -120,10 +119,10 @@ namespace DynamicGeometry
             {
                 Text = "y=f(x)",
                 FontSize = 13,
-                Foreground = new SolidColorBrush(Colors.Black),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
+            text.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Ink));
             var grid = new Grid()
             {
                 MinWidth = IconBuilder.IconSize,

@@ -1,0 +1,377 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Text;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Media.Immutable;
+using Avalonia.Styling;
+
+namespace DynamicGeometry;
+
+/// <summary>
+/// The colors of the app's chrome (toolbar, ribbon, side panel, Figure List, gallery page):
+/// one named color per role, and a theme is a set of values for them. Every theme is a
+/// <see cref="ThemeVariant"/> with a resource dictionary of brushes under the role names,
+/// registered on the application (<see cref="Register"/>); the chrome binds its brushes to
+/// those resources (<see cref="ThemeBinding"/>), so switching the application's requested
+/// variant re-skins the chrome and Fluent's own controls (text boxes, scroll bars, menus)
+/// in one go, and a color set on a theme while it shows changes the screen at once - the
+/// theme can be edited in the property grid, and <see cref="CopyAsCode"/> takes the result
+/// back into this file. A new theme is a new instance here with a variant of its own,
+/// inheriting Light or Dark so that Fluent has something to fall back on.
+/// (Not "Theme": every control has a Theme property, its ControlTheme, which would shadow
+/// the class inside the controls that use it most.)
+/// </summary>
+[PropertyGridNoUndo]
+public class AppTheme : INotifyPropertyChanged
+{
+    /// <summary>The choice that follows the operating system (or the browser) instead of naming a theme</summary>
+    public const string SystemChoice = "System";
+
+    public static AppTheme Light { get; } = new AppTheme("Light", ThemeVariant.Light)
+    {
+        Strip = Color.Parse("#DDE0E3"),
+        HeaderRow = Color.Parse("#E9ECF1"),
+        Background = Color.Parse("#F6F7F9"),
+        GroupBackground = Color.Parse("#FCFCFD"),
+        InputBackground = Color.Parse("#FFFFFF"),
+        Page = Color.Parse("#FFFFFF"),
+        TabLine = Color.Parse("#A9B1BE"),
+        Separator = Color.Parse("#D5D9E0"),
+        ButtonHover = Color.Parse("#E6EBF2"),
+        ButtonPressed = Color.Parse("#D3DCE8"),
+        ButtonChecked = Color.Parse("#D2E7FF"),
+        ButtonCheckedBorder = Color.Parse("#6FAEEC"),
+        Text = Color.Parse("#2B3038"),
+        TextEmphasis = Color.Parse("#000000"),
+        TextMuted = Color.Parse("#6B7482"),
+        TextFaint = Color.Parse("#B4BAC4"),
+        Ink = Color.Parse("#000000"),
+        IconOutline = Color.Parse("#3A4250"),
+        Guide = Color.Parse("#8A94A6"),
+        Accent = Color.Parse("#2F7BD6"),
+        Destructive = Color.Parse("#B3261E"),
+        HintBackground = Color.Parse("#FFFDE8"),
+        HintBorder = Color.Parse("#D9D29A"),
+        ErrorBackground = Color.Parse("#FDECEC"),
+        ErrorBorder = Color.Parse("#D93B3B"),
+        ErrorText = Color.Parse("#9B1C1C")
+    };
+
+    public static AppTheme Dark { get; } = new AppTheme("Dark", ThemeVariant.Dark)
+    {
+        Strip = Color.Parse("#1B1F26"),
+        HeaderRow = Color.Parse("#22272F"),
+        Background = Color.Parse("#2A303A"),
+        GroupBackground = Color.Parse("#323945"),
+        InputBackground = Color.Parse("#1F242B"),
+        Page = Color.Parse("#1E2228"),
+        TabLine = Color.Parse("#4D5665"),
+        Separator = Color.Parse("#3A414D"),
+        ButtonHover = Color.Parse("#3A4250"),
+        ButtonPressed = Color.Parse("#48525F"),
+        ButtonChecked = Color.Parse("#2A4A6E"),
+        ButtonCheckedBorder = Color.Parse("#4C8DD6"),
+        Text = Color.Parse("#D9DEE6"),
+        TextEmphasis = Color.Parse("#FFFFFF"),
+        TextMuted = Color.Parse("#98A2B3"),
+        TextFaint = Color.Parse("#6B7482"),
+        Ink = Color.Parse("#E6EAF0"),
+        IconOutline = Color.Parse("#D0D6DF"),
+        Guide = Color.Parse("#7A8595"),
+        Accent = Color.Parse("#5AA0F2"),
+        Destructive = Color.Parse("#F0736A"),
+        HintBackground = Color.Parse("#3B3A2C"),
+        HintBorder = Color.Parse("#6E6A45"),
+        ErrorBackground = Color.Parse("#4A2A2A"),
+        ErrorBorder = Color.Parse("#D95050"),
+        ErrorText = Color.Parse("#F2A0A0")
+    };
+
+    /// <summary>Every theme there is, in the order a list offers them</summary>
+    public static IReadOnlyList<AppTheme> All { get; } = new[] { Light, Dark };
+
+    public static readonly CornerRadius ButtonCornerRadius = new CornerRadius(5);
+    public const double ButtonMinWidth = 52;
+
+    public AppTheme(string name, ThemeVariant variant)
+    {
+        Name = name;
+        Variant = variant;
+    }
+
+    public string Name { get; }
+
+    public ThemeVariant Variant { get; }
+
+    /// <summary>The brushes of this theme under the names of the colors, kept current by the setters</summary>
+    public ResourceDictionary Resources { get; } = new ResourceDictionary();
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    /// <summary>Puts every theme's dictionary under its variant, once, before the first window</summary>
+    public static void Register(Application application)
+    {
+        foreach (var theme in All)
+        {
+            application.Resources.ThemeDictionaries[theme.Variant] = theme.Resources;
+        }
+    }
+
+    /// <summary>The theme on screen</summary>
+    public static AppTheme Current
+    {
+        get
+        {
+            var variant = Application.Current?.ActualThemeVariant;
+            return All.FirstOrDefault(theme => theme.Variant == variant) ?? Light;
+        }
+    }
+
+    /// <summary>What the operating system (or the browser) asks for: Light or Dark</summary>
+    public static AppTheme System
+    {
+        get
+        {
+            var settings = Application.Current?.PlatformSettings;
+            return settings != null && settings.GetColorValues().ThemeVariant == Avalonia.Platform.PlatformThemeVariant.Dark
+                ? Dark
+                : Light;
+        }
+    }
+
+    /// <summary>Raised after the theme on screen changed, for whatever can't be bound to a resource</summary>
+    public static event Action CurrentChanged;
+
+    static bool listening;
+
+    /// <summary>
+    /// Shows the named theme, or with <see cref="SystemChoice"/> whichever the system asks for
+    /// (and follows the system from then on)
+    /// </summary>
+    public static void Apply(string choice)
+    {
+        var application = Application.Current;
+        if (!listening)
+        {
+            listening = true;
+            application.ActualThemeVariantChanged += (s, e) => CurrentChanged?.Invoke();
+        }
+
+        var theme = ByName(choice);
+        application.RequestedThemeVariant = theme?.Variant ?? ThemeVariant.Default;
+    }
+
+    public static AppTheme ByName(string name)
+    {
+        return All.FirstOrDefault(theme => theme.Name == name);
+    }
+
+    public override string ToString()
+    {
+        return Name + " theme";
+    }
+
+    #region Colors
+
+    // The chrome's surfaces, from the top of the window down: the toolbar strip, the row of
+    // ribbon headers, the tools and the side panel, a boxed group inside the panel.
+
+    Color strip;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Surfaces")]
+    public Color Strip { get => strip; set => Set(ref strip, value); }
+
+    Color headerRow;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Surfaces")]
+    public Color HeaderRow { get => headerRow; set => Set(ref headerRow, value); }
+
+    Color background;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Surfaces")]
+    public Color Background { get => background; set => Set(ref background, value); }
+
+    Color groupBackground;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Surfaces")]
+    public Color GroupBackground { get => groupBackground; set => Set(ref groupBackground, value); }
+
+    Color inputBackground;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Surfaces")]
+    public Color InputBackground { get => inputBackground; set => Set(ref inputBackground, value); }
+
+    /// <summary>The gallery page</summary>
+    Color page;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Surfaces")]
+    public Color Page { get => page; set => Set(ref page, value); }
+
+    /// <summary>The line along the ribbon's header row, the outline of a tab, the border of a box</summary>
+    Color tabLine;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Lines")]
+    public Color TabLine { get => tabLine; set => Set(ref tabLine, value); }
+
+    Color separator;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Lines")]
+    public Color Separator { get => separator; set => Set(ref separator, value); }
+
+    Color buttonHover;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Buttons")]
+    public Color ButtonHover { get => buttonHover; set => Set(ref buttonHover, value); }
+
+    Color buttonPressed;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Buttons")]
+    public Color ButtonPressed { get => buttonPressed; set => Set(ref buttonPressed, value); }
+
+    Color buttonChecked;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Buttons")]
+    public Color ButtonChecked { get => buttonChecked; set => Set(ref buttonChecked, value); }
+
+    Color buttonCheckedBorder;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Buttons")]
+    public Color ButtonCheckedBorder { get => buttonCheckedBorder; set => Set(ref buttonCheckedBorder, value); }
+
+    Color text;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Text")]
+    public Color Text { get => text; set => Set(ref text, value); }
+
+    /// <summary>The selected tab header</summary>
+    Color textEmphasis;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Text")]
+    public Color TextEmphasis { get => textEmphasis; set => Set(ref textEmphasis, value); }
+
+    /// <summary>Text that is beside the point: the name of the app on the gallery page, a credit</summary>
+    Color textMuted;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Text")]
+    public Color TextMuted { get => textMuted; set => Set(ref textMuted, value); }
+
+    /// <summary>Barely there until hovered: the cross that closes the side panel</summary>
+    Color textFaint;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Text")]
+    public Color TextFaint { get => textFaint; set => Set(ref textFaint, value); }
+
+    /// <summary>The lines of the tool icons, drawn as figures are on the paper</summary>
+    Color ink;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color Ink { get => ink; set => Set(ref ink, value); }
+
+    /// <summary>The outlines of the drawn chrome icons (toolbar, property grid buttons)</summary>
+    Color iconOutline;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color IconOutline { get => iconOutline; set => Set(ref iconOutline, value); }
+
+    /// <summary>Faint construction lines in an icon (a grid, an axis)</summary>
+    Color guide;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color Guide { get => guide; set => Set(ref guide, value); }
+
+    /// <summary>The blue of arrows and of what is pointed out</summary>
+    Color accent;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color Accent { get => accent; set => Set(ref accent, value); }
+
+    Color destructive;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color Destructive { get => destructive; set => Set(ref destructive, value); }
+
+    Color hintBackground;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Notes")]
+    public Color HintBackground { get => hintBackground; set => Set(ref hintBackground, value); }
+
+    Color hintBorder;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Notes")]
+    public Color HintBorder { get => hintBorder; set => Set(ref hintBorder, value); }
+
+    Color errorBackground;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Notes")]
+    public Color ErrorBackground { get => errorBackground; set => Set(ref errorBackground, value); }
+
+    Color errorBorder;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Notes")]
+    public Color ErrorBorder { get => errorBorder; set => Set(ref errorBorder, value); }
+
+    Color errorText;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Notes")]
+    public Color ErrorText { get => errorText; set => Set(ref errorText, value); }
+
+    #endregion
+
+    void Set(ref Color field, Color value, [CallerMemberName] string key = null)
+    {
+        field = value;
+
+        // the dictionary tells its owner (the application), and every binding to the key
+        // reads it again
+        Resources[key] = new ImmutableSolidColorBrush(value);
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(key));
+    }
+
+    /// <summary>The color properties, in the order declared</summary>
+    public static IEnumerable<PropertyInfo> ColorProperties
+    {
+        get
+        {
+            return typeof(AppTheme)
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(property => property.PropertyType == typeof(Color));
+        }
+    }
+
+    /// <summary>
+    /// The colors as the initializer above, to paste back after tweaking them in the property
+    /// grid (also printed to the console)
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Copy as code")]
+    [PropertyGridIcon(PropertyGridIcon.Copy)]
+    public void CopyAsCode()
+    {
+        var code = ToCode();
+        Clipboard.SetText(code);
+        Console.WriteLine(code);
+    }
+
+    public string ToCode()
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine($"public static AppTheme {Name} {{ get; }} = new AppTheme(\"{Name}\", ThemeVariant.{Variant})");
+        sb.AppendLine("{");
+        var properties = ColorProperties.ToArray();
+        for (int i = 0; i < properties.Length; i++)
+        {
+            var color = (Color)properties[i].GetValue(this);
+            string separator = i < properties.Length - 1 ? "," : "";
+            sb.AppendLine($"    {properties[i].Name} = Color.Parse(\"{ColorText.ToHex(color)}\"){separator}");
+        }
+
+        sb.AppendLine("};");
+        return sb.ToString();
+    }
+}

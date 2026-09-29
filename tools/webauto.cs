@@ -6,8 +6,9 @@
 // browser, and because the Release publish (trimmed) can break in ways `dotnet run` never shows.
 //
 //   dotnet run tools/serve.cs -- <publish>/wwwroot [port=5005]  (separate tool: static file server, run in background)
-//   dotnet run tools/webauto.cs -- start [url] [width height] [--lang de-DE]  launch headless Edge (keeps running), open url;
+//   dotnet run tools/webauto.cs -- start [url] [width height] [--lang de-DE] [--dark]  launch headless Edge (keeps running), open url;
 //                                  --lang sets the browser language (navigator.language, so .NET's culture); only on a fresh start, so `stop` first
+//                                  --dark makes the browser prefer a dark color scheme (what the app follows with the System theme); only on a fresh start
 //   dotnet run tools/webauto.cs -- stop                        close that Edge
 //   dotnet run tools/webauto.cs -- nav <url>
 //   dotnet run tools/webauto.cs -- wait <text> [seconds=60]    wait until a console line contains text
@@ -62,12 +63,13 @@ try
         {
             int langIndex = Array.IndexOf(args, "--lang");
             string lang = langIndex >= 0 && langIndex + 1 < args.Length ? args[langIndex + 1] : null;
-            var positional = args.Where((a, i) => langIndex < 0 || (i != langIndex && i != langIndex + 1)).ToArray();
+            var positional = args.Where((a, i) => a != "--dark" && (langIndex < 0 || (i != langIndex && i != langIndex + 1))).ToArray();
             await Start(
                 positional.Length > 1 ? positional[1] : "about:blank",
                 positional.Length > 3 ? int.Parse(positional[2]) : 1280,
                 positional.Length > 3 ? int.Parse(positional[3]) : 800,
-                lang);
+                lang,
+                dark: args.Contains("--dark"));
             break;
         }
         case "stop": { using var cdp = await Cdp.Connect(DebugPort, browser: true); await cdp.Send("Browser.close"); break; }
@@ -150,7 +152,7 @@ return 0;
 
 // ---------------------------------------------------------------- browser lifetime
 
-static async Task Start(string url, int width, int height, string lang)
+static async Task Start(string url, int width, int height, string lang, bool dark)
 {
     if (await Cdp.IsAlive(DebugPort))
     {
@@ -188,6 +190,13 @@ static async Task Start(string url, int width, int height, string lang)
             // the language the page sees (navigator.language), which .NET takes as its culture
             info.ArgumentList.Add($"--lang={lang}");
             info.ArgumentList.Add($"--accept-lang={lang}");
+        }
+
+        if (dark)
+        {
+            // a dark browser: the page's prefers-color-scheme query answers dark (a CDP media
+            // emulation would die with the session that set it, before the app reads it)
+            info.ArgumentList.Add("--force-dark-mode");
         }
 
         info.ArgumentList.Add("about:blank");

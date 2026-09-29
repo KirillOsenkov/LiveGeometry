@@ -17,7 +17,7 @@ namespace DynamicGeometry
             return Picker;
         }
 
-        protected override void SetPickerSurface(IBrush surface)
+        protected override void SetPickerSurface(string surface)
         {
             Picker.Surface = surface;
         }

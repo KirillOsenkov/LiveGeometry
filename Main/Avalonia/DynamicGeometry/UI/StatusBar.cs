@@ -18,8 +18,8 @@ namespace DynamicGeometry
 
             border.Padding = new Thickness(10, 5, 10, 5);
             border.CornerRadius = new CornerRadius(6);
-            border.Background = RibbonTheme.HintBackground;
-            border.BorderBrush = RibbonTheme.HintBorder;
+            border.BindTheme(Border.BackgroundProperty, nameof(AppTheme.HintBackground));
+            border.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.HintBorder));
             border.BorderThickness = new Thickness(1);
             border.BoxShadow = new BoxShadows(new BoxShadow()
             {
@@ -32,10 +32,10 @@ namespace DynamicGeometry
             TextBlock = new TextBlock()
             {
                 FontSize = 12,
-                Foreground = RibbonTheme.Text,
                 TextWrapping = TextWrapping.Wrap,
                 MaxWidth = 640
             };
+            TextBlock.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
             border.Child = TextBlock;
 
             this.Children.Add(border);

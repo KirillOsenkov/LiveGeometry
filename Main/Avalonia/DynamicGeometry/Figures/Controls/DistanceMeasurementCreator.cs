@@ -69,7 +69,7 @@ namespace DynamicGeometry
                 .BuildIcon()
                 .Polygon(
                     new SolidColorBrush(Colors.Yellow),
-                    new SolidColorBrush(Colors.Black),
+                    nameof(AppTheme.Ink),
                     new Point(0.1, 0.8),
                     new Point(0.3, 1),
                     new Point(1, 0.3),

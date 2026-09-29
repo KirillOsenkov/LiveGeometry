@@ -34,13 +34,13 @@ public class ColorPickerView : Decorator
         {
             Width = 40,
             Background = ColorText.CheckerboardBrush,
-            BorderBrush = RibbonTheme.TabLine,
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(4),
             ClipToBounds = true,
             Margin = new Thickness(0, 0, 6, 0),
             Child = sample
         };
+        sampleHolder.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.TabLine));
 
         var footer = new DockPanel();
         DockPanel.SetDock(sampleHolder, Dock.Left);
@@ -74,8 +74,8 @@ public class ColorPickerView : Decorator
 
     public IReadOnlyList<ColorPage> Pages => pages;
 
-    /// <summary>The background the picker sits on, so that the page tabs can blend into it.</summary>
-    public IBrush Surface
+    /// <summary>The theme color of the background the picker sits on, so that the page tabs can blend into it.</summary>
+    public string Surface
     {
         get => switcher.Surface;
         set => switcher.Surface = value;

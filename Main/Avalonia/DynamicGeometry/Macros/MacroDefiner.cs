@@ -135,7 +135,7 @@ namespace DynamicGeometry
                         Color.FromArgb(255, 200, 255, 0),
                         Color.FromArgb(255, 255, 255, 0),
                         90),
-                    new SolidColorBrush(Colors.Black),
+                    nameof(AppTheme.Ink),
                     new Point(a, b),
                     new Point(b, b),
                     new Point(b, a),

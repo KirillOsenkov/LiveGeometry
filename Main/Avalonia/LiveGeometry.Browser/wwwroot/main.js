@@ -39,8 +39,29 @@ const dotnetRuntime = await dotnet
     .withResourceLoader(loadResource)
     .create();
 
-// The address bar, for BrowserAddressBar.cs: the app has routes (/gallery/morley).
+// The address bar, for BrowserAddressBar.cs: the app has routes (/gallery/morley); the
+// settings, for BrowserSettingsStore.cs: local storage, one entry per key (index.html reads
+// the theme from the same entry before the app is up).
+const settingPrefix = 'LiveGeometry.';
 dotnetRuntime.setModuleImports('main.js', {
+    getSetting: (key) => {
+        try {
+            return globalThis.localStorage.getItem(settingPrefix + key);
+        } catch {
+            return null;
+        }
+    },
+    setSetting: (key, value) => {
+        try {
+            if (value === null || value === undefined) {
+                globalThis.localStorage.removeItem(settingPrefix + key);
+            } else {
+                globalThis.localStorage.setItem(settingPrefix + key, value);
+            }
+        } catch {
+            // private mode, storage denied: the choice holds for the session
+        }
+    },
     getPath: () => globalThis.location.pathname,
     pushState: (path, title) => {
         if (globalThis.location.pathname !== path) {

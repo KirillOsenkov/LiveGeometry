@@ -101,13 +101,13 @@ namespace DynamicGeometry
                 .Line(0.5, 0, 0.5, 1)
                 .Polygon(
                     new SolidColorBrush(Colors.Yellow),
-                    new SolidColorBrush(Colors.Black),
+                    nameof(AppTheme.Ink),
                     new Point(0.4, 0.2),
                     new Point(0.4, 0.9),
                     new Point(0, 0.9))
                 .Polygon(
                     new SolidColorBrush(Color.FromArgb(255, 128, 255, 128)),
-                    new SolidColorBrush(Colors.Black),
+                    nameof(AppTheme.Ink),
                     new Point(0.6, 0.2),
                     new Point(0.6, 0.9),
                     new Point(1, 0.9))

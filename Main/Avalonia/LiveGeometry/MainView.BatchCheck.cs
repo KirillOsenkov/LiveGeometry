@@ -54,6 +54,9 @@ public partial class MainView
             .ToArray();
         ShowEditor();
 
+        // the pictures compare across runs and machines: always the light theme
+        AppTheme.Apply(AppTheme.Light.Name);
+
         // as the gallery would show them: without the tools on a small screen
         ribbonChoice = !IsSmallScreen;
         UpdateRibbon();

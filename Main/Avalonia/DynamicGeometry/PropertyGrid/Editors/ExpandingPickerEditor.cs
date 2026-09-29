@@ -27,14 +27,16 @@ public abstract class ExpandingPickerEditor : LabeledValueEditor
             Margin = new Thickness(0, 3, 0, 3),
             HorizontalAlignment = HorizontalAlignment.Left,
             Background = ColorText.CheckerboardBrush,
-            BorderBrush = RibbonTheme.TabLine,
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(4),
             ClipToBounds = true,
             Cursor = new Cursor(StandardCursorType.Hand),
             Child = chipFill
         };
+        chip.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.TabLine));
         chip.PointerPressed += (s, e) => IsExpanded = !IsExpanded;
+        frame.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.Separator));
+        frame.BindTheme(Border.BackgroundProperty, nameof(AppTheme.GroupBackground));
 
         RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
         RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
@@ -53,16 +55,14 @@ public abstract class ExpandingPickerEditor : LabeledValueEditor
     /// </summary>
     readonly Border frame = new Border()
     {
-        BorderBrush = RibbonTheme.Separator,
         BorderThickness = new Thickness(1),
         CornerRadius = new CornerRadius(6),
-        Background = RibbonTheme.GroupBackground,
         Margin = new Thickness(-8, 0, -8, 0),
         IsVisible = false
     };
 
-    /// <summary>Tell the picker what it is sitting on (its tabs blend into that).</summary>
-    protected virtual void SetPickerSurface(IBrush surface)
+    /// <summary>Tell the picker what it is sitting on (its tabs blend into that): the name of a theme color</summary>
+    protected virtual void SetPickerSurface(string surface)
     {
     }
 
@@ -88,7 +88,7 @@ public abstract class ExpandingPickerEditor : LabeledValueEditor
             if (value && picker == null)
             {
                 picker = CreatePicker();
-                SetPickerSurface(RibbonTheme.GroupBackground);
+                SetPickerSurface(nameof(AppTheme.GroupBackground));
                 picker.Margin = new Thickness(0, 4, 0, 8);
                 Grid.SetRow(picker, 1);
                 Grid.SetColumnSpan(picker, 2);

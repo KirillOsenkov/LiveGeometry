@@ -96,14 +96,14 @@ public class UpDownControl : Grid
         var triangle = new Avalonia.Controls.Shapes.Path()
         {
             Data = Geometry.Parse(isUp ? "M0,4 L3.5,0 L7,4 Z" : "M0,0 L3.5,4 L7,0 Z"),
-            Fill = RibbonTheme.Text,
             Width = 7,
             Height = 4,
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
+        triangle.BindTheme(Shape.FillProperty, nameof(AppTheme.Text));
 
-        return new RepeatButton()
+        var button = new RepeatButton()
         {
             Content = triangle,
             Padding = new Thickness(0),
@@ -113,8 +113,6 @@ public class UpDownControl : Grid
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalContentAlignment = HorizontalAlignment.Center,
             VerticalContentAlignment = VerticalAlignment.Center,
-            Background = RibbonTheme.ButtonHover,
-            BorderBrush = RibbonTheme.TabLine,
             BorderThickness = new Thickness(1),
             CornerRadius = isUp ? new CornerRadius(0, 4, 0, 0) : new CornerRadius(0, 0, 4, 0),
             Margin = isUp ? new Thickness(-1, 0, 0, 0) : new Thickness(-1, -1, 0, 0),
@@ -122,5 +120,8 @@ public class UpDownControl : Grid
             Delay = 400,
             Interval = 60
         };
+        button.BindTheme(RepeatButton.BackgroundProperty, nameof(AppTheme.ButtonHover));
+        button.BindTheme(RepeatButton.BorderBrushProperty, nameof(AppTheme.TabLine));
+        return button;
     }
 }

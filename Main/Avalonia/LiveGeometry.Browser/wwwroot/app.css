@@ -1,3 +1,13 @@
+/* The page under the app, in the theme index.html decided on (the Strip color of the
+   theme, what the top of the window shows): the app draws over it once it is up. */
+html {
+    background: #DDE0E3;
+}
+
+html[data-theme="dark"] {
+    background: #1B1F26;
+}
+
 /* The splash screen (index.html): Euclid's first construction drawing itself while the
    runtime downloads. Avalonia adds splash-close when the app is up. */
 .avalonia-splash {
@@ -10,6 +20,27 @@
     align-items: center;
     display: flex;
     pointer-events: none;
+}
+
+html[data-theme="dark"] .avalonia-splash {
+    background: radial-gradient(circle at 50% 40%, #2A303A 0%, #22272F 60%, #1B1F26 100%);
+}
+
+html[data-theme="dark"] .avalonia-splash h2 {
+    color: #9CC4F0;
+}
+
+html[data-theme="dark"] .splash-progress {
+    background: #3A414D;
+}
+
+html[data-theme="dark"] .euclid .base,
+html[data-theme="dark"] .euclid .sides {
+    stroke: #9CC4F0;
+}
+
+html[data-theme="dark"] .euclid .pen {
+    fill: #9CC4F0;
 }
 
 .avalonia-splash.splash-close {

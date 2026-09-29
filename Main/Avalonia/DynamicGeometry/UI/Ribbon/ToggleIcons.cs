@@ -8,8 +8,9 @@ namespace DynamicGeometry;
 /// </summary>
 public static class ToggleIcons
 {
-    static readonly Color guide = Color.FromRgb(0x8A, 0x94, 0xA6);
-    static readonly Color accent = Color.FromRgb(0x2F, 0x7F, 0xD8);
+    const string guide = nameof(AppTheme.Guide);
+    const string accent = nameof(AppTheme.Accent);
+    const string ink = nameof(AppTheme.Ink);
 
     /// <summary>Movement constrained to horizontal/vertical</summary>
     public static FrameworkElement Ortho()
@@ -74,7 +75,7 @@ public static class ToggleIcons
     {
         return IconBuilder.BuildIcon()
             .Point(0.36, 0.64)
-            .Text(Colors.Black, 0.5, 0.08, text: "A")
+            .Text(ink, 0.5, 0.08, text: "A")
             .Canvas;
     }
 
@@ -92,7 +93,7 @@ public static class ToggleIcons
             }
         };
         return IconBuilder.BuildIcon()
-            .Polygon(paper, new SolidColorBrush(guide), new Point(0.12, 0.1), new Point(0.88, 0.1), new Point(0.88, 0.9), new Point(0.12, 0.9))
+            .Polygon(paper, guide, new Point(0.12, 0.1), new Point(0.88, 0.1), new Point(0.88, 0.9), new Point(0.12, 0.9))
             .Line(accent, 0.3, 0.68, 0.7, 0.32)
             .Point(0.3, 0.68)
             .Point(0.7, 0.32)
@@ -106,7 +107,7 @@ public static class ToggleIcons
     public static FrameworkElement FigureList()
     {
         var builder = IconBuilder.BuildIcon()
-            .Polygon(new SolidColorBrush(Colors.White), new SolidColorBrush(guide), new Point(0.1, 0.08), new Point(0.9, 0.08), new Point(0.9, 0.92), new Point(0.1, 0.92))
+            .Polygon(new SolidColorBrush(Colors.White), guide, new Point(0.1, 0.08), new Point(0.9, 0.08), new Point(0.9, 0.92), new Point(0.1, 0.92))
             .Polygon(new SolidColorBrush(Color.FromRgb(0xD2, 0xE7, 0xFF)), new SolidColorBrush(Color.FromRgb(0x6F, 0xAE, 0xEC)), new Point(0.15, 0.39), new Point(0.85, 0.39), new Point(0.85, 0.61), new Point(0.15, 0.61))
             .Line(strokeThickness: 2, guide, 0.42, 0.25, 0.8, 0.25)
             .Line(strokeThickness: 2, Color.FromRgb(0x4A, 0x55, 0x68), 0.42, 0.5, 0.74, 0.5)
@@ -141,8 +142,8 @@ public static class ToggleIcons
             .Line(accent, 0.28, 0.36, 0.7, 0.36)
             .Line(accent, 0.7, 0.78, 0.7, 0.36)
             .Point(0.7, 0.36)
-            .Text(Colors.Black, 0.58, 0.72, text: "x", fontSize: 10)
-            .Text(Colors.Black, 0.04, 0.2, text: "y", fontSize: 10)
+            .Text(ink, 0.58, 0.72, text: "x", fontSize: 10)
+            .Text(ink, 0.04, 0.2, text: "y", fontSize: 10)
             .Canvas;
     }
 }

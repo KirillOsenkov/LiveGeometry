@@ -58,11 +58,11 @@ namespace DynamicGeometry
                 size, (size - 4) / 2, size - 4, size / 2, (size - 4) / 4 - 1);
             var path = new Path
             {
-                Stroke = new SolidColorBrush(Colors.Black),
                 StrokeThickness = 1,
                 Fill = new SolidColorBrush(Color.Parse("#33FF33")),
                 Data = Geometry.Parse(pathData)
             };
+            path.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
             builder.Canvas.Children.Add(path);
 
             var radius = ((size - 4) / 2) * 0.95;

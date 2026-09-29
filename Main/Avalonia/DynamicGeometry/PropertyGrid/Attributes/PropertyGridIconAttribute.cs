@@ -18,7 +18,8 @@ public enum PropertyGridIcon
     Arc,
     CircleSegment,
     Sector,
-    Polyline
+    Polyline,
+    Copy
 }
 
 /// <summary>

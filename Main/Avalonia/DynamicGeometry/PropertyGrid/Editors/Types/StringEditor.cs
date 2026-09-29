@@ -171,13 +171,11 @@ namespace DynamicGeometry
         {
             errorBlock = new TextBlock()
             {
-                TextWrapping = TextWrapping.Wrap,
-                Foreground = RibbonTheme.ErrorText
+                TextWrapping = TextWrapping.Wrap
             };
+            errorBlock.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.ErrorText));
             errorBox = new Border()
             {
-                Background = RibbonTheme.ErrorBackground,
-                BorderBrush = RibbonTheme.ErrorBorder,
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(0, 0, 4, 4),
                 Padding = new Thickness(6, 3, 6, 4),
@@ -188,6 +186,8 @@ namespace DynamicGeometry
                 IsVisible = false,
                 Child = errorBlock
             };
+            errorBox.BindTheme(Border.BackgroundProperty, nameof(AppTheme.ErrorBackground));
+            errorBox.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.ErrorBorder));
 
             var panel = new StackPanel();
             panel.Children.Add(editor);

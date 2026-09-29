@@ -36,7 +36,7 @@ namespace DynamicGeometry
             return IconBuilder.BuildIcon()
                 .Polygon(
                     new SolidColorBrush(Color.FromArgb(255, 200, 200, 128)),
-                    new SolidColorBrush(Colors.Black),
+                    nameof(AppTheme.Ink),
                     new Point(0.68, 0.98),
                     new Point(1.01, 0.63),
                     new Point(0.875, 0.166),

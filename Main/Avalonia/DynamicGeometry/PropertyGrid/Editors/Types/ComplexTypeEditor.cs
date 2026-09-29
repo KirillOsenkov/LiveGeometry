@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
-using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 
 namespace DynamicGeometry
@@ -114,8 +113,8 @@ namespace DynamicGeometry
             header.Orientation = Orientation.Horizontal;
             header.VerticalAlignment = VerticalAlignment.Center;
             expandCollapse = new Border();
-            expandCollapse.Background = new SolidColorBrush(Colors.White);
-            expandCollapse.BorderBrush = new SolidColorBrush(Colors.Black);
+            expandCollapse.BindTheme(Border.BackgroundProperty, nameof(AppTheme.InputBackground));
+            expandCollapse.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.TabLine));
             expandCollapse.BorderThickness = new Thickness(1);
             expandCollapse.PointerPressed += expandCollapse_Click;
             UpdateExpandCollapseGlyph();

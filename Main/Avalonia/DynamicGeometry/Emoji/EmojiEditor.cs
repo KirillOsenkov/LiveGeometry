@@ -74,13 +74,14 @@ public class EmojiEditor : StackPanel, IValueEditor
         Children.Add(searchBox);
         Children.Add(results);
         Children.Add(previewRow);
-        Children.Add(new TextBlock()
+        var credit = new TextBlock()
         {
             Text = "Emoji art: Twemoji by Twitter, CC-BY 4.0",
             FontSize = 10,
-            Foreground = RibbonTheme.TabHeaderText,
             Margin = new Thickness(0, 6, 0, 6)
-        });
+        };
+        credit.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.TextMuted));
+        Children.Add(credit);
 
         ShowResults();
     }
@@ -152,13 +153,13 @@ public class EmojiEditor : StackPanel, IValueEditor
         if (character == null)
         {
             previewName.Text = "No emoji yet: pick one above";
-            previewName.Foreground = RibbonTheme.TabHeaderText;
+            previewName.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.TextMuted));
             return;
         }
 
         var emoji = EmojiList.Find(character);
         previewName.Text = (emoji?.Name ?? "") + "\n" + EmojiList.CodePoints(character);
-        previewName.Foreground = RibbonTheme.Text;
+        previewName.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
     }
 
     void ShowResults()

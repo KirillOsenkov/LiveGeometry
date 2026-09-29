@@ -90,7 +90,14 @@ namespace DynamicGeometry
             return this;
         }
 
+        /// <summary>A line in the theme's ink, as a figure's line is drawn on the paper</summary>
         public IconBuilder Line(double x1, double y1, double x2, double y2)
+        {
+            return Line(nameof(AppTheme.Ink), x1, y1, x2, y2);
+        }
+
+        /// <summary>A line in a color of the theme (<c>nameof(AppTheme.Accent)</c>)</summary>
+        public IconBuilder Line(string themeColor, double x1, double y1, double x2, double y2)
         {
             Line line = Factory.CreateLineShape();
             Canvas.Children.Add(line);
@@ -98,6 +105,14 @@ namespace DynamicGeometry
             line.Y1 = Canvas.Height * y1;
             line.X2 = Canvas.Width * x2;
             line.Y2 = Canvas.Height * y2;
+            line.BindTheme(Shape.StrokeProperty, themeColor);
+            return this;
+        }
+
+        public IconBuilder Line(double strokeThickness, string themeColor, double x1, double y1, double x2, double y2)
+        {
+            Line(themeColor, x1, y1, x2, y2);
+            ((Line)Canvas.Children[Canvas.Children.Count - 1]).StrokeThickness = strokeThickness;
             return this;
         }
 
@@ -128,9 +143,9 @@ namespace DynamicGeometry
                         figure
                     }
                 },
-                Stroke = new SolidColorBrush(Colors.Black),
                 StrokeThickness = 1
             };
+            path.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
             Canvas.Children.Add(path);
             return this;
         }
@@ -163,6 +178,7 @@ namespace DynamicGeometry
         public IconBuilder Circle(double x, double y, double radius)
         {
             Shape circle = Factory.CreateCircleShape();
+            circle.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
             Canvas.Children.Add(circle);
             circle.Width = Canvas.Width * radius * 2;
             circle.Height = Canvas.Height * radius * 2;
@@ -174,6 +190,7 @@ namespace DynamicGeometry
         public IconBuilder Ellipse(double x, double y, double semiMajor, double semiMinor)
         {
             Shape ellipse = Factory.CreateCircleShape();
+            ellipse.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
             Canvas.Children.Add(ellipse);
             ellipse.Width = Canvas.Width * semiMajor * 2;
             ellipse.Height = Canvas.Height * semiMinor * 2;
@@ -191,6 +208,7 @@ namespace DynamicGeometry
             arcInfo.Item3.Size = new Size(Canvas.Width * radius, Canvas.Height * radius);
             arcInfo.Item3.SweepDirection = Avalonia.Media.SweepDirection.CounterClockwise;
             arcInfo.Item3.IsLargeArc = false;
+            arcInfo.Item1.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
             Canvas.Children.Add(arcInfo.Item1);
             return this;
         }
@@ -205,6 +223,7 @@ namespace DynamicGeometry
             arcInfo.Item3.SweepDirection = Avalonia.Media.SweepDirection.CounterClockwise;
             arcInfo.Item3.IsLargeArc = false;
             arcInfo.Item3.RotationAngle = a;
+            arcInfo.Item1.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
             Canvas.Children.Add(arcInfo.Item1);
             return this;
         }
@@ -228,6 +247,30 @@ namespace DynamicGeometry
             var result = AddPolygon((IEnumerable<Point>)points);
             result.Fill = fill;
             result.Stroke = stroke;
+            result.StrokeThickness = 1;
+            result.StrokeJoin = PenLineJoin.Round;
+            return this;
+        }
+
+        /// <summary>A filled polygon outlined in a color of the theme (the ink, as on the paper)</summary>
+        public IconBuilder Polygon(
+            Brush fill, string strokeThemeColor, params Avalonia.Point[] points)
+        {
+            var result = AddPolygon((IEnumerable<Point>)points);
+            result.Fill = fill;
+            result.BindTheme(Shape.StrokeProperty, strokeThemeColor);
+            result.StrokeThickness = 1;
+            result.StrokeJoin = PenLineJoin.Round;
+            return this;
+        }
+
+        /// <summary>A polygon filled and outlined in a color of the theme (an arrowhead in ink)</summary>
+        public IconBuilder Polygon(
+            string fillThemeColor, string strokeThemeColor, params Avalonia.Point[] points)
+        {
+            var result = AddPolygon((IEnumerable<Point>)points);
+            result.BindTheme(Shape.FillProperty, fillThemeColor);
+            result.BindTheme(Shape.StrokeProperty, strokeThemeColor);
             result.StrokeThickness = 1;
             result.StrokeJoin = PenLineJoin.Round;
             return this;
@@ -276,7 +319,8 @@ namespace DynamicGeometry
             return polyline;
         }
 
-        public IconBuilder Text(Color color, double x1, double y1, string text, double fontSize = 0)
+        /// <summary>Text in a color of the theme (the ink)</summary>
+        public IconBuilder Text(string themeColor, double x1, double y1, string text, double fontSize = 0)
         {
             TextBlock textblock = new TextBlock();
             textblock.Text = text;
@@ -288,7 +332,7 @@ namespace DynamicGeometry
             Canvas.Children.Add(textblock);
             textblock.SetValue(Canvas.LeftProperty, x1 * Canvas.Width);
             textblock.SetValue(Canvas.TopProperty, y1 * Canvas.Height);
-            textblock.Foreground = new SolidColorBrush(color);
+            textblock.BindTheme(TextBlock.ForegroundProperty, themeColor);
 
             return this;
         }

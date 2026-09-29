@@ -4,9 +4,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
-using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
+using DynamicGeometry;
 
 namespace LiveGeometry;
 
@@ -36,7 +36,11 @@ public class App : Application
     public override void Initialize()
     {
         Styles.Add(new FluentTheme());
-        RequestedThemeVariant = ThemeVariant.Light;
+
+        // the chrome's colors under each theme variant; the stored choice (or the system's)
+        // before the first frame, so nothing flashes light first
+        AppTheme.Register(this);
+        AppSettings.Instance.Load();
 
         // An exception that gets out of an event handler or a posted job would end the app
         // (the desktop window disappears, the browser page freezes) and take the drawing with

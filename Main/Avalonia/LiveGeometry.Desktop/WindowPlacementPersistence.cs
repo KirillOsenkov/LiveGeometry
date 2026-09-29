@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
 using Avalonia.Controls;
 
@@ -7,10 +6,10 @@ namespace LiveGeometry.Desktop;
 
 /// <summary>
 /// The main window comes back where it was closed: position, size, maximized or not.
-/// Windows only, through Get/SetWindowPlacement (the same approach as in Helix and
-/// MSBuild Structured Log Viewer): the placement is about the *restored* rectangle even while
-/// the window is maximized, it is in work area coordinates, and Windows itself pulls a window
-/// back onto a screen if the monitor it was on is gone.
+/// Windows only, through Get/SetWindowPlacement (the same approach as in MSBuild Structured
+/// Log Viewer): the placement is about the *restored* rectangle even while the window is
+/// maximized, it is in work area coordinates, and Windows itself pulls a window back onto a
+/// screen if the monitor it was on is gone. Kept in the <see cref="SettingsStore"/>.
 /// </summary>
 public static class WindowPlacementPersistence
 {
@@ -19,14 +18,7 @@ public static class WindowPlacementPersistence
     const int SW_SHOWMINIMIZED = 2;
     const int SW_SHOWMAXIMIZED = 3;
 
-    public static string SettingsFile
-    {
-        get
-        {
-            var folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            return Path.Combine(folder, "LiveGeometry", "MainWindowPosition.txt");
-        }
-    }
+    const string SettingKey = "WindowPlacement";
 
     /// <summary>
     /// Call before the window is shown. Without a saved placement the window is left alone.
@@ -53,12 +45,13 @@ public static class WindowPlacementPersistence
 
     static void Restore(Window window)
     {
-        if (!File.Exists(SettingsFile))
+        var saved = SettingsStore.Current.Get(SettingKey);
+        if (saved == null)
         {
             return;
         }
 
-        var placement = WindowPlacement.Parse(File.ReadAllText(SettingsFile).Trim());
+        var placement = WindowPlacement.Parse(saved.Trim());
         var handle = GetHandle(window);
         if (placement == null || handle == IntPtr.Zero)
         {
@@ -99,8 +92,7 @@ public static class WindowPlacementPersistence
                 placement.showCmd = SW_SHOWNORMAL;
             }
 
-            Directory.CreateDirectory(Path.GetDirectoryName(SettingsFile));
-            File.WriteAllText(SettingsFile, placement.ToString());
+            SettingsStore.Current.Set(SettingKey, placement.ToString());
         }
         catch (Exception ex)
         {
@@ -173,7 +165,7 @@ public static class WindowPlacementPersistence
             };
         }
 
-        // flags, showCmd, minimized x y, maximized x y, left, top, width, height - as in Helix
+        // flags, showCmd, minimized x y, maximized x y, left, top, width, height
         public override string ToString()
         {
             return $"{flags},{showCmd},{minX},{minY},{maxX},{maxY},{left},{top},{right - left},{bottom - top}";

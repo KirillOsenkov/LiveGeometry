@@ -47,7 +47,6 @@ namespace DynamicGeometry
                 // lid with handle, tapered body, two ribs - on a 14x14 grid
                 Data = Avalonia.Media.Geometry.Parse(
                     "M2.5,4 H11.5 M5.5,4 V2.5 H8.5 V4 M3.5,4 L4.2,12 H9.8 L10.5,4 M6,6.2 V9.8 M8,6.2 V9.8"),
-                Stroke = RibbonTheme.Destructive,
                 StrokeThickness = 1.2,
                 StrokeLineCap = Avalonia.Media.PenLineCap.Round,
                 StrokeJoin = Avalonia.Media.PenLineJoin.Round,
@@ -55,21 +54,22 @@ namespace DynamicGeometry
                 Height = 14,
                 VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
             };
-            return CreateContent(trashCan, name, RibbonTheme.Destructive);
+            trashCan.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, nameof(AppTheme.Destructive));
+            return CreateContent(trashCan, name, nameof(AppTheme.Destructive));
         }
 
         /// <summary>
-        /// An icon to the left of the caption.
+        /// An icon to the left of the caption, in a theme color.
         /// </summary>
-        static object CreateContent(Control icon, string name, Avalonia.Media.IBrush foreground)
+        static object CreateContent(Control icon, string name, string foreground)
         {
             icon.Margin = new Avalonia.Thickness(0, 0, 6, 0);
             var caption = new TextBlock()
             {
                 Text = name,
-                Foreground = foreground,
                 VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
             };
+            caption.BindTheme(TextBlock.ForegroundProperty, foreground);
             var result = new StackPanel() { Orientation = Avalonia.Layout.Orientation.Horizontal };
             result.Children.Add(icon);
             result.Children.Add(caption);
@@ -87,7 +87,7 @@ namespace DynamicGeometry
             var iconAttribute = operation.GetAttribute<PropertyGridIconAttribute>();
             if (iconAttribute != null)
             {
-                return CreateContent(PropertyGridIcons.Create(iconAttribute.Icon), name, RibbonTheme.Text);
+                return CreateContent(PropertyGridIcons.Create(iconAttribute.Icon), name, nameof(AppTheme.Text));
             }
 
             return name;

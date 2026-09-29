@@ -37,7 +37,7 @@ namespace DynamicGeometry
                 RowDefinitions.Add(new RowDefinition());
                 RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 ColumnDefinitions.Add(new ColumnDefinition());
-                MinWidth = RibbonTheme.ButtonMinWidth;
+                MinWidth = AppTheme.ButtonMinWidth;
 
                 // The tab's feet flare outwards, and drawing outside of one's bounds gets clipped,
                 // so the header is wider than the tab body by the flare on both sides.
@@ -69,16 +69,16 @@ namespace DynamicGeometry
                 RowDefinitions.Add(new RowDefinition());
                 RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 ColumnDefinitions.Add(new ColumnDefinition());
-                MinWidth = RibbonTheme.ButtonMinWidth;
+                MinWidth = AppTheme.ButtonMinWidth;
                 Margin = new Thickness(1, 0, 1, 0);
 
-                plate.CornerRadius = RibbonTheme.ButtonCornerRadius;
+                plate.CornerRadius = AppTheme.ButtonCornerRadius;
                 plate.BorderThickness = new Thickness(1);
                 Grid.SetRowSpan(plate, 2);
 
                 iconHolder.Margin = new Thickness(6, 5, 6, 0);
                 textBlock.Margin = new Thickness(6, 1, 6, 4);
-                textBlock.Foreground = RibbonTheme.Text;
+                textBlock.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
                 Grid.SetRow(textBlock, 1);
 
                 Children.Add(plate);
@@ -120,7 +120,7 @@ namespace DynamicGeometry
         {
             if (isTabHeader)
             {
-                textBlock.Foreground = isChecked ? RibbonTheme.TabHeaderTextSelected : RibbonTheme.TabHeaderText;
+                textBlock.BindTheme(TextBlock.ForegroundProperty, isChecked ? nameof(AppTheme.TextEmphasis) : nameof(AppTheme.Text));
                 tabOutline.IsSelected = isChecked;
                 return;
             }
@@ -128,15 +128,16 @@ namespace DynamicGeometry
             // never fully transparent-null: the plate is what makes the whole button clickable
             if (isChecked)
             {
-                plate.Background = RibbonTheme.ButtonChecked;
-                plate.BorderBrush = RibbonTheme.ButtonCheckedBorder;
+                plate.BindTheme(Border.BackgroundProperty, nameof(AppTheme.ButtonChecked));
+                plate.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.ButtonCheckedBorder));
             }
             else
             {
-                plate.Background = isPressed
-                    ? RibbonTheme.ButtonPressed
-                    : isHovered ? RibbonTheme.ButtonHover : Brushes.Transparent;
-                plate.BorderBrush = Brushes.Transparent;
+                string background = isPressed
+                    ? nameof(AppTheme.ButtonPressed)
+                    : isHovered ? nameof(AppTheme.ButtonHover) : null;
+                plate.BindTheme(Border.BackgroundProperty, background, whenNone: Brushes.Transparent);
+                plate.BindTheme(Border.BorderBrushProperty, key: null, whenNone: Brushes.Transparent);
             }
         }
 

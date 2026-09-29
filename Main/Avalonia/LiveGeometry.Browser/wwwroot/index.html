@@ -8,6 +8,20 @@
          relative urls below would be looked up under /gallery/. -->
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <!-- The theme before the app is up, so that the splash and the page behind it are
+         already dark for a dark theme: the choice the app stored (main.js keeps it in local
+         storage under the same key), or else what the browser asks for. -->
+    <script>
+      (function () {
+        var theme = null;
+        try { theme = localStorage.getItem('LiveGeometry.Theme'); } catch (e) { }
+        if (theme !== 'Light' && theme !== 'Dark') {
+          theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light';
+        }
+        document.documentElement.setAttribute('data-theme', theme.toLowerCase());
+      })();
+    </script>
     <link rel="stylesheet" href="./app.css" />
     <link rel="icon" href="./favicon.ico" />
 

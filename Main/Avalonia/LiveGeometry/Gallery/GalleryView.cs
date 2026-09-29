@@ -27,9 +27,6 @@ public class GalleryView : DockPanel
     static readonly Color newDrawingPlate = Color.Parse("#E6EFFB");
     static readonly Color continueDrawingPlate = Color.Parse("#FBF1DC");
 
-    static readonly IBrush accent = new SolidColorBrush(Color.FromRgb(0x2F, 0x7B, 0xD6));
-    static readonly IBrush brandText = new SolidColorBrush(Color.FromRgb(0x6B, 0x74, 0x82));
-
     readonly StackPanel startTiles = new StackPanel()
     {
         Orientation = Orientation.Horizontal,
@@ -40,9 +37,9 @@ public class GalleryView : DockPanel
     readonly GalleryTile continueTile;
 
     /// <param name="arrange">The arrange mode: see <see cref="Arrange_PointerPressed"/></param>
-    public GalleryView(Control buildStamp, bool arrange = false)
+    public GalleryView(Control corner, bool arrange = false)
     {
-        Background = Brushes.White;
+        this.BindTheme(BackgroundProperty, nameof(AppTheme.Page));
 
         startTiles.Children.Add(new GalleryTile(PlusPicture(), "New Drawing", newDrawingPlate, () => NewDrawingRequested())
         {
@@ -102,16 +99,17 @@ public class GalleryView : DockPanel
             Margin = new Thickness(32, 24, 32, 40)
         };
         content.Children.Add(startRow);
-        content.Children.Add(new TextBlock()
+        var heading = new TextBlock()
         {
             Text = arrange
                 ? "Arrange the gallery: drag a tile into place. Every drop rewrites the order in GalleryCatalog.cs; rebuild to see it in the app."
                 : "Gallery",
             FontSize = arrange ? 16 : 24,
             FontWeight = FontWeight.SemiBold,
-            Foreground = arrange ? accent : RibbonTheme.Text,
             Margin = new Thickness(2, 30, 0, 12)
-        });
+        };
+        heading.BindTheme(TextBlock.ForegroundProperty, arrange ? nameof(AppTheme.Accent) : nameof(AppTheme.Text));
+        content.Children.Add(heading);
         content.Children.Add(galleryTiles);
         if (arrange)
         {
@@ -128,13 +126,13 @@ public class GalleryView : DockPanel
             Content = content
         });
 
-        // the build stamp in the corner, as on the editor's toolbar
-        if (buildStamp != null)
+        // the theme button and the build stamp in the corner, as on the editor's toolbar
+        if (corner != null)
         {
-            buildStamp.HorizontalAlignment = HorizontalAlignment.Right;
-            buildStamp.VerticalAlignment = VerticalAlignment.Top;
-            buildStamp.Margin = new Thickness(0, 6, 22, 0);
-            page.Children.Add(buildStamp);
+            corner.HorizontalAlignment = HorizontalAlignment.Right;
+            corner.VerticalAlignment = VerticalAlignment.Top;
+            corner.Margin = new Thickness(0, 6, 22, 0);
+            page.Children.Add(corner);
         }
 
         Children.Add(page);
@@ -238,14 +236,15 @@ public class GalleryView : DockPanel
             Spacing = 20
         };
         brand.Children.Add(AppIcon.Create(size: 68));
-        brand.Children.Add(new TextBlock()
+        var name = new TextBlock()
         {
             Text = "Live Geometry",
             FontSize = 38,
             FontWeight = FontWeight.SemiBold,
-            Foreground = brandText,
             VerticalAlignment = VerticalAlignment.Center
-        });
+        };
+        name.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.TextMuted));
+        brand.Children.Add(name);
 
         // shrinks on a narrow window instead of running off the edge; the margin keeps it
         // off the tiles at its left
@@ -279,8 +278,10 @@ public class GalleryView : DockPanel
 
     static Control PlusPicture()
     {
+        var disc = new Ellipse() { Width = 84, Height = 84 };
+        disc.BindTheme(Shape.FillProperty, nameof(AppTheme.Accent));
         return Picture(
-            new Ellipse() { Width = 84, Height = 84, Fill = accent },
+            disc,
             new Path()
             {
                 Data = Geometry.Parse("M42,22 V62 M22,42 H62"),

@@ -509,12 +509,47 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   whose tooltip is the build. The first button is the app's mark and folds the ribbon (Ctrl+F1,
   `MainView.UpdateRibbon`): folded by default when a gallery drawing opens on a small screen
   (under 700x500), open otherwise; once pressed, the user's choice holds for the session.
-  Everything else is keys. Lost their menu entry and are unreachable for now: Lock, the
-  settings page. Not on the Selection tab (obscure for the audience; the commands and
+  Everything else is keys. Lost its menu entry and is unreachable for now: Lock. Not on the Selection tab (obscure for the audience; the commands and
   settings are still there in `DrawingHost`): Ortho, Polar, Snap to grid, Snap to point, Snap to
   center. Shift while dragging or clicking still snaps to the grid, and a click near the middle
   of a segment still makes a midpoint.
-- **Ribbon look** is centralized in `UI/Ribbon/RibbonTheme.cs`; `ButtonGrid` draws the
+- **The chrome's colors are a theme** (`UI/AppTheme.cs`, not `Theme`: every control has a
+  `Theme` property, its ControlTheme, which would shadow the class). One `Color` property per
+  role (`Strip`, `HeaderRow`, `Background`, `Text`, `Ink`, `Accent`...), and `AppTheme.Light`
+  and `AppTheme.Dark` are the values; each theme is a `ThemeVariant` whose resource dictionary
+  of brushes (under the property names) is registered on the application, and the chrome binds
+  to those resources - the code side of DynamicResource - through `ThemeBinding`:
+  `border.BindTheme(Border.BackgroundProperty, nameof(AppTheme.Background))`. A control whose
+  color follows its state binds again to another name (a null name unbinds, `whenNone:` gives
+  the plain value); pens made in `Render` come from a styled property bound the same way with
+  `AffectsRender`; a gradient of theme colors is rebuilt from `ObserveTheme`. Never copy a
+  color out of a theme brush into a plain brush: it stops following. Fluent's own controls
+  (text boxes, combos, scroll bars, menus, tooltips) follow the variant on their own; the
+  property grid's styles use `DynamicResourceExtension` setters (`PropertyGridTheme`).
+  Switching is `AppTheme.Apply(choice)`: a theme's name, or `System` (`RequestedThemeVariant
+  = Default`, the OS's or the browser's `prefers-color-scheme`); `AppTheme.CurrentChanged`
+  is for what can't bind. A theme is a `[PropertyGridNoUndo]` object with a color picker per
+  row: the settings page (the gear after Redo on the toolbar) opens `AppTheme.Current` through "Theme
+  colors", every pick repaints the app at once (the setter writes the dictionary, which
+  notifies its owner), and "Copy as code" puts the initializer on the clipboard to paste
+  back into `AppTheme.cs`. A new theme is another instance with its own variant, inheriting
+  Light or Dark for Fluent's sake, added to `All`. Tool icons draw their lines in `Ink`
+  (`IconBuilder` binds them, and takes a theme color's name where a `Color` was passed);
+  the drawn chrome icons (`MainToolbarIcons`, `PropertyGridIcons`) use a sentinel brush that
+  `Shape` rebinds to `IconOutline`; fills stay the colors of the things drawn. The sun/moon
+  beside the Octocat (both pages) flips between light and dark, and landing on what the system
+  says stores `System` again. Out of the theme for now: the canvas (white paper), the gallery's
+  pastel tiles (captions go by the plate), the drawings' styles. On Windows the title bar is
+  asked to go dark too (`LiveGeometry.Desktop/WindowFrameTheme.cs`).
+- **Settings between runs** (`LiveGeometry/SettingsStore.cs`): `Get`/`Set` by key, the desktop
+  head keeping them as `key=value` lines in `%LocalAppData%\LiveGeometry\Settings.txt`
+  (`FileSettingsStore`), the browser in `localStorage` under `LiveGeometry.<key>`
+  (`BrowserSettingsStore`, two imports in `main.js`; `index.html` reads the `Theme` entry
+  before the runtime starts, so the splash and the page are already dark). `AppSettings`
+  (`[PropertyGridName("Settings")]`, the gear) is the page over it: `Theme` is `System` or a
+  theme's name, applied in `App.Initialize` before the first frame. The window placement is
+  the `WindowPlacement` line of the same file.
+- **Ribbon look**: `ButtonGrid` draws the
   hover/pressed/checked plate; `Ribbon`/`TabPanel` replace the Fluent templates in code. To
   bring the group headers closer together, change `ButtonGrid.HeaderOverlap`, not the padding
   inside the tab. An on/off `Command` exposes `IsChecked` (a `Func<bool>`), which its button
@@ -757,8 +792,9 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
   `drag <t> x1 y1 x2 y2 [steps] [--shift] [--alt]`, `wheel <t> x y <notches>`, `keys <t> "^s"`, `text`, `focus`,
   `cursor`, `place <t> x y w h`. Target = process name | `pid:N` | `hwnd:0x..` | `title:substr`.
   - The VB6 app starts maximized: `place <t> 100 100 1500 1000` first. The Avalonia desktop app
-    remembers its window (`LiveGeometry.Desktop/WindowPlacementPersistence.cs`, a
-    `MainWindowPosition.txt` in the user's local app data). It is left at 100,100 1700x1100 for
+    remembers its window (`LiveGeometry.Desktop/WindowPlacementPersistence.cs`, the
+    `WindowPlacement` line of `Settings.txt` in the user's local app data, next to the theme
+    choice). It is left at 100,100 1700x1100 for
     testing - `place` is only needed again if someone resized it. Close test instances with
     `(Get-Process -Id N).CloseMainWindow()`: that goes through the normal close path, which is
     what saves the placement (and it is more reliable than Alt+F4).
@@ -792,19 +828,26 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
     single-letter shortcuts); other characters go as Unicode packets, which KeyDown-based
     shortcuts never see.
 - `tools/webauto.cs` - the browser build in headless Edge over CDP (port 9333, Edge stays alive
-  between calls). `start <url> [w h] [--lang xx-XX]`, `stop`, `nav`, `wait <console text>`,
+  between calls). `start <url> [w h] [--lang xx-XX] [--dark]`, `stop`, `nav`, `wait <console text>`,
   `console [--errors]`, `shot`, `click`, `drag`, `move`, `key <Key> [ctrl] [shift] [alt]`,
   `text`, `eval <js>`.
   - The app takes several seconds to boot after `start`; the splash `div` stays in the DOM, so
     don't test for its absence - take a screenshot.
   - Edge runs with `--guest`; without it Edge signs the throwaway profile into the Windows
     account and opens a sync dialog as an extra page target.
+  - `--dark` (on `start`, a fresh one: `stop` first) runs Edge with `--force-dark-mode`, so
+    `prefers-color-scheme` answers dark and the app's `System` theme comes up dark. A CDP
+    media emulation would not do: it dies with the session that set it, before the app reads
+    the query. The stored choice is tested with
+    `eval "localStorage.setItem('LiveGeometry.Theme','Dark')"` and a `nav`; `--guest` starts
+    with an empty storage every time.
 - `tools/serve.cs <publish>/wwwroot [port]` - static server for a publish output (blocks; run in
   the background). Separate file because a running server locks its own exe.
 
 Web smoke test (run before deploying changes that touch file I/O, clipboard, fonts, or anything
 reflection-based): publish Release, `serve` its wwwroot, `webauto start http://localhost:5005/`,
 `console --errors` must show no `CRASH:`, draw a segment via the Lines tab, `shot`, `stop`.
+A change to the theme wants the same once more with `start ... --dark`.
 
 ## VB6 parity backlog
 

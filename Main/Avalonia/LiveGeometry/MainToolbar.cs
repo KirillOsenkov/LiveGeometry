@@ -28,6 +28,12 @@ public class MainToolbar : Panel
     // where buttons are added: the strip itself or the group that is open
     Panel current;
 
+    // the small things at the far right (the theme button, the build stamp), as one
+    readonly StackPanel rightControls = new StackPanel()
+    {
+        Orientation = Orientation.Horizontal,
+        Spacing = 2
+    };
     Control rightControl;
     double rightWidth; // as last measured; kept while it is hidden
 
@@ -41,16 +47,12 @@ public class MainToolbar : Panel
     // between a wrapped group and the ribbon under it
     const double WrappedRowGap = 4;
 
-    // the ribbon's tint, a shade darker than its header row
-    static readonly IBrush StripBackground = new SolidColorBrush(Color.FromRgb(0xDD, 0xE0, 0xE3));
-
     // along the bottom edge, like the line under the ribbon's group headers: the tab of the
     // open ribbon (below) swings up out of it, and it is what the strip ends in when the ribbon
     // is folded and the canvas is right under it
     readonly Border bottomLine = new Border()
     {
-        Height = 1,
-        Background = RibbonTheme.TabLine
+        Height = 1
     };
 
     // The button that stands for the ribbon: while the ribbon is open it is drawn as a tab
@@ -64,18 +66,7 @@ public class MainToolbar : Panel
 
     readonly TabOutline tab = new TabOutline()
     {
-        IsSelected = true,
-        Surface = new LinearGradientBrush()
-        {
-            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-            EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            GradientStops =
-            {
-                new GradientStop(((ISolidColorBrush)RibbonTheme.Background).Color, 0),
-                new GradientStop(((ISolidColorBrush)RibbonTheme.Background).Color, 0.9),
-                new GradientStop(((ISolidColorBrush)RibbonTheme.HeaderRowBackground).Color, 1)
-            }
-        }
+        IsSelected = true
     };
 
     public MainToolbar()
@@ -84,10 +75,47 @@ public class MainToolbar : Panel
 
         // A notch darker and more neutral than the ribbon's header row right under it; the line
         // between the two is what the tab of the open ribbon opens through.
-        Background = StripBackground;
+        this.BindTheme(BackgroundProperty, nameof(AppTheme.Strip));
+        bottomLine.BindTheme(Border.BackgroundProperty, nameof(AppTheme.TabLine));
         Children.Add(bottomLine);
         Children.Add(tab);
         Children.Add(buttons);
+
+        // the tab's fill is a gradient of two theme colors: built again whenever either changes
+        tab.BindTheme(TabOutline.SurfaceProperty, key: null);
+        this.ObserveTheme(nameof(AppTheme.Background), color =>
+        {
+            tabBackground = color;
+            UpdateTabSurface();
+        });
+        this.ObserveTheme(nameof(AppTheme.HeaderRow), color =>
+        {
+            tabHeaderRow = color;
+            UpdateTabSurface();
+        });
+    }
+
+    Color? tabBackground;
+    Color? tabHeaderRow;
+
+    void UpdateTabSurface()
+    {
+        if (tabBackground == null || tabHeaderRow == null)
+        {
+            return;
+        }
+
+        tab.Surface = new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(tabBackground.Value, 0),
+                new GradientStop(tabBackground.Value, 0.9),
+                new GradientStop(tabHeaderRow.Value, 1)
+            }
+        };
     }
 
     /// <summary>The button that is drawn as a tab while <see cref="IsTabOpen"/></summary>
@@ -121,15 +149,20 @@ public class MainToolbar : Panel
     /// </summary>
     public const double RowTopInset = 2;
 
-    /// <summary>Something small at the far right (the build stamp)</summary>
+    /// <summary>Something small at the far right (the theme button, the build stamp), after what is there</summary>
     public void AddAtRight(Control control)
     {
-        rightControl = new Border()
+        if (rightControl == null)
         {
-            Padding = new Thickness(0, RowTopInset, 0, 0),
-            Child = control
-        };
-        Children.Add(rightControl);
+            rightControl = new Border()
+            {
+                Padding = new Thickness(0, RowTopInset, 0, 0),
+                Child = rightControls
+            };
+            Children.Add(rightControl);
+        }
+
+        rightControls.Children.Add(control);
     }
 
     protected override Size MeasureOverride(Size availableSize)
@@ -271,12 +304,13 @@ public class MainToolbar : Panel
 
     public void AddSeparator()
     {
-        current.Children.Add(new Border()
+        var separator = new Border()
         {
             Width = 1,
-            Margin = new Thickness(5, 5, 5, 5),
-            Background = RibbonTheme.TabLine
-        });
+            Margin = new Thickness(5, 5, 5, 5)
+        };
+        separator.BindTheme(Border.BackgroundProperty, nameof(AppTheme.TabLine));
+        current.Children.Add(separator);
     }
 
     public TextBlock AddText(FontWeight weight, double minWidth = 0, double fontSize = 13)
@@ -285,11 +319,11 @@ public class MainToolbar : Panel
         {
             FontSize = fontSize,
             FontWeight = weight,
-            Foreground = RibbonTheme.Text,
             MinWidth = minWidth,
             TextAlignment = TextAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
+        text.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
         current.Children.Add(text);
         return text;
     }
@@ -314,11 +348,11 @@ public class MainToolbar : Panel
         {
             FontSize = fontSize,
             FontWeight = weight,
-            Foreground = RibbonTheme.Text,
             TextTrimming = TextTrimming.CharacterEllipsis,
             VerticalAlignment = VerticalAlignment.Center,
             Margin = new Thickness(6, 0, 6, 0)
         };
+        text.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
         centered.Trailing.Children.Add(text);
         return text;
     }
@@ -444,7 +478,7 @@ public class MainToolbarButton : Border, ICommandObserver
         this.action = action;
         Width = iconSize + 2 * inset + 4;
         Height = iconSize + 2 * inset;
-        CornerRadius = RibbonTheme.ButtonCornerRadius;
+        CornerRadius = AppTheme.ButtonCornerRadius;
         Background = Brushes.Transparent;
 
         // always there (transparent), so that the icon doesn't shift when the button is checked
@@ -502,14 +536,21 @@ public class MainToolbarButton : Border, ICommandObserver
     {
         if (isChecked && !isPressed)
         {
-            Background = RibbonTheme.ButtonChecked;
-            BorderBrush = RibbonTheme.ButtonCheckedBorder;
+            this.BindTheme(BackgroundProperty, nameof(AppTheme.ButtonChecked));
+            this.BindTheme(BorderBrushProperty, nameof(AppTheme.ButtonCheckedBorder));
             return;
         }
 
         // on the header row, which is darker than the tools strip: the hover plate is lighter
-        Background = isPressed ? RibbonTheme.ButtonPressed : (isOver ? RibbonTheme.GroupBackground : Brushes.Transparent);
-        BorderBrush = Brushes.Transparent;
+        string plate = isPressed ? nameof(AppTheme.ButtonPressed) : (isOver ? nameof(AppTheme.GroupBackground) : null);
+        this.BindTheme(BackgroundProperty, plate, whenNone: Brushes.Transparent);
+        this.BindTheme(BorderBrushProperty, key: null, whenNone: Brushes.Transparent);
+    }
+
+    /// <summary>A new picture in the button (the theme button turns from moon to sun)</summary>
+    public void SetIcon(Control icon)
+    {
+        ((Viewbox)Child).Child = icon;
     }
 
     public void EnabledChanged(bool newEnabledState)
@@ -540,7 +581,12 @@ public static class MainToolbarIcons
 {
     public const double Size = 20;
 
-    static readonly IBrush outline = new SolidColorBrush(Color.FromRgb(0x3A, 0x42, 0x50));
+    /// <summary>Stands for the theme's <see cref="AppTheme.IconOutline"/>: <see cref="Shape"/> binds it</summary>
+    static readonly IBrush outline = new SolidColorBrush(Colors.Black);
+
+    /// <summary>Stands for the theme's <see cref="AppTheme.Accent"/></summary>
+    static readonly IBrush arrow = new SolidColorBrush(Colors.Blue);
+
     static readonly IBrush paper = Brushes.White;
     static readonly IBrush green = new SolidColorBrush(Color.FromRgb(0x2E, 0x9E, 0x4F));
     static readonly IBrush folderBack = new SolidColorBrush(Color.FromRgb(0xF2, 0xB6, 0x32));
@@ -549,7 +595,6 @@ public static class MainToolbarIcons
     static readonly IBrush diskBody = new SolidColorBrush(Color.FromRgb(0x4C, 0x8B, 0xF5));
     static readonly IBrush diskOutline = new SolidColorBrush(Color.FromRgb(0x2A, 0x5D, 0xB0));
     static readonly IBrush diskLabel = new SolidColorBrush(Color.FromRgb(0xE8, 0xEE, 0xF9));
-    static readonly IBrush arrow = new SolidColorBrush(Color.FromRgb(0x2F, 0x7B, 0xD6));
     static readonly IBrush tileBlue = new SolidColorBrush(Color.FromRgb(0xBF, 0xDC, 0xFF));
     static readonly IBrush tileYellow = new SolidColorBrush(Color.FromRgb(0xFF, 0xE7, 0xA3));
     static readonly IBrush tileGreen = new SolidColorBrush(Color.FromRgb(0xC4, 0xEB, 0xC8));
@@ -615,6 +660,66 @@ public static class MainToolbarIcons
             Shape("M12,4 L16,8 L12,12", null, arrow, thickness: 2));
     }
 
+    /// <summary>A gear: the settings page</summary>
+    public static Control Settings()
+    {
+        // eight teeth around a ring, drawn as one outline
+        var teeth = new System.Text.StringBuilder();
+        const double outer = 8.6, inner = 6.6, hub = 2.6, center = 10;
+        for (int i = 0; i < 8; i++)
+        {
+            double angle = i * System.Math.PI / 4;
+            double toothHalf = System.Math.PI / 20;
+            double gapHalf = System.Math.PI / 8 - toothHalf;
+            teeth.Append(i == 0 ? "M" : "L");
+            teeth.Append(PolarPoint(center, inner, angle - gapHalf - toothHalf));
+            teeth.Append(" L").Append(PolarPoint(center, outer, angle - toothHalf));
+            teeth.Append(" L").Append(PolarPoint(center, outer, angle + toothHalf));
+            teeth.Append(" L").Append(PolarPoint(center, inner, angle + toothHalf + gapHalf));
+        }
+
+        teeth.Append(" Z");
+        return Icon(
+            Shape(teeth.ToString(), null, outline, thickness: 1.5),
+            Shape(string.Format(
+                System.Globalization.CultureInfo.InvariantCulture,
+                "M{0},{1} m-{2},0 a{2},{2} 0 1 0 {3},0 a{2},{2} 0 1 0 -{3},0",
+                center,
+                center,
+                hub,
+                2 * hub), null, outline, thickness: 1.5));
+    }
+
+    /// <summary>A crescent moon: the dark theme is a click away</summary>
+    public static Control Moon()
+    {
+        return Icon(Shape("M12.5,3.2 A7,7 0 1 0 16.8,12.6 A5.6,5.6 0 0 1 12.5,3.2 Z", null, outline, thickness: 1.5));
+    }
+
+    /// <summary>The sun: the light theme is a click away</summary>
+    public static Control Sun()
+    {
+        var rays = new System.Text.StringBuilder();
+        for (int i = 0; i < 8; i++)
+        {
+            double angle = i * System.Math.PI / 4;
+            rays.Append("M").Append(PolarPoint(10, 6.2, angle)).Append(" L").Append(PolarPoint(10, 8.6, angle)).Append(' ');
+        }
+
+        return Icon(
+            Shape("M10,10 m-3.6,0 a3.6,3.6 0 1 0 7.2,0 a3.6,3.6 0 1 0 -7.2,0", null, outline, thickness: 1.5),
+            Shape(rays.ToString(), null, outline, thickness: 1.5));
+    }
+
+    static string PolarPoint(double center, double radius, double angle)
+    {
+        return string.Format(
+            System.Globalization.CultureInfo.InvariantCulture,
+            "{0:0.##},{1:0.##}",
+            center + radius * System.Math.Cos(angle),
+            center + radius * System.Math.Sin(angle));
+    }
+
     static Control Icon(params Path[] shapes)
     {
         var canvas = new Canvas() { Width = Size, Height = Size };
@@ -624,7 +729,7 @@ public static class MainToolbarIcons
 
     static Path Shape(string data, IBrush fill, IBrush stroke, double thickness = 1)
     {
-        return new Path()
+        var path = new Path()
         {
             Data = Geometry.Parse(data),
             Fill = fill,
@@ -633,5 +738,18 @@ public static class MainToolbarIcons
             StrokeJoin = PenLineJoin.Round,
             StrokeLineCap = PenLineCap.Round
         };
+
+        // the outlines and the arrows follow the theme; the fills are the colors of the
+        // things drawn (a folder, a disk)
+        if (stroke == outline)
+        {
+            path.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, nameof(AppTheme.IconOutline));
+        }
+        else if (stroke == arrow)
+        {
+            path.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, nameof(AppTheme.Accent));
+        }
+
+        return path;
     }
 }

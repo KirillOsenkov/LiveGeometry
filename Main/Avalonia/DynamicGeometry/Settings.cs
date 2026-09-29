@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Avalonia.Media;
 
 namespace DynamicGeometry
 {
@@ -11,7 +10,6 @@ namespace DynamicGeometry
         public static bool ChangePointStrokeWidthWhenSelected = false;
         public static double DefaultUnitLength = 48;
         public static double DefaultToolbarFontSize = 11;
-        public static Color PropertyGridTitleColor = Color.FromRgb(0x2B, 0x30, 0x38);
         public static bool ShowIconInTabPanelHeader = true;
         public static bool UpdateSelectedBehaviorOnTabChange = true;
         public static bool ShowStyleNameInStylePicker = false;

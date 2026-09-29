@@ -102,7 +102,7 @@ namespace DynamicGeometry
                 .BuildIcon()
                 .Polygon(
                     new SolidColorBrush(Color.FromArgb(255, 255, 214, 214)),
-                    new SolidColorBrush(Colors.Black),
+                    nameof(AppTheme.Ink),
                     pentagon);
 
             // hatching: the parts of the lines x + y = c that are inside the pentagon

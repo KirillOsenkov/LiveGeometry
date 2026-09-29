@@ -4,7 +4,6 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 
 namespace DynamicGeometry
 {
@@ -31,7 +30,7 @@ namespace DynamicGeometry
         {
             groupBox = new Border();
             groupBox.BorderThickness = new Thickness(1);
-            groupBox.BorderBrush = new SolidColorBrush(Colors.LightGray);
+            groupBox.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.Separator));
             stackPanel = new StackPanel();
             stackPanel.Margin = new Thickness(7);
             groupBox.Child = stackPanel;

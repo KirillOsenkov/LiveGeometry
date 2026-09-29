@@ -34,6 +34,19 @@ public class GradientStopBar : Control
     const double RemoveDistance = 36;
     const double Inset = HandleRadius + 1;
 
+    /// <summary>The outline of the bar and of the handles</summary>
+    public static readonly StyledProperty<IBrush> LineProperty =
+        AvaloniaProperty.Register<GradientStopBar, IBrush>(nameof(Line));
+
+    /// <summary>The outline of the selected handle</summary>
+    public static readonly StyledProperty<IBrush> SelectedLineProperty =
+        AvaloniaProperty.Register<GradientStopBar, IBrush>(nameof(SelectedLine));
+
+    static GradientStopBar()
+    {
+        AffectsRender<GradientStopBar>(LineProperty, SelectedLineProperty);
+    }
+
     readonly List<ColorStop> stops = new List<ColorStop>();
     ColorStop dragged;
     bool isRemoving;
@@ -42,6 +55,20 @@ public class GradientStopBar : Control
     {
         Height = HandleCenterY + HandleRadius + 2;
         Cursor = new Cursor(StandardCursorType.Hand);
+        this.BindTheme(LineProperty, nameof(AppTheme.TabLine));
+        this.BindTheme(SelectedLineProperty, nameof(AppTheme.ButtonCheckedBorder));
+    }
+
+    public IBrush Line
+    {
+        get => GetValue(LineProperty);
+        set => SetValue(LineProperty, value);
+    }
+
+    public IBrush SelectedLine
+    {
+        get => GetValue(SelectedLineProperty);
+        set => SetValue(SelectedLineProperty, value);
     }
 
     public int MinimumStops { get; set; } = 2;
@@ -103,7 +130,7 @@ public class GradientStopBar : Control
             gradient.GradientStops.Add(new GradientStop(stop.Color, stop.Offset));
         }
 
-        context.DrawRectangle(gradient, new Pen(RibbonTheme.TabLine, thickness: 1), bar, 4, 4);
+        context.DrawRectangle(gradient, new Pen(Line, thickness: 1), bar, 4, 4);
 
         // the selected handle last, so that it is on top of a neighbor it overlaps
         foreach (var stop in stops.OrderBy(s => s == SelectedStop))
@@ -113,12 +140,12 @@ public class GradientStopBar : Control
             double opacity = stop == dragged && isRemoving ? 0.3 : 1;
             using (context.PushOpacity(opacity))
             {
-                var tick = new Pen(isSelected ? RibbonTheme.ButtonCheckedBorder : RibbonTheme.TabLine, thickness: isSelected ? 2 : 1);
+                var tick = new Pen(isSelected ? SelectedLine : Line, thickness: isSelected ? 2 : 1);
                 context.DrawLine(tick, new Point(center.X, BarHeight), new Point(center.X, HandleCenterY - HandleRadius));
                 context.DrawEllipse(ColorText.CheckerboardBrush, pen: null, center, HandleRadius, HandleRadius);
                 context.DrawEllipse(
                     new SolidColorBrush(stop.Color),
-                    new Pen(isSelected ? RibbonTheme.ButtonCheckedBorder : RibbonTheme.TabLine, thickness: isSelected ? 2.5 : 1),
+                    new Pen(isSelected ? SelectedLine : Line, thickness: isSelected ? 2.5 : 1),
                     center,
                     HandleRadius,
                     HandleRadius);

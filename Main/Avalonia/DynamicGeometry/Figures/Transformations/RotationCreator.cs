@@ -169,13 +169,13 @@ namespace DynamicGeometry
                 .Point(0.1, 0.9)
                 .Polygon(
                     new SolidColorBrush(Colors.Yellow),
-                    new SolidColorBrush(Colors.Black),
+                    nameof(AppTheme.Ink),
                     new Point(0.3, 0.9),
                     new Point(0.9, 0.9),
                     new Point(0.9, 0.6))
                 .Polygon(
                     new SolidColorBrush(Color.FromArgb(255, 128, 255, 128)),
-                    new SolidColorBrush(Colors.Black),
+                    nameof(AppTheme.Ink),
                     new Point(0.24, 0.06),
                     new Point(0.5, 0.21),
                     new Point(0.2, 0.73))

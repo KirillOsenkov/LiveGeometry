@@ -106,10 +106,10 @@ namespace DynamicGeometry
             {
                 Text = "x²+y²=r²",
                 FontSize = 13,
-                Foreground = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.Black),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
+            text.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Ink));
             var grid = new Grid()
             {
                 MinWidth = IconBuilder.IconSize,

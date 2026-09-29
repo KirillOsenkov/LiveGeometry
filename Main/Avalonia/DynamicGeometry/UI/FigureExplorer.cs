@@ -38,8 +38,6 @@ public class FigureExplorer : Border
     /// <summary>Between the edge of the window and the arrows</summary>
     const double LeftPadding = 8;
 
-    static readonly IBrush ArrowBrush = new SolidColorBrush(Color.FromRgb(0x2F, 0x7F, 0xD8));
-
     readonly StackPanel rowPanel = new StackPanel();
     readonly Canvas arrows = new Canvas() { IsHitTestVisible = false };
     readonly ScrollViewer scrollViewer;
@@ -67,7 +65,7 @@ public class FigureExplorer : Border
     public FigureExplorer()
     {
         Focusable = true;
-        Background = RibbonTheme.Background;
+        this.BindTheme(BackgroundProperty, nameof(AppTheme.Background));
 
         var content = new Panel() { Margin = new Thickness(LeftPadding, 0, 0, 0) };
         content.Children.Add(rowPanel);
@@ -84,9 +82,9 @@ public class FigureExplorer : Border
             Text = "Figures",
             FontSize = 13,
             FontWeight = FontWeight.SemiBold,
-            Foreground = RibbonTheme.Text,
             Margin = new Thickness(LeftPadding + ArrowMargin + 4, 8, 8, 6)
         };
+        header.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
         var dock = new DockPanel();
         DockPanel.SetDock(header, Dock.Top);
         dock.Children.Add(header);
@@ -436,39 +434,42 @@ public class FigureExplorer : Border
 
         AddLine(new Point(TrunkX, top), new Point(TrunkX, bottom));
         AddLine(new Point(TrunkX, origin), new Point(tip - 2, origin));
-        arrows.Children.Add(new Avalonia.Controls.Shapes.Ellipse()
+        var dot = new Avalonia.Controls.Shapes.Ellipse()
         {
             Width = 5,
             Height = 5,
-            Fill = ArrowBrush,
             [Canvas.LeftProperty] = tip - 4.5,
             [Canvas.TopProperty] = origin - 2.5
-        });
+        };
+        dot.BindTheme(Avalonia.Controls.Shapes.Shape.FillProperty, nameof(AppTheme.Accent));
+        arrows.Children.Add(dot);
 
         foreach (var y in targets)
         {
             AddLine(new Point(TrunkX, y), new Point(tip - ArrowHeadLength, y));
-            arrows.Children.Add(new Avalonia.Controls.Shapes.Polygon()
+            var head = new Avalonia.Controls.Shapes.Polygon()
             {
                 Points = new List<Point>()
                 {
                     new Point(tip, y),
                     new Point(tip - ArrowHeadLength, y - 3),
                     new Point(tip - ArrowHeadLength, y + 3)
-                },
-                Fill = ArrowBrush
-            });
+                }
+            };
+            head.BindTheme(Avalonia.Controls.Shapes.Shape.FillProperty, nameof(AppTheme.Accent));
+            arrows.Children.Add(head);
         }
 
         void AddLine(Point start, Point end)
         {
-            arrows.Children.Add(new Avalonia.Controls.Shapes.Line()
+            var line = new Avalonia.Controls.Shapes.Line()
             {
                 StartPoint = start,
                 EndPoint = end,
-                Stroke = ArrowBrush,
                 StrokeThickness = 1.5
-            });
+            };
+            line.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, nameof(AppTheme.Accent));
+            arrows.Children.Add(line);
         }
     }
 
@@ -492,8 +493,7 @@ public class FigureExplorer : Border
         readonly TextBlock text = new TextBlock()
         {
             VerticalAlignment = VerticalAlignment.Center,
-            TextTrimming = TextTrimming.CharacterEllipsis,
-            Foreground = RibbonTheme.Text
+            TextTrimming = TextTrimming.CharacterEllipsis
         };
 
         string iconKey;
@@ -503,6 +503,7 @@ public class FigureExplorer : Border
         public Row(FigureExplorer explorer, IFigure figure)
         {
             Figure = figure;
+            text.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
             Height = RowHeight;
             Margin = new Thickness(ArrowMargin, 0, 4, 0);
             Padding = new Thickness(4, 0, 4, 0);
@@ -553,10 +554,11 @@ public class FigureExplorer : Border
 
         void Paint()
         {
-            Background = Figure.Selected
-                ? RibbonTheme.ButtonChecked
-                : hover ? RibbonTheme.ButtonHover : Brushes.Transparent;
-            BorderBrush = isFocused ? RibbonTheme.ButtonCheckedBorder : Brushes.Transparent;
+            string background = Figure.Selected
+                ? nameof(AppTheme.ButtonChecked)
+                : hover ? nameof(AppTheme.ButtonHover) : null;
+            this.BindTheme(BackgroundProperty, background, whenNone: Brushes.Transparent);
+            this.BindTheme(BorderBrushProperty, isFocused ? nameof(AppTheme.ButtonCheckedBorder) : null, whenNone: Brushes.Transparent);
         }
     }
 }

@@ -24,19 +24,20 @@ public class SegmentSwitcher : Panel
     public SegmentSwitcher()
     {
         // behind the tabs, so that the selected one paints over it
-        Children.Add(new Border()
+        var line = new Border()
         {
-            BorderBrush = RibbonTheme.TabLine,
             BorderThickness = new Thickness(0, 0, 0, 1)
-        });
+        };
+        line.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.TabLine));
+        Children.Add(line);
         Children.Add(segments);
         IsVisible = false;
     }
 
-    IBrush surface = RibbonTheme.Background;
+    string surface = nameof(AppTheme.Background);
 
-    /// <summary>The background of the area below the strip; the selected tab is filled with it.</summary>
-    public IBrush Surface
+    /// <summary>The theme color of the area below the strip; the selected tab is filled with it.</summary>
+    public string Surface
     {
         get => surface;
         set
@@ -44,8 +45,7 @@ public class SegmentSwitcher : Panel
             surface = value;
             foreach (var entry in entries)
             {
-                entry.Outline.Surface = value;
-                entry.Outline.InvalidateVisual();
+                entry.Outline.BindTheme(TabOutline.SurfaceProperty, value);
             }
         }
     }
@@ -55,7 +55,8 @@ public class SegmentSwitcher : Panel
 
     public void Add(string caption, object value)
     {
-        var outline = new TabOutline() { Flare = Flare, TopRadius = 5, Surface = surface };
+        var outline = new TabOutline() { Flare = Flare, TopRadius = 5 };
+        outline.BindTheme(TabOutline.SurfaceProperty, surface);
         var text = new TextBlock()
         {
             Text = caption,
@@ -98,7 +99,7 @@ public class SegmentSwitcher : Panel
             {
                 bool isCurrent = Equals(entry.Value, value);
                 entry.Outline.IsSelected = isCurrent;
-                entry.Caption.Foreground = isCurrent ? RibbonTheme.TabHeaderTextSelected : RibbonTheme.TabHeaderText;
+                entry.Caption.BindTheme(TextBlock.ForegroundProperty, isCurrent ? nameof(AppTheme.TextEmphasis) : nameof(AppTheme.Text));
             }
         }
     }

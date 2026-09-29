@@ -14,6 +14,7 @@ sealed class Program
     public static void Main(string[] args)
     {
         App.UseInvariantCulture();
+        SettingsStore.Current = new FileSettingsStore();
 
         // "LiveGeometry.Desktop.exe drawing.lgf", which is also what a file association runs
         if (args.Length > 0 && System.IO.File.Exists(args[0]))
@@ -51,7 +52,11 @@ sealed class Program
 
         DynamicGeometry.EmojiFont.Open = () => Task.FromResult<Stream>(
             File.OpenRead(Path.Combine(AppContext.BaseDirectory, "Fonts", "Twemoji.Mozilla.ttf")));
-        App.MainWindowCreated = WindowPlacementPersistence.Attach;
+        App.MainWindowCreated = window =>
+        {
+            WindowPlacementPersistence.Attach(window);
+            WindowFrameTheme.Attach(window);
+        };
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
 

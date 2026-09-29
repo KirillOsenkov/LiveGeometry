@@ -113,33 +113,86 @@ public partial class MainView : UserControl
 
     static Control CreateBuildStamp()
     {
-        var octocat = new Border()
+        var mark = new Avalonia.Controls.Shapes.Path()
         {
-            Background = Brushes.Transparent, // hit-testable around the cat too
+            Data = Geometry.Parse(OctocatPath),
+            Stretch = Stretch.Uniform,
+            Width = OctocatSize,
+            Height = OctocatSize
+        };
+        mark.BindTheme(Avalonia.Controls.Shapes.Shape.FillProperty, nameof(AppTheme.Text));
+        var octocat = CreateCornerButton(mark, () => TopLevel.GetTopLevel(mark)?.Launcher.LaunchUriAsync(new Uri(RepositoryUrl)));
+        ToolTip.SetTip(octocat, BuildVersion.Full + "\n" + RepositoryUrl);
+        return octocat;
+    }
+
+    /// <summary>
+    /// The sun/moon beside the Octocat, on both pages: the other of light and dark, at a click
+    /// (the settings page has the full choice, System included).
+    /// </summary>
+    static Control CreateThemeButton()
+    {
+        var picture = new Viewbox()
+        {
+            Width = OctocatSize,
+            Height = OctocatSize
+        };
+        var button = CreateCornerButton(picture, AppSettings.Instance.ToggleDarkTheme);
+
+        void Update()
+        {
+            bool isDark = AppTheme.Current == AppTheme.Dark;
+            picture.Child = isDark ? MainToolbarIcons.Sun() : MainToolbarIcons.Moon();
+            ToolTip.SetTip(button, isDark ? "Light theme" : "Dark theme");
+        }
+
+        Update();
+        AppTheme.CurrentChanged += Update;
+        return button;
+    }
+
+    /// <summary>A small faint picture that comes to life under the pointer; the corner of both pages holds a couple</summary>
+    static Border CreateCornerButton(Control picture, Action action)
+    {
+        var button = new Border()
+        {
+            Background = Brushes.Transparent, // hit-testable around the picture too
             Cursor = new Cursor(StandardCursorType.Hand),
             Opacity = OctocatOpacity,
-            Margin = new Avalonia.Thickness(8, 0, 10, 0),
+            Margin = new Avalonia.Thickness(6, 0, 6, 0),
             VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
-            Child = new Avalonia.Controls.Shapes.Path()
-            {
-                Data = Geometry.Parse(OctocatPath),
-                Fill = RibbonTheme.Text,
-                Stretch = Stretch.Uniform,
-                Width = OctocatSize,
-                Height = OctocatSize
-            }
+            Child = picture
         };
-        ToolTip.SetTip(octocat, BuildVersion.Full + "\n" + RepositoryUrl);
-        octocat.PointerEntered += (s, e) => octocat.Opacity = 1;
-        octocat.PointerExited += (s, e) => octocat.Opacity = OctocatOpacity;
-        octocat.PointerReleased += (s, e) =>
+        button.PointerEntered += (s, e) => button.Opacity = 1;
+        button.PointerExited += (s, e) => button.Opacity = OctocatOpacity;
+        button.PointerReleased += (s, e) =>
         {
             if (e.InitialPressMouseButton == MouseButton.Left)
             {
-                TopLevel.GetTopLevel(octocat)?.Launcher.LaunchUriAsync(new Uri(RepositoryUrl));
+                action();
             }
         };
-        return octocat;
+        return button;
+    }
+
+    /// <summary>The theme button and the build stamp, for the corner of either page</summary>
+    static Control CreateCorner()
+    {
+        var corner = new StackPanel()
+        {
+            Orientation = Avalonia.Layout.Orientation.Horizontal,
+            Margin = new Avalonia.Thickness(0, 0, 4, 0)
+        };
+        corner.Children.Add(CreateThemeButton());
+        corner.Children.Add(CreateBuildStamp());
+        return corner;
+    }
+
+    /// <summary>The gear: the settings page in the side panel, or away again</summary>
+    void ToggleSettings()
+    {
+        var settings = AppSettings.Instance;
+        DrawingHost.ShowProperties(DrawingHost.PropertyGrid.Selection == settings ? null : settings);
     }
 
     private void InitializeComponent()
@@ -163,7 +216,8 @@ public partial class MainView : UserControl
         // No menu: the few document commands are a toolbar, everything else is the keyboard
         // (see MainView_KeyUp and HandlePlainKey), the mouse wheel and the context menu.
         var toolbar = Toolbar;
-        toolbar.AddAtRight(CreateBuildStamp());
+        toolbar.AddAtRight(CreateCorner());
+        AppSettings.Instance.ShowRequested += page => HandleExceptions(() => DrawingHost.ShowProperties(page));
         ToolboxButton = toolbar.AddButton(
             AppIcon.Create(BrandIconSize),
             "Tools",
@@ -180,6 +234,8 @@ public partial class MainView : UserControl
         toolbar.AddSeparator();
         toolbar.AddButton(MainToolbarIcons.Undo(), "Ctrl+Z", DrawingHost.DrawingControl.CommandUndo);
         toolbar.AddButton(MainToolbarIcons.Redo(), "Ctrl+Y", DrawingHost.DrawingControl.CommandRedo);
+        toolbar.AddSeparator();
+        toolbar.AddButton(MainToolbarIcons.Settings(), "Settings", shortcut: null, ToggleSettings);
 
         // only while a drawing of the gallery is open: previous / next through the gallery,
         // in the middle of the room the toolbar has left, and bigger than the document buttons
@@ -375,7 +431,7 @@ public partial class MainView : UserControl
             return;
         }
 
-        Gallery = new GalleryView(CreateBuildStamp(), ArrangeGallery);
+        Gallery = new GalleryView(CreateCorner(), ArrangeGallery);
         Gallery.NewDrawingRequested += () => HandleExceptions(() => ShowNewDrawing(push: true));
         Gallery.ContinueDrawingRequested += () => HandleExceptions(() => ShowOwnDrawing(push: true));
         Gallery.ItemRequested += item => HandleExceptions(() => ShowSample(item, push: true));
