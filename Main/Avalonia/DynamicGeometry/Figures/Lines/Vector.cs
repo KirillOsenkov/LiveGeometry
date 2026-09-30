@@ -68,9 +68,11 @@ namespace DynamicGeometry
             Arrow.EnsureStyleAssigned();
         }
 
+        // the arrow is a filled polygon, so a hit on it has to land on the drawn pixels: the
+        // shaft gets the same room around it as a segment (the invisible line inside)
         public override IFigure HitTest(Point point, System.Predicate<IFigure> filter)
         {
-            var result = Arrow.HitTest(point);
+            var result = Arrow.HitTest(point) ?? Line.HitTest(point);
             if (result != null)
             {
                 result = this;
