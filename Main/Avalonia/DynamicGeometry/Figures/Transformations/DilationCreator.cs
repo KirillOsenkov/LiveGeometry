@@ -125,20 +125,28 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// A typed factor becomes a Number of its own, before the points and shared by every
+        /// point of the dilated figure; a clicked figure with a length is the source as it is.
+        /// </summary>
         protected override IEnumerable<IFigure> CreateFigures()
         {
             Check.NotNull(FoundDependencies[0]);
             Check.NotNull(FoundDependencies[1]);
 
-            var segment1 = (FoundDependencies.Count >= 3) ? FoundDependencies[2] : null;
+            var factor = FoundDependencies.Count >= 3 ? FoundDependencies[2] : null;
+            if (factor == null)
+            {
+                factor = Number.CreateAuxiliary(Drawing, Dialog.factor);
+                yield return factor;
+            }
 
             var results = Transformer.CreateDilatedFigure(
                Drawing,
                FoundDependencies[0],
                FoundDependencies[1],
-               segment1,
-               null,
-               Dialog.factor);
+               factor,
+               lengthProvider2: null);
 
             Check.NotNull(results);
             Check.NoNullElements(results);
@@ -146,6 +154,22 @@ namespace DynamicGeometry
             {
                 yield return f;
             }
+        }
+
+        /// <summary>A factor set in the panel after a dilation is the next dilation's</summary>
+        protected override void TakeDefaultsFrom(ITiedValues created)
+        {
+            if (created is DilatedPoint point && point.FactorSource is Number number)
+            {
+                Dialog.factor = number.Value;
+            }
+        }
+
+        protected override string CreatedFigureHint(ITiedValues values)
+        {
+            return values.IsTied(nameof(DilatedPoint.Factor))
+                ? "click another segment or a slider to take the factor from it instead."
+                : "set its factor in the panel, or click a segment or a slider to take the factor from it.";
         }
 
         public override string Name

@@ -137,6 +137,7 @@ namespace DynamicGeometry
         /// </summary>
         protected void StartConstruction()
         {
+            ForgetCreatedFigure();
             EnsureTransaction();
             Drawing.RaiseConstructionStepStarted();
         }
@@ -152,6 +153,7 @@ namespace DynamicGeometry
 
         public override void Stopping()
         {
+            ForgetCreatedFigure();
             if (Transaction != null)
             {
                 if (this.ConstructionComplete)
@@ -205,13 +207,23 @@ namespace DynamicGeometry
         }
 
         /// <summary>
-        /// Right after a figure with a length is made (a segment, a vector, a square's base
-        /// side, a regular polygon): the side panel shows just its length and Fix length
-        /// (<see cref="LengthPanel"/>), and the status bar says so - instead of a length box
-        /// on every tool.
+        /// Right after a figure is made, the side panel offers what is worth adjusting at
+        /// once, and the status bar says so - instead of a box for it on every tool: its tied
+        /// values (<see cref="TiedValuesPanel"/> - the angle of a line at an angle or of a
+        /// rotation, the factor of a dilation, the distance and direction of a translation,
+        /// see <see cref="ITiedValues"/>), or the length and Fix length of a figure with one
+        /// (<see cref="LengthPanel"/>: a segment, a vector, a square's base side, a regular
+        /// polygon).
         /// </summary>
         protected virtual void ShowCreatedFigure(IList<IFigure> figures)
         {
+            var values = figures.OfType<ITiedValues>().FirstOrDefault(v => v.TiedValueNames.Any());
+            if (values != null)
+            {
+                ShowTiedValues(figures.Last(f => f != null), values);
+                return;
+            }
+
             var withLength = figures.OfType<IFixableLength>().FirstOrDefault();
             // nothing to offer when no point can move (built on existing dependent points)
             if (withLength == null || !withLength.CanEdit("Length"))
@@ -222,6 +234,142 @@ namespace DynamicGeometry
             var what = withLength.Caption("Length", "Length").ToLowerInvariant();
             Drawing.RaiseDisplayProperties(new LengthPanel(withLength));
             Drawing.RaiseStatusNotification(withLength.Title + ": set its " + what + " in the panel, or fix it.");
+        }
+
+        #endregion
+
+        #region The figure just made
+
+        /// <summary>
+        /// The figure whose panel (<see cref="TiedValuesPanel"/>) is up right after it was made:
+        /// a click on a suitable figure ties one of its values to that
+        /// (<see cref="TryTieCreatedFigure"/>) instead of starting the next construction. Until
+        /// anything else takes the side panel, the next construction starts, or the tool is
+        /// put down.
+        /// </summary>
+        protected IFigure CreatedFigure { get; private set; }
+
+        ITiedValues createdValues;
+        Drawing createdIn;
+
+        // under the cursor: the figure a click would tie a value to
+        IFigure tieTarget;
+
+        void ShowTiedValues(IFigure shown, ITiedValues values)
+        {
+            ForgetCreatedFigure();
+            CreatedFigure = shown;
+            createdValues = values;
+            createdIn = Drawing;
+            createdIn.DisplayProperties += Drawing_DisplayProperties;
+            Drawing.RaiseDisplayProperties(new TiedValuesPanel(shown, values));
+            Drawing.RaiseStatusNotification(shown.Title + ": " + CreatedFigureHint(values));
+        }
+
+        /// <summary>What the status bar says under the panel of a figure just made; a tool knows what its values can be taken from</summary>
+        protected virtual string CreatedFigureHint(ITiedValues values)
+        {
+            var names = values.TiedValueNames.Select(name => name.ToLowerInvariant()).ToList();
+            string what = names.Count == 1
+                ? names[0]
+                : string.Join(", ", names.Take(names.Count - 1)) + " and " + names[names.Count - 1];
+            return "set its " + what + " in the panel, or click a figure that has one to take it from there.";
+        }
+
+        /// <summary>
+        /// The offer is over. The values as they are become the defaults of the next
+        /// construction (<see cref="TakeDefaultsFrom"/>), so that the next figure is made
+        /// like the last one ended up.
+        /// </summary>
+        protected void ForgetCreatedFigure()
+        {
+            if (createdValues == null)
+            {
+                return;
+            }
+
+            TakeDefaultsFrom(createdValues);
+            createdIn.DisplayProperties -= Drawing_DisplayProperties;
+            createdIn = null;
+            CreatedFigure = null;
+            createdValues = null;
+            tieTarget = null;
+        }
+
+        /// <summary>The typed values of the figure just made, edited in its panel or not, as the tool's defaults from now on</summary>
+        protected virtual void TakeDefaultsFrom(ITiedValues created)
+        {
+        }
+
+        // anything else in the side panel (OK, a figure's properties, undo's null) ends the
+        // offer; the figure's own panel shown again keeps it
+        void Drawing_DisplayProperties(object sender, Drawing.DisplayPropertiesEventArgs e)
+        {
+            if (!(e.Object is TiedValuesPanel panel && panel.Values == createdValues))
+            {
+                ForgetCreatedFigure();
+            }
+        }
+
+        /// <summary>The figure under the cursor that a click would tie a value of the figure just made to, if any</summary>
+        IFigure FindTieTarget(Point unconstrainedCoordinates)
+        {
+            if (createdValues == null)
+            {
+                return null;
+            }
+
+            var figure = Drawing.Figures.HitTest(unconstrainedCoordinates);
+            if (figure == null || figure.DependsOn(createdValues))
+            {
+                return null;
+            }
+
+            return createdValues.TiedValueNames.Any(name => createdValues.Accepts(name, figure)) ? figure : null;
+        }
+
+        /// <summary>
+        /// A click while the panel of the figure just made is up: on a figure one of its values
+        /// can be taken from, the value is tied to it - a vector gives a translation both its
+        /// distance and its direction, anything else goes to the first value that takes it -
+        /// and the panel shows the source. True when the click was that.
+        /// </summary>
+        protected bool TryTieCreatedFigure(Point unconstrainedCoordinates)
+        {
+            var target = FindTieTarget(unconstrainedCoordinates);
+            if (target == null)
+            {
+                return false;
+            }
+
+            var values = createdValues;
+            var shown = CreatedFigure;
+            var names = values.TiedValueNames.Where(name => values.Accepts(name, target)).ToList();
+            if (!(target is Vector))
+            {
+                names = names.Take(1).ToList();
+            }
+
+            bool tied = false;
+            using (Transaction.Create(Drawing.ActionManager, false))
+            {
+                foreach (var name in names)
+                {
+                    tied |= values.TieTo(name, target);
+                }
+            }
+
+            if (tied)
+            {
+                Drawing.RaiseDisplayProperties(new TiedValuesPanel(shown, values));
+                Drawing.RaiseStatusNotification(shown.Title + " now follows " + target.Name + ".");
+            }
+            else
+            {
+                Drawing.RaiseStatusNotification(target.Name + " is built on " + shown.Name + ": it can't be taken from.");
+            }
+
+            return true;
         }
 
         #endregion
@@ -656,6 +804,11 @@ namespace DynamicGeometry
             newPosition = AdjustCurrentCoordinates(newPosition);
             MouseDownCoordinates = newPosition;
             ClickedUnconstrainedCoordinates = Coordinates(e, false, false, false);
+            if (TryTieCreatedFigure(ClickedUnconstrainedCoordinates))
+            {
+                return;
+            }
+
             Click(MouseDownCoordinates);
         }
 
@@ -664,8 +817,9 @@ namespace DynamicGeometry
             Point newPosition = Coordinates(e);
             newPosition = AdjustCurrentCoordinates(newPosition);
             var unconstrainedCoordinates = Coordinates(e, false, false, false);
-            hoverPlacement = FindPointPlacement(unconstrainedCoordinates, newPosition);
-            hoverFigure = FindFigureToPick(unconstrainedCoordinates);
+            tieTarget = FindTieTarget(unconstrainedCoordinates);
+            hoverPlacement = tieTarget != null ? null : FindPointPlacement(unconstrainedCoordinates, newPosition);
+            hoverFigure = tieTarget ?? FindFigureToPick(unconstrainedCoordinates);
 
             if (TempPoint != null)
             {
@@ -750,6 +904,12 @@ namespace DynamicGeometry
         /// </summary>
         protected override Avalonia.Input.Cursor GetCursor(Point coordinates)
         {
+            // a click ties a value of the figure just made to what is here
+            if (tieTarget != null)
+            {
+                return HandCursor;
+            }
+
             if (GetExpectedDependencyType() == null)
             {
                 return ArrowCursor;

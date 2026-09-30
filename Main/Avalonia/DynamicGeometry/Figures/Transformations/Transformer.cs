@@ -98,37 +98,30 @@ namespace DynamicGeometry
             return result;
         }
 
-        public static List<IFigure> CreateDilatedFigure(Drawing drawing, IFigure source, IFigure center, IFigure lengthProvider1, IFigure lengthProvider2, double factor)
+        /// <summary>
+        /// The factor is a figure the points depend on: a Number holding a typed one, shared by
+        /// every point, or anything with a length; with a second length it is their ratio.
+        /// </summary>
+        public static List<IFigure> CreateDilatedFigure(Drawing drawing, IFigure source, IFigure center, IFigure lengthProvider1, IFigure lengthProvider2)
         {
             Check.NotNull(source, "source");
             Check.NotNull(center, "center");
+            Check.NotNull(lengthProvider1, "lengthProvider1");
 
-            var list = new List<IFigure>() { source, center };
-
-            var lp1 = lengthProvider1 as ILengthProvider;
-            var lp2 = lengthProvider2 as ILengthProvider;
-            if (lp1 != null)
+            var list = new List<IFigure>() { source, center, lengthProvider1 };
+            if (lengthProvider2 != null)
             {
-                if (lp2 != null)
-                {
-                    factor = lp1.Length / lp2.Length;
-                    list.Add(lp1, lp2);
-                }
-                else
-                {
-                    factor = lp1.Length;
-                    list.Add(lp1);
-                }
+                list.Add(lengthProvider2);
             }
 
             List<IFigure> result = new List<IFigure>();
             if (source is IPoint)
             {
-                var dilatedPoint = Factory.CreateDilatedPoint(drawing, list, factor);
+                var dilatedPoint = Factory.CreateDilatedPoint(drawing, list);
                 if (dilatedPoint == null)
                 {
-                    throw "dilatedPoint is null. source = {0}, center = {1}, segment1 = {2}, segment2 = {3}, factor = {4}"
-                        .Format(source, center, lengthProvider1, lengthProvider2, factor)
+                    throw "dilatedPoint is null. source = {0}, center = {1}, segment1 = {2}, segment2 = {3}"
+                        .Format(source, center, lengthProvider1, lengthProvider2)
                         .AsException();
                 }
                 dilatedPoint.Visible = source.Visible;
@@ -139,17 +132,17 @@ namespace DynamicGeometry
                 var dependencies = new List<IFigure>();
                 foreach (var dependency in source.Dependencies)
                 {
-                    var dilatedDependency = CreateDilatedFigure(drawing, dependency, center, lengthProvider1, lengthProvider2, factor);
+                    var dilatedDependency = CreateDilatedFigure(drawing, dependency, center, lengthProvider1, lengthProvider2);
                     if (dilatedDependency == null)
                     {
-                        throw "dilatedDependency is null. dependency = {0}, center = {1}, segment1 = {2}, segment2 = {3} factor = {2}"
-                            .Format(dependency, center, lengthProvider1, lengthProvider2, factor)
+                        throw "dilatedDependency is null. dependency = {0}, center = {1}, segment1 = {2}, segment2 = {3}"
+                            .Format(dependency, center, lengthProvider1, lengthProvider2)
                             .AsException();
                     }
                     if (dilatedDependency.IsEmpty())
                     {
-                        throw "dilatedDependency is empty. dependency = {0}, center = {1}, segment1 = {2}, segment2 = {3} factor = {2}"
-                            .Format(dependency, center, lengthProvider1, lengthProvider2, factor)
+                        throw "dilatedDependency is empty. dependency = {0}, center = {1}, segment1 = {2}, segment2 = {3}"
+                            .Format(dependency, center, lengthProvider1, lengthProvider2)
                             .AsException();
                     }
                     result.AddRange(dilatedDependency);
@@ -172,28 +165,26 @@ namespace DynamicGeometry
             return result;
         }
 
-        public static List<IFigure> CreateRotatedFigure(Drawing drawing, IFigure source, IFigure center, IFigure angleProvider, double angle)
+        /// <summary>
+        /// The angle is a figure the points depend on: a Number holding a typed one, shared by
+        /// every point of the rotated figure, or anything with an angle.
+        /// </summary>
+        public static List<IFigure> CreateRotatedFigure(Drawing drawing, IFigure source, IFigure center, IFigure angleProvider)
         {
             Check.NotNull(source, "source");
             Check.NotNull(center, "center");
+            Check.NotNull(angleProvider, "angleProvider");
 
-            var list = new List<IFigure>() { source, center };
-
-            var safeAngleProvider = angleProvider as IAngleProvider;
-            if (safeAngleProvider != null)
-            {
-                angle = safeAngleProvider.Angle;
-                list.Add(angleProvider);
-            }
+            var list = new List<IFigure>() { source, center, angleProvider };
 
             List<IFigure> result = new List<IFigure>();
             if (source is IPoint)
             {
-                var rotatedPoint = Factory.CreateRotatedPoint(drawing, list, angle);
+                var rotatedPoint = Factory.CreateRotatedPoint(drawing, list);
                 if (rotatedPoint == null)
                 {
-                    throw "rotatedPoint is null. source = {0}, center = {1}, angleArc = {2}, angle = {3}"
-                        .Format(source, center, angleProvider, angle)
+                    throw "rotatedPoint is null. source = {0}, center = {1}, angle = {2}"
+                        .Format(source, center, angleProvider)
                         .AsException();
                 }
                 rotatedPoint.Visible = source.Visible;
@@ -204,17 +195,17 @@ namespace DynamicGeometry
                 var dependencies = new List<IFigure>();
                 foreach (var dependency in source.Dependencies)
                 {
-                    var rotatedDependency = CreateRotatedFigure(drawing, dependency, center, angleProvider, angle);
+                    var rotatedDependency = CreateRotatedFigure(drawing, dependency, center, angleProvider);
                     if (rotatedDependency == null)
                     {
-                        throw "rotatedDependency is null. dependency = {0}, center = {1}, angleArc = {2}, angle = {3}"
-                            .Format(dependency, center, angleProvider, angle)
+                        throw "rotatedDependency is null. dependency = {0}, center = {1}, angle = {2}"
+                            .Format(dependency, center, angleProvider)
                             .AsException();
                     }
                     if (rotatedDependency.IsEmpty())
                     {
-                        throw "rotatedDependency is empty. dependency = {0}, center = {1}, angleArc = {2} angle = {3}"
-                            .Format(dependency, center, angleProvider, angle)
+                        throw "rotatedDependency is empty. dependency = {0}, center = {1}, angle = {2}"
+                            .Format(dependency, center, angleProvider)
                             .AsException();
                     }
                     result.AddRange(rotatedDependency);

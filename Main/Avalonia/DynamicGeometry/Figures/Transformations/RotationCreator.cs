@@ -125,19 +125,27 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// A typed angle becomes a Number of its own, before the points and shared by every
+        /// point of the rotated figure; a clicked figure with an angle is the source as it is.
+        /// </summary>
         protected override IEnumerable<IFigure> CreateFigures()
         {
             Check.NotNull(FoundDependencies[0]);
             Check.NotNull(FoundDependencies[1]);
 
-            var angleProvider = (FoundDependencies.Count == 3) ? FoundDependencies[2] : null;
+            var angle = FoundDependencies.Count == 3 ? FoundDependencies[2] : null;
+            if (angle == null)
+            {
+                angle = Number.CreateAuxiliary(Drawing, Dialog.angle);
+                yield return angle;
+            }
 
             var results = Transformer.CreateRotatedFigure(
                 Drawing,
                 FoundDependencies[0],
                 FoundDependencies[1],
-                angleProvider,
-                Dialog.angle);
+                angle);
 
             Check.NotNull(results);
             Check.NoNullElements(results);
@@ -145,6 +153,22 @@ namespace DynamicGeometry
             {
                 yield return f;
             }
+        }
+
+        /// <summary>An angle set in the panel after a rotation is the next rotation's</summary>
+        protected override void TakeDefaultsFrom(ITiedValues created)
+        {
+            if (created is RotatedPoint point && point.AngleSource is Number number)
+            {
+                Dialog.angle = number.Value;
+            }
+        }
+
+        protected override string CreatedFigureHint(ITiedValues values)
+        {
+            return values.IsTied(nameof(RotatedPoint.Angle))
+                ? "click another angle or a slider to take the angle from it instead."
+                : "set its angle in the panel, or click an angle or a slider to take the angle from it.";
         }
 
         public override string Name

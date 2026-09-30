@@ -129,7 +129,7 @@ namespace DynamicGeometry
         /// place (a Number made for it), so that the list stays in dependency order. Nothing
         /// is taken off the canvas: a move is not a removal and an insertion to the list.
         /// </summary>
-        static void MoveBefore(Drawing drawing, IFigure figure, IFigure before)
+        public static void MoveBefore(Drawing drawing, IFigure figure, IFigure before)
         {
             var figures = drawing.Figures;
             int target = figures.IndexOf(before);

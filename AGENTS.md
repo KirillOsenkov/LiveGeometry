@@ -32,9 +32,12 @@ being true. Things derivable from the code or git history don't belong here.
   The Write tool emits LF: after creating a file, or rewriting an existing CRLF file with Write
   rather than Edit, convert its line endings with an editor tool. Never grep for `\r`.
 - **Never edit workspace files from the shell** (sed/perl/heredocs). Use the editing tools.
-- **Backwards compatibility is not a concern** inside the repo: every caller is in-tree, so
-  change all call sites rather than keep a worse shape. The exception here is the `.lgf` file
-  format - users have saved drawings, so old files must keep loading.
+- **Backwards compatibility is not a concern**: every caller is in-tree, so change all call
+  sites rather than keep a worse shape. That goes for the `.lgf` file format too: as of
+  2026-09-29 there are no drawings to stay compatible with other than the gallery's, so the
+  format may change freely as long as the gallery drawings are updated to it (edit them, or
+  `--rewrite` the folder) and still load. Don't add upgrade paths for old files; the ones the
+  loader has are from before this rule.
 - **Always brace** single-statement `if`s, even one-liners.
 - **No two consecutive blank lines.** One blank between members, none at the top of a block,
   none before `}`.
@@ -88,7 +91,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Perpendicular (E) - a line then a point; Perpendicular Bisector - two points or a segment; Angle Bisector
   (B) - vertex then two side points, or an angle measurement; Line at Angle - a point, at the
   angle in the tool's panel (0 until changed, so a horizontal line is one click), or click an
-  angle measurement, its arc or a slider first to tie the angle to it. Join segments (a point between
+  angle measurement, its arc or a slider first to tie the angle to it; right after the click
+  the panel shows the new line's angle instead (see "Tied values"). Join segments (a point between
   two segments joins their other ends) and Polyline (points, double-click or click an
   existing point to finish) exist but are `[Ignore]`d as rarely used.
 - **Circles**: Circle (C) - center then a point on it; By Radius (R) - two points, a segment, a
@@ -104,7 +108,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Reflect (T) - source figure, then a mirror (point, line, segment, ray, or a
   circle for a point source); Rotate - source, center, angle (a figure with an angle or a
   typed value); Translate - source, distance, direction (see "TranslatedPoint"); Dilate -
-  source, center, factor (a figure with a length or a typed value). Last of the tabs that
+  source, center, factor (a figure with a length or a typed value); after each of the three
+  the panel shows the new figure's values (see "Tied values"). Last of the tabs that
   draw with figures alone; the two after it work with numbers.
 - **Coordinates**: Background and Grid (G) (commands); Function - an expression in x; Line - by
   slope and intercept expressions; Circle - by center and radius expressions; Point by
@@ -474,9 +479,30 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   two new free points for a radius are made with the Point tool first. A `FigureCreator`
   that finishes something on mouse up must not call the base `MouseUp` afterwards: with a
   point following the cursor the base takes the release for the next click.
+- **Tied values** (`Figures/Values/TiedValues.cs`): a figure's number that is either *typed* -
+  an auxiliary `Number` it depends on, shared by every point of a transformed figure - or
+  *tied* to a figure it depends on and follows: the angle of a `LineAtAngle` or a
+  `RotatedPoint`, the factor of a `DilatedPoint`, the distance and direction of a
+  `TranslatedPoint` (which may also be free, see below). `ITiedValues` names them; they are
+  rows of the figure's grid, editable while typed, "Angle = ang1" read-only while tied, with
+  a "Type the angle" button (`Untie` + name) for the way back, all decided by the figure's
+  `IConditionalProperties`. Tying is `TiedValues.Tie`: one undo step that adds a new
+  source, moves it before its owners in the list with what it is built on (dependency
+  order), swaps the dependency on every sibling (the vertices rotated about the same center
+  by the same angle, or translated by the same sources) and drops a Number nothing uses any
+  more; a source built on an owner is refused. Right after such a figure is made,
+  `FigureCreator.ShowCreatedFigure` shows a `TiedValuesPanel` (the figure's own rows, the
+  Untie buttons, OK; titled after the last figure made) and remembers the figure
+  (`CreatedFigure`): a click on a figure a value accepts ties it there (a vector gives a
+  translation both; anything else goes to the first value that takes it) instead of starting
+  the next construction, until anything else takes the side panel, the next construction
+  starts or the tool stops; then the typed values become the tool's defaults
+  (`TakeDefaultsFrom`). The pre-create panels stay (Line at Angle's angle, Rotate's and
+  Dilate's dialogs, Translate's steps): OK in the post panel goes back to them.
 - **TranslatedPoint** (`Figures/Points/TranslatedPoint.cs`): distance and direction are each
   *tied* to a figure (vector, length/angle provider, `ILine` as it points, a Number) or *free*
-  (the parameter dragging changes). Roles are stored by index into the dependency list, never
+  (the parameter dragging changes); both are tied values (above), `SetSource` does the swap
+  since a vector serves both at one index. Roles are stored by index into the dependency list, never
   inferred from types (a `Label` is both a length and an angle provider). A point with a free
   quantity takes the green `PointOnFigure` style. The Translate tool is stepwise (source,
   distance, direction, placement); its panel is cleared in `Stopping` because that event is
@@ -704,6 +730,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 
 ## File format (.lgf)
 
+No compatibility requirements: the gallery drawings are the only files that matter (see
+"Backwards compatibility is not a concern"). The upgrade notes below describe what the
+loader still does for files from before; none of it needs extending.
+
 - **Colors are always `#AARRGGBB`** (`ColorText.ToArgbHex`). Never `Color.ToString()`: Avalonia
   writes the *name* of a known color. `ToColor()` accepts names too, for old files. A gradient
   is a child element (`<Fill><LinearGradientBrush>`, `<Background>...` on `<Viewport>` for the
@@ -756,7 +786,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   own loader tolerates but `XDocument.Load` does not.
 - **`TranslatedPoint`** without `DistanceSource`/`DirectionSource`/`FreeDistance`/`FreeDirection`
   is the old format (typed values as attributes, roles by position, direction in radians);
-  `UpgradeLegacyValues` gives the typed values auxiliary Numbers.
+  `UpgradeLegacyValues` gives the typed values auxiliary Numbers. A `RotatedPoint` or
+  `DilatedPoint` always has its angle or factor as its third dependency (since 2026-09-29;
+  the `Angle`/`Factor` attribute before that is not read).
 - **Pinned labels** (`Label.Pin`, `Figures/Controls/LabelPin.cs`): `Pin="TopRight" OffsetX
   OffsetY` is the pixel distance from a canvas corner to the *same* corner of the label, so it
   keeps that edge while the plane zooms and pans under it. `Coordinates` always tell where it

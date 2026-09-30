@@ -196,7 +196,11 @@ namespace DynamicGeometry
                 throw new Exception("Calling ReplaceDependency on a figure where oldDependency is not a dependency");
             }
             ReplaceDependency(figure, index, newDependency);
-            figure.UpdateVisual();  // Necessary for Undo of CallMethodAction in Actions.ReplaceDependency(...)
+
+            // a stored position (a rotated point) follows the new dependency, and what is built
+            // on the figure follows that - on undo of Actions.ReplaceDependency too
+            figure.RecalculateAndUpdateVisual();
+            figure.RecalculateAllDependents();
         }
 
         public static void SubstituteWith(this IFigure figure, IFigure replacement)

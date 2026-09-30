@@ -6,13 +6,22 @@ namespace DynamicGeometry;
 /// A line through a point at an angle to the x axis, counterclockwise. The angle is a figure
 /// it depends on: a <see cref="Number"/> holding a typed value, edited in the property grid,
 /// or anything with an angle (an angle measurement or its arc, a slider in degrees), which
-/// the line then follows. Dependencies: the point, then the angle.
+/// the line then follows (<see cref="ITiedValues"/>). Dependencies: the point, then the angle.
 /// </summary>
-public class LineAtAngle : LineBase, ILine, IConditionalProperties
+public class LineAtAngle : LineBase, ILine, ITiedValues, IConditionalProperties
 {
     public static LineAtAngle Create(Drawing drawing, IPoint point, IFigure angleSource)
     {
         return new LineAtAngle() { Drawing = drawing, Dependencies = new List<IFigure>() { point, angleSource } };
+    }
+
+    /// <summary>
+    /// An angle measurement, its arc or a slider. Not any other arc, although it has an angle
+    /// too: a click on an arc puts a point on it.
+    /// </summary>
+    public static bool CanTakeAngleFrom(IFigure figure)
+    {
+        return figure is AngleMeasurementBase || figure is AngleArc || figure is Slider;
     }
 
     protected override string Kind
@@ -59,6 +68,8 @@ public class LineAtAngle : LineBase, ILine, IConditionalProperties
 
     /// <summary>In degrees; editable when it is a typed value, which lives in the Number</summary>
     [PropertyGridVisible]
+    [PropertyGridName("Angle (degrees)")]
+    [PropertyGridGroup("Angle")]
     [PropertyGridPreferredEditor("UpDown")]
     [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
     public override double Angle
@@ -76,15 +87,64 @@ public class LineAtAngle : LineBase, ILine, IConditionalProperties
         }
     }
 
+    /// <summary>The grid's button back from a tied angle (<see cref="Detach"/>), shown while the angle is a figure's</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Type the angle")]
+    [PropertyGridGroup("Angle")]
+    [PropertyGridIcon(PropertyGridIcon.Pencil)]
+    public void UntieAngle()
+    {
+        if (Detach(nameof(Angle)))
+        {
+            Drawing.RaiseDisplayProperties(this);
+        }
+    }
+
     public bool CanEdit(string propertyName)
     {
-        return propertyName != "Angle" || AngleSource is Number;
+        switch (propertyName)
+        {
+            case nameof(Angle):
+                return AngleSource is Number;
+            case nameof(UntieAngle):
+                return this.IsTied(nameof(Angle));
+            default:
+                return true;
+        }
     }
 
     /// <summary>An angle taken from a figure says which</summary>
     public string Caption(string propertyName, string defaultCaption)
     {
-        var source = AngleSource;
-        return propertyName != "Angle" || source == null || source is Number ? defaultCaption : defaultCaption + " = " + source.Name;
+        return propertyName == nameof(Angle) && this.IsTied(propertyName) ? "Angle = " + AngleSource.Name : defaultCaption;
     }
+
+    #region Tied values
+
+    public IEnumerable<string> TiedValueNames
+    {
+        get { yield return nameof(Angle); }
+    }
+
+    public IFigure GetSource(string name)
+    {
+        return AngleSource;
+    }
+
+    public bool Accepts(string name, IFigure figure)
+    {
+        return CanTakeAngleFrom(figure);
+    }
+
+    public bool TieTo(string name, IFigure source)
+    {
+        return TiedValues.Tie(new IFigure[] { this }, AngleSource, source);
+    }
+
+    public bool Detach(string name)
+    {
+        return this.IsTied(name) && TieTo(name, Number.CreateAuxiliary(Drawing, Angle));
+    }
+
+    #endregion
 }

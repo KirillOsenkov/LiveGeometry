@@ -146,10 +146,10 @@ namespace DynamicGeometry
         }
 
 
-        /// <param name="angle">in degrees.</param>
-        public static RotatedPoint CreateRotatedPoint(Drawing drawing, IList<IFigure> dependencies, double angle)
+        /// <param name="dependencies">The source, the center, and the angle: a Number or an angle provider</param>
+        public static RotatedPoint CreateRotatedPoint(Drawing drawing, IList<IFigure> dependencies)
         {
-            return new RotatedPoint() { Drawing = drawing, Dependencies = dependencies, Angle = angle };
+            return new RotatedPoint() { Drawing = drawing, Dependencies = dependencies };
         }
 
         public static Segment CreateSegment(Drawing drawing, IList<IFigure> dependencies)
@@ -265,9 +265,10 @@ namespace DynamicGeometry
             return new ReflectedPoint() { Drawing = drawing, Dependencies = dependencies };
         }
 
-        public static DilatedPoint CreateDilatedPoint(Drawing drawing, IList<IFigure> dependencies, double factor)
+        /// <param name="dependencies">The source, the center, and the factor: a Number or a length provider</param>
+        public static DilatedPoint CreateDilatedPoint(Drawing drawing, IList<IFigure> dependencies)
         {
-            return new DilatedPoint() { Drawing = drawing, Dependencies = dependencies, Factor = factor };
+            return new DilatedPoint() { Drawing = drawing, Dependencies = dependencies };
         }
 
         public static DistanceMeasurement CreateDistanceMeasurement(Drawing drawing, IList<IFigure> dependencies)

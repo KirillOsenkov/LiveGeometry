@@ -4,6 +4,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls.Shapes;
+using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
@@ -16,7 +17,7 @@ namespace DynamicGeometry
     /// (signed, so it passes through the source to the other side). Both free would be a free
     /// point on a leash; the property grid doesn't allow it.
     /// </summary>
-    public class TranslatedPoint : PointBase, IPoint, IConditionalProperties
+    public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalProperties
     {
         /// <summary>
         /// One of the two quantities: the index of its source in the dependency list (-1 when
@@ -254,9 +255,33 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>The way back from a distance taken from a figure: a typed value again (<see cref="Detach"/>)</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Type the distance")]
+        [PropertyGridIcon(PropertyGridIcon.Pencil)]
+        public void UntieDistance()
+        {
+            if (Detach(nameof(Distance)))
+            {
+                Drawing.RaiseDisplayProperties(this);
+            }
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Type the direction")]
+        [PropertyGridIcon(PropertyGridIcon.Pencil)]
+        public void UntieDirection()
+        {
+            if (Detach(nameof(Direction)))
+            {
+                Drawing.RaiseDisplayProperties(this);
+            }
+        }
+
         /// <summary>
         /// Which rows the grid lets the user edit: a value when it is free or held by a Number,
-        /// a Free checkbox unless ticking it would free both quantities.
+        /// a Free checkbox unless ticking it would free both quantities, a "Type the ..."
+        /// button while the value is a figure's.
         /// </summary>
         public bool CanEdit(string propertyName)
         {
@@ -266,6 +291,10 @@ namespace DynamicGeometry
                     return IsDistanceFree || DistanceSource is Number;
                 case "Direction":
                     return IsDirectionFree || DirectionSource is Number;
+                case nameof(UntieDistance):
+                    return this.IsTied(nameof(Distance));
+                case nameof(UntieDirection):
+                    return this.IsTied(nameof(Direction));
                 case "FreeDistance":
                     return IsDistanceFree || !IsDirectionFree;
                 case "FreeDirection":
@@ -374,6 +403,135 @@ namespace DynamicGeometry
             {
                 Style = manager.AssignDefaultStyle(this);
             }
+        }
+
+        #endregion
+
+        #region Tied values
+
+        public IEnumerable<string> TiedValueNames
+        {
+            get
+            {
+                yield return nameof(Distance);
+                yield return nameof(Direction);
+            }
+        }
+
+        Quantity QuantityOf(string name)
+        {
+            return name == nameof(Distance) ? distanceQuantity : directionQuantity;
+        }
+
+        public IFigure GetSource(string name)
+        {
+            return SourceOf(QuantityOf(name));
+        }
+
+        /// <summary>What the Translate tool takes for each: a vector for both, a length for the distance, an angle or a line as it points for the direction</summary>
+        public bool Accepts(string name, IFigure figure)
+        {
+            if (figure is IPoint)
+            {
+                return false;
+            }
+
+            return name == nameof(Distance)
+                ? figure is Vector || figure is ILengthProvider
+                : figure is Vector || figure is ILine || figure is IAngleProvider;
+        }
+
+        /// <summary>
+        /// The points translated by the same sources: the vertices of one translated figure,
+        /// tied and detached together. A free quantity is each point's own.
+        /// </summary>
+        IList<IFigure> Siblings(Quantity quantity)
+        {
+            var source = SourceOf(quantity);
+            if (source == null)
+            {
+                return new IFigure[] { this };
+            }
+
+            var distance = DistanceSource;
+            var direction = DirectionSource;
+            return source.Dependents
+                .OfType<TranslatedPoint>()
+                .Where(point => point.DistanceSource == distance && point.DirectionSource == direction)
+                .Cast<IFigure>()
+                .ToList();
+        }
+
+        /// <summary>
+        /// One quantity from another source (<see cref="TiedValues.Tie"/>). The swap is
+        /// <see cref="SetSource"/> on each sibling, recorded with its undo: a source shared
+        /// with the other quantity (a vector) or a free quantity has no dependency to replace
+        /// one for one.
+        /// </summary>
+        public bool TieTo(string name, IFigure source)
+        {
+            var quantity = QuantityOf(name);
+            var old = SourceOf(quantity);
+            return TiedValues.Tie(Siblings(quantity), old, source, owner =>
+            {
+                var point = (TranslatedPoint)owner;
+                var pointQuantity = point.QuantityOf(name);
+                var before = point.SourceOf(pointQuantity);
+                double parameter = pointQuantity.Parameter;
+                point.Drawing.ActionManager.RecordAction(new CallMethodAction(
+                    () => point.SetSource(pointQuantity, source, parameter),
+                    () => point.SetSource(pointQuantity, before, parameter)));
+            });
+        }
+
+        public bool Detach(string name)
+        {
+            if (!this.IsTied(name))
+            {
+                return false;
+            }
+
+            double value = QuantityOf(name) == distanceQuantity ? DistanceValue : DirectionRadians.ToDegrees();
+            return TieTo(name, Number.CreateAuxiliary(Drawing, value));
+        }
+
+        /// <summary>
+        /// The quantity's source from now on - null leaves it free, at <paramref name="parameter"/> -
+        /// with the dependency list kept in step: a source the other quantity has too is shared
+        /// (a vector), a dependency only this quantity had is dropped. Not recorded itself.
+        /// </summary>
+        void SetSource(Quantity quantity, IFigure source, double parameter)
+        {
+            var other = quantity == distanceQuantity ? directionQuantity : distanceQuantity;
+            int index = quantity.SourceIndex;
+            if (index >= 0)
+            {
+                quantity.SourceIndex = -1;
+                if (other.SourceIndex != index)
+                {
+                    if (other.SourceIndex > index)
+                    {
+                        other.SourceIndex--;
+                    }
+
+                    this.RemoveDependencyCore(index, Dependencies[index]);
+                }
+            }
+
+            quantity.Parameter = parameter;
+            if (source != null)
+            {
+                int existing = Dependencies.IndexOf(source);
+                if (existing < 0)
+                {
+                    existing = Dependencies.Count;
+                    this.InsertDependencyCore(existing, source);
+                }
+
+                quantity.SourceIndex = existing;
+            }
+
+            OnFreedomChanged();
         }
 
         #endregion

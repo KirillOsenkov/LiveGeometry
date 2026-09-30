@@ -8,14 +8,19 @@ namespace DynamicGeometry;
 /// A line through a point at an angle. The angle comes first, so that a line at the angle
 /// in the side panel (horizontal until something else is typed) is a single click on a
 /// point, or on an empty spot for a new one. For an angle from the drawing instead, click
-/// the angle measurement, its arc or a slider first; the line then follows it.
+/// the angle measurement, its arc or a slider first; the line then follows it. Right after
+/// the line is made its own panel shows the angle (<see cref="TiedValuesPanel"/>), where it
+/// can be turned, tied to an angle with a click on it, or typed again.
 /// </summary>
 [Category(BehaviorCategories.Lines)]
 [Order(9)]
 public class LineAtAngleCreator : FigureCreator
 {
-    // the next line is likely at the same angle as the last
-    static double lastAngle;
+    /// <summary>
+    /// The angle the next line gets: the next line is likely at the same angle as the last,
+    /// and a line turned in the panel after it sets it too (<see cref="TakeDefaultsFrom"/>).
+    /// </summary>
+    public static double LastAngle { get; set; }
 
     IFigure angleSource;
     AnglePanel panel;
@@ -40,11 +45,11 @@ public class LineAtAngleCreator : FigureCreator
         {
             get
             {
-                return parent.angleSource is IAngleProvider source ? source.Angle.ToDegrees() : lastAngle;
+                return parent.angleSource is IAngleProvider source ? source.Angle.ToDegrees() : LastAngle;
             }
             set
             {
-                lastAngle = value;
+                LastAngle = value;
             }
         }
 
@@ -95,15 +100,6 @@ public class LineAtAngleCreator : FigureCreator
         return DependencyList.Point;
     }
 
-    /// <summary>
-    /// An angle measurement, its arc or a slider. Not any other arc, although it has an angle
-    /// too: a click on an arc puts the point on it.
-    /// </summary>
-    static bool CanTakeAngleFrom(IFigure figure)
-    {
-        return figure is AngleMeasurementBase || figure is AngleArc || figure is Slider;
-    }
-
     protected override IFigure FindFigureInsteadOfPoint(Point unconstrainedCoordinates)
     {
         if (angleSource != null)
@@ -112,7 +108,7 @@ public class LineAtAngleCreator : FigureCreator
         }
 
         var figure = Drawing.Figures.HitTest(unconstrainedCoordinates);
-        return figure != null && CanTakeAngleFrom(figure) ? figure : null;
+        return figure != null && LineAtAngle.CanTakeAngleFrom(figure) ? figure : null;
     }
 
     protected override void Click(Point coordinates)
@@ -134,11 +130,27 @@ public class LineAtAngleCreator : FigureCreator
         var angle = angleSource;
         if (angle == null)
         {
-            angle = Number.CreateAuxiliary(Drawing, lastAngle);
+            angle = Number.CreateAuxiliary(Drawing, LastAngle);
             yield return angle;
         }
 
         yield return LineAtAngle.Create(Drawing, (IPoint)FoundDependencies[0], angle);
+    }
+
+    /// <summary>A line turned in its panel sets the angle of the next one</summary>
+    protected override void TakeDefaultsFrom(ITiedValues created)
+    {
+        if (created is LineAtAngle line && line.AngleSource is Number number)
+        {
+            LastAngle = number.Value;
+        }
+    }
+
+    protected override string CreatedFigureHint(ITiedValues values)
+    {
+        return values.IsTied(nameof(LineAtAngle.Angle))
+            ? "click another angle or a slider to take the angle from it instead."
+            : "set its angle in the panel, or click an angle or a slider to take the angle from it.";
     }
 
     public override string Name

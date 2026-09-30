@@ -1468,7 +1468,9 @@ public class GeoGebraReader
         var vertices = new List<IPoint>() { a, b };
         for (int i = 2; i < sides; i++)
         {
-            var vertex = Factory.CreateRotatedPoint(drawing, new IFigure[] { a, center }, i * 360.0 / sides);
+            var angle = Number.CreateAuxiliary(drawing, i * 360.0 / sides);
+            Add(angle);
+            var vertex = Factory.CreateRotatedPoint(drawing, new IFigure[] { a, center, angle });
             Add(vertex);
             vertices.Add(vertex);
         }
@@ -1792,7 +1794,7 @@ public class GeoGebraReader
             angle = NumberArgument(inputs[1], isAngle: true);
         }
 
-        return Last(Transformer.CreateRotatedFigure(drawing, source, center, angle, angle: 0));
+        return Last(Transformer.CreateRotatedFigure(drawing, source, center, angle));
     }
 
     IFigure TranslateCommand(string[] inputs)
@@ -1813,7 +1815,7 @@ public class GeoGebraReader
         var source = Resolve(inputs[0]);
         IFigure center = inputs.Length > 2 ? PointOf(inputs[2]) : OriginPoint();
         var factor = LengthProvider(inputs[1]);
-        return Last(Transformer.CreateDilatedFigure(drawing, source, center, factor, lengthProvider2: null, factor: 0));
+        return Last(Transformer.CreateDilatedFigure(drawing, source, center, factor, lengthProvider2: null));
     }
 
     /// <summary>Centroid[polygon]: the mean of the vertices, a point by coordinates</summary>

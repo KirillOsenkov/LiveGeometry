@@ -372,6 +372,28 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>Values set in the panel after a translation are the next translation's</summary>
+        protected override void TakeDefaultsFrom(ITiedValues created)
+        {
+            if (created is TranslatedPoint point)
+            {
+                if (point.DistanceSource is Number distance)
+                {
+                    lastDistance = distance.Value;
+                }
+
+                if (point.DirectionSource is Number direction)
+                {
+                    lastDirection = direction.Value;
+                }
+            }
+        }
+
+        protected override string CreatedFigureHint(ITiedValues values)
+        {
+            return "set its distance and direction in the panel, or click a segment, vector, angle or slider to take one from it.";
+        }
+
         public override string Name
         {
             get { return "Translate"; }
