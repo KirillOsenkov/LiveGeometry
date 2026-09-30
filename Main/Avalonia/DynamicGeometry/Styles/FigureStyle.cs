@@ -121,7 +121,7 @@ namespace DynamicGeometry
         {
             themeBindings ??= new Dictionary<string, Func<AppTheme, object>>();
             themeBindings[property] = value;
-            RefreshFromTheme();
+            ReadFromTheme(property, value);
         }
 
         /// <summary>Reads the bound properties from the themes again (a theme color was tweaked)</summary>
@@ -132,21 +132,25 @@ namespace DynamicGeometry
                 return;
             }
 
-            var type = GetType();
             foreach (var binding in themeBindings)
             {
-                foreach (var theme in AppTheme.All)
+                ReadFromTheme(binding.Key, binding.Value);
+            }
+        }
+
+        void ReadFromTheme(string property, Func<AppTheme, object> value)
+        {
+            foreach (var theme in AppTheme.All)
+            {
+                var themeValue = value(theme);
+                if (theme == AppTheme.Light)
                 {
-                    var value = binding.Value(theme);
-                    if (theme == AppTheme.Light)
-                    {
-                        // the setter raises PropertyChanged, and the figures repaint
-                        type.GetProperty(binding.Key).SetValue(this, value);
-                    }
-                    else
-                    {
-                        SetOverride(theme.Name, binding.Key, value);
-                    }
+                    // the setter raises PropertyChanged, and the figures repaint
+                    GetType().GetProperty(property).SetValue(this, themeValue);
+                }
+                else
+                {
+                    SetOverride(theme.Name, property, themeValue);
                 }
             }
         }

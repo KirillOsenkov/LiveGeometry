@@ -51,12 +51,23 @@ namespace DynamicGeometry
             // the paper, until a drawing paints its own over it: bound below the value a
             // drawing sets, or a switch of theme would paint the theme's paper over that again
             this.Bind(BackgroundProperty, this.GetResourceObservable(nameof(AppTheme.Paper)), BindingPriority.Style);
-            AppTheme.CurrentChanged += () => Drawing?.RefreshTheme(colorsChanged: false);
-            AppTheme.ColorsChanged += () => Drawing?.RefreshTheme(colorsChanged: true);
+            // while on screen; hidden behind the gallery page, the drawing catches up when the
+            // editor shows again (whoever shows it calls Drawing.RefreshThemeIfStale: Avalonia
+            // tells nobody when IsEffectivelyVisible changes)
+            AppTheme.CurrentChanged += () => RefreshTheme(colorsChanged: false);
+            AppTheme.ColorsChanged += () => RefreshTheme(colorsChanged: true);
             this.SizeChanged += DrawingControl_SizeChanged;
 
             CommandUndo = new Command(Undo, null, "Undo", "Drawing");
             CommandRedo = new Command(Redo, null, "Redo", "Drawing");
+        }
+
+        void RefreshTheme(bool colorsChanged)
+        {
+            if (IsEffectivelyVisible)
+            {
+                Drawing?.RefreshTheme(colorsChanged);
+            }
         }
 
         private void HandleException(Exception ex)

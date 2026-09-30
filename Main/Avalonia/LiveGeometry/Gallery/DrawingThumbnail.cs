@@ -44,6 +44,26 @@ public class DrawingThumbnail : Viewbox
         IsHitTestVisible = false;
         Child = surface;
         surface.SizeChanged += (s, e) => Enqueue();
+
+        // the figures follow the theme like the editor's do, while the tile is on screen (the
+        // tiles live as long as the gallery); hidden behind the editor, a tile catches up when
+        // the gallery page shows again (RefreshThemeIfStale, called by the gallery)
+        AppTheme.CurrentChanged += () => RefreshTheme(colorsChanged: false);
+        AppTheme.ColorsChanged += () => RefreshTheme(colorsChanged: true);
+    }
+
+    void RefreshTheme(bool colorsChanged)
+    {
+        if (Drawing != null && IsEffectivelyVisible)
+        {
+            Drawing.RefreshTheme(colorsChanged);
+        }
+    }
+
+    /// <summary>The theme may have changed while the tile was hidden</summary>
+    public void RefreshThemeIfStale()
+    {
+        Drawing?.RefreshThemeIfStale();
     }
 
     public Drawing Drawing { get; private set; }
@@ -240,10 +260,6 @@ public class DrawingThumbnail : Viewbox
 
             Drawing = drawing;
             DrawingLoaded(drawing);
-
-            // the figures follow the theme like the editor's do (the tiles live as long as the gallery)
-            AppTheme.CurrentChanged += () => drawing.RefreshTheme(colorsChanged: false);
-            AppTheme.ColorsChanged += () => drawing.RefreshTheme(colorsChanged: true);
         }
         catch (Exception ex)
         {

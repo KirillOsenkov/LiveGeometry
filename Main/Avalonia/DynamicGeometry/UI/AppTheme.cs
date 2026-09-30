@@ -11,6 +11,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Styling;
+using Avalonia.Threading;
 
 namespace DynamicGeometry;
 
@@ -198,6 +199,8 @@ public class AppTheme : INotifyPropertyChanged
         {
             application.Resources.ThemeDictionaries[theme.Variant] = theme.Resources;
         }
+
+        registered = true;
     }
 
     /// <summary>The theme on screen</summary>
@@ -227,11 +230,21 @@ public class AppTheme : INotifyPropertyChanged
 
     /// <summary>
     /// Raised after a color of any theme was set (tweaked in the property grid), for what
-    /// holds copies of theme colors (the default styles of a drawing)
+    /// holds copies of theme colors (the default styles of a drawing). Only for a color
+    /// drawings take (<see cref="IsDrawingColor"/>), and once per dispatcher tick however
+    /// many sets a drag in the color picker made (<see cref="SetResource"/>).
     /// </summary>
     public static event Action ColorsChanged;
 
+    /// <summary>
+    /// Counts what changes the look of drawings: a switch of theme, a tweaked color. A
+    /// drawing that is off screen skips the refresh and compares against this when it
+    /// comes back (<see cref="Drawing.RefreshThemeIfStale"/>).
+    /// </summary>
+    public static int Version { get; private set; }
+
     static bool listening;
+    static bool registered;
 
     /// <summary>
     /// Shows the named theme, or with <see cref="SystemChoice"/> whichever the system asks for
@@ -243,7 +256,11 @@ public class AppTheme : INotifyPropertyChanged
         if (!listening)
         {
             listening = true;
-            application.ActualThemeVariantChanged += (s, e) => CurrentChanged?.Invoke();
+            application.ActualThemeVariantChanged += (s, e) =>
+            {
+                Version++;
+                CurrentChanged?.Invoke();
+            };
         }
 
         var theme = ByName(choice);
@@ -523,21 +540,82 @@ public class AppTheme : INotifyPropertyChanged
     void Set(ref Color field, Color value, [CallerMemberName] string key = null)
     {
         field = value;
-
-        // the dictionary tells its owner (the application), and every binding to the key
-        // reads it again
-        Resources[key] = new ImmutableSolidColorBrush(value);
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(key));
-        ColorsChanged?.Invoke();
+        SetResource(key, new ImmutableSolidColorBrush(value));
     }
 
     /// <summary>A fill that may be a gradient: the resource is the brush itself, which every icon bound to the key shares</summary>
     void Set(ref Brush field, Brush value, [CallerMemberName] string key = null)
     {
         field = value;
-        Resources[key] = value.ToImmutable();
+        SetResource(key, value.ToImmutable());
+    }
+
+    readonly Dictionary<string, object> pendingResources = new Dictionary<string, object>();
+
+    /// <summary>
+    /// Puts the brush under the key. Once the dictionary is registered, a write makes the
+    /// application tell the whole tree that its resources changed, and every binding
+    /// anywhere (the chrome's, and the ones inside Fluent's templates) reads its resource
+    /// again, whatever the key; so the writes of a drag in the color picker - a set per
+    /// pointer move - are gathered and made once the dispatcher is idle, followed by one
+    /// <see cref="ColorsChanged"/>. The property itself changed already: the grid's row
+    /// shows the value, <see cref="CopyAsCode"/> reads it.
+    /// </summary>
+    void SetResource(string key, object brush)
+    {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(key));
-        ColorsChanged?.Invoke();
+        if (!registered)
+        {
+            Resources[key] = brush;
+            return;
+        }
+
+        bool scheduled = pendingResources.Count > 0;
+        pendingResources[key] = brush;
+        if (!scheduled)
+        {
+            Dispatcher.UIThread.Post(FlushResources, DispatcherPriority.Background);
+        }
+    }
+
+    void FlushResources()
+    {
+        bool drawingsChanged = false;
+        foreach (var pair in pendingResources)
+        {
+            Resources[pair.Key] = pair.Value;
+            drawingsChanged |= IsDrawingColor(pair.Key);
+        }
+
+        pendingResources.Clear();
+        if (drawingsChanged)
+        {
+            Version++;
+            ColorsChanged?.Invoke();
+        }
+    }
+
+    static HashSet<string> drawingColors;
+
+    /// <summary>
+    /// Whether drawings take the color: the default styles are built from the Paper group
+    /// (<c>StyleManager.AddDefaultStyles</c>, <c>CartesianGrid</c>) and the gallery's text
+    /// style from <see cref="Text"/>. A change of any other color repaints the chrome alone.
+    /// </summary>
+    public static bool IsDrawingColor(string key)
+    {
+        if (drawingColors == null)
+        {
+            drawingColors = new HashSet<string>(
+                ColorProperties
+                    .Where(property => property.GetCustomAttributes<PropertyGridGroupAttribute>().Any(group => group.Name == "Paper"))
+                    .Select(property => property.Name))
+            {
+                nameof(Text)
+            };
+        }
+
+        return drawingColors.Contains(key);
     }
 
     /// <summary>The color with another alpha: a rim or a line that lets the paper through</summary>

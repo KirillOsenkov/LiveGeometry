@@ -160,20 +160,59 @@ namespace DynamicGeometry
 
         /// <summary>
         /// The theme on screen changed, or a color of a theme: the paper, the styles built from
-        /// the theme and every figure are drawn again as the theme now says
+        /// the theme and every figure are drawn again as the theme now says. Every figure
+        /// once: the styles' own change notifications, which would have each figure on a style
+        /// repaint per property read from the theme, are held back meanwhile
+        /// (<see cref="IsRefreshingTheme"/>). Not for a drawing without a canvas (the user's,
+        /// parked while they look at the gallery): it catches up when it gets one.
         /// </summary>
         public void RefreshTheme(bool colorsChanged)
         {
-            if (colorsChanged)
+            if (Canvas == null)
             {
-                StyleManager.RefreshTheme();
-                CoordinateGrid.RefreshTheme();
+                return;
             }
 
-            ApplyBackground();
+            themeVersion = AppTheme.Version;
+            IsRefreshingTheme = true;
+            try
+            {
+                if (colorsChanged)
+                {
+                    StyleManager.RefreshTheme();
+                }
+
+                PaintPaper();
+            }
+            finally
+            {
+                IsRefreshingTheme = false;
+            }
+
             foreach (var figure in Figures)
             {
                 figure.ApplyStyle();
+            }
+        }
+
+        /// <summary>
+        /// While set, figures don't repaint on a change of their style: the drawing applies
+        /// every style once at the end (<see cref="RefreshTheme"/>)
+        /// </summary>
+        public bool IsRefreshingTheme { get; private set; }
+
+        int themeVersion = AppTheme.Version;
+
+        /// <summary>
+        /// A drawing that was off screen (a hidden gallery tile, the user's drawing parked while
+        /// they looked at the gallery) missed the theme changes meanwhile: refreshes it if there
+        /// were any
+        /// </summary>
+        public void RefreshThemeIfStale()
+        {
+            if (themeVersion != AppTheme.Version)
+            {
+                RefreshTheme(colorsChanged: true);
             }
         }
 
@@ -235,13 +274,14 @@ namespace DynamicGeometry
 
         void ApplyBackground()
         {
-            // the grid's colors go by the paper it is on
-            if (CoordinateGrid != null)
-            {
-                CoordinateGrid.RefreshTheme();
-                CoordinateGrid.ApplyStyle();
-            }
+            PaintPaper();
+            CoordinateGrid?.ApplyStyle();
+        }
 
+        /// <summary>The paper onto the canvas, and the grid's colors, which go by the paper it is on</summary>
+        void PaintPaper()
+        {
+            CoordinateGrid?.RefreshTheme();
             if (Canvas != null)
             {
                 Canvas.Background = PaintsPaper ? PlaceBackground(Background) : null;
@@ -297,6 +337,9 @@ namespace DynamicGeometry
             {
                 figure.OnAddingToCanvas(canvas);
             }
+
+            // parked while the theme changed (a switch, a tweaked color): the shapes still wear the old look
+            RefreshThemeIfStale();
         }
 
         void UpdateClip(Canvas canvas)

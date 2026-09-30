@@ -558,6 +558,9 @@ public partial class MainView : UserControl
 
         LayoutRoot.IsVisible = true;
 
+        // the drawing skipped theme changes while the editor was hidden behind the gallery
+        DrawingHost.CurrentDrawing?.RefreshThemeIfStale();
+
         // the canvas must know its size before a drawing is fitted into it, and the ribbon
         // (folded or not, which the callers have decided by setting CurrentSample) is part of it
         UpdateRibbon();

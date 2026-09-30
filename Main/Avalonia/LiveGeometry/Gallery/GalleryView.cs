@@ -9,6 +9,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Reactive;
 using DynamicGeometry;
 using Ellipse = Avalonia.Controls.Shapes.Ellipse;
 
@@ -37,6 +38,7 @@ public class GalleryView : DockPanel
         VerticalAlignment = VerticalAlignment.Top
     };
     readonly TileGridPanel galleryTiles = new TileGridPanel();
+    readonly List<DrawingThumbnail> pictures = new List<DrawingThumbnail>();
     readonly GalleryTile continueTile;
 
     /// <param name="arrange">The arrange mode: see <see cref="Arrange_PointerPressed"/></param>
@@ -64,6 +66,7 @@ public class GalleryView : DockPanel
         {
             var item = GalleryCatalog.Items[i];
             var picture = new DrawingThumbnail(item) { Margin = new Thickness(8, 8, 8, 4) };
+            pictures.Add(picture);
             var tile = new GalleryTile(
                 picture,
                 item.Title,
@@ -121,6 +124,18 @@ public class GalleryView : DockPanel
             galleryTiles.PointerMoved += Arrange_PointerMoved;
             galleryTiles.PointerReleased += Arrange_PointerReleased;
         }
+
+        // the tiles skip theme changes while the page is hidden behind the editor
+        this.GetObservable(IsVisibleProperty).Subscribe(new AnonymousObserver<bool>(visible =>
+        {
+            if (visible)
+            {
+                foreach (var picture in pictures)
+                {
+                    picture.RefreshThemeIfStale();
+                }
+            }
+        }));
 
         var page = new Panel();
         page.Children.Add(new ScrollViewer()

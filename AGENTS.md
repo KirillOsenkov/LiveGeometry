@@ -633,7 +633,18 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   row: the settings page (the gear after Redo on the toolbar) opens `AppTheme.Current` through "Theme
   colors", every pick repaints the app at once (the setter writes the dictionary, which
   notifies its owner), and "Copy as code" puts the initializer on the clipboard to paste
-  back into `AppTheme.cs`. A new theme is another instance with its own variant, inheriting
+  back into `AppTheme.cs`. A write to the dictionary makes every resource binding in the
+  app (Fluent's templates included) look its resource up again, whatever the key, and
+  a drag in the picker is a set per pointer move: the setter changes the property at
+  once but posts the dictionary writes (`AppTheme.SetResource`, one flush per idle
+  tick), and `ColorsChanged` - the drawings' refresh - fires after the flush, only for a
+  color drawings take (`IsDrawingColor`: the Paper group and `Text`). `Drawing.RefreshTheme`
+  applies each figure's style once (`IsRefreshingTheme` holds the styles' own notifications
+  back while they re-read the theme), and only while the drawing is on screen: a hidden
+  gallery tile or the parked drawing catches up through `RefreshThemeIfStale` against
+  `AppTheme.Version` when it shows again (the gallery's `IsVisible`, `MainView.ShowEditor`,
+  the attach to a canvas; Avalonia's `IsEffectivelyVisibleChanged` is internal). Without
+  this, one pick in the browser (interpreted, no AOT) took over a second. A new theme is another instance with its own variant, inheriting
   Light or Dark for Fluent's sake, added to `All`. Tool icons draw their lines in `Ink`
   (`IconBuilder` binds them, and takes a theme color's name where a `Color` was passed);
   the drawn chrome icons (`MainToolbarIcons`, `PropertyGridIcons`) use a sentinel brush that

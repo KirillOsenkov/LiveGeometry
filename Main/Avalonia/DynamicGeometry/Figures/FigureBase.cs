@@ -745,6 +745,12 @@ namespace DynamicGeometry
 
         void style_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            // the drawing applies every style once at the end
+            if (Drawing != null && Drawing.IsRefreshingTheme)
+            {
+                return;
+            }
+
             ApplyStyle();
         }
 
