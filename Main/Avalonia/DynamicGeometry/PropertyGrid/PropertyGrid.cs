@@ -6,6 +6,7 @@ using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Threading;
 using GuiLabs.Undo;
 
 namespace DynamicGeometry
@@ -103,6 +104,21 @@ namespace DynamicGeometry
 
         void SelectionPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            // no name: the rows changed shape (what is editable, a caption, which buttons -
+            // a translated point freed), so everything is built again; posted, since this
+            // may come from inside an editor's own set
+            if (string.IsNullOrEmpty(e.PropertyName))
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (Selection == sender)
+                    {
+                        UpdateContents();
+                    }
+                });
+                return;
+            }
+
             FindAndUpdatePropertyEditor(e.PropertyName);
             FollowObjectTab();
 

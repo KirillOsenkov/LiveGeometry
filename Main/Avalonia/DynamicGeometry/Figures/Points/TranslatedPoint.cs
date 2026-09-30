@@ -156,6 +156,7 @@ namespace DynamicGeometry
         #region Property grid
 
         [PropertyGridVisible]
+        [PropertyGridGroup("Distance")]
         [PropertyGridPreferredEditor("UpDown")]
         [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public double Distance
@@ -172,6 +173,7 @@ namespace DynamicGeometry
 
         /// <summary>In degrees, counterclockwise from the x axis</summary>
         [PropertyGridVisible]
+        [PropertyGridGroup("Direction")]
         [PropertyGridPreferredEditor("UpDown")]
         [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public double Direction
@@ -213,6 +215,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Free distance")]
+        [PropertyGridGroup("Distance")]
         [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public bool FreeDistance
         {
@@ -235,6 +238,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Free direction")]
+        [PropertyGridGroup("Direction")]
         [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public bool FreeDirection
         {
@@ -258,6 +262,7 @@ namespace DynamicGeometry
         /// <summary>The way back from a distance taken from a figure: a typed value again (<see cref="Detach"/>)</summary>
         [PropertyGridVisible]
         [PropertyGridName("Type the distance")]
+        [PropertyGridGroup("Distance")]
         [PropertyGridIcon(PropertyGridIcon.Pencil)]
         public void UntieDistance()
         {
@@ -269,6 +274,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Type the direction")]
+        [PropertyGridGroup("Direction")]
         [PropertyGridIcon(PropertyGridIcon.Pencil)]
         public void UntieDirection()
         {
@@ -372,16 +378,15 @@ namespace DynamicGeometry
             OnFreedomChanged();
         }
 
+        // the rows of the grid change shape, not just their values: which are editable, what
+        // "Direction = ..." names, whether "Type the direction" is there - so the grid rebuilds
         void OnFreedomChanged()
         {
             Recalculate();
             UpdateVisual();
             this.RecalculateAllDependents();
             UpdateStyleForFreedom();
-            RaisePropertyChanged("Distance");
-            RaisePropertyChanged("Direction");
-            RaisePropertyChanged("FreeDistance");
-            RaisePropertyChanged("FreeDirection");
+            RaisePropertyChanged(null);
         }
 
         /// <summary>

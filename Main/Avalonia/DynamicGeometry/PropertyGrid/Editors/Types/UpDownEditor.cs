@@ -90,7 +90,12 @@ public class UpDownEditor : LabeledValueEditor, IValueEditor
     public override void UpdateEditor()
     {
         ShowValue(GetValue<double>());
-        TextBox.IsEnabled = Value.CanSetValue;
-        UpDown.IsEnabled = Value.CanSetValue;
+        bool canSet = Value.CanSetValue;
+        TextBox.IsEnabled = canSet;
+
+        // a value that can't be set has nothing to step: no buttons, and the box gets its
+        // right corners back
+        UpDown.IsVisible = canSet;
+        TextBox.CornerRadius = canSet ? new Avalonia.CornerRadius(4, 0, 0, 4) : new Avalonia.CornerRadius(4);
     }
 }

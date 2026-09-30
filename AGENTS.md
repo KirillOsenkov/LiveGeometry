@@ -390,7 +390,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (label text). Rows that are editable only
   sometimes: `[PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]` on the
   property and `IConditionalProperties` on the figure (`CanEdit`, `Caption`); the same interface
-  vetoes buttons by method name. A property setter that changes the figure list (the length
+  vetoes buttons by method name. The grid refreshes a row's value on `PropertyChanged` with
+  its name, and rebuilds itself (posted) on a `PropertyChanged` with a null name: for a set
+  after which the rows change shape - what is editable, a caption, which buttons (a
+  translated point's Free direction). A property setter that changes the figure list (the length
   panel's Show, the point's Free toggles) does so directly: the grid records the property set as
   the undo step and the undo library refuses an action recorded from inside another. A tool's
   panel that holds settings, not drawing state, says `[PropertyGridNoUndo]`: otherwise typing in
