@@ -501,7 +501,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `FigureCreator.ShowCreatedFigure` shows a `TiedValuesPanel` (the figure's own rows, the
   Untie buttons, OK; titled after the last figure made) and remembers the figure
   (`CreatedFigure`): a click on a figure a value accepts ties it there (a vector gives a
-  translation both; anything else goes to the first value that takes it) instead of starting
+  translation both, or only the values typed at that moment - "Type the direction", then a
+  click on another vector, leaves the distance with the first; anything else goes to the
+  first value that takes it) instead of starting
   the next construction, until anything else takes the side panel, the next construction
   starts or the tool stops; then the typed values become the tool's defaults
   (`TakeDefaultsFrom`). The pre-create panels stay (Line at Angle's angle, Rotate's and
@@ -521,7 +523,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   scaling the long axis scales the short one with it.
 - **Vectors** are an invisible `Segment` plus an `Arrow` polygon sized in pixels, filled with the
   line color. `Vector.OnAddingToCanvas` sets the default `LineStyle` before the base call,
-  otherwise the polygon default (pale fill) wins.
+  otherwise the polygon default (pale fill) wins. A vector is an `ILine` (parallel,
+  perpendicular, intersection, a point on it all take it) and its hit test asks the segment
+  inside after the arrow, since the arrow is a filled polygon with no room around it.
 - **Names of lines and circles** (`Figures/Controls/FigureLabel.cs`): "Show name" on a line,
   ray, segment or circle (`LineBase`/`CircleBase.ShowName`, over `FigureBase.HasNameLabel`)
   adds a `FigureLabel` the way a point's name is a `PointLabel`: a label depending on the

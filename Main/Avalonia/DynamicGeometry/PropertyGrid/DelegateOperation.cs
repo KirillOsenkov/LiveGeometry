@@ -12,18 +12,22 @@ namespace DynamicGeometry;
 public class DelegateOperation : IOperationDescription
 {
     readonly Action action;
-    readonly PropertyGridIconAttribute icon;
+    readonly Attribute[] attributes;
 
+    /// <param name="group">The <see cref="PropertyGridGroupAttribute"/> box the button sits in, under its rows; null for a plain button</param>
     public DelegateOperation(
         string name,
         string caption,
         PropertyGridIcon icon,
-        Action action)
+        Action action,
+        string group = null)
     {
         Name = name;
         DisplayName = caption;
-        this.icon = new PropertyGridIconAttribute(icon);
         this.action = action;
+        attributes = group != null
+            ? new Attribute[] { new PropertyGridIconAttribute(icon), new PropertyGridGroupAttribute(group) }
+            : new Attribute[] { new PropertyGridIconAttribute(icon) };
     }
 
     public string Name { get; }
@@ -47,12 +51,11 @@ public class DelegateOperation : IOperationDescription
 
     public T GetAttribute<T>() where T : Attribute
     {
-        return icon as T;
+        return attributes.OfType<T>().FirstOrDefault();
     }
 
     public IEnumerable<T> GetAttributes<T>() where T : Attribute
     {
-        var one = GetAttribute<T>();
-        return one != null ? new[] { one } : Enumerable.Empty<T>();
+        return attributes.OfType<T>();
     }
 }

@@ -7,7 +7,11 @@ using System.Xml.Linq;
 using Avalonia.Media;
 namespace DynamicGeometry
 {
-    public class Vector : CompositeFigure, ILengthProvider, IFixableLength
+    /// <summary>
+    /// A segment with an arrowhead. An <see cref="ILine"/> like a segment, so that the tools
+    /// that take a line take it (parallel, perpendicular, intersection, a point on it).
+    /// </summary>
+    public class Vector : CompositeFigure, ILengthProvider, IFixableLength, ILine
     {
         public Vector()
         {

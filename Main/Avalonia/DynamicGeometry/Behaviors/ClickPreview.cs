@@ -216,6 +216,13 @@ public class ClickPreview
             // the track stands for the whole (a slider taken as a radius)
             halo = (AvaloniaShapes.Shape)CreateHalo(slider.Track);
         }
+        else if (figure is Vector vector)
+        {
+            // along the invisible segment inside, as wide as the arrow's shaft is drawn
+            halo = (AvaloniaShapes.Shape)CreateHalo(vector.Line);
+            var lineStyle = vector.Style as LineStyle;
+            halo.StrokeThickness = (lineStyle != null ? lineStyle.StrokeWidth : 1) + HaloWidth;
+        }
         else if (figure is LabelBase label)
         {
             // a plate behind the text (a distance measurement taken as a radius)

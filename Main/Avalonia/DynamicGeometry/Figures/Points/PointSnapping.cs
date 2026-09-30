@@ -70,7 +70,11 @@ public static class PointSnapping
 
         if (dependencies[1] is IPoint second)
         {
-            var kind = figure is Segment ? "segment" : figure is Ray ? "ray" : figure is LineTwoPoints ? "line" : null;
+            var kind = figure is Segment ? "segment"
+                : figure is Ray ? "ray"
+                : figure is LineTwoPoints ? "line"
+                : figure is Vector ? "vector"
+                : null;
             if (kind != null)
             {
                 // the default name: the points in order (line AB, not BA)

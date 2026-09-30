@@ -36,11 +36,14 @@ public class TiedValuesPanel : ICustomPropertyProvider, ICustomMethodProvider
             if (Values.IsTied(name))
             {
                 string valueName = name;
+                // in the box of the value's row, right under it (Distance, Direction)
+                var group = Values.GetType().GetProperty(name)?.GetAttribute<PropertyGridGroupAttribute>()?.Name;
                 yield return new DelegateOperation(
                     TiedValues.UntieVerb(name),
                     "Type the " + name.ToLowerInvariant(),
                     PropertyGridIcon.Pencil,
-                    () => Untie(valueName));
+                    () => Untie(valueName),
+                    group);
             }
         }
 

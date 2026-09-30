@@ -331,8 +331,10 @@ namespace DynamicGeometry
         /// <summary>
         /// A click while the panel of the figure just made is up: on a figure one of its values
         /// can be taken from, the value is tied to it - a vector gives a translation both its
-        /// distance and its direction, anything else goes to the first value that takes it -
-        /// and the panel shows the source. True when the click was that.
+        /// distance and its direction, or only what is typed at that moment ("Type the
+        /// direction", then a click on another vector: the distance stays with the first),
+        /// anything else goes to the first value that takes it - and the panel shows the
+        /// source. True when the click was that.
         /// </summary>
         protected bool TryTieCreatedFigure(Point unconstrainedCoordinates)
         {
@@ -348,6 +350,10 @@ namespace DynamicGeometry
             if (!(target is Vector))
             {
                 names = names.Take(1).ToList();
+            }
+            else if (names.Any(name => !values.IsTied(name)))
+            {
+                names = names.Where(name => !values.IsTied(name)).ToList();
             }
 
             bool tied = false;
