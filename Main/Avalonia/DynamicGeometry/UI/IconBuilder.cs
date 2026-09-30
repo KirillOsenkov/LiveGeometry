@@ -30,14 +30,8 @@ namespace DynamicGeometry
 
         public Canvas Canvas { get; set; }
 
-        /// <summary>The points from here on are this many pixels across (a crowded icon wants them smaller than the usual 8)</summary>
-        public IconBuilder PointSize(double size)
-        {
-            pointSize = size;
-            return this;
-        }
-
-        double? pointSize;
+        /// <summary>How many pixels across the points of an icon are: smaller than on the paper (8), the icons being small</summary>
+        public static double PointSize = 6;
 
         public static IconBuilder BuildIcon()
         {
@@ -72,12 +66,8 @@ namespace DynamicGeometry
         Shape AddPoint(double x, double y, string fillThemeColor)
         {
             Shape point = Factory.CreatePointShape();
-            if (pointSize != null)
-            {
-                point.Width = pointSize.Value;
-                point.Height = pointSize.Value;
-            }
-
+            point.Width = PointSize;
+            point.Height = PointSize;
             point.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
             if (fillThemeColor != null)
             {

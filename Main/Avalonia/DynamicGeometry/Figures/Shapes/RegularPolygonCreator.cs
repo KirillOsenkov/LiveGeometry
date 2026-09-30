@@ -37,7 +37,6 @@ namespace DynamicGeometry
         public override FrameworkElement CreateIcon()
         {
             return IconBuilder.BuildIcon()
-                .PointSize(6)
                 .Polygon(
                     nameof(AppTheme.ShapeIconFill),
                     nameof(AppTheme.ShapeOutline),

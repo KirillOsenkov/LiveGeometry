@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Input;
-using Avalonia.Media;
 
 namespace DynamicGeometry
 {
@@ -123,11 +122,8 @@ namespace DynamicGeometry
             double a = 0.2, b = 0.4, c = 0.6, d = 0.8;
             return IconBuilder.BuildIcon()
                 .Polygon(
-                    Factory.CreateLinearGradient(
-                        Color.FromArgb(255, 200, 255, 0),
-                        Color.FromArgb(255, 255, 255, 0),
-                        90),
-                    nameof(AppTheme.Ink),
+                    nameof(AppTheme.ShapeIconFill),
+                    nameof(AppTheme.ShapeOutline),
                     new Point(a, b),
                     new Point(b, b),
                     new Point(b, a),

@@ -80,7 +80,6 @@ namespace DynamicGeometry
         {
             double a = 0.2, b = 0.8;
             return IconBuilder.BuildIcon()
-                .PointSize(6)
                 .Polygon(
                     nameof(AppTheme.ShapeIconFill),
                     nameof(AppTheme.ShapeOutline),
