@@ -182,7 +182,7 @@ namespace DynamicGeometry
             return IconBuilder.BuildIcon()
                 .Point(0.1, 0.9)
                 .Polygon(
-                    nameof(AppTheme.SourceFill),
+                    nameof(AppTheme.ShapeIconFill),
                     nameof(AppTheme.Ink),
                     new Point(0.3, 0.9),
                     new Point(0.9, 0.9),

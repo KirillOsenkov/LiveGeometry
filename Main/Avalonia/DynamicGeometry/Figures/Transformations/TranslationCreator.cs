@@ -403,7 +403,7 @@ namespace DynamicGeometry
         {
             return IconBuilder.BuildIcon()
                 .Polygon(
-                    nameof(AppTheme.SourceFill),
+                    nameof(AppTheme.ShapeIconFill),
                     nameof(AppTheme.Ink),
                     new Point(0.1, 0.9),
                     new Point(0.4, 0.9),

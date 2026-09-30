@@ -527,6 +527,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Color/brush picking** (`DynamicGeometry/Controls/ColorPicker/`) is layered so parts can be
   swapped: `ColorPalette` -> `ColorPage` (swatches, spectrum) -> `ColorPickerView` ->
   `BrushPickerView` (solid | gradient); in the property grid through `ExpandingPickerEditor`.
+  A gradient is its stops and an angle; the brush's two points are the line through the
+  middle of the box at that angle, long enough for the end colors to be reached in the
+  corners (the CSS rule: (0,0)-(1,1) at 45°, edge to edge at 0° and 90°, outside the box in
+  between), so that the stops reach every part of the shape. Gradients made before
+  2026-09-29 have a line of length 1, which leaves the corners of a diagonal one flat; they
+  load as they are and take the new line when edited.
   Whoever hosts a `SegmentSwitcher` sets its `Surface` to the background it sits on so the
   selected tab blends into it.
 - **The paper** is `Drawing.Background`, edited through the "Background" button on the
@@ -595,10 +601,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (`IconBuilder` binds them, and takes a theme color's name where a `Color` was passed);
   the drawn chrome icons (`MainToolbarIcons`, `PropertyGridIcons`) use a sentinel brush that
   `Shape` rebinds to `IconOutline`. A tool icon's fills are theme colors too: the Paper group
-  for what a figure would look like (points, `ShapeFill` for every polygon icon), and the
-  Icons group for what is only a picture (`SourceFill`/`ImageFill` of the transformations,
+  for what a figure would look like (points), and the
+  Icons group for what is only a picture (`ShapeIconFill`/`ShapeOutline` of every shape in
+  the Shapes icons, `ImageFill` of a transformation's image - the figure transformed is
+  filled as a shape is, though outlined in ink like its image -
   `RulerFill`, `AngleFill`, `AreaFill`/`AreaHatch`) - no literal brush in a `CreateIcon`,
-  or the theme can't reach it. `SourceFill` and `ImageFill` are a `Brush`, not a `Color`, so
+  or the theme can't reach it. A shape's icon is not filled with the Paper group's
+  `ShapeFill`, the fill of a new polygon: that one is translucent, made for the paper, and
+  a gradient there would fill every new polygon with it. `ShapeIconFill` and
+  `ImageFill` are a `Brush`, not a `Color`, so
   the grid gives them the brush editor and they can be gradients; to make another fill one,
   change its type and its two initializers (a property bound to it must take a brush, and
   `ObserveTheme` hands out solid colors only). The sun/moon

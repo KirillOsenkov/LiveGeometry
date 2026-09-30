@@ -37,12 +37,13 @@ namespace DynamicGeometry
         {
             var text = new TextBlock()
             {
+                // as the icons of the Coordinates tab that are text (y=f(x)): same size, upright, in ink
                 Text = "Abc",
-                FontStyle = FontStyles.Italic,
-                FontWeight = FontWeights.Bold,
+                FontSize = 13,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
+            text.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Ink));
             var grid = new Grid()
             {
                 MinWidth = IconBuilder.IconSize,

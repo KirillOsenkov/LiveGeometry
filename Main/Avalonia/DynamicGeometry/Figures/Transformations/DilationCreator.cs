@@ -189,7 +189,7 @@ namespace DynamicGeometry
                     new Point(0.9, 0.1),
                     new Point(0.1, 0.1))
                 .Polygon(
-                    nameof(AppTheme.SourceFill),
+                    nameof(AppTheme.ShapeIconFill),
                     nameof(AppTheme.Ink),
                     new Point(0.1, 0.9),
                     new Point(0.5, 0.9),

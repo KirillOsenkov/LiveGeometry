@@ -54,20 +54,20 @@ public class AppTheme : INotifyPropertyChanged
         TextFaint = Color.Parse("#B4BAC4"),
         IconOutline = Color.Parse("#3A4250"),
         ShapeOutline = Color.Parse("#A87B05"),
-        SourceFill = new LinearGradientBrush()
+        ShapeIconFill = new LinearGradientBrush()
         {
-            StartPoint = new RelativePoint(0.067, 0.25, RelativeUnit.Relative),
-            EndPoint = new RelativePoint(0.933, 0.75, RelativeUnit.Relative),
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(1, 1, RelativeUnit.Relative),
             GradientStops =
             {
-                new GradientStop(Color.Parse("#FFFBD7"), 0),
-                new GradientStop(Color.Parse("#ECEC45"), 1)
+                new GradientStop(Color.Parse("#FFFEF0"), 0),
+                new GradientStop(Color.Parse("#F1E7A8"), 1)
             }
         },
         ImageFill = new LinearGradientBrush()
         {
-            StartPoint = new RelativePoint(0.1464, 0.1464, RelativeUnit.Relative),
-            EndPoint = new RelativePoint(0.8536, 0.8536, RelativeUnit.Relative),
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(1, 1, RelativeUnit.Relative),
             GradientStops =
             {
                 new GradientStop(Color.Parse("#E0FEFF"), 0),
@@ -121,7 +121,16 @@ public class AppTheme : INotifyPropertyChanged
         TextFaint = Color.Parse("#6B7482"),
         IconOutline = Color.Parse("#D0D6DF"),
         ShapeOutline = Color.Parse("#D9B44A"),
-        SourceFill = new SolidColorBrush(Color.Parse("#B8962E")),
+        ShapeIconFill = new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(1, 1, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(Color.Parse("#7D7A60"), 0),
+                new GradientStop(Color.Parse("#4A4838"), 1)
+            }
+        },
         ImageFill = new SolidColorBrush(Color.Parse("#4E9A5E")),
         RulerFill = Color.Parse("#A88E32"),
         AngleFill = Color.Parse("#3F8F4E"),
@@ -347,19 +356,24 @@ public class AppTheme : INotifyPropertyChanged
     [PropertyGridGroup("Icons")]
     public Color IconOutline { get => iconOutline; set => Set(ref iconOutline, value); }
 
-    /// <summary>The outline around the default fill in the tool icons of shapes, which on its own would sink into the ribbon</summary>
+    /// <summary>The outline of every shape in the tool icons of shapes (triangle, square, polygon)...</summary>
     Color shapeOutline;
     [PropertyGridVisible]
     [PropertyGridGroup("Icons")]
     public Color ShapeOutline { get => shapeOutline; set => Set(ref shapeOutline, value); }
 
-    /// <summary>In the icons of the transformations: the figure that is transformed (a brush: it may be a gradient)...</summary>
-    Brush sourceFill;
+    /// <summary>
+    /// ...and what fills it (a brush: it may be a gradient). The icon's own: a new polygon on
+    /// the paper is filled with <see cref="ShapeFill"/>, which is translucent and would sink
+    /// into the ribbon. Also the figure that is transformed, in the icons of the
+    /// transformations: it is a shape like any other...
+    /// </summary>
+    Brush shapeIconFill;
     [PropertyGridVisible]
     [PropertyGridGroup("Icons")]
-    public Brush SourceFill { get => sourceFill; set => Set(ref sourceFill, value); }
+    public Brush ShapeIconFill { get => shapeIconFill; set => Set(ref shapeIconFill, value); }
 
-    /// <summary>...and its image</summary>
+    /// <summary>...and its image, which is what stands out</summary>
     Brush imageFill;
     [PropertyGridVisible]
     [PropertyGridGroup("Icons")]
@@ -623,6 +637,8 @@ public class AppTheme : INotifyPropertyChanged
 
     static string ToCode(double number)
     {
-        return number.ToString("0.####", CultureInfo.InvariantCulture);
+        // adding zero turns a negative zero, which would print as -0, into zero
+        // (global: System is the theme the system asks for, in here)
+        return (global::System.Math.Round(number, digits: 4) + 0.0).ToString("0.####", CultureInfo.InvariantCulture);
     }
 }

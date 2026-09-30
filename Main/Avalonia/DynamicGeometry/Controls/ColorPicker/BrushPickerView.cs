@@ -129,13 +129,21 @@ public class BrushPickerView : Decorator
                 return new SolidColorBrush(solidColor);
             }
 
+            // The line goes through the middle of the box at the angle, and is as long as it
+            // takes for the first and the last color to be reached in the corners (as CSS
+            // does it): (0,0) to (1,1) at 45 degrees, edge to edge at 0 and 90. The stops
+            // then reach everywhere. A shorter line leaves the corners flat, where no stop
+            // can do anything; this one ends outside the box at angles in between.
             double radians = angleSlider.Value * System.Math.PI / 180;
-            double x = System.Math.Cos(radians) / 2;
-            double y = System.Math.Sin(radians) / 2;
+            double cosine = System.Math.Cos(radians);
+            double sine = System.Math.Sin(radians);
+            double reach = (System.Math.Abs(cosine) + System.Math.Abs(sine)) / 2;
+            double x = cosine * reach;
+            double y = sine * reach;
             var brush = new LinearGradientBrush()
             {
-                StartPoint = new RelativePoint(0.5 - x, 0.5 - y, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0.5 + x, 0.5 + y, RelativeUnit.Relative)
+                StartPoint = new RelativePoint(Tidy(0.5 - x), Tidy(0.5 - y), RelativeUnit.Relative),
+                EndPoint = new RelativePoint(Tidy(0.5 + x), Tidy(0.5 + y), RelativeUnit.Relative)
             };
             foreach (var stop in stopBar.Stops)
             {
@@ -169,6 +177,12 @@ public class BrushPickerView : Decorator
                 isUpdating = false;
             }
         }
+    }
+
+    /// <summary>Without the rounding error of the sine and cosine: 0 and 1 where they are meant, and no negative zero</summary>
+    static double Tidy(double coordinate)
+    {
+        return System.Math.Round(coordinate, digits: 6) + 0.0;
     }
 
     void SwitchKind(string kind)
