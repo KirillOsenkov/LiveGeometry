@@ -295,7 +295,7 @@ public class GalleryView : DockPanel
     static Control PlusPicture()
     {
         var disc = new Ellipse() { Width = 84, Height = 84 };
-        disc.BindTheme(Shape.FillProperty, nameof(AppTheme.Accent));
+        disc.ObserveTheme(nameof(AppTheme.Accent), color => disc.Fill = Lit(color));
         return Picture(
             disc,
             new Path()
@@ -323,16 +323,49 @@ public class GalleryView : DockPanel
             new Path()
             {
                 Data = Geometry.Parse("M10,66 L20,38 H79 L70,66 Z"),
-                Fill = new SolidColorBrush(Color.FromRgb(0xFA, 0xD5, 0x65)),
+                Fill = Lit(Color.FromRgb(0xFA, 0xD5, 0x65)),
                 Stroke = outline,
                 StrokeThickness = 2.5,
                 StrokeJoin = PenLineJoin.Round
             });
     }
 
+    /// <summary>
+    /// The color as if lit from the upper left, as the tool icons' shapes are: a diagonal
+    /// gradient from a lighter tint of it there to the color itself at the lower right.
+    /// </summary>
+    /// <param name="lightAt">Where along the diagonal of the shape's box the tint is, 0 to 1</param>
+    /// <param name="fullAt">Where the color itself is: a shape that lies across the diagonal
+    /// (the pencil) spans only the middle of it, and wants the blend in there</param>
+    static LinearGradientBrush Lit(Color color, double lightAt = 0, double fullAt = 1)
+    {
+        return new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(1, 1, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(Lighter(color, 0.6), lightAt),
+                new GradientStop(color, fullAt)
+            }
+        };
+    }
+
+    /// <summary>The color mixed with white, by the given part of the way</summary>
+    static Color Lighter(Color color, double part)
+    {
+        return Color.FromArgb(
+            color.A,
+            (byte)(color.R + (255 - color.R) * part),
+            (byte)(color.G + (255 - color.G) * part),
+            (byte)(color.B + (255 - color.B) * part));
+    }
+
     static Control PencilPicture()
     {
-        var wood = new SolidColorBrush(Color.FromRgb(0xF2, 0xB6, 0x32));
+        // the pencil runs from the lower left to the upper right, across the light: on the
+        // diagonal of its box it takes up only the part between 0.39 and 0.61
+        var wood = Lit(Color.FromRgb(0xF2, 0xB6, 0x32), lightAt: 0.39, fullAt: 0.61);
         var outline = new SolidColorBrush(Color.FromRgb(0x8A, 0x63, 0x05));
         return Picture(
             new Path()
