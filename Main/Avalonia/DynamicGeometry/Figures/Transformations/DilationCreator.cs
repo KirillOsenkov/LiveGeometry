@@ -21,6 +21,7 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridFocus]
+            [PropertyGridPreferredEditor("UpDown")]
             [PropertyGridEvent("KeyDown", "Factor_KeyDown")]
             [PropertyGridName("Factor = ")]
             public double factor { get; set; } = 2; // 0 would squash the figure into the center

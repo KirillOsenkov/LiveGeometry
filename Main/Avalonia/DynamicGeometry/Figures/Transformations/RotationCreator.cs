@@ -21,6 +21,7 @@ namespace DynamicGeometry
 
             [PropertyGridVisible]
             [PropertyGridFocus]
+            [PropertyGridPreferredEditor("UpDown")]
             [PropertyGridEvent("KeyDown", "Angle_KeyDown")]
             [PropertyGridName("Angle = ")]
             public double angle { get; set; }
