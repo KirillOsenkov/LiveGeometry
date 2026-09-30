@@ -35,7 +35,6 @@
   body {
     margin: 0;
     position: relative;
-    overflow-x: hidden;
     color: var(--ink);
     font-family: var(--serif);
     font-size: 19px;
@@ -54,10 +53,19 @@
   a:hover { color: var(--terracotta); border-bottom-color: currentColor; }
 
   /* ---------- floating constructions in the margins ---------- */
+  /* a layer over the whole page that clips them, so nothing widens the document */
+  .backdrop {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
   .figure {
     position: absolute;
     color: var(--ink);
-    opacity: 0.085;
+    opacity: 0.1;
     pointer-events: none;
     z-index: 0;
     will-change: transform;
@@ -65,7 +73,7 @@
 
   .figure svg { display: block; width: 100%; height: auto; }
 
-  @media (max-width: 1100px) { .figure { display: none; } }
+  @media (max-width: 900px) { .figure { display: none; } }
 
   /* ---------- header ---------- */
   .top-link {
@@ -129,8 +137,8 @@
   }
 
   header .compiled {
-    font-size: 15px;
-    color: var(--ink-faint);
+    font-size: 17px;
+    color: var(--ink-soft);
     letter-spacing: 0.04em;
   }
 
@@ -184,17 +192,6 @@
     border-left: 1px solid rgba(58, 42, 20, 0.55);
     border-right: 1px solid rgba(58, 42, 20, 0.55);
     box-shadow: 0 0 12px -4px rgba(58, 42, 20, 0.35);
-  }
-
-  /* the part of the shaft the reader has passed darkens, as sand pours down */
-  .shaft::after {
-    content: "";
-    position: absolute;
-    left: 0; right: 0; top: 0;
-    height: var(--fill, 0%);
-    background: linear-gradient(180deg, rgba(179, 134, 42, 0.0), rgba(179, 134, 42, 0.2) 60%, rgba(179, 134, 42, 0.38));
-    transition: height 0.15s linear;
-    pointer-events: none;
   }
 
   .era {
@@ -359,12 +356,13 @@
   footer {
     position: relative;
     z-index: 1;
-    max-width: 760px;
+    max-width: 820px;
     margin: 64px auto 60px;
     padding: 28px 20px 0;
     border-top: 1px solid rgba(58, 42, 20, 0.3);
-    font-size: 16px;
-    color: var(--ink-soft);
+    font-size: 19px;
+    line-height: 1.45;
+    color: var(--ink);
   }
 
   footer h2 {
@@ -377,11 +375,12 @@
     color: var(--ink);
   }
 
-  footer ul { list-style: none; padding: 0; margin: 0 0 22px; }
-  footer li { margin: 4px 0; }
+  footer ul { list-style: none; padding: 0; margin: 0 0 26px; }
+  footer li { margin: 7px 0; }
   footer li::before { content: "◦ "; color: var(--gold); }
+  footer a { color: #1f3a66; border-bottom-color: rgba(31, 58, 102, 0.45); }
 
-  footer .note { font-style: italic; }
+  footer .note { font-style: italic; color: var(--ink-soft); }
 
   /* ---------- narrow screens: pillar on the left, every card to its right ---------- */
   @media (max-width: 760px) {
@@ -402,7 +401,6 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .entry { opacity: 1; transform: none; transition: none; }
-    .shaft::after { transition: none; }
   }
 </style>
 </head>
@@ -411,68 +409,70 @@
 <a class="top-link" href="/">← Live Geometry</a>
 
 <!-- faint constructions in the margins: Euclid I.1, the pentagon, Pythagoras, the golden spiral, Thales, a compass -->
-<div class="figure" style="left: 1.5%; top: 6%; width: 300px;" data-speed="0.06">
-  <svg viewBox="-110 -110 320 220" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+<div class="backdrop" aria-hidden="true">
+<div class="figure" style="left: 1.5%; top: 6%; width: 600px;" data-speed="0.06" data-width="600">
+  <svg viewBox="-110 -110 320 220" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
     <circle cx="0" cy="0" r="100"/>
     <circle cx="100" cy="0" r="100"/>
     <path d="M0 0 L100 0 L50 -86.6 Z"/>
-    <circle cx="0" cy="0" r="2.6" fill="currentColor"/>
-    <circle cx="100" cy="0" r="2.6" fill="currentColor"/>
-    <circle cx="50" cy="-86.6" r="2.6" fill="currentColor"/>
+    <circle cx="0" cy="0" r="3.4" fill="currentColor"/>
+    <circle cx="100" cy="0" r="3.4" fill="currentColor"/>
+    <circle cx="50" cy="-86.6" r="3.4" fill="currentColor"/>
     <text x="-14" y="16" font-size="12" fill="currentColor" stroke="none" font-family="Cormorant Garamond, serif" font-style="italic">A</text>
     <text x="104" y="16" font-size="12" fill="currentColor" stroke="none" font-family="Cormorant Garamond, serif" font-style="italic">B</text>
     <text x="46" y="-94" font-size="12" fill="currentColor" stroke="none" font-family="Cormorant Garamond, serif" font-style="italic">C</text>
   </svg>
 </div>
 
-<div class="figure" style="right: 2%; top: 14%; width: 260px;" data-speed="-0.05">
-  <svg viewBox="-112 -112 224 224" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+<div class="figure" style="right: 2%; top: 14%; width: 520px;" data-speed="-0.05" data-width="520">
+  <svg viewBox="-112 -112 224 224" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round">
     <circle cx="0" cy="0" r="100"/>
     <path d="M0 -100 L95.1 -30.9 L58.8 80.9 L-58.8 80.9 L-95.1 -30.9 Z"/>
-    <path d="M0 -100 L58.8 80.9 L-95.1 -30.9 L95.1 -30.9 L-58.8 80.9 Z" stroke-width="0.9"/>
-    <circle cx="0" cy="0" r="2.4" fill="currentColor"/>
+    <path d="M0 -100 L58.8 80.9 L-95.1 -30.9 L95.1 -30.9 L-58.8 80.9 Z" stroke-width="1.4"/>
+    <circle cx="0" cy="0" r="3.2" fill="currentColor"/>
   </svg>
 </div>
 
-<div class="figure" style="left: 2.5%; top: 34%; width: 280px;" data-speed="0.04">
-  <svg viewBox="-70 -10 220 160" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+<div class="figure" style="left: 2.5%; top: 34%; width: 560px;" data-speed="0.04" data-width="560">
+  <svg viewBox="-70 -10 220 160" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round">
     <path d="M0 0 L80 0 L0 60 Z"/>
     <path d="M0 0 L80 0 L80 80 L0 80 Z"/>
     <path d="M0 0 L0 60 L-60 60 L-60 0 Z"/>
     <path d="M80 0 L0 60 L60 140 L140 80 Z"/>
-    <path d="M0 8 L8 8 L8 0" stroke-width="1"/>
+    <path d="M0 8 L8 8 L8 0" stroke-width="1.5"/>
   </svg>
 </div>
 
-<div class="figure" style="right: 1.5%; top: 47%; width: 300px;" data-speed="-0.07">
-  <svg viewBox="-8 -8 146 96" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
+<div class="figure" style="right: 1.5%; top: 47%; width: 600px;" data-speed="-0.07" data-width="600">
+  <svg viewBox="-8 -8 146 96" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
     <path d="M0 0 H130 V80 H0 Z"/>
     <path d="M80 0 V80 M80 50 H130 M100 50 V80 M80 60 H100 M90 50 V60"/>
-    <path d="M0 80 A80 80 0 0 1 80 0 A50 50 0 0 1 130 50 A30 30 0 0 1 100 80 A20 20 0 0 1 80 60 A10 10 0 0 1 90 50 A10 10 0 0 1 100 60" stroke-width="1.8"/>
+    <path d="M0 80 A80 80 0 0 1 80 0 A50 50 0 0 1 130 50 A30 30 0 0 1 100 80 A20 20 0 0 1 80 60 A10 10 0 0 1 90 50 A10 10 0 0 1 100 60" stroke-width="2.7"/>
   </svg>
 </div>
 
-<div class="figure" style="left: 1%; top: 63%; width: 260px;" data-speed="0.05">
-  <svg viewBox="-104 -104 208 208" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+<div class="figure" style="left: 1%; top: 63%; width: 520px;" data-speed="0.05" data-width="520">
+  <svg viewBox="-104 -104 208 208" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round">
     <circle cx="0" cy="0" r="90"/>
     <path d="M-90 0 L90 0 L57.9 -68.9 Z"/>
-    <path d="M52.5 -62.4 L59 -57.2 L64.3 -63.7" stroke-width="1"/>
-    <circle cx="-90" cy="0" r="2.4" fill="currentColor"/>
-    <circle cx="90" cy="0" r="2.4" fill="currentColor"/>
-    <circle cx="57.9" cy="-68.9" r="2.4" fill="currentColor"/>
-    <circle cx="0" cy="0" r="1.6" fill="currentColor"/>
+    <path d="M52.5 -62.4 L59 -57.2 L64.3 -63.7" stroke-width="1.5"/>
+    <circle cx="-90" cy="0" r="3.2" fill="currentColor"/>
+    <circle cx="90" cy="0" r="3.2" fill="currentColor"/>
+    <circle cx="57.9" cy="-68.9" r="3.2" fill="currentColor"/>
+    <circle cx="0" cy="0" r="2.2" fill="currentColor"/>
   </svg>
 </div>
 
-<div class="figure" style="right: 3%; top: 78%; width: 220px;" data-speed="-0.04">
-  <svg viewBox="-70 -110 160 200" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<div class="figure" style="right: 3%; top: 78%; width: 440px;" data-speed="-0.04" data-width="440">
+  <svg viewBox="-70 -110 160 200" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="0" cy="-88" r="7"/>
     <path d="M0 -95 V-104"/>
     <path d="M-4 -81 L-46 70 M4 -81 L46 70"/>
     <path d="M-46 70 L-52 82 M46 70 L52 82"/>
-    <path d="M-30 -20 Q0 -10 30 -20" stroke-width="1"/>
-    <path d="M-66 84 A70 70 0 0 1 66 84" stroke-width="0.9" stroke-dasharray="3 4"/>
+    <path d="M-30 -20 Q0 -10 30 -20" stroke-width="1.5"/>
+    <path d="M-66 84 A70 70 0 0 1 66 84" stroke-width="1.4" stroke-dasharray="3 4"/>
   </svg>
+</div>
 </div>
 
 <header>
@@ -668,7 +668,7 @@
       <rect x="71.5" y="120" width="97" height="14" fill="url(#drumShade)"/>
       </g>
     </svg>
-    <div class="shaft" id="shaft"></div>
+    <div class="shaft"></div>
     <!-- an Attic base: fillet, scotia, torus, plinth, to the same scale -->
     <svg class="base" viewBox="-11.5 0 240 80">
       <g filter="url(#weathered)">
@@ -694,12 +694,22 @@
     <div class="card">
       <p class="when">1999</p>
       <h3>A program begins in Kharkiv</h3>
-      <p>Kirill Osenkov starts DG at the Kharkiv pedagogical university in Ukraine, under the supervision of Sergey A. Rakov. The language is Visual Basic 6. He is the only programmer on the project, beside about five program managers, five testers, and a team of teachers, methodologists and mathematicians who are writing the drawings.</p>
-      <p class="evidence">Kirill's 2007 blog post; the copyright line <i>(C) 1999‑2004 Sergey Rakov, Kirill Osenkov</i> that the later VB.NET port still carries.</p>
+      <p>Kirill Osenkov starts DG at the Skovoroda pedagogical university in Kharkiv, Ukraine, under the supervision of Sergey A. Rakov. The idea it serves is older than the program: Rakov and Viktor P. Gorokh had published <i>Computer Experiments in Geometry</i> in 1996, a course in which pupils discover theorems by experimenting. The language is Visual Basic 6. Kirill is the only programmer on the project, beside about five program managers, five testers, and a team of teachers, methodologists and mathematicians who are writing the drawings.</p>
+      <p class="evidence">Kirill's 2007 blog post; the copyright line <i>(C) 1999‑2004 Sergey Rakov, Kirill Osenkov</i> that the later VB.NET port still carries; Раков С.А., Горох В.П., <i>Компьютерные эксперименты в геометрии</i>, Харків: РЦНІТ, 1996, 176 с.</p>
     </div>
   </article>
 
   <article class="entry right">
+    <span class="medal">2000</span>
+    <div class="card">
+      <p class="when">2000</p>
+      <h3>The first teacher's book</h3>
+      <p>Two years before version 1.0 ships, DG is in print: <i>Discovering Geometry through Computer Experiments in the DG Package</i>, a 202‑page guide for mathematics teachers published by the university, with nine authors. Kirill's name is third on the cover, after Rakov and Gorokh: the programmer among the methodologists.</p>
+      <p class="evidence">Раков С.А., Горох В.П., Осенков К.О., Думчикова О.В., Костіна О.В., Ларін О.Р., Лисиця В.Т., Олійник Т.О., Пікалова В.В., <i>Відкриття геометрії через комп'ютерні експерименти в пакеті DG</i>, Харків: ХДПУ, 2000, 202 с.</p>
+    </div>
+  </article>
+
+  <article class="entry left">
     <span class="medal">2002</span>
     <div class="card">
       <p class="when">February 2002</p>
@@ -709,13 +719,23 @@
     </div>
   </article>
 
-  <article class="entry left">
+  <article class="entry right">
     <span class="medal">2002</span>
     <div class="card">
       <p class="when">Summer 2002</p>
       <h3>DG 1.0 ships</h3>
-      <p>The package goes to Ukrainian schools, where it is still in use in geometry lessons years later. It can do things its successor would take a long time to catch up with: analytic expressions, measurements, hyperlinks between drawings, whole composed documents.</p>
-      <p class="evidence">Kirill's 2007 blog post: <q>I shipped and deployed working and tested software in 2002 that still works in 2007.</q></p>
+      <p>The package goes to Ukrainian schools on a CD, <i>Dynamic Geometry DG, version 1.0</i>, distributed by the Ministry of Education and Science, with a second edition of the teacher's book. It is still in use in geometry lessons years later, and it can do things its successor would take a long time to catch up with: analytic expressions, measurements, hyperlinks between drawings, whole composed documents.</p>
+      <p class="evidence">Kirill's 2007 blog post: <q>I shipped and deployed working and tested software in 2002 that still works in 2007</q>; the CD record <i>Програмно-методичний комплекс «Динамічна геометрія DG», версія 1.0</i>, Харків, 2002; the guide's 2002 edition, Харків: Вікторія, 136 с.</p>
+    </div>
+  </article>
+
+  <article class="entry left">
+    <span class="medal">2003</span>
+    <div class="card">
+      <p class="when">2003</p>
+      <h3>DG in the journals</h3>
+      <p>Kirill publishes the one paper that is his alone, on how DG is built: <i>The DG dynamic geometry package: principles of construction and possibilities for use in the educational process</i>, in the Drahomanov University's series on computer‑oriented learning systems. The same year Rakov and Gorokh present DG as "a step from traditional to information technology in teaching geometry", and Valentina Pikalova, a co‑author of the book, writes on classroom investigations with it.</p>
+      <p class="evidence">Осенков К.О., Науковий часопис НПУ ім. М.П. Драгоманова, серія 2, вип. 6, 2003; Раков, Горох, <i>Комп'ютер у школі і сім'ї</i>, 2003, №1, с. 20–23; Пікалова, там само, 4(28), 2003, с. 34–40.</p>
     </div>
   </article>
 
@@ -730,6 +750,16 @@
   </article>
 
   <article class="entry left">
+    <span class="medal">2005</span>
+    <div class="card">
+      <p class="when">2005</p>
+      <h3>Transformations, and a doctorate</h3>
+      <p>Rakov, Gorokh and Osenkov publish together in <i>Mathematics at School</i>: classroom investigations of geometric transformations with DG. The same year Rakov's doctoral dissertation makes the research approach, with DG as its instrument, the basis of a mathematics teacher's competencies, and two more of his articles put DG beside Cabri, Sketchpad and Cinderella as the Ukrainian package in the field.</p>
+      <p class="evidence">Раков С.А., Горох В.П., Осєнков К.А., <i>Математика в школі</i>, 2005, №1, с. 10–14; Раков, дис. д‑ра пед. наук, Харків, 2005; <i>Математика в школі</i>, 2005, №7, с. 2–9; Науковий часопис НПУ, 2004, №1(8), с. 42–55.</p>
+    </div>
+  </article>
+
+  <article class="entry right">
     <span class="medal">2006</span>
     <div class="card">
       <p class="when">2006</p>
@@ -739,13 +769,14 @@
     </div>
   </article>
 
-  <article class="entry right">
+  <article class="entry left">
     <span class="medal">2007</span>
     <div class="card">
       <p class="when">December 8, 2007</p>
       <h3>DG 1.0 goes free</h3>
       <p>Five years after shipping, Kirill publishes DG as free software on his blog and tells its story for the first time in English.</p>
-      <p class="evidence">The blog post <i>DG 1.0 – free dynamic geometry software</i>.</p>
+      <p>DG lives on in Ukrainian teacher training. A 2008 book for teachers gives it a chapter beside GRAN‑2D, the ministry's methodical letters recommend the two packages together, and university courses keep it on their syllabi with lab work in its printed workbooks. A later dissertation records that its development "was halted", and GeoGebra takes its place.</p>
+      <p class="evidence">The blog post <i>DG 1.0 – free dynamic geometry software</i>; Крамаренко Т.Г., <i>Уроки математики з комп'ютером</i>, Кривий Ріг, 2008; Пікалова В.В., dissertation on GeoGebra in teacher training.</p>
     </div>
   </article>
 
@@ -813,6 +844,16 @@
   </article>
 
   <article class="entry left">
+    <span class="medal">2009</span>
+    <div class="card">
+      <p class="when">2009</p>
+      <h3>One more paper together</h3>
+      <p>The Kharkiv three publish in English for the first time: a chapter in the <i>Handbook of Research on Computational Arts and Creative Informatics</i> on what computer mathematical systems open up for mathematics and its uses in art, with the automated drawing of caricatures as the example, and on the research approach to teaching that DG was built for. The affiliation line still reads Skovoroda National Pedagogical University for all three, seven years after DG shipped and a year into Live Geometry.</p>
+      <p class="evidence">Rakov S., Gorokh V., Osenkov K., "Mathematics, computer mathematical systems, creativity, art", in <i>Handbook of Research on Computational Arts and Creative Informatics</i>, IGI Global, 2009, pp. 253–279, doi:10.4018/978-1-60566-352-4.ch015.</p>
+    </div>
+  </article>
+
+  <article class="entry right">
     <span class="medal">2010</span>
     <div class="card">
       <p class="when">January to March 2010</p>
@@ -822,7 +863,7 @@
     </div>
   </article>
 
-  <article class="entry right">
+  <article class="entry left">
     <span class="medal">2010</span>
     <div class="card">
       <p class="when">April 17, 2010</p>
@@ -832,7 +873,7 @@
     </div>
   </article>
 
-  <article class="entry left">
+  <article class="entry right">
     <span class="medal">2010</span>
     <div class="card">
       <p class="when">March to July 2010</p>
@@ -842,13 +883,23 @@
     </div>
   </article>
 
-  <article class="entry right">
+  <article class="entry left">
     <span class="medal">2010</span>
     <div class="card">
       <p class="when">September to November 2010</p>
       <h3>Windows Phone 7</h3>
       <p>A port to the new phone, 570 files dated September 19 to November 2010. The manifest reads <i>Live Geometry 1.0.0.0, Interactive geometry, Kirill Osenkov</i>.</p>
       <p class="evidence">Archived project files, WMAppManifest.xml.</p>
+    </div>
+  </article>
+
+  <article class="entry right">
+    <span class="medal">2010</span>
+    <div class="card">
+      <p class="when">Autumn 2010</p>
+      <h3>On NuPack</h3>
+      <p>The undo engine split out of Live Geometry the year before, GuiLabs.Undo, becomes one of the earliest packages on NuGet, in the weeks when it was still called NuPack. Kirill recalls that David Fowler urged him to upload it and wrote the .nuspec himself. The package is still on the feed today, with a 1.0.0 the current gallery dates to March 29, 2011, when nuget.org took over the original feed, and still describes itself as "a simple .NET Undo/Redo framework with mergeable actions and composite transactions", which is what runs Live Geometry's undo to this day.</p>
+      <p class="evidence">nuget.org/packages/GuiLabs.Undo; Kirill's recollection.</p>
     </div>
   </article>
 
@@ -933,8 +984,24 @@
     <li><a href="https://learn.microsoft.com/en-us/archive/blogs/rucoding4fun/live-geometry">Coding4Fun: Live Geometry</a>, March 2010</li>
     <li><a href="https://learn.microsoft.com/en-us/archive/blogs/kirillosenkov/recording-of-my-inside-live-geometry-talk-now-available">Recording of the "Inside Live Geometry" talk</a>, April 2010</li>
     <li><a href="https://learn.microsoft.com/en-us/archive/blogs/kirillosenkov/tabula">Tabula</a>, May 2011</li>
+    <li><a href="https://www.nuget.org/packages/GuiLabs.Undo">GuiLabs.Undo on NuGet</a>, and <a href="https://github.com/KirillOsenkov/Undo">its source</a></li>
     <li>Wayback Machine captures of codeplex.com/DynamicGeometry, livegeometry.codeplex.com and livegeometry.com</li>
     <li>The <i>Reference</i> folders of the repository and the git log</li>
+  </ul>
+  <h2>DG in print</h2>
+  <ul>
+    <li>Раков С.А., Горох В.П. <i>Компьютерные эксперименты в геометрии.</i> Харків: РЦНІТ, 1996. 176 с.</li>
+    <li>Раков С.А., Горох В.П., Осенков К.О., Думчикова О.В., Костіна О.В., Ларін О.Р., Лисиця В.Т., Олійник Т.О., Пікалова В.В. <i>Відкриття геометрії через комп'ютерні експерименти в пакеті DG.</i> Харків: ХДПУ, 2000. 202 с. Second edition: Харків: Вікторія, 2002. 136 с.</li>
+    <li><i>Програмно-методичний комплекс навчального призначення «Динамічна геометрія DG» для загальноосвітніх закладів, версія 1.0.</i> Харків, 2002. CD‑ROM.</li>
+    <li><a href="https://enpuir.udu.edu.ua/entities/publication/e25ac1bc-57bb-4121-ada6-19c7fa7213f6">Осенков К.О. Пакет динамічної геометрії DG: принципи побудови та можливості використання у навчальному процесі.</a> Науковий часопис НПУ ім. М.П. Драгоманова, серія 2: Комп'ютерно‑орієнтовані системи навчання, вип. 6, 2003.</li>
+    <li>Раков С.А., Горох В.П. Програмно-методичний комплекс DG як крок від традиційної до інформаційної технології навчання геометрії. <i>Комп'ютер у школі і сім'ї</i>, 2003, №1, с. 20–23.</li>
+    <li>Пікалова В.В. Підтримка навчальних досліджень у курсі геометрії засобами пакета DG. <i>Комп'ютер у школі та сім'ї</i>, 4(28), 2003, с. 34–40.</li>
+    <li>Раков С.А. Дослідницький підхід у курсі геометрії, відкриті задачі, проблемні області, чотирикутники та пакет динамічної геометрії DG. Науковий часопис НПУ ім. М.П. Драгоманова, серія 2, 2004, №1(8), с. 42–55.</li>
+    <li>Раков С.А., Горох В.П., Осєнков К.А. Навчальні дослідження у курсі геометрії за темою «Геометричні перетворення» з використанням пакета динамічної геометрії DG. <i>Математика в школі</i>, 2005, №1, с. 10–14.</li>
+    <li>Раков С.А. Пакети динамічної геометрії у курсі геометрії. <i>Математика в школі</i>, 2005, №7, с. 2–9.</li>
+    <li>Раков С.А. <i>Формування математичних компетентностей учителя математики на основі дослідницького підходу у навчанні з використанням інформаційних технологій.</i> Дис. д‑ра пед. наук, Харків, 2005.</li>
+    <li>Rakov S., Gorokh V., Osenkov K. <a href="https://doi.org/10.4018/978-1-60566-352-4.ch015">Mathematics, Computer Mathematical Systems, Creativity, Art.</a> In: <i>Handbook of Research on Computational Arts and Creative Informatics</i>, IGI Global, 2009, pp. 253–279.</li>
+    <li><a href="https://elibrary.kdpu.edu.ua/bitstream/0564/570/1/tgkramarenko_urok_Kniga_2008.pdf">Крамаренко Т.Г. Уроки математики з комп'ютером.</a> Кривий Ріг, 2008: the chapter on dynamic geometry with GRAN‑2D and DG, and the bibliography the entries above are taken from, with <a href="https://elibrary.kdpu.edu.ua/bitstream/0564/668/2/mathbook.pdf">the KDPU collection</a> that prints Rakov's list of works.</li>
   </ul>
   <p class="note">Where a date comes from a file's modification time it is given as such; those are the least certain entries here.</p>
 </footer>
@@ -944,7 +1011,31 @@
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var entries = Array.prototype.slice.call(document.querySelectorAll(".entry"));
     var figures = Array.prototype.slice.call(document.querySelectorAll(".figure"));
-    var shaft = document.getElementById("shaft");
+
+    // Tile the six constructions down the whole page, one every 620px, alternating sides,
+    // tucked in under the edges of the cards so that some part of one is always in view.
+    // The six in the markup are the templates and get the first six places.
+    (function tileFigures() {
+      var step = 620;
+      var count = Math.ceil(document.body.scrollHeight / step);
+      var templates = figures.slice();
+      for (var i = 0; i < count; i++) {
+        var figure = i < templates.length ? templates[i] : templates[i % templates.length].cloneNode(true);
+        if (i >= templates.length) {
+          templates[0].parentNode.insertBefore(figure, templates[0]);
+          figures.push(figure);
+        }
+
+        var width = parseFloat(figure.getAttribute("data-width")) || 500;
+        var jitter = ((i * 37) % 120) - 60;
+        var onLeft = i % 2 === 0;
+        figure.style.top = (260 + i * step + jitter) + "px";
+        figure.style.width = width + "px";
+        figure.style.right = "auto";
+        figure.style.left = onLeft ? "calc(50% - " + (width + 200 + jitter / 2) + "px)" : "calc(50% + " + (200 - jitter / 2) + "px)";
+        figure.setAttribute("data-speed", (onLeft ? 1 : -1) * (0.015 + ((i * 7) % 4) * 0.005));
+      }
+    })();
 
     // cards appear as they come into view
     if (!reduce && "IntersectionObserver" in window) {
@@ -961,16 +1052,10 @@
       entries.forEach(function (entry) { entry.classList.add("shown"); });
     }
 
-    // the shaft darkens down to the reader's place, and the margin drawings drift a little
+    // the margin drawings drift a little as the page scrolls
     var ticking = false;
     function update() {
       ticking = false;
-      var rect = shaft.getBoundingClientRect();
-      var focus = window.innerHeight * 0.55;
-      var fill = (focus - rect.top) / rect.height;
-      fill = Math.max(0, Math.min(1, fill));
-      shaft.style.setProperty("--fill", (fill * 100).toFixed(2) + "%");
-
       if (!reduce) {
         var y = window.scrollY || window.pageYOffset;
         figures.forEach(function (figure) {
