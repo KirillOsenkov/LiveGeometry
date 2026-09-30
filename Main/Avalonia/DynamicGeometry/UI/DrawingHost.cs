@@ -103,40 +103,58 @@ namespace DynamicGeometry
             CommandToggleGrid = new Command(ToggleGrid, CartesianGrid.GetIcon(), "Grid", BehaviorCategories.Coordinates)
             {
                 IsChecked = () => CurrentDrawing != null && CurrentDrawing.CoordinateGrid.Visible,
-                Shortcut = "G"
+                Shortcut = "G",
+                HintText = "Show coordinate axes and grid. "
+                    + "Hold Shift while placing or dragging a point to snap it to the grid, with or without the grid on screen."
             };
             CommandToggleOrtho = new Command(ToggleOrtho, ToggleIcons.Ortho(), "Ortho", BehaviorCategories.Selection)
             {
-                IsChecked = () => Settings.Instance.EnableOrtho
+                IsChecked = () => Settings.Instance.EnableOrtho,
+                HintText = "The next point of a figure goes exactly to the side of, or straight above or below, the one before it."
             };
             CommandToggleSnapToGrid = new Command(ToggleSnapToGrid, ToggleIcons.SnapToGrid(), "Snap to grid", BehaviorCategories.Selection)
             {
-                IsChecked = () => Settings.Instance.EnableSnapToGrid
+                IsChecked = () => Settings.Instance.EnableSnapToGrid,
+                HintText = "New and dragged points land on the grid. Shift does the same for one point."
             };
             CommandToggleSnapToPoint = new Command(ToggleSnapToPoint, ToggleIcons.SnapToPoint(), "Snap to point", BehaviorCategories.Selection)
             {
-                IsChecked = () => Settings.Instance.EnableSnapToPoint
+                IsChecked = () => Settings.Instance.EnableSnapToPoint,
+                HintText = "A click near an existing point picks that point instead of making a new one."
             };
             CommandToggleLabelNewPoints = new Command(ToggleLabelNewPoints, ToggleIcons.LabelNewPoints(), "Label new points", BehaviorCategories.Points)
             {
-                IsChecked = () => Settings.Instance.AutoLabelPoints
+                IsChecked = () => Settings.Instance.AutoLabelPoints,
+                HintText = "Every new point shows its name (A, B, C...) beside it. "
+                    + "To enable the name later select the point and turn on Show name."
             };
             CommandTogglePolar = new Command(TogglePolar, ToggleIcons.Polar(), "Polar", BehaviorCategories.Selection)
             {
-                IsChecked = () => Settings.Instance.EnablePolar
+                IsChecked = () => Settings.Instance.EnablePolar,
+                HintText = "The next point of a figure goes at a round angle from the one before it."
             };
             CommandToggleSnapToCenter = new Command(ToggleSnapToCenter, ToggleIcons.SnapToCenter(), "Snap to center", BehaviorCategories.Selection)
             {
-                IsChecked = () => Settings.Instance.EnableSnapToCenter
+                IsChecked = () => Settings.Instance.EnableSnapToCenter,
+                HintText = "A click near the middle of a segment makes its midpoint."
             };
             CommandTogglePointByCoordinates = new Command(TogglePointByCoordinates, ToggleIcons.PointByCoordinates(), "Point by coordinates", BehaviorCategories.Coordinates)
             {
-                IsChecked = () => Settings.Instance.EnablePointByCoordinates
+                IsChecked = () => Settings.Instance.EnablePointByCoordinates,
+                HintText = "Enables typing X and Y when a point is needed."
+                    + " For a point by itself, "
+                    + "the Coordinates tool on the Points tab needs no toggle."
             };
-            CommandDrawingBackground = new Command(ToggleDrawingProperties, ToggleIcons.Background(), "Background", BehaviorCategories.Coordinates);
+            CommandDrawingBackground = new Command(ToggleDrawingProperties, ToggleIcons.Background(), "Background", BehaviorCategories.Coordinates)
+            {
+                HintText = "The paper of the drawing: pick a color or a gradient for it in the side panel. "
+                    + "A new drawing takes the paper of the light or dark theme."
+            };
             CommandToggleFigureExplorer = new Command(ToggleFigureExplorer, ToggleIcons.FigureList(), "Figure List", BehaviorCategories.Selection)
             {
-                IsChecked = () => FigureExplorer.IsVisible
+                IsChecked = () => FigureExplorer.IsVisible,
+                HintText = "A list of all figures in the drawing at the left, hidden ones faded. "
+                    + "Selecting a row selects the figure; arrows in the margin show what it is built on."
             };
         }
 

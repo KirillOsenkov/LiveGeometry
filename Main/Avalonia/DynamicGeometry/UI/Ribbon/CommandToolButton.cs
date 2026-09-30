@@ -30,9 +30,20 @@ namespace DynamicGeometry
                 AttachedToVisualTree += (s, e) => UpdateCheckedState();
             }
 
-            if (command.Shortcut != null)
+            if (command.Shortcut != null || !string.IsNullOrEmpty(command.HintText))
             {
-                ToolTip.SetTip(this, command.Name + "  (" + command.Shortcut + ")");
+                var tip = command.Name + (command.Shortcut != null ? "  (" + command.Shortcut + ")" : "");
+                if (!string.IsNullOrEmpty(command.HintText))
+                {
+                    tip += "\n\n" + command.HintText;
+                }
+
+                ToolTip.SetTip(this, new TextBlock()
+                {
+                    Text = tip,
+                    MaxWidth = 320,
+                    TextWrapping = Avalonia.Media.TextWrapping.Wrap
+                });
             }
         }
 

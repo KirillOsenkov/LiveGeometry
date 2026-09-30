@@ -70,6 +70,9 @@ namespace DynamicGeometry
         /// <summary>The key that runs it, for the tooltip ("G" for the grid); null for none</summary>
         public string Shortcut { get; set; }
 
+        /// <summary>A sentence or two under the name in the tooltip, as a tool's HintText; null for none</summary>
+        public string HintText { get; set; }
+
         public virtual void Execute()
         {
             if (Implementation != null)
