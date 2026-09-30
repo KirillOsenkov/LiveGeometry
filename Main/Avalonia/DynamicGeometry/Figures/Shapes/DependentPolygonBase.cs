@@ -107,17 +107,32 @@ namespace DynamicGeometry
         protected void RemoveVertex()
         {
             var vertex = vertices[vertices.Count - 1];
-            vertex.UnregisterFromDependencies();
             vertices.RemoveLast();
+            RemovePart(vertex);
+        }
 
-            var drawing = vertex.Drawing;
-            var action = new RemoveFigureAction(drawing, vertex);
-            action.Execute();
-            Children.Remove(vertex);
+        /// <summary>
+        /// A part the count no longer needs (a vertex, a side) leaves: out of its
+        /// dependencies, out of the children, off the canvas. Only a part something outside
+        /// the polygon is built on goes through the whole deletion, which takes the
+        /// dependents along and tells the selection. Its own parts depending on it (the
+        /// polygon, the sides at the vertex) are rewired by whoever adjusts them, so they
+        /// don't count: the deletion per part would rebuild the property grid once per
+        /// vertex and once per side of a 500-gon becoming a triangle.
+        /// </summary>
+        protected void RemovePart(IFigure part)
+        {
+            part.UnregisterFromDependencies();
+            if (part.Dependents.Any(dependent => !Children.Contains(dependent)))
+            {
+                var action = new RemoveFigureAction(Drawing, part);
+                action.Execute();
+            }
 
+            Children.Remove(part);
             if (Drawing != null)
             {
-                vertex.OnRemovingFromCanvas(Drawing.Canvas);
+                part.OnRemovingFromCanvas(Drawing.Canvas);
             }
         }
 

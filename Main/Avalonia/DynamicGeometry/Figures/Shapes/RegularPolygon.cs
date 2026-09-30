@@ -237,21 +237,8 @@ namespace DynamicGeometry
             }
 
             var side = sides[index];
-
-            side.UnregisterFromDependencies();
-
             sides.RemoveLast();
-
-            var drawing = Drawing;
-            var action = new RemoveFigureAction(drawing, side);
-            action.Execute();
-
-            Children.Remove(side);
-
-            if (Drawing != null)
-            {
-                side.OnRemovingFromCanvas(Drawing.Canvas);
-            }
+            RemovePart(side);
         }
 
         public override string ToString()

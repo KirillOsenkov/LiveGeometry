@@ -450,7 +450,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   determined) and Free makes it a point on the line again; an end on any other figure can't be
   stretched or fixed at all. Right after such a figure is made the side
   panel shows a `LengthPanel` (`FigureCreator.ShowCreatedFigure`); the tools themselves have no
-  length box. The swap is `Actions.ReplacePoint`, which hands over the point's name label
+  length box. A regular polygon's panel starts with the polygon's own `NumberOfSides` row (the
+  panel is an `ICustomPropertyProvider` and forwards the figure's `PropertyChanged` while the
+  grid shows it, so the side and the title follow a change of the count). The swap is `Actions.ReplacePoint`, which hands over the point's name label
   (`ReplaceFigureAction` skips it on purpose). A creator's undo transaction spans one
   construction, opened at the first click (`FigureCreator.EnsureTransaction`), so an edit made
   in that panel between constructions is an undo step of its own.

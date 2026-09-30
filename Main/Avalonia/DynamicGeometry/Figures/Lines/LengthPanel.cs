@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace DynamicGeometry;
 
@@ -7,15 +8,88 @@ namespace DynamicGeometry;
 /// regular polygon, a circle): just its length and Fix length or Free length, forwarded to
 /// the figure, so that "a segment of length 2" is draw, type 2, click Fix - without a
 /// length box on every tool. Captions come from the figure (Side, Radius, Fix radius);
-/// the title is the figure's ("Segment AB"). The figure's own grid has the same rows.
+/// the title is the figure's ("Segment AB"). The figure's own grid has the same rows. A
+/// regular polygon's panel starts with its number of sides, the polygon's own row.
 /// </summary>
-public class LengthPanel : IConditionalProperties, ICustomMethodProvider
+public class LengthPanel :
+    IConditionalProperties,
+    ICustomPropertyProvider,
+    ICustomMethodProvider,
+    IPropertyGridHost,
+    INotifyPropertyChanged
 {
     readonly IFixableLength figure;
+    PropertyGrid propertyGrid;
 
     public LengthPanel(IFixableLength figure)
     {
         this.figure = figure;
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    /// <summary>
+    /// Set by the grid while it shows the panel: the figure's own changes (a new number of
+    /// sides, which also changes the side and the title) are passed on as the panel's for
+    /// that long.
+    /// </summary>
+    public PropertyGrid PropertyGrid
+    {
+        get
+        {
+            return propertyGrid;
+        }
+        set
+        {
+            if (propertyGrid == value)
+            {
+                return;
+            }
+
+            if (figure is INotifyPropertyChanged notifying)
+            {
+                if (value != null)
+                {
+                    notifying.PropertyChanged += Figure_PropertyChanged;
+                }
+                else
+                {
+                    notifying.PropertyChanged -= Figure_PropertyChanged;
+                }
+            }
+
+            propertyGrid = value;
+        }
+    }
+
+    void Figure_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        PropertyChanged?.Invoke(this, e);
+        if (e.PropertyName == nameof(RegularPolygon.NumberOfSides))
+        {
+            // the side is the vertex's distance from the center scaled by the number of sides
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Length)));
+        }
+    }
+
+    /// <summary>
+    /// The rows: a regular polygon's number of sides first (the polygon's own property, its
+    /// up/down within the polygon's limits, an undo step on the polygon), then the length,
+    /// then Show where there is a figure to hang a measurement on.
+    /// </summary>
+    public IEnumerable<IValueProvider> GetProperties()
+    {
+        if (figure is RegularPolygon polygon)
+        {
+            yield return PropertyDiscoveryStrategy.CreateValueProvider(polygon, nameof(RegularPolygon.NumberOfSides));
+        }
+
+        yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Length));
+        // a regular polygon's sides are its own children, nothing in the drawing to measure
+        if (figure.MeasuredFigures != null)
+        {
+            yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Show));
+        }
     }
 
     [PropertyGridVisible]
@@ -101,12 +175,6 @@ public class LengthPanel : IConditionalProperties, ICustomMethodProvider
 
     public bool CanEdit(string propertyName)
     {
-        // no figure to hang a measurement on (a regular polygon's sides are its own children)
-        if (propertyName == "Show")
-        {
-            return figure.MeasuredFigures != null;
-        }
-
         return figure.CanEdit(propertyName);
     }
 
