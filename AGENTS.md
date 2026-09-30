@@ -934,6 +934,12 @@ buttons and checkboxes, 3D, custom tools.
 - Entry files are `no-cache` with an ETag that changes on every deploy, so a browser holding the
   previous version picks up the new one on a plain reload. If something looks stale, check the
   commit stamp and the Actions run before suspecting the cache.
+- **`/history`** is a static page of its own (`history/index.html` at the repo root, no build
+  step, everything inline but the Google Fonts; a relative URL in it would resolve against
+  `/`, since `/history` has no trailing slash): the Browser csproj links the folder into
+  `wwwroot/history/`, and a `web.config` rule answers `/history` with its `index.html` (a folder
+  is not a file, so the SPA fallback would otherwise serve the app). `tools/serve.cs` has no
+  such rule: locally open `/history/index.html`, or serve the `history` folder itself.
 
 ## Running instances
 

@@ -46,6 +46,8 @@
   <ItemGroup>
     <!-- the emoji font, fetched on first use (EmojiFont), not part of the startup download -->
     <Content Include="..\Fonts\Twemoji.Mozilla.ttf" Link="wwwroot\fonts\Twemoji.Mozilla.ttf" />
+    <!-- the history page, a static site of its own at /history (web.config routes it) -->
+    <Content Include="..\..\..\history\**" Link="wwwroot\history\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>

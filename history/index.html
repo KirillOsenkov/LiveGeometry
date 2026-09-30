@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Geometry · A History</title>
+<meta name="description" content="Twenty-seven years of ruler and compass: from DG 1.0 in Kharkiv to Live Geometry in the browser.">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #e7d5a4;
+    --sand-light: #f3e7c3;
+    --sand-deep: #cdb37a;
+    --ink: #3a2a14;
+    --ink-soft: #6b5230;
+    --ink-faint: rgba(58, 42, 20, 0.35);
+    --terracotta: #a3452c;
+    --lapis: #2e4c7c;
+    --gold: #b3862a;
+    --plate: rgba(255, 249, 228, 0.62);
+    --pillar-w: 76px;
+    /* the capital and the base are drawn 240 wide for a shaft of 97 */
+    --capital-w: calc(var(--pillar-w) * 240 / 97);
+    --serif: "Cormorant Garamond", "Palatino Linotype", Palatino, Georgia, serif;
+    --display: "Cinzel", "Trajan Pro", "Palatino Linotype", Georgia, serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    position: relative;
+    overflow-x: hidden;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.5;
+    background-color: var(--sand);
+    /* papyrus: fibers from turbulence, a faint horizontal weave, and a warm vignette */
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(255, 246, 214, 0.9), rgba(255, 246, 214, 0) 60%),
+      radial-gradient(ellipse at 50% 100%, rgba(150, 110, 50, 0.22), rgba(150, 110, 50, 0) 55%),
+      repeating-linear-gradient(0deg, rgba(120, 85, 35, 0.045) 0 1px, transparent 1px 7px),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.018 0.35' numOctaves='3' seed='7'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.08  0 0 0 0.18 0'/></filter><rect width='400' height='400' filter='url(%23f)'/></svg>");
+    background-attachment: fixed, fixed, scroll, scroll;
+  }
+
+  a { color: var(--lapis); text-decoration: none; border-bottom: 1px solid rgba(46, 76, 124, 0.35); }
+  a:hover { color: var(--terracotta); border-bottom-color: currentColor; }
+
+  /* ---------- floating constructions in the margins ---------- */
+  .figure {
+    position: absolute;
+    color: var(--ink);
+    opacity: 0.085;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+  }
+
+  .figure svg { display: block; width: 100%; height: auto; }
+
+  @media (max-width: 1100px) { .figure { display: none; } }
+
+  /* ---------- header ---------- */
+  .top-link {
+    position: absolute;
+    top: 18px;
+    left: 24px;
+    font-family: var(--display);
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none;
+    color: var(--ink-soft);
+    z-index: 2;
+  }
+
+  .top-link:hover { color: var(--terracotta); }
+
+  header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 96px 20px 40px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .meander {
+    height: 22px;
+    margin: 0 auto;
+    max-width: 520px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='22' viewBox='0 0 30 22'><path d='M0 3 H27 V19 H9 V9 H19 V14' fill='none' stroke='%233a2a14' stroke-width='2'/></svg>") repeat-x center;
+    opacity: 0.55;
+  }
+
+  header .kicker {
+    font-family: var(--display);
+    font-size: 15px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 26px 0 8px;
+  }
+
+  header h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(40px, 7vw, 76px);
+    letter-spacing: 0.06em;
+    line-height: 1.05;
+    margin: 0 0 18px;
+    color: var(--ink);
+    text-shadow: 0 1px 0 rgba(255, 250, 230, 0.7);
+  }
+
+  header .lede {
+    font-size: 23px;
+    font-style: italic;
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin: 0 auto 26px;
+  }
+
+  header .compiled {
+    font-size: 15px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- the pillar and the timeline ---------- */
+  .timeline {
+    position: relative;
+    z-index: 1;
+    max-width: 1120px;
+    margin: 30px auto 0;
+    /* room for the capital above the first plaque and the base below the last card */
+    padding: calc(var(--capital-w) * 134 / 240 + 16px) 20px calc(var(--capital-w) * 80 / 240 + 12px);
+  }
+
+  .pillar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - var(--pillar-w) / 2);
+    width: var(--pillar-w);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 0;
+  }
+
+  .pillar svg {
+    display: block;
+    flex: none;
+    width: var(--capital-w);
+    max-width: none;
+    height: auto;
+    filter: drop-shadow(0 3px 3px rgba(58, 42, 20, 0.28));
+  }
+
+  /* marble, fluted, in the photo's gray: seven flutes across, each a concave groove lit from
+     the left with a fillet between, continuing the rounded tops drawn in the capital (one
+     flute is a seventh of the shaft, the groove 10 of its 13.857 units); over that the
+     shading of the whole drum, and a hint of veins */
+  .shaft {
+    flex: 1;
+    width: 100%;
+    position: relative;
+    background:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.5  0 0 0 0 0.4  0 0 0 0.26 0'/></filter><rect width='160' height='160' filter='url(%23g)'/></svg>"),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='600'><filter id='s'><feTurbulence type='fractalNoise' baseFrequency='0.012 0.03' numOctaves='3' seed='11'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.42  0 0 0 0 0.3  0 0 0 0.22 0'/></filter><rect width='300' height='600' filter='url(%23s)'/></svg>"),
+      linear-gradient(90deg, rgba(60, 46, 28, 0.42), rgba(60, 46, 28, 0.08) 18%, rgba(255, 252, 240, 0.22) 36%, rgba(255, 252, 240, 0.04) 52%, rgba(60, 46, 28, 0.16) 74%, rgba(60, 46, 28, 0.5)),
+      repeating-linear-gradient(170deg, transparent 0 91px, rgba(90, 76, 56, 0.12) 91px 93px, transparent 93px 160px),
+      repeating-linear-gradient(90deg, #dcd4c1 0 calc(var(--pillar-w) * 1.93 / 97), #7c7060 calc(var(--pillar-w) * 1.93 / 97) calc(var(--pillar-w) * 3.2 / 97), #a89d88 calc(var(--pillar-w) * 4.4 / 97), #cdc4ae calc(var(--pillar-w) * 7.9 / 97), #e2dac8 calc(var(--pillar-w) * 11.9 / 97), #dcd4c1 calc(var(--pillar-w) * 11.93 / 97) calc(var(--pillar-w) * 13.857 / 97));
+    background-color: #c9bfa8;
+    background-blend-mode: multiply, multiply, normal, normal, normal;
+    border-left: 1px solid rgba(58, 42, 20, 0.55);
+    border-right: 1px solid rgba(58, 42, 20, 0.55);
+    box-shadow: 0 0 12px -4px rgba(58, 42, 20, 0.35);
+  }
+
+  /* the part of the shaft the reader has passed darkens, as sand pours down */
+  .shaft::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: var(--fill, 0%);
+    background: linear-gradient(180deg, rgba(179, 134, 42, 0.0), rgba(179, 134, 42, 0.2) 60%, rgba(179, 134, 42, 0.38));
+    transition: height 0.15s linear;
+    pointer-events: none;
+  }
+
+  .era {
+    text-align: center;
+    margin: 64px 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .era:first-of-type { margin-top: 0; }
+
+  .era .plaque {
+    display: inline-block;
+    padding: 12px 34px 10px;
+    background: linear-gradient(180deg, #f5e9c6, #e6d2a0);
+    border: 1px solid rgba(58, 42, 20, 0.55);
+    box-shadow: 0 2px 0 rgba(58, 42, 20, 0.35), inset 0 0 0 3px rgba(255, 250, 230, 0.5), inset 0 0 0 4px rgba(58, 42, 20, 0.25);
+    font-family: var(--display);
+    font-size: 15px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .era .plaque b { color: var(--terracotta); font-weight: 700; margin-right: 0.6em; }
+
+  .era .years {
+    display: block;
+    margin-top: 6px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 17px;
+    letter-spacing: 0.05em;
+    text-transform: none;
+    color: var(--ink-soft);
+  }
+
+  /* every entry is a row of its own: card on one side, the medallion on the pillar */
+  .entry {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr var(--pillar-w) 1fr;
+    column-gap: 34px;
+    align-items: start;
+    margin: 18px 0;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  /* cards on opposite sides may climb a little into each other's row */
+  .entry + .entry { margin-top: -44px; }
+
+  .entry.shown { opacity: 1; transform: none; }
+
+  .entry.left .card { grid-column: 1; }
+  .entry.right .card { grid-column: 3; }
+  .entry .card { grid-row: 1; }
+
+  /* the tie from a card to the pillar */
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 33px;
+    width: 34px;
+    height: 0;
+    border-top: 1px solid var(--ink-faint);
+  }
+
+  .entry.left .card::before { right: -35px; }
+  .entry.right .card::before { left: -35px; }
+
+  .entry .medal {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: center;
+    margin-top: 14px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #f6ebc9, #d8bf85 70%, #b99a55);
+    border: 1px solid rgba(58, 42, 20, 0.7);
+    box-shadow: 0 0 0 3px rgba(243, 231, 195, 0.9), 0 0 0 4px rgba(58, 42, 20, 0.35), 0 3px 6px rgba(58, 42, 20, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--display);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    z-index: 3;
+  }
+
+  .card {
+    background: var(--plate);
+    border: 1px solid rgba(58, 42, 20, 0.4);
+    box-shadow: inset 0 0 0 4px rgba(255, 250, 230, 0.45), inset 0 0 0 5px rgba(58, 42, 20, 0.18), 0 6px 18px -10px rgba(58, 42, 20, 0.45);
+    padding: 22px 26px 20px;
+    position: relative;
+  }
+
+  .card .when {
+    font-family: var(--display);
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin: 0 0 6px;
+  }
+
+  .card h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 21px;
+    letter-spacing: 0.02em;
+    margin: 0 0 10px;
+    line-height: 1.25;
+  }
+
+  .card p { margin: 0 0 8px; }
+  .card p:last-of-type { margin-bottom: 0; }
+
+  .card q { font-style: italic; quotes: "\201C" "\201D"; }
+
+  .card .evidence {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(58, 42, 20, 0.3);
+    font-size: 15.5px;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .card .evidence::before { content: "Evidence · "; font-style: normal; font-variant: small-caps; letter-spacing: 0.06em; }
+
+  /* ---------- epilogue and footer ---------- */
+  .epilogue {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 56px auto 0;
+    padding: 0 20px;
+    text-align: center;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .epilogue .apps {
+    margin-top: 28px;
+    font-style: normal;
+    font-family: var(--display);
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .epilogue .apps a { margin: 0 14px; border-bottom-width: 1px; }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 64px auto 60px;
+    padding: 28px 20px 0;
+    border-top: 1px solid rgba(58, 42, 20, 0.3);
+    font-size: 16px;
+    color: var(--ink-soft);
+  }
+
+  footer h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+
+  footer ul { list-style: none; padding: 0; margin: 0 0 22px; }
+  footer li { margin: 4px 0; }
+  footer li::before { content: "◦ "; color: var(--gold); }
+
+  footer .note { font-style: italic; }
+
+  /* ---------- narrow screens: pillar on the left, every card to its right ---------- */
+  @media (max-width: 760px) {
+    :root { --pillar-w: 44px; }
+    body { font-size: 17.5px; }
+    .timeline { padding-left: 34px; padding-right: 14px; }
+    .pillar { left: 34px; }
+    .entry { grid-template-columns: var(--pillar-w) 1fr; column-gap: 30px; }
+    .entry + .entry { margin-top: 18px; }
+    .entry .medal { grid-column: 1; width: 38px; height: 38px; font-size: 10.5px; margin-top: 16px; }
+    .entry.left .card, .entry.right .card { grid-column: 2; }
+    .entry.left .card::before, .entry.right .card::before { left: -31px; right: auto; width: 30px; }
+    .card { padding: 18px 18px 16px; }
+    .era .plaque { padding: 10px 18px 8px; letter-spacing: 0.18em; font-size: 13px; }
+    header { padding-top: 76px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .entry { opacity: 1; transform: none; transition: none; }
+    .shaft::after { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="top-link" href="/">← Live Geometry</a>
+
+<!-- faint constructions in the margins: Euclid I.1, the pentagon, Pythagoras, the golden spiral, Thales, a compass -->
+<div class="figure" style="left: 1.5%; top: 6%; width: 300px;" data-speed="0.06">
+  <svg viewBox="-110 -110 320 220" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+    <circle cx="0" cy="0" r="100"/>
+    <circle cx="100" cy="0" r="100"/>
+    <path d="M0 0 L100 0 L50 -86.6 Z"/>
+    <circle cx="0" cy="0" r="2.6" fill="currentColor"/>
+    <circle cx="100" cy="0" r="2.6" fill="currentColor"/>
+    <circle cx="50" cy="-86.6" r="2.6" fill="currentColor"/>
+    <text x="-14" y="16" font-size="12" fill="currentColor" stroke="none" font-family="Cormorant Garamond, serif" font-style="italic">A</text>
+    <text x="104" y="16" font-size="12" fill="currentColor" stroke="none" font-family="Cormorant Garamond, serif" font-style="italic">B</text>
+    <text x="46" y="-94" font-size="12" fill="currentColor" stroke="none" font-family="Cormorant Garamond, serif" font-style="italic">C</text>
+  </svg>
+</div>
+
+<div class="figure" style="right: 2%; top: 14%; width: 260px;" data-speed="-0.05">
+  <svg viewBox="-112 -112 224 224" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+    <circle cx="0" cy="0" r="100"/>
+    <path d="M0 -100 L95.1 -30.9 L58.8 80.9 L-58.8 80.9 L-95.1 -30.9 Z"/>
+    <path d="M0 -100 L58.8 80.9 L-95.1 -30.9 L95.1 -30.9 L-58.8 80.9 Z" stroke-width="0.9"/>
+    <circle cx="0" cy="0" r="2.4" fill="currentColor"/>
+  </svg>
+</div>
+
+<div class="figure" style="left: 2.5%; top: 34%; width: 280px;" data-speed="0.04">
+  <svg viewBox="-70 -10 220 160" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+    <path d="M0 0 L80 0 L0 60 Z"/>
+    <path d="M0 0 L80 0 L80 80 L0 80 Z"/>
+    <path d="M0 0 L0 60 L-60 60 L-60 0 Z"/>
+    <path d="M80 0 L0 60 L60 140 L140 80 Z"/>
+    <path d="M0 8 L8 8 L8 0" stroke-width="1"/>
+  </svg>
+</div>
+
+<div class="figure" style="right: 1.5%; top: 47%; width: 300px;" data-speed="-0.07">
+  <svg viewBox="-8 -8 146 96" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
+    <path d="M0 0 H130 V80 H0 Z"/>
+    <path d="M80 0 V80 M80 50 H130 M100 50 V80 M80 60 H100 M90 50 V60"/>
+    <path d="M0 80 A80 80 0 0 1 80 0 A50 50 0 0 1 130 50 A30 30 0 0 1 100 80 A20 20 0 0 1 80 60 A10 10 0 0 1 90 50 A10 10 0 0 1 100 60" stroke-width="1.8"/>
+  </svg>
+</div>
+
+<div class="figure" style="left: 1%; top: 63%; width: 260px;" data-speed="0.05">
+  <svg viewBox="-104 -104 208 208" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+    <circle cx="0" cy="0" r="90"/>
+    <path d="M-90 0 L90 0 L57.9 -68.9 Z"/>
+    <path d="M52.5 -62.4 L59 -57.2 L64.3 -63.7" stroke-width="1"/>
+    <circle cx="-90" cy="0" r="2.4" fill="currentColor"/>
+    <circle cx="90" cy="0" r="2.4" fill="currentColor"/>
+    <circle cx="57.9" cy="-68.9" r="2.4" fill="currentColor"/>
+    <circle cx="0" cy="0" r="1.6" fill="currentColor"/>
+  </svg>
+</div>
+
+<div class="figure" style="right: 3%; top: 78%; width: 220px;" data-speed="-0.04">
+  <svg viewBox="-70 -110 160 200" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="-88" r="7"/>
+    <path d="M0 -95 V-104"/>
+    <path d="M-4 -81 L-46 70 M4 -81 L46 70"/>
+    <path d="M-46 70 L-52 82 M46 70 L52 82"/>
+    <path d="M-30 -20 Q0 -10 30 -20" stroke-width="1"/>
+    <path d="M-66 84 A70 70 0 0 1 66 84" stroke-width="0.9" stroke-dasharray="3 4"/>
+  </svg>
+</div>
+
+<header>
+  <div class="meander"></div>
+  <p class="kicker">Live Geometry</p>
+  <h1>A History</h1>
+  <p class="lede">Twenty-seven years of ruler and compass: from a Visual Basic program in Kharkiv to a WebAssembly app in the browser, by way of two false starts and one long silence.</p>
+  <p class="compiled">Assembled in September 2026 from the repository, the Internet Archive and the author's blog posts of the time.</p>
+</header>
+
+<main class="timeline" id="timeline">
+  <div class="pillar" aria-hidden="true">
+    <!-- A Composite capital, simplified: the proportions are the photo's (shaft 97 wide, centered
+         at 120, the capital 1.2 shafts tall): an abacus 2.4 shafts wide, two big volutes half a
+         shaft across under its corners with a fleuron on a stalk between them, a rim over one
+         main row of acanthus (a small row behind), a thick plain collar wider than the shaft, and
+         the rounded tops of the flutes. -->
+    <svg class="capital" viewBox="0 0 240 134">
+      <defs>
+        <linearGradient id="marbleV" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#e4dccb"/>
+          <stop offset="1" stop-color="#b3a78f"/>
+        </linearGradient>
+        <linearGradient id="marbleH" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#a1957e"/>
+          <stop offset="0.35" stop-color="#e0d8c6"/>
+          <stop offset="0.6" stop-color="#d0c7b1"/>
+          <stop offset="1" stop-color="#8f8369"/>
+        </linearGradient>
+        <!-- the bell: deep shadow where it turns away under the volutes, light in the middle -->
+        <linearGradient id="bell" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#4f4436"/>
+          <stop offset="0.1" stop-color="#7a6d58"/>
+          <stop offset="0.28" stop-color="#c9bfa8"/>
+          <stop offset="0.45" stop-color="#e4dccb"/>
+          <stop offset="0.6" stop-color="#d8cfb9"/>
+          <stop offset="0.78" stop-color="#a99d86"/>
+          <stop offset="0.92" stop-color="#6b5f4c"/>
+          <stop offset="1" stop-color="#463b2e"/>
+        </linearGradient>
+        <!-- the stone under the leaf shading: the bell and the front leaves, nothing else -->
+        <clipPath id="leafZone">
+          <path d="M71.5 108 C68 92 52 60 44 20 H196 C188 60 172 92 168.5 108 Z"/>
+          <use href="#leafOutline" transform="translate(72 108) rotate(-11) scale(0.72)"/>
+          <use href="#leafOutline" transform="translate(168 107) rotate(10) scale(0.74)"/>
+          <use href="#leafOutline" transform="translate(96 109) rotate(-4) scale(0.7)"/>
+          <use href="#leafBrokenOutline" transform="translate(144 108) rotate(3) scale(0.72)"/>
+          <use href="#leafOutline" transform="translate(120 109) rotate(1) scale(0.73)"/>
+        </clipPath>
+        <linearGradient id="leafShade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#3c2e1c" stop-opacity="0.72"/>
+          <stop offset="0.18" stop-color="#3c2e1c" stop-opacity="0.4"/>
+          <stop offset="0.42" stop-color="#3c2e1c" stop-opacity="0"/>
+          <stop offset="0.58" stop-color="#3c2e1c" stop-opacity="0"/>
+          <stop offset="0.82" stop-color="#3c2e1c" stop-opacity="0.4"/>
+          <stop offset="1" stop-color="#3c2e1c" stop-opacity="0.72"/>
+        </linearGradient>
+        <linearGradient id="flute" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#7c7060"/>
+          <stop offset="0.25" stop-color="#a89d88"/>
+          <stop offset="0.6" stop-color="#cdc4ae"/>
+          <stop offset="1" stop-color="#e2dac8"/>
+        </linearGradient>
+        <linearGradient id="drumShade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#3c2e1c" stop-opacity="0.42"/>
+          <stop offset="0.18" stop-color="#3c2e1c" stop-opacity="0.08"/>
+          <stop offset="0.36" stop-color="#fffcf0" stop-opacity="0.22"/>
+          <stop offset="0.52" stop-color="#fffcf0" stop-opacity="0.04"/>
+          <stop offset="0.74" stop-color="#3c2e1c" stop-opacity="0.16"/>
+          <stop offset="1" stop-color="#3c2e1c" stop-opacity="0.5"/>
+        </linearGradient>
+        <!-- a leaf: tapered, three lobes a side, the tip folded forward -->
+        <g id="leaf">
+          <path id="leafOutline" d="M0 0 C7 -3 11 -9 10 -16 C13 -18 13 -25 10 -29 C12 -32 11 -37 8 -40 C8 -44 4 -46 0 -45 C-4 -46 -8 -44 -8 -40 C-11 -37 -12 -32 -10 -29 C-13 -25 -13 -18 -10 -16 C-11 -9 -7 -3 0 0 Z" fill="#dcd4c1" stroke="#6f6350" stroke-width="1" stroke-linejoin="round"/>
+          <path d="M0 -3 V-36" fill="none" stroke="#8f8369" stroke-width="0.9"/>
+          <ellipse cx="0" cy="-44.5" rx="7" ry="3.6" fill="#c4b9a1" stroke="#6f6350" stroke-width="1"/>
+        </g>
+        <!-- the same leaf with its tip broken off -->
+        <g id="leafBroken">
+          <path id="leafBrokenOutline" d="M0 0 C7 -3 11 -9 10 -16 C13 -18 13 -25 10 -29 L3 -32 L-5 -30 C-13 -25 -13 -18 -10 -16 C-11 -9 -7 -3 0 0 Z" fill="#dcd4c1" stroke="#6f6350" stroke-width="1" stroke-linejoin="round"/>
+          <path d="M0 -3 V-27" fill="none" stroke="#8f8369" stroke-width="0.9"/>
+          <path d="M10 -29 L3 -32 L-5 -30" fill="none" stroke="#8f8369" stroke-width="1.6"/>
+        </g>
+        <!-- the spiral: quarter arcs, radius shrinking by 2 each turn of the corner -->
+        <!-- the spiral starts as a tail at the rim, sweeps out and round, and tightens in -->
+        <path id="spiral" d="M62 78 Q52 78 45 74 A24 24 0 0 1 21 50 A22 22 0 0 1 43 28 A20 20 0 0 1 63 48 A18 18 0 0 1 45 66 A16 16 0 0 1 29 50 A14 14 0 0 1 43 36 A12 12 0 0 1 55 48 A10 10 0 0 1 45 58 A8 8 0 0 1 37 50 A6 6 0 0 1 43 44 A4 4 0 0 1 47 48" fill="none" stroke-linecap="round"/>
+        <!-- a volute: a marble disc, a half-tone spiral in the lighter stone, and the dark
+             groove on top, offset, as carved relief reads in raking light -->
+        <g id="volute">
+          <circle cx="45" cy="49" r="27" fill="url(#marbleV)" stroke="#8f8369" stroke-width="0.8"/>
+          <use href="#spiral" stroke="#c8bea6" stroke-width="5.5" opacity="0.95"/>
+          <use href="#spiral" stroke="#9c9079" stroke-width="3" transform="translate(1.2 1.4)"/>
+          <use href="#spiral" stroke="#6f6350" stroke-width="1.4" transform="translate(2.2 2.5)" opacity="0.8"/>
+          <circle cx="46" cy="51" r="3.4" fill="#6f6350" opacity="0.85"/>
+        </g>
+        <g id="egg">
+          <ellipse cx="0" cy="0" rx="8" ry="10.5" fill="#dcd4c1" stroke="#6f6350" stroke-width="1"/>
+          <ellipse cx="0" cy="0" rx="5" ry="7.5" fill="#e9e2d1" stroke="#8f8369" stroke-width="0.8"/>
+        </g>
+        <!-- weathering: every outline is pushed around a little by noise, as if cut by hand
+             and worn since; then grain and larger stains, clipped to the stone -->
+        <filter id="weathered" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="5" result="warp"/>
+          <feDisplacementMap in="SourceGraphic" in2="warp" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="carved"/>
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="9" result="fine"/>
+          <feColorMatrix in="fine" type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.5  0 0 0 0 0.4  0 0 0 0.2 0" result="grain"/>
+          <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="2" result="coarse"/>
+          <feColorMatrix in="coarse" type="matrix" values="0 0 0 0 0.5  0 0 0 0 0.42  0 0 0 0 0.3  0 0 0 0.2 0" result="stains"/>
+          <feMerge result="dirt"><feMergeNode in="grain"/><feMergeNode in="stains"/></feMerge>
+          <feComposite in="dirt" in2="carved" operator="in" result="dirtOnStone"/>
+          <feBlend in="dirtOnStone" in2="carved" mode="multiply"/>
+        </filter>
+        <!-- the same dirt without the displacement, for the neck, whose flutes must stay in line
+             with the CSS shaft below -->
+        <filter id="grained" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="9" result="fine"/>
+          <feColorMatrix in="fine" type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.5  0 0 0 0 0.4  0 0 0 0.2 0" result="grain"/>
+          <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="2" result="coarse"/>
+          <feColorMatrix in="coarse" type="matrix" values="0 0 0 0 0.5  0 0 0 0 0.42  0 0 0 0 0.3  0 0 0 0.2 0" result="stains"/>
+          <feMerge result="dirt"><feMergeNode in="grain"/><feMergeNode in="stains"/></feMerge>
+          <feComposite in="dirt" in2="SourceGraphic" operator="in" result="dirtOnStone"/>
+          <feBlend in="dirtOnStone" in2="SourceGraphic" mode="multiply"/>
+        </filter>
+      </defs>
+      <g filter="url(#weathered)">
+        <!-- the bell, from the collar all the way up under the abacus; the volutes sit on its corners -->
+        <path d="M71.5 108 C68 92 52 60 44 20 H196 C188 60 172 92 168.5 108 Z" fill="url(#bell)" stroke="#6f6350" stroke-width="1"/>
+        <!-- stains and a crack -->
+        <ellipse cx="96" cy="50" rx="14" ry="6" fill="#7c7060" opacity="0.1" transform="rotate(-20 96 50)"/>
+        <ellipse cx="156" cy="88" rx="7" ry="12" fill="#7c7060" opacity="0.09"/>
+        <path d="M151 30 L155 46 L152 60 L156 72" fill="none" stroke="#6f6350" stroke-width="0.9" opacity="0.7"/>
+        <!-- the fleuron between the volutes: a stalk, two curling leaves, a fan of petals and a bud -->
+        <path d="M120 74 V46" stroke="#6f6350" stroke-width="2" stroke-linecap="round"/>
+        <path d="M110 68 C100 64 95 54 100 45 M130 68 C140 64 145 54 140 45" fill="none" stroke="#6f6350" stroke-width="1.3" stroke-linecap="round"/>
+        <g fill="#dcd4c1" stroke="#6f6350" stroke-width="1">
+          <ellipse cx="120" cy="40" rx="5" ry="13" transform="rotate(-52 120 54)"/>
+          <ellipse cx="120" cy="40" rx="5" ry="13" transform="rotate(52 120 54)"/>
+          <ellipse cx="120" cy="38" rx="5" ry="14" transform="rotate(-26 120 54)"/>
+          <ellipse cx="120" cy="38" rx="5" ry="14" transform="rotate(26 120 54)"/>
+          <ellipse cx="120" cy="37" rx="5.5" ry="15"/>
+        </g>
+        <circle cx="120" cy="26" r="4.5" fill="#c4b9a1" stroke="#6f6350" stroke-width="1"/>
+        <!-- the back row of leaves, small, in the gaps of the front row -->
+        <use href="#leaf" transform="translate(84 104) rotate(-8) scale(0.56)"/>
+        <use href="#leaf" transform="translate(108 105) rotate(-2) scale(0.58)"/>
+        <use href="#leaf" transform="translate(132 104) rotate(3) scale(0.56)"/>
+        <use href="#leaf" transform="translate(156 105) rotate(9) scale(0.57)"/>
+        <!-- the volutes, the right one turned a touch -->
+        <use href="#volute"/>
+        <use href="#volute" transform="translate(240 0) scale(-1 1) rotate(-3 45 50)"/>
+        <!-- the rim the leaves grow up to -->
+        <path d="M58 72 H182 Q184 76 182 80 H58 Q56 76 58 72 Z" fill="url(#marbleV)" stroke="#6f6350" stroke-width="1"/>
+        <!-- the main row of acanthus, tips folded over under the rim; one tip is gone -->
+        <use href="#leaf" transform="translate(72 108) rotate(-11) scale(0.72)"/>
+        <use href="#leaf" transform="translate(168 107) rotate(10) scale(0.74)"/>
+        <use href="#leaf" transform="translate(96 109) rotate(-4) scale(0.7)"/>
+        <use href="#leafBroken" transform="translate(144 108) rotate(3) scale(0.72)"/>
+        <use href="#leaf" transform="translate(120 109) rotate(1) scale(0.73)"/>
+        <!-- the leaves fall into shadow toward the edges, like the bell behind them -->
+        <rect x="56" y="80" width="128" height="28" fill="url(#leafShade)" clip-path="url(#leafZone)"/>
+        <!-- the abacus: five lines, four bands, as in the photo. A thin lip on top, a narrower band
+             in its shadow, the wide light fascia, and a darker moulding at the bottom that curves
+             inward, its bottom edge shorter than the rest. -->
+        <path d="M2 0 H238 V3 H2 Z" fill="#e9e2d1" stroke="#6f6350" stroke-width="1.2"/>
+        <path d="M4 3 H236 V8 H4 Z" fill="#cfc6b0" stroke="#6f6350" stroke-width="1.2"/>
+        <path d="M6 8 H234 V16 H6 Z" fill="url(#marbleV)" stroke="#6f6350" stroke-width="1.2"/>
+        <path d="M9 16 H231 C229 18.5 227 19.5 225 20 H15 C13 19.5 11 18.5 9 16 Z" fill="#b3a78f" stroke="#6f6350" stroke-width="1.2"/>
+        <path d="M2 0 L10 0 L2 2.8 Z" fill="#b3a78f"/>
+        <path d="M234 8 L226 8 L234 14 Z" fill="#b3a78f"/>
+        <path d="M15 20 L24 20 L16 17 Z" fill="#a1957e"/>
+        <path d="M62 8.5 L66 15.5" fill="none" stroke="#6f6350" stroke-width="0.7" opacity="0.6"/>
+        <ellipse cx="150" cy="12" rx="26" ry="3" fill="#7c7060" opacity="0.09"/>
+        <!-- the collar: a thick plain ring, wider than the shaft, chipped -->
+        <rect x="63" y="106" width="114" height="14" rx="7" fill="url(#marbleV)" stroke="#6f6350" stroke-width="1"/>
+        <path d="M68 111 H172" stroke="#f0ebdd" stroke-width="1.2" opacity="0.8"/>
+        <path d="M177 111 L171 108 L172 116 Z" fill="#a1957e"/>
+        <ellipse cx="101" cy="109" rx="3" ry="1.6" fill="#a1957e" transform="rotate(-25 101 109)"/>
+      </g>
+      <!-- the neck: seven flutes ending in rounded tops, continued below by the CSS shaft -->
+      <g filter="url(#grained)">
+      <rect x="71.5" y="120" width="97" height="14" fill="#dcd4c1"/>
+      <path d="M71.5 120 V134 M168.5 120 V134" stroke="rgba(58, 42, 20, 0.55)" stroke-width="1"/>
+      <g fill="url(#flute)">
+        <path d="M73.4 134 V129 A5 5 0 0 1 83.4 129 V134 Z"/>
+        <path d="M87.3 134 V129 A5 5 0 0 1 97.3 129 V134 Z"/>
+        <path d="M101.1 134 V129 A5 5 0 0 1 111.1 129 V134 Z"/>
+        <path d="M115 134 V129 A5 5 0 0 1 125 129 V134 Z"/>
+        <path d="M128.9 134 V129 A5 5 0 0 1 138.9 129 V134 Z"/>
+        <path d="M142.7 134 V129 A5 5 0 0 1 152.7 129 V134 Z"/>
+        <path d="M156.6 134 V129 A5 5 0 0 1 166.6 129 V134 Z"/>
+      </g>
+      <!-- the same shading of the drum as the CSS shaft, so the neck joins it seamlessly -->
+      <rect x="71.5" y="120" width="97" height="14" fill="url(#drumShade)"/>
+      </g>
+    </svg>
+    <div class="shaft" id="shaft"></div>
+    <!-- an Attic base: fillet, scotia, torus, plinth, to the same scale -->
+    <svg class="base" viewBox="-11.5 0 240 80">
+      <g filter="url(#weathered)">
+        <rect x="60" y="0" width="97" height="7" fill="#c4b9a1" stroke="#6f6350" stroke-width="1"/>
+        <path d="M60 7 C60 19 52 25 40 29 H177 C165 25 157 19 157 7 Z" fill="url(#marbleH)" stroke="#6f6350" stroke-width="1"/>
+        <rect x="34" y="29" width="149" height="17" rx="8.5" fill="url(#marbleV)" stroke="#6f6350" stroke-width="1"/>
+        <path d="M40 37 H177" stroke="#f0ebdd" stroke-width="1.2" opacity="0.8"/>
+        <rect x="20" y="46" width="177" height="27" fill="url(#marbleV)" stroke="#6f6350" stroke-width="1"/>
+        <path d="M20 46 L28 46 L20 52 Z" fill="#a1957e"/>
+        <path d="M197 73 L189 73 L197 66 Z" fill="#a1957e"/>
+        <path d="M150 48 L146 60 L149 72" fill="none" stroke="#6f6350" stroke-width="0.8" opacity="0.6"/>
+        <ellipse cx="70" cy="62" rx="20" ry="5" fill="#7c7060" opacity="0.1"/>
+      </g>
+      <ellipse cx="108.5" cy="76" rx="95" ry="4" fill="#6f6350" opacity="0.18"/>
+    </svg>
+  </div>
+
+  <!-- ===================== I ===================== -->
+  <div class="era"><span class="plaque"><b>I</b> DG <span class="years">1999 – 2007 · Kharkiv</span></span></div>
+
+  <article class="entry left">
+    <span class="medal">1999</span>
+    <div class="card">
+      <p class="when">1999</p>
+      <h3>A program begins in Kharkiv</h3>
+      <p>Kirill Osenkov starts DG at the Kharkiv pedagogical university in Ukraine, under the supervision of Sergey A. Rakov. The language is Visual Basic 6. He is the only programmer on the project, beside about five program managers, five testers, and a team of teachers, methodologists and mathematicians who are writing the drawings.</p>
+      <p class="evidence">Kirill's 2007 blog post; the copyright line <i>(C) 1999‑2004 Sergey Rakov, Kirill Osenkov</i> that the later VB.NET port still carries.</p>
+    </div>
+  </article>
+
+  <article class="entry right">
+    <span class="medal">2002</span>
+    <div class="card">
+      <p class="when">February 2002</p>
+      <h3>The library drawings</h3>
+      <p>The last drawings of the CD library are dated February 11 to 25, 2002: Ladder, Morley, Ceva, Pythagoras, Three Circles, the Ellipse Evolute. Over 250 interactive drawings follow the school geometry course; several of them live on today in the Live Geometry gallery.</p>
+      <p class="evidence">File dates of the surviving <i>.dgf</i> demo files.</p>
+    </div>
+  </article>
+
+  <article class="entry left">
+    <span class="medal">2002</span>
+    <div class="card">
+      <p class="when">Summer 2002</p>
+      <h3>DG 1.0 ships</h3>
+      <p>The package goes to Ukrainian schools, where it is still in use in geometry lessons years later. It can do things its successor would take a long time to catch up with: analytic expressions, measurements, hyperlinks between drawings, whole composed documents.</p>
+      <p class="evidence">Kirill's 2007 blog post: <q>I shipped and deployed working and tested software in 2002 that still works in 2007.</q></p>
+    </div>
+  </article>
+
+  <article class="entry right">
+    <span class="medal">2004</span>
+    <div class="card">
+      <p class="when">2004</p>
+      <h3>The first .NET attempt</h3>
+      <p>A port to VB.NET: a DGApp front end over a new DynamicGeometry library, "Copyright 2004 Kirill Osenkov". It is left unfinished, and stays in the repository under <i>Reference</i> as the first of two false starts.</p>
+      <p class="evidence">AssemblyInfo of <i>Reference/VB.NET</i>.</p>
+    </div>
+  </article>
+
+  <article class="entry left">
+    <span class="medal">2006</span>
+    <div class="card">
+      <p class="when">2006</p>
+      <h3>Canvas</h3>
+      <p>A C# rendering library named Canvas joins the VB.NET generation, with design notes on styles and events written as small HTML readmes. It is resaved once in Visual Studio 2008 and then also abandoned.</p>
+      <p class="evidence"><i>Reference/VB.NET/Canvas</i>, "Copyright Kirill Osenkov 2006".</p>
+    </div>
+  </article>
+
+  <article class="entry right">
+    <span class="medal">2007</span>
+    <div class="card">
+      <p class="when">December 8, 2007</p>
+      <h3>DG 1.0 goes free</h3>
+      <p>Five years after shipping, Kirill publishes DG as free software on his blog and tells its story for the first time in English.</p>
+      <p class="evidence">The blog post <i>DG 1.0 – free dynamic geometry software</i>.</p>
+    </div>
+  </article>
+
+  <!-- ===================== II ===================== -->
+  <div class="era"><span class="plaque"><b>II</b> Live Geometry <span class="years">2008 – 2012 · Silverlight</span></span></div>
+
+  <article class="entry left">
+    <span class="medal">2008</span>
+    <div class="card">
+      <p class="when">Spring 2008</p>
+      <h3>The engine is rewritten</h3>
+      <p>The code that livegeometry.com still runs on begins here: C# 3.0, Silverlight 2 Beta 2, and a WPF desktop edition built from the very same source files through two project files side by side. The Reference/C# solution in the repository is this first cut.</p>
+      <p class="evidence"><i>Reference/C#</i>, "Copyright Microsoft 2008", Visual Studio 2008.</p>
+    </div>
+  </article>
+
+  <article class="entry right">
+    <span class="medal">2008</span>
+    <div class="card">
+      <p class="when">June 6, 2008</p>
+      <h3>A project on CodePlex</h3>
+      <p>codeplex.com/DynamicGeometry is first captured by the Internet Archive. Its page says <q>the development has just started, so please don't expect a functional program yet.</q></p>
+      <p class="evidence">Wayback Machine capture of the CodePlex home page.</p>
+    </div>
+  </article>
+
+  <article class="entry left">
+    <span class="medal">2008</span>
+    <div class="card">
+      <p class="when">June 18, 2008</p>
+      <h3>"Live Geometry with Silverlight 2"</h3>
+      <p>The announcement post, with a live preview at geometry.osenkov.com. Already in place: the transaction system with nested transactions and unlimited undo, dependency tracking with a topological sort of the figure graph, and a toolbar built by reflection. Kirill calls the idea <q>CAD with lazy evaluation</q>, and sets the goal that still stands: <q>I'd like to reach parity with the first version.</q></p>
+      <p class="evidence">MSDN blog, June 18, 2008.</p>
+    </div>
+  </article>
+
+  <article class="entry right">
+    <span class="medal">2008</span>
+    <div class="card">
+      <p class="when">October 26, 2008</p>
+      <h3>Silverlight 2 final</h3>
+      <p>The project catches up with the released Silverlight 2. The coordinate grid and axes appear, and the post already sketches pan and zoom by dragging the plane and turning the wheel. On December 1 Kirill presents it to the .NET Developers Association in Seattle.</p>
+      <p class="evidence">MSDN blog, October 26, 2008, and its comments.</p>
+    </div>
+  </article>
+
+  <article class="entry left">
+    <span class="medal">2009</span>
+    <div class="card">
+      <p class="when">March 2009</p>
+      <h3>A name</h3>
+      <p>DynamicGeometry becomes Live Geometry. livegeometry.codeplex.com is first captured on March 7, and livegeometry.com follows on June 29. The undo engine is split out as its own project, the Undo Framework, the day after.</p>
+      <p class="evidence">Wayback Machine captures; MSDN blog, June 30, 2009.</p>
+    </div>
+  </article>
+
+  <article class="entry right">
+    <span class="medal">2009</span>
+    <div class="card">
+      <p class="when">Summer 2009</p>
+      <h3>Files, and a screencast</h3>
+      <p>Saving from the user interface arrives: the oldest surviving <i>.lgf</i> file is dated July 31, 2009, a month after Kirill was still telling a commenter that saving existed only in code. On August 8 a five‑minute screencast shows the tools.</p>
+      <p class="evidence">File dates; MSDN blog, August 8, 2009.</p>
+    </div>
+  </article>
+
+  <article class="entry left">
+    <span class="medal">2010</span>
+    <div class="card">
+      <p class="when">January to March 2010</p>
+      <h3>The Coding4Fun article</h3>
+      <p>A web service starts collecting error reports from the app (33 of them on one January day). The Coding4Fun article, drafted on January 4, is published on March 1 and in Russian on March 19: a walk through figures, creators, the property grid, actions, expressions and macros, with project files for both Visual Studio 2008 and 2010.</p>
+      <p class="evidence">Archived project files; the MSDN Coding4Fun archive.</p>
+    </div>
+  </article>
+
+  <article class="entry right">
+    <span class="medal">2010</span>
+    <div class="card">
+      <p class="when">April 17, 2010</p>
+      <h3>"Inside Live Geometry"</h3>
+      <p>An hour‑long talk at Seattle CodeCamp 2010, recorded: a short demo, then a tour of the source explaining how the parts fit together.</p>
+      <p class="evidence">MSDN blog, April 26, 2010.</p>
+    </div>
+  </article>
+
+  <article class="entry left">
+    <span class="medal">2010</span>
+    <div class="card">
+      <p class="when">March to July 2010</p>
+      <h3>Tabula</h3>
+      <p>David Hartmann, a math teacher, builds Tabula on the Live Geometry engine in Silverlight 4: paper folding, taping and cutting, a compass, a ruler and a protractor that behave like the real ones. Kirill keeps its builds from March 22 to July 1, 2010, and announces it on May 2, 2011.</p>
+      <p class="evidence">Archived project files; MSDN blog, May 2, 2011.</p>
+    </div>
+  </article>
+
+  <article class="entry right">
+    <span class="medal">2010</span>
+    <div class="card">
+      <p class="when">September to November 2010</p>
+      <h3>Windows Phone 7</h3>
+      <p>A port to the new phone, 570 files dated September 19 to November 2010. The manifest reads <i>Live Geometry 1.0.0.0, Interactive geometry, Kirill Osenkov</i>.</p>
+      <p class="evidence">Archived project files, WMAppManifest.xml.</p>
+    </div>
+  </article>
+
+  <article class="entry left">
+    <span class="medal">2011</span>
+    <div class="card">
+      <p class="when">2011</p>
+      <h3>A second pair of hands</h3>
+      <p>David Hartmann's initials appear in the library itself, on comments dated June 29 and August 11, 2011, sorting figures by z‑order and retiring a static ID. He is the only other person whose work is still visible in the code.</p>
+      <p class="evidence"><i>FigureList.cs</i>, <i>FigureBase.cs</i>.</p>
+    </div>
+  </article>
+
+  <article class="entry right">
+    <span class="medal">2012</span>
+    <div class="card">
+      <p class="when">January 2012</p>
+      <h3>The last file of the era</h3>
+      <p>A spreadsheet of application downloads, dated January 2, 2012, is the newest file in the project archive of those years. Silverlight itself has three more years of browser support ahead, and the app keeps running unchanged.</p>
+      <p class="evidence">File dates.</p>
+    </div>
+  </article>
+
+  <!-- ===================== III ===================== -->
+  <div class="era"><span class="plaque"><b>III</b> The long pause <span class="years">2012 – 2026 · GitHub</span></span></div>
+
+  <article class="entry left">
+    <span class="medal">2017</span>
+    <div class="card">
+      <p class="when">March 18, 2017</p>
+      <h3>From CodePlex to GitHub</h3>
+      <p>Ahead of CodePlex's shutdown the code is imported into a GitHub repository in one flat commit. The nine years of TFS history stay behind, which is why the chronology above rests on the archive and on file dates rather than on the log.</p>
+      <p class="evidence">git log: <i>Initial import from https://livegeometry.codeplex.com</i>.</p>
+    </div>
+  </article>
+
+  <article class="entry right">
+    <span class="medal">2020</span>
+    <div class="card">
+      <p class="when">September 2020</p>
+      <h3>Signs of life</h3>
+      <p>Thirteen commits in one month: polygon intersection, fixes to composite figures, Escape returning to the selection tool, and the projects converted to the SDK style. Then net6.0 in January 2024 and net10.0 in January 2026, a couple of commits each.</p>
+      <p class="evidence">git log: 22 commits between 2017 and 2025.</p>
+    </div>
+  </article>
+
+  <!-- ===================== IV ===================== -->
+  <div class="era"><span class="plaque"><b>IV</b> Avalonia <span class="years">2026 · WebAssembly</span></span></div>
+
+  <article class="entry left">
+    <span class="medal">2026</span>
+    <div class="card">
+      <p class="when">July 15, 2026</p>
+      <h3>Back in the browser</h3>
+      <p>The Avalonia initial commit. The geometry library is rewritten onto Avalonia with a thin compatibility layer over its WPF habits, a desktop head and a browser head share one UI, and the browser build, compiled to WebAssembly, is deployed to livegeometry.com the same day. Fifteen years after Silverlight, the same engine runs on the same address.</p>
+      <p class="evidence">git log; the deployment workflow.</p>
+    </div>
+  </article>
+
+  <article class="entry right">
+    <span class="medal">2026</span>
+    <div class="card">
+      <p class="when">September 2026</p>
+      <h3>Catching up with 2002</h3>
+      <p>175 commits in the year against 22 in the nine before it: a ribbon of tools, a gallery of 47 drawings from the phone and the CD library, light and dark themes, sliders and tied values, GeoGebra import, segment marks and right‑angle marks, SVG export. The parity list from June 2008 is shorter than it was, and still not empty.</p>
+      <p class="evidence">git log; the working notes in AGENTS.md.</p>
+    </div>
+  </article>
+</main>
+
+<section class="epilogue">
+  <p>“I'd like to reach parity with the first version.” — June 2008, eighteen years and three frameworks ago.</p>
+  <p class="apps"><a href="/">Open Live Geometry</a><a href="https://github.com/KirillOsenkov/LiveGeometry">Source on GitHub</a></p>
+</section>
+
+<footer>
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://kirillosenkov.blogspot.com/2007/12/dg-10-free-dynamic-geometry-software.html">DG 1.0 – free dynamic geometry software</a>, December 2007</li>
+    <li><a href="https://learn.microsoft.com/en-us/archive/blogs/kirillosenkov/live-geometry-with-silverlight-2">Live Geometry with Silverlight 2</a>, June 2008</li>
+    <li><a href="https://learn.microsoft.com/en-us/archive/blogs/kirillosenkov/live-geometry-project-updated-to-silverlight-2-final-release">Live Geometry project updated to Silverlight 2 final release</a>, October 2008</li>
+    <li><a href="https://learn.microsoft.com/en-us/archive/blogs/rucoding4fun/live-geometry">Coding4Fun: Live Geometry</a>, March 2010</li>
+    <li><a href="https://learn.microsoft.com/en-us/archive/blogs/kirillosenkov/recording-of-my-inside-live-geometry-talk-now-available">Recording of the "Inside Live Geometry" talk</a>, April 2010</li>
+    <li><a href="https://learn.microsoft.com/en-us/archive/blogs/kirillosenkov/tabula">Tabula</a>, May 2011</li>
+    <li>Wayback Machine captures of codeplex.com/DynamicGeometry, livegeometry.codeplex.com and livegeometry.com</li>
+    <li>The <i>Reference</i> folders of the repository and the git log</li>
+  </ul>
+  <p class="note">Where a date comes from a file's modification time it is given as such; those are the least certain entries here.</p>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var entries = Array.prototype.slice.call(document.querySelectorAll(".entry"));
+    var figures = Array.prototype.slice.call(document.querySelectorAll(".figure"));
+    var shaft = document.getElementById("shaft");
+
+    // cards appear as they come into view
+    if (!reduce && "IntersectionObserver" in window) {
+      var observer = new IntersectionObserver(function (records) {
+        records.forEach(function (record) {
+          if (record.isIntersecting) {
+            record.target.classList.add("shown");
+            observer.unobserve(record.target);
+          }
+        });
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.15 });
+      entries.forEach(function (entry) { observer.observe(entry); });
+    } else {
+      entries.forEach(function (entry) { entry.classList.add("shown"); });
+    }
+
+    // the shaft darkens down to the reader's place, and the margin drawings drift a little
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var rect = shaft.getBoundingClientRect();
+      var focus = window.innerHeight * 0.55;
+      var fill = (focus - rect.top) / rect.height;
+      fill = Math.max(0, Math.min(1, fill));
+      shaft.style.setProperty("--fill", (fill * 100).toFixed(2) + "%");
+
+      if (!reduce) {
+        var y = window.scrollY || window.pageYOffset;
+        figures.forEach(function (figure) {
+          var speed = parseFloat(figure.getAttribute("data-speed")) || 0;
+          figure.style.transform = "translateY(" + (y * speed).toFixed(1) + "px)";
+        });
+      }
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+  })();
+</script>
+
+</body>
+</html>
