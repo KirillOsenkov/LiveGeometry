@@ -56,12 +56,98 @@ html[data-theme="dark"] .euclid .pen {
     gap: 6px;
 }
 
+.splash-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
 .avalonia-splash h2 {
     margin: 0;
     font-weight: 500;
     font-size: 1.35rem;
     color: #1F4E8C;
     letter-spacing: 0.01em;
+}
+
+/* The description above the construction: what the site is, to read while it loads. */
+.splash-intro {
+    box-sizing: border-box;
+    max-width: 560px;
+    padding: 0 24px;
+    margin-bottom: 12px;
+    text-align: left;
+    color: #3A4556;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.splash-intro h1 {
+    margin: 0 0 10px;
+    font-weight: 600;
+    font-size: 1.9rem;
+    color: #1F4E8C;
+    letter-spacing: 0.01em;
+}
+
+.splash-intro p {
+    margin: 0 0 8px;
+}
+
+.splash-intro a {
+    color: #2F7BD6;
+    text-decoration: none;
+    pointer-events: auto;
+}
+
+.splash-intro a:hover {
+    text-decoration: underline;
+}
+
+html[data-theme="dark"] .splash-intro {
+    color: #C2CAD6;
+}
+
+html[data-theme="dark"] .splash-intro h1 {
+    color: #9CC4F0;
+}
+
+html[data-theme="dark"] .splash-intro a {
+    color: #7FB4EE;
+}
+
+/* A short window: a smaller construction, so the text stays above it. */
+@media (max-height: 620px) {
+    .euclid {
+        width: 224px;
+        height: 175px;
+    }
+
+    .splash-intro {
+        font-size: 0.875rem;
+        margin-bottom: 4px;
+    }
+
+    .splash-intro h1 {
+        font-size: 1.5rem;
+        margin-bottom: 6px;
+    }
+}
+
+/* A short wide window (a phone held sideways): the text beside the construction. */
+@media (max-height: 460px) and (min-width: 640px) {
+    .splash-card {
+        flex-direction: row;
+        gap: 24px;
+        padding: 0 24px;
+    }
+
+    .splash-intro {
+        max-width: 420px;
+        padding: 0;
+        margin-bottom: 0;
+    }
 }
 
 .splash-progress {

@@ -4,6 +4,12 @@
 <head>
     <title>Live Geometry</title>
     <meta charset="UTF-8">
+    <!-- What a search engine shows under the title (the splash below says the same). -->
+    <meta name="description" content="Live Geometry is a free and open source interactive geometry website: a colorful gallery of drawings illustrating geometry concepts, interactive ruler and compass constructions, coordinates, and figures you can drag around.">
+    <meta property="og:title" content="Live Geometry">
+    <meta property="og:description" content="Free and open source interactive geometry: a gallery of drawings, ruler and compass constructions, coordinates, and figures you can drag around.">
+    <meta property="og:url" content="https://livegeometry.com/">
+    <meta property="og:type" content="website">
     <!-- The app has routes (/gallery/morley) that all serve this page: without a base the
          relative urls below would be looked up under /gallery/. -->
     <base href="/">
@@ -46,38 +52,52 @@
          the app starting. -->
     <div class="avalonia-splash">
         <div class="splash-card">
-            <svg class="euclid" viewBox="0 0 320 250" width="320" height="250" aria-hidden="true">
-                <defs>
-                    <linearGradient id="splash-tri" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0" stop-color="#7CE38B" />
-                        <stop offset="1" stop-color="#6FD3F7" />
-                    </linearGradient>
-                    <radialGradient id="splash-a" cx="0.5" cy="0.5" r="0.5">
-                        <stop offset="0.6" stop-color="#2F7BD6" stop-opacity="0.04" />
-                        <stop offset="1" stop-color="#2F7BD6" stop-opacity="0.22" />
-                    </radialGradient>
-                    <radialGradient id="splash-b" cx="0.5" cy="0.5" r="0.5">
-                        <stop offset="0.6" stop-color="#E08A00" stop-opacity="0.04" />
-                        <stop offset="1" stop-color="#E08A00" stop-opacity="0.22" />
-                    </radialGradient>
-                </defs>
-                <g class="scene">
-                    <circle class="disc disc-a" cx="110" cy="140" r="100" fill="url(#splash-a)" />
-                    <circle class="disc disc-b" cx="210" cy="140" r="100" fill="url(#splash-b)" />
-                    <circle class="ring ring-a" cx="110" cy="140" r="100" />
-                    <circle class="ring ring-b" cx="210" cy="140" r="100" />
-                    <polygon class="tri" points="110,140 160,53.4 210,140" />
-                    <path class="base" d="M110,140 L210,140" />
-                    <path class="sides" d="M110,140 L160,53.4 L210,140" />
-                    <circle class="pen pen-a" r="4" />
-                    <circle class="pen pen-b" r="4" />
-                    <circle class="dot dot-a" cx="110" cy="140" r="6" />
-                    <circle class="dot dot-b" cx="210" cy="140" r="6" />
-                    <circle class="dot dot-c" cx="160" cy="53.4" r="6" />
-                </g>
-            </svg>
-            <h2>Loading Live Geometry…</h2>
-            <div class="splash-progress"><div class="splash-progress-bar" id="splash-progress-bar"></div></div>
+            <!-- The description, to read while the runtime downloads (and what a search
+                 engine indexes; the meta description in the head says the same). -->
+            <div class="splash-intro">
+                <h1>Live Geometry</h1>
+                <p>Live Geometry is a free and open source interactive geometry website.
+                    It has a colorful gallery of geometry drawings illustrating various geometry
+                    concepts. It allows you to create interactive ruler and compass constructions,
+                    work with coordinates and experiment by dragging points and figures.</p>
+                <p>The source code is at
+                    <a href="https://github.com/KirillOsenkov/LiveGeometry">github.com/KirillOsenkov/LiveGeometry</a>.
+                    It is written in .NET and Avalonia.</p>
+            </div>
+            <div class="splash-loading">
+                <svg class="euclid" viewBox="0 0 320 250" width="320" height="250" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="splash-tri" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#7CE38B" />
+                            <stop offset="1" stop-color="#6FD3F7" />
+                        </linearGradient>
+                        <radialGradient id="splash-a" cx="0.5" cy="0.5" r="0.5">
+                            <stop offset="0.6" stop-color="#2F7BD6" stop-opacity="0.04" />
+                            <stop offset="1" stop-color="#2F7BD6" stop-opacity="0.22" />
+                        </radialGradient>
+                        <radialGradient id="splash-b" cx="0.5" cy="0.5" r="0.5">
+                            <stop offset="0.6" stop-color="#E08A00" stop-opacity="0.04" />
+                            <stop offset="1" stop-color="#E08A00" stop-opacity="0.22" />
+                        </radialGradient>
+                    </defs>
+                    <g class="scene">
+                        <circle class="disc disc-a" cx="110" cy="140" r="100" fill="url(#splash-a)" />
+                        <circle class="disc disc-b" cx="210" cy="140" r="100" fill="url(#splash-b)" />
+                        <circle class="ring ring-a" cx="110" cy="140" r="100" />
+                        <circle class="ring ring-b" cx="210" cy="140" r="100" />
+                        <polygon class="tri" points="110,140 160,53.4 210,140" />
+                        <path class="base" d="M110,140 L210,140" />
+                        <path class="sides" d="M110,140 L160,53.4 L210,140" />
+                        <circle class="pen pen-a" r="4" />
+                        <circle class="pen pen-b" r="4" />
+                        <circle class="dot dot-a" cx="110" cy="140" r="6" />
+                        <circle class="dot dot-b" cx="210" cy="140" r="6" />
+                        <circle class="dot dot-c" cx="160" cy="53.4" r="6" />
+                    </g>
+                </svg>
+                <h2>Loading Live Geometry…</h2>
+                <div class="splash-progress"><div class="splash-progress-bar" id="splash-progress-bar"></div></div>
+            </div>
         </div>
     </div>
 </div>
