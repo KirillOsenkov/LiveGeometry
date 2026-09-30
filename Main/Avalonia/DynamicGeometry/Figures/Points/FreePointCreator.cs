@@ -75,17 +75,29 @@ namespace DynamicGeometry
                 {
                     var point = Factory.CreatePointByCoordinates(parent.Drawing, X, Y);
                     Actions.Add(parent.Drawing, point);
+
+                    // the panel stays for the next point: back to its first box
+                    FocusRow(nameof(X));
                 }
             }
         }
 
         CoordinatesDialog dialog;
 
+        /// <summary>
+        /// Whether the tool shows the X/Y panel: the Point tool while "Point by coordinates"
+        /// is switched on, the Coordinates tool (<see cref="PointByCoordinatesCreator"/>) always.
+        /// </summary>
+        protected virtual bool ShowsCoordinatesPanel
+        {
+            get { return Settings.Instance.EnablePointByCoordinates; }
+        }
+
         public override object PropertyBag
         {
             get
             {
-                if (!Settings.Instance.EnablePointByCoordinates)
+                if (!ShowsCoordinatesPanel)
                 {
                     return null;
                 }

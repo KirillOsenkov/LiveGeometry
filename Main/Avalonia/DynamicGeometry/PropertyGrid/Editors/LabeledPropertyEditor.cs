@@ -47,6 +47,12 @@ namespace DynamicGeometry
 
         }
 
+        /// <summary>Puts the keyboard into the editor now (a tool panel asking for its first row again)</summary>
+        public void TakeFocus()
+        {
+            Focus();
+        }
+
         protected abstract UIElement CreateEditor();
 
         public TextBlock Label { get; set; }

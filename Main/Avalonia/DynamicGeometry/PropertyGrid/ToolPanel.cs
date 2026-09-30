@@ -18,6 +18,18 @@ public class ToolPanel
         PropertyError?.Invoke(propertyName, error);
     }
 
+    /// <summary>A property whose row should take the keyboard now</summary>
+    public event Action<string> FocusRequested;
+
+    /// <summary>
+    /// Puts the keyboard into a row, so that a command that keeps the panel (Add point, for
+    /// the next point) leaves the user ready to type again
+    /// </summary>
+    protected void FocusRow(string propertyName)
+    {
+        FocusRequested?.Invoke(propertyName);
+    }
+
     /// <summary>Compiles the text of a row and says under the row what is wrong with it</summary>
     protected CompileResult Compile(Drawing drawing, string propertyName, string text)
     {

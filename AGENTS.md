@@ -85,8 +85,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   returns to. Figure List (toggle): see "The Figure List".
 - **Points**: Point (P) - free, on a figure, or at an intersection; Midpoint (M) - two points
   or a segment; Intersection (I) - two figures that cross, the click on the second picks the
-  nearer crossing (`PointPlacement.Intersection`, shared with the Point tool); Label new
-  points (toggle).
+  nearer crossing (`PointPlacement.Intersection`, shared with the Point tool); Coordinates (X) -
+  the Point tool with its X/Y panel always on (`PointByCoordinatesCreator`), so a point by
+  coordinates needs no trip to the Coordinates tab's toggle (that toggle stays for typing
+  the points of other figures); Label new points (toggle).
 - **Lines**: Segment (S), Ray (Y), Line (L), Vector - two points each; Parallel (N) and
   Perpendicular (E) - a line then a point; Perpendicular Bisector - two points or a segment; Angle Bisector
   (B) - vertex then two side points, or an angle measurement; Line at Angle - a point, at the

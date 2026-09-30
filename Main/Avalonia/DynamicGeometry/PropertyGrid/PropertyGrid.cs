@@ -80,6 +80,7 @@ namespace DynamicGeometry
             if (instance is ToolPanel panel)
             {
                 panel.PropertyError += SelectionPropertyError;
+                panel.FocusRequested += SelectionFocusRequested;
             }
         }
 
@@ -99,6 +100,7 @@ namespace DynamicGeometry
             if (instance is ToolPanel panel)
             {
                 panel.PropertyError -= SelectionPropertyError;
+                panel.FocusRequested -= SelectionFocusRequested;
             }
         }
 
@@ -137,6 +139,15 @@ namespace DynamicGeometry
             {
                 editor.ErrorText = error;
             }
+        }
+
+        /// <summary>A tool panel's command wants the keyboard in one of its rows (Add point: back to X)</summary>
+        void SelectionFocusRequested(string propertyName)
+        {
+            var editor = CurrentEditors?
+                .OfType<LabeledValueEditor>()
+                .FirstOrDefault(e => e.Value?.Name == propertyName);
+            editor?.TakeFocus();
         }
 
         void FindAndUpdatePropertyEditor(string propertyName)

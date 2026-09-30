@@ -16,6 +16,7 @@ public static class FigureIcons
     static readonly Dictionary<Type, Func<Behavior>> tools = new()
     {
         [typeof(PointBase)] = () => new FreePointCreator(),
+        [typeof(PointByCoordinates)] = () => new PointByCoordinatesCreator(),
         [typeof(IntersectionPoint)] = () => new IntersectionCreator(),
         [typeof(MidPoint)] = () => new MidpointCreator(),
         [typeof(ReflectedPoint)] = () => new ReflectionCreator(),
@@ -59,11 +60,6 @@ public static class FigureIcons
     /// <summary>Tells which icon the figure gets, so that a list can see when it changes (a triangle given a fourth vertex)</summary>
     public static string GetKey(IFigure figure)
     {
-        if (figure is PointByCoordinates)
-        {
-            return nameof(PointByCoordinates);
-        }
-
         if (figure is Polygon polygon)
         {
             var points = polygon.Dependencies.OfType<IPoint>().ToArray();
@@ -114,8 +110,6 @@ public static class FigureIcons
         {
             case null:
                 return null;
-            case nameof(PointByCoordinates):
-                return ToggleIcons.PointByCoordinates();
             case nameof(TriangleCreator):
                 return GetTool(key, () => new TriangleCreator()).CreateIcon();
             case nameof(SquareCreator):
