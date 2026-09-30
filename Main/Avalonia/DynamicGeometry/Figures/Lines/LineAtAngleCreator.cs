@@ -53,13 +53,35 @@ public class LineAtAngleCreator : FigureCreator
             }
         }
 
+        /// <summary>
+        /// Back to a typed angle before any point is clicked: the clicked figure's angle as
+        /// it is now becomes the typed one, and the tool starts over (the panel comes back
+        /// editable with it).
+        /// </summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Type the angle")]
+        [PropertyGridIcon(PropertyGridIcon.Pencil)]
+        public void UntieAngle()
+        {
+            if (parent.angleSource is IAngleProvider source)
+            {
+                LastAngle = source.Angle.ToDegrees();
+                parent.Restart();
+            }
+        }
+
         public bool CanEdit(string propertyName)
         {
-            return parent.angleSource == null;
+            return propertyName == nameof(UntieAngle) ? parent.angleSource != null : parent.angleSource == null;
         }
 
         public string Caption(string propertyName, string defaultCaption)
         {
+            if (propertyName != nameof(Angle))
+            {
+                return defaultCaption;
+            }
+
             return parent.angleSource == null ? "Angle (degrees)" : "Angle = " + parent.angleSource.Name;
         }
 

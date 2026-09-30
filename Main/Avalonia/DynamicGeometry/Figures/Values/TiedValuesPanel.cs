@@ -56,11 +56,16 @@ public class TiedValuesPanel : ICustomPropertyProvider, ICustomMethodProvider
         }
     }
 
-    /// <summary>Back to the tool's panel; the figure stays as it is</summary>
+    /// <summary>
+    /// Back to the tool's panel; the figure stays as it is. Closed first, so that the tool
+    /// takes the values as its defaults (<see cref="FigureCreator.ForgetCreatedFigure"/>)
+    /// before its own panel reads them.
+    /// </summary>
     [PropertyGridIcon(PropertyGridIcon.Check)]
     public void OK()
     {
         var drawing = Values.Drawing;
+        drawing.RaiseDisplayProperties(null);
         drawing.RaiseDisplayProperties(drawing.Behavior?.PropertyBag);
         drawing.ClearStatus();
     }
