@@ -100,11 +100,8 @@
     <Label Name="Description" Style="GalleryText" Text="Four towns A, B, C and D want to build one shared airport E, with a straight road from each town to it. Where should E go so that the four roads together are as short as possible?\n\nRoads right now:\n[dist(E,A)+dist(E,B)+dist(E,C)+dist(E,D)]\n\nDrag E around and find the smallest number. Then look where E ended up — can you see the rule? Try a dented (non-convex) quadrilateral too.\n\nIf roads could also branch at crossroads, they could be even shorter: that is the Steiner tree problem." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
       <Dependency Name="E" />
       <Dependency Name="A" />
-      <Dependency Name="E" />
       <Dependency Name="B" />
-      <Dependency Name="E" />
       <Dependency Name="C" />
-      <Dependency Name="E" />
       <Dependency Name="D" />
     </Label>
   </Figures>

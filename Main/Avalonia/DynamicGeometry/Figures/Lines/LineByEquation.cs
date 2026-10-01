@@ -1,7 +1,16 @@
 ﻿namespace DynamicGeometry
 {
-    public class LineByEquation : LineBase, ILine, IRenamableExpressions
+    public class LineByEquation : LineBase, ILine, IRenamableExpressions, IExpressionOwner
     {
+        [PropertyGridVisible(false)]
+        public System.Collections.Generic.IEnumerable<DrawingExpression> Expressions
+        {
+            get
+            {
+                return Equation != null ? Equation.Expressions : new DrawingExpression[0];
+            }
+        }
+
         public void RenameInExpressions(ExpressionRenamer renamer)
         {
             if (Equation != null)

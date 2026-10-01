@@ -33,6 +33,17 @@ public class UpDownEditor : LabeledValueEditor, IValueEditor
         TextBox.CornerRadius = new Avalonia.CornerRadius(4, 0, 0, 4);
         TextBox.TextChanged += TextBox_TextChanged;
 
+        // a value typed or stepped to, then another after Enter or after coming back to the
+        // box: two undo steps
+        TextBox.LostFocus += (s, e) => EndEditRun();
+        TextBox.KeyDown += (s, e) =>
+        {
+            if (e.Key == Avalonia.Input.Key.Enter)
+            {
+                EndEditRun();
+            }
+        };
+
         UpDown = new UpDownControl();
         UpDown.VerticalAlignment = VerticalAlignment.Center;
         TextBox.SizeChanged += (s, e) => UpDown.Height = TextBox.Bounds.Height;

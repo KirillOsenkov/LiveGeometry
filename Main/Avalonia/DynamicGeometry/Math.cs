@@ -1085,6 +1085,12 @@ namespace DynamicGeometry
         /// </summary>
         public static bool IsPointOnPolygonalChain(IList<Point> points, Point point, double epsilon, bool IsClosed)
         {
+            // a curve not worked out yet (a function graph while its file is being read)
+            if (points == null || points.Count == 0)
+            {
+                return false;
+            }
+
             var projection = Math.GetProjection(point, points, IsClosed);
             var projectionDistance = projection.DistanceToLine;
             if (projectionDistance < epsilon)

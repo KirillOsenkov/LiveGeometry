@@ -63,6 +63,15 @@ namespace DynamicGeometry
         [Ignore]
         public Dictionary<string, Dictionary<string, object>> Overrides { get; private set; } = new Dictionary<string, Dictionary<string, object>>();
 
+        /// <summary>
+        /// The file the style came from says how it looks under other themes, if only that
+        /// it looks no different (an empty theme element): it is not a copy of a default
+        /// from before the themes, which loading swaps for the default
+        /// (<see cref="StyleManager.AddWithDefaults"/>).
+        /// </summary>
+        [Ignore]
+        public bool SaysThemes { get; set; }
+
         Dictionary<string, Func<AppTheme, object>> themeBindings;
 
         /// <summary>Under the named theme, the property has this value</summary>
@@ -145,6 +154,14 @@ namespace DynamicGeometry
                 var theme = AppTheme.Current;
                 return !AppTheme.IsBase(theme) && Overrides.TryGetValue(theme.Name, out var values) && values.Count > 0;
             }
+
+#if !PLAYER
+            // a style every drawing starts with is not deleted: no button that does nothing
+            if (propertyName == nameof(Delete))
+            {
+                return StyleManager != null && StyleManager.CanRemove(this);
+            }
+#endif
 
             return true;
         }

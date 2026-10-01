@@ -47,7 +47,8 @@ namespace DynamicGeometry
 
             var segment = Factory.CreateSegment(Drawing, new[] { otherPoint1, otherPoint2 });
 
-            using (Drawing.ActionManager.CreateTransaction())
+            // not delayed, like the transaction around it: executed in the order recorded
+            using (Transaction.Create(Drawing.ActionManager, delayed: false))
             {
                 RemovePointFromPolygons(point);
                 Actions.Remove(line2);
@@ -126,7 +127,7 @@ namespace DynamicGeometry
 
                     // create new polyline
                     var newPolyLine = Factory.CreatePolyline(Drawing, NewPolyLinePoints);
-                    using (Drawing.ActionManager.CreateTransaction())
+                    using (Transaction.Create(Drawing.ActionManager, delayed: false))
                     {
                         Actions.Remove(point);
                         Actions.ReplaceWithNew(polyline, newPolyLine);

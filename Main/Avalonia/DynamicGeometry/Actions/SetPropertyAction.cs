@@ -21,6 +21,15 @@ namespace DynamicGeometry
         /// </summary>
         public bool Coalesce { get; set; }
 
+        /// <summary>
+        /// The run of edits the set belongs to, when its editor tells them apart: only sets
+        /// of one run join. An editor starts a new run when it is done with a value (Enter,
+        /// leaving the box) and every time the grid shows the object anew - otherwise a
+        /// length typed now joined the one typed five minutes ago, if nothing else was done
+        /// in between, and undo skipped it.
+        /// </summary>
+        public object Run { get; set; }
+
         /// <summary>Whose history the action is in, to know when there is something to redo</summary>
         public ActionManager ActionManager { get; set; }
 
@@ -52,7 +61,9 @@ namespace DynamicGeometry
 
         protected override void UnExecuteCore()
         {
-            for (int i = 0; i < targets.Length; i++)
+            // last to first: a set that takes a figure out of the drawing (a point's label)
+            // remembers where it was, and those places only add up in reverse
+            for (int i = targets.Length - 1; i >= 0; i--)
             {
                 if (targets[i] is IRestorableValue restorable)
                 {
@@ -68,7 +79,7 @@ namespace DynamicGeometry
         public override bool TryToMerge(IAction followingAction)
         {
             SetPropertyAction next = followingAction as SetPropertyAction;
-            if (next == null || !Coalesce || !next.Coalesce || targets == null)
+            if (next == null || !Coalesce || !next.Coalesce || targets == null || !Equals(Run, next.Run))
             {
                 return false;
             }

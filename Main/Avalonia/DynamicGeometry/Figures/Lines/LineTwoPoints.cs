@@ -2,8 +2,37 @@
 
 namespace DynamicGeometry
 {
-    public class LineTwoPoints : LineBase, ILine
+    public class LineTwoPoints : LineBase, ILine, IConditionalProperties
     {
+        /// <summary>
+        /// Whether the line runs through its two points, so that a ray or a segment can be
+        /// drawn on them instead. Not a line built otherwise - a parallel, a perpendicular,
+        /// a bisector: on those the Convert buttons made a ray out of a line and a point
+        /// (and threw), or the segment whose bisector it was.
+        /// </summary>
+        protected virtual bool IsThroughTwoPoints
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public virtual bool CanEdit(string propertyName)
+        {
+            if (propertyName == nameof(ConvertToRay) || propertyName == nameof(ConvertToSegment))
+            {
+                return IsThroughTwoPoints;
+            }
+
+            return true;
+        }
+
+        public virtual string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
+        }
+
         public override PointPair OnScreenCoordinates
         {
             get
@@ -29,6 +58,10 @@ namespace DynamicGeometry
         {
             var drawing = oldLine.Drawing;
             newLine.Style = oldLine.Style;
+
+            // a hidden helper (converted from the Figure List) stays hidden
+            newLine.Visible = oldLine.Visible;
+            newLine.Locked = oldLine.Locked;
             Actions.ReplaceWithNew(oldLine, newLine);
             drawing.RaiseUserIsAddingFigures(new Drawing.UIAFEventArgs() { Figures = newLine.AsEnumerable<IFigure>() });
         }

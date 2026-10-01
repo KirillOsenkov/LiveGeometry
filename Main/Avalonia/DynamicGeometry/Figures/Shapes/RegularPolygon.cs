@@ -262,7 +262,7 @@ namespace DynamicGeometry
                 var firstSide = sides[index - 1];
                 firstSide.UnregisterFromDependencies();
                 firstSide.Dependencies[1] = vertices[index - 1];
-                firstSide.RegisterWithDependencies();
+                RegisterPart(firstSide);
             }
 
             if (index == 0)
@@ -285,7 +285,7 @@ namespace DynamicGeometry
                 side.OnAddingToCanvas(Drawing.Canvas);
             }
 
-            side.RegisterWithDependencies();
+            RegisterPart(side);
         }
 
         protected override void RemoveSide()
@@ -296,7 +296,7 @@ namespace DynamicGeometry
                 var firstSide = sides[index - 1];
                 firstSide.UnregisterFromDependencies();
                 firstSide.Dependencies[1] = this.Dependencies[1];
-                firstSide.RegisterWithDependencies();
+                RegisterPart(firstSide);
             }
 
             var side = sides[index];

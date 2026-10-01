@@ -102,6 +102,9 @@ namespace DynamicGeometry
         {
             TextEdited();
 
+            // what is typed after this is another undo step
+            EndEditRun();
+
             // what the editor showed needs no checking (an empty box never touched, say)
             string text = TextBox.Text ?? "";
             if (text == ShownText)

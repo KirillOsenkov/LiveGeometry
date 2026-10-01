@@ -1,7 +1,15 @@
 ﻿namespace DynamicGeometry
 {
-    public class PointByCoordinates : PointBase, IPoint, IRenamableExpressions, IConditionalProperties
+    public class PointByCoordinates : PointBase, IPoint, IRenamableExpressions, IConditionalProperties, IExpressionOwner
     {
+        public System.Collections.Generic.IEnumerable<DrawingExpression> Expressions
+        {
+            get
+            {
+                return new[] { XExpression, YExpression };
+            }
+        }
+
         public PointByCoordinates()
         {
             XExpression = new DrawingExpression(this) { Name = "X = " };

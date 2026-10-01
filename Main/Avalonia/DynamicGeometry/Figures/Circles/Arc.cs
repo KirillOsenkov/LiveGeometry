@@ -22,6 +22,10 @@ namespace DynamicGeometry
             var drawing = oldArc.Drawing;
             newArc.Style = oldArc.Style;
             newArc.Clockwise = oldArc.Clockwise;
+
+            // a hidden helper (converted from the Figure List) stays hidden
+            newArc.Visible = oldArc.Visible;
+            newArc.Locked = oldArc.Locked;
             Actions.ReplaceWithNew(oldArc, newArc);
             drawing.RaiseUserIsAddingFigures(new Drawing.UIAFEventArgs() { Figures = newArc.AsEnumerable<IFigure>() });
         }

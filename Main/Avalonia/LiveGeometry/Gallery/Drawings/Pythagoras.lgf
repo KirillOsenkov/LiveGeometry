@@ -235,15 +235,6 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
       <Dependency Name="B" />
-      <Dependency Name="C" />
-      <Dependency Name="A" />
-      <Dependency Name="B" />
-      <Dependency Name="A" />
-      <Dependency Name="B" />
-      <Dependency Name="A" />
-      <Dependency Name="C" />
-      <Dependency Name="B" />
-      <Dependency Name="C" />
     </Label>
   </Figures>
 </Drawing>

@@ -213,10 +213,75 @@ namespace DynamicGeometry
             this.RecalculateAllDependents();
         }
 
+        /// <summary>
+        /// The Free distance and Free direction rows. Undo of a tick puts back the source the
+        /// quantity had, whatever it was - unticking the box gives it a Number, which is not
+        /// what a distance taken from a vector had.
+        /// </summary>
+        public class FreedomValue : ConditionalPropertyValue, IRestorableValue
+        {
+            class SavedSource
+            {
+                public IFigure Source;
+                public int Index;
+            }
+
+            TranslatedPoint Owner
+            {
+                get { return (TranslatedPoint)Parent; }
+            }
+
+            Quantity OwnerQuantity
+            {
+                get { return Property.Name == nameof(FreeDistance) ? Owner.distanceQuantity : Owner.directionQuantity; }
+            }
+
+            /// <summary>The source of the quantity and its place among the dependencies; no source while it is free</summary>
+            public object CaptureState()
+            {
+                var quantity = OwnerQuantity;
+                return new SavedSource() { Source = Owner.SourceOf(quantity), Index = quantity.SourceIndex };
+            }
+
+            public void RestoreState(object state)
+            {
+                var saved = (SavedSource)state;
+                var owner = Owner;
+                var quantity = OwnerQuantity;
+                if (saved.Source == null)
+                {
+                    owner.Free(quantity, quantity == owner.distanceQuantity ? owner.DistanceValue : owner.DirectionRadians);
+                }
+                else if (quantity.SourceIndex < 0)
+                {
+                    owner.Reattach(quantity, saved.Source, saved.Index);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The quantity follows the source again, which is listed among the dependencies
+        /// where it was; a Number that left the drawing when the quantity was freed comes
+        /// back to its place. For undo of a tick of a Free box.
+        /// </summary>
+        void Reattach(Quantity quantity, IFigure source, int index)
+        {
+            if (source is Number number && Drawing != null && !Drawing.Figures.Contains(number))
+            {
+                Drawing.Figures.ReturnBefore(number, this);
+                if (quantity.Retired == number)
+                {
+                    quantity.Retired = null;
+                }
+            }
+
+            SetSource(quantity, source, quantity.Parameter, index);
+        }
+
         [PropertyGridVisible]
         [PropertyGridName("Free distance")]
         [PropertyGridGroup("Distance")]
-        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
+        [PropertyGridCustomValueProvider(typeof(FreedomValue))]
         public bool FreeDistance
         {
             get
@@ -239,7 +304,7 @@ namespace DynamicGeometry
         [PropertyGridVisible]
         [PropertyGridName("Free direction")]
         [PropertyGridGroup("Direction")]
-        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
+        [PropertyGridCustomValueProvider(typeof(FreedomValue))]
         public bool FreeDirection
         {
             get
@@ -344,7 +409,7 @@ namespace DynamicGeometry
                 this.RemoveDependencyCore(index, source);
                 if (source is Number number && number.Auxiliary && number.Dependents.IsEmpty() && Drawing != null)
                 {
-                    Drawing.Figures.Remove(number);
+                    Drawing.Figures.Retire(number);
                     quantity.Retired = number;
                 }
             }
@@ -369,8 +434,7 @@ namespace DynamicGeometry
             number.Value = quantity == directionQuantity ? currentValue.ToDegrees() : currentValue;
             if (!Drawing.Figures.Contains(number))
             {
-                int place = Drawing.Figures.IndexOf(this);
-                Drawing.Figures.Insert(place < 0 ? Drawing.Figures.Count : place, number);
+                Drawing.Figures.ReturnBefore(number, this);
             }
 
             quantity.SourceIndex = Dependencies.Count;
@@ -482,10 +546,11 @@ namespace DynamicGeometry
                 var point = (TranslatedPoint)owner;
                 var pointQuantity = point.QuantityOf(name);
                 var before = point.SourceOf(pointQuantity);
+                int placeBefore = pointQuantity.SourceIndex;
                 double parameter = pointQuantity.Parameter;
                 point.Drawing.ActionManager.RecordAction(new CallMethodAction(
                     () => point.SetSource(pointQuantity, source, parameter),
-                    () => point.SetSource(pointQuantity, before, parameter)));
+                    () => point.SetSource(pointQuantity, before, parameter, placeBefore)));
             });
         }
 
@@ -505,7 +570,12 @@ namespace DynamicGeometry
         /// with the dependency list kept in step: a source the other quantity has too is shared
         /// (a vector), a dependency only this quantity had is dropped. Not recorded itself.
         /// </summary>
-        void SetSource(Quantity quantity, IFigure source, double parameter)
+        /// <param name="place">Where among the dependencies a source not listed yet goes; at the end when not given (undo gives where it was)</param>
+        void SetSource(
+            Quantity quantity,
+            IFigure source,
+            double parameter,
+            int place = -1)
         {
             var other = quantity == distanceQuantity ? directionQuantity : distanceQuantity;
             int index = quantity.SourceIndex;
@@ -529,7 +599,12 @@ namespace DynamicGeometry
                 int existing = Dependencies.IndexOf(source);
                 if (existing < 0)
                 {
-                    existing = Dependencies.Count;
+                    existing = place >= 1 && place <= Dependencies.Count ? place : Dependencies.Count;
+                    if (other.SourceIndex >= existing)
+                    {
+                        other.SourceIndex++;
+                    }
+
                     this.InsertDependencyCore(existing, source);
                 }
 

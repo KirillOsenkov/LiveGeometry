@@ -3,6 +3,16 @@ using System.Collections.Generic;
 
 namespace DynamicGeometry
 {
+    /// <summary>
+    /// A figure given by expressions (a point by coordinates, a circle or a line by
+    /// equation): it depends on the figures they name, and on nothing else
+    /// </summary>
+    public interface IExpressionOwner
+    {
+        /// <summary>Always in the same order (X, then Y), which is the order the dependencies are listed in</summary>
+        IEnumerable<DrawingExpression> Expressions { get; }
+    }
+
     public class DrawingExpression : IValueProvider
     {
         public DrawingExpression(IFigure parent)
@@ -57,20 +67,35 @@ namespace DynamicGeometry
             ParentFigure.UnregisterFromDependencies();
 
             mValue = result.Expression;
-
-            if (!Dependencies.IsEmpty())
-            {
-                ParentFigure.Dependencies.RemoveAll(Dependencies);
-            }
             Dependencies = result.Dependencies;
-            if (ParentFigure.Dependencies != null)
+
+            // The figure depends on what its expressions name, all of them, listed in the
+            // order of the expressions (X's, then Y's). Not "this one's old ones out, its new
+            // ones in at the end": a figure another expression names too went out with them
+            // (X = A.X, Y = A.Y, then X edited: the point no longer followed A, nor went
+            // with it), and undo of an edit left the list in another order than it was.
+            var named = new List<IFigure>();
+            var expressions = ParentFigure is IExpressionOwner owner ? owner.Expressions : new[] { this };
+            var figures = ParentFigure.Drawing.Figures;
+            foreach (var expression in expressions)
             {
-                ParentFigure.Dependencies.Merge(Dependencies);
+                if (expression == null || expression.Dependencies == null)
+                {
+                    continue;
+                }
+
+                foreach (var dependency in expression.Dependencies)
+                {
+                    // another expression may still name a figure that has left: when a
+                    // point is replaced, the expressions are compiled again one by one
+                    if ((expression == this || figures.ContainsRecursively(dependency)) && !named.Contains(dependency))
+                    {
+                        named.Add(dependency);
+                    }
+                }
             }
-            else
-            {
-                ParentFigure.Dependencies.SetItems(Dependencies);
-            }
+
+            ParentFigure.Dependencies.SetItems(named);
 
             // Do the following only when the ParentFigure is already in Drawing.
             // RegisterWithDependencies gets called when the ParentFigure is added to Drawing.

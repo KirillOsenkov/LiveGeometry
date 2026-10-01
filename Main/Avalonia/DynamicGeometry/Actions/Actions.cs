@@ -54,10 +54,36 @@ namespace DynamicGeometry
         public static void ReplaceWithNew(IFigure existingFigure, IFigure newFigure)
         {
             Drawing drawing = existingFigure.Drawing;
-            using (drawing.ActionManager.CreateTransaction())
+
+            // not delayed: each step happens as it is recorded, so that the place in the list
+            // and the name are worked out from the drawing as it is by then (delayed, the new
+            // figure had no name yet when its name was decided, and stayed AB2)
+            using (Transaction.Create(drawing.ActionManager, delayed: false))
             {
                 Actions.Add(drawing, newFigure);
                 Actions.ReplaceWithExisting(existingFigure, newFigure);
+
+                // the name written next to the figure (Show name) went over with the other
+                // dependents: the new figure is the one that shows its name now
+                if (existingFigure is FigureBase existing && newFigure is FigureBase replacement && existing.NameLabel != null)
+                {
+                    var label = existing.NameLabel;
+                    drawing.ActionManager.RecordAction(new CallMethodAction(
+                        () =>
+                        {
+                            existing.NameLabel = null;
+                            replacement.NameLabel = label;
+                        },
+                        () =>
+                        {
+                            replacement.NameLabel = null;
+                            existing.NameLabel = label;
+                        }));
+                }
+
+                // in the old figure's place in the list, before what is built on it, not at
+                // the end: a file is written in this order
+                MoveBefore(drawing, newFigure, existingFigure);
                 Actions.Remove(existingFigure);
                 if (newFigure is PointBase && existingFigure is PointBase || !existingFigure.HasDefaultName)
                 {
@@ -228,15 +254,18 @@ namespace DynamicGeometry
         /// Whether a run of sets of the same property is one undo step (typing, a slider
         /// being dragged) rather than a step each (a check box, a choice)
         /// </param>
+        /// <param name="run">The run of edits this one belongs to, if the caller tells runs apart (<see cref="SetPropertyAction.Run"/>)</param>
         public static void SetProperty(
             ActionManager actionManager,
             IValueProvider valueProvider,
             object value,
-            bool coalesce = false)
+            bool coalesce = false,
+            object run = null)
         {
             SetPropertyAction action = new SetPropertyAction(valueProvider, value)
             {
                 Coalesce = coalesce,
+                Run = run,
                 ActionManager = actionManager
             };
             if (actionManager == null)

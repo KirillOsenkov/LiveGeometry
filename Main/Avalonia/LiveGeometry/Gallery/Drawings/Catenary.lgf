@@ -16,12 +16,12 @@
       <Dependency Name="B" />
     </Segment>
     <PointByCoordinates Name="Offsets" Visible="false" X="B.X - A.X" Y="B.Y - A.Y">
-      <Dependency Name="A" />
       <Dependency Name="B" />
+      <Dependency Name="A" />
     </PointByCoordinates>
     <PointByCoordinates Name="Ratio" Visible="false" X="sqrt(rope * rope - Offsets.Y * Offsets.Y) / abs(Offsets.X)" Y="sqrt(rope * rope - Offsets.Y * Offsets.Y)">
-      <Dependency Name="Offsets" />
       <Dependency Name="rope" />
+      <Dependency Name="Offsets" />
     </PointByCoordinates>
     <PointByCoordinates Name="Guess0" Visible="false" X="sqrt(6 * (Ratio.X - 1))" Y="0">
       <Dependency Name="Ratio" />
@@ -39,31 +39,31 @@
       <Dependency Name="Guess2" />
     </PointByCoordinates>
     <PointByCoordinates Name="Newton1" Visible="false" X="Guess3.X - (sinh(Guess3.X) - Ratio.X * Guess3.X) / (cosh(Guess3.X) - Ratio.X)" Y="0">
-      <Dependency Name="Ratio" />
       <Dependency Name="Guess3" />
+      <Dependency Name="Ratio" />
     </PointByCoordinates>
     <PointByCoordinates Name="Newton2" Visible="false" X="Newton1.X - (sinh(Newton1.X) - Ratio.X * Newton1.X) / (cosh(Newton1.X) - Ratio.X)" Y="0">
-      <Dependency Name="Ratio" />
       <Dependency Name="Newton1" />
+      <Dependency Name="Ratio" />
     </PointByCoordinates>
     <PointByCoordinates Name="Newton3" Visible="false" X="Newton2.X - (sinh(Newton2.X) - Ratio.X * Newton2.X) / (cosh(Newton2.X) - Ratio.X)" Y="0">
-      <Dependency Name="Ratio" />
       <Dependency Name="Newton2" />
+      <Dependency Name="Ratio" />
     </PointByCoordinates>
     <PointByCoordinates Name="Newton4" Visible="false" X="Newton3.X - (sinh(Newton3.X) - Ratio.X * Newton3.X) / (cosh(Newton3.X) - Ratio.X)" Y="0">
-      <Dependency Name="Ratio" />
       <Dependency Name="Newton3" />
+      <Dependency Name="Ratio" />
     </PointByCoordinates>
     <PointByCoordinates Name="Newton5" Visible="false" X="Newton4.X - (sinh(Newton4.X) - Ratio.X * Newton4.X) / (cosh(Newton4.X) - Ratio.X)" Y="0">
-      <Dependency Name="Ratio" />
       <Dependency Name="Newton4" />
+      <Dependency Name="Ratio" />
     </PointByCoordinates>
     <PointByCoordinates Name="Params" Visible="false" X="abs(Offsets.X) / (2 * Newton5.X)" Y="(A.X + B.X) / 2 - abs(Offsets.X) / (2 * Newton5.X) * asinh(Offsets.X * Offsets.Y / (abs(Offsets.X) * Ratio.Y))">
+      <Dependency Name="Offsets" />
+      <Dependency Name="Newton5" />
       <Dependency Name="A" />
       <Dependency Name="B" />
-      <Dependency Name="Offsets" />
       <Dependency Name="Ratio" />
-      <Dependency Name="Newton5" />
     </PointByCoordinates>
     <PointByCoordinates Name="Lift" Visible="false" X="A.Y - Params.X * cosh((A.X - Params.Y) / Params.X)" Y="0">
       <Dependency Name="A" />

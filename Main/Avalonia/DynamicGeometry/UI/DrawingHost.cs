@@ -201,15 +201,31 @@ namespace DynamicGeometry
             header.Children.Add(closeButton);
             header.Children.Add(title);
 
+            var rows = new Border()
+            {
+                Padding = new Thickness(14, 0, 14, 12),
+                Child = PropertyGrid
+            };
+
+            // A list (the styles, the emoji) brings its selected item into view when it is
+            // laid out, and the request goes on up to the panel's own scroll viewer: the
+            // panel opened scrolled down to the figure's style, its first rows (a
+            // segment's marks) cut off. The list scrolls itself; the panel stays put.
+            rows.AddHandler(
+                Control.RequestBringIntoViewEvent,
+                (sender, e) =>
+                {
+                    if (e.TargetObject is ListBoxItem)
+                    {
+                        e.Handled = true;
+                    }
+                });
+
             propertyGridScrollViewer = new ScrollViewer()
             {
                 HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Auto,
                 VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Auto,
-                Content = new Border()
-                {
-                    Padding = new Thickness(14, 0, 14, 12),
-                    Child = PropertyGrid
-                }
+                Content = rows
             };
 
             var layout = new DockPanel();
@@ -237,9 +253,14 @@ namespace DynamicGeometry
             PropertyGrid.ValueDiscoveryStrategy = new ExcludeByDefaultValueDiscoveryStrategy();
         }
 
+        // raised whenever the grid is given something to show, by whoever (a figure's
+        // "Edit this style" shows the style itself)
         private void PropertyGrid_VisibilityChanged(object sender, EventArgs e)
         {
             sidePanel.Visibility = PropertyGrid.Visibility;
+
+            // a page starts at its top, not where the one before it was scrolled to
+            propertyGridScrollViewer.Offset = default;
         }
 
         /// <summary>A small faint cross that puts the side panel away (<see cref="CloseSidePanel"/>)</summary>

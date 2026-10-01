@@ -89,6 +89,19 @@ public class ThemedValue : IValueProvider, IRestorableValue
             return (T)value;
         }
 
+        // A property without a value of its own under the theme may still read differently
+        // there: a point style's Size is the shape's or the character's, whichever the
+        // style shows, and that may be the theme's (an emoji under Dark only showed the
+        // shape's size in the grid).
+        if (values != null && values.Count > 0 && target is FigureStyle style)
+        {
+            var property = style.GetType().GetProperty(inner.Name);
+            if (property != null)
+            {
+                return (T)property.GetValue(style.Resolve(theme));
+            }
+        }
+
         return inner.GetValue<T>();
     }
 

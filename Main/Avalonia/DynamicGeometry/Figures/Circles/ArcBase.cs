@@ -79,7 +79,7 @@ namespace DynamicGeometry
 
         bool mClockwise = false;
         [PropertyGridVisible]
-        public bool Clockwise
+        public virtual bool Clockwise
         {
             get
             {
@@ -100,7 +100,8 @@ namespace DynamicGeometry
                     }
                     if (Drawing != null)
                     {
-                        UpdateVisual();
+                        // a point on the arc, its length: what is built on it follows
+                        this.RecalculateAllDependents();
                     }
                 }
 

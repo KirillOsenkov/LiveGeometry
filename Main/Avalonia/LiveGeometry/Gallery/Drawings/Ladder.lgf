@@ -193,23 +193,23 @@
       <Dependency Name="AB" />
     </IntersectionPoint>
     <PointByCoordinates Name="O" Visible="false" Style="10" X="J.X + (A.X - J.X) / 3" Y="A.Y + (H.Y - A.Y) * 2 / 3">
-      <Dependency Name="A" />
       <Dependency Name="J" />
+      <Dependency Name="A" />
       <Dependency Name="H" />
     </PointByCoordinates>
     <PointByCoordinates Name="P" Visible="false" Style="10" X="J.X + (A.X - J.X) * 2 / 3" Y="A.Y + (H.Y - A.Y) * 2 / 3">
-      <Dependency Name="A" />
       <Dependency Name="J" />
+      <Dependency Name="A" />
       <Dependency Name="H" />
     </PointByCoordinates>
     <PointByCoordinates Name="Q" Visible="false" Style="10" X="J.X + (A.X - J.X) * 2 / 3" Y="A.Y + (H.Y - A.Y) / 3">
-      <Dependency Name="A" />
       <Dependency Name="J" />
+      <Dependency Name="A" />
       <Dependency Name="H" />
     </PointByCoordinates>
     <PointByCoordinates Name="R" Visible="false" Style="10" X="J.X + (A.X - J.X) / 3" Y="A.Y + (H.Y - A.Y) / 3">
-      <Dependency Name="A" />
       <Dependency Name="J" />
+      <Dependency Name="A" />
       <Dependency Name="H" />
     </PointByCoordinates>
     <Segment Name="Drag me!F" Style="16">

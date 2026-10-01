@@ -250,7 +250,7 @@ namespace DynamicGeometry
             if (Label != null && !Label.ShowName && !Label.ShowCoordinates)
             {
                 keptLabel = Label;
-                Drawing.Figures.Remove(Label);
+                Drawing.Figures.Retire(Label);
                 Label = null;
             }
         }
@@ -263,7 +263,7 @@ namespace DynamicGeometry
                 Label = keptLabel ?? Factory.CreatePointLabel(Drawing, new[] { this });
                 Label.ShowName = false;
                 Label.ShowCoordinates = false;
-                Drawing.Figures.Add(Label);
+                Drawing.Figures.Return(Label, owner: this);
             }
         }
 

@@ -262,13 +262,13 @@ namespace DynamicGeometry
                 {
                     NameLabel = retiredNameLabel ?? Factory.CreateFigureLabel(Drawing, this);
                     retiredNameLabel = null;
-                    Drawing.Figures.Add(NameLabel);
+                    Drawing.Figures.Return(NameLabel, owner: this);
                 }
                 else
                 {
                     var label = NameLabel;
                     NameLabel = null;
-                    Drawing.Figures.Remove(label);
+                    Drawing.Figures.Retire(label);
                     retiredNameLabel = label;
                 }
             }
@@ -737,7 +737,7 @@ namespace DynamicGeometry
         public void EditStyleButton()
         {
             var drawingHost = Canvas.Parent as DrawingHost;
-            if (drawingHost != null)
+            if (drawingHost != null && Style != null)
             {
                 if (PropertyGrid != null)
                 {
@@ -755,6 +755,11 @@ namespace DynamicGeometry
         [PropertyGridIcon(PropertyGridIcon.Plus)]
         public void CreateNewStyle()
         {
+            if (Style == null)
+            {
+                return;
+            }
+
             // the new style and the figure taking it: one undo step
             using (Transaction.Create(Drawing.ActionManager, delayed: false))
             {

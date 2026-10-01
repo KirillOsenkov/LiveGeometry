@@ -571,12 +571,19 @@ namespace DynamicGeometry
                 && other is FigureStyle b
                 && a.GetType() == b.GetType()
                 && a.Overrides.Count == 0
+                && !a.SaysThemes
                 && a.GetBaseSignature() == b.GetBaseSignature();
+        }
+
+        /// <summary>A style the user made; the ones a drawing starts with stay</summary>
+        public bool CanRemove(IFigureStyle style)
+        {
+            return list.Contains(style) && list.IndexOf(style) >= numDefaultStyles;
         }
 
         public virtual void Remove(IFigureStyle style)
         {
-            if (list.Contains(style) && list.IndexOf(style) >= numDefaultStyles)
+            if (CanRemove(style))
             {
                 var transaction = Transaction.Create(Drawing.ActionManager, false);
                 foreach (var fig in Drawing.Figures)

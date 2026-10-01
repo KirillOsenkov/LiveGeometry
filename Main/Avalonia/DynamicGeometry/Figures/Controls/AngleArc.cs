@@ -5,8 +5,38 @@ using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
-    public class AngleArc : CircleArc
+    public class AngleArc : CircleArc, IConditionalProperties
     {
+        /// <summary>
+        /// An arc's verbs that are not an angle mark's: it is not an arc between two points
+        /// to make a circle segment or a sector of, and which way round it goes is the
+        /// angle's (<see cref="ConvertToOpposite()"/>).
+        /// </summary>
+        public bool CanEdit(string propertyName)
+        {
+            return propertyName != nameof(ConvertToCircleSegment)
+                && propertyName != nameof(ConvertToSector);
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
+        }
+
+        /// <summary>Not in the grid: the mark goes the way the angle is measured, counterclockwise from the first side</summary>
+        [PropertyGridVisible(false)]
+        public override bool Clockwise
+        {
+            get
+            {
+                return base.Clockwise;
+            }
+            set
+            {
+                base.Clockwise = value;
+            }
+        }
+
         public AngleArc()
             : base()
         {

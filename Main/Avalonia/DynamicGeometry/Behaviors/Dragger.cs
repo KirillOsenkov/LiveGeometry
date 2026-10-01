@@ -29,6 +29,9 @@ namespace DynamicGeometry
         /// <summary>In cursor tolerances: how far a snapped point may be pulled before it lets go</summary>
         public static double StickyReach = 2;
 
+        /// <summary>In pixels: how far the cursor goes from where it was pressed before the press is a drag and not a click</summary>
+        public static double DragThreshold = 3;
+
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
             // a drag whose release never arrived
@@ -172,6 +175,19 @@ namespace DynamicGeometry
                 {
                     return;
                 }
+
+                // A press that wobbles is still a click. Without this a click with a hand
+                // not perfectly still - most of them - moved what it was meant to select by
+                // a pixel (a point jumped under the cursor), or panned the view by one, did
+                // not select anything, and left an undo step that seemed to undo nothing.
+                var coordinateSystem = Drawing.CoordinateSystem;
+                var wobble = coordinateSystem.ToPhysical(Coordinates(e, false, false, false))
+                    .Distance(coordinateSystem.ToPhysical(coordinatesOnMouseDown));
+                if (wobble < DragThreshold)
+                {
+                    return;
+                }
+
                 startedMoving = true;
                 if (found is IPoint && !found.Locked && !moving.IsEmpty())
                 {
@@ -244,7 +260,10 @@ namespace DynamicGeometry
             }
 
             EndDrag();
-            if (Coordinates(e) == coordinatesOnMouseDown)
+
+            // a press that didn't become a drag (moving is null when the press was elsewhere:
+            // on the ribbon, in another tool)
+            if (moving != null && !startedMoving)
             {
                 UpdateSelection();
                 Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());

@@ -144,6 +144,22 @@ public class ExpressionRenamer
     void RenameVariable(Token token, List<(int Start, int Length, string Text)> replacements, bool isFunction)
     {
         var text = token.Text;
+
+        // a number called exactly this, as the compiler takes it (Binder.ResolveExactNumber)
+        bool isConstant = text.Equals("pi", StringComparison.InvariantCultureIgnoreCase)
+            || text.Equals("e", StringComparison.InvariantCultureIgnoreCase)
+            || isFunction && text == "x";
+        var exact = isConstant ? null : drawing.Figures.FirstOrDefault(f => f is INumber && OldName(f) == text);
+        if (exact != null)
+        {
+            if (IsRenamed(exact))
+            {
+                replacements.Add((token.Start, text.Length, exact.Name));
+            }
+
+            return;
+        }
+
         var twoPoints = SplitTwoPoints(text, OldName);
         if (twoPoints != null)
         {

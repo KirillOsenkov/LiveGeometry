@@ -53,9 +53,9 @@
     </PointOnFigure>
     <PointByCoordinates Name="L" Style="OnEllipse" X="a.X * (T.X - P0.X) / 0.75" Y="b.Y * (T.Y - P0.Y) / 0.75">
       <Dependency Name="a" />
-      <Dependency Name="b" />
       <Dependency Name="T" />
       <Dependency Name="P0" />
+      <Dependency Name="b" />
     </PointByCoordinates>
     <PointByCoordinates Name="M" Style="Center" X="(a.X ^ 2 - b.Y ^ 2) / a.X * ((T.X - P0.X) / 0.75) ^ 3" Y="(b.Y ^ 2 - a.X ^ 2) / b.Y * ((T.Y - P0.Y) / 0.75) ^ 3">
       <Dependency Name="a" />

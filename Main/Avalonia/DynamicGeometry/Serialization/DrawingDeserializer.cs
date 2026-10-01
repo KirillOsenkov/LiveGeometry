@@ -250,6 +250,8 @@ namespace DynamicGeometry
                         continue;
                     }
 
+                    // even an empty one: the style is as under the base theme, on purpose
+                    figureStyle.SaysThemes = true;
                     foreach (var attribute in themeNode.Attributes())
                     {
                         var value = OverrideValue(figureStyle, type, theme, attribute.Name.LocalName);

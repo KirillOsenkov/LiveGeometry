@@ -208,7 +208,7 @@ namespace DynamicGeometry
             if (end >= 0)
             {
                 LengthConstraint.Fix(End(end), End(1 - end));
-                Drawing.RaiseDisplayProperties(this);
+                ShowProperties();
             }
         }
 
@@ -223,6 +223,19 @@ namespace DynamicGeometry
             if (fixedEnd != null)
             {
                 LengthConstraint.Free(fixedEnd);
+                ShowProperties();
+            }
+        }
+
+        /// <summary>
+        /// The grid again, with the other verb. Not for the segment inside a vector, which
+        /// is no figure of the drawing: the vector shows its own (the segment's has a style
+        /// from no style list, and the style picker threw on it).
+        /// </summary>
+        void ShowProperties()
+        {
+            if (Drawing.Figures.Contains(this))
+            {
                 Drawing.RaiseDisplayProperties(this);
             }
         }

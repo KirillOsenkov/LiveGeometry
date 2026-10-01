@@ -59,10 +59,36 @@ namespace DynamicGeometry
             var text = Math.Round(Measure, DecimalsToShow).ToString();
             Text = (Radians) ? text + " rad" : text + "°";
         }
+
+        public override void ReadXml(System.Xml.Linq.XElement element)
+        {
+            base.ReadXml(element);
+            radians = element.ReadBool("Radians", false);
+        }
+
+        public override void WriteXml(System.Xml.XmlWriter writer)
+        {
+            base.WriteXml(writer);
+            if (Radians)
+            {
+                writer.WriteAttributeBool("Radians", true);
+            }
+        }
     }
 
-    public class AngleMeasurement : AngleMeasurementBase
+    public class AngleMeasurement : AngleMeasurementBase, IConditionalProperties
     {
+        /// <summary>Without its arc (deleted) the number has no arcs to count</summary>
+        public bool CanEdit(string propertyName)
+        {
+            return propertyName != nameof(ArcCount) || FindArc() != null;
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
+        }
+
         /// <summary>
         /// The arc that was created together with this label: same vertex, same two sides.
         /// Null if it has been deleted.
@@ -79,6 +105,7 @@ namespace DynamicGeometry
         [PropertyGridVisible]
         [PropertyGridName("Arcs")]
         [Domain(0, 3)]
+        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public int ArcCount
         {
             get

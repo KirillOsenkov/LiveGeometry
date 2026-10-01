@@ -153,6 +153,16 @@ namespace DynamicGeometry
 
         public bool CanEdit(string propertyName)
         {
+            if (propertyName == nameof(Angle))
+            {
+                // a direction typed in turns a free end about the start; any other end stays
+                // where it is built, and the set was an undo step that undid nothing
+                return Dependencies.Count == 2
+                    && Dependencies[1] is FreePoint end
+                    && !(end is PointOnFigure)
+                    && !end.Locked;
+            }
+
             return Line.CanEdit(propertyName);
         }
 
@@ -188,6 +198,7 @@ namespace DynamicGeometry
 
         [PropertyGridVisible]
         [PropertyGridName("Direction")]
+        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public double Angle
         {
             get

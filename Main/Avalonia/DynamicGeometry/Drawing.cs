@@ -143,6 +143,17 @@ namespace DynamicGeometry
         [PropertyGridIcon(PropertyGridIcon.Paper)]
         public void UseThemePaper()
         {
+            // the theme's already: no undo step that undoes nothing
+            bool isThemePaper = !AppTheme.IsBase(AppTheme.Current)
+                && Overrides.TryGetValue(AppTheme.Current.Name, out var values)
+                && values.TryGetValue(nameof(Background), out var chosen)
+                ? chosen == null
+                : OwnBackground == null;
+            if (isThemePaper)
+            {
+                return;
+            }
+
             var paper = ThemedValue.ForCurrentTheme(PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Background)));
             Actions.SetProperty(ActionManager, paper, value: null);
         }

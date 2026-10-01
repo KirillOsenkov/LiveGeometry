@@ -193,14 +193,15 @@ namespace DynamicGeometry
                     : usedStyles.Contains(style.Name);
                 if (write)
                 {
-                    WriteStyle(style, writer);
+                    WriteStyle(style, writer, defaults.FirstOrDefault(candidate => candidate.Name == style.Name));
                 }
             }
 
             writer.WriteEndElement();
         }
 
-        public virtual void WriteStyle(IFigureStyle style, XmlWriter writer)
+        /// <param name="original">The default style of the same name as a new drawing has it, if the style is one</param>
+        public virtual void WriteStyle(IFigureStyle style, XmlWriter writer, IFigureStyle original = null)
         {
             writer.WriteStartElement(GetStyleElementName(style));
 
@@ -223,6 +224,17 @@ namespace DynamicGeometry
                     {
                         writer.WriteStartElement(theme.Name);
                         WriteValues(overrides, writer);
+                        writer.WriteEndElement();
+                    }
+                    else if (original is FigureStyle originalStyle
+                        && originalStyle.OverrideValues(theme.Name).Any()
+                        && originalStyle.GetBaseSignature() == figureStyle.GetBaseSignature())
+                    {
+                        // A default style made to look under the theme as it does under
+                        // the base one ("Same as in Light"), and otherwise unchanged, says
+                        // so with an empty element: without any, the loader takes it for
+                        // an old file's copy of the default and puts the theme's look back.
+                        writer.WriteStartElement(theme.Name);
                         writer.WriteEndElement();
                     }
                 }

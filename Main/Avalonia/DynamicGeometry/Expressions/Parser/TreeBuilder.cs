@@ -88,6 +88,16 @@ namespace DynamicGeometry
         Expression CreateIdentifierExpression(Node root)
         {
             var text = root.Token.Text;
+
+            // A number called exactly this comes before the reading as two points, which
+            // takes the points' names in any case: with points A and B in the drawing, a
+            // slider named ab was the distance AB.
+            var exact = Binder.ResolveExactNumber(text);
+            if (exact != null)
+            {
+                return CreateNumberExpression(exact, text);
+            }
+
             Expression resolveTwoPoints = ResolveTwoPoints(text);
             if (resolveTwoPoints != null)
             {
@@ -103,20 +113,25 @@ namespace DynamicGeometry
             // a Number in the drawing, by its name: the expression then depends on it
             if (Binder.ResolveFigure(text) is INumber number)
             {
-                if (!Binder.IsFigureAllowed(number))
-                {
-                    Status.AddDependencyCycleError(text);
-                    return null;
-                }
-
-                Status.Dependencies.Add(number);
-                return Expression.Property(
-                    Expression.Constant(number, typeof(INumber)),
-                    typeof(INumber).GetProperty("Value"));
+                return CreateNumberExpression(number, text);
             }
 
             Status.AddUnknownIdentifierError(text);
             return null;
+        }
+
+        Expression CreateNumberExpression(INumber number, string text)
+        {
+            if (!Binder.IsFigureAllowed(number))
+            {
+                Status.AddDependencyCycleError(text);
+                return null;
+            }
+
+            Status.Dependencies.Add(number);
+            return Expression.Property(
+                Expression.Constant(number, typeof(INumber)),
+                typeof(INumber).GetProperty("Value"));
         }
 
         public Expression ResolveTwoPoints(string twoPoints)

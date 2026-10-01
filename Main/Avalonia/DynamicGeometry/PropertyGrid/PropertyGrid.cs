@@ -199,7 +199,8 @@ namespace DynamicGeometry
             Selection = newSelection;
         }
 
-        public ActionManager ActionManager { get; set; }
+        /// <summary>Whose history the rows record their sets in; null for none</summary>
+        public virtual ActionManager ActionManager { get; set; }
 
         /// <param name="focusProperty">
         /// The property whose editor takes the keyboard, this once (a new label's text), besides

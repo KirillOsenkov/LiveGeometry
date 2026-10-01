@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
@@ -39,34 +40,24 @@ namespace DynamicGeometry
         [PropertyGridIcon(PropertyGridIcon.Polyline)]
         public void ConvertToPolyline()
         {
-            List<IFigure> newPolyLinePoints = new List<IFigure>();
-            List<IFigure> verticesToDelete = new List<IFigure>();
+            // The outline through the same vertices and back to the first: ABCA. (It used to
+            // be drawn on new free points, and the vertices deleted - with everything else
+            // built on them, which in a construction is most of the drawing; redo of that threw.)
+            var drawing = Drawing;
+            var points = new List<IFigure>(Dependencies);
+            points.Add(points[0]);
+            var polyline = Factory.CreatePolyline(drawing, points);
 
-            using (Drawing.ActionManager.CreateTransaction())
+            using (Transaction.Create(drawing.ActionManager, delayed: false))
             {
-                foreach (var vertex in this.Dependencies)
-                {
-                    IPoint vertexPoint = vertex as IPoint;
-                    FreePoint newVertexPoint = Factory.CreateFreePoint(this.Drawing, vertexPoint.Coordinates);
-                    Actions.Add(Drawing, newVertexPoint);
-                    verticesToDelete.Add(vertexPoint);
-                    newPolyLinePoints.Add(newVertexPoint);
-                }
+                Actions.Add(drawing, polyline);
 
-                // add last point
-                newPolyLinePoints.Add(newPolyLinePoints[0]);
-
-                Polyline newPolyline = Factory.CreatePolyline(this.Drawing, newPolyLinePoints);
-                Actions.Add(Drawing, newPolyline);
-
-                // delete main shape
+                // in the polygon's place in the list
+                Actions.MoveBefore(drawing, polyline, this);
                 Actions.Remove(this);
-
-                foreach (var vertexToDelete in verticesToDelete)
-                {
-                    Actions.Remove(vertexToDelete);
-                }
             }
+
+            drawing.RaiseUserIsAddingFigures(new Drawing.UIAFEventArgs() { Figures = polyline.AsEnumerable<IFigure>() });
         }
 
 #endif

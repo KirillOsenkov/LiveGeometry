@@ -183,6 +183,13 @@ namespace DynamicGeometry
                         temp.AddRange(child.Dependencies);
                         temp[index] = newDependency;
                         child.Dependencies = temp;
+
+                        // a part that is registered with what it is built on (the sides of
+                        // a regular polygon) is registered with the new one from now on
+                        if (oldDependency.Dependents.Remove(child))
+                        {
+                            newDependency.Dependents.Add(child);
+                        }
                     }
                 }
             }
@@ -212,7 +219,12 @@ namespace DynamicGeometry
             }
             foreach (var dependent in dependents)
             {
-                dependent.ReplaceDependency(figure, replacement);
+                // a part of a composite (a side of a regular polygon built on the figure)
+                // has gone over with its composite already
+                if (dependent.Dependencies.Contains(figure))
+                {
+                    dependent.ReplaceDependency(figure, replacement);
+                }
             }
             replacement.Dependents.AddRange(figure.Dependents.ToArray());
             figure.Dependents.Clear();

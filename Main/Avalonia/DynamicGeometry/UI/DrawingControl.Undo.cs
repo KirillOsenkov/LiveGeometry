@@ -27,6 +27,7 @@ namespace DynamicGeometry
             }
             catch (Exception ex)
             {
+                ReleaseStuckAction();
                 HandleException(ex);
             }
             UpdateUndoRedo();
@@ -49,11 +50,30 @@ namespace DynamicGeometry
             }
             catch (Exception ex)
             {
+                ReleaseStuckAction();
                 HandleException(ex);
             }
             UpdateUndoRedo();
             CommandToolButton.UpdateToggles();
             Drawing.RaiseDisplayProperties(null);
+        }
+
+        /// <summary>
+        /// The undo library marks the action it is undoing or redoing and takes the mark off
+        /// when it is done - but not when the action threw, and with the mark left on it
+        /// refuses every action from then on ("currently running or undoing an action"): one
+        /// undo that failed, and nothing more could be done to the drawing. The mark has no
+        /// public setter.
+        /// </summary>
+        void ReleaseStuckAction()
+        {
+            var manager = Drawing.ActionManager;
+            if (manager.ActionIsExecuting)
+            {
+                typeof(GuiLabs.Undo.ActionManager)
+                    .GetProperty(nameof(GuiLabs.Undo.ActionManager.CurrentAction))
+                    .SetValue(manager, null);
+            }
         }
 
         private void ActionManager_CollectionChanged(object sender, EventArgs e)

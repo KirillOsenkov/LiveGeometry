@@ -36,7 +36,11 @@ namespace DynamicGeometry
         {
             foreach (var dependent in Dependents)
             {
-                dependent.ReplaceDependency(Replacement, Figure);
+                // a part of a composite has gone back with its composite already
+                if (dependent.Dependencies.Contains(Replacement))
+                {
+                    dependent.ReplaceDependency(Replacement, Figure);
+                }
             }
             //Figure.Dependents.AddRange(Dependents);   This appears to be redundant and leads to errors. D.H.
             RecalculateDependents();

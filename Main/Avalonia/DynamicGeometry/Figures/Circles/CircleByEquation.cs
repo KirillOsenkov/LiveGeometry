@@ -2,8 +2,17 @@
 
 namespace DynamicGeometry
 {
-    public class CircleByEquation : CircleBase, ICircle, IShapeWithInterior, IRenamableExpressions
+    public class CircleByEquation : CircleBase, ICircle, IShapeWithInterior, IRenamableExpressions, IExpressionOwner
     {
+        [PropertyGridVisible(false)]
+        public System.Collections.Generic.IEnumerable<DrawingExpression> Expressions
+        {
+            get
+            {
+                return new[] { X, Y, R };
+            }
+        }
+
         public void RenameInExpressions(ExpressionRenamer renamer)
         {
             X?.RenameInExpression(renamer);

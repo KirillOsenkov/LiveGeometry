@@ -44,6 +44,14 @@ public abstract class PerpendicularLineBase : LineTwoPoints
         return null;
     }
 
+    protected override bool IsThroughTwoPoints
+    {
+        get
+        {
+            return false;
+        }
+    }
+
     [PropertyGridVisible]
     [PropertyGridName("Right angle mark")]
     public bool ShowRightAngle

@@ -33,6 +33,17 @@ namespace DynamicGeometry
             TextBox.CornerRadius = new Avalonia.CornerRadius(4, 0, 0, 4);
             TextBox.TextChanged += TextBox_TextChanged;
 
+            // a value typed, then another after Enter or after coming back to the box: two
+            // undo steps
+            TextBox.LostFocus += (s, e) => EndEditRun();
+            TextBox.KeyDown += (s, e) =>
+            {
+                if (e.Key == Avalonia.Input.Key.Enter)
+                {
+                    EndEditRun();
+                }
+            };
+
             // the slider is for sweeping through the range, these are for exact single steps
             UpDown = new UpDownControl();
             UpDown.VerticalAlignment = VerticalAlignment.Center;

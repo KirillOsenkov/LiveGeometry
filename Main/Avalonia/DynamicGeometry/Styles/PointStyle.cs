@@ -151,7 +151,21 @@ namespace DynamicGeometry
             }
         }
 
-        string IPropertyGridTabs.CurrentTab => Character != null ? EmojiTab : ShapeTab;
+        /// <summary>
+        /// The character under the theme on screen, which is what the grid shows and edits
+        /// (under any theme but the base one, the theme's own value). Going by the base
+        /// value, an emoji picked under the dark theme opened on the Shape tab and could
+        /// not be taken off again.
+        /// </summary>
+        string ShownCharacter
+        {
+            get
+            {
+                return ((PointStyle)Resolve()).Character;
+            }
+        }
+
+        string IPropertyGridTabs.CurrentTab => ShownCharacter != null ? EmojiTab : ShapeTab;
 
         /// <summary>
         /// Back on Shape the character goes, so that the point is what the tab shows; on Emoji
@@ -159,12 +173,12 @@ namespace DynamicGeometry
         /// </summary>
         void IPropertyGridTabs.OnTabSelected(string tab, ActionManager actionManager)
         {
-            if (tab != ShapeTab || Character == null)
+            if (tab != ShapeTab || ShownCharacter == null)
             {
                 return;
             }
 
-            var value = PropertyDiscoveryStrategy.CreateValueProvider(this, "Character");
+            var value = ThemedValue.ForCurrentTheme(PropertyDiscoveryStrategy.CreateValueProvider(this, "Character"));
             if (actionManager != null)
             {
                 Actions.SetProperty(actionManager, value, "");

@@ -49,12 +49,18 @@ public partial class MainView
         var reportPath = Path.Combine(outputFolder, "report.txt");
         File.WriteAllText(reportPath, "");
         var report = new StringBuilder();
-        var files = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories)
-            .Where(f => f.EndsWith(".lgf", StringComparison.OrdinalIgnoreCase)
-                || f.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase)
-                || f.EndsWith(".ggb", StringComparison.OrdinalIgnoreCase))
-            .OrderBy(f => f)
-            .ToArray();
+
+        // a single drawing instead of a folder of them: listing a file as a folder threw,
+        // and the window stayed up with the error instead of exiting
+        bool isSingleFile = File.Exists(folder);
+        var files = isSingleFile
+            ? new[] { folder }
+            : Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories)
+                .Where(f => f.EndsWith(".lgf", StringComparison.OrdinalIgnoreCase)
+                    || f.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase)
+                    || f.EndsWith(".ggb", StringComparison.OrdinalIgnoreCase))
+                .OrderBy(f => f)
+                .ToArray();
         ShowEditor();
 
         // the pictures compare across runs and machines: the light theme unless asked for dark
@@ -65,7 +71,7 @@ public partial class MainView
         UpdateRibbon();
         foreach (var file in files)
         {
-            var relative = Path.GetRelativePath(folder, file);
+            var relative = isSingleFile ? Path.GetFileName(file) : Path.GetRelativePath(folder, file);
             checkMessages.Clear();
             File.AppendAllText(reportPath, report.ToString());
             report.Clear();

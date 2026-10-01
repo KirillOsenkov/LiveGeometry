@@ -92,6 +92,23 @@ namespace DynamicGeometry
     public abstract class Measurement : LabelWithOffset
     {
         /// <summary>
+        /// Not in the grid: what a measurement says is worked out from what it measures.
+        /// Typed there, a text lasted until the next move and was an undo step that undid nothing.
+        /// </summary>
+        [PropertyGridVisible(false)]
+        public override string Text
+        {
+            get
+            {
+                return base.Text;
+            }
+            set
+            {
+                base.Text = value;
+            }
+        }
+
+        /// <summary>
         /// A measurement depends on what it measures, and a dependent figure normally can't be
         /// dragged (its parents move instead). But all that dragging a measurement changes is the
         /// offset of the label from its anchor - so it can, like in the original DG.

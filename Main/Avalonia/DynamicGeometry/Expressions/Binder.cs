@@ -84,6 +84,21 @@ namespace DynamicGeometry
             return null;
         }
 
+        /// <summary>
+        /// A number of the drawing (a slider, a Number) with exactly this name, capitals
+        /// and all; not pi, e or a function's x, which stay what they are. Null when there
+        /// is none.
+        /// </summary>
+        public INumber ResolveExactNumber(string name)
+        {
+            if (Drawing == null || Resolve(name) != null)
+            {
+                return null;
+            }
+
+            return Drawing.Figures.FirstOrDefault(f => f is INumber && f.Name == name) as INumber;
+        }
+
         public IFigure ResolveFigure(string figureName)
         {
             var candidate = Drawing.Figures[figureName];

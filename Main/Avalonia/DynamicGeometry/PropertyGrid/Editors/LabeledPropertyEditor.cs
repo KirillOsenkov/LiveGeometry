@@ -147,6 +147,19 @@ namespace DynamicGeometry
             get { return true; }
         }
 
+        // the run of edits under way: sets of one run are one undo step (if CoalescesEdits)
+        object editRun = new object();
+
+        /// <summary>
+        /// The user is done with a value (Enter, leaving the box): what is typed next is
+        /// another undo step. Every editor starts with a run of its own, so edits made
+        /// before and after the grid showed something else never join either.
+        /// </summary>
+        protected void EndEditRun()
+        {
+            editRun = new object();
+        }
+
         protected virtual void SetValue(object value)
         {
             if (guard || value == null)
@@ -176,7 +189,7 @@ namespace DynamicGeometry
                 {
                     if (ActionManager != null)
                     {
-                        Actions.SetProperty(ActionManager, Value, value, CoalescesEdits);
+                        Actions.SetProperty(ActionManager, Value, value, CoalescesEdits, editRun);
                     }
                     else
                     {

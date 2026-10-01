@@ -131,11 +131,11 @@ public class LengthPanel :
                 }
 
                 retiredMeasurements.Remove(figure);
-                figure.Drawing.Figures.Add(measurement);
+                figure.Drawing.Figures.Return(measurement, owner: figure);
             }
             else if (!value && existing != null)
             {
-                figure.Drawing.Figures.Remove(existing);
+                figure.Drawing.Figures.Retire(existing);
                 retiredMeasurements.AddOrUpdate(figure, existing);
             }
         }

@@ -27,6 +27,35 @@ namespace DynamicGeometry
             this.Margin = new Thickness(32, 0, 0, 0);
         }
 
+        /// <summary>
+        /// Passed on to the rows there are already: an editor that starts expanded (a line's
+        /// Equation) makes its rows when it gets its value, which is before it gets this -
+        /// and they recorded nothing, so that m and b of a line were edited past undo.
+        /// </summary>
+        public override GuiLabs.Undo.ActionManager ActionManager
+        {
+            get
+            {
+                return base.ActionManager;
+            }
+            set
+            {
+                base.ActionManager = value;
+                if (CurrentEditors == null)
+                {
+                    return;
+                }
+
+                foreach (var editor in CurrentEditors)
+                {
+                    if (editor is IValueEditor valueEditor)
+                    {
+                        valueEditor.ActionManager = value;
+                    }
+                }
+            }
+        }
+
         IValueProvider mValue;
         public IValueProvider Value
         {

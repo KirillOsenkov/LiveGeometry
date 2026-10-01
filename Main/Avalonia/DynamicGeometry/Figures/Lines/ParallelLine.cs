@@ -10,6 +10,14 @@
             }
         }
 
+        protected override bool IsThroughTwoPoints
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public override PointPair Coordinates
         {
             get

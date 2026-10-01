@@ -306,7 +306,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   point named PB) become `dist(P, B)`. Only the text changes, and not through undo: undoing the rename renames back.
   A trap of the same rule: `pi` reads as the distance between points P and I when both exist
   (`ResolveTwoPoints` runs before the constants), so generated expressions say `rad(45)` or
-  the digits of π rather than `pi`.
+  the digits of π rather than `pi`. A number (slider, Number) called exactly what the text
+  says, capitals and all, comes before the two-points reading (`Binder.ResolveExactNumber`,
+  mirrored in the renamer): two points match in any case, so with points A and B a slider
+  named `ab` was the distance AB, and undo of renaming it could not find it in the text.
+  A figure given by expressions (`IExpressionOwner`: point by coordinates, line and circle
+  by equation) depends on what all of its expressions name, listed in the expressions'
+  order - not on what the last one compiled named, appended (X = A.X, Y = A.Y, X edited:
+  the point no longer followed A).
 - **Snapping and releasing points** (`Figures/Points/PointSnapping.cs`) swap a point for another
   kind where it is through `Actions.ReplacePoint` (name, label, dependents, lock, a chosen style
   go along). Snap: a free point onto a figure through it - "Snap to line AB" in the grid when
@@ -372,7 +379,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   as immutable: a different font must get a different file name). The
   style's editor has Shape | Emoji tabs (`IPropertyGridTabs`: the tab shown is what the style
   is; picking Shape drops the character, undoably; a row on two tabs, Size, gets an editor on
-  each). The Emoji tab searches `Emoji/Emoji.txt`
+  each). "What the style is" is what it is under the theme on screen (`ShownCharacter`,
+  and `ThemedValue` reads a property without an override from the resolved style): by
+  the base values an emoji picked under Dark opened on the Shape tab, could not be taken
+  off, and showed the shape's size. The Emoji tab searches `Emoji/Emoji.txt`
   (CLDR names and subgroups of the single-character emoji the font has): regenerate it with
   `dotnet tools/emoji.cs -- <emoji-test.txt> <font> <Emoji.txt>` when the font changes.
 - **Touching is decided with a relative tolerance** (`Math.TangencyTolerance`, 1e-9 of the size
@@ -421,7 +431,24 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **The side panel** (`DrawingHost.CreatePropertyGrid`) is one rounded surface: a fixed
   header row (the grid's title, put there through `PropertyGrid.HeaderHost`, and the ×)
   over a scroll viewer with the rows. Nested grids (complex types, method parameters) have
-  no `HeaderHost` and keep their title as the first row.
+  no `HeaderHost` and keep their title as the first row. A page starts at its top
+  (the scroll offset is reset whenever the grid is given something to show), and a list in it that brings
+  its selected item into view (the styles, the emoji) scrolls only itself: the request
+  is stopped on its way up to the panel's scroll viewer (`CreatePropertyGrid`), or in a
+  small window the panel opened scrolled down to the figure's style, its first rows cut
+  off.
+- **A figure inherits the rows and buttons of its base class**, and has to take away the
+  ones that are not its own: a button through `IConditionalProperties.CanEdit` (by method
+  name), a row by overriding the property with `[PropertyGridVisible(false)]`, or by making
+  it read-only (`ConditionalPropertyValue`). Each of these was a bug: Convert to ray /
+  segment on a parallel, a perpendicular or a bisector (built on a line and a point: it
+  threw; `LineTwoPoints.IsThroughTwoPoints`), Convert to segment / sector and Clockwise on
+  an angle's arc (`AngleArc`), the Text box of a measurement (`Measurement`, whose text is
+  worked out), the style buttons of a Number (no style), a vector's Direction and an
+  angle's Arcs when nothing can change them, "Delete this style" on a default style. A
+  row or button that does nothing is an undo step that undoes nothing. A row whose setter
+  only stores (a point on a figure's `Parameter`, which a locus samples through) gets a
+  property of its own for the grid that also moves things (`ParameterDisplay`).
 - **Closing the side panel** (its ×, or a press on empty chrome: the ribbon's empty
   strip, the toolbar beside its buttons, the Figure List below its rows) goes through
   `DrawingHost.CloseSidePanel`. A tool's own panel (same type as the tool's `PropertyBag`)
@@ -488,7 +515,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
     choice doesn't (merged, hide-then-show was a step that undid nothing). Same object,
     same property, same theme only; and never while there is something to redo: the
     library merges without ending the redo chain, so `SetPropertyAction` and `MoveAction`
-    refuse then.
+    refuse then. And only within one run of edits (`SetPropertyAction.Run`, a token of the
+    editor): Enter, leaving the box and the grid showing the object anew each start
+    another (`EndEditRun`), or a length typed now joined the one typed five minutes ago.
+    Undo of a set on several objects restores them last to first.
   - *`MoveAction`* moves by an offset once; undo and redo restore places
     (`IRestorablePlace`: coordinates, a label's pixel offset or pin offset, a translated
     point's distance and direction). Moving back by the offset left a point on a circle, a
@@ -499,6 +529,26 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
     panel's measurement) brings the same object back, never a new one: the history may
     hold a drag of it. `PointBase` keeps its label (`keptLabel`), also across undo and redo
     of the point itself; a point is auto-labeled only the first time it enters a drawing.
+    And in the same place of the figure list (`RootFigureList.Retire`, then `Return` or
+    `ReturnBefore`): the list's order is the file's.
+  - *A check box that stands for more than yes and no* (a translated point's Free
+    distance: free, a Number, or tied to a vector) is an `IRestorableValue` too
+    (`TranslatedPoint.FreedomValue`): undo puts the source back, where unticking the box
+    would give it a Number.
+  - *Replacing a figure by another kind* (`Actions.ReplaceWithNew`: Convert to line, ray,
+    segment, arc, sector; Reverse) is a transaction that is not delayed, so that each
+    step sees the drawing as the one before left it: the new figure goes to the old one's
+    place in the list (`MoveBefore`), takes over its name label, stays hidden or locked
+    if the old one was, and is named AB once the old AB is gone (delayed, it stayed AB2).
+    Convert to polyline keeps the polygon's vertices (ABCA).
+  - *Rows of a nested grid* (`ComplexTypeEditor`: a line's Equation) get the action
+    manager from their parent editor, which passes it on when it is set: an editor that
+    starts expanded makes its rows before that, and m and b were edited past undo.
+  - *An undo or redo that throws* leaves the library's "currently running" mark on, and
+    it then refuses every action: `DrawingControl.ReleaseStuckAction` takes it off.
+  - *A click is not a drag* until the cursor has gone `Dragger.DragThreshold` pixels:
+    a press with a wobble moved the point or the view by a pixel, selected nothing and
+    left an undo step that seemed to undo nothing.
   - *While a transaction is open* (`Drawing.IsRecordingTransaction`: a construction or a
     point drag under way) anything recorded joins it and is rolled back with it. So Redo,
     Delete and Paste do nothing then, a keyboard pan and the grid toggle are not recorded,
@@ -511,7 +561,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   To check a change: a temporary `DispatcherTimer` in `MainView` that appends the undo and
   redo counts and a hash of `Drawing.SaveAsText()` to a file whenever they change, driven
   with `winauto`. A hash that changes without a new step is a hole; one that doesn't come
-  back on Ctrl+Z is a wrong undo.
+  back on Ctrl+Z is a wrong undo. What found the most (2026-09-30, second pass) was a
+  sweep in the same temporary code: for each figure of a drawing, show it in the real
+  grid, and for each row set another value through the row's own value provider and
+  action manager, for each button invoke it; after each, compare the saved text before,
+  after, after undo, after redo, load the saved text into a second drawing and save that
+  (a round trip), run `Figures.CheckConsistency`, and log every first-chance exception
+  with the row at hand. Run over the gallery and over one drawing made with every tool.
 - **Sliders** (`Figures/Values/Slider.cs`) are one `CompositeFigure` whose parts are library
   figures: a `FreePoint` anchor, a `TranslatedPoint` knob kept on the horizontal through it
   (free distance, direction a Number saying 0, clamped at the anchor), the `Segment` track, a
@@ -847,6 +903,10 @@ loader still does for files from before; none of it needs extending.
   style taking the place of the default of the same name unless it looks the same in Light
   (files from before the themes carry every default they use: those are dropped for the
   default itself, which follows the theme), others after (`StyleManager.AddWithDefaults`).
+  A default made to look under a theme as it does in Light ("Same as in Light") and
+  otherwise unchanged would be taken for such a copy: it is written with an empty theme
+  element (`<PointStyle Name="FreePoint" ...><Dark /></PointStyle>`), and a style read
+  with any theme element is kept (`FigureStyle.SaysThemes`).
   A file style under any name that looks like what a default used to be (the numbered
   copies of the phone and CD drawings: the yellow, green and gray 10 px points with a black
   rim, the 18 and 40 pt black Segoe UI text; `StyleManager.LegacyDefaults`) is dropped too,
@@ -878,6 +938,13 @@ loader still does for files from before; none of it needs extending.
   parts in `ReadXml`, before it is on a canvas (`IsOnCanvas`), and says `Sides="7"` when it
   is not a pentagon. The number of sides doesn't go below what figures built on its vertices
   and sides need: the parts would take them along, from inside a setter, past undo.
+  The parts are listed with what they are built on (the polygon, its first vertex) only
+  while the polygon is in the drawing (`RegisterPart`): registered when read, before the
+  polygon was added, they failed the consistency check that a point by coordinates runs
+  when it is added, and such a file did not load. When the point a polygon is built on is
+  replaced (Fix length, Convert to point by coordinates), the polygon takes its parts
+  along (`ReplaceDependency` moves their registration; `SubstituteWith` skips them).
+- **`AngleMeasurement`** says `Radians="true"` when it shows radians (it was not saved).
 - **Scenes** (`<Scene Left Top Right Bottom />` under `<Drawing>`, 1 or 2) are opt-in suggested
   views for drawings whose content has no useful bounds (endless ground: Castle, The Falling
   Ladder; a locus: Spiral). Where they exist, fit and tile show the scene nearest in shape to
@@ -1035,7 +1102,7 @@ rather than by process name when more than one could exist.
 ## Batch-checking drawings
 
 `LiveGeometry.Desktop.exe --check <folder> <out>` (`MainView.BatchCheck.cs`) opens every
-`.lgf`/`.dgf` under the folder in the real editor, zooms to fit (a captioned drawing is laid
+`.lgf`/`.dgf` under the folder (or the one drawing, given a file) in the real editor, zooms to fit (a captioned drawing is laid
 out by `GalleryDrawing.Fit` instead, with the ribbon folded when the window is small - so the
 sheet shows the gallery layout at whatever size the window was last closed at: `place` it,
 close it, then run the check), saves `<out>/<relative path>.png`

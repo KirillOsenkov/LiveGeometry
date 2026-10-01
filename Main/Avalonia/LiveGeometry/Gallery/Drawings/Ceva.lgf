@@ -82,16 +82,10 @@
     <Label Name="Description" Style="GalleryText" Text="Points D, E and F lie on the sides of triangle ABC. When do the segments AD, BE and CF pass through a single point?\n\nExactly when this product of ratios equals 1:\nAF/FB · BD/DC · CE/EA = [AF/FB*BD/DC*CE/EA]\n\nDrag D, E and F until the three segments meet, and watch the number." Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />
       <Dependency Name="F" />
-      <Dependency Name="F" />
-      <Dependency Name="B" />
       <Dependency Name="B" />
       <Dependency Name="D" />
-      <Dependency Name="D" />
-      <Dependency Name="C" />
       <Dependency Name="C" />
       <Dependency Name="E" />
-      <Dependency Name="E" />
-      <Dependency Name="A" />
     </Label>
   </Figures>
 </Drawing>

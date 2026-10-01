@@ -144,10 +144,21 @@ namespace DynamicGeometry
         }
 
         // The parts are built on the polygon and on the point that is its first vertex.
-        // While the polygon is out of the drawing (deleted, its making undone) they are not
-        // among the dependents of those: a point would be left with dependents that are in
-        // no drawing. Back in, they are again.
-        bool partsUnregistered;
+        // While the polygon is not in the drawing (read from a file and not added yet,
+        // deleted, its making undone) they are not among the dependents of those: a point
+        // would have dependents that are in no drawing, which fails the consistency check
+        // (a file with a regular polygon on a point by coordinates did not load). In the
+        // drawing, they are.
+        bool partsUnregistered = true;
+
+        /// <summary>Lists a part with what it is built on, if the polygon is in the drawing; else that waits until it is</summary>
+        protected void RegisterPart(IFigure part)
+        {
+            if (!partsUnregistered)
+            {
+                part.RegisterWithDependencies();
+            }
+        }
 
         public override void OnRemovingFromDrawing(Drawing drawing)
         {
@@ -223,7 +234,7 @@ namespace DynamicGeometry
             List<IFigure> allVertices = new List<IFigure>();
             CollectPolygonDependencies(allVertices.Add);
             polygon.Dependencies = allVertices;
-            polygon.RegisterWithDependencies();
+            RegisterPart(polygon);
         }
 
         public double Area => polygon.Area;
@@ -293,7 +304,7 @@ namespace DynamicGeometry
         {
             var vertex = new PolygonVertex();
             vertex.Dependencies.Add(this);
-            vertex.RegisterWithDependencies();
+            RegisterPart(vertex);
             vertex.Drawing = Drawing;
             vertices.Add(vertex);
             Children.Add(vertex);

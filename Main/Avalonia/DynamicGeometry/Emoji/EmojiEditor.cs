@@ -144,9 +144,12 @@ public class EmojiEditor : StackPanel, IValueEditor
     void UpdatePreview()
     {
         string character = Character;
+
+        // as the theme on screen shows the style: its own fill and size there, if it has any
+        var shown = OwnerStyle?.Resolve() as PointStyle;
         preview.Text = character;
-        preview.Foreground = OwnerStyle?.Fill;
-        double size = System.Math.Min(OwnerStyle?.Size ?? PointStyle.DefaultCharacterSize, PreviewMaxSize);
+        preview.Foreground = shown?.Fill;
+        double size = System.Math.Min(shown?.Size ?? PointStyle.DefaultCharacterSize, PreviewMaxSize);
         preview.Width = size;
         preview.Height = size;
         preview.IsVisible = character != null;

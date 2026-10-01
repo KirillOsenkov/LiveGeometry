@@ -50,18 +50,6 @@
     <Label Name="Title" Style="GalleryTitle" Text="Complex Multiplication" Pin="TopRight" OffsetX="16" OffsetY="25.5" WrapWidth="400" Backdrop="true" />
     <Label Name="Description" Style="GalleryText" Text="Think of the arrows as complex numbers: A = [A.X] + [A.Y]i and B = [B.X] + [B.Y]i.\n\nC is their product. Its angle, counted counterclockwise from the x-axis, is the sum of the two angles ([deg(xang(o,a))]° + [deg(xang(o,b))]° = [deg(xang(o,c))]°; past 360° it starts over at 0°), and its length is the product of the two lengths ([AO] · [OB] = [OC]).\n\nMultiplying by a complex number rotates and stretches. Drag A and B." Pin="TopRight" OffsetX="16" OffsetY="73.5" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />
-      <Dependency Name="A" />
-      <Dependency Name="B" />
-      <Dependency Name="B" />
-      <Dependency Name="O" />
-      <Dependency Name="A" />
-      <Dependency Name="O" />
-      <Dependency Name="B" />
-      <Dependency Name="O" />
-      <Dependency Name="C" />
-      <Dependency Name="A" />
-      <Dependency Name="O" />
-      <Dependency Name="O" />
       <Dependency Name="B" />
       <Dependency Name="O" />
       <Dependency Name="C" />

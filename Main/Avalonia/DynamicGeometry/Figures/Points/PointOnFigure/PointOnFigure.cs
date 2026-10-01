@@ -26,8 +26,27 @@ namespace DynamicGeometry
             return result;
         }
 
-        [PropertyGridVisible]
+        /// <summary>Where the point is along its figure. Setting it moves nothing by itself (a locus samples through it).</summary>
         public double Parameter { get; set; }
+
+        /// <summary>The parameter as the grid edits it: the point goes there, and what is built on it follows</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Parameter")]
+        public double ParameterDisplay
+        {
+            get
+            {
+                return Parameter;
+            }
+            set
+            {
+                Parameter = value;
+                if (Drawing != null)
+                {
+                    this.RecalculateAllDependents();
+                }
+            }
+        }
 
         public override double X => base.X;
 

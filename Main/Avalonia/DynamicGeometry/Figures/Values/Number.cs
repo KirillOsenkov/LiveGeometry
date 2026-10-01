@@ -12,8 +12,19 @@ namespace DynamicGeometry
     /// created on demand for a single figure is <see cref="FigureBase.Auxiliary"/> and leaves
     /// the drawing with its last user.
     /// </summary>
-    public class Number : FigureBase, INumber, ILengthProvider, IAngleProvider
+    public class Number : FigureBase, INumber, ILengthProvider, IAngleProvider, IConditionalProperties
     {
+        /// <summary>A number has no shape and so no style: the style buttons every figure has are not its (they threw)</summary>
+        public bool CanEdit(string propertyName)
+        {
+            return propertyName != nameof(EditStyleButton) && propertyName != nameof(CreateNewStyle);
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
+        }
+
         public Number()
         {
             IsHitTestVisible = false;
