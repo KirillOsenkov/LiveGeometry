@@ -295,10 +295,10 @@ namespace DynamicGeometry
                 case Step.Source:
                     return Transformer.CanBeTransformSource(figure);
                 case Step.Distance:
-                    return figure is Vector || figure is ILengthProvider && Label.GivesNumber(figure);
+                    return figure is Vector || figure.GivesLength();
                 case Step.Direction:
                     // a line points from its first point to its second: that is its angle
-                    return figure is IAngleProvider && Label.GivesNumber(figure) || figure is ILine || figure is Vector;
+                    return figure.GivesAngle() || figure is ILine || figure is Vector;
                 default:
                     return false;
             }

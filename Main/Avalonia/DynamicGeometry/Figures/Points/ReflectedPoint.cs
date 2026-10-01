@@ -57,7 +57,12 @@ namespace DynamicGeometry
                 Coordinates = Math.GetSymmetricPoint(source, mirrorCircle.Center, mirrorCircle.Radius);
             }
 
-            Exists = Coordinates.Exists();
+            // The image of a point that is not there is not there either. (Asked only
+            // whether its own coordinates were numbers - and the source keeps its last ones -
+            // the image of an intersection that had gone stayed on screen, frozen, with all
+            // that was built on it. Likewise a rotated, a dilated point, a point by
+            // coordinates and an angle bisector.)
+            Exists = Dependencies.Exists() && Coordinates.Exists();
         }
     }
 }

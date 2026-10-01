@@ -222,23 +222,17 @@ namespace DynamicGeometry
 
             // HitTest for the edge
             var width = LogicalWidth();
-            var r = Math.Distance(Center, point);
             var angleToPoint = Math.GetAngle(Center, point);
             bool between = Math.IsAngleBetweenAngles(angleToPoint, StartAngle, EndAngle, Clockwise);
             if (between)
             {
-                // Find the point relative to the ellipse in canonical form(unrotated).
-                var canonicalPoint = Math.RotatePoint(Center, r, angleToPoint - Inclination).Minus(Center);
-                var equationLeft = canonicalPoint.X.Sqr() / SemiMajor.Sqr() + canonicalPoint.Y.Sqr() / SemiMinor.Sqr();
-
-                // A cheap way to deal with small arcs.
-                var tolerance = CursorTolerance + width / 2;
-                if (SemiMajor < 1 || SemiMinor < 1)
-                {
-                    tolerance += .25;
-                }
-
-                if ((equationLeft - 1).Abs() < tolerance)
+                var fromEdge = Math.RadialDistanceToEllipse(
+                    Center,
+                    SemiMajor,
+                    SemiMinor,
+                    Inclination,
+                    point);
+                if (fromEdge.Abs() < CursorTolerance + width / 2)
                 {
                     return this;
                 }
@@ -470,6 +464,20 @@ namespace DynamicGeometry
         public override int EndPointIndex
         {
             get { return 2; }
+        }
+
+        /// <summary>
+        /// No arc while its radius is 0 or its end is on the center (Shift snaps both to
+        /// one place on the grid): there is no direction to end in, and its length, area
+        /// and path were "NaN".
+        /// </summary>
+        public override void UpdateExistence()
+        {
+            base.UpdateExistence();
+            if (Exists && Dependencies.Count > 2 && (!(Radius > 0) || !(Center.Distance(Point(2)) > 0)))
+            {
+                Exists = false;
+            }
         }
 
         public override double Length

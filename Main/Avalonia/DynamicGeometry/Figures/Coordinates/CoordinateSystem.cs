@@ -167,6 +167,31 @@ namespace DynamicGeometry
         }
 
         /// <summary>
+        /// Two fingers on the paper: what was under <paramref name="from"/> goes under
+        /// <paramref name="to"/> (the middle between the fingers, before and now), zoomed
+        /// about it by how much the fingers came apart. At the limit of the zoom the paper
+        /// still follows the fingers.
+        /// </summary>
+        /// <param name="from">Physical (canvas) coordinates</param>
+        /// <param name="to">Physical (canvas) coordinates</param>
+        public void PanAndZoom(Point from, Point to, double factor)
+        {
+            var newUnitLength = ClampUnitLength(unitLength * factor);
+            var ratio = newUnitLength / unitLength;
+            if (ratio == 1 && from == to)
+            {
+                return;
+            }
+
+            unitLength = newUnitLength;
+            scale = unitLength / Settings.DefaultUnitLength;
+            origin = new Point(
+                to.X - (from.X - origin.X) * ratio,
+                to.Y - (from.Y - origin.Y) * ratio);
+            Recalculate();
+        }
+
+        /// <summary>
         /// Zoom to fit: everything visible, as large as possible. An empty drawing goes back
         /// to the default view.
         /// </summary>

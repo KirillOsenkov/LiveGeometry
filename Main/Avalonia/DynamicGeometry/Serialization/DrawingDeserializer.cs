@@ -237,9 +237,41 @@ namespace DynamicGeometry
                 return;
             }
 
-            // a file has only the styles its figures use; the rest are the defaults
-            var own = stylesNode.Elements().Select(ReadStyle).Where(s => s != null).ToList();
+            // A file has only the styles its figures use; the rest are the defaults. A kind of
+            // style this version doesn't have (PolylineStyle of an old file) is left out, and
+            // what uses it gets the default of its kind: reading it threw, and nothing of the
+            // drawing came in.
+            var own = new List<IFigureStyle>();
+            foreach (var styleNode in stylesNode.Elements())
+            {
+                if (!StyleTypes.Contains(styleNode.Name.LocalName))
+                {
+                    ReportError(string.Format("The style {0} is left out: this version has no style of the kind {1}.", styleNode.ReadString("Name"), styleNode.Name.LocalName));
+                    continue;
+                }
+
+                var style = ReadStyle(styleNode);
+                if (style != null)
+                {
+                    own.Add(style);
+                }
+            }
+
             drawing.StyleManager.AddWithDefaults(own);
+        }
+
+        static HashSet<string> styleTypes;
+
+        /// <summary>The names of the kinds of style a file may hold</summary>
+        static HashSet<string> StyleTypes
+        {
+            get
+            {
+                return styleTypes ??= new HashSet<string>(typeof(DrawingDeserializer).Assembly
+                    .GetTypes()
+                    .Where(t => typeof(IFigureStyle).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
+                    .Select(t => t.Name));
+            }
         }
 
         private IFigureStyle ReadStyle(XElement styleNode)
@@ -300,12 +332,18 @@ namespace DynamicGeometry
 
         public virtual void ReadFigureList(IList<IFigure> figureList, XElement element, Drawing drawing)
         {
+            ReadFigureList(figureList, element, drawing, new Dictionary<string, IFigure>());
+        }
+
+        /// <param name="byFileName">Filled with the figures read, by the names the file gives them</param>
+        public void ReadFigureList(IList<IFigure> figureList, XElement element, Drawing drawing, Dictionary<string, IFigure> byFileName)
+        {
             if (element.Name == "Drawing")
             {
                 element = element.Element("Figures");
             }
 
-            var figures = ReadFigures(element, drawing);
+            var figures = ReadFigures(element, drawing, byFileName);
             figureList.AddRange(figures);
         }
 
@@ -335,8 +373,15 @@ namespace DynamicGeometry
             foreach (var figureNode in figuresNode.Elements())
             {
                 string name = figureNode.ReadString("Name");
-                // Temporary fix! This prevents an error when duplicate names occur.    - D.H.
-                if (!nodeMap.ContainsKey(name))
+                if (string.IsNullOrEmpty(name))
+                {
+                    ReportError(figureNode.Name.LocalName + " without a name is left out.");
+                }
+                else if (nodeMap.ContainsKey(name))
+                {
+                    ReportError(string.Format("Two figures are called {0}: only the first is read.", name));
+                }
+                else
                 {
                     nodeMap.Add(name, figureNode);
                 }
@@ -393,12 +438,49 @@ namespace DynamicGeometry
                 return;
             }
 
-            var figureNode = nodeMap[figureName];
+            // A file that is not whole - a figure of a kind this version doesn't have, one
+            // built on a figure the file lacks, two built on each other - is read as far as
+            // it goes, and what is left out is said in words (ReportError). It used to throw
+            // half way: the message was a bare name, or "The given key was not present in
+            // the dictionary", and nothing of the drawing was shown.
+            if (!nodeMap.TryGetValue(figureName, out var figureNode) || !beingRead.Add(figureName))
+            {
+                return;
+            }
 
+            try
+            {
+                ReadFigure(
+                    figureName,
+                    figureNode,
+                    alreadyDeserializedFigures,
+                    nameBlacklist,
+                    nodeMap,
+                    drawing,
+                    callbackWhenCreated);
+            }
+            finally
+            {
+                beingRead.Remove(figureName);
+            }
+        }
+
+        // the figures whose dependencies are being read: one that comes up again is built on itself
+        readonly HashSet<string> beingRead = new HashSet<string>();
+
+        void ReadFigure(
+            string figureName,
+            XElement figureNode,
+            Dictionary<string, IFigure> alreadyDeserializedFigures,
+            List<string> nameBlacklist,
+            Dictionary<string, XElement> nodeMap,
+            Drawing drawing,
+            Action<IFigure> callbackWhenCreated)
+        {
             Type type = FindType(figureNode.Name.LocalName);
             if (type == null)
             {
-                ReportError(string.Format("Type {0} not found.", figureNode.Name.LocalName));
+                ReportError(string.Format("{0} is left out: this version has no figure of the kind {1}.", figureName, figureNode.Name.LocalName));
                 return;
             }
 
@@ -406,7 +488,10 @@ namespace DynamicGeometry
             var dependencyNames = dependencyNodes.Select(e => e.ReadString("Name")).ToArray();
             foreach (var dependencyName in dependencyNames)
             {
-                ReadFigure(dependencyName, alreadyDeserializedFigures, nameBlacklist, nodeMap, drawing, callbackWhenCreated);
+                if (dependencyName != null)
+                {
+                    ReadFigure(dependencyName, alreadyDeserializedFigures, nameBlacklist, nodeMap, drawing, callbackWhenCreated);
+                }
             }
 
             List<IFigure> dependencies = new List<IFigure>();
@@ -414,9 +499,10 @@ namespace DynamicGeometry
             {
                 string dependencyName = dependencyNames[i];
                 IFigure existingDependency = null;
-                if (!alreadyDeserializedFigures.TryGetValue(dependencyName, out existingDependency))
+                if (dependencyName == null || !alreadyDeserializedFigures.TryGetValue(dependencyName, out existingDependency))
                 {
-                    throw new Exception(dependencyName);
+                    ReportError(string.Format("{0} is left out: it is built on {1}, which could not be read.", figureName, dependencyName ?? "a figure without a name"));
+                    return;
                 }
 
                 // a part of the figure (a vertex a regular polygon works out), not the figure
@@ -426,7 +512,8 @@ namespace DynamicGeometry
                     existingDependency = (existingDependency as IFigureParts)?.GetPart(partName);
                     if (existingDependency == null)
                     {
-                        throw new Exception(dependencyName + " " + partName);
+                        ReportError(string.Format("{0} is left out: {1} has no part {2}.", figureName, dependencyName, partName));
+                        return;
                     }
                 }
 
@@ -434,6 +521,12 @@ namespace DynamicGeometry
             }
 
             IFigure instance = InstantiateFigure(type, drawing, dependencies);
+            if (instance == null)
+            {
+                ReportError(string.Format("{0} is left out: a {1} can't be read from a file.", figureName, type.Name));
+                return;
+            }
+
             if (!GenerateNewNames)
             {
                 instance.Name = figureName;
@@ -452,7 +545,7 @@ namespace DynamicGeometry
             }
             catch (Exception ex)
             {
-                ReportError(ex.ToString());
+                ReportError(string.Format("{0} was not read in full: {1}", figureName, ex.Message));
                 callbackWhenCreated(instance);
                 return;
             }

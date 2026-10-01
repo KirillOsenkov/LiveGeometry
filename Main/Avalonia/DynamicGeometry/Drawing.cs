@@ -333,6 +333,39 @@ namespace DynamicGeometry
             CoordinateSystem.FitScene(scene);
         }
 
+        /// <summary>
+        /// "Zoom to fit" as whoever shows the drawing does it, when that takes more than the
+        /// bounds of the content: where a caption leaves room for the figure, which part of
+        /// the plane a graph is about. Null for the plain fit.
+        /// </summary>
+        public Action FitToWindow { get; set; }
+
+        /// <summary>
+        /// Zoom to fit, as the user asks for it (a double click, H, the context menu): the
+        /// layout the drawing was opened with, a scene if it has scenes, else everything
+        /// visible. (It was the last of these always: a double click on a drawing of the
+        /// gallery put the figure under its caption, zoomed a graph onto its few points
+        /// and showed the Castle's points instead of its scene.)
+        /// </summary>
+        public void ZoomToFit()
+        {
+            if (FitToWindow != null)
+            {
+                FitToWindow();
+                return;
+            }
+
+            var scene = Canvas != null ? ChooseScene(Canvas.Bounds.Width, Canvas.Bounds.Height) : null;
+            if (scene != null)
+            {
+                ShowScene(scene.Value);
+            }
+            else
+            {
+                CoordinateSystem.ZoomExtend();
+            }
+        }
+
         void ApplyBackground()
         {
             PaintPaper();
@@ -959,13 +992,25 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// What of the file the drawing was read from could not be read, a line each; null
+        /// when all of it was. Such a drawing is not the file any more: it does not take the
+        /// file's name, and Save does not write what is left of it over the file.
+        /// </summary>
+        public string LoadErrors { get; private set; }
+
         public void AddFromXml(XElement element)
         {
             var deserializer = new DrawingDeserializer();
             deserializer.ReadDrawing(this, element);
-            if (!deserializer.IsSuccess)
+            LoadErrors = deserializer.IsSuccess ? null : deserializer.GetErrorReport();
+            if (LoadErrors != null)
             {
-                RaiseStatusNotification(deserializer.GetErrorReport());
+                var lines = LoadErrors.Split('\n');
+                RaiseStatusNotification(
+                    "Not all of this file could be read. "
+                    + lines[0]
+                    + (lines.Length > 1 ? " (and " + (lines.Length - 1) + " more)" : ""));
             }
         }
 
@@ -1051,9 +1096,24 @@ namespace DynamicGeometry
 
 #if !SILVERLIGHT
 
+        /// <summary>In pixels: how far down and to the right each paste puts its copy from the one before</summary>
+        public const double PasteStep = 24;
+
+        // the pastes of what is on the clipboard so far: each goes a step further, or the
+        // second paste would lie exactly on the first
+        static int pastes;
+
         public void Copy()
         {
             List<IFigure> list = new List<IFigure>(this.GetSelectedFiguresWithDependencies());
+
+            // nothing selected: the clipboard keeps what it has (it was emptied)
+            if (list.Count == 0)
+            {
+                return;
+            }
+
+            pastes = 0;
             var s = new System.Text.StringBuilder();
             using (var w = System.Xml.XmlWriter.Create(s, new System.Xml.XmlWriterSettings()
             {
@@ -1075,10 +1135,13 @@ namespace DynamicGeometry
 
         public void PasteFromText(string str)
         {
-            // not into the undo step of a construction under way
+            // Not into the undo step of a construction under way. A step down and to the
+            // right of the originals, selected: on top of them and not selected, a paste
+            // looked like nothing at all, and each try left another hidden copy.
             if (str != null && !IsRecordingTransaction)
             {
-                Actions.Paste(this, str);
+                pastes++;
+                Actions.Paste(this, str, pixelOffset: pastes * PasteStep);
             }
         }
 

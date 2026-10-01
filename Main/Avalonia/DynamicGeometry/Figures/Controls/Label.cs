@@ -17,6 +17,12 @@ namespace DynamicGeometry
         {
             get
             {
+                var exact = ExactValue;
+                if (exact != null)
+                {
+                    return exact.Value;
+                }
+
                 double result = 0;
                 if (!double.TryParse(
                         ProcessedText,
@@ -255,6 +261,13 @@ namespace DynamicGeometry
 
         public override void UpdateVisual()
         {
+            // the paper may have changed since (a theme switch, the paper of a file, which
+            // is read after its figures): a label's plate was the paper it was made on
+            if (backdrop)
+            {
+                ApplyBackdrop();
+            }
+
             if (pin == LabelPin.None)
             {
                 base.UpdateVisual();
@@ -264,12 +277,6 @@ namespace DynamicGeometry
             if (!HasCanvas)
             {
                 return;
-            }
-
-            if (backdrop)
-            {
-                // the paper may have changed since
-                ApplyBackdrop();
             }
 
             var topLeft = PinnedTopLeft(MeasureSize());
@@ -342,7 +349,7 @@ namespace DynamicGeometry
         public override void ReadXml(XElement element)
         {
             base.ReadXml(element);
-            text = element.ReadString("Text").Replace(@"\n", Environment.NewLine);
+            text = Unescape(element.ReadString("Text"));
             WrapWidth = element.ReadDouble("WrapWidth");
             Backdrop = element.ReadBool("Backdrop", false);
             var pinName = element.ReadString("Pin");
@@ -361,12 +368,72 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// The text as the file says it: any line break (\r\n, or a bare \n, which a text
+        /// box gives back) as the two characters \n, and a backslash as two, so that one
+        /// typed before an n ("C:\notes") is not read back as a line break. Characters an
+        /// XML file can't hold (a control character pasted from elsewhere) are left out:
+        /// with one, Save threw and wrote nothing.
+        /// </summary>
+        static string Escape(string text)
+        {
+            var sb = new System.Text.StringBuilder(text.Length);
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+                if (c == '\r')
+                {
+                    sb.Append(@"\n");
+                    if (i + 1 < text.Length && text[i + 1] == '\n')
+                    {
+                        i++;
+                    }
+                }
+                else if (c == '\n')
+                {
+                    sb.Append(@"\n");
+                }
+                else if (c == '\\')
+                {
+                    sb.Append(@"\\");
+                }
+                else if (System.Xml.XmlConvert.IsXmlChar(c))
+                {
+                    sb.Append(c);
+                }
+                else if (i + 1 < text.Length && System.Xml.XmlConvert.IsXmlSurrogatePair(text[i + 1], c))
+                {
+                    sb.Append(c).Append(text[i + 1]);
+                    i++;
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        static string Unescape(string text)
+        {
+            var sb = new System.Text.StringBuilder(text.Length);
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (text[i] == '\\' && i + 1 < text.Length && (text[i + 1] == 'n' || text[i + 1] == '\\'))
+                {
+                    sb.Append(text[i + 1] == 'n' ? Environment.NewLine : @"\");
+                    i++;
+                }
+                else
+                {
+                    sb.Append(text[i]);
+                }
+            }
+
+            return sb.ToString();
+        }
+
         public override void WriteXml(System.Xml.XmlWriter writer)
         {
             base.WriteXml(writer);
-            // any line break, \r\n or a bare \n (what a TextBox gives back), as the two characters \n
-            var escaped = Text.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", @"\n");
-            writer.WriteAttributeString("Text", escaped);
+            writer.WriteAttributeString("Text", Escape(Text));
             if (pin == LabelPin.None)
             {
                 var coordinates = Coordinates;

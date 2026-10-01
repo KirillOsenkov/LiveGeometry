@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DynamicGeometry
 {
@@ -64,8 +65,6 @@ namespace DynamicGeometry
                 return;
             }
 
-            ParentFigure.UnregisterFromDependencies();
-
             mValue = result.Expression;
             Dependencies = result.Dependencies;
 
@@ -77,6 +76,23 @@ namespace DynamicGeometry
             var named = new List<IFigure>();
             var expressions = ParentFigure is IExpressionOwner owner ? owner.Expressions : new[] { this };
             var figures = ParentFigure.Drawing.Figures;
+
+            // A figure being read is asked for its place before what it names is in the
+            // drawing (an intersection works itself out as it is read): an expression that
+            // names a figure doesn't compile yet, and the others, compiling, set the
+            // dependencies to what they name - nothing. Its dependencies are then what the
+            // file says until all of them compile. (A line by equation x = P.X lost P in a
+            // file saved while the intersection on it was there, and no longer followed it.)
+            if (!figures.Contains(ParentFigure)
+                && expressions.Any(expression => expression != null
+                    && expression != this
+                    && expression.Dependencies == null
+                    && !expression.Text.IsEmpty()))
+            {
+                return;
+            }
+
+            ParentFigure.UnregisterFromDependencies();
             foreach (var expression in expressions)
             {
                 if (expression == null || expression.Dependencies == null)

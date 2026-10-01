@@ -364,9 +364,9 @@ namespace DynamicGeometry
 
             var figure = Factory.CreateCircleByEquation(
                 drawing,
-                x.ToStringInvariant(),
-                y.ToStringInvariant(),
-                r.ToStringInvariant());
+                x.ToExpressionText(),
+                y.ToExpressionText(),
+                r.ToExpressionText());
             SetFigureStyle(section, figure);
             AddFigure(section, figure);
         }
@@ -376,9 +376,9 @@ namespace DynamicGeometry
             // a x + b y + c = 0; a coefficient that is 0 isn't written
             var figure = Factory.CreateLineByEquation(
                 drawing,
-                GetAuxInfo(section, 1).ToStringInvariant(),
-                GetAuxInfo(section, 2).ToStringInvariant(),
-                GetAuxInfo(section, 3).ToStringInvariant());
+                GetAuxInfo(section, 1).ToExpressionText(),
+                GetAuxInfo(section, 2).ToExpressionText(),
+                GetAuxInfo(section, 3).ToExpressionText());
             SetFigureStyle(section, figure);
             AddFigure(section, figure);
         }

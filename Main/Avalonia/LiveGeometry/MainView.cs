@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -387,6 +388,8 @@ public partial class MainView : UserControl
         return exception is OperationCanceledException
             || exception is AggregateException
             || exception is System.Reflection.TargetInvocationException
+            // an element of a GeoGebra worksheet left out, which the status says
+            || exception is GeoGebraReader.LeftOutException
             // the browser's file picker throws on cancel (Avalonia catches it and answers null)
             || exception.GetType().Name == "JSException" && exception.Message.StartsWith("AbortError", StringComparison.Ordinal)
             || IsReadOnlyFile(exception);
@@ -619,8 +622,10 @@ public partial class MainView : UserControl
 
         // a reader drags the figure, not the text: on a phone a thumb on the caption scrolls
         control.Drawing.FixedLabels = true;
-        GalleryDrawing.Fit(control.Drawing, item.Plane);
-        KeepFitted(control.Drawing);
+        var drawing = control.Drawing;
+        drawing.FitToWindow = () => GalleryDrawing.Fit(drawing, item.Plane);
+        GalleryDrawing.Fit(drawing, item.Plane);
+        KeepFitted(drawing);
         UpdateTour();
         Publish(item.Path, item.Title + " - " + AppTitle, push);
     }
@@ -676,8 +681,10 @@ public partial class MainView : UserControl
     {
         if (DrawingHost.CurrentDrawing != null)
         {
-            // the user's own drawing: labels are theirs to move again
+            // the user's own drawing: labels are theirs to move again, and "zoom to fit"
+            // no longer lays out the caption (see OpenDrawing)
             DrawingHost.CurrentDrawing.FixedLabels = false;
+            DrawingHost.CurrentDrawing.FitToWindow = null;
         }
 
         CurrentSample = null;
@@ -820,10 +827,49 @@ public partial class MainView : UserControl
     /// <param name="file">Where the bytes are from, if Save may write there again; only an .lgf is written again</param>
     public void OpenDrawing(string name, byte[] bytes, IStorageFile file = null)
     {
+        // What the file is comes first: one that is no drawing leaves the page as it was.
+        // (The page used to change hands before the file was read. A picture picked by
+        // mistake left the drawing on screen under the picture's name - a drawing of the
+        // gallery became the user's own that way, and one parked behind the gallery was
+        // dropped.)
+        bool isDgf = name.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase);
+        bool isGeoGebra = name.EndsWith(".ggb", StringComparison.OrdinalIgnoreCase);
+        XElement xml = null;
+        string text = null;
+        string problem = null;
+        if (isGeoGebra)
+        {
+            // a GeoGebra worksheet: a zip with the construction as geogebra.xml inside
+            try
+            {
+                xml = GeoGebraReader.ReadWorksheet(bytes, out problem);
+            }
+            catch (Exception ex)
+            {
+                problem = "This file is damaged: " + ex.Message;
+            }
+        }
+        else if (!isDgf)
+        {
+            text = Utilities.StripByteOrderMark(new System.Text.UTF8Encoding().GetString(bytes));
+            xml = DrawingControl.ParseDrawing(text, out problem);
+        }
+        else if (!DecodeLegacyText(bytes).Contains("[General]", StringComparison.OrdinalIgnoreCase))
+        {
+            // every drawing DG wrote starts with its [General] section
+            problem = "This file is not a drawing.";
+        }
+
+        if (problem != null)
+        {
+            RefuseFile(name, problem);
+            return;
+        }
+
         BecomeOwnDrawing(name, file: null);
         ShowEditor();
 
-        if (name.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase))
+        if (isDgf)
         {
             // drawings of the original VB6 DG: INI-like text in the Windows ANSI code page
             var lines = DecodeLegacyText(bytes).Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
@@ -831,32 +877,43 @@ public partial class MainView : UserControl
             return;
         }
 
-        if (name.EndsWith(".ggb", StringComparison.OrdinalIgnoreCase))
+        if (isGeoGebra)
         {
-            // a GeoGebra worksheet: a zip with the construction as geogebra.xml inside
-            HandleExceptions(() => DrawingHost.DrawingControl.LoadDrawingFromGeoGebra(GeoGebraReader.ReadWorksheet(bytes), name));
+            HandleExceptions(() => DrawingHost.DrawingControl.LoadDrawingFromGeoGebra(xml, name));
             return;
         }
 
-        var text = Utilities.StripByteOrderMark(new System.Text.UTF8Encoding().GetString(bytes));
         HandleExceptions(() =>
         {
-            DrawingHost.DrawingControl.LoadDrawing(text, name);
+            DrawingHost.DrawingControl.LoadDrawing(xml, name);
             var drawing = DrawingHost.CurrentDrawing;
 
-            // a file that failed to load has not given the drawing its name: Save must not
-            // write what is left of it over the file
+            // a file that was not read in full has not given the drawing its name: Save
+            // must not write what is left of it over the file
             if (drawing.Name == name)
             {
                 OwnFile = file;
             }
 
-            // a drawing with a caption (one of the gallery, saved) is laid out for this window
+            // a drawing with a caption (one of the gallery, saved) is laid out for this
+            // window - once: the caption is the user's own to move now, and laid out again
+            // by "zoom to fit" it would change what the file saves without an undo step
             if (GalleryDrawing.HasCaption(drawing))
             {
                 GalleryDrawing.Fit(drawing, GalleryDrawing.GetPlane(text));
             }
         });
+    }
+
+    /// <summary>A file that can't be opened: said in the status bar, which only the editor has</summary>
+    void RefuseFile(string name, string problem)
+    {
+        if (!LayoutRoot.IsVisible)
+        {
+            HandleExceptions(() => ShowOwnDrawing(push: true));
+        }
+
+        DrawingHost.ShowHint(name + ": " + problem);
     }
 
     /// <summary>
@@ -960,9 +1017,18 @@ public partial class MainView : UserControl
 
     async Task WriteDrawing(IStorageFile file)
     {
+        // A construction under way is not in the drawing yet: its point following the
+        // cursor and its preview are figures like any other while it lasts, and went into
+        // the file ("TempPoint", half a polygon). It is put away, as Escape does.
+        var drawing = DrawingHost.CurrentDrawing;
+        if (DrawingHost.DrawingControl.ConstructionInProgress || drawing.IsRecordingTransaction)
+        {
+            drawing.Behavior?.Restart();
+        }
+
         // bytes straight into the stream: the browser's file stream only has WriteAsync,
         // and a StreamWriter flushes synchronously when disposed
-        var bytes = new System.Text.UTF8Encoding(false).GetBytes(DrawingHost.CurrentDrawing.SaveAsText());
+        var bytes = new System.Text.UTF8Encoding(false).GetBytes(drawing.SaveAsText());
         await using (var stream = await file.OpenWriteAsync())
         {
             await stream.WriteAsync(bytes);
@@ -1068,10 +1134,21 @@ public partial class MainView : UserControl
                 DrawingHost.ToggleGrid();
                 return true;
             case Key.H:
-                HandleExceptions(() => coordinateSystem.ZoomExtend());
+                HandleExceptions(() => drawing.ZoomToFit());
                 return true;
             case Key.Home:
-                HandleExceptions(() => coordinateSystem.CenterContent());
+                // (a drawing laid out around its caption has its middle elsewhere than its content)
+                HandleExceptions(() =>
+                {
+                    if (drawing.FitToWindow != null)
+                    {
+                        drawing.ZoomToFit();
+                    }
+                    else
+                    {
+                        coordinateSystem.CenterContent();
+                    }
+                });
                 return true;
             case Key.PageUp:
                 HandleExceptions(() => ShowNeighborSample(-1));
@@ -1131,6 +1208,14 @@ public partial class MainView : UserControl
             return;
         }
 
+        // Nor from a list, a slider or a combo of the side panel, which has taken the key on
+        // its way down: an arrow that picked the next style also moved the view by a step,
+        // as an undo step. (Tool letters still work from there.)
+        if (DrawingHost.PropertyGrid.IsKeyboardFocusWithin && IsViewKey(e.Key))
+        {
+            return;
+        }
+
         // the letter of a Ctrl shortcut, let go after Ctrl: not a tool letter
         if (e.Key == shortcutKeyDown)
         {
@@ -1151,6 +1236,28 @@ public partial class MainView : UserControl
     }
 
     Key shortcutKeyDown = Key.None;
+
+    /// <summary>The keys that move the view (<see cref="HandlePlainKey"/>), which controls with a selection or a value use too</summary>
+    static bool IsViewKey(Key key)
+    {
+        switch (key)
+        {
+            case Key.Left:
+            case Key.Right:
+            case Key.Up:
+            case Key.Down:
+            case Key.Home:
+            case Key.PageUp:
+            case Key.PageDown:
+            case Key.Add:
+            case Key.OemPlus:
+            case Key.Subtract:
+            case Key.OemMinus:
+                return true;
+        }
+
+        return false;
+    }
 
     #region Empty chrome
 
@@ -1259,11 +1366,33 @@ public partial class MainView : UserControl
             return;
         }
 
+        // A plain key pressed anew is no longer the letter of a Ctrl shortcut. (The release
+        // of that letter is skipped on its way up - but after Ctrl+S or Ctrl+O it goes to
+        // the file dialog and never arrives, and the next S, for the Segment tool, was the
+        // one skipped.)
+        if (e.KeyModifiers == KeyModifiers.None && e.Key == shortcutKeyDown)
+        {
+            shortcutKeyDown = Key.None;
+        }
+
         if (e.KeyModifiers == KeyModifiers.Control)
         {
-            // in a text box Ctrl+C, V, Z, A are the text box's own
+            // In a text box Ctrl+C, V, X, Z, Y, A are the text box's own. Save, Open, New
+            // and the ribbon are not: with the keyboard in a box (where a tool's panel keeps
+            // putting it) Ctrl+S did nothing, and in the browser the page got it. What is
+            // typed in the box goes into the drawing first, as when the box is left.
             var focused = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
-            if (!(focused is TextBox) && HandleControlShortcut(e.Key))
+            if (focused is TextBox)
+            {
+                if (e.Key != Key.S && e.Key != Key.O && e.Key != Key.N && e.Key != Key.F1)
+                {
+                    return;
+                }
+
+                DrawingHost.DrawingControl.Focus();
+            }
+
+            if (HandleControlShortcut(e.Key))
             {
                 shortcutKeyDown = e.Key;
                 e.Handled = true;

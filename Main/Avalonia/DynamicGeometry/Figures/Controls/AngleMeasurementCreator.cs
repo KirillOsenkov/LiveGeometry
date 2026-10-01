@@ -23,8 +23,30 @@ namespace DynamicGeometry
         // another order.)
         protected override IEnumerable<IFigure> CreateFigures()
         {
-            yield return Factory.CreateAngleArc(Drawing, FoundDependencies);
-            yield return Factory.CreateAngleMeasurement(Drawing, FoundDependencies);
+            var sides = InsideOrder(FoundDependencies);
+            yield return Factory.CreateAngleArc(Drawing, sides);
+            yield return Factory.CreateAngleMeasurement(Drawing, sides);
+        }
+
+        /// <summary>
+        /// The angle under 180 degrees between the two sides, whichever side was clicked
+        /// first: an angle goes counterclockwise from its first side to its second, and
+        /// clicked the other way round the angle of a triangle said 270 or 300 degrees.
+        /// "Convert to opposite angle" gives the other one; dragged afterwards, the angle is
+        /// what it has become (as the bisector's oriented sweep is).
+        /// </summary>
+        static IList<IFigure> InsideOrder(IList<IFigure> found)
+        {
+            if (found.Count == 3
+                && found[0] is IPoint vertex
+                && found[1] is IPoint first
+                && found[2] is IPoint second
+                && Math.OAngle(first.Coordinates, vertex.Coordinates, second.Coordinates) > Math.PI)
+            {
+                return new[] { found[0], found[2], found[1] };
+            }
+
+            return found;
         }
 
         public override string Name

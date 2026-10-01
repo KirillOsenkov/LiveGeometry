@@ -58,7 +58,13 @@ namespace DynamicGeometry
                 }
             }
 
-            Drawing.RaiseSelectionChanged(new Drawing.SelectionChangedEventArgs());
+            // Not for what a tool takes away of its own (the point following the cursor, its
+            // preview), which is never recorded: the side panel then showed whatever had been
+            // selected before the construction began, every time one was given up.
+            if (!Drawing.ActionManager.ExecuteImmediatelyWithoutRecording || Deleted.Any(figure => figure.Selected))
+            {
+                Drawing.RaiseSelectionChanged(new Drawing.SelectionChangedEventArgs());
+            }
         }
 
         private IEnumerable<IFigure> GetRemovableDependencies(IFigure figure)

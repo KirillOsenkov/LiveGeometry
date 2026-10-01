@@ -91,7 +91,9 @@
                 return;
             }
             Coordinates = new Avalonia.Point(XExpression.Value(), YExpression.Value());
-            Exists = Coordinates.Exists();
+
+            // (see ReflectedPoint: X = A.X has no value while A is not there)
+            Exists = Dependencies.Exists() && Coordinates.Exists();
         }
 
         public override void OnAddingToDrawing(Drawing drawing)

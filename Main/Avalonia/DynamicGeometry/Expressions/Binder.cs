@@ -63,18 +63,22 @@ namespace DynamicGeometry
         }
 
         /// <summary>
-        /// The function called by this name with this many arguments: one of System.Math
-        /// that takes that many numbers (sin, sqrt, max, atan2) if there is one, else
-        /// whatever goes by the name (ours take points: dist, ang, area)
+        /// The function called by this name with this many arguments: one that takes that
+        /// many numbers if there is one - ours first (round, sign: the ones System.Math has
+        /// in a way a drawing doesn't want), then System.Math's (sin, sqrt, max, atan2) -
+        /// else whatever goes by the name (ours that take points: dist, ang, area)
         /// </summary>
         public MethodInfo ResolveMethod(string functionName, int argumentCount)
         {
-            foreach (var methodInfo in typeof(System.Math).GetMethods())
+            foreach (var type in new[] { typeof(Functions), typeof(System.Math) })
             {
-                if (methodInfo.Name.Equals(functionName, StringComparison.OrdinalIgnoreCase)
-                    && TakesNumbers(methodInfo, argumentCount))
+                foreach (var methodInfo in type.GetMethods())
                 {
-                    return methodInfo;
+                    if (methodInfo.Name.Equals(functionName, StringComparison.OrdinalIgnoreCase)
+                        && TakesNumbers(methodInfo, argumentCount))
+                    {
+                        return methodInfo;
+                    }
                 }
             }
 

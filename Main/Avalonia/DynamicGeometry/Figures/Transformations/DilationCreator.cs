@@ -89,11 +89,11 @@ namespace DynamicGeometry
         {
             if (FoundDependencies.Count == 0)
             {
-                var result = Transformer.FindTransformSource(Drawing.Figures.HitTest(coordinates));
-                if (result != null)
-                {
-                    return result;
-                }
+                // Only what can be dilated: a number can't (a circle whose radius is a
+                // slider), nor a label or a graph. (Anything else under the cursor used to
+                // be taken as well: the tool went on, and made a hidden Number and nothing
+                // else, or threw.)
+                return Transformer.FindTransformSource(Drawing.Figures.HitTest(coordinates), keepsLengths: false);
             }
             else if (FoundDependencies.Count == 1)
             {
@@ -106,7 +106,7 @@ namespace DynamicGeometry
             else if (FoundDependencies.Count == 2)
             {
                 var result = Drawing.Figures.HitTest(coordinates);
-                if (result is ILengthProvider && Label.GivesNumber(result))
+                if (result.GivesLength())
                 {
                     return result;
                 }

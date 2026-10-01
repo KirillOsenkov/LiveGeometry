@@ -130,7 +130,8 @@ namespace DynamicGeometry
                 Coordinates = Math.GetDilationPoint(Source.Coordinates, Center.Coordinates, Factor);
             }
 
-            Exists = Coordinates.Exists();
+            // (see ReflectedPoint: no image of what is not there)
+            Exists = Dependencies.Exists() && Coordinates.Exists();
         }
 
         #region Tied values
@@ -148,7 +149,7 @@ namespace DynamicGeometry
         public bool Accepts(string name, IFigure figure)
         {
             // (DynamicGeometry.Label: here Label is the point's own name label)
-            return figure is ILengthProvider && !(figure is IPoint) && DynamicGeometry.Label.GivesNumber(figure);
+            return !(figure is IPoint) && figure.GivesLength();
         }
 
         /// <summary>The points stretched from the same center by the same factor: the vertices of one dilated figure, tied and detached together</summary>

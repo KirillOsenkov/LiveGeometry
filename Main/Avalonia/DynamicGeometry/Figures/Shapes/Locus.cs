@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Avalonia;
-using Avalonia.Media;
 
 namespace DynamicGeometry
 {
@@ -13,14 +12,6 @@ namespace DynamicGeometry
             get
             {
                 return 60;
-            }
-        }
-
-        public Locus()
-        {
-            for (int i = 0; i < StepCount; i++)
-            {
-                pathSegments.Add(new LineSegment());
             }
         }
 
@@ -57,15 +48,22 @@ namespace DynamicGeometry
         }
 
         /// <summary>Where the traced point is when the sliding point is at the parameter; the caller puts the sliding point back</summary>
+        /// <returns>
+        /// <see cref="Curve.Gap"/> where the traced point is not there (an intersection
+        /// that the sliding point has taken apart): the last place it was at would be
+        /// joined to the next one by a chord across the gap
+        /// </returns>
         Point Trace(PointOnFigure sliding, IPoint traced, double parameter)
         {
             sliding.Parameter = parameter;
             for (int i = 0; i < figuresToRecalculate.Count; i++)
             {
+                // (whether each is there, as a move of the sliding point by hand would ask)
+                figuresToRecalculate[i].UpdateExistence();
                 figuresToRecalculate[i].Recalculate();
             }
 
-            return traced.Coordinates;
+            return traced.Exists && traced.Coordinates.Exists() ? traced.Coordinates : Gap;
         }
 
         public override void GetPoints(List<Point> result)
@@ -162,13 +160,8 @@ namespace DynamicGeometry
 
             var oldParameter = pointOnFigure.Parameter;
             var result = Trace(pointOnFigure, point, parameter);
-            if (!point.Exists)
-            {
-                result = Math.InfinitePoint;
-            }
-
             Trace(pointOnFigure, point, oldParameter);
-            return result;
+            return result.Exists() ? result : Math.InfinitePoint;
         }
 
         /// <summary>The parameters of the sliding point: those of the figure it slides on</summary>

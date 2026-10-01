@@ -35,12 +35,12 @@ namespace DynamicGeometry
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
             // a drag whose release never arrived
-            EndDrag();
+            Release();
 
 #if !SILVERLIGHT
             if (e.ClickCount == 2)
             {
-                Drawing.CoordinateSystem.ZoomExtend();
+                Drawing.ZoomToFit();
                 return;
             }
 #endif
@@ -176,6 +176,16 @@ namespace DynamicGeometry
 
         public override void MouseMove(object sender, MouseEventArgs e)
         {
+            // A move with no button down is no drag. The release of this press never
+            // arrived (the tool was changed by a key and back while the button was held,
+            // the window lost the mouse): the point went on following the cursor, every
+            // move a recorded one, until the next click.
+            if (moving != null && !e.GetCurrentPoint(ParentCanvas).Properties.IsLeftButtonPressed)
+            {
+                Release();
+                return;
+            }
+
             var currentCoordinates = Coordinates(e);
 
             currentCoordinates = AdjustCoordinates(currentCoordinates);
@@ -272,6 +282,12 @@ namespace DynamicGeometry
                     PointSnapping.Snap(dragged, snap);
                 }
             }
+            catch
+            {
+                // (the drag is over also when the drop threw, or the next move would go on with it)
+                Release();
+                throw;
+            }
             finally
             {
                 // also when the drop threw: left open, the drag's transaction would take in
@@ -287,15 +303,41 @@ namespace DynamicGeometry
                 Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
             }
 
-            startedMoving = false;
-            moving = null;
-            found = null;
+            Release();
         }
 
         public override void Stopping()
         {
-            EndDrag();
+            Release();
             base.Stopping();
+        }
+
+        /// <summary>The tool on another drawing (the next of the gallery): what it held of the old one is let go</summary>
+        public override Drawing Drawing
+        {
+            get
+            {
+                return base.Drawing;
+            }
+            set
+            {
+                if (value != base.Drawing)
+                {
+                    Release();
+                }
+
+                base.Drawing = value;
+            }
+        }
+
+        /// <summary>The press is over: nothing is held any more</summary>
+        void Release()
+        {
+            EndDrag();
+            startedMoving = false;
+            moving = null;
+            found = null;
+            toRecalculate = null;
         }
 
         void EndDrag()
@@ -432,7 +474,7 @@ namespace DynamicGeometry
 
             if (figure == null)
             {
-                Add("Zoom to fit", () => Drawing.CoordinateSystem.ZoomExtend());
+                Add("Zoom to fit", () => Drawing.ZoomToFit());
                 Add("Select all", () =>
                 {
                     Drawing.SelectAll();
@@ -464,7 +506,8 @@ namespace DynamicGeometry
                     Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
                 });
                 Add(figure.Locked ? "Unlock" : "Lock", () => Set(figure, "Locked", !figure.Locked));
-                if (!(figure is PointLabel))
+                // (a name label goes with its "Show name", not by itself: Delete did nothing)
+                if (!(figure is PointLabel) && !(figure is FigureLabel))
                 {
                     menu.Items.Add(new Avalonia.Controls.Separator());
                     Add("Delete", () => Drawing.DeleteSelection());

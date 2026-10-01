@@ -23,18 +23,71 @@ namespace DynamicGeometry
                 return;
             }
 
-            //var point = Drawing.Figures.HitTest<IPoint>(coordinates);
-            if (figure is PointBase && FoundDependencies.Count >= 4 // 4 including the TempPoint 
-                // (and 3 after TempPoint is removed)
-                && FoundDependencies.Contains(figure))
+            if (figure is PointBase && FoundDependencies.Contains(figure) && TryFinish())
             {
-                RemoveIntermediateFigureIfNecessary();
-                RemoveTempPointIfNecessary();
-                AddFiguresAndRestart();
                 return;
             }
 
             base.Click(coordinates);
+        }
+
+        /// <summary>Three points or more (and the one following the cursor): enough for an area</summary>
+        bool CanFinish
+        {
+            get
+            {
+                return FoundDependencies.Count >= 4 && FoundDependencies.All(f => f is IPoint);
+            }
+        }
+
+        bool TryFinish()
+        {
+            if (!CanFinish)
+            {
+                return false;
+            }
+
+            RemoveIntermediateFigureIfNecessary();
+            RemoveTempPointIfNecessary();
+            AddFiguresAndRestart();
+            return true;
+        }
+
+        /// <summary>
+        /// Enter and a right click finish the list of points, as they close a polygon
+        /// (<see cref="PolygonCreator"/>). The only way was to click one of the points a
+        /// second time, which nothing said; Enter did nothing and a right click threw the
+        /// points away.
+        /// </summary>
+        public override void MouseRightClick(object sender, MouseButtonEventArgs e)
+        {
+            if (TryFinish())
+            {
+                return;
+            }
+
+            base.MouseRightClick(sender, e);
+        }
+
+        public override void KeyDown(object sender, Avalonia.Input.KeyEventArgs e)
+        {
+            if (e.Key == Avalonia.Input.Key.Enter && TryFinish())
+            {
+                e.Handled = true;
+                return;
+            }
+
+            base.KeyDown(sender, e);
+        }
+
+        public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+        {
+            if (CanFinish)
+            {
+                return "Press Enter when done (or click one of the points again), or click more points.";
+            }
+
+            return base.ConstructionHintText(args);
         }
 
         protected override bool CanCreateTempResults()

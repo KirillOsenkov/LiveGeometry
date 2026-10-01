@@ -279,9 +279,11 @@ namespace DynamicGeometry
             return point.Distance(other).IsWithinEpsilon();
         }
 
+        // (noise off a coordinate, on every conversion from pixels: not the rounding for
+        // display, which goes through decimal)
         public static double RoundToEpsilon(this double point)
         {
-            return point.Round(10);
+            return M.Round(point, 10);
         }
 
         public static Point RoundToEpsilon(this Point point)
@@ -526,8 +528,20 @@ namespace DynamicGeometry
         /// Rounded for showing. Plus zero: -0.001 rounds to a negative zero, which is
         /// written "-0" (a label said A is at (3, -0)); adding zero makes it a plain one.
         /// </summary>
+        /// <remarks>
+        /// A 5 rounds up, as at school: 3.125 is 3.13. (The default of System.Math is the
+        /// banker's, to the even digit: an area of 3.125 was shown as 3.12, and of the
+        /// numbers a point snapped to the grid gives, every other half went the wrong way.)
+        /// Through decimal, which takes the number as it is written: 2.675 as a double is a
+        /// hair under and would still round down.
+        /// </remarks>
         public static double Round(this double num, int fractionalDigits)
         {
+            if (M.Abs(num) < 1e15)
+            {
+                return (double)M.Round((decimal)num, fractionalDigits, System.MidpointRounding.AwayFromZero) + 0.0;
+            }
+
             return M.Round(num, fractionalDigits) + 0.0;
         }
 
@@ -593,6 +607,15 @@ namespace DynamicGeometry
             {
                 result -= 2 * PI;
             }
+
+            // A full turn but for a rounding error is no turn: two sides along one ray (a
+            // point put on ray BA) came out 0 or 359.99999 at random, and the angle's number
+            // and mark blinked between 0 and 360 degrees while anything moved.
+            if (2 * PI - result < 1e-9)
+            {
+                result = 0;
+            }
+
             return result;
         }
 
@@ -1352,6 +1375,16 @@ namespace DynamicGeometry
             }
             else
             {
+                // A polygon whose sides cross (a vertex dragged over the opposite side: a
+                // bow tie) is measured as it is filled. The formula below takes the parts
+                // that go round the other way away from the rest: the two halves of a
+                // symmetric bow tie came to 0, under a figure plainly filled.
+                var levels = CrossingLevels(points);
+                if (levels != null)
+                {
+                    return FilledArea(points, levels);
+                }
+
                 // general polygon area
                 double sum = 0;
                 for (int i = 0; i < points.Length - 1; i++)
@@ -1362,6 +1395,93 @@ namespace DynamicGeometry
                 sum += (points[0].X - points[lastIndex].X) * (points[0].Y + points[lastIndex].Y) / 2;
                 return sum.Abs();
             }
+        }
+
+        /// <summary>
+        /// The heights at which two sides of the polygon cross each other (not at a vertex
+        /// they share); null for a polygon whose sides don't cross
+        /// </summary>
+        static List<double> CrossingLevels(Point[] points)
+        {
+            List<double> levels = null;
+            int count = points.Length;
+            for (int i = 0; i < count; i++)
+            {
+                var p = points[i];
+                var r = points[(i + 1) % count].Minus(p);
+                for (int j = i + 2; j < count; j++)
+                {
+                    // the last side and the first share a vertex too
+                    if (i == 0 && j == count - 1)
+                    {
+                        continue;
+                    }
+
+                    var q = points[j];
+                    var s = points[(j + 1) % count].Minus(q);
+                    double denominator = r.X * s.Y - r.Y * s.X;
+                    if (denominator == 0)
+                    {
+                        continue;
+                    }
+
+                    double t = ((q.X - p.X) * s.Y - (q.Y - p.Y) * s.X) / denominator;
+                    double u = ((q.X - p.X) * r.Y - (q.Y - p.Y) * r.X) / denominator;
+                    if (t > 0 && t < 1 && u > 0 && u < 1)
+                    {
+                        levels = levels ?? new List<double>();
+                        levels.Add(p.Y + t * r.Y);
+                    }
+                }
+            }
+
+            return levels;
+        }
+
+        /// <summary>
+        /// The area an even-odd fill of the polygon covers (how a polygon is filled on
+        /// screen), in slabs between the heights of its vertices and of the crossings of
+        /// its sides: within a slab no two sides cross, so what is filled there is a row of
+        /// trapezoids, as wide in all as they are half way up.
+        /// </summary>
+        static double FilledArea(Point[] points, List<double> levels)
+        {
+            foreach (var point in points)
+            {
+                levels.Add(point.Y);
+            }
+
+            levels.Sort();
+            double area = 0;
+            var crossings = new List<double>();
+            for (int level = 1; level < levels.Count; level++)
+            {
+                double height = levels[level] - levels[level - 1];
+                if (!(height > 0))
+                {
+                    continue;
+                }
+
+                double middle = (levels[level] + levels[level - 1]) / 2;
+                crossings.Clear();
+                for (int i = 0; i < points.Length; i++)
+                {
+                    var a = points[i];
+                    var b = points[(i + 1) % points.Length];
+                    if ((a.Y < middle) != (b.Y < middle))
+                    {
+                        crossings.Add(a.X + (b.X - a.X) * (middle - a.Y) / (b.Y - a.Y));
+                    }
+                }
+
+                crossings.Sort();
+                for (int i = 0; i + 1 < crossings.Count; i += 2)
+                {
+                    area += (crossings[i + 1] - crossings[i]) * height;
+                }
+            }
+
+            return area;
         }
 
         public static double Area(this IEnumerable<Point> vertices)
@@ -1429,6 +1549,36 @@ namespace DynamicGeometry
         static double Magnitude(Point point)
         {
             return M.Max(M.Abs(point.X), M.Abs(point.Y));
+        }
+
+        /// <summary>
+        /// How far a point is from an ellipse, along the ray from the center through the
+        /// point: negative inside, the radius minus the distance for a circle. What a hit
+        /// test compares with the reach of the cursor. (It compared the left side of the
+        /// ellipse's equation minus 1 instead, a number without units against a length: the
+        /// band around a circle that took a click was as many times too wide as half the
+        /// radius measures in units - a circle of radius 100 took every click on the screen,
+        /// one of radius 0.2 almost none.)
+        /// </summary>
+        public static double RadialDistanceToEllipse(
+            Point center,
+            double semiMajor,
+            double semiMinor,
+            double inclination,
+            Point point)
+        {
+            var distance = Distance(center, point);
+            if (distance == 0)
+            {
+                return -M.Min(semiMajor, semiMinor);
+            }
+
+            // (distance from the center / distance of the edge in that direction) squared
+            var angle = GetAngle(center, point) - inclination;
+            var x = distance * M.Cos(angle);
+            var y = distance * M.Sin(angle);
+            var equationLeft = x * x / (semiMajor * semiMajor) + y * y / (semiMinor * semiMinor);
+            return distance - distance / M.Sqrt(equationLeft);
         }
 
         /// <summary>

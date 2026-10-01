@@ -193,15 +193,38 @@ namespace DynamicGeometry
             }
         }
 
+        // what the binding last gave each theme, by theme and property
+        Dictionary<(string Theme, string Property), object> boundValues;
+
+        /// <summary>
+        /// Each theme's value of the property from the theme's colors - except where the
+        /// user has given the property another value since (a red fill for the default
+        /// point style): that is theirs and stays. It used to be overwritten whenever the
+        /// themes were read again (a theme color tweaked, the theme switched while the
+        /// drawing was behind the gallery), and the drawing then saved without it.
+        /// </summary>
         void ReadFromTheme(string property, Func<AppTheme, object> value)
         {
+            boundValues ??= new Dictionary<(string Theme, string Property), object>();
+            var propertyInfo = GetType().GetProperty(property);
             foreach (var theme in AppTheme.All)
             {
+                var key = (theme.Name, property);
+                bool isBase = theme == AppTheme.Light;
+                object current = isBase
+                    ? propertyInfo.GetValue(this)
+                    : Overrides.TryGetValue(theme.Name, out var values) && values.TryGetValue(property, out var overridden) ? overridden : null;
+                if (boundValues.TryGetValue(key, out var bound) && !Equals(current, bound))
+                {
+                    continue;
+                }
+
                 var themeValue = value(theme);
-                if (theme == AppTheme.Light)
+                boundValues[key] = themeValue;
+                if (isBase)
                 {
                     // the setter raises PropertyChanged, and the figures repaint
-                    GetType().GetProperty(property).SetValue(this, themeValue);
+                    propertyInfo.SetValue(this, themeValue);
                 }
                 else
                 {
@@ -247,6 +270,7 @@ namespace DynamicGeometry
             result.PropertyChanged = null; // the copy's setters must not repaint the original's figures
             result.Overrides = new Dictionary<string, Dictionary<string, object>>();
             result.themeBindings = null;
+            result.boundValues = null;
             var type = GetType();
             foreach (var pair in values)
             {
@@ -283,6 +307,7 @@ namespace DynamicGeometry
             result.PropertyChanged = null;
             result.Name = "";
             result.themeBindings = null;
+            result.boundValues = null;
             result.Overrides = new Dictionary<string, Dictionary<string, object>>();
             foreach (var pair in Overrides)
             {

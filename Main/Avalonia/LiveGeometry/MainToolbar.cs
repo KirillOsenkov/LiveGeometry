@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -21,8 +22,8 @@ public class MainToolbar : Panel
     readonly StackPanel buttons = new StackPanel()
     {
         Orientation = Orientation.Horizontal,
-        Spacing = 2,
-        Margin = new Thickness(8, 4, 6, 2)
+        Spacing = NormalSpacing,
+        Margin = NormalMargin
     };
 
     // where buttons are added: the strip itself or the group that is open
@@ -165,10 +166,68 @@ public class MainToolbar : Panel
         rightControls.Children.Add(control);
     }
 
+    // the buttons closer together, for a narrow window
+    bool isCompact;
+
+    const double NormalSpacing = 2;
+    const double NormalSeparatorMargin = 5;
+    const double CompactSeparatorMargin = 2;
+    static readonly Thickness NormalMargin = new Thickness(8, 4, 6, 2);
+    // (the same at the left: the tab drawn around the first button reaches past it)
+    static readonly Thickness CompactMargin = new Thickness(8, 4, 2, 2);
+
+    /// <summary>
+    /// On a phone the buttons as they are need more than the width of the screen (about
+    /// 410 pixels), and the last of them - the settings - was cut off with no way to reach
+    /// it. Closer together, square and without room around the separators, they fit in 330.
+    /// </summary>
+    void SetCompact(bool compact)
+    {
+        isCompact = compact;
+        buttons.Spacing = compact ? 0 : NormalSpacing;
+        buttons.Margin = compact ? CompactMargin : NormalMargin;
+        foreach (var child in buttons.Children)
+        {
+            if (child is MainToolbarButton button)
+            {
+                button.Width = compact ? button.Height : button.Height + MainToolbarButton.ExtraWidth;
+            }
+            else if (child is Border separator && separator.Width == 1)
+            {
+                double margin = compact ? CompactSeparatorMargin : NormalSeparatorMargin;
+                separator.Margin = new Thickness(margin, 5, margin, 5);
+            }
+        }
+    }
+
+    /// <summary>How much wider the buttons are when they are not compact</summary>
+    double CompactSavings()
+    {
+        int buttonCount = buttons.Children.OfType<MainToolbarButton>().Count();
+        int separatorCount = buttons.Children.Count(child => !(child is MainToolbarButton) && child is Border border && border.Width == 1);
+        return buttonCount * MainToolbarButton.ExtraWidth
+            + separatorCount * 2 * (NormalSeparatorMargin - CompactSeparatorMargin)
+            + System.Math.Max(0, buttons.Children.Count - 1) * NormalSpacing
+            + NormalMargin.Left + NormalMargin.Right - CompactMargin.Left - CompactMargin.Right;
+    }
+
     protected override Size MeasureOverride(Size availableSize)
     {
         var unbounded = new Size(double.PositiveInfinity, double.PositiveInfinity);
         buttons.Measure(unbounded);
+
+        // changed only when the width asks for the other way, or every pass would undo the last
+        if (!isCompact && buttons.DesiredSize.Width > availableSize.Width)
+        {
+            SetCompact(true);
+            buttons.Measure(unbounded);
+        }
+        else if (isCompact && buttons.DesiredSize.Width + CompactSavings() <= availableSize.Width)
+        {
+            SetCompact(false);
+            buttons.Measure(unbounded);
+        }
+
         double width = buttons.DesiredSize.Width;
         double height = buttons.DesiredSize.Height;
 
@@ -307,7 +366,7 @@ public class MainToolbar : Panel
         var separator = new Border()
         {
             Width = 1,
-            Margin = new Thickness(5, 5, 5, 5)
+            Margin = new Thickness(NormalSeparatorMargin, 5, NormalSeparatorMargin, 5)
         };
         separator.BindTheme(Border.BackgroundProperty, nameof(AppTheme.TabLine));
         current.Children.Add(separator);
@@ -468,6 +527,9 @@ public class MainToolbarButton : Border, ICommandObserver
     /// <summary>The plate around the icon (a little more at the sides)</summary>
     public const double DefaultInset = 5;
 
+    /// <summary>A button is this much wider than high (none in a narrow window, see MainToolbar.SetCompact)</summary>
+    public const double ExtraWidth = 4;
+
     readonly Action action;
     bool isPressed;
     bool isChecked;
@@ -479,7 +541,7 @@ public class MainToolbarButton : Border, ICommandObserver
         double inset = DefaultInset)
     {
         this.action = action;
-        Width = iconSize + 2 * inset + 4;
+        Width = iconSize + 2 * inset + ExtraWidth;
         Height = iconSize + 2 * inset;
         CornerRadius = AppTheme.ButtonCornerRadius;
         Background = Brushes.Transparent;

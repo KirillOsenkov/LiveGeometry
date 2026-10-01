@@ -267,7 +267,9 @@ namespace DynamicGeometry
 
                 coordinates.P1 = vertex;
                 coordinates.P2 = halfway;
-                Exists = coordinates.P2.Exists();
+
+                // (see ReflectedPoint: no bisector of an angle whose points are not there)
+                Exists = Dependencies.Exists() && dependencies.Exists() && coordinates.P2.Exists();
             }
             else
             {

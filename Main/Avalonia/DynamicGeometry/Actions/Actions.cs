@@ -318,17 +318,54 @@ namespace DynamicGeometry
 
 #if !PLAYER
 
-        public static void Paste(Drawing drawing, string xmlContent)
+        /// <param name="pixelOffset">
+        /// How far from the originals the copies go, in pixels down and to the right, with
+        /// their roots that can move; the copies are selected
+        /// </param>
+        public static void Paste(Drawing drawing, string xmlContent, double pixelOffset = 0)
         {
             var action = new PasteAction(
                 drawing,
                 xmlContent);
 
             // nothing was copied: no undo step that undoes nothing
-            if (action.Figures.Any())
+            if (!action.Figures.Any())
+            {
+                return;
+            }
+
+            // not delayed: the copies are in the drawing before they are moved
+            using (Transaction.Create(drawing.ActionManager, false))
             {
                 drawing.ActionManager.RecordAction(action);
+                var pasted = action.Figures.ToList();
+                var roots = pasted
+                    .Where(figure => figure.Dependencies.Count == 0
+                        && figure is IMovable movable
+                        && movable.AllowMove()
+                        && !(figure is Label { Pin: not LabelPin.None }))
+                    .Cast<IMovable>()
+                    .ToList();
+
+                // a slider moves by its anchor, as when it is dragged
+                roots.AddRange(pasted.OfType<Slider>().Select(slider => (IMovable)slider.Anchor));
+                if (pixelOffset != 0 && roots.Count > 0)
+                {
+                    var system = drawing.CoordinateSystem;
+                    var offset = new Point(system.ToLogical(pixelOffset), -system.ToLogical(pixelOffset));
+                    var toRecalculate = DependencyAlgorithms.FindDescendants(f => f.Dependents, roots.Cast<IFigure>());
+                    toRecalculate.Reverse();
+                    Move(drawing, roots, offset, toRecalculate);
+                }
             }
+
+            drawing.Figures.ClearSelection();
+            foreach (var figure in action.Figures)
+            {
+                figure.Selected = true;
+            }
+
+            drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
         }
 
 #endif

@@ -25,7 +25,12 @@ namespace DynamicGeometry
         /// </summary>
         protected override IFigure FindFigureInsteadOfPoint(Point unconstrainedCoordinates)
         {
-            var underMouse = Drawing.Figures.HitTest(unconstrainedCoordinates, f => f is ILengthProvider && Label.GivesNumber(f) && !f.DependsOn(TempPoint));
+            // (only what is in view: the filter is this tool's own, and without the last two
+            // tests a click on empty paper measured a hidden segment lying there - the long
+            // axis every ellipse keeps)
+            var underMouse = Drawing.Figures.HitTest(
+                unconstrainedCoordinates,
+                f => f.GivesLength() && f.Visible && f.IsHitTestVisible && !f.DependsOn(TempPoint));
             if (underMouse != null && Drawing.Figures.HitTest<IPoint>(unconstrainedCoordinates) == null)
             {
                 return underMouse;
@@ -36,7 +41,8 @@ namespace DynamicGeometry
 
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var underMouse = FindFigureInsteadOfPoint(Coordinates(e));
+            // where the cursor is, as the hover preview asks: not where Shift snaps it to
+            var underMouse = FindFigureInsteadOfPoint(Coordinates(e, false, false, false));
             if (underMouse != null)
             {
                 FoundDependencies.Clear();

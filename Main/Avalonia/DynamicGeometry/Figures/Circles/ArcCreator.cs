@@ -23,6 +23,15 @@ namespace DynamicGeometry
             return DependencyList.PointPointPoint;
         }
 
+        /// <summary>
+        /// Center, start and end are three points: the start on the center is a radius of 0,
+        /// the end on the start or the center no arc (a double click made them)
+        /// </summary>
+        protected override bool IsDegenerateRepeat(IFigure figure, IList<IFigure> found)
+        {
+            return true;
+        }
+
         protected override IFigure CreateIntermediateFigure()
         {
             if (FoundDependencies.Count == 2
@@ -74,6 +83,15 @@ namespace DynamicGeometry
         protected override DependencyList InitExpectedDependencies()
         {
             return DependencyList.PointPointPointPointPoint;
+        }
+
+        /// <summary>
+        /// Center and the ends of the two axes are three points; the arc may begin or end at
+        /// the end of an axis, but not at the center, and it doesn't end where it begins
+        /// </summary>
+        protected override bool IsDegenerateRepeat(IFigure figure, IList<IFigure> found)
+        {
+            return found.Count < 3 || figure == found[0] || found.Count == 4 && figure == found[3];
         }
 
         protected override IFigure CreateIntermediateFigure()

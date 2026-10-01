@@ -48,11 +48,23 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// From the first point to the last, along the way. (It was the perimeter of the
+        /// polygon on the same points, with the way back from the last to the first: an
+        /// open polyline over a 3 and a 4 measured 12.)
+        /// </summary>
         public double Length
         {
             get
             {
-                return VertexCoordinates.Distance();
+                var points = Dependencies.ToPoints().ToArray();
+                double length = 0;
+                for (int i = 1; i < points.Length; i++)
+                {
+                    length += points[i - 1].Distance(points[i]);
+                }
+
+                return length;
             }
         }
 

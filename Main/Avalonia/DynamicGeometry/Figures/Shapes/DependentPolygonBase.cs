@@ -212,6 +212,18 @@ namespace DynamicGeometry
             AdjustSides(sideCount);
             AdjustPolygon();
 
+            // New parts are shown, and a hidden polygon must hide them too: read from a
+            // file, it made its parts after it was told it was hidden, and its vertices and
+            // sides came back on screen, to be clicked, with the polygon itself not there.
+            // (Likewise when its number of sides went up while hidden.)
+            if (!Visible)
+            {
+                foreach (var part in Children)
+                {
+                    part.Visible = false;
+                }
+            }
+
             if (recalculate)
             {
                 Recalculate();

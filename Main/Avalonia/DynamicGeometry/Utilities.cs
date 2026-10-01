@@ -674,6 +674,16 @@ namespace DynamicGeometry
             return number.ToString(CultureInfo.InvariantCulture);
         }
 
+        /// <summary>
+        /// A number for the text of an expression: all its digits and never an exponent,
+        /// which the expression language doesn't read (6.1E-17, a coefficient of a line from
+        /// a file that should have been 0, made the line an error)
+        /// </summary>
+        public static string ToExpressionText(this double number)
+        {
+            return number.ToString("0.#################", CultureInfo.InvariantCulture);
+        }
+
         public static double ReadDouble(this XElement element, string attributeName)
         {
             double result = 0;

@@ -89,11 +89,8 @@ namespace DynamicGeometry
         {
             if (FoundDependencies.Count == 0)
             {
-                var result = Transformer.FindTransformSource(Drawing.Figures.HitTest(coordinates));
-                if (result != null)
-                {
-                    return result;
-                }
+                // only what can be rotated (see DilationCreator)
+                return Transformer.FindTransformSource(Drawing.Figures.HitTest(coordinates));
             }
             else if (FoundDependencies.Count == 1)
             {
@@ -106,7 +103,7 @@ namespace DynamicGeometry
             else if (FoundDependencies.Count == 2)
             {
                 var result = Drawing.Figures.HitTest(coordinates);
-                if (result is IAngleProvider && Label.GivesNumber(result))
+                if (result.GivesAngle())
                 {
                     return result;
                 }

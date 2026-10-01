@@ -44,7 +44,12 @@ public class SliderCreator : Behavior
             return;
         }
 
-        Finish(coordinates);
+        // (a second click where the first was is a double click, not the other end: the
+        // slider would start at 0, its knob on its anchor)
+        if (pending.IsDragged(coordinates))
+        {
+            Finish(coordinates);
+        }
     }
 
     public override void MouseMove(object sender, MouseEventArgs e)

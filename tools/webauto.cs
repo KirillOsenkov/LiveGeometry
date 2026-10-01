@@ -17,6 +17,9 @@
 //   dotnet run tools/webauto.cs -- click <x> <y> [left|right|double|middle]
 //   dotnet run tools/webauto.cs -- drag <x1> <y1> <x2> <y2> [steps]
 //   dotnet run tools/webauto.cs -- move <x> <y>
+//   dotnet run tools/webauto.cs -- tap <x> <y> [double]             a finger: touch events, which reach the page as pointer events of type "touch"
+//   dotnet run tools/webauto.cs -- touch <x1> <y1> <x2> <y2> [steps]   a drag with one finger
+//   dotnet run tools/webauto.cs -- pinch <x1> <y1> <x2> <y2> <x3> <y3> <x4> <y4> [steps]   two fingers: one from 1 to 2, the other from 3 to 4
 //   dotnet run tools/webauto.cs -- key <Key> [ctrl] [shift] [alt]   e.g. key Enter | key z ctrl | key F6 | key Delete
 //   dotnet run tools/webauto.cs -- text <literal text>
 //   dotnet run tools/webauto.cs -- eval <javascript>
@@ -51,7 +54,7 @@ const string ConsoleHook = """
 
 if (args.Length == 0)
 {
-    Console.WriteLine("usage: start | stop | nav | wait | console | shot | click | drag | move | key | text | eval  (see header comment)");
+    Console.WriteLine("usage: start | stop | nav | wait | console | shot | click | drag | move | tap | touch | pinch | key | text | eval  (see header comment)");
     return 1;
 }
 
@@ -135,6 +138,60 @@ try
             }
 
             await Mouse(cdp, "mouseReleased", x2, y2, "left", 0, 1);
+            break;
+        }
+        case "tap":
+        {
+            using var cdp = await Cdp.Connect(DebugPort);
+            double x = double.Parse(args[1]), y = double.Parse(args[2]);
+            for (int i = 0; i < (args.Length > 3 && args[3] == "double" ? 2 : 1); i++)
+            {
+                await Touch(cdp, "touchStart", (x, y));
+                await Task.Delay(30);
+                await Touch(cdp, "touchEnd");
+                await Task.Delay(60);
+            }
+
+            break;
+        }
+        case "touch":
+        {
+            using var cdp = await Cdp.Connect(DebugPort);
+            double x1 = double.Parse(args[1]), y1 = double.Parse(args[2]), x2 = double.Parse(args[3]), y2 = double.Parse(args[4]);
+            int steps = args.Length > 5 ? int.Parse(args[5]) : 12;
+            await Touch(cdp, "touchStart", (x1, y1));
+            for (int i = 1; i <= steps; i++)
+            {
+                await Touch(cdp, "touchMove", (x1 + (x2 - x1) * i / steps, y1 + (y2 - y1) * i / steps));
+                await Task.Delay(15);
+            }
+
+            await Touch(cdp, "touchEnd");
+            break;
+        }
+        case "pinch":
+        {
+            // two fingers: the first goes from (x1, y1) to (x2, y2) while the second, which
+            // lands a moment later, goes from (x3, y3) to (x4, y4); the second lifts first
+            using var cdp = await Cdp.Connect(DebugPort);
+            var p = args.Skip(1).Take(8).Select(double.Parse).ToArray();
+            int steps = args.Length > 9 ? int.Parse(args[9]) : 12;
+            await Touch(cdp, "touchStart", (p[0], p[1]));
+            await Task.Delay(30);
+            await Touch(cdp, "touchStart", (p[0], p[1]), (p[4], p[5]));
+            for (int i = 1; i <= steps; i++)
+            {
+                await Touch(
+                    cdp,
+                    "touchMove",
+                    (p[0] + (p[2] - p[0]) * i / steps, p[1] + (p[3] - p[1]) * i / steps),
+                    (p[4] + (p[6] - p[4]) * i / steps, p[5] + (p[7] - p[5]) * i / steps));
+                await Task.Delay(15);
+            }
+
+            await Touch(cdp, "touchEnd", (p[2], p[3]));
+            await Task.Delay(30);
+            await Touch(cdp, "touchEnd");
             break;
         }
         case "key": { using var cdp = await Cdp.Connect(DebugPort); await Key(cdp, args[1], args.Skip(2).ToArray()); break; }
@@ -269,6 +326,19 @@ static Task<JsonNode> Mouse(Cdp cdp, string type, double x, double y, string but
     {
         ["type"] = type, ["x"] = x, ["y"] = y, ["button"] = button, ["buttons"] = buttons, ["clickCount"] = clickCount,
     });
+
+// The fingers on the screen after the event, in the order they went down (the place in
+// the list is the finger's id); none for the end of the last touch.
+static Task<JsonNode> Touch(Cdp cdp, string type, params (double X, double Y)[] fingers)
+{
+    var points = new JsonArray();
+    for (int i = 0; i < fingers.Length; i++)
+    {
+        points.Add(new JsonObject { ["x"] = fingers[i].X, ["y"] = fingers[i].Y, ["id"] = i, ["radiusX"] = 8, ["radiusY"] = 8, ["force"] = 1 });
+    }
+
+    return cdp.Send("Input.dispatchTouchEvent", new JsonObject { ["type"] = type, ["touchPoints"] = points });
+}
 
 static async Task Key(Cdp cdp, string key, string[] modifierNames)
 {

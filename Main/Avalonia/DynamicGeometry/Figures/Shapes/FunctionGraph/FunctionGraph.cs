@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Avalonia;
-using Avalonia.Media;
 
 namespace DynamicGeometry
 {
     public class FunctionGraph : Curve, ILinearFigure, IRenamableExpressions
     {
-        public FunctionGraph()
-        {
-            for (int i = 0; i < StepCount; i++)
-            {
-                pathSegments.Add(new LineSegment());
-            }
-        }
-
         /// <summary>
         /// A sample every couple of pixels: at one per 10 px a sine of frequency 3 was a zigzag
         /// </summary>
@@ -147,26 +138,29 @@ namespace DynamicGeometry
             }
         }
 
+        // no value where there is no function, and where it throws (it was 0: a wrong value
+        // drawn as if it were one)
         double CallFunction(double parameter)
         {
             if (Function == null)
             {
-                return 0;
+                return double.NaN;
             }
+
             try
             {
                 return Function(parameter);
             }
             catch (Exception)
             {
-                return 0;
+                return double.NaN;
             }
         }
 
         public override void GetPoints(List<Point> result)
         {
             var stepCount = StepCount;
-            if (stepCount == 0)
+            if (stepCount == 0 || Function == null)
             {
                 return;
             }
@@ -175,20 +169,145 @@ namespace DynamicGeometry
             double minX = coordinates.MinimalVisibleX;
             double maxX = coordinates.MaximalVisibleX;
 
-            var step = (maxX - minX) / StepCount;
-            for (double x = minX; x < maxX; x += step)
+            // Far beyond the window one value is as good as another, and a coordinate of
+            // 1e300 pixels is not drawn at all: exp(x^2) vanished whole. The piece that
+            // leaves the window still leaves it steeply.
+            double height = coordinates.MaximalVisibleY - coordinates.MinimalVisibleY;
+            double lowest = coordinates.MinimalVisibleY - 10 * height;
+            double highest = coordinates.MaximalVisibleY + 10 * height;
+
+            Point Clamped(double x, double y)
             {
+                return new Point(x, System.Math.Max(lowest, System.Math.Min(highest, y)));
+            }
+
+            double previousX = 0;
+            double previousY = double.NaN;
+            for (int i = 0; i <= stepCount; i++)
+            {
+                double x = i == stepCount ? maxX : minX + (maxX - minX) * i / stepCount;
                 double y = CallFunction(x);
-                if (y.IsValidValue())
+                if (!y.IsValidValue())
                 {
-                    result.Add(new Point(x, y));
+                    // the graph goes on to where the function stops having a value, not
+                    // only to the last sample before (sqrt(x) starts at 0, not in the air)
+                    if (i > 0 && previousY.IsValidValue())
+                    {
+                        double edge = FindEdge(inside: previousX, outside: x);
+                        result.Add(Clamped(edge, CallFunction(edge)));
+                    }
+
+                    AddGap(result);
+                }
+                else
+                {
+                    if (i > 0 && !previousY.IsValidValue())
+                    {
+                        double edge = FindEdge(inside: x, outside: previousX);
+                        result.Add(Clamped(edge, CallFunction(edge)));
+                    }
+                    else if (previousY.IsValidValue()
+                        && MayBeJump(previousY, y, coordinates)
+                        && IsJump(previousX, previousY, x, y))
+                    {
+                        AddGap(result);
+                    }
+
+                    result.Add(Clamped(x, y));
+                }
+
+                previousX = x;
+                previousY = y;
+            }
+        }
+
+        /// <summary>Between a place where the function has a value and one where it has none: the last place where it has</summary>
+        double FindEdge(double inside, double outside)
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                double middle = (inside + outside) / 2;
+                if (CallFunction(middle).IsValidValue())
+                {
+                    inside = middle;
+                }
+                else
+                {
+                    outside = middle;
                 }
             }
-            double finalY = CallFunction(maxX);
-            if (finalY.IsValidValue())
+
+            return inside;
+        }
+
+        static void AddGap(List<Point> points)
+        {
+            if (points.Count > 0 && points[points.Count - 1].Exists())
             {
-            result.Add(new Point(maxX, finalY));
+                points.Add(Gap);
             }
+        }
+
+        /// <summary>Units up for one across: a step of the graph steeper than this is looked into</summary>
+        const double SteepSlope = 8;
+
+        /// <summary>In pixels: a step of the graph that climbs less than this is no jump to look for</summary>
+        const double JumpPixels = 24;
+
+        /// <summary>
+        /// Whether the line between two samples next to each other is worth looking into
+        /// (<see cref="IsJump"/> costs a dozen more values of the function): it is long on
+        /// the screen, and not wholly above or below the window, where it isn't seen
+        /// </summary>
+        static bool MayBeJump(double y1, double y2, CoordinateSystem coordinates)
+        {
+            if (System.Math.Abs(y2 - y1) * coordinates.UnitLength < JumpPixels)
+            {
+                return false;
+            }
+
+            bool bothAbove = y1 > coordinates.MaximalVisibleY && y2 > coordinates.MaximalVisibleY;
+            bool bothBelow = y1 < coordinates.MinimalVisibleY && y2 < coordinates.MinimalVisibleY;
+            return !bothAbove && !bothBelow;
+        }
+
+        /// <summary>
+        /// Whether the function jumps between two samples next to each other, rather than
+        /// climbs: 1/x across 0, tan x across its poles, floor(x) at every whole number.
+        /// The two are then not joined - the line between them was drawn as if it were part
+        /// of the graph, a vertical one at every pole. Told apart by halving the step
+        /// towards the larger change: a climb gets smaller with the step, a jump stays.
+        /// </summary>
+        bool IsJump(double x1, double y1, double x2, double y2)
+        {
+            double change = System.Math.Abs(y2 - y1);
+            if (change <= SteepSlope * (x2 - x1))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < 12; i++)
+            {
+                double middle = (x1 + x2) / 2;
+                double y = CallFunction(middle);
+                if (!y.IsValidValue())
+                {
+                    return true;
+                }
+
+                if (System.Math.Abs(y - y1) > System.Math.Abs(y2 - y))
+                {
+                    x2 = middle;
+                    y2 = y;
+                }
+                else
+                {
+                    x1 = middle;
+                    y1 = y;
+                }
+            }
+
+            return System.Math.Abs(y2 - y1) > change / 8;
         }
 
         public override double GetNearestParameterFromPoint(Point point)

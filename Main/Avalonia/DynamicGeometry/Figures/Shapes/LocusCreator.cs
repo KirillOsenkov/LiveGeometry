@@ -20,6 +20,12 @@ namespace DynamicGeometry
                 {
                     return;
                 }
+
+                // nothing here that the locus takes: no step (see FigureCreator.AddDependency)
+                if (underMouse == null || !GetExpectedDependencyType().IsAssignableFrom(underMouse.GetType()))
+                {
+                    return;
+                }
             }
 
             StartConstruction();

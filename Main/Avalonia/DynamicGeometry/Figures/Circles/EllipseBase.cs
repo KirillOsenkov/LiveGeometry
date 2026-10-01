@@ -36,15 +36,15 @@ namespace DynamicGeometry
         public override IFigure HitTest(Point point)
         {
             var width = LogicalWidth();
-            var r = Math.Distance(Center, point);
-            var angleToPoint = Math.GetAngle(Center, point);
-
-            // Find the point relative to the ellipse in canonical form(unrotated).
-            var canonicalPoint = Math.RotatePoint(Center, r, angleToPoint - Inclination).Minus(Center);
-            var equationLeft = canonicalPoint.X.Sqr() / SemiMajor.Sqr() + canonicalPoint.Y.Sqr() / SemiMinor.Sqr();
+            var fromEdge = Math.RadialDistanceToEllipse(
+                Center,
+                SemiMajor,
+                SemiMinor,
+                Inclination,
+                point);
 
             // HitTest for the edge
-            if ((equationLeft - 1).Abs() < CursorTolerance + width / 2)
+            if (fromEdge.Abs() < CursorTolerance + width / 2)
             {
                 return this;
             }
@@ -53,7 +53,7 @@ namespace DynamicGeometry
             ShapeStyle shapeStyle = Style as ShapeStyle;
             if (shapeStyle != null)
             {
-                if (shapeStyle.IsFilled && equationLeft < 1)
+                if (shapeStyle.IsFilled && fromEdge < 0)
                 {
                     return this;
                 }

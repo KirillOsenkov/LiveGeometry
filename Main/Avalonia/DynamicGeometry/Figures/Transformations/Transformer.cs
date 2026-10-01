@@ -11,7 +11,8 @@ namespace DynamicGeometry
         /// its copy would be one: an unnamed segment, which a file can't refer to. A vertex
         /// stays a point like any other. Null for what can't be transformed.
         /// </summary>
-        public static IFigure FindTransformSource(IFigure figure)
+        /// <param name="keepsLengths">False for a dilation, see <see cref="CanBeTransformSource"/></param>
+        public static IFigure FindTransformSource(IFigure figure, bool keepsLengths = true)
         {
             if (figure != null && !(figure is IPoint))
             {
@@ -24,10 +25,20 @@ namespace DynamicGeometry
                 }
             }
 
-            return CanBeTransformSource(figure) ? figure : null;
+            return CanBeTransformSource(figure, keepsLengths) ? figure : null;
         }
 
-        public static bool CanBeTransformSource(IFigure figure)
+        /// <summary>
+        /// A figure is transformed by transforming what it is built on, down to its points,
+        /// so everything it is built on must be something to transform - or a length, which
+        /// a reflection, a rotation and a translation leave as it is: a circle by radius
+        /// whose radius is a slider, a Number or a measurement keeps that radius. (Asked
+        /// only about the figure itself, such a circle was taken, and the tool threw
+        /// "dependency is empty" when the last click was made - By Radius makes a slider
+        /// for the radius whenever its first click is on empty paper.)
+        /// </summary>
+        /// <param name="keepsLengths">False for a dilation: a radius that is a number can't be scaled</param>
+        public static bool CanBeTransformSource(IFigure figure, bool keepsLengths = true)
         {
             // Not yet supported (a line at an angle would transform its angle as if it were a point)
             if (figure is CircleByEquation || figure is LineByEquation || figure is LineAtAngle || figure is FunctionGraph || figure is Locus)
@@ -35,12 +46,40 @@ namespace DynamicGeometry
                 return false;
             }
 
-            // Supported
-            if (figure is IPoint || figure is ILine || figure is IEllipse || figure is IPolygonalChain)
+            if (figure is IPoint)
             {
                 return true;
             }
-            return false;
+
+            if (!(figure is ILine || figure is IEllipse || figure is IPolygonalChain))
+            {
+                return false;
+            }
+
+            foreach (var dependency in figure.Dependencies)
+            {
+                if (IsLength(figure, dependency))
+                {
+                    if (!keepsLengths)
+                    {
+                        return false;
+                    }
+                }
+                else if (!CanBeTransformSource(dependency, keepsLengths))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>A radius given by a number, not by a segment or two points: the image has the same</summary>
+        static bool IsLength(IFigure figure, IFigure dependency)
+        {
+            return figure is CircleByRadius
+                && dependency is ILengthProvider
+                && !(dependency is IPoint || dependency is ILine || dependency is IEllipse || dependency is IPolygonalChain);
         }
 
         public static bool CanFigureBeMirrorForSource(IFigure figure, IFigure source)
@@ -80,6 +119,12 @@ namespace DynamicGeometry
                 var dependencies = new List<IFigure>();
                 foreach (var dependency in source.Dependencies)
                 {
+                    if (IsLength(source, dependency))
+                    {
+                        dependencies.Add(dependency);
+                        continue;
+                    }
+
                     var reflectedDependency = CreateReflectedFigure(drawing, dependency, mirror);
                     if (reflectedDependency == null)
                     {
@@ -218,6 +263,12 @@ namespace DynamicGeometry
                 var dependencies = new List<IFigure>();
                 foreach (var dependency in source.Dependencies)
                 {
+                    if (IsLength(source, dependency))
+                    {
+                        dependencies.Add(dependency);
+                        continue;
+                    }
+
                     var rotatedDependency = CreateRotatedFigure(drawing, dependency, center, angleProvider);
                     if (rotatedDependency == null)
                     {
@@ -274,6 +325,12 @@ namespace DynamicGeometry
                 var dependencies = new List<IFigure>();
                 foreach (var dependency in source.Dependencies)
                 {
+                    if (IsLength(source, dependency))
+                    {
+                        dependencies.Add(dependency);
+                        continue;
+                    }
+
                     var translatedDependency = CreateTranslatedFigure(drawing, dependency, distanceSource, directionSource);
                     if (translatedDependency.IsEmpty())
                     {

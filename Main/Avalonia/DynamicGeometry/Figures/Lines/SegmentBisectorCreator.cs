@@ -20,13 +20,19 @@ namespace DynamicGeometry
 
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var underMouse = Drawing.Figures.HitTest<Segment>(Coordinates(e));
+            // A segment stands for its two ends only as the first click. As the second - the
+            // other point, put on a segment - its ends were added to the point already
+            // there: the bisector was that of the point and one end, and the click's own
+            // point was left over.
+            var coordinates = Coordinates(e, false, false, false);
+            var underMouse = FoundDependencies.IsEmpty() ? Drawing.Figures.HitTest<Segment>(coordinates) : null;
             if (underMouse != null
                 && underMouse.Dependencies.Count() == 2
-                && Drawing.Figures.HitTest<IPoint>(Coordinates(e)) == null)
+                && Drawing.Figures.HitTest<IPoint>(coordinates) == null)
             {
                 FoundDependencies.AddRange(underMouse.Dependencies);
             }
+
             base.MouseDown(sender, e);
         }
 

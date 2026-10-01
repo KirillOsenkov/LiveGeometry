@@ -360,7 +360,14 @@ namespace DynamicGeometry
                 return;
             }
 
+            // the way round it goes: the mirror image of a mark goes clockwise (reflected, a
+            // 60 degree mark came out as the 300 degree loop on the other side)
             var angle = Math.OAngle(BeginLocation, center, EndLocation);
+            if (Clockwise && angle > 0)
+            {
+                angle = 2 * Math.PI - angle;
+            }
+
             var isRightAngle = System.Math.Abs(angle - Math.PI / 2) < RightAngleTolerance;
             // What the first figure of the path is made of. "Nothing" is a figure without
             // segments and not a path without figures: an empty path doesn't get repainted.

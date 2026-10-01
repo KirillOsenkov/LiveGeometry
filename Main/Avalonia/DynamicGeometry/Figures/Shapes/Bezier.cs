@@ -123,8 +123,9 @@ namespace DynamicGeometry
                 return null;
             }
 
-            var projection = curve.GetProjection(point);
-            if (projection.DistanceToLine < ToLogical(Shape.StrokeThickness / 2 + Math.CursorTolerance))
+            // (the corners of the polyline count too: on the outer side of a bend a click is
+            // over neither piece, and a curve bending sharply was missed right beside it)
+            if (Math.IsPointOnPolygonalChain(curve.Points, point, ToLogical(Shape.StrokeThickness / 2 + Math.CursorTolerance), false))
             {
                 return this;
             }

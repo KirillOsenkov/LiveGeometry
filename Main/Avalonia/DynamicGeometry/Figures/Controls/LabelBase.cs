@@ -172,9 +172,10 @@ namespace DynamicGeometry
                     var compileResult = embeddedExpressions[i - 1];
                     if (compileResult.IsSuccess)
                     {
-                        // (the square root of a negative number, 0 / 0: it said "NaN")
+                        // (the square root of a negative number, 0 / 0: it said "NaN"; 1 / 0
+                        // said "Infinity")
                         double value = compileResult.Expression();
-                        sb.Append(double.IsNaN(value) ? UndefinedText : Math.Round(value, DecimalsToShow).ToString());
+                        sb.Append(!value.IsValidValue() ? UndefinedText : Math.Round(value, DecimalsToShow).ToString());
                     }
                     else
                     {
@@ -253,6 +254,33 @@ namespace DynamicGeometry
                 // once each: a figure named in two [...] parts listed twice would be swapped
                 // only in its first place when it is replaced (ReplaceDependency)
                 Dependencies.Merge(compileResult.Dependencies);
+            }
+        }
+
+        /// <summary>
+        /// The value of a label that is one expression and nothing else ("[AB / 3]"), as
+        /// it is and not as the label shows it: rounded to the label's decimals, a radius
+        /// taken from it was 0.33 instead of a third, and changed with Decimals. Null for
+        /// any other label.
+        /// </summary>
+        protected double? ExactValue
+        {
+            get
+            {
+                if (!ShouldProcessText
+                    || textChunks == null
+                    || embeddedExpressions == null
+                    || embeddedExpressions.Count != 1
+                    || textChunks.Count != 2
+                    || !string.IsNullOrWhiteSpace(textChunks[0])
+                    || !string.IsNullOrWhiteSpace(textChunks[1])
+                    || !embeddedExpressions[0].IsSuccess)
+                {
+                    return null;
+                }
+
+                double value = embeddedExpressions[0].Expression();
+                return value.IsValidValue() ? value : double.NaN;
             }
         }
 

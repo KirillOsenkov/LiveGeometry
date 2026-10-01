@@ -19,9 +19,31 @@ namespace DynamicGeometry
             return Angle(a, b, c);
         }
 
+        // (not number.SquareRoot(), which takes the root of the absolute value: sqr(-4) was 2)
         public static double Sqr(double number)
         {
-            return number.SquareRoot();
+            return System.Math.Sqrt(number);
+        }
+
+        // Functions of numbers that System.Math has under the same name, as they should
+        // be in a drawing (Binder.ResolveMethod asks here first).
+
+        /// <summary>A half goes up, as at school: System.Math.Round takes 2.5 to 2</summary>
+        public static double Round(double number)
+        {
+            return System.Math.Round(number, System.MidpointRounding.AwayFromZero);
+        }
+
+        /// <summary>System.Math.Sign throws for what is not a number (the sign of log(x) left of 0)</summary>
+        public static double Sign(double number)
+        {
+            return double.IsNaN(number) ? double.NaN : System.Math.Sign(number);
+        }
+
+        /// <summary>System.Math.Clamp throws when the bounds are the wrong way round</summary>
+        public static double Clamp(double number, double low, double high)
+        {
+            return low > high ? double.NaN : System.Math.Max(low, System.Math.Min(high, number));
         }
 
         public static double Ln(double number)
@@ -107,7 +129,7 @@ namespace DynamicGeometry
 
         public static double Sgn(double number)
         {
-            return System.Math.Sign(number);
+            return Sign(number);
         }
 
         public static double Lg(double number)

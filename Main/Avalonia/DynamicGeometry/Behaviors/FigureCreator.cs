@@ -161,6 +161,16 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>The transaction opened for a click that turned out to add nothing, at the first step</summary>
+        protected void DropEmptyTransaction()
+        {
+            if (Transaction != null && FoundDependencies.IsEmpty() && !Transaction.HasActions())
+            {
+                Transaction.Rollback();
+                Transaction = null;
+            }
+        }
+
         public override void Stopping()
         {
             ForgetCreatedFigure();
@@ -547,6 +557,31 @@ namespace DynamicGeometry
 
         protected bool CanReuseDependency { get; set; }
 
+        /// <summary>
+        /// A figure the construction has and does not take a second time: any it has found,
+        /// unless the tool may come back to one (<see cref="CanReuseDependency"/>: a circle
+        /// around an end of its own radius) - and then not where that would make nothing
+        /// (<see cref="IsDegenerateRepeat"/>: the same point twice in a row is the second
+        /// click of a double click, and By Radius made a circle of radius 0 of it, nowhere
+        /// to be seen but in the list and in the file).
+        /// </summary>
+        protected bool IsTaken(IFigure figure)
+        {
+            if (figure == null || !FoundDependencies.Contains(figure))
+            {
+                return false;
+            }
+
+            return !CanReuseDependency || IsDegenerateRepeat(figure, FoundDependencies.Where(found => found != TempPoint).ToList());
+        }
+
+        /// <summary>For a tool that may take a figure again: whether taking this one, which it has, as the next would make nothing</summary>
+        /// <param name="found">What the construction has so far, without the point following the cursor</param>
+        protected virtual bool IsDegenerateRepeat(IFigure figure, IList<IFigure> found)
+        {
+            return false;
+        }
+
         protected abstract DependencyList InitExpectedDependencies();
 
         protected virtual void AddFoundDependency(IFigure figure)
@@ -580,7 +615,18 @@ namespace DynamicGeometry
                 // MouseDownUnconstrainedCoordinates used here to properly find the figure under the mouse.
                 underMouse = LookForExpectedDependencyUnderCursor(ClickedUnconstrainedCoordinates);
 
-                if (underMouse != null && FoundDependencies.Contains(underMouse) && !CanReuseDependency)
+                // Typed coordinates take a point only where it is exactly. Found as a click
+                // finds one - anything within reach of a cursor - a vertex typed close to
+                // the one before was taken for it and dropped, and one typed near any other
+                // point became that point.
+                if (!canPlacePointsOnFigures
+                    && underMouse is IPoint near
+                    && !near.Coordinates.EqualsWithPrecision(ClickedUnconstrainedCoordinates))
+                {
+                    underMouse = null;
+                }
+
+                if (IsTaken(underMouse))
                 {
                     return;
                 }
@@ -603,6 +649,17 @@ namespace DynamicGeometry
                         freePoint.Coordinates = pointUnderMouse.Coordinates;
                     }
                     underMouse = freePoint;
+                }
+
+                // A click that found nothing the tool takes (a figure is wanted, and the
+                // click was on empty paper) is no step of a construction. It used to start
+                // one, with nothing in it: the Undo button lit up on an empty drawing, the
+                // first Ctrl+Z only put the tool back, and Redo, Delete and Paste did
+                // nothing until then.
+                if (underMouse == null)
+                {
+                    DropEmptyTransaction();
+                    return;
                 }
             }
 
@@ -666,8 +723,10 @@ namespace DynamicGeometry
                     return false;
                 }
 
-                // (a label that says no number is nothing to take a length or an angle from)
-                if ((expected == typeof(ILengthProvider) || expected == typeof(IAngleProvider)) && !Label.GivesNumber(f))
+                // (a label that says no number is nothing to take a length or an angle
+                // from, nor is an angle's mark a length)
+                if (expected == typeof(ILengthProvider) && !f.GivesLength()
+                    || expected == typeof(IAngleProvider) && !f.GivesAngle())
                 {
                     return false;
                 }
@@ -786,7 +845,7 @@ namespace DynamicGeometry
             }
 
             var figure = LookForExpectedDependencyUnderCursor(unconstrainedCoordinates);
-            if (figure != null && FoundDependencies.Contains(figure) && !CanReuseDependency)
+            if (IsTaken(figure))
             {
                 return null;
             }
@@ -814,7 +873,7 @@ namespace DynamicGeometry
 
             // an existing point the click would take
             var point = hoverPlacement != null ? hoverPlacement.ExistingPoint : null;
-            if (point != null && FoundDependencies.Contains(point) && !CanReuseDependency)
+            if (IsTaken(point))
             {
                 return null;
             }
@@ -956,10 +1015,7 @@ namespace DynamicGeometry
             if (ExpectingAPoint())
             {
                 // a point the tool already has: the click is ignored
-                if (hoverPlacement != null
-                    && hoverPlacement.ExistingPoint != null
-                    && FoundDependencies.Contains(hoverPlacement.ExistingPoint)
-                    && !CanReuseDependency)
+                if (hoverPlacement != null && IsTaken(hoverPlacement.ExistingPoint))
                 {
                     return ArrowCursor;
                 }

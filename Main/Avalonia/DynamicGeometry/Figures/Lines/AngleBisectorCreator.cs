@@ -14,12 +14,17 @@ namespace DynamicGeometry
 
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var underMouse = Drawing.Figures.HitTest(Coordinates(e));
+            // An angle stands for its three points only as the first click (see
+            // SegmentBisectorCreator): after a vertex was clicked, a click on an angle's
+            // mark gave a bisector of five points, which doesn't exist, and a stray point.
+            var underMouse = FoundDependencies.IsEmpty() ? Drawing.Figures.HitTest(Coordinates(e, false, false, false)) : null;
             if (underMouse != null
-                && (underMouse is AngleArc || underMouse is AngleMeasurement))
+                && (underMouse is AngleArc || underMouse is AngleMeasurement)
+                && underMouse.Dependencies.Count == 3)
             {
                 FoundDependencies.AddRange(underMouse.Dependencies);
             }
+
             base.MouseDown(sender, e);
         }
 

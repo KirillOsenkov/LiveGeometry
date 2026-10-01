@@ -46,13 +46,24 @@ public class ExpressionRenamer
 {
     readonly Drawing drawing;
     readonly IReadOnlyDictionary<IFigure, string> oldNames;
+    readonly IReadOnlyList<IFigure> preferred;
 
     /// <param name="oldNames">Each renamed figure with the name it had</param>
-    public ExpressionRenamer(Drawing drawing, IReadOnlyDictionary<IFigure, string> oldNames)
+    /// <param name="preferred">
+    /// Figures a name means before any other figure of the drawing called that: pasted
+    /// copies, whose texts name them by the names the originals still have
+    /// </param>
+    public ExpressionRenamer(Drawing drawing, IReadOnlyDictionary<IFigure, string> oldNames, IReadOnlyList<IFigure> preferred = null)
     {
         this.drawing = drawing;
         this.oldNames = oldNames;
+        this.preferred = preferred ?? new IFigure[0];
     }
+
+    // the figures names are looked up among, in the order they are tried
+    IEnumerable<IFigure> TopLevel => preferred.Concat(drawing.Figures);
+
+    IEnumerable<IFigure> AllFigures => preferred.Concat(drawing.Figures.GetAllFiguresRecursive());
 
     /// <param name="isFunction">A function of x (a graph), where x is the variable and not a figure</param>
     public string Rewrite(string expression, bool isFunction)
@@ -155,7 +166,7 @@ public class ExpressionRenamer
         bool isConstant = text.Equals("pi", StringComparison.InvariantCultureIgnoreCase)
             || text.Equals("e", StringComparison.InvariantCultureIgnoreCase)
             || isFunction && text == "x";
-        var exact = isConstant ? null : drawing.Figures.FirstOrDefault(f => f is INumber && OldName(f) == text);
+        var exact = isConstant ? null : TopLevel.FirstOrDefault(f => f is INumber && OldName(f) == text);
         if (exact != null)
         {
             if (IsRenamed(exact))
@@ -228,9 +239,9 @@ public class ExpressionRenamer
     /// <summary><see cref="Binder.ResolveFigure"/> under the old names</summary>
     IFigure ResolveFigure(string name)
     {
-        return drawing.Figures.GetAllFiguresRecursive().FirstOrDefault(f => OldName(f) == name)
-            ?? drawing.Figures.FirstOrDefault(f => f != null && OldName(f) == name)
-            ?? drawing.Figures.FirstOrDefault(f => f != null
+        return AllFigures.FirstOrDefault(f => OldName(f) == name)
+            ?? TopLevel.FirstOrDefault(f => f != null && OldName(f) == name)
+            ?? TopLevel.FirstOrDefault(f => f != null
                 && !OldName(f).IsEmpty()
                 && OldName(f).Equals(name, StringComparison.OrdinalIgnoreCase));
     }
@@ -241,7 +252,7 @@ public class ExpressionRenamer
     /// </summary>
     (PointBase First, PointBase Second, int FirstLength)? SplitTwoPoints(string text, Func<IFigure, string> nameOf)
     {
-        var points = drawing.Figures.OfType<PointBase>().ToArray();
+        var points = TopLevel.OfType<PointBase>().ToArray();
         string longestPrefix = "";
         string longestSuffix = "";
         foreach (var point in points)

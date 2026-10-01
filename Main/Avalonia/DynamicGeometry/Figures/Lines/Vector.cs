@@ -88,6 +88,18 @@ namespace DynamicGeometry
             return result;
         }
 
+        /// <summary>
+        /// Where the vector is, shown or not, as a segment answers: whether a figure is
+        /// in view is for whoever asks to decide (<see cref="FigureList.HitTest(Point)"/>
+        /// does). A point on a vector and an intersection with one exist where this says
+        /// the vector is: asked through the composite's own test, which leaves out what
+        /// is hidden, they all stopped existing when the vector was hidden.
+        /// </summary>
+        public override IFigure HitTest(Point point)
+        {
+            return HitTest(point, filter: figure => true);
+        }
+
         public Segment Line { get; set; }
         public Arrow Arrow { get; set; }
 

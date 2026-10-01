@@ -58,40 +58,47 @@ namespace DynamicGeometry
             set
             {
                 mUrl = value;
-                Shape.IsEnabled = false;
-                DownloadAsync(value);
             }
         }
 
-        void Shape_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// The drawing at the link is fetched when the link is clicked. (It was fetched as
+        /// soon as the link was read from a file, and a link that led nowhere put the whole
+        /// error, stack trace and all, into its own text - which was then saved with it.)
+        /// </summary>
+        async void Shape_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(fileText))
+            if (!Enabled || string.IsNullOrEmpty(mUrl) || Drawing == null)
             {
-                Drawing.RaiseDocumentOpenRequested(new Drawing.DocumentOpenRequestedEventArgs()
-                {
-                    DocumentXml = fileText,
-                    InWhichWindow = Drawing.DocumentOpenRequestedEventArgs.InWhichWindowChoice.DontCare
-                });
+                return;
             }
-        }
 
-        string fileText = null;
-
-        async void DownloadAsync(string url)
-        {
+            var drawing = Drawing;
+            string text;
             try
             {
-                var result = await internet.GetStringAsync(url);
-                fileText = Utilities.StripByteOrderMark(result);
-                if (Enabled)
+                // the status is asked rather than thrown: an exception, even caught, is an
+                // error report on screen
+                using var response = await internet.GetAsync(mUrl);
+                if (!response.IsSuccessStatusCode)
                 {
-                    Shape.IsEnabled = true;
+                    drawing.RaiseStatusNotification("The drawing at " + mUrl + " could not be opened (" + (int)response.StatusCode + ").");
+                    return;
                 }
+
+                text = Utilities.StripByteOrderMark(await response.Content.ReadAsStringAsync());
             }
             catch (Exception ex)
             {
-                Shape.Content = "Error: " + ex.ToString();
+                drawing.RaiseStatusNotification("The drawing at " + mUrl + " could not be opened: " + ex.Message);
+                return;
             }
+
+            drawing.RaiseDocumentOpenRequested(new Drawing.DocumentOpenRequestedEventArgs()
+            {
+                DocumentXml = text,
+                InWhichWindow = Drawing.DocumentOpenRequestedEventArgs.InWhichWindowChoice.DontCare
+            });
         }
 
         public override void Recalculate()
@@ -157,7 +164,6 @@ namespace DynamicGeometry
                     Shape.ReleaseMouseCapture();
                 }
                 base.Enabled = value;
-                Shape.IsEnabled = value;
             }
         }
 

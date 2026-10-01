@@ -24,6 +24,15 @@ namespace DynamicGeometry
             return DependencyList.PointPointPoint;
         }
 
+        /// <summary>
+        /// The second end of the radius on the first is a radius of 0; the center may be
+        /// either end (the circles about A and about B of an equilateral triangle)
+        /// </summary>
+        protected override bool IsDegenerateRepeat(IFigure figure, IList<IFigure> found)
+        {
+            return found.Count == 1 && found[0] == figure;
+        }
+
         protected override IFigure CreateIntermediateFigure()
         {
             if (FoundDependencies.Count == 2
@@ -54,7 +63,7 @@ namespace DynamicGeometry
 
             var underMouse = Drawing.Figures.HitTest(
                 unconstrainedCoordinates,
-                f => f is ILengthProvider && Label.GivesNumber(f) && f.Visible && f.IsHitTestVisible);
+                f => f.GivesLength() && f.Visible && f.IsHitTestVisible);
             if (underMouse != null && Drawing.Figures.HitTest<IPoint>(unconstrainedCoordinates) == null)
             {
                 return underMouse;
@@ -156,7 +165,12 @@ namespace DynamicGeometry
         {
             if (slider.Exists)
             {
-                FinishSlider(coordinates);
+                // (not where it began: that is the second click of a double click, and a
+                // slider of length 0 would be a circle of radius 0)
+                if (slider.IsDragged(coordinates))
+                {
+                    FinishSlider(coordinates);
+                }
             }
             else if (StartsSlider(coordinates))
             {

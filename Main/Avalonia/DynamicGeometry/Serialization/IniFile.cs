@@ -30,27 +30,25 @@ namespace DynamicGeometry
                     continue;
                 }
 
-                if (currentLine[0] == '[')
+                // A line that is neither a section nor name=value, or a value outside any
+                // section, is skipped: what DG wrote is read as far as it goes. (It threw,
+                // and a file that was a line of text was "Incorrect 'name=value' syntax".)
+                if (currentLine[0] == '[' && currentLine[currentLineLength - 1] == ']' && currentLineLength >= 3)
                 {
-                    if (currentLineLength < 3)
-                    {
-                        throw new Exception("Incomplete ini section header: {0}"
-                             + currentLine);
-                    }
                     currentSection = new Section(currentLine.Substring(1, currentLineLength - 2));
                     Sections.Add(currentSection);
                 }
                 else
                 {
                     int equals = currentLine.IndexOf('=');
-                    if (equals < 1 || equals > currentLineLength - 1)
+                    if (equals >= 1 && currentSection != null)
                     {
-                        throw new Exception("Incorrect 'name=value' syntax: {0}" + currentLine);
+                        string name = currentLine.Substring(0, equals);
+                        string value = currentLine.Substring(equals + 1, currentLineLength - equals - 1);
+                        currentSection.Entries[name] = value;
                     }
-                    string name = currentLine.Substring(0, equals);
-                    string value = currentLine.Substring(equals + 1, currentLineLength - equals - 1);
-                    currentSection.Entries.Add(name, value);
                 }
+
                 i++;
             }
         }

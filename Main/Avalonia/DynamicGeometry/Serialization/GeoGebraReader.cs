@@ -27,18 +27,48 @@ public class GeoGebraReader
     /// <summary>The name of the worksheet inside the zip</summary>
     public const string WorksheetEntry = "geogebra.xml";
 
-    /// <summary>Unpacks a .ggb and returns its worksheet; the zip itself has no other use here</summary>
-    public static XElement ReadWorksheet(byte[] ggb)
+    /// <summary>
+    /// Unpacks a .ggb and returns its worksheet; the zip itself has no other use here. Null,
+    /// with the reason in words, for a file that is no worksheet - checked rather than
+    /// tried as far as it goes, since an exception, even caught, is an error report on
+    /// screen.
+    /// </summary>
+    public static XElement ReadWorksheet(byte[] ggb, out string problem)
     {
+        problem = null;
+
+        // every zip starts with "PK" and 3, 4
+        if (ggb == null || ggb.Length < 4 || ggb[0] != 'P' || ggb[1] != 'K' || ggb[2] != 3 || ggb[3] != 4)
+        {
+            problem = "This file is not a GeoGebra worksheet.";
+            return null;
+        }
+
         using var archive = new ZipArchive(new MemoryStream(ggb), ZipArchiveMode.Read);
         var entry = archive.GetEntry(WorksheetEntry);
         if (entry == null)
         {
-            throw new InvalidDataException("Not a GeoGebra file: no " + WorksheetEntry + " inside");
+            problem = "This file is not a GeoGebra worksheet: it has no " + WorksheetEntry + " inside.";
+            return null;
         }
 
         using var stream = entry.Open();
         return XElement.Load(stream);
+    }
+
+    /// <summary>
+    /// An element of the worksheet that is left out: an argument of a command that is not
+    /// what the command takes here. Thrown from deep in reading a command, caught where
+    /// the element is read (<see cref="ReadConstruction"/>), which reports it - what the
+    /// reader does with every element it can't read, so no error to show
+    /// (MainView.IsBenign).
+    /// </summary>
+    public class LeftOutException : Exception
+    {
+        public LeftOutException(string message)
+            : base(message)
+        {
+        }
     }
 
     public bool IsSuccess
@@ -894,9 +924,9 @@ public class GeoGebraReader
 
         var line = Factory.CreateLineByEquation(
             drawing,
-            coordinates.ReadDouble("x").ToStringInvariant(),
-            coordinates.ReadDouble("y").ToStringInvariant(),
-            coordinates.ReadDouble("z").ToStringInvariant());
+            coordinates.ReadDouble("x").ToExpressionText(),
+            coordinates.ReadDouble("y").ToExpressionText(),
+            coordinates.ReadDouble("z").ToExpressionText());
         Actions.Add(drawing, line);
         return line;
     }
@@ -984,9 +1014,9 @@ public class GeoGebraReader
 
         var circle = Factory.CreateCircleByEquation(
             drawing,
-            x.ToStringInvariant(),
-            y.ToStringInvariant(),
-            radiusSquared.SquareRoot().ToStringInvariant());
+            x.ToExpressionText(),
+            y.ToExpressionText(),
+            radiusSquared.SquareRoot().ToExpressionText());
         Actions.Add(drawing, circle);
         return circle;
     }
@@ -1321,7 +1351,10 @@ public class GeoGebraReader
             case "Length":
                 return One(DistanceCommand(inputs));
             case "Area":
-                return One(Add(Factory.CreateAreaMeasurement(drawing, new[] { Resolve(inputs[0]) })));
+                // Area[A, B, C]: of the polygon on the points (it measured the first alone: 0)
+                return One(Add(Factory.CreateAreaMeasurement(
+                    drawing,
+                    inputs.Length >= 3 ? Points(inputs, inputs.Length) : new[] { Resolve(inputs[0]) })));
             case "Text":
                 return One(CreateText(inputs[0]));
             case "Mirror":
@@ -1458,7 +1491,7 @@ public class GeoGebraReader
     {
         // the center is to the left of A->B, half a side along the perpendicular over tan(pi/n)
         double k = 0.5 / System.Math.Tan(Math.PI / sides);
-        string kText = k.ToStringInvariant();
+        string kText = k.ToExpressionText();
         var center = Factory.CreatePointByCoordinates(
             drawing,
             "(" + a.Name + ".X + " + b.Name + ".X) / 2 - (" + b.Name + ".Y - " + a.Name + ".Y) * " + kText,
@@ -1594,12 +1627,21 @@ public class GeoGebraReader
             var figure = Resolve(inputs[0]);
             if (figure is ICircle circle)
             {
-                // Center[c]: the center of a circle by two points is its first point
-                if (circle.Dependencies.Count > 0 && circle.Dependencies[circle is CircleByRadius ? circle.Dependencies.Count - 1 : 0] is IPoint centerPoint)
+                // Center[c]: the center of a circle by two points is its first point. A point
+                // of its own there, given by that point's coordinates - not the point itself,
+                // which the output's element would then rename and restyle (A became M, and
+                // was hidden if M was)
+                if (circle.Dependencies.Count > 0
+                    && circle.Dependencies[circle is CircleByRadius ? circle.Dependencies.Count - 1 : 0] is IPoint centerPoint)
                 {
-                    return centerPoint;
+                    // a name no expression can say (A'): the point itself, renamed, rather
+                    // than nothing and nothing of what is built on it
+                    return IsIdentifier(centerPoint.Name)
+                        ? Add(Factory.CreatePointByCoordinates(drawing, centerPoint.Name + ".X", centerPoint.Name + ".Y"))
+                        : centerPoint;
                 }
 
+                Report("Center[" + inputs[0] + "]: no center point to stand on");
                 return null;
             }
 
@@ -1928,7 +1970,7 @@ public class GeoGebraReader
         var figure = ResolveArgument(argument);
         if (figure == null)
         {
-            throw new InvalidDataException("'" + argument + "' is not a figure that was read");
+            throw new LeftOutException("'" + argument + "' is not a figure that was read");
         }
 
         return figure;
@@ -1942,7 +1984,7 @@ public class GeoGebraReader
             return point;
         }
 
-        throw new InvalidDataException("'" + argument + "' is not a point");
+        throw new LeftOutException("'" + argument + "' is not a point");
     }
 
     IFigure Line(string argument)
@@ -1953,7 +1995,7 @@ public class GeoGebraReader
             return figure;
         }
 
-        throw new InvalidDataException("'" + argument + "' is not a line");
+        throw new LeftOutException("'" + argument + "' is not a line");
     }
 
     IList<IFigure> Points(string[] inputs, int count)
@@ -1974,7 +2016,7 @@ public class GeoGebraReader
         var ends = figure.Dependencies.OfType<IPoint>().Take(2).Cast<IFigure>().ToList();
         if (ends.Count != 2)
         {
-            throw new InvalidDataException("'" + argument + "' has no two points");
+            throw new LeftOutException("'" + argument + "' has no two points");
         }
 
         return ends;
@@ -1991,7 +2033,7 @@ public class GeoGebraReader
 
         if (figure != null)
         {
-            throw new InvalidDataException("'" + argument + "' has no length");
+            throw new LeftOutException("'" + argument + "' has no length");
         }
 
         return NumberArgument(argument, isAngle: false);
@@ -2016,7 +2058,7 @@ public class GeoGebraReader
         var compiled = string.IsNullOrWhiteSpace(expression) ? null : drawing.CompileExpression(expression);
         if (compiled == null || !compiled.IsSuccess)
         {
-            throw new InvalidDataException("'" + text + "' is not a number");
+            throw new LeftOutException("'" + text + "' is not a number");
         }
 
         if (compiled.Dependencies.Count == 0)

@@ -119,7 +119,7 @@ namespace DynamicGeometry
             // the same test, with the same rounding, as the branch that changed
             var center = ellipse.Center;
             var projection = Math.GetProjectionPoint(center, line.Coordinates);
-            if (!center.Exists() || !projection.Exists() || center.Distance(projection).Round(4) != 0)
+            if (!center.Exists() || !projection.Exists() || System.Math.Round(center.Distance(projection), 4) != 0)
             {
                 return false;
             }

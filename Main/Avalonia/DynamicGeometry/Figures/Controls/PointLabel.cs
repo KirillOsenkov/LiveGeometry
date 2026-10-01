@@ -53,6 +53,13 @@ namespace DynamicGeometry
         public const double Clearance = 0;
 
         /// <summary>
+        /// In pixels: what the orbit and the first place of a label add to the size of the
+        /// text and the point. A number of its own: it was the cursor's tolerance, which a
+        /// finger has more of than a mouse, and a label made by touch would sit elsewhere.
+        /// </summary>
+        public const double Margin = 5;
+
+        /// <summary>
         /// Keeps the label in orbit around its point: the center of the label may not get
         /// further from the point than the label's larger dimension plus the point radius
         /// (a long label - name and coordinates - gets a proportionally bigger orbit), and
@@ -73,7 +80,7 @@ namespace DynamicGeometry
             var point = ToPhysical(Anchor);
             var halfSize = new Point(width / 2, height / 2);
             var pointRadius = GetPoint().Shape.Bounds.Width / 2;
-            var radius = System.Math.Max(width, height) + pointRadius + Math.CursorTolerance;
+            var radius = System.Math.Max(width, height) + pointRadius + Margin;
             var fromPoint = ToPhysical(newPosition).Plus(halfSize).Minus(point);
             fromPoint = fromPoint.TrimToMaxLength(radius);
 
@@ -197,7 +204,7 @@ namespace DynamicGeometry
                 var size = MeasureSize();
                 Offset = new Point(
                     -size.Width / 2,
-                    -(size.Height + GetPoint().Shape.ActualHeight / 2 + Math.CursorTolerance));
+                    -(size.Height + GetPoint().Shape.ActualHeight / 2 + Margin));
             }
 
             base.UpdateVisual();

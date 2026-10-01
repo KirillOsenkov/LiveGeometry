@@ -10,23 +10,17 @@ namespace DynamicGeometry
         public Curve()
         {
             Shape = CreateShape();
-            pathSegments = new PathSegmentCollection();
-            // open: in Avalonia a PathFigure is closed unless told otherwise (in WPF it was the
-            // other way round), which drew a line from the end of a graph back to its start
-            pathFigure = new PathFigure()
-            {
-                IsClosed = false,
-                IsFilled = false,
-                Segments = pathSegments
-            };
-            Shape.Data = new PathGeometry()
-            {
-                Figures = new PathFigureCollection() 
-                { 
-                    pathFigure 
-                }
-            };
         }
+
+        /// <summary>
+        /// Among the points of a curve (<see cref="GetPoints"/>): the curve is interrupted
+        /// here, the point before and the point after are not joined. A graph has gaps
+        /// where the function has no value or jumps, a locus where the traced point is
+        /// not there. (A curve was one line through all its points: the graph of
+        /// sqrt(x^2 - 4) had a straight piece across the stretch where there is no root,
+        /// that of 1/x a vertical line at 0 joining its two branches.)
+        /// </summary>
+        public static readonly Point Gap = new Point(double.NaN, double.NaN);
 
         public override void Recalculate()
         {
@@ -36,91 +30,77 @@ namespace DynamicGeometry
         {
             try
             {
-                Points.Clear();
-                GetPoints(Points);
-                if (Points.Count == 0)
+                logicalPoints.Clear();
+                GetPoints(logicalPoints);
+
+                // one figure for each stretch between gaps, each open and not filled: in
+                // Avalonia a figure is closed unless told otherwise, which draws a line
+                // from the end of a graph back to its start
+                var geometry = new StreamGeometry();
+                using (var context = geometry.Open())
                 {
-                    // Clearing the pathSegments is not triggering an immediate redraw.  Creating a new pathSegments does. - D.H.
-                    //pathSegments.Clear();
-                    pathSegments = new PathSegmentCollection();
-                    pathFigure.Segments = pathSegments;
-                    return;
+                    var coordinateSystem = Drawing.CoordinateSystem;
+                    bool isDrawing = false;
+                    for (int i = 0; i < logicalPoints.Count; i++)
+                    {
+                        if (!logicalPoints[i].Exists())
+                        {
+                            if (isDrawing)
+                            {
+                                context.EndFigure(isClosed: false);
+                                isDrawing = false;
+                            }
+
+                            continue;
+                        }
+
+                        var physical = coordinateSystem.ToPhysical(logicalPoints[i]);
+                        if (isDrawing)
+                        {
+                            context.LineTo(physical);
+                        }
+                        else if (i + 1 < logicalPoints.Count && logicalPoints[i + 1].Exists())
+                        {
+                            // (a point with a gap on either side is no line to draw)
+                            context.BeginFigure(physical, isFilled: false);
+                            isDrawing = true;
+                        }
+                    }
+
+                    if (isDrawing)
+                    {
+                        context.EndFigure(isClosed: false);
+                    }
                 }
 
-                logicalPoints.Capacity = System.Math.Max(Points.Count, logicalPoints.Capacity);
-                var coordinateSystem = Drawing.CoordinateSystem;
-                for (int i = 0; i < Points.Count; i++)
-                {
-                    if (logicalPoints.Count <= i)
-                    {
-                        logicalPoints.Add(Points[i]);
-                    }
-                    else
-                    {
-                        logicalPoints[i] = Points[i];
-                    }
-
-                    Points[i] = coordinateSystem.ToPhysical(Points[i]);
-                }
-
-                int count = logicalPoints.Count;
-                if (count > Points.Count)
-                {
-                    for (int i = 0; i < count - Points.Count; i++)
-                    {
-                        logicalPoints.RemoveAt(count - i - 1);
-                    }
-                }
-
-                pathFigure.StartPoint = Points[0];
-                ConstructPolyline(Points);
+                Shape.Data = geometry;
             }
             catch (System.Exception)
             {
             }
         }
 
-        List<Point> Points = new List<Point>();
+        // as GetPoints gave them, in the units of the drawing, gaps included
         List<Point> logicalPoints = new List<Point>();
-
-        protected virtual void ConstructPolyline(List<Point> points)
-        {
-            PolylineDirect(points);
-        }
-
-        private void PolylineDirect(List<Point> points)
-        {
-            for (int i = 0; i < points.Count - 1; i++)
-            {
-                if (pathSegments.Count <= i)
-                {
-                    pathSegments.Add(new LineSegment() { Point = points[i + 1] });
-                }
-                else
-                {
-                    ((LineSegment)pathSegments[i]).Point = points[i + 1];
-                }
-            }
-
-            int segmentCount = pathSegments.Count;
-            if (segmentCount > points.Count - 1)
-            {
-                for (int i = 0; i < segmentCount - points.Count + 1; i++)
-                {
-                    pathSegments.RemoveAt(segmentCount - i - 1);
-                }
-            }
-        }
 
         public override Point Center
         {
             get
             {
-                if (logicalPoints.IsEmpty())
+                // the middle one of the points, or the nearest to it that is not a gap
+                for (int offset = 0; offset < logicalPoints.Count; offset++)
                 {
-                    return base.Center;
+                    int middle = logicalPoints.Count / 2;
+                    foreach (int index in new[] { middle + offset, middle - offset })
+                    {
+                        if (index >= 0 && index < logicalPoints.Count && logicalPoints[index].Exists())
+                        {
+                            return logicalPoints[index];
+                        }
+                    }
                 }
-                return logicalPoints[(int)System.Math.Floor((double)(logicalPoints.Count)/2)];
+
+                return base.Center;
             }
         }
 
@@ -259,17 +239,28 @@ namespace DynamicGeometry
         //    }
         //}
 
-        protected PathFigure pathFigure;
-        protected PathSegmentCollection pathSegments;
-
+        /// <summary>The points of the curve, in the units of the drawing, with a <see cref="Gap"/> wherever it is interrupted</summary>
         public abstract void GetPoints(List<Point> points);
 
         public override IFigure HitTest(Avalonia.Point point)
         {
             double epsilon = ToLogical(Shape.StrokeThickness / 2 + Math.CursorTolerance);
-            if (Math.IsPointOnPolygonalChain(logicalPoints, point, epsilon, false))
+            for (int i = 1; i < logicalPoints.Count; i++)
             {
-                return this;
+                var from = logicalPoints[i - 1];
+                var to = logicalPoints[i];
+                if (!from.Exists() || !to.Exists())
+                {
+                    continue;
+                }
+
+                // (at a corner, past the end of both pieces, the place is near the corner itself)
+                if (Math.IsPointOnSegment(new PointPair(from, to), point, epsilon)
+                    || from.Distance(point) < epsilon
+                    || to.Distance(point) < epsilon)
+                {
+                    return this;
+                }
             }
 
             return null;

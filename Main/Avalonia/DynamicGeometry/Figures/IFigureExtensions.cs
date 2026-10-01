@@ -88,6 +88,24 @@ namespace DynamicGeometry
             return figure.Dependents.Any(dependent => dependent is AreaMeasurement);
         }
 
+        /// <summary>
+        /// Whether a tool or a tied value may take a length from the figure: anything that
+        /// has one, except a label that says no number (<see cref="Label.GivesNumber"/>)
+        /// and the mark of an angle - an arc in the code only, a sign of a size in pixels,
+        /// whose "length" changes with every zoom (a click just beside a vertex took it
+        /// for a radius or a distance).
+        /// </summary>
+        public static bool GivesLength(this IFigure figure)
+        {
+            return figure is ILengthProvider && !(figure is AngleArc) && Label.GivesNumber(figure);
+        }
+
+        /// <summary>The same for an angle: anything that has one, except a label that says no number</summary>
+        public static bool GivesAngle(this IFigure figure)
+        {
+            return figure is IAngleProvider && Label.GivesNumber(figure);
+        }
+
         public static void RecalculateAllDependents(this IFigure figure)
         {
             var dependentsToRecalculate = DependencyAlgorithms

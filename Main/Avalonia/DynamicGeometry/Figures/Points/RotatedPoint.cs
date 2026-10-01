@@ -110,7 +110,8 @@ namespace DynamicGeometry
                 Coordinates = Math.GetRotationPoint(Source.Coordinates, Center.Coordinates, Math.ToRadians(Angle));
             }
 
-            Exists = Coordinates.Exists();
+            // (see ReflectedPoint: no image of what is not there)
+            Exists = Dependencies.Exists() && Coordinates.Exists();
         }
 
         #region Tied values
@@ -128,7 +129,7 @@ namespace DynamicGeometry
         public bool Accepts(string name, IFigure figure)
         {
             // (DynamicGeometry.Label: here Label is the point's own name label)
-            return figure is IAngleProvider && !(figure is IPoint) && DynamicGeometry.Label.GivesNumber(figure);
+            return !(figure is IPoint) && figure.GivesAngle();
         }
 
         /// <summary>The points turned about the same center by the same angle: the vertices of one rotated figure, tied and detached together</summary>

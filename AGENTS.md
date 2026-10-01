@@ -116,12 +116,21 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   typed value); Translate - source, distance, direction (see "TranslatedPoint"); Dilate -
   source, center, factor (a figure with a length or a typed value); after each of the three
   the panel shows the new figure's values (see "Tied values"). Last of the tabs that
-  draw with figures alone; the two after it work with numbers.
+  draw with figures alone; the two after it work with numbers. A figure is transformed by
+  transforming what it is built on, down to points (`Transformer`), so a source is taken
+  only when all of that can be (`CanBeTransformSource`, recursive) - except a radius given
+  by a number (a slider, a Number, a measurement: By Radius makes a slider whenever its
+  first click is on paper), which the image of a reflection, rotation or translation
+  shares and a dilation can't scale, so Dilate leaves such a circle alone. Asked only
+  about the figure itself, the tool threw at its last click.
 - **Coordinates**: Background and Grid (G) (commands); Function - an expression in x; Line - by
   slope and intercept expressions; Circle - by center and radius expressions; Point by
   coordinates (toggle: gives the point tools an X/Y panel).
-- **Measure**: Distance - two points or a segment; Angle (J) - vertex then two side points;
-  Area (K) - a polygon, ellipse, circle or list of points; Slider - where it sits, then where
+- **Measure**: Distance - two points or a segment; Angle (J) - vertex then two side points,
+  the angle under 180° whichever side comes first (the tool orders the sides; an angle goes
+  counterclockwise from its first side, and clicked the other way round a triangle's angle
+  said 270°; "Convert to opposite angle" gives the other); Area (K) - a polygon, ellipse,
+  circle or list of points, Enter or a right click when the points are done; Slider - where it sits, then where
   its knob starts (or press, drag, release): a number with a handle, taken wherever a tool
   asks for a length or an angle, named in expressions (a, b, c).
 - **Misc**: Bezier - four points; Locus (D) - a point that depends on a point on a figure;
@@ -150,6 +159,17 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   to return the base type.
 - **Input**: all WPF-style mouse events funnel through `DynamicGeometry/Behaviors/Behavior.cs`
   (pointer adapters live there). Avalonia has no static Keyboard; modifiers come from event args.
+  Fingers (`PointerType.Touch`, "Touch" region there) don't go to the tool as they come: a
+  finger's press is held back until it is a tap (lifted where it came down), a drag (gone
+  `TouchSlop` pixels: the tool gets the press where it came down, then the moves) or one of
+  two fingers, which zoom and pan the view (`CoordinateSystem.PanAndZoom`, the paper under
+  the fingers stays under them) and of which the tool hears nothing. Passed on as they came,
+  a second finger was a second press: the Drag tool's view jumped between the fingers, any
+  other tool left points behind. While a tool handles a finger, `Math.CursorTolerance` is
+  `TouchTolerance` (10 px, a finger reaches further than a mouse); whatever sizes things in
+  pixels must not take the cursor's tolerance for it (`PointLabel.Margin` does now: a label
+  placed by touch sat further out). No long press yet: what the right button does (the
+  context menu) has no touch equivalent. `webauto tap/touch/pinch` drive it headless.
 - **Mutating a collection in place does not redraw in Avalonia** the way a WPF Freezable did.
   `Polygon/Polyline.Points` only rebuild geometry when the property gets a different list;
   figures call `Shape.PointsChanged()` (`WpfCompat.cs`) instead. Suspect the same thing whenever
@@ -229,12 +249,21 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   keys go to the window alone, past MainView; `MainView.TopLevel_KeyDown` catches that,
   refocuses the canvas and forwards the key. Ctrl shortcuts are
   handled on key *down* (`MainView.HandleControlShortcut`): on key up Ctrl may already be
-  released and a bare S is the Segment tool. Plain keys: `MainView.HandlePlainKey`; tool letters:
-  `UI/BehaviorShortcuts.cs` (also feeds the tooltips).
+  released and a bare S is the Segment tool. In a text box Ctrl+C, V, X, Z, Y, A are the
+  box's own; S, O, N and F1 are not (they did nothing there, and the browser took them),
+  and the canvas takes the keyboard first so that the typed text is committed. The letter
+  of a Ctrl shortcut is skipped on its way up (`shortcutKeyDown`) - until it is pressed
+  again on its own, since after Ctrl+S or Ctrl+O its release goes to the file dialog.
+  Plain keys: `MainView.HandlePlainKey`; tool letters: `UI/BehaviorShortcuts.cs` (also feeds
+  the tooltips). The keys that move the view (arrows, Home, Page Up/Down, +/-) do nothing
+  while the side panel has the keyboard: its lists, sliders and combos use them, and an
+  arrow that picked the next style also panned the canvas.
 - **Every exception is shown** (`MainView.CurrentDomain_FirstChanceException`): status bar plus
   an `ExceptionReport` page in the side panel, also printed to the console. Add to `IsBenign`
   when a framework exception turns out to be noise (the browser's file picker throws
-  `JSException` "AbortError..." on cancel). So never use a caught exception as a test (decode
+  `JSException` "AbortError..." on cancel; `GeoGebraReader.LeftOutException` is how that
+  reader leaves out an element it can't read, and says so in the status). So never use a
+  caught exception as a test (decode
   as UTF-8 and catch, as `DecodeLegacyText` once did): check instead. `--check` runs print
   every one, and should print none. One that escapes an event handler or a posted job is
   then swallowed (`Dispatcher.UIThread.UnhandledException` in `App.Initialize`), so a bug
@@ -253,7 +282,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   segments/polygons/Béziers even when their points are hidden - not lines. Panning (`MoveTo`)
   must not round the origin: a drag is many sub-pixel steps (0.5 px at 200% scaling) and
   rounding each one makes the plane run faster than the cursor. Labels have a fixed *pixel*
-  size, so fit re-measures and refits a few times.
+  size, so fit re-measures and refits a few times. What the user asks for as "zoom to fit"
+  (double click, H, Home, the context menu) is `Drawing.ZoomToFit`: the drawing's
+  `FitToWindow` when whoever showed it set one (a drawing of the gallery:
+  `GalleryDrawing.Fit`, with its plane - only there, since it lays out the caption, which
+  in the user's own drawing is theirs and saved), else a scene if it has scenes, else
+  `ZoomExtend`. Plain `ZoomExtend` put
+  a gallery figure under its caption, zoomed a graph onto its few points and showed the
+  Castle's points instead of its scene.
 - **The grid step adapts to the zoom** (`CoordinateSystem`, "Grid step" region): 1, 2 or 5 times
   a power of ten, with a fainter minor tier between. Below a step of 1 the whole-number axis
   labels are bold (`AxisLabel.SetEmphasis`). Shift-snapping lands on the labeled step
@@ -279,13 +315,38 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   figures. Hit testing uses the *snapped* coordinates. Typed coordinates always give a free
   point, or the point that is exactly there (`FigureCreator.AddTypedPoint`, for both
   coordinate panels: the one of the Shapes tools looked under the last mouse click instead,
-  so a vertex typed after a clicked one found the clicked one again and was dropped). A
+  so a vertex typed after a clicked one found the clicked one again and was dropped; and a
+  point within a cursor's reach of the typed place was taken for it). A
   point must never be placed on the figure being constructed
   (`FigureCreator.CanPlacePointOn`), that would be a dependency cycle. A figure that
   doesn't exist right now is not hit (`FigureList.HitTest`, `HitTestMany`): its own
   `HitTest` still answers from where it was last, and a tool took the invisible
   intersection or the circle built on it - what was made on it never appeared, and a point
-  put "on" it was saved at (0, 0).
+  put "on" it was saved at (0, 0). And a figure doesn't exist while what it is built on
+  doesn't: a figure whose `Recalculate` decides `Exists` itself (by its own coordinates
+  being numbers) must ask `Dependencies.Exists()` too, as the transformed points, the point
+  by coordinates and the angle bisector do now - the image of an intersection that had
+  gone stayed on screen, frozen at its last place, with everything built on it.
+- **The reach of a click is in pixels**, the cursor's tolerance plus half the stroke, for
+  every figure. A circle, ellipse or arc is hit by its distance from the curve along the
+  ray from the center (`Math.RadialDistanceToEllipse`); it was the left side of the
+  ellipse's equation minus 1, a number without units, against a length - a circle of
+  radius 100 took every click on the screen, one of radius 0.2 almost none. The `math`
+  mode of the harness checks it (2 px beside every figure a point can sit on hits, 16 px
+  doesn't).
+- **A first click on what a tool doesn't take is no step**: a tool that wants a figure
+  (Parallel, Rotate, Locus...) and is clicked on empty paper starts no construction
+  (`FigureCreator.DropEmptyTransaction`). It did: the Undo button lit up on an empty
+  drawing, the first Ctrl+Z only put the tool back, Redo, Delete and Paste did nothing. A
+  click that stands for several dependencies (a segment for the Perpendicular Bisector's
+  two points, an angle for the Angle Bisector's three) does so only as the first click.
+  A tool that may take a point again (`CanReuseDependency`) says where a repeat makes
+  nothing (`FigureCreator.IsDegenerateRepeat`): a double click made circles and arcs of
+  radius 0. Not a blanket "not twice in a row" - By Radius centers its second circle on
+  the second end of its radius (the equilateral triangle), and an elliptical arc may
+  begin at the end of the axis just clicked.
+  An angle's mark is no length (`IFigureExtensions.GivesLength`: its size is in pixels and
+  changes with the zoom); tools and tied values ask `GivesLength`/`GivesAngle`.
 - **Figures are named after their points** (`FigureBase.NameFromDependencies`): segment, ray,
   line through two points and vector AB, polygon ABC (up to 10 vertices), polyline, Bezier
   ABCD; a clash gets a number (line AB next to segment AB is AB2), and the numbers go by
@@ -351,10 +412,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **The expression language calculates as it is written in class** (`Expressions/Parser`):
   a minus in front takes everything up to the next + - * /, powers included, so `-x^2` is
   -(x²) (it was (-x)²: the parabola y = -x^2 opened upward); `^` is right-associative. A
-  function of numbers is any of `System.Math` with as many `double` parameters as it is
-  given arguments (`sin`, `max(a, b)`, `atan2(y, x)`), each argument an expression
-  (`Binder.ResolveMethod` by name and count); ours take the names of points (`dist`,
-  `ang`, `area`). Everything is a double: a whole number is converted (`sign(x)`, a
+  function of numbers is one of ours (`Expressions/Functions.cs`) or of `System.Math` with
+  as many `double` parameters as it is given arguments (`sin`, `max(a, b)`, `atan2(y, x)`),
+  each argument an expression (`Binder.ResolveMethod` by name and count, ours first: they
+  stand in where `System.Math` does what a drawing doesn't want - `round(2.5)` is 3, not
+  the banker's 2; `sign` and `clamp` give "undefined" where `System.Math` throws, for the
+  sign of what has no value or bounds the wrong way round); ours that take the names of
+  points (`dist`, `ang`, `area`). Everything is a double: a whole number is converted (`sign(x)`, a
   polygon's `NumberOfSides` - unconverted, the first operator applied to it threw), and a
   property that is no number (`A.Name`) is an error said in words
   (`ExpressionTreeBuilder.AsNumber`). Nothing a user can type may throw, caught or not: a
@@ -362,8 +426,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   from the language's tokens and the drawing's names (20000 of them: compile as an
   expression and as a function, evaluate, run the renamer), next to a list of texts with
   known values and of wrong texts that must each give an error with words in it. Left
-  as they are: `sqr` is the square root (VB's `Sqr`, for `.dgf` files), `log` the natural
-  logarithm (`lg` is base 10), and `2x` is an error, not a product.
+  as they are: `sqr` is the square root (VB's `Sqr`, for `.dgf` files; of a negative number
+  undefined - it took the root of the absolute value), `log` the natural logarithm (`lg`
+  is base 10), and `2x` is an error, not a product.
 - **Snapping and releasing points** (`Figures/Points/PointSnapping.cs`) swap a point for another
   kind where it is through `Actions.ReplacePoint` (name, label, dependents, lock, a chosen style
   go along). Snap: a free point onto a figure through it - "Snap to line AB" in the grid when
@@ -487,7 +552,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   and by labels by default; values keep their digits and a typed number is taken as typed.
   Rounding for display goes through `Math.Round(value, digits)` of the library, which adds
   0.0: -0.001 rounds to a negative zero, and that is written "-0" (a point at (3, -0)).
-  A point's coordinates are written (3, 4), with a comma.
+  A half rounds up, as at school (3.125 is 3.13): through `decimal`, which takes 2.675 as
+  written where the double is a hair under, and away from zero; `System.Math.Round` goes
+  to the even digit, and an area of 3.125 said 3.12. A point's coordinates are written
+  (3, 4), with a comma.
 - **Several figures in the grid** (`FigureSelection`): a row whose values differ has no
   value (`CompositeValueProvider` answers null), and every editor has to show that as
   nothing - an empty box, no item selected (`SelectorValueEditor.ShowSelected`), a check
@@ -622,7 +690,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `Accepts` of the tied values, `FigureCreator.LookForExpectedDependencyUnderCursor`): a
   caption, taken for 0, tied a circle's radius or a rotation to a piece of text with one
   stray click. An expression without a value shows "undefined" (`LabelBase.UndefinedText`),
-  not "NaN", and such a label's `Value` is still not a number.
+  not "NaN" (nor "Infinity"), and such a label's `Value` is still not a number. A label
+  that is one expression and nothing else gives that expression's value, not the text it
+  shows (`LabelBase.ExactValue`): `[AB / 3]` as a radius was 0.33, and changed with the
+  label's Decimals. A circle whose radius comes out negative or undefined (a label, a
+  Number) doesn't exist (`CircleByRadius.UpdateExistence`).
 - **Undo** (GuiLabs.Undo; `Actions/`). What must hold: every change to what a file saves is
   one undo step, undo puts back exactly what was there, redo what was made. The traps, each
   of which was a bug (2026-09-30):
@@ -685,7 +757,21 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
     Delete and Paste do nothing then, a keyboard pan and the grid toggle are not recorded,
     and a click in the Figure List abandons the construction first.
   - *Loading is not undoable*: `DrawingControl.ForgetLoading` clears the history in a
-    `finally`, also when the file threw half way.
+    `finally`, also when the file threw half way. A construction left half way goes with
+    its drawing (`DrawingControl.Drawing` resets `ConstructionInProgress`): still "in
+    progress" for the next drawing, Undo only restarted the tool and Redo did nothing.
+  - *Paste* (`Actions.Paste`) is one step: the copies, then a move of their roots
+    `Drawing.PasteStep` pixels down and right per paste of the same copy, and they are
+    selected. On top of the originals and not selected, a paste looked like nothing, and
+    each try left another copy under them. Copy with nothing selected leaves the clipboard
+    as it was. The copies are read under new names where the old ones are taken, so
+    whatever a figure's `ReadXml` finds by name must look among its own `Dependency`
+    elements, not the names its dependencies have now (a translated point's sources: the
+    copy of a fixed segment's end came back free, on its pivot). Expressions of the copies
+    are compiled as they are read, when the names they say are the originals'; once the
+    copies are in, their texts are rewritten to the copies' names and compiled again
+    (`PasteAction.RebindExpressions`, an `ExpressionRenamer` that looks among the copies
+    first): the copy of a label `[AB]` measured the original segment.
   - *Parts of a composite* that are among a figure's dependents (a regular polygon's
     vertices) are not removed or put back by `RemoveFigureAction`: they go with their
     composite.
@@ -790,12 +876,32 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   temporary code as undo (see "Undo"): figures made by the `Factory` and their values
   against known ones, and for every figure a point can sit on, a grid of points projected
   onto it - each must land on the figure, stay put when projected again and be its
-  nearest place (by angle on an ellipse, by x on a graph).
+  nearest place (by angle on an ellipse, by x on a graph). A circular arc doesn't exist
+  while its radius is 0 or its end is on its center (its length said "NaN"). A
+  self-crossing polygon's area is what its even-odd fill covers (`Math.FilledArea`); the
+  shoelace sum took the lobes that go round the other way away from the rest, and a bow
+  tie measured 0. An open polyline's length has no closing side. An angle of a full turn
+  but for rounding is 0 (`Math.OAngle`: two sides along one ray blinked between 0° and
+  360°), and a mark reflected in a line goes clockwise (`AngleArc.UpdateVisual` takes the
+  long way only when that way is long).
+- **Curves have gaps** (`Curve.Gap`, a point that is not one, in what `GetPoints` gives):
+  each stretch between gaps is a figure of its own in the geometry. A function graph has
+  one where the function has no value - the graph goes on to the very edge of where it
+  has one (`FindEdge`), sqrt(x) starts at 0 - and where it jumps between two samples
+  (`IsJump`: halving the step towards the larger change, a climb gets smaller and a jump
+  stays), so 1/x, tan x and floor(x) have no vertical lines; values far beyond the window
+  are clamped (a coordinate of 1e300 pixels is not drawn, and exp(x²) vanished whole). A
+  function that throws has no value there (it was 0). A locus has one wherever the traced
+  point doesn't exist. Before, a curve was one line through all its points: straight
+  pieces across where there is nothing.
 - **Vectors** are an invisible `Segment` plus an `Arrow` polygon sized in pixels, filled with the
   line color. `Vector.OnAddingToCanvas` sets the default `LineStyle` before the base call,
   otherwise the polygon default (pale fill) wins. A vector is an `ILine` (parallel,
   perpendicular, intersection, a point on it all take it) and its hit test asks the segment
   inside after the arrow, since the arrow is a filled polygon with no room around it.
+  `Vector.HitTest(Point)` answers whether hidden or not, as a segment's does: a point on a
+  vector and an intersection with one exist where that says, and through the composite's
+  own test (shown parts only) they all went when the vector was hidden.
 - **Names of lines and circles** (`Figures/Controls/FigureLabel.cs`): "Show name" on a line,
   ray, segment or circle (`LineBase`/`CircleBase.ShowName`, over `FigureBase.HasNameLabel`)
   adds a `FigureLabel` the way a point's name is a `PointLabel`: a label depending on the
@@ -858,9 +964,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   when it has one: `OwnFile`, the .lgf it was read from (the Open dialog, the command line)
   or last saved to. A new drawing, a drawing of the gallery and one read from a GeoGebra or
   DG file have none and get Save as (`SaveDrawingAs`, also the first item of the Export
-  menu), whose file is the drawing's from then on. A file that failed to load is not kept
-  (`Drawing.Name` is set only by a load that went through), or Save would write the ruins
-  over it. In the browser the first Save of an opened file makes the browser ask for
+  menu), whose file is the drawing's from then on. A file that failed to load, or loaded
+  only in part, is not kept (`Drawing.Name` is set only by a load that went through, see
+  "A file is read as far as it goes"), or Save would write the ruins over it. A
+  construction under way is put away before saving (its point following the cursor and
+  its preview are figures while it lasts, and went into the file). In the browser the first Save of an opened file makes the browser ask for
   permission to write; a browser without the File System Access API gives files to read
   only, and Save falls back to Save as there (`IsReadOnlyFile`; not tried in a real
   Firefox). There is no unsaved-changes prompt and no mark of a changed drawing.
@@ -891,7 +999,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Everything else is keys. Lost its menu entry and is unreachable for now: Lock. Not on the Selection tab (obscure for the audience; the commands and
   settings are still there in `DrawingHost`): Ortho, Polar, Snap to grid, Snap to point, Snap to
   center. Shift while dragging or clicking still snaps to the grid, and a click near the middle
-  of a segment still makes a midpoint.
+  of a segment still makes a midpoint. In a narrow window (a phone, under about 410 px)
+  the buttons close up (`MainToolbar.SetCompact`: square, no spacing, tighter
+  separators, about 330 px), or the last of them, the settings gear, was cut off; what is
+  at the right (theme, Octocat) is dropped first when there is no room.
 - **The chrome's colors are a theme** (`UI/AppTheme.cs`, not `Theme`: every control has a
   `Theme` property, its ControlTheme, which would shadow the class). One `Color` property per
   role (`Strip`, `HeaderRow`, `Background`, `Text`, `Ink`, `Accent`...), and `AppTheme.Light`
@@ -956,7 +1067,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   black in Light and an opaque light gray in Dark, where a translucent one came out too dim -
   `SliderTrack`, the point fills, `ShapeFill`, `Axis`, `GridMajor`/`GridMinor`) through `BindToTheme`: base from Light, an override from every
   other theme, read again when a theme color is tweaked (`AppTheme.ColorsChanged` ->
-  `Drawing.RefreshTheme`). Chosen colors that read on both papers (a red line, a blue
+  `Drawing.RefreshTheme`) - except where the user has given the property another value
+  since (a red fill for the default point style): `FigureStyle.ReadFromTheme` remembers
+  what the binding last gave each theme and leaves a value that differs alone. It was
+  overwritten whenever the themes were read again (also when the theme switched while the
+  drawing was behind the gallery), and then not saved. Chosen colors that read on both papers (a red line, a blue
   outline) stay literal; a gray helper line gets a literal Dark override. A drawing's paper is
   the theme's unless it has one of its own (`Drawing.OwnBackground`, null for the theme's;
   files leave it out; the readers of foreign formats take white as none). A theme switch
@@ -1097,7 +1212,28 @@ loader still does for files from before; none of it needs extending.
   comes into the drawing. One that doesn't exist kept the (0, 0) it got from figures that
   were nowhere yet, and wrote it into the next file; in a session it is where its
   parameter says, also off the end of an arc that turned away (`PointOnFigure.Recalculate`),
-  so that the same drawing is saved with the same numbers.
+  so that the same drawing is saved with the same numbers. A figure given by expressions
+  asked then compiles what it can: what names a figure doesn't compile yet, and the rest
+  must not set its dependencies (`DrawingExpression.Recalculate` keeps the file's until
+  all of its expressions compile) - a line by equation `x = P.X` lost P, whenever the
+  intersection read before it happened to exist.
+- **A file is read as far as it goes.** What the file is comes first
+  (`DrawingControl.ParseDrawing`: XML with a `<Drawing>` root; `GeoGebraReader.ReadWorksheet`
+  checks for a zip; a `.dgf` must have its `[General]` section): a file that is none, or
+  damaged, is said so in the status and leaves the page as it was - it used to switch to
+  the editor under the file's name first, so a picture picked by mistake made a gallery
+  drawing the user's own and dropped one parked behind the gallery, and any other XML (an
+  exported .svg) opened as an empty drawing that Save then wrote over. Within a drawing,
+  what can't be read is left out with a line in words (`DrawingDeserializer.ReportError`:
+  a kind of figure or style this version doesn't have, a figure built on one the file
+  lacks or on itself, a second figure of the same name, a `ReadXml` that threw), and the
+  rest comes in; it threw half way, with a bare name or "the given key was not present"
+  for a message. Such a drawing keeps the list (`Drawing.LoadErrors`), gets no name and
+  so no file to be saved over, and the status says the first line and how many more.
+  `IniFile` skips the lines of a `.dgf` it can't read.
+- **Label text** is one attribute: a line break is the two characters `\n` and a
+  backslash is two backslashes (a typed `C:\notes` came back as two lines); characters an
+  XML file can't hold are left out (one pasted in made Save throw and write nothing).
 - **A show/hide box is read as a box** (`ShowHideControl.ReadXml`): each figure says in
   the file whether it is hidden. Applying the box to its figures on load hid again one
   that had been shown by hand since the box was last clicked. (The `.dgf` reader does
@@ -1123,7 +1259,9 @@ loader still does for files from before; none of it needs extending.
   point the polygon is built on - `Side1`..., `Interior`). So a regular polygon makes its
   parts in `ReadXml`, before it is on a canvas (`IsOnCanvas`), and says `Sides="7"` when it
   is not a pentagon. The number of sides doesn't go below what figures built on its vertices
-  and sides need: the parts would take them along, from inside a setter, past undo.
+  and sides need: the parts would take them along, from inside a setter, past undo. A
+  hidden polygon hides the parts it makes (`Recreate`): read from a file, it made them
+  after it was told it was hidden, and its vertices and sides came back to be clicked.
   The parts are listed with what they are built on (the polygon, its first vertex) only
   while the polygon is in the drawing (`RegisterPart`): registered when read, before the
   polygon was added, they failed the consistency check that a point by coordinates runs
@@ -1398,9 +1536,14 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
 - `tools/webauto.cs` - the browser build in headless Edge over CDP (port 9333, Edge stays alive
   between calls). `start <url> [w h] [--lang xx-XX] [--dark]`, `stop`, `nav`, `wait <console text>`,
   `console [--errors]`, `shot`, `click`, `drag`, `move`, `key <Key> [ctrl] [shift] [alt]`,
-  `text`, `eval <js>`.
+  `text`, `eval <js>`, and fingers: `tap x y [double]`, `touch x1 y1 x2 y2` (one-finger
+  drag), `pinch x1 y1 x2 y2 x3 y3 x4 y4` (one finger from 1 to 2, the other from 3 to 4).
   - The app takes several seconds to boot after `start`; the splash `div` stays in the DOM, so
-    don't test for its absence - take a screenshot.
+    don't test for its absence - take a screenshot. A tap or pinch before the app has
+    loaded reaches the page, which zooms itself (`visualViewport.scale` 4); `stop` and
+    `start` again for a clean page.
+  - Edge won't make its window narrower than about 490 px: phone widths are tested on the
+    desktop app (`winauto place` at 736 wide is 368 at 200% scaling).
   - `text` (CDP's `Input.insertText`) does not reach a text box of the app: type with `key`,
     one character a call (`key -`, `key x`, `key ^`, `key 2`, `key Enter`).
   - Edge runs with `--guest`; without it Edge signs the throwaway profile into the Windows
@@ -1433,7 +1576,9 @@ rulers; undo/redo captions naming the action; unsaved-changes prompt; recent fil
 
 ## Not yet verified in the browser
 
-Printing, demo download, and the `Hyperlink` figure's use of `WebClient`.
+Printing, demo download, and the `Hyperlink` figure (only in old files, no tool makes one),
+which fetches the drawing at its URL with `HttpClient` when clicked - not when read, which
+put a failure's whole stack trace into its text, saved with it.
 Saving through the browser storage provider works (drawings, and PNG and SVG pictures);
 opening has only been checked as far as the picker (see "Files in the browser"). Copy image
 finishes without an error in headless Edge, but reading the clipboard back is denied there:

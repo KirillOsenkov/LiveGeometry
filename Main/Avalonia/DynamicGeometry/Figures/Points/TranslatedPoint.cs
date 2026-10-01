@@ -513,7 +513,7 @@ namespace DynamicGeometry
             }
 
             return name == nameof(Distance)
-                ? figure is Vector || figure is ILengthProvider
+                ? figure is Vector || figure.GivesLength()
                 : figure is Vector || figure is ILine || figure is IAngleProvider;
         }
 
@@ -761,7 +761,7 @@ namespace DynamicGeometry
                 return index >= 1 && index < Dependencies.Count ? index : -1;
             }
 
-            return IndexOfDependency(name);
+            return IndexOfDependency(element, name);
         }
 
         void WriteSource(XmlWriter writer, string quantity, IFigure source)
@@ -778,19 +778,30 @@ namespace DynamicGeometry
             }
         }
 
-        int IndexOfDependency(string name)
+        /// <summary>
+        /// The place of the named source among the figure's own Dependency elements: the
+        /// name is the one the file says, which the figure read under it need not have any
+        /// more. (A paste gives a copy whose name is taken another one: the copy of a
+        /// fixed segment's Number n1 is n2, and the copied end, looking for n1 among
+        /// figures that were now called n2, came back with no sources - free, at distance
+        /// 0, on its pivot.)
+        /// </summary>
+        int IndexOfDependency(XElement element, string name)
         {
             if (name == null)
             {
                 return -1;
             }
 
-            for (int i = 0; i < Dependencies.Count; i++)
+            int index = 0;
+            foreach (var dependency in element.Elements("Dependency"))
             {
-                if (Dependencies[i].Name == name)
+                if (dependency.ReadString("Name") == name && dependency.Attribute("Part") == null)
                 {
-                    return i;
+                    return index < Dependencies.Count ? index : -1;
                 }
+
+                index++;
             }
 
             return -1;

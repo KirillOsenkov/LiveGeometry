@@ -12,17 +12,51 @@ namespace DynamicGeometry
 
         public void LoadDrawing(string drawingXml, string fileName)
         {
-            XElement xml = null;
-            try
+            var xml = ParseDrawing(drawingXml, out string problem);
+            if (xml == null)
             {
-                xml = XElement.Parse(drawingXml);
-            }
-            catch (Exception ex)
-            {
-                Drawing.RaiseStatusNotification("Invalid file format: " + ex.ToString());
+                Drawing.RaiseStatusNotification(problem);
                 return;
             }
+
             LoadDrawing(xml, fileName);
+        }
+
+        /// <summary>
+        /// The text of a drawing as XML; null, with the reason in words, for a text that is
+        /// none: a picture or a document picked by mistake, a file cut short, XML of another
+        /// kind (which used to open as an empty drawing under the file's name, for Save to
+        /// write over the file).
+        /// </summary>
+        public static XElement ParseDrawing(string text, out string problem)
+        {
+            problem = null;
+
+            // checked, not tried: an exception, even caught, is an error report on screen
+            if (string.IsNullOrWhiteSpace(text) || !text.TrimStart().StartsWith("<"))
+            {
+                problem = "This file is not a drawing.";
+                return null;
+            }
+
+            XElement xml;
+            try
+            {
+                xml = XElement.Parse(text);
+            }
+            catch (System.Xml.XmlException ex)
+            {
+                problem = "This file is damaged: " + ex.Message;
+                return null;
+            }
+
+            if (xml.Name.LocalName != "Drawing")
+            {
+                problem = "This file is not a drawing.";
+                return null;
+            }
+
+            return xml;
         }
 
         public void LoadDrawing(string drawingXml)
@@ -37,8 +71,14 @@ namespace DynamicGeometry
             {
                 Clear();
                 Drawing.AddFromXml(element);
-                Drawing.Name = fileName;
-                Drawing.ClearStatus();
+
+                // only a file read in full gives the drawing its name (and with it the
+                // right to be saved over that file); otherwise the status says what is missing
+                if (Drawing.LoadErrors == null)
+                {
+                    Drawing.Name = fileName;
+                    Drawing.ClearStatus();
+                }
             }
             catch (Exception ex)
             {

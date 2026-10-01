@@ -30,6 +30,12 @@ namespace DynamicGeometry
                     mCurrentDrawing.DocumentOpenRequested -= mCurrentDrawing_DocumentOpenRequested;
                     mCurrentDrawing.UserIsAddingFigures -= mCurrentDrawing_FiguresBeingAdded;
                     mCurrentDrawing.Canvas = null;
+
+                    // A construction left half way goes with its drawing: taking the canvas
+                    // away stops the tool, but nobody hears it say so any more. Still "in
+                    // progress" for the next drawing, Undo only restarted the tool and Redo
+                    // did nothing, until some tool finished a figure.
+                    ConstructionInProgress = false;
                 }
                 mCurrentDrawing = value;
                 if (mCurrentDrawing != null)
