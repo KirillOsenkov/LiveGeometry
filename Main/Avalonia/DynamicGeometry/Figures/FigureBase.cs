@@ -398,7 +398,10 @@ namespace DynamicGeometry
                     {
                         var wave = renameWave;
                         renameWave = null;
-                        RenameInExpressions(wave);
+                        if (!SuppressRenameInExpressions)
+                        {
+                            RenameInExpressions(wave);
+                        }
                     }
                 }
             }
@@ -411,6 +414,15 @@ namespace DynamicGeometry
         /// </summary>
         [ThreadStatic]
         static Dictionary<IFigure, string> renameWave;
+
+        /// <summary>
+        /// On while a point is put in place of another (<see cref="Actions.ReplacePoint"/>):
+        /// the replacement passes through a temporary name, and the default names of what is
+        /// built on it with it, before every name is back as it was - on undo too. Expressions
+        /// wait that out; they would follow the temporary name and keep it.
+        /// </summary>
+        [ThreadStatic]
+        public static bool SuppressRenameInExpressions;
 
         /// <summary>
         /// After a wave of renames, the expressions that name those figures say the new names

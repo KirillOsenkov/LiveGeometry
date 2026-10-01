@@ -312,8 +312,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   go along). Snap: a free point onto a figure through it - "Snap to line AB" in the grid when
   there is exactly one (`FreePoint` is `IConditionalProperties`; the grid captions buttons
   through `CaptionedMethod`), a submenu in the context menu when more. Release ("Free point"):
-  a point on a figure, an intersection point or a midpoint. Alt while dragging (read live, on
-  every move) releases a tied point and makes the free one snap to what
+  a point on a figure, an intersection point or a midpoint. "Convert to point by coordinates"
+  (grid and context menu) makes a free point a `PointByCoordinates` whose X and Y start as
+  the numbers it is at, rounded as the grid shows them and without an exponent (the scanner
+  reads none), with the keyboard in X; "Free point" is the way back, but not Alt-drag
+  (`CanFree` against `CanRelease`: typed coordinates are there on purpose). Alt while
+  dragging (read live, on every move) releases a tied point and makes the free one snap to what
   `PointPlacement.FindSnap` finds - what the Point tool would make there (no second midpoints);
   a snap lets go at `Dragger.StickyReach` times the reach. Over another point it sits on top
   of it and the drop *joins* it (`PointSnapping.Join`: its dependents rewired to the target,
@@ -321,6 +325,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   target built on the point and one that shares a dependent with it (segment EF: F onto E
   would give a segment EE, and undo's ReplaceDependency would swap its ends). Swaps happen
   only when Alt first applies and at the drop; the whole drag is one undo transaction.
+  Inside `ReplacePoint` the replacement has a temporary name until it takes the point's, on
+  undo too, so expressions sit the swap out (`FigureBase.SuppressRenameInExpressions`) and
+  the ones that name the point are compiled again at the end
+  (`IRenamableExpressions.RebindExpressions`): compiled, they hold the figure that left.
+  The point's label is handed over before its other dependents, or it is registered twice.
 - **The Figure List** (`UI/FigureExplorer.cs`, left column of `DrawingHost` with a splitter):
   top-level figures but the grid and point labels, by `Title`, with the ribbon icon of the
   tool that makes each (`UI/FigureIcons.cs`: figure type -> tool, walking base types; a new

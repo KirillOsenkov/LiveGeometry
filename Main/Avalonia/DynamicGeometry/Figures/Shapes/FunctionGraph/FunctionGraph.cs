@@ -89,6 +89,14 @@ namespace DynamicGeometry
             }
         }
 
+        public void RebindExpressions()
+        {
+            if (!mFunctionText.IsEmpty())
+            {
+                Compile();
+            }
+        }
+
         public CompileResult Compile()
         {
             var result = Compiler.Instance.CompileFunction(Drawing, FunctionText);

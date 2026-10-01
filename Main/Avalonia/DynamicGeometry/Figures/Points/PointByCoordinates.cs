@@ -1,6 +1,6 @@
 ﻿namespace DynamicGeometry
 {
-    public class PointByCoordinates : PointBase, IPoint, IRenamableExpressions
+    public class PointByCoordinates : PointBase, IPoint, IRenamableExpressions, IConditionalProperties
     {
         public PointByCoordinates()
         {
@@ -14,6 +14,12 @@
             YExpression.RenameInExpression(renamer);
         }
 
+        public void RebindExpressions()
+        {
+            XExpression.Rebind();
+            YExpression.Rebind();
+        }
+
         [PropertyGridVisible]
         [PropertyGridName("X = ")]
         public DrawingExpression XExpression { get; private set; }
@@ -21,6 +27,28 @@
         [PropertyGridVisible]
         [PropertyGridName("Y = ")]
         public DrawingExpression YExpression { get; private set; }
+
+        /// <summary>Lets go of the coordinates: a free point where it is (<see cref="PointSnapping.Release"/>)</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Free point")]
+        [PropertyGridIcon(PropertyGridIcon.Unlock)]
+        public void Release()
+        {
+            if (PointSnapping.CanFree(this))
+            {
+                PointSnapping.Release(this);
+            }
+        }
+
+        public bool CanEdit(string propertyName)
+        {
+            return propertyName != nameof(Release) || PointSnapping.CanFree(this);
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
+        }
 
         public override void Recalculate()
         {

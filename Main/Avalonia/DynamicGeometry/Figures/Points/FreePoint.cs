@@ -22,9 +22,32 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// The point stays where typed coordinates say, the ones it is at to begin with
+        /// (<see cref="PointSnapping.ConvertToPointByCoordinates"/>)
+        /// </summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Convert to point by coordinates")]
+        [PropertyGridIcon(PropertyGridIcon.Pencil)]
+        public void ConvertToPointByCoordinates()
+        {
+            if (PointSnapping.CanConvertToPointByCoordinates(this))
+            {
+                PointSnapping.ConvertToPointByCoordinates(this);
+            }
+        }
+
         public bool CanEdit(string propertyName)
         {
-            return propertyName != nameof(SnapToFigure) || PointSnapping.FiguresToSnapTo(this).Count == 1;
+            switch (propertyName)
+            {
+                case nameof(SnapToFigure):
+                    return PointSnapping.FiguresToSnapTo(this).Count == 1;
+                case nameof(ConvertToPointByCoordinates):
+                    return PointSnapping.CanConvertToPointByCoordinates(this);
+                default:
+                    return true;
+            }
         }
 
         public string Caption(string propertyName, string defaultCaption)

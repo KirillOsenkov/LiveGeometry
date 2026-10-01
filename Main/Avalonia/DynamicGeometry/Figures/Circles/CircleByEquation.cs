@@ -11,6 +11,13 @@ namespace DynamicGeometry
             R?.RenameInExpression(renamer);
         }
 
+        public void RebindExpressions()
+        {
+            X?.Rebind();
+            Y?.Rebind();
+            R?.Rebind();
+        }
+
         [PropertyGridVisible(false)]
         public override Point Center
         {

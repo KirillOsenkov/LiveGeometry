@@ -16,6 +16,13 @@ public interface IRenamableExpressions
     /// not their names
     /// </summary>
     void RenameInExpressions(ExpressionRenamer renamer);
+
+    /// <summary>
+    /// Compiles the expressions again from their text: a figure they name was replaced by
+    /// another under the same name (<see cref="Actions.ReplacePoint"/>), and what they
+    /// compiled to still holds the one that left
+    /// </summary>
+    void RebindExpressions();
 }
 
 /// <summary>

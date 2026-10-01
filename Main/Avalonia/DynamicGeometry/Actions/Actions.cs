@@ -83,8 +83,27 @@ namespace DynamicGeometry
         public static void ReplacePoint(PointBase point, PointBase replacement)
         {
             var drawing = point.Drawing;
+
+            // an expression that names the point ([A.X] in a label) holds the figure itself
+            // once compiled. Its text is left alone while the names change hands (the
+            // replacement has a temporary one in between), and it is compiled again when the
+            // replacement has the name, or on undo when the point is back: the first thing
+            // and the last either way, hence the two actions
+            var expressions = point.Dependents.OfType<IRenamableExpressions>().ToArray();
+            void Rebind()
+            {
+                FigureBase.SuppressRenameInExpressions = false;
+                foreach (var holder in expressions)
+                {
+                    holder.RebindExpressions();
+                }
+            }
+
             using (Transaction.Create(drawing.ActionManager, false))
             {
+                drawing.ActionManager.RecordAction(new CallMethodAction(
+                    () => FigureBase.SuppressRenameInExpressions = true,
+                    Rebind));
                 replacement.Visible = point.Visible;
                 replacement.Locked = point.Locked;
                 if (point.Style != null && point.Style != drawing.StyleManager.AssignDefaultStyle(point))
@@ -97,8 +116,11 @@ namespace DynamicGeometry
                 SuppressAutoLabelPoints(drawing, suppress: true);
                 Add(drawing, replacement);
                 SuppressAutoLabelPoints(drawing, suppress: false);
+
+                // the label goes first: one still on the point when its other dependents move
+                // is listed with the replacement as well (SubstituteWith), a second time, and
+                // the entry left over after undo fails the consistency check
                 var label = point.Label;
-                ReplaceWithExisting(point, replacement);
                 if (label != null)
                 {
                     ReplaceDependency(label, point, replacement);
@@ -116,10 +138,15 @@ namespace DynamicGeometry
                     drawing.ActionManager.RecordAction(handOver);
                 }
 
+                ReplaceWithExisting(point, replacement);
+
                 // in the point's place in the list (the Figure List, the file), not at the end
                 MoveBefore(drawing, replacement, point);
                 Remove(point);
                 SetProperty(drawing.ActionManager, new PropertyValue("Name", replacement), point.Name);
+                drawing.ActionManager.RecordAction(new CallMethodAction(
+                    Rebind,
+                    () => FigureBase.SuppressRenameInExpressions = true));
             }
         }
 

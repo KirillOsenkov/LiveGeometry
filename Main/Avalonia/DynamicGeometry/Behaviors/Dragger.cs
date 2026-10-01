@@ -434,7 +434,8 @@ namespace DynamicGeometry
 
         /// <summary>
         /// As in the original DG: "Snap to" the figure through the point (a submenu when there
-        /// are several), and "Free point" for a point tied to figures
+        /// are several), "Convert to point by coordinates" for a free point, and "Free point" for a point
+        /// tied to figures or to typed coordinates
         /// </summary>
         static void AddSnapItems(
             Avalonia.Controls.ContextMenu menu,
@@ -459,7 +460,12 @@ namespace DynamicGeometry
                 menu.Items.Add(snapTo);
             }
 
-            if (PointSnapping.CanRelease(point))
+            if (PointSnapping.CanConvertToPointByCoordinates(point))
+            {
+                add("Convert to point by coordinates", () => PointSnapping.ConvertToPointByCoordinates((FreePoint)point), null);
+            }
+
+            if (PointSnapping.CanFree(point))
             {
                 add("Free point", () => PointSnapping.Release(point), null);
             }

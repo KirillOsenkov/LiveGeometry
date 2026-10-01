@@ -13,6 +13,17 @@
             }
         }
 
+        public void RebindExpressions()
+        {
+            if (Equation != null)
+            {
+                foreach (var expression in Equation.Expressions)
+                {
+                    expression.Rebind();
+                }
+            }
+        }
+
         protected override string Kind
         {
             get

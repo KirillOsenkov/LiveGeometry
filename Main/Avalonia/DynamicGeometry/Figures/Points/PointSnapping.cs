@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using GuiLabs.Undo;
 
@@ -8,8 +9,10 @@ namespace DynamicGeometry;
 /// Turns a point into another kind of point where it is, keeping its name, label and what is
 /// built on it (<see cref="Actions.ReplacePoint"/>, one undo step): a free point snapped onto a
 /// figure, and a point tied to figures - on a figure, at an intersection, a midpoint - released
-/// into a free point. A point dragged onto another point joins it (<see cref="Join"/>). The
-/// property grid, the context menu and the Alt-drag of the <see cref="Dragger"/> all come here.
+/// into a free point. A free point also becomes a point by coordinates and back
+/// (<see cref="ConvertToPointByCoordinates"/>). A point dragged onto another point joins it
+/// (<see cref="Join"/>). The property grid, the context menu and the Alt-drag of the
+/// <see cref="Dragger"/> all come here.
 /// </summary>
 public static class PointSnapping
 {
@@ -19,12 +22,61 @@ public static class PointSnapping
         return point is PointOnFigure || point is IntersectionPoint || point is MidPoint;
     }
 
+    /// <summary>
+    /// What "Free point" is offered for: the points that can be let go, and a point by
+    /// coordinates that is somewhere. Dragging with Alt doesn't free that one
+    /// (<see cref="CanRelease"/>): its place was typed on purpose.
+    /// </summary>
+    public static bool CanFree(IFigure point)
+    {
+        return CanRelease(point)
+            || point is PointByCoordinates byCoordinates && byCoordinates.Exists && byCoordinates.Coordinates.Exists();
+    }
+
     /// <summary>The point becomes a free point where it is</summary>
     public static FreePoint Release(PointBase point)
     {
         var free = Factory.CreateFreePoint(point.Drawing, point.Coordinates);
         Replace(point, free);
         return free;
+    }
+
+    /// <summary>A free point proper: a point on a figure is a <see cref="FreePoint"/> only by inheritance</summary>
+    public static bool CanConvertToPointByCoordinates(IFigure point)
+    {
+        return point is FreePoint && !(point is PointOnFigure);
+    }
+
+    /// <summary>
+    /// The free point becomes a point by coordinates: it stays where its X and Y say, which
+    /// start as the numbers it is at, as the grid shows them, to be typed over (the grid
+    /// puts the keyboard into X). The way back is <see cref="Release"/>.
+    /// </summary>
+    public static PointByCoordinates ConvertToPointByCoordinates(FreePoint point)
+    {
+        var drawing = point.Drawing;
+        var coordinates = point.Coordinates;
+        var converted = Factory.CreatePointByCoordinates(drawing, ConstantText(coordinates.X), ConstantText(coordinates.Y));
+        converted.Recalculate();
+        Replace(point, converted);
+        if (converted.Selected)
+        {
+            drawing.RaiseDisplayProperties(converted, focusProperty: converted.XExpression.Name);
+        }
+
+        return converted;
+    }
+
+    /// <summary>
+    /// A number as an expression says it: rounded as the grid shows numbers
+    /// (<see cref="Settings.DisplayDecimals"/>), and never with an exponent, which the
+    /// expression language doesn't read
+    /// </summary>
+    static string ConstantText(double value)
+    {
+        // + 0.0: a small negative number rounds to -0, which would read "-0"
+        var rounded = System.Math.Round(value, Settings.DisplayDecimals) + 0.0;
+        return rounded.ToString("0." + new string('#', Settings.DisplayDecimals), CultureInfo.InvariantCulture);
     }
 
     /// <summary>

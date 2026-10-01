@@ -205,6 +205,14 @@ namespace DynamicGeometry
             }
         }
 
+        public void RebindExpressions()
+        {
+            if (ShouldProcessText && !text.IsEmpty())
+            {
+                ProcessText();
+            }
+        }
+
         void ProcessMatch(Match match)
         {
             var result = match.Value;
@@ -222,7 +230,9 @@ namespace DynamicGeometry
             embeddedExpressions.Add(compileResult);
             if (compileResult.IsSuccess)
             {
-                Dependencies.AddRange(compileResult.Dependencies);
+                // once each: a figure named in two [...] parts listed twice would be swapped
+                // only in its first place when it is replaced (ReplaceDependency)
+                Dependencies.Merge(compileResult.Dependencies);
             }
         }
 

@@ -89,6 +89,15 @@ namespace DynamicGeometry
             Text = renamer.Rewrite(Text, isFunction: false);
         }
 
+        /// <summary>Compiles the text again (<see cref="IRenamableExpressions.RebindExpressions"/>)</summary>
+        public void Rebind()
+        {
+            if (!Text.IsEmpty())
+            {
+                Recalculate();
+            }
+        }
+
         public override string ToString()
         {
             return Text;
