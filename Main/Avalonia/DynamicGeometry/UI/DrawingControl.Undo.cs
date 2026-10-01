@@ -13,6 +13,14 @@ namespace DynamicGeometry
                 Drawing.Behavior.Restart();
                 return;
             }
+
+            // a drag under way: its moves are not in the history yet, and undoing what is
+            // would leave them on top of a state they were not made in
+            if (Drawing.IsRecordingTransaction)
+            {
+                return;
+            }
+
             try
             {
                 Drawing.ActionManager.Undo();
@@ -22,11 +30,19 @@ namespace DynamicGeometry
                 HandleException(ex);
             }
             UpdateUndoRedo();
+            CommandToolButton.UpdateToggles();
             Drawing.RaiseDisplayProperties(null);
         }
 
         public void Redo()
         {
+            // not in the middle of a construction or a drag: what is redone would land among
+            // the figures being made (its points took the names of the ones under way)
+            if (ConstructionInProgress || Drawing.IsRecordingTransaction)
+            {
+                return;
+            }
+
             try
             {
                 Drawing.ActionManager.Redo();
@@ -36,6 +52,7 @@ namespace DynamicGeometry
                 HandleException(ex);
             }
             UpdateUndoRedo();
+            CommandToolButton.UpdateToggles();
             Drawing.RaiseDisplayProperties(null);
         }
 

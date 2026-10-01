@@ -16,6 +16,19 @@ namespace DynamicGeometry
         string GetSignature();
     }
 
+    /// <summary>
+    /// A value whose state is more than what reading it gives: reading resolves (the theme's
+    /// paper for a drawing without one of its own, the base value of a style without an
+    /// override for the theme), and undo of a set must put back what was there - nothing.
+    /// </summary>
+    public interface IRestorableValue
+    {
+        /// <summary>What <see cref="RestoreState"/> needs to undo a set made now</summary>
+        object CaptureState();
+
+        void RestoreState(object state);
+    }
+
     public class CompositeValueProvider : IValueProvider
     {
         public List<IValueProvider> InnerList = new List<IValueProvider>();

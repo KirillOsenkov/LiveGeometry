@@ -220,6 +220,33 @@ namespace DynamicGeometry
             UpdateVisual();
         }
 
+        /// <summary>A pinned label's place is its offset from the corner, in pixels; an unpinned one's is in the plane</summary>
+        public override object CapturePlace()
+        {
+            return pin != LabelPin.None ? new PinnedPlace() { Offset = PinOffset } : base.CapturePlace();
+        }
+
+        public override void RestorePlace(object place)
+        {
+            if (place is PinnedPlace pinned)
+            {
+                PinOffset = pinned.Offset;
+                if (HasCanvas)
+                {
+                    UpdateVisual();
+                }
+            }
+            else
+            {
+                base.RestorePlace(place);
+            }
+        }
+
+        class PinnedPlace
+        {
+            public Point Offset;
+        }
+
         /// <summary>Dragging a pinned label changes its offset from the corner, not its place in the plane</summary>
         public override void MoveToCore(Point newLocation)
         {

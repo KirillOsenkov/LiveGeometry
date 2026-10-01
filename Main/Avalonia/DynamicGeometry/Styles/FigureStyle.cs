@@ -78,6 +78,19 @@ namespace DynamicGeometry
             OnPropertyChanged(property);
         }
 
+        public void RemoveOverride(string theme, string property)
+        {
+            if (Overrides.TryGetValue(theme, out var values) && values.Remove(property))
+            {
+                if (values.Count == 0)
+                {
+                    Overrides.Remove(theme);
+                }
+
+                OnPropertyChanged(property);
+            }
+        }
+
         public void ClearOverrides(string theme)
         {
             if (Overrides.Remove(theme, out var values))
@@ -91,13 +104,38 @@ namespace DynamicGeometry
 
         /// <summary>
         /// The button that drops the theme's own values (shown under a theme that has some):
-        /// the style looks as it does under the base theme again
+        /// the style looks as it does under the base theme again. One undo step, which puts
+        /// the values back.
         /// </summary>
         [PropertyGridVisible]
         [PropertyGridIcon(PropertyGridIcon.Cross)]
         public void SameAsBaseTheme()
         {
-            ClearOverrides(AppTheme.Current.Name);
+            string theme = AppTheme.Current.Name;
+            if (!Overrides.TryGetValue(theme, out var values))
+            {
+                return;
+            }
+
+            var saved = new Dictionary<string, object>(values);
+            var action = new CallMethodAction(
+                () => ClearOverrides(theme),
+                () =>
+                {
+                    foreach (var pair in saved)
+                    {
+                        SetOverride(theme, pair.Key, pair.Value);
+                    }
+                });
+            var actionManager = StyleManager?.Drawing?.ActionManager;
+            if (actionManager != null)
+            {
+                actionManager.RecordAction(action);
+            }
+            else
+            {
+                action.Execute();
+            }
         }
 
         public virtual bool CanEdit(string propertyName)

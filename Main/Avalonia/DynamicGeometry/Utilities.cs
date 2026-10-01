@@ -245,10 +245,15 @@ namespace DynamicGeometry
 
 #if !PLAYER
 
-        public static void SetProperty(this ActionManager actionManager, object instance, string propertyName, object value)
+        public static void SetProperty(
+            this ActionManager actionManager,
+            object instance,
+            string propertyName,
+            object value,
+            bool coalesce = false)
         {
             var variable = new PropertyValue(propertyName, instance);
-            Actions.SetProperty(actionManager, variable, value);
+            Actions.SetProperty(actionManager, variable, value, coalesce);
         }
 
 #endif

@@ -46,6 +46,7 @@ namespace DynamicGeometry
         /// canvas shows it.
         /// </summary>
         [PropertyGridVisible]
+        [PropertyGridCustomValueProvider(typeof(PaperValue))]
         public Brush Background
         {
             get
@@ -97,34 +98,76 @@ namespace DynamicGeometry
             ApplyBackground();
         }
 
+        public void RemoveOverride(string theme, string property)
+        {
+            if (Overrides.TryGetValue(theme, out var values) && values.Remove(property))
+            {
+                if (values.Count == 0)
+                {
+                    Overrides.Remove(theme);
+                }
+
+                ApplyBackground();
+            }
+        }
+
         public void ClearOverrides(string theme)
         {
             Overrides.Remove(theme);
             ApplyBackground();
         }
 
-        /// <summary>The theme's own paper: under the base theme no paper of the drawing's own, under another an override saying so</summary>
+        /// <summary>
+        /// The paper as the property grid sets it: undoing the first choice of a paper gives
+        /// back the theme's (no paper of the drawing's own), not the color the theme had
+        /// </summary>
+        public class PaperValue : PropertyValue, IRestorableValue
+        {
+            public object CaptureState()
+            {
+                return ((Drawing)Parent).OwnBackground;
+            }
+
+            public void RestoreState(object state)
+            {
+                ((Drawing)Parent).Background = (Brush)state;
+            }
+        }
+
+        /// <summary>
+        /// The theme's own paper: under the base theme no paper of the drawing's own, under
+        /// another an override saying so. An undo step like a paper picked in the grid.
+        /// </summary>
         [PropertyGridVisible]
         [PropertyGridName("Theme's paper")]
         [PropertyGridIcon(PropertyGridIcon.Paper)]
         public void UseThemePaper()
         {
-            if (AppTheme.IsBase(AppTheme.Current))
-            {
-                Background = null;
-            }
-            else
-            {
-                SetOverride(AppTheme.Current.Name, nameof(Background), null);
-            }
+            var paper = ThemedValue.ForCurrentTheme(PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Background)));
+            Actions.SetProperty(ActionManager, paper, value: null);
         }
 
-        /// <summary>Drops the paper chosen for the theme on screen: the base theme's again</summary>
+        /// <summary>Drops the paper chosen for the theme on screen: the base theme's again. One undo step.</summary>
         [PropertyGridVisible]
         [PropertyGridIcon(PropertyGridIcon.Cross)]
         public void SameAsBaseTheme()
         {
-            ClearOverrides(AppTheme.Current.Name);
+            string theme = AppTheme.Current.Name;
+            if (!Overrides.TryGetValue(theme, out var values))
+            {
+                return;
+            }
+
+            var saved = new Dictionary<string, object>(values);
+            ActionManager.RecordAction(new CallMethodAction(
+                () => ClearOverrides(theme),
+                () =>
+                {
+                    foreach (var pair in saved)
+                    {
+                        SetOverride(theme, pair.Key, pair.Value);
+                    }
+                }));
         }
 
         public bool CanEdit(string propertyName)
@@ -678,6 +721,16 @@ namespace DynamicGeometry
         public IAction LastUndoableActionAtSave { get; set; }
         public ActionManager ActionManager { get; set; }
 
+        /// <summary>
+        /// A tool is in the middle of a construction, or a point is being dragged: whatever is
+        /// recorded now joins that undo step, and is taken back with it if it is given up.
+        /// Commands that are not part of it (Delete, Paste, Redo) wait.
+        /// </summary>
+        public bool IsRecordingTransaction
+        {
+            get { return ActionManager.RecordingTransaction != null; }
+        }
+
         public event Action<Canvas> OnAttachToCanvas;
         public event Action<Canvas> OnDetachFromCanvas;
 
@@ -955,6 +1008,13 @@ namespace DynamicGeometry
                 return;
             }
 
+            // a tool in the middle of a construction has its transaction open: a deletion now
+            // would be part of that figure's undo step, and Escape would put the figures back
+            if (IsRecordingTransaction)
+            {
+                return;
+            }
+
             // not delayed: each removal happens now, so that a figure that went as a
             // dependent of an earlier one is seen to be gone and not removed a second time
             using (Transaction.Create(ActionManager, false))
@@ -996,8 +1056,9 @@ namespace DynamicGeometry
         }
 
         public void PasteFromText(string str)
-        {  
-            if (str != null)
+        {
+            // not into the undo step of a construction under way
+            if (str != null && !IsRecordingTransaction)
             {
                 Actions.Paste(this, str);
             }

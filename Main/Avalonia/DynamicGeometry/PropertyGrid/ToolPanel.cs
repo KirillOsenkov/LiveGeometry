@@ -6,8 +6,10 @@ namespace DynamicGeometry;
 /// A tool's panel whose command checks what was typed into its rows (Add point checks X and
 /// Y). What is wrong goes under the row it is about (<see cref="StringEditor.ErrorText"/>)
 /// when the command runs, never while the user is typing, and stays until that text is
-/// edited or the command finds it right.
+/// edited or the command finds it right. What is typed is the tool's, not the drawing's:
+/// no undo step (<see cref="PropertyGridNoUndoAttribute"/>, inherited).
 /// </summary>
+[PropertyGridNoUndo]
 public class ToolPanel
 {
     /// <summary>A property's name and what is wrong with its text; null takes the error away</summary>

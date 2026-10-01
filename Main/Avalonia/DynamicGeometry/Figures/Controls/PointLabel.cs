@@ -9,6 +9,9 @@ namespace DynamicGeometry
         {
         }
 
+        // has its place: the default one it got with its first text, or the file's
+        bool placed;
+
         PointBase GetPoint()
         {
             return (PointBase)Dependencies.ElementAt(0);
@@ -185,11 +188,12 @@ namespace DynamicGeometry
                 return;
             }
 
-            var textWasEmpty = Text.IsEmpty();
             UpdateText();
-            if (textWasEmpty && !Text.IsEmpty())
+            if (!placed && !Text.IsEmpty())
             {
-                // a new label: centered under its point, just clear of it
+                // a new label: centered above its point, just clear of it. Once: a label
+                // that comes back (the name shown again, undo) is where it was left.
+                placed = true;
                 var size = MeasureSize();
                 Offset = new Point(
                     -size.Width / 2,
@@ -269,6 +273,7 @@ namespace DynamicGeometry
             base.ReadXml(element);
             this.showName = element.ReadBool("ShowName", true);
             this.showCoordinates = element.ReadBool("ShowCoordinates", false);
+            placed = true;
             UpdateText();
         }
 

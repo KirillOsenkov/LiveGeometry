@@ -13,37 +13,101 @@ namespace DynamicGeometry
 
         public IValueProvider Property { get; set; }
         public object NewValue { get; set; }
-        public object OldValue { get; set; }
+
+        /// <summary>
+        /// Whether the next set of the same property may join this one in a single undo step:
+        /// the letters typed into a box, the positions a slider or a color picker passes
+        /// through. A check box or a choice from a list is a step each time.
+        /// </summary>
+        public bool Coalesce { get; set; }
+
+        /// <summary>Whose history the action is in, to know when there is something to redo</summary>
+        public ActionManager ActionManager { get; set; }
+
+        // one value per object of a multiple selection, each with what it had before: the
+        // objects may have differed, and undo gives each its own back
+        IValueProvider[] targets;
+        object[] oldStates;
+
+        static IValueProvider[] GetTargets(IValueProvider property)
+        {
+            return property is CompositeValueProvider composite
+                ? composite.InnerList.ToArray()
+                : new[] { property };
+        }
 
         protected override void ExecuteCore()
         {
-            OldValue = Property.GetValue<object>();
+            targets = GetTargets(Property);
+            oldStates = new object[targets.Length];
+            for (int i = 0; i < targets.Length; i++)
+            {
+                oldStates[i] = targets[i] is IRestorableValue restorable
+                    ? restorable.CaptureState()
+                    : targets[i].GetValue<object>();
+            }
+
             Property.SetValue(NewValue);
         }
 
         protected override void UnExecuteCore()
         {
-            Property.SetValue(OldValue);
+            for (int i = 0; i < targets.Length; i++)
+            {
+                if (targets[i] is IRestorableValue restorable)
+                {
+                    restorable.RestoreState(oldStates[i]);
+                }
+                else
+                {
+                    targets[i].SetValue(oldStates[i]);
+                }
+            }
         }
 
         public override bool TryToMerge(IAction followingAction)
         {
             SetPropertyAction next = followingAction as SetPropertyAction;
-
-            // Comparing the Property does not allow for proper merging. - D.H.
-            // if (next != null
-            // && next.Property == this.Property)
-            // Using new comparison.
-            if (next != null
-                && next.Property.Name == this.Property.Name
-                && next.Property.Parent == this.Property.Parent
-                && next.Property.CanSetValue == this.Property.CanSetValue)
+            if (next == null || !Coalesce || !next.Coalesce || targets == null)
             {
-                this.NewValue = next.NewValue;
-                Property.SetValue(NewValue);
-                return true;
+                return false;
             }
-            return false;
+
+            // the history keeps what there is to redo when an action is merged into the last
+            // one: a new edit must end that, so it is an action of its own
+            if (ActionManager != null && ActionManager.CanRedo)
+            {
+                return false;
+            }
+
+            var nextTargets = GetTargets(next.Property);
+            if (nextTargets.Length != targets.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < targets.Length; i++)
+            {
+                if (!IsSameValue(targets[i], nextTargets[i]))
+                {
+                    return false;
+                }
+            }
+
+            this.NewValue = next.NewValue;
+            Property.SetValue(NewValue);
+            return true;
+        }
+
+        /// <summary>The same property of the same object, seen under the same theme</summary>
+        static bool IsSameValue(IValueProvider first, IValueProvider second)
+        {
+            return first.GetType() == second.GetType()
+                && first.Name == second.Name
+                && first.Parent != null
+                && first.Parent == second.Parent
+                && first.CanSetValue == second.CanSetValue
+                && (first as ThemedValue)?.Theme == (second as ThemedValue)?.Theme;
         }
     }
 }

@@ -137,6 +137,16 @@ namespace DynamicGeometry
             };
         }
 
+        /// <summary>
+        /// Whether a run of edits is one undo step: the letters typed into a box, the places a
+        /// slider or a color picker is dragged through. An editor of single choices (a check
+        /// box, a list) says no: each choice is a step.
+        /// </summary>
+        protected virtual bool CoalescesEdits
+        {
+            get { return true; }
+        }
+
         protected virtual void SetValue(object value)
         {
             if (guard || value == null)
@@ -166,7 +176,7 @@ namespace DynamicGeometry
                 {
                     if (ActionManager != null)
                     {
-                        Actions.SetProperty(ActionManager, Value, value);
+                        Actions.SetProperty(ActionManager, Value, value, CoalescesEdits);
                     }
                     else
                     {

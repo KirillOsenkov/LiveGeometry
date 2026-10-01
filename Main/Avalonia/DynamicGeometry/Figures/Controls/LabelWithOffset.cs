@@ -37,6 +37,21 @@ namespace DynamicGeometry
             base.MoveToCore(newPosition);
         }
 
+        /// <summary>The offset is the label's place: undo of a drag puts it back whatever the zoom is by then</summary>
+        public override object CapturePlace()
+        {
+            return Offset;
+        }
+
+        public override void RestorePlace(object place)
+        {
+            Offset = (Point)place;
+            if (Drawing != null)
+            {
+                UpdateVisual();
+            }
+        }
+
         /// <summary>Puts the label where its anchor and offset say; the text is the subclass's business</summary>
         public override void UpdateVisual()
         {

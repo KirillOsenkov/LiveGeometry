@@ -39,13 +39,31 @@ namespace DynamicGeometry
                 Drawing.AddFromXml(element);
                 Drawing.Name = fileName;
                 Drawing.ClearStatus();
-                Drawing.ActionManager.Clear();
             }
             catch (Exception ex)
             {
                 Drawing.RaiseError(this, ex);
             }
+            finally
+            {
+                ForgetLoading();
+            }
             PointBase.SuppressAutoLabelPoints = false;
+        }
+
+        /// <summary>
+        /// Reading a file is not something to undo: the history starts empty, also when the
+        /// file failed half way - or Undo would take the figures that did load away one by one
+        /// </summary>
+        void ForgetLoading()
+        {
+            var manager = Drawing.ActionManager;
+            if (manager.RecordingTransaction != null)
+            {
+                manager.TransactionStack.Clear();
+            }
+
+            manager.Clear();
         }
 
         public void LoadDrawingFromDGF(string[] lines, string fileName)
@@ -56,13 +74,16 @@ namespace DynamicGeometry
                 {
                     Clear();
                     Drawing.AddFromDGF(lines);
-                    Drawing.ActionManager.Clear();
                     Drawing.Name = fileName;
                 });
             }
             catch (Exception ex)
             {
                 Drawing.RaiseError(this, ex);
+            }
+            finally
+            {
+                ForgetLoading();
             }
         }
 
@@ -79,12 +100,15 @@ namespace DynamicGeometry
             {
                 Clear();
                 Drawing.AddFromGeoGebra(worksheet);
-                Drawing.ActionManager.Clear();
                 Drawing.Name = fileName;
             }
             catch (Exception ex)
             {
                 Drawing.RaiseError(this, ex);
+            }
+            finally
+            {
+                ForgetLoading();
             }
 
             PointBase.SuppressAutoLabelPoints = false;

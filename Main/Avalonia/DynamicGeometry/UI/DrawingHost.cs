@@ -326,7 +326,17 @@ namespace DynamicGeometry
 
         public void ToggleGrid()
         {
-            CurrentDrawing.CoordinateGrid.Visible = !CurrentDrawing.CoordinateGrid.Visible;
+            // the grid is the drawing's (a file says whether it shows), so this is an undo
+            // step - except in the middle of a construction, whose step is its figure's alone
+            var grid = CurrentDrawing.CoordinateGrid;
+            if (CurrentDrawing.IsRecordingTransaction)
+            {
+                grid.Visible = !grid.Visible;
+            }
+            else
+            {
+                CurrentDrawing.ActionManager.SetProperty(grid, nameof(grid.Visible), !grid.Visible);
+            }
 
             // the G key comes through here too, and the ribbon button must follow
             CommandToolButton.UpdateToggles();

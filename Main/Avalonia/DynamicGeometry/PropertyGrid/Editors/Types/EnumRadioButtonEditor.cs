@@ -26,6 +26,12 @@ namespace DynamicGeometry
         private StackPanel stackPanel;
         private IEnumerable<string> items;
 
+        /// <summary>Each choice is an undo step of its own</summary>
+        protected override bool CoalescesEdits
+        {
+            get { return false; }
+        }
+
         protected override UIElement CreateEditor()
         {
             groupBox = new Border();

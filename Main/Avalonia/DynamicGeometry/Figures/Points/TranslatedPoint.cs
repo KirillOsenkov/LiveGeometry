@@ -579,6 +579,26 @@ namespace DynamicGeometry
             Recalculate();
         }
 
+        /// <summary>
+        /// The place is the two parameters: put back as they were, where moving back by the
+        /// offset of a drag would project the point onto its circle or line anew, somewhere else
+        /// </summary>
+        public override object CapturePlace()
+        {
+            return new Point(distanceQuantity.Parameter, directionQuantity.Parameter);
+        }
+
+        public override void RestorePlace(object place)
+        {
+            var parameters = (Point)place;
+            distanceQuantity.Parameter = parameters.X;
+            directionQuantity.Parameter = parameters.Y;
+            RaisePropertyChanged("Distance");
+            RaisePropertyChanged("Direction");
+            Recalculate();
+            UpdateVisual();
+        }
+
         #endregion
 
         protected override Shape CreateShape()

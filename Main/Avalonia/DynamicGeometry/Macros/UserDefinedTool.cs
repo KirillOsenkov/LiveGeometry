@@ -25,6 +25,7 @@ namespace DynamicGeometry
         }
 
         [PropertyGridName("Tool properties")]
+        [PropertyGridNoUndo]
         public class UserDefinedDialog
         {
             public UserDefinedDialog(UserDefinedTool parent)

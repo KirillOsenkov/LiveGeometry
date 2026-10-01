@@ -286,6 +286,14 @@ public class FigureExplorer : Border
     /// <param name="toggle">Add to or take from the selection (Ctrl)</param>
     void Select(IFigure figure, bool range, bool toggle)
     {
+        // turning to the list gives up a construction under way, as Escape does: its
+        // transaction is open, and an edit of the selected figure would join the undo step
+        // of the figure being made
+        if (constructing)
+        {
+            drawing.Behavior?.Restart();
+        }
+
         selecting = true;
         try
         {

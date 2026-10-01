@@ -65,22 +65,59 @@ namespace DynamicGeometry
             }
         }
 
+        // The label the point had last. A label is added and removed with the point and by
+        // its Show name and Show coordinates, outside the undo history, so it must be the
+        // same object every time: the history may hold a drag of it, and its place is its own.
+        PointLabel keptLabel;
+
+        // the point left the drawing with its label on (undo of adding it): it comes back with it
+        bool returnsWithLabel;
+
+        // new points are labeled once, when they are made: redo makes the point as it was
+        bool wasInDrawing;
+
         public override void OnAddingToDrawing(Drawing drawing)
         {
             base.OnAddingToDrawing(drawing);
 
             // Make sure this is in the drawing's figure list before labeling.
-            if (Settings.Instance.AutoLabelPoints &&
-                         Drawing.Figures.Contains(this) &&
-                         IsHitTestVisible &&
-                         !SuppressAutoLabelPoints &&
-                         Visible) ShowName = true;
+            if (!Drawing.Figures.Contains(this))
+            {
+                return;
+            }
+
+            bool returning = wasInDrawing;
+            bool withLabel = returnsWithLabel;
+            wasInDrawing = true;
+            returnsWithLabel = false;
+
+            // while suppressed, whoever adds the point sees to its label (undo of a deletion
+            // puts the label back itself)
+            if (SuppressAutoLabelPoints)
+            {
+                return;
+            }
+
+            if (returning)
+            {
+                if (withLabel && Label == null && keptLabel != null && !Drawing.Figures.Contains(keptLabel))
+                {
+                    Label = keptLabel;
+                    Drawing.Figures.Add(Label);
+                }
+            }
+            else if (Settings.Instance.AutoLabelPoints && IsHitTestVisible && Visible)
+            {
+                ShowName = true;
+            }
         }
 
         public override void OnRemovingFromDrawing(Drawing drawing)
         {
             if (Label != null)
             {
+                keptLabel = Label;
+                returnsWithLabel = true;
                 Drawing.Figures.Remove(Label);
                 Label = null;
             }
@@ -212,6 +249,7 @@ namespace DynamicGeometry
         {
             if (Label != null && !Label.ShowName && !Label.ShowCoordinates)
             {
+                keptLabel = Label;
                 Drawing.Figures.Remove(Label);
                 Label = null;
             }
@@ -221,7 +259,9 @@ namespace DynamicGeometry
         {
             if (Label == null)
             {
-                Label = Factory.CreatePointLabel(Drawing, new[] { this });
+                // the one it had, where it was, if it had one: saying nothing yet
+                Label = keptLabel ?? Factory.CreatePointLabel(Drawing, new[] { this });
+                Label.ShowName = false;
                 Label.ShowCoordinates = false;
                 Drawing.Figures.Add(Label);
             }

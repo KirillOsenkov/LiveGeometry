@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
@@ -16,10 +17,14 @@ namespace DynamicGeometry
             var underMouse = Drawing.Figures.HitTest<FreePoint>(coordinates);
             if (underMouse != null)
             {
-                JoinSegments(underMouse);
-                // for polyline
-                JoinPolyLineSegments(underMouse);
-                RemovePointFromPolygons(underMouse);
+                // one click, one undo step
+                using (Transaction.Create(Drawing.ActionManager, delayed: false))
+                {
+                    JoinSegments(underMouse);
+                    // for polyline
+                    JoinPolyLineSegments(underMouse);
+                    RemovePointFromPolygons(underMouse);
+                }
             }
         }
 

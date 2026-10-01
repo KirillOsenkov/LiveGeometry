@@ -119,7 +119,12 @@ public class RightAngleMark
             return;
         }
 
-        owner.Drawing.ActionManager.SetProperty(this, nameof(Corner), Corner + 1);
+        // a few clicks in a row, to get to the right corner, are one undo step
+        owner.Drawing.ActionManager.SetProperty(
+            this,
+            nameof(Corner),
+            Corner + 1,
+            coalesce: true);
         e.Handled = true;
     }
 

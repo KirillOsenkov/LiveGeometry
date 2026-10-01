@@ -224,9 +224,21 @@ namespace DynamicGeometry
             drawing.ActionManager.RecordAction(action);
         }
 
-        public static void SetProperty(ActionManager actionManager, IValueProvider valueProvider, object value)
+        /// <param name="coalesce">
+        /// Whether a run of sets of the same property is one undo step (typing, a slider
+        /// being dragged) rather than a step each (a check box, a choice)
+        /// </param>
+        public static void SetProperty(
+            ActionManager actionManager,
+            IValueProvider valueProvider,
+            object value,
+            bool coalesce = false)
         {
-            SetPropertyAction action = new SetPropertyAction(valueProvider, value);
+            SetPropertyAction action = new SetPropertyAction(valueProvider, value)
+            {
+                Coalesce = coalesce,
+                ActionManager = actionManager
+            };
             if (actionManager == null)
             {
                 action.Execute();
@@ -256,7 +268,12 @@ namespace DynamicGeometry
             var action = new PasteAction(
                 drawing,
                 xmlContent);
-            drawing.ActionManager.RecordAction(action);
+
+            // nothing was copied: no undo step that undoes nothing
+            if (action.Figures.Any())
+            {
+                drawing.ActionManager.RecordAction(action);
+            }
         }
 
 #endif

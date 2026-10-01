@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
-    public class AngleBisector : Ray
+    public class AngleBisector : Ray, IConditionalProperties
     {
         PointPair coordinates;
 
@@ -172,24 +173,60 @@ namespace DynamicGeometry
         }
 
         /// <summary>
-        /// The bisector of the other angle the two sides make (the one over 180°): the same
-        /// line, pointing the other way. Inside-the-angle mode has no other angle, so it goes.
+        /// The bisector of the other angle the two sides make: the same line, pointing the
+        /// other way. Inside-the-angle mode has no other angle, so it goes, and the sides are
+        /// read in the order (<see cref="FigureBase.Flipped"/>) whose sweep is the other one.
+        /// One undo step.
         /// </summary>
         [PropertyGridVisible]
         [PropertyGridName("Convert to opposite angle")]
         [PropertyGridIcon(PropertyGridIcon.Angle)]
         public void ConvertToOpposite()
         {
-            IFigure[] dependencies = Dependencies as IFigure[];
-            if (dependencies != null)
+            if (Drawing == null)
             {
-                var t = dependencies[1];
-                dependencies[1] = dependencies[2];
-                dependencies[2] = t;
+                return;
             }
+
+            bool wasInterior = interior;
+            bool wasFlipped = Flipped;
+
+            // which order of the sides points the other way: try the one there is
+            var direction = coordinates.P2.Minus(coordinates.P1);
             interior = false;
-            this.RecalculateAllDependents();
+            Recalculate();
+            var oriented = coordinates.P2.Minus(coordinates.P1);
+            bool flipped = oriented.X * direction.X + oriented.Y * direction.Y > 0 ? !wasFlipped : wasFlipped;
+            interior = wasInterior;
+
+            Drawing.ActionManager.RecordAction(new CallMethodAction(
+                () => SetSweep(interior: false, flipped: flipped),
+                () => SetSweep(wasInterior, wasFlipped)));
             Drawing.RaiseSelectionChanged(this);
+        }
+
+        void SetSweep(bool interior, bool flipped)
+        {
+            this.interior = interior;
+            Flipped = flipped;
+            this.RecalculateAllDependents();
+        }
+
+        /// <summary>
+        /// A ray's verbs that are not a bisector's: it is built on an angle, not on two points
+        /// to draw a line or a segment through, and the way it points is the angle's
+        /// (<see cref="ConvertToOpposite"/>). The whole line is <see cref="IsLine"/>.
+        /// </summary>
+        public bool CanEdit(string propertyName)
+        {
+            return propertyName != nameof(ConvertToLine)
+                && propertyName != nameof(ConvertToSegment)
+                && propertyName != nameof(Reverse);
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
         }
 
         IFigure[] GetDependencies()

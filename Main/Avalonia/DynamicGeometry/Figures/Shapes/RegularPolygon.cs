@@ -99,7 +99,7 @@ namespace DynamicGeometry
 
         #endregion
 
-        private int numberOfSides = 5;
+        private int numberOfSides = DefaultNumberOfSides;
         [PropertyGridVisible]
         [PropertyGridName("Number of sides")]
         [Domain(3, 500)]
@@ -116,11 +116,74 @@ namespace DynamicGeometry
                     return;
                 }
 
+                // a vertex or a side that something is built on stays: fewer sides would
+                // take that figure away with it, from inside this setter, where no undo
+                // would bring it back
+                int minimum = MinimumNumberOfSides();
+                if (value < minimum)
+                {
+                    value = minimum;
+                    Drawing?.RaiseStatusNotification(
+                        Name + " keeps " + minimum + " sides: figures are built on its vertices or sides.");
+                }
+
                 numberOfSides = value;
                 Recreate(numberOfSides);
                 this.RecalculateAllDependents();
                 // the title says it: 5-gon
                 RaisePropertyChanged(nameof(NumberOfSides));
+            }
+        }
+
+        /// <summary>The fewest sides that keep every vertex and side something outside the polygon is built on</summary>
+        int MinimumNumberOfSides()
+        {
+            int minimum = 3;
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                // vertices[0] is the second vertex
+                if (i + 2 > minimum && HasOutsideDependents(vertices[i]))
+                {
+                    minimum = i + 2;
+                }
+            }
+
+            for (int i = 0; i < sides.Count; i++)
+            {
+                if (i + 1 > minimum && HasOutsideDependents(sides[i]))
+                {
+                    minimum = i + 1;
+                }
+            }
+
+            return minimum;
+        }
+
+        const int DefaultNumberOfSides = 5;
+
+        public override void WriteXml(System.Xml.XmlWriter writer)
+        {
+            base.WriteXml(writer);
+            if (numberOfSides != DefaultNumberOfSides)
+            {
+                writer.WriteAttributeString("Sides", numberOfSides.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            }
+        }
+
+        public override void ReadXml(System.Xml.Linq.XElement element)
+        {
+            base.ReadXml(element);
+            int count = (int)element.ReadDouble("Sides");
+            if (count >= 3 && count <= 500)
+            {
+                numberOfSides = count;
+            }
+
+            // the parts now, not at the first recalculation: a figure of the file that is
+            // built on a vertex or a side looks for it as soon as it is read
+            if (Drawing != null)
+            {
+                Recreate(numberOfSides, recalculate: false);
             }
         }
 
@@ -190,7 +253,7 @@ namespace DynamicGeometry
 
         protected override void AddSide(int sideCount)
         {
-            var side = new Segment();
+            var side = new PolygonSide();
             side.Drawing = Drawing;
             var index = sides.Count;
             var NumberOfSides = sideCount;
@@ -217,7 +280,7 @@ namespace DynamicGeometry
 
             sides.Add(side);
             Children.Add(side);
-            if (Drawing != null)
+            if (IsOnCanvas)
             {
                 side.OnAddingToCanvas(Drawing.Canvas);
             }

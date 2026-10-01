@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
+using GuiLabs.Undo;
 using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
@@ -233,10 +234,16 @@ namespace DynamicGeometry
         /// <summary>The label writing the figure's name next to it, while it shows one (<see cref="FigureLabel"/>)</summary>
         public FigureLabel NameLabel { get; set; }
 
+        // the label the figure had last: showing the name again brings the same one back,
+        // where it was dragged to, and what the undo history did to it still applies to it
+        FigureLabel retiredNameLabel;
+
         /// <summary>
         /// Whether the figure writes its name next to itself. Setting it adds or removes the
         /// label directly, like a point's ShowName: the property set is the undo step. The
-        /// figures that offer it in the grid (lines, circles) expose it as "Show name".
+        /// label taken away is kept, and comes back when the name is shown again (undo
+        /// included). The figures that offer it in the grid (lines, circles) expose it as
+        /// "Show name".
         /// </summary>
         public bool HasNameLabel
         {
@@ -253,7 +260,8 @@ namespace DynamicGeometry
 
                 if (value)
                 {
-                    NameLabel = Factory.CreateFigureLabel(Drawing, this);
+                    NameLabel = retiredNameLabel ?? Factory.CreateFigureLabel(Drawing, this);
+                    retiredNameLabel = null;
                     Drawing.Figures.Add(NameLabel);
                 }
                 else
@@ -261,6 +269,7 @@ namespace DynamicGeometry
                     var label = NameLabel;
                     NameLabel = null;
                     Drawing.Figures.Remove(label);
+                    retiredNameLabel = label;
                 }
             }
         }
@@ -746,10 +755,15 @@ namespace DynamicGeometry
         [PropertyGridIcon(PropertyGridIcon.Plus)]
         public void CreateNewStyle()
         {
-            Drawing.ActionManager.SetProperty(
-                this,
-                "Style",
-                Drawing.StyleManager.CreateNewStyle(this));
+            // the new style and the figure taking it: one undo step
+            using (Transaction.Create(Drawing.ActionManager, delayed: false))
+            {
+                Drawing.ActionManager.SetProperty(
+                    this,
+                    "Style",
+                    Drawing.StyleManager.CreateNewStyle(this));
+            }
+
             EditStyleButton();
         }
 

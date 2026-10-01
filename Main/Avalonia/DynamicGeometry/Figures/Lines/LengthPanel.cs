@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace DynamicGeometry;
 
@@ -105,7 +107,9 @@ public class LengthPanel :
     /// A distance measurement on the figure, added or removed. The grid records the
     /// property set as the undo step, and this setter runs inside it - so the drawing is
     /// changed directly (the undo library refuses an action recorded from within another);
-    /// undo sets the property back, which removes or re-adds the measurement.
+    /// undo sets the property back, which removes or re-adds the measurement. The same one:
+    /// the measurement taken away is kept for its figure, so that it comes back where it
+    /// was dragged to and a drag of it in the undo history still finds it.
     /// </summary>
     [PropertyGridVisible]
     [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
@@ -120,14 +124,25 @@ public class LengthPanel :
             var existing = LengthConstraint.FindMeasurement(figure);
             if (value && existing == null)
             {
-                figure.Drawing.Figures.Add(LengthConstraint.CreateMeasurement(figure));
+                if (!retiredMeasurements.TryGetValue(figure, out var measurement)
+                    || !measurement.Dependencies.SequenceEqual(figure.MeasuredFigures))
+                {
+                    measurement = LengthConstraint.CreateMeasurement(figure);
+                }
+
+                retiredMeasurements.Remove(figure);
+                figure.Drawing.Figures.Add(measurement);
             }
             else if (!value && existing != null)
             {
                 figure.Drawing.Figures.Remove(existing);
+                retiredMeasurements.AddOrUpdate(figure, existing);
             }
         }
     }
+
+    // by figure, not in the panel: the panel is made anew every time it is shown
+    static readonly ConditionalWeakTable<IFigure, DistanceMeasurement> retiredMeasurements = new ConditionalWeakTable<IFigure, DistanceMeasurement>();
 
     [PropertyGridName("Fix length")]
     [PropertyGridIcon(PropertyGridIcon.Lock)]

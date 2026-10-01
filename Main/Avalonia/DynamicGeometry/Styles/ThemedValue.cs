@@ -10,7 +10,7 @@ namespace DynamicGeometry;
 /// so that a change lands in the theme on screen (and undo puts the override back), and
 /// what the serializer reads and writes a theme's child element through.
 /// </summary>
-public class ThemedValue : IValueProvider
+public class ThemedValue : IValueProvider, IRestorableValue
 {
     readonly IValueProvider inner;
     readonly IThemeOverridable target;
@@ -22,6 +22,48 @@ public class ThemedValue : IValueProvider
         this.target = target;
         this.theme = theme;
         inner.ValueChanged += RaiseValueChanged;
+    }
+
+    /// <summary>The theme whose value this is</summary>
+    public string Theme
+    {
+        get { return theme; }
+    }
+
+    /// <summary>An override that was there before a set, or that there was none</summary>
+    class SavedOverride
+    {
+        public bool Exists;
+        public object Value;
+    }
+
+    /// <summary>
+    /// The override as it is, for undo: a set under a theme that had none makes one, and
+    /// undoing it must take the override away again, not leave one saying the base value
+    /// </summary>
+    public object CaptureState()
+    {
+        var saved = new SavedOverride();
+        if (target.Overrides.TryGetValue(theme, out var values) && values.TryGetValue(inner.Name, out var value))
+        {
+            saved.Exists = true;
+            saved.Value = value;
+        }
+
+        return saved;
+    }
+
+    public void RestoreState(object state)
+    {
+        var saved = (SavedOverride)state;
+        if (saved.Exists)
+        {
+            target.SetOverride(theme, inner.Name, saved.Value);
+        }
+        else
+        {
+            target.RemoveOverride(theme, inner.Name);
+        }
     }
 
     /// <summary>Whether the theme has a value of its own for the property</summary>

@@ -16,6 +16,9 @@ public interface IThemeOverridable
 
     void SetOverride(string theme, string property, object value);
 
+    /// <summary>The property is as under the base theme again under the named theme</summary>
+    void RemoveOverride(string theme, string property);
+
     /// <summary>Back to the base theme's values under the named theme</summary>
     void ClearOverrides(string theme);
 }

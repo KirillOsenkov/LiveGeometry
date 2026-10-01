@@ -1085,13 +1085,31 @@ public partial class MainView : UserControl
 
         void Pan(double physicalX, double physicalY)
         {
-            // the same undoable move that dragging the empty canvas does
             var offset = new Avalonia.Point(
                 coordinateSystem.ToLogical(physicalX),
                 -coordinateSystem.ToLogical(physicalY));
-            Actions.Move(drawing, new IMovable[] { coordinateSystem }, offset, null);
+
+            // the same list for every press, so that a run of arrow keys is one undo step,
+            // as a drag of the canvas is (moves of the same list merge)
+            if (keyboardPan == null || keyboardPan[0] != coordinateSystem)
+            {
+                keyboardPan = new IMovable[] { coordinateSystem };
+            }
+
+            // in the middle of a construction the view just moves: recorded, the pan would
+            // be part of the figure's undo step, and Escape would take the view back
+            if (drawing.IsRecordingTransaction)
+            {
+                keyboardPan.Move(offset);
+                return;
+            }
+
+            // the same undoable move that dragging the empty canvas does
+            Actions.Move(drawing, keyboardPan, offset, toRecalculate: null);
         }
     }
+
+    IMovable[] keyboardPan;
 
     private void MainView_KeyUp(object sender, KeyEventArgs e)
     {

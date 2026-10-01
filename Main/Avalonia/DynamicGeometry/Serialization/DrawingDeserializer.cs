@@ -391,19 +391,32 @@ namespace DynamicGeometry
                 return;
             }
 
-            var dependencyNames = figureNode.Elements("Dependency").Select(e => e.ReadString("Name")).ToArray();
+            var dependencyNodes = figureNode.Elements("Dependency").ToArray();
+            var dependencyNames = dependencyNodes.Select(e => e.ReadString("Name")).ToArray();
             foreach (var dependencyName in dependencyNames)
             {
                 ReadFigure(dependencyName, alreadyDeserializedFigures, nameBlacklist, nodeMap, drawing, callbackWhenCreated);
             }
 
             List<IFigure> dependencies = new List<IFigure>();
-            foreach (var dependencyName in dependencyNames)
+            for (int i = 0; i < dependencyNames.Length; i++)
             {
+                string dependencyName = dependencyNames[i];
                 IFigure existingDependency = null;
                 if (!alreadyDeserializedFigures.TryGetValue(dependencyName, out existingDependency))
                 {
                     throw new Exception(dependencyName);
+                }
+
+                // a part of the figure (a vertex a regular polygon works out), not the figure
+                string partName = dependencyNodes[i].ReadString("Part");
+                if (partName != null)
+                {
+                    existingDependency = (existingDependency as IFigureParts)?.GetPart(partName);
+                    if (existingDependency == null)
+                    {
+                        throw new Exception(dependencyName + " " + partName);
+                    }
                 }
 
                 dependencies.Add(existingDependency);

@@ -11,6 +11,15 @@ namespace DynamicGeometry
     {
         public CheckBox CheckBox { get; set; }
 
+        /// <summary>
+        /// Each tick is an undo step of its own: merged, hiding and showing again would
+        /// leave a step that undoes nothing
+        /// </summary>
+        protected override bool CoalescesEdits
+        {
+            get { return false; }
+        }
+
         protected override UIElement CreateEditor()
         {
             CheckBox = new CheckBox();

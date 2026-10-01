@@ -27,6 +27,13 @@ namespace DynamicGeometry
 
             var deleted = Figure.AsEnumerable<IFigure>()
                 .TopologicalSort(GetRemovableDependencies);
+
+            // The parts of a composite (the vertices a regular polygon works out, which are
+            // built on the polygon) are among the dependents so that what is built on them
+            // goes too. They are not figures of the drawing: they leave and come back with
+            // their composite, which sees to their dependencies. (Put back as figures on
+            // undo, they ended up in the drawing's own list, and on the canvas twice.)
+            deleted.RemoveAll(figure => figure != Figure && !Drawing.Figures.Contains(figure));
             // after their dependents, so that undo brings them back first
             deleted.AddRange(FindOrphanedAuxiliaries(deleted));
             Deleted = deleted.ToArray();

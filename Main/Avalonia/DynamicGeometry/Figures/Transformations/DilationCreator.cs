@@ -10,6 +10,7 @@ namespace DynamicGeometry
     public class DilationCreator : FigureCreator
     {
         [PropertyGridName("Dilation Factor")]
+        [PropertyGridNoUndo]
         public class DilationDialog
         {
             public DilationDialog(DilationCreator parent)

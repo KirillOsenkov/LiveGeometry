@@ -1,8 +1,9 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Media;
+﻿using System.Linq;
 using System.Xml.Linq;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
@@ -71,21 +72,61 @@ namespace DynamicGeometry
             Checkbox.Background = Brushes.Transparent;
             Checkbox.IsCheckedChanged += (s, e) =>
             {
-                if (Checkbox.IsChecked == true)
+                if (!settingBox)
                 {
-                    result_Checked(s, e);
-                }
-                else
-                {
-                    result_Unchecked(s, e);
+                    Toggle(Checkbox.IsChecked == true);
                 }
             };
             return Checkbox;
         }
 
-        void result_Unchecked(object sender, RoutedEventArgs e)
+        // the box is being ticked by the program (undo, redo): not a click to record
+        bool settingBox;
+
+        /// <summary>
+        /// A click on the box. The box and what it shows are saved with the drawing, so this
+        /// is an undo step: undo puts the box back and gives each figure the visibility it
+        /// had, which need not have been what the box said.
+        /// </summary>
+        void Toggle(bool show)
         {
-            Show(false);
+            // from a file, or in the middle of a construction, whose undo step is its figure's alone
+            if (Drawing == null || !Drawing.Figures.Contains(this) || Drawing.IsRecordingTransaction)
+            {
+                Show(show);
+                return;
+            }
+
+            var figures = Dependencies.ToArray();
+            var before = figures.Select(figure => figure.Visible).ToArray();
+            Drawing.ActionManager.RecordAction(new CallMethodAction(
+                () =>
+                {
+                    SetBox(show);
+                    Show(show);
+                },
+                () =>
+                {
+                    SetBox(!show);
+                    for (int i = 0; i < figures.Length; i++)
+                    {
+                        figures[i].Visible = before[i];
+                        figures[i].UpdateVisual();
+                    }
+                }));
+        }
+
+        void SetBox(bool isChecked)
+        {
+            settingBox = true;
+            try
+            {
+                Checkbox.IsChecked = isChecked;
+            }
+            finally
+            {
+                settingBox = false;
+            }
         }
 
         public void UpdateFigureVisibility()
@@ -100,11 +141,6 @@ namespace DynamicGeometry
                 figure.Visible = show;
                 figure.UpdateVisual();
             }
-        }
-
-        void result_Checked(object sender, RoutedEventArgs e)
-        {
-            Show(true);
         }
     }
 }

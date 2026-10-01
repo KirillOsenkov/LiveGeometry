@@ -308,8 +308,47 @@ namespace DynamicGeometry
         protected virtual void WriteDependency(IFigure dependency, XmlWriter writer)
         {
             writer.WriteStartElement("Dependency");
-            writer.WriteAttributeString("Name", dependency.Name);
+
+            // a part of a figure (a vertex a regular polygon works out) has no name of its
+            // own: the figure's name, and which part
+            var owner = FindPartOwner(dependency);
+            if (owner != null)
+            {
+                writer.WriteAttributeString("Name", owner.Name);
+                writer.WriteAttributeString("Part", owner.GetPartName(dependency));
+            }
+            else
+            {
+                writer.WriteAttributeString("Name", dependency.Name);
+            }
+
             writer.WriteEndElement();
+        }
+
+        HashSet<IFigure> drawingFigures;
+
+        /// <summary>The figure the dependency is a part of, if it is not a figure of the drawing itself</summary>
+        IFigureParts FindPartOwner(IFigure dependency)
+        {
+            var drawing = dependency.Drawing;
+            if (drawing == null)
+            {
+                return null;
+            }
+
+            if (drawingFigures == null)
+            {
+                drawingFigures = new HashSet<IFigure>(drawing.Figures);
+            }
+
+            if (drawingFigures.Contains(dependency))
+            {
+                return null;
+            }
+
+            return drawing.Figures
+                .OfType<IFigureParts>()
+                .FirstOrDefault(figure => figure.GetPartName(dependency) != null);
         }
 
         protected virtual string GetTagNameForFigure(IFigure figure)

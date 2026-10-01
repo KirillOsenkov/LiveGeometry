@@ -10,6 +10,7 @@ namespace DynamicGeometry
     public class RotationCreator : FigureCreator
     {
         [PropertyGridName("Rotation Angle")]
+        [PropertyGridNoUndo]
         public partial class RotationDialog
         {
             public RotationDialog(RotationCreator parent)

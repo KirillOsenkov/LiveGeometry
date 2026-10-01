@@ -8,6 +8,12 @@ namespace DynamicGeometry
     {
         public Selector Selector { get; set; }
 
+        /// <summary>Each choice is an undo step of its own</summary>
+        protected override bool CoalescesEdits
+        {
+            get { return false; }
+        }
+
         protected override UIElement CreateEditor()
         {
             Selector = CreateSelector();

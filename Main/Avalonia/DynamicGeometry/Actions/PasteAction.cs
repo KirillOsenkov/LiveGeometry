@@ -18,7 +18,18 @@ namespace DynamicGeometry
 
         protected override void ExecuteCore()
         {
-            Drawing.Figures.Add(Figures.ToArray<IFigure>());
+            // the labels of the pasted points are among the figures: the points must not
+            // make or bring back labels of their own
+            bool suppressed = PointBase.SuppressAutoLabelPoints;
+            PointBase.SuppressAutoLabelPoints = true;
+            try
+            {
+                Drawing.Figures.Add(Figures.ToArray<IFigure>());
+            }
+            finally
+            {
+                PointBase.SuppressAutoLabelPoints = suppressed;
+            }
         }
 
         protected override void UnExecuteCore()

@@ -48,6 +48,7 @@ namespace DynamicGeometry
         /// The side panel while a value is wanted: the number box, OK, and Free when the
         /// point may be left draggable. Enter is OK.
         /// </summary>
+        [PropertyGridNoUndo]
         public class ValueStep : ICustomMethodProvider, IConditionalProperties
         {
             public ValueStep(TranslationCreator parent, bool isDirection, bool canFree, double value)

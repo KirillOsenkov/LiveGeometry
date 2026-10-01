@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
+using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
@@ -240,31 +241,53 @@ namespace DynamicGeometry
 
         /// <summary>
         /// Swaps the two sides, which turns the angle into the one that completes it to 360
-        /// degrees - for the arc and the number together, whichever of them was asked.
+        /// degrees - for the arc and the number together, whichever of them was asked. One
+        /// undo step.
         /// </summary>
         public static void ConvertToOpposite(IFigure angleFigure)
         {
             var dependencies = angleFigure.Dependencies;
-            if (dependencies.Count != 3)
+            if (dependencies.Count != 3 || angleFigure.Drawing == null)
             {
                 return;
             }
 
             var companion = FindCompanion(angleFigure);
+            var first = dependencies[1];
+            var second = dependencies[2];
 
-            var side = dependencies[1];
-            dependencies[1] = dependencies[2];
-            dependencies[2] = side;
+            // not "swap it too": the companion gets the same sides, in case the two were out
+            // of step already - and its own back on undo
+            var companionFirst = companion?.Dependencies[1];
+            var companionSecond = companion?.Dependencies[2];
+            angleFigure.Drawing.ActionManager.RecordAction(new CallMethodAction(
+                () =>
+                {
+                    SetSides(angleFigure, second, first);
+                    if (companion != null)
+                    {
+                        SetSides(companion, second, first);
+                    }
+                },
+                () =>
+                {
+                    SetSides(angleFigure, first, second);
+                    if (companion != null)
+                    {
+                        SetSides(companion, companionFirst, companionSecond);
+                    }
+                }));
+        }
+
+        /// <summary>The two sides of an angle figure in this order; the same two figures, so nothing to register anew</summary>
+        static void SetSides(IFigure angleFigure, IFigure first, IFigure second)
+        {
+            angleFigure.Dependencies[1] = first;
+            angleFigure.Dependencies[2] = second;
             angleFigure.RecalculateAndUpdateVisual();
 
-            // not "swap it too": make it the same, in case the two were out of step already
-            // (an array says IsReadOnly, but its elements can be set, and arrays are what these are)
-            if (companion != null)
-            {
-                companion.Dependencies[1] = dependencies[1];
-                companion.Dependencies[2] = dependencies[2];
-                companion.RecalculateAndUpdateVisual();
-            }
+            // what is built on the angle: a bisector, a rotation by it
+            angleFigure.RecalculateAllDependents();
         }
 
         /// <summary>

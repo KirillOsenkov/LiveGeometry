@@ -407,8 +407,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   translated point's Free direction). A property setter that changes the figure list (the length
   panel's Show, the point's Free toggles) does so directly: the grid records the property set as
   the undo step and the undo library refuses an action recorded from inside another. A tool's
-  panel that holds settings, not drawing state, says `[PropertyGridNoUndo]`: otherwise typing in
-  it between constructions is an undo step that undoes nothing visible. `[PropertyGridFocus]`
+  panel holds settings, not drawing state, so it says `[PropertyGridNoUndo]` (`ToolPanel` does,
+  for all that derive from it; a panel that doesn't derive says it itself): otherwise typing in
+  it is an undo step that undoes nothing visible. `[PropertyGridFocus]`
   (the editor takes the keyboard whenever it appears) is for tool panels only; a figure's
   row that should take it just once, when the figure is created (a new label's text), is
   named by `RaiseDisplayProperties(figure, focusProperty:)`, otherwise selecting the figure
@@ -471,6 +472,46 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   created on demand for another: it is removed with its last dependent and comes back on undo.
   Every deletion goes through `RemoveFigureAction`, one figure per action inside a transaction,
   so undo restores labels and a polygon loses a vertex rather than dying.
+- **Undo** (GuiLabs.Undo; `Actions/`). What must hold: every change to what a file saves is
+  one undo step, undo puts back exactly what was there, redo what was made. The traps, each
+  of which was a bug (2026-09-30):
+  - *A grid button calls its method directly* (`MethodCallerButton`): the method records
+    itself (`Actions.*`, a `CallMethodAction`, a transaction when it is several actions -
+    Create new style), or it is a hole.
+  - *`SetPropertyAction`* keeps an old value per object of a multiple selection (they may
+    have differed). A value whose getter resolves - the theme's paper for a drawing without
+    one, the base value of a style without an override - is an `IRestorableValue`
+    (`ThemedValue`, `Drawing.PaperValue`): undo of the first set takes the override or the
+    paper away again instead of writing the resolved value.
+  - *Merging* (a run of sets as one step) is asked for by the caller (`coalesce:`): editors
+    of typed or dragged values do (`LabeledValueEditor.CoalescesEdits`), a check box or a
+    choice doesn't (merged, hide-then-show was a step that undid nothing). Same object,
+    same property, same theme only; and never while there is something to redo: the
+    library merges without ending the redo chain, so `SetPropertyAction` and `MoveAction`
+    refuse then.
+  - *`MoveAction`* moves by an offset once; undo and redo restore places
+    (`IRestorablePlace`: coordinates, a label's pixel offset or pin offset, a translated
+    point's distance and direction). Moving back by the offset left a point on a circle, a
+    slider knob behind its stop and a label after a zoom somewhere else. The coordinate
+    system has no place, only offsets. Keyboard pans use one list of movables so that a
+    run of arrow keys merges like a drag.
+  - *A setter that adds or removes a figure* (a point's label, a line's name, the length
+    panel's measurement) brings the same object back, never a new one: the history may
+    hold a drag of it. `PointBase` keeps its label (`keptLabel`), also across undo and redo
+    of the point itself; a point is auto-labeled only the first time it enters a drawing.
+  - *While a transaction is open* (`Drawing.IsRecordingTransaction`: a construction or a
+    point drag under way) anything recorded joins it and is rolled back with it. So Redo,
+    Delete and Paste do nothing then, a keyboard pan and the grid toggle are not recorded,
+    and a click in the Figure List abandons the construction first.
+  - *Loading is not undoable*: `DrawingControl.ForgetLoading` clears the history in a
+    `finally`, also when the file threw half way.
+  - *Parts of a composite* that are among a figure's dependents (a regular polygon's
+    vertices) are not removed or put back by `RemoveFigureAction`: they go with their
+    composite.
+  To check a change: a temporary `DispatcherTimer` in `MainView` that appends the undo and
+  redo counts and a hash of `Drawing.SaveAsText()` to a file whenever they change, driven
+  with `winauto`. A hash that changes without a new step is a hole; one that doesn't come
+  back on Ctrl+Z is a wrong undo.
 - **Sliders** (`Figures/Values/Slider.cs`) are one `CompositeFigure` whose parts are library
   figures: a `FreePoint` anchor, a `TranslatedPoint` knob kept on the horizontal through it
   (free distance, direction a Number saying 0, clamped at the anchor), the `Segment` track, a
@@ -542,7 +583,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   circle, and for a line or ray a point of its visible part `EdgeInset` pixels in from the
   window's edge (the end nearer the top for a line, the far end for a ray), so the name stays
   on screen and moves along the line as the view pans. The setter adds and removes the label
-  directly (the property set is the undo step); the label links itself back on undo
+  directly (the property set is the undo step), the same label every time, so it comes back
+  where it was dragged to; the label links itself back on undo
   (`OnAddingToDrawing`), hides with its figure, follows renames (`FigureBase.Name`), and stays
   out of the Figure List and of Delete like a point label. GeoGebra's `<show label>` on those
   figures turns it on, in the figure's color.
@@ -703,10 +745,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   **The property grid edits what is on screen**: under the base theme (Light) a style's
   property itself, under any other theme its override for that theme
   (`ThemedValue.ForCurrentTheme` wraps the value the grid edits; `IThemeOverridable` is
-  what a style and a drawing's paper implement), and undo puts the override back. A "Same
-  as in Light" button drops the theme's overrides (shown once there are some, on the next
-  opening of the style). The paper works the same: `Drawing.Overrides` holds the paper chosen
-  for another theme, "Theme's paper" under Dark stores a null override (that theme's paper).
+  what a style and a drawing's paper implement), and undo puts the override back, or takes
+  it away if there was none. A "Same as in Light" button drops the theme's overrides (shown
+  once there are some, on the next opening of the style). The paper works the same:
+  `Drawing.Overrides` holds the paper chosen for another theme, "Theme's paper" under Dark
+  stores a null override (that theme's paper). Both buttons are undo steps.
   `GalleryTitle` (a Dark override in the splash's blue), `GalleryText` (the chrome's text
   color) and `GalleryLocus` are defaults too. The gallery drawings' own styles got their
   Dark overrides from `dotnet tools/darken.cs -- <folder> [--apply]` (2026-09-29): a stroke,
@@ -826,6 +869,15 @@ loader still does for files from before; none of it needs extending.
   is in the plane right now, so hit testing, dragging and the property grid need nothing
   special. `WrapWidth` (px) and `Backdrop` (a plate of the paper's color) exist for captions.
   Pinned labels draw above figures, zoom to fit ignores them, thumbnails hide them.
+- **Parts of a figure** (`IFigureParts`, `Figures/Shapes/DependentPolygonBase.cs`): the
+  vertices, sides and inside a regular polygon works out are figures other figures can be
+  built on, but not figures of the drawing: unnamed (`PolygonVertex`, `PolygonSide`,
+  `InteriorPolygon` skip the naming of `OnAddingToDrawing`), written as
+  `<Dependency Name="RegularPolygon1" Part="Vertex3" />` (`Vertex2`... - `Vertex1` is the
+  point the polygon is built on - `Side1`..., `Interior`). So a regular polygon makes its
+  parts in `ReadXml`, before it is on a canvas (`IsOnCanvas`), and says `Sides="7"` when it
+  is not a pentagon. The number of sides doesn't go below what figures built on its vertices
+  and sides need: the parts would take them along, from inside a setter, past undo.
 - **Scenes** (`<Scene Left Top Right Bottom />` under `<Drawing>`, 1 or 2) are opt-in suggested
   views for drawings whose content has no useful bounds (endless ground: Castle, The Falling
   Ladder; a locus: Spiral). Where they exist, fit and tile show the scene nearest in shape to
@@ -1013,7 +1065,9 @@ Learned from `Reference/VB6/Source` while making the CD library load (`DGFReader
   whichever way round the sides are; off, the bisector halves the angle counterclockwise from
   side 1 to side 2, which swings outside a triangle dragged the other way round. New
   bisectors are interior; a file without the attribute gets the oriented one it was saved
-  with. Morley's trisectors are expressions and get the same effect from
+  with. "Convert to opposite angle" turns `Interior` off and reads the sides in the order
+  (`Flipped`) that points the bisector the other way; the verbs it would inherit from `Ray`
+  (Convert to line/segment, Reverse) are vetoed in `CanEdit`. Morley's trisectors are expressions and get the same effect from
   `SGN(pi - OANG(...)) * ANG(...)` - `OANG` is the counterclockwise angle in [0, 2pi).
 - A point on a figure is placed by moving it to its saved X,Y in one `MoveTo` (setting X then Y
   projects twice from off the figure and lands elsewhere); `AuxInfo(1)` (t on a line, clockwise
