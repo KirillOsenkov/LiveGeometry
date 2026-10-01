@@ -99,10 +99,8 @@ namespace DynamicGeometry
             AxisLabels = new AxisLabelsCollection() { Drawing = Drawing };
             GridLines = new RectangularGridLinesCollection() { Drawing = Drawing, MinorStyle = minorGridStyle };
 
-            //XAxisLine.Arrow.Style = arrowStyle;
-            XAxisLine.Line.Style = axisStyle;
-            //YAxisLine.Arrow.Style = arrowStyle;
-            YAxisLine.Line.Style = axisStyle;
+            XAxisLine.Arrow.Style = axisStyle;
+            YAxisLine.Arrow.Style = axisStyle;
             GridLines.Style = gridStyle;
             AxisLabels.Style = labelsStyle;
 
@@ -185,27 +183,29 @@ namespace DynamicGeometry
 #if TABULAPLAYER
             return null;    // never used and my player excludes IconBuilder
 #else
-            var builder = IconBuilder
-                .BuildIcon()
+            var builder = IconBuilder.BuildIcon();
+            for (double i = 0.1; i < 1; i += 0.2)
+            {
+                builder.TransparentLine(nameof(AppTheme.Guide), i, 0, i, 1, transparency: 0.4);
+                builder.TransparentLine(nameof(AppTheme.Guide), 0, i, 1, i, transparency: 0.4);
+            }
+
+            const string axis = nameof(AppTheme.LineAccent);
+            builder
                 .Polygon(
-                    new SolidColorBrush(Colors.Blue),
-                    new SolidColorBrush(Colors.Blue),
+                    axis,
+                    axis,
                     new Point(0.5, 0),
                     new Point(0.4, 0.2),
                     new Point(0.6, 0.2))
                 .Polygon(
-                    new SolidColorBrush(Colors.Blue),
-                    new SolidColorBrush(Colors.Blue),
+                    axis,
+                    axis,
                     new Point(1, 0.5),
                     new Point(0.8, 0.4),
                     new Point(0.8, 0.6))
-                .Line(Color.FromArgb(255, 0, 0, 255), 0.5, 0, 0.5, 1)
-                .Line(Color.FromArgb(255, 0, 0, 255), 0, 0.5, 1, 0.5);
-            for (double i = 0.1; i < 1; i += 0.2)
-            {
-                builder.Line(Color.FromArgb(100, 0, 0, 255), i, 0, i, 1);
-                builder.Line(Color.FromArgb(100, 0, 0, 255), 0, i, 1, i);
-            }
+                .Line(axis, 0.5, 0, 0.5, 1)
+                .Line(axis, 0, 0.5, 1, 0.5);
             return builder.Canvas;
 #endif
         }

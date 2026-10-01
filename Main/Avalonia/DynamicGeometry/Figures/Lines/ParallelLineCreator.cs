@@ -36,8 +36,8 @@ namespace DynamicGeometry
         public override FrameworkElement CreateIcon()
         {
             return IconBuilder.BuildIcon()
-                .Line(0, 0.7, 0.7, 0)
                 .Line(0.3, 1, 1, 0.3)
+                .AccentLine(0, 0.7, 0.7, 0)
                 .Point(0.35, 0.35)
                 .Canvas;
         }

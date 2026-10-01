@@ -1,5 +1,4 @@
 using Avalonia;
-using Avalonia.Media;
 
 namespace DynamicGeometry;
 
@@ -82,18 +81,8 @@ public static class ToggleIcons
     /// <summary>The paper of the drawing: a sheet with a gradient on it</summary>
     public static FrameworkElement Background()
     {
-        var paper = new LinearGradientBrush()
-        {
-            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-            EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            GradientStops =
-            {
-                new GradientStop(Colors.White, 0),
-                new GradientStop(Color.FromRgb(0xBF, 0xDC, 0xFF), 1)
-            }
-        };
         return IconBuilder.BuildIcon()
-            .Polygon(paper, guide, new Point(0.12, 0.1), new Point(0.88, 0.1), new Point(0.88, 0.9), new Point(0.12, 0.9))
+            .Polygon(nameof(AppTheme.PaperIconFill), guide, new Point(0.12, 0.1), new Point(0.88, 0.1), new Point(0.88, 0.9), new Point(0.12, 0.9))
             .Line(accent, 0.3, 0.68, 0.7, 0.32)
             .Point(0.3, 0.68)
             .Point(0.7, 0.32)
@@ -102,32 +91,52 @@ public static class ToggleIcons
 
     /// <summary>
     /// The Figure List: a sheet of rows, each a little figure (a point, a segment, a circle)
-    /// before its name, the middle one selected
+    /// before its name, the middle one selected (in the colors of a checked button)
     /// </summary>
     public static FrameworkElement FigureList()
     {
         var builder = IconBuilder.BuildIcon()
-            .Polygon(new SolidColorBrush(Colors.White), guide, new Point(0.1, 0.08), new Point(0.9, 0.08), new Point(0.9, 0.92), new Point(0.1, 0.92))
-            .Polygon(new SolidColorBrush(Color.FromRgb(0xD2, 0xE7, 0xFF)), new SolidColorBrush(Color.FromRgb(0x6F, 0xAE, 0xEC)), new Point(0.15, 0.39), new Point(0.85, 0.39), new Point(0.85, 0.61), new Point(0.15, 0.61))
+            .Polygon(nameof(AppTheme.InputBackground), guide, new Point(0.1, 0.08), new Point(0.9, 0.08), new Point(0.9, 0.92), new Point(0.1, 0.92))
+            .Polygon(nameof(AppTheme.ButtonChecked), nameof(AppTheme.ButtonCheckedBorder), new Point(0.15, 0.39), new Point(0.85, 0.39), new Point(0.85, 0.61), new Point(0.15, 0.61))
             .Line(strokeThickness: 2, guide, 0.42, 0.25, 0.8, 0.25)
-            .Line(strokeThickness: 2, Color.FromRgb(0x4A, 0x55, 0x68), 0.42, 0.5, 0.74, 0.5)
+            .Line(strokeThickness: 2, nameof(AppTheme.Text), 0.42, 0.5, 0.74, 0.5)
             .Line(strokeThickness: 2, guide, 0.42, 0.75, 0.78, 0.75)
             .Line(strokeThickness: 1.5, accent, 0.2, 0.57, 0.33, 0.43);
-        Dot(builder, 0.265, 0.25, diameter: 6, Brushes.Gold, Brushes.Black);
-        Dot(builder, 0.265, 0.75, diameter: 7, Brushes.Transparent, new SolidColorBrush(Color.FromRgb(0x2E, 0xA0, 0x43)));
+        Dot(
+            builder,
+            0.265, 0.25,
+            diameter: 6,
+            nameof(AppTheme.FreePointFill),
+            ink);
+        Dot(
+            builder,
+            0.265, 0.75,
+            diameter: 7,
+            fillThemeColor: null,
+            nameof(AppTheme.PointOnFigureFill));
         return builder.Canvas;
     }
 
-    static void Dot(IconBuilder builder, double x, double y, double diameter, IBrush fill, IBrush stroke)
+    static void Dot(
+        IconBuilder builder,
+        double x,
+        double y,
+        double diameter,
+        string fillThemeColor,
+        string strokeThemeColor)
     {
         var dot = new Avalonia.Controls.Shapes.Ellipse()
         {
             Width = diameter,
             Height = diameter,
-            Fill = fill,
-            Stroke = stroke,
             StrokeThickness = 1.2
         };
+        if (fillThemeColor != null)
+        {
+            dot.BindTheme(Avalonia.Controls.Shapes.Shape.FillProperty, fillThemeColor);
+        }
+
+        dot.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, strokeThemeColor);
         Avalonia.Controls.Canvas.SetLeft(dot, builder.Canvas.Width * x - diameter / 2);
         Avalonia.Controls.Canvas.SetTop(dot, builder.Canvas.Height * y - diameter / 2);
         builder.Canvas.Children.Add(dot);

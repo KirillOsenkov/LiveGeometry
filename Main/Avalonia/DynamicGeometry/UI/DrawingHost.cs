@@ -56,12 +56,19 @@ namespace DynamicGeometry
             SetupLayout();
 
             // the side panel is built for the theme it opened under: the style swatches are
-            // drawn for it, and an edit goes to that theme's values (ThemedValue)
+            // drawn for it, and an edit goes to that theme's values (ThemedValue). The colors
+            // of a theme are those of the theme on screen: the page goes over to the new one.
             AppTheme.CurrentChanged += () =>
             {
-                if (PropertyGrid.Selection != null && CurrentDrawing != null)
+                var selection = PropertyGrid.Selection;
+                if (selection is AppTheme)
                 {
-                    ShowProperties(PropertyGrid.Selection);
+                    selection = AppTheme.Current;
+                }
+
+                if (selection != null && CurrentDrawing != null)
+                {
+                    ShowProperties(selection);
                 }
             };
         }

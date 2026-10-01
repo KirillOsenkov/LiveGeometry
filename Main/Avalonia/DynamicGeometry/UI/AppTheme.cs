@@ -75,12 +75,26 @@ public class AppTheme : INotifyPropertyChanged
                 new GradientStop(Color.Parse("#4EE7FF"), 1)
             }
         },
-        RulerFill = Color.Parse("#FFFF00"),
-        AngleFill = Color.Parse("#33FF33"),
+        RulerFill = Color.Parse("#FFFF3C"),
+        RulerOutline = Color.Parse("#000000"),
+        AngleFill = Color.Parse("#90FF7E"),
+        AngleOutline = Color.Parse("#000000"),
+        ScaleMarks = Color.Parse("#000000"),
+        PaperIconFill = new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(Color.Parse("#FFFFFF"), 0),
+                new GradientStop(Color.Parse("#BFDCFF"), 1)
+            }
+        },
         AreaFill = Color.Parse("#FFD6D6"),
         AreaHatch = Color.Parse("#C8606E"),
         Guide = Color.Parse("#8A94A6"),
         Accent = Color.Parse("#2F7BD6"),
+        LineAccent = Color.Parse("#00AEE8"),
         Destructive = Color.Parse("#B3261E"),
         HintBackground = Color.Parse("#FFFDE8"),
         HintBorder = Color.Parse("#D9D29A"),
@@ -121,24 +135,47 @@ public class AppTheme : INotifyPropertyChanged
         TextMuted = Color.Parse("#98A2B3"),
         TextFaint = Color.Parse("#6B7482"),
         IconOutline = Color.Parse("#D0D6DF"),
-        ShapeOutline = Color.Parse("#D9B44A"),
+        ShapeOutline = Color.Parse("#2EC0F2"),
         ShapeIconFill = new LinearGradientBrush()
         {
             StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
             EndPoint = new RelativePoint(1, 1, RelativeUnit.Relative),
             GradientStops =
             {
-                new GradientStop(Color.Parse("#7D7A60"), 0),
-                new GradientStop(Color.Parse("#4A4838"), 1)
+                new GradientStop(Color.Parse("#36C0FA"), 0),
+                new GradientStop(Color.Parse("#052C3C"), 1)
             }
         },
-        ImageFill = new SolidColorBrush(Color.Parse("#4E9A5E")),
-        RulerFill = Color.Parse("#A88E32"),
-        AngleFill = Color.Parse("#3F8F4E"),
+        ImageFill = new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(1, 1, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(Color.Parse("#8FDFFF"), 0),
+                new GradientStop(Color.Parse("#0181B3"), 1)
+            }
+        },
+        RulerFill = Color.Parse("#D8D83D"),
+        RulerOutline = Color.Parse("#D8D83D"),
+        AngleFill = Color.Parse("#28D428"),
+        AngleOutline = Color.Parse("#28D428"),
+        ScaleMarks = Color.Parse("#000000"),
+        PaperIconFill = new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(Color.Parse("#46566C"), 0),
+                new GradientStop(Color.Parse("#1E2A3A"), 1)
+            }
+        },
         AreaFill = Color.Parse("#6E4A50"),
         AreaHatch = Color.Parse("#C88A94"),
         Guide = Color.Parse("#7A8595"),
         Accent = Color.Parse("#5AA0F2"),
+        LineAccent = Color.Parse("#2EC0F2"),
         Destructive = Color.Parse("#F0736A"),
         HintBackground = Color.Parse("#3B3A2C"),
         HintBorder = Color.Parse("#6E6A45"),
@@ -396,17 +433,41 @@ public class AppTheme : INotifyPropertyChanged
     [PropertyGridGroup("Icons")]
     public Brush ImageFill { get => imageFill; set => Set(ref imageFill, value); }
 
-    /// <summary>The ruler of the Distance tool (and so the Measure tab)</summary>
+    /// <summary>The ruler of the Distance tool (and so the Measure tab)...</summary>
     Color rulerFill;
     [PropertyGridVisible]
     [PropertyGridGroup("Icons")]
     public Color RulerFill { get => rulerFill; set => Set(ref rulerFill, value); }
 
-    /// <summary>The protractor of the Angle tool</summary>
+    /// <summary>...and its outline</summary>
+    Color rulerOutline;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color RulerOutline { get => rulerOutline; set => Set(ref rulerOutline, value); }
+
+    /// <summary>The protractor of the Angle tool...</summary>
     Color angleFill;
     [PropertyGridVisible]
     [PropertyGridGroup("Icons")]
     public Color AngleFill { get => angleFill; set => Set(ref angleFill, value); }
+
+    /// <summary>...and its outline</summary>
+    Color angleOutline;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color AngleOutline { get => angleOutline; set => Set(ref angleOutline, value); }
+
+    /// <summary>The marks on the ruler and the protractor, drawn on their fill</summary>
+    Color scaleMarks;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color ScaleMarks { get => scaleMarks; set => Set(ref scaleMarks, value); }
+
+    /// <summary>The sheet of the Background command: a paper (a brush: it may be a gradient)</summary>
+    Brush paperIconFill;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Brush PaperIconFill { get => paperIconFill; set => Set(ref paperIconFill, value); }
 
     /// <summary>The hatched pentagon of the Area tool...</summary>
     Color areaFill;
@@ -431,6 +492,15 @@ public class AppTheme : INotifyPropertyChanged
     [PropertyGridVisible]
     [PropertyGridGroup("Icons")]
     public Color Accent { get => accent; set => Set(ref accent, value); }
+
+    /// <summary>
+    /// The line or curve a tool makes, where its icon shows the figures it is made from too
+    /// (a parallel, a bisector, a Bézier curve, a locus)
+    /// </summary>
+    Color lineAccent;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Icons")]
+    public Color LineAccent { get => lineAccent; set => Set(ref lineAccent, value); }
 
     Color destructive;
     [PropertyGridVisible]

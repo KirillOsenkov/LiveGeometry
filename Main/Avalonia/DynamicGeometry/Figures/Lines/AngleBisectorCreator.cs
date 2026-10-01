@@ -53,7 +53,7 @@ namespace DynamicGeometry
             var builder = IconBuilder.BuildIcon()
                 .Line(a, a, b, a)
                 .Line(b, a, b, b)
-                .Line(a, b, b, a)
+                .AccentLine(a, b, b, a)
                 .Arc(b, a, 0.4, a, b, 0.6)
                 .Point(a, a)
                 .Point(b, a)

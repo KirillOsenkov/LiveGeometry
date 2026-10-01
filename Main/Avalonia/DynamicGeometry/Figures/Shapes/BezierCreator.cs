@@ -32,14 +32,18 @@ namespace DynamicGeometry
 
         public override FrameworkElement CreateIcon()
         {
+            // the ends at the bottom, each pulled up and away by its handle
             return IconBuilder.BuildIcon()
-                .Bezier(0, 0.75, 0, 0, 0.5, 1, 1, 0)
-                //.Line(0, 0, 0, 0.75)
-                //.Line(0.5, 1, 1, 0)
-                //.Point(0, 0)
-                //.Point(0, 0.75)
-                //.Point(1, 0)
-                //.Point(0.5, 1)
+                .DashedLine(nameof(AppTheme.Ink), 0.1, 0.67, 0.22, 0.2)
+                .DashedLine(nameof(AppTheme.Ink), 0.53, 0.8, 0.9, 0.43)
+                .Bezier(
+                    strokeThickness: 2,
+                    nameof(AppTheme.LineAccent),
+                    0.1, 0.67, 0.22, 0.2, 0.9, 0.43, 0.53, 0.8)
+                .Point(0.22, 0.2)
+                .Point(0.9, 0.43)
+                .Point(0.1, 0.67)
+                .Point(0.53, 0.8)
                 .Canvas;
         }
     }

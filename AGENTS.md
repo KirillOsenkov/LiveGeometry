@@ -298,7 +298,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (`CoordinateGrid.Visible`): a new drawing starts without one and a file says. The axes
   are a second switch for a grid that shows (`ShowAxes`, `Axes="false"` in the file also
   while the grid is hidden: unticked then, it was an undo step that changed nothing saved,
-  and ticked it brought the axes up without the grid until the file was opened). There is no
+  and ticked it brought the axes up without the grid until the file was opened). An axis is
+  drawn as a vector's `Arrow` over an invisible line (`Axis`), the head where it leaves the
+  window to the right or the top. There is no
   global setting: one would leak from every loaded file (each gallery tile included) into the
   next new drawing.
 - **No pixel snapping of figure geometry.** Lines are exact and point shapes have
@@ -1042,7 +1044,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Icons group for what is only a picture (`ShapeIconFill`/`ShapeOutline` of every shape in
   the Shapes icons, `ImageFill` of a transformation's image - the figure transformed is
   filled as a shape is, though outlined in ink like its image -
-  `RulerFill`, `AngleFill`, `AreaFill`/`AreaHatch`) - no literal brush in a `CreateIcon`,
+  `RulerFill`/`RulerOutline`, `AngleFill`/`AngleOutline` with `ScaleMarks` on both,
+  `AreaFill`/`AreaHatch`, `PaperIconFill` (a brush), `LineAccent` for the line or curve a
+  tool makes out of the figures its icon also shows: `IconBuilder.AccentLine`, 1.5 thick)
+  - no literal brush in a `CreateIcon`,
   or the theme can't reach it. A shape's icon is not filled with the Paper group's
   `ShapeFill`, the fill of a new polygon: that one is translucent, made for the paper, and
   a gradient there would fill every new polygon with it. `ShapeIconFill` and

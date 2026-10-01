@@ -82,13 +82,14 @@ namespace DynamicGeometry
 
         public IconBuilder TransparentLine(double x1, double y1, double x2, double y2, double transparency)
         {
-            Line line = Factory.CreateLineShape();
-            Canvas.Children.Add(line);
-            line.X1 = Canvas.Width * x1;
-            line.Y1 = Canvas.Height * y1;
-            line.X2 = Canvas.Width * x2;
-            line.Y2 = Canvas.Height * y2;
-            line.Opacity = transparency;
+            return TransparentLine(nameof(AppTheme.Ink), x1, y1, x2, y2, transparency);
+        }
+
+        /// <summary>A line in a color of the theme, let through the background by <paramref name="transparency"/> (its opacity)</summary>
+        public IconBuilder TransparentLine(string themeColor, double x1, double y1, double x2, double y2, double transparency)
+        {
+            Line(themeColor, x1, y1, x2, y2);
+            Canvas.Children[Canvas.Children.Count - 1].Opacity = transparency;
             return this;
         }
 
@@ -124,7 +125,36 @@ namespace DynamicGeometry
             return this;
         }
 
+        /// <summary>The line a tool makes from the figures around it, in the theme's <see cref="AppTheme.LineAccent"/></summary>
+        public IconBuilder AccentLine(double x1, double y1, double x2, double y2)
+        {
+            return Line(AccentThickness, nameof(AppTheme.LineAccent), x1, y1, x2, y2);
+        }
+
+        /// <summary>How thick the line a tool makes is drawn (<see cref="AccentLine"/>), thicker than the figures it is made from</summary>
+        public static double AccentThickness = 1.5;
+
+        /// <summary>A dashed line in a color of the theme, toned down: a helper, such as a Bézier curve's handle</summary>
+        public IconBuilder DashedLine(string themeColor, double x1, double y1, double x2, double y2)
+        {
+            TransparentLine(themeColor, x1, y1, x2, y2, transparency: 0.6);
+            ((Line)Canvas.Children[Canvas.Children.Count - 1]).StrokeDashArray = new Avalonia.Collections.AvaloniaList<double>() { 2, 1.5 };
+            return this;
+        }
+
         public IconBuilder Bezier(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
+        {
+            return Bezier(
+                strokeThickness: 1,
+                nameof(AppTheme.Ink),
+                x1, y1, x2, y2, x3, y3, x4, y4);
+        }
+
+        /// <summary>A Bézier curve from (x1, y1) to (x4, y4), pulled towards (x2, y2) and (x3, y3), in a color of the theme</summary>
+        public IconBuilder Bezier(
+            double strokeThickness,
+            string themeColor,
+            double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
         {
             var segment = new BezierSegment()
             {
@@ -151,9 +181,10 @@ namespace DynamicGeometry
                         figure
                     }
                 },
-                StrokeThickness = 1
+                StrokeThickness = strokeThickness,
+                StrokeLineCap = PenLineCap.Round
             };
-            path.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
+            path.BindTheme(Shape.StrokeProperty, themeColor);
             Canvas.Children.Add(path);
             return this;
         }
@@ -185,8 +216,18 @@ namespace DynamicGeometry
 
         public IconBuilder Circle(double x, double y, double radius)
         {
+            return Circle(
+                strokeThickness: 1,
+                nameof(AppTheme.Ink),
+                x, y, radius);
+        }
+
+        /// <summary>A circle in a color of the theme (<c>nameof(AppTheme.LineAccent)</c>)</summary>
+        public IconBuilder Circle(double strokeThickness, string themeColor, double x, double y, double radius)
+        {
             Shape circle = Factory.CreateCircleShape();
-            circle.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
+            circle.BindTheme(Shape.StrokeProperty, themeColor);
+            circle.StrokeThickness = strokeThickness;
             Canvas.Children.Add(circle);
             circle.Width = Canvas.Width * radius * 2;
             circle.Height = Canvas.Height * radius * 2;

@@ -53,9 +53,9 @@ namespace DynamicGeometry
         {
             return IconBuilder.BuildIcon()
                 .Line(0.25, 0.75, 0.75, 0.25)
+                .AccentLine(0, 0, 1, 1)
                 .Point(0.25, 0.75)
                 .Point(0.75, 0.25)
-                .Line(0, 0, 1, 1)
                 .Canvas;
         }
     }

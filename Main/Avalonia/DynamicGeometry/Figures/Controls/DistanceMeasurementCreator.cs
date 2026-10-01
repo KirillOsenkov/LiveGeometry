@@ -74,7 +74,7 @@ namespace DynamicGeometry
                 .BuildIcon()
                 .Polygon(
                     nameof(AppTheme.RulerFill),
-                    nameof(AppTheme.Ink),
+                    nameof(AppTheme.RulerOutline),
                     new Point(0.1, 0.8),
                     new Point(0.3, 1),
                     new Point(1, 0.3),
@@ -82,11 +82,11 @@ namespace DynamicGeometry
                 .Line(0, 0.7, 0.7, 0);
             for (double i = 0.2; i <= 0.7; i += 0.1)
             {
-                builder.Line(i, 0.9 - i, i + 0.1, 1 - i);
+                builder.Line(nameof(AppTheme.ScaleMarks), i, 0.9 - i, i + 0.1, 1 - i);
             }
             for (double i = 0.15; i <= 0.75; i += 0.1)
             {
-                builder.Line(i, 0.9 - i, i + 0.05, 0.95 - i);
+                builder.Line(nameof(AppTheme.ScaleMarks), i, 0.9 - i, i + 0.05, 0.95 - i);
             }
             return builder.Canvas;
         }

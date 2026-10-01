@@ -82,7 +82,7 @@ namespace DynamicGeometry
                 Data = Geometry.Parse(pathData)
             };
             path.BindTheme(Shape.FillProperty, nameof(AppTheme.AngleFill));
-            path.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
+            path.BindTheme(Shape.StrokeProperty, nameof(AppTheme.AngleOutline));
             builder.Canvas.Children.Add(path);
 
             var radius = ((size - 4) / 2) * 0.95;
@@ -91,7 +91,8 @@ namespace DynamicGeometry
             for (double i = 0; i < 16; i++)
             {
                 var angle = i * Math.PI / 15;
-                builder.Line((center.X + radius * M.Cos(angle)) / size,
+                builder.Line(nameof(AppTheme.ScaleMarks),
+                    (center.X + radius * M.Cos(angle)) / size,
                     (center.Y - radius * M.Sin(angle)) / size,
                     (center.X + radiusSmall * M.Cos(angle)) / size,
                     (center.Y - radiusSmall * M.Sin(angle)) / size);

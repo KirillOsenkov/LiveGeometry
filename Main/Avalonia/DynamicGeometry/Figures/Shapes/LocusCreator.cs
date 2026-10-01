@@ -108,10 +108,22 @@ namespace DynamicGeometry
 
         public override FrameworkElement CreateIcon()
         {
+            // The midpoint of a segment from a point that goes round a circle to a free point
+            // goes round a circle of half the radius, centered halfway to the free point
+            const string line = nameof(AppTheme.Line);
+            Point center = new Point(0.36, 0.62);
+            const double radius = 0.3;
+            Point free = new Point(0.9, 0.1);
+            Point onCircle = center + new Point(System.Math.Cos(0.9), System.Math.Sin(0.9)) * radius;
+            Point locusCenter = (center + free) / 2;
+            Point midpoint = (onCircle + free) / 2;
             return IconBuilder.BuildIcon()
-                .Line(0, 0.7, 0.7, 0)
-                .Line(0.3, 1, 1, 0.3)
-                .Point(0.35, 0.35)
+                .Circle(strokeThickness: 1, line, center.X, center.Y, radius)
+                .Circle(IconBuilder.AccentThickness, nameof(AppTheme.LineAccent), locusCenter.X, locusCenter.Y, radius / 2)
+                .Line(line, onCircle.X, onCircle.Y, free.X, free.Y)
+                .Point(free.X, free.Y)
+                .Point(onCircle.X, onCircle.Y, nameof(AppTheme.PointOnFigureFill))
+                .Point(midpoint.X, midpoint.Y, nameof(AppTheme.PointOnFigureFill))
                 .Canvas;
         }
     }

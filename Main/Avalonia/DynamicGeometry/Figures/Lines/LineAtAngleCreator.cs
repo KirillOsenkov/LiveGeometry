@@ -201,7 +201,7 @@ public class LineAtAngleCreator : FigureCreator
         return IconBuilder.BuildIcon()
             .TransparentLine(0.25, 0.75, 1, 0.75, transparency: 0.5)
             .Arc(0.25, 0.75, 0.7, 0.75, 0.601, 0.469)
-            .Line(0, 0.95, 1, 0.15)
+            .AccentLine(0, 0.95, 1, 0.15)
             .Point(0.25, 0.75)
             .Canvas;
     }
