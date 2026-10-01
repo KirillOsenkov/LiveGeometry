@@ -54,7 +54,7 @@ namespace DynamicGeometry
 
             var underMouse = Drawing.Figures.HitTest(
                 unconstrainedCoordinates,
-                f => f is ILengthProvider && f.Visible && f.IsHitTestVisible);
+                f => f is ILengthProvider && Label.GivesNumber(f) && f.Visible && f.IsHitTestVisible);
             if (underMouse != null && Drawing.Figures.HitTest<IPoint>(unconstrainedCoordinates) == null)
             {
                 return underMouse;

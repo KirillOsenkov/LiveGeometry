@@ -216,10 +216,9 @@ namespace DynamicGeometry
                 var coordinates = Point(0);
                 var x = Math.Round(coordinates.X, DecimalsToShow);
                 var y = Math.Round(coordinates.Y, DecimalsToShow);
-                var coordinatesText = string.Format("({0};{1})", x , y );
-                //var coordinatesText = string.Format("({0:0.0#};{1:0.0#})",
-                //    coordinates.X,
-                //    coordinates.Y);
+                // as a textbook writes them (it was "(3;4)", the way of the countries that
+                // write a decimal comma; numbers here have a point)
+                var coordinatesText = string.Format("({0}, {1})", x, y);
                 if (!text.IsEmpty())
                 {
                     text += " ";

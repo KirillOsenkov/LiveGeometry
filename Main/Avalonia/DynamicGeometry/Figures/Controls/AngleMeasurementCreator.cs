@@ -17,16 +17,14 @@ namespace DynamicGeometry
             return DependencyList.PointPointPoint;
         }
 
+        // The mark and the number, both made when the third point is there. (The arc used
+        // to be added for good with the preview, before the third point existed: it sat in
+        // the figure list ahead of a point it is built on, and a saved file came back in
+        // another order.)
         protected override IEnumerable<IFigure> CreateFigures()
         {
-            var result = Factory.CreateAngleMeasurement(Drawing, FoundDependencies);
-            yield return result;
-        }
-
-        protected override void CreateTempResults()
-        {
-            base.CreateTempResults();
-            Actions.Add(Drawing, Factory.CreateAngleArc(Drawing, FoundDependencies));
+            yield return Factory.CreateAngleArc(Drawing, FoundDependencies);
+            yield return Factory.CreateAngleMeasurement(Drawing, FoundDependencies);
         }
 
         public override string Name

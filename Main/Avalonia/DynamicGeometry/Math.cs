@@ -522,9 +522,13 @@ namespace DynamicGeometry
             return M.Abs(num);
         }
 
+        /// <summary>
+        /// Rounded for showing. Plus zero: -0.001 rounds to a negative zero, which is
+        /// written "-0" (a label said A is at (3, -0)); adding zero makes it a plain one.
+        /// </summary>
         public static double Round(this double num, int fractionalDigits)
         {
-            return M.Round(num, fractionalDigits);
+            return M.Round(num, fractionalDigits) + 0.0;
         }
 
         public static double Round(this double num)
@@ -694,7 +698,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return 6.28318530718;
+                return 2 * M.PI;
             }
         }
 
@@ -1783,6 +1787,12 @@ namespace DynamicGeometry
 
         public static Point GetPointOnPolylineFromParameter(IList<Point> logicalPoints, double parameter)
         {
+            // a curve not worked out yet (a locus while its file is being read): no such point
+            if (logicalPoints == null || logicalPoints.Count == 0)
+            {
+                return InfinitePoint;
+            }
+
             double sum = 0;
             double totalLength = logicalPoints.PolylineLength();
             for (int i = 0; i < logicalPoints.Count - 1; i++)

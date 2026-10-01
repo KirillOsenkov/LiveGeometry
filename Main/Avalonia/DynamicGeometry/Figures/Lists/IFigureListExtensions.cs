@@ -57,17 +57,31 @@ namespace DynamicGeometry
             return result;
         }
 
+        /// <summary>
+        /// A visible segment, ray, line or vector on the two points: what already draws the
+        /// side of a polygon between them. Not any line that depends on both - the
+        /// perpendicular bisector of the two, the bisector of an angle at one of them, a
+        /// hidden helper: taken for the side, it left the side undrawn.
+        /// </summary>
         public static ILine FindLine(this IEnumerable<IFigure> figures, IPoint p1, IPoint p2)
         {
             foreach (var figure in figures)
             {
-                if (figure is ILine
+                var type = figure.GetType();
+                bool runsThroughItsPoints = type == typeof(Segment)
+                    || type == typeof(Ray)
+                    || type == typeof(LineTwoPoints)
+                    || type == typeof(Vector);
+                if (runsThroughItsPoints
+                    && figure.Visible
+                    && figure.Dependencies.Count == 2
                     && figure.Dependencies.Contains(p1)
                     && figure.Dependencies.Contains(p2))
                 {
                     return figure as ILine;
                 }
             }
+
             return null;
         }
 

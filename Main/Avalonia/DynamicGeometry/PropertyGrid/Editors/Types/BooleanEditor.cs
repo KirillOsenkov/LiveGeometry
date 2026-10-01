@@ -28,14 +28,31 @@ namespace DynamicGeometry
             return CheckBox;
         }
 
+        // several figures, some of them ticked: the box shows neither
+        bool mixed;
+
         void CheckBox_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // a click on the mixed box ticks them all (the check box itself goes from
+            // "neither" to unticked)
+            if (mixed && CheckBox.IsChecked == false)
+            {
+                mixed = false;
+                CheckBox.IsChecked = true;
+                return;
+            }
+
             SetValue(CheckBox.IsChecked ?? true);
         }
 
         public override void UpdateEditor()
         {
-            CheckBox.IsChecked = GetValue<bool>();
+            // no value: several figures that differ. It was shown unticked, as if none
+            // of them were (hidden, locked...).
+            var value = GetValue() as bool?;
+            mixed = false;
+            CheckBox.IsChecked = value;
+            mixed = value == null;
             CheckBox.IsEnabled = Value.CanSetValue;
         }
     }

@@ -77,6 +77,23 @@
             Insert(index, figure);
         }
 
+        /// <summary>
+        /// The figure of the list that the figure is, or is a part of (a side of a regular
+        /// polygon, the knob of a slider); null if it is neither
+        /// </summary>
+        public IFigure FindTopLevel(IFigure figure)
+        {
+            foreach (var item in this)
+            {
+                if (item == figure || item is CompositeFigure composite && composite.Children.ContainsRecursively(figure))
+                {
+                    return item;
+                }
+            }
+
+            return null;
+        }
+
         protected override void OnItemAdded(IFigure item)
         {
             item.RegisterWithDependencies();
@@ -86,6 +103,24 @@
                 item.OnAddingToCanvas(Drawing.Canvas);
                 item.RecalculateAndUpdateVisual();
             }
+
+            // segment AB that comes back before line AB (undo of its deletion) is AB again
+            FigureBase.SettleDefaultNames(Drawing, item);
+        }
+
+        protected override void RemoveItem(int index)
+        {
+            var item = this[index];
+            base.RemoveItem(index);
+
+            // line AB2 is AB once segment AB is gone
+            FigureBase.SettleDefaultNamesAfter(Drawing, item.Name);
+        }
+
+        protected override void MoveItem(int oldIndex, int newIndex)
+        {
+            base.MoveItem(oldIndex, newIndex);
+            FigureBase.SettleDefaultNames(Drawing, this[newIndex]);
         }
 
         protected override void OnItemRemoved(IFigure item)

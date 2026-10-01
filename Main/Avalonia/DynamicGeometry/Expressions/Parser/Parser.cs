@@ -100,7 +100,10 @@ namespace DynamicGeometry
                     ReportError("Expected an expression after a negation sign -");
                     return null;
                 }
-                var unaryOperand = ParseExpression(GetPrecedence(NodeType.Negation));
+                // The minus takes what follows up to the next + - * /, powers included: -x^2
+                // is -(x^2), as it is written in class. (It bound tighter than the power, so
+                // -x^2 was (-x)^2: the parabola y = -x^2 opened upward.)
+                var unaryOperand = ParseExpression(GetPrecedence(NodeType.Multiplication));
                 leftOperand = Negation(unaryOperand);
             }
             else

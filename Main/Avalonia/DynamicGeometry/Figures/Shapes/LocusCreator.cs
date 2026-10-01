@@ -96,7 +96,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return "Click a point that depends on some point on figure.";
+                return "Click a point built on a point that slides along a figure, then the sliding point: the locus is the path of the first.";
             }
         }
 

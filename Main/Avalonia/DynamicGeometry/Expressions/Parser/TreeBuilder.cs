@@ -98,6 +98,15 @@ namespace DynamicGeometry
                 return CreateNumberExpression(exact, text);
             }
 
+            // pi is π whatever the drawing has. Two points are read in any case (ab is the
+            // distance AB), so in a drawing with points P and I it was their distance, and
+            // sin(pi * x) came out wrong without a word. Written as the points are, PI, it
+            // still is the distance.
+            if (text == "pi" || text == "e")
+            {
+                return Binder.Resolve(text);
+            }
+
             Expression resolveTwoPoints = ResolveTwoPoints(text);
             if (resolveTwoPoints != null)
             {
@@ -219,47 +228,85 @@ namespace DynamicGeometry
                 return null;
             }
 
+            // by name in any case, the one written exactly first (GetProperty with
+            // IgnoreCase throws when two differ only by case, or one hides another)
             Type type = figure.GetType();
-            var property = type.GetProperty(propertyName,
-                BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            var properties = type
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.Name.Equals(propertyName, StringComparison.OrdinalIgnoreCase) && p.GetIndexParameters().Length == 0 && p.CanRead)
+                .ToList();
+            var property = properties.FirstOrDefault(p => p.Name == propertyName) ?? properties.FirstOrDefault();
             if (property == null)
             {
                 Status.AddPropertyNotFoundError(figure, propertyName);
                 return null;
             }
 
-            Status.Dependencies.Add(figure);
             var figureExpression = Expression.Constant(figure);
-            var propertyExpression = Expression.Property(figureExpression, property);
-            return propertyExpression;
+            var value = AsNumber(Expression.Property(figureExpression, property), figureName + "." + propertyName);
+            if (value != null)
+            {
+                Status.Dependencies.Add(figure);
+            }
+
+            return value;
         }
 
         Expression CreateCallExpression(Node root)
         {
             string functionName = root.Token.Text;
-            MethodInfo method = Binder.ResolveMethod(functionName);
+            var arguments = root.Children;
+            MethodInfo method = Binder.ResolveMethod(functionName, arguments.Count);
             if (method == null)
             {
                 Status.AddMethodNotFoundError(functionName);
                 return null;
             }
 
-            // a function of a number (sin, sqrt); anything else takes points (dist, ang) - and
-            // a wrong number of arguments is an error, not an exception out of Expression.Call
-            var arguments = root.Children;
-            var parameters = method.GetParameters();
-            if (arguments.Count == 1 && parameters.Length == 1 && parameters[0].ParameterType == typeof(double))
+            // a function of numbers (sin, sqrt, max, atan2): each argument is an expression.
+            // Anything else takes points (dist, ang) - and a wrong number of arguments is an
+            // error, not an exception out of Expression.Call. (max(x, 2) used to be told
+            // that it "takes the names of points".)
+            if (Binder.TakesNumbers(method, arguments.Count))
             {
-                var argument = CreateExpressionCore(arguments[0]);
-                if (argument == null)
+                var values = new List<Expression>();
+                foreach (var node in arguments)
                 {
-                    return null;
+                    var value = node == null ? null : CreateExpressionCore(node);
+                    if (value == null)
+                    {
+                        return null;
+                    }
+
+                    values.Add(value);
                 }
 
-                return Expression.Call(method, argument);
+                return AsNumber(Expression.Call(method, values), functionName);
             }
 
             return CreatePointFunctionCallExpression(method, arguments);
+        }
+
+        /// <summary>
+        /// What the language calculates with is a double. A whole number becomes one (the
+        /// sign of a number, a polygon's count of sides: left as it was, the first operator
+        /// applied to it threw, and a function that ended in it could not be made). Anything
+        /// else - a name, a check box, a point - is an error, said here.
+        /// </summary>
+        Expression AsNumber(Expression value, string what)
+        {
+            if (value.Type == typeof(double))
+            {
+                return value;
+            }
+
+            if (value.Type == typeof(int) || value.Type == typeof(long) || value.Type == typeof(float) || value.Type == typeof(decimal))
+            {
+                return Expression.Convert(value, typeof(double));
+            }
+
+            Status.AddError(string.Format("'{0}' is not a number", what));
+            return null;
         }
 
         Expression CreatePointFunctionCallExpression(MethodInfo method, IEnumerable<Node> arguments)

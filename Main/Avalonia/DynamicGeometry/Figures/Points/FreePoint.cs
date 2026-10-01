@@ -45,6 +45,9 @@ namespace DynamicGeometry
                     return PointSnapping.FiguresToSnapTo(this).Count == 1;
                 case nameof(ConvertToPointByCoordinates):
                     return PointSnapping.CanConvertToPointByCoordinates(this);
+                case nameof(PointOnFigure.Release):
+                    // (the "Free point" of a point on a figure: not while a locus is drawn from it)
+                    return PointSnapping.CanRelease(this);
                 default:
                     return true;
             }

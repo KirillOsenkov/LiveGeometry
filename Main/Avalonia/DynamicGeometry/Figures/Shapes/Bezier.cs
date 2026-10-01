@@ -25,6 +25,24 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// The curve worked out, also before its first <see cref="Recalculate"/>: a point
+        /// on it that is read from a file asks where it is while the file is still being
+        /// read (it threw, and opening such a drawing showed an error)
+        /// </summary>
+        Math.BezierInfo CurveInfo
+        {
+            get
+            {
+                if (Info.Points == null && Dependencies.Count == 4)
+                {
+                    Recalculate();
+                }
+
+                return Info;
+            }
+        }
+
         public override void Recalculate()
         {
             var p0 = Point(0);
@@ -99,7 +117,13 @@ namespace DynamicGeometry
         public override IFigure HitTest(Point point)
         {
             // Curve HitTest
-            var projection = Info.GetProjection(point);
+            var curve = CurveInfo;
+            if (curve.Points == null)
+            {
+                return null;
+            }
+
+            var projection = curve.GetProjection(point);
             if (projection.DistanceToLine < ToLogical(Shape.StrokeThickness / 2 + Math.CursorTolerance))
             {
                 return this;
@@ -119,12 +143,13 @@ namespace DynamicGeometry
 
         public double GetNearestParameterFromPoint(Point point)
         {
-            return Info.GetNearestParameterFromPoint(point);
+            var curve = CurveInfo;
+            return curve.Points == null ? 0 : curve.GetNearestParameterFromPoint(point);
         }
 
         public Point GetPointFromParameter(double parameter)
         {
-            return Math.GetPointOnPolylineFromParameter(Info.Points, parameter);
+            return Math.GetPointOnPolylineFromParameter(CurveInfo.Points, parameter);
         }
 
         public Tuple<double, double> GetParameterDomain()

@@ -288,6 +288,13 @@ namespace DynamicGeometry
         /// </summary>
         public bool FixedLabels { get; set; }
 
+        /// <summary>
+        /// On while a file is being read: the figures keep the names the file gives them
+        /// until all of them are in (expressions are compiled by those names as the figures
+        /// come in); <see cref="FigureBase.SettleDefaultNames(Drawing, IFigure)"/> waits.
+        /// </summary>
+        public bool KeepsNamesAsRead { get; set; }
+
         Rect? activeScene;
 
         /// <summary>

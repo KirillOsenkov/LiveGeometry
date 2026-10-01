@@ -161,11 +161,14 @@ namespace DynamicGeometry
             }
             set
             {
-                AxisLabels.Visible = value;
-                XAxisLine.Visible = value;
-                YAxisLine.Visible = value;
+                // the axes of a grid that shows: ticked while the grid is hidden, they used
+                // to come up on their own, and were gone when the file was opened again
+                bool shown = value && visible;
+                AxisLabels.Visible = shown;
+                XAxisLine.Visible = shown;
+                YAxisLine.Visible = shown;
                 showAxes = value;
-                if (value && this.Drawing != null)
+                if (shown && this.Drawing != null)
                 {
                     UpdateVisual();
                 }

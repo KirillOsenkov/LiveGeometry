@@ -30,6 +30,14 @@ namespace DynamicGeometry
             {
                 PointBase.SuppressAutoLabelPoints = suppressed;
             }
+
+            // A copy of segment AB could not be AB again and was numbered by its type
+            // (Segment1) before it was in the drawing; now that it is, it takes the name of
+            // its own points, as a figure read from a file does.
+            foreach (var figure in Figures)
+            {
+                (figure as FigureBase)?.UpdateDefaultName();
+            }
         }
 
         protected override void UnExecuteCore()

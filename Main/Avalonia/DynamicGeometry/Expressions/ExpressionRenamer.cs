@@ -23,6 +23,14 @@ public interface IRenamableExpressions
     /// compiled to still holds the one that left
     /// </summary>
     void RebindExpressions();
+
+    /// <summary>
+    /// The texts of the expressions, to keep and to put back as they were: undo of a join
+    /// (<see cref="PointSnapping.Join"/>), where renaming back could not tell the names that
+    /// were the joined point's from the target's own. Setting them compiles nothing
+    /// (<see cref="RebindExpressions"/> does).
+    /// </summary>
+    IReadOnlyList<string> ExpressionTexts { get; set; }
 }
 
 /// <summary>
@@ -100,9 +108,13 @@ public class ExpressionRenamer
                 RenameFigure(node.Children[0].Token, replacements);
                 return;
             case NodeType.FunctionCall:
-                if (TakesNumber(node))
+                if (TakesNumbers(node))
                 {
-                    Visit(node.Children[0], replacements, isFunction);
+                    foreach (var argument in node.Children)
+                    {
+                        Visit(argument, replacements, isFunction);
+                    }
+
                     return;
                 }
 
@@ -124,17 +136,11 @@ public class ExpressionRenamer
         }
     }
 
-    /// <summary>sin(...), sqrt(...): a function of a number and not of points, as the compiler tells them apart</summary>
-    static bool TakesNumber(Node call)
+    /// <summary>sin(...), max(..., ...): a function of numbers and not of points, as the compiler tells them apart</summary>
+    static bool TakesNumbers(Node call)
     {
-        var method = new Binder().ResolveMethod(call.Token.Text);
-        if (method == null || call.Children.Count != 1)
-        {
-            return false;
-        }
-
-        var parameters = method.GetParameters();
-        return parameters.Length == 1 && parameters[0].ParameterType == typeof(double);
+        var method = new Binder().ResolveMethod(call.Token.Text, call.Children.Count);
+        return method != null && Binder.TakesNumbers(method, call.Children.Count);
     }
 
     /// <summary>
@@ -157,6 +163,12 @@ public class ExpressionRenamer
                 replacements.Add((token.Start, text.Length, exact.Name));
             }
 
+            return;
+        }
+
+        // pi and e in lowercase are the constants, also next to points P and I
+        if (text == "pi" || text == "e")
+        {
             return;
         }
 

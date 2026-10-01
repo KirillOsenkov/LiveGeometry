@@ -67,14 +67,6 @@ public class PointShapeEditor : SelectorValueEditor
     public override void UpdateEditor()
     {
         var value = GetValue();
-        foreach (Control item in Items)
-        {
-            if (Equals(item.Tag, value))
-            {
-                guard = true;
-                Selector.SelectedItem = item;
-                guard = false;
-            }
-        }
+        ShowSelected(item => value != null && Equals(((Control)item).Tag, value));
     }
 }

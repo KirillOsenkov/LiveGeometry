@@ -170,8 +170,17 @@ namespace DynamicGeometry
 
             foreach (var item in this)
             {
+                // A figure that doesn't exist right now (an intersection whose lines no
+                // longer cross, a circle built on it) is nowhere to be clicked. Its own hit
+                // test still answers, from where it was last: a tool took the invisible
+                // figure, and what was built on it never appeared.
+                if (!item.Exists)
+                {
+                    continue;
+                }
+
                 IFigure found = item.HitTest(point);
-                if (found != null && filter(found))
+                if (found != null && found.Exists && filter(found))
                 {
                     if (bestFoundSoFar == null || bestFoundSoFar.ZIndex <= found.ZIndex)
                     {
@@ -201,8 +210,13 @@ namespace DynamicGeometry
             var reverse = this.Reverse();
             foreach (var item in reverse)
             {
+                if (!item.Exists)
+                {
+                    continue;
+                }
+
                 IFigure found = item.HitTest(point);
-                if (found != null && found.Visible && found.IsHitTestVisible)
+                if (found != null && found.Exists && found.Visible && found.IsHitTestVisible)
                 {
                     result.Add(found);
                 }

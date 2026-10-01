@@ -2,8 +2,19 @@
 
 namespace DynamicGeometry
 {
-    public class MidPoint : PointBase, IPoint
+    public class MidPoint : PointBase, IPoint, IConditionalProperties
     {
+        /// <summary>No "Free point" while a locus is drawn from the point</summary>
+        public bool CanEdit(string propertyName)
+        {
+            return propertyName != nameof(Release) || PointSnapping.CanRelease(this);
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
+        }
+
         protected override Avalonia.Controls.Shapes.Shape CreateShape()
         {
             return Factory.CreateDependentPointShape();

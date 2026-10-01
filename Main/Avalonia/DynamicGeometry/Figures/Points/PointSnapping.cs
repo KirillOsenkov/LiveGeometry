@@ -19,7 +19,20 @@ public static class PointSnapping
     /// <summary>The kinds of point a click puts on figures (<see cref="PointPlacement"/>), which can be let go</summary>
     public static bool CanRelease(IFigure point)
     {
-        return point is PointOnFigure || point is IntersectionPoint || point is MidPoint;
+        return (point is PointOnFigure || point is IntersectionPoint || point is MidPoint)
+            && !IsHeldByLocus(point);
+    }
+
+    /// <summary>
+    /// A locus is drawn from two points: the one that slides along its figure, and the one
+    /// whose trace it is, built on the first. Neither can become another kind of point or
+    /// join one: the locus would be the trace of nothing. (Let go with Alt, the sliding
+    /// point left a locus that threw on every move, a segment on a point that was not in
+    /// the drawing, and an undo that did not bring the drawing back.)
+    /// </summary>
+    public static bool IsHeldByLocus(IFigure point)
+    {
+        return point.Dependents.OfType<Locus>().Any();
     }
 
     /// <summary>
@@ -30,7 +43,10 @@ public static class PointSnapping
     public static bool CanFree(IFigure point)
     {
         return CanRelease(point)
-            || point is PointByCoordinates byCoordinates && byCoordinates.Exists && byCoordinates.Coordinates.Exists();
+            || point is PointByCoordinates byCoordinates
+                && byCoordinates.Exists
+                && byCoordinates.Coordinates.Exists()
+                && !IsHeldByLocus(point);
     }
 
     /// <summary>The point becomes a free point where it is</summary>
@@ -83,11 +99,12 @@ public static class PointSnapping
     /// The figures a point can be snapped onto from where it is: those passing through it
     /// (within the cursor's reach) that can hold a point, except the one it is on already and
     /// those built on it, which would make a loop. None for a locked point: snapping moves it.
+    /// None for a point a locus is drawn from (<see cref="IsHeldByLocus"/>).
     /// </summary>
     public static IList<IFigure> FiguresToSnapTo(PointBase point)
     {
         var drawing = point.Drawing;
-        if (drawing == null || point.Locked)
+        if (drawing == null || point.Locked || IsHeldByLocus(point))
         {
             return new IFigure[0];
         }
@@ -165,12 +182,17 @@ public static class PointSnapping
     /// <summary>
     /// Whether the point can be joined into the target: not one built on it (a loop), and no
     /// figure uses both, which would then use the target twice (a segment between them).
+    /// Nor into a point without a name (a vertex a regular polygon works out) when
+    /// expressions name the point: they would have nothing to call the target. Nor a
+    /// point a locus is drawn from (<see cref="IsHeldByLocus"/>).
     /// </summary>
     public static bool CanJoin(PointBase point, IPoint target)
     {
         return target != point
+            && !IsHeldByLocus(point)
             && !target.DependsOn(point)
-            && !point.Dependents.Any(d => !(d is PointLabel) && d.Dependencies.Contains(target));
+            && !point.Dependents.Any(d => !(d is PointLabel) && d.Dependencies.Contains(target))
+            && !(string.IsNullOrEmpty(target.Name) && point.Dependents.OfType<IRenamableExpressions>().Any());
     }
 
     /// <summary>
@@ -185,12 +207,79 @@ public static class PointSnapping
         bool selected = point.Selected;
         using (Transaction.Create(drawing.ActionManager, false))
         {
-            foreach (var dependent in point.Dependents.Where(d => !(d is PointLabel)).ToArray())
+            var dependents = point.Dependents.Where(d => !(d is PointLabel)).ToArray();
+
+            // Expressions that name the point ([A.X] in a label, the X of a point by
+            // coordinates) name the target from now on. Compiled, they hold the point
+            // itself: left alone they kept showing where it was last, and the saved
+            // file named a point that is gone. The text is rewritten once the point has
+            // left (its name then means the target alone), and put back as it was on
+            // undo, where it is compiled again last of all, when the point is back.
+            var expressions = dependents.OfType<IRenamableExpressions>().ToArray();
+            void Rebind()
             {
-                Actions.ReplaceDependency(dependent, point, target);
+                foreach (var holder in expressions)
+                {
+                    holder.RebindExpressions();
+                }
+            }
+
+            if (expressions.Length > 0)
+            {
+                drawing.ActionManager.RecordAction(new CallMethodAction(() => { }, Rebind));
+            }
+
+            // The target, with what it is built on, goes before the first figure that is
+            // about to be built on it: the list is in dependency order, and a file is
+            // written in the order of the list (joined into a point made later, what was
+            // built on the point came before the target, and a saved file came back in
+            // another order).
+            var figures = drawing.Figures;
+            var first = dependents
+                .Select(dependent => figures.FindTopLevel(dependent))
+                .Where(listed => listed != null)
+                .OrderBy(listed => figures.IndexOf(listed))
+                .FirstOrDefault();
+            if (first != null)
+            {
+                Actions.MoveBefore(drawing, target, first);
+            }
+
+            foreach (var dependent in dependents)
+            {
+                // a part of a composite (a side of a regular polygon built on the point)
+                // has gone over with its composite already
+                if (dependent.Dependencies.Contains(point))
+                {
+                    Actions.ReplaceDependency(dependent, point, target);
+                }
             }
 
             Actions.Remove(point);
+
+            if (expressions.Length > 0)
+            {
+                string pointName = point.Name;
+                var texts = expressions.Select(holder => holder.ExpressionTexts).ToArray();
+                drawing.ActionManager.RecordAction(new CallMethodAction(
+                    () =>
+                    {
+                        var renamer = new ExpressionRenamer(drawing, new Dictionary<IFigure, string>() { { target, pointName } });
+                        foreach (var holder in expressions)
+                        {
+                            holder.RenameInExpressions(renamer);
+                        }
+
+                        Rebind();
+                    },
+                    () =>
+                    {
+                        for (int i = 0; i < expressions.Length; i++)
+                        {
+                            expressions[i].ExpressionTexts = texts[i];
+                        }
+                    }));
+            }
         }
 
         drawing.Recalculate();

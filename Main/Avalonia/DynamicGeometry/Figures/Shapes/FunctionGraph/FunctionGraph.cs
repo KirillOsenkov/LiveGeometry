@@ -97,6 +97,22 @@ namespace DynamicGeometry
             }
         }
 
+        public IReadOnlyList<string> ExpressionTexts
+        {
+            get
+            {
+                return new[] { mFunctionText };
+            }
+            set
+            {
+                if (value[0] != mFunctionText)
+                {
+                    mFunctionText = value[0];
+                    RaisePropertyChanged(nameof(FunctionText));
+                }
+            }
+        }
+
         public CompileResult Compile()
         {
             var result = Compiler.Instance.CompileFunction(Drawing, FunctionText);

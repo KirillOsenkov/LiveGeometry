@@ -28,6 +28,19 @@
             YExpression.Rebind();
         }
 
+        public System.Collections.Generic.IReadOnlyList<string> ExpressionTexts
+        {
+            get
+            {
+                return new[] { XExpression.Text, YExpression.Text };
+            }
+            set
+            {
+                XExpression.Text = value[0];
+                YExpression.Text = value[1];
+            }
+        }
+
         [PropertyGridVisible]
         [PropertyGridName("X = ")]
         public DrawingExpression XExpression { get; private set; }
@@ -46,6 +59,16 @@
             {
                 PointSnapping.Release(this);
             }
+        }
+
+        /// <summary>
+        /// The point is where its X and Y say, also when they are plain numbers and it
+        /// depends on nothing: a drag moved it nowhere, and left an undo step that undid
+        /// nothing. Like a locked point, it also keeps what is built on it from being dragged.
+        /// </summary>
+        public override bool AllowMove()
+        {
+            return false;
         }
 
         public bool CanEdit(string propertyName)

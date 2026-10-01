@@ -66,6 +66,28 @@ namespace DynamicGeometry
             return figure.Dependencies.Contains(possibleDependency);
         }
 
+        /// <summary>
+        /// Whether something built on the figure takes it for its length: a distance
+        /// measurement of it, a circle with it for a radius, a translation or a dilation by
+        /// it. A figure that becomes a kind without a length (a segment converted to a line
+        /// or a ray) would leave them with nothing to measure - the measurement threw on
+        /// every redraw - so the conversion is not offered then.
+        /// </summary>
+        public static bool IsUsedForLength(this IFigure figure)
+        {
+            return figure.Dependents.Any(dependent =>
+                dependent is DistanceMeasurement
+                || dependent is CircleByRadius
+                || dependent is DilatedPoint
+                || dependent is TranslatedPoint translated && translated.DistanceSource == figure);
+        }
+
+        /// <summary>The same for its area: a sector or a circular segment converted to a bare arc has none</summary>
+        public static bool IsUsedForArea(this IFigure figure)
+        {
+            return figure.Dependents.Any(dependent => dependent is AreaMeasurement);
+        }
+
         public static void RecalculateAllDependents(this IFigure figure)
         {
             var dependentsToRecalculate = DependencyAlgorithms

@@ -35,11 +35,16 @@ namespace DynamicGeometry
 
             // a value typed, then another after Enter or after coming back to the box: two
             // undo steps
-            TextBox.LostFocus += (s, e) => EndEditRun();
+            TextBox.LostFocus += (s, e) =>
+            {
+                CommitText();
+                EndEditRun();
+            };
             TextBox.KeyDown += (s, e) =>
             {
                 if (e.Key == Avalonia.Input.Key.Enter)
                 {
+                    CommitText();
                     EndEditRun();
                 }
             };
@@ -69,7 +74,8 @@ namespace DynamicGeometry
 
         void StepValue(bool up)
         {
-            if (Value == null || !Value.CanSetValue)
+            // (no value: several figures that differ - there is nothing to step from)
+            if (Value == null || !Value.CanSetValue || GetValue() == null)
             {
                 return;
             }
@@ -91,6 +97,24 @@ namespace DynamicGeometry
             TextBox.Text = shownText;
         }
 
+        /// <summary>
+        /// The value in the box and on the slider, or an empty box when there is none:
+        /// several figures whose values differ (it said 0, which none of them had)
+        /// </summary>
+        void ShowCurrentValue()
+        {
+            if (GetValue() is double value)
+            {
+                Slider.Value = value;
+                Show(value);
+            }
+            else
+            {
+                shownText = "";
+                TextBox.Text = shownText;
+            }
+        }
+
         void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (guard || TextBox.Text == shownText)
@@ -98,6 +122,9 @@ namespace DynamicGeometry
                 return;
             }
 
+            // the user's from here on: the text the box showed, typed again, is theirs too
+            // (UpDownEditor.TextBox_TextChanged)
+            shownText = null;
             string source = TextBox.Text;
             double result;
             if (!string.IsNullOrEmpty(source) 
@@ -110,6 +137,35 @@ namespace DynamicGeometry
                 SetValue(result);
                 guard = false;
             };
+        }
+
+        /// <summary>
+        /// The user is done with the box (Enter, leaving it): a number beyond the range
+        /// goes to the nearest end of it, and then the box says what the value is. (150
+        /// typed for a size of up to 100 was dropped without a word and stayed in the box,
+        /// as did anything that is no number.)
+        /// </summary>
+        void CommitText()
+        {
+            if (Value == null || !Value.CanSetValue || TextBox.Text == shownText)
+            {
+                return;
+            }
+
+            // (also a number within the range: its TextChanged may still be on its way)
+            double result;
+            if (double.TryParse(TextBox.Text, out result) && result.IsValidValue())
+            {
+                double nearest = System.Math.Max(Slider.Minimum, System.Math.Min(Slider.Maximum, result));
+                guard = true;
+                Slider.Value = nearest;
+                SetValue(nearest);
+                guard = false;
+            }
+
+            guard = true;
+            ShowCurrentValue();
+            guard = false;
         }
 
         void Slider_ValueChanged(object sender, Avalonia.Controls.Primitives.RangeBaseValueChangedEventArgs e)
@@ -141,11 +197,9 @@ namespace DynamicGeometry
         public override void UpdateEditor()
         {
             guard = true;
-            var value = GetValue<double>();
-            Slider.Value = value;
             Slider.IsEnabled = Value.CanSetValue;
             TextBox.IsEnabled = Slider.IsEnabled;
-            Show(value);
+            ShowCurrentValue();
             guard = false;
         }
     }

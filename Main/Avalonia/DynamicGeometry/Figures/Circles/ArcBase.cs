@@ -108,12 +108,36 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// The length of the arc. An ellipse has no formula for it: Simpson's rule over the
+        /// parameter. (It was "not a number", and so was whatever took its length from an
+        /// elliptical arc: a measurement, the radius of a circle.)
+        /// </summary>
         public virtual double Length
         {
             get
             {
-                // Not yet calculated for ellipse arcs.
-                return double.NaN;
+                double a = SemiMajor;
+                double b = SemiMinor;
+                if (!(a > 0 && b > 0))
+                {
+                    return 0;
+                }
+
+                double start = ParametricAngle(Clockwise ? EndLocation : BeginLocation);
+                double sweep = ParametricSweep;
+                const int intervals = 64;
+                double step = sweep / intervals;
+                double sum = 0;
+                for (int i = 0; i <= intervals; i++)
+                {
+                    double t = start + i * step;
+                    double speed = System.Math.Sqrt((a * System.Math.Sin(t)).Sqr() + (b * System.Math.Cos(t)).Sqr());
+                    int weight = i == 0 || i == intervals ? 1 : i % 2 == 1 ? 4 : 2;
+                    sum += weight * speed;
+                }
+
+                return sum * step / 3;
             }
         }
 
@@ -144,29 +168,20 @@ namespace DynamicGeometry
                 a2 -= inclination;
             }
 
-            if (a2 < a1)
+            // Off the arc: its nearer end, the short way round. (An arc that doesn't cross
+            // the angle 0 took every direction below its start for the start and every one
+            // above its end for the end: from the far side of the circle a dragged point
+            // jumped to the wrong end half of the time.)
+            bool onArc = a2 < a1
+                ? result <= a2 || result >= a1
+                : result >= a1 && result <= a2;
+            if (!onArc)
             {
-                if (result <= a2 || result >= a1)
-                {
-                    //return result;
-                }
-                else if (result > (a1 + a2) / 2)
-                {
-                    result = a1;
-                }
-                else
-                {
-                    result = a2;
-                }
+                double toStart = System.Math.Abs(System.Math.IEEERemainder(result - a1, 2 * Math.PI));
+                double toEnd = System.Math.Abs(System.Math.IEEERemainder(result - a2, 2 * Math.PI));
+                result = toStart <= toEnd ? a1 : a2;
             }
-            else if (result < a1)
-            {
-                result = a1;
-            }
-            else if (result > a2)
-            {
-                result = a2;
-            }
+
             if (Flipped) result = -result;
             return result;
         }
@@ -330,6 +345,74 @@ namespace DynamicGeometry
                 //return Math.GetAngle(StartAngle, EndAngle);
                 return Clockwise ? Math.OAngle(EndLocation, Center, BeginLocation) :
                                    Math.OAngle(BeginLocation, Center, EndLocation);
+            }
+        }
+
+        /// <summary>
+        /// How far the arc goes around, 0 to 2π, in the angle t that parametrizes its
+        /// ellipse (x = a cos t, y = b sin t; on a circle, the central angle). The areas go
+        /// by it: stretching the unit circle into the ellipse keeps t and scales every area
+        /// by a * b.
+        /// </summary>
+        double ParametricSweep
+        {
+            get
+            {
+                double begin = ParametricAngle(BeginLocation);
+                double end = ParametricAngle(EndLocation);
+                double sweep = Clockwise ? begin - end : end - begin;
+                if (sweep < 0)
+                {
+                    sweep += 2 * Math.PI;
+                }
+
+                return sweep;
+            }
+        }
+
+        double ParametricAngle(Point point)
+        {
+            var center = Center;
+            double inclination = Inclination;
+            double cos = System.Math.Cos(inclination);
+            double sin = System.Math.Sin(inclination);
+            double dx = point.X - center.X;
+            double dy = point.Y - center.Y;
+
+            // in the ellipse's own axes
+            double along = dx * cos + dy * sin;
+            double across = -dx * sin + dy * cos;
+            return System.Math.Atan2(across / SemiMinor, along / SemiMajor);
+        }
+
+        /// <summary>The area between the arc and the two radii to its ends: a * b * t / 2</summary>
+        protected double SectorArea
+        {
+            get
+            {
+                double a = SemiMajor;
+                double b = SemiMinor;
+                return a > 0 && b > 0 ? a * b * ParametricSweep / 2 : 0;
+            }
+        }
+
+        /// <summary>
+        /// The area between the arc and its chord: a * b * (t - sin t) / 2, which past half
+        /// way round is the sector plus the triangle (the sine is negative there)
+        /// </summary>
+        protected double SegmentArea
+        {
+            get
+            {
+                double a = SemiMajor;
+                double b = SemiMinor;
+                if (!(a > 0 && b > 0))
+                {
+                    return 0;
+                }
+
+                double sweep = ParametricSweep;
+                return a * b * (sweep - System.Math.Sin(sweep)) / 2;
             }
         }
 

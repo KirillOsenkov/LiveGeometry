@@ -28,6 +28,24 @@ namespace DynamicGeometry
         }
 
         [PropertyGridVisible(false)]
+        public System.Collections.Generic.IReadOnlyList<string> ExpressionTexts
+        {
+            get
+            {
+                return new[] { X?.Text, Y?.Text, R?.Text };
+            }
+            set
+            {
+                if (X != null && Y != null && R != null)
+                {
+                    X.Text = value[0];
+                    Y.Text = value[1];
+                    R.Text = value[2];
+                }
+            }
+        }
+
+        [PropertyGridVisible(false)]
         public override Point Center
         {
             get 

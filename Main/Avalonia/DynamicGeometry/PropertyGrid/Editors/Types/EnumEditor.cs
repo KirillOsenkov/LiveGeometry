@@ -33,14 +33,10 @@ namespace DynamicGeometry
 
         public override void UpdateEditor()
         {
-            var value = GetValue();
-            foreach (var item in Items)
-            {
-                if (item.Equals(value.ToString()))
-                {
-                    Selector.SelectedItem = item;
-                }
-            }
+            // no value: several figures that differ (it threw on the null, with everything
+            // selected in a drawing whose measurements have different units)
+            var value = GetValue()?.ToString();
+            ShowSelected(item => item.Equals(value));
         }
     }
 }

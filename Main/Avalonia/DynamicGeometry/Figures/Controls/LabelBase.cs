@@ -90,6 +90,9 @@ namespace DynamicGeometry
 
         protected bool ShouldProcessText = false;
 
+        /// <summary>What an expression that has no value shows (the square root of a negative number, 0 / 0)</summary>
+        public const string UndefinedText = "undefined";
+
         const string squareBracketsRegexString = @"[\[][^\[\]]*[\]]";
         static Regex squareBrackets = new Regex(squareBracketsRegexString, RegexOptions.None);
 
@@ -169,8 +172,9 @@ namespace DynamicGeometry
                     var compileResult = embeddedExpressions[i - 1];
                     if (compileResult.IsSuccess)
                     {
-                        sb.Append(Math.Round(compileResult.Expression(), DecimalsToShow).ToString());
-                        //sb.Append(compileResult.Expression().ToString("F01"));
+                        // (the square root of a negative number, 0 / 0: it said "NaN")
+                        double value = compileResult.Expression();
+                        sb.Append(double.IsNaN(value) ? UndefinedText : Math.Round(value, DecimalsToShow).ToString());
                     }
                     else
                     {
@@ -210,6 +214,22 @@ namespace DynamicGeometry
             if (ShouldProcessText && !text.IsEmpty())
             {
                 ProcessText();
+            }
+        }
+
+        public IReadOnlyList<string> ExpressionTexts
+        {
+            get
+            {
+                return new[] { text };
+            }
+            set
+            {
+                if (value[0] != text)
+                {
+                    text = value[0];
+                    RaisePropertyChanged("Text");
+                }
             }
         }
 

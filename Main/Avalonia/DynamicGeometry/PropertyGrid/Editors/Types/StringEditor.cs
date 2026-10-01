@@ -49,8 +49,16 @@ namespace DynamicGeometry
         protected void Show(string text)
         {
             ShownText = text;
+            appliedText = null;
             TextBox.Text = text;
         }
+
+        // The text of the user's that has gone into the property already. A commit (Enter,
+        // then leaving the box) doesn't set it a second and a third time: the value read
+        // back need not equal what was typed (a vector's direction is worked out from its
+        // points, 27.57 comes back as 27.570000000000004), and each such set was an undo
+        // step of its own that undid nothing.
+        string appliedText;
 
         void StringPropertyEditor_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -73,6 +81,12 @@ namespace DynamicGeometry
             }
 
             ShownText = null;
+            if (text == appliedText)
+            {
+                return;
+            }
+
+            appliedText = text;
             SetValue(text);
         }
 

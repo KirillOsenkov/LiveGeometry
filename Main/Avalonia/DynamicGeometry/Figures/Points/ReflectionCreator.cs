@@ -19,8 +19,8 @@ namespace DynamicGeometry
         {
             if (FoundDependencies.Count == 0)
             {
-                var result = Drawing.Figures.HitTest(coordinates);
-                if (Transformer.CanBeTransformSource(result))
+                var result = Transformer.FindTransformSource(Drawing.Figures.HitTest(coordinates));
+                if (result != null)
                 {
                     return result;
                 }

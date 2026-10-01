@@ -95,7 +95,7 @@ namespace DynamicGeometry
         /// <summary>An angle taken from a figure says which</summary>
         public string Caption(string propertyName, string defaultCaption)
         {
-            return propertyName == nameof(Angle) && this.IsTied(propertyName) ? "Angle = " + AngleSource.Name : defaultCaption;
+            return propertyName == nameof(Angle) && this.IsTied(propertyName) ? "Angle = " + TiedValues.SourceName(AngleSource) : defaultCaption;
         }
 
         protected override Shape CreateShape()
@@ -127,7 +127,8 @@ namespace DynamicGeometry
 
         public bool Accepts(string name, IFigure figure)
         {
-            return figure is IAngleProvider && !(figure is IPoint);
+            // (DynamicGeometry.Label: here Label is the point's own name label)
+            return figure is IAngleProvider && !(figure is IPoint) && DynamicGeometry.Label.GivesNumber(figure);
         }
 
         /// <summary>The points turned about the same center by the same angle: the vertices of one rotated figure, tied and detached together</summary>

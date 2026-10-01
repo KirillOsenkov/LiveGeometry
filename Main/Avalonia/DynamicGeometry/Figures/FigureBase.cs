@@ -195,6 +195,23 @@ namespace DynamicGeometry
             return true;
         }
 
+        /// <summary>
+        /// Whether a name typed for the figure would stay. One that reads like the name of
+        /// its points with another number, or the other way round (AB3 or BA for segment
+        /// AB), is a default name, and those are worked out: it would be put right at
+        /// once, leaving an undo step that undoes nothing. The exception is the default
+        /// name itself, for a figure that has a name of its own and is to lose it.
+        /// </summary>
+        public bool KeepsTypedName(string name)
+        {
+            if (name == mName || NameFromDependencies() == null || !IsDefaultName(name))
+            {
+                return true;
+            }
+
+            return !HasDefaultName && name == GenerateFigureName(null);
+        }
+
         /// <summary>A default name follows the points the figure is built on</summary>
         public void UpdateDefaultName()
         {
@@ -212,6 +229,139 @@ namespace DynamicGeometry
                 Name = name;
             }
         }
+
+        #region Numbers of default names
+
+        [ThreadStatic]
+        static bool settlingDefaultNames;
+
+        /// <summary>
+        /// Figures named after the same points - segment AB, line AB, a second segment AB -
+        /// are AB, AB2, AB3 in the order they have in the drawing's list: the numbers are
+        /// worked out from the drawing as it is, not from what happened to it. They used to
+        /// go to whoever asked first, so AB2 stayed AB2 after AB was deleted until the file
+        /// was opened again, and undo of a join handed the two names back the other way
+        /// round. Called for a figure that came into the list, moved in it or was renamed;
+        /// puts the numbers of its whole group right.
+        /// </summary>
+        public static void SettleDefaultNames(Drawing drawing, IFigure figure)
+        {
+            if (drawing == null || settlingDefaultNames || drawing.KeepsNamesAsRead)
+            {
+                return;
+            }
+
+            var stem = (figure as FigureBase)?.NameFromDependencies();
+            if (stem == null)
+            {
+                return;
+            }
+
+            // the others named after the same points are built on the same points
+            var figures = drawing.Figures;
+            var group = new List<FigureBase>();
+            foreach (var dependent in figure.Dependencies[0].Dependents)
+            {
+                if (dependent is FigureBase candidate
+                    && candidate.HasDefaultName
+                    && !group.Contains(candidate)
+                    && figures.Contains(candidate)
+                    && candidate.NameFromDependencies() == stem)
+                {
+                    group.Add(candidate);
+                }
+            }
+
+            if (group.Count == 0)
+            {
+                return;
+            }
+
+            group.Sort((first, second) => figures.IndexOf(first).CompareTo(figures.IndexOf(second)));
+            settlingDefaultNames = true;
+            try
+            {
+                int number = 0;
+                foreach (var member in group)
+                {
+                    // AB, AB2, AB3... but for a name something else in the drawing has
+                    string name;
+                    do
+                    {
+                        number++;
+                        name = number == 1 ? stem : stem + number;
+                    }
+                    while (figures.Any(f => f.Name == name && !group.Contains(f as FigureBase)));
+
+                    // (whichever of the group has the name gives it up: the setter sees to that)
+                    if (member.mName != name)
+                    {
+                        member.Name = name;
+                    }
+                }
+            }
+            finally
+            {
+                settlingDefaultNames = false;
+            }
+        }
+
+        /// <summary>
+        /// A name has become free - its figure was deleted or renamed: the figures numbered
+        /// after it move up (AB2 is AB once AB is gone)
+        /// </summary>
+        public static void SettleDefaultNamesAfter(Drawing drawing, string freedName)
+        {
+            if (drawing == null || settlingDefaultNames || drawing.KeepsNamesAsRead || string.IsNullOrEmpty(freedName))
+            {
+                return;
+            }
+
+            // one figure of each group the name could go to (a group shares its first letter)
+            var stems = new Dictionary<string, FigureBase>();
+            foreach (var figure in drawing.Figures)
+            {
+                if (figure is FigureBase candidate
+                    && candidate.HasDefaultName
+                    && !string.IsNullOrEmpty(candidate.mName)
+                    && candidate.mName[0] == freedName[0])
+                {
+                    var stem = candidate.NameFromDependencies();
+                    if (stem != null && !stems.ContainsKey(stem) && IsStemAndNumber(freedName, stem))
+                    {
+                        stems.Add(stem, candidate);
+                    }
+                }
+            }
+
+            foreach (var member in stems.Values)
+            {
+                SettleDefaultNames(drawing, member);
+            }
+        }
+
+        /// <summary>After a wave of renames: the groups the renamed figures are in now, and the ones their old names were in</summary>
+        static void SettleDefaultNames(Dictionary<IFigure, string> wave)
+        {
+            if (settlingDefaultNames)
+            {
+                return;
+            }
+
+            foreach (var pair in wave)
+            {
+                var drawing = pair.Key.Drawing;
+                if (drawing == null || pair.Key.Name == pair.Value || !drawing.Figures.Contains(pair.Key))
+                {
+                    continue;
+                }
+
+                SettleDefaultNames(drawing, pair.Key);
+                SettleDefaultNamesAfter(drawing, pair.Value);
+            }
+        }
+
+        #endregion
 
         protected Drawing drawing;
         public virtual Drawing Drawing
@@ -411,6 +561,8 @@ namespace DynamicGeometry
                         {
                             RenameInExpressions(wave);
                         }
+
+                        SettleDefaultNames(wave);
                     }
                 }
             }

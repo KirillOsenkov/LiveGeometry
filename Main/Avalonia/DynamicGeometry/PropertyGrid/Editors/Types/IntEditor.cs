@@ -28,12 +28,15 @@ namespace DynamicGeometry
             var panel = new StackPanel() { Orientation = Orientation.Horizontal };
             panel.Children.Add(TextBox);
             panel.Children.Add(UpDown);
-            return panel;
+
+            // with room under it for what is wrong with the number typed
+            return WithErrorBox(panel);
         }
 
         void StepValue(bool up)
         {
-            if (Value == null || !Value.CanSetValue)
+            // (no value: several figures that differ - there is nothing to step from)
+            if (Value == null || !Value.CanSetValue || GetValue() == null)
             {
                 return;
             }
@@ -58,11 +61,24 @@ namespace DynamicGeometry
             ValidationResult result = new ValidationResult();
             string source = value.ToString();
             int intValue = 0;
-            if (!string.IsNullOrEmpty(source) && int.TryParse(source, out intValue))
+
+            // within the limits of the property, if it has any: a number outside them was
+            // dropped without a word, and the box went on showing it
+            var domain = Value?.GetAttribute<DomainAttribute>();
+            if (string.IsNullOrEmpty(source) || !int.TryParse(source, out intValue))
+            {
+                result.Error = "Type a whole number.";
+            }
+            else if (domain != null && (intValue < domain.MinValue || intValue > domain.MaxValue))
+            {
+                result.Error = "Type a whole number from " + domain.MinValue.ToStringInvariant() + " to " + domain.MaxValue.ToStringInvariant() + ".";
+            }
+            else
             {
                 result.IsValid = true;
                 result.Value = intValue;
-            };
+            }
+
             return result;
         }
     }

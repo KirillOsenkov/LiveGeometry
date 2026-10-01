@@ -55,11 +55,30 @@ namespace DynamicGeometry
         {
             Drawing drawing = existingFigure.Drawing;
 
+            // An expression that names the figure ([AB.Length] in a label) means the new one
+            // from now on, under the same name. Its text is left alone while the two are
+            // both in the drawing and trade the names AB and AB2 (the text would follow the
+            // old figure to AB2 and keep that name when the figure has left), and it is
+            // compiled again at the end - on undo too, when the old figure is back: the
+            // first thing and the last either way, as in ReplacePoint.
+            var expressions = existingFigure.Dependents.OfType<IRenamableExpressions>().ToArray();
+            void Rebind()
+            {
+                FigureBase.SuppressRenameInExpressions = false;
+                foreach (var holder in expressions)
+                {
+                    holder.RebindExpressions();
+                }
+            }
+
             // not delayed: each step happens as it is recorded, so that the place in the list
             // and the name are worked out from the drawing as it is by then (delayed, the new
             // figure had no name yet when its name was decided, and stayed AB2)
             using (Transaction.Create(drawing.ActionManager, delayed: false))
             {
+                drawing.ActionManager.RecordAction(new CallMethodAction(
+                    () => FigureBase.SuppressRenameInExpressions = true,
+                    Rebind));
                 Actions.Add(drawing, newFigure);
                 Actions.ReplaceWithExisting(existingFigure, newFigure);
 
@@ -85,15 +104,16 @@ namespace DynamicGeometry
                 // the end: a file is written in this order
                 MoveBefore(drawing, newFigure, existingFigure);
                 Actions.Remove(existingFigure);
+                // (a default name needs nothing: segment AB converted to a line is line AB,
+                // by its place in the list - FigureBase.SettleDefaultNames)
                 if (newFigure is PointBase && existingFigure is PointBase || !existingFigure.HasDefaultName)
                 {
                     Actions.SetProperty(drawing.ActionManager, new PropertyValue("Name", newFigure), existingFigure.Name);
                 }
-                else if (newFigure.HasDefaultName)
-                {
-                    // segment AB converted to a line is line AB: AB2 while both were there
-                    Actions.SetProperty(drawing.ActionManager, new PropertyValue("Name", newFigure), newFigure.GenerateFigureName());
-                }
+
+                drawing.ActionManager.RecordAction(new CallMethodAction(
+                    Rebind,
+                    () => FigureBase.SuppressRenameInExpressions = true));
             }
         }
 
@@ -179,12 +199,17 @@ namespace DynamicGeometry
         /// <summary>
         /// Moves <paramref name="figure"/> in the drawing's list to just before
         /// <paramref name="before"/>, together with what it is built on that comes after that
-        /// place (a Number made for it), so that the list stays in dependency order. Nothing
-        /// is taken off the canvas: a move is not a removal and an insertion to the list.
+        /// place (a Number made for it; the regular polygon whose side it is on), so that the
+        /// list stays in dependency order. Nothing is taken off the canvas: a move is not a
+        /// removal and an insertion to the list.
         /// </summary>
         public static void MoveBefore(Drawing drawing, IFigure figure, IFigure before)
         {
             var figures = drawing.Figures;
+
+            // a part (a vertex or a side of a regular polygon) is in the list as its figure
+            figure = figures.FindTopLevel(figure) ?? figure;
+            before = figures.FindTopLevel(before) ?? before;
             int target = figures.IndexOf(before);
             if (target < 0 || figures.IndexOf(figure) <= target)
             {
@@ -221,9 +246,10 @@ namespace DynamicGeometry
 
                 foreach (var dependency in item.Dependencies)
                 {
-                    if (figures.IndexOf(dependency) > target)
+                    var listed = figures.FindTopLevel(dependency);
+                    if (listed != null && figures.IndexOf(listed) > target)
                     {
-                        Collect(dependency);
+                        Collect(listed);
                     }
                 }
             }

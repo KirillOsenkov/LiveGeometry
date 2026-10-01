@@ -46,12 +46,15 @@ namespace DynamicGeometry
         public override void ReadXml(XElement element)
         {
             base.ReadXml(element);
-            Checkbox.IsChecked = element.ReadBool("Show", true);
+
+            // Only the box: each figure says in the file whether it is hidden. Hiding them
+            // all again here undid what the user had done since the box was last clicked -
+            // one of its figures shown by hand came back hidden when the file was opened.
+            SetBox(element.ReadBool("Show", true));
             Checkbox.Content = element.ReadString("Text");
             var x = element.ReadDouble("X");
             var y = element.ReadDouble("Y");
             MoveTo(new Point(x, y));
-            UpdateFigureVisibility();
         }
 
         public override void WriteXml(System.Xml.XmlWriter writer)

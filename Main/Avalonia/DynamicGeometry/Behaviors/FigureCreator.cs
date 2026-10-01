@@ -77,19 +77,29 @@ namespace DynamicGeometry
                         return;
                     }
 
-                    this.parent.ClickedUnconstrainedCoordinates = point;
-
-                    // typed coordinates mean a free point exactly there, whatever happens to pass through
-                    this.parent.canPlacePointsOnFigures = false;
-                    try
-                    {
-                        this.parent.AddDependency(point);
-                    }
-                    finally
-                    {
-                        this.parent.canPlacePointsOnFigures = true;
-                    }
+                    this.parent.AddTypedPoint(point);
                 }
+            }
+        }
+
+        /// <summary>
+        /// A point at typed coordinates is the next step of the construction: a free point
+        /// exactly there, whatever happens to pass through - or the point that is there
+        /// already. Not what was under the last mouse click, which is where the tool would
+        /// look otherwise (the polygon tools did: after a click on the first vertex, a typed
+        /// second one found the first again and was dropped).
+        /// </summary>
+        protected void AddTypedPoint(Point point)
+        {
+            ClickedUnconstrainedCoordinates = point;
+            canPlacePointsOnFigures = false;
+            try
+            {
+                AddDependency(point);
+            }
+            finally
+            {
+                canPlacePointsOnFigures = true;
             }
         }
 
@@ -368,11 +378,11 @@ namespace DynamicGeometry
             if (tied)
             {
                 Drawing.RaiseDisplayProperties(new TiedValuesPanel(shown, values));
-                Drawing.RaiseStatusNotification(shown.Title + " now follows " + target.Name + ".");
+                Drawing.RaiseStatusNotification(shown.Title + " now follows " + TiedValues.SourceName(target) + ".");
             }
             else
             {
-                Drawing.RaiseStatusNotification(target.Name + " is built on " + shown.Name + ": it can't be taken from.");
+                Drawing.RaiseStatusNotification(TiedValues.SourceName(target) + " is built on " + shown.Name + ": it can't be taken from.");
             }
 
             return true;
@@ -650,12 +660,29 @@ namespace DynamicGeometry
                     return false;
                 }
 
-                if (!GetExpectedDependencyType().IsAssignableFrom(f.GetType()))
+                var expected = GetExpectedDependencyType();
+                if (!expected.IsAssignableFrom(f.GetType()))
+                {
+                    return false;
+                }
+
+                // (a label that says no number is nothing to take a length or an angle from)
+                if ((expected == typeof(ILengthProvider) || expected == typeof(IAngleProvider)) && !Label.GivesNumber(f))
                 {
                     return false;
                 }
 
                 if (!TempResults.IsEmpty() && TempResults.Contains(f))
+                {
+                    return false;
+                }
+
+                // Nor a part of what is being drawn (the vertices and sides of a regular
+                // polygon, which are not in TempResults themselves): it follows the point
+                // under the cursor and is gone with the preview. A double click with the
+                // Regular polygon tool took a vertex of the preview, all of them on the
+                // center just then, for the polygon's own vertex.
+                if (TempPoint != null && f.DependsOn(TempPoint))
                 {
                     return false;
                 }

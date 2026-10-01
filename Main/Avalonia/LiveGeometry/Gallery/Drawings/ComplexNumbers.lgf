@@ -18,7 +18,7 @@
     <FreePoint Name="O" Style="7" X="0" Y="0" />
     <FreePoint Name="A" Style="8" X="1.839999" Y="1.370612" />
     <FreePoint Name="B" Style="8" X="1.5" Y="0.6" />
-    <PointByCoordinates Name="C" Style="9" X="a.x*b.x-a.y*b.y" Y="a.y*b.x+a.x*b.y">
+    <PointByCoordinates Name="C" Style="9" X="A.X * B.X - A.Y * B.Y" Y="A.Y * B.X + A.X * B.Y">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
@@ -48,7 +48,7 @@
       <Dependency Name="C" />
     </Vector>
     <Label Name="Title" Style="GalleryTitle" Text="Complex Multiplication" Pin="TopRight" OffsetX="16" OffsetY="25.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Think of the arrows as complex numbers: A = [A.X] + [A.Y]i and B = [B.X] + [B.Y]i.\n\nC is their product. Its angle, counted counterclockwise from the x-axis, is the sum of the two angles ([deg(xang(o,a))]° + [deg(xang(o,b))]° = [deg(xang(o,c))]°; past 360° it starts over at 0°), and its length is the product of the two lengths ([AO] · [OB] = [OC]).\n\nMultiplying by a complex number rotates and stretches. Drag A and B." Pin="TopRight" OffsetX="16" OffsetY="73.5" WrapWidth="400" Backdrop="true">
+    <Label Name="Description" Style="GalleryText" Text="Think of the arrows as complex numbers: A = [A.X] + [A.Y]i and B = [B.X] + [B.Y]i.\n\nC is their product. Its angle, counted counterclockwise from the x-axis, is the sum of the two angles ([deg(xang(O, A))]° + [deg(xang(O, B))]° = [deg(xang(O, C))]°; past 360° it starts over at 0°), and its length is the product of the two lengths ([AO] · [OB] = [OC]).\n\nMultiplying by a complex number rotates and stretches. Drag A and B." Pin="TopRight" OffsetX="16" OffsetY="73.5" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="O" />

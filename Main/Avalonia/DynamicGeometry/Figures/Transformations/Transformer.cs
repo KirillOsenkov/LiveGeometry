@@ -1,9 +1,32 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace DynamicGeometry
 {
     public class Transformer
     {
+        /// <summary>
+        /// What a click on the figure transforms: the figure, or the regular polygon whose
+        /// side or inside it is. A part is not a figure of the drawing (it has no name), and
+        /// its copy would be one: an unnamed segment, which a file can't refer to. A vertex
+        /// stays a point like any other. Null for what can't be transformed.
+        /// </summary>
+        public static IFigure FindTransformSource(IFigure figure)
+        {
+            if (figure != null && !(figure is IPoint))
+            {
+                var owner = figure.Drawing?.Figures
+                    .OfType<IFigureParts>()
+                    .FirstOrDefault(candidate => candidate.GetPartName(figure) != null);
+                if (owner != null)
+                {
+                    figure = owner;
+                }
+            }
+
+            return CanBeTransformSource(figure) ? figure : null;
+        }
+
         public static bool CanBeTransformSource(IFigure figure)
         {
             // Not yet supported (a line at an angle would transform its angle as if it were a point)

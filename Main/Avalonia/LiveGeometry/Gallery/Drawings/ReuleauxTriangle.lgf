@@ -54,7 +54,7 @@
       <Dependency Name="AD" />
       <Dependency Name="A" />
     </PerpendicularLine>
-    <DistanceMeasurement Name="DistanceMeasurement28" OffsetX="0" OffsetY="-0">
+    <DistanceMeasurement Name="DistanceMeasurement28" OffsetX="0" OffsetY="0">
       <Dependency Name="A" />
       <Dependency Name="D" />
     </DistanceMeasurement>

@@ -139,6 +139,12 @@ namespace DynamicGeometry
                 writer.WriteAttributeBool("Grid", true);
                 writer.WriteAttributeBool("Axes", drawing.CoordinateGrid.ShowAxes);
             }
+            else if (!drawing.CoordinateGrid.ShowAxes)
+            {
+                // unticked while the grid is hidden: said too, or the tick was an undo step
+                // that changed nothing saved and came back on when the file was opened
+                writer.WriteAttributeBool("Axes", false);
+            }
 
             if (drawing.CoordinateSystem.GridStep > 0)
             {

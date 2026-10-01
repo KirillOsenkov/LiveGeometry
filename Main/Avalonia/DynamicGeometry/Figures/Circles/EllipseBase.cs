@@ -113,6 +113,13 @@ namespace DynamicGeometry
             var logicalWidth = LogicalWidth();
             var major = ToPhysical(SemiMajor * 2 + logicalWidth);
             var minor = ToPhysical(SemiMinor * 2 + logicalWidth);
+
+            // an ellipse that doesn't exist has no size to give the shape (CircleBase.UpdateVisual)
+            if (!center.Exists() || !major.IsValidValue() || !minor.IsValidValue() || !Inclination.IsValidValue())
+            {
+                return;
+            }
+
             // Avalonia rotates about RenderTransformOrigin, the middle of the shape by default;
             // the CenterX/CenterY that WPF needed on the transform would shift a tilted
             // ellipse off its center.

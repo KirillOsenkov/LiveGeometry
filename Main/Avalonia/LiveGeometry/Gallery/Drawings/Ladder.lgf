@@ -422,7 +422,7 @@
       <Dependency Name="A" />
       <Dependency Name="Drag me!" />
     </Ray>
-    <DistanceMeasurement Name="DistanceMeasurement1" OffsetX="0" OffsetY="-0">
+    <DistanceMeasurement Name="DistanceMeasurement1" OffsetX="0" OffsetY="0">
       <Dependency Name="Ladder length" />
       <Dependency Name="E" />
     </DistanceMeasurement>

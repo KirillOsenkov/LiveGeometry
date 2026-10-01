@@ -92,19 +92,7 @@ namespace DynamicGeometry
         public override void UpdateEditor()
         {
             var value = GetValue();
-            if (value == null || Items == null)
-            {
-                return;
-            }
-            foreach (var item in Items)
-            {
-                if ((item as FrameworkElement).Tag == value)
-                {
-                    guard = true;
-                    Selector.SelectedItem = item;
-                    guard = false;
-                }
-            }
+            ShowSelected(item => value != null && (item as FrameworkElement).Tag == value);
         }
     }
 }

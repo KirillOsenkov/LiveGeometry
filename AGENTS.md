@@ -104,7 +104,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   semi-minor, begin angle, end angle.
 - **Shapes**: Triangle - 3 points; Square - two adjacent vertices; Polygon (W) - points, then
   Enter, a right-click or a click on a vertex closes it; Regular polygon - center then a vertex.
-  Triangle and Polygon show no length panel (a side's length means nothing for them). (Polygon intersection
+  Triangle and Polygon show no length panel (a side's length means nothing for them). Both
+  draw their sides as segments (the polygon's own outline is transparent in the default
+  style), except where a visible segment, ray, line or vector on the two points is there
+  already (`FindLine`; not any line that depends on both - a perpendicular bisector of the
+  two took the side's place and left it undrawn). (Polygon intersection
   exists but is `[Ignore]`d.)
 - **Transform** (the tools are verbs, as the tab is; the classes stay `ReflectionCreator`...):
   Reflect (T) - source figure, then a mirror (point, line, segment, ray, or a
@@ -121,7 +125,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   its knob starts (or press, drag, release): a number with a handle, taken wherever a tool
   asks for a length or an angle, named in expressions (a, b, c).
 - **Misc**: Bezier - four points; Locus (D) - a point that depends on a point on a figure;
-  Text - a label at the click; Define figure - records a construction as a new tool.
+  Text - a label at the click; Define figure - records a construction as a new tool: click
+  the figures it starts from, OK, click the figures it makes, Create tool (neither step
+  goes on with nothing picked). The new tool lands on Misc; it is not kept between runs
+  (`ToolStorage` is a stub) nor saved with a drawing, and a result whose text names
+  figures (a label's [AB]) still means the figures it was recorded on.
 
 ## Avalonia and framework traps
 
@@ -155,7 +163,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   rectangle" for a canvas child placed at infinity, unhandled: the desktop app dies and the
   browser app freezes on the spot. `CenterAt`/`MoveTo` in `Utilities` also refuse a non-finite
   place. Anything new that positions a control from figure coordinates must not hand it NaN
-  or infinity.
+  or infinity. A size neither: `Width` throws on infinity right in the setter, and a
+  figure's `UpdateVisual` runs also while it doesn't exist (a circle around a center that
+  is nowhere has an infinite radius: the exception ended a drag, which then could not be
+  undone; `CircleBase`/`EllipseBase.UpdateVisual` return early).
 - **`Shape.Render` is sealed** (Avalonia 12): a Shape can't draw anything but its geometry.
   `PointMarker` draws a character through an `EmojiGlyph` visual child it measures and arranges
   itself; with no geometry, `Shape.ArrangeOverride` returns size 0 and the shape collapses to
@@ -248,7 +259,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   labels are bold (`AxisLabel.SetEmphasis`). Shift-snapping lands on the labeled step
   (`MajorGridStep`), not on a fixed 1; `<Viewport GridStep="1">` floors the step for a drawing
   that must keep its unit squares (Pick's Theorem). Whether the grid shows is the drawing's own
-  (`CoordinateGrid.Visible`): a new drawing starts without one and a file says. There is no
+  (`CoordinateGrid.Visible`): a new drawing starts without one and a file says. The axes
+  are a second switch for a grid that shows (`ShowAxes`, `Axes="false"` in the file also
+  while the grid is hidden: unticked then, it was an undo step that changed nothing saved,
+  and ticked it brought the axes up without the grid until the file was opened). There is no
   global setting: one would leak from every loaded file (each gallery tile included) into the
   next new drawing.
 - **No pixel snapping of figure geometry.** Lines are exact and point shapes have
@@ -263,21 +277,39 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   tool that takes a figure where it would otherwise expect a point (Distance, Circle by Radius)
   overrides `FigureCreator.FindFigureInsteadOfPoint`. The preview is plain canvas visuals, never
   figures. Hit testing uses the *snapped* coordinates. Typed coordinates always give a free
-  point. A point must never be placed on the figure being constructed
-  (`FigureCreator.CanPlacePointOn`), that would be a dependency cycle.
+  point, or the point that is exactly there (`FigureCreator.AddTypedPoint`, for both
+  coordinate panels: the one of the Shapes tools looked under the last mouse click instead,
+  so a vertex typed after a clicked one found the clicked one again and was dropped). A
+  point must never be placed on the figure being constructed
+  (`FigureCreator.CanPlacePointOn`), that would be a dependency cycle. A figure that
+  doesn't exist right now is not hit (`FigureList.HitTest`, `HitTestMany`): its own
+  `HitTest` still answers from where it was last, and a tool took the invisible
+  intersection or the circle built on it - what was made on it never appeared, and a point
+  put "on" it was saved at (0, 0).
 - **Figures are named after their points** (`FigureBase.NameFromDependencies`): segment, ray,
   line through two points and vector AB, polygon ABC (up to 10 vertices), polyline, Bezier
-  ABCD; a clash gets a number (line AB next to segment AB is AB2). The points are read in
+  ABCD; a clash gets a number (line AB next to segment AB is AB2), and the numbers go by
+  the order of the drawing's list, worked out from the drawing as it is
+  (`FigureBase.SettleDefaultNames`: after a figure enters, leaves or moves in the root
+  list, and at the end of a rename wave, for the group named after the same points; while
+  a file is read it waits, `Drawing.KeepsNamesAsRead`, since expressions are compiled by
+  the file's names). Handed out to whoever asked first, AB2 stayed AB2 after AB was
+  deleted until the file was opened again, and undo of a join gave segment AB and line
+  AB2 their names back the other way round. The points are read in
   the order that comes first alphabetically (A-Z, then A1-Z1) among the readings that name
   the same figure: a polygon from any vertex either way round (ECBA is ABCE), a segment,
   line, polyline or Bezier either way, a ray or vector only as it goes (`PointOrder`); any
   of those readings counts as a default name. Everything else is numbered
   by type (Circle1); hidden points too, so a helper doesn't take a letter from the points on
   screen. `HasDefaultName` (nobody typed a name) is not stored: a name that reads like the
-  default is the default, old `Segment1` included, and loading renames those. A default name
+  default is the default, old `Segment1` included, and loading renames those (so does a
+  paste: a copy is numbered by type while it is read, and takes its points' name once it
+  is in the drawing). A default name
   follows its points - renamed, replaced, joined, a vertex deleted - and undo needs nothing
   special, since it restores the cause. The grid's Name box (`NameEditor`) refuses an empty
-  name and one another figure has (case matters: slider `a` next to point `A`); the setter
+  name, one another figure has (case matters: slider `a` next to point `A`), and one that
+  reads like a default name the figure would not keep (AB3 or BA for segment AB: it would
+  be AB again at once, `FigureBase.KeepsTypedName`); the setter
   itself would take the name from the other figure, and turns an empty one into the default.
   The grid's title is `Title`: the figure's `Kind` in front of the name ("Triangle ABC",
   "Point A"), left off when the name says it already (Circle1, Bezier3) or there is no kind.
@@ -304,9 +336,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the old names (A.X, AB as two points, the points of ang/dist/area, a Number) and swaps them
   all at once; two points whose new names run together would read differently (PB next to a
   point named PB) become `dist(P, B)`. Only the text changes, and not through undo: undoing the rename renames back.
-  A trap of the same rule: `pi` reads as the distance between points P and I when both exist
-  (`ResolveTwoPoints` runs before the constants), so generated expressions say `rad(45)` or
-  the digits of π rather than `pi`. A number (slider, Number) called exactly what the text
+  `pi` and `e` in lowercase are the constants whatever the drawing has; in any other case
+  (`PI`) the two-points reading comes first, and with points P and I that is their
+  distance. (Lowercase too, until 2026-10-01: `sin(pi * x)` came out wrong without a word
+  in a drawing with points P and I. Generated expressions still say `rad(45)` or the digits
+  of π.) A number (slider, Number) called exactly what the text
   says, capitals and all, comes before the two-points reading (`Binder.ResolveExactNumber`,
   mirrored in the renamer): two points match in any case, so with points A and B a slider
   named `ab` was the distance AB, and undo of renaming it could not find it in the text.
@@ -314,6 +348,22 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   by equation) depends on what all of its expressions name, listed in the expressions'
   order - not on what the last one compiled named, appended (X = A.X, Y = A.Y, X edited:
   the point no longer followed A).
+- **The expression language calculates as it is written in class** (`Expressions/Parser`):
+  a minus in front takes everything up to the next + - * /, powers included, so `-x^2` is
+  -(x²) (it was (-x)²: the parabola y = -x^2 opened upward); `^` is right-associative. A
+  function of numbers is any of `System.Math` with as many `double` parameters as it is
+  given arguments (`sin`, `max(a, b)`, `atan2(y, x)`), each argument an expression
+  (`Binder.ResolveMethod` by name and count); ours take the names of points (`dist`,
+  `ang`, `area`). Everything is a double: a whole number is converted (`sign(x)`, a
+  polygon's `NumberOfSides` - unconverted, the first operator applied to it threw), and a
+  property that is no number (`A.Name`) is an error said in words
+  (`ExpressionTreeBuilder.AsNumber`). Nothing a user can type may throw, caught or not: a
+  first-chance exception is an error report on screen. Checked with random texts built
+  from the language's tokens and the drawing's names (20000 of them: compile as an
+  expression and as a function, evaluate, run the renamer), next to a list of texts with
+  known values and of wrong texts that must each give an error with words in it. Left
+  as they are: `sqr` is the square root (VB's `Sqr`, for `.dgf` files), `log` the natural
+  logarithm (`lg` is base 10), and `2x` is an error, not a product.
 - **Snapping and releasing points** (`Figures/Points/PointSnapping.cs`) swap a point for another
   kind where it is through `Actions.ReplacePoint` (name, label, dependents, lock, a chosen style
   go along). Snap: a free point onto a figure through it - "Snap to line AB" in the grid when
@@ -330,7 +380,22 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   of it and the drop *joins* it (`PointSnapping.Join`: its dependents rewired to the target,
   itself removed). No un-join (which dependents would go back?): undo. `CanJoin` refuses a
   target built on the point and one that shares a dependent with it (segment EF: F onto E
-  would give a segment EE, and undo's ReplaceDependency would swap its ends). Swaps happen
+  would give a segment EE, and undo's ReplaceDependency would swap its ends). In a join the
+  target, with what it is built on, moves before the first figure that comes to depend on
+  it (the list is in dependency order, see "The figure list is in dependency order"), a
+  part of a composite that went over with its composite is not rewired a second time (a
+  regular polygon's sides: it threw), and expressions that named the point name the target
+  ([A.X] becomes [C.X]: `ExpressionRenamer` with the target under the point's name, once
+  the point has left; undo puts the texts back as they were,
+  `IRenamableExpressions.ExpressionTexts`) - so a join into a point without a name (a
+  vertex a regular polygon works out) is refused when expressions name the point. A point
+  a locus is drawn from - the one that slides, the one traced - is not released, snapped
+  or joined at all (`PointSnapping.IsHeldByLocus`; Alt does nothing to it and it has no
+  "Free point"; Fix length leaves it alone as well, `LengthConstraint.CanStretch`, and
+  Free length only lets its distance go): the locus would trace nothing. Released, the
+  sliding point of a gallery locus left exceptions on every move and an undo that did not
+  restore the drawing; the `Locus` itself now draws nothing when its second point is not
+  on a figure. Swaps happen
   only when Alt first applies and at the drop; the whole drag is one undo transaction.
   Inside `ReplacePoint` the replacement has a temporary name until it takes the point's, on
   undo too, so expressions sit the swap out (`FigureBase.SuppressRenameInExpressions`) and
@@ -399,9 +464,37 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   center1 -> center2.
 - **Any figure is draggable**: dragging a dependent figure moves its root free points, so gallery
   text can say "drag the circle" even when the points it is built on are hidden. Labels are the
-  exception (`AllowMove`): a drag moves the label, not what it measures or names.
+  exception (`AllowMove`): a drag moves the label, not what it measures or names. A point by
+  coordinates is no root to move (`PointByCoordinates.AllowMove` is false, and `Dragger`
+  leaves such roots out): the drag goes to the other roots, and a figure built on such
+  points alone doesn't move, nor does the view. (They used to be "moved", to no effect but
+  an undo step that undid nothing - every drag of the Ladder's wall.) A drag whose drop
+  throws still ends its transaction (`Dragger.MouseUp`): left open, it took in everything
+  done afterwards.
+- **The figure list is in dependency order**: a figure comes after what it is built on. The
+  file is written in the list's order and read back dependencies first, so a list out of
+  order comes back in another order, and `Drawing.Recalculate` goes down the list. What
+  breaks it is rewiring: a join (the target may be later than what gets built on it) and a
+  tool that records a figure while its last point is still the one following the cursor
+  (the Angle tool added its arc with the preview; both figures are made at the end now).
+  `Actions.MoveBefore` is the repair, and knows parts (`RootFigureList.FindTopLevel`).
+- **Tool letters are the only plain keys**: `Behavior.KeyDown` (what a tool without a key
+  handler of its own gets: Point, Coordinates, Slider, Text) used to toggle "Label new
+  points" on A and "Snap to grid" on G, from before those were the letters of the Arc tool
+  and the grid: G with the Point tool on showed the grid and, silently, made every new
+  point snap to it.
 - **Numbers are shown with `Settings.DisplayDecimals`** (2) by every editor of the property grid
   and by labels by default; values keep their digits and a typed number is taken as typed.
+  Rounding for display goes through `Math.Round(value, digits)` of the library, which adds
+  0.0: -0.001 rounds to a negative zero, and that is written "-0" (a point at (3, -0)).
+  A point's coordinates are written (3, 4), with a comma.
+- **Several figures in the grid** (`FigureSelection`): a row whose values differ has no
+  value (`CompositeValueProvider` answers null), and every editor has to show that as
+  nothing - an empty box, no item selected (`SelectorValueEditor.ShowSelected`), a check
+  box in its third state (a click then ticks them all) - and not as a value none of them
+  has (0, the first item, unticked). The enum editor threw on the null: select all in a
+  drawing with two kinds of measurement units. Up/down buttons do nothing without a value
+  to step from.
 - **Property grid layout is declarative** (`PropertyGrid/`): `[PropertyGridGroup]` boxes rows
   and their buttons together, `[PropertyGridDestructive]` puts a button last under a divider,
   `[PropertyGridIcon]` puts a drawn icon (`PropertyGridIcons`) in front of a caption (every verb
@@ -449,6 +542,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   row or button that does nothing is an undo step that undoes nothing. A row whose setter
   only stores (a point on a figure's `Parameter`, which a locus samples through) gets a
   property of its own for the grid that also moves things (`ParameterDisplay`).
+- **A Convert button is not offered when the new kind lacks what something takes from the
+  figure**: a segment's length (`IFigureExtensions.IsUsedForLength`: a distance measurement
+  of it, a circle with it for a radius, a translation or dilation by it) for Convert to
+  line / ray, a sector's or circular segment's area (`IsUsedForArea`) for Convert to arc.
+  `ReplaceWithNew` hands every dependent over to the new figure whatever it is: a distance
+  measurement of a segment that became a ray threw on every redraw (it now doesn't exist
+  when it has nothing to measure). Convert to polyline deletes the polygon, and an area
+  measurement of it with it.
 - **Closing the side panel** (its ×, or a press on empty chrome: the ribbon's empty
   strip, the toolbar beside its buttons, the Figure List below its rows) goes through
   `DrawingHost.CloseSidePanel`. A tool's own panel (same type as the tool's `PropertyBag`)
@@ -478,7 +579,21 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `FunctionEditor` on `[PropertyGridPreferredEditor("Function")]`, `DoubleEditor`), and a tool
   panel's command: panels derive from `ToolPanel` and check each row with `Compile`/`Evaluate`
   (`ReportError` for anything else), which the grid routes to that row's editor. An empty box
-  compiles to nothing without an error: `CompileResult.GetErrorText` supplies one.
+  compiles to nothing without an error: `CompileResult.GetErrorText` supplies one. A whole
+  number (`IntEditor`) is checked against the property's `[Domain]` ("Type a whole number
+  from 3 to 500."). The two number boxes without an error plate put the box right on commit
+  instead: `SliderEditor` takes a number beyond its range to the nearest end, `UpDownEditor`
+  shows the value again when the text is no number. No editor takes "Infinity" or 1e999.
+- **A commit sets the typed text once.** Enter commits, and leaving the box commits again:
+  the editors remember the text that has gone into the property (`appliedText` in
+  `StringEditor` and `UpDownEditor`) rather than compare it with the value read back, which
+  need not equal it (a vector's direction and a segment's length are worked out from
+  points: 27.57 comes back as 27.570000000000004) - each further set was an undo step that
+  undid nothing. And the text an editor put in the box itself (`shownText`, kept so that
+  its own late TextChanged is not taken for typing) is forgotten at the user's first edit
+  in the number boxes too (`UpDownEditor`, `SliderEditor`, as in `StringEditor`): a box
+  that said 12, Backspace (the length is 1), the 2 typed back - the 12 was taken for the
+  editor's own text and dropped, and the segment stayed 1 long under a box saying 12.
 - **Setting a segment's length stretches it once** (not a constraint); **Fix length** makes the
   constraint: the end becomes a `TranslatedPoint` from the pivot with an auxiliary `Number` at
   the current distance and a free direction (`IFixableLength`, `Figures/Lines/LengthConstraint.cs`;
@@ -499,6 +614,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   created on demand for another: it is removed with its last dependent and comes back on undo.
   Every deletion goes through `RemoveFigureAction`, one figure per action inside a transaction,
   so undo restores labels and a polygon loses a vertex rather than dying.
+- **A label is a length and an angle only when it says a number** (`Label.IsNumber`: its
+  text is one, usually the value of an expression, "[AB * 2]" - what the GeoGebra reader
+  makes for a computed value). Every `Label` has `ILengthProvider` and `IAngleProvider`,
+  so wherever a tool or a tied value takes "a figure with a length" or "with an angle" it
+  asks `Label.GivesNumber` too (By Radius, Distance, Rotate, Dilate, Translate, the
+  `Accepts` of the tied values, `FigureCreator.LookForExpectedDependencyUnderCursor`): a
+  caption, taken for 0, tied a circle's radius or a rotation to a piece of text with one
+  stray click. An expression without a value shows "undefined" (`LabelBase.UndefinedText`),
+  not "NaN", and such a label's `Value` is still not a number.
 - **Undo** (GuiLabs.Undo; `Actions/`). What must hold: every change to what a file saves is
   one undo step, undo puts back exactly what was there, redo what was made. The traps, each
   of which was a bug (2026-09-30):
@@ -534,12 +658,19 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   - *A check box that stands for more than yes and no* (a translated point's Free
     distance: free, a Number, or tied to a vector) is an `IRestorableValue` too
     (`TranslatedPoint.FreedomValue`): undo puts the source back, where unticking the box
-    would give it a Number.
+    would give it a Number. A label's pin too (`Label.PinValue`): pinned, the label goes
+    where the screen carries it, so undo of the pin puts it back where it was in the
+    plane, not just the pin (pin, zoom, undo left it somewhere else).
   - *Replacing a figure by another kind* (`Actions.ReplaceWithNew`: Convert to line, ray,
     segment, arc, sector; Reverse) is a transaction that is not delayed, so that each
     step sees the drawing as the one before left it: the new figure goes to the old one's
     place in the list (`MoveBefore`), takes over its name label, stays hidden or locked
-    if the old one was, and is named AB once the old AB is gone (delayed, it stayed AB2).
+    if the old one was, and is named AB by its place in the list (`SettleDefaultNames`).
+    While both are in the drawing they trade the names AB and AB2, so expressions that
+    name the figure (`[AB.Length]`) sit the replacement out and are compiled again at the
+    end, undo included, as in `ReplacePoint` (`SuppressRenameInExpressions`, then
+    `RebindExpressions`): following the renames, the text ended as `AB2.Length`, the name
+    of the figure that had just left.
     Convert to polyline keeps the polygon's vertices (ABCA).
   - *Rows of a nested grid* (`ComplexTypeEditor`: a line's Equation) get the action
     manager from their parent editor, which passes it on when it is set: an editor that
@@ -568,6 +699,20 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   after, after undo, after redo, load the saved text into a second drawing and save that
   (a round trip), run `Figures.CheckConsistency`, and log every first-chance exception
   with the row at hand. Run over the gallery and over one drawing made with every tool.
+  The third pass added simulated input to the same checks (pointer and key events raised
+  on the canvas, `PointerPressedEventArgs` and friends built by hand, so the tools' real
+  handlers run): every tool walked at random - clicks on paper, on figures of the kind it
+  expects, drags, double clicks, Enter, its panels filled in and their buttons pressed,
+  then given up by Escape, a right click, another tool; every figure dragged, with Shift
+  and with Alt onto every kind of figure; deleted; copied and pasted; the grid's real
+  editors driven (text set and Enter raised on the box, sliders, check boxes); and random
+  sequences of all of these with undo and redo in between, then everything undone and
+  redone, each state compared with what it was when first reached. Seeded, so a failure
+  replays. The temporary code need not touch the repo: a partial `MainView` outside it,
+  compiled in with `-p:CustomBeforeMicrosoftCommonTargets=<a .targets file adding the
+  Compile items for the LiveGeometry project>` and started by a `[ModuleInitializer]`. What
+  the checks can't see: anything that depends on the view (a point on an angle's mark sat
+  elsewhere in the round trip's canvas) - which is how that one was found.
 - **Sliders** (`Figures/Values/Slider.cs`) are one `CompositeFigure` whose parts are library
   figures: a `FreePoint` anchor, a `TranslatedPoint` knob kept on the horizontal through it
   (free distance, direction a Number saying 0, clamped at the anchor), the `Segment` track, a
@@ -627,6 +772,25 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   from the long axis, so a point on the short axis is on the ellipse. The tool puts a free third
   click on a hidden perpendicular through the center (`EllipseCreator.FindPointPlacement`), so
   scaling the long axis scales the short one with it.
+- **Arcs, sectors and segments of circles and ellipses** (`Figures/Circles/ArcBase.cs`) get
+  their areas from the sweep t in the angle that parametrizes the ellipse (x = a cos t,
+  y = b sin t; the central angle on a circle): sector a·b·t/2, segment a·b·(t - sin t)/2;
+  the length of an elliptical arc is Simpson's rule over t. They said r²·angle/π (a quarter
+  disc of radius 2 had the area 4), and "not a number" for every ellipse - so did an Area
+  or Distance measurement on one, and a circle given such an arc for its radius. A point
+  put on an arc from beyond its ends goes to the nearer end, the short way round
+  (`GetNearestParameterFromPoint`). A point on a function graph exists wherever the
+  function has a value: its place is not hit-tested, since a graph is hit by its samples
+  and those end at the edges of the window. A point on a locus keeps the parameter of
+  the locus's sliding point (on that point's own figure) and is worked out exactly, by
+  putting the sliding point there and back as for a sample (`Locus.GetPointFromParameter`);
+  it kept a fraction of the drawn curve's length, and how much of a locus is drawn depends
+  on the view when the sliding point is on a line - the point slid along the curve with
+  every pan and zoom. Not hit-tested either. Numbers like these were checked in the same
+  temporary code as undo (see "Undo"): figures made by the `Factory` and their values
+  against known ones, and for every figure a point can sit on, a grid of points projected
+  onto it - each must land on the figure, stay put when projected again and be its
+  nearest place (by angle on an ellipse, by x on a graph).
 - **Vectors** are an invisible `Segment` plus an `Arrow` polygon sized in pixels, filled with the
   line color. `Vector.OnAddingToCanvas` sets the default `LineStyle` before the base call,
   otherwise the polygon default (pale fill) wins. A vector is an `ILine` (parallel,
@@ -657,12 +821,19 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `PerpendicularLineBase` (perpendicular line, segment bisector), deliberately not an angle
   figure. Which corner the mark sits in is *stored* (`Corner`), chosen once and never derived
   from the geometry again - deriving it makes the mark flip-flop on rounding; a click with the
-  Drag tool moves it to the next corner. It hides when an `AngleArc` sits at the same vertex,
+  Drag tool moves it to the next corner. Chosen when the line is first worked out, shown or
+  not, with its foot on the base line or beyond: chosen when the mark first showed, it
+  changed what the file saves when a hidden line (a square's helper) was shown or a point
+  dragged, and undo of that did not put it back. It hides when an `AngleArc` sits at the same vertex,
   because a measured angle of exactly 90° draws the same sign itself.
 - **An angle is two figures**, `AngleMeasurement` (the number) and `AngleArc` (the mark, 0-3
   arcs), paired by `AngleArc.FindCompanion`. Neither exists while a side has no length (a
   point dragged onto the vertex, `AngleArc.HasSides`): not existing hides a shape and shows it
-  again later (`ShapeBase.Exists`), where setting `Shape.Visibility` by hand is forever. `DGFReader.ReadMeasureAngle` creates the arc from
+  again later (`ShapeBase.Exists`), where setting `Shape.Visibility` by hand is forever. The
+  mark is an arc in code only: a sign of a fixed size in pixels, so no point goes on it and
+  nothing is intersected with it (`PointOnFigure.CanBeOnFigure`,
+  `IntersectionPoint.GetAlgorithms`) - a click near the vertex glued the new point to the
+  mark, and it moved with every zoom. Its grid says the angle in degrees, like the number. `DGFReader.ReadMeasureAngle` creates the arc from
   VB6's DrawStyle / AuxInfo(2) - not tested, there is no sample .dgf with an angle in the repo.
 - **Dashes**: `LineStyle.Dash` is put on in `LineStyle.OnApplied`, not through a setter, because
   `StrokeDashArray` counts in stroke widths and a selected figure is thicker. Anything that
@@ -916,6 +1087,21 @@ loader still does for files from before; none of it needs extending.
   The order matters: new lines and shapes take the first line or shape style. Labels leave
   out `DecimalsToShow` at the default. `LiveGeometry.Desktop.exe --rewrite <folder>` loads
   and saves every drawing of a folder, keeping each file's viewport.
+- **A figure is asked before it is worked out** while a file is read: whatever a `ReadXml`
+  works out (an intersection point does) sees figures that have been read but never
+  recalculated nor added. A Bézier curve had no points yet (`Bezier.CurveInfo` works them
+  out on demand) and a locus an empty list (`Math.GetPointOnPolylineFromParameter` answers
+  "no such point"): both threw for a point on them, and opening the drawing showed an
+  error, though the point came out right once the drawing was recalculated. A point on a
+  figure no longer works itself out there: it is where the file says until its figure
+  comes into the drawing. One that doesn't exist kept the (0, 0) it got from figures that
+  were nowhere yet, and wrote it into the next file; in a session it is where its
+  parameter says, also off the end of an arc that turned away (`PointOnFigure.Recalculate`),
+  so that the same drawing is saved with the same numbers.
+- **A show/hide box is read as a box** (`ShowHideControl.ReadXml`): each figure says in
+  the file whether it is hidden. Applying the box to its figures on load hid again one
+  that had been shown by hand since the box was last clicked. (The `.dgf` reader does
+  apply it: those files have only the buttons.)
 - **Saved files declare `encoding="utf-8"`**; files from older builds say `utf-16`, which our
   own loader tolerates but `XDocument.Load` does not.
 - **`TranslatedPoint`** without `DistanceSource`/`DirectionSource`/`FreeDistance`/`FreeDirection`
@@ -944,6 +1130,18 @@ loader still does for files from before; none of it needs extending.
   when it is added, and such a file did not load. When the point a polygon is built on is
   replaced (Fix length, Convert to point by coordinates), the polygon takes its parts
   along (`ReplaceDependency` moves their registration; `SubstituteWith` skips them).
+  Hit testing hands the parts to the tools, and whatever takes a figure from a click has
+  to cope with one that has no name and is not in the drawing's list
+  (`RootFigureList.FindTopLevel` gives the figure it belongs to): a tool must not take a
+  part of its own preview (`FigureCreator.LookForExpectedDependencyUnderCursor` leaves out
+  what is built on the point following the cursor - a double click with the Regular
+  polygon tool made a polygon on a vertex of its preview, and the saved file did not
+  load); the Transform tools take the side or the inside for the polygon
+  (`Transformer.FindTransformSource`: a copy of a side was a segment without a name);
+  `TiedValues.Tie` must not add it to the drawing as a figure; a caption calls it by its
+  polygon's name (`TiedValues.SourceName`); a translated point says such a source by its
+  place among the dependencies (`DistanceSourceIndex="1"`, where a named one is
+  `DistanceSource="AB"`).
 - **`AngleMeasurement`** says `Radians="true"` when it shows radians (it was not saved).
 - **Scenes** (`<Scene Left Top Right Bottom />` under `<Drawing>`, 1 or 2) are opt-in suggested
   views for drawings whose content has no useful bounds (endless ground: Castle, The Falling
@@ -1068,7 +1266,10 @@ buttons and checkboxes, 3D, custom tools.
   has no free point, so dragging it does nothing), and the only things that move are
   `PointOnFigure` sliders on hidden rays or segments plus a free point or two.
 - **The Spiral's rings** ("Drag to here") are placed for `Locus.StepCount` = 60 samples;
-  changing `StepCount` moves them.
+  changing `StepCount` moves them. The samples are taken by their count (61 points, 60
+  equal steps of the sliding point's parameter): added up, the step's rounding decided
+  whether the last sample but one was taken, and the curve had 60 or 61 points from one
+  move to the next.
 
 ## Deployment and caching
 
@@ -1200,6 +1401,8 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
   `text`, `eval <js>`.
   - The app takes several seconds to boot after `start`; the splash `div` stays in the DOM, so
     don't test for its absence - take a screenshot.
+  - `text` (CDP's `Input.insertText`) does not reach a text box of the app: type with `key`,
+    one character a call (`key -`, `key x`, `key ^`, `key 2`, `key Enter`).
   - Edge runs with `--guest`; without it Edge signs the throwaway profile into the Windows
     account and opens a sync dialog as an extra page target.
   - `--dark` (on `start`, a fresh one: `stop` first) runs Edge with `--force-dark-mode`, so

@@ -9,8 +9,12 @@ namespace DynamicGeometry
         public override void ReadXml(System.Xml.Linq.XElement element)
         {
             base.ReadXml(element);
+
+            // Where the file says, until the drawing is worked out (it is, as each figure
+            // comes in). Not worked out here: what the point is on may be built on figures
+            // that are nowhere yet, and a point that doesn't exist kept the (0, 0) it got
+            // from that - and wrote it into the next file.
             Parameter = element.ReadDouble("Parameter");
-            Recalculate();
         }
 
         public override void WriteXml(System.Xml.XmlWriter writer)
@@ -85,20 +89,39 @@ namespace DynamicGeometry
 
             var figure1 = LinearFigure;
             Point p = figure1.GetPointFromParameter(Parameter);
-            bool HitTestFailed = (UseHitTestingForExistence) ? LinearFigure.HitTest(p) == null : false;
-            if (!p.Exists() || HitTestFailed)
+            if (!p.Exists())
             {
                 Exists = false;
                 return;
             }
 
-            Exists = true;
+            // Where the parameter says, also when that place is off the figure (past the
+            // end of an arc that turned away) and the point doesn't exist: its coordinates
+            // go into the file, and left where the point last existed - or where a locus
+            // last sampled it - the same drawing was saved with other numbers each time.
             Coordinates = p;
+
+            // A graph is hit by its samples, and those end at the edges of the window: a
+            // point on it is wherever the function has a value. (Hit-tested, it stopped
+            // existing, with everything built on it, when the view was panned away from it.)
+            // A locus likewise: its point is worked out exactly, and may be a hair off the
+            // curve as drawn through its samples.
+            bool hitTestFailed = UseHitTestingForExistence
+                && !(figure1 is FunctionGraph)
+                && !(figure1 is Locus)
+                && LinearFigure.HitTest(p) == null;
+            Exists = !hitTestFailed;
         }
 
+        /// <summary>
+        /// Whether a click puts a new point on the figure. Not on the mark of an angle,
+        /// though it is an arc: the mark is a sign of a fixed size in pixels, not a figure
+        /// of the plane - a click near the vertex glued the point to it, and the point
+        /// moved with every zoom.
+        /// </summary>
         public static bool CanBeOnFigure(IFigure figure)
         {
-            return figure is ILinearFigure;
+            return figure is ILinearFigure && !(figure is AngleArc);
         }
 
         /// <summary>Detaches the point from its figure (<see cref="PointSnapping.Release"/>)</summary>

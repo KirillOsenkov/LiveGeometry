@@ -312,7 +312,8 @@ namespace DynamicGeometry
 
         public static void WriteAttributeDouble(this System.Xml.XmlWriter writer, string attributeName, double value)
         {
-            writer.WriteAttributeString(attributeName, value.ToStringInvariant());
+            // (plus zero: a negative zero would be written "-0")
+            writer.WriteAttributeString(attributeName, (value + 0.0).ToStringInvariant());
         }
 
         public static void WriteAttributeBool(this System.Xml.XmlWriter writer, string attributeName, bool value)

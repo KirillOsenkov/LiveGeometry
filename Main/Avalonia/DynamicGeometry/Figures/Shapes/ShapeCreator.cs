@@ -72,18 +72,17 @@ namespace DynamicGeometry
                         return;
                     }
 
-                    FreePoint first = (FreePoint)this.parent.FoundDependencies.FirstOrDefault(f => f is FreePoint);
-                    if (first == null || !(first.X == x && first.Y == y))
+                    // the coordinates of the first vertex again close the figure, when it has
+                    // vertices enough; a click on the first vertex does the same
+                    FreePoint first = this.parent.FoundDependencies.FirstOrDefault() as FreePoint;
+                    bool isFirstAgain = first != null && first != this.parent.TempPoint && first.X == x && first.Y == y;
+                    if (!isFirstAgain)
                     {
-                        this.parent.AddDependency(new Point(x, y));
+                        this.parent.AddTypedPoint(new Point(x, y));
                     }
                     else
                     {
-                        if (this.parent.TempPoint != null)
-                        {
-                            this.parent.FoundDependencies.Remove(this.parent.TempPoint);
-                        }
-                        this.parent.AddFiguresAndRestart();
+                        CloseFigure();
                     }
                 }
             }

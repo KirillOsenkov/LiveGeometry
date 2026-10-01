@@ -66,12 +66,8 @@ public class LengthPanel :
 
     void Figure_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
+        // (a regular polygon says that its side changed with the number of sides)
         PropertyChanged?.Invoke(this, e);
-        if (e.PropertyName == nameof(RegularPolygon.NumberOfSides))
-        {
-            // the side is the vertex's distance from the center scaled by the number of sides
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Length)));
-        }
     }
 
     /// <summary>

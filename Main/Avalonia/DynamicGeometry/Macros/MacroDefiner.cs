@@ -42,6 +42,14 @@ namespace DynamicGeometry
             [PropertyGridIcon(PropertyGridIcon.Check)]
             public void OK()
             {
+                // nothing to start from: nothing could be picked as a result either, and
+                // Create tool would add a tool that makes nothing
+                if (Parent.behavior.GetSelection().Count == 0)
+                {
+                    Parent.Drawing.RaiseStatusNotification("Click the figures the new tool starts from (two points, say), then press OK.");
+                    return;
+                }
+
                 Parent.Inputs = Parent.behavior.GetSelection();
                 Parent.behavior = new MacroResultSelector(Parent.Drawing, Parent.Inputs);
                 var dialog = new SelectResultsDialog(Parent);
@@ -70,6 +78,12 @@ namespace DynamicGeometry
             [PropertyGridIcon(PropertyGridIcon.Check)]
             public void CreateTool()
             {
+                if (Parent.behavior.GetSelection().Count == 0)
+                {
+                    Parent.Drawing.RaiseStatusNotification("Click the figures the new tool should make: those built on the ones picked before.");
+                    return;
+                }
+
                 Parent.Results = Parent.behavior.GetSelection();
                 Parent.CreateTool();
                 Parent.AbortAndSetDefaultTool();

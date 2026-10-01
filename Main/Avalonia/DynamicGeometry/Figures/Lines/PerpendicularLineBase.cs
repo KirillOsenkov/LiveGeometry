@@ -90,20 +90,29 @@ public abstract class PerpendicularLineBase : LineTwoPoints
     {
         base.UpdateVisual();
 
-        Point vertex;
-        PointPair baseLine;
-        Point pointAcross;
-        if (!Exists || !Visible || !TryGetRightAngle(out vertex, out baseLine, out pointAcross))
+        if (!Exists)
         {
             Mark.Hide();
             return;
         }
 
-        // once, when the line first shows up; from then on the corner only changes by a click
+        bool hasRightAngle = TryGetRightAngle(out Point vertex, out PointPair baseLine, out Point pointAcross);
+
+        // Once, when the line is first worked out; from then on the corner only changes by
+        // a click. Also for a hidden line (a square's helper) and one whose foot is beyond
+        // the end of its segment: chosen only when the mark first showed, the corner
+        // changed - and with it what a file saves - when the line was shown or a point was
+        // dragged, and undo of that could not put it back.
         if (!cornerChosen)
         {
             cornerChosen = true;
             Mark.Corner = RightAngleMark.GetRoomiestCorner(vertex, baseLine, pointAcross);
+        }
+
+        if (!Visible || !hasRightAngle)
+        {
+            Mark.Hide();
+            return;
         }
 
         Mark.Show(Drawing, vertex, baseLine);

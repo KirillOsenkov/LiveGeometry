@@ -6,8 +6,19 @@ using Avalonia.Media;
 
 namespace DynamicGeometry
 {
-    public class IntersectionPoint : PointBase, IPoint
+    public class IntersectionPoint : PointBase, IPoint, IConditionalProperties
     {
+        /// <summary>No "Free point" while a locus is drawn from the point</summary>
+        public bool CanEdit(string propertyName)
+        {
+            return propertyName != nameof(Release) || PointSnapping.CanRelease(this);
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
+        }
+
         public IntersectionPoint()
         {
         }
@@ -180,6 +191,12 @@ namespace DynamicGeometry
         /// </summary>
         public static Func<IFigure, IFigure, Point>[] GetAlgorithms(IFigure figure1, IFigure figure2)
         {
+            // the mark of an angle is a sign, not a figure to cross (PointOnFigure.CanBeOnFigure)
+            if (figure1 is AngleArc || figure2 is AngleArc)
+            {
+                return new Func<IFigure, IFigure, Point>[0];
+            }
+
             if (figure1 is ILine)
             {
                 if (figure2 is ILine)

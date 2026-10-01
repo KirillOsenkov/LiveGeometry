@@ -25,7 +25,7 @@ namespace DynamicGeometry
         /// </summary>
         protected override IFigure FindFigureInsteadOfPoint(Point unconstrainedCoordinates)
         {
-            var underMouse = Drawing.Figures.HitTest(unconstrainedCoordinates, f => f is ILengthProvider && !f.DependsOn(TempPoint));
+            var underMouse = Drawing.Figures.HitTest(unconstrainedCoordinates, f => f is ILengthProvider && Label.GivesNumber(f) && !f.DependsOn(TempPoint));
             if (underMouse != null && Drawing.Figures.HitTest<IPoint>(unconstrainedCoordinates) == null)
             {
                 return underMouse;

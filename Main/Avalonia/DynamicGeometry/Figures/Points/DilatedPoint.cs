@@ -114,8 +114,8 @@ namespace DynamicGeometry
             }
 
             return IsRatio
-                ? "Factor = " + Dependencies[2].Name + " / " + Dependencies[3].Name
-                : "Factor = " + FactorSource.Name;
+                ? "Factor = " + TiedValues.SourceName(Dependencies[2]) + " / " + TiedValues.SourceName(Dependencies[3])
+                : "Factor = " + TiedValues.SourceName(FactorSource);
         }
 
         protected override Shape CreateShape()
@@ -147,7 +147,8 @@ namespace DynamicGeometry
 
         public bool Accepts(string name, IFigure figure)
         {
-            return figure is ILengthProvider && !(figure is IPoint);
+            // (DynamicGeometry.Label: here Label is the point's own name label)
+            return figure is ILengthProvider && !(figure is IPoint) && DynamicGeometry.Label.GivesNumber(figure);
         }
 
         /// <summary>The points stretched from the same center by the same factor: the vertices of one dilated figure, tied and detached together</summary>

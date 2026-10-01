@@ -379,7 +379,12 @@ namespace DynamicGeometry
         public string Caption(string propertyName, string defaultCaption)
         {
             var source = propertyName == "Distance" ? DistanceSource : propertyName == "Direction" ? DirectionSource : null;
-            return source == null || source is Number ? defaultCaption : defaultCaption + " = " + source.Name;
+            if (source == null || source is Number)
+            {
+                return defaultCaption;
+            }
+
+            return defaultCaption + " = " + TiedValues.SourceName(source);
         }
 
         /// <summary>
@@ -500,7 +505,9 @@ namespace DynamicGeometry
         /// <summary>What the Translate tool takes for each: a vector for both, a length for the distance, an angle or a line as it points for the direction</summary>
         public bool Accepts(string name, IFigure figure)
         {
-            if (figure is IPoint)
+            // (nor a label that says no number: a caption is no length and no angle;
+            // DynamicGeometry.Label, since here Label is the point's own name label)
+            if (figure is IPoint || !DynamicGeometry.Label.GivesNumber(figure))
             {
                 return false;
             }
@@ -709,12 +716,14 @@ namespace DynamicGeometry
             var directionSource = element.ReadString("DirectionSource");
             bool newFormat = distanceSource != null
                 || directionSource != null
+                || element.Attribute("DistanceSourceIndex") != null
+                || element.Attribute("DirectionSourceIndex") != null
                 || element.Attribute("FreeDistance") != null
                 || element.Attribute("FreeDirection") != null;
             if (newFormat)
             {
-                distanceQuantity.SourceIndex = IndexOfDependency(distanceSource);
-                directionQuantity.SourceIndex = IndexOfDependency(directionSource);
+                distanceQuantity.SourceIndex = IndexOfSource(element, "Distance", distanceSource);
+                directionQuantity.SourceIndex = IndexOfSource(element, "Direction", directionSource);
                 distanceQuantity.Parameter = element.ReadDouble("Distance");
                 directionQuantity.Parameter = element.ReadDouble("Direction").ToRadians();
             }
@@ -737,6 +746,36 @@ namespace DynamicGeometry
             }
 
             Recalculate();
+        }
+
+        // A source is named, except a part of a figure (a side of a regular polygon), which
+        // has no name: that one is said by its place among the dependencies
+        // (DistanceSourceIndex="1"). Written by its empty name, it was read as no source
+        // at all, and the point came back free.
+        int IndexOfSource(XElement element, string quantity, string name)
+        {
+            var place = element.Attribute(quantity + "SourceIndex");
+            if (place != null)
+            {
+                int index = (int)element.ReadDouble(quantity + "SourceIndex");
+                return index >= 1 && index < Dependencies.Count ? index : -1;
+            }
+
+            return IndexOfDependency(name);
+        }
+
+        void WriteSource(XmlWriter writer, string quantity, IFigure source)
+        {
+            if (string.IsNullOrEmpty(source.Name))
+            {
+                writer.WriteAttributeString(
+                    quantity + "SourceIndex",
+                    Dependencies.IndexOf(source).ToString(System.Globalization.CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                writer.WriteAttributeString(quantity + "Source", source.Name);
+            }
         }
 
         int IndexOfDependency(string name)
@@ -786,7 +825,7 @@ namespace DynamicGeometry
             var distanceSource = DistanceSource;
             if (distanceSource != null)
             {
-                writer.WriteAttributeString("DistanceSource", distanceSource.Name);
+                WriteSource(writer, "Distance", distanceSource);
             }
             else
             {
@@ -797,7 +836,7 @@ namespace DynamicGeometry
             var directionSource = DirectionSource;
             if (directionSource != null)
             {
-                writer.WriteAttributeString("DirectionSource", directionSource.Name);
+                WriteSource(writer, "Direction", directionSource);
             }
             else
             {

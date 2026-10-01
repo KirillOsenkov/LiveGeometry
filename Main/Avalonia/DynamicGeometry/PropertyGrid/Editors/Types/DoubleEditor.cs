@@ -14,7 +14,7 @@
         public override void UpdateEditor()
         {
             var value = GetValue();
-            Show(value is double number ? System.Math.Round(number, Settings.DisplayDecimals).ToStringInvariant() : (value ?? "").ToString());
+            Show(value is double number ? Math.Round(number, Settings.DisplayDecimals).ToStringInvariant() : (value ?? "").ToString());
             TextBox.IsEnabled = Value.CanSetValue;
         }
 
@@ -23,7 +23,8 @@
             var result = new ValidationResult();
             double doubleResult;
             string source = value.ToString();
-            if (!string.IsNullOrEmpty(source) && double.TryParse(source, out doubleResult))
+            // a number there is: "Infinity" and 1e999 parse too, and a figure at infinity is nowhere
+            if (!string.IsNullOrEmpty(source) && double.TryParse(source, out doubleResult) && doubleResult.IsValidValue())
             {
                 result.IsValid = true;
                 result.Value = doubleResult;

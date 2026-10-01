@@ -89,9 +89,20 @@ namespace DynamicGeometry
     // A segment could be added to this figure to provide a functioning chord. (SquareCreator is a model to follow.)
     // Implementing this as a composite figure is probably not a good idea. Intersections, pointOnFigure, etc would be ambiguous.
     // Unlike an arc, a circle or ellipse segment has a defined area.
-    public partial class CircleSegment : CircleArcBase, IShapeWithInterior
+    public partial class CircleSegment : CircleArcBase, IShapeWithInterior, IConditionalProperties
     {
-        
+        /// <summary>No "Convert to arc" while something measures the area: a bare arc has none</summary>
+        public bool CanEdit(string propertyName)
+        {
+            return propertyName != "ConvertToArc" || !this.IsUsedForArea();
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
+        }
+
+
         protected override Path CreateShape()
         {
             var result = base.CreateShape();
@@ -99,11 +110,12 @@ namespace DynamicGeometry
             return result;
         }
 
+        // (it said r² * angle / π: a half disc came out as r², not π r² / 2)
         public double Area
         {
             get
             {
-                return Radius.Sqr() * Angle / Math.PI;
+                return SegmentArea;
             }
         }
 
@@ -129,8 +141,19 @@ namespace DynamicGeometry
 
     }
 
-    public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior
+    public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IConditionalProperties
     {
+        /// <summary>No "Convert to arc" while something measures the area: a bare arc has none</summary>
+        public bool CanEdit(string propertyName)
+        {
+            return propertyName != "ConvertToEllipseArc" || !this.IsUsedForArea();
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
+        }
+
         protected override Path CreateShape()
         {
             var result = base.CreateShape();
@@ -148,57 +171,12 @@ namespace DynamicGeometry
             get { return 4; }
         }
 
+        // (it was "not a number": the Area tool on an elliptical segment said NaN)
         public double Area
         {
             get
             {
-                // Area of ellipse sector. Having trouble with integration.
-                return double.NaN;
-
-                //double t1 = StartAngle;
-                //double t2 = EndAngle;
-                //double a = SemiMajor;
-                //double b = SemiMinor;
-                //Point C = Center;
-                //double angle = Angle;
-                //var canonicalEndPoint = Math.RotatePoint(EndLocation, C, -angle).Minus(C);
-                //var canonicalBeginPoint = Math.RotatePoint(BeginLocation, C, -angle).Minus(C);
-                //t1 = M.Acos(canonicalBeginPoint.X / SemiMajor);
-                //if (StartAngle > Math.PI) t1 += Math.PI;
-                //t2 = M.Acos(canonicalEndPoint.X / SemiMajor);
-                //if (EndAngle > Math.PI) t2 += Math.PI;
-                //double sectorArea = 0;
-                ////sectorArea = .5 * SemiMajor * SemiMinor * (t2 - t1);
-                //if (Clockwise)
-                //{
-                //    var temp = t1;
-                //    t1 = t2;
-                //    t2 = temp;
-                //}
-                //if (t2 > t1)
-                //{
-                //    sectorArea = (t2 - t1) * (a * a + b * b) / 4 + (M.Sin(t2) * M.Cos(t2) - M.Sin(t1) * M.Cos(t1)) * (a * a - b * b) / 4;
-                //}
-                //else
-                //{
-                //    // Can't integrate across a disconinuity. Integrate in parts.
-                //    double dp = Math.DOUBLEPI;
-                //    double area1 = (dp - t1) * (a * a + b * b) / 4 + (0 - M.Sin(t1) * M.Cos(t1)) * (a * a - b * b) / 4;
-                //    double area2 = (t2) * (a * a + b * b) / 4 + (M.Sin(t2) * M.Cos(t2) - 0) * (a * a - b * b) / 4;
-                //    sectorArea = area1 + area2;
-                //}
-
-                //// Area of Triangle
-                //Point B = BeginLocation;
-                //Point E = EndLocation;
-                //double triangleArea = M.Abs((C.X * B.Y - B.X * C.Y) / 2 + (B.X * E.Y - E.X * B.Y) / 2 + (E.X * C.Y - C.X * E.Y) / 2);
-
-                //// The triangle area should be added to the sector area for large arcs.
-                //if (M.Sin(ArcAngle) < 0)
-                //{
-                //    triangleArea = -triangleArea;
-                //}
-                //return M.Abs(sectorArea) - triangleArea;
+                return SegmentArea;
             }
         }
 
@@ -224,8 +202,19 @@ namespace DynamicGeometry
 
     }
 
-    public partial class CircleSector : CircleArcBase, IShapeWithInterior
+    public partial class CircleSector : CircleArcBase, IShapeWithInterior, IConditionalProperties
     {
+        /// <summary>No "Convert to arc" while something measures the area: a bare arc has none</summary>
+        public bool CanEdit(string propertyName)
+        {
+            return propertyName != "ConvertToArc" || !this.IsUsedForArea();
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
+        }
+
         private PathFigure PolygonPart;
         private LineSegment Side1;
         private LineSegment Side2;
@@ -258,13 +247,12 @@ namespace DynamicGeometry
             Side2.Point = ToPhysical(EndLocation);
         }
 
+        // (it said r² * angle / π plus the triangle: a quarter disc came out as r², not π r² / 4)
         public double Area
         {
             get
             {
-                var segmentArea = Radius.Sqr() * Angle / Math.PI;
-                var polygonArea = Math.Area(BeginLocation, Center, EndLocation);
-                return segmentArea + polygonArea;
+                return SectorArea;
             }
         }
 
@@ -290,8 +278,19 @@ namespace DynamicGeometry
 
     }
 
-    public partial class EllipseSector : EllipseArcBase, IShapeWithInterior
+    public partial class EllipseSector : EllipseArcBase, IShapeWithInterior, IConditionalProperties
     {
+        /// <summary>No "Convert to arc" while something measures the area: a bare arc has none</summary>
+        public bool CanEdit(string propertyName)
+        {
+            return propertyName != "ConvertToEllipseArc" || !this.IsUsedForArea();
+        }
+
+        public string Caption(string propertyName, string defaultCaption)
+        {
+            return defaultCaption;
+        }
+
         private PathFigure PolygonPart;
         private LineSegment Side1;
         private LineSegment Side2;
@@ -339,8 +338,7 @@ namespace DynamicGeometry
         {
             get
             {
-                // Area of ellipse sector. Having trouble with integration.
-                return double.NaN;
+                return SectorArea;
             }
         }
 

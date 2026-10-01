@@ -40,7 +40,7 @@ public class IntersectionCreator : FigureCreator
 
             if (FoundDependencies.Count == 0)
             {
-                return figure is ILine || figure is IEllipse;
+                return (figure is ILine || figure is IEllipse) && !(figure is AngleArc);
             }
 
             return figure != FoundDependencies[0] && FindNewIntersection(figure, coordinates) != null;

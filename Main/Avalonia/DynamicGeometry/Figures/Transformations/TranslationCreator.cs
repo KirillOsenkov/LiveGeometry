@@ -295,10 +295,10 @@ namespace DynamicGeometry
                 case Step.Source:
                     return Transformer.CanBeTransformSource(figure);
                 case Step.Distance:
-                    return figure is Vector || figure is ILengthProvider;
+                    return figure is Vector || figure is ILengthProvider && Label.GivesNumber(figure);
                 case Step.Direction:
                     // a line points from its first point to its second: that is its angle
-                    return figure is IAngleProvider || figure is ILine || figure is Vector;
+                    return figure is IAngleProvider && Label.GivesNumber(figure) || figure is ILine || figure is Vector;
                 default:
                     return false;
             }
@@ -307,6 +307,12 @@ namespace DynamicGeometry
         protected override IFigure FindFigureToPick(Point unconstrainedCoordinates)
         {
             var figure = Drawing.Figures.HitTest(unconstrainedCoordinates);
+            if (step == Step.Source)
+            {
+                // the side or the inside of a regular polygon stands for the polygon
+                return Transformer.FindTransformSource(figure);
+            }
+
             return figure != null && Accepts(figure) ? figure : null;
         }
 

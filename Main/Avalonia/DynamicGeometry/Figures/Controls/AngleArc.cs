@@ -229,13 +229,17 @@ namespace DynamicGeometry
             }
         }
         
+        /// <summary>
+        /// The angle the mark is of, in degrees, like the number next to it (the grid said
+        /// "Measure 1.11", radians, beside a label saying 63.43°)
+        /// </summary>
         [PropertyGridVisible]
+        [PropertyGridName("Angle (degrees)")]
         public virtual double Measure
         {
-            get 
+            get
             {
-                return Angle;
-                //return Math.OAngle(BeginLocation, Center, EndLocation); 
+                return Angle.ToDegrees();
             }
         }
 

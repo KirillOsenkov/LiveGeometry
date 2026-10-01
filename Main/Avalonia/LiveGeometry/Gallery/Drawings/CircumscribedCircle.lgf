@@ -15,65 +15,57 @@
     <LineStyle Name="10" Color="#FFB1B1B1" />
   </Styles>
   <Figures>
-    <FreePoint Name="FreePoint1" Style="1" X="-7.0553385417" Y="-4.8280526621" />
-    <FreePoint Name="FreePoint7" Style="1" X="3.9748987268" Y="-4.8280526621" />
-    <FreePoint Name="FreePoint4" Style="1" X="0.5135271991" Y="9.3404947916" />
-    <MidPoint Name="MidPoint11" Style="2">
-      <Dependency Name="FreePoint4" />
-      <Dependency Name="FreePoint7" />
+    <FreePoint Name="A" Style="1" X="-7.0553385417" Y="-4.8280526621" />
+    <FreePoint Name="B" Style="1" X="3.9748987268" Y="-4.8280526621" />
+    <FreePoint Name="C" Style="1" X="0.5135271991" Y="9.3404947916" />
+    <MidPoint Name="D" Style="2">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
     </MidPoint>
-    <Segment Name="FreePoint4FreePoint7" Style="9">
-      <Dependency Name="FreePoint4" />
-      <Dependency Name="FreePoint7" />
+    <Segment Name="BC" Style="9">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
     </Segment>
     <PerpendicularLine Name="PerpendicularLine13" Style="10" RightAngleCorner="2">
-      <Dependency Name="FreePoint4FreePoint7" />
-      <Dependency Name="MidPoint11" />
+      <Dependency Name="BC" />
+      <Dependency Name="D" />
     </PerpendicularLine>
-    <MidPoint Name="MidPoint10" Style="2">
-      <Dependency Name="FreePoint7" />
-      <Dependency Name="FreePoint1" />
+    <MidPoint Name="E" Style="2">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
     </MidPoint>
-    <Segment Name="FreePoint1FreePoint7" Style="9">
-      <Dependency Name="FreePoint7" />
-      <Dependency Name="FreePoint1" />
+    <Segment Name="AB" Style="9">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
     </Segment>
     <PerpendicularLine Name="PerpendicularLine15" Style="10" RightAngleCorner="3">
-      <Dependency Name="FreePoint1FreePoint7" />
-      <Dependency Name="MidPoint10" />
+      <Dependency Name="AB" />
+      <Dependency Name="E" />
     </PerpendicularLine>
-    <IntersectionPoint Name="IntersectionPoint16" Style="3" Algorithm="IntersectLineAndLine">
+    <IntersectionPoint Name="O" Style="3" Algorithm="IntersectLineAndLine">
       <Dependency Name="PerpendicularLine15" />
       <Dependency Name="PerpendicularLine13" />
     </IntersectionPoint>
     <Circle Name="Circle18" Style="8">
-      <Dependency Name="IntersectionPoint16" />
-      <Dependency Name="FreePoint7" />
+      <Dependency Name="O" />
+      <Dependency Name="B" />
     </Circle>
-    <Segment Name="FreePoint1FreePoint4" Style="9">
-      <Dependency Name="FreePoint1" />
-      <Dependency Name="FreePoint4" />
+    <Segment Name="AC" Style="9">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
     </Segment>
-    <Polygon Name="FreePoint1FreePoint4FreePoint7" Style="5">
-      <Dependency Name="FreePoint1" />
-      <Dependency Name="FreePoint4" />
-      <Dependency Name="FreePoint7" />
+    <Polygon Name="ABC" Style="5">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
     </Polygon>
-    <Segment Name="FreePoint4FreePoint72" Style="9">
-      <Dependency Name="FreePoint4" />
-      <Dependency Name="FreePoint7" />
-    </Segment>
-    <Segment Name="FreePoint1FreePoint72" Style="9">
-      <Dependency Name="FreePoint7" />
-      <Dependency Name="FreePoint1" />
-    </Segment>
-    <MidPoint Name="A" Style="2">
-      <Dependency Name="FreePoint4" />
-      <Dependency Name="FreePoint1" />
+    <MidPoint Name="F" Style="2">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
     </MidPoint>
     <PerpendicularLine Name="PerpendicularLine48" Style="10" RightAngleCorner="3">
-      <Dependency Name="FreePoint1FreePoint4" />
-      <Dependency Name="A" />
+      <Dependency Name="AC" />
+      <Dependency Name="F" />
     </PerpendicularLine>
     <Label Name="Title" Style="GalleryTitle" Text="Circumscribed Circle" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
     <Label Name="Description" Style="GalleryText" Text="Every triangle has exactly one circle through all three vertices: its circumcircle.\n\nThe gray points are the midpoints of the sides, and the gray lines are the perpendicular bisectors. They always meet in one point, the circumcenter — the center of the circle.\n\nDrag the yellow vertices. When does the center leave the triangle?" Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />

@@ -112,10 +112,21 @@ namespace DynamicGeometry
                 if (!found.Locked)
                 {
                     // a Number has no place to move; the drag goes to the points
-                    roots = DependencyAlgorithms.FindRoots(f => f.Dependencies, found)
+                    var allRoots = DependencyAlgorithms.FindRoots(f => f.Dependencies, found)
                         .Where(root => !(root is INumber))
                         .ToArray();
-                    if (roots.All(root => root is IMovable))
+
+                    // A point by coordinates stays where its X and Y say: the drag goes to
+                    // the other roots (a segment from such a point to a free one turns
+                    // about it), and a figure built on such points alone doesn't move at
+                    // all - nor does the view. (It used to "move" them: nothing happened,
+                    // but each drag left an undo step that undid nothing.)
+                    roots = allRoots.Where(root => !(root is PointByCoordinates)).ToArray();
+                    if (roots.IsEmpty() && !allRoots.IsEmpty())
+                    {
+                        isLocked = true;
+                    }
+                    else if (roots.All(root => root is IMovable))
                     {
                         if (roots.All(root => ((IMovable)root).AllowMove()))
                         {
@@ -254,12 +265,19 @@ namespace DynamicGeometry
 
         public override void MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (snap != null && IsAltPressed() && found is FreePoint dragged)
+            try
             {
-                PointSnapping.Snap(dragged, snap);
+                if (snap != null && IsAltPressed() && found is FreePoint dragged)
+                {
+                    PointSnapping.Snap(dragged, snap);
+                }
             }
-
-            EndDrag();
+            finally
+            {
+                // also when the drop threw: left open, the drag's transaction would take in
+                // everything done from then on, and nothing of it could be undone
+                EndDrag();
+            }
 
             // a press that didn't become a drag (moving is null when the press was elsewhere:
             // on the ribbon, in another tool)
@@ -303,7 +321,12 @@ namespace DynamicGeometry
         {
             var previous = snap;
             snap = null;
-            if (!IsAltPressed() || !(found is PointBase point) || found.Locked || dragTransaction == null)
+            // (a point a locus is drawn from stays what it is: Alt does nothing to it)
+            if (!IsAltPressed()
+                || !(found is PointBase point)
+                || found.Locked
+                || dragTransaction == null
+                || PointSnapping.IsHeldByLocus(point))
             {
                 return null;
             }

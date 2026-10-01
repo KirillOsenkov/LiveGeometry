@@ -33,6 +33,23 @@
             }
         }
 
+        [PropertyGridVisible(false)]
+        public System.Collections.Generic.IReadOnlyList<string> ExpressionTexts
+        {
+            get
+            {
+                return System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(Expressions, expression => expression.Text));
+            }
+            set
+            {
+                int index = 0;
+                foreach (var expression in Expressions)
+                {
+                    expression.Text = value[index++];
+                }
+            }
+        }
+
         protected override string Kind
         {
             get

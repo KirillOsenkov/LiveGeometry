@@ -62,18 +62,22 @@ namespace DynamicGeometry
             return ResolveConstant(identifier) ?? ResolveParameter(identifier);
         }
 
-        public MethodInfo ResolveMethod(string functionName)
+        /// <summary>
+        /// The function called by this name with this many arguments: one of System.Math
+        /// that takes that many numbers (sin, sqrt, max, atan2) if there is one, else
+        /// whatever goes by the name (ours take points: dist, ang, area)
+        /// </summary>
+        public MethodInfo ResolveMethod(string functionName, int argumentCount)
         {
             foreach (var methodInfo in typeof(System.Math).GetMethods())
             {
-                var parameters = methodInfo.GetParameters();
                 if (methodInfo.Name.Equals(functionName, StringComparison.OrdinalIgnoreCase)
-                    && parameters.Length == 1
-                    && parameters[0].ParameterType == typeof(double))
+                    && TakesNumbers(methodInfo, argumentCount))
                 {
                     return methodInfo;
                 }
             }
+
             foreach (var methodInfo in methods)
             {
                 if (methodInfo.Name.Equals(functionName, StringComparison.OrdinalIgnoreCase))
@@ -81,7 +85,17 @@ namespace DynamicGeometry
                     return methodInfo;
                 }
             }
+
             return null;
+        }
+
+        /// <summary>A function of numbers, called with as many as it takes: its arguments are expressions, not the names of points</summary>
+        public static bool TakesNumbers(MethodInfo method, int argumentCount)
+        {
+            var parameters = method.GetParameters();
+            return parameters.Length == argumentCount
+                && argumentCount > 0
+                && parameters.All(parameter => parameter.ParameterType == typeof(double));
         }
 
         /// <summary>

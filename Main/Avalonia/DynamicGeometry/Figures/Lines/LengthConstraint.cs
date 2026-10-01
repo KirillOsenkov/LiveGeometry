@@ -66,7 +66,9 @@ public static class LengthConstraint
     /// </summary>
     public static bool CanStretch(IFigure end, IFigure pivot)
     {
-        if (end.Locked || pivot.DependsOn(end))
+        // (nor a point a locus is drawn from: fixing the length would put another kind of
+        // point in its place, and the locus would trace nothing - PointSnapping.IsHeldByLocus)
+        if (end.Locked || pivot.DependsOn(end) || PointSnapping.IsHeldByLocus(end))
         {
             return false;
         }
@@ -217,7 +219,12 @@ public static class LengthConstraint
     public static void Free(TranslatedPoint fixedEnd)
     {
         var drawing = fixedEnd.Drawing;
-        if (fixedEnd.IsDirectionFree)
+        if (PointSnapping.IsHeldByLocus(fixedEnd))
+        {
+            // a point a locus is drawn from stays the point it is: only its distance is let go
+            drawing.ActionManager.SetProperty(fixedEnd, "FreeDistance", true);
+        }
+        else if (fixedEnd.IsDirectionFree)
         {
             Actions.ReplacePoint(fixedEnd, Factory.CreateFreePoint(drawing, fixedEnd.Coordinates));
         }

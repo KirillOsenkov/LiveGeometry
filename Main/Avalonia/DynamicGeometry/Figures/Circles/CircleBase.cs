@@ -153,6 +153,16 @@ namespace DynamicGeometry
         {
             var center = ToPhysical(Center);
             var diameter = ToPhysical(Radius * 2) + shape.StrokeThickness;
+
+            // A circle that doesn't exist - its center is nowhere - may have any radius, an
+            // infinite one too, and Avalonia throws on such a width: in the middle of a drag
+            // (an ellipse flattened to nothing, the circle of its curvature), which then
+            // could not be undone. It is hidden anyway.
+            if (!center.Exists() || !diameter.IsValidValue())
+            {
+                return;
+            }
+
             if (shape.Width != diameter)
             {
                 shape.Width = diameter;

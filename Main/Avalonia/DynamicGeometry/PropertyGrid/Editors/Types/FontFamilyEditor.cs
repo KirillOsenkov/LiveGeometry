@@ -54,14 +54,8 @@ namespace DynamicGeometry
 
         public override void UpdateEditor()
         {
-            var value = GetValue();
-            foreach (var item in Items)
-            {
-                if (item.Equals(value.ToString()))
-                {
-                    Selector.SelectedItem = item;
-                }
-            }
+            var value = GetValue()?.ToString();
+            ShowSelected(item => item.Equals(value));
         }
     }
 }

@@ -35,11 +35,16 @@ public class UpDownEditor : LabeledValueEditor, IValueEditor
 
         // a value typed or stepped to, then another after Enter or after coming back to the
         // box: two undo steps
-        TextBox.LostFocus += (s, e) => EndEditRun();
+        TextBox.LostFocus += (s, e) =>
+        {
+            CommitText();
+            EndEditRun();
+        };
         TextBox.KeyDown += (s, e) =>
         {
             if (e.Key == Avalonia.Input.Key.Enter)
             {
+                CommitText();
                 EndEditRun();
             }
         };
@@ -65,7 +70,8 @@ public class UpDownEditor : LabeledValueEditor, IValueEditor
 
     void StepValue(bool up)
     {
-        if (Value == null || !Value.CanSetValue)
+        // (no value: several figures that differ - there is nothing to step from)
+        if (Value == null || !Value.CanSetValue || GetValue() == null)
         {
             return;
         }
@@ -86,21 +92,90 @@ public class UpDownEditor : LabeledValueEditor, IValueEditor
             return;
         }
 
-        if (double.TryParse(TextBox.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out var result))
+        // The user's from here on: the text the box showed, typed again, is theirs too.
+        // (The box said 12; Backspace made the length 1; the 2 typed back was taken for
+        // the editor's own text and dropped - a segment 1 long under a box that said 12.)
+        shownText = null;
+        Apply(TextBox.Text);
+    }
+
+    // The typed text that has gone into the property already: it is not set again when the
+    // box is left. The value read back need not equal it (a length is worked out from the
+    // points: 5 comes back as 4.999999999999999), and a second set would be an undo step
+    // of its own.
+    string appliedText;
+
+    bool Apply(string text)
+    {
+        if (!TryParse(text, out var result))
         {
+            return false;
+        }
+
+        if (text != appliedText)
+        {
+            appliedText = text;
             SetValue(result);
+        }
+
+        return true;
+    }
+
+    // a number there is: "Infinity" and 1e999 parse too
+    static bool TryParse(string text, out double result)
+    {
+        return double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out result) && result.IsValidValue();
+    }
+
+    /// <summary>
+    /// The user is done with the box (Enter, leaving it): text that is no number gives way
+    /// to the value, which is what the box then says (it used to keep saying "abc")
+    /// </summary>
+    void CommitText()
+    {
+        if (Value == null || !Value.CanSetValue || TextBox.Text == shownText)
+        {
+            return;
+        }
+
+        // (a number is set here too: its TextChanged may still be on its way)
+        if (!Apply(TextBox.Text))
+        {
+            ShowCurrentValue();
         }
     }
 
     void ShowValue(double value)
     {
-        shownText = System.Math.Round(value, Settings.DisplayDecimals).ToStringInvariant();
+        ShowText(Math.Round(value, Settings.DisplayDecimals).ToStringInvariant());
+    }
+
+    void ShowText(string text)
+    {
+        shownText = text;
+        appliedText = null;
         TextBox.Text = shownText;
+    }
+
+    /// <summary>
+    /// The value, or an empty box when there is none: several figures whose values
+    /// differ (it said 0, which none of them had)
+    /// </summary>
+    void ShowCurrentValue()
+    {
+        if (GetValue() is double value)
+        {
+            ShowValue(value);
+        }
+        else
+        {
+            ShowText("");
+        }
     }
 
     public override void UpdateEditor()
     {
-        ShowValue(GetValue<double>());
+        ShowCurrentValue();
         bool canSet = Value.CanSetValue;
         TextBox.IsEnabled = canSet;
 

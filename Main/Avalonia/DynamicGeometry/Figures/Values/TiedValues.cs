@@ -42,6 +42,20 @@ public static class TiedValues
         return source != null && !(source is Number);
     }
 
+    /// <summary>
+    /// What a caption calls the figure a value comes from: its name, or for a part, which
+    /// has none (a side of a regular polygon), the name of the figure it is a part of
+    /// </summary>
+    public static string SourceName(IFigure source)
+    {
+        if (!string.IsNullOrEmpty(source.Name))
+        {
+            return source.Name;
+        }
+
+        return source.Drawing?.Figures.FindTopLevel(source)?.Name ?? "";
+    }
+
     /// <summary>The name of the "Type the ..." button of a value: UntieAngle</summary>
     public static string UntieVerb(string name)
     {
@@ -77,7 +91,8 @@ public static class TiedValues
         var drawing = owners[0].Drawing;
         using (Transaction.Create(drawing.ActionManager, false))
         {
-            if (!drawing.Figures.Contains(source))
+            // (a side of a regular polygon is in the drawing as a part of the polygon)
+            if (drawing.Figures.FindTopLevel(source) == null)
             {
                 Actions.Add(drawing, source);
             }

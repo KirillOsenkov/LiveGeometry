@@ -84,14 +84,11 @@ namespace DynamicGeometry
 
         public override void UpdateEditor()
         {
+            // no value (several figures that differ): none of the buttons
             object value = Value.GetValue<object>();
             foreach (RadioButton item in stackPanel.Children)
             {
-                if (value.Equals(item.Tag))
-                {
-                    item.IsChecked = true;
-                    return;
-                }
+                item.IsChecked = value != null && value.Equals(item.Tag);
             }
         }
 

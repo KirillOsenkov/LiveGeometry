@@ -45,10 +45,20 @@ namespace DynamicGeometry
             }
             else
             {
-                var figures = ReadFigures(figuresNode, drawing);
-                foreach (var figure in figures)
+                // under the names the file gives them until all are in: a label's expression
+                // is compiled by those names as the label comes in
+                drawing.KeepsNamesAsRead = true;
+                try
                 {
-                    Actions.Add(drawing, figure);
+                    var figures = ReadFigures(figuresNode, drawing);
+                    foreach (var figure in figures)
+                    {
+                        Actions.Add(drawing, figure);
+                    }
+                }
+                finally
+                {
+                    drawing.KeepsNamesAsRead = false;
                 }
             }
             ReadViewport(drawing, element);
@@ -78,10 +88,12 @@ namespace DynamicGeometry
             }
 
             // Every figure used to be numbered by its type (Segment1); one nobody renamed takes
-            // the name of its points now (2026-09-27)
+            // the name of its points now (2026-09-27), and of two named after the same points
+            // the first in the file is AB, the next AB2
             foreach (var figure in drawing.Figures.ToArray())
             {
                 (figure as FigureBase)?.UpdateDefaultName();
+                FigureBase.SettleDefaultNames(drawing, figure);
             }
 
             // A typed distance or direction of a translated point used to be an attribute of
@@ -149,10 +161,7 @@ namespace DynamicGeometry
             // on. (It used to default to the global setting, which the last drawing shown
             // had set - so a gallery tile loaded after a graph got a grid.)
             drawing.CoordinateGrid.Visible = viewportNode.ReadBool("Grid", false);
-            if (drawing.CoordinateGrid.Visible)
-            {
-                drawing.CoordinateGrid.ShowAxes = viewportNode.ReadBool("Axes", true);
-            }
+            drawing.CoordinateGrid.ShowAxes = viewportNode.ReadBool("Axes", true);
             drawing.CoordinateSystem.GridStep = viewportNode.ReadDouble("GridStep");
             drawing.CoordinateSystem.SetViewport(minX, maxX, minY, maxY);
             string styleName = viewportNode.ReadString("Style");    // Don't know who uses this.  I don't. - David

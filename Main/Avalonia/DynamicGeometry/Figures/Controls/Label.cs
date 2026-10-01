@@ -18,13 +18,45 @@ namespace DynamicGeometry
             get
             {
                 double result = 0;
-                double.TryParse(
+                if (!double.TryParse(
                         ProcessedText,
                         NumberStyles.Float,
                         CultureInfo.InvariantCulture,
-                        out result);
+                        out result)
+                    && ProcessedText == UndefinedText)
+                {
+                    return double.NaN;
+                }
+
                 return result;
             }
+        }
+
+        /// <summary>
+        /// Whether the label says a number - "[AB * 2]", the value of an expression - and
+        /// so can stand for a length or an angle where a tool asks for one. Every label
+        /// has the interfaces, but a caption has no number to give: taken for 0, a click on
+        /// it tied a circle's radius or a rotation's angle to a piece of text.
+        /// </summary>
+        public bool IsNumber
+        {
+            get
+            {
+                return double.TryParse(
+                    ProcessedText,
+                    NumberStyles.Float,
+                    CultureInfo.InvariantCulture,
+                    out _);
+            }
+        }
+
+        /// <summary>
+        /// For a tool that takes a figure with a length or an angle: any such figure but a
+        /// label that says no number (<see cref="IsNumber"/>)
+        /// </summary>
+        public static bool GivesNumber(IFigure figure)
+        {
+            return !(figure is Label label) || label.IsNumber;
         }
 
         public double Angle
@@ -49,6 +81,7 @@ namespace DynamicGeometry
         /// </summary>
         [PropertyGridVisible]
         [PropertyGridName("Pinned to")]
+        [PropertyGridCustomValueProvider(typeof(PinValue))]
         public LabelPin Pin
         {
             get
@@ -74,6 +107,52 @@ namespace DynamicGeometry
                 if (HasCanvas)
                 {
                     UpdateVisual();
+                }
+            }
+        }
+
+        /// <summary>
+        /// The pin as the property grid sets it: undo puts the label back where it was - in
+        /// the plane if it was not pinned, at its offset from the corner if it was. (Only
+        /// the pin went back. A label pinned, the view zoomed, the pin undone: it stayed
+        /// where the screen had carried it, somewhere else in the plane than before.)
+        /// </summary>
+        public class PinValue : PropertyValue, IRestorableValue
+        {
+            class SavedPin
+            {
+                public LabelPin Pin;
+                public Point Offset;
+                public Point Coordinates;
+            }
+
+            public object CaptureState()
+            {
+                var label = (Label)Parent;
+                return new SavedPin()
+                {
+                    Pin = label.Pin,
+                    Offset = label.PinOffset,
+                    Coordinates = label.Coordinates
+                };
+            }
+
+            public void RestoreState(object state)
+            {
+                var label = (Label)Parent;
+                var saved = (SavedPin)state;
+                label.Pin = saved.Pin;
+                if (saved.Pin == LabelPin.None)
+                {
+                    label.MoveTo(saved.Coordinates);
+                }
+                else
+                {
+                    label.PinOffset = saved.Offset;
+                    if (label.HasCanvas)
+                    {
+                        label.UpdateVisual();
+                    }
                 }
             }
         }

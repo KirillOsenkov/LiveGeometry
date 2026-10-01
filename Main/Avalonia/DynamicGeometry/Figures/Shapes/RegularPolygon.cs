@@ -132,6 +132,9 @@ namespace DynamicGeometry
                 this.RecalculateAllDependents();
                 // the title says it: 5-gon
                 RaisePropertyChanged(nameof(NumberOfSides));
+
+                // and the side is another, with the vertex where it was
+                RaisePropertyChanged(nameof(Length));
             }
         }
 

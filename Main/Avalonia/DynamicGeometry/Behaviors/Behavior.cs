@@ -467,18 +467,11 @@ namespace DynamicGeometry
                 {
                 }
             }
-            else if (e.Key == Avalonia.Input.Key.A)
-            {
-                Settings.Instance.AutoLabelPoints = !Settings.Instance.AutoLabelPoints;
-                string state = (Settings.Instance.AutoLabelPoints) ? "on." : "off.";
-                Drawing.RaiseStatusNotification("Toggling automatic labeling of points " + state);
-            }
-            else if (e.Key == Avalonia.Input.Key.G)
-            {
-                Settings.Instance.EnableSnapToGrid = !Settings.Instance.EnableSnapToGrid;
-                string state = (Settings.Instance.EnableSnapToGrid) ? "on." : "off.";
-                Drawing.RaiseStatusNotification("Toggling constraining to grid " + state);
-            }
+
+            // (A and G used to toggle "Label new points" and "Snap to grid" here, for the
+            // tools that don't handle keys themselves - Point, Slider, Text. They are tool
+            // letters now, A for the arc and G for the grid: with the Point tool on, G
+            // showed the grid and, without a word, made every new point snap to it.)
 
 #endif
         }

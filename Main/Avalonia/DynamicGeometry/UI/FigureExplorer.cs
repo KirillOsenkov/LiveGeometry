@@ -425,7 +425,9 @@ public class FigureExplorer : Border
             return;
         }
 
+        // a vertex or a side of a regular polygon is listed as its polygon
         var targets = focused.Dependencies
+            .Select(dependency => drawing.Figures.FindTopLevel(dependency) ?? dependency)
             .Distinct()
             .Where(rowsByFigure.ContainsKey)
             .Select(dependency => RowCenter(IndexOf(dependency)))
