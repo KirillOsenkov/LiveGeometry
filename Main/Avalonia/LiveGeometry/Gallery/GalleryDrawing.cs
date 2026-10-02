@@ -98,7 +98,18 @@ public static class GalleryDrawing
         Rect figure = default;
         if (!hasScene)
         {
-            bool hasFigure = coordinateSystem.TryGetContentBounds(out figure, include: f => f != title && f != description);
+            // the geometry a show/hide box brings up gets room from the start, or on a phone a
+            // hint appears under the caption. Not its text: that is sized in pixels, so it has
+            // no size in the plane to make room for (a long one only shrank the figure)
+            var revealable = drawing.Figures
+                .OfType<ShowHideControl>()
+                .SelectMany(box => box.Dependencies)
+                .Where(figure => figure is not ControlBase)
+                .ToHashSet();
+            bool hasFigure = coordinateSystem.TryGetContentBounds(
+                out figure,
+                include: f => f != title && f != description,
+                includeHidden: revealable.Contains);
             if (plane != null)
             {
                 figure = hasFigure ? figure.Union(plane.Value) : plane.Value;

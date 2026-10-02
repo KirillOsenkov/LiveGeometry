@@ -243,7 +243,11 @@ namespace DynamicGeometry
         /// arcs, labels. Lines, rays and graphs don't end, so they don't count.
         /// </summary>
         /// <param name="include">Which figures count; all of them by default</param>
-        public bool TryGetContentBounds(out Rect bounds, Func<IFigure, bool> include = null)
+        /// <param name="includeHidden">Which hidden figures count as if they showed; none by default</param>
+        public bool TryGetContentBounds(
+            out Rect bounds,
+            Func<IFigure, bool> include = null,
+            Func<IFigure, bool> includeHidden = null)
         {
             double minX = double.MaxValue;
             double minY = double.MaxValue;
@@ -265,7 +269,9 @@ namespace DynamicGeometry
 
             foreach (var figure in Drawing.Figures)
             {
-                if (!figure.Visible || !figure.Exists || (include != null && !include(figure)))
+                if ((!figure.Visible && (includeHidden == null || !includeHidden(figure)))
+                    || !figure.Exists
+                    || (include != null && !include(figure)))
                 {
                     continue;
                 }
