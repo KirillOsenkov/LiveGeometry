@@ -8,7 +8,7 @@ namespace DynamicGeometry
 
         public IExpressionTreeEvaluatorProvider ExpressionTreeEvaluatorProvider { get; set; } = new ExpressionTreeCompiler();
 
-        public CompileResult CompileFunction(Drawing drawing, string functionText)
+        public CompileResult CompileFunction(Drawing drawing, string functionText, Predicate<IFigure> isFigureAllowed = null)
         {
             CompileResult result = new CompileResult();
             if (string.IsNullOrEmpty(functionText))
@@ -23,7 +23,7 @@ namespace DynamicGeometry
             }
 
             ExpressionTreeBuilder builder = new ExpressionTreeBuilder();
-            builder.SetContext(drawing, f => true);
+            builder.SetContext(drawing, isFigureAllowed);
             var expressionTree = builder.CreateFunction(ast, result);
             if (expressionTree == null || !result.Errors.IsEmpty())
             {

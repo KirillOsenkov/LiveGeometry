@@ -50,7 +50,7 @@ namespace DynamicGeometry
         [PropertyGridName("Radius")]
         [PropertyGridGroup("Radius")]
         [PropertyGridPreferredEditor("UpDown")]
-        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
+        [PropertyGridCustomValueProvider(typeof(LengthPropertyValue))]
         public double Length
         {
             get
@@ -65,6 +65,8 @@ namespace DynamicGeometry
                 }
             }
         }
+
+        public IPoint LengthEndpoint => RadiusEnd;
 
         /// <summary>A measurement of the radius sits between the two radius points</summary>
         public IList<IFigure> MeasuredFigures

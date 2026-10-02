@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using Avalonia;
 using Avalonia.Controls;
-using System.Xml;
 
 namespace DynamicGeometry
 {
@@ -27,6 +27,7 @@ namespace DynamicGeometry
         protected readonly List<PointBase> vertices = new List<PointBase>();
         protected readonly List<Segment> sides = new List<Segment>();
         protected readonly Polygon polygon = new InteriorPolygon();
+        readonly Stack<PointBase> retiredVertices = new Stack<PointBase>();
 
         public DependentPolygonBase()
         {
@@ -292,6 +293,7 @@ namespace DynamicGeometry
             var vertex = vertices[vertices.Count - 1];
             vertices.RemoveLast();
             RemovePart(vertex);
+            retiredVertices.Push(vertex);
         }
 
         /// <summary>
@@ -314,8 +316,10 @@ namespace DynamicGeometry
 
         protected void AddVertex()
         {
-            var vertex = new PolygonVertex();
-            vertex.Dependencies.Add(this);
+            var vertex = retiredVertices.Count > 0 ? retiredVertices.Pop() : new PolygonVertex();
+            vertex.Dependencies = new IFigure[] { this };
+            vertex.Visible = Visible;
+            vertex.Selected = Selected;
             RegisterPart(vertex);
             vertex.Drawing = Drawing;
             vertices.Add(vertex);

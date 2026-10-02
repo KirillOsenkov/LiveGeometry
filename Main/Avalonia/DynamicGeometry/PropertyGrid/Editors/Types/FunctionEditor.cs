@@ -25,7 +25,7 @@ public class FunctionEditor : StringEditor
             return base.Validate(value);
         }
 
-        var compileResult = Compiler.Instance.CompileFunction(drawing, source);
+        var compileResult = Compiler.Instance.CompileFunction(drawing, source, figure => !figure.DependsOn((IFigure)Value.Parent));
         return new ValidationResult()
         {
             IsValid = compileResult.IsSuccess,

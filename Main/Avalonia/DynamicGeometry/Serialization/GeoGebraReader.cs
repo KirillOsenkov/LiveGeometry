@@ -53,7 +53,14 @@ public class GeoGebraReader
         }
 
         using var stream = entry.Open();
-        return XElement.Load(stream);
+        var worksheet = XElement.Load(stream);
+        if (worksheet.Name != "geogebra" || worksheet.Element("construction") == null)
+        {
+            problem = "This file is not a GeoGebra worksheet: it has no GeoGebra construction.";
+            return null;
+        }
+
+        return worksheet;
     }
 
     /// <summary>
@@ -329,7 +336,7 @@ public class GeoGebraReader
                 break;
             case "numeric":
             case "angle":
-                figure = ReadNumeric(element);
+                figure = ReadNumeric(element, expression);
                 break;
             case "text":
                 figure = ReadText(element, expression);
@@ -637,11 +644,20 @@ public class GeoGebraReader
     }
 
     /// <summary>A slider, or a plain number (hidden) that expressions can name</summary>
-    IFigure ReadNumeric(XElement element)
+    IFigure ReadNumeric(XElement element, XElement expression)
     {
+        bool isAngle = (string)element.Attribute("type") == "angle";
         var valueElement = element.Element("value");
         double value = valueElement != null ? valueElement.ReadDouble("val") : 0;
-        bool isAngle = (string)element.Attribute("type") == "angle";
+        if (expression != null)
+        {
+            var calculated = ReadCalculatedNumber(element, (string)expression.Attribute("exp"), value, isAngle);
+            if (calculated != null)
+            {
+                return calculated;
+            }
+        }
+
         if (isAngle)
         {
             value = value.ToDegrees();
@@ -676,8 +692,64 @@ public class GeoGebraReader
         return number;
     }
 
+    /// <summary>
+    /// A number GeoGebra works out from other objects (b = 2a): a hidden label that goes on
+    /// working it out, under the file's name. Null for a constant, and for an expression ours
+    /// can't say or works out to another value than the one in the file: the number then
+    /// keeps the file's value, as a point whose expression doesn't translate stays where it
+    /// was. (Left out, it took everything built on it along.)
+    /// </summary>
+    IFigure ReadCalculatedNumber(XElement element, string text, double saved, bool isAngle)
+    {
+        var translated = TranslateExpression(text ?? "");
+        if (string.IsNullOrWhiteSpace(translated))
+        {
+            return null;
+        }
+
+        var compiled = drawing.CompileExpression(translated);
+        if (compiled.IsSuccess && compiled.Dependencies.Count == 0)
+        {
+            return null;
+        }
+
+        string problem = !compiled.IsSuccess
+            ? "expression not understood"
+            : !IsSameNumber(compiled.Expression(), saved, isAngle) ? "worked out differently here" : null;
+        if (problem != null)
+        {
+            Report("Number " + (string)element.Attribute("label") + " = " + text + ": " + problem + ", a fixed number instead");
+            return null;
+        }
+
+        var calculated = NumberArgument(text, isAngle: false);
+        calculated.Auxiliary = false;
+        numericExpressions.Add(calculated);
+        if (isAngle)
+        {
+            angleNumbers.Add(calculated);
+        }
+
+        return calculated;
+    }
+
+    /// <summary>The same number up to rounding; angles up to whole turns (GeoGebra keeps an angle between 0 and 2π)</summary>
+    static bool IsSameNumber(double worked, double saved, bool isAngle)
+    {
+        if (worked == saved || (double.IsNaN(worked) && double.IsNaN(saved)))
+        {
+            return true;
+        }
+
+        double difference = isAngle ? System.Math.IEEERemainder(worked - saved, 2 * System.Math.PI) : worked - saved;
+        return System.Math.Abs(difference) <= 1e-6 * System.Math.Max(1, System.Math.Abs(saved));
+    }
+
     // the Numbers that stand for angles: GeoGebra's expressions have them in radians, ours hold degrees
     readonly HashSet<IFigure> angleNumbers = new HashSet<IFigure>();
+
+    // the numbers GeoGebra works out from others: hidden labels, named in expressions by their Value
+    readonly HashSet<IFigure> numericExpressions = new HashSet<IFigure>();
 
     IFigure ReadText(XElement element, XElement expression)
     {
@@ -774,7 +846,7 @@ public class GeoGebraReader
             if (figure != null)
             {
                 // Text[t]: another text's words
-                if (figure is Label other)
+                if (figure is Label other && !numericExpressions.Contains(figure))
                 {
                     sb.Append(other.Text);
                     continue;
@@ -820,6 +892,12 @@ public class GeoGebraReader
         if (figure is INumber && IsIdentifier(figure.Name))
         {
             return angleNumbers.Contains(figure) && !degrees ? "rad(" + figure.Name + ")" : figure.Name;
+        }
+
+        if (figure is Label label && (numericExpressions.Contains(figure) || label.IsNumber) && IsIdentifier(figure.Name))
+        {
+            var value = figure.Name + ".Value";
+            return angleNumbers.Contains(figure) && degrees ? "deg(" + value + ")" : value;
         }
 
         if (figure is DistanceMeasurement distance && distance.Dependencies.Count == 2 && distance.Dependencies.All(d => d is IPoint && IsIdentifier(d.Name)))
@@ -1831,7 +1909,7 @@ public class GeoGebraReader
         var source = Resolve(inputs[0]);
         IFigure center = inputs.Length > 2 ? PointOf(inputs[2]) : OriginPoint();
         var angle = ResolveArgument(inputs[1]);
-        if (!(angle is IAngleProvider))
+        if (!(angle is IAngleProvider) || angle is INumber && !angleNumbers.Contains(angle))
         {
             angle = NumberArgument(inputs[1], isAngle: true);
         }
@@ -1860,22 +1938,35 @@ public class GeoGebraReader
         return Last(Transformer.CreateDilatedFigure(drawing, source, center, factor, lengthProvider2: null));
     }
 
-    /// <summary>Centroid[polygon]: the mean of the vertices, a point by coordinates</summary>
+    /// <summary>Centroid[polygon]: the area-weighted centroid, a point by coordinates.</summary>
     IFigure CentroidCommand(string[] inputs)
     {
         var polygon = Resolve(inputs[0]);
         var vertices = polygon.Dependencies.OfType<IPoint>().ToList();
         if (vertices.Count == 0 || vertices.Any(v => !IsIdentifier(v.Name)))
         {
-            Report("Centroid[" + inputs[0] + "]: no vertices to average");
+            Report("Centroid[" + inputs[0] + "]: no named vertices");
             return null;
         }
 
-        string count = vertices.Count.ToString(CultureInfo.InvariantCulture);
+        var crosses = new List<string>();
+        var horizontal = new List<string>();
+        var vertical = new List<string>();
+        for (int i = 0; i < vertices.Count; i++)
+        {
+            var first = vertices[i].Name;
+            var second = vertices[(i + 1) % vertices.Count].Name;
+            var cross = "(" + first + ".X * " + second + ".Y - " + second + ".X * " + first + ".Y)";
+            crosses.Add(cross);
+            horizontal.Add("(" + first + ".X + " + second + ".X) * " + cross);
+            vertical.Add("(" + first + ".Y + " + second + ".Y) * " + cross);
+        }
+
+        string denominator = "(3 * (" + string.Join(" + ", crosses) + "))";
         return Add(Factory.CreatePointByCoordinates(
             drawing,
-            "(" + string.Join(" + ", vertices.Select(v => v.Name + ".X")) + ") / " + count,
-            "(" + string.Join(" + ", vertices.Select(v => v.Name + ".Y")) + ") / " + count));
+            "(" + string.Join(" + ", horizontal) + ") / " + denominator,
+            "(" + string.Join(" + ", vertical) + ") / " + denominator));
     }
 
     IPoint OriginPoint()
@@ -2151,6 +2242,12 @@ public class GeoGebraReader
         string type = (string)element.Attribute("type");
         bool visible = show != null ? show.ReadBool("object", true) : type != "numeric" && type != "angle";
         bool showLabel = show != null && show.ReadBool("label", false);
+        if (numericExpressions.Contains(figure))
+        {
+            // a number, though a label here: it has no place in the view, and stays hidden
+            return;
+        }
+
         if (!(figure is INumber) || figure is Slider)
         {
             // first: a point's label is placed by its size (a plain number has no shape to style)

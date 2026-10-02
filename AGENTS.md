@@ -411,6 +411,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   by equation) depends on what all of its expressions name, listed in the expressions'
   order - not on what the last one compiled named, appended (X = A.X, Y = A.Y, X edited:
   the point no longer followed A).
+- **Expression cycle checks include every binding form**: bare distances, point-function
+  arguments (`dist`, `ang`, `area`), numbers and property access. Labels and function graphs
+  reject themselves and their descendants, just as coordinate expressions do. A function
+  referencing a point on itself otherwise creates a dependency cycle.
 - **The expression language calculates as it is written in class** (`Expressions/Parser`):
   a minus in front takes everything up to the next + - * /, powers included, so `-x^2` is
   -(x²) (it was (-x)²: the parabola y = -x^2 opened upward); `^` is right-associative. A
@@ -776,7 +780,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
     first): the copy of a label `[AB]` measured the original segment.
   - *Parts of a composite* that are among a figure's dependents (a regular polygon's
     vertices) are not removed or put back by `RemoveFigureAction`: they go with their
-    composite.
+    composite. Parts removed by reducing the side count are retained for reuse: redo may
+    restore a later construction that still holds those exact vertex or side objects.
+  - *Length edits* restore the endpoint's place and any Number holding its distance
+    (`LengthPropertyValue`, also used by the length panel), not just the previous length:
+    zero loses the direction and a negative length reverses it. A point on a figure restores
+    its exact parameter, not a new projection of its coordinates.
   To check a change: a temporary `DispatcherTimer` in `MainView` that appends the undo and
   redo counts and a hash of `Drawing.SaveAsText()` to a file whenever they change, driven
   with `winauto`. A hash that changes without a new step is a hole; one that doesn't come
@@ -1333,7 +1342,14 @@ that a saved `.lgf` keeps them - a default without overrides would be swapped fo
 theme's on loading), which is what an element without a color and anything drawn later
 gets. A number typed into a command (`Circle[A, 3]`, `Rotate[P, 45°, O]`, `Dilate[P, 0.2 * a,
 O]`) becomes an auxiliary `Number`, or a hidden auxiliary `Label` evaluating `[expression]`
-when it depends on figures (a label is a length and an angle provider); a point given by an
+when it depends on figures (a label is a length and an angle provider). A named numeric
+expression also stays live as a hidden Label (shown or not in the file); later expressions
+refer to its `.Value`. One our language can't say, or works out to another value than the
+file has (angles up to whole turns), keeps the file's value as a fixed Number, with a line
+in the report: left out, it took everything built on it along. Ordinary
+numeric inputs to Rotate are radians, while imported angle Numbers already hold degrees.
+Centroid uses the polygon's area-weighted centroid, not the average of its vertices.
+A point given by an
 expression (`A + (0, 1)`, `t B + (1 - t) A`) becomes a `PointByCoordinates` through a small
 vector-arithmetic translator (`TranslateTerm`). A line typed as an equation (`x = x(P)`,
 `y = m x + b`) is a live `LineByEquation` (the variable side read off by substitution at 0 and
@@ -1493,6 +1509,11 @@ Learned from `Reference/VB6/Source` while making the CD library load (`DGFReader
 - `IniFile` skips blank lines (every CD file has them between sections).
 
 ## UI automation (tools/)
+
+`dotnet run tools\regression.cs` runs focused construction, property/editor, dragging,
+undo/redo, expression-cycle, and LGF/GGB regression cases against the desktop libraries,
+including loading and reloading every gallery drawing. Pointer cases briefly open test
+windows. This is not an exhaustive UI or importer compatibility suite.
 
 Screenshots are PNGs; image pixels are the click coordinates in both tools.
 

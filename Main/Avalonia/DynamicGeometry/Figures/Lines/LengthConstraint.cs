@@ -13,6 +13,8 @@ public interface IFixableLength : IFigure, IConditionalProperties
 {
     double Length { get; set; }
 
+    IPoint LengthEndpoint { get; }
+
     void FixLength();
 
     void FreeLength();
@@ -22,6 +24,32 @@ public interface IFixableLength : IFigure, IConditionalProperties
     /// circle's center and rim point); null when there is no figure to hang one on.
     /// </summary>
     IList<IFigure> MeasuredFigures { get; }
+}
+
+/// <summary>Undo restores the endpoint, not a length whose direction may have been lost at zero or reversed.</summary>
+public class LengthPropertyValue : ConditionalPropertyValue, IRestorableValue
+{
+    public virtual IFixableLength Figure => (IFixableLength)Parent;
+
+    public object CaptureState()
+    {
+        var endpoint = Figure.LengthEndpoint;
+        var place = (IRestorablePlace)endpoint;
+        var number = (endpoint as TranslatedPoint)?.DistanceSource as Number;
+        return (place, place.CapturePlace(), number, number?.Value);
+    }
+
+    public void RestoreState(object state)
+    {
+        var (place, position, number, value) = ((IRestorablePlace, object, Number, double?))state;
+        if (number != null)
+        {
+            number.Value = value.Value;
+        }
+
+        place.RestorePlace(position);
+        Figure.Drawing.Recalculate();
+    }
 }
 
 /// <summary>

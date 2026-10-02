@@ -106,7 +106,7 @@ namespace DynamicGeometry
 
         public CompileResult Compile()
         {
-            var result = Compiler.Instance.CompileFunction(Drawing, FunctionText);
+            var result = Compiler.Instance.CompileFunction(Drawing, FunctionText, figure => !figure.DependsOn(this));
             if (result.IsSuccess)
             {
                 SetFunction(result);

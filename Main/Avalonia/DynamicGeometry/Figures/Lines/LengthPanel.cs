@@ -92,11 +92,16 @@ public class LengthPanel :
 
     [PropertyGridVisible]
     [PropertyGridPreferredEditor("UpDown")]
-    [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
+    [PropertyGridCustomValueProvider(typeof(PanelLengthValue))]
     public double Length
     {
         get { return figure.Length; }
         set { figure.Length = value; }
+    }
+
+    public class PanelLengthValue : LengthPropertyValue
+    {
+        public override IFixableLength Figure => ((LengthPanel)Parent).figure;
     }
 
     /// <summary>

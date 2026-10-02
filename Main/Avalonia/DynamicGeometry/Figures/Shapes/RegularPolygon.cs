@@ -32,7 +32,7 @@ namespace DynamicGeometry
         [PropertyGridName("Side")]
         [PropertyGridGroup("Side")]
         [PropertyGridPreferredEditor("UpDown")]
-        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
+        [PropertyGridCustomValueProvider(typeof(LengthPropertyValue))]
         public double Length
         {
             get
@@ -44,6 +44,8 @@ namespace DynamicGeometry
                 LengthConstraint.SetDistance(VertexPoint, CenterPoint, value / RadiusToSide);
             }
         }
+
+        public IPoint LengthEndpoint => VertexPoint;
 
         // the sides are the polygon's own children, nothing in the drawing to measure
         public IList<IFigure> MeasuredFigures
@@ -256,8 +258,10 @@ namespace DynamicGeometry
 
         protected override void AddSide(int sideCount)
         {
-            var side = new PolygonSide();
+            var side = retiredSides.Count > 0 ? retiredSides.Pop() : new PolygonSide();
             side.Drawing = Drawing;
+            side.Visible = Visible;
+            side.Selected = Selected;
             var index = sides.Count;
             var NumberOfSides = sideCount;
             if (index > 2)
@@ -305,7 +309,10 @@ namespace DynamicGeometry
             var side = sides[index];
             sides.RemoveLast();
             RemovePart(side);
+            retiredSides.Push(side);
         }
+
+        readonly Stack<Segment> retiredSides = new Stack<Segment>();
 
         public override string ToString()
         {

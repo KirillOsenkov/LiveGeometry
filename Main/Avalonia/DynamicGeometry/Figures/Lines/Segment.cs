@@ -105,7 +105,7 @@ namespace DynamicGeometry
         [PropertyGridVisible]
         [PropertyGridGroup("Length")]
         [PropertyGridPreferredEditor("UpDown")]
-        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
+        [PropertyGridCustomValueProvider(typeof(LengthPropertyValue))]
         public double Length
         {
             get
@@ -119,6 +119,15 @@ namespace DynamicGeometry
                 {
                     LengthConstraint.SetDistance(End(end), End(1 - end), value);
                 }
+            }
+        }
+
+        public IPoint LengthEndpoint
+        {
+            get
+            {
+                int end = LengthEnd();
+                return end >= 0 ? End(end) : null;
             }
         }
 

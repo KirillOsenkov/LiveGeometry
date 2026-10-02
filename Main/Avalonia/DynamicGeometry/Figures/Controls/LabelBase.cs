@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using System.Xml.Linq;
-using System.Xml;
 
 namespace DynamicGeometry
 {
@@ -76,7 +76,7 @@ namespace DynamicGeometry
             }
             set
             {
-                text = value;
+                text = value ?? "";
                 if (ShouldProcessText)
                 {
                     ProcessText();
@@ -153,8 +153,14 @@ namespace DynamicGeometry
                 Shape.RenderTransform = scale;
             }
 
-            if (!ShouldProcessText || text.IsEmpty())
+            if (!ShouldProcessText)
             {
+                return;
+            }
+
+            if (text.IsEmpty())
+            {
+                ProcessedText = "";
                 return;
             }
 
@@ -247,7 +253,7 @@ namespace DynamicGeometry
 
             var expression = result.Substring(1, result.Length - 2);
 
-            var compileResult = Drawing.CompileExpression(expression);
+            var compileResult = Compiler.Instance.CompileExpression(Drawing, expression, figure => !figure.DependsOn(this));
             embeddedExpressions.Add(compileResult);
             if (compileResult.IsSuccess)
             {

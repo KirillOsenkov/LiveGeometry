@@ -186,12 +186,12 @@ namespace DynamicGeometry
                     Status.AddFigureIsNotAPointError(longestSuffix);
                     return null;
                 }
-                if (!Binder.FigureAllowed(point1))
+                if (!Binder.IsFigureAllowed(point1))
                 {
                     Status.AddDependencyCycleError(longestPrefix);
                     return null;
                 }
-                if (!Binder.FigureAllowed(point2))
+                if (!Binder.IsFigureAllowed(point2))
                 {
                     Status.AddDependencyCycleError(longestSuffix);
                     return null;
@@ -378,6 +378,13 @@ namespace DynamicGeometry
                 Status.AddFigureIsNotAPointError(pointName);
                 return null;
             }
+
+            if (!Binder.IsFigureAllowed(point))
+            {
+                Status.AddDependencyCycleError(pointName);
+                return null;
+            }
+
             Status.Dependencies.Add(point);
             return point;
         }

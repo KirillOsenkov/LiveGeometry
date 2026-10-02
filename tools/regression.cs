@@ -1,0 +1,704 @@
+#:project ..\Main\Avalonia\LiveGeometry.Desktop\LiveGeometry.Desktop.csproj
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Text;
+using System.Xml.Linq;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Threading;
+using DynamicGeometry;
+using LiveGeometry;
+
+namespace LiveGeometryRegression;
+
+public class Program
+{
+    [STAThread]
+    public static int Main()
+    {
+        App.UseInvariantCulture();
+        AppBuilder.Configure<App>().UsePlatformDetect().WithInterFont().SetupWithoutStarting();
+        Settings.Instance.AutoLabelPoints = false;
+        var tests = new (string Name, Action Run)[]
+        {
+            ("Undo zero length", UndoZeroLength),
+            ("Undo negative length", UndoNegativeLength),
+            ("Polygon parts survive redo", PolygonPartsSurviveRedo),
+            ("Point-on-circle parameter survives undo", PointParameterSurvivesUndo),
+            ("Length edits across figure kinds", LengthEditsAcrossKinds),
+            ("Length panel preserves endpoint on undo", LengthPanelUndo),
+            ("Point functions reject dependency cycles", PointFunctionsRejectCycles),
+            ("Labels reject dependency cycles", LabelsRejectCycles),
+            ("Clearing label text clears display", ClearLabelText),
+            ("Functions reject dependency cycles", FunctionsRejectCycles),
+            ("Repeated function references survive replacement", FunctionReplacement),
+            ("Construction cancellation and undo", ConstructionUndo),
+            ("Dragging and Alt snapping undo", DraggingUndo),
+            ("Editor commits and undo", EditorUndo),
+            ("GeoGebra dependent numeric stays live", GeoGebraDependentNumeric),
+            ("GeoGebra untranslated numeric keeps its value", GeoGebraUntranslatedNumeric),
+            ("GeoGebra worked-out numeric stays hidden", GeoGebraShownNumericStaysHidden),
+            ("GeoGebra numeric rotation uses radians", GeoGebraNumericRotation),
+            ("GeoGebra live expressions round trip", GeoGebraExpressionsRoundTrip),
+            ("GeoGebra polygon centroid", GeoGebraCentroid),
+            ("GeoGebra constant slider stays a slider", GeoGebraConstantSlider),
+            ("GeoGebra worksheet rejects unrelated XML", RejectUnrelatedWorksheet),
+            ("LGF partial load", PartialLoad),
+            ("LGF rejects abstract figures", AbstractFigureLoad),
+            ("Gallery LGF round trips", GalleryRoundTrips)
+        };
+        int failures = 0;
+        foreach (var test in tests)
+        {
+            try
+            {
+                test.Run();
+                Console.WriteLine("PASS " + test.Name);
+            }
+            catch (Exception ex)
+            {
+                failures++;
+                Console.WriteLine("FAIL " + test.Name + ": " + ex);
+            }
+        }
+
+        Console.WriteLine($"{tests.Length - failures}/{tests.Length} passed.");
+        return failures == 0 ? 0 : 1;
+    }
+
+    static Drawing NewDrawing()
+    {
+        var canvas = new Canvas { Width = 1000, Height = 700 };
+        canvas.Measure(new Size(1000, 700));
+        canvas.Arrange(new Rect(0, 0, 1000, 700));
+        var drawing = new Drawing(canvas);
+        drawing.UnhandledException += (_, arguments) => throw arguments.Exception;
+        return drawing;
+    }
+
+    static FreePoint AddPoint(Drawing drawing, double x, double y)
+    {
+        var point = Factory.CreateFreePoint(drawing, new Point(x, y));
+        Actions.Add(drawing, point);
+        return point;
+    }
+
+    static void Set(Drawing drawing, object figure, string property, object value)
+    {
+        Actions.SetProperty(drawing.ActionManager, PropertyDiscoveryStrategy.CreateValueProvider(figure, property), value);
+    }
+
+    static void UndoZeroLength()
+    {
+        CheckLengthUndo(length: 0);
+    }
+
+    static void UndoNegativeLength()
+    {
+        CheckLengthUndo(length: -2);
+    }
+
+    static void CheckLengthUndo(double length)
+    {
+        var drawing = NewDrawing();
+        var first = AddPoint(drawing, x: 1, y: 2);
+        var second = AddPoint(drawing, x: 4, y: 6);
+        var segment = Factory.CreateSegment(drawing, first, second);
+        Actions.Add(drawing, segment);
+        string before = drawing.SaveAsText();
+        Set(drawing, segment, nameof(Segment.Length), length);
+        string after = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo did not restore the endpoints: " + second.Coordinates);
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo did not restore the changed drawing.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void PolygonPartsSurviveRedo()
+    {
+        var drawing = NewDrawing();
+        var center = AddPoint(drawing, x: 0, y: 0);
+        var vertex = AddPoint(drawing, x: 3, y: 0);
+        var polygon = Factory.CreateRegularPolygon(drawing, new IFigure[] { center, vertex });
+        Actions.Add(drawing, polygon);
+        Set(drawing, polygon, nameof(RegularPolygon.NumberOfSides), value: 6);
+        var part = (IPoint)polygon.GetPart("Vertex6");
+        var line = Factory.CreateSegment(drawing, center, part);
+        Actions.Add(drawing, line);
+        var side = polygon.GetPart("Side6");
+        var onSide = Factory.CreatePointOnFigure(drawing, side, parameter: 0.4);
+        Actions.Add(drawing, onSide);
+        string after = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        drawing.ActionManager.Undo();
+        drawing.ActionManager.Undo();
+        drawing.ActionManager.Redo();
+        drawing.ActionManager.Redo();
+        drawing.ActionManager.Redo();
+        Require(ReferenceEquals(polygon.GetPart("Vertex6"), line.Dependencies[1]), "Redo left the segment on a retired vertex.");
+        Require(ReferenceEquals(polygon.GetPart("Side6"), onSide.Dependencies[0]), "Redo left the point on a retired side.");
+        Require(drawing.SaveAsText() == after, "Redo changed the file.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void LengthEditsAcrossKinds()
+    {
+        foreach (string kind in new[] { "segment", "circle", "vector", "polygon", "fixed", "onLine" })
+        {
+            var drawing = NewDrawing();
+            var first = AddPoint(drawing, x: 1, y: 2);
+            IPoint second = AddPoint(drawing, x: 4, y: 6);
+            if (kind == "onLine")
+            {
+                var line = Factory.CreateLineTwoPoints(drawing, new IFigure[] { first, second });
+                Actions.Add(drawing, line);
+                second = Factory.CreatePointOnFigure(drawing, line, parameter: 0.8);
+                Actions.Add(drawing, second);
+            }
+
+            IFixableLength figure = kind switch
+            {
+                "circle" => Factory.CreateCircle(drawing, new IFigure[] { first, second }),
+                "vector" => Factory.CreateVector(drawing, new IFigure[] { first, second }),
+                "polygon" => Factory.CreateRegularPolygon(drawing, new IFigure[] { first, second }),
+                _ => Factory.CreateSegment(drawing, first, second)
+            };
+            Actions.Add(drawing, figure);
+            if (kind == "fixed")
+            {
+                figure.FixLength();
+            }
+
+            foreach (double length in new[] { 0, -2, 0.5, 2.675 })
+            {
+                string before = drawing.SaveAsText();
+                Set(drawing, figure, nameof(IFixableLength.Length), length);
+                string after = drawing.SaveAsText();
+                drawing.ActionManager.Undo();
+                Require(drawing.SaveAsText() == before, kind + ": undo length " + length);
+                drawing.ActionManager.Redo();
+                Require(drawing.SaveAsText() == after, kind + ": redo length " + length);
+                drawing.Figures.CheckConsistency();
+                drawing.ActionManager.Undo();
+            }
+        }
+    }
+
+    static void LengthPanelUndo()
+    {
+        var drawing = NewDrawing();
+        var first = AddPoint(drawing, x: 1, y: 2);
+        var second = AddPoint(drawing, x: 4, y: 6);
+        var segment = Factory.CreateSegment(drawing, first, second);
+        Actions.Add(drawing, segment);
+        string before = drawing.SaveAsText();
+        var value = new LengthPanel(segment).GetProperties().Single(property => property.Name == nameof(Segment.Length));
+        Actions.SetProperty(drawing.ActionManager, value, value: 0.0);
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Panel length lost the endpoint.");
+    }
+
+    static void PointFunctionsRejectCycles()
+    {
+        var drawing = NewDrawing();
+        var first = AddPoint(drawing, x: 0, y: 0);
+        var second = AddPoint(drawing, x: 3, y: 4);
+        foreach (string text in new[] { "dist(A, B)", "ang(A, B, A)", "area(A, B, A)", "AB", "B.X" })
+        {
+            var result = Compiler.Instance.CompileExpression(drawing, text, figure => figure != second);
+            Require(!result.IsSuccess && !string.IsNullOrWhiteSpace(result.GetErrorText()), text + " accepted a forbidden dependency.");
+        }
+    }
+
+    static void LabelsRejectCycles()
+    {
+        var drawing = NewDrawing();
+        var label = Factory.CreateLabel(drawing);
+        Actions.Add(drawing, label);
+        label.Text = "[1]";
+        label.Text = "[" + label.Name + ".Value]";
+        Require(!label.Dependencies.Contains(label), "A label depends on itself.");
+        Require(!label.IsNumber, "A cyclic label was evaluated.");
+        label.Text = "[2]";
+        var dependent = Factory.CreatePointByCoordinates(drawing, label.Name + ".Value", "0");
+        Actions.Add(drawing, dependent);
+        label.Text = "[" + dependent.Name + ".X]";
+        Require(!label.Dependencies.Contains(dependent), "A label depends on its descendant.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void ClearLabelText()
+    {
+        var drawing = NewDrawing();
+        var label = Factory.CreateLabel(drawing);
+        Actions.Add(drawing, label);
+        label.Text = "Words";
+        Set(drawing, label, nameof(DynamicGeometry.Label.Text), value: "");
+        Require(string.IsNullOrEmpty(label.ProcessedText), "The old text is still displayed.");
+        drawing.ActionManager.Undo();
+        Require(label.ProcessedText == "Words", "Undo did not restore the text.");
+        drawing.ActionManager.Redo();
+        Require(string.IsNullOrEmpty(label.ProcessedText), "Redo did not clear the text.");
+    }
+
+    static void FunctionsRejectCycles()
+    {
+        var drawing = NewDrawing();
+        var graph = new FunctionGraph { Drawing = drawing, FunctionText = "x" };
+        Actions.Add(drawing, graph);
+        var point = Factory.CreatePointOnFigure(drawing, graph, parameter: 2);
+        Actions.Add(drawing, point);
+        string expression = point.Name + ".Y + x";
+        var compiled = Compiler.Instance.CompileFunction(drawing, expression, figure => !figure.DependsOn(graph));
+        Require(!compiled.IsSuccess, "A graph accepted a point on itself.");
+        graph.FunctionText = expression;
+        Require(!graph.Dependencies.Contains(point), "A graph installed a dependency cycle.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void FunctionReplacement()
+    {
+        var drawing = NewDrawing();
+        var point = AddPoint(drawing, x: 3, y: 4);
+        var graph = new FunctionGraph { Drawing = drawing, FunctionText = "A.X + A.Y + x" };
+        Actions.Add(drawing, graph);
+        string before = drawing.SaveAsText();
+        PointSnapping.ConvertToPointByCoordinates(point);
+        drawing.Figures.CheckConsistency();
+        Near(graph.Function(0), expected: 7);
+        drawing.ActionManager.Undo();
+        drawing.Figures.CheckConsistency();
+        Require(drawing.SaveAsText() == before, "Undo of replacing a repeated function dependency changed the drawing.");
+    }
+
+    static void ConstructionUndo()
+    {
+        var creators = new (FigureCreator Creator, int Points)[]
+        {
+            (new SegmentCreator(), 2), (new RayCreator(), 2), (new LineTwoPointsCreator(), 2),
+            (new VectorCreator(), 2), (new CircleCreator(), 2), (new MidpointCreator(), 2),
+            (new TriangleCreator(), 3), (new RegularPolygonCreator(), 2), (new SquareCreator(), 2),
+            (new CircleArcCreator(), 3), (new EllipseCreator(), 3),
+            (new AngleMeasurementCreator(), 3), (new AngleBisectorCreator(), 3),
+            (new SegmentBisectorCreator(), 2), (new BezierCreator(), 4),
+            (new PolygonCreator(), 3), (new AreaMeasurementCreator(), 3)
+        };
+        var positions = new[] { new Point(0, 0), new Point(3, 0), new Point(0, 4), new Point(-2, 1) };
+        foreach (var (creator, pointCount) in creators)
+        {
+            var drawing = NewDrawing();
+            drawing.Behavior = creator;
+            string before = drawing.SaveAsText();
+            new FigureCreator.Dialog(creator) { X = "0", Y = "0" }.AddPoint();
+            creator.Restart();
+            Require(!drawing.IsRecordingTransaction, creator.Name + " left a transaction open.");
+            Require(drawing.SaveAsText() == before, creator.Name + " cancellation left figures.");
+            for (int index = 0; index < pointCount; index++)
+            {
+                var position = positions[index];
+                new FigureCreator.Dialog(creator) { X = position.X.ToString(), Y = position.Y.ToString() }.AddPoint();
+            }
+
+            if (creator is PolygonCreator or AreaMeasurementCreator)
+            {
+                creator.KeyDown(drawing.Canvas, new KeyEventArgs { Key = Key.Enter });
+            }
+
+            Require(!drawing.IsRecordingTransaction, creator.Name + " did not complete.");
+            string after = drawing.SaveAsText();
+            Require(after != before, creator.Name + " made nothing.");
+            drawing.ActionManager.Undo();
+            Require(drawing.SaveAsText() == before, creator.Name + " undo.");
+            drawing.ActionManager.Redo();
+            Require(drawing.SaveAsText() == after, creator.Name + " redo.");
+            drawing.Figures.CheckConsistency();
+        }
+    }
+
+    static void DraggingUndo()
+    {
+        foreach (bool snap in new[] { false, true })
+        {
+            var drawing = NewDrawing();
+            var point = AddPoint(drawing, x: -3, y: 1);
+            var first = AddPoint(drawing, x: 0, y: -3);
+            var second = AddPoint(drawing, x: 0, y: 3);
+            var segment = Factory.CreateSegment(drawing, first, second);
+            Actions.Add(drawing, segment);
+            using var window = new TestWindow(drawing.Canvas);
+            drawing.Behavior = new Dragger();
+            string before = drawing.SaveAsText();
+            var from = drawing.CoordinateSystem.ToPhysical(point.Coordinates);
+            var to = drawing.CoordinateSystem.ToPhysical(new Point(snap ? 0 : -1, 1));
+            using var pointer = new Pointer(Pointer.GetNextFreeId(), PointerType.Mouse, isPrimary: true);
+            var modifiers = snap ? KeyModifiers.Alt : KeyModifiers.None;
+            var down = new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.LeftButtonPressed);
+            var moving = new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.Other);
+            var up = new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonReleased);
+            var canvas = drawing.Canvas;
+            canvas.RaiseEvent(new PointerPressedEventArgs(
+                canvas,
+                pointer,
+                canvas,
+                from,
+                timestamp: 0,
+                down,
+                modifiers,
+                clickCount: 1));
+            for (int step = 1; step <= 12; step++)
+            {
+                canvas.RaiseEvent(new PointerEventArgs(
+                    InputElement.PointerMovedEvent,
+                    canvas,
+                    pointer,
+                    canvas,
+                    from + (to - from) * (step / 12.0),
+                    timestamp: (ulong)step,
+                    moving,
+                    modifiers));
+            }
+
+            canvas.RaiseEvent(new PointerReleasedEventArgs(
+                canvas,
+                pointer,
+                canvas,
+                to,
+                timestamp: 13,
+                up,
+                modifiers,
+                MouseButton.Left));
+            Require(!drawing.IsRecordingTransaction, "Drag left an open transaction.");
+            if (snap)
+            {
+                Require(Find(drawing, point.Name) is PointOnFigure, "Alt drag did not snap onto the segment.");
+            }
+            else
+            {
+                Near(point.X, expected: -1);
+                Near(point.Y, expected: 1);
+            }
+
+            string after = drawing.SaveAsText();
+            drawing.ActionManager.Undo();
+            Require(drawing.SaveAsText() == before, "Drag undo changed the drawing.");
+            drawing.ActionManager.Redo();
+            Require(drawing.SaveAsText() == after, "Drag redo changed the drawing.");
+            drawing.Figures.CheckConsistency();
+        }
+    }
+
+    public class TestWindow : Window, IDisposable
+    {
+        public TestWindow(Canvas canvas)
+        {
+            Content = canvas;
+            Width = canvas.Width;
+            Height = canvas.Height;
+            Show();
+            Dispatcher.UIThread.RunJobs();
+        }
+
+        public void Dispose()
+        {
+            Close();
+        }
+    }
+
+    static void EditorUndo()
+    {
+        var drawing = NewDrawing();
+        var first = AddPoint(drawing, x: 1, y: 2);
+        var second = AddPoint(drawing, x: 4, y: 6);
+        var segment = Factory.CreateSegment(drawing, first, second);
+        Actions.Add(drawing, segment);
+        var editor = new UpDownEditor
+        {
+            ActionManager = drawing.ActionManager,
+            Value = PropertyDiscoveryStrategy.CreateValueProvider(segment, nameof(Segment.Length))
+        };
+        Dispatcher.UIThread.RunJobs();
+        string before = drawing.SaveAsText();
+        editor.TextBox.Text = "0";
+        editor.TextBox.RaiseEvent(new KeyEventArgs { RoutedEvent = InputElement.KeyDownEvent, Key = Key.Enter });
+        Dispatcher.UIThread.RunJobs();
+        Near(segment.Length, expected: 0);
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Editor undo lost the endpoint.");
+    }
+
+    static void PointParameterSurvivesUndo()
+    {
+        var drawing = NewDrawing();
+        var center = AddPoint(drawing, x: 0, y: 0);
+        var rim = AddPoint(drawing, x: 3, y: 0);
+        var circle = Factory.CreateCircle(drawing, new IFigure[] { center, rim });
+        Actions.Add(drawing, circle);
+        var point = Factory.CreatePointOnFigure(drawing, circle, parameter: 7);
+        Actions.Add(drawing, point);
+        string before = drawing.SaveAsText();
+        var moving = new List<IMovable> { point };
+        Actions.Move(drawing, moving, new Point(0.2, 0.4), new IFigure[] { point });
+        drawing.ActionManager.Undo();
+        Require(point.Parameter == 7, "Parameter changed to " + point.Parameter);
+        Require(drawing.SaveAsText() == before, "Undo changed the file.");
+    }
+
+    static Drawing ReadGeoGebra(string construction)
+    {
+        var (drawing, reader) = ReadGeoGebraWithReport(construction);
+        Require(reader.IsSuccess, reader.Details);
+        return drawing;
+    }
+
+    static (Drawing Drawing, GeoGebraReader Reader) ReadGeoGebraWithReport(string construction)
+    {
+        var drawing = NewDrawing();
+        var reader = new GeoGebraReader();
+        using var bytes = new MemoryStream();
+        using (var archive = new ZipArchive(bytes, ZipArchiveMode.Create, leaveOpen: true))
+        {
+            using var writer = new StreamWriter(archive.CreateEntry(GeoGebraReader.WorksheetEntry).Open(), Encoding.UTF8);
+            writer.Write("<geogebra><construction>" + construction + "</construction></geogebra>");
+        }
+
+        var worksheet = GeoGebraReader.ReadWorksheet(bytes.ToArray(), out string problem);
+        Require(worksheet != null && problem == null, problem ?? "No worksheet was read.");
+        reader.ReadDrawing(drawing, worksheet);
+        drawing.Figures.CheckConsistency();
+        return (drawing, reader);
+    }
+
+    static IFigure Find(Drawing drawing, string name)
+    {
+        return drawing.Figures.Single(figure => figure.Name == name);
+    }
+
+    static void GeoGebraDependentNumeric()
+    {
+        var drawing = ReadGeoGebra("""
+            <element type="numeric" label="a"><value val="2"/></element>
+            <expression label="b" exp="2*a"/>
+            <element type="numeric" label="b"><value val="4"/></element>
+            <element type="point" label="O"><coords x="0" y="0" z="1"/></element>
+            <command name="Circle"><input a0="O" a1="b"/><output a0="c"/></command>
+            <element type="conic" label="c"/>
+            """);
+        ((Number)Find(drawing, "a")).Value = 3;
+        drawing.Recalculate();
+        Near(((ICircle)Find(drawing, "c")).Radius, expected: 6);
+    }
+
+    static void GeoGebraUntranslatedNumeric()
+    {
+        var (drawing, reader) = ReadGeoGebraWithReport("""
+            <element type="numeric" label="a"><value val="2"/></element>
+            <expression label="b" exp="If(a > 1, 5, 6)"/>
+            <element type="numeric" label="b"><value val="5"/></element>
+            <element type="point" label="O"><coords x="0" y="0" z="1"/></element>
+            <command name="Circle"><input a0="O" a1="b"/><output a0="c"/></command>
+            <element type="conic" label="c"/>
+            """);
+        Require(!reader.IsSuccess, "A number kept at its value was not reported.");
+        Near(((ICircle)Find(drawing, "c")).Radius, expected: 5);
+    }
+
+    static void GeoGebraShownNumericStaysHidden()
+    {
+        var drawing = ReadGeoGebra("""
+            <element type="numeric" label="a"><value val="2"/></element>
+            <expression label="b" exp="2*a"/>
+            <element type="numeric" label="b"><value val="4"/><show object="true" label="true"/></element>
+            """);
+        Require(!Find(drawing, "b").Visible, "A worked-out number showed as a label.");
+    }
+
+    static void GeoGebraNumericRotation()
+    {
+        var drawing = ReadGeoGebra("""
+            <element type="point" label="P"><coords x="1" y="0" z="1"/></element>
+            <element type="point" label="O"><coords x="0" y="0" z="1"/></element>
+            <element type="numeric" label="a"><value val="1.5707963267948966"/></element>
+            <command name="Rotate"><input a0="P" a1="a" a2="O"/><output a0="Q"/></command>
+            <element type="point" label="Q"><coords x="0" y="1" z="1"/></element>
+            """);
+        var point = (IPoint)Find(drawing, "Q");
+        Near(point.Coordinates.X, expected: 0);
+        Near(point.Coordinates.Y, expected: 1);
+    }
+
+    static void GeoGebraExpressionsRoundTrip()
+    {
+        var drawing = ReadGeoGebra("""
+            <element type="numeric" label="a"><value val="2"/></element>
+            <expression label="b" exp="2*a"/>
+            <element type="numeric" label="b"><value val="4"/></element>
+            <expression label="d" exp="b+1"/>
+            <element type="numeric" label="d"><value val="5"/></element>
+            <element type="point" label="P"><coords x="1" y="0" z="1"/></element>
+            <element type="point" label="O"><coords x="0" y="0" z="1"/></element>
+            <command name="Circle"><input a0="O" a1="d"/><output a0="c"/></command>
+            <element type="conic" label="c"/>
+            <command name="Rotate"><input a0="P" a1="a" a2="O"/><output a0="Q"/></command>
+            <element type="point" label="Q"/>
+            <expression label="alpha" exp="a*45°"/>
+            <element type="angle" label="alpha"><value val="1.5707963267948966"/></element>
+            <command name="Rotate"><input a0="P" a1="alpha" a2="O"/><output a0="R"/></command>
+            <element type="point" label="R"/>
+            <expression label="undefinedValue" exp="sqrt(a-3)"/>
+            <element type="numeric" label="undefinedValue"><value val="NaN"/></element>
+            <expression label="laterValue" exp="undefinedValue+1"/>
+            <element type="numeric" label="laterValue"><value val="NaN"/></element>
+            <expression label="angleText" exp="alpha"/>
+            <element type="text" label="angleText"/>
+            """);
+        foreach (var current in new[] { drawing, ReadLgf(drawing.SaveAsText()) })
+        {
+            var number = (Number)Find(current, "a");
+            number.Value = 3;
+            current.Recalculate();
+            Near(((ICircle)Find(current, "c")).Radius, expected: 7);
+            Near(((IPoint)Find(current, "Q")).Coordinates.X, System.Math.Cos(3));
+            Near(((IPoint)Find(current, "R")).Coordinates.X, System.Math.Cos(3 * System.Math.PI / 4));
+            Near(((DynamicGeometry.Label)Find(current, "laterValue")).Value, expected: 1);
+            Near(((DynamicGeometry.Label)Find(current, "angleText")).Value, expected: 135);
+            current.Figures.CheckConsistency();
+        }
+    }
+
+    static void GeoGebraCentroid()
+    {
+        var drawing = ReadGeoGebra("""
+            <element type="point" label="A"><coords x="0" y="0" z="1"/></element>
+            <element type="point" label="B"><coords x="4" y="0" z="1"/></element>
+            <element type="point" label="C"><coords x="4" y="1" z="1"/></element>
+            <element type="point" label="D"><coords x="0" y="3" z="1"/></element>
+            <command name="Polygon"><input a0="A" a1="B" a2="C" a3="D"/><output a0="poly"/></command>
+            <element type="polygon" label="poly"/>
+            <command name="Centroid"><input a0="poly"/><output a0="G"/></command>
+            <element type="point" label="G"><coords x="1.6666666666666667" y="1.0833333333333333" z="1"/></element>
+            """);
+        var center = (IPoint)Find(drawing, "G");
+        Near(center.Coordinates.X, expected: 5.0 / 3);
+        Near(center.Coordinates.Y, expected: 13.0 / 12);
+    }
+
+    static void GeoGebraConstantSlider()
+    {
+        var drawing = ReadGeoGebra("""
+            <expression label="a" exp="2"/>
+            <element type="numeric" label="a">
+              <value val="2"/><slider x="0" y="0"/><show object="true"/>
+            </element>
+            """);
+        Require(Find(drawing, "a") is DynamicGeometry.Slider, "A constant expression lost its slider.");
+    }
+
+    static void RejectUnrelatedWorksheet()
+    {
+        using var bytes = new MemoryStream();
+        using (var archive = new ZipArchive(bytes, ZipArchiveMode.Create, leaveOpen: true))
+        {
+            using var writer = new StreamWriter(archive.CreateEntry(GeoGebraReader.WorksheetEntry).Open(), Encoding.UTF8);
+            writer.Write("<unrelated />");
+        }
+
+        var worksheet = GeoGebraReader.ReadWorksheet(bytes.ToArray(), out string problem);
+        Require(worksheet == null && !string.IsNullOrEmpty(problem), "A zip containing unrelated XML was accepted as a drawing.");
+    }
+
+    static Drawing ReadLgf(string xml)
+    {
+        var drawing = NewDrawing();
+        bool suppressed = PointBase.SuppressAutoLabelPoints;
+        PointBase.SuppressAutoLabelPoints = true;
+        try
+        {
+            drawing.AddFromXml(XElement.Parse(xml));
+        }
+        finally
+        {
+            PointBase.SuppressAutoLabelPoints = suppressed;
+        }
+
+        drawing.Figures.CheckConsistency();
+        return drawing;
+    }
+
+    static void PartialLoad()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1"><Figures>
+              <FreePoint Name="A" X="1" Y="2"/>
+              <UnsupportedFigure Name="bad"/>
+              <Segment Name="missing"><Dependency Name="A"/><Dependency Name="bad"/></Segment>
+              <FreePoint Name="B" X="3" Y="4"/>
+              <Segment Name="AB"><Dependency Name="A"/><Dependency Name="B"/></Segment>
+            </Figures></Drawing>
+            """);
+        Require(drawing.LoadErrors != null, "Missing figures were not reported.");
+        Require(Find(drawing, "AB") is Segment, "Valid figures after a bad one were dropped.");
+    }
+
+    static void AbstractFigureLoad()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1"><Figures>
+              <CircleBase Name="bad"/>
+              <FreePoint Name="A" X="1" Y="2"/>
+            </Figures></Drawing>
+            """);
+        Require(drawing.LoadErrors != null, "An abstract figure was not reported.");
+        Require(Find(drawing, "A") is FreePoint, "An abstract figure prevented valid figures loading.");
+    }
+
+    static void GalleryRoundTrips()
+    {
+        var directory = System.IO.Path.Combine(FindRepository(), @"Main\Avalonia\LiveGeometry\Gallery\Drawings");
+        int count = 0;
+        foreach (var path in Directory.GetFiles(directory, "*.lgf"))
+        {
+            var drawing = ReadLgf(File.ReadAllText(path));
+            Require(drawing.LoadErrors == null, path + ": " + drawing.LoadErrors);
+            var saved = drawing.SaveAsText();
+            var loaded = ReadLgf(saved);
+            Require(loaded.LoadErrors == null, path + ": reload: " + loaded.LoadErrors);
+            Require(loaded.Figures.Count == drawing.Figures.Count, path + ": figure count changed.");
+            count++;
+        }
+
+        Require(count > 0, "No gallery files found.");
+        Console.WriteLine("  Gallery: " + count + " drawings loaded and reloaded.");
+    }
+
+    static string FindRepository()
+    {
+        for (var directory = new DirectoryInfo(Directory.GetCurrentDirectory()); directory != null; directory = directory.Parent)
+        {
+            if (Directory.Exists(System.IO.Path.Combine(directory.FullName, @"Main\Avalonia")))
+            {
+                return directory.FullName;
+            }
+        }
+
+        throw new InvalidOperationException("Run this tool from the repository.");
+    }
+
+    static void Near(double actual, double expected)
+    {
+        Require(double.IsFinite(actual) && System.Math.Abs(actual - expected) <= 1e-10, $"Expected {expected:R}, got {actual:R}.");
+    }
+
+    static void Require(bool condition, string message)
+    {
+        if (!condition)
+        {
+            throw new InvalidOperationException(message);
+        }
+    }
+}

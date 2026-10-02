@@ -1,10 +1,11 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Media;
+
 namespace DynamicGeometry
 {
     /// <summary>
@@ -150,7 +151,7 @@ namespace DynamicGeometry
         [PropertyGridVisible]
         [PropertyGridGroup("Length")]
         [PropertyGridPreferredEditor("UpDown")]
-        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
+        [PropertyGridCustomValueProvider(typeof(LengthPropertyValue))]
         public double Length
         {
             get
@@ -177,6 +178,8 @@ namespace DynamicGeometry
 
             return Line.CanEdit(propertyName);
         }
+
+        public IPoint LengthEndpoint => Line.LengthEndpoint;
 
         public IList<IFigure> MeasuredFigures
         {

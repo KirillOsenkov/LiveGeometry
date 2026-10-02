@@ -33,6 +33,17 @@ namespace DynamicGeometry
         /// <summary>Where the point is along its figure. Setting it moves nothing by itself (a locus samples through it).</summary>
         public double Parameter { get; set; }
 
+        public override object CapturePlace()
+        {
+            return Parameter;
+        }
+
+        public override void RestorePlace(object place)
+        {
+            Parameter = (double)place;
+            this.RecalculateAndUpdateVisual();
+        }
+
         /// <summary>The parameter as the grid edits it: the point goes there, and what is built on it follows</summary>
         [PropertyGridVisible]
         [PropertyGridName("Parameter")]
@@ -134,4 +145,3 @@ namespace DynamicGeometry
         }
     }
 }
-
