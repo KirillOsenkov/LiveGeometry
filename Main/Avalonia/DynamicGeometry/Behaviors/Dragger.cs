@@ -58,7 +58,7 @@ namespace DynamicGeometry
             // labels that can't be dragged are paper: the drag moves the view, and one that
             // starts on a caption takes the captions along (Drawing.FixedLabels)
             PinnedLabelScroll captions = null;
-            if (Drawing.FixedLabels && found is LabelBase)
+            if (found is LabelBase label && Drawing.FixedLabels.Contains(label))
             {
                 if (found is Label { Pin: not LabelPin.None })
                 {

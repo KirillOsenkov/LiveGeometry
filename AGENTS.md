@@ -501,7 +501,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   tool that makes each (`UI/FigureIcons.cs`: figure type -> tool, walking base types; a new
   figure kind wants an entry). Hidden and `Auxiliary` figures are faded. Its selection *is*
   the drawing's (`Selected` + one `RaiseSelectionChanged`); arrows in the left margin go from
-  the keyboard's row to its dependencies. It rebuilds on `ActionManager.CollectionChanged`
+  the keyboard's row to its dependencies (blue), and with `FigureExplorer.RecursiveArrows`
+  (off; no UI for it) on up from those (gray), one trunk per figure, a step left of the
+  trunks above it that it runs beside, its branches stopping short of the next trunk: so no
+  two arrows cross (`LayOutTrunks`). It rebuilds on `ActionManager.CollectionChanged`
   (posted, coalesced), never between `ConstructionStepStarted` and a complete step: temporary
   figures of a tool are never recorded and its real steps sit in its transaction. Undoing a
   deletion puts each figure back at its old index (`RemoveFigureAction.Indices`), so it
@@ -1463,9 +1466,10 @@ buttons and checkboxes, 3D, custom tools.
   the figure gets the canvas minus the text and the zoom is computed from that in one go -
   never iterate "place text, zoom to fit": it runs away once the text needs more than its
   share (under the figure, the text may leave it a third of the height; beside it, 40% of
-  the width). If the text doesn't fit it runs off the bottom and the reader drags it up: labels of
-  a gallery drawing can't be dragged (`Drawing.FixedLabels`, not saved, off once the drawing is
-  the user's own), a drag on one pans the view, and one that starts on the caption scrolls the
+  the width). If the text doesn't fit it runs off the bottom and the reader drags it up: labels a
+  gallery drawing comes with can't be dragged (`Drawing.FixedLabels`, not saved, emptied once
+  the drawing is the user's own; one added later, a point's name shown, can: all of them were
+  paper at first, and a name shown on A could not be moved), a drag on one pans the view, and one that starts on the caption scrolls the
   pinned labels along (`PinnedLabelScroll`, by pixels, so undo brings both back). Not
   `Locked`: a point counts as locked when anything built on it is, captions included. Refitted on
   resize until the first edit, through `Drawing.SizeChanged` (`MainView.KeepFitted`) and not the

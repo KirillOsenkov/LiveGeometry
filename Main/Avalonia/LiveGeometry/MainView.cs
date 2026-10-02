@@ -634,7 +634,7 @@ public partial class MainView : UserControl
         control.LoadDrawing(item.LoadText(), item.FileName);
 
         // a reader drags the figure, not the text: on a phone a thumb on the caption scrolls
-        control.Drawing.FixedLabels = true;
+        control.Drawing.FixLabels();
         var drawing = control.Drawing;
         drawing.FitToWindow = () => GalleryDrawing.Fit(drawing, item.Plane);
         GalleryDrawing.Fit(drawing, item.Plane);
@@ -696,7 +696,7 @@ public partial class MainView : UserControl
         {
             // the user's own drawing: labels are theirs to move again, and "zoom to fit"
             // no longer lays out the caption (see OpenDrawing)
-            DrawingHost.CurrentDrawing.FixedLabels = false;
+            DrawingHost.CurrentDrawing.FixedLabels.Clear();
             DrawingHost.CurrentDrawing.FitToWindow = null;
         }
 
