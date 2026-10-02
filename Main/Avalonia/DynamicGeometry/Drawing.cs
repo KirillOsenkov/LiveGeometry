@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -10,8 +11,10 @@ using GuiLabs.Undo;
 namespace DynamicGeometry
 {
     [PropertyGridName("Drawing")]
-    public partial class Drawing : IThemeOverridable, IConditionalProperties
+    public partial class Drawing : IThemeOverridable, IConditionalProperties, INotifyPropertyChanged
     {
+        /// <summary>The paper changed: the grid's Background row and its buttons follow</summary>
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public Drawing(Canvas canvas)
         {
@@ -139,17 +142,13 @@ namespace DynamicGeometry
         /// another an override saying so. An undo step like a paper picked in the grid.
         /// </summary>
         [PropertyGridVisible]
-        [PropertyGridName("Theme's paper")]
-        [PropertyGridIcon(PropertyGridIcon.Paper)]
+        [PropertyGridName("Reset to default")]
+        [PropertyGridDestructive]
+        [PropertyGridLiveCondition]
         public void UseThemePaper()
         {
             // the theme's already: no undo step that undoes nothing
-            bool isThemePaper = !AppTheme.IsBase(AppTheme.Current)
-                && Overrides.TryGetValue(AppTheme.Current.Name, out var values)
-                && values.TryGetValue(nameof(Background), out var chosen)
-                ? chosen == null
-                : OwnBackground == null;
-            if (isThemePaper)
+            if (IsThemePaper)
             {
                 return;
             }
@@ -158,9 +157,23 @@ namespace DynamicGeometry
             Actions.SetProperty(ActionManager, paper, value: null);
         }
 
+        /// <summary>Whether the paper on screen is the theme's own, not one the drawing chose for the theme</summary>
+        bool IsThemePaper
+        {
+            get
+            {
+                return !AppTheme.IsBase(AppTheme.Current)
+                    && Overrides.TryGetValue(AppTheme.Current.Name, out var values)
+                    && values.TryGetValue(nameof(Background), out var chosen)
+                    ? chosen == null
+                    : OwnBackground == null;
+            }
+        }
+
         /// <summary>Drops the paper chosen for the theme on screen: the base theme's again. One undo step.</summary>
         [PropertyGridVisible]
         [PropertyGridIcon(PropertyGridIcon.Cross)]
+        [PropertyGridLiveCondition]
         public void SameAsBaseTheme()
         {
             string theme = AppTheme.Current.Name;
@@ -187,6 +200,11 @@ namespace DynamicGeometry
             {
                 var theme = AppTheme.Current;
                 return !AppTheme.IsBase(theme) && Overrides.TryGetValue(theme.Name, out var values) && values.Count > 0;
+            }
+
+            if (propertyName == nameof(UseThemePaper))
+            {
+                return !IsThemePaper;
             }
 
             return true;
@@ -381,6 +399,7 @@ namespace DynamicGeometry
         {
             PaintPaper();
             CoordinateGrid?.ApplyStyle();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Background)));
         }
 
         /// <summary>The paper onto the canvas, and the grid's colors, which go by the paper it is on</summary>

@@ -123,7 +123,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   first click is on paper), which the image of a reflection, rotation or translation
   shares and a dilation can't scale, so Dilate leaves such a circle alone. Asked only
   about the figure itself, the tool threw at its last click.
-- **Coordinates**: Background and Grid (G) (commands); Function - an expression in x; Line - by
+- **Coordinates**: Grid (G) (command); Function - an expression in x; Line - by
   slope and intercept expressions; Circle - by center and radius expressions; Point by
   coordinates (toggle: gives the point tools an X/Y panel).
 - **Measure**: Distance - two points or a segment; Angle (J) - vertex then two side points,
@@ -1006,9 +1006,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   load as they are and take the new line when edited.
   Whoever hosts a `SegmentSwitcher` sets its `Surface` to the background it sits on so the
   selected tab blends into it.
-- **The paper** is `Drawing.Background`, edited through the "Background" button on the
-  Coordinates tab (`DrawingHost.ToggleDrawingProperties` puts the drawing itself in the property
-  grid). A gallery tile takes a drawing's paper as its plate and turns its caption white on a
+- **The paper** is `Drawing.Background`, edited through "Drawing background" on the settings
+  page (`AppSettings.EditDrawingBackground`; `DrawingHost.ShowDrawingProperties` puts the
+  drawing itself in the property grid). "Reset to default" (the theme's paper) shows only while
+  the paper is not the theme's, and "Same paper as in Light" only while there is a Dark override: both come and go
+  as the paper changes (`[PropertyGridLiveCondition]`: the button is made hidden and the grid
+  asks `CanEdit` again on each named `PropertyChanged`; the divider over destructive buttons
+  hides with them), since the usual rebuild on a change
+  without a name would fold the color picker under the cursor. A gallery tile takes a drawing's paper as its plate and turns its caption white on a
   dark one.
 - **Save writes the drawing's own file again, without a dialog** (`MainView.SaveDrawing`),
   when it has one: `OwnFile`, the .lgf it was read from (the Open dialog, the command line)
@@ -1097,7 +1102,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the Shapes icons, `ImageFill` of a transformation's image - the figure transformed is
   filled as a shape is, though outlined in ink like its image -
   `RulerFill`/`RulerOutline`, `AngleFill`/`AngleOutline` with `ScaleMarks` on both,
-  `AreaFill`/`AreaHatch`, `PaperIconFill` (a brush), `LineAccent` for the line or curve a
+  `AreaFill`/`AreaHatch`, `LineAccent` for the line or curve a
   tool makes out of the figures its icon also shows: `IconBuilder.AccentLine`, 1.5 thick)
   - no literal brush in a `CreateIcon`,
   or the theme can't reach it. A shape's icon is not filled with the Paper group's
@@ -1147,7 +1152,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   what a style and a drawing's paper implement), and undo puts the override back, or takes
   it away if there was none. A "Same as in Light" button drops the theme's overrides (shown
   once there are some, on the next opening of the style). The paper works the same:
-  `Drawing.Overrides` holds the paper chosen for another theme, "Theme's paper" under Dark
+  `Drawing.Overrides` holds the paper chosen for another theme, "Reset to default" under Dark
   stores a null override (that theme's paper). Both buttons are undo steps.
   `GalleryTitle` (a Dark override in the splash's blue), `GalleryText` (the chrome's text
   color) and `GalleryLocus` are defaults too. The gallery drawings' own styles got their

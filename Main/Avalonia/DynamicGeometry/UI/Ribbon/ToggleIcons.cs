@@ -78,17 +78,6 @@ public static class ToggleIcons
             .Canvas;
     }
 
-    /// <summary>The paper of the drawing: a sheet with a gradient on it</summary>
-    public static FrameworkElement Background()
-    {
-        return IconBuilder.BuildIcon()
-            .Polygon(nameof(AppTheme.PaperIconFill), guide, new Point(0.12, 0.1), new Point(0.88, 0.1), new Point(0.88, 0.9), new Point(0.12, 0.9))
-            .Line(accent, 0.3, 0.68, 0.7, 0.32)
-            .Point(0.3, 0.68)
-            .Point(0.7, 0.32)
-            .Canvas;
-    }
-
     /// <summary>
     /// The Figure List: a sheet of rows, each a little figure (a point, a segment, a circle)
     /// before its name, the middle one selected (in the colors of a checked button)

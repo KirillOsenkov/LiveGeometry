@@ -122,6 +122,7 @@ namespace DynamicGeometry
             }
 
             FindAndUpdatePropertyEditor(e.PropertyName);
+            UpdateLiveButtons();
             FollowObjectTab();
 
             // the title may say what changed: the name ("Segment AB", also when a point is
@@ -498,6 +499,21 @@ namespace DynamicGeometry
                     Margin = new Thickness(-8, 12, -8, 8)
                 };
                 divider.BindTheme(Border.BackgroundProperty, nameof(AppTheme.Separator));
+
+                // a live button (PropertyGridLiveCondition) may hide: no divider over nothing
+                void UpdateDivider() => divider.IsVisible = destructive.Any(button => button.IsVisible);
+                foreach (var button in destructive)
+                {
+                    button.PropertyChanged += (s, e) =>
+                    {
+                        if (e.Property == Visual.IsVisibleProperty)
+                        {
+                            UpdateDivider();
+                        }
+                    };
+                }
+
+                UpdateDivider();
                 result.Add(divider);
                 result.AddRange(destructive);
             }
@@ -589,8 +605,25 @@ namespace DynamicGeometry
             var currentMethods = GetCallableMethods(editableObject);
             var currentMethodButtons = currentMethods
                 .Select(m => CreateMethodCallerControl(m, editableObject)).ToArray();
+            liveButtons = currentMethodButtons
+                .OfType<MethodCallerButton>()
+                .Where(b => b.OperationDescription.GetAttribute<PropertyGridLiveConditionAttribute>() != null)
+                .ToArray();
+            UpdateLiveButtons();
 
             return currentEditors.Concat(currentMethodButtons).ToArray();
+        }
+
+        /// <summary>The buttons that show and hide as their object changes (<see cref="PropertyGridLiveConditionAttribute"/>)</summary>
+        MethodCallerButton[] liveButtons = new MethodCallerButton[0];
+
+        void UpdateLiveButtons()
+        {
+            foreach (var button in liveButtons)
+            {
+                button.IsVisible = button.Target is not IConditionalProperties conditions
+                    || conditions.CanEdit(button.OperationDescription.Name);
+            }
         }
 
         protected virtual IEnumerable<IValueProvider> GetEditableProperties<T>(T editableObject)
@@ -627,7 +660,7 @@ namespace DynamicGeometry
             if (editableObject is IConditionalProperties conditions)
             {
                 return allMethods
-                    .Where(m => conditions.CanEdit(m.Name))
+                    .Where(m => conditions.CanEdit(m.Name) || m.HasAttribute<PropertyGridLiveConditionAttribute>())
                     .Select(m => (IOperationDescription)new CaptionedMethod(MethodDescription.Create(m), conditions))
                     .ToArray();
             }

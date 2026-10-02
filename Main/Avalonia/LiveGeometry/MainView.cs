@@ -227,6 +227,7 @@ public partial class MainView : UserControl
         var toolbar = Toolbar;
         toolbar.AddAtRight(CreateCorner());
         AppSettings.Instance.ShowRequested += page => HandleExceptions(() => DrawingHost.ShowProperties(page));
+        AppSettings.Instance.DrawingBackgroundRequested += () => HandleExceptions(DrawingHost.ShowDrawingProperties);
         ToolboxButton = toolbar.AddButton(
             AppIcon.Create(BrandIconSize),
             "Tools",
@@ -320,7 +321,6 @@ public partial class MainView : UserControl
     void InitializeCommands()
     {
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleGrid, first: true);
-        DrawingHost.AddToolbarButton(DrawingHost.CommandDrawingBackground, first: true);
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleLabelNewPoints);
         DrawingHost.AddToolbarButton(DrawingHost.CommandTogglePointByCoordinates);
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleFigureExplorer);

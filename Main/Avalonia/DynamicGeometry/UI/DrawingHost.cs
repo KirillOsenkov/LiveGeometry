@@ -41,7 +41,6 @@ namespace DynamicGeometry
         public Command CommandTogglePolar { get; set; }
         public Command CommandToggleSnapToCenter { get; set; }
         public Command CommandTogglePointByCoordinates { get; set; }
-        public Command CommandDrawingBackground { get; set; }
         public Command CommandToggleFigureExplorer { get; set; }
 
         GridSplitter figureExplorerSplitter;
@@ -152,11 +151,6 @@ namespace DynamicGeometry
                     + " For a point by itself, "
                     + "the Coordinates tool on the Points tab needs no toggle."
             };
-            CommandDrawingBackground = new Command(ToggleDrawingProperties, ToggleIcons.Background(), "Background", BehaviorCategories.Coordinates)
-            {
-                HintText = "The paper of the drawing: pick a color or a gradient for it in the side panel. "
-                    + "A new drawing takes the paper of the light or dark theme."
-            };
             CommandToggleFigureExplorer = new Command(ToggleFigureExplorer, ToggleIcons.FigureList(), "Figure List", BehaviorCategories.Selection)
             {
                 IsChecked = () => FigureExplorer.IsVisible,
@@ -165,15 +159,15 @@ namespace DynamicGeometry
             };
         }
 
-        /// <summary>The drawing's own properties (its paper) in the side panel; again to put them away</summary>
-        public void ToggleDrawingProperties()
+        /// <summary>The drawing's own properties (its paper) in the side panel</summary>
+        public void ShowDrawingProperties()
         {
             if (CurrentDrawing == null)
             {
                 return;
             }
 
-            ShowProperties(PropertyGrid.Selection == CurrentDrawing ? null : CurrentDrawing);
+            ShowProperties(CurrentDrawing);
         }
 
         protected void CreateFigureExplorer()

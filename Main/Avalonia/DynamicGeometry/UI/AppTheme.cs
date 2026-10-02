@@ -81,16 +81,6 @@ public class AppTheme : INotifyPropertyChanged, IConditionalProperties
         AngleFill = Color.Parse("#90FF7E"),
         AngleOutline = Color.Parse("#000000"),
         ScaleMarks = Color.Parse("#000000"),
-        PaperIconFill = new LinearGradientBrush()
-        {
-            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-            EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            GradientStops =
-            {
-                new GradientStop(Color.Parse("#FFFFFF"), 0),
-                new GradientStop(Color.Parse("#BFDCFF"), 1)
-            }
-        },
         AreaFill = Color.Parse("#FFD6D6"),
         AreaHatch = Color.Parse("#C8606E"),
         Guide = Color.Parse("#8A94A6"),
@@ -162,16 +152,6 @@ public class AppTheme : INotifyPropertyChanged, IConditionalProperties
         AngleFill = Color.Parse("#28D428"),
         AngleOutline = Color.Parse("#28D428"),
         ScaleMarks = Color.Parse("#000000"),
-        PaperIconFill = new LinearGradientBrush()
-        {
-            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-            EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-            GradientStops =
-            {
-                new GradientStop(Color.Parse("#46566C"), 0),
-                new GradientStop(Color.Parse("#1E2A3A"), 1)
-            }
-        },
         AreaFill = Color.Parse("#6E4A50"),
         AreaHatch = Color.Parse("#C88A94"),
         Guide = Color.Parse("#7A8595"),
@@ -463,12 +443,6 @@ public class AppTheme : INotifyPropertyChanged, IConditionalProperties
     [PropertyGridVisible]
     [PropertyGridGroup("Icons")]
     public Color ScaleMarks { get => scaleMarks; set => Set(ref scaleMarks, value); }
-
-    /// <summary>The sheet of the Background command: a paper (a brush: it may be a gradient)</summary>
-    Brush paperIconFill;
-    [PropertyGridVisible]
-    [PropertyGridGroup("Icons")]
-    public Brush PaperIconFill { get => paperIconFill; set => Set(ref paperIconFill, value); }
 
     /// <summary>The hatched pentagon of the Area tool...</summary>
     Color areaFill;

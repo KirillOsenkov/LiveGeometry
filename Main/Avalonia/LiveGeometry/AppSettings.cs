@@ -90,6 +90,18 @@ public class AppSettings : INotifyPropertyChanged
         ShowRequested?.Invoke(AppTheme.Current);
     }
 
+    /// <summary>The drawing on screen wants its paper shown: not a setting, but the drawing's (saved with it, undoable)</summary>
+    public event Action DrawingBackgroundRequested;
+
+    /// <summary>The paper of the drawing on screen, a color or a gradient</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Drawing background")]
+    [PropertyGridIcon(PropertyGridIcon.Paper)]
+    public void EditDrawingBackground()
+    {
+        DrawingBackgroundRequested?.Invoke();
+    }
+
     DispatcherTimer themeColorsTimer;
 
     /// <summary>
