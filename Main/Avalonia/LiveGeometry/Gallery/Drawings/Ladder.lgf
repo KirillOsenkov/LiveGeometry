@@ -426,92 +426,80 @@
       <Dependency Name="Ladder length" />
       <Dependency Name="E" />
     </DistanceMeasurement>
-    <Polygon Name="AHIJJ" Style="25">
+    <Polygon Name="AHIJ" Style="25">
       <Dependency Name="J" />
       <Dependency Name="I" />
       <Dependency Name="H" />
       <Dependency Name="A" />
-      <Dependency Name="J" />
     </Polygon>
     <PointByCoordinates Name="GroundLeft" Visible="false" Style="7" X="-1000" Y="-2.368023" />
     <PointByCoordinates Name="GroundRight" Visible="false" Style="7" X="1000" Y="-2.368023" />
     <PointByCoordinates Name="GroundFarRight" Visible="false" Style="7" X="1000" Y="-1000" />
     <PointByCoordinates Name="GroundFarLeft" Visible="false" Style="7" X="-1000" Y="-1000" />
-    <Polygon Name="GroundFarLeftGroundFarRightGroundRightGroundLeftGroundLeft" Style="26">
+    <Polygon Name="GroundFarLeftGroundFarRightGroundRightGroundLeft" Style="26">
       <Dependency Name="GroundLeft" />
       <Dependency Name="GroundRight" />
       <Dependency Name="GroundFarRight" />
       <Dependency Name="GroundFarLeft" />
-      <Dependency Name="GroundLeft" />
     </Polygon>
-    <Polygon Name="OOPQR" Style="27">
+    <Polygon Name="OPQR" Style="27">
       <Dependency Name="O" />
       <Dependency Name="P" />
       <Dependency Name="Q" />
       <Dependency Name="R" />
-      <Dependency Name="O" />
     </Polygon>
-    <Polygon Name="AHIJJ2" Style="28">
+    <Polygon Name="AHIJ2" Style="28">
       <Dependency Name="J" />
       <Dependency Name="I" />
       <Dependency Name="H" />
       <Dependency Name="A" />
-      <Dependency Name="J" />
     </Polygon>
     <Polygon Name="Roof" Style="Roof">
       <Dependency Name="I" />
       <Dependency Name="RoofTop" />
       <Dependency Name="H" />
-      <Dependency Name="I" />
     </Polygon>
-    <Polygon Name="OPQQR" Style="29">
+    <Polygon Name="OPQR2" Style="29">
       <Dependency Name="Q" />
       <Dependency Name="R" />
       <Dependency Name="O" />
       <Dependency Name="P" />
-      <Dependency Name="Q" />
     </Polygon>
-    <Polygon Name="OPPVG1" Style="30">
+    <Polygon Name="OPVG1" Style="30">
       <Dependency Name="P" />
       <Dependency Name="V" />
       <Dependency Name="G1" />
       <Dependency Name="O" />
-      <Dependency Name="P" />
     </Polygon>
-    <Polygon Name="QRD1YY" Style="30">
+    <Polygon Name="QRD1Y" Style="30">
       <Dependency Name="Y" />
       <Dependency Name="Q" />
       <Dependency Name="R" />
       <Dependency Name="D1" />
-      <Dependency Name="Y" />
     </Polygon>
-    <Polygon Name="PQZUU" Style="30">
+    <Polygon Name="PQZU" Style="30">
       <Dependency Name="U" />
       <Dependency Name="Z" />
       <Dependency Name="Q" />
       <Dependency Name="P" />
-      <Dependency Name="U" />
     </Polygon>
-    <Polygon Name="ORC1H1H1" Style="30">
+    <Polygon Name="ORC1H1" Style="30">
       <Dependency Name="H1" />
       <Dependency Name="O" />
       <Dependency Name="R" />
       <Dependency Name="C1" />
-      <Dependency Name="H1" />
     </Polygon>
-    <Polygon Name="V1W1W1Y1X1" Style="30">
+    <Polygon Name="V1W1Y1X1" Style="30">
       <Dependency Name="W1" />
       <Dependency Name="V1" />
       <Dependency Name="X1" />
       <Dependency Name="Y1" />
-      <Dependency Name="W1" />
     </Polygon>
-    <Polygon Name="Z1Z1A2C2B2" Style="30">
+    <Polygon Name="Z1A2C2B2" Style="30">
       <Dependency Name="Z1" />
       <Dependency Name="A2" />
       <Dependency Name="C2" />
       <Dependency Name="B2" />
-      <Dependency Name="Z1" />
     </Polygon>
     <Label Name="Title" Style="GalleryTitle" Text="The Falling Ladder" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
     <Label Name="Description" Style="GalleryText" Text="A ladder leans on a wall, with a bucket of paint hanging on it. It slips: the top slides down the wall, the foot slides out.\n\nWhat path does the bucket follow? Drag the ladder's top down and see. Then slide the bucket to the middle: what shape is it now?\n\nThe other green points move the house, resize it and raise its roof." Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />

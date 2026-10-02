@@ -77,7 +77,7 @@ foreach (var square in squares)
         (square.Left, square.Bottom + square.Side)
     };
     figures.AppendLine("    <Polygon Name=\"" + fill + "\" Style=\"" + fill + "\">");
-    foreach (var corner in corners.Concat(new[] { corners[0] }))
+    foreach (var corner in corners)
     {
         figures.AppendLine("      <Dependency Name=\"" + Corner(corner) + "\" />");
     }

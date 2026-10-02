@@ -101,7 +101,7 @@
       <Dependency Name="N" />
       <Dependency Name="M" />
     </Segment>
-    <Polygon Name="CDEFGHILJJ" Style="20">
+    <Polygon Name="CDEFGHILJ" Style="20">
       <Dependency Name="J" />
       <Dependency Name="L" />
       <Dependency Name="I" />
@@ -111,7 +111,6 @@
       <Dependency Name="E" />
       <Dependency Name="D" />
       <Dependency Name="C" />
-      <Dependency Name="J" />
     </Polygon>
     <ShowHideControl Name="ShowHideControl1" Style="GalleryText" Show="false" Text="Help 1" X="-5" Y="-0.6">
       <Dependency Name="K" />

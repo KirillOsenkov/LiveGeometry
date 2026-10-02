@@ -1592,6 +1592,10 @@ Learned from `Reference/VB6/Source` while making the CD library load (`DGFReader
   logical operators, `IF`/`MAX`/`MIN`, `°` inside brackets. Those labels show the error text;
   the compiler never throws out of a label (`Compiler.CompileExpression` catches).
 - `IniFile` skips blank lines (every CD file has them between sections).
+- A polygon lists its first point again at the end, to close it; the reader drops repeated
+  vertices (kept, the inner triangle of Morley's was a "Quadrilateral" named JJKL). The
+  gallery's polygons had the same repeat, also the hand-made and generated ones: removed
+  2026-10-01.
 
 ## UI automation (tools/)
 

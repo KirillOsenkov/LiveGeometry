@@ -219,13 +219,11 @@
       <Dependency Name="Tetrahedron3" />
       <Dependency Name="Tetrahedron0" />
       <Dependency Name="Tetrahedron1" />
-      <Dependency Name="Tetrahedron3" />
     </Polygon>
     <Polygon Name="TetrahedronFace1" Style="TetrahedronFace1">
       <Dependency Name="Tetrahedron1" />
       <Dependency Name="Tetrahedron0" />
       <Dependency Name="Tetrahedron2" />
-      <Dependency Name="Tetrahedron1" />
     </Polygon>
     <PointByCoordinates Name="Tetrahedron" Visible="false" X="-2.9" Y="0.45" />
     <PointLabel Name="TetrahedronName" Style="Name" OffsetX="-52.3" OffsetY="6" ShowName="true" ShowCoordinates="false">
@@ -244,21 +242,18 @@
       <Dependency Name="Cube6" />
       <Dependency Name="Cube2" />
       <Dependency Name="Cube3" />
-      <Dependency Name="Cube7" />
     </Polygon>
     <Polygon Name="CubeFace1" Style="CubeFace1">
       <Dependency Name="Cube3" />
       <Dependency Name="Cube2" />
       <Dependency Name="Cube0" />
       <Dependency Name="Cube1" />
-      <Dependency Name="Cube3" />
     </Polygon>
     <Polygon Name="CubeFace2" Style="CubeFace2">
       <Dependency Name="Cube7" />
       <Dependency Name="Cube3" />
       <Dependency Name="Cube1" />
       <Dependency Name="Cube5" />
-      <Dependency Name="Cube7" />
     </Polygon>
     <PointByCoordinates Name="Cube" Visible="false" X="0" Y="-1.25" />
     <PointLabel Name="CubeName" Style="Name" OffsetX="-19" OffsetY="6" ShowName="true" ShowCoordinates="false">
@@ -274,25 +269,21 @@
       <Dependency Name="Octahedron3" />
       <Dependency Name="Octahedron0" />
       <Dependency Name="Octahedron4" />
-      <Dependency Name="Octahedron3" />
     </Polygon>
     <Polygon Name="OctahedronFace1" Style="OctahedronFace1">
       <Dependency Name="Octahedron4" />
       <Dependency Name="Octahedron0" />
       <Dependency Name="Octahedron2" />
-      <Dependency Name="Octahedron4" />
     </Polygon>
     <Polygon Name="OctahedronFace2" Style="OctahedronFace2">
       <Dependency Name="Octahedron4" />
       <Dependency Name="Octahedron1" />
       <Dependency Name="Octahedron3" />
-      <Dependency Name="Octahedron4" />
     </Polygon>
     <Polygon Name="OctahedronFace3" Style="OctahedronFace3">
       <Dependency Name="Octahedron2" />
       <Dependency Name="Octahedron1" />
       <Dependency Name="Octahedron4" />
-      <Dependency Name="Octahedron2" />
     </Polygon>
     <PointByCoordinates Name="Octahedron" Visible="false" X="2.9" Y="0.45" />
     <PointLabel Name="OctahedronName" Style="Name" OffsetX="-47.5" OffsetY="6" ShowName="true" ShowCoordinates="false">
@@ -324,7 +315,6 @@
       <Dependency Name="Dodecahedron0" />
       <Dependency Name="Dodecahedron9" />
       <Dependency Name="Dodecahedron1" />
-      <Dependency Name="Dodecahedron13" />
     </Polygon>
     <Polygon Name="DodecahedronFace1" Style="DodecahedronFace1">
       <Dependency Name="Dodecahedron5" />
@@ -332,7 +322,6 @@
       <Dependency Name="Dodecahedron1" />
       <Dependency Name="Dodecahedron9" />
       <Dependency Name="Dodecahedron15" />
-      <Dependency Name="Dodecahedron5" />
     </Polygon>
     <Polygon Name="DodecahedronFace2" Style="DodecahedronFace2">
       <Dependency Name="Dodecahedron3" />
@@ -340,7 +329,6 @@
       <Dependency Name="Dodecahedron2" />
       <Dependency Name="Dodecahedron10" />
       <Dependency Name="Dodecahedron13" />
-      <Dependency Name="Dodecahedron3" />
     </Polygon>
     <Polygon Name="DodecahedronFace3" Style="DodecahedronFace3">
       <Dependency Name="Dodecahedron17" />
@@ -348,7 +336,6 @@
       <Dependency Name="Dodecahedron5" />
       <Dependency Name="Dodecahedron19" />
       <Dependency Name="Dodecahedron7" />
-      <Dependency Name="Dodecahedron17" />
     </Polygon>
     <Polygon Name="DodecahedronFace4" Style="DodecahedronFace4">
       <Dependency Name="Dodecahedron18" />
@@ -356,7 +343,6 @@
       <Dependency Name="Dodecahedron3" />
       <Dependency Name="Dodecahedron17" />
       <Dependency Name="Dodecahedron7" />
-      <Dependency Name="Dodecahedron18" />
     </Polygon>
     <Polygon Name="DodecahedronFace5" Style="DodecahedronFace5">
       <Dependency Name="Dodecahedron3" />
@@ -364,7 +350,6 @@
       <Dependency Name="Dodecahedron1" />
       <Dependency Name="Dodecahedron11" />
       <Dependency Name="Dodecahedron17" />
-      <Dependency Name="Dodecahedron3" />
     </Polygon>
     <PointByCoordinates Name="Dodecahedron" Visible="false" X="-2.9" Y="-2.95" />
     <PointLabel Name="DodecahedronName" Style="Name" OffsetX="-57" OffsetY="6" ShowName="true" ShowCoordinates="false">
@@ -386,61 +371,51 @@
       <Dependency Name="Icosahedron3" />
       <Dependency Name="Icosahedron1" />
       <Dependency Name="Icosahedron7" />
-      <Dependency Name="Icosahedron3" />
     </Polygon>
     <Polygon Name="IcosahedronFace1" Style="IcosahedronFace1">
       <Dependency Name="Icosahedron11" />
       <Dependency Name="Icosahedron3" />
       <Dependency Name="Icosahedron7" />
-      <Dependency Name="Icosahedron11" />
     </Polygon>
     <Polygon Name="IcosahedronFace2" Style="IcosahedronFace2">
       <Dependency Name="Icosahedron2" />
       <Dependency Name="Icosahedron1" />
       <Dependency Name="Icosahedron5" />
-      <Dependency Name="Icosahedron2" />
     </Polygon>
     <Polygon Name="IcosahedronFace3" Style="IcosahedronFace3">
       <Dependency Name="Icosahedron10" />
       <Dependency Name="Icosahedron9" />
       <Dependency Name="Icosahedron11" />
-      <Dependency Name="Icosahedron10" />
     </Polygon>
     <Polygon Name="IcosahedronFace4" Style="IcosahedronFace4">
       <Dependency Name="Icosahedron4" />
       <Dependency Name="Icosahedron2" />
       <Dependency Name="Icosahedron5" />
-      <Dependency Name="Icosahedron4" />
     </Polygon>
     <Polygon Name="IcosahedronFace5" Style="IcosahedronFace5">
       <Dependency Name="Icosahedron5" />
       <Dependency Name="Icosahedron1" />
       <Dependency Name="Icosahedron3" />
-      <Dependency Name="Icosahedron5" />
     </Polygon>
     <Polygon Name="IcosahedronFace6" Style="IcosahedronFace6">
       <Dependency Name="Icosahedron10" />
       <Dependency Name="Icosahedron4" />
       <Dependency Name="Icosahedron9" />
-      <Dependency Name="Icosahedron10" />
     </Polygon>
     <Polygon Name="IcosahedronFace7" Style="IcosahedronFace7">
       <Dependency Name="Icosahedron9" />
       <Dependency Name="Icosahedron3" />
       <Dependency Name="Icosahedron11" />
-      <Dependency Name="Icosahedron9" />
     </Polygon>
     <Polygon Name="IcosahedronFace8" Style="IcosahedronFace8">
       <Dependency Name="Icosahedron9" />
       <Dependency Name="Icosahedron4" />
       <Dependency Name="Icosahedron5" />
-      <Dependency Name="Icosahedron9" />
     </Polygon>
     <Polygon Name="IcosahedronFace9" Style="IcosahedronFace9">
       <Dependency Name="Icosahedron5" />
       <Dependency Name="Icosahedron3" />
       <Dependency Name="Icosahedron9" />
-      <Dependency Name="Icosahedron5" />
     </Polygon>
     <PointByCoordinates Name="Icosahedron" Visible="false" X="2.9" Y="-2.95" />
     <PointLabel Name="IcosahedronName" Style="Name" OffsetX="-52.3" OffsetY="6" ShowName="true" ShowCoordinates="false">

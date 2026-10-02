@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 
@@ -248,8 +249,10 @@ namespace DynamicGeometry
 
         void ReadPolygon(IniFile.Section section)
         {
+            // DG lists the first vertex again at the end to close the outline; here a vertex
+            // is a vertex, and ABCA was a quadrilateral with a side of length 0
             var polygon = Factory.CreatePolygon(
-                drawing, GetPointList(section));
+                drawing, GetPointList(section).Distinct().ToList());
             Actions.Add(drawing, polygon);
             SetFigureStyle(section, polygon);
             staticGraphics[section.GetTitleNumber("SG")] = polygon;

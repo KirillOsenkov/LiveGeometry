@@ -98,7 +98,7 @@ for (int s = 0; s < solids.Length; s++)
         styles.AppendLine("    </ShapeStyle>");
 
         figures.AppendLine("    <Polygon Name=\"" + styleName + "\" Style=\"" + styleName + "\">");
-        foreach (int vertex in face.Vertices.Concat(new[] { face.Vertices[0] }))
+        foreach (int vertex in face.Vertices)
         {
             figures.AppendLine("      <Dependency Name=\"" + solid.Name + vertex + "\" />");
         }

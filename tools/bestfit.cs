@@ -94,7 +94,6 @@ foreach (var name in names)
     figures.AppendLine("      <Dependency Name=\"" + name + "Foot\" />");
     figures.AppendLine("      <Dependency Name=\"" + name + "FootAcross\" />");
     figures.AppendLine("      <Dependency Name=\"" + name + "Across\" />");
-    figures.AppendLine("      <Dependency Name=\"" + name + "\" />");
     figures.AppendLine("    </Polygon>");
     figures.AppendLine("    <Segment Name=\"" + name + "Gap\" Style=\"Gap\">");
     figures.AppendLine("      <Dependency Name=\"" + name + "\" />");

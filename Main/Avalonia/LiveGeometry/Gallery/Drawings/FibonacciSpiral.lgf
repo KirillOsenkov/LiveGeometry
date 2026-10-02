@@ -118,49 +118,42 @@
       <Dependency Name="P13_0" />
       <Dependency Name="P13_13" />
       <Dependency Name="P0_13" />
-      <Dependency Name="P0_0" />
     </Polygon>
     <Polygon Name="Square2" Style="Square2">
       <Dependency Name="P13_5" />
       <Dependency Name="P21_5" />
       <Dependency Name="P21_13" />
       <Dependency Name="P13_13" />
-      <Dependency Name="P13_5" />
     </Polygon>
     <Polygon Name="Square3" Style="Square3">
       <Dependency Name="P16_0" />
       <Dependency Name="P21_0" />
       <Dependency Name="P21_5" />
       <Dependency Name="P16_5" />
-      <Dependency Name="P16_0" />
     </Polygon>
     <Polygon Name="Square4" Style="Square4">
       <Dependency Name="P13_0" />
       <Dependency Name="P16_0" />
       <Dependency Name="P16_3" />
       <Dependency Name="P13_3" />
-      <Dependency Name="P13_0" />
     </Polygon>
     <Polygon Name="Square5" Style="Square5">
       <Dependency Name="P13_3" />
       <Dependency Name="P15_3" />
       <Dependency Name="P15_5" />
       <Dependency Name="P13_5" />
-      <Dependency Name="P13_3" />
     </Polygon>
     <Polygon Name="Square6" Style="Square6">
       <Dependency Name="P15_4" />
       <Dependency Name="P16_4" />
       <Dependency Name="P16_5" />
       <Dependency Name="P15_5" />
-      <Dependency Name="P15_4" />
     </Polygon>
     <Polygon Name="Square7" Style="Square7">
       <Dependency Name="P15_3" />
       <Dependency Name="P16_3" />
       <Dependency Name="P16_4" />
       <Dependency Name="P15_4" />
-      <Dependency Name="P15_3" />
     </Polygon>
     <CircleArc Name="Arc1" Style="Arc1">
       <Dependency Name="P13_0" />

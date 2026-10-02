@@ -56,29 +56,25 @@
       <Dependency Name="E" />
       <Dependency Name="A" />
     </Segment>
-    <Polygon Name="CDDE" Style="16">
+    <Polygon Name="CDE" Style="16">
       <Dependency Name="D" />
       <Dependency Name="C" />
       <Dependency Name="E" />
-      <Dependency Name="D" />
     </Polygon>
-    <Polygon Name="BCEE" Style="17">
+    <Polygon Name="BCE" Style="17">
       <Dependency Name="E" />
       <Dependency Name="C" />
       <Dependency Name="B" />
-      <Dependency Name="E" />
     </Polygon>
-    <Polygon Name="ABEE" Style="18">
+    <Polygon Name="ABE" Style="18">
       <Dependency Name="E" />
       <Dependency Name="B" />
       <Dependency Name="A" />
-      <Dependency Name="E" />
     </Polygon>
-    <Polygon Name="ADDE" Style="19">
+    <Polygon Name="ADE" Style="19">
       <Dependency Name="D" />
       <Dependency Name="E" />
       <Dependency Name="A" />
-      <Dependency Name="D" />
     </Polygon>
     <Segment Name="AE2" Style="RoadMarking">
       <Dependency Name="A" />

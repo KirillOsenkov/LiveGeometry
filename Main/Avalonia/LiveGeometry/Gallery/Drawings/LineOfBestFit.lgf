@@ -78,7 +78,6 @@
       <Dependency Name="AFoot" />
       <Dependency Name="AFootAcross" />
       <Dependency Name="AAcross" />
-      <Dependency Name="A" />
     </Polygon>
     <Segment Name="AGap" Style="Gap">
       <Dependency Name="A" />
@@ -101,7 +100,6 @@
       <Dependency Name="BFoot" />
       <Dependency Name="BFootAcross" />
       <Dependency Name="BAcross" />
-      <Dependency Name="B" />
     </Polygon>
     <Segment Name="BGap" Style="Gap">
       <Dependency Name="B" />
@@ -124,7 +122,6 @@
       <Dependency Name="CFoot" />
       <Dependency Name="CFootAcross" />
       <Dependency Name="CAcross" />
-      <Dependency Name="C" />
     </Polygon>
     <Segment Name="CGap" Style="Gap">
       <Dependency Name="C" />
@@ -147,7 +144,6 @@
       <Dependency Name="DFoot" />
       <Dependency Name="DFootAcross" />
       <Dependency Name="DAcross" />
-      <Dependency Name="D" />
     </Polygon>
     <Segment Name="DGap" Style="Gap">
       <Dependency Name="D" />
@@ -170,7 +166,6 @@
       <Dependency Name="EFoot" />
       <Dependency Name="EFootAcross" />
       <Dependency Name="EAcross" />
-      <Dependency Name="E" />
     </Polygon>
     <Segment Name="EGap" Style="Gap">
       <Dependency Name="E" />
@@ -193,7 +188,6 @@
       <Dependency Name="FFoot" />
       <Dependency Name="FFootAcross" />
       <Dependency Name="FAcross" />
-      <Dependency Name="F" />
     </Polygon>
     <Segment Name="FGap" Style="Gap">
       <Dependency Name="F" />
@@ -216,7 +210,6 @@
       <Dependency Name="GFoot" />
       <Dependency Name="GFootAcross" />
       <Dependency Name="GAcross" />
-      <Dependency Name="G" />
     </Polygon>
     <Segment Name="GGap" Style="Gap">
       <Dependency Name="G" />
@@ -239,7 +232,6 @@
       <Dependency Name="HFoot" />
       <Dependency Name="HFootAcross" />
       <Dependency Name="HAcross" />
-      <Dependency Name="H" />
     </Polygon>
     <Segment Name="HGap" Style="Gap">
       <Dependency Name="H" />
@@ -262,7 +254,6 @@
       <Dependency Name="IFoot" />
       <Dependency Name="IFootAcross" />
       <Dependency Name="IAcross" />
-      <Dependency Name="I" />
     </Polygon>
     <Segment Name="IGap" Style="Gap">
       <Dependency Name="I" />
@@ -285,7 +276,6 @@
       <Dependency Name="JFoot" />
       <Dependency Name="JFootAcross" />
       <Dependency Name="JAcross" />
-      <Dependency Name="J" />
     </Polygon>
     <Segment Name="JGap" Style="Gap">
       <Dependency Name="J" />
@@ -308,7 +298,6 @@
       <Dependency Name="KFoot" />
       <Dependency Name="KFootAcross" />
       <Dependency Name="KAcross" />
-      <Dependency Name="K" />
     </Polygon>
     <Segment Name="KGap" Style="Gap">
       <Dependency Name="K" />
@@ -331,7 +320,6 @@
       <Dependency Name="LFoot" />
       <Dependency Name="LFootAcross" />
       <Dependency Name="LAcross" />
-      <Dependency Name="L" />
     </Polygon>
     <Segment Name="LGap" Style="Gap">
       <Dependency Name="L" />

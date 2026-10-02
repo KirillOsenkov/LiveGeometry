@@ -78,7 +78,6 @@
       <Dependency Name="GroundRight" />
       <Dependency Name="GroundFarRight" />
       <Dependency Name="GroundFarLeft" />
-      <Dependency Name="GroundLeft" />
     </Polygon>
     <PointByCoordinates Name="GroundRayStart" Visible="false" X="-100" Y="0" />
     <PointByCoordinates Name="GroundRayDirection" Visible="false" X="-99" Y="0" />
@@ -109,7 +108,6 @@
       <Dependency Name="FarLeft" />
       <Dependency Name="FarPeak" />
       <Dependency Name="FarRight" />
-      <Dependency Name="FarLeft" />
     </Polygon>
     <PointOnFigure Name="MountainFoot" X="-6.25" Y="0" Parameter="93.75">
       <Dependency Name="GroundRay" />
@@ -134,7 +132,6 @@
       <Dependency Name="MountainLeft" />
       <Dependency Name="Peak" />
       <Dependency Name="MountainRight" />
-      <Dependency Name="MountainLeft" />
     </Polygon>
     <PointByCoordinates Name="L" Visible="false" X="-1" Y="0" />
     <PointByCoordinates Name="RBase" Visible="false" X="1.5" Y="0" />
@@ -253,7 +250,6 @@
       <Dependency Name="Merlon0B" />
       <Dependency Name="Merlon0C" />
       <Dependency Name="Merlon0D" />
-      <Dependency Name="L" />
     </Polygon>
     <PointByCoordinates Name="TBase" Visible="false" X="-1.8" Y="4" />
     <PointByCoordinates Name="TDirection" Visible="false" X="-1.8" Y="5" />
@@ -297,7 +293,6 @@
       <Dependency Name="Tower5" />
       <Dependency Name="Tower6" />
       <Dependency Name="Tower7" />
-      <Dependency Name="TowerFootLeft" />
     </Polygon>
     <PointByCoordinates Name="PoleTop" Visible="false" X="-1.8" Y="T.Y + 1.7">
       <Dependency Name="T" />
@@ -316,7 +311,6 @@
       <Dependency Name="PoleTop" />
       <Dependency Name="FlagTip" />
       <Dependency Name="FlagBottom" />
-      <Dependency Name="PoleTop" />
     </Polygon>
     <PointByCoordinates Name="DoorLeft" Visible="false" X="(L.X + R.X) / 2 - 0.45" Y="0">
       <Dependency Name="L" />
@@ -343,7 +337,6 @@
       <Dependency Name="DoorRight" />
       <Dependency Name="DoorTopRight" />
       <Dependency Name="DoorTopLeft" />
-      <Dependency Name="DoorLeft" />
     </Polygon>
     <Circle Name="Arch" Style="Door">
       <Dependency Name="DoorArch" />
@@ -366,7 +359,6 @@
       <Dependency Name="Window1B" />
       <Dependency Name="Window1C" />
       <Dependency Name="Window1D" />
-      <Dependency Name="Window1A" />
     </Polygon>
     <PointByCoordinates Name="Window2A" Visible="false" X="R.X - 1.1" Y="1.8">
       <Dependency Name="R" />
@@ -385,7 +377,6 @@
       <Dependency Name="Window2B" />
       <Dependency Name="Window2C" />
       <Dependency Name="Window2D" />
-      <Dependency Name="Window2A" />
     </Polygon>
     <PointOnFigure Name="TreeFoot" X="7.599999999999994" Y="0" Parameter="107.6">
       <Dependency Name="GroundRay" />
@@ -419,7 +410,6 @@
       <Dependency Name="TrunkRight" />
       <Dependency Name="TrunkTopRight" />
       <Dependency Name="TrunkTopLeft" />
-      <Dependency Name="TrunkLeft" />
     </Polygon>
     <PointByCoordinates Name="Crown" Visible="false" X="TreeFoot.X" Y="Tree.Y * 0.72">
       <Dependency Name="TreeFoot" />
