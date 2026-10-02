@@ -17,6 +17,9 @@ internal sealed partial class Program
             AddressBar.Current = new LiveGeometry.Browser.BrowserAddressBar();
             SettingsStore.Current = new LiveGeometry.Browser.BrowserSettingsStore();
 
+            // hints name the keys as the keyboard does (Option on a Mac)
+            DynamicGeometry.KeyNames.IsMac = IsMacKeyboard();
+
             // a reload, or another visit, finds the user's drawing where it was left
             MainView.KeepsOwnDrawing = true;
             DynamicGeometry.EmojiFont.Open = OpenEmojiFont;
@@ -34,6 +37,9 @@ internal sealed partial class Program
             }
         }
     }
+
+    [JSImport("isMac", "main.js")]
+    private static partial bool IsMacKeyboard();
 
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>();

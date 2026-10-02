@@ -229,6 +229,12 @@ namespace DynamicGeometry
                 if (found is IPoint && !found.Locked && !moving.IsEmpty())
                 {
                     dragTransaction = Transaction.Create(Drawing.ActionManager, false);
+                    var hint = ModifierHint(found);
+                    if (hint != null)
+                    {
+                        Drawing.RaiseStatusNotification(hint);
+                        showsModifierHint = true;
+                    }
                 }
             }
             if (!moving.IsEmpty())
@@ -365,6 +371,44 @@ namespace DynamicGeometry
                 dragTransaction.Commit();
                 dragTransaction = null;
             }
+
+            if (showsModifierHint)
+            {
+                showsModifierHint = false;
+                Drawing?.RaiseStatusNotification(HintText);
+            }
+        }
+
+        // the status says what Shift and Alt do to the dragged point, until the drop
+        bool showsModifierHint;
+
+        /// <summary>
+        /// What holding a key does to the point that is dragged, for the status: Shift puts a
+        /// free point on the grid, Alt snaps it to a figure or lets go of the figures it is
+        /// on (<see cref="PointToSnap"/>); null for a point the keys do nothing to
+        /// </summary>
+        static string ModifierHint(IFigure figure)
+        {
+            if (!(figure is PointBase point))
+            {
+                return null;
+            }
+
+            // (a point a locus is drawn from stays what it is: Alt does nothing to it)
+            bool altApplies = !PointSnapping.IsHeldByLocus(point);
+            if (PointSnapping.CanRelease(point))
+            {
+                return altApplies ? "Hold " + KeyNames.Alt + " to detach the point." : null;
+            }
+
+            if (point is FreePoint)
+            {
+                return altApplies
+                    ? "Hold Shift to snap to grid. Hold " + KeyNames.Alt + " to snap to a figure."
+                    : "Hold Shift to snap to grid.";
+            }
+
+            return null;
         }
 
         #region Alt-drag: snapping and releasing points

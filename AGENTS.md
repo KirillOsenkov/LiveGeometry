@@ -81,8 +81,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 (letter in parentheses):
 
 - **Selection**: Drag (Q) - drags points and figures (with Alt a point snaps onto figures and
-  lets go of them, see "Snapping and releasing points"); also the tool every construction
-  returns to. Figure List (toggle): see "The Figure List".
+  lets go of them, see "Snapping and releasing points"; while a point is dragged the
+  status says what Shift and Alt do to it, `Dragger.ModifierHint`); also the tool every
+  construction returns to. Figure List (toggle): see "The Figure List".
 - **Points**: Point (P) - free, on a figure, or at an intersection; Midpoint (M) - two points
   or a segment; Intersection (I) - two figures that cross, the click on the second picks the
   nearer crossing (`PointPlacement.Intersection`, shared with the Point tool); Coordinates (X) -
@@ -292,7 +293,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Cmd does what Ctrl does (`MainView.IsCommandModifier`, `Behavior.IsCtrlPressed`): in the
   browser on a Mac every shortcut was dead, Cmd+S saved the web page, and Ctrl+click there
   is a right click. Ctrl+Shift+Z redoes as Ctrl+Y does, and Backspace (a Mac's "delete"
-  key) deletes the selection as Delete does.
+  key) deletes the selection as Delete does. Text that names a key names it as the
+  keyboard does (`KeyNames.Alt`: Option on a Mac); `KeyNames.IsMac` is the desktop's OS,
+  and in the browser the page's platform (`isMac` in `main.js`), since a browser says it
+  runs on "browser". The browser sets it before Avalonia is up, which is why it is a class
+  of its own: touching `Behavior` that early ran its static constructor, which makes
+  cursors, and the page died with "Unable to locate ICursorFactory".
   Plain keys: `MainView.HandlePlainKey`; tool letters: `UI/BehaviorShortcuts.cs` (also feeds
   the tooltips). The keys that move the view (arrows, Home, Page Up/Down, +/-) do nothing
   while the side panel has the keyboard: its lists, sliders and combos use them, and an

@@ -51,6 +51,11 @@ dotnetRuntime.setModuleImports('main.js', {
             return null;
         }
     },
+    // a Mac's keyboard (an iPad's too: a browser on one says MacIntel), for the names of keys in hints
+    isMac: () => {
+        const platform = globalThis.navigator.userAgentData?.platform || globalThis.navigator.platform || '';
+        return /Mac|iPhone|iPad|iPod/i.test(platform);
+    },
     getSettingKeys: (prefix) => {
         const keys = [];
         try {

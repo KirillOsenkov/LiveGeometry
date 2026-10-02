@@ -39,6 +39,7 @@ public class Program
             ("Repeated function references survive replacement", FunctionReplacement),
             ("Construction cancellation and undo", ConstructionUndo),
             ("Dragging and Alt snapping undo", DraggingUndo),
+            ("Dragging a point says what Shift and Alt do", DragModifierHints),
             ("Editor commits and undo", EditorUndo),
             ("GeoGebra dependent numeric stays live", GeoGebraDependentNumeric),
             ("GeoGebra untranslated numeric keeps its value", GeoGebraUntranslatedNumeric),
@@ -956,6 +957,82 @@ public class Program
         {
             Behavior.NewBehaviorCreated -= created;
             ToolStorage.Instance = previous;
+        }
+    }
+
+    /// <summary>
+    /// While a point is dragged, the status says what Shift and Alt do to it (Option on a
+    /// Mac); at the drop the Drag tool's own hint is back.
+    /// </summary>
+    static void DragModifierHints()
+    {
+        var drawing = NewDrawing();
+        var free = AddPoint(drawing, x: -3, y: 1);
+        var first = AddPoint(drawing, x: 0, y: -3);
+        var second = AddPoint(drawing, x: 0, y: 3);
+        var segment = Factory.CreateSegment(drawing, first, second);
+        Actions.Add(drawing, segment);
+        var onSegment = Factory.CreatePointOnFigure(drawing, segment, new Point(0, 0));
+        Actions.Add(drawing, onSegment);
+        using var window = new TestWindow(drawing.Canvas);
+        var dragger = new Dragger();
+        drawing.Behavior = dragger;
+        string status = null;
+        drawing.Status += text => status = text;
+
+        // the status while the button is still down, then after the release
+        (string During, string After) Drag(IPoint point, Point to)
+        {
+            var canvas = drawing.Canvas;
+            var from = drawing.CoordinateSystem.ToPhysical(point.Coordinates);
+            var target = drawing.CoordinateSystem.ToPhysical(to);
+            using var pointer = new Pointer(Pointer.GetNextFreeId(), PointerType.Mouse, isPrimary: true);
+            canvas.RaiseEvent(new PointerPressedEventArgs(
+                canvas,
+                pointer,
+                canvas,
+                from,
+                timestamp: 0,
+                new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.LeftButtonPressed),
+                KeyModifiers.None,
+                clickCount: 1));
+            canvas.RaiseEvent(new PointerEventArgs(
+                InputElement.PointerMovedEvent,
+                canvas,
+                pointer,
+                canvas,
+                target,
+                timestamp: 1,
+                new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.Other),
+                KeyModifiers.None));
+            var during = status;
+            canvas.RaiseEvent(new PointerReleasedEventArgs(
+                canvas,
+                pointer,
+                canvas,
+                target,
+                timestamp: 2,
+                new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonReleased),
+                KeyModifiers.None,
+                MouseButton.Left));
+            return (during, status);
+        }
+
+        var dragged = Drag(free, new Point(-2, 2));
+        Require(dragged.During == "Hold Shift to snap to grid. Hold Alt to snap to a figure.", "Dragging a free point said: " + dragged.During);
+        Require(dragged.After == dragger.HintText, "After the drop the status said: " + dragged.After);
+        dragged = Drag(onSegment, new Point(0, 1));
+        Require(dragged.During == "Hold Alt to detach the point.", "Dragging a point on a segment said: " + dragged.During);
+        bool wasMac = KeyNames.IsMac;
+        KeyNames.IsMac = true;
+        try
+        {
+            dragged = Drag(free, new Point(-3, 1));
+            Require(dragged.During == "Hold Shift to snap to grid. Hold Option to snap to a figure.", "On a Mac it said: " + dragged.During);
+        }
+        finally
+        {
+            KeyNames.IsMac = wasMac;
         }
     }
 
