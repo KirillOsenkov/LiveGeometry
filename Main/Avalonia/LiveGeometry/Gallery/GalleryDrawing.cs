@@ -36,8 +36,11 @@ public static class GalleryDrawing
     const double gapPixels = 32;
     const double lineGapPixels = -Label.BackdropPadding;
 
-    // the text never squeezes the figure below this share of the canvas
+    // the text never squeezes the figure below this share of the canvas: of its width beside
+    // the caption, of its height above it - a third there, or on a phone the last line of
+    // an explanation (Circumscribed Circle's question) was cut off at the bottom edge
     const double figureShare = 0.4;
+    const double stackedFigureShare = 1.0 / 3;
 
     /// <summary>
     /// For a thumbnail: text pinned to the screen is unreadable at that size and the geometry
@@ -148,7 +151,7 @@ public static class GalleryDrawing
             double textHeight = titleSize.Height + lineGapPixels + descriptionSize.Height;
             double roomHeight = System.Math.Max(
                 canvasHeight - margin - gapPixels - textHeight - textMarginPixels,
-                figureShare * canvasHeight);
+                stackedFigureShare * canvasHeight);
             double textTop = margin + roomHeight + gapPixels;
             title.PinOffset = new Point(textMarginPixels, canvasHeight - textTop - titleSize.Height);
             description.PinOffset = new Point(textMarginPixels, canvasHeight - textTop - textHeight);

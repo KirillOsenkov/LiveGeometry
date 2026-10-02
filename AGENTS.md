@@ -201,6 +201,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   family until the font has loaded.
 - **`RotateTransform`**: no CenterX/CenterY - Avalonia rotates about `RenderTransformOrigin`
   (the middle by default), and WPF-style centering shifts a tilted ellipse off its center.
+- **A TextBlock drops lines that don't fit its arranged height**: it lays its text out again
+  at arrange time, at most as high as the space given, and leaves out every line that
+  doesn't fit whole. Arranged a pixel shorter than it measured (a phone's scaling, it
+  seems), a wrapped caption lost its last line, also when dragged into view. A label's text
+  is a `LabelTextBlock`, laid out at least as high as it measured.
 - **TextChanged arrives late**: Avalonia raises a TextBox's TextChanged through the dispatcher,
   after a programmatic-set guard is gone. Text editors of the property grid remember the text
   they put in the box (`StringEditor.ShownText`) and ignore a TextChanged carrying it;
@@ -1452,7 +1457,8 @@ buttons and checkboxes, 3D, custom tools.
   right in a wide canvas, a strip at the bottom in a tall one. Labels are sized in pixels, so
   the figure gets the canvas minus the text and the zoom is computed from that in one go -
   never iterate "place text, zoom to fit": it runs away once the text needs more than its
-  share. If the text doesn't fit it runs off the bottom and the reader drags it up: labels of
+  share (under the figure, the text may leave it a third of the height; beside it, 40% of
+  the width). If the text doesn't fit it runs off the bottom and the reader drags it up: labels of
   a gallery drawing can't be dragged (`Drawing.FixedLabels`, not saved, off once the drawing is
   the user's own), a drag on one pans the view, and one that starts on the caption scrolls the
   pinned labels along (`PinnedLabelScroll`, by pixels, so undo brings both back). Not

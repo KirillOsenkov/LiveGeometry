@@ -122,9 +122,7 @@ namespace DynamicGeometry
 
         public static TextBlock CreateLabelShape()
         {
-            return new TextBlock()
-            {
-            };
+            return new LabelTextBlock();
         }
 
         public static MidPoint CreateMidPoint(Drawing drawing, IList<IFigure> dependencies)
