@@ -68,9 +68,10 @@ public class PointPlacement
         };
     }
 
-    public static PointPlacement Midpoint(Segment segment)
+    /// <param name="segment">A segment or a vector (<see cref="HasMidpoint"/>)</param>
+    public static PointPlacement Midpoint(IFigure segment)
     {
-        return new PointPlacement(PointPlacementKind.Midpoint, segment.Coordinates.Midpoint, new IFigure[] { segment });
+        return new PointPlacement(PointPlacementKind.Midpoint, ((ILine)segment).Coordinates.Midpoint, new IFigure[] { segment });
     }
 
     /// <param name="coordinates">Logical coordinates of the click, after snapping</param>
@@ -162,12 +163,12 @@ public class PointPlacement
             return intersection;
         }
 
-        // the middle of a segment attracts the point even without snapping;
+        // the middle of a segment or a vector attracts the point even without snapping;
         // with snapping the whole segment does
         var midpointReach = MidpointReach * drawing.CoordinateSystem.CursorTolerance;
-        var segment = linear.OfType<Segment>().FirstOrDefault(s =>
+        var segment = linear.FirstOrDefault(s =>
             HasMidpoint(s)
-            && (snapToMidpoint || s.Coordinates.Midpoint.Distance(coordinates) <= midpointReach));
+            && (snapToMidpoint || ((ILine)s).Coordinates.Midpoint.Distance(coordinates) <= midpointReach));
         if (segment != null)
         {
             var existingMidpoint = FindExistingMidpoint(segment.Dependencies[0], segment.Dependencies[1]);
@@ -214,9 +215,16 @@ public class PointPlacement
             .FirstOrDefault(m => m.Visible && m.Dependencies.Count == 2 && m.Dependencies.Contains(second));
     }
 
-    public static bool HasMidpoint(Segment segment)
+    /// <summary>
+    /// A segment or a vector between two points: a figure with a middle. (A vector is a
+    /// figure of its own around a hidden segment, and the click found the vector: its middle
+    /// drew no point, where a segment's did.)
+    /// </summary>
+    public static bool HasMidpoint(IFigure figure)
     {
-        return segment.Dependencies.Count == 2 && segment.Dependencies.All(d => d is IPoint);
+        return (figure is Segment || figure is Vector)
+            && figure.Dependencies.Count == 2
+            && figure.Dependencies.All(d => d is IPoint);
     }
 
     /// <summary>
@@ -290,7 +298,7 @@ public class PointPlacement
                 return Factory.CreateIntersectionPoint(drawing, Sources[0], Sources[1], Coordinates);
             case PointPlacementKind.Midpoint:
                 // a list of its own: the segment keeps using (and may change) the one it has
-                return Factory.CreateMidPoint(drawing, ((Segment)Sources[0]).Dependencies.ToList());
+                return Factory.CreateMidPoint(drawing, Sources[0].Dependencies.ToList());
             default:
                 return null;
         }

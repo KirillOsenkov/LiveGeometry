@@ -1034,7 +1034,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Everything else is keys. Lost its menu entry and is unreachable for now: Lock. Not on the Selection tab (obscure for the audience; the commands and
   settings are still there in `DrawingHost`): Ortho, Polar, Snap to grid, Snap to point, Snap to
   center. Shift while dragging or clicking still snaps to the grid, and a click near the middle
-  of a segment still makes a midpoint. In a narrow window (a phone, under about 410 px)
+  of a segment or a vector still makes a midpoint (`PointPlacement.HasMidpoint`: a vector
+  is a figure of its own around a hidden segment, and a check for `Segment` missed it). In a narrow window (a phone, under about 410 px)
   the buttons close up (`MainToolbar.SetCompact`: square, no spacing, tighter
   separators, about 330 px), or the last of them, the settings gear, was cut off; what is
   at the right (theme, Octocat) is dropped first when there is no room.

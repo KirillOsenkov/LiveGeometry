@@ -91,7 +91,7 @@ public class ClickPreview
 
             if (kind == PointPlacementKind.Midpoint)
             {
-                AddTicks(coordinateSystem, (Segment)sources[0]);
+                AddTicks(coordinateSystem, (ILine)sources[0]);
             }
 
             if (placement != null)
@@ -254,7 +254,7 @@ public class ClickPreview
     /// <summary>
     /// The school notation for "these two are equal": one tick across each half.
     /// </summary>
-    void AddTicks(CoordinateSystem coordinateSystem, Segment segment)
+    void AddTicks(CoordinateSystem coordinateSystem, ILine segment)
     {
         var start = coordinateSystem.ToPhysical(segment.Coordinates.P1);
         var end = coordinateSystem.ToPhysical(segment.Coordinates.P2);

@@ -51,6 +51,7 @@ public class Program
             ("GeoGebra worksheet rejects unrelated XML", RejectUnrelatedWorksheet),
             ("A point renamed A' stays named in expressions", PrimeNames),
             ("A square takes the side drawn already", SquareOnSegment),
+            ("The middle of a vector gives its midpoint", VectorMidpoint),
             ("Paste into another drawing keeps the look", PasteBringsStyles),
             ("Pasting plain text is no error", PastePlainText),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
@@ -685,6 +686,52 @@ public class Program
             editor.TextBox.RaiseEvent(new KeyEventArgs { RoutedEvent = InputElement.KeyDownEvent, Key = Key.Enter });
             return string.IsNullOrEmpty(editor.ErrorText) ? null : editor.ErrorText;
         }
+    }
+
+    static void VectorMidpoint()
+    {
+        var drawing = NewDrawing();
+        var first = AddPoint(drawing, x: -2, y: 0);
+        var second = AddPoint(drawing, x: 4, y: 2);
+        var vector = Factory.CreateVector(drawing, new IFigure[] { first, second });
+        Actions.Add(drawing, vector);
+        using var window = new TestWindow(drawing.Canvas);
+        var placement = PointPlacement.Find(drawing, new Point(1, 1), snapToMidpoint: false);
+        Require(placement.Kind == PointPlacementKind.Midpoint, "The middle of a vector gave " + placement.Kind);
+        var midpoint = placement.Create(drawing);
+        Require(midpoint is MidPoint && midpoint.Dependencies.SequenceEqual(new IFigure[] { first, second }), "Not the midpoint of the vector's ends.");
+
+        // the Midpoint tool: one click on the vector
+        drawing.Behavior = new MidpointCreator();
+        Click(drawing, drawing.CoordinateSystem.ToPhysical(new Point(2.5, 1.5)));
+        var made = drawing.Figures.OfType<MidPoint>().SingleOrDefault();
+        Require(made != null, "A click on a vector made no midpoint.");
+        Near(made.Coordinates.X, expected: 1);
+        Near(made.Coordinates.Y, expected: 1);
+    }
+
+    static void Click(Drawing drawing, Point at)
+    {
+        var canvas = drawing.Canvas;
+        using var pointer = new Pointer(Pointer.GetNextFreeId(), PointerType.Mouse, isPrimary: true);
+        canvas.RaiseEvent(new PointerPressedEventArgs(
+            canvas,
+            pointer,
+            canvas,
+            at,
+            timestamp: 0,
+            new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.LeftButtonPressed),
+            KeyModifiers.None,
+            clickCount: 1));
+        canvas.RaiseEvent(new PointerReleasedEventArgs(
+            canvas,
+            pointer,
+            canvas,
+            at,
+            timestamp: 1,
+            new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonReleased),
+            KeyModifiers.None,
+            MouseButton.Left));
     }
 
     static void SquareOnSegment()

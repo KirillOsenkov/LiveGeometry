@@ -41,15 +41,15 @@ namespace DynamicGeometry
             base.MouseDown(sender, e);
         }
 
-        static bool HasMidpointAlready(Segment segment)
+        static bool HasMidpointAlready(IFigure segment)
         {
             return PointPlacement.FindExistingMidpoint(segment.Dependencies[0], segment.Dependencies[1]) != null;
         }
 
         /// <summary>
-        /// A click on a segment (not on a point of it) takes both its endpoints at once
+        /// A click on a segment or a vector (not on a point of it) takes both its endpoints at once
         /// </summary>
-        Segment FindSegmentToBisect(MouseEventArgs e)
+        IFigure FindSegmentToBisect(MouseEventArgs e)
         {
             if (!FoundDependencies.IsEmpty())
             {
@@ -57,7 +57,7 @@ namespace DynamicGeometry
             }
 
             var coordinates = Coordinates(e);
-            var segment = Drawing.Figures.HitTest<Segment>(coordinates);
+            var segment = (IFigure)Drawing.Figures.HitTest<Segment>(coordinates) ?? Drawing.Figures.HitTest<Vector>(coordinates);
             if (segment == null
                 || !PointPlacement.HasMidpoint(segment)
                 || Drawing.Figures.HitTest<IPoint>(coordinates) != null)
@@ -109,7 +109,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return "Click two points (or a segment) to construct a midpoint.";
+                return "Click two points (or a segment or a vector) to construct a midpoint.";
             }
         }
 
