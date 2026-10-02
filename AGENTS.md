@@ -693,7 +693,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   segment on a parallel, a perpendicular or a bisector (built on a line and a point: it
   threw; `LineTwoPoints.IsThroughTwoPoints`), Convert to segment / sector and Clockwise on
   an angle's arc (`AngleArc`), the Text box of a measurement (`Measurement`, whose text is
-  worked out), the style buttons of a Number (no style), a vector's Direction and an
+  worked out), the style rows and buttons, Visible and Locked of a Number (nothing on
+  the paper; Select all leaves numbers out, or a selection with one would lose those
+  rows for every figure), a vector's Direction and an
   angle's Arcs when nothing can change them, "Delete this style" on a default style. A
   row or button that does nothing is an undo step that undoes nothing. A row whose setter
   only stores (a point on a figure's `Parameter`, which a locus samples through) gets a

@@ -652,7 +652,7 @@ namespace DynamicGeometry
         [PropertyGridName("Style")]
         [PropertyGridGroup("Style")]
         [PropertyGridCustomValueProvider(typeof(StylePropertyValueProvider))]
-        public IFigureStyle StyleDisplay
+        public virtual IFigureStyle StyleDisplay
         {
             get
             {

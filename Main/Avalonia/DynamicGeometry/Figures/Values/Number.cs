@@ -30,6 +30,48 @@ namespace DynamicGeometry
             IsHitTestVisible = false;
         }
 
+        // Nothing on screen to show, hide, lock or style: no rows for them (they stood empty
+        // or did nothing).
+
+        [PropertyGridVisible(false)]
+        public override IFigureStyle StyleDisplay
+        {
+            get
+            {
+                return base.StyleDisplay;
+            }
+            set
+            {
+                base.StyleDisplay = value;
+            }
+        }
+
+        [PropertyGridVisible(false)]
+        public override bool Visible
+        {
+            get
+            {
+                return base.Visible;
+            }
+            set
+            {
+                base.Visible = value;
+            }
+        }
+
+        [PropertyGridVisible(false)]
+        public override bool Locked
+        {
+            get
+            {
+                return base.Locked;
+            }
+            set
+            {
+                base.Locked = value;
+            }
+        }
+
         public static Number CreateAuxiliary(Drawing drawing, double value)
         {
             return new Number() { Drawing = drawing, Auxiliary = true, Value = value };
@@ -38,6 +80,7 @@ namespace DynamicGeometry
         double value;
 
         [PropertyGridVisible]
+        [PropertyGridPreferredEditor("UpDown")]
         public double Value
         {
             get

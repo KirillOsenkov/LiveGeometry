@@ -1247,7 +1247,9 @@ namespace DynamicGeometry
         {
             foreach (IFigure figure in Figures)
             {
-                if ((!(figure is CartesianGrid)))
+                // nor a Number, which has nothing on the paper: a selection shows only the
+                // rows all its figures have, and a number has no Visible or Locked
+                if (!(figure is CartesianGrid) && !(figure is Number))
                 {
                     figure.Selected = true;
                 }
