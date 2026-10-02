@@ -61,7 +61,9 @@ sealed class Program
         App.MainWindowCreated = window =>
         {
             WindowPlacementPersistence.Attach(window);
+            WindowBoundsPersistence.Attach(window);
             WindowFrameTheme.Attach(window);
+            MacDockIcon.Apply();
         };
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }

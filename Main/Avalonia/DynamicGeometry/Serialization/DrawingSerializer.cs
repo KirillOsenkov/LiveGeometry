@@ -51,7 +51,9 @@ namespace DynamicGeometry
                 {
                     Indent = true,
                     Encoding = Encoding.UTF8,
-                    CloseOutput = true
+                    CloseOutput = true,
+                    // the same file on every system: Environment.NewLine is \n on a Mac
+                    NewLineChars = "\r\n"
                 };
             }
         }

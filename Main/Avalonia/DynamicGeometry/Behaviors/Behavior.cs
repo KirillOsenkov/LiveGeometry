@@ -246,6 +246,19 @@ namespace DynamicGeometry
             return (currentModifiers & KeyModifiers.Alt) == KeyModifiers.Alt;
         }
 
+        /// <summary>
+        /// Ctrl+click is a right click on a Mac. AppKit hands it over as a press of the left
+        /// button with Control held, and Avalonia passes it on as such: on the desktop it was
+        /// a click (with Ctrl, which stands for Cmd) where a Mac user asks for the context menu.
+        /// The moves and the release of that press are no left button's either.
+        /// </summary>
+        bool isSecondaryClickHeld;
+
+        static bool IsSecondaryClick(PointerPointProperties properties, KeyModifiers modifiers)
+        {
+            return KeyNames.IsMac && properties.IsLeftButtonPressed && (modifiers & KeyModifiers.Control) != 0;
+        }
+
         void PointerPressedHandler(object sender, PointerPressedEventArgs e)
         {
             currentModifiers = e.KeyModifiers;
@@ -257,11 +270,12 @@ namespace DynamicGeometry
             }
 
             var properties = e.GetCurrentPoint(mParentCanvas).Properties;
-            if (properties.IsLeftButtonPressed)
+            isSecondaryClickHeld = IsSecondaryClick(properties, e.KeyModifiers);
+            if (properties.IsLeftButtonPressed && !isSecondaryClickHeld)
             {
                 SafeMouseDown(sender, e);
             }
-            else if (properties.IsRightButtonPressed)
+            else if (properties.IsRightButtonPressed || isSecondaryClickHeld)
             {
                 try
                 {
@@ -280,6 +294,13 @@ namespace DynamicGeometry
             if (e.Pointer.Type == PointerType.Touch)
             {
                 TouchMoved(sender, e);
+                return;
+            }
+
+            // (the context menu it opened may have taken the release)
+            isSecondaryClickHeld = isSecondaryClickHeld && e.GetCurrentPoint(mParentCanvas).Properties.IsLeftButtonPressed;
+            if (isSecondaryClickHeld)
+            {
                 return;
             }
 
@@ -664,7 +685,11 @@ namespace DynamicGeometry
                 return;
             }
 
-            if (e.InitialPressMouseButton == MouseButton.Left)
+            if (isSecondaryClickHeld)
+            {
+                isSecondaryClickHeld = false;
+            }
+            else if (e.InitialPressMouseButton == MouseButton.Left)
             {
                 SafeMouseUp(sender, e);
             }

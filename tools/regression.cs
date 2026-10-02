@@ -1018,15 +1018,17 @@ public class Program
             return (during, status);
         }
 
-        var dragged = Drag(free, new Point(-2, 2));
-        Require(dragged.During == "Hold Shift to snap to grid. Hold Alt to snap to a figure.", "Dragging a free point said: " + dragged.During);
-        Require(dragged.After == dragger.HintText, "After the drop the status said: " + dragged.After);
-        dragged = Drag(onSegment, new Point(0, 1));
-        Require(dragged.During == "Hold Alt to detach the point.", "Dragging a point on a segment said: " + dragged.During);
+        // the keys as a PC's keyboard names them, then as a Mac's, whatever this runs on
         bool wasMac = KeyNames.IsMac;
-        KeyNames.IsMac = true;
+        KeyNames.IsMac = false;
         try
         {
+            var dragged = Drag(free, new Point(-2, 2));
+            Require(dragged.During == "Hold Shift to snap to grid. Hold Alt to snap to a figure.", "Dragging a free point said: " + dragged.During);
+            Require(dragged.After == dragger.HintText, "After the drop the status said: " + dragged.After);
+            dragged = Drag(onSegment, new Point(0, 1));
+            Require(dragged.During == "Hold Alt to detach the point.", "Dragging a point on a segment said: " + dragged.During);
+            KeyNames.IsMac = true;
             dragged = Drag(free, new Point(-3, 1));
             Require(dragged.During == "Hold Shift to snap to grid. Hold Option to snap to a figure.", "On a Mac it said: " + dragged.During);
         }
@@ -1090,7 +1092,7 @@ public class Program
 
     static void GalleryRoundTrips()
     {
-        var directory = System.IO.Path.Combine(FindRepository(), @"Main\Avalonia\LiveGeometry\Gallery\Drawings");
+        var directory = System.IO.Path.Combine(FindRepository(), "Main", "Avalonia", "LiveGeometry", "Gallery", "Drawings");
         int count = 0;
         foreach (var path in Directory.GetFiles(directory, "*.lgf"))
         {
@@ -1111,7 +1113,7 @@ public class Program
     {
         for (var directory = new DirectoryInfo(Directory.GetCurrentDirectory()); directory != null; directory = directory.Parent)
         {
-            if (Directory.Exists(System.IO.Path.Combine(directory.FullName, @"Main\Avalonia")))
+            if (Directory.Exists(System.IO.Path.Combine(directory.FullName, "Main", "Avalonia")))
             {
                 return directory.FullName;
             }

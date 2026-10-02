@@ -111,7 +111,7 @@ public partial class MainView : UserControl
     // A link to the repository at the far right of the toolbar; its tooltip is the build (git
     // commit) on screen - e.g. whether a fresh deployment has arrived yet. A faint Octocat
     // rather than the raw commit hash, which meant nothing to the kids the app is for.
-    const string RepositoryUrl = "https://github.com/KirillOsenkov/LiveGeometry";
+    public const string RepositoryUrl = "https://github.com/KirillOsenkov/LiveGeometry";
 
     const double OctocatSize = 16;
     const double OctocatOpacity = 0.4;

@@ -65,6 +65,8 @@ being true. Things derivable from the code or git history don't belong here.
   feature work. A drawing can be hand-written as XML (`docs/*.lgf` are examples: styles, then
   figures by type name with `<Dependency Name=...>` children; a point's name shows through a
   separate `PointLabel` figure that depends on it) and opened from the command line to check it.
+  On a Mac the executable is `bin/Debug/net10.0/LiveGeometry.Desktop` (no `.exe`), and the
+  same build runs as is: see "macOS" below.
 - Browser: needs the `wasm-tools` workload (`WasmBuildNative=true` links Skia/HarfBuzz; without
   it Skia throws DllNotFoundException). Do a full bin/obj clean when native assets change.
 - Browser publish: `dotnet publish Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj -c Release -o <dir>`.
@@ -1150,7 +1152,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (`LiveGeometry.Desktop/WindowFrameTheme.cs`: the DWM attribute, and then a non-client
   activation cycle plus a frame-changed `SetWindowPos`, since Windows 10 keeps painting the
   old shade until the next activation otherwise). `winauto shot` doesn't show the frame at
-  all (PrintWindow): to check it, `shot ... --screen`.
+  all (PrintWindow): to check it, `shot ... --screen`. On a Mac Avalonia shades the title bar
+  itself.
 - **Drawings follow the theme through their styles.** A `FigureStyle` has its values (how it
   looks under Light, the base theme) and may hold *overrides* for another theme: the
   properties that differ, with their values (`Overrides`, `SetOverride`). Whoever draws with a
@@ -1207,12 +1210,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   theme resolves it. A tile follows `AppTheme.CurrentChanged` on its own.
 - **Settings between runs** (`LiveGeometry/SettingsStore.cs`): `Get`/`Set` by key, the desktop
   head keeping them as `key=value` lines in `%LocalAppData%\LiveGeometry\Settings.txt`
-  (`FileSettingsStore`), the browser in `localStorage` under `LiveGeometry.<key>`
+  (`~/Library/Application Support/LiveGeometry/Settings.txt` on a Mac;
+  `FileSettingsStore`), the browser in `localStorage` under `LiveGeometry.<key>`
   (`BrowserSettingsStore`, two imports in `main.js`; `index.html` reads the `Theme` entry
   before the runtime starts, so the splash and the page are already dark). `AppSettings`
   (`[PropertyGridName("Settings")]`, the gear) is the page over it: `Theme` is `System` or a
   theme's name, applied in `App.Initialize` before the first frame. The window placement is
-  the `WindowPlacement` line of the same file. Colors tweaked on the "Theme colors" page are
+  the `WindowPlacement` line of the same file (`WindowBounds` on a Mac). Colors tweaked on the "Theme colors" page are
   kept per theme (`ThemeColors.Dark`), only those that differ from `AppTheme.cs`
   (`AppTheme.EditsToText`/`ApplyEdits`, one line, read without throwing), so an untouched
   color follows the code; they are put on before `AppTheme.Register`, and "Built-in colors"
@@ -1559,6 +1563,32 @@ buttons and checkboxes, 3D, custom tools.
   is not a file, so the SPA fallback would otherwise serve the app). `tools/serve.cs` has no
   such rule: locally open `/history/index.html`, or serve the `history` folder itself.
 
+## macOS
+
+The desktop head builds and runs on a Mac (Apple silicon, .NET 10 SDK, no workloads) from the
+same project; the regression suite, `--check` and `--rewrite` work there too (the gallery
+rewrites byte for byte). What is the Mac's own (2026-10-02):
+- **Ctrl+click is a right click** (`Behavior.IsSecondaryClick`): AppKit hands it over as a left
+  press with Control, and Avalonia passes it on as one. Its moves and release are swallowed.
+  Ctrl's other uses are Cmd's there, as in the browser on a Mac.
+- **The menu bar**: `App.Initialize` sets the application's `Name` (it said "Avalonia
+  Application") and its own `NativeMenu` ("Live Geometry on GitHub"; Avalonia's default has
+  "About Avalonia"); Avalonia adds Services, Hide and Quit after it. Cmd+Q goes through the
+  window's Closing, so settings and the window bounds are saved.
+- **The Dock icon** (`LiveGeometry.Desktop/MacDockIcon.cs`): Avalonia ignores `Window.Icon`
+  on a Mac and a bare executable shows a blank document, so the vector `AppIcon` is rendered
+  and given to `NSApplication.applicationIconImage` through the Objective-C runtime.
+- **Window bounds** (`WindowBoundsPersistence`, the `WindowBounds` setting): Avalonia's own
+  position and client size, those of the last moment the window was normal. A zoom animates
+  through a few sizes while the window still says Normal, so bounds count once they have held
+  for a second. The green button (Option+click: Zoom) maximizes, but in Avalonia 12.1 it
+  doesn't un-zoom a maximized window, also one zoomed by hand: drag its edge instead.
+- `.lgf` files are written with CRLF on every system (`DrawingSerializer.XmlSettings`), as
+  the gallery's are and the batch rewrite does.
+- Testing traps: Cmd+A in the save panel's name box selects the name without its extension,
+  so typing `x.lgf` gives `x.lgf.lgf` (the panel, not the app). `winauto.cs` and
+  `contactsheet.cs` are Windows only (WinForms); `macauto.cs` is the Mac's (below).
+
 ## Running instances
 
 Always build into the normal `bin/` - no scratch output folders. The maintainer rarely has the app
@@ -1676,6 +1706,19 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
   - `winauto keys` sends real virtual keys for lowercase ASCII letters/digits (needed for the
     single-letter shortcuts); other characters go as Unicode packets, which KeyDown-based
     shortcuts never see.
+- `tools/macauto.cs` - winauto's counterpart on a Mac (CoreGraphics events, `screencapture`,
+  System Events to place a window; the terminal that runs it needs the Accessibility and
+  Screen Recording permissions). `list`, `shot <t> out.png [--screen]`, `click <t> x y
+  [right|double] [--shift] [--alt] [--cmd] [--ctrl]`, `move`, `drag <t> x1 y1 x2 y2 [steps]
+  [modifiers]`, `wheel <t> x y <notches>`, `key <t> <key> [cmd] [ctrl] [shift] [alt]` (`s cmd`,
+  `Escape`, `Return`), `keys <t> <letters>` (real key codes: tool letters), `text <t> <text>`
+  (Unicode, for text boxes), `focus`, `place <t> x y w h` (in points). Target = process name |
+  `pid:N` | `window:N` | `title:substr`. Pixels are those of a Retina shot (twice the points),
+  relative to the window's top left, title bar included; a y above 0 reaches the menu bar.
+  Run it with `dotnet run --file tools/macauto.cs -- ...`: from inside a project folder a bare
+  `dotnet run` takes the project instead. A native save panel and a context menu are windows
+  of their own in `list` (a menu on layer 101), and `key`/`text` with `window:N` go to them;
+  in the save panel Cmd+Shift+G types a folder.
 - `tools/webauto.cs` - the browser build in headless Edge over CDP (port 9333, Edge stays alive
   between calls). `start <url> [w h] [--lang xx-XX] [--dark]`, `stop`, `nav`, `wait <console text>`,
   `console [--errors]`, `shot`, `click`, `drag`, `move`, `key <Key> [ctrl] [shift] [alt]`,

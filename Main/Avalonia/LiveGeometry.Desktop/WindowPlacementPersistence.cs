@@ -6,10 +6,11 @@ namespace LiveGeometry.Desktop;
 
 /// <summary>
 /// The main window comes back where it was closed: position, size, maximized or not.
-/// Windows only, through Get/SetWindowPlacement (the same approach as in MSBuild Structured
-/// Log Viewer): the placement is about the *restored* rectangle even while the window is
-/// maximized, it is in work area coordinates, and Windows itself pulls a window back onto a
-/// screen if the monitor it was on is gone. Kept in the <see cref="SettingsStore"/>.
+/// Windows only (elsewhere <see cref="WindowBoundsPersistence"/>), through
+/// Get/SetWindowPlacement (the same approach as in MSBuild Structured Log Viewer): the
+/// placement is about the *restored* rectangle even while the window is maximized, it is in
+/// work area coordinates, and Windows itself pulls a window back onto a screen if the
+/// monitor it was on is gone. Kept in the <see cref="SettingsStore"/>.
 /// </summary>
 public static class WindowPlacementPersistence
 {

@@ -49,6 +49,27 @@ public class App : Application
         // it. It has been shown already, at the throw (MainView.CurrentDomain_FirstChanceException):
         // here it is only kept from going any further.
         Dispatcher.UIThread.UnhandledException += (s, e) => e.Handled = true;
+
+        // A Mac's menu bar names the app and has an application menu: without a name and a menu
+        // of our own they said "Avalonia Application" and "About Avalonia". Avalonia reads both
+        // after this, and puts Services, Hide and Quit after our items.
+        Name = "Live Geometry";
+        if (OperatingSystem.IsMacOS())
+        {
+            NativeMenu.SetMenu(this, CreateMacApplicationMenu());
+        }
+    }
+
+    NativeMenu CreateMacApplicationMenu()
+    {
+        var gitHub = new NativeMenuItem("Live Geometry on GitHub") { ToolTip = BuildVersion.Full };
+        gitHub.Click += (s, e) =>
+        {
+            var window = (ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+            window?.Launcher.LaunchUriAsync(new Uri(MainView.RepositoryUrl));
+        };
+
+        return new NativeMenu() { gitHub };
     }
 
     public override void OnFrameworkInitializationCompleted()
