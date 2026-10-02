@@ -679,7 +679,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   line / ray, a sector's or circular segment's area (`IsUsedForArea`) for Convert to arc.
   `ReplaceWithNew` hands every dependent over to the new figure whatever it is: a distance
   measurement of a segment that became a ray threw on every redraw (it now doesn't exist
-  when it has nothing to measure). Convert to polyline deletes the polygon, and an area
+  when it has nothing to measure). Convert to polyline (not offered since 2026-10-01: no
+  tool makes polylines; a method is a button when it has `[PropertyGridVisible]` at all,
+  `(false)` included, so it has none) deletes the polygon, and an area
   measurement of it with it.
 - **Closing the side panel** (its ×, or a press on empty chrome: the ribbon's empty
   strip, the toolbar beside its buttons, the Figure List below its rows) goes through

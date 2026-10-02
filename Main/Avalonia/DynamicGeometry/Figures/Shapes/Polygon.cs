@@ -35,7 +35,9 @@ namespace DynamicGeometry
 
 #if !PLAYER && !TABULA
 
-        [PropertyGridVisible]
+        // not offered (no [PropertyGridVisible], which the grid looks for on a method, whatever
+        // it says): no tool makes a polyline (the Polyline tool is [Ignore]d), so one would be
+        // a figure the user can't make or recognize
         [PropertyGridName("Convert to polyline")]
         [PropertyGridIcon(PropertyGridIcon.Polyline)]
         public void ConvertToPolyline()
