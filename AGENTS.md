@@ -142,7 +142,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   clicked first was asked for last), and the expressions of what it makes (a point by
   coordinates, a label's [AB]) are rewritten to name what it was given and the copies,
   as a paste's are (`UserDefinedTool.RebindExpressions`): compiled by the macro's names,
-  a tool defined on the Catenary drew the first curve again.
+  a tool defined on the Catenary drew the first curve again. Its icon is a picture of the
+  inputs and results as they were at Create tool (`MacroIcon`, kept in the macro as
+  `<Icon>`, in the icon's units): inputs as yellow points and ink, results as
+  constructed points and the accent color, lines and graphs cut to the picture's box;
+  figures without a simple picture (labels, measurements, angle marks) are left out, and a
+  tool with nothing to draw shows a dot and the number of its inputs.
 
 ## Avalonia and framework traps
 

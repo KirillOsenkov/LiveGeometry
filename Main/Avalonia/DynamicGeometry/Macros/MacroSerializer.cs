@@ -29,6 +29,7 @@ namespace DynamicGeometry
             writer.WriteStartElement("Macro");
             writer.WriteAttributeString("Name", "Custom tool");
             WriteInputs(writer);
+            MacroIcon.Write(writer, Inputs, Results);
             WriteResults(writer);
             writer.WriteEndElement();
             writer.WriteEndDocument();

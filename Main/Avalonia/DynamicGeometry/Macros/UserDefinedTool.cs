@@ -302,9 +302,7 @@ namespace DynamicGeometry
 
         public override FrameworkElement CreateIcon()
         {
-            return IconBuilder.BuildIcon()
-                .Point(0.5, 0.5)
-                .Canvas;
+            return MacroIcon.Build(RootElement);
         }
 
     }

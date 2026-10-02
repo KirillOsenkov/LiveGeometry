@@ -344,6 +344,30 @@ namespace DynamicGeometry
             return this;
         }
 
+        /// <summary>A polyline in a color of the theme, closed back to its first point when <paramref name="isClosed"/></summary>
+        public IconBuilder Polyline(double strokeThickness, string themeColor, IEnumerable<Point> points, bool isClosed = false)
+        {
+            var scaled = new List<Point>();
+            foreach (var p in points)
+            {
+                scaled.Add(new Point(Canvas.Width * p.X, Canvas.Height * p.Y));
+            }
+
+            if (isClosed && scaled.Count > 2)
+            {
+                scaled.Add(scaled[0]);
+            }
+
+            var polyline = Factory.CreatePolylineShape();
+            polyline.Points = scaled;
+            polyline.StrokeThickness = strokeThickness;
+            polyline.StrokeJoin = PenLineJoin.Round;
+            polyline.StrokeLineCap = PenLineCap.Round;
+            polyline.BindTheme(Shape.StrokeProperty, themeColor);
+            Canvas.Children.Add(polyline);
+            return this;
+        }
+
         public Avalonia.Controls.Shapes.Polyline AddPolyline(IEnumerable<Point> points)
         {
             var polyline = Factory.CreatePolylineShape();

@@ -863,6 +863,8 @@ public class Program
         var inputs = tool.RootElement.Element("Inputs").Elements().Select(e => e.Attribute("Name").Value);
         Require(string.Join(" ", inputs) == "s A B", "The inputs are not in the order clicked: " + string.Join(" ", inputs));
         Require(tool.HintText == "Click a slider (s), a point (A), then a point (B).", "The tool's hint: " + tool.HintText);
+        var icon = tool.RootElement.Element("Icon");
+        Require(icon != null && icon.Elements("Dot").Any(d => d.ReadBool("Made", defaultValue: false)), "The tool's icon doesn't show the point it makes: " + icon);
         var first = AddPoint(drawing, x: 2, y: 0);
         var second = AddPoint(drawing, x: 4, y: 2);
         int count = drawing.Figures.Count;
