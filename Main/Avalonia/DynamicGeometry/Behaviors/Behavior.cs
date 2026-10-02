@@ -332,6 +332,13 @@ namespace DynamicGeometry
 
             try
             {
+                var angle = GetAngleToPick(e);
+                if (angle != null)
+                {
+                    clickPreview.ShowAngle(Drawing, angle);
+                    return;
+                }
+
                 var placement = GetClickPreview(e);
                 clickPreview.Show(
                     Drawing,
@@ -359,6 +366,12 @@ namespace DynamicGeometry
         /// perpendicular to. Null if there is none.
         /// </summary>
         protected virtual IFigure GetFigureToPick(MouseEventArgs e)
+        {
+            return null;
+        }
+
+        /// <summary>An angle a click here would measure whole (the Angle tool near a vertex). Null if there is none.</summary>
+        protected virtual AngleAtVertex GetAngleToPick(MouseEventArgs e)
         {
             return null;
         }

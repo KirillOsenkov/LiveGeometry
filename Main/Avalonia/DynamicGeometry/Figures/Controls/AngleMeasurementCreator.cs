@@ -49,6 +49,51 @@ namespace DynamicGeometry
             return found;
         }
 
+        /// <summary>
+        /// Near a vertex, inside the mark it would get, the first click measures the angle
+        /// whole (see <see cref="AngleAtVertex"/>) instead of taking a point: the hover shows
+        /// it, the cursor is a hand, and no point is offered there.
+        /// </summary>
+        AngleAtVertex FindAngleAtVertex(Point unconstrainedCoordinates)
+        {
+            // the later clicks are points on the sides
+            return FoundDependencies.IsEmpty() ? AngleAtVertex.Find(Drawing, unconstrainedCoordinates) : null;
+        }
+
+        protected override AngleAtVertex GetAngleToPick(MouseEventArgs e)
+        {
+            return FindAngleAtVertex(Coordinates(e, false, false, false));
+        }
+
+        protected override PointPlacement FindPointPlacement(Point unconstrainedCoordinates, Point coordinates)
+        {
+            if (FindAngleAtVertex(unconstrainedCoordinates) != null)
+            {
+                return null;
+            }
+
+            return base.FindPointPlacement(unconstrainedCoordinates, coordinates);
+        }
+
+        protected override Avalonia.Input.Cursor GetCursor(Point coordinates)
+        {
+            return FindAngleAtVertex(coordinates) != null ? HandCursor : base.GetCursor(coordinates);
+        }
+
+        public override void MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // where the cursor is, as the hover preview asks: not where Shift snaps it to
+            var angle = FindAngleAtVertex(Coordinates(e, false, false, false));
+            if (angle != null)
+            {
+                FoundDependencies.AddRange(angle.Points);
+                AddFiguresAndRestart();
+                return;
+            }
+
+            base.MouseDown(sender, e);
+        }
+
         public override string Name
         {
             get { return "Angle"; }
@@ -58,7 +103,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return "Click an angle vertex, and then click two points on the angle sides to measure the angle.";
+                return "Click an angle vertex, and then click two points on the angle sides to measure the angle, or click inside an angle next to its vertex.";
             }
         }
 

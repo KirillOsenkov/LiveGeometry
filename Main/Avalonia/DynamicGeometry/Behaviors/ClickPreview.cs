@@ -34,6 +34,7 @@ public class ClickPreview
     AvaloniaShapes.Shape ghost;
     IReadOnlyList<IFigure> shownSources;
     PointPlacementKind? shownKind;
+    AngleAtVertex shownAngle;
     Point shownOrigin;
     Point shownUnit;
 
@@ -122,6 +123,116 @@ public class ClickPreview
         ghost = null;
         shownSources = null;
         shownKind = null;
+        shownAngle = null;
+    }
+
+    /// <summary>
+    /// An angle a click would measure whole (<see cref="AngleAtVertex"/>): halos on its two
+    /// sides, and its mark and number faint where they are going to be.
+    /// </summary>
+    public void ShowAngle(Drawing drawing, AngleAtVertex angle)
+    {
+        if (drawing == null || drawing.Canvas == null || angle == null)
+        {
+            Clear();
+            return;
+        }
+
+        var coordinateSystem = drawing.CoordinateSystem;
+        var origin = coordinateSystem.ToPhysical(new Point(0, 0));
+        var unit = coordinateSystem.ToPhysical(new Point(1, 1));
+        if (canvas == drawing.Canvas && angle.IsSameAngle(shownAngle) && origin == shownOrigin && unit == shownUnit)
+        {
+            return;
+        }
+
+        Clear();
+        var corner = coordinateSystem.ToPhysical(angle.Vertex.Coordinates);
+        var first = RightAngleMark.Direction(corner, coordinateSystem.ToPhysical(angle.First.Coordinates));
+        var second = RightAngleMark.Direction(corner, coordinateSystem.ToPhysical(angle.Second.Coordinates));
+        if (first == null || second == null)
+        {
+            return;
+        }
+
+        canvas = drawing.Canvas;
+        shownOrigin = origin;
+        shownUnit = unit;
+        shownAngle = angle;
+        foreach (var side in angle.SideFigures.Distinct())
+        {
+            Add(CreateHalo(side));
+        }
+
+        var measure = Math.OAngle(angle.First.Coordinates, angle.Vertex.Coordinates, angle.Second.Coordinates);
+        Add(CreateAngleMarkGhost(drawing, corner, first.Value, second.Value, measure));
+        Add(CreateAngleNumberGhost(drawing, corner, measure));
+    }
+
+    /// <summary>The mark an <see cref="AngleArc"/> draws, in the style a new one gets: an arc, or the square of a right angle</summary>
+    static Control CreateAngleMarkGhost(
+        Drawing drawing,
+        Point corner,
+        Point first,
+        Point second,
+        double measure)
+    {
+        var figure = new PathFigure()
+        {
+            IsClosed = false,
+            IsFilled = false
+        };
+        if (System.Math.Abs(measure - Math.PI / 2) < AngleArc.RightAngleTolerance)
+        {
+            var points = RightAngleMark.GetPoints(corner, first, second, RightAngleMark.Size);
+            figure.StartPoint = points[0];
+            figure.Segments.Add(new LineSegment() { Point = points[1] });
+            figure.Segments.Add(new LineSegment() { Point = points[2] });
+        }
+        else
+        {
+            var size = AngleArc.DefaultSize;
+            figure.StartPoint = corner + first * size;
+            figure.Segments.Add(new ArcSegment()
+            {
+                Point = corner + second * size,
+                Size = new Size(size, size),
+                SweepDirection = SweepDirection.CounterClockwise
+            });
+        }
+
+        var result = new AvaloniaShapes.Path()
+        {
+            Data = new PathGeometry() { Figures = new PathFigures() { figure } }
+        };
+        ApplyGhostStyle(drawing, typeof(AngleArc), result);
+        result.ZIndex = (int)ZOrder.Figures;
+        return result;
+    }
+
+    /// <summary>The number an <see cref="AngleMeasurement"/> shows, where a new one sits: its top left at the vertex</summary>
+    static Control CreateAngleNumberGhost(Drawing drawing, Point corner, double measure)
+    {
+        var result = Factory.CreateLabelShape();
+        result.Text = Math.Round(measure.ToDegrees(), Settings.DisplayDecimals).ToString() + "°";
+        ApplyGhostStyle(drawing, typeof(AngleMeasurement), result);
+        result.ZIndex = (int)ZOrder.Labels;
+        Canvas.SetLeft(result, corner.X);
+        Canvas.SetTop(result, corner.Y);
+        return result;
+    }
+
+    /// <summary>The style a new figure of the type gets (<see cref="StyleManager.AssignDefaultStyle"/>), faint</summary>
+    static void ApplyGhostStyle(Drawing drawing, System.Type figureType, Control element)
+    {
+        var style = drawing.StyleManager.GetSupportedStyles(figureType).FirstOrDefault();
+        if (style != null)
+        {
+            element.Apply(style.GetWpfStyle(null));
+            style.Resolve().OnApplied(null, element);
+        }
+
+        element.Opacity = GhostOpacity;
     }
 
     void Add(Control visual)

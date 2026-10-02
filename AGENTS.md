@@ -132,7 +132,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Measure**: Distance - two points or a segment; Angle (J) - vertex then two side points,
   the angle under 180° whichever side comes first (the tool orders the sides; an angle goes
   counterclockwise from its first side, and clicked the other way round a triangle's angle
-  said 270°; "Convert to opposite angle" gives the other); Area (K) - a polygon, ellipse,
+  said 270°; "Convert to opposite angle" gives the other), or one click inside an angle
+  next to its vertex, within the reach of the mark it would get, where drawn lines,
+  segments, rays or polygon sides leave a point (`AngleAtVertex`: the hover shows the mark
+  and number faint, halos on the sides). Only when that is the one angle the cursor can
+  mean: two vertices in reach, a third line on the same side (a bisector: the half or the
+  whole?), a side with no point on it to depend on, an angle measured already - nothing,
+  and the click takes a point as before (as it always does on a point); Area (K) - a polygon, ellipse,
   circle or list of points, Enter or a right click when the points are done; Slider - where it sits, then where
   its knob starts (or press, drag, release): a number with a handle, taken wherever a tool
   asks for a length or an angle, named in expressions (a, b, c).
