@@ -148,7 +148,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   too (the property grid reads `ExceptionReport` by reflection, and `[DynamicallyAccessedMembers]`
   on the class did not keep its rows). A trimming break shows up as a white screen and a
   `CRASH: ...` console line (`Program.cs` prints those). Anything new that is reached only by
-  reflection outside those assemblies needs its own root.
+  reflection outside those assemblies needs its own root. The functions of the expression
+  language that are System.Math's are found by name (`Binder`, a `Type` out of a list, which
+  the trimmer can't follow): `[DynamicDependency]` on `Binder`'s static constructor keeps
+  them all. Without it the browser had only those the app also calls itself, and `asinh`,
+  `sinh`, `cosh` were "Could not find method" - the Catenary drew no curve there, while the
+  desktop (never trimmed) drew it.
 - **Inherited attributes come twice in the browser**: Mono's `inherit: true` lookup on a
   property declared in a base class (`Circle.Length` from `CircleBase`) adds the base
   property's attributes again. With `AllowMultiple = true` they aren't deduplicated and

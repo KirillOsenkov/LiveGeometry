@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -8,6 +9,14 @@ namespace DynamicGeometry
 {
     public class Binder
     {
+        /// <summary>
+        /// The functions of System.Math are found by name, through reflection the trimmer
+        /// can't follow (a type out of a list): it kept only those the app calls itself, and
+        /// in the browser build asinh, sinh, cosh... were "Could not find method" - the
+        /// Catenary drew no curve. Kept whole here.
+        /// </summary>
+        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicMethods, typeof(System.Math))]
+        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicMethods, typeof(Functions))]
         static Binder()
         {
             AddMethods(typeof(System.Math));
