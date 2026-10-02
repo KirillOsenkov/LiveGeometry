@@ -124,8 +124,21 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   only when all of that can be (`CanBeTransformSource`, recursive) - except a radius given
   by a number (a slider, a Number, a measurement: By Radius makes a slider whenever its
   first click is on paper), which the image of a reflection, rotation or translation
-  shares and a dilation can't scale, so Dilate leaves such a circle alone. Asked only
-  about the figure itself, the tool threw at its last click.
+  shares and a dilation can't scale. Asked only about the figure itself, the tool threw
+  at its last click. What can't be transformed that way but can carry a point (a locus,
+  a graph, a line or circle by equation, a line at an angle, a Bézier curve, a circle by
+  a number under Dilate) is *traced* (`Transformer.CanBeTraced`, `CreateTracedImage`):
+  a hidden auxiliary `PointOnFigure` on it, its image by the same transformation (hidden,
+  auxiliary), and a `Locus` of that image, in the source's line style - so
+  deleting the locus takes both points along. Reflect in a circle (inversion) traces
+  every source but a point: a line's image there is a circle through the center. A
+  polygon is refused there (no point is on a polygon, and its image would be no
+  polygon). Every other transformation of a polygon or polyline also carries over the
+  visible segments along its sides (`Transformer.AddSideSegments`: the shape tools draw
+  sides as segments, and the image was a shape without an outline), same style and
+  marks; they go into the list before the image, which callers take to be the last. The
+  GeoGebra reader says `sideSegments: false`: a file has the image's sides as objects
+  of their own, and the copies came out hidden.
 - **Coordinates**: Grid (G) (command); Function - an expression in x; Line - by
   slope and intercept expressions; Circle - by center and radius expressions; Point by
   coordinates (toggle: gives the point tools an X/Y panel).
@@ -976,7 +989,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   stays), so 1/x, tan x and floor(x) have no vertical lines; values far beyond the window
   are clamped (a coordinate of 1e300 pixels is not drawn, and exp(x²) vanished whole). A
   function that throws has no value there (it was 0). A locus has one wherever the traced
-  point doesn't exist. Before, a curve was one line through all its points: straight
+  point doesn't exist. A locus samples adaptively (`Locus.SampleAdaptively`): 60 even
+  steps, then round after round every step halved where the curve strays more than half
+  a pixel from the piece drawn, or a gap begins or ends - at most 12 rounds and 1000
+  samples, spread evenly when they run out (sin(40x) is coarse, not stuck); a piece still
+  long after every round is a jump (1/x), not joined. Past the open ends of a line, ray
+  or graph (and of a locus on one) it steps outward, each step twice the last, and a
+  traced point beyond 20 window sizes is a gap. Sampled evenly along the line, the image
+  of a line in a circle was a hexagon on its far side with a hole at the center.
+  `Samples="60"` in a file asks for that many even steps instead: only the Spiral. Before, a curve was one line through all its points: straight
   pieces across where there is nothing.
 - **Vectors** are an invisible `Segment` plus an `Arrow` polygon sized in pixels, filled with the
   line color. `Vector.OnAddingToCanvas` sets the default `LineStyle` before the base call,
@@ -1547,8 +1568,8 @@ buttons and checkboxes, 3D, custom tools.
   Ladder): fixed points are `PointByCoordinates` with constant coordinates (a polygon of those
   has no free point, so dragging it does nothing), and the only things that move are
   `PointOnFigure` sliders on hidden rays or segments plus a free point or two.
-- **The Spiral's rings** ("Drag to here") are placed for `Locus.StepCount` = 60 samples;
-  changing `StepCount` moves them. The samples are taken by their count (61 points, 60
+- **The Spiral's rings** ("Drag to here") are placed for its locus's `Samples="60"`;
+  changing the number moves them, and without it the curve is a smooth spiral. The samples are taken by their count (61 points, 60
   equal steps of the sliding point's parameter): added up, the step's rounding decided
   whether the last sample but one was taken, and the curve had 60 or 61 points from one
   move to the next.
@@ -1758,17 +1779,21 @@ A change to the theme wants the same once more with `start ... --dark`.
 
 Deliberately out of scope for now: Calculator, step-by-step construction playback.
 
-Still missing compared to VB6, roughly by value: symmetric point (about a point) and inverted
-point (in a circle) tools; tracing locus of a point ("Create locus" on a point); "Choose point/figure" disambiguation for
-overlapping figures; double-click opens properties (here: double-click = zoom to fit); measurement
-label dragging constraints; point shape/size per point and name color; line dash styles per
-figure; Show/Hide, message, sound and launch buttons; live cursor coordinates in the status bar;
-rulers; undo/redo captions naming the action; unsaved-changes prompt; recent files; print;
-"tool select once" option; settings persistence; languages (en/ru/uk/de).
+Still missing compared to VB6, roughly by value: unsaved-changes prompt; "Choose point/figure"
+disambiguation for overlapping figures; live cursor coordinates in the status bar; undo/redo
+captions naming the action; recent files; print; message, sound and launch buttons (the `.dgf`
+reader leaves button types 1-3 out); "Create locus" on a point (the Locus tool does the
+tracing); measurement label dragging constraints; rulers; "tool select once" option (every
+construction returns to Drag); languages (en/ru/uk/de). Not a gap but a choice: double-click
+zooms to fit, where VB6 opened properties (here selecting a figure shows them).
+
+Done since the list was made: the point symmetric about a point and the inverted point are
+Reflect with a point or a circle for the mirror; point shapes and sizes, name colors and dashes
+are per style; show/hide buttons are `ShowHideControl`; settings persist (`SettingsStore`).
 
 ## Not yet verified in the browser
 
-Printing, demo download, and the `Hyperlink` figure (only in old files, no tool makes one),
+The `Hyperlink` figure (only in old files, no tool makes one),
 which fetches the drawing at its URL with `HttpClient` when clicked - not when read, which
 put a failure's whole stack trace into its text, saved with it.
 Saving through the browser storage provider works (drawings, and PNG and SVG pictures);

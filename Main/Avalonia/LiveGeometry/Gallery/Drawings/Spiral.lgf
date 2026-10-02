@@ -26,7 +26,7 @@
     <PointByCoordinates Name="B" Style="10" X="(A.X) * (COS(A.Y))" Y="(A.X) * (SIN(A.Y))">
       <Dependency Name="A" />
     </PointByCoordinates>
-    <Locus Name="Locus1" Style="11">
+    <Locus Name="Locus1" Style="11" Samples="60">
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Locus>

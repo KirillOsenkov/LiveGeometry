@@ -1438,7 +1438,8 @@ public class GeoGebraReader
                 return One(CreateText(inputs[0]));
             case "Mirror":
             case "Reflect":
-                return One(Last(Transformer.CreateReflectedFigure(drawing, Resolve(inputs[0]), Resolve(inputs[1]))));
+                // (the image's sides are objects of their own in the file: see polygonSides)
+                return One(Last(Transformer.CreateReflectedFigure(drawing, Resolve(inputs[0]), Resolve(inputs[1]), sideSegments: false)));
             case "Rotate":
                 return One(RotateCommand(inputs));
             case "Translate":
@@ -1928,7 +1929,7 @@ public class GeoGebraReader
             angle = NumberArgument(inputs[1], isAngle: true);
         }
 
-        return Last(Transformer.CreateRotatedFigure(drawing, source, center, angle));
+        return Last(Transformer.CreateRotatedFigure(drawing, source, center, angle, sideSegments: false));
     }
 
     IFigure TranslateCommand(string[] inputs)
@@ -1941,7 +1942,12 @@ public class GeoGebraReader
             return null;
         }
 
-        return Last(Transformer.CreateTranslatedFigure(drawing, source, vector, vector));
+        return Last(Transformer.CreateTranslatedFigure(
+            drawing,
+            source,
+            vector,
+            vector,
+            sideSegments: false));
     }
 
     IFigure DilateCommand(string[] inputs)
@@ -1949,7 +1955,13 @@ public class GeoGebraReader
         var source = Resolve(inputs[0]);
         IFigure center = inputs.Length > 2 ? PointOf(inputs[2]) : OriginPoint();
         var factor = LengthProvider(inputs[1]);
-        return Last(Transformer.CreateDilatedFigure(drawing, source, center, factor, lengthProvider2: null));
+        return Last(Transformer.CreateDilatedFigure(
+            drawing,
+            source,
+            center,
+            factor,
+            lengthProvider2: null,
+            sideSegments: false));
     }
 
     /// <summary>Centroid[polygon]: the area-weighted centroid, a point by coordinates.</summary>

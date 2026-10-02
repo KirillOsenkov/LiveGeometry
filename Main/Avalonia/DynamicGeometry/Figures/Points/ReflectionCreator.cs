@@ -89,7 +89,11 @@ namespace DynamicGeometry
             }
             else if (FoundDependencies.Count == 1)
             {
-                return "Select a mirror. The mirror can be a point, line, segment, ray, or circle (if the source is a point).";
+                // (a polygon has no image in a circle: it would not be a polygon)
+                var source = FoundDependencies[0];
+                return source is IPoint || Transformer.CanBeTraced(source)
+                    ? "Select a mirror: a point, line, segment, ray, or circle."
+                    : "Select a mirror: a point, line, segment, or ray.";
             }
             return base.ConstructionHintText(args);
         }

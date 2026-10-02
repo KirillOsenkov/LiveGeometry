@@ -293,7 +293,7 @@ namespace DynamicGeometry
             switch (step)
             {
                 case Step.Source:
-                    return Transformer.CanBeTransformSource(figure);
+                    return Transformer.CanBeSource(figure);
                 case Step.Distance:
                     return figure is Vector || figure.GivesLength();
                 case Step.Direction:
