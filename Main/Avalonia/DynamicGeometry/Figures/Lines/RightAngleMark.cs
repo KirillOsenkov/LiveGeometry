@@ -152,7 +152,9 @@ public class RightAngleMark
     /// <param name="vertex">Where the two lines meet, logical</param>
     /// <param name="baseLine">The line the owner is perpendicular to, logical; its direction
     /// is what <see cref="Corner"/> counts from</param>
-    public void Show(Drawing drawing, Point vertex, PointPair baseLine)
+    /// <param name="baseFigure">The figure drawn along the base line, if any: a mark whose
+    /// side along it would reach past its end (a segment's, the start of a ray's) isn't drawn</param>
+    public void Show(Drawing drawing, Point vertex, PointPair baseLine, IFigure baseFigure)
     {
         var coordinateSystem = drawing.CoordinateSystem;
         var along = baseLine.P2.Minus(baseLine.P1);
@@ -181,6 +183,12 @@ public class RightAngleMark
         }
 
         var points = GetPoints(cornerPoint, first.Value, second.Value, Size);
+        if (baseFigure != null && baseFigure.HitTest(coordinateSystem.ToLogical(points[0])) == null)
+        {
+            Hide();
+            return;
+        }
+
         sign.Points = points;
         clickArea.Points = new Points() { cornerPoint, points[0], points[1], points[2] };
         sign.IsVisible = true;

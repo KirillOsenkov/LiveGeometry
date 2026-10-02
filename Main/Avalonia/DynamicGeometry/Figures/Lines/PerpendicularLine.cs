@@ -28,11 +28,26 @@ namespace DynamicGeometry
         {
             // where this line crosses the one it is perpendicular to - if it does:
             // the foot can be beyond the end of a segment
-            var baseFigure = Dependencies[0];
             baseLine = Dependencies.Line(0);
             pointAcross = Point(1);
             vertex = Math.GetProjectionPoint(pointAcross, baseLine);
-            return baseFigure.Visible && baseFigure.HitTest(vertex) != null;
+            return Dependencies[0].Visible && BaseFigure.HitTest(vertex) != null;
+        }
+
+        // a vector by the segment inside it: its arrowhead is a polygon that has no points
+        // while the file is read, and the mark is about where the vector ends, not its head
+        protected override IFigure BaseFigure
+        {
+            get
+            {
+                var vector = Dependencies[0] as Vector;
+                if (vector != null)
+                {
+                    return vector.Line;
+                }
+
+                return Dependencies[0];
+            }
         }
     }
 }

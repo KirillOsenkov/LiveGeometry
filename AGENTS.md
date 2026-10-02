@@ -974,7 +974,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Drag tool moves it to the next corner. Chosen when the line is first worked out, shown or
   not, with its foot on the base line or beyond: chosen when the mark first showed, it
   changed what the file saves when a hidden line (a square's helper) was shown or a point
-  dragged, and undo of that did not put it back. It hides when an `AngleArc` sits at the same vertex,
+  dragged, and undo of that did not put it back. It hides where its side along the base would
+  stick out past the end of a segment, ray or vector (`PerpendicularLineBase.BaseFigure`; a
+  vector's inner segment, since its arrowhead has no points while a file is read and threw
+  there). It hides when an `AngleArc` sits at the same vertex,
   because a measured angle of exactly 90° draws the same sign itself.
 - **An angle is two figures**, `AngleMeasurement` (the number) and `AngleArc` (the mark, 0-3
   arcs), paired by `AngleArc.FindCompanion`. Neither exists while a side has no length (a

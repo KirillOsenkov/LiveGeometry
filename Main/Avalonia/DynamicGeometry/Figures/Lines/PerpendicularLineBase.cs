@@ -38,6 +38,18 @@ public abstract class PerpendicularLineBase : LineTwoPoints
     /// <param name="pointAcross">A point on this line that tells which side the mark starts on</param>
     protected abstract bool TryGetRightAngle(out Point vertex, out PointPair baseLine, out Point pointAcross);
 
+    /// <summary>
+    /// The figure drawn along the base line, if any: the mark isn't drawn where its side along
+    /// the base line would stick out past the end of a segment or the start of a ray.
+    /// </summary>
+    protected virtual IFigure BaseFigure
+    {
+        get
+        {
+            return null;
+        }
+    }
+
     // the perpendicular bisector of AB doesn't run through A and B: not "AB"
     protected override IReadOnlyList<string> NamesFromDependencies()
     {
@@ -115,7 +127,7 @@ public abstract class PerpendicularLineBase : LineTwoPoints
             return;
         }
 
-        Mark.Show(Drawing, vertex, baseLine);
+        Mark.Show(Drawing, vertex, baseLine, BaseFigure);
     }
 
     public override void OnAddingToCanvas(Canvas newContainer)
