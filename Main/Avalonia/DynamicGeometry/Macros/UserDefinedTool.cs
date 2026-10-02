@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Avalonia.Input;
 
 namespace DynamicGeometry
 {
@@ -43,7 +44,19 @@ namespace DynamicGeometry
                 }
             }
 
+            [PropertyGridVisible(false)]
+            public UserDefinedTool Tool
+            {
+                get
+                {
+                    return Parent;
+                }
+            }
+
+            // the name on the tool's button: never empty, and no other tool's (the editor says so)
             [PropertyGridVisible]
+            [PropertyGridPreferredEditor("ToolName")]
+            [PropertyGridEvent("KeyDown", "Name_KeyDown")]
             public string Name
             {
                 get
@@ -52,8 +65,34 @@ namespace DynamicGeometry
                 }
                 set
                 {
-                    Parent.MutableName = value;
+                    value = value?.Trim();
+                    if (!value.IsEmpty() && !IsToolNameTaken(value, except: Parent))
+                    {
+                        Parent.MutableName = value;
+                    }
                 }
+            }
+
+            /// <summary>Enter is OK, unless the name was refused (the box says why)</summary>
+            public void Name_KeyDown(object sender, KeyEventArgs e)
+            {
+                if (e.Key == Key.Enter)
+                {
+                    if (!(sender is StringEditor editor) || string.IsNullOrEmpty(editor.ErrorText))
+                    {
+                        OK();
+                    }
+
+                    e.Handled = true;
+                }
+            }
+
+            /// <summary>Puts the panel away and keeps the tool: it needs nothing typed to work</summary>
+            [PropertyGridVisible]
+            [PropertyGridIcon(PropertyGridIcon.Check)]
+            public void OK()
+            {
+                Parent.Drawing?.RaiseDisplayProperties(null);
             }
 
             [PropertyGridVisible]
@@ -132,10 +171,11 @@ namespace DynamicGeometry
             }
         }
 
-        public static void AddFromString(string macro)
+        public static UserDefinedTool AddFromString(string macro)
         {
             UserDefinedTool tool = new UserDefinedTool(macro);
             Behavior.Add(tool);
+            return tool;
         }
 
         protected override IEnumerable<IFigure> CreateFigures()

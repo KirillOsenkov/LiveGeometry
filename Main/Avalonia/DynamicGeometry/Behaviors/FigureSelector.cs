@@ -34,11 +34,10 @@ namespace DynamicGeometry
 
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var coordinates = Coordinates(e);
-            var underMouse = Drawing.Figures.HitTest(coordinates);
+            var underMouse = FindFigureToToggle(Coordinates(e));
             if (underMouse != null)
             {
-                if (IsFigureSelected(underMouse))
+                if (clicked.Contains(underMouse))
                 {
                     DeselectFigure(underMouse);
                 }
@@ -47,6 +46,22 @@ namespace DynamicGeometry
                     TrySelectFigure(underMouse);
                 }
             }
+        }
+
+        /// <summary>
+        /// The figure a click here would select or let go of: one this selector selected, or
+        /// one it can select. Null for none - also for one an earlier step selected (an input,
+        /// while the results are picked), which a click used to unselect to no purpose.
+        /// </summary>
+        public IFigure FindFigureToToggle(Avalonia.Point coordinates)
+        {
+            var underMouse = Drawing.Figures.HitTest(coordinates);
+            if (underMouse == null)
+            {
+                return null;
+            }
+
+            return clicked.Contains(underMouse) || CanSelectFigure(underMouse) ? underMouse : null;
         }
 
         public void UpdateEnabledFigures()

@@ -86,8 +86,12 @@ namespace DynamicGeometry
                 }
 
                 Parent.Results = Parent.behavior.GetSelection();
-                Parent.CreateTool();
-                Parent.AbortAndSetDefaultTool();
+                var tool = Parent.CreateTool();
+
+                // ready to use, with its name to change: Enter or OK keeps it
+                var drawing = Parent.Drawing;
+                drawing.Behavior = tool;
+                drawing.RaiseDisplayProperties(tool.PropertyBag, focusProperty: nameof(UserDefinedTool.UserDefinedDialog.Name));
             }
         }
 
@@ -121,6 +125,17 @@ namespace DynamicGeometry
             {
                 behavior.MouseDown(sender, e);
             }
+        }
+
+        /// <summary>A halo on the figure a click would select or let go of, as tools show the figure they would take</summary>
+        protected override IFigure GetFigureToPick(MouseEventArgs e)
+        {
+            return behavior?.FindFigureToToggle(Coordinates(e));
+        }
+
+        protected override Cursor GetCursor(Point coordinates)
+        {
+            return behavior?.FindFigureToToggle(coordinates) != null ? HandCursor : ArrowCursor;
         }
 
         public override void KeyDown(object sender, KeyEventArgs e)
@@ -165,15 +180,17 @@ namespace DynamicGeometry
             get { return "Click the inputs in order."; }
         }
 
-        public virtual void CreateTool()
+        public virtual UserDefinedTool CreateTool()
         {
+            // named after the first figure it makes (Catenary), a number added when that is taken
+            var firstName = Results.Select(r => r.Name).FirstOrDefault(n => !n.IsEmpty()) ?? "Custom tool";
             foreach (var result in Results.ToArray())
             {
                 AddIntermediateResults(result);
             }
             Results = Sort(Results);
-            string macro = MacroSerializer.WriteMacroToString(Inputs, Results);
-            UserDefinedTool.AddFromString(macro);
+            string macro = MacroSerializer.WriteMacroToString(Inputs, Results, UniqueToolName(firstName));
+            return UserDefinedTool.AddFromString(macro);
         }
 
         protected IList<IFigure> Sort(IList<IFigure> set)

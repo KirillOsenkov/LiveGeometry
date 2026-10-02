@@ -33,8 +33,29 @@ namespace DynamicGeometry
             }
 
             BehaviorOrderer.Order(result);
-
+            tools.AddRange(result);
             return result;
+        }
+
+        // the tools on the ribbon: the library's and those the user defined
+        static readonly List<Behavior> tools = new List<Behavior>();
+
+        /// <summary>Whether a tool on the ribbon other than <paramref name="except"/> is called that, in any case</summary>
+        public static bool IsToolNameTaken(string name, Behavior except = null)
+        {
+            return tools.Exists(t => t != except && string.Equals(t.Name, name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>The name, or with a number after it when a tool has it already: Catenary 2</summary>
+        public static string UniqueToolName(string name)
+        {
+            var candidate = name;
+            for (int i = 2; IsToolNameTaken(candidate); i++)
+            {
+                candidate = name + " " + i;
+            }
+
+            return candidate;
         }
 
         protected virtual FreePoint CreatePointAtCurrentPosition(
@@ -47,6 +68,7 @@ namespace DynamicGeometry
 
         public static void Add(UserDefinedTool newBehavior)
         {
+            tools.Add(newBehavior);
             if (Behavior.NewBehaviorCreated != null)
             {
                 Behavior.NewBehaviorCreated(newBehavior);
@@ -56,6 +78,7 @@ namespace DynamicGeometry
 
         public static void Delete(UserDefinedTool tool)
         {
+            tools.Remove(tool);
             if (Behavior.BehaviorDeleted != null)
             {
                 Behavior.BehaviorDeleted(tool);

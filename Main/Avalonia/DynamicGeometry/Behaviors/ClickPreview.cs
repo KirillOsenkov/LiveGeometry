@@ -180,13 +180,22 @@ public class ClickPreview
             Canvas.SetTop(halo, Canvas.GetTop(source));
             SetHaloStroke(halo, source);
         }
-        else if (figure is EllipseArcBase arc)
+        else if (figure is ShapeBase<AvaloniaShapes.Path> path)
         {
+            // an arc, a curve (a locus, a function graph), a Bézier curve
             halo = new AvaloniaShapes.Path()
             {
-                Data = arc.Shape.Data
+                Data = path.Shape.Data
             };
-            SetHaloStroke(halo, arc.Shape);
+            SetHaloStroke(halo, path.Shape);
+        }
+        else if (figure is ShapeBase<AvaloniaShapes.Polyline> polyline)
+        {
+            halo = new AvaloniaShapes.Polyline()
+            {
+                Points = polyline.Shape.Points.ToList()
+            };
+            SetHaloStroke(halo, polyline.Shape);
         }
         else if (figure is PointBase point)
         {

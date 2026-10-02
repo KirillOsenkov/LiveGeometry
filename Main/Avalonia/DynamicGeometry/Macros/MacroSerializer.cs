@@ -14,12 +14,16 @@ namespace DynamicGeometry
             return WriteUsingXmlWriter(Write);
         }
 
-        public static string WriteMacroToString(IList<IFigure> inputs, IList<IFigure> results)
+        /// <summary>The name of the tool, on its button</summary>
+        public string Name { get; set; } = "Custom tool";
+
+        public static string WriteMacroToString(IList<IFigure> inputs, IList<IFigure> results, string name)
         {
             return new MacroSerializer()
             {
                 Inputs = inputs,
-                Results = results
+                Results = results,
+                Name = name
             }.WriteMacroToString();
         }
 
@@ -27,7 +31,7 @@ namespace DynamicGeometry
         {
             writer.WriteStartDocument();
             writer.WriteStartElement("Macro");
-            writer.WriteAttributeString("Name", "Custom tool");
+            writer.WriteAttributeString("Name", Name);
             WriteInputs(writer);
             MacroIcon.Write(writer, Inputs, Results);
             WriteResults(writer);

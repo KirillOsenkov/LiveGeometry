@@ -136,7 +136,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Misc**: Bezier - four points; Locus (D) - a point that depends on a point on a figure;
   Text - a label at the click; Define figure - records a construction as a new tool: click
   the figures it starts from, OK, click the figures it makes, Create tool (neither step
-  goes on with nothing picked). The new tool lands on Misc; it is not kept between runs
+  goes on with nothing picked); a halo and the hand cursor show what a click would select
+  or let go of (`FigureSelector.FindFigureToToggle`). The new tool lands on Misc, named
+  after the first result clicked (Catenary, then Catenary 2: `Behavior.UniqueToolName`
+  over the ribbon's tools), and is picked at once with its panel open and the keyboard in
+  the name (`ToolNameEditor` refuses an empty name or another tool's; OK or Enter only
+  puts the panel away); it is not kept between runs
   (`ToolStorage` is a stub) nor saved with a drawing. It asks for its inputs in the order
   they were clicked (`FigureSelector.GetSelection`; in the drawing's order, a slider
   clicked first was asked for last), and the expressions of what it makes (a point by

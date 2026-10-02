@@ -860,6 +860,8 @@ public class Program
         }
 
         Require(tool != null, "Define figure made no tool.");
+        Require(drawing.Behavior == tool, "Define figure didn't hand over to the new tool.");
+        Require(tool.Name == "Up", "The tool isn't named after the figure it makes: " + tool.Name);
         var inputs = tool.RootElement.Element("Inputs").Elements().Select(e => e.Attribute("Name").Value);
         Require(string.Join(" ", inputs) == "s A B", "The inputs are not in the order clicked: " + string.Join(" ", inputs));
         Require(tool.HintText == "Click a slider (s), a point (A), then a point (B).", "The tool's hint: " + tool.HintText);
