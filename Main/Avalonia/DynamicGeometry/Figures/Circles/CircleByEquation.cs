@@ -73,6 +73,25 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// A center or a radius without a value (an expression that doesn't compile, a radius
+        /// below 0 or undefined) leaves no circle, as for a circle by radius: it was a dot at
+        /// (0, 0), or at the center, with what was built on it
+        /// </summary>
+        public override void UpdateExistence()
+        {
+            base.UpdateExistence();
+            if (Exists
+                && (X?.Value == null
+                    || Y?.Value == null
+                    || R?.Value == null
+                    || !Center.Exists()
+                    || !(R.Value() >= 0)))
+            {
+                Exists = false;
+            }
+        }
+
         [PropertyGridVisible]
         public DrawingExpression X { get; set; }
 

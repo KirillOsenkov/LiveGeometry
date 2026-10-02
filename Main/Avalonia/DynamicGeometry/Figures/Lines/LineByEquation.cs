@@ -74,6 +74,29 @@
             }
         }
 
+        /// <summary>
+        /// An equation without a value - an expression that doesn't compile, A = B = 0, a slope
+        /// of sqrt(-1) - leaves no line: it was a line through (0, 0) going nowhere, with
+        /// what was built on it
+        /// </summary>
+        public override void UpdateExistence()
+        {
+            base.UpdateExistence();
+            if (!Exists)
+            {
+                return;
+            }
+
+            var coordinates = Equation?.LineCoordinates;
+            if (coordinates == null
+                || !coordinates.Value.P1.Exists()
+                || !coordinates.Value.P2.Exists()
+                || coordinates.Value.P1 == coordinates.Value.P2)
+            {
+                Exists = false;
+            }
+        }
+
         public override void ReadXml(System.Xml.Linq.XElement element)
         {
             Equation = LineEquation.Read(this, element);

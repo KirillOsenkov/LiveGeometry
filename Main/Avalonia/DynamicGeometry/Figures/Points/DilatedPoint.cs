@@ -57,7 +57,8 @@ namespace DynamicGeometry
                 if (IsRatio)
                 {
                     double denominator = (Dependencies[3] as ILengthProvider)?.Length ?? 1;
-                    return denominator != 0 ? ((Dependencies[2] as ILengthProvider)?.Length ?? 1) / denominator : 99999;
+                    // over a length of 0 there is no factor, and no point (it was 99999: far away)
+                    return denominator != 0 ? ((Dependencies[2] as ILengthProvider)?.Length ?? 1) / denominator : double.NaN;
                 }
 
                 switch (FactorSource)

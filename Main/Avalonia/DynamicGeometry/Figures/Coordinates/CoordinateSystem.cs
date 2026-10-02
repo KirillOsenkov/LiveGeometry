@@ -29,24 +29,22 @@ namespace DynamicGeometry
         public Drawing Drawing { get; set; }
 
         /// <summary>
-        /// Sets the unitLength and origin of the coordinate system.
+        /// Sets the unitLength and origin of the coordinate system so that the rectangle shows.
+        /// A rectangle without a size (a file saved from a window that had none, a file
+        /// edited by hand), or a canvas without one, leaves the view as it is: it threw, and
+        /// the whole file was refused for the view it asked for.
         /// </summary>
         public void SetViewport(double minX, double maxX, double minY, double maxY)
         {
             var logicalWidth = maxX - minX;
             var logicalHeight = maxY - minY;
-            if (!logicalWidth.IsValidPositiveValue())
-            {
-                throw new ArgumentException("maxX must be greater than minX and both numbers need to exist");
-            }
-            if (!logicalHeight.IsValidPositiveValue())
-            {
-                throw new ArgumentException("maxY must be greater than minY and both numbers need to exist");
-            }
             var physicalSize = PhysicalSize;
-            if (!physicalSize.X.IsValidPositiveValue() || !physicalSize.Y.IsValidPositiveValue())
+            if (!logicalWidth.IsValidPositiveValue()
+                || !logicalHeight.IsValidPositiveValue()
+                || !physicalSize.X.IsValidPositiveValue()
+                || !physicalSize.Y.IsValidPositiveValue())
             {
-                throw new ArgumentException("Canvas.ActualWidth and Canvas.ActualHeight must be valid values");
+                return;
             }
 
             Fit(new Rect(minX, minY, logicalWidth, logicalHeight), marginPixels: 0);

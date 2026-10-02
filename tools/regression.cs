@@ -55,6 +55,7 @@ public class Program
             ("Paste into another drawing keeps the look", PasteBringsStyles),
             ("Pasting plain text is no error", PastePlainText),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
+            ("Figures without a value don't exist", FiguresWithoutValue),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
             ("Gallery LGF round trips", GalleryRoundTrips)
@@ -817,6 +818,31 @@ public class Program
             var attribute = (PropertyGridVisibleAttribute)Attribute.GetCustomAttribute(type.GetProperty(nameof(IFigure.Visible)), typeof(PropertyGridVisibleAttribute));
             Require(attribute is { Visible: false }, type.Name + " has a Visible row of its own.");
         }
+    }
+
+    static void FiguresWithoutValue()
+    {
+        // an empty viewport (saved from a window without a size) keeps the view
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Viewport Left="0" Top="0" Right="0" Bottom="0" />
+              <Figures>
+                <FreePoint Name="A" X="1" Y="2"/>
+                <CircleByEquation Name="c1" X="A.X" Y="A.Y" R="-1"/>
+                <CircleByEquation Name="c2" X="A.X" Y="A.Y" R="2"/>
+                <LineByEquation Name="l1" A="0" B="0" C="1"/>
+                <LineByEquation Name="l2" A="1" B="0" C="-3"/>
+                <PointByCoordinates Name="P" X="A.X + 1" Y="sqrt(0 - 1)"/>
+              </Figures>
+            </Drawing>
+            """);
+        Require(drawing.LoadErrors == null, "The drawing did not load: " + drawing.LoadErrors);
+        drawing.Recalculate();
+        Require(!Find(drawing, "c1").Exists, "A circle of radius -1 exists.");
+        Require(Find(drawing, "c2").Exists, "A circle of radius 2 doesn't exist.");
+        Require(!Find(drawing, "l1").Exists, "The line 0 = 1 exists.");
+        Require(Find(drawing, "l2").Exists, "The line x = 3 doesn't exist.");
+        Require(!Find(drawing, "P").Exists, "A point at y = sqrt(-1) exists.");
     }
 
     static void PartialLoad()

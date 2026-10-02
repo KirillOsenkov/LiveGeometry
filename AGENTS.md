@@ -334,7 +334,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   by coordinates and the angle bisector do now - the image of an intersection that had
   gone stayed on screen, frozen at its last place, with everything built on it. A point by
   coordinates whose expression doesn't compile (it names a figure that isn't there) doesn't
-  exist either: it stood at (0, 0).
+  exist either: it stood at (0, 0). Nor a line by equation without a value (A = B = 0, a
+  slope of sqrt(-1)), nor a circle by equation with a radius below 0 or undefined (it was
+  a dot), nor a point dilated by a ratio over a length of 0.
 - **The reach of a click is in pixels**, the cursor's tolerance plus half the stroke, for
   every figure. A circle, ellipse or arc is hit by its distance from the curve along the
   ray from the center (`Math.RadialDistanceToEllipse`); it was the left side of the
@@ -1279,7 +1281,9 @@ loader still does for files from before; none of it needs extending.
   rest comes in; it threw half way, with a bare name or "the given key was not present"
   for a message. Such a drawing keeps the list (`Drawing.LoadErrors`), gets no name and
   so no file to be saved over, and the status says the first line and how many more.
-  `IniFile` skips the lines of a `.dgf` it can't read.
+  `IniFile` skips the lines of a `.dgf` it can't read. A viewport without a size (a file
+  saved from a window that had none) keeps the view (`CoordinateSystem.SetViewport`): it
+  threw, and the file was refused whole.
 - **Label text** is one attribute: a line break is the two characters `\n` and a
   backslash is two backslashes (a typed `C:\notes` came back as two lines); characters an
   XML file can't hold are left out (one pasted in made Save throw and write nothing).
