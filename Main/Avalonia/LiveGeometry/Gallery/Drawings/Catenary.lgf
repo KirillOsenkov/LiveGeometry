@@ -88,7 +88,7 @@
       <Dependency Name="B" />
     </PointLabel>
     <Label Name="Title" Style="GalleryTitle" Text="Catenary" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A rope of length [rope] hangs from A and B, which are [AB] apart. It sags into a catenary, y = a·cosh((x − x₀)/a) + c: the curve of any chain or cable hanging under its own weight. It looks like a parabola, but it isn't one.\n\nDrag A and B, or the knob of the rope's slider. The dashed line is the shortest way from A to B: a rope shorter than that can't reach, and the curve is gone." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true">
+    <Label Name="Description" Style="GalleryText" Text="A rope of length [rope] hangs from A and B, which are [AB] apart.\n\nIt sags into a catenary, y = a·cosh((x − x₀)/a) + c: the curve of any chain or cable hanging under its own weight. It looks like a parabola, but it isn't one.\n\nDrag A and B, or the knob of the rope's slider. The dashed line is the shortest way from A to B: a rope shorter than that can't reach, and the curve is gone." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true">
       <Dependency Name="rope" />
       <Dependency Name="A" />
       <Dependency Name="B" />
