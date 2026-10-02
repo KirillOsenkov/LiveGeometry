@@ -56,6 +56,7 @@ public class Program
             ("Pasting plain text is no error", PastePlainText),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
             ("Figures without a value don't exist", FiguresWithoutValue),
+            ("A tool defined on expressions builds on its inputs", DefinedToolOnExpressions),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
             ("Gallery LGF round trips", GalleryRoundTrips)
@@ -818,6 +819,64 @@ public class Program
             var attribute = (PropertyGridVisibleAttribute)Attribute.GetCustomAttribute(type.GetProperty(nameof(IFigure.Visible)), typeof(PropertyGridVisibleAttribute));
             Require(attribute is { Visible: false }, type.Name + " has a Visible row of its own.");
         }
+    }
+
+    /// <summary>
+    /// Define figure on a construction made of expressions (as the Catenary is): the tool
+    /// asks for its inputs in the order they were clicked, and what it makes is built on
+    /// the figures it is given, not on the ones it was defined on.
+    /// </summary>
+    static void DefinedToolOnExpressions()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="-3" Y="-1" />
+                <FreePoint Name="B" X="1" Y="-2" />
+                <Slider Name="s" X="-4" Y="3" Value="2" />
+                <PointByCoordinates Name="Middle" Visible="false" X="(A.X + B.X) / 2" Y="(A.Y + B.Y) / 2" />
+                <PointByCoordinates Name="Up" X="Middle.X" Y="Middle.Y + s" />
+              </Figures>
+            </Drawing>
+            """);
+        using var window = new TestWindow(drawing.Canvas);
+        UserDefinedTool tool = null;
+        Action<Behavior> created = behavior => tool = (UserDefinedTool)behavior;
+        Behavior.NewBehaviorCreated += created;
+        try
+        {
+            var definer = new MacroDefiner();
+            drawing.Behavior = definer;
+            Click(drawing, drawing.CoordinateSystem.ToPhysical(new Point(-3, 3)));
+            Click(drawing, drawing.CoordinateSystem.ToPhysical(new Point(-3, -1)));
+            Click(drawing, drawing.CoordinateSystem.ToPhysical(new Point(1, -2)));
+            ((MacroDefiner.SelectInputsDialog)definer.PropertyBag).OK();
+            Click(drawing, drawing.CoordinateSystem.ToPhysical(new Point(-1, 0.5)));
+            ((MacroDefiner.SelectResultsDialog)definer.PropertyBag).CreateTool();
+        }
+        finally
+        {
+            Behavior.NewBehaviorCreated -= created;
+        }
+
+        Require(tool != null, "Define figure made no tool.");
+        var inputs = tool.RootElement.Element("Inputs").Elements().Select(e => e.Attribute("Name").Value);
+        Require(string.Join(" ", inputs) == "s A B", "The inputs are not in the order clicked: " + string.Join(" ", inputs));
+        var first = AddPoint(drawing, x: 2, y: 0);
+        var second = AddPoint(drawing, x: 4, y: 2);
+        int count = drawing.Figures.Count;
+        drawing.Behavior = tool;
+        Click(drawing, drawing.CoordinateSystem.ToPhysical(new Point(-3, 3)));
+        Click(drawing, drawing.CoordinateSystem.ToPhysical(new Point(2, 0)));
+        Click(drawing, drawing.CoordinateSystem.ToPhysical(new Point(4, 2)));
+        var made = drawing.Figures.Skip(count).OfType<PointByCoordinates>().ToArray();
+        Require(made.Length == 2, made.Length + " points made.");
+        var originals = new[] { Find(drawing, "A"), Find(drawing, "B"), Find(drawing, "Middle") };
+        Require(!made.Any(p => p.Dependencies.Any(originals.Contains)), "A figure made is built on the figures the tool was defined on.");
+        Require(made[0].Name.StartsWith("PointByCoordinates"), "The hidden helper took a point's letter: " + made[0].Name);
+        Near(made[1].Coordinates.X, expected: 3);
+        Near(made[1].Coordinates.Y, expected: 3);
+        drawing.Figures.CheckConsistency();
     }
 
     static void FiguresWithoutValue()

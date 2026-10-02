@@ -539,6 +539,11 @@ namespace DynamicGeometry
             }
             if (drawing.Figures[instance.Name] != null)
             {
+                // a hidden helper is numbered by its type and leaves the letters to the points
+                // on screen (PointBase.GenerateFigureName), which it can tell only once it
+                // knows it is hidden: pasted or made by a tool defined from the Catenary, its
+                // helpers took E to U
+                instance.Visible = figureNode.ReadBool("Visible", defaultValue: true);
                 instance.GenerateNewNameIfNecessary(drawing, nameBlacklist);
             }
 

@@ -214,6 +214,8 @@ namespace DynamicGeometry
                     Actions.Add(Drawing, figure);
                 }
             }
+
+            FiguresAdded(figures);
             Drawing.RaiseUserIsAddingFigures(new Drawing.UIAFEventArgs() { Figures = figures });
             Transaction.Commit();
             Transaction = null;
@@ -224,6 +226,11 @@ namespace DynamicGeometry
             });
             Restart();
             ShowCreatedFigure(figures);
+        }
+
+        /// <summary>The figures made are in the drawing, inside the construction's transaction</summary>
+        protected virtual void FiguresAdded(IList<IFigure> figures)
+        {
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace DynamicGeometry
@@ -147,8 +148,58 @@ namespace DynamicGeometry
             }
             var deserializer = new DrawingDeserializer();
             //EnsureUniqueNames(Drawing, figuresElement);   This changes RootElement so that the names don't match up with Inputs. - D.H.
-            var tempFigures = deserializer.ReadFigures(figuresElement, Drawing, inputs);
+            var tempFigures = deserializer.ReadFigures(figuresElement, Drawing, inputs).ToList();
+            byMacroName = inputs;
             return tempFigures;
+        }
+
+        // the inputs and the figures made, by the names the macro gives them
+        Dictionary<string, IFigure> byMacroName;
+
+        protected override void FiguresAdded(IList<IFigure> figures)
+        {
+            RebindExpressions(figures);
+        }
+
+        protected override void CreateTempResults()
+        {
+            base.CreateTempResults();
+            RebindExpressions(TempResults);
+        }
+
+        /// <summary>
+        /// The expressions of the figures made (a point by coordinates, a label's [AB]) name
+        /// the inputs and the other figures made, by the names the macro gives them. Compiled
+        /// as they are read, they named the figures the tool was defined on: a catenary made
+        /// from two other points was the first one again, only the segment between the new
+        /// points and the point sliding on it being new. As a paste does
+        /// (<see cref="PasteAction"/>): the texts are rewritten to the names the figures have
+        /// in the drawing and compiled again, once they are in.
+        /// </summary>
+        void RebindExpressions(IEnumerable<IFigure> figures)
+        {
+            if (byMacroName == null)
+            {
+                return;
+            }
+
+            var oldNames = new Dictionary<IFigure, string>();
+            foreach (var pair in byMacroName)
+            {
+                oldNames[pair.Value] = pair.Key;
+            }
+
+            var renamer = new ExpressionRenamer(Drawing, oldNames, preferred: byMacroName.Values.ToArray());
+            var holders = figures.OfType<IRenamableExpressions>().ToArray();
+            foreach (var holder in holders)
+            {
+                holder.RenameInExpressions(renamer);
+            }
+
+            foreach (var holder in holders)
+            {
+                holder.RebindExpressions();
+            }
         }
 
         private void EnsureUniqueNames(Drawing drawing, XElement figuresElement)

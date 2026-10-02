@@ -137,8 +137,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Text - a label at the click; Define figure - records a construction as a new tool: click
   the figures it starts from, OK, click the figures it makes, Create tool (neither step
   goes on with nothing picked). The new tool lands on Misc; it is not kept between runs
-  (`ToolStorage` is a stub) nor saved with a drawing, and a result whose text names
-  figures (a label's [AB]) still means the figures it was recorded on.
+  (`ToolStorage` is a stub) nor saved with a drawing. It asks for its inputs in the order
+  they were clicked (`FigureSelector.GetSelection`; in the drawing's order, a slider
+  clicked first was asked for last), and the expressions of what it makes (a point by
+  coordinates, a label's [AB]) are rewritten to name what it was given and the copies,
+  as a paste's are (`UserDefinedTool.RebindExpressions`): compiled by the macro's names,
+  a tool defined on the Catenary drew the first curve again.
 
 ## Avalonia and framework traps
 

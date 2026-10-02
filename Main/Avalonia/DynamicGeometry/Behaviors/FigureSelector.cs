@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DynamicGeometry
 {
@@ -74,15 +75,21 @@ namespace DynamicGeometry
             return true;
         }
 
+        // the figures selected here, in the order they were clicked
+        readonly List<IFigure> clicked = new List<IFigure>();
+
         public void SelectFigure(IFigure figure)
         {
             figure.Selected = true;
+            clicked.Remove(figure);
+            clicked.Add(figure);
             UpdateEnabledFigures();
         }
 
         public void DeselectFigure(IFigure figure)
         {
             figure.Selected = false;
+            clicked.Remove(figure);
             UpdateEnabledFigures();
         }
 
@@ -103,9 +110,15 @@ namespace DynamicGeometry
             get { return "Figure selector"; }
         }
 
+        /// <summary>
+        /// What this selector selected, in the order of the clicks: the order a tool defined
+        /// from them asks for its inputs. Not the drawing's selection, which lists them in the
+        /// drawing's order and still holds what an earlier step selected (the inputs, while
+        /// the results are picked).
+        /// </summary>
         public IList<IFigure> GetSelection()
         {
-            return new List<IFigure>(Drawing.GetSelectedFigures());
+            return clicked.Where(f => f.Selected).ToList();
         }
     }
 }
