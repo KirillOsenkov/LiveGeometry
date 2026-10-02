@@ -14,6 +14,9 @@ namespace DynamicGeometry
     {
         protected List<IMovable> moving = null;
         IFigure found = null;
+
+        // A label the press found that can't be dragged: the drag moves the view, a click selects it
+        LabelBase pressedFixedLabel;
         List<IFigure> toRecalculate = null;
         Point offsetFromFigureLeftTopCorner;
         protected Point oldCoordinates;
@@ -56,16 +59,29 @@ namespace DynamicGeometry
             found = Drawing.Figures.HitTest(offsetFromFigureLeftTopCorner);
 
             // labels that can't be dragged are paper: the drag moves the view, and one that
-            // starts on a caption takes the captions along (Drawing.FixedLabels)
+            // starts on a caption takes the captions along (Drawing.FixedLabels). A click
+            // still selects one, and one that is selected drags as any label does - but a
+            // caption, where on a phone a tap and then a thumb to read on would pull the
+            // explanation away from its heading. Nor does a tap select the caption: the
+            // side panel would cover half of a phone for a reader touching the text.
             PinnedLabelScroll captions = null;
             if (found is LabelBase label && Drawing.FixedLabels.Contains(label))
             {
-                if (found is Label { Pin: not LabelPin.None })
+                bool isCaption = found is Label { Pin: not LabelPin.None };
+                if (isCaption || !label.Selected)
                 {
-                    captions = new PinnedLabelScroll(Drawing);
-                }
+                    if (isCaption)
+                    {
+                        captions = new PinnedLabelScroll(Drawing);
+                    }
 
-                found = null;
+                    if (!isCaption || e.Pointer.Type != PointerType.Touch)
+                    {
+                        pressedFixedLabel = label;
+                    }
+
+                    found = null;
+                }
             }
 
             // a figure with parts (a slider) says which of them the press takes
@@ -337,6 +353,7 @@ namespace DynamicGeometry
             startedMoving = false;
             moving = null;
             found = null;
+            pressedFixedLabel = null;
             toRecalculate = null;
         }
 
@@ -544,17 +561,33 @@ namespace DynamicGeometry
                     figure.Selected = false;
                     Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
                 });
-                Add(figure.Locked ? "Unlock" : "Lock", () =>
+                if (figure is LabelBase fixedLabel && Drawing.FixedLabels.Contains(fixedLabel))
                 {
-                    bool locked = !figure.Locked;
-                    using (Transaction.Create(Drawing.ActionManager, false))
+                    // a label a gallery drawing came with is held as if locked: unlocked, it
+                    // drags as any label does, the caption on its own
+                    Add("Unlock", () =>
                     {
-                        foreach (var item in SelectedOrClicked(figure).Where(f => f.Locked != locked))
+                        foreach (var item in SelectedOrClicked(figure).OfType<LabelBase>())
                         {
-                            Set(item, "Locked", locked);
+                            Drawing.FixedLabels.Remove(item);
                         }
-                    }
-                });
+                    });
+                }
+                else
+                {
+                    Add(figure.Locked ? "Unlock" : "Lock", () =>
+                    {
+                        bool locked = !figure.Locked;
+                        using (Transaction.Create(Drawing.ActionManager, false))
+                        {
+                            foreach (var item in SelectedOrClicked(figure).Where(f => f.Locked != locked))
+                            {
+                                Set(item, "Locked", locked);
+                            }
+                        }
+                    });
+                }
+
                 // (a name label goes with its "Show name", not by itself: Delete did nothing)
                 if (!(figure is PointLabel) && !(figure is FigureLabel))
                 {
@@ -633,19 +666,20 @@ namespace DynamicGeometry
 
         private void UpdateSelection()
         {
+            var clicked = found ?? pressedFixedLabel;
             if (IsCtrlPressed())
             {
-                if (found != null)
+                if (clicked != null)
                 {
-                    found.Selected = !found.Selected;
+                    clicked.Selected = !clicked.Selected;
                 }
             }
             else
             {
                 Drawing.Figures.ClearSelection();
-                if (found != null)
+                if (clicked != null)
                 {
-                    found.Selected = true;
+                    clicked.Selected = true;
                 }
             }
         }

@@ -1475,7 +1475,13 @@ buttons and checkboxes, 3D, custom tools.
   gallery drawing comes with can't be dragged (`Drawing.FixedLabels`, not saved, emptied once
   the drawing is the user's own; one added later, a point's name shown, can: all of them were
   paper at first, and a name shown on A could not be moved), a drag on one pans the view, and one that starts on the caption scrolls the
-  pinned labels along (`PinnedLabelScroll`, by pixels, so undo brings both back). Not
+  pinned labels along (`PinnedLabelScroll`, by pixels, so undo brings both back). A click
+  still selects one (with no way to its properties but a right click, and none at all to move
+  it, they were out of reach), and a selected one drags as any label does - but the caption:
+  on a phone, a tap and then a thumb to read on would pull the explanation away from its
+  heading. Nor does a finger's tap select the caption (the side panel would cover half the
+  phone for a reader touching the text). The context menu says "Unlock" for one, which takes it out of the set, caption
+  included. Not
   `Locked`: a point counts as locked when anything built on it is, captions included. Refitted on
   resize until the first edit, through `Drawing.SizeChanged` (`MainView.KeepFitted`) and not the
   canvas's event: the coordinate system's own resize handler shifts the origin and has to run
