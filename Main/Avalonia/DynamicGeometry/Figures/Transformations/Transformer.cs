@@ -194,6 +194,38 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// The parts of a composite's image (a regular polygon's sides and inside) go over to
+        /// the image's dependencies. The clone made them when it was read, on what the
+        /// source is built on, and setting the image's dependencies doesn't reach them: two
+        /// sides and the inside of a reflected regular pentagon ran to the source's first
+        /// vertex. Not in the drawing yet, the parts are registered with nothing (see
+        /// DependentPolygonBase.RegisterPart), so their lists are all there is to change.
+        /// </summary>
+        static void MovePartsOver(IFigure image, IList<IFigure> sourceDependencies)
+        {
+            if (!(image is CompositeFigure composite))
+            {
+                return;
+            }
+
+            var imageDependencies = image.Dependencies;
+            foreach (var part in composite.Children)
+            {
+                var rewired = part.Dependencies
+                    .Select(dependency =>
+                    {
+                        int index = sourceDependencies.IndexOf(dependency);
+                        return index >= 0 && index < imageDependencies.Count ? imageDependencies[index] : dependency;
+                    })
+                    .ToList();
+                if (!rewired.SequenceEqual(part.Dependencies))
+                {
+                    part.Dependencies = rewired;
+                }
+            }
+        }
+
         /// <summary>A visible segment from one vertex to the other, either way round</summary>
         static Segment FindSideSegment(Drawing drawing, IFigure vertex1, IFigure vertex2)
         {
@@ -299,6 +331,7 @@ namespace DynamicGeometry
                 }
                 reflected.UnregisterFromDependencies();
                 reflected.Dependencies.SetItems(dependencies);
+                MovePartsOver(reflected, source.Dependencies);
                 result.Add(reflected);
                 if (sideSegments)
                 {
@@ -390,6 +423,7 @@ namespace DynamicGeometry
                 }
                 dilated.UnregisterFromDependencies();
                 dilated.Dependencies.SetItems(dependencies);
+                MovePartsOver(dilated, source.Dependencies);
                 result.Add(dilated);
                 if (sideSegments)
                 {
@@ -474,6 +508,7 @@ namespace DynamicGeometry
                 }
                 rotated.UnregisterFromDependencies();
                 rotated.Dependencies = dependencies;
+                MovePartsOver(rotated, source.Dependencies);
                 result.Add(rotated);
                 if (sideSegments)
                 {
@@ -541,6 +576,7 @@ namespace DynamicGeometry
                 }
                 translated.UnregisterFromDependencies();
                 translated.Dependencies = dependencies;
+                MovePartsOver(translated, source.Dependencies);
                 result.Add(translated);
                 if (sideSegments)
                 {

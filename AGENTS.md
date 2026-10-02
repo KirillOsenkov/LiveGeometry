@@ -136,7 +136,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   polygon). Every other transformation of a polygon or polyline also carries over the
   visible segments along its sides (`Transformer.AddSideSegments`: the shape tools draw
   sides as segments, and the image was a shape without an outline), same style and
-  marks; they go into the list before the image, which callers take to be the last. The
+  marks; they go into the list before the image, which callers take to be the last. An
+  image is a clone of the source given the transformed dependencies; a composite's clone
+  made its parts on the source's when it was read, and `Transformer.MovePartsOver` moves
+  them (a reflected regular pentagon had two sides and its inside on the source's first
+  vertex). The
   GeoGebra reader says `sideSegments: false`: a file has the image's sides as objects
   of their own, and the copies came out hidden.
 - **Coordinates**: Grid (G) (command); Function - an expression in x; Line - by
