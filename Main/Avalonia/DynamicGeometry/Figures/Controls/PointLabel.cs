@@ -235,6 +235,24 @@ namespace DynamicGeometry
             Text = text;
         }
 
+        /// <summary>
+        /// Not in the grid: the name shows and hides with the point's Show name. (Hidden by
+        /// itself, the label stayed hidden whatever Show name said, and a name label isn't
+        /// in the Figure List to be found again.)
+        /// </summary>
+        [PropertyGridVisible(false)]
+        public override bool Visible
+        {
+            get
+            {
+                return base.Visible;
+            }
+            set
+            {
+                base.Visible = value;
+            }
+        }
+
         [PropertyGridVisible(false)]    // Handled in the point's property grid.
         public override string Text
         {

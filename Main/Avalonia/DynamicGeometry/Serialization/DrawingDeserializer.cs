@@ -274,6 +274,12 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>A style element of a file or of the clipboard; null for a kind of style this version doesn't have</summary>
+        public IFigureStyle ReadKnownStyle(XElement styleNode)
+        {
+            return StyleTypes.Contains(styleNode.Name.LocalName) ? ReadStyle(styleNode) : null;
+        }
+
         private IFigureStyle ReadStyle(XElement styleNode)
         {
             var style = SerializationService.Instance.Read<IFigureStyle>(styleNode);

@@ -411,6 +411,7 @@ namespace DynamicGeometry
                 if (value)
                 {
                     NameLabel = retiredNameLabel ?? Factory.CreateFigureLabel(Drawing, this);
+                    NameLabel.Visible = true;
                     retiredNameLabel = null;
                     Drawing.Figures.Return(NameLabel, owner: this);
                 }

@@ -83,11 +83,14 @@
 
         public override void Recalculate()
         {
-            if (XExpression == null 
-                || XExpression.Value == null 
+            // an expression that doesn't compile (it names a figure that isn't there) gives no
+            // place: the point is nowhere, not at (0, 0) with everything built on it
+            if (XExpression == null
+                || XExpression.Value == null
                 || YExpression == null
                 || YExpression.Value == null)
             {
+                Exists = false;
                 return;
             }
             Coordinates = new Avalonia.Point(XExpression.Value(), YExpression.Value());

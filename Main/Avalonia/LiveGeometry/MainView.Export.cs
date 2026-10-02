@@ -110,14 +110,10 @@ public partial class MainView
                 return;
             }
 
-            // as in WriteDrawing: the browser's file stream only has WriteAsync
-            await using (var stream = await file.OpenWriteAsync())
+            if (await TryWriteFile(file, bytes))
             {
-                await stream.WriteAsync(bytes);
-                await stream.FlushAsync();
+                DrawingHost.ShowHint("Saved " + file.Name);
             }
-
-            DrawingHost.ShowHint("Saved " + file.Name);
         }
         catch (Exception ex)
         {

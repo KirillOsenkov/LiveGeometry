@@ -499,6 +499,29 @@ namespace DynamicGeometry
             list.Add(style);
         }
 
+        /// <summary>Takes out a style nothing uses (one a paste brought, on undo); not recorded</summary>
+        public void Withdraw(IFigureStyle style)
+        {
+            list.Remove(style);
+        }
+
+        /// <summary>The name, or the name with the first number after it that no style goes by</summary>
+        public string FreeName(string name)
+        {
+            if (this[name] == null)
+            {
+                return name;
+            }
+
+            for (int i = 2; ; i++)
+            {
+                if (this[name + i] == null)
+                {
+                    return name + i;
+                }
+            }
+        }
+
         /// <summary>A fresh set of the styles a new drawing starts with, names included</summary>
         public static List<IFigureStyle> CreateDefaultStyles()
         {

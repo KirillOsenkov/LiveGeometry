@@ -1120,9 +1120,27 @@ namespace DynamicGeometry
                 Indent = true
             }))
             {
-                new DrawingSerializer().WriteFigureList(list, w);
+                new DrawingSerializer().WriteFiguresWithStyles(this, list, w);
             }
-            Clipboard.SetText(s.ToString()); 
+            Clipboard.SetText(s.ToString());
+        }
+
+        /// <summary>
+        /// Whether the text can be figures: what Copy puts on the clipboard, or a drawing's
+        /// file. Text copied from anywhere else is not, and reading it as figures threw - an
+        /// error report for a Ctrl+V. (A check, not a caught exception: every exception is
+        /// shown.)
+        /// </summary>
+        static bool CanBeFigures(string text)
+        {
+            var start = text.TrimStart();
+            if (start.StartsWith("<?xml", StringComparison.Ordinal))
+            {
+                int end = start.IndexOf("?>", StringComparison.Ordinal);
+                start = end < 0 ? "" : start.Substring(end + 2).TrimStart();
+            }
+
+            return start.StartsWith("<Figures", StringComparison.Ordinal) || start.StartsWith("<Drawing", StringComparison.Ordinal);
         }
 
         public void Paste()
@@ -1140,6 +1158,12 @@ namespace DynamicGeometry
             // looked like nothing at all, and each try left another hidden copy.
             if (str != null && !IsRecordingTransaction)
             {
+                if (!CanBeFigures(str))
+                {
+                    RaiseStatusNotification("Nothing to paste: copy figures first (select them, then Ctrl+C).");
+                    return;
+                }
+
                 pastes++;
                 Actions.Paste(this, str, pixelOffset: pastes * PasteStep);
             }

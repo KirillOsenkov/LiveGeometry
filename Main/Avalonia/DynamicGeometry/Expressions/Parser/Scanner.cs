@@ -105,6 +105,38 @@
                 || char.IsLetter(ch);
         }
 
+        /// <summary>
+        /// A prime after a name: A', A'' - the image of A, as in class. Part of the name, so
+        /// that an expression can say it (renamed to A', a point named in [A.X] left the label
+        /// with an error, the text being [A'.X]).
+        /// </summary>
+        private static bool IsPrime(char ch)
+        {
+            return ch == '\'' || ch == '′' || ch == '″';
+        }
+
+        /// <summary>
+        /// Whether an expression can say the name: a letter (or _), then letters, digits and
+        /// primes. A figure is named in expressions by its name, and every rename rewrites them.
+        /// </summary>
+        public static bool IsName(string name)
+        {
+            if (string.IsNullOrEmpty(name) || !IsLetter(name[0]))
+            {
+                return false;
+            }
+
+            for (int i = 1; i < name.Length; i++)
+            {
+                if (!IsLetter(name[i]) && !IsDigit(name[i]) && !IsPrime(name[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         private void ScanNumericLiteral()
         {
             int start = current;
@@ -204,7 +236,7 @@
                 }
 
                 char currentChar = text[current];
-                if (!IsDigit(currentChar) && !IsLetter(currentChar))
+                if (!IsDigit(currentChar) && !IsLetter(currentChar) && !IsPrime(currentChar))
                 {
                     AddIdentifier(start);
                     return;

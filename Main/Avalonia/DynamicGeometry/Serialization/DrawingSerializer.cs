@@ -289,6 +289,37 @@ namespace DynamicGeometry
             return style.GetType().Name;
         }
 
+        /// <summary>
+        /// Figures for the clipboard, with the styles of their own that they name: pasted into
+        /// another drawing, a figure looked its style up there by name - a drawing without it
+        /// gave the default look, one with another style of that name ("1", say) that one.
+        /// The default styles every drawing has are not written.
+        /// </summary>
+        public void WriteFiguresWithStyles(Drawing drawing, IEnumerable<IFigure> list, XmlWriter writer)
+        {
+            var figureList = new XDocument();
+            using (var figureWriter = figureList.CreateWriter())
+            {
+                WriteFigureList(list, figureWriter);
+            }
+
+            var usedStyles = new HashSet<string>(figureList.Descendants().Attributes("Style").Select(a => a.Value));
+            var defaults = StyleManager.CreateDefaultStyles();
+            writer.WriteStartElement("Drawing");
+            writer.WriteStartElement("Styles");
+            foreach (var style in drawing.StyleManager.GetAllStyles())
+            {
+                if (usedStyles.Contains(style.Name) && !defaults.Any(candidate => candidate.Name == style.Name))
+                {
+                    WriteStyle(style, writer);
+                }
+            }
+
+            writer.WriteEndElement();
+            figureList.Root.WriteTo(writer);
+            writer.WriteEndElement();
+        }
+
         public virtual void WriteFigureList(IEnumerable<IFigure> list, XmlWriter writer)
         {
             writer.WriteStartElement("Figures");

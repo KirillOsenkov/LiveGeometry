@@ -501,11 +501,60 @@ namespace DynamicGeometry
 
                 Add("Hide", () =>
                 {
-                    Set(figure, "Visible", false);
+                    // A name goes the way its Show name takes it: hidden by itself, it stayed
+                    // hidden with Show name ticked, ticked again or not.
+                    if (figure is PointLabel && point != null)
+                    {
+                        using (Transaction.Create(Drawing.ActionManager, false))
+                        {
+                            if (point.ShowName)
+                            {
+                                Set(point, nameof(PointBase.ShowName), false);
+                            }
+
+                            if (point.ShowCoordinates)
+                            {
+                                Set(point, nameof(PointBase.ShowCoordinates), false);
+                            }
+                        }
+                    }
+                    else if (figure is FigureLabel && figure.Dependencies.FirstOrDefault() is FigureBase named)
+                    {
+                        Set(named, nameof(FigureBase.HasNameLabel), false);
+                    }
+                    else
+                    {
+                        // the selection, as Delete takes it: hidden, the one clicked alone
+                        // went and the rest stayed selected
+                        var hidden = SelectedOrClicked(figure).Where(f => f.Visible).ToArray();
+                        using (Transaction.Create(Drawing.ActionManager, false))
+                        {
+                            foreach (var item in hidden)
+                            {
+                                Set(item, "Visible", false);
+                            }
+                        }
+
+                        foreach (var item in hidden)
+                        {
+                            item.Selected = false;
+                        }
+                    }
+
                     figure.Selected = false;
                     Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
                 });
-                Add(figure.Locked ? "Unlock" : "Lock", () => Set(figure, "Locked", !figure.Locked));
+                Add(figure.Locked ? "Unlock" : "Lock", () =>
+                {
+                    bool locked = !figure.Locked;
+                    using (Transaction.Create(Drawing.ActionManager, false))
+                    {
+                        foreach (var item in SelectedOrClicked(figure).Where(f => f.Locked != locked))
+                        {
+                            Set(item, "Locked", locked);
+                        }
+                    }
+                });
                 // (a name label goes with its "Show name", not by itself: Delete did nothing)
                 if (!(figure is PointLabel) && !(figure is FigureLabel))
                 {
@@ -515,6 +564,20 @@ namespace DynamicGeometry
             }
 
             menu.Open(ParentCanvas);
+        }
+
+        /// <summary>The figures selected with the one clicked, which is among them; no names of points or lines (those go with Show name)</summary>
+        IList<IFigure> SelectedOrClicked(IFigure clicked)
+        {
+            var selected = Drawing.GetSelectedFigures()
+                .Where(f => !(f is PointLabel) && !(f is FigureLabel))
+                .ToList();
+            if (!selected.Contains(clicked))
+            {
+                selected.Add(clicked);
+            }
+
+            return selected;
         }
 
         /// <summary>

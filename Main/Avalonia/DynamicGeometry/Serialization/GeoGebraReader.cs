@@ -941,9 +941,10 @@ public class GeoGebraReader
         }
     }
 
+    /// <summary>Whether our expressions can say the name (A' too)</summary>
     static bool IsIdentifier(string name)
     {
-        return !string.IsNullOrEmpty(name) && name.All(c => char.IsLetterOrDigit(c) || c == '_') && !char.IsDigit(name[0]);
+        return Scanner.IsName(name);
     }
 
     /// <summary>The top-level operands of a + b + c, quotes and brackets respected</summary>
@@ -1567,13 +1568,18 @@ public class GeoGebraReader
 
     List<IPoint> RegularPolygonVertices(IPoint a, IPoint b, int sides)
     {
-        // the center is to the left of A->B, half a side along the perpendicular over tan(pi/n)
-        double k = 0.5 / System.Math.Tan(Math.PI / sides);
-        string kText = k.ToExpressionText();
-        var center = Factory.CreatePointByCoordinates(
-            drawing,
-            "(" + a.Name + ".X + " + b.Name + ".X) / 2 - (" + b.Name + ".Y - " + a.Name + ".Y) * " + kText,
-            "(" + a.Name + ".Y + " + b.Name + ".Y) / 2 + (" + b.Name + ".X - " + a.Name + ".X) * " + kText);
+        // The center is to the left of A->B: B turned about A by 90 - 180/n degrees and
+        // brought in to the circumradius, side / (2 sin(pi/n)). Built from the points, not
+        // from their names: an expression can't say A' (the center of Polygon[B, A', 4]
+        // stood at the origin, and the square somewhere else).
+        var turn = Number.CreateAuxiliary(drawing, 90 - 180.0 / sides);
+        Add(turn);
+        var turned = Factory.CreateRotatedPoint(drawing, new IFigure[] { b, a, turn });
+        turned.Visible = false;
+        Add(turned);
+        var factor = Number.CreateAuxiliary(drawing, 0.5 / System.Math.Sin(Math.PI / sides));
+        Add(factor);
+        var center = Factory.CreateDilatedPoint(drawing, new IFigure[] { turned, a, factor });
         center.Visible = false;
         Add(center);
         var vertices = new List<IPoint>() { a, b };
@@ -1661,21 +1667,29 @@ public class GeoGebraReader
         var f2 = PointOf(inputs[1]);
         var third = ResolveArgument(inputs[2]);
         string a;
+        var named = new List<IFigure>() { f1, f2 };
         if (third is IPoint p)
         {
+            named.Add(p);
             a = "(dist(" + p.Name + ", " + f1.Name + ") + dist(" + p.Name + ", " + f2.Name + ")) / 2";
         }
         else
         {
+            // what our expressions say for its length (a segment f is no name of a number)
             var length = LengthProvider(inputs[2]);
-            a = length.Name;
+            a = ValueExpressionOf(length, degrees: false);
+            if (a == null)
+            {
+                Report("Ellipse over " + inputs[2] + ": its length can't be said in an expression");
+                return null;
+            }
         }
 
-        foreach (var named in new IFigure[] { f1, f2 })
+        foreach (var figure in named)
         {
-            if (!IsIdentifier(named.Name))
+            if (!IsIdentifier(figure.Name))
             {
-                Report("Ellipse over " + named.Name + ": the name can't be said in an expression");
+                Report("Ellipse over " + figure.Name + ": the name can't be said in an expression");
                 return null;
             }
         }
@@ -2141,8 +2155,10 @@ public class GeoGebraReader
         text = text.Trim();
         if (text == "°")
         {
-            // Rotate[A, °, B]: an angle nobody typed
-            text = "0";
+            // Rotate[A, °, B]: an angle nobody typed, which to GeoGebra is the degree itself,
+            // 1° (taken for 0, an arc from such a point to the one it was turned from had
+            // nothing in it, and the points on it were nowhere)
+            text = "1°";
         }
 
         var expression = TranslateExpression(text);

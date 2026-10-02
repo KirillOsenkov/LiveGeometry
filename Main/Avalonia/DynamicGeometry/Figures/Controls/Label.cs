@@ -349,7 +349,7 @@ namespace DynamicGeometry
         public override void ReadXml(XElement element)
         {
             base.ReadXml(element);
-            text = Unescape(element.ReadString("Text"));
+            text = Unescape(element.ReadString("Text") ?? "");
             WrapWidth = element.ReadDouble("WrapWidth");
             Backdrop = element.ReadBool("Backdrop", false);
             var pinName = element.ReadString("Pin");

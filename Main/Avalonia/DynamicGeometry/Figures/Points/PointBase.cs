@@ -263,6 +263,9 @@ namespace DynamicGeometry
                 Label = keptLabel ?? Factory.CreatePointLabel(Drawing, new[] { this });
                 Label.ShowName = false;
                 Label.ShowCoordinates = false;
+
+                // (one hidden by itself, in a file from before it couldn't be, shows again)
+                Label.Visible = true;
                 Drawing.Figures.Return(Label, owner: this);
             }
         }

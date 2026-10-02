@@ -230,6 +230,20 @@ public class FigureLabel : Measurement
         placed = true;
     }
 
+    /// <summary>Not in the grid: the name shows and hides with its figure's Show name (see <see cref="PointLabel.Visible"/>)</summary>
+    [PropertyGridVisible(false)]
+    public override bool Visible
+    {
+        get
+        {
+            return base.Visible;
+        }
+        set
+        {
+            base.Visible = value;
+        }
+    }
+
     [PropertyGridVisible(false)]
     public override string Text
     {

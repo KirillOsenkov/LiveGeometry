@@ -218,9 +218,10 @@ namespace DynamicGeometry
         // modifier state, so track the last observed state as events flow through.
         static KeyModifiers currentModifiers;
 
+        /// <summary>Ctrl, or Cmd on a Mac (where Ctrl+click is a right click)</summary>
         public static bool IsCtrlPressed()
         {
-            return (currentModifiers & KeyModifiers.Control) == KeyModifiers.Control;
+            return (currentModifiers & (KeyModifiers.Control | KeyModifiers.Meta)) != 0;
         }
 
         // Adapters translating Avalonia pointer events onto the WPF-shaped

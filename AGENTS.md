@@ -104,8 +104,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   semi-minor, begin angle, end angle.
 - **Shapes**: Triangle - 3 points; Square - two adjacent vertices; Polygon (W) - points, then
   Enter, a right-click or a click on a vertex closes it; Regular polygon - center then a vertex.
-  Triangle and Polygon show no length panel (a side's length means nothing for them). Both
-  draw their sides as segments (the polygon's own outline is transparent in the default
+  Triangle and Polygon show no length panel (a side's length means nothing for them). They
+  (and Square, for its first side) draw their sides as segments (the polygon's own outline is transparent in the default
   style), except where a visible segment, ray, line or vector on the two points is there
   already (`FindLine`; not any line that depends on both - a perpendicular bisector of the
   two took the side's place and left it undrawn). (Polygon intersection
@@ -254,6 +254,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   and the canvas takes the keyboard first so that the typed text is committed. The letter
   of a Ctrl shortcut is skipped on its way up (`shortcutKeyDown`) - until it is pressed
   again on its own, since after Ctrl+S or Ctrl+O its release goes to the file dialog.
+  Cmd does what Ctrl does (`MainView.IsCommandModifier`, `Behavior.IsCtrlPressed`): in the
+  browser on a Mac every shortcut was dead, Cmd+S saved the web page, and Ctrl+click there
+  is a right click. Ctrl+Shift+Z redoes as Ctrl+Y does, and Backspace (a Mac's "delete"
+  key) deletes the selection as Delete does.
   Plain keys: `MainView.HandlePlainKey`; tool letters: `UI/BehaviorShortcuts.cs` (also feeds
   the tooltips). The keys that move the view (arrows, Home, Page Up/Down, +/-) do nothing
   while the side panel has the keyboard: its lists, sliders and combos use them, and an
@@ -328,7 +332,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   doesn't: a figure whose `Recalculate` decides `Exists` itself (by its own coordinates
   being numbers) must ask `Dependencies.Exists()` too, as the transformed points, the point
   by coordinates and the angle bisector do now - the image of an intersection that had
-  gone stayed on screen, frozen at its last place, with everything built on it.
+  gone stayed on screen, frozen at its last place, with everything built on it. A point by
+  coordinates whose expression doesn't compile (it names a figure that isn't there) doesn't
+  exist either: it stood at (0, 0).
 - **The reach of a click is in pixels**, the cursor's tolerance plus half the stroke, for
   every figure. A circle, ellipse or arc is hit by its distance from the curve along the
   ray from the center (`Math.RadialDistanceToEllipse`); it was the left side of the
@@ -399,6 +405,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the old names (A.X, AB as two points, the points of ang/dist/area, a Number) and swaps them
   all at once; two points whose new names run together would read differently (PB next to a
   point named PB) become `dist(P, B)`. Only the text changes, and not through undo: undoing the rename renames back.
+  A name may end in primes (A', A'': `Scanner.IsName`, the one rule of what an expression
+  can say), and the Name box refuses a name no expression can say only for a figure an
+  expression names, directly or through a figure named after it - renamed "my point", the
+  label `[A.X]` became an error; a caption for a name ("Drag me!", as the Ladder has) is
+  fine elsewhere.
   `pi` and `e` in lowercase are the constants whatever the drawing has; in any other case
   (`PI`) the two-points reading comes first, and with points P and I that is their
   distance. (Lowercase too, until 2026-10-01: `sin(pi * x)` came out wrong without a word
@@ -777,7 +788,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
     are compiled as they are read, when the names they say are the originals'; once the
     copies are in, their texts are rewritten to the copies' names and compiled again
     (`PasteAction.RebindExpressions`, an `ExpressionRenamer` that looks among the copies
-    first): the copy of a label `[AB]` measured the original segment.
+    first): the copy of a label `[AB]` measured the original segment. The clipboard
+    carries the styles of their own the copies name (`DrawingSerializer.WriteFiguresWithStyles`):
+    pasted into another drawing, a figure looked its style up there by name, and took the
+    default look, or another drawing's style "1" (a text style on a point). The paste brings
+    a style the drawing lacks, under a free name where the name is taken by another look
+    (`StyleManager.FreeName`), and takes it away again on undo. Text that is no figures
+    (plain text, a page) is said so in the status, not read as XML (that threw).
   - *Parts of a composite* that are among a figure's dependents (a regular polygon's
     vertices) are not removed or put back by `RemoveFigureAction`: they go with their
     composite. Parts removed by reducing the side count are retained for reuse: redo may
@@ -923,7 +940,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   directly (the property set is the undo step), the same label every time, so it comes back
   where it was dragged to; the label links itself back on undo
   (`OnAddingToDrawing`), hides with its figure, follows renames (`FigureBase.Name`), and stays
-  out of the Figure List and of Delete like a point label. GeoGebra's `<show label>` on those
+  out of the Figure List and of Delete like a point label. A name label has no Visible of
+  its own in the grid, and Hide in the context menu turns its figure's Show name off:
+  hidden by itself, it stayed hidden whatever Show name said, and nothing listed it to find
+  it again. (A label from a file hidden that way shows when the name is shown again.)
+  Hide and Lock in the context menu take the whole selection, as Delete does. GeoGebra's `<show label>` on those
   figures turns it on, in the figure's color.
 - **Segment marks** (`Segment.Decoration`, `Figures/Lines/SegmentDecoration.cs`): one to
   three ticks across the middle, one to three chevrons along it (pointing from the first point
@@ -982,7 +1003,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   its preview are figures while it lasts, and went into the file). In the browser the first Save of an opened file makes the browser ask for
   permission to write; a browser without the File System Access API gives files to read
   only, and Save falls back to Save as there (`IsReadOnlyFile`; not tried in a real
-  Firefox). There is no unsaved-changes prompt and no mark of a changed drawing.
+  Firefox). A file the desktop can't write (read-only, open in another program) is said so
+  in the hint and Save goes on to Save as (`MainView.TryWriteFile`, Export's too): it was
+  an error report, as for a bug. There is no unsaved-changes prompt and no mark of a
+  changed drawing.
 - **Export** (`MainView.Export.cs`, the button after Save; its menu is a `MenuFlyout`): Save
   as .lgf (see above), then Save
   as .png, Save as .svg, Copy image - the canvas as it is on screen at that moment, same view,
@@ -1349,6 +1373,12 @@ file has (angles up to whole turns), keeps the file's value as a fixed Number, w
 in the report: left out, it took everything built on it along. Ordinary
 numeric inputs to Rotate are radians, while imported angle Numbers already hold degrees.
 Centroid uses the polygon's area-weighted centroid, not the average of its vertices.
+A bare `°` (Rotate[C, °, A]) is one degree, as in GeoGebra. Helpers are built from the
+points, not from expressions over their names, where they can be (the center of a regular
+polygon is a rotated and dilated point: written as expressions over A', it stood at the
+origin). To check the reader's geometry against GeoGebra's: every element of a worksheet
+carries its coordinates (a point's, a line's equation, a conic's matrix), also when it is
+worked out - compare them with what the import puts there.
 A point given by an
 expression (`A + (0, 1)`, `t B + (1 - t) A`) becomes a `PointByCoordinates` through a small
 vector-arithmetic translator (`TranslateTerm`). A line typed as an equation (`x = x(P)`,

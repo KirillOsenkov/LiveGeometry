@@ -21,9 +21,13 @@ namespace DynamicGeometry
                 }
             }
 
-            var side0 = Factory.CreateSegment(Drawing, p1, p2);
+            // a side drawn between the two points already (segment AB, then a square on A and
+            // B) is the square's first side, as with the Triangle and Polygon tools: a second
+            // segment lay on top of it as AB2
+            var existingSide = Drawing.Figures.FindLine(p1, p2);
+            var side0 = existingSide == null ? Factory.CreateSegment(Drawing, p1, p2) : null;
             var circle = Factory.CreateCircle(Drawing, new[] { p2, p1 });
-            var perpendicular = Factory.CreatePerpendicularLine(Drawing, new IFigure[] { side0, p2 });
+            var perpendicular = Factory.CreatePerpendicularLine(Drawing, new IFigure[] { (IFigure)side0 ?? existingSide, p2 });
             // P2 of the perpendicular is a clockwise turn from p1 -> p2; aim at its mirror image
             // through p2 instead, so that a square drawn left to right stands on its first side
             var perpendicularCoordinates = perpendicular.Coordinates;
@@ -37,15 +41,10 @@ namespace DynamicGeometry
             var side2 = Factory.CreateSegment(Drawing, intersection, reflectedPoint);
             var side3 = Factory.CreateSegment(Drawing, reflectedPoint, p1);
             var polygon = Factory.CreatePolygon(Drawing, new IFigure[] { p1, p2, intersection, reflectedPoint });
-            var midpoint0 = Factory.CreateMidPoint(Drawing, side0);
-            var midpoint1 = Factory.CreateMidPoint(Drawing, side1);
-            var midpoint2 = Factory.CreateMidPoint(Drawing, side2);
-            var midpoint3 = Factory.CreateMidPoint(Drawing, side3);
-
             var added = new IFigure[]
             {
-                side0, 
-                circle, 
+                side0,
+                circle,
                 perpendicular, 
                 intersection, 
                 midpoint,
@@ -62,7 +61,10 @@ namespace DynamicGeometry
 
             foreach (var item in added)
             {
-                yield return item;
+                if (item != null)
+                {
+                    yield return item;
+                }
             }
         }
 

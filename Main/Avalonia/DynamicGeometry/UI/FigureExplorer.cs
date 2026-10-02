@@ -372,7 +372,7 @@ public class FigureExplorer : Border
         Select(
             row.Figure,
             range: e.KeyModifiers.HasFlag(KeyModifiers.Shift),
-            toggle: e.KeyModifiers.HasFlag(KeyModifiers.Control));
+            toggle: (e.KeyModifiers & (KeyModifiers.Control | KeyModifiers.Meta)) != 0);
         e.Handled = true;
     }
 

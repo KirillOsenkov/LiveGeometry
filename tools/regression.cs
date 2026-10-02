@@ -46,8 +46,14 @@ public class Program
             ("GeoGebra numeric rotation uses radians", GeoGebraNumericRotation),
             ("GeoGebra live expressions round trip", GeoGebraExpressionsRoundTrip),
             ("GeoGebra polygon centroid", GeoGebraCentroid),
+            ("GeoGebra bare degree and a square on A'", GeoGebraPrimedSquare),
             ("GeoGebra constant slider stays a slider", GeoGebraConstantSlider),
             ("GeoGebra worksheet rejects unrelated XML", RejectUnrelatedWorksheet),
+            ("A point renamed A' stays named in expressions", PrimeNames),
+            ("A square takes the side drawn already", SquareOnSegment),
+            ("Paste into another drawing keeps the look", PasteBringsStyles),
+            ("Pasting plain text is no error", PastePlainText),
+            ("A hidden name shows again with Show name", HiddenNameShowsAgain),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
             ("Gallery LGF round trips", GalleryRoundTrips)
@@ -588,6 +594,26 @@ public class Program
         Near(center.Coordinates.Y, expected: 13.0 / 12);
     }
 
+    static void GeoGebraPrimedSquare()
+    {
+        var drawing = ReadGeoGebra("""
+            <element type="point" label="A"><coords x="0" y="0" z="1"/></element>
+            <element type="point" label="B"><coords x="1" y="0" z="1"/></element>
+            <command name="Rotate"><input a0="B" a1="°" a2="A"/><output a0="B'"/></command>
+            <element type="point" label="B'"/>
+            <command name="Polygon"><input a0="A" a1="B'" a2="4"/><output a0="poly" a1="s1" a2="s2" a3="s3" a4="s4" a5="C" a6="D"/></command>
+            <element type="polygon" label="poly"/>
+            <element type="point" label="C"/>
+            """);
+        double angle = System.Math.PI / 180;
+        var turned = ((IPoint)Find(drawing, "B'")).Coordinates;
+        Near(turned.X, System.Math.Cos(angle));
+        Near(turned.Y, System.Math.Sin(angle));
+        var corner = ((IPoint)Find(drawing, "C")).Coordinates;
+        Near(corner.X, System.Math.Cos(angle) - System.Math.Sin(angle));
+        Near(corner.Y, System.Math.Sin(angle) + System.Math.Cos(angle));
+    }
+
     static void GeoGebraConstantSlider()
     {
         var drawing = ReadGeoGebra("""
@@ -628,6 +654,122 @@ public class Program
 
         drawing.Figures.CheckConsistency();
         return drawing;
+    }
+
+    static void PrimeNames()
+    {
+        var drawing = NewDrawing();
+        var point = AddPoint(drawing, x: 3, y: 4);
+        var other = AddPoint(drawing, x: 0, y: 0);
+        var label = Factory.CreateLabel(drawing);
+        Actions.Add(drawing, label);
+        label.Text = "[A.X + AB]";
+        Set(drawing, point, nameof(IFigure.Name), value: "A'");
+        Require(label.Text == "[A'.X + A'B]", "The label says " + label.Text);
+        Require(label.IsNumber, "The label lost its value: " + label.ProcessedText);
+        Near(label.Value, expected: 8);
+        var reloaded = ReadLgf(drawing.SaveAsText());
+        var copy = reloaded.Figures.OfType<DynamicGeometry.Label>().Single();
+        Near(copy.Value, expected: 8);
+        Require(Scanner.IsName("A''") && Scanner.IsName("P_1'") && !Scanner.IsName("'A") && !Scanner.IsName("my point"), "Scanner.IsName");
+
+        // a caption for a name, where no expression names the figure; refused where one does
+        var free = AddPoint(drawing, x: 5, y: 5);
+        Require(Rename(free, "Drag me!") == null && free.Name == "Drag me!", "A caption was refused for a name.");
+        Require(Rename(other, "Drag me too") != null && other.Name == "B", "A name the label can't say was taken.");
+
+        static string Rename(IFigure figure, string name)
+        {
+            var editor = new NameEditor { Value = PropertyDiscoveryStrategy.CreateValueProvider(figure, nameof(IFigure.Name)) };
+            editor.TextBox.Text = name;
+            editor.TextBox.RaiseEvent(new KeyEventArgs { RoutedEvent = InputElement.KeyDownEvent, Key = Key.Enter });
+            return string.IsNullOrEmpty(editor.ErrorText) ? null : editor.ErrorText;
+        }
+    }
+
+    static void SquareOnSegment()
+    {
+        var drawing = NewDrawing();
+        var first = AddPoint(drawing, x: 0, y: 0);
+        var second = AddPoint(drawing, x: 3, y: 0);
+        var segment = Factory.CreateSegment(drawing, first, second);
+        Actions.Add(drawing, segment);
+        string before = drawing.SaveAsText();
+        var creator = new SquareCreator();
+        drawing.Behavior = creator;
+        new FigureCreator.Dialog(creator) { X = "0", Y = "0" }.AddPoint();
+        new FigureCreator.Dialog(creator) { X = "3", Y = "0" }.AddPoint();
+        Require(!drawing.IsRecordingTransaction, "The square was not finished.");
+        var onAB = drawing.Figures.OfType<Segment>().Count(s => s.Dependencies.Contains(first) && s.Dependencies.Contains(second));
+        Require(onAB == 1, onAB + " segments on A and B.");
+        var square = drawing.Figures.OfType<Polygon>().Single();
+        Require(square.Dependencies.Count == 4 && square.Dependencies.All(d => d.Exists), "The square is not whole.");
+        Near(((IPoint)square.Dependencies[2]).Coordinates.Y, expected: 3);
+        string after = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the square changed the drawing.");
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo of the square changed the drawing.");
+        drawing.Figures.CheckConsistency();
+        Require(ReadLgf(after).LoadErrors == null, "The drawing with the square did not load.");
+    }
+
+    static void PasteBringsStyles()
+    {
+        var source = NewDrawing();
+        var point = AddPoint(source, x: 1, y: 2);
+        var big = new PointStyle() { Name = "1", Size = 15, Fill = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.Red) };
+        source.StyleManager.Add(big);
+        point.Style = big;
+        string copied = DrawingSerializer.WriteUsingXmlWriter(writer => new DrawingSerializer().WriteFiguresWithStyles(source, new IFigure[] { point }, writer));
+
+        var target = NewDrawing();
+        var clash = new LineStyle() { Name = "1", StrokeWidth = 5 };
+        target.StyleManager.Add(clash);
+        int styleCount = target.StyleManager.GetAllStyles().Count();
+        string before = target.SaveAsText();
+        target.PasteFromText(copied);
+        var pasted = target.Figures.OfType<FreePoint>().Single();
+        Require(pasted.Style is PointStyle { Size: 15 } style && style.Name != "1", "The copy did not keep its look: " + pasted.Style?.Name);
+        Require(target.StyleManager["1"] == clash, "The drawing's own style 1 was replaced.");
+        string after = target.SaveAsText();
+        target.ActionManager.Undo();
+        Require(target.StyleManager.GetAllStyles().Count() == styleCount, "Undo left the pasted style.");
+        Require(target.SaveAsText() == before, "Undo of the paste changed the drawing.");
+        target.ActionManager.Redo();
+        Require(target.SaveAsText() == after, "Redo of the paste changed the drawing.");
+        var reloaded = ReadLgf(after);
+        Require(reloaded.Figures.OfType<FreePoint>().Single().Style is PointStyle { Size: 15 }, "The saved copy lost its look.");
+
+        // into the drawing it came from: its own style, no second one
+        int sourceStyles = source.StyleManager.GetAllStyles().Count();
+        source.PasteFromText(copied);
+        Require(source.StyleManager.GetAllStyles().Count() == sourceStyles, "A paste into the same drawing added a style.");
+        Require(source.Figures.OfType<FreePoint>().All(p => p.Style == big), "The copy in the same drawing took another style.");
+    }
+
+    static void PastePlainText()
+    {
+        var drawing = NewDrawing();
+        drawing.PasteFromText("Hello, <b>world</b>");
+        drawing.PasteFromText("<html><body>a page</body></html>");
+        Require(!drawing.ActionManager.CanUndo, "Pasting text made an undo step.");
+    }
+
+    static void HiddenNameShowsAgain()
+    {
+        var drawing = NewDrawing();
+        var point = AddPoint(drawing, x: 1, y: 2);
+        Set(drawing, point, nameof(PointBase.ShowName), value: true);
+        point.Label.Visible = false;
+        Set(drawing, point, nameof(PointBase.ShowName), value: false);
+        Set(drawing, point, nameof(PointBase.ShowName), value: true);
+        Require(point.Label.Visible, "Show name brought the name back hidden.");
+        foreach (var type in new[] { typeof(PointLabel), typeof(FigureLabel) })
+        {
+            var attribute = (PropertyGridVisibleAttribute)Attribute.GetCustomAttribute(type.GetProperty(nameof(IFigure.Visible)), typeof(PropertyGridVisibleAttribute));
+            Require(attribute is { Visible: false }, type.Name + " has a Visible row of its own.");
+        }
     }
 
     static void PartialLoad()

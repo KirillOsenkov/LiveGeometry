@@ -392,7 +392,9 @@ public partial class MainView : UserControl
             || exception is GeoGebraReader.LeftOutException
             // the browser's file picker throws on cancel (Avalonia catches it and answers null)
             || exception.GetType().Name == "JSException" && exception.Message.StartsWith("AbortError", StringComparison.Ordinal)
-            || IsReadOnlyFile(exception);
+            || IsReadOnlyFile(exception)
+            // a file that can't be written now, said in words (TryWriteFile)
+            || writingFile && (exception is IOException || exception is UnauthorizedAccessException);
     }
 
     /// <summary>The message in the status bar, the whole text in the side panel</summary>
@@ -949,7 +951,14 @@ public partial class MainView : UserControl
 
         try
         {
-            await WriteDrawing(file);
+            // a file that can't be written now (read-only, open in another program): it is
+            // said why, and Save as offers another
+            if (!await WriteDrawing(file))
+            {
+                SaveDrawingAs();
+                return;
+            }
+
             DrawingHost.ShowHint("Saved " + file.Name);
         }
         catch (Exception ex) when (IsReadOnlyFile(ex))
@@ -991,7 +1000,10 @@ public partial class MainView : UserControl
                 return;
             }
 
-            await WriteDrawing(file);
+            if (!await WriteDrawing(file))
+            {
+                return;
+            }
 
             // a saved drawing of the gallery is the user's own from here on; a drawing of
             // their own goes by its new name
@@ -1015,7 +1027,8 @@ public partial class MainView : UserControl
         }
     }
 
-    async Task WriteDrawing(IStorageFile file)
+    /// <returns>Whether the file was written (see <see cref="TryWriteFile"/>)</returns>
+    async Task<bool> WriteDrawing(IStorageFile file)
     {
         // A construction under way is not in the drawing yet: its point following the
         // cursor and its preview are figures like any other while it lasts, and went into
@@ -1026,13 +1039,40 @@ public partial class MainView : UserControl
             drawing.Behavior?.Restart();
         }
 
-        // bytes straight into the stream: the browser's file stream only has WriteAsync,
-        // and a StreamWriter flushes synchronously when disposed
-        var bytes = new System.Text.UTF8Encoding(false).GetBytes(drawing.SaveAsText());
-        await using (var stream = await file.OpenWriteAsync())
+        return await TryWriteFile(file, new System.Text.UTF8Encoding(false).GetBytes(drawing.SaveAsText()));
+    }
+
+    // a file is being written: what the system says against it is said in words, not reported
+    static bool writingFile;
+
+    /// <summary>
+    /// The bytes into the file. One that can't be written - read-only, open in another
+    /// program, in a folder one may not write to - is said so in the hint, and false comes
+    /// back. (It was an error report, as for a bug, and the system's message in the hint.)
+    /// </summary>
+    async Task<bool> TryWriteFile(IStorageFile file, byte[] bytes)
+    {
+        writingFile = true;
+        try
         {
-            await stream.WriteAsync(bytes);
-            await stream.FlushAsync();
+            // bytes straight into the stream: the browser's file stream only has WriteAsync,
+            // and a StreamWriter flushes synchronously when disposed
+            await using (var stream = await file.OpenWriteAsync())
+            {
+                await stream.WriteAsync(bytes);
+                await stream.FlushAsync();
+            }
+
+            return true;
+        }
+        catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+        {
+            DrawingHost.ShowHint("Could not write " + file.Name + ": it may be read-only or open in another program.");
+            return false;
+        }
+        finally
+        {
+            writingFile = false;
         }
     }
 
@@ -1229,7 +1269,8 @@ public partial class MainView : UserControl
             return;
         }
 
-        if (e.Key == Key.Delete)
+        // a Mac's "delete" key is Backspace
+        if (e.Key == Key.Delete || e.Key == Key.Back)
         {
             DeleteSelection();
         }
@@ -1319,6 +1360,21 @@ public partial class MainView : UserControl
     #endregion
 
     /// <summary>
+    /// The modifier of the shortcuts: Ctrl, or Cmd on a Mac (the browser app there, where
+    /// Ctrl+click is a right click and Cmd+S, ours ignored, saved the web page)
+    /// </summary>
+    static bool IsCommandModifier(KeyModifiers modifiers)
+    {
+        return modifiers == KeyModifiers.Control || modifiers == KeyModifiers.Meta;
+    }
+
+    /// <summary>Ctrl+Shift+Z (Cmd+Shift+Z on a Mac): redo, as most programs have it besides Ctrl+Y</summary>
+    static bool IsRedoChord(KeyModifiers modifiers, Key key)
+    {
+        return key == Key.Z && IsCommandModifier(modifiers & ~KeyModifiers.Shift) && modifiers.HasFlag(KeyModifiers.Shift);
+    }
+
+    /// <summary>
     /// Ctrl+letter, on the way down. (On the way up the state of Ctrl depends on which of the
     /// two keys was let go first, and a bare "S" is the Segment tool.)
     /// </summary>
@@ -1351,7 +1407,7 @@ public partial class MainView : UserControl
         if (IsGalleryShowing)
         {
             // there is no drawing to undo, select or save
-            if (e.KeyModifiers == KeyModifiers.Control && (e.Key == Key.N || e.Key == Key.O))
+            if (IsCommandModifier(e.KeyModifiers) && (e.Key == Key.N || e.Key == Key.O))
             {
                 HandleControlShortcut(e.Key);
                 shortcutKeyDown = e.Key;
@@ -1375,7 +1431,8 @@ public partial class MainView : UserControl
             shortcutKeyDown = Key.None;
         }
 
-        if (e.KeyModifiers == KeyModifiers.Control)
+        bool redo = IsRedoChord(e.KeyModifiers, e.Key);
+        if (IsCommandModifier(e.KeyModifiers) || redo)
         {
             // In a text box Ctrl+C, V, X, Z, Y, A are the text box's own. Save, Open, New
             // and the ribbon are not: with the keyboard in a box (where a tool's panel keeps
@@ -1392,7 +1449,13 @@ public partial class MainView : UserControl
                 DrawingHost.DrawingControl.Focus();
             }
 
-            if (HandleControlShortcut(e.Key))
+            if (redo)
+            {
+                DrawingHost.DrawingControl.Redo();
+                shortcutKeyDown = e.Key;
+                e.Handled = true;
+            }
+            else if (HandleControlShortcut(e.Key))
             {
                 shortcutKeyDown = e.Key;
                 e.Handled = true;

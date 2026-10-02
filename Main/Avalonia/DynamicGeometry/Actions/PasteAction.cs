@@ -9,12 +9,73 @@ namespace DynamicGeometry
         public PasteAction(Drawing drawing, string copiedFigures)
             : base(drawing)
         {
+            var copied = XElement.Parse(copiedFigures);
+            var deserializer = new DrawingDeserializer();
+            BringStyles(copied, deserializer);
             List<IFigure> list = new List<IFigure>();
-            new DrawingDeserializer().ReadFigureList(list, XElement.Parse(copiedFigures), Drawing, byFileName);
+            deserializer.ReadFigureList(list, copied, Drawing, byFileName);
             Figures = list.ToArray();
+
+            // nothing to paste, and no undo step: the styles go again
+            if (list.Count == 0)
+            {
+                foreach (var style in addedStyles)
+                {
+                    Drawing.StyleManager.Withdraw(style);
+                }
+            }
         }
 
         public IEnumerable<IFigure> Figures { get; set; }
+
+        // the styles of the copies that the drawing didn't have, in it while the copies are
+        readonly List<IFigureStyle> addedStyles = new List<IFigureStyle>();
+
+        /// <summary>
+        /// The styles the copied figures name (<see cref="DrawingSerializer.WriteFiguresWithStyles"/>):
+        /// one the drawing has, looking the same, is taken as it is; one it lacks comes along;
+        /// one whose name the drawing gives to another look comes along under a free name,
+        /// which the copies are made to name. In the drawing before the figures are read,
+        /// since a figure looks its style up as it is read.
+        /// </summary>
+        void BringStyles(XElement copied, DrawingDeserializer deserializer)
+        {
+            var styles = copied.Element("Styles");
+            var figures = copied.Name == "Drawing" ? copied.Element("Figures") : copied;
+            if (styles == null || figures == null)
+            {
+                return;
+            }
+
+            var manager = Drawing.StyleManager;
+            foreach (var styleNode in styles.Elements())
+            {
+                var style = deserializer.ReadKnownStyle(styleNode);
+                if (style == null || style.Name.IsEmpty())
+                {
+                    continue;
+                }
+
+                var existing = manager[style.Name];
+                if (existing != null && existing.GetType() == style.GetType() && existing.GetSignature() == style.GetSignature())
+                {
+                    continue;
+                }
+
+                if (existing != null)
+                {
+                    string oldName = style.Name;
+                    style.Name = manager.FreeName(oldName);
+                    foreach (var attribute in figures.Descendants().Attributes("Style").Where(a => a.Value == oldName))
+                    {
+                        attribute.Value = style.Name;
+                    }
+                }
+
+                manager.Add(style);
+                addedStyles.Add(style);
+            }
+        }
 
         // the copies by the names the clipboard gives them, which are the originals' names
         readonly Dictionary<string, IFigure> byFileName = new Dictionary<string, IFigure>();
@@ -51,6 +112,15 @@ namespace DynamicGeometry
 
         protected override void ExecuteCore()
         {
+            // (on redo: they left with the copies)
+            foreach (var style in addedStyles)
+            {
+                if (!Drawing.StyleManager.GetAllStyles().Contains(style))
+                {
+                    Drawing.StyleManager.Add(style);
+                }
+            }
+
             // the labels of the pasted points are among the figures: the points must not
             // make or bring back labels of their own
             bool suppressed = PointBase.SuppressAutoLabelPoints;
@@ -83,6 +153,10 @@ namespace DynamicGeometry
         protected override void UnExecuteCore()
         {
             Drawing.Figures.Remove(Figures);
+            foreach (var style in addedStyles)
+            {
+                Drawing.StyleManager.Withdraw(style);
+            }
         }
     }
 }
