@@ -50,6 +50,13 @@ namespace DynamicGeometry
         }
 
 
+        // Nothing of a reflection to adjust afterwards: its image is worked out from the
+        // source. (The length panel came up for a side segment that the inversion of a
+        // polygon drew along the source, offering to stretch the source.)
+        protected override void ShowCreatedFigure(IList<IFigure> figures)
+        {
+        }
+
         protected override IEnumerable<IFigure> CreateFigures()
         {
             Check.ElementCount(FoundDependencies, 2);
@@ -89,9 +96,7 @@ namespace DynamicGeometry
             }
             else if (FoundDependencies.Count == 1)
             {
-                // (a polygon has no image in a circle: it would not be a polygon)
-                var source = FoundDependencies[0];
-                return source is IPoint || Transformer.CanBeTraced(source)
+                return Transformer.CanBeInverted(FoundDependencies[0])
                     ? "Select a mirror: a point, line, segment, ray, or circle."
                     : "Select a mirror: a point, line, segment, or ray.";
             }

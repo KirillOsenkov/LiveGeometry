@@ -132,8 +132,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   auxiliary), and a `Locus` of that image, in the source's line style - so
   deleting the locus takes both points along. Reflect in a circle (inversion) traces
   every source but a point: a line's image there is a circle through the center. A
-  polygon is refused there (no point is on a polygon, and its image would be no
-  polygon). Every other transformation of a polygon or polyline also carries over the
+  polygon there gives the images of its sides, not a polygon (no point is on a polygon,
+  and a region bounded by arcs is no figure here: `Transformer.CreateInvertedSides`): a
+  regular polygon's own side parts are traced, a polygon's side segments, and a side
+  without one gets a segment first, as the shape tools would have drawn it. Reflect
+  shows no panel after a construction (the length panel came up for such a segment).
+  Every other transformation of a polygon or polyline also carries over the
   visible segments along its sides (`Transformer.AddSideSegments`: the shape tools draw
   sides as segments, and the image was a shape without an outline), same style and
   marks; they go into the list before the image, which callers take to be the last. An

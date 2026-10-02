@@ -239,9 +239,15 @@ namespace DynamicGeometry
         }
 
         /// <summary>
-        /// A circle reflects (inverts) a point, and traces anything a point can be on
-        /// (<see cref="CanBeTraced"/>): not a polygon, whose image would not be a polygon
+        /// Whether a circle takes the figure as a mirror: a point it reflects (inverts),
+        /// anything a point can be on it traces (<see cref="CanBeTraced"/>), and a polygon
+        /// it gives the images of its sides (<see cref="CreateInvertedSides"/>)
         /// </summary>
+        public static bool CanBeInverted(IFigure source)
+        {
+            return source is IPoint || CanBeTraced(source) || source is Polygon || source is DependentPolygonBase;
+        }
+
         public static bool CanFigureBeMirrorForSource(IFigure figure, IFigure source)
         {
             if (figure is IPoint || figure is ILine)
@@ -250,9 +256,53 @@ namespace DynamicGeometry
             }
             else if (figure is ICircle)
             {
-                return source is IPoint || CanBeTraced(source);
+                return CanBeInverted(source);
             }
             return false;
+        }
+
+        /// <summary>
+        /// A polygon in a circle: no polygon (the image of a side is an arc, and a filled
+        /// region bounded by arcs is no figure here), but the images of its sides, each
+        /// traced (<see cref="CreateTracedImage"/>) in the style of the side. A regular
+        /// polygon's sides are its own parts; a polygon's are the segments drawn along them,
+        /// and a side without one gets one first, as the Triangle and Polygon tools draw it.
+        /// </summary>
+        static List<IFigure> CreateInvertedSides(Drawing drawing, IFigure source, IFigure mirror)
+        {
+            var result = new List<IFigure>();
+            var sides = new List<IFigure>();
+            if (source is IFigureParts parts)
+            {
+                for (int i = 1; parts.GetPart("Side" + i) is IFigure side; i++)
+                {
+                    sides.Add(side);
+                }
+            }
+            else
+            {
+                var vertices = source.Dependencies.ToList();
+                for (int i = 0; i < vertices.Count; i++)
+                {
+                    var from = (IPoint)vertices[i];
+                    var to = (IPoint)vertices[(i + 1) % vertices.Count];
+                    IFigure side = FindSideSegment(drawing, from, to);
+                    if (side == null)
+                    {
+                        side = Factory.CreateSegment(drawing, from, to);
+                        result.Add(side);
+                    }
+
+                    sides.Add(side);
+                }
+            }
+
+            foreach (var side in sides)
+            {
+                result.AddRange(CreateTracedImage(drawing, side, point => CreateReflectedFigure(drawing, point, mirror)));
+            }
+
+            return result;
         }
 
         /// <summary>Whether the image is a <see cref="Locus"/> (<see cref="CreateTracedImage"/>) rather than a figure of the source's kind</summary>
@@ -270,6 +320,11 @@ namespace DynamicGeometry
             if (IsTraced(source) || (mirror is ICircle && CanBeTraced(source)))
             {
                 return CreateTracedImage(drawing, source, point => CreateReflectedFigure(drawing, point, mirror));
+            }
+
+            if (mirror is ICircle && (source is Polygon || source is DependentPolygonBase))
+            {
+                return CreateInvertedSides(drawing, source, mirror);
             }
 
             List<IFigure> result = new List<IFigure>();
