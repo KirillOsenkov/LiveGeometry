@@ -58,11 +58,13 @@ public static class PropertyGridIcons
                 return Icon(Shape("M7,12 L3,3.8 A7.5,7.5 0 0 1 11,3.8 Z", sky, outline, thickness: 1.2));
             case PropertyGridIcon.Polyline:
                 return Icon(Shape("M2,11 L5,4 L8.5,10 L12,3", null, outline, thickness: 1.4));
-            case PropertyGridIcon.Paper:
-                // a sheet with its top right corner folded over
+            case PropertyGridIcon.Swatches:
+                // four color swatches, two by two, as the tiles of the toolbar's Gallery button
                 return Icon(
-                    Shape("M3.5,2.5 H8.5 L11.5,5.5 V12.5 H3.5 Z", null, outline, thickness: 1.3),
-                    Shape("M8.5,2.5 V5.5 H11.5", null, outline, thickness: 1.3));
+                    Shape("M1.5,1.5 H6.5 V6.5 H1.5 Z", swatchBlue, outline, thickness: 0.8),
+                    Shape("M7.5,1.5 H12.5 V6.5 H7.5 Z", swatchYellow, outline, thickness: 0.8),
+                    Shape("M1.5,7.5 H6.5 V12.5 H1.5 Z", swatchGreen, outline, thickness: 0.8),
+                    Shape("M7.5,7.5 H12.5 V12.5 H7.5 Z", swatchRed, outline, thickness: 0.8));
             case PropertyGridIcon.Copy:
                 // two sheets, the front one over the lower right of the back one
                 return Icon(
@@ -75,6 +77,12 @@ public static class PropertyGridIcons
 
     static readonly IBrush point = new SolidColorBrush(Color.FromRgb(0xFF, 0xFF, 0x64));
     static readonly IBrush sky = new SolidColorBrush(Color.FromRgb(0xC8, 0xE0, 0xFF));
+
+    // stronger than the Gallery button's pastels, which fade at this size
+    static readonly IBrush swatchBlue = new SolidColorBrush(Color.FromRgb(0x4A, 0x90, 0xE2));
+    static readonly IBrush swatchYellow = new SolidColorBrush(Color.FromRgb(0xF5, 0xC5, 0x18));
+    static readonly IBrush swatchGreen = new SolidColorBrush(Color.FromRgb(0x3D, 0xB5, 0x5A));
+    static readonly IBrush swatchRed = new SolidColorBrush(Color.FromRgb(0xE8, 0x5D, 0x75));
 
     /// <summary>A yellow point, like a free point on the canvas</summary>
     static Path Dot(double x, double y)

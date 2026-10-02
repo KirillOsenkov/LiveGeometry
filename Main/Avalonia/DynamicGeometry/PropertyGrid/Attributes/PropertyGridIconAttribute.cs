@@ -20,7 +20,7 @@ public enum PropertyGridIcon
     Sector,
     Polyline,
     Copy,
-    Paper
+    Swatches
 }
 
 /// <summary>

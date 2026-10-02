@@ -96,7 +96,7 @@ public class AppSettings : INotifyPropertyChanged
     /// <summary>The paper of the drawing on screen, a color or a gradient</summary>
     [PropertyGridVisible]
     [PropertyGridName("Drawing background")]
-    [PropertyGridIcon(PropertyGridIcon.Paper)]
+    [PropertyGridIcon(PropertyGridIcon.Swatches)]
     public void EditDrawingBackground()
     {
         DrawingBackgroundRequested?.Invoke();
