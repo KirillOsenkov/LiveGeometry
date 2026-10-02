@@ -62,7 +62,7 @@ public static class GalleryCatalog
         Item("circumscribed-circle", "Circumscribed Circle"),
         Item("aperiodic-monotile", "Aperiodic Monotile"),
         Item("hat-kites", "Eight Kites Make a Hat"),
-        Item("hat-to-spectre", "From Hat to Spectre"),
+        Item("hat-family", "The Hat Family"),
         Item("inscribed-circle", "Inscribed Circle"),
         Item("circle-touching-three-lines", "Circle Touching Three Lines"),
         Item("morley", "Morley's Miracle"),

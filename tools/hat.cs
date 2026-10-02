@@ -13,12 +13,13 @@
 //   point H; the hat sits on the hexagon center nearest to H (Z) and is turned by the
 //   multiple of 60 degrees nearest to the angle of a point R on a circle around Z (Q holds
 //   that turn's cosine and sine), so it always lies on the grid.
-// - HatToSpectre.lgf: a smaller patch whose sides change length as a point slides along a
+// - HatFamily.lgf: a smaller patch whose sides change length as a point slides along a
 //   track: a side of the hat is either a short side of a kite (along a multiple of 60
 //   degrees) or a long one (30 degrees off), every corner is a sum of such sides, and with
 //   the short ones a long and the long ones b long the patch is the tiling by Tile(a, b) of
 //   the paper. a = sin(90 t), b = cos(90 t) for the place t of the point on the track: the
-//   chevron at 0, the hat at 1/3, the spectre at 1/2, the turtle at 2/3, the comet at 1.
+//   chevron at 0, the hat at 1/3, Tile(1, 1) at 1/2, the turtle at 2/3, the comet at 1.
+//   (The spectre is Tile(1, 1) with its sides bent into curves, which this doesn't draw.)
 //
 // The patch is found by a search on the kite grid: copies, turned by a multiple of 60
 // degrees and flipped or not, are laid one by one onto the uncovered kite nearest the
@@ -173,7 +174,7 @@ if (mainKites.Count != 8)
 Directory.CreateDirectory(args[0]);
 WriteTiling(Path.Combine(args[0], "AperiodicMonotile.lgf"));
 WriteKites(Path.Combine(args[0], "HatKites.lgf"));
-if (!WriteMorph(Path.Combine(args[0], "HatToSpectre.lgf")))
+if (!WriteMorph(Path.Combine(args[0], "HatFamily.lgf")))
 {
     return 1;
 }
@@ -515,14 +516,15 @@ bool WriteMorph(string path)
     text.AppendLine("    </Segment>");
 
     // a tick and a name at each shape of the paper
-    var stops = new[] { (0.0, "chevron"), (1.0 / 3, "hat"), (0.5, "spectre"), (2.0 / 3, "turtle"), (1.0, "comet") };
+    var stops = new[] { (0.0, "chevron"), (1.0 / 3, "hat"), (0.5, "Tile(1, 1)"), (2.0 / 3, "turtle"), (1.0, "comet") };
     int index = 0;
     foreach (var (place, name) in stops)
     {
         index++;
-        // the name under the tick, the spectre's above it, which is too near to its neighbors
+        // the name under the tick, the middle one's above it, which is too near to its
+        // neighbors
         double x = TrackLeft + (TrackRight - TrackLeft) * place;
-        bool above = name == "spectre";
+        bool above = place == 0.5;
         text.AppendLine(string.Format(invariant, "    <PointByCoordinates Name=\"T{0}a\" Visible=\"false\" X=\"{1:0.####}\" Y=\"{2}\" />", index, x, TrackY + (above ? -0.25 : 0.25)));
         text.AppendLine(string.Format(invariant, "    <PointByCoordinates Name=\"{0}\" Visible=\"false\" X=\"{1:0.####}\" Y=\"{2}\" />", name, x, TrackY + (above ? 0.25 : -0.25)));
         text.AppendLine("    <Segment Name=\"Tick" + index + "\" Style=\"Tick\">");
@@ -530,8 +532,8 @@ bool WriteMorph(string path)
         text.AppendLine("      <Dependency Name=\"" + name + "\" />");
         text.AppendLine("    </Segment>");
         text.AppendLine(string.Format(invariant,
-            "    <PointLabel Name=\"{0}Name\" Style=\"TickText\" OffsetX=\"{1}\" OffsetY=\"{2}\" ShowName=\"true\" ShowCoordinates=\"false\">",
-            name, -name.Length * 3.6, above ? -26 : 6));
+            "    <PointLabel Name=\"TickName{0}\" Style=\"TickText\" OffsetX=\"{1}\" OffsetY=\"{2}\" ShowName=\"true\" ShowCoordinates=\"false\">",
+            index, -name.Length * 3.6, above ? -26 : 6));
         text.AppendLine("      <Dependency Name=\"" + name + "\" />");
         text.AppendLine("    </PointLabel>");
     }
@@ -589,8 +591,8 @@ bool WriteMorph(string path)
 
     text.Append(tiles);
     Console.WriteLine($"{patch.Count} tiles in the morph, {patch.Count(IsFlipped)} flipped");
-    Finish(text, path, "From Hat to Spectre",
-        "Every side of the hat is a short or a long side of one of its kites. Give all the short sides one length and all the long ones another, keep the angles, and the copies still fit together the same way.\\n\\nSlide the green point. Every shape on the way is an aperiodic monotile, except the two ends, which tile in a repeating pattern, and the spectre, whose sides are all equal: it repeats too, but only with flipped copies. Without them it never does, and with curvy sides it can't be flipped at all.");
+    Finish(text, path, "The Hat Family",
+        "Every side of the hat is a short or a long side of one of its kites. Give all the short sides one length a and all the long ones another length b, keep the angles, and the copies still fit together the same way. The hat's finders call such a shape Tile(a, b).\\n\\nSlide the green point. Every shape on the way is an aperiodic monotile, except the two ends, which tile in a repeating pattern, and Tile(1, 1) in the middle, whose sides are all equal: it can repeat too, but only with flipped copies. Bend each of its sides into the same curve, and you get the spectre: flipped copies no longer fit, and its tilings never repeat.");
     return true;
 }
 

@@ -1527,7 +1527,7 @@ buttons and checkboxes, 3D, custom tools.
 - **Generated drawings** - regenerate rather than edit the file: Line of Best Fit
   (`dotnet tools/bestfit.cs -- <the .lgf>`), Fibonacci Spiral (`tools/fibonacci.cs`),
   The Five Platonic Solids (`tools/platonic.cs`, `--alpha` for a translucent variant),
-  Aperiodic Monotile, Eight Kites Make a Hat and From Hat to Spectre (`tools/hat.cs -- <the
+  Aperiodic Monotile, Eight Kites Make a Hat and The Hat Family (`tools/hat.cs -- <the
   Drawings folder>` writes all three: it searches the kite grid for a gap-free patch of hats
   around the middle one, the seed picks the patch). Captions of these live in their tools
   too: change both. A segment is drawn over every polygon whatever the order of the list

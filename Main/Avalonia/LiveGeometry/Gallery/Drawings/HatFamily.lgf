@@ -102,7 +102,7 @@
       <Dependency Name="T1a" />
       <Dependency Name="chevron" />
     </Segment>
-    <PointLabel Name="chevronName" Style="TickText" OffsetX="-25.2" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="TickName1" Style="TickText" OffsetX="-25.2" OffsetY="6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="chevron" />
     </PointLabel>
     <PointByCoordinates Name="T2a" Visible="false" X="-2" Y="-6.55" />
@@ -111,17 +111,17 @@
       <Dependency Name="T2a" />
       <Dependency Name="hat" />
     </Segment>
-    <PointLabel Name="hatName" Style="TickText" OffsetX="-10.8" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="TickName2" Style="TickText" OffsetX="-10.8" OffsetY="6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="hat" />
     </PointLabel>
     <PointByCoordinates Name="T3a" Visible="false" X="0" Y="-7.05" />
-    <PointByCoordinates Name="spectre" Visible="false" X="0" Y="-6.55" />
+    <PointByCoordinates Name="Tile(1, 1)" Visible="false" X="0" Y="-6.55" />
     <Segment Name="Tick3" Style="Tick">
       <Dependency Name="T3a" />
-      <Dependency Name="spectre" />
+      <Dependency Name="Tile(1, 1)" />
     </Segment>
-    <PointLabel Name="spectreName" Style="TickText" OffsetX="-25.2" OffsetY="-26" ShowName="true" ShowCoordinates="false">
-      <Dependency Name="spectre" />
+    <PointLabel Name="TickName3" Style="TickText" OffsetX="-36" OffsetY="-26" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="Tile(1, 1)" />
     </PointLabel>
     <PointByCoordinates Name="T4a" Visible="false" X="2" Y="-6.55" />
     <PointByCoordinates Name="turtle" Visible="false" X="2" Y="-7.05" />
@@ -129,7 +129,7 @@
       <Dependency Name="T4a" />
       <Dependency Name="turtle" />
     </Segment>
-    <PointLabel Name="turtleName" Style="TickText" OffsetX="-21.6" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="TickName4" Style="TickText" OffsetX="-21.6" OffsetY="6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="turtle" />
     </PointLabel>
     <PointByCoordinates Name="T5a" Visible="false" X="6" Y="-6.55" />
@@ -138,7 +138,7 @@
       <Dependency Name="T5a" />
       <Dependency Name="comet" />
     </Segment>
-    <PointLabel Name="cometName" Style="TickText" OffsetX="-18" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="TickName5" Style="TickText" OffsetX="-18" OffsetY="6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="comet" />
     </PointLabel>
     <PointOnFigure Name="T" X="-2.0000000004" Y="-6.8" Parameter="0.3333333333">
@@ -534,7 +534,7 @@
       <Dependency Name="P41" />
       <Dependency Name="P24" />
     </Polygon>
-    <Label Name="Title" Style="GalleryTitle" Text="From Hat to Spectre" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Every side of the hat is a short or a long side of one of its kites. Give all the short sides one length and all the long ones another, keep the angles, and the copies still fit together the same way.\n\nSlide the green point. Every shape on the way is an aperiodic monotile, except the two ends, which tile in a repeating pattern, and the spectre, whose sides are all equal: it repeats too, but only with flipped copies. Without them it never does, and with curvy sides it can't be flipped at all." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="GalleryTitle" Text="The Hat Family" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Every side of the hat is a short or a long side of one of its kites. Give all the short sides one length a and all the long ones another length b, keep the angles, and the copies still fit together the same way. The hat's finders call such a shape Tile(a, b).\n\nSlide the green point. Every shape on the way is an aperiodic monotile, except the two ends, which tile in a repeating pattern, and Tile(1, 1) in the middle, whose sides are all equal: it can repeat too, but only with flipped copies. Bend each of its sides into the same curve, and you get the spectre: flipped copies no longer fit, and its tilings never repeat." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>
