@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-6" Top="4" Right="6" Bottom="-4" />
+  <Styles>
+    <ShapeStyle Name="HatMain" Color="#FF3A3F47" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFA375" Offset="0" />
+          <GradientStop Color="#FFFF7448" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF101215">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFD27A" Offset="0" />
+            <GradientStop Color="#FFC0530A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="HatFlipped" Color="#FF3A3F47" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FF9B7EE8" Offset="0" />
+          <GradientStop Color="#FF5B3BB0" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF101215">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFD6B4FF" Offset="0" />
+            <GradientStop Color="#FF5B1FB0" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Hat1" Color="#FF3A3F47" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFD3EBFC" Offset="0" />
+          <GradientStop Color="#FFA6D0F2" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF101215">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF36C0FA" Offset="0" />
+            <GradientStop Color="#FF052C3C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Hat2" Color="#FF3A3F47" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFDDF3D6" Offset="0" />
+          <GradientStop Color="#FFB2DFA9" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF101215">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF8FDFFF" Offset="0" />
+            <GradientStop Color="#FF0181B3" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Hat3" Color="#FF3A3F47" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFF2C8" Offset="0" />
+          <GradientStop Color="#FFF5D98A" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF101215">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF3FE0C0" Offset="0" />
+            <GradientStop Color="#FF04362E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Tick" Color="#FF9BA2AC" StrokeWidth="2">
+      <Dark Color="#FF7A818C" />
+    </LineStyle>
+    <TextStyle Name="TickText" FontSize="15" Color="#FF4A515C" FontFamily="Segoe UI">
+      <Dark Color="#FFB5BBC6" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="S1" Visible="false" X="-6" Y="-6.8" />
+    <PointByCoordinates Name="S2" Visible="false" X="6" Y="-6.8" />
+    <Segment Name="Track" Style="SliderTrack">
+      <Dependency Name="S1" />
+      <Dependency Name="S2" />
+    </Segment>
+    <PointByCoordinates Name="T1a" Visible="false" X="-6" Y="-6.55" />
+    <PointByCoordinates Name="chevron" Visible="false" X="-6" Y="-7.05" />
+    <Segment Name="Tick1" Style="Tick">
+      <Dependency Name="T1a" />
+      <Dependency Name="chevron" />
+    </Segment>
+    <PointLabel Name="chevronName" Style="TickText" OffsetX="-25.2" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="chevron" />
+    </PointLabel>
+    <PointByCoordinates Name="T2a" Visible="false" X="-2" Y="-6.55" />
+    <PointByCoordinates Name="hat" Visible="false" X="-2" Y="-7.05" />
+    <Segment Name="Tick2" Style="Tick">
+      <Dependency Name="T2a" />
+      <Dependency Name="hat" />
+    </Segment>
+    <PointLabel Name="hatName" Style="TickText" OffsetX="-10.8" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="hat" />
+    </PointLabel>
+    <PointByCoordinates Name="T3a" Visible="false" X="0" Y="-7.05" />
+    <PointByCoordinates Name="spectre" Visible="false" X="0" Y="-6.55" />
+    <Segment Name="Tick3" Style="Tick">
+      <Dependency Name="T3a" />
+      <Dependency Name="spectre" />
+    </Segment>
+    <PointLabel Name="spectreName" Style="TickText" OffsetX="-25.2" OffsetY="-26" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="spectre" />
+    </PointLabel>
+    <PointByCoordinates Name="T4a" Visible="false" X="2" Y="-6.55" />
+    <PointByCoordinates Name="turtle" Visible="false" X="2" Y="-7.05" />
+    <Segment Name="Tick4" Style="Tick">
+      <Dependency Name="T4a" />
+      <Dependency Name="turtle" />
+    </Segment>
+    <PointLabel Name="turtleName" Style="TickText" OffsetX="-21.6" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="turtle" />
+    </PointLabel>
+    <PointByCoordinates Name="T5a" Visible="false" X="6" Y="-6.55" />
+    <PointByCoordinates Name="comet" Visible="false" X="6" Y="-7.05" />
+    <Segment Name="Tick5" Style="Tick">
+      <Dependency Name="T5a" />
+      <Dependency Name="comet" />
+    </Segment>
+    <PointLabel Name="cometName" Style="TickText" OffsetX="-18" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="comet" />
+    </PointLabel>
+    <PointOnFigure Name="T" X="-2.0000000004" Y="-6.8" Parameter="0.3333333333">
+      <Dependency Name="Track" />
+    </PointOnFigure>
+    <PointByCoordinates Name="L" Visible="false" X="1.2 * sin(pi / 2 * (T.X + 6) / 12)" Y="1.2 * cos(pi / 2 * (T.X + 6) / 12)">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P1" Visible="false" X="1.461538 * L.X + 0 * L.Y" Y="0.6 + -0.133235 * L.X + -0.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2" Visible="false" X="1.461538 * L.X + -0.866025 * L.Y" Y="0.6 + -0.133235 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P3" Visible="false" X="0.961538 * L.X + -0.866025 * L.Y" Y="0.6 + -0.99926 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4" Visible="false" X="1.961538 * L.X + -0.866025 * L.Y" Y="0.6 + -2.731311 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P5" Visible="false" X="2.961538 * L.X + -0.866025 * L.Y" Y="0.6 + -2.731311 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P6" Visible="false" X="2.961538 * L.X + -0.866025 * L.Y" Y="0.6 + -2.731311 * L.X + -1.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P7" Visible="false" X="2.961538 * L.X + 0 * L.Y" Y="0.6 + -2.731311 * L.X + -1.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8" Visible="false" X="3.461538 * L.X + 0 * L.Y" Y="0.6 + -1.865285 * L.X + -1.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P9" Visible="false" X="2.961538 * L.X + 0 * L.Y" Y="0.6 + -0.99926 * L.X + -1.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P10" Visible="false" X="2.961538 * L.X + 0.866025 * L.Y" Y="0.6 + -0.99926 * L.X + -1.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P11" Visible="false" X="2.961538 * L.X + 0.866025 * L.Y" Y="0.6 + -0.99926 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P12" Visible="false" X="1.961538 * L.X + 0.866025 * L.Y" Y="0.6 + -0.99926 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P13" Visible="false" X="1.461538 * L.X + 0.866025 * L.Y" Y="0.6 + -0.133235 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P14" Visible="false" X="-3.038462 * L.X + -0.866025 * L.Y" Y="0.6 + 0.732791 * L.X + 0.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P15" Visible="false" X="-3.038462 * L.X + -1.732051 * L.Y" Y="0.6 + 0.732791 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P16" Visible="false" X="-3.538462 * L.X + -1.732051 * L.Y" Y="0.6 + -0.133235 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P17" Visible="false" X="-2.538462 * L.X + -1.732051 * L.Y" Y="0.6 + -1.865285 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P18" Visible="false" X="-1.538462 * L.X + -1.732051 * L.Y" Y="0.6 + -1.865285 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P19" Visible="false" X="-1.538462 * L.X + -1.732051 * L.Y" Y="0.6 + -1.865285 * L.X + 0.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P20" Visible="false" X="-1.538462 * L.X + -0.866025 * L.Y" Y="0.6 + -1.865285 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P21" Visible="false" X="-1.038462 * L.X + -0.866025 * L.Y" Y="0.6 + -0.99926 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P22" Visible="false" X="-1.538462 * L.X + -0.866025 * L.Y" Y="0.6 + -0.133235 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P23" Visible="false" X="-1.538462 * L.X + 0 * L.Y" Y="0.6 + -0.133235 * L.X + 0.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P24" Visible="false" X="-1.538462 * L.X + 0 * L.Y" Y="0.6 + -0.133235 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P25" Visible="false" X="-2.538462 * L.X + 0 * L.Y" Y="0.6 + -0.133235 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P26" Visible="false" X="-3.038462 * L.X + 0 * L.Y" Y="0.6 + 0.732791 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P27" Visible="false" X="-0.038462 * L.X + 0.866025 * L.Y" Y="0.6 + 0.732791 * L.X + 0.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P28" Visible="false" X="-0.038462 * L.X + 0.866025 * L.Y" Y="0.6 + 0.732791 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P29" Visible="false" X="0.961538 * L.X + 0.866025 * L.Y" Y="0.6 + 0.732791 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P30" Visible="false" X="1.961538 * L.X + 0.866025 * L.Y" Y="0.6 + 2.464842 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P31" Visible="false" X="1.461538 * L.X + 0.866025 * L.Y" Y="0.6 + 3.330867 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P32" Visible="false" X="1.461538 * L.X + 1.732051 * L.Y" Y="0.6 + 3.330867 * L.X + 0.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P33" Visible="false" X="1.461538 * L.X + 1.732051 * L.Y" Y="0.6 + 3.330867 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P34" Visible="false" X="0.461538 * L.X + 1.732051 * L.Y" Y="0.6 + 3.330867 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P35" Visible="false" X="-0.038462 * L.X + 1.732051 * L.Y" Y="0.6 + 2.464842 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P36" Visible="false" X="-0.038462 * L.X + 0.866025 * L.Y" Y="0.6 + 2.464842 * L.X + 1.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P37" Visible="false" X="-0.038462 * L.X + 0 * L.Y" Y="0.6 + 2.464842 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P38" Visible="false" X="0.461538 * L.X + 0 * L.Y" Y="0.6 + 1.598816 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P39" Visible="false" X="-0.038462 * L.X + 0 * L.Y" Y="0.6 + 0.732791 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P40" Visible="false" X="-1.538462 * L.X + 0 * L.Y" Y="0.6 + -0.133235 * L.X + 2.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P41" Visible="false" X="-0.538462 * L.X + 0 * L.Y" Y="0.6 + -0.133235 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P42" Visible="false" X="-0.038462 * L.X + 0.866025 * L.Y" Y="0.6 + 2.464842 * L.X + 2.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P43" Visible="false" X="-1.038462 * L.X + 0.866025 * L.Y" Y="0.6 + 2.464842 * L.X + 2.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P44" Visible="false" X="-1.538462 * L.X + 0.866025 * L.Y" Y="0.6 + 1.598816 * L.X + 2.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P45" Visible="false" X="-1.538462 * L.X + 0 * L.Y" Y="0.6 + 1.598816 * L.X + 3.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P46" Visible="false" X="-1.538462 * L.X + -0.866025 * L.Y" Y="0.6 + 1.598816 * L.X + 2.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P47" Visible="false" X="-1.038462 * L.X + -0.866025 * L.Y" Y="0.6 + 0.732791 * L.X + 2.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P48" Visible="false" X="-1.538462 * L.X + -0.866025 * L.Y" Y="0.6 + -0.133235 * L.X + 2.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P49" Visible="false" X="1.461538 * L.X + -1.732051 * L.Y" Y="0.6 + -1.865285 * L.X + -0.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P50" Visible="false" X="1.461538 * L.X + -0.866025 * L.Y" Y="0.6 + -1.865285 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P51" Visible="false" X="-1.538462 * L.X + -2.598076 * L.Y" Y="0.6 + -1.865285 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P52" Visible="false" X="-1.038462 * L.X + -2.598076 * L.Y" Y="0.6 + -2.731311 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P53" Visible="false" X="-0.038462 * L.X + -2.598076 * L.Y" Y="0.6 + -2.731311 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P54" Visible="false" X="-0.038462 * L.X + -2.598076 * L.Y" Y="0.6 + -2.731311 * L.X + -1.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P55" Visible="false" X="-0.038462 * L.X + -1.732051 * L.Y" Y="0.6 + -2.731311 * L.X + -1.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P56" Visible="false" X="0.461538 * L.X + -1.732051 * L.Y" Y="0.6 + -1.865285 * L.X + -1.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P57" Visible="false" X="1.461538 * L.X + -1.732051 * L.Y" Y="0.6 + -1.865285 * L.X + -1.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P58" Visible="false" X="-3.038462 * L.X + -0.866025 * L.Y" Y="0.6 + 2.464842 * L.X + 1.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P59" Visible="false" X="-3.038462 * L.X + -0.866025 * L.Y" Y="0.6 + 2.464842 * L.X + 2.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P60" Visible="false" X="-2.038462 * L.X + -0.866025 * L.Y" Y="0.6 + 2.464842 * L.X + 2.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P61" Visible="false" X="-2.538462 * L.X + -1.732051 * L.Y" Y="0.6 + 1.598816 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P62" Visible="false" X="-3.038462 * L.X + -1.732051 * L.Y" Y="0.6 + 2.464842 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P63" Visible="false" X="1.461538 * L.X + 1.732051 * L.Y" Y="0.6 + 1.598816 * L.X + -0.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P64" Visible="false" X="1.461538 * L.X + 0.866025 * L.Y" Y="0.6 + 1.598816 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P65" Visible="false" X="2.961538 * L.X + 1.732051 * L.Y" Y="0.6 + -0.99926 * L.X + -1.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P66" Visible="false" X="3.461538 * L.X + 1.732051 * L.Y" Y="0.6 + -0.133235 * L.X + -1.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P67" Visible="false" X="2.961538 * L.X + 1.732051 * L.Y" Y="0.6 + 0.732791 * L.X + -1.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P68" Visible="false" X="2.961538 * L.X + 2.598076 * L.Y" Y="0.6 + 0.732791 * L.X + -1.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P69" Visible="false" X="2.961538 * L.X + 2.598076 * L.Y" Y="0.6 + 0.732791 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P70" Visible="false" X="1.961538 * L.X + 2.598076 * L.Y" Y="0.6 + 0.732791 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P71" Visible="false" X="1.461538 * L.X + 2.598076 * L.Y" Y="0.6 + 1.598816 * L.X + -0.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P72" Visible="false" X="2.461538 * L.X + 0 * L.Y" Y="0.6 + -3.597336 * L.X + -1.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P73" Visible="false" X="0.461538 * L.X + 0 * L.Y" Y="0.6 + -3.597336 * L.X + -1.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P74" Visible="false" X="-0.038462 * L.X + 0 * L.Y" Y="0.6 + -2.731311 * L.X + -1.923077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P75" Visible="false" X="-0.038462 * L.X + -0.866025 * L.Y" Y="0.6 + -2.731311 * L.X + -2.423077 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P76" Visible="false" X="2.461538 * L.X + 1.732051 * L.Y" Y="0.6 + 3.330867 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P77" Visible="false" X="3.461538 * L.X + 1.732051 * L.Y" Y="0.6 + 1.598816 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P78" Visible="false" X="2.961538 * L.X + 1.732051 * L.Y" Y="0.6 + 0.732791 * L.X + 1.076923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P79" Visible="false" X="2.961538 * L.X + 2.598076 * L.Y" Y="0.6 + 0.732791 * L.X + 0.576923 * L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <Polygon Name="Tile2" Style="Hat2">
+      <Dependency Name="P1" />
+      <Dependency Name="P2" />
+      <Dependency Name="P3" />
+      <Dependency Name="P4" />
+      <Dependency Name="P5" />
+      <Dependency Name="P6" />
+      <Dependency Name="P7" />
+      <Dependency Name="P8" />
+      <Dependency Name="P9" />
+      <Dependency Name="P10" />
+      <Dependency Name="P11" />
+      <Dependency Name="P12" />
+      <Dependency Name="P13" />
+    </Polygon>
+    <Polygon Name="Tile3" Style="Hat1">
+      <Dependency Name="P14" />
+      <Dependency Name="P15" />
+      <Dependency Name="P16" />
+      <Dependency Name="P17" />
+      <Dependency Name="P18" />
+      <Dependency Name="P19" />
+      <Dependency Name="P20" />
+      <Dependency Name="P21" />
+      <Dependency Name="P22" />
+      <Dependency Name="P23" />
+      <Dependency Name="P24" />
+      <Dependency Name="P25" />
+      <Dependency Name="P26" />
+    </Polygon>
+    <Polygon Name="Tile4" Style="Hat3">
+      <Dependency Name="P27" />
+      <Dependency Name="P28" />
+      <Dependency Name="P29" />
+      <Dependency Name="P30" />
+      <Dependency Name="P31" />
+      <Dependency Name="P32" />
+      <Dependency Name="P33" />
+      <Dependency Name="P34" />
+      <Dependency Name="P35" />
+      <Dependency Name="P36" />
+      <Dependency Name="P37" />
+      <Dependency Name="P38" />
+      <Dependency Name="P39" />
+    </Polygon>
+    <Polygon Name="Tile5" Style="Hat1">
+      <Dependency Name="P40" />
+      <Dependency Name="P24" />
+      <Dependency Name="P41" />
+      <Dependency Name="P38" />
+      <Dependency Name="P37" />
+      <Dependency Name="P36" />
+      <Dependency Name="P42" />
+      <Dependency Name="P43" />
+      <Dependency Name="P44" />
+      <Dependency Name="P45" />
+      <Dependency Name="P46" />
+      <Dependency Name="P47" />
+      <Dependency Name="P48" />
+    </Polygon>
+    <Polygon Name="Tile6" Style="Hat3">
+      <Dependency Name="P49" />
+      <Dependency Name="P50" />
+      <Dependency Name="P3" />
+      <Dependency Name="P21" />
+      <Dependency Name="P20" />
+      <Dependency Name="P19" />
+      <Dependency Name="P51" />
+      <Dependency Name="P52" />
+      <Dependency Name="P53" />
+      <Dependency Name="P54" />
+      <Dependency Name="P55" />
+      <Dependency Name="P56" />
+      <Dependency Name="P57" />
+    </Polygon>
+    <Polygon Name="Tile7" Style="HatFlipped">
+      <Dependency Name="P58" />
+      <Dependency Name="P59" />
+      <Dependency Name="P60" />
+      <Dependency Name="P47" />
+      <Dependency Name="P48" />
+      <Dependency Name="P40" />
+      <Dependency Name="P24" />
+      <Dependency Name="P25" />
+      <Dependency Name="P26" />
+      <Dependency Name="P14" />
+      <Dependency Name="P15" />
+      <Dependency Name="P61" />
+      <Dependency Name="P62" />
+    </Polygon>
+    <Polygon Name="Tile8" Style="Hat1">
+      <Dependency Name="P63" />
+      <Dependency Name="P64" />
+      <Dependency Name="P29" />
+      <Dependency Name="P12" />
+      <Dependency Name="P11" />
+      <Dependency Name="P10" />
+      <Dependency Name="P65" />
+      <Dependency Name="P66" />
+      <Dependency Name="P67" />
+      <Dependency Name="P68" />
+      <Dependency Name="P69" />
+      <Dependency Name="P70" />
+      <Dependency Name="P71" />
+    </Polygon>
+    <Polygon Name="Tile9" Style="HatFlipped">
+      <Dependency Name="P6" />
+      <Dependency Name="P7" />
+      <Dependency Name="P72" />
+      <Dependency Name="P73" />
+      <Dependency Name="P74" />
+      <Dependency Name="P75" />
+      <Dependency Name="P55" />
+      <Dependency Name="P56" />
+      <Dependency Name="P57" />
+      <Dependency Name="P49" />
+      <Dependency Name="P50" />
+      <Dependency Name="P4" />
+      <Dependency Name="P5" />
+    </Polygon>
+    <Polygon Name="Tile10" Style="HatFlipped">
+      <Dependency Name="P32" />
+      <Dependency Name="P33" />
+      <Dependency Name="P76" />
+      <Dependency Name="P77" />
+      <Dependency Name="P78" />
+      <Dependency Name="P79" />
+      <Dependency Name="P69" />
+      <Dependency Name="P70" />
+      <Dependency Name="P71" />
+      <Dependency Name="P63" />
+      <Dependency Name="P64" />
+      <Dependency Name="P30" />
+      <Dependency Name="P31" />
+    </Polygon>
+    <Polygon Name="Tile" Style="HatMain">
+      <Dependency Name="P23" />
+      <Dependency Name="P22" />
+      <Dependency Name="P21" />
+      <Dependency Name="P3" />
+      <Dependency Name="P2" />
+      <Dependency Name="P1" />
+      <Dependency Name="P13" />
+      <Dependency Name="P29" />
+      <Dependency Name="P28" />
+      <Dependency Name="P27" />
+      <Dependency Name="P39" />
+      <Dependency Name="P41" />
+      <Dependency Name="P24" />
+    </Polygon>
+    <Label Name="Title" Style="GalleryTitle" Text="From Hat to Spectre" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Every side of the hat is a short or a long side of one of its kites. Give all the short sides one length and all the long ones another, keep the angles, and the copies still fit together the same way.\n\nSlide the green point. Every shape on the way is an aperiodic monotile, except the two ends, which tile in a repeating pattern, and the spectre, whose sides are all equal: it repeats too, but only with flipped copies. Without them it never does, and with curvy sides it can't be flipped at all." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

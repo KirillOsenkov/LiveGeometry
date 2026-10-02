@@ -1,0 +1,1196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-6" Top="4" Right="6" Bottom="-4" />
+  <Styles>
+    <ShapeStyle Name="Hexagon" Fill="#00FFFFFF" Color="#FF9BA2AC" StrokeWidth="1.5">
+      <Dark Color="#FF6B727C" />
+    </ShapeStyle>
+    <ShapeStyle Name="GridKite" Fill="#00FFFFFF" Color="#FFCDD1D7">
+      <Dark Color="#FF4A4F57" />
+    </ShapeStyle>
+    <LineStyle Name="TurnCircle" Color="#FFB8BEC6" Dash="Dash">
+      <Dark Color="#FF5E6570" />
+    </LineStyle>
+    <ShapeStyle Name="Kite1" Color="#C0FFFFFF">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFA375" Offset="0" />
+          <GradientStop Color="#FFFF7448" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#90FFFFFF">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFD27A" Offset="0" />
+            <GradientStop Color="#FFC0530A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Kite2" Color="#C0FFFFFF">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFE89A" Offset="0" />
+          <GradientStop Color="#FFF5BE3C" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#90FFFFFF">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFF2A8" Offset="0" />
+            <GradientStop Color="#FF9C7A00" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Kite3" Color="#C0FFFFFF">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFB8C0" Offset="0" />
+          <GradientStop Color="#FFF07A8C" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#90FFFFFF">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFB8D0" Offset="0" />
+            <GradientStop Color="#FFA02858" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="HatOutline" Fill="#00FFFFFF" Color="#FF2B3038" StrokeWidth="2.5">
+      <Dark Color="#FFF2F2F2" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="G1" Visible="false" X="0" Y="-3.4641" />
+    <PointByCoordinates Name="G2" Visible="false" X="0.75" Y="-3.0311" />
+    <PointByCoordinates Name="G3" Visible="false" X="0.5" Y="-2.5981" />
+    <PointByCoordinates Name="G4" Visible="false" X="0" Y="-2.5981" />
+    <PointByCoordinates Name="G5" Visible="false" X="-0.5" Y="-2.5981" />
+    <PointByCoordinates Name="G6" Visible="false" X="-0.75" Y="-3.0311" />
+    <PointByCoordinates Name="G7" Visible="false" X="-1" Y="-3.4641" />
+    <PointByCoordinates Name="G8" Visible="false" X="-0.75" Y="-3.8971" />
+    <PointByCoordinates Name="G9" Visible="false" X="-0.5" Y="-4.3301" />
+    <PointByCoordinates Name="G10" Visible="false" X="0" Y="-4.3301" />
+    <PointByCoordinates Name="G11" Visible="false" X="0.5" Y="-4.3301" />
+    <PointByCoordinates Name="G12" Visible="false" X="0.75" Y="-3.8971" />
+    <PointByCoordinates Name="G13" Visible="false" X="1" Y="-3.4641" />
+    <PointByCoordinates Name="G14" Visible="false" X="-1.5" Y="-2.5981" />
+    <PointByCoordinates Name="G15" Visible="false" X="-0.75" Y="-2.1651" />
+    <PointByCoordinates Name="G16" Visible="false" X="-1" Y="-1.7321" />
+    <PointByCoordinates Name="G17" Visible="false" X="-1.5" Y="-1.7321" />
+    <PointByCoordinates Name="G18" Visible="false" X="-2" Y="-1.7321" />
+    <PointByCoordinates Name="G19" Visible="false" X="-2.25" Y="-2.1651" />
+    <PointByCoordinates Name="G20" Visible="false" X="-2.5" Y="-2.5981" />
+    <PointByCoordinates Name="G21" Visible="false" X="-2.25" Y="-3.0311" />
+    <PointByCoordinates Name="G22" Visible="false" X="-2" Y="-3.4641" />
+    <PointByCoordinates Name="G23" Visible="false" X="-1.5" Y="-3.4641" />
+    <PointByCoordinates Name="G24" Visible="false" X="1.5" Y="-2.5981" />
+    <PointByCoordinates Name="G25" Visible="false" X="2.25" Y="-2.1651" />
+    <PointByCoordinates Name="G26" Visible="false" X="2" Y="-1.7321" />
+    <PointByCoordinates Name="G27" Visible="false" X="1.5" Y="-1.7321" />
+    <PointByCoordinates Name="G28" Visible="false" X="1" Y="-1.7321" />
+    <PointByCoordinates Name="G29" Visible="false" X="0.75" Y="-2.1651" />
+    <PointByCoordinates Name="G30" Visible="false" X="1.5" Y="-3.4641" />
+    <PointByCoordinates Name="G31" Visible="false" X="2" Y="-3.4641" />
+    <PointByCoordinates Name="G32" Visible="false" X="2.25" Y="-3.0311" />
+    <PointByCoordinates Name="G33" Visible="false" X="2.5" Y="-2.5981" />
+    <PointByCoordinates Name="G34" Visible="false" X="-3" Y="-1.7321" />
+    <PointByCoordinates Name="G35" Visible="false" X="-2.25" Y="-1.299" />
+    <PointByCoordinates Name="G36" Visible="false" X="-2.5" Y="-0.866" />
+    <PointByCoordinates Name="G37" Visible="false" X="-3" Y="-0.866" />
+    <PointByCoordinates Name="G38" Visible="false" X="-3.5" Y="-0.866" />
+    <PointByCoordinates Name="G39" Visible="false" X="-3.75" Y="-1.299" />
+    <PointByCoordinates Name="G40" Visible="false" X="-4" Y="-1.7321" />
+    <PointByCoordinates Name="G41" Visible="false" X="-3.75" Y="-2.1651" />
+    <PointByCoordinates Name="G42" Visible="false" X="-3.5" Y="-2.5981" />
+    <PointByCoordinates Name="G43" Visible="false" X="-3" Y="-2.5981" />
+    <PointByCoordinates Name="G44" Visible="false" X="0" Y="-1.7321" />
+    <PointByCoordinates Name="G45" Visible="false" X="0.75" Y="-1.299" />
+    <PointByCoordinates Name="G46" Visible="false" X="0.5" Y="-0.866" />
+    <PointByCoordinates Name="G47" Visible="false" X="0" Y="-0.866" />
+    <PointByCoordinates Name="G48" Visible="false" X="-0.5" Y="-0.866" />
+    <PointByCoordinates Name="G49" Visible="false" X="-0.75" Y="-1.299" />
+    <PointByCoordinates Name="G50" Visible="false" X="3" Y="-1.7321" />
+    <PointByCoordinates Name="G51" Visible="false" X="3.75" Y="-1.299" />
+    <PointByCoordinates Name="G52" Visible="false" X="3.5" Y="-0.866" />
+    <PointByCoordinates Name="G53" Visible="false" X="3" Y="-0.866" />
+    <PointByCoordinates Name="G54" Visible="false" X="2.5" Y="-0.866" />
+    <PointByCoordinates Name="G55" Visible="false" X="2.25" Y="-1.299" />
+    <PointByCoordinates Name="G56" Visible="false" X="3" Y="-2.5981" />
+    <PointByCoordinates Name="G57" Visible="false" X="3.5" Y="-2.5981" />
+    <PointByCoordinates Name="G58" Visible="false" X="3.75" Y="-2.1651" />
+    <PointByCoordinates Name="G59" Visible="false" X="4" Y="-1.7321" />
+    <PointByCoordinates Name="G60" Visible="false" X="-1.5" Y="-0.866" />
+    <PointByCoordinates Name="G61" Visible="false" X="-0.75" Y="-0.433" />
+    <PointByCoordinates Name="G62" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="G63" Visible="false" X="-1.5" Y="0" />
+    <PointByCoordinates Name="G64" Visible="false" X="-2" Y="0" />
+    <PointByCoordinates Name="G65" Visible="false" X="-2.25" Y="-0.433" />
+    <PointByCoordinates Name="G66" Visible="false" X="1.5" Y="-0.866" />
+    <PointByCoordinates Name="G67" Visible="false" X="2.25" Y="-0.433" />
+    <PointByCoordinates Name="G68" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="G69" Visible="false" X="1.5" Y="0" />
+    <PointByCoordinates Name="G70" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="G71" Visible="false" X="0.75" Y="-0.433" />
+    <PointByCoordinates Name="G72" Visible="false" X="-3" Y="0" />
+    <PointByCoordinates Name="G73" Visible="false" X="-2.25" Y="0.433" />
+    <PointByCoordinates Name="G74" Visible="false" X="-2.5" Y="0.866" />
+    <PointByCoordinates Name="G75" Visible="false" X="-3" Y="0.866" />
+    <PointByCoordinates Name="G76" Visible="false" X="-3.5" Y="0.866" />
+    <PointByCoordinates Name="G77" Visible="false" X="-3.75" Y="0.433" />
+    <PointByCoordinates Name="G78" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="G79" Visible="false" X="-3.75" Y="-0.433" />
+    <PointByCoordinates Name="G80" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="G81" Visible="false" X="0.75" Y="0.433" />
+    <PointByCoordinates Name="G82" Visible="false" X="0.5" Y="0.866" />
+    <PointByCoordinates Name="G83" Visible="false" X="0" Y="0.866" />
+    <PointByCoordinates Name="G84" Visible="false" X="-0.5" Y="0.866" />
+    <PointByCoordinates Name="G85" Visible="false" X="-0.75" Y="0.433" />
+    <PointByCoordinates Name="G86" Visible="false" X="3" Y="0" />
+    <PointByCoordinates Name="G87" Visible="false" X="3.75" Y="0.433" />
+    <PointByCoordinates Name="G88" Visible="false" X="3.5" Y="0.866" />
+    <PointByCoordinates Name="G89" Visible="false" X="3" Y="0.866" />
+    <PointByCoordinates Name="G90" Visible="false" X="2.5" Y="0.866" />
+    <PointByCoordinates Name="G91" Visible="false" X="2.25" Y="0.433" />
+    <PointByCoordinates Name="G92" Visible="false" X="3.75" Y="-0.433" />
+    <PointByCoordinates Name="G93" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="G94" Visible="false" X="-1.5" Y="0.866" />
+    <PointByCoordinates Name="G95" Visible="false" X="-0.75" Y="1.299" />
+    <PointByCoordinates Name="G96" Visible="false" X="-1" Y="1.7321" />
+    <PointByCoordinates Name="G97" Visible="false" X="-1.5" Y="1.7321" />
+    <PointByCoordinates Name="G98" Visible="false" X="-2" Y="1.7321" />
+    <PointByCoordinates Name="G99" Visible="false" X="-2.25" Y="1.299" />
+    <PointByCoordinates Name="G100" Visible="false" X="1.5" Y="0.866" />
+    <PointByCoordinates Name="G101" Visible="false" X="2.25" Y="1.299" />
+    <PointByCoordinates Name="G102" Visible="false" X="2" Y="1.7321" />
+    <PointByCoordinates Name="G103" Visible="false" X="1.5" Y="1.7321" />
+    <PointByCoordinates Name="G104" Visible="false" X="1" Y="1.7321" />
+    <PointByCoordinates Name="G105" Visible="false" X="0.75" Y="1.299" />
+    <PointByCoordinates Name="G106" Visible="false" X="-3" Y="1.7321" />
+    <PointByCoordinates Name="G107" Visible="false" X="-2.25" Y="2.1651" />
+    <PointByCoordinates Name="G108" Visible="false" X="-2.5" Y="2.5981" />
+    <PointByCoordinates Name="G109" Visible="false" X="-3" Y="2.5981" />
+    <PointByCoordinates Name="G110" Visible="false" X="-3.5" Y="2.5981" />
+    <PointByCoordinates Name="G111" Visible="false" X="-3.75" Y="2.1651" />
+    <PointByCoordinates Name="G112" Visible="false" X="-4" Y="1.7321" />
+    <PointByCoordinates Name="G113" Visible="false" X="-3.75" Y="1.299" />
+    <PointByCoordinates Name="G114" Visible="false" X="0" Y="1.7321" />
+    <PointByCoordinates Name="G115" Visible="false" X="0.75" Y="2.1651" />
+    <PointByCoordinates Name="G116" Visible="false" X="0.5" Y="2.5981" />
+    <PointByCoordinates Name="G117" Visible="false" X="0" Y="2.5981" />
+    <PointByCoordinates Name="G118" Visible="false" X="-0.5" Y="2.5981" />
+    <PointByCoordinates Name="G119" Visible="false" X="-0.75" Y="2.1651" />
+    <PointByCoordinates Name="G120" Visible="false" X="3" Y="1.7321" />
+    <PointByCoordinates Name="G121" Visible="false" X="3.75" Y="2.1651" />
+    <PointByCoordinates Name="G122" Visible="false" X="3.5" Y="2.5981" />
+    <PointByCoordinates Name="G123" Visible="false" X="3" Y="2.5981" />
+    <PointByCoordinates Name="G124" Visible="false" X="2.5" Y="2.5981" />
+    <PointByCoordinates Name="G125" Visible="false" X="2.25" Y="2.1651" />
+    <PointByCoordinates Name="G126" Visible="false" X="3.75" Y="1.299" />
+    <PointByCoordinates Name="G127" Visible="false" X="4" Y="1.7321" />
+    <PointByCoordinates Name="G128" Visible="false" X="-1.5" Y="2.5981" />
+    <PointByCoordinates Name="G129" Visible="false" X="-0.75" Y="3.0311" />
+    <PointByCoordinates Name="G130" Visible="false" X="-1" Y="3.4641" />
+    <PointByCoordinates Name="G131" Visible="false" X="-1.5" Y="3.4641" />
+    <PointByCoordinates Name="G132" Visible="false" X="-2" Y="3.4641" />
+    <PointByCoordinates Name="G133" Visible="false" X="-2.25" Y="3.0311" />
+    <PointByCoordinates Name="G134" Visible="false" X="1.5" Y="2.5981" />
+    <PointByCoordinates Name="G135" Visible="false" X="2.25" Y="3.0311" />
+    <PointByCoordinates Name="G136" Visible="false" X="2" Y="3.4641" />
+    <PointByCoordinates Name="G137" Visible="false" X="1.5" Y="3.4641" />
+    <PointByCoordinates Name="G138" Visible="false" X="1" Y="3.4641" />
+    <PointByCoordinates Name="G139" Visible="false" X="0.75" Y="3.0311" />
+    <PointByCoordinates Name="G140" Visible="false" X="0" Y="3.4641" />
+    <PointByCoordinates Name="G141" Visible="false" X="0.75" Y="3.8971" />
+    <PointByCoordinates Name="G142" Visible="false" X="0.5" Y="4.3301" />
+    <PointByCoordinates Name="G143" Visible="false" X="0" Y="4.3301" />
+    <PointByCoordinates Name="G144" Visible="false" X="-0.5" Y="4.3301" />
+    <PointByCoordinates Name="G145" Visible="false" X="-0.75" Y="3.8971" />
+    <Polygon Name="GridKite1" Style="GridKite">
+      <Dependency Name="G1" />
+      <Dependency Name="G2" />
+      <Dependency Name="G3" />
+      <Dependency Name="G4" />
+    </Polygon>
+    <Polygon Name="GridKite2" Style="GridKite">
+      <Dependency Name="G1" />
+      <Dependency Name="G4" />
+      <Dependency Name="G5" />
+      <Dependency Name="G6" />
+    </Polygon>
+    <Polygon Name="GridKite3" Style="GridKite">
+      <Dependency Name="G1" />
+      <Dependency Name="G6" />
+      <Dependency Name="G7" />
+      <Dependency Name="G8" />
+    </Polygon>
+    <Polygon Name="GridKite4" Style="GridKite">
+      <Dependency Name="G1" />
+      <Dependency Name="G8" />
+      <Dependency Name="G9" />
+      <Dependency Name="G10" />
+    </Polygon>
+    <Polygon Name="GridKite5" Style="GridKite">
+      <Dependency Name="G1" />
+      <Dependency Name="G10" />
+      <Dependency Name="G11" />
+      <Dependency Name="G12" />
+    </Polygon>
+    <Polygon Name="GridKite6" Style="GridKite">
+      <Dependency Name="G1" />
+      <Dependency Name="G12" />
+      <Dependency Name="G13" />
+      <Dependency Name="G2" />
+    </Polygon>
+    <Polygon Name="GridKite7" Style="GridKite">
+      <Dependency Name="G14" />
+      <Dependency Name="G15" />
+      <Dependency Name="G16" />
+      <Dependency Name="G17" />
+    </Polygon>
+    <Polygon Name="GridKite8" Style="GridKite">
+      <Dependency Name="G14" />
+      <Dependency Name="G17" />
+      <Dependency Name="G18" />
+      <Dependency Name="G19" />
+    </Polygon>
+    <Polygon Name="GridKite9" Style="GridKite">
+      <Dependency Name="G14" />
+      <Dependency Name="G19" />
+      <Dependency Name="G20" />
+      <Dependency Name="G21" />
+    </Polygon>
+    <Polygon Name="GridKite10" Style="GridKite">
+      <Dependency Name="G14" />
+      <Dependency Name="G21" />
+      <Dependency Name="G22" />
+      <Dependency Name="G23" />
+    </Polygon>
+    <Polygon Name="GridKite11" Style="GridKite">
+      <Dependency Name="G14" />
+      <Dependency Name="G23" />
+      <Dependency Name="G7" />
+      <Dependency Name="G6" />
+    </Polygon>
+    <Polygon Name="GridKite12" Style="GridKite">
+      <Dependency Name="G14" />
+      <Dependency Name="G6" />
+      <Dependency Name="G5" />
+      <Dependency Name="G15" />
+    </Polygon>
+    <Polygon Name="GridKite13" Style="GridKite">
+      <Dependency Name="G24" />
+      <Dependency Name="G25" />
+      <Dependency Name="G26" />
+      <Dependency Name="G27" />
+    </Polygon>
+    <Polygon Name="GridKite14" Style="GridKite">
+      <Dependency Name="G24" />
+      <Dependency Name="G27" />
+      <Dependency Name="G28" />
+      <Dependency Name="G29" />
+    </Polygon>
+    <Polygon Name="GridKite15" Style="GridKite">
+      <Dependency Name="G24" />
+      <Dependency Name="G29" />
+      <Dependency Name="G3" />
+      <Dependency Name="G2" />
+    </Polygon>
+    <Polygon Name="GridKite16" Style="GridKite">
+      <Dependency Name="G24" />
+      <Dependency Name="G2" />
+      <Dependency Name="G13" />
+      <Dependency Name="G30" />
+    </Polygon>
+    <Polygon Name="GridKite17" Style="GridKite">
+      <Dependency Name="G24" />
+      <Dependency Name="G30" />
+      <Dependency Name="G31" />
+      <Dependency Name="G32" />
+    </Polygon>
+    <Polygon Name="GridKite18" Style="GridKite">
+      <Dependency Name="G24" />
+      <Dependency Name="G32" />
+      <Dependency Name="G33" />
+      <Dependency Name="G25" />
+    </Polygon>
+    <Polygon Name="GridKite19" Style="GridKite">
+      <Dependency Name="G34" />
+      <Dependency Name="G35" />
+      <Dependency Name="G36" />
+      <Dependency Name="G37" />
+    </Polygon>
+    <Polygon Name="GridKite20" Style="GridKite">
+      <Dependency Name="G34" />
+      <Dependency Name="G37" />
+      <Dependency Name="G38" />
+      <Dependency Name="G39" />
+    </Polygon>
+    <Polygon Name="GridKite21" Style="GridKite">
+      <Dependency Name="G34" />
+      <Dependency Name="G39" />
+      <Dependency Name="G40" />
+      <Dependency Name="G41" />
+    </Polygon>
+    <Polygon Name="GridKite22" Style="GridKite">
+      <Dependency Name="G34" />
+      <Dependency Name="G41" />
+      <Dependency Name="G42" />
+      <Dependency Name="G43" />
+    </Polygon>
+    <Polygon Name="GridKite23" Style="GridKite">
+      <Dependency Name="G34" />
+      <Dependency Name="G43" />
+      <Dependency Name="G20" />
+      <Dependency Name="G19" />
+    </Polygon>
+    <Polygon Name="GridKite24" Style="GridKite">
+      <Dependency Name="G34" />
+      <Dependency Name="G19" />
+      <Dependency Name="G18" />
+      <Dependency Name="G35" />
+    </Polygon>
+    <Polygon Name="GridKite25" Style="GridKite">
+      <Dependency Name="G44" />
+      <Dependency Name="G45" />
+      <Dependency Name="G46" />
+      <Dependency Name="G47" />
+    </Polygon>
+    <Polygon Name="GridKite26" Style="GridKite">
+      <Dependency Name="G44" />
+      <Dependency Name="G47" />
+      <Dependency Name="G48" />
+      <Dependency Name="G49" />
+    </Polygon>
+    <Polygon Name="GridKite27" Style="GridKite">
+      <Dependency Name="G44" />
+      <Dependency Name="G49" />
+      <Dependency Name="G16" />
+      <Dependency Name="G15" />
+    </Polygon>
+    <Polygon Name="GridKite28" Style="GridKite">
+      <Dependency Name="G44" />
+      <Dependency Name="G15" />
+      <Dependency Name="G5" />
+      <Dependency Name="G4" />
+    </Polygon>
+    <Polygon Name="GridKite29" Style="GridKite">
+      <Dependency Name="G44" />
+      <Dependency Name="G4" />
+      <Dependency Name="G3" />
+      <Dependency Name="G29" />
+    </Polygon>
+    <Polygon Name="GridKite30" Style="GridKite">
+      <Dependency Name="G44" />
+      <Dependency Name="G29" />
+      <Dependency Name="G28" />
+      <Dependency Name="G45" />
+    </Polygon>
+    <Polygon Name="GridKite31" Style="GridKite">
+      <Dependency Name="G50" />
+      <Dependency Name="G51" />
+      <Dependency Name="G52" />
+      <Dependency Name="G53" />
+    </Polygon>
+    <Polygon Name="GridKite32" Style="GridKite">
+      <Dependency Name="G50" />
+      <Dependency Name="G53" />
+      <Dependency Name="G54" />
+      <Dependency Name="G55" />
+    </Polygon>
+    <Polygon Name="GridKite33" Style="GridKite">
+      <Dependency Name="G50" />
+      <Dependency Name="G55" />
+      <Dependency Name="G26" />
+      <Dependency Name="G25" />
+    </Polygon>
+    <Polygon Name="GridKite34" Style="GridKite">
+      <Dependency Name="G50" />
+      <Dependency Name="G25" />
+      <Dependency Name="G33" />
+      <Dependency Name="G56" />
+    </Polygon>
+    <Polygon Name="GridKite35" Style="GridKite">
+      <Dependency Name="G50" />
+      <Dependency Name="G56" />
+      <Dependency Name="G57" />
+      <Dependency Name="G58" />
+    </Polygon>
+    <Polygon Name="GridKite36" Style="GridKite">
+      <Dependency Name="G50" />
+      <Dependency Name="G58" />
+      <Dependency Name="G59" />
+      <Dependency Name="G51" />
+    </Polygon>
+    <Polygon Name="GridKite37" Style="GridKite">
+      <Dependency Name="G60" />
+      <Dependency Name="G61" />
+      <Dependency Name="G62" />
+      <Dependency Name="G63" />
+    </Polygon>
+    <Polygon Name="GridKite38" Style="GridKite">
+      <Dependency Name="G60" />
+      <Dependency Name="G63" />
+      <Dependency Name="G64" />
+      <Dependency Name="G65" />
+    </Polygon>
+    <Polygon Name="GridKite39" Style="GridKite">
+      <Dependency Name="G60" />
+      <Dependency Name="G65" />
+      <Dependency Name="G36" />
+      <Dependency Name="G35" />
+    </Polygon>
+    <Polygon Name="GridKite40" Style="GridKite">
+      <Dependency Name="G60" />
+      <Dependency Name="G35" />
+      <Dependency Name="G18" />
+      <Dependency Name="G17" />
+    </Polygon>
+    <Polygon Name="GridKite41" Style="GridKite">
+      <Dependency Name="G60" />
+      <Dependency Name="G17" />
+      <Dependency Name="G16" />
+      <Dependency Name="G49" />
+    </Polygon>
+    <Polygon Name="GridKite42" Style="GridKite">
+      <Dependency Name="G60" />
+      <Dependency Name="G49" />
+      <Dependency Name="G48" />
+      <Dependency Name="G61" />
+    </Polygon>
+    <Polygon Name="GridKite43" Style="GridKite">
+      <Dependency Name="G66" />
+      <Dependency Name="G67" />
+      <Dependency Name="G68" />
+      <Dependency Name="G69" />
+    </Polygon>
+    <Polygon Name="GridKite44" Style="GridKite">
+      <Dependency Name="G66" />
+      <Dependency Name="G69" />
+      <Dependency Name="G70" />
+      <Dependency Name="G71" />
+    </Polygon>
+    <Polygon Name="GridKite45" Style="GridKite">
+      <Dependency Name="G66" />
+      <Dependency Name="G71" />
+      <Dependency Name="G46" />
+      <Dependency Name="G45" />
+    </Polygon>
+    <Polygon Name="GridKite46" Style="GridKite">
+      <Dependency Name="G66" />
+      <Dependency Name="G45" />
+      <Dependency Name="G28" />
+      <Dependency Name="G27" />
+    </Polygon>
+    <Polygon Name="GridKite47" Style="GridKite">
+      <Dependency Name="G66" />
+      <Dependency Name="G27" />
+      <Dependency Name="G26" />
+      <Dependency Name="G55" />
+    </Polygon>
+    <Polygon Name="GridKite48" Style="GridKite">
+      <Dependency Name="G66" />
+      <Dependency Name="G55" />
+      <Dependency Name="G54" />
+      <Dependency Name="G67" />
+    </Polygon>
+    <Polygon Name="GridKite49" Style="GridKite">
+      <Dependency Name="G72" />
+      <Dependency Name="G73" />
+      <Dependency Name="G74" />
+      <Dependency Name="G75" />
+    </Polygon>
+    <Polygon Name="GridKite50" Style="GridKite">
+      <Dependency Name="G72" />
+      <Dependency Name="G75" />
+      <Dependency Name="G76" />
+      <Dependency Name="G77" />
+    </Polygon>
+    <Polygon Name="GridKite51" Style="GridKite">
+      <Dependency Name="G72" />
+      <Dependency Name="G77" />
+      <Dependency Name="G78" />
+      <Dependency Name="G79" />
+    </Polygon>
+    <Polygon Name="GridKite52" Style="GridKite">
+      <Dependency Name="G72" />
+      <Dependency Name="G79" />
+      <Dependency Name="G38" />
+      <Dependency Name="G37" />
+    </Polygon>
+    <Polygon Name="GridKite53" Style="GridKite">
+      <Dependency Name="G72" />
+      <Dependency Name="G37" />
+      <Dependency Name="G36" />
+      <Dependency Name="G65" />
+    </Polygon>
+    <Polygon Name="GridKite54" Style="GridKite">
+      <Dependency Name="G72" />
+      <Dependency Name="G65" />
+      <Dependency Name="G64" />
+      <Dependency Name="G73" />
+    </Polygon>
+    <Polygon Name="GridKite55" Style="GridKite">
+      <Dependency Name="G80" />
+      <Dependency Name="G81" />
+      <Dependency Name="G82" />
+      <Dependency Name="G83" />
+    </Polygon>
+    <Polygon Name="GridKite56" Style="GridKite">
+      <Dependency Name="G80" />
+      <Dependency Name="G83" />
+      <Dependency Name="G84" />
+      <Dependency Name="G85" />
+    </Polygon>
+    <Polygon Name="GridKite57" Style="GridKite">
+      <Dependency Name="G80" />
+      <Dependency Name="G85" />
+      <Dependency Name="G62" />
+      <Dependency Name="G61" />
+    </Polygon>
+    <Polygon Name="GridKite58" Style="GridKite">
+      <Dependency Name="G80" />
+      <Dependency Name="G61" />
+      <Dependency Name="G48" />
+      <Dependency Name="G47" />
+    </Polygon>
+    <Polygon Name="GridKite59" Style="GridKite">
+      <Dependency Name="G80" />
+      <Dependency Name="G47" />
+      <Dependency Name="G46" />
+      <Dependency Name="G71" />
+    </Polygon>
+    <Polygon Name="GridKite60" Style="GridKite">
+      <Dependency Name="G80" />
+      <Dependency Name="G71" />
+      <Dependency Name="G70" />
+      <Dependency Name="G81" />
+    </Polygon>
+    <Polygon Name="GridKite61" Style="GridKite">
+      <Dependency Name="G86" />
+      <Dependency Name="G87" />
+      <Dependency Name="G88" />
+      <Dependency Name="G89" />
+    </Polygon>
+    <Polygon Name="GridKite62" Style="GridKite">
+      <Dependency Name="G86" />
+      <Dependency Name="G89" />
+      <Dependency Name="G90" />
+      <Dependency Name="G91" />
+    </Polygon>
+    <Polygon Name="GridKite63" Style="GridKite">
+      <Dependency Name="G86" />
+      <Dependency Name="G91" />
+      <Dependency Name="G68" />
+      <Dependency Name="G67" />
+    </Polygon>
+    <Polygon Name="GridKite64" Style="GridKite">
+      <Dependency Name="G86" />
+      <Dependency Name="G67" />
+      <Dependency Name="G54" />
+      <Dependency Name="G53" />
+    </Polygon>
+    <Polygon Name="GridKite65" Style="GridKite">
+      <Dependency Name="G86" />
+      <Dependency Name="G53" />
+      <Dependency Name="G52" />
+      <Dependency Name="G92" />
+    </Polygon>
+    <Polygon Name="GridKite66" Style="GridKite">
+      <Dependency Name="G86" />
+      <Dependency Name="G92" />
+      <Dependency Name="G93" />
+      <Dependency Name="G87" />
+    </Polygon>
+    <Polygon Name="GridKite67" Style="GridKite">
+      <Dependency Name="G94" />
+      <Dependency Name="G95" />
+      <Dependency Name="G96" />
+      <Dependency Name="G97" />
+    </Polygon>
+    <Polygon Name="GridKite68" Style="GridKite">
+      <Dependency Name="G94" />
+      <Dependency Name="G97" />
+      <Dependency Name="G98" />
+      <Dependency Name="G99" />
+    </Polygon>
+    <Polygon Name="GridKite69" Style="GridKite">
+      <Dependency Name="G94" />
+      <Dependency Name="G99" />
+      <Dependency Name="G74" />
+      <Dependency Name="G73" />
+    </Polygon>
+    <Polygon Name="GridKite70" Style="GridKite">
+      <Dependency Name="G94" />
+      <Dependency Name="G73" />
+      <Dependency Name="G64" />
+      <Dependency Name="G63" />
+    </Polygon>
+    <Polygon Name="GridKite71" Style="GridKite">
+      <Dependency Name="G94" />
+      <Dependency Name="G63" />
+      <Dependency Name="G62" />
+      <Dependency Name="G85" />
+    </Polygon>
+    <Polygon Name="GridKite72" Style="GridKite">
+      <Dependency Name="G94" />
+      <Dependency Name="G85" />
+      <Dependency Name="G84" />
+      <Dependency Name="G95" />
+    </Polygon>
+    <Polygon Name="GridKite73" Style="GridKite">
+      <Dependency Name="G100" />
+      <Dependency Name="G101" />
+      <Dependency Name="G102" />
+      <Dependency Name="G103" />
+    </Polygon>
+    <Polygon Name="GridKite74" Style="GridKite">
+      <Dependency Name="G100" />
+      <Dependency Name="G103" />
+      <Dependency Name="G104" />
+      <Dependency Name="G105" />
+    </Polygon>
+    <Polygon Name="GridKite75" Style="GridKite">
+      <Dependency Name="G100" />
+      <Dependency Name="G105" />
+      <Dependency Name="G82" />
+      <Dependency Name="G81" />
+    </Polygon>
+    <Polygon Name="GridKite76" Style="GridKite">
+      <Dependency Name="G100" />
+      <Dependency Name="G81" />
+      <Dependency Name="G70" />
+      <Dependency Name="G69" />
+    </Polygon>
+    <Polygon Name="GridKite77" Style="GridKite">
+      <Dependency Name="G100" />
+      <Dependency Name="G69" />
+      <Dependency Name="G68" />
+      <Dependency Name="G91" />
+    </Polygon>
+    <Polygon Name="GridKite78" Style="GridKite">
+      <Dependency Name="G100" />
+      <Dependency Name="G91" />
+      <Dependency Name="G90" />
+      <Dependency Name="G101" />
+    </Polygon>
+    <Polygon Name="GridKite79" Style="GridKite">
+      <Dependency Name="G106" />
+      <Dependency Name="G107" />
+      <Dependency Name="G108" />
+      <Dependency Name="G109" />
+    </Polygon>
+    <Polygon Name="GridKite80" Style="GridKite">
+      <Dependency Name="G106" />
+      <Dependency Name="G109" />
+      <Dependency Name="G110" />
+      <Dependency Name="G111" />
+    </Polygon>
+    <Polygon Name="GridKite81" Style="GridKite">
+      <Dependency Name="G106" />
+      <Dependency Name="G111" />
+      <Dependency Name="G112" />
+      <Dependency Name="G113" />
+    </Polygon>
+    <Polygon Name="GridKite82" Style="GridKite">
+      <Dependency Name="G106" />
+      <Dependency Name="G113" />
+      <Dependency Name="G76" />
+      <Dependency Name="G75" />
+    </Polygon>
+    <Polygon Name="GridKite83" Style="GridKite">
+      <Dependency Name="G106" />
+      <Dependency Name="G75" />
+      <Dependency Name="G74" />
+      <Dependency Name="G99" />
+    </Polygon>
+    <Polygon Name="GridKite84" Style="GridKite">
+      <Dependency Name="G106" />
+      <Dependency Name="G99" />
+      <Dependency Name="G98" />
+      <Dependency Name="G107" />
+    </Polygon>
+    <Polygon Name="GridKite85" Style="GridKite">
+      <Dependency Name="G114" />
+      <Dependency Name="G115" />
+      <Dependency Name="G116" />
+      <Dependency Name="G117" />
+    </Polygon>
+    <Polygon Name="GridKite86" Style="GridKite">
+      <Dependency Name="G114" />
+      <Dependency Name="G117" />
+      <Dependency Name="G118" />
+      <Dependency Name="G119" />
+    </Polygon>
+    <Polygon Name="GridKite87" Style="GridKite">
+      <Dependency Name="G114" />
+      <Dependency Name="G119" />
+      <Dependency Name="G96" />
+      <Dependency Name="G95" />
+    </Polygon>
+    <Polygon Name="GridKite88" Style="GridKite">
+      <Dependency Name="G114" />
+      <Dependency Name="G95" />
+      <Dependency Name="G84" />
+      <Dependency Name="G83" />
+    </Polygon>
+    <Polygon Name="GridKite89" Style="GridKite">
+      <Dependency Name="G114" />
+      <Dependency Name="G83" />
+      <Dependency Name="G82" />
+      <Dependency Name="G105" />
+    </Polygon>
+    <Polygon Name="GridKite90" Style="GridKite">
+      <Dependency Name="G114" />
+      <Dependency Name="G105" />
+      <Dependency Name="G104" />
+      <Dependency Name="G115" />
+    </Polygon>
+    <Polygon Name="GridKite91" Style="GridKite">
+      <Dependency Name="G120" />
+      <Dependency Name="G121" />
+      <Dependency Name="G122" />
+      <Dependency Name="G123" />
+    </Polygon>
+    <Polygon Name="GridKite92" Style="GridKite">
+      <Dependency Name="G120" />
+      <Dependency Name="G123" />
+      <Dependency Name="G124" />
+      <Dependency Name="G125" />
+    </Polygon>
+    <Polygon Name="GridKite93" Style="GridKite">
+      <Dependency Name="G120" />
+      <Dependency Name="G125" />
+      <Dependency Name="G102" />
+      <Dependency Name="G101" />
+    </Polygon>
+    <Polygon Name="GridKite94" Style="GridKite">
+      <Dependency Name="G120" />
+      <Dependency Name="G101" />
+      <Dependency Name="G90" />
+      <Dependency Name="G89" />
+    </Polygon>
+    <Polygon Name="GridKite95" Style="GridKite">
+      <Dependency Name="G120" />
+      <Dependency Name="G89" />
+      <Dependency Name="G88" />
+      <Dependency Name="G126" />
+    </Polygon>
+    <Polygon Name="GridKite96" Style="GridKite">
+      <Dependency Name="G120" />
+      <Dependency Name="G126" />
+      <Dependency Name="G127" />
+      <Dependency Name="G121" />
+    </Polygon>
+    <Polygon Name="GridKite97" Style="GridKite">
+      <Dependency Name="G128" />
+      <Dependency Name="G129" />
+      <Dependency Name="G130" />
+      <Dependency Name="G131" />
+    </Polygon>
+    <Polygon Name="GridKite98" Style="GridKite">
+      <Dependency Name="G128" />
+      <Dependency Name="G131" />
+      <Dependency Name="G132" />
+      <Dependency Name="G133" />
+    </Polygon>
+    <Polygon Name="GridKite99" Style="GridKite">
+      <Dependency Name="G128" />
+      <Dependency Name="G133" />
+      <Dependency Name="G108" />
+      <Dependency Name="G107" />
+    </Polygon>
+    <Polygon Name="GridKite100" Style="GridKite">
+      <Dependency Name="G128" />
+      <Dependency Name="G107" />
+      <Dependency Name="G98" />
+      <Dependency Name="G97" />
+    </Polygon>
+    <Polygon Name="GridKite101" Style="GridKite">
+      <Dependency Name="G128" />
+      <Dependency Name="G97" />
+      <Dependency Name="G96" />
+      <Dependency Name="G119" />
+    </Polygon>
+    <Polygon Name="GridKite102" Style="GridKite">
+      <Dependency Name="G128" />
+      <Dependency Name="G119" />
+      <Dependency Name="G118" />
+      <Dependency Name="G129" />
+    </Polygon>
+    <Polygon Name="GridKite103" Style="GridKite">
+      <Dependency Name="G134" />
+      <Dependency Name="G135" />
+      <Dependency Name="G136" />
+      <Dependency Name="G137" />
+    </Polygon>
+    <Polygon Name="GridKite104" Style="GridKite">
+      <Dependency Name="G134" />
+      <Dependency Name="G137" />
+      <Dependency Name="G138" />
+      <Dependency Name="G139" />
+    </Polygon>
+    <Polygon Name="GridKite105" Style="GridKite">
+      <Dependency Name="G134" />
+      <Dependency Name="G139" />
+      <Dependency Name="G116" />
+      <Dependency Name="G115" />
+    </Polygon>
+    <Polygon Name="GridKite106" Style="GridKite">
+      <Dependency Name="G134" />
+      <Dependency Name="G115" />
+      <Dependency Name="G104" />
+      <Dependency Name="G103" />
+    </Polygon>
+    <Polygon Name="GridKite107" Style="GridKite">
+      <Dependency Name="G134" />
+      <Dependency Name="G103" />
+      <Dependency Name="G102" />
+      <Dependency Name="G125" />
+    </Polygon>
+    <Polygon Name="GridKite108" Style="GridKite">
+      <Dependency Name="G134" />
+      <Dependency Name="G125" />
+      <Dependency Name="G124" />
+      <Dependency Name="G135" />
+    </Polygon>
+    <Polygon Name="GridKite109" Style="GridKite">
+      <Dependency Name="G140" />
+      <Dependency Name="G141" />
+      <Dependency Name="G142" />
+      <Dependency Name="G143" />
+    </Polygon>
+    <Polygon Name="GridKite110" Style="GridKite">
+      <Dependency Name="G140" />
+      <Dependency Name="G143" />
+      <Dependency Name="G144" />
+      <Dependency Name="G145" />
+    </Polygon>
+    <Polygon Name="GridKite111" Style="GridKite">
+      <Dependency Name="G140" />
+      <Dependency Name="G145" />
+      <Dependency Name="G130" />
+      <Dependency Name="G129" />
+    </Polygon>
+    <Polygon Name="GridKite112" Style="GridKite">
+      <Dependency Name="G140" />
+      <Dependency Name="G129" />
+      <Dependency Name="G118" />
+      <Dependency Name="G117" />
+    </Polygon>
+    <Polygon Name="GridKite113" Style="GridKite">
+      <Dependency Name="G140" />
+      <Dependency Name="G117" />
+      <Dependency Name="G116" />
+      <Dependency Name="G139" />
+    </Polygon>
+    <Polygon Name="GridKite114" Style="GridKite">
+      <Dependency Name="G140" />
+      <Dependency Name="G139" />
+      <Dependency Name="G138" />
+      <Dependency Name="G141" />
+    </Polygon>
+    <Polygon Name="Hexagon1" Style="Hexagon">
+      <Dependency Name="G13" />
+      <Dependency Name="G3" />
+      <Dependency Name="G5" />
+      <Dependency Name="G7" />
+      <Dependency Name="G9" />
+      <Dependency Name="G11" />
+    </Polygon>
+    <Polygon Name="Hexagon2" Style="Hexagon">
+      <Dependency Name="G5" />
+      <Dependency Name="G16" />
+      <Dependency Name="G18" />
+      <Dependency Name="G20" />
+      <Dependency Name="G22" />
+      <Dependency Name="G7" />
+    </Polygon>
+    <Polygon Name="Hexagon3" Style="Hexagon">
+      <Dependency Name="G33" />
+      <Dependency Name="G26" />
+      <Dependency Name="G28" />
+      <Dependency Name="G3" />
+      <Dependency Name="G13" />
+      <Dependency Name="G31" />
+    </Polygon>
+    <Polygon Name="Hexagon4" Style="Hexagon">
+      <Dependency Name="G18" />
+      <Dependency Name="G36" />
+      <Dependency Name="G38" />
+      <Dependency Name="G40" />
+      <Dependency Name="G42" />
+      <Dependency Name="G20" />
+    </Polygon>
+    <Polygon Name="Hexagon5" Style="Hexagon">
+      <Dependency Name="G28" />
+      <Dependency Name="G46" />
+      <Dependency Name="G48" />
+      <Dependency Name="G16" />
+      <Dependency Name="G5" />
+      <Dependency Name="G3" />
+    </Polygon>
+    <Polygon Name="Hexagon6" Style="Hexagon">
+      <Dependency Name="G59" />
+      <Dependency Name="G52" />
+      <Dependency Name="G54" />
+      <Dependency Name="G26" />
+      <Dependency Name="G33" />
+      <Dependency Name="G57" />
+    </Polygon>
+    <Polygon Name="Hexagon7" Style="Hexagon">
+      <Dependency Name="G48" />
+      <Dependency Name="G62" />
+      <Dependency Name="G64" />
+      <Dependency Name="G36" />
+      <Dependency Name="G18" />
+      <Dependency Name="G16" />
+    </Polygon>
+    <Polygon Name="Hexagon8" Style="Hexagon">
+      <Dependency Name="G54" />
+      <Dependency Name="G68" />
+      <Dependency Name="G70" />
+      <Dependency Name="G46" />
+      <Dependency Name="G28" />
+      <Dependency Name="G26" />
+    </Polygon>
+    <Polygon Name="Hexagon9" Style="Hexagon">
+      <Dependency Name="G64" />
+      <Dependency Name="G74" />
+      <Dependency Name="G76" />
+      <Dependency Name="G78" />
+      <Dependency Name="G38" />
+      <Dependency Name="G36" />
+    </Polygon>
+    <Polygon Name="Hexagon10" Style="Hexagon">
+      <Dependency Name="G70" />
+      <Dependency Name="G82" />
+      <Dependency Name="G84" />
+      <Dependency Name="G62" />
+      <Dependency Name="G48" />
+      <Dependency Name="G46" />
+    </Polygon>
+    <Polygon Name="Hexagon11" Style="Hexagon">
+      <Dependency Name="G93" />
+      <Dependency Name="G88" />
+      <Dependency Name="G90" />
+      <Dependency Name="G68" />
+      <Dependency Name="G54" />
+      <Dependency Name="G52" />
+    </Polygon>
+    <Polygon Name="Hexagon12" Style="Hexagon">
+      <Dependency Name="G84" />
+      <Dependency Name="G96" />
+      <Dependency Name="G98" />
+      <Dependency Name="G74" />
+      <Dependency Name="G64" />
+      <Dependency Name="G62" />
+    </Polygon>
+    <Polygon Name="Hexagon13" Style="Hexagon">
+      <Dependency Name="G90" />
+      <Dependency Name="G102" />
+      <Dependency Name="G104" />
+      <Dependency Name="G82" />
+      <Dependency Name="G70" />
+      <Dependency Name="G68" />
+    </Polygon>
+    <Polygon Name="Hexagon14" Style="Hexagon">
+      <Dependency Name="G98" />
+      <Dependency Name="G108" />
+      <Dependency Name="G110" />
+      <Dependency Name="G112" />
+      <Dependency Name="G76" />
+      <Dependency Name="G74" />
+    </Polygon>
+    <Polygon Name="Hexagon15" Style="Hexagon">
+      <Dependency Name="G104" />
+      <Dependency Name="G116" />
+      <Dependency Name="G118" />
+      <Dependency Name="G96" />
+      <Dependency Name="G84" />
+      <Dependency Name="G82" />
+    </Polygon>
+    <Polygon Name="Hexagon16" Style="Hexagon">
+      <Dependency Name="G127" />
+      <Dependency Name="G122" />
+      <Dependency Name="G124" />
+      <Dependency Name="G102" />
+      <Dependency Name="G90" />
+      <Dependency Name="G88" />
+    </Polygon>
+    <Polygon Name="Hexagon17" Style="Hexagon">
+      <Dependency Name="G118" />
+      <Dependency Name="G130" />
+      <Dependency Name="G132" />
+      <Dependency Name="G108" />
+      <Dependency Name="G98" />
+      <Dependency Name="G96" />
+    </Polygon>
+    <Polygon Name="Hexagon18" Style="Hexagon">
+      <Dependency Name="G124" />
+      <Dependency Name="G136" />
+      <Dependency Name="G138" />
+      <Dependency Name="G116" />
+      <Dependency Name="G104" />
+      <Dependency Name="G102" />
+    </Polygon>
+    <Polygon Name="Hexagon19" Style="Hexagon">
+      <Dependency Name="G138" />
+      <Dependency Name="G142" />
+      <Dependency Name="G144" />
+      <Dependency Name="G130" />
+      <Dependency Name="G118" />
+      <Dependency Name="G116" />
+    </Polygon>
+    <FreePoint Name="H" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Z" Visible="false" X="1.5 * round(H.X / 1.5)" Y="sqrt(3) / 2 * round(H.X / 1.5) + sqrt(3) * round((H.Y - sqrt(3) / 2 * round(H.X / 1.5)) / sqrt(3))">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Z2" Visible="false" X="Z.X + 2.8" Y="Z.Y">
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <Circle Name="Turn" Style="TurnCircle">
+      <Dependency Name="Z" />
+      <Dependency Name="Z2" />
+    </Circle>
+    <PointOnFigure Name="R" X="1.7145055188062944E-16" Y="2.8" Parameter="1.5707963267948966">
+      <Dependency Name="Turn" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Q" Visible="false" X="cos(round((atan2(R.Y - Z.Y, R.X - Z.X) - pi / 2) / (pi / 3)) * pi / 3)" Y="sin(round((atan2(R.Y - Z.Y, R.X - Z.X) - pi / 2) / (pi / 3)) * pi / 3)">
+      <Dependency Name="R" />
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K1" Visible="false" X="Z.X + 0 * Q.X - 0 * Q.Y" Y="Z.Y + 0 * Q.Y + 0 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K2" Visible="false" X="Z.X + 0.75 * Q.X - 0.433013 * Q.Y" Y="Z.Y + 0.75 * Q.Y + 0.433013 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K3" Visible="false" X="Z.X + 0.5 * Q.X - 0.866025 * Q.Y" Y="Z.Y + 0.5 * Q.Y + 0.866025 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K4" Visible="false" X="Z.X + 0 * Q.X - 0.866025 * Q.Y" Y="Z.Y + 0 * Q.Y + 0.866025 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K5" Visible="false" X="Z.X + -0.75 * Q.X - -0.433013 * Q.Y" Y="Z.Y + -0.75 * Q.Y + -0.433013 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K6" Visible="false" X="Z.X + -0.5 * Q.X - -0.866025 * Q.Y" Y="Z.Y + -0.5 * Q.Y + -0.866025 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K7" Visible="false" X="Z.X + 0 * Q.X - -0.866025 * Q.Y" Y="Z.Y + 0 * Q.Y + -0.866025 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K8" Visible="false" X="Z.X + 0.5 * Q.X - -0.866025 * Q.Y" Y="Z.Y + 0.5 * Q.Y + -0.866025 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K9" Visible="false" X="Z.X + 0.75 * Q.X - -0.433013 * Q.Y" Y="Z.Y + 0.75 * Q.Y + -0.433013 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K10" Visible="false" X="Z.X + 1 * Q.X - 0 * Q.Y" Y="Z.Y + 1 * Q.Y + 0 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K11" Visible="false" X="Z.X + 1.5 * Q.X - -0.866025 * Q.Y" Y="Z.Y + 1.5 * Q.Y + -0.866025 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K12" Visible="false" X="Z.X + 2.25 * Q.X - -0.433013 * Q.Y" Y="Z.Y + 2.25 * Q.Y + -0.433013 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K13" Visible="false" X="Z.X + 2 * Q.X - 0 * Q.Y" Y="Z.Y + 2 * Q.Y + 0 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K14" Visible="false" X="Z.X + 1.5 * Q.X - 0 * Q.Y" Y="Z.Y + 1.5 * Q.Y + 0 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K15" Visible="false" X="Z.X + 1.5 * Q.X - 0.866025 * Q.Y" Y="Z.Y + 1.5 * Q.Y + 0.866025 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K16" Visible="false" X="Z.X + 0.75 * Q.X - 1.299038 * Q.Y" Y="Z.Y + 0.75 * Q.Y + 1.299038 * Q.X">
+      <Dependency Name="Z" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <Polygon Name="HatKite1" Style="Kite1">
+      <Dependency Name="K1" />
+      <Dependency Name="K2" />
+      <Dependency Name="K3" />
+      <Dependency Name="K4" />
+    </Polygon>
+    <Polygon Name="HatKite2" Style="Kite1">
+      <Dependency Name="K1" />
+      <Dependency Name="K5" />
+      <Dependency Name="K6" />
+      <Dependency Name="K7" />
+    </Polygon>
+    <Polygon Name="HatKite3" Style="Kite1">
+      <Dependency Name="K1" />
+      <Dependency Name="K7" />
+      <Dependency Name="K8" />
+      <Dependency Name="K9" />
+    </Polygon>
+    <Polygon Name="HatKite4" Style="Kite1">
+      <Dependency Name="K1" />
+      <Dependency Name="K9" />
+      <Dependency Name="K10" />
+      <Dependency Name="K2" />
+    </Polygon>
+    <Polygon Name="HatKite5" Style="Kite2">
+      <Dependency Name="K11" />
+      <Dependency Name="K12" />
+      <Dependency Name="K13" />
+      <Dependency Name="K14" />
+    </Polygon>
+    <Polygon Name="HatKite6" Style="Kite2">
+      <Dependency Name="K11" />
+      <Dependency Name="K14" />
+      <Dependency Name="K10" />
+      <Dependency Name="K9" />
+    </Polygon>
+    <Polygon Name="HatKite7" Style="Kite3">
+      <Dependency Name="K15" />
+      <Dependency Name="K16" />
+      <Dependency Name="K3" />
+      <Dependency Name="K2" />
+    </Polygon>
+    <Polygon Name="HatKite8" Style="Kite3">
+      <Dependency Name="K15" />
+      <Dependency Name="K2" />
+      <Dependency Name="K10" />
+      <Dependency Name="K14" />
+    </Polygon>
+    <Polygon Name="Hat" Style="HatOutline">
+      <Dependency Name="K1" />
+      <Dependency Name="K5" />
+      <Dependency Name="K6" />
+      <Dependency Name="K8" />
+      <Dependency Name="K9" />
+      <Dependency Name="K11" />
+      <Dependency Name="K12" />
+      <Dependency Name="K13" />
+      <Dependency Name="K14" />
+      <Dependency Name="K15" />
+      <Dependency Name="K16" />
+      <Dependency Name="K3" />
+      <Dependency Name="K4" />
+    </Polygon>
+    <Label Name="Title" Style="GalleryTitle" Text="Eight Kites Make a Hat" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Cut every hexagon of a grid into six kites, from its center to the middle of each side. Each kite has angles of 60°, 90°, 120° and 90°. The hat is eight of these kites stuck together: four from one hexagon and two from each of two others, a color for each. So whenever copies of the hat cover the plane, they lie on such a grid, kite on kite.\n\nDrag the hat around: it jumps from hexagon to hexagon. Drag the green point to turn it." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

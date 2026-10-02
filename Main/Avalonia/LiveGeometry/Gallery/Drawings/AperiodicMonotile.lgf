@@ -1,0 +1,1320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-6" Top="4" Right="6" Bottom="-4" />
+  <Styles>
+    <ShapeStyle Name="HatMain" Color="#FF3A3F47" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFA375" Offset="0" />
+          <GradientStop Color="#FFFF7448" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF101215">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFD27A" Offset="0" />
+            <GradientStop Color="#FFC0530A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="HatFlipped" Color="#FF3A3F47" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FF9B7EE8" Offset="0" />
+          <GradientStop Color="#FF5B3BB0" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF101215">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFD6B4FF" Offset="0" />
+            <GradientStop Color="#FF5B1FB0" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Hat1" Color="#FF3A3F47" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFD3EBFC" Offset="0" />
+          <GradientStop Color="#FFA6D0F2" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF101215">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF36C0FA" Offset="0" />
+            <GradientStop Color="#FF052C3C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Hat2" Color="#FF3A3F47" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFDDF3D6" Offset="0" />
+          <GradientStop Color="#FFB2DFA9" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF101215">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF8FDFFF" Offset="0" />
+            <GradientStop Color="#FF0181B3" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Hat3" Color="#FF3A3F47" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFF2C8" Offset="0" />
+          <GradientStop Color="#FFF5D98A" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF101215">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF3FE0C0" Offset="0" />
+            <GradientStop Color="#FF04362E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="KiteLine" Color="#B0FFFFFF">
+      <Dark Color="#80FFFFFF" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" X="-1.25" Y="-0.866" />
+    <FreePoint Name="B" X="-0.25" Y="-0.866" />
+    <PointByCoordinates Name="C" Visible="false" X="A.X + (B.X - A.X) / 2 - sqrt(3) / 2 * (B.Y - A.Y)" Y="A.Y + (B.Y - A.Y) / 2 + sqrt(3) / 2 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4_0" Visible="false" X="A.X + (4 * (B.X - A.X) + 0 * (C.X - A.X)) / 2" Y="A.Y + (4 * (B.Y - A.Y) + 0 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_1" Visible="false" X="A.X + (2 * (B.X - A.X) + 1 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + 1 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4_m2" Visible="false" X="A.X + (4 * (B.X - A.X) + -2 * (C.X - A.X)) / 2" Y="A.Y + (4 * (B.Y - A.Y) + -2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P5_m2" Visible="false" X="A.X + (5 * (B.X - A.X) + -2 * (C.X - A.X)) / 2" Y="A.Y + (5 * (B.Y - A.Y) + -2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P6_m4" Visible="false" X="A.X + (6 * (B.X - A.X) + -4 * (C.X - A.X)) / 2" Y="A.Y + (6 * (B.Y - A.Y) + -4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8_m5" Visible="false" X="A.X + (8 * (B.X - A.X) + -5 * (C.X - A.X)) / 2" Y="A.Y + (8 * (B.Y - A.Y) + -5 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8_m4" Visible="false" X="A.X + (8 * (B.X - A.X) + -4 * (C.X - A.X)) / 2" Y="A.Y + (8 * (B.Y - A.Y) + -4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P7_m3" Visible="false" X="A.X + (7 * (B.X - A.X) + -3 * (C.X - A.X)) / 2" Y="A.Y + (7 * (B.Y - A.Y) + -3 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8_m2" Visible="false" X="A.X + (8 * (B.X - A.X) + -2 * (C.X - A.X)) / 2" Y="A.Y + (8 * (B.Y - A.Y) + -2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P7_0" Visible="false" X="A.X + (7 * (B.X - A.X) + 0 * (C.X - A.X)) / 2" Y="A.Y + (7 * (B.Y - A.Y) + 0 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P6_0" Visible="false" X="A.X + (6 * (B.X - A.X) + 0 * (C.X - A.X)) / 2" Y="A.Y + (6 * (B.Y - A.Y) + 0 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P5_1" Visible="false" X="A.X + (5 * (B.X - A.X) + 1 * (C.X - A.X)) / 2" Y="A.Y + (5 * (B.Y - A.Y) + 1 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm4_4" Visible="false" X="A.X + (-4 * (B.X - A.X) + 4 * (C.X - A.X)) / 2" Y="A.Y + (-4 * (B.Y - A.Y) + 4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm6_5" Visible="false" X="A.X + (-6 * (B.X - A.X) + 5 * (C.X - A.X)) / 2" Y="A.Y + (-6 * (B.Y - A.Y) + 5 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm6_4" Visible="false" X="A.X + (-6 * (B.X - A.X) + 4 * (C.X - A.X)) / 2" Y="A.Y + (-6 * (B.Y - A.Y) + 4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm4_2" Visible="false" X="A.X + (-4 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (-4 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm3_2" Visible="false" X="A.X + (-3 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (-3 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm2_0" Visible="false" X="A.X + (-2 * (B.X - A.X) + 0 * (C.X - A.X)) / 2" Y="A.Y + (-2 * (B.Y - A.Y) + 0 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P0_m1" Visible="false" X="A.X + (0 * (B.X - A.X) + -1 * (C.X - A.X)) / 2" Y="A.Y + (0 * (B.Y - A.Y) + -1 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm1_1" Visible="false" X="A.X + (-1 * (B.X - A.X) + 1 * (C.X - A.X)) / 2" Y="A.Y + (-1 * (B.Y - A.Y) + 1 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm1_4" Visible="false" X="A.X + (-1 * (B.X - A.X) + 4 * (C.X - A.X)) / 2" Y="A.Y + (-1 * (B.Y - A.Y) + 4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm2_4" Visible="false" X="A.X + (-2 * (B.X - A.X) + 4 * (C.X - A.X)) / 2" Y="A.Y + (-2 * (B.Y - A.Y) + 4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm3_5" Visible="false" X="A.X + (-3 * (B.X - A.X) + 5 * (C.X - A.X)) / 2" Y="A.Y + (-3 * (B.Y - A.Y) + 5 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_4" Visible="false" X="A.X + (2 * (B.X - A.X) + 4 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + 4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P3_2" Visible="false" X="A.X + (3 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (3 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4_2" Visible="false" X="A.X + (4 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (4 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4_4" Visible="false" X="A.X + (4 * (B.X - A.X) + 4 * (C.X - A.X)) / 2" Y="A.Y + (4 * (B.Y - A.Y) + 4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P3_5" Visible="false" X="A.X + (3 * (B.X - A.X) + 5 * (C.X - A.X)) / 2" Y="A.Y + (3 * (B.Y - A.Y) + 5 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4_6" Visible="false" X="A.X + (4 * (B.X - A.X) + 6 * (C.X - A.X)) / 2" Y="A.Y + (4 * (B.Y - A.Y) + 6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P3_8" Visible="false" X="A.X + (3 * (B.X - A.X) + 8 * (C.X - A.X)) / 2" Y="A.Y + (3 * (B.Y - A.Y) + 8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_8" Visible="false" X="A.X + (2 * (B.X - A.X) + 8 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + 8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_7" Visible="false" X="A.X + (2 * (B.X - A.X) + 7 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + 7 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P0_8" Visible="false" X="A.X + (0 * (B.X - A.X) + 8 * (C.X - A.X)) / 2" Y="A.Y + (0 * (B.Y - A.Y) + 8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm1_7" Visible="false" X="A.X + (-1 * (B.X - A.X) + 7 * (C.X - A.X)) / 2" Y="A.Y + (-1 * (B.Y - A.Y) + 7 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P0_6" Visible="false" X="A.X + (0 * (B.X - A.X) + 6 * (C.X - A.X)) / 2" Y="A.Y + (0 * (B.Y - A.Y) + 6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P0_5" Visible="false" X="A.X + (0 * (B.X - A.X) + 5 * (C.X - A.X)) / 2" Y="A.Y + (0 * (B.Y - A.Y) + 5 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm2_6" Visible="false" X="A.X + (-2 * (B.X - A.X) + 6 * (C.X - A.X)) / 2" Y="A.Y + (-2 * (B.Y - A.Y) + 6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P0_4" Visible="false" X="A.X + (0 * (B.X - A.X) + 4 * (C.X - A.X)) / 2" Y="A.Y + (0 * (B.Y - A.Y) + 4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm1_10" Visible="false" X="A.X + (-1 * (B.X - A.X) + 10 * (C.X - A.X)) / 2" Y="A.Y + (-1 * (B.Y - A.Y) + 10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm2_10" Visible="false" X="A.X + (-2 * (B.X - A.X) + 10 * (C.X - A.X)) / 2" Y="A.Y + (-2 * (B.Y - A.Y) + 10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm2_9" Visible="false" X="A.X + (-2 * (B.X - A.X) + 9 * (C.X - A.X)) / 2" Y="A.Y + (-2 * (B.Y - A.Y) + 9 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm4_10" Visible="false" X="A.X + (-4 * (B.X - A.X) + 10 * (C.X - A.X)) / 2" Y="A.Y + (-4 * (B.Y - A.Y) + 10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm5_9" Visible="false" X="A.X + (-5 * (B.X - A.X) + 9 * (C.X - A.X)) / 2" Y="A.Y + (-5 * (B.Y - A.Y) + 9 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm4_8" Visible="false" X="A.X + (-4 * (B.X - A.X) + 8 * (C.X - A.X)) / 2" Y="A.Y + (-4 * (B.Y - A.Y) + 8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm4_7" Visible="false" X="A.X + (-4 * (B.X - A.X) + 7 * (C.X - A.X)) / 2" Y="A.Y + (-4 * (B.Y - A.Y) + 7 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_m2" Visible="false" X="A.X + (2 * (B.X - A.X) + -2 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + -2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P3_m1" Visible="false" X="A.X + (3 * (B.X - A.X) + -1 * (C.X - A.X)) / 2" Y="A.Y + (3 * (B.Y - A.Y) + -1 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm3_m1" Visible="false" X="A.X + (-3 * (B.X - A.X) + -1 * (C.X - A.X)) / 2" Y="A.Y + (-3 * (B.Y - A.Y) + -1 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm2_m2" Visible="false" X="A.X + (-2 * (B.X - A.X) + -2 * (C.X - A.X)) / 2" Y="A.Y + (-2 * (B.Y - A.Y) + -2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm1_m2" Visible="false" X="A.X + (-1 * (B.X - A.X) + -2 * (C.X - A.X)) / 2" Y="A.Y + (-1 * (B.Y - A.Y) + -2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P0_m4" Visible="false" X="A.X + (0 * (B.X - A.X) + -4 * (C.X - A.X)) / 2" Y="A.Y + (0 * (B.Y - A.Y) + -4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_m5" Visible="false" X="A.X + (2 * (B.X - A.X) + -5 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + -5 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_m4" Visible="false" X="A.X + (2 * (B.X - A.X) + -4 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + -4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P3_m4" Visible="false" X="A.X + (3 * (B.X - A.X) + -4 * (C.X - A.X)) / 2" Y="A.Y + (3 * (B.Y - A.Y) + -4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm6_8" Visible="false" X="A.X + (-6 * (B.X - A.X) + 8 * (C.X - A.X)) / 2" Y="A.Y + (-6 * (B.Y - A.Y) + 8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm7_10" Visible="false" X="A.X + (-7 * (B.X - A.X) + 10 * (C.X - A.X)) / 2" Y="A.Y + (-7 * (B.Y - A.Y) + 10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm6_10" Visible="false" X="A.X + (-6 * (B.X - A.X) + 10 * (C.X - A.X)) / 2" Y="A.Y + (-6 * (B.Y - A.Y) + 10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm6_6" Visible="false" X="A.X + (-6 * (B.X - A.X) + 6 * (C.X - A.X)) / 2" Y="A.Y + (-6 * (B.Y - A.Y) + 6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm7_7" Visible="false" X="A.X + (-7 * (B.X - A.X) + 7 * (C.X - A.X)) / 2" Y="A.Y + (-7 * (B.Y - A.Y) + 7 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P6_2" Visible="false" X="A.X + (6 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (6 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4_3" Visible="false" X="A.X + (4 * (B.X - A.X) + 3 * (C.X - A.X)) / 2" Y="A.Y + (4 * (B.Y - A.Y) + 3 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P10_m3" Visible="false" X="A.X + (10 * (B.X - A.X) + -3 * (C.X - A.X)) / 2" Y="A.Y + (10 * (B.Y - A.Y) + -3 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P10_m2" Visible="false" X="A.X + (10 * (B.X - A.X) + -2 * (C.X - A.X)) / 2" Y="A.Y + (10 * (B.Y - A.Y) + -2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P9_m1" Visible="false" X="A.X + (9 * (B.X - A.X) + -1 * (C.X - A.X)) / 2" Y="A.Y + (9 * (B.Y - A.Y) + -1 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P10_0" Visible="false" X="A.X + (10 * (B.X - A.X) + 0 * (C.X - A.X)) / 2" Y="A.Y + (10 * (B.Y - A.Y) + 0 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P9_2" Visible="false" X="A.X + (9 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (9 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8_2" Visible="false" X="A.X + (8 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (8 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P7_3" Visible="false" X="A.X + (7 * (B.X - A.X) + 3 * (C.X - A.X)) / 2" Y="A.Y + (7 * (B.Y - A.Y) + 3 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8_m6" Visible="false" X="A.X + (8 * (B.X - A.X) + -6 * (C.X - A.X)) / 2" Y="A.Y + (8 * (B.Y - A.Y) + -6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P6_m6" Visible="false" X="A.X + (6 * (B.X - A.X) + -6 * (C.X - A.X)) / 2" Y="A.Y + (6 * (B.Y - A.Y) + -6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P5_m5" Visible="false" X="A.X + (5 * (B.X - A.X) + -5 * (C.X - A.X)) / 2" Y="A.Y + (5 * (B.Y - A.Y) + -5 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4_m6" Visible="false" X="A.X + (4 * (B.X - A.X) + -6 * (C.X - A.X)) / 2" Y="A.Y + (4 * (B.Y - A.Y) + -6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4_8" Visible="false" X="A.X + (4 * (B.X - A.X) + 8 * (C.X - A.X)) / 2" Y="A.Y + (4 * (B.Y - A.Y) + 8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P6_6" Visible="false" X="A.X + (6 * (B.X - A.X) + 6 * (C.X - A.X)) / 2" Y="A.Y + (6 * (B.Y - A.Y) + 6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P6_5" Visible="false" X="A.X + (6 * (B.X - A.X) + 5 * (C.X - A.X)) / 2" Y="A.Y + (6 * (B.Y - A.Y) + 5 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8_4" Visible="false" X="A.X + (8 * (B.X - A.X) + 4 * (C.X - A.X)) / 2" Y="A.Y + (8 * (B.Y - A.Y) + 4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm4_m2" Visible="false" X="A.X + (-4 * (B.X - A.X) + -2 * (C.X - A.X)) / 2" Y="A.Y + (-4 * (B.Y - A.Y) + -2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm3_m4" Visible="false" X="A.X + (-3 * (B.X - A.X) + -4 * (C.X - A.X)) / 2" Y="A.Y + (-3 * (B.Y - A.Y) + -4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm2_m4" Visible="false" X="A.X + (-2 * (B.X - A.X) + -4 * (C.X - A.X)) / 2" Y="A.Y + (-2 * (B.Y - A.Y) + -4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm4_1" Visible="false" X="A.X + (-4 * (B.X - A.X) + 1 * (C.X - A.X)) / 2" Y="A.Y + (-4 * (B.Y - A.Y) + 1 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm6_2" Visible="false" X="A.X + (-6 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (-6 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm7_1" Visible="false" X="A.X + (-7 * (B.X - A.X) + 1 * (C.X - A.X)) / 2" Y="A.Y + (-7 * (B.Y - A.Y) + 1 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm6_0" Visible="false" X="A.X + (-6 * (B.X - A.X) + 0 * (C.X - A.X)) / 2" Y="A.Y + (-6 * (B.Y - A.Y) + 0 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm6_m1" Visible="false" X="A.X + (-6 * (B.X - A.X) + -1 * (C.X - A.X)) / 2" Y="A.Y + (-6 * (B.Y - A.Y) + -1 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_10" Visible="false" X="A.X + (2 * (B.X - A.X) + 10 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + 10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P3_11" Visible="false" X="A.X + (3 * (B.X - A.X) + 11 * (C.X - A.X)) / 2" Y="A.Y + (3 * (B.Y - A.Y) + 11 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_12" Visible="false" X="A.X + (2 * (B.X - A.X) + 12 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + 12 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P0_12" Visible="false" X="A.X + (0 * (B.X - A.X) + 12 * (C.X - A.X)) / 2" Y="A.Y + (0 * (B.Y - A.Y) + 12 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P0_11" Visible="false" X="A.X + (0 * (B.X - A.X) + 11 * (C.X - A.X)) / 2" Y="A.Y + (0 * (B.Y - A.Y) + 11 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm2_12" Visible="false" X="A.X + (-2 * (B.X - A.X) + 12 * (C.X - A.X)) / 2" Y="A.Y + (-2 * (B.Y - A.Y) + 12 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm3_11" Visible="false" X="A.X + (-3 * (B.X - A.X) + 11 * (C.X - A.X)) / 2" Y="A.Y + (-3 * (B.Y - A.Y) + 11 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P10_m6" Visible="false" X="A.X + (10 * (B.X - A.X) + -6 * (C.X - A.X)) / 2" Y="A.Y + (10 * (B.Y - A.Y) + -6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P11_m8" Visible="false" X="A.X + (11 * (B.X - A.X) + -8 * (C.X - A.X)) / 2" Y="A.Y + (11 * (B.Y - A.Y) + -8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P12_m8" Visible="false" X="A.X + (12 * (B.X - A.X) + -8 * (C.X - A.X)) / 2" Y="A.Y + (12 * (B.Y - A.Y) + -8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P12_m6" Visible="false" X="A.X + (12 * (B.X - A.X) + -6 * (C.X - A.X)) / 2" Y="A.Y + (12 * (B.Y - A.Y) + -6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P11_m5" Visible="false" X="A.X + (11 * (B.X - A.X) + -5 * (C.X - A.X)) / 2" Y="A.Y + (11 * (B.Y - A.Y) + -5 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P12_m4" Visible="false" X="A.X + (12 * (B.X - A.X) + -4 * (C.X - A.X)) / 2" Y="A.Y + (12 * (B.Y - A.Y) + -4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P11_m2" Visible="false" X="A.X + (11 * (B.X - A.X) + -2 * (C.X - A.X)) / 2" Y="A.Y + (11 * (B.Y - A.Y) + -2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm7_4" Visible="false" X="A.X + (-7 * (B.X - A.X) + 4 * (C.X - A.X)) / 2" Y="A.Y + (-7 * (B.Y - A.Y) + 4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm8_6" Visible="false" X="A.X + (-8 * (B.X - A.X) + 6 * (C.X - A.X)) / 2" Y="A.Y + (-8 * (B.Y - A.Y) + 6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm10_7" Visible="false" X="A.X + (-10 * (B.X - A.X) + 7 * (C.X - A.X)) / 2" Y="A.Y + (-10 * (B.Y - A.Y) + 7 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm10_6" Visible="false" X="A.X + (-10 * (B.X - A.X) + 6 * (C.X - A.X)) / 2" Y="A.Y + (-10 * (B.Y - A.Y) + 6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm9_5" Visible="false" X="A.X + (-9 * (B.X - A.X) + 5 * (C.X - A.X)) / 2" Y="A.Y + (-9 * (B.Y - A.Y) + 5 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm10_4" Visible="false" X="A.X + (-10 * (B.X - A.X) + 4 * (C.X - A.X)) / 2" Y="A.Y + (-10 * (B.Y - A.Y) + 4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm9_2" Visible="false" X="A.X + (-9 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (-9 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm8_2" Visible="false" X="A.X + (-8 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (-8 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm1_m5" Visible="false" X="A.X + (-1 * (B.X - A.X) + -5 * (C.X - A.X)) / 2" Y="A.Y + (-1 * (B.Y - A.Y) + -5 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm2_m6" Visible="false" X="A.X + (-2 * (B.X - A.X) + -6 * (C.X - A.X)) / 2" Y="A.Y + (-2 * (B.Y - A.Y) + -6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm1_m8" Visible="false" X="A.X + (-1 * (B.X - A.X) + -8 * (C.X - A.X)) / 2" Y="A.Y + (-1 * (B.Y - A.Y) + -8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P0_m8" Visible="false" X="A.X + (0 * (B.X - A.X) + -8 * (C.X - A.X)) / 2" Y="A.Y + (0 * (B.Y - A.Y) + -8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P0_m7" Visible="false" X="A.X + (0 * (B.X - A.X) + -7 * (C.X - A.X)) / 2" Y="A.Y + (0 * (B.Y - A.Y) + -7 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_m8" Visible="false" X="A.X + (2 * (B.X - A.X) + -8 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + -8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P3_m7" Visible="false" X="A.X + (3 * (B.X - A.X) + -7 * (C.X - A.X)) / 2" Y="A.Y + (3 * (B.Y - A.Y) + -7 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_m6" Visible="false" X="A.X + (2 * (B.X - A.X) + -6 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + -6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm4_12" Visible="false" X="A.X + (-4 * (B.X - A.X) + 12 * (C.X - A.X)) / 2" Y="A.Y + (-4 * (B.Y - A.Y) + 12 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm5_12" Visible="false" X="A.X + (-5 * (B.X - A.X) + 12 * (C.X - A.X)) / 2" Y="A.Y + (-5 * (B.Y - A.Y) + 12 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm6_14" Visible="false" X="A.X + (-6 * (B.X - A.X) + 14 * (C.X - A.X)) / 2" Y="A.Y + (-6 * (B.Y - A.Y) + 14 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm8_15" Visible="false" X="A.X + (-8 * (B.X - A.X) + 15 * (C.X - A.X)) / 2" Y="A.Y + (-8 * (B.Y - A.Y) + 15 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm8_14" Visible="false" X="A.X + (-8 * (B.X - A.X) + 14 * (C.X - A.X)) / 2" Y="A.Y + (-8 * (B.Y - A.Y) + 14 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm7_13" Visible="false" X="A.X + (-7 * (B.X - A.X) + 13 * (C.X - A.X)) / 2" Y="A.Y + (-7 * (B.Y - A.Y) + 13 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm8_12" Visible="false" X="A.X + (-8 * (B.X - A.X) + 12 * (C.X - A.X)) / 2" Y="A.Y + (-8 * (B.Y - A.Y) + 12 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4_m8" Visible="false" X="A.X + (4 * (B.X - A.X) + -8 * (C.X - A.X)) / 2" Y="A.Y + (4 * (B.Y - A.Y) + -8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P5_m8" Visible="false" X="A.X + (5 * (B.X - A.X) + -8 * (C.X - A.X)) / 2" Y="A.Y + (5 * (B.Y - A.Y) + -8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P6_m10" Visible="false" X="A.X + (6 * (B.X - A.X) + -10 * (C.X - A.X)) / 2" Y="A.Y + (6 * (B.Y - A.Y) + -10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8_m11" Visible="false" X="A.X + (8 * (B.X - A.X) + -11 * (C.X - A.X)) / 2" Y="A.Y + (8 * (B.Y - A.Y) + -11 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8_m10" Visible="false" X="A.X + (8 * (B.X - A.X) + -10 * (C.X - A.X)) / 2" Y="A.Y + (8 * (B.Y - A.Y) + -10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P7_m9" Visible="false" X="A.X + (7 * (B.X - A.X) + -9 * (C.X - A.X)) / 2" Y="A.Y + (7 * (B.Y - A.Y) + -9 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8_m8" Visible="false" X="A.X + (8 * (B.X - A.X) + -8 * (C.X - A.X)) / 2" Y="A.Y + (8 * (B.Y - A.Y) + -8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P7_m6" Visible="false" X="A.X + (7 * (B.X - A.X) + -6 * (C.X - A.X)) / 2" Y="A.Y + (7 * (B.Y - A.Y) + -6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm8_10" Visible="false" X="A.X + (-8 * (B.X - A.X) + 10 * (C.X - A.X)) / 2" Y="A.Y + (-8 * (B.Y - A.Y) + 10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm8_9" Visible="false" X="A.X + (-8 * (B.X - A.X) + 9 * (C.X - A.X)) / 2" Y="A.Y + (-8 * (B.Y - A.Y) + 9 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm10_10" Visible="false" X="A.X + (-10 * (B.X - A.X) + 10 * (C.X - A.X)) / 2" Y="A.Y + (-10 * (B.Y - A.Y) + 10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm11_9" Visible="false" X="A.X + (-11 * (B.X - A.X) + 9 * (C.X - A.X)) / 2" Y="A.Y + (-11 * (B.Y - A.Y) + 9 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm10_8" Visible="false" X="A.X + (-10 * (B.X - A.X) + 8 * (C.X - A.X)) / 2" Y="A.Y + (-10 * (B.Y - A.Y) + 8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P10_2" Visible="false" X="A.X + (10 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (10 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P10_4" Visible="false" X="A.X + (10 * (B.X - A.X) + 4 * (C.X - A.X)) / 2" Y="A.Y + (10 * (B.Y - A.Y) + 4 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P9_5" Visible="false" X="A.X + (9 * (B.X - A.X) + 5 * (C.X - A.X)) / 2" Y="A.Y + (9 * (B.Y - A.Y) + 5 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P10_6" Visible="false" X="A.X + (10 * (B.X - A.X) + 6 * (C.X - A.X)) / 2" Y="A.Y + (10 * (B.Y - A.Y) + 6 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P9_8" Visible="false" X="A.X + (9 * (B.X - A.X) + 8 * (C.X - A.X)) / 2" Y="A.Y + (9 * (B.Y - A.Y) + 8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8_8" Visible="false" X="A.X + (8 * (B.X - A.X) + 8 * (C.X - A.X)) / 2" Y="A.Y + (8 * (B.Y - A.Y) + 8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8_7" Visible="false" X="A.X + (8 * (B.X - A.X) + 7 * (C.X - A.X)) / 2" Y="A.Y + (8 * (B.Y - A.Y) + 7 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P6_8" Visible="false" X="A.X + (6 * (B.X - A.X) + 8 * (C.X - A.X)) / 2" Y="A.Y + (6 * (B.Y - A.Y) + 8 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P5_7" Visible="false" X="A.X + (5 * (B.X - A.X) + 7 * (C.X - A.X)) / 2" Y="A.Y + (5 * (B.Y - A.Y) + 7 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P12_m2" Visible="false" X="A.X + (12 * (B.X - A.X) + -2 * (C.X - A.X)) / 2" Y="A.Y + (12 * (B.Y - A.Y) + -2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P12_m1" Visible="false" X="A.X + (12 * (B.X - A.X) + -1 * (C.X - A.X)) / 2" Y="A.Y + (12 * (B.Y - A.Y) + -1 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P14_m2" Visible="false" X="A.X + (14 * (B.X - A.X) + -2 * (C.X - A.X)) / 2" Y="A.Y + (14 * (B.Y - A.Y) + -2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P15_m1" Visible="false" X="A.X + (15 * (B.X - A.X) + -1 * (C.X - A.X)) / 2" Y="A.Y + (15 * (B.Y - A.Y) + -1 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P14_0" Visible="false" X="A.X + (14 * (B.X - A.X) + 0 * (C.X - A.X)) / 2" Y="A.Y + (14 * (B.Y - A.Y) + 0 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P13_0" Visible="false" X="A.X + (13 * (B.X - A.X) + 0 * (C.X - A.X)) / 2" Y="A.Y + (13 * (B.Y - A.Y) + 0 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P12_2" Visible="false" X="A.X + (12 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (12 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P10_3" Visible="false" X="A.X + (10 * (B.X - A.X) + 3 * (C.X - A.X)) / 2" Y="A.Y + (10 * (B.Y - A.Y) + 3 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P10_m10" Visible="false" X="A.X + (10 * (B.X - A.X) + -10 * (C.X - A.X)) / 2" Y="A.Y + (10 * (B.Y - A.Y) + -10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P10_m9" Visible="false" X="A.X + (10 * (B.X - A.X) + -9 * (C.X - A.X)) / 2" Y="A.Y + (10 * (B.Y - A.Y) + -9 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P12_m10" Visible="false" X="A.X + (12 * (B.X - A.X) + -10 * (C.X - A.X)) / 2" Y="A.Y + (12 * (B.Y - A.Y) + -10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P13_m9" Visible="false" X="A.X + (13 * (B.X - A.X) + -9 * (C.X - A.X)) / 2" Y="A.Y + (13 * (B.Y - A.Y) + -9 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P6_10" Visible="false" X="A.X + (6 * (B.X - A.X) + 10 * (C.X - A.X)) / 2" Y="A.Y + (6 * (B.Y - A.Y) + 10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P5_10" Visible="false" X="A.X + (5 * (B.X - A.X) + 10 * (C.X - A.X)) / 2" Y="A.Y + (5 * (B.Y - A.Y) + 10 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4_12" Visible="false" X="A.X + (4 * (B.X - A.X) + 12 * (C.X - A.X)) / 2" Y="A.Y + (4 * (B.Y - A.Y) + 12 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_13" Visible="false" X="A.X + (2 * (B.X - A.X) + 13 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + 13 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm2_14" Visible="false" X="A.X + (-2 * (B.X - A.X) + 14 * (C.X - A.X)) / 2" Y="A.Y + (-2 * (B.Y - A.Y) + 14 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm3_14" Visible="false" X="A.X + (-3 * (B.X - A.X) + 14 * (C.X - A.X)) / 2" Y="A.Y + (-3 * (B.Y - A.Y) + 14 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm4_16" Visible="false" X="A.X + (-4 * (B.X - A.X) + 16 * (C.X - A.X)) / 2" Y="A.Y + (-4 * (B.Y - A.Y) + 16 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm6_17" Visible="false" X="A.X + (-6 * (B.X - A.X) + 17 * (C.X - A.X)) / 2" Y="A.Y + (-6 * (B.Y - A.Y) + 17 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm6_16" Visible="false" X="A.X + (-6 * (B.X - A.X) + 16 * (C.X - A.X)) / 2" Y="A.Y + (-6 * (B.Y - A.Y) + 16 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Pm5_15" Visible="false" X="A.X + (-5 * (B.X - A.X) + 15 * (C.X - A.X)) / 2" Y="A.Y + (-5 * (B.Y - A.Y) + 15 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P1_3" Visible="false" X="A.X + (1 * (B.X - A.X) + 3 * (C.X - A.X)) / 2" Y="A.Y + (1 * (B.Y - A.Y) + 3 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P1_0" Visible="false" X="A.X + (1 * (B.X - A.X) + 0 * (C.X - A.X)) / 2" Y="A.Y + (1 * (B.Y - A.Y) + 0 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2_2" Visible="false" X="A.X + (2 * (B.X - A.X) + 2 * (C.X - A.X)) / 2" Y="A.Y + (2 * (B.Y - A.Y) + 2 * (C.Y - A.Y)) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Polygon Name="Hat2" Style="Hat2">
+      <Dependency Name="P4_0" />
+      <Dependency Name="P2_1" />
+      <Dependency Name="B" />
+      <Dependency Name="P4_m2" />
+      <Dependency Name="P5_m2" />
+      <Dependency Name="P6_m4" />
+      <Dependency Name="P8_m5" />
+      <Dependency Name="P8_m4" />
+      <Dependency Name="P7_m3" />
+      <Dependency Name="P8_m2" />
+      <Dependency Name="P7_0" />
+      <Dependency Name="P6_0" />
+      <Dependency Name="P5_1" />
+    </Polygon>
+    <Polygon Name="Hat3" Style="Hat1">
+      <Dependency Name="Pm4_4" />
+      <Dependency Name="Pm6_5" />
+      <Dependency Name="Pm6_4" />
+      <Dependency Name="Pm4_2" />
+      <Dependency Name="Pm3_2" />
+      <Dependency Name="Pm2_0" />
+      <Dependency Name="P0_m1" />
+      <Dependency Name="A" />
+      <Dependency Name="Pm1_1" />
+      <Dependency Name="C" />
+      <Dependency Name="Pm1_4" />
+      <Dependency Name="Pm2_4" />
+      <Dependency Name="Pm3_5" />
+    </Polygon>
+    <Polygon Name="Hat4" Style="Hat3">
+      <Dependency Name="P2_4" />
+      <Dependency Name="P3_2" />
+      <Dependency Name="P4_2" />
+      <Dependency Name="P4_4" />
+      <Dependency Name="P3_5" />
+      <Dependency Name="P4_6" />
+      <Dependency Name="P3_8" />
+      <Dependency Name="P2_8" />
+      <Dependency Name="P2_7" />
+      <Dependency Name="P0_8" />
+      <Dependency Name="Pm1_7" />
+      <Dependency Name="P0_6" />
+      <Dependency Name="P0_5" />
+    </Polygon>
+    <Polygon Name="Hat5" Style="Hat1">
+      <Dependency Name="Pm2_6" />
+      <Dependency Name="Pm1_4" />
+      <Dependency Name="P0_4" />
+      <Dependency Name="P0_6" />
+      <Dependency Name="Pm1_7" />
+      <Dependency Name="P0_8" />
+      <Dependency Name="Pm1_10" />
+      <Dependency Name="Pm2_10" />
+      <Dependency Name="Pm2_9" />
+      <Dependency Name="Pm4_10" />
+      <Dependency Name="Pm5_9" />
+      <Dependency Name="Pm4_8" />
+      <Dependency Name="Pm4_7" />
+    </Polygon>
+    <Polygon Name="Hat6" Style="Hat3">
+      <Dependency Name="P2_m2" />
+      <Dependency Name="P3_m1" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+      <Dependency Name="P0_m1" />
+      <Dependency Name="Pm2_0" />
+      <Dependency Name="Pm3_m1" />
+      <Dependency Name="Pm2_m2" />
+      <Dependency Name="Pm1_m2" />
+      <Dependency Name="P0_m4" />
+      <Dependency Name="P2_m5" />
+      <Dependency Name="P2_m4" />
+      <Dependency Name="P3_m4" />
+    </Polygon>
+    <Polygon Name="Hat7" Style="HatFlipped">
+      <Dependency Name="Pm6_8" />
+      <Dependency Name="Pm7_10" />
+      <Dependency Name="Pm6_10" />
+      <Dependency Name="Pm4_8" />
+      <Dependency Name="Pm4_7" />
+      <Dependency Name="Pm2_6" />
+      <Dependency Name="Pm1_4" />
+      <Dependency Name="Pm2_4" />
+      <Dependency Name="Pm3_5" />
+      <Dependency Name="Pm4_4" />
+      <Dependency Name="Pm6_5" />
+      <Dependency Name="Pm6_6" />
+      <Dependency Name="Pm7_7" />
+    </Polygon>
+    <Polygon Name="Hat8" Style="Hat1">
+      <Dependency Name="P6_2" />
+      <Dependency Name="P4_3" />
+      <Dependency Name="P4_2" />
+      <Dependency Name="P6_0" />
+      <Dependency Name="P7_0" />
+      <Dependency Name="P8_m2" />
+      <Dependency Name="P10_m3" />
+      <Dependency Name="P10_m2" />
+      <Dependency Name="P9_m1" />
+      <Dependency Name="P10_0" />
+      <Dependency Name="P9_2" />
+      <Dependency Name="P8_2" />
+      <Dependency Name="P7_3" />
+    </Polygon>
+    <Polygon Name="Hat9" Style="HatFlipped">
+      <Dependency Name="P6_m4" />
+      <Dependency Name="P8_m5" />
+      <Dependency Name="P8_m6" />
+      <Dependency Name="P6_m6" />
+      <Dependency Name="P5_m5" />
+      <Dependency Name="P4_m6" />
+      <Dependency Name="P2_m5" />
+      <Dependency Name="P2_m4" />
+      <Dependency Name="P3_m4" />
+      <Dependency Name="P2_m2" />
+      <Dependency Name="P3_m1" />
+      <Dependency Name="P4_m2" />
+      <Dependency Name="P5_m2" />
+    </Polygon>
+    <Polygon Name="Hat10" Style="HatFlipped">
+      <Dependency Name="P4_6" />
+      <Dependency Name="P3_8" />
+      <Dependency Name="P4_8" />
+      <Dependency Name="P6_6" />
+      <Dependency Name="P6_5" />
+      <Dependency Name="P8_4" />
+      <Dependency Name="P9_2" />
+      <Dependency Name="P8_2" />
+      <Dependency Name="P7_3" />
+      <Dependency Name="P6_2" />
+      <Dependency Name="P4_3" />
+      <Dependency Name="P4_4" />
+      <Dependency Name="P3_5" />
+    </Polygon>
+    <Polygon Name="Hat11" Style="Hat2">
+      <Dependency Name="Pm4_m2" />
+      <Dependency Name="Pm3_m4" />
+      <Dependency Name="Pm2_m4" />
+      <Dependency Name="Pm2_m2" />
+      <Dependency Name="Pm3_m1" />
+      <Dependency Name="Pm2_0" />
+      <Dependency Name="Pm3_2" />
+      <Dependency Name="Pm4_2" />
+      <Dependency Name="Pm4_1" />
+      <Dependency Name="Pm6_2" />
+      <Dependency Name="Pm7_1" />
+      <Dependency Name="Pm6_0" />
+      <Dependency Name="Pm6_m1" />
+    </Polygon>
+    <Polygon Name="Hat12" Style="Hat2">
+      <Dependency Name="P2_10" />
+      <Dependency Name="P3_11" />
+      <Dependency Name="P2_12" />
+      <Dependency Name="P0_12" />
+      <Dependency Name="P0_11" />
+      <Dependency Name="Pm2_12" />
+      <Dependency Name="Pm3_11" />
+      <Dependency Name="Pm2_10" />
+      <Dependency Name="Pm1_10" />
+      <Dependency Name="P0_8" />
+      <Dependency Name="P2_7" />
+      <Dependency Name="P2_8" />
+      <Dependency Name="P3_8" />
+    </Polygon>
+    <Polygon Name="Hat13" Style="Hat3">
+      <Dependency Name="P10_m6" />
+      <Dependency Name="P11_m8" />
+      <Dependency Name="P12_m8" />
+      <Dependency Name="P12_m6" />
+      <Dependency Name="P11_m5" />
+      <Dependency Name="P12_m4" />
+      <Dependency Name="P11_m2" />
+      <Dependency Name="P10_m2" />
+      <Dependency Name="P10_m3" />
+      <Dependency Name="P8_m2" />
+      <Dependency Name="P7_m3" />
+      <Dependency Name="P8_m4" />
+      <Dependency Name="P8_m5" />
+    </Polygon>
+    <Polygon Name="Hat14" Style="Hat3">
+      <Dependency Name="Pm6_2" />
+      <Dependency Name="Pm4_1" />
+      <Dependency Name="Pm4_2" />
+      <Dependency Name="Pm6_4" />
+      <Dependency Name="Pm7_4" />
+      <Dependency Name="Pm8_6" />
+      <Dependency Name="Pm10_7" />
+      <Dependency Name="Pm10_6" />
+      <Dependency Name="Pm9_5" />
+      <Dependency Name="Pm10_4" />
+      <Dependency Name="Pm9_2" />
+      <Dependency Name="Pm8_2" />
+      <Dependency Name="Pm7_1" />
+    </Polygon>
+    <Polygon Name="Hat15" Style="Hat1">
+      <Dependency Name="P0_m4" />
+      <Dependency Name="Pm1_m2" />
+      <Dependency Name="Pm2_m2" />
+      <Dependency Name="Pm2_m4" />
+      <Dependency Name="Pm1_m5" />
+      <Dependency Name="Pm2_m6" />
+      <Dependency Name="Pm1_m8" />
+      <Dependency Name="P0_m8" />
+      <Dependency Name="P0_m7" />
+      <Dependency Name="P2_m8" />
+      <Dependency Name="P3_m7" />
+      <Dependency Name="P2_m6" />
+      <Dependency Name="P2_m5" />
+    </Polygon>
+    <Polygon Name="Hat16" Style="Hat3">
+      <Dependency Name="Pm4_10" />
+      <Dependency Name="Pm2_9" />
+      <Dependency Name="Pm2_10" />
+      <Dependency Name="Pm4_12" />
+      <Dependency Name="Pm5_12" />
+      <Dependency Name="Pm6_14" />
+      <Dependency Name="Pm8_15" />
+      <Dependency Name="Pm8_14" />
+      <Dependency Name="Pm7_13" />
+      <Dependency Name="Pm8_12" />
+      <Dependency Name="Pm7_10" />
+      <Dependency Name="Pm6_10" />
+      <Dependency Name="Pm5_9" />
+    </Polygon>
+    <Polygon Name="Hat17" Style="Hat3">
+      <Dependency Name="P4_m6" />
+      <Dependency Name="P2_m5" />
+      <Dependency Name="P2_m6" />
+      <Dependency Name="P4_m8" />
+      <Dependency Name="P5_m8" />
+      <Dependency Name="P6_m10" />
+      <Dependency Name="P8_m11" />
+      <Dependency Name="P8_m10" />
+      <Dependency Name="P7_m9" />
+      <Dependency Name="P8_m8" />
+      <Dependency Name="P7_m6" />
+      <Dependency Name="P6_m6" />
+      <Dependency Name="P5_m5" />
+    </Polygon>
+    <Polygon Name="Hat18" Style="Hat2">
+      <Dependency Name="Pm8_6" />
+      <Dependency Name="Pm7_4" />
+      <Dependency Name="Pm6_4" />
+      <Dependency Name="Pm6_6" />
+      <Dependency Name="Pm7_7" />
+      <Dependency Name="Pm6_8" />
+      <Dependency Name="Pm7_10" />
+      <Dependency Name="Pm8_10" />
+      <Dependency Name="Pm8_9" />
+      <Dependency Name="Pm10_10" />
+      <Dependency Name="Pm11_9" />
+      <Dependency Name="Pm10_8" />
+      <Dependency Name="Pm10_7" />
+    </Polygon>
+    <Polygon Name="Hat19" Style="Hat1">
+      <Dependency Name="P8_4" />
+      <Dependency Name="P9_2" />
+      <Dependency Name="P10_2" />
+      <Dependency Name="P10_4" />
+      <Dependency Name="P9_5" />
+      <Dependency Name="P10_6" />
+      <Dependency Name="P9_8" />
+      <Dependency Name="P8_8" />
+      <Dependency Name="P8_7" />
+      <Dependency Name="P6_8" />
+      <Dependency Name="P5_7" />
+      <Dependency Name="P6_6" />
+      <Dependency Name="P6_5" />
+    </Polygon>
+    <Polygon Name="Hat20" Style="Hat2">
+      <Dependency Name="P10_0" />
+      <Dependency Name="P9_m1" />
+      <Dependency Name="P10_m2" />
+      <Dependency Name="P12_m2" />
+      <Dependency Name="P12_m1" />
+      <Dependency Name="P14_m2" />
+      <Dependency Name="P15_m1" />
+      <Dependency Name="P14_0" />
+      <Dependency Name="P13_0" />
+      <Dependency Name="P12_2" />
+      <Dependency Name="P10_3" />
+      <Dependency Name="P10_2" />
+      <Dependency Name="P9_2" />
+    </Polygon>
+    <Polygon Name="Hat21" Style="Hat2">
+      <Dependency Name="P8_m8" />
+      <Dependency Name="P7_m9" />
+      <Dependency Name="P8_m10" />
+      <Dependency Name="P10_m10" />
+      <Dependency Name="P10_m9" />
+      <Dependency Name="P12_m10" />
+      <Dependency Name="P13_m9" />
+      <Dependency Name="P12_m8" />
+      <Dependency Name="P11_m8" />
+      <Dependency Name="P10_m6" />
+      <Dependency Name="P8_m5" />
+      <Dependency Name="P8_m6" />
+      <Dependency Name="P7_m6" />
+    </Polygon>
+    <Polygon Name="Hat22" Style="Hat3">
+      <Dependency Name="P6_8" />
+      <Dependency Name="P8_7" />
+      <Dependency Name="P8_8" />
+      <Dependency Name="P6_10" />
+      <Dependency Name="P5_10" />
+      <Dependency Name="P4_12" />
+      <Dependency Name="P2_13" />
+      <Dependency Name="P2_12" />
+      <Dependency Name="P3_11" />
+      <Dependency Name="P2_10" />
+      <Dependency Name="P3_8" />
+      <Dependency Name="P4_8" />
+      <Dependency Name="P5_7" />
+    </Polygon>
+    <Polygon Name="Hat23" Style="Hat1">
+      <Dependency Name="Pm2_12" />
+      <Dependency Name="P0_11" />
+      <Dependency Name="P0_12" />
+      <Dependency Name="Pm2_14" />
+      <Dependency Name="Pm3_14" />
+      <Dependency Name="Pm4_16" />
+      <Dependency Name="Pm6_17" />
+      <Dependency Name="Pm6_16" />
+      <Dependency Name="Pm5_15" />
+      <Dependency Name="Pm6_14" />
+      <Dependency Name="Pm5_12" />
+      <Dependency Name="Pm4_12" />
+      <Dependency Name="Pm3_11" />
+    </Polygon>
+    <Polygon Name="Hat" Style="HatMain">
+      <Dependency Name="C" />
+      <Dependency Name="Pm1_1" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="P2_1" />
+      <Dependency Name="P4_0" />
+      <Dependency Name="P5_1" />
+      <Dependency Name="P4_2" />
+      <Dependency Name="P3_2" />
+      <Dependency Name="P2_4" />
+      <Dependency Name="P0_5" />
+      <Dependency Name="P0_4" />
+      <Dependency Name="Pm1_4" />
+    </Polygon>
+    <Segment Name="Kite1" Style="KiteLine">
+      <Dependency Name="C" />
+      <Dependency Name="P1_3" />
+    </Segment>
+    <Segment Name="Kite2" Style="KiteLine">
+      <Dependency Name="P0_4" />
+      <Dependency Name="P1_3" />
+    </Segment>
+    <Segment Name="Kite3" Style="KiteLine">
+      <Dependency Name="C" />
+      <Dependency Name="P1_0" />
+    </Segment>
+    <Segment Name="Kite4" Style="KiteLine">
+      <Dependency Name="C" />
+      <Dependency Name="P2_1" />
+    </Segment>
+    <Segment Name="Kite5" Style="KiteLine">
+      <Dependency Name="P2_1" />
+      <Dependency Name="P2_2" />
+    </Segment>
+    <Segment Name="Kite6" Style="KiteLine">
+      <Dependency Name="P1_3" />
+      <Dependency Name="P2_2" />
+    </Segment>
+    <Segment Name="Kite7" Style="KiteLine">
+      <Dependency Name="P3_2" />
+      <Dependency Name="P4_0" />
+    </Segment>
+    <Segment Name="Kite8" Style="KiteLine">
+      <Dependency Name="P2_2" />
+      <Dependency Name="P3_2" />
+    </Segment>
+    <Segment Name="Kite9" Style="KiteLine">
+      <Dependency Name="P1_3" />
+      <Dependency Name="P2_4" />
+    </Segment>
+    <Label Name="Title" Style="GalleryTitle" Text="Aperiodic Monotile" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="In 2023 David Smith, a retired print technician from England who loves shapes, found the hat. Its copies cover the whole plane with no gaps and no overlaps, yet the pattern never repeats: slide it any way you like, and it never lands on itself. A single tile like that is called an aperiodic monotile. Mathematicians had looked for one for more than fifty years.\n\nSome copies are flipped over, like the purple ones: roughly one in eight. The lines in the orange one show the eight kites it is made of.\n\nDrag the yellow points to turn and resize the tiles." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>
