@@ -172,6 +172,7 @@ public class MainToolbar : Panel
     const double NormalSpacing = 2;
     const double NormalSeparatorMargin = 5;
     const double CompactSeparatorMargin = 2;
+    const double SeparatorInset = 5; // above and below, within the row of buttons
     static readonly Thickness NormalMargin = new Thickness(8, 4, 6, 2);
     // (the same at the left: the tab drawn around the first button reaches past it)
     static readonly Thickness CompactMargin = new Thickness(8, 4, 2, 2);
@@ -195,7 +196,7 @@ public class MainToolbar : Panel
             else if (child is Border separator && separator.Width == 1)
             {
                 double margin = compact ? CompactSeparatorMargin : NormalSeparatorMargin;
-                separator.Margin = new Thickness(margin, 5, margin, 5);
+                separator.Margin = new Thickness(margin, SeparatorInset, margin, SeparatorInset);
             }
         }
     }
@@ -238,6 +239,7 @@ public class MainToolbar : Panel
         wrapped = false;
         if (hasCentered)
         {
+            centered.HasSeparator = IsGroupLeftAligned;
             centered.Measure(unbounded);
             centeredWidth = centered.DesiredSize.Width;
             wrapped = width + centeredWidth > availableSize.Width;
@@ -279,7 +281,8 @@ public class MainToolbar : Panel
             double room = wrapped
                 ? availableSize.Width
                 : System.Math.Max(0, availableSize.Width - buttons.DesiredSize.Width - rightRoom);
-            centered.IsLeftAligned = wrapped;
+            centered.IsLeftAligned = IsGroupLeftAligned || wrapped;
+            centered.HasSeparator = IsGroupLeftAligned && !wrapped;
             centered.Measure(new Size(room, double.PositiveInfinity));
             if (wrapped)
             {
@@ -363,13 +366,18 @@ public class MainToolbar : Panel
 
     public void AddSeparator()
     {
+        current.Children.Add(CreateSeparator());
+    }
+
+    Border CreateSeparator()
+    {
         var separator = new Border()
         {
             Width = 1,
-            Margin = new Thickness(NormalSeparatorMargin, 5, NormalSeparatorMargin, 5)
+            Margin = new Thickness(NormalSeparatorMargin, SeparatorInset, NormalSeparatorMargin, SeparatorInset)
         };
         separator.BindTheme(Border.BackgroundProperty, nameof(AppTheme.TabLine));
-        current.Children.Add(separator);
+        return separator;
     }
 
     public TextBlock AddText(FontWeight weight, double minWidth = 0, double fontSize = 13)
@@ -394,11 +402,25 @@ public class MainToolbar : Panel
     /// </summary>
     public Panel BeginCenteredGroup()
     {
-        centered = new MainToolbarGroup(buttons.Spacing);
+        // in line with the separators among the buttons: as far from the button before it and
+        // the one after it (past the strip's margin and the group's), and as tall
+        var separator = CreateSeparator();
+        separator.Margin = new Thickness(
+            NormalSpacing + NormalSeparatorMargin - NormalMargin.Right,
+            NormalMargin.Top + SeparatorInset,
+            NormalSpacing + NormalSeparatorMargin - MainToolbarGroup.MiddleMargin,
+            NormalMargin.Bottom + SeparatorInset);
+        centered = new MainToolbarGroup(buttons.Spacing, separator);
         Children.Add(centered);
         current = centered.Middle;
         return centered;
     }
+
+    /// <summary>
+    /// Whether the group sits right after the buttons, behind a separator, rather than in the
+    /// middle of the room the buttons leave
+    /// </summary>
+    public bool IsGroupLeftAligned { get; set; } = true;
 
     /// <summary>Text to the right of the centered group, cut short when there is no room</summary>
     public TextBlock AddTrailingText(FontWeight weight, double fontSize)
@@ -437,32 +459,56 @@ public class MainToolbar : Panel
 /// text still fits whole to their right; then they move left just as far as the text needs,
 /// and only when even that is not enough is the text cut short. So the buttons stay put from
 /// one text to the next until room really runs out. <see cref="IsLeftAligned"/> packs
-/// everything to the left instead (for a row of its own).
+/// everything to the left instead (beside the buttons, or on a row of its own), and
+/// <see cref="HasSeparator"/> sets it off from the buttons.
 /// </summary>
 public class MainToolbarGroup : Panel
 {
+    /// <summary>Around <see cref="Middle"/> at the left and the right</summary>
+    public const double MiddleMargin = 6;
+
     public StackPanel Middle { get; }
     public Panel Trailing { get; }
 
+    readonly Control separator;
     bool isLeftAligned;
     double trailingNaturalWidth;
 
-    public MainToolbarGroup(double spacing)
+    public MainToolbarGroup(double spacing, Control separator)
     {
+        this.separator = separator;
         Middle = new StackPanel()
         {
             Orientation = Orientation.Horizontal,
             Spacing = spacing,
-            Margin = new Thickness(6, MainToolbar.RowTopInset, 6, 0)
+            Margin = new Thickness(MiddleMargin, MainToolbar.RowTopInset, MiddleMargin, 0)
         };
         // not a StackPanel: that would hand the text unlimited width and it could never trim
         Trailing = new Panel()
         {
             Margin = new Thickness(0, MainToolbar.RowTopInset, 6, 0)
         };
+        Children.Add(separator);
         Children.Add(Middle);
         Children.Add(Trailing);
     }
+
+    /// <summary>Whether the separator shows at the left, before everything else</summary>
+    public bool HasSeparator
+    {
+        get => separator.IsVisible;
+        set
+        {
+            if (separator.IsVisible != value)
+            {
+                separator.IsVisible = value;
+                InvalidateMeasure();
+            }
+        }
+    }
+
+    // a hidden separator measures as nothing
+    double SeparatorWidth => separator.DesiredSize.Width;
 
     public bool IsLeftAligned
     {
@@ -480,6 +526,7 @@ public class MainToolbarGroup : Panel
     protected override Size MeasureOverride(Size availableSize)
     {
         var unbounded = new Size(double.PositiveInfinity, double.PositiveInfinity);
+        separator.Measure(unbounded);
         Middle.Measure(unbounded);
         Trailing.Measure(unbounded);
         trailingNaturalWidth = Trailing.DesiredSize.Width;
@@ -492,12 +539,14 @@ public class MainToolbarGroup : Panel
         }
 
         return new Size(
-            Middle.DesiredSize.Width + trailingNaturalWidth,
+            SeparatorWidth + Middle.DesiredSize.Width + trailingNaturalWidth,
             System.Math.Max(Middle.DesiredSize.Height, Trailing.DesiredSize.Height));
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
+        // its margin is what places it in the height of the row
+        separator.Arrange(new Rect(0, 0, SeparatorWidth, finalSize.Height));
         Place(finalSize.Width, out double left, out double trailingWidth);
         double middleWidth = Middle.DesiredSize.Width;
         Middle.Arrange(new Rect(left, 0, middleWidth, finalSize.Height));
@@ -511,11 +560,14 @@ public class MainToolbarGroup : Panel
     /// </summary>
     void Place(double width, out double left, out double trailingWidth)
     {
+        double start = SeparatorWidth;
+        width -= start;
         double middleWidth = Middle.DesiredSize.Width;
         double centeredLeft = middleWidth > 0 ? (width - middleWidth) / 2 : (width - trailingNaturalWidth) / 2;
         double leftForWholeText = width - middleWidth - trailingNaturalWidth;
         left = isLeftAligned ? 0 : System.Math.Max(0, System.Math.Min(centeredLeft, leftForWholeText));
         trailingWidth = System.Math.Max(0, width - left - middleWidth);
+        left += start;
     }
 }
 

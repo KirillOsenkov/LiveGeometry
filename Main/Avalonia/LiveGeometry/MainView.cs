@@ -248,7 +248,8 @@ public partial class MainView : UserControl
         toolbar.AddButton(MainToolbarIcons.Settings(), "Settings", shortcut: null, ToggleSettings);
 
         // while a drawing of the gallery is open: previous / next through the gallery and its
-        // title, in the middle of the room the toolbar has left, and bigger than the document
+        // title, after the buttons (or in the middle of the room they leave, as the toolbar's
+        // IsGroupLeftAligned says), and bigger than the document
         // buttons; while a drawing from a file is open, the file's name alone
         TourGroup = toolbar.BeginCenteredGroup();
         TourPrevious = toolbar.AddButton(

@@ -1428,7 +1428,9 @@ buttons and checkboxes, 3D, custom tools.
   dropped silently, Save asks for a file and the drawing becomes the user's own), the user's own
   drawing (parked in `OwnDrawing` with its undo history while they look around; the name of
   the file it came from or was saved to, `OwnFileName`, sits alone in the tour group's
-  place, centered, and in the page title - nothing for a new drawing). Paths `/`,
+  place and in the page title - nothing for a new drawing). The tour group follows the
+  buttons behind a separator (`MainToolbar.IsGroupLeftAligned`; off, it is centered in the
+  room they leave, and the code for that stays). Paths `/`,
   `/gallery/<slug>`, `/drawing`; `AddressBar` is the abstraction, `BrowserAddressBar` +
   `main.js` do pushState/popstate. `index.html` needs `<base href="/">` for that (all routes
   serve it; `web.config` and `tools/serve.cs` fall back to it). All page changes go through
