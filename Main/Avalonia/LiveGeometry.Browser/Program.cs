@@ -16,6 +16,9 @@ internal sealed partial class Program
             App.UseInvariantCulture();
             AddressBar.Current = new LiveGeometry.Browser.BrowserAddressBar();
             SettingsStore.Current = new LiveGeometry.Browser.BrowserSettingsStore();
+
+            // a reload, or another visit, finds the user's drawing where it was left
+            MainView.KeepsOwnDrawing = true;
             DynamicGeometry.EmojiFont.Open = OpenEmojiFont;
             await BuildAvaloniaApp()
                 .WithInterFont()

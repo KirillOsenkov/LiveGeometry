@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace LiveGeometry;
@@ -11,6 +12,17 @@ namespace LiveGeometry;
 public class SettingsStore
 {
     public static SettingsStore Current { get; set; } = new SettingsStore();
+
+    /// <summary>
+    /// The app may be gone in a moment - the window is closing, the browser's tab was hidden
+    /// (the last sure moment on a phone): whoever waits to store something stores it now
+    /// </summary>
+    public static event Action Leaving;
+
+    public static void RaiseLeaving()
+    {
+        Leaving?.Invoke();
+    }
 
     readonly Dictionary<string, string> values = new Dictionary<string, string>();
 

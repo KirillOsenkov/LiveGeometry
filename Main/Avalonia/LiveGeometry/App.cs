@@ -38,9 +38,11 @@ public class App : Application
         Styles.Add(new FluentTheme());
 
         // the chrome's colors under each theme variant; the stored choice (or the system's)
-        // before the first frame, so nothing flashes light first
-        AppTheme.Register(this);
+        // before the first frame, so nothing flashes light first. The stored colors go on
+        // before the dictionaries are registered: they go straight in then, where afterwards
+        // they would wait for an idle moment (AppTheme.SetResource), after the first frame.
         AppSettings.Instance.Load();
+        AppTheme.Register(this);
 
         // An exception that gets out of an event handler or a posted job would end the app
         // (the desktop window disappears, the browser page freezes) and take the drawing with
@@ -62,6 +64,7 @@ public class App : Application
             };
 
             AddressBar.Current.TitleChanged += title => window.Title = title;
+            window.Closing += (s, e) => SettingsStore.RaiseLeaving();
 
             if (MainWindowCreated != null)
             {

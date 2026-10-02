@@ -23,14 +23,15 @@ namespace DynamicGeometry;
 /// those resources (<see cref="ThemeBinding"/>), so switching the application's requested
 /// variant re-skins the chrome and Fluent's own controls (text boxes, scroll bars, menus)
 /// in one go, and a color set on a theme while it shows changes the screen at once - the
-/// theme can be edited in the property grid, and <see cref="CopyAsCode"/> takes the result
-/// back into this file. A new theme is a new instance here with a variant of its own,
+/// theme can be edited in the property grid, the settings keep what was edited
+/// (<see cref="EditsToText"/>), and <see cref="CopyAsCode"/> takes the result back into this
+/// file. A new theme is a new instance here with a variant of its own,
 /// inheriting Light or Dark so that Fluent has something to fall back on.
 /// (Not "Theme": every control has a Theme property, its ControlTheme, which would shadow
 /// the class inside the controls that use it most.)
 /// </summary>
 [PropertyGridNoUndo]
-public class AppTheme : INotifyPropertyChanged
+public class AppTheme : INotifyPropertyChanged, IConditionalProperties
 {
     /// <summary>The choice that follows the operating system (or the browser) instead of naming a theme</summary>
     public const string SystemChoice = "System";
@@ -604,6 +605,198 @@ public class AppTheme : INotifyPropertyChanged
     [PropertyGridVisible]
     [PropertyGridGroup("Paper")]
     public Color GridMinor { get => gridMinor; set => Set(ref gridMinor, value); }
+
+    #endregion
+
+    #region Edits
+
+    // A color tweaked in the property grid outlives the run: the settings keep the colors
+    // that differ from the ones this file gives (EditsToText), and they go on top of those at
+    // the next start (ApplyEdits). A color nobody touched follows this file when it changes.
+    // One line of text, "Name=value;Name=value", for the desktop's line-per-key settings
+    // file: a color is #AARRGGBB, a gradient its two points and its stops,
+    // "0,0 1,1 #FFFFFEF0@0 #FFF1E7A8@1". Read by hand and never thrown at: whatever doesn't
+    // read is left at this file's value.
+
+    /// <summary>The colors as this file has them, as text by property; taken before any edit goes on</summary>
+    Dictionary<string, string> builtIn;
+
+    void RememberBuiltIn()
+    {
+        if (builtIn != null)
+        {
+            return;
+        }
+
+        builtIn = new Dictionary<string, string>();
+        foreach (var property in ColorProperties)
+        {
+            builtIn[property.Name] = ToText(property.GetValue(this));
+        }
+    }
+
+    /// <summary>The colors that differ from this file's, as text for the settings; null when there are none</summary>
+    public string EditsToText()
+    {
+        RememberBuiltIn();
+        var edits = new List<string>();
+        foreach (var property in ColorProperties)
+        {
+            var text = ToText(property.GetValue(this));
+            if (text != null && text != builtIn[property.Name])
+            {
+                edits.Add(property.Name + "=" + text);
+            }
+        }
+
+        return edits.Count > 0 ? string.Join(";", edits) : null;
+    }
+
+    /// <summary>Puts the colors of <see cref="EditsToText"/> on top of this file's</summary>
+    public void ApplyEdits(string text)
+    {
+        RememberBuiltIn();
+        if (string.IsNullOrEmpty(text))
+        {
+            return;
+        }
+
+        foreach (var entry in text.Split(';'))
+        {
+            int separator = entry.IndexOf('=');
+            if (separator <= 0)
+            {
+                continue;
+            }
+
+            var property = ColorProperties.FirstOrDefault(candidate => candidate.Name == entry.Substring(0, separator).Trim());
+            var value = property == null ? null : FromText(entry.Substring(separator + 1), property.PropertyType);
+            if (value != null)
+            {
+                property.SetValue(this, value);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Every color back to what this file gives, and the settings forget the edits. Not undo:
+    /// the theme has none.
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Built-in colors")]
+    [PropertyGridIcon(PropertyGridIcon.Cross)]
+    [PropertyGridDestructive]
+    public void ResetColors()
+    {
+        RememberBuiltIn();
+        foreach (var property in ColorProperties)
+        {
+            var value = FromText(builtIn[property.Name], property.PropertyType);
+            if (value != null && ToText(property.GetValue(this)) != builtIn[property.Name])
+            {
+                property.SetValue(this, value);
+            }
+        }
+
+        // the button goes: nothing to reset now
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
+    }
+
+    public bool CanEdit(string propertyName)
+    {
+        return propertyName != nameof(ResetColors) || EditsToText() != null;
+    }
+
+    public string Caption(string propertyName, string defaultCaption)
+    {
+        return defaultCaption;
+    }
+
+    /// <summary>A color, a solid brush or a linear gradient as text; null for anything else</summary>
+    static string ToText(object value)
+    {
+        if (value is Color color)
+        {
+            return ColorText.ToArgbHex(color);
+        }
+
+        if (value is ISolidColorBrush solid)
+        {
+            return ColorText.ToArgbHex(solid.Color);
+        }
+
+        if (value is not ILinearGradientBrush gradient)
+        {
+            return null;
+        }
+
+        var parts = new List<string>()
+        {
+            ToText(gradient.StartPoint.Point),
+            ToText(gradient.EndPoint.Point)
+        };
+        foreach (var stop in gradient.GradientStops)
+        {
+            parts.Add(ColorText.ToArgbHex(stop.Color) + "@" + stop.Offset.ToString(CultureInfo.InvariantCulture));
+        }
+
+        return string.Join(" ", parts);
+    }
+
+    static string ToText(Point point)
+    {
+        return point.X.ToString(CultureInfo.InvariantCulture) + "," + point.Y.ToString(CultureInfo.InvariantCulture);
+    }
+
+    /// <summary>What <see cref="ToText(object)"/> wrote, as a value of the type; null when it doesn't read</summary>
+    static object FromText(string text, Type type)
+    {
+        var parts = text.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (parts.Length == 1 && ColorText.TryParse(parts[0], out var color))
+        {
+            return type == typeof(Color) ? color : new SolidColorBrush(color);
+        }
+
+        if (type != typeof(Brush) || parts.Length < 4 || !TryParsePoint(parts[0], out var start) || !TryParsePoint(parts[1], out var end))
+        {
+            return null;
+        }
+
+        var gradient = new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(start, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(end, RelativeUnit.Relative)
+        };
+        for (int i = 2; i < parts.Length; i++)
+        {
+            var stop = parts[i].Split('@');
+            if (stop.Length != 2
+                || !ColorText.TryParse(stop[0], out var stopColor)
+                || !double.TryParse(stop[1], NumberStyles.Float, CultureInfo.InvariantCulture, out var offset))
+            {
+                return null;
+            }
+
+            gradient.GradientStops.Add(new GradientStop(stopColor, offset));
+        }
+
+        return gradient;
+    }
+
+    static bool TryParsePoint(string text, out Point point)
+    {
+        point = default;
+        var coordinates = text.Split(',');
+        if (coordinates.Length != 2
+            || !double.TryParse(coordinates[0], NumberStyles.Float, CultureInfo.InvariantCulture, out var x)
+            || !double.TryParse(coordinates[1], NumberStyles.Float, CultureInfo.InvariantCulture, out var y))
+        {
+            return false;
+        }
+
+        point = new Point(x, y);
+        return true;
+    }
 
     #endregion
 

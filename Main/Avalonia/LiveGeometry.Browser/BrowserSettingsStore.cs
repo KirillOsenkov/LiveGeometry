@@ -23,4 +23,11 @@ public partial class BrowserSettingsStore : SettingsStore
 
     [JSImport("setSetting", "main.js")]
     public static partial void SetSetting(string key, string value);
+
+    /// <summary>Called by main.js when the page is hidden: on a phone the last sure moment before the tab is gone</summary>
+    [JSExport]
+    public static void OnPageHidden()
+    {
+        RaiseLeaving();
+    }
 }

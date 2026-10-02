@@ -58,6 +58,7 @@ public partial class MainView : UserControl
         AddBehaviors();
         LayoutRoot.Children.Add(DrawingHost);
         InitializeCommands();
+        InitializeKeptDrawing();
 
         // The geometry library surfaces errors through the WPF-style MessageBox shim.
         MessageBox.Handler = text => DrawingHost.ShowHint(text);
@@ -547,7 +548,7 @@ public partial class MainView : UserControl
         }
 
         EnsureGallery();
-        Gallery.CanContinueDrawing = OwnDrawing != null;
+        Gallery.CanContinueDrawing = OwnDrawing != null || HasKeptDrawing;
         Gallery.IsVisible = true;
         LayoutRoot.IsVisible = false;
         UpdateTour();
@@ -581,13 +582,22 @@ public partial class MainView : UserControl
         OwnFileName = null;
         OwnFile = null;
         DrawingHost.Clear();
+        ReplaceKeptDrawing();
         UpdateTour();
         Publish(OwnDrawingPath, OwnTitle, push);
     }
 
-    /// <summary>Back to the drawing the user left for the gallery; a new one if there is none</summary>
+    /// <summary>
+    /// Back to the drawing the user left for the gallery, or kept from their last visit; a
+    /// new one if there is none
+    /// </summary>
     void ShowOwnDrawing(bool push)
     {
+        if (OwnDrawing == null && HasKeptDrawing && ShowKeptDrawing(push))
+        {
+            return;
+        }
+
         if (OwnDrawing == null)
         {
             ShowNewDrawing(push);
@@ -693,6 +703,7 @@ public partial class MainView : UserControl
         OwnDrawing = null;
         OwnFileName = fileName;
         OwnFile = file;
+        ReplaceKeptDrawing();
         UpdateTour();
         Publish(OwnDrawingPath, OwnTitle, push: true);
     }
@@ -1015,6 +1026,7 @@ public partial class MainView : UserControl
             {
                 OwnFileName = file.Name;
                 OwnFile = file;
+                KeepOwnDrawingSoon();
                 UpdateTour();
                 AddressBar.Current.Replace(OwnDrawingPath, OwnTitle);
             }

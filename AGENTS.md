@@ -1156,7 +1156,17 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   before the runtime starts, so the splash and the page are already dark). `AppSettings`
   (`[PropertyGridName("Settings")]`, the gear) is the page over it: `Theme` is `System` or a
   theme's name, applied in `App.Initialize` before the first frame. The window placement is
-  the `WindowPlacement` line of the same file.
+  the `WindowPlacement` line of the same file. Colors tweaked on the "Theme colors" page are
+  kept per theme (`ThemeColors.Dark`), only those that differ from `AppTheme.cs`
+  (`AppTheme.EditsToText`/`ApplyEdits`, one line, read without throwing), so an untouched
+  color follows the code; they are put on before `AppTheme.Register`, and "Built-in colors"
+  drops them. Writes wait for a half-second pause (a picker drag sets a color per move) or
+  `SettingsStore.Leaving` (the window closing; the page hidden, from `main.js`'s
+  `visibilitychange`). In the browser only (`MainView.KeepsOwnDrawing`), the user's own
+  drawing is kept too (`MainView.KeptDrawing.cs`: keys `Drawing`, `DrawingName`): saved
+  after every undo step and on Leaving, never during a construction, removed when empty;
+  read at startup but loaded only when the user goes to it (/drawing, My Drawing). Until
+  then it is their drawing and nothing is written over it; New or an opened file replaces it.
 - **Ribbon look**: `ButtonGrid` draws the
   hover/pressed/checked plate; `Ribbon`/`TabPanel` replace the Fluent templates in code. To
   bring the group headers closer together, change `ButtonGrid.HeaderOverlap`, not the padding

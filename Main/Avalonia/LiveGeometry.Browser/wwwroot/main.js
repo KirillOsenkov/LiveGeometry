@@ -81,4 +81,13 @@ globalThis.addEventListener('popstate', () => {
     exports.LiveGeometry.Browser.BrowserAddressBar.OnPopState(globalThis.location.pathname);
 });
 
+// What waits to be stored (the drawing, tweaked theme colors) is stored when the page is
+// hidden: a tab switched away from, closed, or a phone's browser sent to the background,
+// after which there may be no other chance.
+globalThis.document.addEventListener('visibilitychange', () => {
+    if (globalThis.document.visibilityState === 'hidden') {
+        exports.LiveGeometry.Browser.BrowserSettingsStore.OnPageHidden();
+    }
+});
+
 await dotnetRuntime.runMain(config.mainAssemblyName, [globalThis.location.href]);

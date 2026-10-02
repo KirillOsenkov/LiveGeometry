@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using Avalonia.Threading;
 using DynamicGeometry;
 
 namespace LiveGeometry;
@@ -17,6 +18,9 @@ public class AppSettings : INotifyPropertyChanged
 
     const string ThemeKey = "Theme";
 
+    /// <summary>The key of a theme's edited colors: "ThemeColors.Dark"</summary>
+    const string ThemeColorsKeyPrefix = "ThemeColors.";
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     /// <summary>Something to show in the side panel: the theme's colors</summary>
@@ -25,6 +29,14 @@ public class AppSettings : INotifyPropertyChanged
     /// <summary>Before the first window: the stored choices take effect</summary>
     public void Load()
     {
+        foreach (var appTheme in AppTheme.All)
+        {
+            appTheme.ApplyEdits(SettingsStore.Current.Get(ThemeColorsKeyPrefix + appTheme.Name));
+            appTheme.PropertyChanged += (s, e) => StoreThemeColorsSoon();
+        }
+
+        SettingsStore.Leaving += StoreThemeColors;
+
         theme = SettingsStore.Current.Get(ThemeKey) ?? AppTheme.SystemChoice;
         if (theme != AppTheme.SystemChoice && AppTheme.ByName(theme) == null)
         {
@@ -76,5 +88,38 @@ public class AppSettings : INotifyPropertyChanged
     public void EditThemeColors()
     {
         ShowRequested?.Invoke(AppTheme.Current);
+    }
+
+    DispatcherTimer themeColorsTimer;
+
+    /// <summary>
+    /// A drag in the color picker sets a color per pointer move: the colors are stored once
+    /// it has rested a moment (or the app is leaving), not at every move
+    /// </summary>
+    void StoreThemeColorsSoon()
+    {
+        if (themeColorsTimer == null)
+        {
+            themeColorsTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(0.5) };
+            themeColorsTimer.Tick += (s, e) => StoreThemeColors();
+        }
+
+        themeColorsTimer.Stop();
+        themeColorsTimer.Start();
+    }
+
+    /// <summary>Each theme's edited colors, only those; a theme without any has no entry</summary>
+    void StoreThemeColors()
+    {
+        if (themeColorsTimer == null || !themeColorsTimer.IsEnabled)
+        {
+            return;
+        }
+
+        themeColorsTimer.Stop();
+        foreach (var appTheme in AppTheme.All)
+        {
+            SettingsStore.Current.Set(ThemeColorsKeyPrefix + appTheme.Name, appTheme.EditsToText());
+        }
     }
 }
