@@ -47,7 +47,19 @@ namespace DynamicGeometry
                 return;
             }
 
-            var manager = Drawing.StyleManager;
+            addedStyles.AddRange(BringStyles(Drawing, styles, figures, deserializer));
+        }
+
+        /// <summary>
+        /// The styles of figures about to be read into the drawing (a paste, a tool the user
+        /// defined): one the drawing has, looking the same, is taken as it is; one it lacks is
+        /// added; one whose name the drawing gives to another look is added under a free name,
+        /// which <paramref name="figures"/> are made to name. Returns the styles added.
+        /// </summary>
+        public static List<IFigureStyle> BringStyles(Drawing drawing, XElement styles, XElement figures, DrawingDeserializer deserializer)
+        {
+            var added = new List<IFigureStyle>();
+            var manager = drawing.StyleManager;
             foreach (var styleNode in styles.Elements())
             {
                 var style = deserializer.ReadKnownStyle(styleNode);
@@ -73,8 +85,10 @@ namespace DynamicGeometry
                 }
 
                 manager.Add(style);
-                addedStyles.Add(style);
+                added.Add(style);
             }
+
+            return added;
         }
 
         // the copies by the names the clipboard gives them, which are the originals' names

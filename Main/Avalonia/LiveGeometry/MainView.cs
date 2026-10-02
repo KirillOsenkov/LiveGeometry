@@ -101,6 +101,11 @@ public partial class MainView : UserControl
         {
             DrawingHost.AddToolButton(behavior);
         }
+
+        // the user's own tools, after the library's: on Misc, behind Define figure
+        var storedTools = new StoredTools();
+        ToolStorage.Instance = storedTools;
+        storedTools.Load();
     }
 
     // A link to the repository at the far right of the toolbar; its tooltip is the build (git

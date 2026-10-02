@@ -69,6 +69,14 @@ namespace DynamicGeometry
             {
                 DrawingHost.ShowProperties(ParentBehavior.PropertyBag);
             }
+
+            // and so is its hint, which what the tool made since had replaced (a new segment's
+            // "set its length"); not halfway through a construction, where the status says
+            // what to click next
+            if (isCurrent && ParentBehavior.IsInInitialState && !ParentBehavior.HintText.IsEmpty())
+            {
+                DrawingHost.ShowHint(ParentBehavior.HintText);
+            }
         }
 
         void behavior_PropertyChanged(object sender, PropertyChangedEventArgs e)

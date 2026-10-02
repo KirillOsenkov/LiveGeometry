@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices.JavaScript;
 
 namespace LiveGeometry.Browser;
@@ -17,6 +19,23 @@ public partial class BrowserSettingsStore : SettingsStore
     {
         SetSetting(key, value);
     }
+
+    public override IReadOnlyList<string> GetDocumentKeys(string group)
+    {
+        var prefix = group + ".";
+        var keys = new List<string>();
+        foreach (var key in GetSettingKeys(prefix))
+        {
+            keys.Add(key.Substring(prefix.Length));
+        }
+
+        keys.Sort(StringComparer.Ordinal);
+        return keys;
+    }
+
+    /// <summary>The keys of the settings that start with the prefix, without the app's own prefix</summary>
+    [JSImport("getSettingKeys", "main.js")]
+    public static partial string[] GetSettingKeys(string prefix);
 
     [JSImport("getSetting", "main.js")]
     public static partial string GetSetting(string key);

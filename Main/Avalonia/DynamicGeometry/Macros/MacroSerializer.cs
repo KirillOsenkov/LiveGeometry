@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace DynamicGeometry
 {
@@ -31,6 +33,9 @@ namespace DynamicGeometry
         {
             writer.WriteStartDocument();
             writer.WriteStartElement("Macro");
+
+            // the figures are written as a drawing's: the same version says how to read them
+            writer.WriteAttributeDouble("Version", Settings.CurrentDrawingVersion);
             writer.WriteAttributeString("Name", Name);
             WriteInputs(writer);
             MacroIcon.Write(writer, Inputs, Results);
@@ -75,9 +80,43 @@ namespace DynamicGeometry
             return inputType.Name;
         }
 
+        /// <summary>
+        /// The figures with the styles of their own that they name, as for the clipboard: used
+        /// in another drawing (or in a later run), a figure would look its style up there by
+        /// name, and a catenary made by the tool lost its rope's look
+        /// </summary>
         void WriteResults(XmlWriter writer)
         {
-            WriteFigureList(Results, writer);
+            var drawing = Inputs.Concat(Results).Select(f => f.Drawing).FirstOrDefault(d => d != null);
+            if (drawing == null)
+            {
+                WriteFigureList(Results, writer);
+                return;
+            }
+
+            var withStyles = new XDocument();
+            using (var aside = withStyles.CreateWriter())
+            {
+                WriteFiguresWithStyles(drawing, Results, aside);
+            }
+
+            // A name that reads like the default is the default, which says nothing once the
+            // figure is built on other points: segment AB on P and Q kept AB as if typed. The
+            // figures that had their default names say so, and get the new ones.
+            var figures = withStyles.Root.Element("Figures");
+            foreach (var element in figures?.Elements() ?? Enumerable.Empty<XElement>())
+            {
+                var result = Results.FirstOrDefault(r => r.Name == element.ReadString("Name"));
+                if (result != null && result.HasDefaultName)
+                {
+                    element.SetAttributeValue("DefaultName", "true");
+                }
+            }
+
+            foreach (var element in withStyles.Root.Elements())
+            {
+                element.WriteTo(writer);
+            }
         }
     }
 }

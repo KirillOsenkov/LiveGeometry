@@ -51,6 +51,22 @@ dotnetRuntime.setModuleImports('main.js', {
             return null;
         }
     },
+    getSettingKeys: (prefix) => {
+        const keys = [];
+        try {
+            const storage = globalThis.localStorage;
+            for (let i = 0; i < storage.length; i++) {
+                const key = storage.key(i);
+                if (key !== null && key.startsWith(settingPrefix + prefix)) {
+                    keys.push(key.substring(settingPrefix.length));
+                }
+            }
+        } catch {
+            // storage denied: nothing kept
+        }
+
+        return keys;
+    },
     setSetting: (key, value) => {
         try {
             if (value === null || value === undefined) {

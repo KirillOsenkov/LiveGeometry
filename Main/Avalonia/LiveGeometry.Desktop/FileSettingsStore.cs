@@ -76,4 +76,73 @@ public class FileSettingsStore : SettingsStore
             Console.WriteLine("Settings: " + ex.Message);
         }
     }
+
+    /// <summary>A group's documents are files in a folder of its name beside the settings file: Tools\*.xml</summary>
+    static string GetFolder(string group)
+    {
+        return Path.Combine(Path.GetDirectoryName(SettingsFile), group);
+    }
+
+    public override IReadOnlyList<string> GetDocumentKeys(string group)
+    {
+        var keys = new List<string>();
+        var folder = GetFolder(group);
+        if (!Directory.Exists(folder))
+        {
+            return keys;
+        }
+
+        try
+        {
+            foreach (var file in Directory.GetFiles(folder, "*.xml"))
+            {
+                keys.Add(Path.GetFileNameWithoutExtension(file));
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Settings: " + ex.Message);
+        }
+
+        keys.Sort(StringComparer.Ordinal);
+        return keys;
+    }
+
+    public override string GetDocument(string group, string key)
+    {
+        var file = Path.Combine(GetFolder(group), key + ".xml");
+        try
+        {
+            return File.Exists(file) ? File.ReadAllText(file) : null;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Settings: " + ex.Message);
+            return null;
+        }
+    }
+
+    public override void SetDocument(string group, string key, string text)
+    {
+        var file = Path.Combine(GetFolder(group), key + ".xml");
+        try
+        {
+            if (text == null)
+            {
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                }
+
+                return;
+            }
+
+            Directory.CreateDirectory(GetFolder(group));
+            File.WriteAllText(file, text);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Settings: " + ex.Message);
+        }
+    }
 }

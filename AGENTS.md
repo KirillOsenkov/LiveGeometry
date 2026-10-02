@@ -141,8 +141,19 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   after the first result clicked (Catenary, then Catenary 2: `Behavior.UniqueToolName`
   over the ribbon's tools), and is picked at once with its panel open and the keyboard in
   the name (`ToolNameEditor` refuses an empty name or another tool's; OK or Enter only
-  puts the panel away); it is not kept between runs
-  (`ToolStorage` is a stub) nor saved with a drawing. It asks for its inputs in the order
+  puts the panel away). It is kept between runs, never in a drawing (what it makes is
+  plain figures): `StoredTools` stores each macro as a document of the settings store
+  (`SettingsStore.GetDocument`: `Tools\<key>.xml` beside `Settings.txt` on the desktop,
+  `LiveGeometry.Tools.<key>` in the browser's local storage, a key per tool so that two
+  windows or tabs don't write over each other), when made, renamed, and gone with "Delete
+  this tool"; read at startup after the ribbon, by key (a time stamp). The macro is
+  `<Macro Version Name>` - the version is the drawing format's, and one from a newer
+  version, damaged or asking for an unknown kind is left out with a console line
+  (`UserDefinedTool.Read`) - then `Inputs`, `Icon`, the `Styles` its figures name (brought
+  in as a paste brings them, `PasteAction.BringStyles`) and `Figures`, where a figure that
+  had its default name says `DefaultName="true"` and gets the default name where it is
+  made (segment AB on P and Q is PQ; a name that reads like the default reads like a
+  typed one on other points). It asks for its inputs in the order
   they were clicked (`FigureSelector.GetSelection`; in the drawing's order, a slider
   clicked first was asked for last), and the expressions of what it makes (a point by
   coordinates, a label's [AB]) are rewritten to name what it was given and the copies,

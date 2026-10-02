@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LiveGeometry;
 
@@ -43,5 +44,32 @@ public class SettingsStore
         {
             values[key] = value;
         }
+    }
+
+    // Documents: longer texts kept by group (the user's tools), each under a key of its own,
+    // so that two windows or tabs storing one each don't write over each other's. Here and in
+    // the browser they are settings named "group.key"; the desktop keeps a file for each.
+
+    /// <summary>The keys of the documents in the group, in order</summary>
+    public virtual IReadOnlyList<string> GetDocumentKeys(string group)
+    {
+        var prefix = group + ".";
+        return values.Keys
+            .Where(key => key.StartsWith(prefix, StringComparison.Ordinal))
+            .Select(key => key.Substring(prefix.Length))
+            .OrderBy(key => key, StringComparer.Ordinal)
+            .ToList();
+    }
+
+    /// <summary>The document's text, or null</summary>
+    public virtual string GetDocument(string group, string key)
+    {
+        return Get(group + "." + key);
+    }
+
+    /// <summary>Stores the document; null deletes it</summary>
+    public virtual void SetDocument(string group, string key, string text)
+    {
+        Set(group + "." + key, text);
     }
 }

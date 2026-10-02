@@ -20,10 +20,72 @@ namespace DynamicGeometry
         }
 
         public UserDefinedTool(string macro)
+            : this(XElement.Parse(macro))
         {
-            RootElement = XElement.Parse(macro);
-            mutableName = RootElement.Attribute("Name").Value; 
+        }
+
+        public UserDefinedTool(XElement macro)
+        {
+            RootElement = macro;
+            mutableName = RootElement.Attribute("Name").Value;
             ReadInputs();
+        }
+
+        /// <summary>
+        /// A tool from a macro kept between runs; null, with the reason in words, for a text
+        /// that is no macro this version can use: damaged, made by a newer version (its
+        /// figures may be written in a way this one doesn't read), asking for a kind of
+        /// figure this version doesn't have. Checked, not tried: an exception, even caught,
+        /// is an error report on screen.
+        /// </summary>
+        public static UserDefinedTool Read(string text, out string problem)
+        {
+            problem = null;
+            if (string.IsNullOrWhiteSpace(text) || !text.TrimStart().StartsWith("<"))
+            {
+                problem = "It is not a tool.";
+                return null;
+            }
+
+            XElement macro;
+            try
+            {
+                macro = XElement.Parse(text);
+            }
+            catch (System.Xml.XmlException ex)
+            {
+                problem = "It is damaged: " + ex.Message;
+                return null;
+            }
+
+            bool hasVersion = double.TryParse(
+                macro.ReadString("Version"),
+                System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture,
+                out double version);
+            var inputs = macro.Element("Inputs")?.Elements("Input").ToList();
+            if (macro.Name.LocalName != "Macro"
+                || macro.ReadString("Name").IsEmpty()
+                || inputs == null
+                || inputs.Count == 0
+                || macro.Element("Figures") == null)
+            {
+                problem = "It is not a tool.";
+            }
+            else if (!hasVersion || !double.IsFinite(version))
+            {
+                problem = "It says no version.";
+            }
+            else if (version > Settings.CurrentDrawingVersion)
+            {
+                problem = "It was made by a newer version of Live Geometry.";
+            }
+            else if (inputs.FirstOrDefault(i => i.ReadString("Name").IsEmpty() || DrawingDeserializer.FindType(i.ReadString("Type") ?? "") == null) is XElement unknown)
+            {
+                problem = "It starts from a kind of figure this version doesn't have: " + unknown.ReadString("Type") + ".";
+            }
+
+            return problem == null ? new UserDefinedTool(macro) : null;
         }
 
         [PropertyGridName("Tool properties")]
@@ -96,7 +158,7 @@ namespace DynamicGeometry
             }
 
             [PropertyGridVisible]
-            [PropertyGridName("Delete this tool button")]
+            [PropertyGridName("Delete this tool")]
             [PropertyGridDestructive]
             public void Delete()
             {
@@ -180,13 +242,22 @@ namespace DynamicGeometry
 
         protected override IEnumerable<IFigure> CreateFigures()
         {
-            var figuresElement = RootElement.Element("Figures");
+            // a copy: the styles brought along may be renamed in it, and the macro keeps the names
+            var figuresElement = new XElement(RootElement.Element("Figures"));
             var inputs = new Dictionary<string, IFigure>();
             for (int i = 0; i < Inputs.Count; i++)
             {
                 inputs.Add(Inputs[i].Name, FoundDependencies[i]);
             }
             var deserializer = new DrawingDeserializer();
+            var styles = RootElement.Element("Styles");
+            if (styles != null)
+            {
+                // as a paste does; not recorded (nor is Create new style): a style left behind
+                // by undo is not saved, files carry only the styles their figures name
+                PasteAction.BringStyles(Drawing, styles, figuresElement, deserializer);
+            }
+
             //EnsureUniqueNames(Drawing, figuresElement);   This changes RootElement so that the names don't match up with Inputs. - D.H.
             var tempFigures = deserializer.ReadFigures(figuresElement, Drawing, inputs).ToList();
             byMacroName = inputs;
@@ -199,6 +270,23 @@ namespace DynamicGeometry
         protected override void FiguresAdded(IList<IFigure> figures)
         {
             RebindExpressions(figures);
+
+            // A figure that had its default name in the macro (segment AB) gets the default
+            // name here (CD, after the points it was given; an empty name is the default).
+            // It kept AB, which on C and D reads like a typed name, unless another figure in
+            // the drawing had it. After the expressions are bound: the rename rewrites the
+            // texts that name it.
+            var defaultNamed = RootElement.Element("Figures").Elements()
+                .Where(e => e.ReadBool("DefaultName", defaultValue: false))
+                .Select(e => e.ReadString("Name"))
+                .ToList();
+            foreach (var name in defaultNamed)
+            {
+                if (byMacroName.TryGetValue(name, out var figure) && figures.Contains(figure))
+                {
+                    figure.Name = "";
+                }
+            }
         }
 
         protected override void CreateTempResults()

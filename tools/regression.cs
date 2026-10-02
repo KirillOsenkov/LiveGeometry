@@ -57,6 +57,7 @@ public class Program
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
             ("Figures without a value don't exist", FiguresWithoutValue),
             ("A tool defined on expressions builds on its inputs", DefinedToolOnExpressions),
+            ("Defined tools are stored, read back and deleted", StoredToolsRoundTrip),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
             ("Gallery LGF round trips", GalleryRoundTrips)
@@ -882,6 +883,80 @@ public class Program
         Near(made[1].Coordinates.X, expected: 3);
         Near(made[1].Coordinates.Y, expected: 3);
         drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// A defined tool is stored when made (with the styles its figures name and a version),
+    /// read back as at the next start, works in another drawing with its look, and its
+    /// document goes with its button. In the in-memory settings store: nothing on disk.
+    /// </summary>
+    static void StoredToolsRoundTrip()
+    {
+        var previous = ToolStorage.Instance;
+        var tools = new List<UserDefinedTool>();
+        Action<Behavior> created = behavior => tools.Add((UserDefinedTool)behavior);
+        Behavior.NewBehaviorCreated += created;
+        try
+        {
+            ToolStorage.Instance = new StoredTools();
+            var drawing = ReadLgf("""
+                <Drawing Version="1">
+                  <Styles>
+                    <PointStyle Name="Big" Size="20" Fill="#FFFF0000" />
+                  </Styles>
+                  <Figures>
+                    <FreePoint Name="A" X="-3" Y="-1" />
+                    <FreePoint Name="B" X="1" Y="-2" />
+                    <PointByCoordinates Name="Mid" Style="Big" X="(A.X + B.X) / 2" Y="(A.Y + B.Y) / 2" />
+                    <Segment Name="AB">
+                      <Dependency Name="A" />
+                      <Dependency Name="B" />
+                    </Segment>
+                  </Figures>
+                </Drawing>
+                """);
+            var inputs = new List<IFigure> { Find(drawing, "A"), Find(drawing, "B") };
+            var results = new List<IFigure> { Find(drawing, "Mid"), Find(drawing, "AB") };
+            var defined = UserDefinedTool.AddFromString(MacroSerializer.WriteMacroToString(inputs, results, "Mid"));
+            var keys = SettingsStore.Current.GetDocumentKeys("Tools");
+            Require(keys.Count == 1, keys.Count + " tools stored.");
+            var text = SettingsStore.Current.GetDocument("Tools", keys[0]);
+            var macro = XElement.Parse(text);
+            Require(macro.Attribute("Version")?.Value == "1", "The stored tool has no version.");
+            Require(macro.Element("Styles")?.Elements().Any(s => s.Attribute("Name")?.Value == "Big") == true, "The stored tool doesn't carry its style.");
+            Require(UserDefinedTool.Read(text.Replace("Version=\"1\"", "Version=\"99\""), out string problem) == null && problem.Contains("newer"), "A tool of a newer version was read: " + problem);
+
+            // the next start
+            var reading = new StoredTools();
+            ToolStorage.Instance = reading;
+            reading.Load();
+            var loaded = tools.Last();
+            Require(loaded != defined && loaded.Name == "Mid 2", "The stored tool was not read back: " + loaded.Name);
+
+            var other = NewDrawing();
+            AddPoint(other, x: 2, y: 0).Name = "P";
+            AddPoint(other, x: 4, y: 2).Name = "Q";
+            using var window = new TestWindow(other.Canvas);
+            other.Behavior = loaded;
+            Click(other, other.CoordinateSystem.ToPhysical(new Point(2, 0)));
+            Click(other, other.CoordinateSystem.ToPhysical(new Point(4, 2)));
+            var made = other.Figures.OfType<PointByCoordinates>().SingleOrDefault();
+            Require(made != null, "The stored tool made nothing.");
+            Near(made.Coordinates.X, expected: 3);
+            Near(made.Coordinates.Y, expected: 1);
+            Require(made.Style?.Name == "Big" && other.StyleManager["Big"] is PointStyle big && big.Size == 20, "The made point lost its look: " + made.Style?.Name);
+            var segment = other.Figures.OfType<Segment>().SingleOrDefault();
+            Require(segment?.Name == "PQ", "The made segment isn't named after its points: " + segment?.Name);
+
+            Behavior.Delete(loaded);
+            Require(SettingsStore.Current.GetDocumentKeys("Tools").Count == 0, "Deleting the tool's button left its document.");
+            Behavior.Delete(defined);
+        }
+        finally
+        {
+            Behavior.NewBehaviorCreated -= created;
+            ToolStorage.Instance = previous;
+        }
     }
 
     static void FiguresWithoutValue()
