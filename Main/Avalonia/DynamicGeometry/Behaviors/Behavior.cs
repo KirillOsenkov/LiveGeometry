@@ -45,45 +45,55 @@ namespace DynamicGeometry
 
         public virtual string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
         {
-            string expectedFigure = "";
-            if (args.FigureTypeNeeded.HasInterface<IPoint>())
+            return "Select " + DescribeFigureType(args.FigureTypeNeeded) + ".";
+        }
+
+        /// <summary>A figure of the type a tool asks for, in words: "a point", "a line, ray or a segment", "a slider"</summary>
+        public static string DescribeFigureType(Type type)
+        {
+            if (type.HasInterface<IPoint>())
             {
-                expectedFigure = "point";
+                return "a point";
             }
-            else if (args.FigureTypeNeeded == typeof(Vector))
+
+            if (type == typeof(Vector))
             {
-                expectedFigure = "vector or enter values";
+                return "a vector or enter values";
             }
-            else if (args.FigureTypeNeeded == typeof(IAngleProvider))
+
+            if (type == typeof(IAngleProvider))
             {
-                expectedFigure = "figure with an angle such as an arc or enter value";
+                return "a figure with an angle such as an arc or enter value";
             }
-            else if (args.FigureTypeNeeded == typeof(ILengthProvider))
+
+            if (type == typeof(ILengthProvider))
             {
-                expectedFigure = "figure with length such as a segment or enter value";
+                return "a figure with length such as a segment or enter value";
             }
-            else if (args.FigureTypeNeeded.HasInterface<ILine>())
+
+            if (type.HasInterface<ILine>())
             {
-                expectedFigure = "line, ray or a segment";
+                return "a line, ray or a segment";
             }
-            else if (args.FigureTypeNeeded.HasInterface<ICircle>())
+
+            if (type.HasInterface<ICircle>())
             {
-                expectedFigure = "circle";
+                return "a circle";
             }
-            else if (args.FigureTypeNeeded.HasInterface<IEllipse>())
+
+            if (type.HasInterface<IEllipse>())
             {
-                expectedFigure = "circle or ellipse";
+                return "a circle or ellipse";
             }
-            else if (args.FigureTypeNeeded.HasInterface<ILinearFigure>())
+
+            if (type.HasInterface<ILinearFigure>())
             {
-                expectedFigure = "line or a circle";
+                return "a line or a circle";
             }
-            else
-            {
-                expectedFigure = args.FigureTypeNeeded.Name;
-            }
-            string hint = string.Format("Select a {0}.", expectedFigure);
-            return hint;
+
+            // the type's name in words: AngleMeasurement is "an angle measurement"
+            var words = System.Text.RegularExpressions.Regex.Replace(type.Name, "(?<=[a-z])(?=[A-Z])", " ").ToLowerInvariant();
+            return ("aeiou".IndexOf(words[0]) >= 0 ? "an " : "a ") + words;
         }
 
         private UIElement icon;

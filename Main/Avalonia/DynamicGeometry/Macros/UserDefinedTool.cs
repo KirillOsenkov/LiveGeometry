@@ -248,6 +248,42 @@ namespace DynamicGeometry
             return originalName;
         }
 
+        /// <summary>
+        /// What to click, in order, with what each stood for when the tool was defined:
+        /// "Click a slider (rope), a point (A), then a point (B)." A click on another kind
+        /// than the one asked for makes a point or nothing, so the order must be known.
+        /// </summary>
+        public override string HintText
+        {
+            get
+            {
+                var steps = Inputs.Select(Describe).ToList();
+                if (steps.Count > 1)
+                {
+                    steps[steps.Count - 1] = "then " + steps[steps.Count - 1];
+                }
+
+                return "Click " + string.Join(", ", steps) + ".";
+            }
+        }
+
+        public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+        {
+            // the point following the cursor is among the found ones already
+            int next = FoundDependencies.Count - (TempPoint != null ? 1 : 0);
+            if (next < 0 || next >= Inputs.Count)
+            {
+                return base.ConstructionHintText(args);
+            }
+
+            return "Click " + Describe(Inputs[next]) + ".";
+        }
+
+        static string Describe(InputInfo input)
+        {
+            return DescribeFigureType(input.Type) + " (" + input.Name + ")";
+        }
+
         protected override DependencyList InitExpectedDependencies()
         {
             DependencyList result = new DependencyList();

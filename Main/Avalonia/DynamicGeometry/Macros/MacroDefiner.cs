@@ -52,6 +52,7 @@ namespace DynamicGeometry
 
                 Parent.Inputs = Parent.behavior.GetSelection();
                 Parent.behavior = new MacroResultSelector(Parent.Drawing, Parent.Inputs);
+                Parent.Drawing.RaiseStatusNotification("Click the figures the new tool should make.");
                 var dialog = new SelectResultsDialog(Parent);
                 Parent.dialog = dialog;
                 if (PropertyGrid != null)
@@ -156,6 +157,12 @@ namespace DynamicGeometry
         public override string Name
         {
             get { return "Define figure"; }
+        }
+
+        // the order is the one the new tool will ask for them in
+        public override string HintText
+        {
+            get { return "Click the inputs in order."; }
         }
 
         public virtual void CreateTool()
