@@ -261,6 +261,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   doesn't fit whole. Arranged a pixel shorter than it measured (a phone's scaling, it
   seems), a wrapped caption lost its last line, also when dragged into view. A label's text
   is a `LabelTextBlock`, laid out at least as high as it measured.
+- **In the browser a posted job can keep the page from painting**: Avalonia's dispatcher
+  runs what is due (Background jobs, a short timer) in the same JavaScript task as the
+  animation frame, before it gives the page back, and the browser paints only between
+  tasks. The gallery's first batch of tiles, posted by the first layout, kept the splash
+  (which Avalonia closes at the first frame) up a second longer. To let a frame be seen
+  first, start the work at the frame after it (`TopLevel.RequestAnimationFrame` twice:
+  `GalleryView.OnAttachedToVisualTree`).
 - **TextChanged arrives late**: Avalonia raises a TextBox's TextChanged through the dispatcher,
   after a programmatic-set guard is gone. Text editors of the property grid remember the text
   they put in the box (`StringEditor.ShownText`) and ignore a TextChanged carrying it;

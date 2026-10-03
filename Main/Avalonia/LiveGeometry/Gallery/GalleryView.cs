@@ -204,9 +204,39 @@ public class GalleryView : DockPanel
     // fewer frames leave more of the time to the loading, and the tiles come in groups.
     const int TilesPerTurn = 8;
 
+    // The tiles wait until the page is on the screen. In the browser the first batch was
+    // posted by the first layout and ran in the same task as the first frame (Avalonia's
+    // dispatcher runs what is due before it gives the page back, a short timer too), so the
+    // browser could not paint until it was over: the splash, which Avalonia closes at the
+    // first frame, stayed up a second longer, for the eight tiles behind it. The second frame
+    // comes in a task of its own, after the first one is painted.
+    bool isOnScreen;
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        if (isOnScreen)
+        {
+            return;
+        }
+
+        var topLevel = TopLevel.GetTopLevel(this);
+        if (topLevel == null)
+        {
+            isOnScreen = true;
+            return;
+        }
+
+        topLevel.RequestAnimationFrame(_ => topLevel.RequestAnimationFrame(_ =>
+        {
+            isOnScreen = true;
+            ScheduleLoad();
+        }));
+    }
+
     void ScheduleLoad()
     {
-        if (isLoadPosted)
+        if (isLoadPosted || !isOnScreen)
         {
             return;
         }
