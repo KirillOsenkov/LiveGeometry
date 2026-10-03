@@ -7,6 +7,25 @@ if (globalThis.location.search.includes("splash")) {
     throw new Error("splash only");
 }
 
+// The emoji font, for Program.OpenEmojiFont. The gallery's first rows show emoji, so on the
+// gallery's page it is fetched now, while the runtime downloads (at a low priority, after
+// the runtime's files). The browser reads a response on this thread a piece at a time, and
+// asked for once the gallery was up, the font came in between the tiles' loads, seconds
+// after its bytes. Elsewhere it is fetched when the app asks for it.
+async function downloadEmojiFont(options) {
+    const response = await fetch('fonts/Twemoji.Mozilla.ttf', options);
+    if (!response.ok) {
+        throw new Error('emoji font: ' + response.status);
+    }
+
+    return new Uint8Array(await response.arrayBuffer());
+}
+
+let emojiFontDownload = globalThis.location.pathname === '/' ? downloadEmojiFont({ priority: 'low' }) : null;
+// a failure is the app's to report, when it asks for the font
+emojiFontDownload?.catch(() => { });
+let emojiFont = null;
+
 const { dotnet } = await import('./_framework/dotnet.js');
 
 // The bar under the splash: downloads finished, out of downloads begun. The loader asks
@@ -44,6 +63,17 @@ const dotnetRuntime = await dotnet
 // the theme from the same entry before the app is up).
 const settingPrefix = 'LiveGeometry.';
 dotnetRuntime.setModuleImports('main.js', {
+    // the emoji font (above): its length once all of it is here, then the bytes in one piece
+    fetchEmojiFont: async () => {
+        emojiFontDownload ??= downloadEmojiFont();
+        emojiFont = await emojiFontDownload;
+        return emojiFont.length;
+    },
+    copyEmojiFont: (target) => {
+        target.set(emojiFont);
+        emojiFont = null;
+        emojiFontDownload = null;
+    },
     getSetting: (key) => {
         try {
             return globalThis.localStorage.getItem(settingPrefix + key);
