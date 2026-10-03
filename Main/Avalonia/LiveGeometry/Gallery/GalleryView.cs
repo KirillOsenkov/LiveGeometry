@@ -200,6 +200,10 @@ public class GalleryView : DockPanel
     Rect tilesInView;
     bool isLoadPosted;
 
+    // Tiles loaded in one turn of the UI thread. Every turn ends with a layout and a frame:
+    // fewer frames leave more of the time to the loading, and the tiles come in groups.
+    const int TilesPerTurn = 8;
+
     void ScheduleLoad()
     {
         if (isLoadPosted)
@@ -208,18 +212,24 @@ public class GalleryView : DockPanel
         }
 
         isLoadPosted = true;
-        Dispatcher.UIThread.Post(LoadNextTile, DispatcherPriority.Background);
+        Dispatcher.UIThread.Post(LoadNextTiles, DispatcherPriority.Background);
     }
 
-    void LoadNextTile()
+    void LoadNextTiles()
     {
         isLoadPosted = false;
-        var next = NextTileToLoad();
-        if (next != null)
+        for (int i = 0; i < TilesPerTurn; i++)
         {
+            var next = NextTileToLoad();
+            if (next == null)
+            {
+                return;
+            }
+
             next.Load();
-            ScheduleLoad();
         }
+
+        ScheduleLoad();
     }
 
     /// <summary>

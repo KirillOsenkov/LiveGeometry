@@ -1587,7 +1587,7 @@ buttons and checkboxes, 3D, custom tools.
   hand line breaks (a blank line separates paragraphs). On an iPhone in portrait (canvas about
   390x565) the long explanations run off the bottom.
 - **Tiles are live drawings**, not bitmaps (`DrawingThumbnail`): no Behavior, text hidden;
-  hovering makes the draggable points drift. Loaded one per idle tick and only as they come
+  hovering makes the draggable points drift. Loaded a batch per idle tick and only as they come
   near the view (`GalleryView.NextTileToLoad`: those in view from the top, then half a screen
   around it; none while the page is hidden behind the editor): a load holds the UI thread,
   in the browser a few hundred milliseconds for a drawing with hundreds of points by
@@ -1713,7 +1713,10 @@ a segment or ray, and sides of a polygon that don't cross - legitimately absent.
   as it is: `list_threads` (thread 0 is the UI thread), `call_tree` with `focus` and
   `startMs`/`endMs`, `call_tree_inverted` for who calls a hot function, `find_hotspots` to
   compare named functions between two traces of the same scenario. A sample is 0.122 ms of
-  CPU. `NtTraceEvent` at the top of a leaf list is the profiler's own cost.
+  CPU. `NtTraceEvent` at the top of a leaf list is the profiler's own cost. The site's
+  speed is what counts, and the desktop is only a proxy for it: read a trace for the work
+  our code does, not for the JIT (the browser interprets), ReadyToRun, or the start of the
+  GPU (ANGLE, Direct3D: the browser has WebGL), and check a fix in the browser.
   2026-10-03, startup into the gallery at 1700x1100: the window's first frame at about
   1.7 s (half of it the JIT: neither our assemblies nor Avalonia's are ReadyToRun), then
   the tiles in view, 0.85 s of the UI thread's CPU (1.73 s before that day's fixes).
