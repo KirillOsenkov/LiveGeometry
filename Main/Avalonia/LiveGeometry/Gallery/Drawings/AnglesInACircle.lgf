@@ -51,7 +51,7 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </AngleArc>
-    <AngleMeasurement Name="AngleMeasurement15" OffsetX="-7.9" OffsetY="15.1">
+    <AngleMeasurement Name="AngleMeasurement15" OffsetX="-24" OffsetY="20">
       <Dependency Name="B" />
       <Dependency Name="A" />
       <Dependency Name="C" />

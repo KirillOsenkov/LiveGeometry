@@ -12,15 +12,16 @@
     <LineStyle Name="11" Color="#FF00FF00" />
     <PointStyle Name="Target" Size="16" Fill="#30FFA726" Color="#FFFFA726" StrokeWidth="2" />
     <TextStyle Name="TargetText" FontSize="14" Color="#FFFFA726" FontFamily="Segoe UI" />
+    <PointStyle Name="Handle" Size="16" Fill="#FFFFFF64" Color="#FFFFFFFF" StrokeWidth="1.5" />
   </Styles>
   <Figures>
-    <FreePoint Name="C" Style="7" X="98.68421" Y="65.037929" />
+    <FreePoint Name="C" Style="Handle" X="80" Y="65.037929" />
     <FreePoint Name="D" Style="7" X="-0.230838" Y="-30.701885" />
     <Segment Name="CD" Style="8">
       <Dependency Name="C" />
       <Dependency Name="D" />
     </Segment>
-    <PointOnFigure Name="A" Style="9" X="71.96992454948955" Y="39.18118857588601" Parameter="0.27007301710565257">
+    <PointOnFigure Name="A" Style="9" X="58.33181551642516" Y="39.18118857588601" Parameter="0.27007301710565257">
       <Dependency Name="CD" />
     </PointOnFigure>
     <PointByCoordinates Name="B" Style="10" X="(A.X) * (COS(A.Y))" Y="(A.X) * (SIN(A.Y))">

@@ -1580,10 +1580,12 @@ buttons and checkboxes, 3D, custom tools.
   the figure gets the canvas minus the text and the zoom is computed from that in one go -
   never iterate "place text, zoom to fit": it runs away once the text needs more than its
   share (under the figure, the text may leave it a third of the height; beside it, 40% of
-  the width). If the text doesn't fit it runs off the bottom and the reader drags it up: labels a
-  gallery drawing comes with can't be dragged (`Drawing.FixedLabels`, not saved, emptied once
-  the drawing is the user's own; one added later, a point's name shown, can: all of them were
-  paper at first, and a name shown on A could not be moved), a drag on one pans the view, and one that starts on the caption scrolls the
+  the width). If the text doesn't fit it runs off the bottom and the reader drags it up: the text
+  labels a gallery drawing comes with (`Label`: the caption, text in the plane) can't be
+  dragged (`Drawing.FixedLabels`, not saved, emptied once the drawing is the user's own; the
+  labels of figures - point names, measurements - and labels added later can: all of them
+  were paper at first, and a name or an angle's number could not be moved off a figure
+  dragged under it), a drag on one pans the view, and one that starts on the caption scrolls the
   pinned labels along (`PinnedLabelScroll`, by pixels, so undo brings both back). A click
   still selects one (with no way to its properties but a right click, and none at all to move
   it, they were out of reach), and a selected one drags as any label does - but the caption:

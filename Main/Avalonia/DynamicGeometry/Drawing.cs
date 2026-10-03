@@ -300,21 +300,23 @@ namespace DynamicGeometry
         /// Labels that can't be dragged: a drag on one moves the view, as on the paper, and one
         /// on a pinned label (a caption) takes the pinned labels along, so text and figure
         /// scroll together. For the drawings of the gallery, where a thumb on the text of a
-        /// phone means scrolling to read the rest. Only the labels the drawing came with
-        /// (<see cref="FixLabels"/>): a label the reader adds, a point's name shown, is theirs
-        /// to move. Not saved. Not <see cref="IFigure.Locked"/> either: a point counts as
+        /// phone means scrolling to read the rest. Only the text the drawing came with
+        /// (<see cref="FixLabels"/>): a label of a figure (a point's name, a measurement) and a
+        /// label the reader adds are theirs to move. Not saved. Not <see cref="IFigure.Locked"/> either: a point counts as
         /// locked when anything built on it is, and a caption with live numbers is built on
         /// its points.
         /// </summary>
         public HashSet<LabelBase> FixedLabels { get; } = new HashSet<LabelBase>();
 
         /// <summary>
-        /// Makes the labels the drawing has now <see cref="FixedLabels"/>
+        /// Makes the text labels the drawing has now <see cref="FixedLabels"/>: the caption and
+        /// any text in the plane, not the labels that sit by a figure (a point's name, a
+        /// measurement), which a reader moves out of the way of a figure dragged under them
         /// </summary>
         public void FixLabels()
         {
             FixedLabels.Clear();
-            FixedLabels.UnionWith(Figures.OfType<LabelBase>());
+            FixedLabels.UnionWith(Figures.OfType<Label>());
         }
 
         /// <summary>
