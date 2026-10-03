@@ -21,7 +21,18 @@ namespace LiveGeometry;
 public partial class MainView : UserControl
 {
     DockPanel LayoutRoot = new DockPanel();
-    DrawingHost DrawingHost = new DrawingHost();
+    DrawingHost drawingHost;
+
+    /// <summary>
+    /// The editor: the canvas, the ribbon with every tool, the side panel, the toolbar. Built
+    /// the first time anything asks for it (<see cref="CreateEditor"/>), not at startup: the
+    /// gallery, the start page, showed only once all of it had been made, and a visitor who
+    /// only looks at the gallery never needs it.
+    /// </summary>
+    DrawingHost DrawingHost => drawingHost ?? CreateEditor();
+
+    /// <summary>Whether the editor is there yet: what only reaches into it (a key, a press, a resize) asks first, so as not to build it</summary>
+    bool IsEditorBuilt => drawingHost != null;
 
     Behavior[] Behaviors = Array.Empty<Behavior>();
 
@@ -55,19 +66,22 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
-        AddBehaviors();
-        LayoutRoot.Children.Add(DrawingHost);
-        InitializeCommands();
         InitializeKeptDrawing();
 
-        // The geometry library surfaces errors through the WPF-style MessageBox shim.
-        MessageBox.Handler = text => DrawingHost.ShowHint(text);
-        DrawingHost.UnhandledException += (s, e) => ReportException(e.Exception);
+        // The geometry library surfaces errors through the WPF-style MessageBox shim: in the
+        // status bar, which only the editor has
+        MessageBox.Handler = text =>
+        {
+            if (IsEditorBuilt)
+            {
+                DrawingHost.ShowHint(text);
+            }
+            else
+            {
+                Console.WriteLine(text);
+            }
+        };
         AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
-
-        // Give the drawing canvas keyboard focus so behaviors receive Escape/Delete/etc.
-        DrawingHost.DrawingControl.Focusable = true;
-        DrawingHost.DrawingControl.PointerPressed += (s, e) => DrawingHost.DrawingControl.Focus();
 
         AddHandler(KeyDownEvent, MainView_KeyDown, RoutingStrategies.Tunnel);
         AddHandler(KeyUpEvent, MainView_KeyUp, RoutingStrategies.Tunnel);
@@ -90,6 +104,28 @@ public partial class MainView : UserControl
             // once the canvas has a size, or the drawing would be laid out in a 0x0 viewport
             Avalonia.Threading.Dispatcher.UIThread.Post(OpenStartupFile, Avalonia.Threading.DispatcherPriority.Loaded);
         };
+    }
+
+    /// <summary>The editor, the first time it is needed (see <see cref="DrawingHost"/>)</summary>
+    DrawingHost CreateEditor()
+    {
+        drawingHost = new DrawingHost();
+        AddBehaviors();
+
+        // the toolbar on top, the drawing host filling the rest
+        CreateToolbar();
+        LayoutRoot.Children.Add(drawingHost);
+        InitializeCommands();
+        KeepDrawingOfEditor();
+        drawingHost.UnhandledException += (s, e) => ReportException(e.Exception);
+
+        // Give the drawing canvas keyboard focus so behaviors receive Escape/Delete/etc.
+        drawingHost.DrawingControl.Focusable = true;
+        drawingHost.DrawingControl.PointerPressed += (s, e) => drawingHost.DrawingControl.Focus();
+
+        // the tour group and the ribbon as the page at hand wants them
+        UpdateTour();
+        return drawingHost;
     }
 
     private void AddBehaviors()
@@ -217,19 +253,27 @@ public partial class MainView : UserControl
         // Two pages, one showing: the gallery (the start page) and the editor. Started with a
         // file (or a batch job), or at the address of a drawing (a shared link to one of the
         // gallery, or /drawing), the editor is up from the first frame and the gallery, with
-        // its tiles, isn't even built until the Gallery button is pressed.
+        // its tiles, isn't even built until the Gallery button is pressed; started at the
+        // gallery, the editor isn't built until a drawing is opened.
         pages.Children.Add(LayoutRoot);
         Content = pages;
         bool startsInEditor = StartupFile != null || CheckFolder != null || ModernizeFolder != null || RewriteFolder != null || RecaptionFolder != null || SpaceLabelsFolder != null || IsDrawingPath(AddressBar.Current.Path);
         LayoutRoot.IsVisible = startsInEditor;
-        if (!startsInEditor)
+        if (startsInEditor)
+        {
+            CreateEditor();
+        }
+        else
         {
             EnsureGallery();
         }
+    }
 
+    void CreateToolbar()
+    {
         // No menu: the few document commands are a toolbar, everything else is the keyboard
         // (see MainView_KeyUp and HandlePlainKey), the mouse wheel and the context menu.
-        var toolbar = Toolbar;
+        var toolbar = Toolbar = new MainToolbar();
         toolbar.AddAtRight(CreateCorner());
         AppSettings.Instance.ShowRequested += page => HandleExceptions(() => DrawingHost.ShowProperties(page));
         AppSettings.Instance.DrawingBackgroundRequested += () => HandleExceptions(DrawingHost.ShowDrawingProperties);
@@ -279,7 +323,6 @@ public partial class MainView : UserControl
 
         LayoutRoot.Children.Add(toolbar);
         DockPanel.SetDock(toolbar, Dock.Top);
-        UpdateRibbon();
     }
 
     #region Ribbon
@@ -289,7 +332,8 @@ public partial class MainView : UserControl
     // screen (one is there to look, and the tabs wouldn't fit anyway) and open everywhere else;
     // once the user has pressed the button, their choice holds for the rest of the session.
 
-    readonly MainToolbar Toolbar = new MainToolbar();
+    /// <summary>The editor's, made with it (<see cref="CreateToolbar"/>)</summary>
+    MainToolbar Toolbar;
     const string RibbonShortcut = "Ctrl+F1";
 
     /// <summary>
@@ -315,6 +359,11 @@ public partial class MainView : UserControl
 
     void UpdateRibbon()
     {
+        if (!IsEditorBuilt)
+        {
+            return;
+        }
+
         bool visible = ribbonChoice ?? !(CurrentSample != null && IsSmallScreen);
         DrawingHost.Ribbon.IsVisible = visible;
         Toolbar.IsTabOpen = visible;
@@ -415,6 +464,13 @@ public partial class MainView : UserControl
         if (isNew)
         {
             Console.WriteLine("LiveGeometry error: " + text);
+        }
+
+        // the status bar and the side panel are the editor's; on the gallery before it, the
+        // console has it
+        if (!IsEditorBuilt)
+        {
+            return;
         }
 
         DrawingHost.ShowHint("Error: " + exception.Message);
@@ -541,7 +597,7 @@ public partial class MainView : UserControl
 
     void ShowGallery(bool push)
     {
-        var drawing = DrawingHost.CurrentDrawing;
+        var drawing = drawingHost?.CurrentDrawing;
         if (CurrentSample != null)
         {
             // nothing of the user's to keep; and the editor shouldn't show it when it comes back
@@ -716,6 +772,12 @@ public partial class MainView : UserControl
 
     void UpdateTour()
     {
+        // the toolbar is the editor's: made later, it asks itself (CreateEditor)
+        if (!IsEditorBuilt)
+        {
+            return;
+        }
+
         bool isSample = CurrentSample != null;
         TourGroup.IsVisible = isSample || OwnFileName != null;
         TourPrevious.IsVisible = isSample;
@@ -1248,7 +1310,7 @@ public partial class MainView : UserControl
 
     private void MainView_KeyUp(object sender, KeyEventArgs e)
     {
-        if (IsGalleryShowing)
+        if (IsGalleryShowing || !IsEditorBuilt)
         {
             shortcutKeyDown = Key.None;
             return;
@@ -1328,7 +1390,7 @@ public partial class MainView : UserControl
     /// </summary>
     void MainView_PointerPressed(object sender, PointerPressedEventArgs e)
     {
-        if (DrawingHost.IsSidePanelShown && e.Source is Avalonia.Visual source && IsEmptyChrome(source))
+        if (IsEditorBuilt && DrawingHost.IsSidePanelShown && e.Source is Avalonia.Visual source && IsEmptyChrome(source))
         {
             HandleExceptions(DrawingHost.CloseSidePanel);
         }
@@ -1435,7 +1497,7 @@ public partial class MainView : UserControl
             return;
         }
 
-        if (DrawingHost.CurrentDrawing == null)
+        if (!IsEditorBuilt || DrawingHost.CurrentDrawing == null)
         {
             return;
         }
@@ -1521,8 +1583,8 @@ public partial class MainView : UserControl
             return;
         }
 
-        Control target = DrawingHost.DrawingControl;
-        if (!target.Focus())
+        Control target = drawingHost?.DrawingControl;
+        if (target == null || !target.Focus())
         {
             target = this;
             if (!target.Focus())

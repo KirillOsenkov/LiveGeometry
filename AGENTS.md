@@ -1541,7 +1541,11 @@ buttons and checkboxes, 3D, custom tools.
   `main.js` do pushState/popstate. `index.html` needs `<base href="/">` for that (all routes
   serve it; `web.config` and `tools/serve.cs` fall back to it). All page changes go through
   `MainView.Show*`. Started at a drawing's address the gallery isn't built at all (the address
-  is readable synchronously since `main.js` registers its imports before the runtime starts).
+  is readable synchronously since `main.js` registers its imports before the runtime starts),
+  and started at the gallery the editor isn't (`MainView.DrawingHost` builds the drawing
+  host, the ribbon's tools and the toolbar the first time anything asks for it; what can run
+  on the gallery page - keys, presses, resizes, error reports - asks `IsEditorBuilt` first).
+  Built up front it was the most of what came before the gallery's first frame.
   The gallery page starts with a row of small tiles (`GalleryView.CreateStartTile`): New,
   Open (the editor's Open dialog; the page has no toolbar, so this and Ctrl+O are the ways
   to a file from there) and, while there is a drawing to go back to, My Drawing. They are

@@ -44,6 +44,16 @@ public partial class MainView
 
         keptDrawingText = SettingsStore.Current.Get(KeptDrawingKey);
         keptDrawingName = SettingsStore.Current.Get(KeptDrawingNameKey);
+        SettingsStore.Leaving += () => HandleExceptions(KeepOwnDrawing);
+    }
+
+    /// <summary>The drawings of the editor are kept after every undo step: hooked when the editor is made (<see cref="CreateEditor"/>)</summary>
+    void KeepDrawingOfEditor()
+    {
+        if (!KeepsOwnDrawing)
+        {
+            return;
+        }
 
         var control = DrawingHost.DrawingControl;
         control.DrawingAttach += drawing => drawing.ActionManager.CollectionChanged += ActionManager_KeepDrawing;
@@ -52,8 +62,6 @@ public partial class MainView
         {
             control.Drawing.ActionManager.CollectionChanged += ActionManager_KeepDrawing;
         }
-
-        SettingsStore.Leaving += () => HandleExceptions(KeepOwnDrawing);
     }
 
     bool HasKeptDrawing => keptDrawingText != null;
@@ -86,7 +94,7 @@ public partial class MainView
     /// gallery is open: back from one, the editor holds a blank page and the user's drawing
     /// is parked.)
     /// </summary>
-    Drawing UserDrawing => OwnDrawing ?? (CurrentSample == null ? DrawingHost.CurrentDrawing : null);
+    Drawing UserDrawing => OwnDrawing ?? (CurrentSample == null ? drawingHost?.CurrentDrawing : null);
 
     void KeepOwnDrawing()
     {
@@ -100,7 +108,7 @@ public partial class MainView
         // a construction under way is not in the drawing yet (its point following the
         // cursor is a figure while it lasts): kept when it is done, which is an undo step
         if (drawing != null
-            && drawing == DrawingHost.CurrentDrawing
+            && drawing == drawingHost?.CurrentDrawing
             && (DrawingHost.DrawingControl.ConstructionInProgress || drawing.IsRecordingTransaction))
         {
             return;
