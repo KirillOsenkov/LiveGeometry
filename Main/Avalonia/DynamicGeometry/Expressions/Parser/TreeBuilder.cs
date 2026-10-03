@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -228,14 +229,7 @@ namespace DynamicGeometry
                 return null;
             }
 
-            // by name in any case, the one written exactly first (GetProperty with
-            // IgnoreCase throws when two differ only by case, or one hides another)
-            Type type = figure.GetType();
-            var properties = type
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.Name.Equals(propertyName, StringComparison.OrdinalIgnoreCase) && p.GetIndexParameters().Length == 0 && p.CanRead)
-                .ToList();
-            var property = properties.FirstOrDefault(p => p.Name == propertyName) ?? properties.FirstOrDefault();
+            var property = FindProperty(figure.GetType(), propertyName);
             if (property == null)
             {
                 Status.AddPropertyNotFoundError(figure, propertyName);
@@ -250,6 +244,25 @@ namespace DynamicGeometry
             }
 
             return value;
+        }
+
+        // the property a name means on a type of figure, looked up once (A.X in one expression
+        // after another went through all the properties of a point each time)
+        static readonly ConcurrentDictionary<(Type Type, string Name), PropertyInfo> properties
+            = new ConcurrentDictionary<(Type Type, string Name), PropertyInfo>();
+
+        static PropertyInfo FindProperty(Type type, string propertyName)
+        {
+            return properties.GetOrAdd((type, propertyName), key =>
+            {
+                // by name in any case, the one written exactly first (GetProperty with
+                // IgnoreCase throws when two differ only by case, or one hides another)
+                var candidates = key.Type
+                    .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(p => p.Name.Equals(key.Name, StringComparison.OrdinalIgnoreCase) && p.GetIndexParameters().Length == 0 && p.CanRead)
+                    .ToList();
+                return candidates.FirstOrDefault(p => p.Name == key.Name) ?? candidates.FirstOrDefault();
+            });
         }
 
         Expression CreateCallExpression(Node root)

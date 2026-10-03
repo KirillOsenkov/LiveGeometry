@@ -123,10 +123,33 @@ namespace DynamicGeometry
                 return null;
             }
 
-            return Drawing.Figures.FirstOrDefault(f => f is INumber && f.Name == name) as INumber;
+            if (!numbersByName.TryGetValue(name, out var number))
+            {
+                number = Drawing.Figures.FirstOrDefault(f => f is INumber && f.Name == name) as INumber;
+                numbersByName[name] = number;
+            }
+
+            return number;
         }
 
+        // What the names of the expression stand for, looked up once each (a binder binds one
+        // expression): an expression says the same name several times (A.X - B.X, A.Y - B.Y),
+        // and each lookup is a search of the whole drawing
+        readonly Dictionary<string, INumber> numbersByName = new Dictionary<string, INumber>();
+        readonly Dictionary<string, IFigure> figuresByName = new Dictionary<string, IFigure>();
+
         public IFigure ResolveFigure(string figureName)
+        {
+            if (!figuresByName.TryGetValue(figureName, out var figure))
+            {
+                figure = FindFigure(figureName);
+                figuresByName[figureName] = figure;
+            }
+
+            return figure;
+        }
+
+        IFigure FindFigure(string figureName)
         {
             var candidate = Drawing.Figures[figureName];
             if (candidate == null)
