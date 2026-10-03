@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-3.4" Top="6.4" Right="8" Bottom="-6.4" />
+  <Styles>
+    <ShapeStyle Name="Mirror ball" Color="#FF8A94A6" StrokeWidth="3">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFF7F9FC" Offset="0" />
+          <GradientStop Color="#FFD3DCE8" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF9AA6B8">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF46536A" Offset="0" />
+            <GradientStop Color="#FF1C232E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Mirror" Color="#FF8A94A6" StrokeWidth="3">
+      <Dark Color="#FF9AA6B8" />
+    </LineStyle>
+    <LineStyle Name="Dashed" Color="#FF8A8A8A" StrokeWidth="1.25" Dash="Dash" />
+    <LineStyle Name="Row0" Color="#FFE0393E" StrokeWidth="2.5" />
+    <LineStyle Name="Row1" Color="#FFF28C28" StrokeWidth="2.5" />
+    <LineStyle Name="Row2" Color="#FFD4A000" StrokeWidth="2.5" />
+    <LineStyle Name="Row3" Color="#FF7CB342" StrokeWidth="2.5" />
+    <LineStyle Name="Row4" Color="#FF2E9E5B" StrokeWidth="2.5" />
+    <LineStyle Name="Column0" Color="#FF00A3A3" StrokeWidth="2.5" />
+    <LineStyle Name="Column1" Color="#FF2D8CEB" StrokeWidth="2.5" />
+    <LineStyle Name="Column2" Color="#FF5C6BC0" StrokeWidth="2.5" />
+    <LineStyle Name="Column3" Color="#FF9B59B6" StrokeWidth="2.5" />
+    <LineStyle Name="Column4" Color="#FFD63384" StrokeWidth="2.5" />
+  </Styles>
+  <Figures>
+    <Slider Name="r" X="-1.5" Y="-2.5" Value="3" />
+    <FreePoint Name="O" X="0" Y="3" />
+    <CircleByRadius Name="Mirror circle" Style="Mirror ball">
+      <Dependency Name="r" />
+      <Dependency Name="O" />
+    </CircleByRadius>
+    <FreePoint Name="M" X="1.8" Y="-0.5" />
+    <FreePoint Name="N" X="8.6" Y="-0.5" />
+    <LineTwoPoints Name="Mirror line" Style="Mirror">
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+    </LineTwoPoints>
+    <FreePoint Name="P" X="3.15" Y="1" />
+    <FreePoint Name="B" X="7.15" Y="1" />
+    <PointByCoordinates Name="Grid10" Visible="false" X="P.X + 0.25 * (B.X - P.X)" Y="P.Y + 0.25 * (B.Y - P.Y)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid20" Visible="false" X="P.X + 0.5 * (B.X - P.X)" Y="P.Y + 0.5 * (B.Y - P.Y)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid30" Visible="false" X="P.X + 0.75 * (B.X - P.X)" Y="P.Y + 0.75 * (B.Y - P.Y)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid01" Visible="false" X="P.X - 0.25 * (B.Y - P.Y)" Y="P.Y + 0.25 * (B.X - P.X)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid41" Visible="false" X="P.X + 1 * (B.X - P.X) - 0.25 * (B.Y - P.Y)" Y="P.Y + 1 * (B.Y - P.Y) + 0.25 * (B.X - P.X)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid02" Visible="false" X="P.X - 0.5 * (B.Y - P.Y)" Y="P.Y + 0.5 * (B.X - P.X)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid42" Visible="false" X="P.X + 1 * (B.X - P.X) - 0.5 * (B.Y - P.Y)" Y="P.Y + 1 * (B.Y - P.Y) + 0.5 * (B.X - P.X)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid03" Visible="false" X="P.X - 0.75 * (B.Y - P.Y)" Y="P.Y + 0.75 * (B.X - P.X)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid43" Visible="false" X="P.X + 1 * (B.X - P.X) - 0.75 * (B.Y - P.Y)" Y="P.Y + 1 * (B.Y - P.Y) + 0.75 * (B.X - P.X)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid04" Visible="false" X="P.X - 1 * (B.Y - P.Y)" Y="P.Y + 1 * (B.X - P.X)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid14" Visible="false" X="P.X + 0.25 * (B.X - P.X) - 1 * (B.Y - P.Y)" Y="P.Y + 0.25 * (B.Y - P.Y) + 1 * (B.X - P.X)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid24" Visible="false" X="P.X + 0.5 * (B.X - P.X) - 1 * (B.Y - P.Y)" Y="P.Y + 0.5 * (B.Y - P.Y) + 1 * (B.X - P.X)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid34" Visible="false" X="P.X + 0.75 * (B.X - P.X) - 1 * (B.Y - P.Y)" Y="P.Y + 0.75 * (B.Y - P.Y) + 1 * (B.X - P.X)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Grid44" Visible="false" X="P.X + 1 * (B.X - P.X) - 1 * (B.Y - P.Y)" Y="P.Y + 1 * (B.Y - P.Y) + 1 * (B.X - P.X)">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <ReflectedPoint Name="P'">
+      <Dependency Name="P" />
+      <Dependency Name="Mirror circle" />
+    </ReflectedPoint>
+    <Segment Name="OP" Style="Dashed">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="OP'" Style="Dashed">
+      <Dependency Name="O" />
+      <Dependency Name="P'" />
+    </Segment>
+    <Segment Name="Row0" Style="Row0">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Row1" Style="Row1">
+      <Dependency Name="Grid01" />
+      <Dependency Name="Grid41" />
+    </Segment>
+    <Segment Name="Row2" Style="Row2">
+      <Dependency Name="Grid02" />
+      <Dependency Name="Grid42" />
+    </Segment>
+    <Segment Name="Row3" Style="Row3">
+      <Dependency Name="Grid03" />
+      <Dependency Name="Grid43" />
+    </Segment>
+    <Segment Name="Row4" Style="Row4">
+      <Dependency Name="Grid04" />
+      <Dependency Name="Grid44" />
+    </Segment>
+    <Segment Name="Column0" Style="Column0">
+      <Dependency Name="P" />
+      <Dependency Name="Grid04" />
+    </Segment>
+    <Segment Name="Column1" Style="Column1">
+      <Dependency Name="Grid10" />
+      <Dependency Name="Grid14" />
+    </Segment>
+    <Segment Name="Column2" Style="Column2">
+      <Dependency Name="Grid20" />
+      <Dependency Name="Grid24" />
+    </Segment>
+    <Segment Name="Column3" Style="Column3">
+      <Dependency Name="Grid30" />
+      <Dependency Name="Grid34" />
+    </Segment>
+    <Segment Name="Column4" Style="Column4">
+      <Dependency Name="B" />
+      <Dependency Name="Grid44" />
+    </Segment>
+    <PointOnFigure Name="Row0 slider" Visible="false" Auxiliary="true" X="5.15" Y="1" Parameter="0.5">
+      <Dependency Name="Row0" />
+    </PointOnFigure>
+    <ReflectedPoint Name="Row0 traced" Visible="false" Auxiliary="true">
+      <Dependency Name="Row0 slider" />
+      <Dependency Name="Mirror circle" />
+    </ReflectedPoint>
+    <Locus Name="Row0 inverted" Style="Row0">
+      <Dependency Name="Row0 traced" />
+      <Dependency Name="Row0 slider" />
+    </Locus>
+    <PointOnFigure Name="Row1 slider" Visible="false" Auxiliary="true" X="5.15" Y="2" Parameter="0.5">
+      <Dependency Name="Row1" />
+    </PointOnFigure>
+    <ReflectedPoint Name="Row1 traced" Visible="false" Auxiliary="true">
+      <Dependency Name="Row1 slider" />
+      <Dependency Name="Mirror circle" />
+    </ReflectedPoint>
+    <Locus Name="Row1 inverted" Style="Row1">
+      <Dependency Name="Row1 traced" />
+      <Dependency Name="Row1 slider" />
+    </Locus>
+    <PointOnFigure Name="Row2 slider" Visible="false" Auxiliary="true" X="5.15" Y="3" Parameter="0.5">
+      <Dependency Name="Row2" />
+    </PointOnFigure>
+    <ReflectedPoint Name="Row2 traced" Visible="false" Auxiliary="true">
+      <Dependency Name="Row2 slider" />
+      <Dependency Name="Mirror circle" />
+    </ReflectedPoint>
+    <Locus Name="Row2 inverted" Style="Row2">
+      <Dependency Name="Row2 traced" />
+      <Dependency Name="Row2 slider" />
+    </Locus>
+    <PointOnFigure Name="Row3 slider" Visible="false" Auxiliary="true" X="5.15" Y="4" Parameter="0.5">
+      <Dependency Name="Row3" />
+    </PointOnFigure>
+    <ReflectedPoint Name="Row3 traced" Visible="false" Auxiliary="true">
+      <Dependency Name="Row3 slider" />
+      <Dependency Name="Mirror circle" />
+    </ReflectedPoint>
+    <Locus Name="Row3 inverted" Style="Row3">
+      <Dependency Name="Row3 traced" />
+      <Dependency Name="Row3 slider" />
+    </Locus>
+    <PointOnFigure Name="Row4 slider" Visible="false" Auxiliary="true" X="5.15" Y="5" Parameter="0.5">
+      <Dependency Name="Row4" />
+    </PointOnFigure>
+    <ReflectedPoint Name="Row4 traced" Visible="false" Auxiliary="true">
+      <Dependency Name="Row4 slider" />
+      <Dependency Name="Mirror circle" />
+    </ReflectedPoint>
+    <Locus Name="Row4 inverted" Style="Row4">
+      <Dependency Name="Row4 traced" />
+      <Dependency Name="Row4 slider" />
+    </Locus>
+    <PointOnFigure Name="Column0 slider" Visible="false" Auxiliary="true" X="3.15" Y="3" Parameter="0.5">
+      <Dependency Name="Column0" />
+    </PointOnFigure>
+    <ReflectedPoint Name="Column0 traced" Visible="false" Auxiliary="true">
+      <Dependency Name="Column0 slider" />
+      <Dependency Name="Mirror circle" />
+    </ReflectedPoint>
+    <Locus Name="Column0 inverted" Style="Column0">
+      <Dependency Name="Column0 traced" />
+      <Dependency Name="Column0 slider" />
+    </Locus>
+    <PointOnFigure Name="Column1 slider" Visible="false" Auxiliary="true" X="4.15" Y="3" Parameter="0.5">
+      <Dependency Name="Column1" />
+    </PointOnFigure>
+    <ReflectedPoint Name="Column1 traced" Visible="false" Auxiliary="true">
+      <Dependency Name="Column1 slider" />
+      <Dependency Name="Mirror circle" />
+    </ReflectedPoint>
+    <Locus Name="Column1 inverted" Style="Column1">
+      <Dependency Name="Column1 traced" />
+      <Dependency Name="Column1 slider" />
+    </Locus>
+    <PointOnFigure Name="Column2 slider" Visible="false" Auxiliary="true" X="5.15" Y="3" Parameter="0.5">
+      <Dependency Name="Column2" />
+    </PointOnFigure>
+    <ReflectedPoint Name="Column2 traced" Visible="false" Auxiliary="true">
+      <Dependency Name="Column2 slider" />
+      <Dependency Name="Mirror circle" />
+    </ReflectedPoint>
+    <Locus Name="Column2 inverted" Style="Column2">
+      <Dependency Name="Column2 traced" />
+      <Dependency Name="Column2 slider" />
+    </Locus>
+    <PointOnFigure Name="Column3 slider" Visible="false" Auxiliary="true" X="6.15" Y="3" Parameter="0.5">
+      <Dependency Name="Column3" />
+    </PointOnFigure>
+    <ReflectedPoint Name="Column3 traced" Visible="false" Auxiliary="true">
+      <Dependency Name="Column3 slider" />
+      <Dependency Name="Mirror circle" />
+    </ReflectedPoint>
+    <Locus Name="Column3 inverted" Style="Column3">
+      <Dependency Name="Column3 traced" />
+      <Dependency Name="Column3 slider" />
+    </Locus>
+    <PointOnFigure Name="Column4 slider" Visible="false" Auxiliary="true" X="7.15" Y="3" Parameter="0.5">
+      <Dependency Name="Column4" />
+    </PointOnFigure>
+    <ReflectedPoint Name="Column4 traced" Visible="false" Auxiliary="true">
+      <Dependency Name="Column4 slider" />
+      <Dependency Name="Mirror circle" />
+    </ReflectedPoint>
+    <Locus Name="Column4 inverted" Style="Column4">
+      <Dependency Name="Column4 traced" />
+      <Dependency Name="Column4 slider" />
+    </Locus>
+    <ReflectedPoint Name="Mirror00" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror10" Visible="false">
+      <Dependency Name="Grid10" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror20" Visible="false">
+      <Dependency Name="Grid20" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror30" Visible="false">
+      <Dependency Name="Grid30" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror40" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror01" Visible="false">
+      <Dependency Name="Grid01" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror41" Visible="false">
+      <Dependency Name="Grid41" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror02" Visible="false">
+      <Dependency Name="Grid02" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror42" Visible="false">
+      <Dependency Name="Grid42" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror03" Visible="false">
+      <Dependency Name="Grid03" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror43" Visible="false">
+      <Dependency Name="Grid43" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror04" Visible="false">
+      <Dependency Name="Grid04" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror14" Visible="false">
+      <Dependency Name="Grid14" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror24" Visible="false">
+      <Dependency Name="Grid24" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror34" Visible="false">
+      <Dependency Name="Grid34" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Mirror44" Visible="false">
+      <Dependency Name="Grid44" />
+      <Dependency Name="Mirror line" />
+    </ReflectedPoint>
+    <Segment Name="Row0 reflected" Style="Row0">
+      <Dependency Name="Mirror00" />
+      <Dependency Name="Mirror40" />
+    </Segment>
+    <Segment Name="Row1 reflected" Style="Row1">
+      <Dependency Name="Mirror01" />
+      <Dependency Name="Mirror41" />
+    </Segment>
+    <Segment Name="Row2 reflected" Style="Row2">
+      <Dependency Name="Mirror02" />
+      <Dependency Name="Mirror42" />
+    </Segment>
+    <Segment Name="Row3 reflected" Style="Row3">
+      <Dependency Name="Mirror03" />
+      <Dependency Name="Mirror43" />
+    </Segment>
+    <Segment Name="Row4 reflected" Style="Row4">
+      <Dependency Name="Mirror04" />
+      <Dependency Name="Mirror44" />
+    </Segment>
+    <Segment Name="Column0 reflected" Style="Column0">
+      <Dependency Name="Mirror00" />
+      <Dependency Name="Mirror04" />
+    </Segment>
+    <Segment Name="Column1 reflected" Style="Column1">
+      <Dependency Name="Mirror10" />
+      <Dependency Name="Mirror14" />
+    </Segment>
+    <Segment Name="Column2 reflected" Style="Column2">
+      <Dependency Name="Mirror20" />
+      <Dependency Name="Mirror24" />
+    </Segment>
+    <Segment Name="Column3 reflected" Style="Column3">
+      <Dependency Name="Mirror30" />
+      <Dependency Name="Mirror34" />
+    </Segment>
+    <Segment Name="Column4 reflected" Style="Column4">
+      <Dependency Name="Mirror40" />
+      <Dependency Name="Mirror44" />
+    </Segment>
+    <PointLabel Name="LabelO" OffsetX="-20" OffsetY="-8" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="O" />
+    </PointLabel>
+    <PointLabel Name="LabelP" OffsetX="-6" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="P" />
+    </PointLabel>
+    <PointLabel Name="LabelB" OffsetX="6" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="LabelP'" OffsetX="-22" OffsetY="4" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="P'" />
+    </PointLabel>
+    <PointLabel Name="LabelM" OffsetX="-6" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="M" />
+    </PointLabel>
+    <PointLabel Name="LabelN" OffsetX="-6" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="N" />
+    </PointLabel>
+    <Label Name="Title" Style="GalleryTitle" Text="Inversion in a Circle" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Reflected across a line, the grid flips over and its lines stay straight. Reflected in a circle (called inversion), it turns inside out and its lines bend into arcs.\n\nEach point P goes to the point P′ on the ray from O through P where\nOP · OP′ = r²\nHere [OP] · [dist(O, P')] = [OP * dist(O, P')] = [r]².\n\nOutside goes inside, inside goes outside, and the circle itself stays put. A line that misses O becomes a circle through O; a line through O stays a line.\n\nA shiny Christmas ornament does something similar: it squeezes the whole room into the ball and curves its straight edges. Its formula is different, but the idea is the same.\n\nDrag P and B to move the grid, O and r to change the circle, M and N to tilt the mirror line. To invert figures of your own, pick Reflect on the Transform tab and click a circle as the mirror." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+      <Dependency Name="P'" />
+      <Dependency Name="r" />
+    </Label>
+  </Figures>
+</Drawing>

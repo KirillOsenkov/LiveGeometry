@@ -97,6 +97,7 @@ public static class GalleryCatalog
         Item("falling-ladder", "The Falling Ladder", "Ladder"),
         Item("square-in-square", "Square in a Square"),
         Item("composition-of-reflections", "Two Reflections"),
+        Item("circle-inversion", "Inversion in a Circle"),
         Item("sierpinski", "Sierpinski Triangle"),
         Item("napoleons-theorem", "Napoleon's Theorem"),
         Item("platonic-solids", "The Five Platonic Solids", "PlatonicSolids"),
