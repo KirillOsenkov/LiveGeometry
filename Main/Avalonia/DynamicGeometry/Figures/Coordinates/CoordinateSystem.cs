@@ -68,7 +68,7 @@ namespace DynamicGeometry
         /// <summary>
         /// Shows the logical rectangle as large as the canvas allows, centered.
         /// </summary>
-        void Fit(Rect logicalBounds, double marginPixels, double maxUnitLength = MaxUnitLength)
+        void Fit(Rect logicalBounds, double marginPixels, double maxUnitLength = MaxUnitLength, double zoom = 1)
         {
             var physicalSize = PhysicalSize;
             var availableWidth = M.Max(physicalSize.X - 2 * marginPixels, physicalSize.X / 2);
@@ -81,7 +81,7 @@ namespace DynamicGeometry
                 newUnitLength = M.Min(
                     logicalBounds.Width > 0 ? availableWidth / logicalBounds.Width : double.MaxValue,
                     logicalBounds.Height > 0 ? availableHeight / logicalBounds.Height : double.MaxValue);
-                newUnitLength = M.Min(newUnitLength, maxUnitLength);
+                newUnitLength = M.Min(newUnitLength, maxUnitLength) * zoom;
             }
 
             SetView(logicalBounds.Center, ClampUnitLength(newUnitLength));
@@ -197,7 +197,8 @@ namespace DynamicGeometry
         /// A part of the plane to keep in view whatever is in it: graphs and lines have no
         /// bounds of their own
         /// </param>
-        public void ZoomExtend(Rect? alsoShow = null)
+        /// <param name="zoom">A factor on the zoom that fits (a tile of the gallery is fitted a little closer)</param>
+        public void ZoomExtend(Rect? alsoShow = null, double zoom = 1)
         {
             Rect bounds;
             if (!TryGetBoundsToShow(out bounds, alsoShow))
@@ -207,13 +208,16 @@ namespace DynamicGeometry
             }
 
             double margin = FitMarginPixels + GetPointReach();
-            Fit(bounds, margin, MaxFitUnitLength);
+            Fit(bounds, margin, MaxFitUnitLength, zoom);
 
             // text keeps its size in pixels, so in logical units a label grows as the view
-            // zooms out: measure again at the new zoom until it settles
-            for (int i = 0; i < 3 && TryGetBoundsToShow(out bounds, alsoShow); i++)
+            // zooms out: measure again at the new zoom until it settles. Only while it
+            // changes: each fit works the whole drawing out again, and without labels the
+            // bounds are the same at every zoom.
+            for (int i = 0; i < 3 && TryGetBoundsToShow(out var refitted, alsoShow) && refitted != bounds; i++)
             {
-                Fit(bounds, margin, MaxFitUnitLength);
+                bounds = refitted;
+                Fit(bounds, margin, MaxFitUnitLength, zoom);
             }
         }
 

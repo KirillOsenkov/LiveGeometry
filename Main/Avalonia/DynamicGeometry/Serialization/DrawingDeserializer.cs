@@ -234,6 +234,14 @@ namespace DynamicGeometry
         public virtual void ReadStyles(Drawing drawing, XElement element)
         {
             var stylesNode = element.Element("Styles");
+
+            // a new drawing's defaults are taken as they are, not made again
+            var defaults = drawing.StyleManager.FreshDefaults;
+            if (stylesNode == null && defaults != null)
+            {
+                return;
+            }
+
             drawing.StyleManager.Clear();
             if (stylesNode == null)
             {
@@ -261,7 +269,7 @@ namespace DynamicGeometry
                 }
             }
 
-            drawing.StyleManager.AddWithDefaults(own);
+            drawing.StyleManager.AddWithDefaults(own, defaults);
         }
 
         static HashSet<string> styleTypes;

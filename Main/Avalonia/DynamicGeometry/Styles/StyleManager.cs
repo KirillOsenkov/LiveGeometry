@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Avalonia.Media;
 using GuiLabs.Undo;
@@ -17,12 +18,43 @@ namespace DynamicGeometry
         public StyleManager(Drawing drawing)
         {
             list.ItemAdded += OnStyleAdded;
+            list.ItemRemoved += style => ForgetFreshDefaults();
             AddDefaultStyles();
             Drawing = drawing;
         }
 
+        // The default styles as AddDefaultStyles made them, while the list holds them and
+        // nothing else and none of them has changed: a file read into a new drawing takes
+        // them as they are (DrawingDeserializer.ReadStyles). It made a second set for every
+        // drawing it read, every tile of the gallery among them.
+        IFigureStyle[] freshDefaults;
+
+        /// <summary>The defaults of a new drawing, untouched (see <see cref="AddWithDefaults"/>); null once anything was added, taken away or changed</summary>
+        public IReadOnlyList<IFigureStyle> FreshDefaults => freshDefaults;
+
+        void ForgetFreshDefaults()
+        {
+            if (freshDefaults == null)
+            {
+                return;
+            }
+
+            foreach (var style in freshDefaults)
+            {
+                style.PropertyChanged -= FreshDefault_PropertyChanged;
+            }
+
+            freshDefaults = null;
+        }
+
+        void FreshDefault_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            ForgetFreshDefaults();
+        }
+
         private void OnStyleAdded(IFigureStyle style)
         {
+            ForgetFreshDefaults();
             if (style.Name.IsEmpty())
             {
                 style.Name = GenerateUniqueName();
@@ -273,6 +305,14 @@ namespace DynamicGeometry
             list.AddRange(newStyles);
 
             numDefaultStyles = newStyles.Length;
+            if (list.Count == newStyles.Length)
+            {
+                freshDefaults = newStyles;
+                foreach (var style in newStyles)
+                {
+                    style.PropertyChanged += FreshDefault_PropertyChanged;
+                }
+            }
         }
 
         /// <summary>A point style filled with a theme color, rimmed with the theme's ink</summary>
@@ -525,8 +565,11 @@ namespace DynamicGeometry
         /// <summary>A fresh set of the styles a new drawing starts with, names included</summary>
         public static List<IFigureStyle> CreateDefaultStyles()
         {
-            // unnamed defaults get their names ("1", "2"...) on the way into a manager
-            return new StyleManager(drawing: null).list.ToList();
+            // unnamed defaults get their names ("1", "2"...) on the way into a manager; the
+            // manager lets go of them (it would stay subscribed to the styles it hands out)
+            var manager = new StyleManager(drawing: null);
+            manager.ForgetFreshDefaults();
+            return manager.list.ToList();
         }
 
         /// <summary>
@@ -541,7 +584,8 @@ namespace DynamicGeometry
         /// default used to look like (<see cref="LegacyDefaults"/>): the figures find the
         /// default under the old name.
         /// </summary>
-        public void AddWithDefaults(IList<IFigureStyle> own)
+        /// <param name="defaults">Default styles nothing else has (<see cref="FreshDefaults"/>), to take instead of making a new set</param>
+        public void AddWithDefaults(IList<IFigureStyle> own, IReadOnlyList<IFigureStyle> defaults = null)
         {
             var taken = new HashSet<IFigureStyle>();
             aliases.Clear();
@@ -553,7 +597,7 @@ namespace DynamicGeometry
                 }
             }
 
-            foreach (var defaultStyle in CreateDefaultStyles())
+            foreach (var defaultStyle in defaults ?? CreateDefaultStyles())
             {
                 var replacement = own.FirstOrDefault(s => s.Name == defaultStyle.Name);
                 if (replacement != null)

@@ -210,7 +210,13 @@ public static class GalleryDrawing
     /// </summary>
     public static Rect? GetPlane(string drawingText)
     {
-        var viewport = XElement.Parse(drawingText).Element("Viewport");
+        return GetPlane(XElement.Parse(drawingText));
+    }
+
+    /// <summary>The same, of a drawing parsed already: parsing the whole file again for one attribute was a good part of loading a tile</summary>
+    public static Rect? GetPlane(XElement drawing)
+    {
+        var viewport = drawing.Element("Viewport");
         if (viewport == null || (string)viewport.Attribute("Grid") != "true")
         {
             return null;

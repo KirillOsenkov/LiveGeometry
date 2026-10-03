@@ -28,8 +28,23 @@ public class GalleryItem
 
     public string Path => GalleryCatalog.PathPrefix + Slug;
 
-    /// <summary>See <see cref="GalleryDrawing.GetPlane"/></summary>
-    public Avalonia.Rect? Plane => GalleryDrawing.GetPlane(LoadText());
+    Avalonia.Rect? plane;
+    bool isPlaneRead;
+
+    /// <summary>See <see cref="GalleryDrawing.GetPlane(string)"/>; read once, it is asked on every resize of the window</summary>
+    public Avalonia.Rect? Plane
+    {
+        get
+        {
+            if (!isPlaneRead)
+            {
+                plane = GalleryDrawing.GetPlane(LoadText());
+                isPlaneRead = true;
+            }
+
+            return plane;
+        }
+    }
 
     /// <summary>Some of its points are characters (an emoji, a ★), drawn in the emoji font (<see cref="DynamicGeometry.EmojiFont"/>)</summary>
     public bool UsesEmoji => LoadText().Contains(" Character=\"", StringComparison.Ordinal);

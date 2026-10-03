@@ -230,8 +230,7 @@ public class DrawingThumbnail : Viewbox
             }
             else
             {
-                drawing.CoordinateSystem.ZoomExtend(item.Plane);
-                drawing.CoordinateSystem.Zoom(zoomAfterFit, new Point(SurfaceWidth / 2, SurfaceHeight / 2));
+                drawing.CoordinateSystem.ZoomExtend(GalleryDrawing.GetPlane(element), zoomAfterFit);
             }
 
             Drawing = drawing;
