@@ -199,11 +199,6 @@ public static class GalleryDrawing
             figure = drawing.ChooseScene(room.Width, room.Height).Value;
             drawing.ActiveScene = figure;
         }
-        else
-        {
-            // a big point (an emoji) would stick out of the room by half its size
-            room = room.Deflate(coordinateSystem.GetPointReach(include: f => !IsCaption(f)));
-        }
 
         // the zoom that fills the room; a figure with no size keeps the zoom it has
         double unitLength = coordinateSystem.UnitLength;
@@ -212,6 +207,16 @@ public static class GalleryDrawing
             unitLength = System.Math.Min(
                 figure.Width > 0 ? room.Width / figure.Width : double.MaxValue,
                 figure.Height > 0 ? room.Height / figure.Height : double.MaxValue);
+            if (!hasScene)
+            {
+                // a big point (an emoji) would stick out of the room by half its size
+                unitLength = coordinateSystem.LimitZoomByPointReach(
+                    unitLength,
+                    figure.Center,
+                    room.Size,
+                    include: f => !IsCaption(f));
+            }
+
             unitLength = System.Math.Min(unitLength, CoordinateSystem.MaxFitUnitLength);
         }
 

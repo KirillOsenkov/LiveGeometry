@@ -257,10 +257,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **`RotateTransform`**: no CenterX/CenterY - Avalonia rotates about `RenderTransformOrigin`
   (the middle by default), and WPF-style centering shifts a tilted ellipse off its center.
 - **A TextBlock drops lines that don't fit its arranged height**: it lays its text out again
-  at arrange time, at most as high as the space given, and leaves out every line that
-  doesn't fit whole. Arranged a pixel shorter than it measured (a phone's scaling, it
-  seems), a wrapped caption lost its last line, also when dragged into view. A label's text
-  is a `LabelTextBlock`, laid out at least as high as it measured.
+  at arrange time, in the arranged size, and leaves out every line past its height (they are
+  not clipped: dragging the label doesn't bring them back). On an iPhone only (3x pixels;
+  never seen on Windows or in headless Edge) a wrapped caption lost its last line, also when
+  laid out at least as high as it measured, so the arranged layout wrapped into a line more.
+  A label's text is a `LabelTextBlock`, laid out again at the width it measured at and with
+  no height limit; that fixed it (2026-10-03). The exact cause wasn't found.
 - **In the browser a posted job can keep the page from painting**: Avalonia's dispatcher
   runs what is due (Background jobs, a short timer) in the same JavaScript task as the
   animation frame, before it gives the page back, and the browser paints only between
@@ -1602,8 +1604,12 @@ buttons and checkboxes, 3D, custom tools.
   listed by a show/hide box, goes under the explanation a paragraph down, its room kept
   while it is hidden (`LabelBase.MeasureSize` measures a hidden label as shown: Avalonia
   measures it as nothing). Under the caption the figure keeps at least a third of the
-  height; a catalog item can ask for more (`stackedFigureShare`, Treasure Island: its
-  portrait scene crops the island at the sides on a phone).
+  height; a catalog item can ask for more (`stackedFigureShare`: the emoji drawings, Steiner's,
+  the pentagon), and a second, narrower scene crops a picture at the phone's sides (Treasure
+  Island, Magic Tree, Fireworks; full screen picks the wide one). A point's own size limits
+  the zoom only where the point is (`CoordinateSystem.LimitZoomByPointReach`): shrinking the
+  room on every side by the biggest emoji (Kaleidoscope's blossom in the middle) left the
+  figure far smaller than the room.
 - **Tiles are live drawings**, not bitmaps (`DrawingThumbnail`): no Behavior, text hidden;
   hovering makes the draggable points drift. Loaded a batch per idle tick and only as they come
   near the view (`GalleryView.NextTileToLoad`: those in view from the top, then half a screen
@@ -1630,8 +1636,9 @@ buttons and checkboxes, 3D, custom tools.
   2026-10-02): an emoji keeps its size in pixels while the figure is fitted to the window,
   so they are drawn a few units across: zoom to fit stops at
   `CoordinateSystem.MaxFitUnitLength` (200 px a unit), and on a big screen the picture
-  stops growing instead of leaving its emoji far apart. On a phone in portrait the figure
-  gets a third of the height and they crowd. Dragging a rotated or reflected copy moves its
+  stops growing instead of leaving its emoji far apart. On a phone in portrait they crowd
+  unless the figure gets the phone's width (see "The caption": `stackedFigureShare`, a
+  narrower scene). Dragging a rotated or reflected copy moves its
   source by the cursor's offset, so the copy goes the mirrored way: the kaleidoscope marks
   the slice whose emoji are the real ones.
 - **The Spiral's rings** ("Drag to here") are placed for its locus's `Samples="60"`;

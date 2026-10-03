@@ -10,6 +10,7 @@
     </Background>
   </Viewport>
   <Scene Left="-2.375" Top="1.75" Right="2.375" Bottom="-1.5" />
+  <Scene Left="-1.875" Top="1.75" Right="1.875" Bottom="-1.5" />
   <Styles>
     <PointStyle Name="FreePoint" Size="6" Fill="#FFC0C0C0" Color="#FFC0C0C0" StrokeWidth="0.1">
       <Dark Fill="#FFC0C0C0" Color="#FFC0C0C0" />

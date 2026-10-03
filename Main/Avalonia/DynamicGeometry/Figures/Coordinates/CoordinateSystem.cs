@@ -373,6 +373,42 @@ namespace DynamicGeometry
             return reach;
         }
 
+        /// <summary>
+        /// The zoom, at most <paramref name="unitLength"/>, at which every visible point, shape
+        /// and all, stays inside a room of this size around <paramref name="center"/>. Each
+        /// point limits it by its own size and place: a room shrunk on every side by the
+        /// biggest point's reach (<see cref="GetPointReach"/>) left a figure with a big emoji
+        /// in the middle much smaller than the room.
+        /// </summary>
+        /// <param name="include">Which figures count; all of them by default</param>
+        public double LimitZoomByPointReach(
+            double unitLength,
+            Point center,
+            Size room,
+            Func<IFigure, bool> include = null)
+        {
+            foreach (var figure in Drawing.Figures)
+            {
+                if (figure is PointBase point
+                    && point.Visible
+                    && point.Exists
+                    && (include == null || include(figure))
+                    && point.Shape.Width.IsValidValue())
+                {
+                    double reach = point.Shape.Width / 2;
+                    unitLength = Limit(unitLength, M.Abs(point.Coordinates.X - center.X), room.Width / 2 - reach);
+                    unitLength = Limit(unitLength, M.Abs(point.Coordinates.Y - center.Y), room.Height / 2 - reach);
+                }
+            }
+
+            return unitLength;
+
+            static double Limit(double unitLength, double distance, double pixels)
+            {
+                return distance > 0 && pixels > 0 ? M.Min(unitLength, pixels / distance) : unitLength;
+            }
+        }
+
         //private double mScale = 1.0;
         //public double Scale
         //{
