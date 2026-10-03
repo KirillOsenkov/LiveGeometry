@@ -20,11 +20,31 @@ namespace DynamicGeometry
         {
             get
             {
-                return this
-                    .GetAllFiguresRecursive()
-                    .Where(f => f.Name == index)
-                    .FirstOrDefault();
+                return FindByName(this, index);
             }
+        }
+
+        /// <summary>
+        /// The first figure of that name, in the order of the list, looking inside composite
+        /// figures and not at them. Without making a list of every figure: an expression
+        /// looks up each name it says, and a drawing of hundreds of points by coordinates
+        /// spent a good part of its loading time in those lists.
+        /// </summary>
+        static IFigure FindByName(IList<IFigure> figures, string name)
+        {
+            for (int i = 0; i < figures.Count; i++)
+            {
+                var figure = figures[i];
+                var found = figure is CompositeFigure composite
+                    ? FindByName(composite.Children, name)
+                    : figure.Name == name ? figure : null;
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
         }
 
         public bool Contains(string name)

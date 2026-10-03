@@ -1703,6 +1703,20 @@ a segment or ray, and sides of a polygon that don't cross - legitimately absent.
   `DOTNET_EventPipeConfig=Microsoft-DotNETCore-SampleProfiler:0:5,Microsoft-Windows-DotNETRuntime:0x4c14fccbd:5`
   in its environment, close it normally, and read the stacks with the TraceEvent package
   (`TraceLog.CreateFromEventPipeDataFile`, then `CallStack()` of each `Thread/Sample` event).
+- Better, with an elevated shell (ETW needs admin on Windows; not on a Mac): the Ultra
+  profiler (`dotnet tool install -g Ultra`) and the UltraMcp server (`dotnet tool install -g
+  ultramcp`, an MCP server that reads its traces). Build Release, then
+  `ultra profile --duration 15 -o <name> -- <...>/bin/Release/net10.0/LiveGeometry.Desktop.exe [--gallery <slug>]`
+  in a scratch folder: it samples every thread 8190 times a second (kernel, native and
+  managed stacks, JIT and GC markers) and writes `<name>.json.gz` in the Firefox Profiler
+  format; the app stays open when the time is up (close it). The MCP tools read the `.gz`
+  as it is: `list_threads` (thread 0 is the UI thread), `call_tree` with `focus` and
+  `startMs`/`endMs`, `call_tree_inverted` for who calls a hot function, `find_hotspots` to
+  compare named functions between two traces of the same scenario. A sample is 0.122 ms of
+  CPU. `NtTraceEvent` at the top of a leaf list is the profiler's own cost.
+  2026-10-03, startup into the gallery at 1700x1100: the window's first frame at about
+  1.7 s (half of it the JIT: neither our assemblies nor Avalonia's are ReadyToRun), then
+  the tiles in view, 0.85 s of the UI thread's CPU (1.73 s before that day's fixes).
 - In the browser: a `Stopwatch` around what is suspected and `Console.WriteLine`, in a
   Release publish served by `tools/serve.cs`, read with `webauto console`. Each `webauto`
   call is a process that takes CPU from the page: compare runs made the same way.

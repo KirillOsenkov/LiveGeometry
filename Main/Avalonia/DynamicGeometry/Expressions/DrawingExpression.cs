@@ -120,7 +120,13 @@ namespace DynamicGeometry
             if (ParentFigure.Drawing.Figures.Contains(ParentFigure))
             {
                 ParentFigure.RegisterWithDependencies();
-                ParentFigure.RecalculateAllDependents();
+
+                // a file being read is recalculated once all of it is in
+                // (DrawingDeserializer.ReadDrawing), not after every expression it compiles
+                if (!ParentFigure.Drawing.IsReading)
+                {
+                    ParentFigure.RecalculateAllDependents();
+                }
             }
         }
 

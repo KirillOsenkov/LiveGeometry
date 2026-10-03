@@ -206,10 +206,12 @@ public class DrawingThumbnail : Viewbox
                 }
             };
 
+            var element = XElement.Parse(item.LoadText());
+            LeaveOutCaption(element);
             PointBase.SuppressAutoLabelPoints = true;
             try
             {
-                drawing.AddFromXml(XElement.Parse(item.LoadText()));
+                drawing.AddFromXml(element);
             }
             finally
             {
@@ -238,6 +240,44 @@ public class DrawingThumbnail : Viewbox
         catch (Exception ex)
         {
             Console.WriteLine("Gallery: " + item.FileName + ": " + ex);
+        }
+    }
+
+    /// <summary>
+    /// A tile shows no text (<see cref="GalleryDrawing.HideText"/>), so the pinned labels -
+    /// the title and the description - are not read at all, unless something is built on
+    /// them: read, each was laid out as it came in (a long text, wrapped) and then hidden.
+    /// </summary>
+    static void LeaveOutCaption(XElement drawing)
+    {
+        var figures = drawing.Element("Figures");
+        if (figures == null)
+        {
+            return;
+        }
+
+        var named = new HashSet<string>();
+        foreach (var dependency in figures.Descendants("Dependency"))
+        {
+            if (dependency.Attribute("Name") is XAttribute name)
+            {
+                named.Add(name.Value);
+            }
+        }
+
+        var pinned = new List<XElement>();
+        foreach (var figure in figures.Elements())
+        {
+            var pin = figure.Attribute("Pin")?.Value;
+            if (pin != null && pin != nameof(LabelPin.None) && !named.Contains(figure.Attribute("Name")?.Value ?? ""))
+            {
+                pinned.Add(figure);
+            }
+        }
+
+        foreach (var figure in pinned)
+        {
+            figure.Remove();
         }
     }
 }

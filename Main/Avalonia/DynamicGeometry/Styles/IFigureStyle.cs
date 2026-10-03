@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -47,17 +48,26 @@ namespace DynamicGeometry
             return style.GetWpfStyle(null);
         }
 
+        // Asked for every figure that comes into a drawing (its default style), of every
+        // style of the drawing until one fits: the attributes, read each time, were a good
+        // part of loading a drawing
+        static readonly ConcurrentDictionary<(Type StyleType, Type FigureType), bool> supports
+            = new ConcurrentDictionary<(Type StyleType, Type FigureType), bool>();
+
         public static bool SupportsFigureType(this Type styleType, Type figureType)
         {
-            var attributes = styleType.GetAttributes<StyleForAttribute>();
-            foreach (var attribute in attributes)
+            return supports.GetOrAdd((styleType, figureType), types =>
             {
-                if (attribute.FigureBaseType.IsAssignableFrom(figureType))
+                foreach (var attribute in types.StyleType.GetAttributes<StyleForAttribute>())
                 {
-                    return true;
+                    if (attribute.FigureBaseType.IsAssignableFrom(types.FigureType))
+                    {
+                        return true;
+                    }
                 }
-            }
-            return false;
+
+                return false;
+            });
         }
 
         public static void Apply(this FrameworkElement element, Style style)

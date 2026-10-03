@@ -568,7 +568,6 @@ namespace DynamicGeometry
                 list.Add(replacement ?? defaultStyle);
             }
 
-            var legacyDefaults = LegacyDefaults().ToArray();
             foreach (var style in own)
             {
                 if (taken.Contains(style))
@@ -576,16 +575,51 @@ namespace DynamicGeometry
                     continue;
                 }
 
-                var legacy = legacyDefaults.FirstOrDefault(candidate => LooksLikeInLight(style, candidate.Prototype));
-                if (legacy.Name != null)
+                var legacyName = FindLegacyDefault(style);
+                if (legacyName != null)
                 {
-                    aliases[style.Name] = legacy.Name;
+                    aliases[style.Name] = legacyName;
                 }
                 else
                 {
                     list.Add(style);
                 }
             }
+        }
+
+        // What the legacy defaults look like, worked out once: a signature is every value of
+        // a style written out, and a file's styles were compared with each legacy default by
+        // working out both signatures again, for every tile of the gallery
+        static (Type Type, string Signature, string Name)[] legacySignatures;
+
+        static (Type Type, string Signature, string Name)[] LegacySignatures => legacySignatures ??= LegacyDefaults()
+            .Select(legacy => (legacy.Prototype.GetType(), ((FigureStyle)legacy.Prototype).GetBaseSignature(), legacy.Name))
+            .ToArray();
+
+        /// <summary>The name of the default the style looks like in Light, as one of <see cref="LegacyDefaults"/>; null when none</summary>
+        static string FindLegacyDefault(IFigureStyle style)
+        {
+            if (!(style is FigureStyle figureStyle) || figureStyle.Overrides.Count != 0 || figureStyle.SaysThemes)
+            {
+                return null;
+            }
+
+            string signature = null;
+            foreach (var legacy in LegacySignatures)
+            {
+                if (legacy.Type != style.GetType())
+                {
+                    continue;
+                }
+
+                signature ??= figureStyle.GetBaseSignature();
+                if (signature == legacy.Signature)
+                {
+                    return legacy.Name;
+                }
+            }
+
+            return null;
         }
 
         static bool LooksLikeInLight(IFigureStyle style, IFigureStyle other)
