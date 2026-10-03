@@ -15,9 +15,7 @@
     <TextStyle Name="GalleryText" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
       <Dark Color="#FF2B3038" />
     </TextStyle>
-    <PointStyle Name="7" Fill="#FFFFFFFF" Color="#FF000000" StrokeWidth="0.7" />
     <LineStyle Name="8" Color="#FF0000FF" />
-    <PointStyle Name="9" Fill="#FFFFFFFF" Color="#FF0000FF" StrokeWidth="0.7" />
     <LineStyle Name="10" Color="#FFC0C0C0" Dash="Dot" />
     <LineStyle Name="11" Color="#FF000000" Dash="Dot" />
     <PointStyle Name="12" Size="8" Fill="#FFFFFFFF" Color="#FF000000" StrokeWidth="0.7" />
@@ -26,16 +24,16 @@
     <LineStyle Name="15" Color="#FFFF0000" StrokeWidth="2" />
   </Styles>
   <Figures>
-    <FreePoint Name="A1" Style="7" X="1.653648" Y="-0.621771" />
-    <FreePoint Name="A2" Style="7" X="2.5" Y="1.2" />
-    <FreePoint Name="A3" Style="7" X="5.3" Y="0.4" />
-    <FreePoint Name="A4" Style="7" X="5.6" Y="-1.9" />
-    <FreePoint Name="A5" Style="7" X="3.770316" Y="-2.341565" />
+    <FreePoint Name="A1" X="1.653648" Y="-0.621771" />
+    <FreePoint Name="A2" X="2.5" Y="1.2" />
+    <FreePoint Name="A3" X="5.3" Y="0.4" />
+    <FreePoint Name="A4" X="5.6" Y="-1.9" />
+    <FreePoint Name="A5" X="3.770316" Y="-2.341565" />
     <LineTwoPoints Name="A2A3" Style="8">
       <Dependency Name="A2" />
       <Dependency Name="A3" />
     </LineTwoPoints>
-    <PointOnFigure Name="M" Style="9" X="3.9110508867924527" Y="0.796842603773585" Parameter="0.5039467452830189">
+    <PointOnFigure Name="M" X="3.9110508867924527" Y="0.796842603773585" Parameter="0.5039467452830189">
       <Dependency Name="A2A3" />
     </PointOnFigure>
     <LineTwoPoints Name="A1A2" Style="10">
@@ -47,10 +45,6 @@
       <Dependency Name="A5" />
     </LineTwoPoints>
     <IntersectionPoint Name="M2" Style="12" Algorithm="IntersectLineAndLine">
-      <Dependency Name="A1A2" />
-      <Dependency Name="A4A5" />
-    </IntersectionPoint>
-    <IntersectionPoint Name="B" Visible="false" Style="12" Algorithm="IntersectLineAndLine">
       <Dependency Name="A1A2" />
       <Dependency Name="A4A5" />
     </IntersectionPoint>
@@ -66,10 +60,6 @@
       <Dependency Name="A3A4" />
       <Dependency Name="MM2" />
     </IntersectionPoint>
-    <IntersectionPoint Name="C" Visible="false" Style="12" Algorithm="IntersectLineAndLine">
-      <Dependency Name="A3A4" />
-      <Dependency Name="MM2" />
-    </IntersectionPoint>
     <LineTwoPoints Name="A1M1" Style="13">
       <Dependency Name="A1" />
       <Dependency Name="M1" />
@@ -79,10 +69,6 @@
       <Dependency Name="M" />
     </LineTwoPoints>
     <IntersectionPoint Name="A" Style="14" Algorithm="IntersectLineAndLine">
-      <Dependency Name="A1M1" />
-      <Dependency Name="MA5" />
-    </IntersectionPoint>
-    <IntersectionPoint Name="D" Visible="false" Style="12" Algorithm="IntersectLineAndLine">
       <Dependency Name="A1M1" />
       <Dependency Name="MA5" />
     </IntersectionPoint>

@@ -139,7 +139,7 @@ public static class GalleryCatalog
         Item("measuring-distance", "Measuring Across a Lake"),
         Item("complex-numbers", "Complex Multiplication"),
         Item("ceva", "Ceva's Theorem"),
-        Item("conic-through-five-points", "Conic Through Five Points", "Pascal"),
+        Item("conic-through-five-points", "Conic Through Five Points"),
     };
 
     /// <summary>

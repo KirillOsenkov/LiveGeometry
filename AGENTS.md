@@ -1259,7 +1259,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   text or fill darker than lightness 0.35 is lightened to the same hue at 0.82 - 0.4 ×
   lightness (black lands on the ink), a drawing with a paper of its own is left alone, and a
   style that has a `<Dark>` already is never touched, so it is safe to rerun after adding a
-  drawing. The three drawings with a light paper of their own (Castle, Pascal, Rose) carry
+  drawing. The three drawings with a light paper of their own (Castle, Conic, Rose) carry
   `GalleryTitle`/`GalleryText` copies whose Dark override is the light color, so the caption
   stays dark on their paper. `--check <folder> <out> --dark` renders the pictures under the
   dark theme; a contact sheet of the gallery in each theme is the way to review. Anything
