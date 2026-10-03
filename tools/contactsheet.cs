@@ -4,7 +4,8 @@
 #:property PublishAot=false
 
 // contactsheet - tiles the PNGs of a folder (the output of `LiveGeometry.Desktop.exe --check`)
-// into one image with a caption under each, to eyeball a whole folder of drawings at once.
+// into one image with a caption under each, to eyeball a whole folder of drawings at once. Or
+// the JPEGs of one (the filmstrip of `loadperf --trace`).
 //
 //   dotnet tools/contactsheet.cs -- <png folder> <out.png> [columns=4] [tile width=420]
 
@@ -28,7 +29,12 @@ const int gap = 10;
 var files = Directory.GetFiles(folder, "*.png").OrderBy(f => f).ToArray();
 if (files.Length == 0)
 {
-    Console.WriteLine("no PNGs in " + folder);
+    files = Directory.GetFiles(folder, "*.jpg").OrderBy(f => f).ToArray();
+}
+
+if (files.Length == 0)
+{
+    Console.WriteLine("no PNGs or JPEGs in " + folder);
     return 1;
 }
 

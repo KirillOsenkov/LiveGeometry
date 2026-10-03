@@ -77,8 +77,16 @@ public class EmojiGlyph : Control
         DrawCharacter(context, Text, new Rect(size).Deflate(Inset), Foreground);
         if (!EmojiFont.IsLoaded)
         {
+            // drawn again when the font is there; not when it failed to come (a network
+            // error): every drawing asked for another, and the page drew without end
             EmojiFont.EnsureLoaded().ContinueWith(
-                _ => Dispatcher.UIThread.Post(InvalidateVisual),
+                _ =>
+                {
+                    if (EmojiFont.IsLoaded)
+                    {
+                        Dispatcher.UIThread.Post(InvalidateVisual);
+                    }
+                },
                 System.Threading.Tasks.TaskScheduler.Default);
         }
     }

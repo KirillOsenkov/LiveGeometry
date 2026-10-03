@@ -599,9 +599,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (`EmojiFont.CanDraw`). The font is 1.5 MB and loaded on first use, or as soon as the
   gallery is built, whose first rows show emoji (`EmojiFont.Open`: a file beside the desktop
   exe, a fetch of `fonts/` in the browser, brotli via web.config and cached as immutable: a
-  different font must get a different file name). The fetch takes the response in one
-  piece: streamed (the default since .NET 10) it waited for a turn of the UI thread at every
-  chunk, and while the gallery's tiles loaded the font came seconds late. The
+  different font must get a different file name). In the browser `main.js` fetches it, on
+  the gallery's page as soon as the page loads (at a low priority, after the runtime's
+  files), and hands it over in one piece (`fetchEmojiFont`, `copyEmojiFont`). The browser
+  reads a response on the page's thread a piece at a time, and HttpClient took a turn of
+  the UI thread for every step besides: fetched once the gallery was up, the font came in
+  between the tiles' loads, seconds after its bytes. A font that fails to come (a network
+  error) leaves the characters in the fallback font for good: each `EmojiGlyph` asked to be
+  drawn again whenever it was drawn without the font, and the page drew without end. The
   style's editor has Shape | Emoji tabs (`IPropertyGridTabs`: the tab shown is what the style
   is; picking Shape drops the character, undoably; a row on two tabs, Size, gets an editor on
   each). "What the style is" is what it is under the theme on screen (`ShownCharacter`,
@@ -1701,6 +1706,18 @@ a segment or ray, and sides of a polygon that don't cross - legitimately absent.
 - In the browser: a `Stopwatch` around what is suspected and `Console.WriteLine`, in a
   Release publish served by `tools/serve.cs`, read with `webauto console`. Each `webauto`
   call is a process that takes CPU from the page: compare runs made the same way.
+- How a page loads, as F12 shows it: `dotnet run tools/loadperf.cs -- <url> <out folder>
+  [--seconds 20] [--size 1700x1000] [--trace] [--phone]`. A first visit (a new Edge profile,
+  nothing cached) and a returning visitor's (a new browser on the same profile): the
+  downloads, when .NET runs (the build line in the console), when the splash closes, and
+  the long tasks of the page's thread - each load of a gallery tile is one. `--trace`
+  records the first visit for F12's Performance panel (Load profile) and saves what was on
+  screen every half second (`contactsheet` puts it on one image); `--phone` is a phone's
+  screen, a 4 times slower CPU and Fast 4G. Nothing else may run meanwhile: a browser busy
+  on the same machine (a page refreshed by hand, a headless one left behind) made every
+  visit 1.5 to 2 times slower. livegeometry.com on 2026-10-03, 1700x1000: on a first visit
+  the splash closed at 2.7-3.0 s and the tiles in view were drawn by 6.2-6.6 s; for a
+  returning visitor, 1.3-1.4 s and 4.6-4.8 s.
 
 ## .dgf (DG 1.0) reader facts
 
