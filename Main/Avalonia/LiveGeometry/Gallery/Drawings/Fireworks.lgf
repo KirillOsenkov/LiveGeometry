@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-2.375" Top="1.75" Right="2.375" Bottom="-1.5">
+    <Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF0A1030" Offset="0" />
+        <GradientStop Color="#FF2A1650" Offset="0.75" />
+        <GradientStop Color="#FF4A2060" Offset="1" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
+  <Scene Left="-2.375" Top="1.75" Right="2.375" Bottom="-1.5" />
+  <Styles>
+    <PointStyle Name="FreePoint" Size="6" Fill="#FFC0C0C0" Color="#FFC0C0C0" StrokeWidth="0.1">
+      <Dark Fill="#FFC0C0C0" Color="#FFC0C0C0" />
+    </PointStyle>
+    <PointStyle Name="PointOnFigure" Size="24" Fill="#FF4ED46E" Color="#FFFFFFFF" StrokeWidth="3">
+      <Dark Fill="#FF4ED46E" Color="#FFFFFFFF" />
+    </PointStyle>
+    <LineStyle Name="SliderTrack" Color="#FFC0C0C0" StrokeWidth="6">
+      <Dark Color="#FFC0C0C0" />
+    </LineStyle>
+    <TextStyle Name="Text" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFFFD966" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFFD966" />
+    </TextStyle>
+    <TextStyle Name="GalleryText" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <ShapeStyle Name="City" Fill="#FF0B1226" Color="#FF0B1226" />
+    <ShapeStyle Name="Ring" IsFilled="false" Color="#B0FFFFFF" StrokeWidth="1.5" Dash="Dash" />
+    <PointStyle Name="Fireworks" Character="🎆" Size="30" Fill="#00FFFFFF" />
+    <PointStyle Name="Sparkling heart" Character="💖" Size="28" Fill="#FFFFFFFF" />
+    <PointStyle Name="Sparkles" Character="✨" Size="20" Fill="#FFFFFFFF" />
+    <PointStyle Name="Sparkles 2" Character="✨" Size="18" Fill="#FFFFFFFF" />
+    <PointStyle Name="Small orange diamond" Character="🔸" Size="11" Fill="#B2FFFFFF" />
+    <PointStyle Name="Small orange diamond 2" Character="🔸" Size="8" Fill="#66FFFFFF" />
+    <PointStyle Name="Star" Character="⭐" Size="26" Fill="#FFFFFFFF" />
+    <PointStyle Name="Star 2" Character="⭐" Size="18" Fill="#FFFFFFFF" />
+    <PointStyle Name="Cherry blossom" Character="🌸" Size="30" Fill="#FFFFFFFF" />
+    <PointStyle Name="Blossom" Character="🌼" Size="21" Fill="#FFFFFFFF" />
+    <PointStyle Name="Gem stone" Character="💎" Size="26" Fill="#FFFFFFFF" />
+    <PointStyle Name="Window" Shape="Square" Size="5" Fill="#FFFFD27A" Color="#FFFFD27A" StrokeWidth="0.1" />
+    <PointStyle Name="Crescent moon" Character="🌙" Size="40" Fill="#FFFFFFFF" />
+    <PointStyle Name="Sparkles 3" Character="✨" Size="14" Fill="#FFFFFFFF" />
+  </Styles>
+  <Figures>
+    <Slider Name="time" X="-2.15" Y="-1.32" Value="1.2" />
+    <FreePoint Name="Burst1" Style="Fireworks" X="-1.25" Y="0.85" />
+    <PointByCoordinates Name="Spark1_0_0" Style="Sparkling heart" X="Burst1.X + 0.401241 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.124118 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_1" Style="Sparkling heart" X="Burst1.X + 0.323201 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.268219 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_2" Style="Sparkling heart" X="Burst1.X + 0.195955 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.371485 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_3" Style="Sparkling heart" X="Burst1.X + 0.038878 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.418197 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_4" Style="Sparkling heart" X="Burst1.X + -0.124118 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.401241 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_5" Style="Sparkling heart" X="Burst1.X + -0.268219 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.323201 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_6" Style="Sparkling heart" X="Burst1.X + -0.371485 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.195955 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_7" Style="Sparkling heart" X="Burst1.X + -0.418197 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.038878 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_8" Style="Sparkling heart" X="Burst1.X + -0.401241 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + -0.124118 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_9" Style="Sparkling heart" X="Burst1.X + -0.323201 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + -0.268219 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_10" Style="Sparkling heart" X="Burst1.X + -0.195955 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + -0.371485 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_11" Style="Sparkling heart" X="Burst1.X + -0.038878 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + -0.418197 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_12" Style="Sparkling heart" X="Burst1.X + 0.124118 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + -0.401241 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_13" Style="Sparkling heart" X="Burst1.X + 0.268219 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + -0.323201 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_14" Style="Sparkling heart" X="Burst1.X + 0.371485 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + -0.195955 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_0_15" Style="Sparkling heart" X="Burst1.X + 0.418197 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + -0.038878 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_1_0" Style="Sparkles" X="Burst1.X + 0.17776 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.14752 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_1_1" Style="Sparkles" X="Burst1.X + 0.021383 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.230008 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_1_2" Style="Sparkles" X="Burst1.X + -0.14752 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.17776 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_1_3" Style="Sparkles" X="Burst1.X + -0.230008 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.021383 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_1_4" Style="Sparkles" X="Burst1.X + -0.17776 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + -0.14752 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_1_5" Style="Sparkles" X="Burst1.X + -0.021383 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + -0.230008 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_1_6" Style="Sparkles" X="Burst1.X + 0.14752 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + -0.17776 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark1_1_7" Style="Sparkles" X="Burst1.X + 0.230008 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + -0.021383 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Middle1" Visible="false" X="Burst1.X + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <Circle Name="Circle1" Visible="false" Style="Ring">
+      <Dependency Name="Middle1" />
+      <Dependency Name="Spark1_0_0" />
+    </Circle>
+    <PointByCoordinates Name="Rocket1" Style="Sparkles 2" X="Burst1.X + 0 * sqrt((time * 2.5 / 1 - 0)) + 0 * sqrt(1 - time * 2.5)" Y="-1.15 + (Burst1.Y - -1.15) * (time * 2.5 / 1 - 0)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rocket1Tail1" Style="Small orange diamond" X="Burst1.X + 0 * sqrt((time * 2.5 / 1 - 0.07)) + 0 * sqrt(1 - time * 2.5)" Y="-1.15 + (Burst1.Y - -1.15) * (time * 2.5 / 1 - 0.07)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rocket1Tail2" Style="Small orange diamond 2" X="Burst1.X + 0 * sqrt((time * 2.5 / 1 - 0.14)) + 0 * sqrt(1 - time * 2.5)" Y="-1.15 + (Burst1.Y - -1.15) * (time * 2.5 / 1 - 0.14)">
+      <Dependency Name="Burst1" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <FreePoint Name="Burst2" Style="Fireworks" X="0.35" Y="1.05" />
+    <PointByCoordinates Name="Spark2_0_0" Style="Star" X="Burst2.X + 0.453935 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + 0.310553 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_1" Style="Star" X="Burst2.X + 0.274237 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + 0.476754 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_2" Style="Star" X="Burst2.X + 0.040223 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + 0.548527 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_3" Style="Star" X="Burst2.X + -0.201757 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + 0.511658 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_4" Style="Star" X="Burst2.X + -0.403777 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + 0.373449 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_5" Style="Star" X="Burst2.X + -0.525824 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + 0.161273 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_6" Style="Star" X="Burst2.X + -0.543725 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + -0.082844 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_7" Style="Star" X="Burst2.X + -0.453935 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + -0.310553 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_8" Style="Star" X="Burst2.X + -0.274237 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + -0.476754 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_9" Style="Star" X="Burst2.X + -0.040223 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + -0.548527 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_10" Style="Star" X="Burst2.X + 0.201757 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + -0.511658 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_11" Style="Star" X="Burst2.X + 0.403777 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + -0.373449 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_12" Style="Star" X="Burst2.X + 0.525824 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + -0.161273 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_0_13" Style="Star" X="Burst2.X + 0.543725 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + 0.082844 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_1_0" Style="Star 2" X="Burst2.X + 0.15083 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + 0.262215 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_1_1" Style="Star 2" X="Burst2.X + -0.110966 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + 0.281412 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_1_2" Style="Star 2" X="Burst2.X + -0.289203 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + 0.0887 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_1_3" Style="Star 2" X="Burst2.X + -0.249664 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + -0.170804 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_1_4" Style="Star 2" X="Burst2.X + -0.022123 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + -0.30169 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_1_5" Style="Star 2" X="Burst2.X + 0.222077 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + -0.205397 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark2_1_6" Style="Star 2" X="Burst2.X + 0.299049 * (time * 2.5 - 2) + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y + 0.045564 * (time * 2.5 - 2) - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Middle2" Visible="false" X="Burst2.X + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)" Y="Burst2.Y - 0.08 * (time * 2.5 - 2) ^ 2 + 0 * sqrt(time * 2.5 - 2) + 0 * sqrt(4.6 - time * 2.5)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <Circle Name="Circle2" Visible="false" Style="Ring">
+      <Dependency Name="Middle2" />
+      <Dependency Name="Spark2_0_0" />
+    </Circle>
+    <PointByCoordinates Name="Rocket2" Style="Sparkles 2" X="Burst2.X + 0 * sqrt((time * 2.5 / 2 - 0)) + 0 * sqrt(2 - time * 2.5)" Y="-1.15 + (Burst2.Y - -1.15) * (time * 2.5 / 2 - 0)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rocket2Tail1" Style="Small orange diamond" X="Burst2.X + 0 * sqrt((time * 2.5 / 2 - 0.07)) + 0 * sqrt(2 - time * 2.5)" Y="-1.15 + (Burst2.Y - -1.15) * (time * 2.5 / 2 - 0.07)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rocket2Tail2" Style="Small orange diamond 2" X="Burst2.X + 0 * sqrt((time * 2.5 / 2 - 0.14)) + 0 * sqrt(2 - time * 2.5)" Y="-1.15 + (Burst2.Y - -1.15) * (time * 2.5 / 2 - 0.14)">
+      <Dependency Name="Burst2" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <FreePoint Name="Burst3" Style="Fireworks" X="1.45" Y="0.45" />
+    <PointByCoordinates Name="Spark3_0_0" Style="Cherry blossom" X="Burst3.X + 0.310805 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + 0.391663 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_0_1" Style="Cherry blossom" X="Burst3.X + 0.073333 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + 0.494593 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_0_2" Style="Cherry blossom" X="Burst3.X + -0.183788 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + 0.464997 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_0_3" Style="Cherry blossom" X="Burst3.X + -0.391663 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + 0.310805 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_0_4" Style="Cherry blossom" X="Burst3.X + -0.494593 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + 0.073333 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_0_5" Style="Cherry blossom" X="Burst3.X + -0.464997 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + -0.183788 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_0_6" Style="Cherry blossom" X="Burst3.X + -0.310805 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + -0.391663 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_0_7" Style="Cherry blossom" X="Burst3.X + -0.073333 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + -0.494593 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_0_8" Style="Cherry blossom" X="Burst3.X + 0.183788 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + -0.464997 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_0_9" Style="Cherry blossom" X="Burst3.X + 0.391663 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + -0.310805 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_0_10" Style="Cherry blossom" X="Burst3.X + 0.494593 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + -0.073333 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_0_11" Style="Cherry blossom" X="Burst3.X + 0.464997 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + 0.183788 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_1_0" Style="Blossom" X="Burst3.X + 0.040333 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + 0.272026 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_1_1" Style="Blossom" X="Burst3.X + -0.215415 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + 0.170943 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_1_2" Style="Blossom" X="Burst3.X + -0.255748 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + -0.101083 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_1_3" Style="Blossom" X="Burst3.X + -0.040333 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + -0.272026 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_1_4" Style="Blossom" X="Burst3.X + 0.215415 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + -0.170943 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark3_1_5" Style="Blossom" X="Burst3.X + 0.255748 * (time * 2.5 - 2.6) + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y + 0.101083 * (time * 2.5 - 2.6) - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Middle3" Visible="false" X="Burst3.X + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)" Y="Burst3.Y - 0.08 * (time * 2.5 - 2.6) ^ 2 + 0 * sqrt(time * 2.5 - 2.6) + 0 * sqrt(5.2 - time * 2.5)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <Circle Name="Circle3" Visible="false" Style="Ring">
+      <Dependency Name="Middle3" />
+      <Dependency Name="Spark3_0_0" />
+    </Circle>
+    <PointByCoordinates Name="Rocket3" Style="Sparkles 2" X="Burst3.X + 0 * sqrt((time * 2.5 / 2.6 - 0)) + 0 * sqrt(2.6 - time * 2.5)" Y="-1.15 + (Burst3.Y - -1.15) * (time * 2.5 / 2.6 - 0)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rocket3Tail1" Style="Small orange diamond" X="Burst3.X + 0 * sqrt((time * 2.5 / 2.6 - 0.07)) + 0 * sqrt(2.6 - time * 2.5)" Y="-1.15 + (Burst3.Y - -1.15) * (time * 2.5 / 2.6 - 0.07)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rocket3Tail2" Style="Small orange diamond 2" X="Burst3.X + 0 * sqrt((time * 2.5 / 2.6 - 0.14)) + 0 * sqrt(2.6 - time * 2.5)" Y="-1.15 + (Burst3.Y - -1.15) * (time * 2.5 / 2.6 - 0.14)">
+      <Dependency Name="Burst3" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <FreePoint Name="Burst4" Style="Fireworks" X="-0.35" Y="0.15" />
+    <PointByCoordinates Name="Spark4_0_0" Style="Gem stone" X="Burst4.X + 0.163061 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + 0.419418 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_0_1" Style="Gem stone" X="Burst4.X + -0.068494 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + 0.444757 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_0_2" Style="Gem stone" X="Burst4.X + -0.281696 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + 0.350924 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_0_3" Style="Gem stone" X="Burst4.X + -0.419418 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + 0.163061 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_0_4" Style="Gem stone" X="Burst4.X + -0.444757 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + -0.068494 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_0_5" Style="Gem stone" X="Burst4.X + -0.350924 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + -0.281696 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_0_6" Style="Gem stone" X="Burst4.X + -0.163061 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + -0.419418 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_0_7" Style="Gem stone" X="Burst4.X + 0.068494 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + -0.444757 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_0_8" Style="Gem stone" X="Burst4.X + 0.281696 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + -0.350924 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_0_9" Style="Gem stone" X="Burst4.X + 0.419418 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + -0.163061 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_0_10" Style="Gem stone" X="Burst4.X + 0.444757 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + 0.068494 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_0_11" Style="Gem stone" X="Burst4.X + 0.350924 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + 0.281696 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_1_0" Style="Sparkles 2" X="Burst4.X + -0.037672 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + 0.244616 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_1_1" Style="Sparkles 2" X="Burst4.X + -0.23068 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + 0.089684 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_1_2" Style="Sparkles 2" X="Burst4.X + -0.193008 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + -0.154933 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_1_3" Style="Sparkles 2" X="Burst4.X + 0.037672 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + -0.244616 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_1_4" Style="Sparkles 2" X="Burst4.X + 0.23068 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + -0.089684 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Spark4_1_5" Style="Sparkles 2" X="Burst4.X + 0.193008 * (time * 2.5 - 3.6) + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y + 0.154933 * (time * 2.5 - 3.6) - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Middle4" Visible="false" X="Burst4.X + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)" Y="Burst4.Y - 0.08 * (time * 2.5 - 3.6) ^ 2 + 0 * sqrt(time * 2.5 - 3.6) + 0 * sqrt(6.2 - time * 2.5)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <Circle Name="Circle4" Visible="false" Style="Ring">
+      <Dependency Name="Middle4" />
+      <Dependency Name="Spark4_0_0" />
+    </Circle>
+    <PointByCoordinates Name="Rocket4" Style="Sparkles 2" X="Burst4.X + 0 * sqrt((time * 2.5 / 3.6 - 0)) + 0 * sqrt(3.6 - time * 2.5)" Y="-1.15 + (Burst4.Y - -1.15) * (time * 2.5 / 3.6 - 0)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rocket4Tail1" Style="Small orange diamond" X="Burst4.X + 0 * sqrt((time * 2.5 / 3.6 - 0.07)) + 0 * sqrt(3.6 - time * 2.5)" Y="-1.15 + (Burst4.Y - -1.15) * (time * 2.5 / 3.6 - 0.07)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rocket4Tail2" Style="Small orange diamond 2" X="Burst4.X + 0 * sqrt((time * 2.5 / 3.6 - 0.14)) + 0 * sqrt(3.6 - time * 2.5)" Y="-1.15 + (Burst4.Y - -1.15) * (time * 2.5 / 3.6 - 0.14)">
+      <Dependency Name="Burst4" />
+      <Dependency Name="time" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CityLeft" Visible="false" X="-1000" Y="-1000" />
+    <PointByCoordinates Name="CityLeftTop" Visible="false" X="-1000" Y="-1.15" />
+    <PointByCoordinates Name="City0a" Visible="false" X="-3" Y="-0.85" />
+    <PointByCoordinates Name="City0b" Visible="false" X="-2.6" Y="-0.85" />
+    <PointByCoordinates Name="City1a" Visible="false" X="-2.6" Y="-0.9" />
+    <PointByCoordinates Name="City1b" Visible="false" X="-2.25" Y="-0.9" />
+    <PointByCoordinates Name="City2a" Visible="false" X="-2.25" Y="-0.73" />
+    <PointByCoordinates Name="City2b" Visible="false" X="-2" Y="-0.73" />
+    <PointByCoordinates Name="City3a" Visible="false" X="-2" Y="-0.85" />
+    <PointByCoordinates Name="City3b" Visible="false" X="-1.7" Y="-0.85" />
+    <PointByCoordinates Name="City4a" Visible="false" X="-1.7" Y="-0.6" />
+    <PointByCoordinates Name="City4b" Visible="false" X="-1.35" Y="-0.6" />
+    <PointByCoordinates Name="City5a" Visible="false" X="-1.35" Y="-0.8" />
+    <PointByCoordinates Name="City5b" Visible="false" X="-1" Y="-0.8" />
+    <PointByCoordinates Name="City6a" Visible="false" X="-1" Y="-0.93" />
+    <PointByCoordinates Name="City6b" Visible="false" X="-0.7" Y="-0.93" />
+    <PointByCoordinates Name="City7a" Visible="false" X="-0.7" Y="-0.67" />
+    <PointByCoordinates Name="City7b" Visible="false" X="-0.4" Y="-0.67" />
+    <PointByCoordinates Name="City8a" Visible="false" X="-0.4" Y="-0.85" />
+    <PointByCoordinates Name="City8b" Visible="false" X="-0.05" Y="-0.85" />
+    <PointByCoordinates Name="City9a" Visible="false" X="-0.05" Y="-0.53" />
+    <PointByCoordinates Name="City9b" Visible="false" X="0.25" Y="-0.53" />
+    <PointByCoordinates Name="City10a" Visible="false" X="0.25" Y="-0.77" />
+    <PointByCoordinates Name="City10b" Visible="false" X="0.6" Y="-0.77" />
+    <PointByCoordinates Name="City11a" Visible="false" X="0.6" Y="-0.88" />
+    <PointByCoordinates Name="City11b" Visible="false" X="0.95" Y="-0.88" />
+    <PointByCoordinates Name="City12a" Visible="false" X="0.95" Y="-0.65" />
+    <PointByCoordinates Name="City12b" Visible="false" X="1.3" Y="-0.65" />
+    <PointByCoordinates Name="City13a" Visible="false" X="1.3" Y="-0.82" />
+    <PointByCoordinates Name="City13b" Visible="false" X="1.6" Y="-0.82" />
+    <PointByCoordinates Name="City14a" Visible="false" X="1.6" Y="-0.7" />
+    <PointByCoordinates Name="City14b" Visible="false" X="1.95" Y="-0.7" />
+    <PointByCoordinates Name="City15a" Visible="false" X="1.95" Y="-0.87" />
+    <PointByCoordinates Name="City15b" Visible="false" X="2.3" Y="-0.87" />
+    <PointByCoordinates Name="City16a" Visible="false" X="2.3" Y="-0.75" />
+    <PointByCoordinates Name="City16b" Visible="false" X="2.6" Y="-0.75" />
+    <PointByCoordinates Name="City17a" Visible="false" X="2.6" Y="-0.85" />
+    <PointByCoordinates Name="City17b" Visible="false" X="2.95" Y="-0.85" />
+    <PointByCoordinates Name="City18a" Visible="false" X="2.95" Y="-0.63" />
+    <PointByCoordinates Name="City18b" Visible="false" X="3.3" Y="-0.63" />
+    <PointByCoordinates Name="City19a" Visible="false" X="3.3" Y="-0.88" />
+    <PointByCoordinates Name="City19b" Visible="false" X="3.6" Y="-0.88" />
+    <PointByCoordinates Name="City20a" Visible="false" X="3.6" Y="-0.79" />
+    <PointByCoordinates Name="City20b" Visible="false" X="3.95" Y="-0.79" />
+    <PointByCoordinates Name="City21a" Visible="false" X="3.95" Y="-0.67" />
+    <PointByCoordinates Name="City21b" Visible="false" X="4.3" Y="-0.67" />
+    <PointByCoordinates Name="City22a" Visible="false" X="4.3" Y="-0.91" />
+    <PointByCoordinates Name="City22b" Visible="false" X="4.6" Y="-0.91" />
+    <PointByCoordinates Name="City23a" Visible="false" X="4.6" Y="-0.75" />
+    <PointByCoordinates Name="City23b" Visible="false" X="5" Y="-0.75" />
+    <PointByCoordinates Name="City24a" Visible="false" X="5" Y="-0.85" />
+    <PointByCoordinates Name="City24b" Visible="false" X="5.4" Y="-0.85" />
+    <PointByCoordinates Name="CityRightTop" Visible="false" X="1000" Y="-1.15" />
+    <PointByCoordinates Name="CityRight" Visible="false" X="1000" Y="-1000" />
+    <Polygon Name="City" Style="City">
+      <Dependency Name="CityLeft" />
+      <Dependency Name="CityLeftTop" />
+      <Dependency Name="City0a" />
+      <Dependency Name="City0b" />
+      <Dependency Name="City1a" />
+      <Dependency Name="City1b" />
+      <Dependency Name="City2a" />
+      <Dependency Name="City2b" />
+      <Dependency Name="City3a" />
+      <Dependency Name="City3b" />
+      <Dependency Name="City4a" />
+      <Dependency Name="City4b" />
+      <Dependency Name="City5a" />
+      <Dependency Name="City5b" />
+      <Dependency Name="City6a" />
+      <Dependency Name="City6b" />
+      <Dependency Name="City7a" />
+      <Dependency Name="City7b" />
+      <Dependency Name="City8a" />
+      <Dependency Name="City8b" />
+      <Dependency Name="City9a" />
+      <Dependency Name="City9b" />
+      <Dependency Name="City10a" />
+      <Dependency Name="City10b" />
+      <Dependency Name="City11a" />
+      <Dependency Name="City11b" />
+      <Dependency Name="City12a" />
+      <Dependency Name="City12b" />
+      <Dependency Name="City13a" />
+      <Dependency Name="City13b" />
+      <Dependency Name="City14a" />
+      <Dependency Name="City14b" />
+      <Dependency Name="City15a" />
+      <Dependency Name="City15b" />
+      <Dependency Name="City16a" />
+      <Dependency Name="City16b" />
+      <Dependency Name="City17a" />
+      <Dependency Name="City17b" />
+      <Dependency Name="City18a" />
+      <Dependency Name="City18b" />
+      <Dependency Name="City19a" />
+      <Dependency Name="City19b" />
+      <Dependency Name="City20a" />
+      <Dependency Name="City20b" />
+      <Dependency Name="City21a" />
+      <Dependency Name="City21b" />
+      <Dependency Name="City22a" />
+      <Dependency Name="City22b" />
+      <Dependency Name="City23a" />
+      <Dependency Name="City23b" />
+      <Dependency Name="City24a" />
+      <Dependency Name="City24b" />
+      <Dependency Name="CityRightTop" />
+      <Dependency Name="CityRight" />
+    </Polygon>
+    <PointByCoordinates Name="Window1" Style="Window" X="-2.69" Y="-1.07" />
+    <PointByCoordinates Name="Window2" Style="Window" X="-2.77" Y="-0.98" />
+    <PointByCoordinates Name="Window3" Style="Window" X="-2.37" Y="-0.98" />
+    <PointByCoordinates Name="Window4" Style="Window" X="-2.1" Y="-0.89" />
+    <PointByCoordinates Name="Window5" Style="Window" X="-1.93" Y="-1.07" />
+    <PointByCoordinates Name="Window6" Style="Window" X="-1.93" Y="-0.98" />
+    <PointByCoordinates Name="Window7" Style="Window" X="-1.77" Y="-0.98" />
+    <PointByCoordinates Name="Window8" Style="Window" X="-1.63" Y="-0.98" />
+    <PointByCoordinates Name="Window9" Style="Window" X="-1.55" Y="-0.98" />
+    <PointByCoordinates Name="Window10" Style="Window" X="-1.47" Y="-0.98" />
+    <PointByCoordinates Name="Window11" Style="Window" X="-1.63" Y="-0.89" />
+    <PointByCoordinates Name="Window12" Style="Window" X="-1.55" Y="-0.89" />
+    <PointByCoordinates Name="Window13" Style="Window" X="-1.63" Y="-0.8" />
+    <PointByCoordinates Name="Window14" Style="Window" X="-1.47" Y="-0.71" />
+    <PointByCoordinates Name="Window15" Style="Window" X="-1.28" Y="-1.07" />
+    <PointByCoordinates Name="Window16" Style="Window" X="-1.28" Y="-0.89" />
+    <PointByCoordinates Name="Window17" Style="Window" X="-1.2" Y="-0.89" />
+    <PointByCoordinates Name="Window18" Style="Window" X="-0.47" Y="-1.07" />
+    <PointByCoordinates Name="Window19" Style="Window" X="-0.63" Y="-0.89" />
+    <PointByCoordinates Name="Window20" Style="Window" X="-0.47" Y="-0.89" />
+    <PointByCoordinates Name="Window21" Style="Window" X="-0.63" Y="-0.8" />
+    <PointByCoordinates Name="Window22" Style="Window" X="-0.55" Y="-0.8" />
+    <PointByCoordinates Name="Window23" Style="Window" X="-0.33" Y="-1.07" />
+    <PointByCoordinates Name="Window24" Style="Window" X="-0.25" Y="-1.07" />
+    <PointByCoordinates Name="Window25" Style="Window" X="0.1" Y="-1.07" />
+    <PointByCoordinates Name="Window26" Style="Window" X="0.18" Y="-1.07" />
+    <PointByCoordinates Name="Window27" Style="Window" X="0.1" Y="-0.98" />
+    <PointByCoordinates Name="Window28" Style="Window" X="0.1" Y="-0.89" />
+    <PointByCoordinates Name="Window29" Style="Window" X="0.02" Y="-0.8" />
+    <PointByCoordinates Name="Window30" Style="Window" X="0.18" Y="-0.71" />
+    <PointByCoordinates Name="Window31" Style="Window" X="0.1" Y="-0.62" />
+    <PointByCoordinates Name="Window32" Style="Window" X="0.48" Y="-1.07" />
+    <PointByCoordinates Name="Window33" Style="Window" X="0.32" Y="-0.98" />
+    <PointByCoordinates Name="Window34" Style="Window" X="0.48" Y="-0.98" />
+    <PointByCoordinates Name="Window35" Style="Window" X="0.67" Y="-1.07" />
+    <PointByCoordinates Name="Window36" Style="Window" X="0.67" Y="-0.98" />
+    <PointByCoordinates Name="Window37" Style="Window" X="1.02" Y="-1.07" />
+    <PointByCoordinates Name="Window38" Style="Window" X="1.02" Y="-0.89" />
+    <PointByCoordinates Name="Window39" Style="Window" X="1.1" Y="-0.89" />
+    <PointByCoordinates Name="Window40" Style="Window" X="1.18" Y="-0.89" />
+    <PointByCoordinates Name="Window41" Style="Window" X="1.18" Y="-0.8" />
+    <PointByCoordinates Name="Window42" Style="Window" X="1.45" Y="-1.07" />
+    <PointByCoordinates Name="Window43" Style="Window" X="1.53" Y="-0.89" />
+    <PointByCoordinates Name="Window44" Style="Window" X="1.83" Y="-1.07" />
+    <PointByCoordinates Name="Window45" Style="Window" X="1.83" Y="-0.98" />
+    <PointByCoordinates Name="Window46" Style="Window" X="1.75" Y="-0.89" />
+    <PointByCoordinates Name="Window47" Style="Window" X="1.75" Y="-0.8" />
+    <PointByCoordinates Name="Window48" Style="Window" X="2.1" Y="-0.98" />
+    <PointByCoordinates Name="Window49" Style="Window" X="2.53" Y="-1.07" />
+    <PointByCoordinates Name="Window50" Style="Window" X="2.37" Y="-0.98" />
+    <PointByCoordinates Name="Window51" Style="Window" X="2.53" Y="-0.98" />
+    <PointByCoordinates Name="Window52" Style="Window" X="2.37" Y="-0.89" />
+    <PointByCoordinates Name="Window53" Style="Window" X="3.18" Y="-1.07" />
+    <PointByCoordinates Name="Window54" Style="Window" X="3.02" Y="-0.8" />
+    <PointByCoordinates Name="Window55" Style="Window" X="3.45" Y="-1.07" />
+    <PointByCoordinates Name="Window56" Style="Window" X="3.67" Y="-0.98" />
+    <PointByCoordinates Name="Window57" Style="Window" X="3.83" Y="-0.98" />
+    <PointByCoordinates Name="Window58" Style="Window" X="4.02" Y="-1.07" />
+    <PointByCoordinates Name="Window59" Style="Window" X="4.1" Y="-1.07" />
+    <PointByCoordinates Name="Window60" Style="Window" X="4.02" Y="-0.98" />
+    <PointByCoordinates Name="Window61" Style="Window" X="4.18" Y="-0.98" />
+    <PointByCoordinates Name="Window62" Style="Window" X="4.1" Y="-0.8" />
+    <PointByCoordinates Name="Window63" Style="Window" X="4.37" Y="-1.07" />
+    <PointByCoordinates Name="Window64" Style="Window" X="4.45" Y="-1.07" />
+    <PointByCoordinates Name="Window65" Style="Window" X="4.75" Y="-1.07" />
+    <PointByCoordinates Name="Window66" Style="Window" X="4.83" Y="-1.07" />
+    <PointByCoordinates Name="Window67" Style="Window" X="4.91" Y="-1.07" />
+    <PointByCoordinates Name="Window68" Style="Window" X="4.83" Y="-0.98" />
+    <PointByCoordinates Name="Window69" Style="Window" X="4.67" Y="-0.89" />
+    <PointByCoordinates Name="Window70" Style="Window" X="4.75" Y="-0.89" />
+    <PointByCoordinates Name="Window71" Style="Window" X="4.83" Y="-0.89" />
+    <PointByCoordinates Name="Window72" Style="Window" X="5.15" Y="-1.07" />
+    <PointByCoordinates Name="Window73" Style="Window" X="5.23" Y="-1.07" />
+    <PointByCoordinates Name="Window74" Style="Window" X="5.31" Y="-1.07" />
+    <PointByCoordinates Name="Window75" Style="Window" X="5.07" Y="-0.98" />
+    <PointByCoordinates Name="Window76" Style="Window" X="5.23" Y="-0.98" />
+    <PointByCoordinates Name="Window77" Style="Window" X="5.31" Y="-0.98" />
+    <FreePoint Name="Moon" Style="Crescent moon" X="-2" Y="1.45" />
+    <FreePoint Name="Star1" Style="Sparkles 3" X="-0.8" Y="1.55" />
+    <FreePoint Name="Star2" Style="Sparkles 3" X="0.9" Y="1.6" />
+    <FreePoint Name="Star3" Style="Sparkles 3" X="1.9" Y="1.35" />
+    <FreePoint Name="Star4" Style="Sparkles 3" X="2.2" Y="0.9" />
+    <FreePoint Name="Star5" Style="Sparkles 3" X="-1.7" Y="0.2" />
+    <FreePoint Name="Star6" Style="Sparkles 3" X="0.95" Y="0.15" />
+    <FreePoint Name="Star7" Style="Sparkles 3" X="-2.25" Y="0.65" />
+    <FreePoint Name="Star8" Style="Sparkles 3" X="1.75" Y="1" />
+    <FreePoint Name="Star9" Style="Sparkles 3" X="-0.3" Y="1.3" />
+    <ShowHideControl Name="ShowCircles" Style="GalleryText" Show="false" Text="Circles" X="1.15" Y="-1.25">
+      <Dependency Name="Circle1" />
+      <Dependency Name="Circle2" />
+      <Dependency Name="Circle3" />
+      <Dependency Name="Circle4" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Fireworks" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Drag the time slider to watch the show.\n\nWhen a firework bursts, its sparks shoot out every which way, and gravity pulls all of them down alike. So the sparks that fly equally fast always stay on a circle, one that grows and drops at once. Check &quot;Circles&quot; to see them.\n\nDrag a firework to move it. To change its sparks, click one, choose Edit this style and pick another emoji." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

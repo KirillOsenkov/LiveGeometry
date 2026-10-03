@@ -607,6 +607,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   off, and showed the shape's size. The Emoji tab searches `Emoji/Emoji.txt`
   (CLDR names and subgroups of the single-character emoji the font has): regenerate it with
   `dotnet tools/emoji.cs -- <emoji-test.txt> <font> <Emoji.txt>` when the font changes.
+  A color emoji is painted with the style's `Fill`, so the fill's alpha is the emoji's
+  opacity: a style written by hand without a `Fill` takes the shape default's (alpha 100)
+  and comes out faded.
 - **Touching is decided with a relative tolerance** (`Math.TangencyTolerance`, 1e-9 of the size
   of the numbers): a line and a circle, or two circles, that touch by construction come out a
   hair apart or overlapping at random, and the point there would blink as the figures move. A
@@ -1326,7 +1329,10 @@ loader still does for files from before; none of it needs extending.
   style, a vector its arrow's) and a default the drawing changed; a default as a new drawing
   has it is left out (`StyleManager.IsUnchangedDefault`). `Name` comes first, and an
   attribute at the value a fresh style has (`IsFilled="true"`, `Dash="Solid"`) is left out; a
-  missing one reads as that value. What differs under another theme is a child element
+  missing one reads as that value. A point style's `Size` is compared with a fresh style
+  showing the same character (`DrawingSerializer.FreshStyleFor`): a character's default is
+  24, a shape's 10, and an emoji of size 10 was left out and came back at 24. What differs
+  under another theme is a child element
   named after the theme, its attributes (and gradient elements) the properties as in the
   style's own element: `<LineStyle Name="RedLine" Color="#FFD83B3B" StrokeWidth="1.5"><Dark
   Color="#FF00BFFF" /></LineStyle>`. The paper's is the same on `<Viewport>`: `<Dark
@@ -1385,7 +1391,11 @@ loader still does for files from before; none of it needs extending.
 - **A show/hide box is read as a box** (`ShowHideControl.ReadXml`): each figure says in
   the file whether it is hidden. Applying the box to its figures on load hid again one
   that had been shown by hand since the box was last clicked. (The `.dgf` reader does
-  apply it: those files have only the buttons.)
+  apply it: those files have only the buttons.) The box exists whatever its figures do
+  (`ShowHideControl.UpdateExistence`): built on them like any figure, it vanished while one
+  of them didn't exist (a firework that hadn't burst yet). Its empty box takes the
+  caption's color, as the caption does: Fluent's outline was dark on a drawing's own dark
+  paper.
 - **Saved files declare `encoding="utf-8"`**; files from older builds say `utf-16`, which our
   own loader tolerates but `XDocument.Load` does not.
 - **`TranslatedPoint`** without `DistanceSource`/`DirectionSource`/`FreeDistance`/`FreeDirection`
@@ -1578,6 +1588,14 @@ buttons and checkboxes, 3D, custom tools.
   Ladder): fixed points are `PointByCoordinates` with constant coordinates (a polygon of those
   has no free point, so dragging it does nothing), and the only things that move are
   `PointOnFigure` sliders on hidden rays or segments plus a free point or two.
+- **Emoji drawings** (Kaleidoscope, Golden Angle, Treasure Island, Magic Tree, Fireworks,
+  2026-10-02): an emoji keeps its size in pixels while the figure is fitted to the window,
+  so they are drawn a few units across: zoom to fit stops at
+  `CoordinateSystem.MaxFitUnitLength` (200 px a unit), and on a big screen the picture
+  stops growing instead of leaving its emoji far apart. On a phone in portrait the figure
+  gets a third of the height and they crowd. Dragging a rotated or reflected copy moves its
+  source by the cursor's offset, so the copy goes the mirrored way: the kaleidoscope marks
+  the slice whose emoji are the real ones.
 - **The Spiral's rings** ("Drag to here") are placed for its locus's `Samples="60"`;
   changing the number moves them, and without it the curve is a smooth spiral. The samples are taken by their count (61 points, 60
   equal steps of the sliding point's parameter): added up, the step's rounding decided

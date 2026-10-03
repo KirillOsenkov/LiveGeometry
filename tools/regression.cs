@@ -59,6 +59,7 @@ public class Program
             ("Figures without a value don't exist", FiguresWithoutValue),
             ("A tool defined on expressions builds on its inputs", DefinedToolOnExpressions),
             ("Defined tools are stored, read back and deleted", StoredToolsRoundTrip),
+            ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
             ("Gallery LGF round trips", GalleryRoundTrips)
@@ -1088,6 +1089,34 @@ public class Program
             """);
         Require(drawing.LoadErrors != null, "An abstract figure was not reported.");
         Require(Find(drawing, "A") is FreePoint, "An abstract figure prevented valid figures loading.");
+    }
+
+    // a character's size has another default (24) than a shape's (10): each is left out of
+    // the file only at its own default
+    static void EmojiSizeRoundTrips()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Styles>
+                <PointStyle Name="SmallStar" Character="★" Size="10" Fill="#FFFFFFFF" />
+                <PointStyle Name="BigStar" Character="★" Size="24" Fill="#FFFFFFFF" />
+                <PointStyle Name="SmallDot" Size="10" Fill="#FFFFFFFF" />
+                <PointStyle Name="BigDot" Size="24" Fill="#FFFFFFFF" />
+              </Styles>
+              <Figures>
+                <FreePoint Name="A" Style="SmallStar" X="0" Y="0"/>
+                <FreePoint Name="B" Style="BigStar" X="1" Y="0"/>
+                <FreePoint Name="C" Style="SmallDot" X="2" Y="0"/>
+                <FreePoint Name="D" Style="BigDot" X="3" Y="0"/>
+              </Figures>
+            </Drawing>
+            """);
+        var reloaded = ReadLgf(drawing.SaveAsText());
+        foreach (var (name, size) in new[] { ("A", 10.0), ("B", 24.0), ("C", 10.0), ("D", 24.0) })
+        {
+            var style = Find(reloaded, name).Style as PointStyle;
+            Require(style != null && style.Size == size, $"Point {name} came back at size {style?.Size}, not {size}.");
+        }
     }
 
     static void GalleryRoundTrips()

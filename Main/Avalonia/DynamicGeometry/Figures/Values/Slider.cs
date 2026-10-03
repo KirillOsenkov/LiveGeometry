@@ -340,8 +340,13 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
 
             Text = NameDisplay.Format(slider.Name) + " = " + Math.Round(slider.Value, DecimalsToShow).ToString();
             var size = MeasureSize();
-            double pointRadius = slider.Anchor.Shape.Width / 2;
-            Offset = new Point(-pointRadius, -(size.Height + pointRadius + gap));
+
+            // left-aligned with the anchor, and above the bigger of the two points: a knob
+            // bigger than the anchor (a drawing's own styles) sat on the text near the start
+            double anchorRadius = slider.Anchor.Shape.Width / 2;
+            double knobWidth = slider.Knob.Shape.Width;
+            double pointRadius = knobWidth.IsValidValue() ? System.Math.Max(anchorRadius, knobWidth / 2) : anchorRadius;
+            Offset = new Point(-anchorRadius, -(size.Height + pointRadius + gap));
             base.UpdateVisual();
         }
     }

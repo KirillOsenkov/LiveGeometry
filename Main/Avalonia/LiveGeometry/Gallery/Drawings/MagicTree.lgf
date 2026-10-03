@@ -1,0 +1,1219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-2.4" Top="2" Right="2.4" Bottom="-1.6">
+    <Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF8FD3FF" Offset="0" />
+        <GradientStop Color="#FFEAF8FF" Offset="1" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
+  <Scene Left="-2.25" Top="1.375" Right="2" Bottom="-1.5" />
+  <Styles>
+    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1F4E8C" />
+    </TextStyle>
+    <TextStyle Name="GalleryText" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
+      <Dark Color="#FF2B3038" />
+    </TextStyle>
+    <ShapeStyle Name="Grass" Fill="#FF7CC56A" Color="#FF4E9A3E" StrokeWidth="2" />
+    <LineStyle Name="Bark1" Color="#FF6D4C41" StrokeWidth="22" />
+    <LineStyle Name="Bark2" Color="#FF6D4C41" StrokeWidth="15" />
+    <LineStyle Name="Bark3" Color="#FF725046" StrokeWidth="10" />
+    <PointStyle Name="Knot3" Fill="#FF725046" Color="#FF725046" StrokeWidth="0.1" />
+    <LineStyle Name="Bark4" Color="#FF77554A" StrokeWidth="7" />
+    <PointStyle Name="Knot4" Size="7" Fill="#FF77554A" Color="#FF77554A" StrokeWidth="0.1" />
+    <LineStyle Name="Bark5" Color="#FF7D5B4F" StrokeWidth="5" />
+    <PointStyle Name="Knot5" Size="5" Fill="#FF7D5B4F" Color="#FF7D5B4F" StrokeWidth="0.1" />
+    <LineStyle Name="Bark6" Color="#FF846255" StrokeWidth="3.5" />
+    <PointStyle Name="Knot6" Size="3.5" Fill="#FF846255" Color="#FF846255" StrokeWidth="0.1" />
+    <LineStyle Name="Bark7" Color="#FF8B6A5C" StrokeWidth="2.5" />
+    <PointStyle Name="Owl" Character="🦉" Size="40" Fill="#FFFFFFFF" />
+    <PointStyle Name="Bird" Character="🐦" Size="34" Fill="#FFFFFFFF" />
+    <PointStyle Name="Baby chick" Character="🐤" Size="30" Fill="#FFFFFFFF" />
+    <PointStyle Name="Sun" Character="☀️" Size="64" Fill="#FFFFFFFF" />
+    <PointStyle Name="Cloud" Character="☁️" Size="56" Fill="#FFFFFFFF" />
+    <PointStyle Name="Cloud 2" Character="☁️" Size="40" Fill="#FFFFFFFF" />
+    <PointStyle Name="Red apple" Character="🍎" Size="32" Fill="#FFFFFFFF" />
+    <PointStyle Name="Tangerine" Character="🍊" Size="32" Fill="#FFFFFFFF" />
+    <PointStyle Name="Lemon" Character="🍋" Size="32" Fill="#FFFFFFFF" />
+    <PointStyle Name="Pear" Character="🍐" Size="32" Fill="#FFFFFFFF" />
+    <PointStyle Name="Peach" Character="🍑" Size="32" Fill="#FFFFFFFF" />
+    <PointStyle Name="Cherries" Character="🍒" Size="32" Fill="#FFFFFFFF" />
+    <PointStyle Name="Grapes" Character="🍇" Size="32" Fill="#FFFFFFFF" />
+    <PointStyle Name="Green apple" Character="🍏" Size="32" Fill="#FFFFFFFF" />
+    <PointStyle Name="Butterfly" Character="🦋" Size="28" Fill="#FFFFFFFF" />
+    <PointStyle Name="Honeybee" Character="🐝" Size="22" Fill="#FFFFFFFF" />
+    <PointStyle Name="Tulip" Character="🌷" Size="32" Fill="#FFFFFFFF" />
+    <PointStyle Name="Blossom" Character="🌼" Size="26" Fill="#FFFFFFFF" />
+    <PointStyle Name="Sunflower" Character="🌻" Size="44" Fill="#FFFFFFFF" />
+    <PointStyle Name="Mushroom" Character="🍄" Size="26" Fill="#FFFFFFFF" />
+    <PointStyle Name="Basket" Character="🧺" Size="36" Fill="#FFFFFFFF" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="GroundLeft" Visible="false" X="-1000" Y="-1.2" />
+    <PointByCoordinates Name="GroundRight" Visible="false" X="1000" Y="-1.2" />
+    <PointByCoordinates Name="GroundFarRight" Visible="false" X="1000" Y="-1000" />
+    <PointByCoordinates Name="GroundFarLeft" Visible="false" X="-1000" Y="-1000" />
+    <Polygon Name="Ground" Style="Grass">
+      <Dependency Name="GroundLeft" />
+      <Dependency Name="GroundRight" />
+      <Dependency Name="GroundFarRight" />
+      <Dependency Name="GroundFarLeft" />
+    </Polygon>
+    <PointByCoordinates Name="Root" Visible="false" X="0" Y="-1.2" />
+    <FreePoint Name="Owl" Style="Owl" X="0" Y="-0.58" />
+    <FreePoint Name="Bird" Style="Bird" X="-0.214859" Y="-0.119233" />
+    <FreePoint Name="Chick" Style="Baby chick" X="0.306884" Y="-0.273116" />
+    <FreePoint Name="Sun" Style="Sun" X="1.636198" Y="1.060196" />
+    <FreePoint Name="Cloud1" Style="Cloud" X="-1.779096" Y="1.060196" />
+    <FreePoint Name="Cloud2" Style="Cloud 2" X="-1.179096" Y="1.240196" />
+    <PointByCoordinates Name="ZL" Visible="false" X="((Bird.X - Owl.X) * (Owl.X - Root.X) + (Bird.Y - Owl.Y) * (Owl.Y - Root.Y)) / ((Owl.X - Root.X) ^ 2 + (Owl.Y - Root.Y) ^ 2)" Y="((Bird.Y - Owl.Y) * (Owl.X - Root.X) - (Bird.X - Owl.X) * (Owl.Y - Root.Y)) / ((Owl.X - Root.X) ^ 2 + (Owl.Y - Root.Y) ^ 2)">
+      <Dependency Name="Bird" />
+      <Dependency Name="Owl" />
+      <Dependency Name="Root" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ZR" Visible="false" X="((Chick.X - Owl.X) * (Owl.X - Root.X) + (Chick.Y - Owl.Y) * (Owl.Y - Root.Y)) / ((Owl.X - Root.X) ^ 2 + (Owl.Y - Root.Y) ^ 2)" Y="((Chick.Y - Owl.Y) * (Owl.X - Root.X) - (Chick.X - Owl.X) * (Owl.Y - Root.Y)) / ((Owl.X - Root.X) ^ 2 + (Owl.Y - Root.Y) ^ 2)">
+      <Dependency Name="Chick" />
+      <Dependency Name="Owl" />
+      <Dependency Name="Root" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLL" Style="Knot3" X="Bird.X + ZL.X * (Bird.X - Owl.X) - ZL.Y * (Bird.Y - Owl.Y)" Y="Bird.Y + ZL.X * (Bird.Y - Owl.Y) + ZL.Y * (Bird.X - Owl.X)">
+      <Dependency Name="Bird" />
+      <Dependency Name="ZL" />
+      <Dependency Name="Owl" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLR" Style="Knot3" X="Bird.X + ZR.X * (Bird.X - Owl.X) - ZR.Y * (Bird.Y - Owl.Y)" Y="Bird.Y + ZR.X * (Bird.Y - Owl.Y) + ZR.Y * (Bird.X - Owl.X)">
+      <Dependency Name="Bird" />
+      <Dependency Name="ZR" />
+      <Dependency Name="Owl" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRL" Style="Knot3" X="Chick.X + ZL.X * (Chick.X - Owl.X) - ZL.Y * (Chick.Y - Owl.Y)" Y="Chick.Y + ZL.X * (Chick.Y - Owl.Y) + ZL.Y * (Chick.X - Owl.X)">
+      <Dependency Name="Chick" />
+      <Dependency Name="ZL" />
+      <Dependency Name="Owl" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRR" Style="Knot3" X="Chick.X + ZR.X * (Chick.X - Owl.X) - ZR.Y * (Chick.Y - Owl.Y)" Y="Chick.Y + ZR.X * (Chick.Y - Owl.Y) + ZR.Y * (Chick.X - Owl.X)">
+      <Dependency Name="Chick" />
+      <Dependency Name="ZR" />
+      <Dependency Name="Owl" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLL" Style="Knot4" X="NLL.X + ZL.X * (NLL.X - Bird.X) - ZL.Y * (NLL.Y - Bird.Y)" Y="NLL.Y + ZL.X * (NLL.Y - Bird.Y) + ZL.Y * (NLL.X - Bird.X)">
+      <Dependency Name="NLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="Bird" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLR" Style="Knot4" X="NLL.X + ZR.X * (NLL.X - Bird.X) - ZR.Y * (NLL.Y - Bird.Y)" Y="NLL.Y + ZR.X * (NLL.Y - Bird.Y) + ZR.Y * (NLL.X - Bird.X)">
+      <Dependency Name="NLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="Bird" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRL" Style="Knot4" X="NLR.X + ZL.X * (NLR.X - Bird.X) - ZL.Y * (NLR.Y - Bird.Y)" Y="NLR.Y + ZL.X * (NLR.Y - Bird.Y) + ZL.Y * (NLR.X - Bird.X)">
+      <Dependency Name="NLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="Bird" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRR" Style="Knot4" X="NLR.X + ZR.X * (NLR.X - Bird.X) - ZR.Y * (NLR.Y - Bird.Y)" Y="NLR.Y + ZR.X * (NLR.Y - Bird.Y) + ZR.Y * (NLR.X - Bird.X)">
+      <Dependency Name="NLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="Bird" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLL" Style="Knot4" X="NRL.X + ZL.X * (NRL.X - Chick.X) - ZL.Y * (NRL.Y - Chick.Y)" Y="NRL.Y + ZL.X * (NRL.Y - Chick.Y) + ZL.Y * (NRL.X - Chick.X)">
+      <Dependency Name="NRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="Chick" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLR" Style="Knot4" X="NRL.X + ZR.X * (NRL.X - Chick.X) - ZR.Y * (NRL.Y - Chick.Y)" Y="NRL.Y + ZR.X * (NRL.Y - Chick.Y) + ZR.Y * (NRL.X - Chick.X)">
+      <Dependency Name="NRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="Chick" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRL" Style="Knot4" X="NRR.X + ZL.X * (NRR.X - Chick.X) - ZL.Y * (NRR.Y - Chick.Y)" Y="NRR.Y + ZL.X * (NRR.Y - Chick.Y) + ZL.Y * (NRR.X - Chick.X)">
+      <Dependency Name="NRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="Chick" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRR" Style="Knot4" X="NRR.X + ZR.X * (NRR.X - Chick.X) - ZR.Y * (NRR.Y - Chick.Y)" Y="NRR.Y + ZR.X * (NRR.Y - Chick.Y) + ZR.Y * (NRR.X - Chick.X)">
+      <Dependency Name="NRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="Chick" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLL" Style="Knot5" X="NLLL.X + ZL.X * (NLLL.X - NLL.X) - ZL.Y * (NLLL.Y - NLL.Y)" Y="NLLL.Y + ZL.X * (NLLL.Y - NLL.Y) + ZL.Y * (NLLL.X - NLL.X)">
+      <Dependency Name="NLLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLR" Style="Knot5" X="NLLL.X + ZR.X * (NLLL.X - NLL.X) - ZR.Y * (NLLL.Y - NLL.Y)" Y="NLLL.Y + ZR.X * (NLLL.Y - NLL.Y) + ZR.Y * (NLLL.X - NLL.X)">
+      <Dependency Name="NLLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRL" Style="Knot5" X="NLLR.X + ZL.X * (NLLR.X - NLL.X) - ZL.Y * (NLLR.Y - NLL.Y)" Y="NLLR.Y + ZL.X * (NLLR.Y - NLL.Y) + ZL.Y * (NLLR.X - NLL.X)">
+      <Dependency Name="NLLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRR" Style="Knot5" X="NLLR.X + ZR.X * (NLLR.X - NLL.X) - ZR.Y * (NLLR.Y - NLL.Y)" Y="NLLR.Y + ZR.X * (NLLR.Y - NLL.Y) + ZR.Y * (NLLR.X - NLL.X)">
+      <Dependency Name="NLLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLL" Style="Knot5" X="NLRL.X + ZL.X * (NLRL.X - NLR.X) - ZL.Y * (NLRL.Y - NLR.Y)" Y="NLRL.Y + ZL.X * (NLRL.Y - NLR.Y) + ZL.Y * (NLRL.X - NLR.X)">
+      <Dependency Name="NLRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLR" Style="Knot5" X="NLRL.X + ZR.X * (NLRL.X - NLR.X) - ZR.Y * (NLRL.Y - NLR.Y)" Y="NLRL.Y + ZR.X * (NLRL.Y - NLR.Y) + ZR.Y * (NLRL.X - NLR.X)">
+      <Dependency Name="NLRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRL" Style="Knot5" X="NLRR.X + ZL.X * (NLRR.X - NLR.X) - ZL.Y * (NLRR.Y - NLR.Y)" Y="NLRR.Y + ZL.X * (NLRR.Y - NLR.Y) + ZL.Y * (NLRR.X - NLR.X)">
+      <Dependency Name="NLRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRR" Style="Knot5" X="NLRR.X + ZR.X * (NLRR.X - NLR.X) - ZR.Y * (NLRR.Y - NLR.Y)" Y="NLRR.Y + ZR.X * (NLRR.Y - NLR.Y) + ZR.Y * (NLRR.X - NLR.X)">
+      <Dependency Name="NLRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLL" Style="Knot5" X="NRLL.X + ZL.X * (NRLL.X - NRL.X) - ZL.Y * (NRLL.Y - NRL.Y)" Y="NRLL.Y + ZL.X * (NRLL.Y - NRL.Y) + ZL.Y * (NRLL.X - NRL.X)">
+      <Dependency Name="NRLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLR" Style="Knot5" X="NRLL.X + ZR.X * (NRLL.X - NRL.X) - ZR.Y * (NRLL.Y - NRL.Y)" Y="NRLL.Y + ZR.X * (NRLL.Y - NRL.Y) + ZR.Y * (NRLL.X - NRL.X)">
+      <Dependency Name="NRLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRL" Style="Knot5" X="NRLR.X + ZL.X * (NRLR.X - NRL.X) - ZL.Y * (NRLR.Y - NRL.Y)" Y="NRLR.Y + ZL.X * (NRLR.Y - NRL.Y) + ZL.Y * (NRLR.X - NRL.X)">
+      <Dependency Name="NRLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRR" Style="Knot5" X="NRLR.X + ZR.X * (NRLR.X - NRL.X) - ZR.Y * (NRLR.Y - NRL.Y)" Y="NRLR.Y + ZR.X * (NRLR.Y - NRL.Y) + ZR.Y * (NRLR.X - NRL.X)">
+      <Dependency Name="NRLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLL" Style="Knot5" X="NRRL.X + ZL.X * (NRRL.X - NRR.X) - ZL.Y * (NRRL.Y - NRR.Y)" Y="NRRL.Y + ZL.X * (NRRL.Y - NRR.Y) + ZL.Y * (NRRL.X - NRR.X)">
+      <Dependency Name="NRRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLR" Style="Knot5" X="NRRL.X + ZR.X * (NRRL.X - NRR.X) - ZR.Y * (NRRL.Y - NRR.Y)" Y="NRRL.Y + ZR.X * (NRRL.Y - NRR.Y) + ZR.Y * (NRRL.X - NRR.X)">
+      <Dependency Name="NRRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRL" Style="Knot5" X="NRRR.X + ZL.X * (NRRR.X - NRR.X) - ZL.Y * (NRRR.Y - NRR.Y)" Y="NRRR.Y + ZL.X * (NRRR.Y - NRR.Y) + ZL.Y * (NRRR.X - NRR.X)">
+      <Dependency Name="NRRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRR" Style="Knot5" X="NRRR.X + ZR.X * (NRRR.X - NRR.X) - ZR.Y * (NRRR.Y - NRR.Y)" Y="NRRR.Y + ZR.X * (NRRR.Y - NRR.Y) + ZR.Y * (NRRR.X - NRR.X)">
+      <Dependency Name="NRRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLLL" Style="Knot6" X="NLLLL.X + ZL.X * (NLLLL.X - NLLL.X) - ZL.Y * (NLLLL.Y - NLLL.Y)" Y="NLLLL.Y + ZL.X * (NLLLL.Y - NLLL.Y) + ZL.Y * (NLLLL.X - NLLL.X)">
+      <Dependency Name="NLLLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLLR" Style="Knot6" X="NLLLL.X + ZR.X * (NLLLL.X - NLLL.X) - ZR.Y * (NLLLL.Y - NLLL.Y)" Y="NLLLL.Y + ZR.X * (NLLLL.Y - NLLL.Y) + ZR.Y * (NLLLL.X - NLLL.X)">
+      <Dependency Name="NLLLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLRL" Style="Knot6" X="NLLLR.X + ZL.X * (NLLLR.X - NLLL.X) - ZL.Y * (NLLLR.Y - NLLL.Y)" Y="NLLLR.Y + ZL.X * (NLLLR.Y - NLLL.Y) + ZL.Y * (NLLLR.X - NLLL.X)">
+      <Dependency Name="NLLLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLRR" Style="Knot6" X="NLLLR.X + ZR.X * (NLLLR.X - NLLL.X) - ZR.Y * (NLLLR.Y - NLLL.Y)" Y="NLLLR.Y + ZR.X * (NLLLR.Y - NLLL.Y) + ZR.Y * (NLLLR.X - NLLL.X)">
+      <Dependency Name="NLLLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRLL" Style="Knot6" X="NLLRL.X + ZL.X * (NLLRL.X - NLLR.X) - ZL.Y * (NLLRL.Y - NLLR.Y)" Y="NLLRL.Y + ZL.X * (NLLRL.Y - NLLR.Y) + ZL.Y * (NLLRL.X - NLLR.X)">
+      <Dependency Name="NLLRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRLR" Style="Knot6" X="NLLRL.X + ZR.X * (NLLRL.X - NLLR.X) - ZR.Y * (NLLRL.Y - NLLR.Y)" Y="NLLRL.Y + ZR.X * (NLLRL.Y - NLLR.Y) + ZR.Y * (NLLRL.X - NLLR.X)">
+      <Dependency Name="NLLRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRRL" Style="Knot6" X="NLLRR.X + ZL.X * (NLLRR.X - NLLR.X) - ZL.Y * (NLLRR.Y - NLLR.Y)" Y="NLLRR.Y + ZL.X * (NLLRR.Y - NLLR.Y) + ZL.Y * (NLLRR.X - NLLR.X)">
+      <Dependency Name="NLLRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRRR" Style="Knot6" X="NLLRR.X + ZR.X * (NLLRR.X - NLLR.X) - ZR.Y * (NLLRR.Y - NLLR.Y)" Y="NLLRR.Y + ZR.X * (NLLRR.Y - NLLR.Y) + ZR.Y * (NLLRR.X - NLLR.X)">
+      <Dependency Name="NLLRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLLL" Style="Knot6" X="NLRLL.X + ZL.X * (NLRLL.X - NLRL.X) - ZL.Y * (NLRLL.Y - NLRL.Y)" Y="NLRLL.Y + ZL.X * (NLRLL.Y - NLRL.Y) + ZL.Y * (NLRLL.X - NLRL.X)">
+      <Dependency Name="NLRLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLLR" Style="Knot6" X="NLRLL.X + ZR.X * (NLRLL.X - NLRL.X) - ZR.Y * (NLRLL.Y - NLRL.Y)" Y="NLRLL.Y + ZR.X * (NLRLL.Y - NLRL.Y) + ZR.Y * (NLRLL.X - NLRL.X)">
+      <Dependency Name="NLRLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLRL" Style="Knot6" X="NLRLR.X + ZL.X * (NLRLR.X - NLRL.X) - ZL.Y * (NLRLR.Y - NLRL.Y)" Y="NLRLR.Y + ZL.X * (NLRLR.Y - NLRL.Y) + ZL.Y * (NLRLR.X - NLRL.X)">
+      <Dependency Name="NLRLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLRR" Style="Knot6" X="NLRLR.X + ZR.X * (NLRLR.X - NLRL.X) - ZR.Y * (NLRLR.Y - NLRL.Y)" Y="NLRLR.Y + ZR.X * (NLRLR.Y - NLRL.Y) + ZR.Y * (NLRLR.X - NLRL.X)">
+      <Dependency Name="NLRLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRLL" Style="Knot6" X="NLRRL.X + ZL.X * (NLRRL.X - NLRR.X) - ZL.Y * (NLRRL.Y - NLRR.Y)" Y="NLRRL.Y + ZL.X * (NLRRL.Y - NLRR.Y) + ZL.Y * (NLRRL.X - NLRR.X)">
+      <Dependency Name="NLRRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRLR" Style="Knot6" X="NLRRL.X + ZR.X * (NLRRL.X - NLRR.X) - ZR.Y * (NLRRL.Y - NLRR.Y)" Y="NLRRL.Y + ZR.X * (NLRRL.Y - NLRR.Y) + ZR.Y * (NLRRL.X - NLRR.X)">
+      <Dependency Name="NLRRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRRL" Style="Knot6" X="NLRRR.X + ZL.X * (NLRRR.X - NLRR.X) - ZL.Y * (NLRRR.Y - NLRR.Y)" Y="NLRRR.Y + ZL.X * (NLRRR.Y - NLRR.Y) + ZL.Y * (NLRRR.X - NLRR.X)">
+      <Dependency Name="NLRRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRRR" Style="Knot6" X="NLRRR.X + ZR.X * (NLRRR.X - NLRR.X) - ZR.Y * (NLRRR.Y - NLRR.Y)" Y="NLRRR.Y + ZR.X * (NLRRR.Y - NLRR.Y) + ZR.Y * (NLRRR.X - NLRR.X)">
+      <Dependency Name="NLRRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLLL" Style="Knot6" X="NRLLL.X + ZL.X * (NRLLL.X - NRLL.X) - ZL.Y * (NRLLL.Y - NRLL.Y)" Y="NRLLL.Y + ZL.X * (NRLLL.Y - NRLL.Y) + ZL.Y * (NRLLL.X - NRLL.X)">
+      <Dependency Name="NRLLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLLR" Style="Knot6" X="NRLLL.X + ZR.X * (NRLLL.X - NRLL.X) - ZR.Y * (NRLLL.Y - NRLL.Y)" Y="NRLLL.Y + ZR.X * (NRLLL.Y - NRLL.Y) + ZR.Y * (NRLLL.X - NRLL.X)">
+      <Dependency Name="NRLLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLRL" Style="Knot6" X="NRLLR.X + ZL.X * (NRLLR.X - NRLL.X) - ZL.Y * (NRLLR.Y - NRLL.Y)" Y="NRLLR.Y + ZL.X * (NRLLR.Y - NRLL.Y) + ZL.Y * (NRLLR.X - NRLL.X)">
+      <Dependency Name="NRLLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLRR" Style="Knot6" X="NRLLR.X + ZR.X * (NRLLR.X - NRLL.X) - ZR.Y * (NRLLR.Y - NRLL.Y)" Y="NRLLR.Y + ZR.X * (NRLLR.Y - NRLL.Y) + ZR.Y * (NRLLR.X - NRLL.X)">
+      <Dependency Name="NRLLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRLL" Style="Knot6" X="NRLRL.X + ZL.X * (NRLRL.X - NRLR.X) - ZL.Y * (NRLRL.Y - NRLR.Y)" Y="NRLRL.Y + ZL.X * (NRLRL.Y - NRLR.Y) + ZL.Y * (NRLRL.X - NRLR.X)">
+      <Dependency Name="NRLRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRLR" Style="Knot6" X="NRLRL.X + ZR.X * (NRLRL.X - NRLR.X) - ZR.Y * (NRLRL.Y - NRLR.Y)" Y="NRLRL.Y + ZR.X * (NRLRL.Y - NRLR.Y) + ZR.Y * (NRLRL.X - NRLR.X)">
+      <Dependency Name="NRLRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRRL" Style="Knot6" X="NRLRR.X + ZL.X * (NRLRR.X - NRLR.X) - ZL.Y * (NRLRR.Y - NRLR.Y)" Y="NRLRR.Y + ZL.X * (NRLRR.Y - NRLR.Y) + ZL.Y * (NRLRR.X - NRLR.X)">
+      <Dependency Name="NRLRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRRR" Style="Knot6" X="NRLRR.X + ZR.X * (NRLRR.X - NRLR.X) - ZR.Y * (NRLRR.Y - NRLR.Y)" Y="NRLRR.Y + ZR.X * (NRLRR.Y - NRLR.Y) + ZR.Y * (NRLRR.X - NRLR.X)">
+      <Dependency Name="NRLRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLLL" Style="Knot6" X="NRRLL.X + ZL.X * (NRRLL.X - NRRL.X) - ZL.Y * (NRRLL.Y - NRRL.Y)" Y="NRRLL.Y + ZL.X * (NRRLL.Y - NRRL.Y) + ZL.Y * (NRRLL.X - NRRL.X)">
+      <Dependency Name="NRRLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLLR" Style="Knot6" X="NRRLL.X + ZR.X * (NRRLL.X - NRRL.X) - ZR.Y * (NRRLL.Y - NRRL.Y)" Y="NRRLL.Y + ZR.X * (NRRLL.Y - NRRL.Y) + ZR.Y * (NRRLL.X - NRRL.X)">
+      <Dependency Name="NRRLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLRL" Style="Knot6" X="NRRLR.X + ZL.X * (NRRLR.X - NRRL.X) - ZL.Y * (NRRLR.Y - NRRL.Y)" Y="NRRLR.Y + ZL.X * (NRRLR.Y - NRRL.Y) + ZL.Y * (NRRLR.X - NRRL.X)">
+      <Dependency Name="NRRLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLRR" Style="Knot6" X="NRRLR.X + ZR.X * (NRRLR.X - NRRL.X) - ZR.Y * (NRRLR.Y - NRRL.Y)" Y="NRRLR.Y + ZR.X * (NRRLR.Y - NRRL.Y) + ZR.Y * (NRRLR.X - NRRL.X)">
+      <Dependency Name="NRRLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRLL" Style="Knot6" X="NRRRL.X + ZL.X * (NRRRL.X - NRRR.X) - ZL.Y * (NRRRL.Y - NRRR.Y)" Y="NRRRL.Y + ZL.X * (NRRRL.Y - NRRR.Y) + ZL.Y * (NRRRL.X - NRRR.X)">
+      <Dependency Name="NRRRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRLR" Style="Knot6" X="NRRRL.X + ZR.X * (NRRRL.X - NRRR.X) - ZR.Y * (NRRRL.Y - NRRR.Y)" Y="NRRRL.Y + ZR.X * (NRRRL.Y - NRRR.Y) + ZR.Y * (NRRRL.X - NRRR.X)">
+      <Dependency Name="NRRRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRRL" Style="Knot6" X="NRRRR.X + ZL.X * (NRRRR.X - NRRR.X) - ZL.Y * (NRRRR.Y - NRRR.Y)" Y="NRRRR.Y + ZL.X * (NRRRR.Y - NRRR.Y) + ZL.Y * (NRRRR.X - NRRR.X)">
+      <Dependency Name="NRRRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRRR" Style="Knot6" X="NRRRR.X + ZR.X * (NRRRR.X - NRRR.X) - ZR.Y * (NRRRR.Y - NRRR.Y)" Y="NRRRR.Y + ZR.X * (NRRRR.Y - NRRR.Y) + ZR.Y * (NRRRR.X - NRRR.X)">
+      <Dependency Name="NRRRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLLLL" Style="Red apple" X="NLLLLL.X + ZL.X * (NLLLLL.X - NLLLL.X) - ZL.Y * (NLLLLL.Y - NLLLL.Y)" Y="NLLLLL.Y + ZL.X * (NLLLLL.Y - NLLLL.Y) + ZL.Y * (NLLLLL.X - NLLLL.X)">
+      <Dependency Name="NLLLLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLLLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLLLR" Style="Red apple" X="NLLLLL.X + ZR.X * (NLLLLL.X - NLLLL.X) - ZR.Y * (NLLLLL.Y - NLLLL.Y)" Y="NLLLLL.Y + ZR.X * (NLLLLL.Y - NLLLL.Y) + ZR.Y * (NLLLLL.X - NLLLL.X)">
+      <Dependency Name="NLLLLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLLLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLLRL" Style="Red apple" X="NLLLLR.X + ZL.X * (NLLLLR.X - NLLLL.X) - ZL.Y * (NLLLLR.Y - NLLLL.Y)" Y="NLLLLR.Y + ZL.X * (NLLLLR.Y - NLLLL.Y) + ZL.Y * (NLLLLR.X - NLLLL.X)">
+      <Dependency Name="NLLLLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLLLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLLRR" Style="Red apple" X="NLLLLR.X + ZR.X * (NLLLLR.X - NLLLL.X) - ZR.Y * (NLLLLR.Y - NLLLL.Y)" Y="NLLLLR.Y + ZR.X * (NLLLLR.Y - NLLLL.Y) + ZR.Y * (NLLLLR.X - NLLLL.X)">
+      <Dependency Name="NLLLLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLLLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLRLL" Style="Tangerine" X="NLLLRL.X + ZL.X * (NLLLRL.X - NLLLR.X) - ZL.Y * (NLLLRL.Y - NLLLR.Y)" Y="NLLLRL.Y + ZL.X * (NLLLRL.Y - NLLLR.Y) + ZL.Y * (NLLLRL.X - NLLLR.X)">
+      <Dependency Name="NLLLRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLLLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLRLR" Style="Tangerine" X="NLLLRL.X + ZR.X * (NLLLRL.X - NLLLR.X) - ZR.Y * (NLLLRL.Y - NLLLR.Y)" Y="NLLLRL.Y + ZR.X * (NLLLRL.Y - NLLLR.Y) + ZR.Y * (NLLLRL.X - NLLLR.X)">
+      <Dependency Name="NLLLRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLLLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLRRL" Style="Tangerine" X="NLLLRR.X + ZL.X * (NLLLRR.X - NLLLR.X) - ZL.Y * (NLLLRR.Y - NLLLR.Y)" Y="NLLLRR.Y + ZL.X * (NLLLRR.Y - NLLLR.Y) + ZL.Y * (NLLLRR.X - NLLLR.X)">
+      <Dependency Name="NLLLRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLLLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLLRRR" Style="Tangerine" X="NLLLRR.X + ZR.X * (NLLLRR.X - NLLLR.X) - ZR.Y * (NLLLRR.Y - NLLLR.Y)" Y="NLLLRR.Y + ZR.X * (NLLLRR.Y - NLLLR.Y) + ZR.Y * (NLLLRR.X - NLLLR.X)">
+      <Dependency Name="NLLLRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLLLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRLLL" Style="Lemon" X="NLLRLL.X + ZL.X * (NLLRLL.X - NLLRL.X) - ZL.Y * (NLLRLL.Y - NLLRL.Y)" Y="NLLRLL.Y + ZL.X * (NLLRLL.Y - NLLRL.Y) + ZL.Y * (NLLRLL.X - NLLRL.X)">
+      <Dependency Name="NLLRLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLLRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRLLR" Style="Lemon" X="NLLRLL.X + ZR.X * (NLLRLL.X - NLLRL.X) - ZR.Y * (NLLRLL.Y - NLLRL.Y)" Y="NLLRLL.Y + ZR.X * (NLLRLL.Y - NLLRL.Y) + ZR.Y * (NLLRLL.X - NLLRL.X)">
+      <Dependency Name="NLLRLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLLRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRLRL" Style="Lemon" X="NLLRLR.X + ZL.X * (NLLRLR.X - NLLRL.X) - ZL.Y * (NLLRLR.Y - NLLRL.Y)" Y="NLLRLR.Y + ZL.X * (NLLRLR.Y - NLLRL.Y) + ZL.Y * (NLLRLR.X - NLLRL.X)">
+      <Dependency Name="NLLRLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLLRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRLRR" Style="Lemon" X="NLLRLR.X + ZR.X * (NLLRLR.X - NLLRL.X) - ZR.Y * (NLLRLR.Y - NLLRL.Y)" Y="NLLRLR.Y + ZR.X * (NLLRLR.Y - NLLRL.Y) + ZR.Y * (NLLRLR.X - NLLRL.X)">
+      <Dependency Name="NLLRLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLLRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRRLL" Style="Pear" X="NLLRRL.X + ZL.X * (NLLRRL.X - NLLRR.X) - ZL.Y * (NLLRRL.Y - NLLRR.Y)" Y="NLLRRL.Y + ZL.X * (NLLRRL.Y - NLLRR.Y) + ZL.Y * (NLLRRL.X - NLLRR.X)">
+      <Dependency Name="NLLRRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLLRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRRLR" Style="Pear" X="NLLRRL.X + ZR.X * (NLLRRL.X - NLLRR.X) - ZR.Y * (NLLRRL.Y - NLLRR.Y)" Y="NLLRRL.Y + ZR.X * (NLLRRL.Y - NLLRR.Y) + ZR.Y * (NLLRRL.X - NLLRR.X)">
+      <Dependency Name="NLLRRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLLRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRRRL" Style="Pear" X="NLLRRR.X + ZL.X * (NLLRRR.X - NLLRR.X) - ZL.Y * (NLLRRR.Y - NLLRR.Y)" Y="NLLRRR.Y + ZL.X * (NLLRRR.Y - NLLRR.Y) + ZL.Y * (NLLRRR.X - NLLRR.X)">
+      <Dependency Name="NLLRRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLLRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLLRRRR" Style="Pear" X="NLLRRR.X + ZR.X * (NLLRRR.X - NLLRR.X) - ZR.Y * (NLLRRR.Y - NLLRR.Y)" Y="NLLRRR.Y + ZR.X * (NLLRRR.Y - NLLRR.Y) + ZR.Y * (NLLRRR.X - NLLRR.X)">
+      <Dependency Name="NLLRRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLLRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLLLL" Style="Peach" X="NLRLLL.X + ZL.X * (NLRLLL.X - NLRLL.X) - ZL.Y * (NLRLLL.Y - NLRLL.Y)" Y="NLRLLL.Y + ZL.X * (NLRLLL.Y - NLRLL.Y) + ZL.Y * (NLRLLL.X - NLRLL.X)">
+      <Dependency Name="NLRLLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLRLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLLLR" Style="Peach" X="NLRLLL.X + ZR.X * (NLRLLL.X - NLRLL.X) - ZR.Y * (NLRLLL.Y - NLRLL.Y)" Y="NLRLLL.Y + ZR.X * (NLRLLL.Y - NLRLL.Y) + ZR.Y * (NLRLLL.X - NLRLL.X)">
+      <Dependency Name="NLRLLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLRLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLLRL" Style="Peach" X="NLRLLR.X + ZL.X * (NLRLLR.X - NLRLL.X) - ZL.Y * (NLRLLR.Y - NLRLL.Y)" Y="NLRLLR.Y + ZL.X * (NLRLLR.Y - NLRLL.Y) + ZL.Y * (NLRLLR.X - NLRLL.X)">
+      <Dependency Name="NLRLLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLRLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLLRR" Style="Peach" X="NLRLLR.X + ZR.X * (NLRLLR.X - NLRLL.X) - ZR.Y * (NLRLLR.Y - NLRLL.Y)" Y="NLRLLR.Y + ZR.X * (NLRLLR.Y - NLRLL.Y) + ZR.Y * (NLRLLR.X - NLRLL.X)">
+      <Dependency Name="NLRLLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLRLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLRLL" Style="Cherries" X="NLRLRL.X + ZL.X * (NLRLRL.X - NLRLR.X) - ZL.Y * (NLRLRL.Y - NLRLR.Y)" Y="NLRLRL.Y + ZL.X * (NLRLRL.Y - NLRLR.Y) + ZL.Y * (NLRLRL.X - NLRLR.X)">
+      <Dependency Name="NLRLRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLRLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLRLR" Style="Cherries" X="NLRLRL.X + ZR.X * (NLRLRL.X - NLRLR.X) - ZR.Y * (NLRLRL.Y - NLRLR.Y)" Y="NLRLRL.Y + ZR.X * (NLRLRL.Y - NLRLR.Y) + ZR.Y * (NLRLRL.X - NLRLR.X)">
+      <Dependency Name="NLRLRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLRLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLRRL" Style="Cherries" X="NLRLRR.X + ZL.X * (NLRLRR.X - NLRLR.X) - ZL.Y * (NLRLRR.Y - NLRLR.Y)" Y="NLRLRR.Y + ZL.X * (NLRLRR.Y - NLRLR.Y) + ZL.Y * (NLRLRR.X - NLRLR.X)">
+      <Dependency Name="NLRLRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLRLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRLRRR" Style="Cherries" X="NLRLRR.X + ZR.X * (NLRLRR.X - NLRLR.X) - ZR.Y * (NLRLRR.Y - NLRLR.Y)" Y="NLRLRR.Y + ZR.X * (NLRLRR.Y - NLRLR.Y) + ZR.Y * (NLRLRR.X - NLRLR.X)">
+      <Dependency Name="NLRLRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLRLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRLLL" Style="Grapes" X="NLRRLL.X + ZL.X * (NLRRLL.X - NLRRL.X) - ZL.Y * (NLRRLL.Y - NLRRL.Y)" Y="NLRRLL.Y + ZL.X * (NLRRLL.Y - NLRRL.Y) + ZL.Y * (NLRRLL.X - NLRRL.X)">
+      <Dependency Name="NLRRLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLRRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRLLR" Style="Grapes" X="NLRRLL.X + ZR.X * (NLRRLL.X - NLRRL.X) - ZR.Y * (NLRRLL.Y - NLRRL.Y)" Y="NLRRLL.Y + ZR.X * (NLRRLL.Y - NLRRL.Y) + ZR.Y * (NLRRLL.X - NLRRL.X)">
+      <Dependency Name="NLRRLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLRRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRLRL" Style="Grapes" X="NLRRLR.X + ZL.X * (NLRRLR.X - NLRRL.X) - ZL.Y * (NLRRLR.Y - NLRRL.Y)" Y="NLRRLR.Y + ZL.X * (NLRRLR.Y - NLRRL.Y) + ZL.Y * (NLRRLR.X - NLRRL.X)">
+      <Dependency Name="NLRRLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLRRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRLRR" Style="Grapes" X="NLRRLR.X + ZR.X * (NLRRLR.X - NLRRL.X) - ZR.Y * (NLRRLR.Y - NLRRL.Y)" Y="NLRRLR.Y + ZR.X * (NLRRLR.Y - NLRRL.Y) + ZR.Y * (NLRRLR.X - NLRRL.X)">
+      <Dependency Name="NLRRLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLRRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRRLL" Style="Green apple" X="NLRRRL.X + ZL.X * (NLRRRL.X - NLRRR.X) - ZL.Y * (NLRRRL.Y - NLRRR.Y)" Y="NLRRRL.Y + ZL.X * (NLRRRL.Y - NLRRR.Y) + ZL.Y * (NLRRRL.X - NLRRR.X)">
+      <Dependency Name="NLRRRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLRRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRRLR" Style="Green apple" X="NLRRRL.X + ZR.X * (NLRRRL.X - NLRRR.X) - ZR.Y * (NLRRRL.Y - NLRRR.Y)" Y="NLRRRL.Y + ZR.X * (NLRRRL.Y - NLRRR.Y) + ZR.Y * (NLRRRL.X - NLRRR.X)">
+      <Dependency Name="NLRRRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLRRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRRRL" Style="Green apple" X="NLRRRR.X + ZL.X * (NLRRRR.X - NLRRR.X) - ZL.Y * (NLRRRR.Y - NLRRR.Y)" Y="NLRRRR.Y + ZL.X * (NLRRRR.Y - NLRRR.Y) + ZL.Y * (NLRRRR.X - NLRRR.X)">
+      <Dependency Name="NLRRRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NLRRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NLRRRRR" Style="Green apple" X="NLRRRR.X + ZR.X * (NLRRRR.X - NLRRR.X) - ZR.Y * (NLRRRR.Y - NLRRR.Y)" Y="NLRRRR.Y + ZR.X * (NLRRRR.Y - NLRRR.Y) + ZR.Y * (NLRRRR.X - NLRRR.X)">
+      <Dependency Name="NLRRRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NLRRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLLLL" Style="Red apple" X="NRLLLL.X + ZL.X * (NRLLLL.X - NRLLL.X) - ZL.Y * (NRLLLL.Y - NRLLL.Y)" Y="NRLLLL.Y + ZL.X * (NRLLLL.Y - NRLLL.Y) + ZL.Y * (NRLLLL.X - NRLLL.X)">
+      <Dependency Name="NRLLLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRLLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLLLR" Style="Red apple" X="NRLLLL.X + ZR.X * (NRLLLL.X - NRLLL.X) - ZR.Y * (NRLLLL.Y - NRLLL.Y)" Y="NRLLLL.Y + ZR.X * (NRLLLL.Y - NRLLL.Y) + ZR.Y * (NRLLLL.X - NRLLL.X)">
+      <Dependency Name="NRLLLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRLLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLLRL" Style="Red apple" X="NRLLLR.X + ZL.X * (NRLLLR.X - NRLLL.X) - ZL.Y * (NRLLLR.Y - NRLLL.Y)" Y="NRLLLR.Y + ZL.X * (NRLLLR.Y - NRLLL.Y) + ZL.Y * (NRLLLR.X - NRLLL.X)">
+      <Dependency Name="NRLLLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRLLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLLRR" Style="Red apple" X="NRLLLR.X + ZR.X * (NRLLLR.X - NRLLL.X) - ZR.Y * (NRLLLR.Y - NRLLL.Y)" Y="NRLLLR.Y + ZR.X * (NRLLLR.Y - NRLLL.Y) + ZR.Y * (NRLLLR.X - NRLLL.X)">
+      <Dependency Name="NRLLLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRLLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLRLL" Style="Tangerine" X="NRLLRL.X + ZL.X * (NRLLRL.X - NRLLR.X) - ZL.Y * (NRLLRL.Y - NRLLR.Y)" Y="NRLLRL.Y + ZL.X * (NRLLRL.Y - NRLLR.Y) + ZL.Y * (NRLLRL.X - NRLLR.X)">
+      <Dependency Name="NRLLRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRLLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLRLR" Style="Tangerine" X="NRLLRL.X + ZR.X * (NRLLRL.X - NRLLR.X) - ZR.Y * (NRLLRL.Y - NRLLR.Y)" Y="NRLLRL.Y + ZR.X * (NRLLRL.Y - NRLLR.Y) + ZR.Y * (NRLLRL.X - NRLLR.X)">
+      <Dependency Name="NRLLRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRLLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLRRL" Style="Tangerine" X="NRLLRR.X + ZL.X * (NRLLRR.X - NRLLR.X) - ZL.Y * (NRLLRR.Y - NRLLR.Y)" Y="NRLLRR.Y + ZL.X * (NRLLRR.Y - NRLLR.Y) + ZL.Y * (NRLLRR.X - NRLLR.X)">
+      <Dependency Name="NRLLRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRLLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLLRRR" Style="Tangerine" X="NRLLRR.X + ZR.X * (NRLLRR.X - NRLLR.X) - ZR.Y * (NRLLRR.Y - NRLLR.Y)" Y="NRLLRR.Y + ZR.X * (NRLLRR.Y - NRLLR.Y) + ZR.Y * (NRLLRR.X - NRLLR.X)">
+      <Dependency Name="NRLLRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRLLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRLLL" Style="Lemon" X="NRLRLL.X + ZL.X * (NRLRLL.X - NRLRL.X) - ZL.Y * (NRLRLL.Y - NRLRL.Y)" Y="NRLRLL.Y + ZL.X * (NRLRLL.Y - NRLRL.Y) + ZL.Y * (NRLRLL.X - NRLRL.X)">
+      <Dependency Name="NRLRLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRLRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRLLR" Style="Lemon" X="NRLRLL.X + ZR.X * (NRLRLL.X - NRLRL.X) - ZR.Y * (NRLRLL.Y - NRLRL.Y)" Y="NRLRLL.Y + ZR.X * (NRLRLL.Y - NRLRL.Y) + ZR.Y * (NRLRLL.X - NRLRL.X)">
+      <Dependency Name="NRLRLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRLRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRLRL" Style="Lemon" X="NRLRLR.X + ZL.X * (NRLRLR.X - NRLRL.X) - ZL.Y * (NRLRLR.Y - NRLRL.Y)" Y="NRLRLR.Y + ZL.X * (NRLRLR.Y - NRLRL.Y) + ZL.Y * (NRLRLR.X - NRLRL.X)">
+      <Dependency Name="NRLRLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRLRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRLRR" Style="Lemon" X="NRLRLR.X + ZR.X * (NRLRLR.X - NRLRL.X) - ZR.Y * (NRLRLR.Y - NRLRL.Y)" Y="NRLRLR.Y + ZR.X * (NRLRLR.Y - NRLRL.Y) + ZR.Y * (NRLRLR.X - NRLRL.X)">
+      <Dependency Name="NRLRLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRLRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRRLL" Style="Pear" X="NRLRRL.X + ZL.X * (NRLRRL.X - NRLRR.X) - ZL.Y * (NRLRRL.Y - NRLRR.Y)" Y="NRLRRL.Y + ZL.X * (NRLRRL.Y - NRLRR.Y) + ZL.Y * (NRLRRL.X - NRLRR.X)">
+      <Dependency Name="NRLRRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRLRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRRLR" Style="Pear" X="NRLRRL.X + ZR.X * (NRLRRL.X - NRLRR.X) - ZR.Y * (NRLRRL.Y - NRLRR.Y)" Y="NRLRRL.Y + ZR.X * (NRLRRL.Y - NRLRR.Y) + ZR.Y * (NRLRRL.X - NRLRR.X)">
+      <Dependency Name="NRLRRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRLRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRRRL" Style="Pear" X="NRLRRR.X + ZL.X * (NRLRRR.X - NRLRR.X) - ZL.Y * (NRLRRR.Y - NRLRR.Y)" Y="NRLRRR.Y + ZL.X * (NRLRRR.Y - NRLRR.Y) + ZL.Y * (NRLRRR.X - NRLRR.X)">
+      <Dependency Name="NRLRRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRLRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRLRRRR" Style="Pear" X="NRLRRR.X + ZR.X * (NRLRRR.X - NRLRR.X) - ZR.Y * (NRLRRR.Y - NRLRR.Y)" Y="NRLRRR.Y + ZR.X * (NRLRRR.Y - NRLRR.Y) + ZR.Y * (NRLRRR.X - NRLRR.X)">
+      <Dependency Name="NRLRRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRLRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLLLL" Style="Peach" X="NRRLLL.X + ZL.X * (NRRLLL.X - NRRLL.X) - ZL.Y * (NRRLLL.Y - NRRLL.Y)" Y="NRRLLL.Y + ZL.X * (NRRLLL.Y - NRRLL.Y) + ZL.Y * (NRRLLL.X - NRRLL.X)">
+      <Dependency Name="NRRLLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRRLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLLLR" Style="Peach" X="NRRLLL.X + ZR.X * (NRRLLL.X - NRRLL.X) - ZR.Y * (NRRLLL.Y - NRRLL.Y)" Y="NRRLLL.Y + ZR.X * (NRRLLL.Y - NRRLL.Y) + ZR.Y * (NRRLLL.X - NRRLL.X)">
+      <Dependency Name="NRRLLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRRLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLLRL" Style="Peach" X="NRRLLR.X + ZL.X * (NRRLLR.X - NRRLL.X) - ZL.Y * (NRRLLR.Y - NRRLL.Y)" Y="NRRLLR.Y + ZL.X * (NRRLLR.Y - NRRLL.Y) + ZL.Y * (NRRLLR.X - NRRLL.X)">
+      <Dependency Name="NRRLLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRRLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLLRR" Style="Peach" X="NRRLLR.X + ZR.X * (NRRLLR.X - NRRLL.X) - ZR.Y * (NRRLLR.Y - NRRLL.Y)" Y="NRRLLR.Y + ZR.X * (NRRLLR.Y - NRRLL.Y) + ZR.Y * (NRRLLR.X - NRRLL.X)">
+      <Dependency Name="NRRLLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRRLL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLRLL" Style="Cherries" X="NRRLRL.X + ZL.X * (NRRLRL.X - NRRLR.X) - ZL.Y * (NRRLRL.Y - NRRLR.Y)" Y="NRRLRL.Y + ZL.X * (NRRLRL.Y - NRRLR.Y) + ZL.Y * (NRRLRL.X - NRRLR.X)">
+      <Dependency Name="NRRLRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRRLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLRLR" Style="Cherries" X="NRRLRL.X + ZR.X * (NRRLRL.X - NRRLR.X) - ZR.Y * (NRRLRL.Y - NRRLR.Y)" Y="NRRLRL.Y + ZR.X * (NRRLRL.Y - NRRLR.Y) + ZR.Y * (NRRLRL.X - NRRLR.X)">
+      <Dependency Name="NRRLRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRRLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLRRL" Style="Cherries" X="NRRLRR.X + ZL.X * (NRRLRR.X - NRRLR.X) - ZL.Y * (NRRLRR.Y - NRRLR.Y)" Y="NRRLRR.Y + ZL.X * (NRRLRR.Y - NRRLR.Y) + ZL.Y * (NRRLRR.X - NRRLR.X)">
+      <Dependency Name="NRRLRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRRLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRLRRR" Style="Cherries" X="NRRLRR.X + ZR.X * (NRRLRR.X - NRRLR.X) - ZR.Y * (NRRLRR.Y - NRRLR.Y)" Y="NRRLRR.Y + ZR.X * (NRRLRR.Y - NRRLR.Y) + ZR.Y * (NRRLRR.X - NRRLR.X)">
+      <Dependency Name="NRRLRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRRLR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRLLL" Style="Grapes" X="NRRRLL.X + ZL.X * (NRRRLL.X - NRRRL.X) - ZL.Y * (NRRRLL.Y - NRRRL.Y)" Y="NRRRLL.Y + ZL.X * (NRRRLL.Y - NRRRL.Y) + ZL.Y * (NRRRLL.X - NRRRL.X)">
+      <Dependency Name="NRRRLL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRRRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRLLR" Style="Grapes" X="NRRRLL.X + ZR.X * (NRRRLL.X - NRRRL.X) - ZR.Y * (NRRRLL.Y - NRRRL.Y)" Y="NRRRLL.Y + ZR.X * (NRRRLL.Y - NRRRL.Y) + ZR.Y * (NRRRLL.X - NRRRL.X)">
+      <Dependency Name="NRRRLL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRRRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRLRL" Style="Grapes" X="NRRRLR.X + ZL.X * (NRRRLR.X - NRRRL.X) - ZL.Y * (NRRRLR.Y - NRRRL.Y)" Y="NRRRLR.Y + ZL.X * (NRRRLR.Y - NRRRL.Y) + ZL.Y * (NRRRLR.X - NRRRL.X)">
+      <Dependency Name="NRRRLR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRRRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRLRR" Style="Grapes" X="NRRRLR.X + ZR.X * (NRRRLR.X - NRRRL.X) - ZR.Y * (NRRRLR.Y - NRRRL.Y)" Y="NRRRLR.Y + ZR.X * (NRRRLR.Y - NRRRL.Y) + ZR.Y * (NRRRLR.X - NRRRL.X)">
+      <Dependency Name="NRRRLR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRRRL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRRLL" Style="Green apple" X="NRRRRL.X + ZL.X * (NRRRRL.X - NRRRR.X) - ZL.Y * (NRRRRL.Y - NRRRR.Y)" Y="NRRRRL.Y + ZL.X * (NRRRRL.Y - NRRRR.Y) + ZL.Y * (NRRRRL.X - NRRRR.X)">
+      <Dependency Name="NRRRRL" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRRRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRRLR" Style="Green apple" X="NRRRRL.X + ZR.X * (NRRRRL.X - NRRRR.X) - ZR.Y * (NRRRRL.Y - NRRRR.Y)" Y="NRRRRL.Y + ZR.X * (NRRRRL.Y - NRRRR.Y) + ZR.Y * (NRRRRL.X - NRRRR.X)">
+      <Dependency Name="NRRRRL" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRRRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRRRL" Style="Green apple" X="NRRRRR.X + ZL.X * (NRRRRR.X - NRRRR.X) - ZL.Y * (NRRRRR.Y - NRRRR.Y)" Y="NRRRRR.Y + ZL.X * (NRRRRR.Y - NRRRR.Y) + ZL.Y * (NRRRRR.X - NRRRR.X)">
+      <Dependency Name="NRRRRR" />
+      <Dependency Name="ZL" />
+      <Dependency Name="NRRRR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NRRRRRR" Style="Green apple" X="NRRRRR.X + ZR.X * (NRRRRR.X - NRRRR.X) - ZR.Y * (NRRRRR.Y - NRRRR.Y)" Y="NRRRRR.Y + ZR.X * (NRRRRR.Y - NRRRR.Y) + ZR.Y * (NRRRRR.X - NRRRR.X)">
+      <Dependency Name="NRRRRR" />
+      <Dependency Name="ZR" />
+      <Dependency Name="NRRRR" />
+    </PointByCoordinates>
+    <Segment Name="BranchOwl" Style="Bark1">
+      <Dependency Name="Root" />
+      <Dependency Name="Owl" />
+    </Segment>
+    <Segment Name="BranchBird" Style="Bark2">
+      <Dependency Name="Owl" />
+      <Dependency Name="Bird" />
+    </Segment>
+    <Segment Name="BranchChick" Style="Bark2">
+      <Dependency Name="Owl" />
+      <Dependency Name="Chick" />
+    </Segment>
+    <Segment Name="BranchNLL" Style="Bark3">
+      <Dependency Name="Bird" />
+      <Dependency Name="NLL" />
+    </Segment>
+    <Segment Name="BranchNLR" Style="Bark3">
+      <Dependency Name="Bird" />
+      <Dependency Name="NLR" />
+    </Segment>
+    <Segment Name="BranchNRL" Style="Bark3">
+      <Dependency Name="Chick" />
+      <Dependency Name="NRL" />
+    </Segment>
+    <Segment Name="BranchNRR" Style="Bark3">
+      <Dependency Name="Chick" />
+      <Dependency Name="NRR" />
+    </Segment>
+    <Segment Name="BranchNLLL" Style="Bark4">
+      <Dependency Name="NLL" />
+      <Dependency Name="NLLL" />
+    </Segment>
+    <Segment Name="BranchNLLR" Style="Bark4">
+      <Dependency Name="NLL" />
+      <Dependency Name="NLLR" />
+    </Segment>
+    <Segment Name="BranchNLRL" Style="Bark4">
+      <Dependency Name="NLR" />
+      <Dependency Name="NLRL" />
+    </Segment>
+    <Segment Name="BranchNLRR" Style="Bark4">
+      <Dependency Name="NLR" />
+      <Dependency Name="NLRR" />
+    </Segment>
+    <Segment Name="BranchNRLL" Style="Bark4">
+      <Dependency Name="NRL" />
+      <Dependency Name="NRLL" />
+    </Segment>
+    <Segment Name="BranchNRLR" Style="Bark4">
+      <Dependency Name="NRL" />
+      <Dependency Name="NRLR" />
+    </Segment>
+    <Segment Name="BranchNRRL" Style="Bark4">
+      <Dependency Name="NRR" />
+      <Dependency Name="NRRL" />
+    </Segment>
+    <Segment Name="BranchNRRR" Style="Bark4">
+      <Dependency Name="NRR" />
+      <Dependency Name="NRRR" />
+    </Segment>
+    <Segment Name="BranchNLLLL" Style="Bark5">
+      <Dependency Name="NLLL" />
+      <Dependency Name="NLLLL" />
+    </Segment>
+    <Segment Name="BranchNLLLR" Style="Bark5">
+      <Dependency Name="NLLL" />
+      <Dependency Name="NLLLR" />
+    </Segment>
+    <Segment Name="BranchNLLRL" Style="Bark5">
+      <Dependency Name="NLLR" />
+      <Dependency Name="NLLRL" />
+    </Segment>
+    <Segment Name="BranchNLLRR" Style="Bark5">
+      <Dependency Name="NLLR" />
+      <Dependency Name="NLLRR" />
+    </Segment>
+    <Segment Name="BranchNLRLL" Style="Bark5">
+      <Dependency Name="NLRL" />
+      <Dependency Name="NLRLL" />
+    </Segment>
+    <Segment Name="BranchNLRLR" Style="Bark5">
+      <Dependency Name="NLRL" />
+      <Dependency Name="NLRLR" />
+    </Segment>
+    <Segment Name="BranchNLRRL" Style="Bark5">
+      <Dependency Name="NLRR" />
+      <Dependency Name="NLRRL" />
+    </Segment>
+    <Segment Name="BranchNLRRR" Style="Bark5">
+      <Dependency Name="NLRR" />
+      <Dependency Name="NLRRR" />
+    </Segment>
+    <Segment Name="BranchNRLLL" Style="Bark5">
+      <Dependency Name="NRLL" />
+      <Dependency Name="NRLLL" />
+    </Segment>
+    <Segment Name="BranchNRLLR" Style="Bark5">
+      <Dependency Name="NRLL" />
+      <Dependency Name="NRLLR" />
+    </Segment>
+    <Segment Name="BranchNRLRL" Style="Bark5">
+      <Dependency Name="NRLR" />
+      <Dependency Name="NRLRL" />
+    </Segment>
+    <Segment Name="BranchNRLRR" Style="Bark5">
+      <Dependency Name="NRLR" />
+      <Dependency Name="NRLRR" />
+    </Segment>
+    <Segment Name="BranchNRRLL" Style="Bark5">
+      <Dependency Name="NRRL" />
+      <Dependency Name="NRRLL" />
+    </Segment>
+    <Segment Name="BranchNRRLR" Style="Bark5">
+      <Dependency Name="NRRL" />
+      <Dependency Name="NRRLR" />
+    </Segment>
+    <Segment Name="BranchNRRRL" Style="Bark5">
+      <Dependency Name="NRRR" />
+      <Dependency Name="NRRRL" />
+    </Segment>
+    <Segment Name="BranchNRRRR" Style="Bark5">
+      <Dependency Name="NRRR" />
+      <Dependency Name="NRRRR" />
+    </Segment>
+    <Segment Name="BranchNLLLLL" Style="Bark6">
+      <Dependency Name="NLLLL" />
+      <Dependency Name="NLLLLL" />
+    </Segment>
+    <Segment Name="BranchNLLLLR" Style="Bark6">
+      <Dependency Name="NLLLL" />
+      <Dependency Name="NLLLLR" />
+    </Segment>
+    <Segment Name="BranchNLLLRL" Style="Bark6">
+      <Dependency Name="NLLLR" />
+      <Dependency Name="NLLLRL" />
+    </Segment>
+    <Segment Name="BranchNLLLRR" Style="Bark6">
+      <Dependency Name="NLLLR" />
+      <Dependency Name="NLLLRR" />
+    </Segment>
+    <Segment Name="BranchNLLRLL" Style="Bark6">
+      <Dependency Name="NLLRL" />
+      <Dependency Name="NLLRLL" />
+    </Segment>
+    <Segment Name="BranchNLLRLR" Style="Bark6">
+      <Dependency Name="NLLRL" />
+      <Dependency Name="NLLRLR" />
+    </Segment>
+    <Segment Name="BranchNLLRRL" Style="Bark6">
+      <Dependency Name="NLLRR" />
+      <Dependency Name="NLLRRL" />
+    </Segment>
+    <Segment Name="BranchNLLRRR" Style="Bark6">
+      <Dependency Name="NLLRR" />
+      <Dependency Name="NLLRRR" />
+    </Segment>
+    <Segment Name="BranchNLRLLL" Style="Bark6">
+      <Dependency Name="NLRLL" />
+      <Dependency Name="NLRLLL" />
+    </Segment>
+    <Segment Name="BranchNLRLLR" Style="Bark6">
+      <Dependency Name="NLRLL" />
+      <Dependency Name="NLRLLR" />
+    </Segment>
+    <Segment Name="BranchNLRLRL" Style="Bark6">
+      <Dependency Name="NLRLR" />
+      <Dependency Name="NLRLRL" />
+    </Segment>
+    <Segment Name="BranchNLRLRR" Style="Bark6">
+      <Dependency Name="NLRLR" />
+      <Dependency Name="NLRLRR" />
+    </Segment>
+    <Segment Name="BranchNLRRLL" Style="Bark6">
+      <Dependency Name="NLRRL" />
+      <Dependency Name="NLRRLL" />
+    </Segment>
+    <Segment Name="BranchNLRRLR" Style="Bark6">
+      <Dependency Name="NLRRL" />
+      <Dependency Name="NLRRLR" />
+    </Segment>
+    <Segment Name="BranchNLRRRL" Style="Bark6">
+      <Dependency Name="NLRRR" />
+      <Dependency Name="NLRRRL" />
+    </Segment>
+    <Segment Name="BranchNLRRRR" Style="Bark6">
+      <Dependency Name="NLRRR" />
+      <Dependency Name="NLRRRR" />
+    </Segment>
+    <Segment Name="BranchNRLLLL" Style="Bark6">
+      <Dependency Name="NRLLL" />
+      <Dependency Name="NRLLLL" />
+    </Segment>
+    <Segment Name="BranchNRLLLR" Style="Bark6">
+      <Dependency Name="NRLLL" />
+      <Dependency Name="NRLLLR" />
+    </Segment>
+    <Segment Name="BranchNRLLRL" Style="Bark6">
+      <Dependency Name="NRLLR" />
+      <Dependency Name="NRLLRL" />
+    </Segment>
+    <Segment Name="BranchNRLLRR" Style="Bark6">
+      <Dependency Name="NRLLR" />
+      <Dependency Name="NRLLRR" />
+    </Segment>
+    <Segment Name="BranchNRLRLL" Style="Bark6">
+      <Dependency Name="NRLRL" />
+      <Dependency Name="NRLRLL" />
+    </Segment>
+    <Segment Name="BranchNRLRLR" Style="Bark6">
+      <Dependency Name="NRLRL" />
+      <Dependency Name="NRLRLR" />
+    </Segment>
+    <Segment Name="BranchNRLRRL" Style="Bark6">
+      <Dependency Name="NRLRR" />
+      <Dependency Name="NRLRRL" />
+    </Segment>
+    <Segment Name="BranchNRLRRR" Style="Bark6">
+      <Dependency Name="NRLRR" />
+      <Dependency Name="NRLRRR" />
+    </Segment>
+    <Segment Name="BranchNRRLLL" Style="Bark6">
+      <Dependency Name="NRRLL" />
+      <Dependency Name="NRRLLL" />
+    </Segment>
+    <Segment Name="BranchNRRLLR" Style="Bark6">
+      <Dependency Name="NRRLL" />
+      <Dependency Name="NRRLLR" />
+    </Segment>
+    <Segment Name="BranchNRRLRL" Style="Bark6">
+      <Dependency Name="NRRLR" />
+      <Dependency Name="NRRLRL" />
+    </Segment>
+    <Segment Name="BranchNRRLRR" Style="Bark6">
+      <Dependency Name="NRRLR" />
+      <Dependency Name="NRRLRR" />
+    </Segment>
+    <Segment Name="BranchNRRRLL" Style="Bark6">
+      <Dependency Name="NRRRL" />
+      <Dependency Name="NRRRLL" />
+    </Segment>
+    <Segment Name="BranchNRRRLR" Style="Bark6">
+      <Dependency Name="NRRRL" />
+      <Dependency Name="NRRRLR" />
+    </Segment>
+    <Segment Name="BranchNRRRRL" Style="Bark6">
+      <Dependency Name="NRRRR" />
+      <Dependency Name="NRRRRL" />
+    </Segment>
+    <Segment Name="BranchNRRRRR" Style="Bark6">
+      <Dependency Name="NRRRR" />
+      <Dependency Name="NRRRRR" />
+    </Segment>
+    <Segment Name="BranchNLLLLLL" Style="Bark7">
+      <Dependency Name="NLLLLL" />
+      <Dependency Name="NLLLLLL" />
+    </Segment>
+    <Segment Name="BranchNLLLLLR" Style="Bark7">
+      <Dependency Name="NLLLLL" />
+      <Dependency Name="NLLLLLR" />
+    </Segment>
+    <Segment Name="BranchNLLLLRL" Style="Bark7">
+      <Dependency Name="NLLLLR" />
+      <Dependency Name="NLLLLRL" />
+    </Segment>
+    <Segment Name="BranchNLLLLRR" Style="Bark7">
+      <Dependency Name="NLLLLR" />
+      <Dependency Name="NLLLLRR" />
+    </Segment>
+    <Segment Name="BranchNLLLRLL" Style="Bark7">
+      <Dependency Name="NLLLRL" />
+      <Dependency Name="NLLLRLL" />
+    </Segment>
+    <Segment Name="BranchNLLLRLR" Style="Bark7">
+      <Dependency Name="NLLLRL" />
+      <Dependency Name="NLLLRLR" />
+    </Segment>
+    <Segment Name="BranchNLLLRRL" Style="Bark7">
+      <Dependency Name="NLLLRR" />
+      <Dependency Name="NLLLRRL" />
+    </Segment>
+    <Segment Name="BranchNLLLRRR" Style="Bark7">
+      <Dependency Name="NLLLRR" />
+      <Dependency Name="NLLLRRR" />
+    </Segment>
+    <Segment Name="BranchNLLRLLL" Style="Bark7">
+      <Dependency Name="NLLRLL" />
+      <Dependency Name="NLLRLLL" />
+    </Segment>
+    <Segment Name="BranchNLLRLLR" Style="Bark7">
+      <Dependency Name="NLLRLL" />
+      <Dependency Name="NLLRLLR" />
+    </Segment>
+    <Segment Name="BranchNLLRLRL" Style="Bark7">
+      <Dependency Name="NLLRLR" />
+      <Dependency Name="NLLRLRL" />
+    </Segment>
+    <Segment Name="BranchNLLRLRR" Style="Bark7">
+      <Dependency Name="NLLRLR" />
+      <Dependency Name="NLLRLRR" />
+    </Segment>
+    <Segment Name="BranchNLLRRLL" Style="Bark7">
+      <Dependency Name="NLLRRL" />
+      <Dependency Name="NLLRRLL" />
+    </Segment>
+    <Segment Name="BranchNLLRRLR" Style="Bark7">
+      <Dependency Name="NLLRRL" />
+      <Dependency Name="NLLRRLR" />
+    </Segment>
+    <Segment Name="BranchNLLRRRL" Style="Bark7">
+      <Dependency Name="NLLRRR" />
+      <Dependency Name="NLLRRRL" />
+    </Segment>
+    <Segment Name="BranchNLLRRRR" Style="Bark7">
+      <Dependency Name="NLLRRR" />
+      <Dependency Name="NLLRRRR" />
+    </Segment>
+    <Segment Name="BranchNLRLLLL" Style="Bark7">
+      <Dependency Name="NLRLLL" />
+      <Dependency Name="NLRLLLL" />
+    </Segment>
+    <Segment Name="BranchNLRLLLR" Style="Bark7">
+      <Dependency Name="NLRLLL" />
+      <Dependency Name="NLRLLLR" />
+    </Segment>
+    <Segment Name="BranchNLRLLRL" Style="Bark7">
+      <Dependency Name="NLRLLR" />
+      <Dependency Name="NLRLLRL" />
+    </Segment>
+    <Segment Name="BranchNLRLLRR" Style="Bark7">
+      <Dependency Name="NLRLLR" />
+      <Dependency Name="NLRLLRR" />
+    </Segment>
+    <Segment Name="BranchNLRLRLL" Style="Bark7">
+      <Dependency Name="NLRLRL" />
+      <Dependency Name="NLRLRLL" />
+    </Segment>
+    <Segment Name="BranchNLRLRLR" Style="Bark7">
+      <Dependency Name="NLRLRL" />
+      <Dependency Name="NLRLRLR" />
+    </Segment>
+    <Segment Name="BranchNLRLRRL" Style="Bark7">
+      <Dependency Name="NLRLRR" />
+      <Dependency Name="NLRLRRL" />
+    </Segment>
+    <Segment Name="BranchNLRLRRR" Style="Bark7">
+      <Dependency Name="NLRLRR" />
+      <Dependency Name="NLRLRRR" />
+    </Segment>
+    <Segment Name="BranchNLRRLLL" Style="Bark7">
+      <Dependency Name="NLRRLL" />
+      <Dependency Name="NLRRLLL" />
+    </Segment>
+    <Segment Name="BranchNLRRLLR" Style="Bark7">
+      <Dependency Name="NLRRLL" />
+      <Dependency Name="NLRRLLR" />
+    </Segment>
+    <Segment Name="BranchNLRRLRL" Style="Bark7">
+      <Dependency Name="NLRRLR" />
+      <Dependency Name="NLRRLRL" />
+    </Segment>
+    <Segment Name="BranchNLRRLRR" Style="Bark7">
+      <Dependency Name="NLRRLR" />
+      <Dependency Name="NLRRLRR" />
+    </Segment>
+    <Segment Name="BranchNLRRRLL" Style="Bark7">
+      <Dependency Name="NLRRRL" />
+      <Dependency Name="NLRRRLL" />
+    </Segment>
+    <Segment Name="BranchNLRRRLR" Style="Bark7">
+      <Dependency Name="NLRRRL" />
+      <Dependency Name="NLRRRLR" />
+    </Segment>
+    <Segment Name="BranchNLRRRRL" Style="Bark7">
+      <Dependency Name="NLRRRR" />
+      <Dependency Name="NLRRRRL" />
+    </Segment>
+    <Segment Name="BranchNLRRRRR" Style="Bark7">
+      <Dependency Name="NLRRRR" />
+      <Dependency Name="NLRRRRR" />
+    </Segment>
+    <Segment Name="BranchNRLLLLL" Style="Bark7">
+      <Dependency Name="NRLLLL" />
+      <Dependency Name="NRLLLLL" />
+    </Segment>
+    <Segment Name="BranchNRLLLLR" Style="Bark7">
+      <Dependency Name="NRLLLL" />
+      <Dependency Name="NRLLLLR" />
+    </Segment>
+    <Segment Name="BranchNRLLLRL" Style="Bark7">
+      <Dependency Name="NRLLLR" />
+      <Dependency Name="NRLLLRL" />
+    </Segment>
+    <Segment Name="BranchNRLLLRR" Style="Bark7">
+      <Dependency Name="NRLLLR" />
+      <Dependency Name="NRLLLRR" />
+    </Segment>
+    <Segment Name="BranchNRLLRLL" Style="Bark7">
+      <Dependency Name="NRLLRL" />
+      <Dependency Name="NRLLRLL" />
+    </Segment>
+    <Segment Name="BranchNRLLRLR" Style="Bark7">
+      <Dependency Name="NRLLRL" />
+      <Dependency Name="NRLLRLR" />
+    </Segment>
+    <Segment Name="BranchNRLLRRL" Style="Bark7">
+      <Dependency Name="NRLLRR" />
+      <Dependency Name="NRLLRRL" />
+    </Segment>
+    <Segment Name="BranchNRLLRRR" Style="Bark7">
+      <Dependency Name="NRLLRR" />
+      <Dependency Name="NRLLRRR" />
+    </Segment>
+    <Segment Name="BranchNRLRLLL" Style="Bark7">
+      <Dependency Name="NRLRLL" />
+      <Dependency Name="NRLRLLL" />
+    </Segment>
+    <Segment Name="BranchNRLRLLR" Style="Bark7">
+      <Dependency Name="NRLRLL" />
+      <Dependency Name="NRLRLLR" />
+    </Segment>
+    <Segment Name="BranchNRLRLRL" Style="Bark7">
+      <Dependency Name="NRLRLR" />
+      <Dependency Name="NRLRLRL" />
+    </Segment>
+    <Segment Name="BranchNRLRLRR" Style="Bark7">
+      <Dependency Name="NRLRLR" />
+      <Dependency Name="NRLRLRR" />
+    </Segment>
+    <Segment Name="BranchNRLRRLL" Style="Bark7">
+      <Dependency Name="NRLRRL" />
+      <Dependency Name="NRLRRLL" />
+    </Segment>
+    <Segment Name="BranchNRLRRLR" Style="Bark7">
+      <Dependency Name="NRLRRL" />
+      <Dependency Name="NRLRRLR" />
+    </Segment>
+    <Segment Name="BranchNRLRRRL" Style="Bark7">
+      <Dependency Name="NRLRRR" />
+      <Dependency Name="NRLRRRL" />
+    </Segment>
+    <Segment Name="BranchNRLRRRR" Style="Bark7">
+      <Dependency Name="NRLRRR" />
+      <Dependency Name="NRLRRRR" />
+    </Segment>
+    <Segment Name="BranchNRRLLLL" Style="Bark7">
+      <Dependency Name="NRRLLL" />
+      <Dependency Name="NRRLLLL" />
+    </Segment>
+    <Segment Name="BranchNRRLLLR" Style="Bark7">
+      <Dependency Name="NRRLLL" />
+      <Dependency Name="NRRLLLR" />
+    </Segment>
+    <Segment Name="BranchNRRLLRL" Style="Bark7">
+      <Dependency Name="NRRLLR" />
+      <Dependency Name="NRRLLRL" />
+    </Segment>
+    <Segment Name="BranchNRRLLRR" Style="Bark7">
+      <Dependency Name="NRRLLR" />
+      <Dependency Name="NRRLLRR" />
+    </Segment>
+    <Segment Name="BranchNRRLRLL" Style="Bark7">
+      <Dependency Name="NRRLRL" />
+      <Dependency Name="NRRLRLL" />
+    </Segment>
+    <Segment Name="BranchNRRLRLR" Style="Bark7">
+      <Dependency Name="NRRLRL" />
+      <Dependency Name="NRRLRLR" />
+    </Segment>
+    <Segment Name="BranchNRRLRRL" Style="Bark7">
+      <Dependency Name="NRRLRR" />
+      <Dependency Name="NRRLRRL" />
+    </Segment>
+    <Segment Name="BranchNRRLRRR" Style="Bark7">
+      <Dependency Name="NRRLRR" />
+      <Dependency Name="NRRLRRR" />
+    </Segment>
+    <Segment Name="BranchNRRRLLL" Style="Bark7">
+      <Dependency Name="NRRRLL" />
+      <Dependency Name="NRRRLLL" />
+    </Segment>
+    <Segment Name="BranchNRRRLLR" Style="Bark7">
+      <Dependency Name="NRRRLL" />
+      <Dependency Name="NRRRLLR" />
+    </Segment>
+    <Segment Name="BranchNRRRLRL" Style="Bark7">
+      <Dependency Name="NRRRLR" />
+      <Dependency Name="NRRRLRL" />
+    </Segment>
+    <Segment Name="BranchNRRRLRR" Style="Bark7">
+      <Dependency Name="NRRRLR" />
+      <Dependency Name="NRRRLRR" />
+    </Segment>
+    <Segment Name="BranchNRRRRLL" Style="Bark7">
+      <Dependency Name="NRRRRL" />
+      <Dependency Name="NRRRRLL" />
+    </Segment>
+    <Segment Name="BranchNRRRRLR" Style="Bark7">
+      <Dependency Name="NRRRRL" />
+      <Dependency Name="NRRRRLR" />
+    </Segment>
+    <Segment Name="BranchNRRRRRL" Style="Bark7">
+      <Dependency Name="NRRRRR" />
+      <Dependency Name="NRRRRRL" />
+    </Segment>
+    <Segment Name="BranchNRRRRRR" Style="Bark7">
+      <Dependency Name="NRRRRR" />
+      <Dependency Name="NRRRRRR" />
+    </Segment>
+    <FreePoint Name="Butterfly" Style="Butterfly" X="1.444318" Y="0.260196" />
+    <FreePoint Name="Bee" Style="Honeybee" X="-1.737217" Y="-0.139804" />
+    <FreePoint Name="Tulip" Style="Tulip" X="-1.45" Y="-1.27" />
+    <FreePoint Name="Blossom" Style="Blossom" X="-1.15" Y="-1.32" />
+    <FreePoint Name="Sunflower" Style="Sunflower" X="1.45" Y="-1.18" />
+    <FreePoint Name="Mushroom" Style="Mushroom" X="0.45" Y="-1.28" />
+    <FreePoint Name="Basket" Style="Basket" X="-0.5" Y="-1.27" />
+    <Label Name="Title" Style="GalleryTitle" Text="Magic Tree" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Every branch of this tree splits in two, and each new pair copies the first fork: it turns and shrinks the same way.\n\nDrag the owl, the bird and the chick to change the first fork, and the whole tree grows again: tall and thin, wide like an umbrella, or curled up like a fern.\n\nThe trunk splits six times, so there are 2 × 2 × 2 × 2 × 2 × 2 = 64 fruits. Count them!" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

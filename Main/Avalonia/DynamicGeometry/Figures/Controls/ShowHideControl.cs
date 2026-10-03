@@ -12,7 +12,8 @@ namespace DynamicGeometry
         public CheckBox Checkbox { get; set; }
 
         // Fluent's check box template colors the caption by state through these resources,
-        // over the control's own Foreground
+        // over the control's own Foreground; and the outline of the empty box, which is the
+        // theme's and was dark on a drawing's own dark paper (a night sky) under the light theme
         static readonly string[] captionResourceKeys =
         {
             "CheckBoxForegroundUnchecked",
@@ -23,10 +24,13 @@ namespace DynamicGeometry
             "CheckBoxForegroundCheckedPressed",
             "CheckBoxForegroundIndeterminate",
             "CheckBoxForegroundIndeterminatePointerOver",
-            "CheckBoxForegroundIndeterminatePressed"
+            "CheckBoxForegroundIndeterminatePressed",
+            "CheckBoxCheckBackgroundStrokeUnchecked",
+            "CheckBoxCheckBackgroundStrokeUncheckedPointerOver",
+            "CheckBoxCheckBackgroundStrokeUncheckedPressed"
         };
 
-        /// <summary>The caption in the text style, in every state (hovered, pressed, checked)</summary>
+        /// <summary>The caption and the empty box in the text style's color, in every state (hovered, pressed, checked)</summary>
         public override void ApplyStyle()
         {
             if (Style == null)
@@ -144,6 +148,16 @@ namespace DynamicGeometry
                 figure.Visible = show;
                 figure.UpdateVisual();
             }
+        }
+
+        /// <summary>
+        /// The box stays whether or not its figures exist right now: they are what it shows and
+        /// hides, not what it is built on. Taken for dependencies, a hint that was nowhere at the
+        /// moment (a firework that hadn't burst yet) took the box along.
+        /// </summary>
+        public override void UpdateExistence()
+        {
+            Exists = true;
         }
     }
 }

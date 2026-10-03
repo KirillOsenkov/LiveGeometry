@@ -56,6 +56,11 @@ public static class GalleryCatalog
 
     public static IReadOnlyList<GalleryItem> Items { get; } = new[]
     {
+        Item("kaleidoscope", "Kaleidoscope"),
+        Item("golden-angle", "Golden Angle"),
+        Item("treasure-island", "Treasure Island"),
+        Item("magic-tree", "Magic Tree"),
+        Item("fireworks", "Fireworks"),
         Item("continuous-deformations", "Continuous Deformations"),
         Item("bubbles", "Bubbles"),
         Item("pythagoras", "Pythagorean Theorem"),

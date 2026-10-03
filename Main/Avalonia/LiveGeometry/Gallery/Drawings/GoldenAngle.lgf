@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-2.8" Top="2.1" Right="2.8" Bottom="-2.1">
+    <Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF2A1B3D" Offset="0" />
+        <GradientStop Color="#FF141022" Offset="1" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
+  <Styles>
+    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFFFD966" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFFD966" />
+    </TextStyle>
+    <TextStyle Name="GalleryText" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <LineStyle Name="Dial" Color="#50FFFFFF" StrokeWidth="1.5" Dash="Dash" />
+    <PointStyle Name="Honeybee" Character="🐝" Size="40" Fill="#FFFFFFFF" />
+    <PointStyle Name="Green heart" Character="💚" Size="36" Fill="#FFFFFFFF" />
+    <PointStyle Name="Growing heart" Character="💗" Size="36" Fill="#FFFFFFFF" />
+    <PointStyle Name="Orange heart" Character="🧡" Size="36" Fill="#FFFFFFFF" />
+    <PointStyle Name="Blue heart" Character="💙" Size="36" Fill="#FFFFFFFF" />
+    <PointStyle Name="White heart" Character="🤍" Size="36" Fill="#FFFFFFFF" />
+    <PointStyle Name="Yellow heart" Character="💛" Size="36" Fill="#FFFFFFFF" />
+    <PointStyle Name="Purple heart" Character="💜" Size="36" Fill="#FFFFFFFF" />
+    <PointStyle Name="Red heart" Character="❤️" Size="36" Fill="#FFFFFFFF" />
+    <LineStyle Name="GoldenLine" Color="#FFFFC83D" StrokeWidth="2" Dash="Dash" />
+    <PointStyle Name="Sunflower" Character="🌻" Size="30" Fill="#FFFFFFFF" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="C" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="DialRim" Visible="false" X="1.6" Y="0" />
+    <Circle Name="Dial" Style="Dial">
+      <Dependency Name="C" />
+      <Dependency Name="DialRim" />
+    </Circle>
+    <PointOnFigure Name="Bee" Style="Honeybee" X="-1.2693651651570586" Y="0.9740185200938397" Parameter="2.487094">
+      <Dependency Name="Dial" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Turn" Visible="false" X="xangle(C, Bee)" Y="0">
+      <Dependency Name="C" />
+      <Dependency Name="Bee" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed1" Style="Green heart" X="0.132681 * sqrt(1) * cos(1 * Turn.X)" Y="0.132681 * sqrt(1) * sin(1 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed2" Style="Growing heart" X="0.132681 * sqrt(2) * cos(2 * Turn.X)" Y="0.132681 * sqrt(2) * sin(2 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed3" Style="Orange heart" X="0.132681 * sqrt(3) * cos(3 * Turn.X)" Y="0.132681 * sqrt(3) * sin(3 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed4" Style="Blue heart" X="0.132681 * sqrt(4) * cos(4 * Turn.X)" Y="0.132681 * sqrt(4) * sin(4 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed5" Style="White heart" X="0.132681 * sqrt(5) * cos(5 * Turn.X)" Y="0.132681 * sqrt(5) * sin(5 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed6" Style="Yellow heart" X="0.132681 * sqrt(6) * cos(6 * Turn.X)" Y="0.132681 * sqrt(6) * sin(6 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed7" Style="Purple heart" X="0.132681 * sqrt(7) * cos(7 * Turn.X)" Y="0.132681 * sqrt(7) * sin(7 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed8" Style="Red heart" X="0.132681 * sqrt(8) * cos(8 * Turn.X)" Y="0.132681 * sqrt(8) * sin(8 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed9" Style="Green heart" X="0.132681 * sqrt(9) * cos(9 * Turn.X)" Y="0.132681 * sqrt(9) * sin(9 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed10" Style="Growing heart" X="0.132681 * sqrt(10) * cos(10 * Turn.X)" Y="0.132681 * sqrt(10) * sin(10 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed11" Style="Orange heart" X="0.132681 * sqrt(11) * cos(11 * Turn.X)" Y="0.132681 * sqrt(11) * sin(11 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed12" Style="Blue heart" X="0.132681 * sqrt(12) * cos(12 * Turn.X)" Y="0.132681 * sqrt(12) * sin(12 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed13" Style="White heart" X="0.132681 * sqrt(13) * cos(13 * Turn.X)" Y="0.132681 * sqrt(13) * sin(13 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed14" Style="Yellow heart" X="0.132681 * sqrt(14) * cos(14 * Turn.X)" Y="0.132681 * sqrt(14) * sin(14 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed15" Style="Purple heart" X="0.132681 * sqrt(15) * cos(15 * Turn.X)" Y="0.132681 * sqrt(15) * sin(15 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed16" Style="Red heart" X="0.132681 * sqrt(16) * cos(16 * Turn.X)" Y="0.132681 * sqrt(16) * sin(16 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed17" Style="Green heart" X="0.132681 * sqrt(17) * cos(17 * Turn.X)" Y="0.132681 * sqrt(17) * sin(17 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed18" Style="Growing heart" X="0.132681 * sqrt(18) * cos(18 * Turn.X)" Y="0.132681 * sqrt(18) * sin(18 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed19" Style="Orange heart" X="0.132681 * sqrt(19) * cos(19 * Turn.X)" Y="0.132681 * sqrt(19) * sin(19 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed20" Style="Blue heart" X="0.132681 * sqrt(20) * cos(20 * Turn.X)" Y="0.132681 * sqrt(20) * sin(20 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed21" Style="White heart" X="0.132681 * sqrt(21) * cos(21 * Turn.X)" Y="0.132681 * sqrt(21) * sin(21 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed22" Style="Yellow heart" X="0.132681 * sqrt(22) * cos(22 * Turn.X)" Y="0.132681 * sqrt(22) * sin(22 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed23" Style="Purple heart" X="0.132681 * sqrt(23) * cos(23 * Turn.X)" Y="0.132681 * sqrt(23) * sin(23 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed24" Style="Red heart" X="0.132681 * sqrt(24) * cos(24 * Turn.X)" Y="0.132681 * sqrt(24) * sin(24 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed25" Style="Green heart" X="0.132681 * sqrt(25) * cos(25 * Turn.X)" Y="0.132681 * sqrt(25) * sin(25 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed26" Style="Growing heart" X="0.132681 * sqrt(26) * cos(26 * Turn.X)" Y="0.132681 * sqrt(26) * sin(26 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed27" Style="Orange heart" X="0.132681 * sqrt(27) * cos(27 * Turn.X)" Y="0.132681 * sqrt(27) * sin(27 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed28" Style="Blue heart" X="0.132681 * sqrt(28) * cos(28 * Turn.X)" Y="0.132681 * sqrt(28) * sin(28 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed29" Style="White heart" X="0.132681 * sqrt(29) * cos(29 * Turn.X)" Y="0.132681 * sqrt(29) * sin(29 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed30" Style="Yellow heart" X="0.132681 * sqrt(30) * cos(30 * Turn.X)" Y="0.132681 * sqrt(30) * sin(30 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed31" Style="Purple heart" X="0.132681 * sqrt(31) * cos(31 * Turn.X)" Y="0.132681 * sqrt(31) * sin(31 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed32" Style="Red heart" X="0.132681 * sqrt(32) * cos(32 * Turn.X)" Y="0.132681 * sqrt(32) * sin(32 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed33" Style="Green heart" X="0.132681 * sqrt(33) * cos(33 * Turn.X)" Y="0.132681 * sqrt(33) * sin(33 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed34" Style="Growing heart" X="0.132681 * sqrt(34) * cos(34 * Turn.X)" Y="0.132681 * sqrt(34) * sin(34 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed35" Style="Orange heart" X="0.132681 * sqrt(35) * cos(35 * Turn.X)" Y="0.132681 * sqrt(35) * sin(35 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed36" Style="Blue heart" X="0.132681 * sqrt(36) * cos(36 * Turn.X)" Y="0.132681 * sqrt(36) * sin(36 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed37" Style="White heart" X="0.132681 * sqrt(37) * cos(37 * Turn.X)" Y="0.132681 * sqrt(37) * sin(37 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed38" Style="Yellow heart" X="0.132681 * sqrt(38) * cos(38 * Turn.X)" Y="0.132681 * sqrt(38) * sin(38 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed39" Style="Purple heart" X="0.132681 * sqrt(39) * cos(39 * Turn.X)" Y="0.132681 * sqrt(39) * sin(39 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed40" Style="Red heart" X="0.132681 * sqrt(40) * cos(40 * Turn.X)" Y="0.132681 * sqrt(40) * sin(40 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed41" Style="Green heart" X="0.132681 * sqrt(41) * cos(41 * Turn.X)" Y="0.132681 * sqrt(41) * sin(41 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed42" Style="Growing heart" X="0.132681 * sqrt(42) * cos(42 * Turn.X)" Y="0.132681 * sqrt(42) * sin(42 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed43" Style="Orange heart" X="0.132681 * sqrt(43) * cos(43 * Turn.X)" Y="0.132681 * sqrt(43) * sin(43 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed44" Style="Blue heart" X="0.132681 * sqrt(44) * cos(44 * Turn.X)" Y="0.132681 * sqrt(44) * sin(44 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed45" Style="White heart" X="0.132681 * sqrt(45) * cos(45 * Turn.X)" Y="0.132681 * sqrt(45) * sin(45 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed46" Style="Yellow heart" X="0.132681 * sqrt(46) * cos(46 * Turn.X)" Y="0.132681 * sqrt(46) * sin(46 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed47" Style="Purple heart" X="0.132681 * sqrt(47) * cos(47 * Turn.X)" Y="0.132681 * sqrt(47) * sin(47 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed48" Style="Red heart" X="0.132681 * sqrt(48) * cos(48 * Turn.X)" Y="0.132681 * sqrt(48) * sin(48 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed49" Style="Green heart" X="0.132681 * sqrt(49) * cos(49 * Turn.X)" Y="0.132681 * sqrt(49) * sin(49 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed50" Style="Growing heart" X="0.132681 * sqrt(50) * cos(50 * Turn.X)" Y="0.132681 * sqrt(50) * sin(50 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed51" Style="Orange heart" X="0.132681 * sqrt(51) * cos(51 * Turn.X)" Y="0.132681 * sqrt(51) * sin(51 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed52" Style="Blue heart" X="0.132681 * sqrt(52) * cos(52 * Turn.X)" Y="0.132681 * sqrt(52) * sin(52 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed53" Style="White heart" X="0.132681 * sqrt(53) * cos(53 * Turn.X)" Y="0.132681 * sqrt(53) * sin(53 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed54" Style="Yellow heart" X="0.132681 * sqrt(54) * cos(54 * Turn.X)" Y="0.132681 * sqrt(54) * sin(54 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed55" Style="Purple heart" X="0.132681 * sqrt(55) * cos(55 * Turn.X)" Y="0.132681 * sqrt(55) * sin(55 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed56" Style="Red heart" X="0.132681 * sqrt(56) * cos(56 * Turn.X)" Y="0.132681 * sqrt(56) * sin(56 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed57" Style="Green heart" X="0.132681 * sqrt(57) * cos(57 * Turn.X)" Y="0.132681 * sqrt(57) * sin(57 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed58" Style="Growing heart" X="0.132681 * sqrt(58) * cos(58 * Turn.X)" Y="0.132681 * sqrt(58) * sin(58 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed59" Style="Orange heart" X="0.132681 * sqrt(59) * cos(59 * Turn.X)" Y="0.132681 * sqrt(59) * sin(59 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed60" Style="Blue heart" X="0.132681 * sqrt(60) * cos(60 * Turn.X)" Y="0.132681 * sqrt(60) * sin(60 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed61" Style="White heart" X="0.132681 * sqrt(61) * cos(61 * Turn.X)" Y="0.132681 * sqrt(61) * sin(61 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed62" Style="Yellow heart" X="0.132681 * sqrt(62) * cos(62 * Turn.X)" Y="0.132681 * sqrt(62) * sin(62 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed63" Style="Purple heart" X="0.132681 * sqrt(63) * cos(63 * Turn.X)" Y="0.132681 * sqrt(63) * sin(63 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed64" Style="Red heart" X="0.132681 * sqrt(64) * cos(64 * Turn.X)" Y="0.132681 * sqrt(64) * sin(64 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed65" Style="Green heart" X="0.132681 * sqrt(65) * cos(65 * Turn.X)" Y="0.132681 * sqrt(65) * sin(65 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed66" Style="Growing heart" X="0.132681 * sqrt(66) * cos(66 * Turn.X)" Y="0.132681 * sqrt(66) * sin(66 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed67" Style="Orange heart" X="0.132681 * sqrt(67) * cos(67 * Turn.X)" Y="0.132681 * sqrt(67) * sin(67 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed68" Style="Blue heart" X="0.132681 * sqrt(68) * cos(68 * Turn.X)" Y="0.132681 * sqrt(68) * sin(68 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed69" Style="White heart" X="0.132681 * sqrt(69) * cos(69 * Turn.X)" Y="0.132681 * sqrt(69) * sin(69 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed70" Style="Yellow heart" X="0.132681 * sqrt(70) * cos(70 * Turn.X)" Y="0.132681 * sqrt(70) * sin(70 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed71" Style="Purple heart" X="0.132681 * sqrt(71) * cos(71 * Turn.X)" Y="0.132681 * sqrt(71) * sin(71 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed72" Style="Red heart" X="0.132681 * sqrt(72) * cos(72 * Turn.X)" Y="0.132681 * sqrt(72) * sin(72 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed73" Style="Green heart" X="0.132681 * sqrt(73) * cos(73 * Turn.X)" Y="0.132681 * sqrt(73) * sin(73 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed74" Style="Growing heart" X="0.132681 * sqrt(74) * cos(74 * Turn.X)" Y="0.132681 * sqrt(74) * sin(74 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed75" Style="Orange heart" X="0.132681 * sqrt(75) * cos(75 * Turn.X)" Y="0.132681 * sqrt(75) * sin(75 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed76" Style="Blue heart" X="0.132681 * sqrt(76) * cos(76 * Turn.X)" Y="0.132681 * sqrt(76) * sin(76 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed77" Style="White heart" X="0.132681 * sqrt(77) * cos(77 * Turn.X)" Y="0.132681 * sqrt(77) * sin(77 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed78" Style="Yellow heart" X="0.132681 * sqrt(78) * cos(78 * Turn.X)" Y="0.132681 * sqrt(78) * sin(78 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed79" Style="Purple heart" X="0.132681 * sqrt(79) * cos(79 * Turn.X)" Y="0.132681 * sqrt(79) * sin(79 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed80" Style="Red heart" X="0.132681 * sqrt(80) * cos(80 * Turn.X)" Y="0.132681 * sqrt(80) * sin(80 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed81" Style="Green heart" X="0.132681 * sqrt(81) * cos(81 * Turn.X)" Y="0.132681 * sqrt(81) * sin(81 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed82" Style="Growing heart" X="0.132681 * sqrt(82) * cos(82 * Turn.X)" Y="0.132681 * sqrt(82) * sin(82 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed83" Style="Orange heart" X="0.132681 * sqrt(83) * cos(83 * Turn.X)" Y="0.132681 * sqrt(83) * sin(83 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed84" Style="Blue heart" X="0.132681 * sqrt(84) * cos(84 * Turn.X)" Y="0.132681 * sqrt(84) * sin(84 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed85" Style="White heart" X="0.132681 * sqrt(85) * cos(85 * Turn.X)" Y="0.132681 * sqrt(85) * sin(85 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed86" Style="Yellow heart" X="0.132681 * sqrt(86) * cos(86 * Turn.X)" Y="0.132681 * sqrt(86) * sin(86 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed87" Style="Purple heart" X="0.132681 * sqrt(87) * cos(87 * Turn.X)" Y="0.132681 * sqrt(87) * sin(87 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed88" Style="Red heart" X="0.132681 * sqrt(88) * cos(88 * Turn.X)" Y="0.132681 * sqrt(88) * sin(88 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed89" Style="Green heart" X="0.132681 * sqrt(89) * cos(89 * Turn.X)" Y="0.132681 * sqrt(89) * sin(89 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed90" Style="Growing heart" X="0.132681 * sqrt(90) * cos(90 * Turn.X)" Y="0.132681 * sqrt(90) * sin(90 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed91" Style="Orange heart" X="0.132681 * sqrt(91) * cos(91 * Turn.X)" Y="0.132681 * sqrt(91) * sin(91 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed92" Style="Blue heart" X="0.132681 * sqrt(92) * cos(92 * Turn.X)" Y="0.132681 * sqrt(92) * sin(92 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed93" Style="White heart" X="0.132681 * sqrt(93) * cos(93 * Turn.X)" Y="0.132681 * sqrt(93) * sin(93 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed94" Style="Yellow heart" X="0.132681 * sqrt(94) * cos(94 * Turn.X)" Y="0.132681 * sqrt(94) * sin(94 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed95" Style="Purple heart" X="0.132681 * sqrt(95) * cos(95 * Turn.X)" Y="0.132681 * sqrt(95) * sin(95 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Seed96" Style="Red heart" X="0.132681 * sqrt(96) * cos(96 * Turn.X)" Y="0.132681 * sqrt(96) * sin(96 * Turn.X)">
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Golden" Visible="false" Style="Sunflower" X="-1.327264" Y="1.215883" />
+    <Segment Name="GoldenRay" Visible="false" Style="GoldenLine">
+      <Dependency Name="C" />
+      <Dependency Name="Golden" />
+    </Segment>
+    <ShowHideControl Name="Hint" Style="GalleryText" Show="false" Text="Hint" X="-2" Y="-1.55">
+      <Dependency Name="Golden" />
+      <Dependency Name="GoldenRay" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Golden Angle" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Each heart sits a little farther out than the one before, and turned [deg(Turn.X)]° further around.\n\nDrag the bee to change the turn. Most turns line the hearts up in spokes or curly arms, with gaps in between. One special turn fills the circle with no gaps at all. Can you find it? Stuck? Check &quot;Hint&quot;.\n\nSunflowers know that turn: their seeds grow the same way." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="Turn" />
+    </Label>
+  </Figures>
+</Drawing>

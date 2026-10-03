@@ -219,7 +219,7 @@ namespace DynamicGeometry
             var fresh = (IFigureStyle)Activator.CreateInstance(style.GetType());
             var values = valueDiscovery.GetValues(style)
                 .OrderBy(v => v.Name == "Name" ? 0 : 1)
-                .Where(v => v.Name == "Name" || !IsFreshValue(v, fresh));
+                .Where(v => v.Name == "Name" || !IsFreshValue(v, FreshStyleFor(style, v.Name, fresh)));
             WriteValues(values, writer);
 
             // what differs under another theme, in a child element named after it
@@ -274,6 +274,22 @@ namespace DynamicGeometry
                 pair.Value.WriteTo(writer);
                 writer.WriteEndElement();
             }
+        }
+
+        /// <summary>
+        /// The fresh style a value is compared with: for the size of a point style that shows a
+        /// character, one showing the same character, since a character's size has another
+        /// default than a shape's. Compared with a fresh shape, an emoji of size 10 (a shape's
+        /// default) was left out, and loading gave it a character's default, 24.
+        /// </summary>
+        static IFigureStyle FreshStyleFor(IFigureStyle style, string propertyName, IFigureStyle fresh)
+        {
+            if (propertyName == nameof(PointStyle.Size) && style is PointStyle { Character: not null } pointStyle)
+            {
+                return new PointStyle() { Character = pointStyle.Character };
+            }
+
+            return fresh;
         }
 
         static bool IsFreshValue(IValueProvider value, IFigureStyle fresh)

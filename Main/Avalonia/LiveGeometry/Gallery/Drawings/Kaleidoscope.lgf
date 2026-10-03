@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-2.8" Top="2.1" Right="2.8" Bottom="-2.1">
+    <Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF1A0B33" Offset="0" />
+        <GradientStop Color="#FF2E1250" Offset="1" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
+  <Styles>
+    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFFFD966" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFFD966" />
+    </TextStyle>
+    <TextStyle Name="GalleryText" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <ShapeStyle Name="View" Color="#00000000" StrokeWidth="0.1">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Color="#FF241850" Offset="0" />
+          <GradientStop Color="#FF0C0820" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Slice" Fill="#24FFFFFF" Color="#00FFFFFF" StrokeWidth="0.1" />
+    <ShapeStyle Name="Rim" IsFilled="false" Color="#FFE0B050" StrokeWidth="10" />
+    <LineStyle Name="Mirror" Color="#30FFFFFF" />
+    <PointStyle Name="Blossom" Character="🌼" Size="72" Fill="#FFFFFFFF" />
+    <PointStyle Name="Gem stone" Character="💎" Fill="#FFFFFFFF" />
+    <PointStyle Name="Cherry blossom" Character="🌸" Size="32" Fill="#FFFFFFFF" />
+    <PointStyle Name="Butterfly" Character="🦋" Size="30" Fill="#FFFFFFFF" />
+    <PointStyle Name="Glowing star" Character="🌟" Size="36" Fill="#FFFFFFFF" />
+    <PointStyle Name="Sparkling heart" Character="💖" Size="38" Fill="#FFFFFFFF" />
+    <PointStyle Name="Cyclone" Character="🌀" Size="34" Fill="#FFFFFFFF" />
+    <PointStyle Name="Four leaf clover" Character="🍀" Size="44" Fill="#FFFFFFFF" />
+    <PointStyle Name="Lollipop" Character="🍭" Size="40" Fill="#FFFFFFFF" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Style="Blossom" X="0" Y="0" />
+    <PointByCoordinates Name="ViewEdge0" Visible="false" X="1.7" Y="0" />
+    <PointByCoordinates Name="ViewEdge1" Visible="false" X="1.69767" Y="0.088971" />
+    <PointByCoordinates Name="ViewEdge2" Visible="false" X="1.690687" Y="0.177698" />
+    <PointByCoordinates Name="ViewEdge3" Visible="false" X="1.67907" Y="0.265939" />
+    <PointByCoordinates Name="ViewEdge4" Visible="false" X="1.662851" Y="0.35345" />
+    <PointByCoordinates Name="ViewEdge5" Visible="false" X="1.642074" Y="0.439992" />
+    <PointByCoordinates Name="ViewEdge6" Visible="false" X="1.616796" Y="0.525329" />
+    <PointByCoordinates Name="ViewEdge7" Visible="false" X="1.587087" Y="0.609226" />
+    <PointByCoordinates Name="ViewEdge8" Visible="false" X="1.553027" Y="0.691452" />
+    <PointByCoordinates Name="ViewEdge9" Visible="false" X="1.514711" Y="0.771784" />
+    <PointByCoordinates Name="ViewEdge10" Visible="false" X="1.472243" Y="0.85" />
+    <PointByCoordinates Name="ViewEdge11" Visible="false" X="1.42574" Y="0.925886" />
+    <PointByCoordinates Name="ViewEdge12" Visible="false" X="1.375329" Y="0.999235" />
+    <PointByCoordinates Name="ViewEdge13" Visible="false" X="1.321148" Y="1.069845" />
+    <PointByCoordinates Name="ViewEdge14" Visible="false" X="1.263346" Y="1.137522" />
+    <PointByCoordinates Name="ViewEdge15" Visible="false" X="1.202082" Y="1.202082" />
+    <PointByCoordinates Name="ViewEdge16" Visible="false" X="1.137522" Y="1.263346" />
+    <PointByCoordinates Name="ViewEdge17" Visible="false" X="1.069845" Y="1.321148" />
+    <PointByCoordinates Name="ViewEdge18" Visible="false" X="0.999235" Y="1.375329" />
+    <PointByCoordinates Name="ViewEdge19" Visible="false" X="0.925886" Y="1.42574" />
+    <PointByCoordinates Name="ViewEdge20" Visible="false" X="0.85" Y="1.472243" />
+    <PointByCoordinates Name="ViewEdge21" Visible="false" X="0.771784" Y="1.514711" />
+    <PointByCoordinates Name="ViewEdge22" Visible="false" X="0.691452" Y="1.553027" />
+    <PointByCoordinates Name="ViewEdge23" Visible="false" X="0.609226" Y="1.587087" />
+    <PointByCoordinates Name="ViewEdge24" Visible="false" X="0.525329" Y="1.616796" />
+    <PointByCoordinates Name="ViewEdge25" Visible="false" X="0.439992" Y="1.642074" />
+    <PointByCoordinates Name="ViewEdge26" Visible="false" X="0.35345" Y="1.662851" />
+    <PointByCoordinates Name="ViewEdge27" Visible="false" X="0.265939" Y="1.67907" />
+    <PointByCoordinates Name="ViewEdge28" Visible="false" X="0.177698" Y="1.690687" />
+    <PointByCoordinates Name="ViewEdge29" Visible="false" X="0.088971" Y="1.69767" />
+    <PointByCoordinates Name="ViewEdge30" Visible="false" X="0" Y="1.7" />
+    <PointByCoordinates Name="ViewEdge31" Visible="false" X="-0.088971" Y="1.69767" />
+    <PointByCoordinates Name="ViewEdge32" Visible="false" X="-0.177698" Y="1.690687" />
+    <PointByCoordinates Name="ViewEdge33" Visible="false" X="-0.265939" Y="1.67907" />
+    <PointByCoordinates Name="ViewEdge34" Visible="false" X="-0.35345" Y="1.662851" />
+    <PointByCoordinates Name="ViewEdge35" Visible="false" X="-0.439992" Y="1.642074" />
+    <PointByCoordinates Name="ViewEdge36" Visible="false" X="-0.525329" Y="1.616796" />
+    <PointByCoordinates Name="ViewEdge37" Visible="false" X="-0.609226" Y="1.587087" />
+    <PointByCoordinates Name="ViewEdge38" Visible="false" X="-0.691452" Y="1.553027" />
+    <PointByCoordinates Name="ViewEdge39" Visible="false" X="-0.771784" Y="1.514711" />
+    <PointByCoordinates Name="ViewEdge40" Visible="false" X="-0.85" Y="1.472243" />
+    <PointByCoordinates Name="ViewEdge41" Visible="false" X="-0.925886" Y="1.42574" />
+    <PointByCoordinates Name="ViewEdge42" Visible="false" X="-0.999235" Y="1.375329" />
+    <PointByCoordinates Name="ViewEdge43" Visible="false" X="-1.069845" Y="1.321148" />
+    <PointByCoordinates Name="ViewEdge44" Visible="false" X="-1.137522" Y="1.263346" />
+    <PointByCoordinates Name="ViewEdge45" Visible="false" X="-1.202082" Y="1.202082" />
+    <PointByCoordinates Name="ViewEdge46" Visible="false" X="-1.263346" Y="1.137522" />
+    <PointByCoordinates Name="ViewEdge47" Visible="false" X="-1.321148" Y="1.069845" />
+    <PointByCoordinates Name="ViewEdge48" Visible="false" X="-1.375329" Y="0.999235" />
+    <PointByCoordinates Name="ViewEdge49" Visible="false" X="-1.42574" Y="0.925886" />
+    <PointByCoordinates Name="ViewEdge50" Visible="false" X="-1.472243" Y="0.85" />
+    <PointByCoordinates Name="ViewEdge51" Visible="false" X="-1.514711" Y="0.771784" />
+    <PointByCoordinates Name="ViewEdge52" Visible="false" X="-1.553027" Y="0.691452" />
+    <PointByCoordinates Name="ViewEdge53" Visible="false" X="-1.587087" Y="0.609226" />
+    <PointByCoordinates Name="ViewEdge54" Visible="false" X="-1.616796" Y="0.525329" />
+    <PointByCoordinates Name="ViewEdge55" Visible="false" X="-1.642074" Y="0.439992" />
+    <PointByCoordinates Name="ViewEdge56" Visible="false" X="-1.662851" Y="0.35345" />
+    <PointByCoordinates Name="ViewEdge57" Visible="false" X="-1.67907" Y="0.265939" />
+    <PointByCoordinates Name="ViewEdge58" Visible="false" X="-1.690687" Y="0.177698" />
+    <PointByCoordinates Name="ViewEdge59" Visible="false" X="-1.69767" Y="0.088971" />
+    <PointByCoordinates Name="ViewEdge60" Visible="false" X="-1.7" Y="0" />
+    <PointByCoordinates Name="ViewEdge61" Visible="false" X="-1.69767" Y="-0.088971" />
+    <PointByCoordinates Name="ViewEdge62" Visible="false" X="-1.690687" Y="-0.177698" />
+    <PointByCoordinates Name="ViewEdge63" Visible="false" X="-1.67907" Y="-0.265939" />
+    <PointByCoordinates Name="ViewEdge64" Visible="false" X="-1.662851" Y="-0.35345" />
+    <PointByCoordinates Name="ViewEdge65" Visible="false" X="-1.642074" Y="-0.439992" />
+    <PointByCoordinates Name="ViewEdge66" Visible="false" X="-1.616796" Y="-0.525329" />
+    <PointByCoordinates Name="ViewEdge67" Visible="false" X="-1.587087" Y="-0.609226" />
+    <PointByCoordinates Name="ViewEdge68" Visible="false" X="-1.553027" Y="-0.691452" />
+    <PointByCoordinates Name="ViewEdge69" Visible="false" X="-1.514711" Y="-0.771784" />
+    <PointByCoordinates Name="ViewEdge70" Visible="false" X="-1.472243" Y="-0.85" />
+    <PointByCoordinates Name="ViewEdge71" Visible="false" X="-1.42574" Y="-0.925886" />
+    <PointByCoordinates Name="ViewEdge72" Visible="false" X="-1.375329" Y="-0.999235" />
+    <PointByCoordinates Name="ViewEdge73" Visible="false" X="-1.321148" Y="-1.069845" />
+    <PointByCoordinates Name="ViewEdge74" Visible="false" X="-1.263346" Y="-1.137522" />
+    <PointByCoordinates Name="ViewEdge75" Visible="false" X="-1.202082" Y="-1.202082" />
+    <PointByCoordinates Name="ViewEdge76" Visible="false" X="-1.137522" Y="-1.263346" />
+    <PointByCoordinates Name="ViewEdge77" Visible="false" X="-1.069845" Y="-1.321148" />
+    <PointByCoordinates Name="ViewEdge78" Visible="false" X="-0.999235" Y="-1.375329" />
+    <PointByCoordinates Name="ViewEdge79" Visible="false" X="-0.925886" Y="-1.42574" />
+    <PointByCoordinates Name="ViewEdge80" Visible="false" X="-0.85" Y="-1.472243" />
+    <PointByCoordinates Name="ViewEdge81" Visible="false" X="-0.771784" Y="-1.514711" />
+    <PointByCoordinates Name="ViewEdge82" Visible="false" X="-0.691452" Y="-1.553027" />
+    <PointByCoordinates Name="ViewEdge83" Visible="false" X="-0.609226" Y="-1.587087" />
+    <PointByCoordinates Name="ViewEdge84" Visible="false" X="-0.525329" Y="-1.616796" />
+    <PointByCoordinates Name="ViewEdge85" Visible="false" X="-0.439992" Y="-1.642074" />
+    <PointByCoordinates Name="ViewEdge86" Visible="false" X="-0.35345" Y="-1.662851" />
+    <PointByCoordinates Name="ViewEdge87" Visible="false" X="-0.265939" Y="-1.67907" />
+    <PointByCoordinates Name="ViewEdge88" Visible="false" X="-0.177698" Y="-1.690687" />
+    <PointByCoordinates Name="ViewEdge89" Visible="false" X="-0.088971" Y="-1.69767" />
+    <PointByCoordinates Name="ViewEdge90" Visible="false" X="-0" Y="-1.7" />
+    <PointByCoordinates Name="ViewEdge91" Visible="false" X="0.088971" Y="-1.69767" />
+    <PointByCoordinates Name="ViewEdge92" Visible="false" X="0.177698" Y="-1.690687" />
+    <PointByCoordinates Name="ViewEdge93" Visible="false" X="0.265939" Y="-1.67907" />
+    <PointByCoordinates Name="ViewEdge94" Visible="false" X="0.35345" Y="-1.662851" />
+    <PointByCoordinates Name="ViewEdge95" Visible="false" X="0.439992" Y="-1.642074" />
+    <PointByCoordinates Name="ViewEdge96" Visible="false" X="0.525329" Y="-1.616796" />
+    <PointByCoordinates Name="ViewEdge97" Visible="false" X="0.609226" Y="-1.587087" />
+    <PointByCoordinates Name="ViewEdge98" Visible="false" X="0.691452" Y="-1.553027" />
+    <PointByCoordinates Name="ViewEdge99" Visible="false" X="0.771784" Y="-1.514711" />
+    <PointByCoordinates Name="ViewEdge100" Visible="false" X="0.85" Y="-1.472243" />
+    <PointByCoordinates Name="ViewEdge101" Visible="false" X="0.925886" Y="-1.42574" />
+    <PointByCoordinates Name="ViewEdge102" Visible="false" X="0.999235" Y="-1.375329" />
+    <PointByCoordinates Name="ViewEdge103" Visible="false" X="1.069845" Y="-1.321148" />
+    <PointByCoordinates Name="ViewEdge104" Visible="false" X="1.137522" Y="-1.263346" />
+    <PointByCoordinates Name="ViewEdge105" Visible="false" X="1.202082" Y="-1.202082" />
+    <PointByCoordinates Name="ViewEdge106" Visible="false" X="1.263346" Y="-1.137522" />
+    <PointByCoordinates Name="ViewEdge107" Visible="false" X="1.321148" Y="-1.069845" />
+    <PointByCoordinates Name="ViewEdge108" Visible="false" X="1.375329" Y="-0.999235" />
+    <PointByCoordinates Name="ViewEdge109" Visible="false" X="1.42574" Y="-0.925886" />
+    <PointByCoordinates Name="ViewEdge110" Visible="false" X="1.472243" Y="-0.85" />
+    <PointByCoordinates Name="ViewEdge111" Visible="false" X="1.514711" Y="-0.771784" />
+    <PointByCoordinates Name="ViewEdge112" Visible="false" X="1.553027" Y="-0.691452" />
+    <PointByCoordinates Name="ViewEdge113" Visible="false" X="1.587087" Y="-0.609226" />
+    <PointByCoordinates Name="ViewEdge114" Visible="false" X="1.616796" Y="-0.525329" />
+    <PointByCoordinates Name="ViewEdge115" Visible="false" X="1.642074" Y="-0.439992" />
+    <PointByCoordinates Name="ViewEdge116" Visible="false" X="1.662851" Y="-0.35345" />
+    <PointByCoordinates Name="ViewEdge117" Visible="false" X="1.67907" Y="-0.265939" />
+    <PointByCoordinates Name="ViewEdge118" Visible="false" X="1.690687" Y="-0.177698" />
+    <PointByCoordinates Name="ViewEdge119" Visible="false" X="1.69767" Y="-0.088971" />
+    <Polygon Name="View" Style="View">
+      <Dependency Name="ViewEdge0" />
+      <Dependency Name="ViewEdge1" />
+      <Dependency Name="ViewEdge2" />
+      <Dependency Name="ViewEdge3" />
+      <Dependency Name="ViewEdge4" />
+      <Dependency Name="ViewEdge5" />
+      <Dependency Name="ViewEdge6" />
+      <Dependency Name="ViewEdge7" />
+      <Dependency Name="ViewEdge8" />
+      <Dependency Name="ViewEdge9" />
+      <Dependency Name="ViewEdge10" />
+      <Dependency Name="ViewEdge11" />
+      <Dependency Name="ViewEdge12" />
+      <Dependency Name="ViewEdge13" />
+      <Dependency Name="ViewEdge14" />
+      <Dependency Name="ViewEdge15" />
+      <Dependency Name="ViewEdge16" />
+      <Dependency Name="ViewEdge17" />
+      <Dependency Name="ViewEdge18" />
+      <Dependency Name="ViewEdge19" />
+      <Dependency Name="ViewEdge20" />
+      <Dependency Name="ViewEdge21" />
+      <Dependency Name="ViewEdge22" />
+      <Dependency Name="ViewEdge23" />
+      <Dependency Name="ViewEdge24" />
+      <Dependency Name="ViewEdge25" />
+      <Dependency Name="ViewEdge26" />
+      <Dependency Name="ViewEdge27" />
+      <Dependency Name="ViewEdge28" />
+      <Dependency Name="ViewEdge29" />
+      <Dependency Name="ViewEdge30" />
+      <Dependency Name="ViewEdge31" />
+      <Dependency Name="ViewEdge32" />
+      <Dependency Name="ViewEdge33" />
+      <Dependency Name="ViewEdge34" />
+      <Dependency Name="ViewEdge35" />
+      <Dependency Name="ViewEdge36" />
+      <Dependency Name="ViewEdge37" />
+      <Dependency Name="ViewEdge38" />
+      <Dependency Name="ViewEdge39" />
+      <Dependency Name="ViewEdge40" />
+      <Dependency Name="ViewEdge41" />
+      <Dependency Name="ViewEdge42" />
+      <Dependency Name="ViewEdge43" />
+      <Dependency Name="ViewEdge44" />
+      <Dependency Name="ViewEdge45" />
+      <Dependency Name="ViewEdge46" />
+      <Dependency Name="ViewEdge47" />
+      <Dependency Name="ViewEdge48" />
+      <Dependency Name="ViewEdge49" />
+      <Dependency Name="ViewEdge50" />
+      <Dependency Name="ViewEdge51" />
+      <Dependency Name="ViewEdge52" />
+      <Dependency Name="ViewEdge53" />
+      <Dependency Name="ViewEdge54" />
+      <Dependency Name="ViewEdge55" />
+      <Dependency Name="ViewEdge56" />
+      <Dependency Name="ViewEdge57" />
+      <Dependency Name="ViewEdge58" />
+      <Dependency Name="ViewEdge59" />
+      <Dependency Name="ViewEdge60" />
+      <Dependency Name="ViewEdge61" />
+      <Dependency Name="ViewEdge62" />
+      <Dependency Name="ViewEdge63" />
+      <Dependency Name="ViewEdge64" />
+      <Dependency Name="ViewEdge65" />
+      <Dependency Name="ViewEdge66" />
+      <Dependency Name="ViewEdge67" />
+      <Dependency Name="ViewEdge68" />
+      <Dependency Name="ViewEdge69" />
+      <Dependency Name="ViewEdge70" />
+      <Dependency Name="ViewEdge71" />
+      <Dependency Name="ViewEdge72" />
+      <Dependency Name="ViewEdge73" />
+      <Dependency Name="ViewEdge74" />
+      <Dependency Name="ViewEdge75" />
+      <Dependency Name="ViewEdge76" />
+      <Dependency Name="ViewEdge77" />
+      <Dependency Name="ViewEdge78" />
+      <Dependency Name="ViewEdge79" />
+      <Dependency Name="ViewEdge80" />
+      <Dependency Name="ViewEdge81" />
+      <Dependency Name="ViewEdge82" />
+      <Dependency Name="ViewEdge83" />
+      <Dependency Name="ViewEdge84" />
+      <Dependency Name="ViewEdge85" />
+      <Dependency Name="ViewEdge86" />
+      <Dependency Name="ViewEdge87" />
+      <Dependency Name="ViewEdge88" />
+      <Dependency Name="ViewEdge89" />
+      <Dependency Name="ViewEdge90" />
+      <Dependency Name="ViewEdge91" />
+      <Dependency Name="ViewEdge92" />
+      <Dependency Name="ViewEdge93" />
+      <Dependency Name="ViewEdge94" />
+      <Dependency Name="ViewEdge95" />
+      <Dependency Name="ViewEdge96" />
+      <Dependency Name="ViewEdge97" />
+      <Dependency Name="ViewEdge98" />
+      <Dependency Name="ViewEdge99" />
+      <Dependency Name="ViewEdge100" />
+      <Dependency Name="ViewEdge101" />
+      <Dependency Name="ViewEdge102" />
+      <Dependency Name="ViewEdge103" />
+      <Dependency Name="ViewEdge104" />
+      <Dependency Name="ViewEdge105" />
+      <Dependency Name="ViewEdge106" />
+      <Dependency Name="ViewEdge107" />
+      <Dependency Name="ViewEdge108" />
+      <Dependency Name="ViewEdge109" />
+      <Dependency Name="ViewEdge110" />
+      <Dependency Name="ViewEdge111" />
+      <Dependency Name="ViewEdge112" />
+      <Dependency Name="ViewEdge113" />
+      <Dependency Name="ViewEdge114" />
+      <Dependency Name="ViewEdge115" />
+      <Dependency Name="ViewEdge116" />
+      <Dependency Name="ViewEdge117" />
+      <Dependency Name="ViewEdge118" />
+      <Dependency Name="ViewEdge119" />
+    </Polygon>
+    <Polygon Name="Slice" Style="Slice">
+      <Dependency Name="O" />
+      <Dependency Name="ViewEdge0" />
+      <Dependency Name="ViewEdge1" />
+      <Dependency Name="ViewEdge2" />
+      <Dependency Name="ViewEdge3" />
+      <Dependency Name="ViewEdge4" />
+      <Dependency Name="ViewEdge5" />
+      <Dependency Name="ViewEdge6" />
+      <Dependency Name="ViewEdge7" />
+      <Dependency Name="ViewEdge8" />
+      <Dependency Name="ViewEdge9" />
+      <Dependency Name="ViewEdge10" />
+    </Polygon>
+    <Circle Name="Rim" Style="Rim">
+      <Dependency Name="O" />
+      <Dependency Name="ViewEdge0" />
+    </Circle>
+    <PointByCoordinates Name="MirrorEnd0" Visible="false" X="1.7" Y="0" />
+    <PointByCoordinates Name="MirrorEnd6" Visible="false" X="-1.7" Y="-0" />
+    <Segment Name="Mirror0" Style="Mirror">
+      <Dependency Name="MirrorEnd0" />
+      <Dependency Name="MirrorEnd6" />
+    </Segment>
+    <PointByCoordinates Name="MirrorEnd1" Visible="false" X="1.472243" Y="0.85" />
+    <PointByCoordinates Name="MirrorEnd7" Visible="false" X="-1.472243" Y="-0.85" />
+    <Segment Name="Mirror1" Style="Mirror">
+      <Dependency Name="MirrorEnd1" />
+      <Dependency Name="MirrorEnd7" />
+    </Segment>
+    <PointByCoordinates Name="MirrorEnd2" Visible="false" X="0.85" Y="1.472243" />
+    <PointByCoordinates Name="MirrorEnd8" Visible="false" X="-0.85" Y="-1.472243" />
+    <Segment Name="Mirror2" Style="Mirror">
+      <Dependency Name="MirrorEnd2" />
+      <Dependency Name="MirrorEnd8" />
+    </Segment>
+    <PointByCoordinates Name="MirrorEnd3" Visible="false" X="0" Y="1.7" />
+    <PointByCoordinates Name="MirrorEnd9" Visible="false" X="-0" Y="-1.7" />
+    <Segment Name="Mirror3" Style="Mirror">
+      <Dependency Name="MirrorEnd3" />
+      <Dependency Name="MirrorEnd9" />
+    </Segment>
+    <PointByCoordinates Name="MirrorEnd4" Visible="false" X="-0.85" Y="1.472243" />
+    <PointByCoordinates Name="MirrorEnd10" Visible="false" X="0.85" Y="-1.472243" />
+    <Segment Name="Mirror4" Style="Mirror">
+      <Dependency Name="MirrorEnd4" />
+      <Dependency Name="MirrorEnd10" />
+    </Segment>
+    <PointByCoordinates Name="MirrorEnd5" Visible="false" X="-1.472243" Y="0.85" />
+    <PointByCoordinates Name="MirrorEnd11" Visible="false" X="1.472243" Y="-0.85" />
+    <Segment Name="Mirror5" Style="Mirror">
+      <Dependency Name="MirrorEnd5" />
+      <Dependency Name="MirrorEnd11" />
+    </Segment>
+    <PointByCoordinates Name="MirrorDirection" Visible="false" X="1" Y="0" />
+    <LineTwoPoints Name="MirrorLine" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="MirrorDirection" />
+    </LineTwoPoints>
+    <Number Name="Turn60" Value="60" />
+    <Number Name="Turn120" Value="120" />
+    <Number Name="Turn180" Value="180" />
+    <Number Name="Turn240" Value="240" />
+    <Number Name="Turn300" Value="300" />
+    <FreePoint Name="S1" Style="Gem stone" X="0.289778" Y="0.077646" />
+    <ReflectedPoint Name="S1m" Style="Gem stone">
+      <Dependency Name="S1" />
+      <Dependency Name="MirrorLine" />
+    </ReflectedPoint>
+    <RotatedPoint Name="S1r1" Style="Gem stone">
+      <Dependency Name="S1" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S1m1" Style="Gem stone">
+      <Dependency Name="S1m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S1r2" Style="Gem stone">
+      <Dependency Name="S1" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S1m2" Style="Gem stone">
+      <Dependency Name="S1m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S1r3" Style="Gem stone">
+      <Dependency Name="S1" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S1m3" Style="Gem stone">
+      <Dependency Name="S1m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S1r4" Style="Gem stone">
+      <Dependency Name="S1" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S1m4" Style="Gem stone">
+      <Dependency Name="S1m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S1r5" Style="Gem stone">
+      <Dependency Name="S1" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="S1m5" Style="Gem stone">
+      <Dependency Name="S1m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <FreePoint Name="S2" Style="Cherry blossom" X="0.495134" Y="0.069587" />
+    <ReflectedPoint Name="S2m" Style="Cherry blossom">
+      <Dependency Name="S2" />
+      <Dependency Name="MirrorLine" />
+    </ReflectedPoint>
+    <RotatedPoint Name="S2r1" Style="Cherry blossom">
+      <Dependency Name="S2" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S2m1" Style="Cherry blossom">
+      <Dependency Name="S2m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S2r2" Style="Cherry blossom">
+      <Dependency Name="S2" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S2m2" Style="Cherry blossom">
+      <Dependency Name="S2m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S2r3" Style="Cherry blossom">
+      <Dependency Name="S2" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S2m3" Style="Cherry blossom">
+      <Dependency Name="S2m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S2r4" Style="Cherry blossom">
+      <Dependency Name="S2" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S2m4" Style="Cherry blossom">
+      <Dependency Name="S2m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S2r5" Style="Cherry blossom">
+      <Dependency Name="S2" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="S2m5" Style="Cherry blossom">
+      <Dependency Name="S2m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <FreePoint Name="S3" Style="Butterfly" X="0.552303" Y="0.234439" />
+    <ReflectedPoint Name="S3m" Style="Butterfly">
+      <Dependency Name="S3" />
+      <Dependency Name="MirrorLine" />
+    </ReflectedPoint>
+    <RotatedPoint Name="S3r1" Style="Butterfly">
+      <Dependency Name="S3" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S3m1" Style="Butterfly">
+      <Dependency Name="S3m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S3r2" Style="Butterfly">
+      <Dependency Name="S3" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S3m2" Style="Butterfly">
+      <Dependency Name="S3m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S3r3" Style="Butterfly">
+      <Dependency Name="S3" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S3m3" Style="Butterfly">
+      <Dependency Name="S3m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S3r4" Style="Butterfly">
+      <Dependency Name="S3" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S3m4" Style="Butterfly">
+      <Dependency Name="S3m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S3r5" Style="Butterfly">
+      <Dependency Name="S3" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="S3m5" Style="Butterfly">
+      <Dependency Name="S3m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <FreePoint Name="S4" Style="Glowing star" X="0.821037" Y="0.219996" />
+    <ReflectedPoint Name="S4m" Style="Glowing star">
+      <Dependency Name="S4" />
+      <Dependency Name="MirrorLine" />
+    </ReflectedPoint>
+    <RotatedPoint Name="S4r1" Style="Glowing star">
+      <Dependency Name="S4" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S4m1" Style="Glowing star">
+      <Dependency Name="S4m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S4r2" Style="Glowing star">
+      <Dependency Name="S4" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S4m2" Style="Glowing star">
+      <Dependency Name="S4m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S4r3" Style="Glowing star">
+      <Dependency Name="S4" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S4m3" Style="Glowing star">
+      <Dependency Name="S4m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S4r4" Style="Glowing star">
+      <Dependency Name="S4" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S4m4" Style="Glowing star">
+      <Dependency Name="S4m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S4r5" Style="Glowing star">
+      <Dependency Name="S4" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="S4m5" Style="Glowing star">
+      <Dependency Name="S4m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <FreePoint Name="S5" Style="Sparkling heart" X="1.046004" Y="0.091514" />
+    <ReflectedPoint Name="S5m" Style="Sparkling heart">
+      <Dependency Name="S5" />
+      <Dependency Name="MirrorLine" />
+    </ReflectedPoint>
+    <RotatedPoint Name="S5r1" Style="Sparkling heart">
+      <Dependency Name="S5" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S5m1" Style="Sparkling heart">
+      <Dependency Name="S5m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S5r2" Style="Sparkling heart">
+      <Dependency Name="S5" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S5m2" Style="Sparkling heart">
+      <Dependency Name="S5m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S5r3" Style="Sparkling heart">
+      <Dependency Name="S5" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S5m3" Style="Sparkling heart">
+      <Dependency Name="S5m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S5r4" Style="Sparkling heart">
+      <Dependency Name="S5" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S5m4" Style="Sparkling heart">
+      <Dependency Name="S5m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S5r5" Style="Sparkling heart">
+      <Dependency Name="S5" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="S5m5" Style="Sparkling heart">
+      <Dependency Name="S5m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <FreePoint Name="S6" Style="Cyclone" X="1.047718" Y="0.423305" />
+    <ReflectedPoint Name="S6m" Style="Cyclone">
+      <Dependency Name="S6" />
+      <Dependency Name="MirrorLine" />
+    </ReflectedPoint>
+    <RotatedPoint Name="S6r1" Style="Cyclone">
+      <Dependency Name="S6" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S6m1" Style="Cyclone">
+      <Dependency Name="S6m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S6r2" Style="Cyclone">
+      <Dependency Name="S6" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S6m2" Style="Cyclone">
+      <Dependency Name="S6m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S6r3" Style="Cyclone">
+      <Dependency Name="S6" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S6m3" Style="Cyclone">
+      <Dependency Name="S6m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S6r4" Style="Cyclone">
+      <Dependency Name="S6" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S6m4" Style="Cyclone">
+      <Dependency Name="S6m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S6r5" Style="Cyclone">
+      <Dependency Name="S6" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="S6m5" Style="Cyclone">
+      <Dependency Name="S6m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <FreePoint Name="S7" Style="Four leaf clover" X="1.374278" Y="0.267133" />
+    <ReflectedPoint Name="S7m" Style="Four leaf clover">
+      <Dependency Name="S7" />
+      <Dependency Name="MirrorLine" />
+    </ReflectedPoint>
+    <RotatedPoint Name="S7r1" Style="Four leaf clover">
+      <Dependency Name="S7" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S7m1" Style="Four leaf clover">
+      <Dependency Name="S7m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S7r2" Style="Four leaf clover">
+      <Dependency Name="S7" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S7m2" Style="Four leaf clover">
+      <Dependency Name="S7m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S7r3" Style="Four leaf clover">
+      <Dependency Name="S7" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S7m3" Style="Four leaf clover">
+      <Dependency Name="S7m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S7r4" Style="Four leaf clover">
+      <Dependency Name="S7" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S7m4" Style="Four leaf clover">
+      <Dependency Name="S7m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S7r5" Style="Four leaf clover">
+      <Dependency Name="S7" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="S7m5" Style="Four leaf clover">
+      <Dependency Name="S7m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <FreePoint Name="S8" Style="Lollipop" X="1.321227" Y="0.644406" />
+    <ReflectedPoint Name="S8m" Style="Lollipop">
+      <Dependency Name="S8" />
+      <Dependency Name="MirrorLine" />
+    </ReflectedPoint>
+    <RotatedPoint Name="S8r1" Style="Lollipop">
+      <Dependency Name="S8" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S8m1" Style="Lollipop">
+      <Dependency Name="S8m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S8r2" Style="Lollipop">
+      <Dependency Name="S8" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S8m2" Style="Lollipop">
+      <Dependency Name="S8m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S8r3" Style="Lollipop">
+      <Dependency Name="S8" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S8m3" Style="Lollipop">
+      <Dependency Name="S8m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S8r4" Style="Lollipop">
+      <Dependency Name="S8" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S8m4" Style="Lollipop">
+      <Dependency Name="S8m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S8r5" Style="Lollipop">
+      <Dependency Name="S8" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="S8m5" Style="Lollipop">
+      <Dependency Name="S8m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <Label Name="Title" Style="GalleryTitle" Text="Kaleidoscope" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Only the bright slice is real. The rest are its reflections, as in the mirrors of a kaleidoscope, so every emoji has eleven twins.\n\nDrag the emoji in the bright slice and watch the twins dance. Push one onto a mirror line and its twins pair up.\n\nTo swap an emoji, click it, choose Edit this style and pick another one: all twelve change together." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>
