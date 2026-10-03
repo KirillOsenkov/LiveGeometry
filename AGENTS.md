@@ -433,7 +433,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the order of the drawing's list, worked out from the drawing as it is
   (`FigureBase.SettleDefaultNames`: after a figure enters, leaves or moves in the root
   list, and at the end of a rename wave, for the group named after the same points; while
-  a file is read it waits, `Drawing.KeepsNamesAsRead`, since expressions are compiled by
+  a file is read it waits, `Drawing.IsReading`, since expressions are compiled by
   the file's names). Handed out to whoever asked first, AB2 stayed AB2 after AB was
   deleted until the file was opened again, and undo of a join gave segment AB and line
   AB2 their names back the other way round. The points are read in
@@ -596,9 +596,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   past the circle by eye so they look as big), or one character instead, in the embedded
   Twemoji font (`Main/Avalonia/Fonts`, CC-BY, credited in the Emoji tab) with Inter named as
   the fallback: the browser has no system fonts, and a character neither has is not offered
-  (`EmojiFont.CanDraw`). The font is 1.5 MB and loaded on first use (`EmojiFont.Open`: a file
-  beside the desktop exe, a fetch of `fonts/` in the browser, brotli via web.config and cached
-  as immutable: a different font must get a different file name). The
+  (`EmojiFont.CanDraw`). The font is 1.5 MB and loaded on first use, or as soon as the
+  gallery is built, whose first rows show emoji (`EmojiFont.Open`: a file beside the desktop
+  exe, a fetch of `fonts/` in the browser, brotli via web.config and cached as immutable: a
+  different font must get a different file name). The fetch takes the response in one
+  piece: streamed (the default since .NET 10) it waited for a turn of the UI thread at every
+  chunk, and while the gallery's tiles loaded the font came seconds late. The
   style's editor has Shape | Emoji tabs (`IPropertyGridTabs`: the tab shown is what the style
   is; picking Shape drops the character, undoably; a row on two tabs, Size, gets an editor on
   each). "What the style is" is what it is under the theme on screen (`ShownCharacter`,
@@ -638,6 +641,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   tool that records a figure while its last point is still the one following the cursor
   (the Angle tool added its arc with the preview; both figures are made at the end now).
   `Actions.MoveBefore` is the repair, and knows parts (`RootFigureList.FindTopLevel`).
+- **The figure list checks itself in Debug builds only** (`CheckConsistencyInDebug`: after a
+  click of a tool, a recalculation of what is built on a figure, a file read): every
+  dependency and dependent of a figure is in the drawing and registered both ways. A
+  Release build (the site) never runs `CheckConsistency` on its own, so a registration bug
+  shows there only by what it breaks later: catch them with the Debug desktop build, the
+  regression suite and the harness, which call the check themselves.
 - **Tool letters are the only plain keys**: `Behavior.KeyDown` (what a tool without a key
   handler of its own gets: Point, Coordinates, Slider, Text) used to toggle "Label new
   points" on A and "Snap to grid" on G, from before those were the letters of the Arc tool
@@ -1422,8 +1431,8 @@ loader still does for files from before; none of it needs extending.
   after it was told it was hidden, and its vertices and sides came back to be clicked.
   The parts are listed with what they are built on (the polygon, its first vertex) only
   while the polygon is in the drawing (`RegisterPart`): registered when read, before the
-  polygon was added, they failed the consistency check that a point by coordinates runs
-  when it is added, and such a file did not load. When the point a polygon is built on is
+  polygon was added, they failed the consistency check (`CheckConsistency`), and such a
+  file did not load. When the point a polygon is built on is
   replaced (Fix length, Convert to point by coordinates), the polygon takes its parts
   along (`ReplaceDependency` moves their registration; `SubstituteWith` skips them).
   Hit testing hands the parts to the tools, and whatever takes a figure from a click has
@@ -1572,9 +1581,15 @@ buttons and checkboxes, 3D, custom tools.
   first. A file with a caption opened from disk is fitted the same way. Explanations have no
   hand line breaks (a blank line separates paragraphs). On an iPhone in portrait (canvas about
   390x565) the long explanations run off the bottom.
-- **Tiles are live drawings**, not bitmaps (`DrawingThumbnail`): no Behavior, text hidden, loaded
-  one per idle tick; hovering makes the draggable points drift. A load error of a tile goes to
-  the console as `Gallery: <file>: ...` - the quickest way to check all drawings at once.
+- **Tiles are live drawings**, not bitmaps (`DrawingThumbnail`): no Behavior, text hidden;
+  hovering makes the draggable points drift. Loaded one per idle tick and only as they come
+  near the view (`GalleryView.NextTileToLoad`: those in view from the top, then half a screen
+  around it; none while the page is hidden behind the editor): a load holds the UI thread,
+  in the browser a few hundred milliseconds for a drawing with hundreds of points by
+  coordinates. A tile whose points are characters waits for the emoji font while the others
+  load (`GalleryItem.UsesEmoji`); loaded before it, it showed its emoji seconds later. A
+  load error of a tile goes to the console as `Gallery: <file>: ...`; every drawing at once
+  is loaded by `tools/regression.cs`.
 - **Generated drawings** - regenerate rather than edit the file: Line of Best Fit
   (`dotnet tools/bestfit.cs -- <the .lgf>`), Fibonacci Spiral (`tools/fibonacci.cs`),
   The Five Platonic Solids (`tools/platonic.cs`, `--alpha` for a translucent variant),
@@ -1671,6 +1686,21 @@ load errors. It exits when done. `dotnet tools/contactsheet.cs -- <png folder> <
 folder (the whole gallery fits on one 4-column sheet). The VB6 CD library (221 files, kept
 outside the repo, read-only) all loads; what the report still calls "missing" there is second intersections that fall outside
 a segment or ray, and sides of a polygon that don't cross - legitimately absent.
+
+## Measuring speed
+
+- The browser runs .NET interpreted (no AOT): the same code took 3-4 times as long there as
+  in the Debug desktop build (2026-10-03, reading the gallery's drawings), and a loop that
+  costs nothing on the desktop can take a second there. Measure in the browser before
+  deciding what is slow.
+- CPU samples of the desktop app need neither admin rights nor a tool: start it with
+  `DOTNET_EnableEventPipe=1`, `DOTNET_EventPipeOutputPath=<file>.nettrace` and
+  `DOTNET_EventPipeConfig=Microsoft-DotNETCore-SampleProfiler:0:5,Microsoft-Windows-DotNETRuntime:0x4c14fccbd:5`
+  in its environment, close it normally, and read the stacks with the TraceEvent package
+  (`TraceLog.CreateFromEventPipeDataFile`, then `CallStack()` of each `Thread/Sample` event).
+- In the browser: a `Stopwatch` around what is suspected and `Console.WriteLine`, in a
+  Release publish served by `tools/serve.cs`, read with `webauto console`. Each `webauto`
+  call is a process that takes CPU from the page: compare runs made the same way.
 
 ## .dgf (DG 1.0) reader facts
 

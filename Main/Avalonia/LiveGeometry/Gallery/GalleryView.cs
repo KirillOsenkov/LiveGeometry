@@ -10,6 +10,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Reactive;
+using Avalonia.Threading;
 using DynamicGeometry;
 using Ellipse = Avalonia.Controls.Shapes.Ellipse;
 
@@ -45,6 +46,12 @@ public class GalleryView : DockPanel
     public GalleryView(Control corner, bool arrange = false)
     {
         this.BindTheme(BackgroundProperty, nameof(AppTheme.Page));
+
+        // tiles in the first rows show emoji: their font is fetched now, and they wait for it
+        // while the tiles without emoji load (NextTileToLoad)
+        EmojiFont.EnsureLoaded().ContinueWith(
+            _ => Dispatcher.UIThread.Post(ScheduleLoad),
+            System.Threading.Tasks.TaskScheduler.Default);
 
         startTiles.Children.Add(CreateStartTile(PlusPicture(), "New", newDrawingPlate, () => NewDrawingRequested()));
         startTiles.Children.Add(CreateStartTile(FolderPicture(), "Open", openDrawingPlate, () => OpenDrawingRequested()));
@@ -125,7 +132,15 @@ public class GalleryView : DockPanel
             galleryTiles.PointerReleased += Arrange_PointerReleased;
         }
 
-        // the tiles skip theme changes while the page is hidden behind the editor
+        // the part of the tiles in view, which the page scrolls and the window resizes
+        galleryTiles.EffectiveViewportChanged += (s, e) =>
+        {
+            tilesInView = e.EffectiveViewport;
+            ScheduleLoad();
+        };
+
+        // the tiles skip theme changes while the page is hidden behind the editor, and
+        // nothing is loaded then
         this.GetObservable(IsVisibleProperty).Subscribe(new AnonymousObserver<bool>(visible =>
         {
             if (visible)
@@ -134,6 +149,8 @@ public class GalleryView : DockPanel
                 {
                     picture.RefreshThemeIfStale();
                 }
+
+                ScheduleLoad();
             }
         }));
 
@@ -172,6 +189,74 @@ public class GalleryView : DockPanel
             IsCompact = true
         };
     }
+
+    #region Loading the drawings
+
+    // The drawings of the tiles are loaded one at a time, when the UI thread has nothing
+    // better to do, and only as they come into view: each load holds the UI thread (in the
+    // browser a big drawing took most of a second), so a tile far down the page waits until
+    // it is scrolled near, and nothing is loaded while the page is hidden behind the editor.
+
+    Rect tilesInView;
+    bool isLoadPosted;
+
+    void ScheduleLoad()
+    {
+        if (isLoadPosted)
+        {
+            return;
+        }
+
+        isLoadPosted = true;
+        Dispatcher.UIThread.Post(LoadNextTile, DispatcherPriority.Background);
+    }
+
+    void LoadNextTile()
+    {
+        isLoadPosted = false;
+        var next = NextTileToLoad();
+        if (next != null)
+        {
+            next.Load();
+            ScheduleLoad();
+        }
+    }
+
+    /// <summary>
+    /// Of the tiles not loaded yet, the one nearest to the view: the ones in it first, from
+    /// the top, then the ones up to half a screen below or above it, so that a scroll finds
+    /// them there. None while the page is hidden. A drawing with emoji waits for their font
+    /// while the others load: loaded before it came, it showed its emoji seconds later.
+    /// </summary>
+    DrawingThumbnail NextTileToLoad()
+    {
+        if (!IsEffectivelyVisible || tilesInView.Height <= 0)
+        {
+            return null;
+        }
+
+        bool isFontComing = !EmojiFont.EnsureLoaded().IsCompleted;
+        double reach = tilesInView.Height / 2;
+        return pictures
+            .Where(picture => picture.CanLoad)
+            .Select(picture => (picture, place: picture.TranslatePoint(default, galleryTiles)))
+            .Where(candidate => candidate.place != null)
+            .Select(candidate =>
+            {
+                double top = candidate.place.Value.Y;
+                double bottom = top + candidate.picture.Bounds.Height;
+                double distance = System.Math.Max(0, System.Math.Max(tilesInView.Top - bottom, top - tilesInView.Bottom));
+                return (candidate.picture, place: candidate.place.Value, distance);
+            })
+            .Where(candidate => candidate.distance <= reach && !(isFontComing && candidate.picture.UsesEmoji))
+            .OrderBy(candidate => candidate.distance)
+            .ThenBy(candidate => candidate.place.Y)
+            .ThenBy(candidate => candidate.place.X)
+            .Select(candidate => candidate.picture)
+            .FirstOrDefault();
+    }
+
+    #endregion
 
     #region Arrange mode
 
@@ -225,6 +310,9 @@ public class GalleryView : DockPanel
                 tile.SetPlate(Pastels.At(i));
             }
         }
+
+        // a tile not loaded yet may have come into view
+        ScheduleLoad();
     }
 
     void Arrange_PointerReleased(object sender, PointerReleasedEventArgs e)

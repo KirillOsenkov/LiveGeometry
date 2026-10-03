@@ -31,6 +31,9 @@ public class GalleryItem
     /// <summary>See <see cref="GalleryDrawing.GetPlane"/></summary>
     public Avalonia.Rect? Plane => GalleryDrawing.GetPlane(LoadText());
 
+    /// <summary>Some of its points are characters (an emoji, a ★), drawn in the emoji font (<see cref="DynamicGeometry.EmojiFont"/>)</summary>
+    public bool UsesEmoji => LoadText().Contains(" Character=\"", StringComparison.Ordinal);
+
     string text;
 
     public string LoadText()

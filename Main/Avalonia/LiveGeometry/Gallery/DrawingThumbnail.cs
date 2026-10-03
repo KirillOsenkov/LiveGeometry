@@ -35,7 +35,6 @@ public class DrawingThumbnail : Viewbox
     };
 
     readonly GalleryItem item;
-    bool isQueued;
 
     public DrawingThumbnail(GalleryItem item)
     {
@@ -43,7 +42,6 @@ public class DrawingThumbnail : Viewbox
         Stretch = Stretch.Uniform;
         IsHitTestVisible = false;
         Child = surface;
-        surface.SizeChanged += (s, e) => Enqueue();
 
         // the figures follow the theme like the editor's do, while the tile is on screen (the
         // tiles live as long as the gallery); hidden behind the editor, a tile catches up when
@@ -71,44 +69,19 @@ public class DrawingThumbnail : Viewbox
     /// <summary>The drawing is on the surface (the tile takes its paper from it)</summary>
     public event Action<Drawing> DrawingLoaded = delegate { };
 
-    // Drawings are loaded one at a time when the UI thread has nothing better to do: the
-    // gallery shows up at once and fills in, first tile first.
-    static readonly Queue<DrawingThumbnail> queue = new Queue<DrawingThumbnail>();
-    static bool isPumping;
+    // Load has been called: the drawing is on the surface, or it failed to load and the
+    // console says why (it is not tried again)
+    bool isLoadCalled;
 
-    void Enqueue()
-    {
-        if (isQueued || surface.Bounds.Width <= 0)
-        {
-            return;
-        }
+    /// <summary>
+    /// Not loaded yet, and the surface has its size: the drawing would be fitted to it. The
+    /// gallery decides when (<see cref="GalleryView"/>); until then the tile is its plate and
+    /// its caption.
+    /// </summary>
+    public bool CanLoad => !isLoadCalled && surface.Bounds.Width > 0;
 
-        isQueued = true;
-        queue.Enqueue(this);
-        Pump();
-    }
-
-    static void Pump()
-    {
-        if (isPumping || queue.Count == 0)
-        {
-            return;
-        }
-
-        isPumping = true;
-        Dispatcher.UIThread.Post(
-            () =>
-            {
-                isPumping = false;
-                if (queue.Count > 0)
-                {
-                    queue.Dequeue().Load();
-                }
-
-                Pump();
-            },
-            DispatcherPriority.Background);
-    }
+    /// <summary>See <see cref="GalleryItem.UsesEmoji"/></summary>
+    public bool UsesEmoji => item.UsesEmoji;
 
     #region Animation
 
@@ -219,8 +192,9 @@ public class DrawingThumbnail : Viewbox
 
     #endregion
 
-    void Load()
+    public void Load()
     {
+        isLoadCalled = true;
         try
         {
             var drawing = new Drawing(surface);

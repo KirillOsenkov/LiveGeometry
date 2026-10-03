@@ -50,6 +50,14 @@ internal sealed partial class Program
         var document = JSHost.GlobalThis.GetPropertyAsJSObject("document");
         var address = new Uri(new Uri(document.GetPropertyAsString("baseURI")), "fonts/Twemoji.Mozilla.ttf");
         using var client = new HttpClient();
-        return new MemoryStream(await client.GetByteArrayAsync(address));
+        using var request = new HttpRequestMessage(HttpMethod.Get, address);
+
+        // in one piece: a response streamed in chunks (the default since .NET 10) waits for a
+        // turn of the UI thread at every chunk, and while the gallery's tiles were loading the
+        // font came in seconds after the tiles that show emoji
+        request.Options.Set(new HttpRequestOptionsKey<bool>("WebAssemblyEnableStreamingResponse"), false);
+        using var response = await client.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+        return new MemoryStream(await response.Content.ReadAsByteArrayAsync());
     }
 }
