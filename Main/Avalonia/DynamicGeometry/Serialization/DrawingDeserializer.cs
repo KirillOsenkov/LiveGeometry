@@ -47,7 +47,7 @@ namespace DynamicGeometry
             {
                 // under the names the file gives them until all are in: a label's expression
                 // is compiled by those names as the label comes in
-                drawing.KeepsNamesAsRead = true;
+                drawing.IsReading = true;
                 try
                 {
                     var figures = ReadFigures(figuresNode, drawing);
@@ -58,8 +58,12 @@ namespace DynamicGeometry
                 }
                 finally
                 {
-                    drawing.KeepsNamesAsRead = false;
+                    drawing.IsReading = false;
                 }
+
+                // once, not as each figure came in (a point by coordinates checked the whole
+                // list as it was added, which made reading a drawing quadratic in its size)
+                drawing.Figures.CheckConsistencyInDebug();
             }
             ReadViewport(drawing, element);
             ReadScenes(drawing, element);

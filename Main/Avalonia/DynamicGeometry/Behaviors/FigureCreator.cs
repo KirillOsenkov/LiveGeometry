@@ -708,7 +708,7 @@ namespace DynamicGeometry
                 AddFiguresAndRestart();
             }
 
-            Drawing.Figures.CheckConsistency();
+            Drawing.Figures.CheckConsistencyInDebug();
         }
 
         /// <summary>

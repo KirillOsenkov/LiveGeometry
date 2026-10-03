@@ -246,7 +246,7 @@ namespace DynamicGeometry
         /// </summary>
         public static void SettleDefaultNames(Drawing drawing, IFigure figure)
         {
-            if (drawing == null || settlingDefaultNames || drawing.KeepsNamesAsRead)
+            if (drawing == null || settlingDefaultNames || drawing.IsReading)
             {
                 return;
             }
@@ -312,7 +312,7 @@ namespace DynamicGeometry
         /// </summary>
         public static void SettleDefaultNamesAfter(Drawing drawing, string freedName)
         {
-            if (drawing == null || settlingDefaultNames || drawing.KeepsNamesAsRead || string.IsNullOrEmpty(freedName))
+            if (drawing == null || settlingDefaultNames || drawing.IsReading || string.IsNullOrEmpty(freedName))
             {
                 return;
             }

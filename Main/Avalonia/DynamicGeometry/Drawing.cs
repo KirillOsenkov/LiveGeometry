@@ -320,9 +320,11 @@ namespace DynamicGeometry
         /// <summary>
         /// On while a file is being read: the figures keep the names the file gives them
         /// until all of them are in (expressions are compiled by those names as the figures
-        /// come in); <see cref="FigureBase.SettleDefaultNames(Drawing, IFigure)"/> waits.
+        /// come in); <see cref="FigureBase.SettleDefaultNames(Drawing, IFigure)"/> waits. And
+        /// the figure list is checked once all of it is in, not as each figure comes in
+        /// (<see cref="IFigureExtensions.RecalculateAllDependents"/>).
         /// </summary>
-        public bool KeepsNamesAsRead { get; set; }
+        public bool IsReading { get; set; }
 
         Rect? activeScene;
 

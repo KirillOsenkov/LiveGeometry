@@ -117,7 +117,11 @@ namespace DynamicGeometry
                 dependent.RecalculateAndUpdateVisual();
             }
 
-            figure.Drawing.Figures.CheckConsistency();
+            // a file being read is checked once all of it is in (DrawingDeserializer.ReadDrawing)
+            if (!figure.Drawing.IsReading)
+            {
+                figure.Drawing.Figures.CheckConsistencyInDebug();
+            }
         }
 
         public static void RecalculateAndUpdateVisual(this IFigure figure)
@@ -347,13 +351,19 @@ namespace DynamicGeometry
 
         public static void CheckConsistency(this IEnumerable<IFigure> list)
         {
+            // the figures of the list and of their parts, collected once: a search of the list
+            // for every dependency and dependent of every figure took time quadratic in the
+            // size of the drawing, and the check runs whenever what is built on a figure is
+            // recalculated (RecalculateAllDependents)
+            var figures = new HashSet<IFigure>(ReferenceEqualityComparer.Instance);
+            AddRecursively(figures, list);
             foreach (var figure in list)
             {
                 if (figure.Dependencies != null)
                 {
                     foreach (var dependency in figure.Dependencies)
                     {
-                        if (!list.ContainsRecursively(dependency))
+                        if (!figures.Contains(dependency))
                         {
                             throw new Exception(
                                 "Consistency check failed: dependency {0} of figure {1} expected in the FigureList"
@@ -371,7 +381,7 @@ namespace DynamicGeometry
                 {
                     foreach (var dependent in figure.Dependents)
                     {
-                        if (!list.ContainsRecursively(dependent))
+                        if (!figures.Contains(dependent))
                         {
                             throw new Exception(
                                 "Consistency check failed: dependent {0} of figure {1} expected in the FigureList"
@@ -385,6 +395,31 @@ namespace DynamicGeometry
                                 .Format(figure, dependent));
                         }
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// The app checks itself (after a click of a tool, a recalculation of what is built on a
+        /// figure, a file read) in a Debug build only. In Release (the browser) a failed check
+        /// could only throw after the fact, or refuse a file that opens otherwise; the tests
+        /// and the harness call <see cref="CheckConsistency"/> themselves.
+        /// </summary>
+        [System.Diagnostics.Conditional("DEBUG")]
+        public static void CheckConsistencyInDebug(this IEnumerable<IFigure> list)
+        {
+            list.CheckConsistency();
+        }
+
+        /// <summary>What <see cref="ContainsRecursively"/> finds: the figures and the parts of composites, down to the last</summary>
+        static void AddRecursively(HashSet<IFigure> figures, IEnumerable<IFigure> list)
+        {
+            foreach (var item in list)
+            {
+                figures.Add(item);
+                if (item is CompositeFigure composite)
+                {
+                    AddRecursively(figures, composite.Children);
                 }
             }
         }

@@ -136,7 +136,7 @@ namespace DynamicGeometry
             CreateTempPoint(coordinates);
             CreateTempResults();
             AdvertiseNextDependency();
-            Drawing.Figures.CheckConsistency();
+            Drawing.Figures.CheckConsistencyInDebug();
         }
 
         #region A slider for the radius
