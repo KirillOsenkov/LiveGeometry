@@ -19,6 +19,7 @@
 //   dotnet tools/winauto.cs -- text   <target> <literal text>
 //   dotnet tools/winauto.cs -- focus  <target>
 //   dotnet tools/winauto.cs -- place  <target> <x> <y> <w> <h>       (move/resize the window)
+//   dotnet tools/winauto.cs -- maximize <target>
 //
 // <target> is a process name (Geometry), pid:1234, hwnd:0x1A2B, or title:substring.
 // All x/y are physical pixels relative to the top-left of the window rectangle, i.e. exactly
@@ -34,7 +35,7 @@ SetProcessDpiAwarenessContext(new IntPtr(-4)); // per-monitor v2: physical pixel
 
 if (args.Length == 0)
 {
-    Console.WriteLine("usage: list | tree | menu | invoke | shot | click | drag | move | keys | text | focus | place  (see header comment)");
+    Console.WriteLine("usage: list | tree | menu | invoke | shot | click | drag | move | keys | text | focus | place | maximize  (see header comment)");
     return 1;
 }
 
@@ -56,6 +57,7 @@ try
         case "keys": { Focus(Resolve(args[1])); SendKeysSyntax(args[2]); break; }
         case "text": { Focus(Resolve(args[1])); foreach (var c in args[2]) Unicode(c); break; }
         case "place": { var h = Resolve(args[1]); ShowWindow(h, 9); MoveWindow(h, int.Parse(args[2]), int.Parse(args[3]), int.Parse(args[4]), int.Parse(args[5]), true); break; }
+        case "maximize": ShowWindow(Resolve(args[1]), 3 /*SW_MAXIMIZE*/); break;
         default: Console.WriteLine("unknown command " + args[0]); return 1;
     }
 }

@@ -10,7 +10,8 @@ namespace LiveGeometry;
 
 /// <summary>
 /// What the drawings of the gallery have in common: a caption - a heading and an explanation,
-/// two labels named "Title" and "Description". The caption is pinned to the screen
+/// two labels named "Title" and "Description", and maybe a third under them, "Hint", hidden
+/// until a show/hide box brings it up (its place is kept). The caption is pinned to the screen
 /// (<see cref="Label.Pin"/>), on a plate, and wraps to its column, so zooming and panning
 /// leave it alone; <see cref="Fit"/> decides where it goes and how much room the figure gets.
 /// It can be dragged like any pinned label: on a phone, where a long explanation runs off the
@@ -20,6 +21,7 @@ public static class GalleryDrawing
 {
     public const string TitleName = "Title";
     public const string DescriptionName = "Description";
+    public const string HintName = "Hint";
 
     /// <summary>The caption beside the figure is a column this wide (wider only for a heading that needs it)</summary>
     public const double CaptionWidth = 400;
@@ -38,9 +40,10 @@ public static class GalleryDrawing
 
     // the text never squeezes the figure below this share of the canvas: of its width beside
     // the caption, of its height above it - a third there, or on a phone the last line of
-    // an explanation (Circumscribed Circle's question) was cut off at the bottom edge
+    // an explanation (Circumscribed Circle's question) was cut off at the bottom edge. A
+    // drawing may ask for more under the caption (GalleryItem.StackedFigureShare)
     const double figureShare = 0.4;
-    const double stackedFigureShare = 1.0 / 3;
+    public const double StackedFigureShare = 1.0 / 3;
 
     /// <summary>
     /// For a thumbnail: text pinned to the screen is unreadable at that size and the geometry
@@ -74,7 +77,9 @@ public static class GalleryDrawing
     /// canvas and the text runs off the bottom edge.
     /// </summary>
     /// <param name="plane">See <see cref="GetPlane"/></param>
-    public static void Fit(Drawing drawing, Rect? plane)
+    /// <param name="stackedFigureShare">With the caption under the figure (a phone), the figure
+    /// keeps at least this share of the height: see <see cref="GalleryItem.StackedFigureShare"/></param>
+    public static void Fit(Drawing drawing, Rect? plane, double stackedFigureShare = StackedFigureShare)
     {
         var coordinateSystem = drawing.CoordinateSystem;
         double canvasWidth = drawing.Canvas.Bounds.Width;
@@ -94,6 +99,9 @@ public static class GalleryDrawing
             return;
         }
 
+        var hint = drawing.Figures[HintName] as Label;
+        bool IsCaption(IFigure figure) => figure == title || figure == description || figure == hint;
+
         // a drawing with scenes shows the scene, not its content (ground goes on forever)
         Rect figure = default;
         if (!hasScene)
@@ -108,7 +116,7 @@ public static class GalleryDrawing
                 .ToHashSet();
             bool hasFigure = coordinateSystem.TryGetContentBounds(
                 out figure,
-                include: f => f != title && f != description,
+                include: f => !IsCaption(f),
                 includeHidden: revealable.Contains);
             if (plane != null)
             {
@@ -138,16 +146,24 @@ public static class GalleryDrawing
             }
         }
 
+        // the hint is set off as another paragraph of the explanation would be, by about a line
+        double hintGap = hint != null ? lineGapPixels + hint.TextBlock.FontSize : 0;
         Rect room;
         if (isWide)
         {
-            SetCaption(title, description, LabelPin.TopRight, column);
+            SetCaption(LabelPin.TopRight, column, title, description, hint);
             var titleSize = title.MeasureSize();
             var descriptionSize = description.MeasureSize();
-            double textHeight = titleSize.Height + lineGapPixels + descriptionSize.Height;
-            double top = System.Math.Max(textMarginPixels, (canvasHeight - textHeight) / 2);
+            double hintHeight = hint != null ? hintGap + hint.MeasureSize().Height : 0;
+            double textHeight = titleSize.Height + lineGapPixels + descriptionSize.Height + hintHeight;
+            double top =System.Math.Max(textMarginPixels, (canvasHeight - textHeight) / 2);
             title.PinOffset = new Point(textMarginPixels, top);
             description.PinOffset = new Point(textMarginPixels, top + titleSize.Height + lineGapPixels);
+            if (hint != null)
+            {
+                hint.PinOffset = new Point(textMarginPixels, top + titleSize.Height + lineGapPixels + descriptionSize.Height + hintGap);
+            }
+
             room = new Rect(
                 margin,
                 margin,
@@ -156,16 +172,24 @@ public static class GalleryDrawing
         }
         else
         {
-            SetCaption(title, description, LabelPin.BottomLeft, canvasWidth - 2 * textMarginPixels);
+            SetCaption(LabelPin.BottomLeft, canvasWidth - 2 * textMarginPixels, title, description, hint);
             var titleSize = title.MeasureSize();
             var descriptionSize = description.MeasureSize();
-            double textHeight = titleSize.Height + lineGapPixels + descriptionSize.Height;
+            double hintHeight = hint != null ? hintGap + hint.MeasureSize().Height : 0;
+            double textHeight = titleSize.Height + lineGapPixels + descriptionSize.Height + hintHeight;
             double roomHeight = System.Math.Max(
                 canvasHeight - margin - gapPixels - textHeight - textMarginPixels,
                 stackedFigureShare * canvasHeight);
             double textTop = margin + roomHeight + gapPixels;
+
+            // pinned at the bottom: an offset is from there to the label's lower edge
             title.PinOffset = new Point(textMarginPixels, canvasHeight - textTop - titleSize.Height);
-            description.PinOffset = new Point(textMarginPixels, canvasHeight - textTop - textHeight);
+            description.PinOffset = new Point(textMarginPixels, canvasHeight - textTop - titleSize.Height - lineGapPixels - descriptionSize.Height);
+            if (hint != null)
+            {
+                hint.PinOffset = new Point(textMarginPixels, canvasHeight - textTop - textHeight);
+            }
+
             room = new Rect(margin, margin, canvasWidth - 2 * margin, roomHeight);
         }
 
@@ -178,7 +202,7 @@ public static class GalleryDrawing
         else
         {
             // a big point (an emoji) would stick out of the room by half its size
-            room = room.Deflate(coordinateSystem.GetPointReach(include: f => f != title && f != description));
+            room = room.Deflate(coordinateSystem.GetPointReach(include: f => !IsCaption(f)));
         }
 
         // the zoom that fills the room; a figure with no size keeps the zoom it has
@@ -194,14 +218,14 @@ public static class GalleryDrawing
         coordinateSystem.SetView(figure.Center, CoordinateSystem.ClampUnitLength(unitLength), room.Center);
     }
 
-    static void SetCaption(Label title, Label description, LabelPin pin, double width)
+    static void SetCaption(LabelPin pin, double width, params Label[] labels)
     {
-        title.Pin = pin;
-        description.Pin = pin;
-        title.WrapWidth = width;
-        description.WrapWidth = width;
-        title.Backdrop = true;
-        description.Backdrop = true;
+        foreach (var label in labels.Where(label => label != null))
+        {
+            label.Pin = pin;
+            label.WrapWidth = width;
+            label.Backdrop = true;
+        }
     }
 
     /// <summary>

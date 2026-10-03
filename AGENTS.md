@@ -1596,7 +1596,12 @@ buttons and checkboxes, 3D, custom tools.
   canvas's event: the coordinate system's own resize handler shifts the origin and has to run
   first. A file with a caption opened from disk is fitted the same way. Explanations have no
   hand line breaks (a blank line separates paragraphs). On an iPhone in portrait (canvas about
-  390x565) the long explanations run off the bottom.
+  390x565) the long explanations run off the bottom. A third label, `Hint`, hidden and
+  listed by a show/hide box, goes under the explanation a paragraph down, its room kept
+  while it is hidden (`LabelBase.MeasureSize` measures a hidden label as shown: Avalonia
+  measures it as nothing). Under the caption the figure keeps at least a third of the
+  height; a catalog item can ask for more (`stackedFigureShare`, Treasure Island: its
+  portrait scene crops the island at the sides on a phone).
 - **Tiles are live drawings**, not bitmaps (`DrawingThumbnail`): no Behavior, text hidden;
   hovering makes the draggable points drift. Loaded a batch per idle tick and only as they come
   near the view (`GalleryView.NextTileToLoad`: those in view from the top, then half a screen
@@ -1799,12 +1804,16 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
   window's own rendering, or what is on the screen there - the only way to see the title bar), `click <t> x y [right|double]`,
   `move <t> x y` (hover, for click previews and `cursor`),
   `drag <t> x1 y1 x2 y2 [steps] [--shift] [--alt]`, `wheel <t> x y <notches>`, `keys <t> "^s"`, `text`, `focus`,
-  `cursor`, `place <t> x y w h`. Target = process name | `pid:N` | `hwnd:0x..` | `title:substr`.
+  `cursor`, `place <t> x y w h`, `maximize <t>`. Target = process name | `pid:N` | `hwnd:0x..` | `title:substr`.
   - The VB6 app starts maximized: `place <t> 100 100 1500 1000` first. The Avalonia desktop app
     remembers its window (`LiveGeometry.Desktop/WindowPlacementPersistence.cs`, the
     `WindowPlacement` line of `Settings.txt` in the user's local app data, next to the theme
-    choice). It is left at 100,100 1700x1100 for
-    testing - `place` is only needed again if someone resized it. Close test instances with
+    choice). It is left maximized for testing (`winauto maximize <t>` once, then close it),
+    since a full screen and an iPhone in portrait (below) are the two layouts that matter: check
+    a change at both, not in an in-between window. The screen is 3840x2160 at 200% scaling, so
+    a full-screen `shot` (about 3866x2064) comes back scaled down: multiply what is read off it
+    by the factor the image reports before clicking, or `shot --region` the part to look at.
+    Leave it maximized after a phone check. Close test instances with
     `(Get-Process -Id N).CloseMainWindow()`: that goes through the normal close path, which is
     what saves the placement (and it is more reliable than Alt+F4).
     `LiveGeometry.Desktop.exe --arrange` opens the gallery with its tiles draggable; every drop
@@ -1830,9 +1839,8 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
     right-click point + the item's place in the menu shot, with `hwnd:` of the main window
     (by `pid:` a click can land on the main window's system menu).
   - After a figure with a length is made (segment, square, circle...) the length panel opens
-    at the right of the canvas (about x 1270-1670, y 405-770 at 1700x1100) and swallows clicks
-    there; the next click on the canvas closes it. Take a shot after each construction, or keep
-    test clicks left of x 1250.
+    at the right of the canvas and swallows clicks there; the next click on the canvas closes
+    it. Take a shot after each construction, or keep test clicks away from the right edge.
   - `winauto keys` sends real virtual keys for lowercase ASCII letters/digits (needed for the
     single-letter shortcuts); other characters go as Unicode packets, which KeyDown-based
     shortcuts never see.

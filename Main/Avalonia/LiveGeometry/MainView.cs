@@ -697,8 +697,8 @@ public partial class MainView : UserControl
         // a reader drags the figure, not the text: on a phone a thumb on the caption scrolls
         control.Drawing.FixLabels();
         var drawing = control.Drawing;
-        drawing.FitToWindow = () => GalleryDrawing.Fit(drawing, item.Plane);
-        GalleryDrawing.Fit(drawing, item.Plane);
+        drawing.FitToWindow = () => GalleryDrawing.Fit(drawing, item.Plane, item.StackedFigureShare);
+        GalleryDrawing.Fit(drawing, item.Plane, item.StackedFigureShare);
         KeepFitted(drawing);
         UpdateTour();
         Publish(item.Path, item.Title + " - " + AppTitle, push);
@@ -730,7 +730,7 @@ public partial class MainView : UserControl
         var drawing = (Drawing)sender;
         if (CurrentSample != null && drawing == DrawingHost.CurrentDrawing && !drawing.ActionManager.CanUndo)
         {
-            HandleExceptions(() => GalleryDrawing.Fit(drawing, CurrentSample.Plane));
+            HandleExceptions(() => GalleryDrawing.Fit(drawing, CurrentSample.Plane, CurrentSample.StackedFigureShare));
         }
     }
 

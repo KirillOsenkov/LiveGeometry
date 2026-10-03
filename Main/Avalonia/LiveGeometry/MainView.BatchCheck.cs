@@ -283,7 +283,7 @@ public partial class MainView
     /// </summary>
     static void KeepCaptionLayout(XDocument original, XDocument rewritten)
     {
-        foreach (var name in new[] { GalleryDrawing.TitleName, GalleryDrawing.DescriptionName })
+        foreach (var name in new[] { GalleryDrawing.TitleName, GalleryDrawing.DescriptionName, GalleryDrawing.HintName })
         {
             var originalLabel = FindLabel(original, name);
             var rewrittenLabel = FindLabel(rewritten, name);

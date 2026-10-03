@@ -12,12 +12,21 @@ namespace LiveGeometry;
 /// </summary>
 public class GalleryItem
 {
-    public GalleryItem(string slug, string title, string fileName)
+    public GalleryItem(string slug, string title, string fileName, double stackedFigureShare)
     {
         Slug = slug;
         Title = title;
         FileName = fileName;
+        StackedFigureShare = stackedFigureShare;
     }
+
+    /// <summary>
+    /// With the caption under the figure (a phone in portrait), the figure keeps at least this
+    /// share of the canvas's height, and what doesn't fit of the caption runs off the bottom
+    /// (it is dragged up to be read). More than the usual third for a picture that is the
+    /// point of the drawing.
+    /// </summary>
+    public double StackedFigureShare { get; }
 
     /// <summary>The name in the url: /gallery/morley</summary>
     public string Slug { get; }
@@ -75,9 +84,9 @@ public static class GalleryCatalog
     public static IReadOnlyList<GalleryItem> Items { get; } = new[]
     {
         Item("continuous-deformations", "Continuous Deformations"),
-        Item("magic-tree", "Magic Tree"),
+        Item("magic-tree", "Magic Tree", stackedFigureShare: 0.5),
         Item("bubbles", "Bubbles"),
-        Item("treasure-island", "Treasure Island"),
+        Item("treasure-island", "Treasure Island", stackedFigureShare: 0.5),
         Item("pythagoras", "Pythagorean Theorem"),
         Item("circumscribed-circle", "Circumscribed Circle"),
         Item("aperiodic-monotile", "Aperiodic Monotile"),
@@ -165,10 +174,15 @@ public static class GalleryCatalog
     }
 
     /// <param name="fileName">Without extension; by default the slug in PascalCase</param>
-    static GalleryItem Item(string slug, string title, string fileName = null)
+    /// <param name="stackedFigureShare">See <see cref="GalleryItem.StackedFigureShare"/></param>
+    static GalleryItem Item(
+        string slug,
+        string title,
+        string fileName = null,
+        double stackedFigureShare = GalleryDrawing.StackedFigureShare)
     {
         fileName ??= string.Concat(slug.Split('-').Select(word => char.ToUpperInvariant(word[0]) + word.Substring(1)));
-        return new GalleryItem(slug, title, fileName + ".lgf");
+        return new GalleryItem(slug, title, fileName + ".lgf", stackedFigureShare);
     }
 
     public static GalleryItem FindBySlug(string slug)

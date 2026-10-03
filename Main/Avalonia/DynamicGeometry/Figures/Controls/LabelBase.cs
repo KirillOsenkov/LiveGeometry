@@ -40,12 +40,18 @@ namespace DynamicGeometry
         /// right after the text changed or the label was created. The shape is a Border around
         /// the TextBlock, and its own measure stays valid when the text or the width inside it
         /// changed, so it is invalidated first: without that it answered with the old size.
+        /// A hidden label is measured as it will be when shown (Avalonia measures a hidden
+        /// control as nothing): a gallery caption leaves room for the hint a box brings up.
         /// </summary>
         public Size MeasureSize()
         {
+            bool wasVisible = Shape.IsVisible;
+            Shape.IsVisible = true;
             Shape.InvalidateMeasure();
             Shape.Measure(Size.Infinity);
-            return Shape.DesiredSize;
+            var size = Shape.DesiredSize;
+            Shape.IsVisible = wasVisible;
+            return size;
         }
 
         public override void ApplyStyle()

@@ -9,6 +9,7 @@
     </Background>
   </Viewport>
   <Scene Left="-2.25" Top="1.375" Right="2" Bottom="-1.5" />
+  <Scene Left="-1.5" Top="1.25" Right="1.5" Bottom="-1.5" />
   <Styles>
     <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF1F4E8C" />

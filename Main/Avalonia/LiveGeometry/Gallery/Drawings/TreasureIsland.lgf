@@ -9,6 +9,7 @@
     </Background>
   </Viewport>
   <Scene Left="-2.375" Top="1.75" Right="2.375" Bottom="-1.5" />
+  <Scene Left="-1.25" Top="1.375" Right="1.25" Bottom="-1.25" />
   <Styles>
     <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF0B4F6C" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF0B4F6C" />
@@ -342,10 +343,12 @@
     <FreePoint Name="Shell" Style="Spiral shell" X="1.45" Y="0.25" />
     <FreePoint Name="Parrot" Style="Parrot" X="-0.45" Y="0.2" />
     <FreePoint Name="Coconut" Style="Coconut" X="-0.98" Y="-0.38" />
-    <FreePoint Name="Fish2" Style="Fish" X="-0.95" Y="-1.3" />
-    <ShowHideControl Name="Hint" Style="GalleryText" Show="false" Text="Hint" X="-2.25" Y="-1.3">
+    <FreePoint Name="Fish2" Style="Fish" X="-0.6" Y="-1.3" />
+    <Label Name="Hint" Visible="false" Style="GalleryText" Text="Move Skull Rock one step. Each flag moves one step too, but turned a quarter turn: one flag to the left, the other to the right. Those are opposite directions, so the flags move apart or together evenly, and the point halfway between them stays put. Try it: put Skull Rock halfway between the palms and follow the map." Pin="TopRight" OffsetX="16" OffsetY="300" WrapWidth="400" Backdrop="true" />
+    <ShowHideControl Name="Hint box" Style="GalleryText" Show="false" Text="Hint" X="-1.45" Y="-1">
       <Dependency Name="Secret" />
       <Dependency Name="Corner" />
+      <Dependency Name="Hint" />
     </ShowHideControl>
     <Label Name="Title" Style="GalleryTitle" Text="Treasure Island" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
     <Label Name="Description" Style="GalleryText" Text="A pirate's map says: Start at Skull Rock. Walk to the big palm, turn right and walk as far again, and plant a flag. Go back to Skull Rock, walk to the little palm, turn left and walk as far again, and plant a flag. The treasure is halfway between the flags.\n\nBut Skull Rock washed away long ago! Drag it anywhere. Where is the treasure now? Check &quot;Hint&quot; to see why." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
