@@ -24,7 +24,7 @@ public static class NameDisplay
 
         if (name.IndexOf('_') < 0)
         {
-            return FormatTrailingDigits(name);
+            return FormatPointNames(name) ?? FormatTrailingDigits(name);
         }
 
         var sb = new StringBuilder();
@@ -78,6 +78,45 @@ public static class NameDisplay
             }
 
             i = next;
+        }
+
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// G1H1IJ1, a figure named after its points, as G₁H₁IJ₁: the index of every point, not
+    /// only the last. Null when the name is not capital letters, each with its primes and
+    /// digits.
+    /// </summary>
+    static string FormatPointNames(string name)
+    {
+        var sb = new StringBuilder(name.Length);
+        int i = 0;
+        while (i < name.Length)
+        {
+            if (!char.IsUpper(name[i]))
+            {
+                return null;
+            }
+
+            sb.Append(name[i]);
+            i++;
+            while (i < name.Length && name[i] == '\'')
+            {
+                sb.Append(name[i]);
+                i++;
+            }
+
+            int start = i;
+            while (i < name.Length && char.IsDigit(name[i]))
+            {
+                i++;
+            }
+
+            if (i > start)
+            {
+                sb.Append(ToSubscript(name.Substring(start, i - start)));
+            }
         }
 
         return sb.ToString();

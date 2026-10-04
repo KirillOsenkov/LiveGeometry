@@ -474,7 +474,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **A name's index is a subscript on screen** (`Figures/NameDisplay.cs`): `A_1` draws as A₁
   on the canvas (point labels, slider captions) and in `Title` (the grid's header, the
   Figure List), as GeoGebra and TeX read an underscore; the trailing digits of a name
-  without one (`A1`, our own default names after Z, `n1`, `Circle1`) draw as a subscript too.
+  without one (`A1`, our own default names after Z, `n1`, `Circle1`) draw as a subscript too,
+  and so do those of every point in a name of points run together (`G1H1IJ1` is G₁H₁IJ₁).
   The name itself stays as typed everywhere else - files, expressions (`A_1.X` parses, `_` is
   a letter to the scanner), the Name box. What follows an underscore is the run of letters
   and digits, or anything in braces; Unicode has the ten subscript digits and a few letters
