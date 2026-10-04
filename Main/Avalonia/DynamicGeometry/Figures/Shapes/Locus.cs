@@ -177,13 +177,22 @@ namespace DynamicGeometry
         /// <summary>In sizes of the window: a traced point further than this from it is taken for a gap, not drawn</summary>
         const double FarReach = 20;
 
-        /// <summary>A sample, and whether the piece from it to the next one is done (needs no more samples between)</summary>
-        class Sample
+        /// <summary>
+        /// A sample, and whether the piece from it to the next one is done (needs no more
+        /// samples between). A struct: ten loci of a drawing take a few thousand of them at
+        /// every move of a drag, and as objects they kept the garbage collector busy.
+        /// </summary>
+        struct Sample
         {
             public double Parameter;
             public Point Point;
             public bool Done;
         }
+
+        // the samples of a round of halving and of the next, kept from one drawing of the
+        // curve to the next rather than made anew at each round of each move of a drag
+        readonly List<Sample> roundSamples = new List<Sample>();
+        readonly List<Sample> nextRoundSamples = new List<Sample>();
 
         /// <summary>
         /// <see cref="InitialSteps"/> even steps, then, round after round, every step halved
@@ -223,34 +232,30 @@ namespace DynamicGeometry
                 };
             }
 
-            var parameters = new List<double>();
+            var samples = roundSamples;
+            var next = nextRoundSamples;
+            samples.Clear();
             GetOpenEnds(sliding.LinearFigure, out bool openLow, out bool openHigh);
             double span = domain.Item2 - domain.Item1;
             if (openLow)
             {
                 for (int i = OpenEndSteps - 1; i >= 0; i--)
                 {
-                    parameters.Add(domain.Item1 - span * System.Math.Pow(2, i));
+                    samples.Add(Take(domain.Item1 - span * System.Math.Pow(2, i)));
                 }
             }
 
             for (int i = 0; i <= InitialSteps; i++)
             {
-                parameters.Add(i == InitialSteps ? domain.Item2 : domain.Item1 + span * i / InitialSteps);
+                samples.Add(Take(i == InitialSteps ? domain.Item2 : domain.Item1 + span * i / InitialSteps));
             }
 
             if (openHigh)
             {
                 for (int i = 0; i < OpenEndSteps; i++)
                 {
-                    parameters.Add(domain.Item2 + span * System.Math.Pow(2, i));
+                    samples.Add(Take(domain.Item2 + span * System.Math.Pow(2, i)));
                 }
-            }
-
-            var samples = new List<Sample>(parameters.Count);
-            foreach (var parameter in parameters)
-            {
-                samples.Add(Take(parameter));
             }
 
             // a round halves every piece that isn't done
@@ -260,13 +265,13 @@ namespace DynamicGeometry
             {
                 round++;
                 halved = false;
-                var next = new List<Sample>(samples.Count * 2);
+                next.Clear();
                 for (int i = 0; i < samples.Count; i++)
                 {
                     var from = samples[i];
-                    next.Add(from);
                     if (from.Done || i == samples.Count - 1 || samplesLeft <= 0)
                     {
+                        next.Add(from);
                         continue;
                     }
 
@@ -277,6 +282,7 @@ namespace DynamicGeometry
                     {
                         // nothing between two gaps, as far as the samples tell
                         from.Done = true;
+                        next.Add(from);
                         continue;
                     }
 
@@ -285,20 +291,23 @@ namespace DynamicGeometry
                         && DistanceToSegment(middle.Point, from.Point, to.Point) * unitLength <= Tolerance)
                     {
                         from.Done = true;
+                        next.Add(from);
                         continue;
                     }
 
+                    next.Add(from);
                     next.Add(middle);
                     halved = true;
                 }
 
-                samples = next;
+                (samples, next) = (next, samples);
             }
 
             // Pieces still far apart after every round of halving are jumps (through
             // infinity, across a pole): not joined. Unless the samples ran out first - a
             // piece is long then because nobody looked into it.
-            bool ranOut = samplesLeft <= 0 && halved;            for (int i = 0; i < samples.Count; i++)
+            bool ranOut = samplesLeft <= 0 && halved;
+            for (int i = 0; i < samples.Count; i++)
             {
                 var sample = samples[i];
                 sampleParameters.Add(sample.Parameter);
