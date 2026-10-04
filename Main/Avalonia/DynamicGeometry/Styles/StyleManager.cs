@@ -419,10 +419,40 @@ namespace DynamicGeometry
         }
 
         /// <summary>Whether the style is what a new drawing has under that name, unchanged: a file needn't carry it</summary>
-        public static bool IsUnchangedDefault(IFigureStyle style, IList<IFigureStyle> defaults)
+        public static bool IsUnchangedDefault(IFigureStyle style)
         {
-            var original = defaults.FirstOrDefault(candidate => candidate.Name == style.Name);
-            return original != null && original.GetType() == style.GetType() && original.GetSignature() == style.GetSignature();
+            return NewDrawingDefaults.TryGetValue(style.Name, out var original)
+                && original.Style.GetType() == style.GetType()
+                && original.Signature == style.GetSignature();
+        }
+
+        /// <summary>The default style of that name as a new drawing has it, or null; only to look at</summary>
+        public static IFigureStyle GetNewDrawingDefault(string name)
+        {
+            return NewDrawingDefaults.TryGetValue(name, out var original) ? original.Style : null;
+        }
+
+        static Dictionary<string, (IFigureStyle Style, string Signature)> newDrawingDefaults;
+        static int newDrawingDefaultsVersion;
+
+        /// <summary>
+        /// The default styles of a new drawing by name, with their signatures, which every
+        /// save compares the drawing's styles with: made again only when a theme color
+        /// changes (<see cref="AppTheme.Version"/>), since the defaults are made from them.
+        /// Made for every save, they were most of what a save cost.
+        /// </summary>
+        static Dictionary<string, (IFigureStyle Style, string Signature)> NewDrawingDefaults
+        {
+            get
+            {
+                if (newDrawingDefaults == null || newDrawingDefaultsVersion != AppTheme.Version)
+                {
+                    newDrawingDefaults = CreateDefaultStyles().ToDictionary(style => style.Name, style => (style, style.GetSignature()));
+                    newDrawingDefaultsVersion = AppTheme.Version;
+                }
+
+                return newDrawingDefaults;
+            }
         }
 
         public void SetStyleIfAvailable(IFigure figure, string styleName)

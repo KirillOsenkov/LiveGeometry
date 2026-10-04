@@ -133,6 +133,13 @@ namespace DynamicGeometry
     {
         protected BindingFlags? BindingFlags { get; set; }
 
+        // The properties a strategy finds depend on the type alone (GetProperties and
+        // FilterProperties look at the type and attributes, never at the object): found once
+        // per type, not on every look at an object - a save compares the values of every
+        // style of the drawing
+        static readonly System.Collections.Concurrent.ConcurrentDictionary<(Type Strategy, BindingFlags? Flags, Type Type), PropertyInfo[]> propertyCache =
+            new System.Collections.Concurrent.ConcurrentDictionary<(Type Strategy, BindingFlags? Flags, Type Type), PropertyInfo[]>();
+
         protected virtual IEnumerable<PropertyInfo> GetProperties(object editableObject)
         {
             var type = editableObject.GetType();
@@ -172,8 +179,9 @@ namespace DynamicGeometry
             {
                 return provider.GetProperties();
             }
-            var properties = GetProperties(editableObject);
-            properties = FilterProperties(properties);
+            var properties = propertyCache.GetOrAdd(
+                (GetType(), BindingFlags, editableObject.GetType()),
+                key => FilterProperties(GetProperties(editableObject)).ToArray());
             var result = CreateValueProviders(properties, editableObject);
             //if (editableObject is IEnumerable)
             //{

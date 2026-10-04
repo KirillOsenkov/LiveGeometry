@@ -33,7 +33,15 @@ public partial class MainView
 
     string keptDrawingName;
 
-    bool keepScheduled;
+    /// <summary>How long the history must stay as it is before the drawing is kept</summary>
+    static readonly TimeSpan KeepDelay = TimeSpan.FromSeconds(1);
+
+    /// <summary>The user's drawing changed since it was last kept</summary>
+    bool hasUnkeptChanges;
+
+    // what is in the store now, as last written or read: the same text again is not written
+    string storedDrawingText;
+    string storedDrawingName;
 
     void InitializeKeptDrawing()
     {
@@ -44,7 +52,18 @@ public partial class MainView
 
         keptDrawingText = SettingsStore.Current.Get(KeptDrawingKey);
         keptDrawingName = SettingsStore.Current.Get(KeptDrawingNameKey);
-        SettingsStore.Leaving += () => HandleExceptions(KeepOwnDrawing);
+        storedDrawingText = keptDrawingText;
+        storedDrawingName = keptDrawingName;
+
+        SettingsStore.Leaving += () =>
+        {
+            // also with nothing changed in the history while the drawing is on screen: the
+            // view (a zoom is no undo step); parked, nothing of it can have changed
+            if (hasUnkeptChanges || EditsUserDrawing)
+            {
+                HandleExceptions(KeepOwnDrawing);
+            }
+        };
     }
 
     /// <summary>The drawings of the editor are kept after every undo step: hooked when the editor is made (<see cref="CreateEditor"/>)</summary>
@@ -66,25 +85,48 @@ public partial class MainView
 
     bool HasKeptDrawing => keptDrawingText != null;
 
+    /// <summary>Whether the editor shows the user's own drawing: not a drawing of the gallery, nor the blank page in front of a parked one</summary>
+    bool EditsUserDrawing => drawingHost?.CurrentDrawing is { } drawing && drawing == UserDrawing;
+
     void ActionManager_KeepDrawing(object sender, EventArgs e)
     {
-        KeepOwnDrawingSoon();
+        // only the editor's drawing is listened to; edits of a drawing of the gallery are
+        // dropped, and the drawing parked behind it doesn't change
+        if (EditsUserDrawing)
+        {
+            KeepOwnDrawingSoon();
+        }
     }
 
-    /// <summary>Once the dispatcher is idle: an undo step may raise several changes of the history</summary>
+    /// <summary>
+    /// After a pause in the changes (<see cref="KeepDelay"/>, from the last one): an undo
+    /// step may raise several changes of the history, and a drag of a figure or of the view
+    /// changes it at every move (its moves merge into one step). Kept at the next idle
+    /// moment, the drawing was saved at every move, and in the browser the drag went a few
+    /// frames a second. The save itself is one job of the UI thread (<see cref="KeepOwnDrawing"/>):
+    /// the throttle's timer only posts it.
+    /// </summary>
     void KeepOwnDrawingSoon()
     {
-        if (!KeepsOwnDrawing || keepScheduled)
+        if (!KeepsOwnDrawing)
         {
             return;
         }
 
-        keepScheduled = true;
-        Dispatcher.UIThread.Post(() =>
+        hasUnkeptChanges = true;
+        Throttle.Schedule(
+            this,
+            view => Dispatcher.UIThread.Post(view.KeepChangedDrawing),
+            KeepDelay,
+            ThrottleOptions.PostponeUntilNoNewRequests);
+    }
+
+    void KeepChangedDrawing()
+    {
+        if (hasUnkeptChanges)
         {
-            keepScheduled = false;
             HandleExceptions(KeepOwnDrawing);
-        }, DispatcherPriority.Background);
+        }
     }
 
     /// <summary>
@@ -115,8 +157,28 @@ public partial class MainView
         }
 
         bool isEmpty = drawing == null || !drawing.Figures.Any(figure => !(figure is CartesianGrid));
-        SettingsStore.Current.Set(KeptDrawingKey, isEmpty ? null : drawing.SaveAsText());
-        SettingsStore.Current.Set(KeptDrawingNameKey, isEmpty ? null : OwnFileName);
+        StoreDrawing(isEmpty ? null : drawing.SaveAsText(), isEmpty ? null : OwnFileName);
+        hasUnkeptChanges = false;
+    }
+
+    /// <summary>
+    /// Into the store, unless it holds that already: the browser's local storage takes the
+    /// whole text through JavaScript on every write, and the page hidden with nothing
+    /// changed, or a drag that ends where it began, would write it all again
+    /// </summary>
+    void StoreDrawing(string text, string name)
+    {
+        if (text != storedDrawingText)
+        {
+            SettingsStore.Current.Set(KeptDrawingKey, text);
+            storedDrawingText = text;
+        }
+
+        if (name != storedDrawingName)
+        {
+            SettingsStore.Current.Set(KeptDrawingNameKey, name);
+            storedDrawingName = name;
+        }
     }
 
     /// <summary>The user's drawing is another one now: the kept one is replaced by it</summary>
@@ -140,8 +202,7 @@ public partial class MainView
         var xml = DrawingControl.ParseDrawing(text, out _);
         if (xml == null)
         {
-            SettingsStore.Current.Set(KeptDrawingKey, null);
-            SettingsStore.Current.Set(KeptDrawingNameKey, null);
+            StoreDrawing(text: null, name: null);
             return false;
         }
 

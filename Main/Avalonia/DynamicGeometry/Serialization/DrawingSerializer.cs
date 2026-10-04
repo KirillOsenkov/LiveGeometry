@@ -191,17 +191,16 @@ namespace DynamicGeometry
         /// </summary>
         public virtual void WriteStyles(Drawing drawing, ISet<string> usedStyles, XmlWriter writer)
         {
-            var defaults = StyleManager.CreateDefaultStyles();
             writer.WriteStartElement("Styles");
             foreach (var style in drawing.StyleManager.GetAllStyles())
             {
-                bool isDefaultName = defaults.Any(candidate => candidate.Name == style.Name);
-                bool write = isDefaultName
-                    ? !StyleManager.IsUnchangedDefault(style, defaults)
+                var original = StyleManager.GetNewDrawingDefault(style.Name);
+                bool write = original != null
+                    ? !StyleManager.IsUnchangedDefault(style)
                     : usedStyles.Contains(style.Name);
                 if (write)
                 {
-                    WriteStyle(style, writer, defaults.FirstOrDefault(candidate => candidate.Name == style.Name));
+                    WriteStyle(style, writer, original);
                 }
             }
 
@@ -322,12 +321,11 @@ namespace DynamicGeometry
             }
 
             var usedStyles = new HashSet<string>(figureList.Descendants().Attributes("Style").Select(a => a.Value));
-            var defaults = StyleManager.CreateDefaultStyles();
             writer.WriteStartElement("Drawing");
             writer.WriteStartElement("Styles");
             foreach (var style in drawing.StyleManager.GetAllStyles())
             {
-                if (usedStyles.Contains(style.Name) && !defaults.Any(candidate => candidate.Name == style.Name))
+                if (usedStyles.Contains(style.Name) && StyleManager.GetNewDrawingDefault(style.Name) == null)
                 {
                     WriteStyle(style, writer);
                 }

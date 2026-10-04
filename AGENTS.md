@@ -1334,7 +1334,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `SettingsStore.Leaving` (the window closing; the page hidden, from `main.js`'s
   `visibilitychange`). In the browser only (`MainView.KeepsOwnDrawing`), the user's own
   drawing is kept too (`MainView.KeptDrawing.cs`: keys `Drawing`, `DrawingName`): saved
-  after every undo step and on Leaving, never during a construction, removed when empty;
+  a second after the last change of the undo history (`Throttle`, which only posts the
+  save to the UI thread) and on Leaving, never during a construction, removed when empty,
+  and not written again when the text is what the store holds (saved at the next idle
+  moment, it was saved at every move of a figure's drag, whose moves are merged steps, and
+  the drag went a few frames a second);
   read at startup but loaded only when the user goes to it (/drawing, My Drawing). Until
   then it is their drawing and nothing is written over it; New or an opened file replaces it.
 - **Ribbon look**: `ButtonGrid` draws the
@@ -1788,7 +1792,11 @@ a segment or ray, and sides of a polygon that don't cross - legitimately absent.
 - The browser runs .NET interpreted (no AOT): the same code took 3-4 times as long there as
   in the Debug desktop build (2026-10-03, reading the gallery's drawings), and a loop that
   costs nothing on the desktop can take a second there. Measure in the browser before
-  deciding what is slow.
+  deciding what is slow. Reflection is the worst of it: `GetAttribute` (`Utilities`) and
+  the property lists of `PropertyDiscoveryStrategy` are cached per member and type, and a
+  save compares the drawing's styles with default styles made once per `AppTheme.Version`
+  (`StyleManager.IsUnchangedDefault`). Before that (2026-10-04) a save of a triangle took
+  5 ms on the desktop, nine tenths of it in the styles.
 - CPU samples of the desktop app need neither admin rights nor a tool: start it with
   `DOTNET_EnableEventPipe=1`, `DOTNET_EventPipeOutputPath=<file>.nettrace` and
   `DOTNET_EventPipeConfig=Microsoft-DotNETCore-SampleProfiler:0:5,Microsoft-Windows-DotNETRuntime:0x4c14fccbd:5`

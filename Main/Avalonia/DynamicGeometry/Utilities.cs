@@ -624,8 +624,17 @@ namespace DynamicGeometry
             this MemberInfo attributeHost)
             where T : Attribute
         {
-            return (T)Attribute.GetCustomAttribute(attributeHost, typeof(T));
+            return (T)attributeCache.GetOrAdd(
+                (attributeHost, typeof(T)),
+                key => Attribute.GetCustomAttribute(key.Host, key.Type));
         }
+
+        // Attribute.GetCustomAttribute makes the attribute anew on every call, and the
+        // property grid and the serializer ask for the same ones over and over (a save of
+        // the drawing for every property of every style), and reflection is slowest in the
+        // browser, which runs interpreted
+        static readonly System.Collections.Concurrent.ConcurrentDictionary<(MemberInfo Host, Type Type), Attribute> attributeCache =
+            new System.Collections.Concurrent.ConcurrentDictionary<(MemberInfo Host, Type Type), Attribute>();
 
         public static IEnumerable<T> GetAttributes<T>(
             this MemberInfo attributeHost)
