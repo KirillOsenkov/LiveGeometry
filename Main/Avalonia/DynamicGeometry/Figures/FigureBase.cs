@@ -539,26 +539,39 @@ namespace DynamicGeometry
         {
             get
             {
+                var (kind, name) = TitleParts;
+                return kind == null ? name : name == null ? kind : kind + " " + name;
+            }
+        }
+
+        /// <summary>
+        /// The two parts of the <see cref="Title"/>, for whoever draws them apart (the Figure
+        /// List): the kind ("Midpoint") and the name as shown ("E", "A₁"); either may be null
+        /// </summary>
+        public (string Kind, string Name) TitleParts
+        {
+            get
+            {
                 // without a kind, what the figure says of itself ("Coordinate grid")
                 var kind = Kind;
                 if (kind == null || string.IsNullOrEmpty(Name))
                 {
-                    return ToString();
+                    return (null, ToString());
                 }
 
                 // Distance, not DistanceMeasurement1. Only for what nothing refers to by name:
                 // Circle1 stays, since "on Circle₁" in another row must be found in the list.
                 if (NamedByConstruction && IsStemAndNumber(Name, GetType().Name))
                 {
-                    return kind;
+                    return (kind, null);
                 }
 
                 if (NameSays(kind))
                 {
-                    return NameDisplay.Format(Name);
+                    return (null, NameDisplay.Format(Name));
                 }
 
-                return kind + " " + NameDisplay.Format(Name);
+                return (kind, NameDisplay.Format(Name));
             }
         }
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
@@ -704,6 +705,11 @@ public class FigureExplorer : Border
             TextTrimming = TextTrimming.CharacterEllipsis
         };
 
+        // the title in two runs: the kind as plain text, the name bold - what the list is
+        // scanned for (the kind in the accent blue made a blue column of every row)
+        readonly Run kindRun = new Run();
+        readonly Run nameRun = new Run() { FontWeight = FontWeight.Bold };
+
         // how the figure is built, faded after the title: what a narrow list cuts first
         readonly TextBlock construction = new TextBlock()
         {
@@ -720,6 +726,7 @@ public class FigureExplorer : Border
         {
             Figure = figure;
             text.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
+            text.Inlines = new InlineCollection() { kindRun, nameRun };
             construction.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.TextMuted));
             Height = RowHeight;
             Margin = explorer.RowMargin;
@@ -757,7 +764,9 @@ public class FigureExplorer : Border
 
         public void UpdateContent()
         {
-            text.Text = Figure.Title;
+            var (kind, name) = Figure is FigureBase figure ? figure.TitleParts : (null, Figure.Title);
+            kindRun.Text = kind == null ? "" : name == null ? kind : kind + " ";
+            nameRun.Text = name ?? "";
             construction.Text = Figure.Construction;
             // a helper made for another figure (the Number of a fixed length) counts as hidden
             Opacity = Figure.Visible && !Figure.Auxiliary ? 1 : HiddenOpacity;

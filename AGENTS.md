@@ -96,11 +96,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   coordinates needs no trip to the Coordinates tab's toggle (that toggle stays for typing
   the points of other figures); Label new points (toggle).
 - **Lines**: Segment (S), Ray (Y), Line (L), Vector - two points each; Parallel (N) and
-  Perpendicular (E) - a line then a point; Perpendicular Bisector - two points or a segment; Angle Bisector
+  Perpendicular (E) - a line then a point; Angle Bisector
   (B) - vertex then two side points, or an angle measurement; Line at Angle - a point, at the
   angle in the tool's panel (0 until changed, so a horizontal line is one click), or click an
   angle measurement, its arc or a slider first to tie the angle to it; right after the click
-  the panel shows the new line's angle instead (see "Tied values"). Join segments (a point between
+  the panel shows the new line's angle instead (see "Tied values"). Perpendicular Bisector
+  (two points or a segment; `[Ignore]`d since 2026-10-04: Perpendicular through the midpoint
+  does it, and its click on a segment took the ends where every other tool puts a point on
+  it - files and GeoGebra imports still make them); Join segments (a point between
   two segments joins their other ends) and Polyline (points, double-click or click an
   existing point to finish) exist but are `[Ignore]`d as rarely used.
 - **Circles**: Circle (C) - center then a point on it; By Radius (R) - two points, a segment, a
