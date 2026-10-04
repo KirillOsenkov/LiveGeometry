@@ -30,6 +30,9 @@ namespace DynamicGeometry
     {
         /// <returns>The part a press here drags; null when nothing on the figure moves</returns>
         IMovable FindMovablePart(Point point);
+
+        /// <summary>What moves the whole figure, as it moves with the rest of a selection</summary>
+        IMovable WholePart { get; }
     }
 
     public static class IMovableExtensions

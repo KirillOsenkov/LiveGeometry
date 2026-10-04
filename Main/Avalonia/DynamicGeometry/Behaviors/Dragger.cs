@@ -23,6 +23,9 @@ namespace DynamicGeometry
         protected Point coordinatesOnMouseDown;
         bool startedMoving = false;
 
+        // the press was on a figure selected with others, and the drag moves them all
+        bool draggingSelection;
+
         // A point drag is one undo step, with the releases and the snap of an Alt-drag in it
         Transaction dragTransaction;
 
@@ -84,11 +87,19 @@ namespace DynamicGeometry
                 }
             }
 
+            // a press on a figure selected with others drags them all
+            var selection = SelectionToDrag();
+            draggingSelection = selection != null;
+
             // a figure with parts (a slider) says which of them the press takes
             IMovable oneMovable = found is IMovableParts parts
                 ? parts.FindMovablePart(offsetFromFigureLeftTopCorner)
                 : found as IMovable;
-            if (oneMovable != null && (found.Locked || oneMovable.AllowMove()))
+            if (selection != null)
+            {
+                roots = FindSelectionRoots(selection, out isLocked);
+            }
+            else if (oneMovable != null && (found.Locked || oneMovable.AllowMove()))
             {
                 if (found.Locked)
                 {
@@ -186,6 +197,59 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// The figures selected with the one pressed on, each a whole, which a drag moves
+        /// together; null when the press is not on a selection of several
+        /// </summary>
+        List<IFigure> SelectionToDrag()
+        {
+            if (found == null)
+            {
+                return null;
+            }
+
+            var clicked = FigureParts.SelectionTarget(found);
+            if (!clicked.Selected && !FigureParts.Whole(clicked).Selected)
+            {
+                return null;
+            }
+
+            // a caption stays where it is pinned, as when the press is on it
+            var selection = FigureParts.Wholes(Drawing.GetSelectedFigures())
+                .Where(figure => !(figure is Label { Pin: not LabelPin.None } label && Drawing.FixedLabels.Contains(label)))
+                .ToList();
+            return selection.Count > 1 ? selection : null;
+        }
+
+        /// <summary>
+        /// What a drag of the selection moves, into <see cref="moving"/>: the points the
+        /// figures are built on, free labels, the sliders selected - each once, so that the
+        /// whole selection goes by the same offset and keeps its shape. Points by coordinates
+        /// stay where they are, as in the drag of one figure; one figure locked, or a point
+        /// that can't move, holds them all. Returns the roots, for what to recalculate.
+        /// </summary>
+        IList<IFigure> FindSelectionRoots(List<IFigure> selection, out bool isLocked)
+        {
+            var roots = DependencyAlgorithms.FindRoots(f => f.Dependencies, selection)
+                .Where(root => root is IMovableParts
+                    ? selection.Contains(root)
+                    : !(root is INumber) && !(root is PointByCoordinates))
+                .ToList();
+            var movables = roots
+                .Select(root => root is IMovableParts parts ? parts.WholePart : root as IMovable)
+                .Where(movable => movable != null)
+                .ToList();
+            isLocked = movables.IsEmpty()
+                || selection.Any(figure => figure.Locked)
+                || movables.Any(movable => !movable.AllowMove());
+            if (!isLocked)
+            {
+                moving.AddRange(movables);
+            }
+
+            return roots;
+        }
+
         public delegate void DraggerMouseMoveHandler(Point previousPoint, ref Point currentPoint);
 
         public event DraggerMouseMoveHandler PreviewMouseMoveCoordinates;
@@ -226,7 +290,8 @@ namespace DynamicGeometry
                 }
 
                 startedMoving = true;
-                if (found is IPoint && !found.Locked && !moving.IsEmpty())
+                // (a selection goes as one piece: Alt does nothing to its points)
+                if (found is IPoint && !found.Locked && !moving.IsEmpty() && !draggingSelection)
                 {
                     dragTransaction = Transaction.Create(Drawing.ActionManager, false);
                     var hint = ModifierHint(found);
@@ -277,6 +342,7 @@ namespace DynamicGeometry
             // coordinate system.
             oldCoordinates = Coordinates(e);
             if (moving != null
+                && !draggingSelection
                 && moving.Count == 1
                 && moving[0] is IPoint
                 && found != null
@@ -357,6 +423,7 @@ namespace DynamicGeometry
         {
             EndDrag();
             startedMoving = false;
+            draggingSelection = false;
             moving = null;
             found = null;
             pressedFixedLabel = null;

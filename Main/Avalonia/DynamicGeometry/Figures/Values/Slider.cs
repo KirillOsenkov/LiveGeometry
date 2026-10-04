@@ -257,6 +257,11 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         return wholeHandle;
     }
 
+    public IMovable WholePart
+    {
+        get { return wholeHandle; }
+    }
+
     /// <summary>
     /// Dragging the track or the caption: the anchor moves by as much as the cursor, without
     /// jumping under it the way a dragged point does.
