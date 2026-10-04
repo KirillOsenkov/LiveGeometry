@@ -1144,6 +1144,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   selected tab blends into it. A click on a swatch gives the page the keyboard, and the
   arrow keys move the current swatch through the grid and pick as a click does
   (`SwatchPage.OnKeyDown`; one undo step for the run, the canvas doesn't pan meanwhile).
+  On the Spectrum tab the surface pressed last (field, hue, opacity) takes them as fine
+  steps, 1% or 1°, ten with Shift (`DragSurface.Stepped`); a step of 1/255 left the color
+  as it was once rounded, and a press that changes nothing looks broken.
 - **The paper** is `Drawing.Background`, edited through "Drawing background" on the settings
   page (`AppSettings.EditDrawingBackground`; `DrawingHost.ShowDrawingProperties` puts the
   drawing itself in the property grid). "Reset to default" (the theme's paper) shows only while

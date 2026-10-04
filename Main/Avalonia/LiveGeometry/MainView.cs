@@ -1316,22 +1316,13 @@ public partial class MainView : UserControl
             return;
         }
 
-        var focused = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
-        if (focused is TextBox)
+        if (!IsPlainKeyForCanvas(e.Key))
         {
             return;
         }
 
-        // up and down the Figure List, not panning the canvas
-        if (DrawingHost.FigureExplorer.IsKeyboardFocusWithin && FigureExplorer.IsNavigationKey(e.Key))
-        {
-            return;
-        }
-
-        // Nor from a list, a slider or a combo of the side panel, which has taken the key on
-        // its way down: an arrow that picked the next style also moved the view by a step,
-        // as an undo step. (Tool letters still work from there.)
-        if (DrawingHost.PropertyGrid.IsKeyboardFocusWithin && IsViewKey(e.Key))
+        // handled on the way down (MainView_KeyDown), where a held key repeats
+        if (IsRepeatingKey(e.Key))
         {
             return;
         }
@@ -1357,6 +1348,59 @@ public partial class MainView : UserControl
     }
 
     Key shortcutKeyDown = Key.None;
+
+    /// <summary>
+    /// Whether a key without modifiers is the canvas's (<see cref="HandlePlainKey"/>) rather
+    /// than that of the control with the keyboard. Both key handlers tunnel, so they see the
+    /// key before that control does.
+    /// </summary>
+    bool IsPlainKeyForCanvas(Key key)
+    {
+        var focused = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
+        if (focused is TextBox)
+        {
+            return false;
+        }
+
+        // up and down the Figure List, not panning the canvas
+        if (DrawingHost.FigureExplorer.IsKeyboardFocusWithin && FigureExplorer.IsNavigationKey(key))
+        {
+            return false;
+        }
+
+        // Nor from a list, a slider or a combo of the side panel, which takes the key on its
+        // way down: an arrow that picked the next style also moved the view by a step, as an
+        // undo step. (Tool letters still work from there.)
+        if (DrawingHost.PropertyGrid.IsKeyboardFocusWithin && IsViewKey(key))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// The plain keys that act on key down, so that holding one repeats it: the arrows pan
+    /// and +/- zoom on. The others act on key up, once (a held G would flicker the grid, a
+    /// held Page Down would race through the gallery).
+    /// </summary>
+    static bool IsRepeatingKey(Key key)
+    {
+        switch (key)
+        {
+            case Key.Left:
+            case Key.Right:
+            case Key.Up:
+            case Key.Down:
+            case Key.Add:
+            case Key.OemPlus:
+            case Key.Subtract:
+            case Key.OemMinus:
+                return true;
+        }
+
+        return false;
+    }
 
     /// <summary>The keys that move the view (<see cref="HandlePlainKey"/>), which controls with a selection or a value use too</summary>
     static bool IsViewKey(Key key)
@@ -1538,6 +1582,17 @@ public partial class MainView : UserControl
             else if (HandleControlShortcut(e.Key))
             {
                 shortcutKeyDown = e.Key;
+                e.Handled = true;
+            }
+
+            return;
+        }
+
+        // on the way down, where a held key repeats (on the way up it panned once)
+        if (e.KeyModifiers == KeyModifiers.None && IsRepeatingKey(e.Key))
+        {
+            if (IsPlainKeyForCanvas(e.Key) && HandlePlainKey(e.Key))
+            {
                 e.Handled = true;
             }
 

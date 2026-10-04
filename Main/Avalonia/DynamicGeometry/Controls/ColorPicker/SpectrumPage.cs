@@ -14,6 +14,15 @@ public class SpectrumPage : ColorPage
     const double StripHeight = 14;
     const double MarkerSize = 12;
 
+    /// <summary>
+    /// What an arrow key changes saturation, value or opacity by: fine, but a step of a color
+    /// channel (1/255) changed nothing once rounded, at a middling value, for the saturation
+    /// </summary>
+    const double ChannelStep = 0.01;
+
+    /// <summary>What an arrow key changes the hue by, in degrees</summary>
+    const double HueStep = 1;
+
     HsvColor hsv = HsvColor.FromColor(Colors.Black);
 
     readonly DragSurface field = new DragSurface() { Height = 132 };
@@ -56,6 +65,14 @@ public class SpectrumPage : ColorPage
         field.Dragged += (position, isStillDragging) => Apply(hsv.WithSaturationAndValue(position.X, 1 - position.Y));
         hueStrip.Dragged += (position, isStillDragging) => Apply(hsv.WithHue(System.Math.Min(position.X * 360, 359.999)));
         alphaStrip.Dragged += (position, isStillDragging) => Apply(hsv.WithAlpha(position.X));
+
+        // the arrow keys on the surface pressed last: fine steps, across the field
+        // saturation and up it value, along a strip right or up for more (the hue goes round)
+        field.Stepped += (across, down) => Apply(hsv.WithSaturationAndValue(
+            hsv.Saturation + across * ChannelStep,
+            hsv.Value - down * ChannelStep));
+        hueStrip.Stepped += (across, down) => Apply(hsv.WithHue(hsv.Hue + (across - down) * HueStep));
+        alphaStrip.Stepped += (across, down) => Apply(hsv.WithAlpha(hsv.Alpha + (across - down) * ChannelStep));
 
         var panel = new StackPanel();
         panel.Children.Add(field);
