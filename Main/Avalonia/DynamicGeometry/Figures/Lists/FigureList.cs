@@ -102,7 +102,8 @@ namespace DynamicGeometry
         {
             foreach (var figure in this)
             {
-                if (figure.Selected)
+                // (a side of a polygon selected by itself too: off with the polygon)
+                if (FigureParts.HasSelection(figure))
                 {
                     figure.Selected = false;
                 }

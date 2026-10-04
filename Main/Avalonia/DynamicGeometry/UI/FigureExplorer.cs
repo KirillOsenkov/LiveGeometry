@@ -388,7 +388,7 @@ public class FigureExplorer : Border
     {
         foreach (var figure in drawing.Figures)
         {
-            if (figure.Selected)
+            if (FigureParts.HasSelection(figure))
             {
                 figure.Selected = false;
             }

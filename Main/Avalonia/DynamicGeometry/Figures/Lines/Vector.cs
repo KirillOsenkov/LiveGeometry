@@ -4,7 +4,6 @@ using System.Xml;
 using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Media;
 
 namespace DynamicGeometry
 {
@@ -16,17 +15,57 @@ namespace DynamicGeometry
     {
         public Vector()
         {
-            Line = new Segment();   // Line's dependencies established by OnDependenciesChanged()
-            Line.Style = new LineStyle() { StrokeWidth = 0, Color = Colors.Transparent };   // Line is invisible
-            Line.ShowsSelectionHalo = false;
-            Arrow = new Arrow();
+            Arrow = new Arrow() { DrawsShaft = false };
             Arrow.ZIndex = (int)ZOrder.Vectors;
+            Line = new VectorShaft(Arrow);   // Line's dependencies established by OnDependenciesChanged()
+            Line.ZIndex = (int)ZOrder.Vectors;
             Arrow.Dependencies.Add(Line);
             Children.Add(Line, Arrow);
             ZIndex = (int)ZOrder.Vectors;
         }
-        
-        public override IFigureStyle Style  // The Arrow's style is used for the vector.
+
+        /// <summary>
+        /// The segment from the start to the end, which tools take for the vector, drawn from
+        /// the start to the head: a line in the vector's style, which can be dashed, as the
+        /// arrow (a filled outline) could not.
+        /// </summary>
+        public class VectorShaft : Segment
+        {
+            readonly Arrow arrow;
+
+            public VectorShaft(Arrow arrow)
+            {
+                this.arrow = arrow;
+            }
+
+            public override void UpdateVisual()
+            {
+                if (!IsShown || Drawing == null)
+                {
+                    Shape.Visibility = Visibility.Collapsed;
+                    return;
+                }
+
+                var outline = arrow.Measure();
+                Shape.Set(new PointPair(outline.Tail, outline.HeadBase));
+                Shape.Visibility = Visibility.Visible;
+            }
+
+            public override void ApplyStyle()
+            {
+                base.ApplyStyle();
+
+                // the head's color, also for a style whose line is transparent (a vector from
+                // an older drawing, in a polygon's style: its fill)
+                if (Style != null)
+                {
+                    Shape.Stroke = DynamicGeometry.Arrow.GetBrush(Style);
+                }
+            }
+        }
+
+        /// <summary>The arrow's style, which the shaft is drawn in too</summary>
+        public override IFigureStyle Style
         {
             get
             {
@@ -35,6 +74,7 @@ namespace DynamicGeometry
             set
             {
                 Arrow.Style = value;
+                Line.Style = value;
             }
         }
 
@@ -65,13 +105,14 @@ namespace DynamicGeometry
             // fill without an outline. A vector is a line.
             if (Arrow.Style == null && Drawing != null)
             {
-                Arrow.Style = Drawing.StyleManager
+                Style = Drawing.StyleManager
                     .GetStyles<LineStyle>()
                     .FirstOrDefault(s => s.GetType() == typeof(LineStyle));
             }
 
             base.OnAddingToCanvas(newContainer);
             Arrow.EnsureStyleAssigned();
+            Line.Style = Arrow.Style;
         }
 
         // the arrow is a filled polygon, so a hit on it has to land on the drawn pixels: the
@@ -138,7 +179,7 @@ namespace DynamicGeometry
                 var style = Drawing.StyleManager[styleAttribute.Value];
                 if (style != null)
                 {
-                    this.Arrow.Style = style;
+                    Style = style;
                 }
             }
         }

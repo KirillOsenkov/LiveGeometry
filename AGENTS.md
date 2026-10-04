@@ -1051,9 +1051,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   of a line in a circle was a hexagon on its far side with a hole at the center.
   `Samples="60"` in a file asks for that many even steps instead: only the Spiral. Before, a curve was one line through all its points: straight
   pieces across where there is nothing.
-- **Vectors** are an invisible `Segment` plus an `Arrow` polygon sized in pixels, filled with the
-  line color. `Vector.OnAddingToCanvas` sets the default `LineStyle` before the base call,
-  otherwise the polygon default (pale fill) wins. A vector is an `ILine` (parallel,
+- **Vectors** are a `Segment` (`Vector.VectorShaft`, drawn from the start to the head) plus
+  an `Arrow` that draws only the head (`DrawsShaft = false`), sized in pixels, filled with the
+  line color; both take the vector's style. The shaft was the arrow's filled outline, which
+  no dash could break: a dashed style did nothing to a vector. An axis's arrow still draws
+  its shaft. `Vector.OnAddingToCanvas` sets the default `LineStyle` before the base call,
+  otherwise the polygon default (pale fill) wins. A vector is one figure to the user (a
+  click anywhere on it selects the vector), not a figure with parts to select. A vector is an `ILine` (parallel,
   perpendicular, intersection, a point on it all take it) and its hit test asks the segment
   inside after the arrow, since the arrow is a filled polygon with no room around it.
   `Vector.HitTest(Point)` answers whether hidden or not, as a segment's does: a point on a
@@ -1122,8 +1126,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   canvas); it redraws on any property change or layout of its shape, so nothing per figure
   kind. Selected figures used to be drawn 3 px thicker or bigger and polygons got a striped
   fill, which hid the very thickness, size and fill being edited in the side panel: a style
-  must not depend on `Selected`. A part never drawn says `ShowsSelectionHalo = false` (a
-  vector's segment). Labels keep their own selection plate.
+  must not depend on `Selected`. A part never drawn says `ShowsSelectionHalo = false`.
+  Labels keep their own selection plate.
 - **Color/brush picking** (`DynamicGeometry/Controls/ColorPicker/`) is layered so parts can be
   swapped: `ColorPalette` -> `ColorPage` (swatches, spectrum) -> `ColorPickerView` ->
   `BrushPickerView` (solid | gradient); in the property grid through `ExpandingPickerEditor`.
@@ -1496,6 +1500,21 @@ loader still does for files from before; none of it needs extending.
   polygon's name (`TiedValues.SourceName`); a translated point says such a source by its
   place among the dependencies (`DistanceSourceIndex="1"`, where a named one is
   `DistanceSource="AB"`).
+  A vertex or a side is selected by itself (`IFigureParts.SelectableParts`), to be styled;
+  a click inside selects the polygon (`FigureParts.SelectionTarget`), and so do its Figure
+  List row and the part page's "Select the 6-gon". The composite's `Selected` is the whole
+  only (selecting the whole selects every part, for the halos), so whatever clears a
+  selection asks `FigureParts.HasSelection`, `Drawing.GetSelectedFigures` gives the parts
+  selected by themselves, and whatever acts on figures of the drawing (Delete, Copy, Hide,
+  Lock, the context menu) takes `FigureParts.Wholes` of it: Delete with a side selected
+  deletes the polygon. A part's page is its `ICustomPropertyProvider` (style, a side's
+  length, which is the polygon's), not the rows of a point or a segment. The polygon's page
+  has Fill (its own style), and Sides and Vertices (`PartStylesValue`: every part at once,
+  undo giving each its own back). The file says the style most sides have and the odd ones
+  (`<Sides Style="RedLine" />`, `<Vertices ... />`, `<Part Name="Side2" Style="BlueLine" />`,
+  child elements, so that the `Style` attributes are found when styles are collected); a
+  new side takes the style most have, one that comes back keeps its own (undo of fewer
+  sides).
 - **`AngleMeasurement`** says `Radians="true"` when it shows radians (it was not saved).
 - **Scenes** (`<Scene Left Top Right Bottom />` under `<Drawing>`, 1 or 2) are opt-in suggested
   views for drawings whose content has no useful bounds (endless ground: Castle, The Falling

@@ -762,7 +762,7 @@ namespace DynamicGeometry
             if (CanRemove(style))
             {
                 var transaction = Transaction.Create(Drawing.ActionManager, false);
-                foreach (var fig in Drawing.Figures)
+                foreach (var fig in Drawing.Figures.SelectMany(FigureParts.WithParts))
                 {
                     if (fig.Style == style)
                     {

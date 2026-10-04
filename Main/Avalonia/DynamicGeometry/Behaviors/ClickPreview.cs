@@ -338,7 +338,7 @@ public class ClickPreview
         }
         else if (figure is Vector vector)
         {
-            // along the invisible segment inside, as wide as the arrow's shaft is drawn
+            // along the segment inside, the shaft, as wide as it is drawn
             halo = (AvaloniaShapes.Shape)CreateHalo(vector.Line);
             var lineStyle = vector.Style as LineStyle;
             halo.StrokeThickness = (lineStyle != null ? lineStyle.StrokeWidth : 1) + HaloWidth;

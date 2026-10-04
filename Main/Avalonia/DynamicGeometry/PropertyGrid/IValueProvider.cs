@@ -100,9 +100,9 @@ namespace DynamicGeometry
             }
         }
 
-        public object Parent
+        public virtual object Parent
         {
-            get 
+            get
             {
                 object commonParent = InnerList[0].Parent;
                 foreach (var item in InnerList)
@@ -121,12 +121,12 @@ namespace DynamicGeometry
             get { return InnerList[0].Type; }
         }
 
-        public string Name
+        public virtual string Name
         {
             get { return InnerList[0].Name; }
         }
 
-        public string DisplayName
+        public virtual string DisplayName
         {
             get { return InnerList[0].DisplayName; }
         }

@@ -61,7 +61,7 @@ namespace DynamicGeometry
             // Not for what a tool takes away of its own (the point following the cursor, its
             // preview), which is never recorded: the side panel then showed whatever had been
             // selected before the construction began, every time one was given up.
-            if (!Drawing.ActionManager.ExecuteImmediatelyWithoutRecording || Deleted.Any(figure => figure.Selected))
+            if (!Drawing.ActionManager.ExecuteImmediatelyWithoutRecording || Deleted.Any(FigureParts.HasSelection))
             {
                 Drawing.RaiseSelectionChanged(new Drawing.SelectionChangedEventArgs());
             }

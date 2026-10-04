@@ -53,6 +53,9 @@ public class Program
             ("A point renamed A' stays named in expressions", PrimeNames),
             ("A square takes the side drawn already", SquareOnSegment),
             ("The middle of a vector gives its midpoint", VectorMidpoint),
+            ("A dashed vector has a dashed shaft", DashedVector),
+            ("A regular polygon's sides and vertices are selected by themselves", RegularPolygonPartSelection),
+            ("A regular polygon's sides and vertices keep their styles", RegularPolygonPartStyles),
             ("Paste into another drawing keeps the look", PasteBringsStyles),
             ("Pasting plain text is no error", PastePlainText),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
@@ -713,6 +716,131 @@ public class Program
         Require(made != null, "A click on a vector made no midpoint.");
         Near(made.Coordinates.X, expected: 1);
         Near(made.Coordinates.Y, expected: 1);
+    }
+
+    static void DashedVector()
+    {
+        var drawing = NewDrawing();
+        var first = AddPoint(drawing, x: -2, y: 0);
+        var second = AddPoint(drawing, x: 4, y: 2);
+        var vector = Factory.CreateVector(drawing, new IFigure[] { first, second });
+        Actions.Add(drawing, vector);
+        using var window = new TestWindow(drawing.Canvas);
+        var dashed = drawing.StyleManager["DashedRedLine"];
+        Require(dashed is LineStyle { Dash: not LineDash.Solid }, "No dashed palette style.");
+        Set(drawing, vector, nameof(FigureBase.StyleDisplay), dashed);
+        var shaft = vector.Line.Shape;
+        Require(shaft.StrokeDashArray != null && shaft.StrokeDashArray.Count > 0, "The shaft is not dashed.");
+        Require(
+            shaft.Stroke is Avalonia.Media.ISolidColorBrush brush && brush.Color == ((LineStyle)dashed.Resolve()).Color,
+            "The shaft is not in the style's color.");
+
+        // the shaft ends where the head begins, not at its tip
+        var tip = drawing.CoordinateSystem.ToPhysical(second.Coordinates);
+        var end = new Point(shaft.EndPoint.X, shaft.EndPoint.Y);
+        Require(end.Distance(tip) > Arrow.HeadLength, "The shaft runs through the head.");
+        var reloaded = ReadLgf(drawing.SaveAsText());
+        Require(reloaded.Figures.OfType<DynamicGeometry.Vector>().Single().Style?.Name == "DashedRedLine", "The vector's style was not saved.");
+    }
+
+    static RegularPolygon AddHexagon(Drawing drawing)
+    {
+        var center = AddPoint(drawing, x: 0, y: 0);
+        var vertex = AddPoint(drawing, x: 3, y: 0);
+        var polygon = Factory.CreateRegularPolygon(drawing, new IFigure[] { center, vertex });
+        Actions.Add(drawing, polygon);
+        Set(drawing, polygon, nameof(RegularPolygon.NumberOfSides), value: 6);
+        return polygon;
+    }
+
+    static void RegularPolygonPartSelection()
+    {
+        var drawing = NewDrawing();
+        var polygon = AddHexagon(drawing);
+        using var window = new TestWindow(drawing.Canvas);
+        drawing.Behavior = new Dragger();
+        var system = drawing.CoordinateSystem;
+        var side = (Segment)polygon.GetPart("Side2");
+        var vertex = (IPoint)polygon.GetPart("Vertex3");
+
+        Click(drawing, system.ToPhysical(side.Coordinates.Midpoint));
+        Require(drawing.GetSelectedFigures().SequenceEqual(new IFigure[] { side }), "A click on a side selected " + string.Join(", ", drawing.GetSelectedFigures()));
+        Require(!polygon.Selected && !polygon.GetPart("Side1").Selected, "A click on a side selected the polygon.");
+
+        Click(drawing, system.ToPhysical(vertex.Coordinates));
+        Require(drawing.GetSelectedFigures().SequenceEqual(new IFigure[] { vertex }), "A click on a vertex selected " + string.Join(", ", drawing.GetSelectedFigures()));
+        Require(!side.Selected, "The side stayed selected.");
+
+        // the inside is the polygon, all of it
+        Click(drawing, system.ToPhysical(new Point(1, 0.8)));
+        Require(drawing.GetSelectedFigures().SequenceEqual(new IFigure[] { polygon }), "A click inside selected " + string.Join(", ", drawing.GetSelectedFigures()));
+        Require(polygon.SelectableParts.All(part => part.Selected), "The polygon's parts don't show it selected.");
+
+        // a side's page: its style and the polygon's side length, not a segment's rows
+        var rows = ((ICustomPropertyProvider)side).GetProperties().Select(row => row.Name).ToList();
+        Require(rows.SequenceEqual(new[] { nameof(RegularPolygon.Length), nameof(FigureBase.StyleDisplay) }), "A side's rows: " + string.Join(", ", rows));
+
+        // Delete with a side selected takes the polygon, and undo brings it back
+        Click(drawing, system.ToPhysical(side.Coordinates.Midpoint));
+        string before = drawing.SaveAsText();
+        drawing.DeleteSelection();
+        Require(!drawing.Figures.Contains(polygon), "Delete left the polygon.");
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the deletion changed the drawing.");
+        drawing.Figures.ClearSelection();
+        Require(!drawing.GetSelectedFigures().Any(), "Clearing the selection left " + string.Join(", ", drawing.GetSelectedFigures()));
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void RegularPolygonPartStyles()
+    {
+        var drawing = NewDrawing();
+        var polygon = AddHexagon(drawing);
+        var red = drawing.StyleManager["RedLine"];
+        var blue = drawing.StyleManager["BlueLine"];
+        var redPoint = drawing.StyleManager["RedPoint"];
+        Require(red != null && blue != null && redPoint != null, "Palette styles missing.");
+        string before = drawing.SaveAsText();
+
+        var side2 = polygon.GetPart("Side2");
+        Set(drawing, side2, nameof(FigureBase.StyleDisplay), blue);
+        string oneSide = drawing.SaveAsText();
+        Require(oneSide != before, "A side's style was not saved.");
+
+        // all the sides at once, then all the vertices; undo gives side 2 its own back
+        Actions.SetProperty(drawing.ActionManager, polygon.SideStyles, red);
+        Actions.SetProperty(drawing.ActionManager, polygon.VertexStyles, redPoint);
+        Require(polygon.SelectableParts.OfType<Segment>().All(side => side.Style == red), "Not every side took the style.");
+        Require(polygon.SelectableParts.OfType<IPoint>().All(vertex => vertex.Style == redPoint), "Not every vertex took the style.");
+        string all = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        drawing.ActionManager.Undo();
+        Require(side2.Style == blue, "Undo did not give side 2 its style back.");
+        Require(drawing.SaveAsText() == oneSide, "Undo of the sides' style changed the drawing.");
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the side's style changed the drawing.");
+        drawing.ActionManager.Redo();
+        drawing.ActionManager.Redo();
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == all, "Redo changed the drawing.");
+
+        // a side more takes the sides' style; fewer and more again keeps an odd one's
+        Set(drawing, polygon.GetPart("Side6"), nameof(FigureBase.StyleDisplay), blue);
+        Set(drawing, polygon, nameof(RegularPolygon.NumberOfSides), value: 7);
+        Require(polygon.GetPart("Side7").Style == red && polygon.GetPart("Vertex7").Style == redPoint, "A new side or vertex did not take the others' style.");
+        Set(drawing, polygon, nameof(RegularPolygon.NumberOfSides), value: 5);
+        drawing.ActionManager.Undo();
+        Require(polygon.GetPart("Side6").Style == blue, "Undo of fewer sides lost a side's style.");
+
+        // what is saved comes back
+        string saved = drawing.SaveAsText();
+        var reloaded = ReadLgf(saved);
+        var copy = reloaded.Figures.OfType<RegularPolygon>().Single();
+        Require(copy.GetPart("Side6").Style?.Name == "BlueLine", "Side 6 came back as " + copy.GetPart("Side6").Style?.Name);
+        Require(copy.GetPart("Side1").Style?.Name == "RedLine", "Side 1 came back as " + copy.GetPart("Side1").Style?.Name);
+        Require(copy.GetPart("Vertex4").Style?.Name == "RedPoint", "Vertex 4 came back as " + copy.GetPart("Vertex4").Style?.Name);
+        Require(reloaded.SaveAsText() == saved, "The polygon's styles did not round trip.");
+        drawing.Figures.CheckConsistency();
     }
 
     static void Click(Drawing drawing, Point at)

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 
 namespace DynamicGeometry
@@ -8,7 +9,6 @@ namespace DynamicGeometry
         public Arrow()
         {
             Shape.Stroke = null;
-            pointCache.Add(new Point(), new Point(), new Point(), new Point(), new Point(), new Point(), new Point());
             Shape.Points = pointCache;
         }
 
@@ -18,18 +18,30 @@ namespace DynamicGeometry
 
         PointCollection pointCache = new PointCollection();
 
-        public override void UpdateVisual()
+        /// <summary>
+        /// Whether the arrow is the whole of it, shaft and head, in one solid color (an axis),
+        /// or only the head, and the shaft is a line of its own that a dash can break (a
+        /// vector: <see cref="Vector.VectorShaft"/>)
+        /// </summary>
+        public bool DrawsShaft { get; set; } = true;
+
+        /// <summary>Where the arrow is, in pixels</summary>
+        public struct Outline
         {
-            if (Drawing == null)
-            {
-                return;
-            }
+            public Point Tail;
+            public Point HeadBase;
+            public Point Tip;
+            public Point Across;
+            public double HalfShaft;
+            public double HalfHead;
+        }
 
-            if (vertexCoordinates == null)
-            {
-                vertexCoordinates = new Point[7];
-            }
-
+        /// <summary>
+        /// All in pixels: an arrow is a line with a head, as wide as its style says and with a
+        /// head that goes with that width - the same at any zoom.
+        /// </summary>
+        public Outline Measure()
+        {
             PointPair line = Dependencies.Line(0);
             LineBase parentLine = Dependencies.ElementAt(0) as LineBase;
             if (parentLine != null)
@@ -37,21 +49,15 @@ namespace DynamicGeometry
                 line = parentLine.OnScreenCoordinates;
             }
 
-            // All in pixels: an arrow is a line with a head, as wide as its style says and with a
-            // head that goes with that width - the same at any zoom.
             Point tail = ToPhysical(line.P1);
             Point tip = ToPhysical(line.P2);
             double length = tail.Distance(tip);
 
             var lineStyle = Style as LineStyle;
             double width = lineStyle != null ? lineStyle.StrokeWidth : 1;
-
-            double halfShaft = System.Math.Max(width / 2, 0.5);
             double headLength = System.Math.Min(HeadLength + HeadGrowth * width, length);
-            double halfHead = HeadHalfWidth + HeadGrowth / 2 * width;
 
             var along = length > 1e-9 ? (tip - tail) / length : new Point(1, 0);
-            var across = new Point(-along.Y, along.X);
 
             // the head points at the end point, it doesn't hide under it
             var endPoint = parentLine != null && parentLine.Dependencies.Count > 1
@@ -66,18 +72,57 @@ namespace DynamicGeometry
                 }
             }
 
-            var headBase = tip - along * headLength;
+            return new Outline()
+            {
+                Tail = tail,
+                HeadBase = tip - along * headLength,
+                Tip = tip,
+                Across = new Point(-along.Y, along.X),
+                HalfShaft = System.Math.Max(width / 2, 0.5),
+                HalfHead = HeadHalfWidth + HeadGrowth / 2 * width
+            };
+        }
 
-            pointCache[0] = headBase + across * halfHead;
-            pointCache[1] = tip;
-            pointCache[2] = headBase - across * halfHead;
-            pointCache[3] = headBase - across * halfShaft;
-            pointCache[4] = tail - across * halfShaft;
-            pointCache[5] = tail + across * halfShaft;
-            pointCache[6] = headBase + across * halfShaft;
+        public override void UpdateVisual()
+        {
+            if (Drawing == null)
+            {
+                return;
+            }
+
+            var outline = Measure();
+            var headBase = outline.HeadBase;
+            var across = outline.Across;
+            var points = new List<Point>()
+            {
+                headBase + across * outline.HalfHead,
+                outline.Tip,
+                headBase - across * outline.HalfHead
+            };
+            if (DrawsShaft)
+            {
+                points.Add(headBase - across * outline.HalfShaft);
+                points.Add(outline.Tail - across * outline.HalfShaft);
+                points.Add(outline.Tail + across * outline.HalfShaft);
+                points.Add(headBase + across * outline.HalfShaft);
+            }
+
+            if (pointCache.Count != points.Count)
+            {
+                pointCache.Clear();
+                pointCache.AddRange(points);
+                vertexCoordinates = new Point[points.Count];
+            }
+            else
+            {
+                for (int i = 0; i < points.Count; i++)
+                {
+                    pointCache[i] = points[i];
+                }
+            }
 
             // the polygon's hit testing works on logical vertices
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < points.Count; i++)
             {
                 VertexCoordinates[i] = ToLogical(pointCache[i]);
             }
@@ -98,23 +143,21 @@ namespace DynamicGeometry
         public override void ApplyStyle()
         {
             base.ApplyStyle();
-
-            // as the style looks under the theme on screen
-            Avalonia.Media.IBrush brush = null;
-            var resolved = Style?.Resolve();
-            var lineStyle = resolved as LineStyle;
-            if (lineStyle != null && lineStyle.Color.A > 0)
-            {
-                brush = new Avalonia.Media.SolidColorBrush(lineStyle.Color);
-            }
-            else if (resolved is ShapeStyle shapeStyle)
-            {
-                brush = shapeStyle.Fill;
-            }
-
-            Shape.Fill = brush ?? Avalonia.Media.Brushes.Black;
+            Shape.Fill = GetBrush(Style);
             Shape.Stroke = null;
             Shape.StrokeDashArray = null;
+        }
+
+        /// <summary>The color an arrow of the style is drawn in, as the style looks under the theme on screen</summary>
+        public static Avalonia.Media.IBrush GetBrush(IFigureStyle style)
+        {
+            var resolved = style?.Resolve();
+            if (resolved is LineStyle lineStyle && lineStyle.Color.A > 0)
+            {
+                return new Avalonia.Media.SolidColorBrush(lineStyle.Color);
+            }
+
+            return (Avalonia.Media.IBrush)(resolved as ShapeStyle)?.Fill ?? Avalonia.Media.Brushes.Black;
         }
     }
 }

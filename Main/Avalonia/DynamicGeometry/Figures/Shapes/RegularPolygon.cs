@@ -173,6 +173,8 @@ namespace DynamicGeometry
             {
                 writer.WriteAttributeString("Sides", numberOfSides.ToString(System.Globalization.CultureInfo.InvariantCulture));
             }
+
+            WritePartStyles(writer);
         }
 
         public override void ReadXml(System.Xml.Linq.XElement element)
@@ -189,6 +191,16 @@ namespace DynamicGeometry
             if (Drawing != null)
             {
                 Recreate(numberOfSides, recalculate: false);
+                ReadPartStyles(element);
+            }
+        }
+
+        /// <summary>A side's page has the side's length, which is every side's</summary>
+        protected override IEnumerable<IValueProvider> GetPartValues(IFigure part)
+        {
+            if (part is PolygonSide)
+            {
+                yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Length));
             }
         }
 
@@ -258,7 +270,9 @@ namespace DynamicGeometry
 
         protected override void AddSide(int sideCount)
         {
-            var side = retiredSides.Count > 0 ? retiredSides.Pop() : new PolygonSide();
+            bool isNew = retiredSides.Count == 0;
+            var side = isNew ? new PolygonSide(this) : retiredSides.Pop();
+            var common = isNew ? CommonStyle(sides) : null;
             side.Drawing = Drawing;
             side.Visible = Visible;
             side.Selected = Selected;
@@ -290,6 +304,11 @@ namespace DynamicGeometry
             if (IsOnCanvas)
             {
                 side.OnAddingToCanvas(Drawing.Canvas);
+            }
+
+            if (common != null)
+            {
+                side.Style = common;
             }
 
             RegisterPart(side);

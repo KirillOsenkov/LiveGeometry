@@ -512,8 +512,13 @@ namespace DynamicGeometry
         /// </summary>
         public override void MouseRightClick(object sender, MouseButtonEventArgs e)
         {
-            var figure = Drawing.Figures.HitTest(Coordinates(e, false, false, false));
+            var hit = Drawing.Figures.HitTest(Coordinates(e, false, false, false));
             var menu = new Avalonia.Controls.ContextMenu();
+
+            // a vertex or a side of a regular polygon is selected by itself, as a click
+            // selects it, but what the menu does (hide, lock, delete) is done to the polygon
+            var clicked = hit != null ? FigureParts.SelectionTarget(hit) : null;
+            var figure = clicked != null ? FigureParts.Whole(clicked) : null;
 
             void Add(string header, System.Action action, bool? isChecked = null)
             {
@@ -544,10 +549,10 @@ namespace DynamicGeometry
             }
             else
             {
-                if (!figure.Selected)
+                if (!clicked.Selected)
                 {
                     Drawing.Figures.ClearSelection();
-                    figure.Selected = true;
+                    clicked.Selected = true;
                     Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
                 }
 
@@ -646,7 +651,7 @@ namespace DynamicGeometry
         /// <summary>The figures selected with the one clicked, which is among them; no names of points or lines (those go with Show name)</summary>
         IList<IFigure> SelectedOrClicked(IFigure clicked)
         {
-            var selected = Drawing.GetSelectedFigures()
+            var selected = FigureParts.Wholes(Drawing.GetSelectedFigures())
                 .Where(f => !(f is PointLabel) && !(f is FigureLabel))
                 .ToList();
             if (!selected.Contains(clicked))
@@ -710,10 +715,17 @@ namespace DynamicGeometry
 
         private void UpdateSelection()
         {
-            var clicked = found ?? pressedFixedLabel;
+            // a vertex or a side of a regular polygon by itself, the inside for the polygon
+            var clicked = found != null ? FigureParts.SelectionTarget(found) : pressedFixedLabel;
             if (IsCtrlPressed())
             {
-                if (clicked != null)
+                // a part of a polygon selected whole: the polygon goes out of the selection
+                var whole = clicked != null ? FigureParts.Whole(clicked) : null;
+                if (whole != clicked && whole.Selected)
+                {
+                    whole.Selected = false;
+                }
+                else if (clicked != null)
                 {
                     clicked.Selected = !clicked.Selected;
                 }

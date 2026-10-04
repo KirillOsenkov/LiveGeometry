@@ -914,6 +914,11 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// The selection as the grid shows it: the figures selected, and the vertices and sides
+        /// of a regular polygon selected by themselves (<see cref="FigureParts"/>). Whatever
+        /// acts on figures of the drawing takes <see cref="FigureParts.Wholes"/> of it.
+        /// </summary>
         public IEnumerable<IFigure> GetSelectedFigures()
         {
             foreach (IFigure figure in Figures)
@@ -921,6 +926,13 @@ namespace DynamicGeometry
                 if (figure.Selected)
                 {
                     yield return figure;
+                }
+                else if (figure is IFigureParts parts)
+                {
+                    foreach (var part in parts.SelectableParts.Where(part => part.Selected))
+                    {
+                        yield return part;
+                    }
                 }
             }
         }
@@ -943,7 +955,7 @@ namespace DynamicGeometry
 
         public List<IFigure> GetSelectedFiguresWithDependencies()
         {
-            var selectedFigures = GetSelectedFigures();
+            var selectedFigures = FigureParts.Wholes(GetSelectedFigures()).ToList();
             List<IFigure> results = new List<IFigure>();
             results.AddRange(selectedFigures);
             foreach (IFigure selectedFigure in selectedFigures)
@@ -1095,7 +1107,8 @@ namespace DynamicGeometry
         /// <summary>Several figures in one undo step, as <see cref="DeleteSelection"/> does</summary>
         public void Delete(IEnumerable<IFigure> figuresToDelete)
         {
-            var figures = figuresToDelete
+            // a vertex or a side goes with its polygon: a regular polygon without one is none
+            var figures = FigureParts.Wholes(figuresToDelete)
                 .Where(f => !(f is CartesianGrid) && !(f is PointLabel) && !(f is FigureLabel))
                 .ToArray();
             // the Delete key reaches here twice (the tool on key down, the window on key up):
@@ -1262,7 +1275,7 @@ namespace DynamicGeometry
 
         public void LockSelected()
         {
-            IEnumerable<IFigure> roots = this.GetSelectedFigures();
+            IEnumerable<IFigure> roots = FigureParts.Wholes(this.GetSelectedFigures()).ToList();
             bool shouldLock = roots.All(root => (!root.Locked));
             foreach (IFigure figure in roots)
             {
