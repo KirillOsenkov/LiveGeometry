@@ -17,6 +17,10 @@ namespace DynamicGeometry;
 public class SwatchPage : ColorPage
 {
     readonly Dictionary<Control, NamedColor> swatches = new Dictionary<Control, NamedColor>();
+
+    /// <summary>The swatches in palette order, row by row: what the arrow keys move through</summary>
+    readonly List<Control> swatchesInOrder = new List<Control>();
+
     Control selectedSwatch;
 
     public SwatchPage()
@@ -27,6 +31,9 @@ public class SwatchPage : ColorPage
     public SwatchPage(ColorPalette palette)
     {
         this.palette = palette;
+
+        // takes the keyboard when a swatch is clicked, for the arrow keys (OnKeyDown)
+        Focusable = true;
     }
 
     public override string Title => "Swatches";
@@ -103,9 +110,9 @@ public class SwatchPage : ColorPage
     void Rebuild()
     {
         swatches.Clear();
+        swatchesInOrder.Clear();
         selectedSwatch = null;
 
-        var controls = new List<Control>();
         foreach (var named in palette.Colors)
         {
             var swatch = CreateSwatch(named);
@@ -116,10 +123,10 @@ public class SwatchPage : ColorPage
             }
 
             swatches.Add(swatch, named);
-            controls.Add(swatch);
+            swatchesInOrder.Add(swatch);
         }
 
-        Child = CreateLayout(controls);
+        Child = CreateLayout(swatchesInOrder.ToArray());
         OnColorSet(Color);
     }
 
@@ -128,6 +135,106 @@ public class SwatchPage : ColorPage
         var swatch = (Control)sender;
         Select(swatch);
         Pick(swatches[swatch].Color);
+
+        // the arrow keys go on from here
+        Focus(NavigationMethod.Pointer);
+    }
+
+    /// <summary>
+    /// An arrow key moves the current swatch to the next one that way, in its row or its
+    /// column, and picks that color as a click would (the editor makes a run of them one
+    /// undo step, as it does a run of clicks). Without a current swatch - a color the palette
+    /// doesn't have - the first press goes to the swatch nearest the color.
+    /// </summary>
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        base.OnKeyDown(e);
+        if (e.Handled || e.KeyModifiers != KeyModifiers.None)
+        {
+            return;
+        }
+
+        (int Columns, int Rows) step = e.Key switch
+        {
+            Key.Left => (-1, 0),
+            Key.Right => (1, 0),
+            Key.Up => (0, -1),
+            Key.Down => (0, 1),
+            _ => (0, 0)
+        };
+        if (step == (0, 0))
+        {
+            return;
+        }
+
+        // at the edge too: the side panel's scroll viewer would take the key and scroll
+        e.Handled = true;
+        var target = selectedSwatch == null
+            ? FindNearest(Color)
+            : FindNeighbor(selectedSwatch, step.Columns, step.Rows);
+        if (target != null && target != selectedSwatch)
+        {
+            Select(target);
+            Pick(swatches[target].Color);
+        }
+    }
+
+    /// <summary>
+    /// The next swatch with a color from the given one, stepping through the grid of
+    /// <see cref="CreateLayout"/>, past holes in the palette; null at the edge
+    /// </summary>
+    Control FindNeighbor(Control swatch, int columnStep, int rowStep)
+    {
+        int columns = System.Math.Max(palette.Columns, 1);
+        int index = swatchesInOrder.IndexOf(swatch);
+        int column = index % columns;
+        int row = index / columns;
+        while (true)
+        {
+            column += columnStep;
+            row += rowStep;
+            int next = row * columns + column;
+            if (column < 0 || column >= columns || row < 0 || next >= swatchesInOrder.Count)
+            {
+                return null;
+            }
+
+            var candidate = swatchesInOrder[next];
+            if (swatches[candidate].Name.Length > 0)
+            {
+                return candidate;
+            }
+        }
+    }
+
+    /// <summary>The swatch whose color is nearest the given one</summary>
+    Control FindNearest(Color color)
+    {
+        Control nearest = null;
+        double nearestDistance = double.MaxValue;
+        foreach (var swatch in swatchesInOrder)
+        {
+            var named = swatches[swatch];
+            if (named.Name.Length == 0)
+            {
+                continue;
+            }
+
+            var swatchColor = named.Color;
+            double distance = Square(swatchColor.R - color.R)
+                + Square(swatchColor.G - color.G)
+                + Square(swatchColor.B - color.B)
+                + Square(swatchColor.A - color.A);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearest = swatch;
+            }
+        }
+
+        return nearest;
+
+        static double Square(double value) => value * value;
     }
 
     /// <summary>The visual of one swatch. Whatever it returns gets the click and the tooltip.</summary>

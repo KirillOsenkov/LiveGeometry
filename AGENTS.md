@@ -1141,7 +1141,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   2026-09-29 have a line of length 1, which leaves the corners of a diagonal one flat; they
   load as they are and take the new line when edited.
   Whoever hosts a `SegmentSwitcher` sets its `Surface` to the background it sits on so the
-  selected tab blends into it.
+  selected tab blends into it. A click on a swatch gives the page the keyboard, and the
+  arrow keys move the current swatch through the grid and pick as a click does
+  (`SwatchPage.OnKeyDown`; one undo step for the run, the canvas doesn't pan meanwhile).
 - **The paper** is `Drawing.Background`, edited through "Drawing background" on the settings
   page (`AppSettings.EditDrawingBackground`; `DrawingHost.ShowDrawingProperties` puts the
   drawing itself in the property grid). "Reset to default" (the theme's paper) shows only while
