@@ -109,6 +109,32 @@ namespace DynamicGeometry
             get { return Value.ToRadians(); }
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Number";
+            }
+        }
+
+        /// <summary>A number goes by its name: "radius n1"</summary>
+        public override string Noun
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /// <summary>"= 3"</summary>
+        public override string Construction
+        {
+            get
+            {
+                return "= " + ConstructionText.Number(Value);
+            }
+        }
+
         // n1, n2, n3: short, since they are what an expression or a "tied to" row shows
         public override string GenerateFigureName(List<string> blacklist)
         {

@@ -10,6 +10,24 @@ namespace DynamicGeometry
             return Factory.CreateLineShape();
         }
 
+        /// <summary>Line g, h... when no points name it</summary>
+        protected override string FirstLetter
+        {
+            get
+            {
+                return "g";
+            }
+        }
+
+        /// <summary>"to line g": a parallel or a bisector is a line to what is built on it</summary>
+        public override string Noun
+        {
+            get
+            {
+                return "line";
+            }
+        }
+
         public virtual PointPair OnScreenCoordinates
         {
             get

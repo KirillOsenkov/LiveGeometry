@@ -38,6 +38,32 @@ namespace DynamicGeometry
             }
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Function";
+            }
+        }
+
+        /// <summary>Function f, g...</summary>
+        protected override string FirstLetter
+        {
+            get
+            {
+                return "f";
+            }
+        }
+
+        /// <summary>"y = sin(x)"</summary>
+        public override string Construction
+        {
+            get
+            {
+                return string.IsNullOrEmpty(FunctionText) ? null : "y = " + FunctionText;
+            }
+        }
+
         public override void ReadXml(System.Xml.Linq.XElement element)
         {
             base.ReadXml(element);
@@ -66,6 +92,7 @@ namespace DynamicGeometry
                 // wrong with one that doesn't (FunctionEditor)
                 mFunctionText = value;
                 Compile();
+                RaiseConstructionChanged();
             }
         }
 

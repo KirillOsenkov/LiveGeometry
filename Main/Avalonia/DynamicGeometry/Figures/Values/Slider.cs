@@ -135,29 +135,35 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
 
     #region Name
 
-    // a, b, c: what an expression says, next to points A, B, C. Not e (the constant), not x
-    // and y (the axes and the variable of a function), not the letters that read as digits.
-    const string alphabet = "abcdfghkmnpqrstuvwz";
-
+    // a, b, c: what an expression says, next to points A, B, C (the letters lines and circles
+    // are named with too, from g and c on)
     public override string GenerateFigureName(List<string> blacklist)
     {
-        for (int i = 0; ; i++)
-        {
-            foreach (var letter in alphabet)
-            {
-                var candidate = i == 0 ? letter.ToString() : letter + i.ToString();
-                if (this.NameAvailable(candidate) && (blacklist == null || !blacklist.Contains(candidate)))
-                {
-                    return candidate;
-                }
-            }
-        }
+        return GenerateLetterName(this, "a", blacklist);
     }
 
     /// <summary>A composite dumps its parts by default</summary>
     public override string ToString()
     {
         return Name;
+    }
+
+    /// <summary>A slider goes by its name, as a number does: "radius a"</summary>
+    public override string Noun
+    {
+        get
+        {
+            return null;
+        }
+    }
+
+    /// <summary>"= 2"</summary>
+    public override string Construction
+    {
+        get
+        {
+            return "= " + ConstructionText.Number(Value);
+        }
     }
 
     /// <summary>The property grid's title: "Slider a"</summary>

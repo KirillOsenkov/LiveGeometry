@@ -24,6 +24,9 @@ namespace DynamicGeometry
         /// <summary>"Segment AB": what the property grid calls the figure (see <see cref="FigureBase.Title"/>)</summary>
         string Title { get; }
 
+        /// <summary>"of CD": how the figure is built, after its title (see <see cref="FigureBase.Construction"/>)</summary>
+        string Construction { get; }
+
         bool Exists { get; set; }
         bool Selected { get; set; }
         bool Enabled { get; set; }

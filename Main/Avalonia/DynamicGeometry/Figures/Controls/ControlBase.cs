@@ -9,6 +9,15 @@ namespace DynamicGeometry
             return (int)ZOrder.Controls;
         }
 
+        /// <summary>A text, a measurement, a box: told apart by what they say, not by Label3</summary>
+        protected override bool NamedByConstruction
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public override IFigure HitTest(Point point)
         {
             if (Rect.Contains(point))

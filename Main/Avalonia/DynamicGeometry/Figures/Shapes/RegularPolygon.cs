@@ -132,7 +132,7 @@ namespace DynamicGeometry
                 numberOfSides = value;
                 Recreate(numberOfSides);
                 this.RecalculateAllDependents();
-                // the title says it: 5-gon
+                // the title says it: Regular pentagon
                 RaisePropertyChanged(nameof(NumberOfSides));
 
                 // and the side is another, with the vertex where it was
@@ -333,9 +333,55 @@ namespace DynamicGeometry
 
         readonly Stack<Segment> retiredSides = new Stack<Segment>();
 
+        /// <summary>"Regular pentagon", "Square", "Regular 13-gon"</summary>
+        protected override string Kind
+        {
+            get
+            {
+                switch (NumberOfSides)
+                {
+                    case 3:
+                        return "Equilateral triangle";
+                    case 4:
+                        return "Square";
+                    case 5:
+                        return "Regular pentagon";
+                    case 6:
+                        return "Regular hexagon";
+                    case 7:
+                        return "Regular heptagon";
+                    case 8:
+                        return "Regular octagon";
+                    case 9:
+                        return "Regular nonagon";
+                    case 10:
+                        return "Regular decagon";
+                    case 12:
+                        return "Regular dodecagon";
+                    default:
+                        return "Regular " + NumberOfSides + "-gon";
+                }
+            }
+        }
+
+        /// <summary>"with center F and vertex G"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count < 2)
+                {
+                    return null;
+                }
+
+                return "with center " + ConstructionText.Of(CenterPoint) + " and vertex " + ConstructionText.Of(VertexPoint);
+            }
+        }
+
+        /// <summary>The name, not the dump of the parts a composite gives</summary>
         public override string ToString()
         {
-            return NumberOfSides.ToString() + "-gon";
+            return Name;
         }
     }
 }

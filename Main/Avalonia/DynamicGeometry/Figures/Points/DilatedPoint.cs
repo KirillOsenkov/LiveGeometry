@@ -119,6 +119,31 @@ namespace DynamicGeometry
                 : "Factor = " + TiedValues.SourceName(FactorSource);
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Dilated point";
+            }
+        }
+
+        /// <summary>"of A from O by 2", "... by a", "... by AB / CD"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count < 3)
+                {
+                    return null;
+                }
+
+                var factor = IsRatio
+                    ? ConstructionText.Length(Dependencies[2]) + " / " + ConstructionText.Length(Dependencies[3])
+                    : ConstructionText.Length(FactorSource);
+                return "of " + ConstructionText.Of(Source) + " from " + ConstructionText.Of(Center) + " by " + factor;
+            }
+        }
+
         protected override Shape CreateShape()
         {
             return Factory.CreateDependentPointShape();

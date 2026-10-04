@@ -41,6 +41,15 @@
             }
         }
 
+        /// <summary>"at (2, A.Y + 1)"</summary>
+        public override string Construction
+        {
+            get
+            {
+                return "at (" + XExpression.Text + ", " + YExpression.Text + ")";
+            }
+        }
+
         [PropertyGridVisible]
         [PropertyGridName("X = ")]
         public DrawingExpression XExpression { get; private set; }

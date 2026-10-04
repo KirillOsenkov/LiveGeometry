@@ -6,6 +6,13 @@ namespace DynamicGeometry
 
     public partial class EllipseArc : EllipseArcBase
     {
+        protected override string Kind
+        {
+            get
+            {
+                return "Elliptical arc";
+            }
+        }
 
         public override int BeginPointIndex
         {
@@ -91,6 +98,14 @@ namespace DynamicGeometry
     // Unlike an arc, a circle or ellipse segment has a defined area.
     public partial class CircleSegment : CircleArcBase, IShapeWithInterior, IConditionalProperties
     {
+        protected override string Kind
+        {
+            get
+            {
+                return "Circular segment";
+            }
+        }
+
         /// <summary>No "Convert to arc" while something measures the area: a bare arc has none</summary>
         public bool CanEdit(string propertyName)
         {
@@ -143,6 +158,14 @@ namespace DynamicGeometry
 
     public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IConditionalProperties
     {
+        protected override string Kind
+        {
+            get
+            {
+                return "Elliptical segment";
+            }
+        }
+
         /// <summary>No "Convert to arc" while something measures the area: a bare arc has none</summary>
         public bool CanEdit(string propertyName)
         {
@@ -204,6 +227,14 @@ namespace DynamicGeometry
 
     public partial class CircleSector : CircleArcBase, IShapeWithInterior, IConditionalProperties
     {
+        protected override string Kind
+        {
+            get
+            {
+                return "Sector";
+            }
+        }
+
         /// <summary>No "Convert to arc" while something measures the area: a bare arc has none</summary>
         public bool CanEdit(string propertyName)
         {
@@ -280,6 +311,14 @@ namespace DynamicGeometry
 
     public partial class EllipseSector : EllipseArcBase, IShapeWithInterior, IConditionalProperties
     {
+        protected override string Kind
+        {
+            get
+            {
+                return "Elliptical sector";
+            }
+        }
+
         /// <summary>No "Convert to arc" while something measures the area: a bare arc has none</summary>
         public bool CanEdit(string propertyName)
         {

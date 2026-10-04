@@ -387,6 +387,54 @@ namespace DynamicGeometry
             return defaultCaption + " = " + TiedValues.SourceName(source);
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Translated point";
+            }
+        }
+
+        /// <summary>
+        /// "of A by vector u", "of A by 3 at 30°", "of A along line g" (a free distance), "of
+        /// A by a" (a free direction)
+        /// </summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Source == null)
+                {
+                    return null;
+                }
+
+                var result = "of " + ConstructionText.Of(Source);
+                var distance = DistanceSource;
+                var direction = DirectionSource;
+                if (distance != null && distance == direction)
+                {
+                    return result + " by " + ConstructionText.Of(distance);
+                }
+
+                if (distance != null)
+                {
+                    result += " by " + (distance is Vector ? "the length of " + ConstructionText.Of(distance) : ConstructionText.Length(distance));
+                }
+
+                switch (direction)
+                {
+                    case null:
+                        return result;
+                    case Vector:
+                        return result + " in the direction of " + ConstructionText.Of(direction);
+                    case ILine:
+                        return result + " along " + ConstructionText.Of(direction);
+                    default:
+                        return result + " at " + ConstructionText.AngleValue(direction);
+                }
+            }
+        }
+
         /// <summary>
         /// The quantity's current value becomes its parameter and its source is dropped. A
         /// Number that held a typed value for this point alone leaves the drawing with it,

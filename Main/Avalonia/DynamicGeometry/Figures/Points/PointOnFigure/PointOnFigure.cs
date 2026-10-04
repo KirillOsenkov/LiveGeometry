@@ -23,6 +23,15 @@ namespace DynamicGeometry
             writer.WriteAttributeDouble("Parameter", Parameter);
         }
 
+        /// <summary>"on segment CD"</summary>
+        public override string Construction
+        {
+            get
+            {
+                return Dependencies.Count > 0 ? "on " + ConstructionText.Of(Dependencies[0]) : null;
+            }
+        }
+
         protected override Avalonia.Controls.Shapes.Shape CreateShape()
         {
             var result = Factory.CreateDependentPointShape();

@@ -30,6 +30,23 @@ namespace DynamicGeometry
             "CheckBoxCheckBackgroundStrokeUncheckedPressed"
         };
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Show/hide box";
+            }
+        }
+
+        /// <summary>The caption, in quotes</summary>
+        public override string Construction
+        {
+            get
+            {
+                return ConstructionText.Quote(Checkbox?.Content?.ToString());
+            }
+        }
+
         /// <summary>The caption and the empty box in the text style's color, in every state (hovered, pressed, checked)</summary>
         public override void ApplyStyle()
         {

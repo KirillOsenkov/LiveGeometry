@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Linq;
+using Avalonia;
 
 namespace DynamicGeometry
 {
@@ -13,6 +14,23 @@ namespace DynamicGeometry
         public string Caption(string propertyName, string defaultCaption)
         {
             return defaultCaption;
+        }
+
+        protected override string Kind
+        {
+            get
+            {
+                return "Midpoint";
+            }
+        }
+
+        /// <summary>"of CD"</summary>
+        public override string Construction
+        {
+            get
+            {
+                return "of " + ConstructionText.Points(Dependencies.ToArray());
+            }
         }
 
         protected override Avalonia.Controls.Shapes.Shape CreateShape()

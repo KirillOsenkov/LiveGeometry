@@ -19,6 +19,23 @@ namespace DynamicGeometry
             }
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Angle";
+            }
+        }
+
+        /// <summary>"ABC": "Angle ABC"</summary>
+        public override string Construction
+        {
+            get
+            {
+                return Dependencies.Count < 3 ? null : ConstructionText.Points(Dependencies[1], Dependencies[0], Dependencies[2]);
+            }
+        }
+
         public double Measure
         {
             get
@@ -135,6 +152,15 @@ namespace DynamicGeometry
 
     public class HorizontalAngleMeasurement : AngleMeasurementBase
     {
+        /// <summary>"of AB to the x axis"</summary>
+        public override string Construction
+        {
+            get
+            {
+                return Dependencies.Count < 2 ? null : "of " + ConstructionText.Points(Dependencies[0], Dependencies[1]) + " to the x axis";
+            }
+        }
+
         public override void MoveToCore(Point newPosition)
         {
             base.MoveToCore(newPosition.Plus(0.2));

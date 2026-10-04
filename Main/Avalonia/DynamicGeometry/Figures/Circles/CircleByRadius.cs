@@ -27,6 +27,23 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>"with center N and radius a", "... radius AB", "... radius 3"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count < 2)
+                {
+                    return null;
+                }
+
+                var radius = Dependencies.Count > 2
+                    ? ConstructionText.Points(Dependencies[0], Dependencies[1])
+                    : ConstructionText.Length(Dependencies[0]);
+                return "with center " + ConstructionText.Of(Dependencies[Dependencies.Count - 1]) + " and radius " + radius;
+            }
+        }
+
         /// <summary>
         /// No circle of a radius that is no length: a label or a Number that says a
         /// negative number or "undefined". (A negative width is nothing Avalonia draws, and

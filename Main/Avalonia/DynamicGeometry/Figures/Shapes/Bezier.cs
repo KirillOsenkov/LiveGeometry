@@ -25,6 +25,24 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>A name: "on Bezier curve ABCD"</summary>
+        public override string Noun
+        {
+            get
+            {
+                return "Bezier curve";
+            }
+        }
+
+        /// <summary>Named as curves are, when no points name it: c, d...</summary>
+        protected override string FirstLetter
+        {
+            get
+            {
+                return "c";
+            }
+        }
+
         /// <summary>
         /// The curve worked out, also before its first <see cref="Recalculate"/>: a point
         /// on it that is read from a file asks where it is while the file is still being

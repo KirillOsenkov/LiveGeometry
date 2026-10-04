@@ -126,7 +126,7 @@ namespace DynamicGeometry
             FollowObjectTab();
 
             // the title may say what changed: the name ("Segment AB", also when a point is
-            // renamed), the number of sides of a regular polygon ("5-gon")
+            // renamed), the number of sides of a regular polygon ("Regular pentagon")
             UpdateHeader();
         }
 
@@ -523,12 +523,7 @@ namespace DynamicGeometry
 
         protected virtual void AddHeader()
         {
-            string title = Title;
-            if (string.IsNullOrEmpty(title))
-            {
-                title = GetTitleString(Selection);
-            }
-            Header = GetTitleControl(title);
+            CreateHeader();
             if (HeaderHost != null)
             {
                 HeaderHost.Child = Header;
@@ -548,33 +543,71 @@ namespace DynamicGeometry
         public void UpdateHeader()
         {
             // a refresh can come after the grid was emptied (it is posted to the dispatcher)
-            if (Selection == null || !(Header is TextBlock))
+            if (Selection == null || headerTitle == null)
             {
                 return;
             }
 
-            string title = Title;
-            if (string.IsNullOrEmpty(title))
-            {
-                title = GetTitleString(Selection);
-            }
-            (Header as TextBlock).Text = title;  
+            ShowHeader();
         }
 
         UIElement Header { get; set; }
 
-        static UIElement GetTitleControl(string title)
+        TextBlock headerTitle;
+
+        // how the figure is built ("of CD"), under its title, smaller and faded
+        TextBlock headerConstruction;
+
+        void CreateHeader()
         {
-            var text = new TextBlock()
+            headerTitle = new TextBlock()
             {
-                Text = title,
                 FontSize = 15,
                 FontWeight = FontWeight.SemiBold,
-                Margin = new Thickness(0, 0, 0, 10),
+                TextWrapping = TextWrapping.Wrap,
                 IsHitTestVisible = false
             };
-            text.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
-            return text;
+            headerTitle.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
+            headerConstruction = new TextBlock()
+            {
+                FontSize = 12,
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0, 2, 0, 0),
+                IsHitTestVisible = false
+            };
+            headerConstruction.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.TextMuted));
+            Header = new StackPanel()
+            {
+                Margin = new Thickness(0, 0, 0, 10),
+                Children = { headerTitle, headerConstruction }
+            };
+            ShowHeader();
+        }
+
+        void ShowHeader()
+        {
+            string title = Title;
+            string construction = null;
+            if (string.IsNullOrEmpty(title))
+            {
+                title = GetTitleString(Selection);
+                construction = GetConstruction(Selection);
+            }
+
+            headerTitle.Text = title;
+            headerConstruction.Text = construction;
+            headerConstruction.IsVisible = !string.IsNullOrEmpty(construction);
+        }
+
+        /// <summary>A figure's construction, unless its page is named otherwise ([PropertyGridName])</summary>
+        static string GetConstruction(object editableObject)
+        {
+            if (editableObject is not IFigure figure || editableObject.GetType().GetAttribute<PropertyGridNameAttribute>() != null)
+            {
+                return null;
+            }
+
+            return figure.Construction;
         }
 
         public string Title { get; set; }

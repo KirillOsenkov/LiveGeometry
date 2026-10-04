@@ -17,6 +17,15 @@ namespace DynamicGeometry
         /// </summary>
         protected IPoint[] vertices;
         protected Point[] vertexCoordinates;
+
+        /// <summary>Polygon p, q... when no points name it (more than ten vertices)</summary>
+        protected override string FirstLetter
+        {
+            get
+            {
+                return "p";
+            }
+        }
         public Point[] VertexCoordinates
         {
             get

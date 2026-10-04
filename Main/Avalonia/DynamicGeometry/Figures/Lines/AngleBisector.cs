@@ -23,6 +23,28 @@ namespace DynamicGeometry
             }
         }
 
+        public override string Noun
+        {
+            get
+            {
+                return IsLine ? "line" : "ray";
+            }
+        }
+
+        /// <summary>"of angle HIJ"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count == 1)
+                {
+                    return "of " + ConstructionText.AngleValue(Dependencies[0]);
+                }
+
+                return Dependencies.Count == 3 ? "of " + ConstructionText.Angle(Dependencies[0], Dependencies[1], Dependencies[2]) : null;
+            }
+        }
+
         public override PointPair Coordinates
         {
             get

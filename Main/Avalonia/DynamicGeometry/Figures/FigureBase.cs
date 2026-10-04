@@ -34,9 +34,21 @@ namespace DynamicGeometry
         public virtual string GenerateFigureName(List<string> blacklist)
         {
             // a composite's parts are numbered: only the composite takes the name of its points
-            var stem = Drawing != null && Drawing.Figures.Contains(this) ? NameFromDependencies() : null;
+            bool inDrawing = Drawing != null && Drawing.Figures.Contains(this);
+            var stem = inDrawing ? NameFromDependencies() : null;
             if (stem == null)
             {
+                // Hidden helpers too (the ellipse's short axis), unlike hidden points: other
+                // figures' constructions name them ("of line g and segment AB"), and a name
+                // like PerpendicularLine1 was one the list showed nowhere else. Not a part of
+                // a composite (a vector's shaft). A copy being pasted isn't in the list yet,
+                // and takes one.
+                bool isPart = Drawing != null && Drawing.Figures.FindTopLevel(this) is IFigure whole && whole != this;
+                if (Drawing != null && !isPart && FirstLetter != null)
+                {
+                    return GenerateLetterName(this, FirstLetter, blacklist);
+                }
+
                 return this.GenerateNewName();
             }
 
@@ -47,6 +59,49 @@ namespace DynamicGeometry
                 if (this.NameAvailable(candidate) && (blacklist == null || !blacklist.Contains(candidate)))
                 {
                     return candidate;
+                }
+            }
+        }
+
+        /// <summary>
+        /// The lowercase letters a figure not named after its points is named with, as a
+        /// textbook names line g or circle c and as a slider is named: not e (the constant),
+        /// not x and y (the axes and the variable of a function), not the letters that read
+        /// as digits
+        /// </summary>
+        public const string Letters = "abcdfghkmnpqrstuvwz";
+
+        /// <summary>
+        /// The letter of <see cref="Letters"/> the names of the figure's kind start from
+        /// (g for a line, c for a circle), when nothing names it after its points; null for
+        /// a figure numbered by its type (Label1, the helpers a measurement or a mark is)
+        /// </summary>
+        protected virtual string FirstLetter
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// The first free name from <paramref name="firstLetter"/> to the end of <see cref="Letters"/>,
+        /// then the same with 1, 2... after it. Not round to the start: a function would be
+        /// named a, a slider's letter, once lines and circles had taken f to z.
+        /// </summary>
+        public static string GenerateLetterName(IFigure figure, string firstLetter, List<string> blacklist)
+        {
+            int start = System.Math.Max(0, Letters.IndexOf(firstLetter, StringComparison.Ordinal));
+            for (int i = 0; ; i++)
+            {
+                for (int j = start; j < Letters.Length; j++)
+                {
+                    var letter = Letters[j];
+                    var candidate = i == 0 ? letter.ToString() : letter + i.ToString();
+                    if (figure.NameAvailable(candidate) && (blacklist == null || !blacklist.Contains(candidate)))
+                    {
+                        return candidate;
+                    }
                 }
             }
         }
@@ -476,27 +531,98 @@ namespace DynamicGeometry
 
         /// <summary>
         /// "Segment AB", "Triangle ABC": the kind in front of the name, for the property grid -
-        /// unless the name says it already (Circle1, Bezier3, SegmentBisector2)
+        /// unless the name says it already (Circle1, Bezier3), or the figure goes by what it
+        /// is built on and has a number for a name (Distance, not DistanceMeasurement1:
+        /// <see cref="NamedByConstruction"/>)
         /// </summary>
         public string Title
         {
             get
             {
-                // without a kind, what the figure says of itself ("Coordinate grid", "6-gon")
+                // without a kind, what the figure says of itself ("Coordinate grid")
                 var kind = Kind;
                 if (kind == null || string.IsNullOrEmpty(Name))
                 {
                     return ToString();
                 }
 
-                var name = Name.Replace(" ", "");
-                if (name.StartsWith(kind.Replace(" ", ""), StringComparison.OrdinalIgnoreCase)
-                    || name.StartsWith(GetType().Name, StringComparison.OrdinalIgnoreCase))
+                // Distance, not DistanceMeasurement1. Only for what nothing refers to by name:
+                // Circle1 stays, since "on Circle₁" in another row must be found in the list.
+                if (NamedByConstruction && IsStemAndNumber(Name, GetType().Name))
+                {
+                    return kind;
+                }
+
+                if (NameSays(kind))
                 {
                     return NameDisplay.Format(Name);
                 }
 
                 return kind + " " + NameDisplay.Format(Name);
+            }
+        }
+
+        /// <summary>Whether the name says what the figure is: Circle1 for "Circle", ParallelLine2 for "Parallel line"</summary>
+        bool NameSays(string kind)
+        {
+            var name = Name.Replace(" ", "");
+            return name.StartsWith(kind.Replace(" ", ""), StringComparison.OrdinalIgnoreCase)
+                || name.StartsWith(GetType().Name, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// A figure whose name nobody reads (a measurement, a text, an angle's mark): with the
+        /// number it is given, its <see cref="Title"/> is the kind alone, and the construction
+        /// says which one it is ("Distance" "AB")
+        /// </summary>
+        protected virtual bool NamedByConstruction
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// How the figure is built, the words that follow its <see cref="Title"/>: "of CD" (a
+        /// midpoint), "on circle k", "to line AB through E". Null where the title says it all
+        /// (segment AB, a free point). The Figure List shows it after the title, faded, and
+        /// the property grid under the title.
+        /// </summary>
+        public virtual string Construction
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// What another figure's <see cref="Construction"/> calls this one in front of its
+        /// name: "segment", "line", "circle" - the plain word, not "parallel line". Null for a
+        /// figure that goes by its name alone (a point, a number).
+        /// </summary>
+        public virtual string Noun
+        {
+            get
+            {
+                return Kind?.ToLowerInvariant();
+            }
+        }
+
+        /// <summary>"circle c", "segment AB", "E": the figure as a construction names it (<see cref="ConstructionText.Of"/>)</summary>
+        public string Reference
+        {
+            get
+            {
+                var name = NameDisplay.Format(Name);
+                var noun = Noun;
+                if (noun == null || string.IsNullOrEmpty(Name))
+                {
+                    return name;
+                }
+
+                return NameSays(noun) ? name : noun + " " + name;
             }
         }
 
@@ -550,6 +676,9 @@ namespace DynamicGeometry
                     foreach (var dependent in Dependents.OfType<FigureBase>().ToArray())
                     {
                         dependent.UpdateDefaultName();
+
+                        // "of AB" names this one
+                        dependent.RaiseConstructionChanged();
                     }
                 }
                 finally
@@ -1048,6 +1177,16 @@ namespace DynamicGeometry
         public virtual object GetContentForPropertyGrid()
         {
             return this;
+        }
+
+        /// <summary>
+        /// What <see cref="Construction"/> says has changed without a property of the figure's
+        /// own (an expression of a point by coordinates edited, a point it is built on
+        /// renamed): the grid's header reads it again
+        /// </summary>
+        public void RaiseConstructionChanged()
+        {
+            RaisePropertyChanged(nameof(Construction));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

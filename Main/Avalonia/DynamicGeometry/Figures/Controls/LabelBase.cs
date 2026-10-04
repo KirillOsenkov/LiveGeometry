@@ -28,6 +28,23 @@ namespace DynamicGeometry
             return (int)ZOrder.Labels;
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Text";
+            }
+        }
+
+        /// <summary>The start of the text, in quotes: Text “Drag the point…”</summary>
+        public override string Construction
+        {
+            get
+            {
+                return ConstructionText.Quote(Text);
+            }
+        }
+
         protected override FrameworkElement CreateShape()
         {
             TextBlock = Factory.CreateLabelShape();

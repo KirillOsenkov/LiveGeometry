@@ -25,6 +25,31 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>A reflection in a circle is an inversion</summary>
+        protected override string Kind
+        {
+            get
+            {
+                return Dependencies.Count > 1 && Mirror is ICircle ? "Inverted point" : "Reflected point";
+            }
+        }
+
+        /// <summary>"of A across line g", "of A through O", "of A in circle k"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count < 2)
+                {
+                    return null;
+                }
+
+                var mirror = Mirror;
+                var preposition = mirror is IPoint ? " through " : mirror is ICircle ? " in " : " across ";
+                return "of " + ConstructionText.Of(Source) + preposition + ConstructionText.Of(mirror);
+            }
+        }
+
         protected override Shape CreateShape()
         {
             return Factory.CreateDependentPointShape();

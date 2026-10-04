@@ -47,6 +47,31 @@ namespace DynamicGeometry
 
         static readonly HttpClient internet = new HttpClient();
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Link";
+            }
+        }
+
+        protected override bool NamedByConstruction
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>The text, in quotes</summary>
+        public override string Construction
+        {
+            get
+            {
+                return ConstructionText.Quote(Shape?.Content?.ToString());
+            }
+        }
+
         private string mUrl = null;
         [PropertyGridVisible]
         public string Url

@@ -65,6 +65,15 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>A point goes by its name: "through E", not "through point E"</summary>
+        public override string Noun
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         // The label the point had last. A label is added and removed with the point and by
         // its Show name and Show coordinates, outside the undo history, so it must be the
         // same object every time: the history may hold a drag of it, and its place is its own.

@@ -17,6 +17,23 @@ namespace DynamicGeometry
             return (PointBase)Dependencies.ElementAt(0);
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Label";
+            }
+        }
+
+        /// <summary>"of A": "Label of A"</summary>
+        public override string Construction
+        {
+            get
+            {
+                return Dependencies.Count > 0 ? "of " + ConstructionText.Of(Dependencies[0]) : null;
+            }
+        }
+
         public override void OnAddingToDrawing(Drawing drawing)
         {
             base.OnAddingToDrawing(drawing);

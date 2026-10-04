@@ -10,6 +10,20 @@
             }
         }
 
+        /// <summary>"to line AB through E"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count < 2)
+                {
+                    return null;
+                }
+
+                return "to " + ConstructionText.Of(Dependencies[0]) + " through " + ConstructionText.Of(Dependencies[1]);
+            }
+        }
+
         protected override bool IsThroughTwoPoints
         {
             get

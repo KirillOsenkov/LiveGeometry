@@ -98,6 +98,30 @@ namespace DynamicGeometry
             return propertyName == nameof(Angle) && this.IsTied(propertyName) ? "Angle = " + TiedValues.SourceName(AngleSource) : defaultCaption;
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Rotated point";
+            }
+        }
+
+        /// <summary>"of A about O by 45°", "... by angle a"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count < 3)
+                {
+                    return null;
+                }
+
+                return "of " + ConstructionText.Of(Source)
+                    + " about " + ConstructionText.Of(Center)
+                    + " by " + ConstructionText.AngleValue(AngleSource);
+            }
+        }
+
         protected override Shape CreateShape()
         {
             return Factory.CreateDependentPointShape();

@@ -206,7 +206,7 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>"Side 2 of the 5-gon": the title of a part's page</summary>
+        /// <summary>"Side 2 of regular pentagon p": the title of a part's page</summary>
         public string DescribePart(IFigure part)
         {
             var partName = GetPartName(part);
@@ -216,7 +216,16 @@ namespace DynamicGeometry
             }
 
             var kind = partName.StartsWith(VertexPart, StringComparison.Ordinal) ? VertexPart : SidePart;
-            return kind + " " + partName.Substring(kind.Length) + " of the " + Title;
+            return kind + " " + partName.Substring(kind.Length) + " of " + Reference;
+        }
+
+        /// <summary>Polygon p, q... (no points of its own name it)</summary>
+        protected override string FirstLetter
+        {
+            get
+            {
+                return "p";
+            }
         }
 
         /// <summary>The rows of a part's page: its style, and what the polygon adds (<see cref="GetPartValues"/>)</summary>
@@ -238,7 +247,7 @@ namespace DynamicGeometry
             yield return MethodDescription.Create(typeof(FigureBase).GetMethod(nameof(CreateNewStyle)));
             yield return new DelegateOperation(
                 "SelectWhole",
-                "Select the " + Title,
+                "Select " + Reference,
                 PropertyGridIcon.Polygon,
                 SelectWhole);
         }

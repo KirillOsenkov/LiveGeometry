@@ -92,6 +92,20 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>"with center (1, A.Y) and radius 2"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (X == null || Y == null || R == null)
+                {
+                    return null;
+                }
+
+                return "with center (" + X.Text + ", " + Y.Text + ") and radius " + R.Text;
+            }
+        }
+
         [PropertyGridVisible]
         public DrawingExpression X { get; set; }
 

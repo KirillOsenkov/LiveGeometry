@@ -32,6 +32,20 @@ public class LineAtAngle : LineBase, ILine, ITiedValues, IConditionalProperties
         }
     }
 
+    /// <summary>"through A at 30°", "through A at angle a"</summary>
+    public override string Construction
+    {
+        get
+        {
+            if (Dependencies.Count < 2)
+            {
+                return null;
+            }
+
+            return "through " + ConstructionText.Of(Dependencies[0]) + " at " + ConstructionText.AngleValue(AngleSource);
+        }
+    }
+
     public IFigure AngleSource
     {
         get { return Dependencies.Count > 1 ? Dependencies[1] : null; }

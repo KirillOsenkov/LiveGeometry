@@ -704,6 +704,14 @@ public class FigureExplorer : Border
             TextTrimming = TextTrimming.CharacterEllipsis
         };
 
+        // how the figure is built, faded after the title: what a narrow list cuts first
+        readonly TextBlock construction = new TextBlock()
+        {
+            VerticalAlignment = VerticalAlignment.Center,
+            TextTrimming = TextTrimming.CharacterEllipsis,
+            Margin = new Thickness(4, 0, 0, 0)
+        };
+
         string iconKey;
         bool hover;
         bool isFocused;
@@ -712,6 +720,7 @@ public class FigureExplorer : Border
         {
             Figure = figure;
             text.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
+            construction.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.TextMuted));
             Height = RowHeight;
             Margin = explorer.RowMargin;
             Padding = new Thickness(4, 0, 4, 0);
@@ -720,8 +729,10 @@ public class FigureExplorer : Border
 
             var content = new DockPanel();
             DockPanel.SetDock(iconHost, Dock.Left);
+            DockPanel.SetDock(text, Dock.Left);
             content.Children.Add(iconHost);
             content.Children.Add(text);
+            content.Children.Add(construction);
             Child = content;
 
             PointerPressed += (s, e) => explorer.Row_PointerPressed(this, e);
@@ -747,6 +758,7 @@ public class FigureExplorer : Border
         public void UpdateContent()
         {
             text.Text = Figure.Title;
+            construction.Text = Figure.Construction;
             // a helper made for another figure (the Number of a fixed length) counts as hidden
             Opacity = Figure.Visible && !Figure.Auxiliary ? 1 : HiddenOpacity;
             var key = FigureIcons.GetKey(Figure);

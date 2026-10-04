@@ -7,6 +7,41 @@ namespace DynamicGeometry
     {
         private List<IFigure> figuresToRecalculate;
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Locus";
+            }
+        }
+
+        /// <summary>Numbered (Locus1): "Locus of P as Q moves on circle c" says which</summary>
+        protected override bool NamedByConstruction
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>"of P as Q moves on circle c"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (mDependencies.Count < 2)
+                {
+                    return null;
+                }
+
+                var sliding = mDependencies[1];
+                var result = "of " + ConstructionText.Of(mDependencies[0]) + " as " + ConstructionText.Of(sliding) + " moves";
+                return sliding is PointOnFigure && sliding.Dependencies.Count > 0
+                    ? result + " on " + ConstructionText.Of(sliding.Dependencies[0])
+                    : result;
+            }
+        }
+
         /// <summary>
         /// What lies between the point that slides and the point traced, worked out anew
         /// each time: kept from the first time, it went on naming a figure that had since

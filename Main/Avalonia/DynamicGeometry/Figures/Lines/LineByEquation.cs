@@ -58,6 +58,23 @@
             }
         }
 
+        /// <summary>"y = 2x + 1", "2x + 3y - 6 = 0": the equation as its expressions say it</summary>
+        public override string Construction
+        {
+            get
+            {
+                switch (Equation)
+                {
+                    case SlopeInterseptLineEquation slope:
+                        return "y = " + ConstructionText.Sum((slope.Slope.Text, "x"), (slope.Intersept.Text, ""));
+                    case GeneralFormLineEquation general:
+                        return ConstructionText.Sum((general.A.Text, "x"), (general.B.Text, "y"), (general.C.Text, "")) + " = 0";
+                    default:
+                        return null;
+                }
+            }
+        }
+
         public override PointPair OnScreenCoordinates
         {
             get

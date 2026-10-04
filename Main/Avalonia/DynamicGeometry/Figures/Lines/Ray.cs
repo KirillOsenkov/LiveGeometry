@@ -59,6 +59,14 @@ namespace DynamicGeometry
             }
         }
 
+        public override string Noun
+        {
+            get
+            {
+                return "ray";
+            }
+        }
+
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]

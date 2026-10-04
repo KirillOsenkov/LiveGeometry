@@ -297,6 +297,14 @@ namespace DynamicGeometry
             }
         }
 
+        public override string Noun
+        {
+            get
+            {
+                return "segment";
+            }
+        }
+
         public override string ToString()
         {
             // I think it is confusing to the user when the title of the property grid for a segment is different than the name.

@@ -14,6 +14,20 @@ namespace DynamicGeometry
             get { return Center.Distance(Point(1)); }
         }
 
+        /// <summary>"with center A through B"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count < 2)
+                {
+                    return null;
+                }
+
+                return "with center " + ConstructionText.Of(Dependencies[0]) + " through " + ConstructionText.Of(Dependencies[1]);
+            }
+        }
+
         protected override IPoint RadiusPivot
         {
             get { return (IPoint)Dependencies[0]; }

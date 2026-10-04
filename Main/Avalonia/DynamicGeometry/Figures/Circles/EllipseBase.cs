@@ -6,6 +6,14 @@ namespace DynamicGeometry
 {
     public abstract partial class EllipseBase : ShapeBase<Shape>, IEllipse
     {
+        /// <summary>Circle c, d... (and ellipses), as lines are g, h...</summary>
+        protected override string FirstLetter
+        {
+            get
+            {
+                return "c";
+            }
+        }
 
         public abstract double SemiMajor
         {

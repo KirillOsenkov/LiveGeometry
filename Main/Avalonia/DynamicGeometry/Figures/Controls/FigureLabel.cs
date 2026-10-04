@@ -28,6 +28,23 @@ public class FigureLabel : Measurement
         get { return Dependencies.Count > 0 ? Dependencies[0] : null; }
     }
 
+    protected override string Kind
+    {
+        get
+        {
+            return "Name";
+        }
+    }
+
+    /// <summary>"of line g": "Name of line g"</summary>
+    public override string Construction
+    {
+        get
+        {
+            return Figure != null ? "of " + ConstructionText.Of(Figure) : null;
+        }
+    }
+
     public override void OnAddingToDrawing(Drawing drawing)
     {
         base.OnAddingToDrawing(drawing);

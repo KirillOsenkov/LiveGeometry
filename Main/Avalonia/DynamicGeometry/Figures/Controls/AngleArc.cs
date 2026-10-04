@@ -23,6 +23,40 @@ namespace DynamicGeometry
             return defaultCaption;
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Angle mark";
+            }
+        }
+
+        /// <summary>Numbered (AngleArc1): a mark doesn't take a letter from the circles</summary>
+        protected override string FirstLetter
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        protected override bool NamedByConstruction
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>"ABC", the angle's points: "Angle mark ABC"</summary>
+        public override string Construction
+        {
+            get
+            {
+                return Dependencies.Count < 3 ? null : ConstructionText.Points(Dependencies[1], Dependencies[0], Dependencies[2]);
+            }
+        }
+
         /// <summary>Not in the grid: the mark goes the way the angle is measured, counterclockwise from the first side</summary>
         [PropertyGridVisible(false)]
         public override bool Clockwise

@@ -27,6 +27,15 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>Named as polygons are, when no points name it: p, q...</summary>
+        protected override string FirstLetter
+        {
+            get
+            {
+                return "p";
+            }
+        }
+
         /// <summary>
         /// Just for caching purposes, to avoid array allocations on a hotpath
         /// </summary>

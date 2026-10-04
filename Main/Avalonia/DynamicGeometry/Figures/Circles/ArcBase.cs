@@ -21,6 +21,30 @@ namespace DynamicGeometry
 
     public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthProvider
     {
+        /// <summary>Named as circles are: c, d...</summary>
+        protected override string FirstLetter
+        {
+            get
+            {
+                return "c";
+            }
+        }
+
+        /// <summary>"with center O from A to B"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count <= System.Math.Max(BeginPointIndex, EndPointIndex))
+                {
+                    return null;
+                }
+
+                return "with center " + ConstructionText.Of(Dependencies[0])
+                    + " from " + ConstructionText.Of(Dependencies[BeginPointIndex])
+                    + " to " + ConstructionText.Of(Dependencies[EndPointIndex]);
+            }
+        }
 
         public PathFigure Figure { get; set; }
         protected ArcSegment ArcShape { get; set; }

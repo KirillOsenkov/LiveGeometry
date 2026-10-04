@@ -175,6 +175,9 @@ namespace DynamicGeometry
             Text = value.ToString();
             Recalculate();
             RaiseValueChanged();
+
+            // "at (A.X + 1, 2)" in the grid's header follows the typing
+            (ParentFigure as FigureBase)?.RaiseConstructionChanged();
         }
 
         public object Parent

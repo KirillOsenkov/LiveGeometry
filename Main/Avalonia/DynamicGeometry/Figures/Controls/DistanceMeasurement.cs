@@ -19,6 +19,28 @@ namespace DynamicGeometry
             }
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Distance";
+            }
+        }
+
+        /// <summary>"AB": "Distance AB"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count > 1 && Dependencies[0] is IPoint && Dependencies[1] is IPoint)
+                {
+                    return ConstructionText.Points(Dependencies[0], Dependencies[1]);
+                }
+
+                return Dependencies.Count > 0 ? ConstructionText.Length(Dependencies[0]) : null;
+            }
+        }
+
         /// <summary>
         /// A figure with a length, or two points. Anything else has nothing to measure (a
         /// segment that was replaced by a ray, a file that says so): the measurement then

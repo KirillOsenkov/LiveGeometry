@@ -23,6 +23,28 @@ namespace DynamicGeometry
         {
         }
 
+        protected override string Kind
+        {
+            get
+            {
+                return "Intersection point";
+            }
+        }
+
+        /// <summary>"of line AB and circle k"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count < 2)
+                {
+                    return null;
+                }
+
+                return "of " + ConstructionText.Of(Dependencies[0]) + " and " + ConstructionText.Of(Dependencies[1]);
+            }
+        }
+
         public IntersectionPoint(Point hintPoint, IList<IFigure> dependencies)
         {
             Dependencies.AddRange(dependencies);

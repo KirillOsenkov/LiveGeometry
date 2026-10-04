@@ -12,6 +12,20 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>"to segment AB through E"</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count < 2)
+                {
+                    return null;
+                }
+
+                return "to " + ConstructionText.Of(Dependencies[0]) + " through " + ConstructionText.Of(Dependencies[1]);
+            }
+        }
+
         public override PointPair Coordinates
         {
             get

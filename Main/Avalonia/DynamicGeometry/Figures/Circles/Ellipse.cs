@@ -12,6 +12,22 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>"with center O and axes to A and B" (B is anywhere at the short axis's distance)</summary>
+        public override string Construction
+        {
+            get
+            {
+                if (Dependencies.Count < 3)
+                {
+                    return null;
+                }
+
+                return "with center " + ConstructionText.Of(Dependencies[0])
+                    + " and axes to " + ConstructionText.Of(Dependencies[1])
+                    + " and " + ConstructionText.Of(Dependencies[2]);
+            }
+        }
+
         public override Point Center
         {
             get { return Point(0); }

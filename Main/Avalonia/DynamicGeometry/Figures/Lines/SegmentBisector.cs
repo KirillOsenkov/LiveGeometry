@@ -12,6 +12,15 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>"of AB"</summary>
+        public override string Construction
+        {
+            get
+            {
+                return Dependencies.Count < 2 ? null : "of " + ConstructionText.Points(Dependencies[0], Dependencies[1]);
+            }
+        }
+
         PointPair coordinates;
 
         public override PointPair Coordinates

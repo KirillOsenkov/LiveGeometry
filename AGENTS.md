@@ -452,9 +452,16 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the order that comes first alphabetically (A-Z, then A1-Z1) among the readings that name
   the same figure: a polygon from any vertex either way round (ECBA is ABCE), a segment,
   line, polyline or Bezier either way, a ray or vector only as it goes (`PointOrder`); any
-  of those readings counts as a default name. Everything else is numbered
-  by type (Circle1); hidden points too, so a helper doesn't take a letter from the points on
-  screen. `HasDefaultName` (nobody typed a name) is not stored: a name that reads like the
+  of those readings counts as a default name. A figure no points name takes a lowercase
+  letter (since 2026-10-04; `FigureBase.FirstLetter`, `GenerateLetterName`): from g for
+  lines, c for circles, ellipses and arcs, f for functions, p for polygons, u for vectors,
+  each counting on through the pool sliders use (`FigureBase.Letters`, no e, x, y) and then
+  again with 1, 2..., never round to the start (a function took a, a slider's letter).
+  Hidden helper lines and circles take letters too: other figures' constructions name them
+  ("of line g and segment AB"), and a PerpendicularLine1 there was a name no row of the
+  Figure List showed. Numbers stay n1, n2; measurements, texts, angle marks, loci, parts of
+  a composite and hidden points are numbered by type (Circle1; a hidden point doesn't take
+  a letter from the points on screen). Old drawings keep their Circle1-style names. `HasDefaultName` (nobody typed a name) is not stored: a name that reads like the
   default is the default, old `Segment1` included, and loading renames those (so does a
   paste: a copy is numbered by type while it is read, and takes its points' name once it
   is in the drawing). A default name
@@ -465,7 +472,17 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   be AB again at once, `FigureBase.KeepsTypedName`); the setter
   itself would take the name from the other figure, and turns an empty one into the default.
   The grid's title is `Title`: the figure's `Kind` in front of the name ("Triangle ABC",
-  "Point A"), left off when the name says it already (Circle1, Bezier3) or there is no kind.
+  "Midpoint E", "Regular pentagon p"), the kind left off when the name says it already
+  (Circle1, Bezier3), the name left off when it is the type and a number on a figure
+  nothing refers to by name (Distance, Text, Angle mark, Locus: `NamedByConstruction`) -
+  not on others: "on Circle₁" in one row must be found in another.
+  After the title comes `Construction`, how the figure is built ("of AB", "to segment AB
+  through C", "with center A and radius 3"): faded after the title in the Figure List, a
+  smaller line under it in the grid's header. It names what it is built on through
+  `ConstructionText`: a point by its name, anything else by its `Noun` and name (segment
+  AB, line g - the plain noun, not "parallel line"), a typed value by its number, a tied
+  one by what it comes from (a, AB, angle ABC). "angle ABC", not ∠: Inter, the browser's
+  only font, has no ∠ glyph.
   A polygon's kind is by vertex count (Triangle, Pentagon, Hexagon, else Polygon); four
   vertices go through `Quadrilaterals.Classify` (Square, Rectangle, Rhombus, Parallelogram,
   Kite, Trapezoid) with a rounding-only tolerance: a shape dragged to look square by eye
@@ -1523,7 +1540,7 @@ loader still does for files from before; none of it needs extending.
   `DistanceSource="AB"`).
   A vertex or a side is selected by itself (`IFigureParts.SelectableParts`), to be styled;
   a click inside selects the polygon (`FigureParts.SelectionTarget`), and so do its Figure
-  List row and the part page's "Select the 6-gon". The composite's `Selected` is the whole
+  List row and the part page's "Select regular hexagon p". The composite's `Selected` is the whole
   only (selecting the whole selects every part, for the halos), so whatever clears a
   selection asks `FigureParts.HasSelection`, `Drawing.GetSelectedFigures` gives the parts
   selected by themselves, and whatever acts on figures of the drawing (Delete, Copy, Hide,
