@@ -82,15 +82,36 @@ namespace DynamicGeometry
     /// are never seen. These let a figure keep its allocation-free point cache and just
     /// say "the points changed".
     /// </summary>
-    public class PolygonShape : Avalonia.Controls.Shapes.Polygon
+    public class PolygonShape : Avalonia.Controls.Shapes.Polygon, IChangesPointsInPlace
     {
-        public void PointsChanged() => InvalidateGeometry();
+        public event EventHandler PointsChangedInPlace;
+
+        public void PointsChanged()
+        {
+            InvalidateGeometry();
+            PointsChangedInPlace?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     /// <inheritdoc cref="PolygonShape"/>
-    public class PolylineShape : Avalonia.Controls.Shapes.Polyline
+    public class PolylineShape : Avalonia.Controls.Shapes.Polyline, IChangesPointsInPlace
     {
-        public void PointsChanged() => InvalidateGeometry();
+        public event EventHandler PointsChangedInPlace;
+
+        public void PointsChanged()
+        {
+            InvalidateGeometry();
+            PointsChangedInPlace?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    /// <summary>
+    /// A shape whose points change without a property of its own changing: whatever draws
+    /// from its geometry beside it (a selection halo) listens to this
+    /// </summary>
+    public interface IChangesPointsInPlace
+    {
+        event EventHandler PointsChangedInPlace;
     }
 
     public static class WpfCompatExtensions

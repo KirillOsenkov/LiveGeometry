@@ -180,9 +180,17 @@ public class FigureExplorer : Border
 
     #region Following the drawing
 
+    // A drag of a figure or of the view records a move at every step (they merge into one
+    // undo step), and a refresh reads every row again: at once, then at most every 300 ms
+    // while the history keeps changing, the last change always included (the titles of
+    // shapes follow the drag: a quadrilateral becomes a square)
     void ActionManager_CollectionChanged(object sender, System.EventArgs e)
     {
-        RequestRefresh();
+        Throttle.Schedule(
+            this,
+            explorer => Dispatcher.UIThread.Post(explorer.RequestRefresh),
+            System.TimeSpan.FromMilliseconds(300),
+            ThrottleOptions.RunOnceImmediatelyIfFree);
     }
 
     void Drawing_ConstructionStepStarted(object sender, Drawing.ConstructionStepStartedEventArgs e)

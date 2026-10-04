@@ -578,7 +578,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (off; no UI for it) on up from those (gray), one trunk per figure, a step left of the
   trunks above it that it runs beside, its branches stopping short of the next trunk: so no
   two arrows cross (`LayOutTrunks`). It rebuilds on `ActionManager.CollectionChanged`
-  (posted, coalesced), never between `ConstructionStepStarted` and a complete step: temporary
+  (posted, coalesced, and through `Throttle` at most every 300 ms: a drag of a figure or the
+  view records a move per step, and it rebuilt every row at every frame), never between `ConstructionStepStarted` and a complete step: temporary
   figures of a tool are never recorded and its real steps sit in its transaction. Undoing a
   deletion puts each figure back at its old index (`RemoveFigureAction.Indices`), so it
   doesn't jump to the end of the list. A hidden figure that is selected is shown ghosted
@@ -1130,8 +1131,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   when it is edited or the theme switches. It is colorless on purpose (grays: white to
   #B0B0B0 in Light, #B0B0B0 to black in Dark): a hue next to the figure changes how the
   figure's own colors read, and those are what is being edited while it is selected. `ShapeBase.UpdateSelectionHalo` keeps it (selected, shown, on a
-  canvas); it redraws on any property change or layout of its shape, so nothing per figure
-  kind. Selected figures used to be drawn 3 px thicker or bigger and polygons got a striped
+  canvas); it redraws on any property change of its shape (its bounds included), a change
+  of a path's geometry in place (`Geometry.Changed`) or of a polygon's points
+  (`IChangesPointsInPlace`), so nothing per figure kind - not on `LayoutUpdated`, which
+  Avalonia raises for every listener after any layout pass anywhere. It draws a copy of the
+  shape's geometry: a geometry is a compositor resource, and shared with the shape, a
+  Bezier curve changed while selected vanished when it was unselected. Selected figures used to be drawn 3 px thicker or bigger and polygons got a striped
   fill, which hid the very thickness, size and fill being edited in the side panel: a style
   must not depend on `Selected`. A part never drawn says `ShowsSelectionHalo = false`.
   Labels keep their own selection plate.

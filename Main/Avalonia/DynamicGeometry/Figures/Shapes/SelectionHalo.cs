@@ -109,11 +109,26 @@ public class SelectionHalo : Control
         IsHitTestVisible = false;
     }
 
+    // What redraws the halo is what changes its shape's geometry: a property set (a point's
+    // place, a line's ends, a path's geometry, a rotation, and the bounds after a layout),
+    // and the two changes in place that the shape itself listens to - the segments of a
+    // path's geometry (Geometry.Changed, as Avalonia's Path does) and the points of a
+    // polygon (IChangesPointsInPlace). It listened to the shape's LayoutUpdated, which
+    // Avalonia raises for every listener after any layout pass anywhere: every halo was
+    // drawn again at every frame of a drag, and when a tooltip showed.
+
+    Geometry watchedGeometry;
+
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
         source.PropertyChanged += Source_PropertyChanged;
-        source.LayoutUpdated += Source_LayoutUpdated;
+        if (source is IChangesPointsInPlace points)
+        {
+            points.PointsChangedInPlace += Source_GeometryChanged;
+        }
+
+        WatchGeometry((source as AvaloniaShapes.Path)?.Data);
         shown.Add(this);
     }
 
@@ -121,26 +136,51 @@ public class SelectionHalo : Control
     {
         base.OnDetachedFromVisualTree(e);
         source.PropertyChanged -= Source_PropertyChanged;
-        source.LayoutUpdated -= Source_LayoutUpdated;
+        if (source is IChangesPointsInPlace points)
+        {
+            points.PointsChangedInPlace -= Source_GeometryChanged;
+        }
+
+        WatchGeometry(null);
         shown.Remove(this);
     }
 
-    // a property set moves or reshapes the figure (a point's place, a line's ends, a
-    // rotation); a change of geometry in place (a path's segments, a polygon's points)
-    // makes the shape lay itself out again
+    void WatchGeometry(Geometry geometry)
+    {
+        if (watchedGeometry != null)
+        {
+            watchedGeometry.Changed -= Source_GeometryChanged;
+        }
+
+        watchedGeometry = geometry;
+        if (watchedGeometry != null)
+        {
+            watchedGeometry.Changed += Source_GeometryChanged;
+        }
+    }
+
     void Source_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
     {
+        if (e.Property == AvaloniaShapes.Path.DataProperty)
+        {
+            WatchGeometry((source as AvaloniaShapes.Path)?.Data);
+        }
+
         InvalidateVisual();
     }
 
-    void Source_LayoutUpdated(object sender, EventArgs e)
+    void Source_GeometryChanged(object sender, EventArgs e)
     {
         InvalidateVisual();
     }
 
     public override void Render(DrawingContext context)
     {
-        var geometry = source.RenderedGeometry;
+        // A copy: a geometry is a resource of the compositor, and drawn here as well as by
+        // its shape it was shared by the two. A Bezier curve whose segments had changed in
+        // place while it was selected vanished when it was unselected (the halo let go of
+        // the geometry, and the shape drew nothing from then on).
+        var geometry = source.RenderedGeometry?.Clone();
         var transform = source.TransformToVisual(this);
         if (geometry == null || transform == null || !source.IsEffectivelyVisible)
         {
