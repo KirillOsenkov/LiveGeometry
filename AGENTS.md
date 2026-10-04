@@ -613,7 +613,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   picker is a grid of fixed
   cells, eight to a row (`StylePickerEditor.CellSize`); a style kept for one purpose
   (`SliderTrack`, `GalleryLocus`) is offered only to its figure (`StyleManager.IsOffered`),
-  or a row would be one short. A new kind of default wants a full row.
+  or a row would be one short. A new kind of default wants a full row. "Create new style"
+  on a figure that can be filled but has a line style (a circle takes either) makes a shape
+  style, so that the fill is there to edit: the same stroke under every theme, a hint of
+  its color for a fill, Filled unticked (`ShapeStyle.WithStrokeOf`).
 - **Point shapes and emoji** (`PointStyle.Shape` / `Character`; `Size` is the shape's or the
   character's, whichever shows: the style keeps both in memory and the file only the one in
   use, so `Character` must be read before `Size`, which declaration order does): every point

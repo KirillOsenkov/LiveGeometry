@@ -576,9 +576,18 @@ namespace DynamicGeometry
             return DependentPointStyleName;
         }
 
+        /// <summary>
+        /// A copy of the figure's style, added to the drawing's styles, for the figure to take.
+        /// A figure that can be filled gets a style with a fill even when it has a line style
+        /// now (a circle takes either): the same stroke, and a fill there to switch on.
+        /// </summary>
         public IFigureStyle CreateNewStyle(IFigure figure)
         {
-            var newStyle = figure.Style.Clone();
+            var newStyle = figure.Style is LineStyle line
+                && line is not ShapeStyle
+                && typeof(ShapeStyle).SupportsFigureType(figure.GetType())
+                ? ShapeStyle.WithStrokeOf(line)
+                : figure.Style.Clone();
             Actions.AddItem(figure.Drawing.ActionManager, list, newStyle);
             return newStyle;
         }
