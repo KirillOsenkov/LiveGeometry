@@ -104,7 +104,17 @@ public class AppTheme : INotifyPropertyChanged, IConditionalProperties
         ShapeFill = Color.Parse("#64FFFFC8"),
         Axis = Color.Parse("#8080FF"),
         GridMajor = Color.Parse("#D3D3D3"),
-        GridMinor = Color.Parse("#ECECEC")
+        GridMinor = Color.Parse("#ECECEC"),
+        SelectionHalo = new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(1, 1, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(Color.Parse("#FFFFFF"), 0),
+                new GradientStop(Color.Parse("#B0B0B0"), 1)
+            }
+        }
     };
 
     public static AppTheme Dark { get; } = new AppTheme("Dark", ThemeVariant.Dark)
@@ -175,7 +185,17 @@ public class AppTheme : INotifyPropertyChanged, IConditionalProperties
         ShapeFill = Color.Parse("#46D8CC96"),
         Axis = Color.Parse("#8C8CFF"),
         GridMajor = Color.Parse("#4A4A4A"),
-        GridMinor = Color.Parse("#383838")
+        GridMinor = Color.Parse("#383838"),
+        SelectionHalo = new LinearGradientBrush()
+        {
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(1, 1, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(Color.Parse("#B0B0B0"), 0),
+                new GradientStop(Color.Parse("#000000"), 1)
+            }
+        }
     };
 
     /// <summary>Every theme there is, in the order a list offers them</summary>
@@ -579,6 +599,16 @@ public class AppTheme : INotifyPropertyChanged, IConditionalProperties
     [PropertyGridVisible]
     [PropertyGridGroup("Paper")]
     public Color GridMinor { get => gridMinor; set => Set(ref gridMinor, value); }
+
+    /// <summary>
+    /// The band under a selected figure (<see cref="DynamicGeometry.SelectionHalo"/>). A
+    /// gradient is not stretched over the figure but repeated along its direction every few
+    /// pixels, there and back: diagonal stripes.
+    /// </summary>
+    Brush selectionHalo;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Selection")]
+    public Brush SelectionHalo { get => selectionHalo; set => Set(ref selectionHalo, value); }
 
     #endregion
 

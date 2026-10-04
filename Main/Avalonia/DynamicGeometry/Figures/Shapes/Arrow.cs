@@ -45,10 +45,6 @@ namespace DynamicGeometry
 
             var lineStyle = Style as LineStyle;
             double width = lineStyle != null ? lineStyle.StrokeWidth : 1;
-            if (Selected && Settings.ChangeLineAppearanceWhenSelected)
-            {
-                width += 3;
-            }
 
             double halfShaft = System.Math.Max(width / 2, 0.5);
             double headLength = System.Math.Min(HeadLength + HeadGrowth * width, length);

@@ -13,8 +13,6 @@ namespace DynamicGeometry;
 /// </summary>
 public class EmojiGlyph : Control
 {
-    static readonly IBrush SelectionPlate = new SolidColorBrush(Color.FromArgb(70, 0, 120, 215));
-
     string text;
     public string Text
     {
@@ -39,19 +37,6 @@ public class EmojiGlyph : Control
         }
     }
 
-    bool isHighlighted;
-
-    /// <summary>A plate behind the character: its point is selected</summary>
-    public bool IsHighlighted
-    {
-        get => isHighlighted;
-        set
-        {
-            isHighlighted = value;
-            InvalidateVisual();
-        }
-    }
-
     /// <summary>Room around the character, on each side</summary>
     public double Inset { get; set; }
 
@@ -67,14 +52,7 @@ public class EmojiGlyph : Control
             return;
         }
 
-        var size = Bounds.Size;
-        if (IsHighlighted)
-        {
-            double radius = System.Math.Max(size.Width, size.Height) * 0.62;
-            context.DrawEllipse(SelectionPlate, pen: null, new Point(size.Width / 2, size.Height / 2), radius, radius);
-        }
-
-        DrawCharacter(context, Text, new Rect(size).Deflate(Inset), Foreground);
+        DrawCharacter(context, Text, new Rect(Bounds.Size).Deflate(Inset), Foreground);
         if (!EmojiFont.IsLoaded)
         {
             // drawn again when the font is there; not when it failed to come (a network

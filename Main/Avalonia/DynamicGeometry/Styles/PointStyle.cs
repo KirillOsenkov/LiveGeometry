@@ -102,13 +102,8 @@ namespace DynamicGeometry
         protected override void ApplyToWpfStyle(Style existingStyle, IFigure figure)
         {
             base.ApplyToWpfStyle(existingStyle, figure);
-            double size = Size;
-            if (figure != null && figure.Selected && Settings.ChangePointAppearanceWhenSelected)
-            {
-                size += 3;
-            }
-            existingStyle.Setters.Add(new Setter(FrameworkElement.WidthProperty, size));
-            existingStyle.Setters.Add(new Setter(FrameworkElement.HeightProperty, size));
+            existingStyle.Setters.Add(new Setter(FrameworkElement.WidthProperty, Size));
+            existingStyle.Setters.Add(new Setter(FrameworkElement.HeightProperty, Size));
         }
 
         public override void OnApplied(IFigure figure, FrameworkElement element)
@@ -118,7 +113,6 @@ namespace DynamicGeometry
             {
                 marker.Kind = Shape;
                 marker.Character = Character;
-                marker.IsHighlighted = figure != null && figure.Selected && Settings.ChangePointAppearanceWhenSelected;
             }
         }
 

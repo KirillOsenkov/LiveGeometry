@@ -18,6 +18,7 @@ namespace DynamicGeometry
         {
             Line = new Segment();   // Line's dependencies established by OnDependenciesChanged()
             Line.Style = new LineStyle() { StrokeWidth = 0, Color = Colors.Transparent };   // Line is invisible
+            Line.ShowsSelectionHalo = false;
             Arrow = new Arrow();
             Arrow.ZIndex = (int)ZOrder.Vectors;
             Arrow.Dependencies.Add(Line);

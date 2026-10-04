@@ -1090,9 +1090,24 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   mark, and it moved with every zoom. Its grid says the angle in degrees, like the number. `DGFReader.ReadMeasureAngle` creates the arc from
   VB6's DrawStyle / AuxInfo(2) - not tested, there is no sample .dgf with an angle in the repo.
 - **Dashes**: `LineStyle.Dash` is put on in `LineStyle.OnApplied`, not through a setter, because
-  `StrokeDashArray` counts in stroke widths and a selected figure is thicker. Anything that
+  `StrokeDashArray` counts in stroke widths. Anything that
   applies a style to a shape by hand (sample glyphs) must call `OnApplied` too. Any enum
   property of a style or figure round-trips by name through the generic `EnumSerializer`.
+- **Selection is a halo, never a change of the figure** (`Figures/Shapes/SelectionHalo.cs`,
+  2026-10-03): a striped band drawn from the shape's own `RenderedGeometry` under it (a
+  slightly bigger silhouette for a point, a disc for an emoji), in one layer per canvas
+  (`SelectionHalo.Layer`, `ZOrder.SelectionHalos`) whose opacity the halos share, so
+  overlaps don't darken. Its brush is the theme's `SelectionHalo` (a gradient edited as
+  any on the theme page), not stretched over the figure but repeated, reflected, every
+  `StripeWidth` pixels along its angle (`SelectionHalo.MakeRepeating`); the halos redraw
+  when it is edited or the theme switches. It is colorless on purpose (grays: white to
+  #B0B0B0 in Light, #B0B0B0 to black in Dark): a hue next to the figure changes how the
+  figure's own colors read, and those are what is being edited while it is selected. `ShapeBase.UpdateSelectionHalo` keeps it (selected, shown, on a
+  canvas); it redraws on any property change or layout of its shape, so nothing per figure
+  kind. Selected figures used to be drawn 3 px thicker or bigger and polygons got a striped
+  fill, which hid the very thickness, size and fill being edited in the side panel: a style
+  must not depend on `Selected`. A part never drawn says `ShowsSelectionHalo = false` (a
+  vector's segment). Labels keep their own selection plate.
 - **Color/brush picking** (`DynamicGeometry/Controls/ColorPicker/`) is layered so parts can be
   swapped: `ColorPalette` -> `ColorPage` (swatches, spectrum) -> `ColorPickerView` ->
   `BrushPickerView` (solid | gradient); in the property grid through `ExpandingPickerEditor`.

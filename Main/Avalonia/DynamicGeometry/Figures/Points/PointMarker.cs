@@ -30,9 +30,6 @@ public class PointMarker : Shape
     public static readonly StyledProperty<string> CharacterProperty =
         AvaloniaProperty.Register<PointMarker, string>(nameof(Character));
 
-    public static readonly StyledProperty<bool> IsHighlightedProperty =
-        AvaloniaProperty.Register<PointMarker, bool>(nameof(IsHighlighted));
-
     static PointMarker()
     {
         // Width and Height, not Bounds: Bounds changes with every move of the point
@@ -52,21 +49,13 @@ public class PointMarker : Shape
         set => SetValue(CharacterProperty, value);
     }
 
-    /// <summary>The point is selected: a character gets a plate behind it (a shape only grows)</summary>
-    public bool IsHighlighted
-    {
-        get => GetValue(IsHighlightedProperty);
-        set => SetValue(IsHighlightedProperty, value);
-    }
-
     EmojiGlyph glyph;
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
         if (change.Property == CharacterProperty
-            || change.Property == FillProperty
-            || change.Property == IsHighlightedProperty)
+            || change.Property == FillProperty)
         {
             UpdateGlyph();
         }
@@ -94,7 +83,6 @@ public class PointMarker : Shape
 
         glyph.Text = Character;
         glyph.Foreground = Fill;
-        glyph.IsHighlighted = IsHighlighted;
     }
 
     protected override Size MeasureOverride(Size availableSize)

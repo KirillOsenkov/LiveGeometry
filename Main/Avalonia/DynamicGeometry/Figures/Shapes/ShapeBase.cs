@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.VisualTree;
 
 namespace DynamicGeometry
 {
@@ -254,6 +255,8 @@ namespace DynamicGeometry
                 Shape.Visibility = needsToBeVisible ? Visibility.Visible : Visibility.Collapsed;
             }
 
+            UpdateSelectionHalo();
+
             if (ghost == wasGhost)
             {
                 return;
@@ -301,12 +304,47 @@ namespace DynamicGeometry
         {
             base.OnAddingToCanvas(newContainer);
             newContainer.Children.Add(Shape);
+            UpdateSelectionHalo();
         }
 
         public override void OnRemovingFromCanvas(Canvas leavingContainer)
         {
             base.OnRemovingFromCanvas(leavingContainer);
             leavingContainer.Children.Remove(Shape);
+            UpdateSelectionHalo();
+        }
+
+        SelectionHalo selectionHalo;
+
+        /// <summary>
+        /// Whether a selection shows a <see cref="SelectionHalo"/> along the shape: not for a
+        /// part that is never drawn (a vector's segment inside its arrow)
+        /// </summary>
+        public bool ShowsSelectionHalo { get; set; } = true;
+
+        void UpdateSelectionHalo()
+        {
+            var geometryShape = Shape as Avalonia.Controls.Shapes.Shape;
+            var canvas = geometryShape?.GetVisualParent() as Canvas;
+            bool needed = Selected
+                && IsShown
+                && ShowsSelectionHalo
+                && canvas != null;
+            if (needed == (selectionHalo != null))
+            {
+                return;
+            }
+
+            if (needed)
+            {
+                selectionHalo = new SelectionHalo(geometryShape, isPoint: this is PointBase);
+                selectionHalo.AddTo(canvas);
+            }
+            else
+            {
+                selectionHalo.Remove();
+                selectionHalo = null;
+            }
         }
     }
 }

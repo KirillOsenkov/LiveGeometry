@@ -5,9 +5,6 @@ namespace DynamicGeometry
     public partial class Settings
     {
         // Developer Settings
-        public static bool ChangeLineAppearanceWhenSelected = true;
-        public static bool ChangePointAppearanceWhenSelected = true;
-        public static bool ChangePointStrokeWidthWhenSelected = false;
         public static double DefaultUnitLength = 48;
         public static double DefaultToolbarFontSize = 11;
         public static bool ShowIconInTabPanelHeader = true;

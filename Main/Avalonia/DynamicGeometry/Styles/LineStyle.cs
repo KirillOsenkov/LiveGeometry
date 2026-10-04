@@ -72,23 +72,17 @@ namespace DynamicGeometry
         protected override void ApplyToWpfStyle(Style existingStyle, IFigure figure)
         {
             base.ApplyToWpfStyle(existingStyle, figure);
-            double width = strokeWidth;
-            if (figure != null && figure.Selected && Settings.ChangeLineAppearanceWhenSelected)
-            {
-                width += 3;
-            }
-
             var strokeSetter = new Setter(Shape.StrokeProperty, new SolidColorBrush(Color));
             existingStyle.Setters.Add(strokeSetter);
 
-            var widthSetter = new Setter(Shape.StrokeThicknessProperty, width);
+            var widthSetter = new Setter(Shape.StrokeThicknessProperty, strokeWidth);
             existingStyle.Setters.Add(widthSetter);
 
         }
 
         /// <summary>
         /// The dash pattern goes on here and not through a setter: it depends on the width the
-        /// shape ended up with (a selected figure is drawn thicker).
+        /// shape ended up with.
         /// </summary>
         public override void OnApplied(IFigure figure, FrameworkElement element)
         {
