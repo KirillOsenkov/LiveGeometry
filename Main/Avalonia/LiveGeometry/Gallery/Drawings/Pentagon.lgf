@@ -12,7 +12,7 @@
   <Figures>
     <FreePoint Name="A" X="-0.5833333334" Y="1" />
     <FreePoint Name="B" X="2.4375" Y="1" />
-    <Circle Name="Circle113" Style="11">
+    <Circle Name="c" Style="11">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Circle>
@@ -20,53 +20,53 @@
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine117" Style="13" RightAngleCorner="0">
+    <PerpendicularLine Name="g" Style="13" RightAngleCorner="0">
       <Dependency Name="AB" />
       <Dependency Name="A" />
     </PerpendicularLine>
     <IntersectionPoint Name="C" Style="DependentPoint" Algorithm="IntersectLineAndEllipse1">
-      <Dependency Name="PerpendicularLine117" />
-      <Dependency Name="Circle113" />
+      <Dependency Name="g" />
+      <Dependency Name="c" />
     </IntersectionPoint>
     <MidPoint Name="D" Style="DependentPoint">
       <Dependency Name="C" />
       <Dependency Name="A" />
     </MidPoint>
-    <Circle Name="Circle154" Style="13">
+    <Circle Name="d" Style="13">
       <Dependency Name="D" />
       <Dependency Name="B" />
     </Circle>
     <IntersectionPoint Name="E" Style="FreePoint" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="Circle154" />
-      <Dependency Name="PerpendicularLine117" />
+      <Dependency Name="d" />
+      <Dependency Name="g" />
     </IntersectionPoint>
-    <Circle Name="Circle156" Style="12">
+    <Circle Name="f" Style="12">
       <Dependency Name="B" />
       <Dependency Name="E" />
     </Circle>
     <IntersectionPoint Name="F" Style="DependentPoint" Algorithm="IntersectCircleAndCircle2">
-      <Dependency Name="Circle156" />
-      <Dependency Name="Circle113" />
+      <Dependency Name="f" />
+      <Dependency Name="c" />
     </IntersectionPoint>
-    <Circle Name="Circle158" Style="12">
+    <Circle Name="h" Style="12">
       <Dependency Name="F" />
       <Dependency Name="B" />
     </Circle>
     <IntersectionPoint Name="G" Style="DependentPoint" Algorithm="IntersectCircleAndCircle2">
-      <Dependency Name="Circle158" />
-      <Dependency Name="Circle113" />
+      <Dependency Name="h" />
+      <Dependency Name="c" />
     </IntersectionPoint>
-    <Circle Name="Circle160" Style="12">
+    <Circle Name="k" Style="12">
       <Dependency Name="G" />
       <Dependency Name="F" />
     </Circle>
     <IntersectionPoint Name="H" Style="DependentPoint" Algorithm="IntersectCircleAndCircle2">
-      <Dependency Name="Circle160" />
-      <Dependency Name="Circle113" />
+      <Dependency Name="k" />
+      <Dependency Name="c" />
     </IntersectionPoint>
     <IntersectionPoint Name="I" Style="DependentPoint" Algorithm="IntersectCircleAndCircle1">
-      <Dependency Name="Circle156" />
-      <Dependency Name="Circle113" />
+      <Dependency Name="f" />
+      <Dependency Name="c" />
     </IntersectionPoint>
     <Polygon Name="BFGHI" Style="10">
       <Dependency Name="G" />

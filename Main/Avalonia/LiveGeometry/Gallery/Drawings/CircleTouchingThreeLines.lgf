@@ -22,37 +22,37 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Segment>
-    <AngleBisector Name="AngleBisector1" Style="DashedLine">
+    <AngleBisector Name="g" Style="DashedLine">
       <Dependency Name="A" />
       <Dependency Name="C" />
       <Dependency Name="B" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector2" Style="DashedLine">
+    <AngleBisector Name="h" Style="DashedLine">
       <Dependency Name="C" />
       <Dependency Name="D" />
       <Dependency Name="A" />
     </AngleBisector>
     <IntersectionPoint Name="E" Algorithm="IntersectLineAndLine">
-      <Dependency Name="AngleBisector1" />
-      <Dependency Name="AngleBisector2" />
+      <Dependency Name="g" />
+      <Dependency Name="h" />
     </IntersectionPoint>
-    <PerpendicularLine Name="PerpendicularLine1" Style="GreenLine" RightAngleCorner="2">
+    <PerpendicularLine Name="k" Style="GreenLine" RightAngleCorner="2">
       <Dependency Name="AB" />
       <Dependency Name="E" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine2" Style="GreenLine" RightAngleCorner="0">
+    <PerpendicularLine Name="m" Style="GreenLine" RightAngleCorner="0">
       <Dependency Name="AC" />
       <Dependency Name="E" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine3" Style="GreenLine" RightAngleCorner="1">
+    <PerpendicularLine Name="n" Style="GreenLine" RightAngleCorner="1">
       <Dependency Name="CD" />
       <Dependency Name="E" />
     </PerpendicularLine>
     <IntersectionPoint Name="F" Algorithm="IntersectLineAndLine">
       <Dependency Name="AB" />
-      <Dependency Name="PerpendicularLine1" />
+      <Dependency Name="k" />
     </IntersectionPoint>
-    <Circle Name="Circle1" Style="PurpleOutline">
+    <Circle Name="c" Style="PurpleOutline">
       <Dependency Name="E" />
       <Dependency Name="F" />
     </Circle>

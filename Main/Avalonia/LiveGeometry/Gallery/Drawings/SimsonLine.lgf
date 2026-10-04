@@ -36,7 +36,7 @@
       <Dependency Name="B" />
       <Dependency Name="C" />
     </MidPoint>
-    <PerpendicularLine Name="PerpendicularLine220" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="g" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="BC" />
       <Dependency Name="E" />
     </PerpendicularLine>
@@ -56,43 +56,43 @@
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine218" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="h" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="AB2" />
       <Dependency Name="D" />
     </PerpendicularLine>
     <IntersectionPoint Name="F" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine220" />
-      <Dependency Name="PerpendicularLine218" />
+      <Dependency Name="g" />
+      <Dependency Name="h" />
     </IntersectionPoint>
-    <Circle Name="Circle222" Style="14">
+    <Circle Name="c" Style="14">
       <Dependency Name="F" />
       <Dependency Name="B" />
     </Circle>
     <PointOnFigure Name="G" Style="13" X="2.4828323338196823" Y="-0.5641029227534533" Parameter="0.66954015447972">
-      <Dependency Name="Circle222" />
+      <Dependency Name="c" />
     </PointOnFigure>
-    <PerpendicularLine Name="PerpendicularLine228" Visible="false" Style="12" RightAngleCorner="0">
+    <PerpendicularLine Name="k" Visible="false" Style="12" RightAngleCorner="0">
       <Dependency Name="AC" />
       <Dependency Name="G" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine226" Visible="false" Style="12" RightAngleCorner="0">
+    <PerpendicularLine Name="m" Visible="false" Style="12" RightAngleCorner="0">
       <Dependency Name="BC" />
       <Dependency Name="G" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine224" Visible="false" Style="12" RightAngleCorner="0">
+    <PerpendicularLine Name="n" Visible="false" Style="12" RightAngleCorner="0">
       <Dependency Name="AB2" />
       <Dependency Name="G" />
     </PerpendicularLine>
     <IntersectionPoint Name="H" Style="PointOnFigure" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine228" />
+      <Dependency Name="k" />
       <Dependency Name="AC2" />
     </IntersectionPoint>
     <IntersectionPoint Name="I" Style="PointOnFigure" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine224" />
+      <Dependency Name="n" />
       <Dependency Name="AB" />
     </IntersectionPoint>
     <IntersectionPoint Name="J" Style="PointOnFigure" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine226" />
+      <Dependency Name="m" />
       <Dependency Name="BC2" />
     </IntersectionPoint>
     <LineTwoPoints Name="IJ" Style="10">

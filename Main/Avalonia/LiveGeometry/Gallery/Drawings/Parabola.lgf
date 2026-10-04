@@ -32,7 +32,7 @@
       <Dependency Name="F" />
       <Dependency Name="C" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine113" Style="8" RightAngleCorner="0">
+    <PerpendicularLine Name="g" Style="8" RightAngleCorner="0">
       <Dependency Name="AB" />
       <Dependency Name="C" />
     </PerpendicularLine>
@@ -40,13 +40,13 @@
       <Dependency Name="F" />
       <Dependency Name="C" />
     </MidPoint>
-    <PerpendicularLine Name="PerpendicularLine119" Style="8" RightAngleCorner="3">
+    <PerpendicularLine Name="h" Style="8" RightAngleCorner="3">
       <Dependency Name="CF" />
       <Dependency Name="D" />
     </PerpendicularLine>
     <IntersectionPoint Name="E" Style="2" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine119" />
-      <Dependency Name="PerpendicularLine113" />
+      <Dependency Name="h" />
+      <Dependency Name="g" />
     </IntersectionPoint>
     <Locus Name="Locus122" Style="10">
       <Dependency Name="E" />

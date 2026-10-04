@@ -22,12 +22,12 @@
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-    <Circle Name="Circle10" Visible="false" Style="4">
+    <Circle Name="c" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Circle>
     <PointOnFigure Name="C" Style="1" X="0.3502478425302544" Y="-2.1755925913953953" Parameter="5.97267023501231">
-      <Dependency Name="Circle10" />
+      <Dependency Name="c" />
     </PointOnFigure>
     <MidPoint Name="D" Visible="false" Style="1">
       <Dependency Name="B" />
@@ -59,17 +59,17 @@
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Segment>
-    <Circle Name="Circle36" Visible="false" Style="4">
+    <Circle Name="d" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Circle>
-    <PerpendicularLine Name="PerpendicularLine37" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="g" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="AB2" />
       <Dependency Name="A" />
     </PerpendicularLine>
     <IntersectionPoint Name="F" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="Circle36" />
-      <Dependency Name="PerpendicularLine37" />
+      <Dependency Name="d" />
+      <Dependency Name="g" />
     </IntersectionPoint>
     <MidPoint Name="G" Visible="false" Style="1">
       <Dependency Name="F" />
@@ -101,17 +101,17 @@
       <Dependency Name="E" />
       <Dependency Name="B" />
     </Segment>
-    <Circle Name="Circle50" Visible="false" Style="4">
+    <Circle Name="f" Visible="false" Style="4">
       <Dependency Name="B" />
       <Dependency Name="E" />
     </Circle>
-    <PerpendicularLine Name="PerpendicularLine51" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="h" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="BE2" />
       <Dependency Name="B" />
     </PerpendicularLine>
     <IntersectionPoint Name="I" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="Circle50" />
-      <Dependency Name="PerpendicularLine51" />
+      <Dependency Name="f" />
+      <Dependency Name="h" />
     </IntersectionPoint>
     <MidPoint Name="J" Visible="false" Style="1">
       <Dependency Name="I" />
@@ -143,17 +143,17 @@
       <Dependency Name="C" />
       <Dependency Name="E" />
     </Segment>
-    <Circle Name="Circle64" Visible="false" Style="4">
+    <Circle Name="k" Visible="false" Style="4">
       <Dependency Name="E" />
       <Dependency Name="C" />
     </Circle>
-    <PerpendicularLine Name="PerpendicularLine65" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="m" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="CE2" />
       <Dependency Name="E" />
     </PerpendicularLine>
     <IntersectionPoint Name="L" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="Circle64" />
-      <Dependency Name="PerpendicularLine65" />
+      <Dependency Name="k" />
+      <Dependency Name="m" />
     </IntersectionPoint>
     <MidPoint Name="M" Visible="false" Style="1">
       <Dependency Name="L" />
@@ -185,17 +185,17 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Segment>
-    <Circle Name="Circle78" Visible="false" Style="4">
+    <Circle Name="n" Visible="false" Style="4">
       <Dependency Name="C" />
       <Dependency Name="A" />
     </Circle>
-    <PerpendicularLine Name="PerpendicularLine79" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="p" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="AC2" />
       <Dependency Name="C" />
     </PerpendicularLine>
     <IntersectionPoint Name="O" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="Circle78" />
-      <Dependency Name="PerpendicularLine79" />
+      <Dependency Name="n" />
+      <Dependency Name="p" />
     </IntersectionPoint>
     <MidPoint Name="P" Visible="false" Style="1">
       <Dependency Name="O" />

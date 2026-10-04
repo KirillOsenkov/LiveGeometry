@@ -42,13 +42,13 @@
     </PointOnFigure>
     <FreePoint Name="B" Visible="false" Style="7" X="-7" Y="3" />
     <FreePoint Name="C" Style="7" X="3.320524" Y="2.235732" />
-    <CircleByRadius Name="CircleByRadius1" Style="9">
+    <CircleByRadius Name="c" Style="9">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="C" />
     </CircleByRadius>
     <PointOnFigure Name="D" Style="10" X="4.512091141713375" Y="3.7748391830463977" Parameter="0.9119901727373227">
-      <Dependency Name="CircleByRadius1" />
+      <Dependency Name="c" />
     </PointOnFigure>
     <PointByCoordinates Name="E" Style="11" X="(D.X) * (COS(D.Y))" Y="(D.Y) * (SIN(D.X))">
       <Dependency Name="D" />

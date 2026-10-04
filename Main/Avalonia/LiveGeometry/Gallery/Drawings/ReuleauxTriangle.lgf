@@ -12,45 +12,45 @@
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-    <Circle Name="Circle10" Visible="false" Style="4">
+    <Circle Name="c" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Circle>
-    <Circle Name="Circle12" Visible="false" Style="4">
+    <Circle Name="d" Visible="false" Style="4">
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Circle>
     <IntersectionPoint Name="C" Visible="false" Style="FreePoint" Algorithm="IntersectCircleAndCircle1">
-      <Dependency Name="Circle12" />
-      <Dependency Name="Circle10" />
+      <Dependency Name="d" />
+      <Dependency Name="c" />
     </IntersectionPoint>
-    <CircleArc Name="CircleArc15" Style="4">
+    <CircleArc Name="f" Style="4">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="C" />
     </CircleArc>
-    <CircleArc Name="CircleArc18" Style="4">
+    <CircleArc Name="g" Style="4">
       <Dependency Name="B" />
       <Dependency Name="C" />
       <Dependency Name="A" />
     </CircleArc>
-    <CircleArc Name="CircleArc21" Style="4">
+    <CircleArc Name="h" Style="4">
       <Dependency Name="C" />
       <Dependency Name="A" />
       <Dependency Name="B" />
     </CircleArc>
     <PointOnFigure Name="D" Style="FreePoint" X="2.1442523193944036" Y="-0.6442384887492643" Parameter="0.365303678375183">
-      <Dependency Name="CircleArc15" />
+      <Dependency Name="f" />
     </PointOnFigure>
     <Segment Name="AD" Style="10">
       <Dependency Name="A" />
       <Dependency Name="D" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine25" Style="10" RightAngleCorner="1">
+    <PerpendicularLine Name="k" Style="10" RightAngleCorner="1">
       <Dependency Name="AD" />
       <Dependency Name="D" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine27" Style="10" RightAngleCorner="0">
+    <PerpendicularLine Name="m" Style="10" RightAngleCorner="0">
       <Dependency Name="AD" />
       <Dependency Name="A" />
     </PerpendicularLine>

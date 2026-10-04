@@ -45,53 +45,53 @@
     <PointOnFigure Name="E" Visible="false" Style="1" X="2.9500747658919537" Y="1.0659815646376847" Parameter="1.16711510287625">
       <Dependency Name="AB" />
     </PointOnFigure>
-    <CircleByRadius Name="CircleByRadius219" Visible="false" Style="4">
+    <CircleByRadius Name="c" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="E" />
       <Dependency Name="D" />
     </CircleByRadius>
     <IntersectionPoint Name="F" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius219" />
+      <Dependency Name="c" />
       <Dependency Name="DA" />
     </IntersectionPoint>
     <IntersectionPoint Name="G" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius219" />
+      <Dependency Name="c" />
       <Dependency Name="DB" />
     </IntersectionPoint>
-    <PerpendicularLine Name="PerpendicularLine221" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="g" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="DA" />
       <Dependency Name="F" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine223" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="h" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="DB" />
       <Dependency Name="G" />
     </PerpendicularLine>
-    <CircleByRadius Name="CircleByRadius226" Visible="false" Style="4">
+    <CircleByRadius Name="d" Visible="false" Style="4">
       <Dependency Name="B" />
       <Dependency Name="E" />
       <Dependency Name="G" />
     </CircleByRadius>
-    <CircleByRadius Name="CircleByRadius229" Visible="false" Style="4">
+    <CircleByRadius Name="f" Visible="false" Style="4">
       <Dependency Name="B" />
       <Dependency Name="E" />
       <Dependency Name="F" />
     </CircleByRadius>
-    <CircleByRadius Name="CircleByRadius232" Visible="false" Style="4">
+    <CircleByRadius Name="k" Visible="false" Style="4">
       <Dependency Name="B" />
       <Dependency Name="E" />
       <Dependency Name="D" />
     </CircleByRadius>
     <IntersectionPoint Name="I" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius232" />
+      <Dependency Name="k" />
       <Dependency Name="DB" />
     </IntersectionPoint>
-    <ParallelLine Name="ParallelLine234" Visible="false" Style="4">
+    <ParallelLine Name="m" Visible="false" Style="4">
       <Dependency Name="DA" />
       <Dependency Name="I" />
     </ParallelLine>
     <IntersectionPoint Name="K" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
-      <Dependency Name="ParallelLine234" />
-      <Dependency Name="PerpendicularLine221" />
+      <Dependency Name="m" />
+      <Dependency Name="g" />
     </IntersectionPoint>
     <Segment Name="DG" Style="4">
       <Dependency Name="D" />
@@ -101,7 +101,7 @@
       <Dependency Name="K" />
       <Dependency Name="F" />
     </Segment>
-    <CircleByRadius Name="CircleByRadius280" Visible="false" Style="4">
+    <CircleByRadius Name="n" Visible="false" Style="4">
       <Dependency Name="D" />
       <Dependency Name="I" />
       <Dependency Name="D" />
@@ -111,20 +111,20 @@
       <Dependency Name="D" />
     </Segment>
     <IntersectionPoint Name="H" Visible="false" Style="1" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="CircleByRadius280" />
+      <Dependency Name="n" />
       <Dependency Name="DF" />
     </IntersectionPoint>
-    <ParallelLine Name="ParallelLine282" Visible="false" Style="4">
+    <ParallelLine Name="p" Visible="false" Style="4">
       <Dependency Name="DG" />
       <Dependency Name="H" />
     </ParallelLine>
     <IntersectionPoint Name="J" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
-      <Dependency Name="ParallelLine282" />
-      <Dependency Name="PerpendicularLine223" />
+      <Dependency Name="p" />
+      <Dependency Name="h" />
     </IntersectionPoint>
     <IntersectionPoint Name="L" Visible="false" Style="1" Algorithm="IntersectLineAndLine">
-      <Dependency Name="ParallelLine282" />
-      <Dependency Name="ParallelLine234" />
+      <Dependency Name="p" />
+      <Dependency Name="m" />
     </IntersectionPoint>
     <Polygon Name="DFKLJG" Style="6">
       <Dependency Name="F" />

@@ -26,7 +26,7 @@
       <Dependency Name="C" />
       <Dependency Name="B" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine13" Style="10" RightAngleCorner="2">
+    <PerpendicularLine Name="g" Style="10" RightAngleCorner="2">
       <Dependency Name="BC" />
       <Dependency Name="D" />
     </PerpendicularLine>
@@ -38,15 +38,15 @@
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine15" Style="10" RightAngleCorner="3">
+    <PerpendicularLine Name="h" Style="10" RightAngleCorner="3">
       <Dependency Name="AB" />
       <Dependency Name="E" />
     </PerpendicularLine>
     <IntersectionPoint Name="O" Style="3" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine15" />
-      <Dependency Name="PerpendicularLine13" />
+      <Dependency Name="h" />
+      <Dependency Name="g" />
     </IntersectionPoint>
-    <Circle Name="Circle18" Style="8">
+    <Circle Name="c" Style="8">
       <Dependency Name="O" />
       <Dependency Name="B" />
     </Circle>
@@ -63,7 +63,7 @@
       <Dependency Name="C" />
       <Dependency Name="A" />
     </MidPoint>
-    <PerpendicularLine Name="PerpendicularLine48" Style="10" RightAngleCorner="3">
+    <PerpendicularLine Name="k" Style="10" RightAngleCorner="3">
       <Dependency Name="AC" />
       <Dependency Name="F" />
     </PerpendicularLine>

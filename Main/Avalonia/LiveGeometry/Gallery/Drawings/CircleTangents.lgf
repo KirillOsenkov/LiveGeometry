@@ -10,7 +10,7 @@
   <Figures>
     <FreePoint Name="A" X="-2.0833333333" Y="0.9791666667" />
     <FreePoint Name="B" X="-3.8020833333" Y="1.71875" />
-    <Circle Name="Circle39" Style="11">
+    <Circle Name="c" Style="11">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Circle>
@@ -19,17 +19,17 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </MidPoint>
-    <Circle Name="Circle41" Style="12">
+    <Circle Name="d" Style="12">
       <Dependency Name="D" />
       <Dependency Name="A" />
     </Circle>
     <IntersectionPoint Name="E" Style="DependentPoint" Algorithm="IntersectCircleAndCircle1">
-      <Dependency Name="Circle41" />
-      <Dependency Name="Circle39" />
+      <Dependency Name="d" />
+      <Dependency Name="c" />
     </IntersectionPoint>
     <IntersectionPoint Name="F" Style="DependentPoint" Algorithm="IntersectCircleAndCircle2">
-      <Dependency Name="Circle41" />
-      <Dependency Name="Circle39" />
+      <Dependency Name="d" />
+      <Dependency Name="c" />
     </IntersectionPoint>
     <Ray Name="CE" Style="10">
       <Dependency Name="C" />

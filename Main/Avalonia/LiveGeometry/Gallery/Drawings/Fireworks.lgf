@@ -150,7 +150,7 @@
       <Dependency Name="Burst1" />
       <Dependency Name="time" />
     </PointByCoordinates>
-    <Circle Name="Circle1" Visible="false" Style="Ring">
+    <Circle Name="c" Visible="false" Style="Ring">
       <Dependency Name="Middle1" />
       <Dependency Name="Spark1_0_0" />
     </Circle>
@@ -255,7 +255,7 @@
       <Dependency Name="Burst2" />
       <Dependency Name="time" />
     </PointByCoordinates>
-    <Circle Name="Circle2" Visible="false" Style="Ring">
+    <Circle Name="d" Visible="false" Style="Ring">
       <Dependency Name="Middle2" />
       <Dependency Name="Spark2_0_0" />
     </Circle>
@@ -348,7 +348,7 @@
       <Dependency Name="Burst3" />
       <Dependency Name="time" />
     </PointByCoordinates>
-    <Circle Name="Circle3" Visible="false" Style="Ring">
+    <Circle Name="f" Visible="false" Style="Ring">
       <Dependency Name="Middle3" />
       <Dependency Name="Spark3_0_0" />
     </Circle>
@@ -441,7 +441,7 @@
       <Dependency Name="Burst4" />
       <Dependency Name="time" />
     </PointByCoordinates>
-    <Circle Name="Circle4" Visible="false" Style="Ring">
+    <Circle Name="g" Visible="false" Style="Ring">
       <Dependency Name="Middle4" />
       <Dependency Name="Spark4_0_0" />
     </Circle>
@@ -655,10 +655,10 @@
     <FreePoint Name="Star8" Style="Sparkles 3" X="1.75" Y="1" />
     <FreePoint Name="Star9" Style="Sparkles 3" X="-0.3" Y="1.3" />
     <ShowHideControl Name="ShowCircles" Style="GalleryText" Show="false" Text="Circles" X="1.15" Y="-1.25">
-      <Dependency Name="Circle1" />
-      <Dependency Name="Circle2" />
-      <Dependency Name="Circle3" />
-      <Dependency Name="Circle4" />
+      <Dependency Name="c" />
+      <Dependency Name="d" />
+      <Dependency Name="f" />
+      <Dependency Name="g" />
     </ShowHideControl>
     <Label Name="Title" Style="GalleryTitle" Text="Fireworks" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
     <Label Name="Description" Style="GalleryText" Text="Drag the time slider to watch the show.\n\nWhen a firework bursts, its sparks shoot out every which way, and gravity pulls all of them down alike. So the sparks that fly equally fast always stay on a circle, one that grows and drops at once. Check &quot;Circles&quot; to see them.\n\nDrag a firework to move it. To change its sparks, click one, choose Edit this style and pick another emoji." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />

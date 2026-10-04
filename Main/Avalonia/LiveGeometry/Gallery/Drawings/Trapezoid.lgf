@@ -66,12 +66,12 @@
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-    <ParallelLine Name="ParallelLine46" Visible="false" Style="14">
+    <ParallelLine Name="g" Visible="false" Style="14">
       <Dependency Name="AB" />
       <Dependency Name="C" />
     </ParallelLine>
     <PointOnFigure Name="D" X="14.524927374500002" Y="-0.1144622958" Parameter="0.421936949068836">
-      <Dependency Name="ParallelLine46" />
+      <Dependency Name="g" />
     </PointOnFigure>
     <MidPoint Name="E" Style="DependentPoint">
       <Dependency Name="A" />

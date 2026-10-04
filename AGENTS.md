@@ -464,7 +464,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   ("of line g and segment AB"), and a PerpendicularLine1 there was a name no row of the
   Figure List showed. Numbers stay n1, n2; measurements, texts, angle marks, loci, parts of
   a composite and hidden points are numbered by type (Circle1; a hidden point doesn't take
-  a letter from the points on screen). Old drawings keep their Circle1-style names. `HasDefaultName` (nobody typed a name) is not stored: a name that reads like the
+  a letter from the points on screen). Old drawings keep their Circle1-style names;
+  `LiveGeometry.Desktop.exe --rewrite <folder> --letters` gives them letters (the
+  gallery's were, 2026-10-04: only `Name` attributes changed, checked by swapping the
+  names back into the old text, comparing every figure loaded both ways, and pixels). `HasDefaultName` (nobody typed a name) is not stored: a name that reads like the
   default is the default, old `Segment1` included, and loading renames those (so does a
   paste: a copy is numbered by type while it is read, and takes its points' name once it
   is in the drawing). A default name

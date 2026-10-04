@@ -64,7 +64,7 @@
       <Dependency Name="A" />
       <Dependency Name="B" />
     </LineTwoPoints>
-    <PerpendicularLine Name="PerpendicularLine1" Visible="false" Style="9" RightAngleCorner="0">
+    <PerpendicularLine Name="g" Visible="false" Style="9" RightAngleCorner="0">
       <Dependency Name="AB" />
       <Dependency Name="A" />
     </PerpendicularLine>
@@ -119,18 +119,18 @@
     <PointOnFigure Name="Ladder length" X="-16.351426824" Y="32.534013" Parameter="0.116">
       <Dependency Name="ELadderMax" />
     </PointOnFigure>
-    <CircleByRadius Name="CircleByRadius1" Visible="false" Style="13">
+    <CircleByRadius Name="c" Visible="false" Style="13">
       <Dependency Name="Ladder length" />
       <Dependency Name="E" />
       <Dependency Name="A" />
     </CircleByRadius>
     <IntersectionPoint Name="S" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse2">
-      <Dependency Name="PerpendicularLine1" />
-      <Dependency Name="CircleByRadius1" />
+      <Dependency Name="g" />
+      <Dependency Name="c" />
     </IntersectionPoint>
     <IntersectionPoint Name="T" Visible="false" Style="14" Algorithm="IntersectLineAndEllipse1">
-      <Dependency Name="PerpendicularLine1" />
-      <Dependency Name="CircleByRadius1" />
+      <Dependency Name="g" />
+      <Dependency Name="c" />
     </IntersectionPoint>
     <Segment Name="AT" Visible="false" Style="11">
       <Dependency Name="T" />
@@ -139,33 +139,33 @@
     <PointOnFigure Name="Drag me!" X="-6.178026999999999" Y="13.041356876799998" Parameter="0.3">
       <Dependency Name="AT" />
     </PointOnFigure>
-    <CircleByRadius Name="CircleByRadius2" Visible="false" Style="13">
+    <CircleByRadius Name="d" Visible="false" Style="13">
       <Dependency Name="Ladder length" />
       <Dependency Name="E" />
       <Dependency Name="Drag me!" />
     </CircleByRadius>
     <IntersectionPoint Name="F" Visible="false" Style="7" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius2" />
+      <Dependency Name="d" />
       <Dependency Name="AB" />
     </IntersectionPoint>
     <IntersectionPoint Name="G" Visible="false" Style="7" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="CircleByRadius2" />
+      <Dependency Name="d" />
       <Dependency Name="AB" />
     </IntersectionPoint>
-    <PerpendicularLine Name="PerpendicularLine2" Visible="false" Style="11" RightAngleCorner="0">
-      <Dependency Name="PerpendicularLine1" />
+    <PerpendicularLine Name="h" Visible="false" Style="11" RightAngleCorner="0">
+      <Dependency Name="g" />
       <Dependency Name="H" />
     </PerpendicularLine>
     <PointByCoordinates Name="I" Visible="false" Style="12" X="J.X" Y="H.Y">
       <Dependency Name="J" />
       <Dependency Name="H" />
     </PointByCoordinates>
-    <PerpendicularLine Name="PerpendicularLine3" Visible="false" Style="11" RightAngleCorner="0">
-      <Dependency Name="PerpendicularLine2" />
+    <PerpendicularLine Name="k" Visible="false" Style="11" RightAngleCorner="0">
+      <Dependency Name="h" />
       <Dependency Name="I" />
     </PerpendicularLine>
     <IntersectionPoint Name="_K" Visible="false" Style="7" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine3" />
+      <Dependency Name="k" />
       <Dependency Name="AB" />
     </IntersectionPoint>
     <ReflectedPoint Name="K" Visible="false" Style="15">
@@ -180,16 +180,16 @@
       <Dependency Name="K" />
       <Dependency Name="L" />
     </ReflectedPoint>
-    <PerpendicularLine Name="PerpendicularLine4" Visible="false" Style="11" RightAngleCorner="0">
+    <PerpendicularLine Name="m" Visible="false" Style="11" RightAngleCorner="0">
       <Dependency Name="AB" />
       <Dependency Name="M" />
     </PerpendicularLine>
     <IntersectionPoint Name="N" Visible="false" Style="7" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine4" />
+      <Dependency Name="m" />
       <Dependency Name="AB" />
     </IntersectionPoint>
     <IntersectionPoint Name="_O" Visible="false" Style="7" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine4" />
+      <Dependency Name="m" />
       <Dependency Name="AB" />
     </IntersectionPoint>
     <PointByCoordinates Name="O" Visible="false" Style="10" X="J.X + (A.X - J.X) / 3" Y="A.Y + (H.Y - A.Y) * 2 / 3">
@@ -230,7 +230,7 @@
     <PointOnFigure Name="U" Visible="false" Style="18" X="-12.294524395624" Y="14.233334333333332" Parameter="0.9388520000000001">
       <Dependency Name="OP" />
     </PointOnFigure>
-    <CircleByRadius Name="CircleByRadius3" Visible="false" Style="13">
+    <CircleByRadius Name="f" Visible="false" Style="13">
       <Dependency Name="P" />
       <Dependency Name="U" />
       <Dependency Name="P" />
@@ -240,49 +240,49 @@
       <Dependency Name="Q" />
     </Segment>
     <IntersectionPoint Name="V" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius3" />
+      <Dependency Name="f" />
       <Dependency Name="PQ" />
     </IntersectionPoint>
     <IntersectionPoint Name="W" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius3" />
+      <Dependency Name="f" />
       <Dependency Name="PQ" />
     </IntersectionPoint>
-    <CircleByRadius Name="CircleByRadius4" Visible="false" Style="13">
+    <CircleByRadius Name="n" Visible="false" Style="13">
       <Dependency Name="P" />
       <Dependency Name="U" />
       <Dependency Name="Q" />
     </CircleByRadius>
     <IntersectionPoint Name="X" Visible="false" Style="19" Algorithm="IntersectLineAndEllipse2">
       <Dependency Name="PQ" />
-      <Dependency Name="CircleByRadius4" />
+      <Dependency Name="n" />
     </IntersectionPoint>
     <IntersectionPoint Name="Y" Visible="false" Style="19" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PQ" />
-      <Dependency Name="CircleByRadius4" />
+      <Dependency Name="n" />
     </IntersectionPoint>
     <Segment Name="QR" Visible="false" Style="11">
       <Dependency Name="Q" />
       <Dependency Name="R" />
     </Segment>
     <IntersectionPoint Name="Z" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius4" />
+      <Dependency Name="n" />
       <Dependency Name="QR" />
     </IntersectionPoint>
     <IntersectionPoint Name="A1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="CircleByRadius4" />
+      <Dependency Name="n" />
       <Dependency Name="QR" />
     </IntersectionPoint>
-    <CircleByRadius Name="CircleByRadius5" Visible="false" Style="13">
+    <CircleByRadius Name="p" Visible="false" Style="13">
       <Dependency Name="P" />
       <Dependency Name="U" />
       <Dependency Name="R" />
     </CircleByRadius>
     <IntersectionPoint Name="B1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="CircleByRadius5" />
+      <Dependency Name="p" />
       <Dependency Name="QR" />
     </IntersectionPoint>
     <IntersectionPoint Name="C1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="CircleByRadius5" />
+      <Dependency Name="p" />
       <Dependency Name="QR" />
     </IntersectionPoint>
     <Segment Name="OR" Visible="false" Style="11">
@@ -290,32 +290,32 @@
       <Dependency Name="O" />
     </Segment>
     <IntersectionPoint Name="D1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius5" />
+      <Dependency Name="p" />
       <Dependency Name="OR" />
     </IntersectionPoint>
     <IntersectionPoint Name="E1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="CircleByRadius5" />
+      <Dependency Name="p" />
       <Dependency Name="OR" />
     </IntersectionPoint>
-    <CircleByRadius Name="CircleByRadius6" Visible="false" Style="13">
+    <CircleByRadius Name="q" Visible="false" Style="13">
       <Dependency Name="P" />
       <Dependency Name="U" />
       <Dependency Name="O" />
     </CircleByRadius>
     <IntersectionPoint Name="F1" Visible="false" Style="19" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="OR" />
-      <Dependency Name="CircleByRadius6" />
+      <Dependency Name="q" />
     </IntersectionPoint>
     <IntersectionPoint Name="G1" Visible="false" Style="19" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="OR" />
-      <Dependency Name="CircleByRadius6" />
+      <Dependency Name="q" />
     </IntersectionPoint>
     <IntersectionPoint Name="H1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius6" />
+      <Dependency Name="q" />
       <Dependency Name="OP" />
     </IntersectionPoint>
     <IntersectionPoint Name="I1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius6" />
+      <Dependency Name="q" />
       <Dependency Name="OP" />
     </IntersectionPoint>
     <MidPoint Name="J1" Visible="false" Style="19">
@@ -334,56 +334,56 @@
       <Dependency Name="R" />
       <Dependency Name="O" />
     </MidPoint>
-    <CircleByRadius Name="CircleByRadius7" Visible="false" Style="13">
+    <CircleByRadius Name="r" Visible="false" Style="13">
       <Dependency Name="P" />
       <Dependency Name="U" />
       <Dependency Name="J1" />
     </CircleByRadius>
     <IntersectionPoint Name="N1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius7" />
+      <Dependency Name="r" />
       <Dependency Name="OP" />
     </IntersectionPoint>
     <IntersectionPoint Name="O1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="CircleByRadius7" />
+      <Dependency Name="r" />
       <Dependency Name="OP" />
     </IntersectionPoint>
-    <CircleByRadius Name="CircleByRadius8" Visible="false" Style="13">
+    <CircleByRadius Name="s" Visible="false" Style="13">
       <Dependency Name="P" />
       <Dependency Name="U" />
       <Dependency Name="K1" />
     </CircleByRadius>
     <IntersectionPoint Name="P1" Visible="false" Style="19" Algorithm="IntersectLineAndEllipse2">
       <Dependency Name="PQ" />
-      <Dependency Name="CircleByRadius8" />
+      <Dependency Name="s" />
     </IntersectionPoint>
     <IntersectionPoint Name="Q1" Visible="false" Style="19" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="PQ" />
-      <Dependency Name="CircleByRadius8" />
+      <Dependency Name="s" />
     </IntersectionPoint>
-    <CircleByRadius Name="CircleByRadius9" Visible="false" Style="13">
+    <CircleByRadius Name="t" Visible="false" Style="13">
       <Dependency Name="P" />
       <Dependency Name="U" />
       <Dependency Name="L1" />
     </CircleByRadius>
     <IntersectionPoint Name="R1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius9" />
+      <Dependency Name="t" />
       <Dependency Name="QR" />
     </IntersectionPoint>
     <IntersectionPoint Name="S1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="CircleByRadius9" />
+      <Dependency Name="t" />
       <Dependency Name="QR" />
     </IntersectionPoint>
-    <CircleByRadius Name="CircleByRadius10" Visible="false" Style="13">
+    <CircleByRadius Name="u" Visible="false" Style="13">
       <Dependency Name="P" />
       <Dependency Name="U" />
       <Dependency Name="M1" />
     </CircleByRadius>
     <IntersectionPoint Name="T1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="CircleByRadius10" />
+      <Dependency Name="u" />
       <Dependency Name="OR" />
     </IntersectionPoint>
     <IntersectionPoint Name="U1" Visible="false" Style="19" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="CircleByRadius10" />
+      <Dependency Name="u" />
       <Dependency Name="OR" />
     </IntersectionPoint>
     <MidPoint Name="V1" Visible="false" Style="19">

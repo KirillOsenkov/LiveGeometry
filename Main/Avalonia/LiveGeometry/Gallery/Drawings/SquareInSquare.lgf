@@ -17,17 +17,17 @@
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Segment>
-    <Circle Name="Circle29" Visible="false" Style="4">
+    <Circle Name="c" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Circle>
-    <PerpendicularLine Name="PerpendicularLine30" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="g" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="AB" />
       <Dependency Name="A" />
     </PerpendicularLine>
     <IntersectionPoint Name="D" Style="DependentPoint" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="Circle29" />
-      <Dependency Name="PerpendicularLine30" />
+      <Dependency Name="c" />
+      <Dependency Name="g" />
     </IntersectionPoint>
     <MidPoint Name="C1" Visible="false" Style="1">
       <Dependency Name="D" />
@@ -58,31 +58,31 @@
     <PointOnFigure Name="E" Style="1" X="-0.9902915762975586" Y="-4.013112739551942" Parameter="0.652287610922977">
       <Dependency Name="AB" />
     </PointOnFigure>
-    <CircleByRadius Name="CircleByRadius37" Visible="false" Style="4">
+    <CircleByRadius Name="d" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="E" />
       <Dependency Name="B" />
     </CircleByRadius>
-    <CircleByRadius Name="CircleByRadius40" Visible="false" Style="4">
+    <CircleByRadius Name="f" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="E" />
       <Dependency Name="C" />
     </CircleByRadius>
-    <CircleByRadius Name="CircleByRadius43" Visible="false" Style="4">
+    <CircleByRadius Name="h" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="E" />
       <Dependency Name="D" />
     </CircleByRadius>
     <IntersectionPoint Name="H" Style="DependentPoint" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="CircleByRadius43" />
+      <Dependency Name="h" />
       <Dependency Name="AD" />
     </IntersectionPoint>
     <IntersectionPoint Name="G" Style="DependentPoint" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="CircleByRadius40" />
+      <Dependency Name="f" />
       <Dependency Name="CD" />
     </IntersectionPoint>
     <IntersectionPoint Name="F" Style="DependentPoint" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="CircleByRadius37" />
+      <Dependency Name="d" />
       <Dependency Name="BC" />
     </IntersectionPoint>
     <Polygon Name="EFGH" Style="5">

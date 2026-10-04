@@ -234,6 +234,10 @@ public partial class MainView
             OpenDrawing(Path.GetFileName(file), File.ReadAllBytes(file));
             await Task.Delay(50);
             var drawing = DrawingHost.CurrentDrawing;
+            if (RewriteGivesLetters)
+            {
+                GiveLetters(drawing, Path.GetFileName(file));
+            }
 
             var rewritten = XDocument.Parse(drawing.SaveAsText());
             var original = XDocument.Parse(before);
@@ -274,7 +278,35 @@ public partial class MainView
         Environment.Exit(0);
     }
 
-    static readonly string[] captionLayoutAttributes = { "Pin", "OffsetX", "OffsetY", "WrapWidth", "Backdrop" };
+    /// <summary>"--rewrite &lt;folder&gt; --letters": see <see cref="GiveLetters"/></summary>
+    public static bool RewriteGivesLetters { get; set; }
+
+    /// <summary>
+    /// The figures named by their type and a number (Circle1, PerpendicularLine12), which is
+    /// how drawings were named before lines and circles got letters (2026-10-04), take the
+    /// letter a new drawing would give them, in the order of the list: circle c, line g.
+    /// Through the Name setter, so that what names them follows (the dependencies a file
+    /// lists by name, expressions). Points keep their names, and so do the figures still
+    /// numbered by type (measurements, texts, angle marks). Prints each rename.
+    /// </summary>
+    static void GiveLetters(Drawing drawing, string fileName)
+    {
+        foreach (var figure in drawing.Figures.OfType<FigureBase>().ToArray())
+        {
+            var name = figure.Name;
+            if (figure is IPoint
+                || !figure.IsNamedWithLetters
+                || !Regex.IsMatch(name ?? "", "^" + figure.GetType().Name + "[0-9]+$"))
+            {
+                continue;
+            }
+
+            figure.Name = "";
+            Console.WriteLine(fileName + ": " + name + " -> " + figure.Name);
+        }
+    }
+
+    static readonly string[] captionLayoutAttributes ={ "Pin", "OffsetX", "OffsetY", "WrapWidth", "Backdrop" };
 
     /// <summary>
     /// The caption's pin, offsets and width are those of the window the drawing was opened in

@@ -33,60 +33,60 @@
     <PointOnFigure Name="E" X="-4.21875" Y="1.0833333332999935" Parameter="0.432370820671454">
       <Dependency Name="AB" />
     </PointOnFigure>
-    <PerpendicularLine Name="PerpendicularLine41" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="g" Style="4" RightAngleCorner="0">
       <Dependency Name="AB" />
       <Dependency Name="C" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine43" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="h" Style="4" RightAngleCorner="0">
       <Dependency Name="AB" />
       <Dependency Name="D" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine45" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="k" Style="4" RightAngleCorner="0">
       <Dependency Name="AB" />
       <Dependency Name="E" />
     </PerpendicularLine>
     <PointOnFigure Name="F" Style="1" X="-0.541666666700003" Y="1.0833333332999935" Parameter="-0.268237082063133">
-      <Dependency Name="PerpendicularLine45" />
+      <Dependency Name="k" />
     </PointOnFigure>
-    <PerpendicularLine Name="PerpendicularLine57" Visible="false" Style="4" RightAngleCorner="0">
-      <Dependency Name="PerpendicularLine45" />
+    <PerpendicularLine Name="m" Visible="false" Style="4" RightAngleCorner="0">
+      <Dependency Name="k" />
       <Dependency Name="F" />
     </PerpendicularLine>
     <IntersectionPoint Name="G" Visible="false" Style="DependentPoint" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine57" />
-      <Dependency Name="PerpendicularLine43" />
+      <Dependency Name="m" />
+      <Dependency Name="h" />
     </IntersectionPoint>
-    <Circle Name="Circle59" Visible="false" Style="11">
+    <Circle Name="c" Visible="false" Style="11">
       <Dependency Name="F" />
       <Dependency Name="G" />
     </Circle>
-    <Circle Name="Circle61" Visible="false" Style="11">
+    <Circle Name="d" Visible="false" Style="11">
       <Dependency Name="G" />
       <Dependency Name="F" />
     </Circle>
     <IntersectionPoint Name="H" Visible="false" Style="DependentPoint" Algorithm="IntersectCircleAndCircle1">
-      <Dependency Name="Circle61" />
-      <Dependency Name="Circle59" />
+      <Dependency Name="d" />
+      <Dependency Name="c" />
     </IntersectionPoint>
     <Segment Name="FH" Visible="false" Style="4">
       <Dependency Name="H" />
       <Dependency Name="F" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine65" Visible="false" Style="10" RightAngleCorner="0">
+    <PerpendicularLine Name="n" Visible="false" Style="10" RightAngleCorner="0">
       <Dependency Name="FH" />
       <Dependency Name="H" />
     </PerpendicularLine>
     <IntersectionPoint Name="I" Visible="false" Style="DependentPoint" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine65" />
-      <Dependency Name="PerpendicularLine41" />
+      <Dependency Name="n" />
+      <Dependency Name="g" />
     </IntersectionPoint>
-    <Circle Name="Circle67" Visible="false" Style="9">
+    <Circle Name="f" Visible="false" Style="9">
       <Dependency Name="I" />
       <Dependency Name="F" />
     </Circle>
     <IntersectionPoint Name="J" Visible="false" Style="DependentPoint" Algorithm="IntersectEllipseAndLine1">
-      <Dependency Name="Circle67" />
-      <Dependency Name="PerpendicularLine43" />
+      <Dependency Name="f" />
+      <Dependency Name="h" />
     </IntersectionPoint>
     <Polygon Name="FIJ" Style="5">
       <Dependency Name="F" />
@@ -107,15 +107,15 @@
     </Segment>
     <Label Name="Label79" Visible="false" Text="Place the first point (yellow) anywhere on the bottom\nline. Rotate the bottom line 60 degrees around the\nyellow point (rotated line is shown in blue).\n\nTo do this:\n1. Draw a vertical line perpendicular to the bottom\n    line and intersect it with the second line.\n2. From the two vertical points, draw two green\n    circles as shown.\n3. Intersect the two green circles to get an\n    equilateral triangle.\n4. Draw the blue line perpendicular to the triangle \n    side.\n\nNow that you have the blue line, intersect it with the\ntop line. You have the second vertex of your desired\ntriangle. Now, to get the third vertex, draw the gray\ncircle and intersect it with the second line." X="-4.5833333333" Y="-3" />
     <ShowHideControl Name="Hint" Style="GalleryText" Show="false" Text="Show solution" X="-4.68" Y="-1.3958333333">
-      <Dependency Name="PerpendicularLine57" />
+      <Dependency Name="m" />
       <Dependency Name="G" />
-      <Dependency Name="Circle59" />
-      <Dependency Name="Circle61" />
+      <Dependency Name="c" />
+      <Dependency Name="d" />
       <Dependency Name="H" />
       <Dependency Name="FH" />
-      <Dependency Name="PerpendicularLine65" />
+      <Dependency Name="n" />
       <Dependency Name="I" />
-      <Dependency Name="Circle67" />
+      <Dependency Name="f" />
       <Dependency Name="J" />
       <Dependency Name="Label79" />
     </ShowHideControl>

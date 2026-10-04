@@ -84,6 +84,15 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>Whether the figure's kind is named with letters (line g), not numbered (Label1)</summary>
+        public bool IsNamedWithLetters
+        {
+            get
+            {
+                return FirstLetter != null;
+            }
+        }
+
         /// <summary>
         /// The first free name from <paramref name="firstLetter"/> to the end of <see cref="Letters"/>,
         /// then the same with 1, 2... after it. Not round to the start: a function would be

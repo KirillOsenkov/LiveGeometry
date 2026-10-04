@@ -41,7 +41,7 @@
       <Dependency Name="C" />
       <Dependency Name="F" />
     </Segment>
-    <FunctionGraph Name="FunctionGraph31" Style="4" Function="E.X * x ^ 2 + F.X">
+    <FunctionGraph Name="f" Style="4" Function="E.X * x ^ 2 + F.X">
       <Dependency Name="E" />
       <Dependency Name="F" />
     </FunctionGraph>

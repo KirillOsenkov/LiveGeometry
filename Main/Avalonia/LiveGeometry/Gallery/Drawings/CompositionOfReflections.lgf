@@ -46,7 +46,7 @@
       <Dependency Name="Point7" />
       <Dependency Name="Point8" />
     </PointByCoordinates>
-    <CircleArc Name="CircleArc70" Style="11">
+    <CircleArc Name="c" Style="11">
       <Dependency Name="Point2" />
       <Dependency Name="ArcEndPoint9" />
       <Dependency Name="ArcEndPoint10" />
@@ -63,7 +63,7 @@
       <Dependency Name="Point8" />
       <Dependency Name="Point7" />
     </PointByCoordinates>
-    <CircleArc Name="CircleArc71" Style="11">
+    <CircleArc Name="d" Style="11">
       <Dependency Name="Point2" />
       <Dependency Name="ArcEndPoint11" />
       <Dependency Name="ArcEndPoint12" />

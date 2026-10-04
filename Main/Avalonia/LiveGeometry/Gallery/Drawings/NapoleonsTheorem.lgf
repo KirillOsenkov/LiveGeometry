@@ -36,17 +36,17 @@
       <Dependency Name="C" />
       <Dependency Name="A" />
     </Segment>
-    <Circle Name="Circle135" Visible="false" Style="4">
+    <Circle Name="c" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Circle>
-    <Circle Name="Circle137" Visible="false" Style="4">
+    <Circle Name="d" Visible="false" Style="4">
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Circle>
     <IntersectionPoint Name="D" Visible="false" Style="1" Algorithm="IntersectCircleAndCircle1">
-      <Dependency Name="Circle137" />
-      <Dependency Name="Circle135" />
+      <Dependency Name="d" />
+      <Dependency Name="c" />
     </IntersectionPoint>
     <Polygon Name="ABD" Style="12">
       <Dependency Name="A" />
@@ -61,17 +61,17 @@
       <Dependency Name="D" />
       <Dependency Name="B" />
     </Segment>
-    <Circle Name="Circle147" Visible="false" Style="4">
+    <Circle Name="f" Visible="false" Style="4">
       <Dependency Name="B" />
       <Dependency Name="C" />
     </Circle>
-    <Circle Name="Circle149" Visible="false" Style="4">
+    <Circle Name="g" Visible="false" Style="4">
       <Dependency Name="C" />
       <Dependency Name="B" />
     </Circle>
     <IntersectionPoint Name="E" Visible="false" Style="1" Algorithm="IntersectCircleAndCircle1">
-      <Dependency Name="Circle149" />
-      <Dependency Name="Circle147" />
+      <Dependency Name="g" />
+      <Dependency Name="f" />
     </IntersectionPoint>
     <Polygon Name="BCE" Style="12">
       <Dependency Name="B" />
@@ -86,17 +86,17 @@
       <Dependency Name="E" />
       <Dependency Name="C" />
     </Segment>
-    <Circle Name="Circle159" Visible="false" Style="4">
+    <Circle Name="h" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Circle>
-    <Circle Name="Circle161" Visible="false" Style="4">
+    <Circle Name="k" Visible="false" Style="4">
       <Dependency Name="C" />
       <Dependency Name="A" />
     </Circle>
     <IntersectionPoint Name="F" Visible="false" Style="1" Algorithm="IntersectCircleAndCircle2">
-      <Dependency Name="Circle161" />
-      <Dependency Name="Circle159" />
+      <Dependency Name="k" />
+      <Dependency Name="h" />
     </IntersectionPoint>
     <Polygon Name="ACF" Style="12">
       <Dependency Name="F" />
@@ -111,41 +111,41 @@
       <Dependency Name="C" />
       <Dependency Name="F" />
     </Segment>
-    <PerpendicularLine Name="PerpendicularLine178" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="m" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="AB" />
       <Dependency Name="D" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine180" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="n" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="BD" />
       <Dependency Name="A" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine182" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="p" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="AF" />
       <Dependency Name="C" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine184" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="q" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="AC" />
       <Dependency Name="F" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine186" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="r" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="BC" />
       <Dependency Name="E" />
     </PerpendicularLine>
-    <PerpendicularLine Name="PerpendicularLine188" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="s" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="CE" />
       <Dependency Name="B" />
     </PerpendicularLine>
     <IntersectionPoint Name="G" Style="PointOnFigure" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine180" />
-      <Dependency Name="PerpendicularLine178" />
+      <Dependency Name="n" />
+      <Dependency Name="m" />
     </IntersectionPoint>
     <IntersectionPoint Name="H" Style="PointOnFigure" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine184" />
-      <Dependency Name="PerpendicularLine182" />
+      <Dependency Name="q" />
+      <Dependency Name="p" />
     </IntersectionPoint>
     <IntersectionPoint Name="I" Style="PointOnFigure" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine188" />
-      <Dependency Name="PerpendicularLine186" />
+      <Dependency Name="s" />
+      <Dependency Name="r" />
     </IntersectionPoint>
     <Polygon Name="GHI" Style="5">
       <Dependency Name="H" />

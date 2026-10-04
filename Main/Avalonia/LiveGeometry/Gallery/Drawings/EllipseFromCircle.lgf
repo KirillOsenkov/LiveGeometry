@@ -20,19 +20,19 @@
       <Dependency Name="A" />
       <Dependency Name="B" />
     </MidPoint>
-    <Circle Name="Circle10" Style="10">
+    <Circle Name="c" Style="10">
       <Dependency Name="C" />
       <Dependency Name="B" />
     </Circle>
     <PointOnFigure Name="D" Style="FreePoint" X="-1.227755063193727" Y="4.435107833375581" Parameter="1.84614759139992">
-      <Dependency Name="Circle10" />
+      <Dependency Name="c" />
     </PointOnFigure>
-    <PerpendicularLine Name="PerpendicularLine12" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="g" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="AB" />
       <Dependency Name="D" />
     </PerpendicularLine>
     <IntersectionPoint Name="E" Visible="false" Style="FreePoint" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine12" />
+      <Dependency Name="g" />
       <Dependency Name="AB" />
     </IntersectionPoint>
     <Segment Name="DE" Style="9">

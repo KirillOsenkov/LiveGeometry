@@ -21,18 +21,18 @@
   <Figures>
     <FreePoint Name="O" X="-0.0208333333" Y="-2.5625" />
     <FreePoint Name="CirclePoint" X="2.75" Y="-5.2916666667" />
-    <Circle Name="Circle8" Locked="true" Style="4">
+    <Circle Name="c" Locked="true" Style="4">
       <Dependency Name="O" />
       <Dependency Name="CirclePoint" />
     </Circle>
     <PointOnFigure Name="A" Style="FreePoint" X="-3.8725830132322128" Y="-2.024083378140239" Parameter="3.00270763808645">
-      <Dependency Name="Circle8" />
+      <Dependency Name="c" />
     </PointOnFigure>
     <PointOnFigure Name="C" Style="FreePoint" X="3.362855991722875" Y="-0.6450760491537042" Parameter="0.515549007458979">
-      <Dependency Name="Circle8" />
+      <Dependency Name="c" />
     </PointOnFigure>
     <PointOnFigure Name="B" Style="10" X="-0.38182067001121817" Y="1.3099096113772521" Parameter="1.66374803581901">
-      <Dependency Name="Circle8" />
+      <Dependency Name="c" />
     </PointOnFigure>
     <Segment Name="AB" Style="4">
       <Dependency Name="A" />

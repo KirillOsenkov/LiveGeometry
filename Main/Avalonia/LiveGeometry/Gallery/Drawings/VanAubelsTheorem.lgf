@@ -41,17 +41,17 @@
       <Dependency Name="C" />
       <Dependency Name="B" />
     </Segment>
-    <Circle Name="Circle64" Visible="false" Style="4">
+    <Circle Name="c" Visible="false" Style="4">
       <Dependency Name="B" />
       <Dependency Name="C" />
     </Circle>
-    <PerpendicularLine Name="PerpendicularLine65" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="g" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="BC2" />
       <Dependency Name="B" />
     </PerpendicularLine>
     <IntersectionPoint Name="E" Visible="false" Style="FreePoint" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="Circle64" />
-      <Dependency Name="PerpendicularLine65" />
+      <Dependency Name="c" />
+      <Dependency Name="g" />
     </IntersectionPoint>
     <MidPoint Name="F" Style="3">
       <Dependency Name="E" />
@@ -83,17 +83,17 @@
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Segment>
-    <Circle Name="Circle78" Visible="false" Style="4">
+    <Circle Name="d" Visible="false" Style="4">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Circle>
-    <PerpendicularLine Name="PerpendicularLine79" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="h" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="AB2" />
       <Dependency Name="A" />
     </PerpendicularLine>
     <IntersectionPoint Name="H" Visible="false" Style="FreePoint" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="Circle78" />
-      <Dependency Name="PerpendicularLine79" />
+      <Dependency Name="d" />
+      <Dependency Name="h" />
     </IntersectionPoint>
     <MidPoint Name="I" Style="3">
       <Dependency Name="H" />
@@ -125,17 +125,17 @@
       <Dependency Name="A" />
       <Dependency Name="D" />
     </Segment>
-    <Circle Name="Circle92" Visible="false" Style="4">
+    <Circle Name="f" Visible="false" Style="4">
       <Dependency Name="D" />
       <Dependency Name="A" />
     </Circle>
-    <PerpendicularLine Name="PerpendicularLine93" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="k" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="AD2" />
       <Dependency Name="D" />
     </PerpendicularLine>
     <IntersectionPoint Name="K" Visible="false" Style="FreePoint" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="Circle92" />
-      <Dependency Name="PerpendicularLine93" />
+      <Dependency Name="f" />
+      <Dependency Name="k" />
     </IntersectionPoint>
     <MidPoint Name="L" Style="3">
       <Dependency Name="K" />
@@ -167,17 +167,17 @@
       <Dependency Name="D" />
       <Dependency Name="C" />
     </Segment>
-    <Circle Name="Circle106" Visible="false" Style="4">
+    <Circle Name="m" Visible="false" Style="4">
       <Dependency Name="C" />
       <Dependency Name="D" />
     </Circle>
-    <PerpendicularLine Name="PerpendicularLine107" Visible="false" Style="4" RightAngleCorner="0">
+    <PerpendicularLine Name="n" Visible="false" Style="4" RightAngleCorner="0">
       <Dependency Name="CD2" />
       <Dependency Name="C" />
     </PerpendicularLine>
     <IntersectionPoint Name="N" Visible="false" Style="FreePoint" Algorithm="IntersectEllipseAndLine2">
-      <Dependency Name="Circle106" />
-      <Dependency Name="PerpendicularLine107" />
+      <Dependency Name="m" />
+      <Dependency Name="n" />
     </IntersectionPoint>
     <MidPoint Name="O" Style="3">
       <Dependency Name="N" />

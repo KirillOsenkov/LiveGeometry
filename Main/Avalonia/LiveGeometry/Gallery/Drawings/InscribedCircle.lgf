@@ -23,34 +23,34 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Segment>
-    <AngleBisector Name="AngleBisector14" Style="9" Interior="true">
+    <AngleBisector Name="g" Style="9" Interior="true">
       <Dependency Name="A" />
       <Dependency Name="C" />
       <Dependency Name="B" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector16" Style="9" Interior="true">
+    <AngleBisector Name="h" Style="9" Interior="true">
       <Dependency Name="C" />
       <Dependency Name="B" />
       <Dependency Name="A" />
     </AngleBisector>
-    <AngleBisector Name="AngleBisector23" Style="9" Interior="true">
+    <AngleBisector Name="k" Style="9" Interior="true">
       <Dependency Name="B" />
       <Dependency Name="A" />
       <Dependency Name="C" />
     </AngleBisector>
     <IntersectionPoint Name="D" Style="DependentPoint" Algorithm="IntersectLineAndLine">
-      <Dependency Name="AngleBisector16" />
-      <Dependency Name="AngleBisector14" />
+      <Dependency Name="h" />
+      <Dependency Name="g" />
     </IntersectionPoint>
-    <PerpendicularLine Name="PerpendicularLine25" Style="10" RightAngleCorner="1">
+    <PerpendicularLine Name="m" Style="10" RightAngleCorner="1">
       <Dependency Name="AC" />
       <Dependency Name="D" />
     </PerpendicularLine>
     <IntersectionPoint Name="E" Style="PointOnFigure" Algorithm="IntersectLineAndLine">
-      <Dependency Name="PerpendicularLine25" />
+      <Dependency Name="m" />
       <Dependency Name="AC" />
     </IntersectionPoint>
-    <Circle Name="Circle27" Style="12">
+    <Circle Name="c" Style="12">
       <Dependency Name="D" />
       <Dependency Name="E" />
     </Circle>

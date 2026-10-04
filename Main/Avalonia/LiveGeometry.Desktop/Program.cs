@@ -32,10 +32,12 @@ sealed class Program
         {
             MainView.ModernizeFolder = System.IO.Path.GetFullPath(args[1]);
         }
-        else if (args.Length == 2 && args[0] == "--rewrite")
+        else if (args.Length >= 2 && args[0] == "--rewrite")
         {
-            // every drawing of a folder loaded and saved again, in today's format
+            // every drawing of a folder loaded and saved again, in today's format; with
+            // --letters, its figures named Circle1 renamed as a new drawing names them (c)
             MainView.RewriteFolder = System.IO.Path.GetFullPath(args[1]);
+            MainView.RewriteGivesLetters = args.Length > 2 && args[2] == "--letters";
         }
         else if (args.Length == 2 && args[0] == "--recaption")
         {
