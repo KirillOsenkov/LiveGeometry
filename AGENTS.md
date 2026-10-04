@@ -598,6 +598,22 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   by name (see "Styles in files"). Gallery point sizes follow the same standard:
   `dotnet tools/pointsizes.cs -- <folder> [--apply]` lists and raises undersized styles. The
   Rose's 90 control points stay at 5 px on purpose (at 10 they swallow the flower).
+- **The default styles** (2026-10-03) are a palette of eight hues (`Styles/StyleHue.cs`:
+  gray, red, orange, brown, green, cyan, blue, purple), a column each in every style picker,
+  in full rows of eight: points (the kind defaults and red, blue, purple at 8; beads, 12 with
+  a highlight), lines (thin 1.5, thick 2.5, dashed), shapes (outlined with a flat fill - the
+  lighter end of the gradient, on either paper - outlined with the gradient, and gradients
+  without an outline, but for the brown and green columns of that row: the fill of a new
+  polygon, `Shape`, flat yellow from the theme's `ShapeFill` as it always was, and the
+  classic flat green, `GreenShape`). Gray is the theme's where a default is (`Line`,
+  `ThickLine`, the point fills). A hue is a stroke per paper; fills are diagonal gradients
+  worked out from it (`Tint`, light to deeper on the light paper, bright to deep on the dark
+  one, translucent; light tints at most 0.75 saturated, or cyan and orange glared). The
+  brown column's fill hue is the ribbon's gold: of its own hue it was too near orange. The
+  picker is a grid of fixed
+  cells, eight to a row (`StylePickerEditor.CellSize`); a style kept for one purpose
+  (`SliderTrack`, `GalleryLocus`) is offered only to its figure (`StyleManager.IsOffered`),
+  or a row would be one short. A new kind of default wants a full row.
 - **Point shapes and emoji** (`PointStyle.Shape` / `Character`; `Size` is the shape's or the
   character's, whichever shows: the style keeps both in memory and the file only the one in
   use, so `Character` must be read before `Size`, which declaration order does): every point
@@ -1247,8 +1263,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   since (a red fill for the default point style): `FigureStyle.ReadFromTheme` remembers
   what the binding last gave each theme and leaves a value that differs alone. It was
   overwritten whenever the themes were read again (also when the theme switched while the
-  drawing was behind the gallery), and then not saved. Chosen colors that read on both papers (a red line, a blue
-  outline) stay literal; a gray helper line gets a literal Dark override. A drawing's paper is
+  drawing was behind the gallery), and then not saved. The palette's colored styles (see
+  "The default styles") are literal, with a literal Dark override each. A drawing's paper is
   the theme's unless it has one of its own (`Drawing.OwnBackground`, null for the theme's;
   files leave it out; the readers of foreign formats take white as none). A theme switch
   (`AppTheme.CurrentChanged`) re-applies every figure's style and the paper
@@ -1361,8 +1377,10 @@ loader still does for files from before; none of it needs extending.
   intersection point drawn green); only a custom style is carried as an element. The default
   names are the constants in `StyleManager` (`FreePoint`, `PointOnFigure`,
   `IntersectionPoint`, `Midpoint`, `DependentPoint` - `DependentPointStyle` in older files,
-  `Line`, `SliderTrack`, `Shape`, `OutlinedShape`, `Text`, `Heading`, `Hyperlink`, and the palette ones like
-  `RedLine`). Saved are the styles the figures name (`DrawingSerializer.Write` writes the
+  `Line`, `SliderTrack`, `Shape`, `OutlinedShape`, `Text`, `Heading`, `Hyperlink`, and the palette ones
+  named by hue: `RedLine`, `ThickRedLine`, `DashedRedLine`, `RedOutline`, `RedShape`,
+  `RedPoint`, `RedBead`... - see "The default styles"; `OtherLine`, `DottedLine` and
+  `OtherShape` are gone). Saved are the styles the figures name (`DrawingSerializer.Write` writes the
   figures aside first and collects their `Style` attributes - a figure may name another's
   style, a vector its arrow's) and a default the drawing changed; a default as a new drawing
   has it is left out (`StyleManager.IsUnchangedDefault`). `Name` comes first, and an
@@ -1389,7 +1407,9 @@ loader still does for files from before; none of it needs extending.
   and its name resolves to the default (`aliases`). Not the old opaque black line: the
   default line is translucent, and every old drawing would turn gray; those stay file styles
   (`dotnet tools/stylecensus.cs -- <folder>` lists what a folder's files carry, by values).
-  The order matters: new lines and shapes take the first line or shape style. Labels leave
+  The order matters: it is the style picker's, and a figure that isn't a point or a slider
+  takes `Line` or `Shape` by name, else the first style that fits
+  (`StyleManager.GetDefaultStyle`). Labels leave
   out `DecimalsToShow` at the default. `LiveGeometry.Desktop.exe --rewrite <folder>` loads
   and saves every drawing of a folder, keeping each file's viewport.
 - **A figure is asked before it is worked out** while a file is read: whatever a `ReadXml`

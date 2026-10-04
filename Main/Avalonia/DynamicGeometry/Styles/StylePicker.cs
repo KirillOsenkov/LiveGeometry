@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Avalonia;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Avalonia.Controls;
-using System.Collections.Generic;
+using Avalonia.Layout;
 
 namespace DynamicGeometry
 {
@@ -52,12 +52,20 @@ namespace DynamicGeometry
             IFigure figure = Value.Parent as IFigure;
             if (figure != null && style != null)
             {
-                allStyles = style.StyleManager.GetSupportedStyles(figure);
+                allStyles = style.StyleManager.GetSupportedStyles(figure)
+                    .Where(candidate => StyleManager.IsOffered(candidate, figure));
             }
 
             Items = allStyles.Select(s => GetGlyph(s)).ToList();
             base.FillList();
         }
+
+        /// <summary>
+        /// The side of the square every sample sits in, whatever its size: the picker is a
+        /// grid, eight to a row (the list is at most 340 wide, and an item takes 3 more), as
+        /// many as the default styles of a kind have in a row (<see cref="StyleHue"/>)
+        /// </summary>
+        public const double CellSize = 36;
 
         protected override Selector CreateSelector()
         {
@@ -70,8 +78,13 @@ namespace DynamicGeometry
         private FrameworkElement GetGlyph(IFigureStyle s)
         {
             var content = s.GetSampleGlyph();
-            content.Margin = new Thickness(8);
-            var result = new Grid();
+            content.HorizontalAlignment = HorizontalAlignment.Center;
+            content.VerticalAlignment = VerticalAlignment.Center;
+            var result = new Grid()
+            {
+                Width = CellSize,
+                Height = CellSize
+            };
             result.Children.Add(content);
             result.Tag = s;
             return result;

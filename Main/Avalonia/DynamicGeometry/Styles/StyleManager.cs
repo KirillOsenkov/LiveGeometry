@@ -145,105 +145,92 @@ namespace DynamicGeometry
         /// </summary>
         public virtual void AddDefaultStyles()
         {
+            // Each kind of figure has a column per hue in its style picker (StyleHue.All),
+            // rows of eight, and its defaults sit in the column of their color: the gray line,
+            // the yellow shape. The order of the list is the order of the picker.
+
             // The look tells how a point behaves: the two kinds that can be dragged are full
-            // size and warm/bright, the constructed ones are a little smaller and cooler.
+            // size and warm/bright, the constructed ones are a little smaller and cooler. The
+            // row under them: beads, bigger, for the points that matter.
             var freePointStyle = ThemedPoint(FreePointStyleName, size: 10, theme => theme.FreePointFill);
             var pointOnFigureStyle = ThemedPoint(PointOnFigureStyleName, size: 10, theme => theme.PointOnFigureFill);
             var intersectionPointStyle = ThemedPoint(IntersectionPointStyleName, size: 8, theme => theme.IntersectionPointFill);
             var midpointStyle = ThemedPoint(MidpointStyleName, size: 8, theme => theme.MidpointFill);
             var dependentPointStyle = ThemedPoint(DependentPointStyleName, size: 8, theme => theme.DependentPointFill);
+            var pointStyles = new List<IFigureStyle>()
+            {
+                dependentPointStyle,
+                HuePoint("RedPoint", fill: "#FF7B7B", darkFill: "#F07272"),
+                midpointStyle,
+                freePointStyle,
+                pointOnFigureStyle,
+                intersectionPointStyle,
+                HuePoint("BluePoint", fill: "#7EA8F8", darkFill: "#6E9EF5"),
+                HuePoint("PurplePoint", fill: "#B98CF5", darkFill: "#A77EF0")
+            };
+            pointStyles.AddRange(StyleHue.All.Select(Bead));
 
+            // Lines: thin, thick, and dashed for auxiliary constructions (there, but stepping
+            // back). Gray is the theme's: the line every new figure gets, the ink.
             var lineStyle = new LineStyle() { Name = LineStyleName };
             lineStyle.BindToTheme(nameof(LineStyle.Color), theme => theme.Line);
-            var lineStyle2 = new LineStyle()
-            {
-                Name = "OtherLine",
-                Color = Color.FromArgb(200, 0, 0, 255)
-            };
-            lineStyle2.SetOverride(AppTheme.Dark.Name, nameof(LineStyle.Color), Color.FromArgb(200, 122, 155, 255));
             var thickLineStyle = new LineStyle()
             {
                 Name = "ThickLine",
-                StrokeWidth = 2.5
+                StrokeWidth = ThickStrokeWidth
             };
             thickLineStyle.BindToTheme(nameof(LineStyle.Color), theme => AppTheme.WithAlpha(theme.Ink, 230));
-            var redLineStyle = new LineStyle()
-            {
-                Name = "RedLine",
-                Color = Color.FromArgb(255, 216, 59, 59),
-                StrokeWidth = 1.5
-            };
-            var greenLineStyle = new LineStyle()
-            {
-                Name = "GreenLine",
-                Color = Color.FromArgb(255, 46, 158, 79),
-                StrokeWidth = 1.5
-            };
+            var dashedLineStyle = HueLine("DashedLine", StyleHue.Gray, strokeWidth: 1.25, LineDash.Dash);
+            var lineStyles = new List<IFigureStyle>() { lineStyle };
+            lineStyles.AddRange(StyleHue.Colors.Select(hue => HueLine(hue.Name + "Line", hue, ThinStrokeWidth, LineDash.Solid)));
+            lineStyles.Add(thickLineStyle);
+            lineStyles.AddRange(StyleHue.Colors.Select(hue => HueLine("Thick" + hue.Name + "Line", hue, ThickStrokeWidth, LineDash.Solid)));
+            lineStyles.Add(dashedLineStyle);
+            lineStyles.AddRange(StyleHue.Colors.Select(hue => HueLine("Dashed" + hue.Name + "Line", hue, ThinStrokeWidth, LineDash.Dash)));
 
-            // auxiliary constructions: there, but stepping back
-            var dashedLineStyle = new LineStyle()
-            {
-                Name = "DashedLine",
-                Color = Color.FromArgb(255, 110, 110, 110),
-                StrokeWidth = 1.25,
-                Dash = LineDash.Dash
-            };
-            dashedLineStyle.SetOverride(AppTheme.Dark.Name, nameof(LineStyle.Color), Color.FromArgb(255, 158, 158, 158));
-            var dottedLineStyle = new LineStyle()
-            {
-                Name = "DottedLine",
-                Color = Color.FromArgb(255, 110, 110, 110),
-                StrokeWidth = 1.5,
-                Dash = LineDash.Dot
-            };
-            dottedLineStyle.SetOverride(AppTheme.Dark.Name, nameof(LineStyle.Color), Color.FromArgb(255, 158, 158, 158));
-
-            // a bar rather than a line: what the knob of a slider runs along
+            // a bar rather than a line: what the knob of a slider runs along (the picker
+            // offers it to sliders only, IsOffered)
             var sliderTrackStyle = new LineStyle()
             {
                 Name = SliderTrackStyleName,
                 StrokeWidth = 6
             };
             sliderTrackStyle.BindToTheme(nameof(LineStyle.Color), theme => theme.SliderTrack);
+            lineStyles.Add(sliderTrackStyle);
 
-            // an outline with a hint of the same color inside: made for circles, fine for polygons
-            var blueOutlineStyle = new ShapeStyle()
-            {
-                Name = "BlueOutline",
-                Color = Color.FromArgb(255, 47, 123, 214),
-                StrokeWidth = 1.5,
-                Fill = new SolidColorBrush(Color.FromArgb(28, 47, 123, 214))
-            };
-            var orangeOutlineStyle = new ShapeStyle()
-            {
-                Name = "OrangeOutline",
-                Color = Color.FromArgb(255, 224, 138, 0),
-                StrokeWidth = 1.5,
-                Fill = new SolidColorBrush(Color.FromArgb(28, 224, 138, 0))
-            };
-            var purpleOutlineStyle = new ShapeStyle()
-            {
-                Name = "PurpleOutline",
-                Color = Color.FromArgb(255, 136, 84, 208),
-                StrokeWidth = 1.5,
-                Fill = new SolidColorBrush(Color.FromArgb(28, 136, 84, 208))
-            };
-            var shapeWithLineStyle = new ShapeStyle() { Name = OutlinedShapeStyleName };
-            shapeWithLineStyle.BindToTheme(nameof(ShapeStyle.Fill), theme => new SolidColorBrush(theme.ShapeFill));
-            shapeWithLineStyle.BindToTheme(nameof(ShapeStyle.Color), theme => AppTheme.WithAlpha(theme.Ink, 100));
+            // Shapes: outlined with a flat fill, outlined with a gradient, and gradients without
+            // an outline - a polygon's sides are segments of their own (the shape tools draw
+            // them). The fill of a new polygon is among these, yellow and flat, as it always
+            // was, and so is the green next to it.
             var shapeStyle = new ShapeStyle()
             {
                 Name = ShapeStyleName,
                 Color = Colors.Transparent
             };
             shapeStyle.BindToTheme(nameof(ShapeStyle.Fill), theme => new SolidColorBrush(theme.ShapeFill));
-            var shapeStyle2 = new ShapeStyle()
+            var greenShapeStyle = new ShapeStyle()
             {
-                Name = "OtherShape",
+                Name = "GreenShape",
                 Color = Colors.Transparent,
                 Fill = new SolidColorBrush(Color.FromArgb(100, 200, 255, 200))
             };
-            shapeStyle2.SetOverride(AppTheme.Dark.Name, nameof(ShapeStyle.Fill), new SolidColorBrush(Color.FromArgb(100, 128, 200, 128)));
+            greenShapeStyle.SetOverride(AppTheme.Dark.Name, nameof(ShapeStyle.Fill), new SolidColorBrush(Color.FromArgb(100, 128, 200, 128)));
+            var shapeStyles = new List<IFigureStyle>();
+            shapeStyles.AddRange(StyleHue.All.Select(hue => HueShape(
+                hue == StyleHue.Gray ? OutlinedShapeStyleName : hue.Name + "Outline",
+                hue,
+                outlined: true,
+                gradient: false)));
+            shapeStyles.AddRange(StyleHue.All.Select(hue => HueShape(
+                "Gradient" + hue.Name + "Outline",
+                hue,
+                outlined: true,
+                gradient: true)));
+            shapeStyles.AddRange(StyleHue.All.Select(hue =>
+                hue == StyleHue.Brown ? shapeStyle
+                : hue == StyleHue.Green ? greenShapeStyle
+                : HueShape(hue.Name + "Shape", hue, outlined: false, gradient: true)));
+
             var hyperLinkStyle = ThemedText(HyperlinkStyleName, fontSize: 18);
             var textStyle = ThemedText(TextStyleName, fontSize: 18);
             var headerStyle = ThemedText(HeadingStyleName, fontSize: 40);
@@ -273,34 +260,19 @@ namespace DynamicGeometry
                 StrokeWidth = 2.5
             };
 
-            var newStyles = new IFigureStyle[]
-            {
-                freePointStyle,
-                pointOnFigureStyle,
-                intersectionPointStyle,
-                midpointStyle,
-                dependentPointStyle,
-                lineStyle,
-                lineStyle2,
-                thickLineStyle,
-                redLineStyle,
-                greenLineStyle,
-                dashedLineStyle,
-                dottedLineStyle,
-                sliderTrackStyle,
-                shapeStyle,
-                shapeStyle2,
-                shapeWithLineStyle,
-                blueOutlineStyle,
-                orangeOutlineStyle,
-                purpleOutlineStyle,
-                textStyle,
-                headerStyle,
-                hyperLinkStyle,
-                galleryTitleStyle,
-                galleryTextStyle,
-                galleryLocusStyle
-            };
+            var newStyles = pointStyles
+                .Concat(lineStyles)
+                .Concat(shapeStyles)
+                .Concat(new IFigureStyle[]
+                {
+                    textStyle,
+                    headerStyle,
+                    hyperLinkStyle,
+                    galleryTitleStyle,
+                    galleryTextStyle,
+                    galleryLocusStyle
+                })
+                .ToArray();
 
             list.AddRange(newStyles);
 
@@ -326,6 +298,97 @@ namespace DynamicGeometry
             style.BindToTheme(nameof(PointStyle.Fill), theme => new SolidColorBrush(fill(theme)));
             style.BindToTheme(nameof(PointStyle.Color), theme => AppTheme.WithAlpha(theme.Ink, 100));
             return style;
+        }
+
+        const double ThinStrokeWidth = 1.5;
+        const double ThickStrokeWidth = 2.5;
+
+        /// <summary>
+        /// A point style of a color of its own on each paper, rimmed with the theme's ink like
+        /// the defaults, and as small as the constructed ones: in the picker's row only the two
+        /// kinds that can be dragged, side by side in the middle, are bigger
+        /// </summary>
+        static PointStyle HuePoint(string name, string fill, string darkFill)
+        {
+            var style = new PointStyle()
+            {
+                Name = name,
+                Size = 8,
+                Fill = new SolidColorBrush(Color.Parse(fill))
+            };
+            style.SetOverride(AppTheme.Dark.Name, nameof(PointStyle.Fill), new SolidColorBrush(Color.Parse(darkFill)));
+            style.BindToTheme(nameof(PointStyle.Color), theme => AppTheme.WithAlpha(theme.Ink, 100));
+            return style;
+        }
+
+        /// <summary>A big point with a highlight, for the points that matter</summary>
+        static PointStyle Bead(StyleHue hue)
+        {
+            var style = new PointStyle()
+            {
+                Name = hue.Name + "Bead",
+                Size = 12,
+                Fill = hue.BeadFill,
+                Color = hue.BeadRim
+            };
+            style.SetOverride(AppTheme.Dark.Name, nameof(PointStyle.Fill), hue.DarkBeadFill);
+            style.SetOverride(AppTheme.Dark.Name, nameof(PointStyle.Color), hue.DarkBeadRim);
+            return style;
+        }
+
+        static LineStyle HueLine(string name, StyleHue hue, double strokeWidth, LineDash dash)
+        {
+            var style = new LineStyle()
+            {
+                Name = name,
+                Color = hue.Stroke,
+                StrokeWidth = strokeWidth,
+                Dash = dash
+            };
+            style.SetOverride(AppTheme.Dark.Name, nameof(LineStyle.Color), hue.DarkStroke);
+            return style;
+        }
+
+        /// <summary>
+        /// A shape filled with the hue's gradient or with its lighter end alone, outlined in
+        /// the hue or not at all
+        /// </summary>
+        static ShapeStyle HueShape(string name, StyleHue hue, bool outlined, bool gradient)
+        {
+            var style = new ShapeStyle()
+            {
+                Name = name,
+                Color = outlined ? hue.Stroke : Colors.Transparent,
+                StrokeWidth = outlined ? ThinStrokeWidth : 1,
+                Fill = gradient ? hue.Fill : hue.SolidFill
+            };
+            style.SetOverride(AppTheme.Dark.Name, nameof(ShapeStyle.Fill), gradient ? hue.DarkFill : hue.DarkSolidFill);
+            if (outlined)
+            {
+                style.SetOverride(AppTheme.Dark.Name, nameof(ShapeStyle.Color), hue.DarkStroke);
+            }
+
+            return style;
+        }
+
+        /// <summary>
+        /// Whether the style picker offers the style for the figure: not one kept for a single
+        /// purpose (a slider's track, the gallery's locus) to any other figure, unless the
+        /// figure has it. Every other kind gets full rows of eight (<see cref="StyleHue"/>).
+        /// </summary>
+        public static bool IsOffered(IFigureStyle style, IFigure figure)
+        {
+            if (figure == null || figure.Style == style)
+            {
+                return true;
+            }
+
+            return style.Name switch
+            {
+                SliderTrackStyleName => figure is Slider,
+                GalleryLocusStyleName => false,
+                _ => true
+            };
         }
 
         /// <summary>A text style in the theme's ink</summary>
@@ -465,8 +528,20 @@ namespace DynamicGeometry
                 return byKind;
             }
 
-            var supportedStyles = GetSupportedStyles(figure);
-            return supportedStyles.FirstOrDefault();
+            return GetDefaultStyle(figure.GetType());
+        }
+
+        /// <summary>
+        /// The style a new figure of the type gets, but for points and sliders, which go by
+        /// their kind (<see cref="AssignDefaultStyle"/>): the line, or for a shape the default
+        /// fill - which is not the first shape style, the picker shows the outlined ones first
+        /// - else the first style that fits
+        /// </summary>
+        public IFigureStyle GetDefaultStyle(Type figureType)
+        {
+            var supportedStyles = GetSupportedStyles(figureType).ToList();
+            return supportedStyles.FirstOrDefault(style => style.Name == LineStyleName || style.Name == ShapeStyleName)
+                ?? supportedStyles.FirstOrDefault();
         }
 
         static string GetDefaultPointStyleName(IFigure point)

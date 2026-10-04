@@ -95,13 +95,13 @@ namespace DynamicGeometry
                     }
 
                     AddChild(side);
-                    Drawing.StyleManager.SetStyleIfAvailable(side, "OtherLine");
+                    Drawing.StyleManager.SetStyleIfAvailable(side, "BlueLine");
                 }
 
                 var polygon = new Polygon();
                 polygon.Dependencies.AddRange(vertices);
                 AddChild(polygon);
-                Drawing.StyleManager.SetStyleIfAvailable(polygon, "OtherShape");
+                Drawing.StyleManager.SetStyleIfAvailable(polygon, "GreenShape");
             }
 
             UpdateVisual();

@@ -225,7 +225,7 @@ public class ClickPreview
     /// <summary>The style a new figure of the type gets (<see cref="StyleManager.AssignDefaultStyle"/>), faint</summary>
     static void ApplyGhostStyle(Drawing drawing, System.Type figureType, Control element)
     {
-        var style = drawing.StyleManager.GetSupportedStyles(figureType).FirstOrDefault();
+        var style = drawing.StyleManager.GetDefaultStyle(figureType);
         if (style != null)
         {
             element.Apply(style.GetWpfStyle(null));

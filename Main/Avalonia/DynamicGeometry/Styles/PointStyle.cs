@@ -12,11 +12,13 @@ namespace DynamicGeometry
             point.Apply(this.GetWpfStyle());
             Resolve().OnApplied(null, point);
 
-            // an emoji wants to be big on the canvas, but the row of styles is for telling them apart
-            if (Character != null)
+            // an emoji wants to be big on the canvas, but the row of styles is for telling them
+            // apart, and every sample has a cell of the same size (StylePickerEditor.CellSize)
+            double maxSize = Character != null ? MaxSampleCharacterSize : MaxSampleShapeSize;
+            if (Size > maxSize)
             {
-                point.Width = System.Math.Min(Size, MaxSampleCharacterSize);
-                point.Height = point.Width;
+                point.Width = maxSize;
+                point.Height = maxSize;
             }
 
             point.Tag = this;
@@ -24,6 +26,7 @@ namespace DynamicGeometry
         }
 
         const double MaxSampleCharacterSize = 20;
+        const double MaxSampleShapeSize = 24;
 
         PointShape shape = PointShape.Circle;
         [PropertyGridVisible]
