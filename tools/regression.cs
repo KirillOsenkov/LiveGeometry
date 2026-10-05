@@ -58,6 +58,7 @@ public class Program
             ("A regular polygon's sides and vertices keep their styles", RegularPolygonPartStyles),
             ("Paste into another drawing keeps the look", PasteBringsStyles),
             ("Pasting plain text is no error", PastePlainText),
+            ("The axes are lines to build on, one of each", AxisLines),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
             ("Figures without a value don't exist", FiguresWithoutValue),
             ("A tool defined on expressions builds on its inputs", DefinedToolOnExpressions),
@@ -926,6 +927,104 @@ public class Program
         source.PasteFromText(copied);
         Require(source.StyleManager.GetAllStyles().Count() == sourceStyles, "A paste into the same drawing added a style.");
         Require(source.Figures.OfType<FreePoint>().All(p => p.Style == big), "The copy in the same drawing took another style.");
+    }
+
+    static void AxisLines()
+    {
+        var drawing = NewDrawing();
+        drawing.CoordinateGrid.Visible = true;
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        var xAxis = drawing.GetAxisLine(AxisDirection.X);
+        var yAxis = drawing.GetAxisLine(AxisDirection.Y);
+        int Listed() => drawing.Figures.OfType<AxisLine>().Count();
+
+        // offered on hover, not in the drawing yet
+        var placement = PointPlacement.Find(drawing, new Point(2, 0.01), snapToMidpoint: false);
+        Require(placement.Kind == PointPlacementKind.OnFigure && placement.Sources[0] == xAxis, "Near the x-axis: " + placement.Kind);
+        Require(Listed() == 0, "Hovering put axes into the drawing.");
+        string empty = drawing.SaveAsText();
+
+        // a point on the x-axis brings both axes in
+        drawing.Behavior = new FreePointCreator();
+        Click(drawing, system.ToPhysical(new Point(2, 0)));
+        var onX = drawing.Figures.OfType<PointOnFigure>().Single();
+        Require(onX.Dependencies.Single() == xAxis, "The point is not on the x-axis.");
+        Require(Listed() == 2 && drawing.Figures.Contains(yAxis), "Both axes did not come in.");
+        drawing.Figures.CheckConsistency();
+        string withX = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == empty && Listed() == 0, "Undo of the point left the axes.");
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == withX, "Redo of the point on the axis.");
+
+        // a second point, on the y-axis: no more axes
+        Click(drawing, system.ToPhysical(new Point(0, 3)));
+        var onY = drawing.Figures.OfType<PointOnFigure>().Single(p => p != onX);
+        Require(onY.Dependencies.Single() == yAxis && Listed() == 2, "The point on the y-axis.");
+
+        // where a circle crosses the axis
+        var center = AddPoint(drawing, x: 1, y: 1);
+        var through = AddPoint(drawing, x: 1, y: 4);
+        var circle = Factory.CreateCircle(drawing, new IFigure[] { center, through });
+        Actions.Add(drawing, circle);
+        var crossing = PointPlacement.Find(drawing, new Point(1 + System.Math.Sqrt(8), 0), snapToMidpoint: false);
+        Require(crossing.Kind == PointPlacementKind.Intersection && crossing.Sources.Contains(xAxis), "The circle and the x-axis: " + crossing.Kind);
+
+        // a parallel to the y-axis, a reflection in the x-axis
+        drawing.Behavior = new ParallelLineCreator();
+        Click(drawing, system.ToPhysical(new Point(0, -2)));
+        Click(drawing, system.ToPhysical(new Point(5, 5)));
+        Require(drawing.Figures.OfType<ParallelLine>().Single().Dependencies.Contains(yAxis), "No parallel to the y-axis.");
+        drawing.Behavior = new ReflectionCreator();
+        Click(drawing, system.ToPhysical(new Point(1, 4)));
+        Click(drawing, system.ToPhysical(new Point(-3, 0)));
+        var image = drawing.Figures.OfType<IPoint>().SingleOrDefault(p => p.Dependencies.Contains(xAxis) && p.Dependencies.Contains(through));
+        Require(image != null, "No reflection in the x-axis.");
+        Near(image.Coordinates.Y, expected: -4);
+        Require(Listed() == 2, Listed() + " axis lines.");
+        drawing.Figures.CheckConsistency();
+
+        // a file: read back the same, one axis of each
+        string saved = drawing.SaveAsText();
+        var reloaded = ReadLgf(saved);
+        Require(reloaded.LoadErrors == null && reloaded.SaveAsText() == saved, "The axes did not round trip.");
+        Require(reloaded.Figures.OfType<AxisLine>().Count() == 2
+            && reloaded.Figures.Contains(reloaded.GetAxisLine(AxisDirection.X)), "The file's axes are not the drawing's own.");
+
+        // a paste into the same drawing builds on its axis; into another brings both
+        string copied = DrawingSerializer.WriteUsingXmlWriter(writer =>
+            new DrawingSerializer().WriteFiguresWithStyles(drawing, new IFigure[] { xAxis, onX }, writer));
+        drawing.PasteFromText(copied);
+        Require(Listed() == 2, "A paste made a second axis.");
+        Require(drawing.Figures.OfType<PointOnFigure>().Count(p => p.Dependencies.Contains(xAxis)) == 2, "The copy is not on the drawing's x-axis.");
+        drawing.ActionManager.Undo();
+        var other = NewDrawing();
+        string otherEmpty = other.SaveAsText();
+        other.PasteFromText(copied);
+        Require(other.Figures.OfType<AxisLine>().Count() == 2, "The paste into another drawing.");
+        other.Figures.CheckConsistency();
+        other.ActionManager.Undo();
+        Require(other.SaveAsText() == otherEmpty, "Undo of the paste left an axis.");
+
+        // the axes go together, when nothing is built on either
+        var fresh = ReadLgf(withX);
+        fresh.Figures.CheckConsistency();
+        var point = fresh.Figures.OfType<PointOnFigure>().Single();
+        Actions.Remove(point);
+        Require(!fresh.Figures.OfType<AxisLine>().Any(), "The axes stayed after their last point.");
+        fresh.ActionManager.Undo();
+        Require(fresh.Figures.OfType<AxisLine>().Count() == 2 && fresh.SaveAsText() == withX, "Undo of the delete.");
+        Actions.Remove(fresh.GetAxisLine(AxisDirection.X));
+        Require(!fresh.Figures.OfType<AxisLine>().Any() && !fresh.Figures.Contains(point), "Deleting the x-axis left figures.");
+        fresh.ActionManager.Undo();
+        Require(fresh.SaveAsText() == withX, "Undo of deleting an axis.");
+
+        // the grid hidden: no clicks on the axes, what is built on them stays
+        drawing.CoordinateGrid.Visible = false;
+        Require(PointPlacement.Find(drawing, new Point(-4, 0.01), snapToMidpoint: false).Kind == PointPlacementKind.Free, "A hidden axis took a click.");
+        drawing.Recalculate();
+        Require(onX.Exists && onY.Exists, "The points on the axes went with the grid.");
     }
 
     static void PastePlainText()

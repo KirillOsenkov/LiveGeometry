@@ -141,6 +141,18 @@ namespace DynamicGeometry
         #region HitTest
 
         /// <summary>
+        /// What a hit test looks at: the figures of the list, and for a drawing's list also
+        /// the axis lines that are not in it yet (<see cref="AxisLine"/>)
+        /// </summary>
+        protected virtual IEnumerable<IFigure> HitTestCandidates
+        {
+            get
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
         /// Finds any figure at the point
         /// </summary>
         /// <param name="point">Hittest coordinates</param>
@@ -189,7 +201,7 @@ namespace DynamicGeometry
         {
             IFigure bestFoundSoFar = null;
 
-            foreach (var item in this)
+            foreach (var item in HitTestCandidates)
             {
                 // A figure that doesn't exist right now (an intersection whose lines no
                 // longer cross, a circle built on it) is nowhere to be clicked. Its own hit
@@ -228,7 +240,7 @@ namespace DynamicGeometry
             List<IFigure> result = new List<IFigure>();
 
             // Changed to use reverse so that more recently added figures appear earlier in the result. - D.H. 6/29/2011
-            var reverse = this.Reverse();
+            var reverse = HitTestCandidates.Reverse();
             foreach (var item in reverse)
             {
                 if (!item.Exists)

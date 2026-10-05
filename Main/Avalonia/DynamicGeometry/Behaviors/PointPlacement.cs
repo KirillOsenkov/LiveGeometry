@@ -151,7 +151,11 @@ public class PointPlacement
         bool snapToMidpoint,
         bool reuseMidpoint)
     {
-        var linear = underCursor.Where(PointOnFigure.CanBeOnFigure).ToArray();
+        // an axis last: a line drawn along it is what the point goes on
+        var linear = underCursor
+            .Where(PointOnFigure.CanBeOnFigure)
+            .OrderBy(figure => figure is AxisLine)
+            .ToArray();
         if (linear.Length == 0)
         {
             return null;

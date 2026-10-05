@@ -141,6 +141,7 @@ namespace DynamicGeometry
             PointBase.SuppressAutoLabelPoints = true;
             try
             {
+                addedAxes = AxisLine.AddMissing(Drawing, Figures.ToArray());
                 Drawing.Figures.Add(Figures.ToArray<IFigure>());
             }
             finally
@@ -164,9 +165,13 @@ namespace DynamicGeometry
             }
         }
 
+        // the axis lines the copies brought into the drawing, built on one of them
+        List<AxisLine> addedAxes;
+
         protected override void UnExecuteCore()
         {
             Drawing.Figures.Remove(Figures);
+            AxisLine.Remove(Drawing, addedAxes);
             foreach (var style in addedStyles)
             {
                 Drawing.StyleManager.Withdraw(style);

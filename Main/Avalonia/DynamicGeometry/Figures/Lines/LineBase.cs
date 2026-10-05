@@ -57,7 +57,7 @@ namespace DynamicGeometry
         /// <summary>The name written next to the line (<see cref="FigureLabel"/>)</summary>
         [PropertyGridVisible]
         [PropertyGridName("Show name")]
-        public bool ShowName
+        public virtual bool ShowName
         {
             get { return HasNameLabel; }
             set { HasNameLabel = value; }

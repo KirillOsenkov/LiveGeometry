@@ -61,6 +61,13 @@ namespace DynamicGeometry
 
             found = Drawing.Figures.HitTest(offsetFromFigureLeftTopCorner);
 
+            // an axis is the grid's, for the tools to build on: a press on it is a press on
+            // the paper, and drags the view
+            if (found is AxisLine)
+            {
+                found = null;
+            }
+
             // labels that can't be dragged are paper: the drag moves the view, and one that
             // starts on a caption takes the captions along (Drawing.FixedLabels). A click
             // still selects one, and one that is selected drags as any label does - but a
@@ -580,6 +587,11 @@ namespace DynamicGeometry
         public override void MouseRightClick(object sender, MouseButtonEventArgs e)
         {
             var hit = Drawing.Figures.HitTest(Coordinates(e, false, false, false));
+            if (hit is AxisLine)
+            {
+                hit = null;
+            }
+
             var menu = new Avalonia.Controls.ContextMenu();
 
             // a vertex or a side of a regular polygon is selected by itself, as a click

@@ -94,6 +94,14 @@
             return null;
         }
 
+        protected override System.Collections.Generic.IEnumerable<IFigure> HitTestCandidates
+        {
+            get
+            {
+                return System.Linq.Enumerable.Concat(this, Drawing.UnlistedAxisLines());
+            }
+        }
+
         protected override void OnItemAdded(IFigure item)
         {
             item.RegisterWithDependencies();

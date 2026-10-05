@@ -360,7 +360,9 @@ namespace DynamicGeometry
             }
 
             drawing.Figures.ClearSelection();
-            foreach (var figure in action.Figures)
+
+            // (an axis line the copies came with is the grid's, not a copy)
+            foreach (var figure in action.Figures.Where(figure => !(figure is AxisLine)))
             {
                 figure.Selected = true;
             }

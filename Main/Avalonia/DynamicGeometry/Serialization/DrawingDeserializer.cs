@@ -502,6 +502,21 @@ namespace DynamicGeometry
                 return;
             }
 
+            // An axis is the drawing's own, never a second one (a paste, a tool the user
+            // defined): what is built on it is built on that. Read only when it isn't in the
+            // drawing yet, which a file is read into.
+            if (type == typeof(AxisLine) && drawing != null)
+            {
+                var axis = drawing.GetAxisLine(AxisLine.ReadDirection(figureNode));
+                alreadyDeserializedFigures.Add(figureName, axis);
+                if (!drawing.Figures.Contains(axis))
+                {
+                    callbackWhenCreated(axis);
+                }
+
+                return;
+            }
+
             var dependencyNodes = figureNode.Elements("Dependency").ToArray();
             var dependencyNames = dependencyNodes.Select(e => e.ReadString("Name")).ToArray();
             foreach (var dependencyName in dependencyNames)

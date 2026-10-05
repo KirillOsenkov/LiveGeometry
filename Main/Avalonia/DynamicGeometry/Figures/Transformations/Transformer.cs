@@ -106,7 +106,7 @@ namespace DynamicGeometry
         {
             // Not through their points (a line at an angle would transform its angle as if it
             // were a point): these are traced (CanBeTraced)
-            if (figure is CircleByEquation || figure is LineByEquation || figure is LineAtAngle || figure is FunctionGraph || figure is Locus)
+            if (figure is CircleByEquation || figure is LineByEquation || figure is LineAtAngle || figure is FunctionGraph || figure is Locus || figure is AxisLine)
             {
                 return false;
             }

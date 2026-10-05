@@ -56,7 +56,7 @@ namespace DynamicGeometry
         public IFigure FindFigureToToggle(Avalonia.Point coordinates)
         {
             var underMouse = Drawing.Figures.HitTest(coordinates);
-            if (underMouse == null)
+            if (underMouse == null || underMouse is AxisLine)
             {
                 return null;
             }

@@ -173,6 +173,15 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>Whether the axes are on screen, where a click can take them (<see cref="AxisLine"/>)</summary>
+        public bool ShowsAxes
+        {
+            get
+            {
+                return visible && showAxes;
+            }
+        }
+
         public override IFigure HitTest(Point point, System.Predicate<IFigure> filter)
         {
             return null;

@@ -87,25 +87,55 @@ namespace DynamicGeometry
         /// <summary>
         /// A figure created on demand for another one (a Number holding a typed length) is
         /// auxiliary: it goes when its last user goes. Transitively, in case an auxiliary
-        /// figure has auxiliary dependencies of its own.
+        /// figure has auxiliary dependencies of its own. The two axis lines go together, once
+        /// nothing is built on either, as they came (<see cref="AxisLine"/>) - also when one of
+        /// them is what is deleted.
         /// </summary>
         public static List<IFigure> FindOrphanedAuxiliaries(IEnumerable<IFigure> dying)
         {
             var gone = new HashSet<IFigure>(dying);
             var orphans = new List<IFigure>();
             var toVisit = new Queue<IFigure>(dying);
+
+            void Visit(IFigure orphan)
+            {
+                gone.Add(orphan);
+                orphans.Add(orphan);
+                toVisit.Enqueue(orphan);
+            }
+
+            void VisitAxes(Drawing drawing)
+            {
+                var axes = drawing.Figures.OfType<AxisLine>().Where(axis => !gone.Contains(axis)).ToList();
+                if (axes.All(axis => axis.Dependents.All(gone.Contains)))
+                {
+                    axes.ForEach(Visit);
+                }
+            }
+
+            var axisDrawing = gone.OfType<AxisLine>().FirstOrDefault()?.Drawing;
+            if (axisDrawing != null)
+            {
+                VisitAxes(axisDrawing);
+            }
+
             while (toVisit.Count > 0)
             {
                 var figure = toVisit.Dequeue();
                 foreach (var dependency in figure.Dependencies)
                 {
-                    if (dependency.Auxiliary
+                    if (dependency is AxisLine axis)
+                    {
+                        if (!gone.Contains(axis) && axis.Drawing != null)
+                        {
+                            VisitAxes(axis.Drawing);
+                        }
+                    }
+                    else if (dependency.Auxiliary
                         && !gone.Contains(dependency)
                         && dependency.Dependents.All(gone.Contains))
                     {
-                        gone.Add(dependency);
-                        orphans.Add(dependency);
-                        toVisit.Enqueue(dependency);
+                        Visit(dependency);
                     }
                 }
             }

@@ -392,6 +392,23 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   window to the right or the top. There is no
   global setting: one would leak from every loaded file (each gallery tile included) into the
   next new drawing.
+- **The axes are lines to build on** (`Figures/Lines/AxisLine.cs`, VB6's "active axes"): a
+  point on the x-axis, where a circle crosses it, a parallel to it, a reflection in it. The
+  grid draws the axes; an `AxisLine` is never drawn (a transparent stroke, for hit testing and
+  a selection's halo). A drawing has one object per axis for its whole life
+  (`Drawing.GetAxisLine`), and whatever reads an `<AxisLine Axis="X" />` - a file, a paste, a
+  tool the user defined, the GeoGebra reader's `xAxis` - gets that one
+  (`DrawingDeserializer.ReadFigure`): never two x-axes. They are in the list only while
+  something is built on them: a figure added on one brings in both (`AxisLine.AddMissing`,
+  from `AddFigureAction` and `PasteAction`, which take them out again on undo; not while a
+  file is read, which has its own in their places), and they leave together when nothing is
+  built on either, also when one of them is deleted (`FindOrphanedAuxiliaries`). Out of the
+  list, hit testing still finds them (`RootFigureList.HitTestCandidates`) - only while the
+  grid shows its axes (`AxisLine.IsHitTestVisible`); what is built on them stays when the grid
+  is hidden. Real figures win over an axis (lowest z; `PointPlacement.FindOnFigures` puts it
+  last), the Drag tool, the context menu and Define figure ignore it (a press pans), and the
+  hover halo is drawn from the coordinates (`ClickPreview.CreateHalo`): an axis out of the
+  list has no shape on the canvas. As a transform source it is traced.
 - **No pixel snapping of figure geometry.** Lines are exact and point shapes have
   `UseLayoutRounding = false`, so lines hit their own points. Anything new that must line up
   with figures: same two rules. To check alignment, `winauto shot ... --region x,y,60,60 --zoom 16`
@@ -1999,19 +2016,19 @@ A change to the theme wants the same once more with `start ... --dark`.
 
 ## VB6 parity backlog
 
-Deliberately out of scope for now: Calculator, step-by-step construction playback.
-
 Still missing compared to VB6, roughly by value: unsaved-changes prompt; "Choose point/figure"
 disambiguation for overlapping figures; live cursor coordinates in the status bar; undo/redo
 captions naming the action; recent files; print; message, sound and launch buttons (the `.dgf`
 reader leaves button types 1-3 out); "Create locus" on a point (the Locus tool does the
 tracing); measurement label dragging constraints; rulers; "tool select once" option (every
-construction returns to Drag); languages (en/ru/uk/de). Not a gap but a choice: double-click
+construction returns to Drag); languages (en/ru/uk/de); step-by-step construction playback;
+Calculator. Not a gap but a choice: double-click
 zooms to fit, where VB6 opened properties (here selecting a figure shows them).
 
 Done since the list was made: the point symmetric about a point and the inverted point are
 Reflect with a point or a circle for the mirror; point shapes and sizes, name colors and dashes
-are per style; show/hide buttons are `ShowHideControl`; settings persist (`SettingsStore`).
+are per style; show/hide buttons are `ShowHideControl`; settings persist (`SettingsStore`);
+the axes are lines to build on (`AxisLine`).
 
 ## Not yet verified in the browser
 

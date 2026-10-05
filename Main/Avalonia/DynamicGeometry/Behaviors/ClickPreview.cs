@@ -268,7 +268,22 @@ public class ClickPreview
     {
         AvaloniaShapes.Shape halo = null;
 
-        if (figure is LineBase line)
+        if (figure is AxisLine axis)
+        {
+            // along the axis the grid draws: the line itself has no shape on the canvas
+            // until something is built on it
+            var system = axis.Drawing.CoordinateSystem;
+            var ends = axis.OnScreenCoordinates;
+            halo = new AvaloniaShapes.Line()
+            {
+                StartPoint = system.ToPhysical(ends.P1),
+                EndPoint = system.ToPhysical(ends.P2),
+                Stroke = HaloBrush,
+                StrokeThickness = 1 + HaloWidth,
+                ZIndex = (int)ZOrder.Axes - 1
+            };
+        }
+        else if (figure is LineBase line)
         {
             halo = new AvaloniaShapes.Line()
             {

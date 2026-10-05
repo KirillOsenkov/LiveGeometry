@@ -39,6 +39,41 @@ namespace DynamicGeometry
 
         public double Version { get; set; }
 
+        readonly AxisLine[] axisLines = new AxisLine[2];
+
+        /// <summary>
+        /// The drawing's x- or y-axis as a line to build on (<see cref="AxisLine"/>): the same
+        /// object for the drawing's whole life, in its list or not
+        /// </summary>
+        public AxisLine GetAxisLine(AxisDirection direction)
+        {
+            ref var axis = ref axisLines[(int)direction];
+            if (axis == null)
+            {
+                axis = new AxisLine(direction) { Drawing = this };
+            }
+
+            return axis;
+        }
+
+        /// <summary>The axis lines a click can take that aren't in the list: hit testing looks at them too</summary>
+        public IEnumerable<IFigure> UnlistedAxisLines()
+        {
+            if (CoordinateGrid == null || !CoordinateGrid.ShowsAxes)
+            {
+                yield break;
+            }
+
+            foreach (var direction in new[] { AxisDirection.X, AxisDirection.Y })
+            {
+                var axis = GetAxisLine(direction);
+                if (!Figures.Contains(axis))
+                {
+                    yield return axis;
+                }
+            }
+        }
+
         Brush background;
 
         /// <summary>

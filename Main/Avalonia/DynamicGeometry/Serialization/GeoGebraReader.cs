@@ -2054,14 +2054,15 @@ public class GeoGebraReader
             return created;
         }
 
-        // the axes are figures in GeoGebra: hidden lines by equation here
+        // the axes are figures in GeoGebra, and the drawing's axis lines here (AxisLine)
         if (argument == "xAxis" || argument == "yAxis")
         {
-            var axis = argument == "xAxis"
-                ? Factory.CreateLineByEquation(drawing, "0", "1", "0")
-                : Factory.CreateLineByEquation(drawing, "1", "0", "0");
-            axis.Visible = false;
-            Add(axis);
+            var axis = drawing.GetAxisLine(argument == "xAxis" ? AxisDirection.X : AxisDirection.Y);
+            if (!drawing.Figures.Contains(axis))
+            {
+                Add(axis);
+            }
+
             figures[argument] = axis;
             return axis;
         }
