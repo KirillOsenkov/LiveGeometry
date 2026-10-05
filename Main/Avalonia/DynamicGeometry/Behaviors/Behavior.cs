@@ -157,6 +157,8 @@ namespace DynamicGeometry
             {
                 if (mParentCanvas != null)
                 {
+                    // a move that waits for a frame was the tool's that is put down
+                    ForgetWaitingMove();
                     clickPreview.Clear();
                     mParentCanvas.PointerExited -= PointerExitedHandler;
                     mParentCanvas.PointerWheelChanged -= PointerWheelHandler;
@@ -261,6 +263,7 @@ namespace DynamicGeometry
 
         void PointerPressedHandler(object sender, PointerPressedEventArgs e)
         {
+            StartOverMoves();
             currentModifiers = e.KeyModifiers;
             clickPreview.Clear();
             if (e.Pointer.Type == PointerType.Touch)
@@ -297,6 +300,19 @@ namespace DynamicGeometry
                 return;
             }
 
+            if (movedThisFrame)
+            {
+                waitingMove = e;
+                waitingMoveSender = sender;
+                return;
+            }
+
+            movedThisFrame = WaitForFrame();
+            HandleMove(sender, e);
+        }
+
+        void HandleMove(object sender, PointerEventArgs e)
+        {
             // (the context menu it opened may have taken the release)
             isSecondaryClickHeld = isSecondaryClickHeld && e.GetCurrentPoint(mParentCanvas).Properties.IsLeftButtonPressed;
             if (isSecondaryClickHeld)
@@ -315,8 +331,87 @@ namespace DynamicGeometry
 
         void PointerExitedHandler(object sender, PointerEventArgs e)
         {
+            HandleWaitingMove();
             clickPreview.Clear();
         }
+
+        #region One move a frame
+
+        // A mouse reports far more often than the screen is drawn (500 or 1000 times a
+        // second, against 60), and Windows hands a move over whenever the app asks for its
+        // messages: a drag in a heavy drawing worked the drawing out again for every move, a
+        // dozen times for each frame that showed one of them. The first move since the last
+        // frame is handled at once, as before; the ones after it wait for the next frame,
+        // which handles the last of them before it lays out and draws. A press, a release,
+        // the wheel and the pointer leaving handle the waiting one first, so that everything
+        // comes in order. (The browser hands over one move a frame already.) A drag of the
+        // grid of the Inversion in a Circle at 1000 moves a second: of the 2000 moves that
+        // came in 4 seconds, one a frame was handled, and the drag took a fifth of the time.
+
+        PointerEventArgs waitingMove;
+        object waitingMoveSender;
+        bool movedThisFrame;
+        bool frameRequested;
+
+        /// <summary>Asks for the next frame, once; false where there is no frame to ask for (no window)</summary>
+        bool WaitForFrame()
+        {
+            if (frameRequested)
+            {
+                return true;
+            }
+
+            var topLevel = TopLevel.GetTopLevel(mParentCanvas);
+            if (topLevel == null)
+            {
+                return false;
+            }
+
+            frameRequested = true;
+            topLevel.RequestAnimationFrame(_ => OnFrame());
+            return true;
+        }
+
+        void OnFrame()
+        {
+            frameRequested = false;
+            movedThisFrame = false;
+            if (waitingMove != null && mParentCanvas != null)
+            {
+                movedThisFrame = WaitForFrame();
+                HandleWaitingMove();
+            }
+        }
+
+        /// <summary>
+        /// Before a press or a release: the move that waits comes first, and the next one is
+        /// handled at once again, as the first move of a drag should be (the status says what
+        /// Shift and Alt do to the point as soon as it moves)
+        /// </summary>
+        void StartOverMoves()
+        {
+            HandleWaitingMove();
+            movedThisFrame = false;
+        }
+
+        void HandleWaitingMove()
+        {
+            var e = waitingMove;
+            var sender = waitingMoveSender;
+            ForgetWaitingMove();
+            if (e != null)
+            {
+                HandleMove(sender, e);
+            }
+        }
+
+        void ForgetWaitingMove()
+        {
+            waitingMove = null;
+            waitingMoveSender = null;
+        }
+
+        #endregion
 
         #region Click preview
 
@@ -691,6 +786,7 @@ namespace DynamicGeometry
 
         void PointerReleasedHandler(object sender, PointerReleasedEventArgs e)
         {
+            StartOverMoves();
             currentModifiers = e.KeyModifiers;
             if (e.Pointer.Type == PointerType.Touch)
             {
@@ -714,6 +810,7 @@ namespace DynamicGeometry
 
         void PointerWheelHandler(object sender, PointerWheelEventArgs e)
         {
+            HandleWaitingMove();
             currentModifiers = e.KeyModifiers;
             clickPreview.Clear();
             MouseWheel(sender, e);

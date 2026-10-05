@@ -13,6 +13,18 @@ namespace DynamicGeometry
             ShouldProcessText = true;
         }
 
+        /// <summary>
+        /// Digits all of one width (the font's tabular figures, "tnum"): the numbers of a text
+        /// label change as figures are dragged, and with digits of their own widths the text
+        /// after them jumped to and fro
+        /// </summary>
+        protected override FrameworkElement CreateShape()
+        {
+            var shape = base.CreateShape();
+            TextBlock.FontFeatures = new FontFeatureCollection() { FontFeature.Parse("tnum") };
+            return shape;
+        }
+
         public double Value
         {
             get
@@ -165,15 +177,6 @@ namespace DynamicGeometry
 
         /// <summary>Pixels from the pinned corner of the canvas to the same corner of the label</summary>
         public Point PinOffset { get; set; }
-
-        // a pin is measured from the canvas: without one there is nothing to measure from
-        bool HasCanvas
-        {
-            get
-            {
-                return Drawing != null && Drawing.Canvas != null;
-            }
-        }
 
         double wrapWidth;
 

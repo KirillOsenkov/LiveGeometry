@@ -88,16 +88,32 @@ namespace DynamicGeometry
             {
                 var list = toRecalculate.ToList();
 
-                foreach (var figure in toRecalculate)
+                bool wasMoving = drawing != null && drawing.IsMoving;
+                if (drawing != null)
                 {
-                    // need to check because Recalculate() of a previous figure (polygon) might have deleted this one from the drawing
-                    if (figure.Drawing != null)
+                    drawing.IsMoving = true;
+                }
+
+                try
+                {
+                    foreach (var figure in toRecalculate)
                     {
-                        figure.RecalculateAndUpdateVisual();
+                        // need to check because Recalculate() of a previous figure (polygon) might have deleted this one from the drawing
+                        if (figure.Drawing != null)
+                        {
+                            figure.RecalculateAndUpdateVisual();
+                        }
+                        else
+                        {
+                            list.Remove(figure);
+                        }
                     }
-                    else
+                }
+                finally
+                {
+                    if (drawing != null)
                     {
-                        list.Remove(figure);
+                        drawing.IsMoving = wasMoving;
                     }
                 }
 

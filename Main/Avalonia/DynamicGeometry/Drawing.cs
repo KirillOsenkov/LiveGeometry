@@ -328,6 +328,13 @@ namespace DynamicGeometry
         /// </summary>
         public bool IsReading { get; set; }
 
+        /// <summary>
+        /// On while the figures are worked out again after a move (a drag, a pan by the keys,
+        /// undo and redo of either): a label shows its new text at most every
+        /// <see cref="LabelBase.TextInterval"/> then (<see cref="LabelBase.ProcessedText"/>)
+        /// </summary>
+        public bool IsMoving { get; set; }
+
         Rect? activeScene;
 
         /// <summary>

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -6,6 +9,7 @@ using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Threading;
 
 namespace DynamicGeometry
 {
@@ -204,7 +208,7 @@ namespace DynamicGeometry
                         // (the square root of a negative number, 0 / 0: it said "NaN"; 1 / 0
                         // said "Infinity")
                         double value = compileResult.Expression();
-                        sb.Append(!value.IsValidValue() ? UndefinedText : Math.Round(value, DecimalsToShow).ToString());
+                        sb.Append(!value.IsValidValue() ? UndefinedText : FormatNumber(value));
                     }
                     else
                     {
@@ -215,6 +219,16 @@ namespace DynamicGeometry
             }
 
             ProcessedText = sb.ToString();
+        }
+
+        /// <summary>
+        /// A number of a text label's [...] part, with every decimal it shows, zeros at the end
+        /// included (3.70, 9.00): a number that lost its last zero now and then got shorter,
+        /// and the text after it jumped to and fro as a figure was dragged
+        /// </summary>
+        string FormatNumber(double value)
+        {
+            return Math.Round(value, DecimalsToShow).ToString("F" + DecimalsToShow, CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -313,15 +327,94 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// How often a label shows a new text while figures move. A number that changed at
+        /// every move of a drag changed its width with it, and the lines after it jumped to and
+        /// fro; and each change laid the whole text out again.
+        /// </summary>
+        public static readonly TimeSpan TextInterval = TimeSpan.FromMilliseconds(300);
+
+        // on screen: a pin is measured from the canvas, and a text shown later is laid out there
+        protected bool HasCanvas
+        {
+            get
+            {
+                return Drawing != null && Drawing.Canvas != null;
+            }
+        }
+
+        string processedText;
+        long textShownAt;
+        IDisposable pendingText;
+
+        /// <summary>
+        /// The text as worked out from the expressions or the measure, right now. The label
+        /// shows it at once, except while figures move (<see cref="Drawing.IsMoving"/>): then
+        /// at once only if the text on screen has been there for <see cref="TextInterval"/>,
+        /// otherwise when that time is up - once an interval while the numbers change, and the
+        /// last text in the end.
+        /// </summary>
         public virtual string ProcessedText
         {
             get
             {
-                return TextBlock.Text;
+                return processedText;
             }
             set
             {
-                TextBlock.Text = value;
+                processedText = value;
+                if (Drawing != null && Drawing.IsMoving && HasCanvas)
+                {
+                    ShowTextSoon();
+                }
+                else
+                {
+                    ShowText();
+                }
+            }
+        }
+
+        void ShowText()
+        {
+            pendingText?.Dispose();
+            pendingText = null;
+            if (TextBlock.Text != processedText)
+            {
+                TextBlock.Text = processedText;
+                textShownAt = Stopwatch.GetTimestamp();
+            }
+        }
+
+        void ShowTextSoon()
+        {
+            var shownFor = Stopwatch.GetElapsedTime(textShownAt);
+            if (TextBlock.Text == processedText || shownFor >= TextInterval)
+            {
+                ShowText();
+                return;
+            }
+
+            // (above Input: a drag that keeps the dispatcher busy with moves still shows a
+            // number once an interval)
+            pendingText ??= DispatcherTimer.RunOnce(ShowPendingText, TextInterval - shownFor, DispatcherPriority.Normal);
+        }
+
+        void ShowPendingText()
+        {
+            pendingText = null;
+            if (TextBlock.Text == processedText)
+            {
+                return;
+            }
+
+            TextBlock.Text = processedText;
+            textShownAt = Stopwatch.GetTimestamp();
+
+            // a label placed by its size (a pinned caption, a point's name kept clear of its
+            // point) goes where the new size puts it
+            if (Drawing != null && HasCanvas)
+            {
+                UpdateVisual();
             }
         }
 
