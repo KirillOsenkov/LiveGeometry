@@ -1186,11 +1186,35 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   deleted hole leaves the path. Transformations but inversion take it through its anchors
   and handles (`CreateImage`): the image's handles are all points, hidden auxiliary ones,
   which can't be dragged; an image isn't split or shortened (`IsImage`). File: the anchors
-  as the first dependencies and `Path="C 1,0 -0.5,1 L C #4 0,2 ..."`, one piece per
+  as the first dependencies and `Path="C 1,0 -0.5,1 L C #4 0,2 C a a ..."`, one piece per
   anchor, the closing one written whether closed or not: `L` for two handles on their
   anchors, else `C`, the out handle of the anchor and the in handle of the next, each an
-  offset or `#k`, the dependency that is its point; the dependencies nothing names after
-  the anchors are the holes. No measurements and no intersections yet.
+  offset, `#k` (the dependency that is its point) or `a` (automatic); the dependencies
+  nothing names after the anchors are the holes, but a `Tension="#k"`. No measurements and
+  no intersections yet.
+  **Automatic handles** (`BezierPathHandle.Auto`, 2026-10-06): a handle can be left to the
+  path, worked out from the anchors in `Recalculate` by the path's `Smoothing`
+  (`BezierPathSmoother`, a pure function: None - on the anchor; Hobby - METAFONT's, the
+  default, four points on a circle give the circle's 0.5523; Catmull-Rom, centripetal;
+  Natural spline, chord length). A clicked anchor's two handles are automatic, so each new
+  click reshapes the pieces before it; press-drag, Alt+click, a drag of a handle (the one
+  across it too: mirrored, or with Alt frozen where it was) make handles the user's.
+  Handles the user set bound the automatic ones: across one an automatic handle continues
+  straight on, next to one on its anchor (a corner) or at an open end it is a free end
+  (Hobby's curl 1, zero curvature for the others). Every method is unchanged by moving,
+  turning, scaling and mirroring the anchors (checked by the regression test), which is
+  why images could keep automatic handles - they don't: an image's handles stay points
+  following the source's handles, so they follow a change of mode too. `Tension` scales
+  automatic handles down (Hobby's own tension, also in its equations, at least 0.75 there;
+  a plain factor for the others); a slider in the grid from 0.5 to 3, or tied to a figure
+  that says a number (`ITiedValues`: the panel right after the tool, a click on a slider;
+  not what a point goes on, which starts the next path), the last dependency, typed again
+  when that is deleted. A tension that is no number above 0 makes the path not exist.
+  "Smooth automatically" and "Sharp corner" on an anchor (grid of a free point or a point
+  on a figure, context menu of any point), "Smooth all anchors" on the path. Convert to
+  path anchor between two automatic handles gives an automatic anchor (the curve moves a
+  little), else the de Casteljau split. The tool's panel has Smoothing and Tension for the
+  next path; the enum editor shows a value's `[PropertyGridName]` ("Catmull-Rom").
 - **Names of lines and circles** (`Figures/Controls/FigureLabel.cs`): "Show name" on a line,
   ray, segment or circle (`LineBase`/`CircleBase.ShowName`, over `FigureBase.HasNameLabel`)
   adds a `FigureLabel` the way a point's name is a `PointLabel`: a label depending on the

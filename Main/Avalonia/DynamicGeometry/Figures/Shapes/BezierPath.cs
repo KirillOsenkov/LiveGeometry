@@ -31,9 +31,12 @@ namespace DynamicGeometry;
 /// is built on a handle, but the images of a transformation. Other paths can be its holes
 /// (<see cref="CutHoles"/>): the inside leaves them out, and they stay paths of their own.
 /// Whatever changes what the path is made of (an anchor, a hole, a handle's point) is one
-/// change of its <see cref="Layout"/>, done and undone whole.
+/// change of its <see cref="Layout"/>, done and undone whole. A handle may be left to the path
+/// (<see cref="BezierPathHandle.Auto"/>): it is worked out from the anchors by the path's
+/// <see cref="Smoothing"/> (<see cref="BezierPathSmoother"/>), so the curve stays smooth as
+/// they move; the tension it takes is typed or comes from a figure (a slider).
 /// </summary>
-public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupportRemoveDependency
+public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupportRemoveDependency, ITiedValues, IConditionalProperties
 {
     readonly List<BezierPathHandle> inHandles = new List<BezierPathHandle>();
     readonly List<BezierPathHandle> outHandles = new List<BezierPathHandle>();
@@ -46,6 +49,11 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
     bool closed;
     bool filled;
+    BezierPathSmoothing smoothing = BezierPathSmoothing.Hobby;
+
+    // the tension typed, and the figure it comes from instead (the last dependency), if any
+    double tension = DefaultTension;
+    IFigure tensionSource;
 
     // the anchor the Drag tool is dragging, whose handles show while it does
     IFigure draggedAnchor;
@@ -92,8 +100,15 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             filled);
     }
 
-    /// <summary>What a handle is: an offset from its anchor, or a point of the drawing (then the offset means nothing)</summary>
-    public record struct HandleSpec(Point Offset, IPoint Point);
+    /// <summary>
+    /// What a handle is: an offset from its anchor, a point of the drawing (then the offset
+    /// means nothing), or left to the path (automatic; the offset is what it was worked out to)
+    /// </summary>
+    public record struct HandleSpec(Point Offset, IPoint Point, bool Auto = false)
+    {
+        /// <summary>A handle the path works out</summary>
+        public static HandleSpec Automatic => new HandleSpec(default, null, Auto: true);
+    }
 
     /// <summary>A new path through the anchors, with these handles and holes, not in the drawing yet</summary>
     public static BezierPath Create(
@@ -120,8 +135,10 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     {
         for (int i = 0; i < anchors.Count; i++)
         {
-            var inHandle = new BezierPathHandle(this, isIn: true) { Offset = ins[i].Offset, Point = ins[i].Point };
-            var outHandle = new BezierPathHandle(this, isIn: false) { Offset = outs[i].Offset, Point = outs[i].Point };
+            var inHandle = new BezierPathHandle(this, isIn: true);
+            var outHandle = new BezierPathHandle(this, isIn: false);
+            inHandle.Set(ins[i]);
+            outHandle.Set(outs[i]);
             inHandles.Add(inHandle);
             outHandles.Add(outHandle);
             AttachPart(inHandle);
@@ -129,10 +146,22 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         }
 
         SyncPieces();
-        SetDependencies(anchors
+        SetDependencies(DependenciesOf(anchors, holes, tensionSource));
+    }
+
+    /// <summary>The anchors, the points of the handles (<see cref="HandlesInOrder"/>), the holes, the figure the tension comes from</summary>
+    List<IFigure> DependenciesOf(IEnumerable<IFigure> anchors, IEnumerable<IFigure> holes, IFigure source)
+    {
+        var result = anchors
             .Concat(HandlesInOrder.Where(h => h.Point != null).Select(h => (IFigure)h.Point))
             .Concat(holes)
-            .ToList());
+            .ToList();
+        if (source != null)
+        {
+            result.Add(source);
+        }
+
+        return result;
     }
 
     #region Anchors, handles and pieces
@@ -201,12 +230,22 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         }
     }
 
+    /// <summary>The dependencies after the points of handles, but for the figure the tension comes from (the last)</summary>
+    List<IFigure> HoleList
+    {
+        get
+        {
+            int start = HoleStart;
+            return Dependencies.Skip(start).Take(Dependencies.Count - start - (tensionSource != null ? 1 : 0)).ToList();
+        }
+    }
+
     /// <summary>The paths whose insides the inside of this one leaves out</summary>
     public IEnumerable<BezierPath> Holes
     {
         get
         {
-            return Dependencies.Skip(HoleStart).OfType<BezierPath>();
+            return HoleList.OfType<BezierPath>();
         }
     }
 
@@ -306,16 +345,17 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             return;
         }
 
-        inHandles[index].Offset = inOffset;
-        outHandles[index].Offset = outOffset;
+        inHandles[index].Set(new HandleSpec(inOffset, null));
+        outHandles[index].Set(new HandleSpec(outOffset, null));
         RecalculateAndUpdate();
     }
 
     /// <summary>
-    /// The handle goes where it is dragged: its offset from its anchor changes, and with
-    /// <see cref="BezierPathHandle.MirrorsOpposite"/> the handle across the anchor is its
-    /// mirror image through the anchor from then on (a smooth, symmetric anchor) - unless
-    /// that one is a point of the drawing, which stays where it is
+    /// The handle goes where it is dragged: its offset from its anchor changes (it is the
+    /// user's from then on, not automatic), and with <see cref="BezierPathHandle.MirrorsOpposite"/>
+    /// the handle across the anchor is its mirror image through the anchor from then on (a
+    /// smooth, symmetric anchor) - unless that one is a point of the drawing, which stays where
+    /// it is. Without it an automatic one across stays where it was worked out to (a corner).
     /// </summary>
     public void MoveHandle(BezierPathHandle handle, Point coordinates)
     {
@@ -326,34 +366,40 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         }
 
         var offset = coordinates.Minus(point.Coordinates);
-        if (handle.MirrorsOpposite && Opposite(handle) is BezierPathHandle { Point: null } opposite)
+        if (Opposite(handle) is BezierPathHandle { Point: null } opposite)
         {
-            opposite.Offset = offset.Minus();
+            if (handle.MirrorsOpposite)
+            {
+                opposite.Offset = offset.Minus();
+            }
+
+            opposite.Auto = false;
         }
 
         handle.Offset = offset;
+        handle.Auto = false;
         RecalculateAndUpdate();
     }
 
-    /// <summary>For undo of a drag of a handle: where it and the one across the anchor are</summary>
+    /// <summary>For undo of a drag of a handle: what it and the one across the anchor are</summary>
     public object CaptureHandles(BezierPathHandle handle)
     {
         var opposite = Opposite(handle);
-        return new Point[] { handle.Offset, opposite != null ? opposite.Offset : default };
+        return new HandleSpec[] { handle.Spec, opposite != null ? opposite.Spec : default };
     }
 
     public void RestoreHandles(BezierPathHandle handle, object place)
     {
-        if (!(place is Point[] offsets) || offsets.Length != 2)
+        if (!(place is HandleSpec[] specs) || specs.Length != 2)
         {
             return;
         }
 
-        handle.Offset = offsets[0];
+        handle.Set(specs[0]);
         var opposite = Opposite(handle);
         if (opposite != null)
         {
-            opposite.Offset = offsets[1];
+            opposite.Set(specs[1]);
         }
 
         RecalculateAndUpdate();
@@ -388,6 +434,11 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             }
 
             index++;
+        }
+
+        if (tensionSource != null && Dependencies.Count > 0)
+        {
+            tensionSource = Dependencies[Dependencies.Count - 1];
         }
 
         curvesKnown = false;
@@ -468,6 +519,8 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         public Dictionary<BezierPathHandle, HandleSpec> Handles;
         public List<IFigure> Holes;
         public Dictionary<PointOnFigure, double> Parameters;
+        public IFigure TensionSource;
+        public double Tension;
     }
 
     Layout Capture()
@@ -478,9 +531,11 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             Ins = inHandles.ToList(),
             Outs = outHandles.ToList(),
             Pieces = pieces.ToList(),
-            Handles = Handles.ToDictionary(h => h, h => new HandleSpec(h.Offset, h.Point)),
-            Holes = Dependencies.Skip(HoleStart).ToList(),
-            Parameters = PointsOnPath().ToDictionary(p => p, p => p.Parameter)
+            Handles = Handles.ToDictionary(h => h, h => h.Spec),
+            Holes = HoleList,
+            Parameters = PointsOnPath().ToDictionary(p => p, p => p.Parameter),
+            TensionSource = tensionSource,
+            Tension = tension
         };
     }
 
@@ -504,8 +559,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         pieces.SetItems(layout.Pieces);
         foreach (var pair in layout.Handles)
         {
-            pair.Key.Offset = pair.Value.Offset;
-            pair.Key.Point = pair.Value.Point;
+            pair.Key.Set(pair.Value);
         }
 
         foreach (var part in layout.Ins.Concat<IFigure>(layout.Outs).Concat(layout.Pieces).Where(part => !present.Contains(part)))
@@ -518,11 +572,13 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             pair.Key.Parameter = pair.Value;
         }
 
-        SetDependencies(layout.Anchors
-            .Concat(HandlesInOrder.Where(h => h.Point != null).Select(h => (IFigure)h.Point))
-            .Concat(layout.Holes)
-            .ToList());
+        tensionSource = layout.TensionSource;
+        tension = layout.Tension;
+        SetDependencies(DependenciesOf(layout.Anchors, layout.Holes, layout.TensionSource));
         RecalculateAndUpdate();
+
+        // the rows and buttons of the grid may change (a tension typed or tied, handles to smooth)
+        RaisePropertyChanged(null);
     }
 
     /// <summary>
@@ -999,6 +1055,290 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         }
     }
 
+    /// <summary>How the automatic handles are worked out (<see cref="BezierPathSmoother"/>); None leaves them on their anchors</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Smoothing")]
+    public BezierPathSmoothing Smoothing
+    {
+        get
+        {
+            return smoothing;
+        }
+        set
+        {
+            if (smoothing == value)
+            {
+                return;
+            }
+
+            smoothing = value;
+            if (Drawing != null)
+            {
+                RecalculateAndUpdate();
+            }
+
+            RaisePropertyChanged(nameof(Smoothing));
+        }
+    }
+
+    public const double DefaultTension = 1;
+    public const double MinimumTension = 0.5;
+    public const double MaximumTension = 3;
+
+    /// <summary>For a path being made: how it is smoothed, before it is worked out the first time</summary>
+    public void InitializeSmoothing(BezierPathSmoothing smoothing, double tension)
+    {
+        this.smoothing = smoothing;
+        this.tension = tension;
+        curvesKnown = false;
+    }
+
+    /// <summary>
+    /// How tight the automatic handles are: 1 as the method has it, more makes them shorter
+    /// (bends tighter), less longer. Typed, or tied to a figure with a number (a slider),
+    /// which it then follows (<see cref="ITiedValues"/>). Typed, from 0.5 to 3 (a slider in
+    /// the grid, to try them out); a figure may give any number above 0.
+    /// </summary>
+    [PropertyGridVisible]
+    [Domain(MinimumTension, MaximumTension)]
+    [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
+    public double Tension
+    {
+        get
+        {
+            switch (tensionSource)
+            {
+                case null:
+                    return tension;
+                case INumber number:
+                    return number.Value;
+                case ILengthProvider provider:
+                    return provider.Length;
+                default:
+                    return double.NaN;
+            }
+        }
+        set
+        {
+            if (tensionSource != null || tension == value)
+            {
+                return;
+            }
+
+            tension = value;
+            if (Drawing != null)
+            {
+                RecalculateAndUpdate();
+            }
+
+            RaisePropertyChanged(nameof(Tension));
+        }
+    }
+
+    /// <summary>The grid's button back from a tied tension (<see cref="Detach"/>)</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Type the tension")]
+    [PropertyGridIcon(PropertyGridIcon.Pencil)]
+    public void UntieTension()
+    {
+        if (Detach(nameof(Tension)))
+        {
+            Drawing.RaiseDisplayProperties(this);
+        }
+    }
+
+    /// <summary>Every handle that is an offset from its anchor left to the path again (<see cref="Smoothing"/>), in one undo step</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Smooth all anchors")]
+    [PropertyGridIcon(PropertyGridIcon.Arc)]
+    public void SmoothAllAnchors()
+    {
+        if (Drawing == null || !CanSmoothAll)
+        {
+            return;
+        }
+
+        Drawing.ActionManager.RecordAction(LayoutChange(layout =>
+        {
+            foreach (var handle in layout.Handles.Keys.ToList())
+            {
+                if (layout.Handles[handle].Point == null)
+                {
+                    layout.Handles[handle] = HandleSpec.Automatic;
+                }
+            }
+        }));
+    }
+
+    /// <summary>Whether a handle that bends a piece is the user's offset (not an image's handles, which are points)</summary>
+    bool CanSmoothAll
+    {
+        get
+        {
+            return !IsImage && Handles.Any(h => h.Point == null && !h.Auto && BendsPiece(h, out _, out _));
+        }
+    }
+
+    public bool CanEdit(string propertyName)
+    {
+        switch (propertyName)
+        {
+            case nameof(Tension):
+                return tensionSource == null;
+            case nameof(UntieTension):
+                return this.IsTied(nameof(Tension));
+            case nameof(SmoothAllAnchors):
+                return CanSmoothAll;
+            default:
+                return true;
+        }
+    }
+
+    /// <summary>A tension taken from a figure says which</summary>
+    public string Caption(string propertyName, string defaultCaption)
+    {
+        if (propertyName == nameof(Tension) && tensionSource != null)
+        {
+            return "Tension = " + TiedValues.SourceName(tensionSource);
+        }
+
+        return defaultCaption;
+    }
+
+    #region Tied tension
+
+    public IEnumerable<string> TiedValueNames
+    {
+        get
+        {
+            yield return nameof(Tension);
+        }
+    }
+
+    /// <summary>The figure the tension comes from; null while it is typed</summary>
+    public IFigure GetSource(string name)
+    {
+        return tensionSource;
+    }
+
+    /// <summary>
+    /// A figure that says a number: a slider, a measurement, a label with a number - not
+    /// what a point goes on (a segment): a click on one starts the next path
+    /// </summary>
+    public bool Accepts(string name, IFigure figure)
+    {
+        return !(figure is IPoint) && !(figure is ILinearFigure) && figure.GivesLength();
+    }
+
+    public bool TieTo(string name, IFigure source)
+    {
+        return TiedValues.Tie(
+            new IFigure[] { this },
+            tensionSource,
+            source,
+            owner => Drawing.ActionManager.RecordAction(LayoutChange(layout => layout.TensionSource = source)));
+    }
+
+    /// <summary>A typed tension again, at the value it has now</summary>
+    public bool Detach(string name)
+    {
+        if (tensionSource == null || Drawing == null)
+        {
+            return false;
+        }
+
+        double value = Tension;
+        Drawing.ActionManager.RecordAction(LayoutChange(layout =>
+        {
+            layout.TensionSource = null;
+            layout.Tension = value;
+        }));
+        return true;
+    }
+
+    #endregion
+
+    #region Anchors smooth or sharp
+
+    /// <summary>The paths the point is an anchor of, whose handles can be changed (not images)</summary>
+    static List<BezierPath> PathsWithAnchor(IFigure point)
+    {
+        if (point?.Drawing == null)
+        {
+            return new List<BezierPath>();
+        }
+
+        return point.Dependents
+            .OfType<BezierPath>()
+            .Distinct()
+            .Where(path => path.Drawing != null && !path.IsImage && path.IsAnchor(point))
+            .ToList();
+    }
+
+    /// <summary>The handles of the anchor that bend a piece</summary>
+    IEnumerable<BezierPathHandle> BendingHandlesOf(IFigure anchor)
+    {
+        int index = Dependencies.IndexOf(anchor);
+        if (index < 0 || index >= AnchorCount)
+        {
+            return Enumerable.Empty<BezierPathHandle>();
+        }
+
+        return new[] { inHandles[index], outHandles[index] }.Where(h => BendsPiece(h, out _, out _));
+    }
+
+    /// <summary>Whether a handle of the point, an anchor, isn't automatic</summary>
+    public static bool CanSmoothAnchor(IFigure point)
+    {
+        return PathsWithAnchor(point).Any(path => path.BendingHandlesOf(point).Any(h => !h.Auto));
+    }
+
+    /// <summary>Whether a handle of the point, an anchor, is off it or automatic: it isn't a sharp corner yet</summary>
+    public static bool CanSharpenAnchor(IFigure point)
+    {
+        return PathsWithAnchor(point).Any(path => path.BendingHandlesOf(point).Any(h => h.Auto || h.Point != null || h.Offset != default));
+    }
+
+    /// <summary>
+    /// Both handles of the anchor left to its paths (<see cref="Smoothing"/>); one that was a
+    /// point lets go of it. One undo step.
+    /// </summary>
+    public static void SmoothAnchor(IFigure point)
+    {
+        SetAnchorHandles(point, HandleSpec.Automatic);
+    }
+
+    /// <summary>Both handles of the anchor on it: the path turns there. One undo step.</summary>
+    public static void SharpenAnchor(IFigure point)
+    {
+        SetAnchorHandles(point, default);
+    }
+
+    static void SetAnchorHandles(IFigure point, HandleSpec spec)
+    {
+        var paths = PathsWithAnchor(point);
+        if (paths.Count == 0)
+        {
+            return;
+        }
+
+        var drawing = point.Drawing;
+        using (Transaction.Create(drawing.ActionManager, false))
+        {
+            foreach (var path in paths)
+            {
+                drawing.ActionManager.RecordAction(path.LayoutChange(layout =>
+                {
+                    int index = layout.Anchors.IndexOf(point);
+                    layout.Handles[layout.Ins[index]] = spec;
+                    layout.Handles[layout.Outs[index]] = spec;
+                }));
+            }
+        }
+    }
+
+    #endregion
+
     /// <summary>
     /// The style of the inside, which is the path's own: a click inside selects the path, and
     /// this is what its grid edits as the fill. The sides and handles have styles of their own.
@@ -1132,6 +1472,11 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     {
         int count = Dependencies.Count >= AnchorCount ? PieceCount : 0;
         int anchors = AnchorCount;
+        if (count > 0)
+        {
+            SmoothHandles();
+        }
+
         var result = new Math.BezierInfo[count];
         var points = new Point[count][];
         for (int i = 0; i < count; i++)
@@ -1144,6 +1489,51 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         curves = result;
         controls = points;
         curvesKnown = true;
+    }
+
+    /// <summary>The automatic handles worked out from where the anchors and the other handles are now</summary>
+    void SmoothHandles()
+    {
+        if (!Handles.Any(h => h.Auto))
+        {
+            return;
+        }
+
+        int count = AnchorCount;
+        var points = new Point[count];
+        for (int i = 0; i < count; i++)
+        {
+            points[i] = AnchorPoint(i);
+            if (!points[i].Exists())
+            {
+                return;
+            }
+        }
+
+        Point? Given(BezierPathHandle handle, int index)
+        {
+            return handle.Auto ? null : HandlePosition(handle, index).Minus(points[index]);
+        }
+
+        var (ins, outs) = BezierPathSmoother.Smooth(
+            points,
+            inHandles.Select((handle, i) => Given(handle, i)).ToList(),
+            outHandles.Select((handle, i) => Given(handle, i)).ToList(),
+            closed,
+            smoothing,
+            Tension);
+        for (int i = 0; i < count; i++)
+        {
+            if (inHandles[i].Auto)
+            {
+                inHandles[i].Offset = ins[i];
+            }
+
+            if (outHandles[i].Auto)
+            {
+                outHandles[i].Offset = outs[i];
+            }
+        }
     }
 
     /// <summary>Whether every point the pieces are drawn through is somewhere</summary>
@@ -1160,7 +1550,11 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         return true;
     }
 
-    /// <summary>The path exists while its anchors and the points of its handles do; a hole that doesn't is left out</summary>
+    /// <summary>
+    /// The path exists while its anchors and the points of its handles do, and while the
+    /// tension is a number above 0 if a handle is worked out with it; a hole that doesn't is
+    /// left out
+    /// </summary>
     public override void UpdateExistence()
     {
         int count = System.Math.Min(HoleStart, Dependencies.Count);
@@ -1168,6 +1562,12 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         for (int i = 0; i < count && exists; i++)
         {
             exists = Dependencies[i].Exists;
+        }
+
+        if (exists && smoothing != BezierPathSmoothing.None && Handles.Any(h => h.Auto))
+        {
+            double value = Tension;
+            exists = (tensionSource == null || tensionSource.Exists) && value > 0 && value.IsValidValue();
         }
 
         Exists = exists;
@@ -1553,6 +1953,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     /// A path keeps going without an anchor that is deleted, as long as two are left (not
     /// an image: its helper points would stay). A hole that is deleted leaves the inside
     /// whole again. A point that is a handle, deleted, leaves an ordinary handle where it was.
+    /// The figure the tension comes from, deleted, leaves the tension typed.
     /// </summary>
     public bool CanRemoveDependency(IFigure dependency)
     {
@@ -1580,6 +1981,17 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     public IAction GetRemoveDependencyAction(IFigure dependency)
     {
         int index = Dependencies.IndexOf(dependency);
+        if (dependency == tensionSource && index == Dependencies.Count - 1)
+        {
+            // the tension stays what it was, typed
+            double value = Tension;
+            return LayoutChange(layout =>
+            {
+                layout.TensionSource = null;
+                layout.Tension = value.IsValidValue() ? value : DefaultTension;
+            });
+        }
+
         if (index >= HoleStart)
         {
             return LayoutChange(layout => layout.Holes.Remove(dependency));
@@ -1778,16 +2190,22 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             var p123 = Lerp(p12, p23, t);
             var at = Lerp(p012, p123, t);
 
+            // between two automatic handles the new anchor is smooth by itself too (the curve
+            // changes a little); else the halves are the curve as it was
             var outHandle = layout.Outs[piece];
             var inHandle = layout.Ins[next];
-            layout.Handles[outHandle] = new HandleSpec(p01.Minus(p0), null);
-            layout.Handles[inHandle] = new HandleSpec(p23.Minus(p3), null);
+            bool auto = layout.Handles[outHandle].Auto && layout.Handles[inHandle].Auto;
+            if (!auto)
+            {
+                layout.Handles[outHandle] = new HandleSpec(p01.Minus(p0), null);
+                layout.Handles[inHandle] = new HandleSpec(p23.Minus(p3), null);
+            }
 
             var newIn = new BezierPathHandle(this, isIn: true) { Style = outHandle.Style };
             var newOut = new BezierPathHandle(this, isIn: false) { Style = outHandle.Style };
             var newPiece = new BezierPathPiece(this) { Style = layout.Pieces[piece].Style };
-            layout.Handles[newIn] = new HandleSpec(p012.Minus(at), null);
-            layout.Handles[newOut] = new HandleSpec(p123.Minus(at), null);
+            layout.Handles[newIn] = auto ? HandleSpec.Automatic : new HandleSpec(p012.Minus(at), null);
+            layout.Handles[newOut] = auto ? HandleSpec.Automatic : new HandleSpec(p123.Minus(at), null);
             layout.Ins.Insert(piece + 1, newIn);
             layout.Outs.Insert(piece + 1, newOut);
             layout.Pieces.Insert(piece + 1, newPiece);
@@ -1958,8 +2376,10 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     /// one, a piece from each anchor to the next, the closing one included whether or not the
     /// path is closed (it keeps its handles): "L" for a piece whose two handles are on their
     /// anchors, else "C", the first anchor's out handle and the second one's in handle - each
-    /// an offset from its anchor ("1,0.5") or a point of the drawing, by its place among the
-    /// dependencies ("#4"). The dependencies after those are the holes.
+    /// an offset from its anchor ("1,0.5"), a point of the drawing, by its place among the
+    /// dependencies ("#4"), or "a", automatic. The dependencies after those are the holes,
+    /// and last the figure the tension comes from, when it does: <c>Tension="#7"</c>, where a
+    /// typed one is a number.
     /// </summary>
     public override void WriteXml(XmlWriter writer)
     {
@@ -1972,6 +2392,20 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         if (filled)
         {
             writer.WriteAttributeBool("Filled", true);
+        }
+
+        if (smoothing != BezierPathSmoothing.Hobby)
+        {
+            writer.WriteAttributeString("Smoothing", smoothing.ToString());
+        }
+
+        if (tensionSource != null)
+        {
+            writer.WriteAttributeString("Tension", "#" + (Dependencies.Count - 1).ToString(CultureInfo.InvariantCulture));
+        }
+        else if (tension != DefaultTension)
+        {
+            writer.WriteAttributeDouble("Tension", tension);
         }
 
         writer.WriteAttributeString("Path", HandlesText());
@@ -1990,6 +2424,11 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
         string Write(BezierPathHandle handle)
         {
+            if (handle.Auto)
+            {
+                return AutomaticToken;
+            }
+
             return handle.Point != null
                 ? "#" + places[handle].ToString(CultureInfo.InvariantCulture)
                 : Number(handle.Offset.X) + "," + Number(handle.Offset.Y);
@@ -2006,7 +2445,12 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
             var outHandle = outHandles[i];
             var inHandle = inHandles[(i + 1) % count];
-            if (outHandle.Point == null && inHandle.Point == null && outHandle.Offset == default && inHandle.Offset == default)
+            if (outHandle.Point == null
+                && inHandle.Point == null
+                && !outHandle.Auto
+                && !inHandle.Auto
+                && outHandle.Offset == default
+                && inHandle.Offset == default)
             {
                 text.Append('L');
             }
@@ -2018,6 +2462,8 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
         return text.ToString();
     }
+
+    const string AutomaticToken = "a";
 
     static string Number(double value)
     {
@@ -2048,6 +2494,11 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         var referenced = new HashSet<int>();
         HandleSpec Read(string text)
         {
+            if (text == AutomaticToken)
+            {
+                return HandleSpec.Automatic;
+            }
+
             if (text.StartsWith("#", StringComparison.Ordinal)
                 && int.TryParse(text.Substring(1), NumberStyles.None, CultureInfo.InvariantCulture, out int index)
                 && index >= count
@@ -2074,6 +2525,24 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             {
                 i++;
             }
+        }
+
+        smoothing = Enum.TryParse(element.ReadString("Smoothing"), out BezierPathSmoothing read) ? read : BezierPathSmoothing.Hobby;
+        tension = DefaultTension;
+        tensionSource = null;
+        var tensionText = element.ReadString("Tension");
+        if (tensionText != null
+            && tensionText.StartsWith("#", StringComparison.Ordinal)
+            && int.TryParse(tensionText.Substring(1), NumberStyles.None, CultureInfo.InvariantCulture, out int tensionIndex)
+            && tensionIndex >= count
+            && tensionIndex < listed.Count)
+        {
+            tensionSource = listed[tensionIndex];
+            referenced.Add(tensionIndex);
+        }
+        else if (double.TryParse(tensionText, NumberStyles.Float, CultureInfo.InvariantCulture, out double typed) && typed.IsValidValue())
+        {
+            tension = typed;
         }
 
         var holes = Enumerable.Range(count, listed.Count - count)
@@ -2208,6 +2677,27 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
         /// <summary>The point of the drawing the handle is, if it is one</summary>
         public IPoint Point { get; set; }
+
+        /// <summary>
+        /// Whether the path works the handle out from its anchors (<see cref="BezierPath.Smoothing"/>);
+        /// <see cref="Offset"/> is then what it came to last. A drag makes it the user's.
+        /// </summary>
+        public bool Auto { get; set; }
+
+        public HandleSpec Spec
+        {
+            get
+            {
+                return new HandleSpec(Offset, Point, Auto);
+            }
+        }
+
+        public void Set(HandleSpec spec)
+        {
+            Offset = spec.Offset;
+            Point = spec.Point;
+            Auto = spec.Auto && spec.Point == null;
+        }
 
         /// <summary>
         /// Set by the Drag tool unless Alt is held: the handle across the anchor follows as

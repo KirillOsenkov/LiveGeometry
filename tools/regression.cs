@@ -64,6 +64,7 @@ public class Program
             ("A point on a Bezier path becomes an anchor, the curve the same", BezierPathInsertAnchor),
             ("Alt+click takes a Bezier path's handles while it is drawn", BezierPathAltClickHandles),
             ("A point as a handle: followed, deleted, dropped onto, split beside", BezierPathPointHandles),
+            ("A Bezier path smooths its automatic handles", BezierPathSmoothing),
             ("Paste into another drawing keeps the look", PasteBringsStyles),
             ("Pasting plain text is no error", PastePlainText),
             ("The axes are lines to build on, one of each", AxisLines),
@@ -999,7 +1000,9 @@ public class Program
         Require(drawing.Figures.OfType<FreePoint>().Count() == 3, "The anchors are not three free points.");
         NearPoint(HandleOffset(path, anchor: 1, isIn: false), new Point(1, 1));
         NearPoint(HandleOffset(path, anchor: 1, isIn: true), new Point(-1, -1));
-        NearPoint(HandleOffset(path, anchor: 0, isIn: false), new Point(0, 0));
+        // the clicked anchors' handles are the path's, worked out: smooth, not on the anchor
+        var outA = (BezierPath.BezierPathHandle)path.GetPart("Out1");
+        Require(outA.Auto && outA.Offset != default, "A clicked anchor's handle is not worked out by the path.");
         Require(path.Name == "ABC", "The path is named " + path.Name);
         drawing.Figures.CheckConsistency();
         string after = drawing.SaveAsText();
@@ -1324,7 +1327,7 @@ public class Program
         Require(drawing.Figures.OfType<FreePoint>().Count() == 3, "Alt+click made points of its own.");
         drawing.Figures.CheckConsistency();
         string after = drawing.SaveAsText();
-        Require(after.Contains("Path=\"C #2 -2,3 L\""), "The path's text: " + after);
+        Require(after.Contains("Path=\"C #2 -2,3 C a a\""), "The path's text: " + after);
         Require(ReadLgf(after).SaveAsText() == after, "The path with a point for a handle did not round trip.");
         drawing.ActionManager.Undo();
         Require(drawing.SaveAsText() == before, "Undo of the path.");
@@ -1405,6 +1408,196 @@ public class Program
         drawing.Figures.CheckConsistency();
         drawing.ActionManager.Undo();
         Require(path.AnchorCount == 2 && inB.Point == q && outA.Point == p, "Undo of the split.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void Close(Point actual, Point expected, string what)
+    {
+        Require(
+            double.IsFinite(actual.X) && double.IsFinite(actual.Y) && actual.Distance(expected) <= 1e-9,
+            what + $": expected {expected}, got {actual}.");
+    }
+
+    /// <summary>
+    /// The smoothing methods: four points on a circle give the handles each method is known
+    /// for; moved, turned, scaled and mirrored anchors give the handles so moved, also next
+    /// to handles the user set; then a path through A, B, C, D on a circle whose tension is a
+    /// slider: read, followed, untied, the slider deleted; another method; a handle dragged
+    /// (the user's from then on), the anchor verbs, a split between automatic handles; and
+    /// the tool's clicks, whose path takes its tension from a slider clicked right after
+    /// </summary>
+    static void BezierPathSmoothing()
+    {
+        var circle = new[] { new Point(1, 0), new Point(0, 1), new Point(-1, 0), new Point(0, -1) };
+        var unknown = new Point?[4];
+        void Expect(BezierPathSmoothing smoothing, double tension, double length)
+        {
+            var (ins, outs) = BezierPathSmoother.Smooth(circle, unknown, unknown, closed: true, smoothing, tension);
+            for (int i = 0; i < circle.Length; i++)
+            {
+                var tangent = new Point(-circle[i].Y, circle[i].X);
+                Close(outs[i], tangent.Scale(length), smoothing + " out handle " + i);
+                Close(ins[i], tangent.Scale(-length), smoothing + " in handle " + i);
+            }
+        }
+
+        double kappa = 4 * (System.Math.Sqrt(2) - 1) / 3;
+        Expect(DynamicGeometry.BezierPathSmoothing.Hobby, tension: 1, kappa);
+        Expect(DynamicGeometry.BezierPathSmoothing.Hobby, tension: 2, kappa / 2);
+        Expect(DynamicGeometry.BezierPathSmoothing.CatmullRom, tension: 1, 1.0 / 3);
+        Expect(DynamicGeometry.BezierPathSmoothing.NaturalSpline, tension: 1, 0.5);
+        Expect(DynamicGeometry.BezierPathSmoothing.None, tension: 1, 0);
+
+        // the same curve for anchors moved, turned, scaled, mirrored: next to a handle set by
+        // the user (C's out handle) and a corner (D's in handle on D)
+        var anchors = new[] { new Point(0, 0), new Point(3, 1), new Point(5, 4), new Point(2, 6), new Point(-1, 3) };
+        var givenIns = new Point?[] { null, null, null, new Point(0, 0), null };
+        var givenOuts = new Point?[] { null, null, new Point(0.5, 2), null, null };
+        Point Turn(Point vector, bool mirror)
+        {
+            double cos = System.Math.Cos(0.5);
+            double sin = System.Math.Sin(0.5);
+            var turned = new Point(2.5 * (vector.X * cos - vector.Y * sin), 2.5 * (vector.X * sin + vector.Y * cos));
+            return mirror ? new Point(turned.X, -turned.Y) : turned;
+        }
+
+        foreach (var smoothing in new[] { DynamicGeometry.BezierPathSmoothing.Hobby, DynamicGeometry.BezierPathSmoothing.CatmullRom, DynamicGeometry.BezierPathSmoothing.NaturalSpline })
+        {
+            foreach (bool closed in new[] { true, false })
+            {
+                var (ins, outs) = BezierPathSmoother.Smooth(anchors, givenIns, givenOuts, closed, smoothing, tension: 1.3);
+                var kept = ins[2];
+                Require(
+                    kept.X * givenOuts[2].Value.Y - kept.Y * givenOuts[2].Value.X is var cross && System.Math.Abs(cross) < 1e-9 && kept.X < 0,
+                    smoothing + ": the automatic handle across a handle set is not straight on.");
+                foreach (bool mirror in new[] { false, true })
+                {
+                    var (movedIns, movedOuts) = BezierPathSmoother.Smooth(
+                        anchors.Select(p => Turn(p, mirror).Plus(new Point(7, -2))).ToList(),
+                        givenIns.Select(o => o.HasValue ? Turn(o.Value, mirror) : (Point?)null).ToList(),
+                        givenOuts.Select(o => o.HasValue ? Turn(o.Value, mirror) : (Point?)null).ToList(),
+                        closed,
+                        smoothing,
+                        tension: 1.3);
+                    for (int i = 0; i < anchors.Length; i++)
+                    {
+                        Close(movedIns[i], Turn(ins[i], mirror), smoothing + " moved, in handle " + i);
+                        Close(movedOuts[i], Turn(outs[i], mirror), smoothing + " moved, out handle " + i);
+                    }
+                }
+            }
+        }
+
+        // a path whose tension is the slider
+        string text = """
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="3" Y="0" />
+                <FreePoint Name="B" X="0" Y="3" />
+                <FreePoint Name="C" X="-3" Y="0" />
+                <FreePoint Name="D" X="0" Y="-3" />
+                <Slider Name="s" X="-6" Y="5" Value="2" />
+                <BezierPath Name="ABCD" Closed="true" Tension="#4" Path="C a a C a a C a a C a a">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                  <Dependency Name="C" />
+                  <Dependency Name="D" />
+                  <Dependency Name="s" />
+                </BezierPath>
+              </Figures>
+            </Drawing>
+            """;
+        var drawing = ReadLgf(text);
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        var path = drawing.Figures.OfType<BezierPath>().Single();
+        var slider = (DynamicGeometry.Slider)Find(drawing, "s");
+        var a = (FreePoint)Find(drawing, "A");
+        var outA = (BezierPath.BezierPathHandle)path.GetPart("Out1");
+        var inA = (BezierPath.BezierPathHandle)path.GetPart("In1");
+        Require(drawing.LoadErrors == null && path.GetSource(nameof(BezierPath.Tension)) == slider, "The tension is not the slider.");
+        Close(outA.Offset, new Point(0, 3 * kappa / 2), "Tension 2");
+        string original = drawing.SaveAsText();
+        Require(original.Contains("Tension=\"#4\"") && original.Contains("Path=\"C a a C a a C a a C a a\""), "The path's text: " + original);
+        Require(ReadLgf(original).SaveAsText() == original, "The smoothed path did not round trip.");
+        Set(drawing, slider, nameof(DynamicGeometry.Slider.Value), 1.0);
+        Close(outA.Offset, new Point(0, 3 * kappa), "Tension 1 from the slider");
+        drawing.ActionManager.Undo();
+        Close(outA.Offset, new Point(0, 3 * kappa / 2), "Undo of the slider");
+
+        // untied: typed at the value it had; the slider deleted: the same
+        Require(path.Detach(nameof(BezierPath.Tension)) && path.GetSource(nameof(BezierPath.Tension)) == null, "Untie left the slider.");
+        Require(!path.Dependencies.Contains(slider) && path.Tension == 2, "Untied, the tension is " + path.Tension);
+        Close(outA.Offset, new Point(0, 3 * kappa / 2), "Untied");
+        drawing.Figures.CheckConsistency();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == original, "Undo of the untie.");
+        Actions.Remove(slider);
+        Require(drawing.Figures.Contains(path) && path.Tension == 2 && path.Exists, "Deleting the slider took the path or its tension.");
+        drawing.Figures.CheckConsistency();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == original, "Undo of deleting the slider.");
+        drawing.Figures.CheckConsistency();
+
+        // another method
+        Set(drawing, path, nameof(BezierPath.Smoothing), DynamicGeometry.BezierPathSmoothing.CatmullRom);
+        Close(outA.Offset, new Point(0, 0.5), "Catmull-Rom at tension 2");
+        Require(drawing.SaveAsText().Contains("Smoothing=\"CatmullRom\""), "The method is not saved.");
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == original, "Undo of the method.");
+
+        // A's out handle dragged: the user's, B's still the path's; undo: the path's again
+        drawing.Behavior = new Dragger();
+        a.Selected = true;
+        drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
+        Drag(drawing, system.ToPhysical(a.Coordinates.Plus(outA.Offset)), system.ToPhysical(new Point(4, 2)));
+        Require(!outA.Auto && !inA.Auto, "A dragged handle is still automatic.");
+        Close(outA.Offset, new Point(1, 2), "The handle dragged");
+        Close(inA.Offset, new Point(-1, -2), "The handle across it");
+        Require(((BezierPath.BezierPathHandle)path.GetPart("In2")).Auto, "B's handle stopped being automatic.");
+        Require(drawing.SaveAsText().Contains("Path=\"C 1,2 a C a a C a a C a -1,-2\""), "The path's text after the drag: " + drawing.SaveAsText());
+        drawing.ActionManager.Undo();
+        Require(outA.Auto && inA.Auto && drawing.SaveAsText() == original, "Undo of the drag.");
+        a.Selected = false;
+        drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
+
+        // A a sharp corner, then smooth again
+        Require(BezierPath.CanSharpenAnchor(a) && !BezierPath.CanSmoothAnchor(a), "The verbs offered at a smooth anchor.");
+        a.SharpenAnchor();
+        Require(!outA.Auto && outA.Offset == default && inA.Offset == default, "A is no sharp corner.");
+        Require(BezierPath.CanSmoothAnchor(a) && !BezierPath.CanSharpenAnchor(a), "The verbs offered at a corner.");
+        a.SmoothAnchor();
+        Require(outA.Auto && inA.Auto && drawing.SaveAsText() == original, "Smooth automatically did not undo the corner.");
+        drawing.ActionManager.Undo();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == original, "Undo of the verbs.");
+
+        // a split between automatic handles: the new anchor is smooth too
+        var onPath = Factory.CreatePointOnFigure(drawing, path, path.GetPointFromParameter(0.5));
+        Actions.Add(drawing, onPath);
+        onPath.ConvertToPathAnchor();
+        Require(path.AnchorCount == 5 && path.Handles.All(h => h.Auto), "The split made handles that aren't automatic.");
+        drawing.Figures.CheckConsistency();
+        drawing.ActionManager.Undo();
+        Require(path.AnchorCount == 4, "Undo of the split.");
+        drawing.Figures.CheckConsistency();
+
+        // the tool: clicks make smooth anchors, a click on the slider right after ties the tension
+        BezierPathCreator.LastSmoothing = DynamicGeometry.BezierPathSmoothing.Hobby;
+        BezierPathCreator.LastTension = 1;
+        var tool = new BezierPathCreator();
+        drawing.Behavior = tool;
+        foreach (var point in new[] { new Point(9, 0), new Point(6, 3), new Point(3, 0), new Point(6, -3), new Point(9, 0) })
+        {
+            Click(drawing, system.ToPhysical(point));
+        }
+
+        var made = drawing.Figures.OfType<BezierPath>().Single(p => p != path);
+        Require(made.Closed && made.AnchorCount == 4, "The tool did not close a path of four anchors.");
+        Close(((BezierPath.BezierPathHandle)made.GetPart("Out1")).Offset, new Point(0, 3 * kappa), "The tool's circle");
+        Click(drawing, system.ToPhysical(new Point(-5, 5)));
+        Require(made.GetSource(nameof(BezierPath.Tension)) == slider, "A click on the slider did not tie the tension.");
+        Close(((BezierPath.BezierPathHandle)made.GetPart("Out1")).Offset, new Point(0, 3 * kappa / 2), "The tool's circle at tension 2");
         drawing.Figures.CheckConsistency();
     }
 

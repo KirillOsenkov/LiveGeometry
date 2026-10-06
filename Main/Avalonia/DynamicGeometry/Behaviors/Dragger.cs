@@ -925,6 +925,16 @@ namespace DynamicGeometry
             {
                 add("Convert to path anchor", () => BezierPath.ConvertToAnchor((PointOnFigure)point), null);
             }
+
+            if (BezierPath.CanSmoothAnchor(point))
+            {
+                add("Smooth automatically", () => BezierPath.SmoothAnchor(point), null);
+            }
+
+            if (BezierPath.CanSharpenAnchor(point))
+            {
+                add("Sharp corner", () => BezierPath.SharpenAnchor(point), null);
+            }
         }
 
         public override void KeyDown(object sender, KeyEventArgs e)

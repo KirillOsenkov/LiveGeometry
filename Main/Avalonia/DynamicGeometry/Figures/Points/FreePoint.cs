@@ -37,10 +37,34 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>The point, an anchor of a Bezier path, has both its handles worked out by the path (<see cref="BezierPath.SmoothAnchor"/>)</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Smooth automatically")]
+        [PropertyGridIcon(PropertyGridIcon.Arc)]
+        public void SmoothAnchor()
+        {
+            BezierPath.SmoothAnchor(this);
+            Drawing?.RaiseDisplayProperties(this);
+        }
+
+        /// <summary>The point, an anchor of a Bezier path, has both its handles on it: the path turns there (<see cref="BezierPath.SharpenAnchor"/>)</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Sharp corner")]
+        [PropertyGridIcon(PropertyGridIcon.Angle)]
+        public void SharpenAnchor()
+        {
+            BezierPath.SharpenAnchor(this);
+            Drawing?.RaiseDisplayProperties(this);
+        }
+
         public bool CanEdit(string propertyName)
         {
             switch (propertyName)
             {
+                case nameof(SmoothAnchor):
+                    return BezierPath.CanSmoothAnchor(this);
+                case nameof(SharpenAnchor):
+                    return BezierPath.CanSharpenAnchor(this);
                 case nameof(SnapToFigure):
                     return PointSnapping.FiguresToSnapTo(this).Count == 1;
                 case nameof(ConvertToPointByCoordinates):

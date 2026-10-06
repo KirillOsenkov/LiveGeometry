@@ -11,19 +11,96 @@ namespace DynamicGeometry;
 
 /// <summary>
 /// Makes a <see cref="BezierPath"/> as the pen of a drawing program does: a click puts an
-/// anchor (wherever the Point tool would put a point) with its handles on it, a press and drag
-/// pulls the handles out, the out one under the cursor and the in one the opposite way, until
-/// the release. A click on the first anchor closes the path (a drag from it sets its handles
+/// anchor (wherever the Point tool would put a point) whose handles the path works out (as
+/// the panel's Smoothing says: the curve is smooth through the anchors, and each new one
+/// reshapes the last pieces; None draws straight lines), a press and drag pulls the handles
+/// out by hand, the out one under the cursor and the in one the opposite way, until the
+/// release. A click on the first anchor closes the path (a drag from it sets its handles
 /// too), Enter, a right click or a double click leaves it open. Alt+click between two anchors
 /// takes the handles, in the order of a Bézier curve's points: the first the out handle of
 /// the anchor before, the second the in handle of the anchor after - a point of the drawing
 /// where the Point tool would take or make one (an existing point, a point on a figure, a
-/// crossing), else an ordinary handle at the click.
+/// crossing), else an ordinary handle at the click. Right after, the path's tension can be
+/// set in the panel, or taken from a slider with a click on it.
 /// </summary>
 [Category(BehaviorCategories.Shapes)]
 [Order(5)]
 public class BezierPathCreator : FigureCreator
 {
+    /// <summary>How the next path is smoothed: as the last was set to, in the panel or after it was made</summary>
+    public static BezierPathSmoothing LastSmoothing { get; set; } = BezierPathSmoothing.Hobby;
+
+    /// <summary>The tension of the next path</summary>
+    public static double LastTension { get; set; } = BezierPath.DefaultTension;
+
+    PathPanel panel;
+
+    /// <summary>The side panel: how the next path is smoothed, and its tension</summary>
+    [PropertyGridNoUndo]
+    public class PathPanel
+    {
+        public PathPanel(BezierPathCreator parent)
+        {
+            this.parent = parent;
+        }
+
+        readonly BezierPathCreator parent;
+
+        [PropertyGridVisible]
+        public BezierPathSmoothing Smoothing
+        {
+            get
+            {
+                return LastSmoothing;
+            }
+            set
+            {
+                LastSmoothing = value;
+                if (parent.Preview is BezierPath preview)
+                {
+                    preview.Smoothing = value;
+                }
+            }
+        }
+
+        [PropertyGridVisible]
+        [Domain(BezierPath.MinimumTension, BezierPath.MaximumTension)]
+        public double Tension
+        {
+            get
+            {
+                return LastTension;
+            }
+            set
+            {
+                LastTension = value;
+                if (parent.Preview is BezierPath preview)
+                {
+                    preview.Tension = value;
+                }
+            }
+        }
+
+        // the title of the panel
+        public override string ToString()
+        {
+            return "Bezier path";
+        }
+    }
+
+    public override object PropertyBag
+    {
+        get
+        {
+            if (panel == null)
+            {
+                panel = new PathPanel(this);
+            }
+
+            return panel;
+        }
+    }
+
     // the handles of the anchors found so far
     readonly List<BezierPath.HandleSpec> ins = new List<BezierPath.HandleSpec>();
     readonly List<BezierPath.HandleSpec> outs = new List<BezierPath.HandleSpec>();
@@ -66,7 +143,7 @@ public class BezierPathCreator : FigureCreator
         pendingSpot = null;
     }
 
-    /// <summary>The in handle Alt+clicked for this anchor, as a handle of it; an ordinary one on it when there is none</summary>
+    /// <summary>The in handle Alt+clicked for this anchor, as a handle of it; an automatic one when there is none</summary>
     BezierPath.HandleSpec PendingFor(IPoint anchor)
     {
         if (pendingPoint != null)
@@ -74,7 +151,12 @@ public class BezierPathCreator : FigureCreator
             return new BezierPath.HandleSpec(default, pendingPoint);
         }
 
-        return new BezierPath.HandleSpec(pendingSpot.HasValue ? pendingSpot.Value.Minus(anchor.Coordinates) : default, null);
+        if (pendingSpot.HasValue)
+        {
+            return new BezierPath.HandleSpec(pendingSpot.Value.Minus(anchor.Coordinates), null);
+        }
+
+        return BezierPath.HandleSpec.Automatic;
     }
 
     protected override DependencyList InitExpectedDependencies()
@@ -113,7 +195,7 @@ public class BezierPathCreator : FigureCreator
 
         // an anchor: it takes the in handle Alt+clicked for it
         ins.Add(PendingFor(anchor));
-        outs.Add(default);
+        outs.Add(BezierPath.HandleSpec.Automatic);
         ForgetPending();
         handleClicks = 0;
     }
@@ -124,8 +206,8 @@ public class BezierPathCreator : FigureCreator
         // it shows the in handle Alt+clicked for the next anchor)
         var anchors = FoundDependencies.ToList();
         var anchorIns = anchors.Select((anchor, i) => i < ins.Count ? ins[i] : PendingFor((IPoint)anchor)).ToList();
-        var anchorOuts = anchors.Select((anchor, i) => i < outs.Count ? outs[i] : default).ToList();
-        yield return BezierPath.Create(
+        var anchorOuts = anchors.Select((anchor, i) => i < outs.Count ? outs[i] : BezierPath.HandleSpec.Automatic).ToList();
+        var path = BezierPath.Create(
             Drawing,
             anchors,
             anchorIns,
@@ -133,6 +215,8 @@ public class BezierPathCreator : FigureCreator
             holes: Array.Empty<IFigure>(),
             closed: finishingClosed,
             filled: finishingClosed);
+        path.InitializeSmoothing(LastSmoothing, LastTension);
+        yield return path;
     }
 
     void RebuildPreview()
@@ -232,9 +316,24 @@ public class BezierPathCreator : FigureCreator
         return true;
     }
 
-    // nothing to adjust right after: no length, no tied values
-    protected override void ShowCreatedFigure(IList<IFigure> figures)
+    /// <summary>A path whose tension was changed in its panel sets the next one's (a tied one leaves the default as it was)</summary>
+    protected override void TakeDefaultsFrom(ITiedValues created)
     {
+        if (created is BezierPath path)
+        {
+            LastSmoothing = path.Smoothing;
+            if (path.GetSource(nameof(BezierPath.Tension)) == null)
+            {
+                LastTension = path.Tension;
+            }
+        }
+    }
+
+    protected override string CreatedFigureHint(ITiedValues values)
+    {
+        return values.IsTied(nameof(BezierPath.Tension))
+            ? "click another slider to take the tension from it instead, or draw the next path."
+            : "set its tension in the panel, click a slider to take the tension from it, or draw the next path.";
     }
 
     protected override void Click(Point coordinates)
@@ -374,7 +473,7 @@ public class BezierPathCreator : FigureCreator
             return "Click the first point to close the path, press Enter to leave it open, or click or drag the next point." + handles;
         }
 
-        return "Click the next point, or press and drag to pull out its handles." + handles;
+        return "Click the next point (the curve bends smoothly through it), or press and drag to pull out its handles yourself." + handles;
     }
 
     public override string Name
@@ -389,7 +488,7 @@ public class BezierPathCreator : FigureCreator
     {
         get
         {
-            return "Click points of a path, or press and drag to pull out handles. Click the first point again to close the path, or press Enter.";
+            return "Click points of a path: the curve bends smoothly through them (Smoothing in the panel), or press and drag to pull out handles. Click the first point again to close the path, or press Enter.";
         }
     }
 
