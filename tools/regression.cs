@@ -59,6 +59,7 @@ public class Program
             ("Paste into another drawing keeps the look", PasteBringsStyles),
             ("Pasting plain text is no error", PastePlainText),
             ("The axes are lines to build on, one of each", AxisLines),
+            ("Tab chooses among overlapping figures", ChoiceAmongOverlaps),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
             ("Figures without a value don't exist", FiguresWithoutValue),
             ("A tool defined on expressions builds on its inputs", DefinedToolOnExpressions),
@@ -1025,6 +1026,95 @@ public class Program
         Require(PointPlacement.Find(drawing, new Point(-4, 0.01), snapToMidpoint: false).Kind == PointPlacementKind.Free, "A hidden axis took a click.");
         drawing.Recalculate();
         Require(onX.Exists && onY.Exists, "The points on the axes went with the grid.");
+    }
+
+    static void Hover(Drawing drawing, Point at)
+    {
+        var canvas = drawing.Canvas;
+        using var pointer = new Pointer(Pointer.GetNextFreeId(), PointerType.Mouse, isPrimary: true);
+        canvas.RaiseEvent(new PointerEventArgs(
+            InputElement.PointerMovedEvent,
+            canvas,
+            pointer,
+            canvas,
+            at,
+            timestamp: 0,
+            new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.Other),
+            KeyModifiers.None));
+    }
+
+    static void ChoiceAmongOverlaps()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        string status = null;
+        drawing.ChoiceStatus += text => status = text;
+
+        // segment AB along the x axis and line CD up the y axis, crossing at (0, 0)
+        var segment = Factory.CreateSegment(drawing, AddPoint(drawing, x: -1, y: 0), AddPoint(drawing, x: 5, y: 0));
+        Actions.Add(drawing, segment);
+        var line = Factory.CreateLineTwoPoints(drawing, new IFigure[] { AddPoint(drawing, x: 0, y: -1), AddPoint(drawing, x: 0, y: 3) });
+        Actions.Add(drawing, line);
+        var crossing = system.ToPhysical(new Point(0, 0));
+
+        // a test window draws no frames: a tool handles one move until the next press, so
+        // each hover is a fresh tool's
+        FreePointCreator HoverWithPointTool()
+        {
+            var tool = new FreePointCreator();
+            drawing.Behavior = tool;
+            Hover(drawing, crossing);
+            return tool;
+        }
+
+        // the first option is what a click took before there was a choice
+        HoverWithPointTool();
+        Require(status != null && status.StartsWith("Where ") && status.Contains("(1 of 3)"), "The status at a crossing: " + status);
+        Click(drawing, crossing);
+        Require(drawing.Figures.OfType<IntersectionPoint>().Count() == 1, "A click at the crossing made no intersection.");
+        drawing.ActionManager.Undo();
+
+        // Tab: a point on one of the two, then on the other, then round to the crossing
+        var tool = HoverWithPointTool();
+        Require(tool.StepChoice(backwards: false), "Tab chose nothing.");
+        Require(status.Contains("(2 of 3)"), "The status after Tab: " + status);
+        Click(drawing, crossing);
+        var first = drawing.Figures.OfType<PointOnFigure>().SingleOrDefault();
+        Require(first != null, "The second option made no point on a figure.");
+        // (the new point is all a click there means now)
+        HoverWithPointTool();
+        Require(status == null, "A click did not end the choice: " + status);
+        drawing.ActionManager.Undo();
+        tool = HoverWithPointTool();
+        tool.StepChoice(backwards: false);
+        tool.StepChoice(backwards: false);
+        Click(drawing, crossing);
+        var second = drawing.Figures.OfType<PointOnFigure>().SingleOrDefault();
+        Require(second != null && second.Dependencies[0] != first.Dependencies[0], "The third option was not on the other figure.");
+        drawing.ActionManager.Undo();
+        tool = HoverWithPointTool();
+        tool.StepChoice(backwards: true);
+        Require(status.Contains("(3 of 3)"), "Shift+Tab did not go back round: " + status);
+
+        // a tool that wants a line: the other of two along each other
+        var along = Factory.CreateLineTwoPoints(drawing, new IFigure[] { AddPoint(drawing, x: -3, y: 0), AddPoint(drawing, x: 8, y: 0) });
+        Actions.Add(drawing, along);
+        var parallel = new ParallelLineCreator();
+        drawing.Behavior = parallel;
+        var onBoth = system.ToPhysical(new Point(2, 0));
+        Hover(drawing, onBoth);
+        Require(parallel.StepChoice(backwards: false), "No choice between a segment and a line along it.");
+        Click(drawing, onBoth);
+        Click(drawing, system.ToPhysical(new Point(3, 4)));
+        var made = drawing.Figures.OfType<ParallelLine>().SingleOrDefault();
+        Require(made != null, "No parallel was made.");
+        Require(made.Dependencies[0] == segment, "Tab took " + made.Dependencies[0] + ", not the segment under the line.");
+
+        drawing.Behavior = new Dragger();
+        Hover(drawing, system.ToPhysical(new Point(-6, -6)));
+        Require(status == null, "The choice's status stayed: " + status);
+        drawing.Figures.CheckConsistency();
     }
 
     static void PastePlainText()

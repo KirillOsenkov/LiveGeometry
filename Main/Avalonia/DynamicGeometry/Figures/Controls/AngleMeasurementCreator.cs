@@ -65,14 +65,14 @@ namespace DynamicGeometry
             return FindAngleAtVertex(Coordinates(e, false, false, false));
         }
 
-        protected override PointPlacement FindPointPlacement(Point unconstrainedCoordinates, Point coordinates)
+        protected override IReadOnlyList<PointPlacement> FindPointPlacements(Point unconstrainedCoordinates, Point coordinates)
         {
             if (FindAngleAtVertex(unconstrainedCoordinates) != null)
             {
-                return null;
+                return System.Array.Empty<PointPlacement>();
             }
 
-            return base.FindPointPlacement(unconstrainedCoordinates, coordinates);
+            return base.FindPointPlacements(unconstrainedCoordinates, coordinates);
         }
 
         protected override Avalonia.Input.Cursor GetCursor(Point coordinates)

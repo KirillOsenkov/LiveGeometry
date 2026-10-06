@@ -15,25 +15,22 @@ namespace DynamicGeometry
             return DependencyList.Create<Point, Point>();   // Not used.
         }
 
-        protected override IFigure LookForExpectedDependencyUnderCursor(Point coordinates)
+        protected override IReadOnlyList<IFigure> FindExpectedDependencies(Point coordinates)
         {
             if (FoundDependencies.Count == 0)
             {
-                var result = Transformer.FindTransformSource(Drawing.Figures.HitTest(coordinates));
-                if (result != null)
-                {
-                    return result;
-                }
+                return Transformer.FindTransformSources(Drawing, coordinates);
             }
-            else if (FoundDependencies.Count == 1)
+
+            if (FoundDependencies.Count == 1)
             {
-                var result = Drawing.Figures.HitTest(coordinates);
-                if (Transformer.CanFigureBeMirrorForSource(result, FoundDependencies[0]))
-                {
-                    return result;
-                }
+                var source = FoundDependencies[0];
+                return Drawing.Figures.HitTestAll(
+                    coordinates,
+                    f => f.Visible && f.IsHitTestVisible && Transformer.CanFigureBeMirrorForSource(f, source));
             }
-            return base.LookForExpectedDependencyUnderCursor(coordinates);
+
+            return System.Array.Empty<IFigure>();
         }
 
         protected override bool ExpectingAPoint()

@@ -34,34 +34,41 @@ namespace DynamicGeometry
 
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var underMouse = FindFigureToToggle(Coordinates(e));
-            if (underMouse != null)
+            Toggle(Choice.Pick(FindFiguresToToggle(Coordinates(e))));
+        }
+
+        /// <summary>Selects the figure, or lets go of it when this selector selected it</summary>
+        public void Toggle(IFigure figure)
+        {
+            if (figure == null)
             {
-                if (clicked.Contains(underMouse))
-                {
-                    DeselectFigure(underMouse);
-                }
-                else
-                {
-                    TrySelectFigure(underMouse);
-                }
+                return;
+            }
+
+            if (clicked.Contains(figure))
+            {
+                DeselectFigure(figure);
+            }
+            else
+            {
+                TrySelectFigure(figure);
             }
         }
 
         /// <summary>
-        /// The figure a click here would select or let go of: one this selector selected, or
-        /// one it can select. Null for none - also for one an earlier step selected (an input,
-        /// while the results are picked), which a click used to unselect to no purpose.
+        /// The figures a click here could select or let go of, the one it takes first: those
+        /// this selector selected, and those it can select. Not one an earlier step selected
+        /// (an input, while the results are picked), which a click used to unselect to no
+        /// purpose; nor an axis.
         /// </summary>
-        public IFigure FindFigureToToggle(Avalonia.Point coordinates)
+        public IReadOnlyList<IFigure> FindFiguresToToggle(Avalonia.Point coordinates)
         {
-            var underMouse = Drawing.Figures.HitTest(coordinates);
-            if (underMouse == null || underMouse is AxisLine)
-            {
-                return null;
-            }
-
-            return clicked.Contains(underMouse) || CanSelectFigure(underMouse) ? underMouse : null;
+            return Drawing.Figures.HitTestAll(
+                coordinates,
+                figure => figure.Visible
+                    && figure.IsHitTestVisible
+                    && !(figure is AxisLine)
+                    && (clicked.Contains(figure) || CanSelectFigure(figure)));
         }
 
         public void UpdateEnabledFigures()

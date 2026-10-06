@@ -439,6 +439,31 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   exist either: it stood at (0, 0). Nor a line by equation without a value (A = B = 0, a
   slope of sqrt(-1)), nor a circle by equation with a radius below 0 or undefined (it was
   a dot), nor a point dilated by a ratio over a length of 0.
+- **Overlapping figures: Tab chooses** (`Behaviors/ClickChoice.cs`, VB6's "Choose
+  point/figure"). A click takes the first of what it could mean, as hit testing orders it
+  (`FigureList.HitTestAll`: the order `HitTest` picks from - topmost ZIndex, the nearer of
+  two points, the newer), so a plain click does what it did before there was a choice. A
+  tool lists what a click at the cursor could take (`Behavior.FindClickOptions`): for a
+  `FigureCreator`, the figures taken instead of a point (`FindFiguresInsteadOfPoint`),
+  then the points it could make (`FindPointPlacements`: the points there, else
+  `PointPlacement.FindAll` - the default, the other crossings nearby, the midpoint, a point
+  on each figure, never a free point next to them, or every hover over a line would be a
+  choice) - or, when a step wants a figure, those it takes (`FindExpectedDependencies`,
+  where a tool says its own rules: only what can be transformed, a crossing figure). The
+  hover offers the list (`ClickChoice.Offer`; the same list again keeps the choice), Tab and
+  Shift+Tab step through it (`MainView_KeyDown`, not from a box, the side panel or the
+  Figure List; `Behavior.StepChoice` shows the hover anew), and every finder picks from its
+  own list through `ClickChoice.Pick`: the first while nothing was chosen, the chosen one
+  when its list has it, nothing when another list does. A choice holds for one click
+  (forgotten after the press, on leaving the canvas, for typed coordinates). The status
+  says it ("A point on circle c (2 of 3): Tab for the next.") through
+  `Drawing.ChoiceStatus`, over the hint, which `DrawingHost` brings back when it goes. A
+  tap where there is a choice asks in a menu (`Behavior.AskWhatTapMeans`) and is the
+  option picked; dismissed, it is nothing. A tool whose click on a figure is a shortcut
+  (Midpoint on a segment, Angle Bisector on an angle, Area on a shape, Angle at a vertex)
+  offers no choice where it applies, or the status would promise what the click doesn't
+  do. The Drag tool has no cycling: its context menu lists the figures under the click
+  ("Choose figure") and selects the one picked.
 - **The reach of a click is in pixels**, the cursor's tolerance plus half the stroke, for
   every figure. A circle, ellipse or arc is hit by its distance from the curve along the
   ray from the center (`Math.RadialDistanceToEllipse`); it was the left side of the
@@ -2016,8 +2041,8 @@ A change to the theme wants the same once more with `start ... --dark`.
 
 ## VB6 parity backlog
 
-Still missing compared to VB6, roughly by value: unsaved-changes prompt; "Choose point/figure"
-disambiguation for overlapping figures; live cursor coordinates in the status bar; undo/redo
+Still missing compared to VB6, roughly by value: unsaved-changes prompt; live cursor
+coordinates in the status bar; undo/redo
 captions naming the action; recent files; print; message, sound and launch buttons (the `.dgf`
 reader leaves button types 1-3 out); "Create locus" on a point (the Locus tool does the
 tracing); measurement label dragging constraints; rulers; "tool select once" option (every
@@ -2028,7 +2053,8 @@ zooms to fit, where VB6 opened properties (here selecting a figure shows them).
 Done since the list was made: the point symmetric about a point and the inverted point are
 Reflect with a point or a circle for the mirror; point shapes and sizes, name colors and dashes
 are per style; show/hide buttons are `ShowHideControl`; settings persist (`SettingsStore`);
-the axes are lines to build on (`AxisLine`).
+the axes are lines to build on (`AxisLine`); a click among overlapping figures is chosen
+with Tab, a tap's in a menu, a selection in the context menu (`ClickChoice`).
 
 ## Not yet verified in the browser
 

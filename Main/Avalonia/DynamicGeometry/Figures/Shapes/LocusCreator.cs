@@ -47,13 +47,19 @@ namespace DynamicGeometry
             Drawing.Figures.CheckConsistencyInDebug();
         }
 
+        /// <summary>A click takes a point that is there and makes none: the choice is among those</summary>
+        protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
+        {
+            return FindExpectedDependencies(Coordinates(e, false, false, false)).ToList<object>();
+        }
+
         /// <summary>
         /// It is important to exclude TempResults from the search since
         /// we don't want the figure to depend on its own parts.
         /// </summary>
-        protected override IFigure LookForExpectedDependencyUnderCursor(Point coordinates)
+        protected override IReadOnlyList<IFigure> FindExpectedDependencies(Point coordinates)
         {
-            return Drawing.Figures.HitTest(coordinates, f =>
+            return Drawing.Figures.HitTestAll(coordinates, f =>
             {
                 if (f == null || !f.Visible || !f.IsHitTestVisible)
                 {

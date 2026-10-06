@@ -85,7 +85,7 @@ namespace DynamicGeometry
             return DependencyList.Create<IFigure, IPoint, ILengthProvider>();
         }
 
-        protected override IFigure LookForExpectedDependencyUnderCursor(Point coordinates)
+        protected override IReadOnlyList<IFigure> FindExpectedDependencies(Point coordinates)
         {
             if (FoundDependencies.Count == 0)
             {
@@ -93,25 +93,10 @@ namespace DynamicGeometry
                 // slider), nor a label or a graph. (Anything else under the cursor used to
                 // be taken as well: the tool went on, and made a hidden Number and nothing
                 // else, or threw.)
-                return Transformer.FindTransformSource(Drawing.Figures.HitTest(coordinates), keepsLengths: false);
+                return Transformer.FindTransformSources(Drawing, coordinates, keepsLengths: false);
             }
-            else if (FoundDependencies.Count == 1)
-            {
-                var result = Drawing.Figures.HitTest(coordinates);
-                if (result is IPoint)
-                {
-                    return result;
-                }
-            }
-            else if (FoundDependencies.Count == 2)
-            {
-                var result = Drawing.Figures.HitTest(coordinates);
-                if (result.GivesLength())
-                {
-                    return result;
-                }
-            }
-            return base.LookForExpectedDependencyUnderCursor(coordinates);
+
+            return base.FindExpectedDependencies(coordinates);
         }
 
         protected override bool ExpectingAPoint()

@@ -14,18 +14,37 @@ namespace DynamicGeometry
 
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // An angle stands for its three points only as the first click (see
-            // SegmentBisectorCreator): after a vertex was clicked, a click on an angle's
-            // mark gave a bisector of five points, which doesn't exist, and a stray point.
+            var angle = FindAngle(e);
+            if (angle != null)
+            {
+                FoundDependencies.AddRange(angle.Dependencies);
+            }
+
+            base.MouseDown(sender, e);
+        }
+
+        /// <summary>
+        /// An angle stands for its three points only as the first click (see
+        /// SegmentBisectorCreator): after a vertex was clicked, a click on an angle's
+        /// mark gave a bisector of five points, which doesn't exist, and a stray point.
+        /// </summary>
+        IFigure FindAngle(MouseEventArgs e)
+        {
             var underMouse = FoundDependencies.IsEmpty() ? Drawing.Figures.HitTest(Coordinates(e, false, false, false)) : null;
             if (underMouse != null
                 && (underMouse is AngleArc || underMouse is AngleMeasurement)
                 && underMouse.Dependencies.Count == 3)
             {
-                FoundDependencies.AddRange(underMouse.Dependencies);
+                return underMouse;
             }
 
-            base.MouseDown(sender, e);
+            return null;
+        }
+
+        /// <summary>A click on an angle takes its points, whatever else is there: nothing to choose</summary>
+        protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
+        {
+            return FindAngle(e) != null ? System.Array.Empty<object>() : base.FindClickOptions(e);
         }
 
         protected override IEnumerable<IFigure> CreateFigures()

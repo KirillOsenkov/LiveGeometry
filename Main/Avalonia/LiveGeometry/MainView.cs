@@ -1354,6 +1354,14 @@ public partial class MainView : UserControl
     /// than that of the control with the keyboard. Both key handlers tunnel, so they see the
     /// key before that control does.
     /// </summary>
+    bool IsTabForCanvas()
+    {
+        var focused = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
+        return !(focused is TextBox)
+            && !DrawingHost.PropertyGrid.IsKeyboardFocusWithin
+            && !DrawingHost.FigureExplorer.IsKeyboardFocusWithin;
+    }
+
     bool IsPlainKeyForCanvas(Key key)
     {
         var focused = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
@@ -1596,6 +1604,17 @@ public partial class MainView : UserControl
                 e.Handled = true;
             }
 
+            return;
+        }
+
+        // Tab: the next of the figures a click at the cursor could take (ClickChoice) - not
+        // from a box, a list or the Figure List, where Tab goes on to the next control
+        if (e.Key == Key.Tab
+            && (e.KeyModifiers == KeyModifiers.None || e.KeyModifiers == KeyModifiers.Shift)
+            && IsTabForCanvas()
+            && DrawingHost.CurrentDrawing.Behavior?.StepChoice(backwards: e.KeyModifiers == KeyModifiers.Shift) == true)
+        {
+            e.Handled = true;
             return;
         }
 

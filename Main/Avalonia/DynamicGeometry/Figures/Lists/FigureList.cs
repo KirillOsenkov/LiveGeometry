@@ -235,6 +235,40 @@ namespace DynamicGeometry
             return bestFoundSoFar;
         }
 
+        /// <summary>
+        /// Every figure at the point for which the filter is true, in the order
+        /// <see cref="HitTest(Point, Predicate{IFigure})"/> picks from: the topmost ZIndex
+        /// first, of two points the nearer, else the one later in the list. The first is what
+        /// that HitTest finds; the others are what a click could mean instead
+        /// (<see cref="ClickChoice"/>).
+        /// </summary>
+        public List<IFigure> HitTestAll(Point point, Predicate<IFigure> filter)
+        {
+            var found = new List<(IFigure Figure, int Index)>();
+            int index = 0;
+            foreach (var item in HitTestCandidates)
+            {
+                index++;
+                if (!item.Exists)
+                {
+                    continue;
+                }
+
+                IFigure hit = item.HitTest(point);
+                if (hit != null && hit.Exists && filter(hit) && !found.Any(f => f.Figure == hit))
+                {
+                    found.Add((hit, index));
+                }
+            }
+
+            return found
+                .OrderByDescending(f => f.Figure.ZIndex)
+                .ThenBy(f => f.Figure is IPoint p ? p.Coordinates.Distance(point) : 0)
+                .ThenByDescending(f => f.Index)
+                .Select(f => f.Figure)
+                .ToList();
+        }
+
         public ReadOnlyCollection<IFigure> HitTestMany(Point point)
         {
             List<IFigure> result = new List<IFigure>();

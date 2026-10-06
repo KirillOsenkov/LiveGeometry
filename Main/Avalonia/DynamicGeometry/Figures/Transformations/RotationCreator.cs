@@ -85,30 +85,15 @@ namespace DynamicGeometry
             return DependencyList.Create<IFigure, IPoint, IAngleProvider>();
         }
 
-        protected override IFigure LookForExpectedDependencyUnderCursor(Point coordinates)
+        protected override IReadOnlyList<IFigure> FindExpectedDependencies(Point coordinates)
         {
             if (FoundDependencies.Count == 0)
             {
                 // only what can be rotated (see DilationCreator)
-                return Transformer.FindTransformSource(Drawing.Figures.HitTest(coordinates));
+                return Transformer.FindTransformSources(Drawing, coordinates);
             }
-            else if (FoundDependencies.Count == 1)
-            {
-                var result = Drawing.Figures.HitTest(coordinates);
-                if (result is IPoint)
-                {
-                    return result;
-                }
-            }
-            else if (FoundDependencies.Count == 2)
-            {
-                var result = Drawing.Figures.HitTest(coordinates);
-                if (result.GivesAngle())
-                {
-                    return result;
-                }
-            }
-            return base.LookForExpectedDependencyUnderCursor(coordinates);
+
+            return base.FindExpectedDependencies(coordinates);
         }
 
         protected override bool ExpectingAPoint()

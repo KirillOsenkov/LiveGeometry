@@ -304,16 +304,26 @@ namespace DynamicGeometry
             }
         }
 
+        // (the source may give the distance or the direction too: a vector moved by itself)
         protected override IFigure FindFigureToPick(Point unconstrainedCoordinates)
         {
-            var figure = Drawing.Figures.HitTest(unconstrainedCoordinates);
+            return LookForExpectedDependencyUnderCursor(unconstrainedCoordinates);
+        }
+
+        protected override IReadOnlyList<IFigure> FindExpectedDependencies(Point coordinates)
+        {
             if (step == Step.Source)
             {
                 // the side or the inside of a regular polygon stands for the polygon
-                return Transformer.FindTransformSource(figure);
+                return Transformer.FindTransformSources(Drawing, coordinates);
             }
 
-            return figure != null && Accepts(figure) ? figure : null;
+            if (step == Step.Placement)
+            {
+                return Array.Empty<IFigure>();
+            }
+
+            return Drawing.Figures.HitTestAll(coordinates, f => f.Visible && f.IsHitTestVisible && Accepts(f));
         }
 
         protected override Type GetExpectedDependencyType()

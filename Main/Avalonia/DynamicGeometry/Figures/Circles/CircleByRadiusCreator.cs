@@ -54,22 +54,18 @@ namespace DynamicGeometry
             get { return FoundDependencies.Count > 0 && !(FoundDependencies[0] is IPoint); }
         }
 
-        protected override IFigure FindFigureInsteadOfPoint(Point unconstrainedCoordinates)
+        protected override IReadOnlyList<IFigure> FindFiguresInsteadOfPoint(Point unconstrainedCoordinates)
         {
-            if (FoundDependencies.Count > 0 || slider.Exists)
+            if (FoundDependencies.Count > 0
+                || slider.Exists
+                || Drawing.Figures.HitTest<IPoint>(unconstrainedCoordinates) != null)
             {
-                return null;
+                return Array.Empty<IFigure>();
             }
 
-            var underMouse = Drawing.Figures.HitTest(
+            return Drawing.Figures.HitTestAll(
                 unconstrainedCoordinates,
                 f => f.GivesLength() && f.Visible && f.IsHitTestVisible);
-            if (underMouse != null && Drawing.Figures.HitTest<IPoint>(unconstrainedCoordinates) == null)
-            {
-                return underMouse;
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -218,9 +214,9 @@ namespace DynamicGeometry
         }
 
         /// <summary>No ghost point while the knob follows the cursor</summary>
-        protected override PointPlacement FindPointPlacement(Point unconstrainedCoordinates, Point coordinates)
+        protected override IReadOnlyList<PointPlacement> FindPointPlacements(Point unconstrainedCoordinates, Point coordinates)
         {
-            return slider.Exists ? null : base.FindPointPlacement(unconstrainedCoordinates, coordinates);
+            return slider.Exists ? Array.Empty<PointPlacement>() : base.FindPointPlacements(unconstrainedCoordinates, coordinates);
         }
 
         protected override Avalonia.Input.Cursor GetCursor(Point coordinates)

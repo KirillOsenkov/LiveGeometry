@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Avalonia;
 
 namespace DynamicGeometry;
@@ -122,15 +123,21 @@ public class LineAtAngleCreator : FigureCreator
         return DependencyList.Point;
     }
 
-    protected override IFigure FindFigureInsteadOfPoint(Point unconstrainedCoordinates)
+    /// <summary>What gives an angle under the cursor, when the topmost there does (not under a point)</summary>
+    protected override IReadOnlyList<IFigure> FindFiguresInsteadOfPoint(Point unconstrainedCoordinates)
     {
         if (angleSource != null)
         {
-            return null;
+            return System.Array.Empty<IFigure>();
         }
 
-        var figure = Drawing.Figures.HitTest(unconstrainedCoordinates);
-        return figure != null && LineAtAngle.CanTakeAngleFrom(figure) ? figure : null;
+        var figures = Drawing.Figures.HitTestAll(unconstrainedCoordinates, f => f.Visible && f.IsHitTestVisible);
+        if (figures.Count == 0 || !LineAtAngle.CanTakeAngleFrom(figures[0]))
+        {
+            return System.Array.Empty<IFigure>();
+        }
+
+        return figures.Where(LineAtAngle.CanTakeAngleFrom).ToList();
     }
 
     protected override void Click(Point coordinates)

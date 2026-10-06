@@ -122,6 +122,7 @@ namespace DynamicGeometry
             {
                 if (mDrawing != null)
                 {
+                    ForgetChoice();
                     mDrawing.OnAttachToCanvas -= mDrawing_OnAttachToCanvas;
                     mDrawing.OnDetachFromCanvas -= mDrawing_OnDetachFromCanvas;
                     ParentCanvas = null;
@@ -277,6 +278,10 @@ namespace DynamicGeometry
             if (properties.IsLeftButtonPressed && !isSecondaryClickHeld)
             {
                 SafeMouseDown(sender, e);
+
+                // a choice is for one click: the next step starts at its first option
+                Choice.Forget();
+                OfferClickOptions(e);
             }
             else if (properties.IsRightButtonPressed || isSecondaryClickHeld)
             {
@@ -320,6 +325,9 @@ namespace DynamicGeometry
                 return;
             }
 
+            lastMove = e;
+            lastMoveSender = sender;
+            OfferClickOptions(e);
             SafeMouseMove(sender, e);
             if (!errorHappened && !e.GetCurrentPoint(mParentCanvas).Properties.IsLeftButtonPressed)
             {
@@ -333,7 +341,120 @@ namespace DynamicGeometry
         {
             HandleWaitingMove();
             clickPreview.Clear();
+            ForgetChoice();
         }
+
+        #region Choosing among overlapping figures
+
+        /// <summary>Which of the things a click at the cursor could mean it means (<see cref="ClickChoice"/>)</summary>
+        public ClickChoice Choice { get; protected set; } = new ClickChoice();
+
+        // the last move over the canvas, to show anew what a click takes once Tab chose another
+        PointerEventArgs lastMove;
+        object lastMoveSender;
+
+        // what the status says of the choice, null while there is none
+        string shownChoiceStatus;
+
+        /// <summary>
+        /// What a click here could take, best first: the figures the step wants, or the points
+        /// it could make (<see cref="PointPlacement"/>). More than one is a choice the user
+        /// makes with Tab, or in a menu after a tap. Nothing by default.
+        /// </summary>
+        protected virtual IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
+        {
+            return Array.Empty<object>();
+        }
+
+        IReadOnlyList<object> SafeFindClickOptions(MouseEventArgs e)
+        {
+            if (errorHappened || mParentCanvas == null || Drawing == null)
+            {
+                return Array.Empty<object>();
+            }
+
+            try
+            {
+                return FindClickOptions(e);
+            }
+            catch (Exception)
+            {
+                return Array.Empty<object>();
+            }
+        }
+
+        void OfferClickOptions(MouseEventArgs e)
+        {
+            Choice.Offer(SafeFindClickOptions(e));
+            ShowChoiceStatus();
+        }
+
+        void ShowChoiceStatus()
+        {
+            var text = Choice.StatusText;
+            if (text != shownChoiceStatus)
+            {
+                shownChoiceStatus = text;
+                Drawing?.RaiseChoiceStatus(text);
+            }
+        }
+
+        protected void ForgetChoice()
+        {
+            Choice.Forget();
+            ShowChoiceStatus();
+        }
+
+        /// <summary>
+        /// Tab (Shift+Tab: back): the next of the things a click at the cursor could mean, with
+        /// its halo and the status saying which it is. False when there is no choice there, and
+        /// Tab is left to do what it does.
+        /// </summary>
+        public bool StepChoice(bool backwards)
+        {
+            if (lastMove == null || mParentCanvas == null || !Choice.Step(backwards ? -1 : 1))
+            {
+                return false;
+            }
+
+            ShowChoiceStatus();
+
+            // what the hover shows, worked out anew for the option chosen
+            SafeMouseMove(lastMoveSender, lastMove);
+            UpdateCursor(lastMove);
+            UpdateClickPreview(lastMove);
+            return true;
+        }
+
+        /// <summary>
+        /// A tap where it could mean more than one thing: a menu says what each is, and the one
+        /// picked is the tap. Dismissed, the tap is nothing.
+        /// </summary>
+        void AskWhatTapMeans(
+            object sender,
+            PointerPressedEventArgs press,
+            PointerEventArgs release,
+            IReadOnlyList<object> options)
+        {
+            var menu = new ContextMenu();
+            foreach (var option in options)
+            {
+                var item = new MenuItem() { Header = ClickChoice.Describe(option) };
+                item.Click += (s, args) =>
+                {
+                    Choice.Offer(options);
+                    Choice.Choose(option);
+                    AsTouch(() => SafeMouseDown(sender, press));
+                    AsTouch(() => SafeMouseUp(sender, release));
+                    ForgetChoice();
+                };
+                menu.Items.Add(item);
+            }
+
+            menu.Open(mParentCanvas);
+        }
+
+        #endregion
 
         #region One move a frame
 
@@ -755,9 +876,19 @@ namespace DynamicGeometry
             {
                 if (e != null && !touchPressDelivered)
                 {
+                    // a tap where it could mean more than one thing asks which
+                    var press = touchPress;
+                    IReadOnlyList<object> options = null;
+                    AsTouch(() => options = SafeFindClickOptions(press));
+                    if (options.Count > 1)
+                    {
+                        ForgetTouch();
+                        AskWhatTapMeans(sender, press, e, options);
+                        return;
+                    }
+
                     // a tap: the press and the release in one go
                     touchPressDelivered = true;
-                    var press = touchPress;
                     AsTouch(() => SafeMouseDown(sender, press));
                 }
 

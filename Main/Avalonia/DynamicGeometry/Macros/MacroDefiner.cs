@@ -121,21 +121,29 @@ namespace DynamicGeometry
 
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (behavior != null)
-            {
-                behavior.MouseDown(sender, e);
-            }
+            behavior?.Toggle(FindFigureToToggle(Coordinates(e)));
+        }
+
+        /// <summary>The figure a click here selects or lets go of: the first there is, or the one chosen with Tab</summary>
+        IFigure FindFigureToToggle(Point coordinates)
+        {
+            return behavior == null ? null : Choice.Pick(behavior.FindFiguresToToggle(coordinates));
+        }
+
+        protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
+        {
+            return behavior == null ? System.Array.Empty<object>() : behavior.FindFiguresToToggle(Coordinates(e)).ToList<object>();
         }
 
         /// <summary>A halo on the figure a click would select or let go of, as tools show the figure they would take</summary>
         protected override IFigure GetFigureToPick(MouseEventArgs e)
         {
-            return behavior?.FindFigureToToggle(Coordinates(e));
+            return FindFigureToToggle(Coordinates(e));
         }
 
         protected override Cursor GetCursor(Point coordinates)
         {
-            return behavior?.FindFigureToToggle(coordinates) != null ? HandCursor : ArrowCursor;
+            return FindFigureToToggle(coordinates) != null ? HandCursor : ArrowCursor;
         }
 
         public override void KeyDown(object sender, KeyEventArgs e)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Avalonia;
 
 namespace DynamicGeometry
@@ -71,15 +72,17 @@ namespace DynamicGeometry
             base.CreateTempResults();
         }
 
-        protected override PointPlacement FindPointPlacement(Point unconstrainedCoordinates, Point coordinates)
+        protected override IReadOnlyList<PointPlacement> FindPointPlacements(Point unconstrainedCoordinates, Point coordinates)
         {
-            var placement = base.FindPointPlacement(unconstrainedCoordinates, coordinates);
-            if (shortAxis != null && placement != null && placement.Kind == PointPlacementKind.Free)
+            var placements = base.FindPointPlacements(unconstrainedCoordinates, coordinates);
+            if (shortAxis == null)
             {
-                return PointPlacement.OnFigure(shortAxis, coordinates);
+                return placements;
             }
 
-            return placement;
+            return placements
+                .Select(placement => placement.Kind == PointPlacementKind.Free ? PointPlacement.OnFigure(shortAxis, coordinates) : placement)
+                .ToList();
         }
 
         protected override void AddFiguresAndRestart()

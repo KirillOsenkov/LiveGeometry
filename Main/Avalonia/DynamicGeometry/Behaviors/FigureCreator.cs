@@ -91,6 +91,8 @@ namespace DynamicGeometry
         /// </summary>
         protected void AddTypedPoint(Point point)
         {
+            // (what was chosen with Tab is for a click under the cursor)
+            ForgetChoice();
             ClickedUnconstrainedCoordinates = point;
             canPlacePointsOnFigures = false;
             try
@@ -712,49 +714,99 @@ namespace DynamicGeometry
         }
 
         /// <summary>
+        /// What a click here takes of the figures this step wants
+        /// (<see cref="FindExpectedDependencies"/>): the first, or the one chosen with Tab
+        /// (<see cref="ClickChoice"/>)
+        /// </summary>
+        protected IFigure LookForExpectedDependencyUnderCursor(Point coordinates)
+        {
+            return Choice.Pick(FindExpectedDependencies(coordinates));
+        }
+
+        /// <summary>
+        /// Every figure under the cursor this step takes, the one a click takes first. A tool
+        /// with rules of its own for a step (only what can be rotated) says them here, so that
+        /// the choice among overlapping figures is a choice among those.
+        /// </summary>
+        protected virtual IReadOnlyList<IFigure> FindExpectedDependencies(Point coordinates)
+        {
+            if (GetExpectedDependencyType() == null)
+            {
+                return Array.Empty<IFigure>();
+            }
+
+            return Drawing.Figures.HitTestAll(coordinates, IsExpectedDependency);
+        }
+
+        /// <summary>
         /// It is important to exclude TempResults from the search since
         /// we don't want the figure to depend on its own parts.
         /// </summary>
-        protected virtual IFigure LookForExpectedDependencyUnderCursor(Point coordinates)
+        bool IsExpectedDependency(IFigure f)
         {
-            return Drawing.Figures.HitTest(coordinates, f =>
+            if (f == null || !f.Visible || !f.IsHitTestVisible)
             {
-                if (f == null || !f.Visible || !f.IsHitTestVisible)
-                {
-                    return false;
-                }
+                return false;
+            }
 
-                var expected = GetExpectedDependencyType();
-                if (!expected.IsAssignableFrom(f.GetType()))
-                {
-                    return false;
-                }
+            var expected = GetExpectedDependencyType();
+            if (!expected.IsAssignableFrom(f.GetType()))
+            {
+                return false;
+            }
 
-                // (a label that says no number is nothing to take a length or an angle
-                // from, nor is an angle's mark a length)
-                if (expected == typeof(ILengthProvider) && !f.GivesLength()
-                    || expected == typeof(IAngleProvider) && !f.GivesAngle())
-                {
-                    return false;
-                }
+            // (a label that says no number is nothing to take a length or an angle
+            // from, nor is an angle's mark a length)
+            if (expected == typeof(ILengthProvider) && !f.GivesLength()
+                || expected == typeof(IAngleProvider) && !f.GivesAngle())
+            {
+                return false;
+            }
 
-                if (!TempResults.IsEmpty() && TempResults.Contains(f))
-                {
-                    return false;
-                }
+            if (!TempResults.IsEmpty() && TempResults.Contains(f))
+            {
+                return false;
+            }
 
-                // Nor a part of what is being drawn (the vertices and sides of a regular
-                // polygon, which are not in TempResults themselves): it follows the point
-                // under the cursor and is gone with the preview. A double click with the
-                // Regular polygon tool took a vertex of the preview, all of them on the
-                // center just then, for the polygon's own vertex.
-                if (TempPoint != null && f.DependsOn(TempPoint))
-                {
-                    return false;
-                }
+            // Nor a part of what is being drawn (the vertices and sides of a regular
+            // polygon, which are not in TempResults themselves): it follows the point
+            // under the cursor and is gone with the preview. A double click with the
+            // Regular polygon tool took a vertex of the preview, all of them on the
+            // center just then, for the polygon's own vertex.
+            if (TempPoint != null && f.DependsOn(TempPoint))
+            {
+                return false;
+            }
 
-                return true;
-            });
+            return true;
+        }
+
+        /// <summary>
+        /// Everything a click here could take, in the order the click looks for it: a figure
+        /// taken instead of a point, then the points it could make (an existing one, one on a
+        /// figure, at a crossing, a midpoint) - or, when the step wants a figure, those it
+        /// takes. Nothing while a click ties a value of the figure just made.
+        /// </summary>
+        protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
+        {
+            var unconstrainedCoordinates = Coordinates(e, false, false, false);
+            if (GetExpectedDependencyType() == null || FindTieTarget(unconstrainedCoordinates) != null)
+            {
+                return Array.Empty<object>();
+            }
+
+            var options = new List<object>(FindFiguresInsteadOfPoint(unconstrainedCoordinates));
+            if (ExpectingAPoint())
+            {
+                var coordinates = AdjustCurrentCoordinates(Coordinates(e));
+                options.AddRange(FindPointPlacements(unconstrainedCoordinates, coordinates));
+            }
+            else
+            {
+                options.AddRange(FindExpectedDependencies(unconstrainedCoordinates));
+            }
+
+            return options;
         }
 
         #endregion
@@ -771,25 +823,40 @@ namespace DynamicGeometry
         /// </summary>
         /// <param name="unconstrainedCoordinates">Where the cursor is</param>
         /// <param name="coordinates">The same after snapping</param>
-        protected virtual PointPlacement FindPointPlacement(Point unconstrainedCoordinates, Point coordinates)
+        protected PointPlacement FindPointPlacement(Point unconstrainedCoordinates, Point coordinates)
         {
             if (!ExpectingAPoint() || FindFigureInsteadOfPoint(unconstrainedCoordinates) != null)
             {
                 return null;
             }
 
+            return Choice.Pick(FindPointPlacements(unconstrainedCoordinates, coordinates));
+        }
+
+        /// <summary>
+        /// Every point a click here could give, the one it gives first (<see cref="FindPointPlacement"/>
+        /// picks): the points under the cursor, else what <see cref="PointPlacement.FindAll"/>
+        /// finds. Empty when the tool doesn't need a point now.
+        /// </summary>
+        protected virtual IReadOnlyList<PointPlacement> FindPointPlacements(Point unconstrainedCoordinates, Point coordinates)
+        {
+            if (!ExpectingAPoint())
+            {
+                return Array.Empty<PointPlacement>();
+            }
+
             if (!usePointsUnderMouse || !canPlacePointsOnFigures)
             {
-                return PointPlacement.Free(coordinates);
+                return new[] { PointPlacement.Free(coordinates) };
             }
 
-            var existing = LookForExpectedDependencyUnderCursor(unconstrainedCoordinates) as IPoint;
-            if (existing != null)
+            var existing = FindExpectedDependencies(unconstrainedCoordinates).OfType<IPoint>().ToList();
+            if (existing.Count > 0)
             {
-                return PointPlacement.Existing(existing);
+                return existing.Select(PointPlacement.Existing).ToList();
             }
 
-            return PointPlacement.Find(
+            return PointPlacement.FindAll(
                 Drawing,
                 coordinates,
                 Settings.Instance.EnableSnapToCenter,
@@ -864,11 +931,18 @@ namespace DynamicGeometry
         /// A figure that a click takes although the tool is expecting a point: the Distance
         /// tool measures a segment, Circle by Radius takes one as the radius. Null by default.
         /// The hover preview (no ghost point, a halo on the figure, a hand) and the tool's
-        /// own click handling must agree, so both go through this.
+        /// own click handling must agree, so both go through this. Null too when a point was
+        /// chosen with Tab instead (<see cref="ClickChoice"/>).
         /// </summary>
-        protected virtual IFigure FindFigureInsteadOfPoint(Point unconstrainedCoordinates)
+        protected IFigure FindFigureInsteadOfPoint(Point unconstrainedCoordinates)
         {
-            return null;
+            return Choice.Pick(FindFiguresInsteadOfPoint(unconstrainedCoordinates));
+        }
+
+        /// <summary>Every figure a click here could take instead of a point (<see cref="FindFigureInsteadOfPoint"/>); none by default</summary>
+        protected virtual IReadOnlyList<IFigure> FindFiguresInsteadOfPoint(Point unconstrainedCoordinates)
+        {
+            return Array.Empty<IFigure>();
         }
 
         protected override IFigure GetFigureToPick(MouseEventArgs e)

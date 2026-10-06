@@ -29,9 +29,9 @@ public class IntersectionCreator : FigureCreator
     /// First any figure that can be intersected; then one that crosses it near the cursor
     /// where there is no point yet - the click and the hover preview both ask this
     /// </summary>
-    protected override IFigure LookForExpectedDependencyUnderCursor(Point coordinates)
+    protected override IReadOnlyList<IFigure> FindExpectedDependencies(Point coordinates)
     {
-        return Drawing.Figures.HitTest(coordinates, figure =>
+        return Drawing.Figures.HitTestAll(coordinates, figure =>
         {
             if (figure == null || !figure.Visible || !figure.IsHitTestVisible)
             {

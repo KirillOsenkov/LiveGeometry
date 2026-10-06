@@ -99,6 +99,97 @@ public class PointPlacement
     }
 
     /// <summary>
+    /// What a click here could make, for a choice among them (<see cref="ClickChoice"/>): what
+    /// <see cref="Find"/> gives first, then the other crossings nearby, the midpoint, and a
+    /// point on each figure under the cursor (axes last). Over points, the points: a click
+    /// there takes one of them and makes nothing new. Never a free point next to these,
+    /// or every hover over a line would offer a choice.
+    /// </summary>
+    public static List<PointPlacement> FindAll(
+        Drawing drawing,
+        Point coordinates,
+        bool snapToMidpoint,
+        Predicate<IFigure> canUse = null)
+    {
+        var underCursor = drawing.Figures.HitTestMany(coordinates)
+            .Where(f => f.IsHitTestVisible && (canUse == null || canUse(f)))
+            .Reverse()
+            .ToArray();
+
+        var points = underCursor.OfType<IPoint>().ToList();
+        if (points.Count > 0)
+        {
+            // the one Find takes first (the nearest of the topmost), as a click took it
+            var first = Find(drawing, coordinates, snapToMidpoint, canUse);
+            return points
+                .OrderBy(point => point == first.ExistingPoint ? 0 : 1)
+                .Select(Existing)
+                .ToList();
+        }
+
+        var result = new List<PointPlacement>()
+        {
+            FindOnFigures(drawing, underCursor, coordinates, snapToMidpoint, reuseMidpoint: true) ?? Free(coordinates)
+        };
+        if (result[0].Kind == PointPlacementKind.Free)
+        {
+            return result;
+        }
+
+        void Add(PointPlacement placement)
+        {
+            if (placement != null && placement.Kind != PointPlacementKind.Free && !result.Any(found => ClickChoice.Same(found, placement)))
+            {
+                result.Add(placement);
+            }
+        }
+
+        var linear = OrderForPoint(underCursor);
+        var maxDistance = 3 * drawing.CoordinateSystem.CursorTolerance;
+        var crossings = new List<PointPlacement>();
+        for (int i = 0; i < linear.Length; i++)
+        {
+            for (int j = i + 1; j < linear.Length; j++)
+            {
+                var crossing = Intersection(linear[i], linear[j], coordinates);
+                if (crossing != null && crossing.Coordinates.Distance(coordinates) <= maxDistance)
+                {
+                    crossings.Add(crossing);
+                }
+            }
+        }
+
+        foreach (var crossing in crossings.OrderBy(c => c.Coordinates.Distance(coordinates)))
+        {
+            Add(crossing);
+        }
+
+        var midpointReach = MidpointReach * drawing.CoordinateSystem.CursorTolerance;
+        foreach (var segment in linear.Where(s => HasMidpoint(s)
+            && (snapToMidpoint || ((ILine)s).Coordinates.Midpoint.Distance(coordinates) <= midpointReach)))
+        {
+            var existingMidpoint = FindExistingMidpoint(segment.Dependencies[0], segment.Dependencies[1]);
+            Add(existingMidpoint != null ? Existing(existingMidpoint) : Midpoint(segment));
+        }
+
+        foreach (var figure in linear)
+        {
+            Add(OnFigure((ILinearFigure)figure, coordinates));
+        }
+
+        return result;
+    }
+
+    /// <summary>The figures under the cursor a point can go on, an axis last: a line drawn along it is what the point goes on</summary>
+    static IFigure[] OrderForPoint(IFigure[] underCursor)
+    {
+        return underCursor
+            .Where(PointOnFigure.CanBeOnFigure)
+            .OrderBy(figure => figure is AxisLine)
+            .ToArray();
+    }
+
+    /// <summary>
     /// Where a point dragged with Alt snaps (<see cref="PointSnapping"/>): what a click of the
     /// Point tool would make here - an existing point first (to be joined), then a figure, a
     /// crossing, a midpoint - but never a second midpoint of a segment (the point slides
@@ -151,11 +242,7 @@ public class PointPlacement
         bool snapToMidpoint,
         bool reuseMidpoint)
     {
-        // an axis last: a line drawn along it is what the point goes on
-        var linear = underCursor
-            .Where(PointOnFigure.CanBeOnFigure)
-            .OrderBy(figure => figure is AxisLine)
-            .ToArray();
+        var linear = OrderForPoint(underCursor);
         if (linear.Length == 0)
         {
             return null;

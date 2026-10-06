@@ -294,16 +294,18 @@ public class ClickPreview
         }
         else if (figure is EllipseBase ellipse)
         {
+            // As much bigger as its stroke is wider: an ellipse is drawn inside its box, half
+            // the stroke in from the edge, and the halo's wider stroke sat inside the curve.
             var source = ellipse.Shape;
             halo = new AvaloniaShapes.Ellipse()
             {
-                Width = source.Width,
-                Height = source.Height,
+                Width = source.Width + HaloWidth,
+                Height = source.Height + HaloWidth,
                 RenderTransform = source.RenderTransform,
                 RenderTransformOrigin = source.RenderTransformOrigin
             };
-            Canvas.SetLeft(halo, Canvas.GetLeft(source));
-            Canvas.SetTop(halo, Canvas.GetTop(source));
+            Canvas.SetLeft(halo, Canvas.GetLeft(source) - HaloWidth / 2);
+            Canvas.SetTop(halo, Canvas.GetTop(source) - HaloWidth / 2);
             SetHaloStroke(halo, source);
         }
         else if (figure is ShapeBase<AvaloniaShapes.Path> path)

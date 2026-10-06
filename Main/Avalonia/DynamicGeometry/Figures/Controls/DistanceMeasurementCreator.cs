@@ -23,20 +23,19 @@ namespace DynamicGeometry
         /// A segment (anything with a length) under the cursor with no point on top of it:
         /// a click measures it instead of putting a point on it.
         /// </summary>
-        protected override IFigure FindFigureInsteadOfPoint(Point unconstrainedCoordinates)
+        protected override IReadOnlyList<IFigure> FindFiguresInsteadOfPoint(Point unconstrainedCoordinates)
         {
+            if (Drawing.Figures.HitTest<IPoint>(unconstrainedCoordinates) != null)
+            {
+                return System.Array.Empty<IFigure>();
+            }
+
             // (only what is in view: the filter is this tool's own, and without the last two
             // tests a click on empty paper measured a hidden segment lying there - the long
             // axis every ellipse keeps)
-            var underMouse = Drawing.Figures.HitTest(
+            return Drawing.Figures.HitTestAll(
                 unconstrainedCoordinates,
                 f => f.GivesLength() && f.Visible && f.IsHitTestVisible && !f.DependsOn(TempPoint));
-            if (underMouse != null && Drawing.Figures.HitTest<IPoint>(unconstrainedCoordinates) == null)
-            {
-                return underMouse;
-            }
-
-            return null;
         }
 
         public override void MouseDown(object sender, MouseButtonEventArgs e)

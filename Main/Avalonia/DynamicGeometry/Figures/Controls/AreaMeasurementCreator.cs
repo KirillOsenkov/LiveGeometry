@@ -31,6 +31,14 @@ namespace DynamicGeometry
             base.Click(coordinates);
         }
 
+        /// <summary>A click on a shape measures it, whatever else is there: nothing to choose</summary>
+        protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
+        {
+            return Drawing.Figures.HitTest(Coordinates(e)) is IShapeWithInterior
+                ? System.Array.Empty<object>()
+                : base.FindClickOptions(e);
+        }
+
         /// <summary>Three points or more (and the one following the cursor): enough for an area</summary>
         bool CanFinish
         {

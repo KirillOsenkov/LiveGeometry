@@ -773,6 +773,16 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// What a click at the cursor would take, while it could take more than one thing
+        /// (<see cref="ClickChoice"/>): shown over the status, which comes back with null
+        /// </summary>
+        public event Action<string> ChoiceStatus;
+        public void RaiseChoiceStatus(string text)
+        {
+            ChoiceStatus?.Invoke(text);
+        }
+
         public event Action ZoomChanged;    // Used by Tabula.
         public void RaiseZoomChanged()
         {

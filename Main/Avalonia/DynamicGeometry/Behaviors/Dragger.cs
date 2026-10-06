@@ -635,6 +635,7 @@ namespace DynamicGeometry
                     Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
                 }
 
+                AddChooseFigureItems(menu, Coordinates(e, false, false, false));
                 var point = figure as PointBase ?? (figure as PointLabel)?.Dependencies.FirstOrDefault() as PointBase;
                 if (point != null)
                 {
@@ -725,6 +726,39 @@ namespace DynamicGeometry
             }
 
             menu.Open(ParentCanvas);
+        }
+
+        /// <summary>
+        /// Where figures overlap, "Choose figure" (as in the original DG) lists them all and
+        /// selects the one picked: the click selects the topmost only
+        /// </summary>
+        void AddChooseFigureItems(Avalonia.Controls.ContextMenu menu, Point coordinates)
+        {
+            var figures = Drawing.Figures
+                .HitTestAll(coordinates, f => f.Visible && f.IsHitTestVisible && !(f is AxisLine))
+                .Select(FigureParts.SelectionTarget)
+                .Distinct()
+                .ToList();
+            if (figures.Count < 2)
+            {
+                return;
+            }
+
+            var choose = new Avalonia.Controls.MenuItem() { Header = "Choose figure" };
+            foreach (var candidate in figures)
+            {
+                var item = new Avalonia.Controls.MenuItem() { Header = ClickChoice.Describe(candidate) };
+                item.Click += (s, args) =>
+                {
+                    Drawing.Figures.ClearSelection();
+                    candidate.Selected = true;
+                    Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
+                };
+                choose.Items.Add(item);
+            }
+
+            menu.Items.Add(choose);
+            menu.Items.Add(new Avalonia.Controls.Separator());
         }
 
         /// <summary>The figures selected with the one clicked, which is among them; no names of points or lines (those go with Show name)</summary>

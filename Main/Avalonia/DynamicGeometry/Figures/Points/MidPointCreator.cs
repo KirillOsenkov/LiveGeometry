@@ -41,6 +41,12 @@ namespace DynamicGeometry
             base.MouseDown(sender, e);
         }
 
+        /// <summary>A click on a segment takes its ends, whatever else is there: nothing to choose</summary>
+        protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
+        {
+            return FindSegmentToBisect(e) != null ? System.Array.Empty<object>() : base.FindClickOptions(e);
+        }
+
         static bool HasMidpointAlready(IFigure segment)
         {
             return PointPlacement.FindExistingMidpoint(segment.Dependencies[0], segment.Dependencies[1]) != null;

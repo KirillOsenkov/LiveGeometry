@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using Avalonia.Input;
 
 namespace DynamicGeometry
@@ -120,9 +121,20 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>The point a click here makes: the first of what it could make, or the one chosen with Tab</summary>
         PointPlacement FindPointPlacement(MouseEventArgs e)
         {
-            return PointPlacement.Find(Drawing, Coordinates(e), Settings.Instance.EnableSnapToCenter);
+            return Choice.Pick(FindPointPlacements(e)) ?? PointPlacement.Free(Coordinates(e));
+        }
+
+        List<PointPlacement> FindPointPlacements(MouseEventArgs e)
+        {
+            return PointPlacement.FindAll(Drawing, Coordinates(e), Settings.Instance.EnableSnapToCenter);
+        }
+
+        protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
+        {
+            return FindPointPlacements(e);
         }
 
         PointPlacement hoverPlacement;

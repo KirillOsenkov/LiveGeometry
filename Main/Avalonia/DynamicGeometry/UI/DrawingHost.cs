@@ -456,6 +456,7 @@ namespace DynamicGeometry
         protected virtual void DrawingControl_DrawingAttach(Drawing drawing)
         {
             drawing.Status += mCurrentDrawing_Status;
+            drawing.ChoiceStatus += mCurrentDrawing_ChoiceStatus;
             drawing.SelectionChanged += mCurrentDrawing_SelectionChanged;
             drawing.BehaviorChanged += mCurrentDrawing_BehaviorChanged;
             drawing.DisplayProperties += mCurrentDrawing_DisplayProperties;
@@ -467,6 +468,8 @@ namespace DynamicGeometry
         protected virtual void DrawingControl_DrawingDetach(Drawing drawing)
         {
             drawing.Status -= mCurrentDrawing_Status;
+            drawing.ChoiceStatus -= mCurrentDrawing_ChoiceStatus;
+            mCurrentDrawing_ChoiceStatus(null);
             drawing.SelectionChanged -= mCurrentDrawing_SelectionChanged;
             drawing.BehaviorChanged -= mCurrentDrawing_BehaviorChanged;
             drawing.DisplayProperties -= mCurrentDrawing_DisplayProperties;
@@ -559,19 +562,39 @@ namespace DynamicGeometry
             ShowHint(status);
         }
 
+        // the hint, and what a click at the cursor would take while it could take more than
+        // one thing (ClickChoice), which is shown over the hint until it goes
+        string hint;
+        string choiceHint;
+
+        void mCurrentDrawing_ChoiceStatus(string text)
+        {
+            choiceHint = text;
+            UpdateStatusBar();
+        }
+
         public virtual void ShowHint(string text)
         {
-            if (!Settings.Instance.HideHints)
+            hint = text;
+            UpdateStatusBar();
+        }
+
+        void UpdateStatusBar()
+        {
+            if (Settings.Instance.HideHints)
             {
-                if (text.IsEmpty())
-                {
-                    StatusBar.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    StatusBar.Text = text;
-                    StatusBar.Visibility = Visibility.Visible;
-                }
+                return;
+            }
+
+            var text = choiceHint ?? hint;
+            if (text.IsEmpty())
+            {
+                StatusBar.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                StatusBar.Text = text;
+                StatusBar.Visibility = Visibility.Visible;
             }
         }
 

@@ -7,6 +7,19 @@ namespace DynamicGeometry
     public class Transformer
     {
         /// <summary>
+        /// What a click here could transform, the one it takes first: <see cref="FindTransformSource"/>
+        /// of each figure under the cursor (a polygon once, for its side and its inside)
+        /// </summary>
+        public static IReadOnlyList<IFigure> FindTransformSources(Drawing drawing, Avalonia.Point coordinates, bool keepsLengths = true)
+        {
+            return drawing.Figures.HitTestAll(coordinates, f => f.Visible && f.IsHitTestVisible)
+                .Select(figure => FindTransformSource(figure, keepsLengths))
+                .Where(source => source != null)
+                .Distinct()
+                .ToList();
+        }
+
+        /// <summary>
         /// What a click on the figure transforms: the figure, or the regular polygon whose
         /// side or inside it is. A part is not a figure of the drawing (it has no name), and
         /// its copy would be one: an unnamed segment, which a file can't refer to. A vertex
