@@ -136,7 +136,7 @@ public static class GalleryCatalog
         Item("desargues", "Desargues' Theorem"),
         Item("ellipse-evolute", "Ellipse and Its Evolute"),
         Item("line-of-best-fit", "Line of Best Fit"),
-        Item("measuring-distance", "Measuring Across a Lake"),
+        Item("measuring-distance", "Measuring Across a Lake", stackedFigureShare: 0.5),
         Item("complex-numbers", "Complex Multiplication"),
         Item("ceva", "Ceva's Theorem"),
         Item("conic-through-five-points", "Conic Through Five Points"),

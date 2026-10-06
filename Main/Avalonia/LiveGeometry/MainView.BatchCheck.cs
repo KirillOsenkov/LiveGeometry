@@ -310,34 +310,44 @@ public partial class MainView
 
     /// <summary>
     /// The caption's pin, offsets and width are those of the window the drawing was opened in
-    /// (<see cref="GalleryDrawing.Fit"/> decides them again on every opening): what the file
-    /// had is kept, or a rewrite in a window of another size would change every drawing.
+    /// (<see cref="GalleryDrawing.Fit"/> decides them again on every opening), and so are the
+    /// offsets of the show/hide boxes pinned beside it: what the file had is kept, or a
+    /// rewrite in a window of another size would change every drawing.
     /// </summary>
     static void KeepCaptionLayout(XDocument original, XDocument rewritten)
     {
         foreach (var name in new[] { GalleryDrawing.TitleName, GalleryDrawing.DescriptionName, GalleryDrawing.HintName })
         {
-            var originalLabel = FindLabel(original, name);
-            var rewrittenLabel = FindLabel(rewritten, name);
-            if (originalLabel == null || rewrittenLabel == null)
-            {
-                continue;
-            }
+            KeepAttributes(FindFigure(original, "Label", name), FindFigure(rewritten, "Label", name));
+        }
 
-            foreach (var attribute in captionLayoutAttributes)
+        var pinnedBoxes = original.Root.Element("Figures")?.Elements(nameof(ShowHideControl)).Where(e => e.Attribute("Pin") != null);
+        foreach (var box in pinnedBoxes ?? Enumerable.Empty<XElement>())
+        {
+            KeepAttributes(box, FindFigure(rewritten, nameof(ShowHideControl), (string)box.Attribute("Name")));
+        }
+    }
+
+    static void KeepAttributes(XElement originalFigure, XElement rewrittenFigure)
+    {
+        if (originalFigure == null || rewrittenFigure == null)
+        {
+            return;
+        }
+
+        foreach (var attribute in captionLayoutAttributes)
+        {
+            var value = (string)originalFigure.Attribute(attribute);
+            if (value != null)
             {
-                var value = (string)originalLabel.Attribute(attribute);
-                if (value != null)
-                {
-                    rewrittenLabel.SetAttributeValue(attribute, value);
-                }
+                rewrittenFigure.SetAttributeValue(attribute, value);
             }
         }
     }
 
-    static XElement FindLabel(XDocument document, string name)
+    static XElement FindFigure(XDocument document, string elementName, string name)
     {
-        return document.Root.Element("Figures")?.Elements("Label").FirstOrDefault(e => (string)e.Attribute("Name") == name);
+        return document.Root.Element("Figures")?.Elements(elementName).FirstOrDefault(e => (string)e.Attribute("Name") == name);
     }
 
     public static string SpaceLabelsFolder { get; set; }

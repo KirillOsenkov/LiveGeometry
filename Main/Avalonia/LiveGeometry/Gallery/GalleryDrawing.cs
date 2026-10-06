@@ -193,6 +193,8 @@ public static class GalleryDrawing
             room = new Rect(margin, margin, canvasWidth - 2 * margin, roomHeight);
         }
 
+        room = LayOutPinnedBoxes(drawing, room, figure, hasScene, margin);
+
         // the scene nearest in shape to the room: landscape or portrait
         if (hasScene)
         {
@@ -222,6 +224,57 @@ public static class GalleryDrawing
 
         coordinateSystem.SetView(figure.Center, CoordinateSystem.ClampUnitLength(unitLength), room.Center);
     }
+
+    /// <summary>
+    /// The show/hide boxes pinned in the top left corner, laid out where they leave the figure
+    /// the most room: one under another beside it, or in a row over it (on a phone in
+    /// portrait a column took a third of the width). Returns the room left for the figure.
+    /// </summary>
+    static Rect LayOutPinnedBoxes(Drawing drawing, Rect room, Rect figure, bool hasScene, double margin)
+    {
+        var boxes = drawing.Figures
+            .OfType<ShowHideControl>()
+            .Where(box => box.Pin == LabelPin.TopLeft && box.Visible)
+            .ToList();
+        if (boxes.Count == 0)
+        {
+            return room;
+        }
+
+        var sizes = boxes.Select(box => box.MeasureSize()).ToList();
+        double left = System.Math.Max(room.X, textMarginPixels + sizes.Max(size => size.Width) + margin);
+        double top = System.Math.Max(room.Y, textMarginPixels + sizes.Max(size => size.Height) + margin);
+        double rowWidth = sizes.Sum(size => size.Width) + boxRowGapPixels * (boxes.Count - 1);
+        var beside = new Rect(left, room.Y, System.Math.Max(0, room.Right - left), room.Height);
+        var under = new Rect(room.X, top, room.Width, System.Math.Max(0, room.Bottom - top));
+        double Zoom(Rect candidate)
+        {
+            var shown = hasScene ? drawing.ChooseScene(candidate.Width, candidate.Height).Value : figure;
+            return System.Math.Min(candidate.Width / shown.Width, candidate.Height / shown.Height);
+        }
+
+        bool inRow = textMarginPixels + rowWidth <= room.Right && Zoom(under) > Zoom(beside);
+        double x = textMarginPixels;
+        double y = textMarginPixels;
+        for (int i = 0; i < boxes.Count; i++)
+        {
+            boxes[i].PinOffset = new Point(x, y);
+            boxes[i].UpdateVisual();
+            if (inRow)
+            {
+                x += sizes[i].Width + boxRowGapPixels;
+            }
+            else
+            {
+                y += sizes[i].Height;
+            }
+        }
+
+        return inRow ? under : beside;
+    }
+
+    // between two show/hide boxes in a row
+    const double boxRowGapPixels = 16;
 
     static void SetCaption(LabelPin pin, double width, params Label[] labels)
     {

@@ -239,27 +239,13 @@ namespace DynamicGeometry
         /// <summary>The top-left corner of a pinned label, in pixels</summary>
         Point PinnedTopLeft(Size size)
         {
-            var canvas = Drawing.CoordinateSystem.PhysicalSize;
-            double x = pin == LabelPin.TopLeft || pin == LabelPin.BottomLeft
-                ? PinOffset.X
-                : canvas.X - PinOffset.X - size.Width;
-            double y = pin == LabelPin.TopLeft || pin == LabelPin.TopRight
-                ? PinOffset.Y
-                : canvas.Y - PinOffset.Y - size.Height;
-            return new Point(x, y);
+            return Pinning.TopLeft(pin, PinOffset, size, Drawing.CoordinateSystem.PhysicalSize);
         }
 
         /// <summary>The offset that puts a label of this size at this top-left corner</summary>
         Point OffsetFrom(LabelPin corner, Point topLeft, Size size)
         {
-            var canvas = Drawing.CoordinateSystem.PhysicalSize;
-            double x = corner == LabelPin.TopLeft || corner == LabelPin.BottomLeft
-                ? topLeft.X
-                : canvas.X - topLeft.X - size.Width;
-            double y = corner == LabelPin.TopLeft || corner == LabelPin.TopRight
-                ? topLeft.Y
-                : canvas.Y - topLeft.Y - size.Height;
-            return new Point(x, y);
+            return Pinning.OffsetFrom(corner, topLeft, size, Drawing.CoordinateSystem.PhysicalSize);
         }
 
         public override void UpdateVisual()

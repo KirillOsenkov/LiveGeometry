@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -73,20 +74,131 @@ namespace DynamicGeometry
             // one of its figures shown by hand came back hidden when the file was opened.
             SetBox(element.ReadBool("Show", true));
             Checkbox.Content = element.ReadString("Text");
-            var x = element.ReadDouble("X");
-            var y = element.ReadDouble("Y");
-            MoveTo(new Point(x, y));
+            var pinName = element.ReadString("Pin");
+            if (pinName != null && Enum.TryParse(pinName, out LabelPin readPin) && readPin != LabelPin.None)
+            {
+                PinOffset = new Point(element.ReadDouble("OffsetX"), element.ReadDouble("OffsetY"));
+                Pin = readPin;
+                UpdateVisual();
+            }
+            else
+            {
+                var x = element.ReadDouble("X");
+                var y = element.ReadDouble("Y");
+                MoveTo(new Point(x, y));
+            }
         }
 
         public override void WriteXml(System.Xml.XmlWriter writer)
         {
             base.WriteXml(writer);
-            var coordinates = Coordinates;
             writer.WriteAttributeBool("Show", Checkbox.IsChecked == true);
             writer.WriteAttributeString("Text", Checkbox.Content.ToString());
-            writer.WriteAttributeString("X", coordinates.X.ToStringInvariant());
-            writer.WriteAttributeString("Y", coordinates.Y.ToStringInvariant());
+            if (Pin == LabelPin.None)
+            {
+                var coordinates = Coordinates;
+                writer.WriteAttributeString("X", coordinates.X.ToStringInvariant());
+                writer.WriteAttributeString("Y", coordinates.Y.ToStringInvariant());
+            }
+            else
+            {
+                writer.WriteAttributeString("Pin", Pin.ToString());
+                writer.WriteAttributeDouble("OffsetX", PinOffset.X);
+                writer.WriteAttributeDouble("OffsetY", PinOffset.Y);
+            }
         }
+
+        #region Pinning
+
+        /// <summary>
+        /// A box pinned to a corner of the canvas stays there in pixels while the plane zooms
+        /// and pans, as a pinned label does (<see cref="Label.Pin"/>). Boxes stacked at places
+        /// in the plane were a different number of pixels apart at every zoom: overlapping on
+        /// a phone, far apart on a big screen. Only a file pins a box.
+        /// </summary>
+        public LabelPin Pin { get; set; }
+
+        /// <summary>Pixels from the pinned corner of the canvas to the same corner of the box</summary>
+        public Point PinOffset { get; set; }
+
+        bool HasCanvas
+        {
+            get
+            {
+                return Drawing != null && Drawing.Canvas != null;
+            }
+        }
+
+        /// <summary>The size of the box in pixels, measured now: right after a load there was no layout pass yet</summary>
+        public Size MeasureSize()
+        {
+            Shape.Measure(Size.Infinity);
+            return Shape.DesiredSize;
+        }
+
+        /// <summary>The top-left corner of a pinned box on the canvas, in pixels</summary>
+        public Point PinnedTopLeft()
+        {
+            return Pinning.TopLeft(Pin, PinOffset, MeasureSize(), Drawing.CoordinateSystem.PhysicalSize);
+        }
+
+        public override void UpdateVisual()
+        {
+            if (Pin == LabelPin.None)
+            {
+                base.UpdateVisual();
+                return;
+            }
+
+            if (!HasCanvas)
+            {
+                return;
+            }
+
+            var topLeft = PinnedTopLeft();
+            Coordinates = ToLogical(topLeft);
+            Shape.MoveTo(topLeft);
+        }
+
+        /// <summary>Dragging a pinned box changes its offset from the corner, not its place in the plane</summary>
+        public override void MoveToCore(Point newLocation)
+        {
+            if (Pin != LabelPin.None && HasCanvas)
+            {
+                PinOffset = Pinning.OffsetFrom(Pin, ToPhysical(newLocation), MeasureSize(), Drawing.CoordinateSystem.PhysicalSize);
+            }
+
+            base.MoveToCore(newLocation);
+        }
+
+        /// <summary>A pinned box's place is its offset from the corner, in pixels; an unpinned one's is in the plane</summary>
+        public override object CapturePlace()
+        {
+            return Pin != LabelPin.None ? new PinnedPlace() { Offset = PinOffset } : base.CapturePlace();
+        }
+
+        public override void RestorePlace(object place)
+        {
+            if (place is PinnedPlace pinned)
+            {
+                PinOffset = pinned.Offset;
+                if (HasCanvas)
+                {
+                    UpdateVisual();
+                }
+            }
+            else
+            {
+                base.RestorePlace(place);
+            }
+        }
+
+        class PinnedPlace
+        {
+            public Point Offset;
+        }
+
+        #endregion
 
         protected override FrameworkElement CreateShape()
         {

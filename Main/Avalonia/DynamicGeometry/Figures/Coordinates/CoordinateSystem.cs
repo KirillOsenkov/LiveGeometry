@@ -280,8 +280,8 @@ namespace DynamicGeometry
                     continue;
                 }
 
-                // a pinned label is on the screen, not in the plane: nothing to fit
-                if (figure is Label label && label.Pin != LabelPin.None)
+                // a pinned label or box is on the screen, not in the plane: nothing to fit
+                if (figure is Label { Pin: not LabelPin.None } || figure is ShowHideControl { Pin: not LabelPin.None })
                 {
                     continue;
                 }

@@ -17,9 +17,12 @@
     <TextStyle Name="GalleryText" FontSize="16" Color="#FF123044" FontFamily="Segoe UI">
       <Dark Color="#FF123044" />
     </TextStyle>
-    <ShapeStyle Name="Lagoon" Fill="#FFB6EEF2" Color="#FFB6EEF2" />
-    <ShapeStyle Name="Sand" Fill="#FFF7DFA0" Color="#FFE2BC6C" StrokeWidth="3" />
-    <ShapeStyle Name="Jungle" Fill="#FF8BCB6A" Color="#FF6AAE4E" StrokeWidth="2" />
+    <ShapeStyle Name="Lagoon" Fill="#FFB6EEF2" Color="#00000000" />
+    <LineStyle Name="Lagoon edge" Color="#FFB6EEF2" />
+    <ShapeStyle Name="Sand" Fill="#FFF7DFA0" Color="#00000000" />
+    <LineStyle Name="Shore" Color="#FFE2BC6C" StrokeWidth="3" />
+    <ShapeStyle Name="Jungle" Fill="#FF8BCB6A" Color="#00000000" />
+    <LineStyle Name="Jungle edge" Color="#FF6AAE4E" StrokeWidth="2" />
     <LineStyle Name="Trail" Color="#FFB03A2E" StrokeWidth="3" Dash="Dash" />
     <LineStyle Name="Between" Color="#AAB03A2E" StrokeWidth="2" Dash="Dot" />
     <PointStyle Name="Hut" Character="🛖" Size="46" Fill="#FFFFFFFF" />
@@ -49,46 +52,27 @@
   </Styles>
   <Figures>
     <PointByCoordinates Name="LagoonEdge0" Visible="false" X="2.174344" Y="0.1" />
-    <PointByCoordinates Name="LagoonEdge1" Visible="false" X="2.174276" Y="0.344504" />
-    <PointByCoordinates Name="LagoonEdge2" Visible="false" X="2.042569" Y="0.571206" />
-    <PointByCoordinates Name="LagoonEdge3" Visible="false" X="1.856543" Y="0.771629" />
-    <PointByCoordinates Name="LagoonEdge4" Visible="false" X="1.65555" Y="0.954007" />
-    <PointByCoordinates Name="LagoonEdge5" Visible="false" X="1.42711" Y="1.113248" />
-    <PointByCoordinates Name="LagoonEdge6" Visible="false" X="1.158308" Y="1.231935" />
-    <PointByCoordinates Name="LagoonEdge7" Visible="false" X="0.868421" Y="1.310105" />
-    <PointByCoordinates Name="LagoonEdge8" Visible="false" X="0.582874" Y="1.373669" />
-    <PointByCoordinates Name="LagoonEdge9" Visible="false" X="0.299058" Y="1.440605" />
-    <PointByCoordinates Name="LagoonEdge10" Visible="false" X="0" Y="1.489555" />
-    <PointByCoordinates Name="LagoonEdge11" Visible="false" X="-0.307924" Y="1.480351" />
-    <PointByCoordinates Name="LagoonEdge12" Visible="false" X="-0.597863" Y="1.406424" />
-    <PointByCoordinates Name="LagoonEdge13" Visible="false" X="-0.868013" Y="1.309535" />
-    <PointByCoordinates Name="LagoonEdge14" Visible="false" X="-1.157475" Y="1.231121" />
-    <PointByCoordinates Name="LagoonEdge15" Visible="false" X="-1.490927" Y="1.158558" />
-    <PointByCoordinates Name="LagoonEdge16" Visible="false" X="-1.814905" Y="1.03621" />
-    <PointByCoordinates Name="LagoonEdge17" Visible="false" X="-2.019966" Y="0.830749" />
-    <PointByCoordinates Name="LagoonEdge18" Visible="false" X="-2.043402" Y="0.571399" />
-    <PointByCoordinates Name="LagoonEdge19" Visible="false" X="-1.938579" Y="0.317999" />
-    <PointByCoordinates Name="LagoonEdge20" Visible="false" X="-1.825656" Y="0.1" />
-    <PointByCoordinates Name="LagoonEdge21" Visible="false" X="-1.776477" Y="-0.09977" />
-    <PointByCoordinates Name="LagoonEdge22" Visible="false" X="-1.761657" Y="-0.306402" />
-    <PointByCoordinates Name="LagoonEdge23" Visible="false" X="-1.707483" Y="-0.517704" />
-    <PointByCoordinates Name="LagoonEdge24" Visible="false" X="-1.580518" Y="-0.715303" />
-    <PointByCoordinates Name="LagoonEdge25" Visible="false" X="-1.401317" Y="-0.894935" />
-    <PointByCoordinates Name="LagoonEdge26" Visible="false" X="-1.192833" Y="-1.065673" />
-    <PointByCoordinates Name="LagoonEdge27" Visible="false" X="-0.947541" Y="-1.220354" />
-    <PointByCoordinates Name="LagoonEdge28" Visible="false" X="-0.653194" Y="-1.327331" />
-    <PointByCoordinates Name="LagoonEdge29" Visible="false" X="-0.32668" Y="-1.36443" />
-    <PointByCoordinates Name="LagoonEdge30" Visible="false" X="-0" Y="-1.350445" />
-    <PointByCoordinates Name="LagoonEdge31" Visible="false" X="0.317814" Y="-1.324684" />
-    <PointByCoordinates Name="LagoonEdge32" Visible="false" X="0.638205" Y="-1.294577" />
-    <PointByCoordinates Name="LagoonEdge33" Visible="false" X="0.947949" Y="-1.220923" />
-    <PointByCoordinates Name="LagoonEdge34" Visible="false" X="1.193666" Y="-1.066487" />
-    <PointByCoordinates Name="LagoonEdge35" Visible="false" X="1.3375" Y="-0.849625" />
-    <PointByCoordinates Name="LagoonEdge36" Visible="false" X="1.421163" Y="-0.6331" />
-    <PointByCoordinates Name="LagoonEdge37" Visible="false" X="1.54406" Y="-0.458584" />
-    <PointByCoordinates Name="LagoonEdge38" Visible="false" X="1.760824" Y="-0.30621" />
-    <PointByCoordinates Name="LagoonEdge39" Visible="false" X="2.012175" Y="-0.126275" />
-    <Polygon Name="Lagoon" Style="Lagoon">
+    <PointByCoordinates Name="LagoonEdge1" Visible="false" X="2.042569" Y="0.571206" />
+    <PointByCoordinates Name="LagoonEdge2" Visible="false" X="1.65555" Y="0.954007" />
+    <PointByCoordinates Name="LagoonEdge3" Visible="false" X="1.158308" Y="1.231935" />
+    <PointByCoordinates Name="LagoonEdge4" Visible="false" X="0.582874" Y="1.373669" />
+    <PointByCoordinates Name="LagoonEdge5" Visible="false" X="0" Y="1.489555" />
+    <PointByCoordinates Name="LagoonEdge6" Visible="false" X="-0.597863" Y="1.406424" />
+    <PointByCoordinates Name="LagoonEdge7" Visible="false" X="-1.157475" Y="1.231121" />
+    <PointByCoordinates Name="LagoonEdge8" Visible="false" X="-1.814905" Y="1.03621" />
+    <PointByCoordinates Name="LagoonEdge9" Visible="false" X="-2.043402" Y="0.571399" />
+    <PointByCoordinates Name="LagoonEdge10" Visible="false" X="-1.825656" Y="0.1" />
+    <PointByCoordinates Name="LagoonEdge11" Visible="false" X="-1.761657" Y="-0.306402" />
+    <PointByCoordinates Name="LagoonEdge12" Visible="false" X="-1.580518" Y="-0.715303" />
+    <PointByCoordinates Name="LagoonEdge13" Visible="false" X="-1.192833" Y="-1.065673" />
+    <PointByCoordinates Name="LagoonEdge14" Visible="false" X="-0.653194" Y="-1.327331" />
+    <PointByCoordinates Name="LagoonEdge15" Visible="false" X="0" Y="-1.350445" />
+    <PointByCoordinates Name="LagoonEdge16" Visible="false" X="0.638205" Y="-1.294577" />
+    <PointByCoordinates Name="LagoonEdge17" Visible="false" X="1.193666" Y="-1.066487" />
+    <PointByCoordinates Name="LagoonEdge18" Visible="false" X="1.421163" Y="-0.6331" />
+    <PointByCoordinates Name="LagoonEdge19" Visible="false" X="1.760824" Y="-0.30621" />
+    <BezierPath Name="Lagoon" Style="Lagoon" Closed="true" Filled="true" Path="C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a">
+      <Sides Style="Lagoon edge" />
       <Dependency Name="LagoonEdge0" />
       <Dependency Name="LagoonEdge1" />
       <Dependency Name="LagoonEdge2" />
@@ -109,68 +93,29 @@
       <Dependency Name="LagoonEdge17" />
       <Dependency Name="LagoonEdge18" />
       <Dependency Name="LagoonEdge19" />
-      <Dependency Name="LagoonEdge20" />
-      <Dependency Name="LagoonEdge21" />
-      <Dependency Name="LagoonEdge22" />
-      <Dependency Name="LagoonEdge23" />
-      <Dependency Name="LagoonEdge24" />
-      <Dependency Name="LagoonEdge25" />
-      <Dependency Name="LagoonEdge26" />
-      <Dependency Name="LagoonEdge27" />
-      <Dependency Name="LagoonEdge28" />
-      <Dependency Name="LagoonEdge29" />
-      <Dependency Name="LagoonEdge30" />
-      <Dependency Name="LagoonEdge31" />
-      <Dependency Name="LagoonEdge32" />
-      <Dependency Name="LagoonEdge33" />
-      <Dependency Name="LagoonEdge34" />
-      <Dependency Name="LagoonEdge35" />
-      <Dependency Name="LagoonEdge36" />
-      <Dependency Name="LagoonEdge37" />
-      <Dependency Name="LagoonEdge38" />
-      <Dependency Name="LagoonEdge39" />
-    </Polygon>
+    </BezierPath>
     <PointByCoordinates Name="Coast0" Visible="false" X="1.869936" Y="0.1" />
-    <PointByCoordinates Name="Coast1" Visible="false" X="1.869878" Y="0.303179" />
-    <PointByCoordinates Name="Coast2" Visible="false" X="1.75661" Y="0.491566" />
-    <PointByCoordinates Name="Coast3" Visible="false" X="1.596627" Y="0.658114" />
-    <PointByCoordinates Name="Coast4" Visible="false" X="1.423773" Y="0.809668" />
-    <PointByCoordinates Name="Coast5" Visible="false" X="1.227315" Y="0.941995" />
-    <PointByCoordinates Name="Coast6" Visible="false" X="0.996145" Y="1.040622" />
-    <PointByCoordinates Name="Coast7" Visible="false" X="0.746842" Y="1.10558" />
-    <PointByCoordinates Name="Coast8" Visible="false" X="0.501271" Y="1.158401" />
-    <PointByCoordinates Name="Coast9" Visible="false" X="0.25719" Y="1.214024" />
-    <PointByCoordinates Name="Coast10" Visible="false" X="0" Y="1.254701" />
-    <PointByCoordinates Name="Coast11" Visible="false" X="-0.264815" Y="1.247052" />
-    <PointByCoordinates Name="Coast12" Visible="false" X="-0.514162" Y="1.18562" />
-    <PointByCoordinates Name="Coast13" Visible="false" X="-0.746491" Y="1.105107" />
-    <PointByCoordinates Name="Coast14" Visible="false" X="-0.995429" Y="1.039946" />
-    <PointByCoordinates Name="Coast15" Visible="false" X="-1.282197" Y="0.979647" />
-    <PointByCoordinates Name="Coast16" Visible="false" X="-1.560818" Y="0.877977" />
-    <PointByCoordinates Name="Coast17" Visible="false" X="-1.737171" Y="0.707242" />
-    <PointByCoordinates Name="Coast18" Visible="false" X="-1.757326" Y="0.491726" />
-    <PointByCoordinates Name="Coast19" Visible="false" X="-1.667178" Y="0.281154" />
-    <PointByCoordinates Name="Coast20" Visible="false" X="-1.570064" Y="0.1" />
-    <PointByCoordinates Name="Coast21" Visible="false" X="-1.52777" Y="-0.066006" />
-    <PointByCoordinates Name="Coast22" Visible="false" X="-1.515025" Y="-0.237714" />
-    <PointByCoordinates Name="Coast23" Visible="false" X="-1.468435" Y="-0.413304" />
-    <PointByCoordinates Name="Coast24" Visible="false" X="-1.359246" Y="-0.577505" />
-    <PointByCoordinates Name="Coast25" Visible="false" X="-1.205133" Y="-0.726777" />
-    <PointByCoordinates Name="Coast26" Visible="false" X="-1.025836" Y="-0.868658" />
-    <PointByCoordinates Name="Coast27" Visible="false" X="-0.814885" Y="-0.997195" />
-    <PointByCoordinates Name="Coast28" Visible="false" X="-0.561747" Y="-1.086092" />
-    <PointByCoordinates Name="Coast29" Visible="false" X="-0.280945" Y="-1.11692" />
-    <PointByCoordinates Name="Coast30" Visible="false" X="-0" Y="-1.105299" />
-    <PointByCoordinates Name="Coast31" Visible="false" X="0.27332" Y="-1.083892" />
-    <PointByCoordinates Name="Coast32" Visible="false" X="0.548856" Y="-1.058873" />
-    <PointByCoordinates Name="Coast33" Visible="false" X="0.815236" Y="-0.997669" />
-    <PointByCoordinates Name="Coast34" Visible="false" X="1.026552" Y="-0.869334" />
-    <PointByCoordinates Name="Coast35" Visible="false" X="1.15025" Y="-0.689125" />
-    <PointByCoordinates Name="Coast36" Visible="false" X="1.2222" Y="-0.509196" />
-    <PointByCoordinates Name="Coast37" Visible="false" X="1.327891" Y="-0.364175" />
-    <PointByCoordinates Name="Coast38" Visible="false" X="1.514308" Y="-0.237555" />
-    <PointByCoordinates Name="Coast39" Visible="false" X="1.73047" Y="-0.088031" />
-    <Polygon Name="Island" Style="Sand">
+    <PointByCoordinates Name="Coast1" Visible="false" X="1.75661" Y="0.491566" />
+    <PointByCoordinates Name="Coast2" Visible="false" X="1.423773" Y="0.809668" />
+    <PointByCoordinates Name="Coast3" Visible="false" X="0.996145" Y="1.040622" />
+    <PointByCoordinates Name="Coast4" Visible="false" X="0.501271" Y="1.158401" />
+    <PointByCoordinates Name="Coast5" Visible="false" X="0" Y="1.254701" />
+    <PointByCoordinates Name="Coast6" Visible="false" X="-0.514162" Y="1.18562" />
+    <PointByCoordinates Name="Coast7" Visible="false" X="-0.995429" Y="1.039946" />
+    <PointByCoordinates Name="Coast8" Visible="false" X="-1.560818" Y="0.877977" />
+    <PointByCoordinates Name="Coast9" Visible="false" X="-1.757326" Y="0.491726" />
+    <PointByCoordinates Name="Coast10" Visible="false" X="-1.570064" Y="0.1" />
+    <PointByCoordinates Name="Coast11" Visible="false" X="-1.515025" Y="-0.237714" />
+    <PointByCoordinates Name="Coast12" Visible="false" X="-1.359246" Y="-0.577505" />
+    <PointByCoordinates Name="Coast13" Visible="false" X="-1.025836" Y="-0.868658" />
+    <PointByCoordinates Name="Coast14" Visible="false" X="-0.561747" Y="-1.086092" />
+    <PointByCoordinates Name="Coast15" Visible="false" X="0" Y="-1.105299" />
+    <PointByCoordinates Name="Coast16" Visible="false" X="0.548856" Y="-1.058873" />
+    <PointByCoordinates Name="Coast17" Visible="false" X="1.026552" Y="-0.869334" />
+    <PointByCoordinates Name="Coast18" Visible="false" X="1.2222" Y="-0.509196" />
+    <PointByCoordinates Name="Coast19" Visible="false" X="1.514308" Y="-0.237555" />
+    <BezierPath Name="Island" Style="Sand" Closed="true" Filled="true" Path="C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a">
+      <Sides Style="Shore" />
       <Dependency Name="Coast0" />
       <Dependency Name="Coast1" />
       <Dependency Name="Coast2" />
@@ -191,60 +136,25 @@
       <Dependency Name="Coast17" />
       <Dependency Name="Coast18" />
       <Dependency Name="Coast19" />
-      <Dependency Name="Coast20" />
-      <Dependency Name="Coast21" />
-      <Dependency Name="Coast22" />
-      <Dependency Name="Coast23" />
-      <Dependency Name="Coast24" />
-      <Dependency Name="Coast25" />
-      <Dependency Name="Coast26" />
-      <Dependency Name="Coast27" />
-      <Dependency Name="Coast28" />
-      <Dependency Name="Coast29" />
-      <Dependency Name="Coast30" />
-      <Dependency Name="Coast31" />
-      <Dependency Name="Coast32" />
-      <Dependency Name="Coast33" />
-      <Dependency Name="Coast34" />
-      <Dependency Name="Coast35" />
-      <Dependency Name="Coast36" />
-      <Dependency Name="Coast37" />
-      <Dependency Name="Coast38" />
-      <Dependency Name="Coast39" />
-    </Polygon>
+    </BezierPath>
     <PointByCoordinates Name="JungleEdge0" Visible="false" X="0.832159" Y="0.35" />
-    <PointByCoordinates Name="JungleEdge1" Visible="false" X="0.702246" Y="0.453902" />
-    <PointByCoordinates Name="JungleEdge2" Visible="false" X="0.642051" Y="0.55193" />
-    <PointByCoordinates Name="JungleEdge3" Visible="false" X="0.599105" Y="0.659126" />
-    <PointByCoordinates Name="JungleEdge4" Visible="false" X="0.473617" Y="0.739989" />
-    <PointByCoordinates Name="JungleEdge5" Visible="false" X="0.28628" Y="0.77134" />
-    <PointByCoordinates Name="JungleEdge6" Visible="false" X="0.11663" Y="0.792554" />
-    <PointByCoordinates Name="JungleEdge7" Visible="false" X="-0.031034" Y="0.841786" />
-    <PointByCoordinates Name="JungleEdge8" Visible="false" X="-0.2" Y="0.895832" />
-    <PointByCoordinates Name="JungleEdge9" Visible="false" X="-0.39526" Y="0.918318" />
-    <PointByCoordinates Name="JungleEdge10" Visible="false" X="-0.601877" Y="0.911705" />
-    <PointByCoordinates Name="JungleEdge11" Visible="false" X="-0.810484" Y="0.878957" />
-    <PointByCoordinates Name="JungleEdge12" Visible="false" X="-0.967526" Y="0.794357" />
-    <PointByCoordinates Name="JungleEdge13" Visible="false" X="-0.999399" Y="0.65924" />
-    <PointByCoordinates Name="JungleEdge14" Visible="false" X="-0.945053" Y="0.528669" />
-    <PointByCoordinates Name="JungleEdge15" Visible="false" X="-0.951453" Y="0.436537" />
-    <PointByCoordinates Name="JungleEdge16" Visible="false" X="-1.067841" Y="0.35" />
-    <PointByCoordinates Name="JungleEdge17" Visible="false" X="-1.161246" Y="0.239303" />
-    <PointByCoordinates Name="JungleEdge18" Visible="false" X="-1.11332" Y="0.130979" />
-    <PointByCoordinates Name="JungleEdge19" Visible="false" X="-0.980688" Y="0.047999" />
-    <PointByCoordinates Name="JungleEdge20" Visible="false" X="-0.869886" Y="-0.037829" />
-    <PointByCoordinates Name="JungleEdge21" Visible="false" X="-0.769304" Y="-0.143277" />
-    <PointByCoordinates Name="JungleEdge22" Visible="false" X="-0.610469" Y="-0.223713" />
-    <PointByCoordinates Name="JungleEdge23" Visible="false" X="-0.401706" Y="-0.237078" />
-    <PointByCoordinates Name="JungleEdge24" Visible="false" X="-0.2" Y="-0.204168" />
-    <PointByCoordinates Name="JungleEdge25" Visible="false" X="-0.024589" Y="-0.160546" />
-    <PointByCoordinates Name="JungleEdge26" Visible="false" X="0.125221" Y="-0.104562" />
-    <PointByCoordinates Name="JungleEdge27" Visible="false" X="0.2451" Y="-0.035659" />
-    <PointByCoordinates Name="JungleEdge28" Visible="false" X="0.375977" Y="0.01654" />
-    <PointByCoordinates Name="JungleEdge29" Visible="false" X="0.580393" Y="0.048113" />
-    <PointByCoordinates Name="JungleEdge30" Visible="false" X="0.810318" Y="0.107718" />
-    <PointByCoordinates Name="JungleEdge31" Visible="false" X="0.912039" Y="0.221938" />
-    <Polygon Name="Jungle" Style="Jungle">
+    <PointByCoordinates Name="JungleEdge1" Visible="false" X="0.642051" Y="0.55193" />
+    <PointByCoordinates Name="JungleEdge2" Visible="false" X="0.473617" Y="0.739989" />
+    <PointByCoordinates Name="JungleEdge3" Visible="false" X="0.11663" Y="0.792554" />
+    <PointByCoordinates Name="JungleEdge4" Visible="false" X="-0.2" Y="0.895832" />
+    <PointByCoordinates Name="JungleEdge5" Visible="false" X="-0.601877" Y="0.911705" />
+    <PointByCoordinates Name="JungleEdge6" Visible="false" X="-0.967526" Y="0.794357" />
+    <PointByCoordinates Name="JungleEdge7" Visible="false" X="-0.945053" Y="0.528669" />
+    <PointByCoordinates Name="JungleEdge8" Visible="false" X="-1.067841" Y="0.35" />
+    <PointByCoordinates Name="JungleEdge9" Visible="false" X="-1.11332" Y="0.130979" />
+    <PointByCoordinates Name="JungleEdge10" Visible="false" X="-0.869886" Y="-0.037829" />
+    <PointByCoordinates Name="JungleEdge11" Visible="false" X="-0.610469" Y="-0.223713" />
+    <PointByCoordinates Name="JungleEdge12" Visible="false" X="-0.2" Y="-0.204168" />
+    <PointByCoordinates Name="JungleEdge13" Visible="false" X="0.125221" Y="-0.104562" />
+    <PointByCoordinates Name="JungleEdge14" Visible="false" X="0.375977" Y="0.01654" />
+    <PointByCoordinates Name="JungleEdge15" Visible="false" X="0.810318" Y="0.107718" />
+    <BezierPath Name="Jungle" Style="Jungle" Closed="true" Filled="true" Path="C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a">
+      <Sides Style="Jungle edge" />
       <Dependency Name="JungleEdge0" />
       <Dependency Name="JungleEdge1" />
       <Dependency Name="JungleEdge2" />
@@ -261,23 +171,7 @@
       <Dependency Name="JungleEdge13" />
       <Dependency Name="JungleEdge14" />
       <Dependency Name="JungleEdge15" />
-      <Dependency Name="JungleEdge16" />
-      <Dependency Name="JungleEdge17" />
-      <Dependency Name="JungleEdge18" />
-      <Dependency Name="JungleEdge19" />
-      <Dependency Name="JungleEdge20" />
-      <Dependency Name="JungleEdge21" />
-      <Dependency Name="JungleEdge22" />
-      <Dependency Name="JungleEdge23" />
-      <Dependency Name="JungleEdge24" />
-      <Dependency Name="JungleEdge25" />
-      <Dependency Name="JungleEdge26" />
-      <Dependency Name="JungleEdge27" />
-      <Dependency Name="JungleEdge28" />
-      <Dependency Name="JungleEdge29" />
-      <Dependency Name="JungleEdge30" />
-      <Dependency Name="JungleEdge31" />
-    </Polygon>
+    </BezierPath>
     <FreePoint Name="Hut" Style="Hut" X="-1.25" Y="0.45" />
     <FreePoint Name="Volcano" Style="Volcano" X="0.85" Y="0.75" />
     <FreePoint Name="Flower1" Style="Hibiscus" X="-0.35" Y="-0.55" />
