@@ -1037,6 +1037,26 @@ public class Program
         Actions.Add(drawing, path);
         drawing.Behavior = new Dragger();
         Require(!path.Handles.Any(h => h.Visible), "Handles show with nothing selected.");
+
+        // not shown, the handles on an anchor are still there to be taken with Tab
+        string hidden = null;
+        Action<string> watch = text => hidden = text;
+        drawing.ChoiceStatus += watch;
+        Hover(drawing, system.ToPhysical(a.Coordinates));
+        Require(hidden != null && hidden.Contains("(1 of 2)"), "Over A, nothing selected: " + hidden);
+        Require(drawing.Behavior.StepChoice(backwards: false) && hidden.StartsWith("Handle of A toward B"), "Tab at A took: " + hidden);
+        string untouched = drawing.SaveAsText();
+        Drag(drawing, system.ToPhysical(a.Coordinates), system.ToPhysical(new Point(1, 1)));
+        NearPoint(a.Coordinates, new Point(0, 0));
+        NearPoint(HandleOffset(path, anchor: 0, isIn: false), new Point(1, 1));
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == untouched, "Undo of pulling out a hidden handle.");
+        drawing.ChoiceStatus -= watch;
+
+        // (a test window draws no frames: a tool takes one move until the next press, so
+        // the hovers below are a fresh tool's)
+        drawing.Behavior = new Dragger();
+
         b.Selected = true;
         drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
         var shown = path.Handles.Where(h => h.Visible).Select(h => path.GetPartName(h)).OrderBy(n => n).ToList();

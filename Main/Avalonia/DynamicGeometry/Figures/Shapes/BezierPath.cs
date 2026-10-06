@@ -789,7 +789,8 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
     /// <summary>
     /// The Drag tool shows the handles next to the point it drags, selected or not, while it
-    /// drags it (null: the drag is over)
+    /// drags it - or next to the anchor of a handle it drags (one taken with Tab while it
+    /// didn't show). Null: the drag is over.
     /// </summary>
     public static void ShowHandlesWhileDragging(Drawing drawing, IFigure point)
     {
@@ -800,7 +801,8 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
         foreach (var path in drawing.Figures.OfType<BezierPath>())
         {
-            var anchor = point != null && path.IsAnchor(point) ? point : null;
+            var dragged = point is BezierPathHandle handle && handle.Owner == path ? path.AnchorOf(handle) : point;
+            var anchor = dragged != null && path.IsAnchor(dragged) ? dragged : null;
             if (path.draggedAnchor != anchor)
             {
                 path.draggedAnchor = anchor;
@@ -822,19 +824,25 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
     bool IsNextToActiveAnchor(BezierPathHandle handle)
     {
+        return BendsPiece(handle, out int index, out int other)
+            && (IsActive(Dependencies[index]) || IsActive(Dependencies[other]));
+    }
+
+    /// <summary>
+    /// Whether the handle bends a piece (not the outer handle of an open path's end), and
+    /// the anchors of that piece: its own and the other one
+    /// </summary>
+    bool BendsPiece(BezierPathHandle handle, out int index, out int other)
+    {
         int count = AnchorCount;
-        if (!Exists || !Visible || Drawing == null || Dependencies.Count < count)
+        index = IndexOf(handle);
+        other = -1;
+        if (!Exists || !Visible || Drawing == null || Dependencies.Count < count || index < 0 || count < 2)
         {
             return false;
         }
 
-        int index = IndexOf(handle);
-        if (index < 0 || count < 2)
-        {
-            return false;
-        }
-
-        int other = handle.IsIn ? index - 1 : index + 1;
+        other = handle.IsIn ? index - 1 : index + 1;
         if (closed)
         {
             other = (other + count) % count;
@@ -844,8 +852,37 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             return false;
         }
 
-        return IsActive(Dependencies[index]) || IsActive(Dependencies[other]);
+        return true;
     }
+
+    /// <summary>
+    /// The anchor's own handles that bend a piece and are at the point, shown or not: a
+    /// handle on its anchor (a path of clicks) is there to be taken with Tab before the
+    /// anchor is selected (<see cref="Dragger"/>)
+    /// </summary>
+    public IEnumerable<BezierPathHandle> HandlesOn(IFigure anchor, Point point)
+    {
+        int index = Dependencies.IndexOf(anchor);
+        if (index < 0 || index >= AnchorCount || Drawing == null)
+        {
+            yield break;
+        }
+
+        var reach = Drawing.CoordinateSystem.CursorTolerance + ToLogical(HandleReach);
+        foreach (var handle in new[] { inHandles[index], outHandles[index] })
+        {
+            if (handle.Point == null
+                && handle.Exists
+                && BendsPiece(handle, out _, out _)
+                && HandleCoordinates(handle).Distance(point) <= reach)
+            {
+                yield return handle;
+            }
+        }
+    }
+
+    /// <summary>In pixels, besides the cursor's tolerance: how far from the cursor a handle hidden under its anchor is taken to be there</summary>
+    const double HandleReach = 4;
 
     bool IsActive(IFigure anchor)
     {

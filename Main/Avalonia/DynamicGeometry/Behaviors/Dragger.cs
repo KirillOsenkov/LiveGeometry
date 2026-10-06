@@ -211,37 +211,62 @@ namespace DynamicGeometry
         }
 
         /// <summary>
-        /// Where a handle of a Bezier path shows among other figures - on its anchor, where a
+        /// Where a handle of a Bezier path is among other figures - on its anchor, where a
         /// click leaves it - Tab chooses (<see cref="ClickChoice"/>): the anchor first, as a
-        /// press takes it, then the handles there (both of a corner). Nowhere else: the Drag
-        /// tool has no choice of its own (its context menu has "Choose figure").
+        /// press takes it, then the handles there (both of a corner). Also while the handles
+        /// don't show: over an anchor whose handles are on it (a path of clicks only looks
+        /// like segments), the status says there is more to take there. Nowhere else: the
+        /// Drag tool has no choice of its own (its context menu has "Choose figure").
         /// </summary>
         protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
         {
             var coordinates = Coordinates(e, false, false, false);
             var figures = Drawing.Figures.HitTestAll(coordinates, f => f.Visible && f.IsHitTestVisible && !(f is AxisLine));
-            if (!figures.Any(f => f is BezierPath.BezierPathHandle))
+
+            // a path gives one part at a place: both handles of an anchor are there; and an
+            // anchor's own handles on it are there, shown or not
+            var options = new List<object>();
+            void Add(IFigure candidate)
             {
-                return new object[0];
+                if (!options.Contains(candidate))
+                {
+                    options.Add(candidate);
+                }
             }
 
-            // a path gives one part at a place: both handles of an anchor are there
-            var options = new List<object>();
             foreach (var figure in figures)
             {
-                var candidates = figure is BezierPath.BezierPathHandle handle
-                    ? handle.Owner.Handles.Where(h => h.Visible && h.Exists && h.HitTest(coordinates) != null).Cast<IFigure>()
-                    : new[] { figure };
-                foreach (var candidate in candidates)
+                if (figure is BezierPath.BezierPathHandle handle)
                 {
-                    if (!options.Contains(candidate))
+                    foreach (var shown in handle.Owner.Handles.Where(h => h.Visible && h.Exists && h.HitTest(coordinates) != null))
                     {
-                        options.Add(candidate);
+                        Add(shown);
+                    }
+
+                    continue;
+                }
+
+                // the choice is between a point and the handles there (not the sides through
+                // it, which a press there takes after the point anyway)
+                if (!(figure is IPoint))
+                {
+                    continue;
+                }
+
+                Add(figure);
+                if (!figure.Locked)
+                {
+                    foreach (var path in Drawing.Figures.OfType<BezierPath>().Where(path => path.Visible && path.IsAnchor(figure)))
+                    {
+                        foreach (var onAnchor in path.HandlesOn(figure, coordinates))
+                        {
+                            Add(onAnchor);
+                        }
                     }
                 }
             }
 
-            return options.Count > 1 ? options : new object[0];
+            return options.Count > 1 && options.Any(option => option is BezierPath.BezierPathHandle) ? options : new object[0];
         }
 
         /// <summary>
