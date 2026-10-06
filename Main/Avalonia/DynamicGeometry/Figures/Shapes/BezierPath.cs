@@ -418,6 +418,28 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     }
 
     /// <summary>
+    /// The same, without the Debug build's check of the list after it: an anchor deleted
+    /// takes its handles off the path (<see cref="RemoveFigureAction"/> runs it first) while
+    /// the helper points of an image built on them are still in the list, to go in the same
+    /// deletion with the image of the anchor
+    /// </summary>
+    void RecalculateAndUpdateUnchecked()
+    {
+        if (Drawing == null)
+        {
+            return;
+        }
+
+        this.RecalculateAndUpdateVisual();
+        var dependents = DependencyAlgorithms.FindDescendants(f => f.Dependents, new IFigure[] { this });
+        dependents.Reverse();
+        foreach (var dependent in dependents)
+        {
+            dependent.RecalculateAndUpdateVisual();
+        }
+    }
+
+    /// <summary>
     /// What took the place of a point that is a handle (it was joined into another point,
     /// let go, replaced) is that handle's point from now on: the dependencies say, in the
     /// order of <see cref="HandlesInOrder"/>
@@ -575,7 +597,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         tensionSource = layout.TensionSource;
         tension = layout.Tension;
         SetDependencies(DependenciesOf(layout.Anchors, layout.Holes, layout.TensionSource));
-        RecalculateAndUpdate();
+        RecalculateAndUpdateUnchecked();
 
         // the rows and buttons of the grid may change (a tension typed or tied, handles to smooth)
         RaisePropertyChanged(null);
@@ -1207,11 +1229,15 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
     #region Tied tension
 
+    /// <summary>The tension, while a handle is worked out with it (none: no panel for it right after the tool)</summary>
     public IEnumerable<string> TiedValueNames
     {
         get
         {
-            yield return nameof(Tension);
+            if ((smoothing != BezierPathSmoothing.None && Handles.Any(h => h.Auto)) || tensionSource != null)
+            {
+                yield return nameof(Tension);
+            }
         }
     }
 
@@ -1251,7 +1277,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         Drawing.ActionManager.RecordAction(LayoutChange(layout =>
         {
             layout.TensionSource = null;
-            layout.Tension = value;
+            layout.Tension = value > 0 && value.IsValidValue() ? value : DefaultTension;
         }));
         return true;
     }
@@ -1975,7 +2001,12 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             return false;
         }
 
-        return indices[0] >= holeStart || indices[0] < anchors && anchors > 2 && !IsImage;
+        // two anchors left after the deletion - also of those that go with it (an anchor on
+        // a segment through the one deleted): each asks before any of them has gone
+        return indices[0] >= holeStart
+            || indices[0] < anchors
+                && Dependencies.Take(anchors).Count(anchor => !anchor.DependsOn(dependency)) >= 2
+                && !IsImage;
     }
 
     public IAction GetRemoveDependencyAction(IFigure dependency)
@@ -1988,7 +2019,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             return LayoutChange(layout =>
             {
                 layout.TensionSource = null;
-                layout.Tension = value.IsValidValue() ? value : DefaultTension;
+                layout.Tension = value > 0 && value.IsValidValue() ? value : DefaultTension;
             });
         }
 
@@ -2029,7 +2060,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     public bool CanDropAnchorInto(IFigure point, IFigure target)
     {
         int count = AnchorCount;
-        if (IsImage || count <= 2)
+        if (IsImage || HasImages || count <= 2)
         {
             return false;
         }
@@ -2123,6 +2154,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         if (!(point is PointOnFigure onFigure)
             || !(onFigure.Dependencies.FirstOrDefault() is BezierPath path)
             || path.IsImage
+            || path.HasImages
             || path.Drawing == null
             || !onFigure.Exists
             || PointSnapping.IsHeldByLocus(onFigure))
@@ -2361,10 +2393,27 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         return (IFigure)handle.Point ?? handle;
     }
 
-    /// <summary>Whether the transformations can take the path: what it is built on can all be transformed</summary>
+    /// <summary>
+    /// Whether the transformations can take the path: what it is built on can all be
+    /// transformed - but the figure the tension comes from, a number (the image's handles
+    /// are points, which need none)
+    /// </summary>
     public bool CanBeTransformed(Func<IFigure, bool> canBeTransformed)
     {
-        return Dependencies.All(canBeTransformed);
+        return Dependencies.Where(dependency => dependency != tensionSource).All(canBeTransformed);
+    }
+
+    /// <summary>
+    /// Whether something is built on the handles: the images of a transformation, whose
+    /// helper points follow them. The path isn't split nor an anchor dropped then: the image
+    /// would keep the old pieces.
+    /// </summary>
+    bool HasImages
+    {
+        get
+        {
+            return Handles.Any(handle => handle.Dependents.Any());
+        }
     }
 
     #endregion

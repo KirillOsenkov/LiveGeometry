@@ -1185,7 +1185,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   last dependencies, unfilled, still paths of their own; a
   deleted hole leaves the path. Transformations but inversion take it through its anchors
   and handles (`CreateImage`): the image's handles are all points, hidden auxiliary ones,
-  which can't be dragged; an image isn't split or shortened (`IsImage`). File: the anchors
+  which can't be dragged; an image isn't split or shortened (`IsImage`), nor is a path
+  with an image split or an anchor dropped from it (`HasImages`: the image would keep the
+  old pieces). A deleted anchor still leaves the source (its image goes with the anchor's
+  image): the layout change runs before the image's helpers leave, so it recalculates
+  without the Debug list check (`RecalculateAndUpdateUnchecked`). A deletion counts the
+  anchors left after it, also those built on the point deleted (`CanRemoveDependency`).
+  The figure the tension comes from is no part of what a transformation transforms. File: the anchors
   as the first dependencies and `Path="C 1,0 -0.5,1 L C #4 0,2 C a a ..."`, one piece per
   anchor, the closing one written whether closed or not: `L` for two handles on their
   anchors, else `C`, the out handle of the anchor and the in handle of the next, each an

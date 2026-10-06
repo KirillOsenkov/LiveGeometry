@@ -275,7 +275,9 @@ namespace DynamicGeometry
         /// </summary>
         List<IFigure> SelectionToDrag()
         {
-            if (found == null)
+            // (a handle of a Bezier path stands for its path in a selection, but a press on
+            // one is for the handle)
+            if (found == null || found is BezierPath.BezierPathHandle)
             {
                 return null;
             }

@@ -65,6 +65,7 @@ public class Program
             ("Alt+click takes a Bezier path's handles while it is drawn", BezierPathAltClickHandles),
             ("A point as a handle: followed, deleted, dropped onto, split beside", BezierPathPointHandles),
             ("A Bezier path smooths its automatic handles", BezierPathSmoothing),
+            ("A Bezier path among other figures: deletion, transforms, selection, images", BezierPathWithOthers),
             ("Paste into another drawing keeps the look", PasteBringsStyles),
             ("Pasting plain text is no error", PastePlainText),
             ("The axes are lines to build on, one of each", AxisLines),
@@ -1599,6 +1600,124 @@ public class Program
         Require(made.GetSource(nameof(BezierPath.Tension)) == slider, "A click on the slider did not tie the tension.");
         Close(((BezierPath.BezierPathHandle)made.GetPart("Out1")).Offset, new Point(0, 3 * kappa / 2), "The tool's circle at tension 2");
         drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// Path CDF where D is on segment CE: deleting C takes D too, and the path, which would
+    /// be left with one anchor. Path ABC whose tension is slider s: it can still be
+    /// transformed; its image keeps it from being split (the image would stay the old
+    /// curve); a press on a handle while the path is selected with A drags the handle, not
+    /// the selection.
+    /// </summary>
+    static void BezierPathWithOthers()
+    {
+        var drawing = NewDrawing();
+        var c = AddPoint(drawing, x: 0, y: 0);
+        var e = AddPoint(drawing, x: 4, y: 0);
+        var f = AddPoint(drawing, x: 2, y: 4);
+        var ce = Factory.CreateSegment(drawing, c, e);
+        Actions.Add(drawing, ce);
+        var d = Factory.CreatePointOnFigure(drawing, ce, new Point(2, 0));
+        Actions.Add(drawing, d);
+        var zero = new Point[3];
+        var cdf = BezierPath.Create(drawing, new IFigure[] { c, d, f }, zero, zero, closed: true, filled: false);
+        Actions.Add(drawing, cdf);
+        string before = drawing.SaveAsText();
+        Actions.Remove(c);
+        Require(!drawing.Figures.Contains(cdf), "Deleting C and D with it left a path of " + cdf.AnchorCount + " anchor.");
+        drawing.Figures.CheckConsistency();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of deleting C.");
+        drawing.Figures.CheckConsistency();
+
+        drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="0" Y="0" />
+                <FreePoint Name="B" X="6" Y="0" />
+                <FreePoint Name="C" X="3" Y="5" />
+                <Slider Name="s" X="-8" Y="6" Value="2" />
+                <BezierPath Name="ABC" Closed="true" Tension="#3" Path="C 2,2 a C a a C a a">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                  <Dependency Name="C" />
+                  <Dependency Name="s" />
+                </BezierPath>
+              </Figures>
+            </Drawing>
+            """);
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        var path = drawing.Figures.OfType<BezierPath>().Single();
+        var a = (FreePoint)Find(drawing, "A");
+        Require(Transformer.CanBeSource(path), "A path whose tension is a slider can't be transformed.");
+
+        // a press on A's handle, with A and the path selected
+        drawing.Behavior = new Dragger();
+        a.Selected = true;
+        path.Selected = true;
+        drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
+        Drag(drawing, system.ToPhysical(new Point(2, 2)), system.ToPhysical(new Point(3, 3)));
+        Require(a.Coordinates == new Point(0, 0), "The press on the handle dragged the selection.");
+        NearPoint(((BezierPath.BezierPathHandle)path.GetPart("Out1")).Offset, new Point(3, 3));
+        drawing.ActionManager.Undo();
+        drawing.Figures.ClearSelection();
+        drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
+
+        // with an image, not split
+        var mirror = Factory.CreateLineTwoPoints(drawing, new IFigure[] { AddPoint(drawing, x: 10, y: 0), AddPoint(drawing, x: 10, y: 1) });
+        Actions.Add(drawing, mirror);
+        foreach (var image in Transformer.CreateReflectedFigure(drawing, path, mirror))
+        {
+            Actions.Add(drawing, image);
+        }
+
+        var onPath = Factory.CreatePointOnFigure(drawing, path, path.GetPointFromParameter(0.5));
+        Actions.Add(drawing, onPath);
+        Require(!BezierPath.CanBecomeAnchor(onPath), "A path with an image can be split.");
+        drawing.Figures.CheckConsistency();
+
+        // an anchor deleted: the source goes on, the image goes, its helpers with it
+        string imaged = drawing.SaveAsText();
+        Actions.Remove(a);
+        Require(drawing.Figures.Contains(path) && path.AnchorCount == 2, "Deleting A took the source.");
+        Require(drawing.Figures.OfType<BezierPath>().Count() == 1, "The image stayed without A's image.");
+        Require(!drawing.Figures.Any(figure => figure.Auxiliary), "The image's helpers stayed.");
+        drawing.Figures.CheckConsistency();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == imaged, "Undo of deleting A.");
+        drawing.Figures.CheckConsistency();
+
+        // a point that is a handle joined into an anchor of the same path: both at once
+        var other = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="0" Y="0" />
+                <FreePoint Name="B" X="6" Y="0" />
+                <FreePoint Name="C" X="3" Y="5" />
+                <FreePoint Name="P" X="2" Y="3" />
+                <BezierPath Name="ABC" Closed="true" Path="C #3 a C a a C a a">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                  <Dependency Name="C" />
+                  <Dependency Name="P" />
+                </BezierPath>
+              </Figures>
+            </Drawing>
+            """);
+        var p = (FreePoint)Find(other, "P");
+        var b = (IPoint)Find(other, "B");
+        Require(PointSnapping.CanJoin(p, b), "P can't join B.");
+        PointSnapping.Join(p, b);
+        other.Figures.CheckConsistency();
+        string joined = other.SaveAsText();
+        var rejoined = ReadLgf(joined);
+        Require(rejoined.LoadErrors == null && rejoined.SaveAsText() == joined, "The joined path did not round trip: " + joined);
+        Actions.Remove((IFigure)b);
+        other.Figures.CheckConsistency();
+        other.ActionManager.Undo();
+        Require(other.SaveAsText() == joined, "Undo of deleting B.");
+        other.Figures.CheckConsistency();
     }
 
     static void Click(Drawing drawing, Point at, KeyModifiers modifiers)
