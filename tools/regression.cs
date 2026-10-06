@@ -62,6 +62,8 @@ public class Program
             ("Alt dragging an anchor onto its neighbor drops it from the path", BezierPathDropAnchor),
             ("A Bezier path: points on it, deleted anchors, holes, images", BezierPathFigure),
             ("A point on a Bezier path becomes an anchor, the curve the same", BezierPathInsertAnchor),
+            ("Alt+click takes a Bezier path's handles while it is drawn", BezierPathAltClickHandles),
+            ("A point as a handle: followed, deleted, dropped onto, split beside", BezierPathPointHandles),
             ("Paste into another drawing keeps the look", PasteBringsStyles),
             ("Pasting plain text is no error", PastePlainText),
             ("The axes are lines to build on, one of each", AxisLines),
@@ -1268,6 +1270,146 @@ public class Program
         drawing.ActionManager.Redo();
         Require(drawing.SaveAsText() == after, "Redo of the new anchor changed the drawing.");
         drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// A, then Alt+click on point P (A's out handle), Alt+click on empty paper (the in handle of
+    /// the next anchor), B, Enter: the path AB pulled towards P and the spot
+    /// </summary>
+    static void BezierPathAltClickHandles()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        var p = AddPoint(drawing, x: 2, y: 4);
+        string before = drawing.SaveAsText();
+        string status = null;
+        drawing.Status += text => status = text;
+        var tool = new BezierPathCreator();
+        drawing.Behavior = tool;
+        Click(drawing, system.ToPhysical(new Point(6, 0)), KeyModifiers.Alt);
+        Require(status != null && status.Contains("first point"), "Alt+click before any point: " + status);
+        Click(drawing, system.ToPhysical(new Point(0, 0)));
+        Click(drawing, system.ToPhysical(p.Coordinates), KeyModifiers.Alt);
+        Click(drawing, system.ToPhysical(new Point(6, 3)), KeyModifiers.Alt);
+        Click(drawing, system.ToPhysical(new Point(6, -3)), KeyModifiers.Alt);
+        Require(status.Contains("Both handles"), "A third Alt+click: " + status);
+        Click(drawing, system.ToPhysical(new Point(8, 0)));
+        tool.KeyDown(null, new KeyEventArgs() { Key = Key.Enter });
+        var path = drawing.Figures.OfType<BezierPath>().Single();
+        Require(path.AnchorCount == 2 && !path.Closed, "The path is not two anchors, open.");
+        var outA = (BezierPath.BezierPathHandle)path.GetPart("Out1");
+        Require(outA.Point == p && path.Dependencies.Contains(p), "A's out handle is not P.");
+        NearPoint(HandleOffset(path, anchor: 1, isIn: true), new Point(-2, 3));
+        Require(drawing.Figures.OfType<FreePoint>().Count() == 3, "Alt+click made points of its own.");
+        drawing.Figures.CheckConsistency();
+        string after = drawing.SaveAsText();
+        Require(after.Contains("Path=\"C #2 -2,3 L\""), "The path's text: " + after);
+        Require(ReadLgf(after).SaveAsText() == after, "The path with a point for a handle did not round trip.");
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the path.");
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo of the path.");
+    }
+
+    /// <summary>
+    /// Open path AB whose A has point P for its out handle: P moved bends the curve; P deleted
+    /// leaves an ordinary handle where it was; the in handle of B dropped with Alt onto Q is Q;
+    /// a point on the path split beside P makes P's handle an ordinary one, the curve the same
+    /// </summary>
+    static void BezierPathPointHandles()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        var a = AddPoint(drawing, x: 0, y: 0);
+        var b = AddPoint(drawing, x: 8, y: 0);
+        var p = AddPoint(drawing, x: 2, y: 4);
+        var q = AddPoint(drawing, x: 7, y: 5);
+        var path = BezierPath.Create(
+            drawing,
+            new IFigure[] { a, b },
+            new[] { new BezierPath.HandleSpec(), new BezierPath.HandleSpec(new Point(-1, 2), null) },
+            new[] { new BezierPath.HandleSpec(default, p), new BezierPath.HandleSpec() },
+            holes: Array.Empty<IFigure>(),
+            closed: false,
+            filled: false);
+        Actions.Add(drawing, path);
+        drawing.Figures.CheckConsistency();
+        var middle = path.GetPointFromParameter(0.5);
+        p.MoveTo(new Point(2, 6));
+        p.RecalculateAllDependents();
+        Require(path.GetPointFromParameter(0.5).Y > middle.Y + 0.5, "Moving P did not bend the curve.");
+        p.MoveTo(new Point(2, 4));
+        p.RecalculateAllDependents();
+        NearPoint(path.GetPointFromParameter(0.5), middle);
+
+        // deleted: an ordinary handle where P was, the curve the same
+        string withP = drawing.SaveAsText();
+        Actions.Remove(p);
+        Require(drawing.Figures.Contains(path), "Deleting P took the path.");
+        var outA = (BezierPath.BezierPathHandle)path.GetPart("Out1");
+        Require(outA.Point == null, "A's handle is still a point.");
+        NearPoint(outA.Offset, new Point(2, 4));
+        NearPoint(path.GetPointFromParameter(0.5), middle);
+        drawing.Figures.CheckConsistency();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == withP, "Undo of deleting P.");
+        drawing.Figures.CheckConsistency();
+
+        // B's in handle dragged with Alt onto Q: it is Q
+        drawing.Behavior = new Dragger();
+        b.Selected = true;
+        drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
+        Drag(drawing, system.ToPhysical(new Point(7, 2)), system.ToPhysical(q.Coordinates), KeyModifiers.Alt);
+        var inB = (BezierPath.BezierPathHandle)path.GetPart("In2");
+        Require(inB.Point == q, "B's in handle is not Q.");
+        Require(drawing.Figures.IndexOf(q) < drawing.Figures.IndexOf(path), "Q comes after the path built on it.");
+        drawing.Figures.CheckConsistency();
+        string onQ = drawing.SaveAsText();
+        Require(ReadLgf(onQ).SaveAsText() == onQ, "Two points as handles did not round trip.");
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == withP, "Undo of the drop onto Q.");
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == onQ, "Redo of the drop onto Q.");
+
+        // split: the piece's handles that are points become ordinary ones, the curve the same
+        var quarter = path.GetPointFromParameter(0.25);
+        var threeQuarters = path.GetPointFromParameter(0.75);
+        var onPath = Factory.CreatePointOnFigure(drawing, path, path.GetPointFromParameter(0.5));
+        Actions.Add(drawing, onPath);
+        onPath.ConvertToPathAnchor();
+        Require(path.AnchorCount == 3 && !path.HasHandlePoints, "The split left points as handles.");
+        NearPoint(path.GetPointFromParameter(0.5), quarter);
+        NearPoint(path.GetPointFromParameter(1.5), threeQuarters);
+        drawing.Figures.CheckConsistency();
+        drawing.ActionManager.Undo();
+        Require(path.AnchorCount == 2 && inB.Point == q && outA.Point == p, "Undo of the split.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void Click(Drawing drawing, Point at, KeyModifiers modifiers)
+    {
+        var canvas = drawing.Canvas;
+        using var pointer = new Pointer(Pointer.GetNextFreeId(), PointerType.Mouse, isPrimary: true);
+        canvas.RaiseEvent(new PointerPressedEventArgs(
+            canvas,
+            pointer,
+            canvas,
+            at,
+            timestamp: 0,
+            new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.LeftButtonPressed),
+            modifiers,
+            clickCount: 1));
+        canvas.RaiseEvent(new PointerReleasedEventArgs(
+            canvas,
+            pointer,
+            canvas,
+            at,
+            timestamp: 1,
+            new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonReleased),
+            modifiers,
+            MouseButton.Left));
     }
 
     static void Click(Drawing drawing, Point at)

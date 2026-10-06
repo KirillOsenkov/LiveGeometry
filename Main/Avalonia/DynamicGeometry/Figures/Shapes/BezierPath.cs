@@ -17,20 +17,21 @@ namespace DynamicGeometry;
 
 /// <summary>
 /// A path of cubic Bézier pieces through anchor points, as a WPF or Avalonia path is made of
-/// Bézier segments. Each anchor has a handle on either side, kept as an offset from it (it
-/// moves with its anchor), and the piece from one anchor to the next is pulled towards the
-/// first one's out handle and the second one's in handle: a handle on its anchor leaves that
-/// end straight, both make the piece a segment. Closed (a piece from the last anchor back to
-/// the first) and filled are two switches of their own; an open path fills as if closed by a
-/// straight line. A composite like a regular polygon: the anchors are points of the drawing
-/// that it is built on, and its pieces (selected and styled one by one, the "sides"), its
-/// inside and its handles are its parts. A handle shows only next to an anchor that is
-/// selected or dragged (<see cref="IsHandleShown"/>), and only the Drag tool takes one:
-/// nothing outside the path is built on a handle, but the images of a transformation.
-/// Other paths can be its holes (<see cref="CutHoles"/>): the inside leaves them out, and
-/// they stay paths of their own. The image of a transformation is a path whose handles are
-/// points of the drawing (<see cref="CreateImage"/>), the images of the source's handles,
-/// which follow those and can't be dragged themselves.
+/// Bézier segments. Each anchor has a handle on either side, and the piece from one anchor to
+/// the next is pulled towards the first one's out handle and the second one's in handle: a
+/// handle on its anchor leaves that end straight, both make the piece a segment. A handle is
+/// either an offset from its anchor (it moves with it, and the Drag tool drags it) or a point
+/// of the drawing, which the path is built on (a handle on a tangent, the images of a
+/// transformation's source handles). Closed (a piece from the last anchor back to the first)
+/// and filled are two switches of their own; an open path fills as if closed by a straight
+/// line. A composite like a regular polygon: the anchors are points of the drawing that it is
+/// built on, and its pieces (selected and styled one by one, the "sides"), its inside and its
+/// handles are its parts. A handle shows only next to an anchor that is selected or dragged
+/// (<see cref="IsHandleShown"/>), and only the Drag tool takes one: nothing outside the path
+/// is built on a handle, but the images of a transformation. Other paths can be its holes
+/// (<see cref="CutHoles"/>): the inside leaves them out, and they stay paths of their own.
+/// Whatever changes what the path is made of (an anchor, a hole, a handle's point) is one
+/// change of its <see cref="Layout"/>, done and undone whole.
 /// </summary>
 public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupportRemoveDependency
 {
@@ -42,11 +43,6 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
     // the dotted lines from the anchors to the handles shown: a picture, not a figure
     readonly AvaloniaPath handleLines;
-
-    // The dependencies are the anchors, then (for an image) two handle points per anchor,
-    // in and out, then the holes. Whoever changes them keeps these counts right.
-    int holeCount;
-    bool handlePoints;
 
     bool closed;
     bool filled;
@@ -86,21 +82,57 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         bool closed,
         bool filled)
     {
+        return Create(
+            drawing,
+            anchors,
+            anchors.Select((anchor, i) => new HandleSpec(inOffsets[i], null)).ToList(),
+            anchors.Select((anchor, i) => new HandleSpec(outOffsets[i], null)).ToList(),
+            holes: Array.Empty<IFigure>(),
+            closed,
+            filled);
+    }
+
+    /// <summary>What a handle is: an offset from its anchor, or a point of the drawing (then the offset means nothing)</summary>
+    public record struct HandleSpec(Point Offset, IPoint Point);
+
+    /// <summary>A new path through the anchors, with these handles and holes, not in the drawing yet</summary>
+    public static BezierPath Create(
+        Drawing drawing,
+        IList<IFigure> anchors,
+        IList<HandleSpec> ins,
+        IList<HandleSpec> outs,
+        IList<IFigure> holes,
+        bool closed,
+        bool filled)
+    {
         var path = new BezierPath()
         {
             Drawing = drawing
         };
         path.closed = closed;
         path.filled = filled;
-        path.Dependencies = anchors.ToList();
-        path.SyncParts();
+        path.Build(anchors, ins, outs, holes);
+        return path;
+    }
+
+    /// <summary>The handles, the pieces and the dependencies, for a path made or read</summary>
+    void Build(IList<IFigure> anchors, IList<HandleSpec> ins, IList<HandleSpec> outs, IList<IFigure> holes)
+    {
         for (int i = 0; i < anchors.Count; i++)
         {
-            path.inHandles[i].Offset = inOffsets[i];
-            path.outHandles[i].Offset = outOffsets[i];
+            var inHandle = new BezierPathHandle(this, isIn: true) { Offset = ins[i].Offset, Point = ins[i].Point };
+            var outHandle = new BezierPathHandle(this, isIn: false) { Offset = outs[i].Offset, Point = outs[i].Point };
+            inHandles.Add(inHandle);
+            outHandles.Add(outHandle);
+            AttachPart(inHandle);
+            AttachPart(outHandle);
         }
 
-        return path;
+        SyncPieces();
+        SetDependencies(anchors
+            .Concat(HandlesInOrder.Where(h => h.Point != null).Select(h => (IFigure)h.Point))
+            .Concat(holes)
+            .ToList());
     }
 
     #region Anchors, handles and pieces
@@ -110,7 +142,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     {
         get
         {
-            return System.Math.Max(0, (Dependencies.Count - holeCount) / (handlePoints ? 3 : 1));
+            return inHandles.Count;
         }
     }
 
@@ -132,7 +164,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     /// <summary>Whether the figure is one of the anchors</summary>
     public bool IsAnchor(IFigure figure)
     {
-        int count = AnchorCount;
+        int count = System.Math.Min(AnchorCount, Dependencies.Count);
         for (int i = 0; i < count; i++)
         {
             if (Dependencies[i] == figure)
@@ -144,21 +176,58 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         return false;
     }
 
+    /// <summary>
+    /// The handles in the order their points come among the dependencies, after the
+    /// anchors: the in and the out handle of the first anchor, of the second...
+    /// </summary>
+    IEnumerable<BezierPathHandle> HandlesInOrder
+    {
+        get
+        {
+            for (int i = 0; i < inHandles.Count; i++)
+            {
+                yield return inHandles[i];
+                yield return outHandles[i];
+            }
+        }
+    }
+
+    /// <summary>Where the holes start among the dependencies: after the anchors and the points of handles</summary>
+    int HoleStart
+    {
+        get
+        {
+            return AnchorCount + HandlesInOrder.Count(h => h.Point != null);
+        }
+    }
+
     /// <summary>The paths whose insides the inside of this one leaves out</summary>
     public IEnumerable<BezierPath> Holes
     {
         get
         {
-            return Dependencies.Skip(Dependencies.Count - holeCount).OfType<BezierPath>();
+            return Dependencies.Skip(HoleStart).OfType<BezierPath>();
         }
     }
 
-    /// <summary>Whether the handles are points of the drawing (an image's), which the Drag tool can't take</summary>
+    /// <summary>Whether a handle is a point of the drawing</summary>
     public bool HasHandlePoints
     {
         get
         {
-            return handlePoints;
+            return Handles.Any(h => h.Point != null);
+        }
+    }
+
+    /// <summary>
+    /// Whether the path is the image of a transformation: its handles are hidden helper
+    /// points, which go with it. It isn't split or made shorter (the helpers would stay).
+    /// </summary>
+    bool IsImage
+    {
+        get
+        {
+            return Handles.Any(h => h.Point is IFigure point && point.Auxiliary);
         }
     }
 
@@ -175,38 +244,45 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         return ((IPoint)Dependencies[index]).Coordinates;
     }
 
+    int IndexOf(BezierPathHandle handle)
+    {
+        return handle.IsIn ? inHandles.IndexOf(handle) : outHandles.IndexOf(handle);
+    }
+
+    /// <summary>Where the handle is in the plane: its point, or its offset from its anchor</summary>
+    Point HandlePosition(BezierPathHandle handle, int index)
+    {
+        return handle.Point != null ? handle.Point.Coordinates : AnchorPoint(index).Plus(handle.Offset);
+    }
+
     /// <summary>Where the handle on the side of the piece before the anchor is</summary>
     Point InPoint(int index)
     {
-        return handlePoints
-            ? ((IPoint)Dependencies[AnchorCount + 2 * index]).Coordinates
-            : AnchorPoint(index).Plus(inHandles[index].Offset);
+        return HandlePosition(inHandles[index], index);
     }
 
     /// <summary>Where the handle on the side of the piece after the anchor is</summary>
     Point OutPoint(int index)
     {
-        return handlePoints
-            ? ((IPoint)Dependencies[AnchorCount + 2 * index + 1]).Coordinates
-            : AnchorPoint(index).Plus(outHandles[index].Offset);
+        return HandlePosition(outHandles[index], index);
     }
 
     /// <summary>Where the handle is in the plane</summary>
     public Point HandleCoordinates(BezierPathHandle handle)
     {
-        int index = handle.IsIn ? inHandles.IndexOf(handle) : outHandles.IndexOf(handle);
-        if (index < 0 || index >= AnchorCount)
+        int index = IndexOf(handle);
+        if (index < 0 || index >= AnchorCount || Dependencies.Count < AnchorCount)
         {
             return handle.Coordinates;
         }
 
-        return handle.IsIn ? InPoint(index) : OutPoint(index);
+        return HandlePosition(handle, index);
     }
 
     /// <summary>The handle across the anchor from this one</summary>
     BezierPathHandle Opposite(BezierPathHandle handle)
     {
-        int index = handle.IsIn ? inHandles.IndexOf(handle) : outHandles.IndexOf(handle);
+        int index = IndexOf(handle);
         if (index < 0)
         {
             return null;
@@ -218,14 +294,14 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     /// <summary>The anchor the handle belongs to</summary>
     IFigure AnchorOf(BezierPathHandle handle)
     {
-        int index = handle.IsIn ? inHandles.IndexOf(handle) : outHandles.IndexOf(handle);
-        return index >= 0 && index < AnchorCount ? Dependencies[index] : null;
+        int index = IndexOf(handle);
+        return index >= 0 && index < AnchorCount && index < Dependencies.Count ? Dependencies[index] : null;
     }
 
     /// <summary>The handles of an anchor, as the tool that makes a path sets them while the path is a preview</summary>
     public void SetHandleOffsets(int index, Point inOffset, Point outOffset)
     {
-        if (handlePoints || index < 0 || index >= inHandles.Count)
+        if (index < 0 || index >= inHandles.Count)
         {
             return;
         }
@@ -238,18 +314,19 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     /// <summary>
     /// The handle goes where it is dragged: its offset from its anchor changes, and with
     /// <see cref="BezierPathHandle.MirrorsOpposite"/> the handle across the anchor is its
-    /// mirror image through the anchor from then on (a smooth, symmetric anchor)
+    /// mirror image through the anchor from then on (a smooth, symmetric anchor) - unless
+    /// that one is a point of the drawing, which stays where it is
     /// </summary>
     public void MoveHandle(BezierPathHandle handle, Point coordinates)
     {
         var anchor = AnchorOf(handle);
-        if (!(anchor is IPoint point))
+        if (!(anchor is IPoint point) || handle.Point != null)
         {
             return;
         }
 
         var offset = coordinates.Minus(point.Coordinates);
-        if (handle.MirrorsOpposite && Opposite(handle) is BezierPathHandle opposite)
+        if (handle.MirrorsOpposite && Opposite(handle) is BezierPathHandle { Point: null } opposite)
         {
             opposite.Offset = offset.Minus();
         }
@@ -295,35 +372,47 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     }
 
     /// <summary>
-    /// The parts the anchors need, made or taken away at the end: two handles per anchor
-    /// (none for an image, whose handles are points of the drawing) and the pieces. A piece
-    /// that leaves is kept, and is the one that comes back (undo of Closed).
+    /// What took the place of a point that is a handle (it was joined into another point,
+    /// let go, replaced) is that handle's point from now on: the dependencies say, in the
+    /// order of <see cref="HandlesInOrder"/>
     /// </summary>
-    void SyncParts()
+    protected override void OnDependenciesChanged()
     {
-        int count = AnchorCount;
-        int handles = handlePoints ? 0 : count;
-        while (inHandles.Count < handles)
+        base.OnDependenciesChanged();
+        int index = AnchorCount;
+        foreach (var handle in HandlesInOrder.Where(h => h.Point != null))
         {
-            var inHandle = new BezierPathHandle(this, isIn: true);
-            var outHandle = new BezierPathHandle(this, isIn: false);
-            inHandles.Add(inHandle);
-            outHandles.Add(outHandle);
-            AddPart(inHandle, CommonStyle(Handles.Where(h => h != inHandle && h != outHandle)));
-            AddPart(outHandle, CommonStyle(Handles.Where(h => h != outHandle)));
+            if (index < Dependencies.Count && Dependencies[index] is IPoint point)
+            {
+                handle.Point = point;
+            }
+
+            index++;
         }
 
-        while (inHandles.Count > handles)
-        {
-            RemovePart(inHandles[inHandles.Count - 1]);
-            RemovePart(outHandles[outHandles.Count - 1]);
-            inHandles.RemoveLast();
-            outHandles.RemoveLast();
-        }
-
-        SyncPieces();
+        curvesKnown = false;
     }
 
+    /// <summary>The dependencies set, and listed with what they are, if they were</summary>
+    void SetDependencies(List<IFigure> dependencies)
+    {
+        bool registered = Dependencies.Count > 0 && Dependencies.All(d => d.Dependents.Contains(this));
+        if (registered)
+        {
+            this.UnregisterFromDependencies();
+        }
+
+        Dependencies = dependencies;
+        if (registered)
+        {
+            this.RegisterWithDependencies();
+        }
+    }
+
+    /// <summary>
+    /// The pieces the anchors need, made or taken away at the end. A piece that leaves is
+    /// kept, and is the one that comes back (undo of Closed).
+    /// </summary>
     void SyncPieces()
     {
         int count = PieceCount;
@@ -332,8 +421,13 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             bool isNew = retiredPieces.Count == 0;
             var piece = isNew ? new BezierPathPiece(this) : retiredPieces.Pop();
             var common = isNew ? CommonStyle(pieces) : null;
+            if (common != null)
+            {
+                piece.Style = common;
+            }
+
             pieces.Add(piece);
-            AddPart(piece, common);
+            AttachPart(piece);
         }
 
         while (pieces.Count > count)
@@ -358,6 +452,105 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
     #endregion
 
+    #region Layout
+
+    /// <summary>
+    /// What the path is made of: its anchors, their handles (each an offset or a point),
+    /// the pieces, the holes, and where the points on it are along it. A change is worked
+    /// out on a copy (<see cref="LayoutChange"/>) and put in place whole.
+    /// </summary>
+    public class Layout
+    {
+        public List<IFigure> Anchors;
+        public List<BezierPathHandle> Ins;
+        public List<BezierPathHandle> Outs;
+        public List<BezierPathPiece> Pieces;
+        public Dictionary<BezierPathHandle, HandleSpec> Handles;
+        public List<IFigure> Holes;
+        public Dictionary<PointOnFigure, double> Parameters;
+    }
+
+    Layout Capture()
+    {
+        return new Layout()
+        {
+            Anchors = Dependencies.Take(AnchorCount).ToList(),
+            Ins = inHandles.ToList(),
+            Outs = outHandles.ToList(),
+            Pieces = pieces.ToList(),
+            Handles = Handles.ToDictionary(h => h, h => new HandleSpec(h.Offset, h.Point)),
+            Holes = Dependencies.Skip(HoleStart).ToList(),
+            Parameters = PointsOnPath().ToDictionary(p => p, p => p.Parameter)
+        };
+    }
+
+    IEnumerable<PointOnFigure> PointsOnPath()
+    {
+        return Dependents.OfType<PointOnFigure>().Where(p => p.Dependencies.FirstOrDefault() == this).Distinct();
+    }
+
+    /// <summary>The path made of what the layout says: parts that leave go off the canvas, new ones come on</summary>
+    void Apply(Layout layout)
+    {
+        var parts = new HashSet<IFigure>(layout.Ins.Concat<IFigure>(layout.Outs).Concat(layout.Pieces));
+        foreach (var part in Handles.Concat<IFigure>(pieces).Where(part => !parts.Contains(part)).ToList())
+        {
+            RemovePart(part);
+        }
+
+        var present = new HashSet<IFigure>(Children);
+        inHandles.SetItems(layout.Ins);
+        outHandles.SetItems(layout.Outs);
+        pieces.SetItems(layout.Pieces);
+        foreach (var pair in layout.Handles)
+        {
+            pair.Key.Offset = pair.Value.Offset;
+            pair.Key.Point = pair.Value.Point;
+        }
+
+        foreach (var part in layout.Ins.Concat<IFigure>(layout.Outs).Concat(layout.Pieces).Where(part => !present.Contains(part)))
+        {
+            AttachPart(part);
+        }
+
+        foreach (var pair in layout.Parameters)
+        {
+            pair.Key.Parameter = pair.Value;
+        }
+
+        SetDependencies(layout.Anchors
+            .Concat(HandlesInOrder.Where(h => h.Point != null).Select(h => (IFigure)h.Point))
+            .Concat(layout.Holes)
+            .ToList());
+        RecalculateAndUpdate();
+    }
+
+    /// <summary>
+    /// A change of what the path is made of, as one action: worked out on a copy of the
+    /// layout when it is first done (from the path as it is then), put in place, and the
+    /// layout before put back on undo
+    /// </summary>
+    IAction LayoutChange(Action<Layout> change)
+    {
+        Layout before = null;
+        Layout after = null;
+        return new CallMethodAction(
+            () =>
+            {
+                if (after == null)
+                {
+                    before = Capture();
+                    after = Capture();
+                    change(after);
+                }
+
+                Apply(after);
+            },
+            () => Apply(before));
+    }
+
+    #endregion
+
     #region Parts
 
     // The parts are figures of the library that the drawing never sees (as a regular
@@ -369,7 +562,8 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     /// <summary>Whether the parts' shapes are on a canvas: parts made before the path is on one get there with it</summary>
     bool IsOnCanvas { get; set; }
 
-    void AddPart(IFigure part, IFigureStyle style)
+    /// <summary>A part made or coming back: built on the path, listed with it, on its canvas</summary>
+    void AttachPart(IFigure part)
     {
         part.Dependencies = new IFigure[] { this };
         part.Drawing = Drawing;
@@ -381,11 +575,6 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         }
 
         Children.Add(part);
-        if (style != null)
-        {
-            part.Style = style;
-        }
-
         if (IsOnCanvas)
         {
             part.OnAddingToCanvas(Drawing.Canvas);
@@ -399,21 +588,6 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         if (IsOnCanvas)
         {
             part.OnRemovingFromCanvas(Drawing.Canvas);
-        }
-    }
-
-    /// <summary>A part that comes back (undo): where it was among the parts, listed again</summary>
-    void ReturnPart(IFigure part)
-    {
-        if (!partsUnregistered)
-        {
-            part.RegisterWithDependencies();
-        }
-
-        Children.Add(part);
-        if (IsOnCanvas)
-        {
-            part.OnAddingToCanvas(Drawing.Canvas);
         }
     }
 
@@ -544,7 +718,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         if (part is BezierPathHandle handle && AnchorOf(handle) is IFigure anchor)
         {
             int count = AnchorCount;
-            int anchorIndex = Dependencies.IndexOf(anchor);
+            int anchorIndex = IndexOf(handle);
             int toward = (anchorIndex + (handle.IsIn ? count - 1 : 1)) % count;
             return "Handle of " + ConstructionText.Of(anchor) + " toward " + ConstructionText.Of(Dependencies[toward]);
         }
@@ -638,18 +812,24 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     /// <summary>
     /// Whether the handle shows: next to an anchor that is selected or dragged - its own two,
     /// and those of its neighbors that face it, which bend the same pieces - and only where
-    /// it bends a piece (not the outer handles of an open path's ends)
+    /// it bends a piece (not the outer handles of an open path's ends). A handle that is a
+    /// point of the drawing doesn't: the point shows itself.
     /// </summary>
     public bool IsHandleShown(BezierPathHandle handle)
     {
-        if (!Exists || !Visible || Drawing == null)
+        return handle.Point == null && IsNextToActiveAnchor(handle);
+    }
+
+    bool IsNextToActiveAnchor(BezierPathHandle handle)
+    {
+        int count = AnchorCount;
+        if (!Exists || !Visible || Drawing == null || Dependencies.Count < count)
         {
             return false;
         }
 
-        int count = AnchorCount;
-        int index = handle.IsIn ? inHandles.IndexOf(handle) : outHandles.IndexOf(handle);
-        if (index < 0 || index >= count || count < 2)
+        int index = IndexOf(handle);
+        if (index < 0 || count < 2)
         {
             return false;
         }
@@ -683,9 +863,14 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         UpdateHandleLines();
     }
 
+    /// <summary>A dotted line from an anchor to each handle shown next to it, and to each point that is a handle there</summary>
     void UpdateHandleLines()
     {
-        var shown = Handles.Where(handle => handle.Visible && handle.Exists).ToList();
+        var shown = Handles
+            .Where(handle => handle.Point == null
+                ? handle.Visible && handle.Exists
+                : handle.Point.Visible && handle.Point.Exists && IsNextToActiveAnchor(handle))
+            .ToList();
         if (shown.Count == 0 || Drawing == null || !Exists)
         {
             handleLines.IsVisible = false;
@@ -701,7 +886,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             }
 
             var from = ToPhysical(anchor.Coordinates);
-            var to = ToPhysical(handle.Coordinates);
+            var to = ToPhysical(HandleCoordinates(handle));
             if (!from.Exists() || !to.Exists())
             {
                 continue;
@@ -854,7 +1039,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     {
         get
         {
-            int count = AnchorCount;
+            int count = System.Math.Min(AnchorCount, Dependencies.Count);
             if (count == 0)
             {
                 return new Point();
@@ -908,7 +1093,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
     void CalculateCurves()
     {
-        int count = PieceCount;
+        int count = Dependencies.Count >= AnchorCount ? PieceCount : 0;
         int anchors = AnchorCount;
         var result = new Math.BezierInfo[count];
         var points = new Point[count][];
@@ -938,11 +1123,11 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         return true;
     }
 
-    /// <summary>The path exists while its anchors (and an image's handle points) do; a hole that doesn't is left out</summary>
+    /// <summary>The path exists while its anchors and the points of its handles do; a hole that doesn't is left out</summary>
     public override void UpdateExistence()
     {
-        int count = Dependencies.Count - holeCount;
-        bool exists = AnchorCount >= 2;
+        int count = System.Math.Min(HoleStart, Dependencies.Count);
+        bool exists = AnchorCount >= 2 && Dependencies.Count >= AnchorCount;
         for (int i = 0; i < count && exists; i++)
         {
             exists = Dependencies[i].Exists;
@@ -1293,39 +1478,98 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
     #endregion
 
-    #region Removing an anchor or a hole
+    #region Points as handles
 
     /// <summary>
-    /// A path keeps going without an anchor that is deleted, as long as two are left; an
-    /// image's anchors are tied to its handle points, and it goes with them. A hole that is
-    /// deleted leaves the inside whole again.
+    /// Whether the point can be the handle's: not a handle itself, not the handle's own
+    /// anchor, and not built on the path (it would be built on itself)
+    /// </summary>
+    public bool CanUseAsHandle(BezierPathHandle handle, IPoint point)
+    {
+        return !(point is BezierPathHandle)
+            && point != AnchorOf(handle)
+            && !point.DependsOn(this);
+    }
+
+    /// <summary>
+    /// The handle is the point from now on (an Alt-drag of it dropped there): the path is
+    /// built on the point, which comes before it in the list. Recorded, inside the caller's
+    /// transaction.
+    /// </summary>
+    public void UsePointAsHandle(BezierPathHandle handle, IPoint point)
+    {
+        if (Drawing == null || !CanUseAsHandle(handle, point))
+        {
+            return;
+        }
+
+        Actions.MoveBefore(Drawing, point, this);
+        Drawing.ActionManager.RecordAction(LayoutChange(layout =>
+            layout.Handles[handle] = new HandleSpec(handle.Offset, point)));
+    }
+
+    #endregion
+
+    #region Removing an anchor, a hole or the point of a handle
+
+    /// <summary>
+    /// A path keeps going without an anchor that is deleted, as long as two are left (not
+    /// an image: its helper points would stay). A hole that is deleted leaves the inside
+    /// whole again. A point that is a handle, deleted, leaves an ordinary handle where it was.
     /// </summary>
     public bool CanRemoveDependency(IFigure dependency)
     {
-        int index = Dependencies.IndexOf(dependency);
-        if (index < 0 || Dependencies.Count(d => d == dependency) != 1)
+        var indices = Enumerable.Range(0, Dependencies.Count).Where(i => Dependencies[i] == dependency).ToList();
+        if (indices.Count == 0)
         {
             return false;
         }
 
-        if (index >= Dependencies.Count - holeCount)
+        int anchors = AnchorCount;
+        int holeStart = HoleStart;
+        if (indices.All(i => i >= anchors && i < holeStart))
         {
             return true;
         }
 
-        return !handlePoints && index < AnchorCount && AnchorCount > 2;
+        if (indices.Count != 1)
+        {
+            return false;
+        }
+
+        return indices[0] >= holeStart || indices[0] < anchors && anchors > 2 && !IsImage;
     }
 
     public IAction GetRemoveDependencyAction(IFigure dependency)
     {
         int index = Dependencies.IndexOf(dependency);
-        if (index >= Dependencies.Count - holeCount)
+        if (index >= HoleStart)
         {
-            var hole = (BezierPath)dependency;
-            return new CallMethodAction(() => RemoveHole(hole), () => AddHole(hole));
+            return LayoutChange(layout => layout.Holes.Remove(dependency));
+        }
+
+        if (index >= AnchorCount)
+        {
+            return LayoutChange(layout => DetachPoint(layout, (IPoint)dependency));
         }
 
         return CreateRemoveAnchorAction(dependency, joinTarget: null);
+    }
+
+    /// <summary>Every handle that is the point is an ordinary handle where the point is</summary>
+    void DetachPoint(Layout layout, IPoint point)
+    {
+        for (int i = 0; i < layout.Ins.Count; i++)
+        {
+            foreach (var handle in new[] { layout.Ins[i], layout.Outs[i] })
+            {
+                if (layout.Handles[handle].Point == point)
+                {
+                    var anchor = ((IPoint)layout.Anchors[i]).Coordinates;
+                    layout.Handles[handle] = new HandleSpec(point.Coordinates.Minus(anchor), null);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -1336,7 +1580,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     public bool CanDropAnchorInto(IFigure point, IFigure target)
     {
         int count = AnchorCount;
-        if (handlePoints || count <= 2)
+        if (IsImage || count <= 2)
         {
             return false;
         }
@@ -1364,113 +1608,48 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
     IAction CreateRemoveAnchorAction(IFigure anchor, IFigure joinTarget)
     {
-        int index = -1;
-        int pieceIndex = -1;
-        BezierPathHandle inHandle = null;
-        BezierPathHandle outHandle = null;
-        BezierPathPiece piece = null;
-        BezierPathHandle heir = null;
-        Point heirOffset = default;
-        List<(PointOnFigure Point, double Parameter)> moved = null;
-
-        return new CallMethodAction(
-            () =>
+        return LayoutChange(layout =>
+        {
+            int count = layout.Anchors.Count;
+            int index = layout.Anchors.IndexOf(anchor);
+            if (joinTarget != null)
             {
-                int count = AnchorCount;
-                index = Dependencies.IndexOf(anchor);
-                inHandle = inHandles[index];
-                outHandle = outHandles[index];
-                heir = null;
-                if (joinTarget != null)
-                {
-                    int target = Dependencies.IndexOf(joinTarget);
-                    bool targetIsNext = target == (index + 1) % count;
-                    heir = targetIsNext ? inHandles[target] : outHandles[target];
-                    heirOffset = heir.Offset;
-                    heir.Offset = targetIsNext ? inHandle.Offset : outHandle.Offset;
-                }
+                int target = layout.Anchors.IndexOf(joinTarget);
+                bool targetIsNext = target == (index + 1) % count;
+                var heir = targetIsNext ? layout.Ins[target] : layout.Outs[target];
+                var from = targetIsNext ? layout.Ins[index] : layout.Outs[index];
+                layout.Handles[heir] = layout.Handles[from];
+            }
 
-                // the piece after the anchor goes (the one before, at the end of an open
-                // path), and the one left joins its neighbors
-                pieceIndex = !closed && index == count - 1 ? index - 1 : index;
-                piece = pieces[pieceIndex];
-                moved = MovePointsOff(pieceIndex);
-                pieces.RemoveAt(pieceIndex);
-                RemovePart(piece);
-                inHandles.RemoveAt(index);
-                outHandles.RemoveAt(index);
-                RemovePart(inHandle);
-                RemovePart(outHandle);
-                this.RemoveDependencyCore(index, anchor);
-                this.RecalculateAllDependents();
-            },
-            () =>
-            {
-                // the parts first: the anchor back in the list works the path out at once
-                inHandles.Insert(index, inHandle);
-                outHandles.Insert(index, outHandle);
-                ReturnPart(inHandle);
-                ReturnPart(outHandle);
-                pieces.Insert(pieceIndex, piece);
-                ReturnPart(piece);
-                this.InsertDependencyCore(index, anchor);
-                if (heir != null)
-                {
-                    heir.Offset = heirOffset;
-                }
-
-                foreach (var (point, parameter) in moved)
-                {
-                    point.Parameter = parameter;
-                }
-
-                RecalculateAndUpdate();
-            });
+            // the piece after the anchor goes (the one before, at the end of an open path),
+            // and the one left joins its neighbors
+            int pieceIndex = !closed && index == count - 1 ? index - 1 : index;
+            MovePointsOff(layout, pieceIndex);
+            layout.Pieces.RemoveAt(pieceIndex);
+            layout.Ins.RemoveAt(index);
+            layout.Outs.RemoveAt(index);
+            layout.Anchors.RemoveAt(index);
+        });
     }
 
     /// <summary>
     /// The points on the path are on the same pieces when the piece at the index goes: those
-    /// after it a piece back, those on it onto the piece that takes its place, as far along
-    /// it. Returns where they were, for undo.
+    /// after it a piece back, those on it onto the piece that takes its place, as far along it
     /// </summary>
-    List<(PointOnFigure Point, double Parameter)> MovePointsOff(int pieceIndex)
+    static void MovePointsOff(Layout layout, int pieceIndex)
     {
-        var result = new List<(PointOnFigure Point, double Parameter)>();
-        foreach (var point in Dependents.OfType<PointOnFigure>().Where(p => p.Dependencies.FirstOrDefault() == this))
+        foreach (var point in layout.Parameters.Keys.ToList())
         {
-            var parameter = point.Parameter;
-            result.Add((point, parameter));
+            var parameter = layout.Parameters[point];
             if (parameter >= pieceIndex + 1)
             {
-                point.Parameter = parameter - 1;
+                layout.Parameters[point] = parameter - 1;
             }
             else if (parameter >= pieceIndex)
             {
-                point.Parameter = System.Math.Max(0, pieceIndex - 1) + (parameter - pieceIndex);
+                layout.Parameters[point] = System.Math.Max(0, pieceIndex - 1) + (parameter - pieceIndex);
             }
         }
-
-        return result;
-    }
-
-    void AddHole(BezierPath hole)
-    {
-        holeCount++;
-        this.InsertDependencyCore(Dependencies.Count, hole);
-        RecalculateAndUpdate();
-    }
-
-    void RemoveHole(BezierPath hole)
-    {
-        int index = Dependencies.IndexOf(hole);
-        if (index < 0)
-        {
-            return;
-        }
-
-        holeCount--;
-        this.RemoveDependencyCore(index, hole);
-        RecalculateAndUpdate();
     }
 
     #endregion
@@ -1487,14 +1666,14 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
     /// <summary>
     /// Whether the point can become an anchor of the path it is on, where it is: a point on
-    /// a path with handles of its own (not an image), somewhere along a piece and not at
-    /// its ends, and not one a locus is drawn from
+    /// a path (not an image), somewhere along a piece and not at its ends, and not one a
+    /// locus is drawn from
     /// </summary>
     public static bool CanBecomeAnchor(IFigure point)
     {
         if (!(point is PointOnFigure onFigure)
             || !(onFigure.Dependencies.FirstOrDefault() is BezierPath path)
-            || path.handlePoints
+            || path.IsImage
             || path.Drawing == null
             || !onFigure.Exists
             || PointSnapping.IsHeldByLocus(onFigure))
@@ -1511,8 +1690,9 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     /// The point on the path becomes an anchor of it there: a free point in its place (its
     /// name, label and dependents, <see cref="Actions.ReplacePoint"/>), put into the path
     /// between the ends of its piece, which is split there (de Casteljau's construction:
-    /// the two pieces draw the same curve). The points on the path stay where they are.
-    /// One undo step.
+    /// the two pieces draw the same curve; a handle of the piece that is a point becomes an
+    /// ordinary handle, since it moves). The points on the path stay where they are. One
+    /// undo step.
     /// </summary>
     public static void ConvertToAnchor(PointOnFigure point)
     {
@@ -1546,84 +1726,37 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
     IAction CreateInsertAnchorAction(IFigure anchor, int piece, double t)
     {
-        BezierPathHandle inHandle = null;
-        BezierPathHandle outHandle = null;
-        BezierPathPiece newPiece = null;
-        Point oldOut = default;
-        Point oldIn = default;
-        List<(PointOnFigure Point, double Parameter)> moved = null;
-        int index = piece + 1;
+        return LayoutChange(layout =>
+        {
+            int count = layout.Anchors.Count;
+            int next = (piece + 1) % count;
+            var p0 = AnchorPoint(piece);
+            var p1 = OutPoint(piece);
+            var p2 = InPoint(next);
+            var p3 = AnchorPoint(next);
+            var p01 = Lerp(p0, p1, t);
+            var p12 = Lerp(p1, p2, t);
+            var p23 = Lerp(p2, p3, t);
+            var p012 = Lerp(p01, p12, t);
+            var p123 = Lerp(p12, p23, t);
+            var at = Lerp(p012, p123, t);
 
-        return new CallMethodAction(
-            () =>
-            {
-                int count = AnchorCount;
-                int next = (piece + 1) % count;
-                var p0 = AnchorPoint(piece);
-                var p1 = OutPoint(piece);
-                var p2 = InPoint(next);
-                var p3 = AnchorPoint(next);
-                var p01 = Lerp(p0, p1, t);
-                var p12 = Lerp(p1, p2, t);
-                var p23 = Lerp(p2, p3, t);
-                var p012 = Lerp(p01, p12, t);
-                var p123 = Lerp(p12, p23, t);
-                var at = Lerp(p012, p123, t);
+            var outHandle = layout.Outs[piece];
+            var inHandle = layout.Ins[next];
+            layout.Handles[outHandle] = new HandleSpec(p01.Minus(p0), null);
+            layout.Handles[inHandle] = new HandleSpec(p23.Minus(p3), null);
 
-                oldOut = outHandles[piece].Offset;
-                oldIn = inHandles[next].Offset;
-                outHandles[piece].Offset = p01.Minus(p0);
-                inHandles[next].Offset = p23.Minus(p3);
-                moved = MovePointsAcross(piece, t);
-
-                bool isNew = inHandle == null;
-                if (isNew)
-                {
-                    inHandle = new BezierPathHandle(this, isIn: true);
-                    outHandle = new BezierPathHandle(this, isIn: false);
-                    newPiece = new BezierPathPiece(this);
-                }
-
-                inHandle.Offset = p012.Minus(at);
-                outHandle.Offset = p123.Minus(at);
-                inHandles.Insert(index, inHandle);
-                outHandles.Insert(index, outHandle);
-                pieces.Insert(piece + 1, newPiece);
-                if (isNew)
-                {
-                    AddPart(inHandle, outHandles[piece].Style);
-                    AddPart(outHandle, outHandles[piece].Style);
-                    AddPart(newPiece, pieces[piece].Style);
-                }
-                else
-                {
-                    ReturnPart(inHandle);
-                    ReturnPart(outHandle);
-                    ReturnPart(newPiece);
-                }
-
-                this.InsertDependencyCore(index, anchor);
-                RecalculateAndUpdate();
-            },
-            () =>
-            {
-                pieces.Remove(newPiece);
-                inHandles.Remove(inHandle);
-                outHandles.Remove(outHandle);
-                RemovePart(newPiece);
-                RemovePart(inHandle);
-                RemovePart(outHandle);
-                this.RemoveDependencyCore(index, anchor);
-                int next = (piece + 1) % AnchorCount;
-                outHandles[piece].Offset = oldOut;
-                inHandles[next].Offset = oldIn;
-                foreach (var (point, parameter) in moved)
-                {
-                    point.Parameter = parameter;
-                }
-
-                RecalculateAndUpdate();
-            });
+            var newIn = new BezierPathHandle(this, isIn: true) { Style = outHandle.Style };
+            var newOut = new BezierPathHandle(this, isIn: false) { Style = outHandle.Style };
+            var newPiece = new BezierPathPiece(this) { Style = layout.Pieces[piece].Style };
+            layout.Handles[newIn] = new HandleSpec(p012.Minus(at), null);
+            layout.Handles[newOut] = new HandleSpec(p123.Minus(at), null);
+            layout.Ins.Insert(piece + 1, newIn);
+            layout.Outs.Insert(piece + 1, newOut);
+            layout.Pieces.Insert(piece + 1, newPiece);
+            layout.Anchors.Insert(piece + 1, anchor);
+            MovePointsAcross(layout, piece, t);
+        });
     }
 
     static Point Lerp(Point from, Point to, double t)
@@ -1634,29 +1767,25 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     /// <summary>
     /// The points on the path stay where they are when the piece is split at t: those on
     /// later pieces a piece on, those on it onto the half they are on (the halves are the
-    /// same cubic, run over [0, t] and [t, 1]). Returns where they were, for undo.
+    /// same cubic, run over [0, t] and [t, 1])
     /// </summary>
-    List<(PointOnFigure Point, double Parameter)> MovePointsAcross(int piece, double t)
+    static void MovePointsAcross(Layout layout, int piece, double t)
     {
-        var result = new List<(PointOnFigure Point, double Parameter)>();
-        foreach (var point in Dependents.OfType<PointOnFigure>().Where(p => p.Dependencies.FirstOrDefault() == this))
+        foreach (var point in layout.Parameters.Keys.ToList())
         {
-            var parameter = point.Parameter;
-            result.Add((point, parameter));
+            var parameter = layout.Parameters[point];
             if (parameter >= piece + 1)
             {
-                point.Parameter = parameter + 1;
+                layout.Parameters[point] = parameter + 1;
             }
             else if (parameter >= piece)
             {
                 double along = parameter - piece;
-                point.Parameter = along < t
+                layout.Parameters[point] = along < t
                     ? piece + along / t
                     : piece + 1 + (along - t) / (1 - t);
             }
         }
-
-        return result;
     }
 
     #endregion
@@ -1686,7 +1815,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
         var primary = paths.OrderByDescending(path => path.Bounds.Width * path.Bounds.Height).First();
         var holes = paths
-            .Where(path => path != primary && !path.DependsOn(primary) && !primary.Dependencies.Contains(path))
+            .Where(path => path != primary && !path.DependsOn(primary) && !primary.Holes.Contains(path))
             .ToList();
         if (holes.Count == 0)
         {
@@ -1699,15 +1828,13 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             foreach (var hole in holes)
             {
                 Actions.MoveBefore(drawing, hole, primary);
-                drawing.ActionManager.RecordAction(new CallMethodAction(
-                    () => primary.AddHole(hole),
-                    () => primary.RemoveHole(hole)));
                 if (hole.Filled)
                 {
                     Actions.SetProperty(drawing.ActionManager, new PropertyValue(nameof(Filled), hole), false);
                 }
             }
 
+            drawing.ActionManager.RecordAction(primary.LayoutChange(layout => layout.Holes.AddRange(holes)));
             if (!primary.Filled)
             {
                 Actions.SetProperty(drawing.ActionManager, new PropertyValue(nameof(Filled), primary), true);
@@ -1746,34 +1873,22 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         }
 
         int count = AnchorCount;
-        var dependencies = new List<IFigure>();
+        var anchors = new List<IFigure>();
         for (int i = 0; i < count; i++)
         {
-            dependencies.Add(Transform(Dependencies[i], helper: false));
+            anchors.Add(Transform(Dependencies[i], helper: false));
         }
 
+        var ins = new List<HandleSpec>();
+        var outs = new List<HandleSpec>();
         for (int i = 0; i < count; i++)
         {
-            dependencies.Add(Transform(HandleSource(i, isIn: true), helper: true));
-            dependencies.Add(Transform(HandleSource(i, isIn: false), helper: true));
+            ins.Add(new HandleSpec(default, (IPoint)Transform(HandleSource(inHandles[i]), helper: true)));
+            outs.Add(new HandleSpec(default, (IPoint)Transform(HandleSource(outHandles[i]), helper: true)));
         }
 
-        var holes = Holes.ToList();
-        foreach (var hole in holes)
-        {
-            dependencies.Add(Transform(hole, helper: false));
-        }
-
-        var path = new BezierPath()
-        {
-            Drawing = Drawing
-        };
-        path.handlePoints = true;
-        path.holeCount = holes.Count;
-        path.closed = closed;
-        path.filled = filled;
-        path.Dependencies = dependencies;
-        path.SyncParts();
+        var holes = Holes.Select(hole => Transform(hole, helper: false)).ToList();
+        var path = Create(Drawing, anchors, ins, outs, holes, closed, filled);
         path.Visible = Visible;
         path.Style = Style;
         for (int i = 0; i < pieces.Count && i < path.pieces.Count; i++)
@@ -1785,15 +1900,10 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         return result;
     }
 
-    /// <summary>The handle as a point: the part, or an image's point</summary>
-    IFigure HandleSource(int index, bool isIn)
+    /// <summary>The handle as a point: its point, or the part itself</summary>
+    static IFigure HandleSource(BezierPathHandle handle)
     {
-        if (handlePoints)
-        {
-            return Dependencies[AnchorCount + 2 * index + (isIn ? 0 : 1)];
-        }
-
-        return isIn ? inHandles[index] : outHandles[index];
+        return (IFigure)handle.Point ?? handle;
     }
 
     /// <summary>Whether the transformations can take the path: what it is built on can all be transformed</summary>
@@ -1807,12 +1917,12 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     #region File
 
     /// <summary>
-    /// The anchors are the dependencies, and their handles a path as Avalonia writes one,
-    /// a piece from each anchor to the next, the closing one included whether or not the
+    /// The anchors are the first dependencies, and their handles a path as Avalonia writes
+    /// one, a piece from each anchor to the next, the closing one included whether or not the
     /// path is closed (it keeps its handles): "L" for a piece whose two handles are on their
-    /// anchors, else "C" and the offsets of the first anchor's out handle and of the second
-    /// one's in handle. An image says HandlePoints instead: its handles are dependencies, two
-    /// per anchor after the anchors. The holes come last (Holes says how many).
+    /// anchors, else "C", the first anchor's out handle and the second one's in handle - each
+    /// an offset from its anchor ("1,0.5") or a point of the drawing, by its place among the
+    /// dependencies ("#4"). The dependencies after those are the holes.
     /// </summary>
     public override void WriteXml(XmlWriter writer)
     {
@@ -1827,25 +1937,27 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             writer.WriteAttributeBool("Filled", true);
         }
 
-        if (holeCount > 0)
-        {
-            writer.WriteAttributeString("Holes", holeCount.ToString(CultureInfo.InvariantCulture));
-        }
-
-        if (handlePoints)
-        {
-            writer.WriteAttributeBool("HandlePoints", true);
-        }
-        else
-        {
-            writer.WriteAttributeString("Path", HandlesText());
-        }
-
+        writer.WriteAttributeString("Path", HandlesText());
         WritePartStyles(writer);
     }
 
     string HandlesText()
     {
+        // where each point of a handle is among the dependencies
+        var places = new Dictionary<BezierPathHandle, int>();
+        int place = AnchorCount;
+        foreach (var handle in HandlesInOrder.Where(h => h.Point != null))
+        {
+            places[handle] = place++;
+        }
+
+        string Write(BezierPathHandle handle)
+        {
+            return handle.Point != null
+                ? "#" + places[handle].ToString(CultureInfo.InvariantCulture)
+                : Number(handle.Offset.X) + "," + Number(handle.Offset.Y);
+        }
+
         var text = new StringBuilder();
         int count = inHandles.Count;
         for (int i = 0; i < count; i++)
@@ -1855,17 +1967,15 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
                 text.Append(' ');
             }
 
-            var outOffset = outHandles[i].Offset;
-            var inOffset = inHandles[(i + 1) % count].Offset;
-            if (outOffset == default && inOffset == default)
+            var outHandle = outHandles[i];
+            var inHandle = inHandles[(i + 1) % count];
+            if (outHandle.Point == null && inHandle.Point == null && outHandle.Offset == default && inHandle.Offset == default)
             {
                 text.Append('L');
             }
             else
             {
-                text.Append("C ")
-                    .Append(Number(outOffset.X)).Append(',').Append(Number(outOffset.Y)).Append(' ')
-                    .Append(Number(inOffset.X)).Append(',').Append(Number(inOffset.Y));
+                text.Append("C ").Append(Write(outHandle)).Append(' ').Append(Write(inHandle));
             }
         }
 
@@ -1878,31 +1988,49 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         return (value + 0.0).ToStringInvariant();
     }
 
-    /// <summary>The offsets <see cref="HandlesText"/> wrote; what can't be read leaves a handle on its anchor</summary>
-    void ReadHandles(string text)
+    /// <summary>
+    /// The path <see cref="HandlesText"/> wrote, over the dependencies the file gave: what
+    /// can't be read leaves a handle on its anchor; with no path at all, the points the
+    /// dependencies start with are the anchors
+    /// </summary>
+    public override void ReadXml(XElement element)
     {
-        if (string.IsNullOrEmpty(text) || inHandles.Count == 0)
+        closed = element.ReadBool("Closed", false);
+        filled = element.ReadBool("Filled", false);
+        var listed = Dependencies.ToList();
+        var tokens = (element.ReadString("Path") ?? "").Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
+        int count = tokens.Count(token => token == "L" || token == "C");
+        if (count < 2 || count > listed.Count || !listed.Take(count).All(d => d is IPoint))
         {
-            return;
+            count = listed.TakeWhile(d => d is IPoint).Count();
+            tokens = Array.Empty<string>();
         }
 
-        var tokens = text.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
-        int count = inHandles.Count;
+        var ins = Enumerable.Repeat(default(HandleSpec), count).ToList();
+        var outs = Enumerable.Repeat(default(HandleSpec), count).ToList();
+        var referenced = new HashSet<int>();
+        HandleSpec Read(string text)
+        {
+            if (text.StartsWith("#", StringComparison.Ordinal)
+                && int.TryParse(text.Substring(1), NumberStyles.None, CultureInfo.InvariantCulture, out int index)
+                && index >= count
+                && index < listed.Count
+                && listed[index] is IPoint point)
+            {
+                referenced.Add(index);
+                return new HandleSpec(default, point);
+            }
+
+            return new HandleSpec(TryParsePoint(text, out var offset) ? offset : default, null);
+        }
+
         int piece = 0;
         for (int i = 0; i < tokens.Length && piece < count; piece++)
         {
             if (tokens[i] == "C" && i + 2 < tokens.Length)
             {
-                if (TryParsePoint(tokens[i + 1], out var outOffset))
-                {
-                    outHandles[piece].Offset = outOffset;
-                }
-
-                if (TryParsePoint(tokens[i + 2], out var inOffset))
-                {
-                    inHandles[(piece + 1) % count].Offset = inOffset;
-                }
-
+                outs[piece] = Read(tokens[i + 1]);
+                ins[(piece + 1) % count] = Read(tokens[i + 2]);
                 i += 3;
             }
             else
@@ -1910,6 +2038,17 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
                 i++;
             }
         }
+
+        var holes = Enumerable.Range(count, listed.Count - count)
+            .Where(index => !referenced.Contains(index) && listed[index] is BezierPath)
+            .Select(index => listed[index])
+            .ToList();
+        Build(listed.Take(count).ToList(), ins, outs, holes);
+
+        // visibility and the style of the inside, onto the parts made
+        base.ReadXml(element);
+        ReadPartStyles(element);
+        curvesKnown = false;
     }
 
     static bool TryParsePoint(string text, out Point point)
@@ -1927,30 +2066,6 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         }
 
         return false;
-    }
-
-    public override void ReadXml(XElement element)
-    {
-        closed = element.ReadBool("Closed", false);
-        filled = element.ReadBool("Filled", false);
-        handlePoints = element.ReadBool("HandlePoints", false);
-        int.TryParse(element.ReadString("Holes"), NumberStyles.None, CultureInfo.InvariantCulture, out holeCount);
-
-        // a file that doesn't add up (made by hand) is read as a path of anchors alone
-        int listed = Dependencies.Count - holeCount;
-        if (holeCount < 0 || listed < 0 || handlePoints && listed % 3 != 0)
-        {
-            holeCount = 0;
-            handlePoints = false;
-        }
-
-        SyncParts();
-        ReadHandles(element.ReadString("Path"));
-
-        // visibility and the style of the inside, onto the parts made
-        base.ReadXml(element);
-        ReadPartStyles(element);
-        curvesKnown = false;
     }
 
     const string SidesElement = "Sides";
@@ -2031,9 +2146,10 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
     #region The parts
 
     /// <summary>
-    /// A handle of an anchor: an offset from it, which the Drag tool changes. Not selected by
-    /// itself (a click on it leaves the selection as it is, so that it stays shown); styled
-    /// with the others on the path's page.
+    /// A handle of an anchor: an offset from it, which the Drag tool changes, or a point of
+    /// the drawing (<see cref="Point"/>; the part is then hidden, the point shows itself).
+    /// Not selected by itself (a click on it leaves the selection as it is, so that it stays
+    /// shown); styled with the others on the path's page.
     /// </summary>
     public class BezierPathHandle : PointBase, IFigurePart
     {
@@ -2050,8 +2166,11 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         /// <summary>Whether the handle is on the side of the piece that comes to its anchor (else of the one that leaves it)</summary>
         public bool IsIn { get; }
 
-        /// <summary>Where the handle is from its anchor</summary>
+        /// <summary>Where the handle is from its anchor, unless it is a point</summary>
         public Point Offset { get; set; }
+
+        /// <summary>The point of the drawing the handle is, if it is one</summary>
+        public IPoint Point { get; set; }
 
         /// <summary>
         /// Set by the Drag tool unless Alt is held: the handle across the anchor follows as
@@ -2088,10 +2207,10 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
         public override bool AllowMove()
         {
-            return !Owner.Locked && Owner.Drawing != null;
+            return !Owner.Locked && Owner.Drawing != null && Point == null;
         }
 
-        public override void MoveToCore(Point newLocation)
+        public override void MoveToCore(Avalonia.Point newLocation)
         {
             Owner.MoveHandle(this, newLocation);
         }

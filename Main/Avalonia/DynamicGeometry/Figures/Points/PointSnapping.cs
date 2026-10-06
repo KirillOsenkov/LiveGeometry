@@ -342,10 +342,15 @@ public static class PointSnapping
                 continue;
             }
 
-            if (collapsing is BezierPath path && path.CanDropAnchorInto(point, target))
+            if (collapsing is BezierPath path)
             {
-                // the path goes on without the point, the target taking its handle on the far side
-                point.Drawing.ActionManager.RecordAction(path.CreateDropAnchorAction(point, target));
+                // two anchors next to each other: the path goes on without the point, the
+                // target taking its handle on the far side. Otherwise one of the two is a
+                // handle, which is the target from now on, as anything built on the point.
+                if (path.CanDropAnchorInto(point, target))
+                {
+                    point.Drawing.ActionManager.RecordAction(path.CreateDropAnchorAction(point, target));
+                }
             }
             else if (CanDropVertex(collapsing, point, target))
             {

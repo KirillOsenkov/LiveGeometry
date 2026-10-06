@@ -372,8 +372,14 @@ namespace DynamicGeometry
                 else if (moving.Count == 1 && moving[0] is BezierPath.BezierPathHandle handle)
                 {
                     // the handle across the anchor follows as its mirror image, unless Alt
-                    // is held (a corner)
+                    // is held (a corner); with Alt it sits on a point under the cursor, and
+                    // dropped there is that point from then on
                     handle.MirrorsOpposite = !IsAltPressed();
+                    snap = HandleSnap(handle, currentCoordinates);
+                    if (snap != null)
+                    {
+                        offset = snap.Coordinates.Minus(handle.Coordinates);
+                    }
                 }
                 else if (moving.Count == 1 && moving[0] is PointOnFigure pointOnFigure)
                 {
@@ -423,6 +429,10 @@ namespace DynamicGeometry
                 if (snap != null && IsAltPressed() && found is FreePoint dragged)
                 {
                     PointSnapping.Snap(dragged, snap);
+                }
+                else if (snap?.ExistingPoint != null && IsAltPressed() && found is BezierPath.BezierPathHandle handle && dragTransaction != null)
+                {
+                    handle.Owner.UsePointAsHandle(handle, snap.ExistingPoint);
                 }
             }
             catch
@@ -514,7 +524,7 @@ namespace DynamicGeometry
         {
             if (figure is BezierPath.BezierPathHandle)
             {
-                return "Hold Shift to snap to grid. Hold " + KeyNames.Alt + " to leave the handle across the anchor where it is.";
+                return "Hold Shift to snap to grid. Hold " + KeyNames.Alt + " to leave the handle across the anchor where it is, or to drop this one on a point.";
             }
 
             if (!(figure is PointBase point))
@@ -588,6 +598,24 @@ namespace DynamicGeometry
             }
 
             return free;
+        }
+
+        /// <summary>
+        /// With Alt, a dragged handle of a Bezier path sits on a point under the cursor
+        /// (<see cref="BezierPath.CanUseAsHandle"/>), the one a drop makes it; null when there is
+        /// none, or Alt is not held
+        /// </summary>
+        PointPlacement HandleSnap(BezierPath.BezierPathHandle handle, Point cursor)
+        {
+            if (!IsAltPressed() || dragTransaction == null)
+            {
+                return null;
+            }
+
+            var target = Drawing.Figures.HitTestMany(cursor)
+                .OfType<IPoint>()
+                .FirstOrDefault(point => point.IsHitTestVisible && handle.Owner.CanUseAsHandle(handle, point));
+            return target != null ? PointPlacement.Existing(target) : null;
         }
 
         /// <summary>The point that replaced the one pressed on is what the drag moves now</summary>

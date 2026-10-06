@@ -1143,9 +1143,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Bezier paths** (`Figures/Shapes/BezierPath.cs`, 2026-10-06; added beside `Bezier` and
   `Polyline`, which stay as they were): a composite like a regular polygon. The anchors are
   points of the drawing (its dependencies, at least two, each once); each has an in and an
-  out handle, a part kept as an offset from its anchor, and the piece from one anchor to
-  the next is the cubic through the first's out handle and the next one's in handle (a
-  handle on its anchor: that end straight). Closed and Filled are two check boxes (an open
+  out handle, a part (`BezierPathHandle`), and the piece from one anchor to the next is
+  the cubic through the first's out handle and the next one's in handle (a handle on its
+  anchor: that end straight). A handle is an offset from its anchor, or a point of the
+  drawing (`BezierPathHandle.Point`; the dependencies after the anchors, in the order in1,
+  out1, in2...; they are the truth: a join or a replacement of such a point carries over,
+  `OnDependenciesChanged`). Whatever changes what the path is made of (an anchor in or out,
+  a hole, a handle's point) is one `LayoutChange`: worked out on a copy of the `Layout`
+  (anchors, handles, sides, holes, the parameters of the points on it) and put in place
+  whole, the old one back on undo. Closed and Filled are two check boxes (an open
   path fills as if a straight line closed it). Parts: the sides (`BezierPathPiece`,
   selected and styled one by one, "Sides" row), the inside (`BezierPathInterior`, the
   path's own style, "Fill"), the handles (`BezierPathHandle`, the `Handle` point style,
@@ -1157,9 +1163,17 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Tab takes it (`Dragger.FindClickOptions`, the Drag tool's only choice). A dragged handle
   takes the one across the anchor along as its mirror image (snapped to it at the first
   move: a symmetric anchor); with Alt that one stays where it is, for a corner
-  (`MirrorsOpposite`, both in the move's undo place). "Convert to path anchor" on a point
+  (`MirrorsOpposite`, both in the move's undo place); dropped with Alt on a point, the
+  handle is that point (`UsePointAsHandle`). A handle that is a point has no part shown
+  (the point shows itself, with the dotted line), is never moved by the one across, and
+  deleted it leaves an ordinary handle where it was. While drawing, Alt+click takes the
+  handles between two anchors: the first the out handle of the one before, the second the
+  in handle of the one after (closing: of the first) - a point where the Point tool would
+  take or make one, else an ordinary handle at the click; a plain click on a point makes it
+  the next anchor. "Convert to path anchor" on a point
   on a path (grid, context menu) makes it a free point there and an anchor between the
-  ends of its piece, split by de Casteljau so the curve stays the same and the other
+  ends of its piece, split by de Casteljau so the curve stays the same (the piece's handles
+  that are points become ordinary ones) and the other
   points on it stay put (`ConvertToAnchor`). A point on a path depends on the path, parameter = piece index
   + the cubic's t (`PointPlacement.OrderForPoint` and Snap to take a side for its path); a
   point on the closing piece of a path opened doesn't exist. Delete an anchor and the path
@@ -1168,14 +1182,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (`CanDropAnchorInto`, from `PointSnapping.Collapse`; not onto an anchor further away).
   Holes: "Cut out holes" on a selection of two paths or more (`FigureSelection`) makes the
   largest one's inside leave the others out (`CombinedGeometry` Exclude), the holes being
-  dependencies after the anchors (`Holes="n"`), unfilled, still paths of their own; a
+  last dependencies, unfilled, still paths of their own; a
   deleted hole leaves the path. Transformations but inversion take it through its anchors
-  and handle parts (`CreateImage`): the image's handles are hidden auxiliary points
-  (`HandlePoints="true"`, two per anchor after the anchors), which can't be dragged. File:
-  the anchors as dependencies and `Path="C 1,0 -0.5,1 L ..."`, one piece per anchor, the
-  closing one written whether closed or not: `L` for two handles on their anchors, else
-  `C`, the out offset of the anchor and the in offset of the next. No measurements and no
-  intersections yet.
+  and handles (`CreateImage`): the image's handles are all points, hidden auxiliary ones,
+  which can't be dragged; an image isn't split or shortened (`IsImage`). File: the anchors
+  as the first dependencies and `Path="C 1,0 -0.5,1 L C #4 0,2 ..."`, one piece per
+  anchor, the closing one written whether closed or not: `L` for two handles on their
+  anchors, else `C`, the out handle of the anchor and the in handle of the next, each an
+  offset or `#k`, the dependency that is its point; the dependencies nothing names after
+  the anchors are the holes. No measurements and no intersections yet.
 - **Names of lines and circles** (`Figures/Controls/FigureLabel.cs`): "Show name" on a line,
   ray, segment or circle (`LineBase`/`CircleBase.ShowName`, over `FigureBase.HasNameLabel`)
   adds a `FigureLabel` the way a point's name is a `PointLabel`: a label depending on the
