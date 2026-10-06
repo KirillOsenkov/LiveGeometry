@@ -180,10 +180,15 @@ public class PointPlacement
         return result;
     }
 
-    /// <summary>The figures under the cursor a point can go on, an axis last: a line drawn along it is what the point goes on</summary>
+    /// <summary>
+    /// The figures under the cursor a point can go on, an axis last: a line drawn along it is
+    /// what the point goes on. A side of a Bezier path stands for the path.
+    /// </summary>
     static IFigure[] OrderForPoint(IFigure[] underCursor)
     {
         return underCursor
+            .Select(BezierPath.PointHolder)
+            .Distinct()
             .Where(PointOnFigure.CanBeOnFigure)
             .OrderBy(figure => figure is AxisLine)
             .ToArray();

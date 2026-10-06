@@ -118,7 +118,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   style), except where a visible segment, ray, line or vector on the two points is there
   already (`FindLine`; not any line that depends on both - a perpendicular bisector of the
   two took the side's place and left it undrawn). (Polygon intersection
-  exists but is `[Ignore]`d.)
+  exists but is `[Ignore]`d.) Bezier path (last, no letter): see "Bezier paths".
 - **Transform** (the tools are verbs, as the tab is; the classes stay `ReflectionCreator`...):
   Reflect (T) - source figure, then a mirror (point, line, segment, ray, or a
   circle for a point source); Rotate - source, center, angle (a figure with an angle or a
@@ -1140,6 +1140,38 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `Vector.HitTest(Point)` answers whether hidden or not, as a segment's does: a point on a
   vector and an intersection with one exist where that says, and through the composite's
   own test (shown parts only) they all went when the vector was hidden.
+- **Bezier paths** (`Figures/Shapes/BezierPath.cs`, 2026-10-06; added beside `Bezier` and
+  `Polyline`, which stay as they were): a composite like a regular polygon. The anchors are
+  points of the drawing (its dependencies, at least two, each once); each has an in and an
+  out handle, a part kept as an offset from its anchor, and the piece from one anchor to
+  the next is the cubic through the first's out handle and the next one's in handle (a
+  handle on its anchor: that end straight). Closed and Filled are two check boxes (an open
+  path fills as if a straight line closed it). Parts: the sides (`BezierPathPiece`,
+  selected and styled one by one, "Sides" row), the inside (`BezierPathInterior`, the
+  path's own style, "Fill"), the handles (`BezierPathHandle`, the `Handle` point style,
+  offered to them alone, "Handles" row; never selected: a click on one keeps the
+  selection). A handle shows only next to an anchor that is selected or dragged - its own
+  two and the neighbors' that face it (`IsHandleShown`) - with dotted lines in the ink at
+  0.3, and only the Drag tool hits one (`HitTest`): nothing is built on a handle but the
+  images of a transformation. A zero handle sits under its anchor (z just below points):
+  Tab takes it (`Dragger.FindClickOptions`, the Drag tool's only choice), Alt while
+  dragging one moves the one across the anchor the opposite way (`MovesOpposite`, both in
+  the move's undo place). A point on a path depends on the path, parameter = piece index
+  + the cubic's t (`PointPlacement.OrderForPoint` and Snap to take a side for its path); a
+  point on the closing piece of a path opened doesn't exist. Delete an anchor and the path
+  keeps the rest (two at least, `ISupportRemoveDependency`); Alt-drag an anchor onto a
+  neighbor drops it, the target taking its handle on the far side
+  (`CanDropAnchorInto`, from `PointSnapping.Collapse`; not onto an anchor further away).
+  Holes: "Cut out holes" on a selection of two paths or more (`FigureSelection`) makes the
+  largest one's inside leave the others out (`CombinedGeometry` Exclude), the holes being
+  dependencies after the anchors (`Holes="n"`), unfilled, still paths of their own; a
+  deleted hole leaves the path. Transformations but inversion take it through its anchors
+  and handle parts (`CreateImage`): the image's handles are hidden auxiliary points
+  (`HandlePoints="true"`, two per anchor after the anchors), which can't be dragged. File:
+  the anchors as dependencies and `Path="C 1,0 -0.5,1 L ..."`, one piece per anchor, the
+  closing one written whether closed or not: `L` for two handles on their anchors, else
+  `C`, the out offset of the anchor and the in offset of the next. No measurements and no
+  intersections yet.
 - **Names of lines and circles** (`Figures/Controls/FigureLabel.cs`): "Show name" on a line,
   ray, segment or circle (`LineBase`/`CircleBase.ShowName`, over `FigureBase.HasNameLabel`)
   adds a `FigureLabel` the way a point's name is a `PointLabel`: a label depending on the

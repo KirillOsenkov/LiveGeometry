@@ -6,6 +6,7 @@ namespace DynamicGeometry
 {
     [StyleFor(typeof(IShapeWithInterior))]
     [StyleFor(typeof(Bezier))]
+    [StyleFor(typeof(BezierPath.BezierPathInterior))]
     public class ShapeStyle : LineStyle
     {
         public override FrameworkElement GetSampleGlyph()

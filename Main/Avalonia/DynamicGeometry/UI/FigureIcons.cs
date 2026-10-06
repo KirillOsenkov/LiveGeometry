@@ -45,6 +45,7 @@ public static class FigureIcons
         [typeof(PolygonIntersection)] = () => new PolygonIntersectionCreator(),
         [typeof(Polyline)] = () => new PolylineCreator(),
         [typeof(Bezier)] = () => new BezierCreator(),
+        [typeof(BezierPath)] = () => new BezierPathCreator(),
         [typeof(Curve)] = () => new FunctionGraphCreator(),
         [typeof(Locus)] = () => new LocusCreator(),
         [typeof(DistanceMeasurement)] = () => new DistanceMeasurementCreator(),

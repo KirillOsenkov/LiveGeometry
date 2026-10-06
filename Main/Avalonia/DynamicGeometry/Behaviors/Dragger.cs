@@ -61,6 +61,12 @@ namespace DynamicGeometry
 
             found = Drawing.Figures.HitTest(offsetFromFigureLeftTopCorner);
 
+            // a handle of a Bezier path chosen with Tab, under its anchor (FindClickOptions)
+            if (Choice.Index > 0 && Choice.Current is BezierPath.BezierPathHandle chosen)
+            {
+                found = chosen;
+            }
+
             // an axis is the grid's, for the tools to build on: a press on it is a press on
             // the paper, and drags the view
             if (found is AxisLine)
@@ -205,6 +211,40 @@ namespace DynamicGeometry
         }
 
         /// <summary>
+        /// Where a handle of a Bezier path shows among other figures - on its anchor, where a
+        /// click leaves it - Tab chooses (<see cref="ClickChoice"/>): the anchor first, as a
+        /// press takes it, then the handles there (both of a corner). Nowhere else: the Drag
+        /// tool has no choice of its own (its context menu has "Choose figure").
+        /// </summary>
+        protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
+        {
+            var coordinates = Coordinates(e, false, false, false);
+            var figures = Drawing.Figures.HitTestAll(coordinates, f => f.Visible && f.IsHitTestVisible && !(f is AxisLine));
+            if (!figures.Any(f => f is BezierPath.BezierPathHandle))
+            {
+                return new object[0];
+            }
+
+            // a path gives one part at a place: both handles of an anchor are there
+            var options = new List<object>();
+            foreach (var figure in figures)
+            {
+                var candidates = figure is BezierPath.BezierPathHandle handle
+                    ? handle.Owner.Handles.Where(h => h.Visible && h.Exists && h.HitTest(coordinates) != null).Cast<IFigure>()
+                    : new[] { figure };
+                foreach (var candidate in candidates)
+                {
+                    if (!options.Contains(candidate))
+                    {
+                        options.Add(candidate);
+                    }
+                }
+            }
+
+            return options.Count > 1 ? options : new object[0];
+        }
+
+        /// <summary>
         /// The figures selected with the one pressed on, each a whole, which a drag moves
         /// together; null when the press is not on a selection of several
         /// </summary>
@@ -300,6 +340,8 @@ namespace DynamicGeometry
                 // (a selection goes as one piece: Alt does nothing to its points)
                 if (found is IPoint && !found.Locked && !moving.IsEmpty() && !draggingSelection)
                 {
+                    // the handles next to an anchor of a Bezier path show while it is dragged
+                    BezierPath.ShowHandlesWhileDragging(Drawing, found);
                     dragTransaction = Transaction.Create(Drawing.ActionManager, false);
                     var hint = ModifierHint(found);
                     if (hint != null)
@@ -326,6 +368,11 @@ namespace DynamicGeometry
                     // that, so that undo restores the precise position.
                     var desired = currentCoordinates.Minus(offsetFromFigureLeftTopCorner);
                     offset = pointLabel.ClampPosition(desired).Minus(pointLabel.Coordinates);
+                }
+                else if (moving.Count == 1 && moving[0] is BezierPath.BezierPathHandle handle)
+                {
+                    // with Alt the handle across the anchor goes the opposite way
+                    handle.MovesOpposite = IsAltPressed();
                 }
                 else if (moving.Count == 1 && moving[0] is PointOnFigure pointOnFigure)
                 {
@@ -429,6 +476,7 @@ namespace DynamicGeometry
         void Release()
         {
             EndDrag();
+            BezierPath.ShowHandlesWhileDragging(Drawing, null);
             startedMoving = false;
             draggingSelection = false;
             moving = null;
@@ -463,6 +511,11 @@ namespace DynamicGeometry
         /// </summary>
         static string ModifierHint(IFigure figure)
         {
+            if (figure is BezierPath.BezierPathHandle)
+            {
+                return "Hold Shift to snap to grid. Hold " + KeyNames.Alt + " to move the handle across the anchor the opposite way.";
+            }
+
             if (!(figure is PointBase point))
             {
                 return null;
@@ -573,7 +626,8 @@ namespace DynamicGeometry
         /// </summary>
         protected override IFigure GetFigureToPick(MouseEventArgs e)
         {
-            return snap?.ExistingPoint;
+            // (or the handle chosen with Tab, which a press takes instead of its anchor)
+            return snap?.ExistingPoint ?? (Choice.Index > 0 ? Choice.Current as BezierPath.BezierPathHandle : null);
         }
 
         #endregion
@@ -828,6 +882,13 @@ namespace DynamicGeometry
 
         private void UpdateSelection()
         {
+            // a click on a handle of a Bezier path leaves the selection as it is: the handle
+            // shows while its anchor is selected, and would go with the anchor
+            if (found is BezierPath.BezierPathHandle)
+            {
+                return;
+            }
+
             // a vertex or a side of a regular polygon by itself, the inside for the polygon
             var clicked = found != null ? FigureParts.SelectionTarget(found) : pressedFixedLabel;
             if (IsCtrlPressed())

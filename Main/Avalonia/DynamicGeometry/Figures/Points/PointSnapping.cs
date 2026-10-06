@@ -111,8 +111,10 @@ public static class PointSnapping
 
         var current = (point as PointOnFigure)?.LinearFigure;
         return drawing.Figures.HitTestMany(point.Coordinates)
-            .Where(f => f.IsHitTestVisible
-                && f != current
+            .Where(f => f.IsHitTestVisible)
+            .Select(BezierPath.PointHolder)
+            .Distinct()
+            .Where(f => f != current
                 && PointOnFigure.CanBeOnFigure(f)
                 && !f.DependsOn(point))
             .Reverse()
@@ -193,7 +195,27 @@ public static class PointSnapping
             && !IsHeldByLocus(point)
             && !target.DependsOn(point)
             && !FindBuiltOnBoth(point, target).Any(dependent => dependent is IRenamableExpressions)
-            && !(string.IsNullOrEmpty(target.Name) && point.Dependents.OfType<IRenamableExpressions>().Any());
+            && !(string.IsNullOrEmpty(target.Name) && point.Dependents.OfType<IRenamableExpressions>().Any())
+            && CanJoinOnBezierPaths(point, target);
+    }
+
+    /// <summary>
+    /// Nothing joins a handle of a Bezier path, nor is joined into one; and two anchors of a
+    /// path join only when they are next to each other and the path keeps two (the point
+    /// leaves the path, <see cref="BezierPath.CanDropAnchorInto"/>) - not to take the path
+    /// away, as the collapse of anything else built on both would
+    /// </summary>
+    static bool CanJoinOnBezierPaths(PointBase point, IPoint target)
+    {
+        if (point is BezierPath.BezierPathHandle || target is BezierPath.BezierPathHandle)
+        {
+            return false;
+        }
+
+        return point.Dependents
+            .OfType<BezierPath>()
+            .Where(path => path.IsAnchor(point) && path.IsAnchor(target))
+            .All(path => path.CanDropAnchorInto(point, target));
     }
 
     /// <summary>The figures built on the point that use the target too (segment BC, for C and B)</summary>
@@ -320,7 +342,12 @@ public static class PointSnapping
                 continue;
             }
 
-            if (CanDropVertex(collapsing, point, target))
+            if (collapsing is BezierPath path && path.CanDropAnchorInto(point, target))
+            {
+                // the path goes on without the point, the target taking its handle on the far side
+                point.Drawing.ActionManager.RecordAction(path.CreateDropAnchorAction(point, target));
+            }
+            else if (CanDropVertex(collapsing, point, target))
             {
                 Actions.RemoveDependency(collapsing, point);
             }

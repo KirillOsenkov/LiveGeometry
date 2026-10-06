@@ -150,20 +150,26 @@ namespace DynamicGeometry
         /// </summary>
         protected IReadOnlyList<string> NamesFromPoints(PointOrder order, int maxCount = 2)
         {
-            if (Dependencies.Count == 0 || Dependencies.Count > maxCount)
+            return NamesFromPoints(Dependencies, order, maxCount);
+        }
+
+        /// <summary>The same for some of the dependencies (a Bezier path's anchors, not its handles)</summary>
+        protected IReadOnlyList<string> NamesFromPoints(IList<IFigure> points, PointOrder order, int maxCount)
+        {
+            if (points.Count == 0 || points.Count > maxCount)
             {
                 return null;
             }
 
-            var names = new string[Dependencies.Count];
+            var names = new string[points.Count];
             for (int i = 0; i < names.Length; i++)
             {
-                if (!(Dependencies[i] is IPoint) || string.IsNullOrEmpty(Dependencies[i].Name))
+                if (!(points[i] is IPoint) || string.IsNullOrEmpty(points[i].Name))
                 {
                     return null;
                 }
 
-                names[i] = Dependencies[i].Name;
+                names[i] = points[i].Name;
             }
 
             var readings = new List<string[]>() { names };

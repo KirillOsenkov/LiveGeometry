@@ -170,6 +170,12 @@ namespace DynamicGeometry
             };
             pointStyles.AddRange(StyleHue.All.Select(Bead));
 
+            // the handles of a Bezier path: small gray squares, apart from the points (the
+            // picker offers it to them alone, IsOffered)
+            var handleStyle = ThemedPoint(HandleStyleName, size: 7, theme => theme.DependentPointFill);
+            handleStyle.Shape = PointShape.Square;
+            pointStyles.Add(handleStyle);
+
             // Lines: thin, thick, and dashed for auxiliary constructions (there, but stepping
             // back). Gray is the theme's: the line every new figure gets, the ink.
             var lineStyle = new LineStyle() { Name = LineStyleName };
@@ -386,6 +392,7 @@ namespace DynamicGeometry
             return style.Name switch
             {
                 SliderTrackStyleName => figure is Slider,
+                HandleStyleName => figure is BezierPath.BezierPathHandle,
                 GalleryLocusStyleName => false,
                 _ => true
             };
@@ -466,7 +473,16 @@ namespace DynamicGeometry
 
         public IEnumerable<IFigureStyle> GetSupportedStyles(IFigure figure)
         {
-            return GetSupportedStyles(figure.GetType());
+            return GetSupportedStyles(StyledType(figure));
+        }
+
+        /// <summary>
+        /// The type whose styles the figure takes: its own, but for a Bezier path, whose style
+        /// is its inside's (it is a figure a point can be on, which line styles are for)
+        /// </summary>
+        static Type StyledType(IFigure figure)
+        {
+            return figure is BezierPath ? typeof(BezierPath.BezierPathInterior) : figure.GetType();
         }
 
         public IEnumerable<IFigureStyle> GetSupportedStyles(Type figureType)
@@ -502,6 +518,7 @@ namespace DynamicGeometry
         public const string DependentPointStyleName = "DependentPoint";
         public const string LineStyleName = "Line";
         public const string SliderTrackStyleName = "SliderTrack";
+        public const string HandleStyleName = "Handle";
         public const string ShapeStyleName = "Shape";
         public const string OutlinedShapeStyleName = "OutlinedShape";
         public const string TextStyleName = "Text";
@@ -558,7 +575,7 @@ namespace DynamicGeometry
                 return byKind;
             }
 
-            return GetDefaultStyle(figure.GetType());
+            return GetDefaultStyle(StyledType(figure));
         }
 
         /// <summary>
@@ -576,6 +593,11 @@ namespace DynamicGeometry
 
         static string GetDefaultPointStyleName(IFigure point)
         {
+            if (point is BezierPath.BezierPathHandle)
+            {
+                return HandleStyleName;
+            }
+
             // PointOnFigure is a FreePoint, so it goes first
             if (point is PointOnFigure)
             {

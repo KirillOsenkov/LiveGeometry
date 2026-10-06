@@ -348,6 +348,18 @@ public class ClickPreview
             };
             SetHaloStroke(halo, polygon.Shape);
         }
+        else if (figure is BezierPath bezierPath)
+        {
+            // along its sides (a point goes on the path)
+            halo = new AvaloniaShapes.Path()
+            {
+                Data = bezierPath.SidesGeometry(),
+                Stroke = HaloBrush,
+                StrokeThickness = 1 + HaloWidth,
+                StrokeLineCap = PenLineCap.Round,
+                ZIndex = (int)ZOrder.Figures - 1
+            };
+        }
         else if (figure is Slider slider)
         {
             // the track stands for the whole (a slider taken as a radius)

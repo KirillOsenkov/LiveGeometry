@@ -298,6 +298,16 @@ namespace DynamicGeometry
                         Include(vertex.Coordinates);
                     }
                 }
+                else if (figure is BezierPath path)
+                {
+                    // the curve as drawn: it bulges past its anchors
+                    var curve = path.Bounds;
+                    if (curve.Width > 0 || curve.Height > 0)
+                    {
+                        Include(curve.TopLeft);
+                        Include(curve.BottomRight);
+                    }
+                }
                 else if (figure is Slider slider)
                 {
                     Include(slider.Anchor.Coordinates);

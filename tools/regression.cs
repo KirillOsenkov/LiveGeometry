@@ -57,6 +57,10 @@ public class Program
             ("A dashed vector has a dashed shaft", DashedVector),
             ("A regular polygon's sides and vertices are selected by themselves", RegularPolygonPartSelection),
             ("A regular polygon's sides and vertices keep their styles", RegularPolygonPartStyles),
+            ("The Bezier path tool clicks, pulls handles and closes", BezierPathTool),
+            ("A Bezier path's handles show, Tab takes one, Alt mirrors", BezierPathHandles),
+            ("Alt dragging an anchor onto its neighbor drops it from the path", BezierPathDropAnchor),
+            ("A Bezier path: points on it, deleted anchors, holes, images", BezierPathFigure),
             ("Paste into another drawing keeps the look", PasteBringsStyles),
             ("Pasting plain text is no error", PastePlainText),
             ("The axes are lines to build on, one of each", AxisLines),
@@ -921,6 +925,288 @@ public class Program
         Require(copy.GetPart("Vertex4").Style?.Name == "RedPoint", "Vertex 4 came back as " + copy.GetPart("Vertex4").Style?.Name);
         Require(reloaded.SaveAsText() == saved, "The polygon's styles did not round trip.");
         drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>A press, moves along the way and a release, as a mouse makes them</summary>
+    static void Drag(Drawing drawing, Point from, Point to, KeyModifiers modifiers = KeyModifiers.None)
+    {
+        var canvas = drawing.Canvas;
+        using var pointer = new Pointer(Pointer.GetNextFreeId(), PointerType.Mouse, isPrimary: true);
+        canvas.RaiseEvent(new PointerPressedEventArgs(
+            canvas,
+            pointer,
+            canvas,
+            from,
+            timestamp: 0,
+            new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.LeftButtonPressed),
+            modifiers,
+            clickCount: 1));
+        for (int step = 1; step <= 12; step++)
+        {
+            canvas.RaiseEvent(new PointerEventArgs(
+                InputElement.PointerMovedEvent,
+                canvas,
+                pointer,
+                canvas,
+                from + (to - from) * (step / 12.0),
+                timestamp: (ulong)step,
+                new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.Other),
+                modifiers));
+        }
+
+        canvas.RaiseEvent(new PointerReleasedEventArgs(
+            canvas,
+            pointer,
+            canvas,
+            to,
+            timestamp: 13,
+            new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonReleased),
+            modifiers,
+            MouseButton.Left));
+    }
+
+    static void NearPoint(Point actual, Point expected)
+    {
+        Near(actual.X, expected.X);
+        Near(actual.Y, expected.Y);
+    }
+
+    static Point HandleOffset(BezierPath path, int anchor, bool isIn)
+    {
+        return ((BezierPath.BezierPathHandle)path.GetPart((isIn ? "In" : "Out") + (anchor + 1))).Offset;
+    }
+
+    /// <summary>A click, a press dragged out, a click, and a click on the first anchor: a closed path with one smooth anchor</summary>
+    static void BezierPathTool()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        string empty = drawing.SaveAsText();
+        var tool = new BezierPathCreator();
+        drawing.Behavior = tool;
+        Click(drawing, system.ToPhysical(new Point(0, 0)));
+        Drag(drawing, system.ToPhysical(new Point(3, 0)), system.ToPhysical(new Point(4, 1)));
+        Click(drawing, system.ToPhysical(new Point(3, -3)));
+        Require(drawing.IsRecordingTransaction, "The path ended before it was closed.");
+        Click(drawing, system.ToPhysical(new Point(0, 0)));
+        Require(!drawing.IsRecordingTransaction, "A click on the first anchor did not close the path.");
+        var path = drawing.Figures.OfType<BezierPath>().Single();
+        Require(path.Closed && path.Filled && path.AnchorCount == 3, "The path: closed " + path.Closed + ", " + path.AnchorCount + " anchors.");
+        Require(drawing.Figures.OfType<FreePoint>().Count() == 3, "The anchors are not three free points.");
+        NearPoint(HandleOffset(path, anchor: 1, isIn: false), new Point(1, 1));
+        NearPoint(HandleOffset(path, anchor: 1, isIn: true), new Point(-1, -1));
+        NearPoint(HandleOffset(path, anchor: 0, isIn: false), new Point(0, 0));
+        Require(path.Name == "ABC", "The path is named " + path.Name);
+        drawing.Figures.CheckConsistency();
+        string after = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == empty, "Undo of the path left something.");
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo of the path changed it.");
+        var reloaded = ReadLgf(after);
+        Require(reloaded.LoadErrors == null && reloaded.SaveAsText() == after, "The path did not round trip.");
+
+        // open, with Enter: not filled
+        Click(drawing, system.ToPhysical(new Point(-5, 3)));
+        Click(drawing, system.ToPhysical(new Point(-3, 4)));
+        tool.KeyDown(null, new KeyEventArgs() { Key = Key.Enter });
+        var open = drawing.Figures.OfType<BezierPath>().Single(p => p != path);
+        Require(!open.Closed && !open.Filled && open.AnchorCount == 2, "Enter did not leave an open path of two anchors.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// Path ABC (open, every handle on its anchor): with B selected its two handles show and
+    /// the ones of A and C that face it; Tab at B takes a handle, which a drag pulls out; with
+    /// Alt the handle across B goes the opposite way; undo puts both back
+    /// </summary>
+    static void BezierPathHandles()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        var a = AddPoint(drawing, x: 0, y: 0);
+        var b = AddPoint(drawing, x: 4, y: 0);
+        var c = AddPoint(drawing, x: 8, y: 0);
+        var zero = new Point[3];
+        var path = BezierPath.Create(drawing, new IFigure[] { a, b, c }, zero, zero, closed: false, filled: false);
+        Actions.Add(drawing, path);
+        drawing.Behavior = new Dragger();
+        Require(!path.Handles.Any(h => h.Visible), "Handles show with nothing selected.");
+        b.Selected = true;
+        drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
+        var shown = path.Handles.Where(h => h.Visible).Select(h => path.GetPartName(h)).OrderBy(n => n).ToList();
+        Require(string.Join(" ", shown) == "In2 In3 Out1 Out2", "Handles shown: " + string.Join(" ", shown));
+
+        string status = null;
+        drawing.ChoiceStatus += text => status = text;
+        var atB = system.ToPhysical(b.Coordinates);
+        Hover(drawing, atB);
+        Require(status != null && status.Contains("(1 of 3)"), "No choice at B: " + status);
+        Require(drawing.Behavior.StepChoice(backwards: false), "Tab chose nothing at B.");
+        Require(status.StartsWith("Handle of B toward A"), "Tab took: " + status);
+        string before = drawing.SaveAsText();
+        Drag(drawing, atB, system.ToPhysical(new Point(4, 2)));
+        NearPoint(b.Coordinates, new Point(4, 0));
+        NearPoint(HandleOffset(path, anchor: 1, isIn: true), new Point(0, 2));
+        Require(b.Selected, "The drag of a handle lost the selection.");
+        string pulled = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the handle's drag.");
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == pulled, "Redo of the handle's drag.");
+
+        // with Alt the out handle goes the opposite way
+        Drag(drawing, system.ToPhysical(new Point(4, 2)), system.ToPhysical(new Point(3, 3)), KeyModifiers.Alt);
+        NearPoint(HandleOffset(path, anchor: 1, isIn: true), new Point(-1, 3));
+        NearPoint(HandleOffset(path, anchor: 1, isIn: false), new Point(1, -1));
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == pulled, "Undo of the mirrored drag.");
+
+        // a click on the handle keeps B selected
+        Click(drawing, system.ToPhysical(new Point(4, 2)));
+        Require(b.Selected && !path.Selected, "A click on a handle changed the selection.");
+        drawing.Figures.CheckConsistency();
+
+        // no other tool takes a handle
+        drawing.Behavior = new FreePointCreator();
+        var placement = PointPlacement.Find(drawing, new Point(4, 2), snapToMidpoint: false);
+        Require(placement.ExistingPoint == null, "The Point tool took a handle.");
+    }
+
+    /// <summary>Path ABCD: B dragged with Alt onto C leaves the path ACD, C taking B's handle toward A</summary>
+    static void BezierPathDropAnchor()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        var points = new[] { AddPoint(drawing, x: 0, y: 0), AddPoint(drawing, x: 3, y: 2), AddPoint(drawing, x: 6, y: 0), AddPoint(drawing, x: 9, y: 2) };
+        var ins = new[] { new Point(0, 0), new Point(-1, 1), new Point(-0.5, 0.5), new Point(0, 0) };
+        var outs = new[] { new Point(1, 1), new Point(1, -1), new Point(0.5, -0.5), new Point(0, 0) };
+        var path = BezierPath.Create(drawing, points, ins, outs, closed: false, filled: false);
+        Actions.Add(drawing, path);
+        drawing.Behavior = new Dragger();
+        string before = drawing.SaveAsText();
+        Drag(drawing, system.ToPhysical(points[1].Coordinates), system.ToPhysical(points[2].Coordinates), KeyModifiers.Alt);
+        Require(!drawing.Figures.Contains(points[1]), "B was not joined into C.");
+        Require(drawing.Figures.Contains(path) && path.AnchorCount == 3, "The path is not ACD.");
+        Require(path.Dependencies.SequenceEqual(new IFigure[] { points[0], points[2], points[3] }), "The anchors: " + string.Join(", ", path.Dependencies));
+        NearPoint(HandleOffset(path, anchor: 1, isIn: true), new Point(-1, 1));
+        NearPoint(HandleOffset(path, anchor: 1, isIn: false), new Point(0.5, -0.5));
+        drawing.Figures.CheckConsistency();
+        string after = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the drop changed the drawing.");
+        drawing.Figures.CheckConsistency();
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo of the drop changed the drawing.");
+
+        // A onto D, not next to each other: no join
+        Drag(drawing, system.ToPhysical(points[0].Coordinates), system.ToPhysical(points[3].Coordinates), KeyModifiers.Alt);
+        Require(drawing.Figures.Contains(points[0]) && path.AnchorCount == 3, "A was joined into D, which is not next to it.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void BezierPathFigure()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var a = AddPoint(drawing, x: 0, y: 4);
+        var b = AddPoint(drawing, x: 4, y: -2);
+        var c = AddPoint(drawing, x: -4, y: -2);
+        var path = BezierPath.Create(
+            drawing,
+            new IFigure[] { a, b, c },
+            new[] { new Point(-1, 0), new Point(0, 1), new Point(1, 0) },
+            new[] { new Point(1, 0), new Point(0, -1), new Point(-1, 0) },
+            closed: true,
+            filled: true);
+        Actions.Add(drawing, path);
+
+        // a point on the second piece, where the cubic's own parameter says
+        var onPath = Factory.CreatePointOnFigure(drawing, path, new Point(0, -3));
+        Actions.Add(drawing, onPath);
+        Require(onPath.Parameter >= 1 && onPath.Parameter <= 2, "The point near the bottom is on piece " + onPath.Parameter);
+        NearPoint(onPath.Coordinates, path.GetPointFromParameter(onPath.Parameter));
+        Near(path.GetNearestParameterFromPoint(path.GetPointFromParameter(0.3)), expected: 0.3);
+        Require(onPath.Exists, "The point on the path doesn't exist.");
+
+        // opened, the closing piece goes, and a point on it with it
+        var onClosing = Factory.CreatePointOnFigure(drawing, path, path.GetPointFromParameter(2.5));
+        Actions.Add(drawing, onClosing);
+        Set(drawing, path, nameof(BezierPath.Closed), false);
+        drawing.Recalculate();
+        Require(!onClosing.Exists && onPath.Exists, "Opening the path: the points on it.");
+        drawing.ActionManager.Undo();
+        drawing.Recalculate();
+        Require(onClosing.Exists, "Undo of opening the path.");
+
+        // a deleted anchor leaves a path of two
+        string before = drawing.SaveAsText();
+        Actions.Remove(c);
+        Require(drawing.Figures.Contains(path) && path.AnchorCount == 2 && onPath.Exists, "Deleting an anchor: " + path.AnchorCount + " anchors.");
+        drawing.Figures.CheckConsistency();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of deleting an anchor.");
+        drawing.Figures.CheckConsistency();
+
+        // a hole
+        var hole = BezierPath.Create(
+            drawing,
+            new IFigure[] { AddPoint(drawing, x: -1, y: 0), AddPoint(drawing, x: 1, y: 0), AddPoint(drawing, x: 0, y: 1) },
+            new Point[3],
+            new Point[3],
+            closed: true,
+            filled: true);
+        Actions.Add(drawing, hole);
+        Require(BezierPath.CanCutHoles(new IFigure[] { path, hole }), "Two paths can't be cut.");
+        string withHole = drawing.SaveAsText();
+        BezierPath.CutHoles(drawing, new IFigure[] { hole, path });
+        Require(path.Holes.Single() == hole && !hole.Filled, "The small path is not an unfilled hole of the big one.");
+        Require(drawing.Figures.IndexOf(hole) < drawing.Figures.IndexOf(path), "The hole comes after the path built on it.");
+        Require(path.HitTest(new Point(0, 0.3)) == null && path.HitTest(new Point(0, 2.5)) != null, "The hole is not left out of the inside.");
+        drawing.Figures.CheckConsistency();
+        string cut = drawing.SaveAsText();
+        var reloaded = ReadLgf(cut);
+        Require(reloaded.LoadErrors == null && reloaded.SaveAsText() == cut, "The holes did not round trip.");
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == withHole, "Undo of cutting the hole.");
+        drawing.ActionManager.Redo();
+        Actions.Remove(hole);
+        Require(drawing.Figures.Contains(path) && !path.Holes.Any(), "Deleting the hole took the path.");
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == cut, "Undo of deleting the hole.");
+        drawing.Figures.CheckConsistency();
+
+        // reflected in the y axis: the image's handles are the images of the source's
+        var mirror = Factory.CreateLineTwoPoints(drawing, new IFigure[] { AddPoint(drawing, x: 6, y: 0), AddPoint(drawing, x: 6, y: 1) });
+        Actions.Add(drawing, mirror);
+        Require(Transformer.CanBeSource(path), "The path can't be reflected.");
+        var images = Transformer.CreateReflectedFigure(drawing, path, mirror);
+        foreach (var image in images)
+        {
+            Actions.Add(drawing, image);
+        }
+
+        var reflected = (BezierPath)images.Last();
+        Require(reflected.HasHandlePoints && reflected.AnchorCount == 3 && reflected.Holes.Count() == 1, "The image is not a path of three anchors with a hole.");
+        NearPoint(reflected.GetPointFromParameter(0.4), new Point(12 - path.GetPointFromParameter(0.4).X, path.GetPointFromParameter(0.4).Y));
+        drawing.Figures.CheckConsistency();
+        string imaged = drawing.SaveAsText();
+        var reread = ReadLgf(imaged);
+        Require(reread.LoadErrors == null && reread.SaveAsText() == imaged, "The image did not round trip.");
+
+        // the image follows the source's handles
+        var handle = (BezierPath.BezierPathHandle)path.GetPart("Out1");
+        handle.MoveTo(handle.Coordinates.Plus(new Point(1, 1)));
+        drawing.Recalculate();
+        NearPoint(reflected.GetPointFromParameter(0.4), new Point(12 - path.GetPointFromParameter(0.4).X, path.GetPointFromParameter(0.4).Y));
+
+        // not in a circle
+        var circle = Factory.CreateCircle(drawing, new IFigure[] { AddPoint(drawing, x: 10, y: 10), AddPoint(drawing, x: 11, y: 10) });
+        Actions.Add(drawing, circle);
+        Require(!Transformer.CanFigureBeMirrorForSource(circle, path), "A circle reflects a path.");
     }
 
     static void Click(Drawing drawing, Point at)

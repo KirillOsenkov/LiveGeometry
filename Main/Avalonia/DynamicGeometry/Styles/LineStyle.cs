@@ -5,6 +5,7 @@ namespace DynamicGeometry
 {
     [StyleFor(typeof(ILinearFigure))]
     [StyleFor(typeof(Slider))]
+    [StyleFor(typeof(BezierPath.BezierPathPiece))]
     public class LineStyle : FigureStyle
     {
         public override FrameworkElement GetSampleGlyph()

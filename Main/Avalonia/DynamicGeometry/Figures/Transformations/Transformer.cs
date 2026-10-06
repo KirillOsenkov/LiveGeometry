@@ -62,7 +62,9 @@ namespace DynamicGeometry
         /// </summary>
         public static bool CanBeTraced(IFigure figure)
         {
-            return !(figure is IPoint) && PointOnFigure.CanBeOnFigure(figure);
+            // (a Bezier path is transformed through its anchors and handles, and has no
+            // image in a circle)
+            return !(figure is IPoint) && !(figure is BezierPath) && PointOnFigure.CanBeOnFigure(figure);
         }
 
         /// <summary>
@@ -127,6 +129,12 @@ namespace DynamicGeometry
             if (figure is IPoint)
             {
                 return true;
+            }
+
+            // its anchors, its handles (which are points) and its holes
+            if (figure is BezierPath path)
+            {
+                return path.CanBeTransformed(dependency => CanBeTransformSource(dependency, keepsLengths));
             }
 
             if (!(figure is ILine || figure is IEllipse || figure is IPolygonalChain))
@@ -360,6 +368,10 @@ namespace DynamicGeometry
 
                 result.Add(reflectedPoint);
             }
+            else if (source is BezierPath path && !(mirror is ICircle))
+            {
+                result.AddRange(path.CreateImage(point => CreateReflectedFigure(drawing, point, mirror)));
+            }
             else if ((source is ILine || source is IEllipse || source is IPolygonalChain) && !(mirror is ICircle))
             {
                 var dependencies = new List<IFigure>();
@@ -458,6 +470,10 @@ namespace DynamicGeometry
                 dilatedPoint.Visible = source.Visible;
                 result.Add(dilatedPoint);
             }
+            else if (source is BezierPath path)
+            {
+                result.AddRange(path.CreateImage(point => CreateDilatedFigure(drawing, point, center, lengthProvider1, lengthProvider2)));
+            }
             else if (source is ILine || source is IEllipse || source is IPolygonalChain)
             {
                 var dependencies = new List<IFigure>();
@@ -537,6 +553,10 @@ namespace DynamicGeometry
                 rotatedPoint.Visible = source.Visible;
                 result.Add(rotatedPoint);
             }
+            else if (source is BezierPath path)
+            {
+                result.AddRange(path.CreateImage(point => CreateRotatedFigure(drawing, point, center, angleProvider)));
+            }
             else if (source is ILine || source is IEllipse || source is IPolygonalChain)
             {
                 var dependencies = new List<IFigure>();
@@ -610,6 +630,10 @@ namespace DynamicGeometry
                 var translatedPoint = Factory.CreateTranslatedPoint(drawing, (IPoint)source, distanceSource, directionSource);
                 translatedPoint.Visible = source.Visible;
                 result.Add(translatedPoint);
+            }
+            else if (source is BezierPath path)
+            {
+                result.AddRange(path.CreateImage(point => CreateTranslatedFigure(drawing, point, distanceSource, directionSource)));
             }
             else if (source is ILine || source is IEllipse || source is IPolygonalChain)
             {
