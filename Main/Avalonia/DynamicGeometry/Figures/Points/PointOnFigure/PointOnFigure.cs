@@ -152,5 +152,14 @@ namespace DynamicGeometry
         {
             PointSnapping.Release(this);
         }
+
+        /// <summary>A point on a Bezier path becomes an anchor of it, where it is (<see cref="BezierPath.ConvertToAnchor"/>)</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Convert to path anchor")]
+        [PropertyGridIcon(PropertyGridIcon.Plus)]
+        public void ConvertToPathAnchor()
+        {
+            BezierPath.ConvertToAnchor(this);
+        }
     }
 }

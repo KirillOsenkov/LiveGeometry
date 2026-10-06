@@ -61,6 +61,7 @@ public class Program
             ("A Bezier path's handles show, Tab takes one, Alt mirrors", BezierPathHandles),
             ("Alt dragging an anchor onto its neighbor drops it from the path", BezierPathDropAnchor),
             ("A Bezier path: points on it, deleted anchors, holes, images", BezierPathFigure),
+            ("A point on a Bezier path becomes an anchor, the curve the same", BezierPathInsertAnchor),
             ("Paste into another drawing keeps the look", PasteBringsStyles),
             ("Pasting plain text is no error", PastePlainText),
             ("The axes are lines to build on, one of each", AxisLines),
@@ -1050,6 +1051,7 @@ public class Program
         Drag(drawing, atB, system.ToPhysical(new Point(4, 2)));
         NearPoint(b.Coordinates, new Point(4, 0));
         NearPoint(HandleOffset(path, anchor: 1, isIn: true), new Point(0, 2));
+        NearPoint(HandleOffset(path, anchor: 1, isIn: false), new Point(0, -2));
         Require(b.Selected, "The drag of a handle lost the selection.");
         string pulled = drawing.SaveAsText();
         drawing.ActionManager.Undo();
@@ -1057,10 +1059,16 @@ public class Program
         drawing.ActionManager.Redo();
         Require(drawing.SaveAsText() == pulled, "Redo of the handle's drag.");
 
-        // with Alt the out handle goes the opposite way
+        // with Alt the out handle stays where it is (a corner)
         Drag(drawing, system.ToPhysical(new Point(4, 2)), system.ToPhysical(new Point(3, 3)), KeyModifiers.Alt);
         NearPoint(HandleOffset(path, anchor: 1, isIn: true), new Point(-1, 3));
-        NearPoint(HandleOffset(path, anchor: 1, isIn: false), new Point(1, -1));
+        NearPoint(HandleOffset(path, anchor: 1, isIn: false), new Point(0, -2));
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == pulled, "Undo of the drag with Alt.");
+
+        // without, it snaps back to the mirror image
+        Drag(drawing, system.ToPhysical(new Point(4, 2)), system.ToPhysical(new Point(5, 3)));
+        NearPoint(HandleOffset(path, anchor: 1, isIn: false), new Point(-1, -3));
         drawing.ActionManager.Undo();
         Require(drawing.SaveAsText() == pulled, "Undo of the mirrored drag.");
 
@@ -1207,6 +1215,59 @@ public class Program
         var circle = Factory.CreateCircle(drawing, new IFigure[] { AddPoint(drawing, x: 10, y: 10), AddPoint(drawing, x: 11, y: 10) });
         Actions.Add(drawing, circle);
         Require(!Transformer.CanFigureBeMirrorForSource(circle, path), "A circle reflects a path.");
+    }
+
+    /// <summary>
+    /// Closed path ABC; P halfway along its first piece becomes an anchor: four anchors, the
+    /// same curve (a place three quarters along the old piece is half along the new second
+    /// one), the other points on the path where they were
+    /// </summary>
+    static void BezierPathInsertAnchor()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var a = AddPoint(drawing, x: 0, y: 4);
+        var b = AddPoint(drawing, x: 4, y: -2);
+        var c = AddPoint(drawing, x: -4, y: -2);
+        var path = BezierPath.Create(
+            drawing,
+            new IFigure[] { a, b, c },
+            new[] { new Point(-2, 0), new Point(0, 2), new Point(1, 1) },
+            new[] { new Point(2, 0), new Point(0, -2), new Point(-1, -1) },
+            closed: true,
+            filled: true);
+        Actions.Add(drawing, path);
+        var oldQuarter = path.GetPointFromParameter(0.25);
+        var oldThreeQuarters = path.GetPointFromParameter(0.75);
+        var oldSecond = path.GetPointFromParameter(1.5);
+        var p = Factory.CreatePointOnFigure(drawing, path, path.GetPointFromParameter(0.5));
+        var q = Factory.CreatePointOnFigure(drawing, path, oldQuarter);
+        var r = Factory.CreatePointOnFigure(drawing, path, oldSecond);
+        Actions.Add(drawing, p);
+        Actions.Add(drawing, q);
+        Actions.Add(drawing, r);
+        Near(p.Parameter, expected: 0.5);
+        Require(BezierPath.CanBecomeAnchor(p) && !BezierPath.CanBecomeAnchor(a), "Which points can become anchors.");
+        string name = p.Name;
+        string before = drawing.SaveAsText();
+        p.ConvertToPathAnchor();
+        Require(path.AnchorCount == 4 && path.Anchor(1) is FreePoint anchor && anchor.Name == name, "P is not the second anchor.");
+        Require(drawing.Figures.IndexOf((IFigure)path.Anchor(1)) < drawing.Figures.IndexOf(path), "The new anchor comes after the path.");
+        NearPoint(path.GetPointFromParameter(0.5), oldQuarter);
+        NearPoint(path.GetPointFromParameter(1.5), oldThreeQuarters);
+        NearPoint(path.GetPointFromParameter(2.5), oldSecond);
+        drawing.Recalculate();
+        NearPoint(q.Coordinates, oldQuarter);
+        NearPoint(r.Coordinates, oldSecond);
+        drawing.Figures.CheckConsistency();
+        string after = drawing.SaveAsText();
+        Require(ReadLgf(after).SaveAsText() == after, "The path with the new anchor did not round trip.");
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the new anchor changed the drawing.");
+        drawing.Figures.CheckConsistency();
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo of the new anchor changed the drawing.");
+        drawing.Figures.CheckConsistency();
     }
 
     static void Click(Drawing drawing, Point at)

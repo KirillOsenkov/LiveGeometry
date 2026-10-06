@@ -237,8 +237,8 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
 
     /// <summary>
     /// The handle goes where it is dragged: its offset from its anchor changes, and with
-    /// <see cref="BezierPathHandle.MovesOpposite"/> the handle across the anchor goes the
-    /// opposite way by as much
+    /// <see cref="BezierPathHandle.MirrorsOpposite"/> the handle across the anchor is its
+    /// mirror image through the anchor from then on (a smooth, symmetric anchor)
     /// </summary>
     public void MoveHandle(BezierPathHandle handle, Point coordinates)
     {
@@ -249,9 +249,9 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         }
 
         var offset = coordinates.Minus(point.Coordinates);
-        if (handle.MovesOpposite && Opposite(handle) is BezierPathHandle opposite)
+        if (handle.MirrorsOpposite && Opposite(handle) is BezierPathHandle opposite)
         {
-            opposite.Offset = opposite.Offset.Minus(offset.Minus(handle.Offset));
+            opposite.Offset = offset.Minus();
         }
 
         handle.Offset = offset;
@@ -1252,7 +1252,31 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             }
         }
 
-        return bestIndex + (low + high) / 2;
+        // and a few steps of Newton's method on the squared distance, which the search above
+        // leaves a little off (it is flat at its minimum)
+        double t = (low + high) / 2;
+        var c = controls[bestIndex];
+        for (int k = 0; k < 4; k++)
+        {
+            double u = 1 - t;
+            var at = best.GetPoint(t);
+            double dx = at.X - point.X;
+            double dy = at.Y - point.Y;
+            double d1x = 3 * u * u * (c[1].X - c[0].X) + 6 * u * t * (c[2].X - c[1].X) + 3 * t * t * (c[3].X - c[2].X);
+            double d1y = 3 * u * u * (c[1].Y - c[0].Y) + 6 * u * t * (c[2].Y - c[1].Y) + 3 * t * t * (c[3].Y - c[2].Y);
+            double d2x = 6 * u * (c[2].X - 2 * c[1].X + c[0].X) + 6 * t * (c[3].X - 2 * c[2].X + c[1].X);
+            double d2y = 6 * u * (c[2].Y - 2 * c[1].Y + c[0].Y) + 6 * t * (c[3].Y - 2 * c[2].Y + c[1].Y);
+            double slope = dx * d1x + dy * d1y;
+            double curvature = d1x * d1x + d1y * d1y + dx * d2x + dy * d2y;
+            if (curvature <= 0)
+            {
+                break;
+            }
+
+            t = System.Math.Max(0, System.Math.Min(1, t - slope / curvature));
+        }
+
+        return bestIndex + t;
     }
 
     static (double Distance, double Ratio) DistanceToSegment(Point point, Point start, Point end)
@@ -1447,6 +1471,192 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         holeCount--;
         this.RemoveDependencyCore(index, hole);
         RecalculateAndUpdate();
+    }
+
+    #endregion
+
+    #region Inserting an anchor
+
+    /// <summary>The piece a parameter is on and how far along it (the cubic's own t)</summary>
+    (int Piece, double T) SplitPlace(double parameter)
+    {
+        int count = PieceCount;
+        int piece = System.Math.Max(0, System.Math.Min(count - 1, (int)System.Math.Floor(parameter)));
+        return (piece, parameter - piece);
+    }
+
+    /// <summary>
+    /// Whether the point can become an anchor of the path it is on, where it is: a point on
+    /// a path with handles of its own (not an image), somewhere along a piece and not at
+    /// its ends, and not one a locus is drawn from
+    /// </summary>
+    public static bool CanBecomeAnchor(IFigure point)
+    {
+        if (!(point is PointOnFigure onFigure)
+            || !(onFigure.Dependencies.FirstOrDefault() is BezierPath path)
+            || path.handlePoints
+            || path.Drawing == null
+            || !onFigure.Exists
+            || PointSnapping.IsHeldByLocus(onFigure))
+        {
+            return false;
+        }
+
+        const double slack = 1e-6;
+        var (_, t) = path.SplitPlace(onFigure.Parameter);
+        return t > slack && t < 1 - slack;
+    }
+
+    /// <summary>
+    /// The point on the path becomes an anchor of it there: a free point in its place (its
+    /// name, label and dependents, <see cref="Actions.ReplacePoint"/>), put into the path
+    /// between the ends of its piece, which is split there (de Casteljau's construction:
+    /// the two pieces draw the same curve). The points on the path stay where they are.
+    /// One undo step.
+    /// </summary>
+    public static void ConvertToAnchor(PointOnFigure point)
+    {
+        if (!CanBecomeAnchor(point))
+        {
+            return;
+        }
+
+        var path = (BezierPath)point.Dependencies[0];
+        var drawing = point.Drawing;
+        var (piece, t) = path.SplitPlace(point.Parameter);
+        bool selected = point.Selected;
+        FreePoint anchor;
+        using (Transaction.Create(drawing.ActionManager, false))
+        {
+            anchor = Factory.CreateFreePoint(drawing, point.Coordinates);
+            Actions.ReplacePoint(point, anchor);
+
+            // before the path, which is built on it from now on
+            Actions.MoveBefore(drawing, anchor, path);
+            drawing.ActionManager.RecordAction(path.CreateInsertAnchorAction(anchor, piece, t));
+        }
+
+        if (selected)
+        {
+            point.Selected = false;
+            anchor.Selected = true;
+            drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
+        }
+    }
+
+    IAction CreateInsertAnchorAction(IFigure anchor, int piece, double t)
+    {
+        BezierPathHandle inHandle = null;
+        BezierPathHandle outHandle = null;
+        BezierPathPiece newPiece = null;
+        Point oldOut = default;
+        Point oldIn = default;
+        List<(PointOnFigure Point, double Parameter)> moved = null;
+        int index = piece + 1;
+
+        return new CallMethodAction(
+            () =>
+            {
+                int count = AnchorCount;
+                int next = (piece + 1) % count;
+                var p0 = AnchorPoint(piece);
+                var p1 = OutPoint(piece);
+                var p2 = InPoint(next);
+                var p3 = AnchorPoint(next);
+                var p01 = Lerp(p0, p1, t);
+                var p12 = Lerp(p1, p2, t);
+                var p23 = Lerp(p2, p3, t);
+                var p012 = Lerp(p01, p12, t);
+                var p123 = Lerp(p12, p23, t);
+                var at = Lerp(p012, p123, t);
+
+                oldOut = outHandles[piece].Offset;
+                oldIn = inHandles[next].Offset;
+                outHandles[piece].Offset = p01.Minus(p0);
+                inHandles[next].Offset = p23.Minus(p3);
+                moved = MovePointsAcross(piece, t);
+
+                bool isNew = inHandle == null;
+                if (isNew)
+                {
+                    inHandle = new BezierPathHandle(this, isIn: true);
+                    outHandle = new BezierPathHandle(this, isIn: false);
+                    newPiece = new BezierPathPiece(this);
+                }
+
+                inHandle.Offset = p012.Minus(at);
+                outHandle.Offset = p123.Minus(at);
+                inHandles.Insert(index, inHandle);
+                outHandles.Insert(index, outHandle);
+                pieces.Insert(piece + 1, newPiece);
+                if (isNew)
+                {
+                    AddPart(inHandle, outHandles[piece].Style);
+                    AddPart(outHandle, outHandles[piece].Style);
+                    AddPart(newPiece, pieces[piece].Style);
+                }
+                else
+                {
+                    ReturnPart(inHandle);
+                    ReturnPart(outHandle);
+                    ReturnPart(newPiece);
+                }
+
+                this.InsertDependencyCore(index, anchor);
+                RecalculateAndUpdate();
+            },
+            () =>
+            {
+                pieces.Remove(newPiece);
+                inHandles.Remove(inHandle);
+                outHandles.Remove(outHandle);
+                RemovePart(newPiece);
+                RemovePart(inHandle);
+                RemovePart(outHandle);
+                this.RemoveDependencyCore(index, anchor);
+                int next = (piece + 1) % AnchorCount;
+                outHandles[piece].Offset = oldOut;
+                inHandles[next].Offset = oldIn;
+                foreach (var (point, parameter) in moved)
+                {
+                    point.Parameter = parameter;
+                }
+
+                RecalculateAndUpdate();
+            });
+    }
+
+    static Point Lerp(Point from, Point to, double t)
+    {
+        return new Point(from.X + (to.X - from.X) * t, from.Y + (to.Y - from.Y) * t);
+    }
+
+    /// <summary>
+    /// The points on the path stay where they are when the piece is split at t: those on
+    /// later pieces a piece on, those on it onto the half they are on (the halves are the
+    /// same cubic, run over [0, t] and [t, 1]). Returns where they were, for undo.
+    /// </summary>
+    List<(PointOnFigure Point, double Parameter)> MovePointsAcross(int piece, double t)
+    {
+        var result = new List<(PointOnFigure Point, double Parameter)>();
+        foreach (var point in Dependents.OfType<PointOnFigure>().Where(p => p.Dependencies.FirstOrDefault() == this))
+        {
+            var parameter = point.Parameter;
+            result.Add((point, parameter));
+            if (parameter >= piece + 1)
+            {
+                point.Parameter = parameter + 1;
+            }
+            else if (parameter >= piece)
+            {
+                double along = parameter - piece;
+                point.Parameter = along < t
+                    ? piece + along / t
+                    : piece + 1 + (along - t) / (1 - t);
+            }
+        }
+
+        return result;
     }
 
     #endregion
@@ -1843,8 +2053,11 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
         /// <summary>Where the handle is from its anchor</summary>
         public Point Offset { get; set; }
 
-        /// <summary>Set by the Drag tool while Alt is held: the handle across the anchor goes the opposite way</summary>
-        public bool MovesOpposite { get; set; }
+        /// <summary>
+        /// Set by the Drag tool unless Alt is held: the handle across the anchor follows as
+        /// the mirror image of this one through the anchor
+        /// </summary>
+        public bool MirrorsOpposite { get; set; }
 
         public override void OnAddingToDrawing(Drawing drawing)
         {

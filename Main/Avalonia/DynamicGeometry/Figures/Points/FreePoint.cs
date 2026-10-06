@@ -48,6 +48,8 @@ namespace DynamicGeometry
                 case nameof(PointOnFigure.Release):
                     // (the "Free point" of a point on a figure: not while a locus is drawn from it)
                     return PointSnapping.CanRelease(this);
+                case nameof(PointOnFigure.ConvertToPathAnchor):
+                    return BezierPath.CanBecomeAnchor(this);
                 default:
                     return true;
             }

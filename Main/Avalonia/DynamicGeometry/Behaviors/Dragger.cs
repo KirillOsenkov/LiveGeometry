@@ -371,8 +371,9 @@ namespace DynamicGeometry
                 }
                 else if (moving.Count == 1 && moving[0] is BezierPath.BezierPathHandle handle)
                 {
-                    // with Alt the handle across the anchor goes the opposite way
-                    handle.MovesOpposite = IsAltPressed();
+                    // the handle across the anchor follows as its mirror image, unless Alt
+                    // is held (a corner)
+                    handle.MirrorsOpposite = !IsAltPressed();
                 }
                 else if (moving.Count == 1 && moving[0] is PointOnFigure pointOnFigure)
                 {
@@ -513,7 +514,7 @@ namespace DynamicGeometry
         {
             if (figure is BezierPath.BezierPathHandle)
             {
-                return "Hold Shift to snap to grid. Hold " + KeyNames.Alt + " to move the handle across the anchor the opposite way.";
+                return "Hold Shift to snap to grid. Hold " + KeyNames.Alt + " to leave the handle across the anchor where it is.";
             }
 
             if (!(figure is PointBase point))
@@ -865,6 +866,11 @@ namespace DynamicGeometry
             if (PointSnapping.CanFree(point))
             {
                 add("Free point", () => PointSnapping.Release(point), null);
+            }
+
+            if (BezierPath.CanBecomeAnchor(point))
+            {
+                add("Convert to path anchor", () => BezierPath.ConvertToAnchor((PointOnFigure)point), null);
             }
         }
 

@@ -1154,9 +1154,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   two and the neighbors' that face it (`IsHandleShown`) - with dotted lines in the ink at
   0.3, and only the Drag tool hits one (`HitTest`): nothing is built on a handle but the
   images of a transformation. A zero handle sits under its anchor (z just below points):
-  Tab takes it (`Dragger.FindClickOptions`, the Drag tool's only choice), Alt while
-  dragging one moves the one across the anchor the opposite way (`MovesOpposite`, both in
-  the move's undo place). A point on a path depends on the path, parameter = piece index
+  Tab takes it (`Dragger.FindClickOptions`, the Drag tool's only choice). A dragged handle
+  takes the one across the anchor along as its mirror image (snapped to it at the first
+  move: a symmetric anchor); with Alt that one stays where it is, for a corner
+  (`MirrorsOpposite`, both in the move's undo place). "Convert to path anchor" on a point
+  on a path (grid, context menu) makes it a free point there and an anchor between the
+  ends of its piece, split by de Casteljau so the curve stays the same and the other
+  points on it stay put (`ConvertToAnchor`). A point on a path depends on the path, parameter = piece index
   + the cubic's t (`PointPlacement.OrderForPoint` and Snap to take a side for its path); a
   point on the closing piece of a path opened doesn't exist. Delete an anchor and the path
   keeps the rest (two at least, `ISupportRemoveDependency`); Alt-drag an anchor onto a
