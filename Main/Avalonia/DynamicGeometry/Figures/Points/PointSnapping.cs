@@ -180,26 +180,35 @@ public static class PointSnapping
     }
 
     /// <summary>
-    /// Whether the point can be joined into the target: not one built on it (a loop), and no
-    /// figure uses both, which would then use the target twice (a segment between them).
-    /// Nor into a point without a name (a vertex a regular polygon works out) when
-    /// expressions name the point: they would have nothing to call the target. Nor a
-    /// point a locus is drawn from (<see cref="IsHeldByLocus"/>).
+    /// Whether the point can be joined into the target: not one built on it (a loop). Nor
+    /// when an expression names both (a label [dist(B, C)]): what is built on both points
+    /// otherwise collapses and goes (<see cref="Collapse"/>), but an expression of the two
+    /// still has a meaning. Nor into a point without a name (a vertex a regular polygon
+    /// works out) when expressions name the point: they would have nothing to call the
+    /// target. Nor a point a locus is drawn from (<see cref="IsHeldByLocus"/>).
     /// </summary>
     public static bool CanJoin(PointBase point, IPoint target)
     {
         return target != point
             && !IsHeldByLocus(point)
             && !target.DependsOn(point)
-            && !point.Dependents.Any(d => !(d is PointLabel) && d.Dependencies.Contains(target))
+            && !FindBuiltOnBoth(point, target).Any(dependent => dependent is IRenamableExpressions)
             && !(string.IsNullOrEmpty(target.Name) && point.Dependents.OfType<IRenamableExpressions>().Any());
+    }
+
+    /// <summary>The figures built on the point that use the target too (segment BC, for C and B)</summary>
+    static IFigure[] FindBuiltOnBoth(PointBase point, IPoint target)
+    {
+        return point.Dependents
+            .Where(dependent => !(dependent is PointLabel) && dependent.Dependencies.Contains(target))
+            .ToArray();
     }
 
     /// <summary>
     /// The point joins the target: what was built on it is built on the target from now on,
-    /// and the point goes, its name and label with it. One undo step. There is no way back
-    /// but undo: taking the point out again would have to guess which of the target's
-    /// dependents were its own.
+    /// and the point goes, its name and label with it. What is built on both collapses
+    /// (<see cref="Collapse"/>). One undo step. There is no way back but undo: taking the
+    /// point out again would have to guess which of the target's dependents were its own.
     /// </summary>
     public static void Join(PointBase point, IPoint target)
     {
@@ -207,6 +216,7 @@ public static class PointSnapping
         bool selected = point.Selected;
         using (Transaction.Create(drawing.ActionManager, false))
         {
+            Collapse(point, target);
             var dependents = point.Dependents.Where(d => !(d is PointLabel)).ToArray();
 
             // Expressions that name the point ([A.X] in a label, the X of a point by
@@ -289,6 +299,61 @@ public static class PointSnapping
             target.Selected = true;
             drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
         }
+    }
+
+    /// <summary>
+    /// What is built on both the point and the target would be built on the target twice
+    /// once they are joined: segment BC when C joins B (ABCD becomes ABD), a midpoint, a
+    /// circle around one through the other. A polygon or polyline in which the two are
+    /// neighbors loses the point; anything else goes, with what is built on it, as Delete
+    /// would take it. Rewired instead, a segment BB was left, and undo of the rewiring
+    /// swapped its ends.
+    /// </summary>
+    static void Collapse(PointBase point, IPoint target)
+    {
+        var figures = point.Drawing.Figures;
+        foreach (var collapsing in FindBuiltOnBoth(point, target))
+        {
+            // gone already with one before it (a midpoint of segment BC built on the segment)
+            if (!point.Dependents.Contains(collapsing))
+            {
+                continue;
+            }
+
+            if (CanDropVertex(collapsing, point, target))
+            {
+                Actions.RemoveDependency(collapsing, point);
+            }
+            else
+            {
+                // (a part of a composite goes with its composite)
+                Actions.Remove(figures.FindTopLevel(collapsing) ?? collapsing);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Whether the point is a vertex of a polygon or polyline next to the target, each there
+    /// once, and the figure keeps enough vertices without it
+    /// </summary>
+    static bool CanDropVertex(IFigure figure, PointBase point, IPoint target)
+    {
+        bool isPolygon = figure.GetType() == typeof(Polygon);
+        if (!isPolygon && !(figure is Polyline))
+        {
+            return false;
+        }
+
+        var vertices = figure.Dependencies;
+        if (vertices.Count(vertex => vertex == point) != 1
+            || vertices.Count(vertex => vertex == target) != 1
+            || vertices.Count - 1 < (isPolygon ? 3 : 2))
+        {
+            return false;
+        }
+
+        int apart = System.Math.Abs(vertices.IndexOf(point) - vertices.IndexOf(target));
+        return apart == 1 || isPolygon && apart == vertices.Count - 1;
     }
 
     /// <summary>

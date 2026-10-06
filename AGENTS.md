@@ -611,8 +611,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   a snap lets go at `Dragger.StickyReach` times the reach. Over another point it sits on top
   of it and the drop *joins* it (`PointSnapping.Join`: its dependents rewired to the target,
   itself removed). No un-join (which dependents would go back?): undo. `CanJoin` refuses a
-  target built on the point and one that shares a dependent with it (segment EF: F onto E
-  would give a segment EE, and undo's ReplaceDependency would swap its ends). In a join the
+  target built on the point. What is built on both collapses first (`PointSnapping.Collapse`):
+  C onto B with segments AB, BC, CD deletes BC and leaves AB, BD; a polygon or polyline
+  where the two are neighbors loses the point (ABCD becomes ABD), anything else goes as
+  Delete takes it. Rewired, segment EF with F onto E was a segment EE, and undo's
+  ReplaceDependency swapped its ends; and refusing the join made the snap fall through to
+  the segment beside the point. An expression naming both still refuses it. In a join the
   target, with what it is built on, moves before the first figure that comes to depend on
   it (the list is in dependency order, see "The figure list is in dependency order"), a
   part of a composite that went over with its composite is not rewired a second time (a

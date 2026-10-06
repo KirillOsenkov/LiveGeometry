@@ -39,6 +39,7 @@ public class Program
             ("Repeated function references survive replacement", FunctionReplacement),
             ("Construction cancellation and undo", ConstructionUndo),
             ("Dragging and Alt snapping undo", DraggingUndo),
+            ("Alt dragging a point onto its neighbor joins them", AltDragJoinsNeighbor),
             ("Dragging a point says what Shift and Alt do", DragModifierHints),
             ("Editor commits and undo", EditorUndo),
             ("GeoGebra dependent numeric stays live", GeoGebraDependentNumeric),
@@ -408,6 +409,83 @@ public class Program
             Require(drawing.SaveAsText() == after, "Drag redo changed the drawing.");
             drawing.Figures.CheckConsistency();
         }
+    }
+
+    /// <summary>
+    /// Points A B C D, segments AB BC CD and polygon ABCD: C dragged with Alt onto B joins it
+    /// (it slid onto segment AB beside B instead), segment BC goes, CD becomes BD, the
+    /// polygon ABD
+    /// </summary>
+    static void AltDragJoinsNeighbor()
+    {
+        var drawing = NewDrawing();
+        var a = AddPoint(drawing, x: -3, y: 0);
+        var b = AddPoint(drawing, x: 0, y: 0);
+        var c = AddPoint(drawing, x: 2, y: 2);
+        var d = AddPoint(drawing, x: 4, y: 0);
+        var ab = Factory.CreateSegment(drawing, a, b);
+        var bc = Factory.CreateSegment(drawing, b, c);
+        var cd = Factory.CreateSegment(drawing, c, d);
+        var polygon = Factory.CreatePolygon(drawing, new IFigure[] { a, b, c, d });
+        Actions.Add(drawing, polygon);
+        Actions.Add(drawing, ab);
+        Actions.Add(drawing, bc);
+        Actions.Add(drawing, cd);
+        using var window = new TestWindow(drawing.Canvas);
+        drawing.Behavior = new Dragger();
+        string before = drawing.SaveAsText();
+        var from = drawing.CoordinateSystem.ToPhysical(c.Coordinates);
+        var to = drawing.CoordinateSystem.ToPhysical(b.Coordinates);
+        using var pointer = new Pointer(Pointer.GetNextFreeId(), PointerType.Mouse, isPrimary: true);
+        var down = new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.LeftButtonPressed);
+        var moving = new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.Other);
+        var up = new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonReleased);
+        var canvas = drawing.Canvas;
+        canvas.RaiseEvent(new PointerPressedEventArgs(
+            canvas,
+            pointer,
+            canvas,
+            from,
+            timestamp: 0,
+            down,
+            KeyModifiers.Alt,
+            clickCount: 1));
+        for (int step = 1; step <= 12; step++)
+        {
+            canvas.RaiseEvent(new PointerEventArgs(
+                InputElement.PointerMovedEvent,
+                canvas,
+                pointer,
+                canvas,
+                from + (to - from) * (step / 12.0),
+                timestamp: (ulong)step,
+                moving,
+                KeyModifiers.Alt));
+        }
+
+        canvas.RaiseEvent(new PointerReleasedEventArgs(
+            canvas,
+            pointer,
+            canvas,
+            to,
+            timestamp: 13,
+            up,
+            KeyModifiers.Alt,
+            MouseButton.Left));
+        Require(!drawing.IsRecordingTransaction, "Drag left an open transaction.");
+        Require(!drawing.Figures.Contains(c), "C was not joined into B.");
+        Require(!drawing.Figures.Contains(bc), "Segment BC is still there.");
+        Require(ab.Dependencies.SequenceEqual(new IFigure[] { a, b }), "Segment AB changed.");
+        Require(cd.Dependencies.SequenceEqual(new IFigure[] { b, d }), "Segment CD is not BD: " + string.Join(", ", cd.Dependencies));
+        Require(polygon.Dependencies.SequenceEqual(new IFigure[] { a, b, d }), "The polygon is not ABD: " + string.Join(", ", polygon.Dependencies));
+        drawing.Figures.CheckConsistency();
+        string after = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the join changed the drawing.");
+        drawing.Figures.CheckConsistency();
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo of the join changed the drawing.");
+        drawing.Figures.CheckConsistency();
     }
 
     public class TestWindow : Window, IDisposable
