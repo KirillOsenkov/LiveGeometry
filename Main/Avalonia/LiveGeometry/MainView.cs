@@ -899,6 +899,12 @@ public partial class MainView : UserControl
             return;
         }
 
+        if (BenchmarkOutput != null)
+        {
+            RunExpressionBenchmark();
+            return;
+        }
+
         var path = StartupFile;
         StartupFile = null;
         if (string.IsNullOrEmpty(path))

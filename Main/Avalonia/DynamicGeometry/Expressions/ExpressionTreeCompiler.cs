@@ -1,21 +1,31 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 
 namespace DynamicGeometry
 {
+    /// <summary>
+    /// A System.Linq.Expressions tree made into a delegate by that library: compiled to IL
+    /// (<see cref="ExpressionStrategy.Compiled"/>: a dynamic method for the JIT on the
+    /// desktop; the browser has no JIT and interprets it instead), or run by its interpreter
+    /// (<see cref="ExpressionStrategy.LightCompiler"/>: Compile(preferInterpretation: true),
+    /// which builds an instruction list and boxes each value as it runs).
+    /// </summary>
     public class ExpressionTreeCompiler : IExpressionTreeEvaluatorProvider
     {
-        public T InterpretFunction<T>(Expression<T> node)
+        readonly bool preferInterpretation;
+
+        public ExpressionTreeCompiler(bool preferInterpretation)
         {
-            return node.Compile();
+            this.preferInterpretation = preferInterpretation;
         }
 
-        // Interpreted, as the browser always does: compiled, each expression was a dynamic
-        // method for the JIT, and a gallery drawing with hundreds of points by coordinates
-        // spent most of its load there (a function is evaluated far more often, and stays
-        // compiled)
+        public T InterpretFunction<T>(Expression<T> node)
+        {
+            return node.Compile(preferInterpretation);
+        }
+
         public T InterpretExpression<T>(Expression<T> node)
         {
-            return node.Compile(preferInterpretation: true);
+            return node.Compile(preferInterpretation);
         }
     }
 }

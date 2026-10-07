@@ -33,6 +33,7 @@ public class Program
             ("Length edits across figure kinds", LengthEditsAcrossKinds),
             ("Length panel preserves endpoint on undo", LengthPanelUndo),
             ("Point functions reject dependency cycles", PointFunctionsRejectCycles),
+            ("Expression strategies agree", ExpressionStrategiesAgree),
             ("Labels reject dependency cycles", LabelsRejectCycles),
             ("Clearing label text clears display", ClearLabelText),
             ("Functions reject dependency cycles", FunctionsRejectCycles),
@@ -240,6 +241,74 @@ public class Program
         {
             var result = Compiler.Instance.CompileExpression(drawing, text, figure => figure != second);
             Require(!result.IsSuccess && !string.IsNullOrWhiteSpace(result.GetErrorText()), text + " accepted a forbidden dependency.");
+        }
+    }
+
+    /// <summary>
+    /// Every way of making an expression's delegate (ExpressionStrategy) gives the same values,
+    /// the same "undefined", and an error with words in it for the same wrong texts; the
+    /// functions of x too. A, B and C are the 3-4-5 triangle with its right angle at C.
+    /// </summary>
+    static void ExpressionStrategiesAgree()
+    {
+        var drawing = NewDrawing();
+        var a = AddPoint(drawing, x: 0, y: 0);
+        var b = AddPoint(drawing, x: 3, y: 4);
+        AddPoint(drawing, x: 3, y: 0);
+        Actions.Add(drawing, Factory.CreateSegment(drawing, a, b));
+        double pi = System.Math.PI;
+        var values = new (string Text, double Expected)[]
+        {
+            ("AB", 5), ("A.X + B.Y", 4), ("dist(A, B)", 5), ("area(A, C, B)", 6), ("ang(A, C, B)", pi / 2),
+            ("sqrt(16)", 4), ("2^3^2", 512), ("-2^2", -4), ("round(2.5)", 3), ("sign(-3)", -1), ("max(1, 2)", 2),
+            ("atan2(1, 1)", pi / 4), ("pi", pi), ("e", System.Math.E), ("AB * 2 + 1", 11), ("B.X^2", 9), ("ln(e)", 1),
+            ("lg(100)", 2), ("sqr(9)", 3), ("clamp(5, 0, 1)", 1), ("AB.Length", 5), ("3 / 4", 0.75), ("1 - 2 - 3", -4),
+            ("2 * (3 + 4)", 14), ("deg(pi)", 180), ("abs(-2.5)", 2.5), ("floor(2.7) + ceiling(2.2)", 5)
+        };
+        var undefined = new[] { "clamp(5, 1, 0)", "sign(0 / 0)", "sqr(-1)", "sqrt(-4)" };
+        var wrong = new[] { "foo(1)", "A.Name", "2x", "A.X +", "dist(1, 2)", "unknown", "AB(", "max(1)", "A.Visible", "ang(A, B)" };
+        var functions = new (string Text, double X, double Expected)[]
+        {
+            ("sin(x) + A.X", 0, 0), ("x^2 + B.X", 2, 7), ("AB * x", 3, 15), ("-x^2", 3, -9), ("round(x)", 2.5, 3)
+        };
+        var previous = Compiler.Instance.Strategy;
+        try
+        {
+            foreach (ExpressionStrategy strategy in Enum.GetValues(typeof(ExpressionStrategy)))
+            {
+                Compiler.Instance.Strategy = strategy;
+                foreach (var (text, expected) in values)
+                {
+                    var result = Compiler.Instance.CompileExpression(drawing, text, isFigureAllowed: null);
+                    Require(result.IsSuccess, strategy + " did not compile " + text + ": " + result.GetErrorText());
+                    double actual = result.Expression();
+                    Require(System.Math.Abs(actual - expected) < 1e-9, strategy + " gave " + actual + " for " + text + ", expected " + expected);
+                }
+
+                foreach (var text in undefined)
+                {
+                    var result = Compiler.Instance.CompileExpression(drawing, text, isFigureAllowed: null);
+                    Require(result.IsSuccess && double.IsNaN(result.Expression()), strategy + " did not give undefined for " + text);
+                }
+
+                foreach (var text in wrong)
+                {
+                    var result = Compiler.Instance.CompileExpression(drawing, text, isFigureAllowed: null);
+                    Require(!result.IsSuccess && !string.IsNullOrWhiteSpace(result.GetErrorText()), strategy + " accepted " + text);
+                }
+
+                foreach (var (text, x, expected) in functions)
+                {
+                    var result = Compiler.Instance.CompileFunction(drawing, text);
+                    Require(result.IsSuccess, strategy + " did not compile the function " + text + ": " + result.GetErrorText());
+                    double actual = result.Function(x);
+                    Require(System.Math.Abs(actual - expected) < 1e-9, strategy + " gave " + actual + " for " + text + " at " + x + ", expected " + expected);
+                }
+            }
+        }
+        finally
+        {
+            Compiler.Instance.Strategy = previous;
         }
     }
 

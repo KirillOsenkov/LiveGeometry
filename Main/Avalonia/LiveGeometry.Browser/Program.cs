@@ -23,6 +23,11 @@ internal sealed partial class Program
             MainView.KeepsOwnDrawing = true;
             DynamicGeometry.EmojiFont.Open = OpenEmojiFont;
             SplashScreen.Attach(HideSplash, ReportSplashProgress);
+            if (args.Length > 0 && args[0].Contains("bench=expressions"))
+            {
+                // "/?bench=expressions": the expression strategies measured, the table in the console
+                MainView.BenchmarkOutput = "console";
+            }
             await BuildAvaloniaApp()
                 .WithInterFont()
                 .StartBrowserAppAsync("out");

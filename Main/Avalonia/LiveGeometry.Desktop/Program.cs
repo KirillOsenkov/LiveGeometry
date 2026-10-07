@@ -47,6 +47,11 @@ sealed class Program
         {
             MainView.SpaceLabelsFolder = System.IO.Path.GetFullPath(args[1]);
         }
+        else if (args.Length == 2 && args[0] == "--bench-expressions")
+        {
+            // the expression strategies measured over the gallery, the table written to the file
+            MainView.BenchmarkOutput = System.IO.Path.GetFullPath(args[1]);
+        }
         else if (args.Length == 1 && args[0] == "--arrange")
         {
             // reorder the gallery by dragging its tiles; the catalog's source is rewritten

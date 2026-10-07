@@ -609,6 +609,36 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   as they are: `sqr` is the square root (VB's `Sqr`, for `.dgf` files; of a negative number
   undefined - it took the root of the absolute value), `log` the natural logarithm (`lg`
   is base 10), and `2x` is an error, not a product.
+- **An expression is bound once and evaluated many times** (`Expressions/`, 2026-10-07):
+  `ExpressionTreeBuilder` binds the parser's `Node` tree into a `BoundExpression` (names
+  resolved to figures, numbers, two-point distances, properties and functions, every value
+  a double), and `Compiler.Strategy` (`ExpressionStrategy`) says what the delegate run at
+  every recalculation is made of: `OwnTree`, the bound tree evaluating itself (the
+  default); `LightCompiler`, a System.Linq.Expressions tree run by that library's
+  interpreter (what every expression was until then); `LinqInterpreter`, the same tree
+  walked by `ExpressionTreeInterpreter`; `Compiled`, the tree compiled to IL (a dynamic
+  method for the JIT on the desktop; the browser has no JIT and interprets it). All four
+  give the same values: the regression suite's "Expression strategies agree" and the
+  benchmark's mismatches column say so. Reflection is asked once (`ExpressionReflection`:
+  a function by name and argument count, a method's shape, a method or a property getter as
+  a delegate - a getter through an open delegate made by a generic method, whose
+  instantiations are named so that Mono's AOT compiles them), and a `Binder` gathers the
+  drawing's point names once per expression, not per identifier.
+  `LiveGeometry.Desktop.exe --bench-expressions <file>` (the browser build at
+  `/?bench=expressions`, read with `webauto console`) loads every gallery drawing under
+  each strategy, after a warm-up pass, and prints the load, the compile share of it, the
+  evaluation of every expression 200 times, the function graphs sampled, the drawings
+  recalculated 20 times, and the mismatches (`ExpressionBenchmark`). 2026-10-07, the
+  gallery's 3572 expressions, compile out of the load and the 200 evaluation rounds, in
+  ms: desktop JIT - OwnTree 46 (8%) and 96, LightCompiler 60 and 144, LinqInterpreter 61
+  and 443, Compiled 528 (68%) and 17; browser AOT - 38 (6%) and 188, 138 and 578, 54 and
+  530, 277 (31%) and 96; browser interpreted - 168 (8%) and 246, 626 and 1412, 453 and
+  3124, 1044 (23%) and 139 (there the later strategies also pay to warm the interpreter
+  up on their own code). So expressions are a small part of a load either way (Stretchy
+  Slime's 160 compile in under 2 ms under AOT) and an evaluation is a fraction of a
+  microsecond; the bound tree is the cheapest to make and second only to IL at running,
+  which is why it is the default. IL wins evaluation everywhere but costs 3 to 7 times the
+  compile.
 - **Snapping and releasing points** (`Figures/Points/PointSnapping.cs`) swap a point for another
   kind where it is through `Actions.ReplacePoint` (name, label, dependents, lock, a chosen style
   go along). Snap: a free point onto a figure through it - "Snap to line AB" in the grid when
@@ -2068,9 +2098,13 @@ a segment or ray, and sides of a polygon that don't cross - legitimately absent.
   instead of 12, and scrolling over loaded tiles takes 15% of the main thread instead of
   27%. A first visit on 4G pays about 4 s more for the download; a returning visitor has it
   cached. Only a publish compiles ahead of time (about 3 minutes more on this machine);
-  `dotnet build` and `dotnet run` never do. A profile-guided partial AOT (only the methods a
-  gallery load runs) would be the next thing to try for most of the speed at less of the
-  size.
+  `dotnet build` and `dotnet run` never do. Switching the property between two publishes
+  on one machine wants the Browser project's `bin` and `obj` deleted in between: published
+  the other way into the same `obj`, the runtime's native image and the assemblies didn't
+  match, and the page died while loading the runtime ("MONO interpreter: NIY encountered",
+  `mono_wasm_load_runtime () failed`). CI starts clean. A profile-guided partial AOT (only
+  the methods a gallery load runs) would be the next thing to try for most of the speed at
+  less of the size.
 
 ## .dgf (DG 1.0) reader facts
 

@@ -1,13 +1,19 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 
 namespace DynamicGeometry
 {
+    /// <summary>
+    /// Binds the parser's tree (<see cref="Node"/>) against a drawing into a
+    /// <see cref="BoundExpression"/>: every name a figure, a number, a distance or the x of a
+    /// function, every call a method, every value a number. What the bound tree then becomes
+    /// is the compiler's choice (<see cref="ExpressionStrategy"/>). An error is said in the
+    /// <see cref="CompileResult"/> and the tree is null; nothing a user can type may throw.
+    /// </summary>
     public class ExpressionTreeBuilder
     {
         public ExpressionTreeBuilder()
@@ -18,38 +24,20 @@ namespace DynamicGeometry
         public Binder Binder { get; set; }
         CompileResult Status { get; set; }
 
-        public Expression<Func<double, double>> CreateFunction(Node root, CompileResult status)
+        public BoundExpression CreateFunction(Node root, CompileResult status)
         {
             Status = status;
-            ParameterExpression parameter = Expression.Parameter(typeof(double), "x");
-            Binder.RegisterParameter(parameter);
-            Expression body = CreateExpressionCore(root);
-            if (body == null)
-            {
-                return null;
-            }
-            var expressionTree = Expression.Lambda<Func<double, double>>(body, parameter);
-            return expressionTree;
+            Binder.RegisterParameter("x");
+            return CreateExpressionCore(root);
         }
 
-        public Expression<Func<double>> CreateExpression(Node root, CompileResult status)
+        public BoundExpression CreateExpression(Node root, CompileResult status)
         {
             Status = status;
-            Expression body = CreateExpressionCore(root);
-            if (body == null)
-            {
-                return null;
-            }
-            // If expression does not return double, we'll get an error. - D.H.
-            if (body.Type != typeof(double))
-            {
-                return null;
-            }
-            var expressionTree = Expression.Lambda<Func<double>>(body);
-            return expressionTree;
+            return CreateExpressionCore(root);
         }
 
-        Expression CreateExpressionCore(Node root)
+        BoundExpression CreateExpressionCore(Node root)
         {
             switch (root.Kind)
             {
@@ -65,7 +53,7 @@ namespace DynamicGeometry
                     return CreateIdentifierExpression(root);
                 case NodeType.Constant:
                     // the language writes decimals with a point, whatever the user's culture
-                    return CreateLiteralExpression(double.Parse(root.Token.Text, CultureInfo.InvariantCulture));
+                    return new BoundConstant(double.Parse(root.Token.Text, CultureInfo.InvariantCulture));
                 case NodeType.FunctionCall:
                     return CreateCallExpression(root);
                 case NodeType.PropertyAccess:
@@ -75,18 +63,18 @@ namespace DynamicGeometry
             }
         }
 
-        Expression CreateUnaryExpression(Node root)
+        BoundExpression CreateUnaryExpression(Node root)
         {
-            Expression operand = CreateExpressionCore(root.Children[0]);
+            BoundExpression operand = CreateExpressionCore(root.Children[0]);
             if (operand == null)
             {
                 return null;
             }
 
-            return Expression.Negate(operand);
+            return new BoundNegation(operand);
         }
 
-        Expression CreateIdentifierExpression(Node root)
+        BoundExpression CreateIdentifierExpression(Node root)
         {
             var text = root.Token.Text;
 
@@ -108,7 +96,7 @@ namespace DynamicGeometry
                 return Binder.Resolve(text);
             }
 
-            Expression resolveTwoPoints = ResolveTwoPoints(text);
+            BoundExpression resolveTwoPoints = ResolveTwoPoints(text);
             if (resolveTwoPoints != null)
             {
                 return resolveTwoPoints;
@@ -130,7 +118,7 @@ namespace DynamicGeometry
             return null;
         }
 
-        Expression CreateNumberExpression(INumber number, string text)
+        BoundExpression CreateNumberExpression(INumber number, string text)
         {
             if (!Binder.IsFigureAllowed(number))
             {
@@ -139,12 +127,10 @@ namespace DynamicGeometry
             }
 
             Status.Dependencies.Add(number);
-            return Expression.Property(
-                Expression.Constant(number, typeof(INumber)),
-                typeof(INumber).GetProperty("Value"));
+            return new BoundNumber(number);
         }
 
-        public Expression ResolveTwoPoints(string twoPoints)
+        public BoundExpression ResolveTwoPoints(string twoPoints)
         {
             var drawing = Binder.Drawing;
             if (drawing == null)
@@ -152,10 +138,9 @@ namespace DynamicGeometry
                 return null;
             }
 
-            var names = drawing.Figures.Where(f => f is PointBase).Select(f => f.Name).ToArray();
             string longestPrefix = "";
             string longestSuffix = "";
-            foreach (var name in names)
+            foreach (var name in Binder.PointNames)
             {
                 if (string.IsNullOrEmpty(name))
                 {
@@ -198,20 +183,15 @@ namespace DynamicGeometry
                     return null;
                 }
 
-                ConstantExpression p1 = Expression.Constant(point1);
-                ConstantExpression p2 = Expression.Constant(point2);
-                MethodInfo distance = typeof(Math).GetMethod("Distance",
-                    new[] { typeof(PointBase), typeof(PointBase) });
-                MethodCallExpression result = Expression.Call(null, distance, p1, p2);
                 Status.Dependencies.Add(point1);
                 Status.Dependencies.Add(point2);
-                return result;
+                return new BoundDistance(point1, point2);
             }
 
             return null;
         }
 
-        Expression CreatePropertyAccessExpression(Node root)
+        BoundExpression CreatePropertyAccessExpression(Node root)
         {
             string figureName = root.Children[0].Token.Text;
             string propertyName = root.Children[1].Token.Text;
@@ -236,14 +216,13 @@ namespace DynamicGeometry
                 return null;
             }
 
-            var figureExpression = Expression.Constant(figure);
-            var value = AsNumber(Expression.Property(figureExpression, property), figureName + "." + propertyName);
-            if (value != null)
+            if (!AsNumber(property.PropertyType, figureName + "." + propertyName))
             {
-                Status.Dependencies.Add(figure);
+                return null;
             }
 
-            return value;
+            Status.Dependencies.Add(figure);
+            return new BoundProperty(figure, property);
         }
 
         // the property a name means on a type of figure, looked up once (A.X in one expression
@@ -265,7 +244,7 @@ namespace DynamicGeometry
             });
         }
 
-        Expression CreateCallExpression(Node root)
+        BoundExpression CreateCallExpression(Node root)
         {
             string functionName = root.Token.Text;
             var arguments = root.Children;
@@ -282,7 +261,7 @@ namespace DynamicGeometry
             // that it "takes the names of points".)
             if (Binder.TakesNumbers(method, arguments.Count))
             {
-                var values = new List<Expression>();
+                var values = new List<BoundExpression>();
                 foreach (var node in arguments)
                 {
                     var value = node == null ? null : CreateExpressionCore(node);
@@ -294,7 +273,7 @@ namespace DynamicGeometry
                     values.Add(value);
                 }
 
-                return AsNumber(Expression.Call(method, values), functionName);
+                return AsNumber(method.ReturnType, functionName) ? new BoundCall(method, values) : null;
             }
 
             return CreatePointFunctionCallExpression(method, arguments);
@@ -306,23 +285,18 @@ namespace DynamicGeometry
         /// applied to it threw, and a function that ended in it could not be made). Anything
         /// else - a name, a check box, a point - is an error, said here.
         /// </summary>
-        Expression AsNumber(Expression value, string what)
+        bool AsNumber(Type type, string what)
         {
-            if (value.Type == typeof(double))
+            if (ExpressionReflection.IsNumberType(type))
             {
-                return value;
-            }
-
-            if (value.Type == typeof(int) || value.Type == typeof(long) || value.Type == typeof(float) || value.Type == typeof(decimal))
-            {
-                return Expression.Convert(value, typeof(double));
+                return true;
             }
 
             Status.AddError(string.Format("'{0}' is not a number", what));
-            return null;
+            return false;
         }
 
-        Expression CreatePointFunctionCallExpression(MethodInfo method, IEnumerable<Node> arguments)
+        BoundExpression CreatePointFunctionCallExpression(MethodInfo method, IEnumerable<Node> arguments)
         {
             if (method.Name != "Area" && method.GetParameters().Length != arguments.Count())
             {
@@ -350,31 +324,7 @@ namespace DynamicGeometry
                 points.Add(point);
             }
 
-            if (method.Name == "Area")
-            {
-                return Expression.Call(method, Expression.Constant(points.ToArray()));
-            }
-
-            List<Expression> pointArguments = new List<Expression>();
-            foreach (var point in points)
-            {
-                Expression pointArgument = CreatePointExpression(point);
-                if (pointArgument == null)
-                {
-                    return null;
-                }
-                pointArguments.Add(pointArgument);
-            }
-
-            return Expression.Call(method, pointArguments.ToArray());
-        }
-
-        Expression CreatePointExpression(IPoint point)
-        {
-            var pointExpression = Expression.Constant(point);
-            var coordinatesProperty = typeof(IPoint).GetProperty("Coordinates");
-            var coordinates = Expression.Property(pointExpression, coordinatesProperty);
-            return coordinates;
+            return AsNumber(method.ReturnType, method.Name) ? new BoundPointCall(method, points) : null;
         }
 
         IPoint ResolvePoint(string pointName)
@@ -402,15 +352,10 @@ namespace DynamicGeometry
             return point;
         }
 
-        Expression CreateLiteralExpression(double arg)
+        BoundExpression CreateBinaryExpression(Node node)
         {
-            return Expression.Constant(arg);
-        }
-
-        Expression CreateBinaryExpression(Node node)
-        {
-            Expression left = CreateExpressionCore(node.Children[0]);
-            Expression right = CreateExpressionCore(node.Children[1]);
+            BoundExpression left = CreateExpressionCore(node.Children[0]);
+            BoundExpression right = CreateExpressionCore(node.Children[1]);
 
             if (left == null || right == null)
             {
@@ -420,15 +365,15 @@ namespace DynamicGeometry
             switch (node.Kind)
             {
                 case NodeType.Addition:
-                    return Expression.Add(left, right);
+                    return new BoundBinary(BoundOperator.Add, left, right);
                 case NodeType.Subtraction:
-                    return Expression.Subtract(left, right);
+                    return new BoundBinary(BoundOperator.Subtract, left, right);
                 case NodeType.Multiplication:
-                    return Expression.Multiply(left, right);
+                    return new BoundBinary(BoundOperator.Multiply, left, right);
                 case NodeType.Division:
-                    return Expression.Divide(left, right);
+                    return new BoundBinary(BoundOperator.Divide, left, right);
                 case NodeType.Power:
-                    return Expression.Power(left, right);
+                    return new BoundBinary(BoundOperator.Power, left, right);
             }
             return null;
         }

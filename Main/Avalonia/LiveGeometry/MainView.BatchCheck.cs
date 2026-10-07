@@ -28,6 +28,32 @@ public partial class MainView
     /// <summary>"--check ... --dark": the pictures under the dark theme instead of the light one</summary>
     public static bool CheckDark { get; set; }
 
+    /// <summary>
+    /// "--bench-expressions <file>": the expression strategies measured over the gallery
+    /// (<see cref="ExpressionBenchmark"/>), the table written to the file; "console" for the
+    /// browser's "/?bench=expressions", which has only the console
+    /// </summary>
+    public static string BenchmarkOutput { get; set; }
+
+    async void RunExpressionBenchmark()
+    {
+        // after the first frame, as the other batch modes run: Environment.Exit from inside
+        // the startup job never returned
+        await Task.Delay(50);
+        var lines = new List<string>();
+        ExpressionBenchmark.Run(line =>
+        {
+            lines.Add(line);
+            Console.WriteLine(line);
+        });
+
+        if (BenchmarkOutput != "console")
+        {
+            File.WriteAllLines(BenchmarkOutput, lines);
+            Environment.Exit(0);
+        }
+    }
+
     public static string ModernizeFolder { get; set; }
 
     readonly List<string> checkMessages = new List<string>();

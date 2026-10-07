@@ -1,114 +1,65 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 
 namespace DynamicGeometry
 {
+    /// <summary>
+    /// Resolves the names of one expression against a drawing: figures, numbers, the x of a
+    /// function, the points whose names run together into a distance, and the functions
+    /// (through <see cref="ExpressionReflection"/>, which looks each up once for all). A
+    /// binder binds one expression and remembers what its names stood for: an expression says
+    /// the same name several times (A.X - B.X, A.Y - B.Y), and each lookup is a search of the
+    /// whole drawing.
+    /// </summary>
     public class Binder
     {
-        /// <summary>
-        /// The functions of System.Math are found by name, through reflection the trimmer
-        /// can't follow (a type out of a list): it kept only those the app calls itself, and
-        /// in the browser build asinh, sinh, cosh... were "Could not find method" - the
-        /// Catenary drew no curve. Kept whole here.
-        /// </summary>
-        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicMethods, typeof(System.Math))]
-        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicMethods, typeof(Functions))]
-        static Binder()
-        {
-            AddMethods(typeof(System.Math));
-            AddMethods(typeof(Functions));
-        }
+        string parameterName;
 
-        static void AddMethods(Type type)
+        /// <summary>The x of a function: a name that stands for the parameter, not for a figure</summary>
+        public void RegisterParameter(string name)
         {
-            foreach (var methodInfo in type.GetMethods())
-            {
-                methods.Add(methodInfo);
-            }
-        }
-
-        static List<MethodInfo> methods = new List<MethodInfo>();
-
-        public void RegisterParameter(ParameterExpression parameter)
-        {
-            parameters.Add(parameter.Name, parameter);
+            parameterName = name;
         }
 
         public Drawing Drawing { get; set; }
         public Predicate<IFigure> FigureAllowed { get; set; }
 
-        ParameterExpression ResolveParameter(string parameterName)
+        BoundExpression ResolveParameter(string identifier)
         {
-            ParameterExpression parameter;
-            if (parameters.TryGetValue(parameterName, out parameter))
-            {
-                return parameter;
-            }
-            return null;
+            return parameterName != null && identifier == parameterName ? new BoundParameter() : null;
         }
 
-        Expression ResolveConstant(string identifier)
+        BoundExpression ResolveConstant(string identifier)
         {
             if (identifier.Equals("pi", StringComparison.InvariantCultureIgnoreCase))
             {
-                return Expression.Constant(Math.PI);
+                return new BoundConstant(Math.PI);
             }
             else if (identifier.Equals("e", StringComparison.InvariantCultureIgnoreCase))
             {
-                return Expression.Constant(System.Math.E);
+                return new BoundConstant(System.Math.E);
             }
             return null;
         }
 
-        Dictionary<string, ParameterExpression> parameters = new Dictionary<string, ParameterExpression>();
-
-        public Expression Resolve(string identifier)
+        /// <summary>pi, e or the x of a function; null for any other name</summary>
+        public BoundExpression Resolve(string identifier)
         {
             return ResolveConstant(identifier) ?? ResolveParameter(identifier);
         }
 
-        /// <summary>
-        /// The function called by this name with this many arguments: one that takes that
-        /// many numbers if there is one - ours first (round, sign: the ones System.Math has
-        /// in a way a drawing doesn't want), then System.Math's (sin, sqrt, max, atan2) -
-        /// else whatever goes by the name (ours that take points: dist, ang, area)
-        /// </summary>
+        /// <summary>See <see cref="ExpressionReflection.ResolveMethod"/></summary>
         public MethodInfo ResolveMethod(string functionName, int argumentCount)
         {
-            foreach (var type in new[] { typeof(Functions), typeof(System.Math) })
-            {
-                foreach (var methodInfo in type.GetMethods())
-                {
-                    if (methodInfo.Name.Equals(functionName, StringComparison.OrdinalIgnoreCase)
-                        && TakesNumbers(methodInfo, argumentCount))
-                    {
-                        return methodInfo;
-                    }
-                }
-            }
-
-            foreach (var methodInfo in methods)
-            {
-                if (methodInfo.Name.Equals(functionName, StringComparison.OrdinalIgnoreCase))
-                {
-                    return methodInfo;
-                }
-            }
-
-            return null;
+            return ExpressionReflection.ResolveMethod(functionName, argumentCount);
         }
 
         /// <summary>A function of numbers, called with as many as it takes: its arguments are expressions, not the names of points</summary>
         public static bool TakesNumbers(MethodInfo method, int argumentCount)
         {
-            var parameters = method.GetParameters();
-            return parameters.Length == argumentCount
-                && argumentCount > 0
-                && parameters.All(parameter => parameter.ParameterType == typeof(double));
+            return ExpressionReflection.TakesNumbers(method, argumentCount);
         }
 
         /// <summary>
@@ -137,6 +88,26 @@ namespace DynamicGeometry
         // and each lookup is a search of the whole drawing
         readonly Dictionary<string, INumber> numbersByName = new Dictionary<string, INumber>();
         readonly Dictionary<string, IFigure> figuresByName = new Dictionary<string, IFigure>();
+        string[] pointNames;
+
+        /// <summary>
+        /// The names of the drawing's points, for reading two of them run together (AB):
+        /// gathered once per expression, where each identifier gathered them anew
+        /// </summary>
+        public string[] PointNames
+        {
+            get
+            {
+                if (pointNames == null)
+                {
+                    pointNames = Drawing == null
+                        ? Array.Empty<string>()
+                        : Drawing.Figures.Where(f => f is PointBase).Select(f => f.Name).ToArray();
+                }
+
+                return pointNames;
+            }
+        }
 
         public IFigure ResolveFigure(string figureName)
         {
@@ -161,8 +132,8 @@ namespace DynamicGeometry
             if (candidate == null)
             {
                 candidate = Drawing.Figures
-                    .Where(f => f != null 
-                        && !f.Name.IsEmpty() 
+                    .Where(f => f != null
+                        && !f.Name.IsEmpty()
                         && f.Name.Equals(figureName, StringComparison.OrdinalIgnoreCase))
                     .FirstOrDefault();
             }
