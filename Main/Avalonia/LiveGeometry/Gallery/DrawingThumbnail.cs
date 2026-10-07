@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -131,19 +132,13 @@ public class DrawingThumbnail : Viewbox
     void StartDrifting()
     {
         drifters.Clear();
-        foreach (var figure in Drawing.Figures)
+        AddDrifters(figure => figure.Visible);
+
+        // A drawing whose points are all hidden (Bubbles shows them only with its hint) drifts
+        // the hidden points that what is on screen is built on, as a drag of it would move them.
+        if (drifters.Count == 0)
         {
-            if (figure.Visible && figure is IPoint && figure is IMovable movable && movable.AllowMove())
-            {
-                int index = drifters.Count;
-                drifters.Add(new Drifter()
-                {
-                    Point = movable,
-                    Home = movable.Coordinates,
-                    Phase = index * 2.4,
-                    Direction = index % 2 == 0 ? 1 : -1
-                });
-            }
+            AddDrifters(figure => !figure.Visible && figure.AllDependents().Any(IsShownFigure));
         }
 
         if (drifters.Count == 0)
@@ -156,6 +151,27 @@ public class DrawingThumbnail : Viewbox
         timer.Tick += (s, e) => Drift(clock.Elapsed.TotalSeconds);
         timer.Start();
     }
+
+    void AddDrifters(Func<IFigure, bool> condition)
+    {
+        foreach (var figure in Drawing.Figures)
+        {
+            if (figure is IPoint && figure is IMovable movable && movable.AllowMove() && condition(figure))
+            {
+                int index = drifters.Count;
+                drifters.Add(new Drifter()
+                {
+                    Point = movable,
+                    Home = movable.Coordinates,
+                    Phase = index * 2.4,
+                    Direction = index % 2 == 0 ? 1 : -1
+                });
+            }
+        }
+    }
+
+    // a show/hide box that lists a point doesn't move with it
+    static bool IsShownFigure(IFigure figure) => figure.Visible && figure is not ControlBase;
 
     void StopDrifting()
     {

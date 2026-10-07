@@ -1900,7 +1900,9 @@ buttons and checkboxes, 3D, custom tools.
   room on every side by the biggest emoji (Kaleidoscope's blossom in the middle) left the
   figure far smaller than the room.
 - **Tiles are live drawings**, not bitmaps (`DrawingThumbnail`): no Behavior, text hidden;
-  hovering makes the draggable points drift. Loaded a batch per idle tick and only as they come
+  hovering makes the draggable points drift (the visible ones; where there are none, the
+  hidden ones that something on screen is built on - Bubbles shows its points only with its
+  hint). Loaded a batch per idle tick and only as they come
   near the view (`GalleryView.LoadNextTiles`: those in view from the top, then half a screen
   around it; none while the page is hidden behind the editor; one a turn while the splash is
   up, so that its bar moves after each): a load holds the UI thread, in the browser a few
