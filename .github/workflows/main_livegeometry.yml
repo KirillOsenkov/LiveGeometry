@@ -26,11 +26,6 @@ jobs:
         with:
           dotnet-version: '10.x'
 
-      - name: Install wasm-tools workload
-        # Required because LiveGeometry.Browser sets WasmBuildNative=true
-        # (links the SkiaSharp/HarfBuzz native libraries into the runtime).
-        run: dotnet workload install wasm-tools
-
       - name: dotnet publish
         # Publish output is a self-contained static site: web.config at the root
         # (IIS MIME maps, compression, SPA fallback) plus wwwroot/ with the app.
