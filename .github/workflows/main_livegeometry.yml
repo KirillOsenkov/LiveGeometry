@@ -11,7 +11,10 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    # Linux, not Windows: the Windows image carries Visual Studio's MAUI, iOS, Mac Catalyst
+    # and Android workloads, and installing wasm-tools there moved the whole workload set to
+    # a new version and reinstalled all of those through MSIs (over half of a 9 minute step).
+    runs-on: ubuntu-latest
     permissions:
       contents: read #This is required for actions/checkout
 
