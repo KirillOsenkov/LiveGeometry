@@ -71,7 +71,9 @@ being true. Things derivable from the code or git history don't belong here.
   it Skia throws DllNotFoundException). Do a full bin/obj clean when native assets change.
 - Browser publish: `dotnet publish Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj -c Release -o <dir>`.
   Output is `<dir>/web.config` + `<dir>/wwwroot/`. CI (`.github/workflows/main_livegeometry.yml`)
-  does exactly this and deploys to Azure App Service (IIS).
+  does exactly this and deploys to Azure App Service (IIS). A publish compiles the .NET code
+  ahead of time to wasm (`RunAOTCompilation` in the csproj, a few minutes more; see
+  "Measuring speed" for what it buys and costs, and how to switch it off).
 
 ## The ribbon
 
@@ -1993,10 +1995,10 @@ a segment or ray, and sides of a polygon that don't cross - legitimately absent.
 
 ## Measuring speed
 
-- The browser runs .NET interpreted (no AOT): the same code took 3-4 times as long there as
-  in the Debug desktop build (2026-10-03, reading the gallery's drawings), and a loop that
-  costs nothing on the desktop can take a second there. Measure in the browser before
-  deciding what is slow. Reflection is the worst of it: `GetAttribute` (`Utilities`) and
+- The browser ran .NET interpreted until 2026-10-07 (see AOT below; the interpreter is one
+  property away): the same code took 3-4 times as long there as in the Debug desktop build
+  (2026-10-03, reading the gallery's drawings), and a loop that costs nothing on the desktop
+  can take a second there. Measure in the browser before deciding what is slow. Reflection is the worst of it: `GetAttribute` (`Utilities`) and
   the property lists of `PropertyDiscoveryStrategy` are cached per member and type, and a
   save compares the drawing's styles with default styles made once per `AppTheme.Version`
   (`StyleManager.IsUnchangedDefault`). Before that (2026-10-04) a save of a triangle took
@@ -2058,14 +2060,17 @@ a segment or ray, and sides of a polygon that don't cross - legitimately absent.
   the first frame 3.1 s after the runtime, Stretchy Slime 2.6-3.2 s. Scrolling over loaded
   tiles at the 4x throttle: a p95 frame of 14 ms, where it was 40 ms before the tile
   distances were made arithmetic (above).
-- `-p:RunAOTCompilation=true` (measured 2026-10-07, not applied): the download is 9.9 MB
-  brotli instead of 5.3 (`dotnet.native.wasm` 35 MB raw, 7.2 MB brotli, which the browser
-  also has to compile), the tiles load 2-3.5x faster (Stretchy Slime 0.24 s), the startup
-  1.3-1.7x, the gallery under the phone throttle is in at 6 s after the runtime instead of
-  12, and scrolling over loaded tiles takes 15% of the main thread instead of 27%. A first
-  visit on 4G pays about 4 s more for the download; a returning visitor has it cached. A
-  profile-guided partial AOT (only the methods a gallery load runs) would be the next thing
-  to try for most of the speed at less of the size.
+- AOT (`RunAOTCompilation` in the Browser csproj, on since 2026-10-07; set it to false, or
+  publish with `-p:RunAOTCompilation=false`, to go back to the interpreter): the download is
+  9.9 MB brotli instead of 5.3 (`dotnet.native.wasm` 35 MB raw, 7.2 MB brotli, which the
+  browser also has to compile), the tiles load 2-3.5x faster (Stretchy Slime 0.24 s), the
+  startup 1.3-1.7x, the gallery under the phone throttle is in at 6 s after the runtime
+  instead of 12, and scrolling over loaded tiles takes 15% of the main thread instead of
+  27%. A first visit on 4G pays about 4 s more for the download; a returning visitor has it
+  cached. Only a publish compiles ahead of time (about 3 minutes more on this machine);
+  `dotnet build` and `dotnet run` never do. A profile-guided partial AOT (only the methods a
+  gallery load runs) would be the next thing to try for most of the speed at less of the
+  size.
 
 ## .dgf (DG 1.0) reader facts
 

@@ -4,6 +4,14 @@
     <TargetFramework>net10.0-browser</TargetFramework>
     <OutputType>Exe</OutputType>
     <WasmBuildNative>true</WasmBuildNative>
+    <!-- The .NET code compiled ahead of time to native wasm on publish (2026-10-07): the
+         gallery's tiles load 2 to 3.5 times faster and the startup 1.3 to 1.7 times, for a
+         download of 9.9 MB brotli instead of 5.3 (dotnet.native.wasm is 35 MB raw, which the
+         browser also has to compile; a first visit on 4G pays about 4 s more, a returning one
+         has it cached). Without AOT the browser interprets the IL. The switch: set this to
+         false (or publish with -p:RunAOTCompilation=false) and the site is back on the
+         interpreter; builds and `dotnet run` never compile ahead of time either way. -->
+    <RunAOTCompilation>true</RunAOTCompilation>
     <!-- The app runs under the invariant culture (App.UseInvariantCulture): numbers are
          written and read with a point everywhere. Without ICU there is nothing else a
          browser's language could change, and the ICU data is not downloaded at all. -->
