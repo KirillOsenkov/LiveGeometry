@@ -868,6 +868,10 @@ namespace DynamicGeometry
             {
                 writer.WriteAttributeBool("Flipped", true);
             }
+            if (!IsHitTestVisible)
+            {
+                writer.WriteAttributeBool("IsHitTestVisible", false);
+            }
         }
 
         public virtual void ReadXml(XElement element)
