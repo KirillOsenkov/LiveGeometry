@@ -448,6 +448,12 @@ public partial class MainView : UserControl
             || exception is GeoGebraReader.LeftOutException
             // the browser's file picker throws on cancel (Avalonia catches it and answers null)
             || exception.GetType().Name == "JSException" && exception.Message.StartsWith("AbortError", StringComparison.Ordinal)
+            // Windows can't draw a window shrunk to its title bar (Avalonia catches it and draws
+            // again when the window grows: "BeginDraw failed", wrapped as the render target
+            // being lost, which has Avalonia make a new one)
+            || exception is System.Runtime.InteropServices.COMException
+                && exception.StackTrace?.Contains("at Avalonia.Win32.", StringComparison.Ordinal) == true
+            || exception is Avalonia.RenderTargetCorruptedException
             || IsReadOnlyFile(exception)
             // a file that can't be written now, said in words (TryWriteFile)
             || writingFile && (exception is IOException || exception is UnauthorizedAccessException);

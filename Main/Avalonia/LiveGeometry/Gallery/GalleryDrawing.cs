@@ -84,6 +84,13 @@ public static class GalleryDrawing
         var coordinateSystem = drawing.CoordinateSystem;
         double canvasWidth = drawing.Canvas.Bounds.Width;
         double canvasHeight = drawing.Canvas.Bounds.Height;
+
+        // nothing to fit into (a window shrunk to its title bar); refitted when it grows
+        if (canvasWidth <= 0 || canvasHeight <= 0)
+        {
+            return;
+        }
+
         bool hasScene = drawing.Scenes.Count > 0;
         if (!FindCaption(drawing, out var title, out var description))
         {
@@ -194,6 +201,10 @@ public static class GalleryDrawing
         }
 
         room = LayOutPinnedBoxes(drawing, room, figure, hasScene, margin);
+        if (room.Width <= 0 || room.Height <= 0)
+        {
+            return;
+        }
 
         // the scene nearest in shape to the room: landscape or portrait
         if (hasScene)
@@ -249,6 +260,11 @@ public static class GalleryDrawing
         var under = new Rect(room.X, top, room.Width, System.Math.Max(0, room.Bottom - top));
         double Zoom(Rect candidate)
         {
+            if (candidate.Width <= 0 || candidate.Height <= 0)
+            {
+                return 0;
+            }
+
             var shown = hasScene ? drawing.ChooseScene(candidate.Width, candidate.Height).Value : figure;
             return System.Math.Min(candidate.Width / shown.Width, candidate.Height / shown.Height);
         }

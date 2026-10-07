@@ -44,4 +44,16 @@ public class ExceptionReport
             return text;
         }
     }
+
+    /// <summary>
+    /// The boxes are grayed (read-only), so their text can't be selected: this is how it gets
+    /// into a bug report, with the build it happened in
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Copy")]
+    [PropertyGridIcon(PropertyGridIcon.Copy)]
+    public void Copy()
+    {
+        Clipboard.SetText("Live Geometry " + BuildVersion.Full + Environment.NewLine + Details);
+    }
 }

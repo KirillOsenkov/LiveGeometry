@@ -331,21 +331,25 @@ public class MainToolbar : Panel
         bottomLine.Arrange(new Rect(0, finalSize.Height - bottomLine.Height, finalSize.Width, bottomLine.Height));
 
         // a little bigger than the button (its hover plate would paint over the outline), wider
-        // still by the flare of its feet, and down over the bottom line
+        // still by the flare of its feet, and down over the bottom line. Not when the strip is
+        // shorter than that: a page with no height (a tab opened in the background) gets a
+        // strip of none, and a rectangle of negative height throws
+        var tabRect = new Rect();
         if (showTab)
         {
             var button = tabButton.Bounds;
             double top = buttons.Bounds.Y + button.Y - TabGap;
-            tab.Arrange(new Rect(
-                buttons.Bounds.X + button.X - TabGap - tab.Flare,
-                top,
-                button.Width + 2 * (TabGap + tab.Flare),
-                finalSize.Height - top));
+            if (finalSize.Height > top)
+            {
+                tabRect = new Rect(
+                    buttons.Bounds.X + button.X - TabGap - tab.Flare,
+                    top,
+                    button.Width + 2 * (TabGap + tab.Flare),
+                    finalSize.Height - top);
+            }
         }
-        else
-        {
-            tab.Arrange(new Rect());
-        }
+
+        tab.Arrange(tabRect);
 
         return finalSize;
     }
