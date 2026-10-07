@@ -3,7 +3,7 @@
   <Viewport Left="-5.6" Top="3.8" Right="5.6" Bottom="-3.8" Grid="true" Axes="true" />
   <Styles>
     <PointStyle Name="Runner" Size="14" Fill="#FFFFEF00" Color="#FFA05C21" StrokeWidth="2" />
-    <PointStyle Name="Handle" Size="12" Fill="#FF7CE38B" Color="#FF2E7D32" StrokeWidth="2">
+    <PointStyle Name="Knob" Size="12" Fill="#FF7CE38B" Color="#FF2E7D32" StrokeWidth="2">
       <Dark Color="#FF8AD48E" />
     </PointStyle>
     <PointStyle Name="OnEllipse" Size="9" Fill="#FF7A62D9" Color="#FF4A3A99" StrokeWidth="1.5" />
@@ -45,10 +45,10 @@
       <Dependency Name="O" />
       <Dependency Name="Y1" />
     </LineTwoPoints>
-    <PointOnFigure Name="a" Style="Handle" X="4" Y="0" Parameter="4">
+    <PointOnFigure Name="a" Style="Knob" X="4" Y="0" Parameter="4">
       <Dependency Name="XAxis" />
     </PointOnFigure>
-    <PointOnFigure Name="b" Style="Handle" X="0" Y="3" Parameter="3">
+    <PointOnFigure Name="b" Style="Knob" X="0" Y="3" Parameter="3">
       <Dependency Name="YAxis" />
     </PointOnFigure>
     <PointByCoordinates Name="L" Style="OnEllipse" X="a.X * (T.X - P0.X) / 0.75" Y="b.Y * (T.Y - P0.Y) / 0.75">

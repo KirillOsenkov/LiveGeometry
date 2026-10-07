@@ -63,13 +63,13 @@
     <LineStyle Name="WireMark" Color="#FF9AA0B8" StrokeWidth="2" />
     <PointStyle Name="Bead" Size="18" Fill="#FFFFFFFF" Color="#FF26215C" StrokeWidth="3" />
     <LineStyle Name="HintCircle" Color="#8026215C" StrokeWidth="1.5" Dash="Dash" />
-    <TextStyle Name="HuggerText" FontSize="15" Color="#FFC2185B" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="HuggerText" FontSize="16" Color="#FFC2185B" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FFC2185B" />
     </TextStyle>
-    <TextStyle Name="BouncerText" FontSize="15" Color="#FFB85F00" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="BouncerText" FontSize="16" Color="#FFB85F00" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FFB85F00" />
     </TextStyle>
-    <TextStyle Name="RoundyText" FontSize="15" Color="#FF0072B0" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="RoundyText" FontSize="16" Color="#FF0072B0" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF0072B0" />
     </TextStyle>
   </Styles>
@@ -187,18 +187,24 @@
       <Dependency Name="HintCenter" />
       <Dependency Name="HintRim" />
     </Circle>
-    <Label Name="LegendHugger" Visible="false" Style="HuggerText" Text="Catmull-Rom" Pin="TopLeft" OffsetX="16" OffsetY="54" />
-    <Label Name="LegendBouncer" Visible="false" Style="BouncerText" Text="Natural spline" Pin="TopLeft" OffsetX="16" OffsetY="78" />
-    <Label Name="LegendRoundy" Visible="false" Style="RoundyText" Text="Hobby" Pin="TopLeft" OffsetX="16" OffsetY="102" />
     <Label Name="Hint" Visible="false" Style="GalleryText" Text="Pink is a Catmull-Rom spline: each dot's handles come from its two neighbors alone. Orange is a natural spline: all its handles are worked out together, so one dot nudges the whole loop. Blue is John Hobby's rule, made for drawing letters: it keeps the bend as even as it can. Spread the dots evenly around the dashed circle and the outer edges agree. The hole never quite does: four diamonds are too few, and the more dots, the closer the rules come. Dragged an arm? That blob stops following its rule there, until you press Undo." Pin="TopRight" OffsetX="16" OffsetY="300" WrapWidth="400" Backdrop="true" />
-    <ShowHideControl Name="HintBox" Style="GalleryText" Show="false" Text="Hint" Pin="TopLeft" OffsetX="16" OffsetY="16">
+    <ShowHideControl Name="PinkBox" Style="HuggerText" Show="true" Text="Pink" Pin="TopLeft" OffsetX="16" OffsetY="16">
+      <Dependency Name="Hugger" />
+      <Dependency Name="HoleHugger" />
+    </ShowHideControl>
+    <ShowHideControl Name="OrangeBox" Style="BouncerText" Show="true" Text="Orange" Pin="TopLeft" OffsetX="16" OffsetY="40">
+      <Dependency Name="Bouncer" />
+      <Dependency Name="HoleBouncer" />
+    </ShowHideControl>
+    <ShowHideControl Name="BlueBox" Style="RoundyText" Show="true" Text="Blue" Pin="TopLeft" OffsetX="16" OffsetY="64">
+      <Dependency Name="Roundy" />
+      <Dependency Name="HoleRoundy" />
+    </ShowHideControl>
+    <ShowHideControl Name="HintBox" Style="GalleryText" Show="false" Text="Hint" Pin="TopLeft" OffsetX="16" OffsetY="88">
       <Dependency Name="HintCircle" />
-      <Dependency Name="LegendHugger" />
-      <Dependency Name="LegendBouncer" />
-      <Dependency Name="LegendRoundy" />
       <Dependency Name="Hint" />
     </ShowHideControl>
     <Label Name="Title" Style="GalleryTitle" Text="Connect the Dots" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Three see-through blobs share seven dots, but each bends between them by its own rule. Drag a dot and each blob shows its handles, the hidden arms that steer its curve. On both sides, pink stays near the dashed line, orange swings out, blue bulges widest.\n\nThe diamonds cut a hole. Slide the bead to make every curve puffy or tight. With the bead on its mark, can you make the three outer edges agree?" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Three see-through blobs share seven dots, but each bends between them by its own rule. Drag a dot and each blob shows its handles, the hidden arms that steer its curve. On both sides, pink stays near the dashed line, orange swings out, blue bulges widest. Uncheck a color to hide its blob.\n\nThe diamonds cut a hole. Slide the bead to make every curve puffy or tight. With the bead on its mark, can you make the three outer edges agree?" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>
