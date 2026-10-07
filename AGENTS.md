@@ -668,7 +668,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `HitTestShape` refuses hidden figures too). Only figures directly in the drawing: a
   composite's parts (a vector's hidden segment) never ghost, so a hidden composite shows
   nothing. `UpdateVisual` overrides that skip hidden figures test `IsShown` instead, or
-  the ghost sits at a stale place. `Actions.ReplacePoint` puts the replacement in the
+  the ghost sits at a stale place. A figure hidden when it comes onto the canvas keeps
+  its shape off the canvas until it first shows, Visible or a ghost
+  (`ShapeBase.OnAddingToCanvas`, `PutShapeOnCanvas`, 2026-10-07; shapes proper only, a
+  label is measured as shown while hidden and wants the tree's font): the hidden helpers
+  of a construction and the variables of a generated drawing (193 of Stretchy Slime's 264
+  figures) cost the canvas nothing at the load and at every frame. The shape is styled all
+  the same, since code reads a point's size or a line's thickness off it hidden or not
+  (`Arrow`, `CoordinateSystem.LimitZoomByPointReach`). `Actions.ReplacePoint` puts the replacement in the
   old point's place (`MoveBefore`: with what it is built on that came later, such as its
   Number, to keep dependency order; `Figures.Move` doesn't touch the canvas). Several figures selected show as a `FigureSelection`
   in the property grid (common properties + Delete).
@@ -1513,17 +1520,31 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   inside the tab. An on/off `Command` exposes `IsChecked` (a `Func<bool>`), which its button
   re-reads after any toggle (`CommandToolButton.UpdateToggles`, called by anything that toggles
   from a key) - don't go back to `CheckBox` icons.
-- **The splash** (`wwwroot/index.html` + `app.css`, shown until Avalonia adds `splash-close`)
-  animates Euclid's first construction, with a progress bar that `main.js` feeds from a
-  `withResourceLoader` wrapper counting fetches (the loader's `onDownloadResourceProgress` is on
-  the module config, which the .NET 10 host builder doesn't expose). The wrapper hands back a
-  Response only for assemblies, the wasm and ICU data; the runtime's own JavaScript modules and
-  its config must be left to the default loading (a Response for `dotnetjs` leaves the site
-  spinning on the splash forever). A change to `main.js` needs the publish smoke test below
-  before deploying. `?splash` on the url shows the splash without starting the app: serve the
-  source `wwwroot` with `tools/serve.cs` and open `http://localhost:<port>/index.html?splash`.
-  It animates regardless of `prefers-reduced-motion` on purpose: the query follows the Windows
-  "Animation effects" setting, which many machines have off, and a still splash looks stuck.
+- **The splash** (`wwwroot/index.html` + `app.css`) stays up until the app says it has drawn
+  what the page opened at (`SplashScreen`, 2026-10-07): the gallery with its tiles in view
+  loaded (`GalleryView.LoadNextTiles`) or a drawing laid out (`MainView.HideSplashWhenDrawn`);
+  `main.js` adds `app-ready` then and the splash fades. Avalonia's own `splash-close`, added
+  at its first frame, hides nothing any more: on the gallery page that frame came seconds
+  before the tiles, which then popped in batch by batch. Two deadlines in `main.js` take the
+  splash down should the app never say so: 10 s after Avalonia's first frame, 20 s after Main
+  returns. It animates Euclid's first construction in HTML, every move a transform or an
+  opacity (a ring is drawn by turning a half-colored ring behind a half-window, a line is ink
+  sliding into a slot), which the browser plays on its compositor thread while the main
+  thread is held by the app's startup; the SVG version's `stroke-dashoffset` and
+  `offset-distance` were painted on the main thread and froze with it. The bar under it is
+  the downloads for its first 60% (a `withResourceLoader` wrapper counting fetches: the
+  loader's `onDownloadResourceProgress` is on the module config, which the .NET 10 host
+  builder doesn't expose) and what the app reports for the rest (`SplashScreen.ReportProgress`:
+  tiles in view loaded, out of all in view); it is a cover sliding off the gradient, not a
+  width, for the same reason. The splash takes the pointer events while it is up (the app
+  under it got the clicks). The wrapper hands back a Response only for assemblies, the wasm
+  and ICU data; the runtime's own JavaScript modules and its config must be left to the
+  default loading (a Response for `dotnetjs` leaves the site spinning on the splash forever).
+  A change to `main.js` needs the publish smoke test below before deploying. `?splash` on
+  the url shows the splash without starting the app: serve the source `wwwroot` with
+  `tools/serve.cs` and open `http://localhost:<port>/index.html?splash`. It animates
+  regardless of `prefers-reduced-motion` on purpose: the query follows the Windows "Animation
+  effects" setting, which many machines have off, and a still splash looks stuck.
 - **web.config**: `LiveGeometry.Browser/web.config` is hand-written (serves the precompressed
   `.br` files, sets immutable caching on fingerprinted assets, `no-cache` on entry files). The
   wasm SDK drops a project web.config from publish, so the csproj copies it with an explicit
@@ -1848,13 +1869,20 @@ buttons and checkboxes, 3D, custom tools.
   figure far smaller than the room.
 - **Tiles are live drawings**, not bitmaps (`DrawingThumbnail`): no Behavior, text hidden;
   hovering makes the draggable points drift. Loaded a batch per idle tick and only as they come
-  near the view (`GalleryView.NextTileToLoad`: those in view from the top, then half a screen
-  around it; none while the page is hidden behind the editor): a load holds the UI thread,
-  in the browser a few hundred milliseconds for a drawing with hundreds of points by
-  coordinates. A tile whose points are characters waits for the emoji font while the others
-  load (`GalleryItem.UsesEmoji`); loaded before it, it showed its emoji seconds later. A
-  load error of a tile goes to the console as `Gallery: <file>: ...`; every drawing at once
-  is loaded by `tools/regression.cs`.
+  near the view (`GalleryView.LoadNextTiles`: those in view from the top, then half a screen
+  around it; none while the page is hidden behind the editor; one a turn while the splash is
+  up, so that its bar moves after each): a load holds the UI thread, in the browser a few
+  hundred milliseconds for a drawing with hundreds of points by coordinates. Which tiles are
+  near the view comes from the grid's arithmetic (`TileGridPanel.GetTileRect`), not from
+  asking each tile where it is: that ran at every step of a scroll, and `TranslatePoint` over
+  sixty tiles took 30 ms a step on a phone - most of what made scrolling the gallery choppy
+  (2026-10-07; `tools/scrollperf.cs` measures it). Tried then and dropped: Avalonia 12's
+  `BitmapCache` (`Visual.CacheMode`) on the tiles near the view - in the browser a tile was
+  drawn into its bitmap again and again during a scroll, 50-100 ms a time at a 4x CPU
+  throttle, and scrolling got worse, not better. A tile whose points are characters waits
+  for the emoji font while the others load (`GalleryItem.UsesEmoji`); loaded before it, it
+  showed its emoji seconds later. A load error of a tile goes to the console as
+  `Gallery: <file>: ...`; every drawing at once is loaded by `tools/regression.cs`.
 - **Generated drawings** - regenerate rather than edit the file: Line of Best Fit
   (`dotnet tools/bestfit.cs -- <the .lgf>`), Fibonacci Spiral (`tools/fibonacci.cs`),
   The Five Platonic Solids (`tools/platonic.cs`, `--alpha` for a translucent variant),
@@ -1999,17 +2027,45 @@ a segment or ray, and sides of a polygon that don't cross - legitimately absent.
   Release publish served by `tools/serve.cs`, read with `webauto console`. Each `webauto`
   call is a process that takes CPU from the page: compare runs made the same way.
 - How a page loads, as F12 shows it: `dotnet run tools/loadperf.cs -- <url> <out folder>
-  [--seconds 20] [--size 1700x1000] [--trace] [--phone]`. A first visit (a new Edge profile,
-  nothing cached) and a returning visitor's (a new browser on the same profile): the
-  downloads, when .NET runs (the build line in the console), when the splash closes, and
-  the long tasks of the page's thread - each load of a gallery tile is one. `--trace`
-  records the first visit for F12's Performance panel (Load profile) and saves what was on
-  screen every half second (`contactsheet` puts it on one image); `--phone` is a phone's
-  screen, a 4 times slower CPU and Fast 4G. Nothing else may run meanwhile: a browser busy
-  on the same machine (a page refreshed by hand, a headless one left behind) made every
-  visit 1.5 to 2 times slower. livegeometry.com on 2026-10-03, 1700x1000: on a first visit
-  the splash closed at 2.7-3.0 s and the tiles in view were drawn by 6.2-6.6 s; for a
-  returning visitor, 1.3-1.4 s and 4.6-4.8 s.
+  [--seconds 20] [--size 1700x1000] [--trace] [--phone] [--wifi]`. A first visit (a new Edge
+  profile, nothing cached) and a returning visitor's (a new browser on the same profile):
+  the downloads, when .NET runs (the build line in the console), Avalonia's first frame and
+  when the app took the splash down, and the long tasks of the page's thread - each load of
+  a gallery tile is one. `--trace` records the first visit for F12's Performance panel (Load
+  profile) and saves what was on screen every half second (`contactsheet` puts it on one
+  image); `--phone` is a phone's screen, a 4 times slower CPU and Fast 4G (`--wifi` leaves
+  the network alone: a local publish has no brotli, so its 4G download says nothing about
+  the site's; the CPU part does). Nothing else may run meanwhile: a browser busy on the same
+  machine (a page refreshed by hand, a headless one left behind) made every visit 1.5 to 2
+  times slower. livegeometry.com on 2026-10-03, 1700x1000: on a first visit the splash
+  closed at 2.7-3.0 s and the tiles in view were drawn by 6.2-6.6 s; for a returning
+  visitor, 1.3-1.4 s and 4.6-4.8 s.
+- How the gallery scrolls: `dotnet run tools/scrollperf.cs -- <url> <out folder> [--phone]
+  [--wheel] [--passes 3] [--wait 15] [--dpr 1]`: the page loaded and left alone until its
+  tiles are in, then scrolled down (loading the tiles it reaches) and back up (over loaded
+  tiles: the scrolling alone), each with its frame intervals, the main thread's time in
+  timer and animation-frame callbacks (Avalonia's dispatcher and render pass run in those)
+  and its long tasks. `--phone` is 390x645 and a 4x CPU throttle, at a pixel ratio of 1:
+  under the emulation Avalonia measured its canvas in physical pixels and divided by the
+  emulated ratio, and laid the page out at a third of its width.
+- Where the time went on 2026-10-07 (a local publish, headless Edge, returning visitor,
+  1700x1000; the runtime is up at 0.2 s and everything below is after that): Avalonia's
+  platform init 0.07 s, FluentTheme 0.03 s, the gallery page built 0.1 s, its first layout
+  and frame 0.2 s (the frame itself 0.12 s of text shaping and Skia, native: the same under
+  AOT), then the tiles in view 2.6 s in all, Stretchy Slime 0.47 s of it (the XML 0.03 s,
+  reading the figures 0.13 s - the expressions compile there - adding them to the drawing
+  0.19 s). The emoji font's parse is 1 ms. Under the 4x throttle every managed part is 4x:
+  the first frame 3.1 s after the runtime, Stretchy Slime 2.6-3.2 s. Scrolling over loaded
+  tiles at the 4x throttle: a p95 frame of 14 ms, where it was 40 ms before the tile
+  distances were made arithmetic (above).
+- `-p:RunAOTCompilation=true` (measured 2026-10-07, not applied): the download is 9.9 MB
+  brotli instead of 5.3 (`dotnet.native.wasm` 35 MB raw, 7.2 MB brotli, which the browser
+  also has to compile), the tiles load 2-3.5x faster (Stretchy Slime 0.24 s), the startup
+  1.3-1.7x, the gallery under the phone throttle is in at 6 s after the runtime instead of
+  12, and scrolling over loaded tiles takes 15% of the main thread instead of 27%. A first
+  visit on 4G pays about 4 s more for the download; a returning visitor has it cached. A
+  profile-guided partial AOT (only the methods a gallery load runs) would be the next thing
+  to try for most of the speed at less of the size.
 
 ## .dgf (DG 1.0) reader facts
 
@@ -2116,6 +2172,8 @@ Screenshots are PNGs; image pixels are the click coordinates in both tools.
   `dotnet run` takes the project instead. A native save panel and a context menu are windows
   of their own in `list` (a menu on layer 101), and `key`/`text` with `window:N` go to them;
   in the save panel Cmd+Shift+G types a folder.
+- `tools/loadperf.cs` and `tools/scrollperf.cs` - how the browser build loads and scrolls, in
+  headless Edge of their own (ports 9334 and 9335): see "Measuring speed".
 - `tools/webauto.cs` - the browser build in headless Edge over CDP (port 9333, Edge stays alive
   between calls). `start <url> [w h] [--lang xx-XX] [--dark]`, `stop`, `nav`, `wait <console text>`,
   `console [--errors]`, `shot`, `click`, `drag`, `move`, `key <Key> [ctrl] [shift] [alt]`,

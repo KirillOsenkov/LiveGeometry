@@ -22,6 +22,25 @@ public class TileGridPanel : Panel
     int columns;
     Size tileSize;
 
+    /// <summary>
+    /// Where the child at the index is laid out, by the grid's arithmetic (every tile has the
+    /// same size), without asking the child: the gallery wants it for every tile at every step
+    /// of a scroll. Empty before the first layout.
+    /// </summary>
+    public Rect GetTileRect(int index)
+    {
+        if (columns == 0)
+        {
+            return default;
+        }
+
+        return new Rect(
+            index % columns * (tileSize.Width + Gap),
+            index / columns * (tileSize.Height + Gap),
+            tileSize.Width,
+            tileSize.Height);
+    }
+
     void Calculate(double availableWidth)
     {
         if (double.IsInfinity(availableWidth))

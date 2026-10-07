@@ -204,12 +204,14 @@ public class GalleryView : DockPanel
     // fewer frames leave more of the time to the loading, and the tiles come in groups.
     const int TilesPerTurn = 8;
 
-    // The tiles wait until the page is on the screen. In the browser the first batch was
+    // The tiles wait until the page has had a frame. In the browser the first batch was
     // posted by the first layout and ran in the same task as the first frame (Avalonia's
     // dispatcher runs what is due before it gives the page back, a short timer too), so the
-    // browser could not paint until it was over: the splash, which Avalonia closes at the
-    // first frame, stayed up a second longer, for the eight tiles behind it. The second frame
-    // comes in a task of its own, after the first one is painted.
+    // browser could not paint until it was over: Avalonia's own splash, which it closed at
+    // the first frame, stayed up a second longer, for the eight tiles behind it. The second
+    // frame comes in a task of its own, after the first one is painted. (The page's splash now
+    // stays until the tiles in view are in, SplashScreen, but the frame still lets the bar
+    // under it move.)
     bool isOnScreen;
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -245,55 +247,96 @@ public class GalleryView : DockPanel
         Dispatcher.UIThread.Post(LoadNextTiles, DispatcherPriority.Background);
     }
 
+    /// <summary>
+    /// Loads the tiles nearest to the view that are not loaded yet: the ones in it first, from
+    /// the top, then the ones up to half a screen below or above it, so that a scroll finds
+    /// them there. A drawing with emoji waits for their font while the others load: loaded
+    /// before it came, it showed its emoji seconds later. While the page's splash is up
+    /// (<see cref="SplashScreen"/>), one tile a turn, so that the bar under the construction
+    /// moves after each, and the splash comes down once the tiles in view are all loaded.
+    /// </summary>
     void LoadNextTiles()
     {
         isLoadPosted = false;
-        for (int i = 0; i < TilesPerTurn; i++)
+        var tiles = TilesByDistance();
+        double reach = tilesInView.Height / 2;
+        bool isFontComing = !EmojiFont.EnsureLoaded().IsCompleted;
+        bool IsDue(TileDistance tile) => tile.Picture.CanLoad && tile.Distance <= reach && !(isFontComing && tile.Picture.UsesEmoji);
+        int perTurn = SplashScreen.IsUp ? 1 : TilesPerTurn;
+
+        // a stable sort: the tiles at one distance stay in the grid's order
+        foreach (var tile in tiles.OrderBy(tile => tile.Distance))
         {
-            var next = NextTileToLoad();
-            if (next == null)
+            if (perTurn == 0)
             {
-                return;
+                break;
             }
 
-            next.Load();
+            if (IsDue(tile))
+            {
+                tile.Picture.Load();
+                perTurn--;
+            }
         }
 
-        ScheduleLoad();
+        if (SplashScreen.IsUp && tiles.Count > 0)
+        {
+            int inView = tiles.Count(tile => tile.Distance == 0);
+            int loadedInView = tiles.Count(tile => tile.Distance == 0 && tile.Picture.HasLoaded);
+            SplashScreen.ReportProgress(inView == 0 ? 1 : (double)loadedInView / inView);
+            if (loadedInView == inView)
+            {
+                SplashScreen.Hide();
+            }
+        }
+
+        if (tiles.Any(IsDue))
+        {
+            ScheduleLoad();
+        }
+    }
+
+    struct TileDistance
+    {
+        public DrawingThumbnail Picture;
+
+        /// <summary>0 for a tile in view, else how far it is above or below the view</summary>
+        public double Distance;
     }
 
     /// <summary>
-    /// Of the tiles not loaded yet, the one nearest to the view: the ones in it first, from
-    /// the top, then the ones up to half a screen below or above it, so that a scroll finds
-    /// them there. None while the page is hidden. A drawing with emoji waits for their font
-    /// while the others load: loaded before it came, it showed its emoji seconds later.
+    /// The tiles in the grid's order, each with its distance from the part of the grid in
+    /// view. From the grid's arithmetic (<see cref="TileGridPanel.GetTileRect"/>), not from
+    /// each tile's place in the tree: this runs at every step of a scroll, and asking sixty
+    /// tiles where they were took 30 ms on a phone. Empty while the page is hidden or the
+    /// grid isn't laid out yet.
     /// </summary>
-    DrawingThumbnail NextTileToLoad()
+    List<TileDistance> TilesByDistance()
     {
+        var result = new List<TileDistance>();
         if (!IsEffectivelyVisible || tilesInView.Height <= 0)
         {
-            return null;
+            return result;
         }
 
-        bool isFontComing = !EmojiFont.EnsureLoaded().IsCompleted;
-        double reach = tilesInView.Height / 2;
-        return pictures
-            .Where(picture => picture.CanLoad)
-            .Select(picture => (picture, place: picture.TranslatePoint(default, galleryTiles)))
-            .Where(candidate => candidate.place != null)
-            .Select(candidate =>
+        var tiles = galleryTiles.Children;
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            if (tiles[i] is GalleryTile tile && tile.Picture is DrawingThumbnail picture)
             {
-                double top = candidate.place.Value.Y;
-                double bottom = top + candidate.picture.Bounds.Height;
-                double distance = System.Math.Max(0, System.Math.Max(tilesInView.Top - bottom, top - tilesInView.Bottom));
-                return (candidate.picture, place: candidate.place.Value, distance);
-            })
-            .Where(candidate => candidate.distance <= reach && !(isFontComing && candidate.picture.UsesEmoji))
-            .OrderBy(candidate => candidate.distance)
-            .ThenBy(candidate => candidate.place.Y)
-            .ThenBy(candidate => candidate.place.X)
-            .Select(candidate => candidate.picture)
-            .FirstOrDefault();
+                var rect = galleryTiles.GetTileRect(i);
+                if (rect.Height == 0)
+                {
+                    result.Clear();
+                    return result;
+                }
+
+                double distance = System.Math.Max(0, System.Math.Max(tilesInView.Top - rect.Bottom, rect.Top - tilesInView.Bottom));
+                result.Add(new TileDistance { Picture = picture, Distance = distance });
+            }
+        }
+
+        return result;
     }
 
     #endregion

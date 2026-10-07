@@ -38,6 +38,7 @@ public class GalleryTile : Border
     public GalleryTile(Control picture, string text, Color plate, Action action)
     {
         this.action = action;
+        Picture = picture;
         SetPlate(plate);
         AppTheme.CurrentChanged += Derive;
 
@@ -91,6 +92,9 @@ public class GalleryTile : Border
             }
         };
     }
+
+    /// <summary>What the tile shows above its caption (a <see cref="DrawingThumbnail"/> for a drawing)</summary>
+    public Control Picture { get; }
 
     bool isCompact;
 

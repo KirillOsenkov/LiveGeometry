@@ -9,7 +9,8 @@ html[data-theme="dark"] {
 }
 
 /* The splash screen (index.html): Euclid's first construction drawing itself while the
-   runtime downloads. Avalonia adds splash-close when the app is up. */
+   runtime downloads and the app starts. main.js adds app-ready when the app has drawn what
+   the page opened at; Avalonia's splash-close (its first frame) changes nothing here. */
 .avalonia-splash {
     position: absolute;
     height: 100%;
@@ -19,7 +20,6 @@ html[data-theme="dark"] {
     justify-content: center;
     align-items: center;
     display: flex;
-    pointer-events: none;
 }
 
 html[data-theme="dark"] .avalonia-splash {
@@ -30,23 +30,21 @@ html[data-theme="dark"] .avalonia-splash h2 {
     color: #9CC4F0;
 }
 
-html[data-theme="dark"] .splash-progress {
+html[data-theme="dark"] .splash-progress,
+html[data-theme="dark"] .splash-progress-cover {
     background: #3A414D;
 }
 
-html[data-theme="dark"] .euclid .base,
-html[data-theme="dark"] .euclid .sides {
-    stroke: #9CC4F0;
-}
-
+html[data-theme="dark"] .euclid .ink,
 html[data-theme="dark"] .euclid .pen {
-    fill: #9CC4F0;
+    background: #9CC4F0;
 }
 
-.avalonia-splash.splash-close {
-    transition: opacity 200ms, display 200ms;
-    display: none;
+/* fades, then is gone for good (visibility switches once the fade is over) */
+.avalonia-splash.app-ready {
     opacity: 0;
+    visibility: hidden;
+    transition: opacity 250ms ease-out, visibility 0s 250ms;
 }
 
 .splash-card {
@@ -117,11 +115,13 @@ html[data-theme="dark"] .splash-intro a {
     color: #7FB4EE;
 }
 
-/* A short window: a smaller construction, so the text stays above it. */
+/* A short window: a smaller construction, so the text stays above it (scaled, and the room
+   the scaling leaves below given back). */
 @media (max-height: 620px) {
     .euclid {
-        width: 224px;
-        height: 175px;
+        transform: scale(0.7);
+        transform-origin: top center;
+        margin-bottom: -75px;
     }
 
     .splash-intro {
@@ -151,6 +151,7 @@ html[data-theme="dark"] .splash-intro a {
 }
 
 .splash-progress {
+    position: relative;
     width: 220px;
     height: 5px;
     margin-top: 8px;
@@ -159,12 +160,22 @@ html[data-theme="dark"] .splash-intro a {
     overflow: hidden;
 }
 
+.splash-progress-bar,
+.splash-progress-cover {
+    position: absolute;
+    inset: 0;
+}
+
 .splash-progress-bar {
-    width: 0;
-    height: 100%;
-    border-radius: 3px;
     background: linear-gradient(90deg, #2F7BD6, #7CE38B);
-    transition: width 300ms ease-out;
+}
+
+/* slides to the right as far as the loading has come (main.js) */
+.splash-progress-cover {
+    background: #DCE4EF;
+    transform: translateX(0);
+    transition: transform 300ms ease-out;
+    will-change: transform;
 }
 
 /* The construction. One 7.5 s loop, everything timed in percentages of it:
@@ -175,98 +186,246 @@ html[data-theme="dark"] .splash-intro a {
     54-58  the crossing point appears
     59-73  the two sides are drawn from it
     73-81  the triangle fills
-    92-100 everything fades, and it starts over */
+    92-100 everything fades, and it starts over
+   Only transforms and opacities are animated, so that the browser's compositor thread
+   plays it while the main thread is held by the app's startup; stroke-dashoffset and
+   offset-distance, which the SVG version used, are painted on the main thread. */
 .euclid {
-    display: block;
-    overflow: visible;
+    position: relative;
+    width: 320px;
+    height: 250px;
 }
 
 .euclid .scene {
+    position: absolute;
+    inset: 0;
     animation: splash-scene 7.5s linear infinite;
 }
 
+.euclid .scene > div,
+.euclid .half,
+.euclid .arc,
+.euclid .ink,
+.euclid .pen {
+    position: absolute;
+}
+
+/* the points: a disc of radius 6 with a rim of 2, placed by its center */
 .euclid .dot {
-    fill: #FFEF00;
-    stroke: #A05C21;
-    stroke-width: 2;
-    transform-box: fill-box;
-    transform-origin: center;
+    width: 14px;
+    height: 14px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    background: #FFEF00;
+    border: 2px solid #A05C21;
     animation: splash-pop 7.5s ease-out infinite;
+    will-change: transform;
+}
+
+.euclid .dot-a {
+    left: 103px;
+    top: 133px;
+}
+
+.euclid .dot-b {
+    left: 203px;
+    top: 133px;
 }
 
 .euclid .dot-c {
+    left: 153px;
+    top: 46.4px;
     animation-name: splash-pop-c;
 }
 
-.euclid .ring {
-    fill: none;
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-dasharray: 628.4;
-    stroke-dashoffset: 628.4;
-}
-
-.euclid .ring-a {
-    stroke: #2F7BD6;
-    animation: splash-ring-a 7.5s ease-in-out infinite;
-}
-
-.euclid .ring-b {
-    stroke: #E08A00;
-    animation: splash-ring-b 7.5s ease-in-out infinite;
-}
-
+/* the inside of each circle, faint towards the middle, fading in once the circle is drawn */
 .euclid .disc {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
     opacity: 0;
 }
 
 .euclid .disc-a {
+    left: 10px;
+    top: 40px;
+    background: radial-gradient(circle closest-side, rgba(47, 123, 214, 0.04) 60%, rgba(47, 123, 214, 0.22) 100%);
     animation: splash-disc-a 7.5s linear infinite;
 }
 
 .euclid .disc-b {
+    left: 110px;
+    top: 40px;
+    background: radial-gradient(circle closest-side, rgba(224, 138, 0, 0.04) 60%, rgba(224, 138, 0, 0.22) 100%);
     animation: splash-disc-b 7.5s linear infinite;
 }
 
-/* the pen: a dot riding the rim as the ring draws, on the same path the stroke follows
-   (an SVG circle's stroke starts at the right and goes clockwise) */
-.euclid .pen {
-    fill: #1F4E8C;
+/* A ring: a stroke 2.5 wide centered on the radius 100, so a box of 202.5. Each half shows
+   its half of a full ring whose right and bottom sides are colored: turned 45°, that colored
+   half lies exactly on the lower half, and turning it on sweeps it through the half's window
+   clockwise from 3 o'clock (the lower half) and from 9 o'clock (the upper), as an SVG
+   stroke is drawn. */
+.euclid .ring {
+    width: 202.5px;
+    height: 202.5px;
+}
+
+.euclid .ring-a {
+    left: 8.75px;
+    top: 38.75px;
+}
+
+.euclid .ring-b {
+    left: 108.75px;
+    top: 38.75px;
+}
+
+.euclid .half {
+    left: 0;
+    width: 202.5px;
+    height: 101.25px;
+    overflow: hidden;
+}
+
+.euclid .half.upper {
+    top: 0;
+}
+
+.euclid .half.lower {
+    top: 101.25px;
+}
+
+.euclid .arc {
+    left: 0;
+    width: 202.5px;
+    height: 202.5px;
+    box-sizing: border-box;
+    border: 2.5px solid transparent;
+    border-radius: 50%;
+    transform: rotate(45deg);
+    will-change: transform;
+}
+
+.euclid .half.upper .arc {
+    top: 0;
+}
+
+.euclid .half.lower .arc {
+    top: -101.25px;
+}
+
+.euclid .ring-a .arc {
+    border-right-color: #2F7BD6;
+    border-bottom-color: #2F7BD6;
+}
+
+.euclid .ring-b .arc {
+    border-right-color: #E08A00;
+    border-bottom-color: #E08A00;
+}
+
+.euclid .ring-a .half.lower .arc {
+    animation: splash-ring-a-lower 7.5s linear infinite;
+}
+
+.euclid .ring-a .half.upper .arc {
+    animation: splash-ring-a-upper 7.5s linear infinite;
+}
+
+.euclid .ring-b .half.lower .arc {
+    animation: splash-ring-b-lower 7.5s linear infinite;
+}
+
+.euclid .ring-b .half.upper .arc {
+    animation: splash-ring-b-upper 7.5s linear infinite;
+}
+
+/* the pen: a dot on an arm that turns about the center, once round as the ring is drawn */
+.euclid .arm {
+    width: 0;
+    height: 0;
     opacity: 0;
+    will-change: transform;
 }
 
-.euclid .pen-a {
-    offset-path: path("M210,140 A100,100 0 1,1 10,140 A100,100 0 1,1 210,140");
-    animation: splash-pen-a 7.5s ease-in-out infinite;
+.euclid .arm-a {
+    left: 110px;
+    top: 140px;
+    animation: splash-arm-a 7.5s linear infinite;
 }
 
-.euclid .pen-b {
-    offset-path: path("M310,140 A100,100 0 1,1 110,140 A100,100 0 1,1 310,140");
-    animation: splash-pen-b 7.5s ease-in-out infinite;
+.euclid .arm-b {
+    left: 210px;
+    top: 140px;
+    animation: splash-arm-b 7.5s linear infinite;
 }
 
-.euclid .base, .euclid .sides {
-    fill: none;
-    stroke: #1F4E8C;
-    stroke-width: 3;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+.euclid .pen {
+    left: 96px;
+    top: -4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #1F4E8C;
+}
+
+/* a line: a slot 3 wide from its first point, turned to point at its second, that ink
+   with round ends slides into */
+.euclid .line {
+    width: 100px;
+    height: 3px;
+    border-radius: 1.5px;
+    overflow: hidden;
+    transform-origin: 0 50%;
 }
 
 .euclid .base {
-    stroke-dasharray: 100;
-    stroke-dashoffset: 100;
+    left: 110px;
+    top: 138.5px;
+}
+
+.euclid .side-a {
+    left: 110px;
+    top: 138.5px;
+    transform: rotate(-60deg);
+}
+
+.euclid .side-b {
+    left: 160px;
+    top: 51.9px;
+    transform: rotate(60deg);
+}
+
+.euclid .ink {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 1.5px;
+    background: #1F4E8C;
+    transform: translateX(-100%);
+    will-change: transform;
+}
+
+.euclid .base .ink {
     animation: splash-base 7.5s ease-in-out infinite;
 }
 
-.euclid .sides {
-    stroke-dasharray: 200;
-    stroke-dashoffset: 200;
-    animation: splash-sides 7.5s ease-in-out infinite;
+.euclid .side-a .ink {
+    animation: splash-side-a 7.5s ease-in-out infinite;
+}
+
+.euclid .side-b .ink {
+    animation: splash-side-b 7.5s ease-in-out infinite;
 }
 
 .euclid .tri {
-    fill: url(#splash-tri);
+    left: 110px;
+    top: 53.4px;
+    width: 100px;
+    height: 86.6px;
+    clip-path: polygon(0 100%, 50% 0, 100% 100%);
+    background: linear-gradient(to bottom right, #7CE38B, #6FD3F7);
     opacity: 0;
     animation: splash-tri 7.5s ease-out infinite;
 }
@@ -287,18 +446,36 @@ html[data-theme="dark"] .splash-intro a {
 }
 
 @keyframes splash-base {
-    0%, 4% { stroke-dashoffset: 100; }
-    9%, 100% { stroke-dashoffset: 0; }
+    0%, 4% { transform: translateX(-100%); }
+    9%, 100% { transform: translateX(0); }
 }
 
-@keyframes splash-ring-a {
-    0%, 10% { stroke-dashoffset: 628.4; }
-    30%, 100% { stroke-dashoffset: 0; }
+/* The lower half is swept first, the upper second, each over half the ring's time. An arc
+   at rest has the ends of its colored half right on the window's edge, where a sliver of
+   antialiasing showed as a dot at 3 and 9 o'clock: an arc is invisible until its sweep
+   begins, and by the time it rests again the whole ring is drawn over the slivers. */
+@keyframes splash-ring-a-lower {
+    0%, 9.99% { transform: rotate(225deg); opacity: 0; }
+    10% { transform: rotate(225deg); opacity: 1; }
+    20%, 100% { transform: rotate(405deg); opacity: 1; }
 }
 
-@keyframes splash-ring-b {
-    0%, 32% { stroke-dashoffset: 628.4; }
-    52%, 100% { stroke-dashoffset: 0; }
+@keyframes splash-ring-a-upper {
+    0%, 19.99% { transform: rotate(45deg); opacity: 0; }
+    20% { transform: rotate(45deg); opacity: 1; }
+    30%, 100% { transform: rotate(225deg); opacity: 1; }
+}
+
+@keyframes splash-ring-b-lower {
+    0%, 31.99% { transform: rotate(225deg); opacity: 0; }
+    32% { transform: rotate(225deg); opacity: 1; }
+    42%, 100% { transform: rotate(405deg); opacity: 1; }
+}
+
+@keyframes splash-ring-b-upper {
+    0%, 41.99% { transform: rotate(45deg); opacity: 0; }
+    42% { transform: rotate(45deg); opacity: 1; }
+    52%, 100% { transform: rotate(225deg); opacity: 1; }
 }
 
 @keyframes splash-disc-a {
@@ -311,23 +488,28 @@ html[data-theme="dark"] .splash-intro a {
     54%, 100% { opacity: 1; }
 }
 
-@keyframes splash-pen-a {
-    0%, 9% { offset-distance: 0%; opacity: 0; }
-    10% { offset-distance: 0%; opacity: 1; }
-    30% { offset-distance: 100%; opacity: 1; }
-    31%, 100% { offset-distance: 100%; opacity: 0; }
+@keyframes splash-arm-a {
+    0%, 9.99% { transform: rotate(0deg); opacity: 0; }
+    10% { transform: rotate(0deg); opacity: 1; }
+    30% { transform: rotate(360deg); opacity: 1; }
+    30.01%, 100% { transform: rotate(360deg); opacity: 0; }
 }
 
-@keyframes splash-pen-b {
-    0%, 31% { offset-distance: 0%; opacity: 0; }
-    32% { offset-distance: 0%; opacity: 1; }
-    52% { offset-distance: 100%; opacity: 1; }
-    53%, 100% { offset-distance: 100%; opacity: 0; }
+@keyframes splash-arm-b {
+    0%, 31.99% { transform: rotate(0deg); opacity: 0; }
+    32% { transform: rotate(0deg); opacity: 1; }
+    52% { transform: rotate(360deg); opacity: 1; }
+    52.01%, 100% { transform: rotate(360deg); opacity: 0; }
 }
 
-@keyframes splash-sides {
-    0%, 59% { stroke-dashoffset: 200; }
-    73%, 100% { stroke-dashoffset: 0; }
+@keyframes splash-side-a {
+    0%, 59% { transform: translateX(-100%); }
+    66%, 100% { transform: translateX(0); }
+}
+
+@keyframes splash-side-b {
+    0%, 66% { transform: translateX(-100%); }
+    73%, 100% { transform: translateX(0); }
 }
 
 @keyframes splash-tri {

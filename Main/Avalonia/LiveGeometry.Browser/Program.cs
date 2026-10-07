@@ -22,6 +22,7 @@ internal sealed partial class Program
             // a reload, or another visit, finds the user's drawing where it was left
             MainView.KeepsOwnDrawing = true;
             DynamicGeometry.EmojiFont.Open = OpenEmojiFont;
+            SplashScreen.Attach(HideSplash, ReportSplashProgress);
             await BuildAvaloniaApp()
                 .WithInterFont()
                 .StartBrowserAppAsync("out");
@@ -39,6 +40,13 @@ internal sealed partial class Program
 
     [JSImport("isMac", "main.js")]
     private static partial bool IsMacKeyboard();
+
+    // the page's splash screen (index.html), see SplashScreen
+    [JSImport("hideSplash", "main.js")]
+    private static partial void HideSplash();
+
+    [JSImport("reportProgress", "main.js")]
+    private static partial void ReportSplashProgress(double fraction);
 
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>();

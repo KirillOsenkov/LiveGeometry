@@ -904,10 +904,38 @@ public partial class MainView : UserControl
         if (string.IsNullOrEmpty(path))
         {
             HandleExceptions(() => Navigate(StartupPath ?? AddressBar.Current.Path, push: false));
+            if (!IsGalleryShowing)
+            {
+                HideSplashWhenDrawn();
+            }
+
             return;
         }
 
         OpenDrawingFromPath(path);
+    }
+
+    /// <summary>
+    /// The page's splash (<see cref="SplashScreen"/>) comes down once the drawing opened at
+    /// startup is on screen: at the next frame, whose render pass has it. The gallery takes it
+    /// down itself, once its tiles in view are loaded (<see cref="GalleryView"/>).
+    /// </summary>
+    void HideSplashWhenDrawn()
+    {
+        if (!SplashScreen.IsUp)
+        {
+            return;
+        }
+
+        SplashScreen.ReportProgress(1);
+        var topLevel = TopLevel.GetTopLevel(this);
+        if (topLevel == null)
+        {
+            SplashScreen.Hide();
+            return;
+        }
+
+        topLevel.RequestAnimationFrame(_ => SplashScreen.Hide());
     }
 
     /// <param name="name">File name; the extension tells the format</param>

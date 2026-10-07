@@ -5,9 +5,10 @@
 // (port 9334, apart from webauto's), twice - a first visit (a new profile, nothing cached) and a
 // returning visitor's (a new browser on the same profile, everything cached). For each: the
 // first byte, the splash, the downloads, the console lines with their times (the app's build
-// line says when .NET runs), when the splash closed, and the long tasks of the page's thread
-// (each load of a gallery tile is one). All of it also goes to first-visit.json and
-// returning-visit.json.
+// line says when .NET runs), Avalonia's first frame (it adds splash-close then) and when the
+// app took the splash down (app-ready: the tiles in view loaded, or a drawing laid out), and
+// the long tasks of the page's thread (each load of a gallery tile is one). All of it also goes
+// to first-visit.json and returning-visit.json.
 //
 //   dotnet run tools/loadperf.cs -- <url> <out folder> [--seconds 20] [--size 1700x1000] [--trace] [--phone]
 //
@@ -17,6 +18,8 @@
 //            (`dotnet tools/contactsheet.cs -- <out folder>/filmstrip <sheet.png> 4 500` puts it
 //            on one image). Recording slows the page down a little.
 // --phone    a phone: 390x645 at 3x, the CPU 4 times slower, DevTools' "Fast 4G"
+// --wifi     with --phone: no network throttling (a local server has no brotli, so the "Fast 4G"
+//            download of a local publish is not what the site's would be; the CPU part is)
 //
 // Each visit gets a browser of its own, closed before the next starts: another one running
 // (even one idle in the background) takes CPU from the page being measured.
@@ -33,7 +36,7 @@ const int Port = 9334;
 // times (milliseconds since the navigation began), and when the splash closed
 const string Hook = """
 (() => {
-  const record = window.__loadperf = { console: [], longTasks: [], splashClosed: null };
+  const record = window.__loadperf = { console: [], longTasks: [], splashClosed: null, appReady: null };
   for (const level of ['log', 'info', 'warn', 'error']) {
     const original = console[level];
     console[level] = function () {
@@ -49,6 +52,9 @@ const string Hook = """
   new MutationObserver(() => {
     if (record.splashClosed === null && document.querySelector('.avalonia-splash.splash-close')) {
       record.splashClosed = Math.round(performance.now());
+    }
+    if (record.appReady === null && document.querySelector('.avalonia-splash.app-ready')) {
+      record.appReady = Math.round(performance.now());
     }
   }).observe(document, { attributes: true, attributeFilter: ['class'], subtree: true });
 })();
@@ -66,7 +72,7 @@ const string Summary = """
     navigation: navigation && {
       firstByte: Math.round(navigation.responseStart), domContentLoaded: Math.round(navigation.domContentLoadedEventEnd),
       load: Math.round(navigation.loadEventEnd), transfer: navigation.transferSize },
-    paint, splashClosed: record.splashClosed, resources, console: record.console || [], longTasks: record.longTasks || [] });
+    paint, splashClosed: record.splashClosed, appReady: record.appReady, resources, console: record.console || [], longTasks: record.longTasks || [] });
 })()
 """;
 
@@ -82,6 +88,7 @@ var watched = TimeSpan.FromSeconds(int.Parse(ArgumentValue("--seconds") ?? "20")
 var size = (ArgumentValue("--size") ?? "1700x1000").Split('x').Select(int.Parse).ToArray();
 bool trace = args.Contains("--trace");
 bool phone = args.Contains("--phone");
+bool wifi = args.Contains("--wifi");
 Directory.CreateDirectory(outputFolder);
 var profile = Path.Combine(Path.GetTempPath(), "loadperf-" + Guid.NewGuid().ToString("N"));
 
@@ -197,13 +204,16 @@ async Task<Cdp> OpenPage()
         await page.Send("Emulation.setCPUThrottlingRate", new JsonObject { ["rate"] = 4 });
 
         // "Fast 4G": 9 Mbit/s down, 1.5 Mbit/s up, 60 ms
-        await page.Send("Network.emulateNetworkConditions", new JsonObject
+        if (!wifi)
         {
-            ["offline"] = false,
-            ["latency"] = 60,
-            ["downloadThroughput"] = 9_000_000 / 8,
-            ["uploadThroughput"] = 1_500_000 / 8,
-        });
+            await page.Send("Network.emulateNetworkConditions", new JsonObject
+            {
+                ["offline"] = false,
+                ["latency"] = 60,
+                ["downloadThroughput"] = 9_000_000 / 8,
+                ["uploadThroughput"] = 1_500_000 / 8,
+            });
+        }
     }
 
     await page.Send("Page.addScriptToEvaluateOnNewDocument", new JsonObject { ["source"] = Hook });
@@ -350,7 +360,7 @@ static void Report(string title, string json)
     var navigation = root["navigation"];
     Console.WriteLine($"== {title} ==");
     Console.WriteLine($"first byte {navigation?["firstByte"]} ms, DOMContentLoaded {navigation?["domContentLoaded"]} ms, load {navigation?["load"]} ms");
-    Console.WriteLine($"first paint (the splash) {root["paint"]?["first-contentful-paint"]} ms, splash closed (the app is up) {root["splashClosed"]} ms");
+    Console.WriteLine($"first paint (the splash) {root["paint"]?["first-contentful-paint"]} ms, Avalonia's first frame {root["splashClosed"]} ms, the splash taken down (the app says it is ready) {root["appReady"]} ms");
     var resources = root["resources"].AsArray();
     long transferred = resources.Sum(resource => (long)resource["transfer"]) + (long)(navigation?["transfer"] ?? 0);
     long decoded = resources.Sum(resource => (long)resource["decoded"]);

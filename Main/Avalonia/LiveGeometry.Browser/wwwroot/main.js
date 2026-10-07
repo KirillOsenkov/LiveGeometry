@@ -26,11 +26,37 @@ let emojiFontDownload = globalThis.location.pathname === '/' ? downloadEmojiFont
 emojiFontDownload?.catch(() => { });
 let emojiFont = null;
 
+// The splash (index.html) stays up until the app has drawn what the page opened at
+// (SplashScreen.cs: the gallery with the tiles in view loaded, a drawing laid out). Its bar
+// is the downloads for the first part and what the app reports for the rest. Avalonia adds
+// splash-close at its first frame; that hides nothing here (app.css), but starts a deadline
+// in case the app never says it is ready: better tiles that pop in than a splash that stays.
+const splash = globalThis.document.querySelector('.avalonia-splash');
+const progressCover = globalThis.document.getElementById('splash-progress-cover');
+const downloadShare = 0.6;
+function showProgress(fraction) {
+    if (progressCover) {
+        progressCover.style.transform = 'translateX(' + Math.round(100 * Math.min(1, Math.max(0, fraction))) + '%)';
+    }
+}
+
+function hideSplash() {
+    splash?.classList.add('app-ready');
+}
+
+if (splash) {
+    new MutationObserver((mutations, observer) => {
+        if (splash.classList.contains('splash-close')) {
+            observer.disconnect();
+            globalThis.setTimeout(hideSplash, 10000);
+        }
+    }).observe(splash, { attributes: true, attributeFilter: ['class'] });
+}
+
 const { dotnet } = await import('./_framework/dotnet.js');
 
-// The bar under the splash: downloads finished, out of downloads begun. The loader asks
-// for every resource right after it has the config, so the denominator settles early.
-const progressBar = globalThis.document.getElementById('splash-progress-bar');
+// The downloads' part of the bar: downloads finished, out of downloads begun. The loader
+// asks for every resource right after it has the config, so the denominator settles early.
 let downloadsBegun = 0;
 let downloadsDone = 0;
 function loadResource(type, name, uri) {
@@ -45,9 +71,7 @@ function loadResource(type, name, uri) {
     const response = fetch(uri);
     response.then(() => {
         downloadsDone++;
-        if (progressBar) {
-            progressBar.style.width = Math.round(100 * downloadsDone / downloadsBegun) + '%';
-        }
+        showProgress(downloadShare * downloadsDone / downloadsBegun);
     }, () => { });
     return response;
 }
@@ -74,6 +98,9 @@ dotnetRuntime.setModuleImports('main.js', {
         emojiFont = null;
         emojiFontDownload = null;
     },
+    // the splash (above): the app's part of the bar, and the app on screen
+    reportProgress: (fraction) => showProgress(downloadShare + (1 - downloadShare) * fraction),
+    hideSplash: () => hideSplash(),
     getSetting: (key) => {
         try {
             return globalThis.localStorage.getItem(settingPrefix + key);
@@ -142,3 +169,7 @@ globalThis.document.addEventListener('visibilitychange', () => {
 });
 
 await dotnetRuntime.runMain(config.mainAssemblyName, [globalThis.location.href]);
+
+// Main returns once Avalonia is set up, before its first frame. An app that never gets to
+// one (a CRASH line in the console) leaves a splash that says "Loading" for good otherwise.
+globalThis.setTimeout(hideSplash, 20000);

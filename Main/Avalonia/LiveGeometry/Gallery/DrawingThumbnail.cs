@@ -80,6 +80,9 @@ public class DrawingThumbnail : Viewbox
     /// </summary>
     public bool CanLoad => !isLoadCalled && surface.Bounds.Width > 0;
 
+    /// <summary><see cref="Load"/> has run (whether or not the drawing came out of it)</summary>
+    public bool HasLoaded => isLoadCalled;
+
     /// <summary>See <see cref="GalleryItem.UsesEmoji"/></summary>
     public bool UsesEmoji => item.UsesEmoji;
 

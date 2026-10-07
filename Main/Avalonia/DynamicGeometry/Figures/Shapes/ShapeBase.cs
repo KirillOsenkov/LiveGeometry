@@ -250,6 +250,14 @@ namespace DynamicGeometry
                 && Drawing.Figures.Contains(this);
 
             bool needsToBeVisible = IsShown;
+            if (needsToBeVisible && canvas != null && !isShapeOnCanvas)
+            {
+                // held back while hidden (OnAddingToCanvas): on the canvas now, with the
+                // geometry it went without (UpdateVisual overrides skip a hidden figure)
+                PutShapeOnCanvas();
+                UpdateVisual();
+            }
+
             if ((Shape.Visibility == Visibility.Visible) != needsToBeVisible)
             {
                 Shape.Visibility = needsToBeVisible ? Visibility.Visible : Visibility.Collapsed;
@@ -300,17 +308,53 @@ namespace DynamicGeometry
             ApplyStyle();
         }
 
+        // The canvas the figure is on, and whether its shape is among the canvas's children.
+        // A figure hidden when it comes onto the canvas keeps its shape off it until it first
+        // shows (Visible, or the ghost of a selection): the hidden helpers of a construction
+        // and the variables of a generated drawing - most of what Stretchy Slime is made of -
+        // then cost the canvas nothing, at the load and at every frame. The shape is styled
+        // all the same (code reads a point's size or a line's thickness off it, hidden or
+        // not). Only for shapes proper: a label is a control, measured as shown while it is
+        // hidden (its room is kept), which wants it in the tree, where it inherits the
+        // window's font.
+        Canvas canvas;
+        bool isShapeOnCanvas;
+
+        bool DefersHiddenShape => Shape is Avalonia.Controls.Shapes.Shape;
+
+        void PutShapeOnCanvas()
+        {
+            if (!isShapeOnCanvas && canvas != null)
+            {
+                isShapeOnCanvas = true;
+                canvas.Children.Add(Shape);
+            }
+        }
+
         public override void OnAddingToCanvas(Canvas newContainer)
         {
+            // the style first (the base assigns one), onto the canvas second: a property set on
+            // a shape in the tree invalidates it, on one outside it is only a set
             base.OnAddingToCanvas(newContainer);
-            newContainer.Children.Add(Shape);
+            canvas = newContainer;
+            if (!DefersHiddenShape || Visible || Selected)
+            {
+                PutShapeOnCanvas();
+            }
+
             UpdateSelectionHalo();
         }
 
         public override void OnRemovingFromCanvas(Canvas leavingContainer)
         {
             base.OnRemovingFromCanvas(leavingContainer);
-            leavingContainer.Children.Remove(Shape);
+            if (isShapeOnCanvas)
+            {
+                leavingContainer.Children.Remove(Shape);
+                isShapeOnCanvas = false;
+            }
+
+            canvas = null;
             UpdateSelectionHalo();
         }
 
