@@ -1864,6 +1864,16 @@ buttons and checkboxes, 3D, custom tools.
   too: change both. A segment is drawn over every polygon whatever the order of the list
   (`ZOrder`, not saved), which is why the kites drawing's grid is polygons. Hidden
   `PointByCoordinates` whose coordinates are expressions are the library's variables.
+  The Bézier path drawings (2026-10-07) are generated too, each by `dotnet tools/<tool>.cs
+  -- <the .lgf>` and a `--rewrite` of the folder, which gives the file byte for byte:
+  Stretchy Slime (`slime.cs`), Moon Jelly (`moonjelly.cs`), Poke the Blob (`pokeblob.cs`),
+  Pump Up the Balloon (`balloon.cs`), Connect the Dots (`connectdots.cs`). All but the last
+  are one recipe: paths with automatic handles whose anchors are hidden points by
+  coordinates over a few hidden "variable" points (two numbers each) worked out from what
+  is dragged, so a drag moves the anchors and every path smooths itself again; a tension
+  tied to a hidden label `[...]`; and whatever appears past a threshold (the pop, the drop,
+  the swallowed bubble) is built on a point `X="0 * sqrt(v - limit)"`, which doesn't exist
+  below it, and neither does anything built on it.
 - **Drawings that must not fall apart** when a kid drags the wrong thing (Castle, The Falling
   Ladder): fixed points are `PointByCoordinates` with constant coordinates (a polygon of those
   has no free point, so dragging it does nothing), and the only things that move are
