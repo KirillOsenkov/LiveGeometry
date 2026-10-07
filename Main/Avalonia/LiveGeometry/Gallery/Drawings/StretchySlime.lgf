@@ -1,0 +1,1014 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-2.75" Top="1.625" Right="2.75" Bottom="-1.75">
+    <Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF140F3C" Offset="0" />
+        <GradientStop Color="#FF2A1A5E" Offset="0.6" />
+        <GradientStop Color="#FF3B1F6E" Offset="1" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
+  <Scene Left="-2.75" Top="1.625" Right="2.75" Bottom="-1.75" />
+  <Scene Left="-2.125" Top="1.625" Right="2.125" Bottom="-1.75" />
+  <Styles>
+    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFFFD6F5" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFFD6F5" />
+    </TextStyle>
+    <TextStyle Name="GalleryText" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <ShapeStyle Name="SlimeFill" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+          <GradientStop Color="#FFFF6EC7" Offset="0" />
+          <GradientStop Color="#FFB45CF5" Offset="0.3" />
+          <GradientStop Color="#FF7C4DFF" Offset="0.55" />
+          <GradientStop Color="#FF4D8DFF" Offset="0.78" />
+          <GradientStop Color="#FF40E0FF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="SlimeShade" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Color="#00190A50" Offset="0" />
+          <GradientStop Color="#00190A50" Offset="0.45" />
+          <GradientStop Color="#40190A50" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="SlimeRim" Color="#FFF3DDFF" StrokeWidth="2.5" />
+    <LineStyle Name="NoLine" Color="#00FFFFFF" StrokeWidth="0.5" />
+    <ShapeStyle Name="GlossFill" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#B3FFFFFF" Offset="0" />
+          <GradientStop Color="#26FFFFFF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="BubbleGlass" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#B3FFFFFF" Offset="0" />
+          <GradientStop Color="#40F0D8FF" Offset="0.5" />
+          <GradientStop Color="#14FFFFFF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <PointStyle Name="BubbleGlint" Size="5" Fill="#F2FFFFFF" Color="#00FFFFFF" StrokeWidth="0.1" />
+    <LineStyle Name="BubbleRim" Color="#CCFFFFFF" StrokeWidth="1.5" />
+    <ShapeStyle Name="DropFill" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFE0A6FF" Offset="0" />
+          <GradientStop Color="#FF7C4DFF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <PointStyle Name="Glitter" Shape="Diamond" Size="8" Fill="#F2FFFFFF" Color="#00FFFFFF" StrokeWidth="0.1" />
+    <PointStyle Name="Glitter2" Shape="Diamond" Size="5" Fill="#E6FFC4EC" Color="#00FFFFFF" StrokeWidth="0.1" />
+    <PointStyle Name="LeftFist" Character="🤜" Size="64" Fill="#FFFFFFFF" />
+    <PointStyle Name="RightFist" Character="🤛" Size="64" Fill="#FFFFFFFF" />
+    <PointStyle Name="Dot" Size="9" Fill="#FFFFE066" Color="#FF2A1460" StrokeWidth="1.5" />
+    <PointStyle Name="SlimeHandle" Size="7" Fill="#FFFFFFFF" Color="#FF40E0FF" StrokeWidth="1.5" />
+    <ShapeStyle Name="Star" Fill="#D9FFFFFF" Color="#D9FFFFFF" StrokeWidth="1.6" />
+    <ShapeStyle Name="Star2" Fill="#8CFFFFFF" Color="#8CFFFFFF" StrokeWidth="1.2" />
+    <ShapeStyle Name="Sparkle" Fill="#CCFFFFFF" Color="#00FFFFFF" StrokeWidth="0.5" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="Sky1a" Visible="false" X="0.95" Y="1.46" />
+    <FreePoint Name="Sky1b" Visible="false" X="0.938969" Y="1.411031" />
+    <FreePoint Name="Sky1c" Visible="false" X="0.89" Y="1.4" />
+    <FreePoint Name="Sky1d" Visible="false" X="0.938969" Y="1.388969" />
+    <FreePoint Name="Sky1e" Visible="false" X="0.95" Y="1.34" />
+    <FreePoint Name="Sky1f" Visible="false" X="0.961031" Y="1.388969" />
+    <FreePoint Name="Sky1g" Visible="false" X="1.01" Y="1.4" />
+    <FreePoint Name="Sky1h" Visible="false" X="0.961031" Y="1.411031" />
+    <Polygon Name="Sparkle1" Style="Sparkle">
+      <Dependency Name="Sky1a" />
+      <Dependency Name="Sky1b" />
+      <Dependency Name="Sky1c" />
+      <Dependency Name="Sky1d" />
+      <Dependency Name="Sky1e" />
+      <Dependency Name="Sky1f" />
+      <Dependency Name="Sky1g" />
+      <Dependency Name="Sky1h" />
+    </Polygon>
+    <FreePoint Name="Sky2a" Visible="false" X="-2.6" Y="0.25" />
+    <FreePoint Name="Sky2b" Visible="false" X="-2.609192" Y="0.209192" />
+    <FreePoint Name="Sky2c" Visible="false" X="-2.65" Y="0.2" />
+    <FreePoint Name="Sky2d" Visible="false" X="-2.609192" Y="0.190808" />
+    <FreePoint Name="Sky2e" Visible="false" X="-2.6" Y="0.15" />
+    <FreePoint Name="Sky2f" Visible="false" X="-2.590808" Y="0.190808" />
+    <FreePoint Name="Sky2g" Visible="false" X="-2.55" Y="0.2" />
+    <FreePoint Name="Sky2h" Visible="false" X="-2.590808" Y="0.209192" />
+    <Polygon Name="Sparkle2" Style="Sparkle">
+      <Dependency Name="Sky2a" />
+      <Dependency Name="Sky2b" />
+      <Dependency Name="Sky2c" />
+      <Dependency Name="Sky2d" />
+      <Dependency Name="Sky2e" />
+      <Dependency Name="Sky2f" />
+      <Dependency Name="Sky2g" />
+      <Dependency Name="Sky2h" />
+    </Polygon>
+    <FreePoint Name="Sky3a" Visible="false" X="2.5" Y="-0.895" />
+    <FreePoint Name="Sky3b" Visible="false" X="2.489888" Y="-0.939888" />
+    <FreePoint Name="Sky3c" Visible="false" X="2.445" Y="-0.95" />
+    <FreePoint Name="Sky3d" Visible="false" X="2.489888" Y="-0.960112" />
+    <FreePoint Name="Sky3e" Visible="false" X="2.5" Y="-1.005" />
+    <FreePoint Name="Sky3f" Visible="false" X="2.510112" Y="-0.960112" />
+    <FreePoint Name="Sky3g" Visible="false" X="2.555" Y="-0.95" />
+    <FreePoint Name="Sky3h" Visible="false" X="2.510112" Y="-0.939888" />
+    <Polygon Name="Sparkle3" Style="Sparkle">
+      <Dependency Name="Sky3a" />
+      <Dependency Name="Sky3b" />
+      <Dependency Name="Sky3c" />
+      <Dependency Name="Sky3d" />
+      <Dependency Name="Sky3e" />
+      <Dependency Name="Sky3f" />
+      <Dependency Name="Sky3g" />
+      <Dependency Name="Sky3h" />
+    </Polygon>
+    <FreePoint Name="Sky4a" Visible="false" X="-1.4" Y="-1.405" />
+    <FreePoint Name="Sky4b" Visible="false" X="-1.408273" Y="-1.441727" />
+    <FreePoint Name="Sky4c" Visible="false" X="-1.445" Y="-1.45" />
+    <FreePoint Name="Sky4d" Visible="false" X="-1.408273" Y="-1.458273" />
+    <FreePoint Name="Sky4e" Visible="false" X="-1.4" Y="-1.495" />
+    <FreePoint Name="Sky4f" Visible="false" X="-1.391727" Y="-1.458273" />
+    <FreePoint Name="Sky4g" Visible="false" X="-1.355" Y="-1.45" />
+    <FreePoint Name="Sky4h" Visible="false" X="-1.391727" Y="-1.441727" />
+    <Polygon Name="Sparkle4" Style="Sparkle">
+      <Dependency Name="Sky4a" />
+      <Dependency Name="Sky4b" />
+      <Dependency Name="Sky4c" />
+      <Dependency Name="Sky4d" />
+      <Dependency Name="Sky4e" />
+      <Dependency Name="Sky4f" />
+      <Dependency Name="Sky4g" />
+      <Dependency Name="Sky4h" />
+    </Polygon>
+    <FreePoint Name="Sky5a" Visible="false" X="-3.2" Y="-1.66" />
+    <FreePoint Name="Sky5b" Visible="false" X="-3.207354" Y="-1.692646" />
+    <FreePoint Name="Sky5c" Visible="false" X="-3.24" Y="-1.7" />
+    <FreePoint Name="Sky5d" Visible="false" X="-3.207354" Y="-1.707354" />
+    <FreePoint Name="Sky5e" Visible="false" X="-3.2" Y="-1.74" />
+    <FreePoint Name="Sky5f" Visible="false" X="-3.192646" Y="-1.707354" />
+    <FreePoint Name="Sky5g" Visible="false" X="-3.16" Y="-1.7" />
+    <FreePoint Name="Sky5h" Visible="false" X="-3.192646" Y="-1.692646" />
+    <Polygon Name="Sparkle5" Style="Sparkle">
+      <Dependency Name="Sky5a" />
+      <Dependency Name="Sky5b" />
+      <Dependency Name="Sky5c" />
+      <Dependency Name="Sky5d" />
+      <Dependency Name="Sky5e" />
+      <Dependency Name="Sky5f" />
+      <Dependency Name="Sky5g" />
+      <Dependency Name="Sky5h" />
+    </Polygon>
+    <FreePoint Name="Sky6a" Visible="false" X="-0.31463" Y="-1.917324" />
+    <FreePoint Name="Sky6b" Visible="false" X="-0.325003" Y="-1.916688" />
+    <FreePoint Name="Sky6c" Visible="false" X="-0.320367" Y="-1.925989" />
+    <Polygon Name="Star6" Style="Star2">
+      <Dependency Name="Sky6a" />
+      <Dependency Name="Sky6b" />
+      <Dependency Name="Sky6c" />
+    </Polygon>
+    <FreePoint Name="Sky7a" Visible="false" X="-2.244648" Y="1.202712" />
+    <FreePoint Name="Sky7b" Visible="false" X="-2.255025" Y="1.203279" />
+    <FreePoint Name="Sky7c" Visible="false" X="-2.250327" Y="1.194009" />
+    <Polygon Name="Star7" Style="Star2">
+      <Dependency Name="Sky7a" />
+      <Dependency Name="Sky7b" />
+      <Dependency Name="Sky7c" />
+    </Polygon>
+    <FreePoint Name="Sky8a" Visible="false" X="-1.187754" Y="-0.798032" />
+    <FreePoint Name="Sky8b" Visible="false" X="-1.177827" Y="-0.807699" />
+    <FreePoint Name="Sky8c" Visible="false" X="-1.174418" Y="-0.794269" />
+    <Polygon Name="Star8" Style="Star">
+      <Dependency Name="Sky8a" />
+      <Dependency Name="Sky8b" />
+      <Dependency Name="Sky8c" />
+    </Polygon>
+    <FreePoint Name="Sky9a" Visible="false" X="-2.124615" Y="0.593835" />
+    <FreePoint Name="Sky9b" Visible="false" X="-2.121014" Y="0.584086" />
+    <FreePoint Name="Sky9c" Visible="false" X="-2.114372" Y="0.592079" />
+    <Polygon Name="Star9" Style="Star2">
+      <Dependency Name="Sky9a" />
+      <Dependency Name="Sky9b" />
+      <Dependency Name="Sky9c" />
+    </Polygon>
+    <FreePoint Name="Sky10a" Visible="false" X="-0.245799" Y="1.121541" />
+    <FreePoint Name="Sky10b" Visible="false" X="-0.238435" Y="1.114208" />
+    <FreePoint Name="Sky10c" Visible="false" X="-0.235766" Y="1.124251" />
+    <Polygon Name="Star10" Style="Star2">
+      <Dependency Name="Sky10a" />
+      <Dependency Name="Sky10b" />
+      <Dependency Name="Sky10c" />
+    </Polygon>
+    <FreePoint Name="Sky11a" Visible="false" X="0.325815" Y="-0.998522" />
+    <FreePoint Name="Sky11b" Visible="false" X="0.315813" Y="-0.995703" />
+    <FreePoint Name="Sky11c" Visible="false" X="0.318372" Y="-1.005775" />
+    <Polygon Name="Star11" Style="Star2">
+      <Dependency Name="Sky11a" />
+      <Dependency Name="Sky11b" />
+      <Dependency Name="Sky11c" />
+    </Polygon>
+    <FreePoint Name="Sky12a" Visible="false" X="2.105772" Y="1.361638" />
+    <FreePoint Name="Sky12b" Visible="false" X="2.095696" Y="1.36418" />
+    <FreePoint Name="Sky12c" Visible="false" X="2.098532" Y="1.354182" />
+    <Polygon Name="Star12" Style="Star2">
+      <Dependency Name="Sky12a" />
+      <Dependency Name="Sky12b" />
+      <Dependency Name="Sky12c" />
+    </Polygon>
+    <FreePoint Name="Sky13a" Visible="false" X="0.49472" Y="-0.547151" />
+    <FreePoint Name="Sky13b" Visible="false" X="0.500173" Y="-0.555998" />
+    <FreePoint Name="Sky13c" Visible="false" X="0.505108" Y="-0.546852" />
+    <Polygon Name="Star13" Style="Star2">
+      <Dependency Name="Sky13a" />
+      <Dependency Name="Sky13b" />
+      <Dependency Name="Sky13c" />
+    </Polygon>
+    <FreePoint Name="Sky14a" Visible="false" X="0.407569" Y="1.612589" />
+    <FreePoint Name="Sky14b" Visible="false" X="0.393973" Y="1.615261" />
+    <FreePoint Name="Sky14c" Visible="false" X="0.398457" Y="1.60215" />
+    <Polygon Name="Star14" Style="Star">
+      <Dependency Name="Sky14a" />
+      <Dependency Name="Sky14b" />
+      <Dependency Name="Sky14c" />
+    </Polygon>
+    <FreePoint Name="Sky15a" Visible="false" X="-1.107535" Y="0.752686" />
+    <FreePoint Name="Sky15b" Visible="false" X="-1.098559" Y="0.742131" />
+    <FreePoint Name="Sky15c" Visible="false" X="-1.093906" Y="0.755183" />
+    <Polygon Name="Star15" Style="Star">
+      <Dependency Name="Sky15a" />
+      <Dependency Name="Sky15b" />
+      <Dependency Name="Sky15c" />
+    </Polygon>
+    <FreePoint Name="Sky16a" Visible="false" X="-0.256352" Y="-1.145136" />
+    <FreePoint Name="Sky16b" Visible="false" X="-0.251036" Y="-1.157933" />
+    <FreePoint Name="Sky16c" Visible="false" X="-0.242612" Y="-1.146931" />
+    <Polygon Name="Star16" Style="Star">
+      <Dependency Name="Sky16a" />
+      <Dependency Name="Sky16b" />
+      <Dependency Name="Sky16c" />
+    </Polygon>
+    <FreePoint Name="Sky17a" Visible="false" X="-2.055439" Y="1.652533" />
+    <FreePoint Name="Sky17b" Visible="false" X="-2.049474" Y="1.644023" />
+    <FreePoint Name="Sky17c" Visible="false" X="-2.045087" Y="1.653444" />
+    <Polygon Name="Star17" Style="Star2">
+      <Dependency Name="Sky17a" />
+      <Dependency Name="Sky17b" />
+      <Dependency Name="Sky17c" />
+    </Polygon>
+    <FreePoint Name="Sky18a" Visible="false" X="-0.708375" Y="-0.044224" />
+    <FreePoint Name="Sky18b" Visible="false" X="-0.715814" Y="-0.051481" />
+    <FreePoint Name="Sky18c" Visible="false" X="-0.70581" Y="-0.054295" />
+    <Polygon Name="Star18" Style="Star2">
+      <Dependency Name="Sky18a" />
+      <Dependency Name="Sky18b" />
+      <Dependency Name="Sky18c" />
+    </Polygon>
+    <FreePoint Name="Sky19a" Visible="false" X="0.964818" Y="0.623025" />
+    <FreePoint Name="Sky19b" Visible="false" X="0.969972" Y="0.614" />
+    <FreePoint Name="Sky19c" Visible="false" X="0.97521" Y="0.622975" />
+    <Polygon Name="Star19" Style="Star2">
+      <Dependency Name="Sky19a" />
+      <Dependency Name="Sky19b" />
+      <Dependency Name="Sky19c" />
+    </Polygon>
+    <FreePoint Name="Sky20a" Visible="false" X="-0.802096" Y="1.561236" />
+    <FreePoint Name="Sky20b" Visible="false" X="-0.815022" Y="1.566227" />
+    <FreePoint Name="Sky20c" Visible="false" X="-0.812882" Y="1.552537" />
+    <Polygon Name="Star20" Style="Star">
+      <Dependency Name="Sky20a" />
+      <Dependency Name="Sky20b" />
+      <Dependency Name="Sky20c" />
+    </Polygon>
+    <FreePoint Name="Sky21a" Visible="false" X="0.37599" Y="-1.589653" />
+    <FreePoint Name="Sky21b" Visible="false" X="0.366704" Y="-1.584986" />
+    <FreePoint Name="Sky21c" Visible="false" X="0.367306" Y="-1.595361" />
+    <Polygon Name="Star21" Style="Star2">
+      <Dependency Name="Sky21a" />
+      <Dependency Name="Sky21b" />
+      <Dependency Name="Sky21c" />
+    </Polygon>
+    <FreePoint Name="Sky22a" Visible="false" X="1.647903" Y="-0.788761" />
+    <FreePoint Name="Sky22b" Visible="false" X="1.634975" Y="-0.783775" />
+    <FreePoint Name="Sky22c" Visible="false" X="1.637121" Y="-0.797464" />
+    <Polygon Name="Star22" Style="Star">
+      <Dependency Name="Sky22a" />
+      <Dependency Name="Sky22b" />
+      <Dependency Name="Sky22c" />
+    </Polygon>
+    <FreePoint Name="Sky23a" Visible="false" X="-0.799136" Y="-1.772047" />
+    <FreePoint Name="Sky23b" Visible="false" X="-0.80732" Y="-1.783229" />
+    <FreePoint Name="Sky23c" Visible="false" X="-0.793544" Y="-1.784725" />
+    <Polygon Name="Star23" Style="Star">
+      <Dependency Name="Sky23a" />
+      <Dependency Name="Sky23b" />
+      <Dependency Name="Sky23c" />
+    </Polygon>
+    <FreePoint Name="Sky24a" Visible="false" X="1.195377" Y="-0.347338" />
+    <FreePoint Name="Sky24b" Visible="false" X="1.185006" Y="-0.346675" />
+    <FreePoint Name="Sky24c" Visible="false" X="1.189617" Y="-0.355988" />
+    <Polygon Name="Star24" Style="Star2">
+      <Dependency Name="Sky24a" />
+      <Dependency Name="Sky24b" />
+      <Dependency Name="Sky24c" />
+    </Polygon>
+    <FreePoint Name="Sky25a" Visible="false" X="0.549807" Y="0.225997" />
+    <FreePoint Name="Sky25b" Visible="false" X="0.544903" Y="0.216834" />
+    <FreePoint Name="Sky25c" Visible="false" X="0.55529" Y="0.217169" />
+    <Polygon Name="Star25" Style="Star2">
+      <Dependency Name="Sky25a" />
+      <Dependency Name="Sky25b" />
+      <Dependency Name="Sky25c" />
+    </Polygon>
+    <FreePoint Name="Sky26a" Visible="false" X="-2.485472" Y="-0.783405" />
+    <FreePoint Name="Sky26b" Visible="false" X="-2.497976" Y="-0.789377" />
+    <FreePoint Name="Sky26c" Visible="false" X="-2.486552" Y="-0.797219" />
+    <Polygon Name="Star26" Style="Star">
+      <Dependency Name="Sky26a" />
+      <Dependency Name="Sky26b" />
+      <Dependency Name="Sky26c" />
+    </Polygon>
+    <FreePoint Name="Sky27a" Visible="false" X="-1.44716" Y="-0.034715" />
+    <FreePoint Name="Sky27b" Visible="false" X="-1.455997" Y="-0.040183" />
+    <FreePoint Name="Sky27c" Visible="false" X="-1.446843" Y="-0.045102" />
+    <Polygon Name="Star27" Style="Star2">
+      <Dependency Name="Sky27a" />
+      <Dependency Name="Sky27b" />
+      <Dependency Name="Sky27c" />
+    </Polygon>
+    <FreePoint Name="Sky28a" Visible="false" X="-1.542158" Y="1.491583" />
+    <FreePoint Name="Sky28b" Visible="false" X="-1.555292" Y="1.495999" />
+    <FreePoint Name="Sky28c" Visible="false" X="-1.55255" Y="1.482417" />
+    <Polygon Name="Star28" Style="Star">
+      <Dependency Name="Sky28a" />
+      <Dependency Name="Sky28b" />
+      <Dependency Name="Sky28c" />
+    </Polygon>
+    <FreePoint Name="Sky29a" Visible="false" X="0.315336" Y="0.812743" />
+    <FreePoint Name="Sky29b" Visible="false" X="0.304956" Y="0.813249" />
+    <FreePoint Name="Sky29c" Visible="false" X="0.309708" Y="0.804007" />
+    <Polygon Name="Star29" Style="Star2">
+      <Dependency Name="Sky29a" />
+      <Dependency Name="Sky29b" />
+      <Dependency Name="Sky29c" />
+    </Polygon>
+    <FreePoint Name="Sky30a" Visible="false" X="2.202557" Y="0.10758" />
+    <FreePoint Name="Sky30b" Visible="false" X="2.192157" Y="0.098424" />
+    <FreePoint Name="Sky30c" Visible="false" X="2.205286" Y="0.093996" />
+    <Polygon Name="Star30" Style="Star">
+      <Dependency Name="Sky30a" />
+      <Dependency Name="Sky30b" />
+      <Dependency Name="Sky30c" />
+    </Polygon>
+    <FreePoint Name="Sky31a" Visible="false" X="-3.255114" Y="-0.376518" />
+    <FreePoint Name="Sky31b" Visible="false" X="-3.265459" Y="-0.377509" />
+    <FreePoint Name="Sky31c" Visible="false" X="-3.259428" Y="-0.385973" />
+    <Polygon Name="Star31" Style="Star2">
+      <Dependency Name="Sky31a" />
+      <Dependency Name="Sky31b" />
+      <Dependency Name="Sky31c" />
+    </Polygon>
+    <FreePoint Name="FistL" Style="LeftFist" X="-1.25" Y="0" />
+    <FreePoint Name="FistR" Style="RightFist" X="1.25" Y="0" />
+    <MidPoint Name="Middle" Visible="false">
+      <Dependency Name="FistL" />
+      <Dependency Name="FistR" />
+    </MidPoint>
+    <PointByCoordinates Name="Frame" Visible="false" X="atan2(FistR.Y - FistL.Y, FistR.X - FistL.X)" Y="clamp(dist(FistL, FistR), 0.4, 7)">
+      <Dependency Name="FistR" />
+      <Dependency Name="FistL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Axis" Visible="false" X="cos(Frame.X)" Y="sin(Frame.X)">
+      <Dependency Name="Frame" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rope" Visible="false" X="Frame.Y / 2 - 0.15 * min(1, Frame.Y / 2.5)" Y="clamp(1.05 / (1 + ((Frame.Y / 2 - 0.15 * min(1, Frame.Y / 2.5)) / 1.4)^2), 0.22, 1)">
+      <Dependency Name="Frame" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Body" Visible="false" X="(sqrt((2 * Rope.X * (0.466667 + 0.533333 * Rope.Y))^2 + 12.566371) - (2 * Rope.X * (0.466667 + 0.533333 * Rope.Y))) / pi" Y="Rope.X + (sqrt((2 * Rope.X * (0.466667 + 0.533333 * Rope.Y))^2 + 12.566371) - (2 * Rope.X * (0.466667 + 0.533333 * Rope.Y))) / pi">
+      <Dependency Name="Rope" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Sag" Visible="false" X="min(0.9, 0.055 * Frame.Y^2) * abs(Axis.X)" Y="(3 - 2 * clamp((abs(Axis.X) - 0.88) / 0.105, 0, 1)) * clamp((abs(Axis.X) - 0.88) / 0.105, 0, 1)^2">
+      <Dependency Name="Frame" />
+      <Dependency Name="Axis" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Drip" Visible="false" X="Sag.Y * clamp((Frame.Y - 2.55) / 0.85, 0, 1) * (1 - 0.55 * clamp((Frame.Y - 3.4) * 200, 0, 1) * (1 - ((Frame.Y - 3.4) / 0.74 - floor((Frame.Y - 3.4) / 0.74))))" Y="((Frame.Y - 3.4) / 0.74 - floor((Frame.Y - 3.4) / 0.74))">
+      <Dependency Name="Sag" />
+      <Dependency Name="Frame" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rib0" Visible="false" X="Body.X * Rope.Y" Y="Sag.X">
+      <Dependency Name="Body" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Sag" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rib1" Visible="false" X="sqrt(max(0, (Body.X * (1 - (1 - Rope.Y) * (1 - min(1, 0.166667 * Body.Y / Rope.X)^2)^2))^2 - max(0, 0.166667 * Body.Y - Rope.X)^2))" Y="Sag.X * (1 - min(1, 0.166667 * Body.Y / Rope.X)^2)^2 * (1 + min(1, 0.166667 * Body.Y / Rope.X)^2)">
+      <Dependency Name="Body" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Sag" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rib2" Visible="false" X="sqrt(max(0, (Body.X * (1 - (1 - Rope.Y) * (1 - min(1, 0.333333 * Body.Y / Rope.X)^2)^2))^2 - max(0, 0.333333 * Body.Y - Rope.X)^2))" Y="Sag.X * (1 - min(1, 0.333333 * Body.Y / Rope.X)^2)^2 * (1 + min(1, 0.333333 * Body.Y / Rope.X)^2)">
+      <Dependency Name="Body" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Sag" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rib3" Visible="false" X="sqrt(max(0, (Body.X * (1 - (1 - Rope.Y) * (1 - min(1, 0.5 * Body.Y / Rope.X)^2)^2))^2 - max(0, 0.5 * Body.Y - Rope.X)^2))" Y="Sag.X * (1 - min(1, 0.5 * Body.Y / Rope.X)^2)^2 * (1 + min(1, 0.5 * Body.Y / Rope.X)^2)">
+      <Dependency Name="Body" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Sag" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rib4" Visible="false" X="sqrt(max(0, (Body.X * (1 - (1 - Rope.Y) * (1 - min(1, 0.666667 * Body.Y / Rope.X)^2)^2))^2 - max(0, 0.666667 * Body.Y - Rope.X)^2))" Y="Sag.X * (1 - min(1, 0.666667 * Body.Y / Rope.X)^2)^2 * (1 + min(1, 0.666667 * Body.Y / Rope.X)^2)">
+      <Dependency Name="Body" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Sag" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rib5" Visible="false" X="sqrt(max(0, (Body.X * (1 - (1 - Rope.Y) * (1 - min(1, 0.833333 * Body.Y / Rope.X)^2)^2))^2 - max(0, 0.833333 * Body.Y - Rope.X)^2))" Y="Sag.X * (1 - min(1, 0.833333 * Body.Y / Rope.X)^2)^2 * (1 + min(1, 0.833333 * Body.Y / Rope.X)^2)">
+      <Dependency Name="Body" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Sag" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="RibS" Visible="false" X="sqrt(max(0, (Body.X * (1 - (1 - Rope.Y) * (1 - min(1, (0.5 * Body.Y - min(1, 1.6 * Drip.X) * (0.166667 * Body.Y - 0.0325)) / Rope.X)^2)^2))^2 - max(0, (0.5 * Body.Y - min(1, 1.6 * Drip.X) * (0.166667 * Body.Y - 0.0325)) - Rope.X)^2))" Y="Sag.X * (1 - min(1, (0.5 * Body.Y - min(1, 1.6 * Drip.X) * (0.166667 * Body.Y - 0.0325)) / Rope.X)^2)^2 * (1 + min(1, (0.5 * Body.Y - min(1, 1.6 * Drip.X) * (0.166667 * Body.Y - 0.0325)) / Rope.X)^2)">
+      <Dependency Name="Body" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Drip" />
+      <Dependency Name="Sag" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Low" Visible="false" X="clamp(-Rope.X^2 * Axis.Y / (2 * max(Sag.X, 0.05)), -0.166667 * Body.Y, 0.166667 * Body.Y)" Y="Sag.X * (1 - (clamp(-Rope.X^2 * Axis.Y / (2 * max(Sag.X, 0.05)), -0.166667 * Body.Y, 0.166667 * Body.Y)) / Rope.X^2)^2 * (1 + (clamp(-Rope.X^2 * Axis.Y / (2 * max(Sag.X, 0.05)), -0.166667 * Body.Y, 0.166667 * Body.Y)) / Rope.X^2)">
+      <Dependency Name="Rope" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Body" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTipR" Visible="false" Style="Dot" X="Middle.X + Body.Y * Axis.X" Y="Middle.Y + Body.Y * Axis.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTopR5" Visible="false" Style="Dot" X="Middle.X + 0.833333 * Body.Y * Axis.X - Rib5.X * Axis.Y" Y="Middle.Y + 0.833333 * Body.Y * Axis.Y + Rib5.X * Axis.X - Rib5.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTopR4" Visible="false" Style="Dot" X="Middle.X + 0.666667 * Body.Y * Axis.X - Rib4.X * Axis.Y" Y="Middle.Y + 0.666667 * Body.Y * Axis.Y + Rib4.X * Axis.X - Rib4.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTopR3" Visible="false" Style="Dot" X="Middle.X + (0.5 * Body.Y - min(1, 1.6 * Drip.X * max(0, -sign(Axis.X))) * (0.166667 * Body.Y - 0.0325)) * Axis.X - (Rib3.X + max(0, -sign(Axis.X)) * (RibS.X - Rib3.X)) * Axis.Y" Y="Middle.Y + (0.5 * Body.Y - min(1, 1.6 * Drip.X * max(0, -sign(Axis.X))) * (0.166667 * Body.Y - 0.0325)) * Axis.Y + (Rib3.X + max(0, -sign(Axis.X)) * (RibS.X - Rib3.X)) * Axis.X - (Rib3.Y + max(0, -sign(Axis.X)) * (RibS.Y - Rib3.Y + 0.05 * Drip.X))">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Drip" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib3" />
+      <Dependency Name="RibS" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTopNeckR" Visible="false" Style="Dot" X="(1 - min(1, 2.5 * Drip.X * max(0, -sign(Axis.X)))) * (Middle.X + 0.333333 * Body.Y * Axis.X - Rib2.X * Axis.Y) + min(1, 2.5 * Drip.X * max(0, -sign(Axis.X))) * (Middle.X - Rib0.X * Axis.Y + Low.X * Axis.X + (0.065 + 0.35 * (1 - Drip.X * max(0, -sign(Axis.X)))^2) * Axis.X)" Y="(1 - min(1, 2.5 * Drip.X * max(0, -sign(Axis.X)))) * (Middle.Y + 0.333333 * Body.Y * Axis.Y + Rib2.X * Axis.X - Rib2.Y) + min(1, 2.5 * Drip.X * max(0, -sign(Axis.X))) * (Middle.Y + Rib0.X * Axis.X - Rib0.Y + Low.X * Axis.Y + Rib0.Y - Low.Y + (0.065 + 0.35 * (1 - Drip.X * max(0, -sign(Axis.X)))^2) * Axis.Y - 0.46 * Drip.X * max(0, -sign(Axis.X)) * (0.1 + 0.2 * Drip.X * max(0, -sign(Axis.X))))">
+      <Dependency Name="Drip" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Rib2" />
+      <Dependency Name="Rib0" />
+      <Dependency Name="Low" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTopBulbR" Visible="false" Style="Dot" X="(1 - min(1, 2.5 * Drip.X * max(0, -sign(Axis.X)))) * (Middle.X + 0.166667 * Body.Y * Axis.X - Rib1.X * Axis.Y) + min(1, 2.5 * Drip.X * max(0, -sign(Axis.X))) * (Middle.X - Rib0.X * Axis.Y + Low.X * Axis.X + (0.11 + 0.02 * Drip.X * max(0, -sign(Axis.X))) * sign(Axis.X))" Y="(1 - min(1, 2.5 * Drip.X * max(0, -sign(Axis.X)))) * (Middle.Y + 0.166667 * Body.Y * Axis.Y + Rib1.X * Axis.X - Rib1.Y) + min(1, 2.5 * Drip.X * max(0, -sign(Axis.X))) * (Middle.Y + Rib0.X * Axis.X - Rib0.Y + Low.X * Axis.Y + Rib0.Y - Low.Y - 0.3128 * Drip.X * max(0, -sign(Axis.X)))">
+      <Dependency Name="Drip" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Rib1" />
+      <Dependency Name="Rib0" />
+      <Dependency Name="Low" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTopMid" Visible="false" Style="Dot" X="Middle.X - Rib0.X * Axis.Y + min(1, 2.5 * Drip.X * max(0, -sign(Axis.X))) * Low.X * Axis.X" Y="Middle.Y + Rib0.X * Axis.X - Rib0.Y + min(1, 2.5 * Drip.X * max(0, -sign(Axis.X))) * (Low.X * Axis.Y + Rib0.Y - Low.Y) - 0.46 * Drip.X * max(0, -sign(Axis.X))">
+      <Dependency Name="Middle" />
+      <Dependency Name="Rib0" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Drip" />
+      <Dependency Name="Low" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTopBulbL" Visible="false" Style="Dot" X="(1 - min(1, 2.5 * Drip.X * max(0, -sign(Axis.X)))) * (Middle.X + (-0.166667) * Body.Y * Axis.X - Rib1.X * Axis.Y) + min(1, 2.5 * Drip.X * max(0, -sign(Axis.X))) * (Middle.X - Rib0.X * Axis.Y + Low.X * Axis.X - (0.11 + 0.02 * Drip.X * max(0, -sign(Axis.X))) * sign(Axis.X))" Y="(1 - min(1, 2.5 * Drip.X * max(0, -sign(Axis.X)))) * (Middle.Y + (-0.166667) * Body.Y * Axis.Y + Rib1.X * Axis.X - Rib1.Y) + min(1, 2.5 * Drip.X * max(0, -sign(Axis.X))) * (Middle.Y + Rib0.X * Axis.X - Rib0.Y + Low.X * Axis.Y + Rib0.Y - Low.Y - 0.3128 * Drip.X * max(0, -sign(Axis.X)))">
+      <Dependency Name="Drip" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Rib1" />
+      <Dependency Name="Rib0" />
+      <Dependency Name="Low" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTopNeckL" Visible="false" Style="Dot" X="(1 - min(1, 2.5 * Drip.X * max(0, -sign(Axis.X)))) * (Middle.X + (-0.333333) * Body.Y * Axis.X - Rib2.X * Axis.Y) + min(1, 2.5 * Drip.X * max(0, -sign(Axis.X))) * (Middle.X - Rib0.X * Axis.Y + Low.X * Axis.X - (0.065 + 0.35 * (1 - Drip.X * max(0, -sign(Axis.X)))^2) * Axis.X)" Y="(1 - min(1, 2.5 * Drip.X * max(0, -sign(Axis.X)))) * (Middle.Y + (-0.333333) * Body.Y * Axis.Y + Rib2.X * Axis.X - Rib2.Y) + min(1, 2.5 * Drip.X * max(0, -sign(Axis.X))) * (Middle.Y + Rib0.X * Axis.X - Rib0.Y + Low.X * Axis.Y + Rib0.Y - Low.Y - (0.065 + 0.35 * (1 - Drip.X * max(0, -sign(Axis.X)))^2) * Axis.Y - 0.46 * Drip.X * max(0, -sign(Axis.X)) * (0.1 + 0.2 * Drip.X * max(0, -sign(Axis.X))))">
+      <Dependency Name="Drip" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Rib2" />
+      <Dependency Name="Rib0" />
+      <Dependency Name="Low" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTopL3" Visible="false" Style="Dot" X="Middle.X + (-(0.5 * Body.Y - min(1, 1.6 * Drip.X * max(0, -sign(Axis.X))) * (0.166667 * Body.Y - 0.0325))) * Axis.X - (Rib3.X + max(0, -sign(Axis.X)) * (RibS.X - Rib3.X)) * Axis.Y" Y="Middle.Y + (-(0.5 * Body.Y - min(1, 1.6 * Drip.X * max(0, -sign(Axis.X))) * (0.166667 * Body.Y - 0.0325))) * Axis.Y + (Rib3.X + max(0, -sign(Axis.X)) * (RibS.X - Rib3.X)) * Axis.X - (Rib3.Y + max(0, -sign(Axis.X)) * (RibS.Y - Rib3.Y + 0.05 * Drip.X))">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Drip" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib3" />
+      <Dependency Name="RibS" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTopL4" Visible="false" Style="Dot" X="Middle.X + (-0.666667) * Body.Y * Axis.X - Rib4.X * Axis.Y" Y="Middle.Y + (-0.666667) * Body.Y * Axis.Y + Rib4.X * Axis.X - Rib4.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTopL5" Visible="false" Style="Dot" X="Middle.X + (-0.833333) * Body.Y * Axis.X - Rib5.X * Axis.Y" Y="Middle.Y + (-0.833333) * Body.Y * Axis.Y + Rib5.X * Axis.X - Rib5.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeTipL" Visible="false" Style="Dot" X="Middle.X - Body.Y * Axis.X" Y="Middle.Y - Body.Y * Axis.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeBottomL5" Visible="false" Style="Dot" X="Middle.X + (-0.833333) * Body.Y * Axis.X + Rib5.X * Axis.Y" Y="Middle.Y + (-0.833333) * Body.Y * Axis.Y - Rib5.X * Axis.X - Rib5.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeBottomL4" Visible="false" Style="Dot" X="Middle.X + (-0.666667) * Body.Y * Axis.X + Rib4.X * Axis.Y" Y="Middle.Y + (-0.666667) * Body.Y * Axis.Y - Rib4.X * Axis.X - Rib4.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeBottomL3" Visible="false" Style="Dot" X="Middle.X + (-(0.5 * Body.Y - min(1, 1.6 * Drip.X * max(0, sign(Axis.X))) * (0.166667 * Body.Y - 0.0325))) * Axis.X + (Rib3.X + max(0, sign(Axis.X)) * (RibS.X - Rib3.X)) * Axis.Y" Y="Middle.Y + (-(0.5 * Body.Y - min(1, 1.6 * Drip.X * max(0, sign(Axis.X))) * (0.166667 * Body.Y - 0.0325))) * Axis.Y - (Rib3.X + max(0, sign(Axis.X)) * (RibS.X - Rib3.X)) * Axis.X - (Rib3.Y + max(0, sign(Axis.X)) * (RibS.Y - Rib3.Y + 0.05 * Drip.X))">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Drip" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib3" />
+      <Dependency Name="RibS" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeBottomNeckL" Visible="false" Style="Dot" X="(1 - min(1, 2.5 * Drip.X * max(0, sign(Axis.X)))) * (Middle.X + (-0.333333) * Body.Y * Axis.X + Rib2.X * Axis.Y) + min(1, 2.5 * Drip.X * max(0, sign(Axis.X))) * (Middle.X + Rib0.X * Axis.Y + Low.X * Axis.X - (0.065 + 0.35 * (1 - Drip.X * max(0, sign(Axis.X)))^2) * Axis.X)" Y="(1 - min(1, 2.5 * Drip.X * max(0, sign(Axis.X)))) * (Middle.Y + (-0.333333) * Body.Y * Axis.Y - Rib2.X * Axis.X - Rib2.Y) + min(1, 2.5 * Drip.X * max(0, sign(Axis.X))) * (Middle.Y - Rib0.X * Axis.X - Rib0.Y + Low.X * Axis.Y + Rib0.Y - Low.Y - (0.065 + 0.35 * (1 - Drip.X * max(0, sign(Axis.X)))^2) * Axis.Y - 0.46 * Drip.X * max(0, sign(Axis.X)) * (0.1 + 0.2 * Drip.X * max(0, sign(Axis.X))))">
+      <Dependency Name="Drip" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Rib2" />
+      <Dependency Name="Rib0" />
+      <Dependency Name="Low" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeBottomBulbL" Visible="false" Style="Dot" X="(1 - min(1, 2.5 * Drip.X * max(0, sign(Axis.X)))) * (Middle.X + (-0.166667) * Body.Y * Axis.X + Rib1.X * Axis.Y) + min(1, 2.5 * Drip.X * max(0, sign(Axis.X))) * (Middle.X + Rib0.X * Axis.Y + Low.X * Axis.X - (0.11 + 0.02 * Drip.X * max(0, sign(Axis.X))) * sign(Axis.X))" Y="(1 - min(1, 2.5 * Drip.X * max(0, sign(Axis.X)))) * (Middle.Y + (-0.166667) * Body.Y * Axis.Y - Rib1.X * Axis.X - Rib1.Y) + min(1, 2.5 * Drip.X * max(0, sign(Axis.X))) * (Middle.Y - Rib0.X * Axis.X - Rib0.Y + Low.X * Axis.Y + Rib0.Y - Low.Y - 0.3128 * Drip.X * max(0, sign(Axis.X)))">
+      <Dependency Name="Drip" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Rib1" />
+      <Dependency Name="Rib0" />
+      <Dependency Name="Low" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeBottomMid" Visible="false" Style="Dot" X="Middle.X + Rib0.X * Axis.Y + min(1, 2.5 * Drip.X * max(0, sign(Axis.X))) * Low.X * Axis.X" Y="Middle.Y - Rib0.X * Axis.X - Rib0.Y + min(1, 2.5 * Drip.X * max(0, sign(Axis.X))) * (Low.X * Axis.Y + Rib0.Y - Low.Y) - 0.46 * Drip.X * max(0, sign(Axis.X))">
+      <Dependency Name="Middle" />
+      <Dependency Name="Rib0" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Drip" />
+      <Dependency Name="Low" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeBottomBulbR" Visible="false" Style="Dot" X="(1 - min(1, 2.5 * Drip.X * max(0, sign(Axis.X)))) * (Middle.X + 0.166667 * Body.Y * Axis.X + Rib1.X * Axis.Y) + min(1, 2.5 * Drip.X * max(0, sign(Axis.X))) * (Middle.X + Rib0.X * Axis.Y + Low.X * Axis.X + (0.11 + 0.02 * Drip.X * max(0, sign(Axis.X))) * sign(Axis.X))" Y="(1 - min(1, 2.5 * Drip.X * max(0, sign(Axis.X)))) * (Middle.Y + 0.166667 * Body.Y * Axis.Y - Rib1.X * Axis.X - Rib1.Y) + min(1, 2.5 * Drip.X * max(0, sign(Axis.X))) * (Middle.Y - Rib0.X * Axis.X - Rib0.Y + Low.X * Axis.Y + Rib0.Y - Low.Y - 0.3128 * Drip.X * max(0, sign(Axis.X)))">
+      <Dependency Name="Drip" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Rib1" />
+      <Dependency Name="Rib0" />
+      <Dependency Name="Low" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeBottomNeckR" Visible="false" Style="Dot" X="(1 - min(1, 2.5 * Drip.X * max(0, sign(Axis.X)))) * (Middle.X + 0.333333 * Body.Y * Axis.X + Rib2.X * Axis.Y) + min(1, 2.5 * Drip.X * max(0, sign(Axis.X))) * (Middle.X + Rib0.X * Axis.Y + Low.X * Axis.X + (0.065 + 0.35 * (1 - Drip.X * max(0, sign(Axis.X)))^2) * Axis.X)" Y="(1 - min(1, 2.5 * Drip.X * max(0, sign(Axis.X)))) * (Middle.Y + 0.333333 * Body.Y * Axis.Y - Rib2.X * Axis.X - Rib2.Y) + min(1, 2.5 * Drip.X * max(0, sign(Axis.X))) * (Middle.Y - Rib0.X * Axis.X - Rib0.Y + Low.X * Axis.Y + Rib0.Y - Low.Y + (0.065 + 0.35 * (1 - Drip.X * max(0, sign(Axis.X)))^2) * Axis.Y - 0.46 * Drip.X * max(0, sign(Axis.X)) * (0.1 + 0.2 * Drip.X * max(0, sign(Axis.X))))">
+      <Dependency Name="Drip" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Rib2" />
+      <Dependency Name="Rib0" />
+      <Dependency Name="Low" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeBottomR3" Visible="false" Style="Dot" X="Middle.X + (0.5 * Body.Y - min(1, 1.6 * Drip.X * max(0, sign(Axis.X))) * (0.166667 * Body.Y - 0.0325)) * Axis.X + (Rib3.X + max(0, sign(Axis.X)) * (RibS.X - Rib3.X)) * Axis.Y" Y="Middle.Y + (0.5 * Body.Y - min(1, 1.6 * Drip.X * max(0, sign(Axis.X))) * (0.166667 * Body.Y - 0.0325)) * Axis.Y - (Rib3.X + max(0, sign(Axis.X)) * (RibS.X - Rib3.X)) * Axis.X - (Rib3.Y + max(0, sign(Axis.X)) * (RibS.Y - Rib3.Y + 0.05 * Drip.X))">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Drip" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib3" />
+      <Dependency Name="RibS" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeBottomR4" Visible="false" Style="Dot" X="Middle.X + 0.666667 * Body.Y * Axis.X + Rib4.X * Axis.Y" Y="Middle.Y + 0.666667 * Body.Y * Axis.Y - Rib4.X * Axis.X - Rib4.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SlimeBottomR5" Visible="false" Style="Dot" X="Middle.X + 0.833333 * Body.Y * Axis.X + Rib5.X * Axis.Y" Y="Middle.Y + 0.833333 * Body.Y * Axis.Y - Rib5.X * Axis.X - Rib5.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble1R" Visible="false" X="min(0.15 * sqrt(clamp(Frame.Y / 2.2, 0.8, 2.5)), 2.5 * min(0.15 / sqrt(clamp(Frame.Y / 2.2, 0.8, 2.5)), 0.3 * Rib2.X))" Y="min(0.15 / sqrt(clamp(Frame.Y / 2.2, 0.8, 2.5)), 0.3 * Rib2.X)">
+      <Dependency Name="Frame" />
+      <Dependency Name="Rib2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble1C" Visible="false" X="Middle.X + (-0.333333) * Body.Y * Axis.X + (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * min(max(0.2 * Rib2.X, sqrt(max(0, 0.2025 - abs(Frame.Y / 2 - abs((-0.333333) * Body.Y))^2))), (0.62 + 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Rib2.X - Bubble1R.Y) * Axis.Y" Y="Middle.Y + (-0.333333) * Body.Y * Axis.Y - (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * min(max(0.2 * Rib2.X, sqrt(max(0, 0.2025 - abs(Frame.Y / 2 - abs((-0.333333) * Body.Y))^2))), (0.62 + 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Rib2.X - Bubble1R.Y) * Axis.X - Rib2.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib2" />
+      <Dependency Name="Frame" />
+      <Dependency Name="Bubble1R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble1T" Visible="false" X="Axis.X / sqrt(1 + 2 * (Sag.X * (2 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1) + 4 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1)^5) / Rope.X) * Axis.Y + (Sag.X * (2 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1) + 4 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1)^5) / Rope.X)^2)" Y="(Axis.Y + (Sag.X * (2 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1) + 4 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1)^5) / Rope.X)) / sqrt(1 + 2 * (Sag.X * (2 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1) + 4 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1)^5) / Rope.X) * Axis.Y + (Sag.X * (2 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1) + 4 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp((-0.333333) * Body.Y / Rope.X, -1, 1)^5) / Rope.X)^2)">
+      <Dependency Name="Axis" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Body" />
+      <Dependency Name="Rope" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble1E" Visible="false" Style="Dot" X="Bubble1C.X + Bubble1R.X * Bubble1T.X" Y="Bubble1C.Y + Bubble1R.X * Bubble1T.Y">
+      <Dependency Name="Bubble1C" />
+      <Dependency Name="Bubble1R" />
+      <Dependency Name="Bubble1T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble1N" Visible="false" Style="Dot" X="Bubble1C.X - Bubble1R.Y * Bubble1T.Y" Y="Bubble1C.Y + Bubble1R.Y * Bubble1T.X">
+      <Dependency Name="Bubble1C" />
+      <Dependency Name="Bubble1R" />
+      <Dependency Name="Bubble1T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble1W" Visible="false" Style="Dot" X="Bubble1C.X - Bubble1R.X * Bubble1T.X" Y="Bubble1C.Y - Bubble1R.X * Bubble1T.Y">
+      <Dependency Name="Bubble1C" />
+      <Dependency Name="Bubble1R" />
+      <Dependency Name="Bubble1T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble1S" Visible="false" Style="Dot" X="Bubble1C.X + Bubble1R.Y * Bubble1T.Y" Y="Bubble1C.Y - Bubble1R.Y * Bubble1T.X">
+      <Dependency Name="Bubble1C" />
+      <Dependency Name="Bubble1R" />
+      <Dependency Name="Bubble1T" />
+    </PointByCoordinates>
+    <BezierPath Name="Bubble1" Style="BubbleGlass" Closed="true" Filled="true" Path="C a a C a a C a a C a a">
+      <Sides Style="BubbleRim" />
+      <Handles Style="SlimeHandle" />
+      <Dependency Name="Bubble1E" />
+      <Dependency Name="Bubble1N" />
+      <Dependency Name="Bubble1W" />
+      <Dependency Name="Bubble1S" />
+    </BezierPath>
+    <PointByCoordinates Name="Bubble2R" Visible="false" X="min(0.065 * sqrt(clamp(Frame.Y / 2.2, 0.8, 2.5)), 2.5 * min(0.065 / sqrt(clamp(Frame.Y / 2.2, 0.8, 2.5)), 0.3 * Rib1.X))" Y="min(0.065 / sqrt(clamp(Frame.Y / 2.2, 0.8, 2.5)), 0.3 * Rib1.X)">
+      <Dependency Name="Frame" />
+      <Dependency Name="Rib1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble2C" Visible="false" X="Middle.X + 0.166667 * Body.Y * Axis.X - (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * min(max(0.4 * Rib1.X, sqrt(max(0, 0.2025 - abs(Frame.Y / 2 - abs(0.166667 * Body.Y))^2))), (0.62 + 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Rib1.X - Bubble2R.Y) * Axis.Y" Y="Middle.Y + 0.166667 * Body.Y * Axis.Y + (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * min(max(0.4 * Rib1.X, sqrt(max(0, 0.2025 - abs(Frame.Y / 2 - abs(0.166667 * Body.Y))^2))), (0.62 + 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Rib1.X - Bubble2R.Y) * Axis.X - Rib1.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib1" />
+      <Dependency Name="Frame" />
+      <Dependency Name="Bubble2R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble2T" Visible="false" X="Axis.X / sqrt(1 + 2 * (Sag.X * (2 * clamp(0.166667 * Body.Y / Rope.X, -1, 1) + 4 * clamp(0.166667 * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp(0.166667 * Body.Y / Rope.X, -1, 1)^5) / Rope.X) * Axis.Y + (Sag.X * (2 * clamp(0.166667 * Body.Y / Rope.X, -1, 1) + 4 * clamp(0.166667 * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp(0.166667 * Body.Y / Rope.X, -1, 1)^5) / Rope.X)^2)" Y="(Axis.Y + (Sag.X * (2 * clamp(0.166667 * Body.Y / Rope.X, -1, 1) + 4 * clamp(0.166667 * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp(0.166667 * Body.Y / Rope.X, -1, 1)^5) / Rope.X)) / sqrt(1 + 2 * (Sag.X * (2 * clamp(0.166667 * Body.Y / Rope.X, -1, 1) + 4 * clamp(0.166667 * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp(0.166667 * Body.Y / Rope.X, -1, 1)^5) / Rope.X) * Axis.Y + (Sag.X * (2 * clamp(0.166667 * Body.Y / Rope.X, -1, 1) + 4 * clamp(0.166667 * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp(0.166667 * Body.Y / Rope.X, -1, 1)^5) / Rope.X)^2)">
+      <Dependency Name="Axis" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Body" />
+      <Dependency Name="Rope" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble2E" Visible="false" Style="Dot" X="Bubble2C.X + Bubble2R.X * Bubble2T.X" Y="Bubble2C.Y + Bubble2R.X * Bubble2T.Y">
+      <Dependency Name="Bubble2C" />
+      <Dependency Name="Bubble2R" />
+      <Dependency Name="Bubble2T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble2N" Visible="false" Style="Dot" X="Bubble2C.X - Bubble2R.Y * Bubble2T.Y" Y="Bubble2C.Y + Bubble2R.Y * Bubble2T.X">
+      <Dependency Name="Bubble2C" />
+      <Dependency Name="Bubble2R" />
+      <Dependency Name="Bubble2T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble2W" Visible="false" Style="Dot" X="Bubble2C.X - Bubble2R.X * Bubble2T.X" Y="Bubble2C.Y - Bubble2R.X * Bubble2T.Y">
+      <Dependency Name="Bubble2C" />
+      <Dependency Name="Bubble2R" />
+      <Dependency Name="Bubble2T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble2S" Visible="false" Style="Dot" X="Bubble2C.X + Bubble2R.Y * Bubble2T.Y" Y="Bubble2C.Y - Bubble2R.Y * Bubble2T.X">
+      <Dependency Name="Bubble2C" />
+      <Dependency Name="Bubble2R" />
+      <Dependency Name="Bubble2T" />
+    </PointByCoordinates>
+    <BezierPath Name="Bubble2" Style="BubbleGlass" Closed="true" Filled="true" Path="C a a C a a C a a C a a">
+      <Sides Style="BubbleRim" />
+      <Handles Style="SlimeHandle" />
+      <Dependency Name="Bubble2E" />
+      <Dependency Name="Bubble2N" />
+      <Dependency Name="Bubble2W" />
+      <Dependency Name="Bubble2S" />
+    </BezierPath>
+    <PointByCoordinates Name="Bubble3R" Visible="false" X="min(0.085 * sqrt(clamp(Frame.Y / 2.2, 0.8, 2.5)), 2.5 * min(0.085 / sqrt(clamp(Frame.Y / 2.2, 0.8, 2.5)), 0.3 * Rib2.X))" Y="min(0.085 / sqrt(clamp(Frame.Y / 2.2, 0.8, 2.5)), 0.3 * Rib2.X)">
+      <Dependency Name="Frame" />
+      <Dependency Name="Rib2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble3C" Visible="false" X="Middle.X + 0.333333 * Body.Y * Axis.X + (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * min(max(0.45 * Rib2.X, sqrt(max(0, 0.2025 - abs(Frame.Y / 2 - abs(0.333333 * Body.Y))^2))), (0.62 + 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Rib2.X - Bubble3R.Y) * Axis.Y" Y="Middle.Y + 0.333333 * Body.Y * Axis.Y - (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * min(max(0.45 * Rib2.X, sqrt(max(0, 0.2025 - abs(Frame.Y / 2 - abs(0.333333 * Body.Y))^2))), (0.62 + 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Rib2.X - Bubble3R.Y) * Axis.X - Rib2.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib2" />
+      <Dependency Name="Frame" />
+      <Dependency Name="Bubble3R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble3T" Visible="false" X="Axis.X / sqrt(1 + 2 * (Sag.X * (2 * clamp(0.333333 * Body.Y / Rope.X, -1, 1) + 4 * clamp(0.333333 * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp(0.333333 * Body.Y / Rope.X, -1, 1)^5) / Rope.X) * Axis.Y + (Sag.X * (2 * clamp(0.333333 * Body.Y / Rope.X, -1, 1) + 4 * clamp(0.333333 * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp(0.333333 * Body.Y / Rope.X, -1, 1)^5) / Rope.X)^2)" Y="(Axis.Y + (Sag.X * (2 * clamp(0.333333 * Body.Y / Rope.X, -1, 1) + 4 * clamp(0.333333 * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp(0.333333 * Body.Y / Rope.X, -1, 1)^5) / Rope.X)) / sqrt(1 + 2 * (Sag.X * (2 * clamp(0.333333 * Body.Y / Rope.X, -1, 1) + 4 * clamp(0.333333 * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp(0.333333 * Body.Y / Rope.X, -1, 1)^5) / Rope.X) * Axis.Y + (Sag.X * (2 * clamp(0.333333 * Body.Y / Rope.X, -1, 1) + 4 * clamp(0.333333 * Body.Y / Rope.X, -1, 1)^3 - 6 * clamp(0.333333 * Body.Y / Rope.X, -1, 1)^5) / Rope.X)^2)">
+      <Dependency Name="Axis" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Body" />
+      <Dependency Name="Rope" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble3E" Visible="false" Style="Dot" X="Bubble3C.X + Bubble3R.X * Bubble3T.X" Y="Bubble3C.Y + Bubble3R.X * Bubble3T.Y">
+      <Dependency Name="Bubble3C" />
+      <Dependency Name="Bubble3R" />
+      <Dependency Name="Bubble3T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble3N" Visible="false" Style="Dot" X="Bubble3C.X - Bubble3R.Y * Bubble3T.Y" Y="Bubble3C.Y + Bubble3R.Y * Bubble3T.X">
+      <Dependency Name="Bubble3C" />
+      <Dependency Name="Bubble3R" />
+      <Dependency Name="Bubble3T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble3W" Visible="false" Style="Dot" X="Bubble3C.X - Bubble3R.X * Bubble3T.X" Y="Bubble3C.Y - Bubble3R.X * Bubble3T.Y">
+      <Dependency Name="Bubble3C" />
+      <Dependency Name="Bubble3R" />
+      <Dependency Name="Bubble3T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble3S" Visible="false" Style="Dot" X="Bubble3C.X + Bubble3R.Y * Bubble3T.Y" Y="Bubble3C.Y - Bubble3R.Y * Bubble3T.X">
+      <Dependency Name="Bubble3C" />
+      <Dependency Name="Bubble3R" />
+      <Dependency Name="Bubble3T" />
+    </PointByCoordinates>
+    <BezierPath Name="Bubble3" Style="BubbleGlass" Closed="true" Filled="true" Path="C a a C a a C a a C a a">
+      <Sides Style="BubbleRim" />
+      <Handles Style="SlimeHandle" />
+      <Dependency Name="Bubble3E" />
+      <Dependency Name="Bubble3N" />
+      <Dependency Name="Bubble3W" />
+      <Dependency Name="Bubble3S" />
+    </BezierPath>
+    <Label Name="Stretch" Visible="false" Text="[clamp(0.9 + 0.06 * (Frame.Y - 2.2), 0.9, 1.15)]" X="0" Y="0">
+      <Dependency Name="Frame" />
+    </Label>
+    <BezierPath Name="Slime" Style="SlimeFill" Closed="true" Filled="true" Tension="#27" Path="C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a">
+      <Sides Style="SlimeRim" />
+      <Handles Style="SlimeHandle" />
+      <Dependency Name="SlimeTipR" />
+      <Dependency Name="SlimeTopR5" />
+      <Dependency Name="SlimeTopR4" />
+      <Dependency Name="SlimeTopR3" />
+      <Dependency Name="SlimeTopNeckR" />
+      <Dependency Name="SlimeTopBulbR" />
+      <Dependency Name="SlimeTopMid" />
+      <Dependency Name="SlimeTopBulbL" />
+      <Dependency Name="SlimeTopNeckL" />
+      <Dependency Name="SlimeTopL3" />
+      <Dependency Name="SlimeTopL4" />
+      <Dependency Name="SlimeTopL5" />
+      <Dependency Name="SlimeTipL" />
+      <Dependency Name="SlimeBottomL5" />
+      <Dependency Name="SlimeBottomL4" />
+      <Dependency Name="SlimeBottomL3" />
+      <Dependency Name="SlimeBottomNeckL" />
+      <Dependency Name="SlimeBottomBulbL" />
+      <Dependency Name="SlimeBottomMid" />
+      <Dependency Name="SlimeBottomBulbR" />
+      <Dependency Name="SlimeBottomNeckR" />
+      <Dependency Name="SlimeBottomR3" />
+      <Dependency Name="SlimeBottomR4" />
+      <Dependency Name="SlimeBottomR5" />
+      <Dependency Name="Bubble1" />
+      <Dependency Name="Bubble2" />
+      <Dependency Name="Bubble3" />
+      <Dependency Name="Stretch" />
+    </BezierPath>
+    <BezierPath Name="Shade" Style="SlimeShade" Closed="true" Filled="true" Tension="#27" Path="C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a">
+      <Sides Style="NoLine" />
+      <Handles Style="SlimeHandle" />
+      <Dependency Name="SlimeTipR" />
+      <Dependency Name="SlimeTopR5" />
+      <Dependency Name="SlimeTopR4" />
+      <Dependency Name="SlimeTopR3" />
+      <Dependency Name="SlimeTopNeckR" />
+      <Dependency Name="SlimeTopBulbR" />
+      <Dependency Name="SlimeTopMid" />
+      <Dependency Name="SlimeTopBulbL" />
+      <Dependency Name="SlimeTopNeckL" />
+      <Dependency Name="SlimeTopL3" />
+      <Dependency Name="SlimeTopL4" />
+      <Dependency Name="SlimeTopL5" />
+      <Dependency Name="SlimeTipL" />
+      <Dependency Name="SlimeBottomL5" />
+      <Dependency Name="SlimeBottomL4" />
+      <Dependency Name="SlimeBottomL3" />
+      <Dependency Name="SlimeBottomNeckL" />
+      <Dependency Name="SlimeBottomBulbL" />
+      <Dependency Name="SlimeBottomMid" />
+      <Dependency Name="SlimeBottomBulbR" />
+      <Dependency Name="SlimeBottomNeckR" />
+      <Dependency Name="SlimeBottomR3" />
+      <Dependency Name="SlimeBottomR4" />
+      <Dependency Name="SlimeBottomR5" />
+      <Dependency Name="Bubble1" />
+      <Dependency Name="Bubble2" />
+      <Dependency Name="Bubble3" />
+      <Dependency Name="Stretch" />
+    </BezierPath>
+    <PointByCoordinates Name="Bubble1Glint" Style="BubbleGlint" X="Bubble1C.X + 0.7 * (Bubble1R.X * (0.8 * Bubble1T.Y - 0.6 * Bubble1T.X) * Bubble1T.X - Bubble1R.Y * (0.8 * Bubble1T.X + 0.6 * Bubble1T.Y) * Bubble1T.Y)" Y="Bubble1C.Y + 0.7 * (Bubble1R.X * (0.8 * Bubble1T.Y - 0.6 * Bubble1T.X) * Bubble1T.Y + Bubble1R.Y * (0.8 * Bubble1T.X + 0.6 * Bubble1T.Y) * Bubble1T.X)">
+      <Dependency Name="Bubble1C" />
+      <Dependency Name="Bubble1R" />
+      <Dependency Name="Bubble1T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble2Glint" Style="BubbleGlint" X="Bubble2C.X + 0.7 * (Bubble2R.X * (0.8 * Bubble2T.Y - 0.6 * Bubble2T.X) * Bubble2T.X - Bubble2R.Y * (0.8 * Bubble2T.X + 0.6 * Bubble2T.Y) * Bubble2T.Y)" Y="Bubble2C.Y + 0.7 * (Bubble2R.X * (0.8 * Bubble2T.Y - 0.6 * Bubble2T.X) * Bubble2T.Y + Bubble2R.Y * (0.8 * Bubble2T.X + 0.6 * Bubble2T.Y) * Bubble2T.X)">
+      <Dependency Name="Bubble2C" />
+      <Dependency Name="Bubble2R" />
+      <Dependency Name="Bubble2T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble3Glint" Style="BubbleGlint" X="Bubble3C.X + 0.7 * (Bubble3R.X * (0.8 * Bubble3T.Y - 0.6 * Bubble3T.X) * Bubble3T.X - Bubble3R.Y * (0.8 * Bubble3T.X + 0.6 * Bubble3T.Y) * Bubble3T.Y)" Y="Bubble3C.Y + 0.7 * (Bubble3R.X * (0.8 * Bubble3T.Y - 0.6 * Bubble3T.X) * Bubble3T.Y + Bubble3R.Y * (0.8 * Bubble3T.X + 0.6 * Bubble3T.Y) * Bubble3T.X)">
+      <Dependency Name="Bubble3C" />
+      <Dependency Name="Bubble3R" />
+      <Dependency Name="Bubble3T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shine" Visible="false" X="atan2(clamp((Frame.Y - 0.5) / 1.7, 0, 1) * (0.85 - Axis.Y) + 0.6 * (1 - clamp((Frame.Y - 0.5) / 1.7, 0, 1)), clamp((Frame.Y - 0.5) / 1.7, 0, 1) * (0.15 - Axis.X) - 0.6 * (1 - clamp((Frame.Y - 0.5) / 1.7, 0, 1)))" Y="atan2(clamp((Frame.Y - 0.5) / 1.7, 0, 1) * (Axis.Y + 0.72) + 0.6 * (1 - clamp((Frame.Y - 0.5) / 1.7, 0, 1)), clamp((Frame.Y - 0.5) / 1.7, 0, 1) * (Axis.X - 0.24) + 0.6 * (1 - clamp((Frame.Y - 0.5) / 1.7, 0, 1)))">
+      <Dependency Name="Frame" />
+      <Dependency Name="Axis" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gloss1" Visible="false" X="Middle.X - clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.X + (0.85 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * cos(Shine.X + 0.733038)" Y="Middle.Y - clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.Y + (0.85 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * sin(Shine.X + 0.733038)">
+      <Dependency Name="Middle" />
+      <Dependency Name="Frame" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Body" />
+      <Dependency Name="Shine" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gloss2" Visible="false" X="Middle.X - clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.X + (0.94 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * cos(Shine.X)" Y="Middle.Y - clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.Y + (0.94 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * sin(Shine.X)">
+      <Dependency Name="Middle" />
+      <Dependency Name="Frame" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Body" />
+      <Dependency Name="Shine" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gloss3" Visible="false" X="Middle.X - clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.X + (0.85 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * cos(Shine.X - 0.733038)" Y="Middle.Y - clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.Y + (0.85 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * sin(Shine.X - 0.733038)">
+      <Dependency Name="Middle" />
+      <Dependency Name="Frame" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Body" />
+      <Dependency Name="Shine" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gloss4" Visible="false" X="Middle.X - clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.X + (0.72 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * cos(Shine.X)" Y="Middle.Y - clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.Y + (0.72 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * sin(Shine.X)">
+      <Dependency Name="Middle" />
+      <Dependency Name="Frame" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Body" />
+      <Dependency Name="Shine" />
+    </PointByCoordinates>
+    <BezierPath Name="Gloss" Style="GlossFill" Closed="true" Filled="true" Path="C 0,0 a C a 0,0 C 0,0 a C a 0,0">
+      <Sides Style="NoLine" />
+      <Handles Style="SlimeHandle" />
+      <Dependency Name="Gloss1" />
+      <Dependency Name="Gloss2" />
+      <Dependency Name="Gloss3" />
+      <Dependency Name="Gloss4" />
+    </BezierPath>
+    <PointByCoordinates Name="Gleam1" Visible="false" X="Middle.X + clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.X + (0.86 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * cos(Shine.Y + 0.453786)" Y="Middle.Y + clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.Y + (0.86 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * sin(Shine.Y + 0.453786)">
+      <Dependency Name="Middle" />
+      <Dependency Name="Frame" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Body" />
+      <Dependency Name="Shine" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gleam2" Visible="false" X="Middle.X + clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.X + (0.94 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * cos(Shine.Y)" Y="Middle.Y + clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.Y + (0.94 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * sin(Shine.Y)">
+      <Dependency Name="Middle" />
+      <Dependency Name="Frame" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Body" />
+      <Dependency Name="Shine" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gleam3" Visible="false" X="Middle.X + clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.X + (0.86 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * cos(Shine.Y - 0.453786)" Y="Middle.Y + clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.Y + (0.86 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * sin(Shine.Y - 0.453786)">
+      <Dependency Name="Middle" />
+      <Dependency Name="Frame" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Body" />
+      <Dependency Name="Shine" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gleam4" Visible="false" X="Middle.X + clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.X + (0.82 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * cos(Shine.Y)" Y="Middle.Y + clamp((Frame.Y - 0.5) / 0.6, 0, 1) * Rope.X * Axis.Y + (0.82 - 0.08 * clamp((Frame.Y - 0.5) / 0.6, 0, 1)) * Body.X * sin(Shine.Y)">
+      <Dependency Name="Middle" />
+      <Dependency Name="Frame" />
+      <Dependency Name="Rope" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Body" />
+      <Dependency Name="Shine" />
+    </PointByCoordinates>
+    <BezierPath Name="Gleam" Style="GlossFill" Closed="true" Filled="true" Path="C 0,0 a C a 0,0 C 0,0 a C a 0,0">
+      <Sides Style="NoLine" />
+      <Handles Style="SlimeHandle" />
+      <Dependency Name="Gleam1" />
+      <Dependency Name="Gleam2" />
+      <Dependency Name="Gleam3" />
+      <Dependency Name="Gleam4" />
+    </BezierPath>
+    <PointByCoordinates Name="Glitter1" Style="Glitter" X="Middle.X + (-0.833333) * Body.Y * Axis.X + 0.35 * (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * Rib5.X * Axis.Y" Y="Middle.Y + (-0.833333) * Body.Y * Axis.Y - 0.35 * (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * Rib5.X * Axis.X - Rib5.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Glitter2" Style="Glitter2" X="Middle.X + (-0.166667) * Body.Y * Axis.X - 0.42 * (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * Rib1.X * Axis.Y" Y="Middle.Y + (-0.166667) * Body.Y * Axis.Y + 0.42 * (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * Rib1.X * Axis.X - Rib1.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Glitter3" Style="Glitter2" X="Middle.X + 0.5 * Body.Y * Axis.X - 0.5 * (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * Rib3.X * Axis.Y" Y="Middle.Y + 0.5 * Body.Y * Axis.Y + 0.5 * (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * Rib3.X * Axis.X - Rib3.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Glitter4" Style="Glitter" X="Middle.X + 0.666667 * Body.Y * Axis.X + 0.42 * (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * Rib4.X * Axis.Y" Y="Middle.Y + 0.666667 * Body.Y * Axis.Y - 0.42 * (1 - 2 * clamp(-3 * Axis.X - 1, 0, 1)) * Rib4.X * Axis.X - Rib4.Y">
+      <Dependency Name="Middle" />
+      <Dependency Name="Body" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="DropC" Visible="false" X="Middle.X + Low.X * Axis.X + sign(Axis.X) * Rib0.X * Axis.Y + 0 * sqrt(Frame.Y - 3.4) + 0 * sqrt(Sag.Y - 0.15)" Y="Middle.Y + Low.X * Axis.Y - Rib0.X * abs(Axis.X) - Low.Y - 0.39 * Sag.Y - (0.15 * Drip.Y + 2.6 * Drip.Y^2)">
+      <Dependency Name="Middle" />
+      <Dependency Name="Low" />
+      <Dependency Name="Axis" />
+      <Dependency Name="Rib0" />
+      <Dependency Name="Frame" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Drip" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="DropTop" Visible="false" Style="Dot" X="DropC.X" Y="DropC.Y + 0.15 * Sag.Y">
+      <Dependency Name="DropC" />
+      <Dependency Name="Sag" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="DropLeft" Visible="false" Style="Dot" X="DropC.X - 0.1 * Sag.Y" Y="DropC.Y - 0.02 * Sag.Y">
+      <Dependency Name="DropC" />
+      <Dependency Name="Sag" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="DropBottom" Visible="false" Style="Dot" X="DropC.X" Y="DropC.Y - 0.12 * Sag.Y">
+      <Dependency Name="DropC" />
+      <Dependency Name="Sag" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="DropRight" Visible="false" Style="Dot" X="DropC.X + 0.1 * Sag.Y" Y="DropC.Y - 0.02 * Sag.Y">
+      <Dependency Name="DropC" />
+      <Dependency Name="Sag" />
+    </PointByCoordinates>
+    <BezierPath Name="Drop" Style="DropFill" Closed="true" Filled="true" Path="C 0,0 a C a a C a a C a 0,0">
+      <Sides Style="SlimeRim" />
+      <Handles Style="SlimeHandle" />
+      <Dependency Name="DropTop" />
+      <Dependency Name="DropLeft" />
+      <Dependency Name="DropBottom" />
+      <Dependency Name="DropRight" />
+    </BezierPath>
+    <ShowHideControl Name="DotsBox" Style="GalleryText" Show="false" Text="Dots" X="-2.05" Y="-1.3">
+      <Dependency Name="SlimeTipR" />
+      <Dependency Name="SlimeTopR5" />
+      <Dependency Name="SlimeTopR4" />
+      <Dependency Name="SlimeTopR3" />
+      <Dependency Name="SlimeTopNeckR" />
+      <Dependency Name="SlimeTopBulbR" />
+      <Dependency Name="SlimeTopMid" />
+      <Dependency Name="SlimeTopBulbL" />
+      <Dependency Name="SlimeTopNeckL" />
+      <Dependency Name="SlimeTopL3" />
+      <Dependency Name="SlimeTopL4" />
+      <Dependency Name="SlimeTopL5" />
+      <Dependency Name="SlimeTipL" />
+      <Dependency Name="SlimeBottomL5" />
+      <Dependency Name="SlimeBottomL4" />
+      <Dependency Name="SlimeBottomL3" />
+      <Dependency Name="SlimeBottomNeckL" />
+      <Dependency Name="SlimeBottomBulbL" />
+      <Dependency Name="SlimeBottomMid" />
+      <Dependency Name="SlimeBottomBulbR" />
+      <Dependency Name="SlimeBottomNeckR" />
+      <Dependency Name="SlimeBottomR3" />
+      <Dependency Name="SlimeBottomR4" />
+      <Dependency Name="SlimeBottomR5" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Stretchy Slime" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Grab the galaxy slime and pull! Drag the fists apart. There's only so much slime, so the longer it gets, the thinner it gets. Watch it sag, drip, and stretch its air bubbles into long ovals. Keep pulling: plop, plop! Push the fists together to squish it into a ball.\n\nIts edge is one smooth curve through 24 dots, with no corners anywhere: a spline. Check Dots to watch the dots slide as you pull." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

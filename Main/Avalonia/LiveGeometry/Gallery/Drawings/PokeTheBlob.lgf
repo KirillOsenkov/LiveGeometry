@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-3.0625" Top="2.625" Right="3.0625" Bottom="-2.0625">
+    <Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFFFF4E6" Offset="0" />
+        <GradientStop Color="#FFE8E0FF" Offset="1" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
+  <Scene Left="-3.0625" Top="2.625" Right="3.0625" Bottom="-2.0625" />
+  <Styles>
+    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF4A2C6E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF4A2C6E" />
+    </TextStyle>
+    <TextStyle Name="GalleryText" FontSize="16" Color="#FF2E2A44" FontFamily="Segoe UI">
+      <Dark Color="#FF2E2A44" />
+    </TextStyle>
+    <ShapeStyle Name="Plate" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Color="#FFFFFFFF" Offset="0" />
+          <GradientStop Color="#FFE9E5FA" Offset="0.8" />
+          <GradientStop Color="#FFBDB3E8" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Plate well" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Color="#FFE6E2F8" Offset="0" />
+          <GradientStop Color="#FFFFFFFF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="No line" Color="#00000000" />
+    <ShapeStyle Name="Shadow" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Color="#304E3F8F" Offset="0" />
+          <GradientStop Color="#664E3F8F" Offset="0.5" />
+          <GradientStop Color="#304E3F8F" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Air" Fill="#FFE3FAF4" Color="#00000000" />
+    <LineStyle Name="Bubble" Color="#CCFFFFFF" StrokeWidth="2" />
+    <LineStyle Name="Bubble shine" Color="#FFFFFFFF" StrokeWidth="3.5" />
+    <ShapeStyle Name="Gummy" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#C4C6FBDD" Offset="0" />
+          <GradientStop Color="#C84DD0E1" Offset="0.5" />
+          <GradientStop Color="#E000A68F" Offset="0.85" />
+          <GradientStop Color="#EE00A68F" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="Gummy rim" Color="#FF00897B" StrokeWidth="3" />
+    <PointStyle Name="Gummy handle" Size="9" Fill="#FFFFFFFF" Color="#FF00897B" StrokeWidth="2" />
+    <PointStyle Name="Dot" Size="11" Fill="#FFFFFFFF" Color="#FF00695C" StrokeWidth="2.5" />
+    <ShapeStyle Name="Gloss" Fill="#A6FFFFFF" Color="#00000000" />
+    <LineStyle Name="Face line" Color="#FF00574D" StrokeWidth="2.5" />
+    <ShapeStyle Name="Eye white" Color="#FF00574D" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Color="#FFFFFFFF" Offset="0.3" />
+          <GradientStop Color="#FFE6E0F7" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Mouth" Fill="#FF0E3F3B" Color="#00000000" />
+    <ShapeStyle Name="Pupil" Fill="#FF15292D" Color="#00000000" />
+    <PointStyle Name="Sparkle" Size="6" Fill="#FFFFFFFF" Color="#00FFFFFF" StrokeWidth="0" />
+    <ShapeStyle Name="Blush" Fill="#D9FF8AB5" Color="#00000000" />
+    <ShapeStyle Name="Gum" Color="#FFB0144F" StrokeWidth="2">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFB3D9" Offset="0" />
+          <GradientStop Color="#FFFF4F9A" Offset="0.55" />
+          <GradientStop Color="#FFD81B60" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Bubble film" Color="#00FFFFFF" StrokeWidth="0">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#CCFFFFFF" Offset="0.15" />
+          <GradientStop Color="#33FFFFFF" Offset="0.32" />
+          <GradientStop Color="#00FFFFFF" Offset="0.45" />
+          <GradientStop Color="#0000897B" Offset="0.6" />
+          <GradientStop Color="#5900897B" Offset="0.85" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="Glint" Color="#E6FFFFFF" StrokeWidth="3.5" />
+    <PointStyle Name="Shine" Fill="#F2FFFFFF" Color="#00FFFFFF" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="Core" Visible="false" X="0" Y="0.25" />
+    <PointByCoordinates Name="PlateLeft" Visible="false" X="Core.X - 2.6875" Y="Core.Y - 1.6625">
+      <Dependency Name="Core" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PlateRight" Visible="false" X="Core.X + 2.6875" Y="Core.Y - 1.6625">
+      <Dependency Name="Core" />
+    </PointByCoordinates>
+    <BezierPath Name="Plate" Style="Plate" Closed="true" Filled="true" Path="C 0,0.6 0,0.6 C 0,-0.6 0,-0.6">
+      <Sides Style="No line" />
+      <Dependency Name="PlateLeft" />
+      <Dependency Name="PlateRight" />
+    </BezierPath>
+    <PointByCoordinates Name="WellLeft" Visible="false" X="Core.X - 1.9375" Y="Core.Y - 1.6375">
+      <Dependency Name="Core" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WellRight" Visible="false" X="Core.X + 1.9375" Y="Core.Y - 1.6375">
+      <Dependency Name="Core" />
+    </PointByCoordinates>
+    <BezierPath Name="Well" Style="Plate well" Closed="true" Filled="true" Path="C 0,0.36667 0,0.36667 C 0,-0.36667 0,-0.36667">
+      <Sides Style="No line" />
+      <Dependency Name="WellLeft" />
+      <Dependency Name="WellRight" />
+    </BezierPath>
+    <PointByCoordinates Name="ShadowLeft" Visible="false" X="Core.X - 1.4375" Y="Core.Y - 1.59375">
+      <Dependency Name="Core" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ShadowRight" Visible="false" X="Core.X + 1.5125" Y="Core.Y - 1.59375">
+      <Dependency Name="Core" />
+    </PointByCoordinates>
+    <BezierPath Name="Shadow" Style="Shadow" Closed="true" Filled="true" Path="C 0,0.125 0,0.125 C 0,-0.125 0,-0.125">
+      <Sides Style="No line" />
+      <Dependency Name="ShadowLeft" />
+      <Dependency Name="ShadowRight" />
+    </BezierPath>
+    <FreePoint Name="Gum" Style="Shine" X="1.03127" Y="1.6196" />
+    <PointByCoordinates Name="Ball" Visible="false" X="Gum.X + 0.10625" Y="Gum.Y - 0.10625">
+      <Dependency Name="Gum" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GumRight" Visible="false" X="Ball.X + 0.275" Y="Ball.Y">
+      <Dependency Name="Ball" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Poke" Visible="false" X="dist(Ball, Core)" Y="atan2(Ball.Y - Core.Y, Ball.X - Core.X)">
+      <Dependency Name="Ball" />
+      <Dependency Name="Core" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Press" Visible="false" X="clamp(2.015 - Poke.X, 0, 1.25) * clamp((Poke.X - 1.125) / 0.15, 0, 1)" Y="clamp((Poke.X - 1.125) / 0.15, 0, 1)">
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Mood" Visible="false" X="min(1, Press.X / 0.5625)" Y="0.03125 + 0.0625 * min(1, Press.X / 0.5625)">
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Squeeze" Visible="false" X="0.7 * min(1, Press.X / 0.15)" Y="max(0.0125, Poke.X * 0.46947 - 0.265)">
+      <Dependency Name="Press" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gulp" Visible="false" X="clamp((1.125 - Poke.X) / 0.125, 0, 1)" Y="0 * sqrt(1.125 - Poke.X)">
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin0" Visible="false" X="1.75 + Mood.Y * sin(3 * (Squeeze.X * sin(Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((-Poke.Y - Squeeze.X * sin(-Poke.Y))))" Y="max(Poke.X * cos((-Poke.Y - Squeeze.X * sin(-Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((-Poke.Y - Squeeze.X * sin(-Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((-Poke.Y - Squeeze.X * sin(-Poke.Y))) * 0.46947 - abs(sin((-Poke.Y - Squeeze.X * sin(-Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim0" Visible="false" Style="Dot" X="Core.X + (Skin0.X - Press.Y * ((Skin0.X - Skin0.Y) + sqrt((Skin0.X - Skin0.Y) ^ 2 + 0.01)) / 2) * cos((Squeeze.X * sin(Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin0.X - Press.Y * ((Skin0.X - Skin0.Y) + sqrt((Skin0.X - Skin0.Y) ^ 2 + 0.01)) / 2) * sin((Squeeze.X * sin(Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin0" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin1" Visible="false" X="1.75 + Mood.Y * sin(3 * (0.3927 - Squeeze.X * sin(0.3927 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((0.3927 - Poke.Y - Squeeze.X * sin(0.3927 - Poke.Y))))" Y="max(Poke.X * cos((0.3927 - Poke.Y - Squeeze.X * sin(0.3927 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((0.3927 - Poke.Y - Squeeze.X * sin(0.3927 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((0.3927 - Poke.Y - Squeeze.X * sin(0.3927 - Poke.Y))) * 0.46947 - abs(sin((0.3927 - Poke.Y - Squeeze.X * sin(0.3927 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim1" Visible="false" Style="Dot" X="Core.X + (Skin1.X - Press.Y * ((Skin1.X - Skin1.Y) + sqrt((Skin1.X - Skin1.Y) ^ 2 + 0.01)) / 2) * cos((0.3927 - Squeeze.X * sin(0.3927 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin1.X - Press.Y * ((Skin1.X - Skin1.Y) + sqrt((Skin1.X - Skin1.Y) ^ 2 + 0.01)) / 2) * sin((0.3927 - Squeeze.X * sin(0.3927 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin1" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin2" Visible="false" X="1.75 + Mood.Y * sin(3 * (0.7854 - Squeeze.X * sin(0.7854 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((0.7854 - Poke.Y - Squeeze.X * sin(0.7854 - Poke.Y))))" Y="max(Poke.X * cos((0.7854 - Poke.Y - Squeeze.X * sin(0.7854 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((0.7854 - Poke.Y - Squeeze.X * sin(0.7854 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((0.7854 - Poke.Y - Squeeze.X * sin(0.7854 - Poke.Y))) * 0.46947 - abs(sin((0.7854 - Poke.Y - Squeeze.X * sin(0.7854 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim2" Visible="false" Style="Dot" X="Core.X + (Skin2.X - Press.Y * ((Skin2.X - Skin2.Y) + sqrt((Skin2.X - Skin2.Y) ^ 2 + 0.01)) / 2) * cos((0.7854 - Squeeze.X * sin(0.7854 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin2.X - Press.Y * ((Skin2.X - Skin2.Y) + sqrt((Skin2.X - Skin2.Y) ^ 2 + 0.01)) / 2) * sin((0.7854 - Squeeze.X * sin(0.7854 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin2" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin3" Visible="false" X="1.75 + Mood.Y * sin(3 * (1.1781 - Squeeze.X * sin(1.1781 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((1.1781 - Poke.Y - Squeeze.X * sin(1.1781 - Poke.Y))))" Y="max(Poke.X * cos((1.1781 - Poke.Y - Squeeze.X * sin(1.1781 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((1.1781 - Poke.Y - Squeeze.X * sin(1.1781 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((1.1781 - Poke.Y - Squeeze.X * sin(1.1781 - Poke.Y))) * 0.46947 - abs(sin((1.1781 - Poke.Y - Squeeze.X * sin(1.1781 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim3" Visible="false" Style="Dot" X="Core.X + (Skin3.X - Press.Y * ((Skin3.X - Skin3.Y) + sqrt((Skin3.X - Skin3.Y) ^ 2 + 0.01)) / 2) * cos((1.1781 - Squeeze.X * sin(1.1781 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin3.X - Press.Y * ((Skin3.X - Skin3.Y) + sqrt((Skin3.X - Skin3.Y) ^ 2 + 0.01)) / 2) * sin((1.1781 - Squeeze.X * sin(1.1781 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin3" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin4" Visible="false" X="1.75 + Mood.Y * sin(3 * (1.5708 - Squeeze.X * sin(1.5708 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((1.5708 - Poke.Y - Squeeze.X * sin(1.5708 - Poke.Y))))" Y="max(Poke.X * cos((1.5708 - Poke.Y - Squeeze.X * sin(1.5708 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((1.5708 - Poke.Y - Squeeze.X * sin(1.5708 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((1.5708 - Poke.Y - Squeeze.X * sin(1.5708 - Poke.Y))) * 0.46947 - abs(sin((1.5708 - Poke.Y - Squeeze.X * sin(1.5708 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim4" Visible="false" Style="Dot" X="Core.X + (Skin4.X - Press.Y * ((Skin4.X - Skin4.Y) + sqrt((Skin4.X - Skin4.Y) ^ 2 + 0.01)) / 2) * cos((1.5708 - Squeeze.X * sin(1.5708 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin4.X - Press.Y * ((Skin4.X - Skin4.Y) + sqrt((Skin4.X - Skin4.Y) ^ 2 + 0.01)) / 2) * sin((1.5708 - Squeeze.X * sin(1.5708 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin4" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin5" Visible="false" X="1.75 + Mood.Y * sin(3 * (1.9635 - Squeeze.X * sin(1.9635 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((1.9635 - Poke.Y - Squeeze.X * sin(1.9635 - Poke.Y))))" Y="max(Poke.X * cos((1.9635 - Poke.Y - Squeeze.X * sin(1.9635 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((1.9635 - Poke.Y - Squeeze.X * sin(1.9635 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((1.9635 - Poke.Y - Squeeze.X * sin(1.9635 - Poke.Y))) * 0.46947 - abs(sin((1.9635 - Poke.Y - Squeeze.X * sin(1.9635 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim5" Visible="false" Style="Dot" X="Core.X + (Skin5.X - Press.Y * ((Skin5.X - Skin5.Y) + sqrt((Skin5.X - Skin5.Y) ^ 2 + 0.01)) / 2) * cos((1.9635 - Squeeze.X * sin(1.9635 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin5.X - Press.Y * ((Skin5.X - Skin5.Y) + sqrt((Skin5.X - Skin5.Y) ^ 2 + 0.01)) / 2) * sin((1.9635 - Squeeze.X * sin(1.9635 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin5" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin6" Visible="false" X="1.75 + Mood.Y * sin(3 * (2.35619 - Squeeze.X * sin(2.35619 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((2.35619 - Poke.Y - Squeeze.X * sin(2.35619 - Poke.Y))))" Y="max(Poke.X * cos((2.35619 - Poke.Y - Squeeze.X * sin(2.35619 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((2.35619 - Poke.Y - Squeeze.X * sin(2.35619 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((2.35619 - Poke.Y - Squeeze.X * sin(2.35619 - Poke.Y))) * 0.46947 - abs(sin((2.35619 - Poke.Y - Squeeze.X * sin(2.35619 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim6" Visible="false" Style="Dot" X="Core.X + (Skin6.X - Press.Y * ((Skin6.X - Skin6.Y) + sqrt((Skin6.X - Skin6.Y) ^ 2 + 0.01)) / 2) * cos((2.35619 - Squeeze.X * sin(2.35619 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin6.X - Press.Y * ((Skin6.X - Skin6.Y) + sqrt((Skin6.X - Skin6.Y) ^ 2 + 0.01)) / 2) * sin((2.35619 - Squeeze.X * sin(2.35619 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin6" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin7" Visible="false" X="1.75 + Mood.Y * sin(3 * (2.74889 - Squeeze.X * sin(2.74889 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((2.74889 - Poke.Y - Squeeze.X * sin(2.74889 - Poke.Y))))" Y="max(Poke.X * cos((2.74889 - Poke.Y - Squeeze.X * sin(2.74889 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((2.74889 - Poke.Y - Squeeze.X * sin(2.74889 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((2.74889 - Poke.Y - Squeeze.X * sin(2.74889 - Poke.Y))) * 0.46947 - abs(sin((2.74889 - Poke.Y - Squeeze.X * sin(2.74889 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim7" Visible="false" Style="Dot" X="Core.X + (Skin7.X - Press.Y * ((Skin7.X - Skin7.Y) + sqrt((Skin7.X - Skin7.Y) ^ 2 + 0.01)) / 2) * cos((2.74889 - Squeeze.X * sin(2.74889 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin7.X - Press.Y * ((Skin7.X - Skin7.Y) + sqrt((Skin7.X - Skin7.Y) ^ 2 + 0.01)) / 2) * sin((2.74889 - Squeeze.X * sin(2.74889 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin7" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin8" Visible="false" X="1.75 + Mood.Y * sin(3 * (3.14159 - Squeeze.X * sin(3.14159 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((3.14159 - Poke.Y - Squeeze.X * sin(3.14159 - Poke.Y))))" Y="max(Poke.X * cos((3.14159 - Poke.Y - Squeeze.X * sin(3.14159 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((3.14159 - Poke.Y - Squeeze.X * sin(3.14159 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((3.14159 - Poke.Y - Squeeze.X * sin(3.14159 - Poke.Y))) * 0.46947 - abs(sin((3.14159 - Poke.Y - Squeeze.X * sin(3.14159 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim8" Visible="false" Style="Dot" X="Core.X + (Skin8.X - Press.Y * ((Skin8.X - Skin8.Y) + sqrt((Skin8.X - Skin8.Y) ^ 2 + 0.01)) / 2) * cos((3.14159 - Squeeze.X * sin(3.14159 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin8.X - Press.Y * ((Skin8.X - Skin8.Y) + sqrt((Skin8.X - Skin8.Y) ^ 2 + 0.01)) / 2) * sin((3.14159 - Squeeze.X * sin(3.14159 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin8" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin9" Visible="false" X="1.75 + Mood.Y * sin(3 * (3.53429 - Squeeze.X * sin(3.53429 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((3.53429 - Poke.Y - Squeeze.X * sin(3.53429 - Poke.Y))))" Y="max(Poke.X * cos((3.53429 - Poke.Y - Squeeze.X * sin(3.53429 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((3.53429 - Poke.Y - Squeeze.X * sin(3.53429 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((3.53429 - Poke.Y - Squeeze.X * sin(3.53429 - Poke.Y))) * 0.46947 - abs(sin((3.53429 - Poke.Y - Squeeze.X * sin(3.53429 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim9" Visible="false" Style="Dot" X="Core.X + (Skin9.X - Press.Y * ((Skin9.X - Skin9.Y) + sqrt((Skin9.X - Skin9.Y) ^ 2 + 0.01)) / 2) * cos((3.53429 - Squeeze.X * sin(3.53429 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin9.X - Press.Y * ((Skin9.X - Skin9.Y) + sqrt((Skin9.X - Skin9.Y) ^ 2 + 0.01)) / 2) * sin((3.53429 - Squeeze.X * sin(3.53429 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin9" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin10" Visible="false" X="1.75 + Mood.Y * sin(3 * (3.92699 - Squeeze.X * sin(3.92699 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((3.92699 - Poke.Y - Squeeze.X * sin(3.92699 - Poke.Y))))" Y="max(Poke.X * cos((3.92699 - Poke.Y - Squeeze.X * sin(3.92699 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((3.92699 - Poke.Y - Squeeze.X * sin(3.92699 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((3.92699 - Poke.Y - Squeeze.X * sin(3.92699 - Poke.Y))) * 0.46947 - abs(sin((3.92699 - Poke.Y - Squeeze.X * sin(3.92699 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim10" Visible="false" Style="Dot" X="Core.X + (Skin10.X - Press.Y * ((Skin10.X - Skin10.Y) + sqrt((Skin10.X - Skin10.Y) ^ 2 + 0.01)) / 2) * cos((3.92699 - Squeeze.X * sin(3.92699 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin10.X - Press.Y * ((Skin10.X - Skin10.Y) + sqrt((Skin10.X - Skin10.Y) ^ 2 + 0.01)) / 2) * sin((3.92699 - Squeeze.X * sin(3.92699 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin10" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin11" Visible="false" X="1.75 + Mood.Y * sin(3 * (4.31969 - Squeeze.X * sin(4.31969 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((4.31969 - Poke.Y - Squeeze.X * sin(4.31969 - Poke.Y))))" Y="max(Poke.X * cos((4.31969 - Poke.Y - Squeeze.X * sin(4.31969 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((4.31969 - Poke.Y - Squeeze.X * sin(4.31969 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((4.31969 - Poke.Y - Squeeze.X * sin(4.31969 - Poke.Y))) * 0.46947 - abs(sin((4.31969 - Poke.Y - Squeeze.X * sin(4.31969 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim11" Visible="false" Style="Dot" X="Core.X + (Skin11.X - Press.Y * ((Skin11.X - Skin11.Y) + sqrt((Skin11.X - Skin11.Y) ^ 2 + 0.01)) / 2) * cos((4.31969 - Squeeze.X * sin(4.31969 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin11.X - Press.Y * ((Skin11.X - Skin11.Y) + sqrt((Skin11.X - Skin11.Y) ^ 2 + 0.01)) / 2) * sin((4.31969 - Squeeze.X * sin(4.31969 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin11" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin12" Visible="false" X="1.75 + Mood.Y * sin(3 * (4.71239 - Squeeze.X * sin(4.71239 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((4.71239 - Poke.Y - Squeeze.X * sin(4.71239 - Poke.Y))))" Y="max(Poke.X * cos((4.71239 - Poke.Y - Squeeze.X * sin(4.71239 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((4.71239 - Poke.Y - Squeeze.X * sin(4.71239 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((4.71239 - Poke.Y - Squeeze.X * sin(4.71239 - Poke.Y))) * 0.46947 - abs(sin((4.71239 - Poke.Y - Squeeze.X * sin(4.71239 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim12" Visible="false" Style="Dot" X="Core.X + (Skin12.X - Press.Y * ((Skin12.X - Skin12.Y) + sqrt((Skin12.X - Skin12.Y) ^ 2 + 0.01)) / 2) * cos((4.71239 - Squeeze.X * sin(4.71239 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin12.X - Press.Y * ((Skin12.X - Skin12.Y) + sqrt((Skin12.X - Skin12.Y) ^ 2 + 0.01)) / 2) * sin((4.71239 - Squeeze.X * sin(4.71239 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin12" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin13" Visible="false" X="1.75 + Mood.Y * sin(3 * (5.10509 - Squeeze.X * sin(5.10509 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((5.10509 - Poke.Y - Squeeze.X * sin(5.10509 - Poke.Y))))" Y="max(Poke.X * cos((5.10509 - Poke.Y - Squeeze.X * sin(5.10509 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((5.10509 - Poke.Y - Squeeze.X * sin(5.10509 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((5.10509 - Poke.Y - Squeeze.X * sin(5.10509 - Poke.Y))) * 0.46947 - abs(sin((5.10509 - Poke.Y - Squeeze.X * sin(5.10509 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim13" Visible="false" Style="Dot" X="Core.X + (Skin13.X - Press.Y * ((Skin13.X - Skin13.Y) + sqrt((Skin13.X - Skin13.Y) ^ 2 + 0.01)) / 2) * cos((5.10509 - Squeeze.X * sin(5.10509 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin13.X - Press.Y * ((Skin13.X - Skin13.Y) + sqrt((Skin13.X - Skin13.Y) ^ 2 + 0.01)) / 2) * sin((5.10509 - Squeeze.X * sin(5.10509 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin13" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin14" Visible="false" X="1.75 + Mood.Y * sin(3 * (5.49779 - Squeeze.X * sin(5.49779 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((5.49779 - Poke.Y - Squeeze.X * sin(5.49779 - Poke.Y))))" Y="max(Poke.X * cos((5.49779 - Poke.Y - Squeeze.X * sin(5.49779 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((5.49779 - Poke.Y - Squeeze.X * sin(5.49779 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((5.49779 - Poke.Y - Squeeze.X * sin(5.49779 - Poke.Y))) * 0.46947 - abs(sin((5.49779 - Poke.Y - Squeeze.X * sin(5.49779 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim14" Visible="false" Style="Dot" X="Core.X + (Skin14.X - Press.Y * ((Skin14.X - Skin14.Y) + sqrt((Skin14.X - Skin14.Y) ^ 2 + 0.01)) / 2) * cos((5.49779 - Squeeze.X * sin(5.49779 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin14.X - Press.Y * ((Skin14.X - Skin14.Y) + sqrt((Skin14.X - Skin14.Y) ^ 2 + 0.01)) / 2) * sin((5.49779 - Squeeze.X * sin(5.49779 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin14" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin15" Visible="false" X="1.75 + Mood.Y * sin(3 * (5.89049 - Squeeze.X * sin(5.89049 - Poke.Y)) + Poke.Y) + 0.1 * Press.X * (1 - cos((5.89049 - Poke.Y - Squeeze.X * sin(5.89049 - Poke.Y))))" Y="max(Poke.X * cos((5.89049 - Poke.Y - Squeeze.X * sin(5.89049 - Poke.Y))) - sqrt(max(0, 0.07023 - (Poke.X * sin((5.89049 - Poke.Y - Squeeze.X * sin(5.89049 - Poke.Y)))) ^ 2)), Squeeze.Y / max(0.05, cos((5.89049 - Poke.Y - Squeeze.X * sin(5.89049 - Poke.Y))) * 0.46947 - abs(sin((5.89049 - Poke.Y - Squeeze.X * sin(5.89049 - Poke.Y)))) * 0.88295))">
+      <Dependency Name="Mood" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim15" Visible="false" Style="Dot" X="Core.X + (Skin15.X - Press.Y * ((Skin15.X - Skin15.Y) + sqrt((Skin15.X - Skin15.Y) ^ 2 + 0.01)) / 2) * cos((5.89049 - Squeeze.X * sin(5.89049 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin15.X - Press.Y * ((Skin15.X - Skin15.Y) + sqrt((Skin15.X - Skin15.Y) ^ 2 + 0.01)) / 2) * sin((5.89049 - Squeeze.X * sin(5.89049 - Poke.Y))) + 1.5625) / 0.1))">
+      <Dependency Name="Core" />
+      <Dependency Name="Skin15" />
+      <Dependency Name="Press" />
+      <Dependency Name="Squeeze" />
+      <Dependency Name="Poke" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="EyeRestL" Visible="false" X="Core.X - 0.5625" Y="Core.Y + 0.475">
+      <Dependency Name="Core" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="EyeRestR" Visible="false" X="Core.X + 0.5625" Y="Core.Y + 0.475">
+      <Dependency Name="Core" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="MouthRest" Visible="false" X="Core.X" Y="Core.Y - 0.375">
+      <Dependency Name="Core" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="EyeL" Visible="false" X="EyeRestL.X + (0.4 * Press.X * exp(-(dist(Ball, EyeRestL) / 1.25) ^ 2) + (0.775 - dist(Ball, EyeRestL) + sqrt((0.775 - dist(Ball, EyeRestL)) ^ 2 + 0.00562)) / 2) * (EyeRestL.X - Ball.X - 0.0375) / sqrt((EyeRestL.X - Ball.X - 0.0375) ^ 2 + (EyeRestL.Y - Ball.Y) ^ 2)" Y="EyeRestL.Y + (0.4 * Press.X * exp(-(dist(Ball, EyeRestL) / 1.25) ^ 2) + (0.775 - dist(Ball, EyeRestL) + sqrt((0.775 - dist(Ball, EyeRestL)) ^ 2 + 0.00562)) / 2) * (EyeRestL.Y - Ball.Y) / sqrt((EyeRestL.X - Ball.X - 0.0375) ^ 2 + (EyeRestL.Y - Ball.Y) ^ 2)">
+      <Dependency Name="EyeRestL" />
+      <Dependency Name="Press" />
+      <Dependency Name="Ball" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="EyeR" Visible="false" X="EyeRestR.X + (0.4 * Press.X * exp(-(dist(Ball, EyeRestR) / 1.25) ^ 2) + (0.775 - dist(Ball, EyeRestR) + sqrt((0.775 - dist(Ball, EyeRestR)) ^ 2 + 0.00562)) / 2) * (EyeRestR.X - Ball.X + 0.0375) / sqrt((EyeRestR.X - Ball.X + 0.0375) ^ 2 + (EyeRestR.Y - Ball.Y) ^ 2)" Y="EyeRestR.Y + (0.4 * Press.X * exp(-(dist(Ball, EyeRestR) / 1.25) ^ 2) + (0.775 - dist(Ball, EyeRestR) + sqrt((0.775 - dist(Ball, EyeRestR)) ^ 2 + 0.00562)) / 2) * (EyeRestR.Y - Ball.Y) / sqrt((EyeRestR.X - Ball.X + 0.0375) ^ 2 + (EyeRestR.Y - Ball.Y) ^ 2)">
+      <Dependency Name="EyeRestR" />
+      <Dependency Name="Press" />
+      <Dependency Name="Ball" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="MouthC" Visible="false" X="MouthRest.X + (0.4 * Press.X * exp(-(dist(Ball, MouthRest) / 1.25) ^ 2) + (0.775 - dist(Ball, MouthRest) + sqrt((0.775 - dist(Ball, MouthRest)) ^ 2 + 0.00562)) / 2) * (MouthRest.X - Ball.X) / sqrt((MouthRest.X - Ball.X) ^ 2 + (MouthRest.Y - Ball.Y - 0.0375) ^ 2)" Y="MouthRest.Y + (0.4 * Press.X * exp(-(dist(Ball, MouthRest) / 1.25) ^ 2) + (0.775 - dist(Ball, MouthRest) + sqrt((0.775 - dist(Ball, MouthRest)) ^ 2 + 0.00562)) / 2) * (MouthRest.Y - Ball.Y - 0.0375) / sqrt((MouthRest.X - Ball.X) ^ 2 + (MouthRest.Y - Ball.Y - 0.0375) ^ 2)">
+      <Dependency Name="MouthRest" />
+      <Dependency Name="Press" />
+      <Dependency Name="Ball" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BubbleE" Visible="false" X="Ball.X + (0.275 + 0.1 * Gulp.X)" Y="Ball.Y">
+      <Dependency Name="Ball" />
+      <Dependency Name="Gulp" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BubbleN" Visible="false" X="Ball.X" Y="Ball.Y + (0.275 + 0.1 * Gulp.X)">
+      <Dependency Name="Ball" />
+      <Dependency Name="Gulp" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BubbleW" Visible="false" X="Ball.X - (0.275 + 0.1 * Gulp.X)" Y="Ball.Y">
+      <Dependency Name="Ball" />
+      <Dependency Name="Gulp" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BubbleS" Visible="false" X="Ball.X" Y="Ball.Y - (0.275 + 0.1 * Gulp.X)">
+      <Dependency Name="Ball" />
+      <Dependency Name="Gulp" />
+    </PointByCoordinates>
+    <BezierPath Name="Bubble" Style="Air" Closed="true" Filled="true" Path="C a a C a a C a a C a a">
+      <Sides Style="Bubble" />
+      <Part Name="Piece1" Style="Bubble shine" />
+      <Dependency Name="BubbleE" />
+      <Dependency Name="BubbleN" />
+      <Dependency Name="BubbleW" />
+      <Dependency Name="BubbleS" />
+    </BezierPath>
+    <BezierPath Name="Blob" Style="Gummy" Closed="true" Filled="true" Path="C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a">
+      <Sides Style="Gummy rim" />
+      <Handles Style="Gummy handle" />
+      <Dependency Name="Rim0" />
+      <Dependency Name="Rim1" />
+      <Dependency Name="Rim2" />
+      <Dependency Name="Rim3" />
+      <Dependency Name="Rim4" />
+      <Dependency Name="Rim5" />
+      <Dependency Name="Rim6" />
+      <Dependency Name="Rim7" />
+      <Dependency Name="Rim8" />
+      <Dependency Name="Rim9" />
+      <Dependency Name="Rim10" />
+      <Dependency Name="Rim11" />
+      <Dependency Name="Rim12" />
+      <Dependency Name="Rim13" />
+      <Dependency Name="Rim14" />
+      <Dependency Name="Rim15" />
+      <Dependency Name="Bubble" />
+    </BezierPath>
+    <PointByCoordinates Name="GlossEnd" Visible="false" X="Core.X + 0.8 * (1.75 + Mood.Y * sin(3 * (2.32129 + 0.43633 * clamp(atan2(sin(2.32129 - Poke.Y), cos(2.32129 - Poke.Y)) / 0.2618, -1, 1)) + Poke.Y) + 0.1 * Press.X * (1 - cos((2.32129 + 0.43633 * clamp(atan2(sin(2.32129 - Poke.Y), cos(2.32129 - Poke.Y)) / 0.2618, -1, 1)) - Poke.Y))) * cos((2.32129 + 0.43633 * clamp(atan2(sin(2.32129 - Poke.Y), cos(2.32129 - Poke.Y)) / 0.2618, -1, 1)))" Y="Core.Y + 0.8 * (1.75 + Mood.Y * sin(3 * (2.32129 + 0.43633 * clamp(atan2(sin(2.32129 - Poke.Y), cos(2.32129 - Poke.Y)) / 0.2618, -1, 1)) + Poke.Y) + 0.1 * Press.X * (1 - cos((2.32129 + 0.43633 * clamp(atan2(sin(2.32129 - Poke.Y), cos(2.32129 - Poke.Y)) / 0.2618, -1, 1)) - Poke.Y))) * sin((2.32129 + 0.43633 * clamp(atan2(sin(2.32129 - Poke.Y), cos(2.32129 - Poke.Y)) / 0.2618, -1, 1)))">
+      <Dependency Name="Core" />
+      <Dependency Name="Mood" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Press" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GlossA" Visible="false" X="GlossEnd.X + (1 - min(1, Press.X / 0.1875) * exp(6 * (cos(2.32129 - Poke.Y) - 1))) ^ 1.5 * (Core.X + -0.24721 * (1.75 + Mood.Y * sin(3 * 1.88496 + Poke.Y) + 0.1 * Press.X * (1 - cos(1.88496 - Poke.Y))) - GlossEnd.X)" Y="GlossEnd.Y + (1 - min(1, Press.X / 0.1875) * exp(6 * (cos(2.32129 - Poke.Y) - 1))) ^ 1.5 * (Core.Y + 0.76085 * (1.75 + Mood.Y * sin(3 * 1.88496 + Poke.Y) + 0.1 * Press.X * (1 - cos(1.88496 - Poke.Y))) - GlossEnd.Y)">
+      <Dependency Name="GlossEnd" />
+      <Dependency Name="Press" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Core" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GlossB" Visible="false" X="GlossEnd.X + (1 - min(1, Press.X / 0.1875) * exp(6 * (cos(2.32129 - Poke.Y) - 1))) ^ 1.5 * (Core.X + -0.60357 * (1.75 + Mood.Y * sin(3 * 2.32129 + Poke.Y) + 0.1 * Press.X * (1 - cos(2.32129 - Poke.Y))) - GlossEnd.X)" Y="GlossEnd.Y + (1 - min(1, Press.X / 0.1875) * exp(6 * (cos(2.32129 - Poke.Y) - 1))) ^ 1.5 * (Core.Y + 0.64725 * (1.75 + Mood.Y * sin(3 * 2.32129 + Poke.Y) + 0.1 * Press.X * (1 - cos(2.32129 - Poke.Y))) - GlossEnd.Y)">
+      <Dependency Name="GlossEnd" />
+      <Dependency Name="Press" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Core" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GlossC" Visible="false" X="GlossEnd.X + (1 - min(1, Press.X / 0.1875) * exp(6 * (cos(2.32129 - Poke.Y) - 1))) ^ 1.5 * (Core.X + -0.74175 * (1.75 + Mood.Y * sin(3 * 2.75762 + Poke.Y) + 0.1 * Press.X * (1 - cos(2.75762 - Poke.Y))) - GlossEnd.X)" Y="GlossEnd.Y + (1 - min(1, Press.X / 0.1875) * exp(6 * (cos(2.32129 - Poke.Y) - 1))) ^ 1.5 * (Core.Y + 0.29969 * (1.75 + Mood.Y * sin(3 * 2.75762 + Poke.Y) + 0.1 * Press.X * (1 - cos(2.75762 - Poke.Y))) - GlossEnd.Y)">
+      <Dependency Name="GlossEnd" />
+      <Dependency Name="Press" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Core" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GlossD" Visible="false" X="GlossEnd.X + (1 - min(1, Press.X / 0.1875) * exp(6 * (cos(2.32129 - Poke.Y) - 1))) ^ 1.5 * (Core.X + -0.53537 * (1.75 + Mood.Y * sin(3 * 2.32129 + Poke.Y) + 0.1 * Press.X * (1 - cos(2.32129 - Poke.Y))) - GlossEnd.X)" Y="GlossEnd.Y + (1 - min(1, Press.X / 0.1875) * exp(6 * (cos(2.32129 - Poke.Y) - 1))) ^ 1.5 * (Core.Y + 0.57411 * (1.75 + Mood.Y * sin(3 * 2.32129 + Poke.Y) + 0.1 * Press.X * (1 - cos(2.32129 - Poke.Y))) - GlossEnd.Y)">
+      <Dependency Name="GlossEnd" />
+      <Dependency Name="Press" />
+      <Dependency Name="Poke" />
+      <Dependency Name="Core" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <BezierPath Name="Gloss" Style="Gloss" Closed="true" Filled="true" Path="C a a C a a C a a C a a">
+      <Sides Style="No line" />
+      <Dependency Name="GlossA" />
+      <Dependency Name="GlossB" />
+      <Dependency Name="GlossC" />
+      <Dependency Name="GlossD" />
+      <Dependency Name="Bubble" />
+    </BezierPath>
+    <PointByCoordinates Name="CheekL" Visible="false" X="EyeL.X - 0.20625 + ((0.5875 - sqrt((EyeL.X - 0.20625 - Ball.X) ^ 2 + (EyeL.Y - 0.375 - Ball.Y) ^ 2) + sqrt((0.5875 - sqrt((EyeL.X - 0.20625 - Ball.X) ^ 2 + (EyeL.Y - 0.375 - Ball.Y) ^ 2)) ^ 2 + 0.00562)) / 2) * (EyeL.X - 0.20625 - Ball.X - 0.0375) / sqrt((EyeL.X - 0.20625 - Ball.X - 0.0375) ^ 2 + (EyeL.Y - 0.375 - Ball.Y) ^ 2)" Y="EyeL.Y - 0.375 + ((0.5875 - sqrt((EyeL.X - 0.20625 - Ball.X) ^ 2 + (EyeL.Y - 0.375 - Ball.Y) ^ 2) + sqrt((0.5875 - sqrt((EyeL.X - 0.20625 - Ball.X) ^ 2 + (EyeL.Y - 0.375 - Ball.Y) ^ 2)) ^ 2 + 0.00562)) / 2) * (EyeL.Y - 0.375 - Ball.Y) / sqrt((EyeL.X - 0.20625 - Ball.X - 0.0375) ^ 2 + (EyeL.Y - 0.375 - Ball.Y) ^ 2)">
+      <Dependency Name="EyeL" />
+      <Dependency Name="Ball" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CheekLIn" Visible="false" X="CheekL.X + 0.13125" Y="CheekL.Y">
+      <Dependency Name="CheekL" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CheekLOut" Visible="false" X="CheekL.X - 0.13125" Y="CheekL.Y">
+      <Dependency Name="CheekL" />
+    </PointByCoordinates>
+    <BezierPath Name="CheekLBlush" Style="Blush" Closed="true" Filled="true" Path="C 0,0.125 0,0.125 C 0,-0.125 0,-0.125">
+      <Sides Style="No line" />
+      <Dependency Name="CheekLOut" />
+      <Dependency Name="CheekLIn" />
+    </BezierPath>
+    <PointByCoordinates Name="CheekR" Visible="false" X="EyeR.X + 0.20625 + ((0.5875 - sqrt((EyeR.X + 0.20625 - Ball.X) ^ 2 + (EyeR.Y - 0.375 - Ball.Y) ^ 2) + sqrt((0.5875 - sqrt((EyeR.X + 0.20625 - Ball.X) ^ 2 + (EyeR.Y - 0.375 - Ball.Y) ^ 2)) ^ 2 + 0.00562)) / 2) * (EyeR.X + 0.20625 - Ball.X + 0.0375) / sqrt((EyeR.X + 0.20625 - Ball.X + 0.0375) ^ 2 + (EyeR.Y - 0.375 - Ball.Y) ^ 2)" Y="EyeR.Y - 0.375 + ((0.5875 - sqrt((EyeR.X + 0.20625 - Ball.X) ^ 2 + (EyeR.Y - 0.375 - Ball.Y) ^ 2) + sqrt((0.5875 - sqrt((EyeR.X + 0.20625 - Ball.X) ^ 2 + (EyeR.Y - 0.375 - Ball.Y) ^ 2)) ^ 2 + 0.00562)) / 2) * (EyeR.Y - 0.375 - Ball.Y) / sqrt((EyeR.X + 0.20625 - Ball.X + 0.0375) ^ 2 + (EyeR.Y - 0.375 - Ball.Y) ^ 2)">
+      <Dependency Name="EyeR" />
+      <Dependency Name="Ball" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CheekRIn" Visible="false" X="CheekR.X - 0.13125" Y="CheekR.Y">
+      <Dependency Name="CheekR" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CheekROut" Visible="false" X="CheekR.X + 0.13125" Y="CheekR.Y">
+      <Dependency Name="CheekR" />
+    </PointByCoordinates>
+    <BezierPath Name="CheekRBlush" Style="Blush" Closed="true" Filled="true" Path="C 0,0.125 0,0.125 C 0,-0.125 0,-0.125">
+      <Sides Style="No line" />
+      <Dependency Name="CheekRIn" />
+      <Dependency Name="CheekROut" />
+    </BezierPath>
+    <PointByCoordinates Name="EyeLSide" Visible="false" X="EyeL.X + 0.175 + 0.01875 * Mood.X" Y="EyeL.Y">
+      <Dependency Name="EyeL" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="EyeLTop" Visible="false" X="EyeL.X" Y="EyeL.Y + 0.2375 + 0.0625 * Mood.X">
+      <Dependency Name="EyeL" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <Ellipse Name="EyeLWhite" Style="Eye white">
+      <Dependency Name="EyeL" />
+      <Dependency Name="EyeLSide" />
+      <Dependency Name="EyeLTop" />
+    </Ellipse>
+    <PointByCoordinates Name="EyeRSide" Visible="false" X="EyeR.X + 0.175 + 0.01875 * Mood.X" Y="EyeR.Y">
+      <Dependency Name="EyeR" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="EyeRTop" Visible="false" X="EyeR.X" Y="EyeR.Y + 0.2375 + 0.0625 * Mood.X">
+      <Dependency Name="EyeR" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <Ellipse Name="EyeRWhite" Style="Eye white">
+      <Dependency Name="EyeR" />
+      <Dependency Name="EyeRSide" />
+      <Dependency Name="EyeRTop" />
+    </Ellipse>
+    <PointByCoordinates Name="Lip0" Visible="false" X="MouthC.X + 0.3125 - 0.1875 * Mood.X" Y="MouthC.Y + 0.0375 - 0.125 * Mood.X">
+      <Dependency Name="MouthC" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Lip1" Visible="false" X="MouthC.X + 0.125 - 0.0625 * Mood.X" Y="MouthC.Y + 0.0125 + 0.04375 * Mood.X">
+      <Dependency Name="MouthC" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Lip2" Visible="false" X="MouthC.X - 0.125 + 0.0625 * Mood.X" Y="MouthC.Y + 0.0125 + 0.04375 * Mood.X">
+      <Dependency Name="MouthC" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Lip3" Visible="false" X="MouthC.X - 0.3125 + 0.1875 * Mood.X" Y="MouthC.Y + 0.0375 - 0.125 * Mood.X">
+      <Dependency Name="MouthC" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Lip4" Visible="false" X="MouthC.X - 0.15 + 0.0875 * Mood.X" Y="MouthC.Y - 0.2 - 0.03125 * Mood.X">
+      <Dependency Name="MouthC" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Lip5" Visible="false" X="MouthC.X + 0.15 - 0.0875 * Mood.X" Y="MouthC.Y - 0.2 - 0.03125 * Mood.X">
+      <Dependency Name="MouthC" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <BezierPath Name="Mouth" Style="Mouth" Closed="true" Filled="true" Path="C a a C a a C a a C a a C a a C a a">
+      <Sides Style="Face line" />
+      <Dependency Name="Lip0" />
+      <Dependency Name="Lip1" />
+      <Dependency Name="Lip2" />
+      <Dependency Name="Lip3" />
+      <Dependency Name="Lip4" />
+      <Dependency Name="Lip5" />
+    </BezierPath>
+    <PointByCoordinates Name="PupilL" Visible="false" X="EyeL.X + 0.075 * (Ball.X - EyeL.X) / max(0.0625, dist(Ball, EyeL))" Y="EyeL.Y + 0.075 * (Ball.Y - EyeL.Y) / max(0.0625, dist(Ball, EyeL))">
+      <Dependency Name="EyeL" />
+      <Dependency Name="Ball" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PupilLEdge" Visible="false" X="PupilL.X + 0.09375 - 0.03125 * Mood.X" Y="PupilL.Y">
+      <Dependency Name="PupilL" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <Circle Name="PupilLDisc" Style="Pupil">
+      <Dependency Name="PupilL" />
+      <Dependency Name="PupilLEdge" />
+    </Circle>
+    <PointByCoordinates Name="SparkL" Style="Sparkle" X="PupilL.X - 0.45 * (PupilLEdge.X - PupilL.X)" Y="PupilL.Y + 0.45 * (PupilLEdge.X - PupilL.X)">
+      <Dependency Name="PupilL" />
+      <Dependency Name="PupilLEdge" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PupilR" Visible="false" X="EyeR.X + 0.075 * (Ball.X - EyeR.X) / max(0.0625, dist(Ball, EyeR))" Y="EyeR.Y + 0.075 * (Ball.Y - EyeR.Y) / max(0.0625, dist(Ball, EyeR))">
+      <Dependency Name="EyeR" />
+      <Dependency Name="Ball" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PupilREdge" Visible="false" X="PupilR.X + 0.09375 - 0.03125 * Mood.X" Y="PupilR.Y">
+      <Dependency Name="PupilR" />
+      <Dependency Name="Mood" />
+    </PointByCoordinates>
+    <Circle Name="PupilRDisc" Style="Pupil">
+      <Dependency Name="PupilR" />
+      <Dependency Name="PupilREdge" />
+    </Circle>
+    <PointByCoordinates Name="SparkR" Style="Sparkle" X="PupilR.X - 0.45 * (PupilREdge.X - PupilR.X)" Y="PupilR.Y + 0.45 * (PupilREdge.X - PupilR.X)">
+      <Dependency Name="PupilR" />
+      <Dependency Name="PupilREdge" />
+    </PointByCoordinates>
+    <Circle Name="BubbleFilm" Style="Bubble film">
+      <Dependency Name="Ball" />
+      <Dependency Name="BubbleE" />
+    </Circle>
+    <Circle Name="Gumball" Style="Gum">
+      <Dependency Name="Ball" />
+      <Dependency Name="GumRight" />
+    </Circle>
+    <PointByCoordinates Name="GlintA" Visible="false" X="Ball.X + 0.2225 * cos(2.35619 - 0.48869 * Gulp.X)" Y="Ball.Y + 0.2225 * sin(2.35619 - 0.48869 * Gulp.X)">
+      <Dependency Name="Ball" />
+      <Dependency Name="Gulp" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GlintB" Visible="false" X="Ball.X + 0.2225 * cos(2.35619 + 0.48869 * Gulp.X)" Y="Ball.Y + 0.2225 * sin(2.35619 + 0.48869 * Gulp.X)">
+      <Dependency Name="Ball" />
+      <Dependency Name="Gulp" />
+    </PointByCoordinates>
+    <CircleArc Name="Glint" Style="Glint">
+      <Dependency Name="Ball" />
+      <Dependency Name="GlintA" />
+      <Dependency Name="GlintB" />
+    </CircleArc>
+    <ShowHideControl Name="Dots" Style="GalleryText" Show="false" Text="Dots" X="-3" Y="-1.775">
+      <Dependency Name="Rim0" />
+      <Dependency Name="Rim1" />
+      <Dependency Name="Rim2" />
+      <Dependency Name="Rim3" />
+      <Dependency Name="Rim4" />
+      <Dependency Name="Rim5" />
+      <Dependency Name="Rim6" />
+      <Dependency Name="Rim7" />
+      <Dependency Name="Rim8" />
+      <Dependency Name="Rim9" />
+      <Dependency Name="Rim10" />
+      <Dependency Name="Rim11" />
+      <Dependency Name="Rim12" />
+      <Dependency Name="Rim13" />
+      <Dependency Name="Rim14" />
+      <Dependency Name="Rim15" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Poke the Blob" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="This gummy blob's edge is one smooth curve through 16 hidden dots. Drag the pink gumball into it: nearby dots get pushed in, the rest bulge out, and the curve wraps around the ball with no corners. Check &quot;Dots&quot;: they bunch up where the curve bends most. Click one to see the two handles steering the curve.\n\nPush the gumball all the way in and... gulp! Now pull it back out (and watch that face)." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

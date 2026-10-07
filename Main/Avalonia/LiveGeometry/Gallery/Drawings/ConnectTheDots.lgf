@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-2.9" Top="2.8" Right="3.65" Bottom="-2.55">
+    <Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFFFFFFF" Offset="0" />
+        <GradientStop Color="#FFEFF4FF" Offset="1" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
+  <Scene Left="-2.9" Top="2.8" Right="3.65" Bottom="-2.55" />
+  <Styles>
+    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1B2A4A" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1B2A4A" />
+    </TextStyle>
+    <TextStyle Name="GalleryText" FontSize="16" Color="#FF2D3557" FontFamily="Segoe UI">
+      <Dark Color="#FF2D3557" />
+    </TextStyle>
+    <TextStyle Name="WireText" FontSize="15" Color="#FF5A6380" FontFamily="Segoe UI">
+      <Dark Color="#FF5A6380" />
+    </TextStyle>
+    <ShapeStyle Name="Hugger" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0.3" EndPoint="1,0.7">
+          <GradientStop Color="#98FF4FC8" Offset="0" />
+          <GradientStop Color="#48FF4FC8" Offset="0.33" />
+          <GradientStop Color="#14FF4FC8" Offset="0.6" />
+          <GradientStop Color="#00FF4FC8" Offset="0.78" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Bouncer" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+          <GradientStop Color="#90FFD84D" Offset="0" />
+          <GradientStop Color="#48FFD84D" Offset="0.3" />
+          <GradientStop Color="#10FFD84D" Offset="0.55" />
+          <GradientStop Color="#00FFD84D" Offset="0.7" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Roundy" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+          <GradientStop Color="#8000BFFF" Offset="0" />
+          <GradientStop Color="#3C00BFFF" Offset="0.22" />
+          <GradientStop Color="#1000BFFF" Offset="0.45" />
+          <GradientStop Color="#1000BFFF" Offset="0.8" />
+          <GradientStop Color="#6800BFFF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="HuggerRim" Color="#FFE8338F" StrokeWidth="2" />
+    <PointStyle Name="HuggerHandle" Size="8" Fill="#FFFF5FD2" Color="#FFFFFFFF" StrokeWidth="1.5" />
+    <LineStyle Name="BouncerRim" Color="#FFF29100" StrokeWidth="2" />
+    <PointStyle Name="BouncerHandle" Size="8" Fill="#FFFFB300" Color="#FFFFFFFF" StrokeWidth="1.5" />
+    <LineStyle Name="RoundyRim" Color="#FF0A9BE0" StrokeWidth="2" />
+    <PointStyle Name="RoundyHandle" Size="8" Fill="#FF35D6FF" Color="#FFFFFFFF" StrokeWidth="1.5" />
+    <ShapeStyle Name="Band" IsFilled="false" Color="#80303A5A" StrokeWidth="1.5" Dash="Dash" />
+    <PointStyle Name="Dot" Size="14" Fill="#FF26215C" Color="#FFFFFFFF" StrokeWidth="2" />
+    <PointStyle Name="HoleDot" Shape="Diamond" Size="13" Fill="#FF26215C" Color="#FFFFFFFF" StrokeWidth="2" />
+    <LineStyle Name="Wire" Color="#FF9AA0B8" StrokeWidth="3" />
+    <LineStyle Name="WireMark" Color="#FF9AA0B8" StrokeWidth="2" />
+    <PointStyle Name="Bead" Size="18" Fill="#FFFFFFFF" Color="#FF26215C" StrokeWidth="3" />
+    <LineStyle Name="HintCircle" Color="#8026215C" StrokeWidth="1.5" Dash="Dash" />
+    <TextStyle Name="HuggerText" FontSize="15" Color="#FFC2185B" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFC2185B" />
+    </TextStyle>
+    <TextStyle Name="BouncerText" FontSize="15" Color="#FFB85F00" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFB85F00" />
+    </TextStyle>
+    <TextStyle Name="RoundyText" FontSize="15" Color="#FF0072B0" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0072B0" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="Dot1" Style="Dot" X="2.6" Y="0.9" />
+    <FreePoint Name="Dot2" Style="Dot" X="1" Y="2" />
+    <FreePoint Name="Dot3" Style="Dot" X="-0.9" Y="1.9" />
+    <FreePoint Name="Dot4" Style="Dot" X="-2.2" Y="0.4" />
+    <FreePoint Name="Dot5" Style="Dot" X="-1.5" Y="-1.6" />
+    <FreePoint Name="Dot6" Style="Dot" X="0.4" Y="-1" />
+    <FreePoint Name="Dot7" Style="Dot" X="2.1" Y="-1.6" />
+    <FreePoint Name="Pip1" Style="HoleDot" X="1.1" Y="0.2" />
+    <FreePoint Name="Pip2" Style="HoleDot" X="0.35" Y="0.85" />
+    <FreePoint Name="Pip3" Style="HoleDot" X="-0.45" Y="0.45" />
+    <FreePoint Name="Pip4" Style="HoleDot" X="0.2" Y="-0.35" />
+    <PointByCoordinates Name="WireL" Visible="false" X="-1.75" Y="-2.3" />
+    <PointByCoordinates Name="WireR" Visible="false" X="2.25" Y="-2.3" />
+    <Segment Name="Wire" Style="Wire">
+      <Dependency Name="WireL" />
+      <Dependency Name="WireR" />
+    </Segment>
+    <PointByCoordinates Name="MarkTop" Visible="false" X="-0.919925" Y="-2.24" />
+    <PointByCoordinates Name="MarkBottom" Visible="false" X="-0.919925" Y="-2.36" />
+    <Segment Name="BeadMark" Style="WireMark">
+      <Dependency Name="MarkTop" />
+      <Dependency Name="MarkBottom" />
+    </Segment>
+    <PointOnFigure Name="Bead" Style="Bead" X="-0.919924" Y="-2.3" Parameter="0.207519">
+      <Dependency Name="Wire" />
+    </PointOnFigure>
+    <Label Name="Squeeze" Visible="false" Text="[0.75 * exp(0.346574 * (Bead.X - WireL.X))]" X="0" Y="0">
+      <Dependency Name="Bead" />
+      <Dependency Name="WireL" />
+    </Label>
+    <Label Name="Puffy" Style="WireText" Text="puffy" X="-2.17" Y="-2.2" />
+    <Label Name="Tight" Style="WireText" Text="tight" X="2.4" Y="-2.2" />
+    <Polygon Name="Band" Style="Band">
+      <Dependency Name="Dot1" />
+      <Dependency Name="Dot2" />
+      <Dependency Name="Dot3" />
+      <Dependency Name="Dot4" />
+      <Dependency Name="Dot5" />
+      <Dependency Name="Dot6" />
+      <Dependency Name="Dot7" />
+    </Polygon>
+    <BezierPath Name="HoleBouncer" Closed="true" Smoothing="NaturalSpline" Tension="#4" Path="C a a C a a C a a C a a">
+      <Sides Style="BouncerRim" />
+      <Handles Style="BouncerHandle" />
+      <Dependency Name="Pip1" />
+      <Dependency Name="Pip2" />
+      <Dependency Name="Pip3" />
+      <Dependency Name="Pip4" />
+      <Dependency Name="Squeeze" />
+    </BezierPath>
+    <BezierPath Name="HoleRoundy" Closed="true" Tension="#4" Path="C a a C a a C a a C a a">
+      <Sides Style="RoundyRim" />
+      <Handles Style="RoundyHandle" />
+      <Dependency Name="Pip1" />
+      <Dependency Name="Pip2" />
+      <Dependency Name="Pip3" />
+      <Dependency Name="Pip4" />
+      <Dependency Name="Squeeze" />
+    </BezierPath>
+    <BezierPath Name="HoleHugger" Closed="true" Smoothing="CatmullRom" Tension="#4" Path="C a a C a a C a a C a a">
+      <Sides Style="HuggerRim" />
+      <Handles Style="HuggerHandle" />
+      <Dependency Name="Pip1" />
+      <Dependency Name="Pip2" />
+      <Dependency Name="Pip3" />
+      <Dependency Name="Pip4" />
+      <Dependency Name="Squeeze" />
+    </BezierPath>
+    <BezierPath Name="Bouncer" Style="Bouncer" Closed="true" Filled="true" Smoothing="NaturalSpline" Tension="#8" Path="C a a C a a C a a C a a C a a C a a C a a">
+      <Sides Style="BouncerRim" />
+      <Handles Style="BouncerHandle" />
+      <Dependency Name="Dot1" />
+      <Dependency Name="Dot2" />
+      <Dependency Name="Dot3" />
+      <Dependency Name="Dot4" />
+      <Dependency Name="Dot5" />
+      <Dependency Name="Dot6" />
+      <Dependency Name="Dot7" />
+      <Dependency Name="HoleBouncer" />
+      <Dependency Name="Squeeze" />
+    </BezierPath>
+    <BezierPath Name="Roundy" Style="Roundy" Closed="true" Filled="true" Tension="#8" Path="C a a C a a C a a C a a C a a C a a C a a">
+      <Sides Style="RoundyRim" />
+      <Handles Style="RoundyHandle" />
+      <Dependency Name="Dot1" />
+      <Dependency Name="Dot2" />
+      <Dependency Name="Dot3" />
+      <Dependency Name="Dot4" />
+      <Dependency Name="Dot5" />
+      <Dependency Name="Dot6" />
+      <Dependency Name="Dot7" />
+      <Dependency Name="HoleRoundy" />
+      <Dependency Name="Squeeze" />
+    </BezierPath>
+    <BezierPath Name="Hugger" Style="Hugger" Closed="true" Filled="true" Smoothing="CatmullRom" Tension="#8" Path="C a a C a a C a a C a a C a a C a a C a a">
+      <Sides Style="HuggerRim" />
+      <Handles Style="HuggerHandle" />
+      <Dependency Name="Dot1" />
+      <Dependency Name="Dot2" />
+      <Dependency Name="Dot3" />
+      <Dependency Name="Dot4" />
+      <Dependency Name="Dot5" />
+      <Dependency Name="Dot6" />
+      <Dependency Name="Dot7" />
+      <Dependency Name="HoleHugger" />
+      <Dependency Name="Squeeze" />
+    </BezierPath>
+    <PointByCoordinates Name="HintCenter" Visible="false" X="0.3" Y="0.25" />
+    <PointByCoordinates Name="HintRim" Visible="false" X="2.5" Y="0.25" />
+    <Circle Name="HintCircle" Visible="false" Style="HintCircle">
+      <Dependency Name="HintCenter" />
+      <Dependency Name="HintRim" />
+    </Circle>
+    <Label Name="LegendHugger" Visible="false" Style="HuggerText" Text="Catmull-Rom" Pin="TopLeft" OffsetX="16" OffsetY="54" />
+    <Label Name="LegendBouncer" Visible="false" Style="BouncerText" Text="Natural spline" Pin="TopLeft" OffsetX="16" OffsetY="78" />
+    <Label Name="LegendRoundy" Visible="false" Style="RoundyText" Text="Hobby" Pin="TopLeft" OffsetX="16" OffsetY="102" />
+    <Label Name="Hint" Visible="false" Style="GalleryText" Text="Pink is a Catmull-Rom spline: each dot's handles come from its two neighbors alone. Orange is a natural spline: all its handles are worked out together, so one dot nudges the whole loop. Blue is John Hobby's rule, made for drawing letters: it keeps the bend as even as it can. Spread the dots evenly around the dashed circle and the outer edges agree. The hole never quite does: four diamonds are too few, and the more dots, the closer the rules come. Dragged an arm? That blob stops following its rule there, until you press Undo." Pin="TopRight" OffsetX="16" OffsetY="300" WrapWidth="400" Backdrop="true" />
+    <ShowHideControl Name="HintBox" Style="GalleryText" Show="false" Text="Hint" Pin="TopLeft" OffsetX="16" OffsetY="16">
+      <Dependency Name="HintCircle" />
+      <Dependency Name="LegendHugger" />
+      <Dependency Name="LegendBouncer" />
+      <Dependency Name="LegendRoundy" />
+      <Dependency Name="Hint" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Connect the Dots" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Three see-through blobs share seven dots, but each bends between them by its own rule. Drag a dot and each blob shows its handles, the hidden arms that steer its curve. On both sides, pink stays near the dashed line, orange swings out, blue bulges widest.\n\nThe diamonds cut a hole. Slide the bead to make every curve puffy or tight. With the bead on its mark, can you make the three outer edges agree?" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

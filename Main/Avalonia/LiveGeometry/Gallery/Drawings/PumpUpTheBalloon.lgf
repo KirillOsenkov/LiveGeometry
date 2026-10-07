@@ -1,0 +1,875 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-3.4" Top="2.75" Right="2.9" Bottom="-2">
+    <Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF9FDCFF" Offset="0" />
+        <GradientStop Color="#FFFFF6E0" Offset="1" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
+  <Scene Left="-3.4" Top="2.75" Right="2.9" Bottom="-2" />
+  <Styles>
+    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1A3D7C" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1A3D7C" />
+    </TextStyle>
+    <TextStyle Name="GalleryText" FontSize="16" Color="#FF22324D" FontFamily="Segoe UI">
+      <Dark Color="#FF22324D" />
+    </TextStyle>
+    <ShapeStyle Name="SunGlow" Fill="#33FFFFFF" Color="#00000000">
+      <Dark Fill="#33FFFFFF" Color="#00000000" />
+    </ShapeStyle>
+    <ShapeStyle Name="SunHalo" Fill="#59FFFFFF" Color="#00000000">
+      <Dark Fill="#59FFFFFF" Color="#00000000" />
+    </ShapeStyle>
+    <ShapeStyle Name="Sun" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFF59D" Offset="0" />
+          <GradientStop Color="#FFFFC107" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#00000000">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFF59D" Offset="0" />
+            <GradientStop Color="#FFFFC107" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="NoEdge" Color="#00FFFFFF">
+      <Dark Color="#00FFFFFF" />
+    </LineStyle>
+    <ShapeStyle Name="Cloud" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Color="#FFFFFFFF" Offset="0" />
+          <GradientStop Color="#FFEAF6FF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#00000000">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FFFFFFFF" Offset="0" />
+            <GradientStop Color="#FFEAF6FF" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Grass" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Color="#FFA5DC78" Offset="0" />
+          <GradientStop Color="#FF7CC862" Offset="0.006" />
+          <GradientStop Color="#FF5BAF4C" Offset="0.05" />
+          <GradientStop Color="#FFD3ECBF" Offset="0.16" />
+          <GradientStop Color="#FFE8F5DC" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#00000000">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FFA5DC78" Offset="0" />
+            <GradientStop Color="#FF7CC862" Offset="0.006" />
+            <GradientStop Color="#FF5BAF4C" Offset="0.05" />
+            <GradientStop Color="#FF3F8E3C" Offset="0.3" />
+            <GradientStop Color="#FF2F7032" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="PumpMetal" Color="#FF37474F" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+          <GradientStop Color="#FF546E7A" Offset="0" />
+          <GradientStop Color="#FFB0BEC5" Offset="0.35" />
+          <GradientStop Color="#FF546E7A" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF37474F">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#FF546E7A" Offset="0" />
+            <GradientStop Color="#FFB0BEC5" Offset="0.35" />
+            <GradientStop Color="#FF546E7A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="PumpDark" Fill="#FF455A64" Color="#FF37474F">
+      <Dark Fill="#FF455A64" Color="#FF37474F" />
+    </ShapeStyle>
+    <LineStyle Name="Rod" Color="#FFB0BEC5" StrokeWidth="5">
+      <Dark Color="#FFB0BEC5" />
+    </LineStyle>
+    <LineStyle Name="GripBar" Color="#FFE53935" StrokeWidth="9">
+      <Dark Color="#FFE53935" />
+    </LineStyle>
+    <PointStyle Name="Grip" Size="28" Fill="#FFFF5252" Color="#FFB71C1C" StrokeWidth="2.5">
+      <Dark Fill="#FFFF5252" Color="#FFB71C1C" />
+    </PointStyle>
+    <PointStyle Name="KnotDot" Size="15" Fill="#FF7F0000" Color="#FF4A0000" StrokeWidth="1.5">
+      <Dark Fill="#FF7F0000" Color="#FF4A0000" />
+    </PointStyle>
+    <LineStyle Name="HoseLine" Color="#FF5C6BC0" StrokeWidth="8">
+      <Dark Color="#FF5C6BC0" />
+    </LineStyle>
+    <ShapeStyle Name="GaugeFace" Color="#FF263238" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFFFFF" Offset="0" />
+          <GradientStop Color="#FFDDE6EA" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF263238">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFFFFF" Offset="0" />
+            <GradientStop Color="#FFDDE6EA" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="GaugeRed" Color="#FFE53935" StrokeWidth="4">
+      <Dark Color="#FFE53935" />
+    </LineStyle>
+    <LineStyle Name="Needle" Color="#FF263238" StrokeWidth="2.5">
+      <Dark Color="#FF263238" />
+    </LineStyle>
+    <PointStyle Name="Hub" Size="6" Fill="#FF263238" Color="#FF263238">
+      <Dark Fill="#FF263238" Color="#FF263238" />
+    </PointStyle>
+    <ShapeStyle Name="BalloonFill" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFF7C9C" Offset="0" />
+          <GradientStop Color="#FFF02848" Offset="0.5" />
+          <GradientStop Color="#FFC0001E" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#00000000">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFF7C9C" Offset="0" />
+            <GradientStop Color="#FFF02848" Offset="0.5" />
+            <GradientStop Color="#FFC0001E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="BalloonRim" Color="#FFB71C1C" StrokeWidth="2">
+      <Dark Color="#FFB71C1C" />
+    </LineStyle>
+    <LineStyle Name="ShredRim" Color="#FFB71C1C" StrokeWidth="1.5">
+      <Dark Color="#FFB71C1C" />
+    </LineStyle>
+    <PointStyle Name="BalloonHandle" Size="7" Fill="#FFFFFFFF" Color="#FFD50000">
+      <Dark Fill="#FFFFFFFF" Color="#FFD50000" />
+    </PointStyle>
+    <PointStyle Name="Dot" Size="8" Fill="#FFFFFFFF" Color="#FF8E0000" StrokeWidth="1.5">
+      <Dark Fill="#FFFFFFFF" Color="#FF8E0000" />
+    </PointStyle>
+    <ShapeStyle Name="BurstFill" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Color="#FFFFF59D" Offset="0" />
+          <GradientStop Color="#FFFF9100" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#00000000">
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FFFFF59D" Offset="0" />
+            <GradientStop Color="#FFFF9100" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="BurstRim" Color="#FFFF3D00" StrokeWidth="3">
+      <Dark Color="#FFFF3D00" />
+    </LineStyle>
+    <PointStyle Name="PopPoint" Size="1" Fill="#00FFFFFF" Color="#00FFFFFF" StrokeWidth="0.1">
+      <Dark Fill="#00FFFFFF" Color="#00FFFFFF" />
+    </PointStyle>
+    <TextStyle Name="PopText" FontSize="40" Color="#FFD50000" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFD50000" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="SunGlow1" Visible="false" X="2.4" Y="2.7" />
+    <PointByCoordinates Name="SunGlow2" Visible="false" X="1.966987" Y="1.95" />
+    <PointByCoordinates Name="SunGlow3" Visible="false" X="2.833013" Y="1.95" />
+    <BezierPath Name="SunGlow" Style="SunGlow" Closed="true" Filled="true" Path="C -0.3849,0 -0.19245,0.333333 C 0.19245,-0.333333 -0.19245,-0.333333 C 0.19245,0.333333 0.3849,0">
+      <Sides Style="NoEdge" />
+      <Dependency Name="SunGlow1" />
+      <Dependency Name="SunGlow2" />
+      <Dependency Name="SunGlow3" />
+    </BezierPath>
+    <PointByCoordinates Name="SunHalo1" Visible="false" X="2.4" Y="2.58" />
+    <PointByCoordinates Name="SunHalo2" Visible="false" X="2.07091" Y="2.01" />
+    <PointByCoordinates Name="SunHalo3" Visible="false" X="2.72909" Y="2.01" />
+    <BezierPath Name="SunHalo" Style="SunHalo" Closed="true" Filled="true" Path="C -0.292524,0 -0.146262,0.253333 C 0.146262,-0.253333 -0.146262,-0.253333 C 0.146262,0.253333 0.292524,0">
+      <Sides Style="NoEdge" />
+      <Dependency Name="SunHalo1" />
+      <Dependency Name="SunHalo2" />
+      <Dependency Name="SunHalo3" />
+    </BezierPath>
+    <PointByCoordinates Name="Sun1" Visible="false" X="2.4" Y="2.47" />
+    <PointByCoordinates Name="Sun2" Visible="false" X="2.166173" Y="2.065" />
+    <PointByCoordinates Name="Sun3" Visible="false" X="2.633827" Y="2.065" />
+    <BezierPath Name="Sun" Style="Sun" Closed="true" Filled="true" Path="C -0.207846,0 -0.103923,0.18 C 0.103923,-0.18 -0.103923,-0.18 C 0.103923,0.18 0.207846,0">
+      <Sides Style="NoEdge" />
+      <Dependency Name="Sun1" />
+      <Dependency Name="Sun2" />
+      <Dependency Name="Sun3" />
+    </BezierPath>
+    <PointByCoordinates Name="CloudAPuff1" Visible="false" X="-0.825" Y="2.15" />
+    <PointByCoordinates Name="CloudAPuff2" Visible="false" X="-1.225" Y="2.46" />
+    <PointByCoordinates Name="CloudAPuff3" Visible="false" X="-1.7" Y="2.41" />
+    <PointByCoordinates Name="CloudAPuff4" Visible="false" X="-2.075" Y="2.15" />
+    <BezierPath Name="CloudA" Style="Cloud" Closed="true" Filled="true" Path="C 0.1522,0.279 0.2322,0.217 C -0.0805,0.3085 0.0145,0.3185 C -0.1935,0.199 -0.1185,0.251 C 0.125,-0.1 -0.125,-0.1">
+      <Sides Style="NoEdge" />
+      <Dependency Name="CloudAPuff1" />
+      <Dependency Name="CloudAPuff2" />
+      <Dependency Name="CloudAPuff3" />
+      <Dependency Name="CloudAPuff4" />
+    </BezierPath>
+    <PointByCoordinates Name="CloudBPuff1" Visible="false" X="2.225" Y="1.036" />
+    <PointByCoordinates Name="CloudBPuff2" Visible="false" X="1.921" Y="1.2716" />
+    <PointByCoordinates Name="CloudBPuff3" Visible="false" X="1.56" Y="1.2336" />
+    <PointByCoordinates Name="CloudBPuff4" Visible="false" X="1.275" Y="1.036" />
+    <BezierPath Name="CloudB" Style="Cloud" Closed="true" Filled="true" Path="C 0.115672,0.21204 0.176472,0.16492 C -0.06118,0.23446 0.01102,0.24206 C -0.14706,0.15124 -0.09006,0.19076 C 0.095,-0.076 -0.095,-0.076">
+      <Sides Style="NoEdge" />
+      <Dependency Name="CloudBPuff1" />
+      <Dependency Name="CloudBPuff2" />
+      <Dependency Name="CloudBPuff3" />
+      <Dependency Name="CloudBPuff4" />
+    </BezierPath>
+    <PointByCoordinates Name="Hill1" Visible="false" X="-40" Y="-1.76" />
+    <PointByCoordinates Name="Hill2" Visible="false" X="-2.4" Y="-1.72" />
+    <PointByCoordinates Name="Hill3" Visible="false" X="0.6" Y="-1.78" />
+    <PointByCoordinates Name="Hill4" Visible="false" X="2.6" Y="-1.74" />
+    <PointByCoordinates Name="Hill5" Visible="false" X="40" Y="-1.76" />
+    <PointByCoordinates Name="HillRight" Visible="false" X="40" Y="-10" />
+    <PointByCoordinates Name="HillLeft" Visible="false" X="-40" Y="-10" />
+    <BezierPath Name="Grass" Style="Grass" Closed="true" Filled="true" Path="C a a C a a C a a C a a L L L">
+      <Sides Style="NoEdge" />
+      <Dependency Name="Hill1" />
+      <Dependency Name="Hill2" />
+      <Dependency Name="Hill3" />
+      <Dependency Name="Hill4" />
+      <Dependency Name="Hill5" />
+      <Dependency Name="HillRight" />
+      <Dependency Name="HillLeft" />
+    </BezierPath>
+    <PointByCoordinates Name="FootLeftTopLeft" Visible="false" X="-3.2" Y="-1.67" />
+    <PointByCoordinates Name="FootLeftTopRight" Visible="false" X="-2.88" Y="-1.67" />
+    <PointByCoordinates Name="FootLeftBottomRight" Visible="false" X="-2.88" Y="-1.76" />
+    <PointByCoordinates Name="FootLeftBottomLeft" Visible="false" X="-3.2" Y="-1.76" />
+    <Polygon Name="FootLeft" Style="PumpDark">
+      <Dependency Name="FootLeftTopLeft" />
+      <Dependency Name="FootLeftTopRight" />
+      <Dependency Name="FootLeftBottomRight" />
+      <Dependency Name="FootLeftBottomLeft" />
+    </Polygon>
+    <PointByCoordinates Name="FootRightTopLeft" Visible="false" X="-2.32" Y="-1.67" />
+    <PointByCoordinates Name="FootRightTopRight" Visible="false" X="-2" Y="-1.67" />
+    <PointByCoordinates Name="FootRightBottomRight" Visible="false" X="-2" Y="-1.76" />
+    <PointByCoordinates Name="FootRightBottomLeft" Visible="false" X="-2.32" Y="-1.76" />
+    <Polygon Name="FootRight" Style="PumpDark">
+      <Dependency Name="FootRightTopLeft" />
+      <Dependency Name="FootRightTopRight" />
+      <Dependency Name="FootRightBottomRight" />
+      <Dependency Name="FootRightBottomLeft" />
+    </Polygon>
+    <PointByCoordinates Name="PumpBaseTopLeft" Visible="false" X="-2.9" Y="-1.54" />
+    <PointByCoordinates Name="PumpBaseTopRight" Visible="false" X="-2.3" Y="-1.54" />
+    <PointByCoordinates Name="PumpBaseBottomRight" Visible="false" X="-2.3" Y="-1.76" />
+    <PointByCoordinates Name="PumpBaseBottomLeft" Visible="false" X="-2.9" Y="-1.76" />
+    <Polygon Name="PumpBase" Style="PumpDark">
+      <Dependency Name="PumpBaseTopLeft" />
+      <Dependency Name="PumpBaseTopRight" />
+      <Dependency Name="PumpBaseBottomRight" />
+      <Dependency Name="PumpBaseBottomLeft" />
+    </Polygon>
+    <PointByCoordinates Name="BarrelTopLeft" Visible="false" X="-2.73" Y="-0.62" />
+    <PointByCoordinates Name="BarrelTopRight" Visible="false" X="-2.47" Y="-0.62" />
+    <PointByCoordinates Name="BarrelBottomRight" Visible="false" X="-2.47" Y="-1.58" />
+    <PointByCoordinates Name="BarrelBottomLeft" Visible="false" X="-2.73" Y="-1.58" />
+    <Polygon Name="Barrel" Style="PumpMetal">
+      <Dependency Name="BarrelTopLeft" />
+      <Dependency Name="BarrelTopRight" />
+      <Dependency Name="BarrelBottomRight" />
+      <Dependency Name="BarrelBottomLeft" />
+    </Polygon>
+    <PointByCoordinates Name="CollarTopLeft" Visible="false" X="-2.77" Y="-0.56" />
+    <PointByCoordinates Name="CollarTopRight" Visible="false" X="-2.43" Y="-0.56" />
+    <PointByCoordinates Name="CollarBottomRight" Visible="false" X="-2.43" Y="-0.67" />
+    <PointByCoordinates Name="CollarBottomLeft" Visible="false" X="-2.77" Y="-0.67" />
+    <Polygon Name="Collar" Style="PumpDark">
+      <Dependency Name="CollarTopLeft" />
+      <Dependency Name="CollarTopRight" />
+      <Dependency Name="CollarBottomRight" />
+      <Dependency Name="CollarBottomLeft" />
+    </Polygon>
+    <PointByCoordinates Name="NozzleTopLeft" Visible="false" X="-2.33" Y="-1.58" />
+    <PointByCoordinates Name="NozzleTopRight" Visible="false" X="-2.2" Y="-1.58" />
+    <PointByCoordinates Name="NozzleBottomRight" Visible="false" X="-2.2" Y="-1.68" />
+    <PointByCoordinates Name="NozzleBottomLeft" Visible="false" X="-2.33" Y="-1.68" />
+    <Polygon Name="Nozzle" Style="PumpDark">
+      <Dependency Name="NozzleTopLeft" />
+      <Dependency Name="NozzleTopRight" />
+      <Dependency Name="NozzleBottomRight" />
+      <Dependency Name="NozzleBottomLeft" />
+    </Polygon>
+    <PointByCoordinates Name="TrackTop" Visible="false" X="-2.6" Y="0.75" />
+    <PointByCoordinates Name="TrackBottom" Visible="false" X="-2.6" Y="-0.55" />
+    <Segment Name="Track" Visible="false">
+      <Dependency Name="TrackTop" />
+      <Dependency Name="TrackBottom" />
+    </Segment>
+    <PointOnFigure Name="Handle" Style="Grip" X="-2.6" Y="0.09999999999999998" Parameter="0.5">
+      <Dependency Name="Track" />
+    </PointOnFigure>
+    <PointByCoordinates Name="RodFoot" Visible="false" X="-2.6" Y="-0.56" />
+    <PointByCoordinates Name="GripLeft" Visible="false" X="Handle.X - 0.17" Y="Handle.Y">
+      <Dependency Name="Handle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GripRight" Visible="false" X="Handle.X + 0.17" Y="Handle.Y">
+      <Dependency Name="Handle" />
+    </PointByCoordinates>
+    <Segment Name="Rod" Style="Rod">
+      <Dependency Name="Handle" />
+      <Dependency Name="RodFoot" />
+    </Segment>
+    <Segment Name="GripBar" Style="GripBar">
+      <Dependency Name="GripLeft" />
+      <Dependency Name="GripRight" />
+    </Segment>
+    <FreePoint Name="Knot" Style="KnotDot" X="0.25" Y="-1.74" />
+    <PointByCoordinates Name="Outlet" Visible="false" X="-2.2" Y="-1.63" />
+    <PointByCoordinates Name="GaugeCenter" Style="Hub" X="-2.6" Y="-1.12" />
+    <PointByCoordinates Name="GaugeEdge" Visible="false" X="-2.4" Y="-1.12" />
+    <Circle Name="Gauge" Style="GaugeFace">
+      <Dependency Name="GaugeCenter" />
+      <Dependency Name="GaugeEdge" />
+    </Circle>
+    <PointByCoordinates Name="RedZoneStart" Visible="false" X="-2.474426" Y="-1.1925" />
+    <PointByCoordinates Name="RedZoneEnd" Visible="false" X="-2.462097" Y="-1.075193" />
+    <CircleArc Name="RedZone" Style="GaugeRed">
+      <Dependency Name="GaugeCenter" />
+      <Dependency Name="RedZoneStart" />
+      <Dependency Name="RedZoneEnd" />
+    </CircleArc>
+    <PointByCoordinates Name="Air" Visible="false" X="clamp((TrackTop.Y - Handle.Y) / 1.3, 0, 1)" Y="0.45 + 1.45 * sqrt(clamp((TrackTop.Y - Handle.Y) / 1.3, 0, 1))">
+      <Dependency Name="TrackTop" />
+      <Dependency Name="Handle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NeedleTip" Visible="false" X="-2.6 + 0.16 * cos(3.665191 - 4.18879 * Air.X)" Y="-1.12 + 0.16 * sin(3.665191 - 4.18879 * Air.X)">
+      <Dependency Name="Air" />
+    </PointByCoordinates>
+    <Segment Name="Needle" Style="Needle">
+      <Dependency Name="GaugeCenter" />
+      <Dependency Name="NeedleTip" />
+    </Segment>
+    <PointByCoordinates Name="Firm" Visible="false" X="clamp((Air.X - 0.45) / 0.48, 0, 1) ^ 1.5" Y="clamp((Air.X - 0.8) / 0.13, 0, 1) ^ 2 * (3 - 2 * clamp((Air.X - 0.8) / 0.13, 0, 1))">
+      <Dependency Name="Air" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Limp" Visible="false" X="max(0, 1 - Air.X / 0.45)" Y="0.6 * max(0, 1 - Air.X / 0.45) ^ 1">
+      <Dependency Name="Air" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Body" Visible="false" X="Air.Y * (1 - 0.58 * Limp.X) * (1 + 0.07 * Firm.Y)" Y="Air.Y * (1 + 0 * Limp.X - 0.05 * Firm.X)">
+      <Dependency Name="Air" />
+      <Dependency Name="Limp" />
+      <Dependency Name="Firm" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Droop" Visible="false" X="(1.65 - 0.23 * min(1, Air.X / 0.2)) * (1 - clamp((Air.X - 0.2) / 0.2, 0, 1) ^ 2 * (3 - 2 * clamp((Air.X - 0.2) / 0.2, 0, 1)))" Y="0.03 + 0.97 * clamp((Air.X - 0.12) / 0.33, 0, 1) ^ 2 * (3 - 2 * clamp((Air.X - 0.12) / 0.33, 0, 1))">
+      <Dependency Name="Air" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Sag" Visible="false" X="1 - 0.55 * sin(Droop.X) ^ 6" Y="0.16 - 0.05 * Firm.X">
+      <Dependency Name="Droop" />
+      <Dependency Name="Firm" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PopBefore" Visible="false" X="0 * sqrt(0.93 - Air.X)" Y="0">
+      <Dependency Name="Air" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PopAfter" Visible="false" X="0 * sqrt(Air.X - 0.930001)" Y="0">
+      <Dependency Name="Air" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shiny" Visible="false" X="0 * sqrt(Air.X - 0.12)" Y="0">
+      <Dependency Name="Air" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Ctr" Visible="false" X="Knot.X" Y="Knot.Y + Sag.Y + Body.Y">
+      <Dependency Name="Knot" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Body" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="HoseEnd" Visible="false" X="Knot.X" Y="Knot.Y">
+      <Dependency Name="Knot" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="HoseMid" Visible="false" X="(Outlet.X + Knot.X) / 2" Y="(Outlet.Y + Knot.Y) / 2 - min(0.3, 0.08 + 0.08 * dist(Outlet, Knot))">
+      <Dependency Name="Outlet" />
+      <Dependency Name="Knot" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="HoseLeave" Visible="false" X="Outlet.X + min(0.3, 0.15 * dist(Outlet, Knot))" Y="Outlet.Y">
+      <Dependency Name="Outlet" />
+      <Dependency Name="Knot" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="HoseArrive" Visible="false" X="Knot.X" Y="Knot.Y - min(0.3, 0.15 * dist(Outlet, Knot))">
+      <Dependency Name="Knot" />
+      <Dependency Name="Outlet" />
+    </PointByCoordinates>
+    <BezierPath Name="Hose" Smoothing="NaturalSpline" Path="C #3 a C a #4 C a a">
+      <Sides Style="HoseLine" />
+      <Dependency Name="Outlet" />
+      <Dependency Name="HoseMid" />
+      <Dependency Name="HoseEnd" />
+      <Dependency Name="HoseLeave" />
+      <Dependency Name="HoseArrive" />
+    </BezierPath>
+    <PointByCoordinates Name="NeckBottomRight" Visible="false" Style="Dot" X="Knot.X + 0.04 * cos(Droop.X * 0.78) + 0.02 * sin(Droop.X * 0.78) + PopBefore.X" Y="Knot.Y - 0.04 * sin(Droop.X * 0.78) + 0.02 * cos(Droop.X * 0.78)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Droop" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NeckTopRight" Visible="false" Style="Dot" X="Knot.X + 0.075 * cos(Droop.X * 0.78) + Sag.Y * sin(Droop.X * 0.78) + PopBefore.X" Y="Knot.Y - 0.075 * sin(Droop.X * 0.78) + Sag.Y * cos(Droop.X * 0.78)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin1" Visible="false" Style="Dot" X="Knot.X + (Body.X * (0.201356 + 0.053392 * Firm.X) * (1 + 0.35 * Limp.Y) * Sag.X) * cos(Droop.X * 0.78956) + (Sag.Y + Body.Y * (1 - 0.913089 * (1 + 0.105 * Limp.Y))) * sin(Droop.X * 0.78956) + PopBefore.X" Y="Knot.Y - (Body.X * (0.201356 + 0.053392 * Firm.X) * (1 + 0.35 * Limp.Y) * Sag.X) * sin(Droop.X * 0.78956) + (Sag.Y + Body.Y * (1 - 0.913089 * (1 + 0.105 * Limp.Y))) * cos(Droop.X * 0.78956)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Firm" />
+      <Dependency Name="Limp" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Droop" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin2" Visible="false" Style="Dot" X="Knot.X + (Body.X * (0.581429 + 0.071043 * Firm.X + 0.02 * Firm.Y) * (1 - Limp.Y) * Sag.X) * cos(Droop.X * 0.827303) + (Sag.Y + Body.Y * (1 - 0.569977 * (1 - 0.3 * Limp.Y))) * sin(Droop.X * 0.827303) + PopBefore.X" Y="Knot.Y - (Body.X * (0.581429 + 0.071043 * Firm.X + 0.02 * Firm.Y) * (1 - Limp.Y) * Sag.X) * sin(Droop.X * 0.827303) + (Sag.Y + Body.Y * (1 - 0.569977 * (1 - 0.3 * Limp.Y))) * cos(Droop.X * 0.827303)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Firm" />
+      <Dependency Name="Limp" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Droop" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin3" Visible="false" Style="Dot" X="Knot.X + (Body.X * (0.841709 + 0.049189 * Firm.X + 0.07 * Firm.Y) * (1 + 0.5 * Limp.Y) * Sag.X) * cos(Droop.X * 0.883167) + (Sag.Y + Body.Y * (1 - 0.062119 * (1 + 0.15 * Limp.Y) + 0.01 * Firm.Y)) * sin(Droop.X * 0.883167) + PopBefore.X" Y="Knot.Y - (Body.X * (0.841709 + 0.049189 * Firm.X + 0.07 * Firm.Y) * (1 + 0.5 * Limp.Y) * Sag.X) * sin(Droop.X * 0.883167) + (Sag.Y + Body.Y * (1 - 0.062119 * (1 + 0.15 * Limp.Y) + 0.01 * Firm.Y)) * cos(Droop.X * 0.883167)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Firm" />
+      <Dependency Name="Limp" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Droop" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin4" Visible="false" Style="Dot" X="Knot.X + (Body.X * (0.825898 + 0.019566 * Firm.X + 0.07 * Firm.Y) * (1 + 0.3 * Limp.Y) * Sag.X) * cos(Droop.X * 0.941006) + (Sag.Y + Body.Y * (1 + 0.463693 * (1 + 0.09 * Limp.Y) + 0.04 * Firm.Y)) * sin(Droop.X * 0.941006) + PopBefore.X" Y="Knot.Y - (Body.X * (0.825898 + 0.019566 * Firm.X + 0.07 * Firm.Y) * (1 + 0.3 * Limp.Y) * Sag.X) * sin(Droop.X * 0.941006) + (Sag.Y + Body.Y * (1 + 0.463693 * (1 + 0.09 * Limp.Y) + 0.04 * Firm.Y)) * cos(Droop.X * 0.941006)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Firm" />
+      <Dependency Name="Limp" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Droop" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin5" Visible="false" Style="Dot" X="Knot.X + (Body.X * (0.50917 + 0.002872 * Firm.X + 0.02 * Firm.Y) * (1 - 0.25 * Limp.Y) * Sag.X) * cos(Droop.X * 0.984103) + (Sag.Y + Body.Y * (1 + 0.85548 * (1 - 0.075 * Limp.Y) + 0.02 * Firm.Y)) * sin(Droop.X * 0.984103) + PopBefore.X" Y="Knot.Y - (Body.X * (0.50917 + 0.002872 * Firm.X + 0.02 * Firm.Y) * (1 - 0.25 * Limp.Y) * Sag.X) * sin(Droop.X * 0.984103) + (Sag.Y + Body.Y * (1 + 0.85548 * (1 - 0.075 * Limp.Y) + 0.02 * Firm.Y)) * cos(Droop.X * 0.984103)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Firm" />
+      <Dependency Name="Limp" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Droop" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin6" Visible="false" Style="Dot" X="Knot.X + (Body.X * (0) * (1)) * cos(Droop.X * 1) + (Sag.Y + Body.Y * (1 + (1))) * sin(Droop.X * 1) + PopBefore.X" Y="Knot.Y - (Body.X * (0) * (1)) * sin(Droop.X * 1) + (Sag.Y + Body.Y * (1 + (1))) * cos(Droop.X * 1)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin7" Visible="false" Style="Dot" X="Knot.X + (Body.X * (-0.50917 - 0.002872 * Firm.X) * (1 - 0.3 * Limp.Y)) * cos(Droop.X * 0.984103) + (Sag.Y + Body.Y * (1 + 0.85548 * (1 - 0.09 * Limp.Y))) * sin(Droop.X * 0.984103) + PopBefore.X" Y="Knot.Y - (Body.X * (-0.50917 - 0.002872 * Firm.X) * (1 - 0.3 * Limp.Y)) * sin(Droop.X * 0.984103) + (Sag.Y + Body.Y * (1 + 0.85548 * (1 - 0.09 * Limp.Y))) * cos(Droop.X * 0.984103)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Firm" />
+      <Dependency Name="Limp" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin8" Visible="false" Style="Dot" X="Knot.X + (Body.X * (-0.825898 - 0.019566 * Firm.X) * (1 + 0.5 * Limp.Y)) * cos(Droop.X * 0.941006) + (Sag.Y + Body.Y * (1 + 0.463693 * (1 + 0.15 * Limp.Y))) * sin(Droop.X * 0.941006) + PopBefore.X" Y="Knot.Y - (Body.X * (-0.825898 - 0.019566 * Firm.X) * (1 + 0.5 * Limp.Y)) * sin(Droop.X * 0.941006) + (Sag.Y + Body.Y * (1 + 0.463693 * (1 + 0.15 * Limp.Y))) * cos(Droop.X * 0.941006)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Firm" />
+      <Dependency Name="Limp" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin9" Visible="false" Style="Dot" X="Knot.X + (Body.X * (-0.841709 - 0.049189 * Firm.X) * (1 - 0.75 * Limp.Y)) * cos(Droop.X * 0.883167) + (Sag.Y + Body.Y * (1 - 0.062119 * (1 - 0.225 * Limp.Y))) * sin(Droop.X * 0.883167) + PopBefore.X" Y="Knot.Y - (Body.X * (-0.841709 - 0.049189 * Firm.X) * (1 - 0.75 * Limp.Y)) * sin(Droop.X * 0.883167) + (Sag.Y + Body.Y * (1 - 0.062119 * (1 - 0.225 * Limp.Y))) * cos(Droop.X * 0.883167)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Firm" />
+      <Dependency Name="Limp" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin10" Visible="false" Style="Dot" X="Knot.X + (Body.X * (-0.581429 - 0.071043 * Firm.X) * (1 + 0.6 * Limp.Y)) * cos(Droop.X * 0.827303) + (Sag.Y + Body.Y * (1 - 0.569977 * (1 + 0.18 * Limp.Y))) * sin(Droop.X * 0.827303) + PopBefore.X" Y="Knot.Y - (Body.X * (-0.581429 - 0.071043 * Firm.X) * (1 + 0.6 * Limp.Y)) * sin(Droop.X * 0.827303) + (Sag.Y + Body.Y * (1 - 0.569977 * (1 + 0.18 * Limp.Y))) * cos(Droop.X * 0.827303)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Firm" />
+      <Dependency Name="Limp" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skin11" Visible="false" Style="Dot" X="Knot.X + (Body.X * (-0.201356 - 0.053392 * Firm.X) * (1 - 0.5 * Limp.Y)) * cos(Droop.X * 0.78956) + (Sag.Y + Body.Y * (1 - 0.913089 * (1 - 0.15 * Limp.Y))) * sin(Droop.X * 0.78956) + PopBefore.X" Y="Knot.Y - (Body.X * (-0.201356 - 0.053392 * Firm.X) * (1 - 0.5 * Limp.Y)) * sin(Droop.X * 0.78956) + (Sag.Y + Body.Y * (1 - 0.913089 * (1 - 0.15 * Limp.Y))) * cos(Droop.X * 0.78956)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Firm" />
+      <Dependency Name="Limp" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NeckTopLeft" Visible="false" Style="Dot" X="Knot.X + -0.075 * cos(Droop.X * 0.78) + Sag.Y * sin(Droop.X * 0.78) + PopBefore.X" Y="Knot.Y - -0.075 * sin(Droop.X * 0.78) + Sag.Y * cos(Droop.X * 0.78)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NeckBottomLeft" Visible="false" Style="Dot" X="Knot.X + -0.04 * cos(Droop.X * 0.78) + 0.02 * sin(Droop.X * 0.78) + PopBefore.X" Y="Knot.Y - -0.04 * sin(Droop.X * 0.78) + 0.02 * cos(Droop.X * 0.78)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Droop" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shine1" Visible="false" X="Knot.X + (Body.X * (-0.335024 + 0.209998 * Droop.Y)) * cos(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.671559 + 0.187502 * Droop.Y))) * sin(Droop.X * 0.956) + Shiny.X + PopBefore.X" Y="Knot.Y - (Body.X * (-0.335024 + 0.209998 * Droop.Y)) * sin(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.671559 + 0.187502 * Droop.Y))) * cos(Droop.X * 0.956)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Shiny" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shine2" Visible="false" X="Knot.X + (Body.X * (-0.335024 - 0.062003 * Droop.Y)) * cos(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.671559 + 0.067058 * Droop.Y))) * sin(Droop.X * 0.956) + Shiny.X + PopBefore.X" Y="Knot.Y - (Body.X * (-0.335024 - 0.062003 * Droop.Y)) * sin(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.671559 + 0.067058 * Droop.Y))) * cos(Droop.X * 0.956)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Shiny" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shine3" Visible="false" X="Knot.X + (Body.X * (-0.335024 - 0.224687 * Droop.Y)) * cos(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.671559 - 0.171812 * Droop.Y))) * sin(Droop.X * 0.956) + Shiny.X + PopBefore.X" Y="Knot.Y - (Body.X * (-0.335024 - 0.224687 * Droop.Y)) * sin(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.671559 - 0.171812 * Droop.Y))) * cos(Droop.X * 0.956)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Shiny" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shine4" Visible="false" X="Knot.X + (Body.X * (-0.335024 - 0.046895 * Droop.Y)) * cos(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.671559 - 0.112001 * Droop.Y))) * sin(Droop.X * 0.956) + Shiny.X + PopBefore.X" Y="Knot.Y - (Body.X * (-0.335024 - 0.046895 * Droop.Y)) * sin(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.671559 - 0.112001 * Droop.Y))) * cos(Droop.X * 0.956)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Shiny" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shine5" Visible="false" X="Knot.X + (Body.X * (-0.335024 + 0.123587 * Droop.Y)) * cos(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.671559 + 0.029253 * Droop.Y))) * sin(Droop.X * 0.956) + Shiny.X + PopBefore.X" Y="Knot.Y - (Body.X * (-0.335024 + 0.123587 * Droop.Y)) * sin(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.671559 + 0.029253 * Droop.Y))) * cos(Droop.X * 0.956)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Shiny" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <BezierPath Name="Glint" Visible="false" Closed="true" Path="C a a C a a C a a C a a C a a">
+      <Dependency Name="Shine1" />
+      <Dependency Name="Shine2" />
+      <Dependency Name="Shine3" />
+      <Dependency Name="Shine4" />
+      <Dependency Name="Shine5" />
+    </BezierPath>
+    <PointByCoordinates Name="Sparkle1" Visible="false" X="Knot.X + (Body.X * (-0.526228)) * cos(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.341531 + 0.05 * Droop.Y))) * sin(Droop.X * 0.956) + Shiny.X + PopBefore.X" Y="Knot.Y - (Body.X * (-0.526228)) * sin(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.341531 + 0.05 * Droop.Y))) * cos(Droop.X * 0.956)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Shiny" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Sparkle2" Visible="false" X="Knot.X + (Body.X * (-0.526228 - 0.043301 * Droop.Y)) * cos(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.341531 - 0.025 * Droop.Y))) * sin(Droop.X * 0.956) + Shiny.X + PopBefore.X" Y="Knot.Y - (Body.X * (-0.526228 - 0.043301 * Droop.Y)) * sin(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.341531 - 0.025 * Droop.Y))) * cos(Droop.X * 0.956)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Shiny" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Sparkle3" Visible="false" X="Knot.X + (Body.X * (-0.526228 + 0.043301 * Droop.Y)) * cos(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.341531 - 0.025 * Droop.Y))) * sin(Droop.X * 0.956) + Shiny.X + PopBefore.X" Y="Knot.Y - (Body.X * (-0.526228 + 0.043301 * Droop.Y)) * sin(Droop.X * 0.956) + (Sag.Y + Body.Y * (1 + (0.341531 - 0.025 * Droop.Y))) * cos(Droop.X * 0.956)">
+      <Dependency Name="Knot" />
+      <Dependency Name="Body" />
+      <Dependency Name="Droop" />
+      <Dependency Name="Sag" />
+      <Dependency Name="Shiny" />
+      <Dependency Name="PopBefore" />
+    </PointByCoordinates>
+    <BezierPath Name="Glint2" Visible="false" Closed="true" Path="C a a C a a C a a">
+      <Dependency Name="Sparkle1" />
+      <Dependency Name="Sparkle2" />
+      <Dependency Name="Sparkle3" />
+    </BezierPath>
+    <Label Name="Tightness" Visible="false" Text="[1 + 0.5 * Limp.X - 0.08 * Firm.X]" X="0" Y="0">
+      <Dependency Name="Limp" />
+      <Dependency Name="Firm" />
+    </Label>
+    <BezierPath Name="Balloon" Style="BalloonFill" Closed="true" Filled="true" Tension="#17" Path="C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a L">
+      <Sides Style="BalloonRim" />
+      <Handles Style="BalloonHandle" />
+      <Dependency Name="NeckBottomRight" />
+      <Dependency Name="NeckTopRight" />
+      <Dependency Name="Skin1" />
+      <Dependency Name="Skin2" />
+      <Dependency Name="Skin3" />
+      <Dependency Name="Skin4" />
+      <Dependency Name="Skin5" />
+      <Dependency Name="Skin6" />
+      <Dependency Name="Skin7" />
+      <Dependency Name="Skin8" />
+      <Dependency Name="Skin9" />
+      <Dependency Name="Skin10" />
+      <Dependency Name="Skin11" />
+      <Dependency Name="NeckTopLeft" />
+      <Dependency Name="NeckBottomLeft" />
+      <Dependency Name="Glint" />
+      <Dependency Name="Glint2" />
+      <Dependency Name="Tightness" />
+    </BezierPath>
+    <PointByCoordinates Name="BurstValley1" Visible="false" X="Ctr.X + 0.589655 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + -0.191591 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstTip1" Visible="false" X="Ctr.X + 1.222685 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + 0.25989 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstValley2" Visible="false" X="Ctr.X + 0.43925 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + 0.330998 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstTip2" Visible="false" X="Ctr.X + 0.492945 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + 0.927095 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstValley3" Visible="false" X="Ctr.X + 0.057523 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + 0.657489 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstTip3" Visible="false" X="Ctr.X + -0.401722 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + 1.236373 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstValley4" Visible="false" X="Ctr.X + -0.402902 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + 0.417217 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstTip4" Visible="false" X="Ctr.X + -1.033662 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + 0.376222 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstValley5" Visible="false" X="Ctr.X + -0.596713 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + -0.062717 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstTip5" Visible="false" X="Ctr.X + -1.034619 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + -0.646502 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstValley6" Visible="false" X="Ctr.X + -0.348569 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + -0.536749 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstTip6" Visible="false" X="Ctr.X + -0.139173 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + -0.990268 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstValley7" Visible="false" X="Ctr.X + 0.163728 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + -0.535531 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BurstTip7" Visible="false" X="Ctr.X + 0.856487 * (0.85 + 3 * (Air.X - 0.93)) + PopAfter.X" Y="Ctr.Y + -0.951225 * (0.85 + 3 * (Air.X - 0.93))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <BezierPath Name="Burst" Style="BurstFill" Closed="true" Filled="true" Path="C a 0,0 C 0,0 a C a 0,0 C 0,0 a C a 0,0 C 0,0 a C a 0,0 C 0,0 a C a 0,0 C 0,0 a C a 0,0 C 0,0 a C a 0,0 C 0,0 a">
+      <Sides Style="BurstRim" />
+      <Dependency Name="BurstValley1" />
+      <Dependency Name="BurstTip1" />
+      <Dependency Name="BurstValley2" />
+      <Dependency Name="BurstTip2" />
+      <Dependency Name="BurstValley3" />
+      <Dependency Name="BurstTip3" />
+      <Dependency Name="BurstValley4" />
+      <Dependency Name="BurstTip4" />
+      <Dependency Name="BurstValley5" />
+      <Dependency Name="BurstTip5" />
+      <Dependency Name="BurstValley6" />
+      <Dependency Name="BurstTip6" />
+      <Dependency Name="BurstValley7" />
+      <Dependency Name="BurstTip7" />
+    </BezierPath>
+    <PointByCoordinates Name="POP!" Style="PopPoint" X="Ctr.X + PopAfter.X" Y="Ctr.Y">
+      <Dependency Name="Ctr" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointLabel Name="PopWord" Style="PopText" OffsetX="-44" OffsetY="-30" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="POP!" />
+    </PointLabel>
+    <PointByCoordinates Name="Shred1Corner1" Visible="false" X="Ctr.X + 0.788011 * (1.4 + 4 * (Air.X - 0.93)) - 0.132403 + PopAfter.X" Y="Ctr.Y + 0.615661 * (1.4 + 4 * (Air.X - 0.93)) - 0.074795">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shred1Corner2" Visible="false" X="Ctr.X + 0.788011 * (1.4 + 4 * (Air.X - 0.93)) + 0.011746 - 0.34202 * (0.09375 + 0.0375 * sin(22 * (Air.X - 0.93))) + PopAfter.X" Y="Ctr.Y + 0.615661 * (1.4 + 4 * (Air.X - 0.93)) + 0.004275 + 0.939693 * (0.09375 + 0.0375 * sin(22 * (Air.X - 0.93)))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shred1Corner3" Visible="false" X="Ctr.X + 0.788011 * (1.4 + 4 * (Air.X - 0.93)) + 0.158055 + PopAfter.X" Y="Ctr.Y + 0.615661 * (1.4 + 4 * (Air.X - 0.93)) + 0.004318">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <BezierPath Name="Shred1" Style="BalloonFill" Closed="true" Filled="true" Path="C -0.002159,0.079027 -0.070477,-0.025652 C 0.070477,0.025652 -0.043271,0.064064 C -0.072096,0.033619 0.033619,0.072096">
+      <Sides Style="ShredRim" />
+      <Dependency Name="Shred1Corner1" />
+      <Dependency Name="Shred1Corner2" />
+      <Dependency Name="Shred1Corner3" />
+    </BezierPath>
+    <PointByCoordinates Name="Shred2Corner1" Visible="false" X="Ctr.X + -0.71934 * (1.4 + 4 * (Air.X - 0.93)) - 0.115258 + PopAfter.X" Y="Ctr.Y + 0.694658 * (1.4 + 4 * (Air.X - 0.93)) + 0.055068">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shred2Corner2" Visible="false" X="Ctr.X + -0.71934 * (1.4 + 4 * (Air.X - 0.93)) + 0.008601 + 0.573576 * (0.07875 + 0.0315 * sin(-26 * (Air.X - 0.93))) + PopAfter.X" Y="Ctr.Y + 0.694658 * (1.4 + 4 * (Air.X - 0.93)) - 0.006023 + 0.819152 * (0.07875 + 0.0315 * sin(-26 * (Air.X - 0.93)))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shred2Corner3" Visible="false" X="Ctr.X + -0.71934 * (1.4 + 4 * (Air.X - 0.93)) + 0.079123 + PopAfter.X" Y="Ctr.Y + 0.694658 * (1.4 + 4 * (Air.X - 0.93)) - 0.106675">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <BezierPath Name="Shred2" Style="BalloonFill" Closed="true" Filled="true" Path="C 0.053338,0.039561 -0.051607,0.036135 C 0.051607,-0.036135 0.023234,0.06064 C -0.011603,0.065806 0.065806,0.011603">
+      <Sides Style="ShredRim" />
+      <Dependency Name="Shred2Corner1" />
+      <Dependency Name="Shred2Corner2" />
+      <Dependency Name="Shred2Corner3" />
+    </BezierPath>
+    <PointByCoordinates Name="Shred3Corner1" Visible="false" X="Ctr.X + -0.743145 * (1.4 + 4 * (Air.X - 0.93)) - 0.049081 + PopAfter.X" Y="Ctr.Y + -0.669131 * (1.4 + 4 * (Air.X - 0.93)) - 0.131012">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shred3Corner2" Visible="false" X="Ctr.X + -0.743145 * (1.4 + 4 * (Air.X - 0.93)) + 0.00575 - 0.866025 * (0.08625 + 0.0345 * sin(18 * (Air.X - 0.93))) + PopAfter.X" Y="Ctr.Y + -0.669131 * (1.4 + 4 * (Air.X - 0.93)) + 0.009959 + 0.5 * (0.08625 + 0.0345 * sin(18 * (Air.X - 0.93)))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shred3Corner3" Visible="false" X="Ctr.X + -0.743145 * (1.4 + 4 * (Air.X - 0.93)) + 0.108837 + PopAfter.X" Y="Ctr.Y + -0.669131 * (1.4 + 4 * (Air.X - 0.93)) + 0.096512">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <BezierPath Name="Shred3" Style="BalloonFill" Closed="true" Filled="true" Path="C -0.048256,0.054419 -0.0345,-0.059756 C 0.0345,0.059756 -0.068381,0.019561 C -0.070692,-0.018942 -0.018942,0.070692">
+      <Sides Style="ShredRim" />
+      <Dependency Name="Shred3Corner1" />
+      <Dependency Name="Shred3Corner2" />
+      <Dependency Name="Shred3Corner3" />
+    </BezierPath>
+    <PointByCoordinates Name="Shred4Corner1" Visible="false" X="Ctr.X + 0.788011 * (1.4 + 4 * (Air.X - 0.93)) - 0.121087 + PopAfter.X" Y="Ctr.Y + -0.615661 * (1.4 + 4 * (Air.X - 0.93)) + 0.01174">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shred4Corner2" Visible="false" X="Ctr.X + 0.788011 * (1.4 + 4 * (Air.X - 0.93)) + 0.009659 + 0.258819 * (0.075 + 0.03 * sin(-24 * (Air.X - 0.93))) + PopAfter.X" Y="Ctr.Y + -0.615661 * (1.4 + 4 * (Air.X - 0.93)) - 0.002588 + 0.965926 * (0.075 + 0.03 * sin(-24 * (Air.X - 0.93)))">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Shred4Corner3" Visible="false" X="Ctr.X + 0.788011 * (1.4 + 4 * (Air.X - 0.93)) + 0.105558 + PopAfter.X" Y="Ctr.Y + -0.615661 * (1.4 + 4 * (Air.X - 0.93)) - 0.069695">
+      <Dependency Name="Ctr" />
+      <Dependency Name="Air" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <BezierPath Name="Shred4" Style="BalloonFill" Closed="true" Filled="true" Path="C 0.034848,0.052779 -0.057956,0.015529 C 0.057956,-0.015529 0.00104,0.061838 C -0.03182,0.055114 0.055114,0.03182">
+      <Sides Style="ShredRim" />
+      <Dependency Name="Shred4Corner1" />
+      <Dependency Name="Shred4Corner2" />
+      <Dependency Name="Shred4Corner3" />
+    </BezierPath>
+    <PointByCoordinates Name="Tatter1" Visible="false" X="Knot.X + 0.04 + PopAfter.X" Y="Knot.Y + 0.01">
+      <Dependency Name="Knot" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tatter2" Visible="false" X="Knot.X + 0.16 + PopAfter.X" Y="Knot.Y + 0.13">
+      <Dependency Name="Knot" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tatter3" Visible="false" X="Knot.X - 0.13 + PopAfter.X" Y="Knot.Y + 0.17">
+      <Dependency Name="Knot" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tatter4" Visible="false" X="Knot.X - 0.04 + PopAfter.X" Y="Knot.Y + 0.01">
+      <Dependency Name="Knot" />
+      <Dependency Name="PopAfter" />
+    </PointByCoordinates>
+    <BezierPath Name="Tatters" Style="BalloonFill" Closed="true" Filled="true" Path="C 0,0.08 -0.05,0.05 C -0.07,-0.09 0.05,-0.08 C 0.05,0.05 0,0.08 L">
+      <Sides Style="ShredRim" />
+      <Dependency Name="Tatter1" />
+      <Dependency Name="Tatter2" />
+      <Dependency Name="Tatter3" />
+      <Dependency Name="Tatter4" />
+    </BezierPath>
+    <Label Name="Hint" Visible="false" Style="GalleryText" Text="The same 15 dots make the crumpled heap and the round balloon. Only where they sit changes, and how tightly the curve is pulled through them: tight when it is nearly empty, so the rubber creases, and looser when it is full, so it bulges round between them.\n\nOnce it stands up, each push adds the same amount of air, but the balloon grows taller by less and less: the new air has to spread around a bigger and bigger balloon.\n\nPopped it? Pull the handle back up." Pin="TopRight" OffsetX="16" OffsetY="300" WrapWidth="400" Backdrop="true" />
+    <ShowHideControl Name="Hint box" Style="GalleryText" Show="false" Text="Hint" X="-3.15" Y="2.4">
+      <Dependency Name="NeckBottomRight" />
+      <Dependency Name="NeckTopRight" />
+      <Dependency Name="Skin1" />
+      <Dependency Name="Skin2" />
+      <Dependency Name="Skin3" />
+      <Dependency Name="Skin4" />
+      <Dependency Name="Skin5" />
+      <Dependency Name="Skin6" />
+      <Dependency Name="Skin7" />
+      <Dependency Name="Skin8" />
+      <Dependency Name="Skin9" />
+      <Dependency Name="Skin10" />
+      <Dependency Name="Skin11" />
+      <Dependency Name="NeckTopLeft" />
+      <Dependency Name="NeckBottomLeft" />
+      <Dependency Name="Hint" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Pump Up the Balloon" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Pull the red pump handle up to let the air out: the balloon flops over in a crumpled heap. Now push it down: the rubber lifts, stands up and stretches smooth, round and shiny. Keep an eye on the gauge! Drag the balloon anywhere and the hose follows.\n\nThe outline is one closed curve through 15 dots: check &quot;Hint&quot; to watch them spread apart. What happens if you push the handle all the way down?" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

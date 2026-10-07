@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-1.9" Top="2.1" Right="3.2" Bottom="-2.65">
+    <Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF12467F" Offset="0" />
+        <GradientStop Color="#FF0A2754" Offset="0.55" />
+        <GradientStop Color="#FF050F24" Offset="1" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
+  <Scene Left="-1.9" Top="2.1" Right="3.1999999999999997" Bottom="-2.65" />
+  <Styles>
+    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFFFE6F7" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFFE6F7" />
+    </TextStyle>
+    <TextStyle Name="GalleryText" FontSize="16" Color="#FFDDEBFF" FontFamily="Segoe UI">
+      <Dark Color="#FFDDEBFF" />
+    </TextStyle>
+    <TextStyle Name="SpinText" FontSize="14" Color="#FFFFC6EA" FontFamily="Segoe UI" />
+    <ShapeStyle Name="Beam" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Color="#14BFE4FF" Offset="0" />
+          <GradientStop Color="#09BFE4FF" Offset="0.5" />
+          <GradientStop Color="#00BFE4FF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="BellFill" Color="#4080E8FF" StrokeWidth="12">
+      <Fill>
+        <LinearGradientBrush StartPoint="0.3,0" EndPoint="0.7,1">
+          <GradientStop Color="#E8FFD6F1" Offset="0" />
+          <GradientStop Color="#C8F59BDD" Offset="0.5" />
+          <GradientStop Color="#A88E68F0" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="BellRim" Color="#F0FFE6F8" StrokeWidth="2.5" />
+    <ShapeStyle Name="GonadFill" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#C0FF8BD8" Offset="0" />
+          <GradientStop Color="#C0B060F0" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="GonadEdge" Color="#70FFD4F2" StrokeWidth="1.2" />
+    <LineStyle Name="GonadInside" Color="#60FFD4F2" />
+    <ShapeStyle Name="SheenFill" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#A0FFFFFF" Offset="0" />
+          <GradientStop Color="#10FFFFFF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="SheenEdge" Color="#00FFFFFF" />
+    <LineStyle Name="Tentacle1" Color="#FFFFB3E4" StrokeWidth="3" />
+    <LineStyle Name="Tentacle2" Color="#FFFFC2A8" StrokeWidth="3" />
+    <LineStyle Name="Tentacle3" Color="#FFD8B8FF" StrokeWidth="3.5" />
+    <LineStyle Name="Tentacle4" Color="#FF9EE7FF" StrokeWidth="3" />
+    <LineStyle Name="Tentacle5" Color="#FFFFA8DA" StrokeWidth="3" />
+    <ShapeStyle Name="Dial" Color="#A0FFB3E4" StrokeWidth="2" Dash="Dot">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#1CBFE4FF" Offset="0" />
+          <GradientStop Color="#05BFE4FF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="GlintLine" Color="#60FFFFFF" StrokeWidth="3" />
+    <LineStyle Name="DialArrow" Color="#C0FFB3E4" StrokeWidth="2" />
+    <ShapeStyle Name="DialArrowHead" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#E0FFB3E4" Offset="0" />
+          <GradientStop Color="#E0FFB3E4" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <PointStyle Name="Pearl" Size="20" Fill="#FFFFF4FB" Color="#FFFF8FD1" StrokeWidth="3" />
+    <PointStyle Name="Anchor" Size="8" Fill="#FFFFFFFF" Color="#FF7A3FC8" StrokeWidth="1.5" />
+    <PointStyle Name="JellyHandle" Size="8" Fill="#FFFFF4FB" Color="#FFFF8FD1" StrokeWidth="2" />
+    <PointStyle Name="Bubble" Size="9" Fill="#18BFE4FF" Color="#80BFE4FF" StrokeWidth="1.2" />
+    <PointStyle Name="BubbleSmall" Size="6" Fill="#18BFE4FF" Color="#70BFE4FF" />
+    <PointStyle Name="BubbleBig" Size="13" Fill="#18BFE4FF" Color="#90BFE4FF" StrokeWidth="1.4" />
+    <PointStyle Name="Plankton" Size="4" Fill="#80FFFFFF" Color="#00FFFFFF" />
+    <PointStyle Name="PlanktonSmall" Size="3" Fill="#55FFFFFF" Color="#00FFFFFF" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="Beam1A" Visible="false" X="-1.55" Y="2.75" />
+    <PointByCoordinates Name="Beam1B" Visible="false" X="-1.05" Y="2.75" />
+    <PointByCoordinates Name="Beam1C" Visible="false" X="0.75" Y="-1.3" />
+    <PointByCoordinates Name="Beam1D" Visible="false" X="-0.35" Y="-1.3" />
+    <Polygon Name="Beam1" Style="Beam" IsHitTestVisible="false">
+      <Dependency Name="Beam1A" />
+      <Dependency Name="Beam1B" />
+      <Dependency Name="Beam1C" />
+      <Dependency Name="Beam1D" />
+    </Polygon>
+    <PointByCoordinates Name="Beam1CoreA" Visible="false" X="-1.425" Y="2.75" />
+    <PointByCoordinates Name="Beam1CoreB" Visible="false" X="-1.175" Y="2.75" />
+    <PointByCoordinates Name="Beam1CoreC" Visible="false" X="0.475" Y="-1.3" />
+    <PointByCoordinates Name="Beam1CoreD" Visible="false" X="-0.075" Y="-1.3" />
+    <Polygon Name="Beam1Core" Style="Beam" IsHitTestVisible="false">
+      <Dependency Name="Beam1CoreA" />
+      <Dependency Name="Beam1CoreB" />
+      <Dependency Name="Beam1CoreC" />
+      <Dependency Name="Beam1CoreD" />
+    </Polygon>
+    <PointByCoordinates Name="Beam2A" Visible="false" X="-0.56" Y="2.75" />
+    <PointByCoordinates Name="Beam2B" Visible="false" X="-0.34" Y="2.75" />
+    <PointByCoordinates Name="Beam2C" Visible="false" X="1.25" Y="-0.6" />
+    <PointByCoordinates Name="Beam2D" Visible="false" X="0.75" Y="-0.6" />
+    <Polygon Name="Beam2" Style="Beam" IsHitTestVisible="false">
+      <Dependency Name="Beam2A" />
+      <Dependency Name="Beam2B" />
+      <Dependency Name="Beam2C" />
+      <Dependency Name="Beam2D" />
+    </Polygon>
+    <PointByCoordinates Name="Beam2CoreA" Visible="false" X="-0.505" Y="2.75" />
+    <PointByCoordinates Name="Beam2CoreB" Visible="false" X="-0.395" Y="2.75" />
+    <PointByCoordinates Name="Beam2CoreC" Visible="false" X="1.125" Y="-0.6" />
+    <PointByCoordinates Name="Beam2CoreD" Visible="false" X="0.875" Y="-0.6" />
+    <Polygon Name="Beam2Core" Style="Beam" IsHitTestVisible="false">
+      <Dependency Name="Beam2CoreA" />
+      <Dependency Name="Beam2CoreB" />
+      <Dependency Name="Beam2CoreC" />
+      <Dependency Name="Beam2CoreD" />
+    </Polygon>
+    <PointByCoordinates Name="Beam3A" Visible="false" X="0.55" Y="2.75" />
+    <PointByCoordinates Name="Beam3B" Visible="false" X="1.15" Y="2.75" />
+    <PointByCoordinates Name="Beam3C" Visible="false" X="3.05" Y="-1.9" />
+    <PointByCoordinates Name="Beam3D" Visible="false" X="1.85" Y="-1.9" />
+    <Polygon Name="Beam3" Style="Beam" IsHitTestVisible="false">
+      <Dependency Name="Beam3A" />
+      <Dependency Name="Beam3B" />
+      <Dependency Name="Beam3C" />
+      <Dependency Name="Beam3D" />
+    </Polygon>
+    <PointByCoordinates Name="Beam3CoreA" Visible="false" X="0.7" Y="2.75" />
+    <PointByCoordinates Name="Beam3CoreB" Visible="false" X="1" Y="2.75" />
+    <PointByCoordinates Name="Beam3CoreC" Visible="false" X="2.75" Y="-1.9" />
+    <PointByCoordinates Name="Beam3CoreD" Visible="false" X="2.15" Y="-1.9" />
+    <Polygon Name="Beam3Core" Style="Beam" IsHitTestVisible="false">
+      <Dependency Name="Beam3CoreA" />
+      <Dependency Name="Beam3CoreB" />
+      <Dependency Name="Beam3CoreC" />
+      <Dependency Name="Beam3CoreD" />
+    </Polygon>
+    <PointByCoordinates Name="Speck1" Style="Plankton" IsHitTestVisible="false" X="-1.7" Y="1.85" />
+    <PointByCoordinates Name="Speck2" Style="PlanktonSmall" IsHitTestVisible="false" X="-0.95" Y="2.1" />
+    <PointByCoordinates Name="Speck3" Style="Plankton" IsHitTestVisible="false" X="0.65" Y="2.15" />
+    <PointByCoordinates Name="Speck4" Style="PlanktonSmall" IsHitTestVisible="false" X="1.55" Y="1.75" />
+    <PointByCoordinates Name="Speck5" Style="Plankton" IsHitTestVisible="false" X="2.8" Y="2" />
+    <PointByCoordinates Name="Speck6" Style="PlanktonSmall" IsHitTestVisible="false" X="2.45" Y="0.35" />
+    <PointByCoordinates Name="Speck7" Style="PlanktonSmall" IsHitTestVisible="false" X="-1.88" Y="1.15" />
+    <PointByCoordinates Name="Speck8" Style="Plankton" IsHitTestVisible="false" X="-1.5" Y="-1.05" />
+    <PointByCoordinates Name="Speck9" Style="PlanktonSmall" IsHitTestVisible="false" X="-0.95" Y="-2.6" />
+    <PointByCoordinates Name="Speck10" Style="Plankton" IsHitTestVisible="false" X="1.05" Y="-2.65" />
+    <PointByCoordinates Name="Speck11" Style="Plankton" IsHitTestVisible="false" X="2.9" Y="-0.5" />
+    <PointByCoordinates Name="Speck12" Style="Plankton" IsHitTestVisible="false" X="1.9" Y="0.95" />
+    <PointByCoordinates Name="Speck13" Style="PlanktonSmall" IsHitTestVisible="false" X="-1.85" Y="-1.95" />
+    <PointByCoordinates Name="Speck14" Style="PlanktonSmall" IsHitTestVisible="false" X="0.45" Y="-2.8" />
+    <PointByCoordinates Name="Speck15" Style="PlanktonSmall" IsHitTestVisible="false" X="2.1" Y="2.2" />
+    <PointByCoordinates Name="Hub" Visible="false" X="2.3" Y="-1.6" />
+    <PointByCoordinates Name="RingEdge" Visible="false" X="3" Y="-1.6" />
+    <Circle Name="Ring" Style="Dial" IsHitTestVisible="false">
+      <Dependency Name="Hub" />
+      <Dependency Name="RingEdge" />
+    </Circle>
+    <PointByCoordinates Name="GlintStart" Visible="false" X="2.023012" Y="-1.079061" />
+    <PointByCoordinates Name="GlintEnd" Visible="false" X="1.752962" Y="-1.378982" />
+    <CircleArc Name="Glint" Style="GlintLine" IsHitTestVisible="false">
+      <Dependency Name="Hub" />
+      <Dependency Name="GlintStart" />
+      <Dependency Name="GlintEnd" />
+    </CircleArc>
+    <PointByCoordinates Name="ArrowStart" Visible="false" X="3.081951" Y="-1.218617" />
+    <PointByCoordinates Name="ArrowEnd" Visible="false" X="2.653861" Y="-0.805215" />
+    <CircleArc Name="Arrow" Style="DialArrow" IsHitTestVisible="false">
+      <Dependency Name="Hub" />
+      <Dependency Name="ArrowStart" />
+      <Dependency Name="ArrowEnd" />
+    </CircleArc>
+    <PointByCoordinates Name="ArrowTip" Visible="false" X="3.114142" Y="-1.292636" />
+    <PointByCoordinates Name="ArrowOut" Visible="false" X="3.111802" Y="-1.153372" />
+    <PointByCoordinates Name="ArrowIn" Visible="false" X="3.019084" Y="-1.190832" />
+    <Polygon Name="ArrowHead" Style="DialArrowHead" IsHitTestVisible="false">
+      <Dependency Name="ArrowTip" />
+      <Dependency Name="ArrowOut" />
+      <Dependency Name="ArrowIn" />
+    </Polygon>
+    <PointOnFigure Name="Pearl" Style="Pearl" X="2.424772000350694" Y="-0.9112097939659083" Parameter="1.391593">
+      <Dependency Name="Ring" />
+    </PointOnFigure>
+    <Label Name="SpinMe" Style="SpinText" IsHitTestVisible="false" Text="spin me!" X="2.11" Y="-2.39" />
+    <FreePoint Name="Home" Visible="false" X="0" Y="0.45" />
+    <PointByCoordinates Name="Beat" Visible="false" X="(1 + cos(xang(Hub, Pearl))) / 2" Y="pi - xang(Hub, Pearl)">
+      <Dependency Name="Hub" />
+      <Dependency Name="Pearl" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Body" Visible="false" X="Home.X + 0.04 * sin(Beat.Y + 0.6)" Y="Home.Y + 0.3 * sin(Beat.Y - 1.2)">
+      <Dependency Name="Home" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Size" Visible="false" X="1.35 - 0.3 * Beat.X" Y="0.95 + 0.25 * Beat.X">
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Skirt" Visible="false" X="Size.X * (1 - 0.3 * Beat.X)" Y="Body.Y - 0.1 - 0.12 * Beat.X">
+      <Dependency Name="Size" />
+      <Dependency Name="Beat" />
+      <Dependency Name="Body" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble1" Style="BubbleSmall" IsHitTestVisible="false" X="2.78 + 0.035 * sin(Beat.Y)" Y="0.05 + 0.025 * cos(Beat.Y)">
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble2" Style="Bubble" IsHitTestVisible="false" X="2.9 + 0.035 * sin(Beat.Y + 1.3)" Y="0.5 + 0.025 * cos(Beat.Y + 1.3)">
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble3" Style="BubbleSmall" IsHitTestVisible="false" X="2.74 + 0.035 * sin(Beat.Y + 2.6)" Y="1 + 0.025 * cos(Beat.Y + 2.6)">
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble4" Style="BubbleBig" IsHitTestVisible="false" X="2.86 + 0.035 * sin(Beat.Y + 3.9)" Y="1.55 + 0.025 * cos(Beat.Y + 3.9)">
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble5" Style="BubbleSmall" IsHitTestVisible="false" X="-1.62 + 0.035 * sin(Beat.Y + 5.2)" Y="-0.55 + 0.025 * cos(Beat.Y + 5.2)">
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble6" Style="Bubble" IsHitTestVisible="false" X="-1.72 + 0.035 * sin(Beat.Y + 6.5)" Y="-0.15 + 0.025 * cos(Beat.Y + 6.5)">
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bubble7" Style="BubbleBig" IsHitTestVisible="false" X="-1.6 + 0.035 * sin(Beat.Y + 7.8)" Y="0.45 + 0.025 * cos(Beat.Y + 7.8)">
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Dome0" Visible="false" Style="Anchor" X="Body.X + 1 * Size.X" Y="Body.Y">
+      <Dependency Name="Body" />
+      <Dependency Name="Size" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Dome1" Visible="false" Style="Anchor" X="Body.X + 0.92388 * (1.2 + 0.15 * cos(Beat.Y - 0.22961))" Y="Body.Y + 0.382683 * (1.075 - 0.125 * cos(Beat.Y - 0.22961))">
+      <Dependency Name="Body" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Dome2" Visible="false" Style="Anchor" X="Body.X + 0.707107 * (1.2 + 0.15 * cos(Beat.Y - 0.424264))" Y="Body.Y + 0.707107 * (1.075 - 0.125 * cos(Beat.Y - 0.424264))">
+      <Dependency Name="Body" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Dome3" Visible="false" Style="Anchor" X="Body.X + 0.382683 * (1.2 + 0.15 * cos(Beat.Y - 0.554328))" Y="Body.Y + 0.92388 * (1.075 - 0.125 * cos(Beat.Y - 0.554328))">
+      <Dependency Name="Body" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Dome4" Visible="false" Style="Anchor" X="Body.X" Y="Body.Y + 1 * (1.075 - 0.125 * cos(Beat.Y - 0.6))">
+      <Dependency Name="Body" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Dome5" Visible="false" Style="Anchor" X="Body.X - 0.382683 * (1.2 + 0.15 * cos(Beat.Y - 0.554328))" Y="Body.Y + 0.92388 * (1.075 - 0.125 * cos(Beat.Y - 0.554328))">
+      <Dependency Name="Body" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Dome6" Visible="false" Style="Anchor" X="Body.X - 0.707107 * (1.2 + 0.15 * cos(Beat.Y - 0.424264))" Y="Body.Y + 0.707107 * (1.075 - 0.125 * cos(Beat.Y - 0.424264))">
+      <Dependency Name="Body" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Dome7" Visible="false" Style="Anchor" X="Body.X - 0.92388 * (1.2 + 0.15 * cos(Beat.Y - 0.22961))" Y="Body.Y + 0.382683 * (1.075 - 0.125 * cos(Beat.Y - 0.22961))">
+      <Dependency Name="Body" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Dome8" Visible="false" Style="Anchor" X="Body.X - 1 * Size.X" Y="Body.Y">
+      <Dependency Name="Body" />
+      <Dependency Name="Size" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim0" Visible="false" Style="Anchor" X="Body.X - 0.8 * Skirt.X" Y="Skirt.Y - 0.045 * Skirt.X">
+      <Dependency Name="Body" />
+      <Dependency Name="Skirt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim1" Visible="false" Style="Anchor" X="Body.X - 0.6 * Skirt.X" Y="Skirt.Y + 0.03 * Skirt.X">
+      <Dependency Name="Body" />
+      <Dependency Name="Skirt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim2" Visible="false" Style="Anchor" X="Body.X - 0.4 * Skirt.X" Y="Skirt.Y - 0.045 * Skirt.X">
+      <Dependency Name="Body" />
+      <Dependency Name="Skirt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim3" Visible="false" Style="Anchor" X="Body.X - 0.2 * Skirt.X" Y="Skirt.Y + 0.03 * Skirt.X">
+      <Dependency Name="Body" />
+      <Dependency Name="Skirt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim4" Visible="false" Style="Anchor" X="Body.X" Y="Skirt.Y - 0.045 * Skirt.X">
+      <Dependency Name="Body" />
+      <Dependency Name="Skirt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim5" Visible="false" Style="Anchor" X="Body.X + 0.2 * Skirt.X" Y="Skirt.Y + 0.03 * Skirt.X">
+      <Dependency Name="Body" />
+      <Dependency Name="Skirt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim6" Visible="false" Style="Anchor" X="Body.X + 0.4 * Skirt.X" Y="Skirt.Y - 0.045 * Skirt.X">
+      <Dependency Name="Body" />
+      <Dependency Name="Skirt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim7" Visible="false" Style="Anchor" X="Body.X + 0.6 * Skirt.X" Y="Skirt.Y + 0.03 * Skirt.X">
+      <Dependency Name="Body" />
+      <Dependency Name="Skirt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim8" Visible="false" Style="Anchor" X="Body.X + 0.8 * Skirt.X" Y="Skirt.Y - 0.045 * Skirt.X">
+      <Dependency Name="Body" />
+      <Dependency Name="Skirt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent1_1" Visible="false" Style="Anchor" X="Home.X - 0.8 * Skirt.X - 0.04 + 0.055 * sin(Beat.Y - 0.3)" Y="Home.Y + 0.3 * sin(Beat.Y - 1.7) - 0.15 - 0.15 * Beat.X - 0.34 * (1 + 0.12 * cos(Beat.Y - 0.9))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent1_2" Visible="false" Style="Anchor" X="Home.X - 0.8 * Skirt.X - 0.08 + 0.11 * sin(Beat.Y - 1.2)" Y="Home.Y + 0.3 * sin(Beat.Y - 2.2) - 0.15 - 0.15 * Beat.X - 0.68 * (1 + 0.12 * cos(Beat.Y - 1.8))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent1_3" Visible="false" Style="Anchor" X="Home.X - 0.8 * Skirt.X - 0.12 + 0.165 * sin(Beat.Y - 2.1)" Y="Home.Y + 0.3 * sin(Beat.Y - 2.7) - 0.15 - 0.15 * Beat.X - 1.02 * (1 + 0.12 * cos(Beat.Y - 2.7))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent1_4" Visible="false" Style="Anchor" X="Home.X - 0.8 * Skirt.X - 0.16 + 0.22 * sin(Beat.Y - 3)" Y="Home.Y + 0.3 * sin(Beat.Y - 3.2) - 0.15 - 0.15 * Beat.X - 1.36 * (1 + 0.12 * cos(Beat.Y - 3.6))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent1_5" Visible="false" Style="Anchor" X="Home.X - 0.8 * Skirt.X - 0.2 + 0.275 * sin(Beat.Y - 3.9)" Y="Home.Y + 0.3 * sin(Beat.Y - 3.7) - 0.15 - 0.15 * Beat.X - 1.7 * (1 + 0.12 * cos(Beat.Y - 4.5))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <BezierPath Name="Tentacle1" Path="C a a C a a C a a C a a C a a C a a">
+      <Sides Style="Tentacle1" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="Rim0" />
+      <Dependency Name="Tent1_1" />
+      <Dependency Name="Tent1_2" />
+      <Dependency Name="Tent1_3" />
+      <Dependency Name="Tent1_4" />
+      <Dependency Name="Tent1_5" />
+    </BezierPath>
+    <PointByCoordinates Name="Tent2_1" Visible="false" Style="Anchor" X="Home.X - 0.4 * Skirt.X - 0.02 + 0.055 * sin(Beat.Y + 0.3)" Y="Home.Y + 0.3 * sin(Beat.Y - 1.7) - 0.15 - 0.15 * Beat.X - 0.42 * (1 + 0.12 * cos(Beat.Y - 0.9))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent2_2" Visible="false" Style="Anchor" X="Home.X - 0.4 * Skirt.X - 0.04 + 0.11 * sin(Beat.Y - 0.6)" Y="Home.Y + 0.3 * sin(Beat.Y - 2.2) - 0.15 - 0.15 * Beat.X - 0.84 * (1 + 0.12 * cos(Beat.Y - 1.8))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent2_3" Visible="false" Style="Anchor" X="Home.X - 0.4 * Skirt.X - 0.06 + 0.165 * sin(Beat.Y - 1.5)" Y="Home.Y + 0.3 * sin(Beat.Y - 2.7) - 0.15 - 0.15 * Beat.X - 1.26 * (1 + 0.12 * cos(Beat.Y - 2.7))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent2_4" Visible="false" Style="Anchor" X="Home.X - 0.4 * Skirt.X - 0.08 + 0.22 * sin(Beat.Y - 2.4)" Y="Home.Y + 0.3 * sin(Beat.Y - 3.2) - 0.15 - 0.15 * Beat.X - 1.68 * (1 + 0.12 * cos(Beat.Y - 3.6))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent2_5" Visible="false" Style="Anchor" X="Home.X - 0.4 * Skirt.X - 0.1 + 0.275 * sin(Beat.Y - 3.3)" Y="Home.Y + 0.3 * sin(Beat.Y - 3.7) - 0.15 - 0.15 * Beat.X - 2.1 * (1 + 0.12 * cos(Beat.Y - 4.5))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <BezierPath Name="Tentacle2" Path="C a a C a a C a a C a a C a a C a a">
+      <Sides Style="Tentacle2" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="Rim2" />
+      <Dependency Name="Tent2_1" />
+      <Dependency Name="Tent2_2" />
+      <Dependency Name="Tent2_3" />
+      <Dependency Name="Tent2_4" />
+      <Dependency Name="Tent2_5" />
+    </BezierPath>
+    <PointByCoordinates Name="Tent3_1" Visible="false" Style="Anchor" X="Home.X + 0.055 * sin(Beat.Y + 0.9)" Y="Home.Y + 0.3 * sin(Beat.Y - 1.7) - 0.15 - 0.15 * Beat.X - 0.46 * (1 + 0.12 * cos(Beat.Y - 0.9))">
+      <Dependency Name="Home" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent3_2" Visible="false" Style="Anchor" X="Home.X + 0.11 * sin(Beat.Y)" Y="Home.Y + 0.3 * sin(Beat.Y - 2.2) - 0.15 - 0.15 * Beat.X - 0.92 * (1 + 0.12 * cos(Beat.Y - 1.8))">
+      <Dependency Name="Home" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent3_3" Visible="false" Style="Anchor" X="Home.X + 0.165 * sin(Beat.Y - 0.9)" Y="Home.Y + 0.3 * sin(Beat.Y - 2.7) - 0.15 - 0.15 * Beat.X - 1.38 * (1 + 0.12 * cos(Beat.Y - 2.7))">
+      <Dependency Name="Home" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent3_4" Visible="false" Style="Anchor" X="Home.X + 0.22 * sin(Beat.Y - 1.8)" Y="Home.Y + 0.3 * sin(Beat.Y - 3.2) - 0.15 - 0.15 * Beat.X - 1.84 * (1 + 0.12 * cos(Beat.Y - 3.6))">
+      <Dependency Name="Home" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent3_5" Visible="false" Style="Anchor" X="Home.X + 0.275 * sin(Beat.Y - 2.7)" Y="Home.Y + 0.3 * sin(Beat.Y - 3.7) - 0.15 - 0.15 * Beat.X - 2.3 * (1 + 0.12 * cos(Beat.Y - 4.5))">
+      <Dependency Name="Home" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <BezierPath Name="Tentacle3" Path="C a a C a a C a a C a a C a a C a a">
+      <Sides Style="Tentacle3" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="Rim4" />
+      <Dependency Name="Tent3_1" />
+      <Dependency Name="Tent3_2" />
+      <Dependency Name="Tent3_3" />
+      <Dependency Name="Tent3_4" />
+      <Dependency Name="Tent3_5" />
+    </BezierPath>
+    <PointByCoordinates Name="Tent4_1" Visible="false" Style="Anchor" X="Home.X + 0.4 * Skirt.X + 0.02 + 0.055 * sin(Beat.Y + 1.5)" Y="Home.Y + 0.3 * sin(Beat.Y - 1.7) - 0.15 - 0.15 * Beat.X - 0.43 * (1 + 0.12 * cos(Beat.Y - 0.9))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent4_2" Visible="false" Style="Anchor" X="Home.X + 0.4 * Skirt.X + 0.04 + 0.11 * sin(Beat.Y + 0.6)" Y="Home.Y + 0.3 * sin(Beat.Y - 2.2) - 0.15 - 0.15 * Beat.X - 0.86 * (1 + 0.12 * cos(Beat.Y - 1.8))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent4_3" Visible="false" Style="Anchor" X="Home.X + 0.4 * Skirt.X + 0.06 + 0.165 * sin(Beat.Y - 0.3)" Y="Home.Y + 0.3 * sin(Beat.Y - 2.7) - 0.15 - 0.15 * Beat.X - 1.29 * (1 + 0.12 * cos(Beat.Y - 2.7))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent4_4" Visible="false" Style="Anchor" X="Home.X + 0.4 * Skirt.X + 0.08 + 0.22 * sin(Beat.Y - 1.2)" Y="Home.Y + 0.3 * sin(Beat.Y - 3.2) - 0.15 - 0.15 * Beat.X - 1.72 * (1 + 0.12 * cos(Beat.Y - 3.6))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent4_5" Visible="false" Style="Anchor" X="Home.X + 0.4 * Skirt.X + 0.1 + 0.275 * sin(Beat.Y - 2.1)" Y="Home.Y + 0.3 * sin(Beat.Y - 3.7) - 0.15 - 0.15 * Beat.X - 2.15 * (1 + 0.12 * cos(Beat.Y - 4.5))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <BezierPath Name="Tentacle4" Path="C a a C a a C a a C a a C a a C a a">
+      <Sides Style="Tentacle4" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="Rim6" />
+      <Dependency Name="Tent4_1" />
+      <Dependency Name="Tent4_2" />
+      <Dependency Name="Tent4_3" />
+      <Dependency Name="Tent4_4" />
+      <Dependency Name="Tent4_5" />
+    </BezierPath>
+    <PointByCoordinates Name="Tent5_1" Visible="false" Style="Anchor" X="Home.X + 0.8 * Skirt.X + 0.04 + 0.055 * sin(Beat.Y + 2.1)" Y="Home.Y + 0.3 * sin(Beat.Y - 1.7) - 0.15 - 0.15 * Beat.X - 0.36 * (1 + 0.12 * cos(Beat.Y - 0.9))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent5_2" Visible="false" Style="Anchor" X="Home.X + 0.8 * Skirt.X + 0.08 + 0.11 * sin(Beat.Y + 1.2)" Y="Home.Y + 0.3 * sin(Beat.Y - 2.2) - 0.15 - 0.15 * Beat.X - 0.72 * (1 + 0.12 * cos(Beat.Y - 1.8))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent5_3" Visible="false" Style="Anchor" X="Home.X + 0.8 * Skirt.X + 0.12 + 0.165 * sin(Beat.Y + 0.3)" Y="Home.Y + 0.3 * sin(Beat.Y - 2.7) - 0.15 - 0.15 * Beat.X - 1.08 * (1 + 0.12 * cos(Beat.Y - 2.7))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent5_4" Visible="false" Style="Anchor" X="Home.X + 0.8 * Skirt.X + 0.16 + 0.22 * sin(Beat.Y - 0.6)" Y="Home.Y + 0.3 * sin(Beat.Y - 3.2) - 0.15 - 0.15 * Beat.X - 1.44 * (1 + 0.12 * cos(Beat.Y - 3.6))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tent5_5" Visible="false" Style="Anchor" X="Home.X + 0.8 * Skirt.X + 0.2 + 0.275 * sin(Beat.Y - 1.5)" Y="Home.Y + 0.3 * sin(Beat.Y - 3.7) - 0.15 - 0.15 * Beat.X - 1.8 * (1 + 0.12 * cos(Beat.Y - 4.5))">
+      <Dependency Name="Home" />
+      <Dependency Name="Skirt" />
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <BezierPath Name="Tentacle5" Path="C a a C a a C a a C a a C a a C a a">
+      <Sides Style="Tentacle5" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="Rim8" />
+      <Dependency Name="Tent5_1" />
+      <Dependency Name="Tent5_2" />
+      <Dependency Name="Tent5_3" />
+      <Dependency Name="Tent5_4" />
+      <Dependency Name="Tent5_5" />
+    </BezierPath>
+    <Label Name="Squeeze" Visible="false" Text="[0.9 + 0.35 * Beat.X]" X="-1.9" Y="2.2">
+      <Dependency Name="Beat" />
+    </Label>
+    <BezierPath Name="Bell" Style="BellFill" Closed="true" Filled="true" Tension="#18" Path="C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a C a a">
+      <Sides Style="BellRim" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="Dome0" />
+      <Dependency Name="Dome1" />
+      <Dependency Name="Dome2" />
+      <Dependency Name="Dome3" />
+      <Dependency Name="Dome4" />
+      <Dependency Name="Dome5" />
+      <Dependency Name="Dome6" />
+      <Dependency Name="Dome7" />
+      <Dependency Name="Dome8" />
+      <Dependency Name="Rim0" />
+      <Dependency Name="Rim1" />
+      <Dependency Name="Rim2" />
+      <Dependency Name="Rim3" />
+      <Dependency Name="Rim4" />
+      <Dependency Name="Rim5" />
+      <Dependency Name="Rim6" />
+      <Dependency Name="Rim7" />
+      <Dependency Name="Rim8" />
+      <Dependency Name="Squeeze" />
+    </BezierPath>
+    <PointByCoordinates Name="Gonad" Visible="false" X="0.15 + 0.03 * Beat.X" Y="0.085 + 0.055 * Beat.X">
+      <Dependency Name="Beat" />
+    </PointByCoordinates>
+    <Label Name="Hollow" Visible="false" Text="[0.56 - 0.28 * Beat.X]" X="-1.9" Y="2.2">
+      <Dependency Name="Beat" />
+    </Label>
+    <PointByCoordinates Name="GonadBack" Visible="false" X="Body.X" Y="Body.Y + 0.62 * Size.Y">
+      <Dependency Name="Body" />
+      <Dependency Name="Size" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadBackE" Visible="false" X="GonadBack.X + 0.8 * Gonad.X" Y="GonadBack.Y">
+      <Dependency Name="GonadBack" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadBackN" Visible="false" X="GonadBack.X" Y="GonadBack.Y + 0.8 * Gonad.Y">
+      <Dependency Name="GonadBack" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadBackW" Visible="false" X="GonadBack.X - 0.8 * Gonad.X" Y="GonadBack.Y">
+      <Dependency Name="GonadBack" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadBackS" Visible="false" X="GonadBack.X" Y="GonadBack.Y - 0.8 * Gonad.Y">
+      <Dependency Name="GonadBack" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <DilatedPoint Name="GonadBackInE" Visible="false">
+      <Dependency Name="GonadBackE" />
+      <Dependency Name="GonadBack" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <DilatedPoint Name="GonadBackInN" Visible="false">
+      <Dependency Name="GonadBackN" />
+      <Dependency Name="GonadBack" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <DilatedPoint Name="GonadBackInW" Visible="false">
+      <Dependency Name="GonadBackW" />
+      <Dependency Name="GonadBack" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <DilatedPoint Name="GonadBackInS" Visible="false">
+      <Dependency Name="GonadBackS" />
+      <Dependency Name="GonadBack" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <BezierPath Name="GonadBackIn" Closed="true" Path="C a a C a a C a a C a a">
+      <Sides Style="GonadInside" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="GonadBackInE" />
+      <Dependency Name="GonadBackInN" />
+      <Dependency Name="GonadBackInW" />
+      <Dependency Name="GonadBackInS" />
+    </BezierPath>
+    <BezierPath Name="GonadBackRing" Style="GonadFill" Closed="true" Filled="true" Path="C a a C a a C a a C a a">
+      <Sides Style="GonadEdge" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="GonadBackE" />
+      <Dependency Name="GonadBackN" />
+      <Dependency Name="GonadBackW" />
+      <Dependency Name="GonadBackS" />
+      <Dependency Name="GonadBackIn" />
+    </BezierPath>
+    <PointByCoordinates Name="GonadLeft" Visible="false" X="Body.X - 0.44 * Size.X" Y="Body.Y + 0.42 * Size.Y">
+      <Dependency Name="Body" />
+      <Dependency Name="Size" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadLeftE" Visible="false" X="GonadLeft.X + 1 * Gonad.X" Y="GonadLeft.Y">
+      <Dependency Name="GonadLeft" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadLeftN" Visible="false" X="GonadLeft.X" Y="GonadLeft.Y + 1 * Gonad.Y">
+      <Dependency Name="GonadLeft" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadLeftW" Visible="false" X="GonadLeft.X - 1 * Gonad.X" Y="GonadLeft.Y">
+      <Dependency Name="GonadLeft" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadLeftS" Visible="false" X="GonadLeft.X" Y="GonadLeft.Y - 1 * Gonad.Y">
+      <Dependency Name="GonadLeft" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <DilatedPoint Name="GonadLeftInE" Visible="false">
+      <Dependency Name="GonadLeftE" />
+      <Dependency Name="GonadLeft" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <DilatedPoint Name="GonadLeftInN" Visible="false">
+      <Dependency Name="GonadLeftN" />
+      <Dependency Name="GonadLeft" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <DilatedPoint Name="GonadLeftInW" Visible="false">
+      <Dependency Name="GonadLeftW" />
+      <Dependency Name="GonadLeft" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <DilatedPoint Name="GonadLeftInS" Visible="false">
+      <Dependency Name="GonadLeftS" />
+      <Dependency Name="GonadLeft" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <BezierPath Name="GonadLeftIn" Closed="true" Path="C a a C a a C a a C a a">
+      <Sides Style="GonadInside" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="GonadLeftInE" />
+      <Dependency Name="GonadLeftInN" />
+      <Dependency Name="GonadLeftInW" />
+      <Dependency Name="GonadLeftInS" />
+    </BezierPath>
+    <BezierPath Name="GonadLeftRing" Style="GonadFill" Closed="true" Filled="true" Path="C a a C a a C a a C a a">
+      <Sides Style="GonadEdge" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="GonadLeftE" />
+      <Dependency Name="GonadLeftN" />
+      <Dependency Name="GonadLeftW" />
+      <Dependency Name="GonadLeftS" />
+      <Dependency Name="GonadLeftIn" />
+    </BezierPath>
+    <PointByCoordinates Name="GonadRight" Visible="false" X="Body.X + 0.44 * Size.X" Y="Body.Y + 0.42 * Size.Y">
+      <Dependency Name="Body" />
+      <Dependency Name="Size" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadRightE" Visible="false" X="GonadRight.X + 1 * Gonad.X" Y="GonadRight.Y">
+      <Dependency Name="GonadRight" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadRightN" Visible="false" X="GonadRight.X" Y="GonadRight.Y + 1 * Gonad.Y">
+      <Dependency Name="GonadRight" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadRightW" Visible="false" X="GonadRight.X - 1 * Gonad.X" Y="GonadRight.Y">
+      <Dependency Name="GonadRight" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadRightS" Visible="false" X="GonadRight.X" Y="GonadRight.Y - 1 * Gonad.Y">
+      <Dependency Name="GonadRight" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <DilatedPoint Name="GonadRightInE" Visible="false">
+      <Dependency Name="GonadRightE" />
+      <Dependency Name="GonadRight" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <DilatedPoint Name="GonadRightInN" Visible="false">
+      <Dependency Name="GonadRightN" />
+      <Dependency Name="GonadRight" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <DilatedPoint Name="GonadRightInW" Visible="false">
+      <Dependency Name="GonadRightW" />
+      <Dependency Name="GonadRight" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <DilatedPoint Name="GonadRightInS" Visible="false">
+      <Dependency Name="GonadRightS" />
+      <Dependency Name="GonadRight" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <BezierPath Name="GonadRightIn" Closed="true" Path="C a a C a a C a a C a a">
+      <Sides Style="GonadInside" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="GonadRightInE" />
+      <Dependency Name="GonadRightInN" />
+      <Dependency Name="GonadRightInW" />
+      <Dependency Name="GonadRightInS" />
+    </BezierPath>
+    <BezierPath Name="GonadRightRing" Style="GonadFill" Closed="true" Filled="true" Path="C a a C a a C a a C a a">
+      <Sides Style="GonadEdge" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="GonadRightE" />
+      <Dependency Name="GonadRightN" />
+      <Dependency Name="GonadRightW" />
+      <Dependency Name="GonadRightS" />
+      <Dependency Name="GonadRightIn" />
+    </BezierPath>
+    <PointByCoordinates Name="GonadFront" Visible="false" X="Body.X" Y="Body.Y + 0.22 * Size.Y">
+      <Dependency Name="Body" />
+      <Dependency Name="Size" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadFrontE" Visible="false" X="GonadFront.X + 1.2 * Gonad.X" Y="GonadFront.Y">
+      <Dependency Name="GonadFront" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadFrontN" Visible="false" X="GonadFront.X" Y="GonadFront.Y + 1.2 * Gonad.Y">
+      <Dependency Name="GonadFront" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadFrontW" Visible="false" X="GonadFront.X - 1.2 * Gonad.X" Y="GonadFront.Y">
+      <Dependency Name="GonadFront" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GonadFrontS" Visible="false" X="GonadFront.X" Y="GonadFront.Y - 1.2 * Gonad.Y">
+      <Dependency Name="GonadFront" />
+      <Dependency Name="Gonad" />
+    </PointByCoordinates>
+    <DilatedPoint Name="GonadFrontInE" Visible="false">
+      <Dependency Name="GonadFrontE" />
+      <Dependency Name="GonadFront" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <DilatedPoint Name="GonadFrontInN" Visible="false">
+      <Dependency Name="GonadFrontN" />
+      <Dependency Name="GonadFront" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <DilatedPoint Name="GonadFrontInW" Visible="false">
+      <Dependency Name="GonadFrontW" />
+      <Dependency Name="GonadFront" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <DilatedPoint Name="GonadFrontInS" Visible="false">
+      <Dependency Name="GonadFrontS" />
+      <Dependency Name="GonadFront" />
+      <Dependency Name="Hollow" />
+    </DilatedPoint>
+    <BezierPath Name="GonadFrontIn" Closed="true" Path="C a a C a a C a a C a a">
+      <Sides Style="GonadInside" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="GonadFrontInE" />
+      <Dependency Name="GonadFrontInN" />
+      <Dependency Name="GonadFrontInW" />
+      <Dependency Name="GonadFrontInS" />
+    </BezierPath>
+    <BezierPath Name="GonadFrontRing" Style="GonadFill" Closed="true" Filled="true" Path="C a a C a a C a a C a a">
+      <Sides Style="GonadEdge" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="GonadFrontE" />
+      <Dependency Name="GonadFrontN" />
+      <Dependency Name="GonadFrontW" />
+      <Dependency Name="GonadFrontS" />
+      <Dependency Name="GonadFrontIn" />
+    </BezierPath>
+    <Number Name="SheenOuter" Value="0.92" />
+    <Number Name="SheenTip" Value="0.87" />
+    <Number Name="SheenInner" Value="0.8" />
+    <DilatedPoint Name="Sheen0" Visible="false">
+      <Dependency Name="Dome4" />
+      <Dependency Name="Body" />
+      <Dependency Name="SheenTip" />
+    </DilatedPoint>
+    <DilatedPoint Name="Sheen1" Visible="false">
+      <Dependency Name="Dome5" />
+      <Dependency Name="Body" />
+      <Dependency Name="SheenOuter" />
+    </DilatedPoint>
+    <DilatedPoint Name="Sheen2" Visible="false">
+      <Dependency Name="Dome6" />
+      <Dependency Name="Body" />
+      <Dependency Name="SheenOuter" />
+    </DilatedPoint>
+    <DilatedPoint Name="Sheen3" Visible="false">
+      <Dependency Name="Dome7" />
+      <Dependency Name="Body" />
+      <Dependency Name="SheenTip" />
+    </DilatedPoint>
+    <DilatedPoint Name="Sheen4" Visible="false">
+      <Dependency Name="Dome6" />
+      <Dependency Name="Body" />
+      <Dependency Name="SheenInner" />
+    </DilatedPoint>
+    <DilatedPoint Name="Sheen5" Visible="false">
+      <Dependency Name="Dome5" />
+      <Dependency Name="Body" />
+      <Dependency Name="SheenInner" />
+    </DilatedPoint>
+    <BezierPath Name="Sheen" Style="SheenFill" Closed="true" Filled="true" Tension="1.6" Path="C a a C a a C a a C a a C a a C a a">
+      <Sides Style="SheenEdge" />
+      <Handles Style="JellyHandle" />
+      <Dependency Name="Sheen0" />
+      <Dependency Name="Sheen1" />
+      <Dependency Name="Sheen2" />
+      <Dependency Name="Sheen3" />
+      <Dependency Name="Sheen4" />
+      <Dependency Name="Sheen5" />
+    </BezierPath>
+    <ShowHideControl Name="Dots" Style="GalleryText" Show="false" Text="Dots" X="-1.75" Y="-2.3">
+      <Dependency Name="Dome0" />
+      <Dependency Name="Dome1" />
+      <Dependency Name="Dome2" />
+      <Dependency Name="Dome3" />
+      <Dependency Name="Dome4" />
+      <Dependency Name="Dome5" />
+      <Dependency Name="Dome6" />
+      <Dependency Name="Dome7" />
+      <Dependency Name="Dome8" />
+      <Dependency Name="Rim0" />
+      <Dependency Name="Rim1" />
+      <Dependency Name="Rim2" />
+      <Dependency Name="Rim3" />
+      <Dependency Name="Rim4" />
+      <Dependency Name="Rim5" />
+      <Dependency Name="Rim6" />
+      <Dependency Name="Rim7" />
+      <Dependency Name="Rim8" />
+      <Dependency Name="Tent3_1" />
+      <Dependency Name="Tent3_2" />
+      <Dependency Name="Tent3_3" />
+      <Dependency Name="Tent3_4" />
+      <Dependency Name="Tent3_5" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Moon Jelly" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Drag the pearl around its ring, and the jellyfish swims. Waves run down its tentacles (drag backward, and they run up): each dot swings like the one above it, a moment later.\n\nThe bell is one smooth curve through 18 dots. As it squeezes, the curve pulls tighter and the holes in its rings shrink. Check &quot;Dots,&quot; click a dot, then drag the pearl: its two pink handles, which steer the curve, turn by themselves." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>
