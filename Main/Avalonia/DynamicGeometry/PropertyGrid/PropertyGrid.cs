@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
 using GuiLabs.Undo;
@@ -576,9 +577,13 @@ namespace DynamicGeometry
                 IsHitTestVisible = false
             };
             headerConstruction.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.TextMuted));
+            // a long construction (the expressions of a point by coordinates) wraps where the
+            // text boxes below do, rather than stretching the panel
             Header = new StackPanel()
             {
                 Margin = new Thickness(0, 0, 0, 10),
+                MaxWidth = PropertyGridTheme.MaxTextWidth,
+                HorizontalAlignment = HorizontalAlignment.Left,
                 Children = { headerTitle, headerConstruction }
             };
             ShowHeader();

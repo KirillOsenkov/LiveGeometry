@@ -21,6 +21,12 @@ public static class PropertyGridTheme
 {
     public const double FontSize = 12;
 
+    /// <summary>
+    /// How wide a text box may get before its text wraps; whatever else holds long text (the
+    /// error plate under a box, the figure's construction in the header) wraps at it too
+    /// </summary>
+    public const double MaxTextWidth = 480;
+
     static readonly CornerRadius inputCornerRadius = new CornerRadius(4);
 
     public static void Apply(PropertyGrid propertyGrid)
@@ -45,7 +51,7 @@ public static class PropertyGridTheme
 
                 // a long text (a caption, an error) wraps instead of stretching the panel
                 // across the window
-                new AvaloniaSetter(TextBox.MaxWidthProperty, 480.0),
+                new AvaloniaSetter(TextBox.MaxWidthProperty, MaxTextWidth),
                 new AvaloniaSetter(TextBox.TextWrappingProperty, TextWrapping.Wrap),
                 new AvaloniaSetter(TextBox.PaddingProperty, new Thickness(6, 4, 6, 3)),
                 new AvaloniaSetter(TextBox.MarginProperty, new Thickness(0, 2, 0, 2)),

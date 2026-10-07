@@ -199,7 +199,7 @@ namespace DynamicGeometry
                 // flush with the text box: over its bottom margin and its bottom border line
                 Margin = new Thickness(0, -3, 0, 2),
                 // as wide as a text box may get (PropertyGridTheme), then it wraps
-                MaxWidth = 480,
+                MaxWidth = PropertyGridTheme.MaxTextWidth,
                 IsVisible = false,
                 Child = errorBlock
             };
