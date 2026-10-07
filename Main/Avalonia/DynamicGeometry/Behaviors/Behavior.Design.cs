@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Avalonia;
 
@@ -39,6 +40,16 @@ namespace DynamicGeometry
 
         // the tools on the ribbon: the library's and those the user defined
         static readonly List<Behavior> tools = new List<Behavior>();
+
+        /// <summary>
+        /// The ribbon's instance of a tool, for code that picks the tool itself (Edit figures
+        /// of a show/hide box): the ribbon finds its button by the instance. Null when the
+        /// tools were never loaded (a drawing without the editor).
+        /// </summary>
+        public static T FindTool<T>() where T : Behavior
+        {
+            return tools.OfType<T>().FirstOrDefault();
+        }
 
         /// <summary>Whether a tool on the ribbon other than <paramref name="except"/> is called that, in any case</summary>
         public static bool IsToolNameTaken(string name, Behavior except = null)

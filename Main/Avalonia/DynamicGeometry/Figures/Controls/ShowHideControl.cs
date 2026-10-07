@@ -3,14 +3,24 @@ using System.Linq;
 using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
-    public class ShowHideControl : ControlBase
+    /// <summary>
+    /// A check box on the paper that shows and hides figures: its dependencies, which it is
+    /// not built on (it exists whatever they do) but holds. Made with the Show/hide box tool
+    /// (<see cref="ShowHideCreator"/>), which also changes what one holds (Edit figures).
+    /// </summary>
+    public class ShowHideControl : ControlBase, ISupportRemoveDependency
     {
         public CheckBox Checkbox { get; set; }
+
+        // the box on a plate that shows when it is selected, as a label's does (LabelBase)
+        readonly Border plate = new Border();
+        static readonly IBrush selectionBrush = new SolidColorBrush(Color.FromArgb(50, 51, 153, 255));
 
         // Fluent's check box template colors the caption by state through these resources,
         // over the control's own Foreground; and the outline of the empty box, which is the
@@ -62,7 +72,92 @@ namespace DynamicGeometry
                 Checkbox.Resources[key] = Checkbox.Foreground;
             }
 
+            plate.Background = Selected ? selectionBrush : null;
             base.ApplyStyle();
+        }
+
+        /// <summary>The caption beside the box</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Caption")]
+        public string Text
+        {
+            get
+            {
+                return Checkbox.Content?.ToString() ?? "";
+            }
+            set
+            {
+                Checkbox.Content = value ?? "";
+
+                // a pinned box keeps its corner as the caption changes its size
+                if (Drawing != null)
+                {
+                    UpdateVisual();
+                }
+
+                // (the grid's title quotes the caption)
+                RaisePropertyChanged(nameof(Text));
+            }
+        }
+
+        /// <summary>What the box shows and hides, in words</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Shows and hides")]
+        public string ShownFigures
+        {
+            get
+            {
+                return Describe(Dependencies);
+            }
+        }
+
+        /// <summary>"segment AB, point C and 3 more"; "nothing" for none</summary>
+        public static string Describe(System.Collections.Generic.IList<IFigure> figures)
+        {
+            const int shown = 4;
+            if (figures.Count == 0)
+            {
+                return "nothing";
+            }
+
+            var names = string.Join(", ", figures.Take(shown).Select(ConstructionText.Of));
+            return figures.Count > shown ? names + " and " + (figures.Count - shown) + " more" : names;
+        }
+
+        /// <summary>Picks again what the box shows and hides, with the Show/hide box tool</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Edit figures")]
+        [PropertyGridIcon(PropertyGridIcon.Pencil)]
+        public void EditFigures()
+        {
+            ShowHideCreator.Edit(this);
+        }
+
+        /// <summary>
+        /// A box is dragged by itself: what it holds is not what it is built on (the base
+        /// would move the points of those figures instead, as for a figure built on points)
+        /// </summary>
+        public override bool AllowMove()
+        {
+            return !Locked;
+        }
+
+        /// <summary>
+        /// A figure the box holds, deleted, leaves the box with the others; the last one takes
+        /// the box along. (A box that held several figures built on the point deleted asks
+        /// for each before any has gone, and can be left holding nothing.)
+        /// </summary>
+        public bool CanRemoveDependency(IFigure dependency)
+        {
+            return Dependencies.Count > 1 && Dependencies.Contains(dependency);
+        }
+
+        public IAction GetRemoveDependencyAction(IFigure dependency)
+        {
+            int index = Dependencies.IndexOf(dependency);
+            return new CallMethodAction(
+                () => this.RemoveDependencyCore(index, dependency),
+                () => this.InsertDependencyCore(index, dependency));
         }
 
         public override void ReadXml(XElement element)
@@ -93,7 +188,7 @@ namespace DynamicGeometry
         {
             base.WriteXml(writer);
             writer.WriteAttributeBool("Show", Checkbox.IsChecked == true);
-            writer.WriteAttributeString("Text", Checkbox.Content.ToString());
+            writer.WriteAttributeString("Text", Text);
             if (Pin == LabelPin.None)
             {
                 var coordinates = Coordinates;
@@ -129,9 +224,14 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>The size of the box in pixels, measured now: right after a load there was no layout pass yet</summary>
+        /// <summary>
+        /// The size of the box in pixels, measured now: right after a load there was no layout
+        /// pass yet. The plate's measure is invalidated first: it stays valid when only the
+        /// caption inside it changed.
+        /// </summary>
         public Size MeasureSize()
         {
+            Shape.InvalidateMeasure();
             Shape.Measure(Size.Infinity);
             return Shape.DesiredSize;
         }
@@ -202,7 +302,7 @@ namespace DynamicGeometry
 
         protected override FrameworkElement CreateShape()
         {
-            Checkbox = new CheckBox();
+            Checkbox = new ShowHideCheckBox() { LeavesPressToTool = () => Drawing?.Behavior is Dragger or ShowHideCreator };
 
             // no plate of its own on the canvas; the theme paints the hover
             Checkbox.Background = Brushes.Transparent;
@@ -213,7 +313,51 @@ namespace DynamicGeometry
                     Toggle(Checkbox.IsChecked == true);
                 }
             };
-            return Checkbox;
+            plate.Child = Checkbox;
+            return plate;
+        }
+
+        /// <summary>
+        /// The box on the canvas. Under the Drag tool a press on it is the tool's (it bubbles
+        /// on to the canvas): a click ticks the box there (<see cref="Click"/>) and a drag
+        /// moves it, as a drag moves any figure. Taken by the check box itself, as under the
+        /// other tools, the press never reached the tool, and nothing could move a box. Under
+        /// the Show/hide box tool too, where a click on a box ends the editing of its figures
+        /// and ticks nothing.
+        /// </summary>
+        public class ShowHideCheckBox : CheckBox
+        {
+            public Func<bool> LeavesPressToTool { get; set; }
+
+            protected override Type StyleKeyOverride => typeof(CheckBox);
+
+            protected override void OnPointerPressed(PointerPressedEventArgs e)
+            {
+                if (LeavesPressToTool?.Invoke() == true)
+                {
+                    return;
+                }
+
+                base.OnPointerPressed(e);
+            }
+
+            protected override void OnPointerReleased(PointerReleasedEventArgs e)
+            {
+                if (LeavesPressToTool?.Invoke() == true)
+                {
+                    return;
+                }
+
+                base.OnPointerReleased(e);
+            }
+        }
+
+        /// <summary>A click on the box that reached the Drag tool: ticks or unticks it, an undo step</summary>
+        public void Click()
+        {
+            bool show = Checkbox.IsChecked != true;
+            SetBox(show);
+            Toggle(show);
         }
 
         // the box is being ticked by the program (undo, redo): not a click to record
@@ -252,7 +396,8 @@ namespace DynamicGeometry
                 }));
         }
 
-        void SetBox(bool isChecked)
+        /// <summary>Ticks or unticks the box, leaving its figures as they are</summary>
+        public void SetBox(bool isChecked)
         {
             settingBox = true;
             try

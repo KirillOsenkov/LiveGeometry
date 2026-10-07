@@ -1380,8 +1380,9 @@ public partial class MainView : UserControl
             return;
         }
 
-        // a Mac's "delete" key is Backspace
-        if (e.Key == Key.Delete || e.Key == Key.Back)
+        // a Mac's "delete" key is Backspace; not while a tool picks figures, which are
+        // selected while they are picked (IFigurePicker)
+        if ((e.Key == Key.Delete || e.Key == Key.Back) && !(DrawingHost.CurrentDrawing.Behavior is IFigurePicker))
         {
             DeleteSelection();
         }

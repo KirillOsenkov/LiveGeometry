@@ -127,6 +127,7 @@ public class FigureExplorer : Border
                 drawing.SelectionChanged -= Drawing_SelectionChanged;
                 drawing.ConstructionStepStarted -= Drawing_ConstructionStepStarted;
                 drawing.ConstructionStepComplete -= Drawing_ConstructionStepComplete;
+                drawing.PicksChanged -= Drawing_PicksChanged;
             }
 
             drawing = value;
@@ -140,6 +141,7 @@ public class FigureExplorer : Border
                 drawing.SelectionChanged += Drawing_SelectionChanged;
                 drawing.ConstructionStepStarted += Drawing_ConstructionStepStarted;
                 drawing.ConstructionStepComplete += Drawing_ConstructionStepComplete;
+                drawing.PicksChanged += Drawing_PicksChanged;
             }
 
             // a drawing is attached empty and loaded right after
@@ -234,6 +236,18 @@ public class FigureExplorer : Border
         {
             ScrollIntoView(focused);
         }
+    }
+
+    // a tool picked a figure (IFigurePicker): the picks are selected figures, painted as the selection
+    void Drawing_PicksChanged(object sender, System.EventArgs e)
+    {
+        if (!IsVisible)
+        {
+            return;
+        }
+
+        lastSelection = SelectedFigures();
+        UpdateLook();
     }
 
     void RequestRefresh()
@@ -425,6 +439,17 @@ public class FigureExplorer : Border
         }
 
         Focus();
+
+        // a tool that picks figures takes the row as a click on its figure, hidden or not
+        if (drawing.Behavior is IFigurePicker picker)
+        {
+            focused = row.Figure;
+            picker.TogglePick(row.Figure);
+            UpdateLook();
+            e.Handled = true;
+            return;
+        }
+
         Select(
             row.Figure,
             range: e.KeyModifiers.HasFlag(KeyModifiers.Shift),
@@ -434,6 +459,15 @@ public class FigureExplorer : Border
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
+        var picker = drawing?.Behavior as IFigurePicker;
+        if (picker != null && e.Key == Key.Space && focused != null && rowsByFigure.ContainsKey(focused))
+        {
+            picker.TogglePick(focused);
+            UpdateLook();
+            e.Handled = true;
+            return;
+        }
+
         if (!IsNavigationKey(e.Key) || rows.Count == 0)
         {
             base.OnKeyDown(e);
@@ -449,7 +483,19 @@ public class FigureExplorer : Border
             _ => rows.Count - 1
         };
         target = System.Math.Clamp(target, 0, rows.Count - 1);
-        Select(rows[target].Figure, range: e.KeyModifiers.HasFlag(KeyModifiers.Shift), toggle: false);
+
+        // picking, the keys walk the rows and Space picks: the selection is the tool's
+        if (picker != null)
+        {
+            focused = rows[target].Figure;
+            UpdateLook();
+            ScrollIntoView(focused);
+        }
+        else
+        {
+            Select(rows[target].Figure, range: e.KeyModifiers.HasFlag(KeyModifiers.Shift), toggle: false);
+        }
+
         e.Handled = true;
     }
 

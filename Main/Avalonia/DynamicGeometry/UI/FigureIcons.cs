@@ -52,6 +52,7 @@ public static class FigureIcons
         [typeof(AngleMeasurementBase)] = () => new AngleMeasurementCreator(),
         [typeof(AreaMeasurement)] = () => new AreaMeasurementCreator(),
         [typeof(ControlBase)] = () => new LabelCreator(),
+        [typeof(ShowHideControl)] = () => new ShowHideCreator(),
         [typeof(Slider)] = () => new SliderCreator(),
         [typeof(Number)] = () => new SliderCreator(),
     };

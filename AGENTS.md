@@ -172,7 +172,25 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   its knob starts (or press, drag, release): a number with a handle, taken wherever a tool
   asks for a length or an angle, named in expressions (a, b, c).
 - **Misc**: Bezier - four points; Locus (D) - a point that depends on a point on a figure;
-  Text - a label at the click; Define figure - records a construction as a new tool: click
+  Text - a label at the click; Show/hide box (`ShowHideCreator`) - the figures selected
+  when it is picked are picked already, a click on a figure picks or lets go of it (a
+  name for its figure, a vertex for its polygon; not boxes, axes, Numbers or `Auxiliary`
+  helpers), a click on a row of the Figure List too, the only way to a hidden figure, which
+  then shows as a ghost (`IFigurePicker`: a row click picks instead of selecting, Space
+  picks the keyboard's row, Delete does nothing meanwhile; the picks are selected figures,
+  and `Drawing.PicksChanged`, not `SelectionChanged`, repaints the list, or the side panel
+  would trade the tool's panel for the selection's); a click on the paper puts the box
+  there, ticked if any of its figures shows ("Show"), else unticked ("Hint"), so that
+  nothing changes on screen, selected with the keyboard in its Caption. The box's Edit
+  figures (grid, context menu) starts the tool on it (`ShowHideCreator.Edit`, the ribbon's
+  instance: `Behavior.FindTool`); the paper, the box, Enter or OK ends it, one undo step
+  (the box moves to the end of the list when it takes a later figure). Under the Drag tool
+  a press on a box is the tool's (`ShowHideCheckBox` leaves it to bubble to the canvas):
+  a click ticks it (`ShowHideControl.Click`), Ctrl+click selects it, a drag moves it (a
+  locked box stays put and still ticks; a box the gallery drawing came with is in
+  `Drawing.FixedLabels`, and a drag on it pans); a right click selects it. A figure
+  deleted leaves its box (`ISupportRemoveDependency`), the last one takes the box along.
+  Define figure - records a construction as a new tool: click
   the figures it starts from, OK, click the figures it makes, Create tool (neither step
   goes on with nothing picked); a halo and the hand cursor show what a click would select
   or let go of (`FigureSelector.FindFigureToToggle`). The new tool lands on Misc, named
@@ -2257,7 +2275,9 @@ zooms to fit, where VB6 opened properties (here selecting a figure shows them).
 
 Done since the list was made: the point symmetric about a point and the inverted point are
 Reflect with a point or a circle for the mirror; point shapes and sizes, name colors and dashes
-are per style; show/hide buttons are `ShowHideControl`; settings persist (`SettingsStore`);
+are per style; show/hide buttons are `ShowHideControl`, made with the Show/hide box tool
+(2026-10-07; VB6 dragged its buttons with the right button, here a drag is a drag and a
+click ticks); settings persist (`SettingsStore`);
 the axes are lines to build on (`AxisLine`); a click among overlapping figures is chosen
 with Tab, a tap's in a menu, a selection in the context menu (`ClickChoice`).
 

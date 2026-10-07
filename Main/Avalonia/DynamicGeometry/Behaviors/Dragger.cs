@@ -15,8 +15,9 @@ namespace DynamicGeometry
         protected List<IMovable> moving = null;
         IFigure found = null;
 
-        // A label the press found that can't be dragged: the drag moves the view, a click selects it
-        LabelBase pressedFixedLabel;
+        // A label the press found that can't be dragged: the drag moves the view, a click
+        // selects it (a show/hide box: ticks it)
+        ControlBase pressedFixedLabel;
         List<IFigure> toRecalculate = null;
         Point offsetFromFigureLeftTopCorner;
         protected Point oldCoordinates;
@@ -44,7 +45,8 @@ namespace DynamicGeometry
             Release();
 
 #if !SILVERLIGHT
-            if (e.ClickCount == 2)
+            // (not on a show/hide box, which two quick clicks tick and untick)
+            if (e.ClickCount == 2 && !(Drawing.Figures.HitTest(Coordinates(e, false, false, false)) is ShowHideControl))
             {
                 Drawing.ZoomToFit();
                 return;
@@ -81,7 +83,7 @@ namespace DynamicGeometry
             // explanation away from its heading. Nor does a tap select the caption: the
             // side panel would cover half of a phone for a reader touching the text.
             PinnedLabelScroll captions = null;
-            if (found is LabelBase label && Drawing.FixedLabels.Contains(label))
+            if (found is ControlBase label && Drawing.FixedLabels.Contains(label))
             {
                 bool isCaption = found is Label { Pin: not LabelPin.None };
                 if (isCaption || !label.Selected)
@@ -136,7 +138,10 @@ namespace DynamicGeometry
                         offsetFromFigureLeftTopCorner = offsetFromFigureLeftTopCorner.Minus(oneMovable.Coordinates);
                     }
                     roots = DependencyAlgorithms.FindRoots(f => f.Dependents, found);
-                    if (roots.All(root => (!root.Locked)))
+
+                    // (a show/hide box holds figures, it isn't built on them: locked, it
+                    // stays where it is, and they still move)
+                    if (roots.All(root => !root.Locked || root is ShowHideControl))
                     {
                         moving.Add(oneMovable);
                         roots = found.AsEnumerable();
@@ -304,10 +309,13 @@ namespace DynamicGeometry
         /// </summary>
         IList<IFigure> FindSelectionRoots(List<IFigure> selection, out bool isLocked)
         {
-            var roots = DependencyAlgorithms.FindRoots(f => f.Dependencies, selection)
+            // a show/hide box moves itself, not the figures it holds
+            var boxes = selection.OfType<ShowHideControl>().ToList<IFigure>();
+            var roots = DependencyAlgorithms.FindRoots(f => f.Dependencies, selection.Except(boxes))
                 .Where(root => root is IMovableParts
                     ? selection.Contains(root)
                     : !(root is INumber) && !(root is PointByCoordinates))
+                .Concat(boxes)
                 .ToList();
             var movables = roots
                 .Select(root => root is IMovableParts parts ? parts.WholePart : root as IMovable)
@@ -476,11 +484,19 @@ namespace DynamicGeometry
             }
 
             // a press that didn't become a drag (moving is null when the press was elsewhere:
-            // on the ribbon, in another tool)
+            // on the ribbon, in another tool); on a show/hide box it ticks the box, with Ctrl
+            // it selects it as any figure
             if (moving != null && !startedMoving)
             {
-                UpdateSelection();
-                Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
+                if ((found ?? pressedFixedLabel) is ShowHideControl box && !IsCtrlPressed())
+                {
+                    box.Click();
+                }
+                else
+                {
+                    UpdateSelection();
+                    Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
+                }
             }
 
             Release();
@@ -755,6 +771,12 @@ namespace DynamicGeometry
                     menu.Items.Add(new Avalonia.Controls.Separator());
                 }
 
+                if (figure is ShowHideControl box)
+                {
+                    Add("Edit figures…", box.EditFigures);
+                    menu.Items.Add(new Avalonia.Controls.Separator());
+                }
+
                 Add("Hide", () =>
                 {
                     // A name goes the way its Show name takes it: hidden by itself, it stayed
@@ -800,13 +822,13 @@ namespace DynamicGeometry
                     figure.Selected = false;
                     Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
                 });
-                if (figure is LabelBase fixedLabel && Drawing.FixedLabels.Contains(fixedLabel))
+                if (figure is ControlBase fixedLabel && Drawing.FixedLabels.Contains(fixedLabel))
                 {
                     // a label a gallery drawing came with is held as if locked: unlocked, it
                     // drags as any label does, the caption on its own
                     Add("Unlock", () =>
                     {
-                        foreach (var item in SelectedOrClicked(figure).OfType<LabelBase>())
+                        foreach (var item in SelectedOrClicked(figure).OfType<ControlBase>())
                         {
                             Drawing.FixedLabels.Remove(item);
                         }
