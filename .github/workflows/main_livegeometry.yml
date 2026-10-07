@@ -37,6 +37,25 @@ jobs:
           name: .net-app
           path: publish
 
+  build-windows:
+    # The same publish on Windows, as a check only (the deploy uses the Linux build). Ref12.WasmNative
+    # brings the native toolchain from NuGet, so nothing is installed and the image's Visual Studio
+    # workloads are left alone.
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: dotnet publish
+        run: dotnet publish Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj -c Release -o "${{ github.workspace }}/publish"
+
   deploy:
     runs-on: windows-latest
     needs: build
