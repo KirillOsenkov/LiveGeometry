@@ -253,6 +253,17 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   figure's `UpdateVisual` runs also while it doesn't exist (a circle around a center that
   is nowhere has an infinite radius: the exception ended a drag, which then could not be
   undone; `CircleBase`/`EllipseBase.UpdateVisual` return early).
+- **The page can have no size**: a browser lays it out at 0x0 (a tab opened in the
+  background, DevTools taking the whole height), and a desktop window shrunk to its title
+  bar leaves a canvas of a few pixels. Arithmetic on a layout size (`finalSize.Height -
+  top`, a room beside a caption) goes negative there, and Avalonia's `Arrange` throws
+  "Invalid Arrange rectangle" (the toolbar's tab did, 2026-10-06); a scene chosen for a room
+  of no area is null. Code that lays out or fits by sizes must survive 0 and a few pixels,
+  and a fit must not depend on the view it came from (`GalleryDrawing.Fit` measured the
+  figure's labels at the previous zoom: shrunk and grown back, the figure came back at half
+  its size). Checked by laying `MainView` out at a grid of sizes from 0 to 800 px on every
+  page and side-panel state, with every first-chance exception logged (a temporary
+  in-process probe, as for undo); Windows and headless Edge can't make windows that small.
 - **`Shape.Render` is sealed** (Avalonia 12): a Shape can't draw anything but its geometry.
   `PointMarker` draws a character through an `EmojiGlyph` visual child it measures and arranges
   itself; with no geometry, `Shape.ArrangeOverride` returns size 0 and the shape collapses to

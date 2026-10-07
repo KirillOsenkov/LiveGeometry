@@ -60,8 +60,18 @@ namespace DynamicGeometry
         /// <summary>"Zoom to fit" on a tiny drawing (two points next to each other) stops here</summary>
         public const double MaxFitUnitLength = 200;
 
+        /// <summary>
+        /// The zoom within its limits; a zoom that is no number (worked out from a size of 0
+        /// by 0) is the default one. Math.Min and Math.Max hand NaN on, and a NaN zoom put
+        /// every figure nowhere, which layout throws on.
+        /// </summary>
         public static double ClampUnitLength(double value)
         {
+            if (double.IsNaN(value))
+            {
+                return Settings.DefaultUnitLength;
+            }
+
             return M.Max(MinUnitLength, M.Min(MaxUnitLength, value));
         }
 

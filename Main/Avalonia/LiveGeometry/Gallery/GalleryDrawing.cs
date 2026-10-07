@@ -109,31 +109,51 @@ public static class GalleryDrawing
         var hint = drawing.Figures[HintName] as Label;
         bool IsCaption(IFigure figure) => figure == title || figure == description || figure == hint;
 
-        // a drawing with scenes shows the scene, not its content (ground goes on forever)
-        Rect figure = default;
-        if (!hasScene)
+        // the geometry a show/hide box brings up gets room from the start, or on a phone a
+        // hint appears under the caption. Not its text: that is sized in pixels, so it has
+        // no size in the plane to make room for (a long one only shrank the figure)
+        var revealable = drawing.Figures
+            .OfType<ShowHideControl>()
+            .SelectMany(box => box.Dependencies)
+            .Where(figure => figure is not ControlBase)
+            .ToHashSet();
+        bool TryGetFigure(out Rect bounds, bool withText = true)
         {
-            // the geometry a show/hide box brings up gets room from the start, or on a phone a
-            // hint appears under the caption. Not its text: that is sized in pixels, so it has
-            // no size in the plane to make room for (a long one only shrank the figure)
-            var revealable = drawing.Figures
-                .OfType<ShowHideControl>()
-                .SelectMany(box => box.Dependencies)
-                .Where(figure => figure is not ControlBase)
-                .ToHashSet();
             bool hasFigure = coordinateSystem.TryGetContentBounds(
-                out figure,
-                include: f => !IsCaption(f),
+                out bounds,
+                include: f => !IsCaption(f) && (withText || f is not ControlBase),
                 includeHidden: revealable.Contains);
             if (plane != null)
             {
-                figure = hasFigure ? figure.Union(plane.Value) : plane.Value;
+                bounds = hasFigure ? bounds.Union(plane.Value) : plane.Value;
+                return true;
             }
-            else if (!hasFigure)
-            {
-                coordinateSystem.ZoomExtend();
-                return;
-            }
+
+            return hasFigure;
+        }
+
+        // The text of the figure (a point's name, a measurement) keeps its size in pixels, so
+        // in the plane it is bigger the further the view is zoomed out: measured at whatever
+        // zoom the view had, the fit depended on where the view came from - a window shrunk
+        // to a sliver and grown back fitted the figure at half the size a fresh load did. So
+        // it is measured at a zoom the window alone decides: the figure without its text
+        // across the whole canvas. (Not round after round at the zoom the fit comes to, as
+        // ZoomExtend does: that makes room for all of the text, and on a small screen the
+        // figure shrank under its names.)
+        if (!hasScene && TryGetFigure(out var bare, withText: false) && (bare.Width > 0 || bare.Height > 0))
+        {
+            double zoom = System.Math.Min(
+                bare.Width > 0 ? canvasWidth / bare.Width : double.MaxValue,
+                bare.Height > 0 ? canvasHeight / bare.Height : double.MaxValue);
+            coordinateSystem.SetView(bare.Center, CoordinateSystem.ClampUnitLength(System.Math.Min(zoom, CoordinateSystem.MaxFitUnitLength)));
+        }
+
+        // a drawing with scenes shows the scene, not its content (ground goes on forever)
+        Rect figure = default;
+        if (!hasScene && !TryGetFigure(out figure))
+        {
+            coordinateSystem.ZoomExtend();
+            return;
         }
 
         double margin = CoordinateSystem.FitMarginPixels;
