@@ -421,48 +421,40 @@ public class Program
         Process server = null;
         if (!IsListening(ServePort))
         {
-            server = Process.Start(new ProcessStartInfo("dotnet", "run tools/serve.cs -- Main " + ServePort) { WorkingDirectory = root, UseShellExecute = false });
+            // through the shell and hidden, so that the server inherits none of our handles (see
+            // webauto.cs): started directly it held the pipe our output goes to
+            server = Process.Start(new ProcessStartInfo("dotnet", "run tools/serve.cs -- Main " + ServePort)
+            {
+                WorkingDirectory = root,
+                UseShellExecute = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            });
             WaitFor(ServePort, "the dev server");
         }
 
         try
         {
-            if (!IsListening(EdgePort))
-            {
-                Process.Start(new ProcessStartInfo("dotnet", "run tools/webauto.cs -- start about:blank 1000 700") { WorkingDirectory = root, UseShellExecute = false });
-                WaitFor(EdgePort, "headless Edge");
-            }
-
-            Webauto(root, "nav", "http://localhost:" + ServePort + "/Player/dev/index.html?r=parity" + Environment.TickCount);
-            Thread.Sleep(2500);
+            // start opens the page (in the Edge that is there, or a new one) and returns when it
+            // has loaded. Its own navigation once raced with ours: started in the background, it
+            // put the tab back on about:blank after ours, and the dump ran on an empty page.
+            var page = "http://localhost:" + ServePort + "/Player/dev/index.html?r=parity" + Environment.TickCount;
+            Webauto(root, TimeSpan.FromMinutes(2), "start", page, "1000", "700");
             // (the desktop head has reflection-based JSON serialization off; file names hold no quotes)
+            // The dev page loads the player's scripts after its load event: wait for its player.
+            // One eval that returns the dumps or throws: webauto waits for the promise.
             var namesJson = "[" + string.Join(",", names.Select(name => "\"" + name + "\"")) + "]";
-            var script = "(async () => { window.parityResult = null; const player = [...LiveGeometry.players.values()][0]; const names = " + namesJson + ";"
+            var script = "(async () => { for (let i = 0; i < 300 && !(window.LiveGeometry && LiveGeometry.players.size > 0); i++) { await new Promise(r => setTimeout(r, 100)); }"
+                + " if (!(window.LiveGeometry && LiveGeometry.players.size > 0)) { throw new Error('the dev page has no player after 30 seconds: ' + location.href); }"
+                + " const player = [...LiveGeometry.players.values()][0]; const names = " + namesJson + ";"
                 + " const offset = new Point(" + dragOffset.X.ToStringInvariant() + ", " + dragOffset.Y.ToStringInvariant() + "); const result = {};"
                 + " for (const name of names) { try { const text = await fetch('/" + relativeFolder + "/' + name).then(r => r.text());"
                 + " const drawing = new Drawing(player.canvas); drawing.addFromXml(text); const load = drawing.dump();"
                 + " const points = drawing.figures.list.filter(f => f.constructor === FreePoint);"
                 + " const dependents = DependencyAlgorithms.findDescendants(f => f.dependents, points); dependents.reverse();"
                 + " Actions.move(drawing, points, offset, dependents); result[name] = { load, drag: drawing.dump() }; } catch (e) { result[name] = { error: e.message + ' ' + (e.stack || '').split('\\n')[1] }; } }"
-                + " window.parityResult = JSON.stringify(result); })()";
-            Webauto(root, "eval", script);
-            string json = null;
-            for (int i = 0; i < 120 && json == null; i++)
-            {
-                Thread.Sleep(1000);
-                var answer = Webauto(root, "eval", "window.parityResult || ''").Trim();
-                if (answer.Length > 0)
-                {
-                    json = answer;
-                }
-            }
-
-            if (json == null)
-            {
-                Console.WriteLine("The player did not finish dumping in two minutes.");
-                return null;
-            }
-
+                + " return JSON.stringify(result); })()";
+            // the last line: a build of webauto prints its warnings first, the JSON is one line
+            var json = Webauto(root, TimeSpan.FromMinutes(3), "eval", script).Trim().Split('\n')[^1];
             var result = new Dictionary<string, PlayerDumps>();
             using var document = JsonDocument.Parse(json);
             foreach (var property in document.RootElement.EnumerateObject())
@@ -483,10 +475,15 @@ public class Program
 
             if (stop)
             {
-                Webauto(root, "stop");
+                Webauto(root, TimeSpan.FromMinutes(1), "stop");
             }
 
             return result;
+        }
+        catch (InvalidOperationException ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
         }
         finally
         {
@@ -497,7 +494,12 @@ public class Program
         }
     }
 
-    static string Webauto(string root, params string[] arguments)
+    /// <summary>
+    /// Runs a webauto command and returns what it printed. Throws InvalidOperationException
+    /// when it fails or takes longer than the timeout (it is killed then): nothing here waits
+    /// without end.
+    /// </summary>
+    static string Webauto(string root, TimeSpan timeout, params string[] arguments)
     {
         var info = new ProcessStartInfo("dotnet") { WorkingDirectory = root, UseShellExecute = false, RedirectStandardOutput = true };
         info.ArgumentList.Add("run");
@@ -509,9 +511,28 @@ public class Program
         }
 
         using var process = Process.Start(info);
-        var output = process.StandardOutput.ReadToEnd();
-        process.WaitForExit();
-        return output;
+        var output = process.StandardOutput.ReadToEndAsync();
+        if (!process.WaitForExit(timeout))
+        {
+            process.Kill(entireProcessTree: true);
+            throw new InvalidOperationException("webauto " + arguments[0] + " did not finish in " + timeout.TotalSeconds + " seconds.");
+        }
+
+        // (the output can't outlive the process by much: webauto starts Edge through the shell)
+        if (!output.Wait(TimeSpan.FromSeconds(10)))
+        {
+            throw new InvalidOperationException("webauto " + arguments[0] + " finished, but something still holds its output open.");
+        }
+
+        if (process.ExitCode != 0)
+        {
+            // webauto's own line, after dotnet run's build warnings and before a script's stack
+            var lines = output.Result.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            var error = lines.FirstOrDefault(line => line.StartsWith("error:")) ?? lines.LastOrDefault() ?? "exit code " + process.ExitCode;
+            throw new InvalidOperationException("webauto " + arguments[0] + " failed: " + error.Trim());
+        }
+
+        return output.Result;
     }
 
     static bool IsListening(int port)

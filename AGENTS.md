@@ -2286,6 +2286,12 @@ windows. This is not an exhaustive UI or importer compatibility suite.
 
 Screenshots are PNGs; image pixels are the click coordinates in both tools.
 
+A tool that starts something that outlives it (Edge, `serve.cs`) starts it through the shell
+(`UseShellExecute = true`, hidden): with `UseShellExecute = false` the child inherits every
+inheritable handle, the caller's output pipe included, and a run piped through `tail` waited
+until Edge was closed. A tool that waits on another process or on a page gives it a timeout
+and fails with words (`playerparity.cs`'s `Webauto`).
+
 - `tools/winauto.cs` - any desktop window (the VB6 app, the Avalonia desktop app).
   `list`, `tree <t>`, `menu <t>`, `invoke <t> <menuId>`, `shot <t> out.png [--screen]` (the
   window's own rendering, or what is on the screen there - the only way to see the title bar), `click <t> x y [right|double]`,
