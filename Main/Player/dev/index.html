@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Geometry player - dev</title>
+<style>
+    html, body { height: 100%; margin: 0; font-family: "Segoe UI", system-ui, sans-serif; }
+    body { display: flex; flex-direction: column; }
+    #bar { padding: 6px 10px; display: flex; gap: 10px; align-items: center; background: #DDE0E3; }
+    #bar select, #bar button { font: inherit; }
+    #status { color: #666; font-size: 13px; }
+    #host { flex: 1; min-height: 0; }
+    .livegeometry { width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+<div id="bar">
+    <select id="drawings"></select>
+    <button id="fit">Fit</button>
+    <label><input type="checkbox" id="dark"> dark</label>
+    <label><input type="checkbox" id="wheel" checked> wheel zooms</label>
+    <span id="status"></span>
+</div>
+<div id="host"><div id="player" class="livegeometry"></div></div>
+<script>
+// The player's files, one script each in the order of files.txt (the bundle is the same
+// files concatenated); then the gallery's drawings from the repo, served by tools/serve.cs
+// with Main/ as its root.
+(async function () {
+    const list = await (await fetch("../files.txt", { cache: "no-store" })).text();
+    const stamp = Date.now();
+    for (const file of list.split("\n").map(line => line.trim()).filter(line => line !== "")) {
+        await new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = "../src/" + file + "?v=" + stamp;
+            script.async = false;
+            script.onload = resolve;
+            script.onerror = () => reject(new Error("failed to load " + file));
+            document.head.appendChild(script);
+        });
+    }
+
+    const drawingsFolder = "/Avalonia/LiveGeometry/Gallery/Drawings/";
+    const names = (await (await fetch(drawingsFolder)).json()).filter(name => name.endsWith(".lgf")).sort();
+    const select = document.getElementById("drawings");
+    for (const name of names) {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name.replace(/\.lgf$/, "");
+        select.appendChild(option);
+    }
+
+    const status = document.getElementById("status");
+    const element = document.getElementById("player");
+    let player = null;
+
+    async function open(name) {
+        const text = await (await fetch(drawingsFolder + name)).text();
+        const started = performance.now();
+        try {
+            player = LiveGeometry.play(element, {
+                lgf: text,
+                theme: document.getElementById("dark").checked ? "dark" : "light",
+                wheel: document.getElementById("wheel").checked ? "zoom" : "ctrl"
+            });
+            const figures = player.drawing.figures.length;
+            status.textContent = name + ": " + figures + " figures, " + (performance.now() - started).toFixed(0) + " ms"
+                + (player.loadErrors != null ? " - errors: " + player.loadErrors : "");
+        } catch (error) {
+            status.textContent = name + ": " + error.message;
+            console.error(error);
+        }
+
+        location.hash = name.replace(/\.lgf$/, "");
+    }
+
+    select.addEventListener("change", () => open(select.value));
+    document.getElementById("fit").addEventListener("click", () => player?.fit());
+    document.getElementById("dark").addEventListener("change", () => open(select.value));
+    document.getElementById("wheel").addEventListener("change", () => open(select.value));
+    const wanted = location.hash.substring(1) + ".lgf";
+    select.value = names.includes(wanted) ? wanted : (names.includes("Pythagoras.lgf") ? "Pythagoras.lgf" : names[0]);
+    await open(select.value);
+})();
+</script>
+</body>
+</html>

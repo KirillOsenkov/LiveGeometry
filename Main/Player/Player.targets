@@ -1,0 +1,79 @@
+<Project>
+
+  <!-- The JavaScript player (see AGENTS.md, "The JavaScript player"): the files of src/ in
+       the order of files.txt, concatenated into one script, wrapped so that the host page
+       sees one global (LiveGeometry). Imported by the Browser project (served as
+       /player/<version>/player.js) and the Desktop project (copied beside the exe, for
+       Save as .html). Built before the build itself, only when a source changed. -->
+
+  <PropertyGroup>
+    <PlayerRoot>$(MSBuildThisFileDirectory)</PlayerRoot>
+    <PlayerVersion>1</PlayerVersion>
+    <PlayerOutput>$(MSBuildProjectDirectory)\obj\player\$(PlayerVersion)\player.js</PlayerOutput>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PlayerSource Include="$(PlayerRoot)src\**\*.js" />
+  </ItemGroup>
+
+  <UsingTask TaskName="ConcatenatePlayer" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <ListFile ParameterType="System.String" Required="true" />
+      <SourceRoot ParameterType="System.String" Required="true" />
+      <Version ParameterType="System.String" Required="true" />
+      <OutputFile ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var text = new StringBuilder();
+        text.Append("// Live Geometry player ").Append(Version).Append(" - https://livegeometry.com - built ").Append(DateTime.UtcNow.ToString("yyyy-MM-dd")).Append('\n');
+        text.Append("(() => {\n");
+        int count = 0;
+        foreach (var rawLine in File.ReadAllLines(ListFile))
+        {
+            var line = rawLine.Trim();
+            if (line.Length == 0 || line.StartsWith("#"))
+            {
+                continue;
+            }
+
+            var path = Path.Combine(SourceRoot, line.Replace('/', Path.DirectorySeparatorChar));
+            if (!File.Exists(path))
+            {
+                Log.LogError("The player's files.txt names a file that doesn't exist: " + line);
+                return false;
+            }
+
+            text.Append("\n// ---- ").Append(line).Append(" ----\n");
+            text.Append(File.ReadAllText(path).Replace("\r\n", "\n"));
+            if (text[text.Length - 1] != '\n')
+            {
+                text.Append('\n');
+            }
+
+            count++;
+        }
+
+        text.Append("\n})();\n");
+        Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
+        File.WriteAllText(OutputFile, text.ToString(), new UTF8Encoding(false));
+        Log.LogMessage(MessageImportance.Normal, "Player: " + count + " files into " + OutputFile);
+      ]]></Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name="BuildPlayer"
+          BeforeTargets="BeforeBuild;AssignTargetPaths"
+          Inputs="@(PlayerSource);$(PlayerRoot)files.txt;$(MSBuildThisFileFullPath)"
+          Outputs="$(PlayerOutput)">
+    <ConcatenatePlayer
+        ListFile="$(PlayerRoot)files.txt"
+        SourceRoot="$(PlayerRoot)src"
+        Version="$(PlayerVersion)"
+        OutputFile="$(PlayerOutput)" />
+  </Target>
+
+</Project>

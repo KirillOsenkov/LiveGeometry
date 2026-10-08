@@ -1,0 +1,4 @@
+# Figure kinds the library reads that the player leaves out on purpose, one per line as
+# "Kind: why". tools/playerparity.cs fails on a kind that is in neither the player nor here.
+Hyperlink: fetches another drawing when clicked; only in old files, no tool makes one
+PolygonIntersection: a stub, [Ignore]d in the ribbon

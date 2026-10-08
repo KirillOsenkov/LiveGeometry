@@ -98,6 +98,15 @@ dotnetRuntime.setModuleImports('main.js', {
         emojiFont = null;
         emojiFontDownload = null;
     },
+    // a text file of the site, for PlayerEmbed (the player's script, written into a saved page)
+    fetchText: async (url) => {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(url + ': ' + response.status);
+        }
+
+        return await response.text();
+    },
     // the splash (above): the app's part of the bar, and the app on screen
     reportProgress: (fraction) => showProgress(downloadShare + (1 - downloadShare) * fraction),
     hideSplash: () => hideSplash(),

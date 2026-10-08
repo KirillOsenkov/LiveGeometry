@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Geometry player - hosted</title>
+<!-- The player and a drawing fetched from another origin, as a post on another site does
+     it: the player's script from the host in the query (?host=http://localhost:5006, a
+     publish served by tools/serve.cs; or ?host=https://livegeometry.com after a deploy) and
+     a gallery drawing by URL from the same host (&drawing=Spiral). The fetch of the drawing
+     is the part the browser blocks unless the host sends Access-Control-Allow-Origin
+     (web.config). -->
+<style>
+    body { font-family: sans-serif; max-width: 900px; margin: 24px auto; padding: 0 16px; }
+    .livegeometry { width: 100%; height: 480px; border: 1px solid #ccc; }
+</style>
+</head>
+<body>
+<h1>A drawing from <span id="where"></span></h1>
+<div class="livegeometry"></div>
+<script>
+    // the element is given its drawing before the player's script is written, whichever
+    // way round the page's own listeners and the player's happen to run
+    const host = new URLSearchParams(location.search).get("host") || "https://livegeometry.com";
+    const drawing = new URLSearchParams(location.search).get("drawing") || "Pythagoras";
+    document.getElementById("where").textContent = host;
+    document.querySelector(".livegeometry").dataset.src = host + "/gallery/" + drawing + ".lgf";
+    document.write('<script src="' + host + '/player/1/player.js"><\/script>');
+</script>
+</body>
+</html>

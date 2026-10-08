@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Geometry player - the bundle</title>
+<!-- The bundled player as the Desktop build makes it (Player.targets), played as a page on
+     another site would play it: an embed by URL and an inline one. Serve the repo's Main
+     folder (tools/serve.cs) and build the Desktop project first. -->
+<style>
+    body { font-family: Georgia, serif; max-width: 900px; margin: 24px auto; padding: 0 16px; color: #222; }
+    .livegeometry { width: 100%; height: 420px; border: 1px solid #ccc; margin: 16px 0; }
+</style>
+<script src="../../Avalonia/LiveGeometry.Desktop/bin/Debug/net10.0/player/player.js" defer></script>
+</head>
+<body>
+<h1>A post with two drawings</h1>
+<p>The first is a gallery drawing by its URL (<code>data-src</code>), with the wheel zooming only with Ctrl, as in a post. Drag the yellow points.</p>
+<div class="livegeometry" data-src="../../Avalonia/LiveGeometry/Gallery/Drawings/Pythagoras.lgf"></div>
+<p>The second is written into the page, dark, and its wheel zooms.</p>
+<div class="livegeometry" data-theme="dark" data-wheel="zoom">
+<script type="text/x-livegeometry">
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry">
+  <Viewport Left="-6" Top="4.5" Right="6" Bottom="-4.5" Grid="true" />
+  <Figures>
+    <FreePoint Name="A" X="-3" Y="-2" />
+    <FreePoint Name="B" X="3" Y="-2" />
+    <FreePoint Name="C" X="0" Y="3" />
+    <Polygon Name="ABC">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Segment Name="AB">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="BC">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="AC">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <MidPoint Name="D">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="E">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="F">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <Segment Name="CD">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="AE">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="BF">
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </Segment>
+    <IntersectionPoint Name="G" Algorithm="IntersectLineAndLine">
+      <Dependency Name="CD" />
+      <Dependency Name="AE" />
+    </IntersectionPoint>
+    <PointLabel Name="LabelA" OffsetX="-16" OffsetY="4">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="LabelB" OffsetX="6" OffsetY="4">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="LabelC" OffsetX="6" OffsetY="-18">
+      <Dependency Name="C" />
+    </PointLabel>
+    <PointLabel Name="LabelG" OffsetX="6" OffsetY="-18">
+      <Dependency Name="G" />
+    </PointLabel>
+    <Label Name="Note" X="-5.5" Y="4" Text="The medians meet at G = ([G.X], [G.Y]): a third of the way from the middle of each side.">
+      <Dependency Name="G" />
+    </Label>
+  </Figures>
+</Drawing>
+</script>
+</div>
+<p>Text after the drawings, to see that the page scrolls over them.</p>
+</body>
+</html>

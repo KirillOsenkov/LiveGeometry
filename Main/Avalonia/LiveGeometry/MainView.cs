@@ -1150,16 +1150,7 @@ public partial class MainView : UserControl
     /// <returns>Whether the file was written (see <see cref="TryWriteFile"/>)</returns>
     async Task<bool> WriteDrawing(IStorageFile file)
     {
-        // A construction under way is not in the drawing yet: its point following the
-        // cursor and its preview are figures like any other while it lasts, and went into
-        // the file ("TempPoint", half a polygon). It is put away, as Escape does.
-        var drawing = DrawingHost.CurrentDrawing;
-        if (DrawingHost.DrawingControl.ConstructionInProgress || drawing.IsRecordingTransaction)
-        {
-            drawing.Behavior?.Restart();
-        }
-
-        return await TryWriteFile(file, new System.Text.UTF8Encoding(false).GetBytes(drawing.SaveAsText()));
+        return await TryWriteFile(file, new System.Text.UTF8Encoding(false).GetBytes(DrawingTextToSave()));
     }
 
     // a file is being written: what the system says against it is said in words, not reported

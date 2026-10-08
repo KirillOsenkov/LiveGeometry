@@ -28,6 +28,12 @@ public partial class MainView
         MimeTypes = new[] { "image/svg+xml" }
     };
 
+    static readonly FilePickerFileType HtmlFileType = new("HTML page")
+    {
+        Patterns = new[] { "*.html" },
+        MimeTypes = new[] { "text/html" }
+    };
+
     MainToolbarButton ExportButton;
 
     /// <summary>
@@ -50,8 +56,10 @@ public partial class MainView
         Add("Save as .lgf", SaveDrawingAs);
         Add("Save as .png", SaveAsPng);
         Add("Save as .svg", SaveAsSvg);
+        Add("Save as .html", SaveAsHtml);
         menu.Items.Add(new Separator());
         Add("Copy image", CopyImage);
+        Add("Copy embed code", CopyEmbedCode);
 
         // the button stays down while its menu is open
         menu.Closed += (s, e) => ExportButton.IsChecked = false;
@@ -114,6 +122,70 @@ public partial class MainView
             {
                 DrawingHost.ShowHint("Saved " + file.Name);
             }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// The drawing as Save writes it. A construction under way is not in the drawing yet:
+    /// its point following the cursor and its preview are figures like any other while it
+    /// lasts, and went into the file ("TempPoint", half a polygon). It is put away, as
+    /// Escape does.
+    /// </summary>
+    string DrawingTextToSave()
+    {
+        var drawing = DrawingHost.CurrentDrawing;
+        if (DrawingHost.DrawingControl.ConstructionInProgress || drawing.IsRecordingTransaction)
+        {
+            drawing.Behavior?.Restart();
+        }
+
+        return drawing.SaveAsText();
+    }
+
+    /// <summary>The drawing's title for a page: the gallery's, or the file's name</summary>
+    string ExportTitle
+    {
+        get
+        {
+            return CurrentSample != null ? CurrentSample.Title : Path.GetFileNameWithoutExtension(OwnFileName ?? "drawing");
+        }
+    }
+
+    /// <summary>
+    /// A web page of its own, the player written into it (PlayerEmbed.CreatePage): one file
+    /// that plays from anywhere, a disk included
+    /// </summary>
+    void SaveAsHtml()
+    {
+        SaveImage(
+            "Save as HTML page",
+            "html",
+            HtmlFileType,
+            async () =>
+            {
+                var page = PlayerEmbed.CreatePage(ExportTitle, DrawingTextToSave(), await PlayerEmbed.OpenPlayerScript());
+                return new System.Text.UTF8Encoding(false).GetBytes(page);
+            });
+    }
+
+    /// <summary>
+    /// The embed snippet on the clipboard (PlayerEmbed.CreateSnippet): the drawing inside
+    /// an element, played by the script on livegeometry.com; to paste into any HTML page.
+    /// (GitHub's READMEs, issues and wikis strip scripts: there, a picture linking to a
+    /// page that holds the snippet is the way.)
+    /// </summary>
+    void CopyEmbedCode()
+    {
+        try
+        {
+            // as tall as the drawing is on screen now, in the page's pixels
+            int height = (int)System.Math.Max(240, System.Math.Round(DrawingHost.DrawingControl.Bounds.Height));
+            Clipboard.SetText(PlayerEmbed.CreateSnippet(DrawingTextToSave(), height));
+            DrawingHost.ShowHint("Embed code copied: paste it into any HTML page.");
         }
         catch (Exception ex)
         {

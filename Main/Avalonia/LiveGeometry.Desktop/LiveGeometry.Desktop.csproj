@@ -15,9 +15,14 @@
     <ProjectReference Include="..\LiveGeometry\LiveGeometry.csproj" />
   </ItemGroup>
 
+  <!-- the JavaScript player, concatenated from Main/Player/src before the build -->
+  <Import Project="..\..\Player\Player.targets" />
+
   <ItemGroup>
     <!-- the emoji font, read on first use (EmojiFont) -->
     <None Include="..\Fonts\Twemoji.Mozilla.ttf" Link="Fonts\Twemoji.Mozilla.ttf" CopyToOutputDirectory="PreserveNewest" />
+    <!-- the player, read by Save as .html (PlayerEmbed), which writes it into the page -->
+    <None Include="$(PlayerOutput)" Link="player\player.js" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

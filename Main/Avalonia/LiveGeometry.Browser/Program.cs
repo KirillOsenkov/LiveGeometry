@@ -22,6 +22,7 @@ internal sealed partial class Program
             // a reload, or another visit, finds the user's drawing where it was left
             MainView.KeepsOwnDrawing = true;
             DynamicGeometry.EmojiFont.Open = OpenEmojiFont;
+            PlayerEmbed.OpenPlayerScript = () => FetchText("player/" + PlayerEmbed.Version + "/player.js");
             SplashScreen.Attach(HideSplash, ReportSplashProgress);
             if (args.Length > 0 && args[0].Contains("bench=expressions"))
             {
@@ -74,4 +75,9 @@ internal sealed partial class Program
 
     [JSImport("copyEmojiFont", "main.js")]
     private static partial void CopyEmojiFont([JSMarshalAs<JSType.MemoryView>] Span<byte> target);
+
+    // a text file of the site (the player's script, for Save as .html)
+    [JSImport("fetchText", "main.js")]
+    [return: JSMarshalAs<JSType.Promise<JSType.String>>]
+    private static partial Task<string> FetchText(string url);
 }

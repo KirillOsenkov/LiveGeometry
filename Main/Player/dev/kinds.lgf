@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry">
+  <Viewport Left="-12" Top="8" Right="12" Bottom="-8" Grid="true" />
+  <Styles>
+    <LineStyle Color="#FF2F7BD6" StrokeWidth="2" Name="Blue" />
+    <LineStyle Color="#FFD83B3B" StrokeWidth="2" Dash="Dash" Name="RedDashed" />
+    <ShapeStyle Fill="#60FFC000" IsFilled="true" Color="#FF806000" StrokeWidth="1.5" Name="Gold" />
+    <ShapeStyle Fill="#4040A0FF" IsFilled="true" Color="#FF2040A0" StrokeWidth="1.5" Name="Sky" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="O" X="-8" Y="3" />
+    <FreePoint Name="A" X="-6" Y="3" />
+    <RegularPolygon Name="p" Sides="6" Style="Gold">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </RegularPolygon>
+    <PointOnFigure Name="P" Parameter="0.4">
+      <Dependency Name="p" Part="Side3" />
+    </PointOnFigure>
+    <Segment Name="Diagonal" Style="RedDashed">
+      <Dependency Name="A" />
+      <Dependency Name="p" Part="Vertex4" />
+    </Segment>
+    <FreePoint Name="B" X="-2" Y="6" />
+    <FreePoint Name="C" X="0" Y="4" />
+    <FreePoint Name="D" X="2" Y="7" />
+    <FreePoint Name="E" X="4" Y="5" />
+    <Polyline Name="BCDE" Style="Blue">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+    </Polyline>
+    <LineByEquation Name="g" m="0.5" b="-2" />
+    <LineByEquation Name="h" A="1" B="1" C="3" Style="RedDashed" />
+    <CircleByEquation Name="c" X="6" Y="-3" R="2.5" Style="Sky" />
+    <FreePoint Name="F" X="7" Y="3" />
+    <Number Name="n1" Value="30" />
+    <LineAtAngle Name="k" Style="Blue">
+      <Dependency Name="F" />
+      <Dependency Name="n1" />
+    </LineAtAngle>
+    <FreePoint Name="G" X="-9" Y="-2" />
+    <FreePoint Name="H" X="-4" Y="-2" />
+    <Segment Name="GH" Decoration="TwoTicks">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+    </Segment>
+    <FigureLabel Name="GHName" OffsetX="-6" OffsetY="-24">
+      <Dependency Name="GH" />
+    </FigureLabel>
+    <FreePoint Name="I" X="-9" Y="-4" />
+    <FreePoint Name="J" X="-4" Y="-4" />
+    <Segment Name="IJ" Decoration="OneArrow">
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+    </Segment>
+    <FreePoint Name="K" X="-9" Y="-6" />
+    <FreePoint Name="L" X="-4" Y="-6" />
+    <Segment Name="KL" Decoration="Wave">
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </Segment>
+    <FigureLabel Name="gName" OffsetX="4" OffsetY="2">
+      <Dependency Name="g" />
+    </FigureLabel>
+    <FreePoint Name="M" X="0" Y="-4" />
+    <FreePoint Name="N" X="2" Y="-4" />
+    <FreePoint Name="Q" X="0" Y="-2" />
+    <CircleSector Name="Sector" Style="Gold">
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+      <Dependency Name="Q" />
+    </CircleSector>
+    <FreePoint Name="R" X="-2" Y="0" />
+    <FreePoint Name="S" X="2" Y="0" />
+    <FreePoint Name="T" X="0" Y="1.5" />
+    <FreePoint Name="U" X="2" Y="1.5" />
+    <FreePoint Name="V" X="-2" Y="1" />
+    <EllipseArc Name="Arc" Style="Blue">
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+      <Dependency Name="V" />
+    </EllipseArc>
+    <EllipseSegment Name="Lens" Style="Sky">
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+      <Dependency Name="T" />
+      <Dependency Name="V" />
+      <Dependency Name="U" />
+    </EllipseSegment>
+    <HorizontalAngleMeasurement Name="Slope" OffsetX="10" OffsetY="-10">
+      <Dependency Name="G" />
+      <Dependency Name="B" />
+    </HorizontalAngleMeasurement>
+    <PointLabel Name="LabelA" OffsetX="6" OffsetY="-6">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="LabelP" OffsetX="6" OffsetY="-6">
+      <Dependency Name="P" />
+    </PointLabel>
+    <PointLabel Name="LabelF" OffsetX="6" OffsetY="-6">
+      <Dependency Name="F" />
+    </PointLabel>
+  </Figures>
+</Drawing>

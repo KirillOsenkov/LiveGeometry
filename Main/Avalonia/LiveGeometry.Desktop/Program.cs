@@ -65,6 +65,9 @@ sealed class Program
 
         DynamicGeometry.EmojiFont.Open = () => Task.FromResult<Stream>(
             File.OpenRead(Path.Combine(AppContext.BaseDirectory, "Fonts", "Twemoji.Mozilla.ttf")));
+
+        // the JavaScript player, for Save as .html (copied beside the exe by the project)
+        PlayerEmbed.OpenPlayerScript = () => File.ReadAllTextAsync(Path.Combine(AppContext.BaseDirectory, "player", "player.js"));
         App.MainWindowCreated = window =>
         {
             WindowPlacementPersistence.Attach(window);

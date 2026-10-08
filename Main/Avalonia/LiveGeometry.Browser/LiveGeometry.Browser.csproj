@@ -23,9 +23,12 @@
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <!-- the emoji font: the SDK compresses .otf but not .ttf, and brotli takes it from
-         1.5 MB to 0.6 MB (web.config serves the .br) -->
-    <CompressionIncludePatterns>**/*.ttf</CompressionIncludePatterns>
+         1.5 MB to 0.6 MB (web.config serves the .br); the gallery drawings served as files -->
+    <CompressionIncludePatterns>**/*.ttf;**/*.lgf</CompressionIncludePatterns>
   </PropertyGroup>
+
+  <!-- the JavaScript player, concatenated from Main/Player/src before the build -->
+  <Import Project="..\..\Player\Player.targets" />
 
   <ItemGroup>
     <!-- The geometry library is consumed via reflection (Behavior.LoadBehaviors,
@@ -56,6 +59,12 @@
     <Content Include="..\Fonts\Twemoji.Mozilla.ttf" Link="wwwroot\fonts\Twemoji.Mozilla.ttf" />
     <!-- the history page, a static site of its own at /history (web.config routes it) -->
     <Content Include="..\..\..\history\**" Link="wwwroot\history\%(RecursiveDir)%(Filename)%(Extension)" />
+    <!-- the player, for pages anywhere that embed a drawing (PlayerEmbed): a version
+         folder, so that a snippet pasted into a post keeps playing when the format moves on -->
+    <Content Include="$(PlayerOutput)" Link="wwwroot\player\$(PlayerVersion)\player.js" />
+    <!-- the gallery drawings as files, for an embed by URL (data-src): /gallery/<file>.lgf;
+         a path with an extension is a file and never falls through to the app's /gallery/<slug> -->
+    <Content Include="..\LiveGeometry\Gallery\Drawings\*.lgf" Link="wwwroot\gallery\%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
