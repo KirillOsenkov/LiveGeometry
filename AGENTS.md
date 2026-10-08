@@ -1940,7 +1940,9 @@ buttons and checkboxes, 3D, custom tools.
   The Five Platonic Solids (`tools/platonic.cs`, `--alpha` for a translucent variant),
   Aperiodic Monotile, Eight Kites Make a Hat and The Hat Family (`tools/hat.cs -- <the
   Drawings folder>` writes all three: it searches the kite grid for a gap-free patch of hats
-  around the middle one, the seed picks the patch). Captions of these live in their tools
+  around the middle one, the seed picks the patch), Seventeen Squares (`tools/squares17.cs`,
+  then `--rewrite` the folder: Bidwell's packing, centers and angles from the Squares
+  project's witness file). Captions of these live in their tools
   too: change both. A segment is drawn over every polygon whatever the order of the list
   (`ZOrder`, not saved), which is why the kites drawing's grid is polygons. Hidden
   `PointByCoordinates` whose coordinates are expressions are the library's variables.

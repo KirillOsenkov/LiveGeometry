@@ -162,12 +162,8 @@ async Task StartBrowser()
         Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe"),
         Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Microsoft\Edge\Application\msedge.exe"),
     }.FirstOrDefault(File.Exists) ?? throw new Exception("msedge.exe not found");
-    var info = new ProcessStartInfo(edge)
-    {
-        UseShellExecute = false,
-        RedirectStandardOutput = true, // keep the browser from holding our console handles open
-        RedirectStandardError = true,
-    };
+    // through the shell, so that the browser inherits none of our handles (see webauto.cs)
+    var info = new ProcessStartInfo(edge) { UseShellExecute = true };
     foreach (var argument in new[]
     {
         "--headless=new", $"--remote-debugging-port={Port}", $"--user-data-dir={profile}",

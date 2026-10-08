@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-2.9" Top="2.9" Right="2.9" Bottom="-2.9" />
+  <Styles>
+    <ShapeStyle Name="Box" Fill="#00FFFFFF" Color="#00FFFFFF" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" X="-2.3377650468022755" Y="-2.3377650468022755" />
+    <FreePoint Name="B" X="2.3377650468022755" Y="-2.3377650468022755" />
+    <PointByCoordinates Name="U" Visible="false" X="A.X + (B.X - A.X) / 4.67553009360455" Y="A.Y + (B.Y - A.Y) / 4.67553009360455">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C" Visible="false" X="B.X - (B.Y - A.Y)" Y="B.Y + (B.X - A.X)">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D" Visible="false" X="A.X - (B.Y - A.Y)" Y="A.Y + (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S1_1" Visible="false" X="A.X + 0 * (U.X - A.X) - 0 * (U.Y - A.Y)" Y="A.Y + 0 * (U.Y - A.Y) + 0 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S1_2" Visible="false" X="A.X + 1 * (U.X - A.X) - 0 * (U.Y - A.Y)" Y="A.Y + 1 * (U.Y - A.Y) + 0 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S1_3" Visible="false" X="A.X + 1 * (U.X - A.X) - 1 * (U.Y - A.Y)" Y="A.Y + 1 * (U.Y - A.Y) + 1 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S1_4" Visible="false" X="A.X + 0 * (U.X - A.X) - 1 * (U.Y - A.Y)" Y="A.Y + 0 * (U.Y - A.Y) + 1 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S2_1" Visible="false" X="A.X + 1 * (U.X - A.X) - 0 * (U.Y - A.Y)" Y="A.Y + 1 * (U.Y - A.Y) + 0 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S2_2" Visible="false" X="A.X + 2 * (U.X - A.X) - 0 * (U.Y - A.Y)" Y="A.Y + 2 * (U.Y - A.Y) + 0 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S2_3" Visible="false" X="A.X + 2 * (U.X - A.X) - 1 * (U.Y - A.Y)" Y="A.Y + 2 * (U.Y - A.Y) + 1 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S2_4" Visible="false" X="A.X + 1 * (U.X - A.X) - 1 * (U.Y - A.Y)" Y="A.Y + 1 * (U.Y - A.Y) + 1 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S3_1" Visible="false" X="A.X + 0 * (U.X - A.X) - 1 * (U.Y - A.Y)" Y="A.Y + 0 * (U.Y - A.Y) + 1 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S3_2" Visible="false" X="A.X + 1 * (U.X - A.X) - 1 * (U.Y - A.Y)" Y="A.Y + 1 * (U.Y - A.Y) + 1 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S3_3" Visible="false" X="A.X + 1 * (U.X - A.X) - 2 * (U.Y - A.Y)" Y="A.Y + 1 * (U.Y - A.Y) + 2 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S3_4" Visible="false" X="A.X + 0 * (U.X - A.X) - 2 * (U.Y - A.Y)" Y="A.Y + 0 * (U.Y - A.Y) + 2 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S4_1" Visible="false" X="A.X + 0 * (U.X - A.X) - 3.67553009360455 * (U.Y - A.Y)" Y="A.Y + 0 * (U.Y - A.Y) + 3.67553009360455 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S4_2" Visible="false" X="A.X + 1 * (U.X - A.X) - 3.67553009360455 * (U.Y - A.Y)" Y="A.Y + 1 * (U.Y - A.Y) + 3.67553009360455 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S4_3" Visible="false" X="A.X + 1 * (U.X - A.X) - 4.67553009360455 * (U.Y - A.Y)" Y="A.Y + 1 * (U.Y - A.Y) + 4.67553009360455 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S4_4" Visible="false" X="A.X + 0 * (U.X - A.X) - 4.67553009360455 * (U.Y - A.Y)" Y="A.Y + 0 * (U.Y - A.Y) + 4.67553009360455 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S5_1" Visible="false" X="A.X + 3.67553009360455 * (U.X - A.X) - 0 * (U.Y - A.Y)" Y="A.Y + 3.67553009360455 * (U.Y - A.Y) + 0 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S5_2" Visible="false" X="A.X + 4.67553009360455 * (U.X - A.X) - 0 * (U.Y - A.Y)" Y="A.Y + 4.67553009360455 * (U.Y - A.Y) + 0 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S5_3" Visible="false" X="A.X + 4.67553009360455 * (U.X - A.X) - 1 * (U.Y - A.Y)" Y="A.Y + 4.67553009360455 * (U.Y - A.Y) + 1 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S5_4" Visible="false" X="A.X + 3.67553009360455 * (U.X - A.X) - 1 * (U.Y - A.Y)" Y="A.Y + 3.67553009360455 * (U.Y - A.Y) + 1 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S6_1" Visible="false" X="A.X + 2.67553009360455 * (U.X - A.X) - 0 * (U.Y - A.Y)" Y="A.Y + 2.67553009360455 * (U.Y - A.Y) + 0 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S6_2" Visible="false" X="A.X + 3.67553009360455 * (U.X - A.X) - 0 * (U.Y - A.Y)" Y="A.Y + 3.67553009360455 * (U.Y - A.Y) + 0 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S6_3" Visible="false" X="A.X + 3.67553009360455 * (U.X - A.X) - 1 * (U.Y - A.Y)" Y="A.Y + 3.67553009360455 * (U.Y - A.Y) + 1 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S6_4" Visible="false" X="A.X + 2.67553009360455 * (U.X - A.X) - 1 * (U.Y - A.Y)" Y="A.Y + 2.67553009360455 * (U.Y - A.Y) + 1 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S7_1" Visible="false" X="A.X + 3.67553009360455 * (U.X - A.X) - 1 * (U.Y - A.Y)" Y="A.Y + 3.67553009360455 * (U.Y - A.Y) + 1 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S7_2" Visible="false" X="A.X + 4.67553009360455 * (U.X - A.X) - 1 * (U.Y - A.Y)" Y="A.Y + 4.67553009360455 * (U.Y - A.Y) + 1 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S7_3" Visible="false" X="A.X + 4.67553009360455 * (U.X - A.X) - 2 * (U.Y - A.Y)" Y="A.Y + 4.67553009360455 * (U.Y - A.Y) + 2 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S7_4" Visible="false" X="A.X + 3.67553009360455 * (U.X - A.X) - 2 * (U.Y - A.Y)" Y="A.Y + 3.67553009360455 * (U.Y - A.Y) + 2 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S8_1" Visible="false" X="A.X + 3.67553009360455 * (U.X - A.X) - 3.67553009360455 * (U.Y - A.Y)" Y="A.Y + 3.67553009360455 * (U.Y - A.Y) + 3.67553009360455 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S8_2" Visible="false" X="A.X + 4.67553009360455 * (U.X - A.X) - 3.67553009360455 * (U.Y - A.Y)" Y="A.Y + 4.67553009360455 * (U.Y - A.Y) + 3.67553009360455 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S8_3" Visible="false" X="A.X + 4.67553009360455 * (U.X - A.X) - 4.67553009360455 * (U.Y - A.Y)" Y="A.Y + 4.67553009360455 * (U.Y - A.Y) + 4.67553009360455 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S8_4" Visible="false" X="A.X + 3.67553009360455 * (U.X - A.X) - 4.67553009360455 * (U.Y - A.Y)" Y="A.Y + 3.67553009360455 * (U.Y - A.Y) + 4.67553009360455 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S9_1" Visible="false" X="A.X + 1.84732482651029 * (U.X - A.X) - 3.67553009360455 * (U.Y - A.Y)" Y="A.Y + 1.84732482651029 * (U.Y - A.Y) + 3.67553009360455 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S9_2" Visible="false" X="A.X + 2.84732482651029 * (U.X - A.X) - 3.67553009360455 * (U.Y - A.Y)" Y="A.Y + 2.84732482651029 * (U.Y - A.Y) + 3.67553009360455 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S9_3" Visible="false" X="A.X + 2.84732482651029 * (U.X - A.X) - 4.67553009360455 * (U.Y - A.Y)" Y="A.Y + 2.84732482651029 * (U.Y - A.Y) + 4.67553009360455 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S9_4" Visible="false" X="A.X + 1.84732482651029 * (U.X - A.X) - 4.67553009360455 * (U.Y - A.Y)" Y="A.Y + 1.84732482651029 * (U.Y - A.Y) + 4.67553009360455 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S10_1" Visible="false" X="A.X + 3.67553009360455 * (U.X - A.X) - 2.11346013251256 * (U.Y - A.Y)" Y="A.Y + 3.67553009360455 * (U.Y - A.Y) + 2.11346013251256 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S10_2" Visible="false" X="A.X + 4.67553009360455 * (U.X - A.X) - 2.11346013251256 * (U.Y - A.Y)" Y="A.Y + 4.67553009360455 * (U.Y - A.Y) + 2.11346013251256 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S10_3" Visible="false" X="A.X + 4.67553009360455 * (U.X - A.X) - 3.11346013251256 * (U.Y - A.Y)" Y="A.Y + 4.67553009360455 * (U.Y - A.Y) + 3.11346013251256 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S10_4" Visible="false" X="A.X + 3.67553009360455 * (U.X - A.X) - 3.11346013251256 * (U.Y - A.Y)" Y="A.Y + 3.67553009360455 * (U.Y - A.Y) + 3.11346013251256 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S11_1" Visible="false" X="A.X + 0.640176192429266 * (U.X - A.X) - 2 * (U.Y - A.Y)" Y="A.Y + 0.640176192429266 * (U.Y - A.Y) + 2 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S11_2" Visible="false" X="A.X + 1.40840431131504 * (U.X - A.X) - 2.64017619242927 * (U.Y - A.Y)" Y="A.Y + 1.40840431131504 * (U.Y - A.Y) + 2.64017619242927 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S11_3" Visible="false" X="A.X + 0.768228118885769 * (U.X - A.X) - 3.40840431131504 * (U.Y - A.Y)" Y="A.Y + 0.768228118885769 * (U.Y - A.Y) + 3.40840431131504 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S11_4" Visible="false" X="A.X + 0 * (U.X - A.X) - 2.76822811888577 * (U.Y - A.Y)" Y="A.Y + 0 * (U.Y - A.Y) + 2.76822811888577 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S12_1" Visible="false" X="A.X + 1.37201753076997 * (U.X - A.X) - 2.68384127760585 * (U.Y - A.Y)" Y="A.Y + 1.37201753076997 * (U.Y - A.Y) + 2.68384127760585 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S12_2" Visible="false" X="A.X + 2.14024564965574 * (U.X - A.X) - 3.32401747003511 * (U.Y - A.Y)" Y="A.Y + 2.14024564965574 * (U.Y - A.Y) + 3.32401747003511 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S12_3" Visible="false" X="A.X + 1.50006945722648 * (U.X - A.X) - 4.09224558892088 * (U.Y - A.Y)" Y="A.Y + 1.50006945722648 * (U.Y - A.Y) + 4.09224558892088 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S12_4" Visible="false" X="A.X + 0.731841338340707 * (U.X - A.X) - 3.45206939649161 * (U.Y - A.Y)" Y="A.Y + 0.731841338340707 * (U.Y - A.Y) + 3.45206939649161 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S13_1" Visible="false" X="A.X + 1.49271119994263 * (U.X - A.X) - 1.40873371618283 * (U.Y - A.Y)" Y="A.Y + 1.49271119994263 * (U.Y - A.Y) + 1.40873371618283 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S13_2" Visible="false" X="A.X + 2.2609393188284 * (U.X - A.X) - 2.0489099086121 * (U.Y - A.Y)" Y="A.Y + 2.2609393188284 * (U.Y - A.Y) + 2.0489099086121 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S13_3" Visible="false" X="A.X + 1.62076312639913 * (U.X - A.X) - 2.81713802749787 * (U.Y - A.Y)" Y="A.Y + 1.62076312639913 * (U.Y - A.Y) + 2.81713802749787 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S13_4" Visible="false" X="A.X + 0.852535007513362 * (U.X - A.X) - 2.1769618350686 * (U.Y - A.Y)" Y="A.Y + 0.852535007513362 * (U.Y - A.Y) + 2.1769618350686 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S14_1" Visible="false" X="A.X + 2.22455253828333 * (U.X - A.X) - 2.09257499378868 * (U.Y - A.Y)" Y="A.Y + 2.22455253828333 * (U.Y - A.Y) + 2.09257499378868 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S14_2" Visible="false" X="A.X + 2.9927806571691 * (U.X - A.X) - 2.73275118621795 * (U.Y - A.Y)" Y="A.Y + 2.9927806571691 * (U.Y - A.Y) + 2.73275118621795 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S14_3" Visible="false" X="A.X + 2.35260446473984 * (U.X - A.X) - 3.50097930510371 * (U.Y - A.Y)" Y="A.Y + 2.35260446473984 * (U.Y - A.Y) + 3.50097930510371 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S14_4" Visible="false" X="A.X + 1.58437634585407 * (U.X - A.X) - 2.86080311267445 * (U.Y - A.Y)" Y="A.Y + 1.58437634585407 * (U.Y - A.Y) + 2.86080311267445 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S15_1" Visible="false" X="A.X + 2.23126048295327 * (U.X - A.X) - 0.722481392009222 * (U.Y - A.Y)" Y="A.Y + 2.23126048295327 * (U.Y - A.Y) + 0.722481392009222 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S15_2" Visible="false" X="A.X + 2.99948860183904 * (U.X - A.X) - 1.36265758443849 * (U.Y - A.Y)" Y="A.Y + 2.99948860183904 * (U.Y - A.Y) + 1.36265758443849 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S15_3" Visible="false" X="A.X + 2.35931240940978 * (U.X - A.X) - 2.13088570332426 * (U.Y - A.Y)" Y="A.Y + 2.35931240940978 * (U.Y - A.Y) + 2.13088570332426 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S15_4" Visible="false" X="A.X + 1.59108429052401 * (U.X - A.X) - 1.49070951089499 * (U.Y - A.Y)" Y="A.Y + 1.59108429052401 * (U.Y - A.Y) + 1.49070951089499 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S16_1" Visible="false" X="A.X + 2.96310182129398 * (U.X - A.X) - 1.40632266961507 * (U.Y - A.Y)" Y="A.Y + 2.96310182129398 * (U.Y - A.Y) + 1.40632266961507 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S16_2" Visible="false" X="A.X + 3.73132994017975 * (U.X - A.X) - 2.04649886204433 * (U.Y - A.Y)" Y="A.Y + 3.73132994017975 * (U.Y - A.Y) + 2.04649886204433 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S16_3" Visible="false" X="A.X + 3.09115374775048 * (U.X - A.X) - 2.8147269809301 * (U.Y - A.Y)" Y="A.Y + 3.09115374775048 * (U.Y - A.Y) + 2.8147269809301 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S16_4" Visible="false" X="A.X + 2.32292562886471 * (U.X - A.X) - 2.17455078850084 * (U.Y - A.Y)" Y="A.Y + 2.32292562886471 * (U.Y - A.Y) + 2.17455078850084 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S17_1" Visible="false" X="A.X + 3.3480795971652 * (U.X - A.X) - 2.67292986316584 * (U.Y - A.Y)" Y="A.Y + 3.3480795971652 * (U.Y - A.Y) + 2.67292986316584 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S17_2" Visible="false" X="A.X + 3.94463771098498 * (U.X - A.X) - 3.47549974600209 * (U.Y - A.Y)" Y="A.Y + 3.94463771098498 * (U.Y - A.Y) + 3.47549974600209 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S17_3" Visible="false" X="A.X + 3.14206782814873 * (U.X - A.X) - 4.07205785982187 * (U.Y - A.Y)" Y="A.Y + 3.14206782814873 * (U.Y - A.Y) + 4.07205785982187 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S17_4" Visible="false" X="A.X + 2.54550971432895 * (U.X - A.X) - 3.26948797698562 * (U.Y - A.Y)" Y="A.Y + 2.54550971432895 * (U.Y - A.Y) + 3.26948797698562 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F1" Visible="false" X="A.X + 4 * (U.X - A.X) - 0 * (U.Y - A.Y)" Y="A.Y + 4 * (U.Y - A.Y) + 0 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F2" Visible="false" X="A.X + 4 * (U.X - A.X) - 4 * (U.Y - A.Y)" Y="A.Y + 4 * (U.Y - A.Y) + 4 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F3" Visible="false" X="A.X + 0 * (U.X - A.X) - 4 * (U.Y - A.Y)" Y="A.Y + 0 * (U.Y - A.Y) + 4 * (U.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <Polygon Name="ABCD" Style="Box">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Polygon Name="Square1" Style="GradientBlueOutline">
+      <Dependency Name="S1_1" />
+      <Dependency Name="S1_2" />
+      <Dependency Name="S1_3" />
+      <Dependency Name="S1_4" />
+    </Polygon>
+    <Polygon Name="Square2" Style="GradientBlueOutline">
+      <Dependency Name="S2_1" />
+      <Dependency Name="S2_2" />
+      <Dependency Name="S2_3" />
+      <Dependency Name="S2_4" />
+    </Polygon>
+    <Polygon Name="Square3" Style="GradientBlueOutline">
+      <Dependency Name="S3_1" />
+      <Dependency Name="S3_2" />
+      <Dependency Name="S3_3" />
+      <Dependency Name="S3_4" />
+    </Polygon>
+    <Polygon Name="Square4" Style="GradientBlueOutline">
+      <Dependency Name="S4_1" />
+      <Dependency Name="S4_2" />
+      <Dependency Name="S4_3" />
+      <Dependency Name="S4_4" />
+    </Polygon>
+    <Polygon Name="Square5" Style="GradientBlueOutline">
+      <Dependency Name="S5_1" />
+      <Dependency Name="S5_2" />
+      <Dependency Name="S5_3" />
+      <Dependency Name="S5_4" />
+    </Polygon>
+    <Polygon Name="Square6" Style="GradientBlueOutline">
+      <Dependency Name="S6_1" />
+      <Dependency Name="S6_2" />
+      <Dependency Name="S6_3" />
+      <Dependency Name="S6_4" />
+    </Polygon>
+    <Polygon Name="Square7" Style="GradientBlueOutline">
+      <Dependency Name="S7_1" />
+      <Dependency Name="S7_2" />
+      <Dependency Name="S7_3" />
+      <Dependency Name="S7_4" />
+    </Polygon>
+    <Polygon Name="Square8" Style="GradientBlueOutline">
+      <Dependency Name="S8_1" />
+      <Dependency Name="S8_2" />
+      <Dependency Name="S8_3" />
+      <Dependency Name="S8_4" />
+    </Polygon>
+    <Polygon Name="Square9" Style="GradientBlueOutline">
+      <Dependency Name="S9_1" />
+      <Dependency Name="S9_2" />
+      <Dependency Name="S9_3" />
+      <Dependency Name="S9_4" />
+    </Polygon>
+    <Polygon Name="Square10" Style="GradientBlueOutline">
+      <Dependency Name="S10_1" />
+      <Dependency Name="S10_2" />
+      <Dependency Name="S10_3" />
+      <Dependency Name="S10_4" />
+    </Polygon>
+    <Polygon Name="Square11" Style="GradientOrangeOutline">
+      <Dependency Name="S11_1" />
+      <Dependency Name="S11_2" />
+      <Dependency Name="S11_3" />
+      <Dependency Name="S11_4" />
+    </Polygon>
+    <Polygon Name="Square12" Style="GradientOrangeOutline">
+      <Dependency Name="S12_1" />
+      <Dependency Name="S12_2" />
+      <Dependency Name="S12_3" />
+      <Dependency Name="S12_4" />
+    </Polygon>
+    <Polygon Name="Square13" Style="GradientOrangeOutline">
+      <Dependency Name="S13_1" />
+      <Dependency Name="S13_2" />
+      <Dependency Name="S13_3" />
+      <Dependency Name="S13_4" />
+    </Polygon>
+    <Polygon Name="Square14" Style="GradientOrangeOutline">
+      <Dependency Name="S14_1" />
+      <Dependency Name="S14_2" />
+      <Dependency Name="S14_3" />
+      <Dependency Name="S14_4" />
+    </Polygon>
+    <Polygon Name="Square15" Style="GradientOrangeOutline">
+      <Dependency Name="S15_1" />
+      <Dependency Name="S15_2" />
+      <Dependency Name="S15_3" />
+      <Dependency Name="S15_4" />
+    </Polygon>
+    <Polygon Name="Square16" Style="GradientOrangeOutline">
+      <Dependency Name="S16_1" />
+      <Dependency Name="S16_2" />
+      <Dependency Name="S16_3" />
+      <Dependency Name="S16_4" />
+    </Polygon>
+    <Polygon Name="Square17" Style="GradientRedOutline">
+      <Dependency Name="S17_1" />
+      <Dependency Name="S17_2" />
+      <Dependency Name="S17_3" />
+      <Dependency Name="S17_4" />
+    </Polygon>
+    <Segment Name="AB" Style="ThickLine">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="BC" Style="ThickLine">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="CD" Style="ThickLine">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="AD" Style="ThickLine">
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="Four1" Visible="false" Style="DashedRedLine">
+      <Dependency Name="F1" />
+      <Dependency Name="F2" />
+    </Segment>
+    <Segment Name="Four2" Visible="false" Style="DashedRedLine">
+      <Dependency Name="F2" />
+      <Dependency Name="F3" />
+    </Segment>
+    <ShowHideControl Name="Hint" Style="GalleryText" Show="false" Text="Show the 4 × 4 box" X="-2.3377650468022755" Y="-2.5877650468022755">
+      <Dependency Name="Four1" />
+      <Dependency Name="Four2" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Seventeen Squares" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="How small a box can hold 17 squares of side 1, without overlapping? Sixteen fill a 4 × 4 box exactly. Add one more and the neat rows have to give way.\n\nThis is the best anyone has found, by John Bidwell in the 1990s: a box 4.6755 wide, with squares tilted at two different angles and gaps all over. It looks wrong, as if a little shaking would let everything settle into something tidier, but every tidier arrangement needs a bigger box.\n\nIs it the best possible? Nobody knows yet. A computer-assisted proof from 2026 shows that a box narrower than 4.66 can never work, which leaves a gap of less than 0.02.\n\nDrag the yellow corners to turn and resize the box." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

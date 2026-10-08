@@ -224,12 +224,10 @@ static async Task Start(string url, int width, int height, string lang, bool dar
         }.FirstOrDefault(File.Exists) ?? throw new Exception("msedge.exe not found");
 
         var profile = Path.Combine(Path.GetTempPath(), "webauto-edge-profile");
-        var info = new ProcessStartInfo(edge)
-        {
-            UseShellExecute = false,
-            RedirectStandardOutput = true, // keep the browser from holding our console handles open
-            RedirectStandardError = true,
-        };
+        // through the shell, so that the browser inherits none of our handles: started directly
+        // it inherited them all, the pipe our output went to included (redirecting its own output
+        // didn't change that), and whoever read that pipe waited until the browser was closed
+        var info = new ProcessStartInfo(edge) { UseShellExecute = true };
         foreach (var a in new[]
         {
             "--headless=new", $"--remote-debugging-port={DebugPort}", $"--user-data-dir={profile}",

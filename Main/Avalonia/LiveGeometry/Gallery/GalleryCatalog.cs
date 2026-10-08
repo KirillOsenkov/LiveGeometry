@@ -100,6 +100,7 @@ public static class GalleryCatalog
         Item("squares-around-rhombus", "Squares Around a Rhombus"),
         Item("fibonacci-spiral", "Fibonacci Spiral"),
         Item("square-between-squares", "Square Between Squares"),
+        Item("seventeen-squares", "Seventeen Squares"),
         Item("van-aubels-theorem", "Van Aubel's Theorem"),
         Item("bezier", "Bézier Curve"),
         Item("triangle-on-3-lines", "Triangle on Three Lines", "TriangleOn3Lines"),
