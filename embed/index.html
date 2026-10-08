@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Geometry · A drawing on your own page</title>
+<meta name="description" content="Put a live, draggable geometry drawing on any web page with three lines of HTML: a script tag and a div. Every drawing of the Live Geometry gallery is ready to embed, and so is one of your own.">
+<meta property="og:title" content="Live Geometry · A drawing on your own page">
+<meta property="og:description" content="A live, draggable geometry drawing on any web page: three lines of HTML, no iframe, no build step.">
+<meta property="og:url" content="https://livegeometry.com/embed">
+<meta property="og:type" content="website">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="/favicon.ico">
+<!-- A page of its own beside the app, like /history: everything inline but the fonts, no
+     build step. The drawings on it are played by the player (/player/1/player.js) exactly
+     as a page on another site would play them, which is the point: what a reader copies
+     from here is what they are looking at. -->
+<!-- The theme before anything paints: the choice the app stored (it keeps it in local
+     storage under this key, and index.html reads it the same way), else the system's. The
+     sun and moon in the corner change it for the app too. -->
+<script>
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('LiveGeometry.Theme'); } catch (e) { }
+    if (theme !== 'Light' && theme !== 'Dark') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light';
+    }
+    document.documentElement.setAttribute('data-theme', theme.toLowerCase());
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #ffffff;
+    --surface: #f4f5f8;
+    --surface-deep: #e9ebf0;
+    --line: #d9dce3;
+    --ink: #1f2430;
+    --ink-soft: #5b6475;
+    --accent: #2f6fdb;
+    --accent-ink: #ffffff;
+    --code: #f7f8fa;
+    --code-ink: #2a3140;
+    --shadow: 0 1px 2px rgba(20, 30, 50, 0.06), 0 8px 24px rgba(20, 30, 50, 0.08);
+    --sans: "Inter", "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", Consolas, "SF Mono", monospace;
+    color-scheme: light;
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #15181e;
+    --surface: #1c2027;
+    --surface-deep: #242932;
+    --line: #313846;
+    --ink: #e4e7ec;
+    --ink-soft: #9aa3b4;
+    --accent: #6ea0ff;
+    --accent-ink: #0d1220;
+    --code: #1a1e26;
+    --code-ink: #d4d9e3;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--paper);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  code, pre { font-family: var(--mono); font-size: 0.88em; }
+  code { background: var(--surface); padding: 0.1em 0.35em; border-radius: 4px; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* ---------- header ---------- */
+  .top {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .brand:hover { text-decoration: none; color: var(--accent); }
+  .brand svg { width: 26px; height: 26px; }
+
+  .top nav { display: flex; align-items: center; gap: 18px; font-size: 15px; }
+  .top nav a { color: var(--ink-soft); }
+  .top nav a:hover { color: var(--accent); }
+
+  .theme {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--ink-soft);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .theme:hover { color: var(--accent); border-color: var(--accent); }
+  .theme svg { width: 18px; height: 18px; }
+  .theme .moon { display: none; }
+  :root[data-theme="dark"] .theme .sun { display: none; }
+  :root[data-theme="dark"] .theme .moon { display: block; }
+
+  /* ---------- layout ---------- */
+  main { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+  .hero { padding: 56px 0 8px; }
+
+  .hero h1 {
+    font-size: 44px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    margin: 0 0 14px;
+  }
+
+  .hero p.lead { font-size: 20px; color: var(--ink-soft); max-width: 640px; margin: 0 0 28px; }
+
+  h2 { font-size: 26px; letter-spacing: -0.01em; margin: 56px 0 10px; }
+  h3 { font-size: 18px; margin: 28px 0 8px; }
+  p { margin: 0 0 14px; }
+
+  /* every drawing on the page: the element the player draws in */
+  .livegeometry {
+    width: 100%;
+    height: 440px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--paper);
+    box-shadow: var(--shadow);
+  }
+
+  .livegeometry.small { height: 300px; }
+
+  .caption { font-size: 14px; color: var(--ink-soft); margin: 8px 2px 0; }
+
+  /* the snippet: a code block with a copy button, and the picker above it */
+  .snippet { position: relative; margin: 14px 0 6px; }
+
+  .snippet pre {
+    margin: 0;
+    padding: 16px 18px;
+    background: var(--code);
+    color: var(--code-ink);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow-x: auto;
+    line-height: 1.5;
+    white-space: pre;
+  }
+
+  .snippet .attribute { color: var(--accent); }
+
+  .copy {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font: 500 13px var(--sans);
+    color: var(--ink-soft);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .copy:hover { color: var(--accent); border-color: var(--accent); }
+  .copy.done { color: var(--accent); }
+
+  .picker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    margin: 18px 0 0;
+    font-size: 15px;
+  }
+
+  .picker select {
+    font: 15px var(--sans);
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 7px 10px;
+    max-width: 100%;
+  }
+
+  .picker a { white-space: nowrap; }
+
+  /* steps and options */
+  ol.steps { padding-left: 22px; }
+  ol.steps li { margin-bottom: 8px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    margin: 10px 0 24px;
+  }
+
+  th, td { text-align: left; vertical-align: top; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+  th { color: var(--ink-soft); font-weight: 500; }
+  td:first-child { white-space: nowrap; }
+
+  .two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin: 18px 0 8px;
+  }
+
+  @media (max-width: 700px) {
+    .two { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 34px; }
+    .livegeometry { height: 360px; }
+  }
+
+  .note {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 12px 16px;
+    border-radius: 0 10px 10px 0;
+    margin: 18px 0;
+    font-size: 15px;
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 14px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  footer a { margin: 0 8px; }
+</style>
+<!-- The player, as any page would load it. Deferred, so the drawings play once the page is
+     parsed, after the script above and the listener below have had their say. -->
+<script src="/player/1/player.js" defer></script>
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="/" title="Live Geometry">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M16 3 L27.3 22.5 L4.7 22.5 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="16" cy="3" r="2.6" fill="currentColor"/>
+      <circle cx="27.3" cy="22.5" r="2.6" fill="currentColor"/>
+      <circle cx="4.7" cy="22.5" r="2.6" fill="currentColor"/>
+    </svg>
+    Live Geometry
+  </a>
+  <nav>
+    <a href="/">Gallery</a>
+    <a href="/history">History</a>
+    <a href="https://github.com/KirillOsenkov/LiveGeometry">GitHub</a>
+    <button class="theme" id="theme" type="button" title="Light or dark" aria-label="Light or dark">
+      <svg class="sun" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+      </svg>
+      <svg class="moon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+        <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>A drawing on your own page</h1>
+    <p class="lead">Three lines of HTML put a live geometry drawing anywhere: a blog post, a class page, a wiki. Readers drag its points. No iframe, nothing to build, nothing to install.</p>
+    <div class="livegeometry" id="hero" data-src="/gallery/Pythagoras.lgf"></div>
+    <p class="caption">Drag the yellow points. This is the embed shown in the box below, playing on this page.</p>
+  </section>
+
+  <h2 id="three-lines">The three lines</h2>
+  <p>Pick any drawing of the <a href="/">gallery</a>, paste the lines where you want it, and it plays. The first line loads the player once per page, the rest is the drawing.</p>
+  <div class="picker">
+    <label for="drawing">Drawing</label>
+    <select id="drawing" aria-label="Drawing"></select>
+    <a id="open" href="/gallery/pythagoras">Open it in Live Geometry →</a>
+  </div>
+  <div class="snippet">
+    <pre><code id="snippet"></code></pre>
+    <button class="copy" type="button" data-for="snippet">Copy</button>
+  </div>
+  <p class="caption">The element can be any size: give it the width and height you want, and the drawing fits itself in. With no height it would be as tall as nothing, so say one.</p>
+
+  <h2 id="your-own">A drawing of your own</h2>
+  <p>Make it in <a href="/">Live Geometry</a>, then take it with you in either of two ways.</p>
+  <ol class="steps">
+    <li><strong>Export › Copy embed code</strong> puts the three lines on the clipboard with the drawing itself written into them, between a <code>&lt;script type="text/x-livegeometry"&gt;</code> tag and its end. Paste into any HTML. Nothing is fetched but the player, so this works in a page opened from a disk too.</li>
+    <li><strong>Export › Save as .html</strong> writes a page of its own with the player inside: one file that plays from a USB stick, a shared folder, or an email attachment.</li>
+  </ol>
+  <p>Or keep the drawing as a file beside your page, saved with <strong>Save as .lgf</strong>, and point at it: <code>data-src="my-drawing.lgf"</code>. A file next to your page needs no permission to be read; one on another site plays only if that site allows it (see below).</p>
+
+  <h2 id="options">Options</h2>
+  <p>Attributes on the element, all optional. The two drawings below are the first two in use.</p>
+  <table>
+    <tr><th>Attribute</th><th>What it does</th></tr>
+    <tr><td><code>data-src</code></td><td>The address of an <code>.lgf</code> to play, when the drawing is not written into the element.</td></tr>
+    <tr><td><code>data-theme</code></td><td><code>light</code>, <code>dark</code>, or <code>auto</code> (the reader's system setting, the default). The drawing keeps its own colors; the paper and the default styles follow the theme.</td></tr>
+    <tr><td><code>data-wheel</code></td><td><code>zoom</code> makes the mouse wheel zoom the drawing. By default it zooms only with Ctrl held, so a drawing in a post doesn't take the page's scrolling; pinching and a double click (zoom to fit) always work.</td></tr>
+    <tr><td><code>data-fit</code></td><td><code>content</code> fits the figures into the element instead of the view the drawing was saved with.</td></tr>
+    <tr><td><code>data-font</code></td><td>A font family for the text in the drawing. By default it is your page's, so the drawing reads like the text around it.</td></tr>
+  </table>
+  <div class="two">
+    <div>
+      <div class="livegeometry small" data-src="/gallery/Bezier.lgf" data-theme="dark" data-wheel="zoom"></div>
+      <p class="caption"><code>data-theme="dark" data-wheel="zoom"</code></p>
+    </div>
+    <div>
+      <div class="livegeometry small" data-src="/gallery/CircumscribedCircle.lgf" data-theme="light" data-fit="content"></div>
+      <p class="caption"><code>data-theme="light" data-fit="content"</code></p>
+    </div>
+  </div>
+
+  <h2 id="good-to-know">Good to know</h2>
+  <h3>Where the drawing can come from</h3>
+  <p>The gallery's drawings are served for this at <code>https://livegeometry.com/gallery/&lt;Name&gt;.lgf</code>, and any page anywhere may fetch them. A drawing of your own next to your page is fine as well. A drawing on a third site plays only if that site sends the <code>Access-Control-Allow-Origin</code> header, which is the browser's rule, not ours: GitHub Pages and most static hosts do, and a file in a GitHub repository can be reached through <code>raw.githubusercontent.com</code>, which does too. A page opened from a disk can't fetch files at all, which is why the exported code carries the drawing inside.</p>
+  <h3>Where it can't go</h3>
+  <p>GitHub READMEs, issues and wikis strip scripts, as do most comment boxes. There, save a picture (<strong>Export › Save as .png</strong>) and link it to a page that holds the embed.</p>
+  <h3>Fonts and emoji</h3>
+  <p>The text in a drawing is drawn in your page's font, and the emoji some drawings use come from the reader's own device. The player itself is about 95 KB compressed, loaded once per page however many drawings it has.</p>
+  <h3>Versions</h3>
+  <p>The address <code>/player/1/player.js</code> names the player's major version. Fixes reach it as they are made; when the file format one day outgrows it, a <code>/player/2/</code> starts and <code>/player/1/</code> keeps playing what was pasted with it.</p>
+  <h3>From a script</h3>
+  <p>The player is a global, <code>LiveGeometry</code>. <code>LiveGeometry.play(element, { src, theme, wheel, fit })</code> plays a drawing into an element you made, <code>LiveGeometry.players</code> holds every player on the page by element, and a player's <code>applyTheme("dark")</code>, <code>fit()</code> and <code>load(text)</code> do what their names say. The sun and moon in the corner of this page use the first two.</p>
+
+  <div class="note">
+    Live Geometry is free and <a href="https://github.com/KirillOsenkov/LiveGeometry">open source</a>. The drawings of the gallery may be embedded anywhere; a link back is appreciated.
+  </div>
+</main>
+
+<footer>
+  <a href="/">Gallery</a> · <a href="/history">History</a> · <a href="https://github.com/KirillOsenkov/LiveGeometry">GitHub</a>
+</footer>
+
+<script>
+  (function () {
+    // ---------- the theme: the page, every drawing on it, and the app's own setting ----------
+    var root = document.documentElement;
+
+    function systemTheme() {
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function applyTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      if (window.LiveGeometry) {
+        LiveGeometry.players.forEach(function (player) { player.applyTheme(theme); });
+      }
+    }
+
+    // the drawings take the page's theme, not the reader's system setting, before they play
+    function themeDrawings() {
+      var theme = root.getAttribute('data-theme');
+      document.querySelectorAll('.livegeometry').forEach(function (element) {
+        if (!element.hasAttribute('data-theme')) {
+          element.dataset.theme = theme;
+        }
+      });
+    }
+
+    // (before the player's own listener, which was registered later: the deferred script)
+    document.addEventListener('DOMContentLoaded', themeDrawings);
+
+    document.getElementById('theme').addEventListener('click', function () {
+      var theme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(theme);
+      // as the app does: landing on what the system says stores no choice at all
+      try {
+        if (theme === systemTheme()) {
+          localStorage.removeItem('LiveGeometry.Theme');
+        } else {
+          localStorage.setItem('LiveGeometry.Theme', theme === 'dark' ? 'Dark' : 'Light');
+        }
+      } catch (e) { }
+    });
+
+    // ---------- the picker and the snippet ----------
+    var select = document.getElementById('drawing');
+    var snippet = document.getElementById('snippet');
+    var open = document.getElementById('open');
+    var catalog = [];
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function showSnippet(item) {
+      var lines = [
+        '<script src="https://livegeometry.com/player/1/player.js" defer><' + '/script>',
+        '<div class="livegeometry" data-src="https://livegeometry.com/gallery/' + item.file + '" style="width: 100%; height: 440px;"></div>'
+      ];
+      snippet.innerHTML = escapeHtml(lines.join('\n')).replace(/(data-src|style|class|src|defer)(?==|&gt;)/g, '<span class="attribute">$1</span>');
+      snippet.dataset.text = lines.join('\n');
+      open.href = '/gallery/' + item.slug;
+    }
+
+    function choose(slug) {
+      var item = catalog.find(function (entry) { return entry.slug === slug; }) || catalog[0];
+      if (!item) {
+        return;
+      }
+
+      showSnippet(item);
+      if (window.LiveGeometry) {
+        var hero = document.getElementById('hero');
+        var player = LiveGeometry.players.get(hero);
+        if (player) {
+          player.loadFrom('/gallery/' + item.file);
+        }
+      }
+    }
+
+    select.addEventListener('change', function () { choose(select.value); });
+
+    // the catalog, in the gallery's order (written at build from GalleryCatalog.cs)
+    fetch('/gallery/index.json').then(function (response) { return response.json(); }).then(function (items) {
+      catalog = items;
+      items.forEach(function (item) {
+        var option = document.createElement('option');
+        option.value = item.slug;
+        option.textContent = item.title;
+        select.appendChild(option);
+      });
+      select.value = 'pythagoras';
+      choose('pythagoras');
+    }).catch(function () {
+      catalog = [{ slug: 'pythagoras', title: 'Pythagorean Theorem', file: 'Pythagoras.lgf' }];
+      choose('pythagoras');
+    });
+
+    // ---------- copy buttons ----------
+    document.querySelectorAll('.copy').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var source = document.getElementById(button.dataset.for);
+        var text = source.dataset.text || source.textContent;
+        navigator.clipboard.writeText(text).then(function () {
+          button.textContent = 'Copied';
+          button.classList.add('done');
+          setTimeout(function () { button.textContent = 'Copy'; button.classList.remove('done'); }, 1500);
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>

@@ -203,7 +203,12 @@ class Player {
             return;
         }
 
-        if (this.options.fit === "content" || drawing.viewport == null) {
+        // a drawing with a caption (the gallery's, an export of one) is laid out for the
+        // element as the app lays it out for its window, now and on every zoom to fit
+        if (GalleryDrawing.hasCaption(drawing)) {
+            drawing.fitToWindow = () => GalleryDrawing.fit(drawing, GalleryDrawing.getPlane(drawing));
+            drawing.fitToWindow();
+        } else if (this.options.fit === "content" || drawing.viewport == null) {
             drawing.zoomToFit();
         } else {
             const viewport = drawing.viewport;

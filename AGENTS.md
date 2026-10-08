@@ -2026,13 +2026,18 @@ else - no ribbon, grid, list or gallery, no undo, no selection. The Silverlight-
   (light, dark, auto), `data-font`, `data-wheel="zoom"` (else the wheel zooms only with
   Ctrl, so an embed doesn't take a blog's scrolling), `data-fit="content"`. "Save as .html"
   writes the player into the page. Fonts: the host page's, and the browser's own emoji
-  font (none shipped; a character the system lacks is a box).
+  font (none shipped; a character the system lacks is a box). The page that explains all
+  of this to a reader is `/embed` (see "Deployment and caching"): a change to the options
+  or the snippet wants the same change there.
 - **Behavior that differs from the app, on purpose**: no selection, so a Bezier path's
   handles show from a press on an anchor until the next press elsewhere
   (`BezierPath.showHandlesWhileDragging` from `Dragger.mouseDown`), and the Tab choice of
-  a handle under its anchor doesn't exist. The caption of a gallery drawing is laid out by
-  the app (`GalleryDrawing.Fit`), not the library: an export carries the pin and offsets it
-  had on screen, and the player fits the file's viewport (or its scene) into the element.
+  a handle under its anchor doesn't exist. A drawing with a caption (Title and Description
+  labels: the gallery's, an export of one) is laid out for the element as the app lays it
+  out for its window, by a port of the app's `GalleryDrawing.Fit` (`src/host/galleryDrawing.js`,
+  the one twin of a file outside the library), now and on every zoom to fit; an export
+  carries the pin and offsets it had on screen, which a small element would clip. Any
+  other drawing gets the file's viewport (or its scene) fitted into the element.
 - **Working on it**: `dotnet run tools/serve.cs -- Main 5005` (`.claude/launch.json` has it
   as "player-dev") serves the repo's `Main` folder, and
   `http://localhost:5005/Player/dev/index.html#<Drawing>` loads `files.txt` one script at a
@@ -2080,6 +2085,17 @@ else - no ribbon, grid, list or gallery, no undo, no selection. The Silverlight-
   `wwwroot/history/`, and a `web.config` rule answers `/history` with its `index.html` (a folder
   is not a file, so the SPA fallback would otherwise serve the app). `tools/serve.cs` has no
   such rule: locally open `/history/index.html`, or serve the `history` folder itself.
+- **`/embed`** is the same kind of page (`embed/index.html` at the repo root, linked into
+  `wwwroot/embed/`, a `web.config` rule): the hub for putting a drawing on another page,
+  itself played by the player it describes (`/player/1/player.js`, the gallery's `.lgf`
+  files). Its picker lists the gallery from `/gallery/index.json`, which the Browser csproj
+  writes at build from `GalleryCatalog.cs` (`WriteGalleryIndex`: the `Item("slug",
+  "Title"[, "File"])` lines, in order), so the list never has to be kept in step by hand.
+  Its sun and moon read and write the app's `LiveGeometry.Theme` entry, so the choice is
+  one for the site, and set every player on the page (`applyTheme`). To look at it locally
+  it needs the player and the drawings at those absolute paths: serve a publish's `wwwroot`
+  (with the page and `gallery/index.json` copied in after an edit) and open
+  `/embed/index.html`.
 
 ## macOS
 
