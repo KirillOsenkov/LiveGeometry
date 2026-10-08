@@ -5,7 +5,8 @@
 // Separate from webauto.cs on purpose: a running server locks its own executable, which
 // would block rebuilding webauto after an edit.
 //
-//   dotnet run tools/serve.cs -- <dir> [port=5005]      (blocks; run it in the background)
+//   dotnet run tools/serve.cs -- <dir> [port=5005] [--overlay <prefix>=<folder>]... [--reload]
+//   (blocks; run it in the background)
 //
 // For a `dotnet publish` output pass its wwwroot folder. No compression, no caching: this is
 // for functional checks, not for measuring load time (production is IIS with web.config).
@@ -14,18 +15,55 @@
 // http://localhost:5005/Player/dev/index.html. A folder without an index.html is served as
 // it is (a folder's own URL, ending in /, answers with a JSON list of its entries), and
 // every answer carries the CORS header the site sends for the player's files.
+//
+// To work on a static page of the site against a publish (the embed page needs the player
+// and the drawings at their site paths): `--overlay embed=embed` answers everything under
+// /embed/ from the repo's embed folder instead of the publish's copy, and `--reload` makes
+// every HTML page reload itself when a file in an overlay folder changes (a script put
+// before </body> asks /__reload for the folders' change stamp every half second).
+//
+//   dotnet run tools/serve.cs -- C:\temp\LiveGeometry\player\publish\wwwroot 5006 --overlay embed=embed --reload
+//   then open http://localhost:5006/embed/index.html
 
 using System.Net;
+using System.Text;
 using System.Text.Json;
 
-if (args.Length == 0)
+var positional = new List<string>();
+var overlays = new List<(string Prefix, string Folder)>();
+bool liveReload = false;
+for (int i = 0; i < args.Length; i++)
 {
-    Console.WriteLine("usage: serve <dir> [port=5005]");
+    if (args[i] == "--overlay" && i + 1 < args.Length)
+    {
+        var pair = args[++i];
+        int equals = pair.IndexOf('=');
+        if (equals <= 0)
+        {
+            Console.WriteLine("--overlay wants <prefix>=<folder>");
+            return 1;
+        }
+
+        overlays.Add((pair.Substring(0, equals).Trim('/'), Path.GetFullPath(pair.Substring(equals + 1))));
+    }
+    else if (args[i] == "--reload")
+    {
+        liveReload = true;
+    }
+    else
+    {
+        positional.Add(args[i]);
+    }
+}
+
+if (positional.Count == 0)
+{
+    Console.WriteLine("usage: serve <dir> [port=5005] [--overlay <prefix>=<folder>]... [--reload]");
     return 1;
 }
 
-var root = Path.GetFullPath(args[0]);
-int port = args.Length > 1 ? int.Parse(args[1]) : 5005;
+var root = Path.GetFullPath(positional[0]);
+int port = positional.Count > 1 ? int.Parse(positional[1]) : 5005;
 bool isApp = File.Exists(Path.Combine(root, "index.html"));
 if (!isApp)
 {
@@ -40,6 +78,28 @@ var mime = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
     [".lgf"] = "application/xml", [".txt"] = "text/plain",
 };
 
+// the change stamp of the overlay folders, for --reload: any change in any of them moves it
+long changeStamp = DateTime.UtcNow.Ticks;
+var watchers = new List<FileSystemWatcher>();
+foreach (var overlay in overlays)
+{
+    Console.WriteLine($"overlay: /{overlay.Prefix}/ from {overlay.Folder}");
+    if (!liveReload)
+    {
+        continue;
+    }
+
+    var watcher = new FileSystemWatcher(overlay.Folder) { IncludeSubdirectories = true, EnableRaisingEvents = true };
+    FileSystemEventHandler changed = (_, _) => Interlocked.Exchange(ref changeStamp, DateTime.UtcNow.Ticks);
+    watcher.Changed += changed;
+    watcher.Created += changed;
+    watcher.Deleted += changed;
+    watcher.Renamed += (_, _) => Interlocked.Exchange(ref changeStamp, DateTime.UtcNow.Ticks);
+    watchers.Add(watcher);
+}
+
+const string reloadScript = "<script>(function () { var seen = null; setInterval(function () { fetch('/__reload', { cache: 'no-store' }).then(function (r) { return r.text(); }).then(function (stamp) { if (seen === null) { seen = stamp; } else if (stamp !== seen) { location.reload(); } }).catch(function () { }); }, 500); })();</script>";
+
 var listener = new HttpListener();
 listener.Prefixes.Add($"http://localhost:{port}/");
 listener.Start();
@@ -52,17 +112,39 @@ while (true)
         try
         {
             var relative = Uri.UnescapeDataString(context.Request.Url.AbsolutePath).TrimStart('/');
-            var path = Path.GetFullPath(Path.Combine(root, relative.Length == 0 && isApp ? "index.html" : relative));
             context.Response.Headers["Access-Control-Allow-Origin"] = "*";
             context.Response.Headers["Cache-Control"] = "no-cache";
 
+            if (liveReload && relative == "__reload")
+            {
+                var stamp = Encoding.ASCII.GetBytes(Interlocked.Read(ref changeStamp).ToString());
+                context.Response.ContentType = "text/plain";
+                context.Response.ContentLength64 = stamp.Length;
+                context.Response.OutputStream.Write(stamp);
+                return;
+            }
+
+            // an overlay answers for its prefix from its own folder; the publish's copy is not consulted
+            var baseFolder = root;
+            var path = Path.GetFullPath(Path.Combine(root, relative.Length == 0 && isApp ? "index.html" : relative));
+            foreach (var overlay in overlays)
+            {
+                if (relative == overlay.Prefix || relative.StartsWith(overlay.Prefix + "/", StringComparison.OrdinalIgnoreCase))
+                {
+                    var rest = relative.Length > overlay.Prefix.Length ? relative.Substring(overlay.Prefix.Length + 1) : "";
+                    baseFolder = overlay.Folder;
+                    path = Path.GetFullPath(Path.Combine(overlay.Folder, rest.Length == 0 ? "index.html" : rest));
+                    break;
+                }
+            }
+
             // the same fallback as web.config: a route of the app (/gallery/morley) is not a file
-            if (isApp && !File.Exists(path) && Path.GetExtension(path).Length == 0)
+            if (isApp && baseFolder == root && !File.Exists(path) && Path.GetExtension(path).Length == 0)
             {
                 path = Path.Combine(root, "index.html");
             }
 
-            if (!path.StartsWith(root, StringComparison.OrdinalIgnoreCase))
+            if (!path.StartsWith(baseFolder, StringComparison.OrdinalIgnoreCase))
             {
                 context.Response.StatusCode = 404;
             }
@@ -81,8 +163,18 @@ while (true)
             }
             else
             {
-                context.Response.ContentType = mime.TryGetValue(Path.GetExtension(path), out var type) ? type : "application/octet-stream";
+                var type = mime.TryGetValue(Path.GetExtension(path), out var known) ? known : "application/octet-stream";
                 var bytes = File.ReadAllBytes(path);
+                if (liveReload && type == "text/html")
+                {
+                    // the page reloads itself when an overlay folder changes
+                    var text = Encoding.UTF8.GetString(bytes);
+                    int body = text.LastIndexOf("</body>", StringComparison.OrdinalIgnoreCase);
+                    text = body >= 0 ? text.Insert(body, reloadScript) : text + reloadScript;
+                    bytes = Encoding.UTF8.GetBytes(text);
+                }
+
+                context.Response.ContentType = type;
                 context.Response.ContentLength64 = bytes.Length;
                 context.Response.OutputStream.Write(bytes);
             }

@@ -2092,10 +2092,13 @@ else - no ribbon, grid, list or gallery, no undo, no selection. The Silverlight-
   writes at build from `GalleryCatalog.cs` (`WriteGalleryIndex`: the `Item("slug",
   "Title"[, "File"])` lines, in order), so the list never has to be kept in step by hand.
   Its sun and moon read and write the app's `LiveGeometry.Theme` entry, so the choice is
-  one for the site, and set every player on the page (`applyTheme`). To look at it locally
-  it needs the player and the drawings at those absolute paths: serve a publish's `wwwroot`
-  (with the page and `gallery/index.json` copied in after an edit) and open
-  `/embed/index.html`.
+  one for the site, and set every player on the page (`applyTheme`). To work on it it
+  needs the player and the drawings at those absolute paths: serve a publish's `wwwroot`
+  with the repo's folder overlaid and live reload,
+  `dotnet run tools/serve.cs -- <publish>\wwwroot 5006 --overlay embed=embed --reload`,
+  and open `/embed/index.html`; every save of the page reloads the browser. A change to
+  the player or the catalog still wants a new publish (or its bundle copied into the
+  publish's `player/1/`).
 
 ## macOS
 

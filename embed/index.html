@@ -4,12 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Live Geometry · A drawing on your own page</title>
-<meta name="description" content="Put a live, draggable geometry drawing on any web page with three lines of HTML: a script tag and a div. Every drawing of the Live Geometry gallery is ready to embed, and so is one of your own.">
+<meta name="description" content="Put a live, draggable geometry drawing on any web page with a snippet of HTML: a script tag and a div. Every drawing of the Live Geometry gallery is ready to embed, and so is one of your own.">
 <meta property="og:title" content="Live Geometry · A drawing on your own page">
-<meta property="og:description" content="A live, draggable geometry drawing on any web page: three lines of HTML, no iframe, no build step.">
+<meta property="og:description" content="A live, draggable geometry drawing on any web page: a snippet of HTML, no iframe, no build step.">
 <meta property="og:url" content="https://livegeometry.com/embed">
 <meta property="og:type" content="website">
 <meta name="color-scheme" content="light dark">
+<!-- every link leaves for a new tab: the reader keeps the snippet they came for (a link
+     to a place on this page would want target="_self") -->
+<base target="_blank">
 <link rel="icon" href="/favicon.ico">
 <!-- A page of its own beside the app, like /history: everything inline but the fonts, no
      build step. The drawings on it are played by the player (/player/1/player.js) exactly
@@ -34,6 +37,7 @@
 <style>
   :root {
     --paper: #ffffff;
+    --header: #fff5b9;
     --surface: #f4f5f8;
     --surface-deep: #e9ebf0;
     --line: #d9dce3;
@@ -49,16 +53,18 @@
     color-scheme: light;
   }
 
+  /* the paper is the player's dark paper (AppTheme.Dark), so a drawing has no edge on the page */
   :root[data-theme="dark"] {
-    --paper: #15181e;
-    --surface: #1c2027;
-    --surface-deep: #242932;
-    --line: #313846;
+    --paper: #2b2b2b;
+    --header: #2b2b2b;
+    --surface: #343434;
+    --surface-deep: #3d3d3d;
+    --line: #464646;
     --ink: #e4e7ec;
-    --ink-soft: #9aa3b4;
-    --accent: #6ea0ff;
+    --ink-soft: #a3a9b4;
+    --accent: #7fabff;
     --accent-ink: #0d1220;
-    --code: #1a1e26;
+    --code: #303030;
     --code-ink: #d4d9e3;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
     color-scheme: dark;
@@ -94,7 +100,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 24px;
-    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    background: color-mix(in srgb, var(--header) 92%, transparent);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--line);
   }
@@ -109,7 +115,7 @@
   }
 
   .brand:hover { text-decoration: none; color: var(--accent); }
-  .brand svg { width: 26px; height: 26px; }
+  .brand svg { width: 30px; height: 30px; }
 
   .top nav { display: flex; align-items: center; gap: 18px; font-size: 15px; }
   .top nav a { color: var(--ink-soft); }
@@ -136,7 +142,7 @@
   :root[data-theme="dark"] .theme .moon { display: block; }
 
   /* ---------- layout ---------- */
-  main { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+  main { max-width: 1040px; margin: 0 auto; padding: 0 24px 80px; }
 
   .hero { padding: 56px 0 8px; }
 
@@ -148,21 +154,18 @@
     margin: 0 0 14px;
   }
 
-  .hero p.lead { font-size: 20px; color: var(--ink-soft); max-width: 640px; margin: 0 0 28px; }
+  .hero p.lead { font-size: 20px; color: var(--ink-soft); max-width: 720px; margin: 0 0 28px; }
 
   h2 { font-size: 26px; letter-spacing: -0.01em; margin: 56px 0 10px; }
   h3 { font-size: 18px; margin: 28px 0 8px; }
   p { margin: 0 0 14px; }
 
-  /* every drawing on the page: the element the player draws in */
+  /* every drawing on the page: the element the player draws in. No frame: the paper is the
+     page's, so a drawing sits in the text as a figure in a book does */
   .livegeometry {
     width: 100%;
-    height: 440px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    overflow: hidden;
+    height: 500px;
     background: var(--paper);
-    box-shadow: var(--shadow);
   }
 
   .livegeometry.small { height: 300px; }
@@ -170,7 +173,7 @@
   .caption { font-size: 14px; color: var(--ink-soft); margin: 8px 2px 0; }
 
   /* the snippet: a code block with a copy button, and the picker above it */
-  .snippet { position: relative; margin: 14px 0 6px; }
+  .snippet { position: relative; margin: 14px 0 14px; }
 
   .snippet pre {
     margin: 0;
@@ -207,9 +210,10 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 10px 14px;
-    margin: 18px 0 0;
+    margin: 14px 0 0;
     font-size: 15px;
   }
+
 
   .picker select {
     font: 15px var(--sans);
@@ -278,12 +282,24 @@
 
 <header class="top">
   <a class="brand" href="/" title="Live Geometry">
-    <svg viewBox="0 0 32 32" aria-hidden="true">
-      <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2"/>
-      <path d="M16 3 L27.3 22.5 L4.7 22.5 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-      <circle cx="16" cy="3" r="2.6" fill="currentColor"/>
-      <circle cx="27.3" cy="22.5" r="2.6" fill="currentColor"/>
-      <circle cx="4.7" cy="22.5" r="2.6" fill="currentColor"/>
+    <!-- the app's mark (AppIcon.cs, the same paths on its 64 grid): a column and a set square -->
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <linearGradient id="marble" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#F4F2EE"/><stop offset="0.45" stop-color="#D9D6D0"/><stop offset="1" stop-color="#9A9690"/>
+        </linearGradient>
+        <linearGradient id="yellow" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#FFF4A0"/><stop offset="0.5" stop-color="#FFE538"/><stop offset="1" stop-color="#F6CC1A"/>
+        </linearGradient>
+      </defs>
+      <path d="M30,60 L62,60 L60,63 L28,63 Z" fill="rgba(0,0,0,0.19)"/>
+      <g fill="url(#marble)" stroke="#5C5852" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M3,56 H27 V61 H3 Z"/><path d="M5,52 H25 V56 H5 Z"/><path d="M8,12 H22 V52 H8 Z"/>
+        <path d="M6,9 Q15,5 24,9 V12 H6 Z"/><path d="M3,4 H27 V9 H3 Z"/>
+      </g>
+      <path d="M11.5,13.5 V50.5 M15,13.5 V50.5 M18.5,13.5 V50.5" fill="none" stroke="rgba(92,88,82,0.38)" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M33,3 L63,60 L33,60 Z M38,24 L38,54 L54,54 Z" fill="url(#yellow)" fill-rule="evenodd" stroke="#9E8000" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M33,8 H34.4 M33,12.8 H35.5 M33,17.6 H35.5 M33,22.4 H35.5 M33,27.2 H35.5 M33,32 H37.5 M33,36.8 H35.5 M33,41.6 H35.5 M33,46.4 H35.5 M33,51.2 H35.5 M33,56 H37.5" fill="none" stroke="#7E6600" stroke-width="1.1" stroke-linecap="round"/>
     </svg>
     Live Geometry
   </a>
@@ -306,28 +322,28 @@
 <main>
   <section class="hero">
     <h1>A drawing on your own page</h1>
-    <p class="lead">Three lines of HTML put a live geometry drawing anywhere: a blog post, a class page, a wiki. Readers drag its points. No iframe, nothing to build, nothing to install.</p>
-    <div class="livegeometry" id="hero" data-src="/gallery/Pythagoras.lgf"></div>
-    <p class="caption">Drag the yellow points. This is the embed shown in the box below, playing on this page.</p>
+    <p class="lead">A snippet of HTML puts a live geometry drawing anywhere: a blog post, a class page, a wiki. Readers drag its points. No iframe, nothing to build, nothing to install.</p>
+    <!-- no drawing named here: the first of the catalog is loaded into it (the script below) -->
+    <div class="livegeometry" id="hero"></div>
+    <div class="picker">
+      <label for="drawing">Drawing</label>
+      <select id="drawing" aria-label="Drawing"></select>
+      <a id="open" href="/gallery/stretchy-slime">Open it in Live Geometry →</a>
+    </div>
   </section>
 
-  <h2 id="three-lines">The three lines</h2>
-  <p>Pick any drawing of the <a href="/">gallery</a>, paste the lines where you want it, and it plays. The first line loads the player once per page, the rest is the drawing.</p>
-  <div class="picker">
-    <label for="drawing">Drawing</label>
-    <select id="drawing" aria-label="Drawing"></select>
-    <a id="open" href="/gallery/pythagoras">Open it in Live Geometry →</a>
-  </div>
+  <h2 id="snippet-section">The embed snippet</h2>
+  <p>Pick any drawing of the <a href="/">gallery</a> above, paste the snippet where you want it, and it plays. The script tag loads the player once per page, the element is the drawing.</p>
   <div class="snippet">
     <pre><code id="snippet"></code></pre>
     <button class="copy" type="button" data-for="snippet">Copy</button>
   </div>
-  <p class="caption">The element can be any size: give it the width and height you want, and the drawing fits itself in. With no height it would be as tall as nothing, so say one.</p>
+  <p>The element can be any size: give it the width and height you want, and the drawing fits itself in. With no height it would be as tall as nothing, so say one.</p>
 
   <h2 id="your-own">A drawing of your own</h2>
   <p>Make it in <a href="/">Live Geometry</a>, then take it with you in either of two ways.</p>
   <ol class="steps">
-    <li><strong>Export › Copy embed code</strong> puts the three lines on the clipboard with the drawing itself written into them, between a <code>&lt;script type="text/x-livegeometry"&gt;</code> tag and its end. Paste into any HTML. Nothing is fetched but the player, so this works in a page opened from a disk too.</li>
+    <li><strong>Export › Copy embed code</strong> puts the same snippet on the clipboard with the drawing itself written into the element, between a <code>&lt;script type="text/x-livegeometry"&gt;</code> tag and its end. Paste into any HTML. Nothing is fetched but the player, so this works in a page opened from a disk too.</li>
     <li><strong>Export › Save as .html</strong> writes a page of its own with the player inside: one file that plays from a USB stick, a shared folder, or an email attachment.</li>
   </ol>
   <p>Or keep the drawing as a file beside your page, saved with <strong>Save as .lgf</strong>, and point at it: <code>data-src="my-drawing.lgf"</code>. A file next to your page needs no permission to be read; one on another site plays only if that site allows it (see below).</p>
@@ -429,7 +445,7 @@
     function showSnippet(item) {
       var lines = [
         '<script src="https://livegeometry.com/player/1/player.js" defer><' + '/script>',
-        '<div class="livegeometry" data-src="https://livegeometry.com/gallery/' + item.file + '" style="width: 100%; height: 440px;"></div>'
+        '<div class="livegeometry" data-src="https://livegeometry.com/gallery/' + item.file + '" style="width: 100%; height: 500px;"></div>'
       ];
       snippet.innerHTML = escapeHtml(lines.join('\n')).replace(/(data-src|style|class|src|defer)(?==|&gt;)/g, '<span class="attribute">$1</span>');
       snippet.dataset.text = lines.join('\n');
@@ -463,11 +479,12 @@
         option.textContent = item.title;
         select.appendChild(option);
       });
-      select.value = 'pythagoras';
-      choose('pythagoras');
+      // the gallery's first drawing plays in the hero element
+      select.value = items[0].slug;
+      choose(items[0].slug);
     }).catch(function () {
-      catalog = [{ slug: 'pythagoras', title: 'Pythagorean Theorem', file: 'Pythagoras.lgf' }];
-      choose('pythagoras');
+      catalog = [{ slug: 'stretchy-slime', title: 'Stretchy Slime', file: 'StretchySlime.lgf' }];
+      choose('stretchy-slime');
     });
 
     // ---------- copy buttons ----------
