@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Live Geometry · A drawing on your own page</title>
+<title>Live Geometry · Hosting your own drawings</title>
 <meta name="description" content="Put a live, draggable geometry drawing on any web page with a snippet of HTML: a script tag and a div. Every drawing of the Live Geometry gallery is ready to embed, and so is one of your own.">
 <meta property="og:title" content="Live Geometry · A drawing on your own page">
 <meta property="og:description" content="A live, draggable geometry drawing on any web page: a snippet of HTML, no iframe, no build step.">
@@ -14,6 +14,15 @@
      to a place on this page would want target="_self") -->
 <base target="_blank">
 <link rel="icon" href="/favicon.ico">
+<!-- Google tag (gtag.js), the same as the app's index.html -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-10ZM10J6RW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-10ZM10J6RW');
+</script>
 <!-- A page of its own beside the app, like /history: everything inline but the fonts, no
      build step. The drawings on it are played by the player (/player/1/player.js) exactly
      as a page on another site would play them, which is the point: what a reader copies
@@ -321,14 +330,14 @@
 
 <main>
   <section class="hero">
-    <h1>A drawing on your own page</h1>
-    <p class="lead">A snippet of HTML puts a live geometry drawing anywhere: a blog post, a class page, a wiki. Readers drag its points. No iframe, nothing to build, nothing to install.</p>
+    <h1>A live drawing on your own page</h1>
+    <p class="lead">A two-line snippet of HTML can embed a drawing anywhere: a blog post, a class page, a wiki. Readers can drag its points but can't edit. It's as simple as embedding an image and only needs JavaScript.</p>
     <!-- no drawing named here: the first of the catalog is loaded into it (the script below) -->
     <div class="livegeometry" id="hero"></div>
     <div class="picker">
       <label for="drawing">Drawing</label>
       <select id="drawing" aria-label="Drawing"></select>
-      <a id="open" href="/gallery/stretchy-slime">Open it in Live Geometry →</a>
+      <a id="open" href="/gallery/stretchy-slime">Open in Live Geometry →</a>
     </div>
   </section>
 
