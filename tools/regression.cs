@@ -1893,6 +1893,13 @@ public class Program
         Actions.Add(drawing, hexagon);
         hexagon.NumberOfSides = 6;
         Near(hexagon.Perimeter, 6);
+        // a click on a regular polygon takes its inside, which stands for the polygon (the hover threw on its empty name)
+        var inside = hexagon.GetPart("Interior");
+        Require(ClickChoice.Describe(inside) == "Regular hexagon " + hexagon.Name, "The inside of a regular polygon is described as " + ClickChoice.Describe(inside));
+        var hexagonMeasurement = Factory.CreatePerimeterMeasurement(drawing, new IFigure[] { inside });
+        Actions.Add(drawing, hexagonMeasurement);
+        Require(hexagonMeasurement.Construction == "of regular hexagon " + hexagon.Name, "The construction says " + hexagonMeasurement.Construction);
+        Near(hexagonMeasurement.Length, 6);
         var ellipse = Factory.CreateEllipse(drawing, new IFigure[] { AddPoint(drawing, x: 30, y: 0), AddPoint(drawing, x: 33, y: 0), AddPoint(drawing, x: 30, y: 2) });
         Actions.Add(drawing, ellipse);
         Require(System.Math.Abs(ellipse.Perimeter - 15.865439589290586) < 1e-6, "An ellipse with axes 3 and 2 has the perimeter " + ellipse.Perimeter);

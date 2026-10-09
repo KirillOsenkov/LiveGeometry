@@ -184,6 +184,11 @@ namespace DynamicGeometry
             public override void OnAddingToDrawing(Drawing drawing)
             {
             }
+
+            public override string ToString()
+            {
+                return Owner.DescribePart(this);
+            }
         }
 
         public IEnumerable<IFigure> SelectableParts => vertices.Concat<IFigure>(sides);
@@ -213,6 +218,14 @@ namespace DynamicGeometry
             if (partName == null)
             {
                 return ToString();
+            }
+
+            // the inside stands for the polygon itself (FigureParts.SelectionTarget): a
+            // perimeter "of regular pentagon p", the hover's "Regular pentagon p" (it read
+            // the name as a side's, "Side rior of", and the inside had no name at all)
+            if (partName == InteriorPart)
+            {
+                return Reference;
             }
 
             var kind = partName.StartsWith(VertexPart, StringComparison.Ordinal) ? VertexPart : SidePart;
