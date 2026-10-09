@@ -332,7 +332,7 @@ namespace DynamicGeometry
         /// every move of a drag changed its width with it, and the lines after it jumped to and
         /// fro; and each change laid the whole text out again.
         /// </summary>
-        public static readonly TimeSpan TextInterval = TimeSpan.FromMilliseconds(300);
+        public static readonly TimeSpan TextInterval = TimeSpan.FromMilliseconds(100);
 
         // on screen: a pin is measured from the canvas, and a text shown later is laid out there
         protected bool HasCanvas
