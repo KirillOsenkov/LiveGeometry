@@ -310,6 +310,21 @@ namespace DynamicGeometry
             return LookForExpectedDependencyUnderCursor(unconstrainedCoordinates);
         }
 
+        /// <summary>
+        /// At the direction step, a click inside an angle next to its vertex measures the
+        /// angle as the Angle tool does and takes the measurement (<see cref="AngleAtVertex"/>)
+        /// </summary>
+        protected override bool TakesAngleAtVertex()
+        {
+            return step == Step.Direction;
+        }
+
+        protected override void ClickAngleAtVertex(AngleAtVertex angle)
+        {
+            directionSource = MeasureAngleAtVertex(angle);
+            Finish();
+        }
+
         protected override IReadOnlyList<IFigure> FindExpectedDependencies(Point coordinates)
         {
             if (step == Step.Source)
@@ -429,7 +444,7 @@ namespace DynamicGeometry
                     return "Click a segment or a vector for the distance, or type it and press OK."
                         + (CanFree ? " Free leaves it to be dragged." : "");
                 case Step.Direction:
-                    return "Click a segment, line, vector or angle for the direction, or type it and press OK."
+                    return "Click a segment, line, vector or angle for the direction (or inside an angle next to its vertex), or type it and press OK."
                         + (CanFree && !distanceFree ? " Free leaves it to be dragged." : "");
                 case Step.Placement:
                     return "Click where the point goes.";

@@ -71,6 +71,7 @@ public class Program
             ("Pasting plain text is no error", PastePlainText),
             ("The axes are lines to build on, one of each", AxisLines),
             ("Tab chooses among overlapping figures", ChoiceAmongOverlaps),
+            ("One click inside an angle serves the bisector, Line at Angle, Rotate and Translate", AngleAtVertexShortcuts),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
             ("Figures without a value don't exist", FiguresWithoutValue),
             ("A tool defined on expressions builds on its inputs", DefinedToolOnExpressions),
@@ -2100,6 +2101,67 @@ public class Program
         Require(dragger.StepChoice(backwards: false) && status.StartsWith("Segment "), "Tab under the Drag tool: " + status);
         Click(drawing, onBoth);
         Require(segment.Selected && !along.Selected, "The click did not select the segment chosen with Tab.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// Triangle ABC with two sides as segments: one click inside the angle at A, next to the
+    /// vertex, gives the Angle Bisector its three points, and gives Line at Angle, Rotate and
+    /// Translate a measurement of the angle (mark and number) to take the angle from, in the
+    /// same undo step
+    /// </summary>
+    static void AngleAtVertexShortcuts()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        var a = AddPoint(drawing, x: 0, y: 0);
+        var b = AddPoint(drawing, x: 4, y: 0);
+        var c = AddPoint(drawing, x: 0, y: 3);
+        var ab = Factory.CreateSegment(drawing, a, b);
+        Actions.Add(drawing, ab);
+        Actions.Add(drawing, Factory.CreateSegment(drawing, a, c));
+
+        // inside the angle at A, within the mark's reach but off the point
+        var insideA = system.ToPhysical(a.Coordinates) + new Point(10, -10);
+        int Measurements() => drawing.Figures.OfType<AngleMeasurement>().Count();
+
+        drawing.Behavior = new AngleBisectorCreator();
+        Click(drawing, insideA);
+        var bisector = drawing.Figures.OfType<AngleBisector>().SingleOrDefault();
+        Require(
+            bisector != null && bisector.Dependencies[0] == a && bisector.Dependencies.Contains(b) && bisector.Dependencies.Contains(c),
+            "The bisector's click inside the angle.");
+        Require(Measurements() == 0, "The bisector measured the angle.");
+        drawing.ActionManager.Undo();
+
+        drawing.Behavior = new LineAtAngleCreator();
+        Click(drawing, insideA);
+        Click(drawing, system.ToPhysical(b.Coordinates));
+        var line = drawing.Figures.OfType<LineAtAngle>().SingleOrDefault();
+        Require(line != null && line.AngleSource is AngleMeasurement && Measurements() == 1, "Line at Angle from the angle at A.");
+        Require(drawing.Figures.OfType<AngleArc>().Count() == 1, "The angle's mark with its number.");
+        drawing.ActionManager.Undo();
+        Require(Measurements() == 0 && !drawing.Figures.OfType<LineAtAngle>().Any(), "Undo of the line left the measurement.");
+
+        drawing.Behavior = new RotationCreator();
+        Click(drawing, system.ToPhysical(c.Coordinates));
+        Click(drawing, system.ToPhysical(b.Coordinates));
+        Click(drawing, insideA);
+        var rotated = drawing.Figures.OfType<RotatedPoint>().SingleOrDefault();
+        Require(rotated != null && rotated.AngleSource is AngleMeasurement && Measurements() == 1, "Rotate by the angle at A.");
+        drawing.ActionManager.Undo();
+
+        drawing.Behavior = new TranslationCreator();
+        Click(drawing, system.ToPhysical(c.Coordinates));
+        Click(drawing, system.ToPhysical(new Point(2, 0)));
+        Click(drawing, insideA);
+        var translated = drawing.Figures.OfType<TranslatedPoint>().SingleOrDefault();
+        Require(
+            translated != null && translated.DistanceSource == ab && translated.DirectionSource is AngleMeasurement && Measurements() == 1,
+            "Translate in the direction of the angle at A.");
+        drawing.ActionManager.Undo();
+        Require(Measurements() == 0, "Undo of the translation left the measurement.");
         drawing.Figures.CheckConsistency();
     }
 

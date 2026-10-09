@@ -99,9 +99,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the points of other figures); Label new points (toggle).
 - **Lines**: Segment (S), Ray (Y), Line (L), Vector - two points each; Parallel (N) and
   Perpendicular (E) - a line then a point; Angle Bisector
-  (B) - vertex then two side points, or an angle measurement; Line at Angle - a point, at the
+  (B) - vertex then two side points, an angle measurement, or one click inside an angle
+  next to its vertex as the Angle tool takes it (see "An angle at a vertex" under Measure);
+  Line at Angle - a point, at the
   angle in the tool's panel (0 until changed, so a horizontal line is one click), or click an
-  angle measurement, its arc or a slider first to tie the angle to it; right after the click
+  angle measurement, its arc or a slider first to tie the angle to it, or inside an angle
+  next to its vertex (which measures it first, mark and number, and ties the line to the
+  measurement); right after the click
   the panel shows the new line's angle instead (see "Tied values"). Perpendicular Bisector
   (two points or a segment; `[Ignore]`d since 2026-10-04: Perpendicular through the midpoint
   does it, and its click on a segment took the ends where every other tool puts a point on
@@ -123,8 +127,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   exists but is `[Ignore]`d.) Bezier path (last, no letter): see "Bezier paths".
 - **Transform** (the tools are verbs, as the tab is; the classes stay `ReflectionCreator`...):
   Reflect (T) - source figure, then a mirror (point, line, segment, ray, or a
-  circle for a point source); Rotate - source, center, angle (a figure with an angle or a
-  typed value); Translate - source, distance, direction (see "TranslatedPoint"); Dilate -
+  circle for a point source); Rotate - source, center, angle (a figure with an angle, a
+  typed value, or a click inside an angle next to its vertex, which measures it first and
+  rotates by the measurement: "An angle at a vertex" under Measure); Translate - source,
+  distance, direction (a figure with an angle, a line as it points, a vector, a typed value,
+  or an angle at a vertex measured the same way; see "TranslatedPoint"); Dilate -
   source, center, factor (a figure with a length or a typed value); after each of the three
   the panel shows the new figure's values (see "Tied values"). Last of the tabs that
   draw with figures alone; the two after it work with numbers. A figure is transformed by
@@ -164,8 +171,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   said 270°; "Convert to opposite angle" gives the other), or one click inside an angle
   next to its vertex, within the reach of the mark it would get, where drawn lines,
   segments, rays or polygon sides leave a point (`AngleAtVertex`: the hover shows the mark
-  and number faint, halos on the sides). Only when that is the one angle the cursor can
-  mean: two vertices in reach, a third line on the same side (a bisector: the half or the
+  and number faint, halos on the sides; `FigureCreator.TakesAngleAtVertex` is the hook, a
+  step's yes or no, and `ClickAngleAtVertex` what the click does: the Angle tool and the
+  bisector take the three points, Line at Angle, Rotate and Translate measure the angle,
+  `MeasureAngleAtVertex`, and take the measurement, so one undo step holds both; a
+  figure the step takes under the cursor comes first). Only when that is the one angle
+  the cursor can mean: two vertices in reach, a third line on the same side (a bisector: the half or the
   whole?), a side with no point on it to depend on, an angle measured already - nothing,
   and the click takes a point as before (as it always does on a point); Area (K) - a polygon, ellipse,
   circle or list of points, Enter or a right click when the points are done; Slider - where it sits, then where

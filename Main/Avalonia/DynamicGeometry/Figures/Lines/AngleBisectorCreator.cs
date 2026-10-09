@@ -47,6 +47,15 @@ namespace DynamicGeometry
             return FindAngle(e) != null ? System.Array.Empty<object>() : base.FindClickOptions(e);
         }
 
+        /// <summary>
+        /// Inside an angle next to its vertex, the first click takes the angle whole, as the
+        /// Angle tool does (<see cref="AngleAtVertex"/>); the later clicks are points on the sides
+        /// </summary>
+        protected override bool TakesAngleAtVertex()
+        {
+            return FoundDependencies.IsEmpty();
+        }
+
         protected override IEnumerable<IFigure> CreateFigures()
         {
             var result = Factory.CreateAngleBisector(Drawing, FoundDependencies);
@@ -62,7 +71,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return "Click an angle vertex, then click two points on the angle sides to create an angle bisector. You can also click an angle measurement.";
+                return "Click an angle vertex, then click two points on the angle sides to create an angle bisector. You can also click an angle measurement, or inside an angle next to its vertex.";
             }
         }
 

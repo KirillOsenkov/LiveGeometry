@@ -154,6 +154,22 @@ public class LineAtAngleCreator : FigureCreator
         AdvertiseNextDependency();
     }
 
+    /// <summary>
+    /// A click inside an angle next to its vertex, before anything else, measures the angle
+    /// as the Angle tool does and takes the measurement for the line's angle
+    /// (<see cref="AngleAtVertex"/>)
+    /// </summary>
+    protected override bool TakesAngleAtVertex()
+    {
+        return angleSource == null && FoundDependencies.IsEmpty();
+    }
+
+    protected override void ClickAngleAtVertex(AngleAtVertex angle)
+    {
+        angleSource = MeasureAngleAtVertex(angle);
+        AdvertiseNextDependency();
+    }
+
     protected override IEnumerable<IFigure> CreateFigures()
     {
         var angle = angleSource;
@@ -192,7 +208,7 @@ public class LineAtAngleCreator : FigureCreator
         get
         {
             return "Click a point: the line goes through it at the angle in the panel."
-                + " To take the angle from an angle or a slider, click that first.";
+                + " To take the angle from an angle or a slider, click that first, or click inside an angle next to its vertex.";
         }
     }
 

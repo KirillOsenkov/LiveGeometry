@@ -110,6 +110,21 @@ namespace DynamicGeometry
         }
 
         /// <summary>
+        /// At the angle step, a click inside an angle next to its vertex measures the angle
+        /// as the Angle tool does and rotates by the measurement (<see cref="AngleAtVertex"/>)
+        /// </summary>
+        protected override bool TakesAngleAtVertex()
+        {
+            return FoundDependencies.Count == 2;
+        }
+
+        protected override void ClickAngleAtVertex(AngleAtVertex angle)
+        {
+            FoundDependencies.Add(MeasureAngleAtVertex(angle));
+            AddFiguresAndRestart();
+        }
+
+        /// <summary>
         /// A typed angle becomes a Number of its own, before the points and shared by every
         /// point of the rotated figure; a clicked figure with an angle is the source as it is.
         /// </summary>
@@ -180,7 +195,7 @@ namespace DynamicGeometry
             }
             else if (FoundDependencies.Count == 2)
             {
-                return "Define the angle by selecting a figure with an angle (such as an arc or angle measurement) or entering the value.";
+                return "Define the angle by selecting a figure with an angle (such as an arc or angle measurement), clicking inside an angle next to its vertex, or entering the value.";
             }
             return base.ConstructionHintText(args);
         }

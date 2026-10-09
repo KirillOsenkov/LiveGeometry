@@ -790,7 +790,9 @@ namespace DynamicGeometry
         protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
         {
             var unconstrainedCoordinates = Coordinates(e, false, false, false);
-            if (GetExpectedDependencyType() == null || FindTieTarget(unconstrainedCoordinates) != null)
+            if (GetExpectedDependencyType() == null
+                || FindTieTarget(unconstrainedCoordinates) != null
+                || FindAngleAtVertex(unconstrainedCoordinates) != null)
             {
                 return Array.Empty<object>();
             }
@@ -840,7 +842,8 @@ namespace DynamicGeometry
         /// </summary>
         protected virtual IReadOnlyList<PointPlacement> FindPointPlacements(Point unconstrainedCoordinates, Point coordinates)
         {
-            if (!ExpectingAPoint())
+            // (none where a click takes an angle whole)
+            if (!ExpectingAPoint() || FindAngleAtVertex(unconstrainedCoordinates) != null)
             {
                 return Array.Empty<PointPlacement>();
             }
@@ -964,6 +967,73 @@ namespace DynamicGeometry
 
         #endregion
 
+        #region An angle at a vertex
+
+        /// <summary>
+        /// Whether a click inside an angle next to its vertex takes the angle whole at this
+        /// step (<see cref="AngleAtVertex"/>): the Angle tool and the bisector take its three
+        /// points (<see cref="ClickAngleAtVertex"/>), a tool that wants a figure with an angle
+        /// (Line at Angle, Rotate, Translate) measures it first and takes the measurement
+        /// (<see cref="MeasureAngleAtVertex"/>). False by default.
+        /// </summary>
+        protected virtual bool TakesAngleAtVertex()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// The angle a click here would take whole, or null: the tool takes none now, a figure
+        /// the step takes is under the cursor (the click takes that), or there is no one angle
+        /// to mean there. The hover shows it, the cursor is a hand, and no point and no choice
+        /// are offered there.
+        /// </summary>
+        protected AngleAtVertex FindAngleAtVertex(Point unconstrainedCoordinates)
+        {
+            if (!TakesAngleAtVertex() || Drawing == null)
+            {
+                return null;
+            }
+
+            if (!ExpectingAPoint() && LookForExpectedDependencyUnderCursor(unconstrainedCoordinates) != null)
+            {
+                return null;
+            }
+
+            return AngleAtVertex.Find(Drawing, unconstrainedCoordinates);
+        }
+
+        protected override AngleAtVertex GetAngleToPick(MouseEventArgs e)
+        {
+            return FindAngleAtVertex(Coordinates(e, false, false, false));
+        }
+
+        /// <summary>
+        /// What the click does with the angle: by default its three points are the
+        /// dependencies and the figures are made (the Angle tool, the bisector)
+        /// </summary>
+        protected virtual void ClickAngleAtVertex(AngleAtVertex angle)
+        {
+            StartConstruction();
+            FoundDependencies.AddRange(angle.Points);
+            AddFiguresAndRestart();
+        }
+
+        /// <summary>
+        /// The angle measured as the Angle tool measures it - its mark and its number - inside
+        /// the construction's undo step, for a tool that takes its angle from a figure
+        /// </summary>
+        protected AngleMeasurement MeasureAngleAtVertex(AngleAtVertex angle)
+        {
+            StartConstruction();
+            var arc = Factory.CreateAngleArc(Drawing, angle.Points);
+            Actions.Add(Drawing, arc);
+            var measurement = Factory.CreateAngleMeasurement(Drawing, angle.Points);
+            Actions.Add(Drawing, measurement);
+            return measurement;
+        }
+
+        #endregion
+
         #region MouseDown, MouseMove, MouseUp
 
         protected Point MouseDownCoordinates;
@@ -979,6 +1049,14 @@ namespace DynamicGeometry
             ClickedUnconstrainedCoordinates = Coordinates(e, false, false, false);
             if (TryTieCreatedFigure(ClickedUnconstrainedCoordinates))
             {
+                return;
+            }
+
+            // where the cursor is, as the hover preview asks: not where Shift snaps it to
+            var angle = FindAngleAtVertex(ClickedUnconstrainedCoordinates);
+            if (angle != null)
+            {
+                ClickAngleAtVertex(angle);
                 return;
             }
 
@@ -1086,6 +1164,12 @@ namespace DynamicGeometry
             if (GetExpectedDependencyType() == null)
             {
                 return ArrowCursor;
+            }
+
+            // a click takes an angle whole
+            if (FindAngleAtVertex(coordinates) != null)
+            {
+                return HandCursor;
             }
 
             if (FindFigureInsteadOfPoint(coordinates) != null)

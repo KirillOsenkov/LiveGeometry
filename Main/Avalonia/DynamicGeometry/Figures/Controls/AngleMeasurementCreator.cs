@@ -51,47 +51,12 @@ namespace DynamicGeometry
 
         /// <summary>
         /// Near a vertex, inside the mark it would get, the first click measures the angle
-        /// whole (see <see cref="AngleAtVertex"/>) instead of taking a point: the hover shows
-        /// it, the cursor is a hand, and no point is offered there.
+        /// whole (see <see cref="AngleAtVertex"/>) instead of taking a point; the later clicks
+        /// are points on the sides
         /// </summary>
-        AngleAtVertex FindAngleAtVertex(Point unconstrainedCoordinates)
+        protected override bool TakesAngleAtVertex()
         {
-            // the later clicks are points on the sides
-            return FoundDependencies.IsEmpty() ? AngleAtVertex.Find(Drawing, unconstrainedCoordinates) : null;
-        }
-
-        protected override AngleAtVertex GetAngleToPick(MouseEventArgs e)
-        {
-            return FindAngleAtVertex(Coordinates(e, false, false, false));
-        }
-
-        protected override IReadOnlyList<PointPlacement> FindPointPlacements(Point unconstrainedCoordinates, Point coordinates)
-        {
-            if (FindAngleAtVertex(unconstrainedCoordinates) != null)
-            {
-                return System.Array.Empty<PointPlacement>();
-            }
-
-            return base.FindPointPlacements(unconstrainedCoordinates, coordinates);
-        }
-
-        protected override Avalonia.Input.Cursor GetCursor(Point coordinates)
-        {
-            return FindAngleAtVertex(coordinates) != null ? HandCursor : base.GetCursor(coordinates);
-        }
-
-        public override void MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            // where the cursor is, as the hover preview asks: not where Shift snaps it to
-            var angle = FindAngleAtVertex(Coordinates(e, false, false, false));
-            if (angle != null)
-            {
-                FoundDependencies.AddRange(angle.Points);
-                AddFiguresAndRestart();
-                return;
-            }
-
-            base.MouseDown(sender, e);
+            return FoundDependencies.IsEmpty();
         }
 
         public override string Name
