@@ -72,6 +72,12 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>After the vertex: which side the point is for (the angle under 180° is measured whichever side comes first)</summary>
+        public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+        {
+            return AngleBisectorCreator.AngleSideHint(FoundDependencies.Count, TempPoint) ?? base.ConstructionHintText(args);
+        }
+
         public override FrameworkElement CreateIcon()
         {
             var builder = IconBuilder.BuildIcon();
