@@ -106,7 +106,9 @@ namespace DynamicGeometry
             {
                 ConstructionInProgress = false;
                 UpdateUndoRedo();
-                Drawing.ClearStatus();
+                // the tool's hint, for the next construction (a tool that shows a panel for
+                // the figure just made says its own thing after this)
+                Drawing.ShowBehaviorHint();
                 // a tool whose panel belongs to a step of the construction has none now
                 Drawing.RaiseDisplayProperties(Drawing.Behavior?.PropertyBag);
             }
