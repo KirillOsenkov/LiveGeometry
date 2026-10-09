@@ -138,15 +138,36 @@ while (true)
                 }
             }
 
-            // the same fallback as web.config: a route of the app (/gallery/morley) is not a file
-            if (isApp && baseFolder == root && !File.Exists(path) && Path.GetExtension(path).Length == 0)
+            // The same fallbacks as web.config. A folder with an index.html is a page of its
+            // own (/history, /embed, /web), and an extensionless path under it is a route of
+            // that page (/web/morley): the nearest such folder up the path answers. Else a
+            // route of the app (/gallery/morley) is not a file, and the app's page answers.
+            if (!File.Exists(path) && Path.GetExtension(path).Length == 0)
             {
-                path = Path.Combine(root, "index.html");
+                var folderIndex = FindFolderIndex(baseFolder, path);
+                if (folderIndex != null)
+                {
+                    path = folderIndex;
+                }
+                else if (isApp && baseFolder == root)
+                {
+                    path = Path.Combine(root, "index.html");
+                }
+                else if (baseFolder != root && File.Exists(Path.Combine(baseFolder, "index.html")))
+                {
+                    // an overlaid page's own route (/web/morley with --overlay web=web)
+                    path = Path.Combine(baseFolder, "index.html");
+                }
             }
 
             if (!path.StartsWith(baseFolder, StringComparison.OrdinalIgnoreCase))
             {
                 context.Response.StatusCode = 404;
+            }
+            else if (Directory.Exists(path) && File.Exists(Path.Combine(path, "index.html")))
+            {
+                // the page's folder with a trailing slash (/web/) is the page too
+                ServeFile(context, Path.Combine(path, "index.html"));
             }
             else if (Directory.Exists(path))
             {
@@ -163,20 +184,7 @@ while (true)
             }
             else
             {
-                var type = mime.TryGetValue(Path.GetExtension(path), out var known) ? known : "application/octet-stream";
-                var bytes = File.ReadAllBytes(path);
-                if (liveReload && type == "text/html")
-                {
-                    // the page reloads itself when an overlay folder changes
-                    var text = Encoding.UTF8.GetString(bytes);
-                    int body = text.LastIndexOf("</body>", StringComparison.OrdinalIgnoreCase);
-                    text = body >= 0 ? text.Insert(body, reloadScript) : text + reloadScript;
-                    bytes = Encoding.UTF8.GetBytes(text);
-                }
-
-                context.Response.ContentType = type;
-                context.Response.ContentLength64 = bytes.Length;
-                context.Response.OutputStream.Write(bytes);
+                ServeFile(context, path);
             }
         }
         catch
@@ -188,4 +196,43 @@ while (true)
             try { context.Response.Close(); } catch { }
         }
     });
+}
+
+void ServeFile(HttpListenerContext context, string path)
+{
+    var type = mime.TryGetValue(Path.GetExtension(path), out var known) ? known : "application/octet-stream";
+    var bytes = File.ReadAllBytes(path);
+    if (liveReload && type == "text/html")
+    {
+        // the page reloads itself when an overlay folder changes
+        var text = Encoding.UTF8.GetString(bytes);
+        int body = text.LastIndexOf("</body>", StringComparison.OrdinalIgnoreCase);
+        text = body >= 0 ? text.Insert(body, reloadScript) : text + reloadScript;
+        bytes = Encoding.UTF8.GetBytes(text);
+    }
+
+    context.Response.ContentType = type;
+    context.Response.ContentLength64 = bytes.Length;
+    context.Response.OutputStream.Write(bytes);
+}
+
+/// <summary>
+/// The index.html of the nearest folder above the path (the base folder itself left out,
+/// which is the app's or an overlay's own fallback), or null
+/// </summary>
+static string FindFolderIndex(string baseFolder, string path)
+{
+    var folder = Path.GetDirectoryName(path);
+    while (folder != null && folder.Length > baseFolder.Length && folder.StartsWith(baseFolder, StringComparison.OrdinalIgnoreCase))
+    {
+        var index = Path.Combine(folder, "index.html");
+        if (File.Exists(index))
+        {
+            return index;
+        }
+
+        folder = Path.GetDirectoryName(folder);
+    }
+
+    return null;
 }

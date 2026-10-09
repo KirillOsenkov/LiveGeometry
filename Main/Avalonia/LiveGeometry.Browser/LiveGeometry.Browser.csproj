@@ -69,6 +69,9 @@
     <Content Include="$(GalleryIndexOutput)" Link="wwwroot\gallery\index.json" />
     <!-- the embed page, a static site of its own at /embed (web.config routes it), like /history -->
     <Content Include="..\..\..\embed\**" Link="wwwroot\embed\%(RecursiveDir)%(Filename)%(Extension)" />
+    <!-- the gallery and its drawings played by the player, no .NET: /web and /web/<slug>
+         (web.config routes every extensionless path under /web to the page) -->
+    <Content Include="..\..\..\web\**" Link="wwwroot\web\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -77,8 +80,9 @@
   </PropertyGroup>
 
   <!-- /gallery/index.json: the slugs, titles and files of the catalog in its order, read
-       off GalleryCatalog.cs (its Item("slug", "Title"[, "File"]) lines), so that the embed
-       page lists the gallery as the app does without a copy of the list to keep in step. -->
+       off GalleryCatalog.cs (its Item("slug", "Title"[, "File"][, stackedFigureShare: n])
+       lines), so that the embed page and the /web page list the gallery as the app does
+       without a copy of the list to keep in step. -->
   <UsingTask TaskName="WriteGalleryIndex" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <Source ParameterType="System.String" Required="true" />
@@ -92,7 +96,7 @@
       <Using Namespace="System.Text.RegularExpressions" />
       <Code Type="Fragment" Language="cs"><![CDATA[
         var items = new StringBuilder();
-        foreach (Match match in Regex.Matches(File.ReadAllText(Source), "Item\\(\"([^\"]+)\",\\s*\"([^\"]+)\"(?:,\\s*\"([^\"]+)\")?"))
+        foreach (Match match in Regex.Matches(File.ReadAllText(Source), "Item\\(\"([^\"]+)\",\\s*\"([^\"]+)\"(?:,\\s*\"([^\"]+)\")?(?:,\\s*stackedFigureShare:\\s*([0-9.]+))?"))
         {
             string slug = match.Groups[1].Value;
             string title = match.Groups[2].Value;
@@ -100,7 +104,13 @@
                 ? match.Groups[3].Value
                 : string.Concat(slug.Split('-').Select(word => char.ToUpperInvariant(word[0]) + word.Substring(1)));
             items.Append(items.Length == 0 ? "[\n" : ",\n");
-            items.Append("  {\"slug\": \"").Append(slug).Append("\", \"title\": \"").Append(title.Replace("\\", "\\\\").Replace("\"", "\\\"")).Append("\", \"file\": \"").Append(file).Append(".lgf\"}");
+            items.Append("  {\"slug\": \"").Append(slug).Append("\", \"title\": \"").Append(title.Replace("\\", "\\\\").Replace("\"", "\\\"")).Append("\", \"file\": \"").Append(file).Append(".lgf\"");
+            if (match.Groups[4].Success)
+            {
+                items.Append(", \"stackedFigureShare\": ").Append(match.Groups[4].Value);
+            }
+
+            items.Append("}");
         }
 
         items.Append("\n]\n");

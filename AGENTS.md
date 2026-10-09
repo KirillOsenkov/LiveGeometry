@@ -2101,6 +2101,28 @@ else - no ribbon, grid, list or gallery, no undo, no selection. The Silverlight-
   and open `/embed/index.html`; every save of the page reloads the browser. A change to
   the player or the catalog still wants a new publish (or its bundle copied into the
   publish's `player/1/`).
+- **`/web`** (2026-10-08) is the gallery and its drawings without .NET: `web/index.html` at
+  the repo root (linked into `wwwroot/web/`), played by the player. `/web` is the gallery
+  page as the app draws it (the New and Open tiles, which lead to the editor at
+  `/drawing`, the brand, the tiles: live drawings in a `TilePlayer`, a `Player` whose
+  canvas is 560 x 380 scaled down through the pixel ratio, the caption left out of the
+  XML as `DrawingThumbnail.LeaveOutCaption` does, drifting on hover, loaded by distance
+  from the view a few per frame as `GalleryView.LoadNextTiles` does); `/web/<slug>` is
+  the app's toolbar over the drawing - the mark (inert), Gallery, New and Open (links to
+  `/drawing`), the tour group (Page Up/Down), the sun and the Octocat - and nothing the
+  player can't do (no ribbon, Save, Export, Undo, Settings, status bar). Routes are the
+  page's own (`pushState`); `web.config` answers every extensionless path under `/web`
+  with the file, and `tools/serve.cs` answers an extensionless path under any folder with
+  an `index.html` with that file. The catalog comes from `/gallery/index.json`, which now
+  also carries `stackedFigureShare`, passed to the player as an option. The player exports
+  `AppTheme`, `GalleryDrawing`, `Label`, `ControlBase` and `LabelPin` for it. The page
+  logs its timings to the console (`web: ...` lines: a drawing's fetch and load, each
+  tile, and when the tiles in view are in), which is what it is for: a feel for the
+  speed without .NET before deciding whether the gallery should move. To work on it:
+  `dotnet run tools/serve.cs -- <publish>\wwwroot 5007 --overlay web=web`, with the
+  current bundle and `index.json` copied into the publish (`dotnet msbuild
+  LiveGeometry.Browser.csproj "-t:BuildPlayer;WriteGalleryIndex"` makes them in `obj/`),
+  then `webauto start http://localhost:5007/web/`.
 
 ## macOS
 

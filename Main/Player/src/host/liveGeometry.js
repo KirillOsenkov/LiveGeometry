@@ -50,12 +50,18 @@ const LiveGeometry = {
         }
     },
 
-    // the classes, for a page that builds on the player
+    // the classes, for a page that builds on the player (the site's /web page does: it
+    // lays out the gallery's drawings and tells a label from a measurement)
     Drawing,
     Player,
     FigureTypes,
     Point,
-    GeometryMath
+    GeometryMath,
+    AppTheme,
+    GalleryDrawing,
+    Label,
+    ControlBase,
+    LabelPin
 };
 
 if (typeof window !== "undefined") {

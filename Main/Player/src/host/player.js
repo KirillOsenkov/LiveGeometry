@@ -46,7 +46,9 @@ class Player {
     /**
      * options: lgf (the drawing's text), src (a URL to fetch it from), theme ("light",
      * "dark" or "auto"), font (a CSS font family), wheel ("zoom" lets the wheel zoom without
-     * Ctrl), fit ("content" fits what is drawn rather than the file's viewport)
+     * Ctrl), fit ("content" fits what is drawn rather than the file's viewport),
+     * stackedFigureShare (with the caption under the figure, the share of the height the
+     * figure keeps: GalleryItem.StackedFigureShare)
      */
     constructor(element, options = {}) {
         this.element = element;
@@ -206,7 +208,7 @@ class Player {
         // a drawing with a caption (the gallery's, an export of one) is laid out for the
         // element as the app lays it out for its window, now and on every zoom to fit
         if (GalleryDrawing.hasCaption(drawing)) {
-            drawing.fitToWindow = () => GalleryDrawing.fit(drawing, GalleryDrawing.getPlane(drawing));
+            drawing.fitToWindow = () => GalleryDrawing.fit(drawing, GalleryDrawing.getPlane(drawing), this.options.stackedFigureShare);
             drawing.fitToWindow();
         } else if (this.options.fit === "content" || drawing.viewport == null) {
             drawing.zoomToFit();

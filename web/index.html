@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Geometry</title>
+<meta name="description" content="Live Geometry is a free and open source interactive geometry website: a colorful gallery of drawings illustrating geometry concepts, with figures you can drag around.">
+<meta property="og:title" content="Live Geometry">
+<meta property="og:description" content="Free and open source interactive geometry: a gallery of drawings with figures you can drag around.">
+<meta property="og:url" content="https://livegeometry.com/web/">
+<meta property="og:type" content="website">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="/favicon.ico">
+<!-- Google tag (gtag.js), the same as the app's index.html -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-10ZM10J6RW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-10ZM10J6RW');
+</script>
+<!-- The gallery and its drawings without .NET: the JavaScript player (/player/1/player.js)
+     plays the gallery's .lgf files, and this page is the chrome around it - the gallery's
+     tiles at /web, and at /web/<slug> the app's toolbar over the drawing, with what the
+     player can't do left out (no ribbon, no Save, Export, Undo or Settings; New and Open
+     lead to the editor). A page of its own beside the app, like /embed and /history:
+     everything inline but the font, no build step. web.config answers every extensionless
+     path under /web with this file, and the page reads the address. -->
+<!-- The theme before anything paints: the choice the app stored (it keeps it in local
+     storage under this key, and index.html reads it the same way), else the system's. -->
+<script>
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('LiveGeometry.Theme'); } catch (e) { }
+    if (theme !== 'Light' && theme !== 'Dark') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light';
+    }
+    document.documentElement.setAttribute('data-theme', theme.toLowerCase());
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* the chrome's colors are AppTheme.cs's (Light, then Dark): the toolbar strip, the line
+     under it, the gallery page, the paper, the text, the icons' outlines, the arrows' blue,
+     the hover and pressed plates of a toolbar button */
+  :root {
+    --strip: #DDE0E3;
+    --tab-line: #A9B1BE;
+    --page: #FFFFFF;
+    --paper: #FFFFFF;
+    --text: #2B3038;
+    --text-muted: #6B7482;
+    --icon: #3A4250;
+    --accent: #2F7BD6;
+    --plate-hover: #FCFCFD;
+    --plate-pressed: #D3DCE8;
+    --sans: "Inter", "Segoe UI", system-ui, sans-serif;
+    color-scheme: light;
+  }
+
+  :root[data-theme="dark"] {
+    --strip: #1B1F26;
+    --tab-line: #4D5665;
+    --page: #1E2228;
+    --paper: #2B2B2B;
+    --text: #D9DEE6;
+    --text-muted: #98A2B3;
+    --icon: #D0D6DF;
+    --accent: #5AA0F2;
+    --plate-hover: #323945;
+    --plate-pressed: #48525F;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    background: var(--page);
+    color: var(--text);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  [hidden] { display: none !important; }
+
+  svg { display: block; }
+
+  /* ---------- the toolbar (MainToolbar): the buttons at the left, the tour group after
+     them behind a separator, the theme button and the Octocat at the right; a line along
+     the bottom. 40 px high, the contents centered 2 px below the middle as the app's are,
+     plus the line. When the tour group doesn't fit beside the buttons it takes a row of
+     its own (wrapped), and the corner goes when there is no room for it. ---------- */
+  .toolbar {
+    flex: none;
+    display: flex;
+    align-items: flex-start;
+    align-content: flex-start;
+    background: var(--strip);
+    border-bottom: 1px solid var(--tab-line);
+  }
+
+  .toolbar.wrapped { flex-wrap: wrap; }
+
+  .buttons {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 34px;
+    margin: 4px 6px 2px 8px;
+  }
+
+  .tb {
+    flex: none;
+    width: 38px;
+    height: 34px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--icon);
+    text-decoration: none;
+    cursor: default;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a.tb:hover, button.tb:hover { background: var(--plate-hover); }
+  a.tb:active, button.tb:active { background: var(--plate-pressed); }
+  button.tb { padding: 0; font: inherit; background: none; }
+  .tb svg { width: 24px; height: 24px; }
+  .tb.logo svg { width: 28px; height: 28px; }
+
+  .sep {
+    flex: none;
+    width: 1px;
+    height: 24px;
+    background: var(--tab-line);
+    margin: 0 5px;
+  }
+
+  .tour {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    height: 38px;
+    margin-top: 2px;
+  }
+
+  .tour .sep { margin: 0 1px; }
+  .tour .middle { flex: none; display: flex; align-items: center; gap: 2px; margin: 0 6px; }
+  .tour .tb svg { width: 32px; height: 32px; }
+
+  .tour .count {
+    min-width: 44px;
+    text-align: center;
+    font-size: 17px;
+    color: var(--text);
+  }
+
+  .tour .title {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0 6px;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* for measuring the title's natural width, off screen */
+  .title-measure {
+    position: absolute;
+    visibility: hidden;
+    white-space: nowrap;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .toolbar.wrapped .tour {
+    order: 3;
+    flex-basis: 100%;
+    margin: 0 0 4px;
+  }
+
+  .toolbar.wrapped .tour .sep { display: none; }
+
+  .corner {
+    flex: none;
+    display: flex;
+    align-items: center;
+    height: 38px;
+    margin: 2px 4px 0 auto;
+  }
+
+  .corner-button {
+    display: flex;
+    margin: 0 6px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--text);
+    opacity: 0.4;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .corner-button:hover { opacity: 1; }
+  .corner-button svg { width: 16px; height: 16px; }
+  .corner-button .moon { display: none; }
+  :root[data-theme="dark"] .corner-button .sun { display: none; }
+  :root[data-theme="dark"] .corner-button .moon { display: block; }
+
+  /* ---------- the drawing: the canvas is the rest of the window ---------- */
+  #drawing-page {
+    flex: 1 1 auto;
+    min-height: 0;
+    position: relative;
+  }
+
+  #drawing {
+    position: absolute;
+    inset: 0;
+    background: var(--paper);
+  }
+
+  /* ---------- the gallery (GalleryView): the start tiles, the brand, the heading, the
+     tiles; the theme button and the Octocat in the corner over the scrolling page ---------- */
+  #gallery-page {
+    flex: 1 1 auto;
+    min-height: 0;
+    position: relative;
+    display: flex;
+  }
+
+  .scroll {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  #gallery-page .corner {
+    position: absolute;
+    top: 6px;
+    right: 22px;
+    height: auto;
+    margin: 0;
+  }
+
+  .content {
+    max-width: 1564px;
+    margin: 24px auto 40px;
+    padding: 0 32px;
+  }
+
+  .start-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+  }
+
+  .start-tiles { display: flex; gap: 10px; }
+
+  .brand-room {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    height: 92px;
+    margin: 0 12px 0 36px;
+    overflow: visible;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    white-space: nowrap;
+    color: var(--text-muted);
+    font-size: 38px;
+    font-weight: 600;
+    filter: drop-shadow(0 6px 13px rgba(0, 0, 0, 0.32));
+    transform-origin: center;
+  }
+
+  .brand svg { width: 68px; height: 68px; }
+
+  h1 {
+    margin: 30px 0 12px 2px;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 18px;
+  }
+
+  /* a tile (GalleryTile): a pastel plate with a picture and a caption under it; the border and
+     the hover states are the plate's hue, a little deeper (worked out in the script) */
+  .tile {
+    display: flex;
+    flex-direction: column;
+    aspect-ratio: 5 / 4;
+    border: 1.5px solid var(--tile-border);
+    border-radius: 10px;
+    background: var(--tile-plate);
+    color: var(--tile-caption);
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tile:hover {
+    background: var(--tile-hover);
+    border-color: var(--tile-hover-border);
+  }
+
+  .tile .picture {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 8px 8px 4px;
+    pointer-events: none;
+  }
+
+  .tile .caption {
+    flex: none;
+    margin: 2px 10px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tile.start {
+    width: 92px;
+    height: 92px;
+    aspect-ratio: auto;
+  }
+
+  .tile.start .picture { margin: 8px 6px 0; }
+  .tile.start .picture svg { width: 44px; height: 44px; }
+  .tile.start .caption { margin: 0 4px 8px; font-size: 13px; }
+
+  .status {
+    margin: 16px 2px;
+    color: var(--text-muted);
+    font-size: 15px;
+  }
+</style>
+<!-- the player, as any page would load it; the script below waits for it (DOMContentLoaded) -->
+<script src="/player/1/player.js" defer></script>
+</head>
+<body>
+
+<!-- The icons, drawn as the app draws them (MainToolbarIcons, AppIcon, GalleryView, the
+     Octocat): on their grids, outlines in the theme's icon color (currentColor), arrows in
+     its accent. -->
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="marble" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F4F2EE"/><stop offset="0.45" stop-color="#D9D6D0"/><stop offset="1" stop-color="#9A9690"/>
+    </linearGradient>
+    <linearGradient id="yellow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF4A0"/><stop offset="0.5" stop-color="#FFE538"/><stop offset="1" stop-color="#F6CC1A"/>
+    </linearGradient>
+    <linearGradient id="plus-disc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ACCAEF"/><stop offset="1" stop-color="#2F7BD6"/>
+    </linearGradient>
+    <linearGradient id="folder-front" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FDEEC1"/><stop offset="1" stop-color="#FAD565"/>
+    </linearGradient>
+    <!-- the app's mark (AppIcon.cs, 64 grid): a column and a set square -->
+    <symbol id="icon-app" viewBox="0 0 64 64">
+      <path d="M30,60 L62,60 L60,63 L28,63 Z" fill="rgba(0,0,0,0.19)"/>
+      <g fill="url(#marble)" stroke="#5C5852" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M3,56 H27 V61 H3 Z"/><path d="M5,52 H25 V56 H5 Z"/><path d="M8,12 H22 V52 H8 Z"/>
+        <path d="M6,9 Q15,5 24,9 V12 H6 Z"/><path d="M3,4 H27 V9 H3 Z"/>
+      </g>
+      <path d="M11.5,13.5 V50.5 M15,13.5 V50.5 M18.5,13.5 V50.5" fill="none" stroke="rgba(92,88,82,0.38)" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M33,3 L63,60 L33,60 Z M38,24 L38,54 L54,54 Z" fill="url(#yellow)" fill-rule="evenodd" stroke="#9E8000" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M33,8 H34.4 M33,12.8 H35.5 M33,17.6 H35.5 M33,22.4 H35.5 M33,27.2 H35.5 M33,32 H37.5 M33,36.8 H35.5 M33,41.6 H35.5 M33,46.4 H35.5 M33,51.2 H35.5 M33,56 H37.5" fill="none" stroke="#7E6600" stroke-width="1.1" stroke-linecap="round"/>
+    </symbol>
+    <!-- the toolbar's icons (MainToolbarIcons, 20 grid) -->
+    <symbol id="icon-gallery" viewBox="0 0 20 20" stroke="currentColor" stroke-width="1" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M3.5,3.5 H9 V9 H3.5 Z" fill="#BFDCFF"/>
+      <path d="M11,3.5 H16.5 V9 H11 Z" fill="#FFE7A3"/>
+      <path d="M3.5,11 H9 V16.5 H3.5 Z" fill="#C4EBC8"/>
+      <path d="M11,11 H16.5 V16.5 H11 Z" fill="#FFCFDD"/>
+    </symbol>
+    <symbol id="icon-new" viewBox="0 0 20 20" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M4.5,2.5 H11.5 L15.5,6.5 V17.5 H4.5 Z" fill="#FFFFFF" stroke="currentColor" stroke-width="1"/>
+      <path d="M11.5,2.5 V6.5 H15.5" fill="none" stroke="currentColor" stroke-width="1"/>
+      <circle cx="14.5" cy="14.5" r="4" fill="#2E9E4F"/>
+      <path d="M14.5,12.3 V16.7 M12.3,14.5 H16.7" fill="none" stroke="#FFFFFF" stroke-width="1.6"/>
+    </symbol>
+    <symbol id="icon-open" viewBox="0 0 20 20" stroke="#A87B05" stroke-width="1" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M2.5,4.5 H8 L9.5,6.5 H16.5 V16 H2.5 Z" fill="#F2B632"/>
+      <path d="M2.5,16 L4.8,9 H18.5 L16.5,16 Z" fill="#FAD565"/>
+    </symbol>
+    <symbol id="icon-previous" viewBox="0 0 20 20">
+      <path d="M13.5,4.5 L8,10 L13.5,15.5" fill="none" style="stroke: var(--accent)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-next" viewBox="0 0 20 20">
+      <path d="M6.5,4.5 L12,10 L6.5,15.5" fill="none" style="stroke: var(--accent)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-moon" viewBox="0 0 20 20">
+      <path d="M12.5,3.2 A7,7 0 1 0 16.8,12.6 A5.6,5.6 0 0 1 12.5,3.2 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
+      <circle cx="10" cy="10" r="3.6"/>
+      <path d="M16.2,10 L18.6,10 M14.38,14.38 L16.08,16.08 M10,16.2 L10,18.6 M5.62,14.38 L3.92,16.08 M3.8,10 L1.4,10 M5.62,5.62 L3.92,3.92 M10,3.8 L10,1.4 M14.38,5.62 L16.08,3.92"/>
+    </symbol>
+    <!-- the GitHub mark (the "mark-github" octicon, 16 grid) -->
+    <symbol id="icon-github" viewBox="0 0 16 16">
+      <path fill="currentColor" d="M8,0 C3.58,0 0,3.58 0,8 c0,3.54 2.29,6.53 5.47,7.59 c0.4,0.07 0.55,-0.17 0.55,-0.38 c0,-0.19 -0.01,-0.82 -0.01,-1.49 c-2.01,0.37 -2.53,-0.49 -2.69,-0.94 c-0.09,-0.23 -0.48,-0.94 -0.82,-1.13 c-0.28,-0.15 -0.68,-0.52 -0.01,-0.53 c0.63,-0.01 1.08,0.58 1.23,0.82 c0.72,1.21 1.87,0.87 2.33,0.66 c0.07,-0.52 0.28,-0.87 0.51,-1.07 c-1.78,-0.2 -3.64,-0.89 -3.64,-3.95 c0,-0.87 0.31,-1.59 0.82,-2.15 c-0.08,-0.2 -0.36,-1.02 0.08,-2.12 c0,0 0.67,-0.21 2.2,0.82 c0.64,-0.18 1.32,-0.27 2,-0.27 c0.68,0 1.36,0.09 2,0.27 c1.53,-1.04 2.2,-0.82 2.2,-0.82 c0.44,1.1 0.16,1.92 0.08,2.12 c0.51,0.56 0.82,1.27 0.82,2.15 c0,3.07 -1.87,3.75 -3.65,3.95 c0.29,0.25 0.54,0.73 0.54,1.48 c0,1.07 -0.01,1.93 -0.01,2.2 c0,0.21 0.15,0.46 0.55,0.38 A8.013,8.013 0 0 0 16,8 c0,-4.42 -3.58,-8 -8,-8 z"/>
+    </symbol>
+    <!-- the pictures of the start tiles (GalleryView, 84 grid) -->
+    <symbol id="picture-plus" viewBox="0 0 84 84">
+      <circle cx="42" cy="42" r="42" fill="url(#plus-disc)"/>
+      <path d="M42,22 V62 M22,42 H62" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="picture-folder" viewBox="0 0 84 84" stroke="#A87B05" stroke-width="2.5" stroke-linejoin="round">
+      <path d="M10,18 H33 L40,27 H70 V66 H10 Z" fill="#F2B632"/>
+      <path d="M10,66 L20,38 H79 L70,66 Z" fill="url(#folder-front)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="toolbar" id="toolbar" hidden>
+  <div class="buttons" id="buttons">
+    <!-- the app's mark: in the app it folds the ribbon, here there is none -->
+    <span class="tb logo" title="Live Geometry"><svg><use href="#icon-app"/></svg></span>
+    <a class="tb" id="gallery-button" href="/web/" title="Gallery"><svg><use href="#icon-gallery"/></svg></a>
+    <span class="sep"></span>
+    <a class="tb" href="/drawing" title="New drawing (opens the editor)"><svg><use href="#icon-new"/></svg></a>
+    <a class="tb" href="/drawing" title="Open a drawing (opens the editor)"><svg><use href="#icon-open"/></svg></a>
+  </div>
+  <div class="tour" id="tour">
+    <span class="sep"></span>
+    <div class="middle">
+      <button class="tb" id="previous" type="button" title="Previous drawing (Page Up)"><svg><use href="#icon-previous"/></svg></button>
+      <span class="count" id="count"></span>
+      <button class="tb" id="next" type="button" title="Next drawing (Page Down)"><svg><use href="#icon-next"/></svg></button>
+    </div>
+    <span class="title" id="title"></span>
+    <span class="title-measure" id="title-measure" aria-hidden="true"></span>
+  </div>
+  <div class="corner" id="toolbar-corner"></div>
+</header>
+
+<main id="drawing-page" hidden>
+  <div id="drawing"></div>
+</main>
+
+<main id="gallery-page" hidden>
+  <div class="scroll" id="scroll">
+    <div class="content">
+      <div class="start-row">
+        <div class="start-tiles">
+          <a class="tile start" href="/drawing" style="--tile-plate: #E6EFFB" title="A new drawing, in the editor">
+            <div class="picture"><svg><use href="#picture-plus"/></svg></div>
+            <div class="caption">New</div>
+          </a>
+          <a class="tile start" href="/drawing" style="--tile-plate: #E4F4E6" title="Open a drawing, in the editor">
+            <div class="picture"><svg><use href="#picture-folder"/></svg></div>
+            <div class="caption">Open</div>
+          </a>
+        </div>
+        <div class="brand-room" id="brand-room">
+          <div class="brand" id="brand"><svg><use href="#icon-app"/></svg><span>Live Geometry</span></div>
+        </div>
+      </div>
+      <h1>Gallery</h1>
+      <div class="tiles" id="tiles"></div>
+      <p class="status" id="gallery-status" hidden></p>
+    </div>
+  </div>
+  <div class="corner" id="gallery-corner"></div>
+</main>
+
+<template id="corner-template">
+  <button class="corner-button theme" type="button" title="Dark theme" aria-label="Light or dark">
+    <svg class="moon"><use href="#icon-moon"/></svg>
+    <svg class="sun"><use href="#icon-sun"/></svg>
+  </button>
+  <a class="corner-button" href="https://github.com/KirillOsenkov/LiveGeometry" title="github.com/KirillOsenkov/LiveGeometry" target="_blank" rel="noopener">
+    <svg><use href="#icon-github"/></svg>
+  </a>
+</template>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+
+    var root = document.documentElement;
+    var toolbar = document.getElementById('toolbar');
+    var drawingPage = document.getElementById('drawing-page');
+    var galleryPage = document.getElementById('gallery-page');
+    var drawingElement = document.getElementById('drawing');
+    var AppTitle = 'Live Geometry';
+    var PathPrefix = '/web/';
+
+    // ---------- the theme: the page, every drawing on it, and the app's own setting ----------
+
+    function systemTheme() {
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function currentTheme() {
+      return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    }
+
+    function applyTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      LiveGeometry.players.forEach(function (player) { player.applyTheme(theme); });
+      // the tiles' players are not among the page's (they are made by hand), and their
+      // plates go by the theme too
+      tiles.forEach(function (tile) {
+        if (tile.player != null) {
+          tile.player.applyTheme(theme);
+        }
+
+        tile.derive();
+      });
+      startTiles.forEach(function (start) { applyPlate(start.element, start.pastel, true); });
+      document.querySelectorAll('.corner-button.theme').forEach(function (button) {
+        button.title = theme === 'dark' ? 'Light theme' : 'Dark theme';
+      });
+    }
+
+    function toggleTheme() {
+      var theme = currentTheme() === 'dark' ? 'light' : 'dark';
+      applyTheme(theme);
+      // as the app does: landing on what the system says stores no choice at all
+      try {
+        if (theme === systemTheme()) {
+          localStorage.removeItem('LiveGeometry.Theme');
+        } else {
+          localStorage.setItem('LiveGeometry.Theme', theme === 'dark' ? 'Dark' : 'Light');
+        }
+      } catch (e) { }
+    }
+
+    // the theme button and the Octocat, for the corner of either page
+    function fillCorner(corner) {
+      corner.appendChild(document.getElementById('corner-template').content.cloneNode(true));
+      var button = corner.querySelector('.theme');
+      button.title = currentTheme() === 'dark' ? 'Light theme' : 'Dark theme';
+      button.addEventListener('click', toggleTheme);
+    }
+
+    fillCorner(document.getElementById('toolbar-corner'));
+    fillCorner(document.getElementById('gallery-corner'));
+
+    // ---------- the catalog: the gallery's drawings in the tour's order (written at build from GalleryCatalog.cs) ----------
+
+    var catalog = [];
+    var texts = new Map(); // by slug: a promise of the drawing's text
+
+    function fetchText(item) {
+      var promise = texts.get(item.slug);
+      if (promise == null) {
+        promise = fetch('/gallery/' + item.file).then(function (response) {
+          if (!response.ok) {
+            throw new Error('could not load ' + item.file + ' (' + response.status + ')');
+          }
+
+          return response.text();
+        });
+        texts.set(item.slug, promise);
+      }
+
+      return promise;
+    }
+
+    function findBySlug(slug) {
+      slug = (slug || '').toLowerCase();
+      return catalog.find(function (item) { return item.slug.toLowerCase() === slug; }) || null;
+    }
+
+    // ---------- where the page is: the gallery (/web) or a drawing (/web/<slug>) ----------
+
+    function slugOfPath(path) {
+      var rest = path.replace(/^\/web\/?/i, '').replace(/\/+$/, '');
+      return rest === 'index.html' ? '' : rest;
+    }
+
+    function publish(path, title, push) {
+      document.title = title;
+      if (push) {
+        if (location.pathname !== path) {
+          history.pushState(null, '', path);
+        }
+      } else {
+        history.replaceState(null, '', path);
+      }
+    }
+
+    function navigate(push) {
+      var slug = slugOfPath(location.pathname);
+      var item = slug !== '' ? findBySlug(slug) : null;
+      if (item != null) {
+        showDrawing(item, push);
+      } else {
+        showGallery(push);
+      }
+    }
+
+    window.addEventListener('popstate', function () { navigate(false); });
+
+    // ---------- the drawing: the toolbar over the player ----------
+
+    var current = null; // the GalleryItem on screen, null on the gallery page
+    var player = null;
+
+    function showDrawing(item, push) {
+      current = item;
+      galleryPage.hidden = true;
+      toolbar.hidden = false;
+      drawingPage.hidden = false;
+      stopTiles();
+      updateTour();
+      publish(PathPrefix + item.slug, item.title + ' - ' + AppTitle, push);
+      var started = performance.now();
+      fetchText(item).then(function (text) {
+        // a faster click went elsewhere meanwhile
+        if (current !== item) {
+          return;
+        }
+
+        var fetched = performance.now();
+        player = LiveGeometry.play(drawingElement, {
+          lgf: text,
+          theme: currentTheme(),
+          wheel: 'zoom',
+          stackedFigureShare: item.stackedFigureShare
+        });
+
+        // a reader drags the figure, not the text: on a phone a thumb on the caption scrolls
+        player.drawing.fixLabels();
+        var loaded = performance.now();
+        console.log('web: ' + item.title + ': ' + player.drawing.figures.list.length + ' figures, fetched in '
+          + Math.round(fetched - started) + ' ms, loaded in ' + Math.round(loaded - fetched) + ' ms');
+
+        // the neighbors, for the next page turn
+        var index = catalog.indexOf(item);
+        fetchText(catalog[(index + 1) % catalog.length]).catch(function () { });
+        fetchText(catalog[(index + catalog.length - 1) % catalog.length]).catch(function () { });
+      }).catch(function (error) {
+        console.error('web: ' + error.message);
+      });
+    }
+
+    function showNeighbor(step) {
+      if (current == null || catalog.length === 0) {
+        return;
+      }
+
+      var index = (catalog.indexOf(current) + step + catalog.length) % catalog.length;
+      showDrawing(catalog[index], true);
+    }
+
+    document.getElementById('previous').addEventListener('click', function () { showNeighbor(-1); });
+    document.getElementById('next').addEventListener('click', function () { showNeighbor(1); });
+    document.getElementById('gallery-button').addEventListener('click', function (e) {
+      if (isPlainClick(e)) {
+        e.preventDefault();
+        showGallery(true);
+      }
+    });
+
+    // the keys the app answers with the tour: Page Up / Page Down turn the pages, Home fits
+    window.addEventListener('keydown', function (e) {
+      if (current == null || e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      if (e.key === 'PageUp') {
+        e.preventDefault();
+        showNeighbor(-1);
+      } else if (e.key === 'PageDown') {
+        e.preventDefault();
+        showNeighbor(1);
+      } else if ((e.key === 'Home' || e.key === 'h' || e.key === 'H') && player != null) {
+        e.preventDefault();
+        player.fit();
+      }
+    });
+
+    // the caption is measured in the page's font: laid out before the font came, once more when it has
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        if (player != null && current != null) {
+          player.applyFont();
+          if (player.keepFitted) {
+            player.fitInitial();
+          }
+
+          player.invalidate();
+        }
+      });
+    }
+
+    // the tour group: the place in the gallery and the title of the drawing on screen
+    var tour = document.getElementById('tour');
+    var titleText = document.getElementById('title');
+    var titleMeasure = document.getElementById('title-measure');
+    var count = document.getElementById('count');
+
+    function updateTour() {
+      if (current != null) {
+        count.textContent = (catalog.indexOf(current) + 1) + '/' + catalog.length;
+        titleText.textContent = current.title;
+        titleMeasure.textContent = current.title;
+      }
+
+      tour.hidden = current == null;
+      layoutToolbar();
+    }
+
+    // MainToolbar.MeasureOverride: the group beside the buttons if all of it fits there (the
+    // corner may have to go), else on a row of its own
+    var buttons = document.getElementById('buttons');
+    var toolbarCorner = document.getElementById('toolbar-corner');
+
+    function layoutToolbar() {
+      if (toolbar.hidden) {
+        return;
+      }
+
+      toolbar.classList.remove('wrapped');
+      toolbarCorner.hidden = false;
+      var available = toolbar.clientWidth;
+      var width = buttons.offsetWidth + 8 + 6;
+      var wrapped = false;
+      if (!tour.hidden) {
+        var middle = tour.querySelector('.middle');
+        var tourNatural = 1 + 2 + middle.offsetWidth + 12 + titleMeasure.offsetWidth + 12;
+        wrapped = width + tourNatural > available;
+        if (!wrapped) {
+          width += tourNatural;
+        }
+      }
+
+      var cornerWidth = toolbarCorner.offsetWidth + 4;
+      toolbarCorner.hidden = width + cornerWidth > available;
+      toolbar.classList.toggle('wrapped', wrapped);
+    }
+
+    window.addEventListener('resize', layoutToolbar);
+
+    // ---------- the gallery: the tiles, live drawings of their own ----------
+
+    var tilesHost = document.getElementById('tiles');
+    var scroll = document.getElementById('scroll');
+    var tiles = [];
+    var galleryShownAt = 0;
+    var tilesInViewReported = false;
+
+    function showGallery(push) {
+      if (player != null) {
+        player.dispose();
+        LiveGeometry.players.delete(drawingElement);
+        player = null;
+      }
+
+      current = null;
+      toolbar.hidden = true;
+      drawingPage.hidden = true;
+      galleryPage.hidden = false;
+      publish(PathPrefix, AppTitle, push);
+      layoutBrand();
+      galleryShownAt = performance.now();
+      tilesInViewReported = false;
+      scheduleLoad();
+    }
+
+    function isPlainClick(e) {
+      return e.button === 0 && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey;
+    }
+
+    // Pastels.cs: hand-picked near-white tints for the plates, cycled in this order
+    var pastels = [
+      '#FDEEE3', '#E4F7EA', '#EAE8E4', '#EFE6DA', '#FBEFD9', '#F1E8FA', '#FCE9E9', '#F5F5F5', '#EDF2E8', '#F9FADC',
+      '#EAE9FA', '#F0E6D2', '#EFF8DE', '#E9ECEF', '#E8F5F0', '#E2F2FB', '#EEEEF4', '#FDF2E0', '#FDF7D8', '#F5ECD5',
+      '#F8E6F6', '#EDEEF0', '#E4EEFA', '#E1F6F3', '#FBE7EF', '#F3EADC', '#E8EEF9', '#F1EFEC'
+    ];
+
+    function buildGallery() {
+      catalog.forEach(function (item, index) {
+        var tile = new Tile(item, pastels[index % pastels.length]);
+        tiles.push(tile);
+        tilesHost.appendChild(tile.element);
+      });
+
+      // the start tiles have plates too, deepened under the dark theme like the others
+      document.querySelectorAll('.tile.start').forEach(function (element) {
+        var pastel = parseColor(element.style.getPropertyValue('--tile-plate').trim());
+        startTiles.push({ element: element, pastel: pastel });
+        applyPlate(element, pastel, true);
+      });
+    }
+
+    var startTiles = [];
+
+    // The thumbnail (DrawingThumbnail): the real drawing on a canvas of its own, laid out at
+    // 560 x 380 and scaled down to whatever room the tile has, so that points, strokes and
+    // text shrink together. The player believes its canvas is 560 x 380 and draws through a
+    // pixel ratio that is the scale (times the screen's), so a tile costs no more pixels
+    // than it shows. No text (the caption would be unreadable), no pointer (the tile is the
+    // link), the paper left to the plate.
+    var SurfaceWidth = 560;
+    var SurfaceHeight = 380;
+    var ZoomAfterFit = 1.08;
+
+    class TilePlayer extends LiveGeometry.Player {
+      constructor(element, text) {
+        super(element, { theme: currentTheme() });
+        this.canvasElement.style.pointerEvents = 'none';
+        this.load(text);
+      }
+
+      measureElement() {
+        var rect = this.element.getBoundingClientRect();
+        var scale = Math.min(rect.width / SurfaceWidth, rect.height / SurfaceHeight);
+        if (!(scale > 0)) {
+          return false;
+        }
+
+        var pixelRatio = scale * (window.devicePixelRatio || 1);
+        if (this.canvas.width === SurfaceWidth && this.canvas.height === SurfaceHeight && pixelRatio === this.pixelRatio) {
+          return false;
+        }
+
+        this.canvas.width = SurfaceWidth;
+        this.canvas.height = SurfaceHeight;
+        this.pixelRatio = pixelRatio;
+        this.canvasElement.width = Math.max(1, Math.round(SurfaceWidth * pixelRatio));
+        this.canvasElement.height = Math.max(1, Math.round(SurfaceHeight * pixelRatio));
+        this.canvasElement.style.width = (SurfaceWidth * scale) + 'px';
+        this.canvasElement.style.height = (SurfaceHeight * scale) + 'px';
+        return true;
+      }
+
+      // the logical size never changes, so a resize only redraws
+      resize() {
+        if (this.measureElement()) {
+          this.invalidate();
+        }
+      }
+
+      show(drawing) {
+        // text pinned to the screen is unreadable at this size and the geometry gets all the room
+        for (const figure of drawing.figures.list) {
+          if (figure instanceof LiveGeometry.Label && figure.pin !== LiveGeometry.LabelPin.None) {
+            figure.visible = false;
+          }
+        }
+
+        drawing.paintsPaper = false;
+        super.show(drawing);
+      }
+
+      fitInitial() {
+        var drawing = this.drawing;
+        if (drawing == null) {
+          return;
+        }
+
+        var scene = drawing.chooseScene(SurfaceWidth, SurfaceHeight);
+        if (scene != null) {
+          drawing.showScene(scene);
+        } else {
+          drawing.coordinateSystem.zoomExtend(LiveGeometry.GalleryDrawing.getPlane(drawing), ZoomAfterFit);
+        }
+      }
+    }
+
+    // The pinned labels nothing is built on - the title and the description - are not read
+    // at all: read, each was laid out as it came in (a long text, wrapped) and then hidden.
+    function leaveOutCaption(element) {
+      var figures = null;
+      for (const child of element.children) {
+        if (child.localName === 'Figures') {
+          figures = child;
+        }
+      }
+
+      if (figures == null) {
+        return element;
+      }
+
+      var named = new Set();
+      figures.querySelectorAll('Dependency').forEach(function (dependency) {
+        if (dependency.getAttribute('Name') != null) {
+          named.add(dependency.getAttribute('Name'));
+        }
+      });
+
+      var pinned = [];
+      for (const figure of figures.children) {
+        var pin = figure.getAttribute('Pin');
+        if (pin != null && pin !== 'None' && !named.has(figure.getAttribute('Name') || '')) {
+          pinned.push(figure);
+        }
+      }
+
+      pinned.forEach(function (figure) { figure.remove(); });
+      return element;
+    }
+
+    function parseXml(text) {
+      var parsed = new DOMParser().parseFromString(text.replace(/^﻿/, '').trimStart(), 'application/xml');
+      var error = parsed.querySelector('parsererror');
+      if (error != null) {
+        throw new Error('not well-formed XML: ' + error.textContent);
+      }
+
+      return parsed.documentElement;
+    }
+
+    class Tile {
+      constructor(item, pastel) {
+        this.item = item;
+        this.pastel = parseColor(pastel);
+        this.paper = null;
+        this.player = null;
+        this.loaded = false;
+        this.text = null;
+        this.fetchStarted = false;
+        this.drifters = null;
+        this.element = document.createElement('a');
+        this.element.className = 'tile';
+        this.element.href = PathPrefix + item.slug;
+        this.picture = document.createElement('div');
+        this.picture.className = 'picture';
+        var caption = document.createElement('div');
+        caption.className = 'caption';
+        caption.textContent = item.title;
+        this.element.appendChild(this.picture);
+        this.element.appendChild(caption);
+        this.derive();
+        var tile = this;
+        this.element.addEventListener('click', function (e) {
+          if (isPlainClick(e)) {
+            e.preventDefault();
+            tile.stopDrifting();
+            showDrawing(item, true);
+          }
+        });
+        this.element.addEventListener('mouseenter', function () { tile.startDrifting(); });
+        this.element.addEventListener('mouseleave', function () { tile.stopDrifting(); });
+      }
+
+      /** The plate and what follows from it: a drawing with paper of its own shows it on its tile instead of the pastel */
+      derive() {
+        var paper = null;
+        if (this.player != null && this.player.drawing != null) {
+          paper = this.player.drawing.getOwnBackground(this.player.drawing.theme);
+        }
+
+        if (paper != null) {
+          applyPaperPlate(this.element, paper);
+        } else {
+          applyPlate(this.element, this.pastel, true);
+        }
+      }
+
+      startFetch() {
+        if (this.fetchStarted) {
+          return;
+        }
+
+        this.fetchStarted = true;
+        var tile = this;
+        fetchText(this.item).then(function (text) {
+          tile.text = text;
+          scheduleLoad();
+        }).catch(function (error) {
+          tile.loaded = true;
+          console.error('Gallery: ' + tile.item.file + ': ' + error.message);
+        });
+      }
+
+      get canLoad() {
+        return !this.loaded && this.text != null && this.picture.clientWidth > 0;
+      }
+
+      load() {
+        this.loaded = true;
+        var started = performance.now();
+        try {
+          var element = leaveOutCaption(parseXml(this.text));
+          this.player = new TilePlayer(this.picture, element);
+          if (this.player.loadErrors != null) {
+            console.warn('Gallery: ' + this.item.file + ': ' + this.player.loadErrors);
+          }
+
+          this.derive();
+          console.log('web: tile ' + this.item.title + ': ' + this.player.drawing.figures.list.length + ' figures in ' + Math.round(performance.now() - started) + ' ms');
+        } catch (error) {
+          console.error('Gallery: ' + this.item.file + ': ' + error.message, error);
+        }
+      }
+
+      // While the mouse is over the tile, the points that can be dragged drift around in
+      // small circles and the construction follows: a still picture can't say "this is alive".
+      startDrifting() {
+        if (this.player == null || this.player.drawing == null || this.drifters != null) {
+          return;
+        }
+
+        var drawing = this.player.drawing;
+        var drifters = [];
+        var add = function (condition) {
+          for (const figure of drawing.figures.list) {
+            if (figure.isPoint === true && figure.isMovable === true && figure.allowMove() && condition(figure)) {
+              var index = drifters.length;
+              drifters.push({ point: figure, home: figure.coordinates, phase: index * 2.4, direction: index % 2 === 0 ? 1 : -1 });
+            }
+          }
+        };
+        add(function (figure) { return figure.visible; });
+
+        // a drawing whose points are all hidden drifts the hidden points that what is on
+        // screen is built on, as a drag of it would move them
+        if (drifters.length === 0) {
+          add(function (figure) { return !figure.visible && descendants(figure).some(isShownFigure); });
+        }
+
+        if (drifters.length === 0) {
+          return;
+        }
+
+        this.drifters = drifters;
+        var tile = this;
+        var startedAt = performance.now();
+        var frame = function () {
+          if (tile.drifters == null) {
+            return;
+          }
+
+          tile.drift((performance.now() - startedAt) / 1000);
+          requestAnimationFrame(frame);
+        };
+        requestAnimationFrame(frame);
+      }
+
+      drift(seconds) {
+        var drawing = this.player.drawing;
+        try {
+          // starts and ends at home: no jump when the mouse comes and goes
+          var radius = 16 / drawing.coordinateSystem.unitLength;
+          var turn = 2 * Math.PI * seconds / 3.2;
+          for (const drifter of this.drifters) {
+            var angle = drifter.direction * turn + drifter.phase;
+            drifter.point.moveTo(new LiveGeometry.Point(
+              drifter.home.x + radius * (Math.cos(angle) - Math.cos(drifter.phase)),
+              drifter.home.y + radius * (Math.sin(angle) - Math.sin(drifter.phase))));
+          }
+
+          drawing.recalculate();
+        } catch (error) {
+          console.error('Gallery: ' + this.item.file + ': ' + error.message);
+          this.stopDrifting();
+        }
+      }
+
+      stopDrifting() {
+        if (this.drifters == null) {
+          return;
+        }
+
+        var drifters = this.drifters;
+        this.drifters = null;
+        for (const drifter of drifters) {
+          drifter.point.moveTo(drifter.home);
+        }
+
+        this.player.drawing.recalculate();
+      }
+    }
+
+    function descendants(figure) {
+      var seen = new Set();
+      var queue = [figure];
+      while (queue.length > 0) {
+        var next = queue.pop();
+        for (const dependent of next.dependents) {
+          if (!seen.has(dependent)) {
+            seen.add(dependent);
+            queue.push(dependent);
+          }
+        }
+      }
+
+      return Array.from(seen);
+    }
+
+    // a show/hide box that lists a point doesn't move with it
+    function isShownFigure(figure) {
+      return figure.visible && !(figure instanceof LiveGeometry.ControlBase);
+    }
+
+    function stopTiles() {
+      tiles.forEach(function (tile) { tile.stopDrifting(); });
+    }
+
+    // The drawings of the tiles are loaded a few at a time, a frame apart, and only as they
+    // come near the view (GalleryView.LoadNextTiles): the ones in view first, from the top,
+    // then the ones up to half a screen below or above it, so that a scroll finds them there.
+    var isLoadPosted = false;
+    var TilesPerTurn = 8;
+
+    function scheduleLoad() {
+      if (isLoadPosted || galleryPage.hidden) {
+        return;
+      }
+
+      isLoadPosted = true;
+      requestAnimationFrame(function () {
+        setTimeout(loadNextTiles, 0);
+      });
+    }
+
+    function loadNextTiles() {
+      isLoadPosted = false;
+      if (galleryPage.hidden) {
+        return;
+      }
+
+      var view = scroll.getBoundingClientRect();
+      if (view.height <= 0) {
+        return;
+      }
+
+      var reach = view.height / 2;
+      var byDistance = tiles.map(function (tile) {
+        var rect = tile.element.getBoundingClientRect();
+        return { tile: tile, distance: Math.max(0, view.top - rect.bottom, rect.top - view.bottom) };
+      }).sort(function (a, b) { return a.distance - b.distance; });
+
+      var perTurn = TilesPerTurn;
+      var left = false;
+      for (const entry of byDistance) {
+        if (entry.distance > reach || entry.tile.loaded) {
+          continue;
+        }
+
+        // a tile whose text is still on its way is loaded when the fetch schedules the next turn
+        entry.tile.startFetch();
+        if (entry.tile.canLoad) {
+          if (perTurn > 0) {
+            entry.tile.load();
+            perTurn--;
+          } else {
+            left = true;
+          }
+        }
+      }
+
+      if (!tilesInViewReported) {
+        var inView = byDistance.filter(function (entry) { return entry.distance === 0; });
+        if (inView.length > 0 && inView.every(function (entry) { return entry.tile.loaded; })) {
+          tilesInViewReported = true;
+          console.log('web: gallery: the ' + inView.length + ' tiles in view loaded ' + Math.round(performance.now() - galleryShownAt)
+            + ' ms after the gallery showed, ' + Math.round(performance.now()) + ' ms after the page started');
+        }
+      }
+
+      if (left) {
+        scheduleLoad();
+      }
+    }
+
+    scroll.addEventListener('scroll', scheduleLoad, { passive: true });
+    window.addEventListener('resize', function () {
+      layoutBrand();
+      scheduleLoad();
+    });
+
+    // the brand shrinks on a narrow window instead of running off the edge (a Viewbox that
+    // only shrinks); on a phone the start tiles leave it no room at all
+    var brandRoom = document.getElementById('brand-room');
+    var brand = document.getElementById('brand');
+
+    function layoutBrand() {
+      if (galleryPage.hidden) {
+        return;
+      }
+
+      brand.style.transform = '';
+      var room = brandRoom.clientWidth;
+      var natural = brand.offsetWidth;
+      if (room < 60) {
+        brand.style.visibility = 'hidden';
+        return;
+      }
+
+      brand.style.visibility = '';
+      if (natural > room) {
+        brand.style.transform = 'scale(' + (room / natural) + ')';
+      }
+    }
+
+    // ---------- the plates (GalleryTile.Derive): the border and the hover states from the
+    // plate's hue, deeper than a light plate, lighter than a dark one; a pastel is
+    // deepened under the dark theme, a drawing's paper shown as it is ----------
+
+    function applyPlate(element, pastel, deepenInDark) {
+      var color = deepenInDark && currentTheme() === 'dark' ? deepen(pastel) : pastel;
+      var derived = derive(color);
+      element.style.setProperty('--tile-plate', toCss(color));
+      element.style.setProperty('--tile-hover', toCss(derived.hover));
+      element.style.setProperty('--tile-border', toCss(derived.border));
+      element.style.setProperty('--tile-hover-border', toCss(derived.hoverBorder));
+      element.style.setProperty('--tile-caption', isDark(color) ? '#FFFFFF' : '#2B3038');
+    }
+
+    /** The plate is a drawing's paper: a solid color as it is, a gradient as it is (hovering only changes the border, which follows the gradient's end) */
+    function applyPaperPlate(element, paper) {
+      var stops = paper.gradientStops;
+      if (stops != null && stops.length > 0) {
+        var bottom = stops[stops.length - 1].color;
+        var derived = derive(bottom);
+        var dx = paper.endPoint.x - paper.startPoint.x;
+        var dy = paper.endPoint.y - paper.startPoint.y;
+        var angle = 90 + Math.atan2(dy, dx) * 180 / Math.PI;
+        var css = 'linear-gradient(' + angle.toFixed(1) + 'deg, ' + stops.map(function (stop) {
+          return stop.color.toCss() + ' ' + (stop.offset * 100).toFixed(1) + '%';
+        }).join(', ') + ')';
+        element.style.setProperty('--tile-plate', css);
+        element.style.setProperty('--tile-hover', css);
+        element.style.setProperty('--tile-border', toCss(derived.border));
+        element.style.setProperty('--tile-hover-border', toCss(derived.hoverBorder));
+        element.style.setProperty('--tile-caption', isDark(bottom) ? '#FFFFFF' : '#2B3038');
+      } else if (paper.color != null) {
+        applyPlate(element, paper.color, false);
+      }
+    }
+
+    function derive(color) {
+      var hsv = toHsv(color);
+      // a gray plate keeps a hint of color in its border so that it still reads as a plate
+      var tint = Math.max(hsv.s, 0.03);
+      if (isDark(color)) {
+        return {
+          hover: fromHsv(hsv.h, Math.min(tint * 1.4, 1), Math.min(hsv.v * 1.18 + 0.02, 1)),
+          border: fromHsv(hsv.h, Math.min(tint * 1.6, 1), Math.min(hsv.v * 1.5 + 0.04, 1)),
+          hoverBorder: fromHsv(hsv.h, Math.min(tint * 2.5, 1), Math.min(hsv.v * 1.9 + 0.06, 1))
+        };
+      }
+
+      return {
+        hover: fromHsv(hsv.h, Math.min(tint * 1.8, 1), hsv.v),
+        border: fromHsv(hsv.h, Math.min(tint * 2.2, 1), hsv.v * 0.91),
+        hoverBorder: fromHsv(hsv.h, Math.min(tint * 5, 1), hsv.v * 0.8)
+      };
+    }
+
+    /** A pastel for the dark theme: the same hue, deep instead of pale, a little more saturated so that it still reads as a color */
+    function deepen(pastel) {
+      var hsv = toHsv(pastel);
+      var saturation = hsv.s < 0.05 ? hsv.s : Math.min(Math.max(hsv.s * 2.2, 0.16), 1);
+      return fromHsv(hsv.h, saturation, 0.24);
+    }
+
+    function isDark(color) {
+      return 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b < 128;
+    }
+
+    function parseColor(hex) {
+      var text = hex.replace('#', '');
+      if (text.length === 8) {
+        text = text.substring(2);
+      }
+
+      return { r: parseInt(text.substring(0, 2), 16), g: parseInt(text.substring(2, 4), 16), b: parseInt(text.substring(4, 6), 16) };
+    }
+
+    function toCss(color) {
+      return 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')';
+    }
+
+    function toHsv(color) {
+      var r = color.r / 255;
+      var g = color.g / 255;
+      var b = color.b / 255;
+      var max = Math.max(r, g, b);
+      var min = Math.min(r, g, b);
+      var delta = max - min;
+      var h;
+      if (delta === 0) {
+        h = 0;
+      } else if (max === r) {
+        h = 60 * (((g - b) / delta) % 6);
+      } else if (max === g) {
+        h = 60 * ((b - r) / delta + 2);
+      } else {
+        h = 60 * ((r - g) / delta + 4);
+      }
+
+      if (h < 0) {
+        h += 360;
+      }
+
+      return { h: h, s: max === 0 ? 0 : delta / max, v: max };
+    }
+
+    function fromHsv(h, s, v) {
+      h = ((h % 360) + 360) % 360;
+      var chroma = v * s;
+      var x = chroma * (1 - Math.abs(h / 60 % 2 - 1));
+      var m = v - chroma;
+      var rgb;
+      switch (Math.floor(h / 60)) {
+        case 0: rgb = [chroma, x, 0]; break;
+        case 1: rgb = [x, chroma, 0]; break;
+        case 2: rgb = [0, chroma, x]; break;
+        case 3: rgb = [0, x, chroma]; break;
+        case 4: rgb = [x, 0, chroma]; break;
+        default: rgb = [chroma, 0, x]; break;
+      }
+
+      return { r: Math.round((rgb[0] + m) * 255), g: Math.round((rgb[1] + m) * 255), b: Math.round((rgb[2] + m) * 255) };
+    }
+
+    // ---------- start: the chrome of the page the address names at once, its contents when the catalog is here ----------
+
+    var status = document.getElementById('gallery-status');
+    if (slugOfPath(location.pathname) !== '') {
+      toolbar.hidden = false;
+      drawingPage.hidden = false;
+      layoutToolbar();
+    } else {
+      galleryPage.hidden = false;
+      layoutBrand();
+    }
+
+    fetch('/gallery/index.json').then(function (response) { return response.json(); }).then(function (items) {
+      catalog = items;
+      buildGallery();
+      var slug = slugOfPath(location.pathname);
+      if (slug !== '' && findBySlug(slug) == null) {
+        // not a drawing of the gallery: the gallery, at its own address
+        history.replaceState(null, '', PathPrefix);
+      }
+
+      navigate(false);
+    }).catch(function (error) {
+      galleryPage.hidden = false;
+      status.hidden = false;
+      status.textContent = 'The gallery could not be loaded: ' + error.message;
+      console.error('web: ' + error.message);
+    });
+  });
+</script>
+</body>
+</html>
