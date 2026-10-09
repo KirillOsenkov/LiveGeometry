@@ -165,8 +165,33 @@ public class ClickPreview
         }
 
         var measure = Math.OAngle(angle.First.Coordinates, angle.Vertex.Coordinates, angle.Second.Coordinates);
+        Add(CreateAngleFillGhost(corner, first.Value, second.Value, measure));
         Add(CreateAngleMarkGhost(drawing, corner, first.Value, second.Value, measure));
         Add(CreateAngleNumberGhost(drawing, corner, measure));
+    }
+
+    /// <summary>
+    /// The angle itself, from the vertex out to where the mark goes, tinted as a halo is: what
+    /// a filled mark would fill. The arc alone, faint and thin, was easy to miss.
+    /// </summary>
+    static Control CreateAngleFillGhost(Point corner, Point first, Point second, double measure)
+    {
+        var size = AngleArc.DefaultSize;
+        var geometry = System.Math.Abs(measure - Math.PI / 2) < AngleArc.RightAngleTolerance
+            ? AngleArc.CreateRightAngleFillGeometry(corner, first, second, size)
+            : AngleArc.CreateSectorGeometry(
+                corner,
+                corner + first * size,
+                corner + second * size,
+                size,
+                isLargeArc: false,
+                SweepDirection.CounterClockwise);
+        return new AvaloniaShapes.Path()
+        {
+            Data = geometry,
+            Fill = PointHaloBrush,
+            ZIndex = (int)ZOrder.Figures - 1
+        };
     }
 
     /// <summary>The mark an <see cref="AngleArc"/> draws, in the style a new one gets: an arc, or the square of a right angle</summary>
@@ -184,7 +209,7 @@ public class ClickPreview
         };
         if (System.Math.Abs(measure - Math.PI / 2) < AngleArc.RightAngleTolerance)
         {
-            var points = RightAngleMark.GetPoints(corner, first, second, RightAngleMark.Size);
+            var points = RightAngleMark.GetPoints(corner, first, second, AngleArc.DefaultSize);
             figure.StartPoint = points[0];
             figure.Segments.Add(new LineSegment() { Point = points[1] });
             figure.Segments.Add(new LineSegment() { Point = points[2] });
@@ -206,6 +231,10 @@ public class ClickPreview
             Data = new PathGeometry() { Figures = new PathFigures() { figure } }
         };
         ApplyGhostStyle(drawing, typeof(AngleArc), result);
+
+        // in the preview's blue, not the default line's faint gray: the arc is what says
+        // which angle the click takes
+        result.Stroke = TickBrush;
         result.ZIndex = (int)ZOrder.Figures;
         return result;
     }

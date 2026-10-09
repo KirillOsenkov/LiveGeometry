@@ -74,11 +74,184 @@ namespace DynamicGeometry
         public AngleArc()
             : base()
         {
-            Size = 16;
+            Size = DefaultSize;
             ArcShape.Size = new Size(this.Size, this.Size);
+
+            // the arcs themselves are never filled (an open figure fills up to its chord): a
+            // style with a fill fills the angle under them, FillShape
+            Figure.IsFilled = false;
         }
 
-        public const double DefaultSize = 16;
+        #region Fill
+
+        // A style with a fill (ShapeStyle, offered to a mark as to a circle) fills the angle
+        // between the vertex and the first arc, or the square of a right angle: a second
+        // path under the arcs, since a path's stroke outlines every figure in it and the
+        // sector's two radii must not be drawn over the sides. It takes the fill the style
+        // put on the shape, follows the shape in visibility and opacity (hidden, a ghost),
+        // and goes onto the canvas only once there is something to fill.
+        Avalonia.Controls.Shapes.Path fillShape;
+        Avalonia.Controls.Canvas fillCanvas;
+        bool hasFill;
+
+        Avalonia.Controls.Shapes.Path FillShape
+        {
+            get
+            {
+                if (fillShape == null)
+                {
+                    fillShape = new Avalonia.Controls.Shapes.Path()
+                    {
+                        IsHitTestVisible = false,
+                        IsVisible = false
+                    };
+                    Shape.PropertyChanged += Shape_PropertyChanged;
+                }
+
+                return fillShape;
+            }
+        }
+
+        void Shape_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == Avalonia.Visual.IsVisibleProperty || e.Property == Avalonia.Visual.OpacityProperty)
+            {
+                SyncFillWithShape();
+            }
+        }
+
+        void SyncFillWithShape()
+        {
+            if (fillShape != null)
+            {
+                fillShape.IsVisible = hasFill && Shape.IsVisible;
+                fillShape.Opacity = Shape.Opacity;
+            }
+        }
+
+        /// <summary>The fill under the arcs as the mark is now; none without a geometry, a fill, or a mark on screen</summary>
+        void UpdateFill(Avalonia.Media.PathGeometry geometry)
+        {
+            hasFill = geometry != null && Shape.Fill != null && IsShown;
+            if (!hasFill)
+            {
+                if (fillShape != null)
+                {
+                    fillShape.IsVisible = false;
+                }
+
+                return;
+            }
+
+            var path = FillShape;
+            path.Data = geometry;
+            path.Fill = Shape.Fill;
+            path.ZIndex = Shape.ZIndex - 1;
+            if (fillCanvas != null && !fillCanvas.Children.Contains(path))
+            {
+                fillCanvas.Children.Add(path);
+            }
+
+            SyncFillWithShape();
+        }
+
+        public override void OnAddingToCanvas(Avalonia.Controls.Canvas newContainer)
+        {
+            base.OnAddingToCanvas(newContainer);
+            fillCanvas = newContainer;
+        }
+
+        public override void OnRemovingFromCanvas(Avalonia.Controls.Canvas leavingContainer)
+        {
+            base.OnRemovingFromCanvas(leavingContainer);
+            if (fillShape != null)
+            {
+                leavingContainer.Children.Remove(fillShape);
+            }
+
+            fillCanvas = null;
+        }
+
+        /// <summary>Whether the place is in what a filled mark fills: the sector under the arcs, or the square of a right angle</summary>
+        bool IsInsideFill(Point point)
+        {
+            var center = Center;
+            if (shownSign == Sign.RightAngle)
+            {
+                var corner = ToPhysical(center);
+                var first = RightAngleMark.Direction(corner, ToPhysical(Point(1)));
+                var second = RightAngleMark.Direction(corner, ToPhysical(Point(2)));
+                if (first == null || second == null)
+                {
+                    return false;
+                }
+
+                // (the two directions are at a right angle: the square's own coordinates)
+                var offset = ToPhysical(point) - corner;
+                double along = offset.X * first.Value.X + offset.Y * first.Value.Y;
+                double across = offset.X * second.Value.X + offset.Y * second.Value.Y;
+                return along >= 0 && along <= Size && across >= 0 && across <= Size;
+            }
+
+            if (shownSign != Sign.Arc || center.Distance(point) > Radius)
+            {
+                return false;
+            }
+
+            return Math.IsAngleBetweenAngles(Math.GetAngle(center, point), StartAngle, EndAngle, Clockwise);
+        }
+
+        /// <summary>The sector between the vertex and an arc, in pixels, to be filled and not stroked (the hover's ghost uses it too)</summary>
+        public static Avalonia.Media.PathGeometry CreateSectorGeometry(
+            Point corner,
+            Point start,
+            Point end,
+            double radius,
+            bool isLargeArc,
+            Avalonia.Media.SweepDirection sweepDirection)
+        {
+            var figure = new Avalonia.Media.PathFigure()
+            {
+                StartPoint = corner,
+                IsClosed = true,
+                IsFilled = true,
+                Segments = new Avalonia.Media.PathSegments()
+                {
+                    new Avalonia.Media.LineSegment() { Point = start },
+                    new Avalonia.Media.ArcSegment()
+                    {
+                        Point = end,
+                        Size = new Size(radius, radius),
+                        IsLargeArc = isLargeArc,
+                        SweepDirection = sweepDirection
+                    }
+                }
+            };
+            return new Avalonia.Media.PathGeometry() { Figures = new Avalonia.Media.PathFigures() { figure } };
+        }
+
+        /// <summary>The square of a right angle's sign, in pixels, from the vertex, the mark's radius for a side: to be filled and not stroked</summary>
+        public static Avalonia.Media.PathGeometry CreateRightAngleFillGeometry(Point corner, Point first, Point second, double size)
+        {
+            var segment = new Avalonia.Media.PolyLineSegment();
+            foreach (var point in RightAngleMark.GetPoints(corner, first, second, size))
+            {
+                segment.Points.Add(point);
+            }
+
+            var figure = new Avalonia.Media.PathFigure()
+            {
+                StartPoint = corner,
+                IsClosed = true,
+                IsFilled = true,
+                Segments = new Avalonia.Media.PathSegments() { segment }
+            };
+            return new Avalonia.Media.PathGeometry() { Figures = new Avalonia.Media.PathFigures() { figure } };
+        }
+
+        #endregion
+
+        public const double DefaultSize = 20;
 
         double size = DefaultSize;
 
@@ -364,6 +537,12 @@ namespace DynamicGeometry
         /// </summary>
         public override IFigure HitTest(Point point)
         {
+            // inside a filled mark
+            if (hasFill && Visible && IsInsideFill(point))
+            {
+                return this;
+            }
+
             var found = base.HitTest(point);
             if (found != null || ArcCount < 2 || shownSign != Sign.Arc)
             {
@@ -432,16 +611,19 @@ namespace DynamicGeometry
             var second = RightAngleMark.Direction(corner, ToPhysical(Point(2)));
             if (first == null || second == null)
             {
+                UpdateFill(null);
                 return;
             }
 
             if (isRightAngle)
             {
                 // the school sign for 90 degrees: two sides of a little square, not an arc
-                var points = RightAngleMark.GetPoints(corner, first.Value, second.Value, RightAngleMark.Size);
+                // (as big as the arc would be: the radius is the square's side)
+                var points = RightAngleMark.GetPoints(corner, first.Value, second.Value, Size);
                 Figure.StartPoint = points[0];
                 rightAngleSide1.Point = points[1];
                 rightAngleSide2.Point = points[2];
+                UpdateFill(sign == Sign.RightAngle ? CreateRightAngleFillGeometry(corner, first.Value, second.Value, Size) : null);
                 return;
             }
 
@@ -461,6 +643,17 @@ namespace DynamicGeometry
                 arc.Segment.IsLargeArc = ArcShape.IsLargeArc;
                 arc.Segment.SweepDirection = ArcShape.SweepDirection;
             }
+
+            // the angle under the first arc, when the style fills
+            UpdateFill(sign == Sign.Arc
+                ? CreateSectorGeometry(
+                    corner,
+                    Figure.StartPoint,
+                    ArcShape.Point,
+                    Size,
+                    ArcShape.IsLargeArc,
+                    ArcShape.SweepDirection)
+                : null);
 
             // I commented out these lines because this causes AngleArc not to honor Visible property. Is this a mistake?  
             // I believe there will be times when a user would like to hide the arc. D. H.

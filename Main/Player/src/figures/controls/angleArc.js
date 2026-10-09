@@ -3,7 +3,7 @@
 // Left out: Convert to opposite angle.
 
 class AngleArc extends CircleArc {
-    static DefaultSize = 16;
+    static DefaultSize = 20;
 
     /** Gap between two arcs in pixels, on top of the stroke width */
     static ArcSpacing = 2;
@@ -76,8 +76,37 @@ class AngleArc extends CircleArc {
             && f.dependencies.includes(dependencies[2])) ?? null;
     }
 
-    /** Anywhere on the mark: from the first arc out to the last one, the gaps between them included */
+    /** Whether the place is in what a filled mark fills: the sector under the arcs, or the square of a right angle */
+    isInsideFill(point) {
+        const center = this.center;
+        if (this.shownSign === "RightAngle") {
+            const corner = this.toPhysical(center);
+            const first = RightAngleMark.direction(corner, this.toPhysical(this.point(1)));
+            const second = RightAngleMark.direction(corner, this.toPhysical(this.point(2)));
+            if (first == null || second == null) {
+                return false;
+            }
+
+            // (the two directions are at a right angle: the square's own coordinates)
+            const offset = this.toPhysical(point).minus(corner);
+            const along = offset.x * first.x + offset.y * first.y;
+            const across = offset.x * second.x + offset.y * second.y;
+            return along >= 0 && along <= this.size && across >= 0 && across <= this.size;
+        }
+
+        if (this.shownSign !== "Arc" || center.distance(point) > this.radius) {
+            return false;
+        }
+
+        return GeometryMath.isAngleBetweenAngles(GeometryMath.getAngle(center, point), this.startAngle, this.endAngle, this.clockwise);
+    }
+
+    /** Anywhere on the mark: from the first arc out to the last one, the gaps between them included; inside a filled mark */
     hitTest(point) {
+        if (this.fill != null && this.visible && this.isInsideFill(point)) {
+            return this;
+        }
+
         const found = super.hitTest(point);
         if (found != null || this.arcCount < 2 || this.shownSign !== "Arc") {
             return found;
@@ -137,10 +166,19 @@ class AngleArc extends CircleArc {
             return;
         }
 
+        // a style with a fill fills the angle under the mark - the square of the sign, the
+        // sector under the first arc - filled and not outlined: the sides are drawn by the
+        // lines through the vertex, and the arcs are never filled themselves
         const stroke = this.stroke;
+        const fill = this.fill;
         if (this.shownSign === "RightAngle") {
-            // the school sign for 90 degrees: two sides of a little square, not an arc
-            const points = RightAngleMark.getPoints(corner, first, second, RightAngleMark.Size);
+            // the school sign for 90 degrees: two sides of a little square, not an arc, as
+            // big as the arc would be (the radius is the square's side)
+            const points = RightAngleMark.getPoints(corner, first, second, this.size);
+            if (fill != null) {
+                renderer.drawPolygon([corner, ...points], null, fill, true);
+            }
+
             renderer.drawPolyline(points, stroke);
             return;
         }
@@ -148,7 +186,18 @@ class AngleArc extends CircleArc {
         // the arcs: counterclockwise from the first side, each a stroke and a bit further out
         const startAngle = this.startAngle;
         const endAngle = this.endAngle;
-        const fill = this.fill;
+        if (fill != null) {
+            const radius = this.size;
+            const start = corner.plus(first.scale(radius));
+            const sector = [
+                { op: "move", x: corner.x, y: corner.y },
+                { op: "line", x: start.x, y: start.y },
+                { op: "arc", cx: corner.x, cy: corner.y, rx: radius, ry: radius, rotation: 0, start: -startAngle, end: -endAngle, counterclockwise: !this.clockwise },
+                { op: "close" }
+            ];
+            renderer.drawPath(sector, null, fill, new Rect(corner.x - radius, corner.y - radius, 2 * radius, 2 * radius));
+        }
+
         for (let i = 0; i < this.arcCount; i++) {
             const radius = this.size + i * (this.strokeThickness + AngleArc.ArcSpacing);
             const start = corner.plus(first.scale(radius));
@@ -156,7 +205,7 @@ class AngleArc extends CircleArc {
                 { op: "move", x: start.x, y: start.y },
                 { op: "arc", cx: corner.x, cy: corner.y, rx: radius, ry: radius, rotation: 0, start: -startAngle, end: -endAngle, counterclockwise: !this.clockwise }
             ];
-            renderer.drawPath(commands, stroke, i === 0 ? fill : null, new Rect(corner.x - radius, corner.y - radius, 2 * radius, 2 * radius));
+            renderer.drawPath(commands, stroke, null, new Rect(corner.x - radius, corner.y - radius, 2 * radius, 2 * radius));
         }
     }
 }

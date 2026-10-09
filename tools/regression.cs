@@ -72,6 +72,7 @@ public class Program
             ("The axes are lines to build on, one of each", AxisLines),
             ("Tab chooses among overlapping figures", ChoiceAmongOverlaps),
             ("One click inside an angle serves the bisector, Line at Angle, Rotate and Translate", AngleAtVertexShortcuts),
+            ("A filled style fills the angle under a mark", FilledAngleMark),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
             ("Figures without a value don't exist", FiguresWithoutValue),
             ("A tool defined on expressions builds on its inputs", DefinedToolOnExpressions),
@@ -2162,6 +2163,35 @@ public class Program
             "Translate in the direction of the angle at A.");
         drawing.ActionManager.Undo();
         Require(Measurements() == 0, "Undo of the translation left the measurement.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// An angle mark on the line style is hit on its arc only; given a filled shape style it
+    /// fills the angle under the arc, which a click inside then takes; undo takes it away
+    /// </summary>
+    static void FilledAngleMark()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var a = AddPoint(drawing, x: 0, y: 0);
+        var b = AddPoint(drawing, x: 4, y: 0);
+        var c = AddPoint(drawing, x: 0, y: 3);
+        var arc = Factory.CreateAngleArc(drawing, new IFigure[] { a, b, c });
+        Actions.Add(drawing, arc);
+
+        // inside the sector, well off the arc
+        var inside = new Point(arc.Radius * 0.4, arc.Radius * 0.4);
+        Require(arc.HitTest(inside) == null, "An unfilled mark took a click inside it.");
+
+        var style = drawing.StyleManager.GetSupportedStyles(arc).OfType<ShapeStyle>().First(s => s.IsFilled);
+        Set(drawing, arc, nameof(FigureBase.Style), style);
+        Require(arc.HitTest(inside) == arc, "A filled mark did not take a click inside it.");
+        Require(
+            drawing.Canvas.Children.OfType<Avalonia.Controls.Shapes.Path>().Any(p => p.Fill != null && p.IsVisible && !p.IsHitTestVisible),
+            "No fill under the arc.");
+        drawing.ActionManager.Undo();
+        Require(arc.HitTest(inside) == null, "Undo of the style left the fill hit.");
         drawing.Figures.CheckConsistency();
     }
 

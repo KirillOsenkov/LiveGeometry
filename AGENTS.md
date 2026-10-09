@@ -1351,7 +1351,20 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   mark is an arc in code only: a sign of a fixed size in pixels, so no point goes on it and
   nothing is intersected with it (`PointOnFigure.CanBeOnFigure`,
   `IntersectionPoint.GetAlgorithms`) - a click near the vertex glued the new point to the
-  mark, and it moved with every zoom. Its grid says the angle in degrees, like the number. `DGFReader.ReadMeasureAngle` creates the arc from
+  mark, and it moved with every zoom. Its grid says the angle in degrees, like the number.
+  Its Radius (`AngleArc.DefaultSize`, 20 px since 2026-10-08) is also the side of the
+  square it draws at 90° (the square was `RightAngleMark.Size`, the perpendicular's own,
+  whatever the radius said). A mark takes a shape style as a circle does (`[StyleFor(typeof(AngleArc))]` on
+  `ShapeStyle`, not `IShapeWithInterior`, which the Area tool takes), the default being
+  the line: filled, the angle between the vertex and the first arc (the square of a right
+  angle) is filled, by a second path under the arcs (`AngleArc.FillShape`: a path's stroke
+  outlines every figure in it, and the sector's radii must not be drawn over the sides;
+  the arcs' own figures say `IsFilled = false`, or an open figure fills up to its chord),
+  which takes the fill the style put on the shape, follows the shape's visibility and
+  opacity through its property changes, goes onto the canvas only when there is something
+  to fill, and is hit inside (`IsInsideFill`). The hover's angle preview tints the same
+  sector (`ClickPreview.CreateAngleFillGhost`, the shared `CreateSectorGeometry`) and
+  draws the ghost arc in the preview's blue: faint and thin, the arc alone was missed. `DGFReader.ReadMeasureAngle` creates the arc from
   VB6's DrawStyle / AuxInfo(2) - not tested, there is no sample .dgf with an angle in the repo.
 - **Dashes**: `LineStyle.Dash` is put on in `LineStyle.OnApplied`, not through a setter, because
   `StrokeDashArray` counts in stroke widths. Anything that
