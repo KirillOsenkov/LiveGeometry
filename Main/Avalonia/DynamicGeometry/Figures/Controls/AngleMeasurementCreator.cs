@@ -50,6 +50,34 @@ namespace DynamicGeometry
         }
 
         /// <summary>
+        /// The preview keeps the angle under 180 degrees as the cursor moves. Its figures are
+        /// made once, when the second click lands and the point following the cursor is still
+        /// on the first side, so they were in click order: with the cursor on the other side
+        /// of the first side the mark went the long way round (343°) until the last click
+        /// made the figures afresh.
+        /// </summary>
+        public override void MouseMove(object sender, MouseEventArgs e)
+        {
+            base.MouseMove(sender, e);
+            if (TempResults.Count == 0 || FoundDependencies.Count != 3)
+            {
+                return;
+            }
+
+            var sides = InsideOrder(FoundDependencies);
+            foreach (var figure in TempResults)
+            {
+                if (figure.Dependencies[1] != sides[1])
+                {
+                    // the same two figures the other way round: nothing to register anew
+                    figure.Dependencies[1] = sides[1];
+                    figure.Dependencies[2] = sides[2];
+                    figure.RecalculateAndUpdateVisual();
+                }
+            }
+        }
+
+        /// <summary>
         /// Near a vertex, inside the mark it would get, the first click measures the angle
         /// whole (see <see cref="AngleAtVertex"/>) instead of taking a point; the later clicks
         /// are points on the sides
