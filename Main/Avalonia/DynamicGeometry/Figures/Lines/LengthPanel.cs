@@ -166,7 +166,7 @@ public class LengthPanel :
     public void OK()
     {
         figure.Drawing.RaiseDisplayProperties(null);
-        figure.Drawing.ClearStatus();
+        figure.Drawing.ShowBehaviorHint();
     }
 
     // the figure shows its own grid after the verb; this panel comes back on top of that

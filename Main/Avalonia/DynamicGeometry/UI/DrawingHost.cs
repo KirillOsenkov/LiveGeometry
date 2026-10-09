@@ -339,6 +339,12 @@ namespace DynamicGeometry
             }
 
             ShowProperties(null);
+
+            // the status back to the tool's hint: a panel's message went with the panel
+            if (drawing != null && !drawing.IsRecordingTransaction)
+            {
+                drawing.ShowBehaviorHint();
+            }
         }
 
         public void ToggleLabelNewPoints()

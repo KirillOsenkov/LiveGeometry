@@ -1359,6 +1359,15 @@ namespace DynamicGeometry
             RaiseStatusNotification("");
         }
 
+        /// <summary>
+        /// The status back to the tool's own hint: a panel's message (set the segment's
+        /// length, tie a value) is over with the panel
+        /// </summary>
+        public void ShowBehaviorHint()
+        {
+            RaiseStatusNotification(Behavior?.HintText ?? "");
+        }
+
         public event EventHandler<UnhandledExceptionNotificationEventArgs> UnhandledException;
         public void RaiseError(object sender, Exception ex)
         {

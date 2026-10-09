@@ -70,7 +70,7 @@ public class TiedValuesPanel : ICustomPropertyProvider, ICustomMethodProvider
         var drawing = Values.Drawing;
         drawing.RaiseDisplayProperties(null);
         drawing.RaiseDisplayProperties(drawing.Behavior?.PropertyBag);
-        drawing.ClearStatus();
+        drawing.ShowBehaviorHint();
     }
 
     public override string ToString()
