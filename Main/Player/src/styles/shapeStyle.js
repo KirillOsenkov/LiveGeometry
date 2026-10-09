@@ -13,9 +13,9 @@ class ShapeStyle extends LineStyle {
         return [["name", "string"], ["fill", "brush"], ["isFilled", "bool"], ["color", "color"], ["strokeWidth", "double"], ["dash", "enum"]];
     }
 
-    /** [StyleFor(IShapeWithInterior)], Bezier, BezierPathInterior */
+    /** [StyleFor(IShapeWithInterior)], Bezier, BezierPathInterior, AngleArc (which fills the angle under its mark) */
     static supportsFigure(figure) {
-        return figure.isShapeWithInterior === true || figure.isBezier === true || figure.isBezierPathInterior === true;
+        return figure.isShapeWithInterior === true || figure.isBezier === true || figure.isBezierPathInterior === true || figure.isAngleArc === true;
     }
 
     /** The brush a shape is filled with right now: none while not filled */
