@@ -13,12 +13,21 @@ class CircleSegment extends CircleArcBase {
         return true;
     }
 
+    get isPerimeterProvider() {
+        return true;
+    }
+
     get isSegmentShape() {
         return true;
     }
 
     get area() {
         return this.segmentArea;
+    }
+
+    /** The arc and its chord */
+    get perimeter() {
+        return this.length + this.beginLocation.distance(this.endLocation);
     }
 }
 
@@ -27,12 +36,21 @@ class EllipseSegment extends EllipseArcBase {
         return true;
     }
 
+    get isPerimeterProvider() {
+        return true;
+    }
+
     get isSegmentShape() {
         return true;
     }
 
     get area() {
         return this.segmentArea;
+    }
+
+    /** The arc and its chord */
+    get perimeter() {
+        return this.length + this.beginLocation.distance(this.endLocation);
     }
 }
 
@@ -41,12 +59,21 @@ class CircleSector extends CircleArcBase {
         return true;
     }
 
+    get isPerimeterProvider() {
+        return true;
+    }
+
     get isSectorShape() {
         return true;
     }
 
     get area() {
         return this.sectorArea;
+    }
+
+    /** The arc and the two radii */
+    get perimeter() {
+        return this.length + this.center.distance(this.beginLocation) + this.center.distance(this.endLocation);
     }
 }
 
@@ -55,12 +82,21 @@ class EllipseSector extends EllipseArcBase {
         return true;
     }
 
+    get isPerimeterProvider() {
+        return true;
+    }
+
     get isSectorShape() {
         return true;
     }
 
     get area() {
         return this.sectorArea;
+    }
+
+    /** The arc and the two radii */
+    get perimeter() {
+        return this.length + this.center.distance(this.beginLocation) + this.center.distance(this.endLocation);
     }
 }
 

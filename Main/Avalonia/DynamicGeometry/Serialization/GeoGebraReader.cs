@@ -1434,6 +1434,9 @@ public class GeoGebraReader
                 return One(Add(Factory.CreateAreaMeasurement(
                     drawing,
                     inputs.Length >= 3 ? Points(inputs, inputs.Length) : new[] { Resolve(inputs[0]) })));
+            case "Perimeter":
+            case "Circumference":
+                return One(Add(Factory.CreatePerimeterMeasurement(drawing, new[] { PerimeterOf(inputs[0]) })));
             case "Text":
                 return One(CreateText(inputs[0]));
             case "Mirror":
@@ -2138,6 +2141,18 @@ public class GeoGebraReader
         }
 
         return ends;
+    }
+
+    /// <summary>A shape with a perimeter: a polygon, a circle, an ellipse, a sector</summary>
+    IFigure PerimeterOf(string argument)
+    {
+        var figure = Resolve(argument);
+        if (figure is IPerimeter)
+        {
+            return figure;
+        }
+
+        throw new LeftOutException("'" + argument + "' has no perimeter");
     }
 
     /// <summary>Something with a length: a segment, a slider, a number; a typed value becomes a Number</summary>

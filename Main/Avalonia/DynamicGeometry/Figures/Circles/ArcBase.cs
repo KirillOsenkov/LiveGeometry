@@ -141,27 +141,25 @@ namespace DynamicGeometry
         {
             get
             {
-                double a = SemiMajor;
-                double b = SemiMinor;
-                if (!(a > 0 && b > 0))
-                {
-                    return 0;
-                }
-
                 double start = ParametricAngle(Clockwise ? EndLocation : BeginLocation);
-                double sweep = ParametricSweep;
-                const int intervals = 64;
-                double step = sweep / intervals;
-                double sum = 0;
-                for (int i = 0; i <= intervals; i++)
-                {
-                    double t = start + i * step;
-                    double speed = System.Math.Sqrt((a * System.Math.Sin(t)).Sqr() + (b * System.Math.Cos(t)).Sqr());
-                    int weight = i == 0 || i == intervals ? 1 : i % 2 == 1 ? 4 : 2;
-                    sum += weight * speed;
-                }
+                return Math.EllipseArcLength(SemiMajor, SemiMinor, start, ParametricSweep);
+            }
+        }
 
-                return sum * step / 3;
+        /// <summary>The point of the arc's ellipse at the parametric angle t</summary>
+        public Point PointAtParametricAngle(double t)
+        {
+            return Math.PointOnEllipse(Center, SemiMajor, SemiMinor, Inclination, t);
+        }
+
+        /// <summary>The point half way along the arc (where a perimeter's number sits)</summary>
+        public Point ArcMiddle
+        {
+            get
+            {
+                double begin = ParametricAngle(BeginLocation);
+                double sweep = ParametricSweep;
+                return PointAtParametricAngle(begin + (Clockwise ? -sweep : sweep) / 2);
             }
         }
 

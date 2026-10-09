@@ -10,7 +10,7 @@ namespace DynamicGeometry
 
     public interface IPolygon : IPolygonalChain { }
 
-    public abstract class PolygonBase : ShapeBase<Avalonia.Controls.Shapes.Polygon>, IPolygonalChain, IShapeWithInterior
+    public abstract class PolygonBase : ShapeBase<Avalonia.Controls.Shapes.Polygon>, IPolygonalChain, IShapeWithInterior, IPerimeter
     {
         /// <summary>
         /// Just for caching purposes, to avoid array allocations on a hotpath

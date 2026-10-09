@@ -66,8 +66,13 @@ class AngleMeasurement extends AngleMeasurementBase {
 }
 
 class HorizontalAngleMeasurement extends AngleMeasurementBase {
-    moveToCore(newPosition) {
-        super.moveToCore(newPosition.plus(0.2));
+    /** The angle of the segment to the x axis, counterclockwise, in radians (the base reads a third point) */
+    get angle() {
+        return GeometryMath.oHAngle(this.point(0), this.point(1));
+    }
+
+    get measure() {
+        return this.radians ? this.angle : GeometryMath.toDegrees(this.angle);
     }
 
     updateVisual() {
@@ -76,7 +81,7 @@ class HorizontalAngleMeasurement extends AngleMeasurementBase {
         }
 
         this.coordinates = this.placeFromOffset();
-        this.setText(NumberFormat.toDegreeString(GeometryMath.toDegrees(GeometryMath.oHAngle(this.point(0), this.point(1)))));
+        this.setText(NumberFormat.toDegreeString(GeometryMath.toDegrees(this.angle)));
     }
 }
 

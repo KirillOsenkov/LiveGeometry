@@ -676,12 +676,28 @@ namespace DynamicGeometry
         /// An angle (the arc or the number) exists only while both sides have a length: with a
         /// point of a side dragged onto the vertex there is no angle. Not existing also hides
         /// the shape until the point moves off again (ShapeBase.Exists), and makes whatever is
-        /// built on the angle not exist either.
+        /// built on the angle not exist either. The sides are every point after the vertex:
+        /// two, or one for an angle to the x axis (<see cref="HorizontalAngleMeasurement"/>;
+        /// asked for a third point, it threw).
         /// </summary>
         public static bool HasSides(IFigure angleFigure)
         {
+            int count = angleFigure.Dependencies.Count;
+            if (count < 2)
+            {
+                return false;
+            }
+
             var vertex = angleFigure.Point(0);
-            return vertex.Distance(angleFigure.Point(1)) != 0 && vertex.Distance(angleFigure.Point(2)) != 0;
+            for (int i = 1; i < count; i++)
+            {
+                if (vertex.Distance(angleFigure.Point(i)) == 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

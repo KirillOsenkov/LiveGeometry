@@ -11,7 +11,7 @@ namespace DynamicGeometry;
 /// single figure, so adding it is the undo step; no transaction.
 /// </summary>
 [Category(BehaviorCategories.Measure)]
-[Order(4)]
+[Order(5)]
 public class SliderCreator : Behavior
 {
     // in the drawing between the clicks, not recorded, so that its knob can follow the cursor

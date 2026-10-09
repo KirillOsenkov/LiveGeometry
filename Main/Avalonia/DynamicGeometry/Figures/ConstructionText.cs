@@ -78,6 +78,8 @@ public static class ConstructionText
                 return "angle " + source.Construction;
             case DistanceMeasurement:
                 return source.Construction;
+            case PerimeterMeasurement:
+                return "perimeter " + source.Construction;
             case Segment:
             case Vector:
                 // a segment's name is its points: AB, not "segment AB" (radius AB)

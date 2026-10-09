@@ -4,7 +4,7 @@ using Avalonia.Controls.Shapes;
 
 namespace DynamicGeometry
 {
-    public abstract partial class EllipseBase : ShapeBase<Shape>, IEllipse
+    public abstract partial class EllipseBase : ShapeBase<Shape>, IEllipse, IPerimeter
     {
         /// <summary>Circle c, d... (and ellipses), as lines are g, h...</summary>
         protected override string FirstLetter
@@ -38,6 +38,15 @@ namespace DynamicGeometry
             get
             {
                 return Math.PI * SemiMajor * SemiMinor;
+            }
+        }
+
+        /// <summary>The circumference: 2πr for a circle, the arc integral over a whole turn for an ellipse</summary>
+        public double Perimeter
+        {
+            get
+            {
+                return Math.EllipseArcLength(SemiMajor, SemiMinor, 0, Math.DOUBLEPI);
             }
         }
 

@@ -96,7 +96,7 @@ namespace DynamicGeometry
     // A segment could be added to this figure to provide a functioning chord. (SquareCreator is a model to follow.)
     // Implementing this as a composite figure is probably not a good idea. Intersections, pointOnFigure, etc would be ambiguous.
     // Unlike an arc, a circle or ellipse segment has a defined area.
-    public partial class CircleSegment : CircleArcBase, IShapeWithInterior, IConditionalProperties
+    public partial class CircleSegment : CircleArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties
     {
         protected override string Kind
         {
@@ -106,7 +106,7 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>No "Convert to arc" while something measures the area: a bare arc has none</summary>
+        /// <summary>No "Convert to arc" while something measures the area or the perimeter: a bare arc has neither</summary>
         public bool CanEdit(string propertyName)
         {
             return propertyName != "ConvertToArc" || !this.IsUsedForArea();
@@ -134,6 +134,15 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>The arc and its chord</summary>
+        public double Perimeter
+        {
+            get
+            {
+                return Length + BeginLocation.Distance(EndLocation);
+            }
+        }
+
 #if !PLAYER && !TABULA
 
         [PropertyGridVisible]
@@ -156,7 +165,7 @@ namespace DynamicGeometry
 
     }
 
-    public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IConditionalProperties
+    public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties
     {
         protected override string Kind
         {
@@ -166,7 +175,16 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>No "Convert to arc" while something measures the area: a bare arc has none</summary>
+        /// <summary>The arc and its chord</summary>
+        public double Perimeter
+        {
+            get
+            {
+                return Length + BeginLocation.Distance(EndLocation);
+            }
+        }
+
+        /// <summary>No "Convert to arc" while something measures the area or the perimeter: a bare arc has neither</summary>
         public bool CanEdit(string propertyName)
         {
             return propertyName != "ConvertToEllipseArc" || !this.IsUsedForArea();
@@ -225,7 +243,7 @@ namespace DynamicGeometry
 
     }
 
-    public partial class CircleSector : CircleArcBase, IShapeWithInterior, IConditionalProperties
+    public partial class CircleSector : CircleArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties
     {
         protected override string Kind
         {
@@ -235,7 +253,16 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>No "Convert to arc" while something measures the area: a bare arc has none</summary>
+        /// <summary>The arc and the two radii</summary>
+        public double Perimeter
+        {
+            get
+            {
+                return Length + Center.Distance(BeginLocation) + Center.Distance(EndLocation);
+            }
+        }
+
+        /// <summary>No "Convert to arc" while something measures the area or the perimeter: a bare arc has neither</summary>
         public bool CanEdit(string propertyName)
         {
             return propertyName != "ConvertToArc" || !this.IsUsedForArea();
@@ -309,7 +336,7 @@ namespace DynamicGeometry
 
     }
 
-    public partial class EllipseSector : EllipseArcBase, IShapeWithInterior, IConditionalProperties
+    public partial class EllipseSector : EllipseArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties
     {
         protected override string Kind
         {
@@ -319,7 +346,16 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>No "Convert to arc" while something measures the area: a bare arc has none</summary>
+        /// <summary>The arc and the two radii</summary>
+        public double Perimeter
+        {
+            get
+            {
+                return Length + Center.Distance(BeginLocation) + Center.Distance(EndLocation);
+            }
+        }
+
+        /// <summary>No "Convert to arc" while something measures the area or the perimeter: a bare arc has neither</summary>
         public bool CanEdit(string propertyName)
         {
             return propertyName != "ConvertToEllipseArc" || !this.IsUsedForArea();

@@ -36,7 +36,7 @@ namespace DynamicGeometry;
 /// <see cref="Smoothing"/> (<see cref="BezierPathSmoother"/>), so the curve stays smooth as
 /// they move; the tension it takes is typed or comes from a figure (a slider).
 /// </summary>
-public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupportRemoveDependency, ITiedValues, IConditionalProperties
+public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimeter, ISupportRemoveDependency, ITiedValues, IConditionalProperties
 {
     readonly List<BezierPathHandle> inHandles = new List<BezierPathHandle>();
     readonly List<BezierPathHandle> outHandles = new List<BezierPathHandle>();
@@ -1048,6 +1048,29 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, ISupport
             }
 
             RaisePropertyChanged(nameof(Closed));
+        }
+    }
+
+    /// <summary>
+    /// The length around a closed path, its pieces added up (<see cref="Math.BezierInfo.Length"/>);
+    /// NaN for an open one, which has nothing to measure (the holes are paths of their own)
+    /// </summary>
+    public double Perimeter
+    {
+        get
+        {
+            if (!closed || PieceCount == 0 || !CurvesExist())
+            {
+                return double.NaN;
+            }
+
+            double sum = 0;
+            foreach (var curve in Curves)
+            {
+                sum += curve.Length;
+            }
+
+            return sum;
         }
     }
 

@@ -75,6 +75,7 @@ public class Program
             ("A filled style fills the angle under a mark", FilledAngleMark),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
             ("Figures without a value don't exist", FiguresWithoutValue),
+            ("Perimeter measurements", PerimeterMeasurements),
             ("A tool defined on expressions builds on its inputs", DefinedToolOnExpressions),
             ("Defined tools are stored, read back and deleted", StoredToolsRoundTrip),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
@@ -1839,6 +1840,90 @@ public class Program
             new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonReleased),
             KeyModifiers.None,
             MouseButton.Left));
+    }
+
+    static void PerimeterMeasurements()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        var center = AddPoint(drawing, x: 0, y: 0);
+        var rim = AddPoint(drawing, x: 2, y: 0);
+        var circle = Factory.CreateCircle(drawing, new IFigure[] { center, rim });
+        Actions.Add(drawing, circle);
+        string before = drawing.SaveAsText();
+
+        // the tool: one click on the circle, undo, redo, a round trip through a file
+        var tool = new PerimeterMeasurementCreator();
+        drawing.Behavior = tool;
+        Click(drawing, system.ToPhysical(new Point(0, 2)));
+        Require(!drawing.IsRecordingTransaction, "The Perimeter tool left a transaction open.");
+        var measurement = drawing.Figures.OfType<PerimeterMeasurement>().Single();
+        Near(measurement.Length, 4 * System.Math.PI);
+        Require(measurement.Text == "12.57", "A circle of radius 2 says " + measurement.Text);
+        Require(measurement.Exists && measurement.Coordinates.Exists(), "The number is nowhere.");
+        Require(measurement.Construction == "of circle " + circle.Name, "The construction says " + measurement.Construction);
+        measurement.Prefix = "P = ";
+        Require(measurement.Text == "P = 12.57", "With a prefix it says " + measurement.Text);
+        string after = drawing.SaveAsText();
+        Require(after.Contains("Prefix=\"P = \""), "The prefix is not saved.");
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the perimeter left something.");
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo of the perimeter changed it.");
+        var reloaded = ReadLgf(after);
+        Require(reloaded.LoadErrors == null && reloaded.SaveAsText() == after, "The perimeter did not round trip.");
+        Require(reloaded.Figures.OfType<PerimeterMeasurement>().Single().Text == "P = 12.57", "Read back, the number changed.");
+
+        // the circumference is a length other figures take, and expressions read it by name
+        var label = Factory.CreateLabel(drawing);
+        Actions.Add(drawing, label);
+        label.Text = "[" + circle.Name + ".Perimeter]";
+        Require(label.ProcessedText == "12.57", "The label says " + label.ProcessedText);
+        var byRadius = Factory.CreateCircleByRadius(drawing, new IFigure[] { measurement, center });
+        Actions.Add(drawing, byRadius);
+        Near(byRadius.Radius, 4 * System.Math.PI);
+
+        // the other kinds
+        var corners = new IFigure[] { AddPoint(drawing, x: 10, y: 0), AddPoint(drawing, x: 13, y: 0), AddPoint(drawing, x: 13, y: 3), AddPoint(drawing, x: 10, y: 3) };
+        var square = Factory.CreatePolygon(drawing, corners);
+        Actions.Add(drawing, square);
+        Near(square.Perimeter, 12);
+        var hexagon = Factory.CreateRegularPolygon(drawing, new IFigure[] { AddPoint(drawing, x: 20, y: 0), AddPoint(drawing, x: 21, y: 0) });
+        Actions.Add(drawing, hexagon);
+        hexagon.NumberOfSides = 6;
+        Near(hexagon.Perimeter, 6);
+        var ellipse = Factory.CreateEllipse(drawing, new IFigure[] { AddPoint(drawing, x: 30, y: 0), AddPoint(drawing, x: 33, y: 0), AddPoint(drawing, x: 30, y: 2) });
+        Actions.Add(drawing, ellipse);
+        Require(System.Math.Abs(ellipse.Perimeter - 15.865439589290586) < 1e-6, "An ellipse with axes 3 and 2 has the perimeter " + ellipse.Perimeter);
+        var sector = Factory.CreateCircleSector(drawing, new IFigure[] { AddPoint(drawing, x: 40, y: 0), AddPoint(drawing, x: 42, y: 0), AddPoint(drawing, x: 40, y: 2) });
+        Actions.Add(drawing, sector);
+        Near(sector.Perimeter, System.Math.PI + 4);
+        var segment = Factory.CreateCircleSegment(drawing, new IFigure[] { AddPoint(drawing, x: 50, y: 0), AddPoint(drawing, x: 52, y: 0), AddPoint(drawing, x: 48, y: 0) });
+        Actions.Add(drawing, segment);
+        Near(segment.Perimeter, 2 * System.Math.PI + 4);
+
+        // a closed path through four points of the unit circle is the circle but for a hair; opened, it has none
+        var automatic = new BezierPath.HandleSpec(default, null, Auto: true);
+        var anchors = new IFigure[] { AddPoint(drawing, x: 61, y: 0), AddPoint(drawing, x: 60, y: 1), AddPoint(drawing, x: 59, y: 0), AddPoint(drawing, x: 60, y: -1) };
+        var path = BezierPath.Create(
+            drawing,
+            anchors,
+            new[] { automatic, automatic, automatic, automatic },
+            new[] { automatic, automatic, automatic, automatic },
+            holes: Array.Empty<IFigure>(),
+            closed: true,
+            filled: true);
+        Actions.Add(drawing, path);
+        Require(System.Math.Abs(path.Perimeter - 2 * System.Math.PI) < 0.01, "The path around the unit circle has the perimeter " + path.Perimeter);
+        var pathMeasurement = Factory.CreatePerimeterMeasurement(drawing, new IFigure[] { path });
+        Actions.Add(drawing, pathMeasurement);
+        Require(pathMeasurement.Exists, "The closed path's perimeter doesn't exist.");
+        path.Closed = false;
+        Require(double.IsNaN(path.Perimeter) && !pathMeasurement.Exists, "An open path still has a perimeter.");
+        path.Closed = true;
+        Require(pathMeasurement.Exists, "Closed again, the path's perimeter is still gone.");
+        drawing.Figures.CheckConsistency();
     }
 
     static void SquareOnSegment()

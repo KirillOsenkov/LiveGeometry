@@ -66,6 +66,27 @@ public static class PropertyGridTheme
             }
         });
 
+        // A grayed box (a value that can't be set: a tied angle, the exception report's
+        // text) is painted by Fluent on the template's border, 20% black in Light - a medium
+        // gray on the panel, far darker than anything else on it - over the box's own
+        // Background, and grays the text. A tint of the chrome instead, and the text as it
+        // is: the exception report's stack is read from such boxes.
+        styles.Add(new AvaloniaStyle(x => x.OfType<TextBox>().Class(":disabled").Template().OfType<Border>().Name("PART_BorderElement"))
+        {
+            Setters =
+            {
+                Themed(Border.BackgroundProperty, nameof(AppTheme.HeaderRow)),
+                Themed(Border.BorderBrushProperty, nameof(AppTheme.Separator))
+            }
+        });
+        styles.Add(new AvaloniaStyle(x => x.OfType<TextBox>().Class(":disabled"))
+        {
+            Setters =
+            {
+                Themed(TextBox.ForegroundProperty, nameof(AppTheme.Text))
+            }
+        });
+
         styles.Add(new AvaloniaStyle(x => x.OfType<Button>())
         {
             Setters =

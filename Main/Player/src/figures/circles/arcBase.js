@@ -65,25 +65,15 @@ class EllipseArcBase extends ShapeBase {
 
     /** The length of the arc: Simpson's rule over the parameter */
     get length() {
-        const a = this.semiMajor;
-        const b = this.semiMinor;
-        if (!(a > 0 && b > 0)) {
-            return 0;
-        }
-
         const start = this.parametricAngle(this.clockwise ? this.endLocation : this.beginLocation);
-        const sweep = this.parametricSweep;
-        const intervals = 64;
-        const step = sweep / intervals;
-        let sum = 0;
-        for (let i = 0; i <= intervals; i++) {
-            const t = start + i * step;
-            const speed = Math.sqrt(GeometryMath.sqr(a * Math.sin(t)) + GeometryMath.sqr(b * Math.cos(t)));
-            const weight = i === 0 || i === intervals ? 1 : i % 2 === 1 ? 4 : 2;
-            sum += weight * speed;
-        }
+        return GeometryMath.ellipseArcLength(this.semiMajor, this.semiMinor, start, this.parametricSweep);
+    }
 
-        return sum * step / 3;
+    /** The point half way along the arc (where a perimeter's number sits) */
+    get arcMiddle() {
+        const begin = this.parametricAngle(this.beginLocation);
+        const sweep = this.parametricSweep;
+        return this.pointAtParametricAngle(begin + (this.clockwise ? -sweep : sweep) / 2);
     }
 
     updateVisual() {
@@ -204,13 +194,7 @@ class EllipseArcBase extends ShapeBase {
     }
 
     pointAtParametricAngle(t) {
-        const center = this.center;
-        const inclination = this.inclination;
-        const cos = Math.cos(inclination);
-        const sin = Math.sin(inclination);
-        const x = this.semiMajor * Math.cos(t);
-        const y = this.semiMinor * Math.sin(t);
-        return new Point(center.x + x * cos - y * sin, center.y + x * sin + y * cos);
+        return GeometryMath.pointOnEllipse(this.center, this.semiMajor, this.semiMinor, this.inclination, t);
     }
 
     getParameterDomain() {

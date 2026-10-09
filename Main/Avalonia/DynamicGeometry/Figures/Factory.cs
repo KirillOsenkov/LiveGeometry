@@ -328,6 +328,11 @@ namespace DynamicGeometry
             return new AreaMeasurement() { Drawing = drawing, Dependencies = dependencies };
         }
 
+        public static PerimeterMeasurement CreatePerimeterMeasurement(Drawing drawing, IList<IFigure> dependencies)
+        {
+            return new PerimeterMeasurement() { Drawing = drawing, Dependencies = dependencies };
+        }
+
         public static PointByCoordinates CreatePointByCoordinates(Drawing drawing, IList<IFigure> dependencies)
         {
             return new PointByCoordinates() { Drawing = drawing, Dependencies = dependencies };

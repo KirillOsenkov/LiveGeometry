@@ -83,6 +83,7 @@ figures/controls/figureLabel.js
 figures/controls/pointLabel.js
 figures/controls/distanceMeasurement.js
 figures/controls/areaMeasurement.js
+figures/controls/perimeterMeasurement.js
 figures/controls/showHideControl.js
 figures/values/number.js
 figures/values/slider.js

@@ -26,6 +26,15 @@ class EllipseBase extends ShapeBase {
         return Math.PI * this.semiMajor * this.semiMinor;
     }
 
+    get isPerimeterProvider() {
+        return true;
+    }
+
+    /** The circumference: the arc integral over a whole turn */
+    get perimeter() {
+        return GeometryMath.ellipseArcLength(this.semiMajor, this.semiMinor, 0, GeometryMath.DOUBLEPI);
+    }
+
     hitTest(point) {
         const width = this.logicalWidth();
         const fromEdge = GeometryMath.radialDistanceToEllipse(this.center, this.semiMajor, this.semiMinor, this.inclination, point);

@@ -104,5 +104,30 @@
     <PointLabel Name="LabelF" OffsetX="6" OffsetY="-6">
       <Dependency Name="F" />
     </PointLabel>
+    <FreePoint Name="W" X="7" Y="-1" />
+    <FreePoint Name="X" X="9" Y="0" />
+    <FreePoint Name="Y" X="10" Y="-2" />
+    <FreePoint Name="Z" X="8" Y="-3" />
+    <BezierPath Name="Blob" Closed="true" Style="Gold" Path="C a a C a a C a a C a a">
+      <Dependency Name="W" />
+      <Dependency Name="X" />
+      <Dependency Name="Y" />
+      <Dependency Name="Z" />
+    </BezierPath>
+    <PerimeterMeasurement Name="Perimeter1">
+      <Dependency Name="p" Part="Interior" />
+    </PerimeterMeasurement>
+    <PerimeterMeasurement Name="Perimeter2" Prefix="P = ">
+      <Dependency Name="c" />
+    </PerimeterMeasurement>
+    <PerimeterMeasurement Name="Perimeter3">
+      <Dependency Name="Sector" />
+    </PerimeterMeasurement>
+    <PerimeterMeasurement Name="Perimeter4">
+      <Dependency Name="Lens" />
+    </PerimeterMeasurement>
+    <PerimeterMeasurement Name="Perimeter5">
+      <Dependency Name="Blob" />
+    </PerimeterMeasurement>
   </Figures>
 </Drawing>

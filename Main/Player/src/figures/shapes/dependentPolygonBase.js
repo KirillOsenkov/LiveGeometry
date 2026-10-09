@@ -254,6 +254,14 @@ class DependentPolygonBase extends CompositeFigure {
         return this.polygon.area;
     }
 
+    get isPerimeterProvider() {
+        return true;
+    }
+
+    get perimeter() {
+        return this.polygon.perimeter;
+    }
+
     get vertexCoordinates() {
         return this.vertices.map(v => v.coordinates);
     }

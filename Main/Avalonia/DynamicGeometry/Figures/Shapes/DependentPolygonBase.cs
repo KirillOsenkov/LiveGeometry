@@ -83,7 +83,7 @@ namespace DynamicGeometry
         }
     }
 
-    public class DependentPolygonBase : CompositeFigure, IShapeWithInterior, IPolygonalChain, IFigureParts
+    public class DependentPolygonBase : CompositeFigure, IShapeWithInterior, IPerimeter, IPolygonalChain, IFigureParts
     {
         protected readonly List<PointBase> vertices = new List<PointBase>();
         protected readonly List<Segment> sides = new List<Segment>();
@@ -564,6 +564,8 @@ namespace DynamicGeometry
         }
 
         public double Area => polygon.Area;
+
+        public double Perimeter => polygon.Perimeter;
 
         public Point[] VertexCoordinates => vertices.Select(v => v.Coordinates).ToArray();
 

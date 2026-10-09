@@ -60,6 +60,10 @@ class PolygonBase extends ShapeBase {
         return GeometryMath.area(this.vertexCoordinates);
     }
 
+    get isPerimeterProvider() {
+        return true;
+    }
+
     get perimeter() {
         return GeometryMath.distanceAround(this.vertexCoordinates);
     }

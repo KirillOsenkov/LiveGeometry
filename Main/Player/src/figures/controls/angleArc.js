@@ -148,10 +148,21 @@ class AngleArc extends CircleArc {
         }
     }
 
-    /** An angle (the arc or the number) exists only while both sides have a length */
+    /** An angle (the arc or the number) exists only while its sides have a length: every point after the vertex, two or one (an angle to the x axis) */
     static hasSides(angleFigure) {
+        const count = angleFigure.dependencies.length;
+        if (count < 2) {
+            return false;
+        }
+
         const vertex = angleFigure.point(0);
-        return vertex.distance(angleFigure.point(1)) !== 0 && vertex.distance(angleFigure.point(2)) !== 0;
+        for (let i = 1; i < count; i++) {
+            if (vertex.distance(angleFigure.point(i)) === 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     render(renderer) {

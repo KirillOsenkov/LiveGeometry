@@ -787,6 +787,34 @@ const GeometryMath = {
         return GeometryMath.getIntersectionOfEllipseAndLine(ellipse.center, ellipse.semiMajor, ellipse.semiMinor, ellipse.inclination, line);
     },
 
+    /** The point of the ellipse at the angle t that parametrizes it (x = a cos t, y = b sin t in its own axes) */
+    pointOnEllipse(center, semiMajor, semiMinor, inclination, t) {
+        const cos = Math.cos(inclination);
+        const sin = Math.sin(inclination);
+        const x = semiMajor * Math.cos(t);
+        const y = semiMinor * Math.sin(t);
+        return new Point(center.x + x * cos - y * sin, center.y + x * sin + y * cos);
+    },
+
+    /** The length of the arc of the ellipse x = a cos t, y = b sin t from start over sweep: Simpson's rule over t */
+    ellipseArcLength(semiMajor, semiMinor, start, sweep) {
+        if (!(semiMajor > 0 && semiMinor > 0)) {
+            return 0;
+        }
+
+        const intervals = 64;
+        const step = sweep / intervals;
+        let sum = 0;
+        for (let i = 0; i <= intervals; i++) {
+            const t = start + i * step;
+            const speed = Math.sqrt(GeometryMath.sqr(semiMajor * Math.sin(t)) + GeometryMath.sqr(semiMinor * Math.cos(t)));
+            const weight = i === 0 || i === intervals ? 1 : i % 2 === 1 ? 4 : 2;
+            sum += weight * speed;
+        }
+
+        return sum * step / 3;
+    },
+
     slope(p2, p1) {
         if (!isWithinEpsilon(p2.x - p1.x)) {
             return (p2.y - p1.y) / (p2.x - p1.x);
@@ -979,6 +1007,33 @@ class BezierInfo {
         return new Point(
             this.ax * t3 + this.bx * t2 + this.cx * t + this.p0.x,
             this.ay * t3 + this.by * t2 + this.cy * t + this.p0.y);
+    }
+
+    /** The velocity along the curve at t */
+    getDerivative(t) {
+        return new Point(
+            3 * this.ax * t * t + 2 * this.bx * t + this.cx,
+            3 * this.ay * t * t + 2 * this.by * t + this.cy);
+    }
+
+    // Gauss-Legendre with five nodes on [-1, 1]
+    static gaussNodes = [0, 0.5384693101056831, -0.5384693101056831, 0.9061798459386640, -0.9061798459386640];
+    static gaussWeights = [0.5688888888888889, 0.4786286704993665, 0.4786286704993665, 0.2369268850561891, 0.2369268850561891];
+
+    /** The length of the curve: the speed integrated over t, by Gauss-Legendre on eight stretches */
+    get length() {
+        const stretches = 8;
+        let sum = 0;
+        for (let i = 0; i < stretches; i++) {
+            const middle = (i + 0.5) / stretches;
+            const half = 0.5 / stretches;
+            for (let j = 0; j < BezierInfo.gaussNodes.length; j++) {
+                const velocity = this.getDerivative(middle + half * BezierInfo.gaussNodes[j]);
+                sum += BezierInfo.gaussWeights[j] * half * Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+            }
+        }
+
+        return sum;
     }
 
     getPoints() {

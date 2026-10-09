@@ -734,6 +734,24 @@ class BezierPath extends CompositeFigure {
         }
     }
 
+    get isPerimeterProvider() {
+        return true;
+    }
+
+    /** The length around a closed path, its pieces added up; NaN for an open one */
+    get perimeter() {
+        if (!this.closedValue || this.pieceCount === 0 || !this.curvesExist()) {
+            return NaN;
+        }
+
+        let sum = 0;
+        for (const curve of this.curveInfos) {
+            sum += curve.length;
+        }
+
+        return sum;
+    }
+
     /** Whether the inside is filled: an open path as if a straight line closed it */
     get filled() {
         return this.filledValue;

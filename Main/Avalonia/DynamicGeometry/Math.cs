@@ -1008,6 +1008,44 @@ namespace DynamicGeometry
                 return result;
             }
 
+            /// <summary>The velocity along the curve at t: where the curve goes and how fast</summary>
+            public Point GetDerivative(double t)
+            {
+                return new Point(
+                    3 * ax * t * t + 2 * bx * t + cx,
+                    3 * ay * t * t + 2 * by * t + cy);
+            }
+
+            // Gauss-Legendre with five nodes on [-1, 1]
+            static readonly double[] gaussNodes = { 0, 0.5384693101056831, -0.5384693101056831, 0.9061798459386640, -0.9061798459386640 };
+            static readonly double[] gaussWeights = { 0.5688888888888889, 0.4786286704993665, 0.4786286704993665, 0.2369268850561891, 0.2369268850561891 };
+
+            /// <summary>
+            /// The length of the curve: the speed integrated over t, by Gauss-Legendre on eight
+            /// stretches (a cubic's speed is smooth, and this is exact to the last digit where the
+            /// 50 sampled points, which are a few hundredths of the curve off, are not)
+            /// </summary>
+            public double Length
+            {
+                get
+                {
+                    const int stretches = 8;
+                    double sum = 0;
+                    for (int i = 0; i < stretches; i++)
+                    {
+                        double middle = (i + 0.5) / stretches;
+                        double half = 0.5 / stretches;
+                        for (int j = 0; j < gaussNodes.Length; j++)
+                        {
+                            var velocity = GetDerivative(middle + half * gaussNodes[j]);
+                            sum += gaussWeights[j] * half * System.Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y);
+                        }
+                    }
+
+                    return sum;
+                }
+            }
+
             Point[] GetPoints()
             {
                 Point[] result = new Point[NumberOfPoints];
@@ -1735,6 +1773,45 @@ namespace DynamicGeometry
             ints.P2 = RotatePoint(ints.P2, center, angle);
             return ints;
 
+        }
+
+        /// <summary>
+        /// The point of the ellipse at the angle t that parametrizes it (x = a cos t, y = b sin t
+        /// in its own axes, turned by the inclination about the center)
+        /// </summary>
+        public static Point PointOnEllipse(Point center, double semiMajor, double semiMinor, double inclination, double t)
+        {
+            double cos = System.Math.Cos(inclination);
+            double sin = System.Math.Sin(inclination);
+            double x = semiMajor * System.Math.Cos(t);
+            double y = semiMinor * System.Math.Sin(t);
+            return new Point(center.X + x * cos - y * sin, center.Y + x * sin + y * cos);
+        }
+
+        /// <summary>
+        /// The length of the arc of the ellipse x = a cos t, y = b sin t from the angle
+        /// <paramref name="start"/> over <paramref name="sweep"/> (a whole turn for the
+        /// circumference). There is no formula: Simpson's rule over t.
+        /// </summary>
+        public static double EllipseArcLength(double semiMajor, double semiMinor, double start, double sweep)
+        {
+            if (!(semiMajor > 0 && semiMinor > 0))
+            {
+                return 0;
+            }
+
+            const int intervals = 64;
+            double step = sweep / intervals;
+            double sum = 0;
+            for (int i = 0; i <= intervals; i++)
+            {
+                double t = start + i * step;
+                double speed = System.Math.Sqrt((semiMajor * System.Math.Sin(t)).Sqr() + (semiMinor * System.Math.Cos(t)).Sqr());
+                int weight = i == 0 || i == intervals ? 1 : i % 2 == 1 ? 4 : 2;
+                sum += weight * speed;
+            }
+
+            return sum * step / 3;
         }
 
         public static double Slope(Point p2, Point p1)

@@ -36,7 +36,7 @@ namespace DynamicGeometry
             }
         }
 
-        public double Measure
+        public virtual double Measure
         {
             get
             {
@@ -45,7 +45,7 @@ namespace DynamicGeometry
             }
         }
 
-        public double Angle
+        public virtual double Angle
         {
             get
             {
@@ -161,9 +161,21 @@ namespace DynamicGeometry
             }
         }
 
-        public override void MoveToCore(Point newPosition)
+        /// <summary>The angle of the segment to the x axis, counterclockwise, in radians (the base reads a third point)</summary>
+        public override double Angle
         {
-            base.MoveToCore(newPosition.Plus(0.2));
+            get
+            {
+                return Math.OHAngle(Point(0), Point(1));
+            }
+        }
+
+        public override double Measure
+        {
+            get
+            {
+                return Radians ? Angle : Angle.ToDegrees();
+            }
         }
 
         public override void UpdateVisual()
@@ -173,10 +185,12 @@ namespace DynamicGeometry
                 return;
             }
 
+            // placed by its top left corner as every label is (ControlBase.UpdateVisual):
+            // it centered the shape, which has no Width to halve, and the shape stayed in the
+            // top left corner of the window
             Coordinates = PlaceFromOffset();
-            Shape.CenterAt(ToPhysical(Coordinates));
-            Text = Math
-                .OHAngle(Point(0), Point(1))
+            Shape.MoveTo(ToPhysical(Coordinates));
+            Text = Angle
                 .ToDegrees()
                 .ToDegreeString();
         }

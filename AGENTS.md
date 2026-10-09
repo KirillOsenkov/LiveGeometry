@@ -179,7 +179,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the cursor can mean: two vertices in reach, a third line on the same side (a bisector: the half or the
   whole?), a side with no point on it to depend on, an angle measured already - nothing,
   and the click takes a point as before (as it always does on a point); Area (K) - a polygon, ellipse,
-  circle or list of points, Enter or a right click when the points are done; Slider - where it sits, then where
+  circle or list of points, Enter or a right click when the points are done; Perimeter
+  (2026-10-09) - one click on a polygon, circle, ellipse, sector, circular segment or closed
+  Bezier path (`IPerimeter`, see "Perimeter" under "Design decisions"; no letter yet);
+  Slider - where it sits, then where
   its knob starts (or press, drag, release): a number with a handle, taken wherever a tool
   asks for a length or an angle, named in expressions (a, b, c).
 - **Misc**: Bezier - four points; Locus (D) - a point that depends on a point on a figure;
@@ -996,6 +999,29 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   shows (`LabelBase.ExactValue`): `[AB / 3]` as a radius was 0.33, and changed with the
   label's Decimals. A circle whose radius comes out negative or undefined (a label, a
   Number) doesn't exist (`CircleByRadius.UpdateExistence`).
+- **Perimeter** (`Figures/Controls/PerimeterMeasurement.cs`, 2026-10-09): `IPerimeter`
+  (`Perimeter`) on `PolygonBase`, `DependentPolygonBase`, `EllipseBase` (the arc integral
+  `Math.EllipseArcLength` over a whole turn, which `ArcBase.Length` also uses), the sectors
+  and circular segments (the arc with the radii or the chord) and `BezierPath` (closed:
+  the cubics' lengths by Gauss-Legendre, `BezierInfo.Length`; open: NaN, and the tool
+  doesn't take it, a measurement of it stops existing). Not `ILengthProvider`, on purpose:
+  a circle's `Length` is its radius and a regular polygon's its side (`IFixableLength`),
+  and `c.Length` in an expression reads that - the perimeter is `c.Perimeter`. The
+  measurement itself is an `ILengthProvider` (a circumference as a radius), shows the bare
+  number as Area does, and has a `Prefix` row ("P = ", saved as `Prefix`) for telling it
+  from an Area next to it (a circle of radius 2 says 12.57 twice). Its anchor is on the
+  outline, where a Distance sits on its segment: the middle of a polygon's first side, the
+  lower right of a circle or an ellipse (the name's corner is the upper left), the middle of
+  a sector's arc, the middle of a path's first piece; the default offset pushes it just
+  outside (across the side away from the inside, else away from the center), worked out
+  at the first `UpdateVisual` with a canvas that has a size (a file without `OffsetX`
+  gets it too; before the first layout the anchor could only be the fallback below, and
+  the offset came out wrong). A circle or
+  an ellipse whose fixed point is off screen anchors at its point nearest the middle of
+  the window, which moves with the view as a line's name does. Function graphs and loci
+  are left out on purpose: their length depends on the window. A click on a regular
+  polygon takes its `Interior` part, as the Area tool's does. The GeoGebra reader maps
+  `Perimeter[]` and `Circumference[]`.
 - **Undo** (GuiLabs.Undo; `Actions/`). What must hold: every change to what a file saves is
   one undo step, undo puts back exactly what was there, redo what was made. The traps, each
   of which was a bug (2026-09-30):
