@@ -179,17 +179,47 @@ public class ClickChoice
         }
     }
 
-    /// <summary>For the status bar while there is a choice: "Segment AB (2 of 3): Tab for the next."; null while there is none</summary>
+    /// <summary>
+    /// An option with how it is built, for the status: "Midpoint E of AB", "Perpendicular
+    /// line h to segment AB through C"; <see cref="Describe"/> for anything else
+    /// </summary>
+    public static string DescribeInFull(object option)
+    {
+        var words = Describe(option);
+        if (option is FigureBase figure && !string.IsNullOrEmpty(figure.Construction))
+        {
+            words += " " + figure.Construction;
+        }
+
+        return words;
+    }
+
+    /// <summary>
+    /// Whether the status names what a click takes also when there is nothing else to choose
+    /// (the Drag tool: whatever is under the cursor); off, it speaks only of a choice
+    /// </summary>
+    public bool DescribesSingle { get; set; }
+
+    /// <summary>
+    /// For the status bar while there is a choice: "Segment AB (2 of 3): Tab for the next.";
+    /// the one option alone with <see cref="DescribesSingle"/>; null while there is nothing
+    /// </summary>
     public string StatusText
     {
         get
         {
-            if (offered.Count < 2)
+            if (offered.Count == 0 || (offered.Count == 1 && !DescribesSingle))
             {
                 return null;
             }
 
-            return Describe(Current) + " (" + (index + 1) + " of " + offered.Count + "): Tab for the next.";
+            var words = DescribeInFull(Current);
+            if (offered.Count == 1)
+            {
+                return words;
+            }
+
+            return words + " (" + (index + 1) + " of " + offered.Count + "): Tab for the next.";
         }
     }
 }

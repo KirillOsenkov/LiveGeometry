@@ -39,6 +39,12 @@ namespace DynamicGeometry
         /// <summary>In pixels: how far the cursor goes from where it was pressed before the press is a drag and not a click</summary>
         public static double DragThreshold = 3;
 
+        public Dragger()
+        {
+            // the status says what is under the cursor also when it is one thing
+            Choice.DescribesSingle = true;
+        }
+
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
             // a drag whose release never arrived
@@ -63,8 +69,8 @@ namespace DynamicGeometry
 
             found = Drawing.Figures.HitTest(offsetFromFigureLeftTopCorner);
 
-            // a handle of a Bezier path chosen with Tab, under its anchor (FindClickOptions)
-            if (Choice.Index > 0 && Choice.Current is BezierPath.BezierPathHandle chosen)
+            // the figure chosen with Tab among those under the cursor (FindClickOptions)
+            if (Choice.Index > 0 && Choice.Current is IFigure chosen)
             {
                 found = chosen;
             }
@@ -216,17 +222,27 @@ namespace DynamicGeometry
         }
 
         /// <summary>
-        /// Where a handle of a Bezier path is among other figures - on its anchor, where a
-        /// click leaves it - Tab chooses (<see cref="ClickChoice"/>): the anchor first, as a
-        /// press takes it, then the handles there (both of a corner). Also while the handles
-        /// don't show: over an anchor whose handles are on it (a path of clicks only looks
-        /// like segments), the status says there is more to take there. Nowhere else: the
-        /// Drag tool has no choice of its own (its context menu has "Choose figure").
+        /// What is under the cursor, for the status and for Tab (<see cref="ClickChoice"/>):
+        /// every figure there in the order a press takes them (the one a press takes first),
+        /// so that the status names what a click would select, and Tab reaches a figure
+        /// under another - the segment under its end, a handle of a Bezier path on its anchor,
+        /// where a click leaves it (both handles of a corner; also while the handles don't
+        /// show: over an anchor whose handles are on it, a path of clicks only looks like
+        /// segments). Not an axis or a caption, on which a press pans. A finger can't hover
+        /// and a tap with a choice asks in a menu, so it is offered the handles only: a tap
+        /// on a point on a circle is the point, as it was.
         /// </summary>
         protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
         {
+            // (nothing while a press is held: the status says what the keys do to the dragged point)
+            if (moving != null)
+            {
+                return new object[0];
+            }
+
             var coordinates = Coordinates(e, false, false, false);
-            var figures = Drawing.Figures.HitTestAll(coordinates, f => f.Visible && f.IsHitTestVisible && !(f is AxisLine));
+            var figures = Drawing.Figures.HitTestAll(coordinates, f => f.Visible && f.IsHitTestVisible && !(f is AxisLine) && !IsCaption(f));
+            bool isTouch = e.Pointer.Type == PointerType.Touch;
 
             // a path gives one part at a place: both handles of an anchor are there; and an
             // anchor's own handles on it are there, shown or not
@@ -251,15 +267,13 @@ namespace DynamicGeometry
                     continue;
                 }
 
-                // the choice is between a point and the handles there (not the sides through
-                // it, which a press there takes after the point anyway)
-                if (!(figure is IPoint))
+                if (isTouch && !(figure is IPoint))
                 {
                     continue;
                 }
 
                 Add(figure);
-                if (!figure.Locked)
+                if (figure is IPoint && !figure.Locked)
                 {
                     foreach (var path in Drawing.Figures.OfType<BezierPath>().Where(path => path.Visible && path.IsAnchor(figure)))
                     {
@@ -271,7 +285,18 @@ namespace DynamicGeometry
                 }
             }
 
-            return options.Count > 1 && options.Any(option => option is BezierPath.BezierPathHandle) ? options : new object[0];
+            if (isTouch && !(options.Count > 1 && options.Any(option => option is BezierPath.BezierPathHandle)))
+            {
+                return new object[0];
+            }
+
+            return options;
+        }
+
+        /// <summary>A label a gallery drawing came with, pinned to the screen: paper to the Drag tool (a press on it pans)</summary>
+        bool IsCaption(IFigure figure)
+        {
+            return figure is Label { Pin: not LabelPin.None } label && Drawing.FixedLabels.Contains(label);
         }
 
         /// <summary>
@@ -694,12 +719,12 @@ namespace DynamicGeometry
 
         /// <summary>
         /// Over a point to join, the dragged point sits right on it and the halo goes on that
-        /// point; nothing is joined before the drop
+        /// point; nothing is joined before the drop. Or the figure chosen with Tab under
+        /// another, which a press takes instead of the topmost: the halo shows which.
         /// </summary>
         protected override IFigure GetFigureToPick(MouseEventArgs e)
         {
-            // (or the handle chosen with Tab, which a press takes instead of its anchor)
-            return snap?.ExistingPoint ?? (Choice.Index > 0 ? Choice.Current as BezierPath.BezierPathHandle : null);
+            return snap?.ExistingPoint ?? (Choice.Index > 0 ? Choice.Current as IFigure : null);
         }
 
         #endregion
@@ -713,6 +738,13 @@ namespace DynamicGeometry
         public override void MouseRightClick(object sender, MouseButtonEventArgs e)
         {
             var hit = Drawing.Figures.HitTest(Coordinates(e, false, false, false));
+
+            // (the figure chosen with Tab, as a click takes it)
+            if (Choice.Index > 0 && Choice.Current is IFigure chosen)
+            {
+                hit = chosen;
+            }
+
             if (hit is AxisLine)
             {
                 hit = null;

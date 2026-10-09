@@ -493,7 +493,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   option picked; dismissed, it is nothing. A tool whose click on a figure is a shortcut
   (Midpoint on a segment, Angle Bisector on an angle, Area on a shape, Angle at a vertex)
   offers no choice where it applies, or the status would promise what the click doesn't
-  do. The Drag tool has no cycling: its context menu lists the figures under the click
+  do. Under the Drag tool the status names whatever is under the cursor, with its
+  construction ("Midpoint E of AB"; `ClickChoice.DescribesSingle`, `DescribeInFull`), and
+  every figure there is an option, in the order a press takes them (a point over the
+  segments through it: "Point A (1 of 3)"), so Tab reaches a figure under another and the
+  press, the right click and the halo go to the one chosen - not an axis or a caption,
+  and nothing while a press is held (the status says what the keys do to the dragged
+  point). A finger is offered the handles of a Bezier path only, or every tap on a point
+  on a figure asked in a menu. Its context menu also lists the figures under the click
   ("Choose figure") and selects the one picked.
 - **The reach of a click is in pixels**, the cursor's tolerance plus half the stroke, for
   every figure. A circle, ellipse or arc is hit by its distance from the curve along the
@@ -1228,7 +1235,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   two and the neighbors' that face it (`IsHandleShown`) - with dotted lines in the ink at
   0.3, and only the Drag tool hits one (`HitTest`): nothing is built on a handle but the
   images of a transformation. A zero handle sits under its anchor (z just below points):
-  Tab takes it (`Dragger.FindClickOptions`, the Drag tool's only choice). A dragged handle
+  Tab takes it (`Dragger.FindClickOptions`, with the other figures there). A dragged handle
   takes the one across the anchor along as its mirror image (snapped to it at the first
   move: a symmetric anchor); with Alt that one stays where it is, for a corner
   (`MirrorsOpposite`, both in the move's undo place); dropped with Alt on a point, the

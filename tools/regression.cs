@@ -1116,7 +1116,8 @@ public class Program
         Action<string> watch = text => hidden = text;
         drawing.ChoiceStatus += watch;
         Hover(drawing, system.ToPhysical(a.Coordinates));
-        Require(hidden != null && hidden.Contains("(1 of 2)"), "Over A, nothing selected: " + hidden);
+        // (the point, its hidden handle, the path)
+        Require(hidden != null && hidden.Contains("(1 of 3)"), "Over A, nothing selected: " + hidden);
         Require(drawing.Behavior.StepChoice(backwards: false) && hidden.StartsWith("Handle of A toward B"), "Tab at A took: " + hidden);
         string untouched = drawing.SaveAsText();
         Drag(drawing, system.ToPhysical(a.Coordinates), system.ToPhysical(new Point(1, 1)));
@@ -1139,6 +1140,7 @@ public class Program
         drawing.ChoiceStatus += text => status = text;
         var atB = system.ToPhysical(b.Coordinates);
         Hover(drawing, atB);
+        // (the point and its two handles, which the path's own hit test answers with)
         Require(status != null && status.Contains("(1 of 3)"), "No choice at B: " + status);
         Require(drawing.Behavior.StepChoice(backwards: false), "Tab chose nothing at B.");
         Require(status.StartsWith("Handle of B toward A"), "Tab took: " + status);
@@ -2082,6 +2084,22 @@ public class Program
         drawing.Behavior = new Dragger();
         Hover(drawing, system.ToPhysical(new Point(-6, -6)));
         Require(status == null, "The choice's status stayed: " + status);
+
+        // the Drag tool: the status names what is under the cursor, one thing or a choice,
+        // and a click takes the one chosen with Tab
+        var alone = AddPoint(drawing, x: -5, y: 5);
+        var dragger = new Dragger();
+        drawing.Behavior = dragger;
+        Hover(drawing, system.ToPhysical(alone.Coordinates));
+        Require(status == "Point " + alone.Name, "The status over a point alone: " + status);
+        dragger = new Dragger();
+        drawing.Behavior = dragger;
+        Hover(drawing, onBoth);
+        // (the line, the newer, first: a press takes it)
+        Require(status != null && status.StartsWith("Line ") && status.Contains("(1 of 2)"), "The status over the segment on the line: " + status);
+        Require(dragger.StepChoice(backwards: false) && status.StartsWith("Segment "), "Tab under the Drag tool: " + status);
+        Click(drawing, onBoth);
+        Require(segment.Selected && !along.Selected, "The click did not select the segment chosen with Tab.");
         drawing.Figures.CheckConsistency();
     }
 
