@@ -44,8 +44,8 @@ public class PerimeterMeasurementCreator : FigureCreator
 
     public override FrameworkElement CreateIcon()
     {
-        // The Area tool's pentagon, hollow, its outline marked off like a ruler: the outline
-        // is what is measured.
+        // The Area tool's pentagon, hollow, with a second outline in the accent color a
+        // little way in along its walls: the outline is what is measured.
         var pentagon = new[]
         {
             new Point(0.5, 0.08),
@@ -55,27 +55,20 @@ public class PerimeterMeasurementCreator : FigureCreator
             new Point(0.07, 0.39)
         };
 
-        var builder = IconBuilder
-            .BuildIcon()
-            .Polyline(IconBuilder.AccentThickness, nameof(AppTheme.Ink), pentagon, isClosed: true);
-
-        // ticks across each side, at a third and two thirds of it, pointing inward
-        const double tickLength = 0.09;
+        // the same pentagon shrunk about its center: for a regular one that is an inset by
+        // the same distance along every wall
+        var center = new Point(0.5, 0.55);
+        const double shrink = 0.78;
+        var inner = new Point[pentagon.Length];
         for (int i = 0; i < pentagon.Length; i++)
         {
-            var from = pentagon[i];
-            var to = pentagon[(i + 1) % pentagon.Length];
-            var along = to - from;
-            double length = System.Math.Sqrt(along.X * along.X + along.Y * along.Y);
-            var inward = new Point(-along.Y / length, along.X / length);
-            foreach (double fraction in new[] { 1.0 / 3, 2.0 / 3 })
-            {
-                var start = from + along * fraction;
-                var end = start + inward * tickLength;
-                builder.Line(nameof(AppTheme.ScaleMarks), start.X, start.Y, end.X, end.Y);
-            }
+            inner[i] = center + (pentagon[i] - center) * shrink;
         }
 
-        return builder.Canvas;
+        return IconBuilder
+            .BuildIcon()
+            .Polyline(IconBuilder.AccentThickness, nameof(AppTheme.Ink), pentagon, isClosed: true)
+            .Polyline(IconBuilder.AccentThickness, nameof(AppTheme.LineAccent), inner, isClosed: true)
+            .Canvas;
     }
 }
