@@ -6,6 +6,12 @@
       "runtimeExecutable": "dotnet",
       "runtimeArgs": ["run", "tools/serve.cs", "--", "Main", "5005"],
       "port": 5005
+    },
+    {
+      "name": "site-dev",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "tools/serve.cs", "--", ".", "5009"],
+      "port": 5009
     }
   ]
 }

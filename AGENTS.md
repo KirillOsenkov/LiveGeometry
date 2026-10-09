@@ -2153,6 +2153,11 @@ else - no ribbon, grid, list or gallery, no undo, no selection. The Silverlight-
   `wwwroot/history/`, and a `web.config` rule answers `/history` with its `index.html` (a folder
   is not a file, so the SPA fallback would otherwise serve the app). `tools/serve.cs` has no
   such rule: locally open `/history/index.html`, or serve the `history` folder itself.
+  `/history/tabula` (2026-10-09) is a wing of it, `history/tabula.html`, with its pictures
+  in `history/tabula/` (a `web.config` rule answers the path with the page, and `serve.cs`
+  serves `<path>.html` for an extensionless path that has one); it references them by
+  absolute path, since a relative one would resolve against `/history/`. Everything on it
+  came from the Wayback Machine's captures of numeracyworks.com and from YouTube.
 - **`/embed`** is the same kind of page (`embed/index.html` at the repo root, linked into
   `wwwroot/embed/`, a `web.config` rule): the hub for putting a drawing on another page,
   itself played by the player it describes (`/player/1/player.js`, the gallery's `.lgf`

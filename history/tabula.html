@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabula · A Live Geometry Museum Wing</title>
+<meta name="description" content="Tabula (2009–2013) by David Hartmann and Numeracy Works: fold, cut and tape geometry on the Live Geometry engine. Screenshots, videos and the website as the Internet Archive kept it.">
+<link rel="icon" href="/favicon.ico">
+<!-- Google tag (gtag.js), the same as the app's index.html -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-10ZM10J6RW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-10ZM10J6RW');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  /* the same papyrus as /history: this page is a wing of that museum */
+  :root {
+    --sand: #e7d5a4;
+    --sand-light: #f3e7c3;
+    --sand-deep: #cdb37a;
+    --ink: #3a2a14;
+    --ink-soft: #6b5230;
+    --ink-faint: rgba(58, 42, 20, 0.35);
+    --terracotta: #a3452c;
+    --lapis: #2e4c7c;
+    --gold: #b3862a;
+    --plate: rgba(255, 249, 228, 0.62);
+    --serif: "Cormorant Garamond", "Palatino Linotype", Palatino, Georgia, serif;
+    --display: "Cinzel", "Trajan Pro", "Palatino Linotype", Georgia, serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    position: relative;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.5;
+    background-color: var(--sand);
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(255, 246, 214, 0.9), rgba(255, 246, 214, 0) 60%),
+      radial-gradient(ellipse at 50% 100%, rgba(150, 110, 50, 0.22), rgba(150, 110, 50, 0) 55%),
+      repeating-linear-gradient(0deg, rgba(120, 85, 35, 0.045) 0 1px, transparent 1px 7px),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.018 0.35' numOctaves='3' seed='7'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.08  0 0 0 0.18 0'/></filter><rect width='400' height='400' filter='url(%23f)'/></svg>");
+    background-attachment: fixed, fixed, scroll, scroll;
+  }
+
+  a { color: var(--lapis); text-decoration: none; border-bottom: 1px solid rgba(46, 76, 124, 0.35); }
+  a:hover { color: var(--terracotta); border-bottom-color: currentColor; }
+
+  .top-link {
+    position: absolute;
+    top: 18px;
+    left: 24px;
+    font-family: var(--display);
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none;
+    color: var(--ink-soft);
+    z-index: 2;
+  }
+
+  .top-link:hover { color: var(--terracotta); }
+
+  header {
+    position: relative;
+    text-align: center;
+    padding: 96px 20px 30px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .meander {
+    height: 22px;
+    margin: 0 auto;
+    max-width: 520px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='22' viewBox='0 0 30 22'><path d='M0 3 H27 V19 H9 V9 H19 V14' fill='none' stroke='%233a2a14' stroke-width='2'/></svg>") repeat-x center;
+    opacity: 0.55;
+  }
+
+  header .kicker {
+    font-family: var(--display);
+    font-size: 15px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 26px 0 8px;
+  }
+
+  header h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(40px, 7vw, 76px);
+    letter-spacing: 0.06em;
+    line-height: 1.05;
+    margin: 0 0 18px;
+    color: var(--ink);
+    text-shadow: 0 1px 0 rgba(255, 250, 230, 0.7);
+  }
+
+  header .lede {
+    font-size: 23px;
+    font-style: italic;
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin: 0 auto 26px;
+  }
+
+  header .compiled {
+    font-size: 17px;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+
+  main {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 20px 20px;
+  }
+
+  /* ---------- rooms of the wing ---------- */
+  .room { margin: 56px 0 0; }
+
+  .room > .plaque {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto 26px;
+    padding: 12px 34px 10px;
+    background: linear-gradient(180deg, #f5e9c6, #e6d2a0);
+    border: 1px solid rgba(58, 42, 20, 0.55);
+    box-shadow: 0 2px 0 rgba(58, 42, 20, 0.35), inset 0 0 0 3px rgba(255, 250, 230, 0.5), inset 0 0 0 4px rgba(58, 42, 20, 0.25);
+    font-family: var(--display);
+    font-size: 15px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--ink);
+  }
+
+  .room > .plaque b { color: var(--terracotta); font-weight: 700; margin-right: 0.6em; }
+
+  .room > .plaque .years {
+    display: block;
+    margin-top: 6px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 17px;
+    letter-spacing: 0.05em;
+    text-transform: none;
+    color: var(--ink-soft);
+  }
+
+  .card {
+    background: var(--plate);
+    border: 1px solid rgba(58, 42, 20, 0.4);
+    box-shadow: inset 0 0 0 4px rgba(255, 250, 230, 0.45), inset 0 0 0 5px rgba(58, 42, 20, 0.18), 0 6px 18px -10px rgba(58, 42, 20, 0.45);
+    padding: 22px 26px 20px;
+    margin: 0 0 22px;
+  }
+
+  .card .when {
+    font-family: var(--display);
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin: 0 0 6px;
+  }
+
+  .card h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 21px;
+    letter-spacing: 0.02em;
+    margin: 0 0 10px;
+    line-height: 1.25;
+  }
+
+  .card h4 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    margin: 18px 0 6px;
+  }
+
+  .card p { margin: 0 0 8px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card ul { margin: 0 0 8px; padding-left: 1.2em; }
+  .card li { margin: 2px 0; }
+
+  .card blockquote {
+    margin: 10px 0 10px 0;
+    padding: 2px 0 2px 18px;
+    border-left: 3px solid rgba(179, 134, 42, 0.6);
+    font-style: italic;
+  }
+
+  .card blockquote cite { display: block; margin-top: 4px; font-style: normal; font-size: 16.5px; color: var(--ink-soft); }
+
+  .card .evidence {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(58, 42, 20, 0.3);
+    font-size: 15.5px;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .card .evidence::before { content: "Evidence · "; font-style: normal; font-variant: small-caps; letter-spacing: 0.06em; }
+
+  /* the website as it was: a plate that quotes a page */
+  .page .nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 1.1em;
+    font-family: var(--display);
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+  }
+
+  .page .nav span.here { color: var(--terracotta); border-bottom: 1px solid currentColor; }
+
+  .prices { width: 100%; border-collapse: collapse; margin: 6px 0 10px; font-size: 18px; }
+  .prices th, .prices td { text-align: left; vertical-align: top; padding: 6px 10px 6px 0; border-bottom: 1px dashed rgba(58, 42, 20, 0.25); }
+  .prices th { font-family: var(--display); font-size: 13px; letter-spacing: 0.1em; font-weight: 600; }
+  .prices td.price { white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ---------- the pictures ---------- */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px 22px;
+    margin: 0 0 22px;
+  }
+
+  .gallery figure, .labs figure { margin: 0; }
+
+  .gallery a, .labs a, .logo a { border: none; display: block; }
+
+  .gallery img, .labs img, .logo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(58, 42, 20, 0.5);
+    box-shadow: 0 1px 0 rgba(255, 250, 230, 0.6), 0 8px 22px -12px rgba(58, 42, 20, 0.6);
+    background: #fff;
+  }
+
+  .gallery figcaption, .labs figcaption {
+    margin-top: 8px;
+    font-family: var(--display);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-align: center;
+    color: var(--ink-soft);
+  }
+
+  .gallery figure.wide { grid-column: 1 / -1; max-width: 760px; margin: 0 auto; }
+
+  .labs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin: 14px 0 6px;
+  }
+
+  .logo { max-width: 400px; margin: 0 auto 18px; }
+
+  .videos { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; margin: 0 0 12px; }
+
+  .video { position: relative; aspect-ratio: 16 / 9; border: 1px solid rgba(58, 42, 20, 0.5); background: #000; box-shadow: 0 8px 22px -12px rgba(58, 42, 20, 0.6); }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video + figcaption, .videos figcaption {
+    margin-top: 8px;
+    font-family: var(--display);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-align: center;
+    color: var(--ink-soft);
+  }
+
+  .videos figure { margin: 0; }
+
+  /* ---------- epilogue and footer ---------- */
+  .epilogue {
+    max-width: 680px;
+    margin: 56px auto 0;
+    padding: 0 20px;
+    text-align: center;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .epilogue .apps {
+    margin-top: 28px;
+    font-style: normal;
+    font-family: var(--display);
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .epilogue .apps a { margin: 0 14px; border-bottom-width: 1px; }
+
+  footer {
+    max-width: 820px;
+    margin: 64px auto 60px;
+    padding: 28px 20px 0;
+    border-top: 1px solid rgba(58, 42, 20, 0.3);
+    font-size: 19px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+
+  footer h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+
+  footer ul { list-style: none; padding: 0; margin: 0 0 26px; }
+  footer li { margin: 7px 0; }
+  footer li::before { content: "◦ "; color: var(--gold); }
+  footer a { color: #1f3a66; border-bottom-color: rgba(31, 58, 102, 0.45); }
+  footer .note { font-style: italic; color: var(--ink-soft); }
+
+  @media (max-width: 760px) {
+    body { font-size: 17.5px; }
+    header { padding-top: 76px; }
+    .card { padding: 18px 18px 16px; }
+    .room > .plaque { padding: 10px 18px 8px; letter-spacing: 0.18em; font-size: 13px; }
+    .gallery { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<a class="top-link" href="/history">← A History</a>
+
+<header>
+  <div class="meander"></div>
+  <p class="kicker">A museum wing</p>
+  <h1>Tabula</h1>
+  <p class="lede">Fold, cut and tape: the geometry program a math teacher built on the Live Geometry engine, 2009 – 2013.</p>
+  <p class="compiled">David Hartmann · Numeracy Works LLC · Augusta, Georgia</p>
+  <div class="meander"></div>
+</header>
+
+<main>
+
+<section class="room">
+  <span class="plaque"><b>I</b> The story <span class="years">2008 – 2015</span></span>
+
+  <div class="card">
+    <p class="when">2008 – 2009</p>
+    <h3>Numeracy Works</h3>
+    <p>David Hartmann, who taught geometry and ran the computer lab at Meigs Magnet School in Nashville for ten years, founds Numeracy Works in 2008 <q>with one product prominent in my mind – Tabula</q>: <q>the teaching and learning tool that I wished for but couldn't find.</q> The first Tabula is a Mac OS X program. In December 2009 the site offers beta .97 for Leopard and Snow Leopard, free, expiring on Christmas Day, and promises <q>Version 1 available before Christmas!</q> A phpBB forum opens in January 2010 with a thread asking what features people would like.</p>
+    <p class="evidence">numeracyworks.com, October 2009 to January 2010 (Wayback Machine).</p>
+  </div>
+
+  <div class="card">
+    <p class="when">2010 – 2011</p>
+    <h3>Rebuilt on Live Geometry</h3>
+    <p>In 2010 Tabula is rewritten on the Live Geometry engine in Silverlight 4, so that it runs on Windows and on a Mac, in the browser or installed out of it. David becomes a co-developer of Live Geometry itself: the compass, ruler and protractor, the marker and eraser, the fold, knife and tape tools, a settings page and much else are written as extensions of the library, and the two projects share a codebase for a while. On May 2, 2011 Kirill announces Tabula on his blog with a four-minute video and ten screenshots, and asks readers to help David spread the news.</p>
+    <p class="evidence">MSDN blog, May 2, 2011; <a href="/history">the Live Geometry history</a>, March to July 2010.</p>
+  </div>
+
+  <div class="card">
+    <p class="when">2011 – 2012</p>
+    <h3>Tabula 2</h3>
+    <p>The product site of 2011 and 2012 sells Tabula at $19.95 a copy through FastSpring, with classroom, lab, school and district licenses, and adds a web page export: any drawing becomes an interactive page played by a small Tabula Player. The site lists folding activities on YouTube, a page on paper folding in math education with a research bibliography, and quotes Arthur Lee of the University of Hong Kong and Jeff Hall of Mercer University. Wikipedia's article on interactive geometry software and the Silverlight Showcase list it.</p>
+    <p class="evidence">numeracyworks.com, 2011 – 2012 (Wayback Machine).</p>
+  </div>
+
+  <div class="card">
+    <p class="when">2013 – 2015</p>
+    <h3>Labs, and the end</h3>
+    <p>By late 2013 the same shell hosts four apps: Tabula, a Patty Paper Lab, a Pattern Blocks Lab and a Pentagon Blocks Lab. Then Silverlight's own end comes; by August 2015 a reader of the 2011 blog post notes that the domain is vacant and that <q>very little traces [are] left from Tabula</q>. Nobody bought geometry, nobody could be reached who wanted it, and the platform it stood on went away. What remains is what the Internet Archive kept: this wing.</p>
+    <p class="evidence">numeracyworks.com, August to December 2013 (Wayback Machine); comments on the MSDN blog, August 2015.</p>
+  </div>
+</section>
+
+<section class="room">
+  <span class="plaque"><b>II</b> The screenshots <span class="years">as the site showed them, 2011 – 2012</span></span>
+
+  <div class="gallery">
+    <figure><a href="/history/tabula/compass.png"><img src="/history/tabula/compass.png" alt="Tabula with a drawing compass standing on a segment, having marked an arc" loading="lazy" width="1000" height="600"></a><figcaption>Compass and Mark on Segment</figcaption></figure>
+    <figure><a href="/history/tabula/ruler.png"><img src="/history/tabula/ruler.png" alt="A ruler with tick marks laid along the side of a square, measuring 5.324" loading="lazy" width="1000" height="600"></a><figcaption>Ruler and Measure of a Side</figcaption></figure>
+    <figure><a href="/history/tabula/protractor.png"><img src="/history/tabula/protractor.png" alt="A protractor over an angle of 51 degrees" loading="lazy" width="1000" height="600"></a><figcaption>Protractor and Measured Angle</figcaption></figure>
+    <figure><a href="/history/tabula/folding.png"><img src="/history/tabula/folding.png" alt="A square with one corner folded over, the fold tool selected" loading="lazy" width="1000" height="600"></a><figcaption>Folded Square</figcaption></figure>
+    <figure><a href="/history/tabula/function.png"><img src="/history/tabula/function.png" alt="A sine wave on a coordinate grid" loading="lazy" width="1000" height="600"></a><figcaption>Sine Function</figcaption></figure>
+    <figure><a href="/history/tabula/construction1.png"><img src="/history/tabula/construction1.png" alt="A pentagon constructed with three circles" loading="lazy" width="1000" height="600"></a><figcaption>Constructed Pentagon</figcaption></figure>
+    <figure><a href="/history/tabula/magic_square.png"><img src="/history/tabula/magic_square.png" alt="A three by three magic square whose cells hold polygons with 1 to 9 sides" loading="lazy" width="1000" height="600"></a><figcaption>Magic Square</figcaption></figure>
+    <figure><a href="/history/tabula/pentominos.png"><img src="/history/tabula/pentominos.png" alt="Twelve colored pentominoes around an empty gray rectangle" loading="lazy" width="1000" height="600"></a><figcaption>Pentominos</figcaption></figure>
+    <figure><a href="/history/tabula/sierpinski.png"><img src="/history/tabula/sierpinski.png" alt="A Sierpinski triangle of blue triangles" loading="lazy" width="1000" height="600"></a><figcaption>Sierpinski's Triangle</figcaption></figure>
+    <figure><a href="/history/tabula/inspector_and_settings.png"><img src="/history/tabula/inspector_and_settings.png" alt="The settings panel on the left, an ellipse in the middle, the inspector with style choices on the right" loading="lazy" width="1000" height="600"></a><figcaption>Custom Settings and Inspector Visible</figcaption></figure>
+  </div>
+
+  <div class="card">
+    <p>Every picture is the whole window: a toolbar across the top (File, Undo, Redo, Delete, Duplicate · Rotate, Dilate, Reflect, Translate · Select, Pan, Zoom, Resize · Grid, Draw, Inspect, List, Customize, Help!) and a drawer of tool trays along the bottom with the tabs Basics, Special Lines, Transformations, Extras and Custom. The Basics tray holds the figures (Point, Segment, Ray, Line, Square, Polygon, Reg Poly, Circle), the instruments (Compass, Ruler, Protractor, Area Tool), the manipulation tools (Fold, Knife, Tape) and the presentation tools (Marker, Eraser, Text). Points are black dots; a new shape is translucent blue with a black edge; a settings page offers a background color, automatic labels, "SmartMarks", static and dynamic snapping with delays, orthogonal and grid constraints, a cursor tolerance and the alphabet points are named from.</p>
+  </div>
+</section>
+
+<section class="room">
+  <span class="plaque"><b>III</b> Moving pictures <span class="years">2011 – 2012</span></span>
+
+  <div class="card">
+    <h3>The overview video</h3>
+    <p>The site's four-and-a-half-minute introduction, the one the 2011 announcement embedded, walks through its chapters: <i>Construct Dynamic Figures</i>, <i>Construct Transformed Figures</i>, <i>Construct With A Compass</i>, finding a circumcenter by folding, <i>Transform With A Pushpin</i> (a pin dropped on a vertex, then the figure turned about it), <i>Measure</i>, <i>Use Working Instruments</i>, a mirror that reflects a smiley as it is drawn, and <i>And More</i>: an ellipse driven by a slider, a sine function, a drawing exported as a web page. Its YouTube copy and the whole Numeracy Works channel are gone; the file itself survives in the Internet Archive.</p>
+    <!-- The video once it is on YouTube again: put the id in place of VIDEO_ID and move this
+         block out of the comment.
+    <figure>
+      <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/VIDEO_ID" title="Tabula overview, 2011" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+      <figcaption>Tabula, the overview video of 2011</figcaption>
+    </figure>
+    -->
+    <p class="evidence"><a href="https://web.archive.org/web/20120312033614/http://numeracyworks.com/Site/demo.mp4">demo.mp4</a> as captured on March 12, 2012.</p>
+  </div>
+
+  <div class="card">
+    <h3>Tabula in other hands</h3>
+    <p>Arthur Lee, a teaching consultant at the Faculty of Education of the University of Hong Kong, recorded his own lessons with it. Two of them are still up.</p>
+    <div class="videos">
+      <figure>
+        <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/_WriXZaloxc" title="Golden Spiral with Tabula" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        <figcaption><a href="https://www.youtube.com/watch?v=_WriXZaloxc">Golden Spiral with Tabula</a></figcaption>
+      </figure>
+      <figure>
+        <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/ZLX3lWd4kKA" title="Golden rectangle and self-similarity shown with folding and cutting in Tabula" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        <figcaption><a href="https://www.youtube.com/watch?v=ZLX3lWd4kKA">Golden rectangle and self-similarity, by folding and cutting</a></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="room">
+  <span class="plaque"><b>IV</b> The website <span class="years">numeracyworks.com, as the Internet Archive kept it</span></span>
+
+  <div class="logo"><a href="https://web.archive.org/web/20121121/http://www.numeracyworks.com/Site/Home.html"><img src="/history/tabula/logo800x240.jpg" alt="Numeracy Works: Tools for Exploring a Mathematical World" width="800" height="240"></a></div>
+
+  <div class="card page">
+    <p class="nav"><span class="here">Home</span><span>Details</span><span>Screenshots</span><span>Examples</span><span>Demos</span><span>Purchase</span><span>Support</span></p>
+    <h3>Tabula by Numeracy Works</h3>
+    <p><b>Try it out.</b> Watch an intro video. Play with some examples. See some demonstrations. Tabula is Windows &amp; MacOS compatible using Silverlight, a free technology from Microsoft. A single license costs $19.95. Volume pricing is available.</p>
+    <h4>Introducing Tabula!</h4>
+    <ul>
+      <li><b>Present</b> – This marker is smart and the text tool can evaluate expressions!</li>
+      <li><b>Manipulate</b> – Fold, crease, cut, and tape like no other program can do.</li>
+      <li><b>Transform</b> – Perform both free and statically or dynamically defined transformations.</li>
+      <li><b>Measure</b> – Use these important instruments to measure and discover.</li>
+      <li><b>Construct</b> – Use a large collection of tools to make basic geometric shapes and graphs.</li>
+    </ul>
+    <p>Tabula is a new dynamic geometry program that supports hands-on learning. Use Tabula to construct, cut, tape, fold, measure, and transform geometric figures. The new version adds incredible dynamic geometry capabilities and even more tools and instruments. Additional features such as dynamic and static snapping and smartmarks make Tabula a great all-around geometry presentation tool supporting a broad range of methods and levels. Oh yeah, one more thing. Tabula is not just for the classroom!</p>
+    <p class="evidence"><a href="https://web.archive.org/web/20121121/http://www.numeracyworks.com/Site/Home.html">Home.html</a>, 2012.</p>
+  </div>
+
+  <div class="card page">
+    <p class="nav"><span>Home</span><span class="here">Details</span><span>Screenshots</span><span>Examples</span><span>Demos</span><span>Purchase</span><span>Support</span></p>
+    <h3>Tabula Details</h3>
+    <p>Tabula was created by David Hartmann, a math teacher with 10 years of experience at both the high school and middle school levels. David created the program to help students learn and teachers teach abstract concepts through familiar manipulation of shapes. David also designed the program to make transformations as accessible to young minds as possible through animation. Teachers can use the program to lecture and present or to guide and extend activities. Students can use the program to learn and apply concepts. Hobbyists can use unique features such as folding to do what other programs can't. In educational settings Tabula is targeting 5th grade math through high school geometry classrooms.</p>
+    <h4>Transformation</h4>
+    <p>With the aid of animation and a pushpin, figures can be transformed in an intuitive and visually accessible way.</p>
+    <ul>
+      <li>Rotate – define center and angle</li>
+      <li>Dilate – define center and scale factor</li>
+      <li>Reflect – define mirror figure</li>
+      <li>Translate – define magnitude &amp; direction</li>
+    </ul>
+    <h4>Manipulation</h4>
+    <p>Investigate geometric relationships and the results of subdividing and combining shapes. The manipulation tools are designed to mimic and extend what can be done with familiar materials and tools.</p>
+    <ul>
+      <li>Fold figures such as segments, polygons and ellipticals leaving creases if desired.</li>
+      <li>Cut figures along a path.</li>
+      <li>Tape polygons together.</li>
+      <li>Use a pushpin when transforming.</li>
+    </ul>
+    <h4>Measurement</h4>
+    <p>Use these instruments to measure and analyze figures. These instruments double as working models of real instruments. This is excellent for demonstrating usage. Models for both traditional and safety compasses are included.</p>
+    <ul>
+      <li>Make construction arcs and circles.</li>
+      <li>Measure length in cm., in. or unitless.</li>
+      <li>Measure angles in radians and degrees.</li>
+      <li>Measure the area of polygons.</li>
+      <li>Study transformations, congruence, and symmetry with the mirror.</li>
+    </ul>
+    <h4>Presentation</h4>
+    <p>With presentation technology such as an interactive whiteboard or projector and screen, Tabula can deliver interactive lessons and activities. Write, draw, and work with geometric objects in a new and exciting way.</p>
+    <ul>
+      <li>Smartmarks remain attached to a figure.</li>
+      <li>Erase marks.</li>
+      <li>Add text and expressions.</li>
+      <li>Toggle the grid and axes.</li>
+    </ul>
+    <h4>More</h4>
+    <ul>
+      <li>Snapping – make relationships (midpoint, point on line, etc.) between figures by dragging them.</li>
+      <li>Style – change the appearance of figures.</li>
+      <li>File options – print or export your work as an image (png or bmp), web page, or as an xml.</li>
+      <li>Expressions – use constants, operations, functions, and references to figures in the workspace.</li>
+    </ul>
+    <h4>Construction</h4>
+    <p>Tools for creating shapes are organized in trays. Some (not all) of the tools are listed below.</p>
+    <ul>
+      <li>Basics – point, midpoint, segment, ray, line, polygon, circle, and more</li>
+      <li>Special Lines – parallel, perpendicular, horizontal, vertical, bisectors</li>
+      <li>Special Polygons – isosceles triangles, rectangles, trapezoids, and more</li>
+      <li>Transformations – rotated figure, reflected figure, translated figure, dilated figure, vector</li>
+      <li>Extras – half-plane, ellipse, bezier, locus, function, slider, and more</li>
+      <li>Custom – create and add your own tools (e.g. a parallelogram tool).</li>
+    </ul>
+    <p class="evidence"><a href="https://web.archive.org/web/20121122/http://numeracyworks.com/Site/Details.html">Details.html</a>, 2012.</p>
+  </div>
+
+  <div class="card page">
+    <p class="nav"><span>Home</span><span>Details</span><span>Screenshots</span><span class="here">Examples</span><span>Demos</span><span>Purchase</span><span>Support</span></p>
+    <h3>Interactive Tabula Examples</h3>
+    <p>The examples below were created using the new webpage export feature. Any Tabula document can be exported to a webpage with custom settings for the toolbar, background, border, size, grid, snapping, and more.</p>
+    <ul>
+      <li>Use Select, Rotate, and Reflect to fill the rectangular frame with the pentominoes.</li>
+      <li>Move the vertices to change the shape of this Sierpinski Triangle.</li>
+      <li>Find the center of the circle within the square by folding. Use the fold tool to create two chords and the perpendicular bisector of the chords. The intersection of the bisectors will be the center. To fold a figure grab the figure anywhere with the Fold Tool. To unfold and leave behind a crease click on a folded figure with the Fold Tool.</li>
+      <li>Adjust the values of the transformation of the sine function.</li>
+    </ul>
+    <p>The four examples were live Silverlight players in the page; a browser of today shows the captions alone.</p>
+    <p class="evidence"><a href="https://web.archive.org/web/20121122/http://numeracyworks.com/Site/Examples.html">Examples.html</a>, 2012.</p>
+  </div>
+
+  <div class="card page">
+    <p class="nav"><span>Home</span><span>Details</span><span>Screenshots</span><span>Examples</span><span class="here">Demos</span><span>Purchase</span><span>Support</span></p>
+    <h3>Tabula Demonstrations</h3>
+    <p>The demonstrations below show a variety of ways that Tabula can used.</p>
+    <ul>
+      <li>Finding Rotational Symmetry Angle and Order for a Square and Parallelogram</li>
+      <li>Using Transformations to Construct a Square Inscribed in a Sector</li>
+      <li>A Collection of Folding Activities</li>
+      <li>Investigation of the Area of a Circle by Subdivision</li>
+      <li>Demonstration Videos Created by Users</li>
+    </ul>
+    <p>The folding playlist held thirteen videos: Triangle Orthocenter, Triangle Incenter, Triangle Circumcenter, Triangle Centroid, Pythagorean Theorem Proof, Trisect an Angle (the method attributed to Hisashi Abe), Make a Tangram, Triangle and Parallelogram Area Formulas, Make An Isosceles Triangle, Make An Hexagon, Make An Equilateral Triangle, Find the Center of a Circle, Make a Golden Rectangle. All of them were on the Numeracy Works YouTube channel, which no longer exists.</p>
+    <p class="evidence"><a href="https://web.archive.org/web/20121215/http://numeracyworks.com/Site/Demonstrations.html">Demonstrations.html</a>, 2012; <a href="https://web.archive.org/web/20121231/http://numeracyworks.com/Site/Paper_Folding.html">Paper_Folding.html</a>, 2012.</p>
+  </div>
+
+  <div class="card page">
+    <p class="nav"><span>Home</span><span>Details</span><span>Screenshots</span><span>Examples</span><span>Demos</span><span class="here">Purchase</span><span>Support</span></p>
+    <h3>Purchasing A Tabula License</h3>
+    <table class="prices">
+      <tr><th>License</th><th></th><th></th></tr>
+      <tr><td>Home/Workplace</td><td>1 copy at the workplace and one copy for each member of a family at home. Only one copy can be used at a time.</td><td class="price">$19.95</td></tr>
+      <tr><td>Classroom</td><td>12 copies in a single classroom, installed for a single user account on each computer.</td><td class="price">$120</td></tr>
+      <tr><td>Lab</td><td>35 copies in a stationary or mobile lab.</td><td class="price">$290</td></tr>
+      <tr><td>School/Institution</td><td>Unlimited access within the school; 10 teachers get licenses for home use, students a 1-year expiring home-use copy.</td><td class="price">$490</td></tr>
+      <tr><td>Local School District</td><td>Same as School/Institution, applied to all schools.</td><td class="price">$950</td></tr>
+      <tr><td>Home-Use Renewal</td><td>Good for 1 year; school $180, district $400.</td><td class="price"></td></tr>
+      <tr><td>Workshop</td><td>By request. Cost of travel + $100 per day.</td><td class="price"></td></tr>
+    </table>
+    <p>The store was handled by FastSpring and took purchase orders.</p>
+    <h4>What Others Are Saying</h4>
+    <blockquote>I enjoy very much using / playing with Tabula, among other dynamic tools for math teachers and learners. Its special and friendly tools for paper-folding, cutting, taping supplement very nicely common dynamic tools. It supports very well my sharing with learners on manipulatives based geometry tasks.<cite>Arthur Lee – Teaching Consultant, Faculty of Education, University of Hong Kong</cite></blockquote>
+    <blockquote>There are many awesome features, but I especially like the folding capabilities and the drop-pin approach to transformations. Both are very unique approaches and are fun and easy to use. The compass feature for measuring angles was also wonderful and intuitive. I will keep investigating the program further, but it is fantastic already. I am very impressed!<cite>Jeff Hall, Assistant Professor of Education, Mercer University</cite></blockquote>
+    <h4>Tabula On the Internet</h4>
+    <ul>
+      <li>Listed in Computing Technology for Math Excellence.</li>
+      <li>Listed in Origami Resource Center.</li>
+      <li>Described in <a href="https://learn.microsoft.com/en-us/archive/blogs/kirillosenkov/tabula">Kirill Osenkov's Blog</a>.</li>
+      <li>Included in Wikipedia's Interactive Geometry Software Article.</li>
+      <li>Included in the Silverlight Showcase.</li>
+    </ul>
+    <p class="evidence"><a href="https://web.archive.org/web/20121121/http://numeracyworks.com/Site/Purchase.html">Purchase.html</a>, 2012.</p>
+  </div>
+
+  <div class="card page">
+    <p class="nav"><span>Home</span><span>Details</span><span>Screenshots</span><span>Examples</span><span>Demos</span><span>Purchase</span><span class="here">Support</span></p>
+    <h3>Support</h3>
+    <p>If you need help, a web based Help Menu is available from within Tabula. If you are unable to find the answer to your question, I will be glad to try and answer your question or take your comments by email. At this point Tabula is new and has a small enough userbase that I am able to provide support directly.</p>
+    <p>Thank you for your interest in Tabula, – David</p>
+    <p>The support page of 2010 listed the help videos built into the program: getting to know the interface; working in the workspace; using the drawer; using the toolbar; performing transformations; manipulating objects by cutting, taping, and folding; the instruments: ruler, protractor, compass; the many uses of the pushpin.</p>
+    <p class="evidence"><a href="https://web.archive.org/web/20121122/http://numeracyworks.com/Site/Support.html">Support.html</a>, 2012; <a href="https://web.archive.org/web/20100128/http://www.numeracyworks.com/Site/Support.html">the same page</a>, January 2010.</p>
+  </div>
+
+  <div class="card page">
+    <p class="nav"><span>About the Author</span></p>
+    <h3>About Numeracy Works</h3>
+    <p>I founded Numeracy Works in 2008 with one product prominent in my mind – Tabula. My goal was to create the teaching and learning tool that I wished for but couldn't find. My hope was that experience teaching math and technology would allow me to create a program that would be useful to others as well.</p>
+    <p>Who am I? My name is David Hartmann. For ten years I taught geometry and ran a computer lab at Meigs Magnet School which is a middle school in Nashville Tennessee. For two years I taught a course on instructional technology at Tennessee State University. I also taught Geometry and Applied Problem Solving at Evans High School in Evans Georgia. I currently am working full time on developing Tabula.</p>
+    <p>Tabula is built upon a dynamic geometry library developed by Kirill Osenkov to which I also contribute. This library together with an interface also created by Kirill is called Live Geometry and can be viewed at livegeometry.com. The code to Live Geometry is open source and available through his codeplex project.</p>
+    <p class="evidence"><a href="https://web.archive.org/web/20121122/http://numeracyworks.com/Site/About.html">About.html</a>, 2012.</p>
+  </div>
+
+  <div class="card page">
+    <p class="nav"><span>Paper Folding in Math Education</span></p>
+    <h3>Paper Folding in Math Education</h3>
+    <p>Throughout my career as a math teacher I've had students cut, fold, tape and manipulate paper in a number of ways. The goal was to learn geometric properties in an active, hands-on, and usually collaborative means. I always felt a great deal of success in this approach. Recently, I've been developing a computer program called Tabula that works with virtual shapes much as one works with paper shapes. My interest and knowledge in this kind of manipulation, in particular folding, has grown. I've created this web page to share what I've learned.</p>
+    <h4>Benefits of Paper Folding</h4>
+    <p>What are some of the benefits of paper folding? It is a manipulative. The effectiveness of manipulatives is well documented by research. It is accessible. Both ordinary paper and patty paper are cheap. It tends to be a positive experience. Coad makes a good case for the positive affect associated with paper folding. All traditional compass and straight-edge constructions can be performed plus additional constructions such as the trisection of an angle. There are also many resources available. Perhaps the best known resource in education is Michael Serra's Patty Paper Geometry.</p>
+    <h4>Approaches To Paper Folding</h4>
+    <p>One approach to paper folding is origami. Origami has the benefit of a long tradition that includes an artistic aspect. The research on paper folding is primarily on origami. Research by Norma Boakes, for example, suggests origami is an effective approach in the math classroom. Another approach to paper folding I've seen is a formalized/axiomatic one. Basic folds are established as axioms which sets up a system conducive to proofs and rigor. Olson and Coad provide good examples of this. One more approach, and these approaches are by no means exclusive, is an investigation approach. This is the approach I took. Folding is done to manifest properties and justification can be systematic or sometimes intuitive.</p>
+    <h4>Dynamic Geometry Software and Paper Folding</h4>
+    <p>What about dynamic geometry environment (DGE) and paper folding? I will shy away from saying anything definitive. Jones notes in his journal article that "DGE cannot provide a self-contained environment but that other activities are needed for students to make progress in mathematics." Perhaps paper folding could be one of the other activities. In the progression through the Van Hiele levels, paper folding as well as other manipulatives, would seem appropriate at an earlier stage than DGE. DGE is a great tool, but there are issues to consider such as the amount of procedural knowledge and student readiness. Perhaps for many, the best relationship for DGE and folding might be a complimentary one.</p>
+    <h4>Research Bibliography</h4>
+    <ul>
+      <li>Sowell, E. (1989). Effects of manipulative materials in mathematics instruction. <i>Journal for Research in Mathematics Education</i>, 20(5), 498–505.</li>
+      <li>Suydam, M. N.; Higgins, J. L. (1977). <i>Activity-Based Learning in Elementary School Mathematics: Recommendations from Research.</i> ERIC/IRC, Ohio State University.</li>
+      <li>Boakes, N. J. (2009). Origami Instruction in the Middle School Mathematics Classroom: Its Impact on Spatial Visualization and Geometry Knowledge of Students. <i>Research in Middle Level Education</i>, 32(7), 1–12.</li>
+      <li>Jones, K. (2002). <a href="https://eprints.soton.ac.uk/14689/">Research on the use of dynamic geometry software: implications for the classroom.</a> <i>MicroMath</i>, 18(3), 18–20.</li>
+    </ul>
+    <h4>Other Folding and Manipulatives Resources</h4>
+    <ul>
+      <li><a href="https://en.wikipedia.org/wiki/Mathematics_of_paper_folding">Mathematics of Paper Folding</a> at Wikipedia.</li>
+      <li><i>Patty Paper Geometry</i> by Michael Serra (Key Curriculum Press).</li>
+      <li>Proving the Area Formulas by Paper Folding, by Yun Quan Zhang.</li>
+      <li>Mathematics Through Paper Folding, by Alton Olson, University of Alberta.</li>
+      <li>Improving Mathematics Teaching by Using Manipulatives, by James W. Heddens, Kent State University.</li>
+      <li>Paper Folding in the Middle School Classroom and Beyond, by Lance Coad.</li>
+    </ul>
+    <p class="evidence"><a href="https://web.archive.org/web/20121231/http://numeracyworks.com/Site/Paper_Folding.html">Paper_Folding.html</a>, last updated June 27, 2011.</p>
+  </div>
+
+  <div class="card page">
+    <p class="nav"><span>Home</span><span>Details</span><span>Screenshots</span><span>Screencasts</span><span class="here">Download</span><span>Support</span><span>Forum</span></p>
+    <h3>The first Tabula, for the Mac, 2009</h3>
+    <p>Before the Silverlight rewrite the site read differently. The home page of October 2009: <q>Tabula is a new software program for math instruction that joins the conveniences of a presentation program with the tools specific to teaching geometry. Tabula also excels at modeling math concepts such as fractions and factoring with geometry. A novel set of manipulation and transformation tools encourages activities that use paper, scissors, straight edge and other hands-on items. Tabula is tailored to late elementary and middle school math through high school geometry. It is best utilized on an electronic whiteboard (e.g. Smartboard®) or a computer connected to a projector or TV.</q> Under <i>Present · Transform · Manipulate · Measure and Construct</i>: <q>Fold, cut, tape, and use a pushpin just as they are used in the real world.</q></p>
+    <p>The download page of December 2009: <q>Version 1 available before Christmas! Tabula is almost finished. I need teachers or indeed anyone to try the program and offer feedback. The free beta version now available for download still contains bugs yet is highly usable. No limitations are built in. It will expire on December 25th.</q> Requirements: Mac OS X Leopard (10.5) or Snow Leopard (10.6). The current beta version is .97.</p>
+    <p>The details page of January 2010 lists what that version did: fold objects and create creases; cut objects along creases or anywhere else; tape objects back together; a pushpin that <q>works just like it does on a pegboard</q>; rotation, dilation, reflection and translation vectors placed in the workspace, with optional animation; a customizable grid <q>with control over spacing, angles, thickness, and color. Includes isometric and 60º</q>; a working demonstration compass, a ruler in centimeters and inches, a protractor; printing and export as TIFF and PDF; a boundless workspace.</p>
+    <p class="evidence"><a href="https://web.archive.org/web/20091014/http://www.numeracyworks.com/Site/Home.html">Home.html</a>, October 2009; <a href="https://web.archive.org/web/20091216/http://www.numeracyworks.com/Site/Download.html">Download.html</a>, December 2009; <a href="https://web.archive.org/web/20100126/http://www.numeracyworks.com/Site/Details.html">Details.html</a>, January 2010.</p>
+  </div>
+
+  <div class="card">
+    <p class="when">2013</p>
+    <h3>The labs</h3>
+    <p>The last captures of the site, from the end of 2013, show four apps side by side in the same shell: Tabula itself, and three labs built from it for younger hands. Only these small pictures of them survived.</p>
+    <div class="labs">
+      <figure><a href="/history/tabula/tabula_window_no_grid.png"><img src="/history/tabula/tabula_window_no_grid.png" alt="Tabula showing a circle tiled with red, yellow and blue pieces" loading="lazy" width="300" height="180"></a><figcaption>Tabula</figcaption></figure>
+      <figure><a href="/history/tabula/PattyPaperWindow250w.png"><img src="/history/tabula/PattyPaperWindow250w.png" alt="Patty Paper Lab: three squares folded on brown paper" loading="lazy" width="250" height="150"></a><figcaption>Patty Paper Lab</figcaption></figure>
+      <figure><a href="/history/tabula/PatternBlocksWindow250w.png"><img src="/history/tabula/PatternBlocksWindow250w.png" alt="Pattern Blocks Lab: a star of colored pattern blocks" loading="lazy" width="250" height="150"></a><figcaption>Pattern Blocks Lab</figcaption></figure>
+      <figure><a href="/history/tabula/PentaBlocksWindow.png"><img src="/history/tabula/PentaBlocksWindow.png" alt="Pentagon Blocks Lab: a pentagon tiled with colored blocks" loading="lazy" width="250" height="150"></a><figcaption>Pentagon Blocks Lab</figcaption></figure>
+    </div>
+    <p class="evidence">numeracyworks.com, December 27, 2013 (Wayback Machine).</p>
+  </div>
+</section>
+
+</main>
+
+<section class="epilogue">
+  <p>“Fold, cut, tape, and use a pushpin just as they are used in the real world.” — October 2009.</p>
+  <p class="apps"><a href="/history">The Live Geometry history</a><a href="/">Open Live Geometry</a></p>
+</section>
+
+<footer>
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://web.archive.org/web/2012*/numeracyworks.com*">Wayback Machine captures of numeracyworks.com</a>, 2009 – 2013: the pages quoted above, the ten screenshots and the overview video</li>
+    <li><a href="https://learn.microsoft.com/en-us/archive/blogs/kirillosenkov/tabula">Tabula</a>, Kirill Osenkov's blog, May 2, 2011</li>
+    <li><a href="https://www.youtube.com/watch?v=_WriXZaloxc">Golden Spiral with Tabula</a> and <a href="https://www.youtube.com/watch?v=ZLX3lWd4kKA">golden rectangle and self-similarity shown with folding and cutting in Tabula</a>, Arthur Lee, YouTube</li>
+  </ul>
+  <p class="note">The text, the pictures and the Numeracy Works logo in this wing are Tabula's own, as its website showed them, and belong to David Hartmann and Numeracy Works LLC; Tabula is a trademark of Numeracy Works LLC. They are kept here as a record of a program that ran on the Live Geometry engine.</p>
+</footer>
+
+</body>
+</html>

@@ -145,7 +145,12 @@ while (true)
             if (!File.Exists(path) && Path.GetExtension(path).Length == 0)
             {
                 var folderIndex = FindFolderIndex(baseFolder, path);
-                if (folderIndex != null)
+                if (File.Exists(path + ".html"))
+                {
+                    // a page beside its folder of pictures (/history/tabula is history/tabula.html)
+                    path += ".html";
+                }
+                else if (folderIndex != null)
                 {
                     path = folderIndex;
                 }
