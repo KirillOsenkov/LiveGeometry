@@ -551,7 +551,7 @@ namespace DynamicGeometry
                 var angle = GetAngleToPick(e);
                 if (angle != null)
                 {
-                    clickPreview.ShowAngle(Drawing, angle);
+                    clickPreview.ShowAngle(Drawing, angle, PreviewsAngleBisector());
                     return;
                 }
 
@@ -590,6 +590,12 @@ namespace DynamicGeometry
         protected virtual AngleAtVertex GetAngleToPick(MouseEventArgs e)
         {
             return null;
+        }
+
+        /// <summary>Whether the preview of that angle also shows the bisector a click would make (the Angle Bisector tool)</summary>
+        protected virtual bool PreviewsAngleBisector()
+        {
+            return false;
         }
 
         /// <summary>

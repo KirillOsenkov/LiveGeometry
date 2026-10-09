@@ -56,6 +56,12 @@ namespace DynamicGeometry
             return FoundDependencies.IsEmpty();
         }
 
+        /// <summary>The hover shows the bisector the click would make, faint, with the angle</summary>
+        protected override bool PreviewsAngleBisector()
+        {
+            return true;
+        }
+
         protected override IEnumerable<IFigure> CreateFigures()
         {
             var result = Factory.CreateAngleBisector(Drawing, FoundDependencies);

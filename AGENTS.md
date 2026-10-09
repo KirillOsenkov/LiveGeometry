@@ -1364,7 +1364,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   opacity through its property changes, goes onto the canvas only when there is something
   to fill, and is hit inside (`IsInsideFill`). The hover's angle preview tints the same
   sector (`ClickPreview.CreateAngleFillGhost`, the shared `CreateSectorGeometry`) and
-  draws the ghost arc in the preview's blue: faint and thin, the arc alone was missed. `DGFReader.ReadMeasureAngle` creates the arc from
+  draws the ghost arc in the preview's blue: faint and thin, the arc alone was missed. The
+  Angle Bisector tool adds the bisector it would make, a faint ray from the vertex
+  (`Behavior.PreviewsAngleBisector`, `ClickPreview.CreateBisectorGhost`). `DGFReader.ReadMeasureAngle` creates the arc from
   VB6's DrawStyle / AuxInfo(2) - not tested, there is no sample .dgf with an angle in the repo.
 - **Dashes**: `LineStyle.Dash` is put on in `LineStyle.OnApplied`, not through a setter, because
   `StrokeDashArray` counts in stroke widths. Anything that

@@ -35,6 +35,7 @@ public class ClickPreview
     IReadOnlyList<IFigure> shownSources;
     PointPlacementKind? shownKind;
     AngleAtVertex shownAngle;
+    bool shownBisector;
     Point shownOrigin;
     Point shownUnit;
 
@@ -130,7 +131,8 @@ public class ClickPreview
     /// An angle a click would measure whole (<see cref="AngleAtVertex"/>): halos on its two
     /// sides, and its mark and number faint where they are going to be.
     /// </summary>
-    public void ShowAngle(Drawing drawing, AngleAtVertex angle)
+    /// <param name="withBisector">Also the bisector the click would make (the Angle Bisector tool): a faint ray from the vertex</param>
+    public void ShowAngle(Drawing drawing, AngleAtVertex angle, bool withBisector)
     {
         if (drawing == null || drawing.Canvas == null || angle == null)
         {
@@ -141,7 +143,11 @@ public class ClickPreview
         var coordinateSystem = drawing.CoordinateSystem;
         var origin = coordinateSystem.ToPhysical(new Point(0, 0));
         var unit = coordinateSystem.ToPhysical(new Point(1, 1));
-        if (canvas == drawing.Canvas && angle.IsSameAngle(shownAngle) && origin == shownOrigin && unit == shownUnit)
+        if (canvas == drawing.Canvas
+            && angle.IsSameAngle(shownAngle)
+            && withBisector == shownBisector
+            && origin == shownOrigin
+            && unit == shownUnit)
         {
             return;
         }
@@ -159,6 +165,7 @@ public class ClickPreview
         shownOrigin = origin;
         shownUnit = unit;
         shownAngle = angle;
+        shownBisector = withBisector;
         foreach (var side in angle.SideFigures.Distinct())
         {
             Add(CreateHalo(side));
@@ -168,6 +175,37 @@ public class ClickPreview
         Add(CreateAngleFillGhost(corner, first.Value, second.Value, measure));
         Add(CreateAngleMarkGhost(drawing, corner, first.Value, second.Value, measure));
         Add(CreateAngleNumberGhost(drawing, corner, measure));
+        if (withBisector)
+        {
+            Add(CreateBisectorGhost(drawing, corner, first.Value, second.Value));
+        }
+    }
+
+    /// <summary>
+    /// The bisector a click would make, as a new one is drawn (a ray inside the angle, in the
+    /// bisector's default style), faint: from the vertex halfway between the sides, out past
+    /// the edge of the canvas
+    /// </summary>
+    static Control CreateBisectorGhost(Drawing drawing, Point corner, Point first, Point second)
+    {
+        var sum = first + second;
+        var length = System.Math.Sqrt(sum.X * sum.X + sum.Y * sum.Y);
+        if (length == 0)
+        {
+            return null;
+        }
+
+        // (farther than any corner of the canvas is from the vertex)
+        var bounds = drawing.Canvas.Bounds;
+        var reach = bounds.Width + bounds.Height + System.Math.Abs(corner.X) + System.Math.Abs(corner.Y);
+        var result = new AvaloniaShapes.Line()
+        {
+            StartPoint = corner,
+            EndPoint = corner + sum * (reach / length)
+        };
+        ApplyGhostStyle(drawing, typeof(AngleBisector), result);
+        result.ZIndex = (int)ZOrder.Figures;
+        return result;
     }
 
     /// <summary>
