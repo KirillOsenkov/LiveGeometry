@@ -1,27 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-5.0833333333" Top="7.5" Right="4.9166666667" Bottom="-7.6666666667" />
-  <Styles>
-    <LineStyle Name="4" Color="#FF000000">
-      <Dark Color="#FFD1D1D1" />
-    </LineStyle>
-    <LineStyle Name="ThinLine" Color="#FFAAAAAA" />
-    <ShapeStyle Name="5" Color="#00FFFFFF">
-      <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#FFFFFFAA" Offset="0" />
-          <GradientStop Color="#00FFFFFF" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
-    </ShapeStyle>
-    <PointStyle Name="10" Size="15" Fill="#FF33FF00" Color="#FF000000">
-      <Dark Color="#FFD1D1D1" />
-    </PointStyle>
-  </Styles>
+  <Styles />
   <Figures>
     <FreePoint Name="O" X="-0.0208333333" Y="-2.5625" />
     <FreePoint Name="CirclePoint" X="2.75" Y="-5.2916666667" />
-    <Circle Name="c" Locked="true" Style="4">
+    <Circle Name="c" Locked="true">
       <Dependency Name="O" />
       <Dependency Name="CirclePoint" />
     </Circle>
@@ -31,22 +15,22 @@
     <PointOnFigure Name="C" Style="FreePoint" X="3.362855991722875" Y="-0.6450760491537042" Parameter="0.515549007458979">
       <Dependency Name="c" />
     </PointOnFigure>
-    <PointOnFigure Name="B" Style="10" X="-0.38182067001121817" Y="1.3099096113772521" Parameter="1.66374803581901">
+    <PointOnFigure Name="B" Style="GreenBead" X="-0.38182067001121817" Y="1.3099096113772521" Parameter="1.66374803581901">
       <Dependency Name="c" />
     </PointOnFigure>
-    <Segment Name="AB" Style="4">
+    <Segment Name="AB" Style="ThickLine">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-    <Segment Name="BC" Style="4">
+    <Segment Name="BC" Style="ThickLine">
       <Dependency Name="B" />
       <Dependency Name="C" />
     </Segment>
-    <Segment Name="AC" Style="ThinLine">
+    <Segment Name="AC" Style="DashedLine">
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Segment>
-    <AngleArc Name="AngleArc14" Style="4">
+    <AngleArc Name="AngleArc14">
       <Dependency Name="B" />
       <Dependency Name="A" />
       <Dependency Name="C" />
@@ -56,7 +40,7 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </AngleMeasurement>
-    <Polygon Name="ABC" Style="5">
+    <Polygon Name="ABC">
       <Dependency Name="A" />
       <Dependency Name="B" />
       <Dependency Name="C" />
