@@ -147,7 +147,7 @@ public class ClickChoice
         return ReferenceEquals(first, second);
     }
 
-    /// <summary>What an option is, in words: "Segment AB", "A point on line g", "Where circle c and line g cross"</summary>
+    /// <summary>What an option is, in words: "Segment AB", "A point on line g", "Intersection of circle c and line g"</summary>
     public static string Describe(object option)
     {
         switch (option)
@@ -160,7 +160,7 @@ public class ClickChoice
                     case PointPlacementKind.OnFigure:
                         return "A point on " + ConstructionText.Of(placement.Sources[0]);
                     case PointPlacementKind.Intersection:
-                        return "Where " + ConstructionText.Of(placement.Sources[0]) + " and " + ConstructionText.Of(placement.Sources[1]) + " cross";
+                        return "Intersection of " + ConstructionText.Of(placement.Sources[0]) + " and " + ConstructionText.Of(placement.Sources[1]);
                     case PointPlacementKind.Midpoint:
                         return "The midpoint of " + ConstructionText.Of(placement.Sources[0]);
                     default:

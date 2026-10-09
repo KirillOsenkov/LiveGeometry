@@ -2040,7 +2040,7 @@ public class Program
 
         // the first option is what a click took before there was a choice
         HoverWithPointTool();
-        Require(status != null && status.StartsWith("Where ") && status.Contains("(1 of 3)"), "The status at a crossing: " + status);
+        Require(status != null && status.StartsWith("Intersection of ") && status.Contains("(1 of 3)"), "The status at a crossing: " + status);
         Click(drawing, crossing);
         Require(drawing.Figures.OfType<IntersectionPoint>().Count() == 1, "A click at the crossing made no intersection.");
         drawing.ActionManager.Undo();
