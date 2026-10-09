@@ -52,7 +52,6 @@ namespace DynamicGeometry
         /// </summary>
         public virtual bool EnablePointByCoordinates { get; set; }
         public virtual bool HideHints { get; set; }
-        public virtual Math.lengthUnit DistanceUnit { get; set; } // Used by Measurement subclasses.  Not yet implemented throughout.
 
         private double cursorTolerance = 5;
         public virtual double CursorTolerance

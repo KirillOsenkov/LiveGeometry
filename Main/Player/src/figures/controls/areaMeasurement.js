@@ -1,29 +1,12 @@
 // Port of Main/Avalonia/DynamicGeometry/Figures/Controls/AreaMeasurement.cs
 
 class AreaMeasurement extends Measurement {
-    constructor() {
-        super();
-        this.units = Settings.distanceUnit;
-    }
-
-    get conversionFactor() {
-        if (this.units === LengthUnit.Inches) {
-            return 1 / GeometryMath.sqr(GeometryMath.inchesLogicalLength);
-        }
-
-        if (this.units === LengthUnit.Centimeter) {
-            return 1 / GeometryMath.sqr(GeometryMath.centimeterLogicalLength);
-        }
-
-        return 1;
-    }
-
     get measure() {
         if (this.dependencies[0].isShapeWithInterior === true) {
-            return this.dependencies[0].area * this.conversionFactor;
+            return this.dependencies[0].area;
         }
 
-        return GeometryMath.area(toPoints(this.dependencies)) * this.conversionFactor;
+        return GeometryMath.area(toPoints(this.dependencies));
     }
 
     get anchor() {
@@ -32,14 +15,7 @@ class AreaMeasurement extends Measurement {
 
     updateVisual() {
         super.updateVisual();
-        const areaText = NumberFormat.toString(GeometryMath.round(this.measure, this.decimalsToShow));
-        if (this.units === LengthUnit.Inches) {
-            this.setText(areaText + "in²");
-        } else if (this.units === LengthUnit.Centimeter) {
-            this.setText(areaText + "cm²");
-        } else {
-            this.setText(areaText);
-        }
+        this.setText(NumberFormat.toString(GeometryMath.round(this.measure, this.decimalsToShow)));
     }
 
     get origin() {
@@ -48,16 +24,6 @@ class AreaMeasurement extends Measurement {
         }
 
         return this.dependencies[0].center;
-    }
-
-    readXml(element) {
-        super.readXml(element);
-        const unitsAsString = element.getAttribute("Units");
-        if (unitsAsString === "Inches") {
-            this.units = LengthUnit.Inches;
-        } else if (unitsAsString === "Centimeters") {
-            this.units = LengthUnit.Centimeter;
-        }
     }
 }
 

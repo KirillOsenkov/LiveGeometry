@@ -299,17 +299,6 @@ namespace DynamicGeometry
 
     public static partial class Math
     {
-        public enum lengthUnit
-        {
-            Unitless = 0,
-            Centimeter = 1,
-            Inches = 2
-        }
-
-        public static double centimeterLogicalLength = .5906;
-
-        public static double inchesLogicalLength = 1.5;
-
         public static Point InfinitePoint
         {
             get

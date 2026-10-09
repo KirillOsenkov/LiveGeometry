@@ -16,16 +16,7 @@ const Settings = {
     /** In pixels: how far from a figure a click still takes it (10 for a finger) */
     cursorTolerance: 5,
 
-    distanceUnit: 0,
-
     autoLabelPoints: false,
 
     pointAlphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-};
-
-/** Math.lengthUnit */
-const LengthUnit = {
-    Unitless: 0,
-    Centimeter: 1,
-    Inches: 2
 };

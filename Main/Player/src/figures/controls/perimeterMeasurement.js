@@ -11,7 +11,6 @@ class PerimeterMeasurement extends Measurement {
 
     constructor() {
         super();
-        this.units = Settings.distanceUnit;
         this.prefix = "";
         this.placed = false;
     }
@@ -40,22 +39,6 @@ class PerimeterMeasurement extends Measurement {
 
     get length() {
         return this.hasSomethingToMeasure ? this.measured.perimeter : NaN;
-    }
-
-    get measure() {
-        return this.length * this.conversionFactor;
-    }
-
-    get conversionFactor() {
-        if (this.units === LengthUnit.Inches) {
-            return 1 / GeometryMath.inchesLogicalLength;
-        }
-
-        if (this.units === LengthUnit.Centimeter) {
-            return 1 / GeometryMath.centimeterLogicalLength;
-        }
-
-        return 1;
     }
 
     /**
@@ -125,9 +108,7 @@ class PerimeterMeasurement extends Measurement {
             return;
         }
 
-        const number = NumberFormat.toString(GeometryMath.round(this.measure, this.decimalsToShow));
-        const unitText = this.units === LengthUnit.Inches ? "\"" : this.units === LengthUnit.Centimeter ? "cm" : "";
-        this.setText(this.prefix + number + unitText);
+        this.setText(this.prefix + NumberFormat.toString(GeometryMath.round(this.length, this.decimalsToShow)));
 
         // (placed once the canvas has a size: before the first layout the anchor of a
         // circle could only be the fallback, and the offset worked out from it was wrong)
@@ -174,12 +155,6 @@ class PerimeterMeasurement extends Measurement {
         // (a file written by hand without an offset gets the default place)
         this.placed = element.hasAttribute("OffsetX");
         this.prefix = element.getAttribute("Prefix") ?? "";
-        const unitsAsString = element.getAttribute("Units");
-        if (unitsAsString === "Inches") {
-            this.units = LengthUnit.Inches;
-        } else if (unitsAsString === "Centimeters") {
-            this.units = LengthUnit.Centimeter;
-        }
     }
 }
 

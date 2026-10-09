@@ -1,6 +1,4 @@
 ﻿using Avalonia;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace DynamicGeometry
 {
@@ -96,14 +94,6 @@ namespace DynamicGeometry
             }
         }
 
-        public double Measure
-        {
-            get
-            {
-                return Distance * ConversionFactor;
-            }
-        }
-
         public double Length
         {
             get
@@ -120,70 +110,7 @@ namespace DynamicGeometry
             }
 
             base.UpdateVisual();
-
-            //Text = Math.Round(Distance,DecimalsToShow).ToString();
-            var distance = Math.Round(Measure, DecimalsToShow).ToString();
-            if (Units == Math.lengthUnit.Inches) Text = distance + "\"";
-            else if (Units == Math.lengthUnit.Centimeter) Text = distance + "cm";
-            else Text = distance;
-
+            Text = Math.Round(Distance, DecimalsToShow).ToString();
         }
-
-        private Math.lengthUnit mUnits = Settings.Instance.DistanceUnit;
-        [PropertyGridVisible]
-        public Math.lengthUnit Units
-        {
-            get
-            {
-                return mUnits;
-            }
-            set
-            {
-                mUnits = value;
-                UpdateVisual();
-            }
-        }
-
-        double ConversionFactor
-        {
-            get
-            {
-                if (Units == Math.lengthUnit.Inches) return 1 / Math.inchesLogicalLength;
-                if (Units == Math.lengthUnit.Centimeter) return 1 / Math.centimeterLogicalLength;
-                return 1;
-            }
-        }
-
-#if !PLAYER
-
-        public override void WriteXml(XmlWriter writer)
-        {
-            base.WriteXml(writer);
-            if (Units == Math.lengthUnit.Inches)
-            {
-                writer.WriteAttributeString("Units", "Inches");
-            }
-            else if (Units == Math.lengthUnit.Centimeter)
-            {
-                writer.WriteAttributeString("Units", "Centimeters");
-            }
-        }
-
-#endif
-
-        public override void ReadXml(XElement element)
-        {
-            base.ReadXml(element);
-            var unitsAsString = element.ReadString("Units");
-            if (unitsAsString == "Inches")
-            {
-                Units = Math.lengthUnit.Inches;
-            }
-            else if (unitsAsString == "Centimeters")
-            {
-                Units = Math.lengthUnit.Centimeter;
-            }
-        }
-
     }
 }

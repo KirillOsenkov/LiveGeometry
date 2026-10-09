@@ -91,45 +91,6 @@ public class PerimeterMeasurement : Measurement, ILengthProvider
         get { return HasSomethingToMeasure ? Measured.Perimeter : double.NaN; }
     }
 
-    public double Measure
-    {
-        get { return Length * ConversionFactor; }
-    }
-
-    Math.lengthUnit units = Settings.Instance.DistanceUnit;
-
-    [PropertyGridVisible]
-    public Math.lengthUnit Units
-    {
-        get
-        {
-            return units;
-        }
-        set
-        {
-            units = value;
-            UpdateVisual();
-        }
-    }
-
-    double ConversionFactor
-    {
-        get
-        {
-            if (Units == Math.lengthUnit.Inches)
-            {
-                return 1 / Math.inchesLogicalLength;
-            }
-
-            if (Units == Math.lengthUnit.Centimeter)
-            {
-                return 1 / Math.centimeterLogicalLength;
-            }
-
-            return 1;
-        }
-    }
-
     /// <summary>
     /// A point of the outline, which is what is measured: the middle of a polygon's first
     /// side, the lower right of a circle or an ellipse (its name sits upper left), the middle
@@ -210,9 +171,7 @@ public class PerimeterMeasurement : Measurement, ILengthProvider
             return;
         }
 
-        var number = Math.Round(Measure, DecimalsToShow).ToString();
-        var unitText = Units == Math.lengthUnit.Inches ? "\"" : Units == Math.lengthUnit.Centimeter ? "cm" : "";
-        Text = prefix + number + unitText;
+        Text = prefix + Math.Round(Length, DecimalsToShow).ToString();
 
         // (placed once the window has a size: before the first layout the anchor of a
         // circle could only be the fallback, and the offset worked out from it was wrong)
@@ -269,15 +228,6 @@ public class PerimeterMeasurement : Measurement, ILengthProvider
         // (a file written by hand without an offset gets the default place)
         placed = element.Attribute("OffsetX") != null;
         prefix = element.ReadString("Prefix") ?? "";
-        var unitsAsString = element.ReadString("Units");
-        if (unitsAsString == "Inches")
-        {
-            Units = Math.lengthUnit.Inches;
-        }
-        else if (unitsAsString == "Centimeters")
-        {
-            Units = Math.lengthUnit.Centimeter;
-        }
     }
 
     public override void WriteXml(XmlWriter writer)
@@ -286,15 +236,6 @@ public class PerimeterMeasurement : Measurement, ILengthProvider
         if (prefix.Length > 0)
         {
             writer.WriteAttributeString("Prefix", prefix);
-        }
-
-        if (Units == Math.lengthUnit.Inches)
-        {
-            writer.WriteAttributeString("Units", "Inches");
-        }
-        else if (Units == Math.lengthUnit.Centimeter)
-        {
-            writer.WriteAttributeString("Units", "Centimeters");
         }
     }
 }

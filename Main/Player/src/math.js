@@ -8,8 +8,6 @@ const GeometryMath = {
     Precision: 0.00000001,
     PI: Math.PI,
     DOUBLEPI: 2 * Math.PI,
-    centimeterLogicalLength: 0.5906,
-    inchesLogicalLength: 1.5,
 
     get infinitePoint() {
         return Point.infinite;

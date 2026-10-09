@@ -1,11 +1,6 @@
 // Port of Main/Avalonia/DynamicGeometry/Figures/Controls/DistanceMeasurement.cs
 
 class DistanceMeasurement extends Measurement {
-    constructor() {
-        super();
-        this.units = Settings.distanceUnit;
-    }
-
     get isLengthProvider() {
         return true;
     }
@@ -52,10 +47,6 @@ class DistanceMeasurement extends Measurement {
         return this.point(0).distance(this.point(1));
     }
 
-    get measure() {
-        return this.distance * this.conversionFactor;
-    }
-
     get length() {
         return this.distance;
     }
@@ -66,36 +57,7 @@ class DistanceMeasurement extends Measurement {
         }
 
         super.updateVisual();
-        const distance = NumberFormat.toString(GeometryMath.round(this.measure, this.decimalsToShow));
-        if (this.units === LengthUnit.Inches) {
-            this.setText(distance + "\"");
-        } else if (this.units === LengthUnit.Centimeter) {
-            this.setText(distance + "cm");
-        } else {
-            this.setText(distance);
-        }
-    }
-
-    get conversionFactor() {
-        if (this.units === LengthUnit.Inches) {
-            return 1 / GeometryMath.inchesLogicalLength;
-        }
-
-        if (this.units === LengthUnit.Centimeter) {
-            return 1 / GeometryMath.centimeterLogicalLength;
-        }
-
-        return 1;
-    }
-
-    readXml(element) {
-        super.readXml(element);
-        const unitsAsString = element.getAttribute("Units");
-        if (unitsAsString === "Inches") {
-            this.units = LengthUnit.Inches;
-        } else if (unitsAsString === "Centimeters") {
-            this.units = LengthUnit.Centimeter;
-        }
+        this.setText(NumberFormat.toString(GeometryMath.round(this.distance, this.decimalsToShow)));
     }
 }
 
