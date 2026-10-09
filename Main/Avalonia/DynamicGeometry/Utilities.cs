@@ -295,14 +295,18 @@ namespace DynamicGeometry
             }
         }
 
+        // (a point that is nowhere where the list has no such figure: a figure asking about
+        // its own dependencies goes through IFigureExtensions.Point/Line, which also report)
         public static Point Point(this IEnumerable<IFigure> figures, int index)
         {
-            return (figures.ElementAt(index) as IPoint).Coordinates;
+            return figures.ElementAtOrDefault(index) is IPoint point ? point.Coordinates : Math.InfinitePoint;
         }
 
         public static PointPair Line(this IEnumerable<IFigure> figures, int index)
         {
-            return (figures.ElementAt(index) as ILine).Coordinates;
+            return figures.ElementAtOrDefault(index) is ILine line
+                ? line.Coordinates
+                : new PointPair(Math.InfinitePoint, Math.InfinitePoint);
         }
 
         public static Point[] Polygon(this IEnumerable<IFigure> figures, int index)

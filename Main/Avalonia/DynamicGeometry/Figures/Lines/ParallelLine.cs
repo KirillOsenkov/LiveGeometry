@@ -37,7 +37,7 @@
             get
             {
                 PointPair coordinates;
-                PointPair parentLine = Dependencies.Line(0);
+                PointPair parentLine = this.Line(0);
                 Avalonia.Point point = Point(1);
 
                 coordinates = new PointPair()

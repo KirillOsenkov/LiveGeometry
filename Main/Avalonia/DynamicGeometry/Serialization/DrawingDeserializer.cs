@@ -55,6 +55,8 @@ namespace DynamicGeometry
                     {
                         Actions.Add(drawing, figure);
                     }
+
+                    LeaveOutInvalidFigures(drawing);
                 }
                 finally
                 {
@@ -121,6 +123,37 @@ namespace DynamicGeometry
                 drawing.Recalculate();
             }
             //drawing.CoordinateSystem.MoveTo(drawing.Figures.OfType<IPoint>().Midpoint().Minus());
+        }
+
+        /// <summary>
+        /// A figure that asked, as it was worked out, for a dependency it is not built on - a
+        /// segment on one point, a perpendicular to a point - is left out with everything
+        /// built on it (<see cref="IFigureExtensions.MissingPoint"/> noted it in
+        /// <see cref="Drawing.InvalidFigures"/>; such a file threw from Recalculate).
+        /// </summary>
+        void LeaveOutInvalidFigures(Drawing drawing)
+        {
+            foreach (var (figure, message) in drawing.InvalidFigures.ToArray())
+            {
+                if (!drawing.Figures.Contains(figure))
+                {
+                    continue;
+                }
+
+                ReportError(message);
+
+                // the dependents first, down to the figure itself
+                var descendants = DependencyAlgorithms.FindDescendants(f => f.Dependents, new[] { figure });
+                foreach (var descendant in descendants)
+                {
+                    if (drawing.Figures.Contains(descendant))
+                    {
+                        Actions.Remove(descendant);
+                    }
+                }
+            }
+
+            drawing.InvalidFigures.Clear();
         }
 
         List<string> errors = new List<string>();

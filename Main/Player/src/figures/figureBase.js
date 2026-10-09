@@ -171,12 +171,57 @@ class FigureBase {
 
     /** The coordinates of the point that is the dependency at the index */
     point(index) {
-        return this.mDependencies[index].coordinates;
+        const dependency = index < this.mDependencies.length ? this.mDependencies[index] : null;
+        if (dependency != null && dependency.isPoint === true) {
+            return dependency.coordinates;
+        }
+
+        return this.missingPoint(index);
     }
 
     /** The coordinates of the line that is the dependency at the index */
     line(index) {
-        return this.mDependencies[index].coordinates;
+        const dependency = index < this.mDependencies.length ? this.mDependencies[index] : null;
+        if (dependency != null && dependency.isLine === true) {
+            return dependency.coordinates;
+        }
+
+        this.reportMissingDependency(index, "a line");
+        return new PointPair(Point.infinite, Point.infinite);
+    }
+
+    /**
+     * The figure asked for a point it is not built on: too few dependencies, or one of another
+     * kind. A file may say that: while the file is read the figure is noted for the deserializer
+     * to leave out (drawing.invalidFigures), made not to exist and given a point that is
+     * nowhere. At any other time it is a bug, and throws.
+     */
+    missingPoint(index) {
+        this.reportMissingDependency(index, "a point");
+        return Point.infinite;
+    }
+
+    reportMissingDependency(index, what) {
+        const count = this.mDependencies.length;
+        const message = this.toString() + " is left out: it is built on " + count + " figure" + (count === 1 ? "" : "s")
+            + " and needs " + what + " as the " + FigureBase.ordinal(index + 1) + ".";
+        const drawing = this.drawing;
+        if (drawing == null || !drawing.isReading) {
+            throw new Error(message);
+        }
+
+        this.exists = false;
+        if (!drawing.invalidFigures.some(invalid => invalid.figure === this)) {
+            drawing.invalidFigures.push({ figure: this, message });
+        }
+    }
+
+    static ordinal(number) {
+        const rest = number % 100;
+        const suffix = rest === 11 || rest === 12 || rest === 13
+            ? "th"
+            : number % 10 === 1 ? "st" : number % 10 === 2 ? "nd" : number % 10 === 3 ? "rd" : "th";
+        return number + suffix;
     }
 
     get style() {

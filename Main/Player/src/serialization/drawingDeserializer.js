@@ -36,6 +36,8 @@ class DrawingDeserializer {
                 for (const figure of figures) {
                     Actions.add(drawing, figure);
                 }
+
+                this.leaveOutInvalidFigures(drawing);
             } finally {
                 drawing.isReading = false;
             }
@@ -63,6 +65,29 @@ class DrawingDeserializer {
             drawing.version = Settings.currentDrawingVersion;
             drawing.recalculate();
         }
+    }
+
+    /**
+     * A figure that asked, as it was worked out, for a dependency it is not built on (a segment
+     * on one point) is left out with everything built on it (FigureBase.missingPoint noted it)
+     */
+    leaveOutInvalidFigures(drawing) {
+        for (const { figure, message } of drawing.invalidFigures.slice()) {
+            if (!drawing.figures.contains(figure)) {
+                continue;
+            }
+
+            this.reportError(message);
+
+            // the dependents first, down to the figure itself
+            for (const descendant of DependencyAlgorithms.findDescendants(f => f.dependents, [figure])) {
+                if (drawing.figures.contains(descendant)) {
+                    drawing.figures.remove(descendant);
+                }
+            }
+        }
+
+        drawing.invalidFigures.length = 0;
     }
 
     reportError(error) {

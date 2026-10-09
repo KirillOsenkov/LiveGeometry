@@ -1754,7 +1754,14 @@ loader still does for files from before; none of it needs extending.
   a kind of figure or style this version doesn't have, a figure built on one the file
   lacks or on itself, a second figure of the same name, a `ReadXml` that threw), and the
   rest comes in; it threw half way, with a bare name or "the given key was not present"
-  for a message. Such a drawing keeps the list (`Drawing.LoadErrors`), gets no name and
+  for a message. A figure that says too little for its kind - a segment on one point, a
+  perpendicular to a point - is caught where it asks (`FigureBase.Point(index)`,
+  `IFigureExtensions.Point`/`Line`, 2026-10-09): while the file is read the figure is noted
+  (`Drawing.InvalidFigures`), made not to exist (its shape must not be laid out at
+  infinity) and given a point that is nowhere, and the deserializer leaves it out with
+  what is built on it once every figure is in (`LeaveOutInvalidFigures`); at any other
+  time the same access is a bug and throws. A direct `Dependencies[i]` cast is not
+  covered. Such a drawing keeps the list (`Drawing.LoadErrors`), gets no name and
   so no file to be saved over, and the status says the first line and how many more.
   `IniFile` skips the lines of a `.dgf` it can't read. A viewport without a size (a file
   saved from a window that had none) keeps the view (`CoordinateSystem.SetViewport`): it

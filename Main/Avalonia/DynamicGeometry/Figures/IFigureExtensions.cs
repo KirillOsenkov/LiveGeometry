@@ -147,7 +147,64 @@ namespace DynamicGeometry
 
         public static Point Point(this IFigure figure, int index)
         {
-            return (figure.Dependencies.ElementAt(index) as IPoint).Coordinates;
+            if (index < figure.Dependencies.Count && figure.Dependencies[index] is IPoint point)
+            {
+                return point.Coordinates;
+            }
+
+            return figure.MissingPoint(index);
+        }
+
+        /// <summary>
+        /// The figure asked for a point it is not built on: too few dependencies, or one of
+        /// another kind. A file may say that (a segment on one point asked for its second as
+        /// it was worked out): while the file is read the figure is noted for the deserializer
+        /// to leave out (<see cref="Drawing.InvalidFigures"/>), made not to exist, so that its
+        /// shape is not laid out at infinity, and given a point that is nowhere. At any other
+        /// time it is a bug, and throws as the index did.
+        /// </summary>
+        public static Point MissingPoint(this IFigure figure, int index)
+        {
+            ReportMissingDependency(figure, index, "a point");
+            return Math.InfinitePoint;
+        }
+
+        /// <summary>The same for a line (<see cref="Line"/>)</summary>
+        public static PointPair MissingLine(this IFigure figure, int index)
+        {
+            ReportMissingDependency(figure, index, "a line");
+            return new PointPair(Math.InfinitePoint, Math.InfinitePoint);
+        }
+
+        static void ReportMissingDependency(IFigure figure, int index, string what)
+        {
+            int count = figure.Dependencies.Count;
+            string message = string.Format(
+                "{0} is left out: it is built on {1} figure{2} and needs {3} as the {4}.",
+                figure,
+                count,
+                count == 1 ? "" : "s",
+                what,
+                Ordinal(index + 1));
+            var drawing = figure.Drawing;
+            if (drawing == null || !drawing.IsReading)
+            {
+                throw new InvalidOperationException(message);
+            }
+
+            figure.Exists = false;
+            if (!drawing.InvalidFigures.Any(invalid => invalid.Figure == figure))
+            {
+                drawing.InvalidFigures.Add((figure, message));
+            }
+        }
+
+        static string Ordinal(int number)
+        {
+            string suffix = number % 100 is 11 or 12 or 13
+                ? "th"
+                : number % 10 == 1 ? "st" : number % 10 == 2 ? "nd" : number % 10 == 3 ? "rd" : "th";
+            return number + suffix;
         }
 
         public static void Move(this IEnumerable<IMovable> figures, Point offset)
@@ -160,7 +217,12 @@ namespace DynamicGeometry
 
         public static PointPair Line(this IFigure figure, int index)
         {
-            return (figure.Dependencies.ElementAt(index) as ILine).Coordinates;
+            if (index < figure.Dependencies.Count && figure.Dependencies[index] is ILine line)
+            {
+                return line.Coordinates;
+            }
+
+            return figure.MissingLine(index);
         }
 
         public static void RegisterWithDependencies(this IFigure figure)

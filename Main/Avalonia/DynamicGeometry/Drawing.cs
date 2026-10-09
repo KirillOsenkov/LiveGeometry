@@ -367,6 +367,13 @@ namespace DynamicGeometry
         public bool IsReading { get; set; }
 
         /// <summary>
+        /// The figures that asked, while the file was read, for a dependency they are not
+        /// built on (<see cref="IFigureExtensions.MissingPoint"/>), with the line to report:
+        /// the deserializer leaves them out once every figure is in.
+        /// </summary>
+        public List<(IFigure Figure, string Message)> InvalidFigures { get; } = new List<(IFigure Figure, string Message)>();
+
+        /// <summary>
         /// On while the figures are worked out again after a move (a drag, a pan by the keys,
         /// undo and redo of either): a label shows its new text at most every
         /// <see cref="LabelBase.TextInterval"/> then (<see cref="LabelBase.ProcessedText"/>)

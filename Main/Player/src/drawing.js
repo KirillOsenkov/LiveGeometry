@@ -32,6 +32,9 @@ class Drawing {
         /** Labels that can't be dragged: a drag on one moves the view */
         this.fixedLabels = new Set();
         this.isReading = false;
+
+        /** The figures that asked, while the file was read, for a dependency they are not built on, with the line to report: the deserializer leaves them out */
+        this.invalidFigures = [];
         this.isMoving = false;
         this.name = null;
         this.loadErrors = null;

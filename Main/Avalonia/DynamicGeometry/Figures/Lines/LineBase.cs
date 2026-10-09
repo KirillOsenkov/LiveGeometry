@@ -40,13 +40,18 @@ namespace DynamicGeometry
         {
             if (IsShown)
             {
-                Shape.Set(ToPhysical(OnScreenCoordinates));
-                Shape.Visibility = Visibility.Visible;
+                // (a line whose points are nowhere - asked for a point it is not built on
+                // while a file is read - is not laid out: Avalonia throws for a place at infinity)
+                var coordinates = OnScreenCoordinates;
+                if (coordinates.P1.Exists() && coordinates.P2.Exists())
+                {
+                    Shape.Set(ToPhysical(coordinates));
+                    Shape.Visibility = Visibility.Visible;
+                    return;
+                }
             }
-            else
-            {
-                Shape.Visibility = Visibility.Collapsed;
-            }
+
+            Shape.Visibility = Visibility.Collapsed;
         }
 
         public virtual PointPair Coordinates

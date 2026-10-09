@@ -206,12 +206,12 @@ namespace DynamicGeometry
 
         public override Point Center
         {
-            get { return this.Dependencies.Point(0); }
+            get { return Point(0); }
         }
 
         public Point Vertex
         {
-            get { return this.Dependencies.Point(1); }
+            get { return Point(1); }
         }
 
         public override void Recalculate()

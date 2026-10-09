@@ -42,7 +42,7 @@ namespace DynamicGeometry
         /// </summary>
         public Outline Measure()
         {
-            PointPair line = Dependencies.Line(0);
+            PointPair line = this.Line(0);
             LineBase parentLine = Dependencies.ElementAt(0) as LineBase;
             if (parentLine != null)
             {

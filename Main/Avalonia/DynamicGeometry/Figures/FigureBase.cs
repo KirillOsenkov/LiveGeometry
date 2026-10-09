@@ -1012,8 +1012,12 @@ namespace DynamicGeometry
 
         public virtual Point Point(int index)
         {
-            var point = mDependencies[index] as IPoint;
-            return point.Coordinates;
+            if (index < mDependencies.Count && mDependencies[index] is IPoint point)
+            {
+                return point.Coordinates;
+            }
+
+            return this.MissingPoint(index);
         }
 
         IFigureStyle style;

@@ -81,6 +81,7 @@ public class Program
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
+            ("LGF leaves out a figure built on too few figures", TooFewDependenciesLoad),
             ("Gallery LGF round trips", GalleryRoundTrips)
         };
         int failures = 0;
@@ -2564,6 +2565,26 @@ public class Program
             """);
         Require(drawing.LoadErrors != null, "Missing figures were not reported.");
         Require(Find(drawing, "AB") is Segment, "Valid figures after a bad one were dropped.");
+    }
+
+    // a segment on one point asked for its second as it was worked out and threw from Recalculate
+    static void TooFewDependenciesLoad()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1"><Figures>
+              <FreePoint Name="A" X="1" Y="2"/>
+              <FreePoint Name="B" X="3" Y="4"/>
+              <Segment Name="short"><Dependency Name="A"/></Segment>
+              <MidPoint Name="M"><Dependency Name="short"/><Dependency Name="B"/></MidPoint>
+              <PerpendicularLine Name="h"><Dependency Name="A"/><Dependency Name="B"/></PerpendicularLine>
+              <Segment Name="AB"><Dependency Name="A"/><Dependency Name="B"/></Segment>
+            </Figures></Drawing>
+            """);
+        Require(drawing.LoadErrors != null && drawing.LoadErrors.Contains("short is left out"), "A segment on one point was not reported: " + drawing.LoadErrors);
+        Require(drawing.LoadErrors.Contains("h is left out") && drawing.LoadErrors.Contains("needs a line"), "A perpendicular to a point was not reported: " + drawing.LoadErrors);
+        Require(!drawing.Figures.Any(figure => figure.Name is "short" or "M" or "h"), "An invalid figure, or one built on it, stayed in the drawing.");
+        Require(Find(drawing, "AB") is Segment && Find(drawing, "A") is FreePoint, "Valid figures were dropped with the invalid ones.");
+        drawing.Figures.CheckConsistency();
     }
 
     static void AbstractFigureLoad()

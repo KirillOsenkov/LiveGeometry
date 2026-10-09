@@ -30,7 +30,7 @@ namespace DynamicGeometry
         {
             get
             {
-                var line = Dependencies.Line(0);
+                var line = this.Line(0);
                 if (Flipped) line = new PointPair(line.P2,line.P1);
                 var point = Point(1);
                 var coordinates = Math.GetPerpendicularLine(line, point);
@@ -42,7 +42,7 @@ namespace DynamicGeometry
         {
             // where this line crosses the one it is perpendicular to - if it does:
             // the foot can be beyond the end of a segment
-            baseLine = Dependencies.Line(0);
+            baseLine = this.Line(0);
             pointAcross = Point(1);
             vertex = Math.GetProjectionPoint(pointAcross, baseLine);
             return Dependencies[0].Visible && BaseFigure.HitTest(vertex) != null;
