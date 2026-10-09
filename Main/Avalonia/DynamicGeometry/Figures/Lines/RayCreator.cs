@@ -30,6 +30,11 @@ namespace DynamicGeometry
             }
         }
 
+        public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+        {
+            return ClickedDependencies == 1 ? "Click a point the ray goes through." : base.ConstructionHintText(args);
+        }
+
         public override FrameworkElement CreateIcon()
         {
             return IconBuilder.BuildIcon()

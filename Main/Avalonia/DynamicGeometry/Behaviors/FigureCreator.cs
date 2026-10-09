@@ -415,6 +415,18 @@ namespace DynamicGeometry
 
         protected IPoint TempPoint { get; set; }
 
+        /// <summary>
+        /// How many dependencies the clicks have found: the point following the cursor is
+        /// among the found ones and is no click (for a step's hint)
+        /// </summary>
+        protected int ClickedDependencies
+        {
+            get
+            {
+                return FoundDependencies.Count - (TempPoint != null ? 1 : 0);
+            }
+        }
+
         protected virtual void CreateTempPoint(Point coordinates)
         {
             TempPoint = Factory.CreateFreePoint(Drawing, coordinates);

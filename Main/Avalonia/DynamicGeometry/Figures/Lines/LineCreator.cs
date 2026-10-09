@@ -33,6 +33,11 @@ namespace DynamicGeometry
             }
         }
 
+        public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+        {
+            return ClickedDependencies == 1 ? "Click another point on the line." : base.ConstructionHintText(args);
+        }
+
         public override FrameworkElement CreateIcon()
         {
             return IconBuilder.BuildIcon()

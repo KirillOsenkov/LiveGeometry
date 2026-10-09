@@ -78,17 +78,16 @@ namespace DynamicGeometry
         /// <summary>After the vertex: which side the point is for (the bisector halves the angle under 180° whichever side comes first)</summary>
         public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
         {
-            return AngleSideHint(FoundDependencies.Count, TempPoint) ?? base.ConstructionHintText(args);
+            return AngleSideHint(ClickedDependencies) ?? base.ConstructionHintText(args);
         }
 
         /// <summary>
         /// The hint of the Angle and Angle Bisector tools after the vertex: a point on the first
-        /// side, then on the second; null for any other step. The points found include the
-        /// one following the cursor, which is no click.
+        /// side, then on the second; null for any other step
         /// </summary>
-        public static string AngleSideHint(int pointsFound, IPoint tempPoint)
+        public static string AngleSideHint(int pointsClicked)
         {
-            switch (pointsFound - (tempPoint != null ? 1 : 0))
+            switch (pointsClicked)
             {
                 case 1:
                     return "Select a point on the first side of the angle.";
