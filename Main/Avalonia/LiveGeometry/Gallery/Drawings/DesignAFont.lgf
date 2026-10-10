@@ -1,0 +1,2708 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-7.5" Top="6.67" Right="7.5" Bottom="-5.22" />
+  <Styles>
+    <ShapeStyle Name="Ink" Fill="#FF2A3140" Color="#00000000">
+      <Dark Fill="#FFE4E8F0" />
+    </ShapeStyle>
+    <LineStyle Name="NoLine" Color="#00FFFFFF" StrokeWidth="0.5" />
+    <ShapeStyle Name="TFill" Fill="#38EF5B3C" Color="#00000000">
+      <Dark Fill="#38FF7D62" />
+    </ShapeStyle>
+    <LineStyle Name="TRim" Color="#FFEF5B3C" StrokeWidth="2">
+      <Dark Color="#FFFF7D62" />
+    </LineStyle>
+    <PointStyle Name="TNode" Fill="#FFFFFFFF" Color="#FFEF5B3C" StrokeWidth="2.5">
+      <Dark Color="#FFFF7D62" />
+    </PointStyle>
+    <PointStyle Name="TCorner" Shape="Square" Size="9" Fill="#FFFFFFFF" Color="#FFEF5B3C" StrokeWidth="2.5">
+      <Dark Color="#FFFF7D62" />
+    </PointStyle>
+    <PointStyle Name="THandle" Size="7" Fill="#FFEF5B3C" Color="#FFFFFFFF" StrokeWidth="1.5">
+      <Dark Fill="#FFFF7D62" />
+    </PointStyle>
+    <ShapeStyle Name="TInk" Fill="#FFEF5B3C" Color="#00000000">
+      <Dark Fill="#FFFF7D62" />
+    </ShapeStyle>
+    <ShapeStyle Name="HFill" Fill="#382F8FE0" Color="#00000000">
+      <Dark Fill="#3862AEFF" />
+    </ShapeStyle>
+    <LineStyle Name="HRim" Color="#FF2F8FE0" StrokeWidth="2">
+      <Dark Color="#FF62AEFF" />
+    </LineStyle>
+    <PointStyle Name="HNode" Fill="#FFFFFFFF" Color="#FF2F8FE0" StrokeWidth="2.5">
+      <Dark Color="#FF62AEFF" />
+    </PointStyle>
+    <PointStyle Name="HCorner" Shape="Square" Size="9" Fill="#FFFFFFFF" Color="#FF2F8FE0" StrokeWidth="2.5">
+      <Dark Color="#FF62AEFF" />
+    </PointStyle>
+    <PointStyle Name="HHandle" Size="7" Fill="#FF2F8FE0" Color="#FFFFFFFF" StrokeWidth="1.5">
+      <Dark Fill="#FF62AEFF" />
+    </PointStyle>
+    <ShapeStyle Name="HInk" Fill="#FF2F8FE0" Color="#00000000">
+      <Dark Fill="#FF62AEFF" />
+    </ShapeStyle>
+    <ShapeStyle Name="EFill" Fill="#389256E0" Color="#00000000">
+      <Dark Fill="#38B38CFF" />
+    </ShapeStyle>
+    <LineStyle Name="ERim" Color="#FF9256E0" StrokeWidth="2">
+      <Dark Color="#FFB38CFF" />
+    </LineStyle>
+    <PointStyle Name="ENode" Fill="#FFFFFFFF" Color="#FF9256E0" StrokeWidth="2.5">
+      <Dark Color="#FFB38CFF" />
+    </PointStyle>
+    <PointStyle Name="ECorner" Shape="Square" Size="9" Fill="#FFFFFFFF" Color="#FF9256E0" StrokeWidth="2.5">
+      <Dark Color="#FFB38CFF" />
+    </PointStyle>
+    <PointStyle Name="EHandle" Size="7" Fill="#FF9256E0" Color="#FFFFFFFF" StrokeWidth="1.5">
+      <Dark Fill="#FFB38CFF" />
+    </PointStyle>
+    <ShapeStyle Name="EInk" Fill="#FF9256E0" Color="#00000000">
+      <Dark Fill="#FFB38CFF" />
+    </ShapeStyle>
+    <LineStyle Name="Guide" Color="#FFB4BAC8" Dash="Dash">
+      <Dark Color="#FF5A6275" />
+    </LineStyle>
+    <TextStyle Name="GuideText" FontSize="12" Color="#FF8A93A6" FontFamily="Segoe UI">
+      <Dark Color="#FF8A93A6" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <Number Name="Shrink" Value="0.125" />
+    <PointByCoordinates Name="AscenderL" Visible="false" X="-1" Y="5.92" />
+    <PointByCoordinates Name="AscenderR" Visible="false" X="1" Y="5.92" />
+    <LineTwoPoints Name="AscenderLine" Style="Guide">
+      <Dependency Name="AscenderL" />
+      <Dependency Name="AscenderR" />
+    </LineTwoPoints>
+    <PointByCoordinates Name="XHeightL" Visible="false" X="-1" Y="4" />
+    <PointByCoordinates Name="XHeightR" Visible="false" X="1" Y="4" />
+    <LineTwoPoints Name="XHeightLine" Style="Guide">
+      <Dependency Name="XHeightL" />
+      <Dependency Name="XHeightR" />
+    </LineTwoPoints>
+    <PointByCoordinates Name="BaselineL" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="BaselineR" Visible="false" X="1" Y="0" />
+    <LineTwoPoints Name="BaselineLine" Style="Guide">
+      <Dependency Name="BaselineL" />
+      <Dependency Name="BaselineR" />
+    </LineTwoPoints>
+    <PointByCoordinates Name="DescenderL" Visible="false" X="-1" Y="-1.76" />
+    <PointByCoordinates Name="DescenderR" Visible="false" X="1" Y="-1.76" />
+    <LineTwoPoints Name="DescenderLine" Style="Guide">
+      <Dependency Name="DescenderL" />
+      <Dependency Name="DescenderR" />
+    </LineTwoPoints>
+    <FreePoint Name="T1" Style="TCorner" X="-5.24" Y="3.12" />
+    <FreePoint Name="T2" Style="TNode" X="-5.24" Y="1.56" />
+    <FreePoint Name="T3" Style="TNode" X="-3.68" Y="0" />
+    <FreePoint Name="T4" Style="TNode" X="-3.36" Y="0" />
+    <FreePoint Name="T5" Style="TNode" X="-3.36" Y="0.88" />
+    <FreePoint Name="T6" Style="TNode" X="-3.68" Y="0.88" />
+    <FreePoint Name="T7" Style="TNode" X="-4.36" Y="1.56" />
+    <FreePoint Name="T8" Style="TCorner" X="-4.36" Y="3.12" />
+    <FreePoint Name="T9" Style="TNode" X="-3.6" Y="3.12" />
+    <FreePoint Name="T10" Style="TNode" X="-3.6" Y="4" />
+    <FreePoint Name="T11" Style="TCorner" X="-4.36" Y="4" />
+    <FreePoint Name="T12" Style="TNode" X="-4.36" Y="4.76" />
+    <FreePoint Name="T13" Style="TNode" X="-5.24" Y="4.76" />
+    <FreePoint Name="T14" Style="TCorner" X="-5.24" Y="4" />
+    <FreePoint Name="T15" Style="TNode" X="-6" Y="4" />
+    <FreePoint Name="T16" Style="TNode" X="-6" Y="3.12" />
+    <BezierPath Name="GlyphT" Style="TFill" Closed="true" Filled="true" Path="L C 0,-0.861564 -0.861564,0 L C 0.586667,0 0.586667,0 L C -0.375554,0 0,-0.375554 L L C 0.586667,0 0.586667,0 L L C 0,0.586667 0,0.586667 L L C -0.586667,0 -0.586667,0 L">
+      <Sides Style="TRim" />
+      <Handles Style="THandle" />
+      <Dependency Name="T1" />
+      <Dependency Name="T2" />
+      <Dependency Name="T3" />
+      <Dependency Name="T4" />
+      <Dependency Name="T5" />
+      <Dependency Name="T6" />
+      <Dependency Name="T7" />
+      <Dependency Name="T8" />
+      <Dependency Name="T9" />
+      <Dependency Name="T10" />
+      <Dependency Name="T11" />
+      <Dependency Name="T12" />
+      <Dependency Name="T13" />
+      <Dependency Name="T14" />
+      <Dependency Name="T15" />
+      <Dependency Name="T16" />
+    </BezierPath>
+    <FreePoint Name="H1" Style="HNode" X="-1.64" Y="0.44" />
+    <FreePoint Name="H2" Style="HNode" X="-0.76" Y="0.44" />
+    <FreePoint Name="H3" Style="HNode" X="-0.76" Y="2.36" />
+    <FreePoint Name="H4" Style="HNode" X="0" Y="3.12" />
+    <FreePoint Name="H5" Style="HNode" X="0.76" Y="2.36" />
+    <FreePoint Name="H6" Style="HNode" X="0.76" Y="0.44" />
+    <FreePoint Name="H7" Style="HNode" X="1.64" Y="0.44" />
+    <FreePoint Name="H8" Style="HNode" X="1.64" Y="2.36" />
+    <FreePoint Name="H9" Style="HNode" X="0" Y="4" />
+    <FreePoint Name="H10" Style="HCorner" X="-0.76" Y="3.813272" />
+    <FreePoint Name="H11" Style="HNode" X="-0.76" Y="5.48" />
+    <FreePoint Name="H12" Style="HNode" X="-1.64" Y="5.48" />
+    <BezierPath Name="GlyphH" Style="HFill" Closed="true" Filled="true" Path="C 0,-0.586667 0,-0.586667 L C 0,0.419736 -0.419736,0 C 0.419736,0 0,0.419736 L C 0,-0.586667 0,-0.586667 L C 0,0.905747 0.905747,0 C -0.26469,0 0.234553,0.122661 L C 0,0.586667 0,0.586667 L">
+      <Sides Style="HRim" />
+      <Handles Style="HHandle" />
+      <Dependency Name="H1" />
+      <Dependency Name="H2" />
+      <Dependency Name="H3" />
+      <Dependency Name="H4" />
+      <Dependency Name="H5" />
+      <Dependency Name="H6" />
+      <Dependency Name="H7" />
+      <Dependency Name="H8" />
+      <Dependency Name="H9" />
+      <Dependency Name="H10" />
+      <Dependency Name="H11" />
+      <Dependency Name="H12" />
+    </BezierPath>
+    <FreePoint Name="E1" Style="ENode" X="6.8" Y="2" />
+    <FreePoint Name="E2" Style="ENode" X="4.8" Y="4" />
+    <FreePoint Name="E3" Style="ENode" X="2.8" Y="2" />
+    <FreePoint Name="E4" Style="ENode" X="4.8" Y="0" />
+    <FreePoint Name="E5" Style="ENode" X="6.332089" Y="0.714425" />
+    <FreePoint Name="E6" Style="ENode" X="5.65797" Y="1.280078" />
+    <FreePoint Name="E7" Style="ENode" X="4.8" Y="0.88" />
+    <FreePoint Name="E8" Style="ECorner" X="3.770049" Y="1.56" />
+    <FreePoint Name="E9" Style="ENode" X="6.36" Y="1.56" />
+    <FreePoint Name="Eye1" Style="ECorner" X="5.829951" Y="2.44" />
+    <FreePoint Name="Eye2" Style="ENode" X="4.8" Y="3.12" />
+    <FreePoint Name="Eye3" Style="ECorner" X="3.770049" Y="2.44" />
+    <BezierPath Name="EyeE" Closed="true" Path="C -0.176197,0.412442 0.448502,0 C -0.448502,0 0.176197,0.412442 L">
+      <Sides Style="ERim" />
+      <Handles Style="EHandle" />
+      <Dependency Name="Eye1" />
+      <Dependency Name="Eye2" />
+      <Dependency Name="Eye3" />
+    </BezierPath>
+    <BezierPath Name="GlyphE" Style="EFill" Closed="true" Filled="true" Path="C 0,1.104569 1.104569,0 C -1.104569,0 0,1.104569 C 0,-1.104569 -1.104569,0 C 0.591186,0 -0.380007,-0.452875 C 0.377102,0.449413 0.377102,0.449413 C -0.212804,-0.25361 0.331064,0 C -0.448502,0 0.176197,-0.412442 L C 0.243005,0 0,-0.243005">
+      <Sides Style="ERim" />
+      <Handles Style="EHandle" />
+      <Dependency Name="E1" />
+      <Dependency Name="E2" />
+      <Dependency Name="E3" />
+      <Dependency Name="E4" />
+      <Dependency Name="E5" />
+      <Dependency Name="E6" />
+      <Dependency Name="E7" />
+      <Dependency Name="E8" />
+      <Dependency Name="E9" />
+      <Dependency Name="EyeE" />
+    </BezierPath>
+    <PointByCoordinates Name="TCopy1Center" Visible="false" X="-5.485714" Y="-3.885714" />
+    <DilatedPoint Name="TCopy1A1" Visible="false" Auxiliary="true">
+      <Dependency Name="T1" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A2" Visible="false" Auxiliary="true">
+      <Dependency Name="T2" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A3" Visible="false" Auxiliary="true">
+      <Dependency Name="T3" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A4" Visible="false" Auxiliary="true">
+      <Dependency Name="T4" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A5" Visible="false" Auxiliary="true">
+      <Dependency Name="T5" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A6" Visible="false" Auxiliary="true">
+      <Dependency Name="T6" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A7" Visible="false" Auxiliary="true">
+      <Dependency Name="T7" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A8" Visible="false" Auxiliary="true">
+      <Dependency Name="T8" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A9" Visible="false" Auxiliary="true">
+      <Dependency Name="T9" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A10" Visible="false" Auxiliary="true">
+      <Dependency Name="T10" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A11" Visible="false" Auxiliary="true">
+      <Dependency Name="T11" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A12" Visible="false" Auxiliary="true">
+      <Dependency Name="T12" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A13" Visible="false" Auxiliary="true">
+      <Dependency Name="T13" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A14" Visible="false" Auxiliary="true">
+      <Dependency Name="T14" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A15" Visible="false" Auxiliary="true">
+      <Dependency Name="T15" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1A16" Visible="false" Auxiliary="true">
+      <Dependency Name="T16" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In1" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out1" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In2" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out2" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In3" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out3" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In4" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out4" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In5" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out5" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In6" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out6" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In7" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out7" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In8" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out8" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In9" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out9" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I10" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In10" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O10" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out10" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I11" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In11" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O11" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out11" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I12" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In12" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O12" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out12" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I13" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In13" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O13" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out13" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I14" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In14" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O14" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out14" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I15" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In15" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O15" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out15" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1I16" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In16" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy1O16" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out16" />
+      <Dependency Name="TCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <BezierPath Name="TCopy1" Style="TInk" Closed="true" Filled="true" Path="C #17 #18 C #19 #20 C #21 #22 C #23 #24 C #25 #26 C #27 #28 C #29 #30 C #31 #32 C #33 #34 C #35 #36 C #37 #38 C #39 #40 C #41 #42 C #43 #44 C #45 #46 C #47 #16">
+      <Sides Style="NoLine" />
+      <Dependency Name="TCopy1A1" />
+      <Dependency Name="TCopy1A2" />
+      <Dependency Name="TCopy1A3" />
+      <Dependency Name="TCopy1A4" />
+      <Dependency Name="TCopy1A5" />
+      <Dependency Name="TCopy1A6" />
+      <Dependency Name="TCopy1A7" />
+      <Dependency Name="TCopy1A8" />
+      <Dependency Name="TCopy1A9" />
+      <Dependency Name="TCopy1A10" />
+      <Dependency Name="TCopy1A11" />
+      <Dependency Name="TCopy1A12" />
+      <Dependency Name="TCopy1A13" />
+      <Dependency Name="TCopy1A14" />
+      <Dependency Name="TCopy1A15" />
+      <Dependency Name="TCopy1A16" />
+      <Dependency Name="TCopy1I1" />
+      <Dependency Name="TCopy1O1" />
+      <Dependency Name="TCopy1I2" />
+      <Dependency Name="TCopy1O2" />
+      <Dependency Name="TCopy1I3" />
+      <Dependency Name="TCopy1O3" />
+      <Dependency Name="TCopy1I4" />
+      <Dependency Name="TCopy1O4" />
+      <Dependency Name="TCopy1I5" />
+      <Dependency Name="TCopy1O5" />
+      <Dependency Name="TCopy1I6" />
+      <Dependency Name="TCopy1O6" />
+      <Dependency Name="TCopy1I7" />
+      <Dependency Name="TCopy1O7" />
+      <Dependency Name="TCopy1I8" />
+      <Dependency Name="TCopy1O8" />
+      <Dependency Name="TCopy1I9" />
+      <Dependency Name="TCopy1O9" />
+      <Dependency Name="TCopy1I10" />
+      <Dependency Name="TCopy1O10" />
+      <Dependency Name="TCopy1I11" />
+      <Dependency Name="TCopy1O11" />
+      <Dependency Name="TCopy1I12" />
+      <Dependency Name="TCopy1O12" />
+      <Dependency Name="TCopy1I13" />
+      <Dependency Name="TCopy1O13" />
+      <Dependency Name="TCopy1I14" />
+      <Dependency Name="TCopy1O14" />
+      <Dependency Name="TCopy1I15" />
+      <Dependency Name="TCopy1O15" />
+      <Dependency Name="TCopy1I16" />
+      <Dependency Name="TCopy1O16" />
+    </BezierPath>
+    <PointByCoordinates Name="HCopy1Center" Visible="false" X="-5.485714" Y="-3.885714" />
+    <DilatedPoint Name="HCopy1A1" Visible="false" Auxiliary="true">
+      <Dependency Name="H1" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1A2" Visible="false" Auxiliary="true">
+      <Dependency Name="H2" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1A3" Visible="false" Auxiliary="true">
+      <Dependency Name="H3" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1A4" Visible="false" Auxiliary="true">
+      <Dependency Name="H4" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1A5" Visible="false" Auxiliary="true">
+      <Dependency Name="H5" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1A6" Visible="false" Auxiliary="true">
+      <Dependency Name="H6" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1A7" Visible="false" Auxiliary="true">
+      <Dependency Name="H7" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1A8" Visible="false" Auxiliary="true">
+      <Dependency Name="H8" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1A9" Visible="false" Auxiliary="true">
+      <Dependency Name="H9" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1A10" Visible="false" Auxiliary="true">
+      <Dependency Name="H10" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1A11" Visible="false" Auxiliary="true">
+      <Dependency Name="H11" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1A12" Visible="false" Auxiliary="true">
+      <Dependency Name="H12" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1I1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In1" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1O1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out1" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1I2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In2" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1O2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out2" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1I3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In3" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1O3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out3" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1I4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In4" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1O4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out4" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1I5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In5" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1O5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out5" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1I6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In6" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1O6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out6" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1I7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In7" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1O7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out7" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1I8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In8" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1O8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out8" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1I9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In9" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1O9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out9" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1I10" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In10" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1O10" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out10" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1I11" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In11" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1O11" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out11" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1I12" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In12" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy1O12" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out12" />
+      <Dependency Name="HCopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <BezierPath Name="HCopy1" Style="HInk" Closed="true" Filled="true" Path="C #13 #14 C #15 #16 C #17 #18 C #19 #20 C #21 #22 C #23 #24 C #25 #26 C #27 #28 C #29 #30 C #31 #32 C #33 #34 C #35 #12">
+      <Sides Style="NoLine" />
+      <Dependency Name="HCopy1A1" />
+      <Dependency Name="HCopy1A2" />
+      <Dependency Name="HCopy1A3" />
+      <Dependency Name="HCopy1A4" />
+      <Dependency Name="HCopy1A5" />
+      <Dependency Name="HCopy1A6" />
+      <Dependency Name="HCopy1A7" />
+      <Dependency Name="HCopy1A8" />
+      <Dependency Name="HCopy1A9" />
+      <Dependency Name="HCopy1A10" />
+      <Dependency Name="HCopy1A11" />
+      <Dependency Name="HCopy1A12" />
+      <Dependency Name="HCopy1I1" />
+      <Dependency Name="HCopy1O1" />
+      <Dependency Name="HCopy1I2" />
+      <Dependency Name="HCopy1O2" />
+      <Dependency Name="HCopy1I3" />
+      <Dependency Name="HCopy1O3" />
+      <Dependency Name="HCopy1I4" />
+      <Dependency Name="HCopy1O4" />
+      <Dependency Name="HCopy1I5" />
+      <Dependency Name="HCopy1O5" />
+      <Dependency Name="HCopy1I6" />
+      <Dependency Name="HCopy1O6" />
+      <Dependency Name="HCopy1I7" />
+      <Dependency Name="HCopy1O7" />
+      <Dependency Name="HCopy1I8" />
+      <Dependency Name="HCopy1O8" />
+      <Dependency Name="HCopy1I9" />
+      <Dependency Name="HCopy1O9" />
+      <Dependency Name="HCopy1I10" />
+      <Dependency Name="HCopy1O10" />
+      <Dependency Name="HCopy1I11" />
+      <Dependency Name="HCopy1O11" />
+      <Dependency Name="HCopy1I12" />
+      <Dependency Name="HCopy1O12" />
+    </BezierPath>
+    <PointByCoordinates Name="ECopy1Center" Visible="false" X="-5.485714" Y="-3.885714" />
+    <DilatedPoint Name="ECopy1EyeA1" Visible="false" Auxiliary="true">
+      <Dependency Name="Eye1" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1EyeA2" Visible="false" Auxiliary="true">
+      <Dependency Name="Eye2" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1EyeA3" Visible="false" Auxiliary="true">
+      <Dependency Name="Eye3" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1EyeI1" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="In1" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1EyeO1" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="Out1" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1EyeI2" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="In2" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1EyeO2" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="Out2" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1EyeI3" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="In3" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1EyeO3" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="Out3" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <BezierPath Name="ECopy1Eye" Closed="true" Path="C #4 #5 C #6 #7 C #8 #3">
+      <Sides Style="NoLine" />
+      <Dependency Name="ECopy1EyeA1" />
+      <Dependency Name="ECopy1EyeA2" />
+      <Dependency Name="ECopy1EyeA3" />
+      <Dependency Name="ECopy1EyeI1" />
+      <Dependency Name="ECopy1EyeO1" />
+      <Dependency Name="ECopy1EyeI2" />
+      <Dependency Name="ECopy1EyeO2" />
+      <Dependency Name="ECopy1EyeI3" />
+      <Dependency Name="ECopy1EyeO3" />
+    </BezierPath>
+    <DilatedPoint Name="ECopy1A1" Visible="false" Auxiliary="true">
+      <Dependency Name="E1" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1A2" Visible="false" Auxiliary="true">
+      <Dependency Name="E2" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1A3" Visible="false" Auxiliary="true">
+      <Dependency Name="E3" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1A4" Visible="false" Auxiliary="true">
+      <Dependency Name="E4" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1A5" Visible="false" Auxiliary="true">
+      <Dependency Name="E5" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1A6" Visible="false" Auxiliary="true">
+      <Dependency Name="E6" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1A7" Visible="false" Auxiliary="true">
+      <Dependency Name="E7" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1A8" Visible="false" Auxiliary="true">
+      <Dependency Name="E8" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1A9" Visible="false" Auxiliary="true">
+      <Dependency Name="E9" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1I1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In1" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1O1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out1" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1I2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In2" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1O2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out2" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1I3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In3" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1O3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out3" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1I4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In4" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1O4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out4" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1I5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In5" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1O5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out5" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1I6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In6" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1O6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out6" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1I7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In7" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1O7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out7" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1I8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In8" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1O8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out8" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1I9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In9" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy1O9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out9" />
+      <Dependency Name="ECopy1Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <BezierPath Name="ECopy1" Style="EInk" Closed="true" Filled="true" Path="C #10 #11 C #12 #13 C #14 #15 C #16 #17 C #18 #19 C #20 #21 C #22 #23 C #24 #25 C #26 #9">
+      <Sides Style="NoLine" />
+      <Dependency Name="ECopy1A1" />
+      <Dependency Name="ECopy1A2" />
+      <Dependency Name="ECopy1A3" />
+      <Dependency Name="ECopy1A4" />
+      <Dependency Name="ECopy1A5" />
+      <Dependency Name="ECopy1A6" />
+      <Dependency Name="ECopy1A7" />
+      <Dependency Name="ECopy1A8" />
+      <Dependency Name="ECopy1A9" />
+      <Dependency Name="ECopy1I1" />
+      <Dependency Name="ECopy1O1" />
+      <Dependency Name="ECopy1I2" />
+      <Dependency Name="ECopy1O2" />
+      <Dependency Name="ECopy1I3" />
+      <Dependency Name="ECopy1O3" />
+      <Dependency Name="ECopy1I4" />
+      <Dependency Name="ECopy1O4" />
+      <Dependency Name="ECopy1I5" />
+      <Dependency Name="ECopy1O5" />
+      <Dependency Name="ECopy1I6" />
+      <Dependency Name="ECopy1O6" />
+      <Dependency Name="ECopy1I7" />
+      <Dependency Name="ECopy1O7" />
+      <Dependency Name="ECopy1I8" />
+      <Dependency Name="ECopy1O8" />
+      <Dependency Name="ECopy1I9" />
+      <Dependency Name="ECopy1O9" />
+      <Dependency Name="ECopy1Eye" />
+    </BezierPath>
+    <PointByCoordinates Name="W4aHoleP1" Visible="false" X="-2.86" Y="-3.15" />
+    <PointByCoordinates Name="W4aHoleP2" Visible="false" X="-3" Y="-3.01" />
+    <PointByCoordinates Name="W4aHoleP3" Visible="false" X="-3.14" Y="-3.15" />
+    <PointByCoordinates Name="W4aHoleP4" Visible="false" X="-3" Y="-3.29" />
+    <BezierPath Name="W4aHole" Closed="true" Path="C 0,0.07732 0.07732,0 C -0.07732,0 0,0.07732 C 0,-0.07732 -0.07732,0 C 0.07732,0 0,-0.07732">
+      <Sides Style="NoLine" />
+      <Dependency Name="W4aHoleP1" />
+      <Dependency Name="W4aHoleP2" />
+      <Dependency Name="W4aHoleP3" />
+      <Dependency Name="W4aHoleP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W4aP1" Visible="false" X="-2.75" Y="-3.15" />
+    <PointByCoordinates Name="W4aP2" Visible="false" X="-3" Y="-2.9" />
+    <PointByCoordinates Name="W4aP3" Visible="false" X="-3.25" Y="-3.15" />
+    <PointByCoordinates Name="W4aP4" Visible="false" X="-3" Y="-3.4" />
+    <BezierPath Name="W4a" Style="Ink" Closed="true" Filled="true" Path="C 0,0.138071 0.138071,0 C -0.138071,0 0,0.138071 C 0,-0.138071 -0.138071,0 C 0.138071,0 0,-0.138071">
+      <Sides Style="NoLine" />
+      <Dependency Name="W4aP1" />
+      <Dependency Name="W4aP2" />
+      <Dependency Name="W4aP3" />
+      <Dependency Name="W4aP4" />
+      <Dependency Name="W4aHole" />
+    </BezierPath>
+    <PointByCoordinates Name="W4bP1" Visible="false" X="-2.75" Y="-3.565" />
+    <PointByCoordinates Name="W4bP2" Visible="false" X="-2.75" Y="-2.955" />
+    <PointByCoordinates Name="W4bP3" Visible="false" X="-2.86" Y="-2.955" />
+    <PointByCoordinates Name="W4bP4" Visible="false" X="-2.86" Y="-3.565" />
+    <BezierPath Name="W4b" Style="Ink" Closed="true" Filled="true" Path="L C 0,0.073333 0,0.073333 L C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W4bP1" />
+      <Dependency Name="W4bP2" />
+      <Dependency Name="W4bP3" />
+      <Dependency Name="W4bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W5aP1" Visible="false" X="-2.605" Y="-2.955" />
+    <PointByCoordinates Name="W5aP2" Visible="false" X="-2.605" Y="-3.195" />
+    <PointByCoordinates Name="W5aP3" Visible="false" X="-2.4" Y="-3.4" />
+    <PointByCoordinates Name="W5aP4" Visible="false" X="-2.195" Y="-3.195" />
+    <PointByCoordinates Name="W5aP5" Visible="false" X="-2.195" Y="-2.955" />
+    <PointByCoordinates Name="W5aP6" Visible="false" X="-2.305" Y="-2.955" />
+    <PointByCoordinates Name="W5aP7" Visible="false" X="-2.305" Y="-3.195" />
+    <PointByCoordinates Name="W5aP8" Visible="false" X="-2.4" Y="-3.29" />
+    <PointByCoordinates Name="W5aP9" Visible="false" X="-2.495" Y="-3.195" />
+    <PointByCoordinates Name="W5aP10" Visible="false" X="-2.495" Y="-2.955" />
+    <BezierPath Name="W5a" Style="Ink" Closed="true" Filled="true" Path="L C 0,-0.113218 -0.113218,0 C 0.113218,0 0,-0.113218 L C 0,0.073333 0,0.073333 L C 0,-0.052467 0.052467,0 C -0.052467,0 0,-0.052467 L C 0,0.073333 0,0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W5aP1" />
+      <Dependency Name="W5aP2" />
+      <Dependency Name="W5aP3" />
+      <Dependency Name="W5aP4" />
+      <Dependency Name="W5aP5" />
+      <Dependency Name="W5aP6" />
+      <Dependency Name="W5aP7" />
+      <Dependency Name="W5aP8" />
+      <Dependency Name="W5aP9" />
+      <Dependency Name="W5aP10" />
+    </BezierPath>
+    <PointByCoordinates Name="W6aP1" Visible="false" X="-1.745" Y="-3.345" />
+    <PointByCoordinates Name="W6aP2" Visible="false" X="-1.745" Y="-2.955" />
+    <PointByCoordinates Name="W6aP3" Visible="false" X="-1.855" Y="-2.955" />
+    <PointByCoordinates Name="W6aP4" Visible="false" X="-1.855" Y="-3.345" />
+    <BezierPath Name="W6a" Style="Ink" Closed="true" Filled="true" Path="L C 0,0.073333 0,0.073333 L C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W6aP1" />
+      <Dependency Name="W6aP2" />
+      <Dependency Name="W6aP3" />
+      <Dependency Name="W6aP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W6bP1" Visible="false" X="-1.73" Y="-2.75" />
+    <PointByCoordinates Name="W6bP2" Visible="false" X="-1.8" Y="-2.68" />
+    <PointByCoordinates Name="W6bP3" Visible="false" X="-1.87" Y="-2.75" />
+    <PointByCoordinates Name="W6bP4" Visible="false" X="-1.8" Y="-2.82" />
+    <BezierPath Name="W6b" Style="Ink" Closed="true" Filled="true" Path="C 0,0.03866 0.03866,0 C -0.03866,0 0,0.03866 C 0,-0.03866 -0.03866,0 C 0.03866,0 0,-0.03866">
+      <Sides Style="NoLine" />
+      <Dependency Name="W6bP1" />
+      <Dependency Name="W6bP2" />
+      <Dependency Name="W6bP3" />
+      <Dependency Name="W6bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W7aP1" Visible="false" X="-1.023223" Y="-2.973223" />
+    <PointByCoordinates Name="W7aP2" Visible="false" X="-1.2" Y="-2.9" />
+    <PointByCoordinates Name="W7aP3" Visible="false" X="-1.45" Y="-3.15" />
+    <PointByCoordinates Name="W7aP4" Visible="false" X="-1.2" Y="-3.4" />
+    <PointByCoordinates Name="W7aP5" Visible="false" X="-1.023223" Y="-3.326777" />
+    <PointByCoordinates Name="W7aP6" Visible="false" X="-1.101005" Y="-3.248995" />
+    <PointByCoordinates Name="W7aP7" Visible="false" X="-1.2" Y="-3.29" />
+    <PointByCoordinates Name="W7aP8" Visible="false" X="-1.34" Y="-3.15" />
+    <PointByCoordinates Name="W7aP9" Visible="false" X="-1.2" Y="-3.01" />
+    <PointByCoordinates Name="W7aP10" Visible="false" X="-1.101005" Y="-3.051005" />
+    <BezierPath Name="W7a" Style="Ink" Closed="true" Filled="true" Path="C -0.046884,0.046884 0.066304,0 C -0.138071,0 0,0.138071 C 0,-0.138071 -0.138071,0 C 0.066304,0 -0.046884,-0.046884 C 0.051854,0.051854 0.051854,0.051854 C -0.026255,-0.026255 0.03713,0 C -0.07732,0 0,-0.07732 C 0,0.07732 -0.07732,0 C 0.03713,0 -0.026255,0.026255 C 0.051854,-0.051854 0.051854,-0.051854">
+      <Sides Style="NoLine" />
+      <Dependency Name="W7aP1" />
+      <Dependency Name="W7aP2" />
+      <Dependency Name="W7aP3" />
+      <Dependency Name="W7aP4" />
+      <Dependency Name="W7aP5" />
+      <Dependency Name="W7aP6" />
+      <Dependency Name="W7aP7" />
+      <Dependency Name="W7aP8" />
+      <Dependency Name="W7aP9" />
+      <Dependency Name="W7aP10" />
+    </BezierPath>
+    <PointByCoordinates Name="W8aP1" Visible="false" X="-0.695" Y="-3.345" />
+    <PointByCoordinates Name="W8aP2" Visible="false" X="-0.695" Y="-2.715" />
+    <PointByCoordinates Name="W8aP3" Visible="false" X="-0.805" Y="-2.715" />
+    <PointByCoordinates Name="W8aP4" Visible="false" X="-0.805" Y="-3.345" />
+    <BezierPath Name="W8a" Style="Ink" Closed="true" Filled="true" Path="L C 0,0.073333 0,0.073333 L C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W8aP1" />
+      <Dependency Name="W8aP2" />
+      <Dependency Name="W8aP3" />
+      <Dependency Name="W8aP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W8bP1" Visible="false" X="-0.719977" Y="-3.216082" />
+    <PointByCoordinates Name="W8bP2" Visible="false" X="-0.389977" Y="-3.001082" />
+    <PointByCoordinates Name="W8bP3" Visible="false" X="-0.450023" Y="-2.908918" />
+    <PointByCoordinates Name="W8bP4" Visible="false" X="-0.780023" Y="-3.123918" />
+    <BezierPath Name="W8b" Style="Ink" Closed="true" Filled="true" Path="L C 0.061443,0.040031 0.061443,0.040031 L C -0.061443,-0.040031 -0.061443,-0.040031">
+      <Sides Style="NoLine" />
+      <Dependency Name="W8bP1" />
+      <Dependency Name="W8bP2" />
+      <Dependency Name="W8bP3" />
+      <Dependency Name="W8bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W8cP1" Visible="false" X="-0.662767" Y="-3.119883" />
+    <PointByCoordinates Name="W8cP2" Visible="false" X="-0.452767" Y="-3.379583" />
+    <PointByCoordinates Name="W8cP3" Visible="false" X="-0.367233" Y="-3.310417" />
+    <PointByCoordinates Name="W8cP4" Visible="false" X="-0.577233" Y="-3.050717" />
+    <BezierPath Name="W8c" Style="Ink" Closed="true" Filled="true" Path="L C 0.04611,-0.057023 0.04611,-0.057023 L C -0.04611,0.057023 -0.04611,0.057023">
+      <Sides Style="NoLine" />
+      <Dependency Name="W8cP1" />
+      <Dependency Name="W8cP2" />
+      <Dependency Name="W8cP3" />
+      <Dependency Name="W8cP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W9aHoleP1" Visible="false" X="0.74" Y="-3.15" />
+    <PointByCoordinates Name="W9aHoleP2" Visible="false" X="0.6" Y="-3.01" />
+    <PointByCoordinates Name="W9aHoleP3" Visible="false" X="0.46" Y="-3.15" />
+    <PointByCoordinates Name="W9aHoleP4" Visible="false" X="0.6" Y="-3.29" />
+    <BezierPath Name="W9aHole" Closed="true" Path="C 0,0.07732 0.07732,0 C -0.07732,0 0,0.07732 C 0,-0.07732 -0.07732,0 C 0.07732,0 0,-0.07732">
+      <Sides Style="NoLine" />
+      <Dependency Name="W9aHoleP1" />
+      <Dependency Name="W9aHoleP2" />
+      <Dependency Name="W9aHoleP3" />
+      <Dependency Name="W9aHoleP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W9aP1" Visible="false" X="0.85" Y="-3.15" />
+    <PointByCoordinates Name="W9aP2" Visible="false" X="0.6" Y="-2.9" />
+    <PointByCoordinates Name="W9aP3" Visible="false" X="0.35" Y="-3.15" />
+    <PointByCoordinates Name="W9aP4" Visible="false" X="0.6" Y="-3.4" />
+    <BezierPath Name="W9a" Style="Ink" Closed="true" Filled="true" Path="C 0,0.138071 0.138071,0 C -0.138071,0 0,0.138071 C 0,-0.138071 -0.138071,0 C 0.138071,0 0,-0.138071">
+      <Sides Style="NoLine" />
+      <Dependency Name="W9aP1" />
+      <Dependency Name="W9aP2" />
+      <Dependency Name="W9aP3" />
+      <Dependency Name="W9aP4" />
+      <Dependency Name="W9aHole" />
+    </BezierPath>
+    <PointByCoordinates Name="W9bP1" Visible="false" X="0.46" Y="-3.345" />
+    <PointByCoordinates Name="W9bP2" Visible="false" X="0.46" Y="-2.715" />
+    <PointByCoordinates Name="W9bP3" Visible="false" X="0.35" Y="-2.715" />
+    <PointByCoordinates Name="W9bP4" Visible="false" X="0.35" Y="-3.345" />
+    <BezierPath Name="W9b" Style="Ink" Closed="true" Filled="true" Path="L C 0,0.073333 0,0.073333 L C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W9bP1" />
+      <Dependency Name="W9bP2" />
+      <Dependency Name="W9bP3" />
+      <Dependency Name="W9bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W10aP1" Visible="false" X="1.155" Y="-3.345" />
+    <PointByCoordinates Name="W10aP2" Visible="false" X="1.155" Y="-2.955" />
+    <PointByCoordinates Name="W10aP3" Visible="false" X="1.045" Y="-2.955" />
+    <PointByCoordinates Name="W10aP4" Visible="false" X="1.045" Y="-3.345" />
+    <BezierPath Name="W10a" Style="Ink" Closed="true" Filled="true" Path="L C 0,0.073333 0,0.073333 L C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W10aP1" />
+      <Dependency Name="W10aP2" />
+      <Dependency Name="W10aP3" />
+      <Dependency Name="W10aP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W10bP1" Visible="false" X="1.155" Y="-3.08" />
+    <PointByCoordinates Name="W10bP2" Visible="false" X="1.225" Y="-3.01" />
+    <PointByCoordinates Name="W10bP3" Visible="false" X="1.33" Y="-3.01" />
+    <PointByCoordinates Name="W10bP4" Visible="false" X="1.33" Y="-2.9" />
+    <PointByCoordinates Name="W10bP5" Visible="false" X="1.225" Y="-2.9" />
+    <PointByCoordinates Name="W10bP6" Visible="false" X="1.045" Y="-3.08" />
+    <BezierPath Name="W10b" Style="Ink" Closed="true" Filled="true" Path="C 0,0.03866 -0.03866,0 L C 0.073333,0 0.073333,0 L C -0.099411,0 0,0.099411 C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W10bP1" />
+      <Dependency Name="W10bP2" />
+      <Dependency Name="W10bP3" />
+      <Dependency Name="W10bP4" />
+      <Dependency Name="W10bP5" />
+      <Dependency Name="W10bP6" />
+    </BezierPath>
+    <PointByCoordinates Name="W11aHoleP1" Visible="false" X="1.94" Y="-3.15" />
+    <PointByCoordinates Name="W11aHoleP2" Visible="false" X="1.8" Y="-3.01" />
+    <PointByCoordinates Name="W11aHoleP3" Visible="false" X="1.66" Y="-3.15" />
+    <PointByCoordinates Name="W11aHoleP4" Visible="false" X="1.8" Y="-3.29" />
+    <BezierPath Name="W11aHole" Closed="true" Path="C 0,0.07732 0.07732,0 C -0.07732,0 0,0.07732 C 0,-0.07732 -0.07732,0 C 0.07732,0 0,-0.07732">
+      <Sides Style="NoLine" />
+      <Dependency Name="W11aHoleP1" />
+      <Dependency Name="W11aHoleP2" />
+      <Dependency Name="W11aHoleP3" />
+      <Dependency Name="W11aHoleP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W11aP1" Visible="false" X="2.05" Y="-3.15" />
+    <PointByCoordinates Name="W11aP2" Visible="false" X="1.8" Y="-2.9" />
+    <PointByCoordinates Name="W11aP3" Visible="false" X="1.55" Y="-3.15" />
+    <PointByCoordinates Name="W11aP4" Visible="false" X="1.8" Y="-3.4" />
+    <BezierPath Name="W11a" Style="Ink" Closed="true" Filled="true" Path="C 0,0.138071 0.138071,0 C -0.138071,0 0,0.138071 C 0,-0.138071 -0.138071,0 C 0.138071,0 0,-0.138071">
+      <Sides Style="NoLine" />
+      <Dependency Name="W11aP1" />
+      <Dependency Name="W11aP2" />
+      <Dependency Name="W11aP3" />
+      <Dependency Name="W11aP4" />
+      <Dependency Name="W11aHole" />
+    </BezierPath>
+    <PointByCoordinates Name="W12aP1" Visible="false" X="2.14179" Y="-2.968917" />
+    <PointByCoordinates Name="W12aP2" Visible="false" X="2.24379" Y="-3.358917" />
+    <PointByCoordinates Name="W12aP3" Visible="false" X="2.35021" Y="-3.331083" />
+    <PointByCoordinates Name="W12aP4" Visible="false" X="2.24821" Y="-2.941083" />
+    <BezierPath Name="W12a" Style="Ink" Closed="true" Filled="true" Path="L C 0.018555,-0.070947 0.018555,-0.070947 L C -0.018555,0.070947 -0.018555,0.070947">
+      <Sides Style="NoLine" />
+      <Dependency Name="W12aP1" />
+      <Dependency Name="W12aP2" />
+      <Dependency Name="W12aP3" />
+      <Dependency Name="W12aP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W12bP1" Visible="false" X="2.350177" Y="-3.359044" />
+    <PointByCoordinates Name="W12bP2" Visible="false" X="2.453177" Y="-2.969044" />
+    <PointByCoordinates Name="W12bP3" Visible="false" X="2.346823" Y="-2.940956" />
+    <PointByCoordinates Name="W12bP4" Visible="false" X="2.243823" Y="-3.330956" />
+    <BezierPath Name="W12b" Style="Ink" Closed="true" Filled="true" Path="L C 0.018725,0.070902 0.018725,0.070902 L C -0.018725,-0.070902 -0.018725,-0.070902">
+      <Sides Style="NoLine" />
+      <Dependency Name="W12bP1" />
+      <Dependency Name="W12bP2" />
+      <Dependency Name="W12bP3" />
+      <Dependency Name="W12bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W12cP1" Visible="false" X="2.346823" Y="-2.969044" />
+    <PointByCoordinates Name="W12cP2" Visible="false" X="2.449823" Y="-3.359044" />
+    <PointByCoordinates Name="W12cP3" Visible="false" X="2.556177" Y="-3.330956" />
+    <PointByCoordinates Name="W12cP4" Visible="false" X="2.453177" Y="-2.940956" />
+    <BezierPath Name="W12c" Style="Ink" Closed="true" Filled="true" Path="L C 0.018725,-0.070902 0.018725,-0.070902 L C -0.018725,0.070902 -0.018725,0.070902">
+      <Sides Style="NoLine" />
+      <Dependency Name="W12cP1" />
+      <Dependency Name="W12cP2" />
+      <Dependency Name="W12cP3" />
+      <Dependency Name="W12cP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W12dP1" Visible="false" X="2.55621" Y="-3.358917" />
+    <PointByCoordinates Name="W12dP2" Visible="false" X="2.65821" Y="-2.968917" />
+    <PointByCoordinates Name="W12dP3" Visible="false" X="2.55179" Y="-2.941083" />
+    <PointByCoordinates Name="W12dP4" Visible="false" X="2.44979" Y="-3.331083" />
+    <BezierPath Name="W12d" Style="Ink" Closed="true" Filled="true" Path="L C 0.018555,0.070947 0.018555,0.070947 L C -0.018555,-0.070947 -0.018555,-0.070947">
+      <Sides Style="NoLine" />
+      <Dependency Name="W12dP1" />
+      <Dependency Name="W12dP2" />
+      <Dependency Name="W12dP3" />
+      <Dependency Name="W12dP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W13aP1" Visible="false" X="2.905" Y="-3.345" />
+    <PointByCoordinates Name="W13aP2" Visible="false" X="2.905" Y="-2.955" />
+    <PointByCoordinates Name="W13aP3" Visible="false" X="2.795" Y="-2.955" />
+    <PointByCoordinates Name="W13aP4" Visible="false" X="2.795" Y="-3.345" />
+    <BezierPath Name="W13a" Style="Ink" Closed="true" Filled="true" Path="L C 0,0.073333 0,0.073333 L C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W13aP1" />
+      <Dependency Name="W13aP2" />
+      <Dependency Name="W13aP3" />
+      <Dependency Name="W13aP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W13bP1" Visible="false" X="2.905" Y="-3.105" />
+    <PointByCoordinates Name="W13bP2" Visible="false" X="3" Y="-3.01" />
+    <PointByCoordinates Name="W13bP3" Visible="false" X="3.095" Y="-3.105" />
+    <PointByCoordinates Name="W13bP4" Visible="false" X="3.095" Y="-3.345" />
+    <PointByCoordinates Name="W13bP5" Visible="false" X="3.205" Y="-3.345" />
+    <PointByCoordinates Name="W13bP6" Visible="false" X="3.205" Y="-3.105" />
+    <PointByCoordinates Name="W13bP7" Visible="false" X="3" Y="-2.9" />
+    <PointByCoordinates Name="W13bP8" Visible="false" X="2.795" Y="-3.105" />
+    <BezierPath Name="W13b" Style="Ink" Closed="true" Filled="true" Path="C 0,0.052467 -0.052467,0 C 0.052467,0 0,0.052467 L C 0,-0.073333 0,-0.073333 L C 0,0.113218 0.113218,0 C -0.113218,0 0,0.113218 C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W13bP1" />
+      <Dependency Name="W13bP2" />
+      <Dependency Name="W13bP3" />
+      <Dependency Name="W13bP4" />
+      <Dependency Name="W13bP5" />
+      <Dependency Name="W13bP6" />
+      <Dependency Name="W13bP7" />
+      <Dependency Name="W13bP8" />
+    </BezierPath>
+    <PointByCoordinates Name="W14aP1" Visible="false" X="4.255" Y="-3.345" />
+    <PointByCoordinates Name="W14aP2" Visible="false" X="4.255" Y="-2.855" />
+    <PointByCoordinates Name="W14aP3" Visible="false" X="4.34" Y="-2.77" />
+    <PointByCoordinates Name="W14aP4" Visible="false" X="4.37" Y="-2.77" />
+    <PointByCoordinates Name="W14aP5" Visible="false" X="4.37" Y="-2.66" />
+    <PointByCoordinates Name="W14aP6" Visible="false" X="4.34" Y="-2.66" />
+    <PointByCoordinates Name="W14aP7" Visible="false" X="4.145" Y="-2.855" />
+    <PointByCoordinates Name="W14aP8" Visible="false" X="4.145" Y="-3.345" />
+    <BezierPath Name="W14a" Style="Ink" Closed="true" Filled="true" Path="L C 0,0.046944 -0.046944,0 L C 0.073333,0 0.073333,0 L C -0.107696,0 0,0.107696 L C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W14aP1" />
+      <Dependency Name="W14aP2" />
+      <Dependency Name="W14aP3" />
+      <Dependency Name="W14aP4" />
+      <Dependency Name="W14aP5" />
+      <Dependency Name="W14aP6" />
+      <Dependency Name="W14aP7" />
+      <Dependency Name="W14aP8" />
+    </BezierPath>
+    <PointByCoordinates Name="W14bP1" Visible="false" X="4.05" Y="-3.01" />
+    <PointByCoordinates Name="W14bP2" Visible="false" X="4.35" Y="-3.01" />
+    <PointByCoordinates Name="W14bP3" Visible="false" X="4.35" Y="-2.9" />
+    <PointByCoordinates Name="W14bP4" Visible="false" X="4.05" Y="-2.9" />
+    <BezierPath Name="W14b" Style="Ink" Closed="true" Filled="true" Path="L C 0.073333,0 0.073333,0 L C -0.073333,0 -0.073333,0">
+      <Sides Style="NoLine" />
+      <Dependency Name="W14bP1" />
+      <Dependency Name="W14bP2" />
+      <Dependency Name="W14bP3" />
+      <Dependency Name="W14bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W15aHoleP1" Visible="false" X="4.94" Y="-3.15" />
+    <PointByCoordinates Name="W15aHoleP2" Visible="false" X="4.8" Y="-3.01" />
+    <PointByCoordinates Name="W15aHoleP3" Visible="false" X="4.66" Y="-3.15" />
+    <PointByCoordinates Name="W15aHoleP4" Visible="false" X="4.8" Y="-3.29" />
+    <BezierPath Name="W15aHole" Closed="true" Path="C 0,0.07732 0.07732,0 C -0.07732,0 0,0.07732 C 0,-0.07732 -0.07732,0 C 0.07732,0 0,-0.07732">
+      <Sides Style="NoLine" />
+      <Dependency Name="W15aHoleP1" />
+      <Dependency Name="W15aHoleP2" />
+      <Dependency Name="W15aHoleP3" />
+      <Dependency Name="W15aHoleP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W15aP1" Visible="false" X="5.05" Y="-3.15" />
+    <PointByCoordinates Name="W15aP2" Visible="false" X="4.8" Y="-2.9" />
+    <PointByCoordinates Name="W15aP3" Visible="false" X="4.55" Y="-3.15" />
+    <PointByCoordinates Name="W15aP4" Visible="false" X="4.8" Y="-3.4" />
+    <BezierPath Name="W15a" Style="Ink" Closed="true" Filled="true" Path="C 0,0.138071 0.138071,0 C -0.138071,0 0,0.138071 C 0,-0.138071 -0.138071,0 C 0.138071,0 0,-0.138071">
+      <Sides Style="NoLine" />
+      <Dependency Name="W15aP1" />
+      <Dependency Name="W15aP2" />
+      <Dependency Name="W15aP3" />
+      <Dependency Name="W15aP4" />
+      <Dependency Name="W15aHole" />
+    </BezierPath>
+    <PointByCoordinates Name="W16aP1" Visible="false" X="5.166109" Y="-2.993891" />
+    <PointByCoordinates Name="W16aP2" Visible="false" X="5.556109" Y="-3.383891" />
+    <PointByCoordinates Name="W16aP3" Visible="false" X="5.633891" Y="-3.306109" />
+    <PointByCoordinates Name="W16aP4" Visible="false" X="5.243891" Y="-2.916109" />
+    <BezierPath Name="W16a" Style="Ink" Closed="true" Filled="true" Path="L C 0.051854,-0.051854 0.051854,-0.051854 L C -0.051854,0.051854 -0.051854,0.051854">
+      <Sides Style="NoLine" />
+      <Dependency Name="W16aP1" />
+      <Dependency Name="W16aP2" />
+      <Dependency Name="W16aP3" />
+      <Dependency Name="W16aP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W16bP1" Visible="false" X="5.556109" Y="-2.916109" />
+    <PointByCoordinates Name="W16bP2" Visible="false" X="5.166109" Y="-3.306109" />
+    <PointByCoordinates Name="W16bP3" Visible="false" X="5.243891" Y="-3.383891" />
+    <PointByCoordinates Name="W16bP4" Visible="false" X="5.633891" Y="-2.993891" />
+    <BezierPath Name="W16b" Style="Ink" Closed="true" Filled="true" Path="L C -0.051854,-0.051854 -0.051854,-0.051854 L C 0.051854,0.051854 0.051854,0.051854">
+      <Sides Style="NoLine" />
+      <Dependency Name="W16bP1" />
+      <Dependency Name="W16bP2" />
+      <Dependency Name="W16bP3" />
+      <Dependency Name="W16bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W17aP1" Visible="false" X="-6.655" Y="-4.255" />
+    <PointByCoordinates Name="W17aP2" Visible="false" X="-6.655" Y="-4.725" />
+    <PointByCoordinates Name="W17aP3" Visible="false" X="-6.74" Y="-4.81" />
+    <PointByCoordinates Name="W17aP4" Visible="false" X="-6.74" Y="-4.92" />
+    <PointByCoordinates Name="W17aP5" Visible="false" X="-6.545" Y="-4.725" />
+    <PointByCoordinates Name="W17aP6" Visible="false" X="-6.545" Y="-4.255" />
+    <BezierPath Name="W17a" Style="Ink" Closed="true" Filled="true" Path="L C 0,-0.046944 0.046944,0 C -0.073333,0 -0.073333,0 C 0.107696,0 0,-0.107696 L C 0,0.073333 0,0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W17aP1" />
+      <Dependency Name="W17aP2" />
+      <Dependency Name="W17aP3" />
+      <Dependency Name="W17aP4" />
+      <Dependency Name="W17aP5" />
+      <Dependency Name="W17aP6" />
+    </BezierPath>
+    <PointByCoordinates Name="W17bP1" Visible="false" X="-6.53" Y="-4.05" />
+    <PointByCoordinates Name="W17bP2" Visible="false" X="-6.6" Y="-3.98" />
+    <PointByCoordinates Name="W17bP3" Visible="false" X="-6.67" Y="-4.05" />
+    <PointByCoordinates Name="W17bP4" Visible="false" X="-6.6" Y="-4.12" />
+    <BezierPath Name="W17b" Style="Ink" Closed="true" Filled="true" Path="C 0,0.03866 0.03866,0 C -0.03866,0 0,0.03866 C 0,-0.03866 -0.03866,0 C 0.03866,0 0,-0.03866">
+      <Sides Style="NoLine" />
+      <Dependency Name="W17bP1" />
+      <Dependency Name="W17bP2" />
+      <Dependency Name="W17bP3" />
+      <Dependency Name="W17bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W18aP1" Visible="false" X="-6.205" Y="-4.255" />
+    <PointByCoordinates Name="W18aP2" Visible="false" X="-6.205" Y="-4.495" />
+    <PointByCoordinates Name="W18aP3" Visible="false" X="-6" Y="-4.7" />
+    <PointByCoordinates Name="W18aP4" Visible="false" X="-5.795" Y="-4.495" />
+    <PointByCoordinates Name="W18aP5" Visible="false" X="-5.795" Y="-4.255" />
+    <PointByCoordinates Name="W18aP6" Visible="false" X="-5.905" Y="-4.255" />
+    <PointByCoordinates Name="W18aP7" Visible="false" X="-5.905" Y="-4.495" />
+    <PointByCoordinates Name="W18aP8" Visible="false" X="-6" Y="-4.59" />
+    <PointByCoordinates Name="W18aP9" Visible="false" X="-6.095" Y="-4.495" />
+    <PointByCoordinates Name="W18aP10" Visible="false" X="-6.095" Y="-4.255" />
+    <BezierPath Name="W18a" Style="Ink" Closed="true" Filled="true" Path="L C 0,-0.113218 -0.113218,0 C 0.113218,0 0,-0.113218 L C 0,0.073333 0,0.073333 L C 0,-0.052467 0.052467,0 C -0.052467,0 0,-0.052467 L C 0,0.073333 0,0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W18aP1" />
+      <Dependency Name="W18aP2" />
+      <Dependency Name="W18aP3" />
+      <Dependency Name="W18aP4" />
+      <Dependency Name="W18aP5" />
+      <Dependency Name="W18aP6" />
+      <Dependency Name="W18aP7" />
+      <Dependency Name="W18aP8" />
+      <Dependency Name="W18aP9" />
+      <Dependency Name="W18aP10" />
+    </BezierPath>
+    <PointByCoordinates Name="W19aP1" Visible="false" X="-5.535" Y="-4.645" />
+    <PointByCoordinates Name="W19aP2" Visible="false" X="-5.535" Y="-4.255" />
+    <PointByCoordinates Name="W19aP3" Visible="false" X="-5.645" Y="-4.255" />
+    <PointByCoordinates Name="W19aP4" Visible="false" X="-5.645" Y="-4.645" />
+    <BezierPath Name="W19a" Style="Ink" Closed="true" Filled="true" Path="L C 0,0.073333 0,0.073333 L C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W19aP1" />
+      <Dependency Name="W19aP2" />
+      <Dependency Name="W19aP3" />
+      <Dependency Name="W19aP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W19bP1" Visible="false" X="-5.535" Y="-4.35" />
+    <PointByCoordinates Name="W19bP2" Visible="false" X="-5.495" Y="-4.31" />
+    <PointByCoordinates Name="W19bP3" Visible="false" X="-5.455" Y="-4.35" />
+    <PointByCoordinates Name="W19bP4" Visible="false" X="-5.455" Y="-4.645" />
+    <PointByCoordinates Name="W19bP5" Visible="false" X="-5.345" Y="-4.645" />
+    <PointByCoordinates Name="W19bP6" Visible="false" X="-5.345" Y="-4.35" />
+    <PointByCoordinates Name="W19bP7" Visible="false" X="-5.495" Y="-4.2" />
+    <PointByCoordinates Name="W19bP8" Visible="false" X="-5.645" Y="-4.35" />
+    <BezierPath Name="W19b" Style="Ink" Closed="true" Filled="true" Path="C 0,0.022091 -0.022091,0 C 0.022091,0 0,0.022091 L C 0,-0.073333 0,-0.073333 L C 0,0.082843 0.082843,0 C -0.082843,0 0,0.082843 C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W19bP1" />
+      <Dependency Name="W19bP2" />
+      <Dependency Name="W19bP3" />
+      <Dependency Name="W19bP4" />
+      <Dependency Name="W19bP5" />
+      <Dependency Name="W19bP6" />
+      <Dependency Name="W19bP7" />
+      <Dependency Name="W19bP8" />
+    </BezierPath>
+    <PointByCoordinates Name="W19cP1" Visible="false" X="-5.345" Y="-4.35" />
+    <PointByCoordinates Name="W19cP2" Visible="false" X="-5.305" Y="-4.31" />
+    <PointByCoordinates Name="W19cP3" Visible="false" X="-5.265" Y="-4.35" />
+    <PointByCoordinates Name="W19cP4" Visible="false" X="-5.265" Y="-4.645" />
+    <PointByCoordinates Name="W19cP5" Visible="false" X="-5.155" Y="-4.645" />
+    <PointByCoordinates Name="W19cP6" Visible="false" X="-5.155" Y="-4.35" />
+    <PointByCoordinates Name="W19cP7" Visible="false" X="-5.305" Y="-4.2" />
+    <PointByCoordinates Name="W19cP8" Visible="false" X="-5.455" Y="-4.35" />
+    <BezierPath Name="W19c" Style="Ink" Closed="true" Filled="true" Path="C 0,0.022091 -0.022091,0 C 0.022091,0 0,0.022091 L C 0,-0.073333 0,-0.073333 L C 0,0.082843 0.082843,0 C -0.082843,0 0,0.082843 C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W19cP1" />
+      <Dependency Name="W19cP2" />
+      <Dependency Name="W19cP3" />
+      <Dependency Name="W19cP4" />
+      <Dependency Name="W19cP5" />
+      <Dependency Name="W19cP6" />
+      <Dependency Name="W19cP7" />
+      <Dependency Name="W19cP8" />
+    </BezierPath>
+    <PointByCoordinates Name="W20aHoleP1" Visible="false" X="-4.66" Y="-4.45" />
+    <PointByCoordinates Name="W20aHoleP2" Visible="false" X="-4.8" Y="-4.31" />
+    <PointByCoordinates Name="W20aHoleP3" Visible="false" X="-4.94" Y="-4.45" />
+    <PointByCoordinates Name="W20aHoleP4" Visible="false" X="-4.8" Y="-4.59" />
+    <BezierPath Name="W20aHole" Closed="true" Path="C 0,0.07732 0.07732,0 C -0.07732,0 0,0.07732 C 0,-0.07732 -0.07732,0 C 0.07732,0 0,-0.07732">
+      <Sides Style="NoLine" />
+      <Dependency Name="W20aHoleP1" />
+      <Dependency Name="W20aHoleP2" />
+      <Dependency Name="W20aHoleP3" />
+      <Dependency Name="W20aHoleP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W20aP1" Visible="false" X="-4.55" Y="-4.45" />
+    <PointByCoordinates Name="W20aP2" Visible="false" X="-4.8" Y="-4.2" />
+    <PointByCoordinates Name="W20aP3" Visible="false" X="-5.05" Y="-4.45" />
+    <PointByCoordinates Name="W20aP4" Visible="false" X="-4.8" Y="-4.7" />
+    <BezierPath Name="W20a" Style="Ink" Closed="true" Filled="true" Path="C 0,0.138071 0.138071,0 C -0.138071,0 0,0.138071 C 0,-0.138071 -0.138071,0 C 0.138071,0 0,-0.138071">
+      <Sides Style="NoLine" />
+      <Dependency Name="W20aP1" />
+      <Dependency Name="W20aP2" />
+      <Dependency Name="W20aP3" />
+      <Dependency Name="W20aP4" />
+      <Dependency Name="W20aHole" />
+    </BezierPath>
+    <PointByCoordinates Name="W20bP1" Visible="false" X="-4.94" Y="-4.865" />
+    <PointByCoordinates Name="W20bP2" Visible="false" X="-4.94" Y="-4.255" />
+    <PointByCoordinates Name="W20bP3" Visible="false" X="-5.05" Y="-4.255" />
+    <PointByCoordinates Name="W20bP4" Visible="false" X="-5.05" Y="-4.865" />
+    <BezierPath Name="W20b" Style="Ink" Closed="true" Filled="true" Path="L C 0,0.073333 0,0.073333 L C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W20bP1" />
+      <Dependency Name="W20bP2" />
+      <Dependency Name="W20bP3" />
+      <Dependency Name="W20bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W21aP1" Visible="false" X="-4.056697" Y="-4.300342" />
+    <PointByCoordinates Name="W21aP2" Visible="false" X="-4.2" Y="-4.2" />
+    <PointByCoordinates Name="W21aP3" Visible="false" X="-4.3525" Y="-4.3525" />
+    <PointByCoordinates Name="W21aP4" Visible="false" X="-4.2" Y="-4.505" />
+    <PointByCoordinates Name="W21aP5" Visible="false" X="-4.1575" Y="-4.5475" />
+    <PointByCoordinates Name="W21aP6" Visible="false" X="-4.2" Y="-4.59" />
+    <PointByCoordinates Name="W21aP7" Visible="false" X="-4.239937" Y="-4.562036" />
+    <PointByCoordinates Name="W21aP8" Visible="false" X="-4.343303" Y="-4.599658" />
+    <PointByCoordinates Name="W21aP9" Visible="false" X="-4.2" Y="-4.7" />
+    <PointByCoordinates Name="W21aP10" Visible="false" X="-4.0475" Y="-4.5475" />
+    <PointByCoordinates Name="W21aP11" Visible="false" X="-4.2" Y="-4.395" />
+    <PointByCoordinates Name="W21aP12" Visible="false" X="-4.2425" Y="-4.3525" />
+    <PointByCoordinates Name="W21aP13" Visible="false" X="-4.2" Y="-4.31" />
+    <PointByCoordinates Name="W21aP14" Visible="false" X="-4.160063" Y="-4.337964" />
+    <BezierPath Name="W21a" Style="Ink" Closed="true" Filled="true" Path="C -0.021927,0.060244 0.064111,0 C -0.084223,0 0,0.084223 C 0,-0.084223 -0.084223,0 C 0.023472,0 0,0.023472 C 0,-0.023472 0.023472,0 C -0.017867,0 0.006111,-0.016789 C -0.025081,0.068911 -0.025081,0.068911 C 0.021927,-0.060244 -0.064111,0 C 0.084223,0 0,-0.084223 C 0,0.084223 0.084223,0 C -0.023472,0 0,-0.023472 C 0,0.023472 -0.023472,0 C 0.017867,0 -0.006111,0.016789 C 0.025081,-0.068911 0.025081,-0.068911">
+      <Sides Style="NoLine" />
+      <Dependency Name="W21aP1" />
+      <Dependency Name="W21aP2" />
+      <Dependency Name="W21aP3" />
+      <Dependency Name="W21aP4" />
+      <Dependency Name="W21aP5" />
+      <Dependency Name="W21aP6" />
+      <Dependency Name="W21aP7" />
+      <Dependency Name="W21aP8" />
+      <Dependency Name="W21aP9" />
+      <Dependency Name="W21aP10" />
+      <Dependency Name="W21aP11" />
+      <Dependency Name="W21aP12" />
+      <Dependency Name="W21aP13" />
+      <Dependency Name="W21aP14" />
+    </BezierPath>
+    <PointByCoordinates Name="W22aHoleP1" Visible="false" X="-2.86" Y="-4.45" />
+    <PointByCoordinates Name="W22aHoleP2" Visible="false" X="-3" Y="-4.31" />
+    <PointByCoordinates Name="W22aHoleP3" Visible="false" X="-3.14" Y="-4.45" />
+    <PointByCoordinates Name="W22aHoleP4" Visible="false" X="-3" Y="-4.59" />
+    <BezierPath Name="W22aHole" Closed="true" Path="C 0,0.07732 0.07732,0 C -0.07732,0 0,0.07732 C 0,-0.07732 -0.07732,0 C 0.07732,0 0,-0.07732">
+      <Sides Style="NoLine" />
+      <Dependency Name="W22aHoleP1" />
+      <Dependency Name="W22aHoleP2" />
+      <Dependency Name="W22aHoleP3" />
+      <Dependency Name="W22aHoleP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W22aP1" Visible="false" X="-2.75" Y="-4.45" />
+    <PointByCoordinates Name="W22aP2" Visible="false" X="-3" Y="-4.2" />
+    <PointByCoordinates Name="W22aP3" Visible="false" X="-3.25" Y="-4.45" />
+    <PointByCoordinates Name="W22aP4" Visible="false" X="-3" Y="-4.7" />
+    <BezierPath Name="W22a" Style="Ink" Closed="true" Filled="true" Path="C 0,0.138071 0.138071,0 C -0.138071,0 0,0.138071 C 0,-0.138071 -0.138071,0 C 0.138071,0 0,-0.138071">
+      <Sides Style="NoLine" />
+      <Dependency Name="W22aP1" />
+      <Dependency Name="W22aP2" />
+      <Dependency Name="W22aP3" />
+      <Dependency Name="W22aP4" />
+      <Dependency Name="W22aHole" />
+    </BezierPath>
+    <PointByCoordinates Name="W23aP1" Visible="false" X="-2.644193" Y="-4.279597" />
+    <PointByCoordinates Name="W23aP2" Visible="false" X="-2.449193" Y="-4.669597" />
+    <PointByCoordinates Name="W23aP3" Visible="false" X="-2.350807" Y="-4.620403" />
+    <PointByCoordinates Name="W23aP4" Visible="false" X="-2.545807" Y="-4.230403" />
+    <BezierPath Name="W23a" Style="Ink" Closed="true" Filled="true" Path="L C 0.032796,-0.065591 0.032796,-0.065591 L C -0.032796,0.065591 -0.032796,0.065591">
+      <Sides Style="NoLine" />
+      <Dependency Name="W23aP1" />
+      <Dependency Name="W23aP2" />
+      <Dependency Name="W23aP3" />
+      <Dependency Name="W23aP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W23bP1" Visible="false" X="-2.350807" Y="-4.669597" />
+    <PointByCoordinates Name="W23bP2" Visible="false" X="-2.155807" Y="-4.279597" />
+    <PointByCoordinates Name="W23bP3" Visible="false" X="-2.254193" Y="-4.230403" />
+    <PointByCoordinates Name="W23bP4" Visible="false" X="-2.449193" Y="-4.620403" />
+    <BezierPath Name="W23b" Style="Ink" Closed="true" Filled="true" Path="L C 0.032796,0.065591 0.032796,0.065591 L C -0.032796,-0.065591 -0.032796,-0.065591">
+      <Sides Style="NoLine" />
+      <Dependency Name="W23bP1" />
+      <Dependency Name="W23bP2" />
+      <Dependency Name="W23bP3" />
+      <Dependency Name="W23bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="ECopy2Center" Visible="false" X="-2.742857" Y="-5.371429" />
+    <DilatedPoint Name="ECopy2EyeA1" Visible="false" Auxiliary="true">
+      <Dependency Name="Eye1" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2EyeA2" Visible="false" Auxiliary="true">
+      <Dependency Name="Eye2" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2EyeA3" Visible="false" Auxiliary="true">
+      <Dependency Name="Eye3" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2EyeI1" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="In1" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2EyeO1" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="Out1" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2EyeI2" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="In2" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2EyeO2" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="Out2" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2EyeI3" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="In3" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2EyeO3" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="Out3" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <BezierPath Name="ECopy2Eye" Closed="true" Path="C #4 #5 C #6 #7 C #8 #3">
+      <Sides Style="NoLine" />
+      <Dependency Name="ECopy2EyeA1" />
+      <Dependency Name="ECopy2EyeA2" />
+      <Dependency Name="ECopy2EyeA3" />
+      <Dependency Name="ECopy2EyeI1" />
+      <Dependency Name="ECopy2EyeO1" />
+      <Dependency Name="ECopy2EyeI2" />
+      <Dependency Name="ECopy2EyeO2" />
+      <Dependency Name="ECopy2EyeI3" />
+      <Dependency Name="ECopy2EyeO3" />
+    </BezierPath>
+    <DilatedPoint Name="ECopy2A1" Visible="false" Auxiliary="true">
+      <Dependency Name="E1" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2A2" Visible="false" Auxiliary="true">
+      <Dependency Name="E2" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2A3" Visible="false" Auxiliary="true">
+      <Dependency Name="E3" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2A4" Visible="false" Auxiliary="true">
+      <Dependency Name="E4" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2A5" Visible="false" Auxiliary="true">
+      <Dependency Name="E5" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2A6" Visible="false" Auxiliary="true">
+      <Dependency Name="E6" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2A7" Visible="false" Auxiliary="true">
+      <Dependency Name="E7" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2A8" Visible="false" Auxiliary="true">
+      <Dependency Name="E8" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2A9" Visible="false" Auxiliary="true">
+      <Dependency Name="E9" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2I1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In1" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2O1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out1" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2I2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In2" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2O2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out2" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2I3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In3" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2O3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out3" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2I4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In4" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2O4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out4" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2I5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In5" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2O5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out5" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2I6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In6" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2O6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out6" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2I7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In7" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2O7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out7" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2I8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In8" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2O8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out8" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2I9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In9" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy2O9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out9" />
+      <Dependency Name="ECopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <BezierPath Name="ECopy2" Style="EInk" Closed="true" Filled="true" Path="C #10 #11 C #12 #13 C #14 #15 C #16 #17 C #18 #19 C #20 #21 C #22 #23 C #24 #25 C #26 #9">
+      <Sides Style="NoLine" />
+      <Dependency Name="ECopy2A1" />
+      <Dependency Name="ECopy2A2" />
+      <Dependency Name="ECopy2A3" />
+      <Dependency Name="ECopy2A4" />
+      <Dependency Name="ECopy2A5" />
+      <Dependency Name="ECopy2A6" />
+      <Dependency Name="ECopy2A7" />
+      <Dependency Name="ECopy2A8" />
+      <Dependency Name="ECopy2A9" />
+      <Dependency Name="ECopy2I1" />
+      <Dependency Name="ECopy2O1" />
+      <Dependency Name="ECopy2I2" />
+      <Dependency Name="ECopy2O2" />
+      <Dependency Name="ECopy2I3" />
+      <Dependency Name="ECopy2O3" />
+      <Dependency Name="ECopy2I4" />
+      <Dependency Name="ECopy2O4" />
+      <Dependency Name="ECopy2I5" />
+      <Dependency Name="ECopy2O5" />
+      <Dependency Name="ECopy2I6" />
+      <Dependency Name="ECopy2O6" />
+      <Dependency Name="ECopy2I7" />
+      <Dependency Name="ECopy2O7" />
+      <Dependency Name="ECopy2I8" />
+      <Dependency Name="ECopy2O8" />
+      <Dependency Name="ECopy2I9" />
+      <Dependency Name="ECopy2O9" />
+      <Dependency Name="ECopy2Eye" />
+    </BezierPath>
+    <PointByCoordinates Name="W25aP1" Visible="false" X="-1.245" Y="-4.645" />
+    <PointByCoordinates Name="W25aP2" Visible="false" X="-1.245" Y="-4.255" />
+    <PointByCoordinates Name="W25aP3" Visible="false" X="-1.355" Y="-4.255" />
+    <PointByCoordinates Name="W25aP4" Visible="false" X="-1.355" Y="-4.645" />
+    <BezierPath Name="W25a" Style="Ink" Closed="true" Filled="true" Path="L C 0,0.073333 0,0.073333 L C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W25aP1" />
+      <Dependency Name="W25aP2" />
+      <Dependency Name="W25aP3" />
+      <Dependency Name="W25aP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W25bP1" Visible="false" X="-1.245" Y="-4.38" />
+    <PointByCoordinates Name="W25bP2" Visible="false" X="-1.175" Y="-4.31" />
+    <PointByCoordinates Name="W25bP3" Visible="false" X="-1.07" Y="-4.31" />
+    <PointByCoordinates Name="W25bP4" Visible="false" X="-1.07" Y="-4.2" />
+    <PointByCoordinates Name="W25bP5" Visible="false" X="-1.175" Y="-4.2" />
+    <PointByCoordinates Name="W25bP6" Visible="false" X="-1.355" Y="-4.38" />
+    <BezierPath Name="W25b" Style="Ink" Closed="true" Filled="true" Path="C 0,0.03866 -0.03866,0 L C 0.073333,0 0.073333,0 L C -0.099411,0 0,0.099411 C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W25bP1" />
+      <Dependency Name="W25bP2" />
+      <Dependency Name="W25bP3" />
+      <Dependency Name="W25bP4" />
+      <Dependency Name="W25bP5" />
+      <Dependency Name="W25bP6" />
+    </BezierPath>
+    <PointByCoordinates Name="TCopy2Center" Visible="false" X="0.685714" Y="-5.371429" />
+    <DilatedPoint Name="TCopy2A1" Visible="false" Auxiliary="true">
+      <Dependency Name="T1" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A2" Visible="false" Auxiliary="true">
+      <Dependency Name="T2" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A3" Visible="false" Auxiliary="true">
+      <Dependency Name="T3" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A4" Visible="false" Auxiliary="true">
+      <Dependency Name="T4" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A5" Visible="false" Auxiliary="true">
+      <Dependency Name="T5" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A6" Visible="false" Auxiliary="true">
+      <Dependency Name="T6" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A7" Visible="false" Auxiliary="true">
+      <Dependency Name="T7" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A8" Visible="false" Auxiliary="true">
+      <Dependency Name="T8" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A9" Visible="false" Auxiliary="true">
+      <Dependency Name="T9" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A10" Visible="false" Auxiliary="true">
+      <Dependency Name="T10" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A11" Visible="false" Auxiliary="true">
+      <Dependency Name="T11" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A12" Visible="false" Auxiliary="true">
+      <Dependency Name="T12" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A13" Visible="false" Auxiliary="true">
+      <Dependency Name="T13" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A14" Visible="false" Auxiliary="true">
+      <Dependency Name="T14" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A15" Visible="false" Auxiliary="true">
+      <Dependency Name="T15" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2A16" Visible="false" Auxiliary="true">
+      <Dependency Name="T16" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In1" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out1" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In2" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out2" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In3" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out3" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In4" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out4" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In5" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out5" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In6" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out6" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In7" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out7" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In8" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out8" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In9" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out9" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I10" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In10" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O10" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out10" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I11" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In11" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O11" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out11" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I12" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In12" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O12" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out12" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I13" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In13" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O13" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out13" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I14" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In14" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O14" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out14" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I15" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In15" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O15" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out15" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2I16" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="In16" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="TCopy2O16" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphT" Part="Out16" />
+      <Dependency Name="TCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <BezierPath Name="TCopy2" Style="TInk" Closed="true" Filled="true" Path="C #17 #18 C #19 #20 C #21 #22 C #23 #24 C #25 #26 C #27 #28 C #29 #30 C #31 #32 C #33 #34 C #35 #36 C #37 #38 C #39 #40 C #41 #42 C #43 #44 C #45 #46 C #47 #16">
+      <Sides Style="NoLine" />
+      <Dependency Name="TCopy2A1" />
+      <Dependency Name="TCopy2A2" />
+      <Dependency Name="TCopy2A3" />
+      <Dependency Name="TCopy2A4" />
+      <Dependency Name="TCopy2A5" />
+      <Dependency Name="TCopy2A6" />
+      <Dependency Name="TCopy2A7" />
+      <Dependency Name="TCopy2A8" />
+      <Dependency Name="TCopy2A9" />
+      <Dependency Name="TCopy2A10" />
+      <Dependency Name="TCopy2A11" />
+      <Dependency Name="TCopy2A12" />
+      <Dependency Name="TCopy2A13" />
+      <Dependency Name="TCopy2A14" />
+      <Dependency Name="TCopy2A15" />
+      <Dependency Name="TCopy2A16" />
+      <Dependency Name="TCopy2I1" />
+      <Dependency Name="TCopy2O1" />
+      <Dependency Name="TCopy2I2" />
+      <Dependency Name="TCopy2O2" />
+      <Dependency Name="TCopy2I3" />
+      <Dependency Name="TCopy2O3" />
+      <Dependency Name="TCopy2I4" />
+      <Dependency Name="TCopy2O4" />
+      <Dependency Name="TCopy2I5" />
+      <Dependency Name="TCopy2O5" />
+      <Dependency Name="TCopy2I6" />
+      <Dependency Name="TCopy2O6" />
+      <Dependency Name="TCopy2I7" />
+      <Dependency Name="TCopy2O7" />
+      <Dependency Name="TCopy2I8" />
+      <Dependency Name="TCopy2O8" />
+      <Dependency Name="TCopy2I9" />
+      <Dependency Name="TCopy2O9" />
+      <Dependency Name="TCopy2I10" />
+      <Dependency Name="TCopy2O10" />
+      <Dependency Name="TCopy2I11" />
+      <Dependency Name="TCopy2O11" />
+      <Dependency Name="TCopy2I12" />
+      <Dependency Name="TCopy2O12" />
+      <Dependency Name="TCopy2I13" />
+      <Dependency Name="TCopy2O13" />
+      <Dependency Name="TCopy2I14" />
+      <Dependency Name="TCopy2O14" />
+      <Dependency Name="TCopy2I15" />
+      <Dependency Name="TCopy2O15" />
+      <Dependency Name="TCopy2I16" />
+      <Dependency Name="TCopy2O16" />
+    </BezierPath>
+    <PointByCoordinates Name="HCopy2Center" Visible="false" X="0.685714" Y="-5.371429" />
+    <DilatedPoint Name="HCopy2A1" Visible="false" Auxiliary="true">
+      <Dependency Name="H1" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2A2" Visible="false" Auxiliary="true">
+      <Dependency Name="H2" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2A3" Visible="false" Auxiliary="true">
+      <Dependency Name="H3" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2A4" Visible="false" Auxiliary="true">
+      <Dependency Name="H4" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2A5" Visible="false" Auxiliary="true">
+      <Dependency Name="H5" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2A6" Visible="false" Auxiliary="true">
+      <Dependency Name="H6" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2A7" Visible="false" Auxiliary="true">
+      <Dependency Name="H7" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2A8" Visible="false" Auxiliary="true">
+      <Dependency Name="H8" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2A9" Visible="false" Auxiliary="true">
+      <Dependency Name="H9" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2A10" Visible="false" Auxiliary="true">
+      <Dependency Name="H10" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2A11" Visible="false" Auxiliary="true">
+      <Dependency Name="H11" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2A12" Visible="false" Auxiliary="true">
+      <Dependency Name="H12" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2I1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In1" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2O1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out1" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2I2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In2" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2O2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out2" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2I3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In3" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2O3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out3" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2I4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In4" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2O4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out4" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2I5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In5" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2O5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out5" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2I6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In6" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2O6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out6" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2I7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In7" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2O7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out7" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2I8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In8" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2O8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out8" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2I9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In9" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2O9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out9" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2I10" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In10" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2O10" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out10" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2I11" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In11" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2O11" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out11" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2I12" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="In12" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="HCopy2O12" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphH" Part="Out12" />
+      <Dependency Name="HCopy2Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <BezierPath Name="HCopy2" Style="HInk" Closed="true" Filled="true" Path="C #13 #14 C #15 #16 C #17 #18 C #19 #20 C #21 #22 C #23 #24 C #25 #26 C #27 #28 C #29 #30 C #31 #32 C #33 #34 C #35 #12">
+      <Sides Style="NoLine" />
+      <Dependency Name="HCopy2A1" />
+      <Dependency Name="HCopy2A2" />
+      <Dependency Name="HCopy2A3" />
+      <Dependency Name="HCopy2A4" />
+      <Dependency Name="HCopy2A5" />
+      <Dependency Name="HCopy2A6" />
+      <Dependency Name="HCopy2A7" />
+      <Dependency Name="HCopy2A8" />
+      <Dependency Name="HCopy2A9" />
+      <Dependency Name="HCopy2A10" />
+      <Dependency Name="HCopy2A11" />
+      <Dependency Name="HCopy2A12" />
+      <Dependency Name="HCopy2I1" />
+      <Dependency Name="HCopy2O1" />
+      <Dependency Name="HCopy2I2" />
+      <Dependency Name="HCopy2O2" />
+      <Dependency Name="HCopy2I3" />
+      <Dependency Name="HCopy2O3" />
+      <Dependency Name="HCopy2I4" />
+      <Dependency Name="HCopy2O4" />
+      <Dependency Name="HCopy2I5" />
+      <Dependency Name="HCopy2O5" />
+      <Dependency Name="HCopy2I6" />
+      <Dependency Name="HCopy2O6" />
+      <Dependency Name="HCopy2I7" />
+      <Dependency Name="HCopy2O7" />
+      <Dependency Name="HCopy2I8" />
+      <Dependency Name="HCopy2O8" />
+      <Dependency Name="HCopy2I9" />
+      <Dependency Name="HCopy2O9" />
+      <Dependency Name="HCopy2I10" />
+      <Dependency Name="HCopy2O10" />
+      <Dependency Name="HCopy2I11" />
+      <Dependency Name="HCopy2O11" />
+      <Dependency Name="HCopy2I12" />
+      <Dependency Name="HCopy2O12" />
+    </BezierPath>
+    <PointByCoordinates Name="ECopy3Center" Visible="false" X="0.685714" Y="-5.371429" />
+    <DilatedPoint Name="ECopy3EyeA1" Visible="false" Auxiliary="true">
+      <Dependency Name="Eye1" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3EyeA2" Visible="false" Auxiliary="true">
+      <Dependency Name="Eye2" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3EyeA3" Visible="false" Auxiliary="true">
+      <Dependency Name="Eye3" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3EyeI1" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="In1" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3EyeO1" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="Out1" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3EyeI2" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="In2" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3EyeO2" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="Out2" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3EyeI3" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="In3" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3EyeO3" Visible="false" Auxiliary="true">
+      <Dependency Name="EyeE" Part="Out3" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <BezierPath Name="ECopy3Eye" Closed="true" Path="C #4 #5 C #6 #7 C #8 #3">
+      <Sides Style="NoLine" />
+      <Dependency Name="ECopy3EyeA1" />
+      <Dependency Name="ECopy3EyeA2" />
+      <Dependency Name="ECopy3EyeA3" />
+      <Dependency Name="ECopy3EyeI1" />
+      <Dependency Name="ECopy3EyeO1" />
+      <Dependency Name="ECopy3EyeI2" />
+      <Dependency Name="ECopy3EyeO2" />
+      <Dependency Name="ECopy3EyeI3" />
+      <Dependency Name="ECopy3EyeO3" />
+    </BezierPath>
+    <DilatedPoint Name="ECopy3A1" Visible="false" Auxiliary="true">
+      <Dependency Name="E1" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3A2" Visible="false" Auxiliary="true">
+      <Dependency Name="E2" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3A3" Visible="false" Auxiliary="true">
+      <Dependency Name="E3" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3A4" Visible="false" Auxiliary="true">
+      <Dependency Name="E4" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3A5" Visible="false" Auxiliary="true">
+      <Dependency Name="E5" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3A6" Visible="false" Auxiliary="true">
+      <Dependency Name="E6" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3A7" Visible="false" Auxiliary="true">
+      <Dependency Name="E7" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3A8" Visible="false" Auxiliary="true">
+      <Dependency Name="E8" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3A9" Visible="false" Auxiliary="true">
+      <Dependency Name="E9" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3I1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In1" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3O1" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out1" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3I2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In2" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3O2" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out2" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3I3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In3" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3O3" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out3" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3I4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In4" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3O4" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out4" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3I5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In5" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3O5" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out5" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3I6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In6" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3O6" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out6" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3I7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In7" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3O7" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out7" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3I8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In8" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3O8" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out8" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3I9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="In9" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <DilatedPoint Name="ECopy3O9" Visible="false" Auxiliary="true">
+      <Dependency Name="GlyphE" Part="Out9" />
+      <Dependency Name="ECopy3Center" />
+      <Dependency Name="Shrink" />
+    </DilatedPoint>
+    <BezierPath Name="ECopy3" Style="EInk" Closed="true" Filled="true" Path="C #10 #11 C #12 #13 C #14 #15 C #16 #17 C #18 #19 C #20 #21 C #22 #23 C #24 #25 C #26 #9">
+      <Sides Style="NoLine" />
+      <Dependency Name="ECopy3A1" />
+      <Dependency Name="ECopy3A2" />
+      <Dependency Name="ECopy3A3" />
+      <Dependency Name="ECopy3A4" />
+      <Dependency Name="ECopy3A5" />
+      <Dependency Name="ECopy3A6" />
+      <Dependency Name="ECopy3A7" />
+      <Dependency Name="ECopy3A8" />
+      <Dependency Name="ECopy3A9" />
+      <Dependency Name="ECopy3I1" />
+      <Dependency Name="ECopy3O1" />
+      <Dependency Name="ECopy3I2" />
+      <Dependency Name="ECopy3O2" />
+      <Dependency Name="ECopy3I3" />
+      <Dependency Name="ECopy3O3" />
+      <Dependency Name="ECopy3I4" />
+      <Dependency Name="ECopy3O4" />
+      <Dependency Name="ECopy3I5" />
+      <Dependency Name="ECopy3O5" />
+      <Dependency Name="ECopy3I6" />
+      <Dependency Name="ECopy3O6" />
+      <Dependency Name="ECopy3I7" />
+      <Dependency Name="ECopy3O7" />
+      <Dependency Name="ECopy3I8" />
+      <Dependency Name="ECopy3O8" />
+      <Dependency Name="ECopy3I9" />
+      <Dependency Name="ECopy3O9" />
+      <Dependency Name="ECopy3Eye" />
+    </BezierPath>
+    <PointByCoordinates Name="W29aP1" Visible="false" X="2.315" Y="-4.015" />
+    <PointByCoordinates Name="W29aP2" Visible="false" X="2.315" Y="-4.505" />
+    <PointByCoordinates Name="W29aP3" Visible="false" X="2.51" Y="-4.7" />
+    <PointByCoordinates Name="W29aP4" Visible="false" X="2.56" Y="-4.7" />
+    <PointByCoordinates Name="W29aP5" Visible="false" X="2.56" Y="-4.59" />
+    <PointByCoordinates Name="W29aP6" Visible="false" X="2.51" Y="-4.59" />
+    <PointByCoordinates Name="W29aP7" Visible="false" X="2.425" Y="-4.505" />
+    <PointByCoordinates Name="W29aP8" Visible="false" X="2.425" Y="-4.015" />
+    <BezierPath Name="W29a" Style="Ink" Closed="true" Filled="true" Path="L C 0,-0.107696 -0.107696,0 L C 0.073333,0 0.073333,0 L C -0.046944,0 0,-0.046944 L C 0,0.073333 0,0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W29aP1" />
+      <Dependency Name="W29aP2" />
+      <Dependency Name="W29aP3" />
+      <Dependency Name="W29aP4" />
+      <Dependency Name="W29aP5" />
+      <Dependency Name="W29aP6" />
+      <Dependency Name="W29aP7" />
+      <Dependency Name="W29aP8" />
+    </BezierPath>
+    <PointByCoordinates Name="W30aHoleP1" Visible="false" X="3.14" Y="-4.45" />
+    <PointByCoordinates Name="W30aHoleP2" Visible="false" X="3" Y="-4.31" />
+    <PointByCoordinates Name="W30aHoleP3" Visible="false" X="2.86" Y="-4.45" />
+    <PointByCoordinates Name="W30aHoleP4" Visible="false" X="3" Y="-4.59" />
+    <BezierPath Name="W30aHole" Closed="true" Path="C 0,0.07732 0.07732,0 C -0.07732,0 0,0.07732 C 0,-0.07732 -0.07732,0 C 0.07732,0 0,-0.07732">
+      <Sides Style="NoLine" />
+      <Dependency Name="W30aHoleP1" />
+      <Dependency Name="W30aHoleP2" />
+      <Dependency Name="W30aHoleP3" />
+      <Dependency Name="W30aHoleP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W30aP1" Visible="false" X="3.25" Y="-4.45" />
+    <PointByCoordinates Name="W30aP2" Visible="false" X="3" Y="-4.2" />
+    <PointByCoordinates Name="W30aP3" Visible="false" X="2.75" Y="-4.45" />
+    <PointByCoordinates Name="W30aP4" Visible="false" X="3" Y="-4.7" />
+    <BezierPath Name="W30a" Style="Ink" Closed="true" Filled="true" Path="C 0,0.138071 0.138071,0 C -0.138071,0 0,0.138071 C 0,-0.138071 -0.138071,0 C 0.138071,0 0,-0.138071">
+      <Sides Style="NoLine" />
+      <Dependency Name="W30aP1" />
+      <Dependency Name="W30aP2" />
+      <Dependency Name="W30aP3" />
+      <Dependency Name="W30aP4" />
+      <Dependency Name="W30aHole" />
+    </BezierPath>
+    <PointByCoordinates Name="W30bP1" Visible="false" X="3.25" Y="-4.645" />
+    <PointByCoordinates Name="W30bP2" Visible="false" X="3.25" Y="-4.255" />
+    <PointByCoordinates Name="W30bP3" Visible="false" X="3.14" Y="-4.255" />
+    <PointByCoordinates Name="W30bP4" Visible="false" X="3.14" Y="-4.645" />
+    <BezierPath Name="W30b" Style="Ink" Closed="true" Filled="true" Path="L C 0,0.073333 0,0.073333 L C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W30bP1" />
+      <Dependency Name="W30bP2" />
+      <Dependency Name="W30bP3" />
+      <Dependency Name="W30bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W31aP1" Visible="false" X="3.405" Y="-4.31" />
+    <PointByCoordinates Name="W31aP2" Visible="false" X="3.795" Y="-4.31" />
+    <PointByCoordinates Name="W31aP3" Visible="false" X="3.795" Y="-4.2" />
+    <PointByCoordinates Name="W31aP4" Visible="false" X="3.405" Y="-4.2" />
+    <BezierPath Name="W31a" Style="Ink" Closed="true" Filled="true" Path="L C 0.073333,0 0.073333,0 L C -0.073333,0 -0.073333,0">
+      <Sides Style="NoLine" />
+      <Dependency Name="W31aP1" />
+      <Dependency Name="W31aP2" />
+      <Dependency Name="W31aP3" />
+      <Dependency Name="W31aP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W31bP1" Visible="false" X="3.756109" Y="-4.216109" />
+    <PointByCoordinates Name="W31bP2" Visible="false" X="3.366109" Y="-4.606109" />
+    <PointByCoordinates Name="W31bP3" Visible="false" X="3.443891" Y="-4.683891" />
+    <PointByCoordinates Name="W31bP4" Visible="false" X="3.833891" Y="-4.293891" />
+    <BezierPath Name="W31b" Style="Ink" Closed="true" Filled="true" Path="L C -0.051854,-0.051854 -0.051854,-0.051854 L C 0.051854,0.051854 0.051854,0.051854">
+      <Sides Style="NoLine" />
+      <Dependency Name="W31bP1" />
+      <Dependency Name="W31bP2" />
+      <Dependency Name="W31bP3" />
+      <Dependency Name="W31bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W31cP1" Visible="false" X="3.405" Y="-4.7" />
+    <PointByCoordinates Name="W31cP2" Visible="false" X="3.795" Y="-4.7" />
+    <PointByCoordinates Name="W31cP3" Visible="false" X="3.795" Y="-4.59" />
+    <PointByCoordinates Name="W31cP4" Visible="false" X="3.405" Y="-4.59" />
+    <BezierPath Name="W31c" Style="Ink" Closed="true" Filled="true" Path="L C 0.073333,0 0.073333,0 L C -0.073333,0 -0.073333,0">
+      <Sides Style="NoLine" />
+      <Dependency Name="W31cP1" />
+      <Dependency Name="W31cP2" />
+      <Dependency Name="W31cP3" />
+      <Dependency Name="W31cP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W32aP1" Visible="false" X="3.955807" Y="-4.279597" />
+    <PointByCoordinates Name="W32aP2" Visible="false" X="4.150807" Y="-4.669597" />
+    <PointByCoordinates Name="W32aP3" Visible="false" X="4.249193" Y="-4.620403" />
+    <PointByCoordinates Name="W32aP4" Visible="false" X="4.054193" Y="-4.230403" />
+    <BezierPath Name="W32a" Style="Ink" Closed="true" Filled="true" Path="L C 0.032796,-0.065591 0.032796,-0.065591 L C -0.032796,0.065591 -0.032796,0.065591">
+      <Sides Style="NoLine" />
+      <Dependency Name="W32aP1" />
+      <Dependency Name="W32aP2" />
+      <Dependency Name="W32aP3" />
+      <Dependency Name="W32aP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W32bP1" Visible="false" X="4.345807" Y="-4.230403" />
+    <PointByCoordinates Name="W32bP2" Visible="false" X="4.040807" Y="-4.840403" />
+    <PointByCoordinates Name="W32bP3" Visible="false" X="4.139193" Y="-4.889597" />
+    <PointByCoordinates Name="W32bP4" Visible="false" X="4.444193" Y="-4.279597" />
+    <BezierPath Name="W32b" Style="Ink" Closed="true" Filled="true" Path="L C -0.032796,-0.065591 -0.032796,-0.065591 L C 0.032796,0.065591 0.032796,0.065591">
+      <Sides Style="NoLine" />
+      <Dependency Name="W32bP1" />
+      <Dependency Name="W32bP2" />
+      <Dependency Name="W32bP3" />
+      <Dependency Name="W32bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W33aHoleP1" Visible="false" X="5.54" Y="-4.45" />
+    <PointByCoordinates Name="W33aHoleP2" Visible="false" X="5.4" Y="-4.31" />
+    <PointByCoordinates Name="W33aHoleP3" Visible="false" X="5.26" Y="-4.45" />
+    <PointByCoordinates Name="W33aHoleP4" Visible="false" X="5.4" Y="-4.59" />
+    <BezierPath Name="W33aHole" Closed="true" Path="C 0,0.07732 0.07732,0 C -0.07732,0 0,0.07732 C 0,-0.07732 -0.07732,0 C 0.07732,0 0,-0.07732">
+      <Sides Style="NoLine" />
+      <Dependency Name="W33aHoleP1" />
+      <Dependency Name="W33aHoleP2" />
+      <Dependency Name="W33aHoleP3" />
+      <Dependency Name="W33aHoleP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W33aP1" Visible="false" X="5.65" Y="-4.45" />
+    <PointByCoordinates Name="W33aP2" Visible="false" X="5.4" Y="-4.2" />
+    <PointByCoordinates Name="W33aP3" Visible="false" X="5.15" Y="-4.45" />
+    <PointByCoordinates Name="W33aP4" Visible="false" X="5.4" Y="-4.7" />
+    <BezierPath Name="W33a" Style="Ink" Closed="true" Filled="true" Path="C 0,0.138071 0.138071,0 C -0.138071,0 0,0.138071 C 0,-0.138071 -0.138071,0 C 0.138071,0 0,-0.138071">
+      <Sides Style="NoLine" />
+      <Dependency Name="W33aP1" />
+      <Dependency Name="W33aP2" />
+      <Dependency Name="W33aP3" />
+      <Dependency Name="W33aP4" />
+      <Dependency Name="W33aHole" />
+    </BezierPath>
+    <PointByCoordinates Name="W33bP1" Visible="false" X="5.65" Y="-4.645" />
+    <PointByCoordinates Name="W33bP2" Visible="false" X="5.65" Y="-4.015" />
+    <PointByCoordinates Name="W33bP3" Visible="false" X="5.54" Y="-4.015" />
+    <PointByCoordinates Name="W33bP4" Visible="false" X="5.54" Y="-4.645" />
+    <BezierPath Name="W33b" Style="Ink" Closed="true" Filled="true" Path="L C 0,0.073333 0,0.073333 L C 0,-0.073333 0,-0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W33bP1" />
+      <Dependency Name="W33bP2" />
+      <Dependency Name="W33bP3" />
+      <Dependency Name="W33bP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W34aHoleP1" Visible="false" X="6.14" Y="-4.45" />
+    <PointByCoordinates Name="W34aHoleP2" Visible="false" X="6" Y="-4.31" />
+    <PointByCoordinates Name="W34aHoleP3" Visible="false" X="5.86" Y="-4.45" />
+    <PointByCoordinates Name="W34aHoleP4" Visible="false" X="6" Y="-4.59" />
+    <BezierPath Name="W34aHole" Closed="true" Path="C 0,0.07732 0.07732,0 C -0.07732,0 0,0.07732 C 0,-0.07732 -0.07732,0 C 0.07732,0 0,-0.07732">
+      <Sides Style="NoLine" />
+      <Dependency Name="W34aHoleP1" />
+      <Dependency Name="W34aHoleP2" />
+      <Dependency Name="W34aHoleP3" />
+      <Dependency Name="W34aHoleP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W34aP1" Visible="false" X="6.25" Y="-4.45" />
+    <PointByCoordinates Name="W34aP2" Visible="false" X="6" Y="-4.2" />
+    <PointByCoordinates Name="W34aP3" Visible="false" X="5.75" Y="-4.45" />
+    <PointByCoordinates Name="W34aP4" Visible="false" X="6" Y="-4.7" />
+    <BezierPath Name="W34a" Style="Ink" Closed="true" Filled="true" Path="C 0,0.138071 0.138071,0 C -0.138071,0 0,0.138071 C 0,-0.138071 -0.138071,0 C 0.138071,0 0,-0.138071">
+      <Sides Style="NoLine" />
+      <Dependency Name="W34aP1" />
+      <Dependency Name="W34aP2" />
+      <Dependency Name="W34aP3" />
+      <Dependency Name="W34aP4" />
+      <Dependency Name="W34aHole" />
+    </BezierPath>
+    <PointByCoordinates Name="W35aHoleP1" Visible="false" X="6.74" Y="-4.45" />
+    <PointByCoordinates Name="W35aHoleP2" Visible="false" X="6.6" Y="-4.31" />
+    <PointByCoordinates Name="W35aHoleP3" Visible="false" X="6.46" Y="-4.45" />
+    <PointByCoordinates Name="W35aHoleP4" Visible="false" X="6.6" Y="-4.59" />
+    <BezierPath Name="W35aHole" Closed="true" Path="C 0,0.07732 0.07732,0 C -0.07732,0 0,0.07732 C 0,-0.07732 -0.07732,0 C 0.07732,0 0,-0.07732">
+      <Sides Style="NoLine" />
+      <Dependency Name="W35aHoleP1" />
+      <Dependency Name="W35aHoleP2" />
+      <Dependency Name="W35aHoleP3" />
+      <Dependency Name="W35aHoleP4" />
+    </BezierPath>
+    <PointByCoordinates Name="W35aP1" Visible="false" X="6.85" Y="-4.45" />
+    <PointByCoordinates Name="W35aP2" Visible="false" X="6.6" Y="-4.2" />
+    <PointByCoordinates Name="W35aP3" Visible="false" X="6.35" Y="-4.45" />
+    <PointByCoordinates Name="W35aP4" Visible="false" X="6.6" Y="-4.7" />
+    <BezierPath Name="W35a" Style="Ink" Closed="true" Filled="true" Path="C 0,0.138071 0.138071,0 C -0.138071,0 0,0.138071 C 0,-0.138071 -0.138071,0 C 0.138071,0 0,-0.138071">
+      <Sides Style="NoLine" />
+      <Dependency Name="W35aP1" />
+      <Dependency Name="W35aP2" />
+      <Dependency Name="W35aP3" />
+      <Dependency Name="W35aP4" />
+      <Dependency Name="W35aHole" />
+    </BezierPath>
+    <PointByCoordinates Name="W35bP1" Visible="false" X="6.74" Y="-4.255" />
+    <PointByCoordinates Name="W35bP2" Visible="false" X="6.74" Y="-4.725" />
+    <PointByCoordinates Name="W35bP3" Visible="false" X="6.655" Y="-4.81" />
+    <PointByCoordinates Name="W35bP4" Visible="false" X="6.64024" Y="-4.808709" />
+    <PointByCoordinates Name="W35bP5" Visible="false" X="6.621139" Y="-4.917038" />
+    <PointByCoordinates Name="W35bP6" Visible="false" X="6.655" Y="-4.92" />
+    <PointByCoordinates Name="W35bP7" Visible="false" X="6.85" Y="-4.725" />
+    <PointByCoordinates Name="W35bP8" Visible="false" X="6.85" Y="-4.255" />
+    <BezierPath Name="W35b" Style="Ink" Closed="true" Filled="true" Path="L C 0,-0.046944 0.046944,0 C -0.004948,0 0.004873,-0.000859 C -0.072219,0.012734 -0.072219,0.012734 C 0.011179,-0.001971 -0.011352,0 C 0.107696,0 0,-0.107696 L C 0,0.073333 0,0.073333">
+      <Sides Style="NoLine" />
+      <Dependency Name="W35bP1" />
+      <Dependency Name="W35bP2" />
+      <Dependency Name="W35bP3" />
+      <Dependency Name="W35bP4" />
+      <Dependency Name="W35bP5" />
+      <Dependency Name="W35bP6" />
+      <Dependency Name="W35bP7" />
+      <Dependency Name="W35bP8" />
+    </BezierPath>
+    <Label Name="AscenderName" Style="GuideText" Text="ascender" X="5.3" Y="6.37" />
+    <Label Name="XHeightName" Style="GuideText" Text="x-height" X="5.3" Y="4.45" />
+    <Label Name="BaselineName" Style="GuideText" Text="baseline" X="-7.2" Y="0.45" />
+    <Label Name="DescenderName" Style="GuideText" Text="descender" X="-7.2" Y="-1.31" />
+    <Label Name="Hint" Visible="false" Style="GalleryText" Text="Click a point to see its two arms: drag an arm and the curve bends while the point stays put. Round points sit where the outline bends smoothly, square ones where it turns a corner. The small letters copy the arms as well.\n\nCan you shorten the h into an n? Give the t a longer foot? Make the e smile wider?" Pin="TopRight" OffsetX="16" OffsetY="300" WrapWidth="400" Backdrop="true" />
+    <ShowHideControl Name="HintBox" Style="GalleryText" Show="false" Text="Hint" Pin="TopLeft" OffsetX="16" OffsetY="16">
+      <Dependency Name="Hint" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Design a Font" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Every letter you read on a screen is a shape: an outline made of a few points and curves, filled with color. The big t, h and e are three such outlines. Drag their points to reshape them, and watch every t, h and e in the sentence change along: each small one is the big one, shrunk to one eighth and set into its place in the line.\n\nThat is how fonts work. A type designer draws each letter once, between guide lines like these, and your computer scales the outlines to any size wherever you type. The sentence has every letter of the alphabet, which is why font makers use it to try out a new design." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

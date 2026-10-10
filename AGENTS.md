@@ -2077,7 +2077,15 @@ buttons and checkboxes, 3D, custom tools.
   is dragged, so a drag moves the anchors and every path smooths itself again; a tension
   tied to a hidden label `[...]`; and whatever appears past a threshold (the pop, the drop,
   the swallowed bubble) is built on a point `X="0 * sqrt(v - limit)"`, which doesn't exist
-  below it, and neither does anything built on it.
+  below it, and neither does anything built on it. Design a Font (`designafont.cs`,
+  2026-10-10) is the other kind: the big t, h and e are closed paths with explicit handles
+  over free points, and every t, h and e of the sentence is a dilated image of the big one
+  (a `DilatedPoint` per anchor and per handle, the handles as `Part="In3"` dependencies on
+  the big path, one hidden center per copy chosen so that the letter's box lands in its
+  cell, `Shrink` = 1/8), so dragging an anchor or an arm of the big letter moves the small
+  ones. The other letters are a tiny monoline font the tool strokes from skeletons of lines
+  and tangent arcs (round caps, 180° as one cubic) into paths over hidden points by
+  coordinates; a bowl is a ring with a hole. 726 figures, the biggest drawing of the gallery.
 - **Drawings that must not fall apart** when a kid drags the wrong thing (Castle, The Falling
   Ladder): fixed points are `PointByCoordinates` with constant coordinates (a polygon of those
   has no free point, so dragging it does nothing), and the only things that move are
