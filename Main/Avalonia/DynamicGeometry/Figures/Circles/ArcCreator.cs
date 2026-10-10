@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Avalonia;
 
 namespace DynamicGeometry
@@ -41,6 +42,20 @@ namespace DynamicGeometry
                 return Factory.CreateSegment(Drawing, FoundDependencies);
             }
             return null;
+        }
+
+        /// <summary>
+        /// The arc just made can become a sector or a circular segment in the side panel
+        /// (<see cref="ArcPanel"/>): the same three clicks make all three, so the shapes have
+        /// no tool of their own
+        /// </summary>
+        protected override void ShowCreatedFigure(IList<IFigure> figures)
+        {
+            var arc = figures.OfType<EllipseArcBase>().FirstOrDefault();
+            if (arc != null)
+            {
+                ArcPanel.Show(arc);
+            }
         }
 
         public override string Name

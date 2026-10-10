@@ -24,12 +24,26 @@ namespace DynamicGeometry
             get { return 4; }
         }
 
+        /// <summary>
+        /// A Convert verb of the figure's own grid: the new figure's grid shows after it, where
+        /// the old one's was (the verbs of <see cref="ArcPanel"/> go through <see cref="Replace"/>
+        /// and show the panel again)
+        /// </summary>
         public static void Convert(IArc oldArc, IArc newArc)
         {
-            var drawing = oldArc.Drawing;
+            Replace(oldArc, newArc);
+            newArc.Drawing.RaiseDisplayProperties(newArc);
+        }
 
-            // a sector made of an arc is filled at once, in the arc's hue; an arc made of a
-            // sector is a line again (StyleManager.ConvertStyle)
+        /// <summary>
+        /// The new arc, sector or segment in the old one's place, one undo step: same points,
+        /// same direction, hidden or locked if the old one was, and the style traded for the
+        /// filled or unfilled one of its hue (<see cref="StyleManager.ConvertStyle"/>): a sector
+        /// made of an arc is seen at once, an arc made of a sector is a line again
+        /// </summary>
+        public static void Replace(IArc oldArc, IArc newArc)
+        {
+            var drawing = oldArc.Drawing;
             newArc.Style = drawing.StyleManager.ConvertStyle(oldArc, newArc);
             newArc.Clockwise = oldArc.Clockwise;
 

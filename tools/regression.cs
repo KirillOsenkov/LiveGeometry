@@ -74,6 +74,7 @@ public class Program
             ("One click inside an angle serves the bisector, Line at Angle, Rotate and Translate", AngleAtVertexShortcuts),
             ("A filled style fills the angle under a mark", FilledAngleMark),
             ("A sector is filled: new, and made of an arc in its hue", ArcConversionStyles),
+            ("The Arc tool's panel makes a sector or a segment of the arc", ArcPanelConverts),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
             ("Figures without a value don't exist", FiguresWithoutValue),
             ("Perimeter measurements", PerimeterMeasurements),
@@ -2356,6 +2357,82 @@ public class Program
 
         Require(drawing.SaveAsText() == before, "Undo did not bring the arc back as it was.");
         Require(drawing.Figures.OfType<CircleArc>().Single().Style?.Name == StyleManager.LineStyleName, "The arc undone is not on the line.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void ArcPanelConverts()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        object shown = null;
+        drawing.DisplayProperties += (_, args) => shown = args.Object;
+
+        // three clicks make the arc, and the panel for it comes up
+        var tool = new CircleArcCreator();
+        drawing.Behavior = tool;
+        Click(drawing, system.ToPhysical(new Point(0, 0)));
+        Click(drawing, system.ToPhysical(new Point(2, 0)));
+        Click(drawing, system.ToPhysical(new Point(0, 2)));
+        var arc = drawing.Figures.OfType<CircleArc>().Single();
+        Require(shown is ArcPanel panel && panel.ToString() == arc.Title, "After an arc the panel shows " + shown);
+        var verbs = ((ArcPanel)shown).GetMethods().Select(method => method.Name).ToArray();
+        Require(verbs.SequenceEqual(new[] { "ConvertToSector", "ConvertToSegment", "OK" }), "The panel's buttons: " + string.Join(", ", verbs));
+        var before = drawing.SaveAsText();
+
+        // the verb: a filled sector in the arc's place, one undo step, and the panel again
+        // for the sector with the verbs to the other two kinds
+        ((ArcPanel)shown).ConvertToSector();
+        var sector = drawing.Figures.OfType<CircleSector>().Single();
+        Require(!drawing.Figures.Contains(arc), "The arc is still there next to its sector.");
+        Require(shown is ArcPanel sectorPanel && sectorPanel.ToString() == sector.Title, "After the verb the panel shows " + shown);
+        verbs = ((ArcPanel)shown).GetMethods().Select(method => method.Name).ToArray();
+        Require(verbs.SequenceEqual(new[] { "ConvertToArc", "ConvertToSegment", "OK" }), "The sector panel's buttons: " + string.Join(", ", verbs));
+        Require(sector.Style?.Name == StyleManager.OutlinedShapeStyleName, "The sector is on " + sector.Style?.Name);
+        Require(!drawing.IsRecordingTransaction, "The verb left a transaction open.");
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the verb did not bring the arc back.");
+        drawing.ActionManager.Redo();
+        sector = drawing.Figures.OfType<CircleSector>().Single();
+        Require(sector.Style?.Name == StyleManager.OutlinedShapeStyleName, "Redo lost the sector's fill.");
+
+        // a verb from the figure's own grid ends in the new figure's grid, which takes the
+        // selection over; its panel has the verbs to the other two kinds, and a segment whose
+        // area is measured offers no way to an arc
+        sector.Selected = true;
+        sector.ConvertToCircleSegment();
+        var circleSegment = drawing.Figures.OfType<CircleSegment>().Single();
+        Require(circleSegment.Selected, "The segment did not take the sector's selection.");
+        Require(drawing.GetSelectedFigures().SequenceEqual(new IFigure[] { circleSegment }), "The selection is not the segment alone.");
+        Require(shown == circleSegment, "After the grid's verb the panel shows " + shown);
+        var segmentPanel = new ArcPanel(circleSegment);
+        verbs = segmentPanel.GetMethods().Select(method => method.Name).ToArray();
+        Require(verbs.SequenceEqual(new[] { "ConvertToArc", "ConvertToSector", "OK" }), "The segment panel's buttons: " + string.Join(", ", verbs));
+        var area = Factory.CreateAreaMeasurement(drawing, new IFigure[] { circleSegment });
+        Actions.Add(drawing, area);
+        verbs = segmentPanel.GetMethods().Select(method => method.Name).ToArray();
+        Require(verbs.SequenceEqual(new[] { "ConvertToSector", "OK" }), "A measured segment's panel: " + string.Join(", ", verbs));
+        Actions.Remove(area);
+        segmentPanel.ConvertToArc();
+        arc = drawing.Figures.OfType<CircleArc>().Single();
+        Require(shown is ArcPanel arcPanel && arcPanel.ToString() == arc.Title, "Back to an arc the panel shows " + shown);
+        Require(arc.Style?.Name == StyleManager.LineStyleName, "The arc is on " + arc.Style?.Name);
+
+        // OK only closes the panel; an elliptical arc gets the panel too, and its verb makes an elliptical segment
+        ((ArcPanel)shown).OK();
+        Require(shown == null, "OK left the panel up: " + shown);
+        drawing.Behavior = new EllipseArcCreator();
+        Click(drawing, system.ToPhysical(new Point(5, 0)));
+        Click(drawing, system.ToPhysical(new Point(8, 0)));
+        Click(drawing, system.ToPhysical(new Point(5, 1)));
+        Click(drawing, system.ToPhysical(new Point(8, 1)));
+        Click(drawing, system.ToPhysical(new Point(4, 1)));
+        var ellipseArc = drawing.Figures.OfType<EllipseArc>().Single();
+        Require(shown is ArcPanel ellipsePanel && ellipsePanel.ToString() == ellipseArc.Title, "After an elliptical arc the panel shows " + shown);
+        ((ArcPanel)shown).ConvertToSegment();
+        var segment = drawing.Figures.OfType<EllipseSegment>().Single();
+        Require(shown is ArcPanel ellipseSegmentPanel && ellipseSegmentPanel.ToString() == segment.Title, "After the elliptical verb the panel shows " + shown);
+        Require(segment.Style?.Name == StyleManager.OutlinedShapeStyleName, "The elliptical segment is on " + segment.Style?.Name);
         drawing.Figures.CheckConsistency();
     }
 

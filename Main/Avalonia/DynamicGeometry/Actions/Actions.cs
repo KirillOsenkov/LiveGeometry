@@ -71,6 +71,11 @@ namespace DynamicGeometry
                 }
             }
 
+            // the selection goes over too (below, after the swap: selection is no part of
+            // undo, as a paste's isn't): the verb was clicked in the old figure's grid, and
+            // the new one is what the user is looking at
+            bool selected = existingFigure.Selected;
+
             // not delayed: each step happens as it is recorded, so that the place in the list
             // and the name are worked out from the drawing as it is by then (delayed, the new
             // figure had no name yet when its name was decided, and stayed AB2)
@@ -114,6 +119,12 @@ namespace DynamicGeometry
                 drawing.ActionManager.RecordAction(new CallMethodAction(
                     Rebind,
                     () => FigureBase.SuppressRenameInExpressions = true));
+            }
+
+            if (selected)
+            {
+                newFigure.Selected = true;
+                drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
             }
         }
 

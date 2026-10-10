@@ -116,7 +116,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   distance or a slider, then the center; a first click on empty paper makes a slider for the
   radius (see "Sliders"); Ellipse - center, end of the long axis, end of the short axis;
   Circular Arc (A) - center, start, end (counterclockwise); Elliptical Arc - center, semi-major,
-  semi-minor, begin angle, end angle.
+  semi-minor, begin angle, end angle. Right after either arc is made the side panel offers
+  Convert to sector / segment and OK (`ArcPanel`, 2026-10-09): a sector and a circular
+  segment are the arc's three clicks, so they have no tool of their own, and the verb gives
+  the shape a filled style in the arc's hue (see "Arcs, sectors and segments"). A verb
+  clicked in that panel ends in the same panel for the new figure, with the verbs to the
+  other two kinds, so one more click goes on or back (`ArcPanel.Convert`); the same verb
+  clicked in the figure's own grid ends in the new figure's grid (`EllipseArc.Convert`,
+  over the shared `Replace`), which also takes the selection over.
 - **Shapes**: Triangle - 3 points; Square - two adjacent vertices; Polygon (W) - points, then
   Enter, a right-click or a click on a vertex closes it; Regular polygon - center then a vertex.
   Triangle and Polygon show no length panel (a side's length means nothing for them). They
@@ -1064,7 +1071,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
     segment, arc, sector; Reverse) is a transaction that is not delayed, so that each
     step sees the drawing as the one before left it: the new figure goes to the old one's
     place in the list (`MoveBefore`), takes over its name label, stays hidden or locked
-    if the old one was, and is named AB by its place in the list (`SettleDefaultNames`).
+    if the old one was, takes its selection (outside the transaction, as a paste's: the
+    verb was clicked in its grid, and the halo stayed on the figure that had left), and
+    is named AB by its place in the list (`SettleDefaultNames`).
     While both are in the drawing they trade the names AB and AB2, so expressions that
     name the figure (`[AB.Length]`) sit the replacement out and are compiled again at the
     end, undo included, as in `ReplacePoint` (`SuppressRenameInExpressions`, then
