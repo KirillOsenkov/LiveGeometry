@@ -117,9 +117,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   radius (see "Sliders"); Ellipse - center, end of the long axis, end of the short axis;
   Circular Arc (A) - center, start, end (counterclockwise); Elliptical Arc - center, semi-major,
   semi-minor, begin angle, end angle. Right after either arc is made the side panel offers
-  Convert to sector / segment and OK (`ArcPanel`, 2026-10-09): a sector and a circular
-  segment are the arc's three clicks, so they have no tool of their own, and the verb gives
-  the shape a filled style in the arc's hue (see "Arcs, sectors and segments"). A verb
+  the arc's `Sweep` row (counterclockwise, clockwise, under or over 180°: see "Which of
+  the two angles"), Convert to sector / segment and OK (`ArcPanel`, 2026-10-09): a sector
+  and a circular segment are the arc's three clicks, so they have no tool of their own,
+  and the verb gives the shape a filled style in the arc's hue (see "Arcs, sectors and
+  segments"). A verb
   clicked in that panel ends in the same panel for the new figure, with the verbs to the
   other two kinds, so one more click goes on or back (`ArcPanel.Convert`); the same verb
   clicked in the figure's own grid ends in the new figure's grid (`EllipseArc.Convert`,
@@ -173,9 +175,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   slope and intercept expressions; Circle - by center and radius expressions; Point by
   coordinates (toggle: gives the point tools an X/Y panel).
 - **Measure**: Distance - two points or a segment; Angle (J) - vertex then two side points,
-  the angle under 180° whichever side comes first (the tool orders the sides; an angle goes
-  counterclockwise from its first side, and clicked the other way round a triangle's angle
-  said 270°; "Convert to opposite angle" gives the other), or one click inside an angle
+  the angle under 180° whichever side comes first (its `Sweep` row, see "Which of the two
+  angles" under "Design decisions", says otherwise), or one click inside an angle
   next to its vertex, within the reach of the mark it would get, where drawn lines,
   segments, rays or polygon sides leave a point (`AngleAtVertex`: the hover shows the mark
   and number faint, halos on the sides; `FigureCreator.TakesAngleAtVertex` is the hook, a
@@ -910,8 +911,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   name), a row by overriding the property with `[PropertyGridVisible(false)]`, or by making
   it read-only (`ConditionalPropertyValue`). Each of these was a bug: Convert to ray /
   segment on a parallel, a perpendicular or a bisector (built on a line and a point: it
-  threw; `LineTwoPoints.IsThroughTwoPoints`), Convert to segment / sector and Clockwise on
-  an angle's arc (`AngleArc`), the Text box of a measurement (`Measurement`, whose text is
+  threw; `LineTwoPoints.IsThroughTwoPoints`), Convert to segment / sector on an angle's
+  arc (`AngleArc`), the Text box of a measurement (`Measurement`, whose text is
   worked out), the style rows and buttons, Visible and Locked of a Number (nothing on
   the paper; Select all leaves numbers out, or a selection with one would lose those
   rows for every figure), a vector's Direction and an
@@ -1234,8 +1235,40 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   shoelace sum took the lobes that go round the other way away from the rest, and a bow
   tie measured 0. An open polyline's length has no closing side. An angle of a full turn
   but for rounding is 0 (`Math.OAngle`: two sides along one ray blinked between 0° and
-  360°), and a mark reflected in a line goes clockwise (`AngleArc.UpdateVisual` takes the
-  long way only when that way is long).
+  360°), whichever of the two angles a sweep chooses (`AngleSweep.Measure`).
+- **Which of the two angles** between two rays out of a point a figure means is one
+  property, `Sweep` (`Figures/AngleSweep.cs`, 2026-10-09), on every figure that is such a
+  region: the angle's mark and number, the bisector, and the four arc kinds with their
+  sectors and segments (`IHasSweep`; `IArc` has it, `EllipseArcBase` keeps it). With θ the
+  counterclockwise angle from the first ray (side, begin) to the second, the choices are
+  `Counterclockwise` (θ), `Clockwise` (360° - θ: the same as naming the sides the other way
+  round, kept as a choice so an arc's start stays the point it was built on), `Smaller`
+  ("Under 180°" in the grid) and `Larger` ("Over 180°"). The first two never jump and run
+  on past 180°; the last two trade places at 180°, where the number bounces and a bisector
+  turns round - right for a triangle's angle, which stays the inside one when the
+  triangle flattens and gets reflected; at exactly 180° the counterclockwise one is taken.
+  Everything derives from it: the number, the arc drawn (`IsClockwise`, worked out, is
+  what the path's `SweepDirection` and `IsAngleBetweenAngles` take), the fill, the
+  bisector's direction, an arc's length and its sector's area, a point's parameter domain
+  and the hit test; `IAngleProvider.Angle` is the chosen region's measure, so the sweep
+  changes the number a Rotate, Line at Angle or Translate takes and never the way a
+  rotation goes (GeoGebra's rule; `ang(A, B, C)` in an expression stays the bare
+  counterclockwise θ). Defaults: the Angle and Bisector tools make `Smaller` (so the
+  hover's wedge is what stays, also dragged past 180°: the creator no longer reorders the
+  sides, and the name is the points as clicked), the arc tools `Counterclockwise` (an arc
+  follows the cursor while drawn), and a conversion copies it. The mark and the number
+  each have the row and keep each other in step (`AngleArc.SyncCompanionSweep`); a
+  bisector built on a measurement takes the measurement's and its row is read-only. A
+  reflection in a line mirrors it (`Transformer`: ccw and cw trade, the conditional ones
+  stay), and a sweep that differs from the kind's default is saved as `Sweep="Larger"`.
+  The arc's post-creation panel (`ArcPanel`) starts with the row, so an arc that came out
+  the long way round is put right there. This replaced an arc's `Clockwise`, the
+  bisector's "Inside the angle" with `Flipped`, and three "Convert to opposite angle"
+  verbs, which each encoded a corner of the same table - and the Angle tool's hover
+  reordered the sides (as `Smaller`) while the figure it left was oriented. GeoGebra's
+  angleStyle 0, 1, 2 are `Counterclockwise`, `Smaller`, `Larger` (3, unbounded, counts
+  turns and is read as 0); DG's angles and bisectors are `Smaller`. The player has the
+  same property (`figures/angleSweep.js`).
 - **Curves have gaps** (`Curve.Gap`, a point that is not one, in what `GetPoints` gives):
   each stretch between gaps is a figure of its own in the geometry. A function graph has
   one where the function has no value - the graph goes on to the very edge of where it
@@ -2362,14 +2395,10 @@ Learned from `Reference/VB6/Source` while making the CD library load (`DGFReader
   `ShowHideControl`'s own `Dependencies` (what it shows and hides, and what the `.lgf` saves);
   `AddDependencies` alone only registers the dependents side and the boxes do nothing.
 - DG's angle bisector (`Math.bas GetBisector`) is the *interior* bisector and a whole line;
-  the reader sets `AngleBisector.Interior` and `IsLine` ("Whole line", saved as `Line="true"`).
-  `Interior` ("Inside the angle", saved as `Interior="true"`) halves the angle under 180°
-  whichever way round the sides are; off, the bisector halves the angle counterclockwise from
-  side 1 to side 2, which swings outside a triangle dragged the other way round. New
-  bisectors are interior; a file without the attribute gets the oriented one it was saved
-  with. "Convert to opposite angle" turns `Interior` off and reads the sides in the order
-  (`Flipped`) that points the bisector the other way; the verbs it would inherit from `Ray`
-  (Convert to line/segment, Reverse) are vetoed in `CanEdit`. Morley's trisectors are expressions and get the same effect from
+  the reader leaves the new bisector's `Sweep` at `Smaller` (the angle under 180°, see
+  "Which of the two angles") and sets `IsLine` ("Whole line", saved as `Line="true"`); the
+  verbs it would inherit from `Ray` (Convert to line/segment, Reverse) are vetoed in
+  `CanEdit`. Morley's trisectors are expressions and get the same effect from
   `SGN(pi - OANG(...)) * ANG(...)` - `OANG` is the counterclockwise angle in [0, 2pi).
 - A point on a figure is placed by moving it to its saved X,Y in one `MoveTo` (setting X then Y
   projects twice from off the figure and lands elsewhere); `AuxInfo(1)` (t on a line, clockwise

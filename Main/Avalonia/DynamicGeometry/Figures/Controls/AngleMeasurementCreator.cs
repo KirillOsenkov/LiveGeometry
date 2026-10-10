@@ -17,64 +17,16 @@ namespace DynamicGeometry
             return DependencyList.PointPointPoint;
         }
 
-        // The mark and the number, both made when the third point is there. (The arc used
-        // to be added for good with the preview, before the third point existed: it sat in
-        // the figure list ahead of a point it is built on, and a saved file came back in
-        // another order.)
+        // The mark and the number, both made when the third point is there, in the order
+        // the sides were clicked: a new angle is the one under 180 degrees whichever side
+        // came first (AngleSweep.Smaller, the default), so the preview and the figure agree
+        // wherever the cursor is. (The arc used to be added for good with the preview,
+        // before the third point existed: it sat in the figure list ahead of a point it is
+        // built on, and a saved file came back in another order.)
         protected override IEnumerable<IFigure> CreateFigures()
         {
-            var sides = InsideOrder(FoundDependencies);
-            yield return Factory.CreateAngleArc(Drawing, sides);
-            yield return Factory.CreateAngleMeasurement(Drawing, sides);
-        }
-
-        /// <summary>
-        /// The angle under 180 degrees between the two sides, whichever side was clicked
-        /// first: an angle goes counterclockwise from its first side to its second, and
-        /// clicked the other way round the angle of a triangle said 270 or 300 degrees.
-        /// "Convert to opposite angle" gives the other one; dragged afterwards, the angle is
-        /// what it has become (as the bisector's oriented sweep is).
-        /// </summary>
-        static IList<IFigure> InsideOrder(IList<IFigure> found)
-        {
-            if (found.Count == 3
-                && found[0] is IPoint vertex
-                && found[1] is IPoint first
-                && found[2] is IPoint second
-                && Math.OAngle(first.Coordinates, vertex.Coordinates, second.Coordinates) > Math.PI)
-            {
-                return new[] { found[0], found[2], found[1] };
-            }
-
-            return found;
-        }
-
-        /// <summary>
-        /// The preview keeps the angle under 180 degrees as the cursor moves. Its figures are
-        /// made once, when the second click lands and the point following the cursor is still
-        /// on the first side, so they were in click order: with the cursor on the other side
-        /// of the first side the mark went the long way round (343°) until the last click
-        /// made the figures afresh.
-        /// </summary>
-        public override void MouseMove(object sender, MouseEventArgs e)
-        {
-            base.MouseMove(sender, e);
-            if (TempResults.Count == 0 || FoundDependencies.Count != 3)
-            {
-                return;
-            }
-
-            var sides = InsideOrder(FoundDependencies);
-            foreach (var figure in TempResults)
-            {
-                if (figure.Dependencies[1] != sides[1])
-                {
-                    // the same two figures the other way round: nothing to register anew
-                    figure.Dependencies[1] = sides[1];
-                    figure.Dependencies[2] = sides[2];
-                    figure.RecalculateAndUpdateVisual();
-                }
-            }
+            yield return Factory.CreateAngleArc(Drawing, FoundDependencies);
+            yield return Factory.CreateAngleMeasurement(Drawing, FoundDependencies);
         }
 
         /// <summary>
@@ -100,7 +52,7 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>After the vertex: which side the point is for (the angle under 180° is measured whichever side comes first)</summary>
+        /// <summary>After the vertex: which side the point is for (the angle under 180° is measured whichever side comes first, its Sweep row says otherwise)</summary>
         public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
         {
             return AngleBisectorCreator.AngleSideHint(ClickedDependencies) ?? base.ConstructionHintText(args);

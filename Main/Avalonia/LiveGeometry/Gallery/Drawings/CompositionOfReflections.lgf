@@ -68,12 +68,12 @@
       <Dependency Name="ArcEndPoint11" />
       <Dependency Name="ArcEndPoint12" />
     </CircleArc>
-    <AngleMeasurement Name="AngleMeasurement72" OffsetX="49.7" OffsetY="-24">
+    <AngleMeasurement Name="AngleMeasurement72" OffsetX="49.7" OffsetY="-24" Sweep="Counterclockwise">
       <Dependency Name="Point2" />
       <Dependency Name="Point5" />
       <Dependency Name="Point1" />
     </AngleMeasurement>
-    <AngleMeasurement Name="AngleMeasurement73" OffsetX="-27.5" OffsetY="-56.8">
+    <AngleMeasurement Name="AngleMeasurement73" OffsetX="-27.5" OffsetY="-56.8" Sweep="Counterclockwise">
       <Dependency Name="Point2" />
       <Dependency Name="ReflectedPoint2" />
       <Dependency Name="Point3" />

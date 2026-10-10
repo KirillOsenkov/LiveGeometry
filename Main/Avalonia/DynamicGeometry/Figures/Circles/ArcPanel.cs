@@ -4,14 +4,15 @@ namespace DynamicGeometry;
 
 /// <summary>
 /// The side panel of an arc, a sector or a circular segment right after it is made or
-/// converted: the two verbs that make the other two kinds of it, and OK. An arc, a sector
-/// and a segment are the same three clicks (center, start, end), so the shapes have no tool
-/// of their own: the arc is drawn and this panel finishes it (<see cref="CircleArcCreator.ShowCreatedFigure"/>),
-/// and a verb clicked here ends in this panel for the new figure, so that one more click
-/// goes on to the third kind or back (the same verb in the figure's own grid ends in the
-/// new figure's grid: <see cref="EllipseArc.Convert"/>). The verb also trades the figure's
-/// style for the filled or unfilled one of its hue (<see cref="StyleManager.ConvertStyle"/>).
-/// Same for the elliptical kinds.
+/// converted: the figure's Sweep row (an arc that came out the long way round is put right
+/// here, <see cref="AngleSweep"/>), the two verbs that make the other two kinds of it, and
+/// OK. An arc, a sector and a segment are the same three clicks (center, start, end), so
+/// the shapes have no tool of their own: the arc is drawn and this panel finishes it
+/// (<see cref="CircleArcCreator.ShowCreatedFigure"/>), and a verb clicked here ends in this
+/// panel for the new figure, so that one more click goes on to the third kind or back (the
+/// same verb in the figure's own grid ends in the new figure's grid: <see cref="EllipseArc.Convert"/>).
+/// The verb also trades the figure's style for the filled or unfilled one of its hue
+/// (<see cref="StyleManager.ConvertStyle"/>). Same for the elliptical kinds.
 /// </summary>
 public class ArcPanel : ICustomPropertyProvider, ICustomMethodProvider
 {
@@ -42,10 +43,10 @@ public class ArcPanel : ICustomPropertyProvider, ICustomMethodProvider
         : IsSector ? "an arc or a segment"
         : "an arc or a sector";
 
-    /// <summary>No rows, only the verbs</summary>
+    /// <summary>The figure's own Sweep row (an undo step on the figure), then the verbs</summary>
     public IEnumerable<IValueProvider> GetProperties()
     {
-        yield break;
+        yield return PropertyDiscoveryStrategy.CreateValueProvider(figure, nameof(EllipseArcBase.Sweep));
     }
 
     /// <summary>

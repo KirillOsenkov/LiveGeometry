@@ -1,6 +1,6 @@
 // Port of Main/Avalonia/DynamicGeometry/Figures/Controls/AngleArc.cs: the mark of an angle, an
-// arc of a fixed size in pixels at the vertex (0 to 3 arcs, or the square sign at 90°).
-// Left out: Convert to opposite angle.
+// arc of a fixed size in pixels at the vertex (0 to 3 arcs, or the square sign at 90°), of
+// the angle its sweep chooses (AngleSweep; the number next to it says the same one).
 
 class AngleArc extends CircleArc {
     static DefaultSize = 20;
@@ -24,6 +24,11 @@ class AngleArc extends CircleArc {
 
     get isAngleArc() {
         return true;
+    }
+
+    /** A new mark says the angle under 180°, whichever way round its sides were clicked */
+    get defaultSweep() {
+        return AngleSweep.Smaller;
     }
 
     readXml(element) {
@@ -98,7 +103,7 @@ class AngleArc extends CircleArc {
             return false;
         }
 
-        return GeometryMath.isAngleBetweenAngles(GeometryMath.getAngle(center, point), this.startAngle, this.endAngle, this.clockwise);
+        return GeometryMath.isAngleBetweenAngles(GeometryMath.getAngle(center, point), this.startAngle, this.endAngle, this.isClockwise);
     }
 
     /** Anywhere on the mark: from the first arc out to the last one, the gaps between them included; inside a filled mark */
@@ -121,7 +126,7 @@ class AngleArc extends CircleArc {
         }
 
         const angleToPoint = GeometryMath.getAngle(center, point);
-        return GeometryMath.isAngleBetweenAngles(angleToPoint, this.startAngle, this.endAngle, this.clockwise) ? this : null;
+        return GeometryMath.isAngleBetweenAngles(angleToPoint, this.startAngle, this.endAngle, this.isClockwise) ? this : null;
     }
 
     updateVisual() {
@@ -130,12 +135,8 @@ class AngleArc extends CircleArc {
             return;
         }
 
-        // the way round it goes: the mirror image of a mark goes clockwise
-        let angle = GeometryMath.oAngle(this.beginLocation, center, this.endLocation);
-        if (this.clockwise && angle > 0) {
-            angle = 2 * Math.PI - angle;
-        }
-
+        // the angle the sweep chooses
+        const angle = this.angle;
         const isRightAngle = Math.abs(angle - Math.PI / 2) < AngleArc.RightAngleTolerance;
         this.shownSign = this.arcCount === 0 ? "None" : isRightAngle ? "RightAngle" : "Arc";
         this.shownAngle = angle;
@@ -194,16 +195,17 @@ class AngleArc extends CircleArc {
             return;
         }
 
-        // the arcs: counterclockwise from the first side, each a stroke and a bit further out
+        // the arcs: from the first side the way the sweep goes, each a stroke and a bit further out
         const startAngle = this.startAngle;
         const endAngle = this.endAngle;
+        const counterclockwise = !this.isClockwise;
         if (fill != null) {
             const radius = this.size;
             const start = corner.plus(first.scale(radius));
             const sector = [
                 { op: "move", x: corner.x, y: corner.y },
                 { op: "line", x: start.x, y: start.y },
-                { op: "arc", cx: corner.x, cy: corner.y, rx: radius, ry: radius, rotation: 0, start: -startAngle, end: -endAngle, counterclockwise: !this.clockwise },
+                { op: "arc", cx: corner.x, cy: corner.y, rx: radius, ry: radius, rotation: 0, start: -startAngle, end: -endAngle, counterclockwise },
                 { op: "close" }
             ];
             renderer.drawPath(sector, null, fill, new Rect(corner.x - radius, corner.y - radius, 2 * radius, 2 * radius));
@@ -214,7 +216,7 @@ class AngleArc extends CircleArc {
             const start = corner.plus(first.scale(radius));
             const commands = [
                 { op: "move", x: start.x, y: start.y },
-                { op: "arc", cx: corner.x, cy: corner.y, rx: radius, ry: radius, rotation: 0, start: -startAngle, end: -endAngle, counterclockwise: !this.clockwise }
+                { op: "arc", cx: corner.x, cy: corner.y, rx: radius, ry: radius, rotation: 0, start: -startAngle, end: -endAngle, counterclockwise }
             ];
             renderer.drawPath(commands, stroke, null, new Rect(corner.x - radius, corner.y - radius, 2 * radius, 2 * radius));
         }

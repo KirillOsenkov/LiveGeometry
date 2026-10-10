@@ -5,7 +5,7 @@
 class EllipseArcBase extends ShapeBase {
     constructor() {
         super();
-        this.clockwiseValue = false;
+        this.sweepValue = this.defaultSweep;
     }
 
     get isLinearFigure() {
@@ -50,22 +50,38 @@ class EllipseArcBase extends ShapeBase {
         return this.toLogicalLength(this.strokeThickness);
     }
 
-    get clockwise() {
-        return this.clockwiseValue;
+    /** Which of the two arcs between the begin and the end this is (AngleSweep) */
+    get sweep() {
+        return this.sweepValue;
     }
 
-    set clockwise(value) {
-        if (this.clockwiseValue !== value) {
-            this.clockwiseValue = value;
+    set sweep(value) {
+        if (this.sweepValue !== value) {
+            this.sweepValue = value;
             if (this.drawing != null) {
                 this.recalculateAllDependents();
             }
         }
     }
 
+    /** What a new one is: the way round the tool's clicks went (an angle's mark says the smaller angle) */
+    get defaultSweep() {
+        return AngleSweep.Counterclockwise;
+    }
+
+    /** The counterclockwise angle from the begin to the end, 0 to 2π: what the sweep chooses from */
+    get counterclockwiseAngle() {
+        return GeometryMath.oAngle(this.beginLocation, this.center, this.endLocation);
+    }
+
+    /** Whether the arc goes clockwise from its begin to its end right now */
+    get isClockwise() {
+        return AngleSweep.isClockwise(this.sweep, this.counterclockwiseAngle);
+    }
+
     /** The length of the arc: Simpson's rule over the parameter */
     get length() {
-        const start = this.parametricAngle(this.clockwise ? this.endLocation : this.beginLocation);
+        const start = this.parametricAngle(this.isClockwise ? this.endLocation : this.beginLocation);
         return GeometryMath.ellipseArcLength(this.semiMajor, this.semiMinor, start, this.parametricSweep);
     }
 
@@ -73,7 +89,7 @@ class EllipseArcBase extends ShapeBase {
     get arcMiddle() {
         const begin = this.parametricAngle(this.beginLocation);
         const sweep = this.parametricSweep;
-        return this.pointAtParametricAngle(begin + (this.clockwise ? -sweep : sweep) / 2);
+        return this.pointAtParametricAngle(begin + (this.isClockwise ? -sweep : sweep) / 2);
     }
 
     updateVisual() {
@@ -81,8 +97,9 @@ class EllipseArcBase extends ShapeBase {
 
     getNearestParameterFromPoint(point) {
         let result = GeometryMath.getAngle(this.center, point);
-        let a1 = this.clockwise ? this.endAngle : this.startAngle;
-        let a2 = this.clockwise ? this.startAngle : this.endAngle;
+        const clockwise = this.isClockwise;
+        let a1 = clockwise ? this.endAngle : this.startAngle;
+        let a2 = clockwise ? this.startAngle : this.endAngle;
         if (!Settings.pointsOnEllipticalsUseAbsoluteAngle) {
             const inclination = this.inclination;
             result -= inclination;
@@ -133,7 +150,7 @@ class EllipseArcBase extends ShapeBase {
         // the edge
         const width = this.logicalWidth();
         const angleToPoint = GeometryMath.getAngle(this.center, point);
-        if (GeometryMath.isAngleBetweenAngles(angleToPoint, this.startAngle, this.endAngle, this.clockwise)) {
+        if (GeometryMath.isAngleBetweenAngles(angleToPoint, this.startAngle, this.endAngle, this.isClockwise)) {
             const fromEdge = GeometryMath.radialDistanceToEllipse(this.center, this.semiMajor, this.semiMinor, this.inclination, point);
             if (Math.abs(fromEdge) < this.cursorTolerance + width / 2) {
                 return this;
@@ -181,7 +198,7 @@ class EllipseArcBase extends ShapeBase {
 
         const begin = this.parametricAngle(this.beginLocation);
         let sweep = this.parametricSweep;
-        if (this.clockwise) {
+        if (this.isClockwise) {
             sweep = -sweep;
         }
 
@@ -198,8 +215,9 @@ class EllipseArcBase extends ShapeBase {
     }
 
     getParameterDomain() {
-        const a1 = this.clockwise ? this.endAngle : this.startAngle;
-        let a2 = this.clockwise ? this.startAngle : this.endAngle;
+        const clockwise = this.isClockwise;
+        const a1 = clockwise ? this.endAngle : this.startAngle;
+        let a2 = clockwise ? this.startAngle : this.endAngle;
         if (a2 < a1) {
             a2 += 2 * Math.PI;
         }
@@ -244,18 +262,16 @@ class EllipseArcBase extends ShapeBase {
         return GeometryMath.getAngle(this.center, this.endLocation);
     }
 
-    /** The central angle of the arc */
+    /** The central angle of the arc, 0 to 2π: the measure of the region the sweep chooses */
     get angle() {
-        return this.clockwise
-            ? GeometryMath.oAngle(this.endLocation, this.center, this.beginLocation)
-            : GeometryMath.oAngle(this.beginLocation, this.center, this.endLocation);
+        return AngleSweep.measure(this.sweep, this.counterclockwiseAngle);
     }
 
     /** How far the arc goes around, 0 to 2π, in the angle t that parametrizes its ellipse */
     get parametricSweep() {
         const begin = this.parametricAngle(this.beginLocation);
         const end = this.parametricAngle(this.endLocation);
-        let sweep = this.clockwise ? begin - end : end - begin;
+        let sweep = this.isClockwise ? begin - end : end - begin;
         if (sweep < 0) {
             sweep += 2 * Math.PI;
         }
@@ -300,7 +316,7 @@ class EllipseArcBase extends ShapeBase {
 
     readXml(element) {
         super.readXml(element);
-        this.clockwise = Xml.readBool(element, "Clockwise", false);
+        this.sweepValue = AngleSweep.read(element, this.defaultSweep);
     }
 
     /** The path in pixels: the arc, closed by the chord or the radii where the figure is */
@@ -314,10 +330,10 @@ class EllipseArcBase extends ShapeBase {
 
         // canvas angles run the other way (y down): a counterclockwise sweep here is one
         // of decreasing canvas angle
+        const clockwise = this.isClockwise;
         const begin = this.parametricAngle(this.beginLocation);
-        let end = this.parametricAngle(this.endLocation);
         const sweep = this.parametricSweep;
-        end = this.clockwise ? begin - sweep : begin + sweep;
+        const end = clockwise ? begin - sweep : begin + sweep;
         const commands = [];
         const start = this.toPhysical(this.beginLocation);
         if (this.isSectorShape) {
@@ -327,7 +343,7 @@ class EllipseArcBase extends ShapeBase {
             commands.push({ op: "move", x: start.x, y: start.y });
         }
 
-        commands.push({ op: "arc", cx: center.x, cy: center.y, rx, ry, rotation: -this.inclination, start: -begin, end: -end, counterclockwise: !this.clockwise });
+        commands.push({ op: "arc", cx: center.x, cy: center.y, rx, ry, rotation: -this.inclination, start: -begin, end: -end, counterclockwise: !clockwise });
         if (this.isSectorShape || this.isSegmentShape) {
             commands.push({ op: "close" });
         }

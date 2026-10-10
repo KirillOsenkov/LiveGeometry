@@ -408,12 +408,7 @@ namespace DynamicGeometry
             var point1 = GetPoint(section, 0);
             var point2 = GetPoint(section, 2);
 
-            if (Math.OAngle(point1.Coordinates, vertex.Coordinates, point2.Coordinates) > Math.PI)
-            {
-                var temp = point1;
-                point1 = point2;
-                point2 = temp;
-            }
+            // the angle under 180 degrees whichever way round the points are (AngleSweep.Smaller, the default)
             var angle = Factory.CreateAngleMeasurement(
                 drawing,
                 new[] {
@@ -526,14 +521,14 @@ namespace DynamicGeometry
 
         void ReadAngleBisector(IniFile.Section section)
         {
-            // DG's bisector (Math.bas GetBisector) always halves the interior angle, and was a
-            // whole line, with intersections on both sides of the vertex
+            // DG's bisector (Math.bas GetBisector) always halves the interior angle (the
+            // angle under 180 degrees: AngleSweep.Smaller, the default), and was a whole
+            // line, with intersections on both sides of the vertex
             var vertex = GetPoint(section, 1);
             var side1 = GetPoint(section, 0);
             var side2 = GetPoint(section, 2);
             var figure = Factory.CreateAngleBisector(
                 drawing, new[] { vertex, side1, side2 });
-            figure.Interior = true;
             figure.IsLine = true;
             SetFigureStyle(section, figure);
             AddFigure(section, figure);

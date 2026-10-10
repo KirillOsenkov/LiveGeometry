@@ -73,6 +73,7 @@ public class Program
             ("Tab chooses among overlapping figures", ChoiceAmongOverlaps),
             ("One click inside an angle serves the bisector, Line at Angle, Rotate and Translate", AngleAtVertexShortcuts),
             ("A filled style fills the angle under a mark", FilledAngleMark),
+            ("The sweep chooses which of the two angles a mark, a number, a bisector and an arc are", AngleSweeps),
             ("A sector is filled: new, and made of an arc in its hue", ArcConversionStyles),
             ("The Arc tool's panel makes a sector or a segment of the arc", ArcPanelConverts),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
@@ -2287,6 +2288,118 @@ public class Program
             "No fill under the arc.");
         drawing.ActionManager.Undo();
         Require(arc.HitTest(inside) == null, "Undo of the style left the fill hit.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// One Sweep on the mark, the number, the bisector and an arc: the four choices give the
+    /// two regions between the sides, the mark and the number keep each other in step (undo
+    /// too), a bisector of a measurement follows the measurement, a reflection mirrors the
+    /// choice, and it is saved and read back
+    /// </summary>
+    static void AngleSweeps()
+    {
+        var drawing = NewDrawing();
+        var a = AddPoint(drawing, x: 0, y: 0);
+        var b = AddPoint(drawing, x: 4, y: 0);
+        var c = AddPoint(drawing, x: 0, y: -3);
+
+        // counterclockwise from B to C at A is 270 degrees: the smaller angle goes clockwise
+        var mark = Factory.CreateAngleArc(drawing, new IFigure[] { a, b, c });
+        var number = Factory.CreateAngleMeasurement(drawing, new IFigure[] { a, b, c });
+        Actions.Add(drawing, mark);
+        Actions.Add(drawing, number);
+        Require(number.Sweep == AngleSweep.Smaller && mark.Sweep == AngleSweep.Smaller, "A new angle is not the smaller one.");
+        Near(number.Measure, 90);
+        Near(mark.Measure, 90);
+        Require(mark.IsClockwise, "The smaller angle from B to C goes counterclockwise.");
+
+        var expected = new[]
+        {
+            (AngleSweep.Counterclockwise, 270.0),
+            (AngleSweep.Clockwise, 90.0),
+            (AngleSweep.Larger, 270.0),
+            (AngleSweep.Smaller, 90.0)
+        };
+        foreach (var (sweep, measure) in expected)
+        {
+            Set(drawing, number, nameof(AngleMeasurement.Sweep), sweep);
+            Require(mark.Sweep == sweep, sweep + ": the mark did not follow the number.");
+            Near(number.Measure, measure);
+            Near(mark.Measure, measure);
+            Require(mark.IsClockwise == (measure == 90), sweep + ": the mark goes the wrong way round.");
+        }
+
+        drawing.ActionManager.Undo();
+        Require(number.Sweep == AngleSweep.Larger && mark.Sweep == AngleSweep.Larger, "Undo of the sweep left the pair apart.");
+        Set(drawing, mark, nameof(AngleArc.Sweep), AngleSweep.Clockwise);
+        Require(number.Sweep == AngleSweep.Clockwise, "The number did not follow the mark.");
+
+        // the bisector of the smaller angle points into it, below the x axis
+        var bisector = Factory.CreateAngleBisector(drawing, new IFigure[] { a, b, c });
+        Actions.Add(drawing, bisector);
+        var direction = bisector.Coordinates.P2.Minus(bisector.Coordinates.P1);
+        Require(direction.X > 0 && direction.Y < 0, "The bisector of the smaller angle points to " + direction);
+        Near(bisector.Angle, 90);
+        Set(drawing, bisector, nameof(AngleBisector.Sweep), AngleSweep.Larger);
+        direction = bisector.Coordinates.P2.Minus(bisector.Coordinates.P1);
+        Require(direction.X < 0 && direction.Y > 0, "The bisector of the larger angle points to " + direction);
+        Near(bisector.Angle, 270);
+
+        // a bisector of the number halves the angle the number says
+        var onNumber = Factory.CreateAngleBisector(drawing, new IFigure[] { number });
+        Actions.Add(drawing, onNumber);
+        Require(!onNumber.CanEdit(nameof(AngleBisector.Sweep)), "A bisector of a measurement offers a sweep of its own.");
+        Require(onNumber.Sweep == AngleSweep.Clockwise, "A bisector of a measurement does not take its sweep.");
+        Near(onNumber.Angle, 90);
+        Set(drawing, number, nameof(AngleMeasurement.Sweep), AngleSweep.Larger);
+        Require(onNumber.Sweep == AngleSweep.Larger, "A bisector of a measurement did not follow its sweep.");
+        Near(onNumber.Angle, 270);
+        direction = onNumber.Coordinates.P2.Minus(onNumber.Coordinates.P1);
+        Require(direction.X < 0 && direction.Y > 0, "The bisector of the measurement's larger angle points to " + direction);
+
+        // an arc goes counterclockwise from its start unless its sweep says otherwise
+        var arc = Factory.CreateArc(drawing, new IFigure[] { a, b, c });
+        Actions.Add(drawing, arc);
+        Require(arc.Sweep == AngleSweep.Counterclockwise, "A new arc is not counterclockwise.");
+        Near(arc.Angle, 3 * System.Math.PI / 2);
+        Near(arc.Length, 6 * System.Math.PI);
+        Set(drawing, arc, nameof(CircleArc.Sweep), AngleSweep.Smaller);
+        Require(arc.IsClockwise, "The smaller arc from B to C goes counterclockwise.");
+        Near(arc.Angle, System.Math.PI / 2);
+        Near(arc.Length, 2 * System.Math.PI);
+        var sector = Factory.CreateCircleSector(drawing, arc.Dependencies);
+        EllipseArc.Replace(arc, sector);
+        Require(sector.Sweep == AngleSweep.Smaller, "The sector did not take the arc's sweep.");
+        Near(sector.Area, 4 * System.Math.PI);
+
+        // a reflection in a line mirrors a fixed choice and keeps a conditional one (the
+        // images are made and let go of again: the drawing stays as it is for the file)
+        var mirror = Factory.CreateSegment(drawing, a, b);
+        Actions.Add(drawing, mirror);
+        Set(drawing, mark, nameof(AngleArc.Sweep), AngleSweep.Clockwise);
+        var markImages = Transformer.CreateReflectedFigure(drawing, mark, mirror);
+        var reflectedMark = markImages.OfType<AngleArc>().Single();
+        Require(reflectedMark.Sweep == AngleSweep.Counterclockwise, "The mirror image of a clockwise mark is " + reflectedMark.Sweep);
+        var bisectorImages = Transformer.CreateReflectedFigure(drawing, bisector, mirror);
+        var reflectedBisector = bisectorImages.OfType<AngleBisector>().Single();
+        Require(reflectedBisector.Sweep == AngleSweep.Larger, "The mirror image of the larger angle's bisector is " + reflectedBisector.Sweep);
+        foreach (var image in markImages.Concat(bisectorImages))
+        {
+            image.UnregisterFromDependencies();
+        }
+
+        Set(drawing, number, nameof(AngleMeasurement.Sweep), AngleSweep.Larger);
+        var saved = drawing.SaveAsText();
+        Require(saved.Contains("Sweep=\"Larger\"") && !saved.Contains("Clockwise=") && !saved.Contains("Interior="), "The sweep is not what the file says.");
+        var loaded = ReadLgf(saved);
+        Require(loaded.LoadErrors == null, "Reload: " + loaded.LoadErrors);
+        Require(
+            loaded.Figures.OfType<AngleMeasurement>().Single().Sweep == AngleSweep.Larger
+                && loaded.Figures.OfType<AngleArc>().Single().Sweep == AngleSweep.Larger
+                && loaded.Figures.OfType<AngleBisector>().All(f => f.Sweep == AngleSweep.Larger)
+                && loaded.Figures.OfType<CircleSector>().Single().Sweep == AngleSweep.Smaller,
+            "The sweeps did not come back from the file.");
         drawing.Figures.CheckConsistency();
     }
 

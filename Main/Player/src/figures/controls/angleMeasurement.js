@@ -20,11 +20,13 @@ class AngleMeasurementBase extends Measurement {
         this.updateVisual();
     }
 
+    /** The number shown: the angle in the unit chosen */
     get measure() {
-        const measure = GeometryMath.oAngle(this.point(1), this.point(0), this.point(2));
-        return this.radians ? measure : GeometryMath.toDegrees(measure);
+        const angle = this.angle;
+        return this.radians ? angle : GeometryMath.toDegrees(angle);
     }
 
+    /** The angle in radians, 0 to 2π: counterclockwise from the first side to the second */
     get angle() {
         return GeometryMath.oAngle(this.point(1), this.point(0), this.point(2));
     }
@@ -46,6 +48,26 @@ class AngleMeasurementBase extends Measurement {
 }
 
 class AngleMeasurement extends AngleMeasurementBase {
+    /** A new angle is the one under 180°, whichever way round its sides were clicked */
+    static DefaultSweep = AngleSweep.Smaller;
+
+    constructor() {
+        super();
+
+        /** Which of the two angles at the vertex the number says (AngleSweep); the mark next to it shows the same one */
+        this.sweep = AngleMeasurement.DefaultSweep;
+    }
+
+    /** The measure of the angle the sweep chooses */
+    get angle() {
+        return AngleSweep.measure(this.sweep, super.angle);
+    }
+
+    readXml(element) {
+        super.readXml(element);
+        this.sweep = AngleSweep.read(element, AngleMeasurement.DefaultSweep);
+    }
+
     /** No angle while a side has no length */
     updateExistence() {
         super.updateExistence();

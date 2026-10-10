@@ -418,11 +418,10 @@ namespace DynamicGeometry
                     AddSideSegments(drawing, source, reflected, result);
                 }
 
-                // Flip the wind of arcs.
-                var arc = reflected as IArc;
-                if (arc != null && mirror is ILine)
+                // a reflection turns a counterclockwise arc, mark or bisector clockwise
+                if (reflected is IHasSweep withSweep && mirror is ILine)
                 {
-                    arc.Clockwise = !arc.Clockwise;
+                    withSweep.Sweep = withSweep.Sweep.Mirrored();
                 }
 
             }

@@ -36,15 +36,17 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>The number shown: the angle in the unit chosen</summary>
         public virtual double Measure
         {
             get
             {
-                var measure = Math.OAngle(Point(1), Point(0), Point(2));
-                return (Radians) ? measure : measure.ToDegrees();
+                var angle = Angle;
+                return (Radians) ? angle : angle.ToDegrees();
             }
         }
 
+        /// <summary>The angle in radians, 0 to 2π: counterclockwise from the first side to the second</summary>
         public virtual double Angle
         {
             get
@@ -93,8 +95,49 @@ namespace DynamicGeometry
         }
     }
 
-    public class AngleMeasurement : AngleMeasurementBase, IConditionalProperties
+    public class AngleMeasurement : AngleMeasurementBase, IConditionalProperties, IHasSweep
     {
+        AngleSweep sweep = DefaultSweep;
+
+        /// <summary>A new angle is the one under 180°, whichever way round its sides were clicked</summary>
+        public const AngleSweep DefaultSweep = AngleSweep.Smaller;
+
+        /// <summary>
+        /// Which of the two angles at the vertex the number says (<see cref="AngleSweep"/>);
+        /// the mark next to it, its companion, shows the same one. What is built on the
+        /// angle (a bisector, a rotation by it) follows.
+        /// </summary>
+        [PropertyGridVisible]
+        public AngleSweep Sweep
+        {
+            get
+            {
+                return sweep;
+            }
+            set
+            {
+                if (sweep != value)
+                {
+                    sweep = value;
+                    if (Drawing != null)
+                    {
+                        this.RecalculateAllDependents();
+                    }
+                }
+
+                AngleArc.SyncCompanionSweep(this, value);
+            }
+        }
+
+        /// <summary>The measure of the angle the sweep chooses</summary>
+        public override double Angle
+        {
+            get
+            {
+                return Sweep.Measure(base.Angle);
+            }
+        }
+
         /// <summary>Without its arc (deleted) the number has no arcs to count</summary>
         public bool CanEdit(string propertyName)
         {
@@ -140,13 +183,19 @@ namespace DynamicGeometry
             }
         }
 
-        [PropertyGridVisible]
-        [PropertyGridName("Convert to opposite angle")]
-        [PropertyGridIcon(PropertyGridIcon.Angle)]
-        public void ConvertToOpposite()
+        public override void ReadXml(System.Xml.Linq.XElement element)
         {
-            // the arc goes along
-            AngleArc.ConvertToOpposite(this);
+            base.ReadXml(element);
+            sweep = element.ReadSweep(DefaultSweep);
+        }
+
+        public override void WriteXml(System.Xml.XmlWriter writer)
+        {
+            base.WriteXml(writer);
+            if (sweep != DefaultSweep)
+            {
+                writer.WriteAttributeString("Sweep", sweep.ToString());
+            }
         }
     }
 

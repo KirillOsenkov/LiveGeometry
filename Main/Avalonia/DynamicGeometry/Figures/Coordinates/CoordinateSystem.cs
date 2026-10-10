@@ -335,7 +335,7 @@ namespace DynamicGeometry
                     for (int quarter = 0; quarter < 4; quarter++)
                     {
                         double angle = quarter * M.PI / 2;
-                        if (Math.IsAngleBetweenAngles(angle, arc.StartAngle, arc.EndAngle, arc.Clockwise))
+                        if (Math.IsAngleBetweenAngles(angle, arc.StartAngle, arc.EndAngle, arc.IsClockwise))
                         {
                             Include(new Point(center.X + radius * M.Cos(angle), center.Y + radius * M.Sin(angle)));
                         }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
-using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
@@ -9,8 +8,7 @@ namespace DynamicGeometry
     {
         /// <summary>
         /// An arc's verbs that are not an angle mark's: it is not an arc between two points
-        /// to make a circle segment or a sector of, and which way round it goes is the
-        /// angle's (<see cref="ConvertToOpposite()"/>).
+        /// to make a circle segment or a sector of.
         /// </summary>
         public bool CanEdit(string propertyName)
         {
@@ -57,17 +55,42 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>Not in the grid: the mark goes the way the angle is measured, counterclockwise from the first side</summary>
-        [PropertyGridVisible(false)]
-        public override bool Clockwise
+        /// <summary>A new mark says the angle under 180°, whichever way round its sides were clicked</summary>
+        protected override AngleSweep DefaultSweep
         {
             get
             {
-                return base.Clockwise;
+                return AngleSweep.Smaller;
+            }
+        }
+
+        /// <summary>
+        /// Which of the two angles at the vertex the mark shows (<see cref="AngleSweep"/>);
+        /// the number next to it, its companion, says the same one (<see cref="SyncCompanionSweep"/>).
+        /// </summary>
+        public override AngleSweep Sweep
+        {
+            get
+            {
+                return base.Sweep;
             }
             set
             {
-                base.Clockwise = value;
+                base.Sweep = value;
+                SyncCompanionSweep(this, value);
+            }
+        }
+
+        /// <summary>
+        /// The mark and the number are two figures of one angle: a sweep set on one is set on
+        /// the other (whose setter finds nothing to change back). Nothing without a companion,
+        /// which was deleted.
+        /// </summary>
+        public static void SyncCompanionSweep(IFigure angleFigure, AngleSweep sweep)
+        {
+            if (FindCompanion(angleFigure) is IHasSweep companion && companion.Sweep != sweep)
+            {
+                companion.Sweep = sweep;
             }
         }
 
@@ -198,7 +221,7 @@ namespace DynamicGeometry
                 return false;
             }
 
-            return Math.IsAngleBetweenAngles(Math.GetAngle(center, point), StartAngle, EndAngle, Clockwise);
+            return Math.IsAngleBetweenAngles(Math.GetAngle(center, point), StartAngle, EndAngle, IsClockwise);
         }
 
         /// <summary>The sector between the vertex and an arc, in pixels, to be filled and not stroked (the hover's ghost uses it too)</summary>
@@ -450,14 +473,6 @@ namespace DynamicGeometry
             }
         }
 
-        [PropertyGridVisible]
-        [PropertyGridName("Convert to opposite angle")]
-        [PropertyGridIcon(PropertyGridIcon.Angle)]
-        public void ConvertToOpposite()
-        {
-            ConvertToOpposite(this);
-        }
-
         /// <summary>
         /// An angle is two figures, the arc and the number, on the same vertex and the same two
         /// points. This finds the other one of the pair (null if it was deleted).
@@ -478,57 +493,6 @@ namespace DynamicGeometry
                 && f.Dependencies[0] == dependencies[0]
                 && f.Dependencies.Contains(dependencies[1])
                 && f.Dependencies.Contains(dependencies[2]));
-        }
-
-        /// <summary>
-        /// Swaps the two sides, which turns the angle into the one that completes it to 360
-        /// degrees - for the arc and the number together, whichever of them was asked. One
-        /// undo step.
-        /// </summary>
-        public static void ConvertToOpposite(IFigure angleFigure)
-        {
-            var dependencies = angleFigure.Dependencies;
-            if (dependencies.Count != 3 || angleFigure.Drawing == null)
-            {
-                return;
-            }
-
-            var companion = FindCompanion(angleFigure);
-            var first = dependencies[1];
-            var second = dependencies[2];
-
-            // not "swap it too": the companion gets the same sides, in case the two were out
-            // of step already - and its own back on undo
-            var companionFirst = companion?.Dependencies[1];
-            var companionSecond = companion?.Dependencies[2];
-            angleFigure.Drawing.ActionManager.RecordAction(new CallMethodAction(
-                () =>
-                {
-                    SetSides(angleFigure, second, first);
-                    if (companion != null)
-                    {
-                        SetSides(companion, second, first);
-                    }
-                },
-                () =>
-                {
-                    SetSides(angleFigure, first, second);
-                    if (companion != null)
-                    {
-                        SetSides(companion, companionFirst, companionSecond);
-                    }
-                }));
-        }
-
-        /// <summary>The two sides of an angle figure in this order; the same two figures, so nothing to register anew</summary>
-        static void SetSides(IFigure angleFigure, IFigure first, IFigure second)
-        {
-            angleFigure.Dependencies[1] = first;
-            angleFigure.Dependencies[2] = second;
-            angleFigure.RecalculateAndUpdateVisual();
-
-            // what is built on the angle: a bisector, a rotation by it
-            angleFigure.RecalculateAllDependents();
         }
 
         /// <summary>
@@ -559,7 +523,7 @@ namespace DynamicGeometry
             }
 
             var angleToPoint = Math.GetAngle(center, point);
-            return Math.IsAngleBetweenAngles(angleToPoint, StartAngle, EndAngle, Clockwise) ? this : null;
+            return Math.IsAngleBetweenAngles(angleToPoint, StartAngle, EndAngle, IsClockwise) ? this : null;
         }
 
         public override void UpdateVisual()
@@ -573,14 +537,9 @@ namespace DynamicGeometry
                 return;
             }
 
-            // the way round it goes: the mirror image of a mark goes clockwise (reflected, a
-            // 60 degree mark came out as the 300 degree loop on the other side)
-            var angle = Math.OAngle(BeginLocation, center, EndLocation);
-            if (Clockwise && angle > 0)
-            {
-                angle = 2 * Math.PI - angle;
-            }
-
+            // the angle the sweep chooses, and which way round it goes from the first side
+            var angle = Angle;
+            ArcShape.SweepDirection = IsClockwise ? Avalonia.Media.SweepDirection.Clockwise : Avalonia.Media.SweepDirection.CounterClockwise;
             var isRightAngle = System.Math.Abs(angle - Math.PI / 2) < RightAngleTolerance;
             // What the first figure of the path is made of. "Nothing" is a figure without
             // segments and not a path without figures: an empty path doesn't get repainted.

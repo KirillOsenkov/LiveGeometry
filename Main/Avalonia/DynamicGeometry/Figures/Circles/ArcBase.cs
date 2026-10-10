@@ -9,18 +9,25 @@ namespace DynamicGeometry
         double Angle { get; }
     }
 
-    public interface IArc : IFigure, ILinearFigure, IEllipse, IAngleProvider
+    public interface IArc : IFigure, ILinearFigure, IEllipse, IAngleProvider, IHasSweep
     {
         // Implemented by EllipseArc, EllipseSegment, and CircleSegment.
         double EndAngle { get; }
         double StartAngle { get; }
         Point EndLocation { get; }
         Point BeginLocation { get; }
-        bool Clockwise { get; set; }
+
+        /// <summary>Whether the arc goes clockwise from its begin to its end right now (see <see cref="Sweep"/>)</summary>
+        bool IsClockwise { get; }
     }
 
     public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthProvider
     {
+        protected EllipseArcBase()
+        {
+            sweep = DefaultSweep;
+        }
+
         /// <summary>Named as circles are: c, d...</summary>
         protected override string FirstLetter
         {
@@ -101,34 +108,59 @@ namespace DynamicGeometry
             return ToLogical(Shape.StrokeThickness);
         }
 
-        bool mClockwise = false;
+        AngleSweep sweep;
+
+        /// <summary>
+        /// Which of the two arcs between the begin and the end this is (<see cref="AngleSweep"/>):
+        /// the one counterclockwise from the begin, the one clockwise, or whichever is under
+        /// or over 180°. The arc drawn, its length, the area of its sector or segment, the
+        /// parameter of a point on it and where it is hit all follow it.
+        /// </summary>
         [PropertyGridVisible]
-        public virtual bool Clockwise
+        public virtual AngleSweep Sweep
         {
             get
             {
-                return mClockwise;
+                return sweep;
             }
             set
             {
-                if (mClockwise != value)
+                if (sweep != value)
                 {
-                    mClockwise = value;
-                    if (mClockwise)
-                    {
-                        ArcShape.SweepDirection = SweepDirection.Clockwise;
-                    }
-                    else
-                    {
-                        ArcShape.SweepDirection = SweepDirection.CounterClockwise;
-                    }
+                    sweep = value;
                     if (Drawing != null)
                     {
                         // a point on the arc, its length: what is built on it follows
                         this.RecalculateAllDependents();
                     }
                 }
+            }
+        }
 
+        /// <summary>What a new one is: the way round the tool's clicks went (an angle's mark says the smaller angle)</summary>
+        protected virtual AngleSweep DefaultSweep
+        {
+            get
+            {
+                return AngleSweep.Counterclockwise;
+            }
+        }
+
+        /// <summary>The counterclockwise angle from the begin to the end, 0 to 2π: what the sweep chooses from</summary>
+        protected double CounterclockwiseAngle
+        {
+            get
+            {
+                return Math.OAngle(BeginLocation, Center, EndLocation);
+            }
+        }
+
+        /// <summary>Whether the arc goes clockwise from its begin to its end right now</summary>
+        public bool IsClockwise
+        {
+            get
+            {
+                return Sweep.IsClockwise(CounterclockwiseAngle);
             }
         }
 
@@ -141,7 +173,7 @@ namespace DynamicGeometry
         {
             get
             {
-                double start = ParametricAngle(Clockwise ? EndLocation : BeginLocation);
+                double start = ParametricAngle(IsClockwise ? EndLocation : BeginLocation);
                 return Math.EllipseArcLength(SemiMajor, SemiMinor, start, ParametricSweep);
             }
         }
@@ -159,13 +191,12 @@ namespace DynamicGeometry
             {
                 double begin = ParametricAngle(BeginLocation);
                 double sweep = ParametricSweep;
-                return PointAtParametricAngle(begin + (Clockwise ? -sweep : sweep) / 2);
+                return PointAtParametricAngle(begin + (IsClockwise ? -sweep : sweep) / 2);
             }
         }
 
         public override void UpdateVisual()
         {
-            var center = Center;
             var startPoint = BeginLocation;
             var endPoint = EndLocation;
 
@@ -173,15 +204,16 @@ namespace DynamicGeometry
             Figure.StartPoint = ToPhysical(startPoint);
             ArcShape.Point = ToPhysical(endPoint);
             ArcShape.RotationAngle = -Inclination.ToDegrees();
-            ArcShape.IsLargeArc = Clockwise ? Math.OAngle(endPoint, center, startPoint) > Math.PI :
-                                              Math.OAngle(startPoint, center, endPoint) > Math.PI;
+            ArcShape.SweepDirection = IsClockwise ? SweepDirection.Clockwise : SweepDirection.CounterClockwise;
+            ArcShape.IsLargeArc = Angle > Math.PI;
         }
 
         public virtual double GetNearestParameterFromPoint(Point point)
         {
             var result = Math.GetAngle(Center, point);
-            var a1 = (Clockwise) ? EndAngle : StartAngle;
-            var a2 = (Clockwise) ? StartAngle : EndAngle;
+            bool clockwise = IsClockwise;
+            var a1 = clockwise ? EndAngle : StartAngle;
+            var a2 = clockwise ? StartAngle : EndAngle;
             if (!Settings.PointsOnEllipticalsUseAbsoluteAngle)
             {
                 var inclination = Inclination;
@@ -245,7 +277,7 @@ namespace DynamicGeometry
             // HitTest for the edge
             var width = LogicalWidth();
             var angleToPoint = Math.GetAngle(Center, point);
-            bool between = Math.IsAngleBetweenAngles(angleToPoint, StartAngle, EndAngle, Clockwise);
+            bool between = Math.IsAngleBetweenAngles(angleToPoint, StartAngle, EndAngle, IsClockwise);
             if (between)
             {
                 var fromEdge = Math.RadialDistanceToEllipse(
@@ -286,8 +318,9 @@ namespace DynamicGeometry
 
         public virtual Tuple<double, double> GetParameterDomain()
         {
-            var a1 = (Clockwise) ? EndAngle : StartAngle;
-            var a2 = (Clockwise) ? StartAngle : EndAngle;
+            bool clockwise = IsClockwise;
+            var a1 = clockwise ? EndAngle : StartAngle;
+            var a2 = clockwise ? StartAngle : EndAngle;
             if (a2 < a1)
             {
                 a2 += 2 * Math.PI;
@@ -352,15 +385,14 @@ namespace DynamicGeometry
         }
 
         /// <summary>
-        /// The central angle of the arc.
+        /// The central angle of the arc, 0 to 2π: the measure of the region the sweep chooses
+        /// (what a tool or an expression takes the arc for).
         /// </summary>
         public virtual double Angle
         {
             get
             {
-                //return Math.GetAngle(StartAngle, EndAngle);
-                return Clockwise ? Math.OAngle(EndLocation, Center, BeginLocation) :
-                                   Math.OAngle(BeginLocation, Center, EndLocation);
+                return Sweep.Measure(CounterclockwiseAngle);
             }
         }
 
@@ -376,13 +408,13 @@ namespace DynamicGeometry
             {
                 double begin = ParametricAngle(BeginLocation);
                 double end = ParametricAngle(EndLocation);
-                double sweep = Clockwise ? begin - end : end - begin;
-                if (sweep < 0)
+                double result = IsClockwise ? begin - end : end - begin;
+                if (result < 0)
                 {
-                    sweep += 2 * Math.PI;
+                    result += 2 * Math.PI;
                 }
 
-                return sweep;
+                return result;
             }
         }
 
@@ -443,15 +475,15 @@ namespace DynamicGeometry
         public override void ReadXml(System.Xml.Linq.XElement element)
         {
             base.ReadXml(element);
-            Clockwise = element.ReadBool("Clockwise", false);
+            sweep = element.ReadSweep(DefaultSweep);
         }
 
         public override void WriteXml(System.Xml.XmlWriter writer)
         {
             base.WriteXml(writer);
-            if (Clockwise)
+            if (sweep != DefaultSweep)
             {
-                writer.WriteAttributeBool("Clockwise", Clockwise);
+                writer.WriteAttributeString("Sweep", sweep.ToString());
             }
         }
     }

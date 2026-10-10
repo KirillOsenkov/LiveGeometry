@@ -1656,8 +1656,9 @@ public class GeoGebraReader
         var center = Circumcenter(points);
         var arc = (IArc)create(drawing, new[] { center, points[0], points[2] });
         var middle = ((IPoint)points[1]).Coordinates;
-        arc.Clockwise = Math.OAngle(((IPoint)points[0]).Coordinates, center.Coordinates, middle)
+        bool clockwise = Math.OAngle(((IPoint)points[0]).Coordinates, center.Coordinates, middle)
             > Math.OAngle(((IPoint)points[0]).Coordinates, center.Coordinates, ((IPoint)points[2]).Coordinates);
+        arc.Sweep = clockwise ? AngleSweep.Clockwise : AngleSweep.Counterclockwise;
         return Add(arc);
     }
 
@@ -1800,7 +1801,6 @@ public class GeoGebraReader
         if (inputs.Length == 3)
         {
             var bisector = Factory.CreateAngleBisector(drawing, new[] { PointOf(inputs[1]), PointOf(inputs[0]), PointOf(inputs[2]) });
-            bisector.Interior = true;
             bisector.IsLine = true;
             return One(Add(bisector));
         }
@@ -1831,7 +1831,6 @@ public class GeoGebraReader
         }
 
         var first = Factory.CreateAngleBisector(drawing, new[] { vertex, side1, side2 });
-        first.Interior = true;
         first.IsLine = true;
         Add(first);
         var second = Add(Factory.CreatePerpendicularLine(drawing, new IFigure[] { first, vertex }));
@@ -2416,18 +2415,16 @@ public class GeoGebraReader
 
     /// <summary>
     /// angleStyle: 0 counterclockwise as given (may be reflex), 1 never reflex, 2 always
-    /// reflex, 3 unbounded. Ours goes counterclockwise from its second point to its third:
-    /// swapping them gives the other angle.
+    /// reflex, 3 unbounded (counts turns: ours can't, and takes it as 0). Each is one of our
+    /// sweeps (<see cref="AngleSweep"/>), set on the number and, through it, the mark.
     /// </summary>
     void ApplyAngleElement(XElement element, AngleMeasurement angle)
     {
         var style = element.Element("angleStyle");
         int angleStyle = style != null ? (int)style.ReadDouble("val") : 0;
-        bool reflex = Math.OAngle(angle.Point(1), angle.Point(0), angle.Point(2)) > Math.PI;
-        if ((angleStyle == 1 && reflex) || (angleStyle == 2 && !reflex))
-        {
-            AngleArc.ConvertToOpposite(angle);
-        }
+        angle.Sweep = angleStyle == 1 ? AngleSweep.Smaller
+            : angleStyle == 2 ? AngleSweep.Larger
+            : AngleSweep.Counterclockwise;
 
         var arc = AngleArc.FindCompanion(angle) as AngleArc;
         if (arc != null)

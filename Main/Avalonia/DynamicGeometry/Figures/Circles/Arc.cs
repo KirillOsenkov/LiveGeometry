@@ -45,7 +45,7 @@ namespace DynamicGeometry
         {
             var drawing = oldArc.Drawing;
             newArc.Style = drawing.StyleManager.ConvertStyle(oldArc, newArc);
-            newArc.Clockwise = oldArc.Clockwise;
+            newArc.Sweep = oldArc.Sweep;
 
             // a hidden helper (converted from the Figure List) stays hidden
             newArc.Visible = oldArc.Visible;

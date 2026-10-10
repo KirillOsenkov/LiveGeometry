@@ -262,7 +262,7 @@ class CoordinateSystem {
                 const radius = figure.semiMajor;
                 for (let quarter = 0; quarter < 4; quarter++) {
                     const angle = quarter * Math.PI / 2;
-                    if (GeometryMath.isAngleBetweenAngles(angle, figure.startAngle, figure.endAngle, figure.clockwise)) {
+                    if (GeometryMath.isAngleBetweenAngles(angle, figure.startAngle, figure.endAngle, figure.isClockwise)) {
                         includePoint(new Point(center.x + radius * Math.cos(angle), center.y + radius * Math.sin(angle)));
                     }
                 }

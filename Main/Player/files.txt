@@ -16,6 +16,7 @@ styles/styleManager.js
 figures/zOrder.js
 figures/figureTypes.js
 figures/nameDisplay.js
+figures/angleSweep.js
 figures/figureBase.js
 figures/lists/dependencyAlgorithms.js
 figures/lists/figureList.js

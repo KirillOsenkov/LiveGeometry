@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
-    public class AngleBisector : Ray, IConditionalProperties
+    public class AngleBisector : Ray, IConditionalProperties, IHasSweep
     {
         PointPair coordinates;
 
@@ -53,59 +52,50 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>The angle halved, in degrees</summary>
         [PropertyGridVisible]
         public override double Angle
         {
             get
             {
                 var dependencies = GetDependencies();
-                double result = 0;
-                if (dependencies != null)
-                {
-
-                    result = (Flipped) ?
-                        Math.OAngle(
-                        dependencies.Point(2),
-                        dependencies.Point(0),
-                        dependencies.Point(1)).ToDegrees() :
-                        Math.OAngle(
-                        dependencies.Point(1),
-                        dependencies.Point(0),
-                        dependencies.Point(2)).ToDegrees();
-                    if (Interior && result > 180)
-                    {
-                        result = 360 - result;
-                    }
-                }
-                return result;
+                return dependencies != null ? Sweep.Measure(CounterclockwiseAngle(dependencies)).ToDegrees() : 0;
             }
         }
 
+        /// <summary>The counterclockwise angle from the first side to the second, 0 to 2π: what the sweep chooses from</summary>
+        static double CounterclockwiseAngle(IFigure[] dependencies)
+        {
+            return Math.OAngle(dependencies.Point(1), dependencies.Point(0), dependencies.Point(2));
+        }
+
+        AngleSweep sweep = DefaultSweep;
+
+        /// <summary>A new bisector halves the angle under 180°, whichever way round its sides were clicked</summary>
+        public const AngleSweep DefaultSweep = AngleSweep.Smaller;
+
         /// <summary>
-        /// Halves the angle under 180° between the sides, whichever way round they are. Off,
-        /// the bisector halves the angle counterclockwise from the first side to the second, so
-        /// it swings outside a triangle whose vertices get dragged the other way round. On for
-        /// new bisectors; files from before have it off, as they were.
+        /// Which of the two angles between the sides is halved (<see cref="AngleSweep"/>). A
+        /// bisector built on an angle measurement halves the angle that says, and the row is
+        /// read-only then (<see cref="CanEdit"/>).
         /// </summary>
         [PropertyGridVisible]
-        [PropertyGridName("Inside the angle")]
-        public bool Interior
+        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
+        public AngleSweep Sweep
         {
             get
             {
-                return interior;
+                return Dependencies.Count == 1 && Dependencies[0] is IHasSweep angle ? angle.Sweep : sweep;
             }
             set
             {
-                interior = value;
+                sweep = value;
                 if (Drawing != null)
                 {
                     this.RecalculateAllDependents();
                 }
             }
         }
-
-        bool interior = true;
 
         /// <summary>
         /// Extends the bisector in both directions (which is what DG's bisector was): the
@@ -177,7 +167,7 @@ namespace DynamicGeometry
         {
             base.ReadXml(element);
             isLine = element.ReadBool("Line", false);
-            interior = element.ReadBool("Interior", false);
+            sweep = element.ReadSweep(DefaultSweep);
         }
 
         public override void WriteXml(System.Xml.XmlWriter writer)
@@ -188,59 +178,26 @@ namespace DynamicGeometry
                 writer.WriteAttributeBool("Line", true);
             }
 
-            if (Interior)
+            // (a bisector of a measurement takes the measurement's sweep: nothing of its own to say)
+            if (sweep != DefaultSweep && Dependencies.Count == 3)
             {
-                writer.WriteAttributeBool("Interior", true);
+                writer.WriteAttributeString("Sweep", sweep.ToString());
             }
-        }
-
-        /// <summary>
-        /// The bisector of the other angle the two sides make: the same line, pointing the
-        /// other way. Inside-the-angle mode has no other angle, so it goes, and the sides are
-        /// read in the order (<see cref="FigureBase.Flipped"/>) whose sweep is the other one.
-        /// One undo step.
-        /// </summary>
-        [PropertyGridVisible]
-        [PropertyGridName("Convert to opposite angle")]
-        [PropertyGridIcon(PropertyGridIcon.Angle)]
-        public void ConvertToOpposite()
-        {
-            if (Drawing == null)
-            {
-                return;
-            }
-
-            bool wasInterior = interior;
-            bool wasFlipped = Flipped;
-
-            // which order of the sides points the other way: try the one there is
-            var direction = coordinates.P2.Minus(coordinates.P1);
-            interior = false;
-            Recalculate();
-            var oriented = coordinates.P2.Minus(coordinates.P1);
-            bool flipped = oriented.X * direction.X + oriented.Y * direction.Y > 0 ? !wasFlipped : wasFlipped;
-            interior = wasInterior;
-
-            Drawing.ActionManager.RecordAction(new CallMethodAction(
-                () => SetSweep(interior: false, flipped: flipped),
-                () => SetSweep(wasInterior, wasFlipped)));
-            Drawing.RaiseSelectionChanged(this);
-        }
-
-        void SetSweep(bool interior, bool flipped)
-        {
-            this.interior = interior;
-            Flipped = flipped;
-            this.RecalculateAllDependents();
         }
 
         /// <summary>
         /// A ray's verbs that are not a bisector's: it is built on an angle, not on two points
         /// to draw a line or a segment through, and the way it points is the angle's
-        /// (<see cref="ConvertToOpposite"/>). The whole line is <see cref="IsLine"/>.
+        /// (<see cref="Sweep"/>). The whole line is <see cref="IsLine"/>. The sweep of a
+        /// bisector built on a measurement is the measurement's.
         /// </summary>
         public bool CanEdit(string propertyName)
         {
+            if (propertyName == nameof(Sweep))
+            {
+                return Dependencies.Count == 3;
+            }
+
             return propertyName != nameof(ConvertToLine)
                 && propertyName != nameof(ConvertToSegment)
                 && propertyName != nameof(Reverse);
@@ -276,13 +233,13 @@ namespace DynamicGeometry
             if (dependencies != null)
             {
                 var vertex = dependencies.Point(0);
-                var side1 = dependencies.Point(Flipped ? 2 : 1);
-                var side2 = dependencies.Point(Flipped ? 1 : 2);
+                var side1 = dependencies.Point(1);
+                var side2 = dependencies.Point(2);
 
-                // the halfway direction counterclockwise from side 1 to side 2; inside the angle
-                // means the other way round when that sweep is the long way
+                // the halfway direction counterclockwise from side 1 to side 2, or the other
+                // way round when the sweep chooses the clockwise region
                 var halfway = Math.GetAngleBisectorPoint(vertex, side1, side2);
-                if (Interior && halfway.Exists() && Math.OAngle(side1, vertex, side2) > Math.PI)
+                if (halfway.Exists() && Sweep.IsClockwise(CounterclockwiseAngle(dependencies)))
                 {
                     halfway = vertex.Minus(halfway.Minus(vertex));
                 }
