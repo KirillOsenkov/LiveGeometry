@@ -73,6 +73,7 @@ public class Program
             ("Tab chooses among overlapping figures", ChoiceAmongOverlaps),
             ("One click inside an angle serves the bisector, Line at Angle, Rotate and Translate", AngleAtVertexShortcuts),
             ("A filled style fills the angle under a mark", FilledAngleMark),
+            ("A sector is filled: new, and made of an arc in its hue", ArcConversionStyles),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
             ("Figures without a value don't exist", FiguresWithoutValue),
             ("Perimeter measurements", PerimeterMeasurements),
@@ -2285,6 +2286,76 @@ public class Program
             "No fill under the arc.");
         drawing.ActionManager.Undo();
         Require(arc.HitTest(inside) == null, "Undo of the style left the fill hit.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void ArcConversionStyles()
+    {
+        var drawing = NewDrawing();
+        var a = AddPoint(drawing, x: 0, y: 0);
+        var b = AddPoint(drawing, x: 3, y: 0);
+        var c = AddPoint(drawing, x: 0, y: 3);
+        var arc = Factory.CreateArc(drawing, new IFigure[] { a, b, c });
+        Actions.Add(drawing, arc);
+        Require(arc.Style?.Name == StyleManager.LineStyleName, "A new arc is on " + arc.Style?.Name);
+
+        // a new sector is the outlined shape, filled; a new circle stays on the line
+        var sector = Factory.CreateCircleSector(drawing, new IFigure[] { a, b, c });
+        Actions.Add(drawing, sector);
+        Require(sector.Style?.Name == StyleManager.OutlinedShapeStyleName, "A new sector is on " + sector.Style?.Name);
+        Require(sector.Style is ShapeStyle { IsFilled: true }, "A new sector is not filled.");
+        var circle = Factory.CreateCircle(drawing, new IFigure[] { a, b });
+        Actions.Add(drawing, circle);
+        Require(circle.Style?.Name == StyleManager.LineStyleName, "A new circle is on " + circle.Style?.Name);
+        Actions.Remove(circle);
+        Actions.Remove(sector);
+
+        // the sector made of a default arc is the outlined shape; made an arc again, the line
+        var before = drawing.SaveAsText();
+        arc.ConvertToSector();
+        sector = drawing.Figures.OfType<CircleSector>().Single();
+        Require(sector.Style?.Name == StyleManager.OutlinedShapeStyleName, "The sector of a default arc is on " + sector.Style?.Name);
+        sector.ConvertToArc();
+        arc = drawing.Figures.OfType<CircleArc>().Single();
+        Require(arc.Style?.Name == StyleManager.LineStyleName, "The arc of a default sector is on " + arc.Style?.Name);
+
+        // the hue follows: a thick red arc gives the red outline, a gradient blue sector the blue line
+        Set(drawing, arc, nameof(FigureBase.Style), drawing.StyleManager["ThickRedLine"]);
+        arc.ConvertToCircleSegment();
+        var segment = drawing.Figures.OfType<CircleSegment>().Single();
+        Require(segment.Style?.Name == "RedOutline", "The segment of a red arc is on " + segment.Style?.Name);
+
+        // from one filled kind to another the style stays
+        Set(drawing, segment, nameof(FigureBase.Style), drawing.StyleManager["GradientBlueOutline"]);
+        segment.ConvertToSector();
+        sector = drawing.Figures.OfType<CircleSector>().Single();
+        Require(sector.Style?.Name == "GradientBlueOutline", "The sector of a segment is on " + sector.Style?.Name);
+        sector.ConvertToArc();
+        arc = drawing.Figures.OfType<CircleArc>().Single();
+        Require(arc.Style?.Name == "BlueLine", "The arc of a blue sector is on " + arc.Style?.Name);
+
+        // a style of the user's own stays where its kind fits the new figure, else the default
+        var ownLine = new LineStyle() { Name = "mine", Color = Avalonia.Media.Colors.Red };
+        drawing.StyleManager.Add(ownLine);
+        Set(drawing, arc, nameof(FigureBase.Style), ownLine);
+        arc.ConvertToSector();
+        sector = drawing.Figures.OfType<CircleSector>().Single();
+        Require(sector.Style == ownLine, "The sector of an arc in a style of its own is on " + sector.Style?.Name);
+        var ownShape = new ShapeStyle() { Name = "mine too", Color = Avalonia.Media.Colors.Blue };
+        drawing.StyleManager.Add(ownShape);
+        Set(drawing, sector, nameof(FigureBase.Style), ownShape);
+        sector.ConvertToArc();
+        arc = drawing.Figures.OfType<CircleArc>().Single();
+        Require(arc.Style?.Name == StyleManager.LineStyleName, "The arc of a sector in a shape style of its own is on " + arc.Style?.Name);
+
+        // and undone, the arc is the first one again, on the line
+        while (drawing.ActionManager.CanUndo && drawing.SaveAsText() != before)
+        {
+            drawing.ActionManager.Undo();
+        }
+
+        Require(drawing.SaveAsText() == before, "Undo did not bring the arc back as it was.");
+        Require(drawing.Figures.OfType<CircleArc>().Single().Style?.Name == StyleManager.LineStyleName, "The arc undone is not on the line.");
         drawing.Figures.CheckConsistency();
     }
 

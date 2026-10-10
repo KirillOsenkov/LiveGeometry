@@ -288,12 +288,24 @@ class StyleManager {
         return figure.isBezierPath === true && figure.interior != null ? figure.interior : figure;
     }
 
-    /** The line, or for a shape the default fill, else the first style that fits */
+    /** The outlined shape for a figure drawn as an outline around an inside, else the line, or for a shape the default fill, else the first style that fits */
     getDefaultStyle(figure) {
         const supportedStyles = this.getSupportedStyles(figure);
+        if (StyleManager.isOutlinedShape(figure)) {
+            const outlined = supportedStyles.find(style => style.name === StyleManager.OutlinedShapeStyleName);
+            if (outlined != null) {
+                return outlined;
+            }
+        }
+
         return supportedStyles.find(style => style.name === StyleManager.LineStyleName || style.name === StyleManager.ShapeStyleName)
             ?? supportedStyles[0]
             ?? null;
+    }
+
+    /** An arc with an inside (a sector, a circular segment) draws its own outline around a fill; not a circle, whose default is the line, nor a polygon, whose outline is its side segments */
+    static isOutlinedShape(figure) {
+        return figure.isArc === true && figure.isShapeWithInterior === true;
     }
 
     getSupportedStyles(figure) {

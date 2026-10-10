@@ -188,11 +188,11 @@ namespace DynamicGeometry
             thickLineStyle.BindToTheme(nameof(LineStyle.Color), theme => AppTheme.WithAlpha(theme.Ink, 230));
             var dashedLineStyle = HueLine("DashedLine", StyleHue.Gray, strokeWidth: 1.25, LineDash.Dash);
             var lineStyles = new List<IFigureStyle>() { lineStyle };
-            lineStyles.AddRange(StyleHue.Colors.Select(hue => HueLine(hue.Name + "Line", hue, ThinStrokeWidth, LineDash.Solid)));
+            lineStyles.AddRange(StyleHue.Colors.Select(hue => HueLine(LineStyleNameOf(hue), hue, ThinStrokeWidth, LineDash.Solid)));
             lineStyles.Add(thickLineStyle);
-            lineStyles.AddRange(StyleHue.Colors.Select(hue => HueLine("Thick" + hue.Name + "Line", hue, ThickStrokeWidth, LineDash.Solid)));
+            lineStyles.AddRange(StyleHue.Colors.Select(hue => HueLine(ThickLineStyleNameOf(hue), hue, ThickStrokeWidth, LineDash.Solid)));
             lineStyles.Add(dashedLineStyle);
-            lineStyles.AddRange(StyleHue.Colors.Select(hue => HueLine("Dashed" + hue.Name + "Line", hue, ThinStrokeWidth, LineDash.Dash)));
+            lineStyles.AddRange(StyleHue.Colors.Select(hue => HueLine(DashedLineStyleNameOf(hue), hue, ThinStrokeWidth, LineDash.Dash)));
 
             // a bar rather than a line: what the knob of a slider runs along (the picker
             // offers it to sliders only, IsOffered)
@@ -223,19 +223,19 @@ namespace DynamicGeometry
             greenShapeStyle.SetOverride(AppTheme.Dark.Name, nameof(ShapeStyle.Fill), new SolidColorBrush(Color.FromArgb(100, 128, 200, 128)));
             var shapeStyles = new List<IFigureStyle>();
             shapeStyles.AddRange(StyleHue.All.Select(hue => HueShape(
-                hue == StyleHue.Gray ? OutlinedShapeStyleName : hue.Name + "Outline",
+                OutlineStyleNameOf(hue),
                 hue,
                 outlined: true,
                 gradient: false)));
             shapeStyles.AddRange(StyleHue.All.Select(hue => HueShape(
-                "Gradient" + hue.Name + "Outline",
+                GradientOutlineStyleNameOf(hue),
                 hue,
                 outlined: true,
                 gradient: true)));
             shapeStyles.AddRange(StyleHue.All.Select(hue =>
                 hue == StyleHue.Brown ? shapeStyle
                 : hue == StyleHue.Green ? greenShapeStyle
-                : HueShape(hue.Name + "Shape", hue, outlined: false, gradient: true)));
+                : HueShape(ShapeStyleNameOf(hue), hue, outlined: false, gradient: true)));
 
             var hyperLinkStyle = ThemedText(HyperlinkStyleName, fontSize: 18);
             var textStyle = ThemedText(TextStyleName, fontSize: 18);
@@ -340,6 +340,57 @@ namespace DynamicGeometry
             style.SetOverride(AppTheme.Dark.Name, nameof(PointStyle.Fill), hue.DarkBeadFill);
             style.SetOverride(AppTheme.Dark.Name, nameof(PointStyle.Color), hue.DarkBeadRim);
             return style;
+        }
+
+        // The names of a hue's styles, a column of the pickers (StyleHue): the gray ones are
+        // the theme's defaults under their own names. One place for the names, so that a
+        // style can be traded for another of the same hue (ConvertStyle).
+
+        /// <summary>The thin line of the hue: the default line for gray</summary>
+        public static string LineStyleNameOf(StyleHue hue)
+        {
+            return hue == StyleHue.Gray ? LineStyleName : hue.Name + "Line";
+        }
+
+        public static string ThickLineStyleNameOf(StyleHue hue)
+        {
+            return "Thick" + LineStyleNameOf(hue);
+        }
+
+        public static string DashedLineStyleNameOf(StyleHue hue)
+        {
+            return "Dashed" + LineStyleNameOf(hue);
+        }
+
+        /// <summary>The shape outlined in the hue with a flat fill: OutlinedShape for gray</summary>
+        public static string OutlineStyleNameOf(StyleHue hue)
+        {
+            return hue == StyleHue.Gray ? OutlinedShapeStyleName : hue.Name + "Outline";
+        }
+
+        public static string GradientOutlineStyleNameOf(StyleHue hue)
+        {
+            return "Gradient" + hue.Name + "Outline";
+        }
+
+        /// <summary>The shape without an outline: the yellow fill of a new polygon in the brown column, the classic green in the green one</summary>
+        public static string ShapeStyleNameOf(StyleHue hue)
+        {
+            return hue == StyleHue.Brown ? ShapeStyleName
+                : hue == StyleHue.Green ? "GreenShape"
+                : hue.Name + "Shape";
+        }
+
+        /// <summary>The hue whose column a default line or shape style of that name is in, or null for any other name</summary>
+        public static StyleHue HueOfDefault(string styleName)
+        {
+            return StyleHue.All.FirstOrDefault(hue =>
+                styleName == LineStyleNameOf(hue)
+                || styleName == ThickLineStyleNameOf(hue)
+                || styleName == DashedLineStyleNameOf(hue)
+                || styleName == OutlineStyleNameOf(hue)
+                || styleName == GradientOutlineStyleNameOf(hue)
+                || styleName == ShapeStyleNameOf(hue));
         }
 
         static LineStyle HueLine(string name, StyleHue hue, double strokeWidth, LineDash dash)
@@ -580,15 +631,72 @@ namespace DynamicGeometry
 
         /// <summary>
         /// The style a new figure of the type gets, but for points and sliders, which go by
-        /// their kind (<see cref="AssignDefaultStyle"/>): the line, or for a shape the default
-        /// fill - which is not the first shape style, the picker shows the outlined ones first
-        /// - else the first style that fits
+        /// their kind (<see cref="AssignDefaultStyle"/>): the outlined shape for a figure that
+        /// draws its own outline around an inside (<see cref="IsOutlinedShape"/>), else the
+        /// line, or for a shape the default fill - which is not the first shape style, the
+        /// picker shows the outlined ones first - else the first style that fits
         /// </summary>
         public IFigureStyle GetDefaultStyle(Type figureType)
         {
             var supportedStyles = GetSupportedStyles(figureType).ToList();
+            if (IsOutlinedShape(figureType))
+            {
+                var outlined = supportedStyles.FirstOrDefault(style => style.Name == OutlinedShapeStyleName);
+                if (outlined != null)
+                {
+                    return outlined;
+                }
+            }
+
             return supportedStyles.FirstOrDefault(style => style.Name == LineStyleName || style.Name == ShapeStyleName)
                 ?? supportedStyles.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Whether a figure of the type is drawn as an outline around a filled inside: an arc
+        /// with an inside, a sector or a circular segment, which the line default left
+        /// unfilled (both a line and a shape, it took the line, which comes first in the
+        /// list). Not a circle, whose default has always been the line, nor a polygon, whose
+        /// outline is its side segments and whose default fill has no stroke.
+        /// </summary>
+        public static bool IsOutlinedShape(Type figureType)
+        {
+            return typeof(EllipseArcBase).IsAssignableFrom(figureType)
+                && typeof(IShapeWithInterior).IsAssignableFrom(figureType);
+        }
+
+        /// <summary>
+        /// The style a figure converted into another kind takes (an arc into a sector, a sector
+        /// into an arc: <see cref="EllipseArc.Convert"/>). Where the new kind is filled and the
+        /// old was not, or the other way round, a default style is traded for the one of the
+        /// same hue that fits: a red line becomes the red outline with its flat fill, so that
+        /// the sector made of the arc is seen at once, and the outline becomes the line again
+        /// (a gradient or an outline-less fill too: the hue is what is kept). Any other style
+        /// stays while its kind takes the new figure, else the new figure gets its default.
+        /// </summary>
+        public IFigureStyle ConvertStyle(IFigure oldFigure, IFigure newFigure)
+        {
+            var style = oldFigure.Style;
+            if (style == null)
+            {
+                return AssignDefaultStyle(newFigure);
+            }
+
+            var newType = StyledType(newFigure);
+            if (IsOutlinedShape(oldFigure.GetType()) != IsOutlinedShape(newType))
+            {
+                var hue = HueOfDefault(style.Name);
+                if (hue != null)
+                {
+                    var counterpart = GetStyle(IsOutlinedShape(newType) ? OutlineStyleNameOf(hue) : LineStyleNameOf(hue));
+                    if (counterpart != null && counterpart.GetType().SupportsFigureType(newType))
+                    {
+                        return counterpart;
+                    }
+                }
+            }
+
+            return style.GetType().SupportsFigureType(newType) ? style : AssignDefaultStyle(newFigure);
         }
 
         static string GetDefaultPointStyleName(IFigure point)

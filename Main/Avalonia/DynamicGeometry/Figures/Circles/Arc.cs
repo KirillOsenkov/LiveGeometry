@@ -27,7 +27,10 @@ namespace DynamicGeometry
         public static void Convert(IArc oldArc, IArc newArc)
         {
             var drawing = oldArc.Drawing;
-            newArc.Style = oldArc.Style;
+
+            // a sector made of an arc is filled at once, in the arc's hue; an arc made of a
+            // sector is a line again (StyleManager.ConvertStyle)
+            newArc.Style = drawing.StyleManager.ConvertStyle(oldArc, newArc);
             newArc.Clockwise = oldArc.Clockwise;
 
             // a hidden helper (converted from the Figure List) stays hidden

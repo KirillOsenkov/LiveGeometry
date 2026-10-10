@@ -1201,7 +1201,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   y = b sin t; the central angle on a circle): sector a·b·t/2, segment a·b·(t - sin t)/2;
   the length of an elliptical arc is Simpson's rule over t. They said r²·angle/π (a quarter
   disc of radius 2 had the area 4), and "not a number" for every ellipse - so did an Area
-  or Distance measurement on one, and a circle given such an arc for its radius. A point
+  or Distance measurement on one, and a circle given such an arc for its radius. Convert
+  to sector / segment / arc (`EllipseArc.Convert`) trades a default style for its
+  counterpart of the same hue (`StyleManager.ConvertStyle`, by the names a hue's styles
+  have, `LineStyleNameOf`...): a red arc becomes a red-outlined, flat-filled sector and
+  back to a red line, so the shape is seen at once; a style of the user's own stays where
+  its kind fits, else the new kind's default (a sector's shape style on an arc didn't). A point
   put on an arc from beyond its ends goes to the nearer end, the short way round
   (`GetNearestParameterFromPoint`). A point on a function graph exists wherever the
   function has a value: its place is not hit-tested, since a graph is hit by its samples
@@ -1725,7 +1730,10 @@ loader still does for files from before; none of it needs extending.
   (`dotnet tools/stylecensus.cs -- <folder>` lists what a folder's files carry, by values).
   The order matters: it is the style picker's, and a figure that isn't a point or a slider
   takes `Line` or `Shape` by name, else the first style that fits
-  (`StyleManager.GetDefaultStyle`). Labels leave
+  (`StyleManager.GetDefaultStyle`) - but a sector or a circular segment, an arc with an
+  inside that draws its own outline (`StyleManager.IsOutlinedShape`), takes `OutlinedShape`
+  (2026-10-09: both a line and a shape, it took `Line`, which comes first, and had no
+  fill; a circle keeps the line, a polygon's outline is its side segments). Labels leave
   out `DecimalsToShow` at the default. `LiveGeometry.Desktop.exe --rewrite <folder>` loads
   and saves every drawing of a folder, keeping each file's viewport.
 - **A figure is asked before it is worked out** while a file is read: whatever a `ReadXml`
