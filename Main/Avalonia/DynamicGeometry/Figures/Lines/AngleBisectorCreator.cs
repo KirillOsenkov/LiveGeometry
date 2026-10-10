@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Avalonia;
 
 namespace DynamicGeometry
 {
@@ -12,39 +13,52 @@ namespace DynamicGeometry
             return DependencyList.PointPointPoint;
         }
 
-        public override void MouseDown(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// An angle's mark or number, or an arc, a sector or a segment, under the cursor
+        /// with no point on top of it: the first click takes its three points and its sweep
+        /// (<see cref="AnglePoints"/>). Only as the first click (see SegmentBisectorCreator):
+        /// after a vertex was clicked, a click on an angle's mark gave a bisector of five
+        /// points, which doesn't exist, and a stray point.
+        /// </summary>
+        protected override IReadOnlyList<IFigure> FindFiguresInsteadOfPoint(Point unconstrainedCoordinates)
         {
-            var angle = FindAngle(e);
-            if (angle != null)
-            {
-                FoundDependencies.AddRange(angle.Dependencies);
-            }
-
-            base.MouseDown(sender, e);
+            return FindAngleFigures(this, unconstrainedCoordinates, AnglePoints.Takes);
         }
 
         /// <summary>
-        /// An angle stands for its three points only as the first click (see
-        /// SegmentBisectorCreator): after a vertex was clicked, a click on an angle's
-        /// mark gave a bisector of five points, which doesn't exist, and a stray point.
+        /// The figures a click takes an angle from, for this tool and the Angle tool: those
+        /// the filter takes, in view, and none while a point is under the cursor or a step
+        /// has been made
         /// </summary>
-        IFigure FindAngle(MouseEventArgs e)
+        public static IReadOnlyList<IFigure> FindAngleFigures(FigureCreator creator, Point unconstrainedCoordinates, System.Func<IFigure, bool> takes)
         {
-            var underMouse = FoundDependencies.IsEmpty() ? Drawing.Figures.HitTest(Coordinates(e, false, false, false)) : null;
-            if (underMouse != null
-                && (underMouse is AngleArc || underMouse is AngleMeasurement)
-                && underMouse.Dependencies.Count == 3)
+            var drawing = creator.Drawing;
+            if (drawing == null || !creator.IsInInitialState || drawing.Figures.HitTest<IPoint>(unconstrainedCoordinates) != null)
             {
-                return underMouse;
+                return System.Array.Empty<IFigure>();
             }
 
-            return null;
+            return drawing.Figures.HitTestAll(
+                unconstrainedCoordinates,
+                f => takes(f) && f.Visible && f.IsHitTestVisible);
         }
 
-        /// <summary>A click on an angle takes its points, whatever else is there: nothing to choose</summary>
-        protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
+        AngleSweep? clickedSweep;
+
+        public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            return FindAngle(e) != null ? System.Array.Empty<object>() : base.FindClickOptions(e);
+            // where the cursor is, as the hover preview asks: not where Shift snaps it to
+            var angle = AnglePoints.From(FindFigureInsteadOfPoint(Coordinates(e, false, false, false)));
+            if (angle != null)
+            {
+                StartConstruction();
+                FoundDependencies.AddRange(angle.Points);
+                clickedSweep = angle.Sweep;
+                AddFiguresAndRestart();
+                return;
+            }
+
+            base.MouseDown(sender, e);
         }
 
         /// <summary>
@@ -62,9 +76,16 @@ namespace DynamicGeometry
             return true;
         }
 
+        /// <summary>The bisector; of the angle a clicked figure shows, when it was one (its sweep copied once)</summary>
         protected override IEnumerable<IFigure> CreateFigures()
         {
             var result = Factory.CreateAngleBisector(Drawing, FoundDependencies);
+            if (clickedSweep != null)
+            {
+                result.Sweep = clickedSweep.Value;
+                clickedSweep = null;
+            }
+
             yield return result;
         }
 
@@ -77,7 +98,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return "Click an angle vertex, then click two points on the angle sides to create an angle bisector. You can also click an angle measurement, or inside an angle next to its vertex.";
+                return "Click an angle vertex, then click two points on the angle sides to create an angle bisector. You can also click an angle measurement, an arc, or inside an angle next to its vertex.";
             }
         }
 

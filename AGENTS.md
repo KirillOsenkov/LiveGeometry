@@ -99,7 +99,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the points of other figures); Label new points (toggle).
 - **Lines**: Segment (S), Ray (Y), Line (L), Vector - two points each; Parallel (N) and
   Perpendicular (E) - a line then a point; Angle Bisector
-  (B) - vertex then two side points, an angle measurement, or one click inside an angle
+  (B) - vertex then two side points, an angle's number or mark, an arc, a sector or a
+  segment (its central angle: center and the two ends; `AnglePoints` turns any of those
+  into the three points and the sweep, which the bisector copies once, as Circle by
+  Radius takes a segment for two points), or one click inside an angle
   next to its vertex as the Angle tool takes it (see "An angle at a vertex" under Measure);
   Line at Angle - a point, at the
   angle in the tool's panel (0 until changed, so a horizontal line is one click), or click an
@@ -176,7 +179,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   coordinates (toggle: gives the point tools an X/Y panel).
 - **Measure**: Distance - two points or a segment; Angle (J) - vertex then two side points,
   the angle under 180° whichever side comes first (its `Sweep` row, see "Which of the two
-  angles" under "Design decisions", says otherwise), or one click inside an angle
+  angles" under "Design decisions", says otherwise), or one click on an arc, a sector or
+  a segment, which measures its central angle the way round the arc goes (`AnglePoints`:
+  the center and the two ends for the points, the arc's sweep copied once; not an
+  angle's own mark or number, measured already), or one click inside an angle
   next to its vertex, within the reach of the mark it would get, where drawn lines,
   segments, rays or polygon sides leave a point (`AngleAtVertex`: the hover shows the mark
   and number faint, halos on the sides; `FigureCreator.TakesAngleAtVertex` is the hook, a

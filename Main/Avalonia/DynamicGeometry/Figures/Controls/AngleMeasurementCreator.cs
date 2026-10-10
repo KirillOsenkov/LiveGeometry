@@ -20,13 +20,52 @@ namespace DynamicGeometry
         // The mark and the number, both made when the third point is there, in the order
         // the sides were clicked: a new angle is the one under 180 degrees whichever side
         // came first (AngleSweep.Smaller, the default), so the preview and the figure agree
-        // wherever the cursor is. (The arc used to be added for good with the preview,
-        // before the third point existed: it sat in the figure list ahead of a point it is
-        // built on, and a saved file came back in another order.)
+        // wherever the cursor is - unless the points came from a clicked arc, whose sweep
+        // they take. (The arc used to be added for good with the preview, before the third
+        // point existed: it sat in the figure list ahead of a point it is built on, and a
+        // saved file came back in another order.)
         protected override IEnumerable<IFigure> CreateFigures()
         {
-            yield return Factory.CreateAngleArc(Drawing, FoundDependencies);
-            yield return Factory.CreateAngleMeasurement(Drawing, FoundDependencies);
+            var arc = Factory.CreateAngleArc(Drawing, FoundDependencies);
+            var measurement = Factory.CreateAngleMeasurement(Drawing, FoundDependencies);
+            if (clickedSweep != null)
+            {
+                arc.Sweep = clickedSweep.Value;
+                measurement.Sweep = clickedSweep.Value;
+                clickedSweep = null;
+            }
+
+            yield return arc;
+            yield return measurement;
+        }
+
+        /// <summary>
+        /// An arc, a sector or a segment under the cursor with no point on top of it: the
+        /// first click measures its central angle, center and the two ends, the way round
+        /// the arc goes (<see cref="AnglePoints"/>). Not an angle's own mark or number: that
+        /// angle is measured already.
+        /// </summary>
+        protected override IReadOnlyList<IFigure> FindFiguresInsteadOfPoint(Point unconstrainedCoordinates)
+        {
+            return AngleBisectorCreator.FindAngleFigures(this, unconstrainedCoordinates, AnglePoints.TakesArc);
+        }
+
+        AngleSweep? clickedSweep;
+
+        public override void MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // where the cursor is, as the hover preview asks: not where Shift snaps it to
+            var angle = AnglePoints.From(FindFigureInsteadOfPoint(Coordinates(e, false, false, false)));
+            if (angle != null)
+            {
+                StartConstruction();
+                FoundDependencies.AddRange(angle.Points);
+                clickedSweep = angle.Sweep;
+                AddFiguresAndRestart();
+                return;
+            }
+
+            base.MouseDown(sender, e);
         }
 
         /// <summary>
@@ -48,7 +87,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return "Click an angle vertex, and then click two points on the angle sides to measure the angle, or click inside an angle next to its vertex.";
+                return "Click an angle vertex, and then click two points on the angle sides to measure the angle, or click inside an angle next to its vertex, or click an arc to measure its angle.";
             }
         }
 

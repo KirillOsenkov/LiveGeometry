@@ -74,6 +74,7 @@ public class Program
             ("One click inside an angle serves the bisector, Line at Angle, Rotate and Translate", AngleAtVertexShortcuts),
             ("A filled style fills the angle under a mark", FilledAngleMark),
             ("The sweep chooses which of the two angles a mark, a number, a bisector and an arc are", AngleSweeps),
+            ("A click on an arc or an angle gives the Angle and Bisector tools three points and the sweep", AngleFromClickedFigure),
             ("A sector is filled: new, and made of an arc in its hue", ArcConversionStyles),
             ("The Arc tool's panel makes a sector or a segment of the arc", ArcPanelConverts),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
@@ -2400,6 +2401,62 @@ public class Program
                 && loaded.Figures.OfType<AngleBisector>().All(f => f.Sweep == AngleSweep.Larger)
                 && loaded.Figures.OfType<CircleSector>().Single().Sweep == AngleSweep.Smaller,
             "The sweeps did not come back from the file.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// One click on an arc measures its central angle the way round the arc goes, and gives
+    /// a bisector of it; one click on an angle's mark gives a bisector of the angle as it is
+    /// shown, its sweep included
+    /// </summary>
+    static void AngleFromClickedFigure()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        var a = AddPoint(drawing, x: 0, y: 0);
+        var b = AddPoint(drawing, x: 4, y: 0);
+        var c = AddPoint(drawing, x: 0, y: -3);
+
+        // counterclockwise from B round to C: 270 degrees, through the west
+        var arc = Factory.CreateArc(drawing, new IFigure[] { a, b, c });
+        Actions.Add(drawing, arc);
+        drawing.Behavior = new AngleMeasurementCreator();
+        Click(drawing, system.ToPhysical(new Point(-4, 0)));
+        var number = drawing.Figures.OfType<AngleMeasurement>().SingleOrDefault();
+        var mark = drawing.Figures.OfType<AngleArc>().SingleOrDefault();
+        Require(number != null && mark != null && number.Dependencies.SequenceEqual(new IFigure[] { a, b, c }), "The Angle tool did not take the arc's points.");
+        Require(number.Sweep == AngleSweep.Counterclockwise && mark.Sweep == AngleSweep.Counterclockwise, "The measurement did not take the arc's sweep.");
+        Near(number.Measure, 270);
+        drawing.ActionManager.Undo();
+        Require(!drawing.Figures.OfType<AngleMeasurement>().Any() && !drawing.Figures.OfType<AngleArc>().Any(), "Undo left the measurement.");
+
+        // the smaller arc, clockwise from B down to C: the bisector halves that one
+        Set(drawing, arc, nameof(CircleArc.Sweep), AngleSweep.Smaller);
+        drawing.Behavior = new AngleBisectorCreator();
+        Click(drawing, system.ToPhysical(new Point(4 * System.Math.Cos(-System.Math.PI / 4), 4 * System.Math.Sin(-System.Math.PI / 4))));
+        var bisector = drawing.Figures.OfType<AngleBisector>().SingleOrDefault();
+        Require(bisector != null && bisector.Dependencies.SequenceEqual(new IFigure[] { a, b, c }), "The bisector did not take the arc's points.");
+        Require(bisector.Sweep == AngleSweep.Smaller, "The bisector did not take the arc's sweep.");
+        Near(bisector.Angle, 90);
+        var direction = bisector.Coordinates.P2.Minus(bisector.Coordinates.P1);
+        Require(direction.X > 0 && direction.Y < 0, "The bisector of the smaller arc points to " + direction);
+        drawing.ActionManager.Undo();
+
+        // an angle shown as the larger one: a click on its mark halves the larger one
+        var angleMark = Factory.CreateAngleArc(drawing, new IFigure[] { a, b, c });
+        var angleNumber = Factory.CreateAngleMeasurement(drawing, new IFigure[] { a, b, c });
+        Actions.Add(drawing, angleMark);
+        Actions.Add(drawing, angleNumber);
+        Set(drawing, angleNumber, nameof(AngleMeasurement.Sweep), AngleSweep.Larger);
+        Set(drawing, angleMark, nameof(AngleArc.Size), 60.0);
+        Click(drawing, system.ToPhysical(a.Coordinates) + new Point(0, -60));
+        bisector = drawing.Figures.OfType<AngleBisector>().SingleOrDefault();
+        Require(bisector != null && bisector.Dependencies.SequenceEqual(new IFigure[] { a, b, c }), "The bisector did not take the mark's points.");
+        Require(bisector.Sweep == AngleSweep.Larger, "The bisector did not take the angle's sweep.");
+        Near(bisector.Angle, 270);
+        direction = bisector.Coordinates.P2.Minus(bisector.Coordinates.P1);
+        Require(direction.X < 0 && direction.Y > 0, "The bisector of the larger angle points to " + direction);
         drawing.Figures.CheckConsistency();
     }
 
