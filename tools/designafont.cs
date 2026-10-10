@@ -27,7 +27,8 @@ if (args.Length < 1)
 
 // ---- the font, in font units: 1000 to the em ----
 
-// every letter sits in a box this wide (a monospaced font), the x-height is half an em
+// every letter is drawn in a box this wide, the x-height is half an em. In the sentence the
+// letters are spaced by their ink (see "Spacing"), not by the box
 const double Advance = 600;
 const double XHeight = 500;
 const double Ascender = 740;
@@ -57,6 +58,8 @@ const double ArchRadius = (RightStem - LeftStem) / 2;
 const double DotY = 650;
 const double DotRadius = 70;
 
+// how the letters are spaced in the sentence: see Spacing at the end
+
 // ---- the drawing, in plane units ----
 
 // the sentence's em is one unit; the big letters are Magnify times that, and their images in
@@ -68,8 +71,9 @@ const double BigUnit = TextUnit * Magnify;
 const string BigLetters = "the";
 string[] sentence = { "the quick brown fox", "jumps over the lazy dog" };
 
-// the big letters stand on y = 0 with their boxes centered on x = 0; the sentence's lines are
-// centered too, the first one's ascenders SentenceGap under the big descender line
+// the big letters stand on y = 0 with their boxes centered on x = 0, Advance apart; the
+// sentence's lines are centered too, the first one's ascenders SentenceGap under the big
+// descender line
 const double SentenceGap = 0.9;
 const double LineHeight = 1.3;
 
@@ -205,24 +209,39 @@ for (int i = 0; i < BigLetters.Length; i++)
 }
 
 // the sentence: a static letter is paths over hidden points, a t, h or e the image of the big
-// one under a dilation whose center puts the box of the big letter onto the letter's box
+// one under a dilation whose center puts the box of the big letter onto the letter's box. A
+// letter's box starts its left bearing before its ink (Spacing, above)
+var spacings = new Dictionary<char, Spacing>();
+foreach (var (letter, pieces) in alphabet)
+{
+    spacings[letter] = Spacing.Of(pieces);
+}
+
+foreach (var (letter, glyph) in bigGlyphs)
+{
+    spacings[letter] = Spacing.Of([glyph]);
+}
+
 int letterIndex = 0;
 var copyCounts = new Dictionary<char, int>();
 for (int line = 0; line < sentence.Length; line++)
 {
     string words = sentence[line];
-    double left = -words.Length * Advance * TextUnit / 2;
+    double width = words.Sum(letter => letter == ' ' ? Spacing.SpaceAdvance : spacings[letter].Width);
+    double pen = -width * TextUnit / 2;
     double baseline = sentenceTop - Ascender * TextUnit - line * LineHeight;
     for (int column = 0; column < words.Length; column++)
     {
         char letter = words[column];
         if (letter == ' ')
         {
+            pen += Spacing.SpaceAdvance * TextUnit;
             continue;
         }
 
         letterIndex++;
-        var origin = new P(left + column * Advance * TextUnit, baseline);
+        var spacing = spacings[letter];
+        var origin = new P(pen + spacing.BoxOffset * TextUnit, baseline);
         if (bigGlyphs.TryGetValue(letter, out var glyph))
         {
             copyCounts[letter] = copyCounts.GetValueOrDefault(letter) + 1;
@@ -232,6 +251,8 @@ for (int line = 0; line < sentence.Length; line++)
         {
             WriteStaticLetter("W" + letterIndex, alphabet[letter], origin);
         }
+
+        pen += spacing.Width * TextUnit;
     }
 }
 
@@ -820,6 +841,26 @@ class Contour
         return dot > 0 && Math.Abs(cross) < Math.Sin(3 * Math.PI / 180);
     }
 
+    /// <summary>Points along the outline, a few dozen per piece, for its extent</summary>
+    public IEnumerable<P> Sample()
+    {
+        const int Steps = 24;
+        int count = Anchors.Count;
+        for (int i = 0; i < count; i++)
+        {
+            var from = Anchors[i];
+            var to = Anchors[(i + 1) % count];
+            var control1 = from.At + from.Out;
+            var control2 = to.At + to.In;
+            for (int step = 0; step < Steps; step++)
+            {
+                double t = (double)step / Steps;
+                double u = 1 - t;
+                yield return from.At * (u * u * u) + control1 * (3 * u * u * t) + control2 * (3 * u * t * t) + to.At * (t * t * t);
+            }
+        }
+    }
+
     /// <summary>The Path attribute: a piece per anchor, L when both handles are on their anchors, else C with the offsets scaled</summary>
     public string PathText(double scale)
     {
@@ -842,6 +883,42 @@ class Contour
 
 /// <summary>A piece of a letter: a closed outline, and the hole it leaves out, if any</summary>
 record Glyph(Contour Outline, Contour Hole);
+
+/// <summary>
+/// How a letter is spaced in the sentence: the width it takes (its ink with a bearing on
+/// each side), and where its box starts relative to the pen (the left bearing before the
+/// ink, which sits BoxOffset into the box). The bearing is less where the side is round (a
+/// bowl, a cap) than where it is a stem, since a curve touches its extreme only for a moment
+/// and would look further off; the vertical span of the ink within RoundReach of its extreme
+/// tells a round side (short) from a stem (long). A word space is its own width.
+/// </summary>
+record Spacing(double Width, double BoxOffset)
+{
+    public const double StemBearing = 80;
+    public const double RoundBearing = 50;
+    public const double SpaceAdvance = 320;
+    const double RoundReach = 20;
+
+    // a pen width and a half
+    const double RoundSpan = 165;
+
+    public static Spacing Of(IEnumerable<Glyph> pieces)
+    {
+        var samples = pieces.SelectMany(piece => piece.Outline.Sample()).ToList();
+        double left = samples.Min(p => p.X);
+        double right = samples.Max(p => p.X);
+        double leftBearing = IsRound(samples.Where(p => p.X < left + RoundReach)) ? RoundBearing : StemBearing;
+        double rightBearing = IsRound(samples.Where(p => p.X > right - RoundReach)) ? RoundBearing : StemBearing;
+        return new Spacing(leftBearing + (right - left) + rightBearing, leftBearing - left);
+    }
+
+    /// <summary>A side that touches its extreme only over a short height: a bowl, a cap</summary>
+    static bool IsRound(IEnumerable<P> edge)
+    {
+        var list = edge.ToList();
+        return list.Max(p => p.Y) - list.Min(p => p.Y) < RoundSpan;
+    }
+}
 
 /// <summary>A big letter's hue: the name its styles start with, and the color under each theme</summary>
 record Hue(string Name, string Light, string Dark);
