@@ -1827,6 +1827,15 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
             double reach = ToLogical(pieces[i].Shape.StrokeThickness / 2 + Math.CursorTolerance);
             if (curves[i].Points != null && Math.IsPointOnPolygonalChain(curves[i].Points, point, reach, false))
             {
+                // a side that draws nothing (a transparent stroke: a letter's, a blob's) is
+                // not what the click means: the filled inside is, within the cursor's reach of
+                // its edge as any figure is - a thin shape was all edge, and every click on
+                // it selected an invisible side
+                if (!pieces[i].DrawsStroke)
+                {
+                    return filled && interior.Exists ? interior : null;
+                }
+
                 return pieces[i];
             }
         }
@@ -2879,6 +2888,17 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
         public override IFigure HitTest(Point point)
         {
             return Owner.HitTest(point) == this ? this : null;
+        }
+
+        /// <summary>Whether the side shows at all: a stroke of some width in a color that is not fully transparent</summary>
+        public bool DrawsStroke
+        {
+            get
+            {
+                return Shape.StrokeThickness > 0
+                    && Shape.Stroke != null
+                    && !(Shape.Stroke is ISolidColorBrush brush && brush.Color.A == 0);
+            }
         }
 
         public IEnumerable<IValueProvider> GetProperties()

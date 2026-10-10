@@ -129,6 +129,12 @@ class BezierPathPiece extends ShapeBase {
         return this.owner.hitTest(point) === this ? this : null;
     }
 
+    /** Whether the side shows at all: a stroke of some width in a color that is not fully transparent */
+    get drawsStroke() {
+        const stroke = this.stroke;
+        return stroke != null && stroke.width > 0 && stroke.color.a !== 0;
+    }
+
     render(renderer) {
         if (!this.isShown) {
             return;
@@ -1115,6 +1121,12 @@ class BezierPath extends CompositeFigure {
             // (the corners of the polyline count too: on the outer side of a bend a click is over neither piece of it)
             const reach = this.toLogicalLength(this.pieces[i].strokeThickness / 2 + GeometryMath.cursorTolerance);
             if (curves[i].points != null && GeometryMath.isPointOnPolygonalChain(curves[i].points, point, reach, false)) {
+                // a side that draws nothing (a transparent stroke) is not what the click means: the filled inside is,
+                // within the cursor's reach of its edge as any figure is
+                if (!this.pieces[i].drawsStroke) {
+                    return this.filled && this.interior.exists ? this.interior : null;
+                }
+
                 return this.pieces[i];
             }
         }

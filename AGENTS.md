@@ -1324,7 +1324,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   selection). A handle shows only next to an anchor that is selected or dragged - its own
   two and the neighbors' that face it (`IsHandleShown`) - with dotted lines in the ink at
   0.3, and only the Drag tool hits one (`HitTest`): nothing is built on a handle but the
-  images of a transformation. A zero handle sits under its anchor (z just below points):
+  images of a transformation. A side whose stroke draws nothing (a transparent color, as
+  the `NoLine` style of a letter or a blob) is never hit: within the cursor's reach of it
+  the click takes the filled inside, the path (2026-10-10; `BezierPathPiece.DrawsStroke`,
+  the player's `drawsStroke`): the thin letters of Design a Font were all edge, and every
+  click on one selected an invisible side instead of the letter. A zero handle sits under its anchor (z just below points):
   Tab takes it (`Dragger.FindClickOptions`, with the other figures there). A dragged handle
   takes the one across the anchor along as its mirror image (snapped to it at the first
   move: a symmetric anchor); with Alt that one stays where it is, for a corner

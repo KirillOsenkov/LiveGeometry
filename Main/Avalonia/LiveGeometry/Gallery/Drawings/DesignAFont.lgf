@@ -6,8 +6,23 @@
       <Dark Fill="#FFE4E8F0" />
     </ShapeStyle>
     <LineStyle Name="NoLine" Color="#00FFFFFF" StrokeWidth="0.5" />
-    <ShapeStyle Name="TFill" Fill="#38EF5B3C" Color="#00000000">
-      <Dark Fill="#38FF7D62" />
+    <ShapeStyle Name="TFill" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFF7AD9E" Offset="0" />
+          <GradientStop Color="#FFEF5B3C" Offset="0.55" />
+          <GradientStop Color="#FFCB4D33" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark>
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFAA99" Offset="0" />
+            <GradientStop Color="#FFFF7D62" Offset="0.55" />
+            <GradientStop Color="#FFCC644E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <LineStyle Name="TRim" Color="#FFEF5B3C" StrokeWidth="2">
       <Dark Color="#FFFF7D62" />
@@ -21,11 +36,23 @@
     <PointStyle Name="THandle" Size="7" Fill="#FFEF5B3C" Color="#FFFFFFFF" StrokeWidth="1.5">
       <Dark Fill="#FFFF7D62" />
     </PointStyle>
-    <ShapeStyle Name="TInk" Fill="#FFEF5B3C" Color="#00000000">
-      <Dark Fill="#FFFF7D62" />
-    </ShapeStyle>
-    <ShapeStyle Name="HFill" Fill="#382F8FE0" Color="#00000000">
-      <Dark Fill="#3862AEFF" />
+    <ShapeStyle Name="HFill" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FF97C7F0" Offset="0" />
+          <GradientStop Color="#FF2F8FE0" Offset="0.55" />
+          <GradientStop Color="#FF287ABE" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark>
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF99CAFF" Offset="0" />
+            <GradientStop Color="#FF62AEFF" Offset="0.55" />
+            <GradientStop Color="#FF4E8BCC" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <LineStyle Name="HRim" Color="#FF2F8FE0" StrokeWidth="2">
       <Dark Color="#FF62AEFF" />
@@ -39,11 +66,23 @@
     <PointStyle Name="HHandle" Size="7" Fill="#FF2F8FE0" Color="#FFFFFFFF" StrokeWidth="1.5">
       <Dark Fill="#FF62AEFF" />
     </PointStyle>
-    <ShapeStyle Name="HInk" Fill="#FF2F8FE0" Color="#00000000">
-      <Dark Fill="#FF62AEFF" />
-    </ShapeStyle>
-    <ShapeStyle Name="EFill" Fill="#389256E0" Color="#00000000">
-      <Dark Fill="#38B38CFF" />
+    <ShapeStyle Name="EFill" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFC8AAF0" Offset="0" />
+          <GradientStop Color="#FF9256E0" Offset="0.55" />
+          <GradientStop Color="#FF7C49BE" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark>
+        <Fill>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFCEB4FF" Offset="0" />
+            <GradientStop Color="#FFB38CFF" Offset="0.55" />
+            <GradientStop Color="#FF8F70CC" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <LineStyle Name="ERim" Color="#FF9256E0" StrokeWidth="2">
       <Dark Color="#FFB38CFF" />
@@ -57,9 +96,6 @@
     <PointStyle Name="EHandle" Size="7" Fill="#FF9256E0" Color="#FFFFFFFF" StrokeWidth="1.5">
       <Dark Fill="#FFB38CFF" />
     </PointStyle>
-    <ShapeStyle Name="EInk" Fill="#FF9256E0" Color="#00000000">
-      <Dark Fill="#FFB38CFF" />
-    </ShapeStyle>
     <LineStyle Name="Guide" Color="#FFB4BAC8" Dash="Dash">
       <Dark Color="#FF5A6275" />
     </LineStyle>
@@ -431,7 +467,7 @@
       <Dependency Name="TCopy1Center" />
       <Dependency Name="Shrink" />
     </DilatedPoint>
-    <BezierPath Name="TCopy1" Style="TInk" Closed="true" Filled="true" Path="C #17 #18 C #19 #20 C #21 #22 C #23 #24 C #25 #26 C #27 #28 C #29 #30 C #31 #32 C #33 #34 C #35 #36 C #37 #38 C #39 #40 C #41 #42 C #43 #44 C #45 #46 C #47 #16">
+    <BezierPath Name="TCopy1" Style="TFill" Closed="true" Filled="true" Path="C #17 #18 C #19 #20 C #21 #22 C #23 #24 C #25 #26 C #27 #28 C #29 #30 C #31 #32 C #33 #34 C #35 #36 C #37 #38 C #39 #40 C #41 #42 C #43 #44 C #45 #46 C #47 #16">
       <Sides Style="NoLine" />
       <Dependency Name="TCopy1A1" />
       <Dependency Name="TCopy1A2" />
@@ -663,7 +699,7 @@
       <Dependency Name="HCopy1Center" />
       <Dependency Name="Shrink" />
     </DilatedPoint>
-    <BezierPath Name="HCopy1" Style="HInk" Closed="true" Filled="true" Path="C #13 #14 C #15 #16 C #17 #18 C #19 #20 C #21 #22 C #23 #24 C #25 #26 C #27 #28 C #29 #30 C #31 #32 C #33 #34 C #35 #12">
+    <BezierPath Name="HCopy1" Style="HFill" Closed="true" Filled="true" Path="C #13 #14 C #15 #16 C #17 #18 C #19 #20 C #21 #22 C #23 #24 C #25 #26 C #27 #28 C #29 #30 C #31 #32 C #33 #34 C #35 #12">
       <Sides Style="NoLine" />
       <Dependency Name="HCopy1A1" />
       <Dependency Name="HCopy1A2" />
@@ -895,7 +931,7 @@
       <Dependency Name="ECopy1Center" />
       <Dependency Name="Shrink" />
     </DilatedPoint>
-    <BezierPath Name="ECopy1" Style="EInk" Closed="true" Filled="true" Path="C #10 #11 C #12 #13 C #14 #15 C #16 #17 C #18 #19 C #20 #21 C #22 #23 C #24 #25 C #26 #9">
+    <BezierPath Name="ECopy1" Style="EFill" Closed="true" Filled="true" Path="C #10 #11 C #12 #13 C #14 #15 C #16 #17 C #18 #19 C #20 #21 C #22 #23 C #24 #25 C #26 #9">
       <Sides Style="NoLine" />
       <Dependency Name="ECopy1A1" />
       <Dependency Name="ECopy1A2" />
@@ -1694,7 +1730,7 @@
       <Dependency Name="ECopy2Center" />
       <Dependency Name="Shrink" />
     </DilatedPoint>
-    <BezierPath Name="ECopy2" Style="EInk" Closed="true" Filled="true" Path="C #10 #11 C #12 #13 C #14 #15 C #16 #17 C #18 #19 C #20 #21 C #22 #23 C #24 #25 C #26 #9">
+    <BezierPath Name="ECopy2" Style="EFill" Closed="true" Filled="true" Path="C #10 #11 C #12 #13 C #14 #15 C #16 #17 C #18 #19 C #20 #21 C #22 #23 C #24 #25 C #26 #9">
       <Sides Style="NoLine" />
       <Dependency Name="ECopy2A1" />
       <Dependency Name="ECopy2A2" />
@@ -1992,7 +2028,7 @@
       <Dependency Name="TCopy2Center" />
       <Dependency Name="Shrink" />
     </DilatedPoint>
-    <BezierPath Name="TCopy2" Style="TInk" Closed="true" Filled="true" Path="C #17 #18 C #19 #20 C #21 #22 C #23 #24 C #25 #26 C #27 #28 C #29 #30 C #31 #32 C #33 #34 C #35 #36 C #37 #38 C #39 #40 C #41 #42 C #43 #44 C #45 #46 C #47 #16">
+    <BezierPath Name="TCopy2" Style="TFill" Closed="true" Filled="true" Path="C #17 #18 C #19 #20 C #21 #22 C #23 #24 C #25 #26 C #27 #28 C #29 #30 C #31 #32 C #33 #34 C #35 #36 C #37 #38 C #39 #40 C #41 #42 C #43 #44 C #45 #46 C #47 #16">
       <Sides Style="NoLine" />
       <Dependency Name="TCopy2A1" />
       <Dependency Name="TCopy2A2" />
@@ -2224,7 +2260,7 @@
       <Dependency Name="HCopy2Center" />
       <Dependency Name="Shrink" />
     </DilatedPoint>
-    <BezierPath Name="HCopy2" Style="HInk" Closed="true" Filled="true" Path="C #13 #14 C #15 #16 C #17 #18 C #19 #20 C #21 #22 C #23 #24 C #25 #26 C #27 #28 C #29 #30 C #31 #32 C #33 #34 C #35 #12">
+    <BezierPath Name="HCopy2" Style="HFill" Closed="true" Filled="true" Path="C #13 #14 C #15 #16 C #17 #18 C #19 #20 C #21 #22 C #23 #24 C #25 #26 C #27 #28 C #29 #30 C #31 #32 C #33 #34 C #35 #12">
       <Sides Style="NoLine" />
       <Dependency Name="HCopy2A1" />
       <Dependency Name="HCopy2A2" />
@@ -2456,7 +2492,7 @@
       <Dependency Name="ECopy3Center" />
       <Dependency Name="Shrink" />
     </DilatedPoint>
-    <BezierPath Name="ECopy3" Style="EInk" Closed="true" Filled="true" Path="C #10 #11 C #12 #13 C #14 #15 C #16 #17 C #18 #19 C #20 #21 C #22 #23 C #24 #25 C #26 #9">
+    <BezierPath Name="ECopy3" Style="EFill" Closed="true" Filled="true" Path="C #10 #11 C #12 #13 C #14 #15 C #16 #17 C #18 #19 C #20 #21 C #22 #23 C #24 #25 C #26 #9">
       <Sides Style="NoLine" />
       <Dependency Name="ECopy3A1" />
       <Dependency Name="ECopy3A2" />

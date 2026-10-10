@@ -3,12 +3,13 @@
 
 // designafont - writes the "Design a Font" gallery drawing: a toy font editor. Three big
 // letters, t, h and e, are closed Bezier paths over free points, drawn between the guide lines
-// of a font (ascender, x-height, baseline, descender) in a color each. Under them the sentence
+// of a font (ascender, x-height, baseline, descender) in a hue each. Under them the sentence
 // "the quick brown fox jumps over the lazy dog" is set in the same font, and every t, h and e
 // in it is a dilated image of the big letter (its anchors and handles dilated towards a hidden
-// center by the Shrink number, 1/8), so that dragging a point of the big letter reshapes the
-// small ones with it. The other letters are static: closed paths over hidden points by
-// coordinates, drawn by stroking a skeleton of lines and circular arcs with a round pen.
+// center by the Shrink number, 1/8), in the big letter's own fill style, so that dragging a
+// point of the big letter reshapes the small ones with it and recoloring it recolors them. The
+// other letters are static: closed paths over hidden points by coordinates in one shared Ink
+// style, drawn by stroking a skeleton of lines and circular arcs with a round pen.
 //
 //   dotnet tools/designafont.cs -- <out.lgf>
 //
@@ -121,13 +122,18 @@ Write("      <Dark Fill=\"#FFE4E8F0\" />");
 Write("    </ShapeStyle>");
 Write("    <LineStyle Name=\"NoLine\" Color=\"#00FFFFFF\" StrokeWidth=\"0.5\" />");
 
-// per big letter: its see-through fill, its outline (the sides of its path), its points - round
-// where the outline is smooth (at the default size, 10), square at a corner - its handles, and
-// the solid ink of its copies
+// per big letter: its fill, a gradient of its hue from a light tint at the upper left to a
+// deeper shade at the lower right, which its copies in the sentence share (so that editing it
+// recolors the big letter and the small ones alike, and each small letter shows the whole
+// gradient over its own box); its outline (the sides of its path); its points - round where
+// the outline is smooth (at the default size, 10), square at a corner - and its handles
 foreach (var hue in hues.Values)
 {
-    Write($"    <ShapeStyle Name=\"{hue.Name}Fill\" Fill=\"{Translucent(hue.Light)}\" Color=\"#00000000\">");
-    Write($"      <Dark Fill=\"{Translucent(hue.Dark)}\" />");
+    Write($"    <ShapeStyle Name=\"{hue.Name}Fill\" Color=\"#00000000\">");
+    WriteGradient(hue.Light, lightMix: 0.5, deepFactor: 0.85, indent: "      ");
+    Write("      <Dark>");
+    WriteGradient(hue.Dark, lightMix: 0.35, deepFactor: 0.8, indent: "        ");
+    Write("      </Dark>");
     Write("    </ShapeStyle>");
     Write($"    <LineStyle Name=\"{hue.Name}Rim\" Color=\"{hue.Light}\" StrokeWidth=\"2\">");
     Write($"      <Dark Color=\"{hue.Dark}\" />");
@@ -141,9 +147,6 @@ foreach (var hue in hues.Values)
     Write($"    <PointStyle Name=\"{hue.Name}Handle\" Size=\"7\" Fill=\"{hue.Light}\" Color=\"#FFFFFFFF\" StrokeWidth=\"1.5\">");
     Write($"      <Dark Fill=\"{hue.Dark}\" />");
     Write("    </PointStyle>");
-    Write($"    <ShapeStyle Name=\"{hue.Name}Ink\" Fill=\"{hue.Light}\" Color=\"#00000000\">");
-    Write($"      <Dark Fill=\"{hue.Dark}\" />");
-    Write("    </ShapeStyle>");
 }
 
 // the guide lines and their names
@@ -378,7 +381,20 @@ void WriteCopy(string name, Glyph glyph, GlyphNames source, P bigOrigin, P origi
         WriteImage(holeName, glyph.Hole, source.Hole, source.HoleAnchors, name + "Center", style: null, filled: false, hole: null);
     }
 
-    WriteImage(name, glyph.Outline, source.Path, source.Anchors, name + "Center", hue.Name + "Ink", filled: true, hole: holeName);
+    WriteImage(name, glyph.Outline, source.Path, source.Anchors, name + "Center", hue.Name + "Fill", filled: true, hole: holeName);
+}
+
+// a fill that runs from the hue mixed with white by lightMix at the upper left corner of the
+// figure's box, through the hue, to the hue darkened by deepFactor at the lower right
+void WriteGradient(string hue, double lightMix, double deepFactor, string indent)
+{
+    Write(indent + "<Fill>");
+    Write(indent + "  <LinearGradientBrush StartPoint=\"0,0\" EndPoint=\"1,1\">");
+    Write(indent + $"    <GradientStop Color=\"{Mix(hue, 255, lightMix)}\" Offset=\"0\" />");
+    Write(indent + $"    <GradientStop Color=\"{hue}\" Offset=\"0.55\" />");
+    Write(indent + $"    <GradientStop Color=\"{Mix(hue, 0, 1 - deepFactor)}\" Offset=\"1\" />");
+    Write(indent + "  </LinearGradientBrush>");
+    Write(indent + "</Fill>");
 }
 
 void WriteImage(
@@ -438,8 +454,19 @@ void WriteLabel(string name, string caption, double x, double y)
     Write($"    <Label Name=\"{name}\" Style=\"GuideText\" Text=\"{caption}\" X=\"{Format(x)}\" Y=\"{Format(y)}\" />");
 }
 
-// a hue at a fifth of its opacity, for the fill of a big letter
-static string Translucent(string color) => "#38" + color.Substring(3);
+// an opaque #AARRGGBB color moved towards a gray (255 white, 0 black) by a share of the way
+static string Mix(string color, int gray, double share)
+{
+    var result = new StringBuilder("#FF");
+    for (int i = 3; i < 9; i += 2)
+    {
+        int channel = Convert.ToInt32(color.Substring(i, 2), 16);
+        int mixed = (int)Math.Round(channel + (gray - channel) * share);
+        result.Append(mixed.ToString("X2"));
+    }
+
+    return result.ToString();
+}
 
 // a label's text as the file has it: a backslash doubled, a line break as the two characters
 // \n, and what XML can't have in an attribute escaped
