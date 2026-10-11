@@ -58,6 +58,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
 
     double minimum;
     double maximum = double.PositiveInfinity;
+    double step;
 
     /// <summary>
     /// The number the slider stands for: <see cref="Minimum"/> at the anchor, one more per
@@ -75,8 +76,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         set
         {
             var origin = Anchor.Coordinates;
-            double clamped = System.Math.Max(minimum, System.Math.Min(maximum, value));
-            Knob.MoveToCore(new Point(origin.X + clamped - minimum, origin.Y));
+            Knob.MoveToCore(new Point(origin.X + value - minimum, origin.Y));
             OnChanged();
         }
     }
@@ -127,10 +127,47 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         }
     }
 
+    /// <summary>
+    /// The knob moves in steps of this (0.25, 1), from the minimum; 0, the default, lets it
+    /// slide smoothly. Also for a value set from the grid or a file.
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridGroup("Range")]
+    [PropertyGridPreferredEditor("UpDown")]
+    public double Step
+    {
+        get
+        {
+            return step;
+        }
+        set
+        {
+            if (!value.IsValidValue() || value < 0)
+            {
+                return;
+            }
+
+            double kept = Value;
+            step = value;
+            Value = kept;
+        }
+    }
+
     /// <summary>How far the knob may go from the anchor</summary>
     public double Span
     {
         get { return maximum - minimum; }
+    }
+
+    /// <summary>The knob's distance from the anchor as the range and the step allow it</summary>
+    public double ConstrainDistance(double distance)
+    {
+        if (step > 0)
+        {
+            distance = System.Math.Round(distance / step) * step;
+        }
+
+        return System.Math.Max(0, System.Math.Min(Span, distance));
     }
 
     /// <summary>Where the anchor is; the knob keeps its distance</summary>
@@ -358,7 +395,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
 
     #region Parts
 
-    /// <summary>The knob: a point sliding along the horizontal through the anchor, never to its left, nor past the slider's span</summary>
+    /// <summary>The knob: a point sliding along the horizontal through the anchor, never to its left, nor past the slider's span, in the slider's steps</summary>
     public class SliderKnob : TranslatedPoint
     {
         readonly Slider slider;
@@ -374,15 +411,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
             if (source != null)
             {
                 double left = source.Coordinates.X;
-                double right = left + slider.Span;
-                if (newPosition.X < left)
-                {
-                    newPosition = new Point(left, newPosition.Y);
-                }
-                else if (newPosition.X > right)
-                {
-                    newPosition = new Point(right, newPosition.Y);
-                }
+                newPosition = new Point(left + slider.ConstrainDistance(newPosition.X - left), newPosition.Y);
             }
 
             base.MoveToCore(newPosition);
@@ -456,6 +485,11 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
             writer.WriteAttributeDouble("Maximum", maximum);
         }
 
+        if (step > 0)
+        {
+            writer.WriteAttributeDouble("Step", step);
+        }
+
         if (Decimals != Settings.DisplayDecimals)
         {
             writer.WriteAttributeDouble("Decimals", Decimals);
@@ -479,6 +513,11 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         if (element.Attribute("Maximum") != null)
         {
             maximum = element.ReadDouble("Maximum");
+        }
+
+        if (element.Attribute("Step") != null)
+        {
+            step = element.ReadDouble("Step");
         }
 
         Anchor.MoveToCore(new Point(element.ReadDouble("X"), element.ReadDouble("Y")));

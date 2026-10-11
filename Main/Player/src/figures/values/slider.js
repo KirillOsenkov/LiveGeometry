@@ -18,6 +18,7 @@ class Slider extends CompositeFigure {
         this.knob.name = "slider knob";
         this.minimum = 0;
         this.maximum = Infinity;
+        this.step = 0;
         this.knob.setSources(this.anchor, null, this.horizontal);
         this.track = new Segment();
         this.track.name = "slider track";
@@ -64,14 +65,22 @@ class Slider extends CompositeFigure {
 
     set value(value) {
         const origin = this.anchor.coordinates;
-        const clamped = Math.max(this.minimum, Math.min(this.maximum, value));
-        this.knob.moveToCore(new Point(origin.x + clamped - this.minimum, origin.y));
+        this.knob.moveToCore(new Point(origin.x + value - this.minimum, origin.y));
         this.onChanged();
     }
 
     /** How far the knob may go from the anchor */
     get span() {
         return this.maximum - this.minimum;
+    }
+
+    /** The knob's distance from the anchor as the range and the step (0: smooth) allow it */
+    constrainDistance(distance) {
+        if (this.step > 0) {
+            distance = Math.round(distance / this.step) * this.step;
+        }
+
+        return Math.max(0, Math.min(this.span, distance));
     }
 
     /** Where the anchor is; the knob keeps its distance */
@@ -209,6 +218,10 @@ class Slider extends CompositeFigure {
             this.maximum = Xml.readDouble(element, "Maximum");
         }
 
+        if (element.hasAttribute("Step")) {
+            this.step = Xml.readDouble(element, "Step");
+        }
+
         this.anchor.moveToCore(new Point(Xml.readDouble(element, "X"), Xml.readDouble(element, "Y")));
         this.value = Xml.readDouble(element, "Value");
     }
@@ -248,12 +261,7 @@ class SliderKnob extends TranslatedPoint {
         const source = this.source;
         if (source != null) {
             const left = source.coordinates.x;
-            const right = left + this.slider.span;
-            if (newPosition.x < left) {
-                newPosition = new Point(left, newPosition.y);
-            } else if (newPosition.x > right) {
-                newPosition = new Point(right, newPosition.y);
-            }
+            newPosition = new Point(left + this.slider.constrainDistance(newPosition.x - left), newPosition.y);
         }
 
         super.moveToCore(newPosition);

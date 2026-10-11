@@ -643,6 +643,17 @@ public class GeoGebraReader
         return null;
     }
 
+    /// <summary>The attribute's number, or null when there is none or it says something else</summary>
+    static double? ReadPlainNumber(XAttribute attribute)
+    {
+        if (attribute != null && double.TryParse(attribute.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double number) && number.IsValidValue())
+        {
+            return number;
+        }
+
+        return null;
+    }
+
     /// <summary>A slider, or a plain number (hidden) that expressions can name</summary>
     IFigure ReadNumeric(XElement element, XElement expression)
     {
@@ -669,6 +680,34 @@ public class GeoGebraReader
         if (sliderElement != null && shown)
         {
             var slider = new Slider() { Drawing = drawing };
+
+            // the range and the increment, where they are plain numbers (GeoGebra lets them
+            // be expressions, which stay unread); angles come in radians, as the value does
+            double? minimum = ReadPlainNumber(sliderElement.Attribute("min"));
+            double? maximum = ReadPlainNumber(sliderElement.Attribute("max"));
+            double? step = ReadPlainNumber(element.Element("animation")?.Attribute("step"));
+            if (isAngle)
+            {
+                minimum = minimum?.ToDegrees();
+                maximum = maximum?.ToDegrees();
+                step = step?.ToDegrees();
+            }
+
+            if (minimum.HasValue)
+            {
+                slider.Minimum = minimum.Value;
+            }
+
+            if (maximum.HasValue)
+            {
+                slider.Maximum = maximum.Value;
+            }
+
+            if (step.HasValue)
+            {
+                slider.Step = step.Value;
+            }
+
             slider.Value = value;
             double x = sliderElement.ReadDouble("x");
             double y = sliderElement.ReadDouble("y");

@@ -1160,11 +1160,16 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   one figure (`<Slider X Y Value>`), and no part is ever handed out: `HitTest` answers with the
   slider, so a tool can't come to depend on the knob. The value is the track's length:
   `INumber` (expressions say `a`), `ILengthProvider` (By Radius, Dilate, Translate),
-  `IAngleProvider` in degrees (Rotate). A slider may have a range (2026-10-10:
-  `Minimum`, 0 unless said, and `Maximum`, none unless said; `<Slider ... Maximum="3">`,
-  the Range group of its grid): the value is the minimum at the anchor plus the track's
-  length, and the knob stops at the maximum, also when the value is set from the grid or
-  the file. Dragging goes by parts (`IMovableParts`, which the
+  `IAngleProvider` in degrees (Rotate). A slider may have a range and a step (2026-10-10:
+  `Minimum`, 0 unless said, `Maximum`, none unless said, and `Step`, 0 for smooth unless
+  said; `<Slider ... Minimum="-10" Maximum="10" Step="0.25">`, the Range group of its
+  grid): the value is the minimum at the anchor plus the track's length, the knob stops at
+  the maximum and lands on a multiple of the step from the minimum
+  (`Slider.ConstrainDistance`), also when the value is set from the grid or the file. The
+  GeoGebra reader takes them from `<slider min max>` and `<animation step>` where those
+  are plain numbers (GeoGebra lets them be expressions, left unread), in degrees for an
+  angle slider. The gallery's sliders have maximums and no steps: the morphing between
+  whole numbers is the point of Times Tables. Dragging goes by parts (`IMovableParts`, which the
   Dragger asks): the knob changes the value, the anchor and anything else move the whole. The
   parts carry names no expression can say ("slider knob"): `Figures[name]` looks *inside*
   composites and not at them, which is also why `Binder.ResolveFigure` matches top-level names
