@@ -48,7 +48,7 @@
     <PointStyle Name="Sparkles 3" Character="✨" Size="14" Fill="#FFFFFFFF" />
   </Styles>
   <Figures>
-    <Slider Name="time" X="-2.15" Y="-1.32" Value="1.2" />
+    <Slider Name="time" X="-2.15" Y="-1.32" Value="1.2" Maximum="2.5" />
     <FreePoint Name="Burst1" Style="Fireworks" X="-1.25" Y="0.85" />
     <PointByCoordinates Name="Spark1_0_0" Style="Sparkling heart" X="Burst1.X + 0.401241 * (time * 2.5 - 1) + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)" Y="Burst1.Y + 0.124118 * (time * 2.5 - 1) - 0.08 * (time * 2.5 - 1) ^ 2 + 0 * sqrt(time * 2.5 - 1) + 0 * sqrt(3.6 - time * 2.5)">
       <Dependency Name="Burst1" />

@@ -79,7 +79,7 @@ Write("      <Dark Fill=\"#FF2A2E38\" Color=\"#80FFFFFF\" />");
 Write("    </PointStyle>");
 Write("  </Styles>");
 Write("  <Figures>");
-Write("    <Slider Name=\"spin\" X=\"-3.5\" Y=\"-4.6\" Value=\"1\" />");
+Write("    <Slider Name=\"spin\" X=\"-3.5\" Y=\"-4.6\" Value=\"1\" Maximum=\"9\" />");
 
 foreach (var gear in gears)
 {

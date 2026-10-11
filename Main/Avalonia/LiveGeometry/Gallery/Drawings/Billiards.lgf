@@ -94,7 +94,7 @@
       <Dependency Name="B" />
       <Dependency Name="D" />
     </Segment>
-    <Slider Name="roll" X="0" Y="-1.4" Value="6" />
+    <Slider Name="roll" X="0" Y="-1.4" Value="6" Maximum="10" />
     <PointByCoordinates Name="TrackL" Visible="false" X="0" Y="-4" />
     <PointByCoordinates Name="TrackR" Visible="false" X="1" Y="-4" />
     <Segment Name="Track" Visible="false">

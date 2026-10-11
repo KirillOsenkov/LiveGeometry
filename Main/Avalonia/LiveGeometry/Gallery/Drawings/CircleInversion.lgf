@@ -34,7 +34,7 @@
     <LineStyle Name="Column4" Color="#FFD63384" StrokeWidth="2.5" />
   </Styles>
   <Figures>
-    <Slider Name="r" X="-1.5" Y="-2.5" Value="3" />
+    <Slider Name="r" X="-1.5" Y="-2.5" Value="3" Maximum="6" />
     <FreePoint Name="O" X="0" Y="3" />
     <CircleByRadius Name="Mirror circle" Style="Mirror ball">
       <Dependency Name="r" />

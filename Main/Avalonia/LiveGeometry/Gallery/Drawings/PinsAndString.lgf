@@ -14,7 +14,7 @@
   <Figures>
     <FreePoint Name="F1" Style="Pin" X="-2" Y="0" />
     <FreePoint Name="F2" Style="Pin" X="2" Y="0" />
-    <Slider Name="string" X="-6" Y="-4.5" Value="8" />
+    <Slider Name="string" X="-6" Y="-4.5" Value="8" Maximum="12" />
     <Number Name="One" Value="1" />
     <CircleByRadius Name="Dial" Visible="false">
       <Dependency Name="One" />

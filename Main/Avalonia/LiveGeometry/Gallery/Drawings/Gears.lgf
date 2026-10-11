@@ -10,7 +10,7 @@
     </PointStyle>
   </Styles>
   <Figures>
-    <Slider Name="spin" X="-3.5" Y="-4.6" Value="1" />
+    <Slider Name="spin" X="-3.5" Y="-4.6" Value="1" Maximum="9" />
     <PointByCoordinates Name="Gold0_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + -7.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + -7.5))">
       <Dependency Name="spin" />
     </PointByCoordinates>

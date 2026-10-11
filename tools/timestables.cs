@@ -48,7 +48,7 @@ Write("    <Circle Name=\"Ring\" Style=\"Ring\">");
 Write("      <Dependency Name=\"O\" />");
 Write("      <Dependency Name=\"Rim\" />");
 Write("    </Circle>");
-Write("    <Slider Name=\"k\" X=\"-5\" Y=\"-5.3\" Value=\"2\" />");
+Write("    <Slider Name=\"k\" X=\"-5\" Y=\"-5.3\" Value=\"2\" Maximum=\"200\" />");
 
 for (int i = 0; i < Count; i++)
 {
@@ -64,7 +64,7 @@ for (int i = 0; i < Count; i++)
 }
 
 Write("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"Times Tables on a Circle\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-Write("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"200 dots sit around the circle, numbered 0 to 199. Each dot is joined by a line to the dot with k times its number: with k at 2, dot 7 goes to dot 14, dot 50 to dot 100, and past 199 the count wraps around to 0 again.\\n\\nThat is all. Nobody drew the heart: it just appears out of the 2 times table. Drag the slider to 3 and the heart grows a second lobe; 4 gives three, 5 gives four. Slide slowly between the whole numbers and watch one pattern melt into the next.\\n\\nTry 51, 99, 101, 199 and 201. Why does 199 look like 2? Because 199 times a number is one less than 200 times it, which wraps around to the same dot as minus one times it.\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"200 dots sit around the circle, numbered 0 to 199. Each dot is joined by a line to the dot with k times its number: with k at 2, dot 7 goes to dot 14, dot 50 to dot 100, and past 199 the count wraps around to 0 again.\\n\\nThat is all. Nobody drew the heart: it just appears out of the 2 times table. Drag the slider to 3 and the heart grows a second lobe; 4 gives three, 5 gives four. Slide slowly between the whole numbers and watch one pattern melt into the next.\\n\\nTry 51, 99, 101 and 199. Why does 199 look like 2? Because 199 times a number is one less than 200 times it, which wraps around to the same dot as minus one times it.\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
 Write("  </Figures>");
 text.Append("</Drawing>");
 File.WriteAllText(args[0], text.ToString(), new UTF8Encoding(false));

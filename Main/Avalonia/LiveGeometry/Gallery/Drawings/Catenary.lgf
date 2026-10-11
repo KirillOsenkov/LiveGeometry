@@ -10,7 +10,7 @@
   <Figures>
     <FreePoint Name="A" X="-5" Y="3" />
     <FreePoint Name="B" X="5" Y="2" />
-    <Slider Name="rope" X="-7" Y="5.5" Value="14" />
+    <Slider Name="rope" X="-7" Y="5.5" Value="14" Maximum="25" />
     <Segment Name="AB" Style="Straight">
       <Dependency Name="A" />
       <Dependency Name="B" />
