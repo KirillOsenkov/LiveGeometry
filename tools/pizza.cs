@@ -5,7 +5,8 @@
 // a slider takes apart and lines up point up, point down into a row that is nearly a
 // rectangle: half the crust along the top, half along the bottom, a radius high. The area of
 // the circle, pi r squared, read off a pizza. Each slice is a sector whose center and ends are
-// points by coordinates, moving and turning between their two places by the slider.
+// points by coordinates, moving and turning between their two places by the slider; a
+// pepperoni and an emoji topping ride on every slice.
 //
 //   dotnet tools/pizza.cs -- <out.lgf>
 
@@ -43,6 +44,17 @@ double height = Radius * Math.Cos(sliceAngle / 2);
 double rowWidth = (Slices / 2.0 + 0.5) * chord;
 double rowTop = -1.2;
 
+// the toppings, one emoji per slice going round, and a pepperoni on every slice
+var toppings = new[]
+{
+    ("Mushroom", "🍄", 28),
+    ("Olive", "🫒", 24),
+    ("Tomato", "🍅", 26),
+    ("Herb", "🌿", 26),
+    ("HotPepper", "🌶️", 26),
+    ("Cheese", "🧀", 26),
+};
+
 Write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 Write("<Drawing Version=\"1\" Creator=\"LiveGeometry.App\">");
 Write("  <Viewport Left=\"-6\" Top=\"4\" Right=\"6\" Bottom=\"-4.5\" />");
@@ -50,10 +62,15 @@ Write("  <Styles>");
 Write("    <ShapeStyle Name=\"Slice\" IsFilled=\"true\" Fill=\"#FFF6C34A\" Color=\"#FFC8782A\" StrokeWidth=\"2.5\">");
 Write("      <Dark Fill=\"#FFD9A832\" Color=\"#FFA85E1E\" />");
 Write("    </ShapeStyle>");
-Write("    <PointStyle Name=\"Pepperoni\" Size=\"13\" Fill=\"#FFC0392B\" Color=\"#FF8E1F14\" StrokeWidth=\"1\" />");
+Write("    <PointStyle Name=\"Pepperoni\" Size=\"15\" Fill=\"#FFC0392B\" Color=\"#FF8E1F14\" StrokeWidth=\"1\" />");
+foreach (var (name, character, size) in toppings)
+{
+    Write($"    <PointStyle Name=\"{name}\" Character=\"{character}\" Size=\"{size}\" Fill=\"#FFFFFFFF\" />");
+}
+
 Write("  </Styles>");
 Write("  <Figures>");
-Write("    <Slider Name=\"unroll\" X=\"-5.5\" Y=\"-3.8\" Value=\"0.6\" Maximum=\"4\" />");
+Write("    <Slider Name=\"unroll\" X=\"-5.5\" Y=\"-3.8\" Value=\"0.3\" Maximum=\"4\" />");
 
 for (int i = 0; i < Slices; i++)
 {
@@ -98,14 +115,21 @@ for (int i = 0; i < Slices; i++)
     Write($"      <Dependency Name=\"Start{i}\" />");
     Write($"      <Dependency Name=\"End{i}\" />");
     Write("    </CircleSector>");
-    Write($"    <PointByCoordinates Name=\"Pepperoni{i}\" Style=\"Pepperoni\" X=\"Center{i}.X + {Format(Radius * 0.62)} * cos({middle})\" Y=\"Center{i}.Y + {Format(Radius * 0.62)} * sin({middle})\">");
+    // the pepperoni near the crust, the emoji nearer the point, each a little off the
+    // slice's middle line so that the toppings don't line up
+    Write($"    <PointByCoordinates Name=\"Pepperoni{i}\" Style=\"Pepperoni\" X=\"Center{i}.X + {Format(Radius * 0.84)} * cos({middle} + {Format(sliceAngle * 0.2)})\" Y=\"Center{i}.Y + {Format(Radius * 0.84)} * sin({middle} + {Format(sliceAngle * 0.2)})\">");
+    Write($"      <Dependency Name=\"Center{i}\" />");
+    Write("      <Dependency Name=\"unroll\" />");
+    Write("    </PointByCoordinates>");
+    var topping = toppings[i % toppings.Length];
+    Write($"    <PointByCoordinates Name=\"Topping{i}\" Style=\"{topping.Item1}\" X=\"Center{i}.X + {Format(Radius * 0.6)} * cos({middle} - {Format(sliceAngle * 0.14)})\" Y=\"Center{i}.Y + {Format(Radius * 0.6)} * sin({middle} - {Format(sliceAngle * 0.14)})\">");
     Write($"      <Dependency Name=\"Center{i}\" />");
     Write("      <Dependency Name=\"unroll\" />");
     Write("    </PointByCoordinates>");
 }
 
 Write("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"Slice the Pizza\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-Write("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"Why is the area of a circle π times the radius squared? Cut a pizza into slices and drag the slider: the slices line up, point up, point down, into a shape that is almost a rectangle.\\n\\nHalf the crust runs along its top and half along its bottom, so the rectangle is half the circumference wide: π times the radius. And it is one slice high: the radius. Width times height is π times the radius times the radius.\\n\\nWith twelve slices the edges are still bumpy. Imagine a hundred slices, or a million: the bumps vanish and the shape is exactly a rectangle. That is the idea behind calculus, two thousand years before calculus was invented.\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"Why is the area of a circle π times the radius squared? Cut a pizza into slices, toppings and all, and drag the slider: the slices line up, point up, point down, into a shape that is almost a rectangle.\\n\\nHalf the crust runs along its top and half along its bottom, so the rectangle is half the circumference wide: π times the radius. And it is one slice high: the radius. Width times height is π times the radius times the radius.\\n\\nWith twelve slices the edges are still bumpy. Imagine a hundred slices, or a million: the bumps vanish and the shape is exactly a rectangle. That is the idea behind calculus, two thousand years before calculus was invented.\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
 Write("  </Figures>");
 text.Append("</Drawing>");
 File.WriteAllText(args[0], text.ToString(), new UTF8Encoding(false));

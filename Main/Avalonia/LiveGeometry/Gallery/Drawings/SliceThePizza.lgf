@@ -5,10 +5,16 @@
     <ShapeStyle Name="Slice" Fill="#FFF6C34A" Color="#FFC8782A" StrokeWidth="2.5">
       <Dark Fill="#FFD9A832" Color="#FFA85E1E" />
     </ShapeStyle>
-    <PointStyle Name="Pepperoni" Size="13" Fill="#FFC0392B" Color="#FF8E1F14" />
+    <PointStyle Name="Pepperoni" Size="15" Fill="#FFC0392B" Color="#FF8E1F14" />
+    <PointStyle Name="Mushroom" Character="🍄" Size="28" Fill="#FFFFFFFF" />
+    <PointStyle Name="Olive" Character="🫒" Fill="#FFFFFFFF" />
+    <PointStyle Name="Tomato" Character="🍅" Size="26" Fill="#FFFFFFFF" />
+    <PointStyle Name="Herb" Character="🌿" Size="26" Fill="#FFFFFFFF" />
+    <PointStyle Name="HotPepper" Character="🌶️" Size="26" Fill="#FFFFFFFF" />
+    <PointStyle Name="Cheese" Character="🧀" Size="26" Fill="#FFFFFFFF" />
   </Styles>
   <Figures>
-    <Slider Name="unroll" X="-5.5" Y="-3.8" Value="0.5999999999999996" Maximum="4" />
+    <Slider Name="unroll" X="-5.5" Y="-3.8" Value="0.2999999999999998" Maximum="4" />
     <PointByCoordinates Name="Center0" Visible="false" X="0 + (-2.2776) * unroll / 4" Y="1.9 + (-3.1) * unroll / 4">
       <Dependency Name="unroll" />
     </PointByCoordinates>
@@ -25,7 +31,11 @@
       <Dependency Name="Start0" />
       <Dependency Name="End0" />
     </CircleSector>
-    <PointByCoordinates Name="Pepperoni0" Style="Pepperoni" X="Center0.X + 0.992 * cos(0.2618 + (-1.8326) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))" Y="Center0.Y + 0.992 * sin(0.2618 + (-1.8326) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))">
+    <PointByCoordinates Name="Pepperoni0" Style="Pepperoni" X="Center0.X + 1.344 * cos(0.2618 + (-1.8326) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)" Y="Center0.Y + 1.344 * sin(0.2618 + (-1.8326) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)">
+      <Dependency Name="Center0" />
+      <Dependency Name="unroll" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Topping0" Style="Mushroom" X="Center0.X + 0.96 * cos(0.2618 + (-1.8326) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)" Y="Center0.Y + 0.96 * sin(0.2618 + (-1.8326) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)">
       <Dependency Name="Center0" />
       <Dependency Name="unroll" />
     </PointByCoordinates>
@@ -45,7 +55,11 @@
       <Dependency Name="Start1" />
       <Dependency Name="End1" />
     </CircleSector>
-    <PointByCoordinates Name="Pepperoni1" Style="Pepperoni" X="Center1.X + 0.992 * cos(0.7854 + (0.7854) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))" Y="Center1.Y + 0.992 * sin(0.7854 + (0.7854) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))">
+    <PointByCoordinates Name="Pepperoni1" Style="Pepperoni" X="Center1.X + 1.344 * cos(0.7854 + (0.7854) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)" Y="Center1.Y + 1.344 * sin(0.7854 + (0.7854) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)">
+      <Dependency Name="Center1" />
+      <Dependency Name="unroll" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Topping1" Style="Olive" X="Center1.X + 0.96 * cos(0.7854 + (0.7854) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)" Y="Center1.Y + 0.96 * sin(0.7854 + (0.7854) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)">
       <Dependency Name="Center1" />
       <Dependency Name="unroll" />
     </PointByCoordinates>
@@ -65,7 +79,11 @@
       <Dependency Name="Start2" />
       <Dependency Name="End2" />
     </CircleSector>
-    <PointByCoordinates Name="Pepperoni2" Style="Pepperoni" X="Center2.X + 0.992 * cos(1.309 + (-2.8798) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))" Y="Center2.Y + 0.992 * sin(1.309 + (-2.8798) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))">
+    <PointByCoordinates Name="Pepperoni2" Style="Pepperoni" X="Center2.X + 1.344 * cos(1.309 + (-2.8798) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)" Y="Center2.Y + 1.344 * sin(1.309 + (-2.8798) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)">
+      <Dependency Name="Center2" />
+      <Dependency Name="unroll" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Topping2" Style="Tomato" X="Center2.X + 0.96 * cos(1.309 + (-2.8798) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)" Y="Center2.Y + 0.96 * sin(1.309 + (-2.8798) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)">
       <Dependency Name="Center2" />
       <Dependency Name="unroll" />
     </PointByCoordinates>
@@ -85,7 +103,11 @@
       <Dependency Name="Start3" />
       <Dependency Name="End3" />
     </CircleSector>
-    <PointByCoordinates Name="Pepperoni3" Style="Pepperoni" X="Center3.X + 0.992 * cos(1.8326 + (-0.2618) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))" Y="Center3.Y + 0.992 * sin(1.8326 + (-0.2618) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))">
+    <PointByCoordinates Name="Pepperoni3" Style="Pepperoni" X="Center3.X + 1.344 * cos(1.8326 + (-0.2618) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)" Y="Center3.Y + 1.344 * sin(1.8326 + (-0.2618) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)">
+      <Dependency Name="Center3" />
+      <Dependency Name="unroll" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Topping3" Style="Herb" X="Center3.X + 0.96 * cos(1.8326 + (-0.2618) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)" Y="Center3.Y + 0.96 * sin(1.8326 + (-0.2618) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)">
       <Dependency Name="Center3" />
       <Dependency Name="unroll" />
     </PointByCoordinates>
@@ -105,7 +127,11 @@
       <Dependency Name="Start4" />
       <Dependency Name="End4" />
     </CircleSector>
-    <PointByCoordinates Name="Pepperoni4" Style="Pepperoni" X="Center4.X + 0.992 * cos(2.3562 + (2.3562) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))" Y="Center4.Y + 0.992 * sin(2.3562 + (2.3562) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))">
+    <PointByCoordinates Name="Pepperoni4" Style="Pepperoni" X="Center4.X + 1.344 * cos(2.3562 + (2.3562) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)" Y="Center4.Y + 1.344 * sin(2.3562 + (2.3562) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)">
+      <Dependency Name="Center4" />
+      <Dependency Name="unroll" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Topping4" Style="HotPepper" X="Center4.X + 0.96 * cos(2.3562 + (2.3562) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)" Y="Center4.Y + 0.96 * sin(2.3562 + (2.3562) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)">
       <Dependency Name="Center4" />
       <Dependency Name="unroll" />
     </PointByCoordinates>
@@ -125,7 +151,11 @@
       <Dependency Name="Start5" />
       <Dependency Name="End5" />
     </CircleSector>
-    <PointByCoordinates Name="Pepperoni5" Style="Pepperoni" X="Center5.X + 0.992 * cos(2.8798 + (-1.309) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))" Y="Center5.Y + 0.992 * sin(2.8798 + (-1.309) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))">
+    <PointByCoordinates Name="Pepperoni5" Style="Pepperoni" X="Center5.X + 1.344 * cos(2.8798 + (-1.309) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)" Y="Center5.Y + 1.344 * sin(2.8798 + (-1.309) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)">
+      <Dependency Name="Center5" />
+      <Dependency Name="unroll" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Topping5" Style="Cheese" X="Center5.X + 0.96 * cos(2.8798 + (-1.309) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)" Y="Center5.Y + 0.96 * sin(2.8798 + (-1.309) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)">
       <Dependency Name="Center5" />
       <Dependency Name="unroll" />
     </PointByCoordinates>
@@ -145,7 +175,11 @@
       <Dependency Name="Start6" />
       <Dependency Name="End6" />
     </CircleSector>
-    <PointByCoordinates Name="Pepperoni6" Style="Pepperoni" X="Center6.X + 0.992 * cos(3.4034 + (1.309) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))" Y="Center6.Y + 0.992 * sin(3.4034 + (1.309) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))">
+    <PointByCoordinates Name="Pepperoni6" Style="Pepperoni" X="Center6.X + 1.344 * cos(3.4034 + (1.309) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)" Y="Center6.Y + 1.344 * sin(3.4034 + (1.309) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)">
+      <Dependency Name="Center6" />
+      <Dependency Name="unroll" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Topping6" Style="Mushroom" X="Center6.X + 0.96 * cos(3.4034 + (1.309) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)" Y="Center6.Y + 0.96 * sin(3.4034 + (1.309) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)">
       <Dependency Name="Center6" />
       <Dependency Name="unroll" />
     </PointByCoordinates>
@@ -165,7 +199,11 @@
       <Dependency Name="Start7" />
       <Dependency Name="End7" />
     </CircleSector>
-    <PointByCoordinates Name="Pepperoni7" Style="Pepperoni" X="Center7.X + 0.992 * cos(3.927 + (-2.3562) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))" Y="Center7.Y + 0.992 * sin(3.927 + (-2.3562) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))">
+    <PointByCoordinates Name="Pepperoni7" Style="Pepperoni" X="Center7.X + 1.344 * cos(3.927 + (-2.3562) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)" Y="Center7.Y + 1.344 * sin(3.927 + (-2.3562) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)">
+      <Dependency Name="Center7" />
+      <Dependency Name="unroll" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Topping7" Style="Olive" X="Center7.X + 0.96 * cos(3.927 + (-2.3562) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)" Y="Center7.Y + 0.96 * sin(3.927 + (-2.3562) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)">
       <Dependency Name="Center7" />
       <Dependency Name="unroll" />
     </PointByCoordinates>
@@ -185,7 +223,11 @@
       <Dependency Name="Start8" />
       <Dependency Name="End8" />
     </CircleSector>
-    <PointByCoordinates Name="Pepperoni8" Style="Pepperoni" X="Center8.X + 0.992 * cos(4.4506 + (0.2618) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))" Y="Center8.Y + 0.992 * sin(4.4506 + (0.2618) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))">
+    <PointByCoordinates Name="Pepperoni8" Style="Pepperoni" X="Center8.X + 1.344 * cos(4.4506 + (0.2618) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)" Y="Center8.Y + 1.344 * sin(4.4506 + (0.2618) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)">
+      <Dependency Name="Center8" />
+      <Dependency Name="unroll" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Topping8" Style="Tomato" X="Center8.X + 0.96 * cos(4.4506 + (0.2618) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)" Y="Center8.Y + 0.96 * sin(4.4506 + (0.2618) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)">
       <Dependency Name="Center8" />
       <Dependency Name="unroll" />
     </PointByCoordinates>
@@ -205,7 +247,11 @@
       <Dependency Name="Start9" />
       <Dependency Name="End9" />
     </CircleSector>
-    <PointByCoordinates Name="Pepperoni9" Style="Pepperoni" X="Center9.X + 0.992 * cos(4.9742 + (2.8798) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))" Y="Center9.Y + 0.992 * sin(4.9742 + (2.8798) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))">
+    <PointByCoordinates Name="Pepperoni9" Style="Pepperoni" X="Center9.X + 1.344 * cos(4.9742 + (2.8798) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)" Y="Center9.Y + 1.344 * sin(4.9742 + (2.8798) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)">
+      <Dependency Name="Center9" />
+      <Dependency Name="unroll" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Topping9" Style="Herb" X="Center9.X + 0.96 * cos(4.9742 + (2.8798) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)" Y="Center9.Y + 0.96 * sin(4.9742 + (2.8798) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)">
       <Dependency Name="Center9" />
       <Dependency Name="unroll" />
     </PointByCoordinates>
@@ -225,7 +271,11 @@
       <Dependency Name="Start10" />
       <Dependency Name="End10" />
     </CircleSector>
-    <PointByCoordinates Name="Pepperoni10" Style="Pepperoni" X="Center10.X + 0.992 * cos(5.4978 + (-0.7854) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))" Y="Center10.Y + 0.992 * sin(5.4978 + (-0.7854) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))">
+    <PointByCoordinates Name="Pepperoni10" Style="Pepperoni" X="Center10.X + 1.344 * cos(5.4978 + (-0.7854) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)" Y="Center10.Y + 1.344 * sin(5.4978 + (-0.7854) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)">
+      <Dependency Name="Center10" />
+      <Dependency Name="unroll" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Topping10" Style="HotPepper" X="Center10.X + 0.96 * cos(5.4978 + (-0.7854) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)" Y="Center10.Y + 0.96 * sin(5.4978 + (-0.7854) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)">
       <Dependency Name="Center10" />
       <Dependency Name="unroll" />
     </PointByCoordinates>
@@ -245,11 +295,15 @@
       <Dependency Name="Start11" />
       <Dependency Name="End11" />
     </CircleSector>
-    <PointByCoordinates Name="Pepperoni11" Style="Pepperoni" X="Center11.X + 0.992 * cos(6.0214 + (1.8326) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))" Y="Center11.Y + 0.992 * sin(6.0214 + (1.8326) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1))">
+    <PointByCoordinates Name="Pepperoni11" Style="Pepperoni" X="Center11.X + 1.344 * cos(6.0214 + (1.8326) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)" Y="Center11.Y + 1.344 * sin(6.0214 + (1.8326) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) + 0.1047)">
+      <Dependency Name="Center11" />
+      <Dependency Name="unroll" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Topping11" Style="Cheese" X="Center11.X + 0.96 * cos(6.0214 + (1.8326) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)" Y="Center11.Y + 0.96 * sin(6.0214 + (1.8326) * clamp((unroll / 4 - 0.3) / 0.7, 0, 1) - 0.0733)">
       <Dependency Name="Center11" />
       <Dependency Name="unroll" />
     </PointByCoordinates>
     <Label Name="Title" Style="GalleryTitle" Text="Slice the Pizza" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Why is the area of a circle π times the radius squared? Cut a pizza into slices and drag the slider: the slices line up, point up, point down, into a shape that is almost a rectangle.\n\nHalf the crust runs along its top and half along its bottom, so the rectangle is half the circumference wide: π times the radius. And it is one slice high: the radius. Width times height is π times the radius times the radius.\n\nWith twelve slices the edges are still bumpy. Imagine a hundred slices, or a million: the bumps vanish and the shape is exactly a rectangle. That is the idea behind calculus, two thousand years before calculus was invented." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Why is the area of a circle π times the radius squared? Cut a pizza into slices, toppings and all, and drag the slider: the slices line up, point up, point down, into a shape that is almost a rectangle.\n\nHalf the crust runs along its top and half along its bottom, so the rectangle is half the circumference wide: π times the radius. And it is one slice high: the radius. Width times height is π times the radius times the radius.\n\nWith twelve slices the edges are still bumpy. Imagine a hundred slices, or a million: the bumps vanish and the shape is exactly a rectangle. That is the idea behind calculus, two thousand years before calculus was invented." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>
