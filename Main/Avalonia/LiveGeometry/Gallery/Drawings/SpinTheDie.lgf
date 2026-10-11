@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-200" Top="150" Right="200" Bottom="-200" />
+  <Styles>
+    <ShapeStyle Name="One" Fill="#A0F28C8C" Color="#C0303030" StrokeWidth="1.5">
+      <Dark Fill="#A0C04040" Color="#C0E0E0E0" />
+    </ShapeStyle>
+    <PointStyle Name="PipOne" Size="11" Fill="#FFB81E1E" Color="#60000000">
+      <Dark Fill="#FFFF8080" Color="#60FFFFFF" />
+    </PointStyle>
+    <ShapeStyle Name="Six" Fill="#A08CB8F2" Color="#C0303030" StrokeWidth="1.5">
+      <Dark Fill="#A04060C0" Color="#C0E0E0E0" />
+    </ShapeStyle>
+    <PointStyle Name="PipSix" Size="11" Fill="#FF1E4FB8" Color="#60000000">
+      <Dark Fill="#FF80A8FF" Color="#60FFFFFF" />
+    </PointStyle>
+    <ShapeStyle Name="Two" Fill="#A0F2E08C" Color="#C0303030" StrokeWidth="1.5">
+      <Dark Fill="#A0C0A030" Color="#C0E0E0E0" />
+    </ShapeStyle>
+    <PointStyle Name="PipTwo" Size="11" Fill="#FFA08A00" Color="#60000000">
+      <Dark Fill="#FFFFE060" Color="#60FFFFFF" />
+    </PointStyle>
+    <ShapeStyle Name="Five" Fill="#A0A0E0A0" Color="#C0303030" StrokeWidth="1.5">
+      <Dark Fill="#A040A050" Color="#C0E0E0E0" />
+    </ShapeStyle>
+    <PointStyle Name="PipFive" Size="11" Fill="#FF1E8A3C" Color="#60000000">
+      <Dark Fill="#FF80E8A0" Color="#60FFFFFF" />
+    </PointStyle>
+    <ShapeStyle Name="Three" Fill="#A0D0A0F0" Color="#C0303030" StrokeWidth="1.5">
+      <Dark Fill="#A08050C0" Color="#C0E0E0E0" />
+    </ShapeStyle>
+    <PointStyle Name="PipThree" Size="11" Fill="#FF7A2EB8" Color="#60000000">
+      <Dark Fill="#FFD0A0FF" Color="#60FFFFFF" />
+    </PointStyle>
+    <ShapeStyle Name="Four" Fill="#A0F2B88C" Color="#C0303030" StrokeWidth="1.5">
+      <Dark Fill="#A0C07030" Color="#C0E0E0E0" />
+    </ShapeStyle>
+    <PointStyle Name="PipFour" Size="11" Fill="#FFC05A10" Color="#60000000">
+      <Dark Fill="#FFFFB070" Color="#60FFFFFF" />
+    </PointStyle>
+  </Styles>
+  <Figures>
+    <Slider Name="turn" X="-190" Y="-150" Value="35" Maximum="360" />
+    <Slider Name="tilt" X="-190" Y="-185" Value="25" Maximum="90" />
+    <PointByCoordinates Name="CornerLBK" Visible="false" X="-70 * cos(rad(turn)) + -70 * sin(rad(turn))" Y="-70 * cos(rad(tilt)) - (70 * sin(rad(turn)) + -70 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CornerLBF" Visible="false" X="-70 * cos(rad(turn)) + 70 * sin(rad(turn))" Y="-70 * cos(rad(tilt)) - (70 * sin(rad(turn)) + 70 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CornerLTK" Visible="false" X="-70 * cos(rad(turn)) + -70 * sin(rad(turn))" Y="70 * cos(rad(tilt)) - (70 * sin(rad(turn)) + -70 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CornerLTF" Visible="false" X="-70 * cos(rad(turn)) + 70 * sin(rad(turn))" Y="70 * cos(rad(tilt)) - (70 * sin(rad(turn)) + 70 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CornerRBK" Visible="false" X="70 * cos(rad(turn)) + -70 * sin(rad(turn))" Y="-70 * cos(rad(tilt)) - (-70 * sin(rad(turn)) + -70 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CornerRBF" Visible="false" X="70 * cos(rad(turn)) + 70 * sin(rad(turn))" Y="-70 * cos(rad(tilt)) - (-70 * sin(rad(turn)) + 70 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CornerRTK" Visible="false" X="70 * cos(rad(turn)) + -70 * sin(rad(turn))" Y="70 * cos(rad(tilt)) - (-70 * sin(rad(turn)) + -70 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CornerRTF" Visible="false" X="70 * cos(rad(turn)) + 70 * sin(rad(turn))" Y="70 * cos(rad(tilt)) - (-70 * sin(rad(turn)) + 70 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <Polygon Name="FaceOne" Style="One">
+      <Dependency Name="CornerLBF" />
+      <Dependency Name="CornerRBF" />
+      <Dependency Name="CornerRTF" />
+      <Dependency Name="CornerLTF" />
+    </Polygon>
+    <Polygon Name="FaceSix" Style="Six">
+      <Dependency Name="CornerLBK" />
+      <Dependency Name="CornerRBK" />
+      <Dependency Name="CornerRTK" />
+      <Dependency Name="CornerLTK" />
+    </Polygon>
+    <Polygon Name="FaceTwo" Style="Two">
+      <Dependency Name="CornerLTK" />
+      <Dependency Name="CornerRTK" />
+      <Dependency Name="CornerRTF" />
+      <Dependency Name="CornerLTF" />
+    </Polygon>
+    <Polygon Name="FaceFive" Style="Five">
+      <Dependency Name="CornerLBK" />
+      <Dependency Name="CornerRBK" />
+      <Dependency Name="CornerRBF" />
+      <Dependency Name="CornerLBF" />
+    </Polygon>
+    <Polygon Name="FaceThree" Style="Three">
+      <Dependency Name="CornerRBK" />
+      <Dependency Name="CornerRTK" />
+      <Dependency Name="CornerRTF" />
+      <Dependency Name="CornerRBF" />
+    </Polygon>
+    <Polygon Name="FaceFour" Style="Four">
+      <Dependency Name="CornerLBK" />
+      <Dependency Name="CornerLTK" />
+      <Dependency Name="CornerLTF" />
+      <Dependency Name="CornerLBF" />
+    </Polygon>
+    <PointByCoordinates Name="PipOne0" Style="PipOne" X="0 * cos(rad(turn)) + 70.07 * sin(rad(turn))" Y="0 * cos(rad(tilt)) - (-0 * sin(rad(turn)) + 70.07 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipSix0" Style="PipSix" X="-38.5 * cos(rad(turn)) + -70.07 * sin(rad(turn))" Y="-38.5 * cos(rad(tilt)) - (38.5 * sin(rad(turn)) + -70.07 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipSix1" Style="PipSix" X="-38.5 * cos(rad(turn)) + -70.07 * sin(rad(turn))" Y="0 * cos(rad(tilt)) - (38.5 * sin(rad(turn)) + -70.07 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipSix2" Style="PipSix" X="-38.5 * cos(rad(turn)) + -70.07 * sin(rad(turn))" Y="38.5 * cos(rad(tilt)) - (38.5 * sin(rad(turn)) + -70.07 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipSix3" Style="PipSix" X="38.5 * cos(rad(turn)) + -70.07 * sin(rad(turn))" Y="-38.5 * cos(rad(tilt)) - (-38.5 * sin(rad(turn)) + -70.07 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipSix4" Style="PipSix" X="38.5 * cos(rad(turn)) + -70.07 * sin(rad(turn))" Y="0 * cos(rad(tilt)) - (-38.5 * sin(rad(turn)) + -70.07 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipSix5" Style="PipSix" X="38.5 * cos(rad(turn)) + -70.07 * sin(rad(turn))" Y="38.5 * cos(rad(tilt)) - (-38.5 * sin(rad(turn)) + -70.07 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipTwo0" Style="PipTwo" X="-38.5 * cos(rad(turn)) + -38.5 * sin(rad(turn))" Y="70.07 * cos(rad(tilt)) - (38.5 * sin(rad(turn)) + -38.5 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipTwo1" Style="PipTwo" X="38.5 * cos(rad(turn)) + 38.5 * sin(rad(turn))" Y="70.07 * cos(rad(tilt)) - (-38.5 * sin(rad(turn)) + 38.5 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipFive0" Style="PipFive" X="-38.5 * cos(rad(turn)) + -38.5 * sin(rad(turn))" Y="-70.07 * cos(rad(tilt)) - (38.5 * sin(rad(turn)) + -38.5 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipFive1" Style="PipFive" X="38.5 * cos(rad(turn)) + 38.5 * sin(rad(turn))" Y="-70.07 * cos(rad(tilt)) - (-38.5 * sin(rad(turn)) + 38.5 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipFive2" Style="PipFive" X="-38.5 * cos(rad(turn)) + 38.5 * sin(rad(turn))" Y="-70.07 * cos(rad(tilt)) - (38.5 * sin(rad(turn)) + 38.5 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipFive3" Style="PipFive" X="38.5 * cos(rad(turn)) + -38.5 * sin(rad(turn))" Y="-70.07 * cos(rad(tilt)) - (-38.5 * sin(rad(turn)) + -38.5 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipFive4" Style="PipFive" X="0 * cos(rad(turn)) + 0 * sin(rad(turn))" Y="-70.07 * cos(rad(tilt)) - (-0 * sin(rad(turn)) + 0 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipThree0" Style="PipThree" X="70.07 * cos(rad(turn)) + -38.5 * sin(rad(turn))" Y="-38.5 * cos(rad(tilt)) - (-70.07 * sin(rad(turn)) + -38.5 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipThree1" Style="PipThree" X="70.07 * cos(rad(turn)) + 0 * sin(rad(turn))" Y="0 * cos(rad(tilt)) - (-70.07 * sin(rad(turn)) + 0 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipThree2" Style="PipThree" X="70.07 * cos(rad(turn)) + 38.5 * sin(rad(turn))" Y="38.5 * cos(rad(tilt)) - (-70.07 * sin(rad(turn)) + 38.5 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipFour0" Style="PipFour" X="-70.07 * cos(rad(turn)) + -38.5 * sin(rad(turn))" Y="-38.5 * cos(rad(tilt)) - (70.07 * sin(rad(turn)) + -38.5 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipFour1" Style="PipFour" X="-70.07 * cos(rad(turn)) + 38.5 * sin(rad(turn))" Y="38.5 * cos(rad(tilt)) - (70.07 * sin(rad(turn)) + 38.5 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipFour2" Style="PipFour" X="-70.07 * cos(rad(turn)) + 38.5 * sin(rad(turn))" Y="-38.5 * cos(rad(tilt)) - (70.07 * sin(rad(turn)) + 38.5 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="PipFour3" Style="PipFour" X="-70.07 * cos(rad(turn)) + -38.5 * sin(rad(turn))" Y="38.5 * cos(rad(tilt)) - (70.07 * sin(rad(turn)) + -38.5 * cos(rad(turn))) * sin(rad(tilt))">
+      <Dependency Name="turn" />
+      <Dependency Name="tilt" />
+    </PointByCoordinates>
+    <Label Name="Title" Style="GalleryTitle" Text="Spin the Die" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A glass die. Drag the sliders to turn it around and tip it over, and look at it from every side.\n\nThe die is really twenty-nine points, eight corners and twenty-one pips, each with three coordinates. The sliders turn them in space, and the picture is just the first two coordinates of each, with the third one thrown away. That is all a 3D picture on a flat screen ever is.\n\nEach face has its own color, pips included, so you can tell them apart through the glass. Turn it so you can see the 1 and the 6 at the same time: they are on opposite faces, and so are 2 and 5, and 3 and 4. Every opposite pair adds up to 7. Dice have been made this way for thousands of years." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

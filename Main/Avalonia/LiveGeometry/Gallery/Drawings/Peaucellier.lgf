@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-2.5" Top="6" Right="10" Bottom="-7" />
+  <Styles>
+    <LineStyle Name="Line" Color="#FF2E9E5B" StrokeWidth="3">
+      <Dark Color="#FF5FD48A" />
+    </LineStyle>
+    <PointStyle Name="Pivot" Size="13" Fill="#FF2B3038" Color="#FF2B3038">
+      <Dark Fill="#FFE4E8F0" Color="#FFE4E8F0" />
+    </PointStyle>
+    <PointStyle Name="Knob" Size="13" Fill="#FFFFE066" Color="#FF806000" StrokeWidth="1.5" />
+    <PointStyle Name="Joint" Fill="#FFD0D0D0" Color="#FF505050" StrokeWidth="1.5" />
+    <PointStyle Name="Pen" Size="12" Fill="#FF2E9E5B" Color="#FF145B30" />
+    <LineStyle Name="CrankCircle" Color="#FF8A8A8A" StrokeWidth="1.25" Dash="Dash" />
+    <LineStyle Name="Reach" Color="#FF8A8A8A" StrokeWidth="3" />
+    <LineStyle Name="Crank" Color="#FF2B3038" StrokeWidth="5">
+      <Dark Color="#FFE4E8F0" />
+    </LineStyle>
+    <LineStyle Name="Arm" Color="#FFE0362B" StrokeWidth="5">
+      <Dark Color="#FFFF6B5E" />
+    </LineStyle>
+    <LineStyle Name="Bar" Color="#FF2F7BD6" StrokeWidth="4">
+      <Dark Color="#FF62AEFF" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <Slider Name="radius" Style="Crank" X="-2" Y="-5.8" Value="2" Maximum="3" />
+    <Slider Name="red" Style="Arm" X="1.5" Y="-5.8" Value="5" Maximum="6" />
+    <Slider Name="blue" Style="Bar" X="8" Y="-5.8" Value="2" Maximum="4" />
+    <FreePoint Name="O" Style="Pivot" X="0" Y="0" />
+    <PointByCoordinates Name="Q" Style="Pivot" X="O.X + radius" Y="O.Y">
+      <Dependency Name="O" />
+      <Dependency Name="radius" />
+    </PointByCoordinates>
+    <Circle Name="CrankCircle" Style="CrankCircle">
+      <Dependency Name="Q" />
+      <Dependency Name="O" />
+    </Circle>
+    <PointByCoordinates Name="Angle" Visible="false" X="2 * acos(clamp((red - blue) / (2 * radius), -0.9999, 1))" Y="0">
+      <Dependency Name="red" />
+      <Dependency Name="blue" />
+      <Dependency Name="radius" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ReachStart" Visible="false" X="Q.X + radius * cos(Angle.X)" Y="Q.Y - radius * sin(Angle.X)">
+      <Dependency Name="Q" />
+      <Dependency Name="radius" />
+      <Dependency Name="Angle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ReachEnd" Visible="false" X="Q.X + radius * cos(Angle.X)" Y="Q.Y + radius * sin(Angle.X)">
+      <Dependency Name="Q" />
+      <Dependency Name="radius" />
+      <Dependency Name="Angle" />
+    </PointByCoordinates>
+    <CircleArc Name="Reach" Style="Reach">
+      <Dependency Name="Q" />
+      <Dependency Name="ReachStart" />
+      <Dependency Name="ReachEnd" />
+    </CircleArc>
+    <PointOnFigure Name="P" Style="Knob" X="3.879385139238593" Y="0.6840405678094933" Parameter="0.349066">
+      <Dependency Name="Reach" />
+    </PointOnFigure>
+    <CircleByRadius Name="ArmCircle" Visible="false">
+      <Dependency Name="red" />
+      <Dependency Name="O" />
+    </CircleByRadius>
+    <CircleByRadius Name="BarCircle" Visible="false">
+      <Dependency Name="blue" />
+      <Dependency Name="P" />
+    </CircleByRadius>
+    <IntersectionPoint Name="A" Style="Joint" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="ArmCircle" />
+      <Dependency Name="BarCircle" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="B" Style="Joint" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="ArmCircle" />
+      <Dependency Name="BarCircle" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="AB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </LineTwoPoints>
+    <ReflectedPoint Name="T" Style="Pen">
+      <Dependency Name="P" />
+      <Dependency Name="AB" />
+    </ReflectedPoint>
+    <Segment Name="PQ" Style="Crank">
+      <Dependency Name="Q" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="AO" Style="Arm">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="BO" Style="Arm">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="AP" Style="Bar">
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="BP" Style="Bar">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="AT" Style="Bar">
+      <Dependency Name="A" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="BT" Style="Bar">
+      <Dependency Name="B" />
+      <Dependency Name="T" />
+    </Segment>
+    <Locus Name="StraightLine">
+      <Dependency Name="T" />
+      <Dependency Name="P" />
+    </Locus>
+    <Label Name="Title" Style="GalleryTitle" Text="A Straight Line from Circles" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Seven rods, pinned together. The two short ones at the left are nailed to the board at their left ends; drag the left nail to move the whole machine. Drag the yellow joint along its arc and watch the green pen: it draws a perfectly straight line, though nothing in the machine moves straight.\n\nFor a hundred years steam engines needed a part that moved exactly straight, and nobody knew how to make one out of hinged rods. In 1864 a French army officer, Charles Peaucellier, found this linkage. The two red rods and the four blue ones turn the circle into a line by the same trick as the mirror ball in the Inversion drawing.\n\nThe sliders change the crank's radius and the lengths of the red and blue rods. The solid arc is as far as the rods can reach: beyond it the machine would come apart. A bigger crank pushes the line further out; make the red rods shorter than the blue ones and the line flips to the other side of the pivot." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

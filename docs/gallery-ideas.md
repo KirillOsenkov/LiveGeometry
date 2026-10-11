@@ -39,6 +39,13 @@ Desargues, Pappus, Van Aubel, Napoleon, Steiner). Observations:
 
 ## Gallery candidates
 
+**Built on 2026-10-10** (19 drawings, in the gallery now): cycloid, spirograph, two pins
+and a string, Peaucellier linkage, gears, clock hands, billiards, tessellation, snowflake,
+times tables on a circle, flower of life, tangram, optical illusions, spiral of Theodorus,
+pizza slices, spin the die, fold the cube, two-point perspective, what is π. Still open
+below: pendulum, rotation and dilation playgrounds, Islamic star, Dudeney's dissection,
+proofs without words, the missing square, cross sections, the shadow of a stick.
+
 Roughly by spark per hour of work. "Generated" means a `tools/<name>.cs` writes the
 `.lgf`, as the slime and the Platonic solids are made.
 

@@ -1160,7 +1160,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   one figure (`<Slider X Y Value>`), and no part is ever handed out: `HitTest` answers with the
   slider, so a tool can't come to depend on the knob. The value is the track's length:
   `INumber` (expressions say `a`), `ILengthProvider` (By Radius, Dilate, Translate),
-  `IAngleProvider` in degrees (Rotate). Dragging goes by parts (`IMovableParts`, which the
+  `IAngleProvider` in degrees (Rotate). A slider may have a range (2026-10-10:
+  `Minimum`, 0 unless said, and `Maximum`, none unless said; `<Slider ... Maximum="3">`,
+  the Range group of its grid): the value is the minimum at the anchor plus the track's
+  length, and the knob stops at the maximum, also when the value is set from the grid or
+  the file. Dragging goes by parts (`IMovableParts`, which the
   Dragger asks): the knob changes the value, the anchor and anything else move the whole. The
   parts carry names no expression can say ("slider knob"): `Figures[name]` looks *inside*
   composites and not at them, which is also why `Binder.ResolveFigure` matches top-level names
@@ -2090,6 +2094,42 @@ buttons and checkboxes, 3D, custom tools.
   ones. The other letters are a tiny monoline font the tool strokes from skeletons of lines
   and tangent arcs (round caps, 180° as one cubic) into paths over hidden points by
   coordinates; a bowl is a ring with a hole. 726 figures, the biggest drawing of the gallery.
+- **The eye-candy batch** (2026-10-10, 19 drawings; the brainstorm they came from and
+  what is still open is `docs/gallery-ideas.md`). Generated, each by `dotnet
+  tools/<tool>.cs -- <the .lgf>` and a `--rewrite`: Times Tables on a Circle
+  (`timestables.cs`), Gears (`gears.cs`: trapezoid teeth as polygons of points by
+  coordinates turned by a slider, the phases worked out so that a tooth meets a gap),
+  Make Your Own Tessellation (`tessellation.cs`: one closed path whose bottom and left
+  edges are its top and right edges shifted by a side, every handle a point so that the
+  eleven translated copies can follow), Design a Snowflake (`snowflake.cs`: one twelfth as
+  a path with automatic handles, mirrored and rotated), Tangram (`tangram.cs`: a piece is
+  a polygon on a free pivot and a point on a unit circle around it, which turns it),
+  Spiral of Theodorus (`theodorus.cs`), Spin the Die (`spindie.cs`: 3D points by
+  coordinates over two angle sliders, translucent faces so that nothing needs sorting),
+  Fold the Cube (`cubenet.cs`), Flower of Life (`flower.cs`), Slice the Pizza (`pizza.cs`:
+  sectors moved between two places by a slider), Clock Hands (`clock.cs`: the hands are
+  polygons of rotated points, the second hand sweeps once per minute of clock time; the
+  frame, bezel and face are 72-gons, not circles, because a polygon draws in the layer
+  under circles, `ZOrder.Polygons` under `Figures`, and a filled circle hid the hands).
+  Hand-written: Cycloid (the inner and the
+  flange point slide on a hidden ray along the spoke), Spirograph (the pen slides on a
+  hidden ray that turns with the wheel; six loci a turn apart, since a point on a circle
+  goes round once), Two Pins and a String (the pencil is a point on the locus, dragged
+  along it), A Straight Line from Circles (`Peaucellier.lgf`: the left nail is free, the
+  crank's center is a radius slider away from it, the three lengths are sliders styled as
+  their rods, and the joint is a point on an arc that covers only the reach of the rods),
+  Billiards (the bouncing path is a locus of a point folded with
+  `abs` and `floor`), Three-Point Perspective (the third point sits below a `<Scene>`
+  that keeps it out of the fit), What Is π? (a wheel 1 across rolls and paints its rim
+  onto a ruler: a slider 0 to π, the painted part straight segments clamped to the slider,
+  the rest arcs of the wheel), Don't Trust Your Eyes. The sliders' `Maximum` came from
+  this batch. Learned on the way: an `AngleArc` and an
+  `AngleMeasurement` list the vertex first; a label (`ZOrder.Labels`) draws under a filled
+  circle or polygon (`ZOrder.Figures`), so a measurement over a clock face is invisible -
+  put the number in a label outside the shape or in the caption; a label as a rotation's
+  angle is read in radians (`[rad(-30 * time)]`); the `Parameter` of a point on a line is
+  the fraction from the line's first point to its second; a name's trailing digits draw
+  as a subscript, so the Theodorus labels are "√17 " with a space.
 - **Drawings that must not fall apart** when a kid drags the wrong thing (Castle, The Falling
   Ladder): fixed points are `PointByCoordinates` with constant coordinates (a polygon of those
   has no free point, so dragging it does nothing), and the only things that move are

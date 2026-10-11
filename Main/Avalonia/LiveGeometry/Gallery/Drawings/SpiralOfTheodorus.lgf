@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-5" Top="4.5" Right="5" Bottom="-4.5" />
+  <Styles>
+    <ShapeStyle Name="Wedge1" Fill="#FFF19D9D" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FFA63030" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge2" Fill="#FFF1BC9D" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FFA65C30" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge3" Fill="#FFF1DC9D" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FFA68930" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge4" Fill="#FFE6F19D" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FF97A630" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge5" Fill="#FFC7F19D" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FF6BA630" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge6" Fill="#FFA7F19D" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FF3FA630" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge7" Fill="#FF9DF1B2" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FF30A64E" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge8" Fill="#FF9DF1D1" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FF30A67A" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge9" Fill="#FF9DF1F1" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FF30A6A6" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge10" Fill="#FF9DD1F1" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FF307AA6" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge11" Fill="#FF9DB2F1" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FF304EA6" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge12" Fill="#FFA79DF1" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FF3F30A6" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge13" Fill="#FFC79DF1" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FF6B30A6" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge14" Fill="#FFE69DF1" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FF9730A6" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge15" Fill="#FFF19DDC" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FFA63089" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Wedge16" Fill="#FFF19DBC" Color="#FF2B3038" StrokeWidth="1.5">
+      <Dark Fill="#FFA6305C" Color="#FFE4E8F0" />
+    </ShapeStyle>
+    <TextStyle Name="Root" FontSize="13" Color="#FF2B3038" FontFamily="Segoe UI">
+      <Dark Color="#FFE4E8F0" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" X="0.3" Y="-0.4" />
+    <FreePoint Name="B" X="1.3" Y="-0.4" />
+    <PointByCoordinates Name="P2" Visible="false" X="A.X + 1 * (B.X - A.X) - 1 * (B.Y - A.Y)" Y="A.Y + 1 * (B.Y - A.Y) + 1 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P3" Visible="false" X="A.X + 0.292893 * (B.X - A.X) - 1.707107 * (B.Y - A.Y)" Y="A.Y + 0.292893 * (B.Y - A.Y) + 1.707107 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4" Visible="false" X="A.X + -0.692705 * (B.X - A.X) - 1.876209 * (B.Y - A.Y)" Y="A.Y + -0.692705 * (B.Y - A.Y) + 1.876209 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P5" Visible="false" X="A.X + -1.63081 * (B.X - A.X) - 1.529856 * (B.Y - A.Y)" Y="A.Y + -1.63081 * (B.Y - A.Y) + 1.529856 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P6" Visible="false" X="A.X + -2.314982 * (B.X - A.X) - 0.800536 * (B.Y - A.Y)" Y="A.Y + -2.314982 * (B.Y - A.Y) + 0.800536 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P7" Visible="false" X="A.X + -2.6418 * (B.X - A.X) - -0.144552 * (B.Y - A.Y)" Y="A.Y + -2.6418 * (B.Y - A.Y) + -0.144552 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P8" Visible="false" X="A.X + -2.587164 * (B.X - A.X) - -1.143058 * (B.Y - A.Y)" Y="A.Y + -2.587164 * (B.Y - A.Y) + -1.143058 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P9" Visible="false" X="A.X + -2.183032 * (B.X - A.X) - -2.057759 * (B.Y - A.Y)" Y="A.Y + -2.183032 * (B.Y - A.Y) + -2.057759 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P10" Visible="false" X="A.X + -1.497113 * (B.X - A.X) - -2.785436 * (B.Y - A.Y)" Y="A.Y + -1.497113 * (B.Y - A.Y) + -2.785436 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P11" Visible="false" X="A.X + -0.61628 * (B.X - A.X) - -3.258865 * (B.Y - A.Y)" Y="A.Y + -0.61628 * (B.Y - A.Y) + -3.258865 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P12" Visible="false" X="A.X + 0.366304 * (B.X - A.X) - -3.44468 * (B.Y - A.Y)" Y="A.Y + 0.366304 * (B.Y - A.Y) + -3.44468 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P13" Visible="false" X="A.X + 1.360698 * (B.X - A.X) - -3.338937 * (B.Y - A.Y)" Y="A.Y + 1.360698 * (B.Y - A.Y) + -3.338937 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P14" Visible="false" X="A.X + 2.286752 * (B.X - A.X) - -2.961547 * (B.Y - A.Y)" Y="A.Y + 2.286752 * (B.Y - A.Y) + -2.961547 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P15" Visible="false" X="A.X + 3.078259 * (B.X - A.X) - -2.350387 * (B.Y - A.Y)" Y="A.Y + 3.078259 * (B.Y - A.Y) + -2.350387 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P16" Visible="false" X="A.X + 3.685127 * (B.X - A.X) - -1.555584 * (B.Y - A.Y)" Y="A.Y + 3.685127 * (B.Y - A.Y) + -1.555584 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P17" Visible="false" X="A.X + 4.074023 * (B.X - A.X) - -0.634302 * (B.Y - A.Y)" Y="A.Y + 4.074023 * (B.Y - A.Y) + -0.634302 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Polygon Name="Triangle1" Style="Wedge1">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="P2" />
+    </Polygon>
+    <Polygon Name="Triangle2" Style="Wedge2">
+      <Dependency Name="A" />
+      <Dependency Name="P2" />
+      <Dependency Name="P3" />
+    </Polygon>
+    <Polygon Name="Triangle3" Style="Wedge3">
+      <Dependency Name="A" />
+      <Dependency Name="P3" />
+      <Dependency Name="P4" />
+    </Polygon>
+    <Polygon Name="Triangle4" Style="Wedge4">
+      <Dependency Name="A" />
+      <Dependency Name="P4" />
+      <Dependency Name="P5" />
+    </Polygon>
+    <Polygon Name="Triangle5" Style="Wedge5">
+      <Dependency Name="A" />
+      <Dependency Name="P5" />
+      <Dependency Name="P6" />
+    </Polygon>
+    <Polygon Name="Triangle6" Style="Wedge6">
+      <Dependency Name="A" />
+      <Dependency Name="P6" />
+      <Dependency Name="P7" />
+    </Polygon>
+    <Polygon Name="Triangle7" Style="Wedge7">
+      <Dependency Name="A" />
+      <Dependency Name="P7" />
+      <Dependency Name="P8" />
+    </Polygon>
+    <Polygon Name="Triangle8" Style="Wedge8">
+      <Dependency Name="A" />
+      <Dependency Name="P8" />
+      <Dependency Name="P9" />
+    </Polygon>
+    <Polygon Name="Triangle9" Style="Wedge9">
+      <Dependency Name="A" />
+      <Dependency Name="P9" />
+      <Dependency Name="P10" />
+    </Polygon>
+    <Polygon Name="Triangle10" Style="Wedge10">
+      <Dependency Name="A" />
+      <Dependency Name="P10" />
+      <Dependency Name="P11" />
+    </Polygon>
+    <Polygon Name="Triangle11" Style="Wedge11">
+      <Dependency Name="A" />
+      <Dependency Name="P11" />
+      <Dependency Name="P12" />
+    </Polygon>
+    <Polygon Name="Triangle12" Style="Wedge12">
+      <Dependency Name="A" />
+      <Dependency Name="P12" />
+      <Dependency Name="P13" />
+    </Polygon>
+    <Polygon Name="Triangle13" Style="Wedge13">
+      <Dependency Name="A" />
+      <Dependency Name="P13" />
+      <Dependency Name="P14" />
+    </Polygon>
+    <Polygon Name="Triangle14" Style="Wedge14">
+      <Dependency Name="A" />
+      <Dependency Name="P14" />
+      <Dependency Name="P15" />
+    </Polygon>
+    <Polygon Name="Triangle15" Style="Wedge15">
+      <Dependency Name="A" />
+      <Dependency Name="P15" />
+      <Dependency Name="P16" />
+    </Polygon>
+    <Polygon Name="Triangle16" Style="Wedge16">
+      <Dependency Name="A" />
+      <Dependency Name="P16" />
+      <Dependency Name="P17" />
+    </Polygon>
+    <PointByCoordinates Name="√2 " Visible="false" X="A.X + 0.5 * (B.X - A.X) - 0.5 * (B.Y - A.Y)" Y="A.Y + 0.5 * (B.Y - A.Y) + 0.5 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root2" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√2 " />
+    </PointLabel>
+    <PointByCoordinates Name="√3 " Visible="false" X="A.X + 0.146447 * (B.X - A.X) - 0.853553 * (B.Y - A.Y)" Y="A.Y + 0.146447 * (B.Y - A.Y) + 0.853553 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root3" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√3 " />
+    </PointLabel>
+    <PointByCoordinates Name="√4 " Visible="false" X="A.X + -0.346353 * (B.X - A.X) - 0.938104 * (B.Y - A.Y)" Y="A.Y + -0.346353 * (B.Y - A.Y) + 0.938104 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root4" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√4 " />
+    </PointLabel>
+    <PointByCoordinates Name="√5 " Visible="false" X="A.X + -0.815405 * (B.X - A.X) - 0.764928 * (B.Y - A.Y)" Y="A.Y + -0.815405 * (B.Y - A.Y) + 0.764928 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root5" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√5 " />
+    </PointLabel>
+    <PointByCoordinates Name="√6 " Visible="false" X="A.X + -1.157491 * (B.X - A.X) - 0.400268 * (B.Y - A.Y)" Y="A.Y + -1.157491 * (B.Y - A.Y) + 0.400268 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root6" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√6 " />
+    </PointLabel>
+    <PointByCoordinates Name="√7 " Visible="false" X="A.X + -1.3209 * (B.X - A.X) - -0.072276 * (B.Y - A.Y)" Y="A.Y + -1.3209 * (B.Y - A.Y) + -0.072276 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root7" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√7 " />
+    </PointLabel>
+    <PointByCoordinates Name="√8 " Visible="false" X="A.X + -1.293582 * (B.X - A.X) - -0.571529 * (B.Y - A.Y)" Y="A.Y + -1.293582 * (B.Y - A.Y) + -0.571529 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root8" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√8 " />
+    </PointLabel>
+    <PointByCoordinates Name="√9 " Visible="false" X="A.X + -1.091516 * (B.X - A.X) - -1.028879 * (B.Y - A.Y)" Y="A.Y + -1.091516 * (B.Y - A.Y) + -1.028879 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root9" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√9 " />
+    </PointLabel>
+    <PointByCoordinates Name="√10 " Visible="false" X="A.X + -0.748556 * (B.X - A.X) - -1.392718 * (B.Y - A.Y)" Y="A.Y + -0.748556 * (B.Y - A.Y) + -1.392718 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root10" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√10 " />
+    </PointLabel>
+    <PointByCoordinates Name="√11 " Visible="false" X="A.X + -0.30814 * (B.X - A.X) - -1.629432 * (B.Y - A.Y)" Y="A.Y + -0.30814 * (B.Y - A.Y) + -1.629432 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root11" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√11 " />
+    </PointLabel>
+    <PointByCoordinates Name="√12 " Visible="false" X="A.X + 0.183152 * (B.X - A.X) - -1.72234 * (B.Y - A.Y)" Y="A.Y + 0.183152 * (B.Y - A.Y) + -1.72234 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root12" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√12 " />
+    </PointLabel>
+    <PointByCoordinates Name="√13 " Visible="false" X="A.X + 0.680349 * (B.X - A.X) - -1.669469 * (B.Y - A.Y)" Y="A.Y + 0.680349 * (B.Y - A.Y) + -1.669469 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root13" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√13 " />
+    </PointLabel>
+    <PointByCoordinates Name="√14 " Visible="false" X="A.X + 1.143376 * (B.X - A.X) - -1.480774 * (B.Y - A.Y)" Y="A.Y + 1.143376 * (B.Y - A.Y) + -1.480774 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root14" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√14 " />
+    </PointLabel>
+    <PointByCoordinates Name="√15 " Visible="false" X="A.X + 1.53913 * (B.X - A.X) - -1.175194 * (B.Y - A.Y)" Y="A.Y + 1.53913 * (B.Y - A.Y) + -1.175194 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root15" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√15 " />
+    </PointLabel>
+    <PointByCoordinates Name="√16 " Visible="false" X="A.X + 1.842563 * (B.X - A.X) - -0.777792 * (B.Y - A.Y)" Y="A.Y + 1.842563 * (B.Y - A.Y) + -0.777792 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root16" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√16 " />
+    </PointLabel>
+    <PointByCoordinates Name="√17 " Visible="false" X="A.X + 2.037011 * (B.X - A.X) - -0.317151 * (B.Y - A.Y)" Y="A.Y + 2.037011 * (B.Y - A.Y) + -0.317151 * (B.X - A.X)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointLabel Name="Root17" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="√17 " />
+    </PointLabel>
+    <PointLabel Name="LabelA" OffsetX="-16" OffsetY="-6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="LabelB" OffsetX="8" OffsetY="-4" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="B" />
+    </PointLabel>
+    <Label Name="Title" Style="GalleryTitle" Text="Spiral of Theodorus" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Start with a right triangle whose two short sides are both 1. Its long side is √2. Now build a new right triangle on that long side, with the other short side 1 again: its long side is √3. Keep going.\n\nEvery long side is the square root of the next whole number, by the Pythagorean theorem, and no ruler had to measure anything. Theodorus of Cyrene drew this about 2,400 years ago, and stopped at √17, where the next triangle would start to overlap the first one.\n\nDrag A or B to turn and resize the spiral. Every length in it scales with AB, which is 1." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-7" Top="5" Right="7" Bottom="-5.5" />
+  <Styles>
+    <PointStyle Name="Pin" Size="13" Fill="#FFE0362B" Color="#FF7A1A14" StrokeWidth="1.5" />
+    <PointStyle Name="Pencil" Size="13" Fill="#FFFFE066" Color="#FF806000" StrokeWidth="1.5" />
+    <LineStyle Name="String" Color="#FF9A6B3A" StrokeWidth="2.5">
+      <Dark Color="#FFD2A06A" />
+    </LineStyle>
+    <LineStyle Name="Ellipse" Color="#FF2F7BD6" StrokeWidth="3">
+      <Dark Color="#FF62AEFF" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="F1" Style="Pin" X="-2" Y="0" />
+    <FreePoint Name="F2" Style="Pin" X="2" Y="0" />
+    <Slider Name="string" X="-6" Y="-4.5" Value="8" />
+    <Number Name="One" Value="1" />
+    <CircleByRadius Name="Dial" Visible="false">
+      <Dependency Name="One" />
+      <Dependency Name="F1" />
+    </CircleByRadius>
+    <PointOnFigure Name="D" Visible="false" X="-1.500000388675198" Y="0.8660256281860526" Parameter="1.047198">
+      <Dependency Name="Dial" />
+    </PointOnFigure>
+    <PointByCoordinates Name="K" Visible="false" X="(string / 2) ^ 2 - (dist(F1, F2) / 2) ^ 2" Y="((D.X - F1.X) * (F2.X - F1.X) + (D.Y - F1.Y) * (F2.Y - F1.Y)) / dist(F1, F2)">
+      <Dependency Name="string" />
+      <Dependency Name="F1" />
+      <Dependency Name="F2" />
+      <Dependency Name="D" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R" Visible="false" X="K.X / (string / 2 - dist(F1, F2) / 2 * K.Y) + 0 * sqrt(string - dist(F1, F2))" Y="0">
+      <Dependency Name="K" />
+      <Dependency Name="string" />
+      <Dependency Name="F1" />
+      <Dependency Name="F2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P" Visible="false" X="F1.X + R.X * (D.X - F1.X)" Y="F1.Y + R.X * (D.Y - F1.Y)">
+      <Dependency Name="F1" />
+      <Dependency Name="R" />
+      <Dependency Name="D" />
+    </PointByCoordinates>
+    <Locus Name="Ellipse" Style="Ellipse">
+      <Dependency Name="P" />
+      <Dependency Name="D" />
+    </Locus>
+    <PointOnFigure Name="Pencil" Style="Pencil" X="-2.072933852348413E-06" Y="3.4641016151372894" Parameter="1.047198">
+      <Dependency Name="Ellipse" />
+    </PointOnFigure>
+    <Segment Name="String1" Style="String">
+      <Dependency Name="F1" />
+      <Dependency Name="Pencil" />
+    </Segment>
+    <Segment Name="String2" Style="String">
+      <Dependency Name="Pencil" />
+      <Dependency Name="F2" />
+    </Segment>
+    <PointLabel Name="LabelF1" OffsetX="-8" OffsetY="10" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="F1" />
+    </PointLabel>
+    <PointLabel Name="LabelF2" OffsetX="-8" OffsetY="10" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="F2" />
+    </PointLabel>
+    <Label Name="Title" Style="GalleryTitle" Text="Two Pins and a String" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Push two pins into a board, tie a loose loop of string around them, pull it tight with a pencil and go around. The pencil draws an ellipse. Gardeners lay out oval flower beds with two stakes and a rope exactly this way.\n\nDrag the yellow pencil around the ellipse and watch the string stay tight. The string is [string] long and the pins are [dist(F1, F2)] apart. Drag the pins closer together and the ellipse gets rounder; put them on top of each other and it's a circle. Pull them apart and it flattens, until the string can't reach any more.\n\nThe pins are the two focuses of the ellipse. Planets move on ellipses, and the Sun sits at one of the two pins." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="string" />
+      <Dependency Name="F1" />
+      <Dependency Name="F2" />
+    </Label>
+  </Figures>
+</Drawing>

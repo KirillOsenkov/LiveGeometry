@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-6" Top="5" Right="6" Bottom="-5" />
+  <Styles>
+    <ShapeStyle Name="Base" Fill="#C0D9A066" Color="#FF6B4423" StrokeWidth="2">
+      <Dark Fill="#C0A07040" Color="#FFE0C0A0" />
+    </ShapeStyle>
+    <ShapeStyle Name="East" Fill="#C0F2B48C" Color="#FF6B4423" StrokeWidth="2">
+      <Dark Fill="#C0C07848" Color="#FFE0C0A0" />
+    </ShapeStyle>
+    <ShapeStyle Name="West" Fill="#C0F2B48C" Color="#FF6B4423" StrokeWidth="2">
+      <Dark Fill="#C0C07848" Color="#FFE0C0A0" />
+    </ShapeStyle>
+    <ShapeStyle Name="South" Fill="#C0E8C89A" Color="#FF6B4423" StrokeWidth="2">
+      <Dark Fill="#C0B08C58" Color="#FFE0C0A0" />
+    </ShapeStyle>
+    <ShapeStyle Name="North" Fill="#C0E8C89A" Color="#FF6B4423" StrokeWidth="2">
+      <Dark Fill="#C0B08C58" Color="#FFE0C0A0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Lid" Fill="#C0C8A070" Color="#FF6B4423" StrokeWidth="2">
+      <Dark Fill="#C0906040" Color="#FFE0C0A0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <Slider Name="fold" X="-5.5" Y="-4.2" Value="1" Maximum="3" />
+    <PointByCoordinates Name="BaseSW" Visible="false" X="(-1) * 0.8192 - (-1) * 0.5736" Y="((-1) * 0.5736 + (-1) * 0.8192) * 0.766 + (0) * 0.6428" />
+    <PointByCoordinates Name="BaseSE" Visible="false" X="(1) * 0.8192 - (-1) * 0.5736" Y="((1) * 0.5736 + (-1) * 0.8192) * 0.766 + (0) * 0.6428" />
+    <PointByCoordinates Name="BaseNE" Visible="false" X="(1) * 0.8192 - (1) * 0.5736" Y="((1) * 0.5736 + (1) * 0.8192) * 0.766 + (0) * 0.6428" />
+    <PointByCoordinates Name="BaseNW" Visible="false" X="(-1) * 0.8192 - (1) * 0.5736" Y="((-1) * 0.5736 + (1) * 0.8192) * 0.766 + (0) * 0.6428" />
+    <PointByCoordinates Name="EastS" Visible="false" X="(1 + 2 * cos(rad(30 * fold))) * 0.8192 - (-1) * 0.5736" Y="((1 + 2 * cos(rad(30 * fold))) * 0.5736 + (-1) * 0.8192) * 0.766 + (2 * sin(rad(30 * fold))) * 0.6428">
+      <Dependency Name="fold" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="EastN" Visible="false" X="(1 + 2 * cos(rad(30 * fold))) * 0.8192 - (1) * 0.5736" Y="((1 + 2 * cos(rad(30 * fold))) * 0.5736 + (1) * 0.8192) * 0.766 + (2 * sin(rad(30 * fold))) * 0.6428">
+      <Dependency Name="fold" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WestS" Visible="false" X="(-1 - 2 * cos(rad(30 * fold))) * 0.8192 - (-1) * 0.5736" Y="((-1 - 2 * cos(rad(30 * fold))) * 0.5736 + (-1) * 0.8192) * 0.766 + (2 * sin(rad(30 * fold))) * 0.6428">
+      <Dependency Name="fold" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WestN" Visible="false" X="(-1 - 2 * cos(rad(30 * fold))) * 0.8192 - (1) * 0.5736" Y="((-1 - 2 * cos(rad(30 * fold))) * 0.5736 + (1) * 0.8192) * 0.766 + (2 * sin(rad(30 * fold))) * 0.6428">
+      <Dependency Name="fold" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SouthW" Visible="false" X="(-1) * 0.8192 - (-1 - 2 * cos(rad(30 * fold))) * 0.5736" Y="((-1) * 0.5736 + (-1 - 2 * cos(rad(30 * fold))) * 0.8192) * 0.766 + (2 * sin(rad(30 * fold))) * 0.6428">
+      <Dependency Name="fold" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SouthE" Visible="false" X="(1) * 0.8192 - (-1 - 2 * cos(rad(30 * fold))) * 0.5736" Y="((1) * 0.5736 + (-1 - 2 * cos(rad(30 * fold))) * 0.8192) * 0.766 + (2 * sin(rad(30 * fold))) * 0.6428">
+      <Dependency Name="fold" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NorthW" Visible="false" X="(-1) * 0.8192 - (1 + 2 * cos(rad(30 * fold))) * 0.5736" Y="((-1) * 0.5736 + (1 + 2 * cos(rad(30 * fold))) * 0.8192) * 0.766 + (2 * sin(rad(30 * fold))) * 0.6428">
+      <Dependency Name="fold" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="NorthE" Visible="false" X="(1) * 0.8192 - (1 + 2 * cos(rad(30 * fold))) * 0.5736" Y="((1) * 0.5736 + (1 + 2 * cos(rad(30 * fold))) * 0.8192) * 0.766 + (2 * sin(rad(30 * fold))) * 0.6428">
+      <Dependency Name="fold" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LidW" Visible="false" X="(-1) * 0.8192 - (1 + 2 * cos(rad(30 * fold)) + 2 * cos(2 * rad(30 * fold))) * 0.5736" Y="((-1) * 0.5736 + (1 + 2 * cos(rad(30 * fold)) + 2 * cos(2 * rad(30 * fold))) * 0.8192) * 0.766 + (2 * sin(rad(30 * fold)) + 2 * sin(2 * rad(30 * fold))) * 0.6428">
+      <Dependency Name="fold" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LidE" Visible="false" X="(1) * 0.8192 - (1 + 2 * cos(rad(30 * fold)) + 2 * cos(2 * rad(30 * fold))) * 0.5736" Y="((1) * 0.5736 + (1 + 2 * cos(rad(30 * fold)) + 2 * cos(2 * rad(30 * fold))) * 0.8192) * 0.766 + (2 * sin(rad(30 * fold)) + 2 * sin(2 * rad(30 * fold))) * 0.6428">
+      <Dependency Name="fold" />
+    </PointByCoordinates>
+    <Polygon Name="BaseFace" Style="Base">
+      <Dependency Name="BaseSW" />
+      <Dependency Name="BaseSE" />
+      <Dependency Name="BaseNE" />
+      <Dependency Name="BaseNW" />
+    </Polygon>
+    <Polygon Name="WestFace" Style="West">
+      <Dependency Name="BaseSW" />
+      <Dependency Name="BaseNW" />
+      <Dependency Name="WestN" />
+      <Dependency Name="WestS" />
+    </Polygon>
+    <Polygon Name="SouthFace" Style="South">
+      <Dependency Name="BaseSW" />
+      <Dependency Name="BaseSE" />
+      <Dependency Name="SouthE" />
+      <Dependency Name="SouthW" />
+    </Polygon>
+    <Polygon Name="NorthFace" Style="North">
+      <Dependency Name="BaseNW" />
+      <Dependency Name="BaseNE" />
+      <Dependency Name="NorthE" />
+      <Dependency Name="NorthW" />
+    </Polygon>
+    <Polygon Name="LidFace" Style="Lid">
+      <Dependency Name="NorthW" />
+      <Dependency Name="NorthE" />
+      <Dependency Name="LidE" />
+      <Dependency Name="LidW" />
+    </Polygon>
+    <Polygon Name="EastFace" Style="East">
+      <Dependency Name="BaseSE" />
+      <Dependency Name="BaseNE" />
+      <Dependency Name="EastN" />
+      <Dependency Name="EastS" />
+    </Polygon>
+    <Label Name="Title" Style="GalleryTitle" Text="Fold the Cube" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Six squares in a cross, lying flat. Drag the slider and the four sides fold up, the lid folds over, and the cross becomes a box.\n\nA flat shape that folds into a solid is called a net. The cross is the famous net of the cube, but it isn't the only one: there are exactly eleven different ways to lay six squares out so that they fold into a cube. Could you draw another?\n\nThe paper is see-through so you can watch the far sides. Fold it all the way to see the cube closed, then back down to flat." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

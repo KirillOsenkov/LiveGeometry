@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-10" Top="5" Right="10" Bottom="-5" />
+  <Styles>
+    <PointStyle Name="Handle" Size="11" Fill="#FFFFE066" Color="#FF806000" StrokeWidth="1.5" />
+    <LineStyle Name="Bar" Color="#FF2B3038" StrokeWidth="4">
+      <Dark Color="#FFE4E8F0" />
+    </LineStyle>
+    <LineStyle Name="Fin" Color="#FF2B3038" StrokeWidth="2.5">
+      <Dark Color="#FFE4E8F0" />
+    </LineStyle>
+    <LineStyle Name="Rails" Color="#FF2B3038" StrokeWidth="2.5">
+      <Dark Color="#FFE4E8F0" />
+    </LineStyle>
+    <LineStyle Name="PonzoBar" Color="#FFE0362B" StrokeWidth="6">
+      <Dark Color="#FFFF6B5E" />
+    </LineStyle>
+    <ShapeStyle Name="Middle" Fill="#FFF28C28" Color="#FFF28C28" />
+    <ShapeStyle Name="Around" Fill="#FF5E8BD0" Color="#FF5E8BD0" />
+    <LineStyle Name="Guide" Color="#FF2E9E5B" StrokeWidth="1.25" Dash="Dash">
+      <Dark Color="#FF5FD48A" />
+    </LineStyle>
+    <TextStyle Name="Answer" FontSize="15" Color="#FF2E9E5B" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF5FD48A" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="ML1" Visible="false" X="-9" Y="3.5" />
+    <PointByCoordinates Name="ML2" Visible="false" X="-5" Y="3.5" />
+    <Segment Name="MullerTop" Style="Bar">
+      <Dependency Name="ML1" />
+      <Dependency Name="ML2" />
+    </Segment>
+    <PointByCoordinates Name="MLa" Visible="false" X="-8.4" Y="4" />
+    <PointByCoordinates Name="MLb" Visible="false" X="-8.4" Y="3" />
+    <PointByCoordinates Name="MLc" Visible="false" X="-5.6" Y="4" />
+    <PointByCoordinates Name="MLd" Visible="false" X="-5.6" Y="3" />
+    <Segment Name="Fin1" Style="Fin">
+      <Dependency Name="ML1" />
+      <Dependency Name="MLa" />
+    </Segment>
+    <Segment Name="Fin2" Style="Fin">
+      <Dependency Name="ML1" />
+      <Dependency Name="MLb" />
+    </Segment>
+    <Segment Name="Fin3" Style="Fin">
+      <Dependency Name="ML2" />
+      <Dependency Name="MLc" />
+    </Segment>
+    <Segment Name="Fin4" Style="Fin">
+      <Dependency Name="ML2" />
+      <Dependency Name="MLd" />
+    </Segment>
+    <PointByCoordinates Name="ML3" Visible="false" X="-9" Y="1.8" />
+    <PointByCoordinates Name="RailL" Visible="false" X="-9" Y="1.8" />
+    <PointByCoordinates Name="RailR" Visible="false" X="-3" Y="1.8" />
+    <Segment Name="MullerRail" Visible="false">
+      <Dependency Name="RailL" />
+      <Dependency Name="RailR" />
+    </Segment>
+    <PointOnFigure Name="ML4" Style="Handle" X="-4.999998" Y="1.8" Parameter="0.666667">
+      <Dependency Name="MullerRail" />
+    </PointOnFigure>
+    <Segment Name="MullerBottom" Style="Bar">
+      <Dependency Name="ML3" />
+      <Dependency Name="ML4" />
+    </Segment>
+    <PointByCoordinates Name="MLe" Visible="false" X="-9.6" Y="2.3" />
+    <PointByCoordinates Name="MLf" Visible="false" X="-9.6" Y="1.3" />
+    <PointByCoordinates Name="MLg" Visible="false" X="ML4.X + 0.6" Y="2.3">
+      <Dependency Name="ML4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="MLh" Visible="false" X="ML4.X + 0.6" Y="1.3">
+      <Dependency Name="ML4" />
+    </PointByCoordinates>
+    <Segment Name="Fin5" Style="Fin">
+      <Dependency Name="ML3" />
+      <Dependency Name="MLe" />
+    </Segment>
+    <Segment Name="Fin6" Style="Fin">
+      <Dependency Name="ML3" />
+      <Dependency Name="MLf" />
+    </Segment>
+    <Segment Name="Fin7" Style="Fin">
+      <Dependency Name="ML4" />
+      <Dependency Name="MLg" />
+    </Segment>
+    <Segment Name="Fin8" Style="Fin">
+      <Dependency Name="ML4" />
+      <Dependency Name="MLh" />
+    </Segment>
+    <DistanceMeasurement Name="MullerTopLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="-28">
+      <Dependency Name="ML1" />
+      <Dependency Name="ML2" />
+    </DistanceMeasurement>
+    <DistanceMeasurement Name="MullerBottomLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="12">
+      <Dependency Name="ML3" />
+      <Dependency Name="ML4" />
+    </DistanceMeasurement>
+    <PointByCoordinates Name="EbbA" Visible="false" X="-6.3" Y="-2" />
+    <PointByCoordinates Name="EbbARim" Visible="false" X="-5.7" Y="-2" />
+    <Circle Name="EbbMiddle1" Style="Middle">
+      <Dependency Name="EbbA" />
+      <Dependency Name="EbbARim" />
+    </Circle>
+    <PointByCoordinates Name="EbbA1" Visible="false" X="-6.3" Y="-0.2" />
+    <PointByCoordinates Name="EbbA1Rim" Visible="false" X="-5.2" Y="-0.2" />
+    <Circle Name="EbbBig1" Style="Around">
+      <Dependency Name="EbbA1" />
+      <Dependency Name="EbbA1Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbA2" Visible="false" X="-4.741025" Y="-1.1" />
+    <PointByCoordinates Name="EbbA2Rim" Visible="false" X="-3.641025" Y="-1.1" />
+    <Circle Name="EbbBig2" Style="Around">
+      <Dependency Name="EbbA2" />
+      <Dependency Name="EbbA2Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbA3" Visible="false" X="-4.741025" Y="-2.9" />
+    <PointByCoordinates Name="EbbA3Rim" Visible="false" X="-3.641025" Y="-2.9" />
+    <Circle Name="EbbBig3" Style="Around">
+      <Dependency Name="EbbA3" />
+      <Dependency Name="EbbA3Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbA4" Visible="false" X="-6.3" Y="-3.8" />
+    <PointByCoordinates Name="EbbA4Rim" Visible="false" X="-5.2" Y="-3.8" />
+    <Circle Name="EbbBig4" Style="Around">
+      <Dependency Name="EbbA4" />
+      <Dependency Name="EbbA4Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbA5" Visible="false" X="-7.858975" Y="-2.9" />
+    <PointByCoordinates Name="EbbA5Rim" Visible="false" X="-6.758975" Y="-2.9" />
+    <Circle Name="EbbBig5" Style="Around">
+      <Dependency Name="EbbA5" />
+      <Dependency Name="EbbA5Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbA6" Visible="false" X="-7.858975" Y="-1.1" />
+    <PointByCoordinates Name="EbbA6Rim" Visible="false" X="-6.758975" Y="-1.1" />
+    <Circle Name="EbbBig6" Style="Around">
+      <Dependency Name="EbbA6" />
+      <Dependency Name="EbbA6Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbB" Visible="false" X="-1.5" Y="-2" />
+    <PointByCoordinates Name="EbbRailL" Visible="false" X="-1.5" Y="-2" />
+    <PointByCoordinates Name="EbbRailR" Visible="false" X="-0.3" Y="-2" />
+    <Segment Name="EbbRail" Visible="false">
+      <Dependency Name="EbbRailL" />
+      <Dependency Name="EbbRailR" />
+    </Segment>
+    <PointOnFigure Name="EbbBRim" Style="Handle" X="-0.9" Y="-2" Parameter="0.5">
+      <Dependency Name="EbbRail" />
+    </PointOnFigure>
+    <Circle Name="EbbMiddle2" Style="Middle">
+      <Dependency Name="EbbB" />
+      <Dependency Name="EbbBRim" />
+    </Circle>
+    <PointByCoordinates Name="EbbB1" Visible="false" X="-1.5" Y="-1" />
+    <PointByCoordinates Name="EbbB1Rim" Visible="false" X="-1.25" Y="-1" />
+    <Circle Name="EbbSmall1" Style="Around">
+      <Dependency Name="EbbB1" />
+      <Dependency Name="EbbB1Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbB2" Visible="false" X="-0.792893" Y="-1.292893" />
+    <PointByCoordinates Name="EbbB2Rim" Visible="false" X="-0.542893" Y="-1.292893" />
+    <Circle Name="EbbSmall2" Style="Around">
+      <Dependency Name="EbbB2" />
+      <Dependency Name="EbbB2Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbB3" Visible="false" X="-0.5" Y="-2" />
+    <PointByCoordinates Name="EbbB3Rim" Visible="false" X="-0.25" Y="-2" />
+    <Circle Name="EbbSmall3" Style="Around">
+      <Dependency Name="EbbB3" />
+      <Dependency Name="EbbB3Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbB4" Visible="false" X="-0.792893" Y="-2.707107" />
+    <PointByCoordinates Name="EbbB4Rim" Visible="false" X="-0.542893" Y="-2.707107" />
+    <Circle Name="EbbSmall4" Style="Around">
+      <Dependency Name="EbbB4" />
+      <Dependency Name="EbbB4Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbB5" Visible="false" X="-1.5" Y="-3" />
+    <PointByCoordinates Name="EbbB5Rim" Visible="false" X="-1.25" Y="-3" />
+    <Circle Name="EbbSmall5" Style="Around">
+      <Dependency Name="EbbB5" />
+      <Dependency Name="EbbB5Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbB6" Visible="false" X="-2.207107" Y="-2.707107" />
+    <PointByCoordinates Name="EbbB6Rim" Visible="false" X="-1.957107" Y="-2.707107" />
+    <Circle Name="EbbSmall6" Style="Around">
+      <Dependency Name="EbbB6" />
+      <Dependency Name="EbbB6Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbB7" Visible="false" X="-2.5" Y="-2" />
+    <PointByCoordinates Name="EbbB7Rim" Visible="false" X="-2.25" Y="-2" />
+    <Circle Name="EbbSmall7" Style="Around">
+      <Dependency Name="EbbB7" />
+      <Dependency Name="EbbB7Rim" />
+    </Circle>
+    <PointByCoordinates Name="EbbB8" Visible="false" X="-2.207107" Y="-1.292893" />
+    <PointByCoordinates Name="EbbB8Rim" Visible="false" X="-1.957107" Y="-1.292893" />
+    <Circle Name="EbbSmall8" Style="Around">
+      <Dependency Name="EbbB8" />
+      <Dependency Name="EbbB8Rim" />
+    </Circle>
+    <Label Name="EbbLeft" Visible="false" Style="Answer" Text="[2 * dist(EbbA, EbbARim)] across" X="-7.1" Y="-5.05">
+      <Dependency Name="EbbA" />
+      <Dependency Name="EbbARim" />
+    </Label>
+    <Label Name="EbbRight" Visible="false" Style="Answer" Text="[2 * dist(EbbB, EbbBRim)] across" X="-2.3" Y="-5.05">
+      <Dependency Name="EbbB" />
+      <Dependency Name="EbbBRim" />
+    </Label>
+    <PointByCoordinates Name="PonzoL1" Visible="false" X="-1.2" Y="0.8" />
+    <PointByCoordinates Name="PonzoL2" Visible="false" X="2.2" Y="4.6" />
+    <PointByCoordinates Name="PonzoR1" Visible="false" X="7.2" Y="0.8" />
+    <PointByCoordinates Name="PonzoR2" Visible="false" X="3.8" Y="4.6" />
+    <Segment Name="PonzoLeft" Style="Rails">
+      <Dependency Name="PonzoL1" />
+      <Dependency Name="PonzoL2" />
+    </Segment>
+    <Segment Name="PonzoRight" Style="Rails">
+      <Dependency Name="PonzoR1" />
+      <Dependency Name="PonzoR2" />
+    </Segment>
+    <PointByCoordinates Name="PonzoTie1L" Visible="false" X="0.1" Y="2.25" />
+    <PointByCoordinates Name="PonzoTie1R" Visible="false" X="5.9" Y="2.25" />
+    <Segment Name="PonzoTie1" Style="Rails">
+      <Dependency Name="PonzoTie1L" />
+      <Dependency Name="PonzoTie1R" />
+    </Segment>
+    <PointByCoordinates Name="PonzoTie2L" Visible="false" X="1.0" Y="3.25" />
+    <PointByCoordinates Name="PonzoTie2R" Visible="false" X="5.0" Y="3.25" />
+    <Segment Name="PonzoTie2" Style="Rails">
+      <Dependency Name="PonzoTie2L" />
+      <Dependency Name="PonzoTie2R" />
+    </Segment>
+    <PointByCoordinates Name="PonzoBottomL" Visible="false" X="2" Y="1.5" />
+    <PointByCoordinates Name="PonzoBottomR" Visible="false" X="4" Y="1.5" />
+    <Segment Name="PonzoBottom" Style="PonzoBar">
+      <Dependency Name="PonzoBottomL" />
+      <Dependency Name="PonzoBottomR" />
+    </Segment>
+    <PointByCoordinates Name="PonzoTopL" Visible="false" X="2" Y="3.9" />
+    <PointByCoordinates Name="PonzoRailL" Visible="false" X="2" Y="3.9" />
+    <PointByCoordinates Name="PonzoRailR" Visible="false" X="5" Y="3.9" />
+    <Segment Name="PonzoRail" Visible="false">
+      <Dependency Name="PonzoRailL" />
+      <Dependency Name="PonzoRailR" />
+    </Segment>
+    <PointOnFigure Name="PonzoTopR" Style="Handle" X="4.000001" Y="3.9" Parameter="0.666667">
+      <Dependency Name="PonzoRail" />
+    </PointOnFigure>
+    <Segment Name="PonzoTop" Style="PonzoBar">
+      <Dependency Name="PonzoTopL" />
+      <Dependency Name="PonzoTopR" />
+    </Segment>
+    <DistanceMeasurement Name="PonzoBottomLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="14">
+      <Dependency Name="PonzoBottomL" />
+      <Dependency Name="PonzoBottomR" />
+    </DistanceMeasurement>
+    <DistanceMeasurement Name="PonzoTopLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="-30">
+      <Dependency Name="PonzoTopL" />
+      <Dependency Name="PonzoTopR" />
+    </DistanceMeasurement>
+    <PointByCoordinates Name="TeeL" Visible="false" X="3" Y="-3.8" />
+    <PointByCoordinates Name="TeeR" Visible="false" X="7" Y="-3.8" />
+    <Segment Name="TeeFlat" Style="Bar">
+      <Dependency Name="TeeL" />
+      <Dependency Name="TeeR" />
+    </Segment>
+    <PointByCoordinates Name="TeeFoot" Visible="false" X="5" Y="-3.8" />
+    <PointByCoordinates Name="TeeRailB" Visible="false" X="5" Y="-3.8" />
+    <PointByCoordinates Name="TeeRailT" Visible="false" X="5" Y="1" />
+    <Segment Name="TeeRail" Visible="false">
+      <Dependency Name="TeeRailB" />
+      <Dependency Name="TeeRailT" />
+    </Segment>
+    <PointOnFigure Name="TeeTop" Style="Handle" X="5" Y="0.19999840000000013" Parameter="0.833333">
+      <Dependency Name="TeeRail" />
+    </PointOnFigure>
+    <Segment Name="TeeUp" Style="Bar">
+      <Dependency Name="TeeFoot" />
+      <Dependency Name="TeeTop" />
+    </Segment>
+    <DistanceMeasurement Name="TeeFlatLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="12">
+      <Dependency Name="TeeL" />
+      <Dependency Name="TeeR" />
+    </DistanceMeasurement>
+    <DistanceMeasurement Name="TeeUpLength" Visible="false" Style="Answer" OffsetX="10" OffsetY="-10">
+      <Dependency Name="TeeFoot" />
+      <Dependency Name="TeeTop" />
+    </DistanceMeasurement>
+    <Number Name="Upright" Value="90" />
+    <Number Name="Flat" Value="0" />
+    <LineAtAngle Name="MullerGuideL" Visible="false" Style="Guide">
+      <Dependency Name="ML1" />
+      <Dependency Name="Upright" />
+    </LineAtAngle>
+    <LineAtAngle Name="MullerGuideR" Visible="false" Style="Guide">
+      <Dependency Name="ML2" />
+      <Dependency Name="Upright" />
+    </LineAtAngle>
+    <LineAtAngle Name="PonzoGuideL" Visible="false" Style="Guide">
+      <Dependency Name="PonzoBottomL" />
+      <Dependency Name="Upright" />
+    </LineAtAngle>
+    <LineAtAngle Name="PonzoGuideR" Visible="false" Style="Guide">
+      <Dependency Name="PonzoBottomR" />
+      <Dependency Name="Upright" />
+    </LineAtAngle>
+    <PointByCoordinates Name="EbbTop" Visible="false" X="EbbA.X" Y="EbbA.Y + dist(EbbA, EbbARim)">
+      <Dependency Name="EbbA" />
+      <Dependency Name="EbbARim" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="EbbBottom" Visible="false" X="EbbA.X" Y="EbbA.Y - dist(EbbA, EbbARim)">
+      <Dependency Name="EbbA" />
+      <Dependency Name="EbbARim" />
+    </PointByCoordinates>
+    <LineAtAngle Name="EbbGuideTop" Visible="false" Style="Guide">
+      <Dependency Name="EbbTop" />
+      <Dependency Name="Flat" />
+    </LineAtAngle>
+    <LineAtAngle Name="EbbGuideBottom" Visible="false" Style="Guide">
+      <Dependency Name="EbbBottom" />
+      <Dependency Name="Flat" />
+    </LineAtAngle>
+    <ShowHideControl Name="Measure" Style="GalleryText" Show="false" Text="Measure" Pin="TopLeft" OffsetX="16" OffsetY="16">
+      <Dependency Name="MullerGuideL" />
+      <Dependency Name="MullerGuideR" />
+      <Dependency Name="PonzoGuideL" />
+      <Dependency Name="PonzoGuideR" />
+      <Dependency Name="EbbGuideTop" />
+      <Dependency Name="EbbGuideBottom" />
+      <Dependency Name="MullerTopLength" />
+      <Dependency Name="MullerBottomLength" />
+      <Dependency Name="EbbLeft" />
+      <Dependency Name="EbbRight" />
+      <Dependency Name="PonzoBottomLength" />
+      <Dependency Name="PonzoTopLength" />
+      <Dependency Name="TeeFlatLength" />
+      <Dependency Name="TeeUpLength" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Don't Trust Your Eyes" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Four famous illusions. In each one the two things are exactly the same size. You don't believe it, and you shouldn't have to: drag the yellow handle until they look the same to you, then tick &quot;Measure&quot; and see how far your eyes pulled you.\n\nTop left: the two lines with the fins. Bottom left: the two orange circles. Top right: the two red bars on the railroad tracks. Bottom right: the upright line and the flat one.\n\nYour brain doesn't measure what hits your eye. It guesses what is out there in the world, and fins, rings and railroad tracks are clues it can't ignore. That is why the illusions keep working even after you know the trick. Geometry is how we check." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

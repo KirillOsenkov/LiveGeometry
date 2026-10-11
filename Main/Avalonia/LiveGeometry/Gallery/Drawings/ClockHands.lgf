@@ -1,0 +1,1015 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-7" Top="4.5" Right="7" Bottom="-5.8" />
+  <Styles>
+    <ShapeStyle Name="Frame" Color="#FF2E1A0C" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FF9C6B3C" Offset="0" />
+          <GradientStop Color="#FF4A2E16" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Bezel" Color="#FF6B4F14">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFF2D98A" Offset="0" />
+          <GradientStop Color="#FF9C7A2A" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Face" Color="#FF8A6A3A">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFFEF8" Offset="0" />
+          <GradientStop Color="#FFEFE3C8" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="MinuteTick" Color="#FF6B5A3A" StrokeWidth="1.25" />
+    <LineStyle Name="HourTick" Color="#FF3A2E1A" StrokeWidth="3" />
+    <TextStyle Name="Numeral" FontSize="20" Color="#FF2E1A0C" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF2E1A0C" />
+    </TextStyle>
+    <ShapeStyle Name="Hand" Color="#FF101418">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FF5A6B85" Offset="0" />
+          <GradientStop Color="#FF1A2130" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="SecondHand" Color="#FFD83B3B" StrokeWidth="2" />
+    <PointStyle Name="Hub" Size="16" Fill="#FF3A4558" Color="#FF101418" StrokeWidth="1.5" />
+    <PointStyle Name="HubCap" Size="7" Fill="#FFD83B3B" Color="#FF8E1F14" StrokeWidth="0.5" />
+    <ShapeStyle Name="Wedge" Fill="#60F28C28" Color="#FFD2691E" StrokeWidth="2" />
+    <TextStyle Name="Degrees" FontSize="20" Color="#FFD2691E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFFA552" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Frame0" Visible="false" X="3.5" Y="0" />
+    <PointByCoordinates Name="Frame1" Visible="false" X="3.4867" Y="0.305" />
+    <PointByCoordinates Name="Frame2" Visible="false" X="3.4468" Y="0.6078" />
+    <PointByCoordinates Name="Frame3" Visible="false" X="3.3807" Y="0.9059" />
+    <PointByCoordinates Name="Frame4" Visible="false" X="3.2889" Y="1.1971" />
+    <PointByCoordinates Name="Frame5" Visible="false" X="3.1721" Y="1.4792" />
+    <PointByCoordinates Name="Frame6" Visible="false" X="3.0311" Y="1.75" />
+    <PointByCoordinates Name="Frame7" Visible="false" X="2.867" Y="2.0075" />
+    <PointByCoordinates Name="Frame8" Visible="false" X="2.6812" Y="2.2498" />
+    <PointByCoordinates Name="Frame9" Visible="false" X="2.4749" Y="2.4749" />
+    <PointByCoordinates Name="Frame10" Visible="false" X="2.2498" Y="2.6812" />
+    <PointByCoordinates Name="Frame11" Visible="false" X="2.0075" Y="2.867" />
+    <PointByCoordinates Name="Frame12" Visible="false" X="1.75" Y="3.0311" />
+    <PointByCoordinates Name="Frame13" Visible="false" X="1.4792" Y="3.1721" />
+    <PointByCoordinates Name="Frame14" Visible="false" X="1.1971" Y="3.2889" />
+    <PointByCoordinates Name="Frame15" Visible="false" X="0.9059" Y="3.3807" />
+    <PointByCoordinates Name="Frame16" Visible="false" X="0.6078" Y="3.4468" />
+    <PointByCoordinates Name="Frame17" Visible="false" X="0.305" Y="3.4867" />
+    <PointByCoordinates Name="Frame18" Visible="false" X="0" Y="3.5" />
+    <PointByCoordinates Name="Frame19" Visible="false" X="-0.305" Y="3.4867" />
+    <PointByCoordinates Name="Frame20" Visible="false" X="-0.6078" Y="3.4468" />
+    <PointByCoordinates Name="Frame21" Visible="false" X="-0.9059" Y="3.3807" />
+    <PointByCoordinates Name="Frame22" Visible="false" X="-1.1971" Y="3.2889" />
+    <PointByCoordinates Name="Frame23" Visible="false" X="-1.4792" Y="3.1721" />
+    <PointByCoordinates Name="Frame24" Visible="false" X="-1.75" Y="3.0311" />
+    <PointByCoordinates Name="Frame25" Visible="false" X="-2.0075" Y="2.867" />
+    <PointByCoordinates Name="Frame26" Visible="false" X="-2.2498" Y="2.6812" />
+    <PointByCoordinates Name="Frame27" Visible="false" X="-2.4749" Y="2.4749" />
+    <PointByCoordinates Name="Frame28" Visible="false" X="-2.6812" Y="2.2498" />
+    <PointByCoordinates Name="Frame29" Visible="false" X="-2.867" Y="2.0075" />
+    <PointByCoordinates Name="Frame30" Visible="false" X="-3.0311" Y="1.75" />
+    <PointByCoordinates Name="Frame31" Visible="false" X="-3.1721" Y="1.4792" />
+    <PointByCoordinates Name="Frame32" Visible="false" X="-3.2889" Y="1.1971" />
+    <PointByCoordinates Name="Frame33" Visible="false" X="-3.3807" Y="0.9059" />
+    <PointByCoordinates Name="Frame34" Visible="false" X="-3.4468" Y="0.6078" />
+    <PointByCoordinates Name="Frame35" Visible="false" X="-3.4867" Y="0.305" />
+    <PointByCoordinates Name="Frame36" Visible="false" X="-3.5" Y="0" />
+    <PointByCoordinates Name="Frame37" Visible="false" X="-3.4867" Y="-0.305" />
+    <PointByCoordinates Name="Frame38" Visible="false" X="-3.4468" Y="-0.6078" />
+    <PointByCoordinates Name="Frame39" Visible="false" X="-3.3807" Y="-0.9059" />
+    <PointByCoordinates Name="Frame40" Visible="false" X="-3.2889" Y="-1.1971" />
+    <PointByCoordinates Name="Frame41" Visible="false" X="-3.1721" Y="-1.4792" />
+    <PointByCoordinates Name="Frame42" Visible="false" X="-3.0311" Y="-1.75" />
+    <PointByCoordinates Name="Frame43" Visible="false" X="-2.867" Y="-2.0075" />
+    <PointByCoordinates Name="Frame44" Visible="false" X="-2.6812" Y="-2.2498" />
+    <PointByCoordinates Name="Frame45" Visible="false" X="-2.4749" Y="-2.4749" />
+    <PointByCoordinates Name="Frame46" Visible="false" X="-2.2498" Y="-2.6812" />
+    <PointByCoordinates Name="Frame47" Visible="false" X="-2.0075" Y="-2.867" />
+    <PointByCoordinates Name="Frame48" Visible="false" X="-1.75" Y="-3.0311" />
+    <PointByCoordinates Name="Frame49" Visible="false" X="-1.4792" Y="-3.1721" />
+    <PointByCoordinates Name="Frame50" Visible="false" X="-1.1971" Y="-3.2889" />
+    <PointByCoordinates Name="Frame51" Visible="false" X="-0.9059" Y="-3.3807" />
+    <PointByCoordinates Name="Frame52" Visible="false" X="-0.6078" Y="-3.4468" />
+    <PointByCoordinates Name="Frame53" Visible="false" X="-0.305" Y="-3.4867" />
+    <PointByCoordinates Name="Frame54" Visible="false" X="-0" Y="-3.5" />
+    <PointByCoordinates Name="Frame55" Visible="false" X="0.305" Y="-3.4867" />
+    <PointByCoordinates Name="Frame56" Visible="false" X="0.6078" Y="-3.4468" />
+    <PointByCoordinates Name="Frame57" Visible="false" X="0.9059" Y="-3.3807" />
+    <PointByCoordinates Name="Frame58" Visible="false" X="1.1971" Y="-3.2889" />
+    <PointByCoordinates Name="Frame59" Visible="false" X="1.4792" Y="-3.1721" />
+    <PointByCoordinates Name="Frame60" Visible="false" X="1.75" Y="-3.0311" />
+    <PointByCoordinates Name="Frame61" Visible="false" X="2.0075" Y="-2.867" />
+    <PointByCoordinates Name="Frame62" Visible="false" X="2.2498" Y="-2.6812" />
+    <PointByCoordinates Name="Frame63" Visible="false" X="2.4749" Y="-2.4749" />
+    <PointByCoordinates Name="Frame64" Visible="false" X="2.6812" Y="-2.2498" />
+    <PointByCoordinates Name="Frame65" Visible="false" X="2.867" Y="-2.0075" />
+    <PointByCoordinates Name="Frame66" Visible="false" X="3.0311" Y="-1.75" />
+    <PointByCoordinates Name="Frame67" Visible="false" X="3.1721" Y="-1.4792" />
+    <PointByCoordinates Name="Frame68" Visible="false" X="3.2889" Y="-1.1971" />
+    <PointByCoordinates Name="Frame69" Visible="false" X="3.3807" Y="-0.9059" />
+    <PointByCoordinates Name="Frame70" Visible="false" X="3.4468" Y="-0.6078" />
+    <PointByCoordinates Name="Frame71" Visible="false" X="3.4867" Y="-0.305" />
+    <Polygon Name="Frame" Style="Frame">
+      <Dependency Name="Frame0" />
+      <Dependency Name="Frame1" />
+      <Dependency Name="Frame2" />
+      <Dependency Name="Frame3" />
+      <Dependency Name="Frame4" />
+      <Dependency Name="Frame5" />
+      <Dependency Name="Frame6" />
+      <Dependency Name="Frame7" />
+      <Dependency Name="Frame8" />
+      <Dependency Name="Frame9" />
+      <Dependency Name="Frame10" />
+      <Dependency Name="Frame11" />
+      <Dependency Name="Frame12" />
+      <Dependency Name="Frame13" />
+      <Dependency Name="Frame14" />
+      <Dependency Name="Frame15" />
+      <Dependency Name="Frame16" />
+      <Dependency Name="Frame17" />
+      <Dependency Name="Frame18" />
+      <Dependency Name="Frame19" />
+      <Dependency Name="Frame20" />
+      <Dependency Name="Frame21" />
+      <Dependency Name="Frame22" />
+      <Dependency Name="Frame23" />
+      <Dependency Name="Frame24" />
+      <Dependency Name="Frame25" />
+      <Dependency Name="Frame26" />
+      <Dependency Name="Frame27" />
+      <Dependency Name="Frame28" />
+      <Dependency Name="Frame29" />
+      <Dependency Name="Frame30" />
+      <Dependency Name="Frame31" />
+      <Dependency Name="Frame32" />
+      <Dependency Name="Frame33" />
+      <Dependency Name="Frame34" />
+      <Dependency Name="Frame35" />
+      <Dependency Name="Frame36" />
+      <Dependency Name="Frame37" />
+      <Dependency Name="Frame38" />
+      <Dependency Name="Frame39" />
+      <Dependency Name="Frame40" />
+      <Dependency Name="Frame41" />
+      <Dependency Name="Frame42" />
+      <Dependency Name="Frame43" />
+      <Dependency Name="Frame44" />
+      <Dependency Name="Frame45" />
+      <Dependency Name="Frame46" />
+      <Dependency Name="Frame47" />
+      <Dependency Name="Frame48" />
+      <Dependency Name="Frame49" />
+      <Dependency Name="Frame50" />
+      <Dependency Name="Frame51" />
+      <Dependency Name="Frame52" />
+      <Dependency Name="Frame53" />
+      <Dependency Name="Frame54" />
+      <Dependency Name="Frame55" />
+      <Dependency Name="Frame56" />
+      <Dependency Name="Frame57" />
+      <Dependency Name="Frame58" />
+      <Dependency Name="Frame59" />
+      <Dependency Name="Frame60" />
+      <Dependency Name="Frame61" />
+      <Dependency Name="Frame62" />
+      <Dependency Name="Frame63" />
+      <Dependency Name="Frame64" />
+      <Dependency Name="Frame65" />
+      <Dependency Name="Frame66" />
+      <Dependency Name="Frame67" />
+      <Dependency Name="Frame68" />
+      <Dependency Name="Frame69" />
+      <Dependency Name="Frame70" />
+      <Dependency Name="Frame71" />
+    </Polygon>
+    <PointByCoordinates Name="Bezel0" Visible="false" X="3.22" Y="0" />
+    <PointByCoordinates Name="Bezel1" Visible="false" X="3.2077" Y="0.2806" />
+    <PointByCoordinates Name="Bezel2" Visible="false" X="3.1711" Y="0.5591" />
+    <PointByCoordinates Name="Bezel3" Visible="false" X="3.1103" Y="0.8334" />
+    <PointByCoordinates Name="Bezel4" Visible="false" X="3.0258" Y="1.1013" />
+    <PointByCoordinates Name="Bezel5" Visible="false" X="2.9183" Y="1.3608" />
+    <PointByCoordinates Name="Bezel6" Visible="false" X="2.7886" Y="1.61" />
+    <PointByCoordinates Name="Bezel7" Visible="false" X="2.6377" Y="1.8469" />
+    <PointByCoordinates Name="Bezel8" Visible="false" X="2.4667" Y="2.0698" />
+    <PointByCoordinates Name="Bezel9" Visible="false" X="2.2769" Y="2.2769" />
+    <PointByCoordinates Name="Bezel10" Visible="false" X="2.0698" Y="2.4667" />
+    <PointByCoordinates Name="Bezel11" Visible="false" X="1.8469" Y="2.6377" />
+    <PointByCoordinates Name="Bezel12" Visible="false" X="1.61" Y="2.7886" />
+    <PointByCoordinates Name="Bezel13" Visible="false" X="1.3608" Y="2.9183" />
+    <PointByCoordinates Name="Bezel14" Visible="false" X="1.1013" Y="3.0258" />
+    <PointByCoordinates Name="Bezel15" Visible="false" X="0.8334" Y="3.1103" />
+    <PointByCoordinates Name="Bezel16" Visible="false" X="0.5591" Y="3.1711" />
+    <PointByCoordinates Name="Bezel17" Visible="false" X="0.2806" Y="3.2077" />
+    <PointByCoordinates Name="Bezel18" Visible="false" X="0" Y="3.22" />
+    <PointByCoordinates Name="Bezel19" Visible="false" X="-0.2806" Y="3.2077" />
+    <PointByCoordinates Name="Bezel20" Visible="false" X="-0.5591" Y="3.1711" />
+    <PointByCoordinates Name="Bezel21" Visible="false" X="-0.8334" Y="3.1103" />
+    <PointByCoordinates Name="Bezel22" Visible="false" X="-1.1013" Y="3.0258" />
+    <PointByCoordinates Name="Bezel23" Visible="false" X="-1.3608" Y="2.9183" />
+    <PointByCoordinates Name="Bezel24" Visible="false" X="-1.61" Y="2.7886" />
+    <PointByCoordinates Name="Bezel25" Visible="false" X="-1.8469" Y="2.6377" />
+    <PointByCoordinates Name="Bezel26" Visible="false" X="-2.0698" Y="2.4667" />
+    <PointByCoordinates Name="Bezel27" Visible="false" X="-2.2769" Y="2.2769" />
+    <PointByCoordinates Name="Bezel28" Visible="false" X="-2.4667" Y="2.0698" />
+    <PointByCoordinates Name="Bezel29" Visible="false" X="-2.6377" Y="1.8469" />
+    <PointByCoordinates Name="Bezel30" Visible="false" X="-2.7886" Y="1.61" />
+    <PointByCoordinates Name="Bezel31" Visible="false" X="-2.9183" Y="1.3608" />
+    <PointByCoordinates Name="Bezel32" Visible="false" X="-3.0258" Y="1.1013" />
+    <PointByCoordinates Name="Bezel33" Visible="false" X="-3.1103" Y="0.8334" />
+    <PointByCoordinates Name="Bezel34" Visible="false" X="-3.1711" Y="0.5591" />
+    <PointByCoordinates Name="Bezel35" Visible="false" X="-3.2077" Y="0.2806" />
+    <PointByCoordinates Name="Bezel36" Visible="false" X="-3.22" Y="0" />
+    <PointByCoordinates Name="Bezel37" Visible="false" X="-3.2077" Y="-0.2806" />
+    <PointByCoordinates Name="Bezel38" Visible="false" X="-3.1711" Y="-0.5591" />
+    <PointByCoordinates Name="Bezel39" Visible="false" X="-3.1103" Y="-0.8334" />
+    <PointByCoordinates Name="Bezel40" Visible="false" X="-3.0258" Y="-1.1013" />
+    <PointByCoordinates Name="Bezel41" Visible="false" X="-2.9183" Y="-1.3608" />
+    <PointByCoordinates Name="Bezel42" Visible="false" X="-2.7886" Y="-1.61" />
+    <PointByCoordinates Name="Bezel43" Visible="false" X="-2.6377" Y="-1.8469" />
+    <PointByCoordinates Name="Bezel44" Visible="false" X="-2.4667" Y="-2.0698" />
+    <PointByCoordinates Name="Bezel45" Visible="false" X="-2.2769" Y="-2.2769" />
+    <PointByCoordinates Name="Bezel46" Visible="false" X="-2.0698" Y="-2.4667" />
+    <PointByCoordinates Name="Bezel47" Visible="false" X="-1.8469" Y="-2.6377" />
+    <PointByCoordinates Name="Bezel48" Visible="false" X="-1.61" Y="-2.7886" />
+    <PointByCoordinates Name="Bezel49" Visible="false" X="-1.3608" Y="-2.9183" />
+    <PointByCoordinates Name="Bezel50" Visible="false" X="-1.1013" Y="-3.0258" />
+    <PointByCoordinates Name="Bezel51" Visible="false" X="-0.8334" Y="-3.1103" />
+    <PointByCoordinates Name="Bezel52" Visible="false" X="-0.5591" Y="-3.1711" />
+    <PointByCoordinates Name="Bezel53" Visible="false" X="-0.2806" Y="-3.2077" />
+    <PointByCoordinates Name="Bezel54" Visible="false" X="-0" Y="-3.22" />
+    <PointByCoordinates Name="Bezel55" Visible="false" X="0.2806" Y="-3.2077" />
+    <PointByCoordinates Name="Bezel56" Visible="false" X="0.5591" Y="-3.1711" />
+    <PointByCoordinates Name="Bezel57" Visible="false" X="0.8334" Y="-3.1103" />
+    <PointByCoordinates Name="Bezel58" Visible="false" X="1.1013" Y="-3.0258" />
+    <PointByCoordinates Name="Bezel59" Visible="false" X="1.3608" Y="-2.9183" />
+    <PointByCoordinates Name="Bezel60" Visible="false" X="1.61" Y="-2.7886" />
+    <PointByCoordinates Name="Bezel61" Visible="false" X="1.8469" Y="-2.6377" />
+    <PointByCoordinates Name="Bezel62" Visible="false" X="2.0698" Y="-2.4667" />
+    <PointByCoordinates Name="Bezel63" Visible="false" X="2.2769" Y="-2.2769" />
+    <PointByCoordinates Name="Bezel64" Visible="false" X="2.4667" Y="-2.0698" />
+    <PointByCoordinates Name="Bezel65" Visible="false" X="2.6377" Y="-1.8469" />
+    <PointByCoordinates Name="Bezel66" Visible="false" X="2.7886" Y="-1.61" />
+    <PointByCoordinates Name="Bezel67" Visible="false" X="2.9183" Y="-1.3608" />
+    <PointByCoordinates Name="Bezel68" Visible="false" X="3.0258" Y="-1.1013" />
+    <PointByCoordinates Name="Bezel69" Visible="false" X="3.1103" Y="-0.8334" />
+    <PointByCoordinates Name="Bezel70" Visible="false" X="3.1711" Y="-0.5591" />
+    <PointByCoordinates Name="Bezel71" Visible="false" X="3.2077" Y="-0.2806" />
+    <Polygon Name="Bezel" Style="Bezel">
+      <Dependency Name="Bezel0" />
+      <Dependency Name="Bezel1" />
+      <Dependency Name="Bezel2" />
+      <Dependency Name="Bezel3" />
+      <Dependency Name="Bezel4" />
+      <Dependency Name="Bezel5" />
+      <Dependency Name="Bezel6" />
+      <Dependency Name="Bezel7" />
+      <Dependency Name="Bezel8" />
+      <Dependency Name="Bezel9" />
+      <Dependency Name="Bezel10" />
+      <Dependency Name="Bezel11" />
+      <Dependency Name="Bezel12" />
+      <Dependency Name="Bezel13" />
+      <Dependency Name="Bezel14" />
+      <Dependency Name="Bezel15" />
+      <Dependency Name="Bezel16" />
+      <Dependency Name="Bezel17" />
+      <Dependency Name="Bezel18" />
+      <Dependency Name="Bezel19" />
+      <Dependency Name="Bezel20" />
+      <Dependency Name="Bezel21" />
+      <Dependency Name="Bezel22" />
+      <Dependency Name="Bezel23" />
+      <Dependency Name="Bezel24" />
+      <Dependency Name="Bezel25" />
+      <Dependency Name="Bezel26" />
+      <Dependency Name="Bezel27" />
+      <Dependency Name="Bezel28" />
+      <Dependency Name="Bezel29" />
+      <Dependency Name="Bezel30" />
+      <Dependency Name="Bezel31" />
+      <Dependency Name="Bezel32" />
+      <Dependency Name="Bezel33" />
+      <Dependency Name="Bezel34" />
+      <Dependency Name="Bezel35" />
+      <Dependency Name="Bezel36" />
+      <Dependency Name="Bezel37" />
+      <Dependency Name="Bezel38" />
+      <Dependency Name="Bezel39" />
+      <Dependency Name="Bezel40" />
+      <Dependency Name="Bezel41" />
+      <Dependency Name="Bezel42" />
+      <Dependency Name="Bezel43" />
+      <Dependency Name="Bezel44" />
+      <Dependency Name="Bezel45" />
+      <Dependency Name="Bezel46" />
+      <Dependency Name="Bezel47" />
+      <Dependency Name="Bezel48" />
+      <Dependency Name="Bezel49" />
+      <Dependency Name="Bezel50" />
+      <Dependency Name="Bezel51" />
+      <Dependency Name="Bezel52" />
+      <Dependency Name="Bezel53" />
+      <Dependency Name="Bezel54" />
+      <Dependency Name="Bezel55" />
+      <Dependency Name="Bezel56" />
+      <Dependency Name="Bezel57" />
+      <Dependency Name="Bezel58" />
+      <Dependency Name="Bezel59" />
+      <Dependency Name="Bezel60" />
+      <Dependency Name="Bezel61" />
+      <Dependency Name="Bezel62" />
+      <Dependency Name="Bezel63" />
+      <Dependency Name="Bezel64" />
+      <Dependency Name="Bezel65" />
+      <Dependency Name="Bezel66" />
+      <Dependency Name="Bezel67" />
+      <Dependency Name="Bezel68" />
+      <Dependency Name="Bezel69" />
+      <Dependency Name="Bezel70" />
+      <Dependency Name="Bezel71" />
+    </Polygon>
+    <PointByCoordinates Name="Face0" Visible="false" X="3" Y="0" />
+    <PointByCoordinates Name="Face1" Visible="false" X="2.9886" Y="0.2615" />
+    <PointByCoordinates Name="Face2" Visible="false" X="2.9544" Y="0.5209" />
+    <PointByCoordinates Name="Face3" Visible="false" X="2.8978" Y="0.7765" />
+    <PointByCoordinates Name="Face4" Visible="false" X="2.8191" Y="1.0261" />
+    <PointByCoordinates Name="Face5" Visible="false" X="2.7189" Y="1.2679" />
+    <PointByCoordinates Name="Face6" Visible="false" X="2.5981" Y="1.5" />
+    <PointByCoordinates Name="Face7" Visible="false" X="2.4575" Y="1.7207" />
+    <PointByCoordinates Name="Face8" Visible="false" X="2.2981" Y="1.9284" />
+    <PointByCoordinates Name="Face9" Visible="false" X="2.1213" Y="2.1213" />
+    <PointByCoordinates Name="Face10" Visible="false" X="1.9284" Y="2.2981" />
+    <PointByCoordinates Name="Face11" Visible="false" X="1.7207" Y="2.4575" />
+    <PointByCoordinates Name="Face12" Visible="false" X="1.5" Y="2.5981" />
+    <PointByCoordinates Name="Face13" Visible="false" X="1.2679" Y="2.7189" />
+    <PointByCoordinates Name="Face14" Visible="false" X="1.0261" Y="2.8191" />
+    <PointByCoordinates Name="Face15" Visible="false" X="0.7765" Y="2.8978" />
+    <PointByCoordinates Name="Face16" Visible="false" X="0.5209" Y="2.9544" />
+    <PointByCoordinates Name="Face17" Visible="false" X="0.2615" Y="2.9886" />
+    <PointByCoordinates Name="Face18" Visible="false" X="0" Y="3" />
+    <PointByCoordinates Name="Face19" Visible="false" X="-0.2615" Y="2.9886" />
+    <PointByCoordinates Name="Face20" Visible="false" X="-0.5209" Y="2.9544" />
+    <PointByCoordinates Name="Face21" Visible="false" X="-0.7765" Y="2.8978" />
+    <PointByCoordinates Name="Face22" Visible="false" X="-1.0261" Y="2.8191" />
+    <PointByCoordinates Name="Face23" Visible="false" X="-1.2679" Y="2.7189" />
+    <PointByCoordinates Name="Face24" Visible="false" X="-1.5" Y="2.5981" />
+    <PointByCoordinates Name="Face25" Visible="false" X="-1.7207" Y="2.4575" />
+    <PointByCoordinates Name="Face26" Visible="false" X="-1.9284" Y="2.2981" />
+    <PointByCoordinates Name="Face27" Visible="false" X="-2.1213" Y="2.1213" />
+    <PointByCoordinates Name="Face28" Visible="false" X="-2.2981" Y="1.9284" />
+    <PointByCoordinates Name="Face29" Visible="false" X="-2.4575" Y="1.7207" />
+    <PointByCoordinates Name="Face30" Visible="false" X="-2.5981" Y="1.5" />
+    <PointByCoordinates Name="Face31" Visible="false" X="-2.7189" Y="1.2679" />
+    <PointByCoordinates Name="Face32" Visible="false" X="-2.8191" Y="1.0261" />
+    <PointByCoordinates Name="Face33" Visible="false" X="-2.8978" Y="0.7765" />
+    <PointByCoordinates Name="Face34" Visible="false" X="-2.9544" Y="0.5209" />
+    <PointByCoordinates Name="Face35" Visible="false" X="-2.9886" Y="0.2615" />
+    <PointByCoordinates Name="Face36" Visible="false" X="-3" Y="0" />
+    <PointByCoordinates Name="Face37" Visible="false" X="-2.9886" Y="-0.2615" />
+    <PointByCoordinates Name="Face38" Visible="false" X="-2.9544" Y="-0.5209" />
+    <PointByCoordinates Name="Face39" Visible="false" X="-2.8978" Y="-0.7765" />
+    <PointByCoordinates Name="Face40" Visible="false" X="-2.8191" Y="-1.0261" />
+    <PointByCoordinates Name="Face41" Visible="false" X="-2.7189" Y="-1.2679" />
+    <PointByCoordinates Name="Face42" Visible="false" X="-2.5981" Y="-1.5" />
+    <PointByCoordinates Name="Face43" Visible="false" X="-2.4575" Y="-1.7207" />
+    <PointByCoordinates Name="Face44" Visible="false" X="-2.2981" Y="-1.9284" />
+    <PointByCoordinates Name="Face45" Visible="false" X="-2.1213" Y="-2.1213" />
+    <PointByCoordinates Name="Face46" Visible="false" X="-1.9284" Y="-2.2981" />
+    <PointByCoordinates Name="Face47" Visible="false" X="-1.7207" Y="-2.4575" />
+    <PointByCoordinates Name="Face48" Visible="false" X="-1.5" Y="-2.5981" />
+    <PointByCoordinates Name="Face49" Visible="false" X="-1.2679" Y="-2.7189" />
+    <PointByCoordinates Name="Face50" Visible="false" X="-1.0261" Y="-2.8191" />
+    <PointByCoordinates Name="Face51" Visible="false" X="-0.7765" Y="-2.8978" />
+    <PointByCoordinates Name="Face52" Visible="false" X="-0.5209" Y="-2.9544" />
+    <PointByCoordinates Name="Face53" Visible="false" X="-0.2615" Y="-2.9886" />
+    <PointByCoordinates Name="Face54" Visible="false" X="-0" Y="-3" />
+    <PointByCoordinates Name="Face55" Visible="false" X="0.2615" Y="-2.9886" />
+    <PointByCoordinates Name="Face56" Visible="false" X="0.5209" Y="-2.9544" />
+    <PointByCoordinates Name="Face57" Visible="false" X="0.7765" Y="-2.8978" />
+    <PointByCoordinates Name="Face58" Visible="false" X="1.0261" Y="-2.8191" />
+    <PointByCoordinates Name="Face59" Visible="false" X="1.2679" Y="-2.7189" />
+    <PointByCoordinates Name="Face60" Visible="false" X="1.5" Y="-2.5981" />
+    <PointByCoordinates Name="Face61" Visible="false" X="1.7207" Y="-2.4575" />
+    <PointByCoordinates Name="Face62" Visible="false" X="1.9284" Y="-2.2981" />
+    <PointByCoordinates Name="Face63" Visible="false" X="2.1213" Y="-2.1213" />
+    <PointByCoordinates Name="Face64" Visible="false" X="2.2981" Y="-1.9284" />
+    <PointByCoordinates Name="Face65" Visible="false" X="2.4575" Y="-1.7207" />
+    <PointByCoordinates Name="Face66" Visible="false" X="2.5981" Y="-1.5" />
+    <PointByCoordinates Name="Face67" Visible="false" X="2.7189" Y="-1.2679" />
+    <PointByCoordinates Name="Face68" Visible="false" X="2.8191" Y="-1.0261" />
+    <PointByCoordinates Name="Face69" Visible="false" X="2.8978" Y="-0.7765" />
+    <PointByCoordinates Name="Face70" Visible="false" X="2.9544" Y="-0.5209" />
+    <PointByCoordinates Name="Face71" Visible="false" X="2.9886" Y="-0.2615" />
+    <Polygon Name="Face" Style="Face">
+      <Dependency Name="Face0" />
+      <Dependency Name="Face1" />
+      <Dependency Name="Face2" />
+      <Dependency Name="Face3" />
+      <Dependency Name="Face4" />
+      <Dependency Name="Face5" />
+      <Dependency Name="Face6" />
+      <Dependency Name="Face7" />
+      <Dependency Name="Face8" />
+      <Dependency Name="Face9" />
+      <Dependency Name="Face10" />
+      <Dependency Name="Face11" />
+      <Dependency Name="Face12" />
+      <Dependency Name="Face13" />
+      <Dependency Name="Face14" />
+      <Dependency Name="Face15" />
+      <Dependency Name="Face16" />
+      <Dependency Name="Face17" />
+      <Dependency Name="Face18" />
+      <Dependency Name="Face19" />
+      <Dependency Name="Face20" />
+      <Dependency Name="Face21" />
+      <Dependency Name="Face22" />
+      <Dependency Name="Face23" />
+      <Dependency Name="Face24" />
+      <Dependency Name="Face25" />
+      <Dependency Name="Face26" />
+      <Dependency Name="Face27" />
+      <Dependency Name="Face28" />
+      <Dependency Name="Face29" />
+      <Dependency Name="Face30" />
+      <Dependency Name="Face31" />
+      <Dependency Name="Face32" />
+      <Dependency Name="Face33" />
+      <Dependency Name="Face34" />
+      <Dependency Name="Face35" />
+      <Dependency Name="Face36" />
+      <Dependency Name="Face37" />
+      <Dependency Name="Face38" />
+      <Dependency Name="Face39" />
+      <Dependency Name="Face40" />
+      <Dependency Name="Face41" />
+      <Dependency Name="Face42" />
+      <Dependency Name="Face43" />
+      <Dependency Name="Face44" />
+      <Dependency Name="Face45" />
+      <Dependency Name="Face46" />
+      <Dependency Name="Face47" />
+      <Dependency Name="Face48" />
+      <Dependency Name="Face49" />
+      <Dependency Name="Face50" />
+      <Dependency Name="Face51" />
+      <Dependency Name="Face52" />
+      <Dependency Name="Face53" />
+      <Dependency Name="Face54" />
+      <Dependency Name="Face55" />
+      <Dependency Name="Face56" />
+      <Dependency Name="Face57" />
+      <Dependency Name="Face58" />
+      <Dependency Name="Face59" />
+      <Dependency Name="Face60" />
+      <Dependency Name="Face61" />
+      <Dependency Name="Face62" />
+      <Dependency Name="Face63" />
+      <Dependency Name="Face64" />
+      <Dependency Name="Face65" />
+      <Dependency Name="Face66" />
+      <Dependency Name="Face67" />
+      <Dependency Name="Face68" />
+      <Dependency Name="Face69" />
+      <Dependency Name="Face70" />
+      <Dependency Name="Face71" />
+    </Polygon>
+    <PointByCoordinates Name="Tick0In" Visible="false" X="0" Y="2.7" />
+    <PointByCoordinates Name="Tick0Out" Visible="false" X="0" Y="2.94" />
+    <Segment Name="Tick0" Style="HourTick">
+      <Dependency Name="Tick0In" />
+      <Dependency Name="Tick0Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick1In" Visible="false" X="0.299" Y="2.8443" />
+    <PointByCoordinates Name="Tick1Out" Visible="false" X="0.3073" Y="2.9239" />
+    <Segment Name="Tick1" Style="MinuteTick">
+      <Dependency Name="Tick1In" />
+      <Dependency Name="Tick1Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick2In" Visible="false" X="0.5946" Y="2.7975" />
+    <PointByCoordinates Name="Tick2Out" Visible="false" X="0.6113" Y="2.8758" />
+    <Segment Name="Tick2" Style="MinuteTick">
+      <Dependency Name="Tick2In" />
+      <Dependency Name="Tick2Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick3In" Visible="false" X="0.8838" Y="2.72" />
+    <PointByCoordinates Name="Tick3Out" Visible="false" X="0.9085" Y="2.7961" />
+    <Segment Name="Tick3" Style="MinuteTick">
+      <Dependency Name="Tick3In" />
+      <Dependency Name="Tick3Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick4In" Visible="false" X="1.1633" Y="2.6127" />
+    <PointByCoordinates Name="Tick4Out" Visible="false" X="1.1958" Y="2.6858" />
+    <Segment Name="Tick4" Style="MinuteTick">
+      <Dependency Name="Tick4In" />
+      <Dependency Name="Tick4Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick5In" Visible="false" X="1.35" Y="2.3383" />
+    <PointByCoordinates Name="Tick5Out" Visible="false" X="1.47" Y="2.5461" />
+    <Segment Name="Tick5" Style="HourTick">
+      <Dependency Name="Tick5In" />
+      <Dependency Name="Tick5Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick6In" Visible="false" X="1.6811" Y="2.3138" />
+    <PointByCoordinates Name="Tick6Out" Visible="false" X="1.7281" Y="2.3785" />
+    <Segment Name="Tick6" Style="MinuteTick">
+      <Dependency Name="Tick6In" />
+      <Dependency Name="Tick6Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick7In" Visible="false" X="1.9137" Y="2.1254" />
+    <PointByCoordinates Name="Tick7Out" Visible="false" X="1.9672" Y="2.1848" />
+    <Segment Name="Tick7" Style="MinuteTick">
+      <Dependency Name="Tick7In" />
+      <Dependency Name="Tick7Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick8In" Visible="false" X="2.1254" Y="1.9137" />
+    <PointByCoordinates Name="Tick8Out" Visible="false" X="2.1848" Y="1.9672" />
+    <Segment Name="Tick8" Style="MinuteTick">
+      <Dependency Name="Tick8In" />
+      <Dependency Name="Tick8Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick9In" Visible="false" X="2.3138" Y="1.6811" />
+    <PointByCoordinates Name="Tick9Out" Visible="false" X="2.3785" Y="1.7281" />
+    <Segment Name="Tick9" Style="MinuteTick">
+      <Dependency Name="Tick9In" />
+      <Dependency Name="Tick9Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick10In" Visible="false" X="2.3383" Y="1.35" />
+    <PointByCoordinates Name="Tick10Out" Visible="false" X="2.5461" Y="1.47" />
+    <Segment Name="Tick10" Style="HourTick">
+      <Dependency Name="Tick10In" />
+      <Dependency Name="Tick10Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick11In" Visible="false" X="2.6127" Y="1.1633" />
+    <PointByCoordinates Name="Tick11Out" Visible="false" X="2.6858" Y="1.1958" />
+    <Segment Name="Tick11" Style="MinuteTick">
+      <Dependency Name="Tick11In" />
+      <Dependency Name="Tick11Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick12In" Visible="false" X="2.72" Y="0.8838" />
+    <PointByCoordinates Name="Tick12Out" Visible="false" X="2.7961" Y="0.9085" />
+    <Segment Name="Tick12" Style="MinuteTick">
+      <Dependency Name="Tick12In" />
+      <Dependency Name="Tick12Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick13In" Visible="false" X="2.7975" Y="0.5946" />
+    <PointByCoordinates Name="Tick13Out" Visible="false" X="2.8758" Y="0.6113" />
+    <Segment Name="Tick13" Style="MinuteTick">
+      <Dependency Name="Tick13In" />
+      <Dependency Name="Tick13Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick14In" Visible="false" X="2.8443" Y="0.299" />
+    <PointByCoordinates Name="Tick14Out" Visible="false" X="2.9239" Y="0.3073" />
+    <Segment Name="Tick14" Style="MinuteTick">
+      <Dependency Name="Tick14In" />
+      <Dependency Name="Tick14Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick15In" Visible="false" X="2.7" Y="0" />
+    <PointByCoordinates Name="Tick15Out" Visible="false" X="2.94" Y="0" />
+    <Segment Name="Tick15" Style="HourTick">
+      <Dependency Name="Tick15In" />
+      <Dependency Name="Tick15Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick16In" Visible="false" X="2.8443" Y="-0.299" />
+    <PointByCoordinates Name="Tick16Out" Visible="false" X="2.9239" Y="-0.3073" />
+    <Segment Name="Tick16" Style="MinuteTick">
+      <Dependency Name="Tick16In" />
+      <Dependency Name="Tick16Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick17In" Visible="false" X="2.7975" Y="-0.5946" />
+    <PointByCoordinates Name="Tick17Out" Visible="false" X="2.8758" Y="-0.6113" />
+    <Segment Name="Tick17" Style="MinuteTick">
+      <Dependency Name="Tick17In" />
+      <Dependency Name="Tick17Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick18In" Visible="false" X="2.72" Y="-0.8838" />
+    <PointByCoordinates Name="Tick18Out" Visible="false" X="2.7961" Y="-0.9085" />
+    <Segment Name="Tick18" Style="MinuteTick">
+      <Dependency Name="Tick18In" />
+      <Dependency Name="Tick18Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick19In" Visible="false" X="2.6127" Y="-1.1633" />
+    <PointByCoordinates Name="Tick19Out" Visible="false" X="2.6858" Y="-1.1958" />
+    <Segment Name="Tick19" Style="MinuteTick">
+      <Dependency Name="Tick19In" />
+      <Dependency Name="Tick19Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick20In" Visible="false" X="2.3383" Y="-1.35" />
+    <PointByCoordinates Name="Tick20Out" Visible="false" X="2.5461" Y="-1.47" />
+    <Segment Name="Tick20" Style="HourTick">
+      <Dependency Name="Tick20In" />
+      <Dependency Name="Tick20Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick21In" Visible="false" X="2.3138" Y="-1.6811" />
+    <PointByCoordinates Name="Tick21Out" Visible="false" X="2.3785" Y="-1.7281" />
+    <Segment Name="Tick21" Style="MinuteTick">
+      <Dependency Name="Tick21In" />
+      <Dependency Name="Tick21Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick22In" Visible="false" X="2.1254" Y="-1.9137" />
+    <PointByCoordinates Name="Tick22Out" Visible="false" X="2.1848" Y="-1.9672" />
+    <Segment Name="Tick22" Style="MinuteTick">
+      <Dependency Name="Tick22In" />
+      <Dependency Name="Tick22Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick23In" Visible="false" X="1.9137" Y="-2.1254" />
+    <PointByCoordinates Name="Tick23Out" Visible="false" X="1.9672" Y="-2.1848" />
+    <Segment Name="Tick23" Style="MinuteTick">
+      <Dependency Name="Tick23In" />
+      <Dependency Name="Tick23Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick24In" Visible="false" X="1.6811" Y="-2.3138" />
+    <PointByCoordinates Name="Tick24Out" Visible="false" X="1.7281" Y="-2.3785" />
+    <Segment Name="Tick24" Style="MinuteTick">
+      <Dependency Name="Tick24In" />
+      <Dependency Name="Tick24Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick25In" Visible="false" X="1.35" Y="-2.3383" />
+    <PointByCoordinates Name="Tick25Out" Visible="false" X="1.47" Y="-2.5461" />
+    <Segment Name="Tick25" Style="HourTick">
+      <Dependency Name="Tick25In" />
+      <Dependency Name="Tick25Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick26In" Visible="false" X="1.1633" Y="-2.6127" />
+    <PointByCoordinates Name="Tick26Out" Visible="false" X="1.1958" Y="-2.6858" />
+    <Segment Name="Tick26" Style="MinuteTick">
+      <Dependency Name="Tick26In" />
+      <Dependency Name="Tick26Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick27In" Visible="false" X="0.8838" Y="-2.72" />
+    <PointByCoordinates Name="Tick27Out" Visible="false" X="0.9085" Y="-2.7961" />
+    <Segment Name="Tick27" Style="MinuteTick">
+      <Dependency Name="Tick27In" />
+      <Dependency Name="Tick27Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick28In" Visible="false" X="0.5946" Y="-2.7975" />
+    <PointByCoordinates Name="Tick28Out" Visible="false" X="0.6113" Y="-2.8758" />
+    <Segment Name="Tick28" Style="MinuteTick">
+      <Dependency Name="Tick28In" />
+      <Dependency Name="Tick28Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick29In" Visible="false" X="0.299" Y="-2.8443" />
+    <PointByCoordinates Name="Tick29Out" Visible="false" X="0.3073" Y="-2.9239" />
+    <Segment Name="Tick29" Style="MinuteTick">
+      <Dependency Name="Tick29In" />
+      <Dependency Name="Tick29Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick30In" Visible="false" X="0" Y="-2.7" />
+    <PointByCoordinates Name="Tick30Out" Visible="false" X="0" Y="-2.94" />
+    <Segment Name="Tick30" Style="HourTick">
+      <Dependency Name="Tick30In" />
+      <Dependency Name="Tick30Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick31In" Visible="false" X="-0.299" Y="-2.8443" />
+    <PointByCoordinates Name="Tick31Out" Visible="false" X="-0.3073" Y="-2.9239" />
+    <Segment Name="Tick31" Style="MinuteTick">
+      <Dependency Name="Tick31In" />
+      <Dependency Name="Tick31Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick32In" Visible="false" X="-0.5946" Y="-2.7975" />
+    <PointByCoordinates Name="Tick32Out" Visible="false" X="-0.6113" Y="-2.8758" />
+    <Segment Name="Tick32" Style="MinuteTick">
+      <Dependency Name="Tick32In" />
+      <Dependency Name="Tick32Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick33In" Visible="false" X="-0.8838" Y="-2.72" />
+    <PointByCoordinates Name="Tick33Out" Visible="false" X="-0.9085" Y="-2.7961" />
+    <Segment Name="Tick33" Style="MinuteTick">
+      <Dependency Name="Tick33In" />
+      <Dependency Name="Tick33Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick34In" Visible="false" X="-1.1633" Y="-2.6127" />
+    <PointByCoordinates Name="Tick34Out" Visible="false" X="-1.1958" Y="-2.6858" />
+    <Segment Name="Tick34" Style="MinuteTick">
+      <Dependency Name="Tick34In" />
+      <Dependency Name="Tick34Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick35In" Visible="false" X="-1.35" Y="-2.3383" />
+    <PointByCoordinates Name="Tick35Out" Visible="false" X="-1.47" Y="-2.5461" />
+    <Segment Name="Tick35" Style="HourTick">
+      <Dependency Name="Tick35In" />
+      <Dependency Name="Tick35Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick36In" Visible="false" X="-1.6811" Y="-2.3138" />
+    <PointByCoordinates Name="Tick36Out" Visible="false" X="-1.7281" Y="-2.3785" />
+    <Segment Name="Tick36" Style="MinuteTick">
+      <Dependency Name="Tick36In" />
+      <Dependency Name="Tick36Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick37In" Visible="false" X="-1.9137" Y="-2.1254" />
+    <PointByCoordinates Name="Tick37Out" Visible="false" X="-1.9672" Y="-2.1848" />
+    <Segment Name="Tick37" Style="MinuteTick">
+      <Dependency Name="Tick37In" />
+      <Dependency Name="Tick37Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick38In" Visible="false" X="-2.1254" Y="-1.9137" />
+    <PointByCoordinates Name="Tick38Out" Visible="false" X="-2.1848" Y="-1.9672" />
+    <Segment Name="Tick38" Style="MinuteTick">
+      <Dependency Name="Tick38In" />
+      <Dependency Name="Tick38Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick39In" Visible="false" X="-2.3138" Y="-1.6811" />
+    <PointByCoordinates Name="Tick39Out" Visible="false" X="-2.3785" Y="-1.7281" />
+    <Segment Name="Tick39" Style="MinuteTick">
+      <Dependency Name="Tick39In" />
+      <Dependency Name="Tick39Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick40In" Visible="false" X="-2.3383" Y="-1.35" />
+    <PointByCoordinates Name="Tick40Out" Visible="false" X="-2.5461" Y="-1.47" />
+    <Segment Name="Tick40" Style="HourTick">
+      <Dependency Name="Tick40In" />
+      <Dependency Name="Tick40Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick41In" Visible="false" X="-2.6127" Y="-1.1633" />
+    <PointByCoordinates Name="Tick41Out" Visible="false" X="-2.6858" Y="-1.1958" />
+    <Segment Name="Tick41" Style="MinuteTick">
+      <Dependency Name="Tick41In" />
+      <Dependency Name="Tick41Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick42In" Visible="false" X="-2.72" Y="-0.8838" />
+    <PointByCoordinates Name="Tick42Out" Visible="false" X="-2.7961" Y="-0.9085" />
+    <Segment Name="Tick42" Style="MinuteTick">
+      <Dependency Name="Tick42In" />
+      <Dependency Name="Tick42Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick43In" Visible="false" X="-2.7975" Y="-0.5946" />
+    <PointByCoordinates Name="Tick43Out" Visible="false" X="-2.8758" Y="-0.6113" />
+    <Segment Name="Tick43" Style="MinuteTick">
+      <Dependency Name="Tick43In" />
+      <Dependency Name="Tick43Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick44In" Visible="false" X="-2.8443" Y="-0.299" />
+    <PointByCoordinates Name="Tick44Out" Visible="false" X="-2.9239" Y="-0.3073" />
+    <Segment Name="Tick44" Style="MinuteTick">
+      <Dependency Name="Tick44In" />
+      <Dependency Name="Tick44Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick45In" Visible="false" X="-2.7" Y="-0" />
+    <PointByCoordinates Name="Tick45Out" Visible="false" X="-2.94" Y="-0" />
+    <Segment Name="Tick45" Style="HourTick">
+      <Dependency Name="Tick45In" />
+      <Dependency Name="Tick45Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick46In" Visible="false" X="-2.8443" Y="0.299" />
+    <PointByCoordinates Name="Tick46Out" Visible="false" X="-2.9239" Y="0.3073" />
+    <Segment Name="Tick46" Style="MinuteTick">
+      <Dependency Name="Tick46In" />
+      <Dependency Name="Tick46Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick47In" Visible="false" X="-2.7975" Y="0.5946" />
+    <PointByCoordinates Name="Tick47Out" Visible="false" X="-2.8758" Y="0.6113" />
+    <Segment Name="Tick47" Style="MinuteTick">
+      <Dependency Name="Tick47In" />
+      <Dependency Name="Tick47Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick48In" Visible="false" X="-2.72" Y="0.8838" />
+    <PointByCoordinates Name="Tick48Out" Visible="false" X="-2.7961" Y="0.9085" />
+    <Segment Name="Tick48" Style="MinuteTick">
+      <Dependency Name="Tick48In" />
+      <Dependency Name="Tick48Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick49In" Visible="false" X="-2.6127" Y="1.1633" />
+    <PointByCoordinates Name="Tick49Out" Visible="false" X="-2.6858" Y="1.1958" />
+    <Segment Name="Tick49" Style="MinuteTick">
+      <Dependency Name="Tick49In" />
+      <Dependency Name="Tick49Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick50In" Visible="false" X="-2.3383" Y="1.35" />
+    <PointByCoordinates Name="Tick50Out" Visible="false" X="-2.5461" Y="1.47" />
+    <Segment Name="Tick50" Style="HourTick">
+      <Dependency Name="Tick50In" />
+      <Dependency Name="Tick50Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick51In" Visible="false" X="-2.3138" Y="1.6811" />
+    <PointByCoordinates Name="Tick51Out" Visible="false" X="-2.3785" Y="1.7281" />
+    <Segment Name="Tick51" Style="MinuteTick">
+      <Dependency Name="Tick51In" />
+      <Dependency Name="Tick51Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick52In" Visible="false" X="-2.1254" Y="1.9137" />
+    <PointByCoordinates Name="Tick52Out" Visible="false" X="-2.1848" Y="1.9672" />
+    <Segment Name="Tick52" Style="MinuteTick">
+      <Dependency Name="Tick52In" />
+      <Dependency Name="Tick52Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick53In" Visible="false" X="-1.9137" Y="2.1254" />
+    <PointByCoordinates Name="Tick53Out" Visible="false" X="-1.9672" Y="2.1848" />
+    <Segment Name="Tick53" Style="MinuteTick">
+      <Dependency Name="Tick53In" />
+      <Dependency Name="Tick53Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick54In" Visible="false" X="-1.6811" Y="2.3138" />
+    <PointByCoordinates Name="Tick54Out" Visible="false" X="-1.7281" Y="2.3785" />
+    <Segment Name="Tick54" Style="MinuteTick">
+      <Dependency Name="Tick54In" />
+      <Dependency Name="Tick54Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick55In" Visible="false" X="-1.35" Y="2.3383" />
+    <PointByCoordinates Name="Tick55Out" Visible="false" X="-1.47" Y="2.5461" />
+    <Segment Name="Tick55" Style="HourTick">
+      <Dependency Name="Tick55In" />
+      <Dependency Name="Tick55Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick56In" Visible="false" X="-1.1633" Y="2.6127" />
+    <PointByCoordinates Name="Tick56Out" Visible="false" X="-1.1958" Y="2.6858" />
+    <Segment Name="Tick56" Style="MinuteTick">
+      <Dependency Name="Tick56In" />
+      <Dependency Name="Tick56Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick57In" Visible="false" X="-0.8838" Y="2.72" />
+    <PointByCoordinates Name="Tick57Out" Visible="false" X="-0.9085" Y="2.7961" />
+    <Segment Name="Tick57" Style="MinuteTick">
+      <Dependency Name="Tick57In" />
+      <Dependency Name="Tick57Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick58In" Visible="false" X="-0.5946" Y="2.7975" />
+    <PointByCoordinates Name="Tick58Out" Visible="false" X="-0.6113" Y="2.8758" />
+    <Segment Name="Tick58" Style="MinuteTick">
+      <Dependency Name="Tick58In" />
+      <Dependency Name="Tick58Out" />
+    </Segment>
+    <PointByCoordinates Name="Tick59In" Visible="false" X="-0.299" Y="2.8443" />
+    <PointByCoordinates Name="Tick59Out" Visible="false" X="-0.3073" Y="2.9239" />
+    <Segment Name="Tick59" Style="MinuteTick">
+      <Dependency Name="Tick59In" />
+      <Dependency Name="Tick59Out" />
+    </Segment>
+    <PointByCoordinates Name="1" Visible="false" X="1.19" Y="2.0611" />
+    <PointLabel Name="Numeral1" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="1" />
+    </PointLabel>
+    <PointByCoordinates Name="2" Visible="false" X="2.0611" Y="1.19" />
+    <PointLabel Name="Numeral2" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="2" />
+    </PointLabel>
+    <PointByCoordinates Name="3" Visible="false" X="2.38" Y="0" />
+    <PointLabel Name="Numeral3" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="3" />
+    </PointLabel>
+    <PointByCoordinates Name="4" Visible="false" X="2.0611" Y="-1.19" />
+    <PointLabel Name="Numeral4" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="4" />
+    </PointLabel>
+    <PointByCoordinates Name="5" Visible="false" X="1.19" Y="-2.0611" />
+    <PointLabel Name="Numeral5" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="5" />
+    </PointLabel>
+    <PointByCoordinates Name="6" Visible="false" X="0" Y="-2.38" />
+    <PointLabel Name="Numeral6" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="6" />
+    </PointLabel>
+    <PointByCoordinates Name="7" Visible="false" X="-1.19" Y="-2.0611" />
+    <PointLabel Name="Numeral7" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="7" />
+    </PointLabel>
+    <PointByCoordinates Name="8" Visible="false" X="-2.0611" Y="-1.19" />
+    <PointLabel Name="Numeral8" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="8" />
+    </PointLabel>
+    <PointByCoordinates Name="9" Visible="false" X="-2.38" Y="-0" />
+    <PointLabel Name="Numeral9" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="9" />
+    </PointLabel>
+    <PointByCoordinates Name="10" Visible="false" X="-2.0611" Y="1.19" />
+    <PointLabel Name="Numeral10" Style="Numeral" IsHitTestVisible="false" OffsetX="-11" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="10" />
+    </PointLabel>
+    <PointByCoordinates Name="11" Visible="false" X="-1.19" Y="2.0611" />
+    <PointLabel Name="Numeral11" Style="Numeral" IsHitTestVisible="false" OffsetX="-11" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="11" />
+    </PointLabel>
+    <PointByCoordinates Name="12" Visible="false" X="-0" Y="2.38" />
+    <PointLabel Name="Numeral12" Style="Numeral" IsHitTestVisible="false" OffsetX="-11" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="12" />
+    </PointLabel>
+    <Slider Name="time" X="-6" Y="-5" Value="2.3" Maximum="12" />
+    <Label Name="HourAngle" Visible="false" Text="[rad(-30 * time)]" X="0" Y="-8">
+      <Dependency Name="time" />
+    </Label>
+    <Label Name="MinuteAngle" Visible="false" Text="[rad(-360 * time)]" X="0" Y="-9">
+      <Dependency Name="time" />
+    </Label>
+    <Label Name="SecondAngle" Visible="false" Text="[rad(-360 * (60 * time - floor(60 * time)))]" X="0" Y="-10">
+      <Dependency Name="time" />
+    </Label>
+    <PointByCoordinates Name="HourHandShape0" Visible="false" X="-0.13" Y="-0.4" />
+    <RotatedPoint Name="HourHand0" Visible="false">
+      <Dependency Name="HourHandShape0" />
+      <Dependency Name="O" />
+      <Dependency Name="HourAngle" />
+    </RotatedPoint>
+    <PointByCoordinates Name="HourHandShape1" Visible="false" X="0.13" Y="-0.4" />
+    <RotatedPoint Name="HourHand1" Visible="false">
+      <Dependency Name="HourHandShape1" />
+      <Dependency Name="O" />
+      <Dependency Name="HourAngle" />
+    </RotatedPoint>
+    <PointByCoordinates Name="HourHandShape2" Visible="false" X="0.08" Y="1.55" />
+    <RotatedPoint Name="HourHand2" Visible="false">
+      <Dependency Name="HourHandShape2" />
+      <Dependency Name="O" />
+      <Dependency Name="HourAngle" />
+    </RotatedPoint>
+    <PointByCoordinates Name="HourHandShape3" Visible="false" X="0" Y="1.8" />
+    <RotatedPoint Name="HourHand3" Visible="false">
+      <Dependency Name="HourHandShape3" />
+      <Dependency Name="O" />
+      <Dependency Name="HourAngle" />
+    </RotatedPoint>
+    <PointByCoordinates Name="HourHandShape4" Visible="false" X="-0.08" Y="1.55" />
+    <RotatedPoint Name="HourHand4" Visible="false">
+      <Dependency Name="HourHandShape4" />
+      <Dependency Name="O" />
+      <Dependency Name="HourAngle" />
+    </RotatedPoint>
+    <Polygon Name="HourHand" Style="Hand">
+      <Dependency Name="HourHand0" />
+      <Dependency Name="HourHand1" />
+      <Dependency Name="HourHand2" />
+      <Dependency Name="HourHand3" />
+      <Dependency Name="HourHand4" />
+    </Polygon>
+    <PointByCoordinates Name="MinuteHandShape0" Visible="false" X="-0.1" Y="-0.5" />
+    <RotatedPoint Name="MinuteHand0" Visible="false">
+      <Dependency Name="MinuteHandShape0" />
+      <Dependency Name="O" />
+      <Dependency Name="MinuteAngle" />
+    </RotatedPoint>
+    <PointByCoordinates Name="MinuteHandShape1" Visible="false" X="0.1" Y="-0.5" />
+    <RotatedPoint Name="MinuteHand1" Visible="false">
+      <Dependency Name="MinuteHandShape1" />
+      <Dependency Name="O" />
+      <Dependency Name="MinuteAngle" />
+    </RotatedPoint>
+    <PointByCoordinates Name="MinuteHandShape2" Visible="false" X="0.05" Y="2.45" />
+    <RotatedPoint Name="MinuteHand2" Visible="false">
+      <Dependency Name="MinuteHandShape2" />
+      <Dependency Name="O" />
+      <Dependency Name="MinuteAngle" />
+    </RotatedPoint>
+    <PointByCoordinates Name="MinuteHandShape3" Visible="false" X="0" Y="2.7" />
+    <RotatedPoint Name="MinuteHand3" Visible="false">
+      <Dependency Name="MinuteHandShape3" />
+      <Dependency Name="O" />
+      <Dependency Name="MinuteAngle" />
+    </RotatedPoint>
+    <PointByCoordinates Name="MinuteHandShape4" Visible="false" X="-0.05" Y="2.45" />
+    <RotatedPoint Name="MinuteHand4" Visible="false">
+      <Dependency Name="MinuteHandShape4" />
+      <Dependency Name="O" />
+      <Dependency Name="MinuteAngle" />
+    </RotatedPoint>
+    <Polygon Name="MinuteHand" Style="Hand">
+      <Dependency Name="MinuteHand0" />
+      <Dependency Name="MinuteHand1" />
+      <Dependency Name="MinuteHand2" />
+      <Dependency Name="MinuteHand3" />
+      <Dependency Name="MinuteHand4" />
+    </Polygon>
+    <PointByCoordinates Name="SecondTail" Visible="false" X="0" Y="-0.7" />
+    <PointByCoordinates Name="SecondTipUp" Visible="false" X="0" Y="2.75" />
+    <RotatedPoint Name="SecondBack" Visible="false">
+      <Dependency Name="SecondTail" />
+      <Dependency Name="O" />
+      <Dependency Name="SecondAngle" />
+    </RotatedPoint>
+    <RotatedPoint Name="SecondTip" Visible="false">
+      <Dependency Name="SecondTipUp" />
+      <Dependency Name="O" />
+      <Dependency Name="SecondAngle" />
+    </RotatedPoint>
+    <Segment Name="SecondHand" Style="SecondHand">
+      <Dependency Name="SecondBack" />
+      <Dependency Name="SecondTip" />
+    </Segment>
+    <PointByCoordinates Name="Hub" Style="Hub" X="0" Y="0" />
+    <PointByCoordinates Name="HubCap" Style="HubCap" X="0" Y="0" />
+    <AngleArc Name="Wedge" Style="Wedge" Radius="40">
+      <Dependency Name="O" />
+      <Dependency Name="HourHand3" />
+      <Dependency Name="MinuteHand3" />
+    </AngleArc>
+    <Label Name="Between" Style="Degrees" DecimalsToShow="1" Text="[deg(ang(HourHand3, O, MinuteHand3))]° between the hands" X="-2.4" Y="-3.85">
+      <Dependency Name="HourHand3" />
+      <Dependency Name="O" />
+      <Dependency Name="MinuteHand3" />
+    </Label>
+    <Label Name="Title" Style="GalleryTitle" Text="Clock Hands" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Drag the slider to turn the clock forward. It's [floor(time)] hours and [floor(60 * (time - floor(time)))] minutes, and the angle between the hands is written under the clock.\n\nThe minute hand goes around twelve times while the hour hand goes around once, so the minute hand catches up with the hour hand only every 65 minutes and change, not every hour. Count how many times they overlap between 12 and 12: it's 11, not 12. The red second hand goes around sixty times for every lap of the minute hand, which is why it spins so fast when you slide.\n\nA classic puzzle: at what time after 3 o'clock are the hands exactly on top of each other? And when do they make an exact right angle? Slide slowly and find out." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="time" />
+    </Label>
+  </Figures>
+</Drawing>

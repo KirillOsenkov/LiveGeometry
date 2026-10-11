@@ -1,0 +1,1621 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-6" Top="5" Right="6" Bottom="-6" />
+  <Styles>
+    <ShapeStyle Name="Ring" IsFilled="false" Color="#FF8A94A6" StrokeWidth="1.5" />
+    <LineStyle Name="Chord" Color="#902F7BD6">
+      <Dark Color="#A062AEFF" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Rim" Visible="false" X="4" Y="0" />
+    <Circle Name="Ring" Style="Ring">
+      <Dependency Name="O" />
+      <Dependency Name="Rim" />
+    </Circle>
+    <Slider Name="k" X="-5" Y="-5.3" Value="2" />
+    <PointByCoordinates Name="P0" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="Q0" Visible="false" X="4 * cos(k * 0)" Y="4 * sin(k * 0)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord0" Style="Chord">
+      <Dependency Name="P0" />
+      <Dependency Name="Q0" />
+    </Segment>
+    <PointByCoordinates Name="P1" Visible="false" X="3.998026" Y="0.125643" />
+    <PointByCoordinates Name="Q1" Visible="false" X="4 * cos(k * 0.031416)" Y="4 * sin(k * 0.031416)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord1" Style="Chord">
+      <Dependency Name="P1" />
+      <Dependency Name="Q1" />
+    </Segment>
+    <PointByCoordinates Name="P2" Visible="false" X="3.992107" Y="0.251162" />
+    <PointByCoordinates Name="Q2" Visible="false" X="4 * cos(k * 0.062832)" Y="4 * sin(k * 0.062832)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord2" Style="Chord">
+      <Dependency Name="P2" />
+      <Dependency Name="Q2" />
+    </Segment>
+    <PointByCoordinates Name="P3" Visible="false" X="3.982248" Y="0.376433" />
+    <PointByCoordinates Name="Q3" Visible="false" X="4 * cos(k * 0.094248)" Y="4 * sin(k * 0.094248)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord3" Style="Chord">
+      <Dependency Name="P3" />
+      <Dependency Name="Q3" />
+    </Segment>
+    <PointByCoordinates Name="P4" Visible="false" X="3.968459" Y="0.501333" />
+    <PointByCoordinates Name="Q4" Visible="false" X="4 * cos(k * 0.125664)" Y="4 * sin(k * 0.125664)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord4" Style="Chord">
+      <Dependency Name="P4" />
+      <Dependency Name="Q4" />
+    </Segment>
+    <PointByCoordinates Name="P5" Visible="false" X="3.950753" Y="0.625738" />
+    <PointByCoordinates Name="Q5" Visible="false" X="4 * cos(k * 0.15708)" Y="4 * sin(k * 0.15708)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord5" Style="Chord">
+      <Dependency Name="P5" />
+      <Dependency Name="Q5" />
+    </Segment>
+    <PointByCoordinates Name="P6" Visible="false" X="3.929149" Y="0.749525" />
+    <PointByCoordinates Name="Q6" Visible="false" X="4 * cos(k * 0.188496)" Y="4 * sin(k * 0.188496)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord6" Style="Chord">
+      <Dependency Name="P6" />
+      <Dependency Name="Q6" />
+    </Segment>
+    <PointByCoordinates Name="P7" Visible="false" X="3.903667" Y="0.872573" />
+    <PointByCoordinates Name="Q7" Visible="false" X="4 * cos(k * 0.219911)" Y="4 * sin(k * 0.219911)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord7" Style="Chord">
+      <Dependency Name="P7" />
+      <Dependency Name="Q7" />
+    </Segment>
+    <PointByCoordinates Name="P8" Visible="false" X="3.874333" Y="0.99476" />
+    <PointByCoordinates Name="Q8" Visible="false" X="4 * cos(k * 0.251327)" Y="4 * sin(k * 0.251327)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord8" Style="Chord">
+      <Dependency Name="P8" />
+      <Dependency Name="Q8" />
+    </Segment>
+    <PointByCoordinates Name="P9" Visible="false" X="3.841175" Y="1.115964" />
+    <PointByCoordinates Name="Q9" Visible="false" X="4 * cos(k * 0.282743)" Y="4 * sin(k * 0.282743)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord9" Style="Chord">
+      <Dependency Name="P9" />
+      <Dependency Name="Q9" />
+    </Segment>
+    <PointByCoordinates Name="P10" Visible="false" X="3.804226" Y="1.236068" />
+    <PointByCoordinates Name="Q10" Visible="false" X="4 * cos(k * 0.314159)" Y="4 * sin(k * 0.314159)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord10" Style="Chord">
+      <Dependency Name="P10" />
+      <Dependency Name="Q10" />
+    </Segment>
+    <PointByCoordinates Name="P11" Visible="false" X="3.763523" Y="1.354952" />
+    <PointByCoordinates Name="Q11" Visible="false" X="4 * cos(k * 0.345575)" Y="4 * sin(k * 0.345575)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord11" Style="Chord">
+      <Dependency Name="P11" />
+      <Dependency Name="Q11" />
+    </Segment>
+    <PointByCoordinates Name="P12" Visible="false" X="3.719106" Y="1.472498" />
+    <PointByCoordinates Name="Q12" Visible="false" X="4 * cos(k * 0.376991)" Y="4 * sin(k * 0.376991)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord12" Style="Chord">
+      <Dependency Name="P12" />
+      <Dependency Name="Q12" />
+    </Segment>
+    <PointByCoordinates Name="P13" Visible="false" X="3.671019" Y="1.588592" />
+    <PointByCoordinates Name="Q13" Visible="false" X="4 * cos(k * 0.408407)" Y="4 * sin(k * 0.408407)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord13" Style="Chord">
+      <Dependency Name="P13" />
+      <Dependency Name="Q13" />
+    </Segment>
+    <PointByCoordinates Name="P14" Visible="false" X="3.619308" Y="1.703117" />
+    <PointByCoordinates Name="Q14" Visible="false" X="4 * cos(k * 0.439823)" Y="4 * sin(k * 0.439823)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord14" Style="Chord">
+      <Dependency Name="P14" />
+      <Dependency Name="Q14" />
+    </Segment>
+    <PointByCoordinates Name="P15" Visible="false" X="3.564026" Y="1.815962" />
+    <PointByCoordinates Name="Q15" Visible="false" X="4 * cos(k * 0.471239)" Y="4 * sin(k * 0.471239)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord15" Style="Chord">
+      <Dependency Name="P15" />
+      <Dependency Name="Q15" />
+    </Segment>
+    <PointByCoordinates Name="P16" Visible="false" X="3.505227" Y="1.927015" />
+    <PointByCoordinates Name="Q16" Visible="false" X="4 * cos(k * 0.502655)" Y="4 * sin(k * 0.502655)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord16" Style="Chord">
+      <Dependency Name="P16" />
+      <Dependency Name="Q16" />
+    </Segment>
+    <PointByCoordinates Name="P17" Visible="false" X="3.442968" Y="2.036166" />
+    <PointByCoordinates Name="Q17" Visible="false" X="4 * cos(k * 0.534071)" Y="4 * sin(k * 0.534071)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord17" Style="Chord">
+      <Dependency Name="P17" />
+      <Dependency Name="Q17" />
+    </Segment>
+    <PointByCoordinates Name="P18" Visible="false" X="3.377312" Y="2.143307" />
+    <PointByCoordinates Name="Q18" Visible="false" X="4 * cos(k * 0.565487)" Y="4 * sin(k * 0.565487)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord18" Style="Chord">
+      <Dependency Name="P18" />
+      <Dependency Name="Q18" />
+    </Segment>
+    <PointByCoordinates Name="P19" Visible="false" X="3.308322" Y="2.248334" />
+    <PointByCoordinates Name="Q19" Visible="false" X="4 * cos(k * 0.596903)" Y="4 * sin(k * 0.596903)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord19" Style="Chord">
+      <Dependency Name="P19" />
+      <Dependency Name="Q19" />
+    </Segment>
+    <PointByCoordinates Name="P20" Visible="false" X="3.236068" Y="2.351141" />
+    <PointByCoordinates Name="Q20" Visible="false" X="4 * cos(k * 0.628319)" Y="4 * sin(k * 0.628319)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord20" Style="Chord">
+      <Dependency Name="P20" />
+      <Dependency Name="Q20" />
+    </Segment>
+    <PointByCoordinates Name="P21" Visible="false" X="3.16062" Y="2.451628" />
+    <PointByCoordinates Name="Q21" Visible="false" X="4 * cos(k * 0.659734)" Y="4 * sin(k * 0.659734)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord21" Style="Chord">
+      <Dependency Name="P21" />
+      <Dependency Name="Q21" />
+    </Segment>
+    <PointByCoordinates Name="P22" Visible="false" X="3.082053" Y="2.549696" />
+    <PointByCoordinates Name="Q22" Visible="false" X="4 * cos(k * 0.69115)" Y="4 * sin(k * 0.69115)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord22" Style="Chord">
+      <Dependency Name="P22" />
+      <Dependency Name="Q22" />
+    </Segment>
+    <PointByCoordinates Name="P23" Visible="false" X="3.000444" Y="2.645247" />
+    <PointByCoordinates Name="Q23" Visible="false" X="4 * cos(k * 0.722566)" Y="4 * sin(k * 0.722566)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord23" Style="Chord">
+      <Dependency Name="P23" />
+      <Dependency Name="Q23" />
+    </Segment>
+    <PointByCoordinates Name="P24" Visible="false" X="2.915875" Y="2.738188" />
+    <PointByCoordinates Name="Q24" Visible="false" X="4 * cos(k * 0.753982)" Y="4 * sin(k * 0.753982)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord24" Style="Chord">
+      <Dependency Name="P24" />
+      <Dependency Name="Q24" />
+    </Segment>
+    <PointByCoordinates Name="P25" Visible="false" X="2.828427" Y="2.828427" />
+    <PointByCoordinates Name="Q25" Visible="false" X="4 * cos(k * 0.785398)" Y="4 * sin(k * 0.785398)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord25" Style="Chord">
+      <Dependency Name="P25" />
+      <Dependency Name="Q25" />
+    </Segment>
+    <PointByCoordinates Name="P26" Visible="false" X="2.738188" Y="2.915875" />
+    <PointByCoordinates Name="Q26" Visible="false" X="4 * cos(k * 0.816814)" Y="4 * sin(k * 0.816814)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord26" Style="Chord">
+      <Dependency Name="P26" />
+      <Dependency Name="Q26" />
+    </Segment>
+    <PointByCoordinates Name="P27" Visible="false" X="2.645247" Y="3.000444" />
+    <PointByCoordinates Name="Q27" Visible="false" X="4 * cos(k * 0.84823)" Y="4 * sin(k * 0.84823)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord27" Style="Chord">
+      <Dependency Name="P27" />
+      <Dependency Name="Q27" />
+    </Segment>
+    <PointByCoordinates Name="P28" Visible="false" X="2.549696" Y="3.082053" />
+    <PointByCoordinates Name="Q28" Visible="false" X="4 * cos(k * 0.879646)" Y="4 * sin(k * 0.879646)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord28" Style="Chord">
+      <Dependency Name="P28" />
+      <Dependency Name="Q28" />
+    </Segment>
+    <PointByCoordinates Name="P29" Visible="false" X="2.451628" Y="3.16062" />
+    <PointByCoordinates Name="Q29" Visible="false" X="4 * cos(k * 0.911062)" Y="4 * sin(k * 0.911062)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord29" Style="Chord">
+      <Dependency Name="P29" />
+      <Dependency Name="Q29" />
+    </Segment>
+    <PointByCoordinates Name="P30" Visible="false" X="2.351141" Y="3.236068" />
+    <PointByCoordinates Name="Q30" Visible="false" X="4 * cos(k * 0.942478)" Y="4 * sin(k * 0.942478)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord30" Style="Chord">
+      <Dependency Name="P30" />
+      <Dependency Name="Q30" />
+    </Segment>
+    <PointByCoordinates Name="P31" Visible="false" X="2.248334" Y="3.308322" />
+    <PointByCoordinates Name="Q31" Visible="false" X="4 * cos(k * 0.973894)" Y="4 * sin(k * 0.973894)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord31" Style="Chord">
+      <Dependency Name="P31" />
+      <Dependency Name="Q31" />
+    </Segment>
+    <PointByCoordinates Name="P32" Visible="false" X="2.143307" Y="3.377312" />
+    <PointByCoordinates Name="Q32" Visible="false" X="4 * cos(k * 1.00531)" Y="4 * sin(k * 1.00531)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord32" Style="Chord">
+      <Dependency Name="P32" />
+      <Dependency Name="Q32" />
+    </Segment>
+    <PointByCoordinates Name="P33" Visible="false" X="2.036166" Y="3.442968" />
+    <PointByCoordinates Name="Q33" Visible="false" X="4 * cos(k * 1.036726)" Y="4 * sin(k * 1.036726)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord33" Style="Chord">
+      <Dependency Name="P33" />
+      <Dependency Name="Q33" />
+    </Segment>
+    <PointByCoordinates Name="P34" Visible="false" X="1.927015" Y="3.505227" />
+    <PointByCoordinates Name="Q34" Visible="false" X="4 * cos(k * 1.068142)" Y="4 * sin(k * 1.068142)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord34" Style="Chord">
+      <Dependency Name="P34" />
+      <Dependency Name="Q34" />
+    </Segment>
+    <PointByCoordinates Name="P35" Visible="false" X="1.815962" Y="3.564026" />
+    <PointByCoordinates Name="Q35" Visible="false" X="4 * cos(k * 1.099557)" Y="4 * sin(k * 1.099557)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord35" Style="Chord">
+      <Dependency Name="P35" />
+      <Dependency Name="Q35" />
+    </Segment>
+    <PointByCoordinates Name="P36" Visible="false" X="1.703117" Y="3.619308" />
+    <PointByCoordinates Name="Q36" Visible="false" X="4 * cos(k * 1.130973)" Y="4 * sin(k * 1.130973)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord36" Style="Chord">
+      <Dependency Name="P36" />
+      <Dependency Name="Q36" />
+    </Segment>
+    <PointByCoordinates Name="P37" Visible="false" X="1.588592" Y="3.671019" />
+    <PointByCoordinates Name="Q37" Visible="false" X="4 * cos(k * 1.162389)" Y="4 * sin(k * 1.162389)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord37" Style="Chord">
+      <Dependency Name="P37" />
+      <Dependency Name="Q37" />
+    </Segment>
+    <PointByCoordinates Name="P38" Visible="false" X="1.472498" Y="3.719106" />
+    <PointByCoordinates Name="Q38" Visible="false" X="4 * cos(k * 1.193805)" Y="4 * sin(k * 1.193805)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord38" Style="Chord">
+      <Dependency Name="P38" />
+      <Dependency Name="Q38" />
+    </Segment>
+    <PointByCoordinates Name="P39" Visible="false" X="1.354952" Y="3.763523" />
+    <PointByCoordinates Name="Q39" Visible="false" X="4 * cos(k * 1.225221)" Y="4 * sin(k * 1.225221)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord39" Style="Chord">
+      <Dependency Name="P39" />
+      <Dependency Name="Q39" />
+    </Segment>
+    <PointByCoordinates Name="P40" Visible="false" X="1.236068" Y="3.804226" />
+    <PointByCoordinates Name="Q40" Visible="false" X="4 * cos(k * 1.256637)" Y="4 * sin(k * 1.256637)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord40" Style="Chord">
+      <Dependency Name="P40" />
+      <Dependency Name="Q40" />
+    </Segment>
+    <PointByCoordinates Name="P41" Visible="false" X="1.115964" Y="3.841175" />
+    <PointByCoordinates Name="Q41" Visible="false" X="4 * cos(k * 1.288053)" Y="4 * sin(k * 1.288053)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord41" Style="Chord">
+      <Dependency Name="P41" />
+      <Dependency Name="Q41" />
+    </Segment>
+    <PointByCoordinates Name="P42" Visible="false" X="0.99476" Y="3.874333" />
+    <PointByCoordinates Name="Q42" Visible="false" X="4 * cos(k * 1.319469)" Y="4 * sin(k * 1.319469)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord42" Style="Chord">
+      <Dependency Name="P42" />
+      <Dependency Name="Q42" />
+    </Segment>
+    <PointByCoordinates Name="P43" Visible="false" X="0.872573" Y="3.903667" />
+    <PointByCoordinates Name="Q43" Visible="false" X="4 * cos(k * 1.350885)" Y="4 * sin(k * 1.350885)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord43" Style="Chord">
+      <Dependency Name="P43" />
+      <Dependency Name="Q43" />
+    </Segment>
+    <PointByCoordinates Name="P44" Visible="false" X="0.749525" Y="3.929149" />
+    <PointByCoordinates Name="Q44" Visible="false" X="4 * cos(k * 1.382301)" Y="4 * sin(k * 1.382301)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord44" Style="Chord">
+      <Dependency Name="P44" />
+      <Dependency Name="Q44" />
+    </Segment>
+    <PointByCoordinates Name="P45" Visible="false" X="0.625738" Y="3.950753" />
+    <PointByCoordinates Name="Q45" Visible="false" X="4 * cos(k * 1.413717)" Y="4 * sin(k * 1.413717)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord45" Style="Chord">
+      <Dependency Name="P45" />
+      <Dependency Name="Q45" />
+    </Segment>
+    <PointByCoordinates Name="P46" Visible="false" X="0.501333" Y="3.968459" />
+    <PointByCoordinates Name="Q46" Visible="false" X="4 * cos(k * 1.445133)" Y="4 * sin(k * 1.445133)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord46" Style="Chord">
+      <Dependency Name="P46" />
+      <Dependency Name="Q46" />
+    </Segment>
+    <PointByCoordinates Name="P47" Visible="false" X="0.376433" Y="3.982248" />
+    <PointByCoordinates Name="Q47" Visible="false" X="4 * cos(k * 1.476549)" Y="4 * sin(k * 1.476549)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord47" Style="Chord">
+      <Dependency Name="P47" />
+      <Dependency Name="Q47" />
+    </Segment>
+    <PointByCoordinates Name="P48" Visible="false" X="0.251162" Y="3.992107" />
+    <PointByCoordinates Name="Q48" Visible="false" X="4 * cos(k * 1.507964)" Y="4 * sin(k * 1.507964)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord48" Style="Chord">
+      <Dependency Name="P48" />
+      <Dependency Name="Q48" />
+    </Segment>
+    <PointByCoordinates Name="P49" Visible="false" X="0.125643" Y="3.998026" />
+    <PointByCoordinates Name="Q49" Visible="false" X="4 * cos(k * 1.53938)" Y="4 * sin(k * 1.53938)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord49" Style="Chord">
+      <Dependency Name="P49" />
+      <Dependency Name="Q49" />
+    </Segment>
+    <PointByCoordinates Name="P50" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="Q50" Visible="false" X="4 * cos(k * 1.570796)" Y="4 * sin(k * 1.570796)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord50" Style="Chord">
+      <Dependency Name="P50" />
+      <Dependency Name="Q50" />
+    </Segment>
+    <PointByCoordinates Name="P51" Visible="false" X="-0.125643" Y="3.998026" />
+    <PointByCoordinates Name="Q51" Visible="false" X="4 * cos(k * 1.602212)" Y="4 * sin(k * 1.602212)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord51" Style="Chord">
+      <Dependency Name="P51" />
+      <Dependency Name="Q51" />
+    </Segment>
+    <PointByCoordinates Name="P52" Visible="false" X="-0.251162" Y="3.992107" />
+    <PointByCoordinates Name="Q52" Visible="false" X="4 * cos(k * 1.633628)" Y="4 * sin(k * 1.633628)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord52" Style="Chord">
+      <Dependency Name="P52" />
+      <Dependency Name="Q52" />
+    </Segment>
+    <PointByCoordinates Name="P53" Visible="false" X="-0.376433" Y="3.982248" />
+    <PointByCoordinates Name="Q53" Visible="false" X="4 * cos(k * 1.665044)" Y="4 * sin(k * 1.665044)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord53" Style="Chord">
+      <Dependency Name="P53" />
+      <Dependency Name="Q53" />
+    </Segment>
+    <PointByCoordinates Name="P54" Visible="false" X="-0.501333" Y="3.968459" />
+    <PointByCoordinates Name="Q54" Visible="false" X="4 * cos(k * 1.69646)" Y="4 * sin(k * 1.69646)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord54" Style="Chord">
+      <Dependency Name="P54" />
+      <Dependency Name="Q54" />
+    </Segment>
+    <PointByCoordinates Name="P55" Visible="false" X="-0.625738" Y="3.950753" />
+    <PointByCoordinates Name="Q55" Visible="false" X="4 * cos(k * 1.727876)" Y="4 * sin(k * 1.727876)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord55" Style="Chord">
+      <Dependency Name="P55" />
+      <Dependency Name="Q55" />
+    </Segment>
+    <PointByCoordinates Name="P56" Visible="false" X="-0.749525" Y="3.929149" />
+    <PointByCoordinates Name="Q56" Visible="false" X="4 * cos(k * 1.759292)" Y="4 * sin(k * 1.759292)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord56" Style="Chord">
+      <Dependency Name="P56" />
+      <Dependency Name="Q56" />
+    </Segment>
+    <PointByCoordinates Name="P57" Visible="false" X="-0.872573" Y="3.903667" />
+    <PointByCoordinates Name="Q57" Visible="false" X="4 * cos(k * 1.790708)" Y="4 * sin(k * 1.790708)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord57" Style="Chord">
+      <Dependency Name="P57" />
+      <Dependency Name="Q57" />
+    </Segment>
+    <PointByCoordinates Name="P58" Visible="false" X="-0.99476" Y="3.874333" />
+    <PointByCoordinates Name="Q58" Visible="false" X="4 * cos(k * 1.822124)" Y="4 * sin(k * 1.822124)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord58" Style="Chord">
+      <Dependency Name="P58" />
+      <Dependency Name="Q58" />
+    </Segment>
+    <PointByCoordinates Name="P59" Visible="false" X="-1.115964" Y="3.841175" />
+    <PointByCoordinates Name="Q59" Visible="false" X="4 * cos(k * 1.85354)" Y="4 * sin(k * 1.85354)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord59" Style="Chord">
+      <Dependency Name="P59" />
+      <Dependency Name="Q59" />
+    </Segment>
+    <PointByCoordinates Name="P60" Visible="false" X="-1.236068" Y="3.804226" />
+    <PointByCoordinates Name="Q60" Visible="false" X="4 * cos(k * 1.884956)" Y="4 * sin(k * 1.884956)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord60" Style="Chord">
+      <Dependency Name="P60" />
+      <Dependency Name="Q60" />
+    </Segment>
+    <PointByCoordinates Name="P61" Visible="false" X="-1.354952" Y="3.763523" />
+    <PointByCoordinates Name="Q61" Visible="false" X="4 * cos(k * 1.916372)" Y="4 * sin(k * 1.916372)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord61" Style="Chord">
+      <Dependency Name="P61" />
+      <Dependency Name="Q61" />
+    </Segment>
+    <PointByCoordinates Name="P62" Visible="false" X="-1.472498" Y="3.719106" />
+    <PointByCoordinates Name="Q62" Visible="false" X="4 * cos(k * 1.947787)" Y="4 * sin(k * 1.947787)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord62" Style="Chord">
+      <Dependency Name="P62" />
+      <Dependency Name="Q62" />
+    </Segment>
+    <PointByCoordinates Name="P63" Visible="false" X="-1.588592" Y="3.671019" />
+    <PointByCoordinates Name="Q63" Visible="false" X="4 * cos(k * 1.979203)" Y="4 * sin(k * 1.979203)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord63" Style="Chord">
+      <Dependency Name="P63" />
+      <Dependency Name="Q63" />
+    </Segment>
+    <PointByCoordinates Name="P64" Visible="false" X="-1.703117" Y="3.619308" />
+    <PointByCoordinates Name="Q64" Visible="false" X="4 * cos(k * 2.010619)" Y="4 * sin(k * 2.010619)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord64" Style="Chord">
+      <Dependency Name="P64" />
+      <Dependency Name="Q64" />
+    </Segment>
+    <PointByCoordinates Name="P65" Visible="false" X="-1.815962" Y="3.564026" />
+    <PointByCoordinates Name="Q65" Visible="false" X="4 * cos(k * 2.042035)" Y="4 * sin(k * 2.042035)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord65" Style="Chord">
+      <Dependency Name="P65" />
+      <Dependency Name="Q65" />
+    </Segment>
+    <PointByCoordinates Name="P66" Visible="false" X="-1.927015" Y="3.505227" />
+    <PointByCoordinates Name="Q66" Visible="false" X="4 * cos(k * 2.073451)" Y="4 * sin(k * 2.073451)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord66" Style="Chord">
+      <Dependency Name="P66" />
+      <Dependency Name="Q66" />
+    </Segment>
+    <PointByCoordinates Name="P67" Visible="false" X="-2.036166" Y="3.442968" />
+    <PointByCoordinates Name="Q67" Visible="false" X="4 * cos(k * 2.104867)" Y="4 * sin(k * 2.104867)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord67" Style="Chord">
+      <Dependency Name="P67" />
+      <Dependency Name="Q67" />
+    </Segment>
+    <PointByCoordinates Name="P68" Visible="false" X="-2.143307" Y="3.377312" />
+    <PointByCoordinates Name="Q68" Visible="false" X="4 * cos(k * 2.136283)" Y="4 * sin(k * 2.136283)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord68" Style="Chord">
+      <Dependency Name="P68" />
+      <Dependency Name="Q68" />
+    </Segment>
+    <PointByCoordinates Name="P69" Visible="false" X="-2.248334" Y="3.308322" />
+    <PointByCoordinates Name="Q69" Visible="false" X="4 * cos(k * 2.167699)" Y="4 * sin(k * 2.167699)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord69" Style="Chord">
+      <Dependency Name="P69" />
+      <Dependency Name="Q69" />
+    </Segment>
+    <PointByCoordinates Name="P70" Visible="false" X="-2.351141" Y="3.236068" />
+    <PointByCoordinates Name="Q70" Visible="false" X="4 * cos(k * 2.199115)" Y="4 * sin(k * 2.199115)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord70" Style="Chord">
+      <Dependency Name="P70" />
+      <Dependency Name="Q70" />
+    </Segment>
+    <PointByCoordinates Name="P71" Visible="false" X="-2.451628" Y="3.16062" />
+    <PointByCoordinates Name="Q71" Visible="false" X="4 * cos(k * 2.230531)" Y="4 * sin(k * 2.230531)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord71" Style="Chord">
+      <Dependency Name="P71" />
+      <Dependency Name="Q71" />
+    </Segment>
+    <PointByCoordinates Name="P72" Visible="false" X="-2.549696" Y="3.082053" />
+    <PointByCoordinates Name="Q72" Visible="false" X="4 * cos(k * 2.261947)" Y="4 * sin(k * 2.261947)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord72" Style="Chord">
+      <Dependency Name="P72" />
+      <Dependency Name="Q72" />
+    </Segment>
+    <PointByCoordinates Name="P73" Visible="false" X="-2.645247" Y="3.000444" />
+    <PointByCoordinates Name="Q73" Visible="false" X="4 * cos(k * 2.293363)" Y="4 * sin(k * 2.293363)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord73" Style="Chord">
+      <Dependency Name="P73" />
+      <Dependency Name="Q73" />
+    </Segment>
+    <PointByCoordinates Name="P74" Visible="false" X="-2.738188" Y="2.915875" />
+    <PointByCoordinates Name="Q74" Visible="false" X="4 * cos(k * 2.324779)" Y="4 * sin(k * 2.324779)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord74" Style="Chord">
+      <Dependency Name="P74" />
+      <Dependency Name="Q74" />
+    </Segment>
+    <PointByCoordinates Name="P75" Visible="false" X="-2.828427" Y="2.828427" />
+    <PointByCoordinates Name="Q75" Visible="false" X="4 * cos(k * 2.356194)" Y="4 * sin(k * 2.356194)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord75" Style="Chord">
+      <Dependency Name="P75" />
+      <Dependency Name="Q75" />
+    </Segment>
+    <PointByCoordinates Name="P76" Visible="false" X="-2.915875" Y="2.738188" />
+    <PointByCoordinates Name="Q76" Visible="false" X="4 * cos(k * 2.38761)" Y="4 * sin(k * 2.38761)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord76" Style="Chord">
+      <Dependency Name="P76" />
+      <Dependency Name="Q76" />
+    </Segment>
+    <PointByCoordinates Name="P77" Visible="false" X="-3.000444" Y="2.645247" />
+    <PointByCoordinates Name="Q77" Visible="false" X="4 * cos(k * 2.419026)" Y="4 * sin(k * 2.419026)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord77" Style="Chord">
+      <Dependency Name="P77" />
+      <Dependency Name="Q77" />
+    </Segment>
+    <PointByCoordinates Name="P78" Visible="false" X="-3.082053" Y="2.549696" />
+    <PointByCoordinates Name="Q78" Visible="false" X="4 * cos(k * 2.450442)" Y="4 * sin(k * 2.450442)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord78" Style="Chord">
+      <Dependency Name="P78" />
+      <Dependency Name="Q78" />
+    </Segment>
+    <PointByCoordinates Name="P79" Visible="false" X="-3.16062" Y="2.451628" />
+    <PointByCoordinates Name="Q79" Visible="false" X="4 * cos(k * 2.481858)" Y="4 * sin(k * 2.481858)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord79" Style="Chord">
+      <Dependency Name="P79" />
+      <Dependency Name="Q79" />
+    </Segment>
+    <PointByCoordinates Name="P80" Visible="false" X="-3.236068" Y="2.351141" />
+    <PointByCoordinates Name="Q80" Visible="false" X="4 * cos(k * 2.513274)" Y="4 * sin(k * 2.513274)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord80" Style="Chord">
+      <Dependency Name="P80" />
+      <Dependency Name="Q80" />
+    </Segment>
+    <PointByCoordinates Name="P81" Visible="false" X="-3.308322" Y="2.248334" />
+    <PointByCoordinates Name="Q81" Visible="false" X="4 * cos(k * 2.54469)" Y="4 * sin(k * 2.54469)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord81" Style="Chord">
+      <Dependency Name="P81" />
+      <Dependency Name="Q81" />
+    </Segment>
+    <PointByCoordinates Name="P82" Visible="false" X="-3.377312" Y="2.143307" />
+    <PointByCoordinates Name="Q82" Visible="false" X="4 * cos(k * 2.576106)" Y="4 * sin(k * 2.576106)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord82" Style="Chord">
+      <Dependency Name="P82" />
+      <Dependency Name="Q82" />
+    </Segment>
+    <PointByCoordinates Name="P83" Visible="false" X="-3.442968" Y="2.036166" />
+    <PointByCoordinates Name="Q83" Visible="false" X="4 * cos(k * 2.607522)" Y="4 * sin(k * 2.607522)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord83" Style="Chord">
+      <Dependency Name="P83" />
+      <Dependency Name="Q83" />
+    </Segment>
+    <PointByCoordinates Name="P84" Visible="false" X="-3.505227" Y="1.927015" />
+    <PointByCoordinates Name="Q84" Visible="false" X="4 * cos(k * 2.638938)" Y="4 * sin(k * 2.638938)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord84" Style="Chord">
+      <Dependency Name="P84" />
+      <Dependency Name="Q84" />
+    </Segment>
+    <PointByCoordinates Name="P85" Visible="false" X="-3.564026" Y="1.815962" />
+    <PointByCoordinates Name="Q85" Visible="false" X="4 * cos(k * 2.670354)" Y="4 * sin(k * 2.670354)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord85" Style="Chord">
+      <Dependency Name="P85" />
+      <Dependency Name="Q85" />
+    </Segment>
+    <PointByCoordinates Name="P86" Visible="false" X="-3.619308" Y="1.703117" />
+    <PointByCoordinates Name="Q86" Visible="false" X="4 * cos(k * 2.70177)" Y="4 * sin(k * 2.70177)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord86" Style="Chord">
+      <Dependency Name="P86" />
+      <Dependency Name="Q86" />
+    </Segment>
+    <PointByCoordinates Name="P87" Visible="false" X="-3.671019" Y="1.588592" />
+    <PointByCoordinates Name="Q87" Visible="false" X="4 * cos(k * 2.733186)" Y="4 * sin(k * 2.733186)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord87" Style="Chord">
+      <Dependency Name="P87" />
+      <Dependency Name="Q87" />
+    </Segment>
+    <PointByCoordinates Name="P88" Visible="false" X="-3.719106" Y="1.472498" />
+    <PointByCoordinates Name="Q88" Visible="false" X="4 * cos(k * 2.764602)" Y="4 * sin(k * 2.764602)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord88" Style="Chord">
+      <Dependency Name="P88" />
+      <Dependency Name="Q88" />
+    </Segment>
+    <PointByCoordinates Name="P89" Visible="false" X="-3.763523" Y="1.354952" />
+    <PointByCoordinates Name="Q89" Visible="false" X="4 * cos(k * 2.796017)" Y="4 * sin(k * 2.796017)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord89" Style="Chord">
+      <Dependency Name="P89" />
+      <Dependency Name="Q89" />
+    </Segment>
+    <PointByCoordinates Name="P90" Visible="false" X="-3.804226" Y="1.236068" />
+    <PointByCoordinates Name="Q90" Visible="false" X="4 * cos(k * 2.827433)" Y="4 * sin(k * 2.827433)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord90" Style="Chord">
+      <Dependency Name="P90" />
+      <Dependency Name="Q90" />
+    </Segment>
+    <PointByCoordinates Name="P91" Visible="false" X="-3.841175" Y="1.115964" />
+    <PointByCoordinates Name="Q91" Visible="false" X="4 * cos(k * 2.858849)" Y="4 * sin(k * 2.858849)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord91" Style="Chord">
+      <Dependency Name="P91" />
+      <Dependency Name="Q91" />
+    </Segment>
+    <PointByCoordinates Name="P92" Visible="false" X="-3.874333" Y="0.99476" />
+    <PointByCoordinates Name="Q92" Visible="false" X="4 * cos(k * 2.890265)" Y="4 * sin(k * 2.890265)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord92" Style="Chord">
+      <Dependency Name="P92" />
+      <Dependency Name="Q92" />
+    </Segment>
+    <PointByCoordinates Name="P93" Visible="false" X="-3.903667" Y="0.872573" />
+    <PointByCoordinates Name="Q93" Visible="false" X="4 * cos(k * 2.921681)" Y="4 * sin(k * 2.921681)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord93" Style="Chord">
+      <Dependency Name="P93" />
+      <Dependency Name="Q93" />
+    </Segment>
+    <PointByCoordinates Name="P94" Visible="false" X="-3.929149" Y="0.749525" />
+    <PointByCoordinates Name="Q94" Visible="false" X="4 * cos(k * 2.953097)" Y="4 * sin(k * 2.953097)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord94" Style="Chord">
+      <Dependency Name="P94" />
+      <Dependency Name="Q94" />
+    </Segment>
+    <PointByCoordinates Name="P95" Visible="false" X="-3.950753" Y="0.625738" />
+    <PointByCoordinates Name="Q95" Visible="false" X="4 * cos(k * 2.984513)" Y="4 * sin(k * 2.984513)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord95" Style="Chord">
+      <Dependency Name="P95" />
+      <Dependency Name="Q95" />
+    </Segment>
+    <PointByCoordinates Name="P96" Visible="false" X="-3.968459" Y="0.501333" />
+    <PointByCoordinates Name="Q96" Visible="false" X="4 * cos(k * 3.015929)" Y="4 * sin(k * 3.015929)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord96" Style="Chord">
+      <Dependency Name="P96" />
+      <Dependency Name="Q96" />
+    </Segment>
+    <PointByCoordinates Name="P97" Visible="false" X="-3.982248" Y="0.376433" />
+    <PointByCoordinates Name="Q97" Visible="false" X="4 * cos(k * 3.047345)" Y="4 * sin(k * 3.047345)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord97" Style="Chord">
+      <Dependency Name="P97" />
+      <Dependency Name="Q97" />
+    </Segment>
+    <PointByCoordinates Name="P98" Visible="false" X="-3.992107" Y="0.251162" />
+    <PointByCoordinates Name="Q98" Visible="false" X="4 * cos(k * 3.078761)" Y="4 * sin(k * 3.078761)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord98" Style="Chord">
+      <Dependency Name="P98" />
+      <Dependency Name="Q98" />
+    </Segment>
+    <PointByCoordinates Name="P99" Visible="false" X="-3.998026" Y="0.125643" />
+    <PointByCoordinates Name="Q99" Visible="false" X="4 * cos(k * 3.110177)" Y="4 * sin(k * 3.110177)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord99" Style="Chord">
+      <Dependency Name="P99" />
+      <Dependency Name="Q99" />
+    </Segment>
+    <PointByCoordinates Name="P100" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="Q100" Visible="false" X="4 * cos(k * 3.141593)" Y="4 * sin(k * 3.141593)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord100" Style="Chord">
+      <Dependency Name="P100" />
+      <Dependency Name="Q100" />
+    </Segment>
+    <PointByCoordinates Name="P101" Visible="false" X="-3.998026" Y="-0.125643" />
+    <PointByCoordinates Name="Q101" Visible="false" X="4 * cos(k * 3.173009)" Y="4 * sin(k * 3.173009)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord101" Style="Chord">
+      <Dependency Name="P101" />
+      <Dependency Name="Q101" />
+    </Segment>
+    <PointByCoordinates Name="P102" Visible="false" X="-3.992107" Y="-0.251162" />
+    <PointByCoordinates Name="Q102" Visible="false" X="4 * cos(k * 3.204425)" Y="4 * sin(k * 3.204425)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord102" Style="Chord">
+      <Dependency Name="P102" />
+      <Dependency Name="Q102" />
+    </Segment>
+    <PointByCoordinates Name="P103" Visible="false" X="-3.982248" Y="-0.376433" />
+    <PointByCoordinates Name="Q103" Visible="false" X="4 * cos(k * 3.23584)" Y="4 * sin(k * 3.23584)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord103" Style="Chord">
+      <Dependency Name="P103" />
+      <Dependency Name="Q103" />
+    </Segment>
+    <PointByCoordinates Name="P104" Visible="false" X="-3.968459" Y="-0.501333" />
+    <PointByCoordinates Name="Q104" Visible="false" X="4 * cos(k * 3.267256)" Y="4 * sin(k * 3.267256)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord104" Style="Chord">
+      <Dependency Name="P104" />
+      <Dependency Name="Q104" />
+    </Segment>
+    <PointByCoordinates Name="P105" Visible="false" X="-3.950753" Y="-0.625738" />
+    <PointByCoordinates Name="Q105" Visible="false" X="4 * cos(k * 3.298672)" Y="4 * sin(k * 3.298672)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord105" Style="Chord">
+      <Dependency Name="P105" />
+      <Dependency Name="Q105" />
+    </Segment>
+    <PointByCoordinates Name="P106" Visible="false" X="-3.929149" Y="-0.749525" />
+    <PointByCoordinates Name="Q106" Visible="false" X="4 * cos(k * 3.330088)" Y="4 * sin(k * 3.330088)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord106" Style="Chord">
+      <Dependency Name="P106" />
+      <Dependency Name="Q106" />
+    </Segment>
+    <PointByCoordinates Name="P107" Visible="false" X="-3.903667" Y="-0.872573" />
+    <PointByCoordinates Name="Q107" Visible="false" X="4 * cos(k * 3.361504)" Y="4 * sin(k * 3.361504)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord107" Style="Chord">
+      <Dependency Name="P107" />
+      <Dependency Name="Q107" />
+    </Segment>
+    <PointByCoordinates Name="P108" Visible="false" X="-3.874333" Y="-0.99476" />
+    <PointByCoordinates Name="Q108" Visible="false" X="4 * cos(k * 3.39292)" Y="4 * sin(k * 3.39292)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord108" Style="Chord">
+      <Dependency Name="P108" />
+      <Dependency Name="Q108" />
+    </Segment>
+    <PointByCoordinates Name="P109" Visible="false" X="-3.841175" Y="-1.115964" />
+    <PointByCoordinates Name="Q109" Visible="false" X="4 * cos(k * 3.424336)" Y="4 * sin(k * 3.424336)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord109" Style="Chord">
+      <Dependency Name="P109" />
+      <Dependency Name="Q109" />
+    </Segment>
+    <PointByCoordinates Name="P110" Visible="false" X="-3.804226" Y="-1.236068" />
+    <PointByCoordinates Name="Q110" Visible="false" X="4 * cos(k * 3.455752)" Y="4 * sin(k * 3.455752)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord110" Style="Chord">
+      <Dependency Name="P110" />
+      <Dependency Name="Q110" />
+    </Segment>
+    <PointByCoordinates Name="P111" Visible="false" X="-3.763523" Y="-1.354952" />
+    <PointByCoordinates Name="Q111" Visible="false" X="4 * cos(k * 3.487168)" Y="4 * sin(k * 3.487168)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord111" Style="Chord">
+      <Dependency Name="P111" />
+      <Dependency Name="Q111" />
+    </Segment>
+    <PointByCoordinates Name="P112" Visible="false" X="-3.719106" Y="-1.472498" />
+    <PointByCoordinates Name="Q112" Visible="false" X="4 * cos(k * 3.518584)" Y="4 * sin(k * 3.518584)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord112" Style="Chord">
+      <Dependency Name="P112" />
+      <Dependency Name="Q112" />
+    </Segment>
+    <PointByCoordinates Name="P113" Visible="false" X="-3.671019" Y="-1.588592" />
+    <PointByCoordinates Name="Q113" Visible="false" X="4 * cos(k * 3.55)" Y="4 * sin(k * 3.55)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord113" Style="Chord">
+      <Dependency Name="P113" />
+      <Dependency Name="Q113" />
+    </Segment>
+    <PointByCoordinates Name="P114" Visible="false" X="-3.619308" Y="-1.703117" />
+    <PointByCoordinates Name="Q114" Visible="false" X="4 * cos(k * 3.581416)" Y="4 * sin(k * 3.581416)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord114" Style="Chord">
+      <Dependency Name="P114" />
+      <Dependency Name="Q114" />
+    </Segment>
+    <PointByCoordinates Name="P115" Visible="false" X="-3.564026" Y="-1.815962" />
+    <PointByCoordinates Name="Q115" Visible="false" X="4 * cos(k * 3.612832)" Y="4 * sin(k * 3.612832)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord115" Style="Chord">
+      <Dependency Name="P115" />
+      <Dependency Name="Q115" />
+    </Segment>
+    <PointByCoordinates Name="P116" Visible="false" X="-3.505227" Y="-1.927015" />
+    <PointByCoordinates Name="Q116" Visible="false" X="4 * cos(k * 3.644247)" Y="4 * sin(k * 3.644247)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord116" Style="Chord">
+      <Dependency Name="P116" />
+      <Dependency Name="Q116" />
+    </Segment>
+    <PointByCoordinates Name="P117" Visible="false" X="-3.442968" Y="-2.036166" />
+    <PointByCoordinates Name="Q117" Visible="false" X="4 * cos(k * 3.675663)" Y="4 * sin(k * 3.675663)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord117" Style="Chord">
+      <Dependency Name="P117" />
+      <Dependency Name="Q117" />
+    </Segment>
+    <PointByCoordinates Name="P118" Visible="false" X="-3.377312" Y="-2.143307" />
+    <PointByCoordinates Name="Q118" Visible="false" X="4 * cos(k * 3.707079)" Y="4 * sin(k * 3.707079)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord118" Style="Chord">
+      <Dependency Name="P118" />
+      <Dependency Name="Q118" />
+    </Segment>
+    <PointByCoordinates Name="P119" Visible="false" X="-3.308322" Y="-2.248334" />
+    <PointByCoordinates Name="Q119" Visible="false" X="4 * cos(k * 3.738495)" Y="4 * sin(k * 3.738495)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord119" Style="Chord">
+      <Dependency Name="P119" />
+      <Dependency Name="Q119" />
+    </Segment>
+    <PointByCoordinates Name="P120" Visible="false" X="-3.236068" Y="-2.351141" />
+    <PointByCoordinates Name="Q120" Visible="false" X="4 * cos(k * 3.769911)" Y="4 * sin(k * 3.769911)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord120" Style="Chord">
+      <Dependency Name="P120" />
+      <Dependency Name="Q120" />
+    </Segment>
+    <PointByCoordinates Name="P121" Visible="false" X="-3.16062" Y="-2.451628" />
+    <PointByCoordinates Name="Q121" Visible="false" X="4 * cos(k * 3.801327)" Y="4 * sin(k * 3.801327)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord121" Style="Chord">
+      <Dependency Name="P121" />
+      <Dependency Name="Q121" />
+    </Segment>
+    <PointByCoordinates Name="P122" Visible="false" X="-3.082053" Y="-2.549696" />
+    <PointByCoordinates Name="Q122" Visible="false" X="4 * cos(k * 3.832743)" Y="4 * sin(k * 3.832743)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord122" Style="Chord">
+      <Dependency Name="P122" />
+      <Dependency Name="Q122" />
+    </Segment>
+    <PointByCoordinates Name="P123" Visible="false" X="-3.000444" Y="-2.645247" />
+    <PointByCoordinates Name="Q123" Visible="false" X="4 * cos(k * 3.864159)" Y="4 * sin(k * 3.864159)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord123" Style="Chord">
+      <Dependency Name="P123" />
+      <Dependency Name="Q123" />
+    </Segment>
+    <PointByCoordinates Name="P124" Visible="false" X="-2.915875" Y="-2.738188" />
+    <PointByCoordinates Name="Q124" Visible="false" X="4 * cos(k * 3.895575)" Y="4 * sin(k * 3.895575)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord124" Style="Chord">
+      <Dependency Name="P124" />
+      <Dependency Name="Q124" />
+    </Segment>
+    <PointByCoordinates Name="P125" Visible="false" X="-2.828427" Y="-2.828427" />
+    <PointByCoordinates Name="Q125" Visible="false" X="4 * cos(k * 3.926991)" Y="4 * sin(k * 3.926991)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord125" Style="Chord">
+      <Dependency Name="P125" />
+      <Dependency Name="Q125" />
+    </Segment>
+    <PointByCoordinates Name="P126" Visible="false" X="-2.738188" Y="-2.915875" />
+    <PointByCoordinates Name="Q126" Visible="false" X="4 * cos(k * 3.958407)" Y="4 * sin(k * 3.958407)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord126" Style="Chord">
+      <Dependency Name="P126" />
+      <Dependency Name="Q126" />
+    </Segment>
+    <PointByCoordinates Name="P127" Visible="false" X="-2.645247" Y="-3.000444" />
+    <PointByCoordinates Name="Q127" Visible="false" X="4 * cos(k * 3.989823)" Y="4 * sin(k * 3.989823)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord127" Style="Chord">
+      <Dependency Name="P127" />
+      <Dependency Name="Q127" />
+    </Segment>
+    <PointByCoordinates Name="P128" Visible="false" X="-2.549696" Y="-3.082053" />
+    <PointByCoordinates Name="Q128" Visible="false" X="4 * cos(k * 4.021239)" Y="4 * sin(k * 4.021239)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord128" Style="Chord">
+      <Dependency Name="P128" />
+      <Dependency Name="Q128" />
+    </Segment>
+    <PointByCoordinates Name="P129" Visible="false" X="-2.451628" Y="-3.16062" />
+    <PointByCoordinates Name="Q129" Visible="false" X="4 * cos(k * 4.052655)" Y="4 * sin(k * 4.052655)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord129" Style="Chord">
+      <Dependency Name="P129" />
+      <Dependency Name="Q129" />
+    </Segment>
+    <PointByCoordinates Name="P130" Visible="false" X="-2.351141" Y="-3.236068" />
+    <PointByCoordinates Name="Q130" Visible="false" X="4 * cos(k * 4.08407)" Y="4 * sin(k * 4.08407)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord130" Style="Chord">
+      <Dependency Name="P130" />
+      <Dependency Name="Q130" />
+    </Segment>
+    <PointByCoordinates Name="P131" Visible="false" X="-2.248334" Y="-3.308322" />
+    <PointByCoordinates Name="Q131" Visible="false" X="4 * cos(k * 4.115486)" Y="4 * sin(k * 4.115486)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord131" Style="Chord">
+      <Dependency Name="P131" />
+      <Dependency Name="Q131" />
+    </Segment>
+    <PointByCoordinates Name="P132" Visible="false" X="-2.143307" Y="-3.377312" />
+    <PointByCoordinates Name="Q132" Visible="false" X="4 * cos(k * 4.146902)" Y="4 * sin(k * 4.146902)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord132" Style="Chord">
+      <Dependency Name="P132" />
+      <Dependency Name="Q132" />
+    </Segment>
+    <PointByCoordinates Name="P133" Visible="false" X="-2.036166" Y="-3.442968" />
+    <PointByCoordinates Name="Q133" Visible="false" X="4 * cos(k * 4.178318)" Y="4 * sin(k * 4.178318)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord133" Style="Chord">
+      <Dependency Name="P133" />
+      <Dependency Name="Q133" />
+    </Segment>
+    <PointByCoordinates Name="P134" Visible="false" X="-1.927015" Y="-3.505227" />
+    <PointByCoordinates Name="Q134" Visible="false" X="4 * cos(k * 4.209734)" Y="4 * sin(k * 4.209734)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord134" Style="Chord">
+      <Dependency Name="P134" />
+      <Dependency Name="Q134" />
+    </Segment>
+    <PointByCoordinates Name="P135" Visible="false" X="-1.815962" Y="-3.564026" />
+    <PointByCoordinates Name="Q135" Visible="false" X="4 * cos(k * 4.24115)" Y="4 * sin(k * 4.24115)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord135" Style="Chord">
+      <Dependency Name="P135" />
+      <Dependency Name="Q135" />
+    </Segment>
+    <PointByCoordinates Name="P136" Visible="false" X="-1.703117" Y="-3.619308" />
+    <PointByCoordinates Name="Q136" Visible="false" X="4 * cos(k * 4.272566)" Y="4 * sin(k * 4.272566)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord136" Style="Chord">
+      <Dependency Name="P136" />
+      <Dependency Name="Q136" />
+    </Segment>
+    <PointByCoordinates Name="P137" Visible="false" X="-1.588592" Y="-3.671019" />
+    <PointByCoordinates Name="Q137" Visible="false" X="4 * cos(k * 4.303982)" Y="4 * sin(k * 4.303982)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord137" Style="Chord">
+      <Dependency Name="P137" />
+      <Dependency Name="Q137" />
+    </Segment>
+    <PointByCoordinates Name="P138" Visible="false" X="-1.472498" Y="-3.719106" />
+    <PointByCoordinates Name="Q138" Visible="false" X="4 * cos(k * 4.335398)" Y="4 * sin(k * 4.335398)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord138" Style="Chord">
+      <Dependency Name="P138" />
+      <Dependency Name="Q138" />
+    </Segment>
+    <PointByCoordinates Name="P139" Visible="false" X="-1.354952" Y="-3.763523" />
+    <PointByCoordinates Name="Q139" Visible="false" X="4 * cos(k * 4.366814)" Y="4 * sin(k * 4.366814)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord139" Style="Chord">
+      <Dependency Name="P139" />
+      <Dependency Name="Q139" />
+    </Segment>
+    <PointByCoordinates Name="P140" Visible="false" X="-1.236068" Y="-3.804226" />
+    <PointByCoordinates Name="Q140" Visible="false" X="4 * cos(k * 4.39823)" Y="4 * sin(k * 4.39823)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord140" Style="Chord">
+      <Dependency Name="P140" />
+      <Dependency Name="Q140" />
+    </Segment>
+    <PointByCoordinates Name="P141" Visible="false" X="-1.115964" Y="-3.841175" />
+    <PointByCoordinates Name="Q141" Visible="false" X="4 * cos(k * 4.429646)" Y="4 * sin(k * 4.429646)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord141" Style="Chord">
+      <Dependency Name="P141" />
+      <Dependency Name="Q141" />
+    </Segment>
+    <PointByCoordinates Name="P142" Visible="false" X="-0.99476" Y="-3.874333" />
+    <PointByCoordinates Name="Q142" Visible="false" X="4 * cos(k * 4.461062)" Y="4 * sin(k * 4.461062)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord142" Style="Chord">
+      <Dependency Name="P142" />
+      <Dependency Name="Q142" />
+    </Segment>
+    <PointByCoordinates Name="P143" Visible="false" X="-0.872573" Y="-3.903667" />
+    <PointByCoordinates Name="Q143" Visible="false" X="4 * cos(k * 4.492477)" Y="4 * sin(k * 4.492477)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord143" Style="Chord">
+      <Dependency Name="P143" />
+      <Dependency Name="Q143" />
+    </Segment>
+    <PointByCoordinates Name="P144" Visible="false" X="-0.749525" Y="-3.929149" />
+    <PointByCoordinates Name="Q144" Visible="false" X="4 * cos(k * 4.523893)" Y="4 * sin(k * 4.523893)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord144" Style="Chord">
+      <Dependency Name="P144" />
+      <Dependency Name="Q144" />
+    </Segment>
+    <PointByCoordinates Name="P145" Visible="false" X="-0.625738" Y="-3.950753" />
+    <PointByCoordinates Name="Q145" Visible="false" X="4 * cos(k * 4.555309)" Y="4 * sin(k * 4.555309)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord145" Style="Chord">
+      <Dependency Name="P145" />
+      <Dependency Name="Q145" />
+    </Segment>
+    <PointByCoordinates Name="P146" Visible="false" X="-0.501333" Y="-3.968459" />
+    <PointByCoordinates Name="Q146" Visible="false" X="4 * cos(k * 4.586725)" Y="4 * sin(k * 4.586725)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord146" Style="Chord">
+      <Dependency Name="P146" />
+      <Dependency Name="Q146" />
+    </Segment>
+    <PointByCoordinates Name="P147" Visible="false" X="-0.376433" Y="-3.982248" />
+    <PointByCoordinates Name="Q147" Visible="false" X="4 * cos(k * 4.618141)" Y="4 * sin(k * 4.618141)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord147" Style="Chord">
+      <Dependency Name="P147" />
+      <Dependency Name="Q147" />
+    </Segment>
+    <PointByCoordinates Name="P148" Visible="false" X="-0.251162" Y="-3.992107" />
+    <PointByCoordinates Name="Q148" Visible="false" X="4 * cos(k * 4.649557)" Y="4 * sin(k * 4.649557)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord148" Style="Chord">
+      <Dependency Name="P148" />
+      <Dependency Name="Q148" />
+    </Segment>
+    <PointByCoordinates Name="P149" Visible="false" X="-0.125643" Y="-3.998026" />
+    <PointByCoordinates Name="Q149" Visible="false" X="4 * cos(k * 4.680973)" Y="4 * sin(k * 4.680973)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord149" Style="Chord">
+      <Dependency Name="P149" />
+      <Dependency Name="Q149" />
+    </Segment>
+    <PointByCoordinates Name="P150" Visible="false" X="-0" Y="-4" />
+    <PointByCoordinates Name="Q150" Visible="false" X="4 * cos(k * 4.712389)" Y="4 * sin(k * 4.712389)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord150" Style="Chord">
+      <Dependency Name="P150" />
+      <Dependency Name="Q150" />
+    </Segment>
+    <PointByCoordinates Name="P151" Visible="false" X="0.125643" Y="-3.998026" />
+    <PointByCoordinates Name="Q151" Visible="false" X="4 * cos(k * 4.743805)" Y="4 * sin(k * 4.743805)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord151" Style="Chord">
+      <Dependency Name="P151" />
+      <Dependency Name="Q151" />
+    </Segment>
+    <PointByCoordinates Name="P152" Visible="false" X="0.251162" Y="-3.992107" />
+    <PointByCoordinates Name="Q152" Visible="false" X="4 * cos(k * 4.775221)" Y="4 * sin(k * 4.775221)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord152" Style="Chord">
+      <Dependency Name="P152" />
+      <Dependency Name="Q152" />
+    </Segment>
+    <PointByCoordinates Name="P153" Visible="false" X="0.376433" Y="-3.982248" />
+    <PointByCoordinates Name="Q153" Visible="false" X="4 * cos(k * 4.806637)" Y="4 * sin(k * 4.806637)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord153" Style="Chord">
+      <Dependency Name="P153" />
+      <Dependency Name="Q153" />
+    </Segment>
+    <PointByCoordinates Name="P154" Visible="false" X="0.501333" Y="-3.968459" />
+    <PointByCoordinates Name="Q154" Visible="false" X="4 * cos(k * 4.838053)" Y="4 * sin(k * 4.838053)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord154" Style="Chord">
+      <Dependency Name="P154" />
+      <Dependency Name="Q154" />
+    </Segment>
+    <PointByCoordinates Name="P155" Visible="false" X="0.625738" Y="-3.950753" />
+    <PointByCoordinates Name="Q155" Visible="false" X="4 * cos(k * 4.869469)" Y="4 * sin(k * 4.869469)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord155" Style="Chord">
+      <Dependency Name="P155" />
+      <Dependency Name="Q155" />
+    </Segment>
+    <PointByCoordinates Name="P156" Visible="false" X="0.749525" Y="-3.929149" />
+    <PointByCoordinates Name="Q156" Visible="false" X="4 * cos(k * 4.900885)" Y="4 * sin(k * 4.900885)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord156" Style="Chord">
+      <Dependency Name="P156" />
+      <Dependency Name="Q156" />
+    </Segment>
+    <PointByCoordinates Name="P157" Visible="false" X="0.872573" Y="-3.903667" />
+    <PointByCoordinates Name="Q157" Visible="false" X="4 * cos(k * 4.9323)" Y="4 * sin(k * 4.9323)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord157" Style="Chord">
+      <Dependency Name="P157" />
+      <Dependency Name="Q157" />
+    </Segment>
+    <PointByCoordinates Name="P158" Visible="false" X="0.99476" Y="-3.874333" />
+    <PointByCoordinates Name="Q158" Visible="false" X="4 * cos(k * 4.963716)" Y="4 * sin(k * 4.963716)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord158" Style="Chord">
+      <Dependency Name="P158" />
+      <Dependency Name="Q158" />
+    </Segment>
+    <PointByCoordinates Name="P159" Visible="false" X="1.115964" Y="-3.841175" />
+    <PointByCoordinates Name="Q159" Visible="false" X="4 * cos(k * 4.995132)" Y="4 * sin(k * 4.995132)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord159" Style="Chord">
+      <Dependency Name="P159" />
+      <Dependency Name="Q159" />
+    </Segment>
+    <PointByCoordinates Name="P160" Visible="false" X="1.236068" Y="-3.804226" />
+    <PointByCoordinates Name="Q160" Visible="false" X="4 * cos(k * 5.026548)" Y="4 * sin(k * 5.026548)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord160" Style="Chord">
+      <Dependency Name="P160" />
+      <Dependency Name="Q160" />
+    </Segment>
+    <PointByCoordinates Name="P161" Visible="false" X="1.354952" Y="-3.763523" />
+    <PointByCoordinates Name="Q161" Visible="false" X="4 * cos(k * 5.057964)" Y="4 * sin(k * 5.057964)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord161" Style="Chord">
+      <Dependency Name="P161" />
+      <Dependency Name="Q161" />
+    </Segment>
+    <PointByCoordinates Name="P162" Visible="false" X="1.472498" Y="-3.719106" />
+    <PointByCoordinates Name="Q162" Visible="false" X="4 * cos(k * 5.08938)" Y="4 * sin(k * 5.08938)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord162" Style="Chord">
+      <Dependency Name="P162" />
+      <Dependency Name="Q162" />
+    </Segment>
+    <PointByCoordinates Name="P163" Visible="false" X="1.588592" Y="-3.671019" />
+    <PointByCoordinates Name="Q163" Visible="false" X="4 * cos(k * 5.120796)" Y="4 * sin(k * 5.120796)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord163" Style="Chord">
+      <Dependency Name="P163" />
+      <Dependency Name="Q163" />
+    </Segment>
+    <PointByCoordinates Name="P164" Visible="false" X="1.703117" Y="-3.619308" />
+    <PointByCoordinates Name="Q164" Visible="false" X="4 * cos(k * 5.152212)" Y="4 * sin(k * 5.152212)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord164" Style="Chord">
+      <Dependency Name="P164" />
+      <Dependency Name="Q164" />
+    </Segment>
+    <PointByCoordinates Name="P165" Visible="false" X="1.815962" Y="-3.564026" />
+    <PointByCoordinates Name="Q165" Visible="false" X="4 * cos(k * 5.183628)" Y="4 * sin(k * 5.183628)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord165" Style="Chord">
+      <Dependency Name="P165" />
+      <Dependency Name="Q165" />
+    </Segment>
+    <PointByCoordinates Name="P166" Visible="false" X="1.927015" Y="-3.505227" />
+    <PointByCoordinates Name="Q166" Visible="false" X="4 * cos(k * 5.215044)" Y="4 * sin(k * 5.215044)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord166" Style="Chord">
+      <Dependency Name="P166" />
+      <Dependency Name="Q166" />
+    </Segment>
+    <PointByCoordinates Name="P167" Visible="false" X="2.036166" Y="-3.442968" />
+    <PointByCoordinates Name="Q167" Visible="false" X="4 * cos(k * 5.24646)" Y="4 * sin(k * 5.24646)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord167" Style="Chord">
+      <Dependency Name="P167" />
+      <Dependency Name="Q167" />
+    </Segment>
+    <PointByCoordinates Name="P168" Visible="false" X="2.143307" Y="-3.377312" />
+    <PointByCoordinates Name="Q168" Visible="false" X="4 * cos(k * 5.277876)" Y="4 * sin(k * 5.277876)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord168" Style="Chord">
+      <Dependency Name="P168" />
+      <Dependency Name="Q168" />
+    </Segment>
+    <PointByCoordinates Name="P169" Visible="false" X="2.248334" Y="-3.308322" />
+    <PointByCoordinates Name="Q169" Visible="false" X="4 * cos(k * 5.309292)" Y="4 * sin(k * 5.309292)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord169" Style="Chord">
+      <Dependency Name="P169" />
+      <Dependency Name="Q169" />
+    </Segment>
+    <PointByCoordinates Name="P170" Visible="false" X="2.351141" Y="-3.236068" />
+    <PointByCoordinates Name="Q170" Visible="false" X="4 * cos(k * 5.340708)" Y="4 * sin(k * 5.340708)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord170" Style="Chord">
+      <Dependency Name="P170" />
+      <Dependency Name="Q170" />
+    </Segment>
+    <PointByCoordinates Name="P171" Visible="false" X="2.451628" Y="-3.16062" />
+    <PointByCoordinates Name="Q171" Visible="false" X="4 * cos(k * 5.372123)" Y="4 * sin(k * 5.372123)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord171" Style="Chord">
+      <Dependency Name="P171" />
+      <Dependency Name="Q171" />
+    </Segment>
+    <PointByCoordinates Name="P172" Visible="false" X="2.549696" Y="-3.082053" />
+    <PointByCoordinates Name="Q172" Visible="false" X="4 * cos(k * 5.403539)" Y="4 * sin(k * 5.403539)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord172" Style="Chord">
+      <Dependency Name="P172" />
+      <Dependency Name="Q172" />
+    </Segment>
+    <PointByCoordinates Name="P173" Visible="false" X="2.645247" Y="-3.000444" />
+    <PointByCoordinates Name="Q173" Visible="false" X="4 * cos(k * 5.434955)" Y="4 * sin(k * 5.434955)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord173" Style="Chord">
+      <Dependency Name="P173" />
+      <Dependency Name="Q173" />
+    </Segment>
+    <PointByCoordinates Name="P174" Visible="false" X="2.738188" Y="-2.915875" />
+    <PointByCoordinates Name="Q174" Visible="false" X="4 * cos(k * 5.466371)" Y="4 * sin(k * 5.466371)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord174" Style="Chord">
+      <Dependency Name="P174" />
+      <Dependency Name="Q174" />
+    </Segment>
+    <PointByCoordinates Name="P175" Visible="false" X="2.828427" Y="-2.828427" />
+    <PointByCoordinates Name="Q175" Visible="false" X="4 * cos(k * 5.497787)" Y="4 * sin(k * 5.497787)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord175" Style="Chord">
+      <Dependency Name="P175" />
+      <Dependency Name="Q175" />
+    </Segment>
+    <PointByCoordinates Name="P176" Visible="false" X="2.915875" Y="-2.738188" />
+    <PointByCoordinates Name="Q176" Visible="false" X="4 * cos(k * 5.529203)" Y="4 * sin(k * 5.529203)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord176" Style="Chord">
+      <Dependency Name="P176" />
+      <Dependency Name="Q176" />
+    </Segment>
+    <PointByCoordinates Name="P177" Visible="false" X="3.000444" Y="-2.645247" />
+    <PointByCoordinates Name="Q177" Visible="false" X="4 * cos(k * 5.560619)" Y="4 * sin(k * 5.560619)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord177" Style="Chord">
+      <Dependency Name="P177" />
+      <Dependency Name="Q177" />
+    </Segment>
+    <PointByCoordinates Name="P178" Visible="false" X="3.082053" Y="-2.549696" />
+    <PointByCoordinates Name="Q178" Visible="false" X="4 * cos(k * 5.592035)" Y="4 * sin(k * 5.592035)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord178" Style="Chord">
+      <Dependency Name="P178" />
+      <Dependency Name="Q178" />
+    </Segment>
+    <PointByCoordinates Name="P179" Visible="false" X="3.16062" Y="-2.451628" />
+    <PointByCoordinates Name="Q179" Visible="false" X="4 * cos(k * 5.623451)" Y="4 * sin(k * 5.623451)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord179" Style="Chord">
+      <Dependency Name="P179" />
+      <Dependency Name="Q179" />
+    </Segment>
+    <PointByCoordinates Name="P180" Visible="false" X="3.236068" Y="-2.351141" />
+    <PointByCoordinates Name="Q180" Visible="false" X="4 * cos(k * 5.654867)" Y="4 * sin(k * 5.654867)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord180" Style="Chord">
+      <Dependency Name="P180" />
+      <Dependency Name="Q180" />
+    </Segment>
+    <PointByCoordinates Name="P181" Visible="false" X="3.308322" Y="-2.248334" />
+    <PointByCoordinates Name="Q181" Visible="false" X="4 * cos(k * 5.686283)" Y="4 * sin(k * 5.686283)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord181" Style="Chord">
+      <Dependency Name="P181" />
+      <Dependency Name="Q181" />
+    </Segment>
+    <PointByCoordinates Name="P182" Visible="false" X="3.377312" Y="-2.143307" />
+    <PointByCoordinates Name="Q182" Visible="false" X="4 * cos(k * 5.717699)" Y="4 * sin(k * 5.717699)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord182" Style="Chord">
+      <Dependency Name="P182" />
+      <Dependency Name="Q182" />
+    </Segment>
+    <PointByCoordinates Name="P183" Visible="false" X="3.442968" Y="-2.036166" />
+    <PointByCoordinates Name="Q183" Visible="false" X="4 * cos(k * 5.749115)" Y="4 * sin(k * 5.749115)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord183" Style="Chord">
+      <Dependency Name="P183" />
+      <Dependency Name="Q183" />
+    </Segment>
+    <PointByCoordinates Name="P184" Visible="false" X="3.505227" Y="-1.927015" />
+    <PointByCoordinates Name="Q184" Visible="false" X="4 * cos(k * 5.78053)" Y="4 * sin(k * 5.78053)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord184" Style="Chord">
+      <Dependency Name="P184" />
+      <Dependency Name="Q184" />
+    </Segment>
+    <PointByCoordinates Name="P185" Visible="false" X="3.564026" Y="-1.815962" />
+    <PointByCoordinates Name="Q185" Visible="false" X="4 * cos(k * 5.811946)" Y="4 * sin(k * 5.811946)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord185" Style="Chord">
+      <Dependency Name="P185" />
+      <Dependency Name="Q185" />
+    </Segment>
+    <PointByCoordinates Name="P186" Visible="false" X="3.619308" Y="-1.703117" />
+    <PointByCoordinates Name="Q186" Visible="false" X="4 * cos(k * 5.843362)" Y="4 * sin(k * 5.843362)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord186" Style="Chord">
+      <Dependency Name="P186" />
+      <Dependency Name="Q186" />
+    </Segment>
+    <PointByCoordinates Name="P187" Visible="false" X="3.671019" Y="-1.588592" />
+    <PointByCoordinates Name="Q187" Visible="false" X="4 * cos(k * 5.874778)" Y="4 * sin(k * 5.874778)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord187" Style="Chord">
+      <Dependency Name="P187" />
+      <Dependency Name="Q187" />
+    </Segment>
+    <PointByCoordinates Name="P188" Visible="false" X="3.719106" Y="-1.472498" />
+    <PointByCoordinates Name="Q188" Visible="false" X="4 * cos(k * 5.906194)" Y="4 * sin(k * 5.906194)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord188" Style="Chord">
+      <Dependency Name="P188" />
+      <Dependency Name="Q188" />
+    </Segment>
+    <PointByCoordinates Name="P189" Visible="false" X="3.763523" Y="-1.354952" />
+    <PointByCoordinates Name="Q189" Visible="false" X="4 * cos(k * 5.93761)" Y="4 * sin(k * 5.93761)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord189" Style="Chord">
+      <Dependency Name="P189" />
+      <Dependency Name="Q189" />
+    </Segment>
+    <PointByCoordinates Name="P190" Visible="false" X="3.804226" Y="-1.236068" />
+    <PointByCoordinates Name="Q190" Visible="false" X="4 * cos(k * 5.969026)" Y="4 * sin(k * 5.969026)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord190" Style="Chord">
+      <Dependency Name="P190" />
+      <Dependency Name="Q190" />
+    </Segment>
+    <PointByCoordinates Name="P191" Visible="false" X="3.841175" Y="-1.115964" />
+    <PointByCoordinates Name="Q191" Visible="false" X="4 * cos(k * 6.000442)" Y="4 * sin(k * 6.000442)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord191" Style="Chord">
+      <Dependency Name="P191" />
+      <Dependency Name="Q191" />
+    </Segment>
+    <PointByCoordinates Name="P192" Visible="false" X="3.874333" Y="-0.99476" />
+    <PointByCoordinates Name="Q192" Visible="false" X="4 * cos(k * 6.031858)" Y="4 * sin(k * 6.031858)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord192" Style="Chord">
+      <Dependency Name="P192" />
+      <Dependency Name="Q192" />
+    </Segment>
+    <PointByCoordinates Name="P193" Visible="false" X="3.903667" Y="-0.872573" />
+    <PointByCoordinates Name="Q193" Visible="false" X="4 * cos(k * 6.063274)" Y="4 * sin(k * 6.063274)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord193" Style="Chord">
+      <Dependency Name="P193" />
+      <Dependency Name="Q193" />
+    </Segment>
+    <PointByCoordinates Name="P194" Visible="false" X="3.929149" Y="-0.749525" />
+    <PointByCoordinates Name="Q194" Visible="false" X="4 * cos(k * 6.09469)" Y="4 * sin(k * 6.09469)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord194" Style="Chord">
+      <Dependency Name="P194" />
+      <Dependency Name="Q194" />
+    </Segment>
+    <PointByCoordinates Name="P195" Visible="false" X="3.950753" Y="-0.625738" />
+    <PointByCoordinates Name="Q195" Visible="false" X="4 * cos(k * 6.126106)" Y="4 * sin(k * 6.126106)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord195" Style="Chord">
+      <Dependency Name="P195" />
+      <Dependency Name="Q195" />
+    </Segment>
+    <PointByCoordinates Name="P196" Visible="false" X="3.968459" Y="-0.501333" />
+    <PointByCoordinates Name="Q196" Visible="false" X="4 * cos(k * 6.157522)" Y="4 * sin(k * 6.157522)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord196" Style="Chord">
+      <Dependency Name="P196" />
+      <Dependency Name="Q196" />
+    </Segment>
+    <PointByCoordinates Name="P197" Visible="false" X="3.982248" Y="-0.376433" />
+    <PointByCoordinates Name="Q197" Visible="false" X="4 * cos(k * 6.188938)" Y="4 * sin(k * 6.188938)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord197" Style="Chord">
+      <Dependency Name="P197" />
+      <Dependency Name="Q197" />
+    </Segment>
+    <PointByCoordinates Name="P198" Visible="false" X="3.992107" Y="-0.251162" />
+    <PointByCoordinates Name="Q198" Visible="false" X="4 * cos(k * 6.220353)" Y="4 * sin(k * 6.220353)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord198" Style="Chord">
+      <Dependency Name="P198" />
+      <Dependency Name="Q198" />
+    </Segment>
+    <PointByCoordinates Name="P199" Visible="false" X="3.998026" Y="-0.125643" />
+    <PointByCoordinates Name="Q199" Visible="false" X="4 * cos(k * 6.251769)" Y="4 * sin(k * 6.251769)">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="Chord199" Style="Chord">
+      <Dependency Name="P199" />
+      <Dependency Name="Q199" />
+    </Segment>
+    <Label Name="Title" Style="GalleryTitle" Text="Times Tables on a Circle" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="200 dots sit around the circle, numbered 0 to 199. Each dot is joined by a line to the dot with k times its number: with k at 2, dot 7 goes to dot 14, dot 50 to dot 100, and past 199 the count wraps around to 0 again.\n\nThat is all. Nobody drew the heart: it just appears out of the 2 times table. Drag the slider to 3 and the heart grows a second lobe; 4 gives three, 5 gives four. Slide slowly between the whole numbers and watch one pattern melt into the next.\n\nTry 51, 99, 101, 199 and 201. Why does 199 look like 2? Because 199 times a number is one less than 200 times it, which wraps around to the same dot as minus one times it." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

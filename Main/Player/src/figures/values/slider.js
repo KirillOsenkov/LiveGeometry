@@ -14,8 +14,10 @@ class Slider extends CompositeFigure {
         // be ones an expression could say
         this.anchor = new FreePoint();
         this.anchor.name = "slider anchor";
-        this.knob = new SliderKnob();
+        this.knob = new SliderKnob(this);
         this.knob.name = "slider knob";
+        this.minimum = 0;
+        this.maximum = Infinity;
         this.knob.setSources(this.anchor, null, this.horizontal);
         this.track = new Segment();
         this.track.name = "slider track";
@@ -55,15 +57,21 @@ class Slider extends CompositeFigure {
 
     // Value and place
 
-    /** The number the slider stands for, never negative. Set it and the knob moves; anything built on the slider follows. */
+    /** The number the slider stands for: the minimum at the anchor, one more per unit of track, up to the maximum. Set it and the knob moves; anything built on the slider follows. */
     get value() {
-        return this.knob.distance;
+        return this.minimum + this.knob.distance;
     }
 
     set value(value) {
         const origin = this.anchor.coordinates;
-        this.knob.moveToCore(new Point(origin.x + value, origin.y));
+        const clamped = Math.max(this.minimum, Math.min(this.maximum, value));
+        this.knob.moveToCore(new Point(origin.x + clamped - this.minimum, origin.y));
         this.onChanged();
+    }
+
+    /** How far the knob may go from the anchor */
+    get span() {
+        return this.maximum - this.minimum;
     }
 
     /** Where the anchor is; the knob keeps its distance */
@@ -192,6 +200,15 @@ class Slider extends CompositeFigure {
             this.decimals = Math.trunc(Xml.readDouble(element, "Decimals"));
         }
 
+        // the range before the value, which is clamped to it
+        if (element.hasAttribute("Minimum")) {
+            this.minimum = Xml.readDouble(element, "Minimum");
+        }
+
+        if (element.hasAttribute("Maximum")) {
+            this.maximum = Xml.readDouble(element, "Maximum");
+        }
+
         this.anchor.moveToCore(new Point(Xml.readDouble(element, "X"), Xml.readDouble(element, "Y")));
         this.value = Xml.readDouble(element, "Value");
     }
@@ -220,12 +237,23 @@ class SliderWholeHandle {
     }
 }
 
-/** The knob: a point sliding along the horizontal through the anchor, never to its left */
+/** The knob: a point sliding along the horizontal through the anchor, never to its left, nor past the slider's span */
 class SliderKnob extends TranslatedPoint {
+    constructor(slider) {
+        super();
+        this.slider = slider;
+    }
+
     moveToCore(newPosition) {
         const source = this.source;
-        if (source != null && newPosition.x < source.coordinates.x) {
-            newPosition = new Point(source.coordinates.x, newPosition.y);
+        if (source != null) {
+            const left = source.coordinates.x;
+            const right = left + this.slider.span;
+            if (newPosition.x < left) {
+                newPosition = new Point(left, newPosition.y);
+            } else if (newPosition.x > right) {
+                newPosition = new Point(right, newPosition.y);
+            }
         }
 
         super.moveToCore(newPosition);

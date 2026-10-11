@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-9" Top="7" Right="9" Bottom="-7" />
+  <Styles>
+    <ShapeStyle Name="Target" IsFilled="false" Color="#FF8A94A6" StrokeWidth="1.5" Dash="Dash" />
+    <ShapeStyle Name="Solution" Fill="#30808080" Color="#A0808080" Dash="Dash" />
+    <PointStyle Name="Pivot" Size="9" Fill="#FFFFFFFF" Color="#80000000" StrokeWidth="1.5" />
+    <PointStyle Name="Knob" Size="9" Fill="#FFFFE066" Color="#FF806000" StrokeWidth="1.5" />
+  </Styles>
+  <Figures>
+    <Number Name="One" Value="1" />
+    <PointByCoordinates Name="TargetA" Visible="false" X="-2" Y="-2" />
+    <PointByCoordinates Name="TargetB" Visible="false" X="2" Y="-2" />
+    <PointByCoordinates Name="TargetC" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="TargetD" Visible="false" X="-2" Y="2" />
+    <Polygon Name="Target" Style="Target">
+      <Dependency Name="TargetA" />
+      <Dependency Name="TargetB" />
+      <Dependency Name="TargetC" />
+      <Dependency Name="TargetD" />
+    </Polygon>
+    <PointByCoordinates Name="SolvedBig10" Visible="false" X="-2" Y="-2" />
+    <PointByCoordinates Name="SolvedBig11" Visible="false" X="2" Y="-2" />
+    <PointByCoordinates Name="SolvedBig12" Visible="false" X="0" Y="0" />
+    <Polygon Name="SolvedBig1" Visible="false" Style="Solution">
+      <Dependency Name="SolvedBig10" />
+      <Dependency Name="SolvedBig11" />
+      <Dependency Name="SolvedBig12" />
+    </Polygon>
+    <PointByCoordinates Name="SolvedBig20" Visible="false" X="-2" Y="-2" />
+    <PointByCoordinates Name="SolvedBig21" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="SolvedBig22" Visible="false" X="-2" Y="2" />
+    <Polygon Name="SolvedBig2" Visible="false" Style="Solution">
+      <Dependency Name="SolvedBig20" />
+      <Dependency Name="SolvedBig21" />
+      <Dependency Name="SolvedBig22" />
+    </Polygon>
+    <PointByCoordinates Name="SolvedMedium0" Visible="false" X="0" Y="2" />
+    <PointByCoordinates Name="SolvedMedium1" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="SolvedMedium2" Visible="false" X="2" Y="0" />
+    <Polygon Name="SolvedMedium" Visible="false" Style="Solution">
+      <Dependency Name="SolvedMedium0" />
+      <Dependency Name="SolvedMedium1" />
+      <Dependency Name="SolvedMedium2" />
+    </Polygon>
+    <PointByCoordinates Name="SolvedSquare0" Visible="false" X="-1" Y="1" />
+    <PointByCoordinates Name="SolvedSquare1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="SolvedSquare2" Visible="false" X="1" Y="1" />
+    <PointByCoordinates Name="SolvedSquare3" Visible="false" X="0" Y="2" />
+    <Polygon Name="SolvedSquare" Visible="false" Style="Solution">
+      <Dependency Name="SolvedSquare0" />
+      <Dependency Name="SolvedSquare1" />
+      <Dependency Name="SolvedSquare2" />
+      <Dependency Name="SolvedSquare3" />
+    </Polygon>
+    <PointByCoordinates Name="SolvedSmall10" Visible="false" X="-2" Y="2" />
+    <PointByCoordinates Name="SolvedSmall11" Visible="false" X="-1" Y="1" />
+    <PointByCoordinates Name="SolvedSmall12" Visible="false" X="0" Y="2" />
+    <Polygon Name="SolvedSmall1" Visible="false" Style="Solution">
+      <Dependency Name="SolvedSmall10" />
+      <Dependency Name="SolvedSmall11" />
+      <Dependency Name="SolvedSmall12" />
+    </Polygon>
+    <PointByCoordinates Name="SolvedSmall20" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="SolvedSmall21" Visible="false" X="1" Y="-1" />
+    <PointByCoordinates Name="SolvedSmall22" Visible="false" X="1" Y="1" />
+    <Polygon Name="SolvedSmall2" Visible="false" Style="Solution">
+      <Dependency Name="SolvedSmall20" />
+      <Dependency Name="SolvedSmall21" />
+      <Dependency Name="SolvedSmall22" />
+    </Polygon>
+    <PointByCoordinates Name="SolvedParallelogram0" Visible="false" X="1" Y="-1" />
+    <PointByCoordinates Name="SolvedParallelogram1" Visible="false" X="2" Y="-2" />
+    <PointByCoordinates Name="SolvedParallelogram2" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="SolvedParallelogram3" Visible="false" X="1" Y="1" />
+    <Polygon Name="SolvedParallelogram" Visible="false" Style="Solution">
+      <Dependency Name="SolvedParallelogram0" />
+      <Dependency Name="SolvedParallelogram1" />
+      <Dependency Name="SolvedParallelogram2" />
+      <Dependency Name="SolvedParallelogram3" />
+    </Polygon>
+    <FreePoint Name="Big1P" Style="Pivot" X="-6.5" Y="1.5" />
+    <CircleByRadius Name="Big1Dial" Visible="false">
+      <Dependency Name="One" />
+      <Dependency Name="Big1P" />
+    </CircleByRadius>
+    <PointOnFigure Name="Big1D" Style="Knob" X="-5.792894517488763" Y="2.2071080798594735" Parameter="0.7854">
+      <Dependency Name="Big1Dial" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Big1A" Visible="false" X="round(xangle(Big1P, Big1D) / (pi / 4)) * (pi / 4)" Y="0">
+      <Dependency Name="Big1P" />
+      <Dependency Name="Big1D" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Big11" Visible="false" X="Big1P.X + 4 * cos(Big1A.X) - 0 * sin(Big1A.X)" Y="Big1P.Y + 4 * sin(Big1A.X) + 0 * cos(Big1A.X)">
+      <Dependency Name="Big1P" />
+      <Dependency Name="Big1A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Big12" Visible="false" X="Big1P.X + 2 * cos(Big1A.X) - 2 * sin(Big1A.X)" Y="Big1P.Y + 2 * sin(Big1A.X) + 2 * cos(Big1A.X)">
+      <Dependency Name="Big1P" />
+      <Dependency Name="Big1A" />
+    </PointByCoordinates>
+    <Polygon Name="Big1" Style="GradientRedOutline">
+      <Dependency Name="Big1P" />
+      <Dependency Name="Big11" />
+      <Dependency Name="Big12" />
+    </Polygon>
+    <FreePoint Name="Big2P" Style="Pivot" X="5" Y="-3.6" />
+    <CircleByRadius Name="Big2Dial" Visible="false">
+      <Dependency Name="One" />
+      <Dependency Name="Big2P" />
+    </CircleByRadius>
+    <PointOnFigure Name="Big2D" Style="Knob" X="5.707105482511237" Y="-4.307108079859473" Parameter="-0.7854">
+      <Dependency Name="Big2Dial" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Big2A" Visible="false" X="round(xangle(Big2P, Big2D) / (pi / 4)) * (pi / 4)" Y="0">
+      <Dependency Name="Big2P" />
+      <Dependency Name="Big2D" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Big21" Visible="false" X="Big2P.X + 2.8284 * cos(Big2A.X) - 0 * sin(Big2A.X)" Y="Big2P.Y + 2.8284 * sin(Big2A.X) + 0 * cos(Big2A.X)">
+      <Dependency Name="Big2P" />
+      <Dependency Name="Big2A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Big22" Visible="false" X="Big2P.X + 2.8284 * cos(Big2A.X) - 2.8284 * sin(Big2A.X)" Y="Big2P.Y + 2.8284 * sin(Big2A.X) + 2.8284 * cos(Big2A.X)">
+      <Dependency Name="Big2P" />
+      <Dependency Name="Big2A" />
+    </PointByCoordinates>
+    <Polygon Name="Big2" Style="GradientBlueOutline">
+      <Dependency Name="Big2P" />
+      <Dependency Name="Big21" />
+      <Dependency Name="Big22" />
+    </Polygon>
+    <FreePoint Name="MediumP" Style="Pivot" X="5.6" Y="2.2" />
+    <CircleByRadius Name="MediumDial" Visible="false">
+      <Dependency Name="One" />
+      <Dependency Name="MediumP" />
+    </CircleByRadius>
+    <PointOnFigure Name="MediumD" Style="Knob" X="5.599996326794896" Y="3.199999999993254" Parameter="1.5708">
+      <Dependency Name="MediumDial" />
+    </PointOnFigure>
+    <PointByCoordinates Name="MediumA" Visible="false" X="round(xangle(MediumP, MediumD) / (pi / 4)) * (pi / 4)" Y="0">
+      <Dependency Name="MediumP" />
+      <Dependency Name="MediumD" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Medium1" Visible="false" X="MediumP.X + 2 * cos(MediumA.X) - 0 * sin(MediumA.X)" Y="MediumP.Y + 2 * sin(MediumA.X) + 0 * cos(MediumA.X)">
+      <Dependency Name="MediumP" />
+      <Dependency Name="MediumA" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Medium2" Visible="false" X="MediumP.X + 2 * cos(MediumA.X) - -2 * sin(MediumA.X)" Y="MediumP.Y + 2 * sin(MediumA.X) + -2 * cos(MediumA.X)">
+      <Dependency Name="MediumP" />
+      <Dependency Name="MediumA" />
+    </PointByCoordinates>
+    <Polygon Name="Medium" Style="GradientGreenOutline">
+      <Dependency Name="MediumP" />
+      <Dependency Name="Medium1" />
+      <Dependency Name="Medium2" />
+    </Polygon>
+    <FreePoint Name="SquareP" Style="Pivot" X="-5.4" Y="-3.2" />
+    <CircleByRadius Name="SquareDial" Visible="false">
+      <Dependency Name="One" />
+      <Dependency Name="SquareP" />
+    </CircleByRadius>
+    <PointOnFigure Name="SquareD" Style="Knob" X="-4.4" Y="-3.2" Parameter="0">
+      <Dependency Name="SquareDial" />
+    </PointOnFigure>
+    <PointByCoordinates Name="SquareA" Visible="false" X="round(xangle(SquareP, SquareD) / (pi / 4)) * (pi / 4)" Y="0">
+      <Dependency Name="SquareP" />
+      <Dependency Name="SquareD" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Square1" Visible="false" X="SquareP.X + 1.4142 * cos(SquareA.X) - 0 * sin(SquareA.X)" Y="SquareP.Y + 1.4142 * sin(SquareA.X) + 0 * cos(SquareA.X)">
+      <Dependency Name="SquareP" />
+      <Dependency Name="SquareA" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Square2" Visible="false" X="SquareP.X + 1.4142 * cos(SquareA.X) - 1.4142 * sin(SquareA.X)" Y="SquareP.Y + 1.4142 * sin(SquareA.X) + 1.4142 * cos(SquareA.X)">
+      <Dependency Name="SquareP" />
+      <Dependency Name="SquareA" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Square3" Visible="false" X="SquareP.X + 0 * cos(SquareA.X) - 1.4142 * sin(SquareA.X)" Y="SquareP.Y + 0 * sin(SquareA.X) + 1.4142 * cos(SquareA.X)">
+      <Dependency Name="SquareP" />
+      <Dependency Name="SquareA" />
+    </PointByCoordinates>
+    <Polygon Name="Square" Style="GradientBrownOutline">
+      <Dependency Name="SquareP" />
+      <Dependency Name="Square1" />
+      <Dependency Name="Square2" />
+      <Dependency Name="Square3" />
+    </Polygon>
+    <FreePoint Name="Small1P" Style="Pivot" X="-0.6" Y="4.4" />
+    <CircleByRadius Name="Small1Dial" Visible="false">
+      <Dependency Name="One" />
+      <Dependency Name="Small1P" />
+    </CircleByRadius>
+    <PointOnFigure Name="Small1D" Style="Knob" X="0.1071054825112363" Y="3.692891920140527" Parameter="-0.7854">
+      <Dependency Name="Small1Dial" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Small1A" Visible="false" X="round(xangle(Small1P, Small1D) / (pi / 4)) * (pi / 4)" Y="0">
+      <Dependency Name="Small1P" />
+      <Dependency Name="Small1D" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Small11" Visible="false" X="Small1P.X + 1.4142 * cos(Small1A.X) - 0 * sin(Small1A.X)" Y="Small1P.Y + 1.4142 * sin(Small1A.X) + 0 * cos(Small1A.X)">
+      <Dependency Name="Small1P" />
+      <Dependency Name="Small1A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Small12" Visible="false" X="Small1P.X + 1.4142 * cos(Small1A.X) - 1.4142 * sin(Small1A.X)" Y="Small1P.Y + 1.4142 * sin(Small1A.X) + 1.4142 * cos(Small1A.X)">
+      <Dependency Name="Small1P" />
+      <Dependency Name="Small1A" />
+    </PointByCoordinates>
+    <Polygon Name="Small1" Style="GradientPurpleOutline">
+      <Dependency Name="Small1P" />
+      <Dependency Name="Small11" />
+      <Dependency Name="Small12" />
+    </Polygon>
+    <FreePoint Name="Small2P" Style="Pivot" X="-1.6" Y="-5" />
+    <CircleByRadius Name="Small2Dial" Visible="false">
+      <Dependency Name="One" />
+      <Dependency Name="Small2P" />
+    </CircleByRadius>
+    <PointOnFigure Name="Small2D" Style="Knob" X="-2.599999999973015" Y="-5.000007346410206" Parameter="3.1416">
+      <Dependency Name="Small2Dial" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Small2A" Visible="false" X="round(xangle(Small2P, Small2D) / (pi / 4)) * (pi / 4)" Y="0">
+      <Dependency Name="Small2P" />
+      <Dependency Name="Small2D" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Small21" Visible="false" X="Small2P.X + 1.4142 * cos(Small2A.X) - 0 * sin(Small2A.X)" Y="Small2P.Y + 1.4142 * sin(Small2A.X) + 0 * cos(Small2A.X)">
+      <Dependency Name="Small2P" />
+      <Dependency Name="Small2A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Small22" Visible="false" X="Small2P.X + 0 * cos(Small2A.X) - 1.4142 * sin(Small2A.X)" Y="Small2P.Y + 0 * sin(Small2A.X) + 1.4142 * cos(Small2A.X)">
+      <Dependency Name="Small2P" />
+      <Dependency Name="Small2A" />
+    </PointByCoordinates>
+    <Polygon Name="Small2" Style="GradientCyanOutline">
+      <Dependency Name="Small2P" />
+      <Dependency Name="Small21" />
+      <Dependency Name="Small22" />
+    </Polygon>
+    <FreePoint Name="ParallelogramP" Style="Pivot" X="2.6" Y="4.9" />
+    <CircleByRadius Name="ParallelogramDial" Visible="false">
+      <Dependency Name="One" />
+      <Dependency Name="ParallelogramP" />
+    </CircleByRadius>
+    <PointOnFigure Name="ParallelogramD" Style="Knob" X="1.8928997122138602" Y="4.192886725472674" Parameter="3.927">
+      <Dependency Name="ParallelogramDial" />
+    </PointOnFigure>
+    <PointByCoordinates Name="ParallelogramA" Visible="false" X="round(xangle(ParallelogramP, ParallelogramD) / (pi / 4)) * (pi / 4)" Y="0">
+      <Dependency Name="ParallelogramP" />
+      <Dependency Name="ParallelogramD" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Parallelogram1" Visible="false" X="ParallelogramP.X + 1.4142 * cos(ParallelogramA.X) - 0 * sin(ParallelogramA.X)" Y="ParallelogramP.Y + 1.4142 * sin(ParallelogramA.X) + 0 * cos(ParallelogramA.X)">
+      <Dependency Name="ParallelogramP" />
+      <Dependency Name="ParallelogramA" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Parallelogram2" Visible="false" X="ParallelogramP.X + 0 * cos(ParallelogramA.X) - 1.4142 * sin(ParallelogramA.X)" Y="ParallelogramP.Y + 0 * sin(ParallelogramA.X) + 1.4142 * cos(ParallelogramA.X)">
+      <Dependency Name="ParallelogramP" />
+      <Dependency Name="ParallelogramA" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Parallelogram3" Visible="false" X="ParallelogramP.X + -1.4142 * cos(ParallelogramA.X) - 1.4142 * sin(ParallelogramA.X)" Y="ParallelogramP.Y + -1.4142 * sin(ParallelogramA.X) + 1.4142 * cos(ParallelogramA.X)">
+      <Dependency Name="ParallelogramP" />
+      <Dependency Name="ParallelogramA" />
+    </PointByCoordinates>
+    <Polygon Name="Parallelogram" Style="GradientOrangeOutline">
+      <Dependency Name="ParallelogramP" />
+      <Dependency Name="Parallelogram1" />
+      <Dependency Name="Parallelogram2" />
+      <Dependency Name="Parallelogram3" />
+    </Polygon>
+    <ShowHideControl Name="SolutionBox" Style="GalleryText" Show="false" Text="Solution" Pin="TopLeft" OffsetX="16" OffsetY="16">
+      <Dependency Name="SolvedBig1" />
+      <Dependency Name="SolvedBig2" />
+      <Dependency Name="SolvedMedium" />
+      <Dependency Name="SolvedSquare" />
+      <Dependency Name="SolvedSmall1" />
+      <Dependency Name="SolvedSmall2" />
+      <Dependency Name="SolvedParallelogram" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Tangram" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Seven pieces: five triangles, a square and a parallelogram. They were cut from the dashed square in the middle. Can you put them back? It is harder than it looks.\n\nDrag a piece to move it; hold Shift while you drag and it snaps to the grid. Drag the small yellow knob on its edge to turn it, in steps of 45 degrees. If you give up, tick the box.\n\nThe tangram came from China about 200 years ago and spread around the world as a craze. With the same seven pieces people have made thousands of figures: cats, swans, runners, houses, letters. Make one of your own." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

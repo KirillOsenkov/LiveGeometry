@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-4.2" Top="4" Right="4.2" Bottom="-4">
+    <Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF0E2A5C" Offset="0" />
+        <GradientStop Color="#FF1A4A8C" Offset="1" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
+  <Styles>
+    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFE8F4FF" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE8F4FF" />
+    </TextStyle>
+    <TextStyle Name="GalleryText" FontSize="16" Color="#FFD6E6FA" FontFamily="Segoe UI">
+      <Dark Color="#FFD6E6FA" />
+    </TextStyle>
+    <ShapeStyle Name="Ice" Fill="#E6FFFFFF" Color="#00000000" StrokeWidth="0.5" />
+    <LineStyle Name="IceEdge" Color="#FFBFE6FF" />
+    <LineStyle Name="Guide" Color="#50FFFFFF" Dash="Dash" />
+    <PointStyle Name="Node" Size="11" Fill="#FF4FA3FF" Color="#FFFFFFFF" StrokeWidth="2" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="AxisEnd" Visible="false" X="1" Y="0" />
+    <Ray Name="Axis" Style="Guide">
+      <Dependency Name="O" />
+      <Dependency Name="AxisEnd" />
+    </Ray>
+    <LineTwoPoints Name="Mirror" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="AxisEnd" />
+    </LineTwoPoints>
+    <PointByCoordinates Name="SideEnd" Visible="false" X="0.866" Y="0.5" />
+    <Ray Name="SideRay" Style="Guide">
+      <Dependency Name="O" />
+      <Dependency Name="SideEnd" />
+    </Ray>
+    <PointOnFigure Name="T" Style="Node" X="3.2" Y="0" Parameter="3.2">
+      <Dependency Name="Axis" />
+    </PointOnFigure>
+    <FreePoint Name="A1" Style="Node" X="2.55" Y="0.42" />
+    <FreePoint Name="A2" Style="Node" X="2.05" Y="0.2" />
+    <FreePoint Name="A3" Style="Node" X="1.75" Y="0.78" />
+    <FreePoint Name="A4" Style="Node" X="1.2" Y="0.38" />
+    <PointOnFigure Name="J" Style="Node" X="0.7794" Y="0.45" Parameter="0.9">
+      <Dependency Name="SideRay" />
+    </PointOnFigure>
+    <Number Name="Turn60" Value="60" />
+    <Number Name="Turn120" Value="120" />
+    <Number Name="Turn180" Value="180" />
+    <Number Name="Turn240" Value="240" />
+    <Number Name="Turn300" Value="300" />
+    <ReflectedPoint Name="A1m" Visible="false">
+      <Dependency Name="A1" />
+      <Dependency Name="Mirror" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="A2m" Visible="false">
+      <Dependency Name="A2" />
+      <Dependency Name="Mirror" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="A3m" Visible="false">
+      <Dependency Name="A3" />
+      <Dependency Name="Mirror" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="A4m" Visible="false">
+      <Dependency Name="A4" />
+      <Dependency Name="Mirror" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Jm" Visible="false">
+      <Dependency Name="J" />
+      <Dependency Name="Mirror" />
+    </ReflectedPoint>
+    <BezierPath Name="Half" Style="Ice" Closed="true" Filled="true" Path="L C a a C a a C a a C a a C a a L">
+      <Sides Style="IceEdge" />
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+      <Dependency Name="A1" />
+      <Dependency Name="A2" />
+      <Dependency Name="A3" />
+      <Dependency Name="A4" />
+      <Dependency Name="J" />
+    </BezierPath>
+    <BezierPath Name="HalfM" Style="Ice" Closed="true" Filled="true" Path="L C a a C a a C a a C a a C a a L">
+      <Sides Style="IceEdge" />
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+      <Dependency Name="A1m" />
+      <Dependency Name="A2m" />
+      <Dependency Name="A3m" />
+      <Dependency Name="A4m" />
+      <Dependency Name="Jm" />
+    </BezierPath>
+    <RotatedPoint Name="Tr60" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="A1r60" Visible="false">
+      <Dependency Name="A1" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="A2r60" Visible="false">
+      <Dependency Name="A2" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="A3r60" Visible="false">
+      <Dependency Name="A3" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="A4r60" Visible="false">
+      <Dependency Name="A4" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="Jr60" Visible="false">
+      <Dependency Name="J" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <BezierPath Name="Arm60" Style="Ice" Closed="true" Filled="true" Path="L C a a C a a C a a C a a C a a L">
+      <Sides Style="IceEdge" />
+      <Dependency Name="O" />
+      <Dependency Name="Tr60" />
+      <Dependency Name="A1r60" />
+      <Dependency Name="A2r60" />
+      <Dependency Name="A3r60" />
+      <Dependency Name="A4r60" />
+      <Dependency Name="Jr60" />
+    </BezierPath>
+    <RotatedPoint Name="A1mr60" Visible="false">
+      <Dependency Name="A1m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="A2mr60" Visible="false">
+      <Dependency Name="A2m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="A3mr60" Visible="false">
+      <Dependency Name="A3m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="A4mr60" Visible="false">
+      <Dependency Name="A4m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="Jmr60" Visible="false">
+      <Dependency Name="Jm" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <BezierPath Name="Arm60M" Style="Ice" Closed="true" Filled="true" Path="L C a a C a a C a a C a a C a a L">
+      <Sides Style="IceEdge" />
+      <Dependency Name="O" />
+      <Dependency Name="Tr60" />
+      <Dependency Name="A1mr60" />
+      <Dependency Name="A2mr60" />
+      <Dependency Name="A3mr60" />
+      <Dependency Name="A4mr60" />
+      <Dependency Name="Jmr60" />
+    </BezierPath>
+    <RotatedPoint Name="Tr120" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="A1r120" Visible="false">
+      <Dependency Name="A1" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="A2r120" Visible="false">
+      <Dependency Name="A2" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="A3r120" Visible="false">
+      <Dependency Name="A3" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="A4r120" Visible="false">
+      <Dependency Name="A4" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="Jr120" Visible="false">
+      <Dependency Name="J" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <BezierPath Name="Arm120" Style="Ice" Closed="true" Filled="true" Path="L C a a C a a C a a C a a C a a L">
+      <Sides Style="IceEdge" />
+      <Dependency Name="O" />
+      <Dependency Name="Tr120" />
+      <Dependency Name="A1r120" />
+      <Dependency Name="A2r120" />
+      <Dependency Name="A3r120" />
+      <Dependency Name="A4r120" />
+      <Dependency Name="Jr120" />
+    </BezierPath>
+    <RotatedPoint Name="A1mr120" Visible="false">
+      <Dependency Name="A1m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="A2mr120" Visible="false">
+      <Dependency Name="A2m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="A3mr120" Visible="false">
+      <Dependency Name="A3m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="A4mr120" Visible="false">
+      <Dependency Name="A4m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="Jmr120" Visible="false">
+      <Dependency Name="Jm" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <BezierPath Name="Arm120M" Style="Ice" Closed="true" Filled="true" Path="L C a a C a a C a a C a a C a a L">
+      <Sides Style="IceEdge" />
+      <Dependency Name="O" />
+      <Dependency Name="Tr120" />
+      <Dependency Name="A1mr120" />
+      <Dependency Name="A2mr120" />
+      <Dependency Name="A3mr120" />
+      <Dependency Name="A4mr120" />
+      <Dependency Name="Jmr120" />
+    </BezierPath>
+    <RotatedPoint Name="Tr180" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="A1r180" Visible="false">
+      <Dependency Name="A1" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="A2r180" Visible="false">
+      <Dependency Name="A2" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="A3r180" Visible="false">
+      <Dependency Name="A3" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="A4r180" Visible="false">
+      <Dependency Name="A4" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="Jr180" Visible="false">
+      <Dependency Name="J" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <BezierPath Name="Arm180" Style="Ice" Closed="true" Filled="true" Path="L C a a C a a C a a C a a C a a L">
+      <Sides Style="IceEdge" />
+      <Dependency Name="O" />
+      <Dependency Name="Tr180" />
+      <Dependency Name="A1r180" />
+      <Dependency Name="A2r180" />
+      <Dependency Name="A3r180" />
+      <Dependency Name="A4r180" />
+      <Dependency Name="Jr180" />
+    </BezierPath>
+    <RotatedPoint Name="A1mr180" Visible="false">
+      <Dependency Name="A1m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="A2mr180" Visible="false">
+      <Dependency Name="A2m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="A3mr180" Visible="false">
+      <Dependency Name="A3m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="A4mr180" Visible="false">
+      <Dependency Name="A4m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="Jmr180" Visible="false">
+      <Dependency Name="Jm" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <BezierPath Name="Arm180M" Style="Ice" Closed="true" Filled="true" Path="L C a a C a a C a a C a a C a a L">
+      <Sides Style="IceEdge" />
+      <Dependency Name="O" />
+      <Dependency Name="Tr180" />
+      <Dependency Name="A1mr180" />
+      <Dependency Name="A2mr180" />
+      <Dependency Name="A3mr180" />
+      <Dependency Name="A4mr180" />
+      <Dependency Name="Jmr180" />
+    </BezierPath>
+    <RotatedPoint Name="Tr240" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="A1r240" Visible="false">
+      <Dependency Name="A1" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="A2r240" Visible="false">
+      <Dependency Name="A2" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="A3r240" Visible="false">
+      <Dependency Name="A3" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="A4r240" Visible="false">
+      <Dependency Name="A4" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="Jr240" Visible="false">
+      <Dependency Name="J" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <BezierPath Name="Arm240" Style="Ice" Closed="true" Filled="true" Path="L C a a C a a C a a C a a C a a L">
+      <Sides Style="IceEdge" />
+      <Dependency Name="O" />
+      <Dependency Name="Tr240" />
+      <Dependency Name="A1r240" />
+      <Dependency Name="A2r240" />
+      <Dependency Name="A3r240" />
+      <Dependency Name="A4r240" />
+      <Dependency Name="Jr240" />
+    </BezierPath>
+    <RotatedPoint Name="A1mr240" Visible="false">
+      <Dependency Name="A1m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="A2mr240" Visible="false">
+      <Dependency Name="A2m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="A3mr240" Visible="false">
+      <Dependency Name="A3m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="A4mr240" Visible="false">
+      <Dependency Name="A4m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="Jmr240" Visible="false">
+      <Dependency Name="Jm" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <BezierPath Name="Arm240M" Style="Ice" Closed="true" Filled="true" Path="L C a a C a a C a a C a a C a a L">
+      <Sides Style="IceEdge" />
+      <Dependency Name="O" />
+      <Dependency Name="Tr240" />
+      <Dependency Name="A1mr240" />
+      <Dependency Name="A2mr240" />
+      <Dependency Name="A3mr240" />
+      <Dependency Name="A4mr240" />
+      <Dependency Name="Jmr240" />
+    </BezierPath>
+    <RotatedPoint Name="Tr300" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="A1r300" Visible="false">
+      <Dependency Name="A1" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="A2r300" Visible="false">
+      <Dependency Name="A2" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="A3r300" Visible="false">
+      <Dependency Name="A3" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="A4r300" Visible="false">
+      <Dependency Name="A4" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="Jr300" Visible="false">
+      <Dependency Name="J" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <BezierPath Name="Arm300" Style="Ice" Closed="true" Filled="true" Path="L C a a C a a C a a C a a C a a L">
+      <Sides Style="IceEdge" />
+      <Dependency Name="O" />
+      <Dependency Name="Tr300" />
+      <Dependency Name="A1r300" />
+      <Dependency Name="A2r300" />
+      <Dependency Name="A3r300" />
+      <Dependency Name="A4r300" />
+      <Dependency Name="Jr300" />
+    </BezierPath>
+    <RotatedPoint Name="A1mr300" Visible="false">
+      <Dependency Name="A1m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="A2mr300" Visible="false">
+      <Dependency Name="A2m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="A3mr300" Visible="false">
+      <Dependency Name="A3m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="A4mr300" Visible="false">
+      <Dependency Name="A4m" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <RotatedPoint Name="Jmr300" Visible="false">
+      <Dependency Name="Jm" />
+      <Dependency Name="O" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <BezierPath Name="Arm300M" Style="Ice" Closed="true" Filled="true" Path="L C a a C a a C a a C a a C a a L">
+      <Sides Style="IceEdge" />
+      <Dependency Name="O" />
+      <Dependency Name="Tr300" />
+      <Dependency Name="A1mr300" />
+      <Dependency Name="A2mr300" />
+      <Dependency Name="A3mr300" />
+      <Dependency Name="A4mr300" />
+      <Dependency Name="Jmr300" />
+    </BezierPath>
+    <Label Name="Title" Style="GalleryTitle" Text="Design a Snowflake" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Every snowflake has six arms, and every arm is the same on both sides. So a snowflake is really one small shape, drawn twelve times: mirrored, then turned five times by 60 degrees.\n\nDrag the blue points. You are drawing one twelfth, between the two dashed lines, and the other eleven follow. The tip slides along the arm, the last point along the line where two arms meet.\n\nReal snowflakes grow their six arms at once in the same cloud, in the same air, which is why the arms match. No two snowflakes take the same trip down, which is why no two flakes match. Can you make one that looks like a real snowflake? One that looks like a flower?" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

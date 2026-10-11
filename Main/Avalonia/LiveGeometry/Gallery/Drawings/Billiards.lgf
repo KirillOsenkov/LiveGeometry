@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-1.5" Top="6" Right="9.5" Bottom="-2.5" />
+  <Styles>
+    <ShapeStyle Name="Rail" Fill="#FF6B4423" Color="#FF3E2612" StrokeWidth="2" />
+    <ShapeStyle Name="Felt" Fill="#FF2E8B57" Color="#FF1F5E3A" />
+    <ShapeStyle Name="Pocket" Fill="#FF101010" Color="#FF000000" />
+    <PointStyle Name="CueBall" Size="18" Fill="#FFFFFFFF" Color="#FF909090" StrokeWidth="1.5" />
+    <PointStyle Name="Ball" Size="16" Fill="#FFFFFFFF" Color="#FF909090" StrokeWidth="1.5" />
+    <PointStyle Name="EightBall" Character="🎱" Size="26" Fill="#FFFFFFFF" />
+    <LineStyle Name="Cue" Color="#FFD2A06A" StrokeWidth="5" />
+    <LineStyle Name="Path" Color="#FFFFFFFF" StrokeWidth="2" Dash="Dash" />
+    <LineStyle Name="Aim" Color="#80FFFFFF" Dash="Dot" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="RailA" Visible="false" X="-0.4" Y="-0.4" />
+    <PointByCoordinates Name="RailB" Visible="false" X="8.4" Y="-0.4" />
+    <PointByCoordinates Name="RailC" Visible="false" X="8.4" Y="5.4" />
+    <PointByCoordinates Name="RailD" Visible="false" X="-0.4" Y="5.4" />
+    <Polygon Name="Rail" Style="Rail">
+      <Dependency Name="RailA" />
+      <Dependency Name="RailB" />
+      <Dependency Name="RailC" />
+      <Dependency Name="RailD" />
+    </Polygon>
+    <PointByCoordinates Name="TableA" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="TableB" Visible="false" X="8" Y="0" />
+    <PointByCoordinates Name="TableC" Visible="false" X="8" Y="5" />
+    <PointByCoordinates Name="TableD" Visible="false" X="0" Y="5" />
+    <Polygon Name="Felt" Style="Felt">
+      <Dependency Name="TableA" />
+      <Dependency Name="TableB" />
+      <Dependency Name="TableC" />
+      <Dependency Name="TableD" />
+    </Polygon>
+    <PointByCoordinates Name="Pocket1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Pocket1Rim" Visible="false" X="0.32" Y="0" />
+    <Circle Name="PocketA" Style="Pocket">
+      <Dependency Name="Pocket1" />
+      <Dependency Name="Pocket1Rim" />
+    </Circle>
+    <PointByCoordinates Name="Pocket2" Visible="false" X="8" Y="0" />
+    <PointByCoordinates Name="Pocket2Rim" Visible="false" X="8.32" Y="0" />
+    <Circle Name="PocketB" Style="Pocket">
+      <Dependency Name="Pocket2" />
+      <Dependency Name="Pocket2Rim" />
+    </Circle>
+    <PointByCoordinates Name="Pocket3" Visible="false" X="8" Y="5" />
+    <PointByCoordinates Name="Pocket3Rim" Visible="false" X="8.32" Y="5" />
+    <Circle Name="PocketC" Style="Pocket">
+      <Dependency Name="Pocket3" />
+      <Dependency Name="Pocket3Rim" />
+    </Circle>
+    <PointByCoordinates Name="Pocket4" Visible="false" X="0" Y="5" />
+    <PointByCoordinates Name="Pocket4Rim" Visible="false" X="0.32" Y="5" />
+    <Circle Name="PocketD" Style="Pocket">
+      <Dependency Name="Pocket4" />
+      <Dependency Name="Pocket4Rim" />
+    </Circle>
+    <PointByCoordinates Name="Pocket5" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="Pocket5Rim" Visible="false" X="4.28" Y="0" />
+    <Circle Name="PocketE" Style="Pocket">
+      <Dependency Name="Pocket5" />
+      <Dependency Name="Pocket5Rim" />
+    </Circle>
+    <PointByCoordinates Name="Pocket6" Visible="false" X="4" Y="5" />
+    <PointByCoordinates Name="Pocket6Rim" Visible="false" X="4.28" Y="5" />
+    <Circle Name="PocketF" Style="Pocket">
+      <Dependency Name="Pocket6" />
+      <Dependency Name="Pocket6Rim" />
+    </Circle>
+    <FreePoint Name="B" Style="CueBall" X="2" Y="1.5" />
+    <Number Name="Reach" Value="1.2" />
+    <CircleByRadius Name="AimCircle" Visible="false">
+      <Dependency Name="Reach" />
+      <Dependency Name="B" />
+    </CircleByRadius>
+    <PointOnFigure Name="D" Style="EightBall" X="2.9192531009545197" Y="2.2713454066664944" Parameter="0.698132">
+      <Dependency Name="AimCircle" />
+    </PointOnFigure>
+    <PointByCoordinates Name="U" Visible="false" X="(D.X - B.X) / 1.2" Y="(D.Y - B.Y) / 1.2">
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CueEnd" Visible="false" X="B.X - 2.6 * U.X" Y="B.Y - 2.6 * U.Y">
+      <Dependency Name="B" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <Segment Name="Cue" Style="Cue">
+      <Dependency Name="CueEnd" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Aim" Style="Aim">
+      <Dependency Name="B" />
+      <Dependency Name="D" />
+    </Segment>
+    <Slider Name="roll" X="0" Y="-1.4" Value="6" />
+    <PointByCoordinates Name="TrackL" Visible="false" X="0" Y="-4" />
+    <PointByCoordinates Name="TrackR" Visible="false" X="1" Y="-4" />
+    <Segment Name="Track" Visible="false">
+      <Dependency Name="TrackL" />
+      <Dependency Name="TrackR" />
+    </Segment>
+    <PointOnFigure Name="T" Visible="false" X="1" Y="-4" Parameter="1">
+      <Dependency Name="Track" />
+    </PointOnFigure>
+    <PointByCoordinates Name="G" Visible="false" X="8 - abs((B.X + 3 * roll * T.X * U.X) - 16 * floor((B.X + 3 * roll * T.X * U.X) / 16) - 8)" Y="5 - abs((B.Y + 3 * roll * T.X * U.Y) - 10 * floor((B.Y + 3 * roll * T.X * U.Y) / 10) - 5)">
+      <Dependency Name="B" />
+      <Dependency Name="roll" />
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <Locus Name="Path" Style="Path">
+      <Dependency Name="G" />
+      <Dependency Name="T" />
+    </Locus>
+    <PointByCoordinates Name="Ball" Style="Ball" X="8 - abs((B.X + 3 * roll * U.X) - 16 * floor((B.X + 3 * roll * U.X) / 16) - 8)" Y="5 - abs((B.Y + 3 * roll * U.Y) - 10 * floor((B.Y + 3 * roll * U.Y) / 10) - 5)">
+      <Dependency Name="B" />
+      <Dependency Name="roll" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <Label Name="Title" Style="GalleryTitle" Text="Billiards" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Drag the 8 ball around the cue ball to aim, and the slider to roll the cue ball further along the dashed path. Every time it hits a cushion it bounces off at the same angle it came in, like light off a mirror.\n\nCan you sink it in a corner pocket off two cushions? Off three?\n\nThe trick the pros use: instead of bending the path at the cushion, imagine the table mirrored across that cushion and the ball going straight into the mirror table. Every bounce is one more mirror. The whole zigzag path is really one straight line, folded." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

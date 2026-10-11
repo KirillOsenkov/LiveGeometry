@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-7.5" Top="6" Right="7.5" Bottom="-7.5" />
+  <Styles>
+    <ShapeStyle Name="Ring" IsFilled="false" Color="#FFB8BCC8" StrokeWidth="10">
+      <Dark Color="#FF4A5061" />
+    </ShapeStyle>
+    <ShapeStyle Name="Roller" Fill="#18808080" Color="#FF8A94A6" StrokeWidth="2">
+      <Dark Color="#FF9AA6B8" />
+    </ShapeStyle>
+    <PointStyle Name="Hub" Size="12" Fill="#FFFFE066" Color="#FF806000" StrokeWidth="1.5" />
+    <PointStyle Name="Pen" Size="12" Fill="#FFE0362B" Color="#FF7A1A14" />
+    <PointStyle Name="Pen2" Fill="#FF2F7BD6" Color="#FF163C6B" />
+    <LineStyle Name="Arm" Color="#FF8A94A6" StrokeWidth="2" />
+    <LineStyle Name="Curve" Color="#FFE0362B" StrokeWidth="2">
+      <Dark Color="#FFFF6B5E" />
+    </LineStyle>
+    <LineStyle Name="Curve2" Color="#FF2F7BD6" StrokeWidth="2">
+      <Dark Color="#FF62AEFF" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="RingRim" Visible="false" X="5" Y="0" />
+    <Circle Name="Ring" Style="Ring">
+      <Dependency Name="O" />
+      <Dependency Name="RingRim" />
+    </Circle>
+    <Slider Name="r" X="-6.5" Y="-6.2" Value="1.5" Maximum="5" />
+    <Label Name="TrackRadius" Visible="false" Text="[5 - r]" X="0" Y="-9">
+      <Dependency Name="r" />
+    </Label>
+    <CircleByRadius Name="Track" Visible="false">
+      <Dependency Name="TrackRadius" />
+      <Dependency Name="O" />
+    </CircleByRadius>
+    <PointOnFigure Name="C" Style="Hub" X="2.175634888947325" Y="2.741644183696192" Parameter="0.9">
+      <Dependency Name="Track" />
+    </PointOnFigure>
+    <CircleByRadius Name="Roller" Style="Roller">
+      <Dependency Name="r" />
+      <Dependency Name="C" />
+    </CircleByRadius>
+    <PointByCoordinates Name="Turn" Visible="false" X="xangle(O, C)" Y="0">
+      <Dependency Name="O" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W" Visible="false" X="C.X + r * cos((5 - r) / r * Turn.X)" Y="C.Y - r * sin((5 - r) / r * Turn.X)">
+      <Dependency Name="C" />
+      <Dependency Name="r" />
+      <Dependency Name="Turn" />
+    </PointByCoordinates>
+    <Ray Name="Spoke" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="W" />
+    </Ray>
+    <PointOnFigure Name="P" Style="Pen" X="1.5698195634274956" Y="1.7057929437175436" Parameter="0.8">
+      <Dependency Name="Spoke" />
+    </PointOnFigure>
+    <Segment Name="Arm" Style="Arm">
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </Segment>
+    <Locus Name="Curve0" Style="Curve">
+      <Dependency Name="P" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointByCoordinates Name="P1" Visible="false" X="(5 - r) * cos(Turn.X + 2 * pi) + dist(C, P) * cos((5 - r) / r * (Turn.X + 2 * pi))" Y="(5 - r) * sin(Turn.X + 2 * pi) - dist(C, P) * sin((5 - r) / r * (Turn.X + 2 * pi))">
+      <Dependency Name="r" />
+      <Dependency Name="Turn" />
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Locus Name="Curve1" Style="Curve">
+      <Dependency Name="P1" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointByCoordinates Name="P2" Visible="false" X="(5 - r) * cos(Turn.X + 4 * pi) + dist(C, P) * cos((5 - r) / r * (Turn.X + 4 * pi))" Y="(5 - r) * sin(Turn.X + 4 * pi) - dist(C, P) * sin((5 - r) / r * (Turn.X + 4 * pi))">
+      <Dependency Name="r" />
+      <Dependency Name="Turn" />
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Locus Name="Curve2" Style="Curve">
+      <Dependency Name="P2" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointByCoordinates Name="P3" Visible="false" X="(5 - r) * cos(Turn.X + 6 * pi) + dist(C, P) * cos((5 - r) / r * (Turn.X + 6 * pi))" Y="(5 - r) * sin(Turn.X + 6 * pi) - dist(C, P) * sin((5 - r) / r * (Turn.X + 6 * pi))">
+      <Dependency Name="r" />
+      <Dependency Name="Turn" />
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Locus Name="Curve3" Style="Curve">
+      <Dependency Name="P3" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointByCoordinates Name="P4" Visible="false" X="(5 - r) * cos(Turn.X + 8 * pi) + dist(C, P) * cos((5 - r) / r * (Turn.X + 8 * pi))" Y="(5 - r) * sin(Turn.X + 8 * pi) - dist(C, P) * sin((5 - r) / r * (Turn.X + 8 * pi))">
+      <Dependency Name="r" />
+      <Dependency Name="Turn" />
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Locus Name="Curve4" Style="Curve">
+      <Dependency Name="P4" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointByCoordinates Name="P5" Visible="false" X="(5 - r) * cos(Turn.X + 10 * pi) + dist(C, P) * cos((5 - r) / r * (Turn.X + 10 * pi))" Y="(5 - r) * sin(Turn.X + 10 * pi) - dist(C, P) * sin((5 - r) / r * (Turn.X + 10 * pi))">
+      <Dependency Name="r" />
+      <Dependency Name="Turn" />
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Locus Name="Curve5" Style="Curve">
+      <Dependency Name="P5" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointOnFigure Name="Q" Visible="false" Style="Pen2" X="1.8727272261874104" Y="2.2237185637068677" Parameter="0.5">
+      <Dependency Name="Arm" />
+    </PointOnFigure>
+    <Locus Name="Blue0" Visible="false" Style="Curve2">
+      <Dependency Name="Q" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointByCoordinates Name="Q1" Visible="false" X="(5 - r) * cos(Turn.X + 2 * pi) + dist(C, Q) * cos((5 - r) / r * (Turn.X + 2 * pi))" Y="(5 - r) * sin(Turn.X + 2 * pi) - dist(C, Q) * sin((5 - r) / r * (Turn.X + 2 * pi))">
+      <Dependency Name="r" />
+      <Dependency Name="Turn" />
+      <Dependency Name="C" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <Locus Name="Blue1" Visible="false" Style="Curve2">
+      <Dependency Name="Q1" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointByCoordinates Name="Q2" Visible="false" X="(5 - r) * cos(Turn.X + 4 * pi) + dist(C, Q) * cos((5 - r) / r * (Turn.X + 4 * pi))" Y="(5 - r) * sin(Turn.X + 4 * pi) - dist(C, Q) * sin((5 - r) / r * (Turn.X + 4 * pi))">
+      <Dependency Name="r" />
+      <Dependency Name="Turn" />
+      <Dependency Name="C" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <Locus Name="Blue2" Visible="false" Style="Curve2">
+      <Dependency Name="Q2" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointByCoordinates Name="Q3" Visible="false" X="(5 - r) * cos(Turn.X + 6 * pi) + dist(C, Q) * cos((5 - r) / r * (Turn.X + 6 * pi))" Y="(5 - r) * sin(Turn.X + 6 * pi) - dist(C, Q) * sin((5 - r) / r * (Turn.X + 6 * pi))">
+      <Dependency Name="r" />
+      <Dependency Name="Turn" />
+      <Dependency Name="C" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <Locus Name="Blue3" Visible="false" Style="Curve2">
+      <Dependency Name="Q3" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointByCoordinates Name="Q4" Visible="false" X="(5 - r) * cos(Turn.X + 8 * pi) + dist(C, Q) * cos((5 - r) / r * (Turn.X + 8 * pi))" Y="(5 - r) * sin(Turn.X + 8 * pi) - dist(C, Q) * sin((5 - r) / r * (Turn.X + 8 * pi))">
+      <Dependency Name="r" />
+      <Dependency Name="Turn" />
+      <Dependency Name="C" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <Locus Name="Blue4" Visible="false" Style="Curve2">
+      <Dependency Name="Q4" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointByCoordinates Name="Q5" Visible="false" X="(5 - r) * cos(Turn.X + 10 * pi) + dist(C, Q) * cos((5 - r) / r * (Turn.X + 10 * pi))" Y="(5 - r) * sin(Turn.X + 10 * pi) - dist(C, Q) * sin((5 - r) / r * (Turn.X + 10 * pi))">
+      <Dependency Name="r" />
+      <Dependency Name="Turn" />
+      <Dependency Name="C" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <Locus Name="Blue5" Visible="false" Style="Curve2">
+      <Dependency Name="Q5" />
+      <Dependency Name="C" />
+    </Locus>
+    <ShowHideControl Name="SecondPen" Style="GalleryText" Show="false" Text="A second pen on the arm" Pin="TopLeft" OffsetX="16" OffsetY="16">
+      <Dependency Name="Q" />
+      <Dependency Name="Blue0" />
+      <Dependency Name="Blue1" />
+      <Dependency Name="Blue2" />
+      <Dependency Name="Blue3" />
+      <Dependency Name="Blue4" />
+      <Dependency Name="Blue5" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Spirograph" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A small wheel rolls around the inside of a big ring. A pen is stuck through a hole in the small wheel, and the red curve is what it draws as the wheel goes round and round.\n\nDrag the yellow hub to roll the wheel. Drag the red pen along its spoke: close to the center it draws gentle waves, near the rim sharp points, and past the rim loops. The slider r is the small wheel's size. With r at 1.5 the curve closes after three laps and has seven petals; try r = 2.5, 3, 1.25 or 2 and count the petals.\n\nTick the box for a second pen on the same arm and slide it along the arm. The toy was a sensation in the 1960s. The real thing uses gears, so the small wheel can't slip, which is why its curves come out so neat." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

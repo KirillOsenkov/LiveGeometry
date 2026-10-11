@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-4" Top="3.6" Right="4" Bottom="-3.6" />
+  <Styles>
+    <ShapeStyle Name="Petal" Fill="#2A2F7BD6" Color="#FF2F7BD6" StrokeWidth="1.2">
+      <Dark Fill="#2A62AEFF" Color="#FF62AEFF" />
+    </ShapeStyle>
+    <ShapeStyle Name="Ring" IsFilled="false" Color="#FF2F7BD6" StrokeWidth="3">
+      <Dark Color="#FF62AEFF" />
+    </ShapeStyle>
+    <ShapeStyle Name="Ring2" IsFilled="false" Color="#FF2F7BD6" StrokeWidth="1.2">
+      <Dark Color="#FF62AEFF" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="O" X="0" Y="0" />
+    <FreePoint Name="R" X="1" Y="0" />
+    <Circle Name="Petal0" Style="Petal">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </Circle>
+    <PointByCoordinates Name="C1" Visible="false" X="O.X + 1 * (R.X - O.X) - 0 * (R.Y - O.Y)" Y="O.Y + 1 * (R.Y - O.Y) + 0 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R1" Visible="false" X="O.X + 2 * (R.X - O.X) - 0 * (R.Y - O.Y)" Y="O.Y + 2 * (R.Y - O.Y) + 0 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal1" Style="Petal">
+      <Dependency Name="C1" />
+      <Dependency Name="R1" />
+    </Circle>
+    <PointByCoordinates Name="C2" Visible="false" X="O.X + 0.5 * (R.X - O.X) - 0.866025 * (R.Y - O.Y)" Y="O.Y + 0.5 * (R.Y - O.Y) + 0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R2" Visible="false" X="O.X + 1.5 * (R.X - O.X) - 0.866025 * (R.Y - O.Y)" Y="O.Y + 1.5 * (R.Y - O.Y) + 0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal2" Style="Petal">
+      <Dependency Name="C2" />
+      <Dependency Name="R2" />
+    </Circle>
+    <PointByCoordinates Name="C3" Visible="false" X="O.X + -0.5 * (R.X - O.X) - 0.866025 * (R.Y - O.Y)" Y="O.Y + -0.5 * (R.Y - O.Y) + 0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R3" Visible="false" X="O.X + 0.5 * (R.X - O.X) - 0.866025 * (R.Y - O.Y)" Y="O.Y + 0.5 * (R.Y - O.Y) + 0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal3" Style="Petal">
+      <Dependency Name="C3" />
+      <Dependency Name="R3" />
+    </Circle>
+    <PointByCoordinates Name="C4" Visible="false" X="O.X + -1 * (R.X - O.X) - 0 * (R.Y - O.Y)" Y="O.Y + -1 * (R.Y - O.Y) + 0 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R4" Visible="false" X="O.X + 0 * (R.X - O.X) - 0 * (R.Y - O.Y)" Y="O.Y + 0 * (R.Y - O.Y) + 0 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal4" Style="Petal">
+      <Dependency Name="C4" />
+      <Dependency Name="R4" />
+    </Circle>
+    <PointByCoordinates Name="C5" Visible="false" X="O.X + -0.5 * (R.X - O.X) - -0.866025 * (R.Y - O.Y)" Y="O.Y + -0.5 * (R.Y - O.Y) + -0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R5" Visible="false" X="O.X + 0.5 * (R.X - O.X) - -0.866025 * (R.Y - O.Y)" Y="O.Y + 0.5 * (R.Y - O.Y) + -0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal5" Style="Petal">
+      <Dependency Name="C5" />
+      <Dependency Name="R5" />
+    </Circle>
+    <PointByCoordinates Name="C6" Visible="false" X="O.X + 0.5 * (R.X - O.X) - -0.866025 * (R.Y - O.Y)" Y="O.Y + 0.5 * (R.Y - O.Y) + -0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R6" Visible="false" X="O.X + 1.5 * (R.X - O.X) - -0.866025 * (R.Y - O.Y)" Y="O.Y + 1.5 * (R.Y - O.Y) + -0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal6" Style="Petal">
+      <Dependency Name="C6" />
+      <Dependency Name="R6" />
+    </Circle>
+    <PointByCoordinates Name="C7" Visible="false" X="O.X + 2 * (R.X - O.X) - 0 * (R.Y - O.Y)" Y="O.Y + 2 * (R.Y - O.Y) + 0 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R7" Visible="false" X="O.X + 3 * (R.X - O.X) - 0 * (R.Y - O.Y)" Y="O.Y + 3 * (R.Y - O.Y) + 0 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal7" Style="Petal">
+      <Dependency Name="C7" />
+      <Dependency Name="R7" />
+    </Circle>
+    <PointByCoordinates Name="C8" Visible="false" X="O.X + 1.5 * (R.X - O.X) - 0.866025 * (R.Y - O.Y)" Y="O.Y + 1.5 * (R.Y - O.Y) + 0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R8" Visible="false" X="O.X + 2.5 * (R.X - O.X) - 0.866025 * (R.Y - O.Y)" Y="O.Y + 2.5 * (R.Y - O.Y) + 0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal8" Style="Petal">
+      <Dependency Name="C8" />
+      <Dependency Name="R8" />
+    </Circle>
+    <PointByCoordinates Name="C9" Visible="false" X="O.X + 1 * (R.X - O.X) - 1.732051 * (R.Y - O.Y)" Y="O.Y + 1 * (R.Y - O.Y) + 1.732051 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R9" Visible="false" X="O.X + 2 * (R.X - O.X) - 1.732051 * (R.Y - O.Y)" Y="O.Y + 2 * (R.Y - O.Y) + 1.732051 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal9" Style="Petal">
+      <Dependency Name="C9" />
+      <Dependency Name="R9" />
+    </Circle>
+    <PointByCoordinates Name="C10" Visible="false" X="O.X + 0 * (R.X - O.X) - 1.732051 * (R.Y - O.Y)" Y="O.Y + 0 * (R.Y - O.Y) + 1.732051 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R10" Visible="false" X="O.X + 1 * (R.X - O.X) - 1.732051 * (R.Y - O.Y)" Y="O.Y + 1 * (R.Y - O.Y) + 1.732051 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal10" Style="Petal">
+      <Dependency Name="C10" />
+      <Dependency Name="R10" />
+    </Circle>
+    <PointByCoordinates Name="C11" Visible="false" X="O.X + -1 * (R.X - O.X) - 1.732051 * (R.Y - O.Y)" Y="O.Y + -1 * (R.Y - O.Y) + 1.732051 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R11" Visible="false" X="O.X + 0 * (R.X - O.X) - 1.732051 * (R.Y - O.Y)" Y="O.Y + 0 * (R.Y - O.Y) + 1.732051 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal11" Style="Petal">
+      <Dependency Name="C11" />
+      <Dependency Name="R11" />
+    </Circle>
+    <PointByCoordinates Name="C12" Visible="false" X="O.X + -1.5 * (R.X - O.X) - 0.866025 * (R.Y - O.Y)" Y="O.Y + -1.5 * (R.Y - O.Y) + 0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R12" Visible="false" X="O.X + -0.5 * (R.X - O.X) - 0.866025 * (R.Y - O.Y)" Y="O.Y + -0.5 * (R.Y - O.Y) + 0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal12" Style="Petal">
+      <Dependency Name="C12" />
+      <Dependency Name="R12" />
+    </Circle>
+    <PointByCoordinates Name="C13" Visible="false" X="O.X + -2 * (R.X - O.X) - 0 * (R.Y - O.Y)" Y="O.Y + -2 * (R.Y - O.Y) + 0 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R13" Visible="false" X="O.X + -1 * (R.X - O.X) - 0 * (R.Y - O.Y)" Y="O.Y + -1 * (R.Y - O.Y) + 0 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal13" Style="Petal">
+      <Dependency Name="C13" />
+      <Dependency Name="R13" />
+    </Circle>
+    <PointByCoordinates Name="C14" Visible="false" X="O.X + -1.5 * (R.X - O.X) - -0.866025 * (R.Y - O.Y)" Y="O.Y + -1.5 * (R.Y - O.Y) + -0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R14" Visible="false" X="O.X + -0.5 * (R.X - O.X) - -0.866025 * (R.Y - O.Y)" Y="O.Y + -0.5 * (R.Y - O.Y) + -0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal14" Style="Petal">
+      <Dependency Name="C14" />
+      <Dependency Name="R14" />
+    </Circle>
+    <PointByCoordinates Name="C15" Visible="false" X="O.X + -1 * (R.X - O.X) - -1.732051 * (R.Y - O.Y)" Y="O.Y + -1 * (R.Y - O.Y) + -1.732051 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R15" Visible="false" X="O.X + -0 * (R.X - O.X) - -1.732051 * (R.Y - O.Y)" Y="O.Y + -0 * (R.Y - O.Y) + -1.732051 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal15" Style="Petal">
+      <Dependency Name="C15" />
+      <Dependency Name="R15" />
+    </Circle>
+    <PointByCoordinates Name="C16" Visible="false" X="O.X + -0 * (R.X - O.X) - -1.732051 * (R.Y - O.Y)" Y="O.Y + -0 * (R.Y - O.Y) + -1.732051 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R16" Visible="false" X="O.X + 1 * (R.X - O.X) - -1.732051 * (R.Y - O.Y)" Y="O.Y + 1 * (R.Y - O.Y) + -1.732051 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal16" Style="Petal">
+      <Dependency Name="C16" />
+      <Dependency Name="R16" />
+    </Circle>
+    <PointByCoordinates Name="C17" Visible="false" X="O.X + 1 * (R.X - O.X) - -1.732051 * (R.Y - O.Y)" Y="O.Y + 1 * (R.Y - O.Y) + -1.732051 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R17" Visible="false" X="O.X + 2 * (R.X - O.X) - -1.732051 * (R.Y - O.Y)" Y="O.Y + 2 * (R.Y - O.Y) + -1.732051 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal17" Style="Petal">
+      <Dependency Name="C17" />
+      <Dependency Name="R17" />
+    </Circle>
+    <PointByCoordinates Name="C18" Visible="false" X="O.X + 1.5 * (R.X - O.X) - -0.866025 * (R.Y - O.Y)" Y="O.Y + 1.5 * (R.Y - O.Y) + -0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R18" Visible="false" X="O.X + 2.5 * (R.X - O.X) - -0.866025 * (R.Y - O.Y)" Y="O.Y + 2.5 * (R.Y - O.Y) + -0.866025 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Petal18" Style="Petal">
+      <Dependency Name="C18" />
+      <Dependency Name="R18" />
+    </Circle>
+    <PointByCoordinates Name="Edge" Visible="false" X="O.X + 3 * (R.X - O.X) - 0 * (R.Y - O.Y)" Y="O.Y + 3 * (R.Y - O.Y) + 0 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Ring" Style="Ring">
+      <Dependency Name="O" />
+      <Dependency Name="Edge" />
+    </Circle>
+    <PointByCoordinates Name="Edge2" Visible="false" X="O.X + 3.12 * (R.X - O.X) - 0 * (R.Y - O.Y)" Y="O.Y + 3.12 * (R.Y - O.Y) + 0 * (R.X - O.X)">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="Ring2" Style="Ring2">
+      <Dependency Name="O" />
+      <Dependency Name="Edge2" />
+    </Circle>
+    <Label Name="Title" Style="GalleryTitle" Text="Flower of Life" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Draw a circle. Draw another one of the same size with its center on the first one's rim. Where the two cross, put the center of a third. Keep going: nineteen circles later you have this.\n\nIt works only because six circles fit exactly around one, with no gap and no overlap, which is true because six equilateral triangles fit exactly around a point. The same fact makes honeycombs hexagonal.\n\nThe pattern is at least 2,600 years old: it is carved into temple pillars in Egypt and Assyria, and Leonardo da Vinci filled pages of his notebooks with it. Drag R to resize it, O to move it." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

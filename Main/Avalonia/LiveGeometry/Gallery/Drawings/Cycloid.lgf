@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-10" Top="4.5" Right="10" Bottom="-1.5" />
+  <Scene Left="-9.5" Top="4" Right="9.5" Bottom="-1.2" />
+  <Styles>
+    <LineStyle Name="Road" Color="#FF8B9A6B" StrokeWidth="5">
+      <Dark Color="#FF6F7D55" />
+    </LineStyle>
+    <LineStyle Name="Rail" Color="#00000000" />
+    <ShapeStyle Name="Tire" Fill="#30808080" Color="#FF404040" StrokeWidth="6">
+      <Dark Color="#FFC0C0C0" />
+    </ShapeStyle>
+    <LineStyle Name="Spoke" Color="#FF707070" StrokeWidth="2">
+      <Dark Color="#FFA0A0A0" />
+    </LineStyle>
+    <PointStyle Name="Hub" Size="14" Fill="#FFFFE066" Color="#FF806000" StrokeWidth="1.5" />
+    <PointStyle Name="RimPoint" Size="12" Fill="#FFE0362B" Color="#FF7A1A14" />
+    <PointStyle Name="InnerPoint" Fill="#FF2F7BD6" Color="#FF163C6B" />
+    <PointStyle Name="FlangePoint" Fill="#FF9B59B6" Color="#FF4A2A5B" />
+    <LineStyle Name="Cycloid" Color="#FFE0362B" StrokeWidth="3">
+      <Dark Color="#FFFF6B5E" />
+    </LineStyle>
+    <LineStyle Name="Inner" Color="#FF2F7BD6" StrokeWidth="2.5">
+      <Dark Color="#FF62AEFF" />
+    </LineStyle>
+    <LineStyle Name="Flange" Color="#FF9B59B6" StrokeWidth="2.5">
+      <Dark Color="#FFC08CE0" />
+    </LineStyle>
+    <LineStyle Name="FlangeArm" Color="#FF9B59B6" StrokeWidth="1.5" Dash="Dash">
+      <Dark Color="#FFC08CE0" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="RoadL" Visible="false" X="-20" Y="0" />
+    <PointByCoordinates Name="RoadR" Visible="false" X="20" Y="0" />
+    <Segment Name="Road" Style="Road">
+      <Dependency Name="RoadL" />
+      <Dependency Name="RoadR" />
+    </Segment>
+    <PointByCoordinates Name="RailL" Visible="false" X="-8.5" Y="1" />
+    <PointByCoordinates Name="RailR" Visible="false" X="8.5" Y="1" />
+    <Segment Name="Rail" Visible="false" Style="Rail">
+      <Dependency Name="RailL" />
+      <Dependency Name="RailR" />
+    </Segment>
+    <PointOnFigure Name="C" Style="Hub" X="-2.500000000000001" Y="1" Parameter="0.3529411764705882">
+      <Dependency Name="Rail" />
+    </PointOnFigure>
+    <PointByCoordinates Name="P" Style="RimPoint" X="C.X - sin(C.X)" Y="1 - cos(C.X)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Circle Name="Wheel" Style="Tire">
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </Circle>
+    <Number Name="Turn60" Value="60" />
+    <Number Name="Turn120" Value="120" />
+    <Number Name="Turn180" Value="180" />
+    <Number Name="Turn240" Value="240" />
+    <Number Name="Turn300" Value="300" />
+    <RotatedPoint Name="S1" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="C" />
+      <Dependency Name="Turn60" />
+    </RotatedPoint>
+    <RotatedPoint Name="S2" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="C" />
+      <Dependency Name="Turn120" />
+    </RotatedPoint>
+    <RotatedPoint Name="S3" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="C" />
+      <Dependency Name="Turn180" />
+    </RotatedPoint>
+    <RotatedPoint Name="S4" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="C" />
+      <Dependency Name="Turn240" />
+    </RotatedPoint>
+    <RotatedPoint Name="S5" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="C" />
+      <Dependency Name="Turn300" />
+    </RotatedPoint>
+    <Segment Name="Spoke0" Style="Spoke">
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="Spoke1" Style="Spoke">
+      <Dependency Name="C" />
+      <Dependency Name="S1" />
+    </Segment>
+    <Segment Name="Spoke2" Style="Spoke">
+      <Dependency Name="C" />
+      <Dependency Name="S2" />
+    </Segment>
+    <Segment Name="Spoke3" Style="Spoke">
+      <Dependency Name="C" />
+      <Dependency Name="S3" />
+    </Segment>
+    <Segment Name="Spoke4" Style="Spoke">
+      <Dependency Name="C" />
+      <Dependency Name="S4" />
+    </Segment>
+    <Segment Name="Spoke5" Style="Spoke">
+      <Dependency Name="C" />
+      <Dependency Name="S5" />
+    </Segment>
+    <Locus Name="Cycloid" Style="Cycloid">
+      <Dependency Name="P" />
+      <Dependency Name="C" />
+    </Locus>
+    <Ray Name="SpokeRay" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </Ray>
+    <PointOnFigure Name="Q" Visible="false" Style="InnerPoint" X="-2.200763927948023" Y="1.400571807773467" Parameter="0.5">
+      <Dependency Name="SpokeRay" />
+    </PointOnFigure>
+    <Locus Name="InnerCurve" Visible="false" Style="Inner">
+      <Dependency Name="Q" />
+      <Dependency Name="C" />
+    </Locus>
+    <PointOnFigure Name="F" Visible="false" Style="FlangePoint" X="-1.5424445694336715" Y="2.281829784875095" Parameter="1.6">
+      <Dependency Name="SpokeRay" />
+    </PointOnFigure>
+    <Segment Name="FlangeArm" Visible="false" Style="FlangeArm">
+      <Dependency Name="P" />
+      <Dependency Name="F" />
+    </Segment>
+    <Locus Name="FlangeCurve" Visible="false" Style="Flange">
+      <Dependency Name="F" />
+      <Dependency Name="C" />
+    </Locus>
+    <ShowHideControl Name="InsideBox" Style="GalleryText" Show="false" Text="A point inside the wheel" Pin="TopLeft" OffsetX="16" OffsetY="16">
+      <Dependency Name="Q" />
+      <Dependency Name="InnerCurve" />
+    </ShowHideControl>
+    <ShowHideControl Name="FlangeBox" Style="GalleryText" Show="false" Text="A train wheel's flange" Pin="TopLeft" OffsetX="16" OffsetY="40">
+      <Dependency Name="F" />
+      <Dependency Name="FlangeArm" />
+      <Dependency Name="FlangeCurve" />
+    </ShowHideControl>
+    <Label Name="Title" Style="GalleryTitle" Text="Cycloid" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Drag the wheel along the road and watch the red dot on its rim. It never moves in a circle: it draws a chain of arches called a cycloid, and it comes to a dead stop every time it touches the road.\n\nEach arch is one turn of the wheel. Its length is exactly 8 times the radius, and the area under it is exactly 3 times the area of the wheel. It took Galileo and his friends decades to find that out.\n\nTick the boxes. A point inside the wheel draws a gentler wave; slide the blue dot along its spoke to move it in or out. A train's wheels have a flange that reaches below the rail: tick it and look at the little loops. While the dot is on the bottom of a loop, it is moving backwards. Some part of every train going forward is always moving backward." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

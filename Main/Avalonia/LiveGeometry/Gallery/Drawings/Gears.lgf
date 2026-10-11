@@ -1,0 +1,692 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-4" Top="4.5" Right="10" Bottom="-5" />
+  <Styles>
+    <ShapeStyle Name="Axle" Fill="#FFFFFFFF" Color="#80000000" StrokeWidth="2">
+      <Dark Fill="#FF2A2E38" Color="#80FFFFFF" />
+    </ShapeStyle>
+    <PointStyle Name="Mark" Size="12" Fill="#FFFFFFFF" Color="#80000000" StrokeWidth="1.5">
+      <Dark Fill="#FF2A2E38" Color="#80FFFFFF" />
+    </PointStyle>
+  </Styles>
+  <Figures>
+    <Slider Name="spin" X="-3.5" Y="-4.6" Value="1" />
+    <PointByCoordinates Name="Gold0_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + -7.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + -7.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold0_1" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + -3.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + -3.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold0_2" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 3.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 3.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold0_3" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 7.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 7.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold1_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 22.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 22.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold1_1" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 26.25))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 26.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold1_2" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 33.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 33.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold1_3" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 37.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 37.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold2_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 52.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 52.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold2_1" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 56.25))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 56.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold2_2" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 63.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 63.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold2_3" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 67.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 67.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold3_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 82.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 82.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold3_1" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 86.25))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 86.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold3_2" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 93.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 93.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold3_3" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 97.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 97.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold4_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 112.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 112.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold4_1" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 116.25))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 116.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold4_2" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 123.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 123.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold4_3" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 127.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 127.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold5_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 142.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 142.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold5_1" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 146.25))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 146.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold5_2" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 153.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 153.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold5_3" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 157.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 157.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold6_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 172.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 172.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold6_1" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 176.25))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 176.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold6_2" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 183.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 183.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold6_3" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 187.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 187.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold7_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 202.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 202.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold7_1" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 206.25))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 206.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold7_2" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 213.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 213.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold7_3" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 217.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 217.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold8_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 232.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 232.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold8_1" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 236.25))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 236.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold8_2" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 243.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 243.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold8_3" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 247.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 247.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold9_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 262.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 262.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold9_1" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 266.25))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 266.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold9_2" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 273.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 273.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold9_3" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 277.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 277.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold10_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 292.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 292.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold10_1" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 296.25))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 296.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold10_2" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 303.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 303.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold10_3" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 307.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 307.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold11_0" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 322.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 322.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold11_1" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 326.25))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 326.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold11_2" Visible="false" X="0 + 2.1 * cos(rad(0 + 120 * spin + 333.75))" Y="0 + 2.1 * sin(rad(0 + 120 * spin + 333.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Gold11_3" Visible="false" X="0 + 1.455 * cos(rad(0 + 120 * spin + 337.5))" Y="0 + 1.455 * sin(rad(0 + 120 * spin + 337.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <Polygon Name="GoldGear" Style="GradientBrownOutline">
+      <Dependency Name="Gold0_0" />
+      <Dependency Name="Gold0_1" />
+      <Dependency Name="Gold0_2" />
+      <Dependency Name="Gold0_3" />
+      <Dependency Name="Gold1_0" />
+      <Dependency Name="Gold1_1" />
+      <Dependency Name="Gold1_2" />
+      <Dependency Name="Gold1_3" />
+      <Dependency Name="Gold2_0" />
+      <Dependency Name="Gold2_1" />
+      <Dependency Name="Gold2_2" />
+      <Dependency Name="Gold2_3" />
+      <Dependency Name="Gold3_0" />
+      <Dependency Name="Gold3_1" />
+      <Dependency Name="Gold3_2" />
+      <Dependency Name="Gold3_3" />
+      <Dependency Name="Gold4_0" />
+      <Dependency Name="Gold4_1" />
+      <Dependency Name="Gold4_2" />
+      <Dependency Name="Gold4_3" />
+      <Dependency Name="Gold5_0" />
+      <Dependency Name="Gold5_1" />
+      <Dependency Name="Gold5_2" />
+      <Dependency Name="Gold5_3" />
+      <Dependency Name="Gold6_0" />
+      <Dependency Name="Gold6_1" />
+      <Dependency Name="Gold6_2" />
+      <Dependency Name="Gold6_3" />
+      <Dependency Name="Gold7_0" />
+      <Dependency Name="Gold7_1" />
+      <Dependency Name="Gold7_2" />
+      <Dependency Name="Gold7_3" />
+      <Dependency Name="Gold8_0" />
+      <Dependency Name="Gold8_1" />
+      <Dependency Name="Gold8_2" />
+      <Dependency Name="Gold8_3" />
+      <Dependency Name="Gold9_0" />
+      <Dependency Name="Gold9_1" />
+      <Dependency Name="Gold9_2" />
+      <Dependency Name="Gold9_3" />
+      <Dependency Name="Gold10_0" />
+      <Dependency Name="Gold10_1" />
+      <Dependency Name="Gold10_2" />
+      <Dependency Name="Gold10_3" />
+      <Dependency Name="Gold11_0" />
+      <Dependency Name="Gold11_1" />
+      <Dependency Name="Gold11_2" />
+      <Dependency Name="Gold11_3" />
+    </Polygon>
+    <PointByCoordinates Name="GoldAxle" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="GoldAxleRim" Visible="false" X="0.396" Y="0" />
+    <Circle Name="GoldHole" Style="Axle">
+      <Dependency Name="GoldAxle" />
+      <Dependency Name="GoldAxleRim" />
+    </Circle>
+    <PointByCoordinates Name="GoldMark" Style="Mark" X="0 + 1.08 * cos(rad(0 + 120 * spin))" Y="0 + 1.08 * sin(rad(0 + 120 * spin))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green0_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + -4.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + -4.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green0_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + -2.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + -2.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green0_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 2.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 2.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green0_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 4.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 4.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green1_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 13.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 13.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green1_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 15.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 15.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green1_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 20.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 20.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green1_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 22.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 22.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green2_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 31.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 31.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green2_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 33.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 33.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green2_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 38.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 38.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green2_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 40.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 40.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green3_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 49.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 49.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green3_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 51.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 51.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green3_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 56.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 56.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green3_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 58.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 58.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green4_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 67.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 67.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green4_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 69.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 69.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green4_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 74.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 74.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green4_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 76.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 76.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green5_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 85.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 85.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green5_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 87.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 87.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green5_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 92.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 92.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green5_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 94.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 94.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green6_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 103.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 103.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green6_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 105.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 105.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green6_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 110.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 110.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green6_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 112.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 112.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green7_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 121.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 121.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green7_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 123.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 123.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green7_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 128.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 128.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green7_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 130.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 130.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green8_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 139.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 139.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green8_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 141.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 141.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green8_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 146.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 146.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green8_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 148.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 148.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green9_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 157.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 157.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green9_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 159.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 159.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green9_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 164.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 164.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green9_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 166.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 166.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green10_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 175.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 175.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green10_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 177.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 177.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green10_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 182.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 182.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green10_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 184.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 184.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green11_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 193.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 193.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green11_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 195.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 195.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green11_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 200.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 200.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green11_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 202.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 202.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green12_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 211.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 211.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green12_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 213.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 213.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green12_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 218.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 218.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green12_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 220.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 220.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green13_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 229.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 229.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green13_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 231.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 231.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green13_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 236.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 236.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green13_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 238.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 238.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green14_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 247.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 247.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green14_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 249.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 249.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green14_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 254.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 254.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green14_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 256.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 256.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green15_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 265.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 265.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green15_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 267.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 267.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green15_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 272.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 272.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green15_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 274.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 274.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green16_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 283.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 283.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green16_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 285.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 285.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green16_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 290.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 290.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green16_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 292.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 292.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green17_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 301.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 301.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green17_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 303.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 303.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green17_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 308.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 308.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green17_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 310.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 310.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green18_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 319.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 319.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green18_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 321.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 321.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green18_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 326.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 326.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green18_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 328.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 328.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green19_0" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 337.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 337.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green19_1" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 339.75))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 339.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green19_2" Visible="false" X="4.8 + 3.3 * cos(rad(171 + -72 * spin + 344.25))" Y="0 + 3.3 * sin(rad(171 + -72 * spin + 344.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Green19_3" Visible="false" X="4.8 + 2.655 * cos(rad(171 + -72 * spin + 346.5))" Y="0 + 2.655 * sin(rad(171 + -72 * spin + 346.5))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <Polygon Name="GreenGear" Style="GradientGreenOutline">
+      <Dependency Name="Green0_0" />
+      <Dependency Name="Green0_1" />
+      <Dependency Name="Green0_2" />
+      <Dependency Name="Green0_3" />
+      <Dependency Name="Green1_0" />
+      <Dependency Name="Green1_1" />
+      <Dependency Name="Green1_2" />
+      <Dependency Name="Green1_3" />
+      <Dependency Name="Green2_0" />
+      <Dependency Name="Green2_1" />
+      <Dependency Name="Green2_2" />
+      <Dependency Name="Green2_3" />
+      <Dependency Name="Green3_0" />
+      <Dependency Name="Green3_1" />
+      <Dependency Name="Green3_2" />
+      <Dependency Name="Green3_3" />
+      <Dependency Name="Green4_0" />
+      <Dependency Name="Green4_1" />
+      <Dependency Name="Green4_2" />
+      <Dependency Name="Green4_3" />
+      <Dependency Name="Green5_0" />
+      <Dependency Name="Green5_1" />
+      <Dependency Name="Green5_2" />
+      <Dependency Name="Green5_3" />
+      <Dependency Name="Green6_0" />
+      <Dependency Name="Green6_1" />
+      <Dependency Name="Green6_2" />
+      <Dependency Name="Green6_3" />
+      <Dependency Name="Green7_0" />
+      <Dependency Name="Green7_1" />
+      <Dependency Name="Green7_2" />
+      <Dependency Name="Green7_3" />
+      <Dependency Name="Green8_0" />
+      <Dependency Name="Green8_1" />
+      <Dependency Name="Green8_2" />
+      <Dependency Name="Green8_3" />
+      <Dependency Name="Green9_0" />
+      <Dependency Name="Green9_1" />
+      <Dependency Name="Green9_2" />
+      <Dependency Name="Green9_3" />
+      <Dependency Name="Green10_0" />
+      <Dependency Name="Green10_1" />
+      <Dependency Name="Green10_2" />
+      <Dependency Name="Green10_3" />
+      <Dependency Name="Green11_0" />
+      <Dependency Name="Green11_1" />
+      <Dependency Name="Green11_2" />
+      <Dependency Name="Green11_3" />
+      <Dependency Name="Green12_0" />
+      <Dependency Name="Green12_1" />
+      <Dependency Name="Green12_2" />
+      <Dependency Name="Green12_3" />
+      <Dependency Name="Green13_0" />
+      <Dependency Name="Green13_1" />
+      <Dependency Name="Green13_2" />
+      <Dependency Name="Green13_3" />
+      <Dependency Name="Green14_0" />
+      <Dependency Name="Green14_1" />
+      <Dependency Name="Green14_2" />
+      <Dependency Name="Green14_3" />
+      <Dependency Name="Green15_0" />
+      <Dependency Name="Green15_1" />
+      <Dependency Name="Green15_2" />
+      <Dependency Name="Green15_3" />
+      <Dependency Name="Green16_0" />
+      <Dependency Name="Green16_1" />
+      <Dependency Name="Green16_2" />
+      <Dependency Name="Green16_3" />
+      <Dependency Name="Green17_0" />
+      <Dependency Name="Green17_1" />
+      <Dependency Name="Green17_2" />
+      <Dependency Name="Green17_3" />
+      <Dependency Name="Green18_0" />
+      <Dependency Name="Green18_1" />
+      <Dependency Name="Green18_2" />
+      <Dependency Name="Green18_3" />
+      <Dependency Name="Green19_0" />
+      <Dependency Name="Green19_1" />
+      <Dependency Name="Green19_2" />
+      <Dependency Name="Green19_3" />
+    </Polygon>
+    <PointByCoordinates Name="GreenAxle" Visible="false" X="4.8" Y="0" />
+    <PointByCoordinates Name="GreenAxleRim" Visible="false" X="5.46" Y="0" />
+    <Circle Name="GreenHole" Style="Axle">
+      <Dependency Name="GreenAxle" />
+      <Dependency Name="GreenAxleRim" />
+    </Circle>
+    <PointByCoordinates Name="GreenMark" Style="Mark" X="4.8 + 1.8 * cos(rad(171 + -72 * spin))" Y="0 + 1.8 * sin(rad(171 + -72 * spin))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple0_0" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + -11.25))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + -11.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple0_1" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + -5.625))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + -5.625))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple0_2" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 5.625))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 5.625))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple0_3" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 11.25))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 11.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple1_0" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 33.75))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 33.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple1_1" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 39.375))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 39.375))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple1_2" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 50.625))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 50.625))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple1_3" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 56.25))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 56.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple2_0" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 78.75))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 78.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple2_1" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 84.375))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 84.375))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple2_2" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 95.625))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 95.625))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple2_3" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 101.25))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 101.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple3_0" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 123.75))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 123.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple3_1" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 129.375))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 129.375))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple3_2" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 140.625))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 140.625))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple3_3" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 146.25))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 146.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple4_0" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 168.75))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 168.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple4_1" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 174.375))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 174.375))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple4_2" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 185.625))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 185.625))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple4_3" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 191.25))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 191.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple5_0" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 213.75))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 213.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple5_1" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 219.375))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 219.375))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple5_2" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 230.625))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 230.625))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple5_3" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 236.25))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 236.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple6_0" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 258.75))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 258.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple6_1" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 264.375))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 264.375))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple6_2" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 275.625))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 275.625))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple6_3" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 281.25))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 281.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple7_0" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 303.75))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 303.75))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple7_1" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 309.375))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 309.375))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple7_2" Visible="false" X="7.4997 + 1.5 * cos(rad(-445 + 180 * spin + 320.625))" Y="-3.2174 + 1.5 * sin(rad(-445 + 180 * spin + 320.625))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Purple7_3" Visible="false" X="7.4997 + 0.855 * cos(rad(-445 + 180 * spin + 326.25))" Y="-3.2174 + 0.855 * sin(rad(-445 + 180 * spin + 326.25))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <Polygon Name="PurpleGear" Style="GradientPurpleOutline">
+      <Dependency Name="Purple0_0" />
+      <Dependency Name="Purple0_1" />
+      <Dependency Name="Purple0_2" />
+      <Dependency Name="Purple0_3" />
+      <Dependency Name="Purple1_0" />
+      <Dependency Name="Purple1_1" />
+      <Dependency Name="Purple1_2" />
+      <Dependency Name="Purple1_3" />
+      <Dependency Name="Purple2_0" />
+      <Dependency Name="Purple2_1" />
+      <Dependency Name="Purple2_2" />
+      <Dependency Name="Purple2_3" />
+      <Dependency Name="Purple3_0" />
+      <Dependency Name="Purple3_1" />
+      <Dependency Name="Purple3_2" />
+      <Dependency Name="Purple3_3" />
+      <Dependency Name="Purple4_0" />
+      <Dependency Name="Purple4_1" />
+      <Dependency Name="Purple4_2" />
+      <Dependency Name="Purple4_3" />
+      <Dependency Name="Purple5_0" />
+      <Dependency Name="Purple5_1" />
+      <Dependency Name="Purple5_2" />
+      <Dependency Name="Purple5_3" />
+      <Dependency Name="Purple6_0" />
+      <Dependency Name="Purple6_1" />
+      <Dependency Name="Purple6_2" />
+      <Dependency Name="Purple6_3" />
+      <Dependency Name="Purple7_0" />
+      <Dependency Name="Purple7_1" />
+      <Dependency Name="Purple7_2" />
+      <Dependency Name="Purple7_3" />
+    </Polygon>
+    <PointByCoordinates Name="PurpleAxle" Visible="false" X="7.4997" Y="-3.2174" />
+    <PointByCoordinates Name="PurpleAxleRim" Visible="false" X="7.7637" Y="-3.2174" />
+    <Circle Name="PurpleHole" Style="Axle">
+      <Dependency Name="PurpleAxle" />
+      <Dependency Name="PurpleAxleRim" />
+    </Circle>
+    <PointByCoordinates Name="PurpleMark" Style="Mark" X="7.4997 + 0.72 * cos(rad(-445 + 180 * spin))" Y="-3.2174 + 0.72 * sin(rad(-445 + 180 * spin))">
+      <Dependency Name="spin" />
+    </PointByCoordinates>
+    <Label Name="Title" Style="GalleryTitle" Text="Gears" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Drag the slider to turn the yellow gear. Its teeth push the green gear the other way, and the green gear pushes the purple one back the first way: every gear in a chain turns against its neighbors.\n\nThe yellow gear has 12 teeth and the green one 20. The yellow gear has made [spin / 3] turns, so the green one has made [12 / 20 * spin / 3]: a big gear turns slower than a small one, by exactly the ratio of their teeth. The purple gear, with 8 teeth, has made [12 / 8 * spin / 3] turns. Watch the white dots.\n\nThat is how a bicycle works. Pedal a 48-tooth chainring driving a 12-tooth sprocket and the back wheel spins four times for every turn of your feet." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="spin" />
+    </Label>
+  </Figures>
+</Drawing>

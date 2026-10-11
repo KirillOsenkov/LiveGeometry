@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-9" Top="5" Right="10" Bottom="-4" />
+  <Scene Left="-9" Top="5" Right="10" Bottom="-4" />
+  <Styles>
+    <LineStyle Name="Horizon" Color="#FF8A94A6" StrokeWidth="1.5" Dash="Dash" />
+    <LineStyle Name="Guide" Color="#30000000">
+      <Dark Color="#30FFFFFF" />
+    </LineStyle>
+    <LineStyle Name="Hidden" Color="#60000000" StrokeWidth="1.5" Dash="Dash">
+      <Dark Color="#60FFFFFF" />
+    </LineStyle>
+    <PointStyle Name="Vanish" Size="13" Fill="#FFF28C28" Color="#FF7A4000" StrokeWidth="1.5" />
+    <PointStyle Name="Corner" Size="11" Fill="#FFFFE066" Color="#FF806000" StrokeWidth="1.5" />
+    <PointStyle Name="Depth" Size="11" Fill="#FF7CE38B" Color="#FF2E6B36" StrokeWidth="1.5" />
+    <ShapeStyle Name="Left" Fill="#FF8FB4E8" Color="#FF2B4A7A" StrokeWidth="2">
+      <Dark Fill="#FF4A6FA5" />
+    </ShapeStyle>
+    <ShapeStyle Name="Right" Fill="#FF5E8BD0" Color="#FF2B4A7A" StrokeWidth="2">
+      <Dark Fill="#FF2F5589" />
+    </ShapeStyle>
+    <ShapeStyle Name="Top" Fill="#FFC6DBF5" Color="#FF2B4A7A" StrokeWidth="2">
+      <Dark Fill="#FF7FA3D6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="HorizonL" Visible="false" X="-40" Y="3" />
+    <PointByCoordinates Name="HorizonR" Visible="false" X="40" Y="3" />
+    <LineTwoPoints Name="Horizon" Style="Horizon">
+      <Dependency Name="HorizonL" />
+      <Dependency Name="HorizonR" />
+    </LineTwoPoints>
+    <PointOnFigure Name="V1" Style="Vanish" X="-7.5" Y="3" Parameter="0.40625">
+      <Dependency Name="Horizon" />
+    </PointOnFigure>
+    <PointOnFigure Name="V2" Style="Vanish" X="8.5" Y="3" Parameter="0.60625">
+      <Dependency Name="Horizon" />
+    </PointOnFigure>
+    <FreePoint Name="V3" Style="Vanish" X="0.5" Y="-18" />
+    <FreePoint Name="A" Style="Corner" X="0.5" Y="-2" />
+    <LineTwoPoints Name="AV3" Style="Guide">
+      <Dependency Name="A" />
+      <Dependency Name="V3" />
+    </LineTwoPoints>
+    <PointOnFigure Name="T" Style="Corner" X="0.5" Y="1" Parameter="-0.1875">
+      <Dependency Name="AV3" />
+    </PointOnFigure>
+    <LineTwoPoints Name="AV1" Style="Guide">
+      <Dependency Name="A" />
+      <Dependency Name="V1" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="AV2" Style="Guide">
+      <Dependency Name="A" />
+      <Dependency Name="V2" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="TV1" Style="Guide">
+      <Dependency Name="T" />
+      <Dependency Name="V1" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="TV2" Style="Guide">
+      <Dependency Name="T" />
+      <Dependency Name="V2" />
+    </LineTwoPoints>
+    <PointOnFigure Name="B1" Style="Depth" X="-2.5" Y="-0.125" Parameter="0.375">
+      <Dependency Name="AV1" />
+    </PointOnFigure>
+    <PointOnFigure Name="B2" Style="Depth" X="3.5" Y="-0.125" Parameter="0.375">
+      <Dependency Name="AV2" />
+    </PointOnFigure>
+    <LineTwoPoints Name="B1V3" Style="Guide">
+      <Dependency Name="B1" />
+      <Dependency Name="V3" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="B2V3" Style="Guide">
+      <Dependency Name="B2" />
+      <Dependency Name="V3" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="T1" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="B1V3" />
+      <Dependency Name="TV1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="T2" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="B2V3" />
+      <Dependency Name="TV2" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="B1V2" Visible="false">
+      <Dependency Name="B1" />
+      <Dependency Name="V2" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="V1B2" Visible="false">
+      <Dependency Name="B2" />
+      <Dependency Name="V1" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="C" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="B1V2" />
+      <Dependency Name="V1B2" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="T1V2" Style="Guide">
+      <Dependency Name="T1" />
+      <Dependency Name="V2" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="V1T2" Style="Guide">
+      <Dependency Name="T2" />
+      <Dependency Name="V1" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="CT" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="T1V2" />
+      <Dependency Name="V1T2" />
+    </IntersectionPoint>
+    <Polygon Name="LeftFace" Style="Left">
+      <Dependency Name="A" />
+      <Dependency Name="B1" />
+      <Dependency Name="T1" />
+      <Dependency Name="T" />
+    </Polygon>
+    <Polygon Name="RightFace" Style="Right">
+      <Dependency Name="A" />
+      <Dependency Name="B2" />
+      <Dependency Name="T2" />
+      <Dependency Name="T" />
+    </Polygon>
+    <Polygon Name="TopFace" Style="Top">
+      <Dependency Name="T" />
+      <Dependency Name="T1" />
+      <Dependency Name="CT" />
+      <Dependency Name="T2" />
+    </Polygon>
+    <Segment Name="BackLeft" Style="Hidden">
+      <Dependency Name="B1" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="BackRight" Style="Hidden">
+      <Dependency Name="B2" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="BackUp" Style="Hidden">
+      <Dependency Name="C" />
+      <Dependency Name="CT" />
+    </Segment>
+    <Label Name="Title" Style="GalleryTitle" Text="Three-Point Perspective" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A box seen from a corner, from above. Its edges don't stay parallel on paper: the ones going left all run to one orange point on the horizon, the ones going right to the other, and the ones going down to a third orange point far below the picture. Those are the vanishing points.\n\nDrag the two orange points along the horizon: far apart, the box looks seen from a distance; close together, like you're right up against it with a wide-angle lens. Drag the yellow corner to move the box, the top yellow point for its height, the green points to make it deeper. Scroll down to find the third point and pull it up: the box leans in like a skyscraper seen from a helicopter.\n\nPainters worked out the first two points in the 1400s. The third one is what makes photos of tall buildings look the way they do." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

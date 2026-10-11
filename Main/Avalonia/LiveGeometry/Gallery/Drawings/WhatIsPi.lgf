@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-1" Top="2.5" Right="4.5" Bottom="-2" />
+  <Styles>
+    <LineStyle Name="Ground" Color="#FF8A94A6" StrokeWidth="1.5" />
+    <LineStyle Name="Tick" Color="#FF8A94A6" StrokeWidth="1.5" />
+    <ShapeStyle Name="Wheel" Fill="#18808080" Color="#FF8A94A6" StrokeWidth="1.5" />
+    <LineStyle Name="Spoke" Color="#FF8A94A6" StrokeWidth="1.5" />
+    <LineStyle Name="Across" Color="#FF2B3038" StrokeWidth="2.5">
+      <Dark Color="#FFE4E8F0" />
+    </LineStyle>
+    <LineStyle Name="StripeA" Color="#FF2F7BD6" StrokeWidth="9">
+      <Dark Color="#FF62AEFF" />
+    </LineStyle>
+    <LineStyle Name="StripeB" Color="#FF7CB7F0" StrokeWidth="9">
+      <Dark Color="#FF3F7FC0" />
+    </LineStyle>
+    <LineStyle Name="StripeC" Color="#FFE0362B" StrokeWidth="9">
+      <Dark Color="#FFFF6B5E" />
+    </LineStyle>
+    <PointStyle Name="Contact" Size="9" Fill="#FFFFE066" Color="#FF806000" StrokeWidth="1.5" />
+    <TextStyle Name="Mark" FontSize="15" Color="#FF2B3038" FontFamily="Segoe UI">
+      <Dark Color="#FFE4E8F0" />
+    </TextStyle>
+    <TextStyle Name="Big" FontSize="22" Color="#FFE0362B" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFF6B5E" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <Slider Name="x" X="-0.5" Y="-1.3" Value="2" Maximum="3.14159265358979" Decimals="3" />
+    <PointByCoordinates Name="GroundL" Visible="false" X="-0.5" Y="0" />
+    <PointByCoordinates Name="GroundR" Visible="false" X="4.2" Y="0" />
+    <Segment Name="Ground" Style="Ground">
+      <Dependency Name="GroundL" />
+      <Dependency Name="GroundR" />
+    </Segment>
+    <PointByCoordinates Name="0" Visible="false" X="0" Y="-0.12" />
+    <PointByCoordinates Name="1" Visible="false" X="1" Y="-0.12" />
+    <PointByCoordinates Name="2" Visible="false" X="2" Y="-0.12" />
+    <PointByCoordinates Name="3" Visible="false" X="3" Y="-0.12" />
+    <PointByCoordinates Name="π" Visible="false" X="3.141593" Y="-0.12" />
+    <PointByCoordinates Name="Tick0" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Tick1" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="Tick2" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="Tick3" Visible="false" X="3" Y="0" />
+    <PointByCoordinates Name="TickPi" Visible="false" X="3.141593" Y="0" />
+    <Segment Name="TickLine0" Style="Tick">
+      <Dependency Name="Tick0" />
+      <Dependency Name="0" />
+    </Segment>
+    <Segment Name="TickLine1" Style="Tick">
+      <Dependency Name="Tick1" />
+      <Dependency Name="1" />
+    </Segment>
+    <Segment Name="TickLine2" Style="Tick">
+      <Dependency Name="Tick2" />
+      <Dependency Name="2" />
+    </Segment>
+    <Segment Name="TickLine3" Style="Tick">
+      <Dependency Name="Tick3" />
+      <Dependency Name="3" />
+    </Segment>
+    <Segment Name="TickLinePi" Style="Tick">
+      <Dependency Name="TickPi" />
+      <Dependency Name="π" />
+    </Segment>
+    <PointLabel Name="Mark0" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="0" />
+    </PointLabel>
+    <PointLabel Name="Mark1" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="1" />
+    </PointLabel>
+    <PointLabel Name="Mark2" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="2" />
+    </PointLabel>
+    <PointLabel Name="Mark3" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="3" />
+    </PointLabel>
+    <PointLabel Name="MarkPi" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="π" />
+    </PointLabel>
+    <PointByCoordinates Name="C" Visible="false" X="x" Y="0.5">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Rim" Visible="false" X="x + 0.5" Y="0.5">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <Circle Name="Wheel" Style="Wheel">
+      <Dependency Name="C" />
+      <Dependency Name="Rim" />
+    </Circle>
+    <PointByCoordinates Name="Bottom" Visible="false" X="x" Y="0">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Top" Visible="false" X="x" Y="1">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <Segment Name="Across" Style="Across">
+      <Dependency Name="Bottom" />
+      <Dependency Name="Top" />
+    </Segment>
+    <PointByCoordinates Name="SpokeEnd" Visible="false" X="x + 0.5 * cos(-pi / 2 - 2 * x)" Y="0.5 + 0.5 * sin(-pi / 2 - 2 * x)">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <Segment Name="Spoke" Style="Spoke">
+      <Dependency Name="C" />
+      <Dependency Name="SpokeEnd" />
+    </Segment>
+    <PointByCoordinates Name="Contact" Style="Contact" X="x" Y="0">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flat0a" Visible="false" X="clamp(0, 0, x)" Y="0">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flat0b" Visible="false" X="clamp(1, 0, x)" Y="0">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <Segment Name="Flat0" Style="StripeA">
+      <Dependency Name="Flat0a" />
+      <Dependency Name="Flat0b" />
+    </Segment>
+    <PointByCoordinates Name="Flat1a" Visible="false" X="clamp(1, 0, x)" Y="0">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flat1b" Visible="false" X="clamp(2, 0, x)" Y="0">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <Segment Name="Flat1" Style="StripeB">
+      <Dependency Name="Flat1a" />
+      <Dependency Name="Flat1b" />
+    </Segment>
+    <PointByCoordinates Name="Flat2a" Visible="false" X="clamp(2, 0, x)" Y="0">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flat2b" Visible="false" X="clamp(3, 0, x)" Y="0">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <Segment Name="Flat2" Style="StripeA">
+      <Dependency Name="Flat2a" />
+      <Dependency Name="Flat2b" />
+    </Segment>
+    <PointByCoordinates Name="Flat3a" Visible="false" X="clamp(3, 0, x)" Y="0">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flat3b" Visible="false" X="clamp(pi, 0, x)" Y="0">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <Segment Name="Flat3" Style="StripeC">
+      <Dependency Name="Flat3a" />
+      <Dependency Name="Flat3b" />
+    </Segment>
+    <PointByCoordinates Name="Round0a" Visible="false" X="x + 0.5 * cos(-pi / 2 + 2 * (clamp(0, x, pi) - x))" Y="0.5 + 0.5 * sin(-pi / 2 + 2 * (clamp(0, x, pi) - x))">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Round0b" Visible="false" X="x + 0.5 * cos(-pi / 2 + 2 * (clamp(1, x + 0.0001, pi) - x))" Y="0.5 + 0.5 * sin(-pi / 2 + 2 * (clamp(1, x + 0.0001, pi) - x))">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <CircleArc Name="Round0" Style="StripeA">
+      <Dependency Name="C" />
+      <Dependency Name="Round0a" />
+      <Dependency Name="Round0b" />
+    </CircleArc>
+    <PointByCoordinates Name="Round1a" Visible="false" X="x + 0.5 * cos(-pi / 2 + 2 * (clamp(1, x, pi) - x))" Y="0.5 + 0.5 * sin(-pi / 2 + 2 * (clamp(1, x, pi) - x))">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Round1b" Visible="false" X="x + 0.5 * cos(-pi / 2 + 2 * (clamp(2, x + 0.0001, pi) - x))" Y="0.5 + 0.5 * sin(-pi / 2 + 2 * (clamp(2, x + 0.0001, pi) - x))">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <CircleArc Name="Round1" Style="StripeB">
+      <Dependency Name="C" />
+      <Dependency Name="Round1a" />
+      <Dependency Name="Round1b" />
+    </CircleArc>
+    <PointByCoordinates Name="Round2a" Visible="false" X="x + 0.5 * cos(-pi / 2 + 2 * (clamp(2, x, pi) - x))" Y="0.5 + 0.5 * sin(-pi / 2 + 2 * (clamp(2, x, pi) - x))">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Round2b" Visible="false" X="x + 0.5 * cos(-pi / 2 + 2 * (clamp(3, x + 0.0001, pi) - x))" Y="0.5 + 0.5 * sin(-pi / 2 + 2 * (clamp(3, x + 0.0001, pi) - x))">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <CircleArc Name="Round2" Style="StripeA">
+      <Dependency Name="C" />
+      <Dependency Name="Round2a" />
+      <Dependency Name="Round2b" />
+    </CircleArc>
+    <PointByCoordinates Name="Round3a" Visible="false" X="x + 0.5 * cos(-pi / 2 + 2 * (clamp(3, x, pi) - x))" Y="0.5 + 0.5 * sin(-pi / 2 + 2 * (clamp(3, x, pi) - x))">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Round3b" Visible="false" X="x + 0.5 * cos(-pi / 2 + 2 * (clamp(pi, x + 0.0001, pi) - x))" Y="0.5 + 0.5 * sin(-pi / 2 + 2 * (clamp(pi, x + 0.0001, pi) - x))">
+      <Dependency Name="x" />
+    </PointByCoordinates>
+    <CircleArc Name="Round3" Style="StripeC">
+      <Dependency Name="C" />
+      <Dependency Name="Round3a" />
+      <Dependency Name="Round3b" />
+    </CircleArc>
+    <Label Name="Unrolled" Style="Big" DecimalsToShow="3" Text="[x] unrolled so far" X="0.9" Y="1.55">
+      <Dependency Name="x" />
+    </Label>
+    <Label Name="Title" Style="GalleryTitle" Text="What Is π?" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="A wheel exactly 1 across rolls along a ruler, and its rim is painted: dark blue, light blue, dark blue, then a short red bit. Drag the slider to roll it. Every bit of paint that touches the ruler stays on it, so the painted line on the ruler is exactly as long as the distance around the wheel.\n\nRoll it all the way. The paint reaches past 3 and stops at 3.14159... That number is π: for every wheel, every coin and every planet, the distance around is π times the distance across. Never a bit more, never a bit less.\n\nThe digits of π go on forever without repeating. People have computed trillions of them, but to steer a spaceship across the solar system you only need about fifteen." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

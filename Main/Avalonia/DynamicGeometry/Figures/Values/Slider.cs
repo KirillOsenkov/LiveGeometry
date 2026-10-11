@@ -28,7 +28,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         // the parts are looked up by name only through the composite (Figures[name] looks
         // inside), so their names must not be ones an expression could say
         Anchor = new FreePoint() { Name = "slider anchor" };
-        Knob = new SliderKnob() { Name = "slider knob" };
+        Knob = new SliderKnob(this) { Name = "slider knob" };
         Knob.SetSources(Anchor, distanceSource: null, directionSource: horizontal);
         Track = new Segment() { Name = "slider track", Dependencies = new IFigure[] { Anchor, Knob } };
         Caption = new SliderCaption(this) { Name = "slider caption", Dependencies = new IFigure[] { Anchor, Knob } };
@@ -56,9 +56,13 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
 
     #region Value and place
 
+    double minimum;
+    double maximum = double.PositiveInfinity;
+
     /// <summary>
-    /// The number the slider stands for, never negative. Set it and the knob moves; anything
-    /// built on the slider follows.
+    /// The number the slider stands for: <see cref="Minimum"/> at the anchor, one more per
+    /// unit of track, up to <see cref="Maximum"/>. Set it and the knob moves; anything built
+    /// on the slider follows.
     /// </summary>
     [PropertyGridVisible]
     [PropertyGridPreferredEditor("UpDown")]
@@ -66,14 +70,67 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     {
         get
         {
-            return Knob.Distance;
+            return minimum + Knob.Distance;
         }
         set
         {
             var origin = Anchor.Coordinates;
-            Knob.MoveToCore(new Point(origin.X + value, origin.Y));
+            double clamped = System.Math.Max(minimum, System.Math.Min(maximum, value));
+            Knob.MoveToCore(new Point(origin.X + clamped - minimum, origin.Y));
             OnChanged();
         }
+    }
+
+    /// <summary>The value at the anchor, 0 unless a file or the grid says otherwise</summary>
+    [PropertyGridVisible]
+    [PropertyGridGroup("Range")]
+    [PropertyGridPreferredEditor("UpDown")]
+    public double Minimum
+    {
+        get
+        {
+            return minimum;
+        }
+        set
+        {
+            if (!value.IsValidValue() || value > maximum)
+            {
+                return;
+            }
+
+            double kept = Value;
+            minimum = value;
+            Value = kept;
+        }
+    }
+
+    /// <summary>Where the knob stops; no stop unless a file or the grid says otherwise</summary>
+    [PropertyGridVisible]
+    [PropertyGridGroup("Range")]
+    [PropertyGridPreferredEditor("UpDown")]
+    public double Maximum
+    {
+        get
+        {
+            return maximum;
+        }
+        set
+        {
+            if (double.IsNaN(value) || value < minimum)
+            {
+                return;
+            }
+
+            double kept = Value;
+            maximum = value;
+            Value = kept;
+        }
+    }
+
+    /// <summary>How far the knob may go from the anchor</summary>
+    public double Span
+    {
+        get { return maximum - minimum; }
     }
 
     /// <summary>Where the anchor is; the knob keeps its distance</summary>
@@ -301,15 +358,31 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
 
     #region Parts
 
-    /// <summary>The knob: a point sliding along the horizontal through the anchor, never to its left</summary>
+    /// <summary>The knob: a point sliding along the horizontal through the anchor, never to its left, nor past the slider's span</summary>
     public class SliderKnob : TranslatedPoint
     {
+        readonly Slider slider;
+
+        public SliderKnob(Slider slider)
+        {
+            this.slider = slider;
+        }
+
         public override void MoveToCore(Point newPosition)
         {
             var source = Source;
-            if (source != null && newPosition.X < source.Coordinates.X)
+            if (source != null)
             {
-                newPosition = new Point(source.Coordinates.X, newPosition.Y);
+                double left = source.Coordinates.X;
+                double right = left + slider.Span;
+                if (newPosition.X < left)
+                {
+                    newPosition = new Point(left, newPosition.Y);
+                }
+                else if (newPosition.X > right)
+                {
+                    newPosition = new Point(right, newPosition.Y);
+                }
             }
 
             base.MoveToCore(newPosition);
@@ -373,6 +446,16 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         writer.WriteAttributeDouble("X", position.X);
         writer.WriteAttributeDouble("Y", position.Y);
         writer.WriteAttributeDouble("Value", Value);
+        if (minimum != 0)
+        {
+            writer.WriteAttributeDouble("Minimum", minimum);
+        }
+
+        if (!double.IsPositiveInfinity(maximum))
+        {
+            writer.WriteAttributeDouble("Maximum", maximum);
+        }
+
         if (Decimals != Settings.DisplayDecimals)
         {
             writer.WriteAttributeDouble("Decimals", Decimals);
@@ -385,6 +468,17 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         if (element.Attribute("Decimals") != null)
         {
             Decimals = (int)element.ReadDouble("Decimals");
+        }
+
+        // the range before the value, which is clamped to it
+        if (element.Attribute("Minimum") != null)
+        {
+            minimum = element.ReadDouble("Minimum");
+        }
+
+        if (element.Attribute("Maximum") != null)
+        {
+            maximum = element.ReadDouble("Maximum");
         }
 
         Anchor.MoveToCore(new Point(element.ReadDouble("X"), element.ReadDouble("Y")));
