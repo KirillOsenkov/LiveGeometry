@@ -47,7 +47,7 @@ class PolygonBase extends ShapeBase {
         renderer.drawPolygon(points, this.stroke, this.fill, true);
     }
 
-    defaultZOrder() {
+    defaultLayer() {
         return ZOrder.Polygons;
     }
 

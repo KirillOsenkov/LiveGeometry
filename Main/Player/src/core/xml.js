@@ -46,6 +46,16 @@ const Xml = {
         return 0;
     },
 
+    /** A whole number; the default when the attribute is missing or is no number (ReadInt) */
+    readInt(element, attributeName, defaultValue) {
+        const text = element.getAttribute(attributeName);
+        if (text == null || !/^\s*[+-]?\d+\s*$/.test(text)) {
+            return defaultValue;
+        }
+
+        return parseInt(text, 10);
+    },
+
     /** bool.Parse of the attribute, the default when it is missing */
     readBool(element, attributeName, defaultValue) {
         const text = element.getAttribute(attributeName);

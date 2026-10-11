@@ -121,7 +121,7 @@ namespace DynamicGeometry
                 pin = value;
 
                 // on the screen means on top of everything in the plane, like a control
-                ZIndex = pin == LabelPin.None ? DefaultZOrder() : (int)ZOrder.Controls;
+                Layer = pin == LabelPin.None ? DefaultLayer() : ZOrder.Controls;
                 if (HasCanvas)
                 {
                     UpdateVisual();
@@ -346,7 +346,7 @@ namespace DynamicGeometry
             {
                 PinOffset = new Point(element.ReadDouble("OffsetX"), element.ReadDouble("OffsetY"));
                 pin = readPin;
-                ZIndex = (int)ZOrder.Controls;
+                Layer = ZOrder.Controls;
                 UpdateVisual();
             }
             else

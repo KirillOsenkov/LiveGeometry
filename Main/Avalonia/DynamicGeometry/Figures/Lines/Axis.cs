@@ -16,9 +16,9 @@ namespace DynamicGeometry
         {
             Line = new LineTwoPoints();
             Line.Style = new LineStyle() { StrokeWidth = 0, Color = Colors.Transparent };
-            Line.SetZIndex(ZOrder.Axes);
+            Line.Layer = ZOrder.Axes;
             Arrow = new Arrow();
-            Arrow.SetZIndex(ZOrder.Axes);
+            Arrow.Layer = ZOrder.Axes;
             Arrow.Dependencies.Add(Line);
             Children.Add(Line, Arrow);
         }

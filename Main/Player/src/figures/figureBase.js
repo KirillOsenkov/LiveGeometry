@@ -22,7 +22,8 @@ class FigureBase {
         this.lockedValue = false;
         this.auxiliary = false;
         this.flipped = false;
-        this.zIndexValue = 0;
+        this.layerValue = 0;
+        this.zValue = 0;
         this.styleValue = null;
         this.selectedValue = false;
         this.enabled = true;
@@ -112,6 +113,7 @@ class FigureBase {
         this.locked = Xml.readBool(element, "Locked", false);
         this.auxiliary = Xml.readBool(element, "Auxiliary", false);
         this.isHitTestVisible = Xml.readBool(element, "IsHitTestVisible", true);
+        this.z = Xml.readInt(element, "Z", 0);
         const styleName = element.getAttribute("Style");
         if (styleName != null && this.drawing != null && this.drawing.styleManager != null) {
             const style = this.drawing.styleManager.get(styleName);
@@ -153,12 +155,33 @@ class FigureBase {
         return this.mDependents;
     }
 
-    get zIndex() {
-        return this.zIndexValue;
+    /** The layer the figure is drawn in, its kind's (ZOrder) */
+    get layer() {
+        return this.layerValue;
     }
 
-    set zIndex(value) {
-        this.zIndexValue = value;
+    set layer(value) {
+        this.layerValue = value;
+        this.onZIndexChanged();
+    }
+
+    /** Where the figure is among those of its band of layers: 0 unless a file says otherwise (ZOrders) */
+    get z() {
+        return this.zValue;
+    }
+
+    set z(value) {
+        this.zValue = value;
+        this.onZIndexChanged();
+    }
+
+    /** What the layer and the Z come to: the order the figures are drawn and hit in */
+    get zIndex() {
+        return ZOrders.encode(this.layer, this.z);
+    }
+
+    /** The layer or the Z changed */
+    onZIndexChanged() {
     }
 
     get exists() {

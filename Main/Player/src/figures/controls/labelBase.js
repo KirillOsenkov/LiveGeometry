@@ -27,7 +27,7 @@ class LabelBase extends ControlBase {
         return true;
     }
 
-    defaultZOrder() {
+    defaultLayer() {
         return ZOrder.Labels;
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Drawing Version="1" Creator="LiveGeometry.App">
-  <Viewport Left="-4.2" Top="4" Right="4.2" Bottom="-4">
+  <Viewport Left="-4.6" Top="4" Right="4.6" Bottom="-4.2">
     <Background>
       <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="#FF0E2A5C" Offset="0" />
@@ -8,6 +8,7 @@
       </LinearGradientBrush>
     </Background>
   </Viewport>
+  <Scene Left="-4.6" Top="3.999999999999999" Right="4.6" Bottom="-4.2" />
   <Styles>
     <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFE8F4FF" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FFE8F4FF" />
@@ -15,35 +16,95 @@
     <TextStyle Name="GalleryText" FontSize="16" Color="#FFD6E6FA" FontFamily="Segoe UI">
       <Dark Color="#FFD6E6FA" />
     </TextStyle>
-    <ShapeStyle Name="Ice" Fill="#E6FFFFFF" Color="#00000000" StrokeWidth="0.5" />
-    <LineStyle Name="IceEdge" Color="#FFBFE6FF" />
-    <LineStyle Name="Guide" Color="#50FFFFFF" Dash="Dash" />
+    <ShapeStyle Name="Ice" Color="#00000000" StrokeWidth="0.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFFFFF" Offset="0" />
+          <GradientStop Color="#FFD2E6FF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="IceEdge" Color="#FF4FA3FF" StrokeWidth="1.5" />
+    <LineStyle Name="Guide" Color="#C04FA3FF" StrokeWidth="1.25" Dash="Dash" />
     <PointStyle Name="Node" Size="11" Fill="#FF4FA3FF" Color="#FFFFFFFF" StrokeWidth="2" />
+    <ShapeStyle Name="Snow" Color="#00000000" StrokeWidth="0.5">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Color="#FFFFFFFF" Offset="0" />
+          <GradientStop Color="#FFC8DCF5" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="NoLine" Color="#00FFFFFF" StrokeWidth="0.5" />
+    <PointStyle Name="Flake" Character="❄️" Size="26" Fill="#FFFFFFFF" />
+    <PointStyle Name="BigFlake" Character="❄️" Size="38" Fill="#FFFFFFFF" />
+    <PointStyle Name="TinyFlake" Character="❄️" Size="17" Fill="#FFFFFFFF" />
+    <PointStyle Name="Snowman" Character="⛄" Size="64" Fill="#FFFFFFFF" />
+    <PointStyle Name="Tree" Character="🌲" Size="56" Fill="#FFFFFFFF" />
+    <PointStyle Name="Snowboarder" Character="🏂" Size="54" Fill="#FFFFFFFF" />
+    <PointStyle Name="Cloud" Character="🌨️" Size="48" Fill="#FFFFFFFF" />
+    <PointStyle Name="Sparkles" Character="✨" Size="28" Fill="#FFFFFFFF" />
   </Styles>
   <Figures>
+    <PointByCoordinates Name="Bank0" Visible="false" X="-40" Y="-3.4" />
+    <PointByCoordinates Name="Bank1" Visible="false" X="-5" Y="-3.4" />
+    <PointByCoordinates Name="Bank2" Visible="false" X="-2.6" Y="-3.25" />
+    <PointByCoordinates Name="Bank3" Visible="false" X="0" Y="-3.6" />
+    <PointByCoordinates Name="Bank4" Visible="false" X="2.6" Y="-3.3" />
+    <PointByCoordinates Name="Bank5" Visible="false" X="5" Y="-3.4" />
+    <PointByCoordinates Name="Bank6" Visible="false" X="40" Y="-3.4" />
+    <PointByCoordinates Name="Bank7" Visible="false" X="40" Y="-40" />
+    <PointByCoordinates Name="Bank8" Visible="false" X="-40" Y="-40" />
+    <BezierPath Name="SnowBank" Style="Snow" Closed="true" Filled="true" Path="L C a a C a a C a a C a a L L L L">
+      <Sides Style="NoLine" />
+      <Dependency Name="Bank0" />
+      <Dependency Name="Bank1" />
+      <Dependency Name="Bank2" />
+      <Dependency Name="Bank3" />
+      <Dependency Name="Bank4" />
+      <Dependency Name="Bank5" />
+      <Dependency Name="Bank6" />
+      <Dependency Name="Bank7" />
+      <Dependency Name="Bank8" />
+    </BezierPath>
+    <FreePoint Name="Sprinkle1" Style="Snowman" X="-3.4" Y="-2.95" />
+    <FreePoint Name="Sprinkle2" Style="Tree" X="-1.6" Y="-3.1" />
+    <FreePoint Name="Sprinkle3" Style="Snowboarder" X="3.3" Y="-2.85" />
+    <FreePoint Name="Sprinkle4" Style="Cloud" X="3.6" Y="3.4" />
+    <FreePoint Name="Sprinkle5" Style="BigFlake" X="-3.7" Y="2.9" />
+    <FreePoint Name="Sprinkle6" Style="Flake" X="-4.1" Y="0.9" />
+    <FreePoint Name="Sprinkle7" Style="Flake" X="4.1" Y="0.3" />
+    <FreePoint Name="Sprinkle8" Style="Flake" X="1" Y="3.6" />
+    <FreePoint Name="Sprinkle9" Style="TinyFlake" X="-2.4" Y="3.6" />
+    <FreePoint Name="Sprinkle10" Style="TinyFlake" X="2.6" Y="2" />
+    <FreePoint Name="Sprinkle11" Style="TinyFlake" X="-4" Y="-1.3" />
+    <FreePoint Name="Sprinkle12" Style="TinyFlake" X="4.2" Y="1.9" />
+    <FreePoint Name="Sprinkle13" Style="Sparkles" X="-1.1" Y="3.5" />
+    <FreePoint Name="Sprinkle14" Style="Sparkles" X="3.9" Y="-1.3" />
+    <FreePoint Name="Sprinkle15" Style="Sparkles" X="-3.4" Y="-0.4" />
     <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
-    <PointByCoordinates Name="AxisEnd" Visible="false" X="1" Y="0" />
-    <Ray Name="Axis" Style="Guide">
+    <PointByCoordinates Name="AxisEnd" Visible="false" X="4.3" Y="0" />
+    <Segment Name="Axis" Style="Guide">
       <Dependency Name="O" />
       <Dependency Name="AxisEnd" />
-    </Ray>
+    </Segment>
     <LineTwoPoints Name="Mirror" Visible="false">
       <Dependency Name="O" />
       <Dependency Name="AxisEnd" />
     </LineTwoPoints>
-    <PointByCoordinates Name="SideEnd" Visible="false" X="0.866" Y="0.5" />
-    <Ray Name="SideRay" Style="Guide">
+    <PointByCoordinates Name="SideEnd" Visible="false" X="3.7239" Y="2.15" />
+    <Segment Name="SideRay" Style="Guide">
       <Dependency Name="O" />
       <Dependency Name="SideEnd" />
-    </Ray>
-    <PointOnFigure Name="T" Style="Node" X="3.2" Y="0" Parameter="3.2">
+    </Segment>
+    <PointOnFigure Name="T" Style="Node" X="3.2000599999999997" Y="0" Parameter="0.7442">
       <Dependency Name="Axis" />
     </PointOnFigure>
     <FreePoint Name="A1" Style="Node" X="2.55" Y="0.42" />
     <FreePoint Name="A2" Style="Node" X="2.05" Y="0.2" />
     <FreePoint Name="A3" Style="Node" X="1.75" Y="0.78" />
     <FreePoint Name="A4" Style="Node" X="1.2" Y="0.38" />
-    <PointOnFigure Name="J" Style="Node" X="0.7794" Y="0.45" Parameter="0.9">
+    <PointOnFigure Name="J" Style="Node" X="0.77941227" Y="0.44999500000000003" Parameter="0.2093">
       <Dependency Name="SideRay" />
     </PointOnFigure>
     <Number Name="Turn60" Value="60" />
@@ -467,6 +528,6 @@
       <Dependency Name="Jmr300" />
     </BezierPath>
     <Label Name="Title" Style="GalleryTitle" Text="Design a Snowflake" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Every snowflake has six arms, and every arm is the same on both sides. So a snowflake is really one small shape, drawn twelve times: mirrored, then turned five times by 60 degrees.\n\nDrag the blue points. You are drawing one twelfth, between the two dashed lines, and the other eleven follow. The tip slides along the arm, the last point along the line where two arms meet.\n\nReal snowflakes grow their six arms at once in the same cloud, in the same air, which is why the arms match. No two snowflakes take the same trip down, which is why no two flakes match. Can you make one that looks like a real snowflake? One that looks like a flower?" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Every snowflake has six arms, and every arm is the same on both sides. So a snowflake is really one small shape, drawn twelve times: mirrored, then turned five times by 60 degrees.\n\nDrag the blue points. You are drawing one twelfth, between the two dashed lines, and the other eleven follow. The tip slides along the arm, the last point along the line where two arms meet.\n\nReal snowflakes grow their six arms at once in the same cloud, in the same air, which is why the arms match. No two snowflakes take the same trip down, which is why no two flakes match. Can you make one that looks like a real snowflake? One that looks like a flower? The snowman and his friends can be dragged around too." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

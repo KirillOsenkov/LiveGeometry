@@ -149,6 +149,7 @@ class RegularPolygon extends DependentPolygonBase {
             side.dependencies = [this.vertices[index - 1], this.vertices[index]];
         }
 
+        side.z = this.z;
         this.sides.push(side);
         this.children.push(side);
         if (this.isOnCanvas) {

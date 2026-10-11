@@ -65,9 +65,9 @@ public class FigureLabel : Measurement
         }
     }
 
-    protected override int DefaultZOrder()
+    protected override ZOrder DefaultLayer()
     {
-        return (int)ZOrder.PointLabels;
+        return ZOrder.PointLabels;
     }
 
     /// <summary>Where the offset is measured from: on the figure, and for a line where the eye finds it</summary>

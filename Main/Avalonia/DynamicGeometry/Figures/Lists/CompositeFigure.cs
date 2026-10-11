@@ -15,6 +15,28 @@ namespace DynamicGeometry
         public CompositeFigure()
         {
             Children = new CollectionWithEvents<IFigure>();
+            Children.CollectionChanged += Children_CollectionChanged;
+        }
+
+        // a part is drawn where its figure is: brought to front with it, and one made later
+        // (a side added to a regular polygon) comes in at the figure's Z
+        void Children_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (IFigure child in e.NewItems)
+                {
+                    child.Z = Z;
+                }
+            }
+        }
+
+        protected override void OnZIndexChanged()
+        {
+            foreach (var child in Children)
+            {
+                child.Z = Z;
+            }
         }
 
         public virtual void ClearChildren()

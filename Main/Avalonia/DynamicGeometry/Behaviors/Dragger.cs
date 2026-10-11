@@ -881,6 +881,24 @@ namespace DynamicGeometry
                     });
                 }
 
+                // the selection's place among the figures it overlaps (ZOrders)
+                var ordered = SelectedOrClicked(figure);
+                bool canBringToFront = ZOrders.CanBringToFront(ordered);
+                bool canSendToBack = ZOrders.CanSendToBack(ordered);
+                if (canBringToFront || canSendToBack)
+                {
+                    menu.Items.Add(new Avalonia.Controls.Separator());
+                    if (canBringToFront)
+                    {
+                        Add("Bring to front", () => ZOrders.BringToFront(ordered));
+                    }
+
+                    if (canSendToBack)
+                    {
+                        Add("Send to back", () => ZOrders.SendToBack(ordered));
+                    }
+                }
+
                 // (a name label goes with its "Show name", not by itself: Delete did nothing)
                 if (!(figure is PointLabel) && !(figure is FigureLabel))
                 {

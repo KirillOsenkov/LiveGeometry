@@ -73,6 +73,16 @@ public static class PropertyGridIcons
                 return Icon(
                     Shape("M2.5,9.5 V2.5 H8.5", null, outline, thickness: 1.3),
                     Shape("M5.5,5.5 H11.5 V12.5 H5.5 Z", null, outline, thickness: 1.3));
+            case PropertyGridIcon.BringToFront:
+                // two overlapping squares: the filled one is the figure, in front of an outlined one
+                return Icon(
+                    Shape("M1.5,1.5 H8.5 V8.5 H1.5 Z", null, outline, thickness: 1.1),
+                    Shape("M5.5,5.5 H12.5 V12.5 H5.5 Z", sky, outline, thickness: 1.1));
+            case PropertyGridIcon.SendToBack:
+                // the filled square behind the outlined one, which shows it through
+                return Icon(
+                    Shape("M1.5,1.5 H8.5 V8.5 H1.5 Z", sky, outline, thickness: 1.1),
+                    Shape("M5.5,5.5 H12.5 V12.5 H5.5 Z", null, outline, thickness: 1.1));
             default:
                 return null;
         }

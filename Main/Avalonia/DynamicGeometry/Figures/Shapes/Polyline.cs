@@ -103,9 +103,9 @@ namespace DynamicGeometry
             }
         }
 
-        protected override int DefaultZOrder()
+        protected override ZOrder DefaultLayer()
         {
-            return (int)ZOrder.Figures;
+            return ZOrder.Figures;
         }
 
         protected override Avalonia.Controls.Shapes.Polyline CreateShape()

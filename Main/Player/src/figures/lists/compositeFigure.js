@@ -15,6 +15,7 @@ class CompositeFigure extends FigureBase {
 
     addChild(figure) {
         figure.registerWithDependencies();
+        figure.z = this.z;
         this.children.push(figure);
         if (this.drawing != null) {
             figure.drawing = this.drawing;
@@ -108,6 +109,13 @@ class CompositeFigure extends FigureBase {
         super.updateExistence();
         for (const figure of this.children) {
             figure.updateExistence();
+        }
+    }
+
+    /** A part is drawn where its figure is: a side of a regular polygon at the polygon's Z */
+    onZIndexChanged() {
+        for (const figure of this.children) {
+            figure.z = this.z;
         }
     }
 

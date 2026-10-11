@@ -138,7 +138,7 @@ namespace DynamicGeometry
                 {
                     Visibility = this.Visible.ToVisibility()
                 };
-                newLine.ZIndex = (int)ZOrder.Grid;
+                newLine.ZIndex = ZIndex;
                 lines.Add(newLine);
                 Drawing.Canvas.Children.Add(newLine);
                 newLine.Apply(style.GetWpfStyle());

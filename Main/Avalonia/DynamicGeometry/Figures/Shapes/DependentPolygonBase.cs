@@ -92,6 +92,8 @@ namespace DynamicGeometry
 
         public DependentPolygonBase()
         {
+            // the polygon itself is drawn by its parts; its layer says the verbs apply to it
+            Layer = ZOrder.Polygons;
             polygon = new InteriorPolygon(this);
             Children.Add(polygon);
         }

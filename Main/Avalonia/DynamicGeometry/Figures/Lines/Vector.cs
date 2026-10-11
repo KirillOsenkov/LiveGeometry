@@ -16,12 +16,12 @@ namespace DynamicGeometry
         public Vector()
         {
             Arrow = new Arrow() { DrawsShaft = false };
-            Arrow.ZIndex = (int)ZOrder.Vectors;
+            Arrow.Layer = ZOrder.Vectors;
             Line = new VectorShaft(Arrow);   // Line's dependencies established by OnDependenciesChanged()
-            Line.ZIndex = (int)ZOrder.Vectors;
+            Line.Layer = ZOrder.Vectors;
             Arrow.Dependencies.Add(Line);
             Children.Add(Line, Arrow);
-            ZIndex = (int)ZOrder.Vectors;
+            Layer = ZOrder.Vectors;
         }
 
         /// <summary>

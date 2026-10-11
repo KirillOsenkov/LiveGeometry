@@ -204,7 +204,7 @@ public class ClickPreview
             EndPoint = corner + sum * (reach / length)
         };
         ApplyGhostStyle(drawing, typeof(AngleBisector), result);
-        result.ZIndex = (int)ZOrder.Figures;
+        result.ZIndex = ZOrders.Default(ZOrder.Figures);
         return result;
     }
 
@@ -228,7 +228,7 @@ public class ClickPreview
         {
             Data = geometry,
             Fill = PointHaloBrush,
-            ZIndex = (int)ZOrder.Figures - 1
+            ZIndex = ZOrders.Default(ZOrder.Figures) - 1
         };
     }
 
@@ -273,7 +273,7 @@ public class ClickPreview
         // in the preview's blue, not the default line's faint gray: the arc is what says
         // which angle the click takes
         result.Stroke = TickBrush;
-        result.ZIndex = (int)ZOrder.Figures;
+        result.ZIndex = ZOrders.Default(ZOrder.Figures);
         return result;
     }
 
@@ -283,7 +283,7 @@ public class ClickPreview
         var result = Factory.CreateLabelShape();
         result.Text = Math.Round(measure.ToDegrees(), Settings.DisplayDecimals).ToString() + "°";
         ApplyGhostStyle(drawing, typeof(AngleMeasurement), result);
-        result.ZIndex = (int)ZOrder.Labels;
+        result.ZIndex = ZOrders.Default(ZOrder.Labels);
         Canvas.SetLeft(result, corner.X);
         Canvas.SetTop(result, corner.Y);
         return result;
@@ -324,7 +324,7 @@ public class ClickPreview
         }
 
         result.Opacity = GhostOpacity;
-        result.ZIndex = (int)ZOrder.Points + 1;
+        result.ZIndex = ZOrders.Default(ZOrder.Points) + 1;
         return result;
     }
 
@@ -347,7 +347,7 @@ public class ClickPreview
                 EndPoint = system.ToPhysical(ends.P2),
                 Stroke = HaloBrush,
                 StrokeThickness = 1 + HaloWidth,
-                ZIndex = (int)ZOrder.Axes - 1
+                ZIndex = ZOrders.Default(ZOrder.Axes) - 1
             };
         }
         else if (figure is LineBase line)
@@ -424,7 +424,7 @@ public class ClickPreview
                 Stroke = HaloBrush,
                 StrokeThickness = 1 + HaloWidth,
                 StrokeLineCap = PenLineCap.Round,
-                ZIndex = (int)ZOrder.Figures - 1
+                ZIndex = bezierPath.ZIndex - 1
             };
         }
         else if (figure is Slider slider)
@@ -490,7 +490,7 @@ public class ClickPreview
                 EndPoint = center + across,
                 Stroke = TickBrush,
                 StrokeThickness = 1.5,
-                ZIndex = (int)ZOrder.Points
+                ZIndex = ZOrders.Default(ZOrder.Points)
             });
         }
     }

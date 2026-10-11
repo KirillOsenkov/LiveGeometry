@@ -36,12 +36,12 @@ class Vector extends CompositeFigure {
         super();
         this.arrow = new Arrow();
         this.arrow.drawsShaft = false;
-        this.arrow.zIndex = ZOrder.Vectors;
+        this.arrow.layer = ZOrder.Vectors;
         this.line = new VectorShaft(this.arrow);
-        this.line.zIndex = ZOrder.Vectors;
+        this.line.layer = ZOrder.Vectors;
         this.arrow.dependencies = [this.line];
         this.children.push(this.line, this.arrow);
-        this.zIndex = ZOrder.Vectors;
+        this.layer = ZOrder.Vectors;
     }
 
     get isVector() {

@@ -36,7 +36,6 @@ public class RightAngleMark
         StrokeThickness = 1,
         StrokeJoin = PenLineJoin.Miter,
         IsHitTestVisible = false,
-        ZIndex = (int)ZOrder.Figures - 1,
         IsVisible = false
     };
 
@@ -44,7 +43,6 @@ public class RightAngleMark
     readonly AvaloniaShapes.Polygon clickArea = new AvaloniaShapes.Polygon()
     {
         Fill = Brushes.Transparent,
-        ZIndex = (int)ZOrder.Figures - 1,
         IsVisible = false
     };
 
@@ -191,6 +189,10 @@ public class RightAngleMark
 
         sign.Points = points;
         clickArea.Points = new Points() { cornerPoint, points[0], points[1], points[2] };
+
+        // right under its line, wherever that is brought or sent
+        sign.ZIndex = owner.ZIndex - 1;
+        clickArea.ZIndex = owner.ZIndex - 1;
         sign.IsVisible = true;
         clickArea.IsVisible = true;
     }

@@ -36,9 +36,9 @@ public class AxisLine : LineBase, ILine, IConditionalProperties
 
     public AxisDirection Direction { get; }
 
-    protected override int DefaultZOrder()
+    protected override ZOrder DefaultLayer()
     {
-        return (int)ZOrder.Axes;
+        return ZOrder.Axes;
     }
 
     public override PointPair Coordinates

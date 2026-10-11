@@ -2,7 +2,7 @@
 // control (a label, a box), its coordinates the top-left corner, its size in pixels.
 
 class ControlBase extends CoordinatesShapeBase {
-    defaultZOrder() {
+    defaultLayer() {
         return ZOrder.Controls;
     }
 

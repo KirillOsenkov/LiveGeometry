@@ -213,8 +213,9 @@ public class SelectionHalo : Control
 
     /// <summary>
     /// All the halos on a canvas, together: they share the opacity, so where two overlap (a
-    /// polygon and its sides, a vector's shaft and head) the band is not darker. Under the
-    /// lines and points, over the fills of polygons.
+    /// polygon and its sides, a vector's shaft and head) the band is not darker. Over every
+    /// line, polygon and label, whatever its Z, under the points: a halo under its figure
+    /// would be hidden by a figure brought to front over it.
     /// </summary>
     public class Layer : Canvas
     {
@@ -224,7 +225,7 @@ public class SelectionHalo : Control
         {
             Opacity = LayerOpacity;
             IsHitTestVisible = false;
-            ZIndex = (int)ZOrder.SelectionHalos;
+            ZIndex = ZOrders.Default(ZOrder.SelectionHalos);
         }
 
         public static Layer Get(Canvas canvas)

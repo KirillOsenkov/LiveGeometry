@@ -5,7 +5,7 @@
 class RectangularGridLinesCollection extends FigureBase {
     constructor() {
         super();
-        this.zIndex = ZOrder.Grid;
+        this.layer = ZOrder.Grid;
 
         /** The finer lines between the labeled ones, fainter than style */
         this.minorStyle = null;

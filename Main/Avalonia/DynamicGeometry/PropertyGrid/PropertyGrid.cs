@@ -690,7 +690,8 @@ namespace DynamicGeometry
                 .Where(m => m.ReturnType == typeof(void)
                     && !m.IsSpecialName
                     && m.IsPublic
-                    && m.HasAttribute<PropertyGridVisibleAttribute>());
+                    && m.HasAttribute<PropertyGridVisibleAttribute>()
+                    && PropertyGridConditionAttribute.Holds(m, editableObject));
 
             // a figure can veto a button by name the way it vetoes editing a row
             // (a segment shows Fix length or Free length, whichever applies), and caption it

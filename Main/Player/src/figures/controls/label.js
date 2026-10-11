@@ -84,7 +84,7 @@ class Label extends LabelBase {
         this.pinValue = value;
 
         // on the screen means on top of everything in the plane, like a control
-        this.zIndex = value === LabelPin.None ? this.defaultZOrder() : ZOrder.Controls;
+        this.layer = value === LabelPin.None ? this.defaultLayer() : ZOrder.Controls;
         if (this.hasCanvas) {
             this.updateVisual();
         }
@@ -201,7 +201,7 @@ class Label extends LabelBase {
         if (readPin !== LabelPin.None) {
             this.pinOffset = new Point(Xml.readDouble(element, "OffsetX"), Xml.readDouble(element, "OffsetY"));
             this.pinValue = readPin;
-            this.zIndex = ZOrder.Controls;
+            this.layer = ZOrder.Controls;
             this.updateVisual();
         } else {
             this.moveTo(new Point(Xml.readDouble(element, "X"), Xml.readDouble(element, "Y")));

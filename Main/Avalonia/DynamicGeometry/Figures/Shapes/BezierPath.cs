@@ -60,6 +60,8 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
     public BezierPath()
     {
+        // the path itself is drawn by its parts; its layer says the verbs apply to it
+        Layer = ZOrder.Polygons;
         interior = new BezierPathInterior(this);
         interior.Dependencies = new IFigure[] { this };
         Children.Add(interior);
@@ -70,7 +72,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
             Opacity = HandleLineOpacity,
             IsHitTestVisible = false,
             IsVisible = false,
-            ZIndex = (int)ZOrder.Figures + 1
+            ZIndex = ZOrders.Default(ZOrder.Handles) - 1
         };
         handleLines.BindTheme(AvaloniaShape.StrokeProperty, nameof(AppTheme.Ink));
     }
@@ -2796,9 +2798,9 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
         // over the figures, under the points: an anchor its handle is on is taken first,
         // the handle with Tab (ClickChoice)
-        protected override int DefaultZOrder()
+        protected override ZOrder DefaultLayer()
         {
-            return (int)ZOrder.Points - 1;
+            return ZOrder.Handles;
         }
 
         public override bool Visible
@@ -2879,9 +2881,9 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
             };
         }
 
-        protected override int DefaultZOrder()
+        protected override ZOrder DefaultLayer()
         {
-            return (int)ZOrder.Figures;
+            return ZOrder.Figures;
         }
 
         // the path finds its parts (BezierPath.HitTest)
@@ -2938,9 +2940,9 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
             return new AvaloniaPath();
         }
 
-        protected override int DefaultZOrder()
+        protected override ZOrder DefaultLayer()
         {
-            return (int)ZOrder.Polygons;
+            return ZOrder.Polygons;
         }
 
         /// <summary>There while the path is filled</summary>

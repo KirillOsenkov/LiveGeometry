@@ -62,7 +62,18 @@ namespace DynamicGeometry
         void OnAddingToDrawing(Drawing drawing);
         void OnRemovingFromDrawing(Drawing drawing);
 
-        int ZIndex { get; set; }
+        /// <summary>The layer the figure is drawn in, its kind's (<see cref="ZOrder"/>)</summary>
+        ZOrder Layer { get; set; }
+
+        /// <summary>
+        /// Where the figure is among those of its band of layers: 0 unless Bring to front or
+        /// Send to back changed it (<see cref="ZOrders"/>); saved as <c>Z</c>
+        /// </summary>
+        int Z { get; set; }
+
+        /// <summary>What the layer and the Z come to: the order the figures are drawn and hit in</summary>
+        int ZIndex { get; }
+
         bool Visible { get; set; }
 
         /// <summary>

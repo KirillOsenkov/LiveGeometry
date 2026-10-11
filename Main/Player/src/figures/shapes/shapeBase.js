@@ -7,11 +7,12 @@
 class ShapeBase extends FigureBase {
     constructor() {
         super();
-        this.zIndex = this.defaultZOrder();
+        this.layer = this.defaultLayer();
         this.resolvedStyle = null;
     }
 
-    defaultZOrder() {
+    /** The layer a figure of this kind is drawn in (ZOrder) */
+    defaultLayer() {
         return ZOrder.Figures;
     }
 

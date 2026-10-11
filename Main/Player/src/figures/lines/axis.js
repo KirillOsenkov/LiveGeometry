@@ -10,9 +10,9 @@ class Axis extends CompositeFigure {
         transparent.strokeWidth = 0;
         transparent.color = Color.transparent;
         this.line.style = transparent;
-        this.line.zIndex = ZOrder.Axes;
+        this.line.layer = ZOrder.Axes;
         this.arrow = new Arrow();
-        this.arrow.zIndex = ZOrder.Axes;
+        this.arrow.layer = ZOrder.Axes;
         this.arrow.dependencies = [this.line];
         this.children.push(this.line, this.arrow);
     }

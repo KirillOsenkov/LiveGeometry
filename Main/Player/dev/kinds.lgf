@@ -10,7 +10,7 @@
   <Figures>
     <FreePoint Name="O" X="-8" Y="3" />
     <FreePoint Name="A" X="-6" Y="3" />
-    <RegularPolygon Name="p" Sides="6" Style="Gold">
+    <RegularPolygon Name="p" Sides="6" Style="Gold" Z="1">
       <Dependency Name="O" />
       <Dependency Name="A" />
     </RegularPolygon>

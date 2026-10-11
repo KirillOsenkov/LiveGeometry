@@ -70,9 +70,9 @@ namespace DynamicGeometry
             Shape.PointsChanged();
         }
 
-        protected override int DefaultZOrder()
+        protected override ZOrder DefaultLayer()
         {
-            return (int)ZOrder.Polygons;
+            return ZOrder.Polygons;
         }
 
         public override IFigure HitTest(Point point)

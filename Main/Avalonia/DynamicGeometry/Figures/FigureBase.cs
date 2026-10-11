@@ -872,6 +872,10 @@ namespace DynamicGeometry
             {
                 writer.WriteAttributeBool("IsHitTestVisible", false);
             }
+            if (Z != 0)
+            {
+                writer.WriteAttributeString("Z", Z.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            }
         }
 
         public virtual void ReadXml(XElement element)
@@ -880,6 +884,7 @@ namespace DynamicGeometry
             Locked = element.ReadBool("Locked", false);
             Auxiliary = element.ReadBool("Auxiliary", false);
             IsHitTestVisible = element.ReadBool("IsHitTestVisible", true);
+            Z = element.ReadInt("Z", 0);
             var styleAttribute = element.Attribute("Style");
             if (styleAttribute != null
                 && Drawing != null
@@ -911,6 +916,36 @@ namespace DynamicGeometry
         }
 
 #if !PLAYER
+
+        /// <summary>Over every other figure of its band of layers (<see cref="ZOrders"/>)</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Bring to front")]
+        [PropertyGridIcon(PropertyGridIcon.BringToFront)]
+        [PropertyGridCondition(nameof(CanBringToFront))]
+        public void BringToFront()
+        {
+            ZOrders.BringToFront(new[] { (IFigure)this });
+        }
+
+        /// <summary>Under every other figure of its band of layers</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Send to back")]
+        [PropertyGridIcon(PropertyGridIcon.SendToBack)]
+        [PropertyGridCondition(nameof(CanSendToBack))]
+        public void SendToBack()
+        {
+            ZOrders.SendToBack(new[] { (IFigure)this });
+        }
+
+        public bool CanBringToFront()
+        {
+            return ZOrders.CanBringToFront(new[] { (IFigure)this });
+        }
+
+        public bool CanSendToBack()
+        {
+            return ZOrders.CanSendToBack(new[] { (IFigure)this });
+        }
 
         [PropertyGridVisible]
         [PropertyGridName("Delete")]
@@ -995,7 +1030,46 @@ namespace DynamicGeometry
             }
         }
 
-        public virtual int ZIndex { get; set; }
+        ZOrder layer;
+        public ZOrder Layer
+        {
+            get
+            {
+                return layer;
+            }
+            set
+            {
+                layer = value;
+                OnZIndexChanged();
+            }
+        }
+
+        int z;
+        public int Z
+        {
+            get
+            {
+                return z;
+            }
+            set
+            {
+                z = value;
+                OnZIndexChanged();
+            }
+        }
+
+        public int ZIndex
+        {
+            get
+            {
+                return ZOrders.Encode(Layer, Z);
+            }
+        }
+
+        /// <summary>The layer or the Z changed: whatever is drawn for the figure takes the new ZIndex</summary>
+        protected virtual void OnZIndexChanged()
+        {
+        }
 
         protected bool mExists = true;
         public virtual bool Exists
@@ -1113,7 +1187,6 @@ namespace DynamicGeometry
 
         public virtual void OnAddingToCanvas(Canvas newContainer)
         {
-            newContainer.ZIndex = this.ZIndex;
             EnsureStyleAssigned();
         }
 

@@ -15,12 +15,13 @@ namespace DynamicGeometry
         public ShapeBase()
         {
             Shape = CreateShape();
-            ZIndex = DefaultZOrder();
+            Layer = DefaultLayer();
         }
 
-        protected virtual int DefaultZOrder()
+        /// <summary>The layer a figure of this kind is drawn in (<see cref="ZOrder"/>)</summary>
+        protected virtual ZOrder DefaultLayer()
         {
-            return (int)ZOrder.Figures;
+            return ZOrder.Figures;
         }
 
         protected TShape shape;
@@ -40,19 +41,11 @@ namespace DynamicGeometry
             }
         }
 
-        public override int ZIndex
+        protected override void OnZIndexChanged()
         {
-            get
+            if (shape != null)
             {
-                return base.ZIndex;
-            }
-            set
-            {
-                base.ZIndex = value;
-                if (shape != null)
-                {
-                    shape.ZIndex = ZIndex;
-                }
+                shape.ZIndex = ZIndex;
             }
         }
 

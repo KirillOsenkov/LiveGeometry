@@ -29,6 +29,23 @@ public class FigureSelection : CompositePropertyProvider, IConditionalProperties
         BezierPath.CutHoles(drawing, figures);
     }
 
+    /// <summary>All of them over every other figure of their band (<see cref="ZOrders"/>), keeping their order among themselves</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Bring to front")]
+    [PropertyGridIcon(PropertyGridIcon.BringToFront)]
+    public void BringToFront()
+    {
+        ZOrders.BringToFront(figures);
+    }
+
+    [PropertyGridVisible]
+    [PropertyGridName("Send to back")]
+    [PropertyGridIcon(PropertyGridIcon.SendToBack)]
+    public void SendToBack()
+    {
+        ZOrders.SendToBack(figures);
+    }
+
     [PropertyGridVisible]
     [PropertyGridName("Delete")]
     [PropertyGridDestructive]
@@ -39,7 +56,17 @@ public class FigureSelection : CompositePropertyProvider, IConditionalProperties
 
     public bool CanEdit(string propertyName)
     {
-        return propertyName != nameof(CutHoles) || BezierPath.CanCutHoles(figures);
+        switch (propertyName)
+        {
+            case nameof(CutHoles):
+                return BezierPath.CanCutHoles(figures);
+            case nameof(BringToFront):
+                return ZOrders.CanBringToFront(figures);
+            case nameof(SendToBack):
+                return ZOrders.CanSendToBack(figures);
+            default:
+                return true;
+        }
     }
 
     public string Caption(string propertyName, string defaultCaption)

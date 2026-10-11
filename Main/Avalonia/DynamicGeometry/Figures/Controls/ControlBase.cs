@@ -4,9 +4,9 @@ namespace DynamicGeometry
 {
     public abstract class ControlBase : CoordinatesShapeBase<FrameworkElement>
     {
-        protected override int DefaultZOrder()
+        protected override ZOrder DefaultLayer()
         {
-            return (int)ZOrder.Controls;
+            return ZOrder.Controls;
         }
 
         /// <summary>A text, a measurement, a box: told apart by what they say, not by Label3</summary>

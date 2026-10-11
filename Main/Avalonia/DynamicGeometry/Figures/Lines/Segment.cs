@@ -60,7 +60,13 @@ namespace DynamicGeometry
 
             // in the segment's own stroke, as it is drawn now (thicker when selected)
             var coordinates = OnScreenCoordinates;
-            Mark.Show(ToPhysical(coordinates.P1), ToPhysical(coordinates.P2), Shape.Stroke, Shape.StrokeThickness, decoration);
+            Mark.Show(
+                ToPhysical(coordinates.P1),
+                ToPhysical(coordinates.P2),
+                Shape.Stroke,
+                Shape.StrokeThickness,
+                ZIndex,
+                decoration);
         }
 
         public override void OnAddingToCanvas(Canvas newContainer)

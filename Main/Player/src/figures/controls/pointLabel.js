@@ -124,7 +124,7 @@ class PointLabel extends Measurement {
         super.moveToCore(this.clampPosition(newPosition));
     }
 
-    defaultZOrder() {
+    defaultLayer() {
         return ZOrder.PointLabels;
     }
 

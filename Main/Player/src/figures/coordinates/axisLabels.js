@@ -4,7 +4,7 @@
 class AxisLabelsCollection extends FigureBase {
     constructor() {
         super();
-        this.zIndex = ZOrder.Grid;
+        this.layer = ZOrder.Grid;
         this.xAxisLabels = [];
         this.yAxisLabels = [];
     }

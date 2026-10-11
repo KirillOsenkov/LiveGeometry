@@ -27,9 +27,9 @@ namespace DynamicGeometry
                 Color.FromArgb(50, back.R, back.G, back.B));
         }
 
-        protected override int DefaultZOrder()
+        protected override ZOrder DefaultLayer()
         {
-            return (int)ZOrder.Labels;
+            return ZOrder.Labels;
         }
 
         protected override string Kind

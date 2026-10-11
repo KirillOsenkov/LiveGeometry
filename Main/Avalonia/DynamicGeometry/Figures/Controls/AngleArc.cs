@@ -152,6 +152,15 @@ namespace DynamicGeometry
             }
         }
 
+        protected override void OnZIndexChanged()
+        {
+            base.OnZIndexChanged();
+            if (fillShape != null)
+            {
+                fillShape.ZIndex = Shape.ZIndex - 1;
+            }
+        }
+
         /// <summary>The fill under the arcs as the mark is now; none without a geometry, a fill, or a mark on screen</summary>
         void UpdateFill(Avalonia.Media.PathGeometry geometry)
         {

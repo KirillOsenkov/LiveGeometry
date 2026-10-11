@@ -72,6 +72,7 @@ class DependentPolygonBase extends CompositeFigure {
         this.sides = [];
         this.retiredVertices = [];
         this.retiredSides = [];
+        this.layer = ZOrder.Polygons;
         this.polygon = new InteriorPolygon(this);
         this.children.push(this.polygon);
         this.isOnCanvas = false;
@@ -337,6 +338,7 @@ class DependentPolygonBase extends CompositeFigure {
         vertex.visible = this.visible;
         this.registerPart(vertex);
         vertex.drawing = this.drawing;
+        vertex.z = this.z;
         this.vertices.push(vertex);
         this.children.push(vertex);
         if (this.isOnCanvas) {

@@ -6,7 +6,7 @@ namespace DynamicGeometry
     {
         public GridLinesCollection()
         {
-            ZIndex = (int)ZOrder.Grid;
+            Layer = ZOrder.Grid;
         }
 
         public override IFigure HitTest(Point point)

@@ -21,7 +21,9 @@ public enum PropertyGridIcon
     Polyline,
     Polygon,
     Copy,
-    Swatches
+    Swatches,
+    BringToFront,
+    SendToBack
 }
 
 /// <summary>

@@ -40,7 +40,7 @@ namespace DynamicGeometry
         public Hyperlink()
         {
             Shape = CreateShape();
-            ZIndex = (int)ZOrder.Labels;
+            Layer = ZOrder.Labels;
             Shape.Click += Shape_Click;
             Enabled = true;
         }

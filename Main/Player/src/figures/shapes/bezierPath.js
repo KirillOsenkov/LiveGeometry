@@ -64,8 +64,8 @@ class BezierPathHandle extends PointBase {
     }
 
     // over the figures, under the points: an anchor its handle is on is taken first
-    defaultZOrder() {
-        return ZOrder.Points - 1;
+    defaultLayer() {
+        return ZOrder.Handles;
     }
 
     get visible() {
@@ -120,7 +120,7 @@ class BezierPathPiece extends ShapeBase {
     onAddingToDrawing(drawing) {
     }
 
-    defaultZOrder() {
+    defaultLayer() {
         return ZOrder.Figures;
     }
 
@@ -166,7 +166,7 @@ class BezierPathInterior extends ShapeBase {
     onAddingToDrawing(drawing) {
     }
 
-    defaultZOrder() {
+    defaultLayer() {
         return ZOrder.Polygons;
     }
 
@@ -238,7 +238,7 @@ class BezierPath extends CompositeFigure {
         this.curvesKnown = false;
         this.partsUnregistered = true;
         this.isOnCanvas = false;
-        this.zIndex = ZOrder.Polygons;
+        this.layer = ZOrder.Polygons;
     }
 
     get isLinearFigure() {
@@ -525,6 +525,7 @@ class BezierPath extends CompositeFigure {
             part.registerWithDependencies();
         }
 
+        part.z = this.z;
         this.children.push(part);
         if (this.isOnCanvas) {
             part.onAddingToCanvas(this.drawing.canvas);

@@ -23,7 +23,7 @@ class AxisLine extends LineBase {
         return true;
     }
 
-    defaultZOrder() {
+    defaultLayer() {
         return ZOrder.Axes;
     }
 

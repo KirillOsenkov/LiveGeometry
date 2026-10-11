@@ -46,7 +46,6 @@ public class SegmentDecorationMark
         StrokeLineCap = PenLineCap.Round,
         StrokeJoin = PenLineJoin.Round,
         IsHitTestVisible = false,
-        ZIndex = (int)ZOrder.Figures,
         IsVisible = false
     };
 
@@ -72,7 +71,14 @@ public class SegmentDecorationMark
     /// <param name="end">The segment's second end, in pixels; chevrons point this way</param>
     /// <param name="stroke">The segment's stroke, which the mark shares</param>
     /// <param name="thickness">The segment's stroke width, in pixels</param>
-    public void Show(Point start, Point end, IBrush stroke, double thickness, SegmentDecoration decoration)
+    /// <param name="zIndex">The segment's, which the mark shares (brought to front with it)</param>
+    public void Show(
+        Point start,
+        Point end,
+        IBrush stroke,
+        double thickness,
+        int zIndex,
+        SegmentDecoration decoration)
     {
         var along = RightAngleMark.Direction(start, end);
         if (decoration == SegmentDecoration.None || along == null)
@@ -85,6 +91,7 @@ public class SegmentDecorationMark
         path.Data = CreateGeometry(decoration, middle, along.Value, thickness);
         path.Stroke = stroke;
         path.StrokeThickness = thickness;
+        path.ZIndex = zIndex;
         path.IsVisible = true;
     }
 

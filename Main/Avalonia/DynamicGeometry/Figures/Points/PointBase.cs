@@ -132,9 +132,9 @@ namespace DynamicGeometry
             }
         }
 
-        protected override int DefaultZOrder()
+        protected override ZOrder DefaultLayer()
         {
-            return (int)ZOrder.Points;
+            return ZOrder.Points;
         }
 
         protected override Shape CreateShape()

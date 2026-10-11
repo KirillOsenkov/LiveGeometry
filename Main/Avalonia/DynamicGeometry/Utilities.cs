@@ -403,13 +403,6 @@ namespace DynamicGeometry
             }
         }
 
-        public static void SetZIndex<TShape>(this ShapeBase<TShape> shape, ZOrder typeOfLayer)
-            where TShape : FrameworkElement
-        {
-            shape.ZIndex = (int)typeOfLayer;
-            shape.Shape.ZIndex = (int)typeOfLayer;
-        }
-
         public static void CenterAt(this FrameworkElement element, Point center)
         {
 #if SILVERLIGHT
@@ -710,6 +703,19 @@ namespace DynamicGeometry
                     out result);
             }
             return result;
+        }
+
+        /// <summary>A whole number; the default when the attribute is missing or is no number</summary>
+        public static int ReadInt(this XElement element, string attributeName, int defaultValue)
+        {
+            var attribute = element.Attribute(attributeName);
+            if (attribute != null
+                && int.TryParse(attribute.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int result))
+            {
+                return result;
+            }
+
+            return defaultValue;
         }
 
         public static bool ReadBool(this XElement element, string attributeName, bool defaultValue)

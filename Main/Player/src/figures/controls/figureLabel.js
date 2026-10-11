@@ -37,7 +37,7 @@ class FigureLabel extends Measurement {
         }
     }
 
-    defaultZOrder() {
+    defaultLayer() {
         return ZOrder.PointLabels;
     }
 

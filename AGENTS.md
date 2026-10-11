@@ -1459,11 +1459,44 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `StrokeDashArray` counts in stroke widths. Anything that
   applies a style to a shape by hand (sample glyphs) must call `OnApplied` too. Any enum
   property of a style or figure round-trips by name through the generic `EnumSerializer`.
+- **Z order** (`Figures/ZOrder.cs`, 2026-10-10): every figure is drawn in its kind's
+  `Layer` (the `ZOrder` enum, bottom up: Grid, Axes, Polygons - polygons, the interiors of
+  regular polygons and Bezier paths - Labels, Figures - lines, circles, arcs, curves,
+  the sides of paths - Vectors, SelectionHalos, Handles, Points, PointLabels, Controls), and
+  within the band from Polygons to Vectors (`ZOrders.IsMovable`) its `Z` comes first and the
+  layer second: `ZIndex` is `ZOrders.Encode(Layer, Z)` - the layers under the band as they
+  are, the band above them with a stride of 1000 per Z, the layers over the band over all
+  of it. Every figure's Z is 0, so the gallery draws as it did before there was a Z (checked
+  pixel for pixel, `--check` before and after), and within one ZIndex the later figure is
+  on top (Avalonia sorts children by ZIndex stably; the player sorts the list the same
+  way). Bring to front sets the Z to one above the band's highest, Send to back to one
+  below its lowest (`ZOrders.BringToFront`/`SendToBack`, a `SetProperty` per figure in one
+  transaction: undo puts the old Z back); a polygon brought to front covers a circle, a
+  measurement, a segment and its marks, and nothing in the band ever covers a point. The
+  verbs are grid buttons on every figure (`FigureBase.BringToFront`, vetoed through
+  `[PropertyGridCondition]`, which names a bool method of the object: the grid asks it
+  where `IConditionalProperties` would have to be implemented by every figure), on a
+  multiple selection (`FigureSelection`, all of them at one Z, their order among
+  themselves kept by the list) and in the context menu (`Dragger`, for the selection as
+  Hide and Lock take it); offered only when a figure of the band that is not among them
+  is over (or under) one of them, or the step would be an undo step that changes
+  nothing; a figure outside the band (a point, a slider, a pinned label) gets none. A
+  composite's parts take its Z (`CompositeFigure.OnZIndexChanged`, and on `Children` adds:
+  a regular polygon's sides, a path's pieces); a composite drawn by its parts alone says
+  its layer itself (a regular polygon and a Bezier path are Polygons), or the verbs would
+  not apply to it. Whatever a figure draws beside its shape follows it: the angle's fill at
+  `Shape.ZIndex - 1`, the right angle mark at the owner's `ZIndex - 1`, a segment's marks
+  at its `ZIndex`, the hover halos at the source's `ZIndex - 1`; a preview visual of a
+  figure to come uses `ZOrders.Default(layer)`, a bare layer constant is never a ZIndex
+  any more. Saved as `Z="1"` on the figure, left out at 0; the player reads it
+  (`figureBase.js`, `zOrder.js`). Since the Z is not the list, the list stays the
+  dependency order, and a figure may go behind what it is built on.
 - **Selection is a halo, never a change of the figure** (`Figures/Shapes/SelectionHalo.cs`,
   2026-10-03): a striped band drawn from the shape's own `RenderedGeometry` under it (a
   slightly bigger silhouette for a point, a disc for an emoji), in one layer per canvas
-  (`SelectionHalo.Layer`, `ZOrder.SelectionHalos`) whose opacity the halos share, so
-  overlaps don't darken. Its brush is the theme's `SelectionHalo` (a gradient edited as
+  (`SelectionHalo.Layer`, `ZOrder.SelectionHalos`, over every figure of the Z band and
+  under the points since 2026-10-10: under its figure it was hidden by one brought to
+  front) whose opacity the halos share, so overlaps don't darken. Its brush is the theme's `SelectionHalo` (a gradient edited as
   any on the theme page), not stretched over the figure but repeated, reflected, every
   `StripeWidth` pixels along its angle (`SelectionHalo.MakeRepeating`); the halos redraw
   when it is edited or the theme switches. It is colorless on purpose (grays: white to
@@ -2074,7 +2107,8 @@ buttons and checkboxes, 3D, custom tools.
   then `--rewrite` the folder: Bidwell's packing, centers and angles from the Squares
   project's witness file). Captions of these live in their tools
   too: change both. A segment is drawn over every polygon whatever the order of the list
-  (`ZOrder`, not saved), which is why the kites drawing's grid is polygons. Hidden
+  (`ZOrder`; only a `Z` changed by Bring to front or Send to back is saved, see "Z order"),
+  which is why the kites drawing's grid is polygons. Hidden
   `PointByCoordinates` whose coordinates are expressions are the library's variables.
   The Bézier path drawings (2026-10-07) are generated too, each by `dotnet tools/<tool>.cs
   -- <the .lgf>` and a `--rewrite` of the folder, which gives the file byte for byte:
@@ -2110,7 +2144,8 @@ buttons and checkboxes, 3D, custom tools.
   sectors moved between two places by a slider), Clock Hands (`clock.cs`: the hands are
   polygons of rotated points, the second hand sweeps once per minute of clock time; the
   frame, bezel and face are 72-gons, not circles, because a polygon draws in the layer
-  under circles, `ZOrder.Polygons` under `Figures`, and a filled circle hid the hands).
+  under circles, `ZOrder.Polygons` under `Figures`, and a filled circle hid the hands;
+  since "Z order" (2026-10-10) a circle with `Z="-1"` would do, the polygons stay).
   Hand-written: Cycloid (the inner and the
   flange point slide on a hidden ray along the spoke), Spirograph (the pen slides on a
   hidden ray that turns with the wheel; six loci a turn apart, since a point on a circle
@@ -2125,7 +2160,8 @@ buttons and checkboxes, 3D, custom tools.
   the rest arcs of the wheel), Don't Trust Your Eyes. The sliders' `Maximum` came from
   this batch. Learned on the way: an `AngleArc` and an
   `AngleMeasurement` list the vertex first; a label (`ZOrder.Labels`) draws under a filled
-  circle or polygon (`ZOrder.Figures`), so a measurement over a clock face is invisible -
+  circle (`ZOrder.Figures`), so a measurement over a clock face is invisible unless it is
+  brought to front (`Z="1"`, see "Z order") -
   put the number in a label outside the shape or in the caption; a label as a rotation's
   angle is read in radians (`[rad(-30 * time)]`); the `Parameter` of a point on a line is
   the fraction from the line's first point to its second; a name's trailing digits draw

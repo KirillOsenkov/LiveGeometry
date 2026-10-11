@@ -200,9 +200,9 @@ namespace DynamicGeometry
             base.MoveToCore(ClampPosition(newPosition));
         }
 
-        protected override int DefaultZOrder()
+        protected override ZOrder DefaultLayer()
         {
-            return (int)ZOrder.PointLabels;
+            return ZOrder.PointLabels;
         }
 
         public override void UpdateVisual()

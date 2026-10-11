@@ -37,7 +37,7 @@ class PointBase extends CoordinatesShapeBase {
         }
     }
 
-    defaultZOrder() {
+    defaultLayer() {
         return ZOrder.Points;
     }
 
