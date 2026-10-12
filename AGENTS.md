@@ -1184,7 +1184,16 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
     pasted into another drawing, a figure looked its style up there by name, and took the
     default look, or another drawing's style "1" (a text style on a point). The paste brings
     a style the drawing lacks, under a free name where the name is taken by another look
-    (`StyleManager.FreeName`), and takes it away again on undo. Text that is no figures
+    (`StyleManager.FreeName`), and takes it away again on undo. The default styles the
+    copies are on come along too, named by them (`StyleManager.NamesDefaults`,
+    `GoesWithoutSaying`): a file leaves a figure's default style unsaid, and a copy took
+    the other drawing's default, changed in either drawing (Edit this style); one the
+    same in both is taken as it is. A tool being defined carries only the defaults its
+    drawing changed (`DefaultStyleNames.Changed`): kept between runs, a copy of an
+    unchanged one would come out as a second style once the theme's colors changed. The new names are
+    decided for all the styles first, none of them the name of another style coming in,
+    and the copies renamed once (red "1" became "12", the blue style's name, and renaming
+    blue to "122" took the red copies along). Text that is no figures
     (plain text, a page) is said so in the status, not read as XML (that threw).
   - *Parts of a composite* that are among a figure's dependents (a regular polygon's
     vertices) are not removed or put back by `RemoveFigureAction`: they go with their

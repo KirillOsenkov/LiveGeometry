@@ -85,9 +85,13 @@ class FigureStyle {
             return this;
         }
 
+        // in the order of the properties, as a file has them, not the order the overrides
+        // came in: a point style's size is its character's or its shape's, so the character first
         const result = this.clone();
         result.name = this.name;
-        for (const [property, value] of values) {
+        const order = this.constructor.properties.map(([property]) => property);
+        const place = property => order.includes(property) ? order.indexOf(property) : order.length;
+        for (const [property, value] of [...values].sort((a, b) => place(a[0]) - place(b[0]))) {
             result[property] = value;
         }
 

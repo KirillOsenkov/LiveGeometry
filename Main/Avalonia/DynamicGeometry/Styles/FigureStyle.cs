@@ -271,13 +271,38 @@ namespace DynamicGeometry
             result.Overrides = new Dictionary<string, Dictionary<string, object>>();
             result.themeBindings = null;
             result.boundValues = null;
+            // In the order of the properties, as a file writes and reads them, not in the order
+            // the overrides were made: a point style's Size is its character's or its shape's,
+            // whichever it shows, so its Character goes first. Made the other way round (a
+            // size, then an emoji, under Dark), the emoji showed at its own size while the
+            // grid said the override's, and came back at the override's from the file.
             var type = GetType();
-            foreach (var pair in values)
+            foreach (var pair in values.OrderBy(pair => PropertyOrder(pair.Key)))
             {
                 type.GetProperty(pair.Key).SetValue(result, pair.Value);
             }
 
             return result;
+        }
+
+        // where each property of a style type comes among its properties (OverrideValues)
+        static readonly Dictionary<Type, Dictionary<string, int>> propertyOrders = new Dictionary<Type, Dictionary<string, int>>();
+
+        int PropertyOrder(string property)
+        {
+            var type = GetType();
+            if (!propertyOrders.TryGetValue(type, out var order))
+            {
+                order = new Dictionary<string, int>();
+                foreach (var value in IncludeByDefaultValueDiscoveryStrategy.Instance.GetValues(this))
+                {
+                    order.TryAdd(value.Name, order.Count);
+                }
+
+                propertyOrders[type] = order;
+            }
+
+            return order.TryGetValue(property, out int index) ? index : int.MaxValue;
         }
 
         #endregion

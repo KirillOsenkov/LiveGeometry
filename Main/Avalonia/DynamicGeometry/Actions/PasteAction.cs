@@ -60,6 +60,13 @@ namespace DynamicGeometry
         {
             var added = new List<IFigureStyle>();
             var manager = drawing.StyleManager;
+
+            // A new name is none the copies' styles go by either, and the figures are made to
+            // name the new ones all at once, by the names they had: renamed one at a time, red
+            // "1" became "12" - the name of the blue style coming next - and renaming blue "12"
+            // to "122" took the red figures along.
+            var incoming = new HashSet<string>(styles.Elements().Select(node => node.ReadString("Name")).Where(name => !name.IsEmpty()));
+            var renamed = new Dictionary<string, string>();
             foreach (var styleNode in styles.Elements())
             {
                 var style = deserializer.ReadKnownStyle(styleNode);
@@ -77,15 +84,20 @@ namespace DynamicGeometry
                 if (existing != null)
                 {
                     string oldName = style.Name;
-                    style.Name = manager.FreeName(oldName);
-                    foreach (var attribute in figures.Descendants().Attributes("Style").Where(a => a.Value == oldName))
-                    {
-                        attribute.Value = style.Name;
-                    }
+                    style.Name = manager.FreeName(oldName, incoming);
+                    renamed[oldName] = style.Name;
                 }
 
                 manager.Add(style);
                 added.Add(style);
+            }
+
+            foreach (var attribute in figures.Descendants().Attributes("Style"))
+            {
+                if (renamed.TryGetValue(attribute.Value, out var newName))
+                {
+                    attribute.Value = newName;
+                }
             }
 
             return added;

@@ -95,6 +95,9 @@ public class Program
             ("A tool on a segment's length asks for a segment; a figure that can't come in leaves nothing", DefinedToolOnSegmentLength),
             ("Undo of a typed coordinate puts a point inside a shape back", PointInsideCoordinateUndo),
             ("Alt does nothing to a point dragged with a selection", AltDragOfSelection),
+            ("A changed default style comes along with its copies", PasteBringsChangedDefault),
+            ("Styles renamed in one paste keep apart", PasteRenamesKeepStylesApart),
+            ("A theme's emoji and size mean the same whichever was set first", ThemeOverrideOrder),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
@@ -2318,6 +2321,119 @@ public class Program
         source.PasteFromText(copied);
         Require(source.StyleManager.GetAllStyles().Count() == sourceStyles, "A paste into the same drawing added a style.");
         Require(source.Figures.OfType<FreePoint>().All(p => p.Style == big), "The copy in the same drawing took another style.");
+    }
+
+    /// <summary>
+    /// A point on a default style its drawing changed (Edit this style, not a new one) keeps
+    /// its look pasted into another drawing, where the style comes along under a free name;
+    /// pasted into its own drawing, it stays on that default
+    /// </summary>
+    static void PasteBringsChangedDefault()
+    {
+        var source = NewDrawing();
+        var point = AddPoint(source, x: 1, y: 2);
+        var edited = (PointStyle)point.Style;
+        Require(edited.Name == StyleManager.FreePointStyleName, "A new point's style: " + edited.Name);
+        edited.Size = 40;
+        string copied = DrawingSerializer.WriteUsingXmlWriter(writer => new DrawingSerializer().WriteFiguresWithStyles(source, new IFigure[] { point }, writer));
+
+        var target = NewDrawing();
+        target.PasteFromText(copied);
+        var pasted = target.Figures.OfType<FreePoint>().Single();
+        Require(pasted.Style is PointStyle { Size: 40 } && pasted.Style.Name != StyleManager.FreePointStyleName, "The copy lost the changed default's look: " + pasted.Style?.Name);
+        Require(target.StyleManager[StyleManager.FreePointStyleName] is PointStyle { Size: 10 }, "The drawing's own default was changed.");
+        var reloaded = ReadLgf(target.SaveAsText());
+        Require(reloaded.Figures.OfType<FreePoint>().Single().Style is PointStyle { Size: 40 }, "The saved copy lost its look.");
+
+        int sourceStyles = source.StyleManager.GetAllStyles().Count();
+        source.PasteFromText(copied);
+        Require(source.StyleManager.GetAllStyles().Count() == sourceStyles, "A paste into the same drawing added a style.");
+        Require(source.Figures.OfType<FreePoint>().All(p => p.Style == edited), "The copy in the same drawing left the default.");
+
+        // the other way round: a point on the default as every drawing has it, pasted where
+        // the default was made bigger, keeps its size, and the points there keep theirs
+        var plain = NewDrawing();
+        var plainPoint = AddPoint(plain, x: 1, y: 2);
+        string plainCopied = DrawingSerializer.WriteUsingXmlWriter(writer => new DrawingSerializer().WriteFiguresWithStyles(plain, new IFigure[] { plainPoint }, writer));
+        var resized = NewDrawing();
+        var own = AddPoint(resized, x: 3, y: 4);
+        var resizedDefault = (PointStyle)own.Style;
+        resizedDefault.Size = 40;
+        resized.PasteFromText(plainCopied);
+        var copy = resized.Figures.OfType<FreePoint>().Single(p => p != own);
+        Require(copy.Style is PointStyle { Size: 10 }, "A point on an unchanged default took the drawing's changed one: " + copy.Style?.Name);
+        Require(own.Style == resizedDefault && resizedDefault.Size == 40, "The drawing's own point or default changed.");
+
+        // and where the default is as every drawing has it, the copy takes it: no second style
+        foreach (var unchanged in new[] { plain, NewDrawing() })
+        {
+            int styles = unchanged.StyleManager.GetAllStyles().Count();
+            unchanged.PasteFromText(plainCopied);
+            Require(unchanged.StyleManager.GetAllStyles().Count() == styles, "A copy on an unchanged default added a style.");
+            Require(unchanged.Figures.OfType<FreePoint>().All(p => p.Style == unchanged.StyleManager[StyleManager.FreePointStyleName]), "A copy on an unchanged default left it.");
+        }
+    }
+
+    /// <summary>
+    /// Two styles of the copies renamed in one paste keep apart: red "1", which the drawing
+    /// has in green, doesn't take "12", the name of the blue style pasted with it (renamed
+    /// one after the other, both copies came out blue)
+    /// </summary>
+    static void PasteRenamesKeepStylesApart()
+    {
+        var red = Avalonia.Media.Colors.Red;
+        var blue = Avalonia.Media.Colors.Blue;
+        var source = NewDrawing();
+        var redPoint = AddPoint(source, x: 0, y: 0);
+        var bluePoint = AddPoint(source, x: 2, y: 0);
+        var redStyle = new PointStyle() { Name = "1", Fill = new Avalonia.Media.SolidColorBrush(red) };
+        var blueStyle = new PointStyle() { Name = "12", Fill = new Avalonia.Media.SolidColorBrush(blue) };
+        source.StyleManager.Add(redStyle);
+        source.StyleManager.Add(blueStyle);
+        redPoint.Style = redStyle;
+        bluePoint.Style = blueStyle;
+        string copied = DrawingSerializer.WriteUsingXmlWriter(writer => new DrawingSerializer().WriteFiguresWithStyles(source, new IFigure[] { redPoint, bluePoint }, writer));
+
+        var target = NewDrawing();
+        target.StyleManager.Add(new PointStyle() { Name = "1", Fill = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.Green) });
+        target.PasteFromText(copied);
+        Avalonia.Media.Color Fill(IFigure figure) => ((Avalonia.Media.SolidColorBrush)((PointStyle)figure.Style).Fill).Color;
+        var pasted = target.Figures.OfType<FreePoint>().ToList();
+        Require(pasted.Count == 2 && Fill(pasted[0]) == red && Fill(pasted[1]) == blue, "The pasted points are " + string.Join(", ", pasted.Select(p => p.Style.Name + " " + Fill(p))));
+        var reloaded = ReadLgf(target.SaveAsText()).Figures.OfType<FreePoint>().ToList();
+        Require(Fill(reloaded[0]) == red && Fill(reloaded[1]) == blue, "The saved copies lost their colors.");
+    }
+
+    /// <summary>
+    /// Under Dark, a point style given a size and an emoji: the same look whichever was set
+    /// first, and after the file is read again (the size went to the shape when it came
+    /// first, and the emoji showed at its own size while the grid said 60)
+    /// </summary>
+    static void ThemeOverrideOrder()
+    {
+        string dark = AppTheme.Dark.Name;
+        const string star = "⭐";
+        foreach (bool sizeFirst in new[] { true, false })
+        {
+            var style = new PointStyle() { Name = "Star" };
+            if (sizeFirst)
+            {
+                style.SetOverride(dark, nameof(PointStyle.Size), 60.0);
+                style.SetOverride(dark, nameof(PointStyle.Character), star);
+            }
+            else
+            {
+                style.SetOverride(dark, nameof(PointStyle.Character), star);
+                style.SetOverride(dark, nameof(PointStyle.Size), 60.0);
+            }
+
+            Require(style.Resolve(dark) is PointStyle { Character: star, Size: 60 }, $"Size {(sizeFirst ? "before" : "after")} the emoji: the emoji at {((PointStyle)style.Resolve(dark)).Size}.");
+            var drawing = NewDrawing();
+            drawing.StyleManager.Add(style);
+            AddPoint(drawing, x: 0, y: 0).Style = style;
+            var reloaded = (FigureStyle)ReadLgf(drawing.SaveAsText()).Figures.OfType<FreePoint>().Single().Style;
+            Require(reloaded.Resolve(dark) is PointStyle { Character: star, Size: 60 }, "The file read again shows the emoji at " + ((PointStyle)reloaded.Resolve(dark)).Size);
+        }
     }
 
     static void AxisLines()

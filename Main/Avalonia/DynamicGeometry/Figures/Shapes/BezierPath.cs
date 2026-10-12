@@ -2747,7 +2747,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
         }
 
         var common = CommonStyle(styled);
-        if (common != Drawing.StyleManager.AssignDefaultStyle(styled[0]))
+        if (!Drawing.StyleManager.GoesWithoutSaying(styled[0], common))
         {
             writer.WriteStartElement(elementName);
             writer.WriteAttributeString("Style", common.Name);

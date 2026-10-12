@@ -860,7 +860,7 @@ namespace DynamicGeometry
             }
             // the style of its kind goes without saying (a free point on FreePoint): a figure
             // without one gets it on loading (EnsureStyleAssigned)
-            if (Style != null && Drawing != null && Style != Drawing.StyleManager.AssignDefaultStyle(this))
+            if (Style != null && Drawing != null && !Drawing.StyleManager.GoesWithoutSaying(this, Style))
             {
                 writer.WriteAttributeString("Style", Style.Name);
             }

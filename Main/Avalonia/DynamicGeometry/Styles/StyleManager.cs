@@ -7,6 +7,23 @@ using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
+    /// <summary>Which default styles the figures written name (<see cref="StyleManager.NamesDefaults"/>)</summary>
+    public enum DefaultStyleNames
+    {
+        /// <summary>None: a file, read back into a drawing with the same defaults</summary>
+        None,
+
+        /// <summary>
+        /// The ones the drawing changed: the results of a tool being defined, kept between
+        /// runs (an unchanged default carried along would stay as it was when the tool was
+        /// made, and come out as a second style once the theme's colors changed)
+        /// </summary>
+        Changed,
+
+        /// <summary>All: copied figures, which look in the other drawing as they did</summary>
+        All
+    }
+
     public partial class StyleManager
     {
         static IEnumerable<Type> StyleTypes = Reflector.DiscoverTypes<IFigureStyle>();
@@ -476,6 +493,35 @@ namespace DynamicGeometry
             return this[name];
         }
 
+        /// <summary>
+        /// Which default styles a figure on the default of its kind names while figures are
+        /// written (<see cref="GoesWithoutSaying"/>): none in a file, which gets the drawing's
+        /// defaults back on loading; every one while they are copied, since the other
+        /// drawing's default of that name may look otherwise; the changed ones in a tool being
+        /// defined (<see cref="DefaultStyleNames"/>)
+        /// </summary>
+        public DefaultStyleNames NamesDefaults { get; set; }
+
+        /// <summary>
+        /// Whether a file may leave out the figure's style (the figure's own, or its parts'):
+        /// it is the default of the figure's kind, which the figure gets on loading - unless
+        /// the figure is going to another drawing (<see cref="NamesDefaults"/>)
+        /// </summary>
+        public bool GoesWithoutSaying(IFigure figure, IFigureStyle style)
+        {
+            if (style != AssignDefaultStyle(figure))
+            {
+                return false;
+            }
+
+            return NamesDefaults switch
+            {
+                DefaultStyleNames.All => false,
+                DefaultStyleNames.Changed => IsUnchangedDefault(style),
+                _ => true
+            };
+        }
+
         /// <summary>Whether the style is what a new drawing has under that name, unchanged: a file needn't carry it</summary>
         public static bool IsUnchangedDefault(IFigureStyle style)
         {
@@ -790,8 +836,11 @@ namespace DynamicGeometry
             list.Remove(style);
         }
 
-        /// <summary>The name, or the name with the first number after it that no style goes by</summary>
-        public string FreeName(string name)
+        /// <summary>
+        /// The name, or the name with the first number after it that no style goes by, nor is
+        /// among the reserved names (those of styles still coming in)
+        /// </summary>
+        public string FreeName(string name, ISet<string> reserved = null)
         {
             if (this[name] == null)
             {
@@ -800,7 +849,7 @@ namespace DynamicGeometry
 
             for (int i = 2; ; i++)
             {
-                if (this[name + i] == null)
+                if (this[name + i] == null && reserved?.Contains(name + i) != true)
                 {
                     return name + i;
                 }

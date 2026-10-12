@@ -181,7 +181,7 @@ namespace DynamicGeometry
             var withStyles = new XDocument();
             using (var aside = withStyles.CreateWriter())
             {
-                WriteFiguresWithStyles(drawing, Results, aside);
+                WriteFiguresWithStyles(drawing, Results, aside, DefaultStyleNames.Changed);
             }
 
             // A name that reads like the default is the default, which says nothing once the

@@ -307,27 +307,43 @@ namespace DynamicGeometry
         }
 
         /// <summary>
-        /// Figures for the clipboard, with the styles of their own that they name: pasted into
-        /// another drawing, a figure looked its style up there by name - a drawing without it
-        /// gave the default look, one with another style of that name ("1", say) that one.
-        /// The default styles every drawing has are not written.
+        /// Figures for another drawing, with the styles they name: pasted there, a figure
+        /// looked its style up by name - a drawing without it gave the default look, one with
+        /// another style of that name ("1", say) that one. Copied figures (<paramref name="defaults"/>
+        /// All) name and carry every style, the defaults too: one changed in either drawing
+        /// gave a copy the other drawing's look (a point on a default made bigger came out at
+        /// the other's size, and the other way round). A tool being defined carries only the
+        /// defaults this drawing changed (<see cref="DefaultStyleNames.Changed"/>).
         /// </summary>
-        public void WriteFiguresWithStyles(Drawing drawing, IEnumerable<IFigure> list, XmlWriter writer)
+        public void WriteFiguresWithStyles(Drawing drawing, IEnumerable<IFigure> list, XmlWriter writer, DefaultStyleNames defaults = DefaultStyleNames.All)
         {
+            var manager = drawing.StyleManager;
             var figureList = new XDocument();
-            using (var figureWriter = figureList.CreateWriter())
+            manager.NamesDefaults = defaults;
+            try
             {
-                WriteFigureList(list, figureWriter);
+                using (var figureWriter = figureList.CreateWriter())
+                {
+                    WriteFigureList(list, figureWriter);
+                }
+            }
+            finally
+            {
+                manager.NamesDefaults = DefaultStyleNames.None;
             }
 
             var usedStyles = new HashSet<string>(figureList.Descendants().Attributes("Style").Select(a => a.Value));
             writer.WriteStartElement("Drawing");
             writer.WriteStartElement("Styles");
-            foreach (var style in drawing.StyleManager.GetAllStyles())
+            foreach (var style in manager.GetAllStyles())
             {
-                if (usedStyles.Contains(style.Name) && StyleManager.GetNewDrawingDefault(style.Name) == null)
+                var original = StyleManager.GetNewDrawingDefault(style.Name);
+                bool carried = original == null
+                    || defaults == DefaultStyleNames.All
+                    || defaults == DefaultStyleNames.Changed && !StyleManager.IsUnchangedDefault(style);
+                if (usedStyles.Contains(style.Name) && carried)
                 {
-                    WriteStyle(style, writer);
+                    WriteStyle(style, writer, original);
                 }
             }
 
