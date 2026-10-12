@@ -16,10 +16,6 @@ class ShapeBase extends FigureBase {
         return ZOrder.Figures;
     }
 
-    get isMovable() {
-        return true;
-    }
-
     /** Implementation of IMovable.MoveTo: MoveToCore (set coordinates) and UpdateVisual */
     moveTo(newPosition) {
         this.moveToCore(newPosition);

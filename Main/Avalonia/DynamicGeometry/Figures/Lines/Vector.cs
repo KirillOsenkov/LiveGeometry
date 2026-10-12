@@ -171,6 +171,12 @@ namespace DynamicGeometry
             {
                 writer.WriteAttributeString("Style", Arrow.Style.Name);
             }
+
+            // brought to front or sent to back
+            if (Z != 0)
+            {
+                writer.WriteAttributeString("Z", Z.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            }
         }
 
 #endif
@@ -180,6 +186,7 @@ namespace DynamicGeometry
             Visible = element.ReadBool("Visible", true);
             Locked = element.ReadBool("Locked", false);
             IsHitTestVisible = element.ReadBool("IsHitTestVisible", true);
+            Z = element.ReadInt("Z", 0);
             var styleAttribute = element.Attribute("Style");
             if (styleAttribute != null
                 && Drawing != null

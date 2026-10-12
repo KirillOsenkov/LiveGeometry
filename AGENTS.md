@@ -1433,7 +1433,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   old pieces). A deleted anchor still leaves the source (its image goes with the anchor's
   image): the layout change runs before the image's helpers leave, so it recalculates
   without the Debug list check (`RecalculateAndUpdateUnchecked`). A deletion counts the
-  anchors left after it, also those built on the point deleted (`CanRemoveDependency`).
+  anchors left after it, also those built on the point deleted (`CanRemoveDependencies`:
+  `RemoveFigureAction` asks a figure that can lose dependencies about everything the
+  deletion takes at once, so a show/hide box holding A and AB goes when A is deleted).
   The figure the tension comes from is no part of what a transformation transforms. File: the anchors
   as the first dependencies and `Path="C 1,0 -0.5,1 L C #4 0,2 C a a ..."`, one piece per
   anchor, the closing one written whether closed or not: `L` for two handles on their

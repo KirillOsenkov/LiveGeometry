@@ -192,6 +192,9 @@ namespace DynamicGeometry
         {
             // named after the first figure it makes (Catenary), a number added when that is taken
             var firstName = Results.Select(r => r.Name).FirstOrDefault(n => !n.IsEmpty()) ?? "Custom tool";
+
+            // a part of a figure (a vertex a regular polygon works out) is made with its figure
+            Results = FigureParts.Wholes(Results).ToList();
             foreach (var result in Results.ToArray())
             {
                 AddIntermediateResults(result);
@@ -219,6 +222,14 @@ namespace DynamicGeometry
 
         protected void AddIntermediateResults(IFigure figure)
         {
+            if (Inputs.Contains(figure))
+            {
+                return;
+            }
+
+            // what is built on a part that is no input is built on the figure the part is of,
+            // which makes the part (a part written as a figure of its own could not be read)
+            figure = FigureParts.Whole(figure);
             if (Inputs.Contains(figure))
             {
                 return;

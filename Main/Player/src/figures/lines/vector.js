@@ -108,6 +108,7 @@ class Vector extends CompositeFigure {
         this.visible = Xml.readBool(element, "Visible", true);
         this.locked = Xml.readBool(element, "Locked", false);
         this.isHitTestVisible = Xml.readBool(element, "IsHitTestVisible", true);
+        this.z = Xml.readInt(element, "Z", 0);
         const styleName = element.getAttribute("Style");
         if (styleName != null && this.drawing != null && this.drawing.styleManager != null) {
             const style = this.drawing.styleManager.get(styleName);

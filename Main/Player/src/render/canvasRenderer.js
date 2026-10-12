@@ -10,9 +10,13 @@
 class CanvasRenderer {
     constructor(context) {
         this.context = context;
+
+        // the canvas, a pixel wider on every side: what a hole is cut out of (drawPath)
+        this.frame = null;
     }
 
     beginFrame(width, height, pixelRatio, paper) {
+        this.frame = new Rect(-1, -1, width + 2, height + 2);
         const context = this.context;
         context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
         context.clearRect(0, 0, width, height);
@@ -154,11 +158,45 @@ class CanvasRenderer {
     /**
      * A path of commands: { op: "move", x, y }, { op: "line", x, y }, { op: "cubic", x1, y1,
      * x2, y2, x, y }, { op: "arc", cx, cy, rx, ry, rotation, start, end, counterclockwise },
-     * { op: "close" }. Filled with the fill (even-odd), outlined with the stroke.
+     * { op: "close" }. Filled with the fill (even-odd), outlined with the stroke, with the
+     * holes (paths of commands too, each even-odd) taken out: all of each, wherever it is.
      */
-    drawPath(commands, stroke, fill, box = null) {
+    drawPath(commands, stroke, fill, box = null, holes = null) {
         const context = this.context;
+        const cut = holes != null && holes.length > 0;
+        if (cut) {
+            // each hole a clip of the frame with the hole in it (even-odd: the frame but the
+            // hole), so that together they leave out the union of the holes
+            context.save();
+            const frame = this.frame ?? new Rect(-1e5, -1e5, 2e5, 2e5);
+            for (const hole of holes) {
+                context.beginPath();
+                context.rect(frame.x, frame.y, frame.width, frame.height);
+                this.addToPath(hole);
+                context.clip("evenodd");
+            }
+        }
+
         context.beginPath();
+        const points = this.addToPath(commands);
+        if (fill != null && points.length > 0) {
+            context.fillStyle = this.toFillStyle(fill, box ?? CanvasRenderer.boxOf(points));
+            context.fill("evenodd");
+        }
+
+        if (CanvasRenderer.hasStroke(stroke)) {
+            this.applyStroke(stroke);
+            context.stroke();
+        }
+
+        if (cut) {
+            context.restore();
+        }
+    }
+
+    /** The commands added to the context's path; the points they go through, for the box of a fill */
+    addToPath(commands) {
+        const context = this.context;
         const points = [];
         for (const command of commands) {
             switch (command.op) {
@@ -184,15 +222,7 @@ class CanvasRenderer {
             }
         }
 
-        if (fill != null && points.length > 0) {
-            context.fillStyle = this.toFillStyle(fill, box ?? CanvasRenderer.boxOf(points));
-            context.fill("evenodd");
-        }
-
-        if (CanvasRenderer.hasStroke(stroke)) {
-            this.applyStroke(stroke);
-            context.stroke();
-        }
+        return points;
     }
 
     /** A point's marker: a shape of the size around the center, or a character in the font size of the size */

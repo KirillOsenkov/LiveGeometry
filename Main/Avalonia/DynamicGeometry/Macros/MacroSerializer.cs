@@ -57,9 +57,63 @@ namespace DynamicGeometry
         void WriteInput(IFigure input, XmlWriter writer)
         {
             writer.WriteStartElement("Input");
-            writer.WriteAttributeString("Name", input.Name);
+            writer.WriteAttributeString("Name", InputNames[input]);
             writer.WriteAttributeString("Type", GetInputType(input));
             writer.WriteEndElement();
+        }
+
+        Dictionary<IFigure, string> inputNames;
+
+        /// <summary>
+        /// The name each input goes by in the macro: its own, or for a part of a figure (a
+        /// vertex a regular polygon works out), which has none, what it is ("vertex 2 of
+        /// regular pentagon p", which the tool's hint shows). A part was an input without a
+        /// name, and what was built on it named it by its polygon, which the tool was never
+        /// given: the tool made nothing.
+        /// </summary>
+        Dictionary<IFigure, string> InputNames
+        {
+            get
+            {
+                if (inputNames == null)
+                {
+                    inputNames = new Dictionary<IFigure, string>();
+                    var taken = new HashSet<string>(Results.Select(result => result.Name));
+                    foreach (var input in Inputs)
+                    {
+                        var name = input.Name;
+                        if (name.IsEmpty() || taken.Contains(name))
+                        {
+                            var description = input.ToString();
+                            description = description.IsEmpty() ? "input" : char.ToLowerInvariant(description[0]) + description.Substring(1);
+                            name = description;
+                            for (int number = 2; taken.Contains(name); number++)
+                            {
+                                name = description + " " + number;
+                            }
+                        }
+
+                        taken.Add(name);
+                        inputNames[input] = name;
+                    }
+                }
+
+                return inputNames;
+            }
+        }
+
+        /// <summary>An input by the name it has in the macro, a part of a figure too</summary>
+        protected override void WriteDependency(IFigure dependency, XmlWriter writer)
+        {
+            if (Inputs.Contains(dependency))
+            {
+                writer.WriteStartElement("Dependency");
+                writer.WriteAttributeString("Name", InputNames[dependency]);
+                writer.WriteEndElement();
+                return;
+            }
+
+            base.WriteDependency(dependency, writer);
         }
 
         static List<Type> commonTypes = new List<Type>()

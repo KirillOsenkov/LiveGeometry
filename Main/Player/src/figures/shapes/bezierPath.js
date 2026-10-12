@@ -47,6 +47,11 @@ class BezierPathHandle extends PointBase {
         return true;
     }
 
+    /** What the Handle point style is offered to (StyleManager.getDefaultPointStyleName) */
+    get isBezierPathHandle() {
+        return true;
+    }
+
     get spec() {
         return new HandleSpec(this.offset, this.point, this.auto);
     }
@@ -163,6 +168,11 @@ class BezierPathInterior extends ShapeBase {
         return true;
     }
 
+    /** What a shape style asks for (ShapeStyle.supportsFigure): a path on its default style was drawn unfilled */
+    get isBezierPathInterior() {
+        return true;
+    }
+
     onAddingToDrawing(drawing) {
     }
 
@@ -184,9 +194,9 @@ class BezierPathInterior extends ShapeBase {
             return;
         }
 
-        const commands = this.owner.interiorCommands();
-        if (commands != null) {
-            renderer.drawPath(commands, null, this.fill, this.owner.pixelBounds());
+        const interior = this.owner.interiorCommands();
+        if (interior != null) {
+            renderer.drawPath(interior.outline, null, this.fill, this.owner.pixelBounds(), interior.holes);
         }
     }
 
@@ -990,24 +1000,28 @@ class BezierPath extends CompositeFigure {
         return commands;
     }
 
-    /** The inside: the outline filled (even-odd), the holes taken out (their outlines in the same path, which even-odd leaves out) */
+    /**
+     * The inside: the outline filled (even-odd) and the holes' outlines, each taken out
+     * (InteriorGeometry: the outline excluding the union of the holes). In the outline's own
+     * path, which even-odd leaves out, a hole dragged outside the path was filled.
+     */
     interiorCommands() {
         const outline = this.outlineCommands();
         if (outline == null) {
             return null;
         }
 
-        const commands = [...outline];
+        const holes = [];
         for (const hole of this.holes) {
             if (hole.exists && hole.pieceCount > 0 && hole.curvesExist()) {
                 const holeOutline = hole.outlineCommands();
                 if (holeOutline != null) {
-                    commands.push(...holeOutline);
+                    holes.push(holeOutline);
                 }
             }
         }
 
-        return commands;
+        return { outline, holes };
     }
 
     /** The outline as a polygon through the points the pieces are drawn through */

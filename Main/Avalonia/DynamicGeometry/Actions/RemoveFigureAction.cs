@@ -23,10 +23,44 @@ namespace DynamicGeometry
 
         protected override void ExecuteCore()
         {
-            CustomDependencyRemovers = new List<IAction>();
+            // What goes is decided against the whole deletion: a figure that can do without
+            // some of what it is built on (ISupportRemoveDependency) is spared only when it
+            // can do without everything the deletion takes from it, and what is built on it
+            // is spared with it. Asked for one dependency at a time, a show/hide box holding
+            // A and segment AB said yes to each when A was deleted, was left holding nothing,
+            // and threw on removing AB at the index it had had before A went. Everything goes
+            // at first, and the figures that can keep going are spared round by round, until
+            // no more can (each round only takes less away).
+            var spared = new List<IFigure>();
+            List<IFigure> deleted;
+            while (true)
+            {
+                deleted = Figure.AsEnumerable<IFigure>()
+                    .TopologicalSort(figure => figure.Dependents.Where(dependent => !spared.Contains(dependent)));
+                var gone = new HashSet<IFigure>(deleted);
+                var keeping = deleted
+                    .Where(figure => figure != Figure
+                        && figure is ISupportRemoveDependency remover
+                        && remover.CanRemoveDependencies(gone))
+                    .ToList();
+                if (keeping.Count == 0)
+                {
+                    break;
+                }
 
-            var deleted = Figure.AsEnumerable<IFigure>()
-                .TopologicalSort(GetRemovableDependencies);
+                spared.AddRange(keeping);
+            }
+
+            // all made before any runs: each finds its dependency when it runs
+            var removed = new HashSet<IFigure>(deleted);
+            CustomDependencyRemovers = new List<IAction>();
+            foreach (var figure in spared)
+            {
+                foreach (var dependency in figure.Dependencies.Where(removed.Contains).Distinct().ToList())
+                {
+                    CustomDependencyRemovers.Add(((ISupportRemoveDependency)figure).GetRemoveDependencyAction(dependency));
+                }
+            }
 
             // The parts of a composite (the vertices a regular polygon works out, which are
             // built on the polygon) are among the dependents so that what is built on them
@@ -65,23 +99,6 @@ namespace DynamicGeometry
             {
                 Drawing.RaiseSelectionChanged(new Drawing.SelectionChangedEventArgs());
             }
-        }
-
-        private IEnumerable<IFigure> GetRemovableDependencies(IFigure figure)
-        {
-            var list = figure.Dependents.ToList();
-
-            foreach (var item in figure.Dependents)
-            {
-                if (item is ISupportRemoveDependency customDependencyRemover
-                    && customDependencyRemover.CanRemoveDependency(figure))
-                {
-                    list.Remove(item);
-                    CustomDependencyRemovers.Add(customDependencyRemover.GetRemoveDependencyAction(figure));
-                }
-            }
-
-            return list;
         }
 
         /// <summary>

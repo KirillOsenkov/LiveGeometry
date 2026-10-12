@@ -715,6 +715,12 @@ namespace DynamicGeometry
             {
                 writer.WriteAttributeString("Style", polygon.Style.Name);
             }
+
+            // brought to front or sent to back (FigureBase.ReadXml reads it)
+            if (Z != 0)
+            {
+                writer.WriteAttributeString("Z", Z.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            }
         }
 
 #endif

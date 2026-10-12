@@ -80,7 +80,12 @@ namespace DynamicGeometry
             {
                 problem = "It was made by a newer version of Live Geometry.";
             }
-            else if (inputs.FirstOrDefault(i => i.ReadString("Name").IsEmpty() || DrawingDeserializer.FindType(i.ReadString("Type") ?? "") == null) is XElement unknown)
+            else if (inputs.Any(i => i.ReadString("Name").IsEmpty()))
+            {
+                // (a vertex of a regular polygon was one, before inputs were named in the macro)
+                problem = "It starts from a figure without a name.";
+            }
+            else if (inputs.FirstOrDefault(i => DrawingDeserializer.FindType(i.ReadString("Type") ?? "") == null) is XElement unknown)
             {
                 problem = "It starts from a kind of figure this version doesn't have: " + unknown.ReadString("Type") + ".";
             }

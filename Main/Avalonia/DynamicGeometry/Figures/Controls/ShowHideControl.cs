@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Avalonia;
@@ -143,20 +144,24 @@ namespace DynamicGeometry
         }
 
         /// <summary>
-        /// A figure the box holds, deleted, leaves the box with the others; the last one takes
-        /// the box along. (A box that held several figures built on the point deleted asks
-        /// for each before any has gone, and can be left holding nothing.)
+        /// A figure the box holds, deleted, leaves the box with the others; the last ones take
+        /// the box along, also when they go together (point A and segment AB, A deleted)
         /// </summary>
-        public bool CanRemoveDependency(IFigure dependency)
+        public bool CanRemoveDependencies(ISet<IFigure> removed)
         {
-            return Dependencies.Count > 1 && Dependencies.Contains(dependency);
+            return Dependencies.Any(figure => !removed.Contains(figure));
         }
 
         public IAction GetRemoveDependencyAction(IFigure dependency)
         {
-            int index = Dependencies.IndexOf(dependency);
+            // where it is when the removal runs, after the removals before it
+            int index = -1;
             return new CallMethodAction(
-                () => this.RemoveDependencyCore(index, dependency),
+                () =>
+                {
+                    index = Dependencies.IndexOf(dependency);
+                    this.RemoveDependencyCore(index, dependency);
+                },
                 () => this.InsertDependencyCore(index, dependency));
         }
 

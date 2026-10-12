@@ -85,6 +85,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     [PropertyGridVisible]
     [PropertyGridGroup("Range")]
     [PropertyGridPreferredEditor("UpDown")]
+    [PropertyGridCustomValueProvider(typeof(RangeValue))]
     public double Minimum
     {
         get
@@ -108,6 +109,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     [PropertyGridVisible]
     [PropertyGridGroup("Range")]
     [PropertyGridPreferredEditor("UpDown")]
+    [PropertyGridCustomValueProvider(typeof(RangeValue))]
     public double Maximum
     {
         get
@@ -134,6 +136,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     [PropertyGridVisible]
     [PropertyGridGroup("Range")]
     [PropertyGridPreferredEditor("UpDown")]
+    [PropertyGridCustomValueProvider(typeof(RangeValue))]
     public double Step
     {
         get
@@ -150,6 +153,45 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
             double kept = Value;
             step = value;
             Value = kept;
+        }
+    }
+
+    /// <summary>
+    /// A row of the Range group as the grid sets it: undo puts back the range and the value,
+    /// which a narrower range clamps. (Only the bound went back: the maximum set from 10 to
+    /// 2 and undone, the slider stayed at 2 under a maximum of 10, and so did everything
+    /// built on it.)
+    /// </summary>
+    public class RangeValue : PropertyValue, IRestorableValue
+    {
+        class SavedRange
+        {
+            public double Minimum;
+            public double Maximum;
+            public double Step;
+            public double Value;
+        }
+
+        public object CaptureState()
+        {
+            var slider = (Slider)Parent;
+            return new SavedRange()
+            {
+                Minimum = slider.minimum,
+                Maximum = slider.maximum,
+                Step = slider.step,
+                Value = slider.Value
+            };
+        }
+
+        public void RestoreState(object state)
+        {
+            var slider = (Slider)Parent;
+            var saved = (SavedRange)state;
+            slider.minimum = saved.Minimum;
+            slider.maximum = saved.Maximum;
+            slider.step = saved.Step;
+            slider.Value = saved.Value;
         }
     }
 

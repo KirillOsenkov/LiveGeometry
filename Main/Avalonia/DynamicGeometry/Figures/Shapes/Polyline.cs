@@ -156,10 +156,10 @@ namespace DynamicGeometry
             return Tuple.Create(0.0, 1.0);
         }
 
-        public bool CanRemoveDependency(IFigure dependency)
+        /// <summary>A polyline loses the points deleted while it keeps two</summary>
+        public bool CanRemoveDependencies(ISet<IFigure> removed)
         {
-            var count = Dependencies.Count(d => d == dependency);
-            return Dependencies.Count > count + 1 && count > 0;
+            return Dependencies.Count(point => !removed.Contains(point)) >= 2;
         }
 
         public IAction GetRemoveDependencyAction(IFigure dependency)

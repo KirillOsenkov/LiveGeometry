@@ -2083,32 +2083,30 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     /// whole again. A point that is a handle, deleted, leaves an ordinary handle where it was.
     /// The figure the tension comes from, deleted, leaves the tension typed.
     /// </summary>
-    public bool CanRemoveDependency(IFigure dependency)
+    public bool CanRemoveDependencies(ISet<IFigure> removed)
     {
-        var indices = Enumerable.Range(0, Dependencies.Count).Where(i => Dependencies[i] == dependency).ToList();
-        if (indices.Count == 0)
-        {
-            return false;
-        }
-
         int anchors = AnchorCount;
         int holeStart = HoleStart;
-        if (indices.All(i => i >= anchors && i < holeStart))
+        bool losesAnchor = false;
+        foreach (var dependency in Dependencies.Where(removed.Contains).Distinct().ToList())
         {
-            return true;
+            var indices = Enumerable.Range(0, Dependencies.Count).Where(i => Dependencies[i] == dependency).ToList();
+            if (indices.All(i => i >= anchors && i < holeStart))
+            {
+                continue;
+            }
+
+            if (indices.Count != 1)
+            {
+                return false;
+            }
+
+            losesAnchor |= indices[0] < anchors;
         }
 
-        if (indices.Count != 1)
-        {
-            return false;
-        }
-
-        // two anchors left after the deletion - also of those that go with it (an anchor on
-        // a segment through the one deleted): each asks before any of them has gone
-        return indices[0] >= holeStart
-            || indices[0] < anchors
-                && Dependencies.Take(anchors).Count(anchor => !anchor.DependsOn(dependency)) >= 2
-                && !IsImage;
+        // two anchors left after the deletion, of those that go with it too (an anchor on a
+        // segment through the one deleted)
+        return !losesAnchor || !IsImage && Dependencies.Take(anchors).Count(anchor => !removed.Contains(anchor)) >= 2;
     }
 
     public IAction GetRemoveDependencyAction(IFigure dependency)

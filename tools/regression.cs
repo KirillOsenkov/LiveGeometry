@@ -88,6 +88,10 @@ public class Program
             ("Perimeter measurements", PerimeterMeasurements),
             ("A tool defined on expressions builds on its inputs", DefinedToolOnExpressions),
             ("Defined tools are stored, read back and deleted", StoredToolsRoundTrip),
+            ("A tool defined on a regular polygon's vertex", DefinedToolOnPolygonVertex),
+            ("Deleting what a show/hide box holds, and undo", ShowHideBoxDeletion),
+            ("Undoing a slider's range puts its value back", SliderRangeUndo),
+            ("A regular polygon and a vector keep their Z", CompositeZRoundTrips),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
@@ -3079,6 +3083,182 @@ public class Program
             Behavior.NewBehaviorCreated -= created;
             ToolStorage.Instance = previous;
         }
+    }
+
+    /// <summary>
+    /// A tool defined from a vertex a regular polygon works out (a part, with no name of its
+    /// own): the input is named in the macro and the tool makes what was built on it. And a
+    /// tool whose result is built on such a vertex that is no input makes the polygon too.
+    /// </summary>
+    static void DefinedToolOnPolygonVertex()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="0" Y="0" />
+                <FreePoint Name="B" X="2" Y="0" />
+                <RegularPolygon Name="p">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                </RegularPolygon>
+                <MidPoint Name="G">
+                  <Dependency Name="A" />
+                  <Dependency Name="p" Part="Vertex2" />
+                </MidPoint>
+              </Figures>
+            </Drawing>
+            """);
+        var a = Find(drawing, "A");
+        var g = (IPoint)Find(drawing, "G");
+        var vertex = ((RegularPolygon)Find(drawing, "p")).GetPart("Vertex2");
+        var onVertex = UserDefinedTool.AddFromString(MacroSerializer.WriteMacroToString(
+            new List<IFigure> { a, vertex },
+            new List<IFigure> { g },
+            "Halfway"));
+        var throughPolygon = new MacroDefiner()
+        {
+            Inputs = new List<IFigure> { a, Find(drawing, "B") },
+            Results = new List<IFigure> { g }
+        }.CreateTool();
+        try
+        {
+            var macro = onVertex.RootElement.ToString();
+            Require(UserDefinedTool.Read(macro, out string problem) != null, "The tool would not be read back: " + problem);
+            Require(onVertex.HintText.Contains("then a point (vertex 2 of "), "The tool's hint: " + onVertex.HintText);
+
+            var other = NewDrawing();
+            AddPoint(other, x: 1, y: 1);
+            AddPoint(other, x: 5, y: 3);
+            using var window = new TestWindow(other.Canvas);
+            other.Behavior = onVertex;
+            Click(other, other.CoordinateSystem.ToPhysical(new Point(1, 1)));
+            Click(other, other.CoordinateSystem.ToPhysical(new Point(5, 3)));
+            var made = other.Figures.OfType<MidPoint>().SingleOrDefault();
+            Require(made != null, "The tool defined on a vertex made nothing: " + macro);
+            Near(made.Coordinates.X, expected: 3);
+            Near(made.Coordinates.Y, expected: 2);
+            other.Figures.CheckConsistency();
+
+            var third = NewDrawing();
+            AddPoint(third, x: 0, y: 0);
+            AddPoint(third, x: 2, y: 0);
+            using var thirdWindow = new TestWindow(third.Canvas);
+            third.Behavior = throughPolygon;
+            Click(third, third.CoordinateSystem.ToPhysical(new Point(0, 0)));
+            Click(third, third.CoordinateSystem.ToPhysical(new Point(2, 0)));
+            Require(third.Figures.OfType<RegularPolygon>().Count() == 1, "The tool didn't make the polygon its result is built on: " + throughPolygon.RootElement);
+            var middle = third.Figures.OfType<MidPoint>().SingleOrDefault();
+            Require(middle != null, "The tool built through the polygon made no midpoint.");
+            Near(middle.Coordinates.X, g.Coordinates.X);
+            Near(middle.Coordinates.Y, g.Coordinates.Y);
+            third.Figures.CheckConsistency();
+        }
+        finally
+        {
+            Behavior.Delete(onVertex);
+            Behavior.Delete(throughPolygon);
+        }
+    }
+
+    /// <summary>
+    /// A show/hide box loses what is deleted of what it holds and goes when nothing is left,
+    /// also when what it holds goes in one deletion (A and AB, A deleted: the removal threw
+    /// half way, and undo gave the box back without A). Undo and redo give each drawing back.
+    /// </summary>
+    static void ShowHideBoxDeletion()
+    {
+        foreach (var (holds, deleted, left) in new (string Holds, string Deleted, string Left)[]
+        {
+            ("A AB", "A", null),
+            ("A C", "A", "C"),
+            ("AB BC", "B", null),
+            ("AB C", "B", "C")
+        })
+        {
+            var dependencies = string.Concat(holds.Split(' ').Select(name => $"<Dependency Name=\"{name}\" />"));
+            var drawing = ReadLgf($"""
+                <Drawing Version="1">
+                  <Figures>
+                    <FreePoint Name="A" X="0" Y="0" />
+                    <FreePoint Name="B" X="3" Y="0" />
+                    <FreePoint Name="C" X="3" Y="3" />
+                    <Segment Name="AB">
+                      <Dependency Name="A" />
+                      <Dependency Name="B" />
+                    </Segment>
+                    <Segment Name="BC">
+                      <Dependency Name="B" />
+                      <Dependency Name="C" />
+                    </Segment>
+                    <ShowHideControl Name="box" Show="true" Text="Show" X="-4" Y="3">{dependencies}</ShowHideControl>
+                  </Figures>
+                </Drawing>
+                """);
+            string before = drawing.SaveAsText();
+            drawing.Delete(new[] { Find(drawing, deleted) });
+            string after = drawing.SaveAsText();
+            var box = drawing.Figures.OfType<ShowHideControl>().SingleOrDefault();
+            string kept = box == null ? null : string.Join(" ", box.Dependencies.Select(figure => figure.Name));
+            Require(kept == left, $"A box holding {holds}, {deleted} deleted, holds {kept ?? "(gone)"}.");
+            drawing.Figures.CheckConsistency();
+            drawing.ActionManager.Undo();
+            Require(drawing.SaveAsText() == before, $"Undo of deleting {deleted} from a box holding {holds} changed the drawing.");
+            drawing.Figures.CheckConsistency();
+            drawing.ActionManager.Redo();
+            Require(drawing.SaveAsText() == after, $"Redo of deleting {deleted} from a box holding {holds} changed the drawing.");
+            drawing.Figures.CheckConsistency();
+        }
+    }
+
+    /// <summary>A narrower range clamps the value; undo puts the range and the value back</summary>
+    static void SliderRangeUndo()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <Slider Name="a" X="-3" Y="-2" Value="5" Maximum="10" />
+              </Figures>
+            </Drawing>
+            """);
+        var slider = (DynamicGeometry.Slider)Find(drawing, "a");
+        string before = drawing.SaveAsText();
+        foreach (var (property, value) in new[] { ("Maximum", 2.0), ("Minimum", 7.0), ("Step", 4.0) })
+        {
+            Set(drawing, slider, property, value);
+            string after = drawing.SaveAsText();
+            Require(slider.Value != 5, property + " didn't clamp the value.");
+            drawing.ActionManager.Undo();
+            Near(slider.Value, expected: 5);
+            Require(drawing.SaveAsText() == before, "Undo of " + property + " changed the drawing: " + drawing.SaveAsText());
+            drawing.ActionManager.Redo();
+            Require(drawing.SaveAsText() == after, "Redo of " + property + " changed the drawing.");
+            drawing.ActionManager.Undo();
+        }
+    }
+
+    /// <summary>A regular polygon and a vector brought to front or sent to back stay so in the file (their own WriteXml left Z out)</summary>
+    static void CompositeZRoundTrips()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="0" Y="0" />
+                <FreePoint Name="B" X="2" Y="0" />
+                <RegularPolygon Name="p" Z="2">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                </RegularPolygon>
+                <Vector Name="AB" Z="-1">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                </Vector>
+              </Figures>
+            </Drawing>
+            """);
+        Require(Find(drawing, "AB").Z == -1, "A vector read without its Z.");
+        var reloaded = ReadLgf(drawing.SaveAsText());
+        Require(Find(reloaded, "p").Z == 2, "A regular polygon saved without its Z.");
+        Require(Find(reloaded, "AB").Z == -1, "A vector saved without its Z.");
     }
 
     /// <summary>
