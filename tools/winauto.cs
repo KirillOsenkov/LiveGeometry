@@ -14,6 +14,9 @@
 //   dotnet tools/winauto.cs -- shot   <target> <out.png> [--screen]
 //   dotnet tools/winauto.cs -- click  <target> <x> <y> [left|right|double|middle]
 //   dotnet tools/winauto.cs -- drag   <target> <x1> <y1> <x2> <y2> [steps] [--shift] [--alt]  (held throughout)
+//   dotnet tools/winauto.cs -- path   <target> <x1> <y1> <x2> <y2> ... [--right] [--shift] [--alt] [--hold]
+//                                     (a drag through the points, a lasso; --hold keeps the button and keys down)
+//   dotnet tools/winauto.cs -- release [--right] [--shift] [--alt]   (lets go of what path --hold kept down)
 //   dotnet tools/winauto.cs -- move   <target> <x> <y>
 //   dotnet tools/winauto.cs -- keys   <target> <sendkeys-syntax>     e.g. "^s" "{ENTER}" "%f" "{DOWN 3}"
 //   dotnet tools/winauto.cs -- text   <target> <literal text>
@@ -35,7 +38,7 @@ SetProcessDpiAwarenessContext(new IntPtr(-4)); // per-monitor v2: physical pixel
 
 if (args.Length == 0)
 {
-    Console.WriteLine("usage: list | tree | menu | invoke | shot | click | drag | move | keys | text | focus | place | maximize  (see header comment)");
+    Console.WriteLine("usage: list | tree | menu | invoke | shot | click | drag | path | release | move | keys | text | focus | place | maximize  (see header comment)");
     return 1;
 }
 
@@ -54,6 +57,8 @@ try
         case "click": Click(Resolve(args[1]), int.Parse(args[2]), int.Parse(args[3]), args.Length > 4 ? args[4] : "left"); break;
         case "move": { var h = Resolve(args[1]); Focus(h); MoveTo(h, int.Parse(args[2]), int.Parse(args[3])); break; }
         case "drag": Drag(Resolve(args[1]), int.Parse(args[2]), int.Parse(args[3]), int.Parse(args[4]), int.Parse(args[5]), args.Length > 6 && !args[6].StartsWith("--") ? int.Parse(args[6]) : 12, args.Contains("--shift"), args.Contains("--alt")); break;
+        case "path": PathDrag(Resolve(args[1]), args.Skip(2).ToArray()); break;
+        case "release": Release(args.Contains("--right"), args.Contains("--shift"), args.Contains("--alt")); break;
         case "keys": { Focus(Resolve(args[1])); SendKeysSyntax(args[2]); break; }
         case "text": { Focus(Resolve(args[1])); foreach (var c in args[2]) Unicode(c); break; }
         case "place": { var h = Resolve(args[1]); ShowWindow(h, 9); MoveWindow(h, int.Parse(args[2]), int.Parse(args[3]), int.Parse(args[4]), int.Parse(args[5]), true); break; }
@@ -406,6 +411,44 @@ static void Drag(IntPtr h, int x1, int y1, int x2, int y2, int steps, bool shift
 
     Thread.Sleep(50);
     Button(0x0004);
+    if (alt) Key(0x12, true);
+    if (shift) Key(0x10, true);
+}
+
+// a drag through the points, each leg in a few steps; --hold leaves the button and the keys
+// down, for a shot in the middle of the gesture, and `release` lets go of them
+static void PathDrag(IntPtr h, string[] rest)
+{
+    var numbers = rest.TakeWhile(arg => !arg.StartsWith("--")).Select(int.Parse).ToArray();
+    bool right = rest.Contains("--right");
+    bool shift = rest.Contains("--shift");
+    bool alt = rest.Contains("--alt");
+    Focus(h);
+    MoveTo(h, numbers[0], numbers[1]);
+    if (shift) Key(0x10, false);
+    if (alt) Key(0x12, false);
+    Button(right ? 0x0008u : 0x0002u);
+    for (int i = 2; i + 1 < numbers.Length; i += 2)
+    {
+        int x0 = numbers[i - 2], y0 = numbers[i - 1], x1 = numbers[i], y1 = numbers[i + 1];
+        for (int step = 1; step <= 8; step++)
+        {
+            MoveTo(h, x0 + (x1 - x0) * step / 8, y0 + (y1 - y0) * step / 8);
+        }
+    }
+
+    if (rest.Contains("--hold"))
+    {
+        return;
+    }
+
+    Thread.Sleep(50);
+    Release(right, shift, alt);
+}
+
+static void Release(bool right, bool shift, bool alt)
+{
+    Button(right ? 0x0010u : 0x0004u);
     if (alt) Key(0x12, true);
     if (shift) Key(0x10, true);
 }

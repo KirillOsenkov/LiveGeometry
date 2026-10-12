@@ -90,7 +90,20 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   selected with others drags them all as one piece (`Dragger.FindSelectionRoots`: the roots
   of the whole selection, each once, by the same offset; no Alt snapping, no point jumping
   under the cursor; a locked figure or root holds them all, a caption stays); also the tool
-  every construction returns to. Figure List (toggle): see "The Figure List".
+  every construction returns to. A drag with the right button draws a lasso, and a right
+  click opens the context menu at the release, not the press (`Behavior`, "The right
+  button": a tool takes a right drag through `MouseRightDragStarted`; one that doesn't gets
+  the click at the release wherever it is). Box, Lasso (2026-10-11; `RegionSelector`:
+  `BoxSelector`, `LassoSelector`) - a drag anywhere, on figures too, adds what the region
+  takes to the selection, with Alt takes it out; a click selects as Drag's does. While the
+  drag lasts (`RegionSelection`) the region is a band of the halo's stripes in the halo
+  layer, what it takes is selected live so the halos show the outcome, and Escape puts the
+  selection back (`Behavior.AbandonGesture`, asked by `MainView` first). What a region takes
+  is judged in pixels on the shapes on screen, fill and stroke as drawn (`SelectionRegion`:
+  Skia path operations through `CombinedGeometry`, after a bounds test): every figure it
+  touches, or with `TakesTouchedFigures` false only those wholly inside - but lines, rays
+  and function graphs whenever touched. Never hidden figures, names, Numbers, the axes or
+  a gallery drawing's text. Figure List (toggle): see "The Figure List".
 - **Points**: Point (P) - free, on a figure, or at an intersection; Midpoint (M) - two points
   or a segment; Intersection (I) - two figures that cross, the click on the second picks the
   nearer crossing (`PointPlacement.Intersection`, shared with the Point tool); Point inside
@@ -2586,7 +2599,10 @@ and fails with words (`playerparity.cs`'s `Webauto`).
   `list`, `tree <t>`, `menu <t>`, `invoke <t> <menuId>`, `shot <t> out.png [--screen]` (the
   window's own rendering, or what is on the screen there - the only way to see the title bar), `click <t> x y [right|double]`,
   `move <t> x y` (hover, for click previews and `cursor`),
-  `drag <t> x1 y1 x2 y2 [steps] [--shift] [--alt]`, `wheel <t> x y <notches>`, `keys <t> "^s"`, `text`, `focus`,
+  `drag <t> x1 y1 x2 y2 [steps] [--shift] [--alt]`, `path <t> x1 y1 x2 y2 ... [--right]
+  [--shift] [--alt] [--hold]` (a drag through the points, a lasso; `--hold` keeps the button
+  and keys down for a `shot` in the middle, `release [--right] [--shift] [--alt]` lets go),
+  `wheel <t> x y <notches>`, `keys <t> "^s"`, `text`, `focus`,
   `cursor`, `place <t> x y w h`, `maximize <t>`. Target = process name | `pid:N` | `hwnd:0x..` | `title:substr`.
   - The VB6 app starts maximized: `place <t> 100 100 1500 1000` first. The Avalonia desktop app
     remembers its window (`LiveGeometry.Desktop/WindowPlacementPersistence.cs`, the

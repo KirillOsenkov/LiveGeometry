@@ -158,8 +158,10 @@ namespace DynamicGeometry
             {
                 if (mParentCanvas != null)
                 {
-                    // a move that waits for a frame was the tool's that is put down
+                    // a move that waits for a frame was the tool's that is put down, and so
+                    // was a press of the right button
                     ForgetWaitingMove();
+                    ForgetRightPress();
                     clickPreview.Clear();
                     mParentCanvas.PointerExited -= PointerExitedHandler;
                     mParentCanvas.PointerWheelChanged -= PointerWheelHandler;
@@ -285,14 +287,7 @@ namespace DynamicGeometry
             }
             else if (properties.IsRightButtonPressed || isSecondaryClickHeld)
             {
-                try
-                {
-                    MouseRightClick(sender, e);
-                }
-                catch (Exception ex)
-                {
-                    HandleException(ex);
-                }
+                PressRightButton(e);
             }
         }
 
@@ -318,9 +313,7 @@ namespace DynamicGeometry
 
         void HandleMove(object sender, PointerEventArgs e)
         {
-            // (the context menu it opened may have taken the release)
-            isSecondaryClickHeld = isSecondaryClickHeld && e.GetCurrentPoint(mParentCanvas).Properties.IsLeftButtonPressed;
-            if (isSecondaryClickHeld)
+            if (MoveRightButton(sender, e))
             {
                 return;
             }
@@ -642,6 +635,143 @@ namespace DynamicGeometry
                 Restart();
             }
 #endif
+        }
+
+        #region The right button
+
+        // A right click (Ctrl+click on a Mac) is MouseRightClick at the release, when the
+        // button comes up where it went down, as Windows opens a context menu. A drag with
+        // the right button is the tool's, if it takes one (the Drag tool draws a lasso); a
+        // tool that doesn't gets the click at the release wherever it is. The click came at
+        // the press: the Drag tool's menu opened under the button still held, and a drag with
+        // it could mean nothing.
+
+        // the press while the button is held, null otherwise
+        PointerPressedEventArgs rightPress;
+        Point rightPressPosition;
+
+        // whether the tool took the drag, and whether it said no to it
+        bool isRightDragging;
+        bool isRightDragRefused;
+
+        void PressRightButton(PointerPressedEventArgs e)
+        {
+            rightPress = e;
+            rightPressPosition = e.GetPosition(mParentCanvas);
+            isRightDragging = false;
+            isRightDragRefused = false;
+        }
+
+        /// <summary>The move of the right button held: a drag once it has gone far enough. False when it is not held.</summary>
+        bool MoveRightButton(object sender, PointerEventArgs e)
+        {
+            if (rightPress == null)
+            {
+                return false;
+            }
+
+            var properties = e.GetCurrentPoint(mParentCanvas).Properties;
+            if (!(isSecondaryClickHeld ? properties.IsLeftButtonPressed : properties.IsRightButtonPressed))
+            {
+                // its release never came (the window lost the mouse): a drag ends where it is
+                ReleaseRightButton(sender, e, isReleased: false);
+                return false;
+            }
+
+            if (!isRightDragging)
+            {
+                if (isRightDragRefused || e.GetPosition(mParentCanvas).Distance(rightPressPosition) < Dragger.DragThreshold)
+                {
+                    return true;
+                }
+
+                try
+                {
+                    isRightDragging = MouseRightDragStarted(sender, rightPress);
+                }
+                catch (Exception ex)
+                {
+                    HandleException(ex);
+                }
+
+                isRightDragRefused = !isRightDragging;
+                if (!isRightDragging)
+                {
+                    return true;
+                }
+            }
+
+            try
+            {
+                MouseRightDragMoved(sender, e);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            return true;
+        }
+
+        /// <param name="isReleased">False when the release never came: no click then</param>
+        void ReleaseRightButton(object sender, PointerEventArgs e, bool isReleased)
+        {
+            bool wasDragging = isRightDragging;
+            ForgetRightPress();
+            try
+            {
+                if (wasDragging)
+                {
+                    MouseRightDragEnded(sender, e);
+                }
+                else if (isReleased)
+                {
+                    MouseRightClick(sender, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+
+        void ForgetRightPress()
+        {
+            rightPress = null;
+            isRightDragging = false;
+            isRightDragRefused = false;
+            isSecondaryClickHeld = false;
+        }
+
+        /// <summary>
+        /// A drag with the right button begins: it has gone <see cref="Dragger.DragThreshold"/>
+        /// pixels from the press. True takes it: the moves and the release go to
+        /// <see cref="MouseRightDragMoved"/> and <see cref="MouseRightDragEnded"/>, and there is
+        /// no click. False by default: the release is a right click wherever it is.
+        /// </summary>
+        protected virtual bool MouseRightDragStarted(object sender, PointerEventArgs press)
+        {
+            return false;
+        }
+
+        protected virtual void MouseRightDragMoved(object sender, PointerEventArgs e)
+        {
+        }
+
+        /// <summary>The release of a drag the tool took; also a move with the button no longer held, when the release never came</summary>
+        protected virtual void MouseRightDragEnded(object sender, PointerEventArgs e)
+        {
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Escape: a gesture under way (a lasso being drawn) is dropped as if it never began,
+        /// and nothing else happens. False when there is none, and Escape does what it does.
+        /// </summary>
+        public virtual bool AbandonGesture()
+        {
+            return false;
         }
 
         #region Cursor
@@ -1028,7 +1158,11 @@ namespace DynamicGeometry
                 return;
             }
 
-            if (isSecondaryClickHeld)
+            if (rightPress != null && (isSecondaryClickHeld || e.InitialPressMouseButton == MouseButton.Right))
+            {
+                ReleaseRightButton(sender, e, isReleased: true);
+            }
+            else if (isSecondaryClickHeld)
             {
                 isSecondaryClickHeld = false;
             }

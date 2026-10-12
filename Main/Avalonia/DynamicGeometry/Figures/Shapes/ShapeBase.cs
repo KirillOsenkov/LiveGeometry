@@ -9,7 +9,13 @@ namespace DynamicGeometry
         double Area { get; }
     }
 
-    public abstract partial class ShapeBase<TShape> : FigureBase
+    /// <summary>A figure drawn by one control on the canvas, whatever kind of control (<see cref="ShapeBase{TShape}"/>)</summary>
+    public interface IHasShape
+    {
+        Control Shape { get; }
+    }
+
+    public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
         where TShape : FrameworkElement
     {
         public ShapeBase()
@@ -40,6 +46,8 @@ namespace DynamicGeometry
                 }
             }
         }
+
+        Control IHasShape.Shape => shape;
 
         protected override void OnZIndexChanged()
         {

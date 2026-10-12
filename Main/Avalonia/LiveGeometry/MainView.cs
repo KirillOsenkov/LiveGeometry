@@ -1656,7 +1656,11 @@ public partial class MainView : UserControl
         }
 
         var behavior = DrawingHost.CurrentDrawing.Behavior;
-        if (behavior.IsInInitialState)
+        if (behavior.AbandonGesture())
+        {
+            // a lasso being drawn goes, and nothing else
+        }
+        else if (behavior.IsInInitialState)
         {
             DrawingHost.CurrentDrawing.SetDefaultBehavior();
         }

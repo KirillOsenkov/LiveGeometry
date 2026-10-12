@@ -618,8 +618,61 @@ namespace DynamicGeometry
         public override void Stopping()
         {
             ReleaseAll();
+            AbandonGesture();
             base.Stopping();
         }
+
+        #region Lasso: a drag with the right button
+
+        // a lasso being drawn, null otherwise
+        RegionSelection lasso;
+
+        protected override bool MouseRightDragStarted(object sender, PointerEventArgs press)
+        {
+            // (not while a press of the left button drags something)
+            if (drags.Count > 0)
+            {
+                return false;
+            }
+
+            lasso = new RegionSelection(
+                Drawing,
+                SelectionRegion.Lasso(press.GetPosition(ParentCanvas)),
+                showsKeyHint: true);
+            return true;
+        }
+
+        protected override void MouseRightDragMoved(object sender, PointerEventArgs e)
+        {
+            lasso?.Extend(e.GetPosition(ParentCanvas), removing: IsAltPressed());
+        }
+
+        protected override void MouseRightDragEnded(object sender, PointerEventArgs e)
+        {
+            if (lasso == null)
+            {
+                return;
+            }
+
+            var finished = lasso;
+            lasso = null;
+            finished.Extend(e.GetPosition(ParentCanvas), removing: IsAltPressed());
+            finished.Finish();
+        }
+
+        public override bool AbandonGesture()
+        {
+            if (lasso == null)
+            {
+                return false;
+            }
+
+            lasso.Cancel();
+            lasso = null;
+            return true;
+        }
+
+        #endregion
 
         /// <summary>The tool on another drawing (the next of the gallery): what it held of the old one is let go</summary>
         public override Drawing Drawing
@@ -633,6 +686,7 @@ namespace DynamicGeometry
                 if (value != base.Drawing)
                 {
                     ReleaseAll();
+                    AbandonGesture();
                 }
 
                 base.Drawing = value;
@@ -1144,7 +1198,16 @@ namespace DynamicGeometry
             }
 
             // a vertex or a side of a regular polygon by itself, the inside for the polygon
-            var clicked = drag.Found != null ? FigureParts.SelectionTarget(drag.Found) : drag.PressedFixedLabel;
+            SelectClicked(Drawing, drag.Found != null ? FigureParts.SelectionTarget(drag.Found) : drag.PressedFixedLabel);
+        }
+
+        /// <summary>
+        /// What a click selects (null when it is on nothing): that alone, or with Ctrl it goes
+        /// into the selection or out of it. Also the click of the selection tools
+        /// (<see cref="RegionSelector"/>).
+        /// </summary>
+        public static void SelectClicked(Drawing drawing, IFigure clicked)
+        {
             if (IsCtrlPressed())
             {
                 // a part of a polygon selected whole: the polygon goes out of the selection
@@ -1160,7 +1223,7 @@ namespace DynamicGeometry
             }
             else
             {
-                Drawing.Figures.ClearSelection();
+                drawing.Figures.ClearSelection();
                 if (clicked != null)
                 {
                     clicked.Selected = true;
@@ -1200,7 +1263,7 @@ namespace DynamicGeometry
 
         public override string HintText
         {
-            get { return "Use this tool to drag points and figures."; }
+            get { return "Use this tool to drag points and figures. Drag with the right button to select figures with a lasso."; }
         }
     }
 }

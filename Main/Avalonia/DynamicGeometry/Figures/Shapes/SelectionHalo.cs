@@ -34,9 +34,10 @@ public class SelectionHalo : Control
     /// <summary>
     /// The theme's <see cref="AppTheme.SelectionHalo"/>, a gradient repeated: its stops and
     /// its direction, from start to end in <see cref="StripeWidth"/> pixels, then back
-    /// (reflected, so that two stops make smooth stripes and four make sharp ones)
+    /// (reflected, so that two stops make smooth stripes and four make sharp ones); also the
+    /// band round a region being selected (<see cref="RegionSelection"/>)
     /// </summary>
-    static IBrush Brush
+    public static IBrush Brush
     {
         get
         {
