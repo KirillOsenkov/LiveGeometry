@@ -1,9 +1,10 @@
 // Port of Main/Avalonia/DynamicGeometry/Behaviors/Behavior.cs: a tool. The pointer events of
 // the canvas element come in here and go to mouseDown/mouseMove/mouseUp in logical
 // coordinates, as the WPF-shaped virtuals the C# tools override. Fingers are told apart from
-// a mouse as in the app: a finger's press is kept back until it is a tap, a drag or one of
-// two fingers, which zoom and pan the view. Left out: the click preview and the choice among
-// overlapping figures (tools that construct), the keyboard, the context menu.
+// a mouse as in the app: a finger's press is kept back until it is a tap or a drag, and each
+// finger is for a figure (it drags that one, whatever the other fingers do) or for the paper
+// (the paper fingers pan and zoom the view together). Left out: the click preview and the
+// choice among overlapping figures (tools that construct), the keyboard, the context menu.
 
 class Behavior {
     /** In pixels: how far a finger goes from where it came down before it is dragging and not tapping */
@@ -19,11 +20,12 @@ class Behavior {
         this.parentCanvasValue = null;
         this.errorHappened = false;
         this.modifiers = { shift: false, ctrl: false, alt: false };
+
+        // the fingers on the canvas in the order they came down: { pointerId, position (canvas
+        // pixels, where it was last seen), onFigure, press (kept back until the finger is a tap
+        // or a drag; null once the finger moves the view itself), pressDelivered, last,
+        // drivesView (a paper finger moving the view itself, past the tool) }
         this.fingers = [];
-        this.isPinching = false;
-        this.touchPress = null;
-        this.touchPressDelivered = false;
-        this.touchLast = null;
         this.listeners = null;
     }
 
@@ -190,113 +192,171 @@ class Behavior {
         }
     }
 
-    forgetTouch() {
-        this.touchPress = null;
-        this.touchPressDelivered = false;
-        this.touchLast = null;
+    /**
+     * Whether a finger pressed here is for a figure - it taps or drags that figure, whatever
+     * other fingers do meanwhile - rather than for the paper, which the paper fingers pan
+     * and zoom together: one pans, two pan and zoom (the paper under them stays under
+     * them), a third does nothing. The paper fingers are the tool's only while there is one
+     * finger on the canvas; with any other they move the view themselves. False by default.
+     */
+    takesFingerOnFigure(e) {
+        return false;
+    }
+
+    safeTakesFingerOnFigure(e) {
+        if (this.errorHappened || this.parentCanvas == null || this.drawing == null) {
+            return false;
+        }
+
+        try {
+            return this.takesFingerOnFigure(e);
+        } catch (error) {
+            return false;
+        }
+    }
+
+    findFinger(pointerId) {
+        return this.fingers.find(finger => finger.pointerId === pointerId) ?? null;
     }
 
     touchPressed(e) {
         this.parentCanvas.element.setPointerCapture?.(e.pointerId);
         e.preventDefault();
         this.fingers = this.fingers.filter(finger => finger.pointerId !== e.pointerId);
-        this.fingers.push({ pointerId: e.pointerId, position: this.position(e) });
-        if (this.fingers.length === 1) {
-            this.isPinching = false;
-            this.touchPress = e;
-            this.touchPressDelivered = false;
-            this.touchLast = e;
-            return;
+        const finger = {
+            pointerId: e.pointerId,
+            position: this.position(e),
+            onFigure: false,
+            press: e,
+            pressDelivered: false,
+            last: e,
+            drivesView: false
+        };
+        this.asTouch(() => finger.onFigure = this.safeTakesFingerOnFigure(e));
+        this.fingers.push(finger);
+
+        // the paper fingers are the tool's only while there is one finger
+        if (this.fingers.length > 1) {
+            for (const paper of this.fingers.filter(other => !other.onFigure && !other.drivesView)) {
+                this.takeFromTool(paper);
+            }
         }
 
-        if (!this.isPinching) {
-            this.isPinching = true;
-
-            // a drag under way ends where the first finger is
-            if (this.touchPressDelivered && this.touchLast != null) {
-                const last = this.touchLast;
-                this.asTouch(() => this.safeMouseUp(last));
-            }
-
-            this.forgetTouch();
+        // A figure finger's press goes to the tool at once (a press on a figure does nothing
+        // visible under the Drag tool, which waits for the slop itself). Held back, the press
+        // reached the tool after the paper fingers had moved the view, and found the figure
+        // no longer under the finger.
+        if (finger.onFigure) {
+            finger.pressDelivered = true;
+            this.asTouch(() => this.safeMouseDown(e));
         }
     }
 
+    /** A paper finger goes over from the tool to the view: a drag under way ends where the finger is */
+    takeFromTool(finger) {
+        if (finger.pressDelivered && finger.last != null) {
+            const last = finger.last;
+            this.asTouch(() => this.safeMouseUp(last));
+        }
+
+        finger.press = null;
+        finger.pressDelivered = false;
+        finger.last = null;
+        finger.drivesView = true;
+    }
+
     touchMoved(e) {
-        const index = this.fingers.findIndex(finger => finger.pointerId === e.pointerId);
-        if (index < 0) {
+        const finger = this.findFinger(e.pointerId);
+        if (finger == null) {
             return;
         }
 
         const position = this.position(e);
-        if (this.isPinching) {
-            if (index < 2 && this.fingers.length >= 2 && this.drawing != null) {
-                const from = GeometryMath.midpoint(this.fingers[0].position, this.fingers[1].position);
-                const span = this.fingers[0].position.distance(this.fingers[1].position);
-                this.fingers[index].position = position;
-                const to = GeometryMath.midpoint(this.fingers[0].position, this.fingers[1].position);
-                const newSpan = this.fingers[0].position.distance(this.fingers[1].position);
-
-                // fingers almost on each other say nothing about the zoom
-                const factor = span > Behavior.TouchSlop && newSpan > Behavior.TouchSlop ? newSpan / span : 1;
-                this.drawing.coordinateSystem.panAndZoom(from, to, factor);
-            } else {
-                this.fingers[index].position = position;
-            }
-
+        if (finger.drivesView) {
+            this.moveView(finger, position);
             return;
         }
 
-        this.fingers[index].position = position;
-        if (this.touchPress == null) {
+        finger.position = position;
+        if (finger.press == null) {
             return;
         }
 
-        this.touchLast = e;
-        if (!this.touchPressDelivered) {
-            if (position.distance(this.position(this.touchPress)) < Behavior.TouchSlop) {
+        finger.last = e;
+        if (!finger.pressDelivered) {
+            if (position.distance(this.position(finger.press)) < Behavior.TouchSlop) {
                 return;
             }
 
-            this.touchPressDelivered = true;
-            const press = this.touchPress;
+            finger.pressDelivered = true;
+            const press = finger.press;
             this.asTouch(() => this.safeMouseDown(press));
         }
 
         this.asTouch(() => this.safeMouseMove(e));
     }
 
+    /**
+     * The paper fingers move the view: what was under the first two of them stays under
+     * them. The figures held by the other fingers stay under those: each gets its last move
+     * again over the moved paper.
+     */
+    moveView(finger, position) {
+        const driving = this.fingers.filter(other => other.drivesView).slice(0, 2);
+        const index = driving.indexOf(finger);
+        if (index < 0 || this.drawing == null) {
+            finger.position = position;
+            return;
+        }
+
+        let from;
+        let to;
+        let factor = 1;
+        if (driving.length === 1) {
+            from = finger.position;
+            finger.position = position;
+            to = position;
+        } else {
+            from = GeometryMath.midpoint(driving[0].position, driving[1].position);
+            const span = driving[0].position.distance(driving[1].position);
+            finger.position = position;
+            to = GeometryMath.midpoint(driving[0].position, driving[1].position);
+            const newSpan = driving[0].position.distance(driving[1].position);
+
+            // fingers almost on each other say nothing about the zoom
+            factor = span > Behavior.TouchSlop && newSpan > Behavior.TouchSlop ? newSpan / span : 1;
+        }
+
+        this.drawing.coordinateSystem.panAndZoom(from, to, factor);
+        for (const held of this.fingers.filter(other => other.pressDelivered && other.last != null)) {
+            const last = held.last;
+            this.asTouch(() => this.safeMouseMove(last));
+        }
+    }
+
     /** e: the release; null when the touch was taken away, and the finger is where it was last seen */
     touchReleased(pointerId, e) {
-        const index = this.fingers.findIndex(finger => finger.pointerId === pointerId);
-        if (index < 0) {
+        const finger = this.findFinger(pointerId);
+        if (finger == null) {
             return;
         }
 
-        this.fingers.splice(index, 1);
-        if (this.isPinching) {
-            if (this.fingers.length === 0) {
-                this.isPinching = false;
-            }
-
+        this.fingers.splice(this.fingers.indexOf(finger), 1);
+        if (finger.press == null) {
             return;
         }
 
-        if (this.touchPress != null) {
-            if (e != null && !this.touchPressDelivered) {
-                // a tap: the press and the release in one go
-                this.touchPressDelivered = true;
-                const press = this.touchPress;
-                this.asTouch(() => this.safeMouseDown(press));
-            }
-
-            const release = e ?? this.touchLast;
-            if (this.touchPressDelivered && release != null) {
-                this.asTouch(() => this.safeMouseUp(release));
-            }
+        if (e != null && !finger.pressDelivered) {
+            // a tap: the press and the release in one go
+            finger.pressDelivered = true;
+            const press = finger.press;
+            this.asTouch(() => this.safeMouseDown(press));
         }
 
-        this.forgetTouch();
+        const release = e ?? finger.last;
+        if (finger.pressDelivered && release != null) {
+            this.asTouch(() => this.safeMouseUp(release));
+        }
     }
 
     pointerCaptureLostHandler(e) {

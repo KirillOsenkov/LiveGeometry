@@ -712,34 +712,57 @@ namespace DynamicGeometry
         #region Touch
 
         // Fingers. A mouse press acts at once (a point appears under the button going
-        // down), but the first finger of two can't: it would leave a point, or start a drag,
-        // before the second one says that the two are zooming. So a finger's press is kept
-        // back until it is known for what it is - a tap when the finger lifts where it
-        // came down, a drag once it has gone a little way (the tool then gets the press
-        // where the finger came down, and the moves), or one of two fingers, which zoom and
-        // pan the view and of which the tool hears nothing. Unhandled, a second finger was a
-        // second press to the tool: with the Drag tool the view jumped between the two
-        // fingers on every move, with any other a pinch left points behind.
+        // down), but a finger's can't: it would leave a point, or start a drag, before a
+        // second finger says that the two are zooming. So a finger's press is kept back
+        // until it is known for what it is - a tap when the finger lifts where it came
+        // down, a drag once it has gone a little way (the tool then gets the press where
+        // the finger came down, and the moves). Unhandled, a second finger was a second
+        // press to the tool: with the Drag tool the view jumped between the two fingers on
+        // every move, with any other a pinch left points behind.
+        //
+        // Each finger is for a figure or for the paper, decided where it comes down
+        // (TakesFingerOnFigure: the Drag tool says a figure where a press would drag or
+        // select one; a tool that constructs says the paper for every finger). A figure
+        // finger is the tool's for as long as it is down: it taps or drags its figure, and
+        // nothing another finger does takes it away. The paper fingers are the tool's only
+        // while there is one finger on the canvas (a tap selects, a drag pans through the
+        // tool, which records it); with any other finger they move the view themselves and
+        // the tool hears nothing of them - one pans, two pan and zoom (the paper under them
+        // stays under them), a third does nothing. So a thumb put down to zoom while a point
+        // is held leaves the point in the finger that holds it, and two fingers drag the
+        // two ends of a segment at once. Until 2026-10-11 the second finger always made a
+        // pinch of the two, and ended the drag of the first.
+
+        enum FingerRole
+        {
+            Paper,
+            Figure
+        }
 
         class Finger
         {
             public IPointer Pointer;
+
+            // where it was last seen, in canvas pixels
             public Point Position;
+            public FingerRole Role;
+
+            // the tool it came down with
+            public Behavior Tool;
+
+            // its press, kept back until the finger is a tap or a drag; null once the
+            // finger moves the view itself
+            public PointerPressedEventArgs Press;
+            public bool PressDelivered;
+            public PointerEventArgs Last;
+
+            // a paper finger that moves the view itself, past the tool
+            public bool DrivesView;
         }
 
-        // The fingers on the canvas in the order they came down, each where it was last
-        // seen, in canvas pixels. Static: a finger outlives a change of tool.
+        // The fingers on the canvas in the order they came down. Static: a finger outlives
+        // a change of tool.
         static readonly List<Finger> fingers = new List<Finger>();
-
-        // from the second finger down until the last one is up
-        static bool isPinching;
-
-        // the one finger on the canvas: its press, the tool it is for, whether the tool
-        // has had it, and the last that was seen of the finger
-        static PointerPressedEventArgs touchPress;
-        static Behavior touchTool;
-        static bool touchPressDelivered;
-        static PointerEventArgs touchLast;
 
         /// <summary>In pixels: how far a finger goes from where it came down before it is dragging and not tapping</summary>
         public static double TouchSlop = 6;
@@ -750,6 +773,34 @@ namespace DynamicGeometry
         /// a finger did
         /// </summary>
         public static double TouchTolerance = 10;
+
+        /// <summary>
+        /// Whether a finger pressed here is for a figure - it taps or drags that figure,
+        /// whatever other fingers do meanwhile - rather than for the paper, which the paper
+        /// fingers pan and zoom together. False by default: a tool that constructs takes
+        /// one finger at a time and lets a second one pinch. Asked with a finger's reach.
+        /// </summary>
+        protected virtual bool TakesFingerOnFigure(MouseButtonEventArgs e)
+        {
+            return false;
+        }
+
+        bool SafeTakesFingerOnFigure(MouseButtonEventArgs e)
+        {
+            if (errorHappened || mParentCanvas == null || Drawing == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                return TakesFingerOnFigure(e);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         void AsTouch(Action action)
         {
@@ -765,91 +816,100 @@ namespace DynamicGeometry
             }
         }
 
-        static void ForgetTouch()
+        static Finger FindFinger(IPointer pointer)
         {
-            touchPress = null;
-            touchTool = null;
-            touchPressDelivered = false;
-            touchLast = null;
+            return fingers.Find(finger => finger.Pointer == pointer);
         }
 
         void TouchPressed(object sender, PointerPressedEventArgs e)
         {
             // a finger whose release never arrived holds nothing any more
             fingers.RemoveAll(finger => finger.Pointer == e.Pointer || finger.Pointer.Captured == null);
-            fingers.Add(new Finger() { Pointer = e.Pointer, Position = e.GetPosition(mParentCanvas) });
-            if (fingers.Count == 1)
+            var finger = new Finger()
             {
-                isPinching = false;
-                touchPress = e;
-                touchTool = this;
-                touchPressDelivered = false;
-                touchLast = e;
-                return;
-            }
+                Pointer = e.Pointer,
+                Position = e.GetPosition(mParentCanvas),
+                Tool = this,
+                Press = e,
+                Last = e
+            };
+            bool onFigure = false;
+            AsTouch(() => onFigure = SafeTakesFingerOnFigure(e));
+            finger.Role = onFigure ? FingerRole.Figure : FingerRole.Paper;
+            fingers.Add(finger);
 
-            if (!isPinching)
+            // the paper fingers are the tool's only while there is one finger
+            if (fingers.Count > 1)
             {
-                isPinching = true;
-
-                // a drag under way ends where the first finger is
-                if (touchPressDelivered && touchTool == this && touchLast != null)
+                foreach (var paper in fingers.Where(other => other.Role == FingerRole.Paper && !other.DrivesView).ToList())
                 {
-                    var last = touchLast;
-                    AsTouch(() => SafeMouseUp(sender, last));
+                    TakeFromTool(sender, paper);
                 }
-
-                ForgetTouch();
             }
+
+            // A figure finger's press goes to the tool at once (a press on a figure does
+            // nothing visible under the Drag tool, which waits for the slop itself), unless
+            // a tap here would have to ask what it means. Held back, the press reached the
+            // tool after the paper fingers had moved the view, and found the figure no
+            // longer under the finger.
+            if (finger.Role == FingerRole.Figure)
+            {
+                IReadOnlyList<object> options = null;
+                AsTouch(() => options = SafeFindClickOptions(e));
+                if (options.Count <= 1)
+                {
+                    finger.PressDelivered = true;
+                    AsTouch(() => SafeMouseDown(sender, e));
+                }
+            }
+        }
+
+        /// <summary>A paper finger goes over from the tool to the view: a drag under way ends where the finger is</summary>
+        void TakeFromTool(object sender, Finger finger)
+        {
+            if (finger.PressDelivered && finger.Tool == this && finger.Last != null)
+            {
+                var last = finger.Last;
+                AsTouch(() => SafeMouseUp(sender, last));
+            }
+
+            finger.Press = null;
+            finger.PressDelivered = false;
+            finger.Last = null;
+            finger.DrivesView = true;
         }
 
         void TouchMoved(object sender, PointerEventArgs e)
         {
-            int index = fingers.FindIndex(finger => finger.Pointer == e.Pointer);
-            if (index < 0)
+            var finger = FindFinger(e.Pointer);
+            if (finger == null)
             {
                 return;
             }
 
             var position = e.GetPosition(mParentCanvas);
-            if (isPinching)
+            if (finger.DrivesView)
             {
-                if (index < 2 && fingers.Count >= 2 && Drawing != null)
-                {
-                    var from = Math.Midpoint(fingers[0].Position, fingers[1].Position);
-                    double span = fingers[0].Position.Distance(fingers[1].Position);
-                    fingers[index].Position = position;
-                    var to = Math.Midpoint(fingers[0].Position, fingers[1].Position);
-                    double newSpan = fingers[0].Position.Distance(fingers[1].Position);
-
-                    // fingers almost on each other say nothing about the zoom
-                    double factor = span > TouchSlop && newSpan > TouchSlop ? newSpan / span : 1;
-                    Drawing.CoordinateSystem.PanAndZoom(from, to, factor);
-                }
-                else
-                {
-                    fingers[index].Position = position;
-                }
-
+                MoveView(sender, finger, position);
                 return;
             }
 
-            fingers[index].Position = position;
-            if (touchTool != this || touchPress == null)
+            finger.Position = position;
+            if (finger.Tool != this || finger.Press == null)
             {
                 return;
             }
 
-            touchLast = e;
-            if (!touchPressDelivered)
+            finger.Last = e;
+            if (!finger.PressDelivered)
             {
-                if (position.Distance(touchPress.GetPosition(mParentCanvas)) < TouchSlop)
+                if (position.Distance(finger.Press.GetPosition(mParentCanvas)) < TouchSlop)
                 {
                     return;
                 }
 
-                touchPressDelivered = true;
-                var press = touchPress;
+                finger.PressDelivered = true;
+                var press = finger.Press;
                 AsTouch(() => SafeMouseDown(sender, press));
             }
 
@@ -857,55 +917,89 @@ namespace DynamicGeometry
             UpdateClickPreview(e);
         }
 
+        /// <summary>
+        /// The paper fingers move the view: what was under the first two of them stays under
+        /// them (one finger pans, two pan and zoom, a third is ignored). The figures held by
+        /// the other fingers stay under those: each gets its last move again over the moved
+        /// paper, or a held point drifted off its finger until the finger moved.
+        /// </summary>
+        void MoveView(object sender, Finger finger, Point position)
+        {
+            var driving = fingers.Where(other => other.DrivesView).Take(2).ToList();
+            int index = driving.IndexOf(finger);
+            if (index < 0 || Drawing == null)
+            {
+                finger.Position = position;
+                return;
+            }
+
+            Point from;
+            Point to;
+            double factor = 1;
+            if (driving.Count == 1)
+            {
+                from = finger.Position;
+                finger.Position = position;
+                to = position;
+            }
+            else
+            {
+                from = Math.Midpoint(driving[0].Position, driving[1].Position);
+                double span = driving[0].Position.Distance(driving[1].Position);
+                finger.Position = position;
+                to = Math.Midpoint(driving[0].Position, driving[1].Position);
+                double newSpan = driving[0].Position.Distance(driving[1].Position);
+
+                // fingers almost on each other say nothing about the zoom
+                factor = span > TouchSlop && newSpan > TouchSlop ? newSpan / span : 1;
+            }
+
+            Drawing.CoordinateSystem.PanAndZoom(from, to, factor);
+            foreach (var held in fingers.Where(other => other.PressDelivered && other.Tool == this && other.Last != null).ToList())
+            {
+                var last = held.Last;
+                AsTouch(() => SafeMouseMove(sender, last));
+            }
+        }
+
         /// <param name="e">The release; null when the touch was taken away, and the finger is where it was last seen</param>
         void TouchReleased(object sender, IPointer pointer, PointerEventArgs e)
         {
-            int index = fingers.FindIndex(finger => finger.Pointer == pointer);
-            if (index < 0)
+            var finger = FindFinger(pointer);
+            if (finger == null)
             {
                 return;
             }
 
-            fingers.RemoveAt(index);
+            fingers.Remove(finger);
             clickPreview.Clear();
-            if (isPinching)
+            if (finger.Tool != this || finger.Press == null)
             {
-                if (fingers.Count == 0)
-                {
-                    isPinching = false;
-                }
-
                 return;
             }
 
-            if (touchTool == this && touchPress != null)
+            if (e != null && !finger.PressDelivered)
             {
-                if (e != null && !touchPressDelivered)
+                // a tap where it could mean more than one thing asks which
+                var press = finger.Press;
+                IReadOnlyList<object> options = null;
+                AsTouch(() => options = SafeFindClickOptions(press));
+                if (options.Count > 1)
                 {
-                    // a tap where it could mean more than one thing asks which
-                    var press = touchPress;
-                    IReadOnlyList<object> options = null;
-                    AsTouch(() => options = SafeFindClickOptions(press));
-                    if (options.Count > 1)
-                    {
-                        ForgetTouch();
-                        AskWhatTapMeans(sender, press, e, options);
-                        return;
-                    }
-
-                    // a tap: the press and the release in one go
-                    touchPressDelivered = true;
-                    AsTouch(() => SafeMouseDown(sender, press));
+                    AskWhatTapMeans(sender, press, e, options);
+                    return;
                 }
 
-                var release = e ?? touchLast;
-                if (touchPressDelivered && release != null)
-                {
-                    AsTouch(() => SafeMouseUp(sender, release));
-                }
+                // a tap: the press and the release in one go
+                finger.PressDelivered = true;
+                AsTouch(() => SafeMouseDown(sender, press));
             }
 
-            ForgetTouch();
+            var release = e ?? finger.Last;
+            if (finger.PressDelivered && release != null)
+            {
+                AsTouch(() => SafeMouseUp(sender, release));
+            }
         }
 
         // A touch the system took away (a gesture of its own, the window going away): a

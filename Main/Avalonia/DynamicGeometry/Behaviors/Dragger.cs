@@ -12,26 +12,41 @@ namespace DynamicGeometry
     [Order(1)]
     public partial class Dragger : Behavior
     {
-        protected List<IMovable> moving = null;
-        IFigure found = null;
+        /// <summary>
+        /// What one press holds while it lasts: the figure under it, what the drag moves,
+        /// where it started. One per pointer (the mouse is one, each finger on a figure is
+        /// one, see "Touch" in <see cref="Behavior"/>): two fingers drag the two ends of a
+        /// segment at once, each its own.
+        /// </summary>
+        class Drag
+        {
+            public IPointer Pointer;
+            public List<IMovable> Moving = new List<IMovable>();
+            public IFigure Found;
 
-        // A label the press found that can't be dragged: the drag moves the view, a click
-        // selects it (a show/hide box: ticks it)
-        ControlBase pressedFixedLabel;
-        List<IFigure> toRecalculate = null;
-        Point offsetFromFigureLeftTopCorner;
-        protected Point oldCoordinates;
-        protected Point coordinatesOnMouseDown;
-        bool startedMoving = false;
+            // A label the press found that can't be dragged: the drag moves the view, a
+            // click selects it (a show/hide box: ticks it)
+            public ControlBase PressedFixedLabel;
+            public List<IFigure> ToRecalculate;
+            public Point OffsetFromFigureLeftTopCorner;
+            public Point OldCoordinates;
+            public Point CoordinatesOnMouseDown;
+            public bool StartedMoving;
 
-        // the press was on a figure selected with others, and the drag moves them all
-        bool draggingSelection;
+            // the press was on a figure selected with others, and the drag moves them all
+            public bool DraggingSelection;
 
-        // A point drag is one undo step, with the releases and the snap of an Alt-drag in it
+            // Where the point dragged with Alt goes if dropped now; null while it is free
+            public PointPlacement Snap;
+        }
+
+        // the presses held right now, in the order they came
+        readonly List<Drag> drags = new List<Drag>();
+
+        // A drag is one undo step, with the releases and the snap of an Alt-drag in it -
+        // one for all the fingers down at once, from the first drag that moves something
+        // to the last release (transactions nest, they can't be interleaved)
         Transaction dragTransaction;
-
-        // Where the point dragged with Alt goes if dropped now; null while it is free
-        PointPlacement snap;
 
         /// <summary>In cursor tolerances: how far a snapped point may be pulled before it lets go</summary>
         public static double StickyReach = 2;
@@ -45,10 +60,78 @@ namespace DynamicGeometry
             Choice.DescribesSingle = true;
         }
 
+        Drag FindDrag(IPointer pointer)
+        {
+            return drags.Find(drag => drag.Pointer == pointer);
+        }
+
+        /// <summary>
+        /// What a press at the coordinates takes: the figure a drag moves or a click
+        /// selects, or null for the paper, which a drag moves - an axis (the grid's, for the
+        /// tools to build on), and the labels that can't be dragged
+        /// (<see cref="Drawing.FixedLabels"/>); a drag that starts on a caption takes the
+        /// captions along (<paramref name="isCaption"/>). A click still selects such a
+        /// label (<paramref name="fixedLabel"/>), and one that is selected drags as any
+        /// label does - but a caption, where on a phone a tap and then a thumb to read on
+        /// would pull the explanation away from its heading. Nor does a tap select the
+        /// caption: the side panel would cover half of a phone for a reader touching the
+        /// text.
+        /// </summary>
+        IFigure FindPressedFigure(Point coordinates, bool isTouch, out ControlBase fixedLabel, out bool isCaption)
+        {
+            fixedLabel = null;
+            isCaption = false;
+            var found = Drawing.Figures.HitTest(coordinates);
+
+            // the figure chosen with Tab among those under the cursor (FindClickOptions)
+            if (Choice.Index > 0 && Choice.Current is IFigure chosen)
+            {
+                found = chosen;
+            }
+
+            if (found is AxisLine)
+            {
+                return null;
+            }
+
+            if (found is ControlBase label && Drawing.FixedLabels.Contains(label))
+            {
+                isCaption = found is Label { Pin: not LabelPin.None };
+                if (isCaption || !label.Selected)
+                {
+                    if (!isCaption || !isTouch)
+                    {
+                        fixedLabel = label;
+                    }
+
+                    return null;
+                }
+            }
+
+            return found;
+        }
+
+        /// <summary>
+        /// A finger stays with what its press would drag or select, whatever the other
+        /// fingers do; one whose press would move the view (the paper, an axis, a caption,
+        /// a graph with nothing to move) pans and zooms with the other paper fingers
+        /// </summary>
+        protected override bool TakesFingerOnFigure(MouseButtonEventArgs e)
+        {
+            var drag = PrepareDrag(e);
+            return !drag.Moving.Contains(Drawing.CoordinateSystem);
+        }
+
         public override void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // a drag whose release never arrived
-            Release();
+            // a drag of this pointer whose release never arrived, and the drags of pointers
+            // that are gone (a finger whose release never came holds nothing any more; a
+            // drag left in the list would keep the shared undo step open)
+            Release(FindDrag(e.Pointer));
+            foreach (var stale in drags.Where(other => other.Pointer.Captured == null).ToList())
+            {
+                Release(stale);
+            }
 
 #if !SILVERLIGHT
             // (not on a show/hide box, which two quick clicks tick and untick)
@@ -58,67 +141,39 @@ namespace DynamicGeometry
                 return;
             }
 #endif
-            offsetFromFigureLeftTopCorner = Coordinates(e, false, false, false);
-            oldCoordinates = offsetFromFigureLeftTopCorner;
-            coordinatesOnMouseDown = offsetFromFigureLeftTopCorner;
-            startedMoving = false;
+            drags.Add(PrepareDrag(e));
+        }
 
-            moving = new List<IMovable>();
+        /// <summary>What a press here would hold: the figure under it and what a drag moves (nothing is changed)</summary>
+        Drag PrepareDrag(MouseButtonEventArgs e)
+        {
+            var drag = new Drag() { Pointer = e.Pointer };
+            drag.OffsetFromFigureLeftTopCorner = Coordinates(e, false, false, false);
+            drag.OldCoordinates = drag.OffsetFromFigureLeftTopCorner;
+            drag.CoordinatesOnMouseDown = drag.OffsetFromFigureLeftTopCorner;
+
             IEnumerable<IFigure> roots = null;
             bool isLocked = false;
 
-            found = Drawing.Figures.HitTest(offsetFromFigureLeftTopCorner);
-
-            // the figure chosen with Tab among those under the cursor (FindClickOptions)
-            if (Choice.Index > 0 && Choice.Current is IFigure chosen)
-            {
-                found = chosen;
-            }
-
-            // an axis is the grid's, for the tools to build on: a press on it is a press on
-            // the paper, and drags the view
-            if (found is AxisLine)
-            {
-                found = null;
-            }
-
-            // labels that can't be dragged are paper: the drag moves the view, and one that
-            // starts on a caption takes the captions along (Drawing.FixedLabels). A click
-            // still selects one, and one that is selected drags as any label does - but a
-            // caption, where on a phone a tap and then a thumb to read on would pull the
-            // explanation away from its heading. Nor does a tap select the caption: the
-            // side panel would cover half of a phone for a reader touching the text.
-            PinnedLabelScroll captions = null;
-            if (found is ControlBase label && Drawing.FixedLabels.Contains(label))
-            {
-                bool isCaption = found is Label { Pin: not LabelPin.None };
-                if (isCaption || !label.Selected)
-                {
-                    if (isCaption)
-                    {
-                        captions = new PinnedLabelScroll(Drawing);
-                    }
-
-                    if (!isCaption || e.Pointer.Type != PointerType.Touch)
-                    {
-                        pressedFixedLabel = label;
-                    }
-
-                    found = null;
-                }
-            }
+            var found = FindPressedFigure(
+                drag.OffsetFromFigureLeftTopCorner,
+                e.Pointer.Type == PointerType.Touch,
+                out drag.PressedFixedLabel,
+                out bool isCaption);
+            drag.Found = found;
+            var captions = isCaption ? new PinnedLabelScroll(Drawing) : null;
 
             // a press on a figure selected with others drags them all
-            var selection = SelectionToDrag();
-            draggingSelection = selection != null;
+            var selection = SelectionToDrag(drag);
+            drag.DraggingSelection = selection != null;
 
             // a figure with parts (a slider) says which of them the press takes
             IMovable oneMovable = found is IMovableParts parts
-                ? parts.FindMovablePart(offsetFromFigureLeftTopCorner)
+                ? parts.FindMovablePart(drag.OffsetFromFigureLeftTopCorner)
                 : found as IMovable;
             if (selection != null)
             {
-                roots = FindSelectionRoots(selection, out isLocked);
+                roots = FindSelectionRoots(drag, selection, out isLocked);
             }
             else if (oneMovable != null && (found.Locked || oneMovable.AllowMove()))
             {
@@ -132,8 +187,8 @@ namespace DynamicGeometry
                     {
                         // when we drag a point, we want it to snap to the cursor
                         // so that the point center is directly under the tip of the mouse
-                        offsetFromFigureLeftTopCorner = new Point();
-                        oldCoordinates = oneMovable.Coordinates;
+                        drag.OffsetFromFigureLeftTopCorner = new Point();
+                        drag.OldCoordinates = oneMovable.Coordinates;
                     }
                     else
                     {
@@ -141,7 +196,7 @@ namespace DynamicGeometry
                         // we want the mouse to always touch the part of the draggable
                         // where it first touched during MouseDown
                         // we don't want the draggable to "snap" to the cursor like points do
-                        offsetFromFigureLeftTopCorner = offsetFromFigureLeftTopCorner.Minus(oneMovable.Coordinates);
+                        drag.OffsetFromFigureLeftTopCorner = drag.OffsetFromFigureLeftTopCorner.Minus(oneMovable.Coordinates);
                     }
                     roots = DependencyAlgorithms.FindRoots(f => f.Dependents, found);
 
@@ -149,7 +204,7 @@ namespace DynamicGeometry
                     // stays where it is, and they still move)
                     if (roots.All(root => !root.Locked || root is ShowHideControl))
                     {
-                        moving.Add(oneMovable);
+                        drag.Moving.Add(oneMovable);
                         roots = found.AsEnumerable();
                     }
                     else
@@ -181,7 +236,7 @@ namespace DynamicGeometry
                     {
                         if (roots.All(root => ((IMovable)root).AllowMove()))
                         {
-                            moving.AddRange(roots.OfType<IMovable>());
+                            drag.Moving.AddRange(roots.OfType<IMovable>());
                         }
                         else
                         {
@@ -197,28 +252,26 @@ namespace DynamicGeometry
 
             if (roots != null)
             {
-                toRecalculate = DependencyAlgorithms.FindDescendants(f => f.Dependents, roots);
-                toRecalculate.Reverse();
+                drag.ToRecalculate = DependencyAlgorithms.FindDescendants(f => f.Dependents, roots);
+                drag.ToRecalculate.Reverse();
             }
             else
             {
-                toRecalculate = null;
+                drag.ToRecalculate = null;
             }
 
-            if (moving.IsEmpty() && !isLocked && !Drawing.CoordinateGrid.Locked)
+            if (drag.Moving.IsEmpty() && !isLocked && !Drawing.CoordinateGrid.Locked)
             {
-                moving.Add(Drawing.CoordinateSystem);
+                drag.Moving.Add(Drawing.CoordinateSystem);
                 if (captions != null)
                 {
-                    moving.Add(captions);
+                    drag.Moving.Add(captions);
                 }
 
-                //var allFigures = Drawing.Figures.GetAllFiguresRecursive();
-                //roots = DependencyAlgorithms.FindRoots(f => f.Dependencies, allFigures);
-                //moving.AddRange(roots.OfType<IMovable>());
-                //roots = null;
-                toRecalculate = null; // Figures;
+                drag.ToRecalculate = null;
             }
+
+            return drag;
         }
 
         /// <summary>
@@ -235,7 +288,7 @@ namespace DynamicGeometry
         protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
         {
             // (nothing while a press is held: the status says what the keys do to the dragged point)
-            if (moving != null)
+            if (drags.Count > 0)
             {
                 return new object[0];
             }
@@ -303,16 +356,16 @@ namespace DynamicGeometry
         /// The figures selected with the one pressed on, each a whole, which a drag moves
         /// together; null when the press is not on a selection of several
         /// </summary>
-        List<IFigure> SelectionToDrag()
+        List<IFigure> SelectionToDrag(Drag drag)
         {
             // (a handle of a Bezier path stands for its path in a selection, but a press on
             // one is for the handle)
-            if (found == null || found is BezierPath.BezierPathHandle)
+            if (drag.Found == null || drag.Found is BezierPath.BezierPathHandle)
             {
                 return null;
             }
 
-            var clicked = FigureParts.SelectionTarget(found);
+            var clicked = FigureParts.SelectionTarget(drag.Found);
             if (!clicked.Selected && !FigureParts.Whole(clicked).Selected)
             {
                 return null;
@@ -332,7 +385,7 @@ namespace DynamicGeometry
         /// stay where they are, as in the drag of one figure; one figure locked, or a point
         /// that can't move, holds them all. Returns the roots, for what to recalculate.
         /// </summary>
-        IList<IFigure> FindSelectionRoots(List<IFigure> selection, out bool isLocked)
+        IList<IFigure> FindSelectionRoots(Drag drag, List<IFigure> selection, out bool isLocked)
         {
             // a show/hide box moves itself, not the figures it holds
             var boxes = selection.OfType<ShowHideControl>().ToList<IFigure>();
@@ -351,7 +404,7 @@ namespace DynamicGeometry
                 || movables.Any(movable => !movable.AllowMove());
             if (!isLocked)
             {
-                moving.AddRange(movables);
+                drag.Moving.AddRange(movables);
             }
 
             return roots;
@@ -363,23 +416,31 @@ namespace DynamicGeometry
 
         public override void MouseMove(object sender, MouseEventArgs e)
         {
+            var drag = FindDrag(e.Pointer);
+            if (drag == null)
+            {
+                return;
+            }
+
             // A move with no button down is no drag. The release of this press never
             // arrived (the tool was changed by a key and back while the button was held,
             // the window lost the mouse): the point went on following the cursor, every
             // move a recorded one, until the next click.
-            if (moving != null && !e.GetCurrentPoint(ParentCanvas).Properties.IsLeftButtonPressed)
+            if (!e.GetCurrentPoint(ParentCanvas).Properties.IsLeftButtonPressed)
             {
-                Release();
+                Release(drag);
                 return;
             }
 
+            var moving = drag.Moving;
+            var found = drag.Found;
             var currentCoordinates = Coordinates(e);
 
-            currentCoordinates = AdjustCoordinates(currentCoordinates);
+            currentCoordinates = AdjustCoordinates(drag, currentCoordinates);
 
-            if (!startedMoving)
+            if (!drag.StartedMoving)
             {
-                if (currentCoordinates == coordinatesOnMouseDown)
+                if (currentCoordinates == drag.CoordinatesOnMouseDown)
                 {
                     return;
                 }
@@ -390,20 +451,29 @@ namespace DynamicGeometry
                 // not select anything, and left an undo step that seemed to undo nothing.
                 var coordinateSystem = Drawing.CoordinateSystem;
                 var wobble = coordinateSystem.ToPhysical(Coordinates(e, false, false, false))
-                    .Distance(coordinateSystem.ToPhysical(coordinatesOnMouseDown));
-                if (wobble < DragThreshold)
+                    .Distance(coordinateSystem.ToPhysical(drag.CoordinatesOnMouseDown));
+                if (wobble < (e.Pointer.Type == PointerType.Touch ? TouchSlop : DragThreshold))
                 {
                     return;
                 }
 
-                startedMoving = true;
+                drag.StartedMoving = true;
+                if (!moving.IsEmpty())
+                {
+                    // one undo step for the gesture: the moves of two fingers on one
+                    // figure, each pulling its roots its own way, come interleaved and
+                    // can't merge into one action
+                    dragTransaction ??= Transaction.Create(Drawing.ActionManager, false);
+                }
+
                 // (a selection goes as one piece: Alt does nothing to its points)
-                if (found is IPoint && !found.Locked && !moving.IsEmpty() && !draggingSelection)
+                if (found is IPoint && !found.Locked && !moving.IsEmpty() && !drag.DraggingSelection)
                 {
                     // the handles next to an anchor of a Bezier path show while it is dragged
                     BezierPath.ShowHandlesWhileDragging(Drawing, found);
-                    dragTransaction = Transaction.Create(Drawing.ActionManager, false);
-                    var hint = ModifierHint(found);
+
+                    // (a finger has no keys to hold)
+                    var hint = e.Pointer.Type == PointerType.Touch ? null : ModifierHint(found);
                     if (hint != null)
                     {
                         Drawing.RaiseStatusNotification(hint);
@@ -413,11 +483,15 @@ namespace DynamicGeometry
             }
             if (!moving.IsEmpty())
             {
-                var offset = currentCoordinates.Minus(oldCoordinates);
-                var snapping = PointToSnap(currentCoordinates);
+                var offset = currentCoordinates.Minus(drag.OldCoordinates);
+                var snapping = PointToSnap(drag, currentCoordinates);
+
+                // (a released point is dragged instead of the one pressed)
+                moving = drag.Moving;
+                found = drag.Found;
                 if (snapping != null)
                 {
-                    var target = snap != null ? snap.Coordinates : currentCoordinates;
+                    var target = drag.Snap != null ? drag.Snap.Coordinates : currentCoordinates;
                     offset = target.Minus(snapping.Coordinates);
                 }
                 else if (moving.Count == 1 && moving[0] is PointLabel pointLabel)
@@ -426,7 +500,7 @@ namespace DynamicGeometry
                     // move would drift away from the cursor once the limit is hit. Move it
                     // to where the cursor wants it (as far as allowed) and record exactly
                     // that, so that undo restores the precise position.
-                    var desired = currentCoordinates.Minus(offsetFromFigureLeftTopCorner);
+                    var desired = currentCoordinates.Minus(drag.OffsetFromFigureLeftTopCorner);
                     offset = pointLabel.ClampPosition(desired).Minus(pointLabel.Coordinates);
                 }
                 else if (moving.Count == 1 && moving[0] is BezierPath.BezierPathHandle handle)
@@ -435,10 +509,10 @@ namespace DynamicGeometry
                     // is held (a corner); with Alt it sits on a point under the cursor, and
                     // dropped there is that point from then on
                     handle.MirrorsOpposite = !IsAltPressed();
-                    snap = HandleSnap(handle, currentCoordinates);
-                    if (snap != null)
+                    drag.Snap = HandleSnap(handle, currentCoordinates);
+                    if (drag.Snap != null)
                     {
-                        offset = snap.Coordinates.Minus(handle.Coordinates);
+                        offset = drag.Snap.Coordinates.Minus(handle.Coordinates);
                     }
                 }
                 else if (moving.Count == 1 && moving[0] is PointOnFigure pointOnFigure)
@@ -452,84 +526,89 @@ namespace DynamicGeometry
                     offset = landing.Minus(pointOnFigure.Coordinates);
                 }
 
-                Actions.Move(Drawing, moving, offset, toRecalculate);
+                Actions.Move(Drawing, moving, offset, drag.ToRecalculate);
             }
 
             // OK attention here. This is a very tricky spot. At the beginning
             // of this method, we call Coordinates(e) to get the logical mouse
             // coordinates. We could just reuse currentCoordinates, BUT!
             // If you're dragging the coordinate plane itself, the Origin changes
-            // so you'll have to re-get the point coordinates in the new 
+            // so you'll have to re-get the point coordinates in the new
             // coordinate system.
-            oldCoordinates = Coordinates(e);
-            if (moving != null
-                && !draggingSelection
+            drag.OldCoordinates = Coordinates(e);
+            if (!drag.DraggingSelection
                 && moving.Count == 1
                 && moving[0] is IPoint
                 && found != null
                 && (found == moving[0] || found is IMovableParts))
             {
-                oldCoordinates = moving[0].Coordinates;
+                drag.OldCoordinates = moving[0].Coordinates;
             }
         }
 
-        private Point AdjustCoordinates(Point currentCoordinates)
+        private Point AdjustCoordinates(Drag drag, Point currentCoordinates)
         {
             if (PreviewMouseMoveCoordinates != null)
             {
-                PreviewMouseMoveCoordinates(oldCoordinates, ref currentCoordinates);
+                PreviewMouseMoveCoordinates(drag.OldCoordinates, ref currentCoordinates);
             }
             return currentCoordinates;
         }
 
         public override void MouseUp(object sender, MouseButtonEventArgs e)
         {
+            var drag = FindDrag(e.Pointer);
+            if (drag == null)
+            {
+                return;
+            }
+
+            var found = drag.Found;
             try
             {
-                if (snap != null && IsAltPressed() && found is FreePoint dragged)
+                if (drag.Snap != null && IsAltPressed() && found is FreePoint dragged)
                 {
-                    PointSnapping.Snap(dragged, snap);
+                    PointSnapping.Snap(dragged, drag.Snap);
                 }
-                else if (snap?.ExistingPoint != null && IsAltPressed() && found is BezierPath.BezierPathHandle handle && dragTransaction != null)
+                else if (drag.Snap?.ExistingPoint != null && IsAltPressed() && found is BezierPath.BezierPathHandle handle && dragTransaction != null)
                 {
-                    handle.Owner.UsePointAsHandle(handle, snap.ExistingPoint);
+                    handle.Owner.UsePointAsHandle(handle, drag.Snap.ExistingPoint);
                 }
             }
             catch
             {
                 // (the drag is over also when the drop threw, or the next move would go on with it)
-                Release();
+                Release(drag);
                 throw;
             }
             finally
             {
                 // also when the drop threw: left open, the drag's transaction would take in
                 // everything done from then on, and nothing of it could be undone
-                EndDrag();
+                EndDrag(drag);
             }
 
-            // a press that didn't become a drag (moving is null when the press was elsewhere:
-            // on the ribbon, in another tool); on a show/hide box it ticks the box, with Ctrl
-            // it selects it as any figure
-            if (moving != null && !startedMoving)
+            // a press that didn't become a drag; on a show/hide box it ticks the box, with
+            // Ctrl it selects it as any figure
+            if (!drag.StartedMoving)
             {
-                if ((found ?? pressedFixedLabel) is ShowHideControl box && !IsCtrlPressed())
+                if ((found ?? drag.PressedFixedLabel) is ShowHideControl box && !IsCtrlPressed())
                 {
                     box.Click();
                 }
                 else
                 {
-                    UpdateSelection();
+                    UpdateSelection(drag);
                     Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
                 }
             }
 
-            Release();
+            Release(drag);
         }
 
         public override void Stopping()
         {
-            Release();
+            ReleaseAll();
             base.Stopping();
         }
 
@@ -544,29 +623,52 @@ namespace DynamicGeometry
             {
                 if (value != base.Drawing)
                 {
-                    Release();
+                    ReleaseAll();
                 }
 
                 base.Drawing = value;
             }
         }
 
-        /// <summary>The press is over: nothing is held any more</summary>
-        void Release()
+        /// <summary>The press is over: nothing is held by it any more</summary>
+        void Release(Drag drag)
         {
-            EndDrag();
-            BezierPath.ShowHandlesWhileDragging(Drawing, null);
-            startedMoving = false;
-            draggingSelection = false;
-            moving = null;
-            found = null;
-            pressedFixedLabel = null;
-            toRecalculate = null;
+            if (drag == null)
+            {
+                return;
+            }
+
+            EndDrag(drag);
+            drags.Remove(drag);
+
+            // (the handles of the point another finger still drags stay)
+            BezierPath.ShowHandlesWhileDragging(Drawing, drags.LastOrDefault(other => other.StartedMoving)?.Found);
         }
 
-        void EndDrag()
+        void ReleaseAll()
         {
-            snap = null;
+            foreach (var drag in drags.ToList())
+            {
+                Release(drag);
+            }
+        }
+
+        /// <summary>
+        /// The drag is over: the last one of the fingers down together ends the undo step
+        /// they share (also when the drop threw, and the drag has left the list already)
+        /// </summary>
+        void EndDrag(Drag drag)
+        {
+            drag.Snap = null;
+
+            // (a drag whose pointer is gone without a release holds nothing: it must not
+            // keep the step open)
+            drags.RemoveAll(other => other != drag && other.Pointer.Captured == null);
+            if (drags.Any(other => other != drag))
+            {
+                return;
+            }
+
             if (dragTransaction != null)
             {
                 dragTransaction.Commit();
@@ -626,14 +728,14 @@ namespace DynamicGeometry
         /// whatever the Point tool would make there. Returns the free point, or null when Alt
         /// doesn't apply (not held, not a point, a locked one).
         /// </summary>
-        FreePoint PointToSnap(Point cursor)
+        FreePoint PointToSnap(Drag drag, Point cursor)
         {
-            var previous = snap;
-            snap = null;
+            var previous = drag.Snap;
+            drag.Snap = null;
             // (a point a locus is drawn from stays what it is: Alt does nothing to it)
             if (!IsAltPressed()
-                || !(found is PointBase point)
-                || found.Locked
+                || !(drag.Found is PointBase point)
+                || drag.Found.Locked
                 || dragTransaction == null
                 || PointSnapping.IsHeldByLocus(point))
             {
@@ -644,9 +746,9 @@ namespace DynamicGeometry
             if (PointSnapping.CanRelease(point))
             {
                 free = PointSnapping.Release(point);
-                DragInstead(free);
+                DragInstead(drag, free);
             }
-            else if (point is FreePoint freePoint && moving.Count == 1 && moving[0] == point)
+            else if (point is FreePoint freePoint && drag.Moving.Count == 1 && drag.Moving[0] == point)
             {
                 free = freePoint;
             }
@@ -655,14 +757,14 @@ namespace DynamicGeometry
                 return null;
             }
 
-            snap = PointPlacement.FindSnap(
+            drag.Snap = PointPlacement.FindSnap(
                 Drawing,
                 cursor,
                 figure => !figure.DependsOn(free),
                 target => PointSnapping.CanJoin(free, target));
-            if (snap == null && previous != null)
+            if (drag.Snap == null && previous != null)
             {
-                snap = Stick(previous, cursor);
+                drag.Snap = Stick(previous, cursor);
             }
 
             return free;
@@ -687,12 +789,12 @@ namespace DynamicGeometry
         }
 
         /// <summary>The point that replaced the one pressed on is what the drag moves now</summary>
-        void DragInstead(PointBase point)
+        void DragInstead(Drag drag, PointBase point)
         {
-            found = point;
-            moving = new List<IMovable>() { (IMovable)point };
-            toRecalculate = DependencyAlgorithms.FindDescendants(f => f.Dependents, point.AsEnumerable<IFigure>());
-            toRecalculate.Reverse();
+            drag.Found = point;
+            drag.Moving = new List<IMovable>() { (IMovable)point };
+            drag.ToRecalculate = DependencyAlgorithms.FindDescendants(f => f.Dependents, point.AsEnumerable<IFigure>());
+            drag.ToRecalculate.Reverse();
         }
 
         /// <summary>
@@ -714,7 +816,7 @@ namespace DynamicGeometry
         /// <summary>The halo and the faint point of the snap, while dragging with Alt</summary>
         protected override PointPlacement GetClickPreview(MouseEventArgs e)
         {
-            return snap;
+            return FindDrag(e.Pointer)?.Snap;
         }
 
         /// <summary>
@@ -724,7 +826,7 @@ namespace DynamicGeometry
         /// </summary>
         protected override IFigure GetFigureToPick(MouseEventArgs e)
         {
-            return snap?.ExistingPoint ?? (Choice.Index > 0 ? Choice.Current as IFigure : null);
+            return FindDrag(e.Pointer)?.Snap?.ExistingPoint ?? (Choice.Index > 0 ? Choice.Current as IFigure : null);
         }
 
         #endregion
@@ -1023,17 +1125,17 @@ namespace DynamicGeometry
 
 #endif
 
-        private void UpdateSelection()
+        private void UpdateSelection(Drag drag)
         {
             // a click on a handle of a Bezier path leaves the selection as it is: the handle
             // shows while its anchor is selected, and would go with the anchor
-            if (found is BezierPath.BezierPathHandle)
+            if (drag.Found is BezierPath.BezierPathHandle)
             {
                 return;
             }
 
             // a vertex or a side of a regular polygon by itself, the inside for the polygon
-            var clicked = found != null ? FigureParts.SelectionTarget(found) : pressedFixedLabel;
+            var clicked = drag.Found != null ? FigureParts.SelectionTarget(drag.Found) : drag.PressedFixedLabel;
             if (IsCtrlPressed())
             {
                 // a part of a polygon selected whole: the polygon goes out of the selection

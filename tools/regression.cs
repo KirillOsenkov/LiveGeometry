@@ -42,6 +42,11 @@ public class Program
             ("Dragging and Alt snapping undo", DraggingUndo),
             ("Alt dragging a point onto its neighbor joins them", AltDragJoinsNeighbor),
             ("Dragging a point says what Shift and Alt do", DragModifierHints),
+            ("Two fingers drag two points at once", TwoFingersDragTwoPoints),
+            ("A finger holds a point while others pan and zoom the paper", FingerHoldsPointWhilePaperMoves),
+            ("Two fingers under a construction tool pinch", ConstructionToolPinches),
+            ("A tap on a figure selects it", TapSelectsFigure),
+            ("A finger on a graph pans with the paper fingers", FingerOnGraphIsPaper),
             ("Editor commits and undo", EditorUndo),
             ("GeoGebra dependent numeric stays live", GeoGebraDependentNumeric),
             ("GeoGebra untranslated numeric keeps its value", GeoGebraUntranslatedNumeric),
@@ -572,6 +577,210 @@ public class Program
         drawing.ActionManager.Redo();
         Require(drawing.SaveAsText() == after, "Redo of the join changed the drawing.");
         drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// A finger on the canvas: pressed where it is made, moved, lifted - touch pointer
+    /// events raised by hand, the pointer captured as a real touch is
+    /// </summary>
+    class Finger : IDisposable
+    {
+        static readonly PointerPointProperties down = new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.LeftButtonPressed);
+        static readonly PointerPointProperties held = new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.Other);
+        static readonly PointerPointProperties up = new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonReleased);
+        static ulong time;
+
+        readonly Canvas canvas;
+        readonly Pointer pointer;
+
+        public Point Position { get; private set; }
+
+        public Finger(Canvas canvas, Point at)
+        {
+            this.canvas = canvas;
+            Position = at;
+            pointer = new Pointer(Pointer.GetNextFreeId(), PointerType.Touch, isPrimary: false);
+            pointer.Capture(canvas);
+            canvas.RaiseEvent(new PointerPressedEventArgs(canvas, pointer, canvas, at, time += 20, down, KeyModifiers.None, clickCount: 1));
+        }
+
+        public void MoveTo(Point to, int steps = 6)
+        {
+            var from = Position;
+            for (int step = 1; step <= steps; step++)
+            {
+                Position = from + (to - from) * (step / (double)steps);
+                canvas.RaiseEvent(new PointerEventArgs(InputElement.PointerMovedEvent, canvas, pointer, canvas, Position, time += 10, held, KeyModifiers.None));
+            }
+        }
+
+        public void Lift()
+        {
+            canvas.RaiseEvent(new PointerReleasedEventArgs(canvas, pointer, canvas, Position, time += 20, up, KeyModifiers.None, MouseButton.Left));
+            pointer.Capture(null);
+        }
+
+        public void Dispose()
+        {
+            pointer.Dispose();
+        }
+    }
+
+    /// <summary>Points A and B with a segment: a finger on each, moved at once, is two drags and one undo step</summary>
+    static void TwoFingersDragTwoPoints()
+    {
+        var drawing = NewDrawing();
+        var a = AddPoint(drawing, x: -3, y: 0);
+        var b = AddPoint(drawing, x: 3, y: 0);
+        Actions.Add(drawing, Factory.CreateSegment(drawing, a, b));
+        using var window = new TestWindow(drawing.Canvas);
+        drawing.Behavior = new Dragger();
+        string before = drawing.SaveAsText();
+        var system = drawing.CoordinateSystem;
+        using var first = new Finger(drawing.Canvas, system.ToPhysical(a.Coordinates));
+        using var second = new Finger(drawing.Canvas, system.ToPhysical(b.Coordinates));
+        var firstFrom = first.Position;
+        var secondFrom = second.Position;
+        var firstTo = system.ToPhysical(new Point(-3, 2));
+        var secondTo = system.ToPhysical(new Point(3, -2));
+        for (int step = 1; step <= 6; step++)
+        {
+            first.MoveTo(firstFrom + (firstTo - firstFrom) * (step / 6.0), steps: 1);
+            second.MoveTo(secondFrom + (secondTo - secondFrom) * (step / 6.0), steps: 1);
+        }
+
+        Near(a.X, expected: -3);
+        Near(a.Y, expected: 2);
+        Near(b.X, expected: 3);
+        Near(b.Y, expected: -2);
+        Require(drawing.IsRecordingTransaction, "Two point drags have no undo step open.");
+        first.Lift();
+        Require(drawing.IsRecordingTransaction, "Lifting one finger ended the step while the other still drags.");
+        second.Lift();
+        Require(!drawing.IsRecordingTransaction, "The two-finger drag left an open transaction.");
+        string after = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the two-finger drag changed the drawing.");
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo of the two-finger drag changed the drawing.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// A finger drags a point and holds it; another finger on the paper pans, two more zoom:
+    /// the view follows them, the point stays under its finger, and the gesture is one undo
+    /// step (the pans are no steps)
+    /// </summary>
+    static void FingerHoldsPointWhilePaperMoves()
+    {
+        var drawing = NewDrawing();
+        var a = AddPoint(drawing, x: 0, y: 0);
+        using var window = new TestWindow(drawing.Canvas);
+        drawing.Behavior = new Dragger();
+        var system = drawing.CoordinateSystem;
+        var canvas = drawing.Canvas;
+        using var held = new Finger(canvas, system.ToPhysical(a.Coordinates));
+        held.MoveTo(system.ToPhysical(new Point(1, 1)));
+        Near(a.X, expected: 1);
+        Near(a.Y, expected: 1);
+        var originBefore = system.Origin;
+        using var paper = new Finger(canvas, new Point(100, 100));
+        paper.MoveTo(new Point(250, 180));
+        Near(system.Origin.X - originBefore.X, expected: 150);
+        Near(system.Origin.Y - originBefore.Y, expected: 80);
+        Require(system.ToPhysical(a.Coordinates).Distance(held.Position) < 1, "The held point drifted off its finger while the paper was panned.");
+        paper.Lift();
+        double unitBefore = system.UnitLength;
+        using var left = new Finger(canvas, new Point(150, 600));
+        using var right = new Finger(canvas, new Point(350, 600));
+        left.MoveTo(new Point(100, 600));
+        right.MoveTo(new Point(400, 600));
+        Near(system.UnitLength / unitBefore, expected: 1.5);
+        Require(system.ToPhysical(a.Coordinates).Distance(held.Position) < 1, "The held point drifted off its finger while the paper was zoomed.");
+        left.Lift();
+        right.Lift();
+        Require(drawing.IsRecordingTransaction, "The paper fingers ended the point drag's step.");
+        held.Lift();
+        Require(!drawing.IsRecordingTransaction, "The drag left an open transaction.");
+        var dragged = a.Coordinates;
+        drawing.ActionManager.Undo();
+        Near(a.X, expected: 0);
+        Near(a.Y, expected: 0);
+        drawing.ActionManager.Redo();
+        Near(a.X, expected: dragged.X);
+        Near(a.Y, expected: dragged.Y);
+        drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>Under a tool that constructs, two fingers zoom and make nothing</summary>
+    static void ConstructionToolPinches()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        drawing.Behavior = new SegmentCreator();
+        var system = drawing.CoordinateSystem;
+        int count = drawing.Figures.Count();
+        double unitBefore = system.UnitLength;
+        using var left = new Finger(drawing.Canvas, new Point(400, 350));
+        using var right = new Finger(drawing.Canvas, new Point(600, 350));
+        left.MoveTo(new Point(350, 350));
+        right.MoveTo(new Point(650, 350));
+        left.Lift();
+        right.Lift();
+        Near(system.UnitLength / unitBefore, expected: 1.5);
+        Require(drawing.Figures.Count() == count, "A pinch under the Segment tool made figures.");
+        Require(!drawing.IsRecordingTransaction, "A pinch under the Segment tool left a construction open.");
+        Require(!drawing.ActionManager.CanUndo, "A pinch under the Segment tool left an undo step.");
+    }
+
+    /// <summary>A finger put down on a point and lifted there selects it, as a click does</summary>
+    static void TapSelectsFigure()
+    {
+        var drawing = NewDrawing();
+        var a = AddPoint(drawing, x: 0, y: 0);
+        using var window = new TestWindow(drawing.Canvas);
+        drawing.Behavior = new Dragger();
+        string before = drawing.SaveAsText();
+        using var finger = new Finger(drawing.Canvas, drawing.CoordinateSystem.ToPhysical(a.Coordinates));
+        finger.Lift();
+        Require(a.Selected, "A tap on the point did not select it.");
+        Require(!drawing.IsRecordingTransaction, "A tap left an open transaction.");
+        Require(drawing.SaveAsText() == before, "A tap changed the drawing.");
+    }
+
+    /// <summary>
+    /// A finger on a function graph, which a drag of pans the view, is a paper finger: with
+    /// a second finger it zooms, the paper under the two stays under them, and nothing is
+    /// recorded
+    /// </summary>
+    static void FingerOnGraphIsPaper()
+    {
+        var drawing = NewDrawing();
+        var graph = new FunctionGraph() { Drawing = drawing };
+        graph.FunctionText = "0";
+        Actions.Add(drawing, graph);
+        using var window = new TestWindow(drawing.Canvas);
+        drawing.Behavior = new Dragger();
+        var system = drawing.CoordinateSystem;
+        var onGraph = system.ToPhysical(new Point(2, 0));
+        var onPaper = system.ToPhysical(new Point(-2, -3));
+        var middle = DynamicGeometry.Math.Midpoint(onGraph, onPaper);
+        var under = system.ToLogical(middle);
+        double unitBefore = system.UnitLength;
+        double spanBefore = onGraph.Distance(onPaper);
+        using var first = new Finger(drawing.Canvas, onGraph);
+        using var second = new Finger(drawing.Canvas, onPaper);
+        var firstTo = onGraph + new Avalonia.Vector(50, 30);
+        var secondTo = onPaper - new Avalonia.Vector(50, 30);
+        first.MoveTo(firstTo);
+        second.MoveTo(secondTo);
+        first.Lift();
+        second.Lift();
+        Near(system.UnitLength / unitBefore, expected: firstTo.Distance(secondTo) / spanBefore);
+        Require(system.ToPhysical(under).Distance(middle) < 1, "The paper under the two fingers did not stay under them.");
+        Require(!drawing.IsRecordingTransaction, "The pinch left an open transaction.");
+        drawing.ActionManager.Undo();
+        Require(!drawing.Figures.Contains(graph), "The pinch left an undo step before the graph's.");
     }
 
     public class TestWindow : Window, IDisposable

@@ -274,12 +274,33 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Input**: all WPF-style mouse events funnel through `DynamicGeometry/Behaviors/Behavior.cs`
   (pointer adapters live there). Avalonia has no static Keyboard; modifiers come from event args.
   Fingers (`PointerType.Touch`, "Touch" region there) don't go to the tool as they come: a
-  finger's press is held back until it is a tap (lifted where it came down), a drag (gone
-  `TouchSlop` pixels: the tool gets the press where it came down, then the moves) or one of
-  two fingers, which zoom and pan the view (`CoordinateSystem.PanAndZoom`, the paper under
-  the fingers stays under them) and of which the tool hears nothing. Passed on as they came,
-  a second finger was a second press: the Drag tool's view jumped between the fingers, any
-  other tool left points behind. While a tool handles a finger, `Math.CursorTolerance` is
+  finger's press is held back until it is a tap (lifted where it came down) or a drag (gone
+  `TouchSlop` pixels: the tool gets the press where it came down, then the moves). Each
+  finger is for a figure or for the paper, decided where it comes down
+  (`Behavior.TakesFingerOnFigure`, 2026-10-11: the Drag tool says a figure wherever a press
+  would drag or select one and the paper wherever it would move the view - empty paper, an
+  axis, a caption, a graph with nothing to move: `Dragger.PrepareDrag`, what a press
+  holds, worked out without a press; a tool that constructs says the paper for every
+  finger). A figure finger is the tool's for as long as it is down and
+  drags its own figure, whatever the other fingers do; its press goes to the tool at once
+  (unless a tap there would have to ask what it means), since held back until the slop
+  it found the figure no longer under the finger once the paper fingers had moved the
+  view, and the Drag tool waits for `TouchSlop` itself before a finger's press is a
+  drag. The Drag tool holds a `Drag` per
+  pointer (the mouse is one), so two fingers drag the two ends of a segment at once, in one
+  undo transaction for all the fingers down together, from the first drag that moves
+  something to the last release (transactions nest and can't be interleaved; and the
+  moves of two fingers on one figure come interleaved and can't merge into one action, so
+  every drag opens the transaction, not only a point's). The paper fingers are the tool's
+  only while there is one finger on the canvas (a tap selects, a drag pans through the
+  tool, recorded); with any other finger they move the view themselves
+  (`CoordinateSystem.PanAndZoom`: one pans, two pan and zoom, the paper under them stays
+  under them, a third does nothing), the tool hears nothing of them, and the held figures
+  get their last move again after each step, so that a held point stays under its finger
+  while the paper moves beneath it. Passed on as they came, a second finger was a second
+  press: the Drag tool's view jumped between the fingers, any other tool left points
+  behind; and until 2026-10-11 a second finger always made a pinch of the two and ended
+  the first finger's drag. While a tool handles a finger, `Math.CursorTolerance` is
   `TouchTolerance` (10 px, a finger reaches further than a mouse); whatever sizes things in
   pixels must not take the cursor's tolerance for it (`PointLabel.Margin` does now: a label
   placed by touch sat further out). No long press yet: what the right button does (the
