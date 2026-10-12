@@ -1811,7 +1811,12 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
         return HasInside && IsInside(point);
     }
 
-    /// <summary>The point itself inside, else the nearest point of the outline as drawn - or of a hole's, from inside the hole</summary>
+    /// <summary>
+    /// The point itself inside, else the nearest point of the inside's edge as drawn: of the
+    /// outline where no hole covers it, of a hole's outline where it is inside the outline.
+    /// The nearest point of the whole outline, or of the hole the point was in, could be in
+    /// another hole, or in one that reached past the outline.
+    /// </summary>
     public Point NearestPointInside(Point point)
     {
         if (!HasInside)
@@ -1824,21 +1829,13 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
             return point;
         }
 
-        var nearest = Math.GetNearestPointOnPolygonalChain(OutlinePolygon(), point, isClosed: true);
-        foreach (var hole in Holes.Where(hole => hole.Exists && hole.PieceCount > 0))
-        {
-            var outline = hole.OutlinePolygon();
-            if (outline.IsPointInPolygon(point))
-            {
-                var onHole = Math.GetNearestPointOnPolygonalChain(outline, point, isClosed: true);
-                if (onHole.Distance(point) < nearest.Distance(point))
-                {
-                    nearest = onHole;
-                }
-            }
-        }
-
-        return nearest;
+        var holes = Holes
+            .Where(hole => hole.Exists && hole.PieceCount > 0)
+            .Select(hole => (IList<Point>)hole.OutlinePolygon())
+            .ToList();
+        return holes.Count == 0
+            ? Math.GetNearestPointOnPolygonalChain(OutlinePolygon(), point, isClosed: true)
+            : Math.GetNearestPointOnRegionEdge(OutlinePolygon(), holes, point);
     }
 
     #endregion

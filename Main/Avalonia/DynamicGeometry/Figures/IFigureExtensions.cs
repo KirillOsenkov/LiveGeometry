@@ -82,10 +82,14 @@ namespace DynamicGeometry
                 || dependent is TranslatedPoint translated && translated.DistanceSource == figure);
         }
 
-        /// <summary>The same for its area or its perimeter: a sector or a circular segment converted to a bare arc has neither</summary>
+        /// <summary>
+        /// The same for its area, its perimeter or its inside (a point kept in it): a sector
+        /// or a circular segment converted to a bare arc has none of them, and the point that
+        /// was inside a sector stopped existing for good
+        /// </summary>
         public static bool IsUsedForArea(this IFigure figure)
         {
-            return figure.Dependents.Any(dependent => dependent is AreaMeasurement || dependent is PerimeterMeasurement);
+            return figure.Dependents.Any(dependent => dependent is AreaMeasurement || dependent is PerimeterMeasurement || dependent is PointInRegion);
         }
 
         /// <summary>

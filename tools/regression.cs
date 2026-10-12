@@ -98,6 +98,9 @@ public class Program
             ("A changed default style comes along with its copies", PasteBringsChangedDefault),
             ("Styles renamed in one paste keep apart", PasteRenamesKeepStylesApart),
             ("A theme's emoji and size mean the same whichever was set first", ThemeOverrideOrder),
+            ("A vector's direction: not offered when its start follows its end; undo puts the end back", VectorDirectionEdit),
+            ("A point inside a path with holes stays out of them", PointInsidePathWithHoles),
+            ("No Convert to arc while a point is kept inside the sector", NoArcUnderPointInside),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
@@ -2434,6 +2437,162 @@ public class Program
             var reloaded = (FigureStyle)ReadLgf(drawing.SaveAsText()).Figures.OfType<FreePoint>().Single().Style;
             Require(reloaded.Resolve(dark) is PointStyle { Character: star, Size: 60 }, "The file read again shows the emoji at " + ((PointStyle)reloaded.Resolve(dark)).Size);
         }
+    }
+
+    /// <summary>
+    /// A vector whose start is the midpoint of its end and another point has no Direction to
+    /// type (turning the end moved the start, and the vector came out at another angle and
+    /// shorter); on an ordinary vector, undo of a run of directions puts the end back exactly
+    /// </summary>
+    static void VectorDirectionEdit()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="C" X="-2" Y="0" />
+                <FreePoint Name="B" X="2" Y="0" />
+                <MidPoint Name="A">
+                  <Dependency Name="C" />
+                  <Dependency Name="B" />
+                </MidPoint>
+                <Vector Name="AB">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                </Vector>
+                <FreePoint Name="P" X="0" Y="-3" />
+                <FreePoint Name="Q" X="2" Y="-3" />
+                <Vector Name="PQ">
+                  <Dependency Name="P" />
+                  <Dependency Name="Q" />
+                </Vector>
+              </Figures>
+            </Drawing>
+            """);
+        var dependent = (DynamicGeometry.Vector)Find(drawing, "AB");
+        Require(!dependent.CanEdit(nameof(DynamicGeometry.Vector.Angle)), "A vector from a midpoint of its end offers a direction to type.");
+
+        var vector = (DynamicGeometry.Vector)Find(drawing, "PQ");
+        var end = (IPoint)Find(drawing, "Q");
+        Require(vector.CanEdit(nameof(DynamicGeometry.Vector.Angle)), "An ordinary vector offers no direction to type.");
+        string before = drawing.SaveAsText();
+        Set(drawing, vector, nameof(DynamicGeometry.Vector.Angle), 90.0);
+        NearPoint(end.Coordinates, new Point(0, -1));
+        Set(drawing, vector, nameof(DynamicGeometry.Vector.Angle), 180.0);
+        string after = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        NearPoint(end.Coordinates, new Point(0, -1));
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the directions didn't put the end back: " + end.Coordinates);
+        drawing.ActionManager.Redo();
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo of the directions changed the drawing.");
+    }
+
+    /// <summary>
+    /// A point inside a filled path with a hole that reaches past the path: dragged into the
+    /// hole, it stops at the hole's edge, not on the path's own outline inside the hole; and
+    /// where the hole covers the whole path, the point is nowhere
+    /// </summary>
+    static void PointInsidePathWithHoles()
+    {
+        // the square from (-4, -4) to (4, 4), filled, with rectangular holes, and P inside it
+        static string WithHoles(params (double Left, double Bottom, double Right, double Top)[] holes)
+        {
+            var figures = new StringBuilder();
+            var outer = new StringBuilder();
+            void Rectangle(string name, (double Left, double Bottom, double Right, double Top) box, string attributes, StringBuilder extra)
+            {
+                var corners = new[] { (box.Left, box.Bottom), (box.Right, box.Bottom), (box.Right, box.Top), (box.Left, box.Top) };
+                for (int i = 0; i < 4; i++)
+                {
+                    figures.Append($"<FreePoint Name=\"{name}{i}\" X=\"{corners[i].Item1}\" Y=\"{corners[i].Item2}\" />");
+                }
+
+                figures.Append($"<BezierPath Name=\"{name}\" Closed=\"true\" {attributes} Path=\"L L L L\">");
+                for (int i = 0; i < 4; i++)
+                {
+                    figures.Append($"<Dependency Name=\"{name}{i}\" />");
+                }
+
+                figures.Append(extra).Append("</BezierPath>");
+            }
+
+            for (int i = 0; i < holes.Length; i++)
+            {
+                Rectangle("hole" + i, holes[i], "", new StringBuilder());
+                outer.Append($"<Dependency Name=\"hole{i}\" />");
+            }
+
+            Rectangle("outer", (-4, -4, 4, 4), "Filled=\"true\"", outer);
+            figures.Append("<PointInRegion Name=\"P\" X=\"3\" Y=\"3.5\" OffsetX=\"3\" OffsetY=\"3.5\"><Dependency Name=\"outer\" /></PointInRegion>");
+            return "<Drawing Version=\"1\"><Figures>" + figures + "</Figures></Drawing>";
+        }
+
+        // a hole reaching past the top: the point stops at the hole's edge, not on the
+        // square's top inside the hole
+        var drawing = ReadLgf(WithHoles((-2, -3, 2, 5)));
+        var point = (PointInRegion)Find(drawing, "P");
+        foreach (var target in new[] { new Point(0, 3.5), new Point(0.5, 4.5) })
+        {
+            point.MoveTo(target);
+            var place = point.Coordinates;
+            Require(System.Math.Abs(System.Math.Abs(place.X) - 2) < 1e-9 && place.Y <= 4 + 1e-9, $"Dragged to {target}, the point is at {place}, in the hole.");
+        }
+
+        // two holes side by side: their seam is no edge
+        var seam = ReadLgf(WithHoles((-2, -2, 0, 2), (0, -2, 2, 2)));
+        var onSeam = (PointInRegion)Find(seam, "P");
+        onSeam.MoveTo(new Point(0, 0.5));
+        Require(System.Math.Abs(onSeam.Coordinates.Distance(new Point(0, 0.5)) - 1.5) < 1e-9, "Dragged onto the seam of two holes, the point is at " + onSeam.Coordinates);
+
+        // a hole that covers the square, exactly or with room: the point is nowhere
+        foreach (var hole in new[] { (-4.0, -4.0, 4.0, 4.0), (-5.0, -5.0, 5.0, 5.0) })
+        {
+            var covered = ReadLgf(WithHoles(hole));
+            covered.Recalculate();
+            Require(!Find(covered, "P").Exists, $"A point inside a path its hole {hole} covers exists.");
+        }
+    }
+
+    /// <summary>
+    /// A sector or a circular segment with a point kept inside has no Convert to arc: a bare
+    /// arc has no inside, and the point stopped existing for good. Between kinds with an
+    /// inside the conversion stays.
+    /// </summary>
+    static void NoArcUnderPointInside()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="0" Y="0" />
+                <FreePoint Name="B" X="3" Y="0" />
+                <FreePoint Name="C" X="0" Y="3" />
+                <CircleSector Name="c">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                  <Dependency Name="C" />
+                </CircleSector>
+                <PointInRegion Name="D" X="1" Y="1" OffsetX="1" OffsetY="1">
+                  <Dependency Name="c" />
+                </PointInRegion>
+                <CircleSegment Name="d">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                  <Dependency Name="C" />
+                </CircleSegment>
+                <PointInRegion Name="E" X="2" Y="2" OffsetX="2" OffsetY="2">
+                  <Dependency Name="d" />
+                </PointInRegion>
+              </Figures>
+            </Drawing>
+            """);
+        foreach (var name in new[] { "c", "d" })
+        {
+            var region = (IConditionalProperties)Find(drawing, name);
+            Require(!region.CanEdit("ConvertToArc"), name + " offers Convert to arc with a point inside it.");
+        }
+
+        Require(((IConditionalProperties)Find(drawing, "c")).CanEdit("ConvertToSegment"), "The sector no longer offers Convert to segment.");
     }
 
     static void AxisLines()

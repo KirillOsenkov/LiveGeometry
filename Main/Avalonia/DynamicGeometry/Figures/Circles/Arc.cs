@@ -134,7 +134,7 @@ namespace DynamicGeometry
             return NearestInsideSegment(point);
         }
 
-        /// <summary>No "Convert to arc" while something measures the area or the perimeter: a bare arc has neither</summary>
+        /// <summary>No "Convert to arc" while something measures the area or the perimeter, or a point is kept inside: a bare arc has none of them</summary>
         public bool CanEdit(string propertyName)
         {
             return propertyName != "ConvertToArc" || !this.IsUsedForArea();
@@ -222,7 +222,7 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>No "Convert to arc" while something measures the area or the perimeter: a bare arc has neither</summary>
+        /// <summary>No "Convert to arc" while something measures the area or the perimeter, or a point is kept inside: a bare arc has none of them</summary>
         public bool CanEdit(string propertyName)
         {
             return propertyName != "ConvertToEllipseArc" || !this.IsUsedForArea();
@@ -310,7 +310,7 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>No "Convert to arc" while something measures the area or the perimeter: a bare arc has neither</summary>
+        /// <summary>No "Convert to arc" while something measures the area or the perimeter, or a point is kept inside: a bare arc has none of them</summary>
         public bool CanEdit(string propertyName)
         {
             return propertyName != "ConvertToArc" || !this.IsUsedForArea();
@@ -413,7 +413,7 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>No "Convert to arc" while something measures the area or the perimeter: a bare arc has neither</summary>
+        /// <summary>No "Convert to arc" while something measures the area or the perimeter, or a point is kept inside: a bare arc has none of them</summary>
         public bool CanEdit(string propertyName)
         {
             return propertyName != "ConvertToEllipseArc" || !this.IsUsedForArea();

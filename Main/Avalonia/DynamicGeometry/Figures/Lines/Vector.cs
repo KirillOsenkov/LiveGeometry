@@ -227,12 +227,15 @@ namespace DynamicGeometry
             if (propertyName == nameof(Angle))
             {
                 // a direction typed in turns a free end about the start; any other end stays
-                // where it is built, and the set was an undo step that undid nothing
+                // where it is built, and the set was an undo step that undid nothing. Nor a
+                // start built on the end (the midpoint of the end and another point), which
+                // moves with it: the vector came out at another angle, and shorter
                 return Dependencies.Count == 2
                     && Dependencies[1] is FreePoint end
                     && !(end is PointOnFigure)
                     && !(end is PointInRegion)
-                    && !end.Locked;
+                    && !end.Locked
+                    && !Dependencies[0].DependsOn(end);
             }
 
             return Line.CanEdit(propertyName);
@@ -270,9 +273,33 @@ namespace DynamicGeometry
             Drawing.RaiseDisplayProperties(this);
         }
 
+        /// <summary>
+        /// The direction as the grid sets it: undo puts the end back where it was. Turned back
+        /// by the angle, it came back to its place only while the start had stayed put.
+        /// </summary>
+        public class DirectionValue : ConditionalPropertyValue, IRestorableValue
+        {
+            public object CaptureState()
+            {
+                var vector = (Vector)Parent;
+                var end = vector.Dependencies.Count == 2 ? vector.Dependencies[1] as IRestorablePlace : null;
+                return (end, end?.CapturePlace());
+            }
+
+            public void RestoreState(object state)
+            {
+                var (end, place) = ((IRestorablePlace, object))state;
+                if (end != null)
+                {
+                    end.RestorePlace(place);
+                    ((IFigure)end).RecalculateAllDependents();
+                }
+            }
+        }
+
         [PropertyGridVisible]
         [PropertyGridName("Direction")]
-        [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
+        [PropertyGridCustomValueProvider(typeof(DirectionValue))]
         public double Angle
         {
             get

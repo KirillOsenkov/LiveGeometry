@@ -737,7 +737,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `ContainsPoint`, `NearestPointInside` - on `PolygonBase`, `DependentPolygonBase` through
   its interior part, `EllipseBase`, the four sectors and segments through helpers on
   `EllipseArcBase`, and `BezierPath`, closed or filled, holes left out; a circle's nearest
-  point is along the ray from its center, a path's is on its outline as drawn). Its state
+  point is along the ray from its center, a path's is on the edge of its inside as drawn,
+  holes taken out: `Math.GetNearestPointOnRegionEdge`, the pieces of every side, cut where
+  the other polygons cross it, with the region on one side and not the other - judged by
+  a point just off each side, since a middle on another polygon's outline is inside it or
+  not by chance, and the seam of two holes was taken for an edge; the nearest point of the
+  whole outline could be in a hole that reached past it). A sector or segment with such
+  a point offers no Convert to arc (`IsUsedForArea`). Its state
   is an `Offset` from the region's `Center` (saved as `OffsetX`/`OffsetY`; a hand-written
   file with X and Y alone gets it at the first recalculation): `Recalculate` works the
   point out from the region as it is now, however it got there - dragged, driven by a

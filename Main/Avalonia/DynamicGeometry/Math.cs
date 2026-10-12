@@ -1187,6 +1187,152 @@ namespace DynamicGeometry
             return projection.DistanceToLine < corner.Distance(point) ? projection.Point : corner;
         }
 
+        /// <summary>
+        /// The point nearest to the given one on the edge of what is inside the outline and in
+        /// none of the holes (each polygon even-odd): every side of the outline and the holes,
+        /// cut where the other polygons cross it, keeps the pieces that have the region on one
+        /// side and not on the other - the outline where no hole covers it, a hole's outline
+        /// inside the outline, but not where two holes meet, nor an outline a hole covers
+        /// exactly. Nowhere (<see cref="InfinitePoint"/>) when the holes leave nothing. The
+        /// nearest point of the whole outline was inside a hole that reached past it; and a
+        /// piece judged by its middle alone, which is on the other polygon's side there, kept
+        /// the seam between two holes.
+        /// </summary>
+        public static Point GetNearestPointOnRegionEdge(IList<Point> outline, IList<IList<Point>> holes, Point point)
+        {
+            var polygons = new List<IList<Point>> { outline };
+            polygons.AddRange(holes.Where(hole => hole.Count > 0));
+            var corners = polygons.SelectMany(polygon => polygon).ToList();
+            if (corners.Count == 0)
+            {
+                return InfinitePoint;
+            }
+
+            // how far beside a piece of a side its two sides are looked at: far below any gap
+            // between sides that are not on top of each other
+            double extent = System.Math.Max(corners.Max(p => p.X) - corners.Min(p => p.X), corners.Max(p => p.Y) - corners.Min(p => p.Y));
+            double beside = extent * 1e-7;
+            bool InRegion(Point place)
+            {
+                if (!outline.IsPointInPolygon(place))
+                {
+                    return false;
+                }
+
+                for (int k = 1; k < polygons.Count; k++)
+                {
+                    if (polygons[k].IsPointInPolygon(place))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            // the sides nearest first: a side no nearer than the best point found has nothing nearer
+            var sides = new List<(int Polygon, Point From, Point To, double Distance)>();
+            for (int k = 0; k < polygons.Count; k++)
+            {
+                var polygon = polygons[k];
+                for (int i = 0; i < polygon.Count; i++)
+                {
+                    var from = polygon[i];
+                    var to = polygon[(i + 1) % polygon.Count];
+                    sides.Add((k, from, to, NearestOnSegment(from, to, point).Distance(point)));
+                }
+            }
+
+            sides.Sort((first, second) => first.Distance.CompareTo(second.Distance));
+            var nearest = InfinitePoint;
+            double nearestDistance = double.PositiveInfinity;
+            foreach (var side in sides)
+            {
+                if (side.Distance >= nearestDistance)
+                {
+                    break;
+                }
+
+                var cuts = new List<double> { 0, 1 };
+                for (int k = 0; k < polygons.Count; k++)
+                {
+                    if (k != side.Polygon)
+                    {
+                        AddCrossings(side.From, side.To, polygons[k], cuts);
+                    }
+                }
+
+                cuts.Sort();
+                for (int c = 0; c + 1 < cuts.Count; c++)
+                {
+                    if (cuts[c + 1] <= cuts[c])
+                    {
+                        continue;
+                    }
+
+                    var start = Lerp(side.From, side.To, cuts[c]);
+                    var end = Lerp(side.From, side.To, cuts[c + 1]);
+                    var middle = Lerp(side.From, side.To, (cuts[c] + cuts[c + 1]) / 2);
+                    double length = start.Distance(end);
+                    var across = new Point(-(end.Y - start.Y) / length * beside, (end.X - start.X) / length * beside);
+                    if (InRegion(middle.Plus(across)) == InRegion(middle.Minus(across)))
+                    {
+                        continue;
+                    }
+
+                    var candidate = NearestOnSegment(start, end, point);
+                    double distance = candidate.Distance(point);
+                    if (distance < nearestDistance)
+                    {
+                        nearest = candidate;
+                        nearestDistance = distance;
+                    }
+                }
+            }
+
+            return nearest;
+        }
+
+        static Point Lerp(Point from, Point to, double t)
+        {
+            return new Point(from.X + t * (to.X - from.X), from.Y + t * (to.Y - from.Y));
+        }
+
+        static Point NearestOnSegment(Point from, Point to, Point point)
+        {
+            double dx = to.X - from.X;
+            double dy = to.Y - from.Y;
+            double squared = dx * dx + dy * dy;
+            double t = squared == 0 ? 0 : ((point.X - from.X) * dx + (point.Y - from.Y) * dy) / squared;
+            return Lerp(from, to, System.Math.Max(0, System.Math.Min(1, t)));
+        }
+
+        /// <summary>Where along the side (0 to 1, the ends left out) the polygon's sides cross it</summary>
+        static void AddCrossings(Point from, Point to, IList<Point> polygon, List<double> cuts)
+        {
+            double dx = to.X - from.X;
+            double dy = to.Y - from.Y;
+            for (int i = 0; i < polygon.Count; i++)
+            {
+                var start = polygon[i];
+                var end = polygon[(i + 1) % polygon.Count];
+                double fx = end.X - start.X;
+                double fy = end.Y - start.Y;
+                double denominator = dx * fy - dy * fx;
+                if (denominator == 0)
+                {
+                    continue;
+                }
+
+                double t = ((start.X - from.X) * fy - (start.Y - from.Y) * fx) / denominator;
+                double u = ((start.X - from.X) * dy - (start.Y - from.Y) * dx) / denominator;
+                if (t > 0 && t < 1 && u >= 0 && u <= 1)
+                {
+                    cuts.Add(t);
+                }
+            }
+        }
+
         public static Point GetAngleBisectorPoint(Point vertex, Point side1, Point side2)
         {
             var s1 = vertex.Distance(side1);

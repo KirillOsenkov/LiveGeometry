@@ -338,6 +338,105 @@ const GeometryMath = {
         return projection.distanceToLine < corner.distance(point) ? projection.point : corner;
     },
 
+    /**
+     * The point nearest to the given one on the edge of what is inside the outline and in
+     * none of the holes (each polygon even-odd): every side, cut where the other polygons
+     * cross it, keeps the pieces with the region on one side and not on the other - not the
+     * seam where two holes meet, nor an outline a hole covers exactly. Nowhere when the
+     * holes leave nothing.
+     */
+    getNearestPointOnRegionEdge(outline, holes, point) {
+        const polygons = [outline, ...holes.filter(hole => hole.length > 0)];
+        const corners = polygons.flat();
+        if (corners.length === 0) {
+            return Point.infinite;
+        }
+
+        // how far beside a piece of a side its two sides are looked at
+        const xs = corners.map(p => p.x);
+        const ys = corners.map(p => p.y);
+        const beside = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) * 1e-7;
+        const inRegion = place => GeometryMath.isPointInPolygon(outline, place)
+            && !polygons.some((polygon, k) => k > 0 && GeometryMath.isPointInPolygon(polygon, place));
+        const lerp = (from, to, t) => new Point(from.x + t * (to.x - from.x), from.y + t * (to.y - from.y));
+        const nearestOnSegment = (from, to) => {
+            const dx = to.x - from.x;
+            const dy = to.y - from.y;
+            const squared = dx * dx + dy * dy;
+            const t = squared === 0 ? 0 : ((point.x - from.x) * dx + (point.y - from.y) * dy) / squared;
+            return lerp(from, to, Math.max(0, Math.min(1, t)));
+        };
+
+        // the sides nearest first: a side no nearer than the best point found has nothing nearer
+        const sides = [];
+        polygons.forEach((polygon, k) => {
+            for (let i = 0; i < polygon.length; i++) {
+                const from = polygon[i];
+                const to = polygon[(i + 1) % polygon.length];
+                sides.push({ polygon: k, from, to, distance: nearestOnSegment(from, to).distance(point) });
+            }
+        });
+        sides.sort((first, second) => first.distance - second.distance);
+
+        let nearest = Point.infinite;
+        let nearestDistance = Infinity;
+        for (const side of sides) {
+            if (side.distance >= nearestDistance) {
+                break;
+            }
+
+            const cuts = [0, 1];
+            const dx = side.to.x - side.from.x;
+            const dy = side.to.y - side.from.y;
+            polygons.forEach((polygon, k) => {
+                if (k === side.polygon) {
+                    return;
+                }
+
+                for (let i = 0; i < polygon.length; i++) {
+                    const start = polygon[i];
+                    const end = polygon[(i + 1) % polygon.length];
+                    const fx = end.x - start.x;
+                    const fy = end.y - start.y;
+                    const denominator = dx * fy - dy * fx;
+                    if (denominator === 0) {
+                        continue;
+                    }
+
+                    const t = ((start.x - side.from.x) * fy - (start.y - side.from.y) * fx) / denominator;
+                    const u = ((start.x - side.from.x) * dy - (start.y - side.from.y) * dx) / denominator;
+                    if (t > 0 && t < 1 && u >= 0 && u <= 1) {
+                        cuts.push(t);
+                    }
+                }
+            });
+            cuts.sort((a, b) => a - b);
+            for (let c = 0; c + 1 < cuts.length; c++) {
+                if (cuts[c + 1] <= cuts[c]) {
+                    continue;
+                }
+
+                const start = lerp(side.from, side.to, cuts[c]);
+                const end = lerp(side.from, side.to, cuts[c + 1]);
+                const middle = lerp(side.from, side.to, (cuts[c] + cuts[c + 1]) / 2);
+                const length = start.distance(end);
+                const across = new Point(-(end.y - start.y) / length * beside, (end.x - start.x) / length * beside);
+                if (inRegion(middle.plus(across)) === inRegion(middle.minus(across))) {
+                    continue;
+                }
+
+                const candidate = nearestOnSegment(start, end);
+                const distance = candidate.distance(point);
+                if (distance < nearestDistance) {
+                    nearest = candidate;
+                    nearestDistance = distance;
+                }
+            }
+        }
+
+        return nearest;
+    },
+
     getIndexOfNearestPoint(point, pointList) {
         let nearest = Infinity;
         let nearestPointIndex = 0;

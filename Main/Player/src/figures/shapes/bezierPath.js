@@ -1077,7 +1077,7 @@ class BezierPath extends CompositeFigure {
         return this.hasInside && this.isInside(point);
     }
 
-    /** The point itself inside, else the nearest point of the outline as drawn - or of a hole's, from inside the hole */
+    /** The point itself inside, else the nearest point of the inside's edge as drawn: of the outline where no hole covers it, of a hole's outline where it is inside the outline */
     nearestPointInside(point) {
         if (!this.hasInside) {
             return Point.infinite;
@@ -1087,20 +1087,12 @@ class BezierPath extends CompositeFigure {
             return point;
         }
 
-        let nearest = GeometryMath.getNearestPointOnPolygonalChain(this.outlinePolygon(), point, true);
-        for (const hole of this.holes) {
-            if (hole.exists && hole.pieceCount > 0) {
-                const outline = hole.outlinePolygon();
-                if (GeometryMath.isPointInPolygon(outline, point)) {
-                    const onHole = GeometryMath.getNearestPointOnPolygonalChain(outline, point, true);
-                    if (onHole.distance(point) < nearest.distance(point)) {
-                        nearest = onHole;
-                    }
-                }
-            }
-        }
-
-        return nearest;
+        const holes = this.holes
+            .filter(hole => hole.exists && hole.pieceCount > 0)
+            .map(hole => hole.outlinePolygon());
+        return holes.length === 0
+            ? GeometryMath.getNearestPointOnPolygonalChain(this.outlinePolygon(), point, true)
+            : GeometryMath.getNearestPointOnRegionEdge(this.outlinePolygon(), holes, point);
     }
 
     /** The smallest box around the pieces as drawn, logical */
