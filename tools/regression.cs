@@ -92,6 +92,9 @@ public class Program
             ("Deleting what a show/hide box holds, and undo", ShowHideBoxDeletion),
             ("Undoing a slider's range puts its value back", SliderRangeUndo),
             ("A regular polygon and a vector keep their Z", CompositeZRoundTrips),
+            ("A tool on a segment's length asks for a segment; a figure that can't come in leaves nothing", DefinedToolOnSegmentLength),
+            ("Undo of a typed coordinate puts a point inside a shape back", PointInsideCoordinateUndo),
+            ("Alt does nothing to a point dragged with a selection", AltDragOfSelection),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
@@ -3259,6 +3262,148 @@ public class Program
         var reloaded = ReadLgf(drawing.SaveAsText());
         Require(Find(reloaded, "p").Z == 2, "A regular polygon saved without its Z.");
         Require(Find(reloaded, "AB").Z == -1, "A vector saved without its Z.");
+    }
+
+    /// <summary>
+    /// A tool defined on a circle whose radius is a segment asks for a segment, not any line.
+    /// And a figure that can't come in (made by such a tool stored before, which took a line)
+    /// takes the construction back: the drawing is as it was, and the tool can be put down.
+    /// </summary>
+    static void DefinedToolOnSegmentLength()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="-4" Y="-3" />
+                <FreePoint Name="B" X="-1" Y="-3" />
+                <Segment Name="AB">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                </Segment>
+                <FreePoint Name="C" X="-3" Y="1" />
+                <CircleByRadius Name="c">
+                  <Dependency Name="AB" />
+                  <Dependency Name="C" />
+                </CircleByRadius>
+                <FreePoint Name="D" X="1" Y="-2" />
+                <FreePoint Name="E" X="4" Y="1" />
+                <LineTwoPoints Name="DE">
+                  <Dependency Name="D" />
+                  <Dependency Name="E" />
+                </LineTwoPoints>
+                <FreePoint Name="F" X="2" Y="3" />
+              </Figures>
+            </Drawing>
+            """);
+        var macro = MacroSerializer.WriteMacroToString(
+            new List<IFigure> { Find(drawing, "C"), Find(drawing, "AB") },
+            new List<IFigure> { Find(drawing, "c") },
+            "Radius");
+        var types = XElement.Parse(macro).Element("Inputs").Elements().Select(input => input.Attribute("Type").Value);
+        Require(string.Join(" ", types) == "IPoint Segment", "The tool asks for: " + string.Join(" ", types));
+
+        var old = UserDefinedTool.AddFromString(macro.Replace("Type=\"Segment\"", "Type=\"ILine\""));
+        try
+        {
+            using var window = new TestWindow(drawing.Canvas);
+            var system = drawing.CoordinateSystem;
+            string before = drawing.SaveAsText();
+            drawing.Behavior = old;
+            Click(drawing, system.ToPhysical(new Point(2, 3)));
+            try
+            {
+                Click(drawing, system.ToPhysical(new Point(2.5, -0.5)));
+            }
+            catch (InvalidOperationException)
+            {
+                // "d is left out: it is built on 2 figures and needs a point as the 1st", as
+                // the circle came in: what matters is what it leaves behind
+            }
+
+            Require(drawing.Figures.OfType<CircleByRadius>().Count() == 1, "The circle that could not come in stayed in the drawing.");
+            Require(drawing.SaveAsText() == before, "The failed construction changed the drawing.");
+            drawing.Behavior = new Dragger();
+            Require(drawing.SaveAsText() == before, "Putting the tool down changed the drawing.");
+            drawing.Figures.CheckConsistency();
+        }
+        finally
+        {
+            Behavior.Delete(old);
+        }
+    }
+
+    /// <summary>A coordinate typed for a point inside a circle, beyond it: undo puts both coordinates back</summary>
+    static void PointInsideCoordinateUndo()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="O" X="0" Y="0" />
+                <FreePoint Name="P" X="2" Y="0" />
+                <Circle Name="c">
+                  <Dependency Name="O" />
+                  <Dependency Name="P" />
+                </Circle>
+                <PointInRegion Name="C" X="1" Y="1" OffsetX="1" OffsetY="1">
+                  <Dependency Name="c" />
+                </PointInRegion>
+              </Figures>
+            </Drawing>
+            """);
+        var point = (PointInRegion)Find(drawing, "C");
+        string before = drawing.SaveAsText();
+        Set(drawing, point, "X", 5.0);
+        Require(point.Coordinates.Y < 0.5, "The point typed out of the circle didn't stop at its edge: " + point.Coordinates);
+        string after = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        NearPoint(point.Coordinates, new Point(1, 1));
+        Require(drawing.SaveAsText() == before, "Undo of the typed X changed the drawing: " + drawing.SaveAsText());
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo of the typed X changed the drawing.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// Alt does nothing to a point dragged with the rest of a selection, which goes as one
+    /// piece: with Alt the point pressed was released and moved alone, off its segment
+    /// </summary>
+    static void AltDragOfSelection()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="-2" Y="-2" />
+                <FreePoint Name="B" X="2" Y="2" />
+                <Segment Name="AB">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                </Segment>
+                <PointOnFigure Name="C" X="0" Y="0" Parameter="0.5">
+                  <Dependency Name="AB" />
+                </PointOnFigure>
+                <FreePoint Name="D" X="3" Y="-2" />
+                <Segment Name="CD">
+                  <Dependency Name="C" />
+                  <Dependency Name="D" />
+                </Segment>
+              </Figures>
+            </Drawing>
+            """);
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        drawing.Behavior = new Dragger();
+        foreach (var figure in drawing.Figures)
+        {
+            figure.Selected = true;
+        }
+
+        drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
+        Drag(drawing, system.ToPhysical(new Point(0, 0)), system.ToPhysical(new Point(1, 1)), KeyModifiers.Alt);
+        Require(Find(drawing, "C") is PointOnFigure, "Alt released the point dragged with the selection.");
+        NearPoint(((IPoint)Find(drawing, "A")).Coordinates, new Point(-1, -1));
+        NearPoint(((IPoint)Find(drawing, "D")).Coordinates, new Point(4, -1));
+        NearPoint(((IPoint)Find(drawing, "C")).Coordinates, new Point(1, 1));
+        drawing.Figures.CheckConsistency();
     }
 
     /// <summary>

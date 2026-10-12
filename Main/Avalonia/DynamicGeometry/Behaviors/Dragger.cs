@@ -795,8 +795,11 @@ namespace DynamicGeometry
         {
             var previous = drag.Snap;
             drag.Snap = null;
-            // (a point a locus is drawn from stays what it is: Alt does nothing to it)
+            // (a point a locus is drawn from stays what it is: Alt does nothing to it; nor to
+            // a point dragged with the rest of a selection, which goes as one piece - Alt
+            // released the point pressed, which then moved alone, off what it was on)
             if (!IsAltPressed()
+                || drag.DraggingSelection
                 || !(drag.Found is PointBase point)
                 || drag.Found.Locked
                 || dragTransaction == null

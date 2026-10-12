@@ -121,9 +121,19 @@ namespace DynamicGeometry
             typeof(IPoint), typeof(ILine), typeof(IEllipse)
         };
         
+        /// <summary>
+        /// What the tool asks for: a point, a line or an ellipse of any kind - unless a result
+        /// takes more from the input than its kind gives (<see cref="TakesMoreThanKind"/>),
+        /// when only the input's own type will do
+        /// </summary>
         string GetInputType(IFigure input)
         {
             Type inputType = input.GetType();
+            if (TakesMoreThanKind(input))
+            {
+                return inputType.Name;
+            }
+
             foreach (var commonType in commonTypes)
             {
                 if (commonType.IsAssignableFrom(inputType))
@@ -132,6 +142,26 @@ namespace DynamicGeometry
                 }
             }
             return inputType.Name;
+        }
+
+        /// <summary>
+        /// Whether a result is built on the line or ellipse for more than being one: its
+        /// length (a radius, a distance, a factor, a translation's distance), its area or
+        /// perimeter, its inside, a circle to reflect in. A tool defined on a circle with a
+        /// segment for its radius asked for any line, and a line given made a circle with no
+        /// radius, which threw and stayed in the drawing. A point is a point to every figure.
+        /// </summary>
+        bool TakesMoreThanKind(IFigure input)
+        {
+            return !(input is IPoint) && input.Dependents.Any(result => Results.Contains(result)
+                && (result is DistanceMeasurement
+                    || result is CircleByRadius
+                    || result is DilatedPoint
+                    || result is TranslatedPoint translated && translated.DistanceSource == input
+                    || result is ReflectedPoint && input is IEllipse
+                    || result is AreaMeasurement
+                    || result is PerimeterMeasurement
+                    || result is PointInRegion));
         }
 
         /// <summary>

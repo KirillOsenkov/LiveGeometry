@@ -235,8 +235,9 @@ class BezierPath extends CompositeFigure {
         this.filledValue = false;
         this.smoothingValue = BezierPathSmoothing.Hobby;
 
-        // the tension typed, and the figure it comes from instead (the last dependency), if any
-        this.tension = BezierPath.DefaultTension;
+        // the tension typed, and the figure it comes from instead (the last dependency), if any;
+        // not "tension", which is the tension the path has (p.Tension in an expression)
+        this.typedTension = BezierPath.DefaultTension;
         this.tensionSource = null;
 
         // the anchor the Drag tool pressed last, whose handles show meanwhile
@@ -801,10 +802,10 @@ class BezierPath extends CompositeFigure {
     }
 
     /** How tight the automatic handles are: typed, or a figure with a number (a slider), which it then follows */
-    get tensionValue() {
+    get tension() {
         const source = this.tensionSource;
         if (source == null) {
-            return this.tension;
+            return this.typedTension;
         }
 
         if (source.isNumber === true) {
@@ -901,7 +902,7 @@ class BezierPath extends CompositeFigure {
             this.outHandles.map(given),
             this.closed,
             this.smoothing,
-            this.tensionValue);
+            this.tension);
         for (let i = 0; i < count; i++) {
             if (this.inHandles[i].auto) {
                 this.inHandles[i].offset = result.ins[i];
@@ -933,7 +934,7 @@ class BezierPath extends CompositeFigure {
         }
 
         if (exists && this.smoothing !== BezierPathSmoothing.None && this.handles.some(h => h.auto)) {
-            const value = this.tensionValue;
+            const value = this.tension;
             exists = (this.tensionSource == null || this.tensionSource.exists) && value > 0 && isValidValue(value);
         }
 
@@ -1370,7 +1371,7 @@ class BezierPath extends CompositeFigure {
 
         const smoothingText = element.getAttribute("Smoothing");
         this.smoothingValue = smoothingText != null && BezierPathSmoothing[smoothingText] != null ? BezierPathSmoothing[smoothingText] : BezierPathSmoothing.Hobby;
-        this.tension = BezierPath.DefaultTension;
+        this.typedTension = BezierPath.DefaultTension;
         this.tensionSource = null;
         const tensionText = element.getAttribute("Tension");
         if (tensionText != null && tensionText.startsWith("#") && /^\d+$/.test(tensionText.substring(1))) {
@@ -1382,7 +1383,7 @@ class BezierPath extends CompositeFigure {
         } else if (tensionText != null) {
             const typed = Xml.parseDouble(tensionText);
             if (isValidValue(typed)) {
-                this.tension = typed;
+                this.typedTension = typed;
             }
         }
 

@@ -2280,8 +2280,13 @@ else - no ribbon, grid, list or gallery, no undo, no selection. The Silverlight-
   `isLine`, `isLinearFigure`, `isCircle`, `isLengthProvider`, `isAngleProvider`,
   `isNumber`, `isMovable`, `isMovableParts`, `isFigurePart`, `isBezierPathPiece`...), and
   a figure's own flag must not take such a name (an `isLine` field on the bisector broke
-  every line: it is `wholeLine`). Classes that would shadow a browser global are renamed:
-  `GeometryMath` (Math.cs), `NumberFigure` (Number.cs; the element is still `<Number>`),
+  every line: it is `wholeLine`). An expression reads a figure's fields as well as its
+  getters (`ExpressionReflection.propertyNames`), so a field must not take the name of a
+  C# property it doesn't hold (a Bezier path's typed tension was `tension`, and
+  `p.Tension` read it instead of a tied slider's value: it is `typedTension`). An
+  interface flag that is read must also be defined: `isBezierPathInterior` never was,
+  and a path on its default style drew no fill. Classes that would shadow a browser
+  global are renamed: `GeometryMath` (Math.cs), `NumberFigure` (Number.cs; the element is still `<Number>`),
   `SyntaxNode` (Node.cs). Every figure file ends with `FigureTypes.register("<element
   name>", Class)`. A figure has `render(renderer)` besides `updateVisual`; `resolvedStyle`
   is the style resolved for the theme on screen (what the Avalonia shape had applied);

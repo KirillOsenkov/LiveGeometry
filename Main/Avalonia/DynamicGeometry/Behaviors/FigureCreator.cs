@@ -209,15 +209,26 @@ namespace DynamicGeometry
             EnsureTransaction();
             RemoveTempResultsIfNecessary();
             var figures = CreateFigures().ToList();
-            foreach (var figure in figures)
+            try
             {
-                if (figure != null)
+                foreach (var figure in figures)
                 {
-                    Actions.Add(Drawing, figure);
+                    if (figure != null)
+                    {
+                        Actions.Add(Drawing, figure);
+                    }
                 }
+
+                FiguresAdded(figures);
+            }
+            catch
+            {
+                // a figure that could not come in takes the construction back, as Escape
+                // does: what came in before it goes too, nothing is left half made
+                Restart();
+                throw;
             }
 
-            FiguresAdded(figures);
             Drawing.RaiseUserIsAddingFigures(new Drawing.UIAFEventArgs() { Figures = figures });
             Transaction.Commit();
             Transaction = null;

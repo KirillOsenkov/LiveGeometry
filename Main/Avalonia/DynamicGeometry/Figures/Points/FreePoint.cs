@@ -117,7 +117,29 @@ namespace DynamicGeometry
         {
         }
 
+        /// <summary>
+        /// A coordinate as the grid sets it: undo puts the point back where it was, not the
+        /// one coordinate typed. A point kept inside a shape goes to the nearest place inside,
+        /// which changes the other coordinate too: undo of X = 5 put X back and left Y where
+        /// the shape's edge had put it.
+        /// </summary>
+        public class PlaceValue : PropertyValue, IRestorableValue
+        {
+            public object CaptureState()
+            {
+                return ((FreePoint)Parent).CapturePlace();
+            }
+
+            public void RestoreState(object state)
+            {
+                var point = (FreePoint)Parent;
+                point.RestorePlace(state);
+                point.RecalculateAllDependents();
+            }
+        }
+
         [PropertyGridVisible]
+        [PropertyGridCustomValueProvider(typeof(PlaceValue))]
         public override double X
         {
             get
@@ -132,6 +154,7 @@ namespace DynamicGeometry
         }
 
         [PropertyGridVisible]
+        [PropertyGridCustomValueProvider(typeof(PlaceValue))]
         public override double Y
         {
             get
