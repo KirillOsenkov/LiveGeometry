@@ -1,4 +1,6 @@
-﻿namespace DynamicGeometry
+﻿using System.Linq;
+
+namespace DynamicGeometry
 {
     public class DrawingExpressionEditorFactory
         : BaseValueEditorFactory<ExpressionEditor, DrawingExpression> { }
@@ -9,20 +11,39 @@
     /// </summary>
     public class ExpressionEditor : StringEditor
     {
+        /// <summary>
+        /// Valid when it compiles for every figure the row edits: one, or each of a selection
+        /// (the X of two points), against its own figure. The row of a selection is the
+        /// expressions together (<see cref="CompositeValueProvider"/>), which was taken for an
+        /// expression, and typing into it threw.
+        /// </summary>
         protected override ValidationResult Validate(object value)
         {
             string source = value.ToString();
-            DrawingExpression expression = Value as DrawingExpression;
-            var compileResult = Compiler.Instance.CompileExpression(
-                expression.ParentFigure.Drawing,
-                source,
-                f => !f.DependsOn(expression.ParentFigure));
+            var expressions = Value is CompositeValueProvider composite
+                ? composite.InnerList.OfType<DrawingExpression>()
+                : new[] { Value as DrawingExpression };
+            foreach (var expression in expressions.Where(expression => expression?.ParentFigure.Drawing != null))
+            {
+                var compileResult = Compiler.Instance.CompileExpression(
+                    expression.ParentFigure.Drawing,
+                    source,
+                    f => !f.DependsOn(expression.ParentFigure));
+                if (!compileResult.IsSuccess)
+                {
+                    return new ValidationResult()
+                    {
+                        IsValid = false,
+                        Value = source,
+                        Error = compileResult.GetErrorText()
+                    };
+                }
+            }
 
             return new ValidationResult()
             {
-                IsValid = compileResult.IsSuccess,
-                Value = source,
-                Error = compileResult.GetErrorText()
+                IsValid = true,
+                Value = source
             };
         }
     }

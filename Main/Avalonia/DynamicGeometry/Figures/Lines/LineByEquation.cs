@@ -129,6 +129,7 @@
         [PropertyGridComplexTypeState(ComplexTypeState.Expanded)]
         [PropertyGridVisible]
         [PropertyGridName("Equation")]
+        [PropertyGridDisallowMultiEdit]
         public ILineEquation Equation { get; set; }
     }
 }

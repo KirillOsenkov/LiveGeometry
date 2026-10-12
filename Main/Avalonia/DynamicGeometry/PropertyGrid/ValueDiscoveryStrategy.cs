@@ -57,7 +57,11 @@ namespace DynamicGeometry
 
         void AddResult(IValueProvider value)
         {
-            if (value.GetAttribute<PropertyGridDisallowMultiEditAttribute>() != null)
+            // What defines a figure is its own: a coordinate or an equation's part (the row is
+            // the expression itself, which carries no attributes), a function, a label's text.
+            // One text typed for several made them one figure several times over, and each
+            // needs its own checks (what it may name without a cycle).
+            if (value.GetAttribute<PropertyGridDisallowMultiEditAttribute>() != null || value is DrawingExpression)
             {
                 return;
             }

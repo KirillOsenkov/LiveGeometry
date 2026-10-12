@@ -757,7 +757,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   offset keeps the wished-for place, so undo of the change, or the shape growing back,
   gives the point its place back; only a drag of the point (`MoveToCore`, which clamps)
   or the file sets the offset, and `CapturePlace`/`RestorePlace` carry it. It doesn't
-  exist while the region doesn't or has no inside. It takes the `PointOnFigure` green,
+  exist while the region doesn't or has no inside. Its X and Y are not typed (read-only,
+  as a point on a figure's; decided 2026-10-12): a place typed outside went to the edge,
+  the other coordinate with it. It takes the `PointOnFigure` green,
   "Free point" releases it, it is no end to stretch or fix (`LengthConstraint.CanStretch`),
   the Dragger records where it lands as for a point on a figure, and the player has the
   twin (`pointInRegion.js`, `isRegion` on the same classes). The tool is
@@ -951,7 +953,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   box in its third state (a click then ticks them all) - and not as a value none of them
   has (0, the first item, unticked). The enum editor threw on the null: select all in a
   drawing with two kinds of measurement units. Up/down buttons do nothing without a value
-  to step from.
+  to step from. What defines a figure is no row of a selection (decided 2026-10-12): the
+  X and Y of points by coordinates and the parts of a circle's equation (expression rows,
+  left out by type in `CompositePropertyProvider`, since the row is the expression and
+  carries no attributes), a function, a label's text, a line's equation
+  (`[PropertyGridDisallowMultiEdit]`, as Name has). One text made every selected figure
+  the same, and each needs its own checks; the X row threw, the function row saved
+  "sin(" into both graphs. How figures look, Visible, Locked, Z and Delete stay.
 - **Property grid layout is declarative** (`PropertyGrid/`): `[PropertyGridGroup]` boxes rows
   and their buttons together, `[PropertyGridDestructive]` puts a button last under a divider,
   `[PropertyGridIcon]` puts a drawn icon (`PropertyGridIcons`) in front of a caption (every verb

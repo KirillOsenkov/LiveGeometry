@@ -81,6 +81,12 @@ public partial class PointInRegion : FreePoint, IPoint
         return !Locked;
     }
 
+    // Not typed, as a point on a figure's aren't: a place typed outside the region went to
+    // the nearest place inside, the other coordinate changing with it. Dragged only.
+    public override double X => base.X;
+
+    public override double Y => base.Y;
+
     /// <summary>The point goes to the nearest place inside, and that is its place from now on</summary>
     public override void MoveToCore(Point newPosition)
     {

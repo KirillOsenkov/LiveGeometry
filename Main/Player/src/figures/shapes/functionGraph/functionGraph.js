@@ -55,6 +55,9 @@ class FunctionGraph extends Curve {
         const result = Compiler.instance.compileFunction(this.drawing, this.functionText, figure => !figure.dependsOn(this));
         if (result.isSuccess) {
             this.setFunction(result);
+        } else {
+            // what it compiled to before goes too: it held the figures it named then
+            this.mFunction = null;
         }
 
         return result;

@@ -95,6 +95,7 @@ namespace DynamicGeometry
         // is merely selected (on the canvas, in the Figure List) would steal the keys from there
         [PropertyGridVisible]
         [PropertyGridMultiline]
+        [PropertyGridDisallowMultiEdit]
         public virtual string Text
         {
             get

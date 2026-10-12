@@ -16,11 +16,17 @@ namespace DynamicGeometry;
 /// </summary>
 public static class PointSnapping
 {
-    /// <summary>The kinds of point a click puts on figures (<see cref="PointPlacement"/>), which can be let go</summary>
+    /// <summary>
+    /// The kinds of point a click puts on figures (<see cref="PointPlacement"/>), which can be
+    /// let go - unless an expression reads a number off the point that a free point has no
+    /// property for (P.Parameter of a point on a figure): let go, the graph of P.Parameter * x
+    /// was drawn on for the session and was nowhere once the file was read again
+    /// </summary>
     public static bool CanRelease(IFigure point)
     {
         return (point is PointOnFigure || point is PointInRegion || point is IntersectionPoint || point is MidPoint)
-            && !IsHeldByLocus(point);
+            && !IsHeldByLocus(point)
+            && !point.IsReadByExpressionsBeyond(typeof(FreePoint));
     }
 
     /// <summary>
@@ -46,7 +52,8 @@ public static class PointSnapping
             || point is PointByCoordinates byCoordinates
                 && byCoordinates.Exists
                 && byCoordinates.Coordinates.Exists()
-                && !IsHeldByLocus(point);
+                && !IsHeldByLocus(point)
+                && !point.IsReadByExpressionsBeyond(typeof(FreePoint));
     }
 
     /// <summary>The point becomes a free point where it is</summary>
@@ -58,9 +65,14 @@ public static class PointSnapping
     }
 
     /// <summary>A free point proper: a point on a figure or inside one is a <see cref="FreePoint"/> only by inheritance</summary>
-    public static bool CanConvertToPointByCoordinates(IFigure point)
+    public static bool IsFreePoint(IFigure point)
     {
         return point is FreePoint && !(point is PointOnFigure) && !(point is PointInRegion);
+    }
+
+    public static bool CanConvertToPointByCoordinates(IFigure point)
+    {
+        return IsFreePoint(point);
     }
 
     /// <summary>
@@ -187,12 +199,14 @@ public static class PointSnapping
     /// otherwise collapses and goes (<see cref="Collapse"/>), but an expression of the two
     /// still has a meaning. Nor into a point without a name (a vertex a regular polygon
     /// works out) when expressions name the point: they would have nothing to call the
-    /// target. Nor a point a locus is drawn from (<see cref="IsHeldByLocus"/>).
+    /// target, nor when they read a number off it that the target has no property for (they
+    /// name the target from then on). Nor a point a locus is drawn from (<see cref="IsHeldByLocus"/>).
     /// </summary>
     public static bool CanJoin(PointBase point, IPoint target)
     {
         return target != point
             && !IsHeldByLocus(point)
+            && !point.IsReadByExpressionsBeyond(target.GetType())
             && !target.DependsOn(point)
             && !FindBuiltOnBoth(point, target).Any(dependent => dependent is IRenamableExpressions)
             && !(string.IsNullOrEmpty(target.Name) && point.Dependents.OfType<IRenamableExpressions>().Any())

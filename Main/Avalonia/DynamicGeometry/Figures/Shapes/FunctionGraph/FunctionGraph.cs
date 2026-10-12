@@ -80,6 +80,7 @@ namespace DynamicGeometry
         [PropertyGridVisible]
         [PropertyGridName("f(x) = ")]
         [PropertyGridPreferredEditor("Function")]
+        [PropertyGridDisallowMultiEdit]
         public string FunctionText
         {
             get
@@ -107,11 +108,22 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>
+        /// Compiles the text again. One that no longer compiles takes the graph out now, and
+        /// what is on it, not at the next recalculation (not from inside <see cref="Compile"/>,
+        /// which the graph's recalculation calls).
+        /// </summary>
         public void RebindExpressions()
         {
-            if (!mFunctionText.IsEmpty())
+            if (mFunctionText.IsEmpty())
             {
-                Compile();
+                return;
+            }
+
+            var result = Compile();
+            if (!result.IsSuccess && Drawing != null && !Drawing.IsReading && Drawing.Figures.Contains(this))
+            {
+                this.RecalculateAllDependents();
             }
         }
 
@@ -138,6 +150,15 @@ namespace DynamicGeometry
             {
                 SetFunction(result);
             }
+            else if (mFunction != null)
+            {
+                // What it compiled to before goes too: it held the figures it named then (a
+                // point on a figure let go, P.Parameter then failing), and the old graph was
+                // drawn for the session, while the file read again had none
+                mFunction = null;
+                UpdateVisual();
+            }
+
             return result;
         }
 

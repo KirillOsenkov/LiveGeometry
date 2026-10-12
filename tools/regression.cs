@@ -93,7 +93,7 @@ public class Program
             ("Undoing a slider's range puts its value back", SliderRangeUndo),
             ("A regular polygon and a vector keep their Z", CompositeZRoundTrips),
             ("A tool on a segment's length asks for a segment; a figure that can't come in leaves nothing", DefinedToolOnSegmentLength),
-            ("Undo of a typed coordinate puts a point inside a shape back", PointInsideCoordinateUndo),
+            ("A point inside a shape has no X or Y to type", PointInsideCoordinatesReadOnly),
             ("Alt does nothing to a point dragged with a selection", AltDragOfSelection),
             ("A changed default style comes along with its copies", PasteBringsChangedDefault),
             ("Styles renamed in one paste keep apart", PasteRenamesKeepStylesApart),
@@ -104,6 +104,8 @@ public class Program
             ("A numeric label edited moves what is built on its value, and undo moves it back", NumericLabelEditMovesDependents),
             ("A number expressions name can't be renamed pi, e, or x where a function names it", ReservedNamesForNumbers),
             ("No conversion that takes away what an expression reads; a failed expression has no value", ConversionKeepsExpressionsWhole),
+            ("The X row of two points and the function row of two graphs: checked for each, then set", SharedExpressionRows),
+            ("No Free point while a graph reads its Parameter; a graph that stops compiling is drawn no more", ReleaseKeepsFunctionsWhole),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
@@ -2717,6 +2719,131 @@ public class Program
         drawing.Figures.CheckConsistency();
     }
 
+    /// <summary>
+    /// What defines a figure is no row of a selection of several: not the X and Y of points
+    /// by coordinates, a function, a label's text, the parts of a line's or a circle's
+    /// equation (one text made them all one figure; the X row threw, the function row took
+    /// "sin(" into both graphs and their file). How they look and Locked still are. Behind
+    /// that, the editors check text against each figure of a row of several, should one be
+    /// offered again: what compiles for each goes into each, what doesn't stays in the box.
+    /// </summary>
+    static void SharedExpressionRows()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <PointByCoordinates Name="A" X="-2" Y="1" />
+                <PointByCoordinates Name="B" X="2" Y="-1" />
+                <FunctionGraph Name="f" Function="x" />
+                <FunctionGraph Name="g" Function="-x" />
+                <Label Name="first" Text="one" X="0" Y="3" />
+                <Label Name="second" Text="two" X="0" Y="4" />
+                <CircleByEquation Name="c" X="0" Y="0" R="1" />
+                <CircleByEquation Name="d" X="1" Y="0" R="2" />
+                <LineByEquation Name="h" A="1" B="0" C="0" />
+                <LineByEquation Name="k" A="0" B="1" C="0" />
+              </Figures>
+            </Drawing>
+            """);
+        foreach (var pair in new[] { ("A", "B"), ("f", "g"), ("first", "second"), ("c", "d"), ("h", "k") })
+        {
+            var rows = new CompositePropertyProvider(new IncludeByDefaultValueDiscoveryStrategy(), new object[] { Find(drawing, pair.Item1), Find(drawing, pair.Item2) })
+                .GetProperties()
+                .ToList();
+            var definitions = rows.Where(row => row.Type == typeof(DrawingExpression) || row.Name is "FunctionText" or "Text" or "Equation").Select(row => row.Name).ToList();
+            Require(definitions.Count == 0, $"{pair.Item1} and {pair.Item2} selected have rows {string.Join(", ", definitions)}.");
+            Require(rows.Any(row => row.Name == nameof(IFigure.Locked)), $"{pair.Item1} and {pair.Item2} selected have no Locked row.");
+        }
+
+        var a = (PointByCoordinates)Find(drawing, "A");
+        var b = (PointByCoordinates)Find(drawing, "B");
+        var coordinates = new ExpressionEditor { Value = new CompositeValueProvider(new IValueProvider[] { a.XExpression, b.XExpression }) };
+        Require(Commit(coordinates, "sin(") != null && a.XExpression.Text == "-2" && b.XExpression.Text == "2", "Text that doesn't compile went into the points.");
+        Require(Commit(coordinates, "4") == null, "The common X was refused.");
+        NearPoint(a.Coordinates, new Point(4, 1));
+        NearPoint(b.Coordinates, new Point(4, -1));
+
+        var f = (FunctionGraph)Find(drawing, "f");
+        var g = (FunctionGraph)Find(drawing, "g");
+        var functions = new FunctionEditor
+        {
+            Value = new CompositeValueProvider(new IValueProvider[]
+            {
+                PropertyDiscoveryStrategy.CreateValueProvider(f, nameof(FunctionGraph.FunctionText)),
+                PropertyDiscoveryStrategy.CreateValueProvider(g, nameof(FunctionGraph.FunctionText))
+            })
+        };
+        Require(Commit(functions, "sin(") != null && f.FunctionText == "x" && g.FunctionText == "-x", "A function that doesn't compile went into the graphs: " + f.FunctionText);
+        Require(Commit(functions, "2 * x") == null && f.FunctionText == "2 * x" && g.FunctionText == "2 * x", "The common function was refused.");
+        Near(g.Function(3), expected: 6);
+
+        static string Commit(StringEditor editor, string text)
+        {
+            editor.TextBox.Text = text;
+            editor.TextBox.RaiseEvent(new KeyEventArgs { RoutedEvent = InputElement.KeyDownEvent, Key = Key.Enter });
+            return string.IsNullOrEmpty(editor.ErrorText) ? null : editor.ErrorText;
+        }
+    }
+
+    /// <summary>
+    /// A point on a segment whose Parameter a graph reads (P.Parameter * x) offers no Free
+    /// point: a free point has none. Let go all the same, the graph is drawn no more at once,
+    /// as it isn't when the file is read again (the old function, holding the point that
+    /// left, went on drawing it), and undo brings it back.
+    /// </summary>
+    static void ReleaseKeepsFunctionsWhole()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="-2" Y="-2" />
+                <FreePoint Name="B" X="2" Y="-2" />
+                <Segment Name="AB">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                </Segment>
+                <PointOnFigure Name="P" X="0" Y="-2" Parameter="0.5">
+                  <Dependency Name="AB" />
+                </PointOnFigure>
+                <FunctionGraph Name="f" Function="P.Parameter * x">
+                  <Dependency Name="P" />
+                </FunctionGraph>
+                <FreePoint Name="C" X="1" Y="-4" />
+                <FreePoint Name="D" X="1" Y="0" />
+                <Segment Name="CD">
+                  <Dependency Name="C" />
+                  <Dependency Name="D" />
+                </Segment>
+              </Figures>
+            </Drawing>
+            """);
+        var point = (PointOnFigure)Find(drawing, "P");
+        Require(!PointSnapping.CanRelease(point) && !point.CanEdit(nameof(PointOnFigure.Release)), "A point whose Parameter a graph reads offers Free point.");
+
+        // nor does Alt let it go: dragged with Alt onto where CD crosses AB, it stays on AB
+        // (as a point on a figure is a FreePoint too, it was snapped into the intersection)
+        using (var window = new TestWindow(drawing.Canvas))
+        {
+            var system = drawing.CoordinateSystem;
+            drawing.Behavior = new Dragger();
+            Drag(drawing, system.ToPhysical(new Point(0, -2)), system.ToPhysical(new Point(1, -2)), KeyModifiers.Alt);
+            var moved = Find(drawing, "P");
+            Require(moved is PointOnFigure, "Alt let go of the point: it is a " + moved.GetType().Name + " now.");
+            NearPoint(((IPoint)moved).Coordinates, new Point(1, -2));
+            Require(((FunctionGraph)Find(drawing, "f")).Function != null, "The graph lost its function in the Alt-drag.");
+            drawing.ActionManager.Undo();
+            point = (PointOnFigure)Find(drawing, "P");
+        }
+
+        PointSnapping.Release(point);
+        var graph = (FunctionGraph)Find(drawing, "f");
+        Require(graph.Function == null, "The graph still has the function that read the point that left.");
+        drawing.ActionManager.Undo();
+        Require(graph.Function != null, "Undo of letting the point go left the graph without its function.");
+        Near(graph.Function(2), expected: 1);
+        drawing.Figures.CheckConsistency();
+    }
+
     static void AxisLines()
     {
         var drawing = NewDrawing();
@@ -3729,8 +3856,12 @@ public class Program
         }
     }
 
-    /// <summary>A coordinate typed for a point inside a circle, beyond it: undo puts both coordinates back</summary>
-    static void PointInsideCoordinateUndo()
+    /// <summary>
+    /// A point inside a shape has no X or Y to type, as a point on a figure hasn't: a place
+    /// typed outside went to the nearest place inside, the other coordinate with it, and
+    /// undo put back only the one typed. It is dragged only.
+    /// </summary>
+    static void PointInsideCoordinatesReadOnly()
     {
         var drawing = ReadLgf("""
             <Drawing Version="1">
@@ -3747,17 +3878,13 @@ public class Program
               </Figures>
             </Drawing>
             """);
-        var point = (PointInRegion)Find(drawing, "C");
-        string before = drawing.SaveAsText();
-        Set(drawing, point, "X", 5.0);
-        Require(point.Coordinates.Y < 0.5, "The point typed out of the circle didn't stop at its edge: " + point.Coordinates);
-        string after = drawing.SaveAsText();
-        drawing.ActionManager.Undo();
-        NearPoint(point.Coordinates, new Point(1, 1));
-        Require(drawing.SaveAsText() == before, "Undo of the typed X changed the drawing: " + drawing.SaveAsText());
-        drawing.ActionManager.Redo();
-        Require(drawing.SaveAsText() == after, "Redo of the typed X changed the drawing.");
-        drawing.Figures.CheckConsistency();
+        var point = Find(drawing, "C");
+        foreach (var name in new[] { "X", "Y" })
+        {
+            Require(!PropertyDiscoveryStrategy.CreateValueProvider(point, name).CanSetValue, "A point inside a shape has a " + name + " to type.");
+        }
+
+        Require(PropertyDiscoveryStrategy.CreateValueProvider(Find(drawing, "O"), "X").CanSetValue, "A free point has no X to type.");
     }
 
     /// <summary>

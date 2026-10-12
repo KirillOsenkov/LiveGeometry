@@ -772,7 +772,8 @@ namespace DynamicGeometry
                 return altApplies ? "Hold " + KeyNames.Alt + " to detach the point." : null;
             }
 
-            if (point is FreePoint)
+            // (not a point on a figure whose release was refused: the keys do nothing to it)
+            if (PointSnapping.IsFreePoint(point))
             {
                 return altApplies
                     ? "Hold Shift to snap to grid. Hold " + KeyNames.Alt + " to snap to a figure."
@@ -814,9 +815,11 @@ namespace DynamicGeometry
                 free = PointSnapping.Release(point);
                 DragInstead(drag, free);
             }
-            else if (point is FreePoint freePoint && drag.Moving.Count == 1 && drag.Moving[0] == point)
+            // a free point proper: a point on a figure is a FreePoint too, and one whose release
+            // was refused (an expression reads its Parameter) was snapped into an intersection
+            else if (PointSnapping.IsFreePoint(point) && drag.Moving.Count == 1 && drag.Moving[0] == point)
             {
-                free = freePoint;
+                free = (FreePoint)point;
             }
             else
             {
