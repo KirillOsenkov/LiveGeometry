@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DynamicGeometry;
@@ -37,6 +39,10 @@ public class NameEditor : StringEditor
             // is a caption ("Drag me!", as gallery drawings have) is fine for any other figure.
             error = "Expressions name this figure, and can't say " + name + ". A name for them starts with a letter, then letters, digits or primes: A, P2, A'.";
         }
+        else if (Value.Parent is INumber number && ReadAsInstead(name, (IFigure)number) is string meaning)
+        {
+            error = "Expressions name this number, and read " + name + " as " + meaning + ". Type another name.";
+        }
         else if (Value.Parent is IFigure figure
             && figure.Drawing != null
             && figure.Drawing.Figures.Any(f => f != figure && f.Name == name))
@@ -63,8 +69,43 @@ public class NameEditor : StringEditor
     /// </summary>
     static bool IsNamedInExpressions(IFigure figure)
     {
-        return figure.Dependents.Any(dependent => HoldsExpressions(dependent)
-            || dependent.HasDefaultName && dependent.Dependents.Any(HoldsExpressions));
+        return ExpressionHolders(figure).Any();
+    }
+
+    /// <summary>The figures with expressions that name the figure, or a figure named after it</summary>
+    static IEnumerable<IFigure> ExpressionHolders(IFigure figure)
+    {
+        return figure.Dependents
+            .SelectMany(dependent => dependent.HasDefaultName ? dependent.Dependents.Prepend(dependent) : new[] { dependent })
+            .Where(HoldsExpressions);
+    }
+
+    /// <summary>
+    /// What expressions that name the number would read the name as instead (null for none):
+    /// pi and e, in any case, are the constants (<see cref="Binder.Resolve"/>), and x in a
+    /// function is its variable. Renamed pi, a slider stayed itself in the expressions
+    /// compiled already, but their texts said pi, and the file read again took them for π;
+    /// undo of the rename did not even put the texts back (the renamer leaves a constant be).
+    /// </summary>
+    static string ReadAsInstead(string name, IFigure number)
+    {
+        var holders = ExpressionHolders(number).ToList();
+        if (holders.Count == 0)
+        {
+            return null;
+        }
+
+        if (name.Equals("pi", StringComparison.OrdinalIgnoreCase))
+        {
+            return "π";
+        }
+
+        if (name.Equals("e", StringComparison.OrdinalIgnoreCase))
+        {
+            return "the number e";
+        }
+
+        return name == "x" && holders.Any(holder => holder is FunctionGraph) ? "a function's variable" : null;
     }
 
     /// <summary>A text label, a point by coordinates, a graph...; not a point's name or a measurement, labels without expressions</summary>

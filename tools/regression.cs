@@ -101,6 +101,9 @@ public class Program
             ("A vector's direction: not offered when its start follows its end; undo puts the end back", VectorDirectionEdit),
             ("A point inside a path with holes stays out of them", PointInsidePathWithHoles),
             ("No Convert to arc while a point is kept inside the sector", NoArcUnderPointInside),
+            ("A numeric label edited moves what is built on its value, and undo moves it back", NumericLabelEditMovesDependents),
+            ("A number expressions name can't be renamed pi, e, or x where a function names it", ReservedNamesForNumbers),
+            ("No conversion that takes away what an expression reads; a failed expression has no value", ConversionKeepsExpressionsWhole),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
@@ -2593,6 +2596,125 @@ public class Program
         }
 
         Require(((IConditionalProperties)Find(drawing, "c")).CanEdit("ConvertToSegment"), "The sector no longer offers Convert to segment.");
+    }
+
+    /// <summary>
+    /// A text label that says a number, edited: what is built on its value follows at once
+    /// (a circle with it for its radius, a point at its value), and goes back on undo. They
+    /// stayed until the next recalculation, and undo left them at the new value.
+    /// </summary>
+    static void NumericLabelEditMovesDependents()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <Label Name="radius" Text="[2]" X="3" Y="3" />
+                <FreePoint Name="O" X="0" Y="0" />
+                <CircleByRadius Name="c">
+                  <Dependency Name="radius" />
+                  <Dependency Name="O" />
+                </CircleByRadius>
+                <PointByCoordinates Name="P" X="radius.Value" Y="-3">
+                  <Dependency Name="radius" />
+                </PointByCoordinates>
+              </Figures>
+            </Drawing>
+            """);
+        var label = Find(drawing, "radius");
+        var circle = (CircleByRadius)Find(drawing, "c");
+        var point = (IPoint)Find(drawing, "P");
+        double width = circle.Shape.Width;
+        Set(drawing, label, "Text", "[4]");
+        NearPoint(point.Coordinates, new Point(4, -3));
+        Require(circle.Shape.Width > 1.5 * width, "The circle was not redrawn at the new radius: " + circle.Shape.Width + " wide, from " + width);
+        drawing.ActionManager.Undo();
+        NearPoint(point.Coordinates, new Point(2, -3));
+        Near(circle.Shape.Width, width);
+
+        // no longer a number: its value is 0 (a caption's), and the point follows that too
+        Set(drawing, label, "Text", "radius");
+        NearPoint(point.Coordinates, new Point(0, -3));
+    }
+
+    /// <summary>
+    /// A number that expressions name can't be renamed pi or e, in any case: the texts said
+    /// the constant, and the file read again took them for it (undo of the rename did not
+    /// even put the texts back). Nor x where a function names it. Where nothing would read
+    /// the name otherwise, any of them is fine.
+    /// </summary>
+    static void ReservedNamesForNumbers()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <Slider Name="a" X="-3" Y="2" Value="2" Maximum="5" />
+                <PointByCoordinates Name="P" X="a" Y="0">
+                  <Dependency Name="a" />
+                </PointByCoordinates>
+                <Slider Name="b" X="-3" Y="4" Value="1" Maximum="5" />
+                <FunctionGraph Name="f" Function="b * x">
+                  <Dependency Name="b" />
+                </FunctionGraph>
+                <Slider Name="c" X="-3" Y="6" Value="1" Maximum="5" />
+              </Figures>
+            </Drawing>
+            """);
+        var a = Find(drawing, "a");
+        foreach (var name in new[] { "pi", "PI", "e", "E" })
+        {
+            Require(Rename(a, name) != null && a.Name == "a", "A slider an expression names was renamed " + name + ".");
+        }
+
+        var b = Find(drawing, "b");
+        Require(Rename(b, "x") != null && b.Name == "b", "A slider a function names was renamed x.");
+        Require(Rename(a, "x") == null && a.Name == "x", "A slider only a point names was refused x.");
+        var c = Find(drawing, "c");
+        Require(Rename(c, "pi") == null && c.Name == "pi", "A slider nothing names was refused pi.");
+
+        static string Rename(IFigure figure, string name)
+        {
+            var editor = new NameEditor { Value = PropertyDiscoveryStrategy.CreateValueProvider(figure, nameof(IFigure.Name)) };
+            editor.TextBox.Text = name;
+            editor.TextBox.RaiseEvent(new KeyEventArgs { RoutedEvent = InputElement.KeyDownEvent, Key = Key.Enter });
+            return string.IsNullOrEmpty(editor.ErrorText) ? null : editor.ErrorText;
+        }
+    }
+
+    /// <summary>
+    /// A segment whose length an expression reads ([AB.Length]) offers no Convert to ray or
+    /// line. Converted all the same, the expression no longer compiles and gives no value:
+    /// the point is nowhere at once, as it is when the file is read again (it went on at
+    /// its old place, through what had been compiled for the segment that left), and undo
+    /// brings it back.
+    /// </summary>
+    static void ConversionKeepsExpressionsWhole()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="0" Y="0" />
+                <FreePoint Name="B" X="3" Y="0" />
+                <Segment Name="AB">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                </Segment>
+                <PointByCoordinates Name="P" X="AB.Length" Y="-1">
+                  <Dependency Name="AB" />
+                </PointByCoordinates>
+              </Figures>
+            </Drawing>
+            """);
+        var segment = (Segment)Find(drawing, "AB");
+        Require(!segment.CanEdit("ConvertToRay") && !segment.CanEdit("ConvertToLine"), "A segment whose length an expression reads offers to become a ray or a line.");
+
+        segment.ConvertToRay();
+        Require(!Find(drawing, "P").Exists, "The point at (AB.Length, -1) exists after AB became a ray.");
+        Require(!Find(ReadLgf(drawing.SaveAsText()), "P").Exists, "Read again, the point exists.");
+        drawing.ActionManager.Undo();
+        var point = (IPoint)Find(drawing, "P");
+        Require(((IFigure)point).Exists, "Undo of the conversion left the point nowhere.");
+        NearPoint(point.Coordinates, new Point(3, -1));
+        drawing.Figures.CheckConsistency();
     }
 
     static void AxisLines()

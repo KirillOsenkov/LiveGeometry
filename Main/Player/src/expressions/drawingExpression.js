@@ -35,6 +35,8 @@ class DrawingExpression {
         const result = Compiler.instance.compileExpression(parent.drawing, this.text, f => !f.dependsOn(parent));
         this.isValid = result.isSuccess;
         if (!this.isValid) {
+            // what it compiled to before goes too: it held the figures it named then
+            this.mValue = null;
             return;
         }
 

@@ -664,7 +664,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   can say), and the Name box refuses a name no expression can say only for a figure an
   expression names, directly or through a figure named after it - renamed "my point", the
   label `[A.X]` became an error; a caption for a name ("Drag me!", as the Ladder has) is
-  fine elsewhere.
+  fine elsewhere. Nor a name an expression would read as something else, for a number
+  expressions name (`NameEditor.ReadAsInstead`): pi and e in any case, and x where a
+  function names it. Renamed pi, a slider stayed itself in what was compiled, but the
+  texts said pi, the file read again took them for π, and undo of the rename did not put
+  the texts back (the renamer leaves a constant be).
   `pi` and `e` in lowercase are the constants whatever the drawing has; in any other case
   (`PI`) the two-points reading comes first, and with points P and I that is their
   distance. (Lowercase too, until 2026-10-01: `sin(pi * x)` came out wrong without a word
@@ -1000,7 +1004,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **A Convert button is not offered when the new kind lacks what something takes from the
   figure**: a segment's length (`IFigureExtensions.IsUsedForLength`: a distance measurement
   of it, a circle with it for a radius, a translation or dilation by it) for Convert to
-  line / ray, a sector's or circular segment's area (`IsUsedForArea`) for Convert to arc.
+  line / ray, a sector's or circular segment's area (`IsUsedForArea`) for Convert to arc,
+  and a number an expression reads off it that the new kind has no property for
+  (`IsReadByExpressionsBeyond`: [AB.Length] for Convert to ray). An expression that no
+  longer compiles drops what it was compiled to (`DrawingExpression.Recalculate`), which
+  held the figure that left: the point at (AB.Length, -1) stayed at its place for the
+  session and was nowhere once the file was read again.
   `ReplaceWithNew` hands every dependent over to the new figure whatever it is: a distance
   measurement of a segment that became a ray threw on every redraw (it now doesn't exist
   when it has nothing to measure). Convert to polyline (not offered since 2026-10-01: no
@@ -1083,7 +1092,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   that is one expression and nothing else gives that expression's value, not the text it
   shows (`LabelBase.ExactValue`): `[AB / 3]` as a radius was 0.33, and changed with the
   label's Decimals. A circle whose radius comes out negative or undefined (a label, a
-  Number) doesn't exist (`CircleByRadius.UpdateExistence`).
+  Number) doesn't exist (`CircleByRadius.UpdateExistence`). A label's text set (the grid,
+  undo, redo) recalculates what is built on it (`LabelBase.Text`); a file read or a
+  re-binding doesn't come through the setter. Without it, a circle and a point on the
+  label's value kept the old one until the next recalculation, and undo left them there.
 - **Perimeter** (`Figures/Controls/PerimeterMeasurement.cs`, 2026-10-09): `IPerimeter`
   (`Perimeter`) on `PolygonBase`, `DependentPolygonBase`, `EllipseBase` (the arc integral
   `Math.EllipseArcLength` over a whole turn, which `ArcBase.Length` also uses), the sectors

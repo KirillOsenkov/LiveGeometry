@@ -134,10 +134,10 @@ namespace DynamicGeometry
             return NearestInsideSegment(point);
         }
 
-        /// <summary>No "Convert to arc" while something measures the area or the perimeter, or a point is kept inside: a bare arc has none of them</summary>
+        /// <summary>No "Convert to arc" while something measures the area or the perimeter, an expression reads them, or a point is kept inside: a bare arc has none of them</summary>
         public bool CanEdit(string propertyName)
         {
-            return propertyName != "ConvertToArc" || !this.IsUsedForArea();
+            return propertyName != "ConvertToArc" || !this.IsUsedForArea() && !this.IsReadByExpressionsBeyond(typeof(CircleArc));
         }
 
         public string Caption(string propertyName, string defaultCaption)
@@ -222,10 +222,10 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>No "Convert to arc" while something measures the area or the perimeter, or a point is kept inside: a bare arc has none of them</summary>
+        /// <summary>No "Convert to arc" while something measures the area or the perimeter, an expression reads them, or a point is kept inside: a bare arc has none of them</summary>
         public bool CanEdit(string propertyName)
         {
-            return propertyName != "ConvertToEllipseArc" || !this.IsUsedForArea();
+            return propertyName != "ConvertToEllipseArc" || !this.IsUsedForArea() && !this.IsReadByExpressionsBeyond(typeof(EllipseArc));
         }
 
         public string Caption(string propertyName, string defaultCaption)
@@ -310,10 +310,10 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>No "Convert to arc" while something measures the area or the perimeter, or a point is kept inside: a bare arc has none of them</summary>
+        /// <summary>No "Convert to arc" while something measures the area or the perimeter, an expression reads them, or a point is kept inside: a bare arc has none of them</summary>
         public bool CanEdit(string propertyName)
         {
-            return propertyName != "ConvertToArc" || !this.IsUsedForArea();
+            return propertyName != "ConvertToArc" || !this.IsUsedForArea() && !this.IsReadByExpressionsBeyond(typeof(CircleArc));
         }
 
         public string Caption(string propertyName, string defaultCaption)
@@ -413,10 +413,10 @@ namespace DynamicGeometry
             }
         }
 
-        /// <summary>No "Convert to arc" while something measures the area or the perimeter, or a point is kept inside: a bare arc has none of them</summary>
+        /// <summary>No "Convert to arc" while something measures the area or the perimeter, an expression reads them, or a point is kept inside: a bare arc has none of them</summary>
         public bool CanEdit(string propertyName)
         {
-            return propertyName != "ConvertToEllipseArc" || !this.IsUsedForArea();
+            return propertyName != "ConvertToEllipseArc" || !this.IsUsedForArea() && !this.IsReadByExpressionsBeyond(typeof(EllipseArc));
         }
 
         public string Caption(string propertyName, string defaultCaption)

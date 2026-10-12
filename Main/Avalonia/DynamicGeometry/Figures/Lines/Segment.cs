@@ -200,10 +200,12 @@ namespace DynamicGeometry
                     return FixedEndIndex() < 0 && EndToStretch() >= 0;
                 case "FreeLength":
                     return FixedEndIndex() >= 0;
+                // a line or a ray has no length for what measures this one, nor for an
+                // expression that reads it ([AB.Length])
                 case "ConvertToLine":
+                    return !this.IsUsedForLength() && !this.IsReadByExpressionsBeyond(typeof(LineTwoPoints));
                 case "ConvertToRay":
-                    // a line or a ray has no length for what measures this one
-                    return !this.IsUsedForLength();
+                    return !this.IsUsedForLength() && !this.IsReadByExpressionsBeyond(typeof(Ray));
                 default:
                     return true;
             }

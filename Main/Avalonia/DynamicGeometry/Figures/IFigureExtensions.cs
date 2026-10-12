@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using Avalonia;
 
 namespace DynamicGeometry
@@ -90,6 +92,33 @@ namespace DynamicGeometry
         public static bool IsUsedForArea(this IFigure figure)
         {
             return figure.Dependents.Any(dependent => dependent is AreaMeasurement || dependent is PerimeterMeasurement || dependent is PointInRegion);
+        }
+
+        /// <summary>
+        /// Whether an expression reads a number off the figure ([AB.Length], c.Area) that a
+        /// figure of the other type has no property for: converted (a segment to a ray), the
+        /// expression didn't compile, and the point at (AB.Length, -1) went on at its old place
+        /// while the session lasted, then was nowhere once the file was opened again. Read from
+        /// the texts, a property as the compiler finds it (by name in any case); a mention in
+        /// a label's plain text counts too, which only keeps a conversion from being offered.
+        /// </summary>
+        public static bool IsReadByExpressionsBeyond(this IFigure figure, Type replacement)
+        {
+            if (string.IsNullOrEmpty(figure.Name))
+            {
+                return false;
+            }
+
+            var reading = new Regex(@"(?<![\w'])" + Regex.Escape(figure.Name) + @"\s*\.\s*([A-Za-z_]\w*)", RegexOptions.IgnoreCase);
+            var properties = replacement.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(property => property.CanRead && property.GetIndexParameters().Length == 0 && ExpressionReflection.IsNumberType(property.PropertyType))
+                .Select(property => property.Name)
+                .ToList();
+            return figure.Dependents
+                .OfType<IRenamableExpressions>()
+                .SelectMany(holder => holder.ExpressionTexts)
+                .SelectMany(text => reading.Matches(text ?? "").Cast<Match>())
+                .Any(match => !properties.Any(name => name.Equals(match.Groups[1].Value, StringComparison.OrdinalIgnoreCase)));
         }
 
         /// <summary>

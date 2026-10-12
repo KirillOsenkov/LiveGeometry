@@ -107,6 +107,16 @@ namespace DynamicGeometry
                 if (ShouldProcessText)
                 {
                     ProcessText();
+
+                    // What is built on the label's value follows it (a circle with it for its
+                    // radius, a point at its value): edited, or undone, the label showed the
+                    // new number while they stayed where they were until the next
+                    // recalculation. Not while a file is read, nor for a label not in the
+                    // drawing yet; loading and re-binding don't come through here.
+                    if (Drawing != null && !Drawing.IsReading && Drawing.Figures.Contains(this))
+                    {
+                        this.RecalculateAllDependents();
+                    }
                 }
                 else
                 {

@@ -62,6 +62,12 @@ namespace DynamicGeometry
             IsValid = result.IsSuccess;
             if (!IsValid)
             {
+                // What it compiled to before goes too: it held the figures it named then, one
+                // of which may have left (a segment converted to a ray, [AB.Length] then
+                // failing), and the point went on at its old place until the file was read
+                // again, where it was nowhere. (A text typed into the grid that doesn't
+                // compile never gets here: the editor keeps it until it does.)
+                mValue = null;
                 return;
             }
 
@@ -136,12 +142,23 @@ namespace DynamicGeometry
             Text = renamer.Rewrite(Text, isFunction: false);
         }
 
-        /// <summary>Compiles the text again (<see cref="IRenamableExpressions.RebindExpressions"/>)</summary>
+        /// <summary>
+        /// Compiles the text again (<see cref="IRenamableExpressions.RebindExpressions"/>). One
+        /// that no longer compiles takes the figure out now, not at the next recalculation
+        /// (not from inside <see cref="Recalculate"/>, which the figure's recalculation calls).
+        /// </summary>
         public void Rebind()
         {
-            if (!Text.IsEmpty())
+            if (Text.IsEmpty())
             {
-                Recalculate();
+                return;
+            }
+
+            Recalculate();
+            var drawing = ParentFigure.Drawing;
+            if (!IsValid && drawing != null && !drawing.IsReading && drawing.Figures.Contains(ParentFigure))
+            {
+                ParentFigure.RecalculateAllDependents();
             }
         }
 
