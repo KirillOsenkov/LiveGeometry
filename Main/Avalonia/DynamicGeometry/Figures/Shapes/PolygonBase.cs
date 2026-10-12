@@ -10,7 +10,7 @@ namespace DynamicGeometry
 
     public interface IPolygon : IPolygonalChain { }
 
-    public abstract class PolygonBase : ShapeBase<Avalonia.Controls.Shapes.Polygon>, IPolygonalChain, IShapeWithInterior, IPerimeter
+    public abstract class PolygonBase : ShapeBase<Avalonia.Controls.Shapes.Polygon>, IPolygonalChain, IShapeWithInterior, IPerimeter, IRegion
     {
         /// <summary>
         /// Just for caching purposes, to avoid array allocations on a hotpath
@@ -82,6 +82,47 @@ namespace DynamicGeometry
         }
 
         public double Area => VertexCoordinates.Area();
+
+        public bool HasInside
+        {
+            get
+            {
+                return vertices != null && vertices.Length >= 3;
+            }
+        }
+
+        /// <summary>The vertices as they are right now (the cache of <see cref="VertexCoordinates"/> is the last visual's)</summary>
+        Point[] CurrentVertexCoordinates()
+        {
+            if (vertices == null)
+            {
+                UpdatePointCache();
+            }
+
+            var result = new Point[vertices.Length];
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                result[i] = vertices[i].Coordinates;
+            }
+
+            return result;
+        }
+
+        public bool ContainsPoint(Point point)
+        {
+            return HasInside && CurrentVertexCoordinates().IsPointInPolygon(point);
+        }
+
+        public Point NearestPointInside(Point point)
+        {
+            if (!HasInside)
+            {
+                return Math.InfinitePoint;
+            }
+
+            var current = CurrentVertexCoordinates();
+            return current.IsPointInPolygon(point) ? point : Math.GetNearestPointOnPolygonalChain(current, point, isClosed: true);
+        }
 
         public double Perimeter
         {

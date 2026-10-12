@@ -57,6 +57,29 @@ class EllipseBase extends ShapeBase {
         return this.toLogicalLength(this.strokeThickness);
     }
 
+    // The inside as a region (IRegion)
+
+    get isRegion() {
+        return true;
+    }
+
+    get hasInside() {
+        return this.semiMajor > 0 && this.semiMinor > 0;
+    }
+
+    containsPoint(point) {
+        return this.hasInside && GeometryMath.radialDistanceToEllipse(this.center, this.semiMajor, this.semiMinor, this.inclination, point) <= 0;
+    }
+
+    /** Outside, the point of the curve along the ray from the center */
+    nearestPointInside(point) {
+        if (!this.hasInside) {
+            return Point.infinite;
+        }
+
+        return this.containsPoint(point) ? point : this.getPointFromParameter(this.getNearestParameterFromPoint(point));
+    }
+
     getNearestParameterFromPoint(point) {
         let result;
         if (Settings.pointsOnEllipticalsUseAbsoluteAngle) {

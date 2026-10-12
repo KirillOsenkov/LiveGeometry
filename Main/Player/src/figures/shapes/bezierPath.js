@@ -1031,6 +1031,63 @@ class BezierPath extends CompositeFigure {
         return !this.holes.some(hole => hole.exists && hole.pieceCount > 0 && GeometryMath.isPointInPolygon(hole.outlinePolygon(), point));
     }
 
+    // The inside as a region (IRegion)
+
+    get isRegion() {
+        return true;
+    }
+
+    /** A closed path has an inside, and so has an open one that is filled (as if a straight line closed it) */
+    get hasInside() {
+        return this.pieceCount > 0 && (this.closed || this.filled) && this.curvesExist();
+    }
+
+    /** The area inside the outline as drawn, the holes taken out */
+    get area() {
+        if (!this.hasInside) {
+            return NaN;
+        }
+
+        let result = GeometryMath.area(this.outlinePolygon());
+        for (const hole of this.holes) {
+            if (hole.exists && hole.pieceCount > 0) {
+                result -= GeometryMath.area(hole.outlinePolygon());
+            }
+        }
+
+        return result;
+    }
+
+    containsPoint(point) {
+        return this.hasInside && this.isInside(point);
+    }
+
+    /** The point itself inside, else the nearest point of the outline as drawn - or of a hole's, from inside the hole */
+    nearestPointInside(point) {
+        if (!this.hasInside) {
+            return Point.infinite;
+        }
+
+        if (this.isInside(point)) {
+            return point;
+        }
+
+        let nearest = GeometryMath.getNearestPointOnPolygonalChain(this.outlinePolygon(), point, true);
+        for (const hole of this.holes) {
+            if (hole.exists && hole.pieceCount > 0) {
+                const outline = hole.outlinePolygon();
+                if (GeometryMath.isPointInPolygon(outline, point)) {
+                    const onHole = GeometryMath.getNearestPointOnPolygonalChain(outline, point, true);
+                    if (onHole.distance(point) < nearest.distance(point)) {
+                        nearest = onHole;
+                    }
+                }
+            }
+        }
+
+        return nearest;
+    }
+
     /** The smallest box around the pieces as drawn, logical */
     get bounds() {
         const points = this.outlinePolygon().filter(point => point.exists());

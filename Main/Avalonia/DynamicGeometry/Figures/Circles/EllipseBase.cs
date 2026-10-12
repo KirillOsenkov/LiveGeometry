@@ -4,7 +4,7 @@ using Avalonia.Controls.Shapes;
 
 namespace DynamicGeometry
 {
-    public abstract partial class EllipseBase : ShapeBase<Shape>, IEllipse, IPerimeter
+    public abstract partial class EllipseBase : ShapeBase<Shape>, IEllipse, IPerimeter, IRegion
     {
         /// <summary>Circle c, d... (and ellipses), as lines are g, h...</summary>
         protected override string FirstLetter
@@ -81,6 +81,30 @@ namespace DynamicGeometry
         public double LogicalWidth()
         {
             return ToLogical(shape.StrokeThickness);
+        }
+
+        public bool HasInside
+        {
+            get
+            {
+                return SemiMajor > 0 && SemiMinor > 0;
+            }
+        }
+
+        public bool ContainsPoint(Point point)
+        {
+            return HasInside && Math.RadialDistanceToEllipse(Center, SemiMajor, SemiMinor, Inclination, point) <= 0;
+        }
+
+        /// <summary>Outside, the point of the curve along the ray from the center</summary>
+        public Point NearestPointInside(Point point)
+        {
+            if (!HasInside)
+            {
+                return Math.InfinitePoint;
+            }
+
+            return ContainsPoint(point) ? point : GetPointFromParameter(GetNearestParameterFromPoint(point));
         }
 
         public virtual double GetNearestParameterFromPoint(Point point)

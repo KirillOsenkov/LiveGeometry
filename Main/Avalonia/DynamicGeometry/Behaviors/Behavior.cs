@@ -607,6 +607,7 @@ namespace DynamicGeometry
             switch (placement.Kind)
             {
                 case PointPlacementKind.OnFigure:
+                case PointPlacementKind.InRegion:
                     name = StyleManager.PointOnFigureStyleName;
                     break;
                 case PointPlacementKind.Intersection:
@@ -696,7 +697,9 @@ namespace DynamicGeometry
 
             switch (placement.Kind)
             {
+                // (a point inside a shape appears right under the cursor, as a free one does)
                 case PointPlacementKind.Free:
+                case PointPlacementKind.InRegion:
                     return CrossCursor;
                 case PointPlacementKind.Existing:
                 case PointPlacementKind.Intersection:

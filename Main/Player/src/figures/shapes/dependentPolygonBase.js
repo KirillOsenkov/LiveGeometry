@@ -255,6 +255,24 @@ class DependentPolygonBase extends CompositeFigure {
         return this.polygon.area;
     }
 
+    // the inside is the polygon part's (a point inside depends on the whole, as a file names it)
+
+    get isRegion() {
+        return true;
+    }
+
+    get hasInside() {
+        return this.polygon.hasInside;
+    }
+
+    containsPoint(point) {
+        return this.polygon.containsPoint(point);
+    }
+
+    nearestPointInside(point) {
+        return this.polygon.nearestPointInside(point);
+    }
+
     get isPerimeterProvider() {
         return true;
     }

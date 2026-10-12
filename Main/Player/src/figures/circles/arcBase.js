@@ -174,6 +174,94 @@ class EllipseArcBase extends ShapeBase {
         return null;
     }
 
+    // The inside of a sector or a segment (IRegion)
+
+    /** Whether the ellipse has an area to speak of: what a sector's or a segment's inside is cut from */
+    get hasInside() {
+        return this.semiMajor > 0 && this.semiMinor > 0;
+    }
+
+    isInsideEllipse(point) {
+        return this.hasInside && GeometryMath.radialDistanceToEllipse(this.center, this.semiMajor, this.semiMinor, this.inclination, point) <= 0;
+    }
+
+    /** Whether the point is inside the ellipse and between the two radii, the way the arc goes */
+    containsInSector(point) {
+        if (!this.isInsideEllipse(point)) {
+            return false;
+        }
+
+        const center = this.center;
+        if (center.distance(point) === 0) {
+            return true;
+        }
+
+        return GeometryMath.isAngleBetweenAngles(GeometryMath.getAngle(center, point), this.startAngle, this.endAngle, this.isClockwise);
+    }
+
+    /** Whether the point is inside the ellipse on the arc's side of the chord */
+    containsInSegment(point) {
+        return this.isInsideEllipse(point) && this.sideOfChord(point) * this.sideOfChord(this.arcMiddle) >= 0;
+    }
+
+    sideOfChord(point) {
+        const begin = this.beginLocation;
+        const end = this.endLocation;
+        return (end.x - begin.x) * (point.y - begin.y) - (end.y - begin.y) * (point.x - begin.x);
+    }
+
+    /** The point itself inside, else the nearest point of the arc or of the two radii */
+    nearestInsideSector(point) {
+        if (!this.hasInside) {
+            return Point.infinite;
+        }
+
+        if (this.containsInSector(point)) {
+            return point;
+        }
+
+        const center = this.center;
+        return EllipseArcBase.nearest(
+            point,
+            this.onArc(point),
+            GeometryMath.getNearestPointOnSegment(point, new PointPair(center, this.beginLocation)),
+            GeometryMath.getNearestPointOnSegment(point, new PointPair(center, this.endLocation)));
+    }
+
+    /** The point itself inside, else the nearest point of the arc or of the chord */
+    nearestInsideSegment(point) {
+        if (!this.hasInside) {
+            return Point.infinite;
+        }
+
+        if (this.containsInSegment(point)) {
+            return point;
+        }
+
+        return EllipseArcBase.nearest(
+            point,
+            this.onArc(point),
+            GeometryMath.getNearestPointOnSegment(point, new PointPair(this.beginLocation, this.endLocation)));
+    }
+
+    onArc(point) {
+        return this.getPointFromParameter(this.getNearestParameterFromPoint(point));
+    }
+
+    static nearest(point, ...candidates) {
+        let result = Point.infinite;
+        let best = Infinity;
+        for (const candidate of candidates) {
+            const distance = candidate.distance(point);
+            if (candidate.exists() && distance < best) {
+                best = distance;
+                result = candidate;
+            }
+        }
+
+        return result;
+    }
+
     /** The region the figure fills, as Avalonia fills its path: the arc closed by its chord, or by the radii for a sector */
     isInsideFill(point) {
         const outline = this.sampleArc(48);

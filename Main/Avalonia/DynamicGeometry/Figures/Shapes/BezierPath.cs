@@ -36,7 +36,7 @@ namespace DynamicGeometry;
 /// <see cref="Smoothing"/> (<see cref="BezierPathSmoother"/>), so the curve stays smooth as
 /// they move; the tension it takes is typed or comes from a figure (a slider).
 /// </summary>
-public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimeter, ISupportRemoveDependency, ITiedValues, IConditionalProperties
+public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimeter, ISupportRemoveDependency, ITiedValues, IConditionalProperties, IRegion
 {
     readonly List<BezierPathHandle> inHandles = new List<BezierPathHandle>();
     readonly List<BezierPathHandle> outHandles = new List<BezierPathHandle>();
@@ -1774,6 +1774,74 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
         return !Holes.Any(hole => hole.Exists && hole.PieceCount > 0 && hole.OutlinePolygon().IsPointInPolygon(point));
     }
+
+    #region The inside as a region (IRegion)
+
+    /// <summary>A closed path has an inside, and so has an open one that is filled (as if a straight line closed it)</summary>
+    public bool HasInside
+    {
+        get
+        {
+            return PieceCount > 0 && (closed || filled) && CurvesExist();
+        }
+    }
+
+    /// <summary>The area inside the outline as drawn, the holes taken out</summary>
+    public double Area
+    {
+        get
+        {
+            if (!HasInside)
+            {
+                return double.NaN;
+            }
+
+            double result = OutlinePolygon().Area();
+            foreach (var hole in Holes.Where(hole => hole.Exists && hole.PieceCount > 0))
+            {
+                result -= hole.OutlinePolygon().Area();
+            }
+
+            return result;
+        }
+    }
+
+    public bool ContainsPoint(Point point)
+    {
+        return HasInside && IsInside(point);
+    }
+
+    /// <summary>The point itself inside, else the nearest point of the outline as drawn - or of a hole's, from inside the hole</summary>
+    public Point NearestPointInside(Point point)
+    {
+        if (!HasInside)
+        {
+            return Math.InfinitePoint;
+        }
+
+        if (IsInside(point))
+        {
+            return point;
+        }
+
+        var nearest = Math.GetNearestPointOnPolygonalChain(OutlinePolygon(), point, isClosed: true);
+        foreach (var hole in Holes.Where(hole => hole.Exists && hole.PieceCount > 0))
+        {
+            var outline = hole.OutlinePolygon();
+            if (outline.IsPointInPolygon(point))
+            {
+                var onHole = Math.GetNearestPointOnPolygonalChain(outline, point, isClosed: true);
+                if (onHole.Distance(point) < nearest.Distance(point))
+                {
+                    nearest = onHole;
+                }
+            }
+        }
+
+        return nearest;
+    }
+
+    #endregion
 
     /// <summary>The smallest box around the pieces as drawn</summary>
     public Rect Bounds

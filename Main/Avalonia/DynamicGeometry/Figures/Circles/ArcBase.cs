@@ -472,6 +472,116 @@ namespace DynamicGeometry
             }
         }
 
+        #region The inside of a sector or a segment (IRegion)
+
+        /// <summary>Whether the ellipse has an area to speak of: what a sector's or a segment's inside is cut from</summary>
+        public bool HasInside
+        {
+            get
+            {
+                return SemiMajor > 0 && SemiMinor > 0;
+            }
+        }
+
+        bool IsInsideEllipse(Point point)
+        {
+            return HasInside && Math.RadialDistanceToEllipse(Center, SemiMajor, SemiMinor, Inclination, point) <= 0;
+        }
+
+        /// <summary>Whether the point is inside the ellipse and between the two radii, the way the arc goes</summary>
+        protected bool ContainsInSector(Point point)
+        {
+            if (!IsInsideEllipse(point))
+            {
+                return false;
+            }
+
+            var center = Center;
+            if (center.Distance(point) == 0)
+            {
+                return true;
+            }
+
+            return Math.IsAngleBetweenAngles(Math.GetAngle(center, point), StartAngle, EndAngle, IsClockwise);
+        }
+
+        /// <summary>Whether the point is inside the ellipse on the arc's side of the chord</summary>
+        protected bool ContainsInSegment(Point point)
+        {
+            return IsInsideEllipse(point) && SideOfChord(point) * SideOfChord(ArcMiddle) >= 0;
+        }
+
+        double SideOfChord(Point point)
+        {
+            var begin = BeginLocation;
+            var end = EndLocation;
+            return (end.X - begin.X) * (point.Y - begin.Y) - (end.Y - begin.Y) * (point.X - begin.X);
+        }
+
+        /// <summary>The point itself inside, else the nearest point of the arc or of the two radii</summary>
+        protected Point NearestInsideSector(Point point)
+        {
+            if (!HasInside)
+            {
+                return Math.InfinitePoint;
+            }
+
+            if (ContainsInSector(point))
+            {
+                return point;
+            }
+
+            var center = Center;
+            return Nearest(
+                point,
+                OnArc(point),
+                Math.GetNearestPointOnSegment(point, new PointPair(center, BeginLocation)),
+                Math.GetNearestPointOnSegment(point, new PointPair(center, EndLocation)));
+        }
+
+        /// <summary>The point itself inside, else the nearest point of the arc or of the chord</summary>
+        protected Point NearestInsideSegment(Point point)
+        {
+            if (!HasInside)
+            {
+                return Math.InfinitePoint;
+            }
+
+            if (ContainsInSegment(point))
+            {
+                return point;
+            }
+
+            return Nearest(
+                point,
+                OnArc(point),
+                Math.GetNearestPointOnSegment(point, new PointPair(BeginLocation, EndLocation)));
+        }
+
+        Point OnArc(Point point)
+        {
+            return GetPointFromParameter(GetNearestParameterFromPoint(point));
+        }
+
+        static Point Nearest(Point point, params Point[] candidates)
+        {
+            var result = Math.InfinitePoint;
+            double best = double.PositiveInfinity;
+            foreach (var candidate in candidates)
+            {
+                var distance = candidate.Distance(point);
+                if (candidate.Exists() && distance < best)
+                {
+                    best = distance;
+                    result = candidate;
+                }
+            }
+
+            return result;
+        }
+
+        #endregion
+
         public override void ReadXml(System.Xml.Linq.XElement element)
         {
             base.ReadXml(element);

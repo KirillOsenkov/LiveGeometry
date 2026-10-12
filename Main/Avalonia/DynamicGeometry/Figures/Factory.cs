@@ -258,6 +258,18 @@ namespace DynamicGeometry
             return result;
         }
 
+        /// <summary>A point kept inside the region (<see cref="IRegion"/>), at the point - or the nearest place inside</summary>
+        public static PointInRegion CreatePointInRegion(Drawing drawing, IFigure region, Point point)
+        {
+            var result = new PointInRegion()
+            {
+                Drawing = drawing,
+                Dependencies = new[] { region },
+            };
+            result.MoveTo(point);
+            return result;
+        }
+
         public static ReflectedPoint CreateReflectedPoint(Drawing drawing, IList<IFigure> dependencies)
         {
             return new ReflectedPoint() { Drawing = drawing, Dependencies = dependencies };

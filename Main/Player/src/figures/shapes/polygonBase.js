@@ -60,6 +60,38 @@ class PolygonBase extends ShapeBase {
         return GeometryMath.area(this.vertexCoordinates);
     }
 
+    // The inside as a region (IRegion)
+
+    get isRegion() {
+        return true;
+    }
+
+    get hasInside() {
+        return this.vertices != null && this.vertices.length >= 3;
+    }
+
+    /** The vertices as they are right now (vertexCoordinates is the last visual's) */
+    currentVertexCoordinates() {
+        if (this.vertices == null) {
+            this.updatePointCache();
+        }
+
+        return this.vertices.map(v => v.coordinates);
+    }
+
+    containsPoint(point) {
+        return this.hasInside && GeometryMath.isPointInPolygon(this.currentVertexCoordinates(), point);
+    }
+
+    nearestPointInside(point) {
+        if (!this.hasInside) {
+            return Point.infinite;
+        }
+
+        const current = this.currentVertexCoordinates();
+        return GeometryMath.isPointInPolygon(current, point) ? point : GeometryMath.getNearestPointOnPolygonalChain(current, point, true);
+    }
+
     get isPerimeterProvider() {
         return true;
     }

@@ -1162,6 +1162,31 @@ namespace DynamicGeometry
             return false;
         }
 
+        /// <summary>The point of the segment nearest to the point: its projection, or the nearer end</summary>
+        public static Point GetNearestPointOnSegment(Point point, PointPair segment)
+        {
+            var projection = GetProjection(point, segment);
+            if (projection.IsWithinSegment())
+            {
+                return projection.Point;
+            }
+
+            return point.Distance(segment.P1) <= point.Distance(segment.P2) ? segment.P1 : segment.P2;
+        }
+
+        /// <summary>The point of the polygonal chain nearest to the point: on a side, or a corner. IsClosed as for <see cref="IsPointOnPolygonalChain"/>.</summary>
+        public static Point GetNearestPointOnPolygonalChain(IList<Point> points, Point point, bool isClosed)
+        {
+            if (points == null || points.Count == 0)
+            {
+                return InfinitePoint;
+            }
+
+            var projection = GetProjection(point, points, isClosed);
+            var corner = GetNearestPoint(point, points);
+            return projection.DistanceToLine < corner.Distance(point) ? projection.Point : corner;
+        }
+
         public static Point GetAngleBisectorPoint(Point vertex, Point side1, Point side2)
         {
             var s1 = vertex.Distance(side1);

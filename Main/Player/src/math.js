@@ -317,6 +317,27 @@ const GeometryMath = {
         return pointList[GeometryMath.getIndexOfNearestPoint(point, pointList)];
     },
 
+    /** The point of the segment nearest to the point: its projection, or the nearer end */
+    getNearestPointOnSegment(point, segment) {
+        const projection = GeometryMath.getProjection(point, segment);
+        if (projection.isWithinSegment()) {
+            return projection.point;
+        }
+
+        return point.distance(segment.p1) <= point.distance(segment.p2) ? segment.p1 : segment.p2;
+    },
+
+    /** The point of the polygonal chain nearest to the point: on a side, or a corner */
+    getNearestPointOnPolygonalChain(points, point, isClosed) {
+        if (points == null || points.length === 0) {
+            return Point.infinite;
+        }
+
+        const projection = GeometryMath.getProjectionOnChain(point, points, isClosed);
+        const corner = GeometryMath.getNearestPoint(point, points);
+        return projection.distanceToLine < corner.distance(point) ? projection.point : corner;
+    },
+
     getIndexOfNearestPoint(point, pointList) {
         let nearest = Infinity;
         let nearestPointIndex = 0;

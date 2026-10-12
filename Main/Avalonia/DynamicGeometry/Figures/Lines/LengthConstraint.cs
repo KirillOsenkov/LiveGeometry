@@ -106,6 +106,12 @@ public static class LengthConstraint
             return LineThrough(onFigure, pivot) != null;
         }
 
+        // (a point kept inside a shape would only get near, as a point on some other figure)
+        if (end is PointInRegion)
+        {
+            return false;
+        }
+
         if (end is FreePoint)
         {
             return true;

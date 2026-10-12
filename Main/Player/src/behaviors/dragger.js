@@ -246,6 +246,13 @@ class Dragger extends Behavior {
                 const landing = figure.getPointFromParameter(
                     figure.getNearestParameterFromPoint(pointOnFigure.coordinates.plus(offset)));
                 offset = landing.minus(pointOnFigure.coordinates);
+            } else if (moving.length === 1 && moving[0] instanceof PointInRegion && moving[0].region != null) {
+                // and for a point kept inside a shape, which stops at its outline
+                const inside = moving[0];
+                const landing = inside.region.nearestPointInside(inside.coordinates.plus(offset));
+                if (landing.exists()) {
+                    offset = landing.minus(inside.coordinates);
+                }
             }
 
             Actions.move(this.drawing, moving, offset, drag.toRecalculate);

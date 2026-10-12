@@ -17,6 +17,7 @@ public static class FigureIcons
     {
         [typeof(PointBase)] = () => new FreePointCreator(),
         [typeof(PointByCoordinates)] = () => new PointByCoordinatesCreator(),
+        [typeof(PointInRegion)] = () => new PointInRegionCreator(),
         [typeof(IntersectionPoint)] = () => new IntersectionCreator(),
         [typeof(MidPoint)] = () => new MidpointCreator(),
         [typeof(ReflectedPoint)] = () => new ReflectionCreator(),

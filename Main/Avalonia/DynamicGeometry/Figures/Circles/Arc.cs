@@ -1,4 +1,5 @@
-﻿using Avalonia.Media;
+﻿using Avalonia;
+using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 
 namespace DynamicGeometry
@@ -113,7 +114,7 @@ namespace DynamicGeometry
     // A segment could be added to this figure to provide a functioning chord. (SquareCreator is a model to follow.)
     // Implementing this as a composite figure is probably not a good idea. Intersections, pointOnFigure, etc would be ambiguous.
     // Unlike an arc, a circle or ellipse segment has a defined area.
-    public partial class CircleSegment : CircleArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties
+    public partial class CircleSegment : CircleArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties, IRegion
     {
         protected override string Kind
         {
@@ -121,6 +122,16 @@ namespace DynamicGeometry
             {
                 return "Circular segment";
             }
+        }
+
+        public bool ContainsPoint(Point point)
+        {
+            return ContainsInSegment(point);
+        }
+
+        public Point NearestPointInside(Point point)
+        {
+            return NearestInsideSegment(point);
         }
 
         /// <summary>No "Convert to arc" while something measures the area or the perimeter: a bare arc has neither</summary>
@@ -182,7 +193,7 @@ namespace DynamicGeometry
 
     }
 
-    public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties
+    public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties, IRegion
     {
         protected override string Kind
         {
@@ -190,6 +201,16 @@ namespace DynamicGeometry
             {
                 return "Elliptical segment";
             }
+        }
+
+        public bool ContainsPoint(Point point)
+        {
+            return ContainsInSegment(point);
+        }
+
+        public Point NearestPointInside(Point point)
+        {
+            return NearestInsideSegment(point);
         }
 
         /// <summary>The arc and its chord</summary>
@@ -260,7 +281,7 @@ namespace DynamicGeometry
 
     }
 
-    public partial class CircleSector : CircleArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties
+    public partial class CircleSector : CircleArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties, IRegion
     {
         protected override string Kind
         {
@@ -268,6 +289,16 @@ namespace DynamicGeometry
             {
                 return "Sector";
             }
+        }
+
+        public bool ContainsPoint(Point point)
+        {
+            return ContainsInSector(point);
+        }
+
+        public Point NearestPointInside(Point point)
+        {
+            return NearestInsideSector(point);
         }
 
         /// <summary>The arc and the two radii</summary>
@@ -353,7 +384,7 @@ namespace DynamicGeometry
 
     }
 
-    public partial class EllipseSector : EllipseArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties
+    public partial class EllipseSector : EllipseArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties, IRegion
     {
         protected override string Kind
         {
@@ -361,6 +392,16 @@ namespace DynamicGeometry
             {
                 return "Elliptical sector";
             }
+        }
+
+        public bool ContainsPoint(Point point)
+        {
+            return ContainsInSector(point);
+        }
+
+        public Point NearestPointInside(Point point)
+        {
+            return NearestInsideSector(point);
         }
 
         /// <summary>The arc and the two radii</summary>

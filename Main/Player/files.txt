@@ -29,6 +29,7 @@ figures/points/pointMarker.js
 figures/points/pointBase.js
 figures/points/freePoint.js
 figures/points/pointOnFigure/pointOnFigure.js
+figures/points/pointInRegion.js
 figures/points/midPoint.js
 figures/points/intersection/intersectionAlgorithms.js
 figures/points/intersection/intersectionPoint.js

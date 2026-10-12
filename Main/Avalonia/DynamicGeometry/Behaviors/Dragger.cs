@@ -525,6 +525,15 @@ namespace DynamicGeometry
                         figure.GetNearestParameterFromPoint(pointOnFigure.Coordinates.Plus(offset)));
                     offset = landing.Minus(pointOnFigure.Coordinates);
                 }
+                else if (moving.Count == 1 && moving[0] is PointInRegion inside && inside.Region != null)
+                {
+                    // and for a point kept inside a shape, which stops at its outline
+                    var landing = inside.Region.NearestPointInside(inside.Coordinates.Plus(offset));
+                    if (landing.Exists())
+                    {
+                        offset = landing.Minus(inside.Coordinates);
+                    }
+                }
 
                 Actions.Move(Drawing, moving, offset, drag.ToRecalculate);
             }

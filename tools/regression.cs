@@ -41,6 +41,7 @@ public class Program
             ("Construction cancellation and undo", ConstructionUndo),
             ("Dragging and Alt snapping undo", DraggingUndo),
             ("Alt dragging a point onto its neighbor joins them", AltDragJoinsNeighbor),
+            ("A point inside a shape stays inside and follows it", PointInsideShape),
             ("Dragging a point says what Shift and Alt do", DragModifierHints),
             ("Two fingers drag two points at once", TwoFingersDragTwoPoints),
             ("A finger holds a point while others pan and zoom the paper", FingerHoldsPointWhilePaperMoves),
@@ -500,6 +501,110 @@ public class Program
             Require(drawing.SaveAsText() == after, "Drag redo changed the drawing.");
             drawing.Figures.CheckConsistency();
         }
+    }
+
+    /// <summary>
+    /// Triangle ABC with a point inside it from the Point inside tool: dragged out, the
+    /// point stops at the side; the triangle dragged carries it along; a vertex dragged moves
+    /// the center and the point with it; the triangle flattened past the point pushes it
+    /// back in, and undo gives it its place back; a circle without a fill takes one too; Tab
+    /// chooses the outer of two nested triangles; the file round trips.
+    /// </summary>
+    static void PointInsideShape()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        string status = null;
+        drawing.ChoiceStatus += text => status = text;
+        var a = AddPoint(drawing, x: 0, y: 0);
+        var b = AddPoint(drawing, x: 6, y: 0);
+        var c = AddPoint(drawing, x: 0, y: 6);
+        var triangle = Factory.CreatePolygon(drawing, new IFigure[] { a, b, c });
+        Actions.Add(drawing, triangle);
+
+        // the tool: a click inside makes the point, a click inside nothing makes nothing
+        drawing.Behavior = new PointInRegionCreator();
+        Click(drawing, system.ToPhysical(new Point(1, 1)));
+        var point = drawing.Figures.OfType<PointInRegion>().SingleOrDefault();
+        Require(point != null && point.Dependencies[0] == triangle, "The click inside the triangle made no point inside it.");
+        Near(point.X, expected: 1);
+        Near(point.Y, expected: 1);
+        Require(point.Style?.Name == StyleManager.PointOnFigureStyleName, "The point is not green.");
+        Click(drawing, system.ToPhysical(new Point(5, 5)));
+        Require(drawing.Figures.OfType<PointInRegion>().Count() == 1, "A click outside every shape made a point.");
+
+        // dragged out, it stops at the side x + y = 6
+        drawing.Behavior = new Dragger();
+        string before = drawing.SaveAsText();
+        Drag(drawing, system.ToPhysical(point.Coordinates), system.ToPhysical(new Point(5, 5)));
+        Near(point.X, expected: 3);
+        Near(point.Y, expected: 3);
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the drag did not put the point back.");
+
+        // the triangle dragged carries the point
+        Drag(drawing, system.ToPhysical(new Point(2, 2)), system.ToPhysical(new Point(4, 3)));
+        Near(a.X, expected: 2);
+        Near(point.X, expected: 3);
+        Near(point.Y, expected: 2);
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the triangle's drag did not put the point back.");
+
+        // a vertex dragged moves the center by a third, and the point with it
+        static void MovePoint(Drawing drawing, IPoint moved, Point offset)
+        {
+            var toRecalculate = DependencyAlgorithms.FindDescendants(f => f.Dependents, new IFigure[] { moved });
+            toRecalculate.Reverse();
+            Actions.Move(drawing, new List<IMovable> { (IMovable)moved }, offset, toRecalculate);
+        }
+
+        MovePoint(drawing, c, new Point(0, -3));
+        Near(point.X, expected: 1);
+        Near(point.Y, expected: 0);
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the vertex's drag did not put the point back.");
+
+        // flattened past the point, it is pushed back in; undo gives its place back
+        MovePoint(drawing, c, new Point(0, -5.5));
+        Require(point.Exists && point.Y <= 0.5 + 1e-9, "The point was not pushed back into the flattened triangle: " + point.Coordinates);
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the flattening did not put the point back.");
+
+        // a circle without a fill takes a point, and the point stops at the rim
+        var center = AddPoint(drawing, x: 7, y: 6);
+        var circle = Factory.CreateCircle(drawing, new IFigure[] { center, AddPoint(drawing, x: 8.5, y: 6) });
+        Actions.Add(drawing, circle);
+        drawing.Behavior = new PointInRegionCreator();
+        Click(drawing, system.ToPhysical(new Point(7.5, 6.5)));
+        var inCircle = drawing.Figures.OfType<PointInRegion>().SingleOrDefault(p => p.Dependencies[0] == circle);
+        Require(inCircle != null, "The click inside the circle made no point inside it.");
+        MovePoint(drawing, inCircle, new Point(5, 0));
+        Near(inCircle.Coordinates.Distance(center.Coordinates), expected: 1.5);
+        Require(inCircle.Y > 6, "The point did not stop on the rim towards where it was dragged: " + inCircle.Coordinates);
+
+        // nested: the inner triangle first, Tab for the outer
+        var inner = Factory.CreatePolygon(drawing, new IFigure[] { AddPoint(drawing, x: 0.5, y: 0.5), AddPoint(drawing, x: 2.5, y: 0.5), AddPoint(drawing, x: 0.5, y: 2.5) });
+        Actions.Add(drawing, inner);
+        var tool = new PointInRegionCreator();
+        drawing.Behavior = tool;
+        var at = system.ToPhysical(new Point(0.8, 0.8));
+        Hover(drawing, at);
+        Require(status != null && status.StartsWith("A point inside ") && status.Contains("(1 of 2)"), "The status inside two triangles: " + status);
+        Require(tool.StepChoice(backwards: false), "Tab chose nothing.");
+        Click(drawing, at);
+        var chosen = drawing.Figures.OfType<PointInRegion>().Single(p => p.Coordinates.Distance(new Point(0.8, 0.8)) < 1e-9);
+        Require(chosen.Dependencies[0] == triangle, "Tab did not take the outer triangle.");
+
+        // the file round trips, offset and all
+        var saved = drawing.SaveAsText();
+        var loaded = ReadLgf(saved);
+        Require(loaded.LoadErrors == null, "Reload: " + loaded.LoadErrors);
+        Require(loaded.SaveAsText() == saved, "The file changed on a round trip.");
+        var reloaded = loaded.Figures.OfType<PointInRegion>().Single(p => p.Name == point.Name);
+        Near(reloaded.X, expected: 1);
+        Near(reloaded.Y, expected: 1);
+        drawing.Figures.CheckConsistency();
     }
 
     /// <summary>

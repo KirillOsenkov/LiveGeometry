@@ -317,8 +317,9 @@ class StyleManager {
             return StyleManager.HandleStyleName;
         }
 
-        // PointOnFigure is a FreePoint, so it goes first
-        if (point instanceof PointOnFigure) {
+        // PointOnFigure is a FreePoint, so it goes first; a point kept inside a shape is
+        // draggable and tied to a figure like it, and takes the same green
+        if (point instanceof PointOnFigure || point instanceof PointInRegion) {
             return StyleManager.PointOnFigureStyleName;
         }
 

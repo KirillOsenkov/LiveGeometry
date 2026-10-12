@@ -93,7 +93,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   every construction returns to. Figure List (toggle): see "The Figure List".
 - **Points**: Point (P) - free, on a figure, or at an intersection; Midpoint (M) - two points
   or a segment; Intersection (I) - two figures that cross, the click on the second picks the
-  nearer crossing (`PointPlacement.Intersection`, shared with the Point tool); Coordinates (X) -
+  nearer crossing (`PointPlacement.Intersection`, shared with the Point tool); Point inside
+  (O; 2026-10-11) - one click inside a polygon, a circle or an ellipse, a sector or a
+  circular segment, a closed or filled Bezier path, filled on screen or not (the hover's
+  halo and ghost say which; `IRegion` is the contract, see "A point inside a shape"), the
+  smallest of nested regions first and Tab for the next; nothing on a point or inside
+  nothing; Coordinates (X) -
   the Point tool with its X/Y panel always on (`PointByCoordinatesCreator`), so a point by
   coordinates needs no trip to the Coordinates tab's toggle (that toggle stays for typing
   the points of other figures); Label new points (toggle).
@@ -713,6 +718,32 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   microsecond; the bound tree is the cheapest to make and second only to IL at running,
   which is why it is the default. IL wins evaluation everywhere but costs 3 to 7 times the
   compile.
+- **A point inside a shape** (`Figures/Points/PointInRegion.cs`, 2026-10-11; GeoGebra's
+  "Point on Object", `PointIn[]`): a `FreePoint` by inheritance, like a point on a figure,
+  with one dependency, an `IRegion` (`Figures/IRegion.cs`: `HasInside`, `Area`,
+  `ContainsPoint`, `NearestPointInside` - on `PolygonBase`, `DependentPolygonBase` through
+  its interior part, `EllipseBase`, the four sectors and segments through helpers on
+  `EllipseArcBase`, and `BezierPath`, closed or filled, holes left out; a circle's nearest
+  point is along the ray from its center, a path's is on its outline as drawn). Its state
+  is an `Offset` from the region's `Center` (saved as `OffsetX`/`OffsetY`; a hand-written
+  file with X and Y alone gets it at the first recalculation): `Recalculate` works the
+  point out from the region as it is now, however it got there - dragged, driven by a
+  slider, the image of a transformation - so a polygon dragged carries the point, a vertex
+  dragged moves it by a third, a turned piece moves it with the center but doesn't turn it.
+  Where the place falls outside, the point sits at the nearest point inside and the
+  offset keeps the wished-for place, so undo of the change, or the shape growing back,
+  gives the point its place back; only a drag of the point (`MoveToCore`, which clamps)
+  or the file sets the offset, and `CapturePlace`/`RestorePlace` carry it. It doesn't
+  exist while the region doesn't or has no inside. It takes the `PointOnFigure` green,
+  "Free point" releases it, it is no end to stretch or fix (`LengthConstraint.CanStretch`),
+  the Dragger records where it lands as for a point on a figure, and the player has the
+  twin (`pointInRegion.js`, `isRegion` on the same classes). The tool is
+  `PointInRegionCreator` (a `Behavior`, as the Point tool): `PointInRegion.FindRegions`
+  lists the visible regions containing the click by area, each a
+  `PointPlacement.InRegion`, so the preview, the choice and the status come for free.
+  Why an offset and not a Dragger rule: a drag of a triangle moves A, then B, then C, each
+  with its own recalculation, so a point that watched its parent for a translation never
+  saw one; and a rule in the Dragger would miss every move that isn't a drag.
 - **Snapping and releasing points** (`Figures/Points/PointSnapping.cs`) swap a point for another
   kind where it is through `Actions.ReplacePoint` (name, label, dependents, lock, a chosen style
   go along). Snap: a free point onto a figure through it - "Snap to line AB" in the grid when

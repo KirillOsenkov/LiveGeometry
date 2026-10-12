@@ -83,7 +83,7 @@ namespace DynamicGeometry
         }
     }
 
-    public class DependentPolygonBase : CompositeFigure, IShapeWithInterior, IPerimeter, IPolygonalChain, IFigureParts
+    public class DependentPolygonBase : CompositeFigure, IShapeWithInterior, IPerimeter, IPolygonalChain, IFigureParts, IRegion
     {
         protected readonly List<PointBase> vertices = new List<PointBase>();
         protected readonly List<Segment> sides = new List<Segment>();
@@ -581,6 +581,19 @@ namespace DynamicGeometry
         public double Area => polygon.Area;
 
         public double Perimeter => polygon.Perimeter;
+
+        // the inside is the polygon part's (a point inside depends on the whole, as a file names it)
+        public bool HasInside => polygon.HasInside;
+
+        public bool ContainsPoint(Point point)
+        {
+            return polygon.ContainsPoint(point);
+        }
+
+        public Point NearestPointInside(Point point)
+        {
+            return polygon.NearestPointInside(point);
+        }
 
         public Point[] VertexCoordinates => vertices.Select(v => v.Coordinates).ToArray();
 

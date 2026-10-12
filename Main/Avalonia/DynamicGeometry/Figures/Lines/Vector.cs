@@ -224,6 +224,7 @@ namespace DynamicGeometry
                 return Dependencies.Count == 2
                     && Dependencies[1] is FreePoint end
                     && !(end is PointOnFigure)
+                    && !(end is PointInRegion)
                     && !end.Locked;
             }
 

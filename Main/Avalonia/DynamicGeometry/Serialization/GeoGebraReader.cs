@@ -1449,7 +1449,7 @@ public class GeoGebraReader
             case "Point":
                 return One(PointCommand(inputs));
             case "PointIn":
-                return One(Add(Factory.CreateFreePoint(drawing, new Point())));
+                return One(PointInCommand(inputs));
             case "Intersect":
                 return IntersectCommand(inputs, outputs);
             case "OrthogonalLine":
@@ -1798,6 +1798,22 @@ public class GeoGebraReader
         }
 
         return Add(Factory.CreatePointOnFigure(drawing, figure, parameter: 0));
+    }
+
+    /// <summary>
+    /// PointIn[region]: a point kept inside the polygon, circle, sector or path (its element
+    /// says where, <see cref="ApplyElement"/> moves it there); a region this version has no
+    /// inside of (a conic) gives a free point where the element says
+    /// </summary>
+    IFigure PointInCommand(string[] inputs)
+    {
+        var figure = Resolve(inputs[0]);
+        if (figure is IRegion region)
+        {
+            return Add(Factory.CreatePointInRegion(drawing, region, region.Center));
+        }
+
+        return Add(Factory.CreateFreePoint(drawing, new Point()));
     }
 
     /// <summary>

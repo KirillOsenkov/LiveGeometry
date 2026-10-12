@@ -10,7 +10,7 @@ namespace DynamicGeometry;
 /// tool does.
 /// </summary>
 [Category(BehaviorCategories.Points)]
-[Order(4)]
+[Order(5)]
 public class PointByCoordinatesCreator : FreePointCreator
 {
     protected override bool ShowsCoordinatesPanel

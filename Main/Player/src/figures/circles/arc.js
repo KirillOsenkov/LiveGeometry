@@ -29,6 +29,18 @@ class CircleSegment extends CircleArcBase {
     get perimeter() {
         return this.length + this.beginLocation.distance(this.endLocation);
     }
+
+    get isRegion() {
+        return true;
+    }
+
+    containsPoint(point) {
+        return this.containsInSegment(point);
+    }
+
+    nearestPointInside(point) {
+        return this.nearestInsideSegment(point);
+    }
 }
 
 class EllipseSegment extends EllipseArcBase {
@@ -51,6 +63,18 @@ class EllipseSegment extends EllipseArcBase {
     /** The arc and its chord */
     get perimeter() {
         return this.length + this.beginLocation.distance(this.endLocation);
+    }
+
+    get isRegion() {
+        return true;
+    }
+
+    containsPoint(point) {
+        return this.containsInSegment(point);
+    }
+
+    nearestPointInside(point) {
+        return this.nearestInsideSegment(point);
     }
 }
 
@@ -75,6 +99,18 @@ class CircleSector extends CircleArcBase {
     get perimeter() {
         return this.length + this.center.distance(this.beginLocation) + this.center.distance(this.endLocation);
     }
+
+    get isRegion() {
+        return true;
+    }
+
+    containsPoint(point) {
+        return this.containsInSector(point);
+    }
+
+    nearestPointInside(point) {
+        return this.nearestInsideSector(point);
+    }
 }
 
 class EllipseSector extends EllipseArcBase {
@@ -97,6 +133,18 @@ class EllipseSector extends EllipseArcBase {
     /** The arc and the two radii */
     get perimeter() {
         return this.length + this.center.distance(this.beginLocation) + this.center.distance(this.endLocation);
+    }
+
+    get isRegion() {
+        return true;
+    }
+
+    containsPoint(point) {
+        return this.containsInSector(point);
+    }
+
+    nearestPointInside(point) {
+        return this.nearestInsideSector(point);
     }
 }
 

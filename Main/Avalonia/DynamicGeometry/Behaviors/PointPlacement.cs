@@ -20,7 +20,10 @@ public enum PointPlacementKind
     Intersection,
 
     /// <summary>A new midpoint of a segment</summary>
-    Midpoint
+    Midpoint,
+
+    /// <summary>A new point kept inside a polygon, a circle, a sector or a path (<see cref="PointInRegion"/>)</summary>
+    InRegion
 }
 
 /// <summary>
@@ -72,6 +75,12 @@ public class PointPlacement
     public static PointPlacement Midpoint(IFigure segment)
     {
         return new PointPlacement(PointPlacementKind.Midpoint, ((ILine)segment).Coordinates.Midpoint, new IFigure[] { segment });
+    }
+
+    /// <summary>A point inside the region, where the coordinates are (the Point inside tool)</summary>
+    public static PointPlacement InRegion(IRegion region, Point coordinates)
+    {
+        return new PointPlacement(PointPlacementKind.InRegion, region.NearestPointInside(coordinates), new IFigure[] { region });
     }
 
     /// <param name="coordinates">Logical coordinates of the click, after snapping</param>
@@ -395,6 +404,8 @@ public class PointPlacement
             case PointPlacementKind.Midpoint:
                 // a list of its own: the segment keeps using (and may change) the one it has
                 return Factory.CreateMidPoint(drawing, Sources[0].Dependencies.ToList());
+            case PointPlacementKind.InRegion:
+                return Factory.CreatePointInRegion(drawing, Sources[0], Coordinates);
             default:
                 return null;
         }

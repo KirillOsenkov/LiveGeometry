@@ -129,5 +129,14 @@
     <PerimeterMeasurement Name="Perimeter5">
       <Dependency Name="Blob" />
     </PerimeterMeasurement>
+    <PointInRegion Name="A1" X="-7.5" Y="3.5" OffsetX="0.5" OffsetY="0.5">
+      <Dependency Name="p" />
+    </PointInRegion>
+    <PointInRegion Name="B1" X="8.5" Y="-1" OffsetX="0" OffsetY="0.5">
+      <Dependency Name="Blob" />
+    </PointInRegion>
+    <PointInRegion Name="C1" X="1" Y="-3.5" OffsetX="1" OffsetY="0.5">
+      <Dependency Name="Sector" />
+    </PointInRegion>
   </Figures>
 </Drawing>

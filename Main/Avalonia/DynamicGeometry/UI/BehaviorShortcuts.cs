@@ -27,6 +27,7 @@ public static class BehaviorShortcuts
         { Key.M, typeof(MidpointCreator) },
         { Key.I, typeof(IntersectionCreator) },
         { Key.X, typeof(PointByCoordinatesCreator) },
+        { Key.O, typeof(PointInRegionCreator) },
         { Key.T, typeof(ReflectionCreator) },
         { Key.D, typeof(LocusCreator) },
         { Key.W, typeof(PolygonCreator) },

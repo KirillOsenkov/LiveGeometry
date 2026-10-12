@@ -19,7 +19,7 @@ public static class PointSnapping
     /// <summary>The kinds of point a click puts on figures (<see cref="PointPlacement"/>), which can be let go</summary>
     public static bool CanRelease(IFigure point)
     {
-        return (point is PointOnFigure || point is IntersectionPoint || point is MidPoint)
+        return (point is PointOnFigure || point is PointInRegion || point is IntersectionPoint || point is MidPoint)
             && !IsHeldByLocus(point);
     }
 
@@ -57,10 +57,10 @@ public static class PointSnapping
         return free;
     }
 
-    /// <summary>A free point proper: a point on a figure is a <see cref="FreePoint"/> only by inheritance</summary>
+    /// <summary>A free point proper: a point on a figure or inside one is a <see cref="FreePoint"/> only by inheritance</summary>
     public static bool CanConvertToPointByCoordinates(IFigure point)
     {
-        return point is FreePoint && !(point is PointOnFigure);
+        return point is FreePoint && !(point is PointOnFigure) && !(point is PointInRegion);
     }
 
     /// <summary>

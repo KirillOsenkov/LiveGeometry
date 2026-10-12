@@ -163,6 +163,8 @@ public class ClickChoice
                         return "Intersection of " + ConstructionText.Of(placement.Sources[0]) + " and " + ConstructionText.Of(placement.Sources[1]);
                     case PointPlacementKind.Midpoint:
                         return "The midpoint of " + ConstructionText.Of(placement.Sources[0]);
+                    case PointPlacementKind.InRegion:
+                        return "A point inside " + ConstructionText.Of(placement.Sources[0]);
                     default:
                         return "A free point";
                 }

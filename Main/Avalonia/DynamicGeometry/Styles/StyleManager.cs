@@ -706,8 +706,9 @@ namespace DynamicGeometry
                 return HandleStyleName;
             }
 
-            // PointOnFigure is a FreePoint, so it goes first
-            if (point is PointOnFigure)
+            // PointOnFigure is a FreePoint, so it goes first; a point kept inside a shape is
+            // draggable and tied to a figure like it, and takes the same green
+            if (point is PointOnFigure || point is PointInRegion)
             {
                 return PointOnFigureStyleName;
             }
