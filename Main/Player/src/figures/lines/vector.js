@@ -134,6 +134,16 @@ class Vector extends CompositeFigure {
         return GeometryMath.getAngle(this.coordinates.p1, this.coordinates.p2);
     }
 
+    /** The second point less the first, across (u.X in an expression) */
+    get x() {
+        return this.coordinates.p2.x - this.coordinates.p1.x;
+    }
+
+    /** The second point less the first, up */
+    get y() {
+        return this.coordinates.p2.y - this.coordinates.p1.y;
+    }
+
     getNearestParameterFromPoint(point) {
         return this.line.getNearestParameterFromPoint(point);
     }

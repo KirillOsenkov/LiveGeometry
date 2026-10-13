@@ -37,6 +37,11 @@ class Segment extends LineBase {
         return this.coordinates.length;
     }
 
+    /** From the first point to the second, in degrees (what an expression reads) */
+    get direction() {
+        return DirectionConstraint.of(this.coordinates);
+    }
+
     getNearestParameterFromPoint(point) {
         let parameter = super.getNearestParameterFromPoint(point);
         if (parameter < 0) {

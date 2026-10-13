@@ -33,6 +33,7 @@ public class Program
             ("Length edits across figure kinds", LengthEditsAcrossKinds),
             ("Length panel preserves endpoint on undo", LengthPanelUndo),
             ("A direction typed, fixed, made horizontal or vertical, freed, and undone", DirectionEditsAcrossKinds),
+            ("A vector's X and Y move its end, and undo moves it back", VectorComponentsEdit),
             ("Point functions reject dependency cycles", PointFunctionsRejectCycles),
             ("Expression strategies agree", ExpressionStrategiesAgree),
             ("Labels reject dependency cycles", LabelsRejectCycles),
@@ -457,6 +458,88 @@ public class Program
         var circlePanel = new DimensionsPanel(circle);
         Require(circlePanel.GetProperties().All(property => property.Name != nameof(DimensionsPanel.Direction)), "A circle's panel has a direction.");
         Require(circlePanel.GetMethods().All(method => method.Name != nameof(DimensionsPanel.MakeHorizontal)), "A circle's panel has Horizontal.");
+    }
+
+    /// <summary>
+    /// A vector's X and Y, the second point less the first: typed, they move the second point
+    /// (the first when the second can't move), a fixed length and direction take the new
+    /// values; each one undo step. In the panel after the tool, and not in a selection of
+    /// several vectors.
+    /// </summary>
+    static void VectorComponentsEdit()
+    {
+        foreach (string kind in new[] { "free", "fixed", "firstEnd" })
+        {
+            var drawing = NewDrawing();
+            var first = AddPoint(drawing, x: 1, y: 2);
+            var second = AddPoint(drawing, x: 4, y: 6);
+            var vector = Factory.CreateVector(drawing, new IFigure[] { first, second });
+            Actions.Add(drawing, vector);
+            if (kind == "fixed")
+            {
+                vector.FixLength();
+                vector.FixDirection();
+            }
+
+            if (kind == "firstEnd")
+            {
+                second.Locked = true;
+            }
+
+            Near(vector.X, 3);
+            Near(vector.Y, 4);
+            var names = new DimensionsPanel(vector).GetProperties().Select(property => property.Name).ToList();
+            Require(names.Contains(nameof(DynamicGeometry.Vector.X)) && names.Contains(nameof(DynamicGeometry.Vector.Y)), kind + ": the panel has no X and Y.");
+
+            void Step(string property, double value, double expectedX, double expectedY)
+            {
+                string before = drawing.SaveAsText();
+                var start = ((IPoint)vector.Dependencies[0]).Coordinates;
+                Set(drawing, vector, property, value);
+                string after = drawing.SaveAsText();
+                Near(vector.X, expectedX);
+                Near(vector.Y, expectedY);
+                if (kind == "firstEnd")
+                {
+                    NearPoint(second.Coordinates, new Point(4, 6));
+                }
+                else
+                {
+                    NearPoint(((IPoint)vector.Dependencies[0]).Coordinates, start);
+                }
+
+                drawing.ActionManager.Undo();
+                Require(drawing.SaveAsText() == before, kind + ": undo of " + property + " = " + value + " didn't restore the drawing.");
+                drawing.ActionManager.Redo();
+                Require(drawing.SaveAsText() == after, kind + ": redo of " + property + " = " + value + " changed the drawing.");
+                drawing.Figures.CheckConsistency();
+            }
+
+            Step(nameof(DynamicGeometry.Vector.X), value: -2, expectedX: -2, expectedY: 4);
+            Step(nameof(DynamicGeometry.Vector.Y), value: 0, expectedX: -2, expectedY: 0);
+            Step(nameof(DynamicGeometry.Vector.X), value: 0, expectedX: 0, expectedY: 0);
+            Step(nameof(DynamicGeometry.Vector.Y), value: -5, expectedX: 0, expectedY: -5);
+            if (kind == "fixed")
+            {
+                Near(vector.Length, 5);
+                Near(vector.Angle, 270);
+                Require(vector.Dependencies[1] is TranslatedPoint end && !end.HasFreedom, "The fixed vector's end isn't fixed any more.");
+            }
+        }
+
+        // the vector of a midpoint and its end has no end to move; several vectors, no X or Y
+        var other = NewDrawing();
+        var a = AddPoint(other, x: 0, y: 0);
+        var b = AddPoint(other, x: 2, y: 0);
+        var middle = Factory.CreateMidPoint(other, new IFigure[] { a, b });
+        Actions.Add(other, middle);
+        var dependent = Factory.CreateVector(other, new IFigure[] { middle, b });
+        var plain = Factory.CreateVector(other, new IFigure[] { a, AddPoint(other, x: 1, y: 3) });
+        Actions.Add(other, dependent);
+        Actions.Add(other, plain);
+        Require(!dependent.CanEdit(nameof(DynamicGeometry.Vector.X)), "A vector from a midpoint of its end offers X to type.");
+        var selection = new FigureSelection(other, new IFigure[] { dependent, plain }, new IncludeByDefaultValueDiscoveryStrategy());
+        Require(selection.GetProperties().All(property => property.Name != nameof(DynamicGeometry.Vector.X)), "Several vectors share an X row.");
     }
 
     static void PointFunctionsRejectCycles()

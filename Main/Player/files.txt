@@ -39,6 +39,7 @@ figures/points/dilatedPoint.js
 figures/points/translatedPoint.js
 figures/points/pointByCoordinates.js
 figures/lines/lineBase.js
+figures/lines/directionConstraint.js
 figures/lines/lineTwoPoints.js
 figures/lines/segment.js
 figures/lines/segmentDecoration.js

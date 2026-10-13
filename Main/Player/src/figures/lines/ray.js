@@ -35,6 +35,11 @@ class Ray extends LineBase {
     getParameterDomain() {
         return [0, super.getParameterDomain()[1]];
     }
+
+    /** From the start through the second point, in degrees (what an expression reads) */
+    get direction() {
+        return DirectionConstraint.of(this.coordinates);
+    }
 }
 
 FigureTypes.register("Ray", Ray);

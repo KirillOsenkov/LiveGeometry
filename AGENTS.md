@@ -1081,7 +1081,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   stretched or fixed at all. The **direction** of a segment, a vector, a ray or a line
   through two points works the same way (`IFixableDirection`, the `Direction` property in
   degrees - a vector's own `Direction` is radians, so its row stays `Angle` and the
-  interface is implemented explicitly; `Figures/Lines/DirectionConstraint.cs`, 2026-10-12):
+  interface is implemented explicitly; `Figures/Lines/DirectionConstraint.cs`, 2026-10-12;
+  an expression reads `AB.Direction`, the player through its `directionConstraint.js`):
   the row turns an end once, Fix direction makes the end a `TranslatedPoint` from the pivot
   whose direction is an auxiliary `Number` (distance free: it slides along the line through
   the pivot) - the same point Fix length makes, so the two are fixed and freed one by one
@@ -1435,7 +1436,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   inside after the arrow, since the arrow is a filled polygon with no room around it.
   `Vector.HitTest(Point)` answers whether hidden or not, as a segment's does: a point on a
   vector and an intersection with one exist where that says, and through the composite's
-  own test (shown parts only) they all went when the vector was hidden.
+  own test (shown parts only) they all went when the vector was hidden. Its X and Y
+  (2026-10-12) are the second point less the first, rows of its grid and of the panel after
+  the tool, not of a selection of several (`[PropertyGridDisallowMultiEdit]`): typed, they
+  move the end the length and direction rows move, and a translated end (fixed length or
+  direction) gets its Numbers or free parameters set to match (`Vector.SetComponents`); an
+  expression reads `u.X`, in the player too. Segments have none, on purpose.
 - **Bezier paths** (`Figures/Shapes/BezierPath.cs`, 2026-10-06; added beside `Bezier` and
   `Polyline`, which stay as they were): a composite like a regular polygon. The anchors are
   points of the drawing (its dependencies, at least two, each once); each has an in and an

@@ -8,6 +8,11 @@ class LineTwoPoints extends LineBase {
     get onScreenCoordinates() {
         return GeometryMath.getLineFromSegment(this.coordinates, this.canvasLogicalBorders);
     }
+
+    /** From the first point to the second, in degrees (what an expression reads) */
+    get direction() {
+        return DirectionConstraint.of(this.coordinates);
+    }
 }
 
 FigureTypes.register("LineTwoPoints", LineTwoPoints);

@@ -13,7 +13,8 @@ namespace DynamicGeometry;
 /// type 2, click Fix, and a horizontal one is draw, click Horizontal, type 2, click Fix
 /// length, without a box on every tool. Captions come from the figure (Side, Radius, Fix
 /// radius); the title is the figure's ("Segment AB"). The figure's own grid has the same
-/// rows. A regular polygon's panel starts with its number of sides, the polygon's own row.
+/// rows. A regular polygon's panel starts with its number of sides, the polygon's own row,
+/// and a vector's ends with its X and Y.
 /// </summary>
 public class DimensionsPanel :
     IConditionalProperties,
@@ -85,7 +86,9 @@ public class DimensionsPanel :
     /// <summary>
     /// The rows: a regular polygon's number of sides first (the polygon's own property, its
     /// up/down within the polygon's limits, an undo step on the polygon), then the length,
-    /// then Show where there is a figure to hang a measurement on, then the direction.
+    /// then Show where there is a figure to hang a measurement on, then the direction, then
+    /// a vector's X and Y (its own rows, as the number of sides is: "a vector (3, 4)" is
+    /// draw, type 3 and 4).
     /// </summary>
     public IEnumerable<IValueProvider> GetProperties()
     {
@@ -107,6 +110,12 @@ public class DimensionsPanel :
         if (ShowsDirection)
         {
             yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Direction));
+        }
+
+        if (figure is Vector vector && vector.CanEdit(nameof(Vector.X)))
+        {
+            yield return PropertyDiscoveryStrategy.CreateValueProvider(vector, nameof(Vector.X));
+            yield return PropertyDiscoveryStrategy.CreateValueProvider(vector, nameof(Vector.Y));
         }
     }
 
