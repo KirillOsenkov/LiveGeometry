@@ -71,9 +71,37 @@ public class LineAtAngleCreator : FigureCreator
             }
         }
 
+        /// <summary>The next line horizontal: one click on a point after this (<see cref="LineAtAngleCreator.Align"/>)</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Horizontal")]
+        [PropertyGridIcon(PropertyGridIcon.Horizontal)]
+        public void MakeHorizontal()
+        {
+            parent.Align(axis: 0);
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Vertical")]
+        [PropertyGridIcon(PropertyGridIcon.Vertical)]
+        public void MakeVertical()
+        {
+            parent.Align(axis: 90);
+        }
+
         public bool CanEdit(string propertyName)
         {
-            return propertyName == nameof(UntieAngle) ? parent.angleSource != null : parent.angleSource == null;
+            switch (propertyName)
+            {
+                case nameof(UntieAngle):
+                    return parent.angleSource != null;
+                // (an angle taken from a figure is let go of for it)
+                case nameof(MakeHorizontal):
+                    return parent.angleSource != null || !DirectionConstraint.IsAlong(LastAngle, axis: 0);
+                case nameof(MakeVertical):
+                    return parent.angleSource != null || !DirectionConstraint.IsAlong(LastAngle, axis: 90);
+                default:
+                    return parent.angleSource == null;
+            }
         }
 
         public string Caption(string propertyName, string defaultCaption)
@@ -103,6 +131,25 @@ public class LineAtAngleCreator : FigureCreator
             }
 
             return panel;
+        }
+    }
+
+    /// <summary>
+    /// The next line's angle along the axis at <paramref name="axis"/> degrees, the nearer way
+    /// from the angle the panel shows (0° or 180°, 90° or 270°). An angle clicked in the
+    /// drawing is let go of, as "Type the angle" does: the tool starts over, which shows the
+    /// panel again; otherwise the panel is shown again here, with its new value and buttons.
+    /// </summary>
+    void Align(double axis)
+    {
+        LastAngle = DirectionConstraint.NearestAlong(panel.Angle, axis);
+        if (angleSource != null)
+        {
+            Restart();
+        }
+        else
+        {
+            Drawing.RaiseDisplayProperties(panel);
         }
     }
 

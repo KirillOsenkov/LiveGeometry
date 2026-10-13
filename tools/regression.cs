@@ -375,6 +375,46 @@ public class Program
             }
         }
 
+        // a line at an angle, in the panel after its tool: Horizontal and Vertical set its typed
+        // angle the nearer way, and an angle taken from a measurement is typed again for them;
+        // each one undo step
+        {
+            var drawing = NewDrawing();
+            var a = AddPoint(drawing, x: 0, y: 0);
+            var b = AddPoint(drawing, x: 3, y: 1);
+            var c = AddPoint(drawing, x: 1, y: 4);
+            var angle = Number.CreateAuxiliary(drawing, value: 200);
+            Actions.Add(drawing, angle);
+            var line = LineAtAngle.Create(drawing, c, angle);
+            Actions.Add(drawing, line);
+            var panel = new TiedValuesPanel(line, line);
+
+            IOperationDescription Verb(string name) => panel.GetMethods().SingleOrDefault(method => method.Name == name);
+
+            void Press(string name, double expected)
+            {
+                string before = drawing.SaveAsText();
+                Verb(name).Invoke(panel, arguments: null);
+                string after = drawing.SaveAsText();
+                Near(line.Angle, expected);
+                Require(line.AngleSource is Number, name + " left the angle tied.");
+                Require(Verb(name) == null, name + " is offered on a line along its axis.");
+                drawing.ActionManager.Undo();
+                Require(drawing.SaveAsText() == before, "Undo of " + name + " on a line at an angle didn't restore the drawing.");
+                drawing.ActionManager.Redo();
+                Require(drawing.SaveAsText() == after, "Redo of " + name + " on a line at an angle changed the drawing.");
+                drawing.Figures.CheckConsistency();
+            }
+
+            Press(nameof(LineAtAngle.MakeHorizontal), expected: 180);
+            // (from 180°, 90° and 270° are as near: the axis itself)
+            Press(nameof(LineAtAngle.MakeVertical), expected: 90);
+            var measurement = Factory.CreateAngleMeasurement(drawing, new IFigure[] { a, b, c });
+            Actions.Add(drawing, measurement);
+            Require(line.TieTo(nameof(LineAtAngle.Angle), measurement), "The line didn't take the measurement's angle.");
+            Press(nameof(LineAtAngle.MakeHorizontal), expected: 0);
+        }
+
         // the end of a segment made horizontal, in its own grid: ticking Free direction (its
         // distance is free already) makes it a free point where it is, one undo step; so does
         // ticking Free distance on the end of a fixed length

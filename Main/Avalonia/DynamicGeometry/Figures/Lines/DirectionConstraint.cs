@@ -92,7 +92,13 @@ public static class DirectionConstraint
     /// <summary>Whether the fixed direction lies along the axis at <paramref name="axis"/> degrees, either way</summary>
     public static bool IsAlong(TranslatedPoint fixedEnd, double axis)
     {
-        double remainder = Normalize(((Number)fixedEnd.DirectionSource).Value - axis) % 180;
+        return IsAlong(((Number)fixedEnd.DirectionSource).Value, axis);
+    }
+
+    /// <summary>Whether the direction, in degrees, lies along the axis at <paramref name="axis"/> degrees, either way</summary>
+    public static bool IsAlong(double degrees, double axis)
+    {
+        double remainder = Normalize(degrees - axis) % 180;
         return remainder < 1e-9 || 180 - remainder < 1e-9;
     }
 

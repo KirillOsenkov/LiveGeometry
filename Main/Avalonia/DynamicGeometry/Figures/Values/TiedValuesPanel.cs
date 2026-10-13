@@ -47,6 +47,33 @@ public class TiedValuesPanel : ICustomPropertyProvider, ICustomMethodProvider
             }
         }
 
+        // a line at an angle: Horizontal and Vertical under its angle, as a segment's panel
+        // has them under its direction (the line's own verbs would show its own grid, which
+        // ends the panel and the click that ties a value)
+        if (Values is LineAtAngle line)
+        {
+            var group = typeof(LineAtAngle).GetProperty(nameof(LineAtAngle.Angle))?.GetAttribute<PropertyGridGroupAttribute>()?.Name;
+            if (line.CanAlign(axis: 0))
+            {
+                yield return new DelegateOperation(
+                    nameof(LineAtAngle.MakeHorizontal),
+                    "Horizontal",
+                    PropertyGridIcon.Horizontal,
+                    () => Align(line, axis: 0),
+                    group);
+            }
+
+            if (line.CanAlign(axis: 90))
+            {
+                yield return new DelegateOperation(
+                    nameof(LineAtAngle.MakeVertical),
+                    "Vertical",
+                    PropertyGridIcon.Vertical,
+                    () => Align(line, axis: 90),
+                    group);
+            }
+        }
+
         yield return MethodDescription.Get<TiedValuesPanel>(nameof(OK));
     }
 
@@ -57,6 +84,12 @@ public class TiedValuesPanel : ICustomPropertyProvider, ICustomMethodProvider
         {
             Values.Drawing.RaiseDisplayProperties(this);
         }
+    }
+
+    void Align(LineAtAngle line, double axis)
+    {
+        line.Align(axis);
+        Values.Drawing.RaiseDisplayProperties(this);
     }
 
     /// <summary>

@@ -127,7 +127,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   angle measurement, its arc or a slider first to tie the angle to it, or inside an angle
   next to its vertex (which measures it first, mark and number, and ties the line to the
   measurement); right after the click
-  the panel shows the new line's angle instead (see "Tied values"). Perpendicular Bisector
+  the panel shows the new line's angle instead (see "Tied values"). Both panels and the
+  line's grid have Horizontal and Vertical (2026-10-12; the nearer way, as a segment's: see
+  "Setting a segment's length"), which type the angle again when it was taken from a figure
+  (`LineAtAngle.Align`; the panel after the tool calls it itself, since the line's own verbs
+  show its grid and that would end the panel). Perpendicular Bisector
   (two points or a segment; `[Ignore]`d since 2026-10-04: Perpendicular through the midpoint
   does it, and its click on a segment took the ends where every other tool puts a point on
   it - files and GeoGebra imports still make them); Join segments (a point between

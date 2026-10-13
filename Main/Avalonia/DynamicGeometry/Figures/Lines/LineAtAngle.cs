@@ -7,6 +7,8 @@ namespace DynamicGeometry;
 /// it depends on: a <see cref="Number"/> holding a typed value, edited in the property grid,
 /// or anything with an angle (an angle measurement or its arc, a slider in degrees), which
 /// the line then follows (<see cref="ITiedValues"/>). Dependencies: the point, then the angle.
+/// Its direction is held by the angle all along, so it has Horizontal and Vertical as a
+/// segment has, but no Fix or Free direction.
 /// </summary>
 public class LineAtAngle : LineBase, ILine, ITiedValues, IConditionalProperties
 {
@@ -114,6 +116,57 @@ public class LineAtAngle : LineBase, ILine, ITiedValues, IConditionalProperties
         }
     }
 
+    /// <summary>The line turned horizontal, as a segment's Horizontal does (<see cref="Align"/>)</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Horizontal")]
+    [PropertyGridGroup("Angle")]
+    [PropertyGridIcon(PropertyGridIcon.Horizontal)]
+    public void MakeHorizontal()
+    {
+        Align(axis: 0);
+        Drawing.RaiseDisplayProperties(this);
+    }
+
+    [PropertyGridVisible]
+    [PropertyGridName("Vertical")]
+    [PropertyGridGroup("Angle")]
+    [PropertyGridIcon(PropertyGridIcon.Vertical)]
+    public void MakeVertical()
+    {
+        Align(axis: 90);
+        Drawing.RaiseDisplayProperties(this);
+    }
+
+    /// <summary>Whether <see cref="Align"/> would change something: not on a typed angle along the axis already</summary>
+    public bool CanAlign(double axis)
+    {
+        return !(AngleSource is Number number && DirectionConstraint.IsAlong(number.Value, axis));
+    }
+
+    /// <summary>
+    /// The angle along the axis at <paramref name="axis"/> degrees, the nearer way (0° or
+    /// 180°, 90° or 270°). One undo step: a typed angle is set; one taken from a figure is
+    /// typed again, at that, the way "Type the angle" does. Shows nothing: the grid's verbs
+    /// and the panel after the tool each show themselves again.
+    /// </summary>
+    public void Align(double axis)
+    {
+        if (!CanAlign(axis))
+        {
+            return;
+        }
+
+        double angle = DirectionConstraint.NearestAlong(Angle, axis);
+        if (AngleSource is Number)
+        {
+            Actions.SetProperty(Drawing.ActionManager, PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Angle)), angle);
+        }
+        else
+        {
+            TieTo(nameof(Angle), Number.CreateAuxiliary(Drawing, angle));
+        }
+    }
+
     public bool CanEdit(string propertyName)
     {
         switch (propertyName)
@@ -122,6 +175,10 @@ public class LineAtAngle : LineBase, ILine, ITiedValues, IConditionalProperties
                 return AngleSource is Number;
             case nameof(UntieAngle):
                 return this.IsTied(nameof(Angle));
+            case nameof(MakeHorizontal):
+                return CanAlign(axis: 0);
+            case nameof(MakeVertical):
+                return CanAlign(axis: 90);
             default:
                 return true;
         }
