@@ -28,12 +28,15 @@ namespace DynamicGeometry
             var side0 = existingSide == null ? Factory.CreateSegment(Drawing, p1, p2) : null;
             var circle = Factory.CreateCircle(Drawing, new[] { p2, p1 });
             var perpendicular = Factory.CreatePerpendicularLine(Drawing, new IFigure[] { (IFigure)side0 ?? existingSide, p2 });
-            // P2 of the perpendicular is a clockwise turn from p1 -> p2; aim at its mirror image
-            // through p2 instead, so that a square drawn left to right stands on its first side
-            var perpendicularCoordinates = perpendicular.Coordinates;
+            // aim a counterclockwise turn from p1 -> p2, so that a square drawn left to right
+            // stands on its first side; by the points as clicked, not by the perpendicular, whose
+            // direction follows the side's: an existing side may run from p2 to p1 (the side of
+            // a square drawn before), and the square came out on the other side of it
+            var p1Coordinates = p1.Coordinates;
+            var p2Coordinates = p2.Coordinates;
             var counterclockwise = new Point(
-                2 * perpendicularCoordinates.P1.X - perpendicularCoordinates.P2.X,
-                2 * perpendicularCoordinates.P1.Y - perpendicularCoordinates.P2.Y);
+                p2Coordinates.X - (p2Coordinates.Y - p1Coordinates.Y),
+                p2Coordinates.Y + (p2Coordinates.X - p1Coordinates.X));
             var intersection = Factory.CreateIntersectionPoint(Drawing, circle, perpendicular, counterclockwise);
             var midpoint = Factory.CreateMidPoint(Drawing, new IFigure[] { intersection, p1 });
             var reflectedPoint = Factory.CreateReflectedPoint(Drawing, new IFigure[] { p2, midpoint });

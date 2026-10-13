@@ -62,6 +62,7 @@ public class Program
             ("GeoGebra worksheet rejects unrelated XML", RejectUnrelatedWorksheet),
             ("A point renamed A' stays named in expressions", PrimeNames),
             ("A square takes the side drawn already", SquareOnSegment),
+            ("A square on a side running the other way keeps its side", SquareOnReversedSide),
             ("The middle of a vector gives its midpoint", VectorMidpoint),
             ("A dashed vector has a dashed shaft", DashedVector),
             ("A regular polygon's sides and vertices are selected by themselves", RegularPolygonPartSelection),
@@ -2602,6 +2603,30 @@ public class Program
         Require(drawing.SaveAsText() == after, "Redo of the square changed the drawing.");
         drawing.Figures.CheckConsistency();
         Require(ReadLgf(after).LoadErrors == null, "The drawing with the square did not load.");
+    }
+
+    // a square on the top right and bottom right corners of a square drawn top to bottom:
+    // the side between them runs bottom to top, and the second square came out on the first
+    static void SquareOnReversedSide()
+    {
+        var drawing = NewDrawing();
+        var creator = new SquareCreator();
+        drawing.Behavior = creator;
+        new FigureCreator.Dialog(creator) { X = "0", Y = "0" }.AddPoint();
+        new FigureCreator.Dialog(creator) { X = "0", Y = "-3" }.AddPoint();
+        var first = drawing.Figures.OfType<Polygon>().Single();
+        var bottomRight = (IPoint)first.Dependencies[2];
+        var topRight = (IPoint)first.Dependencies[3];
+        Near(bottomRight.Coordinates.X, expected: 3);
+        Near(topRight.Coordinates.X, expected: 3);
+        new FigureCreator.Dialog(creator) { X = "3", Y = "0" }.AddPoint();
+        new FigureCreator.Dialog(creator) { X = "3", Y = "-3" }.AddPoint();
+        Require(!drawing.IsRecordingTransaction, "The second square was not finished.");
+        var second = drawing.Figures.OfType<Polygon>().Single(p => p != first);
+        Require(second.Dependencies[0] == topRight && second.Dependencies[1] == bottomRight, "The second square is not on the first one's corners.");
+        Near(((IPoint)second.Dependencies[2]).Coordinates.X, expected: 6);
+        Near(((IPoint)second.Dependencies[3]).Coordinates.X, expected: 6);
+        drawing.Figures.CheckConsistency();
     }
 
     static void PasteBringsStyles()
