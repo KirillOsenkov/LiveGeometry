@@ -78,6 +78,13 @@ namespace DynamicGeometry
             get { return IsDistanceFree || IsDirectionFree; }
         }
 
+        // dragged along its circle or line like a point on a figure, or not by itself at all
+        // (ZOrder); taken again whenever the freedom changes
+        protected override ZOrder DefaultLayer()
+        {
+            return HasFreedom ? ZOrder.ConstrainedPoints : ZOrder.FixedPoints;
+        }
+
         /// <summary>
         /// The dependencies: the source point, then the distance source and the direction
         /// source when there are any (one entry when a vector is both). A null source leaves
@@ -108,6 +115,7 @@ namespace DynamicGeometry
             }
 
             Dependencies = dependencies;
+            Layer = DefaultLayer();
         }
 
         double DistanceValue
@@ -544,6 +552,7 @@ namespace DynamicGeometry
             UpdateVisual();
             this.RecalculateAllDependents();
             UpdateStyleForFreedom();
+            Layer = DefaultLayer();
             RaisePropertyChanged(null);
         }
 
@@ -834,6 +843,7 @@ namespace DynamicGeometry
                 needsLegacyUpgrade = HasFreedom;
             }
 
+            Layer = DefaultLayer();
             Recalculate();
         }
 

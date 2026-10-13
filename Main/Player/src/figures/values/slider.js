@@ -33,7 +33,7 @@ class Slider extends CompositeFigure {
         this.wholeHandle = new SliderWholeHandle(this);
 
         // of the figures under the cursor the topmost wins: the knob over a line crossing it
-        this.layer = ZOrder.Points;
+        this.layer = ZOrder.ConstrainedPoints;
     }
 
     get isSlider() {

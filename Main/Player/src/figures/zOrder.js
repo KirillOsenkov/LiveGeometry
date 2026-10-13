@@ -11,7 +11,12 @@ const ZOrder = {
     Vectors: 55,
     SelectionHalos: 58,
     Handles: 59,
-    Points: 60,
+    /** Points that a drag doesn't move by themselves: midpoints, intersections, images, points by coordinates */
+    FixedPoints: 60,
+    /** Points dragged along a figure or within one: on a figure, inside a shape, translated with something free; sliders */
+    ConstrainedPoints: 62,
+    /** Points dragged anywhere */
+    FreePoints: 64,
     PointLabels: 70,
     Controls: 80
 };
@@ -25,15 +30,15 @@ const ZOrders = {
 
     /**
      * The band whose Z orders figures of the layer, named by its lowest layer: the figures'
-     * (Polygons to Vectors), the points' (Points), or null
+     * (Polygons to Vectors), the points' (FixedPoints to FreePoints), or null
      */
     band(layer) {
         if (layer >= ZOrder.Polygons && layer <= ZOrder.Vectors) {
             return ZOrder.Polygons;
         }
 
-        if (layer === ZOrder.Points) {
-            return ZOrder.Points;
+        if (layer >= ZOrder.FixedPoints && layer <= ZOrder.FreePoints) {
+            return ZOrder.FixedPoints;
         }
 
         return null;
@@ -52,7 +57,7 @@ const ZOrders = {
     /**
      * The zIndex of the layer at the Z, bottom up: the layers below the figures' band as
      * they are, the figures' band ordered by Z and then by layer, the selection halos and the
-     * handles, the points' band ordered by Z, the layers above it over all of it
+     * handles, the points' band ordered the same way, the layers above it over all of it
      */
     encode(layer, z) {
         const span = ZOrders.Stride * (2 * ZOrders.Range + 1);
@@ -67,11 +72,11 @@ const ZOrders = {
             return figureBand + place + layer;
         }
 
-        if (layer < ZOrder.Points) {
+        if (layer < ZOrder.FixedPoints) {
             return figureBand + span + layer;
         }
 
-        if (layer === ZOrder.Points) {
+        if (layer <= ZOrder.FreePoints) {
             return pointBand + place + layer;
         }
 

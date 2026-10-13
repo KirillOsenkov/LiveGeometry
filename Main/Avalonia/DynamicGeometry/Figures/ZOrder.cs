@@ -8,12 +8,13 @@ namespace DynamicGeometry
     /// <summary>
     /// The layers figures are drawn in, bottom up. A figure's <see cref="IFigure.Layer"/> is
     /// its kind's. Two bands of layers are ordered by <see cref="IFigure.Z"/> (0 unless Bring
-    /// to front or Send to back changed it): the figures', from <see cref="Polygons"/> to
-    /// <see cref="Vectors"/>, where the Z comes first and the layer second
-    /// (<see cref="ZOrders.Encode"/>), so a polygon brought to front covers a circle; and the
-    /// points', <see cref="Points"/> (sliders too), all of it over the first, so nothing in
-    /// the figures' band ever covers a point, and a point brought to front covers the points
-    /// it overlaps. Within one value the later figure is on top.
+    /// to front or Send to back changed it), the Z first and the layer second
+    /// (<see cref="ZOrders.Encode"/>): the figures', from <see cref="Polygons"/> to
+    /// <see cref="Vectors"/>, so a polygon brought to front covers a circle; and the points',
+    /// from <see cref="FixedPoints"/> to <see cref="FreePoints"/>, all of it over the first,
+    /// so nothing in the figures' band ever covers a point - free points over those dragged
+    /// along a figure over those that don't move by themselves, and any of them brought to
+    /// front over all three. Within one value the later figure is on top.
     /// </summary>
     public enum ZOrder : int
     {
@@ -25,7 +26,16 @@ namespace DynamicGeometry
         Vectors = 55,
         SelectionHalos = 58,
         Handles = 59,
-        Points = 60,
+
+        /// <summary>Points that a drag doesn't move by themselves: midpoints, intersections, images, points by coordinates</summary>
+        FixedPoints = 60,
+
+        /// <summary>Points dragged along a figure or within one: on a figure, inside a shape, translated with something free; sliders</summary>
+        ConstrainedPoints = 62,
+
+        /// <summary>Points dragged anywhere</summary>
+        FreePoints = 64,
+
         PointLabels = 70,
         Controls = 80,
 
@@ -57,7 +67,7 @@ namespace DynamicGeometry
         /// <summary>
         /// The band whose Z orders figures of the layer, named by its lowest layer: the
         /// figures' (<see cref="ZOrder.Polygons"/> to <see cref="ZOrder.Vectors"/>), the
-        /// points' (<see cref="ZOrder.Points"/>), or none
+        /// points' (<see cref="ZOrder.FixedPoints"/> to <see cref="ZOrder.FreePoints"/>), or none
         /// </summary>
         static ZOrder? Band(ZOrder layer)
         {
@@ -66,9 +76,9 @@ namespace DynamicGeometry
                 return ZOrder.Polygons;
             }
 
-            if (layer == ZOrder.Points)
+            if (layer >= ZOrder.FixedPoints && layer <= ZOrder.FreePoints)
             {
-                return ZOrder.Points;
+                return ZOrder.FixedPoints;
             }
 
             return null;
@@ -89,7 +99,7 @@ namespace DynamicGeometry
         /// <summary>
         /// The ZIndex of the layer at the Z, bottom up: the layers below the figures' band as
         /// they are, the figures' band ordered by Z and then by layer, the selection halos and
-        /// the handles, the points' band ordered by Z, the layers above it over all of it.
+        /// the handles, the points' band ordered the same way, the layers above it over all of it.
         /// </summary>
         public static int Encode(ZOrder layer, int z)
         {
@@ -103,12 +113,12 @@ namespace DynamicGeometry
                 return FigureBand + Place(z) + (int)layer;
             }
 
-            if (layer < ZOrder.Points)
+            if (layer < ZOrder.FixedPoints)
             {
                 return FigureBand + Span + (int)layer;
             }
 
-            if (layer == ZOrder.Points)
+            if (layer <= ZOrder.FreePoints)
             {
                 return PointBand + Place(z) + (int)layer;
             }

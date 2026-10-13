@@ -324,7 +324,7 @@ public class ClickPreview
         }
 
         result.Opacity = GhostOpacity;
-        result.ZIndex = ZOrders.Default(ZOrder.Points) + 1;
+        result.ZIndex = ZOrders.Default(ZOrder.FreePoints) + 1;
         return result;
     }
 
@@ -495,7 +495,7 @@ public class ClickPreview
                 EndPoint = center + across,
                 Stroke = TickBrush,
                 StrokeThickness = 1.5,
-                ZIndex = ZOrders.Default(ZOrder.Points)
+                ZIndex = ZOrders.Default(ZOrder.FreePoints)
             });
         }
     }

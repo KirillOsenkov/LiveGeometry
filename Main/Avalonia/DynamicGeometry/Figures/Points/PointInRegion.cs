@@ -32,6 +32,12 @@ public partial class PointInRegion : FreePoint, IPoint
         }
     }
 
+    // a FreePoint by inheritance, dragged within its figure only (ZOrder)
+    protected override ZOrder DefaultLayer()
+    {
+        return ZOrder.ConstrainedPoints;
+    }
+
     public override void ReadXml(System.Xml.Linq.XElement element)
     {
         base.ReadXml(element);

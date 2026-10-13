@@ -6,6 +6,12 @@ namespace DynamicGeometry
 {
     public partial class PointOnFigure : FreePoint, IPoint
     {
+        // a FreePoint by inheritance, dragged along its figure only (ZOrder)
+        protected override ZOrder DefaultLayer()
+        {
+            return ZOrder.ConstrainedPoints;
+        }
+
         public override void ReadXml(System.Xml.Linq.XElement element)
         {
             base.ReadXml(element);

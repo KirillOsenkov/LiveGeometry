@@ -16,6 +16,11 @@ class PointInRegion extends FreePoint {
         this.hasOffset = false;
     }
 
+    /** A FreePoint by inheritance, dragged within its figure only (ZOrder) */
+    defaultLayer() {
+        return ZOrder.ConstrainedPoints;
+    }
+
     readXml(element) {
         super.readXml(element);
         this.hasOffset = element.getAttribute("OffsetX") != null;

@@ -37,8 +37,9 @@ class PointBase extends CoordinatesShapeBase {
         }
     }
 
+    /** A constructed point: dragged, it moves what it is built on (FreePoint and the others that can be dragged by themselves say otherwise) */
     defaultLayer() {
-        return ZOrder.Points;
+        return ZOrder.FixedPoints;
     }
 
     get x() {

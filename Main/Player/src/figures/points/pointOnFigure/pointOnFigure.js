@@ -9,6 +9,11 @@ class PointOnFigure extends FreePoint {
         this.useHitTestingForExistence = true;
     }
 
+    /** A FreePoint by inheritance, dragged along its figure only (ZOrder) */
+    defaultLayer() {
+        return ZOrder.ConstrainedPoints;
+    }
+
     readXml(element) {
         super.readXml(element);
 

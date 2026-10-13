@@ -5,6 +5,12 @@ namespace DynamicGeometry
 {
     public partial class FreePoint : PointBase, IMovable, IConditionalProperties
     {
+        // over the points that a drag moves along a figure or not at all (ZOrder)
+        protected override ZOrder DefaultLayer()
+        {
+            return ZOrder.FreePoints;
+        }
+
         /// <summary>
         /// Puts the point onto the one figure passing through it (<see cref="PointSnapping"/>).
         /// Shown only when there is exactly one, and captioned with its name; with more, the

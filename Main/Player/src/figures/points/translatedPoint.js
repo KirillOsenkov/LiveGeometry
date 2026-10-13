@@ -9,6 +9,9 @@ class TranslatedPoint extends PointBase {
         super();
         this.distanceQuantity = { sourceIndex: -1, parameter: 0 };
         this.directionQuantity = { sourceIndex: -1, parameter: 0 };
+
+        // ShapeBase asked before the quantities were there
+        this.layer = this.defaultLayer();
     }
 
     get source() {
@@ -43,6 +46,11 @@ class TranslatedPoint extends PointBase {
         return this.isDistanceFree || this.isDirectionFree;
     }
 
+    /** Dragged along its circle or line like a point on a figure, or not by itself at all (ZOrder); taken again whenever the freedom changes */
+    defaultLayer() {
+        return this.distanceQuantity == null || this.hasFreedom ? ZOrder.ConstrainedPoints : ZOrder.FixedPoints;
+    }
+
     /** The dependencies: the source point, then the distance source and the direction source when there are any (one entry when a vector is both) */
     setSources(source, distanceSource, directionSource) {
         const dependencies = [source];
@@ -63,6 +71,7 @@ class TranslatedPoint extends PointBase {
         }
 
         this.dependencies = dependencies;
+        this.layer = this.defaultLayer();
     }
 
     get distanceValue() {
@@ -181,6 +190,7 @@ class TranslatedPoint extends PointBase {
             this.directionQuantity.parameter = Xml.readDouble(element, "Direction");
         }
 
+        this.layer = this.defaultLayer();
         this.recalculate();
     }
 

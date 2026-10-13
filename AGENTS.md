@@ -1604,13 +1604,20 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Z order** (`Figures/ZOrder.cs`, 2026-10-10): every figure is drawn in its kind's
   `Layer` (the `ZOrder` enum, bottom up: Grid, Axes, Polygons - polygons, the interiors of
   regular polygons and Bezier paths - Labels, Figures - lines, circles, arcs, curves,
-  the sides of paths - Vectors, SelectionHalos, Handles, Points, PointLabels, Controls).
-  Two bands of layers are ordered by the figure's `Z` (`ZOrders.IsMovable`): the figures'
-  band, from Polygons to Vectors, where the Z comes first and the layer second, and the
-  points' band (2026-10-13), Points alone - points and sliders, ordered among themselves.
-  `ZIndex` is `ZOrders.Encode(Layer, Z)`: the layers under the figures' band as they are,
-  the figures' band with a stride of 1000 per Z, the halos and handles over all of it, the
-  points' band over those with the same stride (so a halo at a point's `ZIndex - 1` is
+  the sides of paths - Vectors, SelectionHalos, Handles, FixedPoints, ConstrainedPoints,
+  FreePoints, PointLabels, Controls). Two bands of layers are ordered by the figure's `Z`
+  (`ZOrders.IsMovable`), the Z first and the layer second: the figures' band, from Polygons
+  to Vectors, and the points' band (2026-10-13), from FixedPoints to FreePoints - points and
+  sliders, ordered among themselves. The three point layers go by what a drag does to the
+  point itself, as the default styles do (`DefaultLayer` of each kind): free points (yellow)
+  over those dragged along or within a figure (green: on a figure, inside a shape, a
+  translated point with a free quantity, which changes layer as it is freed or fixed, and
+  sliders) over those that don't move by themselves (gray: midpoints, intersections, images,
+  points by coordinates, a regular polygon's vertices). All at Z 0, so a file says nothing
+  of it; Bring to front gives Z 1, over the free points, Send to back Z -1, under the fixed
+  ones. `ZIndex` is `ZOrders.Encode(Layer, Z)`: the layers under the figures' band as they
+  are, the figures' band with a stride of 1000 per Z, the halos and handles over all of it,
+  the points' band over those with the same stride (so a halo at a point's `ZIndex - 1` is
   still over the points of the Z below), the layers over it over all of it. Every figure's
   Z is 0, so the gallery draws as it did before there was a Z (checked pixel for pixel,
   `--check` before and after), and within one ZIndex the later figure is on top (Avalonia

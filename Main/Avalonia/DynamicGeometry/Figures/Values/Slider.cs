@@ -38,8 +38,9 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         AddChild(Caption);
         wholeHandle = new WholeHandle(this);
 
-        // of the figures under the cursor the topmost wins: the knob over a line crossing it
-        Layer = ZOrder.Points;
+        // of the figures under the cursor the topmost wins: the knob over a line crossing it;
+        // among the points, where the knob is, dragged along its track
+        Layer = ZOrder.ConstrainedPoints;
     }
 
     /// <summary>Where the slider sits; a free point, yellow</summary>

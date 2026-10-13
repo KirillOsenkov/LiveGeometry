@@ -132,9 +132,11 @@ namespace DynamicGeometry
             }
         }
 
+        // a constructed point: dragged, it moves what it is built on (FreePoint and the
+        // others that can be dragged by themselves say otherwise)
         protected override ZOrder DefaultLayer()
         {
-            return ZOrder.Points;
+            return ZOrder.FixedPoints;
         }
 
         protected override Shape CreateShape()

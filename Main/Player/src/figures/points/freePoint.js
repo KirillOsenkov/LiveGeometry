@@ -2,6 +2,11 @@
 // verbs (snap to figure, convert to point by coordinates, the Bezier anchor verbs).
 
 class FreePoint extends PointBase {
+    /** Over the points that a drag moves along a figure or not at all (ZOrder) */
+    defaultLayer() {
+        return ZOrder.FreePoints;
+    }
+
     readXml(element) {
         super.readXml(element);
         this.coordinates = new Point(Xml.readDouble(element, "X"), Xml.readDouble(element, "Y"));
