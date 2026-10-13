@@ -527,6 +527,34 @@ public class Program
             }
         }
 
+        // the end as a point by coordinates at the start plus the components: it follows the
+        // start, the vector keeps them; one undo step; "A.X - 2" and a bare "A.Y" for 0
+        foreach (var (endX, endY, expectedX, expectedY) in new[] { (4.0, 6.5, "A.X + 3", "A.Y + 4.5"), (-1.0, 2.0, "A.X - 2", "A.Y") })
+        {
+            var drawing = NewDrawing();
+            var start = AddPoint(drawing, x: 1, y: 2);
+            start.Name = "A";
+            var end = AddPoint(drawing, endX, endY);
+            var vector = Factory.CreateVector(drawing, new IFigure[] { start, end });
+            Actions.Add(drawing, vector);
+            Require(vector.CanEdit(nameof(DynamicGeometry.Vector.ConvertEndToPointByCoordinates)), "A vector with a free end offers no conversion of it.");
+            string before = drawing.SaveAsText();
+            vector.ConvertEndToPointByCoordinates();
+            string after = drawing.SaveAsText();
+            var converted = vector.Dependencies[1] as PointByCoordinates;
+            Require(converted != null && converted.Name == end.Name, "The end didn't become a point by coordinates.");
+            Require(converted.XExpression.Text == expectedX && converted.YExpression.Text == expectedY, "The end's coordinates read " + converted.XExpression.Text + ", " + converted.YExpression.Text + ".");
+            NearPoint(converted.Coordinates, new Point(endX, endY));
+            Require(!vector.CanEdit(nameof(DynamicGeometry.Vector.ConvertEndToPointByCoordinates)), "The conversion is offered again.");
+            drawing.ActionManager.Undo();
+            Require(drawing.SaveAsText() == before && vector.Dependencies[1] == end, "Undo of the conversion didn't bring the free end back.");
+            drawing.ActionManager.Redo();
+            Require(drawing.SaveAsText() == after, "Redo of the conversion changed the drawing.");
+            drawing.Figures.CheckConsistency();
+            Set(drawing, start, nameof(FreePoint.X), 10.0);
+            NearPoint(((IPoint)vector.Dependencies[1]).Coordinates, new Point(10 + endX - 1, endY));
+        }
+
         // the vector of a midpoint and its end has no end to move; several vectors, no X or Y
         var other = NewDrawing();
         var a = AddPoint(other, x: 0, y: 0);
@@ -538,6 +566,7 @@ public class Program
         Actions.Add(other, dependent);
         Actions.Add(other, plain);
         Require(!dependent.CanEdit(nameof(DynamicGeometry.Vector.X)), "A vector from a midpoint of its end offers X to type.");
+        Require(!dependent.CanEdit(nameof(DynamicGeometry.Vector.ConvertEndToPointByCoordinates)), "A vector from a midpoint of its end offers its end as a point by coordinates.");
         var selection = new FigureSelection(other, new IFigure[] { dependent, plain }, new IncludeByDefaultValueDiscoveryStrategy());
         Require(selection.GetProperties().All(property => property.Name != nameof(DynamicGeometry.Vector.X)), "Several vectors share an X row.");
     }

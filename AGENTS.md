@@ -1441,7 +1441,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the tool, not of a selection of several (`[PropertyGridDisallowMultiEdit]`): typed, they
   move the end the length and direction rows move, and a translated end (fixed length or
   direction) gets its Numbers or free parameters set to match (`Vector.SetComponents`); an
-  expression reads `u.X`, in the player too. Segments have none, on purpose.
+  expression reads `u.X`, in the player too. Segments have none, on purpose. "Convert end to
+  point by coordinates" (grid, a free end) makes the end `A.X + 3`, `A.Y - 1.5` - the
+  components as the grid shows them, so the end may move by a rounding - which then follows
+  the start; offered only where both texts compile without a cycle (`EndCoordinateTexts`).
 - **Bezier paths** (`Figures/Shapes/BezierPath.cs`, 2026-10-06; added beside `Bezier` and
   `Polyline`, which stay as they were): a composite like a regular polygon. The anchors are
   points of the drawing (its dependencies, at least two, each once); each has an in and an

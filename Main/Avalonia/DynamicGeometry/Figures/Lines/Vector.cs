@@ -248,6 +248,11 @@ namespace DynamicGeometry
                 return ComponentsEnd() >= 0;
             }
 
+            if (propertyName == nameof(ConvertEndToPointByCoordinates))
+            {
+                return EndCoordinateTexts() != null;
+            }
+
             return Line.CanEdit(propertyName == nameof(Angle) ? nameof(Segment.Direction) : propertyName);
         }
 
@@ -477,6 +482,64 @@ namespace DynamicGeometry
             }
 
             RaiseDimensionsChanged();
+        }
+
+        /// <summary>
+        /// The end becomes a point by coordinates at the start plus the components as the grid
+        /// shows them ("A.X + 3", "A.Y - 1.5"): the vector keeps them wherever the start goes,
+        /// and they can be typed over as expressions (a slider's a). Offered on a free end;
+        /// "Free point" on the end is the way back. One undo step.
+        /// </summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Convert end to point by coordinates")]
+        [PropertyGridGroup("Components")]
+        [PropertyGridIcon(PropertyGridIcon.Pencil)]
+        public void ConvertEndToPointByCoordinates()
+        {
+            var texts = EndCoordinateTexts();
+            if (texts == null)
+            {
+                return;
+            }
+
+            PointSnapping.ConvertToPointByCoordinates((FreePoint)Dependencies[1], texts.Value.X, texts.Value.Y);
+            Drawing.RaiseDisplayProperties(this);
+        }
+
+        /// <summary>
+        /// What <see cref="ConvertEndToPointByCoordinates"/> would give the end, or null when it
+        /// doesn't apply: the end isn't a free point, or the texts don't compile without a
+        /// cycle (a start built on the end, or with a name no expression can say)
+        /// </summary>
+        (string X, string Y)? EndCoordinateTexts()
+        {
+            if (Drawing == null
+                || Dependencies.Count != 2
+                || Dependencies[0] is not IPoint start
+                || !PointSnapping.CanConvertToPointByCoordinates(Dependencies[1]))
+            {
+                return null;
+            }
+
+            var end = Dependencies[1];
+            var texts = (X: Offset(start.Name, "X", X), Y: Offset(start.Name, "Y", Y));
+            bool Compiles(string text) => Compiler.Instance
+                .CompileExpression(Drawing, text, figure => figure != end && !figure.DependsOn(end))
+                .IsSuccess;
+            return Compiles(texts.X) && Compiles(texts.Y) ? texts : null;
+        }
+
+        /// <summary>"A.X + 3", "A.X - 1.5", "A.X": the start's coordinate and the component as the grid shows it</summary>
+        static string Offset(string name, string coordinate, double component)
+        {
+            var start = name + "." + coordinate;
+            var amount = PointSnapping.ConstantText(System.Math.Abs(component));
+            if (amount == "0")
+            {
+                return start;
+            }
+
+            return start + (component < 0 ? " - " : " + ") + amount;
         }
 
         // the vector's own Direction is in radians (what a translation by it reads)

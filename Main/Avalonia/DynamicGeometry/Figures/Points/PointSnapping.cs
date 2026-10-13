@@ -82,9 +82,15 @@ public static class PointSnapping
     /// </summary>
     public static PointByCoordinates ConvertToPointByCoordinates(FreePoint point)
     {
-        var drawing = point.Drawing;
         var coordinates = point.Coordinates;
-        var converted = Factory.CreatePointByCoordinates(drawing, ConstantText(coordinates.X), ConstantText(coordinates.Y));
+        return ConvertToPointByCoordinates(point, ConstantText(coordinates.X), ConstantText(coordinates.Y));
+    }
+
+    /// <summary>The free point becomes a point by coordinates whose X and Y say these (a vector's end: "A.X + 3")</summary>
+    public static PointByCoordinates ConvertToPointByCoordinates(FreePoint point, string x, string y)
+    {
+        var drawing = point.Drawing;
+        var converted = Factory.CreatePointByCoordinates(drawing, x, y);
         converted.Recalculate();
         Replace(point, converted);
         if (converted.Selected)
@@ -100,7 +106,7 @@ public static class PointSnapping
     /// (<see cref="Settings.DisplayDecimals"/>), and never with an exponent, which the
     /// expression language doesn't read
     /// </summary>
-    static string ConstantText(double value)
+    public static string ConstantText(double value)
     {
         // + 0.0: a small negative number rounds to -0, which would read "-0"
         var rounded = System.Math.Round(value, Settings.DisplayDecimals) + 0.0;
