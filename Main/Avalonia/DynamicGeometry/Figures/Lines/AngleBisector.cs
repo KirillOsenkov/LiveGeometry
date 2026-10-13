@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DynamicGeometry
 {
-    public class AngleBisector : Ray, IConditionalProperties, IHasSweep
+    public class AngleBisector : Ray, IHasSweep
     {
         PointPair coordinates;
 
@@ -188,10 +188,11 @@ namespace DynamicGeometry
         /// <summary>
         /// A ray's verbs that are not a bisector's: it is built on an angle, not on two points
         /// to draw a line or a segment through, and the way it points is the angle's
-        /// (<see cref="Sweep"/>). The whole line is <see cref="IsLine"/>. The sweep of a
+        /// (<see cref="Sweep"/>) - so no direction to type or fix either (the ray's answer for
+        /// a figure not on two points). The whole line is <see cref="IsLine"/>. The sweep of a
         /// bisector built on a measurement is the measurement's.
         /// </summary>
-        public bool CanEdit(string propertyName)
+        public override bool CanEdit(string propertyName)
         {
             if (propertyName == nameof(Sweep))
             {
@@ -200,12 +201,22 @@ namespace DynamicGeometry
 
             return propertyName != nameof(ConvertToLine)
                 && propertyName != nameof(ConvertToSegment)
-                && propertyName != nameof(Reverse);
+                && propertyName != nameof(Reverse)
+                && base.CanEdit(propertyName);
         }
 
-        public string Caption(string propertyName, string defaultCaption)
+        /// <summary>Not a row of a bisector's: it points the way its angle says (see <see cref="CanEdit"/>)</summary>
+        [PropertyGridVisible(false)]
+        public override double Direction
         {
-            return defaultCaption;
+            get
+            {
+                return base.Direction;
+            }
+            set
+            {
+                base.Direction = value;
+            }
         }
 
         IFigure[] GetDependencies()

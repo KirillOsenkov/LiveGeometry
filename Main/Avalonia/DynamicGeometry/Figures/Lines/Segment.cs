@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 using Avalonia.Controls;
-using GuiLabs.Undo;
 
 namespace DynamicGeometry
 {
@@ -143,41 +142,25 @@ namespace DynamicGeometry
         /// axis. Setting it on a segment with a fixed direction (<see cref="FixDirection"/>)
         /// changes that direction. Otherwise it turns an end about the other once: the second
         /// end if it can take it, else the first - not a constraint, dragging changes the
-        /// direction again. Read-only when neither applies.
+        /// direction again. Read-only when neither applies (<see cref="DirectionConstraint"/>).
         /// </summary>
         [PropertyGridVisible]
-        [PropertyGridName("Direction")]
         [PropertyGridGroup("Direction")]
         [PropertyGridPreferredEditor("UpDown")]
         [PropertyGridCustomValueProvider(typeof(DirectionPropertyValue))]
-        public override double Angle
+        public double Direction
         {
             get
             {
-                // a full turn but for rounding is no turn: a first end fixed at 180° from the
-                // second, a hair below it (sin 180° is no 0 in doubles), said 360
-                double angle = base.Angle;
-                return 360 - angle < 1e-9 ? 0 : angle;
+                return DirectionConstraint.Of(Coordinates);
             }
             set
             {
-                int end = DirectionEnd();
-                if (end >= 0)
-                {
-                    // the first end is turned about the second, the opposite way
-                    DirectionConstraint.SetDirection(End(end), End(1 - end), end == 1 ? value : value + 180);
-                }
+                DirectionConstraint.SetDirection(this, value);
             }
         }
 
-        public IPoint DirectionEndpoint
-        {
-            get
-            {
-                int end = DirectionEnd();
-                return end >= 0 ? End(end) : null;
-            }
-        }
+        public IPoint DirectionEndpoint => DirectionConstraint.Endpoint(this);
 
         IPoint End(int index)
         {
@@ -214,43 +197,6 @@ namespace DynamicGeometry
             return fixedEnd >= 0 ? fixedEnd : EndToStretch();
         }
 
-        /// <summary>The end holding a fixed direction from the other (see <see cref="DirectionConstraint.FixedEnd"/>); -1 when none does</summary>
-        int FixedDirectionEndIndex()
-        {
-            return IndexOfEnd((end, pivot) => DirectionConstraint.FixedEnd(end, pivot) != null);
-        }
-
-        /// <summary>The end a new direction turns (see <see cref="DirectionConstraint.CanTurn"/>), the second preferred; -1 when neither can</summary>
-        int EndToTurn()
-        {
-            return IndexOfEnd(DirectionConstraint.CanTurn);
-        }
-
-        /// <summary>The end that answers for the direction: the fixed one, else the one that can be turned</summary>
-        int DirectionEnd()
-        {
-            int fixedEnd = FixedDirectionEndIndex();
-            return fixedEnd >= 0 ? fixedEnd : EndToTurn();
-        }
-
-        bool CanFreeDirection()
-        {
-            int end = FixedDirectionEndIndex();
-            return end >= 0 && DirectionConstraint.CanFree((TranslatedPoint)Dependencies[end]);
-        }
-
-        /// <summary>Whether Horizontal (axis 0) or Vertical (axis 90) would change something: not on a direction fixed along that axis already</summary>
-        bool CanAlign(double axis)
-        {
-            if (DirectionEnd() < 0)
-            {
-                return false;
-            }
-
-            int fixedEnd = FixedDirectionEndIndex();
-            return fixedEnd < 0 || !DirectionConstraint.IsAlong((TranslatedPoint)Dependencies[fixedEnd], axis);
-        }
-
         int IndexOfEnd(System.Func<IFigure, IFigure, bool> qualifies)
         {
             if (Dependencies == null || Dependencies.Count < 2)
@@ -271,6 +217,11 @@ namespace DynamicGeometry
 
         public bool CanEdit(string propertyName)
         {
+            if (DirectionConstraint.IsMember(propertyName))
+            {
+                return DirectionConstraint.CanEdit(this, propertyName);
+            }
+
             switch (propertyName)
             {
                 case "Length":
@@ -279,16 +230,6 @@ namespace DynamicGeometry
                     return FixedEndIndex() < 0 && EndToStretch() >= 0;
                 case "FreeLength":
                     return FixedEndIndex() >= 0;
-                case "Angle":
-                    return DirectionEnd() >= 0;
-                case "FixDirection":
-                    return FixedDirectionEndIndex() < 0 && EndToTurn() >= 0;
-                case "FreeDirection":
-                    return CanFreeDirection();
-                case "MakeHorizontal":
-                    return CanAlign(axis: 0);
-                case "MakeVertical":
-                    return CanAlign(axis: 90);
                 // a line or a ray has no length for what measures this one, nor for an
                 // expression that reads it ([AB.Length])
                 case "ConvertToLine":
@@ -344,12 +285,8 @@ namespace DynamicGeometry
         [PropertyGridIcon(PropertyGridIcon.Lock)]
         public void FixDirection()
         {
-            int end = EndToTurn();
-            if (FixedDirectionEndIndex() < 0 && end >= 0)
-            {
-                DirectionConstraint.Fix(End(end), End(1 - end));
-                ShowProperties();
-            }
+            DirectionConstraint.FixDirection(this);
+            ShowProperties();
         }
 
         /// <summary>The opposite of <see cref="FixDirection"/> (<see cref="DirectionConstraint.Free"/>)</summary>
@@ -359,56 +296,29 @@ namespace DynamicGeometry
         [PropertyGridIcon(PropertyGridIcon.Unlock)]
         public void FreeDirection()
         {
-            if (CanFreeDirection())
-            {
-                DirectionConstraint.Free((TranslatedPoint)Dependencies[FixedDirectionEndIndex()]);
-                ShowProperties();
-            }
+            DirectionConstraint.FreeDirection(this);
+            ShowProperties();
         }
 
+        /// <summary>The direction fixed at 0° or 180°, whichever is nearer (<see cref="DirectionConstraint.Align"/>)</summary>
         [PropertyGridVisible]
         [PropertyGridName("Horizontal")]
         [PropertyGridGroup("Direction")]
         [PropertyGridIcon(PropertyGridIcon.Horizontal)]
         public void MakeHorizontal()
         {
-            Align(axis: 0);
+            DirectionConstraint.Align(this, axis: 0);
+            ShowProperties();
         }
 
+        /// <summary>The direction fixed at 90° or 270°, whichever is nearer</summary>
         [PropertyGridVisible]
         [PropertyGridName("Vertical")]
         [PropertyGridGroup("Direction")]
         [PropertyGridIcon(PropertyGridIcon.Vertical)]
         public void MakeVertical()
         {
-            Align(axis: 90);
-        }
-
-        /// <summary>
-        /// The direction fixed along the axis, the nearer way (rightward or leftward, up or
-        /// down: the second point stays on its side of the first). One undo step: the fix,
-        /// then the direction set through the row, so that its undo puts the Number back.
-        /// </summary>
-        void Align(double axis)
-        {
-            if (!CanAlign(axis))
-            {
-                return;
-            }
-
-            double direction = DirectionConstraint.NearestAlong(Angle, axis);
-            var actionManager = Drawing.ActionManager;
-            using (Transaction.Create(actionManager, false))
-            {
-                if (FixedDirectionEndIndex() < 0)
-                {
-                    int end = EndToTurn();
-                    DirectionConstraint.Fix(End(end), End(1 - end));
-                }
-
-                Actions.SetProperty(actionManager, PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Angle)), direction);
-            }
-
+            DirectionConstraint.Align(this, axis: 90);
             ShowProperties();
         }
 

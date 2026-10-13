@@ -2,7 +2,7 @@
 
 namespace DynamicGeometry
 {
-    public class LineTwoPoints : LineBase, ILine, IConditionalProperties
+    public class LineTwoPoints : LineBase, ILine, IFixableDirection
     {
         /// <summary>
         /// Whether the line runs through its two points, so that a ray or a segment can be
@@ -25,8 +25,40 @@ namespace DynamicGeometry
                 return IsThroughTwoPoints;
             }
 
+            // (a segment bisector is built on two points too, and points across them)
+            if (DirectionConstraint.IsMember(propertyName))
+            {
+                return IsThroughTwoPoints && DirectionConstraint.CanEdit(this, propertyName);
+            }
+
             return true;
         }
+
+        /// <summary>
+        /// The way from the first point to the second, in degrees: typed, fixed and freed as a
+        /// segment's (<see cref="Segment.Direction"/>, <see cref="DirectionConstraint"/>). Not
+        /// a row of a line built otherwise, which hides it.
+        /// </summary>
+        [PropertyGridVisible]
+        [PropertyGridGroup("Direction")]
+        [PropertyGridPreferredEditor("UpDown")]
+        [PropertyGridCustomValueProvider(typeof(DirectionPropertyValue))]
+        public virtual double Direction
+        {
+            get
+            {
+                return DirectionConstraint.Of(Coordinates);
+            }
+            set
+            {
+                if (IsThroughTwoPoints)
+                {
+                    DirectionConstraint.SetDirection(this, value);
+                }
+            }
+        }
+
+        public IPoint DirectionEndpoint => IsThroughTwoPoints ? DirectionConstraint.Endpoint(this) : null;
 
         public virtual string Caption(string propertyName, string defaultCaption)
         {
@@ -82,6 +114,58 @@ namespace DynamicGeometry
         public void ConvertToSegment()
         {
             LineTwoPoints.Convert(this, Factory.CreateSegment(this.Drawing, this.Dependencies));
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Fix direction")]
+        [PropertyGridGroup("Direction")]
+        [PropertyGridIcon(PropertyGridIcon.Lock)]
+        public void FixDirection()
+        {
+            if (IsThroughTwoPoints)
+            {
+                DirectionConstraint.FixDirection(this);
+                Drawing.RaiseDisplayProperties(this);
+            }
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Free direction")]
+        [PropertyGridGroup("Direction")]
+        [PropertyGridIcon(PropertyGridIcon.Unlock)]
+        public void FreeDirection()
+        {
+            if (IsThroughTwoPoints)
+            {
+                DirectionConstraint.FreeDirection(this);
+                Drawing.RaiseDisplayProperties(this);
+            }
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Horizontal")]
+        [PropertyGridGroup("Direction")]
+        [PropertyGridIcon(PropertyGridIcon.Horizontal)]
+        public void MakeHorizontal()
+        {
+            if (IsThroughTwoPoints)
+            {
+                DirectionConstraint.Align(this, axis: 0);
+                Drawing.RaiseDisplayProperties(this);
+            }
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Vertical")]
+        [PropertyGridGroup("Direction")]
+        [PropertyGridIcon(PropertyGridIcon.Vertical)]
+        public void MakeVertical()
+        {
+            if (IsThroughTwoPoints)
+            {
+                DirectionConstraint.Align(this, axis: 90);
+                Drawing.RaiseDisplayProperties(this);
+            }
         }
 
 #endif

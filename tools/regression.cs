@@ -259,33 +259,39 @@ public class Program
         var segment = Factory.CreateSegment(drawing, first, second);
         Actions.Add(drawing, segment);
         string before = drawing.SaveAsText();
-        var value = new LengthPanel(segment).GetProperties().Single(property => property.Name == nameof(Segment.Length));
+        var value = new DimensionsPanel(segment).GetProperties().Single(property => property.Name == nameof(Segment.Length));
         Actions.SetProperty(drawing.ActionManager, value, value: 0.0);
         drawing.ActionManager.Undo();
         Require(drawing.SaveAsText() == before, "Panel length lost the endpoint.");
     }
 
     /// <summary>
-    /// A segment's or a vector's direction, in the length panel: typed, it turns the end once;
-    /// fixed, the end slides along the line through the start, and with the length fixed too
-    /// it is fully determined; Horizontal and Vertical fix it along the axis the nearer way;
-    /// each step undoes to the drawing before it and redoes to the one after. "firstEnd": the
-    /// second end is locked, so the first turns about it.
+    /// A segment's, a vector's, a ray's or a line's direction, in the panel after the tool:
+    /// typed, it turns the end once; fixed, the end slides along the line through the start,
+    /// and with the length fixed too it is fully determined; Horizontal and Vertical fix it
+    /// along the axis the nearer way; each step undoes to the drawing before it and redoes to
+    /// the one after. "firstEnd": the second end is locked, so the first turns about it.
     /// </summary>
     static void DirectionEditsAcrossKinds()
     {
-        foreach (string kind in new[] { "segment", "vector", "fixedLength", "firstEnd" })
+        foreach (string kind in new[] { "segment", "vector", "fixedLength", "firstEnd", "ray", "line" })
         {
             var drawing = NewDrawing();
             var first = AddPoint(drawing, x: 1, y: 2);
             var second = AddPoint(drawing, x: -3, y: 5);
-            IFixableLength figure = kind == "vector"
-                ? Factory.CreateVector(drawing, new IFigure[] { first, second })
-                : Factory.CreateSegment(drawing, first, second);
+            var points = new IFigure[] { first, second };
+            IFixableDirection figure = kind switch
+            {
+                "vector" => Factory.CreateVector(drawing, points),
+                "ray" => Factory.CreateRay(drawing, points),
+                "line" => Factory.CreateLineTwoPoints(drawing, points),
+                _ => Factory.CreateSegment(drawing, first, second)
+            };
             Actions.Add(drawing, figure);
+            var withLength = figure as IFixableLength;
             if (kind == "fixedLength")
             {
-                figure.FixLength();
+                withLength.FixLength();
             }
 
             if (kind == "firstEnd")
@@ -293,10 +299,10 @@ public class Program
                 second.Locked = true;
             }
 
-            var direction = (IFixableDirection)figure;
-            var panel = new LengthPanel(figure);
-            var row = panel.GetProperties().SingleOrDefault(property => property.Name == nameof(LengthPanel.Angle));
+            var panel = new DimensionsPanel(figure);
+            var row = panel.GetProperties().SingleOrDefault(property => property.Name == nameof(DimensionsPanel.Direction));
             Require(row != null, kind + ": the panel has no direction.");
+            Require((withLength != null) == panel.GetProperties().Any(property => property.Name == nameof(DimensionsPanel.Length)), kind + ": the panel's length row is wrong.");
 
             void Step(string what, Action action)
             {
@@ -313,29 +319,60 @@ public class Program
 
             bool Offers(string verb) => panel.GetMethods().Any(method => method.Name == verb);
 
+            // the distance between the two points, which a segment calls its length
+            double Apart() => ((IPoint)figure.Dependencies[0]).Coordinates.Distance(((IPoint)figure.Dependencies[1]).Coordinates);
+
             Step("direction 30", () => Actions.SetProperty(drawing.ActionManager, row, value: 30.0));
-            Near(direction.Angle, 30);
-            Near(figure.Length, 5);
-            Require(Offers(nameof(LengthPanel.FixDirection)) && !Offers(nameof(LengthPanel.FreeDirection)), kind + ": Fix direction isn't offered.");
+            Near(figure.Direction, 30);
+            Near(Apart(), 5);
+            Require(Offers(nameof(DimensionsPanel.FixDirection)) && !Offers(nameof(DimensionsPanel.FreeDirection)), kind + ": Fix direction isn't offered.");
             Step("fix direction", panel.FixDirection);
-            Require(!Offers(nameof(LengthPanel.FixDirection)) && Offers(nameof(LengthPanel.FreeDirection)), kind + ": Free direction isn't offered.");
-            Step("length 2", () => Set(drawing, figure, nameof(IFixableLength.Length), 2.0));
-            Near(direction.Angle, 30);
-            Near(figure.Length, 2);
+            Require(!Offers(nameof(DimensionsPanel.FixDirection)) && Offers(nameof(DimensionsPanel.FreeDirection)), kind + ": Free direction isn't offered.");
+            if (withLength != null)
+            {
+                Step("length 2", () => Set(drawing, figure, nameof(IFixableLength.Length), 2.0));
+                Near(figure.Direction, 30);
+                Near(withLength.Length, 2);
+            }
+
+            double apart = Apart();
             Step("horizontal", panel.MakeHorizontal);
-            Near(direction.Angle, 0);
-            Near(figure.Length, 2);
-            Require(!Offers(nameof(LengthPanel.MakeHorizontal)) && Offers(nameof(LengthPanel.MakeVertical)), kind + ": Horizontal is offered on a horizontal direction.");
+            Near(figure.Direction, 0);
+            Near(Apart(), apart);
+            Require(!Offers(nameof(DimensionsPanel.MakeHorizontal)) && Offers(nameof(DimensionsPanel.MakeVertical)), kind + ": Horizontal is offered on a horizontal direction.");
             Step("vertical", panel.MakeVertical);
-            Near(direction.Angle, 90);
+            Near(figure.Direction, 90);
             Step("direction 200", () => Actions.SetProperty(drawing.ActionManager, row, value: 200.0));
-            Near(direction.Angle, 200);
+            Near(figure.Direction, 200);
             Step("horizontal from 200", panel.MakeHorizontal);
-            Near(direction.Angle, 180);
+            Near(figure.Direction, 180);
             Step("free direction", panel.FreeDirection);
-            Require(Offers(nameof(LengthPanel.FixDirection)), kind + ": Fix direction isn't offered again.");
-            Near(direction.Angle, 180);
-            Near(figure.Length, 2);
+            Require(Offers(nameof(DimensionsPanel.FixDirection)), kind + ": Fix direction isn't offered again.");
+            Near(figure.Direction, 180);
+            Near(Apart(), apart);
+        }
+
+        // lines built otherwise point the way what they are built on says: a perpendicular
+        // bisector (on two points, but across them), a parallel, an angle bisector
+        {
+            var drawing = NewDrawing();
+            var a = AddPoint(drawing, x: 0, y: 0);
+            var b = AddPoint(drawing, x: 3, y: 1);
+            var c = AddPoint(drawing, x: 1, y: 4);
+            var line = Factory.CreateLineTwoPoints(drawing, new IFigure[] { a, b });
+            Actions.Add(drawing, line);
+            var others = new IFixableDirection[]
+            {
+                Factory.CreateSegmentBisector(drawing, new IFigure[] { a, b }),
+                Factory.CreateParallelLine(drawing, new IFigure[] { line, c }),
+                Factory.CreateAngleBisector(drawing, new IFigure[] { a, b, c })
+            };
+            foreach (var other in others)
+            {
+                Actions.Add(drawing, other);
+                Require(!other.CanEdit(nameof(IFixableDirection.Direction)) && !other.CanEdit(nameof(IFixableDirection.MakeHorizontal)), other.GetType().Name + " offers a direction.");
+                Require(new DimensionsPanel(other).GetProperties().All(property => property.Name != nameof(DimensionsPanel.Direction)), other.GetType().Name + "'s panel has a direction.");
+            }
         }
 
         // the end of a segment made horizontal, in its own grid: ticking Free direction (its
@@ -377,9 +414,9 @@ public class Program
         var circleDrawing = NewDrawing();
         var circle = Factory.CreateCircle(circleDrawing, new IFigure[] { AddPoint(circleDrawing, x: 0, y: 0), AddPoint(circleDrawing, x: 1, y: 0) });
         Actions.Add(circleDrawing, circle);
-        var circlePanel = new LengthPanel(circle);
-        Require(circlePanel.GetProperties().All(property => property.Name != nameof(LengthPanel.Angle)), "A circle's panel has a direction.");
-        Require(circlePanel.GetMethods().All(method => method.Name != nameof(LengthPanel.MakeHorizontal)), "A circle's panel has Horizontal.");
+        var circlePanel = new DimensionsPanel(circle);
+        Require(circlePanel.GetProperties().All(property => property.Name != nameof(DimensionsPanel.Direction)), "A circle's panel has a direction.");
+        Require(circlePanel.GetMethods().All(method => method.Name != nameof(DimensionsPanel.MakeHorizontal)), "A circle's panel has Horizontal.");
     }
 
     static void PointFunctionsRejectCycles()

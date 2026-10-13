@@ -6,29 +6,34 @@ using System.Runtime.CompilerServices;
 namespace DynamicGeometry;
 
 /// <summary>
-/// The side panel right after a figure with a length is made (a segment, a vector, a
-/// regular polygon, a circle): just its length and Fix length or Free length, forwarded to
-/// the figure, so that "a segment of length 2" is draw, type 2, click Fix - without a
-/// length box on every tool. A segment or a vector has its direction under that, with Fix
-/// direction, Horizontal and Vertical: a horizontal segment of length 2 is draw, click
-/// Horizontal, type 2, click Fix length. Captions come from the figure (Side, Radius, Fix
+/// The side panel right after a figure with a length or a direction is made: its length with
+/// Fix length or Free length (a segment, a vector, a regular polygon, a circle), and its
+/// direction with Fix direction, Horizontal and Vertical (a segment, a vector, a ray, a line
+/// through two points), forwarded to the figure - so that "a segment of length 2" is draw,
+/// type 2, click Fix, and a horizontal one is draw, click Horizontal, type 2, click Fix
+/// length, without a box on every tool. Captions come from the figure (Side, Radius, Fix
 /// radius); the title is the figure's ("Segment AB"). The figure's own grid has the same
 /// rows. A regular polygon's panel starts with its number of sides, the polygon's own row.
 /// </summary>
-public class LengthPanel :
+public class DimensionsPanel :
     IConditionalProperties,
     ICustomPropertyProvider,
     ICustomMethodProvider,
     IPropertyGridHost,
     INotifyPropertyChanged
 {
-    readonly IFixableLength figure;
+    readonly IFigure figure;
+    readonly IConditionalProperties conditions;
+    readonly IFixableLength length;
     readonly IFixableDirection direction;
     PropertyGrid propertyGrid;
 
-    public LengthPanel(IFixableLength figure)
+    /// <param name="figure">An <see cref="IFixableLength"/>, an <see cref="IFixableDirection"/>, or both</param>
+    public DimensionsPanel(IFigure figure)
     {
         this.figure = figure;
+        conditions = (IConditionalProperties)figure;
+        length = figure as IFixableLength;
         direction = figure as IFixableDirection;
     }
 
@@ -74,11 +79,13 @@ public class LengthPanel :
         PropertyChanged?.Invoke(this, e);
     }
 
+    /// <summary>Whether the panel has the direction: where the figure has one that can be set</summary>
+    bool ShowsDirection => direction != null && direction.CanEdit(nameof(Direction));
+
     /// <summary>
     /// The rows: a regular polygon's number of sides first (the polygon's own property, its
     /// up/down within the polygon's limits, an undo step on the polygon), then the length,
-    /// then Show where there is a figure to hang a measurement on, then the direction where
-    /// the figure has one that can be set.
+    /// then Show where there is a figure to hang a measurement on, then the direction.
     /// </summary>
     public IEnumerable<IValueProvider> GetProperties()
     {
@@ -87,16 +94,19 @@ public class LengthPanel :
             yield return PropertyDiscoveryStrategy.CreateValueProvider(polygon, nameof(RegularPolygon.NumberOfSides));
         }
 
-        yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Length));
-        // a regular polygon's sides are its own children, nothing in the drawing to measure
-        if (figure.MeasuredFigures != null)
+        if (length != null)
         {
-            yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Show));
+            yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Length));
+            // a regular polygon's sides are its own children, nothing in the drawing to measure
+            if (length.MeasuredFigures != null)
+            {
+                yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Show));
+            }
         }
 
-        if (direction != null && direction.CanEdit(nameof(Angle)))
+        if (ShowsDirection)
         {
-            yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Angle));
+            yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Direction));
         }
     }
 
@@ -106,30 +116,29 @@ public class LengthPanel :
     [PropertyGridCustomValueProvider(typeof(PanelLengthValue))]
     public double Length
     {
-        get { return figure.Length; }
-        set { figure.Length = value; }
+        get { return length.Length; }
+        set { length.Length = value; }
     }
 
     public class PanelLengthValue : LengthPropertyValue
     {
-        public override IFixableLength Figure => ((LengthPanel)Parent).figure;
+        public override IFixableLength Figure => ((DimensionsPanel)Parent).length;
     }
 
     /// <summary>The figure's direction, in degrees (named as the figure's row is, so that its CanEdit answers for both)</summary>
     [PropertyGridVisible]
-    [PropertyGridName("Direction")]
     [PropertyGridGroup("Direction")]
     [PropertyGridPreferredEditor("UpDown")]
     [PropertyGridCustomValueProvider(typeof(PanelDirectionValue))]
-    public double Angle
+    public double Direction
     {
-        get { return direction.Angle; }
-        set { direction.Angle = value; }
+        get { return direction.Direction; }
+        set { direction.Direction = value; }
     }
 
     public class PanelDirectionValue : DirectionPropertyValue
     {
-        public override IFixableDirection Figure => ((LengthPanel)Parent).direction;
+        public override IFixableDirection Figure => ((DimensionsPanel)Parent).direction;
     }
 
     /// <summary>
@@ -147,17 +156,17 @@ public class LengthPanel :
     {
         get
         {
-            return LengthConstraint.FindMeasurement(figure) != null;
+            return LengthConstraint.FindMeasurement(length) != null;
         }
         set
         {
-            var existing = LengthConstraint.FindMeasurement(figure);
+            var existing = LengthConstraint.FindMeasurement(length);
             if (value && existing == null)
             {
                 if (!retiredMeasurements.TryGetValue(figure, out var measurement)
-                    || !measurement.Dependencies.SequenceEqual(figure.MeasuredFigures))
+                    || !measurement.Dependencies.SequenceEqual(length.MeasuredFigures))
                 {
-                    measurement = LengthConstraint.CreateMeasurement(figure);
+                    measurement = LengthConstraint.CreateMeasurement(length);
                 }
 
                 retiredMeasurements.Remove(figure);
@@ -179,7 +188,7 @@ public class LengthPanel :
     [PropertyGridIcon(PropertyGridIcon.Lock)]
     public void FixLength()
     {
-        figure.FixLength();
+        length.FixLength();
         ShowAgain();
     }
 
@@ -188,7 +197,7 @@ public class LengthPanel :
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
     public void FreeLength()
     {
-        figure.FreeLength();
+        length.FreeLength();
         ShowAgain();
     }
 
@@ -250,31 +259,36 @@ public class LengthPanel :
     /// </summary>
     public IEnumerable<IOperationDescription> GetMethods()
     {
-        var names = new List<string>() { nameof(FixLength), nameof(FreeLength) };
-        if (direction != null && direction.CanEdit(nameof(Angle)))
+        var names = new List<string>();
+        if (length != null)
+        {
+            names.AddRange(new[] { nameof(FixLength), nameof(FreeLength) });
+        }
+
+        if (ShowsDirection)
         {
             names.AddRange(new[] { nameof(FixDirection), nameof(FreeDirection), nameof(MakeHorizontal), nameof(MakeVertical) });
         }
 
         foreach (var name in names)
         {
-            if (figure.CanEdit(name))
+            if (conditions.CanEdit(name))
             {
-                yield return new CaptionedMethod(MethodDescription.Get<LengthPanel>(name), figure);
+                yield return new CaptionedMethod(MethodDescription.Get<DimensionsPanel>(name), conditions);
             }
         }
 
-        yield return MethodDescription.Get<LengthPanel>("OK");
+        yield return MethodDescription.Get<DimensionsPanel>("OK");
     }
 
     public bool CanEdit(string propertyName)
     {
-        return figure.CanEdit(propertyName);
+        return conditions.CanEdit(propertyName);
     }
 
     public string Caption(string propertyName, string defaultCaption)
     {
-        return figure.Caption(propertyName, defaultCaption);
+        return conditions.Caption(propertyName, defaultCaption);
     }
 
     public override string ToString()

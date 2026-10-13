@@ -1074,18 +1074,23 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   segments, vectors, regular polygons, circles). An end on a line that runs through the pivot
   takes the line as its direction instead (the Number signed along it, so the end is fully
   determined) and Free makes it a point on the line again; an end on any other figure can't be
-  stretched or fixed at all. A segment's or a vector's **direction** works the same way
-  (`IFixableDirection`, `Figures/Lines/DirectionConstraint.cs`, 2026-10-12): the Direction
-  row turns an end once, Fix direction makes the end a `TranslatedPoint` from the pivot whose
-  direction is an auxiliary `Number` (distance free: it slides along the line through the
-  pivot) - the same point Fix length makes, so the two are fixed and freed one by one through
-  its Free distance and Free direction, and fixed both ways it is fully determined. The end
-  turned is the second if it can be, else the first (whose own direction is the segment's +
-  180°). Horizontal and Vertical fix the direction along the axis the nearer way (0° or
-  180°, 90° or 270°), one undo step. Right after such a figure is made the side
-  panel shows a `LengthPanel` (`FigureCreator.ShowCreatedFigure`): the length, and for a
-  segment or a vector the direction, each in its own box with its verbs; the tools
-  themselves have no length box. A regular polygon's panel starts with the polygon's own `NumberOfSides` row (the
+  stretched or fixed at all. The **direction** of a segment, a vector, a ray or a line
+  through two points works the same way (`IFixableDirection`, the `Direction` property in
+  degrees - a vector's own `Direction` is radians, so its row stays `Angle` and the
+  interface is implemented explicitly; `Figures/Lines/DirectionConstraint.cs`, 2026-10-12):
+  the row turns an end once, Fix direction makes the end a `TranslatedPoint` from the pivot
+  whose direction is an auxiliary `Number` (distance free: it slides along the line through
+  the pivot) - the same point Fix length makes, so the two are fixed and freed one by one
+  through its Free distance and Free direction, and fixed both ways it is fully determined.
+  The end turned is the second if it can be, else the first (whose own direction is the
+  figure's + 180°). Horizontal and Vertical fix the direction along the axis the nearer way
+  (0° or 180°, 90° or 270°), one undo step. Lines built otherwise inherit the members and
+  say no (`DirectionConstraint.CanEdit` wants two points; `LineTwoPoints.IsThroughTwoPoints`
+  for a segment bisector, which is on two points), and hide the row: a parallel, a
+  perpendicular, an angle bisector (whose `Angle` is its half angle, why the property is
+  not `Angle`). Right after such a figure is made the side panel shows a `DimensionsPanel`
+  (`FigureCreator.ShowCreatedFigure`): the length and the direction, whichever the figure
+  has, each in its own box with its verbs; the tools themselves have no length box. A regular polygon's panel starts with the polygon's own `NumberOfSides` row (the
   panel is an `ICustomPropertyProvider` and forwards the figure's `PropertyChanged` while the
   grid shows it, so the side and the title follow a change of the count). The swap is `Actions.ReplacePoint`, which hands over the point's name label
   (`ReplaceFigureAction` skips it on purpose). A creator's undo transaction spans one

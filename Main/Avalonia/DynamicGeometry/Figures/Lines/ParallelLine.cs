@@ -32,6 +32,20 @@
             }
         }
 
+        /// <summary>Not a row of a parallel's: it points the way its line does</summary>
+        [PropertyGridVisible(false)]
+        public override double Direction
+        {
+            get
+            {
+                return base.Direction;
+            }
+            set
+            {
+                base.Direction = value;
+            }
+        }
+
         public override PointPair Coordinates
         {
             get

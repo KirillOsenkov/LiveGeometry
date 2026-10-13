@@ -222,11 +222,12 @@ namespace DynamicGeometry
             }
         }
 
-        // the direction too: an end that can't be turned (a point on a figure, a start built on
-        // the end) leaves the row read-only, where a set was an undo step that undid nothing
+        // the direction too (its row is Angle here): an end that can't be turned (a point on a
+        // figure, a start built on the end) leaves the row read-only, where a set was an undo
+        // step that undid nothing
         public bool CanEdit(string propertyName)
         {
-            return Line.CanEdit(propertyName);
+            return Line.CanEdit(propertyName == nameof(Angle) ? nameof(Segment.Direction) : propertyName);
         }
 
         public IPoint LengthEndpoint => Line.LengthEndpoint;
@@ -274,11 +275,24 @@ namespace DynamicGeometry
         {
             get
             {
-                return Line.Angle;
+                return Line.Direction;
             }
             set
             {
-                Line.Angle = value;
+                Line.Direction = value;
+            }
+        }
+
+        // the vector's own Direction is in radians (what a translation by it reads)
+        double IFixableDirection.Direction
+        {
+            get
+            {
+                return Angle;
+            }
+            set
+            {
+                Angle = value;
             }
         }
 

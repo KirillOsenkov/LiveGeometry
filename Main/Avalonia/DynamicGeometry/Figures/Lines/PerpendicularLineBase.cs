@@ -64,6 +64,20 @@ public abstract class PerpendicularLineBase : LineTwoPoints
         }
     }
 
+    /// <summary>Not a row of a perpendicular's: it points across its line or segment</summary>
+    [PropertyGridVisible(false)]
+    public override double Direction
+    {
+        get
+        {
+            return base.Direction;
+        }
+        set
+        {
+            base.Direction = value;
+        }
+    }
+
     [PropertyGridVisible]
     [PropertyGridName("Right angle mark")]
     public bool ShowRightAngle

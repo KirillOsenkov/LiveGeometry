@@ -251,9 +251,10 @@ namespace DynamicGeometry
         /// once, and the status bar says so - instead of a box for it on every tool: its tied
         /// values (<see cref="TiedValuesPanel"/> - the angle of a line at an angle or of a
         /// rotation, the factor of a dilation, the distance and direction of a translation,
-        /// see <see cref="ITiedValues"/>), or the length and Fix length of a figure with one
-        /// (<see cref="LengthPanel"/>: a segment, a vector, a square's base side, a regular
-        /// polygon), with the direction, Horizontal and Vertical of a segment or a vector.
+        /// see <see cref="ITiedValues"/>), or the length and direction of a figure with them
+        /// (<see cref="DimensionsPanel"/>: the length and Fix length of a segment, a vector, a
+        /// square's base side, a regular polygon, a circle; the direction, Fix direction,
+        /// Horizontal and Vertical of a segment, a vector, a ray, a line).
         /// </summary>
         protected virtual void ShowCreatedFigure(IList<IFigure> figures)
         {
@@ -264,18 +265,37 @@ namespace DynamicGeometry
                 return;
             }
 
-            var withLength = figures.OfType<IFixableLength>().FirstOrDefault();
             // nothing to offer when no point can move (built on existing dependent points)
-            if (withLength == null || !withLength.CanEdit("Length"))
+            var shown = figures.FirstOrDefault(figure => CanSetLength(figure) || CanSetDirection(figure));
+            if (shown == null)
             {
                 return;
             }
 
-            var what = withLength.Caption("Length", "Length").ToLowerInvariant();
-            Drawing.RaiseDisplayProperties(new LengthPanel(withLength));
-            Drawing.RaiseStatusNotification(withLength is IFixableDirection direction && direction.CanEdit(nameof(direction.Angle))
-                ? withLength.Title + ": set its " + what + " and direction in the panel, or fix them."
-                : withLength.Title + ": set its " + what + " in the panel, or fix it.");
+            var what = new List<string>();
+            if (CanSetLength(shown))
+            {
+                what.Add(((IFixableLength)shown).Caption("Length", "Length").ToLowerInvariant());
+            }
+
+            if (CanSetDirection(shown))
+            {
+                what.Add("direction");
+            }
+
+            Drawing.RaiseDisplayProperties(new DimensionsPanel(shown));
+            Drawing.RaiseStatusNotification(
+                shown.Title + ": set its " + string.Join(" and ", what) + " in the panel, or fix " + (what.Count > 1 ? "them." : "it."));
+        }
+
+        static bool CanSetLength(IFigure figure)
+        {
+            return figure is IFixableLength withLength && withLength.CanEdit(nameof(withLength.Length));
+        }
+
+        static bool CanSetDirection(IFigure figure)
+        {
+            return figure is IFixableDirection withDirection && withDirection.CanEdit(nameof(withDirection.Direction));
         }
 
         #endregion
