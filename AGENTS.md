@@ -998,7 +998,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   its selected item into view (the styles, the emoji) scrolls only itself: the request
   is stopped on its way up to the panel's scroll viewer (`CreatePropertyGrid`), or in a
   small window the panel opened scrolled down to the figure's style, its first rows cut
-  off.
+  off. After undo or redo (`DrawingControl.UndoneOrRedone`, `DrawingHost`) a panel that was
+  up shows a figure's page as the selection is now, read again, and a tool's own panel
+  again; anything else goes away (the panel after a construction, a style, the settings:
+  they may be about a figure that left), and a panel put away stays away. Every panel went
+  away until 2026-10-12, a selected figure's too.
 - **A figure inherits the rows and buttons of its base class**, and has to take away the
   ones that are not its own: a button through `IConditionalProperties.CanEdit` (by method
   name), a row by overriding the property with `[PropertyGridVisible(false)]`, or by making

@@ -32,7 +32,7 @@ namespace DynamicGeometry
             }
             UpdateUndoRedo();
             CommandToolButton.UpdateToggles();
-            Drawing.RaiseDisplayProperties(null);
+            ShowPanelAfterHistoryStep();
         }
 
         public void Redo()
@@ -55,7 +55,26 @@ namespace DynamicGeometry
             }
             UpdateUndoRedo();
             CommandToolButton.UpdateToggles();
-            Drawing.RaiseDisplayProperties(null);
+            ShowPanelAfterHistoryStep();
+        }
+
+        /// <summary>
+        /// After an undo or a redo, what the side panel shows may be about a figure that left;
+        /// whoever hosts the panel decides what it shows now (<see cref="DrawingHost"/>: the
+        /// selection again). With nobody listening the panel is put away.
+        /// </summary>
+        public event EventHandler UndoneOrRedone;
+
+        void ShowPanelAfterHistoryStep()
+        {
+            if (UndoneOrRedone != null)
+            {
+                UndoneOrRedone(this, EventArgs.Empty);
+            }
+            else
+            {
+                Drawing.RaiseDisplayProperties(null);
+            }
         }
 
         /// <summary>

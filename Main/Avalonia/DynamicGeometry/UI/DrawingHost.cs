@@ -444,6 +444,34 @@ namespace DynamicGeometry
             DrawingControl.ReadyForInteraction += RaiseReadyForInteraction;
             DrawingControl.DrawingAttach += DrawingControl_DrawingAttach;
             DrawingControl.DrawingDetach += DrawingControl_DrawingDetach;
+            DrawingControl.UndoneOrRedone += DrawingControl_UndoneOrRedone;
+        }
+
+        /// <summary>
+        /// After undo or redo, a side panel that was up shows anew what it can still trust: a
+        /// figure's page shows the selection as it is now (read again, so its rows say the
+        /// values put back; nothing when nothing is selected any more), a tool's panel comes
+        /// back. Anything else is put away, as every panel was before (2026-10-12): the panel
+        /// after a construction, a style, the settings may be about a figure that just left.
+        /// A panel that was put away stays away.
+        /// </summary>
+        void DrawingControl_UndoneOrRedone(object sender, EventArgs e)
+        {
+            var drawing = CurrentDrawing;
+            if (drawing == null || !IsSidePanelShown)
+            {
+                return;
+            }
+
+            var shown = PropertyGrid.Selection;
+            if (shown is IFigure || shown is FigureSelection)
+            {
+                ShowSelectionProperties();
+                return;
+            }
+
+            var toolPanel = drawing.Behavior?.PropertyBag;
+            drawing.RaiseDisplayProperties(shown != null && toolPanel?.GetType() == shown.GetType() ? toolPanel : null);
         }
 
         protected void RaiseReadyForInteraction(object sender, EventArgs e)
