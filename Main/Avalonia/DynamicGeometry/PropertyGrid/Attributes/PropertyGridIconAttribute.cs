@@ -23,7 +23,9 @@ public enum PropertyGridIcon
     Copy,
     Swatches,
     BringToFront,
-    SendToBack
+    SendToBack,
+    Horizontal,
+    Vertical
 }
 
 /// <summary>

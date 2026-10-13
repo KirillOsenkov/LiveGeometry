@@ -44,6 +44,11 @@ public static class PropertyGridIcons
                 return Icon(Shape("M3,11 L11.5,2.5", null, outline, thickness: 1.2), Arrowhead(11.5, 2.5), Dot(3, 11));
             case PropertyGridIcon.Line:
                 return Icon(Shape("M2.5,11.5 L11.5,2.5", null, outline, thickness: 1.2), Arrowhead(11.5, 2.5), Arrowhead(2.5, 11.5, back: true));
+            case PropertyGridIcon.Horizontal:
+                // the Segment icon laid flat, or stood up
+                return Icon(Shape("M2.5,7 H11.5", null, outline, thickness: 1.2), Dot(2.5, 7), Dot(11.5, 7));
+            case PropertyGridIcon.Vertical:
+                return Icon(Shape("M7,2.5 V11.5", null, outline, thickness: 1.2), Dot(7, 2.5), Dot(7, 11.5));
             case PropertyGridIcon.Reverse:
                 return Icon(Shape("M2.5,4.5 H11.5 M9,2 L11.5,4.5 L9,7 M11.5,9.5 H2.5 M5,7 L2.5,9.5 L5,12", null, outline, thickness: 1.4));
             case PropertyGridIcon.Angle:

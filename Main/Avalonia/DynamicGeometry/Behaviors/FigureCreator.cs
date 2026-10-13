@@ -253,7 +253,7 @@ namespace DynamicGeometry
         /// rotation, the factor of a dilation, the distance and direction of a translation,
         /// see <see cref="ITiedValues"/>), or the length and Fix length of a figure with one
         /// (<see cref="LengthPanel"/>: a segment, a vector, a square's base side, a regular
-        /// polygon).
+        /// polygon), with the direction, Horizontal and Vertical of a segment or a vector.
         /// </summary>
         protected virtual void ShowCreatedFigure(IList<IFigure> figures)
         {
@@ -273,7 +273,9 @@ namespace DynamicGeometry
 
             var what = withLength.Caption("Length", "Length").ToLowerInvariant();
             Drawing.RaiseDisplayProperties(new LengthPanel(withLength));
-            Drawing.RaiseStatusNotification(withLength.Title + ": set its " + what + " in the panel, or fix it.");
+            Drawing.RaiseStatusNotification(withLength is IFixableDirection direction && direction.CanEdit(nameof(direction.Angle))
+                ? withLength.Title + ": set its " + what + " and direction in the panel, or fix them."
+                : withLength.Title + ": set its " + what + " in the panel, or fix it.");
         }
 
         #endregion

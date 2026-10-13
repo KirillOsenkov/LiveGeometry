@@ -111,6 +111,26 @@ public static class PropertyGridTheme
             }
         });
 
+        // A check box that can't be ticked looked like one that can: Fluent's is the
+        // unticked outline a shade fainter, or ticked a pale gray square with a white check.
+        // Painted as a grayed text box is (above): the chrome's tint inside, the separator
+        // around, and the check in the muted text color, which shows on the tint.
+        styles.Add(new AvaloniaStyle(x => x.OfType<CheckBox>().Class(":disabled").Template().OfType<Border>().Name("NormalRectangle"))
+        {
+            Setters =
+            {
+                Themed(Border.BackgroundProperty, nameof(AppTheme.HeaderRow)),
+                Themed(Border.BorderBrushProperty, nameof(AppTheme.Separator))
+            }
+        });
+        styles.Add(new AvaloniaStyle(x => x.OfType<CheckBox>().Class(":disabled").Template().OfType<Avalonia.Controls.Shapes.Path>().Name("CheckGlyph"))
+        {
+            Setters =
+            {
+                Themed(Avalonia.Controls.Shapes.Shape.FillProperty, nameof(AppTheme.TextMuted))
+            }
+        });
+
         styles.Add(new AvaloniaStyle(x => x.OfType<ComboBox>())
         {
             Setters =

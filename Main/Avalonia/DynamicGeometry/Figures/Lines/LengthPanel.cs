@@ -9,9 +9,11 @@ namespace DynamicGeometry;
 /// The side panel right after a figure with a length is made (a segment, a vector, a
 /// regular polygon, a circle): just its length and Fix length or Free length, forwarded to
 /// the figure, so that "a segment of length 2" is draw, type 2, click Fix - without a
-/// length box on every tool. Captions come from the figure (Side, Radius, Fix radius);
-/// the title is the figure's ("Segment AB"). The figure's own grid has the same rows. A
-/// regular polygon's panel starts with its number of sides, the polygon's own row.
+/// length box on every tool. A segment or a vector has its direction under that, with Fix
+/// direction, Horizontal and Vertical: a horizontal segment of length 2 is draw, click
+/// Horizontal, type 2, click Fix length. Captions come from the figure (Side, Radius, Fix
+/// radius); the title is the figure's ("Segment AB"). The figure's own grid has the same
+/// rows. A regular polygon's panel starts with its number of sides, the polygon's own row.
 /// </summary>
 public class LengthPanel :
     IConditionalProperties,
@@ -21,11 +23,13 @@ public class LengthPanel :
     INotifyPropertyChanged
 {
     readonly IFixableLength figure;
+    readonly IFixableDirection direction;
     PropertyGrid propertyGrid;
 
     public LengthPanel(IFixableLength figure)
     {
         this.figure = figure;
+        direction = figure as IFixableDirection;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -73,7 +77,8 @@ public class LengthPanel :
     /// <summary>
     /// The rows: a regular polygon's number of sides first (the polygon's own property, its
     /// up/down within the polygon's limits, an undo step on the polygon), then the length,
-    /// then Show where there is a figure to hang a measurement on.
+    /// then Show where there is a figure to hang a measurement on, then the direction where
+    /// the figure has one that can be set.
     /// </summary>
     public IEnumerable<IValueProvider> GetProperties()
     {
@@ -88,9 +93,15 @@ public class LengthPanel :
         {
             yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Show));
         }
+
+        if (direction != null && direction.CanEdit(nameof(Angle)))
+        {
+            yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Angle));
+        }
     }
 
     [PropertyGridVisible]
+    [PropertyGridGroup("Length")]
     [PropertyGridPreferredEditor("UpDown")]
     [PropertyGridCustomValueProvider(typeof(PanelLengthValue))]
     public double Length
@@ -104,6 +115,23 @@ public class LengthPanel :
         public override IFixableLength Figure => ((LengthPanel)Parent).figure;
     }
 
+    /// <summary>The figure's direction, in degrees (named as the figure's row is, so that its CanEdit answers for both)</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Direction")]
+    [PropertyGridGroup("Direction")]
+    [PropertyGridPreferredEditor("UpDown")]
+    [PropertyGridCustomValueProvider(typeof(PanelDirectionValue))]
+    public double Angle
+    {
+        get { return direction.Angle; }
+        set { direction.Angle = value; }
+    }
+
+    public class PanelDirectionValue : DirectionPropertyValue
+    {
+        public override IFixableDirection Figure => ((LengthPanel)Parent).direction;
+    }
+
     /// <summary>
     /// A distance measurement on the figure, added or removed. The grid records the
     /// property set as the undo step, and this setter runs inside it - so the drawing is
@@ -113,6 +141,7 @@ public class LengthPanel :
     /// was dragged to and a drag of it in the undo history still finds it.
     /// </summary>
     [PropertyGridVisible]
+    [PropertyGridGroup("Length")]
     [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
     public bool Show
     {
@@ -146,6 +175,7 @@ public class LengthPanel :
     static readonly ConditionalWeakTable<IFigure, DistanceMeasurement> retiredMeasurements = new ConditionalWeakTable<IFigure, DistanceMeasurement>();
 
     [PropertyGridName("Fix length")]
+    [PropertyGridGroup("Length")]
     [PropertyGridIcon(PropertyGridIcon.Lock)]
     public void FixLength()
     {
@@ -154,10 +184,49 @@ public class LengthPanel :
     }
 
     [PropertyGridName("Free length")]
+    [PropertyGridGroup("Length")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
     public void FreeLength()
     {
         figure.FreeLength();
+        ShowAgain();
+    }
+
+    [PropertyGridName("Fix direction")]
+    [PropertyGridGroup("Direction")]
+    [PropertyGridIcon(PropertyGridIcon.Lock)]
+    public void FixDirection()
+    {
+        direction.FixDirection();
+        ShowAgain();
+    }
+
+    [PropertyGridName("Free direction")]
+    [PropertyGridGroup("Direction")]
+    [PropertyGridIcon(PropertyGridIcon.Unlock)]
+    public void FreeDirection()
+    {
+        direction.FreeDirection();
+        ShowAgain();
+    }
+
+    /// <summary>The direction fixed at 0° or 180°, whichever is nearer</summary>
+    [PropertyGridName("Horizontal")]
+    [PropertyGridGroup("Direction")]
+    [PropertyGridIcon(PropertyGridIcon.Horizontal)]
+    public void MakeHorizontal()
+    {
+        direction.MakeHorizontal();
+        ShowAgain();
+    }
+
+    /// <summary>The direction fixed at 90° or 270°, whichever is nearer</summary>
+    [PropertyGridName("Vertical")]
+    [PropertyGridGroup("Direction")]
+    [PropertyGridIcon(PropertyGridIcon.Vertical)]
+    public void MakeVertical()
+    {
+        direction.MakeVertical();
         ShowAgain();
     }
 
@@ -175,10 +244,19 @@ public class LengthPanel :
         figure.Drawing.RaiseDisplayProperties(this);
     }
 
-    /// <summary>The verb that applies, captioned by the figure ("Fix radius"), then OK</summary>
+    /// <summary>
+    /// The verbs that apply, captioned by the figure ("Fix radius"): the length's, the
+    /// direction's (only with its row: none for a direction nothing can set), then OK
+    /// </summary>
     public IEnumerable<IOperationDescription> GetMethods()
     {
-        foreach (var name in new[] { "FixLength", "FreeLength" })
+        var names = new List<string>() { nameof(FixLength), nameof(FreeLength) };
+        if (direction != null && direction.CanEdit(nameof(Angle)))
+        {
+            names.AddRange(new[] { nameof(FixDirection), nameof(FreeDirection), nameof(MakeHorizontal), nameof(MakeVertical) });
+        }
+
+        foreach (var name in names)
         {
             if (figure.CanEdit(name))
             {

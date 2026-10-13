@@ -299,6 +299,11 @@ namespace DynamicGeometry
             bool coalesce = false,
             object run = null)
         {
+            if (actionManager != null && valueProvider is ISelfRecordingValue recording && recording.TryRecord(actionManager, value))
+            {
+                return;
+            }
+
             SetPropertyAction action = new SetPropertyAction(valueProvider, value)
             {
                 Coalesce = coalesce,

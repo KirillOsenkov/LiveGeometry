@@ -15,7 +15,8 @@ namespace DynamicGeometry
     /// that dragging the point changes, kept in the file. A point with a free direction slides
     /// on the circle around its source, one with a free distance on the line through it
     /// (signed, so it passes through the source to the other side). Both free would be a free
-    /// point on a leash; the property grid doesn't allow it.
+    /// point on a leash: ticking the second Free box makes it a free point instead
+    /// (<see cref="FreedomValue.TryRecord"/>).
     /// </summary>
     public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalProperties
     {
@@ -218,8 +219,33 @@ namespace DynamicGeometry
         /// quantity had, whatever it was - unticking the box gives it a Number, which is not
         /// what a distance taken from a vector had.
         /// </summary>
-        public class FreedomValue : ConditionalPropertyValue, IRestorableValue
+        public class FreedomValue : ConditionalPropertyValue, IRestorableValue, ISelfRecordingValue
         {
+            /// <summary>
+            /// A tick that would leave both quantities free makes the point a free point where
+            /// it is (<see cref="PointSnapping.Release"/>, its own undo step): the end of a
+            /// segment made horizontal, its direction ticked free, is free as the panel's Free
+            /// direction makes it. The box was disabled there, and the tick did nothing.
+            /// </summary>
+            public bool TryRecord(ActionManager actionManager, object value)
+            {
+                var owner = Owner;
+                if (value is not true || !owner.FreesLast(OwnerQuantity))
+                {
+                    return false;
+                }
+
+                var drawing = owner.Drawing;
+                var free = PointSnapping.Release(owner);
+                // a point shown without being selected (its grid after "Type the distance")
+                if (!free.Selected)
+                {
+                    drawing.RaiseDisplayProperties(free);
+                }
+
+                return true;
+            }
+
             class SavedSource
             {
                 public IFigure Source;
@@ -290,11 +316,12 @@ namespace DynamicGeometry
             }
             set
             {
-                if (value)
+                // (the last one to free makes this a free point, which the row's value records itself)
+                if (value && !IsDirectionFree)
                 {
                     Free(distanceQuantity, DistanceValue);
                 }
-                else
+                else if (!value)
                 {
                     Fix(distanceQuantity, DistanceValue);
                 }
@@ -313,15 +340,29 @@ namespace DynamicGeometry
             }
             set
             {
-                if (value)
+                if (value && !IsDistanceFree)
                 {
                     Free(directionQuantity, DirectionRadians);
                 }
-                else
+                else if (!value)
                 {
                     Fix(directionQuantity, DirectionRadians);
                 }
             }
+        }
+
+        /// <summary>
+        /// Whether freeing the quantity frees the last one held, and the point can become a
+        /// free point for it: not one a locus is drawn from, nor one an expression reads
+        /// beyond what a free point has (<see cref="PointSnapping.CanRelease"/>'s rules)
+        /// </summary>
+        bool FreesLast(Quantity quantity)
+        {
+            var other = quantity == distanceQuantity ? directionQuantity : distanceQuantity;
+            return quantity.SourceIndex >= 0
+                && other.SourceIndex < 0
+                && !PointSnapping.IsHeldByLocus(this)
+                && !this.IsReadByExpressionsBeyond(typeof(FreePoint));
         }
 
         /// <summary>The way back from a distance taken from a figure: a typed value again (<see cref="Detach"/>)</summary>
@@ -351,8 +392,8 @@ namespace DynamicGeometry
 
         /// <summary>
         /// Which rows the grid lets the user edit: a value when it is free or held by a Number,
-        /// a Free checkbox unless ticking it would free both quantities, a "Type the ..."
-        /// button while the value is a figure's.
+        /// a Free checkbox unless ticking it would free both quantities of a point that can't
+        /// become a free point, a "Type the ..." button while the value is a figure's.
         /// </summary>
         public bool CanEdit(string propertyName)
         {
@@ -367,9 +408,9 @@ namespace DynamicGeometry
                 case nameof(UntieDirection):
                     return this.IsTied(nameof(Direction));
                 case "FreeDistance":
-                    return IsDistanceFree || !IsDirectionFree;
+                    return IsDistanceFree || !IsDirectionFree || FreesLast(distanceQuantity);
                 case "FreeDirection":
-                    return IsDirectionFree || !IsDistanceFree;
+                    return IsDirectionFree || !IsDistanceFree || FreesLast(directionQuantity);
                 default:
                     return true;
             }

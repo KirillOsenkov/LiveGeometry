@@ -11,7 +11,7 @@ namespace DynamicGeometry
     /// A segment with an arrowhead. An <see cref="ILine"/> like a segment, so that the tools
     /// that take a line take it (parallel, perpendicular, intersection, a point on it).
     /// </summary>
-    public class Vector : CompositeFigure, ILengthProvider, IFixableLength, ILine
+    public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixableDirection, ILine
     {
         public Vector()
         {
@@ -222,26 +222,16 @@ namespace DynamicGeometry
             }
         }
 
+        // the direction too: an end that can't be turned (a point on a figure, a start built on
+        // the end) leaves the row read-only, where a set was an undo step that undid nothing
         public bool CanEdit(string propertyName)
         {
-            if (propertyName == nameof(Angle))
-            {
-                // a direction typed in turns a free end about the start; any other end stays
-                // where it is built, and the set was an undo step that undid nothing. Nor a
-                // start built on the end (the midpoint of the end and another point), which
-                // moves with it: the vector came out at another angle, and shorter
-                return Dependencies.Count == 2
-                    && Dependencies[1] is FreePoint end
-                    && !(end is PointOnFigure)
-                    && !(end is PointInRegion)
-                    && !end.Locked
-                    && !Dependencies[0].DependsOn(end);
-            }
-
             return Line.CanEdit(propertyName);
         }
 
         public IPoint LengthEndpoint => Line.LengthEndpoint;
+
+        public IPoint DirectionEndpoint => Line.DirectionEndpoint;
 
         public IList<IFigure> MeasuredFigures
         {
@@ -273,43 +263,64 @@ namespace DynamicGeometry
             Drawing.RaiseDisplayProperties(this);
         }
 
-        /// <summary>
-        /// The direction as the grid sets it: undo puts the end back where it was. Turned back
-        /// by the angle, it came back to its place only while the start had stayed put.
-        /// </summary>
-        public class DirectionValue : ConditionalPropertyValue, IRestorableValue
-        {
-            public object CaptureState()
-            {
-                var vector = (Vector)Parent;
-                var end = vector.Dependencies.Count == 2 ? vector.Dependencies[1] as IRestorablePlace : null;
-                return (end, end?.CapturePlace());
-            }
-
-            public void RestoreState(object state)
-            {
-                var (end, place) = ((IRestorablePlace, object))state;
-                if (end != null)
-                {
-                    end.RestorePlace(place);
-                    ((IFigure)end).RecalculateAllDependents();
-                }
-            }
-        }
-
+        // undo puts the end back where it was: turned back by the angle, it came back to its
+        // place only while the start had stayed put
         [PropertyGridVisible]
         [PropertyGridName("Direction")]
-        [PropertyGridCustomValueProvider(typeof(DirectionValue))]
+        [PropertyGridGroup("Direction")]
+        [PropertyGridPreferredEditor("UpDown")]
+        [PropertyGridCustomValueProvider(typeof(DirectionPropertyValue))]
         public double Angle
         {
             get
             {
-                return Direction.ToDegrees();
+                return Line.Angle;
             }
             set
             {
                 Line.Angle = value;
             }
+        }
+
+        // so do Fix direction, Free direction, Horizontal and Vertical
+        [PropertyGridVisible]
+        [PropertyGridName("Fix direction")]
+        [PropertyGridGroup("Direction")]
+        [PropertyGridIcon(PropertyGridIcon.Lock)]
+        public void FixDirection()
+        {
+            Line.FixDirection();
+            Drawing.RaiseDisplayProperties(this);
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Free direction")]
+        [PropertyGridGroup("Direction")]
+        [PropertyGridIcon(PropertyGridIcon.Unlock)]
+        public void FreeDirection()
+        {
+            Line.FreeDirection();
+            Drawing.RaiseDisplayProperties(this);
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Horizontal")]
+        [PropertyGridGroup("Direction")]
+        [PropertyGridIcon(PropertyGridIcon.Horizontal)]
+        public void MakeHorizontal()
+        {
+            Line.MakeHorizontal();
+            Drawing.RaiseDisplayProperties(this);
+        }
+
+        [PropertyGridVisible]
+        [PropertyGridName("Vertical")]
+        [PropertyGridGroup("Direction")]
+        [PropertyGridIcon(PropertyGridIcon.Vertical)]
+        public void MakeVertical()
+        {
+            Line.MakeVertical();
+            Drawing.RaiseDisplayProperties(this);
         }
 
         public double Direction

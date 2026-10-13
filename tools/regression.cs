@@ -32,6 +32,7 @@ public class Program
             ("Point-on-circle parameter survives undo", PointParameterSurvivesUndo),
             ("Length edits across figure kinds", LengthEditsAcrossKinds),
             ("Length panel preserves endpoint on undo", LengthPanelUndo),
+            ("A direction typed, fixed, made horizontal or vertical, freed, and undone", DirectionEditsAcrossKinds),
             ("Point functions reject dependency cycles", PointFunctionsRejectCycles),
             ("Expression strategies agree", ExpressionStrategiesAgree),
             ("Labels reject dependency cycles", LabelsRejectCycles),
@@ -262,6 +263,123 @@ public class Program
         Actions.SetProperty(drawing.ActionManager, value, value: 0.0);
         drawing.ActionManager.Undo();
         Require(drawing.SaveAsText() == before, "Panel length lost the endpoint.");
+    }
+
+    /// <summary>
+    /// A segment's or a vector's direction, in the length panel: typed, it turns the end once;
+    /// fixed, the end slides along the line through the start, and with the length fixed too
+    /// it is fully determined; Horizontal and Vertical fix it along the axis the nearer way;
+    /// each step undoes to the drawing before it and redoes to the one after. "firstEnd": the
+    /// second end is locked, so the first turns about it.
+    /// </summary>
+    static void DirectionEditsAcrossKinds()
+    {
+        foreach (string kind in new[] { "segment", "vector", "fixedLength", "firstEnd" })
+        {
+            var drawing = NewDrawing();
+            var first = AddPoint(drawing, x: 1, y: 2);
+            var second = AddPoint(drawing, x: -3, y: 5);
+            IFixableLength figure = kind == "vector"
+                ? Factory.CreateVector(drawing, new IFigure[] { first, second })
+                : Factory.CreateSegment(drawing, first, second);
+            Actions.Add(drawing, figure);
+            if (kind == "fixedLength")
+            {
+                figure.FixLength();
+            }
+
+            if (kind == "firstEnd")
+            {
+                second.Locked = true;
+            }
+
+            var direction = (IFixableDirection)figure;
+            var panel = new LengthPanel(figure);
+            var row = panel.GetProperties().SingleOrDefault(property => property.Name == nameof(LengthPanel.Angle));
+            Require(row != null, kind + ": the panel has no direction.");
+
+            void Step(string what, Action action)
+            {
+                string before = drawing.SaveAsText();
+                action();
+                string after = drawing.SaveAsText();
+                Require(after != before, kind + ": " + what + " changed nothing.");
+                drawing.ActionManager.Undo();
+                Require(drawing.SaveAsText() == before, kind + ": undo of " + what + " didn't restore the drawing.");
+                drawing.ActionManager.Redo();
+                Require(drawing.SaveAsText() == after, kind + ": redo of " + what + " changed the drawing.");
+                drawing.Figures.CheckConsistency();
+            }
+
+            bool Offers(string verb) => panel.GetMethods().Any(method => method.Name == verb);
+
+            Step("direction 30", () => Actions.SetProperty(drawing.ActionManager, row, value: 30.0));
+            Near(direction.Angle, 30);
+            Near(figure.Length, 5);
+            Require(Offers(nameof(LengthPanel.FixDirection)) && !Offers(nameof(LengthPanel.FreeDirection)), kind + ": Fix direction isn't offered.");
+            Step("fix direction", panel.FixDirection);
+            Require(!Offers(nameof(LengthPanel.FixDirection)) && Offers(nameof(LengthPanel.FreeDirection)), kind + ": Free direction isn't offered.");
+            Step("length 2", () => Set(drawing, figure, nameof(IFixableLength.Length), 2.0));
+            Near(direction.Angle, 30);
+            Near(figure.Length, 2);
+            Step("horizontal", panel.MakeHorizontal);
+            Near(direction.Angle, 0);
+            Near(figure.Length, 2);
+            Require(!Offers(nameof(LengthPanel.MakeHorizontal)) && Offers(nameof(LengthPanel.MakeVertical)), kind + ": Horizontal is offered on a horizontal direction.");
+            Step("vertical", panel.MakeVertical);
+            Near(direction.Angle, 90);
+            Step("direction 200", () => Actions.SetProperty(drawing.ActionManager, row, value: 200.0));
+            Near(direction.Angle, 200);
+            Step("horizontal from 200", panel.MakeHorizontal);
+            Near(direction.Angle, 180);
+            Step("free direction", panel.FreeDirection);
+            Require(Offers(nameof(LengthPanel.FixDirection)), kind + ": Fix direction isn't offered again.");
+            Near(direction.Angle, 180);
+            Near(figure.Length, 2);
+        }
+
+        // the end of a segment made horizontal, in its own grid: ticking Free direction (its
+        // distance is free already) makes it a free point where it is, one undo step; so does
+        // ticking Free distance on the end of a fixed length
+        foreach (string quantity in new[] { nameof(TranslatedPoint.FreeDirection), nameof(TranslatedPoint.FreeDistance) })
+        {
+            var drawing = NewDrawing();
+            var first = AddPoint(drawing, x: 1, y: 2);
+            var segment = Factory.CreateSegment(drawing, first, AddPoint(drawing, x: 4, y: 3));
+            Actions.Add(drawing, segment);
+            if (quantity == nameof(TranslatedPoint.FreeDirection))
+            {
+                segment.MakeHorizontal();
+            }
+            else
+            {
+                segment.FixLength();
+            }
+
+            var end = (TranslatedPoint)segment.Dependencies[1];
+            var place = end.Coordinates;
+            var box = PropertyDiscoveryStrategy.CreateValueProvider(end, quantity);
+            Require(box.CanSetValue, quantity + " can't be ticked on the end.");
+            string before = drawing.SaveAsText();
+            Actions.SetProperty(drawing.ActionManager, box, value: true);
+            string after = drawing.SaveAsText();
+            var free = segment.Dependencies[1];
+            Require(PointSnapping.IsFreePoint(free) && free.Name == end.Name, quantity + " didn't make the end a free point.");
+            NearPoint(((IPoint)free).Coordinates, place);
+            drawing.ActionManager.Undo();
+            Require(drawing.SaveAsText() == before && segment.Dependencies[1] == end, quantity + ": undo didn't bring the translated point back.");
+            drawing.ActionManager.Redo();
+            Require(drawing.SaveAsText() == after, quantity + ": redo changed the drawing.");
+            drawing.Figures.CheckConsistency();
+        }
+
+        // a circle has a length and no direction
+        var circleDrawing = NewDrawing();
+        var circle = Factory.CreateCircle(circleDrawing, new IFigure[] { AddPoint(circleDrawing, x: 0, y: 0), AddPoint(circleDrawing, x: 1, y: 0) });
+        Actions.Add(circleDrawing, circle);
+        var circlePanel = new LengthPanel(circle);
+        Require(circlePanel.GetProperties().All(property => property.Name != nameof(LengthPanel.Angle)), "A circle's panel has a direction.");
+        Require(circlePanel.GetMethods().All(method => method.Name != nameof(LengthPanel.MakeHorizontal)), "A circle's panel has Horizontal.");
     }
 
     static void PointFunctionsRejectCycles()

@@ -1074,9 +1074,18 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   segments, vectors, regular polygons, circles). An end on a line that runs through the pivot
   takes the line as its direction instead (the Number signed along it, so the end is fully
   determined) and Free makes it a point on the line again; an end on any other figure can't be
-  stretched or fixed at all. Right after such a figure is made the side
-  panel shows a `LengthPanel` (`FigureCreator.ShowCreatedFigure`); the tools themselves have no
-  length box. A regular polygon's panel starts with the polygon's own `NumberOfSides` row (the
+  stretched or fixed at all. A segment's or a vector's **direction** works the same way
+  (`IFixableDirection`, `Figures/Lines/DirectionConstraint.cs`, 2026-10-12): the Direction
+  row turns an end once, Fix direction makes the end a `TranslatedPoint` from the pivot whose
+  direction is an auxiliary `Number` (distance free: it slides along the line through the
+  pivot) - the same point Fix length makes, so the two are fixed and freed one by one through
+  its Free distance and Free direction, and fixed both ways it is fully determined. The end
+  turned is the second if it can be, else the first (whose own direction is the segment's +
+  180°). Horizontal and Vertical fix the direction along the axis the nearer way (0° or
+  180°, 90° or 270°), one undo step. Right after such a figure is made the side
+  panel shows a `LengthPanel` (`FigureCreator.ShowCreatedFigure`): the length, and for a
+  segment or a vector the direction, each in its own box with its verbs; the tools
+  themselves have no length box. A regular polygon's panel starts with the polygon's own `NumberOfSides` row (the
   panel is an `ICustomPropertyProvider` and forwards the figure's `PropertyChanged` while the
   grid shows it, so the side and the title follow a change of the count). The swap is `Actions.ReplacePoint`, which hands over the point's name label
   (`ReplaceFigureAction` skips it on purpose). A creator's undo transaction spans one
@@ -1313,7 +1322,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (the parameter dragging changes); both are tied values (above), `SetSource` does the swap
   since a vector serves both at one index. Roles are stored by index into the dependency list, never
   inferred from types (a `Label` is both a length and an angle provider). A point with a free
-  quantity takes the green `PointOnFigure` style. The Translate tool is stepwise (source,
+  quantity takes the green `PointOnFigure` style. Both can't be free: ticking the second Free
+  box makes the point a free point where it is (`FreedomValue.TryRecord`, through
+  `ISelfRecordingValue`, which `Actions.SetProperty` asks first: a point swapped for another
+  is an undo step of its own, and can't be recorded from inside the property set; the box
+  was disabled until 2026-10-12). The Translate tool is stepwise (source,
   distance, direction, placement); its panel is cleared in `Stopping` because that event is
   raised before `Started` resets the state, and `DrawingControl` re-shows a behavior's
   `PropertyBag` on "construction complete" as well.

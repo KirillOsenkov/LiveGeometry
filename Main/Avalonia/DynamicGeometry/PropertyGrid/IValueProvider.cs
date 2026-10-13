@@ -29,6 +29,18 @@ namespace DynamicGeometry
         void RestoreState(object state);
     }
 
+    /// <summary>
+    /// A value whose set can be more than a property set: one that puts another kind of
+    /// figure in the figure's place (the last Free tick of a translated point makes it a free
+    /// point) is an undo step of its own, which can't be recorded from inside the set.
+    /// <see cref="Actions.SetProperty"/> asks it first.
+    /// </summary>
+    public interface ISelfRecordingValue
+    {
+        /// <summary>Records the change itself and says so; false leaves it to a plain property set</summary>
+        bool TryRecord(GuiLabs.Undo.ActionManager actionManager, object value);
+    }
+
     public class CompositeValueProvider : IValueProvider
     {
         public List<IValueProvider> InnerList = new List<IValueProvider>();
