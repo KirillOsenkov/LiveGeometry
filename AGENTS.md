@@ -1604,27 +1604,39 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Z order** (`Figures/ZOrder.cs`, 2026-10-10): every figure is drawn in its kind's
   `Layer` (the `ZOrder` enum, bottom up: Grid, Axes, Polygons - polygons, the interiors of
   regular polygons and Bezier paths - Labels, Figures - lines, circles, arcs, curves,
-  the sides of paths - Vectors, SelectionHalos, Handles, Points, PointLabels, Controls), and
-  within the band from Polygons to Vectors (`ZOrders.IsMovable`) its `Z` comes first and the
-  layer second: `ZIndex` is `ZOrders.Encode(Layer, Z)` - the layers under the band as they
-  are, the band above them with a stride of 1000 per Z, the layers over the band over all
-  of it. Every figure's Z is 0, so the gallery draws as it did before there was a Z (checked
-  pixel for pixel, `--check` before and after), and within one ZIndex the later figure is
-  on top (Avalonia sorts children by ZIndex stably; the player sorts the list the same
-  way). Bring to front sets the Z to one above the band's highest, Send to back to one
-  below its lowest (`ZOrders.BringToFront`/`SendToBack`, a `SetProperty` per figure in one
-  transaction: undo puts the old Z back); a polygon brought to front covers a circle, a
-  measurement, a segment and its marks, and nothing in the band ever covers a point. The
+  the sides of paths - Vectors, SelectionHalos, Handles, Points, PointLabels, Controls).
+  Two bands of layers are ordered by the figure's `Z` (`ZOrders.IsMovable`): the figures'
+  band, from Polygons to Vectors, where the Z comes first and the layer second, and the
+  points' band (2026-10-13), Points alone - points and sliders, ordered among themselves.
+  `ZIndex` is `ZOrders.Encode(Layer, Z)`: the layers under the figures' band as they are,
+  the figures' band with a stride of 1000 per Z, the halos and handles over all of it, the
+  points' band over those with the same stride (so a halo at a point's `ZIndex - 1` is
+  still over the points of the Z below), the layers over it over all of it. Every figure's
+  Z is 0, so the gallery draws as it did before there was a Z (checked pixel for pixel,
+  `--check` before and after), and within one ZIndex the later figure is on top (Avalonia
+  sorts children by ZIndex stably; the player sorts the list the same way). Bring to front
+  sets the Z to one above the highest of the figure's band, Send to back to one below its
+  lowest (`ZOrders.BringToFront`/`SendToBack`, a `SetProperty` per figure in one
+  transaction, a selection of both kinds band by band: undo puts the old Z back); a
+  polygon brought to front covers a circle, a measurement, a segment and its marks, a
+  point brought to front the points it overlaps (and a click there takes it first: of two
+  points the nearer wins only at one ZIndex, `FigureList.HitTest`), and nothing in the
+  figures' band ever covers a point. The
   verbs are grid buttons on every figure (`FigureBase.BringToFront`, vetoed through
   `[PropertyGridCondition]`, which names a bool method of the object: the grid asks it
   where `IConditionalProperties` would have to be implemented by every figure), on a
   multiple selection (`FigureSelection`, all of them at one Z, their order among
   themselves kept by the list) and in the context menu (`Dragger`, for the selection as
   Hide and Lock take it); offered only when a figure of the band that is not among them
-  is over (or under) one of them, or the step would be an undo step that changes
-  nothing; a figure outside the band (a point, a slider, a pinned label) gets none. A
+  is over (or under) one of them in the order of drawing - overlapping or not, as for the
+  figures - or the step would be an undo step that changes nothing; a figure outside the
+  bands (a label of a point, a pinned label) gets none. A swapped point
+  (`Actions.ReplacePoint`) keeps the Z. A
   composite's parts take its Z (`CompositeFigure.OnZIndexChanged`, and on `Children` adds:
-  a regular polygon's sides, a path's pieces); a composite drawn by its parts alone says
+  a regular polygon's sides, a path's pieces), but only parts of its band
+  (`ZOrders.PassOn`): a Z is a place in its own band, and a regular polygon brought to
+  front among the figures would have put its vertices over every point, a slider brought to
+  front among the points its track over every figure; a composite drawn by its parts alone says
   its layer itself (a regular polygon and a Bezier path are Polygons), or the verbs would
   not apply to it. Whatever a figure draws beside its shape follows it: the angle's fill at
   `Shape.ZIndex - 1`, the right angle mark at the owner's `ZIndex - 1`, a segment's marks
@@ -1636,8 +1648,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Selection is a halo, never a change of the figure** (`Figures/Shapes/SelectionHalo.cs`,
   2026-10-03): a striped band drawn from the shape's own `RenderedGeometry` under it (a
   slightly bigger silhouette for a point, a disc for an emoji), in one layer per canvas
-  (`SelectionHalo.Layer`, `ZOrder.SelectionHalos`, over every figure of the Z band and
-  under the points since 2026-10-10: under its figure it was hidden by one brought to
+  (`SelectionHalo.Layer`, `ZOrder.SelectionHalos`, over every figure of the figures' band
+  and under the points' band since 2026-10-10: under its figure it was hidden by one brought to
   front) whose opacity the halos share, so overlaps don't darken. Its brush is the theme's `SelectionHalo` (a gradient edited as
   any on the theme page), not stretched over the figure but repeated, reflected, every
   `StripeWidth` pixels along its angle (`SelectionHalo.MakeRepeating`); the halos redraw

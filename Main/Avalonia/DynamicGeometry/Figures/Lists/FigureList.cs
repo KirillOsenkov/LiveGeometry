@@ -217,11 +217,13 @@ namespace DynamicGeometry
                 {
                     if (bestFoundSoFar == null || bestFoundSoFar.ZIndex <= found.ZIndex)
                     {
-                        // of two nearby points, pick the one which is closer to the hit point
+                        // of two nearby points, pick the one which is closer to the hit point -
+                        // of two at one ZIndex: one brought to front is over the other
                         var oldPoint = bestFoundSoFar as IPoint;
                         var newPoint = found as IPoint;
-                        if (oldPoint != null 
-                            && newPoint != null 
+                        if (oldPoint != null
+                            && newPoint != null
+                            && bestFoundSoFar.ZIndex == found.ZIndex
                             && oldPoint.Coordinates.Distance(point) < newPoint.Coordinates.Distance(point))
                         {
                             continue;

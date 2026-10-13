@@ -134,8 +134,8 @@ namespace DynamicGeometry
         /// <see cref="ReplaceFigureAction"/> leaves alone - in one undo step. What the old point
         /// was built on goes with it when nothing else uses it (an auxiliary Number). The
         /// replacement should already be where the point is, so that nothing moves. It keeps
-        /// the point's visibility, lock and a style the user chose; a default style follows the
-        /// replacement's kind.
+        /// the point's visibility, lock, Z and a style the user chose; a default style follows
+        /// the replacement's kind.
         /// </summary>
         public static void ReplacePoint(PointBase point, PointBase replacement)
         {
@@ -163,6 +163,7 @@ namespace DynamicGeometry
                     Rebind));
                 replacement.Visible = point.Visible;
                 replacement.Locked = point.Locked;
+                replacement.Z = point.Z;
                 if (point.Style != null && point.Style != drawing.StyleManager.AssignDefaultStyle(point))
                 {
                     replacement.Style = point.Style;

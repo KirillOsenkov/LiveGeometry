@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace DynamicGeometry;
@@ -8,7 +9,7 @@ namespace DynamicGeometry;
 /// all of them at once, as the Delete key does. Two Bezier paths or more can be made one
 /// with holes.
 /// </summary>
-public class FigureSelection : CompositePropertyProvider, IConditionalProperties
+public class FigureSelection : CompositePropertyProvider, IConditionalProperties, INotifyPropertyChanged
 {
     readonly Drawing drawing;
     readonly IFigure[] figures;
@@ -36,6 +37,7 @@ public class FigureSelection : CompositePropertyProvider, IConditionalProperties
     public void BringToFront()
     {
         ZOrders.BringToFront(figures);
+        ButtonsChanged();
     }
 
     [PropertyGridVisible]
@@ -44,6 +46,15 @@ public class FigureSelection : CompositePropertyProvider, IConditionalProperties
     public void SendToBack()
     {
         ZOrders.SendToBack(figures);
+        ButtonsChanged();
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    /// <summary>The grid builds the page again: which of Bring to front and Send to back applies has changed</summary>
+    void ButtonsChanged()
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
     }
 
     [PropertyGridVisible]

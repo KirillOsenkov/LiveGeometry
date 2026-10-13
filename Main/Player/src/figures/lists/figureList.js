@@ -120,10 +120,12 @@ class FigureList {
             const found = item.hitTest(point);
             if (found != null && found.exists && filter(found)) {
                 if (bestFoundSoFar == null || bestFoundSoFar.zIndex <= found.zIndex) {
-                    // of two nearby points, pick the one which is closer to the hit point
+                    // of two nearby points, pick the one which is closer to the hit point -
+                    // of two at one zIndex: one brought to front is over the other
                     if (bestFoundSoFar != null
                         && bestFoundSoFar.isPoint === true
                         && found.isPoint === true
+                        && bestFoundSoFar.zIndex === found.zIndex
                         && bestFoundSoFar.coordinates.distance(point) < found.coordinates.distance(point)) {
                         continue;
                     }

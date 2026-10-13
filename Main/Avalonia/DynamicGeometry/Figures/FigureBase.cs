@@ -1053,8 +1053,16 @@ namespace DynamicGeometry
             }
             set
             {
+                bool changed = z != value;
                 z = value;
                 OnZIndexChanged();
+
+                // the grid offers Bring to front or Send to back by where the figure is now:
+                // after one, the same button stayed and did nothing visible a second time
+                if (changed)
+                {
+                    RaisePropertyChanged(null);
+                }
             }
         }
 

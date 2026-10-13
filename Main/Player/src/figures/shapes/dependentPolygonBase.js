@@ -356,7 +356,7 @@ class DependentPolygonBase extends CompositeFigure {
         vertex.visible = this.visible;
         this.registerPart(vertex);
         vertex.drawing = this.drawing;
-        vertex.z = this.z;
+        ZOrders.passOn(this, vertex);
         this.vertices.push(vertex);
         this.children.push(vertex);
         if (this.isOnCanvas) {

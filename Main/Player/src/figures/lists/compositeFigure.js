@@ -15,7 +15,7 @@ class CompositeFigure extends FigureBase {
 
     addChild(figure) {
         figure.registerWithDependencies();
-        figure.z = this.z;
+        ZOrders.passOn(this, figure);
         this.children.push(figure);
         if (this.drawing != null) {
             figure.drawing = this.drawing;
@@ -112,10 +112,10 @@ class CompositeFigure extends FigureBase {
         }
     }
 
-    /** A part is drawn where its figure is: a side of a regular polygon at the polygon's Z */
+    /** A part is drawn where its figure is: a side of a regular polygon at the polygon's Z (in the polygon's band) */
     onZIndexChanged() {
         for (const figure of this.children) {
-            figure.z = this.z;
+            ZOrders.passOn(this, figure);
         }
     }
 

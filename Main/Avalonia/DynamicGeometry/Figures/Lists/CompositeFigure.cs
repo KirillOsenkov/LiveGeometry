@@ -19,14 +19,15 @@ namespace DynamicGeometry
         }
 
         // a part is drawn where its figure is: brought to front with it, and one made later
-        // (a side added to a regular polygon) comes in at the figure's Z
+        // (a side added to a regular polygon) comes in at the figure's Z - in the figure's
+        // band of layers, where a Z means something (ZOrders.PassOn)
         void Children_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
                 foreach (IFigure child in e.NewItems)
                 {
-                    child.Z = Z;
+                    ZOrders.PassOn(this, child);
                 }
             }
         }
@@ -35,7 +36,7 @@ namespace DynamicGeometry
         {
             foreach (var child in Children)
             {
-                child.Z = Z;
+                ZOrders.PassOn(this, child);
             }
         }
 

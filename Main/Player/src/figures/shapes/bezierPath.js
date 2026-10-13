@@ -536,7 +536,7 @@ class BezierPath extends CompositeFigure {
             part.registerWithDependencies();
         }
 
-        part.z = this.z;
+        ZOrders.passOn(this, part);
         this.children.push(part);
         if (this.isOnCanvas) {
             part.onAddingToCanvas(this.drawing.canvas);
