@@ -679,8 +679,10 @@ namespace DynamicGeometry
         /// The style a new figure of the type gets, but for points and sliders, which go by
         /// their kind (<see cref="AssignDefaultStyle"/>): the outlined shape for a figure that
         /// draws its own outline around an inside (<see cref="IsOutlinedShape"/>), else the
-        /// line, or for a shape the default fill - which is not the first shape style, the
-        /// picker shows the outlined ones first - else the first style that fits
+        /// line for a figure a point can be on (a circle, which takes a shape style too), the
+        /// default fill for a shape that is no such figure (a polygon, which takes a line style
+        /// too) - not the first shape style, the picker shows the outlined ones first - else
+        /// either of the two, else the first style that fits
         /// </summary>
         public IFigureStyle GetDefaultStyle(Type figureType)
         {
@@ -694,7 +696,9 @@ namespace DynamicGeometry
                 }
             }
 
-            return supportedStyles.FirstOrDefault(style => style.Name == LineStyleName || style.Name == ShapeStyleName)
+            var preferred = typeof(ILinearFigure).IsAssignableFrom(figureType) ? LineStyleName : ShapeStyleName;
+            return supportedStyles.FirstOrDefault(style => style.Name == preferred)
+                ?? supportedStyles.FirstOrDefault(style => style.Name == LineStyleName || style.Name == ShapeStyleName)
                 ?? supportedStyles.FirstOrDefault();
         }
 

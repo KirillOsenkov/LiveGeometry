@@ -288,7 +288,7 @@ class StyleManager {
         return figure.isBezierPath === true && figure.interior != null ? figure.interior : figure;
     }
 
-    /** The outlined shape for a figure drawn as an outline around an inside, else the line, or for a shape the default fill, else the first style that fits */
+    /** The outlined shape for a figure drawn as an outline around an inside, else the line for a figure a point can be on, the default fill for a shape that is none (a polygon), else either, else the first style that fits */
     getDefaultStyle(figure) {
         const supportedStyles = this.getSupportedStyles(figure);
         if (StyleManager.isOutlinedShape(figure)) {
@@ -298,7 +298,9 @@ class StyleManager {
             }
         }
 
-        return supportedStyles.find(style => style.name === StyleManager.LineStyleName || style.name === StyleManager.ShapeStyleName)
+        const preferred = figure.isLinearFigure === true ? StyleManager.LineStyleName : StyleManager.ShapeStyleName;
+        return supportedStyles.find(style => style.name === preferred)
+            ?? supportedStyles.find(style => style.name === StyleManager.LineStyleName || style.name === StyleManager.ShapeStyleName)
             ?? supportedStyles[0]
             ?? null;
     }

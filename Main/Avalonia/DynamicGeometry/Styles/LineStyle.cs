@@ -6,6 +6,8 @@ namespace DynamicGeometry
     [StyleFor(typeof(ILinearFigure))]
     [StyleFor(typeof(Slider))]
     [StyleFor(typeof(BezierPath.BezierPathPiece))]
+    // a polygon on a line style is its outline, unfilled, as a circle on one is
+    [StyleFor(typeof(PolygonBase))]
     public class LineStyle : FigureStyle
     {
         public override FrameworkElement GetSampleGlyph()

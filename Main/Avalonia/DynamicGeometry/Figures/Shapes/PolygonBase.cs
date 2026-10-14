@@ -75,10 +75,31 @@ namespace DynamicGeometry
             return ZOrder.Polygons;
         }
 
+        /// <summary>
+        /// The outline where it draws something, the inside where it is filled: on a line
+        /// style, or a shape style not filled, a polygon is an outline, and a click inside it
+        /// goes through, as inside a circle
+        /// </summary>
         public override IFigure HitTest(Point point)
         {
-            bool isInside = vertexCoordinates.IsPointInPolygon(point);
+            if (DrawsOutline
+                && Math.IsPointOnPolygonalChain(vertexCoordinates, point, ToLogical(Shape.StrokeThickness / 2 + Math.CursorTolerance), true))
+            {
+                return this;
+            }
+
+            bool isInside = Shape.Fill != null && vertexCoordinates.IsPointInPolygon(point);
             return isInside ? this : null;
+        }
+
+        bool DrawsOutline
+        {
+            get
+            {
+                return Shape.StrokeThickness > 0
+                    && Shape.Stroke != null
+                    && !(Shape.Stroke is Avalonia.Media.ISolidColorBrush brush && brush.Color.A == 0);
+            }
         }
 
         public double Area => VertexCoordinates.Area();
@@ -140,9 +161,10 @@ namespace DynamicGeometry
 
         public override Point Center => VertexCoordinates.Midpoint();
 
+        /// <summary>No fill of its own: a shape style fills it, a line style leaves it an outline</summary>
         protected override Avalonia.Controls.Shapes.Polygon CreateShape()
         {
-            return Factory.CreatePolygonShape();
+            return new PolygonShape();
         }
     }
 }

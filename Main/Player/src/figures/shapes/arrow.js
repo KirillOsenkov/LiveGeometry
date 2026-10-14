@@ -76,12 +76,21 @@ class Arrow extends Polygon {
         this.vertexCoordinates = points.map(p => this.toLogical(p));
     }
 
+    /** No outline, and filled in the color of its line, whatever kind its style is (ApplyStyle) */
+    get stroke() {
+        return null;
+    }
+
+    get fill() {
+        return Arrow.getBrush(this.style, this.drawing);
+    }
+
     render(renderer) {
         if (!this.isShown || this.screenPoints == null) {
             return;
         }
 
-        renderer.drawPolygon(this.screenPoints, null, Arrow.getBrush(this.style, this.drawing), true);
+        renderer.drawPolygon(this.screenPoints, null, this.fill, true);
     }
 
     /** The color an arrow of the style is drawn in, as the style looks under the drawing's theme */

@@ -14,9 +14,9 @@ class LineStyle extends FigureStyle {
         return [["name", "string"], ["color", "color"], ["strokeWidth", "double"], ["dash", "enum"]];
     }
 
-    /** [StyleFor(ILinearFigure)], Slider, BezierPathPiece */
+    /** [StyleFor(ILinearFigure)], Slider, BezierPathPiece, PolygonBase (its outline, unfilled) */
     static supportsFigure(figure) {
-        return figure.isLinearFigure === true || figure.isSlider === true || figure.isBezierPathPiece === true;
+        return figure.isLinearFigure === true || figure.isSlider === true || figure.isBezierPathPiece === true || figure instanceof PolygonBase;
     }
 
     /** The dash lengths in pixels for the width the line is drawn with; null for solid */

@@ -51,8 +51,19 @@ class PolygonBase extends ShapeBase {
         return ZOrder.Polygons;
     }
 
+    /** The outline where it draws something, the inside where it is filled: on a line style, or a shape style not filled, a polygon is an outline */
     hitTest(point) {
-        const isInside = this.vertexCoordinates != null && GeometryMath.isPointInPolygon(this.vertexCoordinates, point);
+        if (this.vertexCoordinates == null) {
+            return null;
+        }
+
+        const stroke = this.stroke;
+        if (stroke != null && stroke.width > 0 && stroke.color.a > 0
+            && GeometryMath.isPointOnPolygonalChain(this.vertexCoordinates, point, this.toLogicalLength(stroke.width / 2 + GeometryMath.cursorTolerance), true)) {
+            return this;
+        }
+
+        const isInside = this.fill != null && GeometryMath.isPointInPolygon(this.vertexCoordinates, point);
         return isInside ? this : null;
     }
 
