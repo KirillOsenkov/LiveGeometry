@@ -432,11 +432,6 @@ public class ClickPreview
             // the track stands for the whole (a slider taken as a radius)
             halo = (AvaloniaShapes.Shape)CreateHalo(slider.Track);
         }
-        else if (figure is DependentPolygonBase regularPolygon)
-        {
-            // its outline (a point goes inside a regular polygon)
-            halo = (AvaloniaShapes.Shape)CreateHalo(regularPolygon.GetPart("Interior"));
-        }
         else if (figure is Vector vector)
         {
             // along the segment inside, the shaft, as wide as it is drawn

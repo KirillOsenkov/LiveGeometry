@@ -152,7 +152,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   clicked in the figure's own grid ends in the new figure's grid (`EllipseArc.Convert`,
   over the shared `Replace`), which also takes the selection over.
 - **Shapes**: Triangle - 3 points; Square - two adjacent vertices; Polygon (W) - points, then
-  Enter, a right-click or a click on a vertex closes it; Regular polygon - center then a vertex.
+  Enter, a right-click or a click on a vertex closes it; Regular polygon - center then a vertex;
+  Polygon on a side - two adjacent vertices, the polygon to the left of the first to the
+  second (2026-10-13). The last three make plain figures (see "Squares and regular
+  polygons"); the two regular polygon tools have a Number of sides panel, shared.
   Triangle and Polygon show no length panel (a side's length means nothing for them). They
   (and Square, for its first side) draw their sides as segments (the polygon's own outline is transparent in the default
   style), except where a visible segment, ray, line or vector on the two points is there
@@ -183,8 +186,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   every source but a point: a line's image there is a circle through the center. A
   polygon there gives the images of its sides, not a polygon (no point is on a polygon,
   and a region bounded by arcs is no figure here: `Transformer.CreateInvertedSides`): a
-  regular polygon's own side parts are traced, a polygon's side segments, and a side
-  without one gets a segment first, as the shape tools would have drawn it. Reflect
+  polygon's side segments are traced, and a side without one gets a segment first, as the
+  shape tools would have drawn it. Reflect
   shows no panel after a construction (the length panel came up for such a segment).
   Every other transformation of a polygon or polyline also carries over the
   visible segments along its sides (`Transformer.AddSideSegments`: the shape tools draw
@@ -192,8 +195,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   marks; they go into the list before the image, which callers take to be the last. An
   image is a clone of the source given the transformed dependencies; a composite's clone
   made its parts on the source's when it was read, and `Transformer.MovePartsOver` moves
-  them (a reflected regular pentagon had two sides and its inside on the source's first
-  vertex). The
+  them (a reflected regular pentagon, a composite then, had two sides and its inside on
+  the source's first vertex). The
   GeoGebra reader says `sideSegments: false`: a file has the image's sides as objects
   of their own, and the copies came out hidden.
 - **Coordinates**: Grid (G) (command); Function - an expression in x; Line - by
@@ -629,7 +632,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   be AB again at once, `FigureBase.KeepsTypedName`); the setter
   itself would take the name from the other figure, and turns an empty one into the default.
   The grid's title is `Title`: the figure's `Kind` in front of the name ("Triangle ABC",
-  "Midpoint E", "Regular pentagon p"), the kind left off when the name says it already
+  "Midpoint E", "Hexagon ABCDEF"), the kind left off when the name says it already
   (Circle1, Bezier3), the name left off when it is the type and a number on a figure
   nothing refers to by name (Distance, Text, Angle mark, Locus: `NamedByConstruction`) -
   not on others: "on Circle₁" in one row must be found in another.
@@ -747,8 +750,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **A point inside a shape** (`Figures/Points/PointInRegion.cs`, 2026-10-11; GeoGebra's
   "Point on Object", `PointIn[]`): a `FreePoint` by inheritance, like a point on a figure,
   with one dependency, an `IRegion` (`Figures/IRegion.cs`: `HasInside`, `Area`,
-  `ContainsPoint`, `NearestPointInside` - on `PolygonBase`, `DependentPolygonBase` through
-  its interior part, `EllipseBase`, the four sectors and segments through helpers on
+  `ContainsPoint`, `NearestPointInside` - on `PolygonBase`, `EllipseBase`, the four sectors and segments through helpers on
   `EllipseArcBase`, and `BezierPath`, closed or filled, holes left out; a circle's nearest
   point is along the ray from its center, a path's is on the edge of its inside as drawn,
   holes taken out: `Math.GetNearestPointOnRegionEdge`, the pieces of every side, cut where
@@ -802,11 +804,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   target, with what it is built on, moves before the first figure that comes to depend on
   it (the list is in dependency order, see "The figure list is in dependency order"), a
   part of a composite that went over with its composite is not rewired a second time (a
-  regular polygon's sides: it threw), and expressions that named the point name the target
+  regular polygon's sides, when it was a composite: it threw), and expressions that named the point name the target
   ([A.X] becomes [C.X]: `ExpressionRenamer` with the target under the point's name, once
   the point has left; undo puts the texts back as they were,
-  `IRenamableExpressions.ExpressionTexts`) - so a join into a point without a name (a
-  vertex a regular polygon works out) is refused when expressions name the point. A point
+  `IRenamableExpressions.ExpressionTexts`) - so a join into a point without a name is
+  refused when expressions name the point (no tool is given one any more). A point
   a locus is drawn from - the one that slides, the one traced - is not released, snapped
   or joined at all (`PointSnapping.IsHeldByLocus`; Alt does nothing to it and it has no
   "Free point"; Fix length leaves it alone as well, `LengthConstraint.CanStretch`, and
@@ -1084,7 +1086,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Setting a segment's length stretches it once** (not a constraint); **Fix length** makes the
   constraint: the end becomes a `TranslatedPoint` from the pivot with an auxiliary `Number` at
   the current distance and a free direction (`IFixableLength`, `Figures/Lines/LengthConstraint.cs`;
-  segments, vectors, regular polygons, circles). An end on a line that runs through the pivot
+  segments, vectors, circles; a regular polygon's vertex from its center or its first vertex,
+  through its panel). An end on a line that runs through the pivot
   takes the line as its direction instead (the Number signed along it, so the end is fully
   determined) and Free makes it a point on the line again; an end on any other figure can't be
   stretched or fixed at all. The **direction** of a segment, a vector, a ray or a line
@@ -1104,12 +1107,34 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   perpendicular, an angle bisector (whose `Angle` is its half angle, why the property is
   not `Angle`). Right after such a figure is made the side panel shows a `DimensionsPanel`
   (`FigureCreator.ShowCreatedFigure`): the length and the direction, whichever the figure
-  has, each in its own box with its verbs; the tools themselves have no length box. A regular polygon's panel starts with the polygon's own `NumberOfSides` row (the
-  panel is an `ICustomPropertyProvider` and forwards the figure's `PropertyChanged` while the
-  grid shows it, so the side and the title follow a change of the count). The swap is `Actions.ReplacePoint`, which hands over the point's name label
+  has, each in its own box with its verbs; the tools themselves have no length box. A
+  regular polygon has a panel of its own (`RegularPolygonPanel`, see "Squares and regular
+  polygons"). The swap is `Actions.ReplacePoint`, which hands over the point's name label
   (`ReplaceFigureAction` skips it on purpose). A creator's undo transaction spans one
   construction, opened at the first click (`FigureCreator.EnsureTransaction`), so an edit made
   in that panel between constructions is an undo step of its own.
+- **Squares and regular polygons are plain figures** (`Figures/Shapes/RegularPolygonBuilder.cs`,
+  2026-10-13): the vertices they add are points by coordinates written over the two points
+  clicked - named like any point, so expressions say them and figures are built on them -
+  then a segment per side not drawn already (`FindLine`), and a `Polygon` on all the
+  vertices. Square and Polygon on a side take two adjacent vertices, the polygon to the
+  left of the first to the second; Regular polygon takes its center and a vertex, the
+  others following counterclockwise. A vertex is P + R(Q - P), its X and Y sorted by point
+  name, X before Y, without parentheses (the square's C is `A.Y + B.X - B.Y`,
+  `-A.X + B.X + B.Y`), its coefficients exact where the polygon tiles - halves and halves of
+  `sqrt(3)` for 3, 6 and 12 sides, of `sqrt(2)` for 8, whole numbers for 4 - and 15-digit
+  decimals otherwise. A deleted side takes only its segment. Until then a square was a
+  circle, a perpendicular, their crossing, a midpoint and a reflection per square, and a
+  regular polygon a composite whose other vertices were unnamed parts nothing could name.
+  The two regular polygon tools share a Number of sides (the pre-create `SidesPanel`,
+  `RegularPolygonCreator.NextNumberOfSides`); right after one is made its own panel
+  (`RegularPolygonPanel`) has the number of sides - a new count builds the polygon again,
+  what was made for it removed and new figures added in one transaction recorded by the
+  row itself (`ISelfRecordingValue`: a property set can't record actions), refused while
+  something else is built on what was made - the side (moving the second click's vertex)
+  with Fix length and Free length, and OK, which brings the tool's panel back. After that
+  the polygon is a plain polygon, with no count to change. The Square shows its base side's
+  `DimensionsPanel`, as other figures with a length do.
 - **Numbers are figures** (`Figures/Values/Number.cs`): roots with no shape, named n1, n2...,
   usable in expressions by name, a length and an angle at once. No tool makes a bare one (the
   Slider is a Number with a handle); a typed value in the Translate tool becomes one. `Auxiliary` (any figure) marks one
@@ -1133,13 +1158,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   re-binding doesn't come through the setter. Without it, a circle and a point on the
   label's value kept the old one until the next recalculation, and undo left them there.
 - **Perimeter** (`Figures/Controls/PerimeterMeasurement.cs`, 2026-10-09): `IPerimeter`
-  (`Perimeter`) on `PolygonBase`, `DependentPolygonBase`, `EllipseBase` (the arc integral
+  (`Perimeter`) on `PolygonBase`, `EllipseBase` (the arc integral
   `Math.EllipseArcLength` over a whole turn, which `ArcBase.Length` also uses), the sectors
   and circular segments (the arc with the radii or the chord) and `BezierPath` (closed:
   the cubics' lengths by Gauss-Legendre, `BezierInfo.Length`; open: NaN, and the tool
   doesn't take it, a measurement of it stops existing). Not `ILengthProvider`, on purpose:
-  a circle's `Length` is its radius and a regular polygon's its side (`IFixableLength`),
-  and `c.Length` in an expression reads that - the perimeter is `c.Perimeter`. The
+  a circle's `Length` is its radius (`IFixableLength`), and `c.Length` in an expression
+  reads that - the perimeter is `c.Perimeter`. The
   measurement itself is an `ILengthProvider` (a circumference as a radius), shows the bare
   number as Area does, and has a `Prefix` row ("P = ", saved as `Prefix`) for telling it
   from an Area next to it (a circle of radius 2 says 12.57 twice). Its anchor is on the
@@ -1152,8 +1177,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the offset came out wrong). A circle or
   an ellipse whose fixed point is off screen anchors at its point nearest the middle of
   the window, which moves with the view as a line's name does. Function graphs and loci
-  are left out on purpose: their length depends on the window. A click on a regular
-  polygon takes its `Interior` part, as the Area tool's does. The GeoGebra reader maps
+  are left out on purpose: their length depends on the window. The GeoGebra reader maps
   `Perimeter[]` and `Circumference[]`.
 - **Undo** (GuiLabs.Undo; `Actions/`). What must hold: every change to what a file saves is
   one undo step, undo puts back exactly what was there, redo what was made. The traps, each
@@ -1249,10 +1273,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
     and the copies renamed once (red "1" became "12", the blue style's name, and renaming
     blue to "122" took the red copies along). Text that is no figures
     (plain text, a page) is said so in the status, not read as XML (that threw).
-  - *Parts of a composite* that are among a figure's dependents (a regular polygon's
-    vertices) are not removed or put back by `RemoveFigureAction`: they go with their
-    composite. Parts removed by reducing the side count are retained for reuse: redo may
-    restore a later construction that still holds those exact vertex or side objects.
+  - *Parts of a composite* that are among a figure's dependents (a Bezier path's handles)
+    are not removed or put back by `RemoveFigureAction`: they go with their composite.
+    Parts removed by a change of the composite are retained for reuse: redo may restore a
+    later construction that still holds those exact objects.
   - *Length edits* restore the endpoint's place and any Number holding its distance
     (`LengthPropertyValue`, also used by the length panel), not just the previous length:
     zero loses the direction and a negative length reverses it. A point on a figure restores
@@ -1455,7 +1479,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   components as the grid shows them, so the end may move by a rounding - which then follows
   the start; offered only where both texts compile without a cycle (`EndCoordinateTexts`).
 - **Bezier paths** (`Figures/Shapes/BezierPath.cs`, 2026-10-06; added beside `Bezier` and
-  `Polyline`, which stay as they were): a composite like a regular polygon. The anchors are
+  `Polyline`, which stay as they were): a composite (see "Parts of a figure"). The anchors are
   points of the drawing (its dependencies, at least two, each once); each has an in and an
   out handle, a part (`BezierPathHandle`), and the piece from one anchor to the next is
   the cubic through the first's out handle and the next one's in handle (a handle on its
@@ -1608,7 +1632,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   property of a style or figure round-trips by name through the generic `EnumSerializer`.
 - **Z order** (`Figures/ZOrder.cs`, 2026-10-10): every figure is drawn in its kind's
   `Layer` (the `ZOrder` enum, bottom up: Grid, Axes, Polygons - polygons, the interiors of
-  regular polygons and Bezier paths - Labels, Figures - lines, circles, arcs, curves,
+  Bezier paths - Labels, Figures - lines, circles, arcs, curves,
   the sides of paths - Vectors, SelectionHalos, Handles, FixedPoints, ConstrainedPoints,
   FreePoints, PointLabels, Controls). Two bands of layers are ordered by the figure's `Z`
   (`ZOrders.IsMovable`), the Z first and the layer second: the figures' band, from Polygons
@@ -1618,7 +1642,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   over those dragged along or within a figure (green: on a figure, inside a shape, a
   translated point with a free quantity, which changes layer as it is freed or fixed, and
   sliders) over those that don't move by themselves (gray: midpoints, intersections, images,
-  points by coordinates, a regular polygon's vertices). All at Z 0, so a file says nothing
+  points by coordinates - the corners a square or a regular polygon adds). All at Z 0, so a file says nothing
   of it; Bring to front gives Z 1, over the free points, Send to back Z -1, under the fixed
   ones. `ZIndex` is `ZOrders.Encode(Layer, Z)`: the layers under the figures' band as they
   are, the figures' band with a stride of 1000 per Z, the halos and handles over all of it,
@@ -1646,11 +1670,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   bands (a label of a point, a pinned label) gets none. A swapped point
   (`Actions.ReplacePoint`) keeps the Z. A
   composite's parts take its Z (`CompositeFigure.OnZIndexChanged`, and on `Children` adds:
-  a regular polygon's sides, a path's pieces), but only parts of its band
-  (`ZOrders.PassOn`): a Z is a place in its own band, and a regular polygon brought to
-  front among the figures would have put its vertices over every point, a slider brought to
-  front among the points its track over every figure; a composite drawn by its parts alone says
-  its layer itself (a regular polygon and a Bezier path are Polygons), or the verbs would
+  a path's pieces), but only parts of its band
+  (`ZOrders.PassOn`): a Z is a place in its own band, and a regular polygon (a composite
+  then) brought to front among the figures would have put its vertices over every point, a
+  slider brought to front among the points its track over every figure; a composite drawn
+  by its parts alone says its layer itself (a Bezier path is Polygons), or the verbs would
   not apply to it. Whatever a figure draws beside its shape follows it: the angle's fill at
   `Shape.ZIndex - 1`, the right angle mark at the owner's `ZIndex - 1`, a segment's marks
   at its `ZIndex`, the hover halos at the source's `ZIndex - 1`; a preview visual of a
@@ -2054,50 +2078,24 @@ loader still does for files from before; none of it needs extending.
   is in the plane right now, so hit testing, dragging and the property grid need nothing
   special. `WrapWidth` (px) and `Backdrop` (a plate of the paper's color) exist for captions.
   Pinned labels draw above figures, zoom to fit ignores them, thumbnails hide them.
-- **Parts of a figure** (`IFigureParts`, `Figures/Shapes/DependentPolygonBase.cs`): the
-  vertices, sides and inside a regular polygon works out are figures other figures can be
-  built on, but not figures of the drawing: unnamed (`PolygonVertex`, `PolygonSide`,
-  `InteriorPolygon` skip the naming of `OnAddingToDrawing`), written as
-  `<Dependency Name="RegularPolygon1" Part="Vertex3" />` (`Vertex2`... - `Vertex1` is the
-  point the polygon is built on - `Side1`..., `Interior`). So a regular polygon makes its
-  parts in `ReadXml`, before it is on a canvas (`IsOnCanvas`), and says `Sides="7"` when it
-  is not a pentagon. The number of sides doesn't go below what figures built on its vertices
-  and sides need: the parts would take them along, from inside a setter, past undo. A
-  hidden polygon hides the parts it makes (`Recreate`): read from a file, it made them
-  after it was told it was hidden, and its vertices and sides came back to be clicked.
-  The parts are listed with what they are built on (the polygon, its first vertex) only
-  while the polygon is in the drawing (`RegisterPart`): registered when read, before the
-  polygon was added, they failed the consistency check (`CheckConsistency`), and such a
-  file did not load. When the point a polygon is built on is
-  replaced (Fix length, Convert to point by coordinates), the polygon takes its parts
-  along (`ReplaceDependency` moves their registration; `SubstituteWith` skips them).
-  Hit testing hands the parts to the tools, and whatever takes a figure from a click has
-  to cope with one that has no name and is not in the drawing's list
-  (`RootFigureList.FindTopLevel` gives the figure it belongs to): a tool must not take a
-  part of its own preview (`FigureCreator.LookForExpectedDependencyUnderCursor` leaves out
-  what is built on the point following the cursor - a double click with the Regular
-  polygon tool made a polygon on a vertex of its preview, and the saved file did not
-  load); the Transform tools take the side or the inside for the polygon
-  (`Transformer.FindTransformSource`: a copy of a side was a segment without a name);
-  `TiedValues.Tie` must not add it to the drawing as a figure; a caption calls it by its
-  polygon's name (`TiedValues.SourceName`); a translated point says such a source by its
-  place among the dependencies (`DistanceSourceIndex="1"`, where a named one is
-  `DistanceSource="AB"`).
-  A vertex or a side is selected by itself (`IFigureParts.SelectableParts`), to be styled;
-  a click inside selects the polygon (`FigureParts.SelectionTarget`), and so do its Figure
-  List row and the part page's "Select regular hexagon p". The composite's `Selected` is the whole
-  only (selecting the whole selects every part, for the halos), so whatever clears a
-  selection asks `FigureParts.HasSelection`, `Drawing.GetSelectedFigures` gives the parts
-  selected by themselves, and whatever acts on figures of the drawing (Delete, Copy, Hide,
-  Lock, the context menu) takes `FigureParts.Wholes` of it: Delete with a side selected
-  deletes the polygon. A part's page is its `ICustomPropertyProvider` (style, a side's
-  length, which is the polygon's), not the rows of a point or a segment. The polygon's page
-  has Fill (its own style), and Sides and Vertices (`PartStylesValue`: every part at once,
-  undo giving each its own back). The file says the style most sides have and the odd ones
-  (`<Sides Style="RedLine" />`, `<Vertices ... />`, `<Part Name="Side2" Style="BlueLine" />`,
-  child elements, so that the `Style` attributes are found when styles are collected); a
-  new side takes the style most have, one that comes back keeps its own (undo of fewer
-  sides).
+- **Parts of a figure** (`IFigureParts`, `Figures/Shapes/FigureParts.cs`): the sides,
+  handles and inside of a Bezier path are figures other figures can be built on (only the
+  images of a transformation are), but not figures of the drawing: unnamed, written as
+  `<Dependency Name="p" Part="In3" />`. They are listed with what they are built on only
+  while the path is in the drawing: registered when read, before it was added, they fail
+  the consistency check. Whatever takes a figure from a click has to cope with one that
+  has no name and is not in the drawing's list (`RootFigureList.FindTopLevel` gives the
+  figure it belongs to). A side is selected by itself (`IFigureParts.SelectableParts`), to
+  be styled; a click inside selects the path (`FigureParts.SelectionTarget`). The
+  composite's `Selected` is the whole only, so whatever clears a selection asks
+  `FigureParts.HasSelection`, and whatever acts on figures of the drawing (Delete, Copy,
+  Hide, Lock, the context menu) takes `FigureParts.Wholes` of it. The file says the style
+  most parts have and the odd ones (`<Sides Style="RedLine" />`, `<Part Name="Piece2"
+  Style="BlueLine" />`). Regular polygons were such a composite until 2026-10-13, their
+  vertices and sides unnamed parts (`RegularPolygon`, `DependentPolygonBase`); much of the
+  code that copes with parts was written for them (`TiedValues.SourceName`, a translated
+  point's `DistanceSourceIndex`, a macro's part inputs, `FigureCreator` leaving out the
+  preview's parts) and stays for any composite.
 - **`AngleMeasurement`** says `Radians="true"` when it shows radians (it was not saved).
 - **Scenes** (`<Scene Left Top Right Bottom />` under `<Drawing>`, 1 or 2) are opt-in suggested
   views for drawings whose content has no useful bounds (endless ground: Castle, The Falling
@@ -2114,8 +2112,9 @@ loader still does for files from before; none of it needs extending.
 (style, show, coords) following the command. Each known command becomes the figure that
 stands for it here, with hidden helpers where the shapes differ (a circle through three
 points is the circle around the crossing of two bisectors, an ellipse by foci is center and
-axis ends as points by coordinates, a regular polygon is a plain polygon of rotated points so
-that its vertices keep the file's names, tangents from a point go through the Thales circle);
+axis ends as points by coordinates, a regular polygon is a plain polygon whose vertices are
+points by coordinates over its side as the Polygon on a side tool makes them, keeping the
+file's names, tangents from a point go through the Thales circle);
 an inline command in an input (`Point[Circle[S, 3]]`) is built hidden. A polygon's sides are
 outputs of the `Polygon` command and objects of their own in GeoGebra; here the polygon draws
 them, and a side becomes a segment only when needed: hidden, the first time a command takes
@@ -2428,8 +2427,8 @@ else - no ribbon, grid, list or gallery, no undo, no selection. The Silverlight-
   time (`?v=` cache-busted; to reload after an edit change the query, `?r=2`, a changed hash
   alone reloads nothing) with a list of the gallery drawings, Fit, dark and wheel switches,
   and a status line with the figure count, the load time and the load errors.
-  `Main/Player/dev/kinds.lgf` has the kinds no gallery drawing uses (a regular polygon with
-  parts, a polyline, lines and a circle by equation, a line at an angle, segment marks, a
+  `Main/Player/dev/kinds.lgf` has the kinds no gallery drawing uses (a regular hexagon of
+  points by coordinates, a polyline, lines and a circle by equation, a line at an angle, segment marks, a
   name label, a sector, an ellipse arc and segment, a horizontal angle). To check every
   drawing at once, in the page's console: for each file of the listing, `new
   Drawing(player.canvas).addFromXml(text)` and look at `loadErrors` and the visible figures

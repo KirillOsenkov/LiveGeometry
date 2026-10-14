@@ -72,8 +72,6 @@ figures/shapes/locus.js
 figures/shapes/arrow.js
 figures/lines/vector.js
 figures/lines/axis.js
-figures/shapes/dependentPolygonBase.js
-figures/shapes/regularPolygon.js
 figures/shapes/bezierPathSmoother.js
 figures/shapes/bezierPath.js
 figures/controls/labelPin.js

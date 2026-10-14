@@ -10,16 +10,64 @@
   <Figures>
     <FreePoint Name="O" X="-8" Y="3" />
     <FreePoint Name="A" X="-6" Y="3" />
-    <RegularPolygon Name="p" Sides="6" Style="Gold" Z="1">
-      <Dependency Name="O" />
+    <PointByCoordinates Name="A2" X="0.5 * A.X - sqrt(3) / 2 * A.Y + 0.5 * O.X + sqrt(3) / 2 * O.Y" Y="sqrt(3) / 2 * A.X + 0.5 * A.Y - sqrt(3) / 2 * O.X + 0.5 * O.Y">
       <Dependency Name="A" />
-    </RegularPolygon>
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="A3" X="-0.5 * A.X - sqrt(3) / 2 * A.Y + 1.5 * O.X + sqrt(3) / 2 * O.Y" Y="sqrt(3) / 2 * A.X - 0.5 * A.Y - sqrt(3) / 2 * O.X + 1.5 * O.Y">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="A4" X="-A.X + 2 * O.X" Y="-A.Y + 2 * O.Y">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="A5" X="-0.5 * A.X + sqrt(3) / 2 * A.Y + 1.5 * O.X - sqrt(3) / 2 * O.Y" Y="-sqrt(3) / 2 * A.X - 0.5 * A.Y + sqrt(3) / 2 * O.X + 1.5 * O.Y">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="A6" X="0.5 * A.X + sqrt(3) / 2 * A.Y + 0.5 * O.X - sqrt(3) / 2 * O.Y" Y="-sqrt(3) / 2 * A.X + 0.5 * A.Y + sqrt(3) / 2 * O.X + 0.5 * O.Y">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <Segment Name="AA2">
+      <Dependency Name="A" />
+      <Dependency Name="A2" />
+    </Segment>
+    <Segment Name="A2A3">
+      <Dependency Name="A2" />
+      <Dependency Name="A3" />
+    </Segment>
+    <Segment Name="A3A4">
+      <Dependency Name="A3" />
+      <Dependency Name="A4" />
+    </Segment>
+    <Segment Name="A4A5">
+      <Dependency Name="A4" />
+      <Dependency Name="A5" />
+    </Segment>
+    <Segment Name="A5A6">
+      <Dependency Name="A5" />
+      <Dependency Name="A6" />
+    </Segment>
+    <Segment Name="AA6">
+      <Dependency Name="A6" />
+      <Dependency Name="A" />
+    </Segment>
+    <Polygon Name="p" Style="Gold" Z="1">
+      <Dependency Name="A" />
+      <Dependency Name="A2" />
+      <Dependency Name="A3" />
+      <Dependency Name="A4" />
+      <Dependency Name="A5" />
+      <Dependency Name="A6" />
+    </Polygon>
     <PointOnFigure Name="P" Parameter="0.4">
-      <Dependency Name="p" Part="Side3" />
+      <Dependency Name="A3A4" />
     </PointOnFigure>
     <Segment Name="Diagonal" Style="RedDashed">
       <Dependency Name="A" />
-      <Dependency Name="p" Part="Vertex4" />
+      <Dependency Name="A4" />
     </Segment>
     <FreePoint Name="B" X="-2" Y="6" />
     <FreePoint Name="C" X="0" Y="4" />
@@ -115,7 +163,7 @@
       <Dependency Name="Z" />
     </BezierPath>
     <PerimeterMeasurement Name="Perimeter1">
-      <Dependency Name="p" Part="Interior" />
+      <Dependency Name="p" />
     </PerimeterMeasurement>
     <PerimeterMeasurement Name="Perimeter2" Prefix="P = ">
       <Dependency Name="c" />

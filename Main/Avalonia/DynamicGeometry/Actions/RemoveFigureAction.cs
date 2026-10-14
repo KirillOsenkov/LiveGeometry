@@ -62,8 +62,8 @@ namespace DynamicGeometry
                 }
             }
 
-            // The parts of a composite (the vertices a regular polygon works out, which are
-            // built on the polygon) are among the dependents so that what is built on them
+            // The parts of a composite (the handles of a Bezier path, which are built on the
+            // path) are among the dependents so that what is built on them
             // goes too. They are not figures of the drawing: they leave and come back with
             // their composite, which sees to their dependencies. (Put back as figures on
             // undo, they ended up in the drawing's own list, and on the canvas twice.)

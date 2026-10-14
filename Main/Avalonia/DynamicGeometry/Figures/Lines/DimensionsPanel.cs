@@ -7,14 +7,13 @@ namespace DynamicGeometry;
 
 /// <summary>
 /// The side panel right after a figure with a length or a direction is made: its length with
-/// Fix length or Free length (a segment, a vector, a regular polygon, a circle), and its
-/// direction with Fix direction, Horizontal and Vertical (a segment, a vector, a ray, a line
-/// through two points), forwarded to the figure - so that "a segment of length 2" is draw,
-/// type 2, click Fix, and a horizontal one is draw, click Horizontal, type 2, click Fix
-/// length, without a box on every tool. Captions come from the figure (Side, Radius, Fix
-/// radius); the title is the figure's ("Segment AB"). The figure's own grid has the same
-/// rows. A regular polygon's panel starts with its number of sides, the polygon's own row,
-/// and a vector's ends with its X and Y.
+/// Fix length or Free length (a segment, a vector, a circle), and its direction with Fix
+/// direction, Horizontal and Vertical (a segment, a vector, a ray, a line through two
+/// points), forwarded to the figure - so that "a segment of length 2" is draw, type 2, click
+/// Fix, and a horizontal one is draw, click Horizontal, type 2, click Fix length, without a
+/// box on every tool. Captions come from the figure (Radius, Fix radius); the title is the
+/// figure's ("Segment AB"). The figure's own grid has the same rows. A vector's panel ends
+/// with its X and Y. (A regular polygon has a panel of its own, <see cref="RegularPolygonPanel"/>.)
 /// </summary>
 public class DimensionsPanel :
     IConditionalProperties,
@@ -41,9 +40,8 @@ public class DimensionsPanel :
     public event PropertyChangedEventHandler PropertyChanged;
 
     /// <summary>
-    /// Set by the grid while it shows the panel: the figure's own changes (a new number of
-    /// sides, which also changes the side and the title) are passed on as the panel's for
-    /// that long.
+    /// Set by the grid while it shows the panel: the figure's own changes are passed on as
+    /// the panel's for that long.
     /// </summary>
     public PropertyGrid PropertyGrid
     {
@@ -76,7 +74,6 @@ public class DimensionsPanel :
 
     void Figure_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        // (a regular polygon says that its side changed with the number of sides)
         PropertyChanged?.Invoke(this, e);
     }
 
@@ -84,23 +81,16 @@ public class DimensionsPanel :
     bool ShowsDirection => direction != null && direction.CanEdit(nameof(Direction));
 
     /// <summary>
-    /// The rows: a regular polygon's number of sides first (the polygon's own property, its
-    /// up/down within the polygon's limits, an undo step on the polygon), then the length,
-    /// then Show where there is a figure to hang a measurement on, then the direction, then
-    /// a vector's X and Y (its own rows, as the number of sides is: "a vector (3, 4)" is
-    /// draw, type 3 and 4).
+    /// The rows: the length, then Show where there is a figure to hang a measurement on, then
+    /// the direction, then a vector's X and Y (its own rows: "a vector (3, 4)" is draw, type
+    /// 3 and 4).
     /// </summary>
     public IEnumerable<IValueProvider> GetProperties()
     {
-        if (figure is RegularPolygon polygon)
-        {
-            yield return PropertyDiscoveryStrategy.CreateValueProvider(polygon, nameof(RegularPolygon.NumberOfSides));
-        }
-
         if (length != null)
         {
             yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Length));
-            // a regular polygon's sides are its own children, nothing in the drawing to measure
+            // (a figure with nothing in the drawing to measure has no Show)
             if (length.MeasuredFigures != null)
             {
                 yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Show));

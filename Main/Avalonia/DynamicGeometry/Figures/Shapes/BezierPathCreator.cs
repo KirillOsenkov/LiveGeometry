@@ -24,7 +24,7 @@ namespace DynamicGeometry;
 /// set in the panel, or taken from a slider with a click on it.
 /// </summary>
 [Category(BehaviorCategories.Shapes)]
-[Order(5)]
+[Order(6)]
 public class BezierPathCreator : FigureCreator
 {
     /// <summary>How the next path is smoothed: as the last was set to, in the panel or after it was made</summary>

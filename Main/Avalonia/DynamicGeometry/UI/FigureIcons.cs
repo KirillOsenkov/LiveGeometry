@@ -42,7 +42,6 @@ public static class FigureIcons
         [typeof(CircleArcBase)] = () => new CircleArcCreator(),
         [typeof(AngleArc)] = () => new AngleMeasurementCreator(),
         [typeof(PolygonBase)] = () => new PolygonCreator(),
-        [typeof(RegularPolygon)] = () => new RegularPolygonCreator(),
         [typeof(PolygonIntersection)] = () => new PolygonIntersectionCreator(),
         [typeof(Polyline)] = () => new PolylineCreator(),
         [typeof(Bezier)] = () => new BezierCreator(),

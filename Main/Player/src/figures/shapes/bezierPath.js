@@ -1,8 +1,8 @@
 // Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/BezierPath.cs: a path of cubic Bézier
 // pieces through anchor points. Each anchor has a handle on either side, an offset from the
 // anchor, a point of the drawing, or left to the path (automatic: BezierPathSmoother). A
-// composite like a regular polygon: the anchors are points of the drawing it is built on,
-// and its pieces, its inside and its handles are its parts. Other paths can be its holes.
+// composite: the anchors are points of the drawing it is built on, and its pieces, its
+// inside and its handles are its parts. Other paths can be its holes.
 // Left out: every change of what the path is made of (layout changes, anchors inserted or
 // dropped, holes cut, points as handles), the images of transformations, undo. A handle
 // shows next to the anchor the Drag tool last pressed (showHandlesWhileDragging; there is
@@ -221,6 +221,37 @@ class BezierPath extends CompositeFigure {
     static PiecePart = "Piece";
     static InteriorPart = "Interior";
     static AutomaticToken = "a";
+
+    /** The number after a part's kind in its name (In3: 3); null when the name is not of that kind */
+    static tryGetIndex(partName, kind) {
+        if (partName == null || !partName.startsWith(kind)) {
+            return null;
+        }
+
+        const rest = partName.substring(kind.length);
+        return /^-?\d+$/.test(rest) ? parseInt(rest, 10) : null;
+    }
+
+    /** The style most of the parts have, for a new one */
+    static commonStyle(parts) {
+        const counts = new Map();
+        for (const part of parts) {
+            if (part.style != null) {
+                counts.set(part.style, (counts.get(part.style) ?? 0) + 1);
+            }
+        }
+
+        let best = null;
+        let bestCount = 0;
+        for (const [style, count] of counts) {
+            if (count > bestCount) {
+                best = style;
+                bestCount = count;
+            }
+        }
+
+        return best;
+    }
 
     constructor() {
         super();
@@ -510,7 +541,7 @@ class BezierPath extends CompositeFigure {
         while (this.pieces.length < count) {
             const isNew = this.retiredPieces.length === 0;
             const piece = isNew ? new BezierPathPiece(this) : this.retiredPieces.pop();
-            const common = isNew ? DependentPolygonBase.commonStyle(this.pieces) : null;
+            const common = isNew ? BezierPath.commonStyle(this.pieces) : null;
             if (common != null) {
                 piece.style = common;
             }
@@ -610,17 +641,17 @@ class BezierPath extends CompositeFigure {
             return this.interior;
         }
 
-        let index = DependentPolygonBase.tryGetIndex(partName, BezierPath.InPart);
+        let index = BezierPath.tryGetIndex(partName, BezierPath.InPart);
         if (index != null) {
             return index >= 1 && index <= this.inHandles.length ? this.inHandles[index - 1] : null;
         }
 
-        index = DependentPolygonBase.tryGetIndex(partName, BezierPath.OutPart);
+        index = BezierPath.tryGetIndex(partName, BezierPath.OutPart);
         if (index != null) {
             return index >= 1 && index <= this.outHandles.length ? this.outHandles[index - 1] : null;
         }
 
-        index = DependentPolygonBase.tryGetIndex(partName, BezierPath.PiecePart);
+        index = BezierPath.tryGetIndex(partName, BezierPath.PiecePart);
         if (index != null) {
             return index >= 1 && index <= this.pieces.length ? this.pieces[index - 1] : null;
         }

@@ -28,7 +28,6 @@ public class Program
         {
             ("Undo zero length", UndoZeroLength),
             ("Undo negative length", UndoNegativeLength),
-            ("Polygon parts survive redo", PolygonPartsSurviveRedo),
             ("Point-on-circle parameter survives undo", PointParameterSurvivesUndo),
             ("Length edits across figure kinds", LengthEditsAcrossKinds),
             ("Length panel preserves endpoint on undo", LengthPanelUndo),
@@ -65,8 +64,7 @@ public class Program
             ("A square on a side running the other way keeps its side", SquareOnReversedSide),
             ("The middle of a vector gives its midpoint", VectorMidpoint),
             ("A dashed vector has a dashed shaft", DashedVector),
-            ("A regular polygon's sides and vertices are selected by themselves", RegularPolygonPartSelection),
-            ("A regular polygon's sides and vertices keep their styles", RegularPolygonPartStyles),
+            ("Regular polygons by their center and on a side are plain figures; the panel after changes their sides", RegularPolygonTools),
             ("The Bezier path tool clicks, pulls handles and closes", BezierPathTool),
             ("A Bezier path's handles show, Tab takes one, Alt mirrors", BezierPathHandles),
             ("Alt dragging an anchor onto its neighbor drops it from the path", BezierPathDropAnchor),
@@ -91,10 +89,9 @@ public class Program
             ("Perimeter measurements", PerimeterMeasurements),
             ("A tool defined on expressions builds on its inputs", DefinedToolOnExpressions),
             ("Defined tools are stored, read back and deleted", StoredToolsRoundTrip),
-            ("A tool defined on a regular polygon's vertex", DefinedToolOnPolygonVertex),
             ("Deleting what a show/hide box holds, and undo", ShowHideBoxDeletion),
             ("Undoing a slider's range puts its value back", SliderRangeUndo),
-            ("A regular polygon and a vector keep their Z", CompositeZRoundTrips),
+            ("A vector keeps its Z", CompositeZRoundTrips),
             ("A tool on a segment's length asks for a segment; a figure that can't come in leaves nothing", DefinedToolOnSegmentLength),
             ("A point inside a shape has no X or Y to type", PointInsideCoordinatesReadOnly),
             ("Alt does nothing to a point dragged with a selection", AltDragOfSelection),
@@ -184,36 +181,9 @@ public class Program
         drawing.Figures.CheckConsistency();
     }
 
-    static void PolygonPartsSurviveRedo()
-    {
-        var drawing = NewDrawing();
-        var center = AddPoint(drawing, x: 0, y: 0);
-        var vertex = AddPoint(drawing, x: 3, y: 0);
-        var polygon = Factory.CreateRegularPolygon(drawing, new IFigure[] { center, vertex });
-        Actions.Add(drawing, polygon);
-        Set(drawing, polygon, nameof(RegularPolygon.NumberOfSides), value: 6);
-        var part = (IPoint)polygon.GetPart("Vertex6");
-        var line = Factory.CreateSegment(drawing, center, part);
-        Actions.Add(drawing, line);
-        var side = polygon.GetPart("Side6");
-        var onSide = Factory.CreatePointOnFigure(drawing, side, parameter: 0.4);
-        Actions.Add(drawing, onSide);
-        string after = drawing.SaveAsText();
-        drawing.ActionManager.Undo();
-        drawing.ActionManager.Undo();
-        drawing.ActionManager.Undo();
-        drawing.ActionManager.Redo();
-        drawing.ActionManager.Redo();
-        drawing.ActionManager.Redo();
-        Require(ReferenceEquals(polygon.GetPart("Vertex6"), line.Dependencies[1]), "Redo left the segment on a retired vertex.");
-        Require(ReferenceEquals(polygon.GetPart("Side6"), onSide.Dependencies[0]), "Redo left the point on a retired side.");
-        Require(drawing.SaveAsText() == after, "Redo changed the file.");
-        drawing.Figures.CheckConsistency();
-    }
-
     static void LengthEditsAcrossKinds()
     {
-        foreach (string kind in new[] { "segment", "circle", "vector", "polygon", "fixed", "onLine" })
+        foreach (string kind in new[] { "segment", "circle", "vector", "fixed", "onLine" })
         {
             var drawing = NewDrawing();
             var first = AddPoint(drawing, x: 1, y: 2);
@@ -230,7 +200,6 @@ public class Program
             {
                 "circle" => Factory.CreateCircle(drawing, new IFigure[] { first, second }),
                 "vector" => Factory.CreateVector(drawing, new IFigure[] { first, second }),
-                "polygon" => Factory.CreateRegularPolygon(drawing, new IFigure[] { first, second }),
                 _ => Factory.CreateSegment(drawing, first, second)
             };
             Actions.Add(drawing, figure);
@@ -720,7 +689,7 @@ public class Program
         {
             (new SegmentCreator(), 2), (new RayCreator(), 2), (new LineTwoPointsCreator(), 2),
             (new VectorCreator(), 2), (new CircleCreator(), 2), (new MidpointCreator(), 2),
-            (new TriangleCreator(), 3), (new RegularPolygonCreator(), 2), (new SquareCreator(), 2),
+            (new TriangleCreator(), 3), (new RegularPolygonCreator(), 2), (new RegularPolygonOnSideCreator(), 2), (new SquareCreator(), 2),
             (new CircleArcCreator(), 3), (new EllipseCreator(), 3),
             (new AngleMeasurementCreator(), 3), (new AngleBisectorCreator(), 3),
             (new SegmentBisectorCreator(), 2), (new BezierCreator(), 4),
@@ -1553,104 +1522,88 @@ public class Program
         Require(reloaded.Figures.OfType<DynamicGeometry.Vector>().Single().Style?.Name == "DashedRedLine", "The vector's style was not saved.");
     }
 
-    static RegularPolygon AddHexagon(Drawing drawing)
+    /// <summary>
+    /// The regular polygon tools make plain figures - points by coordinates for the vertices
+    /// they add, a segment per side and a polygon - regular whichever way they are built.
+    /// Right after, the polygon's panel builds it again with another number of sides, one
+    /// undo step, and the next polygon gets that count; its side moves the vertex clicked
+    /// last, and undo puts it back; OK brings the tool's panel back. Read again, the drawing
+    /// is the same.
+    /// </summary>
+    static void RegularPolygonTools()
     {
-        var center = AddPoint(drawing, x: 0, y: 0);
-        var vertex = AddPoint(drawing, x: 3, y: 0);
-        var polygon = Factory.CreateRegularPolygon(drawing, new IFigure[] { center, vertex });
-        Actions.Add(drawing, polygon);
-        Set(drawing, polygon, nameof(RegularPolygon.NumberOfSides), value: 6);
-        return polygon;
-    }
+        int next = RegularPolygonCreator.NextNumberOfSides;
+        try
+        {
+            foreach (var (tool, onSide) in new (RegularPolygonCreator Tool, bool OnSide)[] { (new RegularPolygonCreator(), false), (new RegularPolygonOnSideCreator(), true) })
+            {
+                var drawing = NewDrawing();
+                object shown = null;
+                drawing.DisplayProperties += (_, args) => shown = args.Object;
+                drawing.Behavior = tool;
+                Require(tool.PropertyBag is RegularPolygonCreator.SidesPanel, tool.Name + "'s panel is " + tool.PropertyBag);
+                RegularPolygonCreator.NextNumberOfSides = 5;
+                string empty = drawing.SaveAsText();
+                new FigureCreator.Dialog(tool) { X = "0", Y = "0" }.AddPoint();
+                new FigureCreator.Dialog(tool) { X = "2", Y = "0" }.AddPoint();
+                Require(!drawing.IsRecordingTransaction, tool.Name + " did not finish.");
+                CheckRegular(drawing, sides: 5, onSide, tool.Name);
+                Require(shown is RegularPolygonPanel, "After the polygon the panel shows " + shown);
+                var panel = (RegularPolygonPanel)shown;
+                Require(panel.ToString() == drawing.Figures.OfType<Polygon>().Single().Title, "The panel's title is " + panel);
+                string made = drawing.SaveAsText();
 
-    static void RegularPolygonPartSelection()
-    {
-        var drawing = NewDrawing();
-        var polygon = AddHexagon(drawing);
-        using var window = new TestWindow(drawing.Canvas);
-        drawing.Behavior = new Dragger();
-        var system = drawing.CoordinateSystem;
-        var side = (Segment)polygon.GetPart("Side2");
-        var vertex = (IPoint)polygon.GetPart("Vertex3");
+                // another number of sides: the polygon again, one undo step
+                Actions.SetProperty(drawing.ActionManager, PropertyDiscoveryStrategy.CreateValueProvider(panel, nameof(RegularPolygonPanel.NumberOfSides)), value: 8);
+                CheckRegular(drawing, sides: 8, onSide, tool.Name + " with 8 sides");
+                Require(RegularPolygonCreator.NextNumberOfSides == 8, "The next polygon gets " + RegularPolygonCreator.NextNumberOfSides + " sides.");
+                string rebuilt = drawing.SaveAsText();
+                drawing.ActionManager.Undo();
+                Require(drawing.SaveAsText() == made, tool.Name + ": undo of 8 sides changed the drawing.");
+                drawing.ActionManager.Redo();
+                Require(drawing.SaveAsText() == rebuilt, tool.Name + ": redo of 8 sides changed the drawing.");
+                drawing.Figures.CheckConsistency();
 
-        Click(drawing, system.ToPhysical(side.Coordinates.Midpoint));
-        Require(drawing.GetSelectedFigures().SequenceEqual(new IFigure[] { side }), "A click on a side selected " + string.Join(", ", drawing.GetSelectedFigures()));
-        Require(!polygon.Selected && !polygon.GetPart("Side1").Selected, "A click on a side selected the polygon.");
+                // the side, undone; then OK brings back the tool's panel
+                panel = (RegularPolygonPanel)shown;
+                Actions.SetProperty(drawing.ActionManager, PropertyDiscoveryStrategy.CreateValueProvider(panel, nameof(RegularPolygonPanel.Side)), value: 3.0);
+                Near(panel.Side, expected: 3);
+                CheckRegular(drawing, sides: 8, onSide, tool.Name + " with a side of 3");
+                drawing.ActionManager.Undo();
+                Require(drawing.SaveAsText() == rebuilt, tool.Name + ": undo of the side changed the drawing.");
+                panel.OK();
+                Require(shown is RegularPolygonCreator.SidesPanel, "OK brought back " + shown);
 
-        Click(drawing, system.ToPhysical(vertex.Coordinates));
-        Require(drawing.GetSelectedFigures().SequenceEqual(new IFigure[] { vertex }), "A click on a vertex selected " + string.Join(", ", drawing.GetSelectedFigures()));
-        Require(!side.Selected, "The side stayed selected.");
+                var reread = ReadLgf(rebuilt);
+                Require(reread.LoadErrors == null && reread.Figures.Count() == drawing.Figures.Count(), tool.Name + ": the drawing did not read back whole.");
+                CheckRegular(reread, sides: 8, onSide, tool.Name + " read again");
+                drawing.ActionManager.Undo();
+                drawing.ActionManager.Undo();
+                Require(drawing.SaveAsText() == empty, tool.Name + ": undo of the polygon left " + drawing.SaveAsText());
+            }
+        }
+        finally
+        {
+            RegularPolygonCreator.NextNumberOfSides = next;
+        }
 
-        // the inside is the polygon, all of it
-        Click(drawing, system.ToPhysical(new Point(1, 0.8)));
-        Require(drawing.GetSelectedFigures().SequenceEqual(new IFigure[] { polygon }), "A click inside selected " + string.Join(", ", drawing.GetSelectedFigures()));
-        Require(polygon.SelectableParts.All(part => part.Selected), "The polygon's parts don't show it selected.");
+        static void CheckRegular(Drawing drawing, int sides, bool onSide, string what)
+        {
+            var polygon = drawing.Figures.OfType<Polygon>().Single();
+            var vertices = polygon.Dependencies.Cast<IPoint>().Select(point => point.Coordinates).ToList();
+            Require(vertices.Count == sides, what + ": " + vertices.Count + " vertices");
+            var center = new Point(vertices.Average(point => point.X), vertices.Average(point => point.Y));
+            for (int i = 0; i < sides; i++)
+            {
+                Near(vertices[i].Distance(vertices[(i + 1) % sides]), vertices[0].Distance(vertices[1]));
+                Near(vertices[i].Distance(center), vertices[0].Distance(center));
+            }
 
-        // a side's page: its style and the polygon's side length, not a segment's rows
-        var rows = ((ICustomPropertyProvider)side).GetProperties().Select(row => row.Name).ToList();
-        Require(rows.SequenceEqual(new[] { nameof(RegularPolygon.Length), nameof(FigureBase.StyleDisplay) }), "A side's rows: " + string.Join(", ", rows));
-
-        // Delete with a side selected takes the polygon, and undo brings it back
-        Click(drawing, system.ToPhysical(side.Coordinates.Midpoint));
-        string before = drawing.SaveAsText();
-        drawing.DeleteSelection();
-        Require(!drawing.Figures.Contains(polygon), "Delete left the polygon.");
-        drawing.ActionManager.Undo();
-        Require(drawing.SaveAsText() == before, "Undo of the deletion changed the drawing.");
-        drawing.Figures.ClearSelection();
-        Require(!drawing.GetSelectedFigures().Any(), "Clearing the selection left " + string.Join(", ", drawing.GetSelectedFigures()));
-        drawing.Figures.CheckConsistency();
-    }
-
-    static void RegularPolygonPartStyles()
-    {
-        var drawing = NewDrawing();
-        var polygon = AddHexagon(drawing);
-        var red = drawing.StyleManager["RedLine"];
-        var blue = drawing.StyleManager["BlueLine"];
-        var redPoint = drawing.StyleManager["RedPoint"];
-        Require(red != null && blue != null && redPoint != null, "Palette styles missing.");
-        string before = drawing.SaveAsText();
-
-        var side2 = polygon.GetPart("Side2");
-        Set(drawing, side2, nameof(FigureBase.StyleDisplay), blue);
-        string oneSide = drawing.SaveAsText();
-        Require(oneSide != before, "A side's style was not saved.");
-
-        // all the sides at once, then all the vertices; undo gives side 2 its own back
-        Actions.SetProperty(drawing.ActionManager, polygon.SideStyles, red);
-        Actions.SetProperty(drawing.ActionManager, polygon.VertexStyles, redPoint);
-        Require(polygon.SelectableParts.OfType<Segment>().All(side => side.Style == red), "Not every side took the style.");
-        Require(polygon.SelectableParts.OfType<IPoint>().All(vertex => vertex.Style == redPoint), "Not every vertex took the style.");
-        string all = drawing.SaveAsText();
-        drawing.ActionManager.Undo();
-        drawing.ActionManager.Undo();
-        Require(side2.Style == blue, "Undo did not give side 2 its style back.");
-        Require(drawing.SaveAsText() == oneSide, "Undo of the sides' style changed the drawing.");
-        drawing.ActionManager.Undo();
-        Require(drawing.SaveAsText() == before, "Undo of the side's style changed the drawing.");
-        drawing.ActionManager.Redo();
-        drawing.ActionManager.Redo();
-        drawing.ActionManager.Redo();
-        Require(drawing.SaveAsText() == all, "Redo changed the drawing.");
-
-        // a side more takes the sides' style; fewer and more again keeps an odd one's
-        Set(drawing, polygon.GetPart("Side6"), nameof(FigureBase.StyleDisplay), blue);
-        Set(drawing, polygon, nameof(RegularPolygon.NumberOfSides), value: 7);
-        Require(polygon.GetPart("Side7").Style == red && polygon.GetPart("Vertex7").Style == redPoint, "A new side or vertex did not take the others' style.");
-        Set(drawing, polygon, nameof(RegularPolygon.NumberOfSides), value: 5);
-        drawing.ActionManager.Undo();
-        Require(polygon.GetPart("Side6").Style == blue, "Undo of fewer sides lost a side's style.");
-
-        // what is saved comes back
-        string saved = drawing.SaveAsText();
-        var reloaded = ReadLgf(saved);
-        var copy = reloaded.Figures.OfType<RegularPolygon>().Single();
-        Require(copy.GetPart("Side6").Style?.Name == "BlueLine", "Side 6 came back as " + copy.GetPart("Side6").Style?.Name);
-        Require(copy.GetPart("Side1").Style?.Name == "RedLine", "Side 1 came back as " + copy.GetPart("Side1").Style?.Name);
-        Require(copy.GetPart("Vertex4").Style?.Name == "RedPoint", "Vertex 4 came back as " + copy.GetPart("Vertex4").Style?.Name);
-        Require(reloaded.SaveAsText() == saved, "The polygon's styles did not round trip.");
-        drawing.Figures.CheckConsistency();
+            int added = drawing.Figures.OfType<PointByCoordinates>().Count();
+            Require(added == sides - (onSide ? 2 : 1), what + ": " + added + " points by coordinates");
+            Require(drawing.Figures.OfType<Segment>().Count() == sides, what + ": " + drawing.Figures.OfType<Segment>().Count() + " segments");
+            drawing.Figures.CheckConsistency();
+        }
     }
 
     /// <summary>A press, moves along the way and a release, as a mouse makes them</summary>
@@ -2538,16 +2491,16 @@ public class Program
         var square = Factory.CreatePolygon(drawing, corners);
         Actions.Add(drawing, square);
         Near(square.Perimeter, 12);
-        var hexagon = Factory.CreateRegularPolygon(drawing, new IFigure[] { AddPoint(drawing, x: 20, y: 0), AddPoint(drawing, x: 21, y: 0) });
-        Actions.Add(drawing, hexagon);
-        hexagon.NumberOfSides = 6;
+        var hexagonFigures = RegularPolygonBuilder.Create(drawing, AddPoint(drawing, x: 20, y: 0), AddPoint(drawing, x: 21, y: 0), sides: 6, onSide: false);
+        foreach (var figure in hexagonFigures)
+        {
+            Actions.Add(drawing, figure);
+        }
+
+        var hexagon = (Polygon)hexagonFigures.Last();
         Near(hexagon.Perimeter, 6);
-        // a click on a regular polygon takes its inside, which stands for the polygon (the hover threw on its empty name)
-        var inside = hexagon.GetPart("Interior");
-        Require(ClickChoice.Describe(inside) == "Regular hexagon " + hexagon.Name, "The inside of a regular polygon is described as " + ClickChoice.Describe(inside));
-        var hexagonMeasurement = Factory.CreatePerimeterMeasurement(drawing, new IFigure[] { inside });
+        var hexagonMeasurement = Factory.CreatePerimeterMeasurement(drawing, new IFigure[] { hexagon });
         Actions.Add(drawing, hexagonMeasurement);
-        Require(hexagonMeasurement.Construction == "of regular hexagon " + hexagon.Name, "The construction says " + hexagonMeasurement.Construction);
         Near(hexagonMeasurement.Length, 6);
         var ellipse = Factory.CreateEllipse(drawing, new IFigure[] { AddPoint(drawing, x: 30, y: 0), AddPoint(drawing, x: 33, y: 0), AddPoint(drawing, x: 30, y: 2) });
         Actions.Add(drawing, ellipse);
@@ -2600,6 +2553,15 @@ public class Program
         var square = drawing.Figures.OfType<Polygon>().Single();
         Require(square.Dependencies.Count == 4 && square.Dependencies.All(d => d.Exists), "The square is not whole.");
         Near(((IPoint)square.Dependencies[2]).Coordinates.Y, expected: 3);
+
+        // the other two corners are points by coordinates over the first two, nothing else
+        var corners = square.Dependencies.Skip(2).Cast<PointByCoordinates>().Select(corner => corner.XExpression.Text + ", " + corner.YExpression.Text);
+        string a = first.Name;
+        string b = second.Name;
+        Require(corners.SequenceEqual(new[] { $"{a}.Y + {b}.X - {b}.Y, -{a}.X + {b}.X + {b}.Y", $"{a}.X + {a}.Y - {b}.Y, -{a}.X + {a}.Y + {b}.X" }), "The corners say " + string.Join("; ", corners));
+        Require(
+            drawing.Figures.OfType<IPoint>().Count() == 4 && drawing.Figures.OfType<Segment>().Count() == 4 && drawing.Figures.OfType<Polygon>().Count() == 1,
+            "The square made more than its corners, sides and polygon: " + string.Join(", ", drawing.Figures));
         string after = drawing.SaveAsText();
         drawing.ActionManager.Undo();
         Require(drawing.SaveAsText() == before, "Undo of the square changed the drawing.");
@@ -4023,81 +3985,6 @@ public class Program
     }
 
     /// <summary>
-    /// A tool defined from a vertex a regular polygon works out (a part, with no name of its
-    /// own): the input is named in the macro and the tool makes what was built on it. And a
-    /// tool whose result is built on such a vertex that is no input makes the polygon too.
-    /// </summary>
-    static void DefinedToolOnPolygonVertex()
-    {
-        var drawing = ReadLgf("""
-            <Drawing Version="1">
-              <Figures>
-                <FreePoint Name="A" X="0" Y="0" />
-                <FreePoint Name="B" X="2" Y="0" />
-                <RegularPolygon Name="p">
-                  <Dependency Name="A" />
-                  <Dependency Name="B" />
-                </RegularPolygon>
-                <MidPoint Name="G">
-                  <Dependency Name="A" />
-                  <Dependency Name="p" Part="Vertex2" />
-                </MidPoint>
-              </Figures>
-            </Drawing>
-            """);
-        var a = Find(drawing, "A");
-        var g = (IPoint)Find(drawing, "G");
-        var vertex = ((RegularPolygon)Find(drawing, "p")).GetPart("Vertex2");
-        var onVertex = UserDefinedTool.AddFromString(MacroSerializer.WriteMacroToString(
-            new List<IFigure> { a, vertex },
-            new List<IFigure> { g },
-            "Halfway"));
-        var throughPolygon = new MacroDefiner()
-        {
-            Inputs = new List<IFigure> { a, Find(drawing, "B") },
-            Results = new List<IFigure> { g }
-        }.CreateTool();
-        try
-        {
-            var macro = onVertex.RootElement.ToString();
-            Require(UserDefinedTool.Read(macro, out string problem) != null, "The tool would not be read back: " + problem);
-            Require(onVertex.HintText.Contains("then a point (vertex 2 of "), "The tool's hint: " + onVertex.HintText);
-
-            var other = NewDrawing();
-            AddPoint(other, x: 1, y: 1);
-            AddPoint(other, x: 5, y: 3);
-            using var window = new TestWindow(other.Canvas);
-            other.Behavior = onVertex;
-            Click(other, other.CoordinateSystem.ToPhysical(new Point(1, 1)));
-            Click(other, other.CoordinateSystem.ToPhysical(new Point(5, 3)));
-            var made = other.Figures.OfType<MidPoint>().SingleOrDefault();
-            Require(made != null, "The tool defined on a vertex made nothing: " + macro);
-            Near(made.Coordinates.X, expected: 3);
-            Near(made.Coordinates.Y, expected: 2);
-            other.Figures.CheckConsistency();
-
-            var third = NewDrawing();
-            AddPoint(third, x: 0, y: 0);
-            AddPoint(third, x: 2, y: 0);
-            using var thirdWindow = new TestWindow(third.Canvas);
-            third.Behavior = throughPolygon;
-            Click(third, third.CoordinateSystem.ToPhysical(new Point(0, 0)));
-            Click(third, third.CoordinateSystem.ToPhysical(new Point(2, 0)));
-            Require(third.Figures.OfType<RegularPolygon>().Count() == 1, "The tool didn't make the polygon its result is built on: " + throughPolygon.RootElement);
-            var middle = third.Figures.OfType<MidPoint>().SingleOrDefault();
-            Require(middle != null, "The tool built through the polygon made no midpoint.");
-            Near(middle.Coordinates.X, g.Coordinates.X);
-            Near(middle.Coordinates.Y, g.Coordinates.Y);
-            third.Figures.CheckConsistency();
-        }
-        finally
-        {
-            Behavior.Delete(onVertex);
-            Behavior.Delete(throughPolygon);
-        }
-    }
-
-    /// <summary>
     /// A show/hide box loses what is deleted of what it holds and goes when nothing is left,
     /// also when what it holds goes in one deletion (A and AB, A deleted: the removal threw
     /// half way, and undo gave the box back without A). Undo and redo give each drawing back.
@@ -4173,7 +4060,7 @@ public class Program
         }
     }
 
-    /// <summary>A regular polygon and a vector brought to front or sent to back stay so in the file (their own WriteXml left Z out)</summary>
+    /// <summary>A vector brought to front or sent to back stays so in the file (its own WriteXml left Z out)</summary>
     static void CompositeZRoundTrips()
     {
         var drawing = ReadLgf("""
@@ -4181,10 +4068,6 @@ public class Program
               <Figures>
                 <FreePoint Name="A" X="0" Y="0" />
                 <FreePoint Name="B" X="2" Y="0" />
-                <RegularPolygon Name="p" Z="2">
-                  <Dependency Name="A" />
-                  <Dependency Name="B" />
-                </RegularPolygon>
                 <Vector Name="AB" Z="-1">
                   <Dependency Name="A" />
                   <Dependency Name="B" />
@@ -4194,7 +4077,6 @@ public class Program
             """);
         Require(Find(drawing, "AB").Z == -1, "A vector read without its Z.");
         var reloaded = ReadLgf(drawing.SaveAsText());
-        Require(Find(reloaded, "p").Z == 2, "A regular polygon saved without its Z.");
         Require(Find(reloaded, "AB").Z == -1, "A vector saved without its Z.");
     }
 

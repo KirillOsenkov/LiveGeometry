@@ -1570,8 +1570,9 @@ public class GeoGebraReader
     /// <summary>
     /// Polygon[A, B, C]: the polygon, then a segment per side in the outputs. Polygon[A, B, n]:
     /// a regular polygon on the side AB, counterclockwise - here a plain polygon whose other
-    /// vertices are A turned about the center, so that they keep the names the file gives
-    /// them; the center is a point by coordinates, hidden.
+    /// vertices are points by coordinates over A and B, as the Polygon on a side tool makes
+    /// them (<see cref="RegularPolygonBuilder"/>), so that they keep the names the file
+    /// gives them.
     /// </summary>
     List<IFigure> PolygonCommand(string[] inputs, string[] outputs)
     {
@@ -1611,26 +1612,9 @@ public class GeoGebraReader
 
     List<IPoint> RegularPolygonVertices(IPoint a, IPoint b, int sides)
     {
-        // The center is to the left of A->B: B turned about A by 90 - 180/n degrees and
-        // brought in to the circumradius, side / (2 sin(pi/n)). Built from the points, not
-        // from their names: an expression can't say A' (the center of Polygon[B, A', 4]
-        // stood at the origin, and the square somewhere else).
-        var turn = Number.CreateAuxiliary(drawing, 90 - 180.0 / sides);
-        Add(turn);
-        var turned = Factory.CreateRotatedPoint(drawing, new IFigure[] { b, a, turn });
-        turned.Visible = false;
-        Add(turned);
-        var factor = Number.CreateAuxiliary(drawing, 0.5 / System.Math.Sin(Math.PI / sides));
-        Add(factor);
-        var center = Factory.CreateDilatedPoint(drawing, new IFigure[] { turned, a, factor });
-        center.Visible = false;
-        Add(center);
         var vertices = new List<IPoint>() { a, b };
-        for (int i = 2; i < sides; i++)
+        foreach (var vertex in RegularPolygonBuilder.CreateVertices(drawing, a, b, sides, onSide: true))
         {
-            var angle = Number.CreateAuxiliary(drawing, i * 360.0 / sides);
-            Add(angle);
-            var vertex = Factory.CreateRotatedPoint(drawing, new IFigure[] { a, center, angle });
             Add(vertex);
             vertices.Add(vertex);
         }

@@ -31,9 +31,14 @@ public class LengthPropertyValue : ConditionalPropertyValue, IRestorableValue
 {
     public virtual IFixableLength Figure => (IFixableLength)Parent;
 
+    /// <summary>The point a new length moves (a panel without such a figure says its own)</summary>
+    protected virtual IPoint Endpoint => Figure.LengthEndpoint;
+
+    protected virtual Drawing Drawing => Figure.Drawing;
+
     public object CaptureState()
     {
-        var endpoint = Figure.LengthEndpoint;
+        var endpoint = Endpoint;
         var place = (IRestorablePlace)endpoint;
         var number = (endpoint as TranslatedPoint)?.DistanceSource as Number;
         return (place, place.CapturePlace(), number, number?.Value);
@@ -48,7 +53,7 @@ public class LengthPropertyValue : ConditionalPropertyValue, IRestorableValue
         }
 
         place.RestorePlace(position);
-        Figure.Drawing.Recalculate();
+        Drawing.Recalculate();
     }
 }
 

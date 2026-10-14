@@ -216,12 +216,12 @@ namespace DynamicGeometry
         }
 
         /// <summary>
-        /// The parts of a composite's image (a regular polygon's sides and inside) go over to
-        /// the image's dependencies. The clone made them when it was read, on what the
-        /// source is built on, and setting the image's dependencies doesn't reach them: two
-        /// sides and the inside of a reflected regular pentagon ran to the source's first
-        /// vertex. Not in the drawing yet, the parts are registered with nothing (see
-        /// DependentPolygonBase.RegisterPart), so their lists are all there is to change.
+        /// The parts of a composite's image go over to the image's dependencies. The clone
+        /// made them when it was read, on what the source is built on, and setting the
+        /// image's dependencies doesn't reach them: the sides and the inside of a reflected
+        /// regular pentagon (a composite then) ran to the source's first vertex. Not in the
+        /// drawing yet, the parts are registered with nothing, so their lists are all there
+        /// is to change.
         /// </summary>
         static void MovePartsOver(IFigure image, IList<IFigure> sourceDependencies)
         {
@@ -266,7 +266,7 @@ namespace DynamicGeometry
         /// </summary>
         public static bool CanBeInverted(IFigure source)
         {
-            return source is IPoint || CanBeTraced(source) || source is Polygon || source is DependentPolygonBase;
+            return source is IPoint || CanBeTraced(source) || source is Polygon;
         }
 
         public static bool CanFigureBeMirrorForSource(IFigure figure, IFigure source)
@@ -285,37 +285,27 @@ namespace DynamicGeometry
         /// <summary>
         /// A polygon in a circle: no polygon (the image of a side is an arc, and a filled
         /// region bounded by arcs is no figure here), but the images of its sides, each
-        /// traced (<see cref="CreateTracedImage"/>) in the style of the side. A regular
-        /// polygon's sides are its own parts; a polygon's are the segments drawn along them,
-        /// and a side without one gets one first, as the Triangle and Polygon tools draw it.
+        /// traced (<see cref="CreateTracedImage"/>) in the style of the side. A polygon's
+        /// sides are the segments drawn along them, and a side without one gets one first, as
+        /// the Triangle and Polygon tools draw it.
         /// </summary>
         static List<IFigure> CreateInvertedSides(Drawing drawing, IFigure source, IFigure mirror)
         {
             var result = new List<IFigure>();
             var sides = new List<IFigure>();
-            if (source is IFigureParts parts)
+            var vertices = source.Dependencies.ToList();
+            for (int i = 0; i < vertices.Count; i++)
             {
-                for (int i = 1; parts.GetPart("Side" + i) is IFigure side; i++)
+                var from = (IPoint)vertices[i];
+                var to = (IPoint)vertices[(i + 1) % vertices.Count];
+                IFigure side = FindSideSegment(drawing, from, to);
+                if (side == null)
                 {
-                    sides.Add(side);
+                    side = Factory.CreateSegment(drawing, from, to);
+                    result.Add(side);
                 }
-            }
-            else
-            {
-                var vertices = source.Dependencies.ToList();
-                for (int i = 0; i < vertices.Count; i++)
-                {
-                    var from = (IPoint)vertices[i];
-                    var to = (IPoint)vertices[(i + 1) % vertices.Count];
-                    IFigure side = FindSideSegment(drawing, from, to);
-                    if (side == null)
-                    {
-                        side = Factory.CreateSegment(drawing, from, to);
-                        result.Add(side);
-                    }
 
-                    sides.Add(side);
-                }
+                sides.Add(side);
             }
 
             foreach (var side in sides)
@@ -343,7 +333,7 @@ namespace DynamicGeometry
                 return CreateTracedImage(drawing, source, point => CreateReflectedFigure(drawing, point, mirror));
             }
 
-            if (mirror is ICircle && (source is Polygon || source is DependentPolygonBase))
+            if (mirror is ICircle && source is Polygon)
             {
                 return CreateInvertedSides(drawing, source, mirror);
             }

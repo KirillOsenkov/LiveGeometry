@@ -24,7 +24,7 @@ namespace DynamicGeometry;
 /// of the drawing, which the path is built on (a handle on a tangent, the images of a
 /// transformation's source handles). Closed (a piece from the last anchor back to the first)
 /// and filled are two switches of their own; an open path fills as if closed by a straight
-/// line. A composite like a regular polygon: the anchors are points of the drawing that it is
+/// line. A composite (<see cref="IFigureParts"/>): the anchors are points of the drawing that it is
 /// built on, and its pieces (selected and styled one by one, the "sides"), its inside and its
 /// handles are its parts. A handle shows only next to an anchor that is selected or dragged
 /// (<see cref="IsHandleShown"/>), and only the Drag tool takes one: nothing outside the path
@@ -633,10 +633,11 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
     #region Parts
 
-    // The parts are figures of the library that the drawing never sees (as a regular
-    // polygon's): no names, found through the path, built on it so that what is built on
-    // them (only the images of a transformation) follows it. They are listed with the path
-    // only while it is in the drawing (see DependentPolygonBase.RegisterPart).
+    // The parts are figures of the library that the drawing never sees (IFigureParts): no
+    // names, found through the path, built on it so that what is built on them (only the
+    // images of a transformation) follows it. They are listed with the path only while it is
+    // in the drawing (partsUnregistered): registered when read, before the path was added,
+    // they would fail the consistency check.
     bool partsUnregistered = true;
 
     /// <summary>Whether the parts' shapes are on a canvas: parts made before the path is on one get there with it</summary>
@@ -2725,8 +2726,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     const string PartElement = "Part";
 
     /// <summary>
-    /// The styles of the sides and handles, as a regular polygon writes its parts' (see
-    /// DependentPolygonBase.WritePartStyles): the style most of them have unless it is the
+    /// The styles of the sides and handles: the style most of them have unless it is the
     /// default, and a part with another by itself
     /// </summary>
     void WritePartStyles(XmlWriter writer)
