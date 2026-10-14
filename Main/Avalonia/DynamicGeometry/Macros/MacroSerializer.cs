@@ -123,8 +123,10 @@ namespace DynamicGeometry
         
         /// <summary>
         /// What the tool asks for: a point, a line or an ellipse of any kind - unless a result
-        /// takes more from the input than its kind gives (<see cref="TakesMoreThanKind"/>),
-        /// when only the input's own type will do
+        /// takes more from the input than its kind gives (<see cref="TakesMoreThanKind"/>), or
+        /// an expression reads a number off it that not every figure of the kind has (u.X of a
+        /// vector: given a segment, the point at (CD.X, CD.Y) was nowhere; a point's X and Y
+        /// every point has), when only the input's own type will do
         /// </summary>
         string GetInputType(IFigure input)
         {
@@ -138,7 +140,11 @@ namespace DynamicGeometry
             {
                 if (commonType.IsAssignableFrom(inputType))
                 {
-                    return commonType.Name;
+                    // what every figure of the kind has: a point's X and Y (PointBase), nothing more for a line or an ellipse
+                    var sharedType = commonType == typeof(IPoint) ? typeof(PointBase) : commonType;
+                    return input.IsReadByExpressionsBeyond(sharedType, Results.Contains)
+                        ? inputType.Name
+                        : commonType.Name;
                 }
             }
             return inputType.Name;

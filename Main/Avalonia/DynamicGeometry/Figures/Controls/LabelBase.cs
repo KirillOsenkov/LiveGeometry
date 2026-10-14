@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -331,6 +332,22 @@ namespace DynamicGeometry
             if (ShouldProcessText && !text.IsEmpty())
             {
                 ProcessText();
+            }
+        }
+
+        /// <summary>The expressions of the [...] parts, without the brackets: none in a text that is shown as it is</summary>
+        public IEnumerable<string> Expressions
+        {
+            get
+            {
+                if (!ShouldProcessText || text.IsEmpty())
+                {
+                    return Enumerable.Empty<string>();
+                }
+
+                return FindExpressionParts(text)
+                    .Where(part => part.Length >= 3)
+                    .Select(part => text.Substring(part.Start + 1, part.Length - 2));
             }
         }
 

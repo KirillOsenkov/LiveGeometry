@@ -375,10 +375,20 @@ namespace DynamicGeometry
         /// </summary>
         void Toggle(bool show)
         {
-            // from a file, or in the middle of a construction, whose undo step is its figure's alone
-            if (Drawing == null || !Drawing.Figures.Contains(this) || Drawing.IsRecordingTransaction)
+            // from a file
+            if (Drawing == null || !Drawing.Figures.Contains(this))
             {
                 Show(show);
+                return;
+            }
+
+            // in the middle of a construction (a segment's first end clicked) or a drag: what is
+            // recorded now joins its transaction, and shown without being recorded, the figures
+            // stayed hidden after Escape and after undo of the segment - the box stays as it
+            // was, as Delete and Paste do nothing then
+            if (Drawing.IsRecordingTransaction)
+            {
+                SetBox(!show);
                 return;
             }
 

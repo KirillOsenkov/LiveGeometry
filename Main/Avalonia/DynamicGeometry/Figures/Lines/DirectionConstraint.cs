@@ -173,10 +173,15 @@ public static class DirectionConstraint
         }
     }
 
-    /// <summary>Whether <see cref="Free"/> applies: not to a point a locus is drawn from that would have to become another kind of point</summary>
+    /// <summary>
+    /// Whether <see cref="Free"/> applies: not to an end that would have to become a free point
+    /// when a locus is drawn from it, or an expression reads off it what a free point has not
+    /// (B.Direction)
+    /// </summary>
     public static bool CanFree(TranslatedPoint fixedEnd)
     {
-        return !fixedEnd.IsDistanceFree || !PointSnapping.IsHeldByLocus(fixedEnd);
+        return !fixedEnd.IsDistanceFree
+            || !PointSnapping.IsHeldByLocus(fixedEnd) && !fixedEnd.IsReadByExpressionsBeyond(typeof(FreePoint));
     }
 
     /// <summary>
@@ -186,6 +191,11 @@ public static class DirectionConstraint
     /// </summary>
     public static void Free(TranslatedPoint fixedEnd)
     {
+        if (!CanFree(fixedEnd))
+        {
+            return;
+        }
+
         var drawing = fixedEnd.Drawing;
         if (fixedEnd.IsDistanceFree)
         {

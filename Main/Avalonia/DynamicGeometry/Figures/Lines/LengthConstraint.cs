@@ -220,6 +220,11 @@ public static class LengthConstraint
     /// </summary>
     public static void Fix(IPoint end, IPoint pivot)
     {
+        if (!CanFix(end, pivot))
+        {
+            return;
+        }
+
         var drawing = end.Drawing;
         if (end is TranslatedPoint sliding)
         {
@@ -241,6 +246,18 @@ public static class LengthConstraint
         }
     }
 
+    /// <summary>
+    /// Whether <see cref="Fix"/> applies: the end can be stretched, and the translated point
+    /// put in its place has every property an expression reads off it (a point on a line read
+    /// as B.Parameter: fixed, the point at (B.Parameter, 3) went nowhere). A length typed once
+    /// moves the end and keeps it what it is (<see cref="CanStretch"/>).
+    /// </summary>
+    public static bool CanFix(IFigure end, IFigure pivot)
+    {
+        return CanStretch(end, pivot)
+            && (end is TranslatedPoint || !end.IsReadByExpressionsBeyond(typeof(TranslatedPoint)));
+    }
+
     /// <summary>How far the point is from the origin the way the line points: negative behind it</summary>
     static double DistanceAlong(ILine line, Point origin, Point point)
     {
@@ -257,24 +274,55 @@ public static class LengthConstraint
     /// </summary>
     public static void Free(TranslatedPoint fixedEnd)
     {
-        var drawing = fixedEnd.Drawing;
-        if (PointSnapping.IsHeldByLocus(fixedEnd))
+        if (!CanFree(fixedEnd))
         {
-            // a point a locus is drawn from stays the point it is: only its distance is let go
-            drawing.ActionManager.SetProperty(fixedEnd, "FreeDistance", true);
+            return;
         }
-        else if (fixedEnd.IsDirectionFree)
+
+        var drawing = fixedEnd.Drawing;
+        var replacement = ReplacementOnFree(fixedEnd);
+        if (replacement == typeof(FreePoint))
         {
             Actions.ReplacePoint(fixedEnd, Factory.CreateFreePoint(drawing, fixedEnd.Coordinates));
         }
-        else if (fixedEnd.DirectionSource is ILine line && IsOnLine(fixedEnd.Source, line) && IsWithin(line, fixedEnd.Coordinates))
+        else if (replacement == typeof(PointOnFigure))
         {
-            Actions.ReplacePoint(fixedEnd, Factory.CreatePointOnFigure(drawing, line, fixedEnd.Coordinates));
+            Actions.ReplacePoint(fixedEnd, Factory.CreatePointOnFigure(drawing, (ILine)fixedEnd.DirectionSource, fixedEnd.Coordinates));
         }
         else
         {
+            // (a point a locus is drawn from stays the point it is: only its distance is let go)
             drawing.ActionManager.SetProperty(fixedEnd, "FreeDistance", true);
         }
+    }
+
+    /// <summary>
+    /// Whether <see cref="Free"/> applies: not when the end would become a kind of point that
+    /// has no property an expression reads off it (B.Distance; Free distance in the point's
+    /// own grid refuses the same, and through the segment's verb the point went nowhere)
+    /// </summary>
+    public static bool CanFree(TranslatedPoint fixedEnd)
+    {
+        var replacement = ReplacementOnFree(fixedEnd);
+        return replacement == null || !fixedEnd.IsReadByExpressionsBeyond(replacement);
+    }
+
+    /// <summary>The kind of point <see cref="Free"/> puts in the end's place; null when the end stays and only its distance is let go</summary>
+    static System.Type ReplacementOnFree(TranslatedPoint fixedEnd)
+    {
+        if (PointSnapping.IsHeldByLocus(fixedEnd))
+        {
+            return null;
+        }
+
+        if (fixedEnd.IsDirectionFree)
+        {
+            return typeof(FreePoint);
+        }
+
+        return fixedEnd.DirectionSource is ILine line && IsOnLine(fixedEnd.Source, line) && IsWithin(line, fixedEnd.Coordinates)
+            ? typeof(PointOnFigure)
+            : null;
     }
 
     /// <summary>Whether a point on the line through a segment or a ray is on the segment or ray itself</summary>

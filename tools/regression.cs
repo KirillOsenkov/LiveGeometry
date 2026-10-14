@@ -93,6 +93,9 @@ public class Program
             ("A tool defined on expressions builds on its inputs", DefinedToolOnExpressions),
             ("Defined tools are stored, read back and deleted", StoredToolsRoundTrip),
             ("Deleting what a show/hide box holds, and undo", ShowHideBoxDeletion),
+            ("A show/hide box clicked in the middle of a construction stays as it was", ShowHideBoxDuringConstruction),
+            ("A box's Edit figures from another tab edits that box", EditFiguresFromAnotherTab),
+            ("Free, drag, fix again by a point's own box: undo gives back the first value", FreedomRefixUndo),
             ("Undoing a slider's range puts its value back", SliderRangeUndo),
             ("A vector keeps its Z", CompositeZRoundTrips),
             ("A tool on a segment's length asks for a segment; a figure that can't come in leaves nothing", DefinedToolOnSegmentLength),
@@ -108,6 +111,7 @@ public class Program
             ("A number expressions name renamed pi, e, or x where a function names it is said in backticks", ReservedNamesForNumbers),
             ("Any name can be said in an expression, in backticks", QuotedNames),
             ("No conversion that takes away what an expression reads; a failed expression has no value", ConversionKeepsExpressionsWhole),
+            ("Fix length, Free length, Free direction and Convert to path anchor keep a point whose number an expression reads", PointKindKeepsExpressionsWhole),
             ("The X row of two points and the function row of two graphs: checked for each, then set", SharedExpressionRows),
             ("No Free point while a graph reads its Parameter; a graph that stops compiling is drawn no more", ReleaseKeepsFunctionsWhole),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
@@ -1609,6 +1613,57 @@ public class Program
                 drawing.ActionManager.Undo();
                 drawing.ActionManager.Undo();
                 Require(drawing.SaveAsText() == empty, tool.Name + ": undo of the polygon left " + drawing.SaveAsText());
+            }
+
+            // on a side the drawing had, running the other way (segment B to A, the polygon on
+            // A then B): the side's Horizontal replaces A, the first click, and a new count
+            // built the polygon on the A that had left - a corner below the side and a second
+            // side AB2
+            {
+                var drawing = ReadLgf("""
+                    <Drawing Version="1">
+                      <Figures>
+                        <FreePoint Name="A" X="-3" Y="-1" />
+                        <FreePoint Name="B" X="0" Y="0" />
+                        <Segment Name="AB">
+                          <Dependency Name="B" />
+                          <Dependency Name="A" />
+                        </Segment>
+                      </Figures>
+                    </Drawing>
+                    """);
+                object shown = null;
+                drawing.DisplayProperties += (_, args) => shown = args.Object;
+                var tool = new RegularPolygonOnSideCreator();
+                drawing.Behavior = tool;
+                RegularPolygonCreator.NextNumberOfSides = 5;
+                new FigureCreator.Dialog(tool) { X = "-3", Y = "-1" }.AddPoint();
+                new FigureCreator.Dialog(tool) { X = "0", Y = "0" }.AddPoint();
+                CheckRegular(drawing, sides: 5, onSide: true, "A pentagon on side BA");
+                var panel = PolygonPanel(shown, onSide: true);
+                ((DimensionsPanel)shown).MakeHorizontal();
+                Require(Find(drawing, "A") is TranslatedPoint, "Horizontal on side BA left A a " + Find(drawing, "A").GetType().Name);
+                string horizontal = drawing.SaveAsText();
+                Actions.SetProperty(drawing.ActionManager, PropertyDiscoveryStrategy.CreateValueProvider(panel, nameof(RegularPolygonPanel.NumberOfSides)), value: 6);
+                CheckRegular(drawing, sides: 6, onSide: true, "On side BA made horizontal, with 6 sides");
+                var polygon = drawing.Figures.OfType<Polygon>().Single();
+                Require(polygon.Dependencies.All(drawing.Figures.Contains), "The hexagon is built on a point the drawing doesn't have.");
+                var side = (IFixableDirection)drawing.Figures.FindLine((IPoint)polygon.Dependencies[0], (IPoint)polygon.Dependencies[1]);
+                Require(System.Math.Abs(System.Math.Sin(side.Direction * System.Math.PI / 180)) < 1e-9, "The hexagon's side is at " + side.Direction + "°.");
+                string rebuilt = drawing.SaveAsText();
+                var reread = ReadLgf(rebuilt);
+                CheckRegular(reread, sides: 6, onSide: true, "On side BA with 6 sides, read again");
+                var vertices = polygon.Dependencies.Cast<IPoint>().Select(point => point.Coordinates).ToList();
+                var rereadVertices = reread.Figures.OfType<Polygon>().Single().Dependencies.Cast<IPoint>().Select(point => point.Coordinates).ToList();
+                for (int i = 0; i < vertices.Count; i++)
+                {
+                    NearPoint(rereadVertices[i], vertices[i]);
+                }
+
+                drawing.ActionManager.Undo();
+                Require(drawing.SaveAsText() == horizontal, "Undo of 6 sides on side BA changed the drawing.");
+                drawing.ActionManager.Redo();
+                Require(drawing.SaveAsText() == rebuilt, "Redo of 6 sides on side BA changed the drawing.");
             }
         }
         finally
@@ -3263,7 +3318,9 @@ public class Program
     /// line. Converted all the same, the expression no longer compiles and gives no value:
     /// the point is nowhere at once, as it is when the file is read again (it went on at
     /// its old place, through what had been compiled for the segment that left), and undo
-    /// brings it back.
+    /// brings it back. A name the expressions say in backticks (`base side`.Length, given by a
+    /// rename or typed so) is read all the same: a regular expression over the text missed it,
+    /// and the conversions came back once the segment was renamed. So is a label's [...] part.
     /// </summary>
     static void ConversionKeepsExpressionsWhole()
     {
@@ -3279,6 +3336,13 @@ public class Program
                 <PointByCoordinates Name="P" X="AB.Length" Y="-1">
                   <Dependency Name="AB" />
                 </PointByCoordinates>
+                <FreePoint Name="C" X="0" Y="2" />
+                <FreePoint Name="D" X="2" Y="2" />
+                <Segment Name="CD">
+                  <Dependency Name="C" />
+                  <Dependency Name="D" />
+                </Segment>
+                <Label Name="half" Text="half of it: [CD.Length / 2]" X="0" Y="4" />
               </Figures>
             </Drawing>
             """);
@@ -3293,6 +3357,170 @@ public class Program
         Require(((IFigure)point).Exists, "Undo of the conversion left the point nowhere.");
         NearPoint(point.Coordinates, new Point(3, -1));
         drawing.Figures.CheckConsistency();
+
+        segment = (Segment)Find(drawing, "AB");
+        var holder = (IRenamableExpressions)point;
+        foreach (var name in new[] { "base side", "my `side" })
+        {
+            Set(drawing, segment, nameof(IFigure.Name), value: name);
+            Require(
+                !segment.CanEdit("ConvertToRay") && !segment.CanEdit("ConvertToLine"),
+                "Named " + name + ", the segment P reads (X = " + holder.ExpressionTexts[0] + ") offers to become a ray or a line.");
+        }
+
+        Set(drawing, segment, nameof(IFigure.Name), value: "AB");
+        holder.ExpressionTexts = new[] { "`AB`.Length", "-1" };
+        holder.RebindExpressions();
+        Require(((IFigure)point).Exists, "P at (`AB`.Length, -1) is nowhere.");
+        Require(!segment.CanEdit("ConvertToRay"), "Read as `AB`.Length, the segment offers to become a ray.");
+
+        var other = (Segment)Find(drawing, "CD");
+        var label = (DynamicGeometry.Label)Find(drawing, "half");
+        Require(!other.CanEdit("ConvertToRay"), "A segment a label's [CD.Length / 2] reads offers to become a ray.");
+        Set(drawing, other, nameof(IFigure.Name), value: "other side");
+        Require(label.Text == "half of it: [`other side`.Length / 2]", "The label says " + label.Text);
+        Require(!other.CanEdit("ConvertToRay"), "Renamed, a segment a label reads offers to become a ray.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// A segment's Free length and Free direction make its fixed end a free point when nothing
+    /// else holds it - not while an expression reads its Distance or Direction, which a free
+    /// point has not (the point at (B.Distance, 3) went nowhere, the label said "Could not find
+    /// property"; the point's own Free boxes refused the same). Freeing one of two fixed
+    /// quantities keeps the translated point, and stays offered. The same for Fix length of
+    /// a point on a line read as B.Parameter (it became a translated point) and Convert to path
+    /// anchor of a point on a path read so (a free point); a length typed once still moves it.
+    /// </summary>
+    static void PointKindKeepsExpressionsWhole()
+    {
+        foreach (var quantity in new[] { "Distance", "Direction" })
+        {
+            var drawing = ReadLgf("""
+                <Drawing Version="1">
+                  <Figures>
+                    <FreePoint Name="A" X="0" Y="0" />
+                    <FreePoint Name="B" X="4" Y="1" />
+                    <Segment Name="AB">
+                      <Dependency Name="A" />
+                      <Dependency Name="B" />
+                    </Segment>
+                  </Figures>
+                </Drawing>
+                """);
+            var segment = (Segment)Find(drawing, "AB");
+            string fix = quantity == "Distance" ? "FixLength" : "FixDirection";
+            string free = quantity == "Distance" ? "FreeLength" : "FreeDirection";
+            if (quantity == "Distance")
+            {
+                segment.FixLength();
+            }
+            else
+            {
+                segment.FixDirection();
+            }
+
+            Require(Find(drawing, "B") is TranslatedPoint, fix + " left B a " + Find(drawing, "B").GetType().Name);
+            var point = Factory.CreatePointByCoordinates(drawing, "B." + quantity, "3");
+            Actions.Add(drawing, point);
+            Require(point.Exists, "The point at (B." + quantity + ", 3) is nowhere.");
+            foreach (var name in new[] { "B", "end point" })
+            {
+                Set(drawing, Find(drawing, "B"), nameof(IFigure.Name), value: name);
+                Require(!segment.CanEdit(free), "With B named " + name + " and read as " + point.XExpression.Text + ", the segment offers " + free + ".");
+                if (quantity == "Distance")
+                {
+                    segment.FreeLength();
+                }
+                else
+                {
+                    segment.FreeDirection();
+                }
+
+                Require(Find(drawing, name) is TranslatedPoint && point.Exists, free + " took away what " + point.XExpression.Text + " reads.");
+                Set(drawing, Find(drawing, name), nameof(IFigure.Name), value: "B");
+            }
+
+            // both fixed: freeing this one lets go of it alone, and the point stays what it is
+            if (quantity == "Distance")
+            {
+                segment.FixDirection();
+            }
+            else
+            {
+                segment.FixLength();
+            }
+
+            Require(segment.CanEdit(free), "With both fixed, the segment offers no " + free + ".");
+            if (quantity == "Distance")
+            {
+                segment.FreeLength();
+            }
+            else
+            {
+                segment.FreeDirection();
+            }
+
+            Require(Find(drawing, "B") is TranslatedPoint && point.Exists, free + " of one of two fixed quantities took away what " + point.XExpression.Text + " reads.");
+            drawing.Figures.CheckConsistency();
+        }
+
+        var onLine = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="0" Y="0" />
+                <FreePoint Name="C" X="4" Y="0" />
+                <LineTwoPoints Name="AC">
+                  <Dependency Name="A" />
+                  <Dependency Name="C" />
+                </LineTwoPoints>
+                <PointOnFigure Name="B" X="2" Y="0" Parameter="0.5">
+                  <Dependency Name="AC" />
+                </PointOnFigure>
+                <Segment Name="AB">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                </Segment>
+                <PointByCoordinates Name="P" X="B.Parameter" Y="3">
+                  <Dependency Name="B" />
+                </PointByCoordinates>
+                <FreePoint Name="D" X="0" Y="4" />
+                <FreePoint Name="E" X="4" Y="4" />
+                <FreePoint Name="F" X="2" Y="7" />
+                <BezierPath Name="DEF" Closed="true" Path="L L L">
+                  <Dependency Name="D" />
+                  <Dependency Name="E" />
+                  <Dependency Name="F" />
+                </BezierPath>
+                <PointOnFigure Name="Q" X="2" Y="4" Parameter="0.5">
+                  <Dependency Name="DEF" />
+                </PointOnFigure>
+                <PointByCoordinates Name="R" X="Q.Parameter" Y="-3">
+                  <Dependency Name="Q" />
+                </PointByCoordinates>
+              </Figures>
+            </Drawing>
+            """);
+        var side = (Segment)Find(onLine, "AB");
+        var p = (PointByCoordinates)Find(onLine, "P");
+        Require(p.Exists && side.CanEdit("Length"), "The point at (B.Parameter, 3) is nowhere, or AB has no length to type.");
+        Require(!side.CanEdit("FixLength"), "AB offers Fix length while P reads B.Parameter.");
+        side.FixLength();
+        Require(Find(onLine, "B") is PointOnFigure && p.Exists, "Fix length took away B.Parameter.");
+        ((IRenamableExpressions)p).ExpressionTexts = new[] { "B.X", "3" };
+        ((IRenamableExpressions)p).RebindExpressions();
+        Require(side.CanEdit("FixLength"), "AB offers no Fix length while P reads only B.X.");
+        side.FixLength();
+        Require(Find(onLine, "B") is TranslatedPoint && p.Exists, "Fix length with P on B.X: B is a " + Find(onLine, "B").GetType().Name);
+
+        var q = (PointOnFigure)Find(onLine, "Q");
+        var r = (PointByCoordinates)Find(onLine, "R");
+        Require(q.Exists && r.Exists, "The point on the path or the point at (Q.Parameter, -3) is nowhere.");
+        Require(!BezierPath.CanBecomeAnchor(q), "Q offers Convert to path anchor while R reads Q.Parameter.");
+        ((IRenamableExpressions)r).ExpressionTexts = new[] { "Q.X", "-3" };
+        ((IRenamableExpressions)r).RebindExpressions();
+        Require(BezierPath.CanBecomeAnchor(q), "Q offers no Convert to path anchor while R reads only Q.X.");
+        onLine.Figures.CheckConsistency();
     }
 
     /// <summary>
@@ -4238,6 +4466,174 @@ public class Program
         }
     }
 
+    /// <summary>
+    /// A click on a show/hide box in the middle of a construction (a segment's first end
+    /// placed) leaves the box as it was: anything recorded then joins the construction's
+    /// transaction, and shown without being recorded, the segment stayed hidden after Escape
+    /// and after undo of the new segment. A click outside a construction is an undo step.
+    /// </summary>
+    static void ShowHideBoxDuringConstruction()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="0" Y="0" />
+                <FreePoint Name="B" X="3" Y="0" />
+                <Segment Name="AB">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                </Segment>
+                <ShowHideControl Name="box" Show="true" Text="Show segment" X="-4" Y="3">
+                  <Dependency Name="AB" />
+                </ShowHideControl>
+              </Figures>
+            </Drawing>
+            """);
+        using var window = new TestWindow(drawing.Canvas);
+        var box = (ShowHideControl)Find(drawing, "box");
+        var segment = Find(drawing, "AB");
+        string before = drawing.SaveAsText();
+        var tool = new SegmentCreator();
+        drawing.Behavior = tool;
+        new FigureCreator.Dialog(tool) { X = "-2", Y = "4" }.AddPoint();
+        Require(drawing.IsRecordingTransaction, "The segment's first end opened no construction.");
+
+        // what a click on the box does to it
+        box.Checkbox.IsChecked = false;
+        Require(box.Checkbox.IsChecked == true && segment.Visible, "A click on the box in the middle of a construction hid AB.");
+        new FigureCreator.Dialog(tool) { X = "2", Y = "4" }.AddPoint();
+        Require(!drawing.IsRecordingTransaction && drawing.Figures.OfType<Segment>().Count() == 2, "The new segment was not made.");
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the new segment left " + drawing.SaveAsText());
+
+        drawing.Behavior = new Dragger();
+        box.Checkbox.IsChecked = false;
+        Require(!segment.Visible, "A click on the box outside a construction didn't hide AB.");
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before && segment.Visible, "Undo of the click left " + drawing.SaveAsText());
+        drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// A box's Edit figures in a fresh editor, the Selection tab open and the Misc tab
+    /// remembering no tool: the ribbon, following the tool, opened Misc, which clicked its first
+    /// tool and stopped the editing; started again, the tool had forgotten the box, and the
+    /// next click on the paper made a second box. Through the real ribbon: a bare drawing has
+    /// no tab to click anything.
+    /// </summary>
+    static void EditFiguresFromAnotherTab()
+    {
+        string startupPath = MainView.StartupPath;
+        MainView.StartupPath = "/drawing";
+        var view = new MainView();
+        var window = new Window { Content = view, Width = 1100, Height = 850 };
+        window.Show();
+        try
+        {
+            Dispatcher.UIThread.RunJobs();
+            view.OpenDrawing("box.lgf", Encoding.UTF8.GetBytes("""
+                <Drawing Version="1">
+                  <Figures>
+                    <FreePoint Name="A" X="-2" Y="0" />
+                    <FreePoint Name="B" X="0" Y="0" />
+                    <FreePoint Name="C" X="2" Y="0" />
+                    <ShowHideControl Name="box" Show="true" Text="Show A" X="-4" Y="3">
+                      <Dependency Name="A" />
+                    </ShowHideControl>
+                  </Figures>
+                </Drawing>
+                """));
+            Dispatcher.UIThread.RunJobs();
+            var host = (DrawingHost)typeof(MainView)
+                .GetProperty("DrawingHost", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                .GetValue(view);
+            var drawing = host.CurrentDrawing;
+            var box = (ShowHideControl)Find(drawing, "box");
+            string before = drawing.SaveAsText();
+
+            box.EditFigures();
+            Dispatcher.UIThread.RunJobs();
+            Require(drawing.Behavior is ShowHideCreator && drawing.Behavior.PropertyBag is ShowHideCreator.EditPanel, "Edit figures shows " + drawing.Behavior.PropertyBag);
+            Require(Find(drawing, "A").Selected && !Find(drawing, "C").Selected, "Edit figures didn't pick the box's figure A alone.");
+            // as a click on C's row of the Figure List does
+            ((IFigurePicker)drawing.Behavior).TogglePick(Find(drawing, "C"));
+            ((ShowHideCreator.EditPanel)drawing.Behavior.PropertyBag).OK();
+            Dispatcher.UIThread.RunJobs();
+            Require(drawing.Figures.OfType<ShowHideControl>().Count() == 1, "Editing the box made another box.");
+            Require(string.Join(" ", box.Dependencies.Select(figure => figure.Name)) == "A C", "The box holds " + string.Join(" ", box.Dependencies.Select(figure => figure.Name)));
+            drawing.ActionManager.Undo();
+            Require(drawing.SaveAsText() == before, "Undo of the edit left " + drawing.SaveAsText());
+            drawing.Figures.CheckConsistency();
+        }
+        finally
+        {
+            window.Close();
+            MainView.StartupPath = startupPath;
+
+            // the view reports every first-chance exception from now on, the ones later cases
+            // throw on purpose too
+            var report = typeof(MainView)
+                .GetMethod("CurrentDomain_FirstChanceException", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                .CreateDelegate<EventHandler<System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs>>(view);
+            AppDomain.CurrentDomain.FirstChanceException -= report;
+        }
+    }
+
+    /// <summary>
+    /// The end of a segment with its length and direction fixed, one of them freed by the
+    /// point's own box, dragged, and fixed again: undo of the three steps gives the drawing back
+    /// as it was. Fixing again took the Number kept aside when the quantity was freed and wrote
+    /// the new value into it, the value the first step's undo put back: the end went to where it
+    /// had been dragged, and stayed there in the file.
+    /// </summary>
+    static void FreedomRefixUndo()
+    {
+        foreach (var (free, moved) in new[] { (nameof(TranslatedPoint.FreeDistance), new Point(5, 0)), (nameof(TranslatedPoint.FreeDirection), new Point(0, 3)) })
+        {
+            var drawing = ReadLgf("""
+                <Drawing Version="1">
+                  <Figures>
+                    <FreePoint Name="A" X="0" Y="0" />
+                    <FreePoint Name="B" X="3" Y="0" />
+                    <Segment Name="AB">
+                      <Dependency Name="A" />
+                      <Dependency Name="B" />
+                    </Segment>
+                  </Figures>
+                </Drawing>
+                """);
+            using var window = new TestWindow(drawing.Canvas);
+            var system = drawing.CoordinateSystem;
+            var segment = (Segment)Find(drawing, "AB");
+            segment.FixLength();
+            segment.FixDirection();
+            var end = (TranslatedPoint)Find(drawing, "B");
+            string fixedBoth = drawing.SaveAsText();
+
+            Set(drawing, end, free, value: true);
+            drawing.Behavior = new Dragger();
+            Drag(drawing, system.ToPhysical(end.Coordinates), system.ToPhysical(moved));
+            NearPoint(end.Coordinates, moved);
+            Set(drawing, end, free, value: false);
+            string refixed = drawing.SaveAsText();
+
+            for (int i = 0; i < 3; i++)
+            {
+                drawing.ActionManager.Undo();
+            }
+
+            Require(drawing.SaveAsText() == fixedBoth, free + ", a drag and fixing again, all undone, left " + drawing.SaveAsText());
+            NearPoint(end.Coordinates, new Point(3, 0));
+            for (int i = 0; i < 3; i++)
+            {
+                drawing.ActionManager.Redo();
+            }
+
+            Require(drawing.SaveAsText() == refixed, free + ": redo of the three steps changed the drawing.");
+            drawing.Figures.CheckConsistency();
+        }
+    }
+
     /// <summary>A narrower range clamps the value; undo puts the range and the value back</summary>
     static void SliderRangeUndo()
     {
@@ -4321,6 +4717,49 @@ public class Program
             "Radius");
         var types = XElement.Parse(macro).Element("Inputs").Elements().Select(input => input.Attribute("Type").Value);
         Require(string.Join(" ", types) == "IPoint Segment", "The tool asks for: " + string.Join(" ", types));
+
+        // a result's expressions read a number off an input that not every figure of its kind
+        // has: u.X of a vector (given a segment, the point at (CD.X, CD.Y) was nowhere),
+        // Q.Parameter of a point on a figure; a point's X and Y every point has
+        var expressions = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="-4" Y="-2" />
+                <FreePoint Name="B" X="-1" Y="-1" />
+                <Vector Name="u">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                </Vector>
+                <PointByCoordinates Name="P" X="u.X" Y="u.Y">
+                  <Dependency Name="u" />
+                </PointByCoordinates>
+                <FreePoint Name="C" X="0" Y="3" />
+                <FreePoint Name="D" X="4" Y="3" />
+                <Segment Name="CD">
+                  <Dependency Name="C" />
+                  <Dependency Name="D" />
+                </Segment>
+                <PointOnFigure Name="Q" X="2" Y="3" Parameter="0.5">
+                  <Dependency Name="CD" />
+                </PointOnFigure>
+                <PointByCoordinates Name="R" X="Q.X + 1" Y="Q.Y">
+                  <Dependency Name="Q" />
+                </PointByCoordinates>
+                <PointByCoordinates Name="S" X="Q.Parameter" Y="0">
+                  <Dependency Name="Q" />
+                </PointByCoordinates>
+              </Figures>
+            </Drawing>
+            """);
+        foreach (var (input, result, expected) in new[] { ("u", "P", "Vector"), ("Q", "R", "IPoint"), ("Q", "S", "PointOnFigure") })
+        {
+            var written = MacroSerializer.WriteMacroToString(
+                new List<IFigure> { Find(expressions, input) },
+                new List<IFigure> { Find(expressions, result) },
+                "Tool");
+            var type = XElement.Parse(written).Element("Inputs").Elements().Single().Attribute("Type").Value;
+            Require(type == expected, $"A tool on {input} making {result} asks for {type}, not {expected}.");
+        }
 
         var old = UserDefinedTool.AddFromString(macro.Replace("Type=\"Segment\"", "Type=\"ILine\""));
         try

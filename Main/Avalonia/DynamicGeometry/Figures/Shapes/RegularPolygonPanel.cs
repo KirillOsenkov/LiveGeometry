@@ -22,20 +22,25 @@ public class RegularPolygonPanel : IConditionalProperties
     /// <param name="made">What the tool made, the polygon last</param>
     public RegularPolygonPanel(IPoint first, int sides, bool onSide, IList<IFigure> made)
     {
-        pivot = first;
+        center = first;
         this.sides = sides;
         this.onSide = onSide;
         this.made = made.ToList();
     }
 
-    // the pivot is never replaced while the panel is up; the vertex may be (Fix length), so it
-    // is read off the polygon, whose first vertex it is (by the center) or its second (on a side)
-    readonly IPoint pivot;
+    // the center is never replaced while the panel is up; the two points on a side may be
+    // (Fix length, Horizontal: a side the drawing had may run the other way, and then it is the
+    // first click that the side's verbs replace), and so may the vertex by the center, so they
+    // are read off the polygon
+    readonly IPoint center;
     readonly bool onSide;
     int sides;
     List<IFigure> made;
 
     Polygon Polygon => (Polygon)made[made.Count - 1];
+
+    /// <summary>What the side is measured from: the center, or on a side the polygon's first vertex</summary>
+    IPoint Pivot => onSide ? (IPoint)Polygon.Dependencies[0] : center;
 
     /// <summary>What the status bar says under the panel</summary>
     public string Hint => Polygon.Title + (BaseSide != null
@@ -45,7 +50,7 @@ public class RegularPolygonPanel : IConditionalProperties
     IPoint Vertex => (IPoint)Polygon.Dependencies[onSide ? 1 : 0];
 
     /// <summary>The side the polygon stands on, the two points clicked, when a segment or a vector draws it: on a side only</summary>
-    IFixableLength BaseSide => onSide ? Polygon.Drawing.Figures.FindLine(pivot, Vertex) as IFixableLength : null;
+    IFixableLength BaseSide => onSide ? Polygon.Drawing.Figures.FindLine(Pivot, Vertex) as IFixableLength : null;
 
     /// <summary>
     /// What the side panel shows for the polygon: the panel of the side it stands on with the
@@ -100,11 +105,11 @@ public class RegularPolygonPanel : IConditionalProperties
     {
         get
         {
-            return Vertex.Coordinates.Distance(pivot.Coordinates) * SideFactor;
+            return Vertex.Coordinates.Distance(Pivot.Coordinates) * SideFactor;
         }
         set
         {
-            LengthConstraint.SetDistance(Vertex, pivot, value / SideFactor);
+            LengthConstraint.SetDistance(Vertex, Pivot, value / SideFactor);
         }
     }
 
@@ -125,7 +130,7 @@ public class RegularPolygonPanel : IConditionalProperties
     [PropertyGridIcon(PropertyGridIcon.Lock)]
     public void FixLength()
     {
-        LengthConstraint.Fix(Vertex, pivot);
+        LengthConstraint.Fix(Vertex, Pivot);
         Polygon.Drawing.RaiseDisplayProperties(this);
     }
 
@@ -135,7 +140,7 @@ public class RegularPolygonPanel : IConditionalProperties
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
     public void FreeLength()
     {
-        var fixedEnd = LengthConstraint.FixedEnd(Vertex, pivot);
+        var fixedEnd = LengthConstraint.FixedEnd(Vertex, Pivot);
         if (fixedEnd != null)
         {
             LengthConstraint.Free(fixedEnd);
@@ -178,6 +183,7 @@ public class RegularPolygonPanel : IConditionalProperties
             return;
         }
 
+        var pivot = Pivot;
         var vertex = Vertex;
         List<IFigure> rebuilt;
         Polygon polygon;
@@ -216,15 +222,15 @@ public class RegularPolygonPanel : IConditionalProperties
 
     public bool CanEdit(string propertyName)
     {
-        bool isFixed = LengthConstraint.FixedEnd(Vertex, pivot) != null;
+        bool isFixed = LengthConstraint.FixedEnd(Vertex, Pivot) != null;
         switch (propertyName)
         {
             case nameof(Side):
-                return isFixed || LengthConstraint.CanStretch(Vertex, pivot);
+                return isFixed || LengthConstraint.CanStretch(Vertex, Pivot);
             case nameof(FixLength):
-                return !isFixed && LengthConstraint.CanStretch(Vertex, pivot);
+                return !isFixed && LengthConstraint.CanFix(Vertex, Pivot);
             case nameof(FreeLength):
-                return isFixed;
+                return isFixed && LengthConstraint.CanFree(LengthConstraint.FixedEnd(Vertex, Pivot));
             default:
                 return true;
         }

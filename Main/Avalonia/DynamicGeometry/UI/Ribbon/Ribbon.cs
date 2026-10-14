@@ -132,8 +132,17 @@ namespace DynamicGeometry
         public void SelectBehavior(Behavior behavior)
         {
             var panel = FindPanel(behavior);
-            SelectedItem = panel;
             var button = panel.FindButton(behavior);
+
+            // the tab, opened, clicks the tool it remembers: one started by a verb (a box's Edit
+            // figures) was stopped by it and started again with what it was given gone, and
+            // made a new box - so the tab remembers this tool first, and clicks the one on
+            if (button != null)
+            {
+                panel.SelectedToolButton = button;
+            }
+
+            SelectedItem = panel;
             if (button != null)
             {
                 button.Click();

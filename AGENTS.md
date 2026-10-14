@@ -236,7 +236,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   there, ticked if any of its figures shows ("Show"), else unticked ("Hint"), so that
   nothing changes on screen, selected with the keyboard in its Caption. The box's Edit
   figures (grid, context menu) starts the tool on it (`ShowHideCreator.Edit`, the ribbon's
-  instance: `Behavior.FindTool`); the paper, the box, Enter or OK ends it, one undo step
+  instance: `Behavior.FindTool`; the ribbon, following a tool a verb started, makes its tab
+  remember it before opening the tab, `Ribbon.SelectBehavior`, or the tab clicked the tool
+  it remembered and stopped the editing); the paper, the box, Enter or OK ends it, one undo step
   (the box moves to the end of the list when it takes a later figure). Under the Drag tool
   a press on a box is the tool's (`ShowHideCheckBox` leaves it to bubble to the canvas):
   a click ticks it (`ShowHideControl.Click`), Ctrl+click selects it, a drag moves it (a
@@ -262,7 +264,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   in as a paste brings them, `PasteAction.BringStyles`) and `Figures`, where a figure that
   had its default name says `DefaultName="true"` and gets the default name where it is
   made (segment AB on P and Q is PQ; a name that reads like the default reads like a
-  typed one on other points). It asks for its inputs in the order
+  typed one on other points). An input is asked for as any point, line or ellipse unless
+  a result takes more from it (`MacroSerializer.TakesMoreThanKind`: its length, area,
+  inside) or an expression of a result reads a number off it that not every figure of the
+  kind has (u.X of a vector, Q.Parameter; a point's X and Y every point has): then only
+  its own type. It asks for its inputs in the order
   they were clicked (`FigureSelector.GetSelection`; in the drawing's order, a slider
   clicked first was asked for last), and the expressions of what it makes (a point by
   coordinates, a label's [AB]) are rewritten to name what it was given and the copies,
@@ -1048,7 +1054,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   of it, a circle with it for a radius, a translation or dilation by it) for Convert to
   line / ray, a sector's or circular segment's area (`IsUsedForArea`) for Convert to arc,
   and a number an expression reads off it that the new kind has no property for
-  (`IsReadByExpressionsBeyond`: [AB.Length] for Convert to ray). An expression that no
+  (`IsReadByExpressionsBeyond`: [AB.Length] for Convert to ray; read off the parsed
+  expressions, so that `` `base side`.Length `` counts - a regular expression over the text
+  missed it once the segment was renamed so). An expression that no
   longer compiles drops what it was compiled to (`DrawingExpression.Recalculate`), which
   held the figure that left: the point at (AB.Length, -1) stayed at its place for the
   session and was nowhere once the file was read again.
@@ -1118,6 +1126,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   whose direction is an auxiliary `Number` (distance free: it slides along the line through
   the pivot) - the same point Fix length makes, so the two are fixed and freed one by one
   through its Free distance and Free direction, and fixed both ways it is fully determined.
+  Freeing the last one held makes it another kind of point, and so does fixing a point on a
+  line, so either is refused (verbs, panels and the point's own boxes alike:
+  `LengthConstraint.CanFree`/`CanFix`, `DirectionConstraint.CanFree`) while an expression
+  reads off it what that kind lacks (B.Distance, B.Parameter). A verb that swaps a point
+  for another kind (`Actions.ReplacePoint`; Convert to path anchor too) asks
+  `IsReadByExpressionsBeyond` of the new kind first, unless the point is a plain free point,
+  whose X and Y every point has.
   The end turned is the second if it can be, else the first (whose own direction is the
   figure's + 180°). Horizontal and Vertical fix the direction along the axis the nearer way
   (0° or 180°, 90° or 270°), one undo step. Lines built otherwise inherit the members and
@@ -1168,7 +1183,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (2026-10-13), with the number of sides on top and the polygon's title and OK
   (`DimensionsPanel.RegularPolygon`, `RegularPolygonPanel.Shown`): the side's length and
   direction, Fix, Horizontal, Vertical. A Show ticked there is built on the side, so a new
-  count is refused until it is unticked.
+  count is refused until it is unticked. Those verbs may replace either point clicked (a
+  side the drawing had may run the other way, and then its end is the first click), so the
+  panel reads both off the polygon: a new count built on the first click as it was put the
+  polygon on a point that had left.
 - **Numbers are figures** (`Figures/Values/Number.cs`): roots with no shape, named n1, n2...,
   usable in expressions by name, a length and an angle at once. No tool makes a bare one (the
   Slider is a Number with a handle); a typed value in the Translate tool becomes one. `Auxiliary` (any figure) marks one
@@ -1248,7 +1266,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   - *A check box that stands for more than yes and no* (a translated point's Free
     distance: free, a Number, or tied to a vector) is an `IRestorableValue` too
     (`TranslatedPoint.FreedomValue`): undo puts the source back, where unticking the box
-    would give it a Number. A label's pin too (`Label.PinValue`): pinned, the label goes
+    would give it a Number - and a Number's value with it: freed, the Number is kept aside,
+    and unticking the box after a drag writes the new value into that same Number. A
+    label's pin too (`Label.PinValue`): pinned, the label goes
     where the screen carries it, so undo of the pin puts it back where it was in the
     plane, not just the pin (pin, zoom, undo left it somewhere else).
   - *Replacing a figure by another kind* (`Actions.ReplaceWithNew`: Convert to line, ray,
@@ -1274,8 +1294,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
     left an undo step that seemed to undo nothing.
   - *While a transaction is open* (`Drawing.IsRecordingTransaction`: a construction or a
     point drag under way) anything recorded joins it and is rolled back with it. So Redo,
-    Delete and Paste do nothing then, a keyboard pan and the grid toggle are not recorded,
-    and a click in the Figure List abandons the construction first.
+    Delete and Paste do nothing then, nor does a click on a show/hide box (shown without being
+    recorded, its figures stayed hidden after Escape and undo), a keyboard pan and the grid
+    toggle are not recorded, and a click in the Figure List abandons the construction first.
   - *Loading is not undoable*: `DrawingControl.ForgetLoading` clears the history in a
     `finally`, also when the file threw half way. A construction left half way goes with
     its drawing (`DrawingControl.Drawing` resets `ConstructionInProgress`): still "in

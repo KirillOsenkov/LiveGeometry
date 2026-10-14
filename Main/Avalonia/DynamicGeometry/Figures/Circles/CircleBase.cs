@@ -84,9 +84,9 @@ namespace DynamicGeometry
                 case "Length":
                     return isFixed || canStretch;
                 case "FixLength":
-                    return !isFixed && canStretch;
+                    return !isFixed && canStretch && LengthConstraint.CanFix(end, RadiusPivot);
                 case "FreeLength":
-                    return isFixed;
+                    return isFixed && LengthConstraint.CanFree(LengthConstraint.FixedEnd(end, RadiusPivot));
                 default:
                     return true;
             }

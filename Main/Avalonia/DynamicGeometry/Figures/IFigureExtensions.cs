@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using Avalonia;
 
 namespace DynamicGeometry
@@ -99,26 +98,78 @@ namespace DynamicGeometry
         /// figure of the other type has no property for: converted (a segment to a ray), the
         /// expression didn't compile, and the point at (AB.Length, -1) went on at its old place
         /// while the session lasted, then was nowhere once the file was opened again. Read from
-        /// the texts, a property as the compiler finds it (by name in any case); a mention in
-        /// a label's plain text counts too, which only keeps a conversion from being offered.
+        /// the expressions as the parser reads them (a label's [...] parts), a name in backticks
+        /// included: a regular expression over the text missed `base side`.Length, and the
+        /// conversion came back once the segment was renamed so. A property is found as the
+        /// compiler finds it, by name in any case.
         /// </summary>
-        public static bool IsReadByExpressionsBeyond(this IFigure figure, Type replacement)
+        /// <param name="readers">Which dependents count (a defined tool's results); all of them when null</param>
+        public static bool IsReadByExpressionsBeyond(this IFigure figure, Type replacement, Func<IFigure, bool> readers = null)
         {
             if (string.IsNullOrEmpty(figure.Name))
             {
                 return false;
             }
 
-            var reading = new Regex(@"(?<![\w'])" + Regex.Escape(figure.Name) + @"\s*\.\s*([A-Za-z_]\w*)", RegexOptions.IgnoreCase);
             var properties = replacement.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(property => property.CanRead && property.GetIndexParameters().Length == 0 && ExpressionReflection.IsNumberType(property.PropertyType))
                 .Select(property => property.Name)
                 .ToList();
             return figure.Dependents
+                .Where(dependent => readers == null || readers(dependent))
                 .OfType<IRenamableExpressions>()
-                .SelectMany(holder => holder.ExpressionTexts)
-                .SelectMany(text => reading.Matches(text ?? "").Cast<Match>())
-                .Any(match => !properties.Any(name => name.Equals(match.Groups[1].Value, StringComparison.OrdinalIgnoreCase)));
+                .SelectMany(holder => holder is LabelBase label ? label.Expressions : holder.ExpressionTexts)
+                .SelectMany(text => PropertiesRead(text, figure.Name))
+                .Any(read => !properties.Any(name => name.Equals(read, StringComparison.OrdinalIgnoreCase)));
+        }
+
+        /// <summary>
+        /// The properties an expression reads off the figure of this name: A.X, `base side`.Length.
+        /// A name in backticks is the figure's when it is exactly its name, a bare one in any
+        /// case (as the binder takes it last). An expression that doesn't parse reads nothing.
+        /// </summary>
+        static IEnumerable<string> PropertiesRead(string expression, string name)
+        {
+            if (string.IsNullOrEmpty(expression))
+            {
+                yield break;
+            }
+
+            var parsed = Parser.Parse(expression);
+            if (parsed.Root == null || !parsed.Errors.IsEmpty())
+            {
+                yield break;
+            }
+
+            var nodes = new Stack<Node>();
+            nodes.Push(parsed.Root);
+            while (nodes.Count > 0)
+            {
+                var node = nodes.Pop();
+                if (node == null)
+                {
+                    continue;
+                }
+
+                if (node.Kind == NodeType.PropertyAccess)
+                {
+                    var figureToken = node.Children[0].Token;
+                    bool isFigure = figureToken.IsQuoted
+                        ? figureToken.Text == name
+                        : figureToken.Text.Equals(name, StringComparison.OrdinalIgnoreCase);
+                    if (isFigure)
+                    {
+                        yield return node.Children[1].Token.Text;
+                    }
+
+                    continue;
+                }
+
+                foreach (var child in node.Children)
+                {
+                    nodes.Push(child);
+                }
+            }
         }
 
         /// <summary>

@@ -258,6 +258,13 @@ namespace DynamicGeometry
             {
                 public IFigure Source;
                 public int Index;
+
+                /// <summary>
+                /// A Number source's value: freed, it is kept aside, and fixed again (after a
+                /// drag) it is the Number that takes the new value, so undo of the first tick
+                /// brought the new value back with it
+                /// </summary>
+                public double? Value;
             }
 
             TranslatedPoint Owner
@@ -274,7 +281,8 @@ namespace DynamicGeometry
             public object CaptureState()
             {
                 var quantity = OwnerQuantity;
-                return new SavedSource() { Source = Owner.SourceOf(quantity), Index = quantity.SourceIndex };
+                var source = Owner.SourceOf(quantity);
+                return new SavedSource() { Source = source, Index = quantity.SourceIndex, Value = (source as Number)?.Value };
             }
 
             public void RestoreState(object state)
@@ -288,6 +296,11 @@ namespace DynamicGeometry
                 }
                 else if (quantity.SourceIndex < 0)
                 {
+                    if (saved.Source is Number number && saved.Value is double value)
+                    {
+                        number.Value = value;
+                    }
+
                     owner.Reattach(quantity, saved.Source, saved.Index);
                 }
             }

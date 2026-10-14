@@ -227,9 +227,10 @@ namespace DynamicGeometry
                 case "Length":
                     return LengthEnd() >= 0;
                 case "FixLength":
-                    return FixedEndIndex() < 0 && EndToStretch() >= 0;
+                    int end = EndToStretch();
+                    return FixedEndIndex() < 0 && end >= 0 && LengthConstraint.CanFix(End(end), End(1 - end));
                 case "FreeLength":
-                    return FixedEndIndex() >= 0;
+                    return FixedEndIndex() >= 0 && LengthConstraint.CanFree(FixedEnd());
                 // a line or a ray has no length for what measures this one, nor for an
                 // expression that reads it ([AB.Length])
                 case "ConvertToLine":

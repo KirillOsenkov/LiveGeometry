@@ -2244,8 +2244,9 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
     /// <summary>
     /// Whether the point can become an anchor of the path it is on, where it is: a point on
-    /// a path (not an image), somewhere along a piece and not at its ends, and not one a
-    /// locus is drawn from
+    /// a path (not an image), somewhere along a piece and not at its ends, not one a locus is
+    /// drawn from, and not one an expression reads a number off that a free point has not
+    /// (P.Parameter, as for Free point)
     /// </summary>
     public static bool CanBecomeAnchor(IFigure point)
     {
@@ -2255,7 +2256,8 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
             || path.HasImages
             || path.Drawing == null
             || !onFigure.Exists
-            || PointSnapping.IsHeldByLocus(onFigure))
+            || PointSnapping.IsHeldByLocus(onFigure)
+            || onFigure.IsReadByExpressionsBeyond(typeof(FreePoint)))
         {
             return false;
         }
