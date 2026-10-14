@@ -1,4 +1,7 @@
-﻿namespace DynamicGeometry
+﻿using System;
+using System.Text;
+
+namespace DynamicGeometry
 {
     public class Scanner
     {
@@ -68,6 +71,13 @@
                     case ' ':
                         current++;
                         break;
+                    case '`':
+                        if (!ScanQuotedName())
+                        {
+                            return;
+                        }
+
+                        break;
                     default:
                         if (IsDigit(currentChar))
                         {
@@ -116,8 +126,8 @@
         }
 
         /// <summary>
-        /// Whether an expression can say the name: a letter (or _), then letters, digits and
-        /// primes. A figure is named in expressions by its name, and every rename rewrites them.
+        /// Whether an expression can say the name as it is: a letter (or _), then letters,
+        /// digits and primes. Any other name it says in backticks (<see cref="NameInExpression"/>).
         /// </summary>
         public static bool IsName(string name)
         {
@@ -135,6 +145,67 @@
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// The name as an expression says it: as it is when it is a name (<see cref="IsName"/>)
+        /// that no expression reads as something else - pi and e in any case are the
+        /// constants, x is a function's variable - and in backticks otherwise, a backtick in it
+        /// doubled: `Drag me!`, `e`. What a rename writes, and whatever writes a figure's name
+        /// into an expression, so that every name can be said.
+        /// </summary>
+        public static string NameInExpression(string name)
+        {
+            // (a part of a figure has no name: `` says nothing, and doesn't compile)
+            name ??= "";
+            bool reserved = name == "x"
+                || name.Equals("pi", StringComparison.OrdinalIgnoreCase)
+                || name.Equals("e", StringComparison.OrdinalIgnoreCase);
+            if (IsName(name) && !reserved)
+            {
+                return name;
+            }
+
+            return "`" + name.Replace("`", "``") + "`";
+        }
+
+        /// <summary>
+        /// A name in backticks, from the opening one: what is between them, a doubled backtick
+        /// standing for one. False, with the error said, when it is empty or not closed.
+        /// </summary>
+        private bool ScanQuotedName()
+        {
+            int start = current;
+            var name = new StringBuilder();
+            current++;
+            while (current < length)
+            {
+                if (text[current] == '`')
+                {
+                    if (NextChar() != '`')
+                    {
+                        current++;
+                        if (name.Length == 0)
+                        {
+                            current = start;
+                            ReportError("A name in backticks can't be empty");
+                            return false;
+                        }
+
+                        AddToken(new Token(name.ToString(), start, current - start, TokenType.Identifier, isQuoted: true));
+                        return true;
+                    }
+
+                    current++;
+                }
+
+                name.Append(text[current]);
+                current++;
+            }
+
+            current = start;
+            ReportError("A name in backticks needs a closing backtick");
+            return false;
         }
 
         private void ScanNumericLiteral()

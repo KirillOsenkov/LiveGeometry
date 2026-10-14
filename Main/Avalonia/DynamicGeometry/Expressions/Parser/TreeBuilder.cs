@@ -78,6 +78,19 @@ namespace DynamicGeometry
         {
             var text = root.Token.Text;
 
+            // a name in backticks is the number called exactly that: never pi, e, a
+            // function's x or two points run together
+            if (root.Token.IsQuoted)
+            {
+                if (Binder.ResolveFigureExactly(text) is INumber quoted)
+                {
+                    return CreateNumberExpression(quoted, text);
+                }
+
+                Status.AddUnknownIdentifierError(text);
+                return null;
+            }
+
             // A number called exactly this comes before the reading as two points, which
             // takes the points' names in any case: with points A and B in the drawing, a
             // slider named ab was the distance AB.
@@ -193,10 +206,11 @@ namespace DynamicGeometry
 
         BoundExpression CreatePropertyAccessExpression(Node root)
         {
-            string figureName = root.Children[0].Token.Text;
+            var figureToken = root.Children[0].Token;
+            string figureName = figureToken.Text;
             string propertyName = root.Children[1].Token.Text;
 
-            IFigure figure = Binder.ResolveFigure(figureName);
+            IFigure figure = ResolveFigure(figureToken);
             if (figure == null)
             {
                 Status.AddUnknownIdentifierError(figureName);
@@ -315,8 +329,7 @@ namespace DynamicGeometry
                     return null;
                 }
 
-                string pointName = node.Token.Text;
-                var point = ResolvePoint(pointName);
+                var point = ResolvePoint(node.Token);
                 if (point == null)
                 {
                     return null;
@@ -327,9 +340,16 @@ namespace DynamicGeometry
             return AsNumber(method.ReturnType, method.Name) ? new BoundPointCall(method, points) : null;
         }
 
-        IPoint ResolvePoint(string pointName)
+        /// <summary>The figure a name stands for: in backticks, the one called exactly that</summary>
+        IFigure ResolveFigure(Token token)
         {
-            IFigure figure = Binder.ResolveFigure(pointName);
+            return token.IsQuoted ? Binder.ResolveFigureExactly(token.Text) : Binder.ResolveFigure(token.Text);
+        }
+
+        IPoint ResolvePoint(Token token)
+        {
+            string pointName = token.Text;
+            IFigure figure = ResolveFigure(token);
             if (figure == null)
             {
                 Status.AddUnknownIdentifierError(pointName);

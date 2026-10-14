@@ -59,6 +59,18 @@ class ExpressionTreeBuilder {
     createIdentifierExpression(root) {
         const text = root.token.text;
 
+        // a name in backticks is the number called exactly that: never pi, e, a function's
+        // x or two points run together
+        if (root.token.isQuoted) {
+            const quoted = this.binder.resolveFigureExactly(text);
+            if (quoted != null && quoted.isNumber === true) {
+                return this.createNumberExpression(quoted, text);
+            }
+
+            this.status.addUnknownIdentifierError(text);
+            return null;
+        }
+
         // a number called exactly this comes before the reading as two points
         const exact = this.binder.resolveExactNumber(text);
         if (exact != null) {
@@ -156,9 +168,10 @@ class ExpressionTreeBuilder {
     }
 
     createPropertyAccessExpression(root) {
-        const figureName = root.children[0].token.text;
+        const figureToken = root.children[0].token;
+        const figureName = figureToken.text;
         const propertyName = root.children[1].token.text;
-        const figure = this.binder.resolveFigure(figureName);
+        const figure = this.resolveFigure(figureToken);
         if (figure == null) {
             this.status.addUnknownIdentifierError(figureName);
             return null;
@@ -233,7 +246,7 @@ class ExpressionTreeBuilder {
                 return null;
             }
 
-            const point = this.resolvePoint(node.token.text);
+            const point = this.resolvePoint(node.token);
             if (point == null) {
                 return null;
             }
@@ -244,8 +257,14 @@ class ExpressionTreeBuilder {
         return new BoundPointCall(method, points);
     }
 
-    resolvePoint(pointName) {
-        const figure = this.binder.resolveFigure(pointName);
+    /** The figure a name stands for: in backticks, the one called exactly that */
+    resolveFigure(token) {
+        return token.isQuoted ? this.binder.resolveFigureExactly(token.text) : this.binder.resolveFigure(token.text);
+    }
+
+    resolvePoint(token) {
+        const pointName = token.text;
+        const figure = this.resolveFigure(token);
         if (figure == null) {
             this.status.addUnknownIdentifierError(pointName);
             return null;

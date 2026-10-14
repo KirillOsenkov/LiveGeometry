@@ -105,7 +105,8 @@ public class Program
             ("A point inside a path with holes stays out of them", PointInsidePathWithHoles),
             ("No Convert to arc while a point is kept inside the sector", NoArcUnderPointInside),
             ("A numeric label edited moves what is built on its value, and undo moves it back", NumericLabelEditMovesDependents),
-            ("A number expressions name can't be renamed pi, e, or x where a function names it", ReservedNamesForNumbers),
+            ("A number expressions name renamed pi, e, or x where a function names it is said in backticks", ReservedNamesForNumbers),
+            ("Any name can be said in an expression, in backticks", QuotedNames),
             ("No conversion that takes away what an expression reads; a failed expression has no value", ConversionKeepsExpressionsWhole),
             ("The X row of two points and the function row of two graphs: checked for each, then set", SharedExpressionRows),
             ("No Free point while a graph reads its Parameter; a graph that stops compiling is drawn no more", ReleaseKeepsFunctionsWhole),
@@ -1488,10 +1489,13 @@ public class Program
         Near(copy.Value, expected: 8);
         Require(Scanner.IsName("A''") && Scanner.IsName("P_1'") && !Scanner.IsName("'A") && !Scanner.IsName("my point"), "Scanner.IsName");
 
-        // a caption for a name, where no expression names the figure; refused where one does
+        // a caption for a name; where an expression names the figure, it says it in backticks
         var free = AddPoint(drawing, x: 5, y: 5);
         Require(Rename(free, "Drag me!") == null && free.Name == "Drag me!", "A caption was refused for a name.");
-        Require(Rename(other, "Drag me too") != null && other.Name == "B", "A name the label can't say was taken.");
+        Require(Rename(other, "Drag me too") == null && other.Name == "Drag me too", "A name the label says in backticks was refused.");
+        Require(label.Text == "[A'.X + dist(A', `Drag me too`)]", "The label says " + label.Text);
+        Near(label.Value, expected: 8);
+        Near(ReadLgf(drawing.SaveAsText()).Figures.OfType<DynamicGeometry.Label>().Single().Value, expected: 8);
 
         static string Rename(IFigure figure, string name)
         {
@@ -2971,10 +2975,10 @@ public class Program
     }
 
     /// <summary>
-    /// A number that expressions name can't be renamed pi or e, in any case: the texts said
-    /// the constant, and the file read again took them for it (undo of the rename did not
-    /// even put the texts back). Nor x where a function names it. Where nothing would read
-    /// the name otherwise, any of them is fine.
+    /// A number that expressions name, renamed pi or e in any case, or x where a function
+    /// names it, is said in backticks: the texts said the constant once, and the file read
+    /// again took them for it. Read again, they still mean the number; undo of the rename
+    /// puts the plain name back.
     /// </summary>
     static void ReservedNamesForNumbers()
     {
@@ -2989,21 +2993,31 @@ public class Program
                 <FunctionGraph Name="f" Function="b * x">
                   <Dependency Name="b" />
                 </FunctionGraph>
-                <Slider Name="c" X="-3" Y="6" Value="1" Maximum="5" />
               </Figures>
             </Drawing>
             """);
         var a = Find(drawing, "a");
+        var point = (PointByCoordinates)Find(drawing, "P");
         foreach (var name in new[] { "pi", "PI", "e", "E" })
         {
-            Require(Rename(a, name) != null && a.Name == "a", "A slider an expression names was renamed " + name + ".");
+            Require(Rename(a, name) == null && a.Name == name, "A slider an expression names was not renamed " + name + ".");
+            Require(point.XExpression.Text == "`" + name + "`", "The point's X says " + point.XExpression.Text);
+            var reread = (IPoint)Find(ReadLgf(drawing.SaveAsText()), "P");
+            Near(reread.Coordinates.X, expected: 2);
         }
 
+        // a plain name again needs no backticks; undo puts them back
+        Set(drawing, a, nameof(IFigure.Name), value: "s");
+        Require(point.XExpression.Text == "s", "The point's X says " + point.XExpression.Text);
+        drawing.ActionManager.Undo();
+        Require(a.Name == "E" && point.XExpression.Text == "`E`", "Undo of the rename to s left " + a.Name + " and " + point.XExpression.Text);
+
         var b = Find(drawing, "b");
-        Require(Rename(b, "x") != null && b.Name == "b", "A slider a function names was renamed x.");
-        Require(Rename(a, "x") == null && a.Name == "x", "A slider only a point names was refused x.");
-        var c = Find(drawing, "c");
-        Require(Rename(c, "pi") == null && c.Name == "pi", "A slider nothing names was refused pi.");
+        var graph = (FunctionGraph)Find(drawing, "f");
+        Require(Rename(b, "x") == null && b.Name == "x", "A slider a function names was not renamed x.");
+        Require(graph.FunctionText == "`x` * x", "The function says " + graph.FunctionText);
+        var rereadGraph = (FunctionGraph)Find(ReadLgf(drawing.SaveAsText()), "f");
+        Near(rereadGraph.Function(3), expected: 3);
 
         static string Rename(IFigure figure, string name)
         {
@@ -3012,6 +3026,70 @@ public class Program
             editor.TextBox.RaiseEvent(new KeyEventArgs { RoutedEvent = InputElement.KeyDownEvent, Key = Key.Enter });
             return string.IsNullOrEmpty(editor.ErrorText) ? null : editor.ErrorText;
         }
+    }
+
+    /// <summary>
+    /// Any name can be said in an expression, in backticks where it isn't a name of the
+    /// language (`Drag me!`, a backtick in it doubled): the figure called exactly that,
+    /// never a constant, two points, a function or a figure differing by case. A label's
+    /// [...] part takes a ] inside backticks along. Renames write the name so, and the file
+    /// read again means the same figures.
+    /// </summary>
+    static void QuotedNames()
+    {
+        Require(Scanner.NameInExpression("A'") == "A'" && Scanner.NameInExpression("P_1") == "P_1", "A name was put in backticks.");
+        Require(Scanner.NameInExpression("Drag me!") == "`Drag me!`" && Scanner.NameInExpression("q`r") == "`q``r`", "Scanner.NameInExpression");
+        Require(Scanner.NameInExpression("e") == "`e`" && Scanner.NameInExpression("Pi") == "`Pi`" && Scanner.NameInExpression("x") == "`x`", "A reserved name was said bare.");
+        Require(Scanner.NameInExpression(null) == "``", "A figure without a name");
+
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="Drag me!" X="3" Y="4" />
+                <FreePoint Name="a]b" X="1" Y="0" />
+                <FreePoint Name="q`r" X="0" Y="2" />
+                <FreePoint Name="e" X="5" Y="0" />
+                <FreePoint Name="B" X="0" Y="0" />
+                <Slider Name="pi" X="-3" Y="2" Value="2" Maximum="5" />
+              </Figures>
+            </Drawing>
+            """);
+        foreach (var (text, expected) in new[]
+        {
+            ("`Drag me!`.X + `a]b`.X", 4.0),
+            ("`q``r`.Y * `pi`", 4.0),
+            ("dist(`Drag me!`, B) + `e`.X", 10.0),
+            ("pi", System.Math.PI),
+            ("`pi` + e.X", 7.0),
+        })
+        {
+            var result = Compiler.Instance.CompileExpression(drawing, text, figure => true);
+            Require(result.IsSuccess, text + ": " + result);
+            Near(result.Expression(), expected);
+        }
+
+        foreach (var text in new[] { "`drag me!`.X", "`Drag me!", "``.X", "`B`(1)", "`AB`", "`sin`(1)" })
+        {
+            Require(!Compiler.Instance.CompileExpression(drawing, text, figure => true).IsSuccess, text + " compiled.");
+        }
+
+        var label = Factory.CreateLabel(drawing);
+        Actions.Add(drawing, label);
+        label.Text = "[`a]b`.X + `Drag me!`.Y] and [B.X]";
+        Require(label.ProcessedText == "5.00 and 0.00", "The label says " + label.ProcessedText);
+
+        // renamed to a name of the language and back into backticks
+        var point = Find(drawing, "Drag me!");
+        Set(drawing, point, nameof(IFigure.Name), value: "Pole");
+        Require(label.Text == "[`a]b`.X + Pole.Y] and [B.X]", "The label says " + label.Text);
+        Set(drawing, Find(drawing, "B"), nameof(IFigure.Name), value: "my ]point");
+        Require(label.Text == "[`a]b`.X + Pole.Y] and [`my ]point`.X]", "The label says " + label.Text);
+        var reread = ReadLgf(drawing.SaveAsText()).Figures.OfType<DynamicGeometry.Label>().Single();
+        Require(reread.ProcessedText == "5.00 and 0.00", "The label read again says " + reread.ProcessedText);
+        drawing.ActionManager.Undo();
+        drawing.ActionManager.Undo();
+        Require(label.Text == "[`a]b`.X + `Drag me!`.Y] and [B.X]", "Undo left the label saying " + label.Text);
+        drawing.Figures.CheckConsistency();
     }
 
     /// <summary>

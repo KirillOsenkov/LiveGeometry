@@ -57,6 +57,12 @@ class Scanner {
                 case " ":
                     this.current++;
                     break;
+                case "`":
+                    if (!this.scanQuotedName()) {
+                        return;
+                    }
+
+                    break;
                 default:
                     if (Scanner.isDigit(currentChar)) {
                         this.scanNumericLiteral();
@@ -89,7 +95,7 @@ class Scanner {
         return ch === "'" || ch === "′" || ch === "″";
     }
 
-    /** Whether an expression can say the name: a letter (or _), then letters, digits and primes */
+    /** Whether an expression can say the name as it is: a letter (or _), then letters, digits and primes; any other it says in backticks */
     static isName(name) {
         if (name == null || name === "" || !Scanner.isLetter(name[0])) {
             return false;
@@ -102,6 +108,41 @@ class Scanner {
         }
 
         return true;
+    }
+
+    /**
+     * A name in backticks, from the opening one: what is between them, a doubled backtick
+     * standing for one. False, with the error said, when it is empty or not closed.
+     */
+    scanQuotedName() {
+        const text = this.text;
+        const start = this.current;
+        let name = "";
+        this.current++;
+        while (this.current < this.length) {
+            if (text[this.current] === "`") {
+                if (this.nextChar() !== "`") {
+                    this.current++;
+                    if (name === "") {
+                        this.current = start;
+                        this.reportError("A name in backticks can't be empty");
+                        return false;
+                    }
+
+                    this.result.tokens.push(new Token(name, start, TokenType.Identifier, this.current - start, true));
+                    return true;
+                }
+
+                this.current++;
+            }
+
+            name += text[this.current];
+            this.current++;
+        }
+
+        this.current = start;
+        this.reportError("A name in backticks needs a closing backtick");
+        return false;
     }
 
     scanNumericLiteral() {

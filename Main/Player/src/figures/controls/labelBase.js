@@ -8,7 +8,49 @@ class LabelBase extends ControlBase {
     /** What an expression that has no value shows */
     static UndefinedText = "undefined";
 
-    static squareBrackets = /\[[^\[\]]*\]/g;
+    /**
+     * The [...] parts of a text, each { start, length } with its brackets: from a [ to the
+     * next ], over a name in backticks whole (`a]b`, whose ] ends nothing). A [ before the ]
+     * starts the part over; a backtick that is never closed is an ordinary character.
+     */
+    static findExpressionParts(text) {
+        const parts = [];
+        let start = -1;
+        for (let i = 0; i < text.length; i++) {
+            const c = text[i];
+            if (c === "[") {
+                start = i;
+            } else if (c === "]" && start >= 0) {
+                parts.push({ start, length: i - start + 1 });
+                start = -1;
+            } else if (c === "`" && start >= 0) {
+                const close = LabelBase.closingBacktick(text, i);
+                if (close >= 0) {
+                    i = close;
+                }
+            }
+        }
+
+        return parts;
+    }
+
+    /** Where the name in backticks opened at open closes, a doubled backtick being one of its characters; -1 if it doesn't */
+    static closingBacktick(text, open) {
+        for (let i = open + 1; i < text.length; i++) {
+            if (text[i] !== "`") {
+                continue;
+            }
+
+            if (i + 1 < text.length && text[i + 1] === "`") {
+                i++;
+                continue;
+            }
+
+            return i;
+        }
+
+        return -1;
+    }
 
     constructor() {
         super();
@@ -93,11 +135,11 @@ class LabelBase extends ControlBase {
         this.embeddedExpressions = [];
         this.textChunks = [];
         let chunkStart = 0;
-        for (const match of text.matchAll(LabelBase.squareBrackets)) {
-            const chunkEnd = match.index;
+        for (const part of LabelBase.findExpressionParts(text)) {
+            const chunkEnd = part.start;
             this.textChunks.push(chunkEnd > chunkStart ? text.substring(chunkStart, chunkEnd) : "");
-            this.processMatch(match[0]);
-            chunkStart = match.index + match[0].length;
+            this.processMatch(text.substring(part.start, part.start + part.length));
+            chunkStart = part.start + part.length;
         }
 
         this.textChunks.push(text.length > chunkStart ? text.substring(chunkStart) : "");

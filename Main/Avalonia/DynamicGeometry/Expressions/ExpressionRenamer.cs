@@ -39,8 +39,10 @@ public interface IRenamableExpressions
 /// names is replaced by its new name, all at once, so that A and B trading names come out
 /// right. Names are read the way <see cref="ExpressionTreeBuilder"/> binds them - A.X, AB for
 /// the distance between two points, the points of ang(A, B, C) and area(...), the name of a
-/// Number - and the rest of the text is left exactly as it was. Two points run together whose
-/// new names would read differently (PB next to a point named PB) become dist(P, B).
+/// Number, a name in backticks - and the rest of the text is left exactly as it was. A new
+/// name goes in as an expression says it (<see cref="Scanner.NameInExpression"/>: `Drag me!`,
+/// `pi`). Two points run together whose new names would read differently (PB next to a point
+/// named PB), or one of which needs backticks, become dist(P, B).
 /// </summary>
 public class ExpressionRenamer
 {
@@ -161,6 +163,11 @@ public class ExpressionRenamer
     void RenameVariable(Token token, List<(int Start, int Length, string Text)> replacements, bool isFunction)
     {
         var text = token.Text;
+        if (token.IsQuoted)
+        {
+            RenameFigure(token, replacements);
+            return;
+        }
 
         // a number called exactly this, as the compiler takes it (Binder.ResolveExactNumber)
         bool isConstant = text.Equals("pi", StringComparison.InvariantCultureIgnoreCase)
@@ -171,7 +178,7 @@ public class ExpressionRenamer
         {
             if (IsRenamed(exact))
             {
-                replacements.Add((token.Start, text.Length, exact.Name));
+                replacements.Add((token.Start, token.Length, Scanner.NameInExpression(exact.Name)));
             }
 
             return;
@@ -194,14 +201,19 @@ public class ExpressionRenamer
                 var joined = firstText + secondText;
 
                 // the new names run together may split differently (P and B next to a point
-                // named PB): then the distance says its points apart
+                // named PB), or one of them may need backticks: then the distance says its
+                // points apart
                 var check = SplitTwoPoints(joined, figure => figure.Name);
-                if (check == null || check.Value.First != first || check.Value.Second != second)
+                if (check == null
+                    || check.Value.First != first
+                    || check.Value.Second != second
+                    || !Scanner.IsName(first.Name)
+                    || !Scanner.IsName(second.Name))
                 {
-                    joined = "dist(" + first.Name + ", " + second.Name + ")";
+                    joined = "dist(" + Scanner.NameInExpression(first.Name) + ", " + Scanner.NameInExpression(second.Name) + ")";
                 }
 
-                replacements.Add((token.Start, text.Length, joined));
+                replacements.Add((token.Start, token.Length, joined));
             }
 
             return;
@@ -224,10 +236,13 @@ public class ExpressionRenamer
             return;
         }
 
-        var figure = ResolveFigure(token.Text);
+        // a name in backticks is the figure called exactly that (Binder.ResolveFigureExactly)
+        var figure = token.IsQuoted
+            ? TopLevel.FirstOrDefault(f => f != null && OldName(f) == token.Text)
+            : ResolveFigure(token.Text);
         if (figure != null && IsRenamed(figure))
         {
-            replacements.Add((token.Start, token.Text.Length, figure.Name));
+            replacements.Add((token.Start, token.Length, Scanner.NameInExpression(figure.Name)));
         }
     }
 

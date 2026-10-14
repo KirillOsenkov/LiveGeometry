@@ -88,6 +88,7 @@ namespace DynamicGeometry
         // and each lookup is a search of the whole drawing
         readonly Dictionary<string, INumber> numbersByName = new Dictionary<string, INumber>();
         readonly Dictionary<string, IFigure> figuresByName = new Dictionary<string, IFigure>();
+        readonly Dictionary<string, IFigure> figuresByExactName = new Dictionary<string, IFigure>();
         string[] pointNames;
 
         /// <summary>
@@ -115,6 +116,22 @@ namespace DynamicGeometry
             {
                 figure = FindFigure(figureName);
                 figuresByName[figureName] = figure;
+            }
+
+            return figure;
+        }
+
+        /// <summary>
+        /// For a name in backticks: the figure of the drawing called exactly this - not one
+        /// that differs by case, nor a part inside a composite (a slider's knob, named so that
+        /// no expression would say it)
+        /// </summary>
+        public IFigure ResolveFigureExactly(string figureName)
+        {
+            if (!figuresByExactName.TryGetValue(figureName, out var figure))
+            {
+                figure = Drawing?.Figures.FirstOrDefault(f => f != null && f.Name == figureName);
+                figuresByExactName[figureName] = figure;
             }
 
             return figure;

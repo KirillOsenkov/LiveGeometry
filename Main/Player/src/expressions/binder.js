@@ -8,6 +8,7 @@ class Binder {
         this.figureAllowed = null;
         this.numbersByName = new Map();
         this.figuresByName = new Map();
+        this.figuresByExactName = new Map();
         this.pointNamesValue = null;
     }
 
@@ -76,6 +77,16 @@ class Binder {
         }
 
         return this.figuresByName.get(figureName);
+    }
+
+    /** For a name in backticks: the figure of the drawing called exactly this, not one inside a composite nor one that differs by case */
+    resolveFigureExactly(figureName) {
+        if (!this.figuresByExactName.has(figureName)) {
+            const figure = this.drawing == null ? null : this.drawing.figures.list.find(f => f != null && f.name === figureName) ?? null;
+            this.figuresByExactName.set(figureName, figure);
+        }
+
+        return this.figuresByExactName.get(figureName);
     }
 
     findFigure(figureName) {

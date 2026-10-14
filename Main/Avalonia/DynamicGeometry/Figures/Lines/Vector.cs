@@ -509,7 +509,7 @@ namespace DynamicGeometry
         /// <summary>
         /// What <see cref="ConvertEndToPointByCoordinates"/> would give the end, or null when it
         /// doesn't apply: the end isn't a free point, or the texts don't compile without a
-        /// cycle (a start built on the end, or with a name no expression can say)
+        /// cycle (a start built on the end)
         /// </summary>
         (string X, string Y)? EndCoordinateTexts()
         {
@@ -522,7 +522,8 @@ namespace DynamicGeometry
             }
 
             var end = Dependencies[1];
-            var texts = (X: Offset(start.Name, "X", X), Y: Offset(start.Name, "Y", Y));
+            var name = Scanner.NameInExpression(start.Name);
+            var texts = (X: Offset(name, "X", X), Y: Offset(name, "Y", Y));
             bool Compiles(string text) => Compiler.Instance
                 .CompileExpression(Drawing, text, figure => figure != end && !figure.DependsOn(end))
                 .IsSuccess;

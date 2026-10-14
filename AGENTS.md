@@ -663,16 +663,21 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   by equation). `ExpressionRenamer` reads names as `ExpressionTreeBuilder` binds them, under
   the old names (A.X, AB as two points, the points of ang/dist/area, a Number) and swaps them
   all at once; two points whose new names run together would read differently (PB next to a
-  point named PB) become `dist(P, B)`. Only the text changes, and not through undo: undoing the rename renames back.
-  A name may end in primes (A', A'': `Scanner.IsName`, the one rule of what an expression
-  can say), and the Name box refuses a name no expression can say only for a figure an
-  expression names, directly or through a figure named after it - renamed "my point", the
-  label `[A.X]` became an error; a caption for a name ("Drag me!", as the Ladder has) is
-  fine elsewhere. Nor a name an expression would read as something else, for a number
-  expressions name (`NameEditor.ReadAsInstead`): pi and e in any case, and x where a
-  function names it. Renamed pi, a slider stayed itself in what was compiled, but the
-  texts said pi, the file read again took them for π, and undo of the rename did not put
-  the texts back (the renamer leaves a constant be).
+  point named PB), or one of which needs backticks, become `dist(P, B)`. Only the text changes, and not through undo: undoing the rename renames back.
+  **Every name can be said** (2026-10-13): as it is when it is a name of the language (a
+  letter or `_`, then letters, digits and primes: A', P_1; `Scanner.IsName`), else in
+  backticks, a backtick in it doubled: `` `Drag me!`.X ``, `` dist(`my point`, B) ``.
+  `Scanner.NameInExpression` writes a name so - the renamer and whatever puts a figure's name
+  into an expression use it - and also puts pi, e (any case) and x in backticks, which
+  bare are the constants and a function's variable. A name in backticks is the top-level
+  figure called exactly that (`Binder.ResolveFigureExactly`): not one differing by case, not
+  a part inside a composite (a slider's knob), never a constant, two points or a function.
+  So the Name box takes any name for any figure. It refused, for a figure an expression
+  named, a name no expression could say ("my point" left the label `[A.X]` an error), and
+  pi, e and x for a number, whose texts the file read again took for the constant. A
+  label's `[...]` part steps over a name in backticks (`LabelBase.FindExpressionParts`, a
+  scan, not a regular expression, which backtracked without end on a run of backticks:
+  `` [`a]b`.X] `` is one part). The player reads backticks too; it renames nothing.
   `pi` and `e` in lowercase are the constants whatever the drawing has; in any other case
   (`PI`) the two-points reading comes first, and with points P and I that is their
   distance. (Lowercase too, until 2026-10-01: `sin(pi * x)` came out wrong without a word
@@ -1620,7 +1625,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the points' band over those with the same stride (so a halo at a point's `ZIndex - 1` is
   still over the points of the Z below), the layers over it over all of it. Every figure's
   Z is 0, so the gallery draws as it did before there was a Z (checked pixel for pixel,
-  `--check` before and after), and within one ZIndex the later figure is on top (Avalonia
+  `--check` before and after; the point layers changed it only where the Kaleidoscope's
+  real emoji now cover their twins), and within one ZIndex the later figure is on top (Avalonia
   sorts children by ZIndex stably; the player sorts the list the same way). Bring to front
   sets the Z to one above the highest of the figure's band, Send to back to one below its
   lowest (`ZOrders.BringToFront`/`SendToBack`, a `SetProperty` per figure in one

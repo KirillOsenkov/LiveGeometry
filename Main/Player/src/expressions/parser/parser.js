@@ -139,7 +139,8 @@ class Parser {
                     return this.parsePropertyAccess();
                 }
 
-                if (next.kind === TokenType.OpenParen) {
+                // (a name in backticks is a figure's, never a function's)
+                if (next.kind === TokenType.OpenParen && !this.currentToken.isQuoted) {
                     return this.parseFunctionCall();
                 }
 

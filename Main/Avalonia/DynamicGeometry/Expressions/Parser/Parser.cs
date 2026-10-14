@@ -211,7 +211,8 @@ namespace DynamicGeometry
                         return ParsePropertyAccess();
                     }
 
-                    if (next.Kind == TokenType.OpenParen)
+                    // (a name in backticks is a figure's, never a function's)
+                    if (next.Kind == TokenType.OpenParen && !Current.IsQuoted)
                     {
                         return ParseFunctionCall();
                     }

@@ -17,10 +17,17 @@ const TokenType = {
 };
 
 class Token {
-    constructor(text, start, kind) {
+    /**
+     * length: how much of the expression's text the token takes, more than its text for a
+     * name in backticks; isQuoted: a name in backticks (`Drag me!`), the figure called
+     * exactly that
+     */
+    constructor(text, start, kind, length = text.length, isQuoted = false) {
         this.text = text;
         this.start = start;
         this.kind = kind;
+        this.length = length;
+        this.isQuoted = isQuoted;
     }
 }
 

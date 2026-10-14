@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using Avalonia;
@@ -131,8 +130,62 @@ namespace DynamicGeometry
         /// <summary>What an expression that has no value shows (the square root of a negative number, 0 / 0)</summary>
         public const string UndefinedText = "undefined";
 
-        const string squareBracketsRegexString = @"[\[][^\[\]]*[\]]";
-        static Regex squareBrackets = new Regex(squareBracketsRegexString, RegexOptions.None);
+        /// <summary>
+        /// The [...] parts of a text, each with its brackets: from a [ to the next ], over a
+        /// name in backticks whole (`a]b`, whose ] ends nothing). A [ before the ] starts the
+        /// part over ("[[A.X]" is a [ of the text, then [A.X]). A backtick that is never
+        /// closed is an ordinary character, for the expression to say what is wrong.
+        /// </summary>
+        public static List<(int Start, int Length)> FindExpressionParts(string text)
+        {
+            var parts = new List<(int Start, int Length)>();
+            int start = -1;
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+                if (c == '[')
+                {
+                    start = i;
+                }
+                else if (c == ']' && start >= 0)
+                {
+                    parts.Add((start, i - start + 1));
+                    start = -1;
+                }
+                else if (c == '`' && start >= 0)
+                {
+                    int close = ClosingBacktick(text, i);
+                    if (close >= 0)
+                    {
+                        i = close;
+                    }
+                }
+            }
+
+            return parts;
+        }
+
+        /// <summary>Where the name in backticks opened at <paramref name="open"/> closes, a doubled backtick being one of its characters (as <see cref="Scanner"/> reads it); -1 if it doesn't</summary>
+        static int ClosingBacktick(string text, int open)
+        {
+            for (int i = open + 1; i < text.Length; i++)
+            {
+                if (text[i] != '`')
+                {
+                    continue;
+                }
+
+                if (i + 1 < text.Length && text[i + 1] == '`')
+                {
+                    i++;
+                    continue;
+                }
+
+                return i;
+            }
+
+            return -1;
+        }
 
         protected List<string> textChunks = null;
         protected List<CompileResult> embeddedExpressions = null;
@@ -151,21 +204,20 @@ namespace DynamicGeometry
             embeddedExpressions = new List<CompileResult>();
             textChunks = new List<string>();
 
-            var matches = squareBrackets.Matches(text);
             int chunkStart = 0;
             int chunkEnd = 0;
             string chunk;
-            foreach (Match match in matches)
+            foreach (var part in FindExpressionParts(text))
             {
-                chunkEnd = match.Index;
+                chunkEnd = part.Start;
                 chunk = "";
                 if (chunkEnd > chunkStart)
                 {
                     chunk = text.Substring(chunkStart, chunkEnd - chunkStart);
                 }
                 textChunks.Add(chunk);
-                ProcessMatch(match);
-                chunkStart = match.Index + match.Length;
+                ProcessPart(text.Substring(part.Start, part.Length));
+                chunkStart = part.Start + part.Length;
             }
             chunkEnd = text.Length;
             chunk = "";
@@ -254,9 +306,19 @@ namespace DynamicGeometry
                 return;
             }
 
-            var renamed = squareBrackets.Replace(text, match => match.Value.Length < 3
-                ? match.Value
-                : "[" + renamer.Rewrite(match.Value.Substring(1, match.Value.Length - 2), isFunction: false) + "]");
+            var sb = new StringBuilder();
+            int chunkStart = 0;
+            foreach (var part in FindExpressionParts(text))
+            {
+                sb.Append(text, chunkStart, part.Start - chunkStart);
+                sb.Append(part.Length < 3
+                    ? text.Substring(part.Start, part.Length)
+                    : "[" + renamer.Rewrite(text.Substring(part.Start + 1, part.Length - 2), isFunction: false) + "]");
+                chunkStart = part.Start + part.Length;
+            }
+
+            sb.Append(text, chunkStart, text.Length - chunkStart);
+            var renamed = sb.ToString();
             if (renamed != text)
             {
                 text = renamed;
@@ -288,9 +350,8 @@ namespace DynamicGeometry
             }
         }
 
-        void ProcessMatch(Match match)
+        void ProcessPart(string result)
         {
-            var result = match.Value;
             if (result.Length < 3)
             {
                 CompileResult error = new CompileResult();
