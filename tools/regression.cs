@@ -1530,8 +1530,9 @@ public class Program
     /// they add, a segment per side and a polygon - regular whichever way they are built.
     /// Right after, the polygon's panel builds it again with another number of sides, one
     /// undo step, and the next polygon gets that count; its side moves the vertex clicked
-    /// last, and undo puts it back; OK brings the tool's panel back. Read again, the drawing
-    /// is the same.
+    /// last, and undo puts it back - on a side through the side's own panel, which also
+    /// turns it vertical; OK brings the tool's panel back. Read again, the drawing is the
+    /// same.
     /// </summary>
     static void RegularPolygonTools()
     {
@@ -1551,9 +1552,8 @@ public class Program
                 new FigureCreator.Dialog(tool) { X = "2", Y = "0" }.AddPoint();
                 Require(!drawing.IsRecordingTransaction, tool.Name + " did not finish.");
                 CheckRegular(drawing, sides: 5, onSide, tool.Name);
-                Require(shown is RegularPolygonPanel, "After the polygon the panel shows " + shown);
-                var panel = (RegularPolygonPanel)shown;
-                Require(panel.ToString() == drawing.Figures.OfType<Polygon>().Single().Title, "The panel's title is " + panel);
+                var panel = PolygonPanel(shown, onSide);
+                Require(shown.ToString() == drawing.Figures.OfType<Polygon>().Single().Title, "The panel's title is " + shown);
                 string made = drawing.SaveAsText();
 
                 // another number of sides: the polygon again, one undo step
@@ -1567,14 +1567,40 @@ public class Program
                 Require(drawing.SaveAsText() == rebuilt, tool.Name + ": redo of 8 sides changed the drawing.");
                 drawing.Figures.CheckConsistency();
 
-                // the side, undone; then OK brings back the tool's panel
-                panel = (RegularPolygonPanel)shown;
-                Actions.SetProperty(drawing.ActionManager, PropertyDiscoveryStrategy.CreateValueProvider(panel, nameof(RegularPolygonPanel.Side)), value: 3.0);
-                Near(panel.Side, expected: 3);
+                // the side, undone; on a side its direction too, as after the Square; then OK
+                // brings back the tool's panel
+                panel = PolygonPanel(shown, onSide);
+                if (shown is DimensionsPanel dimensions)
+                {
+                    Require(dimensions.GetProperties().Any(row => row.Name == nameof(DimensionsPanel.Direction)), "The side's panel has no direction.");
+                    Actions.SetProperty(drawing.ActionManager, PropertyDiscoveryStrategy.CreateValueProvider(dimensions, nameof(DimensionsPanel.Length)), value: 3.0);
+                    Near(dimensions.Length, expected: 3);
+                }
+                else
+                {
+                    Actions.SetProperty(drawing.ActionManager, PropertyDiscoveryStrategy.CreateValueProvider(panel, nameof(RegularPolygonPanel.Side)), value: 3.0);
+                    Near(panel.Side, expected: 3);
+                }
+
                 CheckRegular(drawing, sides: 8, onSide, tool.Name + " with a side of 3");
                 drawing.ActionManager.Undo();
                 Require(drawing.SaveAsText() == rebuilt, tool.Name + ": undo of the side changed the drawing.");
-                panel.OK();
+                if (shown is DimensionsPanel sidePanel)
+                {
+                    var polygon = drawing.Figures.OfType<Polygon>().Single();
+                    var side = (IFixableDirection)drawing.Figures.FindLine((IPoint)polygon.Dependencies[0], (IPoint)polygon.Dependencies[1]);
+                    sidePanel.MakeVertical();
+                    Require(System.Math.Abs(System.Math.Cos(side.Direction * System.Math.PI / 180)) < 1e-9, "Vertical left the side at " + side.Direction + "°.");
+                    CheckRegular(drawing, sides: 8, onSide, tool.Name + " made vertical");
+                    drawing.ActionManager.Undo();
+                    Require(drawing.SaveAsText() == rebuilt, tool.Name + ": undo of Vertical changed the drawing.");
+                    sidePanel.OK();
+                }
+                else
+                {
+                    panel.OK();
+                }
+
                 Require(shown is RegularPolygonCreator.SidesPanel, "OK brought back " + shown);
 
                 var reread = ReadLgf(rebuilt);
@@ -1588,6 +1614,19 @@ public class Program
         finally
         {
             RegularPolygonCreator.NextNumberOfSides = next;
+        }
+
+        // by its center the polygon's own panel; on a side the side's, the number of sides on top
+        static RegularPolygonPanel PolygonPanel(object shown, bool onSide)
+        {
+            if (onSide)
+            {
+                Require(shown is DimensionsPanel { RegularPolygon: not null }, "After the polygon on a side the panel shows " + shown);
+                return ((DimensionsPanel)shown).RegularPolygon;
+            }
+
+            Require(shown is RegularPolygonPanel, "After the polygon the panel shows " + shown);
+            return (RegularPolygonPanel)shown;
         }
 
         static void CheckRegular(Drawing drawing, int sides, bool onSide, string what)

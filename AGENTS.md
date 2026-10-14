@@ -1164,7 +1164,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   something else is built on what was made - the side (moving the second click's vertex)
   with Fix length and Free length, and OK, which brings the tool's panel back. After that
   the polygon is a plain polygon, with no count to change. The Square shows its base side's
-  `DimensionsPanel`, as other figures with a length do.
+  `DimensionsPanel`, as other figures with a length do, and so does Polygon on a side
+  (2026-10-13), with the number of sides on top and the polygon's title and OK
+  (`DimensionsPanel.RegularPolygon`, `RegularPolygonPanel.Shown`): the side's length and
+  direction, Fix, Horizontal, Vertical. A Show ticked there is built on the side, so a new
+  count is refused until it is unticked.
 - **Numbers are figures** (`Figures/Values/Number.cs`): roots with no shape, named n1, n2...,
   usable in expressions by name, a length and an angle at once. No tool makes a bare one (the
   Slider is a Number with a handle); a typed value in the Translate tool becomes one. `Auxiliary` (any figure) marks one

@@ -12,7 +12,9 @@ namespace DynamicGeometry;
 /// (<see cref="RegularPolygonBuilder"/>), and its count is no property of any of them: a new
 /// count builds it again - the figures made for it go, new ones come - one undo step, for as
 /// long as this panel is up. Undo of it closes the panel (only a tool's own panel comes back
-/// after undo), so the panel never holds figures that have left.
+/// after undo), so the panel never holds figures that have left. On a side that is a segment
+/// or a vector, what shows is that side's panel with the number of sides on top
+/// (<see cref="Shown"/>): its length and its direction, as after the Square.
 /// </summary>
 public class RegularPolygonPanel : IConditionalProperties
 {
@@ -36,9 +38,29 @@ public class RegularPolygonPanel : IConditionalProperties
     Polygon Polygon => (Polygon)made[made.Count - 1];
 
     /// <summary>What the status bar says under the panel</summary>
-    public string Hint => Polygon.Title + ": set its number of sides or its side in the panel, or fix the side.";
+    public string Hint => Polygon.Title + (BaseSide != null
+        ? ": set its number of sides, or its side's length and direction, in the panel, or fix them."
+        : ": set its number of sides or its side in the panel, or fix the side.");
 
     IPoint Vertex => (IPoint)Polygon.Dependencies[onSide ? 1 : 0];
+
+    /// <summary>The side the polygon stands on, the two points clicked, when a segment or a vector draws it: on a side only</summary>
+    IFixableLength BaseSide => onSide ? Polygon.Drawing.Figures.FindLine(pivot, Vertex) as IFixableLength : null;
+
+    /// <summary>
+    /// What the side panel shows for the polygon: the panel of the side it stands on with the
+    /// number of sides on top, where there is such a side (<see cref="BaseSide"/>), so that
+    /// its length and direction are set and fixed as a square's are; else this panel. Made
+    /// anew each time: a new number of sides may make the side anew.
+    /// </summary>
+    public object Shown
+    {
+        get
+        {
+            var side = BaseSide;
+            return side != null ? new DimensionsPanel(side) { RegularPolygon = this } : this;
+        }
+    }
 
     /// <summary>The side over the distance from the pivot to the vertex: 1 on a side, the chord of the central angle by the center</summary>
     double SideFactor => onSide ? 1 : 2 * System.Math.Sin(System.Math.PI / sides);
@@ -188,7 +210,7 @@ public class RegularPolygonPanel : IConditionalProperties
 
         made = rebuilt;
         sides = count;
-        drawing.RaiseDisplayProperties(this);
+        drawing.RaiseDisplayProperties(Shown);
         drawing.RaiseStatusNotification(Hint);
     }
 

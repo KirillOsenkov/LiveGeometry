@@ -88,7 +88,11 @@ namespace DynamicGeometry
             return RegularPolygonBuilder.Create(Drawing, first, (IPoint)FoundDependencies[1], NextNumberOfSides, OnSide, out polygon);
         }
 
-        /// <summary>The polygon's own panel: its number of sides and its side (<see cref="RegularPolygonPanel"/>); a word when it was there already</summary>
+        /// <summary>
+        /// The polygon's own panel: its number of sides and its side (<see cref="RegularPolygonPanel"/>;
+        /// on a side, that side's length and direction, as after the Square); a word when it
+        /// was there already
+        /// </summary>
         protected override void ShowCreatedFigure(IList<IFigure> figures)
         {
             if (polygon == null)
@@ -102,9 +106,9 @@ namespace DynamicGeometry
                 return;
             }
 
-            var shown = new RegularPolygonPanel(first, NextNumberOfSides, OnSide, figures);
-            Drawing.RaiseDisplayProperties(shown);
-            Drawing.RaiseStatusNotification(shown.Hint);
+            var panel = new RegularPolygonPanel(first, NextNumberOfSides, OnSide, figures);
+            Drawing.RaiseDisplayProperties(panel.Shown);
+            Drawing.RaiseStatusNotification(panel.Hint);
         }
 
         protected override DependencyList InitExpectedDependencies()

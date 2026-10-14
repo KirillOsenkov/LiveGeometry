@@ -13,7 +13,9 @@ namespace DynamicGeometry;
 /// Fix, and a horizontal one is draw, click Horizontal, type 2, click Fix length, without a
 /// box on every tool. Captions come from the figure (Radius, Fix radius); the title is the
 /// figure's ("Segment AB"). The figure's own grid has the same rows. A vector's panel ends
-/// with its X and Y. (A regular polygon has a panel of its own, <see cref="RegularPolygonPanel"/>.)
+/// with its X and Y. (A regular polygon by its center has a panel of its own,
+/// <see cref="RegularPolygonPanel"/>; one on a side gets this one for that side, with its
+/// number of sides on top: <see cref="RegularPolygon"/>.)
 /// </summary>
 public class DimensionsPanel :
     IConditionalProperties,
@@ -38,6 +40,14 @@ public class DimensionsPanel :
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    /// <summary>
+    /// The regular polygon standing on the figure, when the panel is the polygon's (Polygon
+    /// on a side: <see cref="RegularPolygonPanel.Shown"/>): its number of sides comes first,
+    /// the title is the polygon's, and OK is the polygon panel's, which brings the tool's
+    /// panel back
+    /// </summary>
+    public RegularPolygonPanel RegularPolygon { get; init; }
 
     /// <summary>
     /// Set by the grid while it shows the panel: the figure's own changes are passed on as
@@ -87,6 +97,11 @@ public class DimensionsPanel :
     /// </summary>
     public IEnumerable<IValueProvider> GetProperties()
     {
+        if (RegularPolygon != null)
+        {
+            yield return PropertyDiscoveryStrategy.CreateValueProvider(RegularPolygon, nameof(RegularPolygonPanel.NumberOfSides));
+        }
+
         if (length != null)
         {
             yield return PropertyDiscoveryStrategy.CreateValueProvider(this, nameof(Length));
@@ -242,6 +257,12 @@ public class DimensionsPanel :
     [PropertyGridIcon(PropertyGridIcon.Check)]
     public void OK()
     {
+        if (RegularPolygon != null)
+        {
+            RegularPolygon.OK();
+            return;
+        }
+
         figure.Drawing.RaiseDisplayProperties(null);
         figure.Drawing.ShowBehaviorHint();
     }
@@ -292,6 +313,6 @@ public class DimensionsPanel :
 
     public override string ToString()
     {
-        return figure.Title;
+        return RegularPolygon?.ToString() ?? figure.Title;
     }
 }
