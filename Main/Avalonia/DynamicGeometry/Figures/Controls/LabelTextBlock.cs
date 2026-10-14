@@ -22,8 +22,17 @@ public class LabelTextBlock : TextBlock
     // styles that target TextBlock apply to this one too
     protected override Type StyleKeyOverride => typeof(TextBlock);
 
+    /// <summary>
+    /// The text is laid out anew at every measure. TextBlock keeps its layout when the text
+    /// changes and drops it only when its measure goes from valid to invalid
+    /// (<see cref="TextBlock.OnMeasureInvalidated"/>), not when the measure was invalid
+    /// already; its own arrange lays the text out again anyway, which hid that, and the
+    /// arrange below doesn't. An angle's number whose sides were dragged to length 0 (it is
+    /// hidden there) and back went on showing "0°" for "120°" until it was restyled.
+    /// </summary>
     protected override Size MeasureOverride(Size availableSize)
     {
+        OnMeasureInvalidated();
         measuredWidth = availableSize.Width;
         measuredHeight = availableSize.Height;
         return base.MeasureOverride(availableSize);

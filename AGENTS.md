@@ -379,7 +379,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   never seen on Windows or in headless Edge) a wrapped caption lost its last line, also when
   laid out at least as high as it measured, so the arranged layout wrapped into a line more.
   A label's text is a `LabelTextBlock`, laid out again at the width it measured at and with
-  no height limit; that fixed it (2026-10-03). The exact cause wasn't found.
+  no height limit; that fixed it (2026-10-03). The exact cause wasn't found. Its arrange
+  keeps the measured layout, and Avalonia 12's TextBlock keeps its layout across a text
+  change unless its measure was valid (`OnMeasureInvalidated` drops it; only its own
+  arrange rebuilt it every time), so `LabelTextBlock.MeasureOverride` drops it first: an
+  angle's number dragged through length 0 and back showed "0°" for "120°" (2026-10-14).
 - **In the browser a posted job can keep the page from painting**: Avalonia's dispatcher
   runs what is due (Background jobs, a short timer) in the same JavaScript task as the
   animation frame, before it gives the page back, and the browser paints only between
