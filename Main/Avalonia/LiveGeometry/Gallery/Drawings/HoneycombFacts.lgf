@@ -1,0 +1,821 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-3.6739647634" Top="4.6276202418" Right="24.1038130146" Bottom="-6.4690232768" />
+  <Scene Left="-5.25" Top="4.125" Right="9.25" Bottom="-4.6875" />
+  <Scene Left="-2" Top="3.3125" Right="6" Bottom="-4.0625" />
+  <Styles>
+    <PointStyle Name="DependentPoint" Size="8" Fill="#FFFFB634" Color="#FF9C6F20" />
+    <PointStyle Name="FreePoint" Fill="#FFFFFF64" Color="#FF9C9C3D" />
+    <LineStyle Name="Line" Color="#FF9E7416" />
+    <ShapeStyle Name="GradientBrownOutline" Color="#FFA87B05">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFDFDF5" Offset="0" />
+          <GradientStop Color="#FFF4EBB2" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <TextStyle Name="Text" FontSize="18" FontFamily="Segoe UI">
+      <Dark Color="#FF000000" />
+    </TextStyle>
+    <ShapeStyle Name="1" Color="#FFA87B05">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFFFFAC0" Offset="0" />
+          <GradientStop Color="#FFFFB312" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="2" Color="#FFA87B05">
+      <Fill>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#FFF2EEBC" Offset="0" />
+          <GradientStop Color="#FFD69712" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <PointStyle Name="3" Character="🐝" Size="48" Fill="#FFFFB634" />
+    <PointStyle Name="4" Character="🍯" Size="48" Fill="#FFFFB45A" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" X="0" Y="-2" />
+    <FreePoint Name="B" X="1" Y="-2" />
+    <PointByCoordinates Name="C" X="-0.5 * A.X + sqrt(3) / 2 * A.Y + 1.5 * B.X - sqrt(3) / 2 * B.Y" Y="-sqrt(3) / 2 * A.X - 0.5 * A.Y + sqrt(3) / 2 * B.X + 1.5 * B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D" X="sqrt(3) * A.Y + B.X - sqrt(3) * B.Y" Y="-sqrt(3) * A.X + sqrt(3) * B.X + B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E" X="A.X + sqrt(3) * A.Y - sqrt(3) * B.Y" Y="-sqrt(3) * A.X + A.Y + sqrt(3) * B.X">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F" X="1.5 * A.X + sqrt(3) / 2 * A.Y - 0.5 * B.X - sqrt(3) / 2 * B.Y" Y="-sqrt(3) / 2 * A.X + 1.5 * A.Y + sqrt(3) / 2 * B.X - 0.5 * B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Segment Name="AB">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="BC">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="CD">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="DE">
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="EF">
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="AF">
+      <Dependency Name="F" />
+      <Dependency Name="A" />
+    </Segment>
+    <Polygon Name="ABCDEF" Style="1">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+    </Polygon>
+    <PointByCoordinates Name="G" X="1.5 * C.X - sqrt(3) / 2 * C.Y - 0.5 * D.X + sqrt(3) / 2 * D.Y" Y="sqrt(3) / 2 * C.X + 1.5 * C.Y - sqrt(3) / 2 * D.X - 0.5 * D.Y">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="H" X="C.X - sqrt(3) * C.Y + sqrt(3) * D.Y" Y="sqrt(3) * C.X + C.Y - sqrt(3) * D.X">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="I" X="-sqrt(3) * C.Y + D.X + sqrt(3) * D.Y" Y="sqrt(3) * C.X - sqrt(3) * D.X + D.Y">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="J" X="-0.5 * C.X - sqrt(3) / 2 * C.Y + 1.5 * D.X + sqrt(3) / 2 * D.Y" Y="sqrt(3) / 2 * C.X - 0.5 * C.Y - sqrt(3) / 2 * D.X + 1.5 * D.Y">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </PointByCoordinates>
+    <Segment Name="CG">
+      <Dependency Name="C" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="GH">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+    </Segment>
+    <Segment Name="HI">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="IJ">
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+    </Segment>
+    <Segment Name="DJ">
+      <Dependency Name="J" />
+      <Dependency Name="D" />
+    </Segment>
+    <Polygon Name="CDJIHG" Style="2">
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+    </Polygon>
+    <PointByCoordinates Name="K" X="-0.5 * D.X + sqrt(3) / 2 * D.Y + 1.5 * J.X - sqrt(3) / 2 * J.Y" Y="-sqrt(3) / 2 * D.X - 0.5 * D.Y + sqrt(3) / 2 * J.X + 1.5 * J.Y">
+      <Dependency Name="D" />
+      <Dependency Name="J" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L" X="sqrt(3) * D.Y + J.X - sqrt(3) * J.Y" Y="-sqrt(3) * D.X + sqrt(3) * J.X + J.Y">
+      <Dependency Name="D" />
+      <Dependency Name="J" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="M" X="D.X + sqrt(3) * D.Y - sqrt(3) * J.Y" Y="-sqrt(3) * D.X + D.Y + sqrt(3) * J.X">
+      <Dependency Name="D" />
+      <Dependency Name="J" />
+    </PointByCoordinates>
+    <Segment Name="JK">
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+    </Segment>
+    <Segment Name="KL">
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="LM">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="EM">
+      <Dependency Name="M" />
+      <Dependency Name="E" />
+    </Segment>
+    <Polygon Name="DEMLKJ" Style="1">
+      <Dependency Name="D" />
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+      <Dependency Name="E" />
+    </Polygon>
+    <PointByCoordinates Name="N" X="1.5 * I.X - sqrt(3) / 2 * I.Y - 0.5 * J.X + sqrt(3) / 2 * J.Y" Y="sqrt(3) / 2 * I.X + 1.5 * I.Y - sqrt(3) / 2 * J.X - 0.5 * J.Y">
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="O" X="I.X - sqrt(3) * I.Y + sqrt(3) * J.Y" Y="sqrt(3) * I.X + I.Y - sqrt(3) * J.X">
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P" X="-sqrt(3) * I.Y + J.X + sqrt(3) * J.Y" Y="sqrt(3) * I.X - sqrt(3) * J.X + J.Y">
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+    </PointByCoordinates>
+    <Segment Name="IN">
+      <Dependency Name="I" />
+      <Dependency Name="N" />
+    </Segment>
+    <Segment Name="NO">
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+    </Segment>
+    <Segment Name="OP">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="KP">
+      <Dependency Name="P" />
+      <Dependency Name="K" />
+    </Segment>
+    <Polygon Name="IJKPON" Style="1">
+      <Dependency Name="J" />
+      <Dependency Name="I" />
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+      <Dependency Name="K" />
+    </Polygon>
+    <PointByCoordinates Name="Q" X="1.5 * H.X - sqrt(3) / 2 * H.Y - 0.5 * I.X + sqrt(3) / 2 * I.Y" Y="sqrt(3) / 2 * H.X + 1.5 * H.Y - sqrt(3) / 2 * I.X - 0.5 * I.Y">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R" X="H.X - sqrt(3) * H.Y + sqrt(3) * I.Y" Y="sqrt(3) * H.X + H.Y - sqrt(3) * I.X">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S" X="-sqrt(3) * H.Y + I.X + sqrt(3) * I.Y" Y="sqrt(3) * H.X - sqrt(3) * I.X + I.Y">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </PointByCoordinates>
+    <Segment Name="HQ">
+      <Dependency Name="H" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Segment Name="QR">
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+    </Segment>
+    <Segment Name="RS">
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="NS">
+      <Dependency Name="S" />
+      <Dependency Name="N" />
+    </Segment>
+    <Polygon Name="HINSRQ" Style="1">
+      <Dependency Name="I" />
+      <Dependency Name="H" />
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+      <Dependency Name="N" />
+    </Polygon>
+    <PointByCoordinates Name="T" X="1.5 * G.X - sqrt(3) / 2 * G.Y - 0.5 * H.X + sqrt(3) / 2 * H.Y" Y="sqrt(3) / 2 * G.X + 1.5 * G.Y - sqrt(3) / 2 * H.X - 0.5 * H.Y">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="U" X="G.X - sqrt(3) * G.Y + sqrt(3) * H.Y" Y="sqrt(3) * G.X + G.Y - sqrt(3) * H.X">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="V" X="-sqrt(3) * G.Y + H.X + sqrt(3) * H.Y" Y="sqrt(3) * G.X - sqrt(3) * H.X + H.Y">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <Segment Name="GT">
+      <Dependency Name="G" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="TU">
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </Segment>
+    <Segment Name="UV">
+      <Dependency Name="U" />
+      <Dependency Name="V" />
+    </Segment>
+    <Segment Name="QV">
+      <Dependency Name="V" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Polygon Name="GHQVUT" Style="1">
+      <Dependency Name="H" />
+      <Dependency Name="G" />
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+      <Dependency Name="V" />
+      <Dependency Name="Q" />
+    </Polygon>
+    <PointByCoordinates Name="W" X="C.X - sqrt(3) * C.Y + sqrt(3) * G.Y" Y="sqrt(3) * C.X + C.Y - sqrt(3) * G.X">
+      <Dependency Name="C" />
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="X" X="-sqrt(3) * C.Y + G.X + sqrt(3) * G.Y" Y="sqrt(3) * C.X - sqrt(3) * G.X + G.Y">
+      <Dependency Name="C" />
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <Segment Name="BW">
+      <Dependency Name="B" />
+      <Dependency Name="W" />
+    </Segment>
+    <Segment Name="WX">
+      <Dependency Name="W" />
+      <Dependency Name="X" />
+    </Segment>
+    <Segment Name="TX">
+      <Dependency Name="X" />
+      <Dependency Name="T" />
+    </Segment>
+    <Polygon Name="BCGTXW" Style="1">
+      <Dependency Name="G" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="W" />
+      <Dependency Name="X" />
+      <Dependency Name="T" />
+    </Polygon>
+    <PointByCoordinates Name="Y" X="1.5 * A.X - sqrt(3) / 2 * A.Y - 0.5 * B.X + sqrt(3) / 2 * B.Y" Y="sqrt(3) / 2 * A.X + 1.5 * A.Y - sqrt(3) / 2 * B.X - 0.5 * B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Z" X="A.X - sqrt(3) * A.Y + sqrt(3) * B.Y" Y="sqrt(3) * A.X + A.Y - sqrt(3) * B.X">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="A1" X="-sqrt(3) * A.Y + B.X + sqrt(3) * B.Y" Y="sqrt(3) * A.X - sqrt(3) * B.X + B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Segment Name="AY">
+      <Dependency Name="A" />
+      <Dependency Name="Y" />
+    </Segment>
+    <Segment Name="YZ">
+      <Dependency Name="Y" />
+      <Dependency Name="Z" />
+    </Segment>
+    <Segment Name="ZA1">
+      <Dependency Name="Z" />
+      <Dependency Name="A1" />
+    </Segment>
+    <Segment Name="WA1">
+      <Dependency Name="A1" />
+      <Dependency Name="W" />
+    </Segment>
+    <Polygon Name="ABWA1ZY" Style="GradientBrownOutline">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+      <Dependency Name="Y" />
+      <Dependency Name="Z" />
+      <Dependency Name="A1" />
+      <Dependency Name="W" />
+    </Polygon>
+    <PointByCoordinates Name="B1" X="-0.5 * A.X + sqrt(3) / 2 * A.Y + 1.5 * F.X - sqrt(3) / 2 * F.Y" Y="-sqrt(3) / 2 * A.X - 0.5 * A.Y + sqrt(3) / 2 * F.X + 1.5 * F.Y">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C1" X="sqrt(3) * A.Y + F.X - sqrt(3) * F.Y" Y="-sqrt(3) * A.X + sqrt(3) * F.X + F.Y">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D1" X="A.X + sqrt(3) * A.Y - sqrt(3) * F.Y" Y="-sqrt(3) * A.X + A.Y + sqrt(3) * F.X">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <Segment Name="FB1">
+      <Dependency Name="F" />
+      <Dependency Name="B1" />
+    </Segment>
+    <Segment Name="B1C1">
+      <Dependency Name="B1" />
+      <Dependency Name="C1" />
+    </Segment>
+    <Segment Name="C1D1">
+      <Dependency Name="C1" />
+      <Dependency Name="D1" />
+    </Segment>
+    <Segment Name="YD1">
+      <Dependency Name="D1" />
+      <Dependency Name="Y" />
+    </Segment>
+    <Polygon Name="AFB1C1D1Y" Style="GradientBrownOutline">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+      <Dependency Name="B1" />
+      <Dependency Name="C1" />
+      <Dependency Name="D1" />
+      <Dependency Name="Y" />
+    </Polygon>
+    <PointByCoordinates Name="E1" X="`E`.X - sqrt(3) * `E`.Y + sqrt(3) * F.Y" Y="sqrt(3) * `E`.X + `E`.Y - sqrt(3) * F.X">
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F1" X="-sqrt(3) * `E`.Y + F.X + sqrt(3) * F.Y" Y="sqrt(3) * `E`.X - sqrt(3) * F.X + F.Y">
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <Segment Name="ME1">
+      <Dependency Name="M" />
+      <Dependency Name="E1" />
+    </Segment>
+    <Segment Name="E1F1">
+      <Dependency Name="E1" />
+      <Dependency Name="F1" />
+    </Segment>
+    <Segment Name="B1F1">
+      <Dependency Name="F1" />
+      <Dependency Name="B1" />
+    </Segment>
+    <Polygon Name="EFB1F1E1M" Style="GradientBrownOutline">
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+      <Dependency Name="M" />
+      <Dependency Name="E1" />
+      <Dependency Name="F1" />
+      <Dependency Name="B1" />
+    </Polygon>
+    <PointByCoordinates Name="G1" X="1.5 * L.X - sqrt(3) / 2 * L.Y - 0.5 * M.X + sqrt(3) / 2 * M.Y" Y="sqrt(3) / 2 * L.X + 1.5 * L.Y - sqrt(3) / 2 * M.X - 0.5 * M.Y">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="H1" X="L.X - sqrt(3) * L.Y + sqrt(3) * M.Y" Y="sqrt(3) * L.X + L.Y - sqrt(3) * M.X">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="I1" X="-sqrt(3) * L.Y + M.X + sqrt(3) * M.Y" Y="sqrt(3) * L.X - sqrt(3) * M.X + M.Y">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <Segment Name="LG1">
+      <Dependency Name="L" />
+      <Dependency Name="G1" />
+    </Segment>
+    <Segment Name="G1H1">
+      <Dependency Name="G1" />
+      <Dependency Name="H1" />
+    </Segment>
+    <Segment Name="H1I1">
+      <Dependency Name="H1" />
+      <Dependency Name="I1" />
+    </Segment>
+    <Segment Name="E1I1">
+      <Dependency Name="I1" />
+      <Dependency Name="E1" />
+    </Segment>
+    <Polygon Name="LME1I1H1G1" Style="GradientBrownOutline">
+      <Dependency Name="M" />
+      <Dependency Name="L" />
+      <Dependency Name="G1" />
+      <Dependency Name="H1" />
+      <Dependency Name="I1" />
+      <Dependency Name="E1" />
+    </Polygon>
+    <PointByCoordinates Name="J1" X="K.X - sqrt(3) * K.Y + sqrt(3) * L.Y" Y="sqrt(3) * K.X + K.Y - sqrt(3) * L.X">
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K1" X="-sqrt(3) * K.Y + L.X + sqrt(3) * L.Y" Y="sqrt(3) * K.X - sqrt(3) * L.X + L.Y">
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <Segment Name="PJ1">
+      <Dependency Name="P" />
+      <Dependency Name="J1" />
+    </Segment>
+    <Segment Name="J1K1">
+      <Dependency Name="J1" />
+      <Dependency Name="K1" />
+    </Segment>
+    <Segment Name="G1K1">
+      <Dependency Name="K1" />
+      <Dependency Name="G1" />
+    </Segment>
+    <Polygon Name="KLG1K1J1P" Style="GradientBrownOutline">
+      <Dependency Name="L" />
+      <Dependency Name="K" />
+      <Dependency Name="P" />
+      <Dependency Name="J1" />
+      <Dependency Name="K1" />
+      <Dependency Name="G1" />
+    </Polygon>
+    <PointByCoordinates Name="L1" X="N.X - sqrt(3) * N.Y + sqrt(3) * O.Y" Y="sqrt(3) * N.X + N.Y - sqrt(3) * O.X">
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="M1" X="-sqrt(3) * N.Y + O.X + sqrt(3) * O.Y" Y="sqrt(3) * N.X - sqrt(3) * O.X + O.Y">
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="N1" X="-0.5 * N.X - sqrt(3) / 2 * N.Y + 1.5 * O.X + sqrt(3) / 2 * O.Y" Y="sqrt(3) / 2 * N.X - 0.5 * N.Y - sqrt(3) / 2 * O.X + 1.5 * O.Y">
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <Segment Name="SL1">
+      <Dependency Name="S" />
+      <Dependency Name="L1" />
+    </Segment>
+    <Segment Name="L1M1">
+      <Dependency Name="L1" />
+      <Dependency Name="M1" />
+    </Segment>
+    <Segment Name="M1N1">
+      <Dependency Name="M1" />
+      <Dependency Name="N1" />
+    </Segment>
+    <Segment Name="ON1">
+      <Dependency Name="N1" />
+      <Dependency Name="O" />
+    </Segment>
+    <Polygon Name="NON1M1L1S" Style="GradientBrownOutline">
+      <Dependency Name="O" />
+      <Dependency Name="N" />
+      <Dependency Name="S" />
+      <Dependency Name="L1" />
+      <Dependency Name="M1" />
+      <Dependency Name="N1" />
+    </Polygon>
+    <PointByCoordinates Name="O1" X="1.5 * R.X - sqrt(3) / 2 * R.Y - 0.5 * S.X + sqrt(3) / 2 * S.Y" Y="sqrt(3) / 2 * R.X + 1.5 * R.Y - sqrt(3) / 2 * S.X - 0.5 * S.Y">
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P1" X="R.X - sqrt(3) * R.Y + sqrt(3) * S.Y" Y="sqrt(3) * R.X + R.Y - sqrt(3) * S.X">
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Q1" X="-sqrt(3) * R.Y + S.X + sqrt(3) * S.Y" Y="sqrt(3) * R.X - sqrt(3) * S.X + S.Y">
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+    </PointByCoordinates>
+    <Segment Name="RO1">
+      <Dependency Name="R" />
+      <Dependency Name="O1" />
+    </Segment>
+    <Segment Name="O1P1">
+      <Dependency Name="O1" />
+      <Dependency Name="P1" />
+    </Segment>
+    <Segment Name="P1Q1">
+      <Dependency Name="P1" />
+      <Dependency Name="Q1" />
+    </Segment>
+    <Segment Name="L1Q1">
+      <Dependency Name="Q1" />
+      <Dependency Name="L1" />
+    </Segment>
+    <Polygon Name="RSL1Q1P1O1" Style="GradientBrownOutline">
+      <Dependency Name="S" />
+      <Dependency Name="R" />
+      <Dependency Name="O1" />
+      <Dependency Name="P1" />
+      <Dependency Name="Q1" />
+      <Dependency Name="L1" />
+    </Polygon>
+    <PointByCoordinates Name="R1" X="Q.X - sqrt(3) * Q.Y + sqrt(3) * R.Y" Y="sqrt(3) * Q.X + Q.Y - sqrt(3) * R.X">
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S1" X="-sqrt(3) * Q.Y + R.X + sqrt(3) * R.Y" Y="sqrt(3) * Q.X - sqrt(3) * R.X + R.Y">
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Segment Name="VR1">
+      <Dependency Name="V" />
+      <Dependency Name="R1" />
+    </Segment>
+    <Segment Name="R1S1">
+      <Dependency Name="R1" />
+      <Dependency Name="S1" />
+    </Segment>
+    <Segment Name="O1S1">
+      <Dependency Name="S1" />
+      <Dependency Name="O1" />
+    </Segment>
+    <Polygon Name="QRO1S1R1V" Style="GradientBrownOutline">
+      <Dependency Name="R" />
+      <Dependency Name="Q" />
+      <Dependency Name="V" />
+      <Dependency Name="R1" />
+      <Dependency Name="S1" />
+      <Dependency Name="O1" />
+    </Polygon>
+    <PointByCoordinates Name="T1" X="1.5 * U.X - sqrt(3) / 2 * U.Y - 0.5 * V.X + sqrt(3) / 2 * V.Y" Y="sqrt(3) / 2 * U.X + 1.5 * U.Y - sqrt(3) / 2 * V.X - 0.5 * V.Y">
+      <Dependency Name="U" />
+      <Dependency Name="V" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="U1" X="U.X - sqrt(3) * U.Y + sqrt(3) * V.Y" Y="sqrt(3) * U.X + U.Y - sqrt(3) * V.X">
+      <Dependency Name="U" />
+      <Dependency Name="V" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="V1" X="-sqrt(3) * U.Y + V.X + sqrt(3) * V.Y" Y="sqrt(3) * U.X - sqrt(3) * V.X + V.Y">
+      <Dependency Name="U" />
+      <Dependency Name="V" />
+    </PointByCoordinates>
+    <Segment Name="UT1">
+      <Dependency Name="U" />
+      <Dependency Name="T1" />
+    </Segment>
+    <Segment Name="T1U1">
+      <Dependency Name="T1" />
+      <Dependency Name="U1" />
+    </Segment>
+    <Segment Name="U1V1">
+      <Dependency Name="U1" />
+      <Dependency Name="V1" />
+    </Segment>
+    <Segment Name="R1V1">
+      <Dependency Name="V1" />
+      <Dependency Name="R1" />
+    </Segment>
+    <Polygon Name="UVR1V1U1T1" Style="GradientBrownOutline">
+      <Dependency Name="V" />
+      <Dependency Name="U" />
+      <Dependency Name="T1" />
+      <Dependency Name="U1" />
+      <Dependency Name="V1" />
+      <Dependency Name="R1" />
+    </Polygon>
+    <PointByCoordinates Name="W1" X="-0.5 * T.X + sqrt(3) / 2 * T.Y + 1.5 * X.X - sqrt(3) / 2 * X.Y" Y="-sqrt(3) / 2 * T.X - 0.5 * T.Y + sqrt(3) / 2 * X.X + 1.5 * X.Y">
+      <Dependency Name="T" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="X1" X="sqrt(3) * T.Y + X.X - sqrt(3) * X.Y" Y="-sqrt(3) * T.X + sqrt(3) * X.X + X.Y">
+      <Dependency Name="T" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <Segment Name="XW1">
+      <Dependency Name="X" />
+      <Dependency Name="W1" />
+    </Segment>
+    <Segment Name="W1X1">
+      <Dependency Name="W1" />
+      <Dependency Name="X1" />
+    </Segment>
+    <Segment Name="T1X1">
+      <Dependency Name="X1" />
+      <Dependency Name="T1" />
+    </Segment>
+    <Polygon Name="TUT1X1W1X" Style="GradientBrownOutline">
+      <Dependency Name="T" />
+      <Dependency Name="X" />
+      <Dependency Name="W1" />
+      <Dependency Name="X1" />
+      <Dependency Name="T1" />
+      <Dependency Name="U" />
+    </Polygon>
+    <PointByCoordinates Name="Y1" X="W.X - sqrt(3) * W.Y + sqrt(3) * X.Y" Y="sqrt(3) * W.X + W.Y - sqrt(3) * X.X">
+      <Dependency Name="W" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Z1" X="-sqrt(3) * W.Y + X.X + sqrt(3) * X.Y" Y="sqrt(3) * W.X - sqrt(3) * X.X + X.Y">
+      <Dependency Name="W" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <Segment Name="A1Y1">
+      <Dependency Name="A1" />
+      <Dependency Name="Y1" />
+    </Segment>
+    <Segment Name="Y1Z1">
+      <Dependency Name="Y1" />
+      <Dependency Name="Z1" />
+    </Segment>
+    <Segment Name="W1Z1">
+      <Dependency Name="Z1" />
+      <Dependency Name="W1" />
+    </Segment>
+    <Polygon Name="WXW1Z1Y1A1" Style="GradientBrownOutline">
+      <Dependency Name="X" />
+      <Dependency Name="W" />
+      <Dependency Name="A1" />
+      <Dependency Name="Y1" />
+      <Dependency Name="Z1" />
+      <Dependency Name="W1" />
+    </Polygon>
+    <PointByCoordinates Name="A2" X="O.X - sqrt(3) * O.Y + sqrt(3) * P.Y" Y="sqrt(3) * O.X + O.Y - sqrt(3) * P.X">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="B2" X="-sqrt(3) * O.Y + P.X + sqrt(3) * P.Y" Y="sqrt(3) * O.X - sqrt(3) * P.X + P.Y">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Segment Name="N1A2">
+      <Dependency Name="N1" />
+      <Dependency Name="A2" />
+    </Segment>
+    <Segment Name="A2B2">
+      <Dependency Name="A2" />
+      <Dependency Name="B2" />
+    </Segment>
+    <Segment Name="J1B2">
+      <Dependency Name="B2" />
+      <Dependency Name="J1" />
+    </Segment>
+    <Polygon Name="OPJ1B2A2N1" Style="GradientBrownOutline">
+      <Dependency Name="P" />
+      <Dependency Name="O" />
+      <Dependency Name="N1" />
+      <Dependency Name="A2" />
+      <Dependency Name="B2" />
+      <Dependency Name="J1" />
+    </Polygon>
+    <PointInRegion Name="C2" Style="3" X="1.998413089480414" Y="1.4851442642788129" OffsetX="-0.0015869105195855937" OffsetY="0.021042649141058467">
+      <Dependency Name="IJKPON" />
+    </PointInRegion>
+    <PointInRegion Name="D2" Style="4" X="3.5089590056353126" Y="0.7577692451591151" OffsetX="0.008959005635313266" OffsetY="0.1596930338057989">
+      <Dependency Name="HINSRQ" />
+    </PointInRegion>
+    <MidPoint Name="E2">
+      <Dependency Name="G1" />
+      <Dependency Name="E1" />
+    </MidPoint>
+    <MidPoint Name="F2">
+      <Dependency Name="E1" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <MidPoint Name="G2">
+      <Dependency Name="F" />
+      <Dependency Name="D1" />
+    </MidPoint>
+    <MidPoint Name="H2">
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <MidPoint Name="I2">
+      <Dependency Name="A" />
+      <Dependency Name="A1" />
+    </MidPoint>
+    <MidPoint Name="J2">
+      <Dependency Name="A1" />
+      <Dependency Name="W1" />
+    </MidPoint>
+    <MidPoint Name="K2">
+      <Dependency Name="W1" />
+      <Dependency Name="U" />
+    </MidPoint>
+    <MidPoint Name="L2">
+      <Dependency Name="U" />
+      <Dependency Name="V1" />
+    </MidPoint>
+    <MidPoint Name="M2">
+      <Dependency Name="R1" />
+      <Dependency Name="R" />
+    </MidPoint>
+    <MidPoint Name="N2">
+      <Dependency Name="R" />
+      <Dependency Name="Q1" />
+    </MidPoint>
+    <MidPoint Name="O2">
+      <Dependency Name="L1" />
+      <Dependency Name="O" />
+    </MidPoint>
+    <MidPoint Name="P2">
+      <Dependency Name="O" />
+      <Dependency Name="B2" />
+    </MidPoint>
+    <MidPoint Name="Q2">
+      <Dependency Name="J1" />
+      <Dependency Name="L" />
+    </MidPoint>
+    <MidPoint Name="R2">
+      <Dependency Name="L" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <MidPoint Name="S2">
+      <Dependency Name="D" />
+      <Dependency Name="H" />
+    </MidPoint>
+    <MidPoint Name="T2">
+      <Dependency Name="H" />
+      <Dependency Name="U" />
+    </MidPoint>
+    <MidPoint Name="U2">
+      <Dependency Name="T" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <AngleArc Name="AngleArc1">
+      <Dependency Name="G2" />
+      <Dependency Name="U2" />
+      <Dependency Name="H2" />
+    </AngleArc>
+    <AngleMeasurement Name="AngleMeasurement1" OffsetX="0" OffsetY="0">
+      <Dependency Name="G2" />
+      <Dependency Name="U2" />
+      <Dependency Name="H2" />
+    </AngleMeasurement>
+    <Segment Name="G2H2">
+      <Dependency Name="H2" />
+      <Dependency Name="G2" />
+    </Segment>
+    <Segment Name="AG2">
+      <Dependency Name="G2" />
+      <Dependency Name="A" />
+    </Segment>
+    <AngleArc Name="AngleArc2">
+      <Dependency Name="J2" />
+      <Dependency Name="W1" />
+      <Dependency Name="T2" />
+    </AngleArc>
+    <AngleMeasurement Name="AngleMeasurement2" OffsetX="0" OffsetY="0">
+      <Dependency Name="J2" />
+      <Dependency Name="W1" />
+      <Dependency Name="T2" />
+    </AngleMeasurement>
+    <Segment Name="J2T2">
+      <Dependency Name="T2" />
+      <Dependency Name="J2" />
+    </Segment>
+    <Segment Name="W1J2">
+      <Dependency Name="J2" />
+      <Dependency Name="W1" />
+    </Segment>
+    <AngleArc Name="AngleArc3">
+      <Dependency Name="C" />
+      <Dependency Name="G" />
+      <Dependency Name="D" />
+    </AngleArc>
+    <AngleMeasurement Name="AngleMeasurement3" OffsetX="5.0000000056409135" OffsetY="-42.000000002897195">
+      <Dependency Name="C" />
+      <Dependency Name="G" />
+      <Dependency Name="D" />
+    </AngleMeasurement>
+    <DistanceMeasurement Name="DistanceMeasurement1" OffsetX="-4.00000000201851" OffsetY="-23.49999999911097">
+      <Dependency Name="VR1" />
+    </DistanceMeasurement>
+    <DistanceMeasurement Name="DistanceMeasurement2" OffsetX="5.5000000027755505" OffsetY="-10.499999997849045">
+      <Dependency Name="J2" />
+      <Dependency Name="T2" />
+    </DistanceMeasurement>
+    <Label Name="Title" Style="GalleryTitle" Text="Honeycomb Facts" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Bees build their combs out of regular hexagons: six equal sides and six equal angles of 120°.\n\nThree cells meet at every corner, and 3 × 120° = 360°, so they leave no gaps. Only three regular shapes can cover a floor all by themselves: triangles, squares and hexagons.\n\nLines from the center to the corners cut a cell into six equilateral triangles with 60° at the center, so every corner is exactly one side away from the center. That is why one of the lines measures three sides: center to corner, along a wall, corner to center.\n\nThe line to a neighbor's center runs between two corners, 30° from each, and crosses the wall between the two cells at a right angle.\n\nWith side 1, each triangle has an area of √3/4, so a cell has 6 × √3/4 = 3√3/2, about 2.6. With side s, multiply that by s².\n\nTurn a cell 60° around its center and it lands on itself. It also has six mirror lines.\n\nOf all the ways to divide a flat surface into cells of equal area, hexagons need the least wall: the least wax for the most honey. People suspected it for 2,000 years, and Thomas Hales proved it in 1999.\n\nDrag the yellow points: the comb grows and turns, but the angles stay the same." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

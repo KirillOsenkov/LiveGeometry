@@ -31,7 +31,8 @@
       <Fill>
         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
           <GradientStop Color="#FFFFFFFF" Offset="0" />
-          <GradientStop Color="#FFC8DCF5" Offset="1" />
+          <GradientStop Color="#FFF2F7FD" Offset="0.55" />
+          <GradientStop Color="#FF1A4A8C" Offset="0.77" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
@@ -53,8 +54,8 @@
     <PointByCoordinates Name="Bank4" Visible="false" X="2.6" Y="-3.3" />
     <PointByCoordinates Name="Bank5" Visible="false" X="5" Y="-3.4" />
     <PointByCoordinates Name="Bank6" Visible="false" X="40" Y="-3.4" />
-    <PointByCoordinates Name="Bank7" Visible="false" X="40" Y="-40" />
-    <PointByCoordinates Name="Bank8" Visible="false" X="-40" Y="-40" />
+    <PointByCoordinates Name="Bank7" Visible="false" X="40" Y="-6" />
+    <PointByCoordinates Name="Bank8" Visible="false" X="-40" Y="-6" />
     <BezierPath Name="SnowBank" Style="Snow" Closed="true" Filled="true" Path="L C a a C a a C a a C a a L L L L">
       <Sides Style="NoLine" />
       <Dependency Name="Bank0" />

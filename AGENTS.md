@@ -2296,8 +2296,16 @@ buttons and checkboxes, 3D, custom tools.
   while it is hidden (`LabelBase.MeasureSize` measures a hidden label as shown: Avalonia
   measures it as nothing). Under the caption the figure keeps at least a third of the
   height; a catalog item can ask for more (`stackedFigureShare`: the emoji drawings, Steiner's,
-  the pentagon), and a second, narrower scene crops a picture at the phone's sides (Treasure
-  Island, Magic Tree, Fireworks; full screen picks the wide one). A point's own size limits
+  the pentagon) or less (Cycloid, a strip), and a second, narrower scene crops a picture at
+  the phone's sides (Treasure Island, Magic Tree, Fireworks; full screen picks the wide one).
+  A phone scene smaller than the figure lets it run into the 40 px margins and fill the
+  width (Honeycomb Facts, Cycloid); its shape must stay nearer the phone's room than the
+  wide scene's does, and the wide one nearer the full screen's and the tile's (560 x 380),
+  or the wrong one is picked. On a phone the caption lies over whatever the plane has under
+  the figure, and a gradient paper gives it no plate: Design a Snowflake's snow fades into
+  the paper's blue just below the scene, or its light text was white on white. `--check` of
+  a single file lays it out with the default share, not the catalog's: check a phone layout
+  with `--gallery <slug>` in a window `place`d to phone size. A point's own size limits
   the zoom only where the point is (`CoordinateSystem.LimitZoomByPointReach`): shrinking the
   room on every side by the biggest emoji (Kaleidoscope's blossom in the middle) left the
   figure far smaller than the room.

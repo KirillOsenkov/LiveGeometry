@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Drawing Version="1" Creator="LiveGeometry.App">
   <Viewport Left="-10" Top="4.5" Right="10" Bottom="-1.5" />
-  <Scene Left="-9.5" Top="4" Right="9.5" Bottom="-1.2" />
+  <Scene Left="-7.5" Top="5.1875" Right="7.5" Bottom="-2.375" />
+  <Scene Left="-5.875" Top="3.25" Right="5.875" Bottom="-1.25" />
   <Styles>
     <LineStyle Name="Road" Color="#FF8B9A6B" StrokeWidth="5">
       <Dark Color="#FF6F7D55" />
@@ -37,13 +38,13 @@
       <Dependency Name="RoadL" />
       <Dependency Name="RoadR" />
     </Segment>
-    <PointByCoordinates Name="RailL" Visible="false" X="-8.5" Y="1" />
-    <PointByCoordinates Name="RailR" Visible="false" X="8.5" Y="1" />
+    <PointByCoordinates Name="RailL" Visible="false" X="-2 * pi" Y="1" />
+    <PointByCoordinates Name="RailR" Visible="false" X="2 * pi" Y="1" />
     <Segment Name="Rail" Visible="false" Style="Rail">
       <Dependency Name="RailL" />
       <Dependency Name="RailR" />
     </Segment>
-    <PointOnFigure Name="C" Style="Hub" X="-2.500000000000001" Y="1" Parameter="0.3529411764705882">
+    <PointOnFigure Name="C" Style="Hub" X="-2.4999999999999982" Y="1" Parameter="0.301056321135131">
       <Dependency Name="Rail" />
     </PointOnFigure>
     <PointByCoordinates Name="P" Style="RimPoint" X="C.X - sin(C.X)" Y="1 - cos(C.X)">
@@ -115,14 +116,14 @@
       <Dependency Name="C" />
       <Dependency Name="P" />
     </Ray>
-    <PointOnFigure Name="Q" Visible="false" Style="InnerPoint" X="-2.200763927948023" Y="1.400571807773467" Parameter="0.5">
+    <PointOnFigure Name="Q" Visible="false" Style="InnerPoint" X="-2.200763927948019" Y="1.4005718077734663" Parameter="0.5">
       <Dependency Name="SpokeRay" />
     </PointOnFigure>
     <Locus Name="InnerCurve" Visible="false" Style="Inner">
       <Dependency Name="Q" />
       <Dependency Name="C" />
     </Locus>
-    <PointOnFigure Name="F" Visible="false" Style="FlangePoint" X="-1.5424445694336715" Y="2.281829784875095" Parameter="1.6">
+    <PointOnFigure Name="F" Visible="false" Style="FlangePoint" X="-1.5424445694336657" Y="2.281829784875092" Parameter="1.6">
       <Dependency Name="SpokeRay" />
     </PointOnFigure>
     <Segment Name="FlangeArm" Visible="false" Style="FlangeArm">
@@ -133,11 +134,11 @@
       <Dependency Name="F" />
       <Dependency Name="C" />
     </Locus>
-    <ShowHideControl Name="InsideBox" Style="GalleryText" Show="false" Text="A point inside the wheel" Pin="TopLeft" OffsetX="16" OffsetY="16">
+    <ShowHideControl Name="InsideBox" Style="GalleryText" Show="false" Text="Point inside" Pin="TopLeft" OffsetX="16" OffsetY="16">
       <Dependency Name="Q" />
       <Dependency Name="InnerCurve" />
     </ShowHideControl>
-    <ShowHideControl Name="FlangeBox" Style="GalleryText" Show="false" Text="A train wheel's flange" Pin="TopLeft" OffsetX="16" OffsetY="40">
+    <ShowHideControl Name="FlangeBox" Style="GalleryText" Show="false" Text="Train flange" Pin="TopLeft" OffsetX="16" OffsetY="40">
       <Dependency Name="F" />
       <Dependency Name="FlangeArm" />
       <Dependency Name="FlangeCurve" />

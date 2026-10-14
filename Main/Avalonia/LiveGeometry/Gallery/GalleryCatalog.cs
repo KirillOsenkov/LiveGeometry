@@ -150,7 +150,7 @@ public static class GalleryCatalog
         Item("tessellation", "Make Your Own Tessellation", stackedFigureShare: 0.5),
         Item("times-tables", "Times Tables on a Circle", stackedFigureShare: 0.5),
         Item("spirograph", "Spirograph", stackedFigureShare: 0.5),
-        Item("cycloid", "Cycloid"),
+        Item("cycloid", "Cycloid", stackedFigureShare: 0.29),
         Item("gears", "Gears", stackedFigureShare: 0.5),
         Item("snowflake", "Design a Snowflake", stackedFigureShare: 0.5),
         Item("tangram", "Tangram", stackedFigureShare: 0.5),
@@ -166,6 +166,7 @@ public static class GalleryCatalog
         Item("perspective", "Three-Point Perspective"),
         Item("what-is-pi", "What Is π?"),
         Item("slice-the-pizza", "Slice the Pizza", stackedFigureShare: 0.5),
+        Item("honeycomb-facts", "Honeycomb Facts", stackedFigureShare: 0.5),
     };
 
     /// <summary>

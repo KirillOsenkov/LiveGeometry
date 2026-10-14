@@ -110,8 +110,11 @@ Write("    <PointStyle Name=\"Node\" Size=\"11\" Fill=\"#FF4FA3FF\" Color=\"#FFF
 Write("    <ShapeStyle Name=\"Snow\" IsFilled=\"true\" Color=\"#00000000\" StrokeWidth=\"0.5\">");
 Write("      <Fill>");
 Write("        <LinearGradientBrush StartPoint=\"0,0\" EndPoint=\"0,1\">");
+// white as far down as a wide window shows, then into the paper's night blue: on a phone the
+// caption sits under the scene, light text that the snow made white on white
 Write("          <GradientStop Color=\"#FFFFFFFF\" Offset=\"0\" />");
-Write("          <GradientStop Color=\"#FFC8DCF5\" Offset=\"1\" />");
+Write("          <GradientStop Color=\"#FFF2F7FD\" Offset=\"0.55\" />");
+Write("          <GradientStop Color=\"#FF1A4A8C\" Offset=\"0.77\" />");
 Write("        </LinearGradientBrush>");
 Write("      </Fill>");
 Write("    </ShapeStyle>");
@@ -128,7 +131,7 @@ Write("  <Figures>");
 // snowman and his friends to stand on
 // (wavy across the view, straight far beyond it: curved through the far points it made a
 // hill behind the caption)
-var bank = new[] { (-40.0, -3.4), (-5.0, -3.4), (-2.6, -3.25), (0.0, -3.6), (2.6, -3.3), (5.0, -3.4), (40.0, -3.4), (40.0, -40.0), (-40.0, -40.0) };
+var bank = new[] { (-40.0, -3.4), (-5.0, -3.4), (-2.6, -3.25), (0.0, -3.6), (2.6, -3.3), (5.0, -3.4), (40.0, -3.4), (40.0, -6.0), (-40.0, -6.0) };
 for (int i = 0; i < bank.Length; i++)
 {
     Write($"    <PointByCoordinates Name=\"Bank{i}\" Visible=\"false\" X=\"{Format(bank[i].Item1)}\" Y=\"{Format(bank[i].Item2)}\" />");
