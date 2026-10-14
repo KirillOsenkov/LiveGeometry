@@ -717,6 +717,18 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   as they are: `sqr` is the square root (VB's `Sqr`, for `.dgf` files; of a negative number
   undefined - it took the root of the absolute value), `log` the natural logarithm (`lg`
   is base 10), and `2x` is an error, not a product.
+- **Exact forms** (`Expressions/LinearForm.cs`, 2026-10-13): `LinearForms` works an
+  expression's bound tree (`DrawingExpression.Bound`, `CompileResult.Bound`) out as a
+  constant plus coefficients times variables, all exact (`ExactNumber`: fractions
+  (`Fraction`, a typed 0.1 being a tenth) times 1, sqrt(2), sqrt(3), sqrt(6), closed under
+  + and *, `sqrt` of a fraction that is a square times 1, 2, 3 or 6). The X and Y of a point
+  by coordinates are worked out through, each once; any other point's X and Y, a Number's
+  value, any other property and a two-point distance are variables. A product of two
+  variables, a function of one, an inexact constant, a division by anything but a fraction
+  give no form, and nothing is equal to an expression without one: equal forms are equal
+  for every position of the figures (the variables are taken as independent, which can
+  only miss an equality). What decides that a regular polygon's vertex is a point the
+  drawing has (see "Squares and regular polygons").
 - **An expression is bound once and evaluated many times** (`Expressions/`, 2026-10-07):
   `ExpressionTreeBuilder` binds the parser's `Node` tree into a `BoundExpression` (names
   resolved to figures, numbers, two-point distances, properties and functions, every value
@@ -1123,7 +1135,18 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   name, X before Y, without parentheses (the square's C is `A.Y + B.X - B.Y`,
   `-A.X + B.X + B.Y`), its coefficients exact where the polygon tiles - halves and halves of
   `sqrt(3)` for 3, 6 and 12 sides, of `sqrt(2)` for 8, whole numbers for 4 - and 15-digit
-  decimals otherwise. A deleted side takes only its segment. Until then a square was a
+  decimals otherwise. What the drawing has is taken, never what is there by chance: a
+  vertex is a point the drawing shows when the two are the same point however the figures
+  move (`RegularPolygonBuilder.FindSamePoint`: their X and Y worked out exactly through the
+  points by coordinates they name come out equal, `LinearForms`, see "Exact forms"), then
+  the sides between such vertices (`FindLine`), and a polygon on the same vertices is no
+  second polygon ("Square ABCD is there already", no undo step). In a lattice of squares
+  grown on each other's sides the fourth corner of a square is the third of its neighbor,
+  and a fan of squares round a point closes on the first one's free corner: one point
+  each, one segment per side (2026-10-13; the regression suite grows a 2 x 2, a 3 x 3, a
+  fan, six hexagons round a hexagon and six triangles round a point). A free point at the
+  place, one typed there or a corner of a square on other points stays a point of its own.
+  A deleted side takes only its segment. Until then a square was a
   circle, a perpendicular, their crossing, a midpoint and a reflection per square, and a
   regular polygon a composite whose other vertices were unnamed parts nothing could name.
   The two regular polygon tools share a Number of sides (the pre-create `SidesPanel`,

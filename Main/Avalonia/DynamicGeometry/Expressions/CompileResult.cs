@@ -8,6 +8,9 @@ namespace DynamicGeometry
     {
         public Func<double, double> Function;
         public Func<double> Expression { get; set; }
+
+        /// <summary>The tree the delegate was made of, its names resolved (what <see cref="LinearForms"/> reads); null when it didn't compile</summary>
+        public BoundExpression Bound { get; set; }
         public readonly List<IFigure> Dependencies = new List<IFigure>();
         public readonly List<CompileError> Errors = new List<CompileError>();
 

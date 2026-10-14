@@ -62,6 +62,9 @@ public class Program
             ("A point renamed A' stays named in expressions", PrimeNames),
             ("A square takes the side drawn already", SquareOnSegment),
             ("A square on a side running the other way keeps its side", SquareOnReversedSide),
+            ("Squares grown into a lattice share their corners and sides", SquareLattice),
+            ("A point there by chance is no corner of a square; the same square again makes nothing", ChancePointsAreNoCorners),
+            ("Hexagons around a hexagon and triangles around a point share their vertices", RegularTilings),
             ("The middle of a vector gives its midpoint", VectorMidpoint),
             ("A dashed vector has a dashed shaft", DashedVector),
             ("Regular polygons by their center and on a side are plain figures; the panel after changes their sides", RegularPolygonTools),
@@ -2491,13 +2494,12 @@ public class Program
         var square = Factory.CreatePolygon(drawing, corners);
         Actions.Add(drawing, square);
         Near(square.Perimeter, 12);
-        var hexagonFigures = RegularPolygonBuilder.Create(drawing, AddPoint(drawing, x: 20, y: 0), AddPoint(drawing, x: 21, y: 0), sides: 6, onSide: false);
+        var hexagonFigures = RegularPolygonBuilder.Create(drawing, AddPoint(drawing, x: 20, y: 0), AddPoint(drawing, x: 21, y: 0), sides: 6, onSide: false, out var hexagon);
         foreach (var figure in hexagonFigures)
         {
             Actions.Add(drawing, figure);
         }
 
-        var hexagon = (Polygon)hexagonFigures.Last();
         Near(hexagon.Perimeter, 6);
         var hexagonMeasurement = Factory.CreatePerimeterMeasurement(drawing, new IFigure[] { hexagon });
         Actions.Add(drawing, hexagonMeasurement);
@@ -2593,6 +2595,169 @@ public class Program
         Near(((IPoint)second.Dependencies[2]).Coordinates.X, expected: 6);
         Near(((IPoint)second.Dependencies[3]).Coordinates.X, expected: 6);
         drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// Squares grown into a lattice, each on a side of one before: a corner where a square
+    /// has one already is that corner (worked out exactly, it is the same point), the sides
+    /// to it are its sides, and nothing is there twice. The 2 x 2 of the bug report in the
+    /// order it was drawn, a 3 x 3 row by row, and four squares round a point, the last one
+    /// closing on the first square's free corner. Undone, redone and read again, the same.
+    /// </summary>
+    static void SquareLattice()
+    {
+        // AB, then CB, DC, CF
+        CheckLattice(new[] { (0, 0, 1, 0), (1, 1, 1, 0), (0, 1, 1, 1), (1, 1, 2, 1) }, points: 9, sides: 12, squares: 4);
+
+        // the bottom row to the right, each on the right side of the one before, then each
+        // square on the top side of the one under it
+        var clicks = new List<(int, int, int, int)> { (0, 0, 1, 0) };
+        for (int i = 1; i < 3; i++)
+        {
+            clicks.Add((i, 1, i, 0));
+        }
+
+        for (int j = 1; j < 3; j++)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                clicks.Add((i, j, i + 1, j));
+            }
+        }
+
+        CheckLattice(clicks, points: 16, sides: 24, squares: 9);
+
+        // round B = (1, 0): the fourth square's corner is A
+        CheckLattice(new[] { (0, 0, 1, 0), (1, 1, 1, 0), (2, 0, 1, 0), (1, -1, 1, 0) }, points: 9, sides: 12, squares: 4);
+
+        static void CheckLattice(IEnumerable<(int X1, int Y1, int X2, int Y2)> clicks, int points, int sides, int squares)
+        {
+            var drawing = NewDrawing();
+            var creator = new SquareCreator();
+            drawing.Behavior = creator;
+            string empty = drawing.SaveAsText();
+            int steps = 0;
+            foreach (var (x1, y1, x2, y2) in clicks)
+            {
+                new FigureCreator.Dialog(creator) { X = x1.ToString(), Y = y1.ToString() }.AddPoint();
+                new FigureCreator.Dialog(creator) { X = x2.ToString(), Y = y2.ToString() }.AddPoint();
+                Require(!drawing.IsRecordingTransaction, "A square was not finished.");
+                steps++;
+            }
+
+            string what = squares + " squares";
+            CheckNothingTwice(drawing, points, sides, squares, what);
+            string done = drawing.SaveAsText();
+            for (int i = 0; i < steps; i++)
+            {
+                drawing.ActionManager.Undo();
+            }
+
+            Require(drawing.SaveAsText() == empty, what + ": undo left " + drawing.SaveAsText());
+            for (int i = 0; i < steps; i++)
+            {
+                drawing.ActionManager.Redo();
+            }
+
+            Require(drawing.SaveAsText() == done, what + ": redo changed the drawing.");
+            drawing.Figures.CheckConsistency();
+            var reread = ReadLgf(done);
+            Require(reread.LoadErrors == null, what + ": the drawing did not read back.");
+            CheckNothingTwice(reread, points, sides, squares, what + " read again");
+        }
+    }
+
+    /// <summary>So many points, segments and polygons, and no two at one place</summary>
+    static void CheckNothingTwice(Drawing drawing, int points, int sides, int polygons, string what)
+    {
+        static (double, double) Place(IPoint point) => (System.Math.Round(point.Coordinates.X, 6) + 0.0, System.Math.Round(point.Coordinates.Y, 6) + 0.0);
+        var places = drawing.Figures.OfType<IPoint>().GroupBy(Place).ToList();
+        var twice = places.Where(place => place.Count() > 1).Select(place => string.Join(" and ", place.Select(point => point.Name)) + " at " + place.Key).ToList();
+        Require(twice.Count == 0, what + ": " + string.Join("; ", twice));
+        Require(places.Count == points, what + ": " + places.Count + " points");
+        var segments = drawing.Figures.OfType<Segment>()
+            .GroupBy(segment => string.Join(" ", segment.Dependencies.Cast<IPoint>().Select(Place).OrderBy(place => place)))
+            .ToList();
+        Require(segments.All(segment => segment.Count() == 1), what + ": a side is drawn twice");
+        Require(segments.Count == sides, what + ": " + segments.Count + " segments");
+        Require(drawing.Figures.OfType<Polygon>().Count() == polygons, what + ": " + drawing.Figures.OfType<Polygon>().Count() + " polygons");
+        drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// Only the same point is taken for a corner, never one there by chance: a free point, a
+    /// point by coordinates typed at the place, the corner of a square on other free points.
+    /// And the same square on the same two points again makes nothing, no undo step either.
+    /// </summary>
+    static void ChancePointsAreNoCorners()
+    {
+        var drawing = NewDrawing();
+        var free = AddPoint(drawing, x: 1, y: 1);
+        var typed = Factory.CreatePointByCoordinates(drawing, "0", "1");
+        Actions.Add(drawing, typed);
+        var creator = new SquareCreator();
+        drawing.Behavior = creator;
+        void Square(int x1, int y1, int x2, int y2)
+        {
+            new FigureCreator.Dialog(creator) { X = x1.ToString(), Y = y1.ToString() }.AddPoint();
+            new FigureCreator.Dialog(creator) { X = x2.ToString(), Y = y2.ToString() }.AddPoint();
+        }
+
+        Square(0, 0, 1, 0);
+        var square = drawing.Figures.OfType<Polygon>().Single();
+        Require(!square.Dependencies.Contains(free) && !square.Dependencies.Contains(typed), "A point there by chance became a corner: " + string.Join(", ", square.Dependencies));
+
+        // on new points above, the square comes down onto the first one's top corners
+        Square(1, 2, 0, 2);
+        int AtPlace(double x, double y) => drawing.Figures.OfType<IPoint>().Count(point => point.Coordinates.Distance(new Point(x, y)) < 1e-9);
+        Require(AtPlace(1, 1) == 3 && AtPlace(0, 1) == 3, "Corners of squares on other free points were taken for each other.");
+
+        string before = drawing.SaveAsText();
+        int undoable = drawing.ActionManager.EnumUndoableActions().Count();
+        Square(0, 0, 1, 0);
+        Require(drawing.SaveAsText() == before, "The same square again changed the drawing: " + drawing.SaveAsText());
+        Require(drawing.ActionManager.EnumUndoableActions().Count() == undoable, "The same square again left an undo step.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// The regular polygons that tile, around a polygon of their kind, each on a side of one
+    /// before: six hexagons round a hexagon (a ring of 24 vertices and 30 sides, the vertices
+    /// two neighbors share worked out with sqrt(3) exactly), six triangles round a point (the
+    /// last closing on the first one's free vertex). Nothing is there twice.
+    /// </summary>
+    static void RegularTilings()
+    {
+        var drawing = NewDrawing();
+        var center = Build(drawing, AddPoint(drawing, x: 0, y: 0), AddPoint(drawing, x: 1, y: 0), sides: 6);
+        var ring = center.Dependencies.Cast<IPoint>().ToList();
+        for (int i = 0; i < 6; i++)
+        {
+            Build(drawing, ring[(i + 1) % 6], ring[i], sides: 6);
+        }
+
+        CheckNothingTwice(drawing, points: 24, sides: 30, polygons: 7, "hexagons");
+
+        drawing = NewDrawing();
+        var middle = AddPoint(drawing, x: 0, y: 0);
+        IPoint next = AddPoint(drawing, x: 1, y: 0);
+        for (int i = 0; i < 6; i++)
+        {
+            next = (IPoint)Build(drawing, middle, next, sides: 3).Dependencies[2];
+        }
+
+        CheckNothingTwice(drawing, points: 7, sides: 12, polygons: 6, "triangles");
+
+        static Polygon Build(Drawing drawing, IPoint first, IPoint second, int sides)
+        {
+            var figures = RegularPolygonBuilder.Create(drawing, first, second, sides, onSide: true, out var polygon);
+            foreach (var figure in figures)
+            {
+                Actions.Add(drawing, figure);
+            }
+
+            return polygon;
+        }
     }
 
     static void PasteBringsStyles()

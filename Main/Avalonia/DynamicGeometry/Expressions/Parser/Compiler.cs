@@ -114,6 +114,7 @@ namespace DynamicGeometry
                 }
 
                 result.Expression = MakeExpression(bound);
+                result.Bound = bound;
             }
             catch (Exception ex)
             {

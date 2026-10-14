@@ -8,6 +8,9 @@ namespace DynamicGeometry
     [Order(2)]
     public class SquareCreator : ShapeCreator
     {
+        // the square of the construction just made, new or one the drawing had on its corners
+        Polygon square;
+
         protected override IEnumerable<IFigure> CreateFigures()
         {
             var p1 = FoundDependencies[0] as IPoint;
@@ -27,8 +30,20 @@ namespace DynamicGeometry
             // their crossing, a midpoint and a reflection once made them. A side drawn between
             // the two points already (segment AB, then a square on A and B) is the square's
             // first side, as with the Triangle and Polygon tools: a second segment lay on top
-            // of it as AB2.
-            return RegularPolygonBuilder.Create(Drawing, p1, p2, sides: 4, onSide: true);
+            // of it as AB2. A corner the drawing has is taken too, with the sides to it.
+            return RegularPolygonBuilder.Create(Drawing, p1, p2, sides: 4, onSide: true, out square);
+        }
+
+        /// <summary>The base side's panel, as for any figure with a length; nothing but a word when the square was there already</summary>
+        protected override void ShowCreatedFigure(IList<IFigure> figures)
+        {
+            if (square != null && !figures.Contains(square))
+            {
+                Drawing.RaiseStatusNotification(square.Title + " is there already.");
+                return;
+            }
+
+            base.ShowCreatedFigure(figures);
         }
 
         protected override DependencyList InitExpectedDependencies()

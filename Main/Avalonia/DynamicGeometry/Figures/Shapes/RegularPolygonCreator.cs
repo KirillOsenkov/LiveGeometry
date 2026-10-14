@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using Avalonia;
 
 namespace DynamicGeometry
@@ -24,9 +23,10 @@ namespace DynamicGeometry
 
         SidesPanel panel;
 
-        // the first click of the polygon just made, for its panel: the clicks are gone by the
-        // time it shows
+        // the first click of the polygon just made and the polygon (new, or one the drawing had
+        // on its vertices), for its panel: the clicks are gone by the time it shows
         IPoint first;
+        Polygon polygon;
 
         /// <summary>The side panel: how many sides the next polygon gets</summary>
         [PropertyGridNoUndo]
@@ -85,14 +85,20 @@ namespace DynamicGeometry
         protected override IEnumerable<IFigure> CreateFigures()
         {
             first = (IPoint)FoundDependencies[0];
-            return RegularPolygonBuilder.Create(Drawing, first, (IPoint)FoundDependencies[1], NextNumberOfSides, OnSide);
+            return RegularPolygonBuilder.Create(Drawing, first, (IPoint)FoundDependencies[1], NextNumberOfSides, OnSide, out polygon);
         }
 
-        /// <summary>The polygon's own panel: its number of sides and its side (<see cref="RegularPolygonPanel"/>)</summary>
+        /// <summary>The polygon's own panel: its number of sides and its side (<see cref="RegularPolygonPanel"/>); a word when it was there already</summary>
         protected override void ShowCreatedFigure(IList<IFigure> figures)
         {
-            if (!(figures.LastOrDefault() is Polygon))
+            if (polygon == null)
             {
+                return;
+            }
+
+            if (!figures.Contains(polygon))
+            {
+                Drawing.RaiseStatusNotification(polygon.Title + " is there already.");
                 return;
             }
 

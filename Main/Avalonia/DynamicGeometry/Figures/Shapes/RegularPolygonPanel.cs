@@ -158,6 +158,7 @@ public class RegularPolygonPanel : IConditionalProperties
 
         var vertex = Vertex;
         List<IFigure> rebuilt;
+        Polygon polygon;
         using (Transaction.Create(actionManager, false))
         {
             foreach (var figure in Enumerable.Reverse(made))
@@ -168,16 +169,25 @@ public class RegularPolygonPanel : IConditionalProperties
                 }
             }
 
-            rebuilt = RegularPolygonBuilder.Create(drawing, pivot, vertex, count, onSide);
+            rebuilt = RegularPolygonBuilder.Create(drawing, pivot, vertex, count, onSide, out polygon);
             foreach (var figure in rebuilt)
             {
                 Actions.Add(drawing, figure);
             }
         }
 
+        RegularPolygonCreator.NextNumberOfSides = count;
+
+        // a polygon the drawing had on these vertices already is not this panel's to change
+        if (!rebuilt.Contains(polygon))
+        {
+            drawing.RaiseDisplayProperties(null);
+            drawing.RaiseStatusNotification(polygon.Title + " is there already.");
+            return;
+        }
+
         made = rebuilt;
         sides = count;
-        RegularPolygonCreator.NextNumberOfSides = count;
         drawing.RaiseDisplayProperties(this);
         drawing.RaiseStatusNotification(Hint);
     }

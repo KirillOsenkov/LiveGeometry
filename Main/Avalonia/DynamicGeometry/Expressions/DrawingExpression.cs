@@ -47,11 +47,16 @@ namespace DynamicGeometry
             {
                 mValue = value;
                 IsValid = value == null;
+                // (a value given as a delegate has no tree)
+                Bound = null;
             }
         }
         public string Text { get; set; }
         public bool IsValid { get; private set; }
         List<IFigure> Dependencies { get; set; }
+
+        /// <summary>The tree the text compiled to last, its names resolved (<see cref="LinearForms"/>); null when it didn't</summary>
+        public BoundExpression Bound { get; private set; }
 
         public void Recalculate()
         {
@@ -68,10 +73,12 @@ namespace DynamicGeometry
                 // again, where it was nowhere. (A text typed into the grid that doesn't
                 // compile never gets here: the editor keeps it until it does.)
                 mValue = null;
+                Bound = null;
                 return;
             }
 
             mValue = result.Expression;
+            Bound = result.Bound;
             Dependencies = result.Dependencies;
 
             // The figure depends on what its expressions name, all of them, listed in the

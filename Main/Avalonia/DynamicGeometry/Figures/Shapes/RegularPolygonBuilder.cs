@@ -23,14 +23,28 @@ public static class RegularPolygonBuilder
 
     /// <summary>
     /// Everything the polygon adds, none of it in the drawing yet, in the order to add it:
-    /// the new vertices, the segments of the sides not drawn already, the polygon last
+    /// the new vertices, the segments of the sides not drawn already, the polygon last. What
+    /// the drawing has already is taken: a vertex that is the same point as one it shows
+    /// (<see cref="FindSamePoint"/>: in a lattice of squares the fourth corner of a square is
+    /// the third of its neighbor), the sides drawn between such vertices, and a polygon on
+    /// the same vertices - then <paramref name="polygon"/> is that one, and none is added.
     /// </summary>
     /// <param name="onSide">Whether the two points are adjacent vertices; else the center, then a vertex</param>
-    public static List<IFigure> Create(Drawing drawing, IPoint first, IPoint second, int sides, bool onSide)
+    public static List<IFigure> Create(Drawing drawing, IPoint first, IPoint second, int sides, bool onSide, out Polygon polygon)
     {
-        var added = CreateVertices(drawing, first, second, sides, onSide);
-        var vertices = (onSide ? new[] { first, second } : new[] { second }).Concat(added).ToList();
-        var result = new List<IFigure>(added);
+        var forms = new LinearForms();
+        var vertices = new List<IPoint>(onSide ? new[] { first, second } : new[] { second });
+        var result = new List<IFigure>();
+        foreach (var vertex in CreateVertices(drawing, first, second, sides, onSide))
+        {
+            var existing = FindSamePoint(drawing, (PointByCoordinates)vertex, forms);
+            vertices.Add(existing ?? vertex);
+            if (existing == null)
+            {
+                result.Add(vertex);
+            }
+        }
+
         for (int i = 0; i < vertices.Count; i++)
         {
             var from = vertices[i];
@@ -41,8 +55,62 @@ public static class RegularPolygonBuilder
             }
         }
 
-        result.Add(Factory.CreatePolygon(drawing, vertices.Cast<IFigure>().ToList()));
+        polygon = drawing.Figures.OfType<Polygon>().FirstOrDefault(existing => GoesRound(existing.Dependencies, vertices));
+        if (polygon == null)
+        {
+            polygon = Factory.CreatePolygon(drawing, vertices.Cast<IFigure>().ToList());
+            result.Add(polygon);
+        }
+
         return result;
+    }
+
+    /// <summary>
+    /// A point the drawing shows where the new vertex is, that is the same point however the
+    /// figures move: its X and Y, worked out exactly through the points by coordinates they
+    /// name, are the new vertex's (<see cref="LinearForms"/>) - a corner of a neighbor, or the
+    /// free point a fan of squares around a point closes on. A point there by chance is not
+    /// (a free point the vertex isn't built to be, one typed there, a corner of a square on
+    /// other points).
+    /// </summary>
+    static IPoint FindSamePoint(Drawing drawing, PointByCoordinates vertex, LinearForms forms)
+    {
+        vertex.Recalculate();
+        var place = vertex.Coordinates;
+        if (!vertex.Exists)
+        {
+            return null;
+        }
+
+        double tolerance = Math.TangencyTolerance(System.Math.Max(System.Math.Abs(place.X), System.Math.Abs(place.Y)));
+        return drawing.Figures
+            .OfType<IPoint>()
+            .FirstOrDefault(candidate => candidate.Visible
+                && candidate.Exists
+                && System.Math.Abs(candidate.Coordinates.X - place.X) <= tolerance
+                && System.Math.Abs(candidate.Coordinates.Y - place.Y) <= tolerance
+                && forms.AreSamePoint(vertex, candidate));
+    }
+
+    /// <summary>Whether the polygon's vertices are these, going round from any of them, either way</summary>
+    static bool GoesRound(IList<IFigure> polygon, List<IPoint> vertices)
+    {
+        int count = vertices.Count;
+        int start = polygon.Count == count ? polygon.IndexOf(vertices[0]) : -1;
+        if (start < 0)
+        {
+            return false;
+        }
+
+        bool forward = true;
+        bool backward = true;
+        for (int i = 0; i < count; i++)
+        {
+            forward &= polygon[(start + i) % count] == vertices[i];
+            backward &= polygon[(start - i + count) % count] == vertices[i];
+        }
+
+        return forward || backward;
     }
 
     /// <summary>
