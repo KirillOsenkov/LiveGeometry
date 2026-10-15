@@ -5328,7 +5328,7 @@ public class Program
 
     static void GalleryRoundTrips()
     {
-        var directory = System.IO.Path.Combine(FindRepository(), "Main", "Avalonia", "LiveGeometry", "Gallery", "Drawings");
+        var directory = System.IO.Path.Combine(FindRepository(), "Main", "Avalonia", "LiveGeometry.App", "Gallery", "Drawings");
         int count = 0;
         foreach (var path in Directory.GetFiles(directory, "*.lgf"))
         {

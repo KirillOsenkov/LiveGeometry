@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/LiveGeometry/Gallery/GalleryDrawing.cs (the app's, not the
+// Port of Main/Avalonia/LiveGeometry.App/Gallery/GalleryDrawing.cs (the app's, not the
 // library's): what the drawings of the gallery have in common, a caption - a heading and an
 // explanation, two labels named "Title" and "Description", and maybe a third under them,
 // "Hint", hidden until a show/hide box brings it up - pinned to the screen, on a plate,

@@ -14,7 +14,7 @@ namespace LiveGeometry;
 /// its content, and its link, https://livegeometry.com/s/&lt;id&gt;, on the clipboard. The page
 /// at the link plays it, with Edit to bring it here (web/index.html, MainView.Handoff.cs); the
 /// same drawing again gets the same link. Only a build given the API's address has it
-/// (ShareService in LiveGeometry.csproj): other builds never call the service.
+/// (ShareService in LiveGeometry.App.csproj): other builds never call the service.
 /// </summary>
 public partial class MainView
 {

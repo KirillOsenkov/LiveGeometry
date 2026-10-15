@@ -54,7 +54,7 @@ public class Program
         var root = FindRepoRoot();
         var folder = folderIndex >= 0 && folderIndex + 1 < args.Length
             ? Path.GetFullPath(args[folderIndex + 1])
-            : Path.Combine(root, "Main", "Avalonia", "LiveGeometry", "Gallery", "Drawings");
+            : Path.Combine(root, "Main", "Avalonia", "LiveGeometry.App", "Gallery", "Drawings");
 
         App.UseInvariantCulture();
         AppBuilder.Configure<App>().UsePlatformDetect().WithInterFont().SetupWithoutStarting();

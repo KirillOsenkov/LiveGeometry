@@ -8,7 +8,8 @@ being true. Things derivable from the code or git history don't belong here.
 - `Main/Avalonia/` - the live codebase. Solution `LiveGeometry.Avalonia.slnx`:
   - `DynamicGeometry/` - the geometry library (assembly `DynamicGeometry.Avalonia`), a fork of
     the WPF sources rewritten onto Avalonia, plus `WpfCompat/` shims.
-  - `LiveGeometry/` - shared UI (`MainView`), used by both heads.
+  - `LiveGeometry.App/` - shared UI (`MainView`), used by both heads (assembly
+    `LiveGeometry.App`, namespace `LiveGeometry`: its `App` class is `LiveGeometry.App`).
   - `LiveGeometry.Desktop/` - desktop head (net10.0).
   - `LiveGeometry.Browser/` - WASM head (net10.0-browser), deployed to https://livegeometry.com.
 - `Main/DynamicGeometryLibrary`, `Main/WPFClient`, `Main/Silverlight*` - the older WPF/Silverlight
@@ -292,7 +293,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 
 - **Trimming only happens on Release publish**, never in `dotnet run`. The geometry library is
   discovered via reflection (`GetTypes()` for behaviors, serializers, figures), hence
-  `TrimmerRootAssembly DynamicGeometry.Avalonia` in the Browser csproj; `LiveGeometry` is a root
+  `TrimmerRootAssembly DynamicGeometry.Avalonia` in the Browser csproj; `LiveGeometry.App` is a root
   too (the property grid reads `ExceptionReport` by reflection, and `[DynamicallyAccessedMembers]`
   on the class did not keep its rows). A trimming break shows up as a white screen and a
   `CRASH: ...` console line (`Program.cs` prints those). Anything new that is reached only by
@@ -1898,7 +1899,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
     report (`IsSharingFailure`, in `IsBenign` while sharing).
   - `ShareService` is a build property (`-p:ShareService=https://...`, the public
     workflow's Actions variable `SHARE_SERVICE`) that reaches the app as an
-    `AssemblyMetadata` (`LiveGeometry.csproj`): a build without it has no menu item and
+    `AssemblyMetadata` (`LiveGeometry.App.csproj`): a build without it has no menu item and
     never calls the API.
   - `web.config`: `/s/<id>` is the `/web` page, `/s/<id>.lgf` a 302 to where the drawing is
     stored (`no-cache`, so that the storage can move). Links and embeds name only these.
@@ -1919,7 +1920,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
     (the app can't open a picker without a click of its own), `edit` loads the drawing as
     the user's own without a file (Save is Save as). Each replaces the kept drawing, as New
     does. `/web`'s New and Open tiles and buttons hand over the same way.
-- **No menu.** New, Open, Save, Export | Undo, Redo are one row (`LiveGeometry/MainToolbar.cs`) above the
+- **No menu.** New, Open, Save, Export | Undo, Redo are one row (`LiveGeometry.App/MainToolbar.cs`) above the
   ribbon, with the tour group (◀ n/N ▶ + title) between them and the Octocat at the right,
   whose tooltip is the build. The first button is the app's mark and folds the ribbon (Ctrl+F1,
   `MainView.UpdateRibbon`): folded by default when a gallery drawing opens on a small screen
@@ -2043,7 +2044,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   theme a tile deepens its pastel (`GalleryTile.Deepen`: same hue, value 0.24) and derives
   a lighter border from a dark plate; a drawing's own paper on a tile is the paper as the
   theme resolves it. A tile follows `AppTheme.CurrentChanged` on its own.
-- **Settings between runs** (`LiveGeometry/SettingsStore.cs`): `Get`/`Set` by key, the desktop
+- **Settings between runs** (`LiveGeometry.App/SettingsStore.cs`): `Get`/`Set` by key, the desktop
   head keeping them as `key=value` lines in `%LocalAppData%\LiveGeometry\Settings.txt`
   (`~/Library/Application Support/LiveGeometry/Settings.txt` on a Mac;
   `FileSettingsStore`), the browser in `localStorage` under `LiveGeometry.<key>`
@@ -2332,7 +2333,7 @@ buttons and checkboxes, 3D, custom tools.
 
 ## Gallery
 
-- **Gallery and routes** (`LiveGeometry/Gallery/`, `MainView` "Pages" region): three states -
+- **Gallery and routes** (`LiveGeometry.App/Gallery/`, `MainView` "Pages" region): three states -
   gallery, a gallery drawing (`CurrentSample`: tour group in the toolbar, Page Up/Down, edits
   dropped silently, Save asks for a file and the drawing becomes the user's own), the user's own
   drawing (parked in `OwnDrawing` with its undo history while they look around; the name of

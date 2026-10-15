@@ -41,7 +41,7 @@
         });
     }
 
-    const drawingsFolder = "/Avalonia/LiveGeometry/Gallery/Drawings/";
+    const drawingsFolder = "/Avalonia/LiveGeometry.App/Gallery/Drawings/";
     const names = (await (await fetch(drawingsFolder)).json()).filter(name => name.endsWith(".lgf")).sort();
     const select = document.getElementById("drawings");
     for (const name of names) {

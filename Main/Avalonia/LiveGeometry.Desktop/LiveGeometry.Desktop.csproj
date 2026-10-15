@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <ApplicationIcon>..\LiveGeometry\Assets\DG.ico</ApplicationIcon>
+    <ApplicationIcon>..\LiveGeometry.App\Assets\DG.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LiveGeometry\LiveGeometry.csproj" />
+    <ProjectReference Include="..\LiveGeometry.App\LiveGeometry.App.csproj" />
   </ItemGroup>
 
   <!-- the JavaScript player, concatenated from Main/Player/src before the build -->

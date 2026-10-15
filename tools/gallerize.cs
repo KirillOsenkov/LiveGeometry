@@ -2,7 +2,7 @@
 #:property PublishAot=false
 
 // gallerize - turns old drawings into the drawings of the gallery
-// (Main/Avalonia/LiveGeometry/Gallery/Drawings). Two sources: the Windows Phone app's .lgf
+// (Main/Avalonia/LiveGeometry.App/Gallery/Drawings). Two sources: the Windows Phone app's .lgf
 // (laid out for a portrait screen, with the text above and below the figure) and drawings of the
 // DG 1.0 CD library, converted from .dgf by `LiveGeometry.Desktop.exe --check` and kept in
 // Gallery/Sources. Here the window is landscape and of any size, so the text goes to the right

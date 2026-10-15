@@ -37,7 +37,7 @@
     <TrimmerRootAssembly Include="DynamicGeometry.Avalonia" />
     <!-- The property grid reads pages of the shared UI by reflection too (ExceptionReport):
          a property nothing referenced in code was trimmed and its row silently missing. -->
-    <TrimmerRootAssembly Include="LiveGeometry" />
+    <TrimmerRootAssembly Include="LiveGeometry.App" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,7 +64,7 @@
     <Content Include="$(PlayerOutput)" Link="wwwroot\player\$(PlayerVersion)\player.js" />
     <!-- the gallery drawings as files, for an embed by URL (data-src): /gallery/<file>.lgf;
          a path with an extension is a file and never falls through to the app's /gallery/<slug> -->
-    <Content Include="..\LiveGeometry\Gallery\Drawings\*.lgf" Link="wwwroot\gallery\%(Filename)%(Extension)" />
+    <Content Include="..\LiveGeometry.App\Gallery\Drawings\*.lgf" Link="wwwroot\gallery\%(Filename)%(Extension)" />
     <!-- the catalog as the embed page's picker reads it (WriteGalleryIndex below) -->
     <Content Include="$(GalleryIndexOutput)" Link="wwwroot\gallery\index.json" />
     <!-- the embed page, a static site of its own at /embed (web.config routes it), like /history -->
@@ -75,7 +75,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <GalleryCatalogSource>$(MSBuildProjectDirectory)\..\LiveGeometry\Gallery\GalleryCatalog.cs</GalleryCatalogSource>
+    <GalleryCatalogSource>$(MSBuildProjectDirectory)\..\LiveGeometry.App\Gallery\GalleryCatalog.cs</GalleryCatalogSource>
     <GalleryIndexOutput>$(MSBuildProjectDirectory)\obj\gallery\index.json</GalleryIndexOutput>
   </PropertyGroup>
 
@@ -129,7 +129,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LiveGeometry\LiveGeometry.csproj" />
+    <ProjectReference Include="..\LiveGeometry.App\LiveGeometry.App.csproj" />
   </ItemGroup>
 
 </Project>

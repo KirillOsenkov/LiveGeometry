@@ -81,7 +81,7 @@ public class App : Application
                 Title = "Live Geometry",
                 Content = new MainView(),
                 WindowState = WindowState.Maximized,
-                Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://LiveGeometry/Assets/DG.ico")))
+                Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://LiveGeometry.App/Assets/DG.ico")))
             };
 
             AddressBar.Current.TitleChanged += title => window.Title = title;
