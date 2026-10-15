@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Coordinates/AxisLabelsCollection.cs: the
+// Port of Main/Avalonia/LiveGeometry/Figures/Coordinates/AxisLabelsCollection.cs: the
 // numbers along the axes. Each label is { text, topLeft, bold } in pixels.
 
 class AxisLabelsCollection extends FigureBase {

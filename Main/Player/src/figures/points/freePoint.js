@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/FreePoint.cs. Left out: the grid's
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/FreePoint.cs. Left out: the grid's
 // verbs (snap to figure, convert to point by coordinates, the Bezier anchor verbs).
 
 class FreePoint extends PointBase {

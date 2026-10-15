@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/PolygonBase.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Shapes/PolygonBase.cs
 
 class PolygonBase extends ShapeBase {
     constructor() {

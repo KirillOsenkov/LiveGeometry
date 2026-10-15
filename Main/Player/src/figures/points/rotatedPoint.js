@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/RotatedPoint.cs: a point turned about
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/RotatedPoint.cs: a point turned about
 // a center by an angle, which is a figure it depends on: a Number holding a typed value, or
 // anything with an angle. Dependencies: the source, the center, the angle. Left out: the
 // tying and untying of the angle (the editor's).

@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Styles/PointStyle.cs
+// Port of Main/Avalonia/LiveGeometry/Styles/PointStyle.cs
 
 /** What a point looks like when its style has no character (PointMarker.cs) */
 const PointShape = {

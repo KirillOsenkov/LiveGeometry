@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lists/FigureList.cs: any set of figures,
+// Port of Main/Avalonia/LiveGeometry/Figures/Lists/FigureList.cs: any set of figures,
 // with the hit testing. The list is `list`; the C# collection's own methods are here by name.
 
 class FigureList {

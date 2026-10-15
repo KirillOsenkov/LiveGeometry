@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/Bezier.cs: a cubic through four points
+// Port of Main/Avalonia/LiveGeometry/Figures/Shapes/Bezier.cs: a cubic through four points
 
 class Bezier extends ShapeBase {
     constructor() {

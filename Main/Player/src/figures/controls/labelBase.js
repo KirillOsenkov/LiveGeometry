@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Controls/LabelBase.cs: text on the paper. Its
+// Port of Main/Avalonia/LiveGeometry/Figures/Controls/LabelBase.cs: text on the paper. Its
 // [...] parts are expressions, compiled when the text is set, whose values the text shows.
 // The TextBlock of the C# is a text layout the canvas measures (textLayout). Left out: the
 // 300 ms throttle of the shown text while figures move (the render loop coalesces frames),

@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Controls/AreaMeasurement.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Controls/AreaMeasurement.cs
 
 class AreaMeasurement extends Measurement {
     get measure() {

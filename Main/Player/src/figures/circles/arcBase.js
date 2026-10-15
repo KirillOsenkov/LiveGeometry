@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Circles/ArcBase.cs: arcs, segments and sectors
+// Port of Main/Avalonia/LiveGeometry/Figures/Circles/ArcBase.cs: arcs, segments and sectors
 // of ellipses and circles. The begin and end are where the rays from the center to the
 // begin and end points meet the ellipse.
 

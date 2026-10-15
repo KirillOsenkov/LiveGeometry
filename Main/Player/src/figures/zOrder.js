@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/ZOrder.cs: the layers figures are drawn in,
+// Port of Main/Avalonia/LiveGeometry/Figures/ZOrder.cs: the layers figures are drawn in,
 // and what a figure's layer and Z (0 unless the app's Bring to front or Send to back changed
 // it, saved as Z) make of its zIndex.
 

@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/Locus.cs: the curve a point traces as
+// Port of Main/Avalonia/LiveGeometry/Figures/Shapes/Locus.cs: the curve a point traces as
 // another point slides along its figure, sampled adaptively.
 
 class Locus extends Curve {

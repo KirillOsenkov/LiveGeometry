@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/Ray.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/Ray.cs
 
 class Ray extends LineBase {
     get isLine() {

@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/SegmentDecoration.cs: the school marks on
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/SegmentDecoration.cs: the school marks on
 // a segment (ticks, chevrons, a wave), drawn at its middle in its own stroke, sized in pixels
 
 const SegmentDecoration = {

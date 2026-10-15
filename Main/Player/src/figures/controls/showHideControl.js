@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Controls/ShowHideControl.cs: a check box on
+// Port of Main/Avalonia/LiveGeometry/Figures/Controls/ShowHideControl.cs: a check box on
 // the paper that shows and hides figures: its dependencies, which it is not built on but
 // holds. The check box is drawn by the renderer (a box and a caption; Fluent's in the app).
 // Left out: Edit figures, the undo of a click.

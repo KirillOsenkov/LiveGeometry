@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/FigureBase.cs and of the extension methods
+// Port of Main/Avalonia/LiveGeometry/Figures/FigureBase.cs and of the extension methods
 // of Figures/IFigureExtensions.cs that act on one figure (dependsOn, registerWithDependencies,
 // recalculateAllDependents, ...), which are methods here. Left out: the naming of new
 // figures after their points and the rename waves (a file's figures have their names), the

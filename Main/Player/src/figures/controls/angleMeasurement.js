@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Controls/AngleMeasurement.cs: the number of an
+// Port of Main/Avalonia/LiveGeometry/Figures/Controls/AngleMeasurement.cs: the number of an
 // angle at its vertex, in degrees or radians, and the angle of a segment to the x axis.
 
 class AngleMeasurementBase extends Measurement {

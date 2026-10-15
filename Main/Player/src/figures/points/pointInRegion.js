@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/PointInRegion.cs: a point kept inside
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/PointInRegion.cs: a point kept inside
 // a figure with an inside (isRegion: a polygon, a circle, a sector, a path). Its place is an
 // offset from the figure's center, worked out from the figure as it is now; where that falls
 // outside, the point sits at the nearest point inside and the offset keeps the wished-for

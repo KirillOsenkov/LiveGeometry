@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/Segment.cs. Left out: setting the
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/Segment.cs. Left out: setting the
 // length and fixing it (the grid's), the decoration mark (SegmentDecoration comes later;
 // the attribute is read and kept).
 

@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Controls/LabelPin.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Controls/LabelPin.cs
 
 /** Where a label (or a show/hide box) is held: nowhere, or a corner of the canvas it keeps its distance from in pixels */
 const LabelPin = {

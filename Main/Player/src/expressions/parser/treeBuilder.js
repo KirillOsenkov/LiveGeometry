@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Expressions/Parser/TreeBuilder.cs: binds the parser's
+// Port of Main/Avalonia/LiveGeometry/Expressions/Parser/TreeBuilder.cs: binds the parser's
 // tree against a drawing into a BoundExpression. An error is said in the CompileResult and
 // the tree is null; nothing a user can type may throw.
 

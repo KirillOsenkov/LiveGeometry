@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/UI/AppTheme.cs: the two themes' colors that drawings
+// Port of Main/Avalonia/LiveGeometry/UI/AppTheme.cs: the two themes' colors that drawings
 // take (the Paper group and Text). The chrome's colors and the theme editing are the
 // app's, not the player's.
 

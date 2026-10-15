@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/LineByEquation.cs and ILineEquation.cs: a
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/LineByEquation.cs and ILineEquation.cs: a
 // line given by expressions, y = m x + b or A x + B y + C = 0
 
 class SlopeInterseptLineEquation {

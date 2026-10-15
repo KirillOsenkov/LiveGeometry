@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Expressions/Parser/Token.cs, TokenType.cs,
+// Port of Main/Avalonia/LiveGeometry/Expressions/Parser/Token.cs, TokenType.cs,
 // ScanResult.cs, ParseResult.cs and CompileError.cs
 
 const TokenType = {

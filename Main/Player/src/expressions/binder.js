@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Expressions/Binder.cs: resolves the names of one
+// Port of Main/Avalonia/LiveGeometry/Expressions/Binder.cs: resolves the names of one
 // expression against a drawing, each once.
 
 class Binder {

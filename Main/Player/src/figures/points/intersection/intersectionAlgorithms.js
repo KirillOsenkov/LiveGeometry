@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/Intersection/IntersectionAlgorithms.cs:
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/Intersection/IntersectionAlgorithms.cs:
 // the methods a file names in an IntersectionPoint's Algorithm attribute, by name.
 
 const IntersectionAlgorithms = {

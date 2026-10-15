@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Circles/Ellipse.cs: center, end of the long
+// Port of Main/Avalonia/LiveGeometry/Figures/Circles/Ellipse.cs: center, end of the long
 // axis, and a third point whose distance from the long axis is the short one
 
 class Ellipse extends EllipseBase {

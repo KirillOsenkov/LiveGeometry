@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/LineTwoPoints.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/LineTwoPoints.cs
 
 class LineTwoPoints extends LineBase {
     get isLine() {

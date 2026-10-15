@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Controls/ControlBase.cs: a figure that is a
+// Port of Main/Avalonia/LiveGeometry/Figures/Controls/ControlBase.cs: a figure that is a
 // control (a label, a box), its coordinates the top-left corner, its size in pixels.
 
 class ControlBase extends CoordinatesShapeBase {

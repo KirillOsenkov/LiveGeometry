@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Expressions/Parser/Parser.cs: a precedence-climbing
+// Port of Main/Avalonia/LiveGeometry/Expressions/Parser/Parser.cs: a precedence-climbing
 // parser. A minus in front takes everything up to the next + - * /, powers included; ^ is
 // right-associative; there is no implicit multiplication.
 

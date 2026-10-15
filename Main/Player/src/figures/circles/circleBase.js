@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Circles/CircleBase.cs. Left out: setting and fixing the radius.
+// Port of Main/Avalonia/LiveGeometry/Figures/Circles/CircleBase.cs. Left out: setting and fixing the radius.
 
 class CircleBase extends EllipseBase {
     get isCircle() {

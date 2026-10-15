@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Math.cs: the geometry. Called GeometryMath here,
+// Port of Main/Avalonia/LiveGeometry/Math.cs: the geometry. Called GeometryMath here,
 // since Math is JavaScript's own. The point helpers (PointExtensions) are methods of Point
 // (core/point.js). Left out: the snapping helpers of the editor (ortho, snap to grid, to
 // point, to a segment's center, exact angle), IsPointInPolygonOld.

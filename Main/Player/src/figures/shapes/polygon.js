@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/Polygon.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Shapes/Polygon.cs
 
 class Polygon extends PolygonBase {
     get isPolygon() {

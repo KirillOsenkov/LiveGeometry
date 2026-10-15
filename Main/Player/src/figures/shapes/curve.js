@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/Curve.cs: a curve drawn through the
+// Port of Main/Avalonia/LiveGeometry/Figures/Shapes/Curve.cs: a curve drawn through the
 // points getPoints gives, with a Gap wherever it is interrupted.
 
 class Curve extends ShapeBase {

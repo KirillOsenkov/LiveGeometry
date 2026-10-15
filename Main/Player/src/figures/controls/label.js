@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Controls/Label.cs: free text, with
+// Port of Main/Avalonia/LiveGeometry/Figures/Controls/Label.cs: free text, with
 // expressions, pinned to a corner of the canvas or placed in the plane.
 
 class Label extends LabelBase {

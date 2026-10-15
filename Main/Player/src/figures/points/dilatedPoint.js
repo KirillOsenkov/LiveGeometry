@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/DilatedPoint.cs: a point stretched
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/DilatedPoint.cs: a point stretched
 // from a center by a factor, a figure it depends on: a Number, or anything with a length -
 // and a fourth dependency when the factor is the ratio of two lengths.
 

@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/ShapeBase.cs: a figure drawn as one
+// Port of Main/Avalonia/LiveGeometry/Figures/Shapes/ShapeBase.cs: a figure drawn as one
 // shape. In C# the shape is an Avalonia control the style is applied to; here the figure
 // keeps the style resolved for the theme on screen (resolvedStyle) and draws itself in
 // render. Left out: ghosts (a hidden figure shown while selected), selection halos, the

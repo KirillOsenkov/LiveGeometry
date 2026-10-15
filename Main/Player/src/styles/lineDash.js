@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Styles/LineDash.cs
+// Port of Main/Avalonia/LiveGeometry/Styles/LineDash.cs
 
 /** The same five the original DG had, in the same order. The names are what goes into drawings. */
 const LineDash = {

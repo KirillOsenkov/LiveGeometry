@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Circles/Arc.cs: the arcs, segments and sectors
+// Port of Main/Avalonia/LiveGeometry/Figures/Circles/Arc.cs: the arcs, segments and sectors
 // of circles and ellipses. Left out: the Convert verbs.
 
 class EllipseArc extends EllipseArcBase {

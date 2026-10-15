@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Circles/EllipseBase.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Circles/EllipseBase.cs
 
 class EllipseBase extends ShapeBase {
     get isLinearFigure() {

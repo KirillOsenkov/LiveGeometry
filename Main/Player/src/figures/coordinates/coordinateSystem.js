@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Coordinates/CoordinateSystem.cs: the view,
+// Port of Main/Avalonia/LiveGeometry/Figures/Coordinates/CoordinateSystem.cs: the view,
 // an origin in pixels plus the number of pixels per unit; every zoom and fit goes through it.
 
 class CoordinateSystem {

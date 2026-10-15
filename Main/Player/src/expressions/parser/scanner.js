@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Expressions/Parser/Scanner.cs
+// Port of Main/Avalonia/LiveGeometry/Expressions/Parser/Scanner.cs
 
 class Scanner {
     constructor(text) {

@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Styles/FigureStyle.cs and IFigureStyle.cs: a style
+// Port of Main/Avalonia/LiveGeometry/Styles/FigureStyle.cs and IFigureStyle.cs: a style
 // has its values (how it looks under the base theme, Light) and may hold overrides for
 // another theme. Whoever draws with it resolves it first (resolve).
 //

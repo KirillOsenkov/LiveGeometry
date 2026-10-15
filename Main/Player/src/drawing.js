@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Drawing.cs: the figures, their styles, the view and
+// Port of Main/Avalonia/LiveGeometry/Drawing.cs: the figures, their styles, the view and
 // the paper. Left out: undo (ActionManager), selection, copy and paste, the events of the
 // editor, the theme refresh of a parked drawing.
 

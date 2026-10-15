@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/Polyline.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Shapes/Polyline.cs
 
 class Polyline extends ShapeBase {
     constructor() {

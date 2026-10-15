@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/AxisLine.cs: an axis of the grid as a
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/AxisLine.cs: an axis of the grid as a
 // line to build on. The grid draws the axes; this line is never drawn itself. A drawing has
 // one of each for its whole life (Drawing.getAxisLine).
 

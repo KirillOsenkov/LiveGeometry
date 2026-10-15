@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/TranslatedPoint.cs: a point at a
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/TranslatedPoint.cs: a point at a
 // distance and a direction from its source point, each tied to a figure (a vector, a length
 // or an angle provider, a Number) or free (the parameter dragging changes). Left out: the
 // grid's rows (Free distance...), tying and untying, the legacy format's upgrade to Numbers

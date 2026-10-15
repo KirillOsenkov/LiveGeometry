@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Styles/TextStyle.cs
+// Port of Main/Avalonia/LiveGeometry/Styles/TextStyle.cs
 
 class TextStyle extends FigureStyle {
     static typeName = "TextStyle";

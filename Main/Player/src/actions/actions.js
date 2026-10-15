@@ -1,4 +1,4 @@
-// Port of what the player needs of Main/Avalonia/DynamicGeometry/Actions/Actions.cs: every
+// Port of what the player needs of Main/Avalonia/LiveGeometry/Actions/Actions.cs: every
 // change of the drawing goes through here, which is where undo attaches when the player
 // grows one. For now each action is done directly.
 

@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Styles/StyleHue.cs: a hue of the default styles,
+// Port of Main/Avalonia/LiveGeometry/Styles/StyleHue.cs: a hue of the default styles,
 // a stroke for each paper, its fills worked out from the stroke.
 
 class StyleHue {

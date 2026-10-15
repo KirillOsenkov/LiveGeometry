@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Values/Number.cs: a number in the drawing, a
+// Port of Main/Avalonia/LiveGeometry/Figures/Values/Number.cs: a number in the drawing, a
 // figure without a shape that other figures depend on. Called NumberFigure here, since
 // Number is JavaScript's own; the file's element is still <Number>.
 

@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/Axis.cs: an axis of the coordinate
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/Axis.cs: an axis of the coordinate
 // grid, a line drawn as a vector's arrow, the shaft across the window and the head where the
 // axis leaves it. The line itself is invisible.
 

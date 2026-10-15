@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/FunctionGraph/FunctionGraph.cs: the
+// Port of Main/Avalonia/LiveGeometry/Figures/Shapes/FunctionGraph/FunctionGraph.cs: the
 // graph of y = f(x) over the window, with gaps where the function has no value or jumps.
 
 class FunctionGraph extends Curve {

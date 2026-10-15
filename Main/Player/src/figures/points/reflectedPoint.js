@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/ReflectedPoint.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/ReflectedPoint.cs
 
 class ReflectedPoint extends PointBase {
     get source() {

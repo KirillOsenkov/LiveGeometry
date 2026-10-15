@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DynamicGeometry\DynamicGeometry.csproj" />
+    <ProjectReference Include="..\LiveGeometry\LiveGeometry.csproj" />
   </ItemGroup>
 
   <!-- The address of the API that makes share links (MainView.Share.cs), given to the site's

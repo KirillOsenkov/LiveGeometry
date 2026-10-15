@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/PointMarker.cs: the visual of a
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/PointMarker.cs: the visual of a
 // point, a PointShape filling its size, centered on the point, or a character (an emoji)
 // instead. Here it is what a renderer draws (Renderer.drawMarker), worked out as a path.
 

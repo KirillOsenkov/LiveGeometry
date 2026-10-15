@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/BezierPathSmoother.cs: the automatic
+// Port of Main/Avalonia/LiveGeometry/Figures/Shapes/BezierPathSmoother.cs: the automatic
 // handles of a Bezier path worked out from its anchors. A handle the user has set (an
 // offset, a point of the drawing) stays as it is and the automatic ones fit themselves to
 // it. Every method gives the same curve, only bigger, smaller, turned or mirrored, for the

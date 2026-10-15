@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Expressions/Functions.cs: the library's own functions
+// Port of Main/Avalonia/LiveGeometry/Expressions/Functions.cs: the library's own functions
 // of the expression language. Angles are in radians unless noted. Each is a function of
 // numbers, or of points (its parameters are Points; area takes any number of them).
 

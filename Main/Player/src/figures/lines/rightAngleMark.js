@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/RightAngleMark.cs: the little square
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/RightAngleMark.cs: the little square
 // in the corner that says "these two are perpendicular". Not a figure: a perpendicular line
 // owns one and shows it by itself. Which corner it sits in is remembered and never derived
 // from the geometry again. Left out: the click that moves it to the next corner.

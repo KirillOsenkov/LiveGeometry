@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Expressions/ExpressionReflection.cs: what binding
+// Port of Main/Avalonia/LiveGeometry/Expressions/ExpressionReflection.cs: what binding
 // asks reflection for in C# - a function by its name and the number of its arguments, a
 // property of a figure by name - as tables here. A function is { name, parameterCount,
 // takesNumbers, takesPoints, takesArray, invoke }.

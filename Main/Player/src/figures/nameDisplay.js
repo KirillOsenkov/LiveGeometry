@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/NameDisplay.cs: how a name is drawn, A_1 as
+// Port of Main/Avalonia/LiveGeometry/Figures/NameDisplay.cs: how a name is drawn, A_1 as
 // A₁ and A1 as A₁ too. Only the text on the screen changes.
 
 const NameDisplay = {

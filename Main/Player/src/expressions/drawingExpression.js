@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Expressions/DrawingExpression.cs: an expression owned
+// Port of Main/Avalonia/LiveGeometry/Expressions/DrawingExpression.cs: an expression owned
 // by a figure (a point by coordinates, a line or circle by equation), which depends on the
 // figures its expressions name and on nothing else.
 

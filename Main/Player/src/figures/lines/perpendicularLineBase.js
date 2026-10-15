@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/PerpendicularLineBase.cs: a line that is
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/PerpendicularLineBase.cs: a line that is
 // perpendicular to another by construction, and says so with a RightAngleMark where they meet.
 
 class PerpendicularLineBase extends LineTwoPoints {

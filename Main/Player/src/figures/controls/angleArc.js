@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Controls/AngleArc.cs: the mark of an angle, an
+// Port of Main/Avalonia/LiveGeometry/Figures/Controls/AngleArc.cs: the mark of an angle, an
 // arc of a fixed size in pixels at the vertex (0 to 3 arcs, or the square sign at 90°), of
 // the angle its sweep chooses (AngleSweep; the number next to it says the same one).
 

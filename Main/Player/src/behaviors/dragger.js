@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Behaviors/Dragger.cs: the Drag tool, the player's one
+// Port of Main/Avalonia/LiveGeometry/Behaviors/Dragger.cs: the Drag tool, the player's one
 // tool. A press takes a figure (or a part of one) and the drag moves what can move: the
 // figure itself if it is free, the free points it is built on otherwise, the view when
 // nothing is there. A click on a show/hide box ticks it. Left out: Alt-drag snapping and

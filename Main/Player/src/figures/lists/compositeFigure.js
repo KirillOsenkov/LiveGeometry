@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lists/CompositeFigure.cs: a figure made of
+// Port of Main/Avalonia/LiveGeometry/Figures/Lists/CompositeFigure.cs: a figure made of
 // figures of the library (a slider, a vector, a regular polygon).
 
 class CompositeFigure extends FigureBase {

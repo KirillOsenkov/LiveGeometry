@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lists/RootFigureList.cs: the drawing's own
+// Port of Main/Avalonia/LiveGeometry/Figures/Lists/RootFigureList.cs: the drawing's own
 // list. Left out: Retire/Return (undo's), the settling of default names.
 
 class RootFigureList extends FigureList {

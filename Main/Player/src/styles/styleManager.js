@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Styles/StyleManager.cs: the styles of a drawing,
+// Port of Main/Avalonia/LiveGeometry/Styles/StyleManager.cs: the styles of a drawing,
 // the defaults a new drawing starts with (which a file names without carrying), and the
 // default style of each kind of figure. Left out: creating, renaming and deleting styles
 // (the editor's), the picker's IsOffered.

@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Circles/CircleByRadius.cs: the radius is
+// Port of Main/Avalonia/LiveGeometry/Figures/Circles/CircleByRadius.cs: the radius is
 // either the distance between two points or the length of a figure; the center is the last
 // dependency either way.
 

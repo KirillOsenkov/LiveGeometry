@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/DirectionConstraint.cs, as far as the
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/DirectionConstraint.cs, as far as the
 // player goes: the direction of a segment, a ray or a line through two points, which an
 // expression reads (AB.Direction). Typing, fixing and freeing it are the editor's.
 

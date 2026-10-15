@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/AngleBisector.cs: a ray halving an
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/AngleBisector.cs: a ray halving an
 // angle, built on its three points (vertex, side, side) or on an angle measurement, the
 // angle its sweep chooses (AngleSweep).
 

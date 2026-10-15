@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Expressions/CompileResult.cs
+// Port of Main/Avalonia/LiveGeometry/Expressions/CompileResult.cs
 
 class CompileResult {
     constructor() {

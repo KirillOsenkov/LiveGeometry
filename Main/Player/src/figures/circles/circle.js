@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Circles/Circle.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Circles/Circle.cs
 
 class Circle extends CircleBase {
     get isShapeWithInterior() {

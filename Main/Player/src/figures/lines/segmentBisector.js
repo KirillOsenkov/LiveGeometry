@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/SegmentBisector.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/SegmentBisector.cs
 
 class SegmentBisector extends PerpendicularLineBase {
     constructor() {

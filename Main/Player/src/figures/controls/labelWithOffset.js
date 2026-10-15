@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Controls/LabelWithOffset.cs: a label attached
+// Port of Main/Avalonia/LiveGeometry/Figures/Controls/LabelWithOffset.cs: a label attached
 // to something in the plane, at Offset pixels from its Anchor; and Measurement.
 
 class LabelWithOffset extends LabelBase {

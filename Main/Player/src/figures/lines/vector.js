@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/Vector.cs: a segment with an arrowhead,
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/Vector.cs: a segment with an arrowhead,
 // an ILine like a segment. The shaft is a segment drawn from the start to the head's base,
 // which a dash can break; the arrow draws only the head.
 

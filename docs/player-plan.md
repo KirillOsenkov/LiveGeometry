@@ -70,7 +70,7 @@ tool but dragging, user-defined tools.
 ## Architecture
 
 - **Folder**: `Main/Player/`, next to `Main/Avalonia/`. Inside, `src/` mirrors
-  `DynamicGeometry/`: `math.js`, `drawing.js`, `figures/figureBase.js`,
+  `LiveGeometry/`: `math.js`, `drawing.js`, `figures/figureBase.js`,
   `figures/points/freePoint.js`, `figures/lines/segment.js`, `expressions/parser/scanner.js`,
   `serialization/drawingDeserializer.js`, `styles/styleManager.js`, `behaviors/dragger.js`...
   Names stay the C# names in camelCase: `recalculate`, `updateExistence`, `hitTest`,

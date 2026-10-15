@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lists/DependencyAlgorithms.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Lists/DependencyAlgorithms.cs
 
 const DependencyAlgorithms = {
     /** A depth-first post-order over the children: every node after all it leads to */

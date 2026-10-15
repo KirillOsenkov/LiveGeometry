@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Controls/LengthMeasurement.cs: the distance
+// Port of Main/Avalonia/LiveGeometry/Figures/Controls/LengthMeasurement.cs: the distance
 // between two points, or a length of one figure - which one is the quantity (a circle's
 // radius, diameter or circumference; an arc's length or radius; a sector's arc length,
 // radius or perimeter). A shape with a perimeter says isPerimeterProvider and has a perimeter

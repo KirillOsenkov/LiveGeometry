@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Expressions/Parser/Node.cs and NodeType.cs. The class
+// Port of Main/Avalonia/LiveGeometry/Expressions/Parser/Node.cs and NodeType.cs. The class
 // is SyntaxNode here: Node is the DOM's.
 
 const NodeType = {

@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/PointOnFigure/PointOnFigure.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/PointOnFigure/PointOnFigure.cs
 
 class PointOnFigure extends FreePoint {
     constructor() {

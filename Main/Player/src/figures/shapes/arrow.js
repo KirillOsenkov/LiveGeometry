@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/Arrow.cs: a polygon that is a line
+// Port of Main/Avalonia/LiveGeometry/Figures/Shapes/Arrow.cs: a polygon that is a line
 // with a head, as wide as its style says, the head sized in pixels. Built on a line.
 
 class Arrow extends Polygon {

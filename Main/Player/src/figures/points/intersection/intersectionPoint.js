@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/Intersection/IntersectionPoint.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/Intersection/IntersectionPoint.cs
 
 class IntersectionPoint extends PointBase {
     constructor() {

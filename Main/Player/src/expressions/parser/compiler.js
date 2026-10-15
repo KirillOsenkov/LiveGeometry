@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Expressions/Parser/Compiler.cs: text to a delegate.
+// Port of Main/Avalonia/LiveGeometry/Expressions/Parser/Compiler.cs: text to a delegate.
 // Only the OwnTree strategy (the bound tree evaluating itself) exists here.
 
 class Compiler {

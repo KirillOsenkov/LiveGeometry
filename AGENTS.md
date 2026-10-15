@@ -6,7 +6,8 @@ being true. Things derivable from the code or git history don't belong here.
 ## Layout
 
 - `Main/Avalonia/` - the live codebase. Solution `LiveGeometry.Avalonia.slnx`:
-  - `DynamicGeometry/` - the geometry library (assembly `DynamicGeometry.Avalonia`), a fork of
+  - `LiveGeometry/` - the geometry library (`LiveGeometry.csproj`; its assembly is still
+    `DynamicGeometry.Avalonia` and its namespace `DynamicGeometry`, both to be renamed), a fork of
     the WPF sources rewritten onto Avalonia, plus `WpfCompat/` shims.
   - `LiveGeometry.App/` - shared UI (`MainView`), used by both heads (assembly
     `LiveGeometry.App`, namespace `LiveGeometry`: its `App` class is `LiveGeometry.App`).
@@ -27,7 +28,7 @@ being true. Things derivable from the code or git history don't belong here.
 ## Code style
 
 - **Apply these rules to new code only.** Keep diffs minimal - don't reformat or rename existing
-  code as a drive-by. Most of `DynamicGeometry/` is decades-old WPF/Silverlight-era code; it
+  code as a drive-by. Most of `LiveGeometry/` is decades-old WPF/Silverlight-era code; it
   stays that way unless a cleanup is explicitly asked for (2026-10-15: every file is
   file-scoped, done in bulk through Helix's `apply_code_action` with `scope: project`).
 - **New files: CRLF line endings, file-scoped namespaces.** Existing files keep what they have.
@@ -312,7 +313,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **StyleKeyOverride**: a subclass of a templated Avalonia control (TabControl, TabItem, ListBox,
   Button, UserControl, ColorPicker...) renders invisible unless it overrides `StyleKeyOverride`
   to return the base type.
-- **Input**: all WPF-style mouse events funnel through `DynamicGeometry/Behaviors/Behavior.cs`
+- **Input**: all WPF-style mouse events funnel through `LiveGeometry/Behaviors/Behavior.cs`
   (pointer adapters live there). Avalonia has no static Keyboard; modifiers come from event args.
   Fingers (`PointerType.Touch`, "Touch" region there) don't go to the tool as they come: a
   finger's press is held back until it is a tap (lifted where it came down) or a drag (gone
@@ -1829,7 +1830,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   fill, which hid the very thickness, size and fill being edited in the side panel: a style
   must not depend on `Selected`. A part never drawn says `ShowsSelectionHalo = false`.
   Labels keep their own selection plate.
-- **Color/brush picking** (`DynamicGeometry/Controls/ColorPicker/`) is layered so parts can be
+- **Color/brush picking** (`LiveGeometry/Controls/ColorPicker/`) is layered so parts can be
   swapped: `ColorPalette` -> `ColorPage` (swatches, spectrum) -> `ColorPickerView` ->
   `BrushPickerView` (solid | gradient); in the property grid through `ExpandingPickerEditor`.
   A gradient is its stops and an angle; the brush's two points are the line through the
@@ -2525,7 +2526,7 @@ buttons and checkboxes, 3D, custom tools.
 web page, in plain JavaScript with no dependencies, a canvas with the Drag tool and nothing
 else - no ribbon, grid, list or gallery, no undo, no selection.
 
-- **A port of the library, file by file**: `src/` mirrors `DynamicGeometry/` (`math.js`,
+- **A port of the library, file by file**: `src/` mirrors `LiveGeometry/` (`math.js`,
   `drawing.js`, `figures/points/midPoint.js`, `expressions/parser/scanner.js`,
   `serialization/drawingDeserializer.js`, `styles/styleManager.js`, `behaviors/dragger.js`),
   the C# names in camelCase, so that a reader of `MidPoint.cs` finds its twin and a change

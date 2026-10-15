@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Styles/ShapeStyle.cs
+// Port of Main/Avalonia/LiveGeometry/Styles/ShapeStyle.cs
 
 class ShapeStyle extends LineStyle {
     static typeName = "ShapeStyle";

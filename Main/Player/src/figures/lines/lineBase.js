@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/LineBase.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/LineBase.cs
 
 class LineBase extends ShapeBase {
     constructor() {

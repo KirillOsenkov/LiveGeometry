@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Settings.cs: what the player needs of it.
+// Port of Main/Avalonia/LiveGeometry/Settings.cs: what the player needs of it.
 
 const Settings = {
     defaultUnitLength: 48,

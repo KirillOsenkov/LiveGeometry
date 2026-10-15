@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/PointBase.cs. Left out: auto-labeling
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/PointBase.cs. Left out: auto-labeling
 // of new points, the kept label across undo (a point's label comes from the file).
 
 class PointBase extends CoordinatesShapeBase {

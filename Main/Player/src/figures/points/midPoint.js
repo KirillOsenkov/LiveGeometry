@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/MidPoint.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/MidPoint.cs
 
 class MidPoint extends PointBase {
     recalculate() {

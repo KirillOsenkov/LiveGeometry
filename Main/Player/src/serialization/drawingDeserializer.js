@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Serialization/DrawingDeserializer.cs: a drawing from
+// Port of Main/Avalonia/LiveGeometry/Serialization/DrawingDeserializer.cs: a drawing from
 // its XML, read as far as it goes; what can't be read is left out with a line in words.
 
 class DrawingDeserializer {

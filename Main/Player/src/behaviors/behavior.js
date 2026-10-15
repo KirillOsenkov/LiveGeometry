@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Behaviors/Behavior.cs: a tool. The pointer events of
+// Port of Main/Avalonia/LiveGeometry/Behaviors/Behavior.cs: a tool. The pointer events of
 // the canvas element come in here and go to mouseDown/mouseMove/mouseUp in logical
 // coordinates, as the WPF-shaped virtuals the C# tools override. Fingers are told apart from
 // a mouse as in the app: a finger's press is kept back until it is a tap or a drag, and each

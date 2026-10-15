@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Coordinates/CartesianGrid.cs: the grid and the
+// Port of Main/Avalonia/LiveGeometry/Figures/Coordinates/CartesianGrid.cs: the grid and the
 // axes, a composite the drawing always has first in its list, hidden unless the file says.
 
 /** The grid's hidden points: the origin and the unit points the axes are built on (points by coordinates in C#) */

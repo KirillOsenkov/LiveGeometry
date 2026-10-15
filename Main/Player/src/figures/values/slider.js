@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Values/Slider.cs: an adjustable number with
+// Port of Main/Avalonia/LiveGeometry/Figures/Values/Slider.cs: an adjustable number with
 // a handle, one composite whose parts are figures of the library: a free point anchor, a
 // knob kept on the horizontal through it, the segment track, a caption "a = 2.00".
 

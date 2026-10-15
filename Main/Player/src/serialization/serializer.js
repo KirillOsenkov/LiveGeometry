@@ -1,4 +1,4 @@
-// Port of what the player needs of Main/Avalonia/DynamicGeometry/Serialization/Serializer.cs:
+// Port of what the player needs of Main/Avalonia/LiveGeometry/Serialization/Serializer.cs:
 // brushes from a file (BrushSerializer) and a style element read into a style
 // (ComplexTypeSerializer over the style's properties).
 

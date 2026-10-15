@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/BezierPath.cs: a path of cubic Bézier
+// Port of Main/Avalonia/LiveGeometry/Figures/Shapes/BezierPath.cs: a path of cubic Bézier
 // pieces through anchor points. Each anchor has a handle on either side, an offset from the
 // anchor, a point of the drawing, or left to the path (automatic: BezierPathSmoother). A
 // composite: the anchors are points of the drawing it is built on, and its pieces, its

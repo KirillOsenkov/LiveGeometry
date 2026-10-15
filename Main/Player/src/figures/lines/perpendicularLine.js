@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/PerpendicularLine.cs
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/PerpendicularLine.cs
 
 class PerpendicularLine extends PerpendicularLineBase {
     get coordinates() {

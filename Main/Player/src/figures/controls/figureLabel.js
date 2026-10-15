@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Controls/FigureLabel.cs: the name of a line,
+// Port of Main/Avalonia/LiveGeometry/Figures/Controls/FigureLabel.cs: the name of a line,
 // ray, segment or circle, written next to it, at Offset pixels from an anchor on it.
 
 class FigureLabel extends Measurement {

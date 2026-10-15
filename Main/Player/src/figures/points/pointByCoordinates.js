@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Points/PointByCoordinates.cs: a point where
+// Port of Main/Avalonia/LiveGeometry/Figures/Points/PointByCoordinates.cs: a point where
 // its X and Y expressions say. Left out: the rename of expressions (the editor's).
 
 class PointByCoordinates extends PointBase {

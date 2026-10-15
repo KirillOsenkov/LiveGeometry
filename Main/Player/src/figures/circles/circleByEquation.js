@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Circles/CircleByEquation.cs: a circle given by
+// Port of Main/Avalonia/LiveGeometry/Figures/Circles/CircleByEquation.cs: a circle given by
 // expressions for its center and radius
 
 class CircleByEquation extends CircleBase {

@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Expressions/BoundExpression.cs: an expression with
+// Port of Main/Avalonia/LiveGeometry/Expressions/BoundExpression.cs: an expression with
 // its names resolved, evaluating itself (the OwnTree strategy, the only one here). Every
 // value is a double.
 

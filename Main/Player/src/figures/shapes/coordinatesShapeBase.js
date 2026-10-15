@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Shapes/CoordinatesShapeBase.cs: a shape at a place
+// Port of Main/Avalonia/LiveGeometry/Figures/Shapes/CoordinatesShapeBase.cs: a shape at a place
 
 class CoordinatesShapeBase extends ShapeBase {
     constructor() {

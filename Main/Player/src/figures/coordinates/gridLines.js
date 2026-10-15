@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Coordinates/GridLinesCollection.cs and
+// Port of Main/Avalonia/LiveGeometry/Figures/Coordinates/GridLinesCollection.cs and
 // RectangularGridLinesCollection.cs: the lines of the grid, the labeled ones and the finer
 // ones between them, across the visible rectangle.
 

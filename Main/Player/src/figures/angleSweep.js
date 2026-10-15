@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/AngleSweep.cs: which of the two angles
+// Port of Main/Avalonia/LiveGeometry/Figures/AngleSweep.cs: which of the two angles
 // between two rays out of a point a figure means (an angle's mark and number, a bisector,
 // an arc with its sector and segment). With θ the counterclockwise angle from the first ray
 // to the second, the regions measure θ and 2π - θ: Counterclockwise and Clockwise are fixed

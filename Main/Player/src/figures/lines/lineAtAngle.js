@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Lines/LineAtAngle.cs: a line through a point at
+// Port of Main/Avalonia/LiveGeometry/Figures/Lines/LineAtAngle.cs: a line through a point at
 // an angle to the x axis, the angle a figure it depends on (a Number, or anything with an
 // angle). Dependencies: the point, then the angle. Left out: tying and untying.
 

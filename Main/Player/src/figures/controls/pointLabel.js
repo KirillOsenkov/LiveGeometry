@@ -1,4 +1,4 @@
-// Port of Main/Avalonia/DynamicGeometry/Figures/Controls/PointLabel.cs: a point's name
+// Port of Main/Avalonia/LiveGeometry/Figures/Controls/PointLabel.cs: a point's name
 // (and/or coordinates), kept in an orbit around the point.
 
 class PointLabel extends Measurement {
