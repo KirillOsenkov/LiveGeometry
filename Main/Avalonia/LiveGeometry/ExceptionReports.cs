@@ -40,7 +40,8 @@ public static class ExceptionReports
     /// <summary>The API's address (MainView.ShareService), set at startup; null sends nothing</summary>
     public static string Address { get; set; }
 
-    record Report(string Type, string Message, List<string> Frames);
+    /// <param name="Exception">Kept when the stack couldn't be walked at the throw, to read its own trace when sent</param>
+    record Report(string Type, string Message, List<string> Frames, Exception Exception);
 
     static readonly Channel<Report> Queue = Channel.CreateBounded<Report>(new BoundedChannelOptions(MaxPerSession)
     {
@@ -99,7 +100,12 @@ public static class ExceptionReports
                 message = message.Substring(0, MaxMessageLength);
             }
 
-            var report = new Report(exception.GetType().FullName ?? exception.GetType().Name, message, CaptureFrames());
+            var frames = CaptureFrames();
+            var report = new Report(
+                exception.GetType().FullName ?? exception.GetType().Name,
+                message,
+                frames,
+                frames.Count == 0 ? exception : null);
             var key = report.Type + "\n" + report.Message + "\n" + string.Join("\n", report.Frames);
             lock (Gate)
             {
@@ -130,7 +136,9 @@ public static class ExceptionReports
     /// first-chance handler (those up to it are the reporting itself) and the runtime's
     /// exception dispatch under it (System.Runtime.EH.DispatchEx on the desktop, the same for
     /// every exception), from the throw site out. The exception's own trace is no use here: at
-    /// first chance it has only the throwing frame, in the browser often nothing.
+    /// first chance it has only the throwing frame. In the browser build (compiled ahead of
+    /// time) the walk finds nothing; the exception's trace, read when the report is sent and
+    /// the exception has unwound (<see cref="TraceFrames"/>), stands in.
     /// </summary>
     static List<string> CaptureFrames()
     {
@@ -154,6 +162,41 @@ public static class ExceptionReports
         return names;
     }
 
+    /// <summary>
+    /// The frames of a stack trace's text, from the throw to where it was caught, in either
+    /// runtime's form: "at Ns.Type.Method(Int32 x) in C:\...:line 12" (desktop),
+    /// "at Ns.Type.Method (System.Int32 x) [0x0001a] in &lt;...&gt;:0" (browser), and
+    /// "at (wrapper managed-to-native) Ns.Type.Method (...)"
+    /// </summary>
+    static List<string> TraceFrames(string trace)
+    {
+        var names = new List<string>();
+        foreach (var text in (trace ?? "").Split('\n'))
+        {
+            var line = text.Trim();
+            if (!line.StartsWith("at ", StringComparison.Ordinal) || names.Count == MaxFrames)
+            {
+                continue;
+            }
+
+            line = line.Substring(3);
+            if (line.StartsWith('('))
+            {
+                int wrapperEnd = line.IndexOf(") ", StringComparison.Ordinal);
+                line = wrapperEnd >= 0 ? line.Substring(wrapperEnd + 2) : line;
+            }
+
+            int arguments = line.IndexOf('(');
+            line = (arguments > 0 ? line.Substring(0, arguments) : line).Trim();
+            if (line.Length > 0)
+            {
+                names.Add(line);
+            }
+        }
+
+        return names;
+    }
+
     static bool IsExceptionDispatch(Type type)
     {
         // DispatchEx is a method of the class System.Runtime.EH
@@ -170,6 +213,12 @@ public static class ExceptionReports
             var batch = new List<Report>();
             while (batch.Count < MaxBatch && reader.TryRead(out var report))
             {
+                if (report.Exception != null)
+                {
+                    // unwound by now: its trace runs from the throw to where it was caught
+                    report.Frames.AddRange(TraceFrames(report.Exception.StackTrace));
+                }
+
                 batch.Add(report);
             }
 

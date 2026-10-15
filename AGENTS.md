@@ -482,8 +482,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `{ build, platform, reports: [ { type, message, frames } ] }` (204; 400, 403, 413, 429 as
   for shares), where `frames` is the stack at the throw as `Namespace.Type.Method`, captured
   in the handler (the exception's own trace has only the throwing frame at first chance) and
-  cut after `CurrentDomain_FirstChanceException`, and the message is cut at 1000
-  characters. Each goes once among the last 10 (a loop sends one), at most 50 a session,
+  cut after `CurrentDomain_FirstChanceException` and the runtime's `System.Runtime.EH`
+  frames, and the message is cut at 1000 characters. In the browser build (compiled ahead of
+  time) that walk finds no frames at all: the report keeps the exception and reads its own
+  trace when it is sent, by when it has unwound - the throw site out to where it was caught
+  (`TraceFrames`, which reads both runtimes' text). There the message is .NET's resource
+  key and its arguments ("Xml_MessageWithErrorPosition, Xml_UnexpectedEOF, 1, 33"): the
+  trimmed build leaves the framework's message texts out. Each goes once among the last 10 (a loop sends one), at most 50 a session,
   queued and sent by a background task in batches of up to 20, 5 seconds after the first of
   a burst. Nothing of the reporting is reported (`ExceptionReports.IsOwn`, checked first in
   the handler, so it isn't shown either): an exception while a report is made, anything the
