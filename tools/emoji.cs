@@ -80,7 +80,7 @@ foreach (var line in File.ReadLines(args[0]))
     }
 
     string text = string.Concat(codePoints.Select(char.ConvertFromUtf32));
-    sb.Append(text).Append('\t').Append(name).Append('\t').Append(subgroup).Append('\n');
+    sb.Append(text).Append('\t').Append(name).Append('\t').Append(subgroup).Append("\r\n");
     count++;
 }
 

@@ -27,7 +27,7 @@ being true. Things derivable from the code or git history don't belong here.
 
 - **Apply these rules to new code only.** Keep diffs minimal - don't reformat or rename existing
   code as a drive-by. Most of `DynamicGeometry/` is decades-old WPF/Silverlight-era code with
-  block namespaces and LF endings; it stays that way unless a cleanup is explicitly asked for.
+  block namespaces; it stays that way unless a cleanup is explicitly asked for.
 - **New files: CRLF line endings, file-scoped namespaces.** Existing files keep what they have.
   The Write tool emits LF: after creating a file, or rewriting an existing CRLF file with Write
   rather than Edit, convert its line endings with an editor tool. Never grep for `\r`.
