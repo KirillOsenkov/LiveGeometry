@@ -77,7 +77,7 @@ namespace DynamicGeometry
         public static bool IsUsedForLength(this IFigure figure)
         {
             return figure.Dependents.Any(dependent =>
-                dependent is DistanceMeasurement
+                dependent is LengthMeasurement
                 || dependent is CircleByRadius
                 || dependent is DilatedPoint
                 || dependent is TranslatedPoint translated && translated.DistanceSource == figure);
@@ -90,7 +90,9 @@ namespace DynamicGeometry
         /// </summary>
         public static bool IsUsedForArea(this IFigure figure)
         {
-            return figure.Dependents.Any(dependent => dependent is AreaMeasurement || dependent is PerimeterMeasurement || dependent is PointInRegion);
+            return figure.Dependents.Any(dependent => dependent is AreaMeasurement
+                || dependent is LengthMeasurement { Quantity: LengthQuantity.Perimeter }
+                || dependent is PointInRegion);
         }
 
         /// <summary>

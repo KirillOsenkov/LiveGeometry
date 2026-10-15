@@ -21,10 +21,10 @@
     <PointOnFigure Name="F" Style="Frequency" X="1" Y="-3" Parameter="0.25">
       <Dependency Name="Track" />
     </PointOnFigure>
-    <DistanceMeasurement Name="FrequencyValue" Style="Measure" OffsetX="-14" OffsetY="10">
+    <LengthMeasurement Name="FrequencyValue" Style="Measure" OffsetX="-14" OffsetY="10">
       <Dependency Name="T1" />
       <Dependency Name="F" />
-    </DistanceMeasurement>
+    </LengthMeasurement>
     <PointByCoordinates Name="P1" Visible="false" X="pi / (2 * F.X + 0.0002)" Y="0">
       <Dependency Name="F" />
     </PointByCoordinates>
@@ -50,10 +50,10 @@
       <Dependency Name="F" />
       <Dependency Name="A" />
     </PointByCoordinates>
-    <DistanceMeasurement Name="AmplitudeValue" Style="Measure" OffsetX="12" OffsetY="-26">
+    <LengthMeasurement Name="AmplitudeValue" Style="Measure" OffsetX="12" OffsetY="-26">
       <Dependency Name="Q1" />
       <Dependency Name="Q2" />
-    </DistanceMeasurement>
+    </LengthMeasurement>
     <FunctionGraph Name="Wave" Style="Wave" Function="A.Y * sin(F.X * x)">
       <Dependency Name="A" />
       <Dependency Name="F" />

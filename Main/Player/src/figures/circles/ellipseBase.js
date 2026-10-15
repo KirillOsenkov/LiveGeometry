@@ -35,6 +35,11 @@ class EllipseBase extends ShapeBase {
         return GeometryMath.ellipseArcLength(this.semiMajor, this.semiMinor, 0, GeometryMath.DOUBLEPI);
     }
 
+    /** The perimeter by the name school gives it, for expressions: c.Circumference */
+    get circumference() {
+        return this.perimeter;
+    }
+
     hitTest(point) {
         const width = this.logicalWidth();
         const fromEdge = GeometryMath.radialDistanceToEllipse(this.center, this.semiMajor, this.semiMinor, this.inclination, point);

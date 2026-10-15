@@ -18,7 +18,7 @@ namespace DynamicGeometry;
 /// list through <see cref="Pick{T}"/>: the first of it while nothing was chosen, which is
 /// what a click took before there was a choice; the chosen one when it is in the list, and
 /// nothing when the choice is something another list holds (a point on the segment the
-/// Distance tool would otherwise measure). A choice holds for one click and for the place
+/// Length tool would otherwise measure). A choice holds for one click and for the place
 /// it was made: the next click and anything else under the cursor start over at the first.
 /// </para>
 /// </summary>

@@ -547,7 +547,7 @@ namespace DynamicGeometry
         /// <summary>
         /// "Segment AB", "Triangle ABC": the kind in front of the name, for the property grid -
         /// unless the name says it already (Circle1, Bezier3), or the figure goes by what it
-        /// is built on and has a number for a name (Distance, not DistanceMeasurement1:
+        /// is built on and has a number for a name (Distance, not LengthMeasurement1:
         /// <see cref="NamedByConstruction"/>)
         /// </summary>
         public string Title
@@ -574,7 +574,7 @@ namespace DynamicGeometry
                     return (null, ToString());
                 }
 
-                // Distance, not DistanceMeasurement1. Only for what nothing refers to by name:
+                // Distance, not LengthMeasurement1. Only for what nothing refers to by name:
                 // Circle1 stays, since "on Circle₁" in another row must be found in the list.
                 if (NamedByConstruction && IsStemAndNumber(Name, GetType().Name))
                 {

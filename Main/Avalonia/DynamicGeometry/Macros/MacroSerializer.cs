@@ -160,13 +160,12 @@ namespace DynamicGeometry
         bool TakesMoreThanKind(IFigure input)
         {
             return !(input is IPoint) && input.Dependents.Any(result => Results.Contains(result)
-                && (result is DistanceMeasurement
+                && (result is LengthMeasurement
                     || result is CircleByRadius
                     || result is DilatedPoint
                     || result is TranslatedPoint translated && translated.DistanceSource == input
                     || result is ReflectedPoint && input is IEllipse
                     || result is AreaMeasurement
-                    || result is PerimeterMeasurement
                     || result is PointInRegion));
         }
 

@@ -189,10 +189,10 @@
       <Dependency Name="N" />
       <Dependency Name="M" />
     </Segment>
-    <DistanceMeasurement Name="Distance" Visible="false" Style="Answer" OffsetX="0" OffsetY="-40">
+    <LengthMeasurement Name="Distance" Visible="false" Style="Answer" OffsetX="0" OffsetY="-40">
       <Dependency Name="N" />
       <Dependency Name="M" />
-    </DistanceMeasurement>
+    </LengthMeasurement>
     <ShowHideControl Name="ShowHideControl1" Style="GalleryText" Show="false" Text="Help 1" Pin="TopLeft" OffsetX="16" OffsetY="16">
       <Dependency Name="K" />
       <Dependency Name="M" />

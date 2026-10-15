@@ -77,22 +77,22 @@
       <Dependency Name="H" />
       <Dependency Name="F" />
     </Segment>
-    <DistanceMeasurement Name="DistanceMeasurement48" Style="8" OffsetX="-16.2" OffsetY="-16.2">
+    <LengthMeasurement Name="LengthMeasurement48" Style="8" OffsetX="-16.2" OffsetY="-16.2">
       <Dependency Name="F" />
       <Dependency Name="E" />
-    </DistanceMeasurement>
-    <DistanceMeasurement Name="DistanceMeasurement49" Style="8" OffsetX="4.3" OffsetY="-1.7">
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement49" Style="8" OffsetX="4.3" OffsetY="-1.7">
       <Dependency Name="G" />
       <Dependency Name="H" />
-    </DistanceMeasurement>
-    <DistanceMeasurement Name="DistanceMeasurement50" Style="8" OffsetX="3.4" OffsetY="-12.8">
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement50" Style="8" OffsetX="3.4" OffsetY="-12.8">
       <Dependency Name="E" />
       <Dependency Name="G" />
-    </DistanceMeasurement>
-    <DistanceMeasurement Name="DistanceMeasurement51" Style="8" OffsetX="-18.7" OffsetY="4.3">
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement51" Style="8" OffsetX="-18.7" OffsetY="4.3">
       <Dependency Name="H" />
       <Dependency Name="F" />
-    </DistanceMeasurement>
+    </LengthMeasurement>
     <AngleArc Name="AngleArc53" Style="4">
       <Dependency Name="F" />
       <Dependency Name="H" />

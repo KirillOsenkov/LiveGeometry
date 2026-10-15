@@ -162,21 +162,36 @@
       <Dependency Name="Y" />
       <Dependency Name="Z" />
     </BezierPath>
-    <PerimeterMeasurement Name="Perimeter1">
+    <LengthMeasurement Name="LengthMeasurement1">
       <Dependency Name="p" />
-    </PerimeterMeasurement>
-    <PerimeterMeasurement Name="Perimeter2" Prefix="P = ">
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement2" Quantity="Circumference" Prefix="">
       <Dependency Name="c" />
-    </PerimeterMeasurement>
-    <PerimeterMeasurement Name="Perimeter3">
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement3" Quantity="Perimeter">
       <Dependency Name="Sector" />
-    </PerimeterMeasurement>
-    <PerimeterMeasurement Name="Perimeter4">
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement4" Quantity="Perimeter">
       <Dependency Name="Lens" />
-    </PerimeterMeasurement>
-    <PerimeterMeasurement Name="Perimeter5">
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement5">
       <Dependency Name="Blob" />
-    </PerimeterMeasurement>
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement6">
+      <Dependency Name="c" />
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement7" Quantity="Diameter">
+      <Dependency Name="c" />
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement8">
+      <Dependency Name="Sector" />
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement9" Quantity="Radius">
+      <Dependency Name="Sector" />
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement10">
+      <Dependency Name="Arc" />
+    </LengthMeasurement>
     <PointInRegion Name="A1" X="-7.5" Y="3.5" OffsetX="0.5" OffsetY="0.5">
       <Dependency Name="p" />
     </PointInRegion>

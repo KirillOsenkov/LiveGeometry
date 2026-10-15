@@ -156,7 +156,7 @@ public class DimensionsPanel :
     }
 
     /// <summary>
-    /// A distance measurement on the figure, added or removed. The grid records the
+    /// A length measurement on the figure, added or removed. The grid records the
     /// property set as the undo step, and this setter runs inside it - so the drawing is
     /// changed directly (the undo library refuses an action recorded from within another);
     /// undo sets the property back, which removes or re-adds the measurement. The same one:
@@ -195,7 +195,7 @@ public class DimensionsPanel :
     }
 
     // by figure, not in the panel: the panel is made anew every time it is shown
-    static readonly ConditionalWeakTable<IFigure, DistanceMeasurement> retiredMeasurements = new ConditionalWeakTable<IFigure, DistanceMeasurement>();
+    static readonly ConditionalWeakTable<IFigure, LengthMeasurement> retiredMeasurements = new ConditionalWeakTable<IFigure, LengthMeasurement>();
 
     [PropertyGridName("Fix length")]
     [PropertyGridGroup("Length")]

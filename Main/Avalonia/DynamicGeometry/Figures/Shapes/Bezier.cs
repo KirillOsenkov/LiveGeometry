@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Controls.Shapes;
@@ -91,6 +92,16 @@ namespace DynamicGeometry
             else
             {
                 Figure.IsFilled = false;
+            }
+        }
+
+        /// <summary>The length of the curve (what the Length tool measures; b.Length in expressions); NaN while a point is nowhere</summary>
+        public double Length
+        {
+            get
+            {
+                var curve = CurveInfo;
+                return curve.Points != null && curve.Points.All(point => point.Exists()) ? curve.Length : double.NaN;
             }
         }
 

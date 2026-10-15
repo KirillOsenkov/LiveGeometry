@@ -197,18 +197,18 @@
       <Dependency Name="I" />
       <Dependency Name="J" />
     </Segment>
-    <DistanceMeasurement Name="DistanceMeasurement62" OffsetX="-8.2" OffsetY="4.1">
+    <LengthMeasurement Name="LengthMeasurement62" OffsetX="-8.2" OffsetY="4.1">
       <Dependency Name="A" />
       <Dependency Name="L" />
-    </DistanceMeasurement>
-    <DistanceMeasurement Name="DistanceMeasurement63" OffsetX="-2.7" OffsetY="6.2">
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement63" OffsetX="-2.7" OffsetY="6.2">
       <Dependency Name="L" />
       <Dependency Name="M" />
-    </DistanceMeasurement>
-    <DistanceMeasurement Name="DistanceMeasurement64" OffsetX="0" OffsetY="4.1">
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement64" OffsetX="0" OffsetY="4.1">
       <Dependency Name="M" />
       <Dependency Name="B" />
-    </DistanceMeasurement>
+    </LengthMeasurement>
     <Segment Name="FI2" Style="47">
       <Dependency Name="F" />
       <Dependency Name="I" />

@@ -13,6 +13,14 @@ class AreaMeasurement extends Measurement {
         return this.origin;
     }
 
+    /** Not while there is no area: a path opened and unfilled after it was measured */
+    updateExistence() {
+        super.updateExistence();
+        if (this.exists && this.dependencies.length > 0 && !isValidValue(this.measure)) {
+            this.exists = false;
+        }
+    }
+
     updateVisual() {
         super.updateVisual();
         this.setText(NumberFormat.toString(GeometryMath.round(this.measure, this.decimalsToShow)));

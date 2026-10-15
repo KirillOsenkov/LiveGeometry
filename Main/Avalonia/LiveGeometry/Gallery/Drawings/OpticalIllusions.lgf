@@ -89,14 +89,14 @@
       <Dependency Name="ML4" />
       <Dependency Name="MLh" />
     </Segment>
-    <DistanceMeasurement Name="MullerTopLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="-28">
+    <LengthMeasurement Name="MullerTopLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="-28">
       <Dependency Name="ML1" />
       <Dependency Name="ML2" />
-    </DistanceMeasurement>
-    <DistanceMeasurement Name="MullerBottomLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="12">
+    </LengthMeasurement>
+    <LengthMeasurement Name="MullerBottomLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="12">
       <Dependency Name="ML3" />
       <Dependency Name="ML4" />
-    </DistanceMeasurement>
+    </LengthMeasurement>
     <PointByCoordinates Name="EbbA" Visible="false" X="-6.3" Y="-2" />
     <PointByCoordinates Name="EbbARim" Visible="false" X="-5.7" Y="-2" />
     <Circle Name="EbbMiddle1" Style="Middle">
@@ -253,14 +253,14 @@
       <Dependency Name="PonzoTopL" />
       <Dependency Name="PonzoTopR" />
     </Segment>
-    <DistanceMeasurement Name="PonzoBottomLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="14">
+    <LengthMeasurement Name="PonzoBottomLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="14">
       <Dependency Name="PonzoBottomL" />
       <Dependency Name="PonzoBottomR" />
-    </DistanceMeasurement>
-    <DistanceMeasurement Name="PonzoTopLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="-30">
+    </LengthMeasurement>
+    <LengthMeasurement Name="PonzoTopLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="-30">
       <Dependency Name="PonzoTopL" />
       <Dependency Name="PonzoTopR" />
-    </DistanceMeasurement>
+    </LengthMeasurement>
     <PointByCoordinates Name="TeeL" Visible="false" X="3" Y="-3.8" />
     <PointByCoordinates Name="TeeR" Visible="false" X="7" Y="-3.8" />
     <Segment Name="TeeFlat" Style="Bar">
@@ -281,14 +281,14 @@
       <Dependency Name="TeeFoot" />
       <Dependency Name="TeeTop" />
     </Segment>
-    <DistanceMeasurement Name="TeeFlatLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="12">
+    <LengthMeasurement Name="TeeFlatLength" Visible="false" Style="Answer" OffsetX="-16" OffsetY="12">
       <Dependency Name="TeeL" />
       <Dependency Name="TeeR" />
-    </DistanceMeasurement>
-    <DistanceMeasurement Name="TeeUpLength" Visible="false" Style="Answer" OffsetX="10" OffsetY="-10">
+    </LengthMeasurement>
+    <LengthMeasurement Name="TeeUpLength" Visible="false" Style="Answer" OffsetX="10" OffsetY="-10">
       <Dependency Name="TeeFoot" />
       <Dependency Name="TeeTop" />
-    </DistanceMeasurement>
+    </LengthMeasurement>
     <Number Name="Upright" Value="90" />
     <Number Name="Flat" Value="0" />
     <LineAtAngle Name="MullerGuideL" Visible="false" Style="Guide">

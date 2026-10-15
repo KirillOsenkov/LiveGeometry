@@ -17,9 +17,12 @@ namespace DynamicGeometry
         public override void FillList()
         {
             var propertyType = Value.Type;
+            var offers = Value.Parent as IOffersValues;
             Items = from f in propertyType.GetFields()
                     where f.FieldType == propertyType
-                    select ShownName(Enum.Parse(propertyType, f.Name, true));
+                    let value = Enum.Parse(propertyType, f.Name, true)
+                    where offers == null || offers.Offers(Value.Name, value)
+                    select ShownName(value);
             base.FillList();
         }
 

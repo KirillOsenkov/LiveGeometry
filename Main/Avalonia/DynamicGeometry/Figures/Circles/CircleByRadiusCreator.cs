@@ -77,7 +77,7 @@ namespace DynamicGeometry
         /// </summary>
         static IList<IPoint> FindRadiusEnds(IFigure figure)
         {
-            if (figure is DistanceMeasurement measurement && measurement.Dependencies[0] is ILengthProvider measured)
+            if (figure is LengthMeasurement { Quantity: LengthQuantity.Length } measurement && measurement.Dependencies[0] is ILengthProvider measured)
             {
                 return FindRadiusEnds(measured);
             }

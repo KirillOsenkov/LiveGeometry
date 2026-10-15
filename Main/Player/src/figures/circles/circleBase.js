@@ -14,6 +14,11 @@ class CircleBase extends EllipseBase {
         return this.radius;
     }
 
+    /** For expressions, c.Diameter */
+    get diameter() {
+        return 2 * this.radius;
+    }
+
     get inclination() {
         return 0;
     }

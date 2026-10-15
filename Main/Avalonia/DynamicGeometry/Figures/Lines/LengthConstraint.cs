@@ -64,19 +64,19 @@ public class LengthPropertyValue : ConditionalPropertyValue, IRestorableValue
 /// </summary>
 public static class LengthConstraint
 {
-    /// <summary>A new distance measurement of the figure's length, not yet in the drawing; null when it has none</summary>
-    public static DistanceMeasurement CreateMeasurement(IFixableLength figure)
+    /// <summary>A new length measurement of the figure's length, not yet in the drawing; null when it has none</summary>
+    public static LengthMeasurement CreateMeasurement(IFixableLength figure)
     {
         var measured = figure.MeasuredFigures;
-        return measured == null ? null : Factory.CreateDistanceMeasurement(figure.Drawing, measured);
+        return measured == null ? null : Factory.CreateLengthMeasurement(figure.Drawing, measured);
     }
 
     /// <summary>
-    /// The distance measurement already showing the figure's length, or null: one on the
-    /// same figures, or - for a segment - on its two points, which is what the Distance
-    /// tool makes.
+    /// The length measurement already showing the figure's length, or null: one on the
+    /// same figures, or - for a segment - on its two points, which is what the Length tool
+    /// makes of two clicks.
     /// </summary>
-    public static DistanceMeasurement FindMeasurement(IFixableLength figure)
+    public static LengthMeasurement FindMeasurement(IFixableLength figure)
     {
         var measured = figure.MeasuredFigures;
         if (measured == null)
@@ -86,7 +86,7 @@ public static class LengthConstraint
 
         var ends = measured.Count == 1 && measured[0] is Segment segment ? segment.Dependencies : null;
         return figure.Drawing.Figures
-            .OfType<DistanceMeasurement>()
+            .OfType<LengthMeasurement>()
             .FirstOrDefault(m => m.Dependencies.SequenceEqual(measured) || (ends != null && m.Dependencies.SequenceEqual(ends)));
     }
 

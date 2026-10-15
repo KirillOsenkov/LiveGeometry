@@ -434,7 +434,7 @@ public class AppTheme : INotifyPropertyChanged, IConditionalProperties
     [PropertyGridGroup("Icons")]
     public Brush ImageFill { get => imageFill; set => Set(ref imageFill, value); }
 
-    /// <summary>The ruler of the Distance tool (and so the Measure tab)...</summary>
+    /// <summary>The ruler of the Length tool (and so the Measure tab)...</summary>
     Color rulerFill;
     [PropertyGridVisible]
     [PropertyGridGroup("Icons")]

@@ -50,6 +50,15 @@ namespace DynamicGeometry
             }
         }
 
+        /// <summary>The perimeter by the name school gives it, for expressions: c.Circumference</summary>
+        public double Circumference
+        {
+            get
+            {
+                return Perimeter;
+            }
+        }
+
         public override IFigure HitTest(Point point)
         {
             var width = LogicalWidth();

@@ -10,20 +10,54 @@ namespace DynamicGeometry
     [Order(3)]
     public class AreaMeasurementCreator : FigureCreator
     {
-        protected override void Click(Point coordinates)
+        /// <summary>
+        /// A shape under the cursor with no point on top of it, before any point of a list:
+        /// a click measures it. Found here, where the hover looks too, so that the cursor is
+        /// the hand and the shape has its halo over a shape (it was the cross of a free point
+        /// over a filled polygon, which the click then measured); and not once points are
+        /// being listed, when a click inside a shape is the next point (it threw the points
+        /// listed away and measured the shape).
+        /// </summary>
+        protected override IReadOnlyList<IFigure> FindFiguresInsteadOfPoint(Point unconstrainedCoordinates)
         {
-            var figure = Drawing.Figures.HitTest(coordinates);
-            if (figure is IShapeWithInterior)
+            if (FoundDependencies.Count > 0 || Drawing.Figures.HitTest<IPoint>(unconstrainedCoordinates) != null)
+            {
+                return System.Array.Empty<IFigure>();
+            }
+
+            // (a path is hit by a side or its inside, parts of it, while the path is what is measured)
+            return Drawing.Figures
+                .HitTestAll(
+                    unconstrainedCoordinates,
+                    f => AreaMeasurement.IsMeasurable(FigureParts.Whole(f))
+                        && f.Visible
+                        && f.IsHitTestVisible
+                        && !FigureParts.Whole(f).DependsOn(TempPoint))
+                .Select(FigureParts.Whole)
+                .Distinct()
+                .ToList();
+        }
+
+        public override void MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // where the cursor is, as the hover preview asks: not where Shift snaps it to
+            var shape = FindFigureInsteadOfPoint(Coordinates(e, false, false, false));
+            if (shape != null)
             {
                 FoundDependencies.Clear();
-                FoundDependencies.Add(figure);
+                FoundDependencies.Add(shape);
                 RemoveIntermediateFigureIfNecessary();
                 RemoveTempPointIfNecessary();
                 AddFiguresAndRestart();
                 return;
             }
 
-            if (figure is PointBase && FoundDependencies.Contains(figure) && TryFinish())
+            base.MouseDown(sender, e);
+        }
+
+        protected override void Click(Point coordinates)
+        {
+            if (Drawing.Figures.HitTest(coordinates) is PointBase point && FoundDependencies.Contains(point) && TryFinish())
             {
                 return;
             }
@@ -31,12 +65,11 @@ namespace DynamicGeometry
             base.Click(coordinates);
         }
 
-        /// <summary>A click on a shape measures it, whatever else is there: nothing to choose</summary>
+        /// <summary>A click on a shape measures it: the choice is between the shapes there, not points in them</summary>
         protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
         {
-            return Drawing.Figures.HitTest(Coordinates(e)) is IShapeWithInterior
-                ? System.Array.Empty<object>()
-                : base.FindClickOptions(e);
+            var shapes = FindFiguresInsteadOfPoint(Coordinates(e, false, false, false));
+            return shapes.Count > 0 ? shapes.ToList<object>() : base.FindClickOptions(e);
         }
 
         /// <summary>Three points or more (and the one following the cursor): enough for an area</summary>
@@ -141,7 +174,7 @@ namespace DynamicGeometry
         {
             get
             {
-                return "Click a polygon, ellipse, circle, or a list of points to measure its area.";
+                return "Click a polygon, ellipse, circle, sector or closed path, or a list of points, to measure its area.";
             }
         }
 

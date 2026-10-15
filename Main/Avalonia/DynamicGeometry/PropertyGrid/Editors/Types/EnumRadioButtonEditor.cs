@@ -47,9 +47,12 @@ namespace DynamicGeometry
         protected override void InitCore()
         {
             var propertyType = Value.Type;
+            var offers = Value.Parent as IOffersValues;
             items = from f in propertyType.GetFields()
                     where f.FieldType == propertyType
-                    select Enum.Parse(propertyType, f.Name, true).ToString();
+                    let value = Enum.Parse(propertyType, f.Name, true)
+                    where offers == null || offers.Offers(Value.Name, value)
+                    select value.ToString();
 
             bool first = true;
             foreach (string enumField in items)

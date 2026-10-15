@@ -76,10 +76,8 @@ public static class ConstructionText
             case AngleMeasurementBase:
             case AngleArc:
                 return "angle " + source.Construction;
-            case DistanceMeasurement:
-                return source.Construction;
-            case PerimeterMeasurement:
-                return "perimeter " + source.Construction;
+            case LengthMeasurement length:
+                return length.ValueText;
             case Segment:
             case Vector:
                 // a segment's name is its points: AB, not "segment AB" (radius AB)

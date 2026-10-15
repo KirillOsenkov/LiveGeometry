@@ -281,9 +281,11 @@ namespace DynamicGeometry
             return new DilatedPoint() { Drawing = drawing, Dependencies = dependencies };
         }
 
-        public static DistanceMeasurement CreateDistanceMeasurement(Drawing drawing, IList<IFigure> dependencies)
+        /// <param name="dependencies">Two points (their distance) or the figure measured</param>
+        /// <param name="quantity">Which length of the figure; null for its first (<see cref="LengthMeasurement.QuantitiesOf"/>)</param>
+        public static LengthMeasurement CreateLengthMeasurement(Drawing drawing, IList<IFigure> dependencies, LengthQuantity? quantity = null)
         {
-            return new DistanceMeasurement() { Drawing = drawing, Dependencies = dependencies };
+            return new LengthMeasurement(quantity) { Drawing = drawing, Dependencies = dependencies };
         }
 
         public static PointLabel CreatePointLabel(Drawing drawing, IList<IFigure> dependencies)
@@ -338,11 +340,6 @@ namespace DynamicGeometry
         public static AreaMeasurement CreateAreaMeasurement(Drawing drawing, IList<IFigure> dependencies)
         {
             return new AreaMeasurement() { Drawing = drawing, Dependencies = dependencies };
-        }
-
-        public static PerimeterMeasurement CreatePerimeterMeasurement(Drawing drawing, IList<IFigure> dependencies)
-        {
-            return new PerimeterMeasurement() { Drawing = drawing, Dependencies = dependencies };
         }
 
         public static PointByCoordinates CreatePointByCoordinates(Drawing drawing, IList<IFigure> dependencies)

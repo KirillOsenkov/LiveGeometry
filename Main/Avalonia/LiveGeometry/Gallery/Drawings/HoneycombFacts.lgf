@@ -808,13 +808,13 @@
       <Dependency Name="G" />
       <Dependency Name="D" />
     </AngleMeasurement>
-    <DistanceMeasurement Name="DistanceMeasurement1" OffsetX="-4.00000000201851" OffsetY="-23.49999999911097">
+    <LengthMeasurement Name="LengthMeasurement1" OffsetX="-4.00000000201851" OffsetY="-23.49999999911097">
       <Dependency Name="VR1" />
-    </DistanceMeasurement>
-    <DistanceMeasurement Name="DistanceMeasurement2" OffsetX="5.5000000027755505" OffsetY="-10.499999997849045">
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthMeasurement2" OffsetX="5.5000000027755505" OffsetY="-10.499999997849045">
       <Dependency Name="J2" />
       <Dependency Name="T2" />
-    </DistanceMeasurement>
+    </LengthMeasurement>
     <Label Name="Title" Style="GalleryTitle" Text="Honeycomb Facts" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
     <Label Name="Description" Style="GalleryText" Text="Bees build their combs out of regular hexagons: six equal sides and six equal angles of 120°.\n\nThree cells meet at every corner, and 3 × 120° = 360°, so they leave no gaps. Only three regular shapes can cover a floor all by themselves: triangles, squares and hexagons.\n\nLines from the center to the corners cut a cell into six equilateral triangles with 60° at the center, so every corner is exactly one side away from the center. That is why one of the lines measures three sides: center to corner, along a wall, corner to center.\n\nThe line to a neighbor's center runs between two corners, 30° from each, and crosses the wall between the two cells at a right angle.\n\nWith side 1, each triangle has an area of √3/4, so a cell has 6 × √3/4 = 3√3/2, about 2.6. With side s, multiply that by s².\n\nTurn a cell 60° around its center and it lands on itself. It also has six mirror lines.\n\nOf all the ways to divide a flat surface into cells of equal area, hexagons need the least wall: the least wax for the most honey. People suspected it for 2,000 years, and Thomas Hales proved it in 1999.\n\nDrag the yellow points: the comb grows and turns, but the angles stay the same." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>

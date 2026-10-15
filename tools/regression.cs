@@ -89,7 +89,11 @@ public class Program
             ("The Arc tool's panel makes a sector or a segment of the arc", ArcPanelConverts),
             ("A hidden name shows again with Show name", HiddenNameShowsAgain),
             ("Figures without a value don't exist", FiguresWithoutValue),
-            ("Perimeter measurements", PerimeterMeasurements),
+            ("Length measurements", LengthMeasurements),
+            ("The Length and Area tools on each kind of figure: what a click takes, the cursor", MeasureToolsOnEachKind),
+            ("A length's number keeps its place through a new quantity and its undo, and a path closed", LengthPlaceThroughUndo),
+            ("Undo of a length's prefix keeps a typed prefix typed", LengthPrefixUndo),
+            ("GeoGebra: a Radius or an Area read in expressions and texts stays live", GeoGebraMeasurementsInExpressions),
             ("A tool defined on expressions builds on its inputs", DefinedToolOnExpressions),
             ("Defined tools are stored, read back and deleted", StoredToolsRoundTrip),
             ("Deleting what a show/hide box holds, and undo", ShowHideBoxDeletion),
@@ -2541,7 +2545,228 @@ public class Program
             MouseButton.Left));
     }
 
-    static void PerimeterMeasurements()
+    static Cursor ToolCursor(string name)
+    {
+        return (Cursor)typeof(Behavior).GetField(name, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static).GetValue(null);
+    }
+
+    static void MeasureToolsOnEachKind()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        var hand = ToolCursor("HandCursor");
+        var arrow = ToolCursor("ArrowCursor");
+        var cross = ToolCursor("CrossCursor");
+        var errors = new List<string>();
+        drawing.UnhandledException += (sender, e) => errors.Add(e.Exception.ToString());
+        Cursor CursorAt(double x, double y)
+        {
+            // (moves are taken one a frame, and the test window draws no frames: as if the last one had)
+            typeof(Behavior)
+                .GetField("movedThisFrame", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .SetValue(drawing.Behavior, false);
+            Hover(drawing, system.ToPhysical(new Point(x, y)));
+            Require(errors.Count == 0, "A tool threw: " + string.Join("\n", errors));
+            return drawing.Canvas.Cursor;
+        }
+
+        // a filled triangle, a line, a Bezier curve, an open path, a segment, apart from each other
+        var triangle = Factory.CreatePolygon(drawing, new IFigure[] { AddPoint(drawing, x: -10, y: 0), AddPoint(drawing, x: -6, y: 0), AddPoint(drawing, x: -8, y: 4) });
+        Actions.Add(drawing, triangle);
+        var line = Factory.CreateLineTwoPoints(drawing, new IFigure[] { AddPoint(drawing, x: -10, y: -6), AddPoint(drawing, x: -9, y: -6) });
+        Actions.Add(drawing, line);
+        var bezier = (Bezier)Factory.CreateBezier(drawing, new IFigure[] { AddPoint(drawing, x: 0, y: 0), AddPoint(drawing, x: 0, y: 3), AddPoint(drawing, x: 3, y: 3), AddPoint(drawing, x: 3, y: 0) });
+        Actions.Add(drawing, bezier);
+        var corner = new BezierPath.HandleSpec(default, null, Auto: false);
+        var path = BezierPath.Create(
+            drawing,
+            new IFigure[] { AddPoint(drawing, x: 6, y: 0), AddPoint(drawing, x: 9, y: 0), AddPoint(drawing, x: 9, y: 4) },
+            new[] { corner, corner, corner },
+            new[] { corner, corner, corner },
+            holes: Array.Empty<IFigure>(),
+            closed: false,
+            filled: false);
+        Actions.Add(drawing, path);
+        var a = AddPoint(drawing, x: 0, y: -8);
+        var segment = Factory.CreateSegment(drawing, new IFigure[] { AddPoint(drawing, x: 4, y: -8), AddPoint(drawing, x: 8, y: -8) });
+        Actions.Add(drawing, segment);
+        Near(path.Length, 7);
+        Require(double.IsNaN(path.Perimeter), "An open path has a perimeter.");
+
+        var length = new LengthMeasurementCreator();
+        drawing.Behavior = length;
+        Require(CursorAt(-8, 1) == hand, "Over a filled triangle the Length tool doesn't show the hand.");
+        Require(CursorAt(-2, 8) == cross, "Over empty paper the Length tool shows no cross.");
+        var overLine = CursorAt(-5, -6);
+        Require(overLine == arrow, "Over a line the Length tool shows " + (overLine == hand ? "the hand" : overLine == cross ? "the cross" : "no cursor") + ", not the arrow of a point on it: "
+            + PointPlacement.Find(drawing, new Point(-5, -6), snapToMidpoint: true)?.Kind);
+        Require(CursorAt(1.5, 2.25) == hand, "Over a Bezier curve the Length tool doesn't show the hand.");
+        Require(CursorAt(9, 2) == hand, "Over an open path the Length tool doesn't show the hand.");
+        Require(CursorAt(-2, 8) == cross, "Over empty paper the Length tool shows no cross.");
+
+        // the curve: its length, on it
+        Click(drawing, system.ToPhysical(new Point(1.5, 2.25)));
+        var curveLength = drawing.Figures.OfType<LengthMeasurement>().Last();
+        Require(curveLength.Dependencies.Single() == bezier && curveLength.Quantity == LengthQuantity.Length, "A click on a Bezier curve measures " + curveLength.Construction);
+        Near(curveLength.Length, new DynamicGeometry.Math.BezierInfo(new Point(0, 0), new Point(0, 3), new Point(3, 3), new Point(3, 0)).Length);
+
+        // the open path: its length, which becomes the perimeter when the path is closed
+        Click(drawing, system.ToPhysical(new Point(9, 2)));
+        var pathLength = drawing.Figures.OfType<LengthMeasurement>().Last();
+        Require(pathLength.Dependencies.Single() == path && pathLength.Quantity == LengthQuantity.Length && pathLength.Text == "7", "The open path says " + pathLength.Text);
+        path.Closed = true;
+        Require(pathLength.Quantity == LengthQuantity.Perimeter && pathLength.Exists && pathLength.Text == "P = 12", "The closed path says " + pathLength.Text);
+        path.Closed = false;
+        Require(pathLength.Quantity == LengthQuantity.Length && pathLength.Text == "7", "Opened again, the path says " + pathLength.Text);
+
+        // a line is no length: a click puts a point on it, the first end of a distance
+        int pointsBefore = drawing.Figures.OfType<IPoint>().Count();
+        Click(drawing, system.ToPhysical(new Point(-5, -6)));
+        Require(!drawing.Figures.OfType<LengthMeasurement>().Any(m => m.Dependencies.Contains(line)), "The line was measured.");
+        Require(CursorAt(5, -8) == arrow, "With the first end down, a segment offers to measure itself.");
+        Click(drawing, system.ToPhysical(new Point(5, -8)));
+        var distance = drawing.Figures.OfType<LengthMeasurement>().Last();
+        Require(distance.Quantity == LengthQuantity.Distance && distance.Dependencies[0] is PointOnFigure && distance.Dependencies[1] is PointOnFigure,
+            "A distance from a line to a segment is " + distance.Quantity + " of " + distance.Construction);
+        Require(drawing.Figures.OfType<IPoint>().Count() == pointsBefore + 2, "The distance left points behind.");
+        Near(distance.Length, System.Math.Sqrt(10 * 10 + 2 * 2));
+
+        // the Area tool: the hand over a filled shape, and its area
+        var area = new AreaMeasurementCreator();
+        drawing.Behavior = area;
+        Require(CursorAt(-8, 1) == hand, "Over a filled triangle the Area tool doesn't show the hand.");
+        Click(drawing, system.ToPhysical(new Point(-8, 1)));
+        var triangleArea = drawing.Figures.OfType<AreaMeasurement>().Last();
+        Require(triangleArea.Dependencies.Single() == triangle && triangleArea.Text == "8", "The triangle's area says " + triangleArea.Text);
+
+        // a closed path is a shape to it (hit on a side: it isn't filled), an open one is not
+        Require(CursorAt(9, 2) != hand, "Over an open path the Area tool shows the hand.");
+        path.Closed = true;
+        Require(CursorAt(9, 2) == hand, "Over a closed path the Area tool doesn't show the hand.");
+        Click(drawing, system.ToPhysical(new Point(9, 2)));
+        var pathArea = drawing.Figures.OfType<AreaMeasurement>().Last();
+        Require(pathArea.Dependencies.Single() == path && pathArea.Text == "6", "The closed path's area says " + pathArea.Text);
+        path.Closed = false;
+        Require(!pathArea.Exists, "The area of a path opened and unfilled still shows.");
+
+        // once points are listed, a click inside a shape is the next point
+        Click(drawing, system.ToPhysical(new Point(0, -12)));
+        Require(drawing.IsRecordingTransaction, "The first point of a list started nothing.");
+        Click(drawing, system.ToPhysical(new Point(-8, 1)));
+        Require(drawing.Figures.OfType<AreaMeasurement>().Count(m => m.Dependencies.Contains(triangle)) == 1, "A click in a shape threw the points away.");
+        drawing.Behavior = new Dragger();
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void LengthPlaceThroughUndo()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+
+        // a radius dragged away, then measured as the diameter: undo puts the number back where it was dragged to
+        var circle = Factory.CreateCircle(drawing, new IFigure[] { AddPoint(drawing, x: 0, y: 0), AddPoint(drawing, x: 2, y: 0) });
+        Actions.Add(drawing, circle);
+        var radius = Factory.CreateLengthMeasurement(drawing, new IFigure[] { circle });
+        Actions.Add(drawing, radius);
+        radius.RestorePlace(new Point(28.5, 18));
+        string before = drawing.SaveAsText();
+        var quantityRow = PropertyDiscoveryStrategy.CreateValueProvider(radius, nameof(LengthMeasurement.Quantity));
+        Require(quantityRow is LengthMeasurement.QuantityValue, "The Measure row is a " + quantityRow.GetType().Name);
+        Actions.SetProperty(drawing.ActionManager, quantityRow, value: LengthQuantity.Diameter);
+        Require(radius.Text == "d = 4" && radius.Offset != new Point(28.5, 18), "The diameter is not placed anew.");
+        string after = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the quantity moved the number: " + radius.Offset);
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo of the quantity put the number elsewhere.");
+
+        // an open path's length dragged away, then the path closed: the number stays, before and after a reload
+        var corner = new BezierPath.HandleSpec(default, null, Auto: false);
+        var path = BezierPath.Create(
+            drawing,
+            new IFigure[] { AddPoint(drawing, x: 10, y: 0), AddPoint(drawing, x: 13, y: 0), AddPoint(drawing, x: 13, y: 4) },
+            new[] { corner, corner, corner },
+            new[] { corner, corner, corner },
+            holes: Array.Empty<IFigure>(),
+            closed: false,
+            filled: false);
+        Actions.Add(drawing, path);
+        var pathLength = Factory.CreateLengthMeasurement(drawing, new IFigure[] { path });
+        Actions.Add(drawing, pathLength);
+        pathLength.RestorePlace(new Point(48, 48));
+        string open = drawing.SaveAsText();
+        Actions.SetProperty(drawing.ActionManager, PropertyDiscoveryStrategy.CreateValueProvider(path, nameof(BezierPath.Closed)), value: true);
+        Require(pathLength.Text == "P = 12" && pathLength.Offset == new Point(48, 48), "Closing the path moved its number to " + pathLength.Offset);
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == open, "Undo of closing the path left something.");
+
+        var reloaded = ReadLgf(open);
+        var reloadedPath = reloaded.Figures.OfType<BezierPath>().Single();
+        var reloadedLength = reloaded.Figures.OfType<LengthMeasurement>().Single(m => m.Dependencies.Contains(reloadedPath));
+        reloadedPath.Closed = true;
+        Require(reloadedLength.Offset == new Point(48, 48), "Read back and closed, the path's number went to " + reloadedLength.Offset);
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void LengthPrefixUndo()
+    {
+        var drawing = NewDrawing();
+        var circle = Factory.CreateCircle(drawing, new IFigure[] { AddPoint(drawing, x: 0, y: 0), AddPoint(drawing, x: 2, y: 0) });
+        Actions.Add(drawing, circle);
+        var measurement = Factory.CreateLengthMeasurement(drawing, new IFigure[] { circle });
+        Actions.Add(drawing, measurement);
+        IValueProvider Row(string name) => PropertyDiscoveryStrategy.CreateValueProvider(measurement, name);
+
+        // "d = " typed on the radius, then the diameter measured, then the prefix cleared and undone twice
+        Actions.SetProperty(drawing.ActionManager, Row(nameof(LengthMeasurement.Prefix)), value: "d = ");
+        Require(measurement.Text == "d = 2", "The typed prefix says " + measurement.Text);
+        Actions.SetProperty(drawing.ActionManager, Row(nameof(LengthMeasurement.Quantity)), value: LengthQuantity.Diameter);
+        string typed = drawing.SaveAsText();
+        Require(typed.Contains("Prefix=\"d = \""), "The typed prefix is not kept.");
+        Actions.SetProperty(drawing.ActionManager, Row(nameof(LengthMeasurement.Prefix)), value: "");
+        Require(measurement.Text == "4", "Without a prefix the diameter says " + measurement.Text);
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == typed, "Undo of the prefix lost the typed one.");
+        drawing.ActionManager.Undo();
+        Require(measurement.Text == "d = 2", "Undo of the quantity says " + measurement.Text);
+    }
+
+    static void GeoGebraMeasurementsInExpressions()
+    {
+        var drawing = ReadGeoGebra(
+            "<element type=\"point\" label=\"A\"><coords x=\"0\" y=\"0\" z=\"1\" /></element>"
+            + "<element type=\"point\" label=\"B\"><coords x=\"2\" y=\"0\" z=\"1\" /></element>"
+            + "<command name=\"Circle\"><input a0=\"A\" a1=\"B\" /><output a0=\"c\" /></command>"
+            + "<element type=\"conic\" label=\"c\" />"
+            + "<command name=\"Radius\"><input a0=\"c\" /><output a0=\"r\" /></command>"
+            + "<element type=\"numeric\" label=\"r\"><value val=\"2\" /></element>"
+            + "<element type=\"point\" label=\"Q\"><coords x=\"5\" y=\"0\" z=\"1\" /></element>"
+            + "<element type=\"point\" label=\"R\"><coords x=\"7\" y=\"0\" z=\"1\" /></element>"
+            + "<element type=\"point\" label=\"S\"><coords x=\"5\" y=\"2\" z=\"1\" /></element>"
+            + "<command name=\"Polygon\"><input a0=\"Q\" a1=\"R\" a2=\"S\" /><output a0=\"t\" /></command>"
+            + "<element type=\"polygon\" label=\"t\" />"
+            + "<command name=\"Area\"><input a0=\"t\" /><output a0=\"a\" /></command>"
+            + "<element type=\"numeric\" label=\"a\"><value val=\"2\" /></element>"
+            + "<expression label=\"diameter\" exp=\"2 * r\" />"
+            + "<element type=\"numeric\" label=\"diameter\"><value val=\"4\" /></element>"
+            + "<expression label=\"P\" exp=\"(r, a)\" />"
+            + "<element type=\"point\" label=\"P\"><coords x=\"2\" y=\"2\" z=\"1\" /></element>"
+            + "<expression label=\"caption\" exp=\"&quot;Radius = &quot; + r\" />"
+            + "<element type=\"text\" label=\"caption\"><startPoint x=\"0\" y=\"-4\" z=\"1\" /></element>"
+            + "<command name=\"Circle\"><input a0=\"A\" a1=\"diameter\" /><output a0=\"big\" /></command>"
+            + "<element type=\"conic\" label=\"big\" />");
+        ((FreePoint)Find(drawing, "B")).MoveTo(new Point(3, 0));
+        ((FreePoint)Find(drawing, "S")).MoveTo(new Point(5, 4));
+        drawing.Recalculate();
+        Near(((CircleBase)Find(drawing, "big")).Radius, 6);
+        var p = (IPoint)Find(drawing, "P");
+        Require(System.Math.Abs(p.Coordinates.X - 3) < 1e-9 && System.Math.Abs(p.Coordinates.Y - 4) < 1e-9, "P is at " + p.Coordinates);
+        var caption = (LabelBase)Find(drawing, "caption");
+        Require(caption.ProcessedText.Contains("3"), "The caption says " + caption.ProcessedText);
+    }
+
+    static void LengthMeasurements()
     {
         var drawing = NewDrawing();
         using var window = new TestWindow(drawing.Canvas);
@@ -2552,36 +2777,80 @@ public class Program
         Actions.Add(drawing, circle);
         string before = drawing.SaveAsText();
 
-        // the tool: one click on the circle, undo, redo, a round trip through a file
-        var tool = new PerimeterMeasurementCreator();
+        // the tool: one click on the circle measures its radius, and the panel offers the others
+        var tool = new LengthMeasurementCreator();
         drawing.Behavior = tool;
         Click(drawing, system.ToPhysical(new Point(0, 2)));
-        Require(!drawing.IsRecordingTransaction, "The Perimeter tool left a transaction open.");
-        var measurement = drawing.Figures.OfType<PerimeterMeasurement>().Single();
-        Near(measurement.Length, 4 * System.Math.PI);
-        Require(measurement.Text == "12.57", "A circle of radius 2 says " + measurement.Text);
+        Require(!drawing.IsRecordingTransaction, "The Length tool left a transaction open.");
+        var measurement = drawing.Figures.OfType<LengthMeasurement>().Single();
+        Require(measurement.Quantity == LengthQuantity.Radius, "A click on a circle measures its " + measurement.Quantity);
+        Require(
+            measurement.Quantities.SequenceEqual(new[] { LengthQuantity.Radius, LengthQuantity.Diameter, LengthQuantity.Circumference }),
+            "A circle offers " + string.Join(", ", measurement.Quantities));
+        Require(measurement.Text == "r = 2", "A circle of radius 2 says " + measurement.Text);
         Require(measurement.Exists && measurement.Coordinates.Exists(), "The number is nowhere.");
-        Require(measurement.Construction == "of circle " + circle.Name, "The construction says " + measurement.Construction);
-        measurement.Prefix = "P = ";
-        Require(measurement.Text == "P = 12.57", "With a prefix it says " + measurement.Text);
+        Require(measurement.Title == "Radius" && measurement.Construction == "of circle " + circle.Name, "The title says " + measurement.Title + " " + measurement.Construction);
+        Require(!drawing.SaveAsText().Contains("Quantity="), "The circle's first length is written out.");
+        Require(measurement.Offers(nameof(LengthMeasurement.Quantity), LengthQuantity.Diameter)
+            && !measurement.Offers(nameof(LengthMeasurement.Quantity), LengthQuantity.Perimeter), "The Measure row offers the wrong lengths.");
+
+        // another length of it is one undo step, and the prefix follows
+        Actions.SetProperty(drawing.ActionManager, PropertyDiscoveryStrategy.CreateValueProvider(measurement, nameof(LengthMeasurement.Quantity)), value: LengthQuantity.Circumference);
+        Near(measurement.Length, 4 * System.Math.PI);
+        Require(measurement.Text == "C = 12.57", "The circumference says " + measurement.Text);
+        Actions.SetProperty(drawing.ActionManager, PropertyDiscoveryStrategy.CreateValueProvider(measurement, nameof(LengthMeasurement.Prefix)), value: "");
+        Require(measurement.Text == "12.57", "Without a prefix it says " + measurement.Text);
         string after = drawing.SaveAsText();
-        Require(after.Contains("Prefix=\"P = \""), "The prefix is not saved.");
+        Require(after.Contains("Quantity=\"Circumference\"") && after.Contains("Prefix=\"\""), "The quantity or the prefix is not saved.");
         drawing.ActionManager.Undo();
-        Require(drawing.SaveAsText() == before, "Undo of the perimeter left something.");
+        Require(measurement.Text == "C = 12.57", "Undo of the prefix says " + measurement.Text);
+        drawing.ActionManager.Undo();
+        Require(measurement.Quantity == LengthQuantity.Radius && measurement.Text == "r = 2", "Undo of the quantity says " + measurement.Text);
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, "Undo of the measurement left something.");
         drawing.ActionManager.Redo();
-        Require(drawing.SaveAsText() == after, "Redo of the perimeter changed it.");
+        drawing.ActionManager.Redo();
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == after, "Redo of the measurement changed it.");
         var reloaded = ReadLgf(after);
-        Require(reloaded.LoadErrors == null && reloaded.SaveAsText() == after, "The perimeter did not round trip.");
-        Require(reloaded.Figures.OfType<PerimeterMeasurement>().Single().Text == "P = 12.57", "Read back, the number changed.");
+        Require(reloaded.LoadErrors == null && reloaded.SaveAsText() == after, "The measurement did not round trip.");
+        Require(reloaded.Figures.OfType<LengthMeasurement>().Single().Text == "12.57", "Read back, the number changed.");
 
         // the circumference is a length other figures take, and expressions read it by name
         var label = Factory.CreateLabel(drawing);
         Actions.Add(drawing, label);
-        label.Text = "[" + circle.Name + ".Perimeter]";
-        Require(label.ProcessedText == "12.57", "The label says " + label.ProcessedText);
+        label.Text = "[" + circle.Name + ".Perimeter] [" + circle.Name + ".Circumference] [" + circle.Name + ".Diameter]";
+        Require(label.ProcessedText == "12.57 12.57 4.00", "The label says " + label.ProcessedText);
         var byRadius = Factory.CreateCircleByRadius(drawing, new IFigure[] { measurement, center });
         Actions.Add(drawing, byRadius);
         Near(byRadius.Radius, 4 * System.Math.PI);
+        Require(byRadius.Construction.Contains("circumference of circle " + circle.Name), "The circle by the circumference says " + byRadius.Construction);
+
+        // two clicks on points, a click on a segment
+        var first = AddPoint(drawing, x: 0, y: -5);
+        var second = AddPoint(drawing, x: 3, y: -9);
+        Click(drawing, system.ToPhysical(new Point(0, -5)));
+        Click(drawing, system.ToPhysical(new Point(3, -9)));
+        var distance = drawing.Figures.OfType<LengthMeasurement>().Last();
+        Require(distance.Quantity == LengthQuantity.Distance && distance.Text == "5", "Two points say " + distance.Text);
+        Require(distance.Title == "Distance" && distance.Construction == first.Name + second.Name, "The distance's title says " + distance.Title + " " + distance.Construction);
+        var side = Factory.CreateSegment(drawing, new IFigure[] { AddPoint(drawing, x: 10, y: -5), AddPoint(drawing, x: 10, y: -8) });
+        Actions.Add(drawing, side);
+        Click(drawing, system.ToPhysical(new Point(10, -6.5)));
+        var length = drawing.Figures.OfType<LengthMeasurement>().Last();
+        Require(length.Dependencies.Single() == side && length.Quantity == LengthQuantity.Length && length.Text == "3", "A segment says " + length.Text);
+        Require(!length.CanEdit(nameof(LengthMeasurement.Quantity)), "A segment's one length can be switched.");
+
+        // an arc: its length first, then its radius
+        var arc = Factory.CreateArc(drawing, new IFigure[] { AddPoint(drawing, x: 20, y: -5), AddPoint(drawing, x: 22, y: -5), AddPoint(drawing, x: 20, y: -3) });
+        Actions.Add(drawing, arc);
+        Click(drawing, system.ToPhysical(new Point(20 + System.Math.Sqrt(2), -5 + System.Math.Sqrt(2))));
+        var arcLength = drawing.Figures.OfType<LengthMeasurement>().Last();
+        Require(arcLength.Dependencies.Single() == arc && arcLength.Quantity == LengthQuantity.ArcLength, "A click on an arc measures its " + arcLength.Quantity);
+        Near(arcLength.Length, System.Math.PI);
+        Require(arcLength.Coordinates.Distance(arc.ArcMiddle) < 2, "The arc's length is not next to the arc.");
+        Require(arcLength.Quantities.SequenceEqual(new[] { LengthQuantity.ArcLength, LengthQuantity.Radius }), "An arc offers " + string.Join(", ", arcLength.Quantities));
+        drawing.Behavior = new Dragger();
 
         // the other kinds
         var corners = new IFigure[] { AddPoint(drawing, x: 10, y: 0), AddPoint(drawing, x: 13, y: 0), AddPoint(drawing, x: 13, y: 3), AddPoint(drawing, x: 10, y: 3) };
@@ -2595,16 +2864,25 @@ public class Program
         }
 
         Near(hexagon.Perimeter, 6);
-        var hexagonMeasurement = Factory.CreatePerimeterMeasurement(drawing, new IFigure[] { hexagon });
+        var hexagonMeasurement = Factory.CreateLengthMeasurement(drawing, new IFigure[] { hexagon });
         Actions.Add(drawing, hexagonMeasurement);
         Near(hexagonMeasurement.Length, 6);
+        Require(hexagonMeasurement.Quantity == LengthQuantity.Perimeter && hexagonMeasurement.Text == "P = 6", "The hexagon says " + hexagonMeasurement.Text);
         var ellipse = Factory.CreateEllipse(drawing, new IFigure[] { AddPoint(drawing, x: 30, y: 0), AddPoint(drawing, x: 33, y: 0), AddPoint(drawing, x: 30, y: 2) });
         Actions.Add(drawing, ellipse);
         Require(System.Math.Abs(ellipse.Perimeter - 15.865439589290586) < 1e-6, "An ellipse with axes 3 and 2 has the perimeter " + ellipse.Perimeter);
         var sector = Factory.CreateCircleSector(drawing, new IFigure[] { AddPoint(drawing, x: 40, y: 0), AddPoint(drawing, x: 42, y: 0), AddPoint(drawing, x: 40, y: 2) });
         Actions.Add(drawing, sector);
         Near(sector.Perimeter, System.Math.PI + 4);
-        var segment = Factory.CreateCircleSegment(drawing, new IFigure[] { AddPoint(drawing, x: 50, y: 0), AddPoint(drawing, x: 52, y: 0), AddPoint(drawing, x: 48, y: 0) });
+        var sectorLength = Factory.CreateLengthMeasurement(drawing, new IFigure[] { sector });
+        Actions.Add(drawing, sectorLength);
+        Require(sectorLength.Quantity == LengthQuantity.ArcLength && !sector.IsUsedForArea(), "A sector's arc length keeps it from being an arc.");
+        sectorLength.Quantity = LengthQuantity.Perimeter;
+        Near(sectorLength.Length, System.Math.PI + 4);
+        Require(sector.IsUsedForArea(), "A sector's perimeter lets it become an arc.");
+        sectorLength.Quantity = LengthQuantity.Radius;
+        Require(sectorLength.Text == "r = 2", "The sector's radius says " + sectorLength.Text);
+        var segment =Factory.CreateCircleSegment(drawing, new IFigure[] { AddPoint(drawing, x: 50, y: 0), AddPoint(drawing, x: 52, y: 0), AddPoint(drawing, x: 48, y: 0) });
         Actions.Add(drawing, segment);
         Near(segment.Perimeter, 2 * System.Math.PI + 4);
 
@@ -2621,13 +2899,18 @@ public class Program
             filled: true);
         Actions.Add(drawing, path);
         Require(System.Math.Abs(path.Perimeter - 2 * System.Math.PI) < 0.01, "The path around the unit circle has the perimeter " + path.Perimeter);
-        var pathMeasurement = Factory.CreatePerimeterMeasurement(drawing, new IFigure[] { path });
+        var pathMeasurement = Factory.CreateLengthMeasurement(drawing, new IFigure[] { path });
         Actions.Add(drawing, pathMeasurement);
         Require(pathMeasurement.Exists, "The closed path's perimeter doesn't exist.");
         path.Closed = false;
-        Require(double.IsNaN(path.Perimeter) && !pathMeasurement.Exists, "An open path still has a perimeter.");
+        Require(double.IsNaN(path.Perimeter) && pathMeasurement.Quantity == LengthQuantity.Length && pathMeasurement.Exists, "An open path's number is not its length.");
         path.Closed = true;
-        Require(pathMeasurement.Exists, "Closed again, the path's perimeter is still gone.");
+        Require(pathMeasurement.Quantity == LengthQuantity.Perimeter && pathMeasurement.Exists, "Closed again, the path's number is not its perimeter.");
+        var sticking = Factory.CreateLengthMeasurement(drawing, new IFigure[] { path }, LengthQuantity.Perimeter);
+        Actions.Add(drawing, sticking);
+        path.Closed = false;
+        Require(!sticking.Exists, "A perimeter asked for stays on an open path.");
+        path.Closed = true;
         drawing.Figures.CheckConsistency();
     }
 

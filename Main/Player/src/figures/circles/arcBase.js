@@ -85,7 +85,12 @@ class EllipseArcBase extends ShapeBase {
         return GeometryMath.ellipseArcLength(this.semiMajor, this.semiMinor, start, this.parametricSweep);
     }
 
-    /** The point half way along the arc (where a perimeter's number sits) */
+    /** The length of the arc by its own name, for expressions: s.ArcLength */
+    get arcLength() {
+        return this.length;
+    }
+
+    /** The point half way along the arc (where a length's number sits) */
     get arcMiddle() {
         const begin = this.parametricAngle(this.beginLocation);
         const sweep = this.parametricSweep;

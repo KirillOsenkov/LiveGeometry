@@ -68,6 +68,15 @@ namespace DynamicGeometry
 
         public IPoint LengthEndpoint => RadiusEnd;
 
+        /// <summary>For expressions, c.Diameter (c.Length is the radius, as the grid's row)</summary>
+        public double Diameter
+        {
+            get
+            {
+                return 2 * Radius;
+            }
+        }
+
         /// <summary>A measurement of the radius sits between the two radius points</summary>
         public IList<IFigure> MeasuredFigures
         {

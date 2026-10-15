@@ -600,7 +600,7 @@ namespace DynamicGeometry
 
         void ReadMeasureDistance(IniFile.Section section)
         {
-            var figure = Factory.CreateDistanceMeasurement(
+            var figure = Factory.CreateLengthMeasurement(
                 drawing, GetPointList(section, 2));
             figure.Offset = ReadLabelOffset(section);
             AddLabelFigure(section, figure);

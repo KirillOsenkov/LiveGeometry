@@ -184,7 +184,16 @@ namespace DynamicGeometry
             return Math.PointOnEllipse(Center, SemiMajor, SemiMinor, Inclination, t);
         }
 
-        /// <summary>The point half way along the arc (where a perimeter's number sits)</summary>
+        /// <summary>The length of the arc by its own name, for expressions: s.ArcLength, of a sector too</summary>
+        public double ArcLength
+        {
+            get
+            {
+                return Length;
+            }
+        }
+
+        /// <summary>The point half way along the arc (where a length's number sits)</summary>
         public Point ArcMiddle
         {
             get

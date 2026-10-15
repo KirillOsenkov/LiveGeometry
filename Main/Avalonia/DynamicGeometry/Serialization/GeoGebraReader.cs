@@ -939,9 +939,22 @@ public class GeoGebraReader
             return angleNumbers.Contains(figure) && degrees ? "deg(" + value + ")" : value;
         }
 
-        if (figure is DistanceMeasurement distance && distance.Dependencies.Count == 2 && distance.Dependencies.All(d => d is IPoint && IsIdentifier(d.Name)))
+        if (figure is LengthMeasurement distance && distance.Dependencies.Count == 2 && distance.Dependencies.All(d => d is IPoint && IsIdentifier(d.Name)))
         {
             return "dist(" + distance.Dependencies[0].Name + ", " + distance.Dependencies[1].Name + ")";
+        }
+
+        // a measurement of one figure (r = Radius(c), p = Perimeter(poly), a = Area(poly))
+        // by its own number: left bare, the name was no number to our language, and what
+        // was built on it kept the worksheet's value
+        if (figure is LengthMeasurement && IsIdentifier(figure.Name))
+        {
+            return figure.Name + "." + nameof(LengthMeasurement.Length);
+        }
+
+        if (figure is AreaMeasurement && IsIdentifier(figure.Name))
+        {
+            return figure.Name + "." + nameof(AreaMeasurement.Measure);
         }
 
         if (figure is Segment segment && segment.Dependencies.All(d => IsIdentifier(d.Name)))
@@ -1475,7 +1488,17 @@ public class GeoGebraReader
                     inputs.Length >= 3 ? Points(inputs, inputs.Length) : new[] { Resolve(inputs[0]) })));
             case "Perimeter":
             case "Circumference":
-                return One(Add(Factory.CreatePerimeterMeasurement(drawing, new[] { PerimeterOf(inputs[0]) })));
+                {
+                    // (a sector's perimeter, not its arc length, which comes first of its lengths)
+                    var shape = PerimeterOf(inputs[0]);
+                    return One(Add(Factory.CreateLengthMeasurement(
+                        drawing,
+                        new[] { shape },
+                        shape is EllipseBase ? LengthQuantity.Circumference : LengthQuantity.Perimeter)));
+                }
+
+            case "Radius":
+                return One(Add(Factory.CreateLengthMeasurement(drawing, new[] { RadiusOf(inputs[0]) }, LengthQuantity.Radius)));
             case "Text":
                 return One(CreateText(inputs[0]));
             case "Mirror":
@@ -1953,10 +1976,15 @@ public class GeoGebraReader
     {
         if (inputs.Length == 1)
         {
-            return Add(Factory.CreateDistanceMeasurement(drawing, new[] { Resolve(inputs[0]) }));
+            // (GeoGebra's length of a circle is its circumference, not the radius it measures first here)
+            var measured = Resolve(inputs[0]);
+            return Add(Factory.CreateLengthMeasurement(
+                drawing,
+                new[] { measured },
+                measured is EllipseBase ? LengthQuantity.Circumference : null));
         }
 
-        return Add(Factory.CreateDistanceMeasurement(drawing, Points(inputs, count: 2)));
+        return Add(Factory.CreateLengthMeasurement(drawing, Points(inputs, count: 2)));
     }
 
     /// <summary>Rotate[figure, angle, center]; without a center, about the origin</summary>
@@ -2191,6 +2219,18 @@ public class GeoGebraReader
         }
 
         throw new LeftOutException("'" + argument + "' has no perimeter");
+    }
+
+    /// <summary>A circle, or a circular arc, sector or segment</summary>
+    IFigure RadiusOf(string argument)
+    {
+        var figure = Resolve(argument);
+        if (figure is CircleBase || figure is CircleArcBase)
+        {
+            return figure;
+        }
+
+        throw new LeftOutException("'" + argument + "' has no radius");
     }
 
     /// <summary>Something with a length: a segment, a slider, a number; a typed value becomes a Number</summary>

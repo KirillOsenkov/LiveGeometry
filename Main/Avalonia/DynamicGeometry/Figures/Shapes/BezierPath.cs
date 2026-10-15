@@ -1062,7 +1062,20 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     {
         get
         {
-            if (!closed || PieceCount == 0 || !CurvesExist())
+            return closed ? Length : double.NaN;
+        }
+    }
+
+    /// <summary>
+    /// The length of the pieces drawn, added up: an open path's from its first anchor to its
+    /// last, a closed one's all the way round (its <see cref="Perimeter"/>); NaN while a point
+    /// it goes through is nowhere
+    /// </summary>
+    public double Length
+    {
+        get
+        {
+            if (PieceCount == 0 || !CurvesExist())
             {
                 return double.NaN;
             }

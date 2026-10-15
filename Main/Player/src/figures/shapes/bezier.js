@@ -52,6 +52,12 @@ class Bezier extends ShapeBase {
         return GeometryMath.midpoint(this.point(0), this.point(1), this.point(2), this.point(3));
     }
 
+    /** The length of the curve (b.Length in expressions); NaN while a point is nowhere */
+    get length() {
+        const curve = this.curveInfo;
+        return curve != null && curve.points != null && curve.points.every(point => point.exists()) ? curve.length : NaN;
+    }
+
     hitTest(point) {
         const curve = this.curveInfo;
         if (curve == null || curve.points == null) {
