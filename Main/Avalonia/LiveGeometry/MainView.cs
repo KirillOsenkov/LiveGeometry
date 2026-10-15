@@ -82,6 +82,7 @@ public partial class MainView : UserControl
             }
         };
         AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+        ExceptionReports.Address = ShareService;
 
         AddHandler(KeyDownEvent, MainView_KeyDown, RoutingStrategies.Tunnel);
         AddHandler(KeyUpEvent, MainView_KeyUp, RoutingStrategies.Tunnel);
@@ -402,7 +403,8 @@ public partial class MainView : UserControl
     // side panel, so that a problem the code swallows is still seen. Reported on the UI
     // thread; while a report is on its way, exceptions it may throw itself are dropped, and
     // the same exception thrown again and again (on every mouse move, say) only refreshes
-    // the status bar.
+    // the status bar. What is shown is also sent to the site (ExceptionReports), in a build
+    // that has its address; what the sending throws itself is neither shown nor sent.
 
     bool reportingException;
     string lastExceptionText;
@@ -410,10 +412,12 @@ public partial class MainView : UserControl
     void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
     {
         var exception = e.Exception;
-        if (reportingException || exception == null || IsBenign(exception))
+        if (reportingException || exception == null || ExceptionReports.IsOwn(exception) || IsBenign(exception))
         {
             return;
         }
+
+        ExceptionReports.Add(exception);
 
         // the exception's own trace is filled in as it unwinds, and in the browser it can
         // stay empty; here, at the throw, the stack still has the throw site on it

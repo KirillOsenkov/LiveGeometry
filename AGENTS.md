@@ -476,6 +476,20 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   never hand layout NaN or infinity. A `JSException` has no .NET stack, so the handler
   captures `Environment.StackTrace` at the throw. Text boxes of the property grid wrap at
   480 px (`PropertyGridTheme`), so a stack trace doesn't stretch the panel across the window.
+  What is shown is also sent to the site (2026-10-15; `ExceptionReports.cs`), desktop and
+  browser alike, in a build given `ShareService` (see "Share links"):
+  `POST {ShareService}/api/v1/exceptions`, `Content-Type: text/plain` with
+  `{ build, platform, reports: [ { type, message, frames } ] }` (204; 400, 403, 413, 429 as
+  for shares), where `frames` is the stack at the throw as `Namespace.Type.Method`, captured
+  in the handler (the exception's own trace has only the throwing frame at first chance) and
+  cut after `CurrentDomain_FirstChanceException`, and the message is cut at 1000
+  characters. Each goes once among the last 10 (a loop sends one), at most 50 a session,
+  queued and sent by a background task in batches of up to 20, 5 seconds after the first of
+  a burst. Nothing of the reporting is reported (`ExceptionReports.IsOwn`, checked first in
+  the handler, so it isn't shown either): an exception while a report is made, anything the
+  sender's code throws (an `AsyncLocal` flag flows into its awaits), and a network failure
+  while a batch is on its way (`IsNetworkFailure`, which sharing uses too). A build without
+  `ShareService` sends nothing.
 
 ## Design decisions
 

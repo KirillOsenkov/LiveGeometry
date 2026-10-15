@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
@@ -53,12 +52,7 @@ public partial class MainView
 
     static bool IsSharingFailure(Exception exception)
     {
-        return exception is HttpRequestException
-            || exception is TaskCanceledException
-            || exception is System.Net.Sockets.SocketException
-            || exception is IOException
-            || exception is System.Security.Authentication.AuthenticationException
-            || exception.GetType().Name == "JSException";
+        return ExceptionReports.IsNetworkFailure(exception);
     }
 
     async void CopyShareLink()
