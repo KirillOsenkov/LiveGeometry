@@ -33,8 +33,6 @@ namespace DynamicGeometry
             }
         }
 
-#if !PLAYER && !TABULA
-
         // not offered (no [PropertyGridVisible], which the grid looks for on a method, whatever
         // it says): no tool makes a polyline (the Polyline tool is [Ignore]d), so one would be
         // a figure the user can't make or recognize
@@ -61,7 +59,5 @@ namespace DynamicGeometry
 
             drawing.RaiseUserIsAddingFigures(new Drawing.UIAFEventArgs() { Figures = polyline.AsEnumerable<IFigure>() });
         }
-
-#endif
     }
 }

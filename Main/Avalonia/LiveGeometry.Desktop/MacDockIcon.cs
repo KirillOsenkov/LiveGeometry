@@ -60,7 +60,7 @@ public static class MacDockIcon
         icon.Measure(new Size(PixelSize, PixelSize));
         icon.Arrange(new Rect(0, 0, PixelSize, PixelSize));
 
-        using var bitmap = new RenderTargetBitmap(new PixelSize(PixelSize, PixelSize), new Vector(96, 96));
+        using var bitmap = new RenderTargetBitmap(new PixelSize(PixelSize, PixelSize), new Avalonia.Vector(96, 96));
         bitmap.Render(icon);
         using var stream = new MemoryStream();
         bitmap.Save(stream, new PngBitmapEncoderOptions());

@@ -803,8 +803,6 @@ namespace DynamicGeometry
             }
         }
 
-#if !PLAYER
-
         [PropertyGridVisible]
         [PropertyGridName("Style")]
         [PropertyGridGroup("Style")]
@@ -820,8 +818,6 @@ namespace DynamicGeometry
                 Style = value;
             }
         }
-
-#endif
 
         protected bool mVisible = true;
         [PropertyGridVisible]
@@ -903,19 +899,9 @@ namespace DynamicGeometry
         {
             get 
             { 
-#if TABULA
-                var mirror = Drawing.Figures.FirstOrDefault(f=>f is Mirror);
-                if (mirror != null && this != mirror && this != (mirror as Mirror).Edge && 
-                    (this.DependsOn(mirror) || this.DependsOn((mirror as Mirror).Edge)))
-                {
-                    return false;
-                }
-#endif
                 return true; 
             }
         }
-
-#if !PLAYER
 
         /// <summary>Over every other figure of its band of layers (<see cref="ZOrders"/>)</summary>
         [PropertyGridVisible]
@@ -954,8 +940,6 @@ namespace DynamicGeometry
         {
             Actions.Remove(this);
         }
-
-#endif
 
         protected Canvas Canvas
         {
@@ -1128,8 +1112,6 @@ namespace DynamicGeometry
             }
         }
 
-#if !PLAYER
-
         [PropertyGridVisible]
         [PropertyGridName("Edit this style")]
         [PropertyGridGroup("Style")]
@@ -1171,8 +1153,6 @@ namespace DynamicGeometry
 
             EditStyleButton();
         }
-
-#endif
 
         void style_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -1287,9 +1267,7 @@ namespace DynamicGeometry
 
         #endregion
 
-#if !PLAYER
         public PropertyGrid PropertyGrid { get; set; }
-#endif
 
         public virtual object GetContentForPropertyGrid()
         {

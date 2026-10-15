@@ -133,14 +133,12 @@ namespace DynamicGeometry
                 Release(stale);
             }
 
-#if !SILVERLIGHT
             // (not on a show/hide box, which two quick clicks tick and untick)
             if (e.ClickCount == 2 && !(Drawing.Figures.HitTest(Coordinates(e, false, false, false)) is ShowHideControl))
             {
                 Drawing.ZoomToFit();
                 return;
             }
-#endif
             drags.Add(PrepareDrag(e));
         }
 
@@ -900,8 +898,6 @@ namespace DynamicGeometry
 
         #endregion
 
-#if !PLAYER
-
         /// <summary>
         /// Context menu for the figure under the cursor, like the point and figure menus
         /// of the original DG.
@@ -1191,8 +1187,6 @@ namespace DynamicGeometry
                 e.Handled = true;
             }
         }
-
-#endif
 
         private void UpdateSelection(Drag drag)
         {

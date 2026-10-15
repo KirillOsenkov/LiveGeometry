@@ -98,8 +98,6 @@ namespace DynamicGeometry
             drawing.RaiseUserIsAddingFigures(new Drawing.UIAFEventArgs() { Figures = newLine.AsEnumerable<IFigure>() });
         }
 
-#if !PLAYER && !TABULA
-
         [PropertyGridVisible]
         [PropertyGridName("Convert to ray")]
         [PropertyGridIcon(PropertyGridIcon.Ray)]
@@ -167,8 +165,5 @@ namespace DynamicGeometry
                 Drawing.RaiseDisplayProperties(this);
             }
         }
-
-#endif
-
     }
 }

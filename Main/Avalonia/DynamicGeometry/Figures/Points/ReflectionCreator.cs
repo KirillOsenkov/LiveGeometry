@@ -5,7 +5,6 @@ using Avalonia;
 namespace DynamicGeometry
 {
 
-#if !PLAYER
     [Category(BehaviorCategories.Transform)]
     [Order(1)]
     public class ReflectionCreator : FigureCreator
@@ -119,5 +118,4 @@ namespace DynamicGeometry
                 .Canvas;
         }
     }
-#endif
 }

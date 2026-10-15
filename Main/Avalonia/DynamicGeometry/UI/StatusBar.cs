@@ -53,9 +53,7 @@ namespace DynamicGeometry
             }
         }
 
-#if !SILVERLIGHT
         new 
-#endif
         public bool IsVisible
         {
             get

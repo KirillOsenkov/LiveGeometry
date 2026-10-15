@@ -11,13 +11,11 @@ namespace DynamicGeometry
 {
     public partial class DrawingSerializer
     {
-#if !SILVERLIGHT
         public static void Save(Drawing drawing, string fileName)
         {
             string serialized = SaveDrawing(drawing);
             File.WriteAllText(fileName, serialized);
         }
-#endif
         public static string SaveDrawing(Drawing drawing)
         {
             return WriteUsingXmlWriter(w => SaveDrawing(drawing, w));

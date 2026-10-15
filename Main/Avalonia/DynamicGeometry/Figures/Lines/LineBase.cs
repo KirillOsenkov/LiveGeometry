@@ -105,9 +105,6 @@ namespace DynamicGeometry
             return new Tuple<double, double>(p1 * 2, p2 * 2);
         }
 
-#if TABULA
-        [PropertyGridVisible]   // I expose this to the user.  Not sure if it should be exposed in other implementations.
-#endif
         public virtual double Angle
         {
             get

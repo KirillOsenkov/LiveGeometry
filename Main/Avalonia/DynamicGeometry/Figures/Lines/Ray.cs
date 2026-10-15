@@ -99,8 +99,6 @@ namespace DynamicGeometry
             }
         }
 
-#if !PLAYER && !TABULA
-
         [PropertyGridVisible]
         [PropertyGridName("Convert to line")]
         [PropertyGridIcon(PropertyGridIcon.Line)]
@@ -164,7 +162,5 @@ namespace DynamicGeometry
             DirectionConstraint.Align(this, axis: 90);
             Drawing.RaiseDisplayProperties(this);
         }
-
-#endif
     }
 }

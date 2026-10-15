@@ -2522,8 +2522,7 @@ buttons and checkboxes, 3D, custom tools.
 
 `Main/Player/` (2026-10-07; the plan it follows is `docs/player-plan.md`): a drawing on any
 web page, in plain JavaScript with no dependencies, a canvas with the Drag tool and nothing
-else - no ribbon, grid, list or gallery, no undo, no selection. The Silverlight-era
-`PLAYER`/`TABULA` defines in `DynamicGeometry` are not it (they are leftovers to delete).
+else - no ribbon, grid, list or gallery, no undo, no selection.
 
 - **A port of the library, file by file**: `src/` mirrors `DynamicGeometry/` (`math.js`,
   `drawing.js`, `figures/points/midPoint.js`, `expressions/parser/scanner.js`,

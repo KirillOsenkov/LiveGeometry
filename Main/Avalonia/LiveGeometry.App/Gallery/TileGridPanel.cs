@@ -48,10 +48,10 @@ public class TileGridPanel : Panel
             availableWidth = MinTileWidth * 4 + Gap * 3;
         }
 
-        columns = (int)Math.Floor((availableWidth + Gap) / (MinTileWidth + Gap));
-        columns = Math.Max(1, Math.Min(MaxColumns, columns));
-        var width = Math.Floor((availableWidth - (columns - 1) * Gap) / columns);
-        tileSize = new Size(width, Math.Round(width * TileAspect));
+        columns = (int)System.Math.Floor((availableWidth + Gap) / (MinTileWidth + Gap));
+        columns = System.Math.Max(1, System.Math.Min(MaxColumns, columns));
+        var width = System.Math.Floor((availableWidth - (columns - 1) * Gap) / columns);
+        tileSize = new Size(width, System.Math.Round(width * TileAspect));
     }
 
     protected override Size MeasureOverride(Size availableSize)

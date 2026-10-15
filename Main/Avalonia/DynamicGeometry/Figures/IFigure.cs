@@ -87,9 +87,7 @@ namespace DynamicGeometry
         /// <param name="blacklist">A list of names to exclude. Can be null.</param>
         string GenerateFigureName(List<string> blacklist);
 
-#if !PLAYER
         void WriteXml(XmlWriter writer);
-#endif
         void ReadXml(XElement element);
 
         /// <summary>

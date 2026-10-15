@@ -43,11 +43,7 @@ namespace DynamicGeometry
                 }
             }
             DrawingUpdater updater;
-#if TABULA
-            updater = new TABDrawingUpdater();
-#else
             updater = new DrawingUpdater();
-#endif
             updater.UpdateIfNecessary(drawing);
             drawing.Recalculate();
         }
@@ -274,11 +270,7 @@ namespace DynamicGeometry
             {
                 text = text.Replace('І', '²');
             }
-#if !PLAYER
             drawing.ActionManager.SetProperty(label, "Text", text);
-#else
-            label.Text = text;
-#endif
         }
 
         void ProcessFigure(IniFile.Section section)

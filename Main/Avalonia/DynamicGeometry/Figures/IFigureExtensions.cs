@@ -429,13 +429,6 @@ namespace DynamicGeometry
 
             // New Scheme - each class essentially uses its own index.
             string className = figure.GetType().Name;
-#if TABULA
-            // Some of the classes in Tabula have prefixes that need to be trimmed. - D.H.
-            if (className[0] == 'T' && className[1] == 'A' && className[2] == 'B')
-            {
-                className = className.TrimStart('T', 'A', 'B');
-            }
-#endif
             for (int i = 1; i < int.MaxValue; i++)
             {
                 string number = i.ToString();

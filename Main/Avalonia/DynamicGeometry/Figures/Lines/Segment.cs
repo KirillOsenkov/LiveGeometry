@@ -247,8 +247,6 @@ namespace DynamicGeometry
             return defaultCaption;
         }
 
-#if !PLAYER && !TABULA
-
         /// <summary>The segment keeps its length from now on (<see cref="LengthConstraint.Fix"/>)</summary>
         [PropertyGridVisible]
         [PropertyGridName("Fix length")]
@@ -336,8 +334,6 @@ namespace DynamicGeometry
             }
         }
 
-#endif
-
         public override double GetNearestParameterFromPoint(Avalonia.Point point)
         {
             var parameter = base.GetNearestParameterFromPoint(point);
@@ -396,8 +392,6 @@ namespace DynamicGeometry
             //return "Segment " + Dependencies[0].ToString() + Dependencies[1].ToString();
         }
 
-#if !PLAYER && !TABULA
-
         [PropertyGridVisible]
         [PropertyGridName("Convert to line")]
         [PropertyGridIcon(PropertyGridIcon.Line)]
@@ -413,7 +407,5 @@ namespace DynamicGeometry
         {
             LineTwoPoints.Convert(this, Factory.CreateRay(this.Drawing, this.Dependencies));
         }
-
-#endif
     }
 }

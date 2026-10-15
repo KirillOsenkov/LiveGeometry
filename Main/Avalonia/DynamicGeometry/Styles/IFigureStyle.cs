@@ -25,9 +25,7 @@ namespace DynamicGeometry
 
         /// <summary>The style as it looks under the theme on screen (see <see cref="FigureStyle.Resolve(string)"/>)</summary>
         IFigureStyle Resolve();
-#if !PLAYER
         FigureStyle.EditInfo CurrentEditInfo { get; set; }
-#endif
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]

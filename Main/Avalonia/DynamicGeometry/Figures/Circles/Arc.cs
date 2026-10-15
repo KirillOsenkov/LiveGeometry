@@ -55,8 +55,6 @@ namespace DynamicGeometry
             drawing.RaiseUserIsAddingFigures(new Drawing.UIAFEventArgs() { Figures = newArc.AsEnumerable<IFigure>() });
         }
 
-#if !PLAYER && !TABULA
-
         [PropertyGridVisible]
         [PropertyGridName("Convert to segment")]
         [PropertyGridIcon(PropertyGridIcon.CircleSegment)]
@@ -72,9 +70,6 @@ namespace DynamicGeometry
         {
             EllipseArc.Convert(this, Factory.CreateEllipseSector(this.Drawing, this.Dependencies));
         }
-
-#endif
-
     }
 
     public partial class CircleArc : CircleArcBase
@@ -86,8 +81,6 @@ namespace DynamicGeometry
                 return "Arc";
             }
         }
-
-#if !PLAYER && !TABULA
 
         [PropertyGridVisible]
         [PropertyGridName("Convert to segment")]
@@ -104,9 +97,6 @@ namespace DynamicGeometry
         {
             EllipseArc.Convert(this, Factory.CreateCircleSector(this.Drawing, this.Dependencies));
         }
-
-#endif
-
     }
 
     // Below are simple implementations of a circle and ellipse segments.  
@@ -171,8 +161,6 @@ namespace DynamicGeometry
             }
         }
 
-#if !PLAYER && !TABULA
-
         [PropertyGridVisible]
         [PropertyGridName("Convert to arc")]
         [PropertyGridIcon(PropertyGridIcon.Arc)]
@@ -188,9 +176,6 @@ namespace DynamicGeometry
         {
             EllipseArc.Convert(this, Factory.CreateCircleSector(this.Drawing, this.Dependencies));
         }
-
-#endif
-
     }
 
     public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties, IRegion
@@ -259,8 +244,6 @@ namespace DynamicGeometry
             }
         }
 
-#if !PLAYER && !TABULA
-
         [PropertyGridVisible]
         [PropertyGridName("Convert to arc")]
         [PropertyGridIcon(PropertyGridIcon.Arc)]
@@ -276,9 +259,6 @@ namespace DynamicGeometry
         {
             EllipseArc.Convert(this, Factory.CreateEllipseSector(this.Drawing, this.Dependencies));
         }
-
-#endif
-
     }
 
     public partial class CircleSector : CircleArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties, IRegion
@@ -362,8 +342,6 @@ namespace DynamicGeometry
             }
         }
 
-#if !PLAYER && !TABULA
-
         [PropertyGridVisible]
         [PropertyGridName("Convert to arc")]
         [PropertyGridIcon(PropertyGridIcon.Arc)]
@@ -379,9 +357,6 @@ namespace DynamicGeometry
         {
             EllipseArc.Convert(this, Factory.CreateCircleSegment(this.Drawing, this.Dependencies));
         }
-
-#endif
-
     }
 
     public partial class EllipseSector : EllipseArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties, IRegion
@@ -475,8 +450,6 @@ namespace DynamicGeometry
             }
         }
 
-#if !PLAYER && !TABULA
-
         [PropertyGridVisible]
         [PropertyGridName("Convert to arc")]
         [PropertyGridIcon(PropertyGridIcon.Arc)]
@@ -492,9 +465,6 @@ namespace DynamicGeometry
         {
             EllipseArc.Convert(this, Factory.CreateEllipseSegment(this.Drawing, this.Dependencies));
         }
-
-#endif
-
     }
 
 }

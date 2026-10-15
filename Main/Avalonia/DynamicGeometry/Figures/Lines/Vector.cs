@@ -155,8 +155,6 @@ namespace DynamicGeometry
         public Segment Line { get; set; }
         public Arrow Arrow { get; set; }
 
-#if !PLAYER
-
         public override void WriteXml(XmlWriter writer)
         {
             if (!Visible)
@@ -179,7 +177,6 @@ namespace DynamicGeometry
             }
         }
 
-#endif
         public override void ReadXml(XElement element)
         {
             // Do not use CompositeFigure.ReadXml() because there are no children to read. Children are created by constructor.

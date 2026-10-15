@@ -220,14 +220,10 @@ namespace DynamicGeometry
             }
         }
 
-#if !PLAYER
-
         protected void AbortAndSetDefaultTool()
         {
             Drawing.SetDefaultBehavior();
         }
-
-#endif
 
         // Avalonia has no global Keyboard.Modifiers; every input event carries the
         // modifier state, so track the last observed state as events flow through.
@@ -625,7 +621,6 @@ namespace DynamicGeometry
         /// </summary>
         public virtual void MouseRightClick(object sender, MouseButtonEventArgs e)
         {
-#if !PLAYER
             if (IsInInitialState)
             {
                 AbortAndSetDefaultTool();
@@ -634,7 +629,6 @@ namespace DynamicGeometry
             {
                 Restart();
             }
-#endif
         }
 
         #region The right button
@@ -1186,7 +1180,6 @@ namespace DynamicGeometry
 
         public virtual void KeyDown(object sender, KeyEventArgs e)
         {
-#if !PLAYER
             if (e.Key == Avalonia.Input.Key.Escape)
             {
                 AbortAndSetDefaultTool();
@@ -1208,8 +1201,6 @@ namespace DynamicGeometry
             // tools that don't handle keys themselves - Point, Slider, Text. They are tool
             // letters now, A for the arc and G for the grid: with the Point tool on, G
             // showed the grid and, without a word, made every new point snap to it.)
-
-#endif
         }
 
         public virtual void KeyUp(object sender, KeyEventArgs e)

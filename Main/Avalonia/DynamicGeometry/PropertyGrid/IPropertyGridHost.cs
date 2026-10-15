@@ -8,8 +8,6 @@
     /// </summary>
     public interface IPropertyGridHost
     {
-#if !PLAYER
         PropertyGrid PropertyGrid { get; set; }
-#endif
     }
 }

@@ -1057,7 +1057,6 @@ namespace DynamicGeometry
             }
         }
 
-#if !SILVERLIGHT
         public static Drawing Load(string path, Canvas canvas)
         {
             Drawing drawing = new Drawing(canvas);
@@ -1069,7 +1068,6 @@ namespace DynamicGeometry
         {
             DrawingSerializer.Save(this, path);
         }
-#endif
 
         [Obsolete("Use Actions.Add instead")]
         public void Add(IFigure figure)
@@ -1077,15 +1075,11 @@ namespace DynamicGeometry
             Actions.Add(this, figure);
         }
 
-#if !PLAYER
-
         [Obsolete("Use Actions.Remove instead")]
         public void Remove(IFigure figure)
         {
             Actions.Remove(figure);
         }
-
-#endif
 
         public void Recalculate()
         {
@@ -1135,7 +1129,6 @@ namespace DynamicGeometry
             }
         }
 
-#if !TABULAPLAYER
         public void AddFromDGF(string[] lines)
         {
             var reader = new DGFReader();
@@ -1160,8 +1153,6 @@ namespace DynamicGeometry
                 RaiseStatusNotification(reader.GetErrorReport());
             }
         }
-#endif
-#if !PLAYER
 
         public string SaveAsText()
         {
@@ -1213,10 +1204,6 @@ namespace DynamicGeometry
                 }
             }
         }
-
-#endif
-
-#if !SILVERLIGHT
 
         /// <summary>In pixels: how far down and to the right each paste puts its copy from the one before</summary>
         public const double PasteStep = 24;
@@ -1297,8 +1284,6 @@ namespace DynamicGeometry
             PasteFromText(copiedFigures);
         }
 
-#endif
-#if !PLAYER
         public void Duplicate()
         {
             var transaction = Transaction.Create(ActionManager, false);
@@ -1333,8 +1318,6 @@ namespace DynamicGeometry
             transaction.Commit();
         }
 
-#endif
-      
         public void SelectAll()
         {
             foreach (IFigure figure in Figures)

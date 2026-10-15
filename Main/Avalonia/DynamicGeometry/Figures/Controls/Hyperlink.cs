@@ -7,8 +7,6 @@ using Avalonia.Media;
 
 namespace DynamicGeometry
 {
-#if !SILVERLIGHT
-
     public class HyperlinkButton : TextBlock
     {
         public HyperlinkButton()
@@ -32,8 +30,6 @@ namespace DynamicGeometry
             }
         }
     }
-
-#endif
 
     public class Hyperlink : CoordinatesShapeBase<HyperlinkButton>, IMovable
     {

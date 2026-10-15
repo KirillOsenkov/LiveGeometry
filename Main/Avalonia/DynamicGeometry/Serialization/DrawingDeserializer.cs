@@ -70,11 +70,7 @@ namespace DynamicGeometry
             ReadViewport(drawing, element);
             ReadScenes(drawing, element);
             DrawingUpdater updater;
-#if TABULA
-            updater = new TABDrawingUpdater();
-#else
             updater = new DrawingUpdater();
-#endif
             updater.UpdateIfNecessary(drawing);
             drawing.Recalculate();
 

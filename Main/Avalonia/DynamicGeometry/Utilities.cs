@@ -196,8 +196,6 @@ namespace DynamicGeometry
             figure.RecalculateAndUpdateVisual();
         }
 
-#if !PLAYER
-
         /// <summary>
         /// Replaces a figure in a drawing with another figure, redirecting the dependents of the source figure to the new figure.
         /// </summary>
@@ -226,8 +224,6 @@ namespace DynamicGeometry
             Actions.Remove(figure);
         }
 
-#endif
-
         public static string Format(this string str, params object[] arguments)
         {
             return string.Format(str, arguments);
@@ -243,8 +239,6 @@ namespace DynamicGeometry
             return Compiler.Instance.CompileExpression(drawing, expression, f => true);
         }
 
-#if !PLAYER
-
         public static void SetProperty(
             this ActionManager actionManager,
             object instance,
@@ -255,8 +249,6 @@ namespace DynamicGeometry
             var variable = new PropertyValue(propertyName, instance);
             Actions.SetProperty(actionManager, variable, value, coalesce);
         }
-
-#endif
 
         public static void Add<T>(this ICollection<T> list, params T[] items)
         {
@@ -405,13 +397,8 @@ namespace DynamicGeometry
 
         public static void CenterAt(this FrameworkElement element, Point center)
         {
-#if SILVERLIGHT
-            var x = center.X - element.ActualWidth / 2;
-            var y = center.Y - element.ActualHeight / 2;
-#else
             var x = center.X - element.Width / 2;
             var y = center.Y - element.Height / 2;
-#endif
             // a place that isn't one would make the layout pass throw and take the app down
             if (!x.IsValidValue() || !y.IsValidValue())
             {
@@ -855,14 +842,3 @@ namespace DynamicGeometry
         }
     }
 }
-
-#if SILVERLIGHT
-namespace Avalonia.Media
-{
-    public static class Brushes
-    {
-        public static SolidColorBrush Black = new SolidColorBrush(Colors.Black);
-        public static SolidColorBrush White = new SolidColorBrush(Colors.White);
-    }
-}
-#endif

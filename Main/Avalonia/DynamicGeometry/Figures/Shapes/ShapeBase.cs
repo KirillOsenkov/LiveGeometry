@@ -127,23 +127,7 @@ namespace DynamicGeometry
 
             IFigure result = null;
 
-#if SILVERLIGHT
-            // surprisingly, UIElement.HitTest expects the point to be in global coordinates
-            // and not in the coordinates of its parent.
-            // That's why we need to translate the argument point
-            // from Canvas coordinates to global coordinates
-
-            // get the transform that will convert Canvas coordinates to RootVisual coordinates
-            var transform = Shape.TransformToVisual(Application.Current.RootVisual);
-            // and apply it to the argument point
-            point = Shape.RenderTransform.Inverse.Transform(point);  // Take into account RenderTransform. - D.H.
-            var hitTestPoint = transform.Transform(point);
-
-            // finally, call HitTest with the point in global coordinates
-            result = VisualTreeHelper.FindElementsInHostCoordinates(hitTestPoint, Shape).Any() ? this : null;
-#else
             result = Avalonia.Input.InputExtensions.InputHitTest(Shape, point) != null ? this : null;
-#endif
             Shape.IsHitTestVisible = oldHitTestVisible;
 
             return result;

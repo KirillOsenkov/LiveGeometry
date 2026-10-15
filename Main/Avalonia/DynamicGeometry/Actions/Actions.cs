@@ -333,8 +333,6 @@ namespace DynamicGeometry
             actionManager.RecordAction(action);
         }
 
-#if !PLAYER
-
         /// <param name="pixelOffset">
         /// How far from the originals the copies go, in pixels down and to the right, with
         /// their roots that can move; the copies are selected
@@ -386,8 +384,6 @@ namespace DynamicGeometry
 
             drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());
         }
-
-#endif
 
         public static void InsertDependency(IFigure figure, int index, IFigure dependency)
         {

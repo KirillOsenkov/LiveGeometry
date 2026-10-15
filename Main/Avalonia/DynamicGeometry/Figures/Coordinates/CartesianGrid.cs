@@ -189,9 +189,6 @@ namespace DynamicGeometry
 
         public static FrameworkElement GetIcon()
         {
-#if TABULAPLAYER
-            return null;    // never used and my player excludes IconBuilder
-#else
             var builder = IconBuilder.BuildIcon();
             for (double i = 0.1; i < 1; i += 0.2)
             {
@@ -216,7 +213,6 @@ namespace DynamicGeometry
                 .Line(axis, 0.5, 0, 0.5, 1)
                 .Line(axis, 0, 0.5, 1, 0.5);
             return builder.Canvas;
-#endif
         }
 
         public override string ToString()

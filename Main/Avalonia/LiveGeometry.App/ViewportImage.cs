@@ -24,7 +24,7 @@ public static class ViewportImage
     public static byte[] ToPng(Visual visual, double scaling)
     {
         var size = PixelSize.FromSize(visual.Bounds.Size, scaling);
-        using var bitmap = new RenderTargetBitmap(size, new Vector(96 * scaling, 96 * scaling));
+        using var bitmap = new RenderTargetBitmap(size, new Avalonia.Vector(96 * scaling, 96 * scaling));
         bitmap.Render(visual);
         using var stream = new MemoryStream();
         bitmap.Save(stream, new PngBitmapEncoderOptions());
@@ -48,7 +48,7 @@ public static class ViewportImage
                 canvas,
                 visual,
                 new Rect(size),
-                new Vector(96, 96));
+                new Avalonia.Vector(96, 96));
         }
 
         // as Skia wrote it, white space and all: some of it is inside the text elements

@@ -4,9 +4,7 @@ namespace DynamicGeometry
 {
     public class Command : ICommand
     {
-#if !PLAYER
         public DrawingHost DrawingHost { get; set; }
-#endif
         public Command()
         {
             Observers = new CompositeCommandObserver();
@@ -19,13 +17,11 @@ namespace DynamicGeometry
             Name = name;
             Category = category;
         }
-#if !PLAYER
         public Command(DrawingHost drawingHost, Action implementation, FrameworkElement icon, string name, string category)
             : this(implementation,icon,name,category)
         {
             DrawingHost = drawingHost;
         }
-#endif
         bool enabled = true;
         public bool Enabled
         {
@@ -79,12 +75,10 @@ namespace DynamicGeometry
             {
                 Implementation();
             }
-#if !PLAYER
             if (DrawingHost != null)
             {
                 DrawingHost.RaiseCommandExecuted(this);
             }
-#endif
         }
 
         public void AddObserver(ICommandObserver observer)

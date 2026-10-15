@@ -35,12 +35,10 @@ namespace DynamicGeometry
                 {
                     name = value;
                 }
-#if !PLAYER
                 if (CurrentEditInfo.PropertyGrid != null)
                 {
                     CurrentEditInfo.PropertyGrid.UpdateHeader();
                 }
-#endif
             }
         }
 
@@ -155,13 +153,11 @@ namespace DynamicGeometry
                 return !AppTheme.IsBase(theme) && Overrides.TryGetValue(theme.Name, out var values) && values.Count > 0;
             }
 
-#if !PLAYER
             // a style every drawing starts with is not deleted: no button that does nothing
             if (propertyName == nameof(Delete))
             {
                 return StyleManager != null && StyleManager.CanRemove(this);
             }
-#endif
 
             return true;
         }
@@ -404,13 +400,10 @@ namespace DynamicGeometry
             }
         }
 
-#if !PLAYER
         public override string ToString()
         {
             var result = Name;
-#if !TABULA
             result += "\n" + GetSignature();
-#endif
             return result;
         }
 
@@ -463,8 +456,5 @@ namespace DynamicGeometry
             StyleManager.Remove(this);
             FinishEditing();
         }
-
-#endif
-
     }
 }
