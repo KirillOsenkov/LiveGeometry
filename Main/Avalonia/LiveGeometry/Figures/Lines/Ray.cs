@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class Ray : LineBase, ILine, IFixableDirection
 {

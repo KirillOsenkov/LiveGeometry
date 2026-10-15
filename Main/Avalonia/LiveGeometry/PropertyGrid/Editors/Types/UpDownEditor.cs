@@ -2,7 +2,7 @@ using System.Globalization;
 using Avalonia.Controls;
 using Avalonia.Layout;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Picked by <c>[PropertyGridPreferredEditor("UpDown")]</c> on a double: a number box with

@@ -13,7 +13,7 @@ using Avalonia.Controls.Shapes;
 using System.Xml.Linq;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class IgnoreAttribute : Attribute { }
 

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Picked by <c>[PropertyGridPreferredEditor("Function")]</c> on a string: the expression in

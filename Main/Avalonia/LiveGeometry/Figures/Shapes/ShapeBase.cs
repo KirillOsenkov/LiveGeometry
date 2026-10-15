@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial interface IShapeWithInterior
 {

@@ -1,6 +1,6 @@
 ﻿using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class SetPropertyAction : AbstractAction
 {

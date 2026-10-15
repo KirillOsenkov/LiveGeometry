@@ -9,7 +9,6 @@ using System.Xml;
 using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Media.Imaging;
-using DynamicGeometry;
 
 namespace LiveGeometry;
 

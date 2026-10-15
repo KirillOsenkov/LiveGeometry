@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class ReflectedPoint : PointBase, IPoint
 {

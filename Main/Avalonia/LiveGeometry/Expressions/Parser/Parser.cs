@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class Parser
 {

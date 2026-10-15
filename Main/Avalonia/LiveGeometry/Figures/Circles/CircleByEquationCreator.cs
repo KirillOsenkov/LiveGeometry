@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Input;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Coordinates)]
 [Order(3)]

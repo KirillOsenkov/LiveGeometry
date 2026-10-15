@@ -1,6 +1,6 @@
 using System;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// On a button's method of an <see cref="IConditionalProperties"/> object: the button is

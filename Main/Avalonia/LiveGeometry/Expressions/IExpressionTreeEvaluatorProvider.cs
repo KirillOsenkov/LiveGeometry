@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public interface IExpressionTreeEvaluatorProvider
 {

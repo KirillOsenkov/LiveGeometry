@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A property of an <see cref="IThemeOverridable"/> as seen under one theme: reading gives

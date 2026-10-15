@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.Input;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public abstract class ShapeCreator : FigureCreator
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class DependencyList : List<Type>
 {

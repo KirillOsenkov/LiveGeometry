@@ -5,7 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using AvaloniaShapes = Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Shows, while the mouse hovers, what a click would do. For a point

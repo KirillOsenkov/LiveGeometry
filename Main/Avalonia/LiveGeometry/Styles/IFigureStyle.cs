@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [PropertyDiscoveryStrategy(typeof(ExcludeByDefaultValueDiscoveryStrategy))]
 public interface IFigureStyle : INotifyPropertyChanged

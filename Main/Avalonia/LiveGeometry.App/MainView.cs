@@ -9,8 +9,6 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
-using DynamicGeometry;
-using Drawing = DynamicGeometry.Drawing;
 
 namespace LiveGeometry;
 
@@ -96,7 +94,7 @@ public partial class MainView : UserControl
             var topLevel = TopLevel.GetTopLevel(this);
             if (topLevel != null)
             {
-                DynamicGeometry.Clipboard.SystemClipboard = topLevel.Clipboard;
+                LiveGeometry.Clipboard.SystemClipboard = topLevel.Clipboard;
                 topLevel.AddHandler(KeyDownEvent, TopLevel_KeyDown, RoutingStrategies.Tunnel);
             }
 

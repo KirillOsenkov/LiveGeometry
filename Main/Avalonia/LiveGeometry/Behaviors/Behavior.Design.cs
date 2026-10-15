@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 partial class Behavior
 {

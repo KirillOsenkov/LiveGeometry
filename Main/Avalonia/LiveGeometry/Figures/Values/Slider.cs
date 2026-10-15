@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// An adjustable number with a handle: a horizontal track from an anchor to a knob, captioned

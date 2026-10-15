@@ -6,7 +6,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
 using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
-using DynamicGeometry;
 
 namespace LiveGeometry;
 

@@ -3,7 +3,7 @@ using Avalonia;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>What a point looks like when its style has no character (<see cref="PointStyle.Shape"/>)</summary>
 public enum PointShape

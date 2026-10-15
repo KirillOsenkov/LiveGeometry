@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class BrushEditorFactory
     : BaseValueEditorFactory<BrushEditor, Brush> { }

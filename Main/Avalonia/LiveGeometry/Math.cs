@@ -4,7 +4,7 @@ using System.Linq;
 using Avalonia;
 using M = System.Math;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 
 public partial struct PointPair

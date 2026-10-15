@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Input;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Single-letter tool shortcuts - the same letters the original VB6 DG used, for the

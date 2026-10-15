@@ -1,7 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [StyleFor(typeof(LabelBase))]
 [StyleFor(typeof(ShowHideControl))]

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A figure given by expressions (a point by coordinates, a circle or a line by

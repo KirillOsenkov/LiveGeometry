@@ -4,7 +4,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class IntersectionPoint : PointBase, IPoint, IConditionalProperties
 {

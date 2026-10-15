@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The layers figures are drawn in, bottom up. A figure's <see cref="IFigure.Layer"/> is

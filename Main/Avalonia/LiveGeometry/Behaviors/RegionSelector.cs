@@ -4,7 +4,7 @@ using Avalonia.Collections;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The tools that select by dragging a region over figures (<see cref="RegionSelection"/>):

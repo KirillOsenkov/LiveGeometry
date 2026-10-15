@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The side panel of an arc, a sector or a circular segment right after it is made or

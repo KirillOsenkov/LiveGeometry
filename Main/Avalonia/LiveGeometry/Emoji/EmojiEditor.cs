@@ -7,7 +7,7 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Picked by <c>[PropertyGridPreferredEditor("Emoji")]</c> on a string (a point style's

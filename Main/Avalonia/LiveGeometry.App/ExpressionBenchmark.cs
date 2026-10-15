@@ -6,8 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Avalonia.Controls;
-using DynamicGeometry;
-using Drawing = DynamicGeometry.Drawing;
 
 namespace LiveGeometry;
 

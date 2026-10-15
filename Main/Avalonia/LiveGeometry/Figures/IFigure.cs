@@ -5,7 +5,7 @@ using Avalonia.Controls;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial interface IFigure : IEquatable<IFigure>
 {

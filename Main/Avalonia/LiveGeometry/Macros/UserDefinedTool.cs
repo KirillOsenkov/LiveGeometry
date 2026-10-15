@@ -4,7 +4,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Avalonia.Input;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class InputInfo
 {

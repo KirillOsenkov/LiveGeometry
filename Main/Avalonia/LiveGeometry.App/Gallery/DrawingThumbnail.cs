@@ -7,8 +7,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Threading;
-using DynamicGeometry;
-using Drawing = DynamicGeometry.Drawing;
 
 namespace LiveGeometry;
 

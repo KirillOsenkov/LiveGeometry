@@ -2,7 +2,7 @@
 using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 
 public partial class EllipseArc : EllipseArcBase

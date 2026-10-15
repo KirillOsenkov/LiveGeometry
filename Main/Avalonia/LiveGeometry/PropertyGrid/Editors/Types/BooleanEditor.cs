@@ -2,7 +2,7 @@
 using Avalonia.Layout;
 using Avalonia.Interactivity;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class BooleanEditorFactory 
     : BaseValueEditorFactory<BooleanEditor, bool> {}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Circles)]
 [Order(2)]

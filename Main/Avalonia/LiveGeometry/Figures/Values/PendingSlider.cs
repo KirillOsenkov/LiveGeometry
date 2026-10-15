@@ -1,6 +1,6 @@
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A slider on its way into the drawing, for the tool that places it: the first click puts

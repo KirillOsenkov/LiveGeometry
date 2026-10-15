@@ -1,4 +1,4 @@
-﻿namespace DynamicGeometry;
+﻿namespace LiveGeometry;
 
 public class PolarEditorFactory : BaseValueEditorFactory<PolarEditor>
 {
@@ -12,7 +12,7 @@ public class PolarEditor : SelectorValueEditor, IValueEditor
 {        
     public override void FillList()
     {
-        Items = DynamicGeometry.Settings.Instance.PolarItems;
+        Items = LiveGeometry.Settings.Instance.PolarItems;
         base.FillList();
     }
 

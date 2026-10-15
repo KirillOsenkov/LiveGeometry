@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class Settings
 {

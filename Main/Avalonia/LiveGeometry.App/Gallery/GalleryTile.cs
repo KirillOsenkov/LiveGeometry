@@ -4,8 +4,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
-using DynamicGeometry;
-using Math = System.Math;
 
 namespace LiveGeometry;
 
@@ -213,8 +211,8 @@ public class GalleryTile : Border
         double r = color.R / 255.0;
         double g = color.G / 255.0;
         double b = color.B / 255.0;
-        double max = Math.Max(r, Math.Max(g, b));
-        double min = Math.Min(r, Math.Min(g, b));
+        double max = System.Math.Max(r, System.Math.Max(g, b));
+        double min = System.Math.Min(r, System.Math.Min(g, b));
         double delta = max - min;
         value = max;
         saturation = max == 0 ? 0 : delta / max;
@@ -245,7 +243,7 @@ public class GalleryTile : Border
     {
         hue = ((hue % 360) + 360) % 360;
         double chroma = value * saturation;
-        double x = chroma * (1 - Math.Abs(hue / 60 % 2 - 1));
+        double x = chroma * (1 - System.Math.Abs(hue / 60 % 2 - 1));
         double m = value - chroma;
         (double r, double g, double b) = ((int)(hue / 60)) switch
         {
@@ -258,8 +256,8 @@ public class GalleryTile : Border
         };
 
         return Color.FromRgb(
-            (byte)Math.Round((r + m) * 255),
-            (byte)Math.Round((g + m) * 255),
-            (byte)Math.Round((b + m) * 255));
+            (byte)System.Math.Round((r + m) * 255),
+            (byte)System.Math.Round((g + m) * 255),
+            (byte)System.Math.Round((b + m) * 255));
     }
 }

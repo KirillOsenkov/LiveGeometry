@@ -5,7 +5,7 @@ using Avalonia;
 using Avalonia.Input;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public abstract partial class FigureCreator : Behavior
 {
@@ -1261,7 +1261,7 @@ public abstract partial class FigureCreator : Behavior
             return newPosition;
         }
 
-        double PolarIncrement = DynamicGeometry.Settings.Instance.PolarIncrement.Val;
+        double PolarIncrement = LiveGeometry.Settings.Instance.PolarIncrement.Val;
 
         if (Settings.Instance.UserModeAngle && !Settings.Instance.UserModeLength)
         {

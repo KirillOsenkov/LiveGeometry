@@ -1,6 +1,6 @@
 using System;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// On a class: what the grid edits in it is not part of the drawing - the panel of a tool,

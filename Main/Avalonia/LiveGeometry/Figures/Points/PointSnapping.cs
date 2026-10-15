@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Turns a point into another kind of point where it is, keeping its name, label and what is

@@ -1,4 +1,4 @@
-﻿namespace DynamicGeometry;
+﻿namespace LiveGeometry;
 
 public interface IEllipse : IFigure, ILinearFigure
 {

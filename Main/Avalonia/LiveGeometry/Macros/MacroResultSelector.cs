@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Ignore]
 public class MacroResultSelector : FigureSelector

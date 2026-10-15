@@ -4,7 +4,7 @@ using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The icon of a figure: the ribbon icon of the tool that makes it (a triangle gets the

@@ -1,6 +1,6 @@
 using System;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Keys as the user's keyboard names them, for the text of hints: Alt is Option on a Mac.

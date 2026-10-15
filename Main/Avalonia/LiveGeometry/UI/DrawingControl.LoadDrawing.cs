@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class DrawingControl
 {

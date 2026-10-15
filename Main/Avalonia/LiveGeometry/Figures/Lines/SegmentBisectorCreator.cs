@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 // Off the ribbon: Perpendicular does the same through the midpoint, and a click on a
 // segment here took its two ends where every other tool puts a point on it. Kept for

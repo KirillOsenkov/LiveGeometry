@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The continuous picker: a saturation/value field for the current hue, a hue strip and an

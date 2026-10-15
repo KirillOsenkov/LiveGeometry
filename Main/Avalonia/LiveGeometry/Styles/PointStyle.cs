@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [StyleFor(typeof(IPoint))]
 public class PointStyle : ShapeStyle, IPropertyGridTabs

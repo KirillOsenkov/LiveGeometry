@@ -11,8 +11,7 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Reactive;
 using Avalonia.Threading;
-using DynamicGeometry;
-using Ellipse = Avalonia.Controls.Shapes.Ellipse;
+using AvaloniaEllipse = Avalonia.Controls.Shapes.Ellipse;
 
 namespace LiveGeometry;
 
@@ -480,7 +479,7 @@ public class GalleryView : DockPanel
 
     static Control PlusPicture()
     {
-        var disc = new Ellipse() { Width = 84, Height = 84 };
+        var disc = new AvaloniaEllipse() { Width = 84, Height = 84 };
         disc.ObserveTheme(nameof(AppTheme.Accent), color => disc.Fill = Lit(color));
         return Picture(
             disc,

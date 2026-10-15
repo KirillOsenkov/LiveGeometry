@@ -1,7 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Layout;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class ReadOnlyValuePropertyEditorFactory 
     : BaseValueEditorFactory<ReadOnlyValuePropertyEditor>

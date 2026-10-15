@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// On a button's method: the button is made only while the named public method of the

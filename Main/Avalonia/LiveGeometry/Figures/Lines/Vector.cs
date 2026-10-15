@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A segment with an arrowhead. An <see cref="ILine"/> like a segment, so that the tools
@@ -59,7 +59,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
             // an older drawing, in a polygon's style: its fill)
             if (Style != null)
             {
-                Shape.Stroke = DynamicGeometry.Arrow.GetBrush(Style);
+                Shape.Stroke = LiveGeometry.Arrow.GetBrush(Style);
             }
         }
     }

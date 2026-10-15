@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// What the Square and the regular polygon tools make, as plain figures: the vertices the

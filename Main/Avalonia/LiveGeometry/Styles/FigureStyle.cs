@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [PropertyGridName("Edit style")]
 public abstract partial class FigureStyle : IFigureStyle, IThemeOverridable, IConditionalProperties

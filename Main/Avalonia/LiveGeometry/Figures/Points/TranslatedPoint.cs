@@ -6,7 +6,7 @@ using Avalonia;
 using Avalonia.Controls.Shapes;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A point at a distance and a direction from its source point. Each of the two is either
@@ -617,8 +617,8 @@ public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalPrope
     public bool Accepts(string name, IFigure figure)
     {
         // (nor a label that says no number: a caption is no length and no angle;
-        // DynamicGeometry.Label, since here Label is the point's own name label)
-        if (figure is IPoint || !DynamicGeometry.Label.GivesNumber(figure))
+        // LiveGeometry.Label, since here Label is the point's own name label)
+        if (figure is IPoint || !LiveGeometry.Label.GivesNumber(figure))
         {
             return false;
         }

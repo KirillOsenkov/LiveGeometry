@@ -5,7 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using AvaloniaShapes = Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Picked by <c>[PropertyGridPreferredEditor("SegmentDecoration")]</c>: the marks a segment can

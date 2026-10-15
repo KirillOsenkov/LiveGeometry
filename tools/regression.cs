@@ -11,7 +11,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
-using DynamicGeometry;
+using LiveGeometry;
 using LiveGeometry;
 
 namespace LiveGeometryRegression;
@@ -471,7 +471,7 @@ public class Program
             Near(vector.X, 3);
             Near(vector.Y, 4);
             var names = new DimensionsPanel(vector).GetProperties().Select(property => property.Name).ToList();
-            Require(names.Contains(nameof(DynamicGeometry.Vector.X)) && names.Contains(nameof(DynamicGeometry.Vector.Y)), kind + ": the panel has no X and Y.");
+            Require(names.Contains(nameof(LiveGeometry.Vector.X)) && names.Contains(nameof(LiveGeometry.Vector.Y)), kind + ": the panel has no X and Y.");
 
             void Step(string property, double value, double expectedX, double expectedY)
             {
@@ -497,10 +497,10 @@ public class Program
                 drawing.Figures.CheckConsistency();
             }
 
-            Step(nameof(DynamicGeometry.Vector.X), value: -2, expectedX: -2, expectedY: 4);
-            Step(nameof(DynamicGeometry.Vector.Y), value: 0, expectedX: -2, expectedY: 0);
-            Step(nameof(DynamicGeometry.Vector.X), value: 0, expectedX: 0, expectedY: 0);
-            Step(nameof(DynamicGeometry.Vector.Y), value: -5, expectedX: 0, expectedY: -5);
+            Step(nameof(LiveGeometry.Vector.X), value: -2, expectedX: -2, expectedY: 4);
+            Step(nameof(LiveGeometry.Vector.Y), value: 0, expectedX: -2, expectedY: 0);
+            Step(nameof(LiveGeometry.Vector.X), value: 0, expectedX: 0, expectedY: 0);
+            Step(nameof(LiveGeometry.Vector.Y), value: -5, expectedX: 0, expectedY: -5);
             if (kind == "fixed")
             {
                 Near(vector.Length, 5);
@@ -519,7 +519,7 @@ public class Program
             var end = AddPoint(drawing, endX, endY);
             var vector = Factory.CreateVector(drawing, new IFigure[] { start, end });
             Actions.Add(drawing, vector);
-            Require(vector.CanEdit(nameof(DynamicGeometry.Vector.ConvertEndToPointByCoordinates)), "A vector with a free end offers no conversion of it.");
+            Require(vector.CanEdit(nameof(LiveGeometry.Vector.ConvertEndToPointByCoordinates)), "A vector with a free end offers no conversion of it.");
             string before = drawing.SaveAsText();
             vector.ConvertEndToPointByCoordinates();
             string after = drawing.SaveAsText();
@@ -527,7 +527,7 @@ public class Program
             Require(converted != null && converted.Name == end.Name, "The end didn't become a point by coordinates.");
             Require(converted.XExpression.Text == expectedX && converted.YExpression.Text == expectedY, "The end's coordinates read " + converted.XExpression.Text + ", " + converted.YExpression.Text + ".");
             NearPoint(converted.Coordinates, new Point(endX, endY));
-            Require(!vector.CanEdit(nameof(DynamicGeometry.Vector.ConvertEndToPointByCoordinates)), "The conversion is offered again.");
+            Require(!vector.CanEdit(nameof(LiveGeometry.Vector.ConvertEndToPointByCoordinates)), "The conversion is offered again.");
             drawing.ActionManager.Undo();
             Require(drawing.SaveAsText() == before && vector.Dependencies[1] == end, "Undo of the conversion didn't bring the free end back.");
             drawing.ActionManager.Redo();
@@ -547,10 +547,10 @@ public class Program
         var plain = Factory.CreateVector(other, new IFigure[] { a, AddPoint(other, x: 1, y: 3) });
         Actions.Add(other, dependent);
         Actions.Add(other, plain);
-        Require(!dependent.CanEdit(nameof(DynamicGeometry.Vector.X)), "A vector from a midpoint of its end offers X to type.");
-        Require(!dependent.CanEdit(nameof(DynamicGeometry.Vector.ConvertEndToPointByCoordinates)), "A vector from a midpoint of its end offers its end as a point by coordinates.");
+        Require(!dependent.CanEdit(nameof(LiveGeometry.Vector.X)), "A vector from a midpoint of its end offers X to type.");
+        Require(!dependent.CanEdit(nameof(LiveGeometry.Vector.ConvertEndToPointByCoordinates)), "A vector from a midpoint of its end offers its end as a point by coordinates.");
         var selection = new FigureSelection(other, new IFigure[] { dependent, plain }, new IncludeByDefaultValueDiscoveryStrategy());
-        Require(selection.GetProperties().All(property => property.Name != nameof(DynamicGeometry.Vector.X)), "Several vectors share an X row.");
+        Require(selection.GetProperties().All(property => property.Name != nameof(LiveGeometry.Vector.X)), "Several vectors share an X row.");
     }
 
     static void PointFunctionsRejectCycles()
@@ -656,7 +656,7 @@ public class Program
         var label = Factory.CreateLabel(drawing);
         Actions.Add(drawing, label);
         label.Text = "Words";
-        Set(drawing, label, nameof(DynamicGeometry.Label.Text), value: "");
+        Set(drawing, label, nameof(LiveGeometry.Label.Text), value: "");
         Require(string.IsNullOrEmpty(label.ProcessedText), "The old text is still displayed.");
         drawing.ActionManager.Undo();
         Require(label.ProcessedText == "Words", "Undo did not restore the text.");
@@ -1176,7 +1176,7 @@ public class Program
         var system = drawing.CoordinateSystem;
         var onGraph = system.ToPhysical(new Point(2, 0));
         var onPaper = system.ToPhysical(new Point(-2, -3));
-        var middle = DynamicGeometry.Math.Midpoint(onGraph, onPaper);
+        var middle = LiveGeometry.Math.Midpoint(onGraph, onPaper);
         var under = system.ToLogical(middle);
         double unitBefore = system.UnitLength;
         double spanBefore = onGraph.Distance(onPaper);
@@ -1367,8 +1367,8 @@ public class Program
             Near(((ICircle)Find(current, "c")).Radius, expected: 7);
             Near(((IPoint)Find(current, "Q")).Coordinates.X, System.Math.Cos(3));
             Near(((IPoint)Find(current, "R")).Coordinates.X, System.Math.Cos(3 * System.Math.PI / 4));
-            Near(((DynamicGeometry.Label)Find(current, "laterValue")).Value, expected: 1);
-            Near(((DynamicGeometry.Label)Find(current, "angleText")).Value, expected: 135);
+            Near(((LiveGeometry.Label)Find(current, "laterValue")).Value, expected: 1);
+            Near(((LiveGeometry.Label)Find(current, "angleText")).Value, expected: 135);
             current.Figures.CheckConsistency();
         }
     }
@@ -1418,7 +1418,7 @@ public class Program
               <value val="2"/><slider x="0" y="0"/><show object="true"/>
             </element>
             """);
-        Require(Find(drawing, "a") is DynamicGeometry.Slider, "A constant expression lost its slider.");
+        Require(Find(drawing, "a") is LiveGeometry.Slider, "A constant expression lost its slider.");
     }
 
     static void RejectUnrelatedWorksheet()
@@ -1465,7 +1465,7 @@ public class Program
         Require(label.IsNumber, "The label lost its value: " + label.ProcessedText);
         Near(label.Value, expected: 8);
         var reloaded = ReadLgf(drawing.SaveAsText());
-        var copy = reloaded.Figures.OfType<DynamicGeometry.Label>().Single();
+        var copy = reloaded.Figures.OfType<LiveGeometry.Label>().Single();
         Near(copy.Value, expected: 8);
         Require(Scanner.IsName("A''") && Scanner.IsName("P_1'") && !Scanner.IsName("'A") && !Scanner.IsName("my point"), "Scanner.IsName");
 
@@ -1475,7 +1475,7 @@ public class Program
         Require(Rename(other, "Drag me too") == null && other.Name == "Drag me too", "A name the label says in backticks was refused.");
         Require(label.Text == "[A'.X + dist(A', `Drag me too`)]", "The label says " + label.Text);
         Near(label.Value, expected: 8);
-        Near(ReadLgf(drawing.SaveAsText()).Figures.OfType<DynamicGeometry.Label>().Single().Value, expected: 8);
+        Near(ReadLgf(drawing.SaveAsText()).Figures.OfType<LiveGeometry.Label>().Single().Value, expected: 8);
 
         static string Rename(IFigure figure, string name)
         {
@@ -1530,7 +1530,7 @@ public class Program
         var end = new Point(shaft.EndPoint.X, shaft.EndPoint.Y);
         Require(end.Distance(tip) > Arrow.HeadLength, "The shaft runs through the head.");
         var reloaded = ReadLgf(drawing.SaveAsText());
-        Require(reloaded.Figures.OfType<DynamicGeometry.Vector>().Single().Style?.Name == "DashedRedLine", "The vector's style was not saved.");
+        Require(reloaded.Figures.OfType<LiveGeometry.Vector>().Single().Style?.Name == "DashedRedLine", "The vector's style was not saved.");
     }
 
     /// <summary>
@@ -2220,11 +2220,11 @@ public class Program
         }
 
         double kappa = 4 * (System.Math.Sqrt(2) - 1) / 3;
-        Expect(DynamicGeometry.BezierPathSmoothing.Hobby, tension: 1, kappa);
-        Expect(DynamicGeometry.BezierPathSmoothing.Hobby, tension: 2, kappa / 2);
-        Expect(DynamicGeometry.BezierPathSmoothing.CatmullRom, tension: 1, 1.0 / 3);
-        Expect(DynamicGeometry.BezierPathSmoothing.NaturalSpline, tension: 1, 0.5);
-        Expect(DynamicGeometry.BezierPathSmoothing.None, tension: 1, 0);
+        Expect(LiveGeometry.BezierPathSmoothing.Hobby, tension: 1, kappa);
+        Expect(LiveGeometry.BezierPathSmoothing.Hobby, tension: 2, kappa / 2);
+        Expect(LiveGeometry.BezierPathSmoothing.CatmullRom, tension: 1, 1.0 / 3);
+        Expect(LiveGeometry.BezierPathSmoothing.NaturalSpline, tension: 1, 0.5);
+        Expect(LiveGeometry.BezierPathSmoothing.None, tension: 1, 0);
 
         // the same curve for anchors moved, turned, scaled, mirrored: next to a handle set by
         // the user (C's out handle) and a corner (D's in handle on D)
@@ -2239,7 +2239,7 @@ public class Program
             return mirror ? new Point(turned.X, -turned.Y) : turned;
         }
 
-        foreach (var smoothing in new[] { DynamicGeometry.BezierPathSmoothing.Hobby, DynamicGeometry.BezierPathSmoothing.CatmullRom, DynamicGeometry.BezierPathSmoothing.NaturalSpline })
+        foreach (var smoothing in new[] { LiveGeometry.BezierPathSmoothing.Hobby, LiveGeometry.BezierPathSmoothing.CatmullRom, LiveGeometry.BezierPathSmoothing.NaturalSpline })
         {
             foreach (bool closed in new[] { true, false })
             {
@@ -2289,7 +2289,7 @@ public class Program
         using var window = new TestWindow(drawing.Canvas);
         var system = drawing.CoordinateSystem;
         var path = drawing.Figures.OfType<BezierPath>().Single();
-        var slider = (DynamicGeometry.Slider)Find(drawing, "s");
+        var slider = (LiveGeometry.Slider)Find(drawing, "s");
         var a = (FreePoint)Find(drawing, "A");
         var outA = (BezierPath.BezierPathHandle)path.GetPart("Out1");
         var inA = (BezierPath.BezierPathHandle)path.GetPart("In1");
@@ -2298,7 +2298,7 @@ public class Program
         string original = drawing.SaveAsText();
         Require(original.Contains("Tension=\"#4\"") && original.Contains("Path=\"C a a C a a C a a C a a\""), "The path's text: " + original);
         Require(ReadLgf(original).SaveAsText() == original, "The smoothed path did not round trip.");
-        Set(drawing, slider, nameof(DynamicGeometry.Slider.Value), 1.0);
+        Set(drawing, slider, nameof(LiveGeometry.Slider.Value), 1.0);
         Close(outA.Offset, new Point(0, 3 * kappa), "Tension 1 from the slider");
         drawing.ActionManager.Undo();
         Close(outA.Offset, new Point(0, 3 * kappa / 2), "Undo of the slider");
@@ -2318,7 +2318,7 @@ public class Program
         drawing.Figures.CheckConsistency();
 
         // another method
-        Set(drawing, path, nameof(BezierPath.Smoothing), DynamicGeometry.BezierPathSmoothing.CatmullRom);
+        Set(drawing, path, nameof(BezierPath.Smoothing), LiveGeometry.BezierPathSmoothing.CatmullRom);
         Close(outA.Offset, new Point(0, 0.5), "Catmull-Rom at tension 2");
         Require(drawing.SaveAsText().Contains("Smoothing=\"CatmullRom\""), "The method is not saved.");
         drawing.ActionManager.Undo();
@@ -2361,7 +2361,7 @@ public class Program
         drawing.Figures.CheckConsistency();
 
         // the tool: clicks make smooth anchors, a click on the slider right after ties the tension
-        BezierPathCreator.LastSmoothing = DynamicGeometry.BezierPathSmoothing.Hobby;
+        BezierPathCreator.LastSmoothing = LiveGeometry.BezierPathSmoothing.Hobby;
         BezierPathCreator.LastTension = 1;
         var tool = new BezierPathCreator();
         drawing.Behavior = tool;
@@ -2609,7 +2609,7 @@ public class Program
         Click(drawing, system.ToPhysical(new Point(1.5, 2.25)));
         var curveLength = drawing.Figures.OfType<LengthMeasurement>().Last();
         Require(curveLength.Dependencies.Single() == bezier && curveLength.Quantity == LengthQuantity.Length, "A click on a Bezier curve measures " + curveLength.Construction);
-        Near(curveLength.Length, new DynamicGeometry.Math.BezierInfo(new Point(0, 0), new Point(0, 3), new Point(3, 3), new Point(3, 0)).Length);
+        Near(curveLength.Length, new LiveGeometry.Math.BezierInfo(new Point(0, 0), new Point(0, 3), new Point(3, 3), new Point(3, 0)).Length);
 
         // the open path: its length, which becomes the perimeter when the path is closed
         Click(drawing, system.ToPhysical(new Point(9, 2)));
@@ -3313,16 +3313,16 @@ public class Program
               </Figures>
             </Drawing>
             """);
-        var dependent = (DynamicGeometry.Vector)Find(drawing, "AB");
-        Require(!dependent.CanEdit(nameof(DynamicGeometry.Vector.Angle)), "A vector from a midpoint of its end offers a direction to type.");
+        var dependent = (LiveGeometry.Vector)Find(drawing, "AB");
+        Require(!dependent.CanEdit(nameof(LiveGeometry.Vector.Angle)), "A vector from a midpoint of its end offers a direction to type.");
 
-        var vector = (DynamicGeometry.Vector)Find(drawing, "PQ");
+        var vector = (LiveGeometry.Vector)Find(drawing, "PQ");
         var end = (IPoint)Find(drawing, "Q");
-        Require(vector.CanEdit(nameof(DynamicGeometry.Vector.Angle)), "An ordinary vector offers no direction to type.");
+        Require(vector.CanEdit(nameof(LiveGeometry.Vector.Angle)), "An ordinary vector offers no direction to type.");
         string before = drawing.SaveAsText();
-        Set(drawing, vector, nameof(DynamicGeometry.Vector.Angle), 90.0);
+        Set(drawing, vector, nameof(LiveGeometry.Vector.Angle), 90.0);
         NearPoint(end.Coordinates, new Point(0, -1));
-        Set(drawing, vector, nameof(DynamicGeometry.Vector.Angle), 180.0);
+        Set(drawing, vector, nameof(LiveGeometry.Vector.Angle), 180.0);
         string after = drawing.SaveAsText();
         drawing.ActionManager.Undo();
         NearPoint(end.Coordinates, new Point(0, -1));
@@ -3588,7 +3588,7 @@ public class Program
         Require(label.Text == "[`a]b`.X + Pole.Y] and [B.X]", "The label says " + label.Text);
         Set(drawing, Find(drawing, "B"), nameof(IFigure.Name), value: "my ]point");
         Require(label.Text == "[`a]b`.X + Pole.Y] and [`my ]point`.X]", "The label says " + label.Text);
-        var reread = ReadLgf(drawing.SaveAsText()).Figures.OfType<DynamicGeometry.Label>().Single();
+        var reread = ReadLgf(drawing.SaveAsText()).Figures.OfType<LiveGeometry.Label>().Single();
         Require(reread.ProcessedText == "5.00 and 0.00", "The label read again says " + reread.ProcessedText);
         drawing.ActionManager.Undo();
         drawing.ActionManager.Undo();
@@ -3658,7 +3658,7 @@ public class Program
         Require(!segment.CanEdit("ConvertToRay"), "Read as `AB`.Length, the segment offers to become a ray.");
 
         var other = (Segment)Find(drawing, "CD");
-        var label = (DynamicGeometry.Label)Find(drawing, "half");
+        var label = (LiveGeometry.Label)Find(drawing, "half");
         Require(!other.CanEdit("ConvertToRay"), "A segment a label's [CD.Length / 2] reads offers to become a ray.");
         Set(drawing, other, nameof(IFigure.Name), value: "other side");
         Require(label.Text == "half of it: [`other side`.Length / 2]", "The label says " + label.Text);
@@ -4927,7 +4927,7 @@ public class Program
               </Figures>
             </Drawing>
             """);
-        var slider = (DynamicGeometry.Slider)Find(drawing, "a");
+        var slider = (LiveGeometry.Slider)Find(drawing, "a");
         string before = drawing.SaveAsText();
         foreach (var (property, value) in new[] { ("Maximum", 2.0), ("Minimum", 7.0), ("Step", 4.0) })
         {

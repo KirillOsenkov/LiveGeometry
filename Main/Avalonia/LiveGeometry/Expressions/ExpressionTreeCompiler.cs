@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A System.Linq.Expressions tree made into a delegate by that library: compiled to IL

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public static partial class DependencyAlgorithms
 {

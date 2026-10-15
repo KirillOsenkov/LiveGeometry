@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using AvaloniaShapes = Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The school marks on a segment: ticks across it for "these are equal", chevrons along it

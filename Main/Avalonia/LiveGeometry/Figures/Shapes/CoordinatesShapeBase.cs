@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public abstract class CoordinatesShapeBase<TShape> : ShapeBase<TShape>, IMovable, IRestorablePlace
     where TShape : FrameworkElement

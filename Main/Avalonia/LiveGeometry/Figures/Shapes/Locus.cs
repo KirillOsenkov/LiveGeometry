@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class Locus : Curve, ILinearFigure
 {

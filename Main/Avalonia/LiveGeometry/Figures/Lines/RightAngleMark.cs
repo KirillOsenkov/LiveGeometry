@@ -8,7 +8,7 @@ using Avalonia.Input;
 using Avalonia.Media;
 using AvaloniaShapes = Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The little square in the corner that says "these two are perpendicular". A figure that is

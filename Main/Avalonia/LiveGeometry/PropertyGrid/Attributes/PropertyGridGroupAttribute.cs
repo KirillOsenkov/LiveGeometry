@@ -1,6 +1,6 @@
 using System;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Properties and methods with the same group name are shown together in the property

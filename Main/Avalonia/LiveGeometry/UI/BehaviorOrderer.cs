@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class BehaviorOrderer
 {

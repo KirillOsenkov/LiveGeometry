@@ -4,7 +4,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public interface ILengthProvider : IFigure
 {

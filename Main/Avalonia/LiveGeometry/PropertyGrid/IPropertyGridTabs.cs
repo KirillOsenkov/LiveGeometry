@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// An object whose rows the property grid spreads over tabs (a point style: Shape | Emoji).

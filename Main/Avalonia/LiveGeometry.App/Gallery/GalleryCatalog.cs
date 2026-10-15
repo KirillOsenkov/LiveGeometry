@@ -55,7 +55,7 @@ public class GalleryItem
         }
     }
 
-    /// <summary>Some of its points are characters (an emoji, a ★), drawn in the emoji font (<see cref="DynamicGeometry.EmojiFont"/>)</summary>
+    /// <summary>Some of its points are characters (an emoji, a ★), drawn in the emoji font (<see cref="LiveGeometry.EmojiFont"/>)</summary>
     public bool UsesEmoji => LoadText().Contains(" Character=\"", StringComparison.Ordinal);
 
     string text;

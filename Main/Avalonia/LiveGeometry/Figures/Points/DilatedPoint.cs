@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A point stretched from a center by a factor. The factor is a figure it depends on: a
@@ -174,7 +174,7 @@ public class DilatedPoint : PointBase, IPoint, ITiedValues, IConditionalProperti
 
     public bool Accepts(string name, IFigure figure)
     {
-        // (DynamicGeometry.Label: here Label is the point's own name label)
+        // (LiveGeometry.Label: here Label is the point's own name label)
         return !(figure is IPoint) && figure.GivesLength();
     }
 

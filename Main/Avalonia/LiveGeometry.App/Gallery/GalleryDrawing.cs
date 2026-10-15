@@ -2,9 +2,6 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using Avalonia;
-using DynamicGeometry;
-using Drawing = DynamicGeometry.Drawing;
-using Label = DynamicGeometry.Label;
 
 namespace LiveGeometry;
 

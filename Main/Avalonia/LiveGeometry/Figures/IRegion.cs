@@ -1,6 +1,6 @@
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A figure with an inside a point can be kept in (<see cref="PointInRegion"/>): a polygon,

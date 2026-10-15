@@ -3,7 +3,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class CartesianGrid : CompositeFigure, ICustomPropertyProvider, ICustomMethodProvider
 {

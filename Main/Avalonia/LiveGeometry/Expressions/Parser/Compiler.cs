@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class Compiler : ICompilerService
 {

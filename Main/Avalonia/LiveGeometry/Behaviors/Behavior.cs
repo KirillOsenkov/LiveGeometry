@@ -6,7 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public abstract partial class Behavior : INotifyPropertyChanged
 {

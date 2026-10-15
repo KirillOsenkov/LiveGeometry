@@ -4,7 +4,7 @@ using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Threading;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// One character (an emoji) in <see cref="EmojiFont"/>, its ink centered in the control and

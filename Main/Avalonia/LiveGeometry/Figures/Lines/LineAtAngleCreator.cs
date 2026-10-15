@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A line through a point at an angle. The angle comes first, so that a line at the angle

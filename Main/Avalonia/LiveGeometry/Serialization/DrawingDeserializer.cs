@@ -6,7 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using System.Xml.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class DrawingDeserializer
 {

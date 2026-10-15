@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// This class encapsulates undoable actions

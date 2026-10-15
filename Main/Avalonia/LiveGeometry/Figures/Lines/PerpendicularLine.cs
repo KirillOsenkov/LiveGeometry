@@ -1,6 +1,6 @@
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class PerpendicularLine : PerpendicularLineBase
 {

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Points)]
 [Order(2)]

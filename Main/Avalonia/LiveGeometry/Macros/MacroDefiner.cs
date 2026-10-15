@@ -4,7 +4,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Input;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Misc)]
 [Order(10)]

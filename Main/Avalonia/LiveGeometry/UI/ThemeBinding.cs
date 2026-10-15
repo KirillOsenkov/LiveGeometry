@@ -6,7 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Reactive;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// How the chrome takes its colors from the <see cref="AppTheme"/>: a property is bound to the

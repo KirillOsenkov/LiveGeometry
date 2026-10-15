@@ -1,6 +1,6 @@
 using Avalonia.Collections;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The same five the original DG had (VB6 DrawStyle 0-4), in the same order.

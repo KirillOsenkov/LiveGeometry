@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using AvaloniaShapes = Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// What a drag selects with (<see cref="RegionSelection"/>): a rectangle, or a lasso - the path

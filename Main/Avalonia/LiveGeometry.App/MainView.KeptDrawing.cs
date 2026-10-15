@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
 using Avalonia.Threading;
-using DynamicGeometry;
-using Drawing = DynamicGeometry.Drawing;
 
 namespace LiveGeometry;
 

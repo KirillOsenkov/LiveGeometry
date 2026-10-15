@@ -4,7 +4,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Layout;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The small icons on property grid buttons, drawn on a 14 x 14 grid like the trash can

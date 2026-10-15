@@ -3,7 +3,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A point kept inside a figure (<see cref="IRegion"/>: a polygon, a circle, a sector, a

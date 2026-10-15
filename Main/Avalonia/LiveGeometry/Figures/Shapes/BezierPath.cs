@@ -13,7 +13,7 @@ using GuiLabs.Undo;
 using AvaloniaPath = Avalonia.Controls.Shapes.Path;
 using AvaloniaShape = Avalonia.Controls.Shapes.Shape;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A path of cubic Bézier pieces through anchor points, as a WPF or Avalonia path is made of

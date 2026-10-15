@@ -1,6 +1,6 @@
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// What a quadrilateral is, from where its vertices are: the most special name that fits,

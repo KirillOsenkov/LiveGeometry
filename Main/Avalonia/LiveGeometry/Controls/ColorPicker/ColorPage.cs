@@ -2,7 +2,7 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// One way of choosing a color: a grid of swatches, a continuous spectrum, whatever comes

@@ -13,7 +13,7 @@ using Avalonia.Media.Immutable;
 using Avalonia.Styling;
 using Avalonia.Threading;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The colors of the app's chrome (toolbar, ribbon, side panel, Figure List, gallery page):
@@ -601,7 +601,7 @@ public class AppTheme : INotifyPropertyChanged, IConditionalProperties
     public Color GridMinor { get => gridMinor; set => Set(ref gridMinor, value); }
 
     /// <summary>
-    /// The band under a selected figure (<see cref="DynamicGeometry.SelectionHalo"/>). A
+    /// The band under a selected figure (<see cref="LiveGeometry.SelectionHalo"/>). A
     /// gradient is not stretched over the figure but repeated along its direction every few
     /// pixels, there and back: diagonal stripes.
     /// </summary>

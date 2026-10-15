@@ -6,7 +6,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using M = System.Math;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Measure)]
 [Order(2)]

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The name of a line, ray, segment or circle, written next to it (as a <see cref="PointLabel"/>

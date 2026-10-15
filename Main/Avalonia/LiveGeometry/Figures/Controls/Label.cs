@@ -4,7 +4,7 @@ using Avalonia.Media;
 using System.Xml.Linq;
 using System.Globalization;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class Label : LabelBase, IAngleProvider, ILengthProvider
 {

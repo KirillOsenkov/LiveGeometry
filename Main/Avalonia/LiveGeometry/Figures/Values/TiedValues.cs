@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A figure some of whose numbers - an angle, a distance, a factor - are each either

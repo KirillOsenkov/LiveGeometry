@@ -6,7 +6,7 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class CompositeFigure : FigureBase
 {

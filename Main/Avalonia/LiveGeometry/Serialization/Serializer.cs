@@ -6,7 +6,7 @@ using System.Reflection;
 using Avalonia.Media;
 using System.Xml.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public interface ISerializer
 {

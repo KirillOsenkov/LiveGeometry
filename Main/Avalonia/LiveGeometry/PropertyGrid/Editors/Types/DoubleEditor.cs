@@ -1,4 +1,4 @@
-﻿namespace DynamicGeometry;
+﻿namespace LiveGeometry;
 
 public class DoubleEditorFactory : BaseValueEditorFactory<DoubleEditor, double>
 {

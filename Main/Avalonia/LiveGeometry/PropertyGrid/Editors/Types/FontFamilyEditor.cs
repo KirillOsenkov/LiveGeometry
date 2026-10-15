@@ -1,6 +1,6 @@
 ﻿using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class FontFamilyEditorFactory : BaseValueEditorFactory<FontFamilyEditor>
 {

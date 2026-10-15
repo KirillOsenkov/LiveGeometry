@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A point turned about a center by an angle. The angle is a figure it depends on: a
@@ -152,7 +152,7 @@ public class RotatedPoint : PointBase, IPoint, ITiedValues, IConditionalProperti
 
     public bool Accepts(string name, IFigure figure)
     {
-        // (DynamicGeometry.Label: here Label is the point's own name label)
+        // (LiveGeometry.Label: here Label is the point's own name label)
         return !(figure is IPoint) && figure.GivesAngle();
     }
 

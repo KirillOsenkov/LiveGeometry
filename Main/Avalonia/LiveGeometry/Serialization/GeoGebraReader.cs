@@ -10,7 +10,7 @@ using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Reads a GeoGebra worksheet (.ggb: a zip with geogebra.xml inside) into a drawing, as far as

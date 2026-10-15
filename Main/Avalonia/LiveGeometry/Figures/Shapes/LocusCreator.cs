@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Misc)]
 [Order(2)]

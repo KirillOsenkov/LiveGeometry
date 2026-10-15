@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A regular polygon on a side: two adjacent vertices, the polygon to the left of the first

@@ -2,7 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The text of a label. Avalonia's TextBlock lays its text out again when it is arranged, in

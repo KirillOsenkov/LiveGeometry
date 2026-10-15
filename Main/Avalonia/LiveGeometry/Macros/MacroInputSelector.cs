@@ -1,4 +1,4 @@
-﻿namespace DynamicGeometry;
+﻿namespace LiveGeometry;
 
 [Ignore]
 public class MacroInputSelector : FigureSelector

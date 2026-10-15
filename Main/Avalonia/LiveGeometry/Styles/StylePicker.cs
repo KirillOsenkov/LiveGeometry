@@ -3,7 +3,7 @@ using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Layout;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class StylePickerEditorFactory : BaseValueEditorFactory<StylePickerEditor>
 {

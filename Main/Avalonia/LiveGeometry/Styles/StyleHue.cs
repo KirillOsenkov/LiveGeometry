@@ -3,7 +3,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A hue of the styles a drawing starts with (<see cref="StyleManager.AddDefaultStyles"/>).

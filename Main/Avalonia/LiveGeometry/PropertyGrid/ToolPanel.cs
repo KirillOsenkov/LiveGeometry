@@ -1,6 +1,6 @@
 using System;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A tool's panel whose command checks what was typed into its rows (Add point checks X and

@@ -1,6 +1,6 @@
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Where a <see cref="Label"/> (or a <see cref="ShowHideControl"/>) is held: nowhere (a place

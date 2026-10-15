@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class AreaMeasurement : Measurement
 {

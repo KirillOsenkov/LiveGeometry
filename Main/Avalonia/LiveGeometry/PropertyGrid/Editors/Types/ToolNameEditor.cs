@@ -1,4 +1,4 @@
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Picked by <c>[PropertyGridPreferredEditor("ToolName")]</c> on the name of a tool the user

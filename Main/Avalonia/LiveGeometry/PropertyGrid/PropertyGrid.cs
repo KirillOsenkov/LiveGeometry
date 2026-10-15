@@ -10,7 +10,7 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class PropertyGrid : StackPanel
 {
@@ -667,7 +667,7 @@ public partial class PropertyGrid : StackPanel
     protected virtual IEnumerable<IValueProvider> GetEditableProperties<T>(T editableObject)
     {
         IValueDiscoveryStrategy discoveryStrategy = 
-            DynamicGeometry.ValueDiscoveryStrategy.Get(editableObject.GetType())
+            LiveGeometry.ValueDiscoveryStrategy.Get(editableObject.GetType())
             ?? this.ValueDiscoveryStrategy;
         var result = discoveryStrategy.GetValues(editableObject);
         return result;

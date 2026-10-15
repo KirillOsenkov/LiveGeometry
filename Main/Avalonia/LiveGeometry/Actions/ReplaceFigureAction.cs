@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Replaces a figure in a drawing with another figure

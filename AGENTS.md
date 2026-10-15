@@ -6,8 +6,8 @@ being true. Things derivable from the code or git history don't belong here.
 ## Layout
 
 - `Main/Avalonia/` - the live codebase. Solution `LiveGeometry.Avalonia.slnx`:
-  - `LiveGeometry/` - the geometry library (`LiveGeometry.csproj`; its assembly is still
-    `DynamicGeometry.Avalonia` and its namespace `DynamicGeometry`, both to be renamed), a fork of
+  - `LiveGeometry/` - the geometry library (assembly and namespace `LiveGeometry`, the namespace
+    shared with the app; it was `DynamicGeometry` until 2026-10-15), a fork of
     the WPF sources rewritten onto Avalonia, plus `WpfCompat/` shims.
   - `LiveGeometry.App/` - shared UI (`MainView`), used by both heads (assembly
     `LiveGeometry.App`, namespace `LiveGeometry`: its `App` class is `LiveGeometry.App`).
@@ -295,7 +295,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 
 - **Trimming only happens on Release publish**, never in `dotnet run`. The geometry library is
   discovered via reflection (`GetTypes()` for behaviors, serializers, figures), hence
-  `TrimmerRootAssembly DynamicGeometry.Avalonia` in the Browser csproj; `LiveGeometry.App` is a root
+  `TrimmerRootAssembly LiveGeometry` in the Browser csproj; `LiveGeometry.App` is a root
   too (the property grid reads `ExceptionReport` by reflection, and `[DynamicallyAccessedMembers]`
   on the class did not keep its rows). A trimming break shows up as a white screen and a
   `CRASH: ...` console line (`Program.cs` prints those). Anything new that is reached only by
@@ -418,7 +418,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **The library's own types shadow framework ones**: `Math`, `Ellipse`, `Polygon`, `Path`...
   In a file-scoped-namespace file a `using X = ...;` alias does NOT win over a type of the
   enclosing namespace - write `System.Math.Max`, `Avalonia.Controls.Shapes.Ellipse` in full.
-- **`Style` and `Setter` are ambiguous in the library**: `DynamicGeometry.Style`/`Setter` are the
+- **`Style` and `Setter` are ambiguous in the library**: `LiveGeometry.Style`/`Setter` are the
   WPF shims and shadow Avalonia's. For real Avalonia styles alias them
   (`using AvaloniaStyle = Avalonia.Styling.Style;`).
 - **Browser has no system fonts.** Text renders only because `Avalonia.Fonts.Inter` is embedded

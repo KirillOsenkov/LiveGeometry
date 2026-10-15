@@ -7,7 +7,7 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using AvaloniaShapes = Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// What shows that a figure is selected: a wide striped band under it, along its outline

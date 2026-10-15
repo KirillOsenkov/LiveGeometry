@@ -32,7 +32,7 @@ using System.Threading;
 using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using DynamicGeometry;
+using LiveGeometry;
 using LiveGeometry;
 
 namespace LiveGeometryPlayerParity;

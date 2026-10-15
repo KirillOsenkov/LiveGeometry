@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class BehaviorToolButton : ToolButton
 {

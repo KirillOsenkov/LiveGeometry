@@ -2,7 +2,7 @@
 using Avalonia.Controls.Shapes;
 using System.Collections.Generic;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
 {

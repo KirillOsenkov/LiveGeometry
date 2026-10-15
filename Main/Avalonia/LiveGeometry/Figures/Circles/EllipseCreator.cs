@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Center, the end of the long axis, the end of the short axis. A free third click lands

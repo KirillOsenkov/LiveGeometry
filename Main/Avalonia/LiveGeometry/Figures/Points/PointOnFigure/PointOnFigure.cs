@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class PointOnFigure : FreePoint, IPoint
 {

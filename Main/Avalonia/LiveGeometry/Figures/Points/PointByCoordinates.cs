@@ -1,4 +1,4 @@
-﻿namespace DynamicGeometry;
+﻿namespace LiveGeometry;
 
 public class PointByCoordinates : PointBase, IPoint, IRenamableExpressions, IConditionalProperties, IExpressionOwner
 {

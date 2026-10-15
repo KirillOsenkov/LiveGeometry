@@ -5,7 +5,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Shapes)]
 [Order(3)]

@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The words of a figure's <see cref="FigureBase.Construction"/>: what it says of the figures
@@ -69,7 +69,7 @@ public static class ConstructionText
     {
         switch (source)
         {
-            case DynamicGeometry.Number number when number.Auxiliary:
+            case LiveGeometry.Number number when number.Auxiliary:
                 return typed(number.Value);
             case INumber:
                 return named(source);

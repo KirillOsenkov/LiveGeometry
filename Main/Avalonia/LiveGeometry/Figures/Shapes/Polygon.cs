@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class Polygon : PolygonBase, IPolygon
 {

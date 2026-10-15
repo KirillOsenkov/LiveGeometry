@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public readonly record struct NamedColor(string Name, Color Color);
 

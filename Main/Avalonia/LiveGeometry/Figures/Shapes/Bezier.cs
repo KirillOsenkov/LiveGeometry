@@ -4,7 +4,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class Bezier : ShapeBase<Path>, ILinearFigure
 {

@@ -2,7 +2,7 @@
 using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class AngleMeasurementBase : Measurement, IAngleProvider
 {

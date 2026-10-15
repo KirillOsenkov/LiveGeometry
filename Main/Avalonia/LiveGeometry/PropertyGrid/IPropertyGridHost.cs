@@ -1,4 +1,4 @@
-﻿namespace DynamicGeometry;
+﻿namespace LiveGeometry;
 
 /// <summary>
 /// A type can implement this interface to declare that it knows that it can be displayed

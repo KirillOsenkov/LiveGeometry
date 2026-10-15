@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The font emoji are drawn with (Twemoji, a color font): the same on every platform, and the

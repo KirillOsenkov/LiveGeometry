@@ -1,4 +1,4 @@
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A figure whose property grid rows are editable or not depending on its state (a

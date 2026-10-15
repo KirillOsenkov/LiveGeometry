@@ -5,7 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class Ribbon : TabControl
 {

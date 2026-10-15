@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml.Linq; 
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class PasteAction : GeometryAction
 {

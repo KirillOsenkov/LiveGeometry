@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Avalonia;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Shapes)]
 [Order(1)]

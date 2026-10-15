@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Picked by <c>[PropertyGridPreferredEditor("ThemeChoice")]</c> on a string: a combo box of

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Shapes)]
 [Order(2)]

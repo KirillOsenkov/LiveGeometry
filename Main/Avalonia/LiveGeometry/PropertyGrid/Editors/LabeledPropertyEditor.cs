@@ -5,7 +5,7 @@ using Avalonia.Layout;
 using Avalonia.Interactivity;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public abstract partial class LabeledValueEditor : Grid
 {

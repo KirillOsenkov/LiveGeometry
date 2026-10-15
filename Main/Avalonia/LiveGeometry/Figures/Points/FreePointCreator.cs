@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Avalonia.Input;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Points)]
 [Order(1)]

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// An angle that a click near its vertex measures in one go: the Angle tool takes the vertex

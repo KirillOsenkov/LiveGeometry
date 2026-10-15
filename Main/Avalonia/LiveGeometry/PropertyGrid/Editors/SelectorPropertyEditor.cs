@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Layout;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class SelectorValueEditor : LabeledValueEditor, IValueEditor
 {

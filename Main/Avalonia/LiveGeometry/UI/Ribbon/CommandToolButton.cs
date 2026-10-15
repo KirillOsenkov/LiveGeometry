@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Avalonia.Controls;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class CommandToolButton : ToolButton
 {

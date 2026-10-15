@@ -1,4 +1,4 @@
-﻿namespace DynamicGeometry;
+﻿namespace LiveGeometry;
 
 public class LineByEquation : LineBase, ILine, IRenamableExpressions, IExpressionOwner
 {

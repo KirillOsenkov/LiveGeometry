@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The angle a figure stands for, as the Angle and Angle Bisector tools take it with one

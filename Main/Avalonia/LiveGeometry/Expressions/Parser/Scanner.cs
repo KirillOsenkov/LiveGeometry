@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class Scanner
 {

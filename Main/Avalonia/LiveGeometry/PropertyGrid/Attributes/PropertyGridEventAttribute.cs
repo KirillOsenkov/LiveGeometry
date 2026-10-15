@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method,
     AllowMultiple = true, 

@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <param name="Text">The emoji as it is written, with its FE0F if it has one</param>
 /// <param name="Name">Its CLDR name: "cherries", "red heart"</param>
@@ -35,7 +35,7 @@ public static class EmojiList
     static List<Emoji> Load()
     {
         var result = new List<Emoji>();
-        using var stream = typeof(EmojiList).Assembly.GetManifestResourceStream("DynamicGeometry.Emoji.Emoji.txt");
+        using var stream = typeof(EmojiList).Assembly.GetManifestResourceStream("LiveGeometry.Emoji.Emoji.txt");
         using var reader = new StreamReader(stream);
         string line;
         while ((line = reader.ReadLine()) != null)

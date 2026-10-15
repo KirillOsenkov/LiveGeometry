@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The Point tool with the X/Y panel always on: a point typed by its coordinates, without

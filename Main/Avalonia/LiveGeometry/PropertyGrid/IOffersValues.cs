@@ -1,4 +1,4 @@
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// An object whose enum row offers only some of the enum's values, as the object is now: a

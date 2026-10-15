@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A figure that can keep going when some of what it is built on is deleted (a show/hide

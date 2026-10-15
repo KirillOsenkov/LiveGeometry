@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using Avalonia.Threading;
-using DynamicGeometry;
 
 namespace LiveGeometry;
 

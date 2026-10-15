@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [AttributeUsage(AttributeTargets.All, Inherited = true, AllowMultiple = false)]
 public sealed class PropertyGridNameAttribute : Attribute

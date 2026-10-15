@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using Avalonia.Input;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// One click inside a polygon, a circle, a sector or a path puts a <see cref="PointInRegion"/>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>How a Bezier path works out the handles left to it (automatic ones) from where its anchors are</summary>
 public enum BezierPathSmoothing

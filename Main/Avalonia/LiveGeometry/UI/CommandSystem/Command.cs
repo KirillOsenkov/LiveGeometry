@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class Command : ICommand
 {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Something whose properties may hold other values under another theme than the base one

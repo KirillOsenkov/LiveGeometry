@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A point where two figures cross, made by clicking the two figures: lines, rays, segments,

@@ -1,4 +1,4 @@
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A tool that picks figures by clicking them (<see cref="ShowHideCreator"/>). A click on a

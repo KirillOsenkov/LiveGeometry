@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The side panel right after a regular polygon is made (<see cref="RegularPolygonCreator"/>):

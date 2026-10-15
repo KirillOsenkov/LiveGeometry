@@ -3,7 +3,7 @@ using System.Linq;
 using GuiLabs.Undo;
 using System;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class RemoveFigureAction : GeometryAction
 {

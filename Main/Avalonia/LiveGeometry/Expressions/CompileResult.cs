@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class CompileResult
 {

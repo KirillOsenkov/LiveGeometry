@@ -2,7 +2,7 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Colors as text (names and hex codes), and the checkerboard that stands for transparency.

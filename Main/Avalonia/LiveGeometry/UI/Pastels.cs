@@ -1,6 +1,6 @@
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Hand-picked near-white tints for plates that carry content (the gallery tiles): pale enough

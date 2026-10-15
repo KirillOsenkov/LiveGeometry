@@ -244,7 +244,7 @@ public static class SvgTextOutlines
         /// <summary>The fonts the app brings along: they come first, being what the screen is drawn with</summary>
         static SKTypeface OpenEmbedded(string family, int weight, bool isItalic)
         {
-            GlyphTypeface found = DynamicGeometry.EmojiFont.Typeface;
+            GlyphTypeface found = LiveGeometry.EmojiFont.Typeface;
             if (found == null || found.PlatformTypeface.FamilyName != family)
             {
                 var typeface = new Typeface(

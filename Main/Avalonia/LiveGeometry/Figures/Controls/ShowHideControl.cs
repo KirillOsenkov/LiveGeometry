@@ -8,7 +8,7 @@ using Avalonia.Input;
 using Avalonia.Media;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A check box on the paper that shows and hides figures: its dependencies, which it is

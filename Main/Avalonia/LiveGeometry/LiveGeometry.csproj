@@ -3,8 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>DynamicGeometry.Avalonia</AssemblyName>
-    <RootNamespace>DynamicGeometry</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

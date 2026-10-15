@@ -6,7 +6,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Input.Platform;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Stand-in for the WPF Style class. The library only ever uses Style as a

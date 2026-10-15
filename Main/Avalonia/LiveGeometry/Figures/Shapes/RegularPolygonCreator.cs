@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A regular polygon by its center and a vertex, with as many sides as the tool's panel

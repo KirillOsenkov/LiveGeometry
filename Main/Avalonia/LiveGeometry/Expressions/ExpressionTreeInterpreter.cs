@@ -2,7 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Walks a System.Linq.Expressions tree (the one <see cref="BoundExpression.ToLinq"/>

@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// How a name is drawn: A_1 as A₁, the way GeoGebra (and TeX) read an underscore, and A1 as

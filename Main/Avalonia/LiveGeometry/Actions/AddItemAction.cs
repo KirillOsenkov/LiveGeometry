@@ -1,7 +1,7 @@
 ﻿using System;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class AddItemAction<T> : AbstractAction
 {

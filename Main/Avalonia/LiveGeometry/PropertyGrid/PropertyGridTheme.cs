@@ -9,7 +9,7 @@ using Avalonia.Styling;
 using AvaloniaSetter = Avalonia.Styling.Setter;
 using AvaloniaStyle = Avalonia.Styling.Style;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Makes the editors inside a property grid (text boxes, buttons, the style picker, labels)

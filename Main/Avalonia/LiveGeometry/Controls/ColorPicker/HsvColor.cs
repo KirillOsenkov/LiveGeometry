@@ -1,7 +1,7 @@
 using System;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Hue (0..360), saturation, value and alpha (0..1). The picker works in this space so that

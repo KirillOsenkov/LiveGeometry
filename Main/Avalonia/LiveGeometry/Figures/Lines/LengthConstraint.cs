@@ -3,7 +3,7 @@ using System.Linq;
 using Avalonia;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A figure with a length the user can type, fix and free: a segment, a vector, a regular

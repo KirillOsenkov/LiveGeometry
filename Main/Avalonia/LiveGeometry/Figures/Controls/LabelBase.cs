@@ -11,7 +11,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Threading;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public abstract partial class LabelBase : ControlBase, IRenamableExpressions
 {

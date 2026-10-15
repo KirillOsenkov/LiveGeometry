@@ -1,4 +1,4 @@
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// How an expression's bound tree (<see cref="BoundExpression"/>, what

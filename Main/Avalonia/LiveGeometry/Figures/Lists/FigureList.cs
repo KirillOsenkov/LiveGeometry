@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Any set of IFigures

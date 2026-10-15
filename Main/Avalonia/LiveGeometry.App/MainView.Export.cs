@@ -5,7 +5,6 @@ using Avalonia.Controls;
 using Avalonia.Input.Platform;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
-using DynamicGeometry;
 
 namespace LiveGeometry;
 

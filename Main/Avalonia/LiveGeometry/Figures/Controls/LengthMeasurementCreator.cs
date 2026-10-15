@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The Length tool: two points for the distance between them, or one click on a segment, a

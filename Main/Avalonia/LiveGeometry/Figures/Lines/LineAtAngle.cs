@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A line through a point at an angle to the x axis, counterclockwise. The angle is a figure

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 // Off the ribbon: rarely used. Kept for when it earns its place back.
 [Ignore]

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Picked by <c>[PropertyGridPreferredEditor("Name")]</c> on a figure's name. Like

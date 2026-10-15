@@ -3,7 +3,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public abstract class Curve : ShapeBase<Path>, ILinearFigure
 {

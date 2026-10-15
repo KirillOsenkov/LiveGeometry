@@ -6,7 +6,7 @@ using Avalonia.Input;
 using Avalonia.Media;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Selection)]
 [Order(1)]

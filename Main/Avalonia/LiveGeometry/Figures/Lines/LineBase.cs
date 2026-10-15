@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public abstract partial class LineBase : ShapeBase<Line>, ILinearFigure
 {

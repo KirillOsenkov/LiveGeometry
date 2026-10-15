@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class EnumEditorFactory : BaseValueEditorFactory<EnumEditor>
 {

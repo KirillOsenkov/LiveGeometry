@@ -7,7 +7,7 @@ using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The icon of a tool made by Define figure: a small picture of what the tool was defined on,

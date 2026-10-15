@@ -1,4 +1,4 @@
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Which of the two angles between two rays out of a point a figure means: an angle's mark

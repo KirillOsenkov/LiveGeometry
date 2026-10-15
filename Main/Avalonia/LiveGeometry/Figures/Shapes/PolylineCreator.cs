@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 // Off the ribbon: rarely used. Polylines in files still load (the figure stays).
 [Ignore]

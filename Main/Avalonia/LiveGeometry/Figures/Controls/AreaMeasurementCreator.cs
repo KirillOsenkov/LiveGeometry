@@ -4,7 +4,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Measure)]
 [Order(3)]

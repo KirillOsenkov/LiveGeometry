@@ -63,7 +63,7 @@ sealed class Program
             MainView.StartupPath = "/gallery/" + args[1];
         }
 
-        DynamicGeometry.EmojiFont.Open = () => Task.FromResult<Stream>(
+        LiveGeometry.EmojiFont.Open = () => Task.FromResult<Stream>(
             File.OpenRead(Path.Combine(AppContext.BaseDirectory, "Fonts", "Twemoji.Mozilla.ttf")));
 
         // the JavaScript player, for Save as .html (copied beside the exe by the project)

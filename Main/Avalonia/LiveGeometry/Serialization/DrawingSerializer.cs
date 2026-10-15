@@ -7,7 +7,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class DrawingSerializer
 {

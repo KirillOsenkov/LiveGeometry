@@ -17,13 +17,13 @@ internal sealed partial class Program
             SettingsStore.Current = new LiveGeometry.Browser.BrowserSettingsStore();
 
             // hints name the keys as the keyboard does (Option on a Mac)
-            DynamicGeometry.KeyNames.IsMac = IsMacKeyboard();
+            LiveGeometry.KeyNames.IsMac = IsMacKeyboard();
 
             // a reload, or another visit, finds the user's drawing where it was left
             MainView.KeepsOwnDrawing = true;
             MainView.TakeHandoff = TakeHandoff;
             MainView.CopyTextWhenReady = CopyTextWhenReady;
-            DynamicGeometry.EmojiFont.Open = OpenEmojiFont;
+            LiveGeometry.EmojiFont.Open = OpenEmojiFont;
             PlayerEmbed.OpenPlayerScript = () => FetchText("player/" + PlayerEmbed.Version + "/player.js");
             SplashScreen.Attach(HideSplash, ReportSplashProgress);
             if (args.Length > 0 && args[0].Contains("bench=expressions"))

@@ -1,7 +1,7 @@
 using System;
 using System.Numerics;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A number worked out exactly: a + b sqrt(2) + c sqrt(3) + d sqrt(6), a to d fractions

@@ -5,7 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using M = System.Math;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public partial class CoordinateSystem : IMovable
 {

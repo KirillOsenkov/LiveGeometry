@@ -4,7 +4,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Avalonia.Controls;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixableDirection
 {

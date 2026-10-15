@@ -8,7 +8,7 @@ using Avalonia.Media;
 using System.Xml.Linq;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [PropertyGridName("Drawing")]
 public partial class Drawing : IThemeOverridable, IConditionalProperties, INotifyPropertyChanged

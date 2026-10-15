@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// What binding and evaluating expressions ask reflection for, looked up once: a function by

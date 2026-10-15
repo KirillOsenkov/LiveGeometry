@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
 using Avalonia.Controls;
-using DynamicGeometry;
 
 namespace LiveGeometry.Desktop;
 

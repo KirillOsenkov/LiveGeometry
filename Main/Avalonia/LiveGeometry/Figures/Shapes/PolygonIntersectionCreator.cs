@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 // Off the ribbon: the intersection doesn't work. The figure stays so old files load.
 [Ignore]

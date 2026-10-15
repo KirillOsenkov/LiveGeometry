@@ -5,7 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using AvaloniaShapes = Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A selection by a region under way (<see cref="SelectionRegion"/>): the Rectangle and Lasso

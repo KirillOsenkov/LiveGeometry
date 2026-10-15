@@ -10,7 +10,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public abstract partial class FigureBase :
     IFigure,

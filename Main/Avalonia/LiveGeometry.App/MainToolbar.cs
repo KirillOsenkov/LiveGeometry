@@ -6,7 +6,6 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
-using DynamicGeometry;
 
 namespace LiveGeometry;
 

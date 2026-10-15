@@ -1,6 +1,6 @@
 ﻿using Avalonia.Media;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// An axis of the coordinate grid: a line drawn as a vector's arrow, the shaft across

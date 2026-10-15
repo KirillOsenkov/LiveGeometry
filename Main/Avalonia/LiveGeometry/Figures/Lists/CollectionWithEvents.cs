@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class CollectionWithEvents<T> : ObservableCollection<T>
 {

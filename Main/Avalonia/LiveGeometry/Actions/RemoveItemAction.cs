@@ -2,7 +2,7 @@
 using System.Linq;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class RemoveItemAction<T> : AbstractAction
 {

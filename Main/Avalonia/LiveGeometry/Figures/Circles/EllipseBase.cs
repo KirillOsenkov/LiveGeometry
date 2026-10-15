@@ -2,7 +2,7 @@
 using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public abstract partial class EllipseBase : ShapeBase<Shape>, IEllipse, IPerimeter, IRegion
 {
@@ -154,7 +154,7 @@ public abstract partial class EllipseBase : ShapeBase<Shape>, IEllipse, IPerimet
 
     public virtual Tuple<double, double> GetParameterDomain()
     {
-        return Tuple.Create(0.0, DynamicGeometry.Math.DOUBLEPI);
+        return Tuple.Create(0.0, LiveGeometry.Math.DOUBLEPI);
     }
 
     public override void UpdateVisual()

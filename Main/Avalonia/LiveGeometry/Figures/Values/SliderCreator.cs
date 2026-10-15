@@ -2,7 +2,7 @@ using System.ComponentModel;
 using Avalonia;
 using Avalonia.Input;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Two clicks: where the slider sits (its anchor), then where its knob starts - the knob

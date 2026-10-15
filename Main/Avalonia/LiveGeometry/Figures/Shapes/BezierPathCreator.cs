@@ -7,7 +7,7 @@ using Avalonia.Media;
 using AvaloniaPath = Avalonia.Controls.Shapes.Path;
 using AvaloniaShape = Avalonia.Controls.Shapes.Shape;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Makes a <see cref="BezierPath"/> as the pen of a drawing program does: a click puts an

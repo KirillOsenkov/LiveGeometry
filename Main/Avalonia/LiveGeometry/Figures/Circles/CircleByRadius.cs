@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The radius is either the distance between two points or the length of a figure

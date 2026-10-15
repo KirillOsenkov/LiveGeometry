@@ -1,6 +1,6 @@
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A figure with a direction the user can type, fix and free - the way from its first point

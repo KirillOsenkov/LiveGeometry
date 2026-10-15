@@ -5,7 +5,7 @@ using Avalonia;
 using Avalonia.Input;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Makes a show/hide box (<see cref="ShowHideControl"/>), or changes what one shows and hides

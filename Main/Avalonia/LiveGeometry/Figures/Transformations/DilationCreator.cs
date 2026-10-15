@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Avalonia;
 using Avalonia.Input;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 [Category(BehaviorCategories.Transform)]
 [Order(4)]

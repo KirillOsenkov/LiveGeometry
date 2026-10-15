@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class DrawingExpressionEditorFactory
     : BaseValueEditorFactory<ExpressionEditor, DrawingExpression> { }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
 {

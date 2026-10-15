@@ -4,7 +4,7 @@ using System.Linq;
 using Avalonia;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 public class Polyline : ShapeBase<Avalonia.Controls.Shapes.Polyline>, ILinearFigure, ISupportRemoveDependency, IPolygonalChain, ILengthProvider
 {

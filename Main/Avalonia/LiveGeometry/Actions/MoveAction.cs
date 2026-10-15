@@ -3,7 +3,7 @@ using System.Linq;
 using Avalonia;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A move by an offset. Undo and redo don't move back and forth by the offset: a movable

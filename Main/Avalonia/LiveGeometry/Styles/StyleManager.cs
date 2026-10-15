@@ -5,7 +5,7 @@ using System.Linq;
 using Avalonia.Media;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>Which default styles the figures written name (<see cref="StyleManager.NamesDefaults"/>)</summary>
 public enum DefaultStyleNames

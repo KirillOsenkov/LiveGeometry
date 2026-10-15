@@ -1,7 +1,7 @@
 using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// The pinned labels of a drawing as one thing to drag along with the view

@@ -5,7 +5,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Input;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// Translation, one thing per step: the figure to translate, then the distance, then

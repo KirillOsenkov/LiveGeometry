@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
 
-namespace DynamicGeometry;
+namespace LiveGeometry;
 
 /// <summary>
 /// A line that is perpendicular to another by construction, and says so with a
