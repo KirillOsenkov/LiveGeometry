@@ -34,7 +34,9 @@ jobs:
       - name: dotnet publish
         # Publish output is a self-contained static site: web.config at the root
         # (IIS MIME maps, compression, SPA fallback) plus wwwroot/ with the app.
-        run: dotnet publish Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj -c Release -o "${{ github.workspace }}/publish"
+        # ShareService (the repository's Actions variable SHARE_SERVICE) is the API that makes
+        # share links; without it the app has no Copy share link.
+        run: dotnet publish Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj -c Release -o "${{ github.workspace }}/publish" -p:ShareService=${{ vars.SHARE_SERVICE }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4

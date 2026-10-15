@@ -238,6 +238,13 @@
     background: var(--paper);
   }
 
+  /* a shared drawing that can't be shown says why, over the empty paper */
+  #drawing-status {
+    position: absolute;
+    left: 16px;
+    top: 0;
+  }
+
   /* ---------- the gallery (GalleryView): the start tiles, the brand, the heading, the
      tiles; the theme button and the Octocat in the corner over the scrolling page ---------- */
   #gallery-page {
@@ -421,6 +428,15 @@
       <path d="M2.5,4.5 H8 L9.5,6.5 H16.5 V16 H2.5 Z" fill="#F2B632"/>
       <path d="M2.5,16 L4.8,9 H18.5 L16.5,16 Z" fill="#FAD565"/>
     </symbol>
+    <!-- Edit: the pencil of the start page's My Drawing tile (GalleryView.PencilPicture, 84
+         grid), cut to its square; lit from the upper left across the middle of its box -->
+    <linearGradient id="pencil-wood" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0.39" stop-color="#F9E1AD"/><stop offset="0.61" stop-color="#F2B632"/>
+    </linearGradient>
+    <symbol id="icon-edit" viewBox="12 10 62 62" stroke="#8A6305" stroke-width="2.5">
+      <path d="M16,68 L20,52 L58,14 L70,26 L32,64 Z" fill="url(#pencil-wood)" stroke-linejoin="round"/>
+      <path d="M20,52 L32,64 M50,22 L62,34" fill="none" stroke-linecap="round"/>
+    </symbol>
     <symbol id="icon-previous" viewBox="0 0 20 20">
       <path d="M13.5,4.5 L8,10 L13.5,15.5" fill="none" style="stroke: var(--accent)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
     </symbol>
@@ -456,8 +472,9 @@
     <span class="tb logo" title="Live Geometry"><svg><use href="#icon-app"/></svg></span>
     <a class="tb" id="gallery-button" href="/web/" title="Gallery"><svg><use href="#icon-gallery"/></svg></a>
     <span class="sep"></span>
-    <a class="tb" href="/drawing" title="New drawing (opens the editor)"><svg><use href="#icon-new"/></svg></a>
-    <a class="tb" href="/drawing" title="Open a drawing (opens the editor)"><svg><use href="#icon-open"/></svg></a>
+    <a class="tb" id="new-button" href="/drawing" title="New drawing (opens the editor)"><svg><use href="#icon-new"/></svg></a>
+    <a class="tb" id="open-button" href="/drawing" title="Open a drawing (opens the editor)"><svg><use href="#icon-open"/></svg></a>
+    <button class="tb" id="edit-button" type="button" title="Edit this drawing (opens the editor)" hidden><svg><use href="#icon-edit"/></svg></button>
   </div>
   <div class="tour" id="tour">
     <span class="sep"></span>
@@ -474,18 +491,22 @@
 
 <main id="drawing-page" hidden>
   <div id="drawing"></div>
+  <p class="status" id="drawing-status" hidden></p>
 </main>
+
+<!-- Open: the file is picked here and handed to the editor (goToEditor) -->
+<input type="file" id="open-file" accept=".lgf,.ggb,.dgf" hidden>
 
 <main id="gallery-page" hidden>
   <div class="scroll" id="scroll">
     <div class="content">
       <div class="start-row">
         <div class="start-tiles">
-          <a class="tile start" href="/drawing" style="--tile-plate: #E6EFFB" title="A new drawing, in the editor">
+          <a class="tile start" id="new-tile" href="/drawing" style="--tile-plate: #E6EFFB" title="A new drawing, in the editor">
             <div class="picture"><svg><use href="#picture-plus"/></svg></div>
             <div class="caption">New</div>
           </a>
-          <a class="tile start" href="/drawing" style="--tile-plate: #E4F4E6" title="Open a drawing, in the editor">
+          <a class="tile start" id="open-tile" href="/drawing" style="--tile-plate: #E4F4E6" title="Open a drawing, in the editor">
             <div class="picture"><svg><use href="#picture-folder"/></svg></div>
             <div class="caption">Open</div>
           </a>
@@ -621,6 +642,11 @@
     }
 
     function navigate(push) {
+      // a shared drawing's page is one drawing and nothing else to go to
+      if (shareId != null) {
+        return;
+      }
+
       var slug = slugOfPath(location.pathname);
       var item = slug !== '' ? findBySlug(slug) : null;
       if (item != null) {
@@ -687,7 +713,8 @@
     document.getElementById('previous').addEventListener('click', function () { showNeighbor(-1); });
     document.getElementById('next').addEventListener('click', function () { showNeighbor(1); });
     document.getElementById('gallery-button').addEventListener('click', function (e) {
-      if (isPlainClick(e)) {
+      // from a shared drawing, the link goes to the app's gallery
+      if (shareId == null && isPlainClick(e)) {
         e.preventDefault();
         showGallery(true);
       }
@@ -695,7 +722,7 @@
 
     // the keys the app answers with the tour: Page Up / Page Down turn the pages, Home fits
     window.addEventListener('keydown', function (e) {
-      if (current == null || e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+      if (player == null || e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
         return;
       }
 
@@ -705,7 +732,7 @@
       } else if (e.key === 'PageDown') {
         e.preventDefault();
         showNeighbor(1);
-      } else if ((e.key === 'Home' || e.key === 'h' || e.key === 'H') && player != null) {
+      } else if (e.key === 'Home' || e.key === 'h' || e.key === 'H') {
         e.preventDefault();
         player.fit();
       }
@@ -714,7 +741,7 @@
     // the caption is measured in the page's font: laid out before the font came, once more when it has
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () {
-        if (player != null && current != null) {
+        if (player != null) {
           player.applyFont();
           if (player.keepFitted) {
             player.fitInitial();
@@ -772,6 +799,115 @@
     }
 
     window.addEventListener('resize', layoutToolbar);
+
+    // ---------- a shared drawing: /s/<id> (the app's Export > Copy share link) ----------
+
+    // web.config answers /s/<id> with this page and /s/<id>.lgf with a redirect to the stored drawing
+    var shareId = shareIdOfPath(location.pathname);
+    var sharedText = null;
+    var drawingStatus = document.getElementById('drawing-status');
+    var editButton = document.getElementById('edit-button');
+
+    function shareIdOfPath(path) {
+      var match = /^\/s\/([a-z2-7]{8,})\/?$/i.exec(path);
+      return match != null ? match[1].toLowerCase() : null;
+    }
+
+    function showShared(id) {
+      galleryPage.hidden = true;
+      toolbar.hidden = false;
+      drawingPage.hidden = false;
+      editButton.hidden = false;
+      document.getElementById('gallery-button').href = '/';
+      document.title = AppTitle;
+      updateTour();
+      fetch('/s/' + id + '.lgf').then(function (response) {
+        if (response.status === 404) {
+          throw new Error('There is no drawing at this link.');
+        }
+
+        if (!response.ok) {
+          throw new Error('The drawing could not be loaded (' + response.status + ').');
+        }
+
+        return response.text();
+      }).then(function (text) {
+        sharedText = text;
+        player = LiveGeometry.play(drawingElement, {
+          lgf: text,
+          theme: currentTheme(),
+          wheel: 'zoom'
+        });
+      }).catch(function (error) {
+        console.error('web: ' + error.message);
+        drawingStatus.textContent = error instanceof TypeError ? 'The drawing could not be loaded.' : error.message;
+        drawingStatus.hidden = false;
+      });
+    }
+
+    // ---------- to the editor: New, Open, Edit ----------
+
+    // The editor is the app, at /drawing: what it is to do there goes into the session's
+    // storage, which the app reads (and removes) as it starts (main.js, MainView.Handoff.cs).
+    // Each replaces the drawing the browser keeps, as New in the app does. Open picks the file
+    // here, in the click: the app can't open a file picker without a click of its own.
+    function goToEditor(handoff) {
+      try {
+        sessionStorage.setItem('LiveGeometry.Handoff', JSON.stringify(handoff));
+      } catch (e) {
+        // storage denied, or a file too big for it: the editor opens as it would anyway
+        console.warn('web: ' + e.message);
+      }
+
+      location.href = '/drawing';
+    }
+
+    function toBase64(bytes) {
+      var binary = '';
+      for (var i = 0; i < bytes.length; i += 0x8000) {
+        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+      }
+
+      return btoa(binary);
+    }
+
+    var openFile = document.getElementById('open-file');
+    openFile.addEventListener('change', function () {
+      var file = openFile.files[0];
+      if (file == null) {
+        return;
+      }
+
+      file.arrayBuffer().then(function (buffer) {
+        goToEditor({ action: 'open', name: file.name, data: toBase64(new Uint8Array(buffer)) });
+      });
+    });
+
+    // a middle click or Ctrl+click still opens /drawing in another tab, as a link does
+    function newDrawing(e) {
+      if (isPlainClick(e)) {
+        e.preventDefault();
+        goToEditor({ action: 'new' });
+      }
+    }
+
+    function openDrawing(e) {
+      if (isPlainClick(e)) {
+        e.preventDefault();
+        openFile.value = '';
+        openFile.click();
+      }
+    }
+
+    document.getElementById('new-button').addEventListener('click', newDrawing);
+    document.getElementById('new-tile').addEventListener('click', newDrawing);
+    document.getElementById('open-button').addEventListener('click', openDrawing);
+    document.getElementById('open-tile').addEventListener('click', openDrawing);
+    editButton.addEventListener('click', function () {
+      if (sharedText != null) {
+        goToEditor({ action: 'edit', data: toBase64(new TextEncoder().encode(sharedText)) });
+      }
+    });
 
     // ---------- the gallery: the tiles, live drawings of their own ----------
 
@@ -1352,6 +1488,12 @@
     // ---------- start: the chrome of the page the address names at once, its contents when the catalog is here ----------
 
     var status = document.getElementById('gallery-status');
+    if (shareId != null) {
+      // one drawing, not from the gallery: the catalog isn't needed
+      showShared(shareId);
+      return;
+    }
+
     if (slugOfPath(location.pathname) !== '') {
       toolbar.hidden = false;
       drawingPage.hidden = false;

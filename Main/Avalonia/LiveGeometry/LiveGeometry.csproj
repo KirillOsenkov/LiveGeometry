@@ -23,4 +23,10 @@
     <ProjectReference Include="..\DynamicGeometry\DynamicGeometry.csproj" />
   </ItemGroup>
 
+  <!-- The address of the API that makes share links (MainView.Share.cs), given to the site's
+       build by its workflow (-p:ShareService=...). A build without it has no Copy share link. -->
+  <ItemGroup Condition="'$(ShareService)' != ''">
+    <AssemblyMetadata Include="ShareService" Value="$(ShareService)" />
+  </ItemGroup>
+
 </Project>

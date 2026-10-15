@@ -21,6 +21,8 @@ internal sealed partial class Program
 
             // a reload, or another visit, finds the user's drawing where it was left
             MainView.KeepsOwnDrawing = true;
+            MainView.TakeHandoff = TakeHandoff;
+            MainView.CopyTextWhenReady = CopyTextWhenReady;
             DynamicGeometry.EmojiFont.Open = OpenEmojiFont;
             PlayerEmbed.OpenPlayerScript = () => FetchText("player/" + PlayerEmbed.Version + "/player.js");
             SplashScreen.Attach(HideSplash, ReportSplashProgress);
@@ -53,6 +55,15 @@ internal sealed partial class Program
 
     [JSImport("reportProgress", "main.js")]
     private static partial void ReportSplashProgress(double fraction);
+
+    // what the player's pages hand over to the editor (MainView.Handoff.cs)
+    [JSImport("takeHandoff", "main.js")]
+    private static partial string TakeHandoff();
+
+    // the clipboard written in the click, the text when it comes (MainView.Share.cs)
+    [JSImport("copyTextWhenReady", "main.js")]
+    [return: JSMarshalAs<JSType.Promise<JSType.Void>>]
+    private static partial Task CopyTextWhenReady([JSMarshalAs<JSType.Promise<JSType.String>>] Task<string> text);
 
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>();

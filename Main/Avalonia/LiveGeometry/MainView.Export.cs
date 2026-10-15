@@ -58,6 +58,11 @@ public partial class MainView
         Add("Save as .svg", SaveAsSvg);
         Add("Save as .html", SaveAsHtml);
         menu.Items.Add(new Separator());
+        if (ShareService != null)
+        {
+            Add("Copy share link", CopyShareLink);
+        }
+
         Add("Copy image", CopyImage);
         Add("Copy embed code", CopyEmbedCode);
 

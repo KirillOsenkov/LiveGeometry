@@ -1820,6 +1820,39 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   family name Skia wrote: the emoji font, Avalonia's `fonts:Inter` collection, then the
   installed ones; a new embedded font wants an entry in `FontFaces.OpenEmbedded`. To check
   an SVG, open it in headless Edge (`webauto start file:///...svg`) next to the PNG.
+- **Share links** (2026-10-14; `MainView.Share.cs`, Export > Copy share link): the drawing
+  as Save writes it is posted to the site's API, which stores it under an id made from its
+  content and answers it; the link is `https://livegeometry.com/s/<id>`. The API is a
+  service of its own. What the app relies on:
+  - `POST {ShareService}/api/v1/share`, the `.lgf` as the body, `Content-Type: text/plain`
+    (a browser sends that without a preflight) -> `200 {"id": "abcd2345"}`: 8 or more
+    characters of `a-z2-7`, the same for the same bytes. `413` over 512 KB, `429` too many
+    calls for now (with `Retry-After`), `400` not XML, `403` from a page of another site.
+    The status says each in words; a failed request or a refused clipboard is no error
+    report (`IsSharingFailure`, in `IsBenign` while sharing).
+  - `ShareService` is a build property (`-p:ShareService=https://...`, the public
+    workflow's Actions variable `SHARE_SERVICE`) that reaches the app as an
+    `AssemblyMetadata` (`LiveGeometry.csproj`): a build without it has no menu item and
+    never calls the API.
+  - `web.config`: `/s/<id>` is the `/web` page, `/s/<id>.lgf` a 302 to where the drawing is
+    stored (`no-cache`, so that the storage can move). Links and embeds name only these.
+    `tools/serve.cs --shares <the storage, ending in />` answers them the same way locally.
+  - The same drawing again (the same text) gets the same link without a request. The text
+    includes the view (`<Viewport>`), which the player and the editor fit into their window:
+    a pan makes another link.
+  - Safari writes to the clipboard only during the click, and the link comes after a
+    request: in the browser the write starts in the click with a `ClipboardItem` whose text
+    is a promise (`copyTextWhenReady` in `main.js`, `CopyTextWhenReady`), resolved with the
+    link. The desktop puts the link on its clipboard when it comes.
+  - The page at the link (`web/index.html`, route `/s/<id>`) plays the drawing, with New,
+    Open and Edit (the pencil of the My Drawing tile) in its toolbar. They hand over to
+    the editor (`MainView.Handoff.cs`): the page puts `{ action, name, data }` (data in
+    base64) into `sessionStorage` (`LiveGeometry.Handoff`) and goes to `/drawing`; `main.js`
+    takes it out before the runtime starts, so a reload doesn't do it again, and
+    `OpenStartupFile` does it: `new` is New, `open` is Open with the file picked on the page
+    (the app can't open a picker without a click of its own), `edit` loads the drawing as
+    the user's own without a file (Save is Save as). Each replaces the kept drawing, as New
+    does. `/web`'s New and Open tiles and buttons hand over the same way.
 - **No menu.** New, Open, Save, Export | Undo, Redo are one row (`LiveGeometry/MainToolbar.cs`) above the
   ribbon, with the tour group (◀ n/N ▶ + title) between them and the Octocat at the right,
   whose tooltip is the build. The first button is the app's mark and folds the ribbon (Ctrl+F1,

@@ -5,7 +5,7 @@
 // Separate from webauto.cs on purpose: a running server locks its own executable, which
 // would block rebuilding webauto after an edit.
 //
-//   dotnet run tools/serve.cs -- <dir> [port=5005] [--overlay <prefix>=<folder>]... [--reload]
+//   dotnet run tools/serve.cs -- <dir> [port=5005] [--overlay <prefix>=<folder>]... [--reload] [--shares <address>]
 //   (blocks; run it in the background)
 //
 // For a `dotnet publish` output pass its wwwroot folder. No compression, no caching: this is
@@ -24,6 +24,10 @@
 //
 //   dotnet run tools/serve.cs -- C:\temp\LiveGeometry\player\publish\wwwroot 5006 --overlay embed=embed --reload
 //   then open http://localhost:5006/embed/index.html
+//
+// `--shares <address>` answers the addresses of shared drawings as web.config does: /s/<id>
+// with the web page, /s/<id>.lgf with a redirect to <address><id>.lgf (the storage, as
+// web.config's redirect says it, ending in /).
 
 using System.Net;
 using System.Text;
@@ -32,8 +36,15 @@ using System.Text.Json;
 var positional = new List<string>();
 var overlays = new List<(string Prefix, string Folder)>();
 bool liveReload = false;
+string sharesAddress = null;
 for (int i = 0; i < args.Length; i++)
 {
+    if (args[i] == "--shares" && i + 1 < args.Length)
+    {
+        sharesAddress = args[++i];
+        continue;
+    }
+
     if (args[i] == "--overlay" && i + 1 < args.Length)
     {
         var pair = args[++i];
@@ -58,7 +69,7 @@ for (int i = 0; i < args.Length; i++)
 
 if (positional.Count == 0)
 {
-    Console.WriteLine("usage: serve <dir> [port=5005] [--overlay <prefix>=<folder>]... [--reload]");
+    Console.WriteLine("usage: serve <dir> [port=5005] [--overlay <prefix>=<folder>]... [--reload] [--shares <address>]");
     return 1;
 }
 
@@ -122,6 +133,19 @@ while (true)
                 context.Response.ContentLength64 = stamp.Length;
                 context.Response.OutputStream.Write(stamp);
                 return;
+            }
+
+            if (sharesAddress != null && relative.StartsWith("s/", StringComparison.OrdinalIgnoreCase))
+            {
+                var name = relative.Substring(2).TrimEnd('/');
+                if (name.EndsWith(".lgf", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Response.Redirect(sharesAddress + name);
+                    return;
+                }
+
+                // the page (with --overlay web=web, the repo's copy)
+                relative = "web/index.html";
             }
 
             // an overlay answers for its prefix from its own folder; the publish's copy is not consulted

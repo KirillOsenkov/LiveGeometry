@@ -21,6 +21,17 @@ async function downloadEmojiFont(options) {
     return new Uint8Array(await response.arrayBuffer());
 }
 
+// What a page without the editor (/web, a shared drawing at /s/<id>) hands over as it sends
+// the user here: New, Open with the file it picked, Edit of the drawing it showed
+// (MainView.Handoff.cs). Taken out of the storage at once, so that a reload doesn't do it again.
+let handoff = null;
+try {
+    handoff = globalThis.sessionStorage.getItem('LiveGeometry.Handoff');
+    globalThis.sessionStorage.removeItem('LiveGeometry.Handoff');
+} catch {
+    // storage denied: nothing handed over
+}
+
 let emojiFontDownload = globalThis.location.pathname === '/' ? downloadEmojiFont({ priority: 'low' }) : null;
 // a failure is the app's to report, when it asks for the font
 emojiFontDownload?.catch(() => { });
@@ -106,6 +117,29 @@ dotnetRuntime.setModuleImports('main.js', {
         }
 
         return await response.text();
+    },
+    // the handoff (above), once
+    takeHandoff: () => {
+        const taken = handoff;
+        handoff = null;
+        return taken;
+    },
+    // Copy share link: Safari takes a write to the clipboard only during the click, and the
+    // link comes after a request to the server. So the write starts in the click with the
+    // promise of the text, which ClipboardItem takes; no text (null) is a failure.
+    copyTextWhenReady: (text) => {
+        if (typeof ClipboardItem === 'undefined' || !globalThis.navigator.clipboard?.write) {
+            return Promise.reject(new Error('this browser has no ClipboardItem'));
+        }
+
+        const blob = text.then(value => {
+            if (value === null || value === undefined) {
+                throw new Error('nothing to copy');
+            }
+
+            return new Blob([value], { type: 'text/plain' });
+        });
+        return globalThis.navigator.clipboard.write([new ClipboardItem({ 'text/plain': blob })]);
     },
     // the splash (above): the app's part of the bar, and the app on screen
     reportProgress: (fraction) => showProgress(downloadShare + (1 - downloadShare) * fraction),

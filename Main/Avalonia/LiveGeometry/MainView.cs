@@ -456,7 +456,9 @@ public partial class MainView : UserControl
             || exception is Avalonia.RenderTargetCorruptedException
             || IsReadOnlyFile(exception)
             // a file that can't be written now, said in words (TryWriteFile)
-            || writingFile && (exception is IOException || exception is UnauthorizedAccessException);
+            || writingFile && (exception is IOException || exception is UnauthorizedAccessException)
+            // a share link that can't be made or copied now, said in words (CopyShareLink)
+            || sharingCount > 0 && IsSharingFailure(exception);
     }
 
     /// <summary>The message in the status bar, the whole text in the side panel</summary>
@@ -909,7 +911,15 @@ public partial class MainView : UserControl
         StartupFile = null;
         if (string.IsNullOrEmpty(path))
         {
-            HandleExceptions(() => Navigate(StartupPath ?? AddressBar.Current.Path, push: false));
+            HandleExceptions(() =>
+            {
+                // New, Open or Edit from a page of the player, else what the address says
+                var startPath = StartupPath ?? AddressBar.Current.Path;
+                if (!DoHandoff(startPath))
+                {
+                    Navigate(startPath, push: false);
+                }
+            });
             if (!IsGalleryShowing)
             {
                 HideSplashWhenDrawn();
