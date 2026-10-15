@@ -4,167 +4,166 @@ using System.Linq;
 using Avalonia;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class Polyline : ShapeBase<Avalonia.Controls.Shapes.Polyline>, ILinearFigure, ISupportRemoveDependency, IPolygonalChain, ILengthProvider
 {
-    public class Polyline : ShapeBase<Avalonia.Controls.Shapes.Polyline>, ILinearFigure, ISupportRemoveDependency, IPolygonalChain, ILengthProvider
+    public Polyline()
     {
-        public Polyline()
-        {
-            this.mDependencies.CollectionChanged += mDependencies_CollectionChanged;
-        }
+        this.mDependencies.CollectionChanged += mDependencies_CollectionChanged;
+    }
 
-        // one converted from a polygon ends where it starts: ABCA
-        protected override IReadOnlyList<string> NamesFromDependencies()
-        {
-            return NamesFromPoints(PointOrder.Reversible, Polygon.MaxVerticesInName + 1);
-        }
+    // one converted from a polygon ends where it starts: ABCA
+    protected override IReadOnlyList<string> NamesFromDependencies()
+    {
+        return NamesFromPoints(PointOrder.Reversible, Polygon.MaxVerticesInName + 1);
+    }
 
-        protected override string Kind
+    protected override string Kind
+    {
+        get
         {
-            get
+            return "Polyline";
+        }
+    }
+
+    /// <summary>Named as polygons are, when no points name it: p, q...</summary>
+    protected override string FirstLetter
+    {
+        get
+        {
+            return "p";
+        }
+    }
+
+    /// <summary>
+    /// Just for caching purposes, to avoid array allocations on a hotpath
+    /// </summary>
+    protected IPoint[] vertices;
+    protected Point[] vertexCoordinates;
+    public Point[] VertexCoordinates
+    {
+        get
+        {
+            return vertexCoordinates;
+        }
+    }
+
+    public override Point Center
+    {
+        get
+        {
+            return VertexCoordinates.Midpoint();
+        }
+    }
+
+    /// <summary>
+    /// From the first point to the last, along the way. (It was the perimeter of the
+    /// polygon on the same points, with the way back from the last to the first: an
+    /// open polyline over a 3 and a 4 measured 12.)
+    /// </summary>
+    public double Length
+    {
+        get
+        {
+            var points = Dependencies.ToPoints().ToArray();
+            double length = 0;
+            for (int i = 1; i < points.Length; i++)
             {
-                return "Polyline";
+                length += points[i - 1].Distance(points[i]);
             }
-        }
 
-        /// <summary>Named as polygons are, when no points name it: p, q...</summary>
-        protected override string FirstLetter
+            return length;
+        }
+    }
+
+    protected override void OnDependenciesChanged()
+    {
+        UpdatePointCache();
+    }
+
+    private void UpdatePointCache()
+    {
+        vertices = Dependencies.Where(f => f is IPoint).Cast<IPoint>().ToArray();   // Tolerates non-IPoint dependencies.
+        vertexCoordinates = new Point[vertices.Length];
+        var cache = new PointCollection();
+        Shape.Points = cache;
+
+        for (int i = 0; i < vertices.Length; i++)
         {
-            get
-            {
-                return "p";
-            }
+            cache.Add(new Point());
         }
+    }
 
-        /// <summary>
-        /// Just for caching purposes, to avoid array allocations on a hotpath
-        /// </summary>
-        protected IPoint[] vertices;
-        protected Point[] vertexCoordinates;
-        public Point[] VertexCoordinates
+    void mDependencies_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (Drawing != null)
         {
-            get
-            {
-                return vertexCoordinates;
-            }
+            this.UpdateVisual();
         }
+    }
 
-        public override Point Center
-        {
-            get
-            {
-                return VertexCoordinates.Midpoint();
-            }
-        }
+    protected override ZOrder DefaultLayer()
+    {
+        return ZOrder.Figures;
+    }
 
-        /// <summary>
-        /// From the first point to the last, along the way. (It was the perimeter of the
-        /// polygon on the same points, with the way back from the last to the first: an
-        /// open polyline over a 3 and a 4 measured 12.)
-        /// </summary>
-        public double Length
-        {
-            get
-            {
-                var points = Dependencies.ToPoints().ToArray();
-                double length = 0;
-                for (int i = 1; i < points.Length; i++)
-                {
-                    length += points[i - 1].Distance(points[i]);
-                }
+    protected override Avalonia.Controls.Shapes.Polyline CreateShape()
+    {
+        return Factory.CreatePolylineShape();
+    }
 
-                return length;
-            }
-        }
-
-        protected override void OnDependenciesChanged()
+    public override void UpdateVisual()
+    {
+        if (vertices == null)
         {
             UpdatePointCache();
         }
 
-        private void UpdatePointCache()
+        var points = Shape.Points;
+        var coordinateSystem = Drawing.CoordinateSystem;
+        for (int i = 0; i < vertices.Length; i++)
         {
-            vertices = Dependencies.Where(f => f is IPoint).Cast<IPoint>().ToArray();   // Tolerates non-IPoint dependencies.
-            vertexCoordinates = new Point[vertices.Length];
-            var cache = new PointCollection();
-            Shape.Points = cache;
-
-            for (int i = 0; i < vertices.Length; i++)
-            {
-                cache.Add(new Point());
-            }
+            vertexCoordinates[i] = vertices[i].Coordinates;
+            points[i] = coordinateSystem.ToPhysical(vertexCoordinates[i]);
         }
 
-        void mDependencies_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        Shape.PointsChanged();
+    }
+
+    public override IFigure HitTest(Avalonia.Point point)
+    {
+        double epsilon = ToLogical(Shape.StrokeThickness / 2 + Math.CursorTolerance);
+        if (Math.IsPointOnPolygonalChain(Dependencies.ToPoints(), point, epsilon, false))
         {
-            if (Drawing != null)
-            {
-                this.UpdateVisual();
-            }
+            return this;
         }
+        return null;
+    }
 
-        protected override ZOrder DefaultLayer()
-        {
-            return ZOrder.Figures;
-        }
+    public double GetNearestParameterFromPoint(Point point)
+    {
+        return Math.GetNearestParameterFromPointOnPolyline(Dependencies.ToPoints(), point);
+    }
 
-        protected override Avalonia.Controls.Shapes.Polyline CreateShape()
-        {
-            return Factory.CreatePolylineShape();
-        }
+    public Point GetPointFromParameter(double parameter)
+    {
+        return Math.GetPointOnPolylineFromParameter(Dependencies.ToPoints(), parameter);
+    }
 
-        public override void UpdateVisual()
-        {
-            if (vertices == null)
-            {
-                UpdatePointCache();
-            }
+    public virtual Tuple<double, double> GetParameterDomain()
+    {
+        return Tuple.Create(0.0, 1.0);
+    }
 
-            var points = Shape.Points;
-            var coordinateSystem = Drawing.CoordinateSystem;
-            for (int i = 0; i < vertices.Length; i++)
-            {
-                vertexCoordinates[i] = vertices[i].Coordinates;
-                points[i] = coordinateSystem.ToPhysical(vertexCoordinates[i]);
-            }
+    /// <summary>A polyline loses the points deleted while it keeps two</summary>
+    public bool CanRemoveDependencies(ISet<IFigure> removed)
+    {
+        return Dependencies.Count(point => !removed.Contains(point)) >= 2;
+    }
 
-            Shape.PointsChanged();
-        }
-
-        public override IFigure HitTest(Avalonia.Point point)
-        {
-            double epsilon = ToLogical(Shape.StrokeThickness / 2 + Math.CursorTolerance);
-            if (Math.IsPointOnPolygonalChain(Dependencies.ToPoints(), point, epsilon, false))
-            {
-                return this;
-            }
-            return null;
-        }
-
-        public double GetNearestParameterFromPoint(Point point)
-        {
-            return Math.GetNearestParameterFromPointOnPolyline(Dependencies.ToPoints(), point);
-        }
-
-        public Point GetPointFromParameter(double parameter)
-        {
-            return Math.GetPointOnPolylineFromParameter(Dependencies.ToPoints(), parameter);
-        }
-
-        public virtual Tuple<double, double> GetParameterDomain()
-        {
-            return Tuple.Create(0.0, 1.0);
-        }
-
-        /// <summary>A polyline loses the points deleted while it keeps two</summary>
-        public bool CanRemoveDependencies(ISet<IFigure> removed)
-        {
-            return Dependencies.Count(point => !removed.Contains(point)) >= 2;
-        }
-
-        public IAction GetRemoveDependencyAction(IFigure dependency)
-        {
-            return new RemoveItemAction<IFigure>(this.Dependencies, dependency);
-        }
+    public IAction GetRemoveDependencyAction(IFigure dependency)
+    {
+        return new RemoveItemAction<IFigure>(this.Dependencies, dependency);
     }
 }

@@ -1,56 +1,55 @@
 using Avalonia;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class SegmentBisector : PerpendicularLineBase
 {
-    public class SegmentBisector : PerpendicularLineBase
+    protected override string Kind
     {
-        protected override string Kind
+        get
         {
-            get
-            {
-                return "Perpendicular bisector";
-            }
+            return "Perpendicular bisector";
         }
+    }
 
-        /// <summary>"of AB"</summary>
-        public override string Construction
+    /// <summary>"of AB"</summary>
+    public override string Construction
+    {
+        get
         {
-            get
-            {
-                return Dependencies.Count < 2 ? null : "of " + ConstructionText.Points(Dependencies[0], Dependencies[1]);
-            }
+            return Dependencies.Count < 2 ? null : "of " + ConstructionText.Points(Dependencies[0], Dependencies[1]);
         }
+    }
 
-        PointPair coordinates;
+    PointPair coordinates;
 
-        public override PointPair Coordinates
+    public override PointPair Coordinates
+    {
+        get
         {
-            get
-            {
-                return coordinates;
-            }
+            return coordinates;
         }
+    }
 
-        public override void Recalculate()
-        {
-            var p1 = Point(0);
-            var p2 = Point(1);
-            var line = (Flipped) ? new PointPair(p2, p1) : new PointPair(p1, p2);
-            var midpoint = Math.Midpoint(p1, p2);
-            var perpendicular = Math.GetPerpendicularLine(line, midpoint);
-            coordinates = perpendicular;
-        }
+    public override void Recalculate()
+    {
+        var p1 = Point(0);
+        var p2 = Point(1);
+        var line = (Flipped) ? new PointPair(p2, p1) : new PointPair(p1, p2);
+        var midpoint = Math.Midpoint(p1, p2);
+        var perpendicular = Math.GetPerpendicularLine(line, midpoint);
+        coordinates = perpendicular;
+    }
 
-        protected override bool TryGetRightAngle(out Point vertex, out PointPair baseLine, out Point pointAcross)
-        {
-            // in the middle of the two points, whether or not a segment is drawn between them
-            baseLine = new PointPair(Point(0), Point(1));
-            vertex = Math.Midpoint(baseLine.P1, baseLine.P2);
+    protected override bool TryGetRightAngle(out Point vertex, out PointPair baseLine, out Point pointAcross)
+    {
+        // in the middle of the two points, whether or not a segment is drawn between them
+        baseLine = new PointPair(Point(0), Point(1));
+        vertex = Math.Midpoint(baseLine.P1, baseLine.P2);
 
-            // nothing to prefer a side by: the mark starts in corner 0
-            var along = baseLine.P2.Minus(baseLine.P1);
-            pointAcross = vertex.Plus(new Point(-along.Y, along.X));
-            return true;
-        }
+        // nothing to prefer a side by: the mark starts in corner 0
+        var along = baseLine.P2.Minus(baseLine.P1);
+        pointAcross = vertex.Plus(new Point(-along.Y, along.X));
+        return true;
     }
 }

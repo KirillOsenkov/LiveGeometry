@@ -1,54 +1,53 @@
-﻿namespace DynamicGeometry
+﻿namespace DynamicGeometry;
+
+public class PolarEditorFactory : BaseValueEditorFactory<PolarEditor>
 {
-    public class PolarEditorFactory : BaseValueEditorFactory<PolarEditor>
+    public override bool SupportsValue(IValueProvider value)
     {
-        public override bool SupportsValue(IValueProvider value)
-        {
-            return value.Type == typeof(PolarValue) && base.SupportsValue(value);
-        }
+        return value.Type == typeof(PolarValue) && base.SupportsValue(value);
+    }
+}
+
+public class PolarEditor : SelectorValueEditor, IValueEditor
+{        
+    public override void FillList()
+    {
+        Items = DynamicGeometry.Settings.Instance.PolarItems;
+        base.FillList();
     }
 
-    public class PolarEditor : SelectorValueEditor, IValueEditor
-    {        
-        public override void FillList()
+    protected override ValidationResult Validate(object value)
+    {
+
+        ValidationResult ret = new ValidationResult();
+
+        PolarValue CPolarVal = new PolarValue();
+
+        string strValue = value.ToString();
+        if (Math.IsDoubleValid(strValue))
         {
-            Items = DynamicGeometry.Settings.Instance.PolarItems;
-            base.FillList();
+            ret.IsValid = true;
+            CPolarVal.Val = System.Convert.ToDouble(strValue);
+            ret.Value = CPolarVal;
+        }
+        else
+        {
+            ret.IsValid = false;
         }
 
-        protected override ValidationResult Validate(object value)
+        return ret;
+    }
+
+    public override void UpdateEditor()
+    {
+        var value = GetValue();
+        PolarValue CPolarVal = (PolarValue)value;
+
+        foreach (var item in Items)
         {
-
-            ValidationResult ret = new ValidationResult();
-
-            PolarValue CPolarVal = new PolarValue();
-
-            string strValue = value.ToString();
-            if (Math.IsDoubleValid(strValue))
+            if (item.Equals(CPolarVal.Val.ToString()))
             {
-                ret.IsValid = true;
-                CPolarVal.Val = System.Convert.ToDouble(strValue);
-                ret.Value = CPolarVal;
-            }
-            else
-            {
-                ret.IsValid = false;
-            }
-
-            return ret;
-        }
-
-        public override void UpdateEditor()
-        {
-            var value = GetValue();
-            PolarValue CPolarVal = (PolarValue)value;
-
-            foreach (var item in Items)
-            {
-                if (item.Equals(CPolarVal.Val.ToString()))
-                {
-                    Selector.SelectedItem = item;
-                }
+                Selector.SelectedItem = item;
             }
         }
     }

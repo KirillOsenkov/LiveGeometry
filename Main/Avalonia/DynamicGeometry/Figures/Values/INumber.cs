@@ -1,7 +1,6 @@
-﻿namespace DynamicGeometry
+﻿namespace DynamicGeometry;
+
+public interface INumber : IFigure
 {
-    public interface INumber : IFigure
-    {
-        double Value { get; }
-    }
+    double Value { get; }
 }

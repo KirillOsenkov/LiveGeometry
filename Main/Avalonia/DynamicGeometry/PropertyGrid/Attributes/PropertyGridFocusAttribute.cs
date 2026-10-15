@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Method,
+    AllowMultiple = false, 
+    Inherited = true)]
+public class PropertyGridFocusAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method,
-        AllowMultiple = false, 
-        Inherited = true)]
-    public class PropertyGridFocusAttribute : Attribute
-    {
-    }
 }

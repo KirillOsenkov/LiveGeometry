@@ -1,7 +1,6 @@
-﻿namespace DynamicGeometry
+﻿namespace DynamicGeometry;
+
+public interface IOperationProvider
 {
-    public interface IOperationProvider
-    {
-        IOperationDescription ProvideOperation(object instance);
-    }
+    IOperationDescription ProvideOperation(object instance);
 }

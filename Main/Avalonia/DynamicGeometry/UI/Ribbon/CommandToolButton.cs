@@ -1,93 +1,92 @@
 using System.Collections.Generic;
 using Avalonia.Controls;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class CommandToolButton : ToolButton
 {
-    public class CommandToolButton : ToolButton
+    /// <summary>
+    /// Toggles can switch each other off (Ortho and Polar), so after any of them
+    /// is clicked all of them re-read their state.
+    /// </summary>
+    static readonly List<CommandToolButton> toggles = new List<CommandToolButton>();
+
+    public CommandToolButton(Command command)
     {
-        /// <summary>
-        /// Toggles can switch each other off (Ortho and Polar), so after any of them
-        /// is clicked all of them re-read their state.
-        /// </summary>
-        static readonly List<CommandToolButton> toggles = new List<CommandToolButton>();
+        Command = command;
+        command.AddObserver(this);
 
-        public CommandToolButton(Command command)
+        buttonGrid = new ButtonGrid(command.Icon, command.Name);
+        if (command.Icon is CheckBox)
         {
-            Command = command;
-            command.AddObserver(this);
+            command.Icon.IsHitTestVisible = false;
+        }
+        Content = buttonGrid;
+        buttonGrid.PointerPressed += Content_MouseLeftButtonDown;
 
-            buttonGrid = new ButtonGrid(command.Icon, command.Name);
-            if (command.Icon is CheckBox)
+        if (command.IsChecked != null)
+        {
+            toggles.Add(this);
+            AttachedToVisualTree += (s, e) => UpdateCheckedState();
+        }
+
+        if (command.Shortcut != null || !string.IsNullOrEmpty(command.HintText))
+        {
+            var tip = command.Name + (command.Shortcut != null ? "  (" + command.Shortcut + ")" : "");
+            if (!string.IsNullOrEmpty(command.HintText))
             {
-                command.Icon.IsHitTestVisible = false;
+                tip += "\n\n" + command.HintText;
             }
-            Content = buttonGrid;
-            buttonGrid.PointerPressed += Content_MouseLeftButtonDown;
 
-            if (command.IsChecked != null)
+            ToolTip.SetTip(this, new TextBlock()
             {
-                toggles.Add(this);
-                AttachedToVisualTree += (s, e) => UpdateCheckedState();
-            }
-
-            if (command.Shortcut != null || !string.IsNullOrEmpty(command.HintText))
-            {
-                var tip = command.Name + (command.Shortcut != null ? "  (" + command.Shortcut + ")" : "");
-                if (!string.IsNullOrEmpty(command.HintText))
-                {
-                    tip += "\n\n" + command.HintText;
-                }
-
-                ToolTip.SetTip(this, new TextBlock()
-                {
-                    Text = tip,
-                    MaxWidth = 320,
-                    TextWrapping = Avalonia.Media.TextWrapping.Wrap
-                });
-            }
+                Text = tip,
+                MaxWidth = 320,
+                TextWrapping = Avalonia.Media.TextWrapping.Wrap
+            });
         }
+    }
 
-        private void Content_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void Content_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        Click();
+        ToggleCheckBox();
+        UpdateToggles();
+    }
+
+    /// <summary>Every toggle re-reads its state: after a click, or a key that toggles (G)</summary>
+    public static void UpdateToggles()
+    {
+        foreach (var toggle in toggles)
         {
-            Click();
-            ToggleCheckBox();
-            UpdateToggles();
+            toggle.UpdateCheckedState();
         }
+    }
 
-        /// <summary>Every toggle re-reads its state: after a click, or a key that toggles (G)</summary>
-        public static void UpdateToggles()
+    void UpdateCheckedState()
+    {
+        buttonGrid.IsChecked = Command.IsChecked();
+    }
+
+    private void ToggleCheckBox()
+    {
+        CheckBox check = Command.Icon as CheckBox;
+        if (check != null)
         {
-            foreach (var toggle in toggles)
-            {
-                toggle.UpdateCheckedState();
-            }
+            check.IsChecked = !check.IsChecked;
         }
+    }
 
-        void UpdateCheckedState()
-        {
-            buttonGrid.IsChecked = Command.IsChecked();
-        }
+    public override void Click()
+    {
+        Command.Execute();
+    }
 
-        private void ToggleCheckBox()
-        {
-            CheckBox check = Command.Icon as CheckBox;
-            if (check != null)
-            {
-                check.IsChecked = !check.IsChecked;
-            }
-        }
+    public Command Command { get; set; }
 
-        public override void Click()
-        {
-            Command.Execute();
-        }
-
-        public Command Command { get; set; }
-
-        public override void EnabledChanged(bool newEnabledState)
-        {
-            base.EnabledChanged(newEnabledState);
-            buttonGrid.Opacity = (newEnabledState) ? 1.0 : 0.5;
-        }
+    public override void EnabledChanged(bool newEnabledState)
+    {
+        base.EnabledChanged(newEnabledState);
+        buttonGrid.Opacity = (newEnabledState) ? 1.0 : 0.5;
     }
 }

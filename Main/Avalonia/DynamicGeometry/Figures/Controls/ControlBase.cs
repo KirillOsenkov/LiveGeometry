@@ -1,67 +1,66 @@
 using Avalonia;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public abstract class ControlBase : CoordinatesShapeBase<FrameworkElement>
 {
-    public abstract class ControlBase : CoordinatesShapeBase<FrameworkElement>
+    protected override ZOrder DefaultLayer()
     {
-        protected override ZOrder DefaultLayer()
+        return ZOrder.Controls;
+    }
+
+    /// <summary>A text, a measurement, a box: told apart by what they say, not by Label3</summary>
+    protected override bool NamedByConstruction
+    {
+        get
         {
-            return ZOrder.Controls;
+            return true;
+        }
+    }
+
+    public override IFigure HitTest(Point point)
+    {
+        if (Rect.Contains(point))
+        {
+            return this;
         }
 
-        /// <summary>A text, a measurement, a box: told apart by what they say, not by Label3</summary>
-        protected override bool NamedByConstruction
+        return null;
+    }
+
+    public override void ApplyStyle()
+    {
+        if (this.Style == null)
         {
-            get
-            {
-                return true;
-            }
+            return;
         }
 
-        public override IFigure HitTest(Point point)
+        if (Drawing != null)
         {
-            if (Rect.Contains(point))
-            {
-                return this;
-            }
-
-            return null;
+            UpdateVisual();
         }
+    }
 
-        public override void ApplyStyle()
+    public override void UpdateVisual()
+    {
+        shape.MoveTo(ToPhysical(Coordinates));
+    }
+
+    public Avalonia.Rect Rect
+    {
+        get
         {
-            if (this.Style == null)
-            {
-                return;
-            }
+            var rect = new Avalonia.Rect();
+            rect = rect.WithX(Coordinates.X);
 
-            if (Drawing != null)
-            {
-                UpdateVisual();
-            }
-        }
+            // Factor in possible scale transform.
+            var transform = Shape.RenderTransform?.Value ?? Avalonia.Matrix.Identity;
+            var p = new Point(Shape.ActualWidth, Shape.ActualHeight).Transform(transform);
 
-        public override void UpdateVisual()
-        {
-            shape.MoveTo(ToPhysical(Coordinates));
-        }
-
-        public Avalonia.Rect Rect
-        {
-            get
-            {
-                var rect = new Avalonia.Rect();
-                rect = rect.WithX(Coordinates.X);
-
-                // Factor in possible scale transform.
-                var transform = Shape.RenderTransform?.Value ?? Avalonia.Matrix.Identity;
-                var p = new Point(Shape.ActualWidth, Shape.ActualHeight).Transform(transform);
- 
-                rect = rect.WithWidth(ToLogical(p.X));
-                rect = rect.WithHeight(ToLogical(p.Y));
-                rect = rect.WithY(Coordinates.Y - rect.Height);
-                return rect;
-            }
+            rect = rect.WithWidth(ToLogical(p.X));
+            rect = rect.WithHeight(ToLogical(p.Y));
+            rect = rect.WithY(Coordinates.Y - rect.Height);
+            return rect;
         }
     }
 }

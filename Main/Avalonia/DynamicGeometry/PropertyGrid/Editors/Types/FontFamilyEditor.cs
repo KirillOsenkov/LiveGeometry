@@ -1,61 +1,60 @@
 ﻿using Avalonia.Media;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class FontFamilyEditorFactory : BaseValueEditorFactory<FontFamilyEditor>
 {
-    public class FontFamilyEditorFactory : BaseValueEditorFactory<FontFamilyEditor>
+    public override bool SupportsValue(IValueProvider value)
     {
-        public override bool SupportsValue(IValueProvider value)
+        return value.Type == typeof(FontFamily) && base.SupportsValue(value);
+    }
+}
+
+public class FontFamilyEditor : SelectorValueEditor, IValueEditor
+{
+    public override void FillList()
+    {
+        Items = new[]
         {
-            return value.Type == typeof(FontFamily) && base.SupportsValue(value);
-        }
+            "Arial",
+            "Arial Black",
+            "Arial Unicode MS",
+            "Calibri",
+            "Cambria",
+            "Cambria Math",
+            "Comic Sans MS",
+            "Candara",
+            "Consolas",
+            "Constantia",
+            "Corbel",
+            "Courier New",
+            "Georgia",
+            "Lucida Sans Unicode",
+            "Segoe UI",
+            "Symbol",
+            "Tahoma",
+            "Times New Roman",
+            "Trebuchet MS",
+            "Verdana",
+            "Wingdings",
+            "Wingdings 2",
+            "Wingdings 3",
+        };
+        base.FillList();
     }
 
-    public class FontFamilyEditor : SelectorValueEditor, IValueEditor
+    protected override ValidationResult Validate(object value)
     {
-        public override void FillList()
+        return new ValidationResult()
         {
-            Items = new[]
-            {
-                "Arial",
-                "Arial Black",
-                "Arial Unicode MS",
-                "Calibri",
-                "Cambria",
-                "Cambria Math",
-                "Comic Sans MS",
-                "Candara",
-                "Consolas",
-                "Constantia",
-                "Corbel",
-                "Courier New",
-                "Georgia",
-                "Lucida Sans Unicode",
-                "Segoe UI",
-                "Symbol",
-                "Tahoma",
-                "Times New Roman",
-                "Trebuchet MS",
-                "Verdana",
-                "Wingdings",
-                "Wingdings 2",
-                "Wingdings 3",
-            };
-            base.FillList();
-        }
+            IsValid = true,
+            Value = new FontFamily(value.ToString())
+        };
+    }
 
-        protected override ValidationResult Validate(object value)
-        {
-            return new ValidationResult()
-            {
-                IsValid = true,
-                Value = new FontFamily(value.ToString())
-            };
-        }
-
-        public override void UpdateEditor()
-        {
-            var value = GetValue()?.ToString();
-            ShowSelected(item => item.Equals(value));
-        }
+    public override void UpdateEditor()
+    {
+        var value = GetValue()?.ToString();
+        ShowSelected(item => item.Equals(value));
     }
 }

@@ -2,174 +2,173 @@
 using System.Xml;
 using System.Xml.Linq;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public interface ILineEquation
 {
-    public interface ILineEquation
+    PointPair LineCoordinates { get; }
+    IEnumerable<DrawingExpression> Expressions { get; }
+    void Write(XmlWriter writer);
+    void Recalculate();
+}
+
+public static class LineEquation
+{
+    public static ILineEquation Read(LineByEquation parent, XElement element)
     {
-        PointPair LineCoordinates { get; }
-        IEnumerable<DrawingExpression> Expressions { get; }
-        void Write(XmlWriter writer);
-        void Recalculate();
+        var m = element.ReadString("m");
+        var b = element.ReadString("b");
+        var A = element.ReadString("A");
+        var B = element.ReadString("B");
+        var C = element.ReadString("C");
+
+        ILineEquation result = null;
+
+        if (!m.IsEmpty() && !b.IsEmpty())
+        {
+            result = new SlopeInterseptLineEquation(parent, m, b);
+        }
+        else if (!A.IsEmpty() && !B.IsEmpty() && !C.IsEmpty())
+        {
+            result = new GeneralFormLineEquation(parent, A, B, C);
+        }
+
+        return result;
+    }
+}
+
+public class SlopeInterseptLineEquation : ILineEquation
+{
+    public SlopeInterseptLineEquation(IFigure parent, string slope, string intersept)
+    {
+        Slope = new DrawingExpression(parent) { Name = "m = " };
+        Slope.Text = slope;
+        Intersept = new DrawingExpression(parent) { Name = "b = " };
+        Intersept.Text = intersept;
     }
 
-    public static class LineEquation
+    public PointPair LineCoordinates
     {
-        public static ILineEquation Read(LineByEquation parent, XElement element)
+        get
         {
-            var m = element.ReadString("m");
-            var b = element.ReadString("b");
-            var A = element.ReadString("A");
-            var B = element.ReadString("B");
-            var C = element.ReadString("C");
-
-            ILineEquation result = null;
-
-            if (!m.IsEmpty() && !b.IsEmpty())
+            if (Slope.Value == null || Intersept.Value == null)
             {
-                result = new SlopeInterseptLineEquation(parent, m, b);
+                return new PointPair();
             }
-            else if (!A.IsEmpty() && !B.IsEmpty() && !C.IsEmpty())
+            var m = Slope.Value();
+            var b = Intersept.Value();
+
+            if (m == 0)
             {
-                result = new GeneralFormLineEquation(parent, A, B, C);
+                return new PointPair(0, b, 1, b);
             }
-
-            return result;
-        }
-    }
-
-    public class SlopeInterseptLineEquation : ILineEquation
-    {
-        public SlopeInterseptLineEquation(IFigure parent, string slope, string intersept)
-        {
-            Slope = new DrawingExpression(parent) { Name = "m = " };
-            Slope.Text = slope;
-            Intersept = new DrawingExpression(parent) { Name = "b = " };
-            Intersept.Text = intersept;
-        }
-
-        public PointPair LineCoordinates
-        {
-            get
+            else
             {
-                if (Slope.Value == null || Intersept.Value == null)
-                {
-                    return new PointPair();
-                }
-                var m = Slope.Value();
-                var b = Intersept.Value();
-
-                if (m == 0)
-                {
-                    return new PointPair(0, b, 1, b);
-                }
-                else
-                {
-                    return new PointPair(0, b, 1, m + b);
-                }
+                return new PointPair(0, b, 1, m + b);
             }
-        }
-
-        public void Recalculate()
-        {
-            Slope.Recalculate();
-            Intersept.Recalculate();
-        }
-
-        [PropertyGridVisible(false)]
-        public IEnumerable<DrawingExpression> Expressions
-        {
-            get
-            {
-                return new[] { Slope, Intersept };
-            }
-        }
-
-        [PropertyGridVisible]
-        [PropertyGridName("m = ")]
-        public DrawingExpression Slope { get; private set; }
-
-        [PropertyGridVisible]
-        [PropertyGridName("b = ")]
-        public DrawingExpression Intersept { get; private set; }
-
-        public void Write(XmlWriter writer)
-        {
-            writer.WriteAttributeString("b", Intersept.Text);
-            writer.WriteAttributeString("m", Slope.Text);
         }
     }
 
-    public class GeneralFormLineEquation : ILineEquation
+    public void Recalculate()
     {
-        public GeneralFormLineEquation(IFigure parent, string a, string b, string c)
-        {
-            A = new DrawingExpression(parent) { Name = "A = " };
-            A.Text = a;
-            B = new DrawingExpression(parent) { Name = "B = " };
-            B.Text = b;
-            C = new DrawingExpression(parent) { Name = "C = " };
-            C.Text = c;
-        }
+        Slope.Recalculate();
+        Intersept.Recalculate();
+    }
 
-        public PointPair LineCoordinates
+    [PropertyGridVisible(false)]
+    public IEnumerable<DrawingExpression> Expressions
+    {
+        get
         {
-            get
+            return new[] { Slope, Intersept };
+        }
+    }
+
+    [PropertyGridVisible]
+    [PropertyGridName("m = ")]
+    public DrawingExpression Slope { get; private set; }
+
+    [PropertyGridVisible]
+    [PropertyGridName("b = ")]
+    public DrawingExpression Intersept { get; private set; }
+
+    public void Write(XmlWriter writer)
+    {
+        writer.WriteAttributeString("b", Intersept.Text);
+        writer.WriteAttributeString("m", Slope.Text);
+    }
+}
+
+public class GeneralFormLineEquation : ILineEquation
+{
+    public GeneralFormLineEquation(IFigure parent, string a, string b, string c)
+    {
+        A = new DrawingExpression(parent) { Name = "A = " };
+        A.Text = a;
+        B = new DrawingExpression(parent) { Name = "B = " };
+        B.Text = b;
+        C = new DrawingExpression(parent) { Name = "C = " };
+        C.Text = c;
+    }
+
+    public PointPair LineCoordinates
+    {
+        get
+        {
+            if (A.Value == null || B.Value == null || C.Value == null)
             {
-                if (A.Value == null || B.Value == null || C.Value == null)
-                {
-                    return new PointPair();
-                }
-                var a = A.Value();
-                var b = B.Value();
-                var c = C.Value();
-
-                if (a == 0 && b == 0)
-                {
-                    return new PointPair();
-                }
-
-                // the point of the line nearest to the origin, and a step along it ((-b, a) is
-                // the direction); the two intercepts would coincide for a line through the origin
-                var scale = c / (a * a + b * b);
-                var x = -a * scale;
-                var y = -b * scale;
-                return new PointPair(x, y, x - b, y + a);
+                return new PointPair();
             }
-        }
+            var a = A.Value();
+            var b = B.Value();
+            var c = C.Value();
 
-        public void Recalculate()
-        {
-            A.Recalculate();
-            B.Recalculate();
-            C.Recalculate();
-        }
-
-        [PropertyGridVisible(false)]
-        public IEnumerable<DrawingExpression> Expressions
-        {
-            get
+            if (a == 0 && b == 0)
             {
-                return new[] { A, B, C };
+                return new PointPair();
             }
+
+            // the point of the line nearest to the origin, and a step along it ((-b, a) is
+            // the direction); the two intercepts would coincide for a line through the origin
+            var scale = c / (a * a + b * b);
+            var x = -a * scale;
+            var y = -b * scale;
+            return new PointPair(x, y, x - b, y + a);
         }
+    }
 
-        [PropertyGridVisible]
-        [PropertyGridName("A = ")]
-        public DrawingExpression A { get; set; }
+    public void Recalculate()
+    {
+        A.Recalculate();
+        B.Recalculate();
+        C.Recalculate();
+    }
 
-        [PropertyGridVisible]
-        [PropertyGridName("B = ")]
-        public DrawingExpression B { get; set; }
-
-        [PropertyGridVisible]
-        [PropertyGridName("C = ")]
-        public DrawingExpression C { get; set; }
-
-        public void Write(XmlWriter writer)
+    [PropertyGridVisible(false)]
+    public IEnumerable<DrawingExpression> Expressions
+    {
+        get
         {
-            writer.WriteAttributeString("A", A.Text);
-            writer.WriteAttributeString("B", B.Text);
-            writer.WriteAttributeString("C", C.Text);
+            return new[] { A, B, C };
         }
+    }
+
+    [PropertyGridVisible]
+    [PropertyGridName("A = ")]
+    public DrawingExpression A { get; set; }
+
+    [PropertyGridVisible]
+    [PropertyGridName("B = ")]
+    public DrawingExpression B { get; set; }
+
+    [PropertyGridVisible]
+    [PropertyGridName("C = ")]
+    public DrawingExpression C { get; set; }
+
+    public void Write(XmlWriter writer)
+    {
+        writer.WriteAttributeString("A", A.Text);
+        writer.WriteAttributeString("B", B.Text);
+        writer.WriteAttributeString("C", C.Text);
     }
 }

@@ -1,38 +1,37 @@
 ﻿using System.Collections.Generic;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class CompositeCommandObserver : ICommandObserver
 {
-    public class CompositeCommandObserver : ICommandObserver
+    private List<ICommandObserver> observers = new List<ICommandObserver>();
+
+    public void CommandRemoved()
     {
-        private List<ICommandObserver> observers = new List<ICommandObserver>();
-
-        public void CommandRemoved()
+        foreach (var observer in observers)
         {
-            foreach (var observer in observers)
-            {
-                observer.CommandRemoved();
-            }
+            observer.CommandRemoved();
         }
+    }
 
-        public void EnabledChanged(bool newEnabledState)
+    public void EnabledChanged(bool newEnabledState)
+    {
+        for (int i = 0; i < observers.Count; i++)
         {
-            for (int i = 0; i < observers.Count; i++)
-            {
-                observers[i].EnabledChanged(newEnabledState);
-            }
+            observers[i].EnabledChanged(newEnabledState);
         }
+    }
 
-        public void Add(ICommandObserver observer)
-        {
-            observers.Add(observer);
-        }
+    public void Add(ICommandObserver observer)
+    {
+        observers.Add(observer);
+    }
 
-        public void IconChanged(FrameworkElement icon)
+    public void IconChanged(FrameworkElement icon)
+    {
+        foreach (var observer in observers)
         {
-            foreach (var observer in observers)
-            {
-                observer.IconChanged(icon);
-            }
+            observer.IconChanged(icon);
         }
     }
 }

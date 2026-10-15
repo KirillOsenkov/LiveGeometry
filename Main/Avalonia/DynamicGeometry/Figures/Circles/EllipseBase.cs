@@ -2,186 +2,185 @@
 using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public abstract partial class EllipseBase : ShapeBase<Shape>, IEllipse, IPerimeter, IRegion
 {
-    public abstract partial class EllipseBase : ShapeBase<Shape>, IEllipse, IPerimeter, IRegion
+    /// <summary>Circle c, d... (and ellipses), as lines are g, h...</summary>
+    protected override string FirstLetter
     {
-        /// <summary>Circle c, d... (and ellipses), as lines are g, h...</summary>
-        protected override string FirstLetter
+        get
         {
-            get
-            {
-                return "c";
-            }
+            return "c";
+        }
+    }
+
+    public abstract double SemiMajor
+    {
+        get;
+    }
+
+    public abstract double SemiMinor
+    {
+        get;
+    }
+
+    /// <summary>
+    /// Angle of inclination of ellipse in radians.
+    /// </summary>
+    public abstract double Inclination
+    {
+        get;
+    }
+
+    public double Area
+    {
+        get
+        {
+            return Math.PI * SemiMajor * SemiMinor;
+        }
+    }
+
+    /// <summary>The circumference: 2πr for a circle, the arc integral over a whole turn for an ellipse</summary>
+    public double Perimeter
+    {
+        get
+        {
+            return Math.EllipseArcLength(SemiMajor, SemiMinor, 0, Math.DOUBLEPI);
+        }
+    }
+
+    /// <summary>The perimeter by the name school gives it, for expressions: c.Circumference</summary>
+    public double Circumference
+    {
+        get
+        {
+            return Perimeter;
+        }
+    }
+
+    public override IFigure HitTest(Point point)
+    {
+        var width = LogicalWidth();
+        var fromEdge = Math.RadialDistanceToEllipse(
+            Center,
+            SemiMajor,
+            SemiMinor,
+            Inclination,
+            point);
+
+        // HitTest for the edge
+        if (fromEdge.Abs() < CursorTolerance + width / 2)
+        {
+            return this;
         }
 
-        public abstract double SemiMajor
+        // HitTest for the fill.  Use this instead of base.HitTest() because it is not working properly with ellipses.
+        ShapeStyle shapeStyle = Style as ShapeStyle;
+        if (shapeStyle != null)
         {
-            get;
-        }
-
-        public abstract double SemiMinor
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Angle of inclination of ellipse in radians.
-        /// </summary>
-        public abstract double Inclination
-        {
-            get;
-        }
-
-        public double Area
-        {
-            get
-            {
-                return Math.PI * SemiMajor * SemiMinor;
-            }
-        }
-
-        /// <summary>The circumference: 2πr for a circle, the arc integral over a whole turn for an ellipse</summary>
-        public double Perimeter
-        {
-            get
-            {
-                return Math.EllipseArcLength(SemiMajor, SemiMinor, 0, Math.DOUBLEPI);
-            }
-        }
-
-        /// <summary>The perimeter by the name school gives it, for expressions: c.Circumference</summary>
-        public double Circumference
-        {
-            get
-            {
-                return Perimeter;
-            }
-        }
-
-        public override IFigure HitTest(Point point)
-        {
-            var width = LogicalWidth();
-            var fromEdge = Math.RadialDistanceToEllipse(
-                Center,
-                SemiMajor,
-                SemiMinor,
-                Inclination,
-                point);
-
-            // HitTest for the edge
-            if (fromEdge.Abs() < CursorTolerance + width / 2)
+            if (shapeStyle.IsFilled && fromEdge < 0)
             {
                 return this;
             }
-
-            // HitTest for the fill.  Use this instead of base.HitTest() because it is not working properly with ellipses.
-            ShapeStyle shapeStyle = Style as ShapeStyle;
-            if (shapeStyle != null)
-            {
-                if (shapeStyle.IsFilled && fromEdge < 0)
-                {
-                    return this;
-                }
-            }
-            return null;
         }
+        return null;
+    }
 
-        public double LogicalWidth()
+    public double LogicalWidth()
+    {
+        return ToLogical(shape.StrokeThickness);
+    }
+
+    public bool HasInside
+    {
+        get
         {
-            return ToLogical(shape.StrokeThickness);
+            return SemiMajor > 0 && SemiMinor > 0;
         }
+    }
 
-        public bool HasInside
+    public bool ContainsPoint(Point point)
+    {
+        return HasInside && Math.RadialDistanceToEllipse(Center, SemiMajor, SemiMinor, Inclination, point) <= 0;
+    }
+
+    /// <summary>Outside, the point of the curve along the ray from the center</summary>
+    public Point NearestPointInside(Point point)
+    {
+        if (!HasInside)
         {
-            get
-            {
-                return SemiMajor > 0 && SemiMinor > 0;
-            }
+            return Math.InfinitePoint;
         }
 
-        public bool ContainsPoint(Point point)
+        return ContainsPoint(point) ? point : GetPointFromParameter(GetNearestParameterFromPoint(point));
+    }
+
+    public virtual double GetNearestParameterFromPoint(Point point)
+    {
+        double result;
+        if (Settings.PointsOnEllipticalsUseAbsoluteAngle)
         {
-            return HasInside && Math.RadialDistanceToEllipse(Center, SemiMajor, SemiMinor, Inclination, point) <= 0;
+            result = Math.GetAngle(Center, point);
         }
-
-        /// <summary>Outside, the point of the curve along the ray from the center</summary>
-        public Point NearestPointInside(Point point)
+        else
         {
-            if (!HasInside)
-            {
-                return Math.InfinitePoint;
-            }
-
-            return ContainsPoint(point) ? point : GetPointFromParameter(GetNearestParameterFromPoint(point));
+            result = Math.GetAngle(Center, point) - Inclination;
         }
+        if (Flipped) result = -result;
+        return result;
+    }
 
-        public virtual double GetNearestParameterFromPoint(Point point)
+    public virtual Point GetPointFromParameter(double parameter)
+    {
+        var center = Center;
+        var inclination = Inclination;
+        var angleToPoint = parameter;
+        if (Flipped) angleToPoint = -angleToPoint;
+        if (!Settings.PointsOnEllipticalsUseAbsoluteAngle) angleToPoint += inclination;
+        var intersections = Math.GetIntersectionOfEllipseAndLine(this, new PointPair(center, Math.GetTranslationPoint(center, 1, angleToPoint)));
+        var direction1 = Math.GetAngle(center, intersections.P1);
+        var cDiff = System.Math.Cos(angleToPoint) - System.Math.Cos(direction1);
+        var sDiff = System.Math.Sin(angleToPoint) - System.Math.Sin(direction1);
+        if (cDiff.IsWithinEpsilon() && sDiff.IsWithinEpsilon())
         {
-            double result;
-            if (Settings.PointsOnEllipticalsUseAbsoluteAngle)
-            {
-                result = Math.GetAngle(Center, point);
-            }
-            else
-            {
-                result = Math.GetAngle(Center, point) - Inclination;
-            }
-            if (Flipped) result = -result;
-            return result;
+            return intersections.P1;
         }
-
-        public virtual Point GetPointFromParameter(double parameter)
+        else
         {
-            var center = Center;
-            var inclination = Inclination;
-            var angleToPoint = parameter;
-            if (Flipped) angleToPoint = -angleToPoint;
-            if (!Settings.PointsOnEllipticalsUseAbsoluteAngle) angleToPoint += inclination;
-            var intersections = Math.GetIntersectionOfEllipseAndLine(this, new PointPair(center, Math.GetTranslationPoint(center, 1, angleToPoint)));
-            var direction1 = Math.GetAngle(center, intersections.P1);
-            var cDiff = System.Math.Cos(angleToPoint) - System.Math.Cos(direction1);
-            var sDiff = System.Math.Sin(angleToPoint) - System.Math.Sin(direction1);
-            if (cDiff.IsWithinEpsilon() && sDiff.IsWithinEpsilon())
-            {
-                return intersections.P1;
-            }
-            else
-            {
-                return intersections.P2;
-            }
+            return intersections.P2;
         }
+    }
 
-        public virtual Tuple<double, double> GetParameterDomain()
+    public virtual Tuple<double, double> GetParameterDomain()
+    {
+        return Tuple.Create(0.0, DynamicGeometry.Math.DOUBLEPI);
+    }
+
+    public override void UpdateVisual()
+    {
+        var center = ToPhysical(Center);
+        var logicalWidth = LogicalWidth();
+        var major = ToPhysical(SemiMajor * 2 + logicalWidth);
+        var minor = ToPhysical(SemiMinor * 2 + logicalWidth);
+
+        // an ellipse that doesn't exist has no size to give the shape (CircleBase.UpdateVisual)
+        if (!center.Exists() || !major.IsValidValue() || !minor.IsValidValue() || !Inclination.IsValidValue())
         {
-            return Tuple.Create(0.0, DynamicGeometry.Math.DOUBLEPI);
+            return;
         }
 
-        public override void UpdateVisual()
-        {
-            var center = ToPhysical(Center);
-            var logicalWidth = LogicalWidth();
-            var major = ToPhysical(SemiMajor * 2 + logicalWidth);
-            var minor = ToPhysical(SemiMinor * 2 + logicalWidth);
+        // Avalonia rotates about RenderTransformOrigin, the middle of the shape by default;
+        // the CenterX/CenterY that WPF needed on the transform would shift a tilted
+        // ellipse off its center.
+        Shape.RenderTransform = new RotateTransform(-Inclination.ToDegrees());
+        Shape.Width = major;
+        Shape.Height = minor;
+        Shape.CenterAt(center);
+    }
 
-            // an ellipse that doesn't exist has no size to give the shape (CircleBase.UpdateVisual)
-            if (!center.Exists() || !major.IsValidValue() || !minor.IsValidValue() || !Inclination.IsValidValue())
-            {
-                return;
-            }
-
-            // Avalonia rotates about RenderTransformOrigin, the middle of the shape by default;
-            // the CenterX/CenterY that WPF needed on the transform would shift a tilted
-            // ellipse off its center.
-            Shape.RenderTransform = new RotateTransform(-Inclination.ToDegrees());
-            Shape.Width = major;
-            Shape.Height = minor;
-            Shape.CenterAt(center);
-        }
-
-        protected override Shape CreateShape()
-        {
-            return Factory.CreateCircleShape();
-        }
+    protected override Shape CreateShape()
+    {
+        return Factory.CreateCircleShape();
     }
 }

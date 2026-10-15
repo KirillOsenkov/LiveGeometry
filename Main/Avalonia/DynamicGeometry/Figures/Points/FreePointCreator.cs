@@ -2,179 +2,178 @@
 using System.ComponentModel;
 using Avalonia.Input;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+[Category(BehaviorCategories.Points)]
+[Order(1)]
+public class FreePointCreator : Behavior
 {
-    [Category(BehaviorCategories.Points)]
-    [Order(1)]
-    public class FreePointCreator : Behavior
+    /// <summary>
+    /// The tool's panel, only while "Point by coordinates" is switched on: the coordinates
+    /// to type. Otherwise the tool has no panel (each kind of point gets its default style).
+    /// </summary>
+    [PropertyGridName("Point by coordinates")]
+    public class CoordinatesDialog : ToolPanel
     {
-        /// <summary>
-        /// The tool's panel, only while "Point by coordinates" is switched on: the coordinates
-        /// to type. Otherwise the tool has no panel (each kind of point gets its default style).
-        /// </summary>
-        [PropertyGridName("Point by coordinates")]
-        public class CoordinatesDialog : ToolPanel
+        public CoordinatesDialog(FreePointCreator parent)
         {
-            public CoordinatesDialog(FreePointCreator parent)
+            this.parent = parent;
+        }
+
+        readonly FreePointCreator parent;
+
+        [PropertyGridVisible]
+        [PropertyGridFocus]
+        [PropertyGridEvent("KeyDown", "X_KeyDown")]
+        [PropertyGridName("X = ")]
+        public string X { get; set; }
+
+        [PropertyGridVisible]
+        [PropertyGridEvent("KeyDown", "Y_KeyDown")]
+        [PropertyGridName("Y = ")]
+        public string Y { get; set; }
+
+        internal void X_KeyDown(object sender, KeyEventArgs e)
+        {
+            Common_KeyDown(sender, e);
+            if (e.Handled)
             {
-                this.parent = parent;
-            }
-
-            readonly FreePointCreator parent;
-
-            [PropertyGridVisible]
-            [PropertyGridFocus]
-            [PropertyGridEvent("KeyDown", "X_KeyDown")]
-            [PropertyGridName("X = ")]
-            public string X { get; set; }
-
-            [PropertyGridVisible]
-            [PropertyGridEvent("KeyDown", "Y_KeyDown")]
-            [PropertyGridName("Y = ")]
-            public string Y { get; set; }
-
-            internal void X_KeyDown(object sender, KeyEventArgs e)
-            {
-                Common_KeyDown(sender, e);
-                if (e.Handled)
-                {
-                    return;
-                }
-            }
-
-            internal void Y_KeyDown(object sender, KeyEventArgs e)
-            {
-                Common_KeyDown(sender, e);
-                if (e.Handled)
-                {
-                    return;
-                }
-            }
-
-            internal void Common_KeyDown(object sender, KeyEventArgs e)
-            {
-                if (e.Key == Avalonia.Input.Key.Escape)
-                {
-                    e.Handled = true;
-                }
-                else if (e.Key == Avalonia.Input.Key.Enter)
-                {
-                    AddPoint();
-                    e.Handled = true;
-                }
-            }
-
-            [PropertyGridVisible]
-            [PropertyGridName("Add point")]
-            [PropertyGridIcon(PropertyGridIcon.Plus)]
-            public void AddPoint()
-            {
-                var xresult = Compile(parent.Drawing, nameof(X), X);
-                var yresult = Compile(parent.Drawing, nameof(Y), Y);
-
-                if (xresult.IsSuccess && yresult.IsSuccess)
-                {
-                    var point = Factory.CreatePointByCoordinates(parent.Drawing, X, Y);
-                    Actions.Add(parent.Drawing, point);
-
-                    // the panel stays for the next point: back to its first box
-                    FocusRow(nameof(X));
-                }
+                return;
             }
         }
 
-        CoordinatesDialog dialog;
-
-        /// <summary>
-        /// Whether the tool shows the X/Y panel: the Point tool while "Point by coordinates"
-        /// is switched on, the Coordinates tool (<see cref="PointByCoordinatesCreator"/>) always.
-        /// </summary>
-        protected virtual bool ShowsCoordinatesPanel
+        internal void Y_KeyDown(object sender, KeyEventArgs e)
         {
-            get { return Settings.Instance.EnablePointByCoordinates; }
-        }
-
-        public override object PropertyBag
-        {
-            get
+            Common_KeyDown(sender, e);
+            if (e.Handled)
             {
-                if (!ShowsCoordinatesPanel)
-                {
-                    return null;
-                }
-
-                dialog ??= new CoordinatesDialog(this);
-                return dialog;
+                return;
             }
         }
 
-        public override void MouseDown(object sender, MouseButtonEventArgs e)
+        internal void Common_KeyDown(object sender, KeyEventArgs e)
         {
-            var placement = FindPointPlacement(e);
-            if (placement.Kind == PointPlacementKind.Free)
+            if (e.Key == Avalonia.Input.Key.Escape)
             {
-                CreatePointAtCurrentPosition(placement.Coordinates);
+                e.Handled = true;
             }
-            else if (placement.IsDependent)
+            else if (e.Key == Avalonia.Input.Key.Enter)
             {
-                Actions.Add(Drawing, placement.Create(Drawing));
+                AddPoint();
+                e.Handled = true;
             }
         }
 
-        /// <summary>The point a click here makes: the first of what it could make, or the one chosen with Tab</summary>
-        PointPlacement FindPointPlacement(MouseEventArgs e)
+        [PropertyGridVisible]
+        [PropertyGridName("Add point")]
+        [PropertyGridIcon(PropertyGridIcon.Plus)]
+        public void AddPoint()
         {
-            return Choice.Pick(FindPointPlacements(e)) ?? PointPlacement.Free(Coordinates(e));
-        }
+            var xresult = Compile(parent.Drawing, nameof(X), X);
+            var yresult = Compile(parent.Drawing, nameof(Y), Y);
 
-        List<PointPlacement> FindPointPlacements(MouseEventArgs e)
-        {
-            return PointPlacement.FindAll(Drawing, Coordinates(e), Settings.Instance.EnableSnapToCenter);
-        }
-
-        protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
-        {
-            return FindPointPlacements(e);
-        }
-
-        PointPlacement hoverPlacement;
-
-        public override void MouseMove(object sender, MouseEventArgs e)
-        {
-            hoverPlacement = FindPointPlacement(e);
-        }
-
-        protected override PointPlacement GetClickPreview(MouseEventArgs e)
-        {
-            return hoverPlacement;
-        }
-
-        protected override Cursor GetCursor(Avalonia.Point coordinates)
-        {
-            // there already is a point here: a click doesn't put another one on top of it
-            if (hoverPlacement != null && hoverPlacement.Kind == PointPlacementKind.Existing)
+            if (xresult.IsSuccess && yresult.IsSuccess)
             {
-                return ArrowCursor;
+                var point = Factory.CreatePointByCoordinates(parent.Drawing, X, Y);
+                Actions.Add(parent.Drawing, point);
+
+                // the panel stays for the next point: back to its first box
+                FocusRow(nameof(X));
+            }
+        }
+    }
+
+    CoordinatesDialog dialog;
+
+    /// <summary>
+    /// Whether the tool shows the X/Y panel: the Point tool while "Point by coordinates"
+    /// is switched on, the Coordinates tool (<see cref="PointByCoordinatesCreator"/>) always.
+    /// </summary>
+    protected virtual bool ShowsCoordinatesPanel
+    {
+        get { return Settings.Instance.EnablePointByCoordinates; }
+    }
+
+    public override object PropertyBag
+    {
+        get
+        {
+            if (!ShowsCoordinatesPanel)
+            {
+                return null;
             }
 
-            return GetCursor(hoverPlacement);
+            dialog ??= new CoordinatesDialog(this);
+            return dialog;
+        }
+    }
+
+    public override void MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        var placement = FindPointPlacement(e);
+        if (placement.Kind == PointPlacementKind.Free)
+        {
+            CreatePointAtCurrentPosition(placement.Coordinates);
+        }
+        else if (placement.IsDependent)
+        {
+            Actions.Add(Drawing, placement.Create(Drawing));
+        }
+    }
+
+    /// <summary>The point a click here makes: the first of what it could make, or the one chosen with Tab</summary>
+    PointPlacement FindPointPlacement(MouseEventArgs e)
+    {
+        return Choice.Pick(FindPointPlacements(e)) ?? PointPlacement.Free(Coordinates(e));
+    }
+
+    List<PointPlacement> FindPointPlacements(MouseEventArgs e)
+    {
+        return PointPlacement.FindAll(Drawing, Coordinates(e), Settings.Instance.EnableSnapToCenter);
+    }
+
+    protected override IReadOnlyList<object> FindClickOptions(MouseEventArgs e)
+    {
+        return FindPointPlacements(e);
+    }
+
+    PointPlacement hoverPlacement;
+
+    public override void MouseMove(object sender, MouseEventArgs e)
+    {
+        hoverPlacement = FindPointPlacement(e);
+    }
+
+    protected override PointPlacement GetClickPreview(MouseEventArgs e)
+    {
+        return hoverPlacement;
+    }
+
+    protected override Cursor GetCursor(Avalonia.Point coordinates)
+    {
+        // there already is a point here: a click doesn't put another one on top of it
+        if (hoverPlacement != null && hoverPlacement.Kind == PointPlacementKind.Existing)
+        {
+            return ArrowCursor;
         }
 
-        public override FrameworkElement CreateIcon()
-        {
-            return IconBuilder.BuildIcon()
-                .Point(0.5, 0.5)
-                .Canvas;
-        }
+        return GetCursor(hoverPlacement);
+    }
 
-        public override string Name
-        {
-            get { return "Point"; }
-        }
+    public override FrameworkElement CreateIcon()
+    {
+        return IconBuilder.BuildIcon()
+            .Point(0.5, 0.5)
+            .Canvas;
+    }
 
-        public override string HintText
-        {
-            get { return "Click to create a point. You can also click on a figure or an intersection."; }
-        }
+    public override string Name
+    {
+        get { return "Point"; }
+    }
+
+    public override string HintText
+    {
+        get { return "Click to create a point. You can also click on a figure or an intersection."; }
     }
 }

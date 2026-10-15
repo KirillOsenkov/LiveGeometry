@@ -4,457 +4,456 @@ using System.ComponentModel;
 using System.Linq;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+[PropertyGridName("Edit style")]
+public abstract partial class FigureStyle : IFigureStyle, IThemeOverridable, IConditionalProperties
 {
-    [PropertyGridName("Edit style")]
-    public abstract partial class FigureStyle : IFigureStyle, IThemeOverridable, IConditionalProperties
+    string name = "";
+    //[PropertyGridVisible]
+    public string Name 
     {
-        string name = "";
-        //[PropertyGridVisible]
-        public string Name 
+        get
         {
-            get
+            return name;
+        }
+        set
+        {
+            // Prevent invalid (duplicate) style names.  Stylemanager is not designed to handle duplicate names.
+            if (StyleManager != null)
             {
-                return name;
-            }
-            set
-            {
-                // Prevent invalid (duplicate) style names.  Stylemanager is not designed to handle duplicate names.
-                if (StyleManager != null)
-                {
-                    if (StyleManager.NameIsValid(value))
-                    {
-                        name = value;
-                    }
-                    else
-                    {
-                        MessageBox.Show("There is already a style with this name");
-                    }
-                }
-                else
+                if (StyleManager.NameIsValid(value))
                 {
                     name = value;
                 }
-                if (CurrentEditInfo.PropertyGrid != null)
+                else
                 {
-                    CurrentEditInfo.PropertyGrid.UpdateHeader();
+                    MessageBox.Show("There is already a style with this name");
                 }
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [Ignore]
-        public StyleManager StyleManager { get; set; }
-
-        #region Themes
-
-        // A style has its values, which are how it looks under the base theme (Light), and
-        // for another theme may hold other values for some of its properties (a Dark override:
-        // a darker fill, a lighter ink). Whoever draws with the style resolves it first
-        // (Resolve): the style itself when the theme on screen has no override, else a copy
-        // with the override's values set. The default styles of a drawing take their colors
-        // from the theme's paper group (BindToTheme): the base value from the Light theme, an
-        // override from every other, kept current when a theme color is tweaked.
-
-        /// <summary>By theme name, the properties that differ under that theme, with their values</summary>
-        [Ignore]
-        public Dictionary<string, Dictionary<string, object>> Overrides { get; private set; } = new Dictionary<string, Dictionary<string, object>>();
-
-        /// <summary>
-        /// The file the style came from says how it looks under other themes, if only that
-        /// it looks no different (an empty theme element): it is not a copy of a default
-        /// from before the themes, which loading swaps for the default
-        /// (<see cref="StyleManager.AddWithDefaults"/>).
-        /// </summary>
-        [Ignore]
-        public bool SaysThemes { get; set; }
-
-        Dictionary<string, Func<AppTheme, object>> themeBindings;
-
-        /// <summary>Under the named theme, the property has this value</summary>
-        public void SetOverride(string theme, string property, object value)
-        {
-            if (!Overrides.TryGetValue(theme, out var values))
-            {
-                values = new Dictionary<string, object>();
-                Overrides[theme] = values;
-            }
-
-            values[property] = value;
-            OnPropertyChanged(property);
-        }
-
-        public void RemoveOverride(string theme, string property)
-        {
-            if (Overrides.TryGetValue(theme, out var values) && values.Remove(property))
-            {
-                if (values.Count == 0)
-                {
-                    Overrides.Remove(theme);
-                }
-
-                OnPropertyChanged(property);
-            }
-        }
-
-        public void ClearOverrides(string theme)
-        {
-            if (Overrides.Remove(theme, out var values))
-            {
-                foreach (var property in values.Keys)
-                {
-                    OnPropertyChanged(property);
-                }
-            }
-        }
-
-        /// <summary>
-        /// The button that drops the theme's own values (shown under a theme that has some):
-        /// the style looks as it does under the base theme again. One undo step, which puts
-        /// the values back.
-        /// </summary>
-        [PropertyGridVisible]
-        [PropertyGridIcon(PropertyGridIcon.Cross)]
-        public void SameAsBaseTheme()
-        {
-            string theme = AppTheme.Current.Name;
-            if (!Overrides.TryGetValue(theme, out var values))
-            {
-                return;
-            }
-
-            var saved = new Dictionary<string, object>(values);
-            var action = new CallMethodAction(
-                () => ClearOverrides(theme),
-                () =>
-                {
-                    foreach (var pair in saved)
-                    {
-                        SetOverride(theme, pair.Key, pair.Value);
-                    }
-                });
-            var actionManager = StyleManager?.Drawing?.ActionManager;
-            if (actionManager != null)
-            {
-                actionManager.RecordAction(action);
             }
             else
             {
-                action.Execute();
+                name = value;
+            }
+            if (CurrentEditInfo.PropertyGrid != null)
+            {
+                CurrentEditInfo.PropertyGrid.UpdateHeader();
             }
         }
+    }
 
-        public virtual bool CanEdit(string propertyName)
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    [Ignore]
+    public StyleManager StyleManager { get; set; }
+
+    #region Themes
+
+    // A style has its values, which are how it looks under the base theme (Light), and
+    // for another theme may hold other values for some of its properties (a Dark override:
+    // a darker fill, a lighter ink). Whoever draws with the style resolves it first
+    // (Resolve): the style itself when the theme on screen has no override, else a copy
+    // with the override's values set. The default styles of a drawing take their colors
+    // from the theme's paper group (BindToTheme): the base value from the Light theme, an
+    // override from every other, kept current when a theme color is tweaked.
+
+    /// <summary>By theme name, the properties that differ under that theme, with their values</summary>
+    [Ignore]
+    public Dictionary<string, Dictionary<string, object>> Overrides { get; private set; } = new Dictionary<string, Dictionary<string, object>>();
+
+    /// <summary>
+    /// The file the style came from says how it looks under other themes, if only that
+    /// it looks no different (an empty theme element): it is not a copy of a default
+    /// from before the themes, which loading swaps for the default
+    /// (<see cref="StyleManager.AddWithDefaults"/>).
+    /// </summary>
+    [Ignore]
+    public bool SaysThemes { get; set; }
+
+    Dictionary<string, Func<AppTheme, object>> themeBindings;
+
+    /// <summary>Under the named theme, the property has this value</summary>
+    public void SetOverride(string theme, string property, object value)
+    {
+        if (!Overrides.TryGetValue(theme, out var values))
         {
-            if (propertyName == nameof(SameAsBaseTheme))
-            {
-                var theme = AppTheme.Current;
-                return !AppTheme.IsBase(theme) && Overrides.TryGetValue(theme.Name, out var values) && values.Count > 0;
-            }
-
-            // a style every drawing starts with is not deleted: no button that does nothing
-            if (propertyName == nameof(Delete))
-            {
-                return StyleManager != null && StyleManager.CanRemove(this);
-            }
-
-            return true;
+            values = new Dictionary<string, object>();
+            Overrides[theme] = values;
         }
 
-        public virtual string Caption(string propertyName, string defaultCaption)
-        {
-            return propertyName == nameof(SameAsBaseTheme) ? "Same as in " + AppTheme.Base.Name : defaultCaption;
-        }
+        values[property] = value;
+        OnPropertyChanged(property);
+    }
 
-        /// <summary>The property takes its value from every theme's colors: a default style's ink or fill</summary>
-        public void BindToTheme(string property, Func<AppTheme, object> value)
+    public void RemoveOverride(string theme, string property)
+    {
+        if (Overrides.TryGetValue(theme, out var values) && values.Remove(property))
         {
-            themeBindings ??= new Dictionary<string, Func<AppTheme, object>>();
-            themeBindings[property] = value;
-            ReadFromTheme(property, value);
-        }
-
-        /// <summary>Reads the bound properties from the themes again (a theme color was tweaked)</summary>
-        public void RefreshFromTheme()
-        {
-            if (themeBindings == null)
+            if (values.Count == 0)
             {
-                return;
+                Overrides.Remove(theme);
             }
 
-            foreach (var binding in themeBindings)
+            OnPropertyChanged(property);
+        }
+    }
+
+    public void ClearOverrides(string theme)
+    {
+        if (Overrides.Remove(theme, out var values))
+        {
+            foreach (var property in values.Keys)
             {
-                ReadFromTheme(binding.Key, binding.Value);
+                OnPropertyChanged(property);
             }
         }
+    }
 
-        // what the binding last gave each theme, by theme and property
-        Dictionary<(string Theme, string Property), object> boundValues;
-
-        /// <summary>
-        /// Each theme's value of the property from the theme's colors - except where the
-        /// user has given the property another value since (a red fill for the default
-        /// point style): that is theirs and stays. It used to be overwritten whenever the
-        /// themes were read again (a theme color tweaked, the theme switched while the
-        /// drawing was behind the gallery), and the drawing then saved without it.
-        /// </summary>
-        void ReadFromTheme(string property, Func<AppTheme, object> value)
+    /// <summary>
+    /// The button that drops the theme's own values (shown under a theme that has some):
+    /// the style looks as it does under the base theme again. One undo step, which puts
+    /// the values back.
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridIcon(PropertyGridIcon.Cross)]
+    public void SameAsBaseTheme()
+    {
+        string theme = AppTheme.Current.Name;
+        if (!Overrides.TryGetValue(theme, out var values))
         {
-            boundValues ??= new Dictionary<(string Theme, string Property), object>();
-            var propertyInfo = GetType().GetProperty(property);
-            foreach (var theme in AppTheme.All)
+            return;
+        }
+
+        var saved = new Dictionary<string, object>(values);
+        var action = new CallMethodAction(
+            () => ClearOverrides(theme),
+            () =>
             {
-                var key = (theme.Name, property);
-                bool isBase = theme == AppTheme.Light;
-                object current = isBase
-                    ? propertyInfo.GetValue(this)
-                    : Overrides.TryGetValue(theme.Name, out var values) && values.TryGetValue(property, out var overridden) ? overridden : null;
-                if (boundValues.TryGetValue(key, out var bound) && !Equals(current, bound))
+                foreach (var pair in saved)
                 {
-                    continue;
+                    SetOverride(theme, pair.Key, pair.Value);
                 }
+            });
+        var actionManager = StyleManager?.Drawing?.ActionManager;
+        if (actionManager != null)
+        {
+            actionManager.RecordAction(action);
+        }
+        else
+        {
+            action.Execute();
+        }
+    }
 
-                var themeValue = value(theme);
-                boundValues[key] = themeValue;
-                if (isBase)
-                {
-                    // the setter raises PropertyChanged, and the figures repaint
-                    propertyInfo.SetValue(this, themeValue);
-                }
-                else
-                {
-                    SetOverride(theme.Name, property, themeValue);
-                }
-            }
+    public virtual bool CanEdit(string propertyName)
+    {
+        if (propertyName == nameof(SameAsBaseTheme))
+        {
+            var theme = AppTheme.Current;
+            return !AppTheme.IsBase(theme) && Overrides.TryGetValue(theme.Name, out var values) && values.Count > 0;
         }
 
-        /// <summary>
-        /// The style looks under every theme as it does under the base one and no longer
-        /// follows the themes' colors: for a drawing whose paper stays light under every theme
-        /// (a GeoGebra worksheet). Each override says the base value, so that a file keeps the
-        /// style that way (<see cref="StyleManager.AddWithDefaults"/> takes a default without
-        /// overrides for the theme's own).
-        /// </summary>
-        public void KeepBaseLook()
+        // a style every drawing starts with is not deleted: no button that does nothing
+        if (propertyName == nameof(Delete))
         {
-            themeBindings = null;
-            var type = GetType();
-            foreach (var theme in Overrides.Keys.ToArray())
+            return StyleManager != null && StyleManager.CanRemove(this);
+        }
+
+        return true;
+    }
+
+    public virtual string Caption(string propertyName, string defaultCaption)
+    {
+        return propertyName == nameof(SameAsBaseTheme) ? "Same as in " + AppTheme.Base.Name : defaultCaption;
+    }
+
+    /// <summary>The property takes its value from every theme's colors: a default style's ink or fill</summary>
+    public void BindToTheme(string property, Func<AppTheme, object> value)
+    {
+        themeBindings ??= new Dictionary<string, Func<AppTheme, object>>();
+        themeBindings[property] = value;
+        ReadFromTheme(property, value);
+    }
+
+    /// <summary>Reads the bound properties from the themes again (a theme color was tweaked)</summary>
+    public void RefreshFromTheme()
+    {
+        if (themeBindings == null)
+        {
+            return;
+        }
+
+        foreach (var binding in themeBindings)
+        {
+            ReadFromTheme(binding.Key, binding.Value);
+        }
+    }
+
+    // what the binding last gave each theme, by theme and property
+    Dictionary<(string Theme, string Property), object> boundValues;
+
+    /// <summary>
+    /// Each theme's value of the property from the theme's colors - except where the
+    /// user has given the property another value since (a red fill for the default
+    /// point style): that is theirs and stays. It used to be overwritten whenever the
+    /// themes were read again (a theme color tweaked, the theme switched while the
+    /// drawing was behind the gallery), and the drawing then saved without it.
+    /// </summary>
+    void ReadFromTheme(string property, Func<AppTheme, object> value)
+    {
+        boundValues ??= new Dictionary<(string Theme, string Property), object>();
+        var propertyInfo = GetType().GetProperty(property);
+        foreach (var theme in AppTheme.All)
+        {
+            var key = (theme.Name, property);
+            bool isBase = theme == AppTheme.Light;
+            object current = isBase
+                ? propertyInfo.GetValue(this)
+                : Overrides.TryGetValue(theme.Name, out var values) && values.TryGetValue(property, out var overridden) ? overridden : null;
+            if (boundValues.TryGetValue(key, out var bound) && !Equals(current, bound))
             {
-                foreach (var property in Overrides[theme].Keys.ToArray())
-                {
-                    SetOverride(theme, property, type.GetProperty(property).GetValue(this));
-                }
+                continue;
             }
-        }
 
-        public IFigureStyle Resolve()
-        {
-            return Resolve(AppTheme.Current.Name);
-        }
-
-        /// <summary>The style as it looks under the theme: itself without an override for it</summary>
-        public IFigureStyle Resolve(string theme)
-        {
-            if (!Overrides.TryGetValue(theme, out var values) || values.Count == 0)
+            var themeValue = value(theme);
+            boundValues[key] = themeValue;
+            if (isBase)
             {
-                return this;
+                // the setter raises PropertyChanged, and the figures repaint
+                propertyInfo.SetValue(this, themeValue);
             }
-
-            var result = (FigureStyle)MemberwiseClone();
-            result.PropertyChanged = null; // the copy's setters must not repaint the original's figures
-            result.Overrides = new Dictionary<string, Dictionary<string, object>>();
-            result.themeBindings = null;
-            result.boundValues = null;
-            // In the order of the properties, as a file writes and reads them, not in the order
-            // the overrides were made: a point style's Size is its character's or its shape's,
-            // whichever it shows, so its Character goes first. Made the other way round (a
-            // size, then an emoji, under Dark), the emoji showed at its own size while the
-            // grid said the override's, and came back at the override's from the file.
-            var type = GetType();
-            foreach (var pair in values.OrderBy(pair => PropertyOrder(pair.Key)))
+            else
             {
-                type.GetProperty(pair.Key).SetValue(result, pair.Value);
+                SetOverride(theme.Name, property, themeValue);
             }
-
-            return result;
         }
+    }
 
-        // where each property of a style type comes among its properties (OverrideValues)
-        static readonly Dictionary<Type, Dictionary<string, int>> propertyOrders = new Dictionary<Type, Dictionary<string, int>>();
-
-        int PropertyOrder(string property)
+    /// <summary>
+    /// The style looks under every theme as it does under the base one and no longer
+    /// follows the themes' colors: for a drawing whose paper stays light under every theme
+    /// (a GeoGebra worksheet). Each override says the base value, so that a file keeps the
+    /// style that way (<see cref="StyleManager.AddWithDefaults"/> takes a default without
+    /// overrides for the theme's own).
+    /// </summary>
+    public void KeepBaseLook()
+    {
+        themeBindings = null;
+        var type = GetType();
+        foreach (var theme in Overrides.Keys.ToArray())
         {
-            var type = GetType();
-            if (!propertyOrders.TryGetValue(type, out var order))
+            foreach (var property in Overrides[theme].Keys.ToArray())
             {
-                order = new Dictionary<string, int>();
-                foreach (var value in IncludeByDefaultValueDiscoveryStrategy.Instance.GetValues(this))
-                {
-                    order.TryAdd(value.Name, order.Count);
-                }
-
-                propertyOrders[type] = order;
+                SetOverride(theme, property, type.GetProperty(property).GetValue(this));
             }
+        }
+    }
 
-            return order.TryGetValue(property, out int index) ? index : int.MaxValue;
+    public IFigureStyle Resolve()
+    {
+        return Resolve(AppTheme.Current.Name);
+    }
+
+    /// <summary>The style as it looks under the theme: itself without an override for it</summary>
+    public IFigureStyle Resolve(string theme)
+    {
+        if (!Overrides.TryGetValue(theme, out var values) || values.Count == 0)
+        {
+            return this;
         }
 
-        #endregion
-
-        public Style GetWpfStyle(IFigure figure)
+        var result = (FigureStyle)MemberwiseClone();
+        result.PropertyChanged = null; // the copy's setters must not repaint the original's figures
+        result.Overrides = new Dictionary<string, Dictionary<string, object>>();
+        result.themeBindings = null;
+        result.boundValues = null;
+        // In the order of the properties, as a file writes and reads them, not in the order
+        // the overrides were made: a point style's Size is its character's or its shape's,
+        // whichever it shows, so its Character goes first. Made the other way round (a
+        // size, then an emoji, under Dark), the emoji showed at its own size while the
+        // grid said the override's, and came back at the override's from the file.
+        var type = GetType();
+        foreach (var pair in values.OrderBy(pair => PropertyOrder(pair.Key)))
         {
-            Style result = new Style(typeof(FrameworkElement));
-            ((FigureStyle)Resolve()).ApplyToWpfStyle(result, figure);
-            return result;
+            type.GetProperty(pair.Key).SetValue(result, pair.Value);
         }
 
-        protected virtual void ApplyToWpfStyle(Style existingStyle, IFigure figure)
+        return result;
+    }
+
+    // where each property of a style type comes among its properties (OverrideValues)
+    static readonly Dictionary<Type, Dictionary<string, int>> propertyOrders = new Dictionary<Type, Dictionary<string, int>>();
+
+    int PropertyOrder(string property)
+    {
+        var type = GetType();
+        if (!propertyOrders.TryGetValue(type, out var order))
         {
-            if (figure != null)
+            order = new Dictionary<string, int>();
+            foreach (var value in IncludeByDefaultValueDiscoveryStrategy.Instance.GetValues(this))
             {
-                if (!figure.Enabled)
-                {
-                    existingStyle.Setters.Add(new Setter(FrameworkElement.OpacityProperty, 0.2));
-                }
+                order.TryAdd(value.Name, order.Count);
             }
+
+            propertyOrders[type] = order;
         }
 
-        /// <summary>A copy with the same values and overrides, but no name and no ties to the theme: it is the user's own now</summary>
-        public virtual IFigureStyle Clone()
+        return order.TryGetValue(property, out int index) ? index : int.MaxValue;
+    }
+
+    #endregion
+
+    public Style GetWpfStyle(IFigure figure)
+    {
+        Style result = new Style(typeof(FrameworkElement));
+        ((FigureStyle)Resolve()).ApplyToWpfStyle(result, figure);
+        return result;
+    }
+
+    protected virtual void ApplyToWpfStyle(Style existingStyle, IFigure figure)
+    {
+        if (figure != null)
         {
-            var result = (FigureStyle)this.MemberwiseClone();
-            result.PropertyChanged = null;
-            result.Name = "";
-            result.themeBindings = null;
-            result.boundValues = null;
-            result.Overrides = new Dictionary<string, Dictionary<string, object>>();
-            foreach (var pair in Overrides)
+            if (!figure.Enabled)
             {
-                result.Overrides[pair.Key] = new Dictionary<string, object>(pair.Value);
+                existingStyle.Setters.Add(new Setter(FrameworkElement.OpacityProperty, 0.2));
             }
+        }
+    }
 
-            return result;
+    /// <summary>A copy with the same values and overrides, but no name and no ties to the theme: it is the user's own now</summary>
+    public virtual IFigureStyle Clone()
+    {
+        var result = (FigureStyle)this.MemberwiseClone();
+        result.PropertyChanged = null;
+        result.Name = "";
+        result.themeBindings = null;
+        result.boundValues = null;
+        result.Overrides = new Dictionary<string, Dictionary<string, object>>();
+        foreach (var pair in Overrides)
+        {
+            result.Overrides[pair.Key] = new Dictionary<string, object>(pair.Value);
         }
 
-        public virtual IEnumerable<IFigureStyle> GetCompatibleStyles()
+        return result;
+    }
+
+    public virtual IEnumerable<IFigureStyle> GetCompatibleStyles()
+    {
+        var result = StyleManager.GetCompatibleStyles(this.GetType());
+        return result;
+    }
+
+    public abstract FrameworkElement GetSampleGlyph();
+
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        if (PropertyChanged != null)
         {
-            var result = StyleManager.GetCompatibleStyles(this.GetType());
-            return result;
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
 
-        public abstract FrameworkElement GetSampleGlyph();
+    public virtual void OnApplied(IFigure figure, FrameworkElement element)
+    {
+    }
 
-        protected virtual void OnPropertyChanged(string propertyName)
+    /// <summary>The values, then each theme's overrides: two styles that look the same under every theme have the same signature</summary>
+    public virtual string GetSignature()
+    {
+        var result = GetBaseSignature();
+        foreach (var theme in Overrides.Keys.OrderBy(name => name))
         {
-            if (PropertyChanged != null)
+            foreach (var value in OverrideValues(theme))
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                result += " " + theme + "." + value.Name + "=" + SerializationService.Instance.Write(value);
             }
         }
 
-        public virtual void OnApplied(IFigure figure, FrameworkElement element)
+        return result;
+    }
+
+    /// <summary>The values under the base theme alone: how the style looks in Light</summary>
+    public string GetBaseSignature()
+    {
+        var values = IncludeByDefaultValueDiscoveryStrategy.Instance
+                .GetValues(this)
+                .Where(v => v.Name != "Name")
+                .Select(v => SerializationService.Instance.Write(v)?.ToString()); // a null string (no character) writes nothing
+        return string.Join(" ", values.ToArray());
+    }
+
+    /// <summary>The theme's overrides as values, in the order of the properties</summary>
+    public IEnumerable<ThemedValue> OverrideValues(string theme)
+    {
+        if (!Overrides.TryGetValue(theme, out var values))
         {
+            yield break;
         }
 
-        /// <summary>The values, then each theme's overrides: two styles that look the same under every theme have the same signature</summary>
-        public virtual string GetSignature()
+        foreach (var property in IncludeByDefaultValueDiscoveryStrategy.Instance.GetValues(this))
         {
-            var result = GetBaseSignature();
-            foreach (var theme in Overrides.Keys.OrderBy(name => name))
+            if (values.ContainsKey(property.Name))
             {
-                foreach (var value in OverrideValues(theme))
-                {
-                    result += " " + theme + "." + value.Name + "=" + SerializationService.Instance.Write(value);
-                }
+                yield return new ThemedValue(property, this, theme);
             }
-
-            return result;
         }
+    }
 
-        /// <summary>The values under the base theme alone: how the style looks in Light</summary>
-        public string GetBaseSignature()
-        {
-            var values = IncludeByDefaultValueDiscoveryStrategy.Instance
-                    .GetValues(this)
-                    .Where(v => v.Name != "Name")
-                    .Select(v => SerializationService.Instance.Write(v)?.ToString()); // a null string (no character) writes nothing
-            return string.Join(" ", values.ToArray());
-        }
+    public override string ToString()
+    {
+        var result = Name;
+        result += "\n" + GetSignature();
+        return result;
+    }
 
-        /// <summary>The theme's overrides as values, in the order of the properties</summary>
-        public IEnumerable<ThemedValue> OverrideValues(string theme)
+    // Below is code necessary to implement an "OK" button that displays in the property grid when editing a style.
+
+    EditInfo mCurrentEditInfo;
+    [Ignore]
+    public EditInfo CurrentEditInfo
+    {
+        get
         {
-            if (!Overrides.TryGetValue(theme, out var values))
+            if (mCurrentEditInfo == null)
             {
-                yield break;
+                mCurrentEditInfo = new EditInfo();
             }
-
-            foreach (var property in IncludeByDefaultValueDiscoveryStrategy.Instance.GetValues(this))
-            {
-                if (values.ContainsKey(property.Name))
-                {
-                    yield return new ThemedValue(property, this, theme);
-                }
-            }
+            return mCurrentEditInfo;
         }
-
-        public override string ToString()
+        set
         {
-            var result = Name;
-            result += "\n" + GetSignature();
-            return result;
+            mCurrentEditInfo = value;
         }
+    }
 
-        // Below is code necessary to implement an "OK" button that displays in the property grid when editing a style.
+    public class EditInfo
+    {
+        public PropertyGrid PropertyGrid { get; set; }
+        public object ParentObject { get; set; }
+        public ActionManager ActionManager { get; set; }
+    }
 
-        EditInfo mCurrentEditInfo;
-        [Ignore]
-        public EditInfo CurrentEditInfo
+    [PropertyGridVisible]
+    [PropertyGridName("OK")]
+    [PropertyGridIcon(PropertyGridIcon.Check)]
+    public void FinishEditing()
+    {
+        if (CurrentEditInfo.PropertyGrid != null && CurrentEditInfo.ParentObject != null)
         {
-            get
-            {
-                if (mCurrentEditInfo == null)
-                {
-                    mCurrentEditInfo = new EditInfo();
-                }
-                return mCurrentEditInfo;
-            }
-            set
-            {
-                mCurrentEditInfo = value;
-            }
+            CurrentEditInfo.PropertyGrid.Show(CurrentEditInfo.ParentObject, CurrentEditInfo.ActionManager);
+            CurrentEditInfo.PropertyGrid = null;
+            CurrentEditInfo.ParentObject = null;
+            CurrentEditInfo.ActionManager = null;
         }
+    }
 
-        public class EditInfo
-        {
-            public PropertyGrid PropertyGrid { get; set; }
-            public object ParentObject { get; set; }
-            public ActionManager ActionManager { get; set; }
-        }
-
-        [PropertyGridVisible]
-        [PropertyGridName("OK")]
-        [PropertyGridIcon(PropertyGridIcon.Check)]
-        public void FinishEditing()
-        {
-            if (CurrentEditInfo.PropertyGrid != null && CurrentEditInfo.ParentObject != null)
-            {
-                CurrentEditInfo.PropertyGrid.Show(CurrentEditInfo.ParentObject, CurrentEditInfo.ActionManager);
-                CurrentEditInfo.PropertyGrid = null;
-                CurrentEditInfo.ParentObject = null;
-                CurrentEditInfo.ActionManager = null;
-            }
-        }
-
-        [PropertyGridVisible]
-        [PropertyGridName("Delete this style")]
-        [PropertyGridDestructive]
-        public void Delete()
-        {
-            StyleManager.Remove(this);
-            FinishEditing();
-        }
+    [PropertyGridVisible]
+    [PropertyGridName("Delete this style")]
+    [PropertyGridDestructive]
+    public void Delete()
+    {
+        StyleManager.Remove(this);
+        FinishEditing();
     }
 }

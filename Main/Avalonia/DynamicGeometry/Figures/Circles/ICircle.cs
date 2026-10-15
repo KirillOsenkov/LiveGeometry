@@ -1,7 +1,6 @@
-﻿namespace DynamicGeometry
+﻿namespace DynamicGeometry;
+
+public interface ICircle : IEllipse
 {
-    public interface ICircle : IEllipse
-    {
-        double Radius { get; }
-    }
+    double Radius { get; }
 }

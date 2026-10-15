@@ -1,60 +1,59 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class ToolButton : UserControl, ICommandObserver
 {
-    public class ToolButton : UserControl, ICommandObserver
+    // Avalonia matches theme templates by concrete type; keep using the UserControl template.
+    protected override System.Type StyleKeyOverride => typeof(UserControl);
+
+    public DrawingHost DrawingHost { get; set; }
+    public TabPanel ParentPanel { get; set; }
+
+    protected ButtonGrid buttonGrid;
+
+    public virtual void Click()
     {
-        // Avalonia matches theme templates by concrete type; keep using the UserControl template.
-        protected override System.Type StyleKeyOverride => typeof(UserControl);
 
-        public DrawingHost DrawingHost { get; set; }
-        public TabPanel ParentPanel { get; set; }
+    }
 
-        protected ButtonGrid buttonGrid;
-
-        public virtual void Click()
+    public virtual FrameworkElement CloneIcon()
+    {
+        if (buttonGrid == null)
         {
-
-        }
-
-        public virtual FrameworkElement CloneIcon()
-        {
-            if (buttonGrid == null)
-            {
-                return null;
-            }
-            var image = buttonGrid.Icon as Image;
-            if (image != null)
-            {
-                Image result = new Image();
-                result.Source = image.Source;
-                result.Stretch = Stretch.None;
-                return result;
-            }
             return null;
         }
-
-        public void CommandRemoved()
+        var image = buttonGrid.Icon as Image;
+        if (image != null)
         {
-            Panel parent = Parent as Panel;
-            if (parent != null)
-            {
-                parent.Children.Remove(this);
-            }
+            Image result = new Image();
+            result.Source = image.Source;
+            result.Stretch = Stretch.None;
+            return result;
         }
+        return null;
+    }
 
-        public virtual void EnabledChanged(bool newEnabledState)
+    public void CommandRemoved()
+    {
+        Panel parent = Parent as Panel;
+        if (parent != null)
         {
-            if (this.IsEnabled != newEnabledState)
-            {
-                this.IsEnabled = newEnabledState;
-            }
+            parent.Children.Remove(this);
         }
+    }
 
-        public void IconChanged(FrameworkElement icon)
+    public virtual void EnabledChanged(bool newEnabledState)
+    {
+        if (this.IsEnabled != newEnabledState)
         {
-            buttonGrid.Icon = icon;
+            this.IsEnabled = newEnabledState;
         }
+    }
+
+    public void IconChanged(FrameworkElement icon)
+    {
+        buttonGrid.Icon = icon;
     }
 }

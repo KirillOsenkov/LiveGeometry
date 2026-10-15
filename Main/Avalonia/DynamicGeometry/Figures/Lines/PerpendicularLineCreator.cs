@@ -1,45 +1,44 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+[Category(BehaviorCategories.Lines)]
+[Order(6)]
+public class PerpendicularLineCreator : FigureCreator
 {
-    [Category(BehaviorCategories.Lines)]
-    [Order(6)]
-    public class PerpendicularLineCreator : FigureCreator
+    protected override IEnumerable<IFigure> CreateFigures()
     {
-        protected override IEnumerable<IFigure> CreateFigures()
-        {
-            yield return Factory.CreatePerpendicularLine(Drawing, FoundDependencies);
-        }
+        yield return Factory.CreatePerpendicularLine(Drawing, FoundDependencies);
+    }
 
-        protected override DependencyList InitExpectedDependencies()
-        {
-            return DependencyList.LinePoint;
-        }
+    protected override DependencyList InitExpectedDependencies()
+    {
+        return DependencyList.LinePoint;
+    }
 
-        public override string Name
+    public override string Name
+    {
+        get
         {
-            get
-            {
-                return "Perpendicular";
-            }
+            return "Perpendicular";
         }
+    }
 
-        public override string HintText
+    public override string HintText
+    {
+        get
         {
-            get
-            {
-                return "Click a line and then click a point.";
-            }
+            return "Click a line and then click a point.";
         }
+    }
 
-        public override FrameworkElement CreateIcon()
-        {
-            return IconBuilder.BuildIcon()
-                .Line(0.3, 1, 1, 0.3)
-                .AccentLine(0, 0, 1, 1)
-                .Point(0.35, 0.35)
-                .Canvas;
-        }
+    public override FrameworkElement CreateIcon()
+    {
+        return IconBuilder.BuildIcon()
+            .Line(0.3, 1, 1, 0.3)
+            .AccentLine(0, 0, 1, 1)
+            .Point(0.35, 0.35)
+            .Canvas;
     }
 }

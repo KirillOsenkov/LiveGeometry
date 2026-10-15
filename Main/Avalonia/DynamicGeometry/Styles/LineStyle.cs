@@ -1,99 +1,98 @@
 ﻿using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+[StyleFor(typeof(ILinearFigure))]
+[StyleFor(typeof(Slider))]
+[StyleFor(typeof(BezierPath.BezierPathPiece))]
+// a polygon on a line style is its outline, unfilled, as a circle on one is
+[StyleFor(typeof(PolygonBase))]
+public class LineStyle : FigureStyle
 {
-    [StyleFor(typeof(ILinearFigure))]
-    [StyleFor(typeof(Slider))]
-    [StyleFor(typeof(BezierPath.BezierPathPiece))]
-    // a polygon on a line style is its outline, unfilled, as a circle on one is
-    [StyleFor(typeof(PolygonBase))]
-    public class LineStyle : FigureStyle
+    public override FrameworkElement GetSampleGlyph()
     {
-        public override FrameworkElement GetSampleGlyph()
+        var line = Factory.CreateLineShape();
+        line.X1 = 0;
+        line.X2 = 20;
+        line.Y1 = 20;
+        line.Y2 = 0;
+        line.Apply(this.GetWpfStyle());
+        Resolve().OnApplied(null, line);
+        line.Tag = this;
+        return line;
+    }
+
+    Color mColor = Color.FromArgb(100, 0, 0, 0);
+    [PropertyGridVisible]
+    [PropertyGridName("Stroke color")]
+    public Color Color
+    {
+        get
         {
-            var line = Factory.CreateLineShape();
-            line.X1 = 0;
-            line.X2 = 20;
-            line.Y1 = 20;
-            line.Y2 = 0;
-            line.Apply(this.GetWpfStyle());
-            Resolve().OnApplied(null, line);
-            line.Tag = this;
-            return line;
+            return mColor;
         }
-
-        Color mColor = Color.FromArgb(100, 0, 0, 0);
-        [PropertyGridVisible]
-        [PropertyGridName("Stroke color")]
-        public Color Color
+        set
         {
-            get
-            {
-                return mColor;
-            }
-            set
-            {
-                mColor = value;
-                OnPropertyChanged("Color");
-            }
+            mColor = value;
+            OnPropertyChanged("Color");
         }
+    }
 
-        double strokeWidth = 1;
-        [PropertyGridName("Stroke width")]
-        [PropertyGridVisible]
-        [Domain(0.1, 50)]
-        public virtual double StrokeWidth
+    double strokeWidth = 1;
+    [PropertyGridName("Stroke width")]
+    [PropertyGridVisible]
+    [Domain(0.1, 50)]
+    public virtual double StrokeWidth
+    {
+        get
         {
-            get
-            {
-                return (double)strokeWidth;
-            }
-            set
-            {
-                strokeWidth = value;
-                OnPropertyChanged("StrokeWidth");
-            }
+            return (double)strokeWidth;
         }
-
-        LineDash dash = LineDash.Solid;
-        [PropertyGridVisible]
-        [PropertyGridName("Dash")]
-        public LineDash Dash
+        set
         {
-            get
-            {
-                return dash;
-            }
-            set
-            {
-                dash = value;
-                OnPropertyChanged("Dash");
-            }
+            strokeWidth = value;
+            OnPropertyChanged("StrokeWidth");
         }
+    }
 
-        protected override void ApplyToWpfStyle(Style existingStyle, IFigure figure)
+    LineDash dash = LineDash.Solid;
+    [PropertyGridVisible]
+    [PropertyGridName("Dash")]
+    public LineDash Dash
+    {
+        get
         {
-            base.ApplyToWpfStyle(existingStyle, figure);
-            var strokeSetter = new Setter(Shape.StrokeProperty, new SolidColorBrush(Color));
-            existingStyle.Setters.Add(strokeSetter);
-
-            var widthSetter = new Setter(Shape.StrokeThicknessProperty, strokeWidth);
-            existingStyle.Setters.Add(widthSetter);
-
+            return dash;
         }
-
-        /// <summary>
-        /// The dash pattern goes on here and not through a setter: it depends on the width the
-        /// shape ended up with.
-        /// </summary>
-        public override void OnApplied(IFigure figure, FrameworkElement element)
+        set
         {
-            var shape = element as Shape;
-            if (shape != null)
-            {
-                shape.StrokeDashArray = LineDashes.GetDashArray(Dash, shape.StrokeThickness);
-            }
+            dash = value;
+            OnPropertyChanged("Dash");
+        }
+    }
+
+    protected override void ApplyToWpfStyle(Style existingStyle, IFigure figure)
+    {
+        base.ApplyToWpfStyle(existingStyle, figure);
+        var strokeSetter = new Setter(Shape.StrokeProperty, new SolidColorBrush(Color));
+        existingStyle.Setters.Add(strokeSetter);
+
+        var widthSetter = new Setter(Shape.StrokeThicknessProperty, strokeWidth);
+        existingStyle.Setters.Add(widthSetter);
+
+    }
+
+    /// <summary>
+    /// The dash pattern goes on here and not through a setter: it depends on the width the
+    /// shape ended up with.
+    /// </summary>
+    public override void OnApplied(IFigure figure, FrameworkElement element)
+    {
+        var shape = element as Shape;
+        if (shape != null)
+        {
+            shape.StrokeDashArray = LineDashes.GetDashArray(Dash, shape.StrokeThickness);
         }
     }
 }

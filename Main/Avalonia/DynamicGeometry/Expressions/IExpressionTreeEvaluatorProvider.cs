@@ -1,10 +1,9 @@
 ﻿using System.Linq.Expressions;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public interface IExpressionTreeEvaluatorProvider
 {
-    public interface IExpressionTreeEvaluatorProvider
-    {
-        T InterpretFunction<T>(Expression<T> node);
-        T InterpretExpression<T>(Expression<T> node);
-    }
+    T InterpretFunction<T>(Expression<T> node);
+    T InterpretExpression<T>(Expression<T> node);
 }

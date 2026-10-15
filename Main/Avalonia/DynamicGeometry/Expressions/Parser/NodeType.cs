@@ -1,17 +1,16 @@
-﻿namespace DynamicGeometry
+﻿namespace DynamicGeometry;
+
+public enum NodeType
 {
-    public enum NodeType
-    {
-        Unknown,
-        Negation,
-        Addition,
-        Subtraction,
-        Multiplication,
-        Division,
-        Power,
-        PropertyAccess,
-        FunctionCall,
-        Constant,
-        Variable
-    }
+    Unknown,
+    Negation,
+    Addition,
+    Subtraction,
+    Multiplication,
+    Division,
+    Power,
+    PropertyAccess,
+    FunctionCall,
+    Constant,
+    Variable
 }

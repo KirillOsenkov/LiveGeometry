@@ -1,206 +1,205 @@
 ﻿using System.Collections.Generic;
 using Avalonia;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
 {
-    public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
+    protected override string Kind
     {
-        protected override string Kind
+        get
         {
-            get
+            return "Circle";
+        }
+    }
+
+    public abstract double Radius
+    {
+        get;
+    }
+
+    /// <summary>The name written next to the circle (<see cref="FigureLabel"/>)</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Show name")]
+    public bool ShowName
+    {
+        get { return HasNameLabel; }
+        set { HasNameLabel = value; }
+    }
+
+    #region Setting and fixing the radius
+
+    /// <summary>
+    /// The two points whose distance is the radius, when the radius can be set: the center
+    /// and the point on the circle (Circle), the two radius points (Circle by radius).
+    /// Null when it can't (a circle by equation, a radius taken from a figure): the
+    /// Radius row is then read-only and the verbs are hidden.
+    /// </summary>
+    protected virtual IPoint RadiusPivot
+    {
+        get { return null; }
+    }
+
+    protected virtual IPoint RadiusEnd
+    {
+        get { return null; }
+    }
+
+    /// <summary>The radius, settable through the two points (<see cref="LengthConstraint.SetDistance"/>)</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Radius")]
+    [PropertyGridGroup("Radius")]
+    [PropertyGridPreferredEditor("UpDown")]
+    [PropertyGridCustomValueProvider(typeof(LengthPropertyValue))]
+    public double Length
+    {
+        get
+        {
+            return Radius;
+        }
+        set
+        {
+            if (RadiusEnd != null)
             {
-                return "Circle";
+                LengthConstraint.SetDistance(RadiusEnd, RadiusPivot, value);
             }
         }
+    }
 
-        public abstract double Radius
+    public IPoint LengthEndpoint => RadiusEnd;
+
+    /// <summary>For expressions, c.Diameter (c.Length is the radius, as the grid's row)</summary>
+    public double Diameter
+    {
+        get
         {
-            get;
+            return 2 * Radius;
+        }
+    }
+
+    /// <summary>A measurement of the radius sits between the two radius points</summary>
+    public IList<IFigure> MeasuredFigures
+    {
+        get { return RadiusEnd == null ? null : new IFigure[] { RadiusPivot, RadiusEnd }; }
+    }
+
+    public bool CanEdit(string propertyName)
+    {
+        var end = RadiusEnd;
+        bool isFixed = end != null && LengthConstraint.FixedEnd(end, RadiusPivot) != null;
+        bool canStretch = end != null && LengthConstraint.CanStretch(end, RadiusPivot);
+        switch (propertyName)
+        {
+            case "Length":
+                return isFixed || canStretch;
+            case "FixLength":
+                return !isFixed && canStretch && LengthConstraint.CanFix(end, RadiusPivot);
+            case "FreeLength":
+                return isFixed && LengthConstraint.CanFree(LengthConstraint.FixedEnd(end, RadiusPivot));
+            default:
+                return true;
+        }
+    }
+
+    public string Caption(string propertyName, string defaultCaption)
+    {
+        switch (propertyName)
+        {
+            case "Length":
+                return "Radius";
+            case "FixLength":
+                return "Fix radius";
+            case "FreeLength":
+                return "Free radius";
+            default:
+                return defaultCaption;
+        }
+    }
+
+    /// <summary>The circle keeps its radius (<see cref="LengthConstraint.Fix"/>)</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Fix radius")]
+    [PropertyGridGroup("Radius")]
+    [PropertyGridIcon(PropertyGridIcon.Lock)]
+    public void FixLength()
+    {
+        if (CanEdit("FixLength"))
+        {
+            LengthConstraint.Fix(RadiusEnd, RadiusPivot);
+            Drawing.RaiseDisplayProperties(this);
+        }
+    }
+
+    [PropertyGridVisible]
+    [PropertyGridName("Free radius")]
+    [PropertyGridGroup("Radius")]
+    [PropertyGridIcon(PropertyGridIcon.Unlock)]
+    public void FreeLength()
+    {
+        if (CanEdit("FreeLength"))
+        {
+            LengthConstraint.Free(LengthConstraint.FixedEnd(RadiusEnd, RadiusPivot));
+            Drawing.RaiseDisplayProperties(this);
+        }
+    }
+
+    #endregion
+
+    public override double Inclination
+    {
+        get { return 0; }
+    }
+
+    public override double SemiMajor
+    {
+        get { return Radius; }
+    }
+
+    public override double SemiMinor
+    {
+        get { return Radius; }
+    }
+
+    public override void UpdateVisual()
+    {
+        var center = ToPhysical(Center);
+        var diameter = ToPhysical(Radius * 2) + shape.StrokeThickness;
+
+        // A circle that doesn't exist - its center is nowhere - may have any radius, an
+        // infinite one too, and Avalonia throws on such a width: in the middle of a drag
+        // (an ellipse flattened to nothing, the circle of its curvature), which then
+        // could not be undone. It is hidden anyway.
+        if (!center.Exists() || !diameter.IsValidValue())
+        {
+            return;
         }
 
-        /// <summary>The name written next to the circle (<see cref="FigureLabel"/>)</summary>
-        [PropertyGridVisible]
-        [PropertyGridName("Show name")]
-        public bool ShowName
+        if (shape.Width != diameter)
         {
-            get { return HasNameLabel; }
-            set { HasNameLabel = value; }
+            shape.Width = diameter;
         }
 
-        #region Setting and fixing the radius
-
-        /// <summary>
-        /// The two points whose distance is the radius, when the radius can be set: the center
-        /// and the point on the circle (Circle), the two radius points (Circle by radius).
-        /// Null when it can't (a circle by equation, a radius taken from a figure): the
-        /// Radius row is then read-only and the verbs are hidden.
-        /// </summary>
-        protected virtual IPoint RadiusPivot
+        if (shape.Height != diameter)
         {
-            get { return null; }
+            shape.Height = diameter;
         }
 
-        protected virtual IPoint RadiusEnd
+        shape.CenterAt(center);
+    }
+
+    public override Point GetPointFromParameter(double parameter)
+    {
+        if (Settings.PointsOnEllipticalsUseAbsoluteAngle)
         {
-            get { return null; }
+            var center = Center;
+            var radius = Radius;
+            return new Point(
+                center.X + radius * System.Math.Cos(parameter),
+                center.Y + radius * System.Math.Sin(parameter));
         }
-
-        /// <summary>The radius, settable through the two points (<see cref="LengthConstraint.SetDistance"/>)</summary>
-        [PropertyGridVisible]
-        [PropertyGridName("Radius")]
-        [PropertyGridGroup("Radius")]
-        [PropertyGridPreferredEditor("UpDown")]
-        [PropertyGridCustomValueProvider(typeof(LengthPropertyValue))]
-        public double Length
+        else
         {
-            get
-            {
-                return Radius;
-            }
-            set
-            {
-                if (RadiusEnd != null)
-                {
-                    LengthConstraint.SetDistance(RadiusEnd, RadiusPivot, value);
-                }
-            }
-        }
-
-        public IPoint LengthEndpoint => RadiusEnd;
-
-        /// <summary>For expressions, c.Diameter (c.Length is the radius, as the grid's row)</summary>
-        public double Diameter
-        {
-            get
-            {
-                return 2 * Radius;
-            }
-        }
-
-        /// <summary>A measurement of the radius sits between the two radius points</summary>
-        public IList<IFigure> MeasuredFigures
-        {
-            get { return RadiusEnd == null ? null : new IFigure[] { RadiusPivot, RadiusEnd }; }
-        }
-
-        public bool CanEdit(string propertyName)
-        {
-            var end = RadiusEnd;
-            bool isFixed = end != null && LengthConstraint.FixedEnd(end, RadiusPivot) != null;
-            bool canStretch = end != null && LengthConstraint.CanStretch(end, RadiusPivot);
-            switch (propertyName)
-            {
-                case "Length":
-                    return isFixed || canStretch;
-                case "FixLength":
-                    return !isFixed && canStretch && LengthConstraint.CanFix(end, RadiusPivot);
-                case "FreeLength":
-                    return isFixed && LengthConstraint.CanFree(LengthConstraint.FixedEnd(end, RadiusPivot));
-                default:
-                    return true;
-            }
-        }
-
-        public string Caption(string propertyName, string defaultCaption)
-        {
-            switch (propertyName)
-            {
-                case "Length":
-                    return "Radius";
-                case "FixLength":
-                    return "Fix radius";
-                case "FreeLength":
-                    return "Free radius";
-                default:
-                    return defaultCaption;
-            }
-        }
-
-        /// <summary>The circle keeps its radius (<see cref="LengthConstraint.Fix"/>)</summary>
-        [PropertyGridVisible]
-        [PropertyGridName("Fix radius")]
-        [PropertyGridGroup("Radius")]
-        [PropertyGridIcon(PropertyGridIcon.Lock)]
-        public void FixLength()
-        {
-            if (CanEdit("FixLength"))
-            {
-                LengthConstraint.Fix(RadiusEnd, RadiusPivot);
-                Drawing.RaiseDisplayProperties(this);
-            }
-        }
-
-        [PropertyGridVisible]
-        [PropertyGridName("Free radius")]
-        [PropertyGridGroup("Radius")]
-        [PropertyGridIcon(PropertyGridIcon.Unlock)]
-        public void FreeLength()
-        {
-            if (CanEdit("FreeLength"))
-            {
-                LengthConstraint.Free(LengthConstraint.FixedEnd(RadiusEnd, RadiusPivot));
-                Drawing.RaiseDisplayProperties(this);
-            }
-        }
-
-        #endregion
-
-        public override double Inclination
-        {
-            get { return 0; }
-        }
-
-        public override double SemiMajor
-        {
-            get { return Radius; }
-        }
-
-        public override double SemiMinor
-        {
-            get { return Radius; }
-        }
-
-        public override void UpdateVisual()
-        {
-            var center = ToPhysical(Center);
-            var diameter = ToPhysical(Radius * 2) + shape.StrokeThickness;
-
-            // A circle that doesn't exist - its center is nowhere - may have any radius, an
-            // infinite one too, and Avalonia throws on such a width: in the middle of a drag
-            // (an ellipse flattened to nothing, the circle of its curvature), which then
-            // could not be undone. It is hidden anyway.
-            if (!center.Exists() || !diameter.IsValidValue())
-            {
-                return;
-            }
-
-            if (shape.Width != diameter)
-            {
-                shape.Width = diameter;
-            }
-
-            if (shape.Height != diameter)
-            {
-                shape.Height = diameter;
-            }
-
-            shape.CenterAt(center);
-        }
-
-        public override Point GetPointFromParameter(double parameter)
-        {
-            if (Settings.PointsOnEllipticalsUseAbsoluteAngle)
-            {
-                var center = Center;
-                var radius = Radius;
-                return new Point(
-                    center.X + radius * System.Math.Cos(parameter),
-                    center.Y + radius * System.Math.Sin(parameter));
-            }
-            else
-            {
-                return base.GetPointFromParameter(parameter);
-            }
+            return base.GetPointFromParameter(parameter);
         }
     }
 }

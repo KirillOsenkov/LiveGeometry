@@ -1,7 +1,6 @@
-﻿namespace DynamicGeometry
-{
-    public interface ICommand
-    {
+﻿namespace DynamicGeometry;
 
-    }
+public interface ICommand
+{
+
 }

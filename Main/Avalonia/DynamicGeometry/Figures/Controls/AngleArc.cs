@@ -2,670 +2,669 @@
 using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class AngleArc : CircleArc, IConditionalProperties
 {
-    public class AngleArc : CircleArc, IConditionalProperties
+    /// <summary>
+    /// An arc's verbs that are not an angle mark's: it is not an arc between two points
+    /// to make a circle segment or a sector of.
+    /// </summary>
+    public bool CanEdit(string propertyName)
     {
-        /// <summary>
-        /// An arc's verbs that are not an angle mark's: it is not an arc between two points
-        /// to make a circle segment or a sector of.
-        /// </summary>
-        public bool CanEdit(string propertyName)
-        {
-            return propertyName != nameof(ConvertToCircleSegment)
-                && propertyName != nameof(ConvertToSector);
-        }
+        return propertyName != nameof(ConvertToCircleSegment)
+            && propertyName != nameof(ConvertToSector);
+    }
 
-        public string Caption(string propertyName, string defaultCaption)
-        {
-            return defaultCaption;
-        }
+    public string Caption(string propertyName, string defaultCaption)
+    {
+        return defaultCaption;
+    }
 
-        protected override string Kind
+    protected override string Kind
+    {
+        get
         {
-            get
+            return "Angle mark";
+        }
+    }
+
+    /// <summary>Numbered (AngleArc1): a mark doesn't take a letter from the circles</summary>
+    protected override string FirstLetter
+    {
+        get
+        {
+            return null;
+        }
+    }
+
+    protected override bool NamedByConstruction
+    {
+        get
+        {
+            return true;
+        }
+    }
+
+    /// <summary>"ABC", the angle's points: "Angle mark ABC"</summary>
+    public override string Construction
+    {
+        get
+        {
+            return Dependencies.Count < 3 ? null : ConstructionText.Points(Dependencies[1], Dependencies[0], Dependencies[2]);
+        }
+    }
+
+    /// <summary>A new mark says the angle under 180°, whichever way round its sides were clicked</summary>
+    protected override AngleSweep DefaultSweep
+    {
+        get
+        {
+            return AngleSweep.Smaller;
+        }
+    }
+
+    /// <summary>
+    /// Which of the two angles at the vertex the mark shows (<see cref="AngleSweep"/>);
+    /// the number next to it, its companion, says the same one (<see cref="SyncCompanionSweep"/>).
+    /// </summary>
+    public override AngleSweep Sweep
+    {
+        get
+        {
+            return base.Sweep;
+        }
+        set
+        {
+            base.Sweep = value;
+            SyncCompanionSweep(this, value);
+        }
+    }
+
+    /// <summary>
+    /// The mark and the number are two figures of one angle: a sweep set on one is set on
+    /// the other (whose setter finds nothing to change back). Nothing without a companion,
+    /// which was deleted.
+    /// </summary>
+    public static void SyncCompanionSweep(IFigure angleFigure, AngleSweep sweep)
+    {
+        if (FindCompanion(angleFigure) is IHasSweep companion && companion.Sweep != sweep)
+        {
+            companion.Sweep = sweep;
+        }
+    }
+
+    public AngleArc()
+        : base()
+    {
+        Size = DefaultSize;
+        ArcShape.Size = new Size(this.Size, this.Size);
+
+        // the arcs themselves are never filled (an open figure fills up to its chord): a
+        // style with a fill fills the angle under them, FillShape
+        Figure.IsFilled = false;
+    }
+
+    #region Fill
+
+    // A style with a fill (ShapeStyle, offered to a mark as to a circle) fills the angle
+    // between the vertex and the first arc, or the square of a right angle: a second
+    // path under the arcs, since a path's stroke outlines every figure in it and the
+    // sector's two radii must not be drawn over the sides. It takes the fill the style
+    // put on the shape, follows the shape in visibility and opacity (hidden, a ghost),
+    // and goes onto the canvas only once there is something to fill.
+    Avalonia.Controls.Shapes.Path fillShape;
+    Avalonia.Controls.Canvas fillCanvas;
+    bool hasFill;
+
+    Avalonia.Controls.Shapes.Path FillShape
+    {
+        get
+        {
+            if (fillShape == null)
             {
-                return "Angle mark";
-            }
-        }
-
-        /// <summary>Numbered (AngleArc1): a mark doesn't take a letter from the circles</summary>
-        protected override string FirstLetter
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        protected override bool NamedByConstruction
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>"ABC", the angle's points: "Angle mark ABC"</summary>
-        public override string Construction
-        {
-            get
-            {
-                return Dependencies.Count < 3 ? null : ConstructionText.Points(Dependencies[1], Dependencies[0], Dependencies[2]);
-            }
-        }
-
-        /// <summary>A new mark says the angle under 180°, whichever way round its sides were clicked</summary>
-        protected override AngleSweep DefaultSweep
-        {
-            get
-            {
-                return AngleSweep.Smaller;
-            }
-        }
-
-        /// <summary>
-        /// Which of the two angles at the vertex the mark shows (<see cref="AngleSweep"/>);
-        /// the number next to it, its companion, says the same one (<see cref="SyncCompanionSweep"/>).
-        /// </summary>
-        public override AngleSweep Sweep
-        {
-            get
-            {
-                return base.Sweep;
-            }
-            set
-            {
-                base.Sweep = value;
-                SyncCompanionSweep(this, value);
-            }
-        }
-
-        /// <summary>
-        /// The mark and the number are two figures of one angle: a sweep set on one is set on
-        /// the other (whose setter finds nothing to change back). Nothing without a companion,
-        /// which was deleted.
-        /// </summary>
-        public static void SyncCompanionSweep(IFigure angleFigure, AngleSweep sweep)
-        {
-            if (FindCompanion(angleFigure) is IHasSweep companion && companion.Sweep != sweep)
-            {
-                companion.Sweep = sweep;
-            }
-        }
-
-        public AngleArc()
-            : base()
-        {
-            Size = DefaultSize;
-            ArcShape.Size = new Size(this.Size, this.Size);
-
-            // the arcs themselves are never filled (an open figure fills up to its chord): a
-            // style with a fill fills the angle under them, FillShape
-            Figure.IsFilled = false;
-        }
-
-        #region Fill
-
-        // A style with a fill (ShapeStyle, offered to a mark as to a circle) fills the angle
-        // between the vertex and the first arc, or the square of a right angle: a second
-        // path under the arcs, since a path's stroke outlines every figure in it and the
-        // sector's two radii must not be drawn over the sides. It takes the fill the style
-        // put on the shape, follows the shape in visibility and opacity (hidden, a ghost),
-        // and goes onto the canvas only once there is something to fill.
-        Avalonia.Controls.Shapes.Path fillShape;
-        Avalonia.Controls.Canvas fillCanvas;
-        bool hasFill;
-
-        Avalonia.Controls.Shapes.Path FillShape
-        {
-            get
-            {
-                if (fillShape == null)
+                fillShape = new Avalonia.Controls.Shapes.Path()
                 {
-                    fillShape = new Avalonia.Controls.Shapes.Path()
-                    {
-                        IsHitTestVisible = false,
-                        IsVisible = false
-                    };
-                    Shape.PropertyChanged += Shape_PropertyChanged;
-                }
-
-                return fillShape;
+                    IsHitTestVisible = false,
+                    IsVisible = false
+                };
+                Shape.PropertyChanged += Shape_PropertyChanged;
             }
+
+            return fillShape;
         }
+    }
 
-        void Shape_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+    void Shape_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == Avalonia.Visual.IsVisibleProperty || e.Property == Avalonia.Visual.OpacityProperty)
         {
-            if (e.Property == Avalonia.Visual.IsVisibleProperty || e.Property == Avalonia.Visual.OpacityProperty)
-            {
-                SyncFillWithShape();
-            }
-        }
-
-        void SyncFillWithShape()
-        {
-            if (fillShape != null)
-            {
-                fillShape.IsVisible = hasFill && Shape.IsVisible;
-                fillShape.Opacity = Shape.Opacity;
-            }
-        }
-
-        protected override void OnZIndexChanged()
-        {
-            base.OnZIndexChanged();
-            if (fillShape != null)
-            {
-                fillShape.ZIndex = Shape.ZIndex - 1;
-            }
-        }
-
-        /// <summary>The fill under the arcs as the mark is now; none without a geometry, a fill, or a mark on screen</summary>
-        void UpdateFill(Avalonia.Media.PathGeometry geometry)
-        {
-            hasFill = geometry != null && Shape.Fill != null && IsShown;
-            if (!hasFill)
-            {
-                if (fillShape != null)
-                {
-                    fillShape.IsVisible = false;
-                }
-
-                return;
-            }
-
-            var path = FillShape;
-            path.Data = geometry;
-            path.Fill = Shape.Fill;
-            path.ZIndex = Shape.ZIndex - 1;
-            if (fillCanvas != null && !fillCanvas.Children.Contains(path))
-            {
-                fillCanvas.Children.Add(path);
-            }
-
             SyncFillWithShape();
         }
+    }
 
-        public override void OnAddingToCanvas(Avalonia.Controls.Canvas newContainer)
+    void SyncFillWithShape()
+    {
+        if (fillShape != null)
         {
-            base.OnAddingToCanvas(newContainer);
-            fillCanvas = newContainer;
+            fillShape.IsVisible = hasFill && Shape.IsVisible;
+            fillShape.Opacity = Shape.Opacity;
         }
+    }
 
-        public override void OnRemovingFromCanvas(Avalonia.Controls.Canvas leavingContainer)
+    protected override void OnZIndexChanged()
+    {
+        base.OnZIndexChanged();
+        if (fillShape != null)
         {
-            base.OnRemovingFromCanvas(leavingContainer);
+            fillShape.ZIndex = Shape.ZIndex - 1;
+        }
+    }
+
+    /// <summary>The fill under the arcs as the mark is now; none without a geometry, a fill, or a mark on screen</summary>
+    void UpdateFill(Avalonia.Media.PathGeometry geometry)
+    {
+        hasFill = geometry != null && Shape.Fill != null && IsShown;
+        if (!hasFill)
+        {
             if (fillShape != null)
             {
-                leavingContainer.Children.Remove(fillShape);
+                fillShape.IsVisible = false;
             }
 
-            fillCanvas = null;
+            return;
         }
 
-        /// <summary>Whether the place is in what a filled mark fills: the sector under the arcs, or the square of a right angle</summary>
-        bool IsInsideFill(Point point)
+        var path = FillShape;
+        path.Data = geometry;
+        path.Fill = Shape.Fill;
+        path.ZIndex = Shape.ZIndex - 1;
+        if (fillCanvas != null && !fillCanvas.Children.Contains(path))
         {
-            var center = Center;
-            if (shownSign == Sign.RightAngle)
-            {
-                var corner = ToPhysical(center);
-                var first = RightAngleMark.Direction(corner, ToPhysical(Point(1)));
-                var second = RightAngleMark.Direction(corner, ToPhysical(Point(2)));
-                if (first == null || second == null)
-                {
-                    return false;
-                }
-
-                // (the two directions are at a right angle: the square's own coordinates)
-                var offset = ToPhysical(point) - corner;
-                double along = offset.X * first.Value.X + offset.Y * first.Value.Y;
-                double across = offset.X * second.Value.X + offset.Y * second.Value.Y;
-                return along >= 0 && along <= Size && across >= 0 && across <= Size;
-            }
-
-            if (shownSign != Sign.Arc || center.Distance(point) > Radius)
-            {
-                return false;
-            }
-
-            return Math.IsAngleBetweenAngles(Math.GetAngle(center, point), StartAngle, EndAngle, IsClockwise);
+            fillCanvas.Children.Add(path);
         }
 
-        /// <summary>The sector between the vertex and an arc, in pixels, to be filled and not stroked (the hover's ghost uses it too)</summary>
-        public static Avalonia.Media.PathGeometry CreateSectorGeometry(
-            Point corner,
-            Point start,
-            Point end,
-            double radius,
-            bool isLargeArc,
-            Avalonia.Media.SweepDirection sweepDirection)
+        SyncFillWithShape();
+    }
+
+    public override void OnAddingToCanvas(Avalonia.Controls.Canvas newContainer)
+    {
+        base.OnAddingToCanvas(newContainer);
+        fillCanvas = newContainer;
+    }
+
+    public override void OnRemovingFromCanvas(Avalonia.Controls.Canvas leavingContainer)
+    {
+        base.OnRemovingFromCanvas(leavingContainer);
+        if (fillShape != null)
         {
-            var figure = new Avalonia.Media.PathFigure()
-            {
-                StartPoint = corner,
-                IsClosed = true,
-                IsFilled = true,
-                Segments = new Avalonia.Media.PathSegments()
-                {
-                    new Avalonia.Media.LineSegment() { Point = start },
-                    new Avalonia.Media.ArcSegment()
-                    {
-                        Point = end,
-                        Size = new Size(radius, radius),
-                        IsLargeArc = isLargeArc,
-                        SweepDirection = sweepDirection
-                    }
-                }
-            };
-            return new Avalonia.Media.PathGeometry() { Figures = new Avalonia.Media.PathFigures() { figure } };
+            leavingContainer.Children.Remove(fillShape);
         }
 
-        /// <summary>The square of a right angle's sign, in pixels, from the vertex, the mark's radius for a side: to be filled and not stroked</summary>
-        public static Avalonia.Media.PathGeometry CreateRightAngleFillGeometry(Point corner, Point first, Point second, double size)
+        fillCanvas = null;
+    }
+
+    /// <summary>Whether the place is in what a filled mark fills: the sector under the arcs, or the square of a right angle</summary>
+    bool IsInsideFill(Point point)
+    {
+        var center = Center;
+        if (shownSign == Sign.RightAngle)
         {
-            var segment = new Avalonia.Media.PolyLineSegment();
-            foreach (var point in RightAngleMark.GetPoints(corner, first, second, size))
-            {
-                segment.Points.Add(point);
-            }
-
-            var figure = new Avalonia.Media.PathFigure()
-            {
-                StartPoint = corner,
-                IsClosed = true,
-                IsFilled = true,
-                Segments = new Avalonia.Media.PathSegments() { segment }
-            };
-            return new Avalonia.Media.PathGeometry() { Figures = new Avalonia.Media.PathFigures() { figure } };
-        }
-
-        #endregion
-
-        public const double DefaultSize = 20;
-
-        double size = DefaultSize;
-
-        /// <summary>Radius of the (first) arc in pixels</summary>
-        [PropertyGridVisible]
-        [PropertyGridName("Radius")]
-        [Domain(10, 100)]
-        public double Size
-        {
-            get
-            {
-                return size;
-            }
-            set
-            {
-                size = value;
-                UpdateIfInDrawing();
-            }
-        }
-
-        int arcCount = 1;
-
-        /// <summary>
-        /// How the angle is marked: not at all, ), )) or ))) - to tell equal angles from the
-        /// others, like the original DG could.
-        /// </summary>
-        [PropertyGridVisible]
-        [PropertyGridName("Arcs")]
-        [Domain(0, 3)]
-        public int ArcCount
-        {
-            get
-            {
-                return arcCount;
-            }
-            set
-            {
-                arcCount = System.Math.Max(0, System.Math.Min(3, value));
-                UpdateIfInDrawing();
-            }
-        }
-
-        /// <summary>Gap between two arcs in pixels, on top of the stroke width</summary>
-        public const double ArcSpacing = 2;
-
-        void UpdateIfInDrawing()
-        {
-            if (Drawing != null && Shape != null)
-            {
-                UpdateVisual();
-            }
-        }
-
-        class ExtraArc
-        {
-            public Avalonia.Media.PathFigure Figure;
-            public Avalonia.Media.ArcSegment Segment;
-        }
-
-        readonly List<ExtraArc> extraArcs = new List<ExtraArc>();
-        int shownFigureCount = 1;
-
-        /// <summary>
-        /// The path has one figure per arc: the one the base class made, plus these.
-        /// </summary>
-        void UpdateFigureCount(int count)
-        {
-            if (count == shownFigureCount)
-            {
-                return;
-            }
-
-            shownFigureCount = count;
-            while (extraArcs.Count < count - 1)
-            {
-                var segment = new Avalonia.Media.ArcSegment();
-                var figure = new Avalonia.Media.PathFigure()
-                {
-                    IsClosed = false,
-                    IsFilled = false,
-                    Segments = new Avalonia.Media.PathSegments() { segment }
-                };
-                extraArcs.Add(new ExtraArc() { Figure = figure, Segment = segment });
-            }
-
-            while (extraArcs.Count > System.Math.Max(0, count - 1))
-            {
-                extraArcs.RemoveAt(extraArcs.Count - 1);
-            }
-
-            // the first one always stays (without segments when there is nothing to draw)
-            var figures = new Avalonia.Media.PathFigures();
-            figures.Add(Figure);
-            foreach (var arc in extraArcs)
-            {
-                figures.Add(arc.Figure);
-            }
-
-            ((Avalonia.Media.PathGeometry)Shape.Data).Figures = figures;
-        }
-
-        public override void ReadXml(System.Xml.Linq.XElement element)
-        {
-            base.ReadXml(element);
-            var arcs = element.Attribute("Arcs");
-            int count;
-            if (arcs != null && int.TryParse(arcs.Value, out count))
-            {
-                arcCount = System.Math.Max(0, System.Math.Min(3, count));
-            }
-
-            if (element.Attribute("Radius") != null)
-            {
-                size = System.Math.Max(10, System.Math.Min(100, element.ReadDouble("Radius")));
-            }
-        }
-
-        public override void WriteXml(System.Xml.XmlWriter writer)
-        {
-            base.WriteXml(writer);
-            if (ArcCount != 1)
-            {
-                writer.WriteAttributeString("Arcs", ArcCount.ToString());
-            }
-
-            if (Size != DefaultSize)
-            {
-                writer.WriteAttributeDouble("Radius", Size);
-            }
-        }
-
-        /// <summary>
-        /// In radians: 0.005 degrees, which is when the label (two decimals) reads "90°".
-        /// The sign and the number never disagree; an angle that merely looks right doesn't get it.
-        /// </summary>
-        public const double RightAngleTolerance = 0.005 * System.Math.PI / 180;
-
-        readonly Avalonia.Media.LineSegment rightAngleSide1 = new Avalonia.Media.LineSegment();
-        readonly Avalonia.Media.LineSegment rightAngleSide2 = new Avalonia.Media.LineSegment();
-
-        enum Sign
-        {
-            None,
-            Arc,
-            RightAngle
-        }
-
-        Sign shownSign = Sign.Arc;
-
-        public override double Radius
-        {
-            get
-            {
-                return ToLogical(Size);
-            }
-        }
-
-        public override double SemiMajor
-        {
-            get
-            {
-                return Radius;
-            }
-        }
-
-        public override double SemiMinor
-        {
-            get
-            {
-                return Radius;
-            }
-        }
-
-        public override Point BeginLocation
-        {
-            get
-            {
-                return Math.ScalePointBetweenTwo(
-                Center,
-                Point(1),
-                Radius / Center.Distance(Point(1)));
-            }
-        }
-        
-        /// <summary>
-        /// The angle the mark is of, in degrees, like the number next to it (the grid said
-        /// "Measure 1.11", radians, beside a label saying 63.43°)
-        /// </summary>
-        [PropertyGridVisible]
-        [PropertyGridName("Angle (degrees)")]
-        public virtual double Measure
-        {
-            get
-            {
-                return Angle.ToDegrees();
-            }
-        }
-
-        /// <summary>
-        /// An angle is two figures, the arc and the number, on the same vertex and the same two
-        /// points. This finds the other one of the pair (null if it was deleted).
-        /// </summary>
-        public static IFigure FindCompanion(IFigure angleFigure)
-        {
-            var dependencies = angleFigure.Dependencies;
-            if (dependencies.Count != 3)
-            {
-                return null;
-            }
-
-            bool wantArc = angleFigure is AngleMeasurement;
-            return dependencies[0].Dependents.FirstOrDefault(f =>
-                f != angleFigure
-                && (wantArc ? f is AngleArc : f is AngleMeasurement)
-                && f.Dependencies.Count == 3
-                && f.Dependencies[0] == dependencies[0]
-                && f.Dependencies.Contains(dependencies[1])
-                && f.Dependencies.Contains(dependencies[2]));
-        }
-
-        /// <summary>
-        /// Anywhere on the mark: from the first arc out to the last one, the gaps between them
-        /// included - not just the first arc, which is all the base class knows about.
-        /// </summary>
-        public override IFigure HitTest(Point point)
-        {
-            // inside a filled mark
-            if (hasFill && Visible && IsInsideFill(point))
-            {
-                return this;
-            }
-
-            var found = base.HitTest(point);
-            if (found != null || ArcCount < 2 || shownSign != Sign.Arc)
-            {
-                return found;
-            }
-
-            var center = Center;
-            var distance = center.Distance(point);
-            var tolerance = CursorTolerance + LogicalWidth() / 2;
-            var outerRadius = ToLogical(Size + (ArcCount - 1) * (Shape.StrokeThickness + ArcSpacing));
-            if (distance < Radius - tolerance || distance > outerRadius + tolerance)
-            {
-                return null;
-            }
-
-            var angleToPoint = Math.GetAngle(center, point);
-            return Math.IsAngleBetweenAngles(angleToPoint, StartAngle, EndAngle, IsClockwise) ? this : null;
-        }
-
-        public override void UpdateVisual()
-        {
-            var center = Point(0);
-            var distance1 = center.Distance(Point(1));
-            var distance2 = center.Distance(Point(2));
-            if (distance1 == 0 || distance2 == 0)
-            {
-                // no angle, and not existing (UpdateExistence), which hides the shape
-                return;
-            }
-
-            // the angle the sweep chooses, and which way round it goes from the first side
-            var angle = Angle;
-            ArcShape.SweepDirection = IsClockwise ? Avalonia.Media.SweepDirection.Clockwise : Avalonia.Media.SweepDirection.CounterClockwise;
-            var isRightAngle = System.Math.Abs(angle - Math.PI / 2) < RightAngleTolerance;
-            // What the first figure of the path is made of. "Nothing" is a figure without
-            // segments and not a path without figures: an empty path doesn't get repainted.
-            var sign = ArcCount == 0 ? Sign.None : (isRightAngle ? Sign.RightAngle : Sign.Arc);
-            if (sign != shownSign)
-            {
-                shownSign = sign;
-                var segments = new Avalonia.Media.PathSegments();
-                if (sign == Sign.RightAngle)
-                {
-                    segments.Add(rightAngleSide1);
-                    segments.Add(rightAngleSide2);
-                }
-                else if (sign == Sign.Arc)
-                {
-                    segments.Add(ArcShape);
-                }
-
-                Figure.Segments = segments;
-            }
-
-            // a right angle has one sign however many arcs were asked for, like in the original DG
-            int figuresNeeded = isRightAngle ? System.Math.Min(ArcCount, 1) : ArcCount;
-            UpdateFigureCount(figuresNeeded);
-
             var corner = ToPhysical(center);
             var first = RightAngleMark.Direction(corner, ToPhysical(Point(1)));
             var second = RightAngleMark.Direction(corner, ToPhysical(Point(2)));
             if (first == null || second == null)
             {
-                UpdateFill(null);
-                return;
-            }
-
-            if (isRightAngle)
-            {
-                // the school sign for 90 degrees: two sides of a little square, not an arc
-                // (as big as the arc would be: the radius is the square's side)
-                var points = RightAngleMark.GetPoints(corner, first.Value, second.Value, Size);
-                Figure.StartPoint = points[0];
-                rightAngleSide1.Point = points[1];
-                rightAngleSide2.Point = points[2];
-                UpdateFill(sign == Sign.RightAngle ? CreateRightAngleFillGeometry(corner, first.Value, second.Value, Size) : null);
-                return;
-            }
-
-            ArcShape.Size = new Size(Size, Size);
-            Figure.StartPoint = ToPhysical(BeginLocation);
-            ArcShape.Point = ToPhysical(EndLocation);
-            ArcShape.IsLargeArc = angle > Math.PI;
-
-            // the second and third arc, each a stroke and a bit further out
-            for (int i = 0; i < extraArcs.Count; i++)
-            {
-                var radius = Size + (i + 1) * (Shape.StrokeThickness + ArcSpacing);
-                var arc = extraArcs[i];
-                arc.Figure.StartPoint = corner + first.Value * radius;
-                arc.Segment.Point = corner + second.Value * radius;
-                arc.Segment.Size = new Size(radius, radius);
-                arc.Segment.IsLargeArc = ArcShape.IsLargeArc;
-                arc.Segment.SweepDirection = ArcShape.SweepDirection;
-            }
-
-            // the angle under the first arc, when the style fills
-            UpdateFill(sign == Sign.Arc
-                ? CreateSectorGeometry(
-                    corner,
-                    Figure.StartPoint,
-                    ArcShape.Point,
-                    Size,
-                    ArcShape.IsLargeArc,
-                    ArcShape.SweepDirection)
-                : null);
-
-            // I commented out these lines because this causes AngleArc not to honor Visible property. Is this a mistake?  
-            // I believe there will be times when a user would like to hide the arc. D. H.
-            //if (Shape.Visibility != Visibility.Visible)
-            //{
-            //    Shape.Visibility = Visibility.Visible;
-            //}
-        }
-
-        public override void UpdateExistence()
-        {
-            base.UpdateExistence();
-            if (Exists && !HasSides(this))
-            {
-                Exists = false;
-            }
-        }
-
-        /// <summary>
-        /// An angle (the arc or the number) exists only while both sides have a length: with a
-        /// point of a side dragged onto the vertex there is no angle. Not existing also hides
-        /// the shape until the point moves off again (ShapeBase.Exists), and makes whatever is
-        /// built on the angle not exist either. The sides are every point after the vertex:
-        /// two, or one for an angle to the x axis (<see cref="HorizontalAngleMeasurement"/>;
-        /// asked for a third point, it threw).
-        /// </summary>
-        public static bool HasSides(IFigure angleFigure)
-        {
-            int count = angleFigure.Dependencies.Count;
-            if (count < 2)
-            {
                 return false;
             }
 
-            var vertex = angleFigure.Point(0);
-            for (int i = 1; i < count; i++)
+            // (the two directions are at a right angle: the square's own coordinates)
+            var offset = ToPhysical(point) - corner;
+            double along = offset.X * first.Value.X + offset.Y * first.Value.Y;
+            double across = offset.X * second.Value.X + offset.Y * second.Value.Y;
+            return along >= 0 && along <= Size && across >= 0 && across <= Size;
+        }
+
+        if (shownSign != Sign.Arc || center.Distance(point) > Radius)
+        {
+            return false;
+        }
+
+        return Math.IsAngleBetweenAngles(Math.GetAngle(center, point), StartAngle, EndAngle, IsClockwise);
+    }
+
+    /// <summary>The sector between the vertex and an arc, in pixels, to be filled and not stroked (the hover's ghost uses it too)</summary>
+    public static Avalonia.Media.PathGeometry CreateSectorGeometry(
+        Point corner,
+        Point start,
+        Point end,
+        double radius,
+        bool isLargeArc,
+        Avalonia.Media.SweepDirection sweepDirection)
+    {
+        var figure = new Avalonia.Media.PathFigure()
+        {
+            StartPoint = corner,
+            IsClosed = true,
+            IsFilled = true,
+            Segments = new Avalonia.Media.PathSegments()
             {
-                if (vertex.Distance(angleFigure.Point(i)) == 0)
+                new Avalonia.Media.LineSegment() { Point = start },
+                new Avalonia.Media.ArcSegment()
                 {
-                    return false;
+                    Point = end,
+                    Size = new Size(radius, radius),
+                    IsLargeArc = isLargeArc,
+                    SweepDirection = sweepDirection
                 }
             }
+        };
+        return new Avalonia.Media.PathGeometry() { Figures = new Avalonia.Media.PathFigures() { figure } };
+    }
 
-            return true;
+    /// <summary>The square of a right angle's sign, in pixels, from the vertex, the mark's radius for a side: to be filled and not stroked</summary>
+    public static Avalonia.Media.PathGeometry CreateRightAngleFillGeometry(Point corner, Point first, Point second, double size)
+    {
+        var segment = new Avalonia.Media.PolyLineSegment();
+        foreach (var point in RightAngleMark.GetPoints(corner, first, second, size))
+        {
+            segment.Points.Add(point);
         }
+
+        var figure = new Avalonia.Media.PathFigure()
+        {
+            StartPoint = corner,
+            IsClosed = true,
+            IsFilled = true,
+            Segments = new Avalonia.Media.PathSegments() { segment }
+        };
+        return new Avalonia.Media.PathGeometry() { Figures = new Avalonia.Media.PathFigures() { figure } };
+    }
+
+    #endregion
+
+    public const double DefaultSize = 20;
+
+    double size = DefaultSize;
+
+    /// <summary>Radius of the (first) arc in pixels</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Radius")]
+    [Domain(10, 100)]
+    public double Size
+    {
+        get
+        {
+            return size;
+        }
+        set
+        {
+            size = value;
+            UpdateIfInDrawing();
+        }
+    }
+
+    int arcCount = 1;
+
+    /// <summary>
+    /// How the angle is marked: not at all, ), )) or ))) - to tell equal angles from the
+    /// others, like the original DG could.
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Arcs")]
+    [Domain(0, 3)]
+    public int ArcCount
+    {
+        get
+        {
+            return arcCount;
+        }
+        set
+        {
+            arcCount = System.Math.Max(0, System.Math.Min(3, value));
+            UpdateIfInDrawing();
+        }
+    }
+
+    /// <summary>Gap between two arcs in pixels, on top of the stroke width</summary>
+    public const double ArcSpacing = 2;
+
+    void UpdateIfInDrawing()
+    {
+        if (Drawing != null && Shape != null)
+        {
+            UpdateVisual();
+        }
+    }
+
+    class ExtraArc
+    {
+        public Avalonia.Media.PathFigure Figure;
+        public Avalonia.Media.ArcSegment Segment;
+    }
+
+    readonly List<ExtraArc> extraArcs = new List<ExtraArc>();
+    int shownFigureCount = 1;
+
+    /// <summary>
+    /// The path has one figure per arc: the one the base class made, plus these.
+    /// </summary>
+    void UpdateFigureCount(int count)
+    {
+        if (count == shownFigureCount)
+        {
+            return;
+        }
+
+        shownFigureCount = count;
+        while (extraArcs.Count < count - 1)
+        {
+            var segment = new Avalonia.Media.ArcSegment();
+            var figure = new Avalonia.Media.PathFigure()
+            {
+                IsClosed = false,
+                IsFilled = false,
+                Segments = new Avalonia.Media.PathSegments() { segment }
+            };
+            extraArcs.Add(new ExtraArc() { Figure = figure, Segment = segment });
+        }
+
+        while (extraArcs.Count > System.Math.Max(0, count - 1))
+        {
+            extraArcs.RemoveAt(extraArcs.Count - 1);
+        }
+
+        // the first one always stays (without segments when there is nothing to draw)
+        var figures = new Avalonia.Media.PathFigures();
+        figures.Add(Figure);
+        foreach (var arc in extraArcs)
+        {
+            figures.Add(arc.Figure);
+        }
+
+        ((Avalonia.Media.PathGeometry)Shape.Data).Figures = figures;
+    }
+
+    public override void ReadXml(System.Xml.Linq.XElement element)
+    {
+        base.ReadXml(element);
+        var arcs = element.Attribute("Arcs");
+        int count;
+        if (arcs != null && int.TryParse(arcs.Value, out count))
+        {
+            arcCount = System.Math.Max(0, System.Math.Min(3, count));
+        }
+
+        if (element.Attribute("Radius") != null)
+        {
+            size = System.Math.Max(10, System.Math.Min(100, element.ReadDouble("Radius")));
+        }
+    }
+
+    public override void WriteXml(System.Xml.XmlWriter writer)
+    {
+        base.WriteXml(writer);
+        if (ArcCount != 1)
+        {
+            writer.WriteAttributeString("Arcs", ArcCount.ToString());
+        }
+
+        if (Size != DefaultSize)
+        {
+            writer.WriteAttributeDouble("Radius", Size);
+        }
+    }
+
+    /// <summary>
+    /// In radians: 0.005 degrees, which is when the label (two decimals) reads "90°".
+    /// The sign and the number never disagree; an angle that merely looks right doesn't get it.
+    /// </summary>
+    public const double RightAngleTolerance = 0.005 * System.Math.PI / 180;
+
+    readonly Avalonia.Media.LineSegment rightAngleSide1 = new Avalonia.Media.LineSegment();
+    readonly Avalonia.Media.LineSegment rightAngleSide2 = new Avalonia.Media.LineSegment();
+
+    enum Sign
+    {
+        None,
+        Arc,
+        RightAngle
+    }
+
+    Sign shownSign = Sign.Arc;
+
+    public override double Radius
+    {
+        get
+        {
+            return ToLogical(Size);
+        }
+    }
+
+    public override double SemiMajor
+    {
+        get
+        {
+            return Radius;
+        }
+    }
+
+    public override double SemiMinor
+    {
+        get
+        {
+            return Radius;
+        }
+    }
+
+    public override Point BeginLocation
+    {
+        get
+        {
+            return Math.ScalePointBetweenTwo(
+            Center,
+            Point(1),
+            Radius / Center.Distance(Point(1)));
+        }
+    }
+    
+    /// <summary>
+    /// The angle the mark is of, in degrees, like the number next to it (the grid said
+    /// "Measure 1.11", radians, beside a label saying 63.43°)
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Angle (degrees)")]
+    public virtual double Measure
+    {
+        get
+        {
+            return Angle.ToDegrees();
+        }
+    }
+
+    /// <summary>
+    /// An angle is two figures, the arc and the number, on the same vertex and the same two
+    /// points. This finds the other one of the pair (null if it was deleted).
+    /// </summary>
+    public static IFigure FindCompanion(IFigure angleFigure)
+    {
+        var dependencies = angleFigure.Dependencies;
+        if (dependencies.Count != 3)
+        {
+            return null;
+        }
+
+        bool wantArc = angleFigure is AngleMeasurement;
+        return dependencies[0].Dependents.FirstOrDefault(f =>
+            f != angleFigure
+            && (wantArc ? f is AngleArc : f is AngleMeasurement)
+            && f.Dependencies.Count == 3
+            && f.Dependencies[0] == dependencies[0]
+            && f.Dependencies.Contains(dependencies[1])
+            && f.Dependencies.Contains(dependencies[2]));
+    }
+
+    /// <summary>
+    /// Anywhere on the mark: from the first arc out to the last one, the gaps between them
+    /// included - not just the first arc, which is all the base class knows about.
+    /// </summary>
+    public override IFigure HitTest(Point point)
+    {
+        // inside a filled mark
+        if (hasFill && Visible && IsInsideFill(point))
+        {
+            return this;
+        }
+
+        var found = base.HitTest(point);
+        if (found != null || ArcCount < 2 || shownSign != Sign.Arc)
+        {
+            return found;
+        }
+
+        var center = Center;
+        var distance = center.Distance(point);
+        var tolerance = CursorTolerance + LogicalWidth() / 2;
+        var outerRadius = ToLogical(Size + (ArcCount - 1) * (Shape.StrokeThickness + ArcSpacing));
+        if (distance < Radius - tolerance || distance > outerRadius + tolerance)
+        {
+            return null;
+        }
+
+        var angleToPoint = Math.GetAngle(center, point);
+        return Math.IsAngleBetweenAngles(angleToPoint, StartAngle, EndAngle, IsClockwise) ? this : null;
+    }
+
+    public override void UpdateVisual()
+    {
+        var center = Point(0);
+        var distance1 = center.Distance(Point(1));
+        var distance2 = center.Distance(Point(2));
+        if (distance1 == 0 || distance2 == 0)
+        {
+            // no angle, and not existing (UpdateExistence), which hides the shape
+            return;
+        }
+
+        // the angle the sweep chooses, and which way round it goes from the first side
+        var angle = Angle;
+        ArcShape.SweepDirection = IsClockwise ? Avalonia.Media.SweepDirection.Clockwise : Avalonia.Media.SweepDirection.CounterClockwise;
+        var isRightAngle = System.Math.Abs(angle - Math.PI / 2) < RightAngleTolerance;
+        // What the first figure of the path is made of. "Nothing" is a figure without
+        // segments and not a path without figures: an empty path doesn't get repainted.
+        var sign = ArcCount == 0 ? Sign.None : (isRightAngle ? Sign.RightAngle : Sign.Arc);
+        if (sign != shownSign)
+        {
+            shownSign = sign;
+            var segments = new Avalonia.Media.PathSegments();
+            if (sign == Sign.RightAngle)
+            {
+                segments.Add(rightAngleSide1);
+                segments.Add(rightAngleSide2);
+            }
+            else if (sign == Sign.Arc)
+            {
+                segments.Add(ArcShape);
+            }
+
+            Figure.Segments = segments;
+        }
+
+        // a right angle has one sign however many arcs were asked for, like in the original DG
+        int figuresNeeded = isRightAngle ? System.Math.Min(ArcCount, 1) : ArcCount;
+        UpdateFigureCount(figuresNeeded);
+
+        var corner = ToPhysical(center);
+        var first = RightAngleMark.Direction(corner, ToPhysical(Point(1)));
+        var second = RightAngleMark.Direction(corner, ToPhysical(Point(2)));
+        if (first == null || second == null)
+        {
+            UpdateFill(null);
+            return;
+        }
+
+        if (isRightAngle)
+        {
+            // the school sign for 90 degrees: two sides of a little square, not an arc
+            // (as big as the arc would be: the radius is the square's side)
+            var points = RightAngleMark.GetPoints(corner, first.Value, second.Value, Size);
+            Figure.StartPoint = points[0];
+            rightAngleSide1.Point = points[1];
+            rightAngleSide2.Point = points[2];
+            UpdateFill(sign == Sign.RightAngle ? CreateRightAngleFillGeometry(corner, first.Value, second.Value, Size) : null);
+            return;
+        }
+
+        ArcShape.Size = new Size(Size, Size);
+        Figure.StartPoint = ToPhysical(BeginLocation);
+        ArcShape.Point = ToPhysical(EndLocation);
+        ArcShape.IsLargeArc = angle > Math.PI;
+
+        // the second and third arc, each a stroke and a bit further out
+        for (int i = 0; i < extraArcs.Count; i++)
+        {
+            var radius = Size + (i + 1) * (Shape.StrokeThickness + ArcSpacing);
+            var arc = extraArcs[i];
+            arc.Figure.StartPoint = corner + first.Value * radius;
+            arc.Segment.Point = corner + second.Value * radius;
+            arc.Segment.Size = new Size(radius, radius);
+            arc.Segment.IsLargeArc = ArcShape.IsLargeArc;
+            arc.Segment.SweepDirection = ArcShape.SweepDirection;
+        }
+
+        // the angle under the first arc, when the style fills
+        UpdateFill(sign == Sign.Arc
+            ? CreateSectorGeometry(
+                corner,
+                Figure.StartPoint,
+                ArcShape.Point,
+                Size,
+                ArcShape.IsLargeArc,
+                ArcShape.SweepDirection)
+            : null);
+
+        // I commented out these lines because this causes AngleArc not to honor Visible property. Is this a mistake?  
+        // I believe there will be times when a user would like to hide the arc. D. H.
+        //if (Shape.Visibility != Visibility.Visible)
+        //{
+        //    Shape.Visibility = Visibility.Visible;
+        //}
+    }
+
+    public override void UpdateExistence()
+    {
+        base.UpdateExistence();
+        if (Exists && !HasSides(this))
+        {
+            Exists = false;
+        }
+    }
+
+    /// <summary>
+    /// An angle (the arc or the number) exists only while both sides have a length: with a
+    /// point of a side dragged onto the vertex there is no angle. Not existing also hides
+    /// the shape until the point moves off again (ShapeBase.Exists), and makes whatever is
+    /// built on the angle not exist either. The sides are every point after the vertex:
+    /// two, or one for an angle to the x axis (<see cref="HorizontalAngleMeasurement"/>;
+    /// asked for a third point, it threw).
+    /// </summary>
+    public static bool HasSides(IFigure angleFigure)
+    {
+        int count = angleFigure.Dependencies.Count;
+        if (count < 2)
+        {
+            return false;
+        }
+
+        var vertex = angleFigure.Point(0);
+        for (int i = 1; i < count; i++)
+        {
+            if (vertex.Distance(angleFigure.Point(i)) == 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

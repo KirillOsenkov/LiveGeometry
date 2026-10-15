@@ -1,9 +1,8 @@
-﻿namespace DynamicGeometry
+﻿namespace DynamicGeometry;
+
+public interface ICommandObserver
 {
-    public interface ICommandObserver
-    {
-        void CommandRemoved();
-        void EnabledChanged(bool newEnabledState);
-        void IconChanged(FrameworkElement icon);
-    }
+    void CommandRemoved();
+    void EnabledChanged(bool newEnabledState);
+    void IconChanged(FrameworkElement icon);
 }

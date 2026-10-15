@@ -1,9 +1,8 @@
 ﻿using Avalonia;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public partial interface IPoint : IFigure
 {
-    public partial interface IPoint : IFigure
-    {
-        Point Coordinates { get; }
-    }
+    Point Coordinates { get; }
 }

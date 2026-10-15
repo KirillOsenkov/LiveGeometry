@@ -1,8 +1,7 @@
-﻿namespace DynamicGeometry
+﻿namespace DynamicGeometry;
+
+public enum ComplexTypeState
 {
-    public enum ComplexTypeState
-    {
-        Collapsed,
-        Expanded
-    }
+    Collapsed,
+    Expanded
 }

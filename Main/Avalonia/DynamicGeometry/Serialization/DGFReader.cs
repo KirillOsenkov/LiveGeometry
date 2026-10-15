@@ -6,1014 +6,1013 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class DGFReader
 {
-    public class DGFReader
+    public bool IsSuccess
     {
-        public bool IsSuccess
+        get
         {
-            get
-            {
-                return true;
-            }
+            return true;
+        }
+    }
+
+    public string GetErrorReport()
+    {
+        return "";
+    }
+
+    public void ReadDrawing(Drawing drawing, string[] lines)
+    {
+        this.drawing = drawing;
+
+        var ini = new IniFile(lines);
+
+        foreach (var section in ini.Sections)
+        {
+            sectionLookup.Add(section.Title, section);
         }
 
-        public string GetErrorReport()
+        using (drawing.ActionManager.CreateTransaction())
         {
-            return "";
-        }
-
-        public void ReadDrawing(Drawing drawing, string[] lines)
-        {
-            this.drawing = drawing;
-
-            var ini = new IniFile(lines);
-
+            drawing.ActionManager.RecordingTransaction.IsDelayed = false;
             foreach (var section in ini.Sections)
             {
-                sectionLookup.Add(section.Title, section);
-            }
-
-            using (drawing.ActionManager.CreateTransaction())
-            {
-                drawing.ActionManager.RecordingTransaction.IsDelayed = false;
-                foreach (var section in ini.Sections)
-                {
-                    ProcessSection(section);
-                }
-            }
-            DrawingUpdater updater;
-            updater = new DrawingUpdater();
-            updater.UpdateIfNecessary(drawing);
-            drawing.Recalculate();
-        }
-
-        void EnsureSectionProcessed(string sectionTitle)
-        {
-            if (processedSections.ContainsKey(sectionTitle))
-            {
-                return;
-            }
-
-            var section = sectionLookup[sectionTitle];
-            ProcessSection(section);
-        }
-
-        Dictionary<string, IniFile.Section> sectionLookup = new Dictionary<string, IniFile.Section>();
-        Dictionary<string, IniFile.Section> processedSections = new Dictionary<string, IniFile.Section>();
-
-        Drawing drawing;
-
-        void ProcessSection(IniFile.Section section)
-        {
-            string title = section.Title;
-            if (processedSections.ContainsKey(title))
-            {
-                return;
-            }
-
-            processedSections.Add(title, section);
-            try
-            {
-                ProcessSectionCore(section);
-            }
-            catch (Exception ex) when (!(ex is DGFSectionException))
-            {
-                // which section of the file, for the message and for debugging
-                throw new DGFSectionException(
-                    "[" + title + "] " + (section["FigureTypeString"] ?? section["Type"] ?? "") + ": " + ex.Message,
-                    ex);
+                ProcessSection(section);
             }
         }
+        DrawingUpdater updater;
+        updater = new DrawingUpdater();
+        updater.UpdateIfNecessary(drawing);
+        drawing.Recalculate();
+    }
 
-        public class DGFSectionException : Exception
+    void EnsureSectionProcessed(string sectionTitle)
+    {
+        if (processedSections.ContainsKey(sectionTitle))
         {
-            public DGFSectionException(string message, Exception inner)
-                : base(message, inner)
-            {
-            }
+            return;
         }
 
-        void ProcessSectionCore(IniFile.Section section)
+        var section = sectionLookup[sectionTitle];
+        ProcessSection(section);
+    }
+
+    Dictionary<string, IniFile.Section> sectionLookup = new Dictionary<string, IniFile.Section>();
+    Dictionary<string, IniFile.Section> processedSections = new Dictionary<string, IniFile.Section>();
+
+    Drawing drawing;
+
+    void ProcessSection(IniFile.Section section)
+    {
+        string title = section.Title;
+        if (processedSections.ContainsKey(title))
         {
-            string title = section.Title;
-            if (title == "General")
-            {
-                ProcessGeneral(section);
-            }
-            else if (title.StartsWith("Point"))
-            {
-                ProcessPoint(section);
-            }
-            else if (title.StartsWith("Figure"))
-            {
-                ProcessFigure(section);
-            }
-            else if (title.StartsWith("Label"))
-            {
-                ProcessLabel(section);
-            }
-            else if (title.StartsWith("Locus"))
-            {
-                ProcessLocus(section);
-            }
-            else if (title.StartsWith("SG"))
-            {
-                ProcessSG(section);
-            }
-            else if (title.StartsWith("Button"))
-            {
-                ProcessButton(section);
-            }
+            return;
         }
 
-        void ProcessButton(IniFile.Section section)
+        processedSections.Add(title, section);
+        try
         {
-            int type = section.ReadInt("Type");
-            if (type != 0)
+            ProcessSectionCore(section);
+        }
+        catch (Exception ex) when (!(ex is DGFSectionException))
+        {
+            // which section of the file, for the message and for debugging
+            throw new DGFSectionException(
+                "[" + title + "] " + (section["FigureTypeString"] ?? section["Type"] ?? "") + ": " + ex.Message,
+                ex);
+        }
+    }
+
+    public class DGFSectionException : Exception
+    {
+        public DGFSectionException(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
+    }
+
+    void ProcessSectionCore(IniFile.Section section)
+    {
+        string title = section.Title;
+        if (title == "General")
+        {
+            ProcessGeneral(section);
+        }
+        else if (title.StartsWith("Point"))
+        {
+            ProcessPoint(section);
+        }
+        else if (title.StartsWith("Figure"))
+        {
+            ProcessFigure(section);
+        }
+        else if (title.StartsWith("Label"))
+        {
+            ProcessLabel(section);
+        }
+        else if (title.StartsWith("Locus"))
+        {
+            ProcessLocus(section);
+        }
+        else if (title.StartsWith("SG"))
+        {
+            ProcessSG(section);
+        }
+        else if (title.StartsWith("Button"))
+        {
+            ProcessButton(section);
+        }
+    }
+
+    void ProcessButton(IniFile.Section section)
+    {
+        int type = section.ReadInt("Type");
+        if (type != 0)
+        {
+            return;
+        }
+
+        ShowHideControl button = new ShowHideControl();
+        button.Drawing = drawing;
+        button.Checkbox.IsChecked = section.ReadBool("InitiallyVisible", false);
+        button.AddDependencies(GetPointList(section));
+        button.MoveTo(section.ReadDouble("X"), section.ReadDouble("Y"));
+        SetButtonStyle(section, button);
+        Actions.Add(drawing, button);
+        
+        string text = section["Caption"].Replace("~~", Environment.NewLine);
+        if (section["Charset"] == "0")
+        {
+            text = text.Replace('I', '²');
+        }
+
+        button.Checkbox.Content = text;
+
+        ReadButtonDependencies(section, button);
+
+        button.UpdateFigureVisibility();
+        buttons[section.GetTitleNumber("Button")] = button;
+    }
+
+    private void ReadButtonDependencies(IniFile.Section section, ShowHideControl button)
+    {
+        List<IFigure> dependencies = new List<IFigure>();
+
+        AddButtonDependencies(section, dependencies, "Button", buttons);
+        AddButtonDependencies(section, dependencies, "Figure", figures);
+        AddButtonDependencies(section, dependencies, "Label", labels);
+        AddButtonDependencies(section, dependencies, "Point", points);
+        AddButtonDependencies(section, dependencies, "SG", staticGraphics);
+
+        // both directions: the button's own list is what it shows and hides (and what is
+        // saved); AddDependencies only registers it as a dependent of each figure
+        button.Dependencies = dependencies;
+        button.AddDependencies(dependencies);
+    }
+
+    private void AddButtonDependencies(
+        IniFile.Section section, 
+        List<IFigure> dependencies,
+        string dependencyType,
+        IList container)
+    {
+        foreach (int dependency in ReadIndices(section, dependencyType))
+        {
+            EnsureSectionProcessed(dependencyType + dependency.ToString());
+            var figure = (IFigure)container[dependency];
+
+            // a message, sound or "open file" button (types 1-3) has no figure here
+            if (figure != null)
             {
-                return;
-            }
-
-            ShowHideControl button = new ShowHideControl();
-            button.Drawing = drawing;
-            button.Checkbox.IsChecked = section.ReadBool("InitiallyVisible", false);
-            button.AddDependencies(GetPointList(section));
-            button.MoveTo(section.ReadDouble("X"), section.ReadDouble("Y"));
-            SetButtonStyle(section, button);
-            Actions.Add(drawing, button);
-            
-            string text = section["Caption"].Replace("~~", Environment.NewLine);
-            if (section["Charset"] == "0")
-            {
-                text = text.Replace('I', '²');
-            }
-
-            button.Checkbox.Content = text;
-
-            ReadButtonDependencies(section, button);
-
-            button.UpdateFigureVisibility();
-            buttons[section.GetTitleNumber("Button")] = button;
-        }
-
-        private void ReadButtonDependencies(IniFile.Section section, ShowHideControl button)
-        {
-            List<IFigure> dependencies = new List<IFigure>();
-
-            AddButtonDependencies(section, dependencies, "Button", buttons);
-            AddButtonDependencies(section, dependencies, "Figure", figures);
-            AddButtonDependencies(section, dependencies, "Label", labels);
-            AddButtonDependencies(section, dependencies, "Point", points);
-            AddButtonDependencies(section, dependencies, "SG", staticGraphics);
-
-            // both directions: the button's own list is what it shows and hides (and what is
-            // saved); AddDependencies only registers it as a dependent of each figure
-            button.Dependencies = dependencies;
-            button.AddDependencies(dependencies);
-        }
-
-        private void AddButtonDependencies(
-            IniFile.Section section, 
-            List<IFigure> dependencies,
-            string dependencyType,
-            IList container)
-        {
-            foreach (int dependency in ReadIndices(section, dependencyType))
-            {
-                EnsureSectionProcessed(dependencyType + dependency.ToString());
-                var figure = (IFigure)container[dependency];
-
-                // a message, sound or "open file" button (types 1-3) has no figure here
-                if (figure != null)
-                {
-                    dependencies.Add(figure);
-                }
-            }
-        }
-
-        private IEnumerable<int> ReadIndices(IniFile.Section section, string key)
-        {
-            int index = 1;
-
-            string currentKey = key + "#" + index.ToString();
-            while (section.Entries.ContainsKey(currentKey))
-            {
-                yield return section.ReadInt(currentKey);
-                index++;
-                currentKey = key + "#" + index.ToString();
-            }
-        }
-
-        void ProcessSG(IniFile.Section section)
-        {
-            var type = section.ReadInt("Type");
-
-            switch (type)
-            {
-                case 0: // Polygon
-                    ReadPolygon(section);
-                    break;
-                case 1: // Bezier
-                    ReadBezier(section);
-                    break;
-                case 2: // Vector
-                    ReadVector(section);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        void ReadVector(IniFile.Section section)
-        {
-            var vector = Factory.CreateVector(
-                drawing, GetPointList(section));
-            Actions.Add(drawing, vector);
-            SetFigureStyle(section, vector);
-            staticGraphics[section.GetTitleNumber("SG")] = vector;
-        }
-
-        void ReadBezier(IniFile.Section section)
-        {
-            var bezier = Factory.CreateBezier(
-                drawing, GetPointList(section));
-            Actions.Add(drawing, bezier);
-            SetFigureStyle(section, bezier);
-            staticGraphics[section.GetTitleNumber("SG")] = bezier;
-        }
-
-        void ReadPolygon(IniFile.Section section)
-        {
-            // DG lists the first vertex again at the end to close the outline; here a vertex
-            // is a vertex, and ABCA was a quadrilateral with a side of length 0
-            var polygon = Factory.CreatePolygon(
-                drawing, GetPointList(section).Distinct().ToList());
-            Actions.Add(drawing, polygon);
-            SetFigureStyle(section, polygon);
-            staticGraphics[section.GetTitleNumber("SG")] = polygon;
-        }
-
-        void ProcessLocus(IniFile.Section section)
-        {
-        }
-
-        void ProcessLabel(IniFile.Section section)
-        {
-            var label = Factory.CreateLabel(drawing);
-            label.MoveTo(section.ReadDouble("X"), section.ReadDouble("Y"));
-            SetLabelStyle(section, label);
-            Actions.Add(drawing, label);
-            labels[section.GetTitleNumber("Label")] = label;
-            string text = section["Caption"].Replace("~~", Environment.NewLine);
-            if (section["Charset"] == "0")
-            {
-                text = text.Replace('І', '²');
-            }
-            drawing.ActionManager.SetProperty(label, "Text", text);
-        }
-
-        void ProcessFigure(IniFile.Section section)
-        {
-            var figureType = section.ReadInt("FigureType");
-
-            switch (figureType)
-            {
-                case 1: // Segment
-                    ReadSegment(section);
-                    break;
-                case 2: // Ray
-                    ReadRay(section);
-                    break;
-                case 3: // Line
-                    ReadLine2Points(section);
-                    break;
-                case 4: // ParallelLine
-                    ReadParallelLine(section);
-                    break;
-                case 5: // PerpendicularLine
-                    ReadPerpendicularLine(section);
-                    break;
-                case 6: // Circle
-                    ReadCircle(section);
-                    break;
-                case 7: // CircleByRadius
-                    ReadCircleByRadius(section);
-                    break;
-                case 8: // Arc
-                    ReadArc(section);
-                    break;
-                case 9: // MidPoint
-                    ReadMidPoint(section);
-                    break;
-                case 10: // SymmPoint
-                    ReadSymmPoint(section);
-                    break;
-                case 11: // SymmPointByLine
-                    ReadSymmPointByLine(section);
-                    break;
-                case 12: // InvertedPoint
-                    ReadInvertedPoint(section);
-                    break;
-                case 13: // IntersectionPoint
-                    ReadIntersectionPoint(section);
-                    break;
-                case 14: // PointOnFigure
-                    ReadPointOnFigure(section);
-                    break;
-                case 15: // MeasureDistance
-                    ReadMeasureDistance(section);
-                    break;
-                case 16: // MeasureAngle
-                    ReadMeasureAngle(section);
-                    break;
-                case 17: // AnLineGeneral
-                    ReadAnalyticLineGeneral(section);
-                    break;
-                case 21: // AnCircle
-                    ReadAnalyticCircle(section);
-                    break;
-                case 22: // AnalyticPoint
-                    ReadAnalyticPoint(section);
-                    break;
-                case 23: // Locus
-                    ReadLocus(section);
-                    break;
-                case 24: // AngleBisector
-                    ReadAngleBisector(section);
-                    break;
-                default:
-                    break;
+                dependencies.Add(figure);
             }
         }
+    }
 
-        void ReadAnalyticCircle(IniFile.Section section)
+    private IEnumerable<int> ReadIndices(IniFile.Section section, string key)
+    {
+        int index = 1;
+
+        string currentKey = key + "#" + index.ToString();
+        while (section.Entries.ContainsKey(currentKey))
         {
-            double a = GetAuxInfo(section, 1);
-            double b = GetAuxInfo(section, 2);
-            double c = GetAuxInfo(section, 3);
+            yield return section.ReadInt(currentKey);
+            index++;
+            currentKey = key + "#" + index.ToString();
+        }
+    }
 
-            double x = -a / 2;
-            double y = -b / 2;
-            double r = (a * a / 4 + b * b / 4 - c).SquareRoot();
+    void ProcessSG(IniFile.Section section)
+    {
+        var type = section.ReadInt("Type");
 
-            var figure = Factory.CreateCircleByEquation(
-                drawing,
-                x.ToExpressionText(),
-                y.ToExpressionText(),
-                r.ToExpressionText());
-            SetFigureStyle(section, figure);
-            AddFigure(section, figure);
+        switch (type)
+        {
+            case 0: // Polygon
+                ReadPolygon(section);
+                break;
+            case 1: // Bezier
+                ReadBezier(section);
+                break;
+            case 2: // Vector
+                ReadVector(section);
+                break;
+            default:
+                break;
+        }
+    }
+
+    void ReadVector(IniFile.Section section)
+    {
+        var vector = Factory.CreateVector(
+            drawing, GetPointList(section));
+        Actions.Add(drawing, vector);
+        SetFigureStyle(section, vector);
+        staticGraphics[section.GetTitleNumber("SG")] = vector;
+    }
+
+    void ReadBezier(IniFile.Section section)
+    {
+        var bezier = Factory.CreateBezier(
+            drawing, GetPointList(section));
+        Actions.Add(drawing, bezier);
+        SetFigureStyle(section, bezier);
+        staticGraphics[section.GetTitleNumber("SG")] = bezier;
+    }
+
+    void ReadPolygon(IniFile.Section section)
+    {
+        // DG lists the first vertex again at the end to close the outline; here a vertex
+        // is a vertex, and ABCA was a quadrilateral with a side of length 0
+        var polygon = Factory.CreatePolygon(
+            drawing, GetPointList(section).Distinct().ToList());
+        Actions.Add(drawing, polygon);
+        SetFigureStyle(section, polygon);
+        staticGraphics[section.GetTitleNumber("SG")] = polygon;
+    }
+
+    void ProcessLocus(IniFile.Section section)
+    {
+    }
+
+    void ProcessLabel(IniFile.Section section)
+    {
+        var label = Factory.CreateLabel(drawing);
+        label.MoveTo(section.ReadDouble("X"), section.ReadDouble("Y"));
+        SetLabelStyle(section, label);
+        Actions.Add(drawing, label);
+        labels[section.GetTitleNumber("Label")] = label;
+        string text = section["Caption"].Replace("~~", Environment.NewLine);
+        if (section["Charset"] == "0")
+        {
+            text = text.Replace('І', '²');
+        }
+        drawing.ActionManager.SetProperty(label, "Text", text);
+    }
+
+    void ProcessFigure(IniFile.Section section)
+    {
+        var figureType = section.ReadInt("FigureType");
+
+        switch (figureType)
+        {
+            case 1: // Segment
+                ReadSegment(section);
+                break;
+            case 2: // Ray
+                ReadRay(section);
+                break;
+            case 3: // Line
+                ReadLine2Points(section);
+                break;
+            case 4: // ParallelLine
+                ReadParallelLine(section);
+                break;
+            case 5: // PerpendicularLine
+                ReadPerpendicularLine(section);
+                break;
+            case 6: // Circle
+                ReadCircle(section);
+                break;
+            case 7: // CircleByRadius
+                ReadCircleByRadius(section);
+                break;
+            case 8: // Arc
+                ReadArc(section);
+                break;
+            case 9: // MidPoint
+                ReadMidPoint(section);
+                break;
+            case 10: // SymmPoint
+                ReadSymmPoint(section);
+                break;
+            case 11: // SymmPointByLine
+                ReadSymmPointByLine(section);
+                break;
+            case 12: // InvertedPoint
+                ReadInvertedPoint(section);
+                break;
+            case 13: // IntersectionPoint
+                ReadIntersectionPoint(section);
+                break;
+            case 14: // PointOnFigure
+                ReadPointOnFigure(section);
+                break;
+            case 15: // MeasureDistance
+                ReadMeasureDistance(section);
+                break;
+            case 16: // MeasureAngle
+                ReadMeasureAngle(section);
+                break;
+            case 17: // AnLineGeneral
+                ReadAnalyticLineGeneral(section);
+                break;
+            case 21: // AnCircle
+                ReadAnalyticCircle(section);
+                break;
+            case 22: // AnalyticPoint
+                ReadAnalyticPoint(section);
+                break;
+            case 23: // Locus
+                ReadLocus(section);
+                break;
+            case 24: // AngleBisector
+                ReadAngleBisector(section);
+                break;
+            default:
+                break;
+        }
+    }
+
+    void ReadAnalyticCircle(IniFile.Section section)
+    {
+        double a = GetAuxInfo(section, 1);
+        double b = GetAuxInfo(section, 2);
+        double c = GetAuxInfo(section, 3);
+
+        double x = -a / 2;
+        double y = -b / 2;
+        double r = (a * a / 4 + b * b / 4 - c).SquareRoot();
+
+        var figure = Factory.CreateCircleByEquation(
+            drawing,
+            x.ToExpressionText(),
+            y.ToExpressionText(),
+            r.ToExpressionText());
+        SetFigureStyle(section, figure);
+        AddFigure(section, figure);
+    }
+
+    void ReadAnalyticLineGeneral(IniFile.Section section)
+    {
+        // a x + b y + c = 0; a coefficient that is 0 isn't written
+        var figure = Factory.CreateLineByEquation(
+            drawing,
+            GetAuxInfo(section, 1).ToExpressionText(),
+            GetAuxInfo(section, 2).ToExpressionText(),
+            GetAuxInfo(section, 3).ToExpressionText());
+        SetFigureStyle(section, figure);
+        AddFigure(section, figure);
+    }
+
+    void ReadAnalyticPoint(IniFile.Section section)
+    {
+        int numberOfPoints = section.ReadInt("NumberOfPoints");
+        for (int i = 1; i < numberOfPoints; i++)
+        {
+            GetPoint(section, i);
         }
 
-        void ReadAnalyticLineGeneral(IniFile.Section section)
+        string x = section["XS"];
+        string y = section["YS"];
+
+        var point = Factory.CreatePointByCoordinates(drawing, x, y);
+        AddFigure(section, point);
+        AddFigurePoint(section, point, 0);
+    }
+
+    void ReadMeasureAngle(IniFile.Section section)
+    {
+        var vertex = GetPoint(section, 1);
+        var point1 = GetPoint(section, 0);
+        var point2 = GetPoint(section, 2);
+
+        // the angle under 180 degrees whichever way round the points are (AngleSweep.Smaller, the default)
+        var angle = Factory.CreateAngleMeasurement(
+            drawing,
+            new[] {
+                vertex,
+                point1,
+                point2});
+        angle.Offset = ReadLabelOffset(section);
+        AddLabelFigure(section, angle);
+
+        // DG kept the mark in the same figure: DrawStyle 0 is no mark, otherwise 1 to 3 arcs
+        // (the values repeat after 3); AuxInfo(2) is their radius in pixels.
+        int drawStyle = section.TryReadInt("DrawStyle") ?? 1;
+        var arc = Factory.CreateAngleArc(drawing, new[] { vertex, point1, point2 });
+        arc.ArcCount = drawStyle <= 0 ? 0 : (drawStyle - 1) % 3 + 1;
+        var radius = section.TryReadDouble("AuxInfo(2)");
+        if (radius != null && radius >= 10)
         {
-            // a x + b y + c = 0; a coefficient that is 0 isn't written
-            var figure = Factory.CreateLineByEquation(
-                drawing,
-                GetAuxInfo(section, 1).ToExpressionText(),
-                GetAuxInfo(section, 2).ToExpressionText(),
-                GetAuxInfo(section, 3).ToExpressionText());
-            SetFigureStyle(section, figure);
-            AddFigure(section, figure);
+            arc.Size = System.Math.Min(radius.Value, 100);
         }
 
-        void ReadAnalyticPoint(IniFile.Section section)
+        arc.Visible = angle.Visible;
+        arc.Style = drawing.StyleManager.FindExistingOrAddNew(new ShapeStyle()
         {
-            int numberOfPoints = section.ReadInt("NumberOfPoints");
-            for (int i = 1; i < numberOfPoints; i++)
-            {
-                GetPoint(section, i);
-            }
+            Color = section.ReadColor("ForeColor"),
+            StrokeWidth = System.Math.Max(section.TryReadDouble("DrawWidth") ?? 1.0, 0.1),
+            IsFilled = false
+        });
+        Actions.Add(drawing, arc);
+    }
 
-            string x = section["XS"];
-            string y = section["YS"];
+    void ReadIntersectionPoint(IniFile.Section section)
+    {
+        var pointSection1 = sectionLookup["Point" + section["Points0"]];
+        var pointSection2 = sectionLookup["Point" + section["Points1"]];
 
-            var point = Factory.CreatePointByCoordinates(drawing, x, y);
-            AddFigure(section, point);
-            AddFigurePoint(section, point, 0);
+        var point1 = Factory.CreateIntersectionPoint(
+            drawing,
+            GetParent(section, 0),
+            GetParent(section, 1),
+            new Point(pointSection1.ReadDouble("X"), pointSection1.ReadDouble("Y")));
+
+        var point2 = Factory.CreateIntersectionPoint(
+            drawing,
+            GetParent(section, 0),
+            GetParent(section, 1),
+            new Point(pointSection2.ReadDouble("X"), pointSection2.ReadDouble("Y")));
+
+        AddFigure(section, point1);
+        Actions.Add(drawing, point2);
+        AddFigurePoint(section, point1, 0);
+        AddFigurePoint(section, point2, 1);
+    }
+
+    void ReadInvertedPoint(IniFile.Section section)
+    {
+        var point = Factory.CreateReflectedPoint(
+            drawing, new[] { GetPoint(section, 1), GetParent(section, 0) });
+        AddFigure(section, point);
+        AddFigurePoint(section, point, 0);
+    }
+
+    void ReadSymmPointByLine(IniFile.Section section)
+    {
+        var point = Factory.CreateReflectedPoint(
+            drawing, new[] { GetPoint(section, 1), GetParent(section, 0) });
+        AddFigure(section, point);
+        AddFigurePoint(section, point, 0);
+    }
+
+    void ReadArc(IniFile.Section section)
+    {
+        var radiusPoint1 = GetPoint(section, 0);
+        var radiusPoint2 = GetPoint(section, 1);
+        var centerPoint = GetPoint(section, 2);
+        var anglePoint1 = GetPoint(section, 3);
+        var anglePoint2 = GetPoint(section, 4);
+
+        var endPoint1 = Factory.CreatePointByCoordinates(
+            drawing,
+            "{2}.X + ({3}.X - {2}.X) * {0}{1} / {2}{3}"
+            .Format(radiusPoint1, radiusPoint2, centerPoint, anglePoint1),
+            "{2}.Y + ({3}.Y - {2}.Y) * {0}{1} / {2}{3}"
+            .Format(radiusPoint1, radiusPoint2, centerPoint, anglePoint1));
+        var endPoint2 = Factory.CreatePointByCoordinates(
+            drawing,
+            "{2}.X + ({3}.X - {2}.X) * {0}{1} / {2}{3}"
+            .Format(radiusPoint1, radiusPoint2, centerPoint, anglePoint2),
+            "{2}.Y + ({3}.Y - {2}.Y) * {0}{1} / {2}{3}"
+            .Format(radiusPoint1, radiusPoint2, centerPoint, anglePoint2));
+
+        Actions.Add(drawing, endPoint1);
+        Actions.Add(drawing, endPoint2);
+
+        AddFigurePoint(section, endPoint1, 5);
+        AddFigurePoint(section, endPoint2, 6);
+
+        var figure = Factory.CreateArc(
+            drawing, new[] { centerPoint, endPoint1, endPoint2 });
+        SetFigureStyle(section, figure);
+        AddFigure(section, figure);
+    }
+
+    void ReadCircleByRadius(IniFile.Section section)
+    {
+        var figure = Factory.CreateCircleByRadius(
+            drawing, GetPointList(section, 3));
+        SetFigureStyle(section, figure);
+        AddFigure(section, figure);
+    }
+
+    void ReadAngleBisector(IniFile.Section section)
+    {
+        // DG's bisector (Math.bas GetBisector) always halves the interior angle (the
+        // angle under 180 degrees: AngleSweep.Smaller, the default), and was a whole
+        // line, with intersections on both sides of the vertex
+        var vertex = GetPoint(section, 1);
+        var side1 = GetPoint(section, 0);
+        var side2 = GetPoint(section, 2);
+        var figure = Factory.CreateAngleBisector(
+            drawing, new[] { vertex, side1, side2 });
+        figure.IsLine = true;
+        SetFigureStyle(section, figure);
+        AddFigure(section, figure);
+    }
+
+    void ReadLocus(IniFile.Section section)
+    {
+        var figure = Factory.CreateLocus(
+            drawing, GetPointList(section, 2));
+        var locusSection = sectionLookup
+            ["Locus" + sectionLookup["Point" + section["Points0"]]["Locus"]];
+        SetFigureStyle(locusSection, figure);
+        AddFigure(section, figure);
+    }
+
+    void ReadSymmPoint(IniFile.Section section)
+    {
+        var point = Factory.CreateReflectedPoint(
+            drawing, new[] {
+                GetPoint(section, 1),
+                GetPoint(section, 2)});
+        AddFigure(section, point);
+        AddFigurePoint(section, point, 0);
+    }
+
+    void ReadMidPoint(IniFile.Section section)
+    {
+        var point = Factory.CreateMidPoint(
+            drawing, new[] {
+                GetPoint(section, 1),
+                GetPoint(section, 2)});
+        AddFigure(section, point);
+        AddFigurePoint(section, point, 0);
+    }
+
+    void ReadPointOnFigure(IniFile.Section section)
+    {
+        // AuxInfo(1) is DG's parameter, but its meaning differs by figure (t along a line,
+        // a clockwise angle on a circle); AddFigurePoint moves the point to its saved
+        // coordinates, which projects it onto the figure and sets the parameter from that
+        var point = Factory.CreatePointOnFigure(
+            drawing, GetParent(section, 0), new Point());
+        AddFigure(section, point);
+        AddFigurePoint(section, point, 0);
+    }
+
+    void AddFigurePoint(IniFile.Section section, PointBase point, int index)
+    {
+        var pointSection1 = sectionLookup["Point" + section["Points" + index.ToString()]];
+        point.Name = pointSection1["Name"];
+
+        // in one go: X and Y one after the other would project a point on a figure onto
+        // it twice, from two places that are both off the figure, and it lands elsewhere
+        var saved = new Point(pointSection1.ReadDouble("X"), pointSection1.ReadDouble("Y"));
+        if (point is PointOnFigure)
+        {
+            point.MoveTo(saved);
+        }
+        else
+        {
+            point.X = saved.X;
+            point.Y = saved.Y;
         }
 
-        void ReadMeasureAngle(IniFile.Section section)
-        {
-            var vertex = GetPoint(section, 1);
-            var point1 = GetPoint(section, 0);
-            var point2 = GetPoint(section, 2);
+        SetPointStyle(pointSection1, point);
+        var pointIndex = GetPointIndex(section, index);
+        points[pointIndex] = point;
+    }
 
-            // the angle under 180 degrees whichever way round the points are (AngleSweep.Smaller, the default)
-            var angle = Factory.CreateAngleMeasurement(
-                drawing,
-                new[] {
-                    vertex,
-                    point1,
-                    point2});
-            angle.Offset = ReadLabelOffset(section);
-            AddLabelFigure(section, angle);
+    void ReadMeasureDistance(IniFile.Section section)
+    {
+        var figure = Factory.CreateLengthMeasurement(
+            drawing, GetPointList(section, 2));
+        figure.Offset = ReadLabelOffset(section);
+        AddLabelFigure(section, figure);
+    }
 
-            // DG kept the mark in the same figure: DrawStyle 0 is no mark, otherwise 1 to 3 arcs
-            // (the values repeat after 3); AuxInfo(2) is their radius in pixels.
-            int drawStyle = section.TryReadInt("DrawStyle") ?? 1;
-            var arc = Factory.CreateAngleArc(drawing, new[] { vertex, point1, point2 });
-            arc.ArcCount = drawStyle <= 0 ? 0 : (drawStyle - 1) % 3 + 1;
-            var radius = section.TryReadDouble("AuxInfo(2)");
-            if (radius != null && radius >= 10)
-            {
-                arc.Size = System.Math.Min(radius.Value, 100);
-            }
+    void ReadCircle(IniFile.Section section)
+    {
+        var figure = Factory.CreateCircle(
+            drawing, GetPointList(section, 2));
+        SetFigureStyle(section, figure);
+        AddFigure(section, figure);
+    }
 
-            arc.Visible = angle.Visible;
-            arc.Style = drawing.StyleManager.FindExistingOrAddNew(new ShapeStyle()
-            {
-                Color = section.ReadColor("ForeColor"),
-                StrokeWidth = System.Math.Max(section.TryReadDouble("DrawWidth") ?? 1.0, 0.1),
-                IsFilled = false
-            });
-            Actions.Add(drawing, arc);
-        }
-
-        void ReadIntersectionPoint(IniFile.Section section)
-        {
-            var pointSection1 = sectionLookup["Point" + section["Points0"]];
-            var pointSection2 = sectionLookup["Point" + section["Points1"]];
-
-            var point1 = Factory.CreateIntersectionPoint(
-                drawing,
+    void ReadPerpendicularLine(IniFile.Section section)
+    {
+        var figure = Factory.CreatePerpendicularLine(
+            drawing, new[] {
                 GetParent(section, 0),
-                GetParent(section, 1),
-                new Point(pointSection1.ReadDouble("X"), pointSection1.ReadDouble("Y")));
+                GetPoint(section, 0)});
+        SetFigureStyle(section, figure);
+        AddFigure(section, figure);
+    }
 
-            var point2 = Factory.CreateIntersectionPoint(
-                drawing,
+    void ReadParallelLine(IniFile.Section section)
+    {
+        var figure = Factory.CreateParallelLine(
+            drawing, new[] {
                 GetParent(section, 0),
-                GetParent(section, 1),
-                new Point(pointSection2.ReadDouble("X"), pointSection2.ReadDouble("Y")));
+                GetPoint(section, 0)});
+        SetFigureStyle(section, figure);
+        AddFigure(section, figure);
+    }
 
-            AddFigure(section, point1);
-            Actions.Add(drawing, point2);
-            AddFigurePoint(section, point1, 0);
-            AddFigurePoint(section, point2, 1);
+    void ReadLine2Points(IniFile.Section section)
+    {
+        var figure = Factory.CreateLineTwoPoints(
+            drawing, GetPointList(section, 2));
+        SetFigureStyle(section, figure);
+        AddFigure(section, figure);
+    }
+
+    IList<IFigure> GetPointList(IniFile.Section section, int numberOfPoints)
+    {
+        var result = new IFigure[numberOfPoints];
+        for (int i = 0; i < numberOfPoints; i++)
+        {
+            result[i] = GetPoint(section, i);
         }
 
-        void ReadInvertedPoint(IniFile.Section section)
+        var figureList = new List<IFigure>(result);
+        return figureList;
+    }
+
+    IList<IFigure> GetPointList(IniFile.Section section)
+    {
+        int numberOfPoints = section.ReadInt("NumberOfPoints");
+        var result = new List<IFigure>();
+        for (int i = 1; i <= numberOfPoints; i++)
         {
-            var point = Factory.CreateReflectedPoint(
-                drawing, new[] { GetPoint(section, 1), GetParent(section, 0) });
-            AddFigure(section, point);
-            AddFigurePoint(section, point, 0);
+            var point = GetPoint(section, i);
+            result.Add(point);
         }
 
-        void ReadSymmPointByLine(IniFile.Section section)
+        return result;
+    }
+
+    void ReadRay(IniFile.Section section)
+    {
+        var figure = Factory.CreateRay(
+            drawing, GetPointList(section, 2));
+        SetFigureStyle(section, figure);
+        AddFigure(section, figure);
+    }
+
+    void ReadSegment(IniFile.Section section)
+    {
+        var figure = Factory.CreateSegment(
+            drawing, GetPointList(section, 2));
+        SetFigureStyle(section, figure);
+        AddFigure(section, figure);
+    }
+
+    void AddFigure(IniFile.Section section, IFigure figure)
+    {
+        Actions.Add(drawing, figure);
+        figures[section.GetTitleNumber("Figure")] = figure;
+    }
+
+    void AddLabelFigure(IniFile.Section section, IFigure figure)
+    {
+        //SetLabelStyle(section, figure);
+        Actions.Add(drawing, figure);
+        figures[section.GetTitleNumber("Figure")] = figure;
+    }
+
+    void SetFigureStyle(IniFile.Section section, IFigure figure)
+    {
+        figure.Visible = !section.ReadBool("Hide", false) && section.ReadBool("Visible", true);
+
+        var fillColor = section.ReadColor("FillColor");
+        var foreColor = section.ReadColor("ForeColor");
+        double drawWidth = section.TryReadDouble("DrawWidth") ?? 1.0;
+        if (drawWidth < 0.1)
         {
-            var point = Factory.CreateReflectedPoint(
-                drawing, new[] { GetPoint(section, 1), GetParent(section, 0) });
-            AddFigure(section, point);
-            AddFigurePoint(section, point, 0);
+            drawWidth = 0.1;
         }
-
-        void ReadArc(IniFile.Section section)
+        int? drawStyle = section.TryReadInt("DrawStyle");
+        int? fillStyle = section.TryReadInt("FillStyle");
+        int? drawMode = section.TryReadInt("DrawMode");
+        if (fillStyle == null || fillStyle == 6)
         {
-            var radiusPoint1 = GetPoint(section, 0);
-            var radiusPoint2 = GetPoint(section, 1);
-            var centerPoint = GetPoint(section, 2);
-            var anglePoint1 = GetPoint(section, 3);
-            var anglePoint2 = GetPoint(section, 4);
-
-            var endPoint1 = Factory.CreatePointByCoordinates(
-                drawing,
-                "{2}.X + ({3}.X - {2}.X) * {0}{1} / {2}{3}"
-                .Format(radiusPoint1, radiusPoint2, centerPoint, anglePoint1),
-                "{2}.Y + ({3}.Y - {2}.Y) * {0}{1} / {2}{3}"
-                .Format(radiusPoint1, radiusPoint2, centerPoint, anglePoint1));
-            var endPoint2 = Factory.CreatePointByCoordinates(
-                drawing,
-                "{2}.X + ({3}.X - {2}.X) * {0}{1} / {2}{3}"
-                .Format(radiusPoint1, radiusPoint2, centerPoint, anglePoint2),
-                "{2}.Y + ({3}.Y - {2}.Y) * {0}{1} / {2}{3}"
-                .Format(radiusPoint1, radiusPoint2, centerPoint, anglePoint2));
-
-            Actions.Add(drawing, endPoint1);
-            Actions.Add(drawing, endPoint2);
-
-            AddFigurePoint(section, endPoint1, 5);
-            AddFigurePoint(section, endPoint2, 6);
-
-            var figure = Factory.CreateArc(
-                drawing, new[] { centerPoint, endPoint1, endPoint2 });
-            SetFigureStyle(section, figure);
-            AddFigure(section, figure);
+            fillColor = Colors.Transparent;
         }
+        var dash = LineDashes.FromVB6DrawStyle(drawStyle ?? 0);
 
-        void ReadCircleByRadius(IniFile.Section section)
+        IFigureStyle style;
+
+        if (figure is IShapeWithInterior)
         {
-            var figure = Factory.CreateCircleByRadius(
-                drawing, GetPointList(section, 3));
-            SetFigureStyle(section, figure);
-            AddFigure(section, figure);
-        }
-
-        void ReadAngleBisector(IniFile.Section section)
-        {
-            // DG's bisector (Math.bas GetBisector) always halves the interior angle (the
-            // angle under 180 degrees: AngleSweep.Smaller, the default), and was a whole
-            // line, with intersections on both sides of the vertex
-            var vertex = GetPoint(section, 1);
-            var side1 = GetPoint(section, 0);
-            var side2 = GetPoint(section, 2);
-            var figure = Factory.CreateAngleBisector(
-                drawing, new[] { vertex, side1, side2 });
-            figure.IsLine = true;
-            SetFigureStyle(section, figure);
-            AddFigure(section, figure);
-        }
-
-        void ReadLocus(IniFile.Section section)
-        {
-            var figure = Factory.CreateLocus(
-                drawing, GetPointList(section, 2));
-            var locusSection = sectionLookup
-                ["Locus" + sectionLookup["Point" + section["Points0"]]["Locus"]];
-            SetFigureStyle(locusSection, figure);
-            AddFigure(section, figure);
-        }
-
-        void ReadSymmPoint(IniFile.Section section)
-        {
-            var point = Factory.CreateReflectedPoint(
-                drawing, new[] {
-                    GetPoint(section, 1),
-                    GetPoint(section, 2)});
-            AddFigure(section, point);
-            AddFigurePoint(section, point, 0);
-        }
-
-        void ReadMidPoint(IniFile.Section section)
-        {
-            var point = Factory.CreateMidPoint(
-                drawing, new[] {
-                    GetPoint(section, 1),
-                    GetPoint(section, 2)});
-            AddFigure(section, point);
-            AddFigurePoint(section, point, 0);
-        }
-
-        void ReadPointOnFigure(IniFile.Section section)
-        {
-            // AuxInfo(1) is DG's parameter, but its meaning differs by figure (t along a line,
-            // a clockwise angle on a circle); AddFigurePoint moves the point to its saved
-            // coordinates, which projects it onto the figure and sets the parameter from that
-            var point = Factory.CreatePointOnFigure(
-                drawing, GetParent(section, 0), new Point());
-            AddFigure(section, point);
-            AddFigurePoint(section, point, 0);
-        }
-
-        void AddFigurePoint(IniFile.Section section, PointBase point, int index)
-        {
-            var pointSection1 = sectionLookup["Point" + section["Points" + index.ToString()]];
-            point.Name = pointSection1["Name"];
-
-            // in one go: X and Y one after the other would project a point on a figure onto
-            // it twice, from two places that are both off the figure, and it lands elsewhere
-            var saved = new Point(pointSection1.ReadDouble("X"), pointSection1.ReadDouble("Y"));
-            if (point is PointOnFigure)
+            if (fillColor != Colors.Transparent && drawMode != 13)
             {
-                point.MoveTo(saved);
+                fillColor = Color.FromArgb(128, fillColor.R, fillColor.G, fillColor.B);
             }
-            else
-            {
-                point.X = saved.X;
-                point.Y = saved.Y;
-            }
-
-            SetPointStyle(pointSection1, point);
-            var pointIndex = GetPointIndex(section, index);
-            points[pointIndex] = point;
-        }
-
-        void ReadMeasureDistance(IniFile.Section section)
-        {
-            var figure = Factory.CreateLengthMeasurement(
-                drawing, GetPointList(section, 2));
-            figure.Offset = ReadLabelOffset(section);
-            AddLabelFigure(section, figure);
-        }
-
-        void ReadCircle(IniFile.Section section)
-        {
-            var figure = Factory.CreateCircle(
-                drawing, GetPointList(section, 2));
-            SetFigureStyle(section, figure);
-            AddFigure(section, figure);
-        }
-
-        void ReadPerpendicularLine(IniFile.Section section)
-        {
-            var figure = Factory.CreatePerpendicularLine(
-                drawing, new[] {
-                    GetParent(section, 0),
-                    GetPoint(section, 0)});
-            SetFigureStyle(section, figure);
-            AddFigure(section, figure);
-        }
-
-        void ReadParallelLine(IniFile.Section section)
-        {
-            var figure = Factory.CreateParallelLine(
-                drawing, new[] {
-                    GetParent(section, 0),
-                    GetPoint(section, 0)});
-            SetFigureStyle(section, figure);
-            AddFigure(section, figure);
-        }
-
-        void ReadLine2Points(IniFile.Section section)
-        {
-            var figure = Factory.CreateLineTwoPoints(
-                drawing, GetPointList(section, 2));
-            SetFigureStyle(section, figure);
-            AddFigure(section, figure);
-        }
-
-        IList<IFigure> GetPointList(IniFile.Section section, int numberOfPoints)
-        {
-            var result = new IFigure[numberOfPoints];
-            for (int i = 0; i < numberOfPoints; i++)
-            {
-                result[i] = GetPoint(section, i);
-            }
-
-            var figureList = new List<IFigure>(result);
-            return figureList;
-        }
-
-        IList<IFigure> GetPointList(IniFile.Section section)
-        {
-            int numberOfPoints = section.ReadInt("NumberOfPoints");
-            var result = new List<IFigure>();
-            for (int i = 1; i <= numberOfPoints; i++)
-            {
-                var point = GetPoint(section, i);
-                result.Add(point);
-            }
-
-            return result;
-        }
-
-        void ReadRay(IniFile.Section section)
-        {
-            var figure = Factory.CreateRay(
-                drawing, GetPointList(section, 2));
-            SetFigureStyle(section, figure);
-            AddFigure(section, figure);
-        }
-
-        void ReadSegment(IniFile.Section section)
-        {
-            var figure = Factory.CreateSegment(
-                drawing, GetPointList(section, 2));
-            SetFigureStyle(section, figure);
-            AddFigure(section, figure);
-        }
-
-        void AddFigure(IniFile.Section section, IFigure figure)
-        {
-            Actions.Add(drawing, figure);
-            figures[section.GetTitleNumber("Figure")] = figure;
-        }
-
-        void AddLabelFigure(IniFile.Section section, IFigure figure)
-        {
-            //SetLabelStyle(section, figure);
-            Actions.Add(drawing, figure);
-            figures[section.GetTitleNumber("Figure")] = figure;
-        }
-
-        void SetFigureStyle(IniFile.Section section, IFigure figure)
-        {
-            figure.Visible = !section.ReadBool("Hide", false) && section.ReadBool("Visible", true);
-
-            var fillColor = section.ReadColor("FillColor");
-            var foreColor = section.ReadColor("ForeColor");
-            double drawWidth = section.TryReadDouble("DrawWidth") ?? 1.0;
-            if (drawWidth < 0.1)
-            {
-                drawWidth = 0.1;
-            }
-            int? drawStyle = section.TryReadInt("DrawStyle");
-            int? fillStyle = section.TryReadInt("FillStyle");
-            int? drawMode = section.TryReadInt("DrawMode");
-            if (fillStyle == null || fillStyle == 6)
-            {
-                fillColor = Colors.Transparent;
-            }
-            var dash = LineDashes.FromVB6DrawStyle(drawStyle ?? 0);
-
-            IFigureStyle style;
-
-            if (figure is IShapeWithInterior)
-            {
-                if (fillColor != Colors.Transparent && drawMode != 13)
-                {
-                    fillColor = Color.FromArgb(128, fillColor.R, fillColor.G, fillColor.B);
-                }
-                style = new ShapeStyle()
-                {
-                    Fill = new SolidColorBrush(fillColor),
-                    Color = foreColor,
-                    StrokeWidth = drawWidth,
-                    Dash = dash
-                };
-            }
-            else
-            {
-                if (foreColor == Colors.Transparent)
-                {
-                    System.Diagnostics.Debugger.Break();
-                }
-                style = new LineStyle()
-                {
-                    Color = foreColor,
-                    StrokeWidth = drawWidth,
-                    Dash = dash
-                };
-            }
-
-            figure.Style = drawing.StyleManager.FindExistingOrAddNew(style);
-        }
-
-        void SetPointStyle(IniFile.Section section, IFigure figure)
-        {
-            figure.Visible = !section.ReadBool("Hide", false) && section.ReadBool("Visible", true);
-
-            var fillColor = section.ReadColor("FillColor");
-            var fillStyle = section.ReadInt("FillStyle");
-            var foreColor = section.ReadColor("ForeColor");
-            var physicalWidth = section.ReadDouble("PhysicalWidth");
-            if (fillStyle == 1)
-            {
-                fillColor = Colors.Transparent;
-            }
-
-            PointStyle pointStyle = new PointStyle()
+            style = new ShapeStyle()
             {
                 Fill = new SolidColorBrush(fillColor),
                 Color = foreColor,
-                Size = physicalWidth,
-                StrokeWidth = 0.7
+                StrokeWidth = drawWidth,
+                Dash = dash
             };
-
-            figure.Style = drawing.StyleManager.FindExistingOrAddNew(pointStyle);
         }
-
-        void SetLabelStyle(IniFile.Section section, IFigure figure)
+        else
         {
-            figure.Visible = !section.ReadBool("Hide", false) && section.ReadBool("Visible", true);
-
-            var fontName = section["FontName"];
-            double? fontSize = section.TryReadDouble("FontSize");
-            bool fontUnderline = section.ReadBool("FontUnderline", false);
-            var foreColor = section.ReadColor("ForeColor");
-            var backColor = section.ReadColor("BackColor");
-
-            TextStyle style = new TextStyle()
+            if (foreColor == Colors.Transparent)
             {
-                FontFamily = new FontFamily(fontName),
+                System.Diagnostics.Debugger.Break();
+            }
+            style = new LineStyle()
+            {
                 Color = foreColor,
-                Underline = fontUnderline
+                StrokeWidth = drawWidth,
+                Dash = dash
             };
-            if (fontSize.HasValue)
+        }
+
+        figure.Style = drawing.StyleManager.FindExistingOrAddNew(style);
+    }
+
+    void SetPointStyle(IniFile.Section section, IFigure figure)
+    {
+        figure.Visible = !section.ReadBool("Hide", false) && section.ReadBool("Visible", true);
+
+        var fillColor = section.ReadColor("FillColor");
+        var fillStyle = section.ReadInt("FillStyle");
+        var foreColor = section.ReadColor("ForeColor");
+        var physicalWidth = section.ReadDouble("PhysicalWidth");
+        if (fillStyle == 1)
+        {
+            fillColor = Colors.Transparent;
+        }
+
+        PointStyle pointStyle = new PointStyle()
+        {
+            Fill = new SolidColorBrush(fillColor),
+            Color = foreColor,
+            Size = physicalWidth,
+            StrokeWidth = 0.7
+        };
+
+        figure.Style = drawing.StyleManager.FindExistingOrAddNew(pointStyle);
+    }
+
+    void SetLabelStyle(IniFile.Section section, IFigure figure)
+    {
+        figure.Visible = !section.ReadBool("Hide", false) && section.ReadBool("Visible", true);
+
+        var fontName = section["FontName"];
+        double? fontSize = section.TryReadDouble("FontSize");
+        bool fontUnderline = section.ReadBool("FontUnderline", false);
+        var foreColor = section.ReadColor("ForeColor");
+        var backColor = section.ReadColor("BackColor");
+
+        TextStyle style = new TextStyle()
+        {
+            FontFamily = new FontFamily(fontName),
+            Color = foreColor,
+            Underline = fontUnderline
+        };
+        if (fontSize.HasValue)
+        {
+            style.FontSize = fontSize.Value * 1.7;
+        }
+
+        figure.Style = drawing.StyleManager.FindExistingOrAddNew(style);
+    }
+
+    void SetButtonStyle(IniFile.Section section, IFigure figure)
+    {
+        figure.Visible = !section.ReadBool("Hide", false) && section.ReadBool("Visible", true);
+
+        var fontName = section["FontName"];
+        double? fontSize = section.TryReadDouble("FontSize");
+        bool fontUnderline = section.ReadBool("FontUnderline", false);
+        var foreColor = section.ReadColor("ForeColor");
+        var backColor = section.ReadColor("BackColor");
+
+        TextStyle style = new TextStyle()
+        {
+            FontFamily = new FontFamily(fontName),
+            Color = foreColor,
+            Underline = fontUnderline
+        };
+
+        if (fontSize.HasValue)
+        {
+            style.FontSize = fontSize.Value * 1.7;
+        }
+
+        figure.Style = drawing.StyleManager.FindExistingOrAddNew(style);
+    }
+
+    IPoint GetPoint(IniFile.Section section, int index)
+    {
+        var pointIndex = GetPointIndex(section, index);
+        EnsureSectionProcessed("Point" + pointIndex.ToString());
+        var result = points[pointIndex];
+        return result;
+    }
+
+    int GetPointIndex(IniFile.Section section, int index)
+    {
+        if (section["Points" + index.ToString()] != null)
+        {
+            return section.ReadInt("Points" + index.ToString());
+        }
+        return section.ReadInt("Point" + index.ToString());
+    }
+
+    IFigure GetParent(IniFile.Section section, int index)
+    {
+        var parentIndex = section.ReadInt("Parents" + index.ToString());
+        var pointSectionTitle = "Figure" + parentIndex.ToString();
+        EnsureSectionProcessed(pointSectionTitle);
+        return figures[parentIndex];
+    }
+
+    /// <summary>
+    /// Where the user dragged the number of a measurement: AuxPoints(6) is the shift from
+    /// its default place, in pixels (Geometry.bas, dsMeasureDistance)
+    /// </summary>
+    // pixels, y down - the same as ours
+    Point ReadLabelOffset(IniFile.Section section)
+    {
+        return GetAuxPoint(section, 6);
+    }
+
+    // VB6 (modFileIO.bas) writes an AuxInfo or AuxPoint only when it isn't 0: absent means 0
+
+    double GetAuxInfo(IniFile.Section section, int index)
+    {
+        return section.TryReadDouble("AuxInfo(" + index.ToString() + ")") ?? 0;
+    }
+
+    Point GetAuxPoint(IniFile.Section section, int index)
+    {
+        double x = section.TryReadDouble("AuxPoints(" + index.ToString() + ").X") ?? 0;
+        double y = section.TryReadDouble("AuxPoints(" + index.ToString() + ").Y") ?? 0;
+        return new Point(x, y);
+    }
+
+    void ProcessPoint(IniFile.Section section)
+    {
+        var type = section.ReadInt("Type");
+        var parentFigure = section["ParentFigure"];
+
+        // Type is the DrawState that made the point: 0 (dsPoint) is a free point. Older
+        // files write ParentFigure=0 for those too, which is not "Figure0".
+        if (type != 0 && !parentFigure.IsEmpty())
+        {
+            EnsureSectionProcessed("Figure" + parentFigure);
+            return;
+        }
+
+        if (type == 8)
+        {
+            FindAndProcessArcWithPoint(section.GetTitleNumber("Point"));
+            return;
+        }
+
+        if (type == 9)
+        {
+            FindAndProcessMidPoint(section.GetTitleNumber("Point"));
+            return;
+        }
+
+        var x = section.ReadDouble("X");
+        var y = section.ReadDouble("Y");
+        FreePoint point = Factory.CreateFreePoint(drawing, new Point(x, y));
+
+        point.Name = section["Name"];
+        SetPointStyle(section, point);
+        Actions.Add(drawing, point);
+        int pointIndex = section.GetTitleNumber("Point");
+        points[pointIndex] = point;
+    }
+
+    void FindAndProcessMidPoint(int pointIndex)
+    {
+        foreach (var section in sectionLookup.Values)
+        {
+            if (section["FigureType"] == "9")
             {
-                style.FontSize = fontSize.Value * 1.7;
-            }
-
-            figure.Style = drawing.StyleManager.FindExistingOrAddNew(style);
-        }
-
-        void SetButtonStyle(IniFile.Section section, IFigure figure)
-        {
-            figure.Visible = !section.ReadBool("Hide", false) && section.ReadBool("Visible", true);
-
-            var fontName = section["FontName"];
-            double? fontSize = section.TryReadDouble("FontSize");
-            bool fontUnderline = section.ReadBool("FontUnderline", false);
-            var foreColor = section.ReadColor("ForeColor");
-            var backColor = section.ReadColor("BackColor");
-
-            TextStyle style = new TextStyle()
-            {
-                FontFamily = new FontFamily(fontName),
-                Color = foreColor,
-                Underline = fontUnderline
-            };
-
-            if (fontSize.HasValue)
-            {
-                style.FontSize = fontSize.Value * 1.7;
-            }
-
-            figure.Style = drawing.StyleManager.FindExistingOrAddNew(style);
-        }
-
-        IPoint GetPoint(IniFile.Section section, int index)
-        {
-            var pointIndex = GetPointIndex(section, index);
-            EnsureSectionProcessed("Point" + pointIndex.ToString());
-            var result = points[pointIndex];
-            return result;
-        }
-
-        int GetPointIndex(IniFile.Section section, int index)
-        {
-            if (section["Points" + index.ToString()] != null)
-            {
-                return section.ReadInt("Points" + index.ToString());
-            }
-            return section.ReadInt("Point" + index.ToString());
-        }
-
-        IFigure GetParent(IniFile.Section section, int index)
-        {
-            var parentIndex = section.ReadInt("Parents" + index.ToString());
-            var pointSectionTitle = "Figure" + parentIndex.ToString();
-            EnsureSectionProcessed(pointSectionTitle);
-            return figures[parentIndex];
-        }
-
-        /// <summary>
-        /// Where the user dragged the number of a measurement: AuxPoints(6) is the shift from
-        /// its default place, in pixels (Geometry.bas, dsMeasureDistance)
-        /// </summary>
-        // pixels, y down - the same as ours
-        Point ReadLabelOffset(IniFile.Section section)
-        {
-            return GetAuxPoint(section, 6);
-        }
-
-        // VB6 (modFileIO.bas) writes an AuxInfo or AuxPoint only when it isn't 0: absent means 0
-
-        double GetAuxInfo(IniFile.Section section, int index)
-        {
-            return section.TryReadDouble("AuxInfo(" + index.ToString() + ")") ?? 0;
-        }
-
-        Point GetAuxPoint(IniFile.Section section, int index)
-        {
-            double x = section.TryReadDouble("AuxPoints(" + index.ToString() + ").X") ?? 0;
-            double y = section.TryReadDouble("AuxPoints(" + index.ToString() + ").Y") ?? 0;
-            return new Point(x, y);
-        }
-
-        void ProcessPoint(IniFile.Section section)
-        {
-            var type = section.ReadInt("Type");
-            var parentFigure = section["ParentFigure"];
-
-            // Type is the DrawState that made the point: 0 (dsPoint) is a free point. Older
-            // files write ParentFigure=0 for those too, which is not "Figure0".
-            if (type != 0 && !parentFigure.IsEmpty())
-            {
-                EnsureSectionProcessed("Figure" + parentFigure);
-                return;
-            }
-
-            if (type == 8)
-            {
-                FindAndProcessArcWithPoint(section.GetTitleNumber("Point"));
-                return;
-            }
-
-            if (type == 9)
-            {
-                FindAndProcessMidPoint(section.GetTitleNumber("Point"));
-                return;
-            }
-
-            var x = section.ReadDouble("X");
-            var y = section.ReadDouble("Y");
-            FreePoint point = Factory.CreateFreePoint(drawing, new Point(x, y));
-
-            point.Name = section["Name"];
-            SetPointStyle(section, point);
-            Actions.Add(drawing, point);
-            int pointIndex = section.GetTitleNumber("Point");
-            points[pointIndex] = point;
-        }
-
-        void FindAndProcessMidPoint(int pointIndex)
-        {
-            foreach (var section in sectionLookup.Values)
-            {
-                if (section["FigureType"] == "9")
+                if (section.ReadInt("Points0") == pointIndex)
                 {
-                    if (section.ReadInt("Points0") == pointIndex)
+                    EnsureSectionProcessed(section.Title);
+                    return;
+                }
+            }
+        }
+    }
+
+    void FindAndProcessArcWithPoint(int pointIndex)
+    {
+        foreach (var section in sectionLookup.Values)
+        {
+            if (section["FigureType"] == "8")
+            {
+                if (section.ReadInt("Points5") == pointIndex
+                    || section.ReadInt("Points6") == pointIndex)
+                {
+                    EnsureSectionProcessed(section.Title);
+                    return;
+                }
+            }
+        }
+    }
+
+    ShowHideControl[] buttons;
+    PointBase[] points;
+    IFigure[] figures;
+    LabelBase[] labels;
+    IFigure[] staticGraphics;
+
+    void ProcessGeneral(IniFile.Section section)
+    {
+        var workArea = section["WorkArea"];
+        if (workArea != null)
+        {
+            workArea = workArea.Trim('(', ')');
+            var values = workArea.Split(',');
+            var left = values[0];
+            var bottom = values[1];
+            var right = values[2];
+            var top = values[3];
+            var minX = double.Parse(left, CultureInfo.InvariantCulture);
+            var minY = double.Parse(bottom, CultureInfo.InvariantCulture);
+            var maxX = double.Parse(right, CultureInfo.InvariantCulture);
+            var maxY = double.Parse(top, CultureInfo.InvariantCulture);
+            drawing.CoordinateSystem.SetViewport(minX, maxX, minY, maxY);
+        }
+
+        var showAxes = section.ReadBool("ShowAxes", false);
+        var showGrid = section.ReadBool("ShowGrid", false);
+
+        drawing.CoordinateGrid.Visible = showAxes || showGrid;
+        drawing.Background = ReadPaper(section);
+
+        var pointCount = section.ReadInt("PointCount");
+        points = new PointBase[pointCount + 1];
+
+        var figureCount = section.ReadInt("FigureCount");
+        figures = new IFigure[figureCount];
+
+        var labelCount = section.ReadInt("LabelCount");
+        labels = new LabelBase[labelCount + 1];
+
+        var buttonCount = section.ReadInt("ButtonCount");
+        buttons = new ShowHideControl[buttonCount + 1];
+
+        var staticGraphicCount = section.ReadInt("StaticGraphicCount");
+        staticGraphics = new IFigure[staticGraphicCount + 1];
+    }
+
+    /// <summary>
+    /// The paper of a DG drawing: PaperColor1, or with GradientPaper a top-to-bottom
+    /// gradient from PaperColor1 to PaperColor2 (modDrawAux.bas Gradient, Vertical=False
+    /// steps down the rows). A negative color is a Windows system color: white here.
+    /// </summary>
+    static Brush ReadPaper(IniFile.Section section)
+    {
+        if (section["PaperColor1"] == null)
+        {
+            return null;
+        }
+
+        var top = ReadPaperColor(section, "PaperColor1");
+        if (section.ReadBool("GradientPaper", false) && section["PaperColor2"] != null)
+        {
+            var bottom = ReadPaperColor(section, "PaperColor2");
+            if (bottom != top)
+            {
+                return new LinearGradientBrush()
+                {
+                    StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                    EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+                    GradientStops =
                     {
-                        EnsureSectionProcessed(section.Title);
-                        return;
+                        new GradientStop(top, 0),
+                        new GradientStop(bottom, 1)
                     }
-                }
+                };
             }
         }
 
-        void FindAndProcessArcWithPoint(int pointIndex)
-        {
-            foreach (var section in sectionLookup.Values)
-            {
-                if (section["FigureType"] == "8")
-                {
-                    if (section.ReadInt("Points5") == pointIndex
-                        || section.ReadInt("Points6") == pointIndex)
-                    {
-                        EnsureSectionProcessed(section.Title);
-                        return;
-                    }
-                }
-            }
-        }
+        // DG's default paper is white; here that is the theme's paper
+        return top == Colors.White ? null : new SolidColorBrush(top);
+    }
 
-        ShowHideControl[] buttons;
-        PointBase[] points;
-        IFigure[] figures;
-        LabelBase[] labels;
-        IFigure[] staticGraphics;
-
-        void ProcessGeneral(IniFile.Section section)
-        {
-            var workArea = section["WorkArea"];
-            if (workArea != null)
-            {
-                workArea = workArea.Trim('(', ')');
-                var values = workArea.Split(',');
-                var left = values[0];
-                var bottom = values[1];
-                var right = values[2];
-                var top = values[3];
-                var minX = double.Parse(left, CultureInfo.InvariantCulture);
-                var minY = double.Parse(bottom, CultureInfo.InvariantCulture);
-                var maxX = double.Parse(right, CultureInfo.InvariantCulture);
-                var maxY = double.Parse(top, CultureInfo.InvariantCulture);
-                drawing.CoordinateSystem.SetViewport(minX, maxX, minY, maxY);
-            }
-
-            var showAxes = section.ReadBool("ShowAxes", false);
-            var showGrid = section.ReadBool("ShowGrid", false);
-
-            drawing.CoordinateGrid.Visible = showAxes || showGrid;
-            drawing.Background = ReadPaper(section);
-
-            var pointCount = section.ReadInt("PointCount");
-            points = new PointBase[pointCount + 1];
-
-            var figureCount = section.ReadInt("FigureCount");
-            figures = new IFigure[figureCount];
-
-            var labelCount = section.ReadInt("LabelCount");
-            labels = new LabelBase[labelCount + 1];
-
-            var buttonCount = section.ReadInt("ButtonCount");
-            buttons = new ShowHideControl[buttonCount + 1];
-
-            var staticGraphicCount = section.ReadInt("StaticGraphicCount");
-            staticGraphics = new IFigure[staticGraphicCount + 1];
-        }
-
-        /// <summary>
-        /// The paper of a DG drawing: PaperColor1, or with GradientPaper a top-to-bottom
-        /// gradient from PaperColor1 to PaperColor2 (modDrawAux.bas Gradient, Vertical=False
-        /// steps down the rows). A negative color is a Windows system color: white here.
-        /// </summary>
-        static Brush ReadPaper(IniFile.Section section)
-        {
-            if (section["PaperColor1"] == null)
-            {
-                return null;
-            }
-
-            var top = ReadPaperColor(section, "PaperColor1");
-            if (section.ReadBool("GradientPaper", false) && section["PaperColor2"] != null)
-            {
-                var bottom = ReadPaperColor(section, "PaperColor2");
-                if (bottom != top)
-                {
-                    return new LinearGradientBrush()
-                    {
-                        StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                        EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-                        GradientStops =
-                        {
-                            new GradientStop(top, 0),
-                            new GradientStop(bottom, 1)
-                        }
-                    };
-                }
-            }
-
-            // DG's default paper is white; here that is the theme's paper
-            return top == Colors.White ? null : new SolidColorBrush(top);
-        }
-
-        static Color ReadPaperColor(IniFile.Section section, string key)
-        {
-            return section.ReadInt(key) < 0 ? Colors.White : section.ReadColor(key);
-        }
+    static Color ReadPaperColor(IniFile.Section section, string key)
+    {
+        return section.ReadInt(key) < 0 ? Colors.White : section.ReadColor(key);
     }
 }

@@ -5,204 +5,203 @@ using Avalonia.Layout;
 using Avalonia.Interactivity;
 using GuiLabs.Undo;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public abstract partial class LabeledValueEditor : Grid
 {
-    public abstract partial class LabeledValueEditor : Grid
+    public LabeledValueEditor()
     {
-        public LabeledValueEditor()
+        this.ColumnDefinitions.Add(new ColumnDefinition()
         {
-            this.ColumnDefinitions.Add(new ColumnDefinition()
-            {
-                Width = GridLength.Auto,
-                MinWidth = 60,
-                // all rows of a property grid share the width of the label column
-                SharedSizeGroup = "PropertyGridLabel"
-            });
-            this.ColumnDefinitions.Add(new ColumnDefinition());
-            this.HorizontalAlignment = HorizontalAlignment.Stretch;
-            Label = new TextBlock();
-            Label.VerticalAlignment = VerticalAlignment.Center;
-            Label.Margin = new Thickness(2, 0, 12, 0);
-            Label.SetValue(Grid.ColumnProperty, 0);
-            var editor = CreateEditor();
-            editor.SetValue(Grid.ColumnProperty, 1);
-            this.Children.Add(Label);
-            this.Children.Add(editor);
-            this.Loaded += LabeledPropertyEditor_Loaded;
-        }
+            Width = GridLength.Auto,
+            MinWidth = 60,
+            // all rows of a property grid share the width of the label column
+            SharedSizeGroup = "PropertyGridLabel"
+        });
+        this.ColumnDefinitions.Add(new ColumnDefinition());
+        this.HorizontalAlignment = HorizontalAlignment.Stretch;
+        Label = new TextBlock();
+        Label.VerticalAlignment = VerticalAlignment.Center;
+        Label.Margin = new Thickness(2, 0, 12, 0);
+        Label.SetValue(Grid.ColumnProperty, 0);
+        var editor = CreateEditor();
+        editor.SetValue(Grid.ColumnProperty, 1);
+        this.Children.Add(Label);
+        this.Children.Add(editor);
+        this.Loaded += LabeledPropertyEditor_Loaded;
+    }
 
-        /// <summary>Takes the keyboard when it appears, as if its property said <see cref="PropertyGridFocusAttribute"/></summary>
-        public bool FocusWhenLoaded { get; set; }
+    /// <summary>Takes the keyboard when it appears, as if its property said <see cref="PropertyGridFocusAttribute"/></summary>
+    public bool FocusWhenLoaded { get; set; }
 
-        void LabeledPropertyEditor_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (FocusWhenLoaded || Value != null && Value.GetAttribute<PropertyGridFocusAttribute>() != null)
-            {
-                Focus();
-            }
-        }
-
-        protected virtual void Focus()
-        {
-
-        }
-
-        /// <summary>Puts the keyboard into the editor now (a tool panel asking for its first row again)</summary>
-        public void TakeFocus()
+    void LabeledPropertyEditor_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (FocusWhenLoaded || Value != null && Value.GetAttribute<PropertyGridFocusAttribute>() != null)
         {
             Focus();
         }
+    }
 
-        protected abstract UIElement CreateEditor();
+    protected virtual void Focus()
+    {
 
-        public TextBlock Label { get; set; }
+    }
 
-        IValueProvider mValue;
-        public IValueProvider Value
+    /// <summary>Puts the keyboard into the editor now (a tool panel asking for its first row again)</summary>
+    public void TakeFocus()
+    {
+        Focus();
+    }
+
+    protected abstract UIElement CreateEditor();
+
+    public TextBlock Label { get; set; }
+
+    IValueProvider mValue;
+    public IValueProvider Value
+    {
+        get
         {
-            get
+            return mValue;
+        }
+        set
+        {
+            if (mValue != null)
             {
-                return mValue;
+                mValue.ValueChanged -= mValue_ValueChanged;
             }
-            set
+            mValue = value;
+            if (mValue != null)
             {
-                if (mValue != null)
-                {
-                    mValue.ValueChanged -= mValue_ValueChanged;
-                }
-                mValue = value;
-                if (mValue != null)
-                {
-                    mValue.ValueChanged += mValue_ValueChanged;
-                    OnValueSet();
-                }
+                mValue.ValueChanged += mValue_ValueChanged;
+                OnValueSet();
             }
         }
+    }
 
-        public ActionManager ActionManager { get; set; }
+    public ActionManager ActionManager { get; set; }
 
-        protected virtual void mValue_ValueChanged()
+    protected virtual void mValue_ValueChanged()
+    {
+        if (guard)
         {
-            if (guard)
-            {
-                return;
-            }
+            return;
+        }
+        guard = true;
+        UpdateEditor();
+        guard = false;
+    }
+
+    private bool guard = false;
+    protected virtual void OnValueSet()
+    {
+        if (guard)
+        {
+            return;
+        }
+        guard = true;
+        Label.Text = Value.DisplayName;
+        InitCore();
+        UpdateEditor();
+        guard = false;
+    }
+
+    protected virtual void InitCore()
+    {
+    }
+
+    protected virtual object GetValue()
+    {
+        return Value.GetValue<object>();
+    }
+
+    protected T GetValue<T>()
+    {
+        object result = GetValue();
+        T typedResult = default(T);
+        if (result != null)
+        {
+            typedResult = (T)result;
+        }
+        return typedResult;
+    }
+
+    public abstract void UpdateEditor();
+
+    protected virtual ValidationResult Validate(object value)
+    {
+        return new ValidationResult()
+        {
+            IsValid = true,
+            Value = value
+        };
+    }
+
+    /// <summary>
+    /// Whether a run of edits is one undo step: the letters typed into a box, the places a
+    /// slider or a color picker is dragged through. An editor of single choices (a check
+    /// box, a list) says no: each choice is a step.
+    /// </summary>
+    protected virtual bool CoalescesEdits
+    {
+        get { return true; }
+    }
+
+    // the run of edits under way: sets of one run are one undo step (if CoalescesEdits)
+    object editRun = new object();
+
+    /// <summary>
+    /// The user is done with a value (Enter, leaving the box): what is typed next is
+    /// another undo step. Every editor starts with a run of its own, so edits made
+    /// before and after the grid showed something else never join either.
+    /// </summary>
+    protected void EndEditRun()
+    {
+        editRun = new object();
+    }
+
+    protected virtual void SetValue(object value)
+    {
+        if (guard || value == null)
+        {
+            return;
+        }
+
+        var validation = Validate(value);
+        if (!validation.IsValid)
+        {
+            return;
+        }
+        value = validation.Value;
+
+        // Avalonia raises a TextBox's TextChanged through the dispatcher, after UpdateEditor
+        // has set the text and let go of the guard: without this, showing a figure in the
+        // grid recorded one undo step per text row, setting what was already set
+        if (Value != null && Equals(Value.GetValue<object>(), value))
+        {
+            return;
+        }
+
+        if (Value != null && Value.CanSetValue)
+        {
             guard = true;
-            UpdateEditor();
-            guard = false;
-        }
-
-        private bool guard = false;
-        protected virtual void OnValueSet()
-        {
-            if (guard)
+            try
             {
-                return;
-            }
-            guard = true;
-            Label.Text = Value.DisplayName;
-            InitCore();
-            UpdateEditor();
-            guard = false;
-        }
-
-        protected virtual void InitCore()
-        {
-        }
-
-        protected virtual object GetValue()
-        {
-            return Value.GetValue<object>();
-        }
-
-        protected T GetValue<T>()
-        {
-            object result = GetValue();
-            T typedResult = default(T);
-            if (result != null)
-            {
-                typedResult = (T)result;
-            }
-            return typedResult;
-        }
-
-        public abstract void UpdateEditor();
-
-        protected virtual ValidationResult Validate(object value)
-        {
-            return new ValidationResult()
-            {
-                IsValid = true,
-                Value = value
-            };
-        }
-
-        /// <summary>
-        /// Whether a run of edits is one undo step: the letters typed into a box, the places a
-        /// slider or a color picker is dragged through. An editor of single choices (a check
-        /// box, a list) says no: each choice is a step.
-        /// </summary>
-        protected virtual bool CoalescesEdits
-        {
-            get { return true; }
-        }
-
-        // the run of edits under way: sets of one run are one undo step (if CoalescesEdits)
-        object editRun = new object();
-
-        /// <summary>
-        /// The user is done with a value (Enter, leaving the box): what is typed next is
-        /// another undo step. Every editor starts with a run of its own, so edits made
-        /// before and after the grid showed something else never join either.
-        /// </summary>
-        protected void EndEditRun()
-        {
-            editRun = new object();
-        }
-
-        protected virtual void SetValue(object value)
-        {
-            if (guard || value == null)
-            {
-                return;
-            }
-
-            var validation = Validate(value);
-            if (!validation.IsValid)
-            {
-                return;
-            }
-            value = validation.Value;
-
-            // Avalonia raises a TextBox's TextChanged through the dispatcher, after UpdateEditor
-            // has set the text and let go of the guard: without this, showing a figure in the
-            // grid recorded one undo step per text row, setting what was already set
-            if (Value != null && Equals(Value.GetValue<object>(), value))
-            {
-                return;
-            }
-
-            if (Value != null && Value.CanSetValue)
-            {
-                guard = true;
-                try
+                if (ActionManager != null)
                 {
-                    if (ActionManager != null)
-                    {
-                        Actions.SetProperty(ActionManager, Value, value, CoalescesEdits, editRun);
-                    }
-                    else
-                    {
-                        Value.SetValue(value);
-                    }
+                    Actions.SetProperty(ActionManager, Value, value, CoalescesEdits, editRun);
                 }
-                catch (Exception)
+                else
                 {
+                    Value.SetValue(value);
                 }
-                finally
-                {
-                    guard = false;
-                }
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                guard = false;
             }
         }
     }

@@ -3,148 +3,147 @@ using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Media;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class IniFile
 {
-    public class IniFile
+    public IniFile(string[] lines)
     {
-        public IniFile(string[] lines)
-        {
-            Sections = new List<Section>();
-            ReadSections(lines);
-        }
+        Sections = new List<Section>();
+        ReadSections(lines);
+    }
 
-        void ReadSections(string[] lines)
-        {
-            int i = 0;
-            int last = lines.Length - 1;
-            Section currentSection = null;
+    void ReadSections(string[] lines)
+    {
+        int i = 0;
+        int last = lines.Length - 1;
+        Section currentSection = null;
 
-            while (i <= last)
+        while (i <= last)
+        {
+            string currentLine = lines[i].Trim();
+            int currentLineLength = currentLine.Length;
+            if (currentLineLength == 0)
             {
-                string currentLine = lines[i].Trim();
-                int currentLineLength = currentLine.Length;
-                if (currentLineLength == 0)
-                {
-                    // the blank line between sections, and a trailing one
-                    i++;
-                    continue;
-                }
-
-                // A line that is neither a section nor name=value, or a value outside any
-                // section, is skipped: what DG wrote is read as far as it goes. (It threw,
-                // and a file that was a line of text was "Incorrect 'name=value' syntax".)
-                if (currentLine[0] == '[' && currentLine[currentLineLength - 1] == ']' && currentLineLength >= 3)
-                {
-                    currentSection = new Section(currentLine.Substring(1, currentLineLength - 2));
-                    Sections.Add(currentSection);
-                }
-                else
-                {
-                    int equals = currentLine.IndexOf('=');
-                    if (equals >= 1 && currentSection != null)
-                    {
-                        string name = currentLine.Substring(0, equals);
-                        string value = currentLine.Substring(equals + 1, currentLineLength - equals - 1);
-                        currentSection.Entries[name] = value;
-                    }
-                }
-
+                // the blank line between sections, and a trailing one
                 i++;
+                continue;
             }
+
+            // A line that is neither a section nor name=value, or a value outside any
+            // section, is skipped: what DG wrote is read as far as it goes. (It threw,
+            // and a file that was a line of text was "Incorrect 'name=value' syntax".)
+            if (currentLine[0] == '[' && currentLine[currentLineLength - 1] == ']' && currentLineLength >= 3)
+            {
+                currentSection = new Section(currentLine.Substring(1, currentLineLength - 2));
+                Sections.Add(currentSection);
+            }
+            else
+            {
+                int equals = currentLine.IndexOf('=');
+                if (equals >= 1 && currentSection != null)
+                {
+                    string name = currentLine.Substring(0, equals);
+                    string value = currentLine.Substring(equals + 1, currentLineLength - equals - 1);
+                    currentSection.Entries[name] = value;
+                }
+            }
+
+            i++;
+        }
+    }
+
+    public List<Section> Sections { get; private set; }
+
+    public class Section
+    {
+        public Section(string title)
+        {
+            Entries = new Dictionary<string, string>();
+            Title = title;
         }
 
-        public List<Section> Sections { get; private set; }
-
-        public class Section
+        public int GetTitleNumber(string prefix)
         {
-            public Section(string title)
+            return int.Parse(Title.Substring(prefix.Length));
+        }
+
+        public string this[string index]
+        {
+            get
             {
-                Entries = new Dictionary<string, string>();
-                Title = title;
-            }
-
-            public int GetTitleNumber(string prefix)
-            {
-                return int.Parse(Title.Substring(prefix.Length));
-            }
-
-            public string this[string index]
-            {
-                get
-                {
-                    string result = null;
-                    Entries.TryGetValue(index, out result);
-                    return result;
-                }
-            }
-
-            public string ReadString(string key)
-            {
-                return this[key];
-            }
-
-            public double? TryReadDouble(string key)
-            {
-                var value = this[key];
-                if (value == null)
-                {
-                    return null;
-                }
-                return double.Parse(value, CultureInfo.InvariantCulture);
-            }
-
-            public double ReadDouble(string key)
-            {
-                // DG wrote its files with a point as the decimal separator
-                return double.Parse(this[key], CultureInfo.InvariantCulture);
-            }
-
-            public string Title { get; set; }
-
-            public Dictionary<string, string> Entries { get; private set; }
-
-            public int ReadInt(string key)
-            {
-                var value = this[key];
-                if (value == null)
-                {
-                    return 0;
-                }
-
-                return int.Parse(value);
-            }
-
-            public int? TryReadInt(string key)
-            {
-                var value = this[key];
-                if (value == null)
-                {
-                    return null;
-                }
-                return int.Parse(value);
-            }
-
-            public Color ReadColor(string key)
-            {
-                if (this[key] == null)
-                {
-                    return Colors.Black;
-                }
-
-                var number = ReadInt(key);
-                return number.ToColor();
-            }
-
-            public bool ReadBool(string key, bool defaultValue)
-            {
-                bool result = defaultValue;
-                string value = this[key];
-                if (value != null)
-                {
-                    bool.TryParse(value.ToLower(), out result);
-                }
+                string result = null;
+                Entries.TryGetValue(index, out result);
                 return result;
             }
+        }
+
+        public string ReadString(string key)
+        {
+            return this[key];
+        }
+
+        public double? TryReadDouble(string key)
+        {
+            var value = this[key];
+            if (value == null)
+            {
+                return null;
+            }
+            return double.Parse(value, CultureInfo.InvariantCulture);
+        }
+
+        public double ReadDouble(string key)
+        {
+            // DG wrote its files with a point as the decimal separator
+            return double.Parse(this[key], CultureInfo.InvariantCulture);
+        }
+
+        public string Title { get; set; }
+
+        public Dictionary<string, string> Entries { get; private set; }
+
+        public int ReadInt(string key)
+        {
+            var value = this[key];
+            if (value == null)
+            {
+                return 0;
+            }
+
+            return int.Parse(value);
+        }
+
+        public int? TryReadInt(string key)
+        {
+            var value = this[key];
+            if (value == null)
+            {
+                return null;
+            }
+            return int.Parse(value);
+        }
+
+        public Color ReadColor(string key)
+        {
+            if (this[key] == null)
+            {
+                return Colors.Black;
+            }
+
+            var number = ReadInt(key);
+            return number.ToColor();
+        }
+
+        public bool ReadBool(string key, bool defaultValue)
+        {
+            bool result = defaultValue;
+            string value = this[key];
+            if (value != null)
+            {
+                bool.TryParse(value.ToLower(), out result);
+            }
+            return result;
         }
     }
 }

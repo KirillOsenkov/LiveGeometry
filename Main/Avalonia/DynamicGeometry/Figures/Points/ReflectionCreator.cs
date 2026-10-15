@@ -2,120 +2,119 @@
 using System.ComponentModel;
 using Avalonia;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+
+[Category(BehaviorCategories.Transform)]
+[Order(1)]
+public class ReflectionCreator : FigureCreator
 {
-
-    [Category(BehaviorCategories.Transform)]
-    [Order(1)]
-    public class ReflectionCreator : FigureCreator
+    protected override DependencyList InitExpectedDependencies()
     {
-        protected override DependencyList InitExpectedDependencies()
+        return DependencyList.Create<Point, Point>();   // Not used.
+    }
+
+    protected override IReadOnlyList<IFigure> FindExpectedDependencies(Point coordinates)
+    {
+        if (FoundDependencies.Count == 0)
         {
-            return DependencyList.Create<Point, Point>();   // Not used.
+            return Transformer.FindTransformSources(Drawing, coordinates);
         }
 
-        protected override IReadOnlyList<IFigure> FindExpectedDependencies(Point coordinates)
+        if (FoundDependencies.Count == 1)
         {
-            if (FoundDependencies.Count == 0)
-            {
-                return Transformer.FindTransformSources(Drawing, coordinates);
-            }
-
-            if (FoundDependencies.Count == 1)
-            {
-                var source = FoundDependencies[0];
-                return Drawing.Figures.HitTestAll(
-                    coordinates,
-                    f => f.Visible && f.IsHitTestVisible && Transformer.CanFigureBeMirrorForSource(f, source));
-            }
-
-            return System.Array.Empty<IFigure>();
+            var source = FoundDependencies[0];
+            return Drawing.Figures.HitTestAll(
+                coordinates,
+                f => f.Visible && f.IsHitTestVisible && Transformer.CanFigureBeMirrorForSource(f, source));
         }
 
-        protected override bool ExpectingAPoint()
+        return System.Array.Empty<IFigure>();
+    }
+
+    protected override bool ExpectingAPoint()
+    {
+        return false;
+    }
+
+    protected override void AddFoundDependency(IFigure figure)
+    {
+        if (figure != null)
         {
-            return false;
+            FoundDependencies.Add(figure);
         }
+    }
 
-        protected override void AddFoundDependency(IFigure figure)
+
+    // Nothing of a reflection to adjust afterwards: its image is worked out from the
+    // source. (The length panel came up for a side segment that the inversion of a
+    // polygon drew along the source, offering to stretch the source.)
+    protected override void ShowCreatedFigure(IList<IFigure> figures)
+    {
+    }
+
+    protected override IEnumerable<IFigure> CreateFigures()
+    {
+        Check.ElementCount(FoundDependencies, 2);
+        Check.NoNullElements(FoundDependencies);
+
+        var results = Transformer.CreateReflectedFigure(
+            Drawing,
+            FoundDependencies[0],
+            FoundDependencies[1]);
+
+        Check.NotNull(results);
+        Check.NoNullElements(results);
+        foreach (IFigure f in results)
         {
-            if (figure != null)
-            {
-                FoundDependencies.Add(figure);
-            }
+            yield return f;
         }
+    }
 
+    public override string Name
+    {
+        get { return "Reflect"; }
+    }
 
-        // Nothing of a reflection to adjust afterwards: its image is worked out from the
-        // source. (The length panel came up for a side segment that the inversion of a
-        // polygon drew along the source, offering to stretch the source.)
-        protected override void ShowCreatedFigure(IList<IFigure> figures)
+    public override string HintText
+    {
+        get
         {
+            return "Select the source figure.";
         }
+    }
 
-        protected override IEnumerable<IFigure> CreateFigures()
+    public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+    {
+        if (FoundDependencies.Count == 0)
         {
-            Check.ElementCount(FoundDependencies, 2);
-            Check.NoNullElements(FoundDependencies);
-
-            var results = Transformer.CreateReflectedFigure(
-                Drawing,
-                FoundDependencies[0],
-                FoundDependencies[1]);
-
-            Check.NotNull(results);
-            Check.NoNullElements(results);
-            foreach (IFigure f in results)
-            {
-                yield return f;
-            }
+            return "Select the source figure.";
         }
-
-        public override string Name
+        else if (FoundDependencies.Count == 1)
         {
-            get { return "Reflect"; }
+            return Transformer.CanBeInverted(FoundDependencies[0])
+                ? "Select a mirror: a point, line, segment, ray, or circle."
+                : "Select a mirror: a point, line, segment, or ray.";
         }
+        return base.ConstructionHintText(args);
+    }
 
-        public override string HintText
-        {
-            get
-            {
-                return "Select the source figure.";
-            }
-        }
-
-        public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
-        {
-            if (FoundDependencies.Count == 0)
-            {
-                return "Select the source figure.";
-            }
-            else if (FoundDependencies.Count == 1)
-            {
-                return Transformer.CanBeInverted(FoundDependencies[0])
-                    ? "Select a mirror: a point, line, segment, ray, or circle."
-                    : "Select a mirror: a point, line, segment, or ray.";
-            }
-            return base.ConstructionHintText(args);
-        }
-
-        public override FrameworkElement CreateIcon()
-        {
-            return IconBuilder.BuildIcon()
-                .Line(0.5, 0, 0.5, 1)
-                .Polygon(
-                    nameof(AppTheme.ShapeIconFill),
-                    nameof(AppTheme.Ink),
-                    new Point(0.4, 0.2),
-                    new Point(0.4, 0.9),
-                    new Point(0, 0.9))
-                .Polygon(
-                    nameof(AppTheme.ImageFill),
-                    nameof(AppTheme.Ink),
-                    new Point(0.6, 0.2),
-                    new Point(0.6, 0.9),
-                    new Point(1, 0.9))
-                .Canvas;
-        }
+    public override FrameworkElement CreateIcon()
+    {
+        return IconBuilder.BuildIcon()
+            .Line(0.5, 0, 0.5, 1)
+            .Polygon(
+                nameof(AppTheme.ShapeIconFill),
+                nameof(AppTheme.Ink),
+                new Point(0.4, 0.2),
+                new Point(0.4, 0.9),
+                new Point(0, 0.9))
+            .Polygon(
+                nameof(AppTheme.ImageFill),
+                nameof(AppTheme.Ink),
+                new Point(0.6, 0.2),
+                new Point(0.6, 0.9),
+                new Point(1, 0.9))
+            .Canvas;
     }
 }

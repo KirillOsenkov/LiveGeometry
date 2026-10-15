@@ -1,13 +1,12 @@
 ﻿using System;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public interface ICompilerService
 {
-    public interface ICompilerService
-    {
-        CompileResult CompileFunction(Drawing drawing, string functionText, Predicate<IFigure> isFigureAllowed = null);
-        CompileResult CompileExpression(
-            Drawing drawing,
-            string expressionText,
-            Predicate<IFigure> isFigureAllowed);
-    }
+    CompileResult CompileFunction(Drawing drawing, string functionText, Predicate<IFigure> isFigureAllowed = null);
+    CompileResult CompileExpression(
+        Drawing drawing,
+        string expressionText,
+        Predicate<IFigure> isFigureAllowed);
 }

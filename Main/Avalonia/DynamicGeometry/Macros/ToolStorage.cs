@@ -1,37 +1,36 @@
-﻿namespace DynamicGeometry
+﻿namespace DynamicGeometry;
+
+public class ToolStorage
 {
-    public class ToolStorage
+    static ToolStorage instance;
+    public static ToolStorage Instance
     {
-        static ToolStorage instance;
-        public static ToolStorage Instance
+        get
         {
-            get
+            if (instance == null)
             {
-                if (instance == null)
-                {
-                    instance = new ToolStorage();
-                }
-                return instance;
+                instance = new ToolStorage();
             }
-            set
-            {
-                instance = value;
-            }
+            return instance;
         }
-
-        public virtual void AddTool(UserDefinedTool newBehavior)
+        set
         {
-
+            instance = value;
         }
+    }
 
-        public virtual void RenameTool(UserDefinedTool behavior, string newName)
-        {
+    public virtual void AddTool(UserDefinedTool newBehavior)
+    {
 
-        }
+    }
 
-        public virtual void RemoveTool(UserDefinedTool behavior)
-        {
+    public virtual void RenameTool(UserDefinedTool behavior, string newName)
+    {
 
-        }
+    }
+
+    public virtual void RemoveTool(UserDefinedTool behavior)
+    {
+
     }
 }

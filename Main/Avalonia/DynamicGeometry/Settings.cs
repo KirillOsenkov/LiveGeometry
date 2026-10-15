@@ -1,94 +1,93 @@
 ﻿using System.Collections;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public partial class Settings
 {
-    public partial class Settings
+    // Developer Settings
+    public static double DefaultUnitLength = 48;
+    public static double DefaultToolbarFontSize = 11;
+    public static bool ShowIconInTabPanelHeader = true;
+    public static bool UpdateSelectedBehaviorOnTabChange = true;
+    public static bool ShowStyleNameInStylePicker = false;
+    public static bool ScaleTextWithDrawing = false;
+    /// <summary>What a saved drawing says it is; 1 = label offsets in pixels (DrawingDeserializer upgrades older files)</summary>
+    public static double CurrentDrawingVersion = 1;
+
+    /// <summary>
+    /// How many decimals a number is shown with: the default of a label's DecimalsToShow,
+    /// and what the property grid's editors display. Only the display - values keep their
+    /// precision, and a typed number is taken as typed.
+    /// </summary>
+    public static int DisplayDecimals = 2;
+
+    /// <summary>
+    /// Should the orientation of a PointOnFigure on an elliptical figure remain fixed or should it be relative to the orientation of the figure?
+    /// </summary>
+    public static bool PointsOnEllipticalsUseAbsoluteAngle = true;
+
+    static Settings instance = new Settings();
+    public static Settings Instance
     {
-        // Developer Settings
-        public static double DefaultUnitLength = 48;
-        public static double DefaultToolbarFontSize = 11;
-        public static bool ShowIconInTabPanelHeader = true;
-        public static bool UpdateSelectedBehaviorOnTabChange = true;
-        public static bool ShowStyleNameInStylePicker = false;
-        public static bool ScaleTextWithDrawing = false;
-        /// <summary>What a saved drawing says it is; 1 = label offsets in pixels (DrawingDeserializer upgrades older files)</summary>
-        public static double CurrentDrawingVersion = 1;
-
-        /// <summary>
-        /// How many decimals a number is shown with: the default of a label's DecimalsToShow,
-        /// and what the property grid's editors display. Only the display - values keep their
-        /// precision, and a typed number is taken as typed.
-        /// </summary>
-        public static int DisplayDecimals = 2;
-
-        /// <summary>
-        /// Should the orientation of a PointOnFigure on an elliptical figure remain fixed or should it be relative to the orientation of the figure?
-        /// </summary>
-        public static bool PointsOnEllipticalsUseAbsoluteAngle = true;
-
-        static Settings instance = new Settings();
-        public static Settings Instance
+        get
         {
-            get
-            {
-                return instance;
-            }
-            set
-            {
-                instance = value;
-            }
+            return instance;
         }
-
-        public virtual bool AutoLabelPoints { get; set; }
-        public virtual bool ShowFigureExplorer { get; set; }
-        public virtual bool EnableOrtho { get; set; }
-        public virtual bool EnableSnapToGrid { get; set; }
-        public virtual bool EnableSnapToPoint { get; set; }
-        public virtual bool EnableSnapToCenter { get; set; }
-
-        /// <summary>
-        /// Whether a tool that needs a point offers the panel to type its coordinates. Off by
-        /// default: it is a niche way to place a point and was in the way of every segment.
-        /// </summary>
-        public virtual bool EnablePointByCoordinates { get; set; }
-        public virtual bool HideHints { get; set; }
-
-        private double cursorTolerance = 5;
-        public virtual double CursorTolerance
+        set
         {
-            get
-            {
-                return cursorTolerance;
-            }
-            set
-            {
-                cursorTolerance = value;
-            }
+            instance = value;
         }
-
-        string pointAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        public virtual string PointAlphabet
-        {
-            get
-            {
-                return pointAlphabet;
-            }
-            set
-            {
-                pointAlphabet = value;
-            }
-        }
-
-        // Polar
-        public virtual bool EnablePolar { get; set; }
-        public virtual PolarValue PolarIncrement { get; set; }  // current polar increment
-        public virtual string TempNewIncrement { get; set; }    // polar increment to add in IEnumerable PolarItems
-        public virtual IEnumerable PolarItems { get; set; }
-
-        // Length and Angle which were input by User in Traction Mode
-        public virtual bool UserModeLength { get; set; }
-        public virtual bool UserModeAngle { get; set; }
-        public virtual double UserAngle { get; set; }
-        public virtual double UserLength { get; set; }
     }
+
+    public virtual bool AutoLabelPoints { get; set; }
+    public virtual bool ShowFigureExplorer { get; set; }
+    public virtual bool EnableOrtho { get; set; }
+    public virtual bool EnableSnapToGrid { get; set; }
+    public virtual bool EnableSnapToPoint { get; set; }
+    public virtual bool EnableSnapToCenter { get; set; }
+
+    /// <summary>
+    /// Whether a tool that needs a point offers the panel to type its coordinates. Off by
+    /// default: it is a niche way to place a point and was in the way of every segment.
+    /// </summary>
+    public virtual bool EnablePointByCoordinates { get; set; }
+    public virtual bool HideHints { get; set; }
+
+    private double cursorTolerance = 5;
+    public virtual double CursorTolerance
+    {
+        get
+        {
+            return cursorTolerance;
+        }
+        set
+        {
+            cursorTolerance = value;
+        }
+    }
+
+    string pointAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public virtual string PointAlphabet
+    {
+        get
+        {
+            return pointAlphabet;
+        }
+        set
+        {
+            pointAlphabet = value;
+        }
+    }
+
+    // Polar
+    public virtual bool EnablePolar { get; set; }
+    public virtual PolarValue PolarIncrement { get; set; }  // current polar increment
+    public virtual string TempNewIncrement { get; set; }    // polar increment to add in IEnumerable PolarItems
+    public virtual IEnumerable PolarItems { get; set; }
+
+    // Length and Angle which were input by User in Traction Mode
+    public virtual bool UserModeLength { get; set; }
+    public virtual bool UserModeAngle { get; set; }
+    public virtual double UserAngle { get; set; }
+    public virtual double UserLength { get; set; }
 }

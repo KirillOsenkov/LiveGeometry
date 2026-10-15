@@ -1,67 +1,66 @@
 using Avalonia;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class PerpendicularLine : PerpendicularLineBase
 {
-    public class PerpendicularLine : PerpendicularLineBase
+    protected override string Kind
     {
-        protected override string Kind
+        get
         {
-            get
-            {
-                return "Perpendicular line";
-            }
+            return "Perpendicular line";
         }
+    }
 
-        /// <summary>"to segment AB through E"</summary>
-        public override string Construction
+    /// <summary>"to segment AB through E"</summary>
+    public override string Construction
+    {
+        get
         {
-            get
+            if (Dependencies.Count < 2)
             {
-                if (Dependencies.Count < 2)
-                {
-                    return null;
-                }
-
-                return "to " + ConstructionText.Of(Dependencies[0]) + " through " + ConstructionText.Of(Dependencies[1]);
+                return null;
             }
-        }
 
-        public override PointPair Coordinates
+            return "to " + ConstructionText.Of(Dependencies[0]) + " through " + ConstructionText.Of(Dependencies[1]);
+        }
+    }
+
+    public override PointPair Coordinates
+    {
+        get
         {
-            get
+            var line = this.Line(0);
+            if (Flipped) line = new PointPair(line.P2,line.P1);
+            var point = Point(1);
+            var coordinates = Math.GetPerpendicularLine(line, point);
+            return coordinates;
+        }
+    }
+
+    protected override bool TryGetRightAngle(out Point vertex, out PointPair baseLine, out Point pointAcross)
+    {
+        // where this line crosses the one it is perpendicular to - if it does:
+        // the foot can be beyond the end of a segment
+        baseLine = this.Line(0);
+        pointAcross = Point(1);
+        vertex = Math.GetProjectionPoint(pointAcross, baseLine);
+        return Dependencies[0].Visible && BaseFigure.HitTest(vertex) != null;
+    }
+
+    // a vector by the segment inside it: its arrowhead is a polygon that has no points
+    // while the file is read, and the mark is about where the vector ends, not its head
+    protected override IFigure BaseFigure
+    {
+        get
+        {
+            var vector = Dependencies[0] as Vector;
+            if (vector != null)
             {
-                var line = this.Line(0);
-                if (Flipped) line = new PointPair(line.P2,line.P1);
-                var point = Point(1);
-                var coordinates = Math.GetPerpendicularLine(line, point);
-                return coordinates;
+                return vector.Line;
             }
-        }
 
-        protected override bool TryGetRightAngle(out Point vertex, out PointPair baseLine, out Point pointAcross)
-        {
-            // where this line crosses the one it is perpendicular to - if it does:
-            // the foot can be beyond the end of a segment
-            baseLine = this.Line(0);
-            pointAcross = Point(1);
-            vertex = Math.GetProjectionPoint(pointAcross, baseLine);
-            return Dependencies[0].Visible && BaseFigure.HitTest(vertex) != null;
-        }
-
-        // a vector by the segment inside it: its arrowhead is a polygon that has no points
-        // while the file is read, and the mark is about where the vector ends, not its head
-        protected override IFigure BaseFigure
-        {
-            get
-            {
-                var vector = Dependencies[0] as Vector;
-                if (vector != null)
-                {
-                    return vector.Line;
-                }
-
-                return Dependencies[0];
-            }
+            return Dependencies[0];
         }
     }
 }

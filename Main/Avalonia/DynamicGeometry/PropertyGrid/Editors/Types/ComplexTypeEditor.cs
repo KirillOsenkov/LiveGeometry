@@ -3,200 +3,199 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry
-{
-    public class ComplexTypeEditorFactory : BaseValueEditorFactory<ComplexTypeEditor>
-    {
-        public ComplexTypeEditorFactory()
-        {
-            LoadOrder = 3;
-        }
+namespace DynamicGeometry;
 
-        public override bool SupportsValue(IValueProvider property)
+public class ComplexTypeEditorFactory : BaseValueEditorFactory<ComplexTypeEditor>
+{
+    public ComplexTypeEditorFactory()
+    {
+        LoadOrder = 3;
+    }
+
+    public override bool SupportsValue(IValueProvider property)
+    {
+        return true;
+    }
+}
+
+public class ComplexTypeEditor : PropertyGrid, IValueEditor
+{
+    public ComplexTypeEditor()
+    {
+        ValueDiscoveryStrategy = new ExcludeByDefaultValueDiscoveryStrategy();
+        Expanded = false;
+        this.Margin = new Thickness(32, 0, 0, 0);
+    }
+
+    /// <summary>
+    /// Passed on to the rows there are already: an editor that starts expanded (a line's
+    /// Equation) makes its rows when it gets its value, which is before it gets this -
+    /// and they recorded nothing, so that m and b of a line were edited past undo.
+    /// </summary>
+    public override GuiLabs.Undo.ActionManager ActionManager
+    {
+        get
         {
-            return true;
+            return base.ActionManager;
+        }
+        set
+        {
+            base.ActionManager = value;
+            if (CurrentEditors == null)
+            {
+                return;
+            }
+
+            foreach (var editor in CurrentEditors)
+            {
+                if (editor is IValueEditor valueEditor)
+                {
+                    valueEditor.ActionManager = value;
+                }
+            }
         }
     }
 
-    public class ComplexTypeEditor : PropertyGrid, IValueEditor
+    IValueProvider mValue;
+    public IValueProvider Value
     {
-        public ComplexTypeEditor()
+        get
         {
-            ValueDiscoveryStrategy = new ExcludeByDefaultValueDiscoveryStrategy();
-            Expanded = false;
-            this.Margin = new Thickness(32, 0, 0, 0);
+            return mValue;
         }
-
-        /// <summary>
-        /// Passed on to the rows there are already: an editor that starts expanded (a line's
-        /// Equation) makes its rows when it gets its value, which is before it gets this -
-        /// and they recorded nothing, so that m and b of a line were edited past undo.
-        /// </summary>
-        public override GuiLabs.Undo.ActionManager ActionManager
+        set
         {
-            get
+            if (mValue == value)
             {
-                return base.ActionManager;
-            }
-            set
-            {
-                base.ActionManager = value;
-                if (CurrentEditors == null)
-                {
-                    return;
-                }
-
-                foreach (var editor in CurrentEditors)
-                {
-                    if (editor is IValueEditor valueEditor)
-                    {
-                        valueEditor.ActionManager = value;
-                    }
-                }
-            }
-        }
-
-        IValueProvider mValue;
-        public IValueProvider Value
-        {
-            get
-            {
-                return mValue;
-            }
-            set
-            {
-                if (mValue == value)
-                {
-                    return;
-                }
-                if (mValue != null)
-                {
-                    mValue.ValueChanged -= mValue_ValueChanged;
-                }
-                mValue = value;
-                if (mValue != null)
-                {
-                    mValue.ValueChanged += mValue_ValueChanged;
-                    var attribute = value.GetAttribute<PropertyGridComplexTypeStateAttribute>();
-                    if (attribute != null && attribute.State == ComplexTypeState.Expanded)
-                    {
-                        mExpanded = true;
-                    }
-                }
-                OnValueSet(mValue);
-            }
-        }
-
-        void mValue_ValueChanged()
-        {
-            OnValueSet(mValue);
-        }
-
-        void OnValueSet(IValueProvider value)
-        {
-            object selection = null;
-            if (value != null)
-            {
-                selection = value.GetValue<object>();
-            }
-            Selection = selection;
-        }
-
-        const int iconSize = 10;
-        const double glyphSize = 0.2;
-
-        Canvas GetPlusIcon()
-        {
-            Canvas canvas = GetMinusIcon();
-            Line line = new Line();
-            line.X1 = 5;
-            line.X2 = 5;
-            line.Y1 = 3;
-            line.Y2 = 8;
-            canvas.Width = 10;
-            canvas.Height = canvas.Width;
-            canvas.Children.Add(line);
-            return canvas;
-        }
-
-        Canvas GetMinusIcon()
-        {
-            Canvas canvas = new Canvas();
-            Line line = new Line();
-            line.X1 = 3;
-            line.X2 = 8;
-            line.Y1 = 5;
-            line.Y2 = 5;
-            canvas.Width = 10;
-            canvas.Height = canvas.Width;
-            canvas.Children.Add(line);
-            return canvas;
-        }
-
-        Border expandCollapse;
-
-        protected override void AddHeader()
-        {
-            StackPanel header = new StackPanel();
-            header.Margin = new Thickness(-32, 0, 0, 0);
-            header.Orientation = Orientation.Horizontal;
-            header.VerticalAlignment = VerticalAlignment.Center;
-            expandCollapse = new Border();
-            expandCollapse.BindTheme(Border.BackgroundProperty, nameof(AppTheme.InputBackground));
-            expandCollapse.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.TabLine));
-            expandCollapse.BorderThickness = new Thickness(1);
-            expandCollapse.PointerPressed += expandCollapse_Click;
-            UpdateExpandCollapseGlyph();
-            expandCollapse.HorizontalAlignment = HorizontalAlignment.Center;
-            expandCollapse.VerticalAlignment = VerticalAlignment.Center;
-            expandCollapse.Margin = new Thickness(4);
-            expandCollapse.Padding = new Thickness();
-            header.Children.Add(expandCollapse);
-
-            TextBlock name = new TextBlock();
-            name.Margin = new Thickness(4, 0, 4, 0);
-            name.VerticalAlignment = VerticalAlignment.Center;
-            name.Text = Value.DisplayName;
-            header.Children.Add(name);
-
-            object value = Value.GetValue<object>();
-            string contentsText = (value ?? "").ToString();
-            if (!string.IsNullOrEmpty(contentsText) && value != null && contentsText != value.GetType().ToString())
-            {
-                TextBlock contents = new TextBlock();
-                contents.MaxWidth = 200;
-                contents.MaxHeight = 30;
-                contents.Margin = new Thickness(16, 0, 0, 0);
-                contents.VerticalAlignment = VerticalAlignment.Center;
-                contents.Text = contentsText;
-                header.Children.Add(contents);
-            }
-            this.Children.Add(header);
-        }
-
-        protected override void AddChildren()
-        {
-            var controls = CreateObjectControls(Selection);
-            if (controls.IsEmpty())
-            {
-                expandCollapse.Visibility = Visibility.Collapsed;
                 return;
             }
-            foreach (var control in controls)
+            if (mValue != null)
             {
-                this.Children.Add(control);
+                mValue.ValueChanged -= mValue_ValueChanged;
             }
+            mValue = value;
+            if (mValue != null)
+            {
+                mValue.ValueChanged += mValue_ValueChanged;
+                var attribute = value.GetAttribute<PropertyGridComplexTypeStateAttribute>();
+                if (attribute != null && attribute.State == ComplexTypeState.Expanded)
+                {
+                    mExpanded = true;
+                }
+            }
+            OnValueSet(mValue);
         }
+    }
 
-        void expandCollapse_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-        {
-            Expanded = !Expanded;
-            UpdateExpandCollapseGlyph();
-        }
+    void mValue_ValueChanged()
+    {
+        OnValueSet(mValue);
+    }
 
-        void UpdateExpandCollapseGlyph()
+    void OnValueSet(IValueProvider value)
+    {
+        object selection = null;
+        if (value != null)
         {
-            expandCollapse.Child = Expanded ? GetMinusIcon() : GetPlusIcon();
+            selection = value.GetValue<object>();
         }
+        Selection = selection;
+    }
+
+    const int iconSize = 10;
+    const double glyphSize = 0.2;
+
+    Canvas GetPlusIcon()
+    {
+        Canvas canvas = GetMinusIcon();
+        Line line = new Line();
+        line.X1 = 5;
+        line.X2 = 5;
+        line.Y1 = 3;
+        line.Y2 = 8;
+        canvas.Width = 10;
+        canvas.Height = canvas.Width;
+        canvas.Children.Add(line);
+        return canvas;
+    }
+
+    Canvas GetMinusIcon()
+    {
+        Canvas canvas = new Canvas();
+        Line line = new Line();
+        line.X1 = 3;
+        line.X2 = 8;
+        line.Y1 = 5;
+        line.Y2 = 5;
+        canvas.Width = 10;
+        canvas.Height = canvas.Width;
+        canvas.Children.Add(line);
+        return canvas;
+    }
+
+    Border expandCollapse;
+
+    protected override void AddHeader()
+    {
+        StackPanel header = new StackPanel();
+        header.Margin = new Thickness(-32, 0, 0, 0);
+        header.Orientation = Orientation.Horizontal;
+        header.VerticalAlignment = VerticalAlignment.Center;
+        expandCollapse = new Border();
+        expandCollapse.BindTheme(Border.BackgroundProperty, nameof(AppTheme.InputBackground));
+        expandCollapse.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.TabLine));
+        expandCollapse.BorderThickness = new Thickness(1);
+        expandCollapse.PointerPressed += expandCollapse_Click;
+        UpdateExpandCollapseGlyph();
+        expandCollapse.HorizontalAlignment = HorizontalAlignment.Center;
+        expandCollapse.VerticalAlignment = VerticalAlignment.Center;
+        expandCollapse.Margin = new Thickness(4);
+        expandCollapse.Padding = new Thickness();
+        header.Children.Add(expandCollapse);
+
+        TextBlock name = new TextBlock();
+        name.Margin = new Thickness(4, 0, 4, 0);
+        name.VerticalAlignment = VerticalAlignment.Center;
+        name.Text = Value.DisplayName;
+        header.Children.Add(name);
+
+        object value = Value.GetValue<object>();
+        string contentsText = (value ?? "").ToString();
+        if (!string.IsNullOrEmpty(contentsText) && value != null && contentsText != value.GetType().ToString())
+        {
+            TextBlock contents = new TextBlock();
+            contents.MaxWidth = 200;
+            contents.MaxHeight = 30;
+            contents.Margin = new Thickness(16, 0, 0, 0);
+            contents.VerticalAlignment = VerticalAlignment.Center;
+            contents.Text = contentsText;
+            header.Children.Add(contents);
+        }
+        this.Children.Add(header);
+    }
+
+    protected override void AddChildren()
+    {
+        var controls = CreateObjectControls(Selection);
+        if (controls.IsEmpty())
+        {
+            expandCollapse.Visibility = Visibility.Collapsed;
+            return;
+        }
+        foreach (var control in controls)
+        {
+            this.Children.Add(control);
+        }
+    }
+
+    void expandCollapse_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Expanded = !Expanded;
+        UpdateExpandCollapseGlyph();
+    }
+
+    void UpdateExpandCollapseGlyph()
+    {
+        expandCollapse.Child = Expanded ? GetMinusIcon() : GetPlusIcon();
     }
 }

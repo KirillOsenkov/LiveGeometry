@@ -1,11 +1,10 @@
 ﻿using Avalonia;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public interface ILinearFigure : IFigure
 {
-    public interface ILinearFigure : IFigure
-    {
-        double GetNearestParameterFromPoint(Point point);
-        Point GetPointFromParameter(double parameter);
-        Tuple<double, double> GetParameterDomain();
-    }
+    double GetNearestParameterFromPoint(Point point);
+    Point GetPointFromParameter(double parameter);
+    Tuple<double, double> GetParameterDomain();
 }

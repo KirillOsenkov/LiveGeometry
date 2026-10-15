@@ -2,238 +2,237 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+/// <summary>
+/// A figure given by expressions (a point by coordinates, a circle or a line by
+/// equation): it depends on the figures they name, and on nothing else
+/// </summary>
+public interface IExpressionOwner
 {
-    /// <summary>
-    /// A figure given by expressions (a point by coordinates, a circle or a line by
-    /// equation): it depends on the figures they name, and on nothing else
-    /// </summary>
-    public interface IExpressionOwner
+    /// <summary>Always in the same order (X, then Y), which is the order the dependencies are listed in</summary>
+    IEnumerable<DrawingExpression> Expressions { get; }
+}
+
+public class DrawingExpression : IValueProvider
+{
+    public DrawingExpression(IFigure parent)
     {
-        /// <summary>Always in the same order (X, then Y), which is the order the dependencies are listed in</summary>
-        IEnumerable<DrawingExpression> Expressions { get; }
+        ParentFigure = parent;
+        IsValid = false;
     }
 
-    public class DrawingExpression : IValueProvider
+    public DrawingExpression(IFigure parent, string name, string expressionText)
     {
-        public DrawingExpression(IFigure parent)
+        ParentFigure = parent;
+        Name = name;
+        Text = expressionText;
+        IsValid = false;
+    }
+
+    public IFigure ParentFigure { get; private set; }
+
+    Func<double> mValue;
+    public Func<double> Value
+    {
+        get
         {
-            ParentFigure = parent;
-            IsValid = false;
+            if (mValue == null)
+            {
+                Recalculate();
+            }
+            return mValue;
+        }
+        set
+        {
+            mValue = value;
+            IsValid = value == null;
+            // (a value given as a delegate has no tree)
+            Bound = null;
+        }
+    }
+    public string Text { get; set; }
+    public bool IsValid { get; private set; }
+    List<IFigure> Dependencies { get; set; }
+
+    /// <summary>The tree the text compiled to last, its names resolved (<see cref="LinearForms"/>); null when it didn't</summary>
+    public BoundExpression Bound { get; private set; }
+
+    public void Recalculate()
+    {
+        var result = Compiler.Instance.CompileExpression(
+             ParentFigure.Drawing,
+             Text,
+             f => !f.DependsOn(ParentFigure));
+        IsValid = result.IsSuccess;
+        if (!IsValid)
+        {
+            // What it compiled to before goes too: it held the figures it named then, one
+            // of which may have left (a segment converted to a ray, [AB.Length] then
+            // failing), and the point went on at its old place until the file was read
+            // again, where it was nowhere. (A text typed into the grid that doesn't
+            // compile never gets here: the editor keeps it until it does.)
+            mValue = null;
+            Bound = null;
+            return;
         }
 
-        public DrawingExpression(IFigure parent, string name, string expressionText)
+        mValue = result.Expression;
+        Bound = result.Bound;
+        Dependencies = result.Dependencies;
+
+        // The figure depends on what its expressions name, all of them, listed in the
+        // order of the expressions (X's, then Y's). Not "this one's old ones out, its new
+        // ones in at the end": a figure another expression names too went out with them
+        // (X = A.X, Y = A.Y, then X edited: the point no longer followed A, nor went
+        // with it), and undo of an edit left the list in another order than it was.
+        var named = new List<IFigure>();
+        var expressions = ParentFigure is IExpressionOwner owner ? owner.Expressions : new[] { this };
+        var figures = ParentFigure.Drawing.Figures;
+
+        // A figure being read is asked for its place before what it names is in the
+        // drawing (an intersection works itself out as it is read): an expression that
+        // names a figure doesn't compile yet, and the others, compiling, set the
+        // dependencies to what they name - nothing. Its dependencies are then what the
+        // file says until all of them compile. (A line by equation x = P.X lost P in a
+        // file saved while the intersection on it was there, and no longer followed it.)
+        if (!figures.Contains(ParentFigure)
+            && expressions.Any(expression => expression != null
+                && expression != this
+                && expression.Dependencies == null
+                && !expression.Text.IsEmpty()))
         {
-            ParentFigure = parent;
-            Name = name;
-            Text = expressionText;
-            IsValid = false;
+            return;
         }
 
-        public IFigure ParentFigure { get; private set; }
-
-        Func<double> mValue;
-        public Func<double> Value
+        ParentFigure.UnregisterFromDependencies();
+        foreach (var expression in expressions)
         {
-            get
+            if (expression == null || expression.Dependencies == null)
             {
-                if (mValue == null)
+                continue;
+            }
+
+            foreach (var dependency in expression.Dependencies)
+            {
+                // another expression may still name a figure that has left: when a
+                // point is replaced, the expressions are compiled again one by one
+                if ((expression == this || figures.ContainsRecursively(dependency)) && !named.Contains(dependency))
                 {
-                    Recalculate();
-                }
-                return mValue;
-            }
-            set
-            {
-                mValue = value;
-                IsValid = value == null;
-                // (a value given as a delegate has no tree)
-                Bound = null;
-            }
-        }
-        public string Text { get; set; }
-        public bool IsValid { get; private set; }
-        List<IFigure> Dependencies { get; set; }
-
-        /// <summary>The tree the text compiled to last, its names resolved (<see cref="LinearForms"/>); null when it didn't</summary>
-        public BoundExpression Bound { get; private set; }
-
-        public void Recalculate()
-        {
-            var result = Compiler.Instance.CompileExpression(
-                 ParentFigure.Drawing,
-                 Text,
-                 f => !f.DependsOn(ParentFigure));
-            IsValid = result.IsSuccess;
-            if (!IsValid)
-            {
-                // What it compiled to before goes too: it held the figures it named then, one
-                // of which may have left (a segment converted to a ray, [AB.Length] then
-                // failing), and the point went on at its old place until the file was read
-                // again, where it was nowhere. (A text typed into the grid that doesn't
-                // compile never gets here: the editor keeps it until it does.)
-                mValue = null;
-                Bound = null;
-                return;
-            }
-
-            mValue = result.Expression;
-            Bound = result.Bound;
-            Dependencies = result.Dependencies;
-
-            // The figure depends on what its expressions name, all of them, listed in the
-            // order of the expressions (X's, then Y's). Not "this one's old ones out, its new
-            // ones in at the end": a figure another expression names too went out with them
-            // (X = A.X, Y = A.Y, then X edited: the point no longer followed A, nor went
-            // with it), and undo of an edit left the list in another order than it was.
-            var named = new List<IFigure>();
-            var expressions = ParentFigure is IExpressionOwner owner ? owner.Expressions : new[] { this };
-            var figures = ParentFigure.Drawing.Figures;
-
-            // A figure being read is asked for its place before what it names is in the
-            // drawing (an intersection works itself out as it is read): an expression that
-            // names a figure doesn't compile yet, and the others, compiling, set the
-            // dependencies to what they name - nothing. Its dependencies are then what the
-            // file says until all of them compile. (A line by equation x = P.X lost P in a
-            // file saved while the intersection on it was there, and no longer followed it.)
-            if (!figures.Contains(ParentFigure)
-                && expressions.Any(expression => expression != null
-                    && expression != this
-                    && expression.Dependencies == null
-                    && !expression.Text.IsEmpty()))
-            {
-                return;
-            }
-
-            ParentFigure.UnregisterFromDependencies();
-            foreach (var expression in expressions)
-            {
-                if (expression == null || expression.Dependencies == null)
-                {
-                    continue;
-                }
-
-                foreach (var dependency in expression.Dependencies)
-                {
-                    // another expression may still name a figure that has left: when a
-                    // point is replaced, the expressions are compiled again one by one
-                    if ((expression == this || figures.ContainsRecursively(dependency)) && !named.Contains(dependency))
-                    {
-                        named.Add(dependency);
-                    }
-                }
-            }
-
-            ParentFigure.Dependencies.SetItems(named);
-
-            // Do the following only when the ParentFigure is already in Drawing.
-            // RegisterWithDependencies gets called when the ParentFigure is added to Drawing.
-            // Otherwise the dependency.Dependents will list the ParentFigure twice
-            // and ultimately cause a consistency error.        - D.H.
-            if (ParentFigure.Drawing.Figures.Contains(ParentFigure))
-            {
-                ParentFigure.RegisterWithDependencies();
-
-                // a file being read is recalculated once all of it is in
-                // (DrawingDeserializer.ReadDrawing), not after every expression it compiles
-                if (!ParentFigure.Drawing.IsReading)
-                {
-                    ParentFigure.RecalculateAllDependents();
+                    named.Add(dependency);
                 }
             }
         }
 
-        /// <summary>The text follows renamed figures; the compiled value holds the figures already</summary>
-        public void RenameInExpression(ExpressionRenamer renamer)
-        {
-            Text = renamer.Rewrite(Text, isFunction: false);
-        }
+        ParentFigure.Dependencies.SetItems(named);
 
-        /// <summary>
-        /// Compiles the text again (<see cref="IRenamableExpressions.RebindExpressions"/>). One
-        /// that no longer compiles takes the figure out now, not at the next recalculation
-        /// (not from inside <see cref="Recalculate"/>, which the figure's recalculation calls).
-        /// </summary>
-        public void Rebind()
+        // Do the following only when the ParentFigure is already in Drawing.
+        // RegisterWithDependencies gets called when the ParentFigure is added to Drawing.
+        // Otherwise the dependency.Dependents will list the ParentFigure twice
+        // and ultimately cause a consistency error.        - D.H.
+        if (ParentFigure.Drawing.Figures.Contains(ParentFigure))
         {
-            if (Text.IsEmpty())
-            {
-                return;
-            }
+            ParentFigure.RegisterWithDependencies();
 
-            Recalculate();
-            var drawing = ParentFigure.Drawing;
-            if (!IsValid && drawing != null && !drawing.IsReading && drawing.Figures.Contains(ParentFigure))
+            // a file being read is recalculated once all of it is in
+            // (DrawingDeserializer.ReadDrawing), not after every expression it compiles
+            if (!ParentFigure.Drawing.IsReading)
             {
                 ParentFigure.RecalculateAllDependents();
             }
         }
+    }
 
-        public override string ToString()
+    /// <summary>The text follows renamed figures; the compiled value holds the figures already</summary>
+    public void RenameInExpression(ExpressionRenamer renamer)
+    {
+        Text = renamer.Rewrite(Text, isFunction: false);
+    }
+
+    /// <summary>
+    /// Compiles the text again (<see cref="IRenamableExpressions.RebindExpressions"/>). One
+    /// that no longer compiles takes the figure out now, not at the next recalculation
+    /// (not from inside <see cref="Recalculate"/>, which the figure's recalculation calls).
+    /// </summary>
+    public void Rebind()
+    {
+        if (Text.IsEmpty())
         {
-            return Text;
+            return;
         }
 
-        public event Action ValueChanged;
-
-        public void RaiseValueChanged()
+        Recalculate();
+        var drawing = ParentFigure.Drawing;
+        if (!IsValid && drawing != null && !drawing.IsReading && drawing.Figures.Contains(ParentFigure))
         {
-            if (ValueChanged != null)
-            {
-                ValueChanged();
-            }
+            ParentFigure.RecalculateAllDependents();
         }
+    }
 
-        public T GetValue<T>()
+    public override string ToString()
+    {
+        return Text;
+    }
+
+    public event Action ValueChanged;
+
+    public void RaiseValueChanged()
+    {
+        if (ValueChanged != null)
         {
-            return (T)(object)Text;
+            ValueChanged();
         }
+    }
 
-        public bool CanSetValue
-        {
-            get { return true; }
-        }
+    public T GetValue<T>()
+    {
+        return (T)(object)Text;
+    }
 
-        public void SetValue<T>(T value)
-        {
-            Text = value.ToString();
-            Recalculate();
-            RaiseValueChanged();
+    public bool CanSetValue
+    {
+        get { return true; }
+    }
 
-            // "at (A.X + 1, 2)" in the grid's header follows the typing
-            (ParentFigure as FigureBase)?.RaiseConstructionChanged();
-        }
+    public void SetValue<T>(T value)
+    {
+        Text = value.ToString();
+        Recalculate();
+        RaiseValueChanged();
 
-        public object Parent
-        {
-            get { return this; }
-        }
+        // "at (A.X + 1, 2)" in the grid's header follows the typing
+        (ParentFigure as FigureBase)?.RaiseConstructionChanged();
+    }
 
-        public Type Type
-        {
-            get { return typeof(DrawingExpression); }
-        }
+    public object Parent
+    {
+        get { return this; }
+    }
 
-        public string Name { get; set; }
+    public Type Type
+    {
+        get { return typeof(DrawingExpression); }
+    }
 
-        public string DisplayName
-        {
-            get { return Name; }
-        }
+    public string Name { get; set; }
 
-        public T GetAttribute<T>() where T : Attribute
-        {
-            return null;
-        }
+    public string DisplayName
+    {
+        get { return Name; }
+    }
 
-        public System.Collections.Generic.IEnumerable<T> GetAttributes<T>() where T : Attribute
-        {
-            return null;
-        }
+    public T GetAttribute<T>() where T : Attribute
+    {
+        return null;
+    }
 
-        public string GetSignature()
-        {
-            return Name;
-        }
+    public System.Collections.Generic.IEnumerable<T> GetAttributes<T>() where T : Attribute
+    {
+        return null;
+    }
+
+    public string GetSignature()
+    {
+        return Name;
     }
 }

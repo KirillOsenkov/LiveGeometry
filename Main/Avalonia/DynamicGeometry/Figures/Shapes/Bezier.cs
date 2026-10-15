@@ -4,187 +4,186 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Controls.Shapes;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class Bezier : ShapeBase<Path>, ILinearFigure
 {
-    public class Bezier : ShapeBase<Path>, ILinearFigure
+    public PathFigure Figure { get; set; }
+    public BezierSegment BezierShape { get; set; }
+    Math.BezierInfo Info;
+
+    // the same curve either way
+    protected override IReadOnlyList<string> NamesFromDependencies()
     {
-        public PathFigure Figure { get; set; }
-        public BezierSegment BezierShape { get; set; }
-        Math.BezierInfo Info;
+        return NamesFromPoints(PointOrder.Reversible, maxCount: 4);
+    }
 
-        // the same curve either way
-        protected override IReadOnlyList<string> NamesFromDependencies()
+    protected override string Kind
+    {
+        get
         {
-            return NamesFromPoints(PointOrder.Reversible, maxCount: 4);
+            return "Bezier curve";
         }
+    }
 
-        protected override string Kind
+    /// <summary>A name: "on Bezier curve ABCD"</summary>
+    public override string Noun
+    {
+        get
         {
-            get
+            return "Bezier curve";
+        }
+    }
+
+    /// <summary>Named as curves are, when no points name it: c, d...</summary>
+    protected override string FirstLetter
+    {
+        get
+        {
+            return "c";
+        }
+    }
+
+    /// <summary>
+    /// The curve worked out, also before its first <see cref="Recalculate"/>: a point
+    /// on it that is read from a file asks where it is while the file is still being
+    /// read (it threw, and opening such a drawing showed an error)
+    /// </summary>
+    Math.BezierInfo CurveInfo
+    {
+        get
+        {
+            if (Info.Points == null && Dependencies.Count == 4)
             {
-                return "Bezier curve";
+                Recalculate();
             }
+
+            return Info;
         }
+    }
 
-        /// <summary>A name: "on Bezier curve ABCD"</summary>
-        public override string Noun
+    public override void Recalculate()
+    {
+        var p0 = Point(0);
+        var p1 = Point(1);
+        var p2 = Point(2);
+        var p3 = Point(3);
+
+        Info = new Math.BezierInfo(p0, p1, p2, p3);
+    }
+
+    public override void UpdateVisual()
+    {
+        var p0 = Point(0);
+        var p1 = Point(1);
+        var p2 = Point(2);
+        var p3 = Point(3);
+
+        Figure.StartPoint = ToPhysical(p0);
+        BezierShape.Point1 = ToPhysical(p1);
+        BezierShape.Point2 = ToPhysical(p2);
+        BezierShape.Point3 = ToPhysical(p3);
+
+        ShapeStyle shapeStyle = Style as ShapeStyle;
+        if (shapeStyle != null)
         {
-            get
-            {
-                return "Bezier curve";
-            }
+            Figure.IsFilled = shapeStyle.IsFilled;
         }
-
-        /// <summary>Named as curves are, when no points name it: c, d...</summary>
-        protected override string FirstLetter
+        else
         {
-            get
-            {
-                return "c";
-            }
+            Figure.IsFilled = false;
         }
+    }
 
-        /// <summary>
-        /// The curve worked out, also before its first <see cref="Recalculate"/>: a point
-        /// on it that is read from a file asks where it is while the file is still being
-        /// read (it threw, and opening such a drawing showed an error)
-        /// </summary>
-        Math.BezierInfo CurveInfo
+    /// <summary>The length of the curve (what the Length tool measures; b.Length in expressions); NaN while a point is nowhere</summary>
+    public double Length
+    {
+        get
         {
-            get
-            {
-                if (Info.Points == null && Dependencies.Count == 4)
-                {
-                    Recalculate();
-                }
-
-                return Info;
-            }
-        }
-
-        public override void Recalculate()
-        {
-            var p0 = Point(0);
-            var p1 = Point(1);
-            var p2 = Point(2);
-            var p3 = Point(3);
-
-            Info = new Math.BezierInfo(p0, p1, p2, p3);
-        }
-
-        public override void UpdateVisual()
-        {
-            var p0 = Point(0);
-            var p1 = Point(1);
-            var p2 = Point(2);
-            var p3 = Point(3);
-
-            Figure.StartPoint = ToPhysical(p0);
-            BezierShape.Point1 = ToPhysical(p1);
-            BezierShape.Point2 = ToPhysical(p2);
-            BezierShape.Point3 = ToPhysical(p3);
-
-            ShapeStyle shapeStyle = Style as ShapeStyle;
-            if (shapeStyle != null)
-            {
-                Figure.IsFilled = shapeStyle.IsFilled;
-            }
-            else
-            {
-                Figure.IsFilled = false;
-            }
-        }
-
-        /// <summary>The length of the curve (what the Length tool measures; b.Length in expressions); NaN while a point is nowhere</summary>
-        public double Length
-        {
-            get
-            {
-                var curve = CurveInfo;
-                return curve.Points != null && curve.Points.All(point => point.Exists()) ? curve.Length : double.NaN;
-            }
-        }
-
-        public override Point Center
-        {
-            get
-            {
-                // For now use a very rough centroid approximation.
-                return Math.Midpoint(Point(0), Point(1), Point(2), Point(3));
-            }
-        }
-
-        protected override Path CreateShape()
-        {
-            BezierShape = new BezierSegment()
-            {
-
-            };
-            Figure = new PathFigure()
-            {
-                IsClosed = false,
-                IsFilled = false,
-                Segments = new PathSegmentCollection()
-                {
-                    BezierShape
-                }
-            };
-            return new Path()
-            {
-                Data = new PathGeometry()
-                {
-                    Figures = new PathFigureCollection()
-                    {
-                        Figure
-                    }
-                },
-                Stroke = new SolidColorBrush(Colors.Black),
-                StrokeThickness = 1
-            };
-        }
-
-        public override IFigure HitTest(Point point)
-        {
-            // Curve HitTest
             var curve = CurveInfo;
-            if (curve.Points == null)
-            {
-                return null;
-            }
+            return curve.Points != null && curve.Points.All(point => point.Exists()) ? curve.Length : double.NaN;
+        }
+    }
 
-            // (the corners of the polyline count too: on the outer side of a bend a click is
-            // over neither piece, and a curve bending sharply was missed right beside it)
-            if (Math.IsPointOnPolygonalChain(curve.Points, point, ToLogical(Shape.StrokeThickness / 2 + Math.CursorTolerance), false))
-            {
-                return this;
-            }
+    public override Point Center
+    {
+        get
+        {
+            // For now use a very rough centroid approximation.
+            return Math.Midpoint(Point(0), Point(1), Point(2), Point(3));
+        }
+    }
 
-            // Fill HitTest
-            ShapeStyle shapeStyle = Style as ShapeStyle;
-            if (shapeStyle != null)
+    protected override Path CreateShape()
+    {
+        BezierShape = new BezierSegment()
+        {
+
+        };
+        Figure = new PathFigure()
+        {
+            IsClosed = false,
+            IsFilled = false,
+            Segments = new PathSegmentCollection()
             {
-                if (shapeStyle.IsFilled)
+                BezierShape
+            }
+        };
+        return new Path()
+        {
+            Data = new PathGeometry()
+            {
+                Figures = new PathFigureCollection()
                 {
-                    return HitTestShape(point);
+                    Figure
                 }
-            }
+            },
+            Stroke = new SolidColorBrush(Colors.Black),
+            StrokeThickness = 1
+        };
+    }
+
+    public override IFigure HitTest(Point point)
+    {
+        // Curve HitTest
+        var curve = CurveInfo;
+        if (curve.Points == null)
+        {
             return null;
         }
 
-        public double GetNearestParameterFromPoint(Point point)
+        // (the corners of the polyline count too: on the outer side of a bend a click is
+        // over neither piece, and a curve bending sharply was missed right beside it)
+        if (Math.IsPointOnPolygonalChain(curve.Points, point, ToLogical(Shape.StrokeThickness / 2 + Math.CursorTolerance), false))
         {
-            var curve = CurveInfo;
-            return curve.Points == null ? 0 : curve.GetNearestParameterFromPoint(point);
+            return this;
         }
 
-        public Point GetPointFromParameter(double parameter)
+        // Fill HitTest
+        ShapeStyle shapeStyle = Style as ShapeStyle;
+        if (shapeStyle != null)
         {
-            return Math.GetPointOnPolylineFromParameter(CurveInfo.Points, parameter);
+            if (shapeStyle.IsFilled)
+            {
+                return HitTestShape(point);
+            }
         }
+        return null;
+    }
 
-        public Tuple<double, double> GetParameterDomain()
-        {
-            return Tuple.Create(0.0, 1.0);
-        }
+    public double GetNearestParameterFromPoint(Point point)
+    {
+        var curve = CurveInfo;
+        return curve.Points == null ? 0 : curve.GetNearestParameterFromPoint(point);
+    }
+
+    public Point GetPointFromParameter(double parameter)
+    {
+        return Math.GetPointOnPolylineFromParameter(CurveInfo.Points, parameter);
+    }
+
+    public Tuple<double, double> GetParameterDomain()
+    {
+        return Tuple.Create(0.0, 1.0);
     }
 }

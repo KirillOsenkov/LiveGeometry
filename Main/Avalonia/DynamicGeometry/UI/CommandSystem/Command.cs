@@ -1,89 +1,88 @@
 ﻿using System;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class Command : ICommand
 {
-    public class Command : ICommand
+    public DrawingHost DrawingHost { get; set; }
+    public Command()
     {
-        public DrawingHost DrawingHost { get; set; }
-        public Command()
+        Observers = new CompositeCommandObserver();
+    }
+
+    public Command(Action implementation, FrameworkElement icon, string name, string category) : this()
+    {
+        Implementation = implementation;
+        Icon = icon;
+        Name = name;
+        Category = category;
+    }
+    public Command(DrawingHost drawingHost, Action implementation, FrameworkElement icon, string name, string category)
+        : this(implementation,icon,name,category)
+    {
+        DrawingHost = drawingHost;
+    }
+    bool enabled = true;
+    public bool Enabled
+    {
+        get
         {
-            Observers = new CompositeCommandObserver();
+            return enabled;
         }
-
-        public Command(Action implementation, FrameworkElement icon, string name, string category) : this()
+        set
         {
-            Implementation = implementation;
-            Icon = icon;
-            Name = name;
-            Category = category;
+            enabled = value;
+            Observers.EnabledChanged(value);
         }
-        public Command(DrawingHost drawingHost, Action implementation, FrameworkElement icon, string name, string category)
-            : this(implementation,icon,name,category)
+    }
+
+    protected Action Implementation { get; set; }
+
+    public CompositeCommandObserver Observers { get; set; }
+
+    FrameworkElement icon;
+    public FrameworkElement Icon
+    {
+        get
         {
-            DrawingHost = drawingHost;
+            return icon;
         }
-        bool enabled = true;
-        public bool Enabled
+        set
         {
-            get
-            {
-                return enabled;
-            }
-            set
-            {
-                enabled = value;
-                Observers.EnabledChanged(value);
-            }
+            icon = value;
+            Observers.IconChanged(value);
         }
+    }
 
-        protected Action Implementation { get; set; }
+    public string Name { get; set; }
+    public string Category { get; set; }
 
-        public CompositeCommandObserver Observers { get; set; }
+    /// <summary>
+    /// For an on/off command: reads the current state, so that its button can show it.
+    /// Null for a plain command.
+    /// </summary>
+    public Func<bool> IsChecked { get; set; }
 
-        FrameworkElement icon;
-        public FrameworkElement Icon
+    /// <summary>The key that runs it, for the tooltip ("G" for the grid); null for none</summary>
+    public string Shortcut { get; set; }
+
+    /// <summary>A sentence or two under the name in the tooltip, as a tool's HintText; null for none</summary>
+    public string HintText { get; set; }
+
+    public virtual void Execute()
+    {
+        if (Implementation != null)
         {
-            get
-            {
-                return icon;
-            }
-            set
-            {
-                icon = value;
-                Observers.IconChanged(value);
-            }
+            Implementation();
         }
-
-        public string Name { get; set; }
-        public string Category { get; set; }
-
-        /// <summary>
-        /// For an on/off command: reads the current state, so that its button can show it.
-        /// Null for a plain command.
-        /// </summary>
-        public Func<bool> IsChecked { get; set; }
-
-        /// <summary>The key that runs it, for the tooltip ("G" for the grid); null for none</summary>
-        public string Shortcut { get; set; }
-
-        /// <summary>A sentence or two under the name in the tooltip, as a tool's HintText; null for none</summary>
-        public string HintText { get; set; }
-
-        public virtual void Execute()
+        if (DrawingHost != null)
         {
-            if (Implementation != null)
-            {
-                Implementation();
-            }
-            if (DrawingHost != null)
-            {
-                DrawingHost.RaiseCommandExecuted(this);
-            }
+            DrawingHost.RaiseCommandExecuted(this);
         }
+    }
 
-        public void AddObserver(ICommandObserver observer)
-        {
-            Observers.Add(observer);
-        }
+    public void AddObserver(ICommandObserver observer)
+    {
+        Observers.Add(observer);
     }
 }

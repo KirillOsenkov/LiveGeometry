@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public interface INotifyPropertyChanging
 {
-    public interface INotifyPropertyChanging
-    {
-        event PropertyChangedEventHandler PropertyChanging;
-    }
+    event PropertyChangedEventHandler PropertyChanging;
 }

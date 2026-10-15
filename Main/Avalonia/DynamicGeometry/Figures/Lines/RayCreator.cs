@@ -1,47 +1,46 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+[Category(BehaviorCategories.Lines)]
+[Order(2)]
+public class RayCreator : FigureCreator
 {
-    [Category(BehaviorCategories.Lines)]
-    [Order(2)]
-    public class RayCreator : FigureCreator
+    protected override DependencyList InitExpectedDependencies()
     {
-        protected override DependencyList InitExpectedDependencies()
-        {
-            return DependencyList.PointPoint;
-        }
+        return DependencyList.PointPoint;
+    }
 
-        protected override IEnumerable<IFigure> CreateFigures()
-        {
-            yield return Factory.CreateRay(Drawing, FoundDependencies);
-        }
+    protected override IEnumerable<IFigure> CreateFigures()
+    {
+        yield return Factory.CreateRay(Drawing, FoundDependencies);
+    }
 
-        public override string Name
-        {
-            get { return "Ray"; }
-        }
+    public override string Name
+    {
+        get { return "Ray"; }
+    }
 
-        public override string HintText
+    public override string HintText
+    {
+        get
         {
-            get
-            {
-                return "Click (and release) twice to create a ray.";
-            }
+            return "Click (and release) twice to create a ray.";
         }
+    }
 
-        public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
-        {
-            return ClickedDependencies == 1 ? "Click a point the ray goes through." : base.ConstructionHintText(args);
-        }
+    public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+    {
+        return ClickedDependencies == 1 ? "Click a point the ray goes through." : base.ConstructionHintText(args);
+    }
 
-        public override FrameworkElement CreateIcon()
-        {
-            return IconBuilder.BuildIcon()
-                .Line(0.25, 0.75, 1, 0)
-                .Point(0.25, 0.75)
-                .Point(0.75, 0.25)
-                .Canvas;
-        }
+    public override FrameworkElement CreateIcon()
+    {
+        return IconBuilder.BuildIcon()
+            .Line(0.25, 0.75, 1, 0)
+            .Point(0.25, 0.75)
+            .Point(0.75, 0.25)
+            .Canvas;
     }
 }

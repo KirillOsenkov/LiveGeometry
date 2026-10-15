@@ -1,49 +1,48 @@
 ﻿using Avalonia;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class Circle : CircleBase, IShapeWithInterior
 {
-    public class Circle : CircleBase, IShapeWithInterior
+    public override Point Center
     {
-        public override Point Center
-        {
-            get { return Point(0); }
-        }
+        get { return Point(0); }
+    }
 
-        public override double Radius
-        {
-            get { return Center.Distance(Point(1)); }
-        }
+    public override double Radius
+    {
+        get { return Center.Distance(Point(1)); }
+    }
 
-        /// <summary>"with center A through B"</summary>
-        public override string Construction
+    /// <summary>"with center A through B"</summary>
+    public override string Construction
+    {
+        get
         {
-            get
+            if (Dependencies.Count < 2)
             {
-                if (Dependencies.Count < 2)
-                {
-                    return null;
-                }
-
-                return "with center " + ConstructionText.Of(Dependencies[0]) + " through " + ConstructionText.Of(Dependencies[1]);
+                return null;
             }
-        }
 
-        protected override IPoint RadiusPivot
-        {
-            get { return (IPoint)Dependencies[0]; }
+            return "with center " + ConstructionText.Of(Dependencies[0]) + " through " + ConstructionText.Of(Dependencies[1]);
         }
+    }
 
-        protected override IPoint RadiusEnd
-        {
-            get { return (IPoint)Dependencies[1]; }
-        }
+    protected override IPoint RadiusPivot
+    {
+        get { return (IPoint)Dependencies[0]; }
+    }
 
-        public override double Inclination
+    protected override IPoint RadiusEnd
+    {
+        get { return (IPoint)Dependencies[1]; }
+    }
+
+    public override double Inclination
+    {
+        get
         {
-            get
-            {
-                return Math.GetAngle(Center, Point(1));
-            }
+            return Math.GetAngle(Center, Point(1));
         }
     }
 }

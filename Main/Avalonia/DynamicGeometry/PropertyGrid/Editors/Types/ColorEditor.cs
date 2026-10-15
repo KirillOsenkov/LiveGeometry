@@ -1,35 +1,34 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class ColorEditorFactory
+    : BaseValueEditorFactory<ColorEditor, Color> { }
+
+public class ColorEditor : ExpandingPickerEditor, IValueEditor
 {
-    public class ColorEditorFactory
-        : BaseValueEditorFactory<ColorEditor, Color> { }
+    public ColorPickerView Picker { get; private set; }
 
-    public class ColorEditor : ExpandingPickerEditor, IValueEditor
+    protected override Control CreatePicker()
     {
-        public ColorPickerView Picker { get; private set; }
+        Picker = new ColorPickerView();
+        Picker.ColorChanged += color => Commit(color);
+        return Picker;
+    }
 
-        protected override Control CreatePicker()
-        {
-            Picker = new ColorPickerView();
-            Picker.ColorChanged += color => Commit(color);
-            return Picker;
-        }
+    protected override void SetPickerSurface(string surface)
+    {
+        Picker.Surface = surface;
+    }
 
-        protected override void SetPickerSurface(string surface)
-        {
-            Picker.Surface = surface;
-        }
+    protected override void UpdatePicker()
+    {
+        Picker.Color = GetValue<Color>();
+    }
 
-        protected override void UpdatePicker()
-        {
-            Picker.Color = GetValue<Color>();
-        }
-
-        protected override IBrush GetChipBrush()
-        {
-            return new SolidColorBrush(GetValue<Color>());
-        }
+    protected override IBrush GetChipBrush()
+    {
+        return new SolidColorBrush(GetValue<Color>());
     }
 }

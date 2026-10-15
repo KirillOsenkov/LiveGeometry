@@ -5,103 +5,102 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class EnumRadioButtonEditorFactory : BaseValueEditorFactory<EnumRadioButtonEditor>
 {
-    public class EnumRadioButtonEditorFactory : BaseValueEditorFactory<EnumRadioButtonEditor>
+    public EnumRadioButtonEditorFactory()
     {
-        public EnumRadioButtonEditorFactory()
+        LoadOrder = 2;
+    }
+
+    public override bool SupportsValue(IValueProvider value)
+    {
+        return value.Type.IsEnum && base.SupportsValue(value);
+    }
+}
+
+public class EnumRadioButtonEditor : LabeledValueEditor, IValueEditor
+{
+    private Border groupBox;
+    private StackPanel stackPanel;
+    private IEnumerable<string> items;
+
+    /// <summary>Each choice is an undo step of its own</summary>
+    protected override bool CoalescesEdits
+    {
+        get { return false; }
+    }
+
+    protected override UIElement CreateEditor()
+    {
+        groupBox = new Border();
+        groupBox.BorderThickness = new Thickness(1);
+        groupBox.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.Separator));
+        stackPanel = new StackPanel();
+        stackPanel.Margin = new Thickness(7);
+        groupBox.Child = stackPanel;
+
+        return groupBox;
+    }
+
+    protected override void InitCore()
+    {
+        var propertyType = Value.Type;
+        var offers = Value.Parent as IOffersValues;
+        items = from f in propertyType.GetFields()
+                where f.FieldType == propertyType
+                let value = Enum.Parse(propertyType, f.Name, true)
+                where offers == null || offers.Offers(Value.Name, value)
+                select value.ToString();
+
+        bool first = true;
+        foreach (string enumField in items)
         {
-            LoadOrder = 2;
+            RadioButton radioButton = new RadioButton();
+            radioButton.Content = enumField;
+            radioButton.Margin = new Thickness(0, 5, 0, 0);
+            if (first)
+            {
+                first = false;
+                radioButton.Margin = new Thickness(0);
+            }
+            radioButton.IsCheckedChanged += (s, e) =>
+            {
+                if (((RadioButton)s).IsChecked == true)
+                {
+                    RadioButton_Checked(s, e);
+                }
+            };
+            radioButton.Tag = Enum.Parse(Value.Type, enumField, true);
+            stackPanel.Children.Add(radioButton);
         }
 
-        public override bool SupportsValue(IValueProvider value)
+        UpdateEditor();
+    }
+
+    private void RadioButton_Checked(object sender, RoutedEventArgs e)
+    {
+        var value = (sender as RadioButton).Tag;
+        SetValue(value);
+    }
+
+    public override void UpdateEditor()
+    {
+        // no value (several figures that differ): none of the buttons
+        object value = Value.GetValue<object>();
+        foreach (RadioButton item in stackPanel.Children)
         {
-            return value.Type.IsEnum && base.SupportsValue(value);
+            item.IsChecked = value != null && value.Equals(item.Tag);
         }
     }
 
-    public class EnumRadioButtonEditor : LabeledValueEditor, IValueEditor
+    protected override ValidationResult Validate(object value)
     {
-        private Border groupBox;
-        private StackPanel stackPanel;
-        private IEnumerable<string> items;
-
-        /// <summary>Each choice is an undo step of its own</summary>
-        protected override bool CoalescesEdits
+        return new ValidationResult()
         {
-            get { return false; }
-        }
-
-        protected override UIElement CreateEditor()
-        {
-            groupBox = new Border();
-            groupBox.BorderThickness = new Thickness(1);
-            groupBox.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.Separator));
-            stackPanel = new StackPanel();
-            stackPanel.Margin = new Thickness(7);
-            groupBox.Child = stackPanel;
-
-            return groupBox;
-        }
-
-        protected override void InitCore()
-        {
-            var propertyType = Value.Type;
-            var offers = Value.Parent as IOffersValues;
-            items = from f in propertyType.GetFields()
-                    where f.FieldType == propertyType
-                    let value = Enum.Parse(propertyType, f.Name, true)
-                    where offers == null || offers.Offers(Value.Name, value)
-                    select value.ToString();
-
-            bool first = true;
-            foreach (string enumField in items)
-            {
-                RadioButton radioButton = new RadioButton();
-                radioButton.Content = enumField;
-                radioButton.Margin = new Thickness(0, 5, 0, 0);
-                if (first)
-                {
-                    first = false;
-                    radioButton.Margin = new Thickness(0);
-                }
-                radioButton.IsCheckedChanged += (s, e) =>
-                {
-                    if (((RadioButton)s).IsChecked == true)
-                    {
-                        RadioButton_Checked(s, e);
-                    }
-                };
-                radioButton.Tag = Enum.Parse(Value.Type, enumField, true);
-                stackPanel.Children.Add(radioButton);
-            }
-
-            UpdateEditor();
-        }
-
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            var value = (sender as RadioButton).Tag;
-            SetValue(value);
-        }
-
-        public override void UpdateEditor()
-        {
-            // no value (several figures that differ): none of the buttons
-            object value = Value.GetValue<object>();
-            foreach (RadioButton item in stackPanel.Children)
-            {
-                item.IsChecked = value != null && value.Equals(item.Tag);
-            }
-        }
-
-        protected override ValidationResult Validate(object value)
-        {
-            return new ValidationResult()
-            {
-                IsValid = true,
-                Value = Enum.Parse(Value.Type, value.ToString(), false)
-            };
-        }
+            IsValid = true,
+            Value = Enum.Parse(Value.Type, value.ToString(), false)
+        };
     }
 }

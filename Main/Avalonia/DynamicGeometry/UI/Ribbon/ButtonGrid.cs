@@ -3,192 +3,191 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+/// <summary>
+/// Icon + caption. As a tool button: icon above the caption on a rounded plate that
+/// reacts to hover/press and shows the checked state. As a group (tab) header: the same
+/// layout, and instead of the plate a <see cref="TabOutline"/> that draws the tab shape.
+/// </summary>
+public class ButtonGrid : Grid
 {
-    /// <summary>
-    /// Icon + caption. As a tool button: icon above the caption on a rounded plate that
-    /// reacts to hover/press and shows the checked state. As a group (tab) header: the same
-    /// layout, and instead of the plate a <see cref="TabOutline"/> that draws the tab shape.
-    /// </summary>
-    public class ButtonGrid : Grid
+    public ButtonGrid(UIElement icon, string text)
+        : this(icon, text, false)
     {
-        public ButtonGrid(UIElement icon, string text)
-            : this(icon, text, false)
+    }
+
+    public ButtonGrid(UIElement icon, string text, bool isTabHeader)
+    {
+        this.isTabHeader = isTabHeader;
+
+        this.textBlock = new TextBlock()
         {
+            Text = text,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            FontSize = Settings.DefaultToolbarFontSize
+        };
+
+        iconHolder.VerticalAlignment = VerticalAlignment.Center;
+        iconHolder.HorizontalAlignment = HorizontalAlignment.Center;
+
+        if (isTabHeader)
+        {
+            RowDefinitions.Add(new RowDefinition());
+            RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+            ColumnDefinitions.Add(new ColumnDefinition());
+            MinWidth = AppTheme.ButtonMinWidth;
+
+            // The tab's feet flare outwards, and drawing outside of one's bounds gets clipped,
+            // so the header is wider than the tab body by the flare on both sides.
+            Grid.SetRowSpan(tabOutline, 2);
+
+            double side = TabOutline.DefaultFlare + 5;
+
+            // Between two tab bodies there are two flares, which is a lot of nothing. Only
+            // the selected tab draws its feet, so neighbors can share that room: the
+            // headers overlap by most of a flare. The padding inside the tab stays.
+            Margin = new Thickness(-HeaderOverlap, 0, -HeaderOverlap, 0);
+            iconHolder.Margin = new Thickness(side, 6, side, 0);
+            textBlock.Margin = new Thickness(side, 1, side, 5);
+            textBlock.FontWeight = FontWeight.Medium;
+            Grid.SetRow(textBlock, 1);
+
+            Children.Add(tabOutline);
+            Children.Add(iconHolder);
+            Children.Add(textBlock);
+
+            // the grid itself must be hit-testable over its whole area
+            Background = Brushes.Transparent;
+            PointerEntered += (s, e) => tabOutline.IsHovered = true;
+            PointerExited += (s, e) => tabOutline.IsHovered = false;
+            UpdatePlate();
+        }
+        else
+        {
+            RowDefinitions.Add(new RowDefinition());
+            RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+            ColumnDefinitions.Add(new ColumnDefinition());
+            MinWidth = AppTheme.ButtonMinWidth;
+            Margin = new Thickness(1, 0, 1, 0);
+
+            plate.CornerRadius = AppTheme.ButtonCornerRadius;
+            plate.BorderThickness = new Thickness(1);
+            Grid.SetRowSpan(plate, 2);
+
+            iconHolder.Margin = new Thickness(6, 5, 6, 0);
+            textBlock.Margin = new Thickness(6, 1, 6, 4);
+            textBlock.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
+            Grid.SetRow(textBlock, 1);
+
+            Children.Add(plate);
+            Children.Add(iconHolder);
+            Children.Add(textBlock);
+
+            PointerEntered += (s, e) => { isHovered = true; UpdatePlate(); };
+            PointerExited += (s, e) => { isHovered = false; isPressed = false; UpdatePlate(); };
+            PointerPressed += (s, e) => { isPressed = true; UpdatePlate(); };
+            PointerReleased += (s, e) => { isPressed = false; UpdatePlate(); };
+            UpdatePlate();
         }
 
-        public ButtonGrid(UIElement icon, string text, bool isTabHeader)
+        this.Icon = icon;
+    }
+
+    /// <summary>How far a tab header reaches into each of its neighbors</summary>
+    public const double HeaderOverlap = 4;
+
+    readonly bool isTabHeader;
+    bool isHovered;
+    bool isPressed;
+
+    bool isChecked;
+    public bool IsChecked
+    {
+        get
         {
-            this.isTabHeader = isTabHeader;
+            return isChecked;
+        }
+        set
+        {
+            isChecked = value;
+            UpdatePlate();
+        }
+    }
 
-            this.textBlock = new TextBlock()
-            {
-                Text = text,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                FontSize = Settings.DefaultToolbarFontSize
-            };
-
-            iconHolder.VerticalAlignment = VerticalAlignment.Center;
-            iconHolder.HorizontalAlignment = HorizontalAlignment.Center;
-
-            if (isTabHeader)
-            {
-                RowDefinitions.Add(new RowDefinition());
-                RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                ColumnDefinitions.Add(new ColumnDefinition());
-                MinWidth = AppTheme.ButtonMinWidth;
-
-                // The tab's feet flare outwards, and drawing outside of one's bounds gets clipped,
-                // so the header is wider than the tab body by the flare on both sides.
-                Grid.SetRowSpan(tabOutline, 2);
-
-                double side = TabOutline.DefaultFlare + 5;
-
-                // Between two tab bodies there are two flares, which is a lot of nothing. Only
-                // the selected tab draws its feet, so neighbors can share that room: the
-                // headers overlap by most of a flare. The padding inside the tab stays.
-                Margin = new Thickness(-HeaderOverlap, 0, -HeaderOverlap, 0);
-                iconHolder.Margin = new Thickness(side, 6, side, 0);
-                textBlock.Margin = new Thickness(side, 1, side, 5);
-                textBlock.FontWeight = FontWeight.Medium;
-                Grid.SetRow(textBlock, 1);
-
-                Children.Add(tabOutline);
-                Children.Add(iconHolder);
-                Children.Add(textBlock);
-
-                // the grid itself must be hit-testable over its whole area
-                Background = Brushes.Transparent;
-                PointerEntered += (s, e) => tabOutline.IsHovered = true;
-                PointerExited += (s, e) => tabOutline.IsHovered = false;
-                UpdatePlate();
-            }
-            else
-            {
-                RowDefinitions.Add(new RowDefinition());
-                RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                ColumnDefinitions.Add(new ColumnDefinition());
-                MinWidth = AppTheme.ButtonMinWidth;
-                Margin = new Thickness(1, 0, 1, 0);
-
-                plate.CornerRadius = AppTheme.ButtonCornerRadius;
-                plate.BorderThickness = new Thickness(1);
-                Grid.SetRowSpan(plate, 2);
-
-                iconHolder.Margin = new Thickness(6, 5, 6, 0);
-                textBlock.Margin = new Thickness(6, 1, 6, 4);
-                textBlock.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
-                Grid.SetRow(textBlock, 1);
-
-                Children.Add(plate);
-                Children.Add(iconHolder);
-                Children.Add(textBlock);
-
-                PointerEntered += (s, e) => { isHovered = true; UpdatePlate(); };
-                PointerExited += (s, e) => { isHovered = false; isPressed = false; UpdatePlate(); };
-                PointerPressed += (s, e) => { isPressed = true; UpdatePlate(); };
-                PointerReleased += (s, e) => { isPressed = false; UpdatePlate(); };
-                UpdatePlate();
-            }
-
-            this.Icon = icon;
+    void UpdatePlate()
+    {
+        if (isTabHeader)
+        {
+            textBlock.BindTheme(TextBlock.ForegroundProperty, isChecked ? nameof(AppTheme.TextEmphasis) : nameof(AppTheme.Text));
+            tabOutline.IsSelected = isChecked;
+            return;
         }
 
-        /// <summary>How far a tab header reaches into each of its neighbors</summary>
-        public const double HeaderOverlap = 4;
-
-        readonly bool isTabHeader;
-        bool isHovered;
-        bool isPressed;
-
-        bool isChecked;
-        public bool IsChecked
+        // never fully transparent-null: the plate is what makes the whole button clickable
+        if (isChecked)
         {
-            get
+            plate.BindTheme(Border.BackgroundProperty, nameof(AppTheme.ButtonChecked));
+            plate.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.ButtonCheckedBorder));
+        }
+        else
+        {
+            string background = isPressed
+                ? nameof(AppTheme.ButtonPressed)
+                : isHovered ? nameof(AppTheme.ButtonHover) : null;
+            plate.BindTheme(Border.BackgroundProperty, background, whenNone: Brushes.Transparent);
+            plate.BindTheme(Border.BorderBrushProperty, key: null, whenNone: Brushes.Transparent);
+        }
+    }
+
+    Border plate = new Border();
+    TabOutline tabOutline = new TabOutline();
+    Grid iconHolder = new Grid();
+
+    public double IconTextGap
+    {
+        set
+        {
+            if (!isTabHeader)
             {
-                return isChecked;
-            }
-            set
-            {
-                isChecked = value;
-                UpdatePlate();
+                iconHolder.Margin = new Thickness(6, 5, 6, value);
             }
         }
+    }
 
-        void UpdatePlate()
+    public TextBlock textBlock;
+
+    UIElement icon;
+    public UIElement Icon
+    {
+        get
         {
-            if (isTabHeader)
+            return icon;
+        }
+        set
+        {
+            if (icon != null)
             {
-                textBlock.BindTheme(TextBlock.ForegroundProperty, isChecked ? nameof(AppTheme.TextEmphasis) : nameof(AppTheme.Text));
-                tabOutline.IsSelected = isChecked;
-                return;
+                iconHolder.Children.Remove(icon);
             }
-
-            // never fully transparent-null: the plate is what makes the whole button clickable
-            if (isChecked)
+            icon = value;
+            if (icon != null)
             {
-                plate.BindTheme(Border.BackgroundProperty, nameof(AppTheme.ButtonChecked));
-                plate.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.ButtonCheckedBorder));
-            }
-            else
-            {
-                string background = isPressed
-                    ? nameof(AppTheme.ButtonPressed)
-                    : isHovered ? nameof(AppTheme.ButtonHover) : null;
-                plate.BindTheme(Border.BackgroundProperty, background, whenNone: Brushes.Transparent);
-                plate.BindTheme(Border.BorderBrushProperty, key: null, whenNone: Brushes.Transparent);
+                iconHolder.Children.Add(icon);
             }
         }
+    }
 
-        Border plate = new Border();
-        TabOutline tabOutline = new TabOutline();
-        Grid iconHolder = new Grid();
-
-        public double IconTextGap
+    public string Text
+    {
+        get
         {
-            set
-            {
-                if (!isTabHeader)
-                {
-                    iconHolder.Margin = new Thickness(6, 5, 6, value);
-                }
-            }
+            return textBlock.Text;
         }
-
-        public TextBlock textBlock;
-
-        UIElement icon;
-        public UIElement Icon
+        set
         {
-            get
-            {
-                return icon;
-            }
-            set
-            {
-                if (icon != null)
-                {
-                    iconHolder.Children.Remove(icon);
-                }
-                icon = value;
-                if (icon != null)
-                {
-                    iconHolder.Children.Add(icon);
-                }
-            }
-        }
-
-        public string Text
-        {
-            get
-            {
-                return textBlock.Text;
-            }
-            set
-            {
-                textBlock.Text = value;
-            }
+            textBlock.Text = value;
         }
     }
 }

@@ -4,580 +4,579 @@ using System.Linq;
 using System.Reflection;
 using Avalonia;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public static class IFigureExtensions
 {
-    public static class IFigureExtensions
+    /// <summary>
+    /// Determines if figure directly or indirectly depends 
+    /// on <paramref name="possibleDependency"/>
+    /// </summary>
+    /// <param name="figure">figure to check</param>
+    /// <param name="possibleDependency"></param>
+    /// <returns></returns>
+    public static bool DependsOn(this IFigure figure, IFigure possibleDependency)
     {
-        /// <summary>
-        /// Determines if figure directly or indirectly depends 
-        /// on <paramref name="possibleDependency"/>
-        /// </summary>
-        /// <param name="figure">figure to check</param>
-        /// <param name="possibleDependency"></param>
-        /// <returns></returns>
-        public static bool DependsOn(this IFigure figure, IFigure possibleDependency)
+        // we consider that a figure depends on itself
+        if (figure == possibleDependency)
         {
-            // we consider that a figure depends on itself
-            if (figure == possibleDependency)
-            {
-                return true;
-            }
+            return true;
+        }
 
-            // quick rejection - if it doesn't depend on anything,
-            // it certainly doesn't depend on possibleDependency
-            if (figure.Dependencies.IsEmpty())
-            {
-                return false;
-            }
-
-            // first do the cheap pre-test without going deep
-            if (figure.DirectlyDependsOn(possibleDependency))
-            {
-                return true;
-            }
-
-            // if that failed, go deeper using recursion
-            foreach (var directDependency in figure.Dependencies)
-            {
-                if (directDependency.DependsOn(possibleDependency))
-                {
-                    return true;
-                }
-            }
-
-            // depth-first search didn't find anything
+        // quick rejection - if it doesn't depend on anything,
+        // it certainly doesn't depend on possibleDependency
+        if (figure.Dependencies.IsEmpty())
+        {
             return false;
         }
 
-        public static bool DirectlyDependsOn(this IFigure figure, IFigure possibleDependency)
+        // first do the cheap pre-test without going deep
+        if (figure.DirectlyDependsOn(possibleDependency))
         {
-            // we consider that a figure depends on itself
-            if (figure == possibleDependency)
+            return true;
+        }
+
+        // if that failed, go deeper using recursion
+        foreach (var directDependency in figure.Dependencies)
+        {
+            if (directDependency.DependsOn(possibleDependency))
             {
                 return true;
             }
-
-            // quick rejection - if it doesn't depend on anything,
-            // it certainly doesn't depend on possibleDependency
-            if (figure.Dependencies.IsEmpty())
-            {
-                return false;
-            }
-
-            return figure.Dependencies.Contains(possibleDependency);
         }
 
-        /// <summary>
-        /// Whether something built on the figure takes it for its length: a distance
-        /// measurement of it, a circle with it for a radius, a translation or a dilation by
-        /// it. A figure that becomes a kind without a length (a segment converted to a line
-        /// or a ray) would leave them with nothing to measure - the measurement threw on
-        /// every redraw - so the conversion is not offered then.
-        /// </summary>
-        public static bool IsUsedForLength(this IFigure figure)
+        // depth-first search didn't find anything
+        return false;
+    }
+
+    public static bool DirectlyDependsOn(this IFigure figure, IFigure possibleDependency)
+    {
+        // we consider that a figure depends on itself
+        if (figure == possibleDependency)
         {
-            return figure.Dependents.Any(dependent =>
-                dependent is LengthMeasurement
-                || dependent is CircleByRadius
-                || dependent is DilatedPoint
-                || dependent is TranslatedPoint translated && translated.DistanceSource == figure);
+            return true;
         }
 
-        /// <summary>
-        /// The same for its area, its perimeter or its inside (a point kept in it): a sector
-        /// or a circular segment converted to a bare arc has none of them, and the point that
-        /// was inside a sector stopped existing for good
-        /// </summary>
-        public static bool IsUsedForArea(this IFigure figure)
+        // quick rejection - if it doesn't depend on anything,
+        // it certainly doesn't depend on possibleDependency
+        if (figure.Dependencies.IsEmpty())
         {
-            return figure.Dependents.Any(dependent => dependent is AreaMeasurement
-                || dependent is LengthMeasurement { Quantity: LengthQuantity.Perimeter }
-                || dependent is PointInRegion);
-        }
-
-        /// <summary>
-        /// Whether an expression reads a number off the figure ([AB.Length], c.Area) that a
-        /// figure of the other type has no property for: converted (a segment to a ray), the
-        /// expression didn't compile, and the point at (AB.Length, -1) went on at its old place
-        /// while the session lasted, then was nowhere once the file was opened again. Read from
-        /// the expressions as the parser reads them (a label's [...] parts), a name in backticks
-        /// included: a regular expression over the text missed `base side`.Length, and the
-        /// conversion came back once the segment was renamed so. A property is found as the
-        /// compiler finds it, by name in any case.
-        /// </summary>
-        /// <param name="readers">Which dependents count (a defined tool's results); all of them when null</param>
-        public static bool IsReadByExpressionsBeyond(this IFigure figure, Type replacement, Func<IFigure, bool> readers = null)
-        {
-            if (string.IsNullOrEmpty(figure.Name))
-            {
-                return false;
-            }
-
-            var properties = replacement.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(property => property.CanRead && property.GetIndexParameters().Length == 0 && ExpressionReflection.IsNumberType(property.PropertyType))
-                .Select(property => property.Name)
-                .ToList();
-            return figure.Dependents
-                .Where(dependent => readers == null || readers(dependent))
-                .OfType<IRenamableExpressions>()
-                .SelectMany(holder => holder is LabelBase label ? label.Expressions : holder.ExpressionTexts)
-                .SelectMany(text => PropertiesRead(text, figure.Name))
-                .Any(read => !properties.Any(name => name.Equals(read, StringComparison.OrdinalIgnoreCase)));
-        }
-
-        /// <summary>
-        /// The properties an expression reads off the figure of this name: A.X, `base side`.Length.
-        /// A name in backticks is the figure's when it is exactly its name, a bare one in any
-        /// case (as the binder takes it last). An expression that doesn't parse reads nothing.
-        /// </summary>
-        static IEnumerable<string> PropertiesRead(string expression, string name)
-        {
-            if (string.IsNullOrEmpty(expression))
-            {
-                yield break;
-            }
-
-            var parsed = Parser.Parse(expression);
-            if (parsed.Root == null || !parsed.Errors.IsEmpty())
-            {
-                yield break;
-            }
-
-            var nodes = new Stack<Node>();
-            nodes.Push(parsed.Root);
-            while (nodes.Count > 0)
-            {
-                var node = nodes.Pop();
-                if (node == null)
-                {
-                    continue;
-                }
-
-                if (node.Kind == NodeType.PropertyAccess)
-                {
-                    var figureToken = node.Children[0].Token;
-                    bool isFigure = figureToken.IsQuoted
-                        ? figureToken.Text == name
-                        : figureToken.Text.Equals(name, StringComparison.OrdinalIgnoreCase);
-                    if (isFigure)
-                    {
-                        yield return node.Children[1].Token.Text;
-                    }
-
-                    continue;
-                }
-
-                foreach (var child in node.Children)
-                {
-                    nodes.Push(child);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Whether a tool or a tied value may take a length from the figure: anything that
-        /// has one, except a label that says no number (<see cref="Label.GivesNumber"/>)
-        /// and the mark of an angle - an arc in the code only, a sign of a size in pixels,
-        /// whose "length" changes with every zoom (a click just beside a vertex took it
-        /// for a radius or a distance).
-        /// </summary>
-        public static bool GivesLength(this IFigure figure)
-        {
-            return figure is ILengthProvider && !(figure is AngleArc) && Label.GivesNumber(figure);
-        }
-
-        /// <summary>The same for an angle: anything that has one, except a label that says no number</summary>
-        public static bool GivesAngle(this IFigure figure)
-        {
-            return figure is IAngleProvider && Label.GivesNumber(figure);
-        }
-
-        public static void RecalculateAllDependents(this IFigure figure)
-        {
-            var dependentsToRecalculate = DependencyAlgorithms
-                .FindDescendants(f => f.Dependents, new IFigure[] { figure });
-            dependentsToRecalculate.Reverse();
-
-            foreach (var dependent in dependentsToRecalculate)
-            {
-                dependent.RecalculateAndUpdateVisual();
-            }
-
-            // a file being read is checked once all of it is in (DrawingDeserializer.ReadDrawing)
-            if (!figure.Drawing.IsReading)
-            {
-                figure.Drawing.Figures.CheckConsistencyInDebug();
-            }
-        }
-
-        public static void RecalculateAndUpdateVisual(this IFigure figure)
-        {
-            if (figure.Drawing == null)
-            {
-                return;
-            }
-
-            figure.UpdateExistence();
-            figure.Recalculate();
-            figure.UpdateVisual();
-        }
-
-        public static IEnumerable<Point> EnumeratePointsOnLinearFigure(this ILinearFigure figure)
-        {
-            var domain = figure.GetParameterDomain();
-            for (double lambda = domain.Item1; lambda < domain.Item2; lambda += 0.01)
-            {
-                yield return figure.GetPointFromParameter(lambda);
-            }
-        }
-
-        public static Point Point(this IFigure figure, int index)
-        {
-            if (index < figure.Dependencies.Count && figure.Dependencies[index] is IPoint point)
-            {
-                return point.Coordinates;
-            }
-
-            return figure.MissingPoint(index);
-        }
-
-        /// <summary>
-        /// The figure asked for a point it is not built on: too few dependencies, or one of
-        /// another kind. A file may say that (a segment on one point asked for its second as
-        /// it was worked out): while the file is read the figure is noted for the deserializer
-        /// to leave out (<see cref="Drawing.InvalidFigures"/>), made not to exist, so that its
-        /// shape is not laid out at infinity, and given a point that is nowhere. At any other
-        /// time it is a bug, and throws as the index did.
-        /// </summary>
-        public static Point MissingPoint(this IFigure figure, int index)
-        {
-            ReportMissingDependency(figure, index, "a point");
-            return Math.InfinitePoint;
-        }
-
-        /// <summary>The same for a line (<see cref="Line"/>)</summary>
-        public static PointPair MissingLine(this IFigure figure, int index)
-        {
-            ReportMissingDependency(figure, index, "a line");
-            return new PointPair(Math.InfinitePoint, Math.InfinitePoint);
-        }
-
-        static void ReportMissingDependency(IFigure figure, int index, string what)
-        {
-            int count = figure.Dependencies.Count;
-            string message = string.Format(
-                "{0} is left out: it is built on {1} figure{2} and needs {3} as the {4}.",
-                figure,
-                count,
-                count == 1 ? "" : "s",
-                what,
-                Ordinal(index + 1));
-            var drawing = figure.Drawing;
-            if (drawing == null || !drawing.IsReading)
-            {
-                throw new InvalidOperationException(message);
-            }
-
-            figure.Exists = false;
-            if (!drawing.InvalidFigures.Any(invalid => invalid.Figure == figure))
-            {
-                drawing.InvalidFigures.Add((figure, message));
-            }
-        }
-
-        static string Ordinal(int number)
-        {
-            string suffix = number % 100 is 11 or 12 or 13
-                ? "th"
-                : number % 10 == 1 ? "st" : number % 10 == 2 ? "nd" : number % 10 == 3 ? "rd" : "th";
-            return number + suffix;
-        }
-
-        public static void Move(this IEnumerable<IMovable> figures, Point offset)
-        {
-            foreach (var figure in figures)
-            {
-                figure.MoveTo(figure.Coordinates.Plus(offset));
-            }
-        }
-
-        public static PointPair Line(this IFigure figure, int index)
-        {
-            if (index < figure.Dependencies.Count && figure.Dependencies[index] is ILine line)
-            {
-                return line.Coordinates;
-            }
-
-            return figure.MissingLine(index);
-        }
-
-        public static void RegisterWithDependencies(this IFigure figure)
-        {
-            figure.AddDependencies(figure.Dependencies);
-        }
-
-        public static void UnregisterFromDependencies(this IFigure figure)
-        {
-            figure.RemoveDependencies(figure.Dependencies);
-        }
-
-        public static void AddDependencies(this IFigure figure, IEnumerable<IFigure> dependencies)
-        {
-            if (figure == null || dependencies.IsEmpty())
-            {
-                return;
-            }
-
-            foreach (var dependency in dependencies)
-            {
-                dependency.Dependents.Add(figure);
-            }
-        }
-
-        public static void RemoveDependencies(this IFigure figure, IEnumerable<IFigure> dependencies)
-        {
-            if (figure == null || dependencies.IsEmpty())
-            {
-                return;
-            }
-            foreach (var dependency in dependencies)
-            {
-                if (dependency != null)
-                {
-                    dependency.Dependents.Remove(figure);
-                }
-            }
-        }
-
-        public static void ReplaceDependency(this IFigure figure, int index, IFigure newDependency)
-        {
-            List<IFigure> temp = new List<IFigure>(figure.Dependencies);
-            if (index < 0 || index >= temp.Count)
-            {
-                throw new ArgumentOutOfRangeException("index");
-            }
-            IFigure oldDependency = temp[index];
-            oldDependency.Dependents.Remove(figure);
-            temp[index] = newDependency;
-            newDependency.Dependents.Add(figure);
-            figure.Dependencies = temp;
-
-            // Dive down into the children of composite figures updating dependencies.
-            var compositeFigure = figure as CompositeFigure;
-            if (compositeFigure != null)
-            {
-                foreach (IFigure child in compositeFigure.Children)
-                {
-                    temp.Clear();
-                    index = child.Dependencies.IndexOf(oldDependency);
-                    if (index >= 0)
-                    {
-                        temp.AddRange(child.Dependencies);
-                        temp[index] = newDependency;
-                        child.Dependencies = temp;
-
-                        // a part that is registered with what it is built on (the sides of
-                        // a regular polygon) is registered with the new one from now on
-                        if (oldDependency.Dependents.Remove(child))
-                        {
-                            newDependency.Dependents.Add(child);
-                        }
-                    }
-                }
-            }
-        }
-
-        public static void ReplaceDependency(this IFigure figure, IFigure oldDependency, IFigure newDependency)
-        {
-            int index = figure.Dependencies.IndexOf(oldDependency);
-            if (index == -1)
-            {
-                throw new Exception("Calling ReplaceDependency on a figure where oldDependency is not a dependency");
-            }
-            ReplaceDependency(figure, index, newDependency);
-
-            // a stored position (a rotated point) follows the new dependency, and what is built
-            // on the figure follows that - on undo of Actions.ReplaceDependency too
-            figure.RecalculateAndUpdateVisual();
-            figure.RecalculateAllDependents();
-        }
-
-        public static void SubstituteWith(this IFigure figure, IFigure replacement)
-        {
-            List<IFigure> dependents = new List<IFigure>(figure.Dependents.Where(f => !(f is PointLabel)));
-            if (dependents.IsEmpty())
-            {
-                return;
-            }
-            foreach (var dependent in dependents)
-            {
-                // a part of a composite (a side of a regular polygon built on the figure)
-                // has gone over with its composite already
-                if (dependent.Dependencies.Contains(figure))
-                {
-                    dependent.ReplaceDependency(figure, replacement);
-                }
-            }
-            replacement.Dependents.AddRange(figure.Dependents.ToArray());
-            figure.Dependents.Clear();
-        }
-
-        public static string GenerateNewName(this IFigure figure)
-        {
-            // Old Scheme - all figures use same index.
-            //return figure.GetType().Name + FigureBase.ID++;
-
-            // New Scheme - each class essentially uses its own index.
-            string className = figure.GetType().Name;
-            for (int i = 1; i < int.MaxValue; i++)
-            {
-                string number = i.ToString();
-                var candidate = className + number;
-                if (figure.NameAvailable(candidate))
-                {
-                    return candidate;
-                }
-            }
-
-            // Report a naming error.
-            if (figure.Drawing != null)
-            {
-                var message = "Error in generating name for figure of class ";
-                figure.Drawing.RaiseError(Application.Current, new Exception(message + figure.GetType().Name));
-            }
-            return "error_generating_name";
-        }
-
-        public static void GenerateNewNameIfNecessary(this IFigure figure, Drawing drawing, List<string> blacklist)
-        {
-            while (figure.Name == null || drawing
-                .Figures
-                //.GetAllFiguresRecursive() // Do not look recursively.
-                .Where(f => f.Name == figure.Name)
-                .Where(f => f != figure)
-                .Any())
-            {
-                figure.Name = figure.GenerateFigureName(blacklist);
-            }
-        }
-
-        public static bool NameAvailable(this IFigure figure, string name)
-        {
-            if (figure.Drawing == null)
-            {
-                return true;
-            }
-            // its own name is available to a figure that looks for a new one (segment AB,
-            // renamed when a point is, may well stay AB)
-            return !figure.Drawing.Figures.Any(f => f != figure && f.Name == name);
-        }
-
-        public static bool ContainsRecursively(this IEnumerable<IFigure> list, IFigure figure)
-        {
-            foreach (var item in list)
-            {
-                if (item == figure)
-                {
-                    return true;
-                }
-
-                if (item is CompositeFigure composite && composite.Children.ContainsRecursively(figure))
-                {
-                    return true;
-                }
-            }
-
             return false;
         }
 
-        public static void CheckConsistency(this IEnumerable<IFigure> list)
-        {
-            // the figures of the list and of their parts, collected once: a search of the list
-            // for every dependency and dependent of every figure took time quadratic in the
-            // size of the drawing, and the check runs whenever what is built on a figure is
-            // recalculated (RecalculateAllDependents)
-            var figures = new HashSet<IFigure>(ReferenceEqualityComparer.Instance);
-            AddRecursively(figures, list);
-            foreach (var figure in list)
-            {
-                if (figure.Dependencies != null)
-                {
-                    foreach (var dependency in figure.Dependencies)
-                    {
-                        if (!figures.Contains(dependency))
-                        {
-                            throw new Exception(
-                                "Consistency check failed: dependency {0} of figure {1} expected in the FigureList"
-                                .Format(dependency, figure));
-                        }
-                        if (!dependency.Dependents.Contains(figure))
-                        {
-                            throw new Exception(
-                                "Consistency check failed: figure {0} is not registered in the Dependents list of its dependency {1}"
-                                .Format(figure, dependency));
-                        }
-                    }
-                }
-                if (figure.Dependents != null)
-                {
-                    foreach (var dependent in figure.Dependents)
-                    {
-                        if (!figures.Contains(dependent))
-                        {
-                            throw new Exception(
-                                "Consistency check failed: dependent {0} of figure {1} expected in the FigureList"
-                                .Format(dependent, figure));
-                        }
+        return figure.Dependencies.Contains(possibleDependency);
+    }
 
-                        if (!dependent.Dependencies.Contains(figure))
-                        {
-                            throw new Exception(
-                                "Consistency check failed: figure {0} is not registered in the Dependencies list of its dependent {1}"
-                                .Format(figure, dependent));
-                        }
+    /// <summary>
+    /// Whether something built on the figure takes it for its length: a distance
+    /// measurement of it, a circle with it for a radius, a translation or a dilation by
+    /// it. A figure that becomes a kind without a length (a segment converted to a line
+    /// or a ray) would leave them with nothing to measure - the measurement threw on
+    /// every redraw - so the conversion is not offered then.
+    /// </summary>
+    public static bool IsUsedForLength(this IFigure figure)
+    {
+        return figure.Dependents.Any(dependent =>
+            dependent is LengthMeasurement
+            || dependent is CircleByRadius
+            || dependent is DilatedPoint
+            || dependent is TranslatedPoint translated && translated.DistanceSource == figure);
+    }
+
+    /// <summary>
+    /// The same for its area, its perimeter or its inside (a point kept in it): a sector
+    /// or a circular segment converted to a bare arc has none of them, and the point that
+    /// was inside a sector stopped existing for good
+    /// </summary>
+    public static bool IsUsedForArea(this IFigure figure)
+    {
+        return figure.Dependents.Any(dependent => dependent is AreaMeasurement
+            || dependent is LengthMeasurement { Quantity: LengthQuantity.Perimeter }
+            || dependent is PointInRegion);
+    }
+
+    /// <summary>
+    /// Whether an expression reads a number off the figure ([AB.Length], c.Area) that a
+    /// figure of the other type has no property for: converted (a segment to a ray), the
+    /// expression didn't compile, and the point at (AB.Length, -1) went on at its old place
+    /// while the session lasted, then was nowhere once the file was opened again. Read from
+    /// the expressions as the parser reads them (a label's [...] parts), a name in backticks
+    /// included: a regular expression over the text missed `base side`.Length, and the
+    /// conversion came back once the segment was renamed so. A property is found as the
+    /// compiler finds it, by name in any case.
+    /// </summary>
+    /// <param name="readers">Which dependents count (a defined tool's results); all of them when null</param>
+    public static bool IsReadByExpressionsBeyond(this IFigure figure, Type replacement, Func<IFigure, bool> readers = null)
+    {
+        if (string.IsNullOrEmpty(figure.Name))
+        {
+            return false;
+        }
+
+        var properties = replacement.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(property => property.CanRead && property.GetIndexParameters().Length == 0 && ExpressionReflection.IsNumberType(property.PropertyType))
+            .Select(property => property.Name)
+            .ToList();
+        return figure.Dependents
+            .Where(dependent => readers == null || readers(dependent))
+            .OfType<IRenamableExpressions>()
+            .SelectMany(holder => holder is LabelBase label ? label.Expressions : holder.ExpressionTexts)
+            .SelectMany(text => PropertiesRead(text, figure.Name))
+            .Any(read => !properties.Any(name => name.Equals(read, StringComparison.OrdinalIgnoreCase)));
+    }
+
+    /// <summary>
+    /// The properties an expression reads off the figure of this name: A.X, `base side`.Length.
+    /// A name in backticks is the figure's when it is exactly its name, a bare one in any
+    /// case (as the binder takes it last). An expression that doesn't parse reads nothing.
+    /// </summary>
+    static IEnumerable<string> PropertiesRead(string expression, string name)
+    {
+        if (string.IsNullOrEmpty(expression))
+        {
+            yield break;
+        }
+
+        var parsed = Parser.Parse(expression);
+        if (parsed.Root == null || !parsed.Errors.IsEmpty())
+        {
+            yield break;
+        }
+
+        var nodes = new Stack<Node>();
+        nodes.Push(parsed.Root);
+        while (nodes.Count > 0)
+        {
+            var node = nodes.Pop();
+            if (node == null)
+            {
+                continue;
+            }
+
+            if (node.Kind == NodeType.PropertyAccess)
+            {
+                var figureToken = node.Children[0].Token;
+                bool isFigure = figureToken.IsQuoted
+                    ? figureToken.Text == name
+                    : figureToken.Text.Equals(name, StringComparison.OrdinalIgnoreCase);
+                if (isFigure)
+                {
+                    yield return node.Children[1].Token.Text;
+                }
+
+                continue;
+            }
+
+            foreach (var child in node.Children)
+            {
+                nodes.Push(child);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Whether a tool or a tied value may take a length from the figure: anything that
+    /// has one, except a label that says no number (<see cref="Label.GivesNumber"/>)
+    /// and the mark of an angle - an arc in the code only, a sign of a size in pixels,
+    /// whose "length" changes with every zoom (a click just beside a vertex took it
+    /// for a radius or a distance).
+    /// </summary>
+    public static bool GivesLength(this IFigure figure)
+    {
+        return figure is ILengthProvider && !(figure is AngleArc) && Label.GivesNumber(figure);
+    }
+
+    /// <summary>The same for an angle: anything that has one, except a label that says no number</summary>
+    public static bool GivesAngle(this IFigure figure)
+    {
+        return figure is IAngleProvider && Label.GivesNumber(figure);
+    }
+
+    public static void RecalculateAllDependents(this IFigure figure)
+    {
+        var dependentsToRecalculate = DependencyAlgorithms
+            .FindDescendants(f => f.Dependents, new IFigure[] { figure });
+        dependentsToRecalculate.Reverse();
+
+        foreach (var dependent in dependentsToRecalculate)
+        {
+            dependent.RecalculateAndUpdateVisual();
+        }
+
+        // a file being read is checked once all of it is in (DrawingDeserializer.ReadDrawing)
+        if (!figure.Drawing.IsReading)
+        {
+            figure.Drawing.Figures.CheckConsistencyInDebug();
+        }
+    }
+
+    public static void RecalculateAndUpdateVisual(this IFigure figure)
+    {
+        if (figure.Drawing == null)
+        {
+            return;
+        }
+
+        figure.UpdateExistence();
+        figure.Recalculate();
+        figure.UpdateVisual();
+    }
+
+    public static IEnumerable<Point> EnumeratePointsOnLinearFigure(this ILinearFigure figure)
+    {
+        var domain = figure.GetParameterDomain();
+        for (double lambda = domain.Item1; lambda < domain.Item2; lambda += 0.01)
+        {
+            yield return figure.GetPointFromParameter(lambda);
+        }
+    }
+
+    public static Point Point(this IFigure figure, int index)
+    {
+        if (index < figure.Dependencies.Count && figure.Dependencies[index] is IPoint point)
+        {
+            return point.Coordinates;
+        }
+
+        return figure.MissingPoint(index);
+    }
+
+    /// <summary>
+    /// The figure asked for a point it is not built on: too few dependencies, or one of
+    /// another kind. A file may say that (a segment on one point asked for its second as
+    /// it was worked out): while the file is read the figure is noted for the deserializer
+    /// to leave out (<see cref="Drawing.InvalidFigures"/>), made not to exist, so that its
+    /// shape is not laid out at infinity, and given a point that is nowhere. At any other
+    /// time it is a bug, and throws as the index did.
+    /// </summary>
+    public static Point MissingPoint(this IFigure figure, int index)
+    {
+        ReportMissingDependency(figure, index, "a point");
+        return Math.InfinitePoint;
+    }
+
+    /// <summary>The same for a line (<see cref="Line"/>)</summary>
+    public static PointPair MissingLine(this IFigure figure, int index)
+    {
+        ReportMissingDependency(figure, index, "a line");
+        return new PointPair(Math.InfinitePoint, Math.InfinitePoint);
+    }
+
+    static void ReportMissingDependency(IFigure figure, int index, string what)
+    {
+        int count = figure.Dependencies.Count;
+        string message = string.Format(
+            "{0} is left out: it is built on {1} figure{2} and needs {3} as the {4}.",
+            figure,
+            count,
+            count == 1 ? "" : "s",
+            what,
+            Ordinal(index + 1));
+        var drawing = figure.Drawing;
+        if (drawing == null || !drawing.IsReading)
+        {
+            throw new InvalidOperationException(message);
+        }
+
+        figure.Exists = false;
+        if (!drawing.InvalidFigures.Any(invalid => invalid.Figure == figure))
+        {
+            drawing.InvalidFigures.Add((figure, message));
+        }
+    }
+
+    static string Ordinal(int number)
+    {
+        string suffix = number % 100 is 11 or 12 or 13
+            ? "th"
+            : number % 10 == 1 ? "st" : number % 10 == 2 ? "nd" : number % 10 == 3 ? "rd" : "th";
+        return number + suffix;
+    }
+
+    public static void Move(this IEnumerable<IMovable> figures, Point offset)
+    {
+        foreach (var figure in figures)
+        {
+            figure.MoveTo(figure.Coordinates.Plus(offset));
+        }
+    }
+
+    public static PointPair Line(this IFigure figure, int index)
+    {
+        if (index < figure.Dependencies.Count && figure.Dependencies[index] is ILine line)
+        {
+            return line.Coordinates;
+        }
+
+        return figure.MissingLine(index);
+    }
+
+    public static void RegisterWithDependencies(this IFigure figure)
+    {
+        figure.AddDependencies(figure.Dependencies);
+    }
+
+    public static void UnregisterFromDependencies(this IFigure figure)
+    {
+        figure.RemoveDependencies(figure.Dependencies);
+    }
+
+    public static void AddDependencies(this IFigure figure, IEnumerable<IFigure> dependencies)
+    {
+        if (figure == null || dependencies.IsEmpty())
+        {
+            return;
+        }
+
+        foreach (var dependency in dependencies)
+        {
+            dependency.Dependents.Add(figure);
+        }
+    }
+
+    public static void RemoveDependencies(this IFigure figure, IEnumerable<IFigure> dependencies)
+    {
+        if (figure == null || dependencies.IsEmpty())
+        {
+            return;
+        }
+        foreach (var dependency in dependencies)
+        {
+            if (dependency != null)
+            {
+                dependency.Dependents.Remove(figure);
+            }
+        }
+    }
+
+    public static void ReplaceDependency(this IFigure figure, int index, IFigure newDependency)
+    {
+        List<IFigure> temp = new List<IFigure>(figure.Dependencies);
+        if (index < 0 || index >= temp.Count)
+        {
+            throw new ArgumentOutOfRangeException("index");
+        }
+        IFigure oldDependency = temp[index];
+        oldDependency.Dependents.Remove(figure);
+        temp[index] = newDependency;
+        newDependency.Dependents.Add(figure);
+        figure.Dependencies = temp;
+
+        // Dive down into the children of composite figures updating dependencies.
+        var compositeFigure = figure as CompositeFigure;
+        if (compositeFigure != null)
+        {
+            foreach (IFigure child in compositeFigure.Children)
+            {
+                temp.Clear();
+                index = child.Dependencies.IndexOf(oldDependency);
+                if (index >= 0)
+                {
+                    temp.AddRange(child.Dependencies);
+                    temp[index] = newDependency;
+                    child.Dependencies = temp;
+
+                    // a part that is registered with what it is built on (the sides of
+                    // a regular polygon) is registered with the new one from now on
+                    if (oldDependency.Dependents.Remove(child))
+                    {
+                        newDependency.Dependents.Add(child);
                     }
                 }
             }
         }
+    }
 
-        /// <summary>
-        /// The app checks itself (after a click of a tool, a recalculation of what is built on a
-        /// figure, a file read) in a Debug build only. In Release (the browser) a failed check
-        /// could only throw after the fact, or refuse a file that opens otherwise; the tests
-        /// and the harness call <see cref="CheckConsistency"/> themselves.
-        /// </summary>
-        [System.Diagnostics.Conditional("DEBUG")]
-        public static void CheckConsistencyInDebug(this IEnumerable<IFigure> list)
+    public static void ReplaceDependency(this IFigure figure, IFigure oldDependency, IFigure newDependency)
+    {
+        int index = figure.Dependencies.IndexOf(oldDependency);
+        if (index == -1)
         {
-            list.CheckConsistency();
+            throw new Exception("Calling ReplaceDependency on a figure where oldDependency is not a dependency");
         }
+        ReplaceDependency(figure, index, newDependency);
 
-        /// <summary>What <see cref="ContainsRecursively"/> finds: the figures and the parts of composites, down to the last</summary>
-        static void AddRecursively(HashSet<IFigure> figures, IEnumerable<IFigure> list)
+        // a stored position (a rotated point) follows the new dependency, and what is built
+        // on the figure follows that - on undo of Actions.ReplaceDependency too
+        figure.RecalculateAndUpdateVisual();
+        figure.RecalculateAllDependents();
+    }
+
+    public static void SubstituteWith(this IFigure figure, IFigure replacement)
+    {
+        List<IFigure> dependents = new List<IFigure>(figure.Dependents.Where(f => !(f is PointLabel)));
+        if (dependents.IsEmpty())
         {
-            foreach (var item in list)
+            return;
+        }
+        foreach (var dependent in dependents)
+        {
+            // a part of a composite (a side of a regular polygon built on the figure)
+            // has gone over with its composite already
+            if (dependent.Dependencies.Contains(figure))
             {
-                figures.Add(item);
-                if (item is CompositeFigure composite)
-                {
-                    AddRecursively(figures, composite.Children);
-                }
+                dependent.ReplaceDependency(figure, replacement);
+            }
+        }
+        replacement.Dependents.AddRange(figure.Dependents.ToArray());
+        figure.Dependents.Clear();
+    }
+
+    public static string GenerateNewName(this IFigure figure)
+    {
+        // Old Scheme - all figures use same index.
+        //return figure.GetType().Name + FigureBase.ID++;
+
+        // New Scheme - each class essentially uses its own index.
+        string className = figure.GetType().Name;
+        for (int i = 1; i < int.MaxValue; i++)
+        {
+            string number = i.ToString();
+            var candidate = className + number;
+            if (figure.NameAvailable(candidate))
+            {
+                return candidate;
             }
         }
 
-        public static void Scale(this IFigure figure, double scaleFactor)
+        // Report a naming error.
+        if (figure.Drawing != null)
         {
-            foreach (IFigure f in figure.Dependencies)
+            var message = "Error in generating name for figure of class ";
+            figure.Drawing.RaiseError(Application.Current, new Exception(message + figure.GetType().Name));
+        }
+        return "error_generating_name";
+    }
+
+    public static void GenerateNewNameIfNecessary(this IFigure figure, Drawing drawing, List<string> blacklist)
+    {
+        while (figure.Name == null || drawing
+            .Figures
+            //.GetAllFiguresRecursive() // Do not look recursively.
+            .Where(f => f.Name == figure.Name)
+            .Where(f => f != figure)
+            .Any())
+        {
+            figure.Name = figure.GenerateFigureName(blacklist);
+        }
+    }
+
+    public static bool NameAvailable(this IFigure figure, string name)
+    {
+        if (figure.Drawing == null)
+        {
+            return true;
+        }
+        // its own name is available to a figure that looks for a new one (segment AB,
+        // renamed when a point is, may well stay AB)
+        return !figure.Drawing.Figures.Any(f => f != figure && f.Name == name);
+    }
+
+    public static bool ContainsRecursively(this IEnumerable<IFigure> list, IFigure figure)
+    {
+        foreach (var item in list)
+        {
+            if (item == figure)
             {
-                if (f is PointBase)
+                return true;
+            }
+
+            if (item is CompositeFigure composite && composite.Children.ContainsRecursively(figure))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static void CheckConsistency(this IEnumerable<IFigure> list)
+    {
+        // the figures of the list and of their parts, collected once: a search of the list
+        // for every dependency and dependent of every figure took time quadratic in the
+        // size of the drawing, and the check runs whenever what is built on a figure is
+        // recalculated (RecalculateAllDependents)
+        var figures = new HashSet<IFigure>(ReferenceEqualityComparer.Instance);
+        AddRecursively(figures, list);
+        foreach (var figure in list)
+        {
+            if (figure.Dependencies != null)
+            {
+                foreach (var dependency in figure.Dependencies)
                 {
-                    ((PointBase)f).X = ((PointBase)f).X * scaleFactor;
-                    ((PointBase)f).Y = ((PointBase)f).Y * scaleFactor;
+                    if (!figures.Contains(dependency))
+                    {
+                        throw new Exception(
+                            "Consistency check failed: dependency {0} of figure {1} expected in the FigureList"
+                            .Format(dependency, figure));
+                    }
+                    if (!dependency.Dependents.Contains(figure))
+                    {
+                        throw new Exception(
+                            "Consistency check failed: figure {0} is not registered in the Dependents list of its dependency {1}"
+                            .Format(figure, dependency));
+                    }
                 }
-                else
+            }
+            if (figure.Dependents != null)
+            {
+                foreach (var dependent in figure.Dependents)
                 {
-                    f.Scale(scaleFactor);
+                    if (!figures.Contains(dependent))
+                    {
+                        throw new Exception(
+                            "Consistency check failed: dependent {0} of figure {1} expected in the FigureList"
+                            .Format(dependent, figure));
+                    }
+
+                    if (!dependent.Dependencies.Contains(figure))
+                    {
+                        throw new Exception(
+                            "Consistency check failed: figure {0} is not registered in the Dependencies list of its dependent {1}"
+                            .Format(figure, dependent));
+                    }
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// The app checks itself (after a click of a tool, a recalculation of what is built on a
+    /// figure, a file read) in a Debug build only. In Release (the browser) a failed check
+    /// could only throw after the fact, or refuse a file that opens otherwise; the tests
+    /// and the harness call <see cref="CheckConsistency"/> themselves.
+    /// </summary>
+    [System.Diagnostics.Conditional("DEBUG")]
+    public static void CheckConsistencyInDebug(this IEnumerable<IFigure> list)
+    {
+        list.CheckConsistency();
+    }
+
+    /// <summary>What <see cref="ContainsRecursively"/> finds: the figures and the parts of composites, down to the last</summary>
+    static void AddRecursively(HashSet<IFigure> figures, IEnumerable<IFigure> list)
+    {
+        foreach (var item in list)
+        {
+            figures.Add(item);
+            if (item is CompositeFigure composite)
+            {
+                AddRecursively(figures, composite.Children);
+            }
+        }
+    }
+
+    public static void Scale(this IFigure figure, double scaleFactor)
+    {
+        foreach (IFigure f in figure.Dependencies)
+        {
+            if (f is PointBase)
+            {
+                ((PointBase)f).X = ((PointBase)f).X * scaleFactor;
+                ((PointBase)f).Y = ((PointBase)f).Y * scaleFactor;
+            }
+            else
+            {
+                f.Scale(scaleFactor);
             }
         }
     }

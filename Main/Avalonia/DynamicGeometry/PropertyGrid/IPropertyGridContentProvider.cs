@@ -1,7 +1,6 @@
-﻿namespace DynamicGeometry
+﻿namespace DynamicGeometry;
+
+public interface IPropertyGridContentProvider
 {
-    public interface IPropertyGridContentProvider
-    {
-        object GetContentForPropertyGrid();
-    }
+    object GetContentForPropertyGrid();
 }

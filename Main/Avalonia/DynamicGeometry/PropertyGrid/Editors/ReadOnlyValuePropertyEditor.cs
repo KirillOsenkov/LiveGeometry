@@ -1,37 +1,36 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Layout;
 
-namespace DynamicGeometry
-{
-    public class ReadOnlyValuePropertyEditorFactory 
-        : BaseValueEditorFactory<ReadOnlyValuePropertyEditor>
-    {
-        public ReadOnlyValuePropertyEditorFactory()
-        {
-            LoadOrder = 4;
-        }
+namespace DynamicGeometry;
 
-        public override bool SupportsValue(IValueProvider property)
-        {
-            return !property.CanSetValue;
-        }
+public class ReadOnlyValuePropertyEditorFactory 
+    : BaseValueEditorFactory<ReadOnlyValuePropertyEditor>
+{
+    public ReadOnlyValuePropertyEditorFactory()
+    {
+        LoadOrder = 4;
     }
 
-    public class ReadOnlyValuePropertyEditor : LabeledValueEditor, IValueEditor
+    public override bool SupportsValue(IValueProvider property)
     {
-        public TextBox TextBox { get; set; }
+        return !property.CanSetValue;
+    }
+}
 
-        protected override UIElement CreateEditor()
-        {
-            TextBox = new TextBox();
-            TextBox.VerticalAlignment = VerticalAlignment.Center;
-            TextBox.IsReadOnly = true;
-            return TextBox;
-        }
+public class ReadOnlyValuePropertyEditor : LabeledValueEditor, IValueEditor
+{
+    public TextBox TextBox { get; set; }
 
-        public override void UpdateEditor()
-        {
-            TextBox.Text = (GetValue() ?? "").ToString();
-        }
+    protected override UIElement CreateEditor()
+    {
+        TextBox = new TextBox();
+        TextBox.VerticalAlignment = VerticalAlignment.Center;
+        TextBox.IsReadOnly = true;
+        return TextBox;
+    }
+
+    public override void UpdateEditor()
+    {
+        TextBox.Text = (GetValue() ?? "").ToString();
     }
 }

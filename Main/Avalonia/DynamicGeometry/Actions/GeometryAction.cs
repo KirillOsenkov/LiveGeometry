@@ -1,14 +1,13 @@
 ﻿using GuiLabs.Undo;
 
-namespace DynamicGeometry
-{
-    public abstract class GeometryAction : AbstractAction
-    {
-        public GeometryAction(Drawing drawing)
-        {
-            Drawing = drawing;
-        }
+namespace DynamicGeometry;
 
-        public Drawing Drawing { get; set; }
+public abstract class GeometryAction : AbstractAction
+{
+    public GeometryAction(Drawing drawing)
+    {
+        Drawing = drawing;
     }
+
+    public Drawing Drawing { get; set; }
 }

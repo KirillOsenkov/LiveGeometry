@@ -1,10 +1,9 @@
-﻿namespace DynamicGeometry
+﻿namespace DynamicGeometry;
+
+public class DrawingUpdater
 {
-    public class DrawingUpdater
+    public virtual void UpdateIfNecessary(Drawing drawing)
     {
-        public virtual void UpdateIfNecessary(Drawing drawing)
-        {
-            // Override this to perform updates.
-        }
+        // Override this to perform updates.
     }
 }

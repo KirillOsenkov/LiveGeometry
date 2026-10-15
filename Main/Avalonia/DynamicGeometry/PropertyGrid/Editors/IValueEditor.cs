@@ -1,10 +1,9 @@
 ﻿using GuiLabs.Undo;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public interface IValueEditor
 {
-    public interface IValueEditor
-    {
-        IValueProvider Value { get; set; }
-        ActionManager ActionManager { get; set; }
-    }
+    IValueProvider Value { get; set; }
+    ActionManager ActionManager { get; set; }
 }

@@ -27,8 +27,9 @@ being true. Things derivable from the code or git history don't belong here.
 ## Code style
 
 - **Apply these rules to new code only.** Keep diffs minimal - don't reformat or rename existing
-  code as a drive-by. Most of `DynamicGeometry/` is decades-old WPF/Silverlight-era code with
-  block namespaces; it stays that way unless a cleanup is explicitly asked for.
+  code as a drive-by. Most of `DynamicGeometry/` is decades-old WPF/Silverlight-era code; it
+  stays that way unless a cleanup is explicitly asked for (2026-10-15: every file is
+  file-scoped, done in bulk through Helix's `apply_code_action` with `scope: project`).
 - **New files: CRLF line endings, file-scoped namespaces.** Existing files keep what they have.
   The Write tool emits LF: after creating a file, or rewriting an existing CRLF file with Write
   rather than Edit, convert its line endings with an editor tool. Never grep for `\r`.

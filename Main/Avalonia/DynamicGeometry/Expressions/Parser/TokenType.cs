@@ -1,18 +1,17 @@
-﻿namespace DynamicGeometry
+﻿namespace DynamicGeometry;
+
+public enum TokenType
 {
-    public enum TokenType
-    {
-        NumericLiteral,
-        Identifier,
-        Plus,
-        Minus,
-        Multiply,
-        Divide,
-        Power,
-        OpenParen,
-        CloseParen,
-        Comma,
-        Dot,
-        Unknown
-    }
+    NumericLiteral,
+    Identifier,
+    Plus,
+    Minus,
+    Multiply,
+    Divide,
+    Power,
+    OpenParen,
+    CloseParen,
+    Comma,
+    Dot,
+    Unknown
 }

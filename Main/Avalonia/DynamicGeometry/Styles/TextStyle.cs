@@ -1,140 +1,139 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+[StyleFor(typeof(LabelBase))]
+[StyleFor(typeof(ShowHideControl))]
+public class TextStyle : FigureStyle
 {
-    [StyleFor(typeof(LabelBase))]
-    [StyleFor(typeof(ShowHideControl))]
-    public class TextStyle : FigureStyle
+    public override FrameworkElement GetSampleGlyph()
     {
-        public override FrameworkElement GetSampleGlyph()
-        {
-            var label = Factory.CreateLabelShape();
-            label.Text = "Text";
-            label.Apply(this.GetWpfStyle());
-            label.Tag = this;
-            return label;
-        }
+        var label = Factory.CreateLabelShape();
+        label.Text = "Text";
+        label.Apply(this.GetWpfStyle());
+        label.Tag = this;
+        return label;
+    }
 
-        protected double fontSize = 10.0;
-        [PropertyGridName("Font size")]
-        [PropertyGridVisible]
-        [Domain(3, 150)]
-        public double FontSize
+    protected double fontSize = 10.0;
+    [PropertyGridName("Font size")]
+    [PropertyGridVisible]
+    [Domain(3, 150)]
+    public double FontSize
+    {
+        get
         {
-            get
-            {
-                return fontSize;
-            }
-            set
-            {
-                fontSize = value;
-                OnPropertyChanged("FontSize");
-            }
+            return fontSize;
         }
+        set
+        {
+            fontSize = value;
+            OnPropertyChanged("FontSize");
+        }
+    }
 
-        Color mColor = Colors.Black;
-        [PropertyGridVisible]
-        public Color Color
+    Color mColor = Colors.Black;
+    [PropertyGridVisible]
+    public Color Color
+    {
+        get
         {
-            get
-            {
-                return mColor;
-            }
-            set
-            {
-                mColor = value;
-                OnPropertyChanged("Color");
-            }
+            return mColor;
         }
+        set
+        {
+            mColor = value;
+            OnPropertyChanged("Color");
+        }
+    }
 
-        FontFamily fontFamily = new FontFamily("Arial");
-        [PropertyGridVisible]
-        [PropertyGridName("Font family")]
-        public FontFamily FontFamily
+    FontFamily fontFamily = new FontFamily("Arial");
+    [PropertyGridVisible]
+    [PropertyGridName("Font family")]
+    public FontFamily FontFamily
+    {
+        get
         {
-            get
-            {
-                return fontFamily;
-            }
-            set
-            {
-                fontFamily = value;
-                OnPropertyChanged("FontFamily");
-            }
+            return fontFamily;
         }
+        set
+        {
+            fontFamily = value;
+            OnPropertyChanged("FontFamily");
+        }
+    }
 
-        bool bold = false;
-        [PropertyGridVisible]
-        public bool Bold
+    bool bold = false;
+    [PropertyGridVisible]
+    public bool Bold
+    {
+        get
         {
-            get
-            {
-                return bold;
-            }
-            set
-            {
-                bold = value;
-                OnPropertyChanged("Bold");
-            }
+            return bold;
         }
+        set
+        {
+            bold = value;
+            OnPropertyChanged("Bold");
+        }
+    }
 
-        bool italic = false;
-        [PropertyGridVisible]
-        public bool Italic
+    bool italic = false;
+    [PropertyGridVisible]
+    public bool Italic
+    {
+        get
         {
-            get
-            {
-                return italic;
-            }
-            set
-            {
-                italic = value;
-                OnPropertyChanged("Italic");
-            }
+            return italic;
         }
+        set
+        {
+            italic = value;
+            OnPropertyChanged("Italic");
+        }
+    }
 
-        bool underline = false;
-        [PropertyGridVisible]
-        public virtual bool Underline
+    bool underline = false;
+    [PropertyGridVisible]
+    public virtual bool Underline
+    {
+        get
         {
-            get
-            {
-                return underline;
-            }
-            set
-            {
-                underline = value;
-                OnPropertyChanged("Underline");
-            }
+            return underline;
         }
+        set
+        {
+            underline = value;
+            OnPropertyChanged("Underline");
+        }
+    }
 
-        protected override void ApplyToWpfStyle(Style existingStyle, IFigure figure)
+    protected override void ApplyToWpfStyle(Style existingStyle, IFigure figure)
+    {
+        base.ApplyToWpfStyle(existingStyle, figure);
+        existingStyle.Setters.Add(new Setter(TextBlock.FontSizeProperty, fontSize));
+        existingStyle.Setters.Add(new Setter(TextBlock.ForegroundProperty, new SolidColorBrush(Color)));
+        if (FontFamily != null && !FontFamily.Name.IsEmpty())
         {
-            base.ApplyToWpfStyle(existingStyle, figure);
-            existingStyle.Setters.Add(new Setter(TextBlock.FontSizeProperty, fontSize));
-            existingStyle.Setters.Add(new Setter(TextBlock.ForegroundProperty, new SolidColorBrush(Color)));
-            if (FontFamily != null && !FontFamily.Name.IsEmpty())
+            // A drawing names fonts of the machine it was made on (Segoe UI, Arial); the
+            // browser has none of them, and what a missing font falls back to by itself
+            // there is Noto Mono - and so are FontFamily.Default and the font manager's
+            // default. The app's own font (embedded Inter) is what the theme puts on the
+            // window and text inherits, so a font that isn't there is simply not set.
+            bool isInstalled = FontManager.Current.TryGetGlyphTypeface(new Typeface(FontFamily), out var resolved)
+                && string.Equals(resolved.FamilyName, FontFamily.Name, System.StringComparison.OrdinalIgnoreCase);
+            if (isInstalled)
             {
-                // A drawing names fonts of the machine it was made on (Segoe UI, Arial); the
-                // browser has none of them, and what a missing font falls back to by itself
-                // there is Noto Mono - and so are FontFamily.Default and the font manager's
-                // default. The app's own font (embedded Inter) is what the theme puts on the
-                // window and text inherits, so a font that isn't there is simply not set.
-                bool isInstalled = FontManager.Current.TryGetGlyphTypeface(new Typeface(FontFamily), out var resolved)
-                    && string.Equals(resolved.FamilyName, FontFamily.Name, System.StringComparison.OrdinalIgnoreCase);
-                if (isInstalled)
-                {
-                    existingStyle.Setters.Add(new Setter(TextBlock.FontFamilyProperty, FontFamily));
-                }
+                existingStyle.Setters.Add(new Setter(TextBlock.FontFamilyProperty, FontFamily));
             }
-            existingStyle.Setters.Add(new Setter(TextBlock.FontStyleProperty, Italic ? FontStyles.Italic : FontStyles.Normal));
-            existingStyle.Setters.Add(new Setter(TextBlock.FontWeightProperty, Bold ? FontWeights.Bold : FontWeights.Normal));
-            if (Underline)
-            {
-                existingStyle.Setters.Add(new Setter(TextBlock.TextDecorationsProperty, TextDecorations.Underline));
-            }
-            //existingStyle.Setters.Add(new Setter(TextBlock.HorizontalAlignmentProperty, Alignment));
         }
+        existingStyle.Setters.Add(new Setter(TextBlock.FontStyleProperty, Italic ? FontStyles.Italic : FontStyles.Normal));
+        existingStyle.Setters.Add(new Setter(TextBlock.FontWeightProperty, Bold ? FontWeights.Bold : FontWeights.Normal));
+        if (Underline)
+        {
+            existingStyle.Setters.Add(new Setter(TextBlock.TextDecorationsProperty, TextDecorations.Underline));
+        }
+        //existingStyle.Setters.Add(new Setter(TextBlock.HorizontalAlignmentProperty, Alignment));
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class ValidationException : Exception
 {
-    public class ValidationException : Exception
-    {
-    }
 }

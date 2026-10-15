@@ -6,134 +6,133 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using M = System.Math;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+[Category(BehaviorCategories.Measure)]
+[Order(2)]
+public class AngleMeasurementCreator : FigureCreator
 {
-    [Category(BehaviorCategories.Measure)]
-    [Order(2)]
-    public class AngleMeasurementCreator : FigureCreator
+    protected override DependencyList InitExpectedDependencies()
     {
-        protected override DependencyList InitExpectedDependencies()
+        return DependencyList.PointPointPoint;
+    }
+
+    // The mark and the number, both made when the third point is there, in the order
+    // the sides were clicked: a new angle is the one under 180 degrees whichever side
+    // came first (AngleSweep.Smaller, the default), so the preview and the figure agree
+    // wherever the cursor is - unless the points came from a clicked arc, whose sweep
+    // they take. (The arc used to be added for good with the preview, before the third
+    // point existed: it sat in the figure list ahead of a point it is built on, and a
+    // saved file came back in another order.)
+    protected override IEnumerable<IFigure> CreateFigures()
+    {
+        var arc = Factory.CreateAngleArc(Drawing, FoundDependencies);
+        var measurement = Factory.CreateAngleMeasurement(Drawing, FoundDependencies);
+        if (clickedSweep != null)
         {
-            return DependencyList.PointPointPoint;
+            arc.Sweep = clickedSweep.Value;
+            measurement.Sweep = clickedSweep.Value;
+            clickedSweep = null;
         }
 
-        // The mark and the number, both made when the third point is there, in the order
-        // the sides were clicked: a new angle is the one under 180 degrees whichever side
-        // came first (AngleSweep.Smaller, the default), so the preview and the figure agree
-        // wherever the cursor is - unless the points came from a clicked arc, whose sweep
-        // they take. (The arc used to be added for good with the preview, before the third
-        // point existed: it sat in the figure list ahead of a point it is built on, and a
-        // saved file came back in another order.)
-        protected override IEnumerable<IFigure> CreateFigures()
-        {
-            var arc = Factory.CreateAngleArc(Drawing, FoundDependencies);
-            var measurement = Factory.CreateAngleMeasurement(Drawing, FoundDependencies);
-            if (clickedSweep != null)
-            {
-                arc.Sweep = clickedSweep.Value;
-                measurement.Sweep = clickedSweep.Value;
-                clickedSweep = null;
-            }
+        yield return arc;
+        yield return measurement;
+    }
 
-            yield return arc;
-            yield return measurement;
+    /// <summary>
+    /// An arc, a sector or a segment under the cursor with no point on top of it: the
+    /// first click measures its central angle, center and the two ends, the way round
+    /// the arc goes (<see cref="AnglePoints"/>). Not an angle's own mark or number: that
+    /// angle is measured already.
+    /// </summary>
+    protected override IReadOnlyList<IFigure> FindFiguresInsteadOfPoint(Point unconstrainedCoordinates)
+    {
+        return AngleBisectorCreator.FindAngleFigures(this, unconstrainedCoordinates, AnglePoints.TakesArc);
+    }
+
+    AngleSweep? clickedSweep;
+
+    public override void MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        // where the cursor is, as the hover preview asks: not where Shift snaps it to
+        var angle = AnglePoints.From(FindFigureInsteadOfPoint(Coordinates(e, false, false, false)));
+        if (angle != null)
+        {
+            StartConstruction();
+            FoundDependencies.AddRange(angle.Points);
+            clickedSweep = angle.Sweep;
+            AddFiguresAndRestart();
+            return;
         }
 
-        /// <summary>
-        /// An arc, a sector or a segment under the cursor with no point on top of it: the
-        /// first click measures its central angle, center and the two ends, the way round
-        /// the arc goes (<see cref="AnglePoints"/>). Not an angle's own mark or number: that
-        /// angle is measured already.
-        /// </summary>
-        protected override IReadOnlyList<IFigure> FindFiguresInsteadOfPoint(Point unconstrainedCoordinates)
+        base.MouseDown(sender, e);
+    }
+
+    /// <summary>
+    /// Near a vertex, inside the mark it would get, the first click measures the angle
+    /// whole (see <see cref="AngleAtVertex"/>) instead of taking a point; the later clicks
+    /// are points on the sides
+    /// </summary>
+    protected override bool TakesAngleAtVertex()
+    {
+        return FoundDependencies.IsEmpty();
+    }
+
+    public override string Name
+    {
+        get { return "Angle"; }
+    }
+
+    public override string HintText
+    {
+        get
         {
-            return AngleBisectorCreator.FindAngleFigures(this, unconstrainedCoordinates, AnglePoints.TakesArc);
+            return "Click an angle vertex, and then click two points on the angle sides to measure the angle, or click inside an angle next to its vertex, or click an arc to measure its angle.";
+        }
+    }
+
+    /// <summary>After the vertex: which side the point is for (the angle under 180° is measured whichever side comes first, its Sweep row says otherwise)</summary>
+    public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+    {
+        return AngleBisectorCreator.AngleSideHint(ClickedDependencies) ?? base.ConstructionHintText(args);
+    }
+
+    public override FrameworkElement CreateIcon()
+    {
+        var builder = IconBuilder.BuildIcon();
+        var size = IconBuilder.IconSize;
+        var centerX = (size - 4) / (2 * size);
+        var centerY = 1 - 4 / size;
+        builder.Line(centerX, centerY, 0.8, 0.2)
+            .Line(centerX, centerY, 1, centerY);
+
+        // path data takes a point as the decimal separator whatever the user's culture
+        var pathData = string.Format(
+            CultureInfo.InvariantCulture,
+            "m 0,{0} v-4 a {1},{1} 0 0 1 {2},0 v4 z m {4},-5 a 6,6 0 0 1 {3},0 z",
+            size, (size - 4) / 2, size - 4, size / 2, (size - 4) / 4 - 1);
+        var path = new Path
+        {
+            StrokeThickness = 1,
+            Data = Geometry.Parse(pathData)
+        };
+        path.BindTheme(Shape.FillProperty, nameof(AppTheme.AngleFill));
+        path.BindTheme(Shape.StrokeProperty, nameof(AppTheme.AngleOutline));
+        builder.Canvas.Children.Add(path);
+
+        var radius = ((size - 4) / 2) * 0.95;
+        var radiusSmall = radius * 0.8;
+        Point center = new Point(radius + 1, size - 4);
+        for (double i = 0; i < 16; i++)
+        {
+            var angle = i * Math.PI / 15;
+            builder.Line(nameof(AppTheme.ScaleMarks),
+                (center.X + radius * M.Cos(angle)) / size,
+                (center.Y - radius * M.Sin(angle)) / size,
+                (center.X + radiusSmall * M.Cos(angle)) / size,
+                (center.Y - radiusSmall * M.Sin(angle)) / size);
         }
 
-        AngleSweep? clickedSweep;
-
-        public override void MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            // where the cursor is, as the hover preview asks: not where Shift snaps it to
-            var angle = AnglePoints.From(FindFigureInsteadOfPoint(Coordinates(e, false, false, false)));
-            if (angle != null)
-            {
-                StartConstruction();
-                FoundDependencies.AddRange(angle.Points);
-                clickedSweep = angle.Sweep;
-                AddFiguresAndRestart();
-                return;
-            }
-
-            base.MouseDown(sender, e);
-        }
-
-        /// <summary>
-        /// Near a vertex, inside the mark it would get, the first click measures the angle
-        /// whole (see <see cref="AngleAtVertex"/>) instead of taking a point; the later clicks
-        /// are points on the sides
-        /// </summary>
-        protected override bool TakesAngleAtVertex()
-        {
-            return FoundDependencies.IsEmpty();
-        }
-
-        public override string Name
-        {
-            get { return "Angle"; }
-        }
-
-        public override string HintText
-        {
-            get
-            {
-                return "Click an angle vertex, and then click two points on the angle sides to measure the angle, or click inside an angle next to its vertex, or click an arc to measure its angle.";
-            }
-        }
-
-        /// <summary>After the vertex: which side the point is for (the angle under 180° is measured whichever side comes first, its Sweep row says otherwise)</summary>
-        public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
-        {
-            return AngleBisectorCreator.AngleSideHint(ClickedDependencies) ?? base.ConstructionHintText(args);
-        }
-
-        public override FrameworkElement CreateIcon()
-        {
-            var builder = IconBuilder.BuildIcon();
-            var size = IconBuilder.IconSize;
-            var centerX = (size - 4) / (2 * size);
-            var centerY = 1 - 4 / size;
-            builder.Line(centerX, centerY, 0.8, 0.2)
-                .Line(centerX, centerY, 1, centerY);
-
-            // path data takes a point as the decimal separator whatever the user's culture
-            var pathData = string.Format(
-                CultureInfo.InvariantCulture,
-                "m 0,{0} v-4 a {1},{1} 0 0 1 {2},0 v4 z m {4},-5 a 6,6 0 0 1 {3},0 z",
-                size, (size - 4) / 2, size - 4, size / 2, (size - 4) / 4 - 1);
-            var path = new Path
-            {
-                StrokeThickness = 1,
-                Data = Geometry.Parse(pathData)
-            };
-            path.BindTheme(Shape.FillProperty, nameof(AppTheme.AngleFill));
-            path.BindTheme(Shape.StrokeProperty, nameof(AppTheme.AngleOutline));
-            builder.Canvas.Children.Add(path);
-
-            var radius = ((size - 4) / 2) * 0.95;
-            var radiusSmall = radius * 0.8;
-            Point center = new Point(radius + 1, size - 4);
-            for (double i = 0; i < 16; i++)
-            {
-                var angle = i * Math.PI / 15;
-                builder.Line(nameof(AppTheme.ScaleMarks),
-                    (center.X + radius * M.Cos(angle)) / size,
-                    (center.Y - radius * M.Sin(angle)) / size,
-                    (center.X + radiusSmall * M.Cos(angle)) / size,
-                    (center.Y - radiusSmall * M.Sin(angle)) / size);
-            }
-
-            return builder.Canvas;
-        }
+        return builder.Canvas;
     }
 }

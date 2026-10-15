@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class ParseResult
 {
-    public class ParseResult
+    public ParseResult()
     {
-        public ParseResult()
-        {
-            Errors = new List<CompileError>();
-        }
-
-        public ParseResult(List<CompileError> list)
-        {
-            Errors = list;
-        }
-
-        public Node Root { get; set; }
-        public List<CompileError> Errors { get; private set; }
+        Errors = new List<CompileError>();
     }
+
+    public ParseResult(List<CompileError> list)
+    {
+        Errors = list;
+    }
+
+    public Node Root { get; set; }
+    public List<CompileError> Errors { get; private set; }
 }

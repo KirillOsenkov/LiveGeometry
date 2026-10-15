@@ -6,342 +6,341 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public partial class CompositeFigure : FigureBase
 {
-    public partial class CompositeFigure : FigureBase
+    public CollectionWithEvents<IFigure> Children { get; private set; }
+
+    public CompositeFigure()
     {
-        public CollectionWithEvents<IFigure> Children { get; private set; }
+        Children = new CollectionWithEvents<IFigure>();
+        Children.CollectionChanged += Children_CollectionChanged;
+    }
 
-        public CompositeFigure()
+    // a part is drawn where its figure is: brought to front with it, and one made later
+    // (a side added to a regular polygon) comes in at the figure's Z - in the figure's
+    // band of layers, where a Z means something (ZOrders.PassOn)
+    void Children_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        if (e.NewItems != null)
         {
-            Children = new CollectionWithEvents<IFigure>();
-            Children.CollectionChanged += Children_CollectionChanged;
-        }
-
-        // a part is drawn where its figure is: brought to front with it, and one made later
-        // (a side added to a regular polygon) comes in at the figure's Z - in the figure's
-        // band of layers, where a Z means something (ZOrders.PassOn)
-        void Children_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.NewItems != null)
-            {
-                foreach (IFigure child in e.NewItems)
-                {
-                    ZOrders.PassOn(this, child);
-                }
-            }
-        }
-
-        protected override void OnZIndexChanged()
-        {
-            foreach (var child in Children)
+            foreach (IFigure child in e.NewItems)
             {
                 ZOrders.PassOn(this, child);
             }
         }
+    }
 
-        public virtual void ClearChildren()
+    protected override void OnZIndexChanged()
+    {
+        foreach (var child in Children)
         {
-            foreach (var child in Children.Reverse())
+            ZOrders.PassOn(this, child);
+        }
+    }
+
+    public virtual void ClearChildren()
+    {
+        foreach (var child in Children.Reverse())
+        {
+            RemoveChild(child);
+        }
+    }
+
+    public virtual void AddChild(IFigure figure)
+    {
+        figure.RegisterWithDependencies();
+        Children.Add(figure);
+        if (drawing != null)
+        {
+            figure.Drawing = drawing;
+            figure.OnAddingToDrawing(drawing);
+            if (drawing.Canvas != null)
             {
-                RemoveChild(child);
+                figure.OnAddingToCanvas(drawing.Canvas);
             }
         }
+    }
 
-        public virtual void AddChild(IFigure figure)
+    public virtual void RemoveChild(IFigure figure)
+    {
+        if (drawing != null)
         {
-            figure.RegisterWithDependencies();
-            Children.Add(figure);
-            if (drawing != null)
+            if (drawing.Canvas != null)
             {
-                figure.Drawing = drawing;
-                figure.OnAddingToDrawing(drawing);
-                if (drawing.Canvas != null)
-                {
-                    figure.OnAddingToCanvas(drawing.Canvas);
-                }
-            }
-        }
-
-        public virtual void RemoveChild(IFigure figure)
-        {
-            if (drawing != null)
-            {
-                if (drawing.Canvas != null)
-                {
-                    figure.OnRemovingFromCanvas(drawing.Canvas);
-                }
-
-                figure.OnRemovingFromDrawing(drawing);
-                figure.Drawing = null;
+                figure.OnRemovingFromCanvas(drawing.Canvas);
             }
 
-            Children.Remove(figure);
-            figure.UnregisterFromDependencies();
+            figure.OnRemovingFromDrawing(drawing);
+            figure.Drawing = null;
         }
 
-        public override void OnAddingToDrawing(Drawing drawing)
+        Children.Remove(figure);
+        figure.UnregisterFromDependencies();
+    }
+
+    public override void OnAddingToDrawing(Drawing drawing)
+    {
+        base.OnAddingToDrawing(drawing);
+        foreach (var item in Children)
         {
-            base.OnAddingToDrawing(drawing);
+            item.OnAddingToDrawing(drawing);
+        }
+    }
+
+    public override void OnRemovingFromDrawing(Drawing drawing)
+    {
+        base.OnRemovingFromDrawing(drawing);
+        foreach (var item in Children)
+        {
+            item.OnRemovingFromDrawing(drawing);
+        }
+    }
+
+    public override void OnAddingToCanvas(Canvas newContainer)
+    {
+        foreach (var figure in Children)
+        {
+            figure.OnAddingToCanvas(newContainer);
+        }
+
+        base.OnAddingToCanvas(newContainer);
+    }
+
+    public override void OnRemovingFromCanvas(Canvas leavingContainer)
+    {
+        base.OnRemovingFromCanvas(leavingContainer);
+
+        foreach (var figure in Children)
+        {
+            figure.OnRemovingFromCanvas(leavingContainer);
+        }
+    }
+
+    public override void Recalculate()
+    {
+        foreach (var figure in Children)
+        {
+            if (figure.Exists)
+            {
+                figure.Recalculate();
+            }
+        }
+    }
+
+    public override void UpdateVisual()
+    {
+        if (!this.Visible)
+        {
+            return;
+        }
+
+        foreach (var figure in Children)
+        {
+            if (figure.Exists)
+            {
+                figure.UpdateVisual();
+            }
+        }
+    }
+
+    public override void UpdateExistence()
+    {
+        base.UpdateExistence();
+
+        foreach (var figure in Children)
+        {
+            figure.UpdateExistence();
+        }
+    }
+
+    public override bool Selected
+    {
+        get
+        {
+            return base.Selected || Children.Any(c => c.Selected);
+        }
+        set
+        {
+            base.Selected = value;
             foreach (var item in Children)
             {
-                item.OnAddingToDrawing(drawing);
+                item.Selected = value;
             }
         }
+    }
 
-        public override void OnRemovingFromDrawing(Drawing drawing)
+    public override bool Visible
+    {
+        get
         {
-            base.OnRemovingFromDrawing(drawing);
+            return mVisible;
+        }
+        set
+        {
+            mVisible = value;
             foreach (var item in Children)
             {
-                item.OnRemovingFromDrawing(drawing);
+                item.Visible = value;
             }
         }
+    }
 
-        public override void OnAddingToCanvas(Canvas newContainer)
+    public override Drawing Drawing
+    {
+        get
         {
-            foreach (var figure in Children)
-            {
-                figure.OnAddingToCanvas(newContainer);
-            }
-
-            base.OnAddingToCanvas(newContainer);
+            return base.Drawing;
         }
-
-        public override void OnRemovingFromCanvas(Canvas leavingContainer)
+        set
         {
-            base.OnRemovingFromCanvas(leavingContainer);
-
-            foreach (var figure in Children)
-            {
-                figure.OnRemovingFromCanvas(leavingContainer);
-            }
-        }
-
-        public override void Recalculate()
-        {
-            foreach (var figure in Children)
-            {
-                if (figure.Exists)
-                {
-                    figure.Recalculate();
-                }
-            }
-        }
-
-        public override void UpdateVisual()
-        {
-            if (!this.Visible)
-            {
-                return;
-            }
-
-            foreach (var figure in Children)
-            {
-                if (figure.Exists)
-                {
-                    figure.UpdateVisual();
-                }
-            }
-        }
-
-        public override void UpdateExistence()
-        {
-            base.UpdateExistence();
-
-            foreach (var figure in Children)
-            {
-                figure.UpdateExistence();
-            }
-        }
-
-        public override bool Selected
-        {
-            get
-            {
-                return base.Selected || Children.Any(c => c.Selected);
-            }
-            set
-            {
-                base.Selected = value;
-                foreach (var item in Children)
-                {
-                    item.Selected = value;
-                }
-            }
-        }
-
-        public override bool Visible
-        {
-            get
-            {
-                return mVisible;
-            }
-            set
-            {
-                mVisible = value;
-                foreach (var item in Children)
-                {
-                    item.Visible = value;
-                }
-            }
-        }
-
-        public override Drawing Drawing
-        {
-            get
-            {
-                return base.Drawing;
-            }
-            set
-            {
-                base.Drawing = value;
-                foreach (var item in Children)
-                {
-                    item.Drawing = value;
-                }
-            }
-        }
-
-        public override void ApplyStyle()
-        {
-            Children.ForEach(f => f.ApplyStyle());
-        }
-
-        #region HitTest
-
-        /// <summary>
-        /// Finds a figure of a given type at the point
-        /// </summary>
-        /// <param name="point">Coordinates</param>
-        /// <param name="figureType">A type (usually typeof(IPoint), typeof(ILine) or typeof(ICircle)
-        /// but could be anything)</param>
-        /// <returns>A figure or null if nothing was found</returns>
-        public IFigure HitTest(Point point, Type figureType)
-        {
-            return HitTest(point, figure =>
-                figure != null && figure.Visible && figureType.IsAssignableFrom(figure.GetType()));
-        }
-
-        /// <summary>
-        /// Finds a figure of a given type at the point
-        /// </summary>
-        /// <typeparam name="T">A type (usually IPoint, ILine or ICircle
-        /// but could be anything)</typeparam>
-        /// <param name="point">Coordinates</param>
-        /// <returns>A figure or null if nothing was found</returns>
-        public T HitTest<T>(Point point)
-        {
-            return (T)HitTest(point, typeof(T));
-        }
-
-        /// <summary>
-        /// Finds a figure at a point
-        /// </summary>
-        /// <param name="point">Coordinates of a point where we want to find objects</param>
-        /// <param name="filter">Determines whether a figure should be included in hit-testing</param>
-        /// <returns>A figure with topmost ZIndex that is under the point
-        /// and for which the filter is true. Returns null if nothing is found.</returns>
-        public virtual IFigure HitTest(Point point, Predicate<IFigure> filter)
-        {
-            IFigure bestFoundSoFar = null;
-
-            foreach (var item in Children.Where(f => filter(f)))
-            {
-                IFigure found = item.HitTest(point);
-                if (found != null)
-                {
-                    if (bestFoundSoFar == null || bestFoundSoFar.ZIndex <= found.ZIndex)
-                    {
-                        bestFoundSoFar = found;
-                    }
-                }
-            }
-            return bestFoundSoFar;
-        }
-
-        public ReadOnlyCollection<IFigure> HitTestMany(Point point)
-        {
-            List<IFigure> result = new List<IFigure>();
-
+            base.Drawing = value;
             foreach (var item in Children)
             {
-                IFigure found = item.HitTest(point);
-                if (found != null && found.Visible)
+                item.Drawing = value;
+            }
+        }
+    }
+
+    public override void ApplyStyle()
+    {
+        Children.ForEach(f => f.ApplyStyle());
+    }
+
+    #region HitTest
+
+    /// <summary>
+    /// Finds a figure of a given type at the point
+    /// </summary>
+    /// <param name="point">Coordinates</param>
+    /// <param name="figureType">A type (usually typeof(IPoint), typeof(ILine) or typeof(ICircle)
+    /// but could be anything)</param>
+    /// <returns>A figure or null if nothing was found</returns>
+    public IFigure HitTest(Point point, Type figureType)
+    {
+        return HitTest(point, figure =>
+            figure != null && figure.Visible && figureType.IsAssignableFrom(figure.GetType()));
+    }
+
+    /// <summary>
+    /// Finds a figure of a given type at the point
+    /// </summary>
+    /// <typeparam name="T">A type (usually IPoint, ILine or ICircle
+    /// but could be anything)</typeparam>
+    /// <param name="point">Coordinates</param>
+    /// <returns>A figure or null if nothing was found</returns>
+    public T HitTest<T>(Point point)
+    {
+        return (T)HitTest(point, typeof(T));
+    }
+
+    /// <summary>
+    /// Finds a figure at a point
+    /// </summary>
+    /// <param name="point">Coordinates of a point where we want to find objects</param>
+    /// <param name="filter">Determines whether a figure should be included in hit-testing</param>
+    /// <returns>A figure with topmost ZIndex that is under the point
+    /// and for which the filter is true. Returns null if nothing is found.</returns>
+    public virtual IFigure HitTest(Point point, Predicate<IFigure> filter)
+    {
+        IFigure bestFoundSoFar = null;
+
+        foreach (var item in Children.Where(f => filter(f)))
+        {
+            IFigure found = item.HitTest(point);
+            if (found != null)
+            {
+                if (bestFoundSoFar == null || bestFoundSoFar.ZIndex <= found.ZIndex)
                 {
-                    result.Add(found);
+                    bestFoundSoFar = found;
                 }
             }
+        }
+        return bestFoundSoFar;
+    }
 
-            if (result.Count > 0)
+    public ReadOnlyCollection<IFigure> HitTestMany(Point point)
+    {
+        List<IFigure> result = new List<IFigure>();
+
+        foreach (var item in Children)
+        {
+            IFigure found = item.HitTest(point);
+            if (found != null && found.Visible)
             {
-                result.Sort((f1, f2) => f1.ZIndex.CompareTo(f2.ZIndex));
+                result.Add(found);
             }
-
-            return result.AsReadOnly();
         }
 
-        /// <summary>
-        /// Finds a figure of a given type at the point. Collections are not searched.
-        /// </summary>
-        public IFigure HitTestNoCollections(Avalonia.Point point, Type figureType)
+        if (result.Count > 0)
         {
-            IFigure bestFoundSoFar = null;
+            result.Sort((f1, f2) => f1.ZIndex.CompareTo(f2.ZIndex));
+        }
 
-            foreach (var item in Children)
+        return result.AsReadOnly();
+    }
+
+    /// <summary>
+    /// Finds a figure of a given type at the point. Collections are not searched.
+    /// </summary>
+    public IFigure HitTestNoCollections(Avalonia.Point point, Type figureType)
+    {
+        IFigure bestFoundSoFar = null;
+
+        foreach (var item in Children)
+        {
+            IFigure found = item.HitTest(point);
+            if (found != null && figureType.IsAssignableFrom(found.GetType()))
             {
-                IFigure found = item.HitTest(point);
-                if (found != null && figureType.IsAssignableFrom(found.GetType()))
+                if (bestFoundSoFar == null || bestFoundSoFar.ZIndex <= found.ZIndex)
                 {
-                    if (bestFoundSoFar == null || bestFoundSoFar.ZIndex <= found.ZIndex)
-                    {
-                        bestFoundSoFar = found;
-                    }
+                    bestFoundSoFar = found;
                 }
             }
-            return bestFoundSoFar;
         }
+        return bestFoundSoFar;
+    }
 
-        /// <summary>
-        /// Finds any figure at the point
-        /// </summary>
-        /// <param name="point">Hittest coordinates</param>
-        /// <returns>A figure with topmost ZIndex or null if nothing found</returns>
-        public override IFigure HitTest(Point point)
+    /// <summary>
+    /// Finds any figure at the point
+    /// </summary>
+    /// <param name="point">Hittest coordinates</param>
+    /// <returns>A figure with topmost ZIndex or null if nothing found</returns>
+    public override IFigure HitTest(Point point)
+    {
+        return HitTest(point, f => f.Visible);
+    }
+
+    #endregion
+
+    public override string ToString()
+    {
+        StringBuilder s = new StringBuilder();
+        foreach (var item in Children)
         {
-            return HitTest(point, f => f.Visible);
+            DumpFigure(item, s);
         }
+        return s.ToString();
+    }
 
-        #endregion
-
-        public override string ToString()
+    private void DumpFigure(IFigure item, StringBuilder s)
+    {
+        s.AppendLine(item.ToString());
+        string tab = "   ";
+        if (!item.Dependencies.IsEmpty())
         {
-            StringBuilder s = new StringBuilder();
-            foreach (var item in Children)
+            int i = 0;
+            foreach (var dependency in item.Dependencies)
             {
-                DumpFigure(item, s);
+                s.AppendLine(tab + i++.ToString() + ". " + dependency.ToString());
             }
-            return s.ToString();
         }
-
-        private void DumpFigure(IFigure item, StringBuilder s)
+        if (!item.Dependents.IsEmpty())
         {
-            s.AppendLine(item.ToString());
-            string tab = "   ";
-            if (!item.Dependencies.IsEmpty())
+            foreach (var dependent in item.Dependents)
             {
-                int i = 0;
-                foreach (var dependency in item.Dependencies)
-                {
-                    s.AppendLine(tab + i++.ToString() + ". " + dependency.ToString());
-                }
-            }
-            if (!item.Dependents.IsEmpty())
-            {
-                foreach (var dependent in item.Dependents)
-                {
-                    s.AppendLine(tab + dependent.ToString());
-                }
+                s.AppendLine(tab + dependent.ToString());
             }
         }
     }

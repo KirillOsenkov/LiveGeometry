@@ -3,72 +3,71 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class StatusBar : WrapPanel
 {
-    public class StatusBar : WrapPanel
+    public TextBlock TextBlock { get; set; }
+    public Border border = new Border();
+
+    public StatusBar()
     {
-        public TextBlock TextBlock { get; set; }
-        public Border border = new Border();
+        HorizontalAlignment = HorizontalAlignment.Left;
+        VerticalAlignment = VerticalAlignment.Bottom;
+        Margin = new Thickness(8);
 
-        public StatusBar()
+        border.Padding = new Thickness(10, 5, 10, 5);
+        border.CornerRadius = new CornerRadius(6);
+        border.BindTheme(Border.BackgroundProperty, nameof(AppTheme.HintBackground));
+        border.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.HintBorder));
+        border.BorderThickness = new Thickness(1);
+        border.BoxShadow = new BoxShadows(new BoxShadow()
         {
-            HorizontalAlignment = HorizontalAlignment.Left;
-            VerticalAlignment = VerticalAlignment.Bottom;
-            Margin = new Thickness(8);
+            OffsetY = 1,
+            Blur = 4,
+            Color = Color.FromArgb(40, 0, 0, 0)
+        });
+        border.PointerPressed += border_MouseLeftButtonDown;
 
-            border.Padding = new Thickness(10, 5, 10, 5);
-            border.CornerRadius = new CornerRadius(6);
-            border.BindTheme(Border.BackgroundProperty, nameof(AppTheme.HintBackground));
-            border.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.HintBorder));
-            border.BorderThickness = new Thickness(1);
-            border.BoxShadow = new BoxShadows(new BoxShadow()
-            {
-                OffsetY = 1,
-                Blur = 4,
-                Color = Color.FromArgb(40, 0, 0, 0)
-            });
-            border.PointerPressed += border_MouseLeftButtonDown;
-
-            TextBlock = new TextBlock()
-            {
-                FontSize = 12,
-                TextWrapping = TextWrapping.Wrap,
-                MaxWidth = 640
-            };
-            TextBlock.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
-            border.Child = TextBlock;
-
-            this.Children.Add(border);
-        }
-
-        public string Text
+        TextBlock = new TextBlock()
         {
-            get
-            {
-                return TextBlock.Text;
-            }
-            set
-            {
-                TextBlock.Text = value;
-            }
-        }
+            FontSize = 12,
+            TextWrapping = TextWrapping.Wrap,
+            MaxWidth = 640
+        };
+        TextBlock.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
+        border.Child = TextBlock;
 
-        new 
-        public bool IsVisible
-        {
-            get
-            {
-                return this.Visibility == Visibility.Visible;
-            }
-            set
-            {
-                this.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
+        this.Children.Add(border);
+    }
 
-        void border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    public string Text
+    {
+        get
         {
-            IsVisible = false;
+            return TextBlock.Text;
         }
+        set
+        {
+            TextBlock.Text = value;
+        }
+    }
+
+    new 
+    public bool IsVisible
+    {
+        get
+        {
+            return this.Visibility == Visibility.Visible;
+        }
+        set
+        {
+            this.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        }
+    }
+
+    void border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        IsVisible = false;
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace DynamicGeometry
+﻿namespace DynamicGeometry;
+
+public interface ILine : IFigure, ILinearFigure
 {
-    public interface ILine : IFigure, ILinearFigure
-    {
-        PointPair Coordinates { get; }
-    }
+    PointPair Coordinates { get; }
 }

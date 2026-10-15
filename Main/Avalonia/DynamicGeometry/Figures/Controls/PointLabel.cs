@@ -1,363 +1,362 @@
 ﻿using System.Linq;
 using Avalonia;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public class PointLabel : Measurement
 {
-    public class PointLabel : Measurement
+    public PointLabel()
     {
-        public PointLabel()
+    }
+
+    // has its place: the default one it got with its first text, or the file's
+    bool placed;
+
+    PointBase GetPoint()
+    {
+        return (PointBase)Dependencies.ElementAt(0);
+    }
+
+    protected override string Kind
+    {
+        get
         {
+            return "Label";
+        }
+    }
+
+    /// <summary>"of A": "Label of A"</summary>
+    public override string Construction
+    {
+        get
+        {
+            return Dependencies.Count > 0 ? "of " + ConstructionText.Of(Dependencies[0]) : null;
+        }
+    }
+
+    public override void OnAddingToDrawing(Drawing drawing)
+    {
+        base.OnAddingToDrawing(drawing);
+        // The undo system can attach this label to a point but not set the point's label property.
+        // This ensures that the label property is set to this pointLabel.
+        var point = GetPoint();
+        if (point.Label == null)
+        {
+            point.Label = this;
+        }
+    }
+
+    /// <summary>
+    /// A point label can be dragged around its point (like in the original VB6 DG),
+    /// even though it depends on the point.
+    /// </summary>
+    public override bool AllowMove()
+    {
+        return !Locked;
+    }
+
+    public override Point Anchor
+    {
+        get
+        {
+            return Point(0);
+        }
+    }
+
+    /// <summary>
+    /// The least room between the point's rim and the letters, in pixels: none, the name
+    /// may touch the point's outline
+    /// </summary>
+    public const double Clearance = 0;
+
+    /// <summary>
+    /// In pixels: what the orbit and the first place of a label add to the size of the
+    /// text and the point. A number of its own: it was the cursor's tolerance, which a
+    /// finger has more of than a mouse, and a label made by touch would sit elsewhere.
+    /// </summary>
+    public const double Margin = 5;
+
+    /// <summary>
+    /// Keeps the label in orbit around its point: the center of the label may not get
+    /// further from the point than the label's larger dimension plus the point radius
+    /// (a long label - name and coordinates - gets a proportionally bigger orbit), and
+    /// no part of the letters may come closer to the point than <see cref="Clearance"/>.
+    /// </summary>
+    /// <param name="newPosition">Desired top-left corner of the label, logical</param>
+    public Point ClampPosition(Point newPosition)
+    {
+        var width = selection.Bounds.Width;
+        var height = selection.Bounds.Height;
+        if (width == 0 || height == 0)
+        {
+            // not measured yet (e.g. while loading): nothing to base the radius on
+            return newPosition;
         }
 
-        // has its place: the default one it got with its first text, or the file's
-        bool placed;
+        // in pixels: the orbit is about the size of the text, whatever the zoom
+        var point = ToPhysical(Anchor);
+        var halfSize = new Point(width / 2, height / 2);
+        var pointRadius = GetPoint().Shape.Bounds.Width / 2;
+        var radius = System.Math.Max(width, height) + pointRadius + Margin;
+        var fromPoint = ToPhysical(newPosition).Plus(halfSize).Minus(point);
+        fromPoint = fromPoint.TrimToMaxLength(radius);
 
-        PointBase GetPoint()
+        // the letters are kept clear, not the line box around them
+        var ink = GetInkBounds(width, height);
+        var inkShift = ink.Center.Minus(halfSize);
+        var inkHalfSize = new Point(ink.Width / 2, ink.Height / 2);
+        fromPoint = PushClear(fromPoint.Plus(inkShift), inkHalfSize, pointRadius + Clearance).Minus(inkShift);
+        return ToLogical(point.Plus(fromPoint).Minus(halfSize));
+    }
+
+    /// <summary>
+    /// Where the letters are in the label, in pixels from its top left corner: the line box
+    /// has room above capitals and below the baseline, and a little at the sides. The whole
+    /// label if the text doesn't say (more than one line, nothing measured yet).
+    /// </summary>
+    Rect GetInkBounds(double width, double height)
+    {
+        var whole = new Rect(0, 0, width, height);
+        var lines = TextBlock.TextLayout?.TextLines;
+        if (lines == null || lines.Count != 1)
         {
-            return (PointBase)Dependencies.ElementAt(0);
+            return whole;
         }
 
-        protected override string Kind
+        var line = lines[0];
+        var bottom = line.Height + line.OverhangAfter;
+        var left = line.Start + line.OverhangLeading;
+        var right = line.Start + line.WidthIncludingTrailingWhitespace - line.OverhangTrailing;
+        var ink = new Rect(left, bottom - line.Extent, right - left, line.Extent)
+            .Translate(new Avalonia.Vector(TextBlock.Padding.Left, TextBlock.Padding.Top));
+        if (!(ink.Width > 0 && ink.Height > 0) || !whole.Contains(ink.Center))
         {
-            get
-            {
-                return "Label";
-            }
+            return whole;
         }
 
-        /// <summary>"of A": "Label of A"</summary>
-        public override string Construction
+        return ink;
+    }
+
+    /// <summary>
+    /// Moves the center of a box out along its own direction from the origin until no part
+    /// of the box is nearer to the origin than the minimum.
+    /// </summary>
+    static Point PushClear(Point center, Point halfSize, double minimum)
+    {
+        if (center.X == 0 && center.Y == 0)
         {
-            get
-            {
-                return Dependencies.Count > 0 ? "of " + ConstructionText.Of(Dependencies[0]) : null;
-            }
+            // right on the point: above it, where a new label goes
+            center = new Point(0, -1);
         }
 
-        public override void OnAddingToDrawing(Drawing drawing)
+        if (Gap(center, halfSize) >= minimum)
         {
-            base.OnAddingToDrawing(drawing);
-            // The undo system can attach this label to a point but not set the point's label property.
-            // This ensures that the label property is set to this pointLabel.
-            var point = GetPoint();
-            if (point.Label == null)
-            {
-                point.Label = this;
-            }
+            return center;
         }
 
-        /// <summary>
-        /// A point label can be dragged around its point (like in the original VB6 DG),
-        /// even though it depends on the point.
-        /// </summary>
-        public override bool AllowMove()
+        // the gap grows with the scale: bisect between "as it is" and "far enough"
+        double low = 1;
+        double high = 2;
+        while (Gap(center.Scale(high), halfSize) < minimum)
         {
-            return !Locked;
+            high *= 2;
         }
 
-        public override Point Anchor
+        for (int i = 0; i < 20; i++)
         {
-            get
+            double middle = (low + high) / 2;
+            if (Gap(center.Scale(middle), halfSize) < minimum)
             {
-                return Point(0);
+                low = middle;
             }
-        }
-
-        /// <summary>
-        /// The least room between the point's rim and the letters, in pixels: none, the name
-        /// may touch the point's outline
-        /// </summary>
-        public const double Clearance = 0;
-
-        /// <summary>
-        /// In pixels: what the orbit and the first place of a label add to the size of the
-        /// text and the point. A number of its own: it was the cursor's tolerance, which a
-        /// finger has more of than a mouse, and a label made by touch would sit elsewhere.
-        /// </summary>
-        public const double Margin = 5;
-
-        /// <summary>
-        /// Keeps the label in orbit around its point: the center of the label may not get
-        /// further from the point than the label's larger dimension plus the point radius
-        /// (a long label - name and coordinates - gets a proportionally bigger orbit), and
-        /// no part of the letters may come closer to the point than <see cref="Clearance"/>.
-        /// </summary>
-        /// <param name="newPosition">Desired top-left corner of the label, logical</param>
-        public Point ClampPosition(Point newPosition)
-        {
-            var width = selection.Bounds.Width;
-            var height = selection.Bounds.Height;
-            if (width == 0 || height == 0)
+            else
             {
-                // not measured yet (e.g. while loading): nothing to base the radius on
-                return newPosition;
-            }
-
-            // in pixels: the orbit is about the size of the text, whatever the zoom
-            var point = ToPhysical(Anchor);
-            var halfSize = new Point(width / 2, height / 2);
-            var pointRadius = GetPoint().Shape.Bounds.Width / 2;
-            var radius = System.Math.Max(width, height) + pointRadius + Margin;
-            var fromPoint = ToPhysical(newPosition).Plus(halfSize).Minus(point);
-            fromPoint = fromPoint.TrimToMaxLength(radius);
-
-            // the letters are kept clear, not the line box around them
-            var ink = GetInkBounds(width, height);
-            var inkShift = ink.Center.Minus(halfSize);
-            var inkHalfSize = new Point(ink.Width / 2, ink.Height / 2);
-            fromPoint = PushClear(fromPoint.Plus(inkShift), inkHalfSize, pointRadius + Clearance).Minus(inkShift);
-            return ToLogical(point.Plus(fromPoint).Minus(halfSize));
-        }
-
-        /// <summary>
-        /// Where the letters are in the label, in pixels from its top left corner: the line box
-        /// has room above capitals and below the baseline, and a little at the sides. The whole
-        /// label if the text doesn't say (more than one line, nothing measured yet).
-        /// </summary>
-        Rect GetInkBounds(double width, double height)
-        {
-            var whole = new Rect(0, 0, width, height);
-            var lines = TextBlock.TextLayout?.TextLines;
-            if (lines == null || lines.Count != 1)
-            {
-                return whole;
-            }
-
-            var line = lines[0];
-            var bottom = line.Height + line.OverhangAfter;
-            var left = line.Start + line.OverhangLeading;
-            var right = line.Start + line.WidthIncludingTrailingWhitespace - line.OverhangTrailing;
-            var ink = new Rect(left, bottom - line.Extent, right - left, line.Extent)
-                .Translate(new Avalonia.Vector(TextBlock.Padding.Left, TextBlock.Padding.Top));
-            if (!(ink.Width > 0 && ink.Height > 0) || !whole.Contains(ink.Center))
-            {
-                return whole;
-            }
-
-            return ink;
-        }
-
-        /// <summary>
-        /// Moves the center of a box out along its own direction from the origin until no part
-        /// of the box is nearer to the origin than the minimum.
-        /// </summary>
-        static Point PushClear(Point center, Point halfSize, double minimum)
-        {
-            if (center.X == 0 && center.Y == 0)
-            {
-                // right on the point: above it, where a new label goes
-                center = new Point(0, -1);
-            }
-
-            if (Gap(center, halfSize) >= minimum)
-            {
-                return center;
-            }
-
-            // the gap grows with the scale: bisect between "as it is" and "far enough"
-            double low = 1;
-            double high = 2;
-            while (Gap(center.Scale(high), halfSize) < minimum)
-            {
-                high *= 2;
-            }
-
-            for (int i = 0; i < 20; i++)
-            {
-                double middle = (low + high) / 2;
-                if (Gap(center.Scale(middle), halfSize) < minimum)
-                {
-                    low = middle;
-                }
-                else
-                {
-                    high = middle;
-                }
-            }
-
-            return center.Scale(high);
-        }
-
-        /// <summary>The distance from the origin to the nearest point of a box</summary>
-        static double Gap(Point center, Point halfSize)
-        {
-            double dx = System.Math.Max(System.Math.Abs(center.X) - halfSize.X, 0);
-            double dy = System.Math.Max(System.Math.Abs(center.Y) - halfSize.Y, 0);
-            return System.Math.Sqrt(dx * dx + dy * dy);
-        }
-
-        /// <summary>
-        /// Puts the label where the orbit rule allows, starting from where it is: for labels
-        /// from files that were placed on top of their point.
-        /// </summary>
-        public void SpaceFromPoint()
-        {
-            MoveTo(Coordinates);
-        }
-
-        public override void MoveToCore(Point newPosition)
-        {
-            base.MoveToCore(ClampPosition(newPosition));
-        }
-
-        protected override ZOrder DefaultLayer()
-        {
-            return ZOrder.PointLabels;
-        }
-
-        public override void UpdateVisual()
-        {
-            if (Dependencies.IsEmpty())
-            {
-                return;
-            }
-
-            UpdateText();
-            if (!placed && !Text.IsEmpty())
-            {
-                // a new label: centered above its point, just clear of it. Once: a label
-                // that comes back (the name shown again, undo) is where it was left.
-                placed = true;
-                var size = MeasureSize();
-                Offset = new Point(
-                    -size.Width / 2,
-                    -(size.Height + GetPoint().Shape.ActualHeight / 2 + Margin));
-            }
-
-            base.UpdateVisual();
-        }
-
-        private void UpdateText()
-        {
-            var text = "";
-            if (ShowName)
-            {
-                // A_1 shows as A₁
-                text = NameDisplay.Format(Dependencies.ElementAt(0).Name);
-            }
-            if (ShowCoordinates)
-            {
-                var coordinates = Point(0);
-                var x = Math.Round(coordinates.X, DecimalsToShow);
-                var y = Math.Round(coordinates.Y, DecimalsToShow);
-                // as a textbook writes them (it was "(3;4)", the way of the countries that
-                // write a decimal comma; numbers here have a point)
-                var coordinatesText = string.Format("({0}, {1})", x, y);
-                if (!text.IsEmpty())
-                {
-                    text += " ";
-                }
-                text += coordinatesText;
-            }
-            Text = text;
-        }
-
-        /// <summary>
-        /// Not in the grid: the name shows and hides with the point's Show name. (Hidden by
-        /// itself, the label stayed hidden whatever Show name said, and a name label isn't
-        /// in the Figure List to be found again.)
-        /// </summary>
-        [PropertyGridVisible(false)]
-        public override bool Visible
-        {
-            get
-            {
-                return base.Visible;
-            }
-            set
-            {
-                base.Visible = value;
+                high = middle;
             }
         }
 
-        [PropertyGridVisible(false)]    // Handled in the point's property grid.
-        public override string Text
+        return center.Scale(high);
+    }
+
+    /// <summary>The distance from the origin to the nearest point of a box</summary>
+    static double Gap(Point center, Point halfSize)
+    {
+        double dx = System.Math.Max(System.Math.Abs(center.X) - halfSize.X, 0);
+        double dy = System.Math.Max(System.Math.Abs(center.Y) - halfSize.Y, 0);
+        return System.Math.Sqrt(dx * dx + dy * dy);
+    }
+
+    /// <summary>
+    /// Puts the label where the orbit rule allows, starting from where it is: for labels
+    /// from files that were placed on top of their point.
+    /// </summary>
+    public void SpaceFromPoint()
+    {
+        MoveTo(Coordinates);
+    }
+
+    public override void MoveToCore(Point newPosition)
+    {
+        base.MoveToCore(ClampPosition(newPosition));
+    }
+
+    protected override ZOrder DefaultLayer()
+    {
+        return ZOrder.PointLabels;
+    }
+
+    public override void UpdateVisual()
+    {
+        if (Dependencies.IsEmpty())
         {
-            get
-            {
-                return base.Text;
-            }
+            return;
         }
 
-        bool showName;
-        [PropertyGridVisible(false)]    // Handled in the point's property grid.
-        public bool ShowName
+        UpdateText();
+        if (!placed && !Text.IsEmpty())
         {
-            get
-            {
-                return showName;
-            }
-            set
-            {
-                showName = value;
-                UpdateVisual();
-            }
-        }
-
-        bool showCoordinates;
-        [PropertyGridVisible(false)]    // Handled in the point's property grid.
-        public bool ShowCoordinates
-        {
-            get
-            {
-                return showCoordinates;
-            }
-            set
-            {
-                showCoordinates = value;
-                UpdateVisual();
-            }
-        }
-
-        public override void ReadXml(System.Xml.Linq.XElement element)
-        {
-            base.ReadXml(element);
-            this.showName = element.ReadBool("ShowName", true);
-            this.showCoordinates = element.ReadBool("ShowCoordinates", false);
+            // a new label: centered above its point, just clear of it. Once: a label
+            // that comes back (the name shown again, undo) is where it was left.
             placed = true;
-            UpdateText();
+            var size = MeasureSize();
+            Offset = new Point(
+                -size.Width / 2,
+                -(size.Height + GetPoint().Shape.ActualHeight / 2 + Margin));
         }
 
-        public override void WriteXml(System.Xml.XmlWriter writer)
-        {
-            base.WriteXml(writer);
-            writer.WriteAttributeBool("ShowName", ShowName);
-            writer.WriteAttributeBool("ShowCoordinates", ShowCoordinates);
-        }
+        base.UpdateVisual();
+    }
 
-        [PropertyGridVisible]
-        [PropertyGridName("Show name")]
-        public bool ShowNameDisplay
+    private void UpdateText()
+    {
+        var text = "";
+        if (ShowName)
         {
-            get
+            // A_1 shows as A₁
+            text = NameDisplay.Format(Dependencies.ElementAt(0).Name);
+        }
+        if (ShowCoordinates)
+        {
+            var coordinates = Point(0);
+            var x = Math.Round(coordinates.X, DecimalsToShow);
+            var y = Math.Round(coordinates.Y, DecimalsToShow);
+            // as a textbook writes them (it was "(3;4)", the way of the countries that
+            // write a decimal comma; numbers here have a point)
+            var coordinatesText = string.Format("({0}, {1})", x, y);
+            if (!text.IsEmpty())
             {
-                return ShowName;
+                text += " ";
             }
-            set
+            text += coordinatesText;
+        }
+        Text = text;
+    }
+
+    /// <summary>
+    /// Not in the grid: the name shows and hides with the point's Show name. (Hidden by
+    /// itself, the label stayed hidden whatever Show name said, and a name label isn't
+    /// in the Figure List to be found again.)
+    /// </summary>
+    [PropertyGridVisible(false)]
+    public override bool Visible
+    {
+        get
+        {
+            return base.Visible;
+        }
+        set
+        {
+            base.Visible = value;
+        }
+    }
+
+    [PropertyGridVisible(false)]    // Handled in the point's property grid.
+    public override string Text
+    {
+        get
+        {
+            return base.Text;
+        }
+    }
+
+    bool showName;
+    [PropertyGridVisible(false)]    // Handled in the point's property grid.
+    public bool ShowName
+    {
+        get
+        {
+            return showName;
+        }
+        set
+        {
+            showName = value;
+            UpdateVisual();
+        }
+    }
+
+    bool showCoordinates;
+    [PropertyGridVisible(false)]    // Handled in the point's property grid.
+    public bool ShowCoordinates
+    {
+        get
+        {
+            return showCoordinates;
+        }
+        set
+        {
+            showCoordinates = value;
+            UpdateVisual();
+        }
+    }
+
+    public override void ReadXml(System.Xml.Linq.XElement element)
+    {
+        base.ReadXml(element);
+        this.showName = element.ReadBool("ShowName", true);
+        this.showCoordinates = element.ReadBool("ShowCoordinates", false);
+        placed = true;
+        UpdateText();
+    }
+
+    public override void WriteXml(System.Xml.XmlWriter writer)
+    {
+        base.WriteXml(writer);
+        writer.WriteAttributeBool("ShowName", ShowName);
+        writer.WriteAttributeBool("ShowCoordinates", ShowCoordinates);
+    }
+
+    [PropertyGridVisible]
+    [PropertyGridName("Show name")]
+    public bool ShowNameDisplay
+    {
+        get
+        {
+            return ShowName;
+        }
+        set
+        {
+            var point = Dependencies.ElementAt(0) as PointBase;
+            if (point != null)
             {
-                var point = Dependencies.ElementAt(0) as PointBase;
-                if (point != null)
-                {
-                    point.ShowName = value;
-                }
+                point.ShowName = value;
             }
         }
+    }
 
-        [PropertyGridVisible]
-        [PropertyGridName("Show coordinates")]
-        public bool ShowCoordinatesDisplay
+    [PropertyGridVisible]
+    [PropertyGridName("Show coordinates")]
+    public bool ShowCoordinatesDisplay
+    {
+        get
         {
-            get
+            return ShowCoordinates;
+        }
+        set
+        {
+            var point = Dependencies.ElementAt(0) as PointBase;
+            if (point != null)
             {
-                return ShowCoordinates;
-            }
-            set
-            {
-                var point = Dependencies.ElementAt(0) as PointBase;
-                if (point != null)
-                {
-                    point.ShowCoordinates = value;
-                }
+                point.ShowCoordinates = value;
             }
         }
     }

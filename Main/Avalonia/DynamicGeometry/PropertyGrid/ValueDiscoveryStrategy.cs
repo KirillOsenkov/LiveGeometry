@@ -3,271 +3,270 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DynamicGeometry
+namespace DynamicGeometry;
+
+public interface ICustomPropertyProvider
 {
-    public interface ICustomPropertyProvider
+    IEnumerable<IValueProvider> GetProperties();
+}
+
+public interface ICustomMethodProvider
+{
+    IEnumerable<IOperationDescription> GetMethods();
+}
+
+public class CompositePropertyProvider : ICustomPropertyProvider
+{
+    private IValueDiscoveryStrategy valueDiscoveryStrategy;
+    private List<object> objects;
+
+    public CompositePropertyProvider(IValueDiscoveryStrategy valueDiscoveryStrategy, IEnumerable<object> objects)
     {
-        IEnumerable<IValueProvider> GetProperties();
+        this.valueDiscoveryStrategy = valueDiscoveryStrategy;
+        this.objects = new List<object>(objects ?? new object[0]);
     }
 
-    public interface ICustomMethodProvider
+    Dictionary<string, CompositeValueProvider> results = new Dictionary<string, CompositeValueProvider>();
+
+    public IEnumerable<IValueProvider> GetProperties()
     {
-        IEnumerable<IOperationDescription> GetMethods();
-    }
-
-    public class CompositePropertyProvider : ICustomPropertyProvider
-    {
-        private IValueDiscoveryStrategy valueDiscoveryStrategy;
-        private List<object> objects;
-
-        public CompositePropertyProvider(IValueDiscoveryStrategy valueDiscoveryStrategy, IEnumerable<object> objects)
+        if (objects.IsEmpty())
         {
-            this.valueDiscoveryStrategy = valueDiscoveryStrategy;
-            this.objects = new List<object>(objects ?? new object[0]);
-        }
-
-        Dictionary<string, CompositeValueProvider> results = new Dictionary<string, CompositeValueProvider>();
-
-        public IEnumerable<IValueProvider> GetProperties()
-        {
-            if (objects.IsEmpty())
-            {
-                return null;
-            }
-
-            results.Clear();
-            AddResults();
-
-            return results
-                .Where(k => k.Value.Count == objects.Count)
-                .Select(k => (IValueProvider)k.Value);
-        }
-
-        void AddResults()
-        {
-            foreach (var item in objects)
-            {
-                var values = valueDiscoveryStrategy.GetValues(item);
-                foreach (var value in values)
-                {
-                    AddResult(value);
-                }
-            }
-        }
-
-        void AddResult(IValueProvider value)
-        {
-            // What defines a figure is its own: a coordinate or an equation's part (the row is
-            // the expression itself, which carries no attributes), a function, a label's text.
-            // One text typed for several made them one figure several times over, and each
-            // needs its own checks (what it may name without a cycle).
-            if (value.GetAttribute<PropertyGridDisallowMultiEditAttribute>() != null || value is DrawingExpression)
-            {
-                return;
-            }
-            var signature = GetSignature(value);
-
-            CompositeValueProvider bucket;
-            if (results.TryGetValue(signature, out bucket))
-            {
-                bucket.Add(value);
-            }
-            else
-            {
-                results.Add(signature, new CompositeValueProvider(value));
-            }
-        }
-
-        string GetSignature(IValueProvider value)
-        {
-            return value.GetSignature();
-        }
-
-        public override string ToString()
-        {
-            if (objects.IsEmpty())
-            {
-                return "No objects selected";
-            }
-            else
-            {
-                return string.Format("{0} objects selected", objects.Count());
-            }
-        }
-    }
-
-    public interface IValueDiscoveryStrategy
-    {
-        IEnumerable<IValueProvider> GetValues(object editableObject);
-    }
-
-    public abstract class ValueDiscoveryStrategy : IValueDiscoveryStrategy
-    {
-        public abstract IEnumerable<IValueProvider> GetValues(object editableObject);
-
-        public static IValueDiscoveryStrategy Get(Type type)
-        {
-            PropertyDiscoveryStrategyAttribute attribute = type.GetAttribute<PropertyDiscoveryStrategyAttribute>();
-            if (attribute != null)
-            {
-                return (IValueDiscoveryStrategy)Activator.CreateInstance(attribute.ValueDiscoveryStrategyType);
-            }
-
             return null;
         }
+
+        results.Clear();
+        AddResults();
+
+        return results
+            .Where(k => k.Value.Count == objects.Count)
+            .Select(k => (IValueProvider)k.Value);
     }
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct, Inherited = true, AllowMultiple = false)]
-    public class PropertyDiscoveryStrategyAttribute : Attribute
+    void AddResults()
     {
-        public PropertyDiscoveryStrategyAttribute(Type type)
+        foreach (var item in objects)
         {
-            if (!typeof(IValueDiscoveryStrategy).IsAssignableFrom(type))
+            var values = valueDiscoveryStrategy.GetValues(item);
+            foreach (var value in values)
             {
-                throw new ArgumentException
-                    ("PropertyDiscoveryStrategyAttribute only accepts types that implement IValueDiscoveryStrategy");
+                AddResult(value);
             }
-            ValueDiscoveryStrategyType = type;
         }
-
-        public Type ValueDiscoveryStrategyType { get; set; }
     }
 
-    public class PropertyDiscoveryStrategy : ValueDiscoveryStrategy
+    void AddResult(IValueProvider value)
     {
-        protected BindingFlags? BindingFlags { get; set; }
-
-        // The properties a strategy finds depend on the type alone (GetProperties and
-        // FilterProperties look at the type and attributes, never at the object): found once
-        // per type, not on every look at an object - a save compares the values of every
-        // style of the drawing
-        static readonly System.Collections.Concurrent.ConcurrentDictionary<(Type Strategy, BindingFlags? Flags, Type Type), PropertyInfo[]> propertyCache =
-            new System.Collections.Concurrent.ConcurrentDictionary<(Type Strategy, BindingFlags? Flags, Type Type), PropertyInfo[]>();
-
-        protected virtual IEnumerable<PropertyInfo> GetProperties(object editableObject)
+        // What defines a figure is its own: a coordinate or an equation's part (the row is
+        // the expression itself, which carries no attributes), a function, a label's text.
+        // One text typed for several made them one figure several times over, and each
+        // needs its own checks (what it may name without a cycle).
+        if (value.GetAttribute<PropertyGridDisallowMultiEditAttribute>() != null || value is DrawingExpression)
         {
-            var type = editableObject.GetType();
-            PropertyInfo[] properties;
-            if (BindingFlags != null)
-            {
-                properties = type.GetProperties(BindingFlags.Value);
-            }
-            else
-            {
-                properties = type.GetProperties();
-            }
-            return properties
-                .Where(p => p.GetIndexParameters().IsEmpty())
-                //.OrderBy(p => p.Name)
-                ;
+            return;
+        }
+        var signature = GetSignature(value);
+
+        CompositeValueProvider bucket;
+        if (results.TryGetValue(signature, out bucket))
+        {
+            bucket.Add(value);
+        }
+        else
+        {
+            results.Add(signature, new CompositeValueProvider(value));
+        }
+    }
+
+    string GetSignature(IValueProvider value)
+    {
+        return value.GetSignature();
+    }
+
+    public override string ToString()
+    {
+        if (objects.IsEmpty())
+        {
+            return "No objects selected";
+        }
+        else
+        {
+            return string.Format("{0} objects selected", objects.Count());
+        }
+    }
+}
+
+public interface IValueDiscoveryStrategy
+{
+    IEnumerable<IValueProvider> GetValues(object editableObject);
+}
+
+public abstract class ValueDiscoveryStrategy : IValueDiscoveryStrategy
+{
+    public abstract IEnumerable<IValueProvider> GetValues(object editableObject);
+
+    public static IValueDiscoveryStrategy Get(Type type)
+    {
+        PropertyDiscoveryStrategyAttribute attribute = type.GetAttribute<PropertyDiscoveryStrategyAttribute>();
+        if (attribute != null)
+        {
+            return (IValueDiscoveryStrategy)Activator.CreateInstance(attribute.ValueDiscoveryStrategyType);
         }
 
-        protected virtual IEnumerable<PropertyInfo> FilterProperties(IEnumerable<PropertyInfo> properties)
-        {
-            return properties;
-        }
+        return null;
+    }
+}
 
-        protected virtual IEnumerable<IValueProvider> CreateValueProviders(IEnumerable<PropertyInfo> properties, object editableObject)
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct, Inherited = true, AllowMultiple = false)]
+public class PropertyDiscoveryStrategyAttribute : Attribute
+{
+    public PropertyDiscoveryStrategyAttribute(Type type)
+    {
+        if (!typeof(IValueDiscoveryStrategy).IsAssignableFrom(type))
         {
-            foreach (var p in properties)
-            {
-                IValueProvider result = PropertyDiscoveryStrategy.CreateValueProvider(editableObject, p);
-                yield return result;
-            }
+            throw new ArgumentException
+                ("PropertyDiscoveryStrategyAttribute only accepts types that implement IValueDiscoveryStrategy");
         }
+        ValueDiscoveryStrategyType = type;
+    }
 
-        public override IEnumerable<IValueProvider> GetValues(object editableObject)
+    public Type ValueDiscoveryStrategyType { get; set; }
+}
+
+public class PropertyDiscoveryStrategy : ValueDiscoveryStrategy
+{
+    protected BindingFlags? BindingFlags { get; set; }
+
+    // The properties a strategy finds depend on the type alone (GetProperties and
+    // FilterProperties look at the type and attributes, never at the object): found once
+    // per type, not on every look at an object - a save compares the values of every
+    // style of the drawing
+    static readonly System.Collections.Concurrent.ConcurrentDictionary<(Type Strategy, BindingFlags? Flags, Type Type), PropertyInfo[]> propertyCache =
+        new System.Collections.Concurrent.ConcurrentDictionary<(Type Strategy, BindingFlags? Flags, Type Type), PropertyInfo[]>();
+
+    protected virtual IEnumerable<PropertyInfo> GetProperties(object editableObject)
+    {
+        var type = editableObject.GetType();
+        PropertyInfo[] properties;
+        if (BindingFlags != null)
         {
-            ICustomPropertyProvider provider = editableObject as ICustomPropertyProvider;
-            if (provider != null)
-            {
-                return provider.GetProperties();
-            }
-            var properties = propertyCache.GetOrAdd(
-                (GetType(), BindingFlags, editableObject.GetType()),
-                key => FilterProperties(GetProperties(editableObject)).ToArray());
-            var result = CreateValueProviders(properties, editableObject);
-            //if (editableObject is IEnumerable)
-            //{
-            //    int take = 10;
-            //    var items = new List<IValueProvider>();
-            //    foreach (var item in (IEnumerable)editableObject)
-            //    {
-            //        if (take-- <= 0)
-            //        {
-            //            break;
-            //        }
-            //        items.Add(new ObjectValue(item));
-            //    }
-            //    result = result.Concat(items);
-            //}
+            properties = type.GetProperties(BindingFlags.Value);
+        }
+        else
+        {
+            properties = type.GetProperties();
+        }
+        return properties
+            .Where(p => p.GetIndexParameters().IsEmpty())
+            //.OrderBy(p => p.Name)
+            ;
+    }
+
+    protected virtual IEnumerable<PropertyInfo> FilterProperties(IEnumerable<PropertyInfo> properties)
+    {
+        return properties;
+    }
+
+    protected virtual IEnumerable<IValueProvider> CreateValueProviders(IEnumerable<PropertyInfo> properties, object editableObject)
+    {
+        foreach (var p in properties)
+        {
+            IValueProvider result = PropertyDiscoveryStrategy.CreateValueProvider(editableObject, p);
+            yield return result;
+        }
+    }
+
+    public override IEnumerable<IValueProvider> GetValues(object editableObject)
+    {
+        ICustomPropertyProvider provider = editableObject as ICustomPropertyProvider;
+        if (provider != null)
+        {
+            return provider.GetProperties();
+        }
+        var properties = propertyCache.GetOrAdd(
+            (GetType(), BindingFlags, editableObject.GetType()),
+            key => FilterProperties(GetProperties(editableObject)).ToArray());
+        var result = CreateValueProviders(properties, editableObject);
+        //if (editableObject is IEnumerable)
+        //{
+        //    int take = 10;
+        //    var items = new List<IValueProvider>();
+        //    foreach (var item in (IEnumerable)editableObject)
+        //    {
+        //        if (take-- <= 0)
+        //        {
+        //            break;
+        //        }
+        //        items.Add(new ObjectValue(item));
+        //    }
+        //    result = result.Concat(items);
+        //}
+        return result;
+    }
+
+    public static IValueProvider CreateValueProvider(object editableObject, PropertyInfo propertyInfo)
+    {
+        IValueProvider result = null;
+
+        if (propertyInfo.HasAttribute<PropertyGridCustomValueProvider>())
+        {
+            var attribute = propertyInfo.GetAttribute<PropertyGridCustomValueProvider>();
+            var derivedType = attribute.CustomValueProviderType;
+            var instance = (PropertyValue)Activator.CreateInstance(derivedType);
+            instance.Property = propertyInfo;
+            instance.Parent = editableObject;
+            instance.Type = propertyInfo.PropertyType;
+            return instance;
+        }
+        else if (propertyInfo.PropertyType.HasInterface<IValueProvider>()
+            && (result = (IValueProvider)propertyInfo.GetValue(editableObject, null)) != null)
+        {
             return result;
         }
-
-        public static IValueProvider CreateValueProvider(object editableObject, PropertyInfo propertyInfo)
+        else
         {
-            IValueProvider result = null;
-
-            if (propertyInfo.HasAttribute<PropertyGridCustomValueProvider>())
-            {
-                var attribute = propertyInfo.GetAttribute<PropertyGridCustomValueProvider>();
-                var derivedType = attribute.CustomValueProviderType;
-                var instance = (PropertyValue)Activator.CreateInstance(derivedType);
-                instance.Property = propertyInfo;
-                instance.Parent = editableObject;
-                instance.Type = propertyInfo.PropertyType;
-                return instance;
-            }
-            else if (propertyInfo.PropertyType.HasInterface<IValueProvider>()
-                && (result = (IValueProvider)propertyInfo.GetValue(editableObject, null)) != null)
-            {
-                return result;
-            }
-            else
-            {
-                return new PropertyValue(propertyInfo, editableObject);
-            }
-        }
-
-        public static IValueProvider CreateValueProvider(object editableObject, string propertyName)
-        {
-            var propertyInfo = editableObject.GetType().GetProperty(propertyName);
-            return CreateValueProvider(editableObject, propertyInfo);
-        }
-
-        public static IEnumerable<IValueProvider> GetValuesFromProperties(object editableObject, params string[] propertyNames)
-        {
-            foreach (var propertyName in propertyNames)
-            {
-                yield return CreateValueProvider(editableObject, propertyName);
-            }
+            return new PropertyValue(propertyInfo, editableObject);
         }
     }
 
-    public class IncludeByDefaultValueDiscoveryStrategy : PropertyDiscoveryStrategy
+    public static IValueProvider CreateValueProvider(object editableObject, string propertyName)
     {
-        public static IncludeByDefaultValueDiscoveryStrategy Instance = new IncludeByDefaultValueDiscoveryStrategy();
-
-        protected override IEnumerable<PropertyInfo> FilterProperties(IEnumerable<PropertyInfo> properties)
-        {
-            return properties
-                .Where(p => !p.HasAttribute<IgnoreAttribute>() &&
-                    (!p.HasAttribute<PropertyGridVisibleAttribute>()
-                    || p.GetAttribute<PropertyGridVisibleAttribute>().Visible));
-        }
+        var propertyInfo = editableObject.GetType().GetProperty(propertyName);
+        return CreateValueProvider(editableObject, propertyInfo);
     }
 
-    public class ExcludeByDefaultValueDiscoveryStrategy : PropertyDiscoveryStrategy
+    public static IEnumerable<IValueProvider> GetValuesFromProperties(object editableObject, params string[] propertyNames)
     {
-        public static ExcludeByDefaultValueDiscoveryStrategy Instance = new ExcludeByDefaultValueDiscoveryStrategy();
-
-        protected override IEnumerable<PropertyInfo> FilterProperties(IEnumerable<PropertyInfo> properties)
+        foreach (var propertyName in propertyNames)
         {
-            return properties
-                .Where(p =>
-                    !p.HasAttribute<IgnoreAttribute>() &&
-                    (p.HasAttribute<PropertyGridVisibleAttribute>()
-                     && p.GetAttribute<PropertyGridVisibleAttribute>().Visible));
+            yield return CreateValueProvider(editableObject, propertyName);
         }
+    }
+}
+
+public class IncludeByDefaultValueDiscoveryStrategy : PropertyDiscoveryStrategy
+{
+    public static IncludeByDefaultValueDiscoveryStrategy Instance = new IncludeByDefaultValueDiscoveryStrategy();
+
+    protected override IEnumerable<PropertyInfo> FilterProperties(IEnumerable<PropertyInfo> properties)
+    {
+        return properties
+            .Where(p => !p.HasAttribute<IgnoreAttribute>() &&
+                (!p.HasAttribute<PropertyGridVisibleAttribute>()
+                || p.GetAttribute<PropertyGridVisibleAttribute>().Visible));
+    }
+}
+
+public class ExcludeByDefaultValueDiscoveryStrategy : PropertyDiscoveryStrategy
+{
+    public static ExcludeByDefaultValueDiscoveryStrategy Instance = new ExcludeByDefaultValueDiscoveryStrategy();
+
+    protected override IEnumerable<PropertyInfo> FilterProperties(IEnumerable<PropertyInfo> properties)
+    {
+        return properties
+            .Where(p =>
+                !p.HasAttribute<IgnoreAttribute>() &&
+                (p.HasAttribute<PropertyGridVisibleAttribute>()
+                 && p.GetAttribute<PropertyGridVisibleAttribute>().Visible));
     }
 }
