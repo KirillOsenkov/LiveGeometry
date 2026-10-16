@@ -121,7 +121,7 @@ tool but dragging, user-defined tools.
   pans; `DragThreshold` 3 px before a press is a drag; wheel zooms 1.2 around the cursor;
   one finger drags, two fingers pan and zoom (`CoordinateSystem.panAndZoom`); a click on a
   show/hide box ticks it; a double click zooms to fit; Shift snaps to the grid step; the
-  hand cursor over what a press would move. `Behavior` with its pointer adapter is ported
+  arrow cursor everywhere, as the app's Drag tool has it. `Behavior` with its pointer adapter is ported
   as the base, `Dragger` derives from it, so tools derive from the same base later.
 - **Fit**: the file's Viewport fitted into the element, as the app opens a file
   (`SetViewport` = `Fit(rect)`), or a scene when the file has scenes. `data-fit="content"`

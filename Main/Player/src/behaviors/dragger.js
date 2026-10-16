@@ -321,35 +321,6 @@ class Dragger extends Behavior {
             this.release(drag);
         }
     }
-
-    /** A hand where a press would move something or tick a box, an arrow elsewhere */
-    getCursor(coordinates) {
-        const found = this.drawing.figures.hitTest(coordinates);
-        if (found == null || found.isAxisLine === true) {
-            return "default";
-        }
-
-        if (found instanceof ShowHideControl) {
-            return "pointer";
-        }
-
-        if (found instanceof ControlBase && this.drawing.fixedLabels.has(found)) {
-            return "default";
-        }
-
-        const oneMovable = found.isMovableParts === true ? found.findMovablePart(coordinates) : found.isMovable === true ? found : null;
-        if (oneMovable != null) {
-            return !found.locked && oneMovable.allowMove() ? "pointer" : "default";
-        }
-
-        if (found.locked) {
-            return "default";
-        }
-
-        const roots = DependencyAlgorithms.findRoots(f => f.dependencies, [found])
-            .filter(root => root.isNumber !== true && !(root instanceof PointByCoordinates));
-        return roots.length > 0 && roots.every(root => root.isMovable === true && root.allowMove()) ? "pointer" : "default";
-    }
 }
 
 /**
