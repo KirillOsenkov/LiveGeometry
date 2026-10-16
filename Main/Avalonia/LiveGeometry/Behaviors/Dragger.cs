@@ -886,11 +886,19 @@ public partial class Dragger : Behavior
     /// <summary>
     /// Over a point to join, the dragged point sits right on it and the halo goes on that
     /// point; nothing is joined before the drop. Or the figure chosen with Tab under
-    /// another, which a press takes instead of the topmost: the halo shows which.
+    /// another, which a press takes instead of the topmost: the halo shows which. Over an
+    /// angle's number, its mark: which angle the number says, where numbers crowd.
     /// </summary>
     protected override IFigure GetFigureToPick(MouseEventArgs e)
     {
-        return FindDrag(e.Pointer)?.Snap?.ExistingPoint ?? (Choice.Index > 0 ? Choice.Current as IFigure : null);
+        var drag = FindDrag(e.Pointer);
+        var picked = drag?.Snap?.ExistingPoint ?? (Choice.Index > 0 ? Choice.Current as IFigure : null);
+        if (picked != null || drag != null)
+        {
+            return picked;
+        }
+
+        return Choice.Current is AngleMeasurement number ? AngleArc.FindCompanion(number) : null;
     }
 
     #endregion

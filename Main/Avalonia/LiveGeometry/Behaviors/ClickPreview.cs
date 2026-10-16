@@ -29,6 +29,10 @@ public class ClickPreview
     public static IBrush PointHaloBrush = new SolidColorBrush(Color.FromArgb(0x48, 0x3B, 0x8E, 0xEA));
     public static IBrush TickBrush = new SolidColorBrush(Color.FromRgb(0x2F, 0x7B, 0xD6));
 
+    // an angle's mark picked (its number hovered): the hue of the coincident line, strong
+    public static IBrush MarkHighlightBrush = new SolidColorBrush(Color.FromArgb(0xE0, 0x00, 0xBA, 0xD7));
+    public static double MarkHighlightWidth = 6;
+
     readonly List<Control> visuals = new List<Control>();
     Canvas canvas;
     AvaloniaShapes.Shape ghost;
@@ -59,7 +63,7 @@ public class ClickPreview
             return;
         }
 
-        IReadOnlyList<IFigure> sources = placement != null ? placement.Sources : new[] { pickedFigure };
+        IReadOnlyList<IFigure> sources = placement != null ? placement.Sources : WithAngleMark(pickedFigure);
 
         // the halos and ticks are in pixels, so they are only good for the view they were made in
         var coordinateSystem = drawing.CoordinateSystem;
@@ -107,6 +111,14 @@ public class ClickPreview
         {
             ghost.CenterAt(coordinateSystem.ToPhysical(placement.Coordinates));
         }
+    }
+
+    /// <summary>An angle's number picked has its mark lit up with it: which angle the number says</summary>
+    static IReadOnlyList<IFigure> WithAngleMark(IFigure picked)
+    {
+        return picked is AngleMeasurement && AngleArc.FindCompanion(picked) is AngleArc mark
+            ? new[] { picked, mark }
+            : new[] { picked };
     }
 
     public void Clear()
@@ -174,7 +186,7 @@ public class ClickPreview
         var measure = Math.OAngle(angle.First.Coordinates, angle.Vertex.Coordinates, angle.Second.Coordinates);
         Add(CreateAngleFillGhost(corner, first.Value, second.Value, measure));
         Add(CreateAngleMarkGhost(drawing, corner, first.Value, second.Value, measure));
-        Add(CreateAngleNumberGhost(drawing, corner, measure));
+        Add(CreateAngleNumberGhost(drawing, angle, corner, measure));
         if (withBisector)
         {
             Add(CreateBisectorGhost(drawing, corner, first.Value, second.Value));
@@ -277,15 +289,43 @@ public class ClickPreview
         return result;
     }
 
-    /// <summary>The number an <see cref="AngleMeasurement"/> shows, where a new one sits: its top left at the vertex</summary>
-    static Control CreateAngleNumberGhost(Drawing drawing, Point corner, double measure)
+    /// <summary>
+    /// The number an <see cref="AngleMeasurement"/> shows, where a new one goes (<see cref="AngleLabelLayout"/>):
+    /// inside the angle past the new mark, clear of the numbers at the vertex as they are now
+    /// </summary>
+    static Control CreateAngleNumberGhost(Drawing drawing, AngleAtVertex angle, Point corner, double measure)
     {
         var result = Factory.CreateLabelShape();
         result.Text = Math.Round(measure.ToDegrees(), Settings.DisplayDecimals).ToString() + "°";
         ApplyGhostStyle(drawing, typeof(AngleMeasurement), result);
         result.ZIndex = ZOrders.Default(ZOrder.Labels);
-        Canvas.SetLeft(result, corner.X);
-        Canvas.SetTop(result, corner.Y);
+        result.Measure(Size.Infinity);
+        var vertex = angle.Vertex;
+        var numbers = vertex.Dependents
+            .OfType<AngleMeasurement>()
+            .Where(number => number.TakesPartInLayout(vertex))
+            .Distinct()
+            .ToList();
+        var obstacles = numbers
+            .Select(number => new Rect(corner + number.Offset, number.LayoutSize()))
+            .ToList();
+        var sides = AngleLabelLayout.SidesOf(numbers);
+        sides.Add(Math.GetAngle(vertex.Coordinates, angle.First.Coordinates));
+        sides.Add(Math.GetAngle(vertex.Coordinates, angle.Second.Coordinates));
+        var wedge = new AngleLabelLayout.Wedge()
+        {
+            Vertex = corner,
+            Start = Math.GetAngle(vertex.Coordinates, angle.First.Coordinates),
+            Sweep = measure,
+            IsClockwise = false,
+            Clearance = System.Math.Abs(measure - Math.PI / 2) < AngleArc.RightAngleTolerance
+                ? AngleArc.DefaultSize * System.Math.Sqrt(2)
+                : AngleArc.DefaultSize,
+            Size = result.DesiredSize
+        };
+        var topLeft = AngleLabelLayout.Arrange([wedge], obstacles, sides)[0].TopLeft;
+        Canvas.SetLeft(result, topLeft.X);
+        Canvas.SetTop(result, topLeft.Y);
         return result;
     }
 
@@ -374,6 +414,22 @@ public class ClickPreview
             Canvas.SetLeft(halo, Canvas.GetLeft(source) - HaloWidth / 2);
             Canvas.SetTop(halo, Canvas.GetTop(source) - HaloWidth / 2);
             SetHaloStroke(halo, source);
+        }
+        else if (figure is AngleArc mark)
+        {
+            // a mark is small and thin, and the halo's faint band around it was hard to
+            // see: the mark is drawn over, a few pixels wide, in a color of its own (a copy
+            // of the geometry: a geometry shared with the shape is a compositor resource of both).
+            // Its ends and corners as the mark's: round caps stuck out past the sides.
+            halo = new AvaloniaShapes.Path()
+            {
+                Data = mark.Shape.Data?.Clone(),
+                Stroke = MarkHighlightBrush,
+                StrokeThickness = System.Math.Max(MarkHighlightWidth, mark.Shape.StrokeThickness),
+                StrokeLineCap = mark.Shape.StrokeLineCap,
+                StrokeJoin = mark.Shape.StrokeJoin,
+                ZIndex = mark.Shape.ZIndex + 1
+            };
         }
         else if (figure is ShapeBase<AvaloniaShapes.Path> path)
         {

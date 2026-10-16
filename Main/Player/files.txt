@@ -80,6 +80,7 @@ figures/controls/controlBase.js
 figures/controls/labelBase.js
 figures/controls/label.js
 figures/controls/labelWithOffset.js
+figures/controls/angleLabelLayout.js
 figures/controls/angleMeasurement.js
 figures/controls/figureLabel.js
 figures/controls/pointLabel.js

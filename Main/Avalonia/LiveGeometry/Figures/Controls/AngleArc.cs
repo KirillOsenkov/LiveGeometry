@@ -295,6 +295,12 @@ public class AngleArc : CircleArc, IConditionalProperties
         if (Drawing != null && Shape != null)
         {
             UpdateVisual();
+
+            // a number that places itself keeps clear of the mark
+            if (FindCompanion(this) is AngleMeasurement { PlacesItself: true } number)
+            {
+                number.UpdateVisual();
+            }
         }
     }
 

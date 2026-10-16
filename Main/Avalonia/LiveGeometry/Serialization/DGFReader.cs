@@ -402,6 +402,7 @@ public class DGFReader
                 point1,
                 point2});
         angle.Offset = ReadLabelOffset(section);
+        angle.PlacesItself = false;
         AddLabelFigure(section, angle);
 
         // DG kept the mark in the same figure: DrawStyle 0 is no mark, otherwise 1 to 3 arcs

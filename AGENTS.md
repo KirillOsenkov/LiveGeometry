@@ -1880,6 +1880,26 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Angle Bisector tool adds the bisector it would make, a faint ray from the vertex
   (`Behavior.PreviewsAngleBisector`, `ClickPreview.CreateBisectorGhost`). `DGFReader.ReadMeasureAngle` creates the arc from
   VB6's DrawStyle / AuxInfo(2) - not tested, there is no sample .dgf with an angle in the repo.
+  **The number places itself** (2026-10-16; `AngleLabelLayout`, `AngleMeasurement.PlacesItself`,
+  the grid's "Place automatically"): at every redraw, for all the numbers at its vertex at
+  once, each inside its angle past its mark, clear of the others and of the sides where
+  there is room (a few turns off the bisector, a few pushes out; the cheapest of overlap,
+  the length of the sides through it, its middle outside the angle, the turn, the push).
+  It remembers its place relative to its angle (`LayoutPlacement`, not saved) and starts
+  from there: it slides by small steps, and takes a place further away only when that is
+  cheaper by `Hysteresis` and `Proximity` per pixel of the way. Chosen afresh at every
+  redraw, the numbers jumped between two places at every move of a drag (measured in the
+  player: 44 jumps over 12 px in a sweep of a side through 110 degrees and back, 1 now). A drag makes it
+  a number placed by hand, which the others keep clear of; undo of the drag, or the row
+  ticked, makes it place itself again. A file says `OffsetX`/`OffsetY` only for one placed
+  by hand (`LabelWithOffset.SavesOffset`); every file from before says them, so the
+  gallery's stay as they were. The Angle tool's hover ghost goes where the layout would put
+  the number. The player has the twin (`angleLabelLayout.js`). Under the Drag tool, hovering
+  a number lights up its mark (`Dragger.GetFigureToPick`), and any tool that picks a number
+  lights its mark with it (`ClickPreview.WithAngleMark`): not with the faint halo band, which
+  was hard to see around a mark this small, but a copy of the mark drawn over it 6 px wide
+  in strong cyan (`ClickPreview.MarkHighlightBrush`, the hue of the coincident line), with
+  the mark's own flat ends (round caps stuck out past the sides).
 - **Dashes**: `LineStyle.Dash` is put on in `LineStyle.OnApplied`, not through a setter, because
   `StrokeDashArray` counts in stroke widths. Anything that
   applies a style to a shape by hand (sample glyphs) must call `OnApplied` too. Any enum

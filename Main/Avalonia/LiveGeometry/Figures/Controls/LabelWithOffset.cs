@@ -87,11 +87,17 @@ public abstract class LabelWithOffset : LabelBase, IMovable
         Offset = new Point(element.ReadDouble("OffsetX"), element.ReadDouble("OffsetY"));
     }
 
+    /// <summary>Whether the file says the offset: not for a label that works out its place itself</summary>
+    protected virtual bool SavesOffset => true;
+
     public override void WriteXml(XmlWriter writer)
     {
         base.WriteXml(writer);
-        writer.WriteAttributeDouble("OffsetX", Offset.X);
-        writer.WriteAttributeDouble("OffsetY", Offset.Y);
+        if (SavesOffset)
+        {
+            writer.WriteAttributeDouble("OffsetX", Offset.X);
+            writer.WriteAttributeDouble("OffsetY", Offset.Y);
+        }
     }
 }
 
