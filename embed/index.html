@@ -224,7 +224,7 @@
   }
 
 
-  .picker select {
+  .picker select, .picker input {
     font: 15px var(--sans);
     color: var(--ink);
     background: var(--surface);
@@ -234,7 +234,14 @@
     max-width: 100%;
   }
 
+  .picker input { width: 22em; }
+  .picker input::placeholder { color: var(--ink-soft); }
+  .picker input.wrong { border-color: #d83b3b; }
+
   .picker a { white-space: nowrap; }
+
+  .picker .message { flex-basis: 100%; margin: -4px 0 0; font-size: 14px; color: var(--ink-soft); }
+  .picker .message:empty { display: none; }
 
   /* steps and options */
   ol.steps { padding-left: 22px; }
@@ -337,12 +344,15 @@
     <div class="picker">
       <label for="drawing">Drawing</label>
       <select id="drawing" aria-label="Drawing"></select>
+      <label for="share">or a share link</label>
+      <input id="share" type="text" inputmode="url"placeholder="https://livegeometry.com/s/…" spellcheck="false" autocomplete="off">
       <a id="open" href="/gallery/stretchy-slime">Open in Live Geometry →</a>
+      <p class="message" id="share-message" aria-live="polite"></p>
     </div>
   </section>
 
   <h2 id="snippet-section">The embed snippet</h2>
-  <p>Pick any drawing of the <a href="/">gallery</a> above, paste the snippet where you want it, and it plays. The script tag loads the player once per page, the element is the drawing.</p>
+  <p>Pick any drawing of the <a href="/">gallery</a> above, or paste the share link of one of your own, then paste the snippet where you want it, and it plays. The script tag loads the player once per page, the element is the drawing.</p>
   <div class="snippet">
     <pre><code id="snippet"></code></pre>
     <button class="copy" type="button" data-for="snippet">Copy</button>
@@ -350,8 +360,9 @@
   <p>The element can be any size: give it the width and height you want, and the drawing fits itself in. With no height it would be as tall as nothing, so say one.</p>
 
   <h2 id="your-own">A drawing of your own</h2>
-  <p>Make it in <a href="/">Live Geometry</a>, then take it with you in either of two ways.</p>
+  <p>Make it in <a href="/">Live Geometry</a>, then take it with you in any of three ways.</p>
   <ol class="steps">
+    <li><strong>Export › Copy share link</strong> stores the drawing on this site and puts its link on the clipboard, <code>https://livegeometry.com/s/…</code>. Paste the link into the box at the top of this page and copy the snippet: it plays the drawing from its link, so the snippet stays short. The link itself works as <code>data-src</code> too. A shared drawing never changes: share it again after an edit, and use the new link.</li>
     <li><strong>Export › Copy embed code</strong> puts the same snippet on the clipboard with the drawing itself written into the element, between a <code>&lt;script type="text/x-livegeometry"&gt;</code> tag and its end. Paste into any HTML. Nothing is fetched but the player, so this works in a page opened from a disk too.</li>
     <li><strong>Export › Save as .html</strong> writes a page of its own with the player inside: one file that plays from a USB stick, a shared folder, or an email attachment.</li>
   </ol>
@@ -361,7 +372,7 @@
   <p>Attributes on the element, all optional. The two drawings below are the first two in use.</p>
   <table>
     <tr><th>Attribute</th><th>What it does</th></tr>
-    <tr><td><code>data-src</code></td><td>The address of an <code>.lgf</code> to play, when the drawing is not written into the element.</td></tr>
+    <tr><td><code>data-src</code></td><td>The address of an <code>.lgf</code> to play, or a share link, when the drawing is not written into the element.</td></tr>
     <tr><td><code>data-theme</code></td><td><code>light</code>, <code>dark</code>, or <code>auto</code> (the reader's system setting, the default). The drawing keeps its own colors; the paper and the default styles follow the theme.</td></tr>
     <tr><td><code>data-wheel</code></td><td><code>zoom</code> makes the mouse wheel zoom the drawing. By default it zooms only with Ctrl held, so a drawing in a post doesn't take the page's scrolling; pinching and a double click (zoom to fit) always work.</td></tr>
     <tr><td><code>data-fit</code></td><td><code>content</code> fits the figures into the element instead of the view the drawing was saved with.</td></tr>
@@ -451,14 +462,21 @@
       return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    function showSnippet(item) {
+    // file: the drawing's path on this site, page: where Open in Live Geometry goes
+    function showSnippet(file, page) {
       var lines = [
         '<script src="https://livegeometry.com/player/1/player.js" defer><' + '/script>',
-        '<div class="livegeometry" data-src="https://livegeometry.com/gallery/' + item.file + '" style="width: 100%; height: 500px;"></div>'
+        '<div class="livegeometry" data-src="https://livegeometry.com' + file + '" style="width: 100%; height: 500px;"></div>'
       ];
       snippet.innerHTML = escapeHtml(lines.join('\n')).replace(/(data-src|style|class|src|defer)(?==|&gt;)/g, '<span class="attribute">$1</span>');
       snippet.dataset.text = lines.join('\n');
-      open.href = '/gallery/' + item.slug;
+      open.href = page;
+    }
+
+    // the hero plays the drawing at file; a promise that fails when it can't be had
+    function play(file) {
+      var player = window.LiveGeometry && LiveGeometry.players.get(document.getElementById('hero'));
+      return player ? player.loadFrom(file) : Promise.resolve();
     }
 
     function choose(slug) {
@@ -467,17 +485,76 @@
         return;
       }
 
-      showSnippet(item);
-      if (window.LiveGeometry) {
-        var hero = document.getElementById('hero');
-        var player = LiveGeometry.players.get(hero);
-        if (player) {
-          player.loadFrom('/gallery/' + item.file);
+      showSnippet('/gallery/' + item.file, '/gallery/' + item.slug);
+      play('/gallery/' + item.file);
+    }
+
+    select.addEventListener('change', function () {
+      share.value = '';
+      showShareMessage('', false);
+      choose(select.value);
+    });
+
+    // ---------- a share link (Export > Copy share link in the app) ----------
+    var share = document.getElementById('share');
+    var shareMessage = document.getElementById('share-message');
+    var sharedId = null;
+
+    // the id of a share link as the app copies it, its .lgf, or the bare id; else null
+    function parseShareLink(text) {
+      text = text.trim().toLowerCase();
+      var match = /^(?:(?:https?:\/\/)?[^\/?#]*\/s\/)?([a-z2-7]{8,})(?:\.lgf)?\/?(?:[?#].*)?$/.exec(text);
+      return match ? match[1] : null;
+    }
+
+    function showShareMessage(text, wrong) {
+      shareMessage.textContent = text;
+      share.classList.toggle('wrong', wrong);
+    }
+
+    function chooseShared(id) {
+      if (id === sharedId) {
+        return;
+      }
+
+      sharedId = id;
+      select.selectedIndex = -1;
+      showShareMessage('', false);
+      // the snippet changes once the drawing is there: none is offered for a link that plays nothing
+      play('/s/' + id + '.lgf').then(function () {
+        if (sharedId === id) {
+          showSnippet('/s/' + id + '.lgf', '/s/' + id);
         }
+      }, function () {
+        if (sharedId === id) {
+          showShareMessage('There is no drawing at that link. Is it copied whole?', true);
+        }
+      });
+    }
+
+    function onShareInput() {
+      var text = share.value.trim();
+      var id = parseShareLink(text);
+      if (id) {
+        chooseShared(id);
+      } else {
+        sharedId = null;
+        showShareMessage(text ? 'A share link looks like https://livegeometry.com/s/abcd2345: in Live Geometry, Export › Copy share link.' : '', text !== '');
       }
     }
 
-    select.addEventListener('change', function () { choose(select.value); });
+    share.addEventListener('input', onShareInput);
+
+    // /embed?s=<id> opens with that drawing
+    function sharedFromAddress() {
+      var id = parseShareLink(new URLSearchParams(location.search).get('s') || '');
+      if (id) {
+        share.value = 'https://livegeometry.com/s/' + id;
+        chooseShared(id);
+      }
+
+      return id;
+    }
 
     // the catalog, in the gallery's order (written at build from GalleryCatalog.cs)
     fetch('/gallery/index.json').then(function (response) { return response.json(); }).then(function (items) {
@@ -488,12 +565,16 @@
         option.textContent = item.title;
         select.appendChild(option);
       });
-      // the gallery's first drawing plays in the hero element
-      select.value = items[0].slug;
-      choose(items[0].slug);
+      // the gallery's first drawing plays in the hero element, unless the address names a shared one
+      if (!sharedFromAddress()) {
+        select.value = items[0].slug;
+        choose(items[0].slug);
+      }
     }).catch(function () {
       catalog = [{ slug: 'stretchy-slime', title: 'Stretchy Slime', file: 'StretchySlime.lgf' }];
-      choose('stretchy-slime');
+      if (!sharedFromAddress()) {
+        choose('stretchy-slime');
+      }
     });
 
     // ---------- copy buttons ----------

@@ -170,12 +170,23 @@ class Player {
 
     /** The drawing from a URL (an .lgf the page can fetch: same origin, or one that allows it) */
     async loadFrom(url) {
+        url = Player.drawingAddress(url);
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error("Live Geometry: could not load " + url + " (" + response.status + ")");
         }
 
         this.load(await response.text());
+    }
+
+    /**
+     * Where to fetch the drawing at a URL from: a share link as the app copies it
+     * (https://livegeometry.com/s/<id>, the page that plays it) is its drawing,
+     * /s/<id>.lgf; anything else is taken as it is
+     */
+    static drawingAddress(url) {
+        const match = /^([^?#]*\/s\/[a-z2-7]{8,})\/?([?#].*)?$/.exec(url);
+        return match != null ? match[1] + ".lgf" : url;
     }
 
     show(drawing) {
