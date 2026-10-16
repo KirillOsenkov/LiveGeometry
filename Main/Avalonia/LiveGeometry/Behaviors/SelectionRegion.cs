@@ -15,17 +15,20 @@ namespace LiveGeometry;
 /// </summary>
 public class SelectionRegion
 {
-    /// <summary>
-    /// Whether the region takes every figure it touches (true), or only those wholly inside it
-    /// (false). Lines, rays and graphs of functions go on past the window, and are taken when
-    /// touched either way: what they are built on may be far away.
-    /// </summary>
-    public const bool TakesTouchedFigures = true;
-
     /// <summary>In pixels: how far the pointer goes before the lasso takes in another point of its path</summary>
     public static double LassoStep = 2;
 
+    /// <summary>
+    /// In pixels: of a figure that goes on past the window or under the side panel, what lies
+    /// this far in from the window's edges and from the panel must be inside the region (see
+    /// <see cref="IsInside"/>). A drag right along the edge is too much to ask.
+    /// </summary>
+    public static double EdgeMargin = 50;
+
     readonly List<Point> points = new List<Point>();
+
+    // the way a lasso takes figures, decided by the way it first goes; null until then
+    bool? lassoTakesTouched;
 
     SelectionRegion(bool isRectangle, Point start)
     {
@@ -44,6 +47,16 @@ public class SelectionRegion
     }
 
     public bool IsRectangle { get; }
+
+    /// <summary>
+    /// Whether the region takes every figure it touches (true), or only those wholly inside it
+    /// (false), as AutoCAD's crossing and window selections go: a rectangle dragged to the left
+    /// of where it began touches, one dragged to the right holds; a lasso goes by the way it
+    /// first went.
+    /// </summary>
+    public bool TakesTouchedFigures => IsRectangle
+        ? points.Count > 1 && points[1].X < points[0].X
+        : lassoTakesTouched == true;
 
     /// <summary>The rectangle's corner across from the first, or the lasso's next point; false when the region stays as it was</summary>
     public bool Extend(Point point)
@@ -65,9 +78,16 @@ public class SelectionRegion
             return true;
         }
 
+        bool isDecided = false;
+        if (lassoTakesTouched == null && System.Math.Abs(point.X - points[0].X) >= Dragger.DragThreshold)
+        {
+            lassoTakesTouched = point.X < points[0].X;
+            isDecided = true;
+        }
+
         if (points[points.Count - 1].Distance(point) < LassoStep)
         {
-            return false;
+            return isDecided;
         }
 
         points.Add(point);
@@ -118,12 +138,17 @@ public class SelectionRegion
     /// <param name="transform">From canvas pixels to the coordinates wanted, or null for canvas pixels</param>
     public Geometry CreateGeometry(Matrix? transform = null)
     {
+        return CreatePolygon(Outline, transform);
+    }
+
+    static Geometry CreatePolygon(IEnumerable<Point> corners, Matrix? transform)
+    {
         var geometry = new StreamGeometry();
         using (var context = geometry.Open())
         {
             context.SetFillRule(FillRule.NonZero);
             bool isFirst = true;
-            foreach (var point in Outline)
+            foreach (var point in corners)
             {
                 var transformed = transform != null ? point.Transform(transform.Value) : point;
                 if (isFirst)
@@ -154,11 +179,16 @@ public class SelectionRegion
         }
 
         var bounds = Bounds;
+        var area = new VisibleArea(canvas);
+        var taken = new HashSet<IFigure>();
         foreach (var figure in drawing.Figures)
         {
-            if (CanBeTaken(drawing, figure) && Takes(figure, canvas, bounds))
+            if (CanBeTaken(drawing, figure)
+                && ((!TakesTouchedFigures && IsTakenWithItsPoints(figure, taken))
+                    || Takes(figure, canvas, bounds, area)))
             {
                 result.Add(figure);
+                taken.Add(figure);
             }
         }
 
@@ -188,33 +218,74 @@ public class SelectionRegion
         return (figure is LineBase && !(figure is Segment)) || figure is FunctionGraph;
     }
 
-    bool Takes(IFigure figure, Canvas canvas, Rect bounds)
+    /// <summary>
+    /// A line or a ray goes with the points it is drawn through when the region takes all of
+    /// them: line AB with A and B, a parallel with the point it goes through. (The drawing's
+    /// list is in dependency order, so its points have been judged already.)
+    /// </summary>
+    static bool IsTakenWithItsPoints(IFigure figure, HashSet<IFigure> taken)
+    {
+        if (!IsEndless(figure))
+        {
+            return false;
+        }
+
+        bool hasPoints = false;
+        foreach (var dependency in figure.Dependencies)
+        {
+            if (dependency is IPoint)
+            {
+                if (!taken.Contains(dependency))
+                {
+                    return false;
+                }
+
+                hasPoints = true;
+            }
+        }
+
+        return hasPoints;
+    }
+
+    bool Takes(IFigure figure, Canvas canvas, Rect bounds, VisibleArea area)
     {
         var shapes = new List<Control>();
         CollectShapes(figure, shapes);
-        bool takesTouched = TakesTouchedFigures || IsEndless(figure);
+        bool isEndless = IsEndless(figure);
         bool isShown = false;
         foreach (var shape in shapes)
         {
-            var overlap = FindOverlap(shape, canvas, bounds, needsInside: !takesTouched);
-            if (overlap == null)
+            var drawn = DrawnShape.Find(shape, canvas);
+            if (drawn == null)
             {
                 continue;
             }
 
-            isShown = true;
-            if (takesTouched && overlap != Overlap.Apart)
+            if (TakesTouchedFigures)
             {
-                return true;
+                if (Touches(drawn, bounds))
+                {
+                    return true;
+                }
+
+                continue;
             }
 
-            if (!takesTouched && overlap != Overlap.Inside)
+            var inside = IsInside(drawn, bounds, area, isEndless);
+            if (inside == null)
+            {
+                continue;
+            }
+
+            if (inside == false)
             {
                 return false;
             }
+
+            isShown = true;
         }
 
-        return !takesTouched && isShown;
+        return isShown;
     }
 
     /// <summary>The controls that draw the figure: its shape, or the shapes of its parts (a slider, a vector, a regular polygon, a path)</summary>
@@ -238,114 +309,82 @@ public class SelectionRegion
         }
     }
 
-    enum Overlap
+    bool Touches(DrawnShape drawn, Rect regionBounds)
     {
-        Apart,
-        Touching,
-        Inside
-    }
-
-    /// <summary>
-    /// How the shape lies to the region: its fill and its stroke as drawn, or the box of a
-    /// control without a geometry (a label, a show/hide box, an emoji); null for a shape not on
-    /// the screen. Inside is only told apart from touching when <paramref name="needsInside"/>.
-    /// </summary>
-    Overlap? FindOverlap(Control shape, Canvas canvas, Rect regionBounds, bool needsInside)
-    {
-        if (!shape.IsEffectivelyVisible)
+        if (!drawn.Bounds.Intersects(regionBounds))
         {
-            return null;
+            return false;
         }
 
-        var transform = shape.TransformToVisual(canvas);
-        if (transform == null)
+        if (IsRectangle && drawn.IsAxisAligned && regionBounds.Contains(drawn.Bounds))
         {
-            return null;
-        }
-
-        var matrix = transform.Value;
-        Geometry fill = null;
-        Geometry stroke = null;
-        Rect bounds;
-        if (shape is AvaloniaShapes.Shape geometryShape && geometryShape.RenderedGeometry != null)
-        {
-            var geometry = geometryShape.RenderedGeometry;
-            bool isStroked = IsPainted(geometryShape.Stroke) && geometryShape.StrokeThickness > 0;
-            bool isFilled = IsPainted(geometryShape.Fill);
-            if (!isStroked && !isFilled)
-            {
-                return null;
-            }
-
-            Pen pen = null;
-            if (isStroked)
-            {
-                pen = new Pen(
-                    Brushes.Black,
-                    geometryShape.StrokeThickness,
-                    lineCap: geometryShape.StrokeLineCap,
-                    lineJoin: geometryShape.StrokeJoin);
-            }
-
-            bounds = (pen != null ? geometry.GetRenderBounds(pen) : geometry.Bounds).TransformToAABB(matrix);
-            if (!bounds.Intersects(regionBounds))
-            {
-                return Overlap.Apart;
-            }
-
-            if (IsRectangle && IsAxisAligned(matrix) && regionBounds.Contains(bounds))
-            {
-                return Overlap.Inside;
-            }
-
-            // (copies: a geometry combined with another is watched by the combination, and
-            // the shape's own would be kept alive by every one made)
-            if (isFilled)
-            {
-                fill = geometry.Clone();
-            }
-
-            if (pen != null)
-            {
-                stroke = geometry.GetWidenedGeometry(pen);
-            }
-        }
-        else
-        {
-            var box = new Rect(shape.Bounds.Size);
-            bounds = box.TransformToAABB(matrix);
-            if (!bounds.Intersects(regionBounds))
-            {
-                return Overlap.Apart;
-            }
-
-            if (IsRectangle && IsAxisAligned(matrix) && regionBounds.Contains(bounds))
-            {
-                return Overlap.Inside;
-            }
-
-            fill = new RectangleGeometry(box);
-        }
-
-        if (!matrix.TryInvert(out var inverse))
-        {
-            return null;
+            return true;
         }
 
         // the region in the shape's own coordinates, where its geometry is
-        var region = CreateGeometry(inverse);
-        bool touches = Intersects(region, fill) || Intersects(region, stroke);
-        if (!touches)
+        var region = CreateGeometry(drawn.Inverse);
+        drawn.CreateGeometries();
+        return Intersects(region, drawn.Fill) || Intersects(region, drawn.Stroke);
+    }
+
+    /// <summary>
+    /// Whether the shape is inside the region: the whole of it where the window shows it whole,
+    /// else what of it lies <see cref="EdgeMargin"/> in from the window's edges and the side
+    /// panel - or, where nothing of it does, what shows at all. A line is never shown whole.
+    /// Null for a shape not on the screen.
+    /// </summary>
+    bool? IsInside(DrawnShape drawn, Rect regionBounds, VisibleArea area, bool isEndless)
+    {
+        var shown = drawn.Bounds.Intersect(area.Window);
+        if (shown.Width <= 0 && shown.Height <= 0)
         {
-            return Overlap.Apart;
+            return null;
         }
 
-        if (needsInside && IsWithin(fill, region) && IsWithin(stroke, region))
+        if (IsRectangle && drawn.IsAxisAligned && regionBounds.Contains(drawn.Bounds))
         {
-            return Overlap.Inside;
+            return true;
         }
 
-        return Overlap.Touching;
+        if (!shown.Intersects(regionBounds))
+        {
+            return false;
+        }
+
+        var region = CreateGeometry(drawn.Inverse);
+        drawn.CreateGeometries();
+        if (!isEndless && area.ShowsWhole(drawn.Bounds))
+        {
+            return IsWithin(drawn.Fill, region) && IsWithin(drawn.Stroke, region);
+        }
+
+        var reach = area.CreateGeometry(EdgeMargin, drawn.Inverse);
+        var fill = Clip(drawn.Fill, reach);
+        var stroke = Clip(drawn.Stroke, reach);
+        if (fill == null && stroke == null)
+        {
+            var screen = area.CreateGeometry(margin: 0, drawn.Inverse);
+            fill = Clip(drawn.Fill, screen);
+            stroke = Clip(drawn.Stroke, screen);
+            if (fill == null && stroke == null)
+            {
+                return null;
+            }
+        }
+
+        return IsWithin(fill, region) && IsWithin(stroke, region);
+    }
+
+    /// <summary>What of the geometry lies in the area, or null for nothing</summary>
+    static Geometry Clip(Geometry geometry, Geometry area)
+    {
+        if (geometry == null)
+        {
+            return null;
+        }
+
+        var clipped = new CombinedGeometry(GeometryCombineMode.Intersect, geometry, area);
+        return IsEmpty(clipped.Bounds) ? null : clipped;
     }
 
     static bool IsPainted(IBrush brush)
@@ -353,12 +392,6 @@ public class SelectionRegion
         return brush != null
             && brush.Opacity > 0
             && !(brush is ISolidColorBrush solid && solid.Color.A == 0);
-    }
-
-    /// <summary>Whether the matrix only moves and scales, so that a box stays a box</summary>
-    static bool IsAxisAligned(Matrix matrix)
-    {
-        return matrix.M12 == 0 && matrix.M21 == 0;
     }
 
     static bool Intersects(Geometry region, Geometry geometry)
@@ -376,5 +409,153 @@ public class SelectionRegion
     static bool IsEmpty(Rect bounds)
     {
         return bounds.Width <= 0 || bounds.Height <= 0;
+    }
+
+    /// <summary>
+    /// A shape as it is drawn on the canvas: its fill and its stroke, or the box of a control
+    /// without a geometry (a label, a show/hide box, an emoji). The geometries are made only
+    /// when the bounds don't decide.
+    /// </summary>
+    class DrawnShape
+    {
+        Geometry geometry;
+        Pen pen;
+        bool isFilled;
+        Rect box;
+        bool hasGeometries;
+
+        /// <summary>From the shape's coordinates to the canvas</summary>
+        public Matrix Matrix { get; private set; }
+
+        /// <summary>From the canvas to the shape's coordinates</summary>
+        public Matrix Inverse { get; private set; }
+
+        /// <summary>On the canvas, the stroke included</summary>
+        public Rect Bounds { get; private set; }
+
+        public Geometry Fill { get; private set; }
+
+        public Geometry Stroke { get; private set; }
+
+        /// <summary>Whether the matrix only moves and scales, so that a box stays a box</summary>
+        public bool IsAxisAligned => Matrix.M12 == 0 && Matrix.M21 == 0;
+
+        /// <summary>The shape as drawn, or null for one not on the screen or that paints nothing</summary>
+        public static DrawnShape Find(Control shape, Canvas canvas)
+        {
+            if (!shape.IsEffectivelyVisible)
+            {
+                return null;
+            }
+
+            var transform = shape.TransformToVisual(canvas);
+            if (transform == null || !transform.Value.TryInvert(out var inverse))
+            {
+                return null;
+            }
+
+            var drawn = new DrawnShape() { Matrix = transform.Value, Inverse = inverse };
+            if (shape is AvaloniaShapes.Shape geometryShape && geometryShape.RenderedGeometry != null)
+            {
+                var geometry = geometryShape.RenderedGeometry;
+                bool isStroked = IsPainted(geometryShape.Stroke) && geometryShape.StrokeThickness > 0;
+                drawn.isFilled = IsPainted(geometryShape.Fill);
+                if (!isStroked && !drawn.isFilled)
+                {
+                    return null;
+                }
+
+                drawn.geometry = geometry;
+                if (isStroked)
+                {
+                    drawn.pen = new Pen(
+                        Brushes.Black,
+                        geometryShape.StrokeThickness,
+                        lineCap: geometryShape.StrokeLineCap,
+                        lineJoin: geometryShape.StrokeJoin);
+                }
+
+                drawn.Bounds = (drawn.pen != null ? geometry.GetRenderBounds(drawn.pen) : geometry.Bounds)
+                    .TransformToAABB(drawn.Matrix);
+            }
+            else
+            {
+                drawn.box = new Rect(shape.Bounds.Size);
+                drawn.Bounds = drawn.box.TransformToAABB(drawn.Matrix);
+            }
+
+            return drawn;
+        }
+
+        public void CreateGeometries()
+        {
+            if (hasGeometries)
+            {
+                return;
+            }
+
+            hasGeometries = true;
+            if (geometry == null)
+            {
+                Fill = new RectangleGeometry(box);
+                return;
+            }
+
+            // (copies: a geometry combined with another is watched by the combination, and
+            // the shape's own would be kept alive by every one made)
+            if (isFilled)
+            {
+                Fill = geometry.Clone();
+            }
+
+            if (pen != null)
+            {
+                Stroke = geometry.GetWidenedGeometry(pen);
+            }
+        }
+    }
+
+    /// <summary>What of the canvas shows: the window, less the side panel where it lies over the canvas</summary>
+    class VisibleArea
+    {
+        public VisibleArea(Canvas canvas)
+        {
+            Window = new Rect(canvas.Bounds.Size);
+            Panel = DrawingHost.FindSidePanelBounds(canvas);
+        }
+
+        public Rect Window { get; }
+
+        public Rect? Panel { get; }
+
+        public bool ShowsWhole(Rect bounds)
+        {
+            return Window.Contains(bounds) && !(Panel != null && Panel.Value.Intersects(bounds));
+        }
+
+        /// <summary>
+        /// The area <paramref name="margin"/> pixels in from the window's edges and out from the
+        /// panel, in the coordinates <paramref name="transform"/> takes canvas pixels to
+        /// </summary>
+        public Geometry CreateGeometry(double margin, Matrix transform)
+        {
+            double inset = System.Math.Min(margin, System.Math.Min(Window.Width, Window.Height) / 2);
+            var inner = Window.Deflate(inset);
+            Geometry area = CreatePolygon(Corners(inner), transform);
+            if (Panel != null)
+            {
+                area = new CombinedGeometry(
+                    GeometryCombineMode.Exclude,
+                    area,
+                    CreatePolygon(Corners(Panel.Value.Inflate(margin)), transform));
+            }
+
+            return area;
+        }
+
+        static Point[] Corners(Rect rect)
+        {
+            return [rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft];
+        }
     }
 }

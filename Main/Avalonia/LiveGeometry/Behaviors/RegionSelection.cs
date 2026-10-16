@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
 using AvaloniaShapes = Avalonia.Controls.Shapes;
@@ -26,6 +27,7 @@ public class RegionSelection
     readonly bool showsKeyHint;
     HashSet<IFigure> taken = new HashSet<IFigure>();
     bool removes;
+    bool takesTouched;
 
     /// <param name="showsKeyHint">Whether the status says what Alt does (not to a finger, which has no keys to hold)</param>
     public RegionSelection(Drawing drawing, SelectionRegion region, bool showsKeyHint)
@@ -45,6 +47,8 @@ public class RegionSelection
 
         // with the halos, which it looks like: under the points, and as faint
         SelectionHalo.Layer.Get(drawing.Canvas).Children.Add(boundary);
+        takesTouched = region.TakesTouchedFigures;
+        StyleBoundary();
         Update(removing: false);
         ShowStatus();
     }
@@ -61,6 +65,13 @@ public class RegionSelection
     void Update(bool removing)
     {
         boundary.Data = region.CreateGeometry();
+        bool isModeChanged = region.TakesTouchedFigures != takesTouched;
+        if (isModeChanged)
+        {
+            takesTouched = region.TakesTouchedFigures;
+            StyleBoundary();
+        }
+
         var now = new HashSet<IFigure>(region.FindFigures(drawing));
 
         // the figures whose state changes: those taken or let go of since, or all those
@@ -68,7 +79,7 @@ public class RegionSelection
         var changed = removing != removes
             ? taken.Union(now).ToList()
             : taken.Except(now).Union(now.Except(taken)).ToList();
-        if (removing != removes)
+        if (removing != removes || isModeChanged)
         {
             removes = removing;
             ShowStatus();
@@ -110,14 +121,32 @@ public class RegionSelection
         }
     }
 
+    /// <summary>A region that takes what it touches is a dashed band, one that takes what is wholly inside a solid band</summary>
+    void StyleBoundary()
+    {
+        boundary.StrokeDashArray = takesTouched ? new AvaloniaList<double>() { 1.5, 1 } : null;
+        boundary.StrokeLineCap = takesTouched ? PenLineCap.Flat : PenLineCap.Round;
+    }
+
     void ShowStatus()
     {
+        var text = (removes ? "Release to unselect " : "Release to select ")
+            + (takesTouched ? "the figures it touches." : "the figures wholly inside it.");
+        if (region.IsRectangle)
+        {
+            text += takesTouched
+                ? " Drag to the right to take only those wholly inside."
+                : " Drag to the left to take all it touches.";
+        }
+
         if (showsKeyHint)
         {
-            drawing.RaiseStatusNotification(removes
-                ? "Release to unselect the figures. Let go of " + KeyNames.Alt + " to select them instead."
-                : "Release to select the figures. Hold " + KeyNames.Alt + " to unselect them instead.");
+            text += removes
+                ? " Let go of " + KeyNames.Alt + " to select them instead."
+                : " Hold " + KeyNames.Alt + " to unselect them instead.";
         }
+
+        drawing.RaiseStatusNotification(text);
     }
 
     /// <summary>The release: what the region took stays selected (or unselected)</summary>

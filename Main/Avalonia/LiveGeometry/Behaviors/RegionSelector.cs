@@ -171,7 +171,7 @@ public class BoxSelector : RegionSelector
 
     public override string Name => "Box";
 
-    public override string HintText => "Drag a box over figures to add them to the selection. Hold " + KeyNames.Alt + " to remove them instead.";
+    public override string HintText => "Drag a box to add figures to the selection: to the right, those wholly inside it; to the left, all it touches. Hold " + KeyNames.Alt + " to remove them instead.";
 }
 
 [Category(BehaviorCategories.Selection)]
@@ -197,5 +197,5 @@ public class LassoSelector : RegionSelector
 
     public override string Name => "Lasso";
 
-    public override string HintText => "Draw a loop around figures to add them to the selection. Hold " + KeyNames.Alt + " to remove them instead.";
+    public override string HintText => "Draw a loop to add figures to the selection: started to the right, those wholly inside it; to the left, all it touches. Hold " + KeyNames.Alt + " to remove them instead.";
 }

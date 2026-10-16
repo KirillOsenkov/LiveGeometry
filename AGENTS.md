@@ -113,10 +113,20 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   layer, what it takes is selected live so the halos show the outcome, and Escape puts the
   selection back (`Behavior.AbandonGesture`, asked by `MainView` first). What a region takes
   is judged in pixels on the shapes on screen, fill and stroke as drawn (`SelectionRegion`:
-  Skia path operations through `CombinedGeometry`, after a bounds test): every figure it
-  touches, or with `TakesTouchedFigures` false only those wholly inside - but lines, rays
-  and function graphs whenever touched. Never hidden figures, names, Numbers, the axes or
-  a gallery drawing's text. Figure List (toggle): see "The Figure List".
+  Skia path operations through `CombinedGeometry`, after a bounds test), by AutoCAD's rule
+  (2026-10-15; `TakesTouchedFigures`): a box dragged to the left of where it began takes
+  every figure it touches (a dashed band), to the right only those wholly inside (a solid
+  one); a lasso goes by the way it first went, left or right. Wholly inside: a figure the
+  window shows whole must be inside whole; one that goes past the window or under the side
+  panel only with what of it lies `EdgeMargin` (50 px) in from the window's edges and the
+  panel (`VisibleArea`) - or, when nothing does, what shows at all - so a big circle is
+  taken without a drag along the very edge. Lines, rays and graphs are never shown whole,
+  so they go by that rule too, and a line or ray also goes with the points it is drawn
+  through when the region takes them all (line AB with A and B, a parallel with its
+  point: `IsTakenWithItsPoints`). (Until 2026-10-15 every region took what it touched;
+  GeoGebra takes only what is wholly inside, and no line at all.) Never hidden figures,
+  names, Numbers, the axes or a gallery drawing's text. Figure List (toggle): see "The
+  Figure List".
 - **Points**: Point (P) - free, on a figure, or at an intersection; Midpoint (M) - two points
   or a segment; Intersection (I) - two figures that cross, the click on the second picks the
   nearer crossing (`PointPlacement.Intersection`, shared with the Point tool); Point inside

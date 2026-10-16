@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 
 namespace LiveGeometry;
 
@@ -303,6 +304,24 @@ public class DrawingHost : Grid
     }
 
     public bool IsSidePanelShown => sidePanel.IsVisible;
+
+    /// <summary>Where the side panel lies over the visual (the canvas), in its coordinates; null while the panel is put away</summary>
+    public static Rect? FindSidePanelBounds(Visual visual)
+    {
+        var host = visual.FindAncestorOfType<DrawingHost>();
+        if (host == null || !host.IsSidePanelShown)
+        {
+            return null;
+        }
+
+        var transform = host.sidePanel.TransformToVisual(visual);
+        if (transform == null)
+        {
+            return null;
+        }
+
+        return new Rect(host.sidePanel.Bounds.Size).TransformToAABB(transform.Value);
+    }
 
     /// <summary>
     /// Puts the side panel away (its cross, a click on empty chrome). A tool's own panel can be
