@@ -185,6 +185,7 @@ public abstract partial class FigureCreator : Behavior
             else
             {
                 Transaction.Rollback(); // Incomplete constructions
+                Drawing.CurveIntersectionHistory.RestoreCurrent();
             }
             Transaction = null;
         }

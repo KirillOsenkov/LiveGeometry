@@ -370,6 +370,22 @@ public class PointPlacement
     /// </summary>
     public static PointPlacement Intersection(IFigure first, IFigure second, Point coordinates)
     {
+        if (CurveIntersections.CanIntersect(first, second))
+        {
+            // a graph or a Bezier curve: the crossing nearest the cursor along the curve,
+            // as the point made here will look for it
+            first = CurveIntersections.Holder(first);
+            second = CurveIntersections.Holder(second);
+            double parameter = CurveIntersections.ParameterNear(first, second, coordinates);
+            var crossing = CurveIntersections.Find(first, second, ref parameter);
+            if (!crossing.Exists() || !CurveIntersections.IsOnOther(first, second, crossing))
+            {
+                return null;
+            }
+
+            return new PointPlacement(PointPlacementKind.Intersection, crossing, new[] { first, second });
+        }
+
         PointPlacement best = null;
         foreach (var algorithm in IntersectionPoint.GetAlgorithms(first, second))
         {

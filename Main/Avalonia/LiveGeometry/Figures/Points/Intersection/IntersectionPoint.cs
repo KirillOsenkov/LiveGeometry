@@ -45,12 +45,38 @@ public class IntersectionPoint : PointBase, IPoint, IConditionalProperties
         IFigure figure1 = Dependencies.ElementAt(0);
         IFigure figure2 = Dependencies.ElementAt(1);
         Algorithm = DoubleDispatchIntersectionAlgorithm(figure1, figure2, hintPoint);
+        if (IsOnCurve)
+        {
+            Parameter = CurveIntersections.ParameterNear(figure1, figure2, hintPoint);
+        }
     }
+
+    /// <summary>
+    /// A crossing with a function graph or a Bézier curve (<see cref="CurveIntersections"/>):
+    /// one of any number, kept by where on the curve it is (<see cref="Parameter"/>), not by
+    /// an <see cref="Algorithm"/>
+    /// </summary>
+    public bool IsOnCurve => Dependencies.Count == 2 && CurveIntersections.CanIntersect(Dependencies[0], Dependencies[1]);
+
+    /// <summary>
+    /// Where on the curve the crossing is, when it is one with a curve: x on a graph, t on a
+    /// Bézier curve, the piece and t on a path. Each recalculation takes the crossing nearest
+    /// it and moves it there, so the point follows its crossing; undo and redo put it back
+    /// (<see cref="CurveIntersectionHistory"/>).
+    /// </summary>
+    public double Parameter { get; set; } = double.NaN;
 
     public override void ReadXml(System.Xml.Linq.XElement element)
     {
         base.ReadXml(element);
         var algorithm = element.ReadString("Algorithm");
+        if (string.IsNullOrEmpty(algorithm) && element.Attribute("Parameter") != null)
+        {
+            Parameter = element.ReadDouble("Parameter");
+            this.RecalculateAndUpdateVisual();
+            return;
+        }
+
         if (string.IsNullOrEmpty(algorithm))
         {
             throw new Exception("When reading the IntersectionPoint, the Algorithm attribute "
@@ -71,7 +97,14 @@ public class IntersectionPoint : PointBase, IPoint, IConditionalProperties
     public override void WriteXml(System.Xml.XmlWriter writer)
     {
         base.WriteXml(writer);
-        writer.WriteAttributeString("Algorithm", Algorithm.Method.Name);
+        if (Algorithm != null)
+        {
+            writer.WriteAttributeString("Algorithm", Algorithm.Method.Name);
+        }
+        else
+        {
+            writer.WriteAttributeDouble("Parameter", Parameter);
+        }
     }
 
     protected override Avalonia.Controls.Shapes.Shape CreateShape()
@@ -98,6 +131,13 @@ public class IntersectionPoint : PointBase, IPoint, IConditionalProperties
     /// <summary>Of the crossings of its two figures, the one nearest the point (a file's saved coordinates)</summary>
     public void PickNearest(Point hint)
     {
+        if (IsOnCurve)
+        {
+            Parameter = CurveIntersections.ParameterNear(Dependencies[0], Dependencies[1], hint);
+            this.RecalculateAndUpdateVisual();
+            return;
+        }
+
         SetAlgorithm(DoubleDispatchIntersectionAlgorithm(Dependencies[0], Dependencies[1], hint));
     }
 
@@ -164,6 +204,22 @@ public class IntersectionPoint : PointBase, IPoint, IConditionalProperties
 
         var figure1 = Dependencies.ElementAt(0);
         var figure2 = Dependencies.ElementAt(1);
+        if (Algorithm == null && IsOnCurve)
+        {
+            // not hit-tested on a graph: a graph is hit by its samples, which end at the
+            // edges of the window, and a crossing off screen is a crossing all the same
+            double parameter = Parameter;
+            var crossing = CurveIntersections.Find(figure1, figure2, ref parameter);
+            Parameter = parameter;
+            Exists = crossing.Exists() && CurveIntersections.IsOnOther(figure1, figure2, crossing);
+            if (Exists)
+            {
+                Coordinates = crossing;
+            }
+
+            return;
+        }
+
         if (Algorithm == null)
         {
             Exists = false;
@@ -203,7 +259,8 @@ public class IntersectionPoint : PointBase, IPoint, IConditionalProperties
     /// <summary>
     /// Every point where the two figures can cross, one algorithm each: one for two lines,
     /// two for a line and an ellipse or two circles, none for figures that can't be
-    /// intersected (two ellipses are not supported).
+    /// intersected (two ellipses are not supported) or that cross any number of times (a
+    /// curve: <see cref="CurveIntersections"/>).
     /// </summary>
     public static Func<IFigure, IFigure, Point>[] GetAlgorithms(IFigure figure1, IFigure figure2)
     {

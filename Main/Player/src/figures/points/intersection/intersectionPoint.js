@@ -7,11 +7,25 @@ class IntersectionPoint extends PointBase {
         /** One of the IntersectionAlgorithms, as the file names it */
         this.algorithm = null;
         this.algorithmName = null;
+
+        /** Where on the curve a crossing with a curve is (CurveIntersections): x on a graph, t on a Bezier curve */
+        this.parameter = NaN;
+    }
+
+    /** A crossing with a function graph or a Bezier curve, kept by its parameter, not by an algorithm */
+    get isOnCurve() {
+        return this.dependencies.length === 2 && CurveIntersections.canIntersect(this.dependencies[0], this.dependencies[1]);
     }
 
     readXml(element) {
         super.readXml(element);
         const algorithm = element.getAttribute("Algorithm");
+        if ((algorithm == null || algorithm === "") && element.getAttribute("Parameter") != null) {
+            this.parameter = Xml.readDouble(element, "Parameter");
+            this.recalculateAndUpdateVisual();
+            return;
+        }
+
         if (algorithm == null || algorithm === "") {
             throw new Error("When reading the IntersectionPoint, the Algorithm attribute was not specified. This point will not be created.");
         }
@@ -77,6 +91,18 @@ class IntersectionPoint extends PointBase {
 
         const figure1 = this.dependencies[0];
         const figure2 = this.dependencies[1];
+        if (this.algorithm == null && this.isOnCurve) {
+            // not hit-tested on a graph: a graph is hit by its samples, which end at the edges of the window
+            const found = CurveIntersections.find(figure1, figure2, this.parameter);
+            this.parameter = found.parameter;
+            this.exists = found.point.exists() && CurveIntersections.isOnOther(figure1, figure2, found.point);
+            if (this.exists) {
+                this.coordinates = found.point;
+            }
+
+            return;
+        }
+
         if (this.algorithm == null) {
             this.exists = false;
             return;

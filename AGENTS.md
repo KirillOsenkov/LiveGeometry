@@ -129,7 +129,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Figure List".
 - **Points**: Point (P) - free, on a figure, or at an intersection; Midpoint (M) - two points
   or a segment; Intersection (I) - two figures that cross, the click on the second picks the
-  nearer crossing (`PointPlacement.Intersection`, shared with the Point tool); Point inside
+  nearer crossing (`PointPlacement.Intersection`, shared with the Point tool), a graph or a
+  Bezier curve among them (see "Crossings with curves"); Point inside
   (O; 2026-10-11) - one click inside a polygon, a circle or an ellipse, a sector or a
   circular segment, a closed or filled Bezier path, filled on screen or not (the hover's
   halo and ghost say which; `IRegion` is the contract, see "A point inside a shape"), the
@@ -614,6 +615,24 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   exist either: it stood at (0, 0). Nor a line by equation without a value (A = B = 0, a
   slope of sqrt(-1)), nor a circle by equation with a radius below 0 or undefined (it was
   a dot), nor a point dilated by a ratio over a length of 0.
+- **Crossings with curves** (`Figures/Points/Intersection/CurveIntersections.cs`,
+  2026-10-15): a function graph, a Bezier curve or a Bezier path crosses a line, ray,
+  segment, vector or axis, a circle, arc or ellipse, or a graph (graph with graph, Bezier
+  with graph; not two Beziers, no loci). Any number of crossings, so the `IntersectionPoint`
+  has no `Algorithm` but a `Parameter` (x on a graph, t on the cubic itself, piece + t on a
+  path; saved as `Parameter="3.16"` instead of `Algorithm`), and each recalculation takes
+  the root nearest it of the other figure's equation along the curve (a signed distance;
+  `y - g(x)` for a graph) and moves the parameter there: the point follows its own root.
+  The search walks out on both sides in steps growing by 1.1, halves a sign change, and
+  takes a minimum of next to nothing for a touch (y = x² on the x-axis); a sign change
+  across a pole or a jump is no root. A graph is not hit-tested (its samples end at the
+  window); a ray, segment or arc is. The hover and the click seed the parameter from the
+  cursor, the GeoGebra reader's `Intersect`, `Root` and `Roots` from the saved place.
+  Tracking depends on the way the figures went, so undo would put two crossings onto one
+  root after a long drag: `CurveIntersectionHistory` keeps every crossing's parameter for
+  each state of the history (by the last undoable action) and puts them back on undo, redo
+  and a rolled-back construction. The player has the twin (`curveIntersections.js`), and
+  `Main/Player/dev/kinds.lgf` has crossings with a graph and a path.
 - **Overlapping figures: Tab chooses** (`Behaviors/ClickChoice.cs`, VB6's "Choose
   point/figure"). A click takes the first of what it could mean, as hit testing orders it
   (`FigureList.HitTestAll`: the order `HitTest` picks from - topmost ZIndex, the nearer of

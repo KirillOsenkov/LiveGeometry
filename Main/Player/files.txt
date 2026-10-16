@@ -32,6 +32,7 @@ figures/points/pointOnFigure/pointOnFigure.js
 figures/points/pointInRegion.js
 figures/points/midPoint.js
 figures/points/intersection/intersectionAlgorithms.js
+figures/points/intersection/curveIntersections.js
 figures/points/intersection/intersectionPoint.js
 figures/points/reflectedPoint.js
 figures/points/rotatedPoint.js

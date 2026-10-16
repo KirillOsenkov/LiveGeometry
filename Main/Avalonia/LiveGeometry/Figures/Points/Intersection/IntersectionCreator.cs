@@ -7,7 +7,9 @@ namespace LiveGeometry;
 
 /// <summary>
 /// A point where two figures cross, made by clicking the two figures: lines, rays, segments,
-/// circles, arcs, and an ellipse with a line (<see cref="IntersectionPoint.GetAlgorithms"/>).
+/// circles, arcs, and an ellipse with a line (<see cref="IntersectionPoint.GetAlgorithms"/>);
+/// a function graph or a Bézier curve with any of those, a graph with a graph
+/// (<see cref="CurveIntersections"/>).
 /// The Point tool makes the same point from a click on the crossing itself; this is for
 /// crossings that are crowded or hard to hit. Where two figures cross twice, the click on
 /// the second one picks the crossing nearer to it.
@@ -40,7 +42,9 @@ public class IntersectionCreator : FigureCreator
 
             if (FoundDependencies.Count == 0)
             {
-                return (figure is ILine || figure is IEllipse) && !(figure is AngleArc);
+                var holder = CurveIntersections.Holder(figure);
+                return (figure is ILine || figure is IEllipse || holder is FunctionGraph || holder is Bezier || holder is BezierPath)
+                    && !(figure is AngleArc);
             }
 
             return figure != FoundDependencies[0] && FindNewIntersection(figure, coordinates) != null;
@@ -109,7 +113,7 @@ public class IntersectionCreator : FigureCreator
 
     public override string Name => "Intersection";
 
-    public override string HintText => "Click two figures that cross (lines, segments, rays, circles) to put a point where they cross.";
+    public override string HintText => "Click two figures that cross (lines, segments, rays, circles, graphs, curves) to put a point where they cross.";
 
     public override FrameworkElement CreateIcon()
     {

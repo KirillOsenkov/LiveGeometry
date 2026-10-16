@@ -24,6 +24,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
         StyleManager = new StyleManager(this);
 
         Figures = new RootFigureList(this);
+        CurveIntersectionHistory = new CurveIntersectionHistory(this);
 
         OnAttachToCanvas += Drawing_OnAttachToCanvas;
         OnDetachFromCanvas += Drawing_OnDetachFromCanvas;
@@ -38,6 +39,9 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     }
 
     public double Version { get; set; }
+
+    /// <summary>Where the crossings with curves were in each state of the undo history</summary>
+    public CurveIntersectionHistory CurveIntersectionHistory { get; }
 
     readonly AxisLine[] axisLines = new AxisLine[2];
 

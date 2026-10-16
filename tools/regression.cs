@@ -81,6 +81,9 @@ public class Program
             ("Paste into another drawing keeps the look", PasteBringsStyles),
             ("Pasting plain text is no error", PastePlainText),
             ("The axes are lines to build on, one of each", AxisLines),
+            ("A graph crosses the axes, lines, circles and graphs, and each crossing keeps its own", GraphCrossings),
+            ("A click where a graph crosses the x-axis makes the crossing", GraphCrossingByClick),
+            ("A Bezier curve crosses a line", BezierCrossesLine),
             ("Tab chooses among overlapping figures", ChoiceAmongOverlaps),
             ("One click inside an angle serves the bisector, Line at Angle, Rotate and Translate", AngleAtVertexShortcuts),
             ("A filled style fills the angle under a mark", FilledAngleMark),
@@ -4111,6 +4114,162 @@ public class Program
             timestamp: 0,
             new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.Other),
             KeyModifiers.None));
+    }
+
+    /// <summary>
+    /// A crossing with a graph is one of any number: it keeps where on the graph it is and
+    /// follows its own root as the graph moves; undo of a long move puts each back on its own
+    /// (by the x it had: two crossings had gone onto the one nearest where they got to)
+    /// </summary>
+    static void GraphCrossings()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <Slider Name="a" X="-3" Y="5" Value="0" Minimum="-10" Maximum="10" />
+                <FunctionGraph Name="f" Function="(x - a)^2 - 4">
+                  <Dependency Name="a" />
+                </FunctionGraph>
+                <FunctionGraph Name="g" Function="sin(x)" />
+                <FunctionGraph Name="h" Function="cos(x)" />
+                <FunctionGraph Name="k" Function="(x - 1)^2" />
+                <FunctionGraph Name="r" Function="1 / x" />
+                <FreePoint Name="O" X="0" Y="0" />
+                <FreePoint Name="P" X="2" Y="0" />
+                <Circle Name="c">
+                  <Dependency Name="O" />
+                  <Dependency Name="P" />
+                </Circle>
+                <FreePoint Name="S" X="3" Y="-1" />
+                <FreePoint Name="T" X="5" Y="-1" />
+                <Segment Name="ST">
+                  <Dependency Name="S" />
+                  <Dependency Name="T" />
+                </Segment>
+              </Figures>
+            </Drawing>
+            """);
+        var f = Find(drawing, "f");
+        var xAxis = drawing.GetAxisLine(AxisDirection.X);
+        var yAxis = drawing.GetAxisLine(AxisDirection.Y);
+
+        IntersectionPoint Cross(IFigure first, IFigure second, double x, double y)
+        {
+            var point = Factory.CreateIntersectionPoint(drawing, first, second, new Point(x, y));
+            Actions.Add(drawing, point);
+            Require(point.IsOnCurve && point.AlgorithmName == null, "A crossing with a graph is not kept by its place on the graph.");
+            return point;
+        }
+
+        void At(IPoint point, double x, double y, double tolerance = 1e-10)
+        {
+            Require(point.Exists, "The crossing near (" + x + ", " + y + ") doesn't exist.");
+            Require(System.Math.Abs(point.Coordinates.X - x) <= tolerance && System.Math.Abs(point.Coordinates.Y - y) <= tolerance,
+                $"The crossing is at {point.Coordinates}, not ({x}, {y}).");
+        }
+
+        var left = Cross(f, xAxis, x: -1.5, y: 0);
+        var right = Cross(f, xAxis, x: 1.5, y: 0);
+        At(left, x: -2, y: 0);
+        At(right, x: 2, y: 0);
+        At(Cross(f, yAxis, x: 0, y: -3), x: 0, y: -4);
+        At(Cross(Find(drawing, "g"), Find(drawing, "h"), x: 0.7, y: 0.7), x: System.Math.PI / 4, y: System.Math.Sqrt(0.5));
+        At(Cross(f, Find(drawing, "c"), x: 1.7, y: -1), x: System.Math.Sqrt(3), y: -1);
+
+        // a graph that only touches the axis, at its lowest point
+        At(Cross(Find(drawing, "k"), xAxis, x: 1.3, y: 0), x: 1, y: 0, tolerance: 1e-6);
+
+        // a pole is no crossing, nor a crossing of the segment's line past its end
+        Require(!Cross(Find(drawing, "r"), xAxis, x: 0.01, y: 0).Exists, "1/x crosses the x-axis at its pole.");
+        Require(!Cross(f, Find(drawing, "ST"), x: 4, y: -1).Exists, "The graph crosses segment ST where it crosses only its line.");
+        drawing.Figures.CheckConsistency();
+
+        // the graph moved to the right as a drag of the slider moves it: each crossing goes along
+        string before = drawing.SaveAsText();
+        var slider = Find(drawing, "a");
+        using (GuiLabs.Undo.Transaction.Create(drawing.ActionManager, false))
+        {
+            for (int i = 1; i <= 60; i++)
+            {
+                Set(drawing, slider, nameof(LiveGeometry.Slider.Value), value: i * 0.1);
+            }
+        }
+
+        At(left, x: 4, y: 0);
+        At(right, x: 8, y: 0);
+        string after = drawing.SaveAsText();
+        var reread = ReadLgf(after);
+        At((IPoint)Find(reread, left.Name), x: 4, y: 0);
+        At((IPoint)Find(reread, right.Name), x: 8, y: 0);
+        Require(reread.SaveAsText() == after, "A drawing with crossings on a graph did not read back as it was saved.");
+
+        drawing.ActionManager.Undo();
+        At(left, x: -2, y: 0);
+        At(right, x: 2, y: 0);
+        Require(drawing.SaveAsText() == before, "Undo of the slider's move did not put the crossings back.");
+        drawing.ActionManager.Redo();
+        At(left, x: 4, y: 0);
+        At(right, x: 8, y: 0);
+        Require(drawing.SaveAsText() == after, "Redo of the slider's move.");
+        drawing.Figures.CheckConsistency();
+    }
+
+    static void GraphCrossingByClick()
+    {
+        var drawing = NewDrawing();
+        drawing.CoordinateGrid.Visible = true;
+        using var window = new TestWindow(drawing.Canvas);
+        var graph = new FunctionGraph { Drawing = drawing, FunctionText = "x^2 - 4" };
+        Actions.Add(drawing, graph);
+        drawing.Behavior = new FreePointCreator();
+        Click(drawing, drawing.CoordinateSystem.ToPhysical(new Point(2, 0)));
+        var crossing = drawing.Figures.OfType<IntersectionPoint>().SingleOrDefault();
+        Require(crossing != null && crossing.Dependencies.Contains(graph) && crossing.Dependencies.Contains(drawing.GetAxisLine(AxisDirection.X)),
+            "A click where the graph crosses the x-axis made no crossing of the two.");
+        Require(crossing.Coordinates.EqualsWithPrecision(new Point(2, 0)), "The crossing is at " + crossing.Coordinates);
+    }
+
+    /// <summary>The cubic itself crosses the line, at each of its three crossings (not the polyline a point on the curve goes by)</summary>
+    static void BezierCrossesLine()
+    {
+        // x = 3t, y = 6t(1 - t)(1 - 2t): on the x-axis at t = 0, 1/2 and 1
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="0" Y="0" />
+                <FreePoint Name="B" X="1" Y="2" />
+                <FreePoint Name="C" X="2" Y="-2" />
+                <FreePoint Name="D" X="3" Y="0" />
+                <Bezier Name="b">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                  <Dependency Name="C" />
+                  <Dependency Name="D" />
+                </Bezier>
+                <FreePoint Name="P" X="-1" Y="0" />
+                <FreePoint Name="Q" X="4" Y="0" />
+                <LineTwoPoints Name="g">
+                  <Dependency Name="P" />
+                  <Dependency Name="Q" />
+                </LineTwoPoints>
+              </Figures>
+            </Drawing>
+            """);
+        var curve = Find(drawing, "b");
+        var line = Find(drawing, "g");
+        foreach (var (hint, expected) in new[] { (1.4, 1.5), (2.8, 3.0), (0.2, 0.0) })
+        {
+            var crossing = Factory.CreateIntersectionPoint(drawing, curve, line, new Point(hint, 0.1));
+            Actions.Add(drawing, crossing);
+            Require(crossing.Exists && System.Math.Abs(crossing.Coordinates.X - expected) <= 1e-9 && System.Math.Abs(crossing.Coordinates.Y) <= 1e-9,
+                $"The crossing near {hint} is at {crossing.Coordinates}, not ({expected}, 0).");
+        }
+
+        // the line raised past the curve's top: no crossing near the middle one any more
+        ((FreePoint)Find(drawing, "P")).MoveTo(new Point(-1, 5));
+        ((FreePoint)Find(drawing, "Q")).MoveTo(new Point(4, 5));
+        drawing.Recalculate();
+        Require(drawing.Figures.OfType<IntersectionPoint>().All(p => !p.Exists), "A crossing stayed with the line above the curve.");
     }
 
     static void ChoiceAmongOverlaps()

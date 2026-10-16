@@ -159,6 +159,13 @@ public class Bezier : ShapeBase<Path>, ILinearFigure
         return Math.GetPointOnPolylineFromParameter(CurveInfo.Points, parameter);
     }
 
+    /// <summary>The point of the cubic itself at t, not of the polyline a point on the curve goes by (a crossing is worked out on it)</summary>
+    public Point GetCurvePoint(double t)
+    {
+        var curve = CurveInfo;
+        return curve.Points == null ? new Point(double.NaN, double.NaN) : curve.GetPoint(t);
+    }
+
     public Tuple<double, double> GetParameterDomain()
     {
         return Tuple.Create(0.0, 1.0);

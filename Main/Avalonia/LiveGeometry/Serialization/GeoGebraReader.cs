@@ -1456,6 +1456,11 @@ public class GeoGebraReader
                 return One(PointInCommand(inputs));
             case "Intersect":
                 return IntersectCommand(inputs, outputs);
+            case "Root":
+            case "Roots":
+                // where the graph crosses the x-axis (Roots[f, a, b] looks only between a and b,
+                // and finds the same crossings by their saved places)
+                return IntersectCommand([inputs[0], "xAxis"], outputs);
             case "OrthogonalLine":
             case "PerpendicularLine":
                 return One(Add(Factory.CreatePerpendicularLine(drawing, new[] { Line(inputs[1]), PointOf(inputs[0]) })));
@@ -1823,6 +1828,19 @@ public class GeoGebraReader
     {
         var figure1 = Resolve(inputs[0]);
         var figure2 = Resolve(inputs[1]);
+        if (CurveIntersections.CanIntersect(figure1, figure2))
+        {
+            // a graph crosses any number of times: each output finds its own by its saved
+            // place, like the others (Intersect[f, g, A] starts at A: the same thing)
+            var crossings = new List<IFigure>();
+            for (int i = 0; i < System.Math.Max(1, outputs.Length); i++)
+            {
+                crossings.Add(Add(new IntersectionPoint(new Point(), new List<IFigure> { figure1, figure2 }) { Drawing = drawing }));
+            }
+
+            return crossings;
+        }
+
         var algorithms = IntersectionPoint.GetAlgorithms(figure1, figure2);
         if (algorithms.Length == 0)
         {

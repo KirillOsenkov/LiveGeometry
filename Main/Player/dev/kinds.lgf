@@ -201,5 +201,30 @@
     <PointInRegion Name="C1" X="1" Y="-3.5" OffsetX="1" OffsetY="0.5">
       <Dependency Name="Sector" />
     </PointInRegion>
+    <AxisLine Name="x-axis" Axis="X" />
+    <AxisLine Name="y-axis" Axis="Y" />
+    <FunctionGraph Name="f" Function="0.5 * x^2 - 5" />
+    <IntersectionPoint Name="D1" Parameter="-3">
+      <Dependency Name="f" />
+      <Dependency Name="x-axis" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="E1" Parameter="3">
+      <Dependency Name="f" />
+      <Dependency Name="x-axis" />
+    </IntersectionPoint>
+    <FreePoint Name="F1" X="6" Y="-1.5" />
+    <FreePoint Name="G1" X="11" Y="-1.5" />
+    <LineTwoPoints Name="F1G1">
+      <Dependency Name="F1" />
+      <Dependency Name="G1" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="H1" Parameter="1.7">
+      <Dependency Name="Blob" />
+      <Dependency Name="F1G1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I1" Parameter="3.7">
+      <Dependency Name="Blob" />
+      <Dependency Name="F1G1" />
+    </IntersectionPoint>
   </Figures>
 </Drawing>
