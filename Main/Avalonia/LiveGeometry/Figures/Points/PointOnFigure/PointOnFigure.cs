@@ -30,13 +30,7 @@ public partial class PointOnFigure : FreePoint, IPoint
     }
 
     /// <summary>"on segment CD"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return Dependencies.Count > 0 ? "on " + ConstructionText.Of(Dependencies[0]) : null;
-        }
-    }
+    public override string Construction => Dependencies.Count > 0 ? "on " + ConstructionText.Of(Dependencies[0]) : null;
 
     protected override Avalonia.Controls.Shapes.Shape CreateShape()
     {
@@ -64,10 +58,7 @@ public partial class PointOnFigure : FreePoint, IPoint
     [PropertyGridName("Parameter")]
     public double ParameterDisplay
     {
-        get
-        {
-            return Parameter;
-        }
+        get => Parameter;
         set
         {
             Parameter = value;
@@ -89,13 +80,7 @@ public partial class PointOnFigure : FreePoint, IPoint
         return !Locked;
     }
 
-    public ILinearFigure LinearFigure
-    {
-        get
-        {
-            return (ILinearFigure)Dependencies.First();
-        }
-    }
+    public ILinearFigure LinearFigure => (ILinearFigure)Dependencies.First();
 
     public override void MoveToCore(Point newPosition)
     {

@@ -11,7 +11,7 @@ namespace LiveGeometry;
 public static class Pastels
 {
     public static readonly Color[] Colors =
-    {
+    [
         Color.Parse("#FDEEE3"), // peach
         Color.Parse("#E4F7EA"), // mint
         Color.Parse("#EAE8E4"), // stone
@@ -40,7 +40,7 @@ public static class Pastels
         Color.Parse("#F3EADC"), // tan
         Color.Parse("#E8EEF9"), // powder blue
         Color.Parse("#F1EFEC"), // warm gray
-    };
+    ];
 
     /// <summary>The color at an index, wrapping around</summary>
     public static Color At(int index)

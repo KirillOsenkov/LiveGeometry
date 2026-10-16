@@ -140,18 +140,9 @@ public class PolygonCreator : ShapeCreator
         return null;
     }
 
-    public override string Name
-    {
-        get { return "Polygon"; }
-    }
+    public override string Name => "Polygon";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click points to construct a polygon. Press Enter (or click the first point again) to close it.";
-        }
-    }
+    public override string HintText => "Click points to construct a polygon. Press Enter (or click the first point again) to close it.";
 
     public override FrameworkElement CreateIcon()
     {

@@ -126,10 +126,7 @@ public partial class FreePoint : PointBase, IMovable, IConditionalProperties
     [PropertyGridVisible]
     public override double X
     {
-        get
-        {
-            return base.X;
-        }
+        get => base.X;
         set
         {
             this.MoveTo(new Point(value, Y));
@@ -140,10 +137,7 @@ public partial class FreePoint : PointBase, IMovable, IConditionalProperties
     [PropertyGridVisible]
     public override double Y
     {
-        get
-        {
-            return base.Y;
-        }
+        get => base.Y;
         set
         {
             this.MoveTo(new Point(X, value));

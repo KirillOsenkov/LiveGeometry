@@ -22,13 +22,7 @@ public class PolygonIntersectionCreator : FigureCreator
 
     public override string Name => "Polygon intersection";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click two polygons in order to intersect them.";
-        }
-    }
+    public override string HintText => "Click two polygons in order to intersect them.";
 
     public override FrameworkElement CreateIcon()
     {

@@ -36,25 +36,13 @@ public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalPrope
     readonly Quantity distanceQuantity = new Quantity();
     readonly Quantity directionQuantity = new Quantity();
 
-    public IPoint Source
-    {
-        get
-        {
-            return Dependencies.Count >= 1 ? Dependencies[0] as IPoint : null;
-        }
-    }
+    public IPoint Source => Dependencies.Count >= 1 ? Dependencies[0] as IPoint : null;
 
     /// <summary>A vector, a length provider or a Number; null while the distance is free</summary>
-    public IFigure DistanceSource
-    {
-        get { return SourceOf(distanceQuantity); }
-    }
+    public IFigure DistanceSource => SourceOf(distanceQuantity);
 
     /// <summary>A vector, a line (its oriented direction), an angle provider or a Number; null while the direction is free</summary>
-    public IFigure DirectionSource
-    {
-        get { return SourceOf(directionQuantity); }
-    }
+    public IFigure DirectionSource => SourceOf(directionQuantity);
 
     IFigure SourceOf(Quantity quantity)
     {
@@ -62,21 +50,12 @@ public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalPrope
         return index >= 0 && index < Dependencies.Count ? Dependencies[index] : null;
     }
 
-    public bool IsDistanceFree
-    {
-        get { return distanceQuantity.SourceIndex < 0; }
-    }
+    public bool IsDistanceFree => distanceQuantity.SourceIndex < 0;
 
-    public bool IsDirectionFree
-    {
-        get { return directionQuantity.SourceIndex < 0; }
-    }
+    public bool IsDirectionFree => directionQuantity.SourceIndex < 0;
 
     /// <summary>Dragging changes something: this is a draggable point, styled like one</summary>
-    public bool HasFreedom
-    {
-        get { return IsDistanceFree || IsDirectionFree; }
-    }
+    public bool HasFreedom => IsDistanceFree || IsDirectionFree;
 
     // dragged along its circle or line like a point on a figure, or not by itself at all
     // (ZOrder); taken again whenever the freedom changes
@@ -170,14 +149,7 @@ public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalPrope
     [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
     public double Distance
     {
-        get
-        {
-            return DistanceValue;
-        }
-        set
-        {
-            SetQuantity(distanceQuantity, value);
-        }
+        get => DistanceValue; set => SetQuantity(distanceQuantity, value);
     }
 
     /// <summary>In degrees, counterclockwise from the x axis</summary>
@@ -187,14 +159,7 @@ public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalPrope
     [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
     public double Direction
     {
-        get
-        {
-            return DirectionRadians.ToDegrees();
-        }
-        set
-        {
-            SetQuantity(directionQuantity, value.ToRadians());
-        }
+        get => DirectionRadians.ToDegrees(); set => SetQuantity(directionQuantity, value.ToRadians());
     }
 
     /// <summary>
@@ -267,15 +232,9 @@ public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalPrope
             public double? Value;
         }
 
-        TranslatedPoint Owner
-        {
-            get { return (TranslatedPoint)Parent; }
-        }
+        TranslatedPoint Owner => (TranslatedPoint)Parent;
 
-        Quantity OwnerQuantity
-        {
-            get { return Property.Name == nameof(FreeDistance) ? Owner.distanceQuantity : Owner.directionQuantity; }
-        }
+        Quantity OwnerQuantity => Property.Name == nameof(FreeDistance) ? Owner.distanceQuantity : Owner.directionQuantity;
 
         /// <summary>The source of the quantity and its place among the dependencies; no source while it is free</summary>
         public object CaptureState()
@@ -331,10 +290,7 @@ public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalPrope
     [PropertyGridCustomValueProvider(typeof(FreedomValue))]
     public bool FreeDistance
     {
-        get
-        {
-            return IsDistanceFree;
-        }
+        get => IsDistanceFree;
         set
         {
             // (the last one to free makes this a free point, which the row's value records itself)
@@ -355,10 +311,7 @@ public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalPrope
     [PropertyGridCustomValueProvider(typeof(FreedomValue))]
     public bool FreeDirection
     {
-        get
-        {
-            return IsDirectionFree;
-        }
+        get => IsDirectionFree;
         set
         {
             if (value && !IsDistanceFree)
@@ -449,13 +402,7 @@ public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalPrope
         return defaultCaption + " = " + TiedValues.SourceName(source);
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Translated point";
-        }
-    }
+    protected override string Kind => "Translated point";
 
     /// <summary>
     /// "of A by vector u", "of A by 3 at 30°", "of A along line g" (a free distance), "of

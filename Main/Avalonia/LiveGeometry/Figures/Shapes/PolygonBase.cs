@@ -19,20 +19,8 @@ public abstract class PolygonBase : ShapeBase<Avalonia.Controls.Shapes.Polygon>,
     protected Point[] vertexCoordinates;
 
     /// <summary>Polygon p, q... when no points name it (more than ten vertices)</summary>
-    protected override string FirstLetter
-    {
-        get
-        {
-            return "p";
-        }
-    }
-    public Point[] VertexCoordinates
-    {
-        get
-        {
-            return vertexCoordinates;
-        }
-    }
+    protected override string FirstLetter => "p";
+    public Point[] VertexCoordinates => vertexCoordinates;
 
     protected override void OnDependenciesChanged()
     {
@@ -104,13 +92,7 @@ public abstract class PolygonBase : ShapeBase<Avalonia.Controls.Shapes.Polygon>,
 
     public double Area => VertexCoordinates.Area();
 
-    public bool HasInside
-    {
-        get
-        {
-            return vertices != null && vertices.Length >= 3;
-        }
-    }
+    public bool HasInside => vertices != null && vertices.Length >= 3;
 
     /// <summary>The vertices as they are right now (the cache of <see cref="VertexCoordinates"/> is the last visual's)</summary>
     Point[] CurrentVertexCoordinates()

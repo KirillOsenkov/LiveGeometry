@@ -28,10 +28,7 @@ public class LineStyle : FigureStyle
     [PropertyGridName("Stroke color")]
     public Color Color
     {
-        get
-        {
-            return mColor;
-        }
+        get => mColor;
         set
         {
             mColor = value;
@@ -45,10 +42,7 @@ public class LineStyle : FigureStyle
     [Domain(0.1, 50)]
     public virtual double StrokeWidth
     {
-        get
-        {
-            return (double)strokeWidth;
-        }
+        get => (double)strokeWidth;
         set
         {
             strokeWidth = value;
@@ -61,10 +55,7 @@ public class LineStyle : FigureStyle
     [PropertyGridName("Dash")]
     public LineDash Dash
     {
-        get
-        {
-            return dash;
-        }
+        get => dash;
         set
         {
             dash = value;

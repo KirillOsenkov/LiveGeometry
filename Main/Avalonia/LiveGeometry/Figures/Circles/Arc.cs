@@ -7,23 +7,11 @@ namespace LiveGeometry;
 
 public partial class EllipseArc : EllipseArcBase
 {
-    protected override string Kind
-    {
-        get
-        {
-            return "Elliptical arc";
-        }
-    }
+    protected override string Kind => "Elliptical arc";
 
-    public override int BeginPointIndex
-    {
-        get { return 3; }
-    }
+    public override int BeginPointIndex => 3;
 
-    public override int EndPointIndex
-    {
-        get { return 4; }
-    }
+    public override int EndPointIndex => 4;
 
     /// <summary>
     /// A Convert verb of the figure's own grid: the new figure's grid shows after it, where
@@ -74,13 +62,7 @@ public partial class EllipseArc : EllipseArcBase
 
 public partial class CircleArc : CircleArcBase
 {
-    protected override string Kind
-    {
-        get
-        {
-            return "Arc";
-        }
-    }
+    protected override string Kind => "Arc";
 
     [PropertyGridVisible]
     [PropertyGridName("Convert to segment")]
@@ -106,13 +88,7 @@ public partial class CircleArc : CircleArcBase
 // Unlike an arc, a circle or ellipse segment has a defined area.
 public partial class CircleSegment : CircleArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties, IRegion
 {
-    protected override string Kind
-    {
-        get
-        {
-            return "Circular segment";
-        }
-    }
+    protected override string Kind => "Circular segment";
 
     public bool ContainsPoint(Point point)
     {
@@ -144,22 +120,10 @@ public partial class CircleSegment : CircleArcBase, IShapeWithInterior, IPerimet
     }
 
     // (it said r² * angle / π: a half disc came out as r², not π r² / 2)
-    public double Area
-    {
-        get
-        {
-            return SegmentArea;
-        }
-    }
+    public double Area => SegmentArea;
 
     /// <summary>The arc and its chord</summary>
-    public double Perimeter
-    {
-        get
-        {
-            return Length + BeginLocation.Distance(EndLocation);
-        }
-    }
+    public double Perimeter => Length + BeginLocation.Distance(EndLocation);
 
     [PropertyGridVisible]
     [PropertyGridName("Convert to arc")]
@@ -180,13 +144,7 @@ public partial class CircleSegment : CircleArcBase, IShapeWithInterior, IPerimet
 
 public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties, IRegion
 {
-    protected override string Kind
-    {
-        get
-        {
-            return "Elliptical segment";
-        }
-    }
+    protected override string Kind => "Elliptical segment";
 
     public bool ContainsPoint(Point point)
     {
@@ -199,13 +157,7 @@ public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IPerim
     }
 
     /// <summary>The arc and its chord</summary>
-    public double Perimeter
-    {
-        get
-        {
-            return Length + BeginLocation.Distance(EndLocation);
-        }
-    }
+    public double Perimeter => Length + BeginLocation.Distance(EndLocation);
 
     /// <summary>No "Convert to arc" while something measures the area or the perimeter, an expression reads them, or a point is kept inside: a bare arc has none of them</summary>
     public bool CanEdit(string propertyName)
@@ -225,24 +177,12 @@ public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IPerim
         return result;
     }
 
-    public override int BeginPointIndex
-    {
-        get { return 3; }
-    }
+    public override int BeginPointIndex => 3;
 
-    public override int EndPointIndex
-    {
-        get { return 4; }
-    }
+    public override int EndPointIndex => 4;
 
     // (it was "not a number": the Area tool on an elliptical segment said NaN)
-    public double Area
-    {
-        get
-        {
-            return SegmentArea;
-        }
-    }
+    public double Area => SegmentArea;
 
     [PropertyGridVisible]
     [PropertyGridName("Convert to arc")]
@@ -263,13 +203,7 @@ public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IPerim
 
 public partial class CircleSector : CircleArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties, IRegion
 {
-    protected override string Kind
-    {
-        get
-        {
-            return "Sector";
-        }
-    }
+    protected override string Kind => "Sector";
 
     public bool ContainsPoint(Point point)
     {
@@ -282,13 +216,7 @@ public partial class CircleSector : CircleArcBase, IShapeWithInterior, IPerimete
     }
 
     /// <summary>The arc and the two radii</summary>
-    public double Perimeter
-    {
-        get
-        {
-            return Length + Center.Distance(BeginLocation) + Center.Distance(EndLocation);
-        }
-    }
+    public double Perimeter => Length + Center.Distance(BeginLocation) + Center.Distance(EndLocation);
 
     /// <summary>No "Convert to arc" while something measures the area or the perimeter, an expression reads them, or a point is kept inside: a bare arc has none of them</summary>
     public bool CanEdit(string propertyName)
@@ -334,13 +262,7 @@ public partial class CircleSector : CircleArcBase, IShapeWithInterior, IPerimete
     }
 
     // (it said r² * angle / π plus the triangle: a quarter disc came out as r², not π r² / 4)
-    public double Area
-    {
-        get
-        {
-            return SectorArea;
-        }
-    }
+    public double Area => SectorArea;
 
     [PropertyGridVisible]
     [PropertyGridName("Convert to arc")]
@@ -361,13 +283,7 @@ public partial class CircleSector : CircleArcBase, IShapeWithInterior, IPerimete
 
 public partial class EllipseSector : EllipseArcBase, IShapeWithInterior, IPerimeter, IConditionalProperties, IRegion
 {
-    protected override string Kind
-    {
-        get
-        {
-            return "Elliptical sector";
-        }
-    }
+    protected override string Kind => "Elliptical sector";
 
     public bool ContainsPoint(Point point)
     {
@@ -380,13 +296,7 @@ public partial class EllipseSector : EllipseArcBase, IShapeWithInterior, IPerime
     }
 
     /// <summary>The arc and the two radii</summary>
-    public double Perimeter
-    {
-        get
-        {
-            return Length + Center.Distance(BeginLocation) + Center.Distance(EndLocation);
-        }
-    }
+    public double Perimeter => Length + Center.Distance(BeginLocation) + Center.Distance(EndLocation);
 
     /// <summary>No "Convert to arc" while something measures the area or the perimeter, an expression reads them, or a point is kept inside: a bare arc has none of them</summary>
     public bool CanEdit(string propertyName)
@@ -432,23 +342,11 @@ public partial class EllipseSector : EllipseArcBase, IShapeWithInterior, IPerime
         Side2.Point = ToPhysical(EndLocation);
     }
 
-    public override int BeginPointIndex
-    {
-        get { return 3; }
-    }
+    public override int BeginPointIndex => 3;
 
-    public override int EndPointIndex
-    {
-        get { return 4; }
-    }
+    public override int EndPointIndex => 4;
 
-    public double Area
-    {
-        get
-        {
-            return SectorArea;
-        }
-    }
+    public double Area => SectorArea;
 
     [PropertyGridVisible]
     [PropertyGridName("Convert to arc")]

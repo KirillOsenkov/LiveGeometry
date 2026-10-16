@@ -18,18 +18,9 @@ public class VectorCreator : FigureCreator
         yield return Factory.CreateVector(Drawing, FoundDependencies);
     }
 
-    public override string Name
-    {
-        get { return "Vector"; }
-    }
+    public override string Name => "Vector";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click (and release) twice to connect two points with a vector.";
-        }
-    }
+    public override string HintText => "Click (and release) twice to connect two points with a vector.";
 
     public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
     {

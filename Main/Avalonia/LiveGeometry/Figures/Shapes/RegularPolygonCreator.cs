@@ -46,14 +46,7 @@ public class RegularPolygonCreator : FigureCreator
         [Domain(RegularPolygonBuilder.MinimumSides, RegularPolygonBuilder.MaximumSides)]
         public int NumberOfSides
         {
-            get
-            {
-                return NextNumberOfSides;
-            }
-            set
-            {
-                NextNumberOfSides = value;
-            }
+            get => NextNumberOfSides; set => NextNumberOfSides = value;
         }
 
         // the title of the panel
@@ -116,21 +109,9 @@ public class RegularPolygonCreator : FigureCreator
         return DependencyList.PointPoint;
     }
 
-    public override string Name
-    {
-        get
-        {
-            return "Regular polygon";
-        }
-    }
+    public override string Name => "Regular polygon";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click the polygon center and then click a vertex.";
-        }
-    }
+    public override string HintText => "Click the polygon center and then click a vertex.";
 
     public override FrameworkElement CreateIcon()
     {

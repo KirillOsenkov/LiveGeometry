@@ -26,23 +26,17 @@ public class DelegateOperation : IOperationDescription
         DisplayName = caption;
         this.action = action;
         attributes = group != null
-            ? new Attribute[] { new PropertyGridIconAttribute(icon), new PropertyGridGroupAttribute(group) }
-            : new Attribute[] { new PropertyGridIconAttribute(icon) };
+            ? [new PropertyGridIconAttribute(icon), new PropertyGridGroupAttribute(group)]
+            : [new PropertyGridIconAttribute(icon)];
     }
 
     public string Name { get; }
 
     public string DisplayName { get; }
 
-    public object Parent
-    {
-        get { return null; }
-    }
+    public object Parent => null;
 
-    public IEnumerable<IValueProvider> Parameters
-    {
-        get { return Enumerable.Empty<IValueProvider>(); }
-    }
+    public IEnumerable<IValueProvider> Parameters => [];
 
     public void Invoke(object target, IEnumerable<object> arguments)
     {

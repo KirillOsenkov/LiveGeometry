@@ -18,13 +18,7 @@ public partial class CoordinateSystem : IMovable
         Origin = PhysicalSize.Scale(0.5).SnapToIntegers().Minus(0.5);
     }
 
-    public Point PhysicalSize
-    {
-        get
-        {
-            return new Point(Canvas.ActualWidth, Canvas.ActualHeight);
-        }
-    }
+    public Point PhysicalSize => new Point(Canvas.ActualWidth, Canvas.ActualHeight);
 
     public Drawing Drawing { get; set; }
 
@@ -132,13 +126,7 @@ public partial class CoordinateSystem : IMovable
     }
 
     /// <summary>The logical point in the middle of the canvas</summary>
-    public Point ViewCenter
-    {
-        get
-        {
-            return ToLogical(PhysicalSize.Scale(0.5));
-        }
-    }
+    public Point ViewCenter => ToLogical(PhysicalSize.Scale(0.5));
 
     public void ZoomIn()
     {
@@ -446,13 +434,7 @@ public partial class CoordinateSystem : IMovable
 
     #region Bounds
 
-    public Canvas Canvas
-    {
-        get
-        {
-            return Drawing.Canvas;
-        }
-    }
+    public Canvas Canvas => Drawing.Canvas;
 
     public Point[] LogicalViewportVertices { get; set; }
     public double MinimalVisibleX { get; set; }
@@ -643,13 +625,7 @@ public partial class CoordinateSystem : IMovable
     #region Coordinate transforms
 
     private double scale = 1;
-    public double Scale
-    {
-        get
-        {
-            return scale;
-        }
-    }
+    public double Scale => scale;
 
     private double unitLength = Settings.DefaultUnitLength;
     /// <summary>
@@ -657,10 +633,7 @@ public partial class CoordinateSystem : IMovable
     /// </summary>
     public double UnitLength
     {
-        get
-        {
-            return unitLength;
-        }
+        get => unitLength;
         set
         {
             if (value < 1 || value > 1000)
@@ -679,10 +652,7 @@ public partial class CoordinateSystem : IMovable
     /// </summary>
     public Point Origin
     {
-        get
-        {
-            return origin;
-        }
+        get => origin;
         private set
         {
             origin = value;
@@ -690,13 +660,7 @@ public partial class CoordinateSystem : IMovable
         }
     }
 
-    public double CursorTolerance
-    {
-        get
-        {
-            return ToLogical(Math.CursorTolerance);
-        }
-    }
+    public double CursorTolerance => ToLogical(Math.CursorTolerance);
 
     public virtual Point ToLogical(Point physicalPoint)
     {
@@ -808,10 +772,7 @@ public partial class CoordinateSystem : IMovable
         return true;
     }
 
-    public Point Coordinates
-    {
-        get { return new Point(); }
-    }
+    public Point Coordinates => new Point();
 
     #endregion
 }

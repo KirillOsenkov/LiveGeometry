@@ -14,13 +14,7 @@ public class DrawingHost : Grid
     public event EventHandler ReadyForInteraction;
     public event EventHandler<UnhandledExceptionNotificationEventArgs> UnhandledException = delegate { };
 
-    public Drawing CurrentDrawing
-    {
-        get
-        {
-            return this.DrawingControl.Drawing;
-        }
-    }
+    public Drawing CurrentDrawing => this.DrawingControl.Drawing;
 
     public Ribbon Ribbon { get; set; }
     public DrawingControl DrawingControl { get; set; }
@@ -308,13 +302,7 @@ public class DrawingHost : Grid
         return button;
     }
 
-    public bool IsSidePanelShown
-    {
-        get
-        {
-            return sidePanel.IsVisible;
-        }
-    }
+    public bool IsSidePanelShown => sidePanel.IsVisible;
 
     /// <summary>
     /// Puts the side panel away (its cross, a click on empty chrome). A tool's own panel can be

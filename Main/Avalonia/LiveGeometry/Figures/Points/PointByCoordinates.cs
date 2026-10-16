@@ -2,13 +2,7 @@
 
 public class PointByCoordinates : PointBase, IPoint, IRenamableExpressions, IConditionalProperties, IExpressionOwner
 {
-    public System.Collections.Generic.IEnumerable<DrawingExpression> Expressions
-    {
-        get
-        {
-            return new[] { XExpression, YExpression };
-        }
-    }
+    public System.Collections.Generic.IEnumerable<DrawingExpression> Expressions => new[] { XExpression, YExpression };
 
     public PointByCoordinates()
     {
@@ -30,10 +24,7 @@ public class PointByCoordinates : PointBase, IPoint, IRenamableExpressions, ICon
 
     public System.Collections.Generic.IReadOnlyList<string> ExpressionTexts
     {
-        get
-        {
-            return new[] { XExpression.Text, YExpression.Text };
-        }
+        get => new[] { XExpression.Text, YExpression.Text };
         set
         {
             XExpression.Text = value[0];
@@ -42,13 +33,7 @@ public class PointByCoordinates : PointBase, IPoint, IRenamableExpressions, ICon
     }
 
     /// <summary>"at (2, A.Y + 1)"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return "at (" + XExpression.Text + ", " + YExpression.Text + ")";
-        }
-    }
+    public override string Construction => "at (" + XExpression.Text + ", " + YExpression.Text + ")";
 
     [PropertyGridVisible]
     [PropertyGridName("X = ")]

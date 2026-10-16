@@ -14,21 +14,9 @@ public class AngleBisector : Ray, IHasSweep
         return null;
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Angle bisector";
-        }
-    }
+    protected override string Kind => "Angle bisector";
 
-    public override string Noun
-    {
-        get
-        {
-            return IsLine ? "line" : "ray";
-        }
-    }
+    public override string Noun => IsLine ? "line" : "ray";
 
     /// <summary>"of angle HIJ"</summary>
     public override string Construction
@@ -44,13 +32,7 @@ public class AngleBisector : Ray, IHasSweep
         }
     }
 
-    public override PointPair Coordinates
-    {
-        get
-        {
-            return coordinates;
-        }
-    }
+    public override PointPair Coordinates => coordinates;
 
     /// <summary>The angle halved, in degrees</summary>
     [PropertyGridVisible]
@@ -83,10 +65,7 @@ public class AngleBisector : Ray, IHasSweep
     [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
     public AngleSweep Sweep
     {
-        get
-        {
-            return Dependencies.Count == 1 && Dependencies[0] is IHasSweep angle ? angle.Sweep : sweep;
-        }
+        get => Dependencies.Count == 1 && Dependencies[0] is IHasSweep angle ? angle.Sweep : sweep;
         set
         {
             sweep = value;
@@ -105,10 +84,7 @@ public class AngleBisector : Ray, IHasSweep
     [PropertyGridName("Whole line")]
     public bool IsLine
     {
-        get
-        {
-            return isLine;
-        }
+        get => isLine;
         set
         {
             isLine = value;
@@ -209,14 +185,7 @@ public class AngleBisector : Ray, IHasSweep
     [PropertyGridVisible(false)]
     public override double Direction
     {
-        get
-        {
-            return base.Direction;
-        }
-        set
-        {
-            base.Direction = value;
-        }
+        get => base.Direction; set => base.Direction = value;
     }
 
     IFigure[] GetDependencies()

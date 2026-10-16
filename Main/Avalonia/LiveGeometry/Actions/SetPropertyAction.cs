@@ -42,7 +42,7 @@ public class SetPropertyAction : AbstractAction
     {
         return property is CompositeValueProvider composite
             ? composite.InnerList.ToArray()
-            : new[] { property };
+            : [property];
     }
 
     protected override void ExecuteCore()

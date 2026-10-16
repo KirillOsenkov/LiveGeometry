@@ -157,10 +157,7 @@ public partial class CompositeFigure : FigureBase
 
     public override bool Selected
     {
-        get
-        {
-            return base.Selected || Children.Any(c => c.Selected);
-        }
+        get => base.Selected || Children.Any(c => c.Selected);
         set
         {
             base.Selected = value;
@@ -173,10 +170,7 @@ public partial class CompositeFigure : FigureBase
 
     public override bool Visible
     {
-        get
-        {
-            return mVisible;
-        }
+        get => mVisible;
         set
         {
             mVisible = value;
@@ -189,10 +183,7 @@ public partial class CompositeFigure : FigureBase
 
     public override Drawing Drawing
     {
-        get
-        {
-            return base.Drawing;
-        }
+        get => base.Drawing;
         set
         {
             base.Drawing = value;

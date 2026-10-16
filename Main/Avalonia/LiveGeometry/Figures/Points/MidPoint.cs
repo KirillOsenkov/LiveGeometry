@@ -16,22 +16,10 @@ public class MidPoint : PointBase, IPoint, IConditionalProperties
         return defaultCaption;
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Midpoint";
-        }
-    }
+    protected override string Kind => "Midpoint";
 
     /// <summary>"of CD"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return "of " + ConstructionText.Points(Dependencies.ToArray());
-        }
-    }
+    public override string Construction => "of " + ConstructionText.Points(Dependencies.ToArray());
 
     protected override Avalonia.Controls.Shapes.Shape CreateShape()
     {

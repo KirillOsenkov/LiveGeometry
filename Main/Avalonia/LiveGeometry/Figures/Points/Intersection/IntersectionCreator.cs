@@ -107,15 +107,9 @@ public class IntersectionCreator : FigureCreator
         return base.ConstructionHintText(args);
     }
 
-    public override string Name
-    {
-        get { return "Intersection"; }
-    }
+    public override string Name => "Intersection";
 
-    public override string HintText
-    {
-        get { return "Click two figures that cross (lines, segments, rays, circles) to put a point where they cross."; }
-    }
+    public override string HintText => "Click two figures that cross (lines, segments, rays, circles) to put a point where they cross.";
 
     public override FrameworkElement CreateIcon()
     {

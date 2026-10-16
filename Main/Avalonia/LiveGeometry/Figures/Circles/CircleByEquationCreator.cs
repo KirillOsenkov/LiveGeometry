@@ -84,21 +84,9 @@ public class CircleByEquationCreator : Behavior
         return Factory.CreateCircleByEquation(Drawing, X, Y, R);
     }
 
-    public override string Name
-    {
-        get
-        {
-            return "Circle";
-        }
-    }
+    public override string Name => "Circle";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Enter expressions for the center and radius of the circle.";
-        }
-    }
+    public override string HintText => "Enter expressions for the center and radius of the circle.";
 
     public override FrameworkElement CreateIcon()
     {

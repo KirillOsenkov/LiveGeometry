@@ -173,7 +173,7 @@ public static class SvgTextOutlines
             return numbers;
         }
 
-        foreach (var part in text.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries))
+        foreach (var part in text.Split([',', ' '], StringSplitOptions.RemoveEmptyEntries))
         {
             if (!float.TryParse(part, NumberStyles.Float, CultureInfo.InvariantCulture, out float number))
             {

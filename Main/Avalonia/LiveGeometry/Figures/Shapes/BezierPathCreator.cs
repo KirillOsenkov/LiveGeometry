@@ -49,10 +49,7 @@ public class BezierPathCreator : FigureCreator
         [PropertyGridVisible]
         public BezierPathSmoothing Smoothing
         {
-            get
-            {
-                return LastSmoothing;
-            }
+            get => LastSmoothing;
             set
             {
                 LastSmoothing = value;
@@ -67,10 +64,7 @@ public class BezierPathCreator : FigureCreator
         [Domain(BezierPath.MinimumTension, BezierPath.MaximumTension)]
         public double Tension
         {
-            get
-            {
-                return LastTension;
-            }
+            get => LastTension;
             set
             {
                 LastTension = value;
@@ -177,13 +171,7 @@ public class BezierPathCreator : FigureCreator
     }
 
     /// <summary>The anchors found, without the point following the cursor</summary>
-    int AnchorsFound
-    {
-        get
-        {
-            return FoundDependencies.Count(found => found != TempPoint);
-        }
-    }
+    int AnchorsFound => FoundDependencies.Count(found => found != TempPoint);
 
     protected override void AddFoundDependency(IFigure figure)
     {
@@ -275,13 +263,7 @@ public class BezierPathCreator : FigureCreator
     }
 
     /// <summary>The path so far, while there is one</summary>
-    BezierPath Preview
-    {
-        get
-        {
-            return TempResults.OfType<BezierPath>().FirstOrDefault();
-        }
-    }
+    BezierPath Preview => TempResults.OfType<BezierPath>().FirstOrDefault();
 
     /// <summary>The path from the anchors found, open or closed; false while there are fewer than two</summary>
     bool TryFinish(bool closed)
@@ -476,21 +458,9 @@ public class BezierPathCreator : FigureCreator
         return "Click the next point (the curve bends smoothly through it), or press and drag to pull out its handles yourself." + handles;
     }
 
-    public override string Name
-    {
-        get
-        {
-            return "Bezier path";
-        }
-    }
+    public override string Name => "Bezier path";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click points of a path: the curve bends smoothly through them (Smoothing in the panel), or press and drag to pull out handles. Click the first point again to close the path, or press Enter.";
-        }
-    }
+    public override string HintText => "Click points of a path: the curve bends smoothly through them (Smoothing in the panel), or press and drag to pull out handles. Click the first point again to close the path, or press Enter.";
 
     public override FrameworkElement CreateIcon()
     {

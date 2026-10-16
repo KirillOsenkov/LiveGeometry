@@ -10,13 +10,7 @@ namespace LiveGeometry;
 
 public class DGFReader
 {
-    public bool IsSuccess
-    {
-        get
-        {
-            return true;
-        }
-    }
+    public bool IsSuccess => true;
 
     public string GetErrorReport()
     {

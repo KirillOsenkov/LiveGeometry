@@ -39,13 +39,7 @@ public partial struct PointPair
             && point.Y < P2.Y;
     }
 
-    public PointPair Reverse
-    {
-        get
-        {
-            return new PointPair(P2, P1);
-        }
-    }
+    public PointPair Reverse => new PointPair(P2, P1);
 
     public PointPair GetBoundingRect()
     {
@@ -65,21 +59,9 @@ public partial struct PointPair
         return result;
     }
 
-    public double Length
-    {
-        get
-        {
-            return P1.Distance(P2);
-        }
-    }
+    public double Length => P1.Distance(P2);
 
-    public Point Midpoint
-    {
-        get
-        {
-            return new Point((P1.X + P2.X) / 2, (P1.Y + P2.Y) / 2);
-        }
-    }
+    public Point Midpoint => new Point((P1.X + P2.X) / 2, (P1.Y + P2.Y) / 2);
 
     public override string ToString()
     {
@@ -299,21 +281,9 @@ public static partial class PointExtensions
 
 public static partial class Math
 {
-    public static Point InfinitePoint
-    {
-        get
-        {
-            return new Point(double.NaN, double.NaN);
-        }
-    }
+    public static Point InfinitePoint => new Point(double.NaN, double.NaN);
 
-    public static PointPair InfinitePointPair
-    {
-        get
-        {
-            return new PointPair() { P1 = Math.InfinitePoint, P2 = Math.InfinitePoint };
-        }
-    }
+    public static PointPair InfinitePointPair => new PointPair() { P1 = Math.InfinitePoint, P2 = Math.InfinitePoint };
 
     /// <summary>
     /// http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
@@ -541,14 +511,7 @@ public static partial class Math
 
     public static double CursorTolerance
     {
-        get
-        {
-            return Settings.Instance.CursorTolerance;
-        }
-        set
-        {
-            Settings.Instance.CursorTolerance = value;
-        }
+        get => Settings.Instance.CursorTolerance; set => Settings.Instance.CursorTolerance = value;
     }
 
     public static Point ScalePointBetweenTwo(Point p1, Point p2, double ratio)
@@ -698,21 +661,9 @@ public static partial class Math
         return (p2.X - p1.X) * (p3.Y - p1.Y) - (p3.X - p1.X) * (p2.Y - p1.Y);
     }
 
-    public static double PI
-    {
-        get
-        {
-            return M.PI;
-        }
-    }
+    public static double PI => M.PI;
 
-    public static double DOUBLEPI
-    {
-        get
-        {
-            return 2 * M.PI;
-        }
-    }
+    public static double DOUBLEPI => 2 * M.PI;
 
     /// <summary>
     /// Square of a number (multiplied by itself)
@@ -1006,8 +957,8 @@ public static partial class Math
         }
 
         // Gauss-Legendre with five nodes on [-1, 1]
-        static readonly double[] gaussNodes = { 0, 0.5384693101056831, -0.5384693101056831, 0.9061798459386640, -0.9061798459386640 };
-        static readonly double[] gaussWeights = { 0.5688888888888889, 0.4786286704993665, 0.4786286704993665, 0.2369268850561891, 0.2369268850561891 };
+        static readonly double[] gaussNodes = [0, 0.5384693101056831, -0.5384693101056831, 0.9061798459386640, -0.9061798459386640];
+        static readonly double[] gaussWeights = [0.5688888888888889, 0.4786286704993665, 0.4786286704993665, 0.2369268850561891, 0.2369268850561891];
 
         /// <summary>
         /// The length of the curve: the speed integrated over t, by Gauss-Legendre on eight
@@ -1425,11 +1376,13 @@ public static partial class Math
         Point TR = new Point(rect.X + rect.Width, rect.Y);
         Point BR = new Point(rect.X + rect.Width, rect.Y - rect.Height);
         Point BL = new Point(rect.X, rect.Y - rect.Height);
-        Point[] ints = new Point[4];
-        ints[0] = GetIntersectionOfSegmentAndLine(new PointPair(TL, TR), line, true);
-        ints[1] = GetIntersectionOfSegmentAndLine(new PointPair(TR, BR), line, true);
-        ints[2] = GetIntersectionOfSegmentAndLine(new PointPair(BR, BL), line, true);
-        ints[3] = GetIntersectionOfSegmentAndLine(new PointPair(BL, TL), line, true);
+        Point[] ints =
+        [
+            GetIntersectionOfSegmentAndLine(new PointPair(TL, TR), line, true),
+            GetIntersectionOfSegmentAndLine(new PointPair(TR, BR), line, true),
+            GetIntersectionOfSegmentAndLine(new PointPair(BR, BL), line, true),
+            GetIntersectionOfSegmentAndLine(new PointPair(BL, TL), line, true),
+        ];
         for (int i = 0; i < 4; i++)
         {
             if (ints[i].X.IsValidValue() && ints[i].Y.IsValidValue())

@@ -58,21 +58,9 @@ public class CircleArcCreator : FigureCreator
         }
     }
 
-    public override string Name
-    {
-        get
-        {
-            return "Circular Arc";
-        }
-    }
+    public override string Name => "Circular Arc";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click (and release) the center point and then two points (start and end of the arc, counterclockwise).";
-        }
-    }
+    public override string HintText => "Click (and release) the center point and then two points (start and end of the arc, counterclockwise).";
 
     public override FrameworkElement CreateIcon()
     {
@@ -127,21 +115,9 @@ public class EllipseArcCreator : CircleArcCreator
         return null;
     }
 
-    public override string Name
-    {
-        get
-        {
-            return "Elliptical Arc";
-        }
-    }
+    public override string Name => "Elliptical Arc";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click on 5 points in order to determine the center, the semi-major axis, the semi-minor axis, the begin angle, and the end angle.";
-        }
-    }
+    public override string HintText => "Click on 5 points in order to determine the center, the semi-major axis, the semi-minor axis, the begin angle, and the end angle.";
 
     public override FrameworkElement CreateIcon()
     {

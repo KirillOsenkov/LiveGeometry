@@ -43,27 +43,13 @@ public class StatusBar : WrapPanel
 
     public string Text
     {
-        get
-        {
-            return TextBlock.Text;
-        }
-        set
-        {
-            TextBlock.Text = value;
-        }
+        get => TextBlock.Text; set => TextBlock.Text = value;
     }
 
     new 
     public bool IsVisible
     {
-        get
-        {
-            return this.Visibility == Visibility.Visible;
-        }
-        set
-        {
-            this.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-        }
+        get => this.Visibility == Visibility.Visible; set => this.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
     }
 
     void border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

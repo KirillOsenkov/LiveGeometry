@@ -33,7 +33,7 @@ public static class RegularPolygonBuilder
     public static List<IFigure> Create(Drawing drawing, IPoint first, IPoint second, int sides, bool onSide, out Polygon polygon)
     {
         var forms = new LinearForms();
-        var vertices = new List<IPoint>(onSide ? new[] { first, second } : new[] { second });
+        var vertices = new List<IPoint>(onSide ? new[] { first, second } : [second]);
         var result = new List<IFigure>();
         foreach (var vertex in CreateVertices(drawing, first, second, sides, onSide))
         {

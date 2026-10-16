@@ -26,13 +26,7 @@ public class LineAtAngle : LineBase, ILine, ITiedValues, IConditionalProperties
         return figure is AngleMeasurementBase || figure is AngleArc || figure is Slider;
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Line";
-        }
-    }
+    protected override string Kind => "Line";
 
     /// <summary>"through A at 30°", "through A at angle a"</summary>
     public override string Construction
@@ -48,15 +42,9 @@ public class LineAtAngle : LineBase, ILine, ITiedValues, IConditionalProperties
         }
     }
 
-    public IFigure AngleSource
-    {
-        get { return Dependencies.Count > 1 ? Dependencies[1] : null; }
-    }
+    public IFigure AngleSource => Dependencies.Count > 1 ? Dependencies[1] : null;
 
-    double Radians
-    {
-        get { return AngleSource is IAngleProvider angle ? angle.Angle : double.NaN; }
-    }
+    double Radians => AngleSource is IAngleProvider angle ? angle.Angle : double.NaN;
 
     public override PointPair Coordinates
     {
@@ -67,10 +55,7 @@ public class LineAtAngle : LineBase, ILine, ITiedValues, IConditionalProperties
         }
     }
 
-    public override PointPair OnScreenCoordinates
-    {
-        get { return Math.GetLineFromSegment(Coordinates, CanvasLogicalBorders); }
-    }
+    public override PointPair OnScreenCoordinates => Math.GetLineFromSegment(Coordinates, CanvasLogicalBorders);
 
     /// <summary>An angle that isn't a number (a side of the measured angle has no length) leaves no line</summary>
     public override void UpdateExistence()
@@ -90,10 +75,7 @@ public class LineAtAngle : LineBase, ILine, ITiedValues, IConditionalProperties
     [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
     public override double Angle
     {
-        get
-        {
-            return AngleSource is Number number ? number.Value : Radians.ToDegrees();
-        }
+        get => AngleSource is Number number ? number.Value : Radians.ToDegrees();
         set
         {
             if (AngleSource is Number number)

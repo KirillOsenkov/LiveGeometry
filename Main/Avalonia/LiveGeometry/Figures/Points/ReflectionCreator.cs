@@ -71,18 +71,9 @@ public class ReflectionCreator : FigureCreator
         }
     }
 
-    public override string Name
-    {
-        get { return "Reflect"; }
-    }
+    public override string Name => "Reflect";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Select the source figure.";
-        }
-    }
+    public override string HintText => "Select the source figure.";
 
     public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
     {

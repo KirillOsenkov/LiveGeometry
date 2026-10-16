@@ -119,10 +119,7 @@ public class TranslationCreator : FigureCreator
         }
     }
 
-    public override object PropertyBag
-    {
-        get { return panel; }
-    }
+    public override object PropertyBag => panel;
 
     #endregion
 
@@ -147,16 +144,10 @@ public class TranslationCreator : FigureCreator
         base.Stopping();
     }
 
-    IFigure Source
-    {
-        get { return FoundDependencies.Count > 0 ? FoundDependencies[0] : null; }
-    }
+    IFigure Source => FoundDependencies.Count > 0 ? FoundDependencies[0] : null;
 
     /// <summary>Only a point can be left partly free: a figure's points would each get a freedom of their own</summary>
-    bool CanFree
-    {
-        get { return Source is IPoint; }
-    }
+    bool CanFree => Source is IPoint;
 
     protected override void Click(Point coordinates)
     {
@@ -426,15 +417,9 @@ public class TranslationCreator : FigureCreator
         return "set its distance and direction in the panel, or click a segment, vector, angle or slider to take one from it.";
     }
 
-    public override string Name
-    {
-        get { return "Translate"; }
-    }
+    public override string Name => "Translate";
 
-    public override string HintText
-    {
-        get { return "Click the figure to translate."; }
-    }
+    public override string HintText => "Click the figure to translate.";
 
     public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
     {

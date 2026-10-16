@@ -12,30 +12,12 @@ namespace LiveGeometry;
 /// </summary>
 public class RotatedPoint : PointBase, IPoint, ITiedValues, IConditionalProperties
 {
-    public IPoint Source
-    {
-        get
-        {
-            return Dependencies.Count >= 1 ? Dependencies[0] as IPoint : null;
-        }
-    }
+    public IPoint Source => Dependencies.Count >= 1 ? Dependencies[0] as IPoint : null;
 
-    public new IPoint Center
-    {
-        get
-        {
-            return Dependencies.Count >= 2 ? Dependencies[1] as IPoint : null;
-        }
-    }
+    public new IPoint Center => Dependencies.Count >= 2 ? Dependencies[1] as IPoint : null;
 
     /// <summary>A Number or an angle provider</summary>
-    public IFigure AngleSource
-    {
-        get
-        {
-            return Dependencies.Count >= 3 ? Dependencies[2] : null;
-        }
-    }
+    public IFigure AngleSource => Dependencies.Count >= 3 ? Dependencies[2] : null;
 
     /// <summary>In degrees, counterclockwise; editable when it is a typed value, which lives in the Number</summary>
     [PropertyGridVisible]
@@ -98,13 +80,7 @@ public class RotatedPoint : PointBase, IPoint, ITiedValues, IConditionalProperti
         return propertyName == nameof(Angle) && this.IsTied(propertyName) ? "Angle = " + TiedValues.SourceName(AngleSource) : defaultCaption;
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Rotated point";
-        }
-    }
+    protected override string Kind => "Rotated point";
 
     /// <summary>"of A about O by 45°", "... by angle a"</summary>
     public override string Construction

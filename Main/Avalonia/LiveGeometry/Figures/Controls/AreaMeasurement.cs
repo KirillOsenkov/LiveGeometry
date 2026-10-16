@@ -5,13 +5,7 @@ namespace LiveGeometry;
 
 public class AreaMeasurement : Measurement
 {
-    protected override string Kind
-    {
-        get
-        {
-            return "Area";
-        }
-    }
+    protected override string Kind => "Area";
 
     /// <summary>
     /// What the Area tool takes a click on: a polygon, a circle, an ellipse, a sector or a
@@ -66,13 +60,7 @@ public class AreaMeasurement : Measurement
         }
     }
 
-    public override Point Anchor
-    {
-        get
-        {
-            return Origin;
-        }
-    }
+    public override Point Anchor => Origin;
 
     public override void UpdateVisual()
     {

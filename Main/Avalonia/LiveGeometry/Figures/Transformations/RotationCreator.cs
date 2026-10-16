@@ -72,13 +72,7 @@ public class RotationCreator : FigureCreator
     /// while the source and the center were still to be clicked. "Construction complete" is
     /// raised before the found figures are cleared, but after the transaction is gone.
     /// </summary>
-    public override object PropertyBag
-    {
-        get
-        {
-            return Transaction != null && FoundDependencies.Count == 2 ? Dialog : null;
-        }
-    }
+    public override object PropertyBag => Transaction != null && FoundDependencies.Count == 2 ? Dialog : null;
 
     protected override DependencyList InitExpectedDependencies()
     {
@@ -170,18 +164,9 @@ public class RotationCreator : FigureCreator
             : "set its angle in the panel, or click an angle or a slider to take the angle from it.";
     }
 
-    public override string Name
-    {
-        get { return "Rotate"; }
-    }
+    public override string Name => "Rotate";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Select the source figure.";
-        }
-    }
+    public override string HintText => "Select the source figure.";
 
     public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
     {

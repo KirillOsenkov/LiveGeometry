@@ -45,14 +45,7 @@ public class Ribbon : TabControl
     /// </summary>
     public Control HeaderStart
     {
-        get
-        {
-            return headerStartHost.Child;
-        }
-        set
-        {
-            headerStartHost.Child = value;
-        }
+        get => headerStartHost.Child; set => headerStartHost.Child = value;
     }
 
     /// <summary>
@@ -61,14 +54,7 @@ public class Ribbon : TabControl
     /// </summary>
     public Control HeaderEnd
     {
-        get
-        {
-            return headerEndHost.Child;
-        }
-        set
-        {
-            headerEndHost.Child = value;
-        }
+        get => headerEndHost.Child; set => headerEndHost.Child = value;
     }
 
     IControlTemplate CreateTemplate()
@@ -169,13 +155,7 @@ public class Ribbon : TabControl
         return null;
     }
 
-    private IEnumerable<TabPanel> Panels
-    {
-        get
-        {
-            return Items.OfType<TabPanel>();
-        }
-    }
+    private IEnumerable<TabPanel> Panels => Items.OfType<TabPanel>();
 
     public TabPanel GetTabPanelByCategory(ToolButton button, string category)
     {

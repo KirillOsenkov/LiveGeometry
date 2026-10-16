@@ -15,10 +15,7 @@ public partial class DrawingControl : Canvas
     private Drawing mCurrentDrawing;
     public Drawing Drawing
     {
-        get
-        {
-            return mCurrentDrawing;
-        }
+        get => mCurrentDrawing;
         set
         {
             if (mCurrentDrawing != null)

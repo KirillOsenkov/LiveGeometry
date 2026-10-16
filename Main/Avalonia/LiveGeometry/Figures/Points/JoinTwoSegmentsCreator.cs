@@ -73,18 +73,9 @@ public class JoinTwoSegmentsCreator : Behavior
         Actions.RemoveDependency(polygon, point);
     }
 
-    public override string Name
-    {
-        get { return "Join segments"; }
-    }
+    public override string Name => "Join segments";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click a point between two segments to join the other two points.";
-        }
-    }
+    public override string HintText => "Click a point between two segments to join the other two points.";
 
     public override FrameworkElement CreateIcon()
     {

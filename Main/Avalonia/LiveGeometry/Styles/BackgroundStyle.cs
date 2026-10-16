@@ -25,10 +25,7 @@ public class BackgroundStyle : FigureStyle
     [PropertyGridVisible]
     public Brush Background
     {
-        get
-        {
-            return mBackground;
-        }
+        get => mBackground;
         set
         {
             mBackground = value;
@@ -41,10 +38,7 @@ public class BackgroundStyle : FigureStyle
     [PropertyGridName("Filled")]
     public bool IsFilled
     {
-        get
-        {
-            return mIsFilled;
-        }
+        get => mIsFilled;
         set
         {
             mIsFilled = value;

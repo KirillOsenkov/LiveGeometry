@@ -15,14 +15,7 @@ public class Ray : LineBase, ILine, IFixableDirection
     [PropertyGridCustomValueProvider(typeof(DirectionPropertyValue))]
     public virtual double Direction
     {
-        get
-        {
-            return DirectionConstraint.Of(Coordinates);
-        }
-        set
-        {
-            DirectionConstraint.SetDirection(this, value);
-        }
+        get => DirectionConstraint.Of(Coordinates); set => DirectionConstraint.SetDirection(this, value);
     }
 
     public IPoint DirectionEndpoint => DirectionConstraint.Endpoint(this);
@@ -83,21 +76,9 @@ public class Ray : LineBase, ILine, IFixableDirection
         return NamesFromPoints(PointOrder.Fixed);
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Ray";
-        }
-    }
+    protected override string Kind => "Ray";
 
-    public override string Noun
-    {
-        get
-        {
-            return "ray";
-        }
-    }
+    public override string Noun => "ray";
 
     [PropertyGridVisible]
     [PropertyGridName("Convert to line")]

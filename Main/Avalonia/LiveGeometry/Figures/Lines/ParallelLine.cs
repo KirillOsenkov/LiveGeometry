@@ -2,13 +2,7 @@
 
 public class ParallelLine : LineTwoPoints
 {
-    protected override string Kind
-    {
-        get
-        {
-            return "Parallel line";
-        }
-    }
+    protected override string Kind => "Parallel line";
 
     /// <summary>"to line AB through E"</summary>
     public override string Construction
@@ -24,26 +18,13 @@ public class ParallelLine : LineTwoPoints
         }
     }
 
-    protected override bool IsThroughTwoPoints
-    {
-        get
-        {
-            return false;
-        }
-    }
+    protected override bool IsThroughTwoPoints => false;
 
     /// <summary>Not a row of a parallel's: it points the way its line does</summary>
     [PropertyGridVisible(false)]
     public override double Direction
     {
-        get
-        {
-            return base.Direction;
-        }
-        set
-        {
-            base.Direction = value;
-        }
+        get => base.Direction; set => base.Direction = value;
     }
 
     public override PointPair Coordinates

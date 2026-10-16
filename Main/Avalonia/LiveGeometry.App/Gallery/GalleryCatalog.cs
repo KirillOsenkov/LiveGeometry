@@ -178,7 +178,7 @@ public static class GalleryCatalog
     {
         var sourcePath = SourcePath();
         var text = File.ReadAllText(sourcePath);
-        var lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None).ToList();
+        var lines = text.Split(["\r\n", "\n"], StringSplitOptions.None).ToList();
         int start = lines.FindIndex(line => line.Contains("Items { get; } = new[]")) + 2;
         int end = lines.FindIndex(start, line => line.Trim() == "};");
         var itemLines = lines

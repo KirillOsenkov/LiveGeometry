@@ -17,21 +17,9 @@ public class ParallelLineCreator : FigureCreator
         return DependencyList.LinePoint;
     }
 
-    public override string Name
-    {
-        get
-        {
-            return "Parallel";
-        }
-    }
+    public override string Name => "Parallel";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click a line and then click a point.";
-        }
-    }
+    public override string HintText => "Click a line and then click a point.";
 
     public override FrameworkElement CreateIcon()
     {

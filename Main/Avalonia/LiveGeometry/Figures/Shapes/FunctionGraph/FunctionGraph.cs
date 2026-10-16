@@ -24,10 +24,7 @@ public class FunctionGraph : Curve, ILinearFigure, IRenamableExpressions
     private Func<double, double> mFunction;
     public Func<double, double> Function
     {
-        get
-        {
-            return mFunction;
-        }
+        get => mFunction;
         private set
         {
             if (value != null)
@@ -38,31 +35,13 @@ public class FunctionGraph : Curve, ILinearFigure, IRenamableExpressions
         }
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Function";
-        }
-    }
+    protected override string Kind => "Function";
 
     /// <summary>Function f, g...</summary>
-    protected override string FirstLetter
-    {
-        get
-        {
-            return "f";
-        }
-    }
+    protected override string FirstLetter => "f";
 
     /// <summary>"y = sin(x)"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return string.IsNullOrEmpty(FunctionText) ? null : "y = " + FunctionText;
-        }
-    }
+    public override string Construction => string.IsNullOrEmpty(FunctionText) ? null : "y = " + FunctionText;
 
     public override void ReadXml(System.Xml.Linq.XElement element)
     {
@@ -83,10 +62,7 @@ public class FunctionGraph : Curve, ILinearFigure, IRenamableExpressions
     [PropertyGridDisallowMultiEdit]
     public string FunctionText
     {
-        get
-        {
-            return mFunctionText;
-        }
+        get => mFunctionText;
         set
         {
             // the grid's editor only sets a function that compiles, and shows what is
@@ -129,10 +105,7 @@ public class FunctionGraph : Curve, ILinearFigure, IRenamableExpressions
 
     public IReadOnlyList<string> ExpressionTexts
     {
-        get
-        {
-            return new[] { mFunctionText };
-        }
+        get => new[] { mFunctionText };
         set
         {
             if (value[0] != mFunctionText)

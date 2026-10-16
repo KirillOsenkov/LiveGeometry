@@ -3,13 +3,7 @@
 public class LineByEquation : LineBase, ILine, IRenamableExpressions, IExpressionOwner
 {
     [PropertyGridVisible(false)]
-    public System.Collections.Generic.IEnumerable<DrawingExpression> Expressions
-    {
-        get
-        {
-            return Equation != null ? Equation.Expressions : new DrawingExpression[0];
-        }
-    }
+    public System.Collections.Generic.IEnumerable<DrawingExpression> Expressions => Equation != null ? Equation.Expressions : new DrawingExpression[0];
 
     public void RenameInExpressions(ExpressionRenamer renamer)
     {
@@ -36,10 +30,7 @@ public class LineByEquation : LineBase, ILine, IRenamableExpressions, IExpressio
     [PropertyGridVisible(false)]
     public System.Collections.Generic.IReadOnlyList<string> ExpressionTexts
     {
-        get
-        {
-            return System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(Expressions, expression => expression.Text));
-        }
+        get => System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(Expressions, expression => expression.Text));
         set
         {
             int index = 0;
@@ -50,13 +41,7 @@ public class LineByEquation : LineBase, ILine, IRenamableExpressions, IExpressio
         }
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Line";
-        }
-    }
+    protected override string Kind => "Line";
 
     /// <summary>"y = 2x + 1", "2x + 3y - 6 = 0": the equation as its expressions say it</summary>
     public override string Construction
@@ -75,21 +60,9 @@ public class LineByEquation : LineBase, ILine, IRenamableExpressions, IExpressio
         }
     }
 
-    public override PointPair OnScreenCoordinates
-    {
-        get
-        {
-            return Math.GetLineFromSegment(Coordinates, CanvasLogicalBorders);
-        }
-    }
+    public override PointPair OnScreenCoordinates => Math.GetLineFromSegment(Coordinates, CanvasLogicalBorders);
 
-    public override PointPair Coordinates
-    {
-        get
-        {
-            return Equation.LineCoordinates;
-        }
-    }
+    public override PointPair Coordinates => Equation.LineCoordinates;
 
     /// <summary>
     /// An equation without a value - an expression that doesn't compile, A = B = 0, a slope

@@ -89,10 +89,7 @@ public class EmojiEditor : StackPanel, IValueEditor
     IValueProvider value;
     public IValueProvider Value
     {
-        get
-        {
-            return value;
-        }
+        get => value;
         set
         {
             if (this.value != null)

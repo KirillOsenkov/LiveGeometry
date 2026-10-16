@@ -25,7 +25,7 @@ partial class Behavior
         {
             if (basic.IsAssignableFrom(t)
                 && !t.IsAbstract
-                && t.GetConstructor(new Type[0]) != null
+                && t.GetConstructor([]) != null
                 && !t.HasAttribute<IgnoreAttribute>())
             {
                 Behavior instance = Activator.CreateInstance(t) as Behavior;

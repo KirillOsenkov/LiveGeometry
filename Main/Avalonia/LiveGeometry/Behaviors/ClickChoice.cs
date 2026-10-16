@@ -28,31 +28,13 @@ public class ClickChoice
     int index;
 
     /// <summary>How many things a click at the cursor could mean</summary>
-    public int Count
-    {
-        get
-        {
-            return offered.Count;
-        }
-    }
+    public int Count => offered.Count;
 
     /// <summary>Which of them a click takes, from 0</summary>
-    public int Index
-    {
-        get
-        {
-            return index;
-        }
-    }
+    public int Index => index;
 
     /// <summary>What a click takes, of what was offered; null when nothing was</summary>
-    public object Current
-    {
-        get
-        {
-            return offered.Count > 0 ? offered[index] : null;
-        }
-    }
+    public object Current => offered.Count > 0 ? offered[index] : null;
 
     /// <summary>
     /// What a click at the cursor could mean, best first. The same as before (the cursor still

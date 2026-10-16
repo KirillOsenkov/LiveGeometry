@@ -28,10 +28,7 @@ public class SliderCreator : Behavior
         }
     }
 
-    public override bool IsInInitialState
-    {
-        get { return !pending.Exists; }
-    }
+    public override bool IsInInitialState => !pending.Exists;
 
     public override void MouseDown(object sender, MouseButtonEventArgs e)
     {
@@ -89,18 +86,9 @@ public class SliderCreator : Behavior
         return pending.Exists ? ArrowCursor : CrossCursor;
     }
 
-    public override string Name
-    {
-        get { return "Slider"; }
-    }
+    public override string Name => "Slider";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click where the slider starts, then where it ends. Drag the knob at its end to change the number; click the slider where a tool asks for a length or an angle.";
-        }
-    }
+    public override string HintText => "Click where the slider starts, then where it ends. Drag the knob at its end to change the number; click the slider where a tool asks for a length or an angle.";
 
     public override FrameworkElement CreateIcon()
     {

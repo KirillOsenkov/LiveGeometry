@@ -29,14 +29,7 @@ public partial class Settings
     static Settings instance = new Settings();
     public static Settings Instance
     {
-        get
-        {
-            return instance;
-        }
-        set
-        {
-            instance = value;
-        }
+        get => instance; set => instance = value;
     }
 
     public virtual bool AutoLabelPoints { get; set; }
@@ -56,27 +49,13 @@ public partial class Settings
     private double cursorTolerance = 5;
     public virtual double CursorTolerance
     {
-        get
-        {
-            return cursorTolerance;
-        }
-        set
-        {
-            cursorTolerance = value;
-        }
+        get => cursorTolerance; set => cursorTolerance = value;
     }
 
     string pointAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public virtual string PointAlphabet
     {
-        get
-        {
-            return pointAlphabet;
-        }
-        set
-        {
-            pointAlphabet = value;
-        }
+        get => pointAlphabet; set => pointAlphabet = value;
     }
 
     // Polar

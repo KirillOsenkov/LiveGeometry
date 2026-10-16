@@ -78,18 +78,9 @@ public class AngleMeasurementCreator : FigureCreator
         return FoundDependencies.IsEmpty();
     }
 
-    public override string Name
-    {
-        get { return "Angle"; }
-    }
+    public override string Name => "Angle";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click an angle vertex, and then click two points on the angle sides to measure the angle, or click inside an angle next to its vertex, or click an arc to measure its angle.";
-        }
-    }
+    public override string HintText => "Click an angle vertex, and then click two points on the angle sides to measure the angle, or click inside an angle next to its vertex, or click an arc to measure its angle.";
 
     /// <summary>After the vertex: which side the point is for (the angle under 180° is measured whichever side comes first, its Sweep row says otherwise)</summary>
     public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)

@@ -99,21 +99,9 @@ public class EllipseCreator : FigureCreator
         base.AddFiguresAndRestart();
     }
 
-    public override string Name
-    {
-        get
-        {
-            return "Ellipse";
-        }
-    }
+    public override string Name => "Ellipse";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click the center, then the end of the long axis, then the end of the short axis.";
-        }
-    }
+    public override string HintText => "Click the center, then the end of the long axis, then the end of the short axis.";
 
     public override FrameworkElement CreateIcon()
     {

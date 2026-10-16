@@ -76,22 +76,10 @@ public abstract partial class FigureBase :
     /// (g for a line, c for a circle), when nothing names it after its points; null for
     /// a figure numbered by its type (Label1, the helpers a measurement or a mark is)
     /// </summary>
-    protected virtual string FirstLetter
-    {
-        get
-        {
-            return null;
-        }
-    }
+    protected virtual string FirstLetter => null;
 
     /// <summary>Whether the figure's kind is named with letters (line g), not numbered (Label1)</summary>
-    public bool IsNamedWithLetters
-    {
-        get
-        {
-            return FirstLetter != null;
-        }
-    }
+    public bool IsNamedWithLetters => FirstLetter != null;
 
     /// <summary>
     /// The first free name from <paramref name="firstLetter"/> to the end of <see cref="Letters"/>,
@@ -436,14 +424,7 @@ public abstract partial class FigureBase :
     protected Drawing drawing;
     public virtual Drawing Drawing
     {
-        get
-        {
-            return drawing;
-        }
-        set
-        {
-            drawing = value;
-        }
+        get => drawing; set => drawing = value;
     }
 
     public virtual void OnAddingToDrawing(Drawing drawing)
@@ -467,10 +448,7 @@ public abstract partial class FigureBase :
     /// </summary>
     public bool HasNameLabel
     {
-        get
-        {
-            return NameLabel != null;
-        }
+        get => NameLabel != null;
         set
         {
             if (value == (NameLabel != null) || Drawing == null)
@@ -536,13 +514,7 @@ public abstract partial class FigureBase :
     /// What the figure is, in a word or two ("Segment", "Triangle"), for <see cref="Title"/>;
     /// null where no word fits
     /// </summary>
-    protected virtual string Kind
-    {
-        get
-        {
-            return null;
-        }
-    }
+    protected virtual string Kind => null;
 
     /// <summary>
     /// "Segment AB", "Triangle ABC": the kind in front of the name, for the property grid -
@@ -603,13 +575,7 @@ public abstract partial class FigureBase :
     /// number it is given, its <see cref="Title"/> is the kind alone, and the construction
     /// says which one it is ("Distance" "AB")
     /// </summary>
-    protected virtual bool NamedByConstruction
-    {
-        get
-        {
-            return false;
-        }
-    }
+    protected virtual bool NamedByConstruction => false;
 
     /// <summary>
     /// How the figure is built, the words that follow its <see cref="Title"/>: "of CD" (a
@@ -617,26 +583,14 @@ public abstract partial class FigureBase :
     /// (segment AB, a free point). The Figure List shows it after the title, faded, and
     /// the property grid under the title.
     /// </summary>
-    public virtual string Construction
-    {
-        get
-        {
-            return null;
-        }
-    }
+    public virtual string Construction => null;
 
     /// <summary>
     /// What another figure's <see cref="Construction"/> calls this one in front of its
     /// name: "segment", "line", "circle" - the plain word, not "parallel line". Null for a
     /// figure that goes by its name alone (a point, a number).
     /// </summary>
-    public virtual string Noun
-    {
-        get
-        {
-            return Kind?.ToLowerInvariant();
-        }
-    }
+    public virtual string Noun => Kind?.ToLowerInvariant();
 
     /// <summary>"circle c", "segment AB", "E": the figure as a construction names it (<see cref="ConstructionText.Of"/>)</summary>
     public string Reference
@@ -660,10 +614,7 @@ public abstract partial class FigureBase :
     [PropertyGridPreferredEditor("Name")]
     public virtual string Name
     {
-        get
-        {
-            return mName;
-        }
+        get => mName;
         set
         {
             // an empty name would not load: files refer to figures by name (the grid's
@@ -692,7 +643,7 @@ public abstract partial class FigureBase :
                 {
                     foreach (var f in Drawing.Figures.Where(f => f.Name == value).Where(f => f != this))
                     {
-                        f.Name = f.GenerateFigureName(new List<string>() {this.Name});    // Rename figure with duplicate name.
+                        f.Name = f.GenerateFigureName(new List<string>() { this.Name });    // Rename figure with duplicate name.
                     }
                 }
                 RaisePropertyChanged("Name");
@@ -780,27 +731,13 @@ public abstract partial class FigureBase :
     private bool mSelected = false;
     public virtual bool Selected
     {
-        get
-        {
-            return mSelected;
-        }
-        set
-        {
-            mSelected = value;
-        }
+        get => mSelected; set => mSelected = value;
     }
 
     protected bool mEnabled = true;
     public virtual bool Enabled
     {
-        get
-        {
-            return mEnabled;
-        }
-        set
-        {
-            mEnabled = value;
-        }
+        get => mEnabled; set => mEnabled = value;
     }
 
     [PropertyGridVisible]
@@ -809,28 +746,14 @@ public abstract partial class FigureBase :
     [PropertyGridCustomValueProvider(typeof(StylePropertyValueProvider))]
     public virtual IFigureStyle StyleDisplay
     {
-        get
-        {
-            return Style;
-        }
-        set
-        {
-            Style = value;
-        }
+        get => Style; set => Style = value;
     }
 
     protected bool mVisible = true;
     [PropertyGridVisible]
     public virtual bool Visible
     {
-        get
-        {
-            return mVisible;
-        }
-        set
-        {
-            mVisible = value;
-        }
+        get => mVisible; set => mVisible = value;
     }
 
     public virtual bool IsHitTestVisible { get; set; }
@@ -895,13 +818,7 @@ public abstract partial class FigureBase :
         Flipped = element.ReadBool("Flipped", false);
     }
 
-    public virtual bool Serializable
-    {
-        get 
-        { 
-            return true; 
-        }
-    }
+    public virtual bool Serializable => true;
 
     /// <summary>Over every other figure of its band of layers (<see cref="ZOrders"/>)</summary>
     [PropertyGridVisible]
@@ -941,29 +858,14 @@ public abstract partial class FigureBase :
         Actions.Remove(this);
     }
 
-    protected Canvas Canvas
-    {
-        get
-        {
-            return Drawing?.Canvas;
-        }
-    }
+    protected Canvas Canvas => Drawing?.Canvas;
 
-    protected PointPair CanvasLogicalBorders
-    {
-        get
-        {
-            return ToLogical(Canvas.GetBorderRectangle());
-        }
-    }
+    protected PointPair CanvasLogicalBorders => ToLogical(Canvas.GetBorderRectangle());
 
     protected readonly ObservableCollection<IFigure> mDependencies = new ObservableCollection<IFigure>();
     public IList<IFigure> Dependencies
     {
-        get
-        {
-            return mDependencies;
-        }
+        get => mDependencies;
         set
         {
             suppressDependencyListChangeNotification = true;
@@ -1017,10 +919,7 @@ public abstract partial class FigureBase :
     ZOrder layer;
     public ZOrder Layer
     {
-        get
-        {
-            return layer;
-        }
+        get => layer;
         set
         {
             layer = value;
@@ -1031,10 +930,7 @@ public abstract partial class FigureBase :
     int z;
     public int Z
     {
-        get
-        {
-            return z;
-        }
+        get => z;
         set
         {
             bool changed = z != value;
@@ -1050,13 +946,7 @@ public abstract partial class FigureBase :
         }
     }
 
-    public int ZIndex
-    {
-        get
-        {
-            return ZOrders.Encode(Layer, Z);
-        }
-    }
+    public int ZIndex => ZOrders.Encode(Layer, Z);
 
     /// <summary>The layer or the Z changed: whatever is drawn for the figure takes the new ZIndex</summary>
     protected virtual void OnZIndexChanged()
@@ -1066,14 +956,7 @@ public abstract partial class FigureBase :
     protected bool mExists = true;
     public virtual bool Exists
     {
-        get
-        {
-            return mExists;
-        }
-        set
-        {
-            mExists = value;
-        }
+        get => mExists; set => mExists = value;
     }
 
     public virtual Point Point(int index)
@@ -1089,10 +972,7 @@ public abstract partial class FigureBase :
     IFigureStyle style;
     public virtual IFigureStyle Style
     {
-        get
-        {
-            return style;
-        }
+        get => style;
         set
         {
             if (style == value)
@@ -1217,23 +1097,11 @@ public abstract partial class FigureBase :
         return object.ReferenceEquals(this, other);
     }
 
-    public virtual Point Center
-    {
-        get
-        {
-            return new Point(0, 0);
-        }
-    }
+    public virtual Point Center => new Point(0, 0);
 
     #region Coordinates
 
-    protected double CursorTolerance
-    {
-        get
-        {
-            return Drawing.CoordinateSystem.CursorTolerance;
-        }
-    }
+    protected double CursorTolerance => Drawing.CoordinateSystem.CursorTolerance;
 
     protected double ToPhysical(double logicalLength)
     {

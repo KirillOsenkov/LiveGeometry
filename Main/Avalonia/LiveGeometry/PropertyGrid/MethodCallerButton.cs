@@ -21,7 +21,7 @@ public class MethodCallerButton : Button
         {
             try
             {
-                object[] arguments = new object[0];
+                object[] arguments = [];
                 if (ParameterGrid != null)
                 {
                     IEnumerable<IValueProvider> parameterValues = ParameterGrid.CurrentProperties;
@@ -99,10 +99,7 @@ public class MethodCallerButton : Button
     private IOperationDescription operationDescription;
     public IOperationDescription OperationDescription
     {
-        get
-        {
-            return operationDescription;
-        }
+        get => operationDescription;
         set
         {
             operationDescription = value;

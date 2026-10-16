@@ -9,14 +9,7 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
     private static bool mSuppress;
     public static bool SuppressAutoLabelPoints
     {
-        get
-        {
-            return mSuppress;
-        }
-        set
-        {
-            mSuppress = value;
-        }
+        get => mSuppress; set => mSuppress = value;
     }
 
     public override string GenerateFigureName(List<string> blacklist)
@@ -57,22 +50,10 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
         }
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Point";
-        }
-    }
+    protected override string Kind => "Point";
 
     /// <summary>A point goes by its name: "through E", not "through point E"</summary>
-    public override string Noun
-    {
-        get
-        {
-            return null;
-        }
-    }
+    public override string Noun => null;
 
     // The label the point had last. A label is added and removed with the point and by
     // its Show name and Show coordinates, outside the undo history, so it must be the
@@ -146,35 +127,15 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
 
     public virtual double X
     {
-        get
-        {
-            return Coordinates.X;
-        }
-        set
-        {
-            Coordinates = Coordinates.SetX(value);
-        }
+        get => Coordinates.X; set => Coordinates = Coordinates.SetX(value);
     }
 
     public virtual double Y
     {
-        get
-        {
-            return Coordinates.Y;
-        }
-        set
-        {
-            Coordinates = Coordinates.SetY(value);
-        }
+        get => Coordinates.Y; set => Coordinates = Coordinates.SetY(value);
     }
 
-    double PointSize
-    {
-        get
-        {
-            return Shape.ActualWidth / 2;
-        }
-    }
+    double PointSize => Shape.ActualWidth / 2;
 
     public override IFigure HitTest(Point point)
     {
@@ -193,10 +154,7 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
     [PropertyGridVisible]
     public override string Name
     {
-        get
-        {
-            return base.Name;
-        }
+        get => base.Name;
         set
         {
             base.Name = value;

@@ -20,14 +20,7 @@ public class HyperlinkButton : TextBlock
 
     public string Content
     {
-        get
-        {
-            return Text;
-        }
-        set
-        {
-            Text = value;
-        }
+        get => Text; set => Text = value;
     }
 }
 
@@ -43,43 +36,18 @@ public class Hyperlink : CoordinatesShapeBase<HyperlinkButton>, IMovable
 
     static readonly HttpClient internet = new HttpClient();
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Link";
-        }
-    }
+    protected override string Kind => "Link";
 
-    protected override bool NamedByConstruction
-    {
-        get
-        {
-            return true;
-        }
-    }
+    protected override bool NamedByConstruction => true;
 
     /// <summary>The text, in quotes</summary>
-    public override string Construction
-    {
-        get
-        {
-            return ConstructionText.Quote(Shape?.Content?.ToString());
-        }
-    }
+    public override string Construction => ConstructionText.Quote(Shape?.Content?.ToString());
 
     private string mUrl = null;
     [PropertyGridVisible]
     public string Url
     {
-        get
-        {
-            return mUrl;
-        }
-        set
-        {
-            mUrl = value;
-        }
+        get => mUrl; set => mUrl = value;
     }
 
     /// <summary>
@@ -157,23 +125,13 @@ public class Hyperlink : CoordinatesShapeBase<HyperlinkButton>, IMovable
     [PropertyGridVisible]
     public string Text
     {
-        get
-        {
-            return Shape.Content.ToString();
-        }
-        set
-        {
-            Shape.Content = value;
-        }
+        get => Shape.Content.ToString(); set => Shape.Content = value;
     }
 
     [PropertyGridVisible]
     public override bool Enabled
     {
-        get
-        {
-            return base.Enabled;
-        }
+        get => base.Enabled;
         set
         {
             if (value)

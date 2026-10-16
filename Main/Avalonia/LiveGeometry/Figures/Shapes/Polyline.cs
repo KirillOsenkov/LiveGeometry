@@ -19,43 +19,19 @@ public class Polyline : ShapeBase<Avalonia.Controls.Shapes.Polyline>, ILinearFig
         return NamesFromPoints(PointOrder.Reversible, Polygon.MaxVerticesInName + 1);
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Polyline";
-        }
-    }
+    protected override string Kind => "Polyline";
 
     /// <summary>Named as polygons are, when no points name it: p, q...</summary>
-    protected override string FirstLetter
-    {
-        get
-        {
-            return "p";
-        }
-    }
+    protected override string FirstLetter => "p";
 
     /// <summary>
     /// Just for caching purposes, to avoid array allocations on a hotpath
     /// </summary>
     protected IPoint[] vertices;
     protected Point[] vertexCoordinates;
-    public Point[] VertexCoordinates
-    {
-        get
-        {
-            return vertexCoordinates;
-        }
-    }
+    public Point[] VertexCoordinates => vertexCoordinates;
 
-    public override Point Center
-    {
-        get
-        {
-            return VertexCoordinates.Midpoint();
-        }
-    }
+    public override Point Center => VertexCoordinates.Midpoint();
 
     /// <summary>
     /// From the first point to the last, along the way. (It was the perimeter of the

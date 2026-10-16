@@ -20,13 +20,7 @@ public partial class IconBuilder
         Canvas.Height = Canvas.Width;
     }
 
-    public static double IconSize
-    {
-        get
-        {
-            return 32;
-        }
-    }
+    public static double IconSize => 32;
 
     public Canvas Canvas { get; set; }
 

@@ -103,22 +103,10 @@ public class UserDefinedTool : FigureCreator
         }
 
         //[PropertyGridVisible]
-        public string XML
-        {
-            get
-            {
-                return Parent.RootElement.ToString();
-            }
-        }
+        public string XML => Parent.RootElement.ToString();
 
         [PropertyGridVisible(false)]
-        public UserDefinedTool Tool
-        {
-            get
-            {
-                return Parent;
-            }
-        }
+        public UserDefinedTool Tool => Parent;
 
         // the name on the tool's button: never empty, and no other tool's (the editor says so)
         [PropertyGridVisible]
@@ -126,10 +114,7 @@ public class UserDefinedTool : FigureCreator
         [PropertyGridEvent("KeyDown", "Name_KeyDown")]
         public string Name
         {
-            get
-            {
-                return Parent.Name;
-            }
+            get => Parent.Name;
             set
             {
                 value = value?.Trim();
@@ -208,18 +193,12 @@ public class UserDefinedTool : FigureCreator
 
     public XElement RootElement { get; set; }
 
-    public override string Name
-    {
-        get { return MutableName; }
-    }
+    public override string Name => MutableName;
 
     string mutableName = "Custom tool";
     public string MutableName
     {
-        get
-        {
-            return mutableName;
-        }
+        get => mutableName;
         set
         {
             mutableName = value;

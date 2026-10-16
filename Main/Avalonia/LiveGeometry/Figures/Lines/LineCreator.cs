@@ -17,21 +17,9 @@ public class LineTwoPointsCreator : FigureCreator
         return DependencyList.PointPoint;
     }
 
-    public override string Name
-    {
-        get
-        {
-            return "Line";
-        }
-    }
+    public override string Name => "Line";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click (and release) twice to draw a line between two points.";
-        }
-    }
+    public override string HintText => "Click (and release) twice to draw a line between two points.";
 
     public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
     {

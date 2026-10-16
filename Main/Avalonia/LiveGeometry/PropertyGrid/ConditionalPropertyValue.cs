@@ -20,18 +20,9 @@ public interface IConditionalProperties
 /// </summary>
 public class ConditionalPropertyValue : PropertyValue
 {
-    IConditionalProperties Conditions
-    {
-        get { return (IConditionalProperties)Parent; }
-    }
+    IConditionalProperties Conditions => (IConditionalProperties)Parent;
 
-    public override bool CanSetValue
-    {
-        get { return base.CanSetValue && Conditions.CanEdit(Property.Name); }
-    }
+    public override bool CanSetValue => base.CanSetValue && Conditions.CanEdit(Property.Name);
 
-    public override string DisplayName
-    {
-        get { return Conditions.Caption(Property.Name, base.DisplayName); }
-    }
+    public override string DisplayName => Conditions.Caption(Property.Name, base.DisplayName);
 }

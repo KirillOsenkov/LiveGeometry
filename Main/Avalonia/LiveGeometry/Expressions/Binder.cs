@@ -102,7 +102,7 @@ public class Binder
             if (pointNames == null)
             {
                 pointNames = Drawing == null
-                    ? Array.Empty<string>()
+                    ? []
                     : Drawing.Figures.Where(f => f is PointBase).Select(f => f.Name).ToArray();
             }
 

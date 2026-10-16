@@ -32,7 +32,7 @@ public partial class MainView : UserControl
     /// <summary>Whether the editor is there yet: what only reaches into it (a key, a press, a resize) asks first, so as not to build it</summary>
     bool IsEditorBuilt => drawingHost != null;
 
-    Behavior[] Behaviors = Array.Empty<Behavior>();
+    Behavior[] Behaviors = [];
 
     // The browser's picker (File System Access API) takes a type only as a MIME type with its
     // extensions; Avalonia drops a type without MimeTypes there, so the save dialog offered
@@ -1005,7 +1005,7 @@ public partial class MainView : UserControl
         if (isDgf)
         {
             // drawings of the original VB6 DG: INI-like text in the Windows ANSI code page
-            var lines = DecodeLegacyText(bytes).Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            var lines = DecodeLegacyText(bytes).Split(["\r\n", "\n"], StringSplitOptions.None);
             HandleExceptions(() => DrawingHost.DrawingControl.LoadDrawingFromDGF(lines, name));
             return;
         }
@@ -1333,7 +1333,7 @@ public partial class MainView : UserControl
             // as a drag of the canvas is (moves of the same list merge)
             if (keyboardPan == null || keyboardPan[0] != coordinateSystem)
             {
-                keyboardPan = new IMovable[] { coordinateSystem };
+                keyboardPan = [coordinateSystem];
             }
 
             // in the middle of a construction the view just moves: recorded, the pan would

@@ -10,13 +10,7 @@ public class LineTwoPoints : LineBase, ILine, IFixableDirection
     /// a bisector: on those the Convert buttons made a ray out of a line and a point
     /// (and threw), or the segment whose bisector it was.
     /// </summary>
-    protected virtual bool IsThroughTwoPoints
-    {
-        get
-        {
-            return true;
-        }
-    }
+    protected virtual bool IsThroughTwoPoints => true;
 
     public virtual bool CanEdit(string propertyName)
     {
@@ -45,10 +39,7 @@ public class LineTwoPoints : LineBase, ILine, IFixableDirection
     [PropertyGridCustomValueProvider(typeof(DirectionPropertyValue))]
     public virtual double Direction
     {
-        get
-        {
-            return DirectionConstraint.Of(Coordinates);
-        }
+        get => DirectionConstraint.Of(Coordinates);
         set
         {
             if (IsThroughTwoPoints)
@@ -65,26 +56,14 @@ public class LineTwoPoints : LineBase, ILine, IFixableDirection
         return defaultCaption;
     }
 
-    public override PointPair OnScreenCoordinates
-    {
-        get
-        {
-            return Math.GetLineFromSegment(Coordinates, CanvasLogicalBorders);
-        }
-    }
+    public override PointPair OnScreenCoordinates => Math.GetLineFromSegment(Coordinates, CanvasLogicalBorders);
 
     protected override IReadOnlyList<string> NamesFromDependencies()
     {
         return NamesFromPoints(PointOrder.Reversible);
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Line";
-        }
-    }
+    protected override string Kind => "Line";
 
     public static void Convert(ILine oldLine, ILine newLine)
     {

@@ -110,10 +110,7 @@ public class FigureExplorer : Border
 
     public Drawing Drawing
     {
-        get
-        {
-            return drawing;
-        }
+        get => drawing;
         set
         {
             if (drawing == value)
@@ -158,10 +155,7 @@ public class FigureExplorer : Border
     /// </summary>
     public bool RecursiveArrows
     {
-        get
-        {
-            return recursiveArrows;
-        }
+        get => recursiveArrows;
         set
         {
             if (recursiveArrows == value)
@@ -345,7 +339,7 @@ public class FigureExplorer : Border
 
     HashSet<IFigure> SelectedFigures()
     {
-        return new HashSet<IFigure>(drawing != null ? drawing.GetSelectedFigures() : Enumerable.Empty<IFigure>());
+        return new HashSet<IFigure>(drawing != null ? drawing.GetSelectedFigures() : []);
     }
 
     #endregion

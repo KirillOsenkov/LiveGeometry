@@ -22,26 +22,14 @@ public abstract partial class Behavior : INotifyPropertyChanged
         }
     }
 
-    public virtual string Category
-    {
-        get
-        {
-            return "Common";
-        }
-    }
+    public virtual string Category => "Common";
 
     public abstract string Name
     {
         get;
     }
 
-    public virtual string HintText
-    {
-        get
-        {
-            return "";
-        }
-    }
+    public virtual string HintText => "";
 
     public virtual string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
     {
@@ -114,10 +102,7 @@ public abstract partial class Behavior : INotifyPropertyChanged
     protected Drawing mDrawing;
     public virtual Drawing Drawing
     {
-        get
-        {
-            return mDrawing;
-        }
+        get => mDrawing;
         set
         {
             if (mDrawing != null)
@@ -150,10 +135,7 @@ public abstract partial class Behavior : INotifyPropertyChanged
     private Canvas mParentCanvas;
     public virtual Canvas ParentCanvas
     {
-        get
-        {
-            return mParentCanvas;
-        }
+        get => mParentCanvas;
         set
         {
             if (mParentCanvas != null)
@@ -188,13 +170,7 @@ public abstract partial class Behavior : INotifyPropertyChanged
         }
     }
 
-    public virtual object PropertyBag
-    {
-        get
-        {
-            return null;
-        }
-    }
+    public virtual object PropertyBag => null;
 
     public virtual void Started()
     {
@@ -212,13 +188,7 @@ public abstract partial class Behavior : INotifyPropertyChanged
         Started();
     }
 
-    public virtual bool IsInInitialState 
-    {
-        get
-        {
-            return true;
-        }
-    }
+    public virtual bool IsInInitialState => true;
 
     protected void AbortAndSetDefaultTool()
     {
@@ -1345,13 +1315,7 @@ public abstract partial class Behavior : INotifyPropertyChanged
         return result;
     }
 
-    protected double CursorTolerance
-    {
-        get
-        {
-            return Drawing.CoordinateSystem.CursorTolerance;
-        }
-    }
+    protected double CursorTolerance => Drawing.CoordinateSystem.CursorTolerance;
 
     protected double ToPhysical(double logicalLength)
     {

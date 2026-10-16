@@ -147,10 +147,7 @@ public class StringEditor : LabeledValueEditor, IValueEditor
     /// </summary>
     public string ErrorText
     {
-        get
-        {
-            return errorBlock?.Text;
-        }
+        get => errorBlock?.Text;
         set
         {
             if (errorBox == null)

@@ -11,12 +11,9 @@ public abstract partial class FigureStyle : IFigureStyle, IThemeOverridable, ICo
 {
     string name = "";
     //[PropertyGridVisible]
-    public string Name 
+    public string Name
     {
-        get
-        {
-            return name;
-        }
+        get => name;
         set
         {
             // Prevent invalid (duplicate) style names.  Stylemanager is not designed to handle duplicate names.
@@ -421,10 +418,8 @@ public abstract partial class FigureStyle : IFigureStyle, IThemeOverridable, ICo
             }
             return mCurrentEditInfo;
         }
-        set
-        {
-            mCurrentEditInfo = value;
-        }
+
+        set => mCurrentEditInfo = value;
     }
 
     public class EditInfo

@@ -13,20 +13,11 @@ public class RectangularGridLinesCollection : GridLinesCollection
     /// <summary>The finer lines between the labeled ones, fainter than <see cref="FigureBase.Style"/></summary>
     public LineStyle MinorStyle { get; set; }
 
-    IEnumerable<Line> AllLines
-    {
-        get
-        {
-            return Lines.Concat(MinorLines);
-        }
-    }
+    IEnumerable<Line> AllLines => Lines.Concat(MinorLines);
 
     public override bool Visible
     {
-        get
-        {
-            return base.Visible;
-        }
+        get => base.Visible;
         set
         {
             base.Visible = value;

@@ -29,10 +29,7 @@ public class ShapeStyle : LineStyle
     [PropertyGridVisible]
     public Brush Fill
     {
-        get
-        {
-            return mFill;
-        }
+        get => mFill;
         set
         {
             mFill = value;
@@ -45,10 +42,7 @@ public class ShapeStyle : LineStyle
     [PropertyGridName("Filled")]
     public bool IsFilled
     {
-        get
-        {
-            return mIsFilled;
-        }
+        get => mIsFilled;
         set
         {
             mIsFilled = value;

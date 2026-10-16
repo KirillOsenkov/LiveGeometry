@@ -46,6 +46,16 @@ being true. Things derivable from the code or git history don't belong here.
   none before `}`.
 - **Blank line after a block** - control-flow statements and member/type declarations alike -
   unless it is the last thing in its enclosing block.
+- **Expression-bodied getters for trivial properties**: `public int Count => items.Count;`,
+  not a `get { return ...; }` block; a getter whose expression wouldn't fit on one line keeps
+  its block. Same for a setter next to such a getter (`set => field = value;`).
+- **Collection expressions over array initializers** where the target is an array: `int[] x =
+  [1, 2, 3]`, not `new[] { 1, 2, 3 }`, and `[]` for an empty one. Where the target isn't an
+  array - `foreach (var s in new[] { ... })`, an `IEnumerable<T>` parameter, one arm of a
+  conditional - `new[]` stays: a collection expression there has no type, or gets a
+  read-only wrapper instead of an array. (`Main/Avalonia/.editorconfig` says both of these
+  to the IDE, `when_on_single_line` and `when_types_exactly_match`; the code was converted
+  on 2026-10-15 through Roslyn's fixes, IDE0025/27 and IDE0300/01.)
 - **Before finishing a file**, sort usings and remove unused ones.
 - **Avoid `sealed`. Avoid `internal`. Prefer `public`.** Only with a concrete reason.
 - **No abbreviations in identifiers** (`operation`, not `op`). Exceptions: `sb`, `ex`, `sw`.

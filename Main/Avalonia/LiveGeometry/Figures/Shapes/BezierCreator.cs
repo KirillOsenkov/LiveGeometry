@@ -17,18 +17,9 @@ public class BezierCreator : FigureCreator
         yield return Factory.CreateBezier(Drawing, FoundDependencies);
     }
 
-    public override string Name
-    {
-        get { return "Bezier"; }
-    }
+    public override string Name => "Bezier";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click four points to draw a cubic bezier curve.";
-        }
-    }
+    public override string HintText => "Click four points to draw a cubic bezier curve.";
 
     public override FrameworkElement CreateIcon()
     {

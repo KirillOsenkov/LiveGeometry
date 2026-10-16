@@ -32,22 +32,10 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
         return ZOrder.Labels;
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Text";
-        }
-    }
+    protected override string Kind => "Text";
 
     /// <summary>The start of the text, in quotes: Text “Drag the point…”</summary>
-    public override string Construction
-    {
-        get
-        {
-            return ConstructionText.Quote(Text);
-        }
-    }
+    public override string Construction => ConstructionText.Quote(Text);
 
     protected override FrameworkElement CreateShape()
     {
@@ -98,10 +86,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     [PropertyGridDisallowMultiEdit]
     public virtual string Text
     {
-        get
-        {
-            return text;
-        }
+        get => text;
         set
         {
             text = value ?? "";
@@ -342,7 +327,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
         {
             if (!ShouldProcessText || text.IsEmpty())
             {
-                return Enumerable.Empty<string>();
+                return [];
             }
 
             return FindExpressionParts(text)
@@ -353,10 +338,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
 
     public IReadOnlyList<string> ExpressionTexts
     {
-        get
-        {
-            return new[] { text };
-        }
+        get => new[] { text };
         set
         {
             if (value[0] != text)
@@ -424,13 +406,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     public static readonly TimeSpan TextInterval = TimeSpan.FromMilliseconds(100);
 
     // on screen: a pin is measured from the canvas, and a text shown later is laid out there
-    protected bool HasCanvas
-    {
-        get
-        {
-            return Drawing != null && Drawing.Canvas != null;
-        }
-    }
+    protected bool HasCanvas => Drawing != null && Drawing.Canvas != null;
 
     string processedText;
     long textShownAt;
@@ -445,10 +421,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     /// </summary>
     public virtual string ProcessedText
     {
-        get
-        {
-            return processedText;
-        }
+        get => processedText;
         set
         {
             processedText = value;
@@ -513,10 +486,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     [PropertyGridVisible]
     public virtual int DecimalsToShow
     {
-        get
-        {
-            return mDecimalsToShow;
-        }
+        get => mDecimalsToShow;
         set
         {
             if (value >= 0 && value <= 10)

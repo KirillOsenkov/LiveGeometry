@@ -67,10 +67,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
     /// <summary>The arrow's style, which the shaft is drawn in too</summary>
     public override IFigureStyle Style
     {
-        get
-        {
-            return Arrow.Style;
-        }
+        get => Arrow.Style;
         set
         {
             Arrow.Style = value;
@@ -90,22 +87,10 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
         return NamesFromPoints(PointOrder.Fixed);
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Vector";
-        }
-    }
+    protected override string Kind => "Vector";
 
     /// <summary>Vector u, v, w... when no points name it</summary>
-    protected override string FirstLetter
-    {
-        get
-        {
-            return "u";
-        }
-    }
+    protected override string FirstLetter => "u";
 
     public override void OnAddingToCanvas(Canvas newContainer)
     {
@@ -197,10 +182,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
         }
     }
 
-    public PointPair Coordinates
-    {
-        get { return Line.Coordinates; }
-    }
+    public PointPair Coordinates => Line.Coordinates;
 
     // the length lives on the segment inside; so do Fix length and Free length
     [PropertyGridVisible]
@@ -209,10 +191,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
     [PropertyGridCustomValueProvider(typeof(LengthPropertyValue))]
     public double Length
     {
-        get
-        {
-            return Line.Length;
-        }
+        get => Line.Length;
         set
         {
             Line.Length = value;
@@ -257,10 +236,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
 
     public IPoint DirectionEndpoint => Line.DirectionEndpoint;
 
-    public IList<IFigure> MeasuredFigures
-    {
-        get { return new IFigure[] { this }; }
-    }
+    public IList<IFigure> MeasuredFigures => new IFigure[] { this };
 
     public string Caption(string propertyName, string defaultCaption)
     {
@@ -296,10 +272,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
     [PropertyGridCustomValueProvider(typeof(DirectionPropertyValue))]
     public double Angle
     {
-        get
-        {
-            return Line.Direction;
-        }
+        get => Line.Direction;
         set
         {
             Line.Direction = value;
@@ -321,14 +294,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
     [PropertyGridCustomValueProvider(typeof(ComponentValue))]
     public double X
     {
-        get
-        {
-            return Coordinates.P2.X - Coordinates.P1.X;
-        }
-        set
-        {
-            SetComponents(new Point(value, Y));
-        }
+        get => Coordinates.P2.X - Coordinates.P1.X; set => SetComponents(new Point(value, Y));
     }
 
     /// <summary>The second point less the first, up (see <see cref="X"/>)</summary>
@@ -339,14 +305,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
     [PropertyGridCustomValueProvider(typeof(ComponentValue))]
     public double Y
     {
-        get
-        {
-            return Coordinates.P2.Y - Coordinates.P1.Y;
-        }
-        set
-        {
-            SetComponents(new Point(X, value));
-        }
+        get => Coordinates.P2.Y - Coordinates.P1.Y; set => SetComponents(new Point(X, value));
     }
 
     /// <summary>Undo puts back the end that moved and the Numbers holding its length and direction</summary>
@@ -543,14 +502,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
     // the vector's own Direction is in radians (what a translation by it reads)
     double IFixableDirection.Direction
     {
-        get
-        {
-            return Angle;
-        }
-        set
-        {
-            Angle = value;
-        }
+        get => Angle; set => Angle = value;
     }
 
     // so do Fix direction, Free direction, Horizontal and Vertical
@@ -594,13 +546,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
         Drawing.RaiseDisplayProperties(this);
     }
 
-    public double Direction
-    {
-        get 
-        { 
-            return Math.GetAngle(Coordinates.P1, Coordinates.P2); 
-        }
-    }
+    public double Direction => Math.GetAngle(Coordinates.P1, Coordinates.P2);
 
     public double GetNearestParameterFromPoint(Point point)
     {

@@ -164,13 +164,7 @@ public partial class DrawingDeserializer
         errors.Add(error);
     }
 
-    public bool IsSuccess
-    {
-        get
-        {
-            return errors.Count == 0;
-        }
-    }
+    public bool IsSuccess => errors.Count == 0;
 
     public string GetErrorReport()
     {
@@ -633,7 +627,7 @@ public partial class DrawingDeserializer
         }
         else
         {
-            var ctorWithDrawingAndDependencies = type.GetConstructor(new Type[] { typeof(Drawing), typeof(IList<IFigure>) });
+            var ctorWithDrawingAndDependencies = type.GetConstructor([typeof(Drawing), typeof(IList<IFigure>)]);
             if (ctorWithDrawingAndDependencies != null)
             {
                 instance = Activator.CreateInstance(type, drawing, dependencies) as IFigure;

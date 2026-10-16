@@ -52,7 +52,7 @@ public static class EmojiList
 
     /// <summary>What a point would want first: shapes in colors, stars, pins, a few things</summary>
     static readonly string[] suggestions =
-    {
+    [
         "🔴", "🟠", "🟡", "🟢", "🔵", "🟣", "🟤", "⚫", "⚪",
         "🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "🟫", "⬛", "⬜",
         "🔺", "🔻", "🔷", "🔶", "🔹", "🔸", "💠", "🔘", "⭕",
@@ -60,7 +60,7 @@ public static class EmojiList
         "📍", "📌", "🚩", "🏁", "🏠", "🏰", "🌳", "⛰️", "🌋",
         "🍎", "🍒", "🌸", "🌻", "🍀", "🐞", "🦋", "🐱", "🐶",
         "🐸", "🐢", "🚀", "✈️", "🚗", "⚽", "🏀", "🎈", "☀️"
-    };
+    ];
 
     public static IEnumerable<Emoji> Suggestions
     {
@@ -98,7 +98,7 @@ public static class EmojiList
         var words = SplitWords(query);
         if (words.Length == 0)
         {
-            return Enumerable.Empty<Emoji>();
+            return [];
         }
 
         var byName = All.Where(e => Matches(words, SplitWords(e.Name)));
@@ -113,7 +113,7 @@ public static class EmojiList
 
     static string[] SplitWords(string text)
     {
-        return (text ?? "").Split(new[] { ' ', '-', ':', ',', '&' }, StringSplitOptions.RemoveEmptyEntries);
+        return (text ?? "").Split([' ', '-', ':', ',', '&'], StringSplitOptions.RemoveEmptyEntries);
     }
 
     /// <summary>

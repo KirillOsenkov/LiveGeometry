@@ -33,11 +33,5 @@ public abstract class CoordinatesShapeBase<TShape> : ShapeBase<TShape>, IMovable
 
     public Point Coordinates { get; set; }
 
-    public override Point Center
-    {
-        get
-        {
-            return Coordinates;
-        }
-    }
+    public override Point Center => Coordinates;
 }

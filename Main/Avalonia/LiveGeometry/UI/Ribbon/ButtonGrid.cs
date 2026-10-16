@@ -105,10 +105,7 @@ public class ButtonGrid : Grid
     bool isChecked;
     public bool IsChecked
     {
-        get
-        {
-            return isChecked;
-        }
+        get => isChecked;
         set
         {
             isChecked = value;
@@ -161,10 +158,7 @@ public class ButtonGrid : Grid
     UIElement icon;
     public UIElement Icon
     {
-        get
-        {
-            return icon;
-        }
+        get => icon;
         set
         {
             if (icon != null)
@@ -181,13 +175,6 @@ public class ButtonGrid : Grid
 
     public string Text
     {
-        get
-        {
-            return textBlock.Text;
-        }
-        set
-        {
-            textBlock.Text = value;
-        }
+        get => textBlock.Text; set => textBlock.Text = value;
     }
 }

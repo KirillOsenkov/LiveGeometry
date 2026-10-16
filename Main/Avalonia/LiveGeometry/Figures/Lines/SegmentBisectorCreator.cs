@@ -40,18 +40,9 @@ public class SegmentBisectorCreator : FigureCreator
         base.MouseDown(sender, e);
     }
 
-    public override string Name
-    {
-        get { return "Perpendicular Bisector"; }
-    }
+    public override string Name => "Perpendicular Bisector";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click two points or a segment to create the perpendicular bisector.";
-        }
-    }
+    public override string HintText => "Click two points or a segment to create the perpendicular bisector.";
 
     public override FrameworkElement CreateIcon()
     {

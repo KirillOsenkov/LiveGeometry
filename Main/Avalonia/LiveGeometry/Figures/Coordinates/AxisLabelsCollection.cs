@@ -95,20 +95,8 @@ public class AxisLabelRange
 
     public AxisLabelsCollection Collection { get; set; }
 
-    public Drawing Drawing
-    {
-        get
-        {
-            return Collection.Drawing;
-        }
-    }
-    public CoordinateSystem CoordinateSystem
-    {
-        get
-        {
-            return Drawing.CoordinateSystem;
-        }
-    }
+    public Drawing Drawing => Collection.Drawing;
+    public CoordinateSystem CoordinateSystem => Drawing.CoordinateSystem;
 
     public void OnAddingToCanvas(Canvas canvas)
     {
@@ -132,10 +120,7 @@ public class AxisLabelRange
     private bool mVisible = true;
     public bool Visible
     {
-        get
-        {
-            return mVisible;
-        }
+        get => mVisible;
         set
         {
             mVisible = value;
@@ -239,10 +224,7 @@ public class AxisLabelsCollection : FigureBase
 
     public override bool Visible
     {
-        get
-        {
-            return base.Visible;
-        }
+        get => base.Visible;
         set
         {
             base.Visible = value;

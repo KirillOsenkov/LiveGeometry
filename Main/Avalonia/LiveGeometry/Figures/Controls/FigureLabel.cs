@@ -23,27 +23,12 @@ public class FigureLabel : Measurement
 
     bool placed;
 
-    IFigure Figure
-    {
-        get { return Dependencies.Count > 0 ? Dependencies[0] : null; }
-    }
+    IFigure Figure => Dependencies.Count > 0 ? Dependencies[0] : null;
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Name";
-        }
-    }
+    protected override string Kind => "Name";
 
     /// <summary>"of line g": "Name of line g"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return Figure != null ? "of " + ConstructionText.Of(Figure) : null;
-        }
-    }
+    public override string Construction => Figure != null ? "of " + ConstructionText.Of(Figure) : null;
 
     public override void OnAddingToDrawing(Drawing drawing)
     {
@@ -251,22 +236,9 @@ public class FigureLabel : Measurement
     [PropertyGridVisible(false)]
     public override bool Visible
     {
-        get
-        {
-            return base.Visible;
-        }
-        set
-        {
-            base.Visible = value;
-        }
+        get => base.Visible; set => base.Visible = value;
     }
 
     [PropertyGridVisible(false)]
-    public override string Text
-    {
-        get
-        {
-            return base.Text;
-        }
-    }
+    public override string Text => base.Text;
 }

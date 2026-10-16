@@ -151,13 +151,7 @@ public partial class MainView
     }
 
     /// <summary>The drawing's title for a page: the gallery's, or the file's name</summary>
-    string ExportTitle
-    {
-        get
-        {
-            return CurrentSample != null ? CurrentSample.Title : Path.GetFileNameWithoutExtension(OwnFileName ?? "drawing");
-        }
-    }
+    string ExportTitle => CurrentSample != null ? CurrentSample.Title : Path.GetFileNameWithoutExtension(OwnFileName ?? "drawing");
 
     /// <summary>
     /// A web page of its own, the player written into it (PlayerEmbed.CreatePage): one file

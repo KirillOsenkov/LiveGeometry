@@ -117,7 +117,7 @@ public class PolygonIntersection : CompositeFigure
             list.Add(mid);
         }
 
-        return new[] { list.ToArray() };
+        return [list.ToArray()];
     }
 
     public override string ToString()

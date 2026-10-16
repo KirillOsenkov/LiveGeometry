@@ -193,7 +193,7 @@ public class MacroSerializer : DrawingSerializer
         // figure is built on other points: segment AB on P and Q kept AB as if typed. The
         // figures that had their default names say so, and get the new ones.
         var figures = withStyles.Root.Element("Figures");
-        foreach (var element in figures?.Elements() ?? Enumerable.Empty<XElement>())
+        foreach (var element in figures?.Elements() ?? [])
         {
             var result = Results.FirstOrDefault(r => r.Name == element.ReadString("Name"));
             if (result != null && result.HasDefaultName)

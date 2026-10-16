@@ -18,31 +18,13 @@ public class Bezier : ShapeBase<Path>, ILinearFigure
         return NamesFromPoints(PointOrder.Reversible, maxCount: 4);
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Bezier curve";
-        }
-    }
+    protected override string Kind => "Bezier curve";
 
     /// <summary>A name: "on Bezier curve ABCD"</summary>
-    public override string Noun
-    {
-        get
-        {
-            return "Bezier curve";
-        }
-    }
+    public override string Noun => "Bezier curve";
 
     /// <summary>Named as curves are, when no points name it: c, d...</summary>
-    protected override string FirstLetter
-    {
-        get
-        {
-            return "c";
-        }
-    }
+    protected override string FirstLetter => "c";
 
     /// <summary>
     /// The curve worked out, also before its first <see cref="Recalculate"/>: a point
@@ -105,14 +87,9 @@ public class Bezier : ShapeBase<Path>, ILinearFigure
         }
     }
 
-    public override Point Center
-    {
-        get
-        {
-            // For now use a very rough centroid approximation.
-            return Math.Midpoint(Point(0), Point(1), Point(2), Point(3));
-        }
-    }
+    public override Point Center =>
+        // For now use a very rough centroid approximation.
+        Math.Midpoint(Point(0), Point(1), Point(2), Point(3));
 
     protected override Path CreateShape()
     {

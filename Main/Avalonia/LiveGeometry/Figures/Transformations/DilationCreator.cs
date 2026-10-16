@@ -72,13 +72,7 @@ public class DilationCreator : FigureCreator
     /// while the source and the center were still to be clicked. "Construction complete" is
     /// raised before the found figures are cleared, but after the transaction is gone.
     /// </summary>
-    public override object PropertyBag
-    {
-        get
-        {
-            return Transaction != null && FoundDependencies.Count == 2 ? Dialog : null;
-        }
-    }
+    public override object PropertyBag => Transaction != null && FoundDependencies.Count == 2 ? Dialog : null;
 
     protected override DependencyList InitExpectedDependencies()
     {
@@ -159,18 +153,9 @@ public class DilationCreator : FigureCreator
             : "set its factor in the panel, or click a segment or a slider to take the factor from it.";
     }
 
-    public override string Name
-    {
-        get { return "Dilate"; }
-    }
+    public override string Name => "Dilate";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Select the source figure.";
-        }
-    }
+    public override string HintText => "Select the source figure.";
 
     public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
     {

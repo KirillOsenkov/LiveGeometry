@@ -49,10 +49,7 @@ public class CircleByRadiusCreator : FigureCreator
     // vector or a distance measurement is unwrapped into its two points (see
     // FindRadiusEnds); anything else with a length is the radius itself.
 
-    bool RadiusIsAFigure
-    {
-        get { return FoundDependencies.Count > 0 && !(FoundDependencies[0] is IPoint); }
-    }
+    bool RadiusIsAFigure => FoundDependencies.Count > 0 && !(FoundDependencies[0] is IPoint);
 
     protected override IReadOnlyList<IFigure> FindFiguresInsteadOfPoint(Point unconstrainedCoordinates)
     {
@@ -224,10 +221,7 @@ public class CircleByRadiusCreator : FigureCreator
         return slider.Exists ? ArrowCursor : base.GetCursor(coordinates);
     }
 
-    public override bool IsInInitialState
-    {
-        get { return !slider.Exists && base.IsInInitialState; }
-    }
+    public override bool IsInInitialState => !slider.Exists && base.IsInInitialState;
 
     public override void Stopping()
     {
@@ -237,21 +231,9 @@ public class CircleByRadiusCreator : FigureCreator
 
     #endregion
 
-    public override string Name
-    {
-        get
-        {
-            return "By Radius";
-        }
-    }
+    public override string Name => "By Radius";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click two points (the ends of a radius), a segment, a distance or a slider - or empty paper, to make a slider for the radius. Then click the circle center.";
-        }
-    }
+    public override string HintText => "Click two points (the ends of a radius), a segment, a distance or a slider - or empty paper, to make a slider for the radius. Then click the circle center.";
 
     public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
     {

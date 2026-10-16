@@ -7,32 +7,14 @@ public class ReflectedPoint : PointBase, IPoint
 {
     [PropertyGridVisible]
     [PropertyGridName("Reflection Of ")]
-    public IFigure Source
-    {
-        get
-        {
-            return Dependencies.ElementAt(0);
-        }
-    }
+    public IFigure Source => Dependencies.ElementAt(0);
 
     [PropertyGridVisible]
     [PropertyGridName("Reflected About ")]
-    public IFigure Mirror
-    {
-        get
-        {
-            return Dependencies.ElementAt(1);
-        }
-    }
+    public IFigure Mirror => Dependencies.ElementAt(1);
 
     /// <summary>A reflection in a circle is an inversion</summary>
-    protected override string Kind
-    {
-        get
-        {
-            return Dependencies.Count > 1 && Mirror is ICircle ? "Inverted point" : "Reflected point";
-        }
-    }
+    protected override string Kind => Dependencies.Count > 1 && Mirror is ICircle ? "Inverted point" : "Reflected point";
 
     /// <summary>"of A across line g", "of A through O", "of A in circle k"</summary>
     public override string Construction

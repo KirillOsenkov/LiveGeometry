@@ -23,7 +23,7 @@ public static class ExpressionReflection
 
     public static readonly PropertyInfo PointCoordinates = typeof(IPoint).GetProperty(nameof(IPoint.Coordinates));
 
-    public static readonly MethodInfo DistanceOfPoints = typeof(Math).GetMethod(nameof(Math.Distance), new[] { typeof(PointBase), typeof(PointBase) });
+    public static readonly MethodInfo DistanceOfPoints = typeof(Math).GetMethod(nameof(Math.Distance), [typeof(PointBase), typeof(PointBase)]);
 
     /// <summary>
     /// The functions of System.Math are found by name, through reflection the trimmer
@@ -49,13 +49,13 @@ public static class ExpressionReflection
     static void KeepGetterInstantiations()
     {
         Func<MethodInfo, Func<object, double>>[] instantiations =
-        {
+        [
             WrapGetter<object, double>,
             WrapGetter<object, int>,
             WrapGetter<object, long>,
             WrapGetter<object, float>,
             WrapGetter<object, decimal>
-        };
+        ];
         GC.KeepAlive(instantiations);
     }
 
@@ -169,7 +169,7 @@ public static class ExpressionReflection
             var wrap = typeof(ExpressionReflection)
                 .GetMethod(nameof(WrapGetter), BindingFlags.NonPublic | BindingFlags.Static)
                 .MakeGenericMethod(owner, property.PropertyType);
-            return (Func<object, double>)wrap.Invoke(null, new object[] { getter });
+            return (Func<object, double>)wrap.Invoke(null, [getter]);
         }
         catch (Exception ex) when (ex is ArgumentException || ex is TargetInvocationException || ex is NotSupportedException)
         {
@@ -239,13 +239,13 @@ public class NumberFunction
         bool exact = method.ReturnType == typeof(double) && parameters.All(parameter => parameter.ParameterType == typeof(double));
         Of1 = exact && parameters.Length == 1
             ? (Func<double, double>)method.CreateDelegate(typeof(Func<double, double>))
-            : first => Invoke(new object[] { first });
+            : first => Invoke([first]);
         Of2 = exact && parameters.Length == 2
             ? (Func<double, double, double>)method.CreateDelegate(typeof(Func<double, double, double>))
-            : (first, second) => Invoke(new object[] { first, second });
+            : (first, second) => Invoke([first, second]);
         Of3 = exact && parameters.Length == 3
             ? (Func<double, double, double, double>)method.CreateDelegate(typeof(Func<double, double, double, double>))
-            : (first, second, third) => Invoke(new object[] { first, second, third });
+            : (first, second, third) => Invoke([first, second, third]);
         OfMany = values => Invoke(values.Cast<object>().ToArray());
     }
 
@@ -310,7 +310,7 @@ public class PointFunction
     {
         if (TakesArray)
         {
-            return ofArray != null ? ofArray(points) : ExpressionReflection.ToDouble(Method.Invoke(null, new object[] { points }));
+            return ofArray != null ? ofArray(points) : ExpressionReflection.ToDouble(Method.Invoke(null, [points]));
         }
 
         if (of1 != null && points.Length == 1)

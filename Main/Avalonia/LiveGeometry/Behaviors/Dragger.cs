@@ -675,10 +675,7 @@ public partial class Dragger : Behavior
     /// <summary>The tool on another drawing (the next of the gallery): what it held of the old one is let go</summary>
     public override Drawing Drawing
     {
-        get
-        {
-            return base.Drawing;
-        }
+        get => base.Drawing;
         set
         {
             if (value != base.Drawing)
@@ -1234,7 +1231,7 @@ public partial class Dragger : Behavior
     public override FrameworkElement CreateIcon()
     {
         Point[] points = 
-        {
+        [
             new Point(10, 5),
             new Point(10, 21),
             new Point(14, 17),
@@ -1245,7 +1242,7 @@ public partial class Dragger : Behavior
             new Point(17, 16),
             new Point(21, 16),
             new Point(10, 5)
-        };
+        ];
         var builder = IconBuilder.BuildIcon();
         var polygon = builder.AddPolygon(
                 points.Select(p => new Point(p.X / 32, p.Y / 32)));
@@ -1256,13 +1253,7 @@ public partial class Dragger : Behavior
         return builder.Canvas;
     }
 
-    public override string Name
-    {
-        get { return "Drag"; }
-    }
+    public override string Name => "Drag";
 
-    public override string HintText
-    {
-        get { return "Use this tool to drag points and figures. Drag with the right button to select figures with a lasso."; }
-    }
+    public override string HintText => "Use this tool to drag points and figures. Drag with the right button to select figures with a lasso.";
 }

@@ -87,10 +87,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     [PropertyGridCustomValueProvider(typeof(PaperValue))]
     public Brush Background
     {
-        get
-        {
-            return GetOwnBackground(AppTheme.Current) ?? new SolidColorBrush(AppTheme.Current.Paper);
-        }
+        get => GetOwnBackground(AppTheme.Current) ?? new SolidColorBrush(AppTheme.Current.Paper);
         set
         {
             background = value;
@@ -99,13 +96,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     }
 
     /// <summary>The paper the drawing chose (under the base theme), null for the theme's</summary>
-    public Brush OwnBackground
-    {
-        get
-        {
-            return background;
-        }
-    }
+    public Brush OwnBackground => background;
 
     /// <summary>The paper the drawing has under the theme, null for the theme's own</summary>
     public Brush GetOwnBackground(AppTheme theme)
@@ -388,10 +379,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     /// </summary>
     public Rect? ActiveScene
     {
-        get
-        {
-            return activeScene;
-        }
+        get => activeScene;
         set
         {
             activeScene = value;
@@ -545,7 +533,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     {
         public SelectionChangedEventArgs()
         {
-            SelectedFigures = Enumerable.Empty<IFigure>();
+            SelectedFigures = [];
         }
 
         public SelectionChangedEventArgs(IEnumerable<IFigure> selection)
@@ -568,7 +556,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     {
         public DeleteExecutedEventArgs()
         {
-            DeletedFigures = Enumerable.Empty<IFigure>();
+            DeletedFigures = [];
         }
 
         public DeleteExecutedEventArgs(IEnumerable<IFigure> deletedFigures)
@@ -820,7 +808,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     {
         public FigureCoordinatesChangedEventArgs()
         {
-            Figures = Enumerable.Empty<IFigure>();
+            Figures = [];
         }
 
         public FigureCoordinatesChangedEventArgs(IEnumerable<IFigure> figures)
@@ -886,10 +874,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     /// recorded now joins that undo step, and is taken back with it if it is given up.
     /// Commands that are not part of it (Delete, Paste, Redo) wait.
     /// </summary>
-    public bool IsRecordingTransaction
-    {
-        get { return ActionManager.RecordingTransaction != null; }
-    }
+    public bool IsRecordingTransaction => ActionManager.RecordingTransaction != null;
 
     public event Action<Canvas> OnAttachToCanvas;
     public event Action<Canvas> OnDetachFromCanvas;
@@ -912,10 +897,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     private Canvas mCanvas;
     public Canvas Canvas
     {
-        get
-        {
-            return mCanvas;
-        }
+        get => mCanvas;
         set
         {
             if (mCanvas == value)
@@ -945,10 +927,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     private Behavior mBehavior;
     public Behavior Behavior
     {
-        get
-        {
-            return mBehavior;
-        }
+        get => mBehavior;
         set
         {
             if (mBehavior == value)
@@ -967,7 +946,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
                 mBehavior.Started();
                 RaiseBehaviorChanged(mBehavior);
             }
-            
+
         }
     }
 

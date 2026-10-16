@@ -177,16 +177,10 @@ public class MacroDefiner : Behavior
             .Canvas;
     }
 
-    public override string Name
-    {
-        get { return "Define figure"; }
-    }
+    public override string Name => "Define figure";
 
     // the order is the one the new tool will ask for them in
-    public override string HintText
-    {
-        get { return "Click the inputs in order."; }
-    }
+    public override string HintText => "Click the inputs in order.";
 
     public virtual UserDefinedTool CreateTool()
     {

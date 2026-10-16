@@ -48,18 +48,9 @@ public class TriangleCreator : ShapeCreator
         return null;
     }
 
-    public override string Name
-    {
-        get { return "Triangle"; }
-    }
+    public override string Name => "Triangle";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click 3 points to construct a triangle.";
-        }
-    }
+    public override string HintText => "Click 3 points to construct a triangle.";
 
     public override FrameworkElement CreateIcon()
     {

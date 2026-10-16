@@ -24,13 +24,7 @@ public partial class PointInRegion : FreePoint, IPoint
     // figure is in the drawing
     bool hasOffset;
 
-    public IRegion Region
-    {
-        get
-        {
-            return Dependencies.Count > 0 ? Dependencies[0] as IRegion : null;
-        }
-    }
+    public IRegion Region => Dependencies.Count > 0 ? Dependencies[0] as IRegion : null;
 
     // a FreePoint by inheritance, dragged within its figure only (ZOrder)
     protected override ZOrder DefaultLayer()
@@ -56,13 +50,7 @@ public partial class PointInRegion : FreePoint, IPoint
     }
 
     /// <summary>"inside triangle ABC"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return Dependencies.Count > 0 ? "inside " + ConstructionText.Of(Dependencies[0]) : null;
-        }
-    }
+    public override string Construction => Dependencies.Count > 0 ? "inside " + ConstructionText.Of(Dependencies[0]) : null;
 
     protected override Avalonia.Controls.Shapes.Shape CreateShape()
     {

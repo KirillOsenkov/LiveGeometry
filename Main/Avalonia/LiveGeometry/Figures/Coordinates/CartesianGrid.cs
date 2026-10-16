@@ -127,10 +127,7 @@ public partial class CartesianGrid : CompositeFigure, ICustomPropertyProvider, I
     private bool visible = false;
     public override bool Visible
     {
-        get
-        {
-            return visible;
-        }
+        get => visible;
         set
         {
             visible = value;
@@ -153,10 +150,7 @@ public partial class CartesianGrid : CompositeFigure, ICustomPropertyProvider, I
     [PropertyGridName("Show Axes")]
     public bool ShowAxes
     {
-        get
-        {
-            return showAxes;
-        }
+        get => showAxes;
         set
         {
             // the axes of a grid that shows: ticked while the grid is hidden, they used
@@ -174,13 +168,7 @@ public partial class CartesianGrid : CompositeFigure, ICustomPropertyProvider, I
     }
 
     /// <summary>Whether the axes are on screen, where a click can take them (<see cref="AxisLine"/>)</summary>
-    public bool ShowsAxes
-    {
-        get
-        {
-            return visible && showAxes;
-        }
-    }
+    public bool ShowsAxes => visible && showAxes;
 
     public override IFigure HitTest(Point point, System.Predicate<IFigure> filter)
     {
@@ -227,14 +215,8 @@ public partial class CartesianGrid : CompositeFigure, ICustomPropertyProvider, I
 
     public IEnumerable<IOperationDescription> GetMethods()
     {
-        return Enumerable.Empty<IOperationDescription>();
+        return [];
     }
 
-    public override bool Serializable
-    {
-        get
-        {
-            return false;
-        }
-    }
+    public override bool Serializable => false;
 }

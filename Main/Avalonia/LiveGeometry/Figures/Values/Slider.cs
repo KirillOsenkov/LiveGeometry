@@ -70,10 +70,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     [PropertyGridPreferredEditor("UpDown")]
     public double Value
     {
-        get
-        {
-            return minimum + Knob.Distance;
-        }
+        get => minimum + Knob.Distance;
         set
         {
             var origin = Anchor.Coordinates;
@@ -89,10 +86,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     [PropertyGridCustomValueProvider(typeof(RangeValue))]
     public double Minimum
     {
-        get
-        {
-            return minimum;
-        }
+        get => minimum;
         set
         {
             if (!value.IsValidValue() || value > maximum)
@@ -113,10 +107,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     [PropertyGridCustomValueProvider(typeof(RangeValue))]
     public double Maximum
     {
-        get
-        {
-            return maximum;
-        }
+        get => maximum;
         set
         {
             if (double.IsNaN(value) || value < minimum)
@@ -140,10 +131,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     [PropertyGridCustomValueProvider(typeof(RangeValue))]
     public double Step
     {
-        get
-        {
-            return step;
-        }
+        get => step;
         set
         {
             if (!value.IsValidValue() || value < 0)
@@ -197,10 +185,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     }
 
     /// <summary>How far the knob may go from the anchor</summary>
-    public double Span
-    {
-        get { return maximum - minimum; }
-    }
+    public double Span => maximum - minimum;
 
     /// <summary>The knob's distance from the anchor as the range and the step allow it</summary>
     public double ConstrainDistance(double distance)
@@ -216,10 +201,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     /// <summary>Where the anchor is; the knob keeps its distance</summary>
     public Point Position
     {
-        get
-        {
-            return Anchor.Coordinates;
-        }
+        get => Anchor.Coordinates;
         set
         {
             Anchor.MoveToCore(value);
@@ -242,31 +224,15 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     [Domain(0, 10)]
     public int Decimals
     {
-        get
-        {
-            return Caption.DecimalsToShow;
-        }
-        set
-        {
-            Caption.DecimalsToShow = value;
-        }
+        get => Caption.DecimalsToShow; set => Caption.DecimalsToShow = value;
     }
 
-    public double Length
-    {
-        get { return Value; }
-    }
+    public double Length => Value;
 
     /// <summary>Angle providers speak radians; the slider itself is in degrees, like a Number</summary>
-    public double Angle
-    {
-        get { return Value.ToRadians(); }
-    }
+    public double Angle => Value.ToRadians();
 
-    public override Point Center
-    {
-        get { return Track.Center; }
-    }
+    public override Point Center => Track.Center;
 
     #endregion
 
@@ -286,41 +252,20 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     }
 
     /// <summary>A slider goes by its name, as a number does: "radius a"</summary>
-    public override string Noun
-    {
-        get
-        {
-            return null;
-        }
-    }
+    public override string Noun => null;
 
     /// <summary>"= 2"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return "= " + ConstructionText.Number(Value);
-        }
-    }
+    public override string Construction => "= " + ConstructionText.Number(Value);
 
     /// <summary>The property grid's title: "Slider a"</summary>
-    protected override string Kind
-    {
-        get
-        {
-            return "Slider";
-        }
-    }
+    protected override string Kind => "Slider";
 
     /// <summary>The caption shows the name</summary>
     [PropertyGridVisible]
     [PropertyGridDisallowMultiEdit]
     public override string Name
     {
-        get
-        {
-            return base.Name;
-        }
+        get => base.Name;
         set
         {
             base.Name = value;
@@ -338,14 +283,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     /// <summary>The track's line style stands for the slider's; the points and the caption keep the styles of their kinds</summary>
     public override IFigureStyle Style
     {
-        get
-        {
-            return Track.Style;
-        }
-        set
-        {
-            Track.Style = value;
-        }
+        get => Track.Style; set => Track.Style = value;
     }
 
     public override void OnAddingToCanvas(Canvas newContainer)
@@ -400,10 +338,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         return wholeHandle;
     }
 
-    public IMovable WholePart
-    {
-        get { return wholeHandle; }
-    }
+    public IMovable WholePart => wholeHandle;
 
     /// <summary>
     /// Dragging the track or the caption: the anchor moves by as much as the cursor, without
@@ -418,10 +353,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
             this.slider = slider;
         }
 
-        public Point Coordinates
-        {
-            get { return slider.Anchor.Coordinates; }
-        }
+        public Point Coordinates => slider.Anchor.Coordinates;
 
         public bool AllowMove()
         {
@@ -477,10 +409,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
             this.slider = slider;
         }
 
-        public override Point Anchor
-        {
-            get { return slider.Anchor.Coordinates; }
-        }
+        public override Point Anchor => slider.Anchor.Coordinates;
 
         public override bool AllowMove()
         {

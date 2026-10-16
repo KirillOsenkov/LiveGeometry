@@ -50,21 +50,12 @@ public class AxisLine : LineBase, ILine, IConditionalProperties
         }
     }
 
-    public override PointPair OnScreenCoordinates
-    {
-        get
-        {
-            return Math.GetLineFromSegment(Coordinates, CanvasLogicalBorders);
-        }
-    }
+    public override PointPair OnScreenCoordinates => Math.GetLineFromSegment(Coordinates, CanvasLogicalBorders);
 
     /// <summary>A click takes the axis only where the grid shows it</summary>
     public override bool IsHitTestVisible
     {
-        get
-        {
-            return Drawing != null && Drawing.CoordinateGrid != null && Drawing.CoordinateGrid.ShowsAxes;
-        }
+        get => Drawing != null && Drawing.CoordinateGrid != null && Drawing.CoordinateGrid.ShowsAxes;
         set
         {
         }
@@ -85,21 +76,9 @@ public class AxisLine : LineBase, ILine, IConditionalProperties
     }
 
     /// <summary>"on x-axis": the name says what it is</summary>
-    public override string Noun
-    {
-        get
-        {
-            return null;
-        }
-    }
+    public override string Noun => null;
 
-    public override string Construction
-    {
-        get
-        {
-            return Direction == AxisDirection.X ? "y = 0" : "x = 0";
-        }
-    }
+    public override string Construction => Direction == AxisDirection.X ? "y = 0" : "x = 0";
 
     // The app names it, the grid draws it and nothing moves it: no rows for its name, its
     // look, whether it shows or is locked.
@@ -107,66 +86,31 @@ public class AxisLine : LineBase, ILine, IConditionalProperties
     [PropertyGridVisible(false)]
     public override string Name
     {
-        get
-        {
-            return base.Name;
-        }
-        set
-        {
-            base.Name = value;
-        }
+        get => base.Name; set => base.Name = value;
     }
 
     [PropertyGridVisible(false)]
     public override IFigureStyle StyleDisplay
     {
-        get
-        {
-            return base.StyleDisplay;
-        }
-        set
-        {
-            base.StyleDisplay = value;
-        }
+        get => base.StyleDisplay; set => base.StyleDisplay = value;
     }
 
     [PropertyGridVisible(false)]
     public override bool Visible
     {
-        get
-        {
-            return base.Visible;
-        }
-        set
-        {
-            base.Visible = value;
-        }
+        get => base.Visible; set => base.Visible = value;
     }
 
     [PropertyGridVisible(false)]
     public override bool Locked
     {
-        get
-        {
-            return base.Locked;
-        }
-        set
-        {
-            base.Locked = value;
-        }
+        get => base.Locked; set => base.Locked = value;
     }
 
     [PropertyGridVisible(false)]
     public override bool ShowName
     {
-        get
-        {
-            return base.ShowName;
-        }
-        set
-        {
-            base.ShowName = value;
-        }
+        get => base.ShowName; set => base.ShowName = value;
     }
 
     public bool CanEdit(string propertyName)

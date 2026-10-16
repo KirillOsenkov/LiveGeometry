@@ -17,10 +17,7 @@ public class PendingSlider
     /// <summary>The slider being placed; null when none is</summary>
     public Slider Slider { get; private set; }
 
-    public bool Exists
-    {
-        get { return Slider != null; }
-    }
+    public bool Exists => Slider != null;
 
     /// <summary>The first click: the anchor goes here</summary>
     public void Start(Drawing drawing, Point coordinates)

@@ -60,10 +60,7 @@ public abstract partial class LabeledValueEditor : Grid
     IValueProvider mValue;
     public IValueProvider Value
     {
-        get
-        {
-            return mValue;
-        }
+        get => mValue;
         set
         {
             if (mValue != null)
@@ -142,10 +139,7 @@ public abstract partial class LabeledValueEditor : Grid
     /// slider or a color picker is dragged through. An editor of single choices (a check
     /// box, a list) says no: each choice is a step.
     /// </summary>
-    protected virtual bool CoalescesEdits
-    {
-        get { return true; }
-    }
+    protected virtual bool CoalescesEdits => true;
 
     // the run of edits under way: sets of one run are one undo step (if CoalescesEdits)
     object editRun = new object();

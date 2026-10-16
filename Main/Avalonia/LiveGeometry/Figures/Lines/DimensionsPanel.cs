@@ -55,10 +55,7 @@ public class DimensionsPanel :
     /// </summary>
     public PropertyGrid PropertyGrid
     {
-        get
-        {
-            return propertyGrid;
-        }
+        get => propertyGrid;
         set
         {
             if (propertyGrid == value)
@@ -129,9 +126,7 @@ public class DimensionsPanel :
     [PropertyGridPreferredEditor("UpDown")]
     [PropertyGridCustomValueProvider(typeof(PanelLengthValue))]
     public double Length
-    {
-        get { return length.Length; }
-        set { length.Length = value; }
+    { get => length.Length; set => length.Length = value;
     }
 
     public class PanelLengthValue : LengthPropertyValue
@@ -145,9 +140,7 @@ public class DimensionsPanel :
     [PropertyGridPreferredEditor("UpDown")]
     [PropertyGridCustomValueProvider(typeof(PanelDirectionValue))]
     public double Direction
-    {
-        get { return direction.Direction; }
-        set { direction.Direction = value; }
+    { get => direction.Direction; set => direction.Direction = value;
     }
 
     public class PanelDirectionValue : DirectionPropertyValue
@@ -168,10 +161,7 @@ public class DimensionsPanel :
     [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
     public bool Show
     {
-        get
-        {
-            return LengthConstraint.FindMeasurement(length) != null;
-        }
+        get => LengthConstraint.FindMeasurement(length) != null;
         set
         {
             var existing = LengthConstraint.FindMeasurement(length);

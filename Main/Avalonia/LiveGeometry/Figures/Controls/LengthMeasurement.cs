@@ -88,15 +88,9 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     }
 
     /// <summary>The one figure measured; null for the distance between two points</summary>
-    IFigure Measured
-    {
-        get { return Dependencies.Count == 1 ? Dependencies[0] : null; }
-    }
+    IFigure Measured => Dependencies.Count == 1 ? Dependencies[0] : null;
 
-    bool IsBetweenPoints
-    {
-        get { return Dependencies.Count == 2 && Dependencies[0] is IPoint && Dependencies[1] is IPoint; }
-    }
+    bool IsBetweenPoints => Dependencies.Count == 2 && Dependencies[0] is IPoint && Dependencies[1] is IPoint;
 
     /// <summary>
     /// What the Length tool takes a click on to measure: a segment, a vector, a polyline, a
@@ -209,10 +203,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     [PropertyGridCustomValueProvider(typeof(QuantityValue))]
     public LengthQuantity Quantity
     {
-        get
-        {
-            return quantity ?? DefaultQuantity;
-        }
+        get => quantity ?? DefaultQuantity;
         set
         {
             if (Quantity == value)
@@ -250,10 +241,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     {
         record SavedQuantity(LengthQuantity? Quantity, Point Offset, bool Placed);
 
-        LengthMeasurement Owner
-        {
-            get { return (LengthMeasurement)Parent; }
-        }
+        LengthMeasurement Owner => (LengthMeasurement)Parent;
 
         public object CaptureState()
         {
@@ -269,10 +257,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     }
 
     /// <summary>What the number is called in the grid's title and the Figure List: "Radius of circle c"</summary>
-    protected override string Kind
-    {
-        get { return KindOf(Quantity); }
-    }
+    protected override string Kind => KindOf(Quantity);
 
     public static string KindOf(LengthQuantity quantity)
     {
@@ -329,10 +314,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     [PropertyGridCustomValueProvider(typeof(PrefixValue))]
     public string Prefix
     {
-        get
-        {
-            return prefix ?? DefaultPrefix(Quantity);
-        }
+        get => prefix ?? DefaultPrefix(Quantity);
         set
         {
             prefix = value == null || value == DefaultPrefix(Quantity) ? null : value;
@@ -383,10 +365,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     /// nothing to measure (an open path, a segment replaced by a ray, a sector a file turned
     /// into an arc): the measurement then doesn't exist, where it used to throw on every redraw.
     /// </summary>
-    bool HasSomethingToMeasure
-    {
-        get { return Quantities.Contains(Quantity) && Length.IsValidValue(); }
-    }
+    bool HasSomethingToMeasure => Quantities.Contains(Quantity) && Length.IsValidValue();
 
     public override void UpdateExistence()
     {
@@ -451,10 +430,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     }
 
     /// <summary>A number of these quantities is placed outside what it measures when it is made; a distance and a length sit at the middle, as they always did</summary>
-    bool PlacesItself
-    {
-        get { return Quantity != LengthQuantity.Distance && Quantity != LengthQuantity.Length; }
-    }
+    bool PlacesItself => Quantity != LengthQuantity.Distance && Quantity != LengthQuantity.Length;
 
     /// <summary>
     /// What the offset is from: the middle of the two points or of the figure for a distance

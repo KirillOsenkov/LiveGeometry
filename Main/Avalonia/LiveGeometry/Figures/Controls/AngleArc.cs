@@ -21,48 +21,18 @@ public class AngleArc : CircleArc, IConditionalProperties
         return defaultCaption;
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Angle mark";
-        }
-    }
+    protected override string Kind => "Angle mark";
 
     /// <summary>Numbered (AngleArc1): a mark doesn't take a letter from the circles</summary>
-    protected override string FirstLetter
-    {
-        get
-        {
-            return null;
-        }
-    }
+    protected override string FirstLetter => null;
 
-    protected override bool NamedByConstruction
-    {
-        get
-        {
-            return true;
-        }
-    }
+    protected override bool NamedByConstruction => true;
 
     /// <summary>"ABC", the angle's points: "Angle mark ABC"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return Dependencies.Count < 3 ? null : ConstructionText.Points(Dependencies[1], Dependencies[0], Dependencies[2]);
-        }
-    }
+    public override string Construction => Dependencies.Count < 3 ? null : ConstructionText.Points(Dependencies[1], Dependencies[0], Dependencies[2]);
 
     /// <summary>A new mark says the angle under 180°, whichever way round its sides were clicked</summary>
-    protected override AngleSweep DefaultSweep
-    {
-        get
-        {
-            return AngleSweep.Smaller;
-        }
-    }
+    protected override AngleSweep DefaultSweep => AngleSweep.Smaller;
 
     /// <summary>
     /// Which of the two angles at the vertex the mark shows (<see cref="AngleSweep"/>);
@@ -70,10 +40,7 @@ public class AngleArc : CircleArc, IConditionalProperties
     /// </summary>
     public override AngleSweep Sweep
     {
-        get
-        {
-            return base.Sweep;
-        }
+        get => base.Sweep;
         set
         {
             base.Sweep = value;
@@ -293,10 +260,7 @@ public class AngleArc : CircleArc, IConditionalProperties
     [Domain(10, 100)]
     public double Size
     {
-        get
-        {
-            return size;
-        }
+        get => size;
         set
         {
             size = value;
@@ -315,10 +279,7 @@ public class AngleArc : CircleArc, IConditionalProperties
     [Domain(0, 3)]
     public int ArcCount
     {
-        get
-        {
-            return arcCount;
-        }
+        get => arcCount;
         set
         {
             arcCount = System.Math.Max(0, System.Math.Min(3, value));
@@ -433,29 +394,11 @@ public class AngleArc : CircleArc, IConditionalProperties
 
     Sign shownSign = Sign.Arc;
 
-    public override double Radius
-    {
-        get
-        {
-            return ToLogical(Size);
-        }
-    }
+    public override double Radius => ToLogical(Size);
 
-    public override double SemiMajor
-    {
-        get
-        {
-            return Radius;
-        }
-    }
+    public override double SemiMajor => Radius;
 
-    public override double SemiMinor
-    {
-        get
-        {
-            return Radius;
-        }
-    }
+    public override double SemiMinor => Radius;
 
     public override Point BeginLocation
     {
@@ -467,20 +410,14 @@ public class AngleArc : CircleArc, IConditionalProperties
             Radius / Center.Distance(Point(1)));
         }
     }
-    
+
     /// <summary>
     /// The angle the mark is of, in degrees, like the number next to it (the grid said
     /// "Measure 1.11", radians, beside a label saying 63.43°)
     /// </summary>
     [PropertyGridVisible]
     [PropertyGridName("Angle (degrees)")]
-    public virtual double Measure
-    {
-        get
-        {
-            return Angle.ToDegrees();
-        }
-    }
+    public virtual double Measure => Angle.ToDegrees();
 
     /// <summary>
     /// An angle is two figures, the arc and the number, on the same vertex and the same two

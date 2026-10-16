@@ -64,13 +64,7 @@ public class CompositeValueProvider : IValueProvider
         provider.ValueChanged += RaiseValueChanged;
     }
 
-    public int Count
-    {
-        get
-        {
-            return InnerList.Count;
-        }
-    }
+    public int Count => InnerList.Count;
 
     public event Action ValueChanged;
 
@@ -99,10 +93,7 @@ public class CompositeValueProvider : IValueProvider
         return commonValue;
     }
 
-    public bool CanSetValue
-    {
-        get { return InnerList.All(i => i.CanSetValue); }
-    }
+    public bool CanSetValue => InnerList.All(i => i.CanSetValue);
 
     public void SetValue<T>(T value)
     {
@@ -128,20 +119,11 @@ public class CompositeValueProvider : IValueProvider
         }
     }
 
-    public Type Type
-    {
-        get { return InnerList[0].Type; }
-    }
+    public Type Type => InnerList[0].Type;
 
-    public virtual string Name
-    {
-        get { return InnerList[0].Name; }
-    }
+    public virtual string Name => InnerList[0].Name;
 
-    public virtual string DisplayName
-    {
-        get { return InnerList[0].DisplayName; }
-    }
+    public virtual string DisplayName => InnerList[0].DisplayName;
 
     public T GetAttribute<T>() where T : Attribute
     {
@@ -175,20 +157,14 @@ public class ObjectValue : IValueProvider
         return (T)Instance;
     }
 
-    public bool CanSetValue
-    {
-        get { return true; }
-    }
+    public bool CanSetValue => true;
 
     public void SetValue<T>(T value)
     {
         Instance = value;
     }
 
-    public string DisplayName
-    {
-        get { return Instance.ToString(); }
-    }
+    public string DisplayName => Instance.ToString();
 
     public T GetAttribute<T>() where T : Attribute
     {
@@ -197,18 +173,12 @@ public class ObjectValue : IValueProvider
 
     public IEnumerable<T> GetAttributes<T>() where T : Attribute
     {
-        return Enumerable.Empty<T>();
+        return [];
     }
 
-    public object Parent
-    {
-        get { return null; }
-    }
+    public object Parent => null;
 
-    public string Name
-    {
-        get { return DisplayName; }
-    }
+    public string Name => DisplayName;
 
     public event Action ValueChanged;
 
@@ -247,10 +217,7 @@ public class ValueProvider : IValueProvider
         return (T)Value;
     }
 
-    public virtual bool CanSetValue
-    {
-        get { return true; }
-    }
+    public virtual bool CanSetValue => true;
 
     public virtual void SetValue<T>(T value)
     {
@@ -268,7 +235,7 @@ public class ValueProvider : IValueProvider
 
     public virtual IEnumerable<T> GetAttributes<T>() where T : Attribute
     {
-        return Enumerable.Empty<T>();
+        return [];
     }
 
     public virtual string GetSignature()
@@ -318,13 +285,7 @@ public class PropertyValue : ValueProvider
         return (T)Property.GetValue(Parent, null);
     }
 
-    public override string Name
-    {
-        get
-        {
-            return Property.Name;
-        }
-    }
+    public override string Name => Property.Name;
 
     string mName = null;
     public override string DisplayName
@@ -348,10 +309,7 @@ public class PropertyValue : ValueProvider
         return DisplayName;
     }
 
-    public override bool CanSetValue
-    {
-        get { return Property.CanWrite; }
-    }
+    public override bool CanSetValue => Property.CanWrite;
 
     public override void SetValue<T>(T value)
     {

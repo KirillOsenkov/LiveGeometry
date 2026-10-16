@@ -42,13 +42,7 @@ public abstract class PerpendicularLineBase : LineTwoPoints
     /// The figure drawn along the base line, if any: the mark isn't drawn where its side along
     /// the base line would stick out past the end of a segment or the start of a ray.
     /// </summary>
-    protected virtual IFigure BaseFigure
-    {
-        get
-        {
-            return null;
-        }
-    }
+    protected virtual IFigure BaseFigure => null;
 
     // the perpendicular bisector of AB doesn't run through A and B: not "AB"
     protected override IReadOnlyList<string> NamesFromDependencies()
@@ -56,48 +50,25 @@ public abstract class PerpendicularLineBase : LineTwoPoints
         return null;
     }
 
-    protected override bool IsThroughTwoPoints
-    {
-        get
-        {
-            return false;
-        }
-    }
+    protected override bool IsThroughTwoPoints => false;
 
     /// <summary>Not a row of a perpendicular's: it points across its line or segment</summary>
     [PropertyGridVisible(false)]
     public override double Direction
     {
-        get
-        {
-            return base.Direction;
-        }
-        set
-        {
-            base.Direction = value;
-        }
+        get => base.Direction; set => base.Direction = value;
     }
 
     [PropertyGridVisible]
     [PropertyGridName("Right angle mark")]
     public bool ShowRightAngle
     {
-        get
-        {
-            return Mark.IsEnabled;
-        }
-        set
-        {
-            Mark.IsEnabled = value;
-        }
+        get => Mark.IsEnabled; set => Mark.IsEnabled = value;
     }
 
     public override bool Visible
     {
-        get
-        {
-            return base.Visible;
-        }
+        get => base.Visible;
         set
         {
             base.Visible = value;

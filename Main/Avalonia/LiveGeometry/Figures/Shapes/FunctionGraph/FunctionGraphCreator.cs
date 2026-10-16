@@ -99,18 +99,9 @@ public class FunctionGraphCreator : Behavior
         PropertyDialog.Cancel();
     }
 
-    public override string Name
-    {
-        get { return "Function"; }
-    }
+    public override string Name => "Function";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Enter an expression that depends on x, such as sin(x) or x * x - 3";
-        }
-    }
+    public override string HintText => "Enter an expression that depends on x, such as sin(x) or x * x - 3";
 
     public override FrameworkElement CreateIcon()
     {

@@ -7,13 +7,7 @@ namespace LiveGeometry;
 public abstract partial class EllipseBase : ShapeBase<Shape>, IEllipse, IPerimeter, IRegion
 {
     /// <summary>Circle c, d... (and ellipses), as lines are g, h...</summary>
-    protected override string FirstLetter
-    {
-        get
-        {
-            return "c";
-        }
-    }
+    protected override string FirstLetter => "c";
 
     public abstract double SemiMajor
     {
@@ -33,31 +27,13 @@ public abstract partial class EllipseBase : ShapeBase<Shape>, IEllipse, IPerimet
         get;
     }
 
-    public double Area
-    {
-        get
-        {
-            return Math.PI * SemiMajor * SemiMinor;
-        }
-    }
+    public double Area => Math.PI * SemiMajor * SemiMinor;
 
     /// <summary>The circumference: 2πr for a circle, the arc integral over a whole turn for an ellipse</summary>
-    public double Perimeter
-    {
-        get
-        {
-            return Math.EllipseArcLength(SemiMajor, SemiMinor, 0, Math.DOUBLEPI);
-        }
-    }
+    public double Perimeter => Math.EllipseArcLength(SemiMajor, SemiMinor, 0, Math.DOUBLEPI);
 
     /// <summary>The perimeter by the name school gives it, for expressions: c.Circumference</summary>
-    public double Circumference
-    {
-        get
-        {
-            return Perimeter;
-        }
-    }
+    public double Circumference => Perimeter;
 
     public override IFigure HitTest(Point point)
     {
@@ -92,13 +68,7 @@ public abstract partial class EllipseBase : ShapeBase<Shape>, IEllipse, IPerimet
         return ToLogical(shape.StrokeThickness);
     }
 
-    public bool HasInside
-    {
-        get
-        {
-            return SemiMajor > 0 && SemiMinor > 0;
-        }
-    }
+    public bool HasInside => SemiMajor > 0 && SemiMinor > 0;
 
     public bool ContainsPoint(Point point)
     {

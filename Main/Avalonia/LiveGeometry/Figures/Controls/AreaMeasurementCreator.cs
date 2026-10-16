@@ -73,13 +73,7 @@ public class AreaMeasurementCreator : FigureCreator
     }
 
     /// <summary>Three points or more (and the one following the cursor): enough for an area</summary>
-    bool CanFinish
-    {
-        get
-        {
-            return FoundDependencies.Count >= 4 && FoundDependencies.All(f => f is IPoint);
-        }
-    }
+    bool CanFinish => FoundDependencies.Count >= 4 && FoundDependencies.All(f => f is IPoint);
 
     bool TryFinish()
     {
@@ -165,18 +159,9 @@ public class AreaMeasurementCreator : FigureCreator
         return null;
     }
 
-    public override string Name
-    {
-        get { return "Area"; }
-    }
+    public override string Name => "Area";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click a polygon, ellipse, circle, sector or closed path, or a list of points, to measure its area.";
-        }
-    }
+    public override string HintText => "Click a polygon, ellipse, circle, sector or closed path, or a list of points, to measure its area.";
 
     public override FrameworkElement CreateIcon()
     {

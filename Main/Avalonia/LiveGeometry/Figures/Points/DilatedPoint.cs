@@ -14,36 +14,15 @@ namespace LiveGeometry;
 /// </summary>
 public class DilatedPoint : PointBase, IPoint, ITiedValues, IConditionalProperties
 {
-    public IPoint Source
-    {
-        get
-        {
-            return Dependencies.Count >= 1 ? Dependencies[0] as IPoint : null;
-        }
-    }
+    public IPoint Source => Dependencies.Count >= 1 ? Dependencies[0] as IPoint : null;
 
-    public new IPoint Center
-    {
-        get
-        {
-            return Dependencies.Count >= 2 ? Dependencies[1] as IPoint : null;
-        }
-    }
+    public new IPoint Center => Dependencies.Count >= 2 ? Dependencies[1] as IPoint : null;
 
     /// <summary>A Number or a length provider</summary>
-    public IFigure FactorSource
-    {
-        get
-        {
-            return Dependencies.Count >= 3 ? Dependencies[2] : null;
-        }
-    }
+    public IFigure FactorSource => Dependencies.Count >= 3 ? Dependencies[2] : null;
 
     /// <summary>The factor is the ratio of two lengths</summary>
-    bool IsRatio
-    {
-        get { return Dependencies.Count >= 4; }
-    }
+    bool IsRatio => Dependencies.Count >= 4;
 
     /// <summary>Editable when it is a typed value, which lives in the Number</summary>
     [PropertyGridVisible]
@@ -119,13 +98,7 @@ public class DilatedPoint : PointBase, IPoint, ITiedValues, IConditionalProperti
             : "Factor = " + TiedValues.SourceName(FactorSource);
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Dilated point";
-        }
-    }
+    protected override string Kind => "Dilated point";
 
     /// <summary>"of A from O by 2", "... by a", "... by AB / CD"</summary>
     public override string Construction

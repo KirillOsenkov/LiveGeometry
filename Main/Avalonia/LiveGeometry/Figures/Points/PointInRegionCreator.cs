@@ -74,13 +74,7 @@ public class PointInRegionCreator : Behavior
             .Canvas;
     }
 
-    public override string Name
-    {
-        get { return "Point inside"; }
-    }
+    public override string Name => "Point inside";
 
-    public override string HintText
-    {
-        get { return "Click inside a polygon, circle, sector or path to create a point that stays inside it."; }
-    }
+    public override string HintText => "Click inside a polygon, circle, sector or path to create a point that stays inside it.";
 }

@@ -83,15 +83,9 @@ public class LineByEquationCreator : Behavior
         Actions.Add(Drawing, line);
     }
 
-    public override string Name
-    {
-        get { return "Line"; }
-    }
+    public override string Name => "Line";
 
-    public override string HintText
-    {
-        get { return "Enter expressions for slope (m) and y-intercept (b) of the line."; }
-    }
+    public override string HintText => "Enter expressions for slope (m) and y-intercept (b) of the line.";
 
     public override FrameworkElement CreateIcon()
     {

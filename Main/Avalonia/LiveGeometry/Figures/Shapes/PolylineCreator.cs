@@ -14,18 +14,9 @@ public class PolylineCreator : PolygonCreator
         yield return Factory.CreatePolyline(Drawing, FoundDependencies);
     }
 
-    public override string Name
-    {
-        get { return "Polyline"; }
-    }
+    public override string Name => "Polyline";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click points to construct a polyline. Double click or click on an existing polyline point to finish.";
-        }
-    }
+    public override string HintText => "Click points to construct a polyline. Double click or click on an existing polyline point to finish.";
 
     public override FrameworkElement CreateIcon()
     {

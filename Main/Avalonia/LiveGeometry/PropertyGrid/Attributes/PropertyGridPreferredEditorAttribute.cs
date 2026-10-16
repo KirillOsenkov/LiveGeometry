@@ -14,11 +14,5 @@ public class PropertyGridPreferredEditorAttribute : Attribute
         this.editorTypeName = editorTypeName;
     }
 
-    public string EditorTypeName
-    {
-        get
-        {
-            return this.editorTypeName;
-        }
-    }
+    public string EditorTypeName => this.editorTypeName;
 }

@@ -4,32 +4,14 @@ namespace LiveGeometry;
 
 public class SegmentBisector : PerpendicularLineBase
 {
-    protected override string Kind
-    {
-        get
-        {
-            return "Perpendicular bisector";
-        }
-    }
+    protected override string Kind => "Perpendicular bisector";
 
     /// <summary>"of AB"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return Dependencies.Count < 2 ? null : "of " + ConstructionText.Points(Dependencies[0], Dependencies[1]);
-        }
-    }
+    public override string Construction => Dependencies.Count < 2 ? null : "of " + ConstructionText.Points(Dependencies[0], Dependencies[1]);
 
     PointPair coordinates;
 
-    public override PointPair Coordinates
-    {
-        get
-        {
-            return coordinates;
-        }
-    }
+    public override PointPair Coordinates => coordinates;
 
     public override void Recalculate()
     {

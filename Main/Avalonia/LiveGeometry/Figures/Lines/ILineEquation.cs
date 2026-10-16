@@ -76,13 +76,7 @@ public class SlopeInterseptLineEquation : ILineEquation
     }
 
     [PropertyGridVisible(false)]
-    public IEnumerable<DrawingExpression> Expressions
-    {
-        get
-        {
-            return new[] { Slope, Intersept };
-        }
-    }
+    public IEnumerable<DrawingExpression> Expressions => new[] { Slope, Intersept };
 
     [PropertyGridVisible]
     [PropertyGridName("m = ")]
@@ -145,13 +139,7 @@ public class GeneralFormLineEquation : ILineEquation
     }
 
     [PropertyGridVisible(false)]
-    public IEnumerable<DrawingExpression> Expressions
-    {
-        get
-        {
-            return new[] { A, B, C };
-        }
-    }
+    public IEnumerable<DrawingExpression> Expressions => new[] { A, B, C };
 
     [PropertyGridVisible]
     [PropertyGridName("A = ")]

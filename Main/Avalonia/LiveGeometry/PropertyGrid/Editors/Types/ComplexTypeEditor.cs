@@ -34,10 +34,7 @@ public class ComplexTypeEditor : PropertyGrid, IValueEditor
     /// </summary>
     public override GuiLabs.Undo.ActionManager ActionManager
     {
-        get
-        {
-            return base.ActionManager;
-        }
+        get => base.ActionManager;
         set
         {
             base.ActionManager = value;
@@ -59,10 +56,7 @@ public class ComplexTypeEditor : PropertyGrid, IValueEditor
     IValueProvider mValue;
     public IValueProvider Value
     {
-        get
-        {
-            return mValue;
-        }
+        get => mValue;
         set
         {
             if (mValue == value)

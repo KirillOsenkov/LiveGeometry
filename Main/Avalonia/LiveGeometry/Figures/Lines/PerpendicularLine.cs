@@ -4,13 +4,7 @@ namespace LiveGeometry;
 
 public class PerpendicularLine : PerpendicularLineBase
 {
-    protected override string Kind
-    {
-        get
-        {
-            return "Perpendicular line";
-        }
-    }
+    protected override string Kind => "Perpendicular line";
 
     /// <summary>"to segment AB through E"</summary>
     public override string Construction

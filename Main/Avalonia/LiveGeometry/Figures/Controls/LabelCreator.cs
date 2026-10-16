@@ -20,18 +20,9 @@ public class LabelCreator : Behavior
         drawing.RaiseDisplayProperties(label, focusProperty: nameof(label.Text));
     }
 
-    public override string Name
-    {
-        get { return "Text"; }
-    }
+    public override string Name => "Text";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click to add a text label.";
-        }
-    }
+    public override string HintText => "Click to add a text label.";
 
     public override FrameworkElement CreateIcon()
     {

@@ -37,14 +37,7 @@ public class BehaviorToolButton : ToolButton
 
     public bool IsChecked
     {
-        get
-        {
-            return buttonGrid.IsChecked;
-        }
-        set
-        {
-            buttonGrid.IsChecked = value;
-        }
+        get => buttonGrid.IsChecked; set => buttonGrid.IsChecked = value;
     }
 
     void buttonGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

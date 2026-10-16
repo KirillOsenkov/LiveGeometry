@@ -81,15 +81,9 @@ public class LengthMeasurementCreator : FigureCreator
         }
     }
 
-    public override string Name
-    {
-        get { return "Length"; }
-    }
+    public override string Name => "Length";
 
-    public override string HintText
-    {
-        get { return "Click two points for the distance between them, or a segment, an arc, a curve, a circle or a shape for its length."; }
-    }
+    public override string HintText => "Click two points for the distance between them, or a segment, an arc, a curve, a circle or a shape for its length.";
 
     public override FrameworkElement CreateIcon()
     {

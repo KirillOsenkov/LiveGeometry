@@ -76,14 +76,7 @@ public class RegularPolygonPanel : IConditionalProperties
     [PropertyGridCustomValueProvider(typeof(SidesValue))]
     public int NumberOfSides
     {
-        get
-        {
-            return sides;
-        }
-        set
-        {
-            Rebuild(Polygon.Drawing.ActionManager, value);
-        }
+        get => sides; set => Rebuild(Polygon.Drawing.ActionManager, value);
     }
 
     /// <summary>A new count is the rebuild's own undo step, not a property set: what it adds and removes are actions of their own</summary>
@@ -103,14 +96,7 @@ public class RegularPolygonPanel : IConditionalProperties
     [PropertyGridCustomValueProvider(typeof(SideValue))]
     public double Side
     {
-        get
-        {
-            return Vertex.Coordinates.Distance(Pivot.Coordinates) * SideFactor;
-        }
-        set
-        {
-            LengthConstraint.SetDistance(Vertex, Pivot, value / SideFactor);
-        }
+        get => Vertex.Coordinates.Distance(Pivot.Coordinates) * SideFactor; set => LengthConstraint.SetDistance(Vertex, Pivot, value / SideFactor);
     }
 
     /// <summary>Undo of a side puts the vertex back where it was (<see cref="LengthPropertyValue"/>)</summary>

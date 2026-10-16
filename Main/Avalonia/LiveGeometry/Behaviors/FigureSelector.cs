@@ -9,10 +9,7 @@ public partial class FigureSelector : Behavior
 {
     public override Drawing Drawing
     {
-        get
-        {
-            return mDrawing;
-        }
+        get => mDrawing;
         set
         {
             mDrawing = value;
@@ -22,14 +19,7 @@ public partial class FigureSelector : Behavior
 
     public override Avalonia.Controls.Canvas ParentCanvas
     {
-        get
-        {
-            return Drawing.Canvas;
-        }
-        set
-        {
-            throw new NotImplementedException();
-        }
+        get => Drawing.Canvas; set => throw new NotImplementedException();
     }
 
     public override void MouseDown(object sender, MouseButtonEventArgs e)
@@ -127,10 +117,7 @@ public partial class FigureSelector : Behavior
             .Canvas;
     }
 
-    public override string Name
-    {
-        get { return "Figure selector"; }
-    }
+    public override string Name => "Figure selector";
 
     /// <summary>
     /// What this selector selected, in the order of the clicks: the order a tool defined

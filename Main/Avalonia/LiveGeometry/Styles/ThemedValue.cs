@@ -25,10 +25,7 @@ public class ThemedValue : IValueProvider, IRestorableValue
     }
 
     /// <summary>The theme whose value this is</summary>
-    public string Theme
-    {
-        get { return theme; }
-    }
+    public string Theme => theme;
 
     /// <summary>An override that was there before a set, or that there was none</summary>
     class SavedOverride
@@ -67,13 +64,7 @@ public class ThemedValue : IValueProvider, IRestorableValue
     }
 
     /// <summary>Whether the theme has a value of its own for the property</summary>
-    public bool HasOverride
-    {
-        get
-        {
-            return target.Overrides.TryGetValue(theme, out var values) && values.ContainsKey(inner.Name);
-        }
-    }
+    public bool HasOverride => target.Overrides.TryGetValue(theme, out var values) && values.ContainsKey(inner.Name);
 
     public event Action ValueChanged;
 

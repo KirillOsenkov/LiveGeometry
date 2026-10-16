@@ -89,18 +89,9 @@ public class AngleBisectorCreator : FigureCreator
         yield return result;
     }
 
-    public override string Name
-    {
-        get { return "Angle Bisector"; }
-    }
+    public override string Name => "Angle Bisector";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click an angle vertex, then click two points on the angle sides to create an angle bisector. You can also click an angle measurement, an arc, or inside an angle next to its vertex.";
-        }
-    }
+    public override string HintText => "Click an angle vertex, then click two points on the angle sides to create an angle bisector. You can also click an angle measurement, an arc, or inside an angle next to its vertex.";
 
     /// <summary>After the vertex: which side the point is for (the bisector halves the angle under 180° whichever side comes first)</summary>
     public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)

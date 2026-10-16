@@ -36,40 +36,19 @@ public class Number : FigureBase, INumber, ILengthProvider, IAngleProvider, ICon
     [PropertyGridVisible(false)]
     public override IFigureStyle StyleDisplay
     {
-        get
-        {
-            return base.StyleDisplay;
-        }
-        set
-        {
-            base.StyleDisplay = value;
-        }
+        get => base.StyleDisplay; set => base.StyleDisplay = value;
     }
 
     [PropertyGridVisible(false)]
     public override bool Visible
     {
-        get
-        {
-            return base.Visible;
-        }
-        set
-        {
-            base.Visible = value;
-        }
+        get => base.Visible; set => base.Visible = value;
     }
 
     [PropertyGridVisible(false)]
     public override bool Locked
     {
-        get
-        {
-            return base.Locked;
-        }
-        set
-        {
-            base.Locked = value;
-        }
+        get => base.Locked; set => base.Locked = value;
     }
 
     public static Number CreateAuxiliary(Drawing drawing, double value)
@@ -83,10 +62,7 @@ public class Number : FigureBase, INumber, ILengthProvider, IAngleProvider, ICon
     [PropertyGridPreferredEditor("UpDown")]
     public double Value
     {
-        get
-        {
-            return value;
-        }
+        get => value;
         set
         {
             this.value = value;
@@ -98,42 +74,18 @@ public class Number : FigureBase, INumber, ILengthProvider, IAngleProvider, ICon
         }
     }
 
-    public double Length
-    {
-        get { return Value; }
-    }
+    public double Length => Value;
 
     /// <summary>Angle providers speak radians; the number itself is in degrees</summary>
-    public double Angle
-    {
-        get { return Value.ToRadians(); }
-    }
+    public double Angle => Value.ToRadians();
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Number";
-        }
-    }
+    protected override string Kind => "Number";
 
     /// <summary>A number goes by its name: "radius n1"</summary>
-    public override string Noun
-    {
-        get
-        {
-            return null;
-        }
-    }
+    public override string Noun => null;
 
     /// <summary>"= 3"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return "= " + ConstructionText.Number(Value);
-        }
-    }
+    public override string Construction => "= " + ConstructionText.Number(Value);
 
     // n1, n2, n3: short, since they are what an expression or a "tied to" row shows
     public override string GenerateFigureName(List<string> blacklist)

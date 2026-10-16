@@ -13,10 +13,7 @@ namespace LiveGeometry;
 [Order(5)]
 public class PointByCoordinatesCreator : FreePointCreator
 {
-    protected override bool ShowsCoordinatesPanel
-    {
-        get { return true; }
-    }
+    protected override bool ShowsCoordinatesPanel => true;
 
     public override FrameworkElement CreateIcon()
     {
@@ -27,13 +24,7 @@ public class PointByCoordinatesCreator : FreePointCreator
             .Canvas;
     }
 
-    public override string Name
-    {
-        get { return "Coordinates"; }
-    }
+    public override string Name => "Coordinates";
 
-    public override string HintText
-    {
-        get { return "Type the coordinates of the new point in the panel, or click to create a point."; }
-    }
+    public override string HintText => "Type the coordinates of the new point in the panel, or click to create a point.";
 }

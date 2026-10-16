@@ -51,10 +51,7 @@ public class SquareCreator : ShapeCreator
         return DependencyList.PointPoint;
     }
 
-    public override string Name
-    {
-        get { return "Square"; }
-    }
+    public override string Name => "Square";
 
     public override FrameworkElement CreateIcon()
     {
@@ -74,11 +71,5 @@ public class SquareCreator : ShapeCreator
             .Canvas;
     }
 
-    public override string HintText
-    {
-        get
-        {
-            return "Create a square given two adjacent vertices";
-        }
-    }
+    public override string HintText => "Create a square given two adjacent vertices";
 }

@@ -8,10 +8,7 @@ namespace LiveGeometry;
 /// </summary>
 public class CircleByRadius : CircleBase, IShapeWithInterior
 {
-    public override Point Center
-    {
-        get { return Point(Dependencies.Count - 1); }
-    }
+    public override Point Center => Point(Dependencies.Count - 1);
 
     public override double Radius
     {
@@ -60,13 +57,7 @@ public class CircleByRadius : CircleBase, IShapeWithInterior
     }
 
     // the radius points, when the radius is two points and not a figure's length
-    protected override IPoint RadiusPivot
-    {
-        get { return Dependencies.Count > 2 ? Dependencies[0] as IPoint : null; }
-    }
+    protected override IPoint RadiusPivot => Dependencies.Count > 2 ? Dependencies[0] as IPoint : null;
 
-    protected override IPoint RadiusEnd
-    {
-        get { return Dependencies.Count > 2 ? Dependencies[1] as IPoint : null; }
-    }
+    protected override IPoint RadiusEnd => Dependencies.Count > 2 ? Dependencies[1] as IPoint : null;
 }

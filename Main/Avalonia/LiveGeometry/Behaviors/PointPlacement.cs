@@ -33,7 +33,7 @@ public enum PointPlacementKind
 /// </summary>
 public class PointPlacement
 {
-    static readonly IFigure[] noFigures = new IFigure[0];
+    static readonly IFigure[] noFigures = [];
 
     PointPlacement(
         PointPlacementKind kind,

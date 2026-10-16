@@ -17,21 +17,9 @@ public class CircleCreator : FigureCreator
         return DependencyList.PointPoint;
     }
 
-    public override string Name
-    {
-        get
-        {
-            return "Circle";
-        }
-    }
+    public override string Name => "Circle";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click the circle center and then click a point on a circle.";
-        }
-    }
+    public override string HintText => "Click the circle center and then click a point on a circle.";
 
     public override FrameworkElement CreateIcon()
     {

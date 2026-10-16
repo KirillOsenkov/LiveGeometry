@@ -29,11 +29,5 @@ public class Axis : CompositeFigure
     }
 
     /// <summary>The theme's axis color, as on screen now</summary>
-    public static Color Color
-    {
-        get
-        {
-            return AppTheme.Current.Axis;
-        }
-    }
+    public static Color Color => AppTheme.Current.Axis;
 }

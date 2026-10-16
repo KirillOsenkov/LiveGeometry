@@ -22,10 +22,7 @@ public class TextStyle : FigureStyle
     [Domain(3, 150)]
     public double FontSize
     {
-        get
-        {
-            return fontSize;
-        }
+        get => fontSize;
         set
         {
             fontSize = value;
@@ -37,10 +34,7 @@ public class TextStyle : FigureStyle
     [PropertyGridVisible]
     public Color Color
     {
-        get
-        {
-            return mColor;
-        }
+        get => mColor;
         set
         {
             mColor = value;
@@ -53,10 +47,7 @@ public class TextStyle : FigureStyle
     [PropertyGridName("Font family")]
     public FontFamily FontFamily
     {
-        get
-        {
-            return fontFamily;
-        }
+        get => fontFamily;
         set
         {
             fontFamily = value;
@@ -68,10 +59,7 @@ public class TextStyle : FigureStyle
     [PropertyGridVisible]
     public bool Bold
     {
-        get
-        {
-            return bold;
-        }
+        get => bold;
         set
         {
             bold = value;
@@ -83,10 +71,7 @@ public class TextStyle : FigureStyle
     [PropertyGridVisible]
     public bool Italic
     {
-        get
-        {
-            return italic;
-        }
+        get => italic;
         set
         {
             italic = value;
@@ -98,10 +83,7 @@ public class TextStyle : FigureStyle
     [PropertyGridVisible]
     public virtual bool Underline
     {
-        get
-        {
-            return underline;
-        }
+        get => underline;
         set
         {
             underline = value;

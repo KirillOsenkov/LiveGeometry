@@ -120,10 +120,7 @@ public abstract class RegionSelector : Behavior
 
     public override Drawing Drawing
     {
-        get
-        {
-            return base.Drawing;
-        }
+        get => base.Drawing;
         set
         {
             if (value != base.Drawing)
@@ -172,15 +169,9 @@ public class BoxSelector : RegionSelector
         return builder.Canvas;
     }
 
-    public override string Name
-    {
-        get { return "Box"; }
-    }
+    public override string Name => "Box";
 
-    public override string HintText
-    {
-        get { return "Drag a box over figures to add them to the selection. Hold " + KeyNames.Alt + " to remove them instead."; }
-    }
+    public override string HintText => "Drag a box over figures to add them to the selection. Hold " + KeyNames.Alt + " to remove them instead.";
 }
 
 [Category(BehaviorCategories.Selection)]
@@ -204,13 +195,7 @@ public class LassoSelector : RegionSelector
             .Canvas;
     }
 
-    public override string Name
-    {
-        get { return "Lasso"; }
-    }
+    public override string Name => "Lasso";
 
-    public override string HintText
-    {
-        get { return "Draw a loop around figures to add them to the selection. Hold " + KeyNames.Alt + " to remove them instead."; }
-    }
+    public override string HintText => "Draw a loop around figures to add them to the selection. Hold " + KeyNames.Alt + " to remove them instead.";
 }

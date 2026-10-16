@@ -99,18 +99,9 @@ public class LocusCreator : FigureCreator
         return false;
     }
 
-    public override string Name
-    {
-        get { return "Locus"; }
-    }
+    public override string Name => "Locus";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click a point built on a point that slides along a figure, then the sliding point: the locus is the path of the first.";
-        }
-    }
+    public override string HintText => "Click a point built on a point that slides along a figure, then the sliding point: the locus is the path of the first.";
 
     public override FrameworkElement CreateIcon()
     {

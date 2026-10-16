@@ -78,13 +78,7 @@ public class GeoGebraReader
         }
     }
 
-    public bool IsSuccess
-    {
-        get
-        {
-            return messages.Count == 0;
-        }
-    }
+    public bool IsSuccess => messages.Count == 0;
 
     /// <summary>One line for the status bar: the list itself can run long, and goes to the console</summary>
     public string GetErrorReport()
@@ -93,10 +87,7 @@ public class GeoGebraReader
     }
 
     /// <summary>What was left out, one line each</summary>
-    public string Details
-    {
-        get { return string.Join(Environment.NewLine, messages); }
-    }
+    public string Details => string.Join(Environment.NewLine, messages);
 
     readonly List<string> messages = new List<string>();
 
@@ -1332,14 +1323,14 @@ public class GeoGebraReader
     /// </summary>
     void RunCommand(XElement command)
     {
-        var outputs = command.Element("output")?.Attributes().Select(a => a.Value).ToArray() ?? Array.Empty<string>();
+        var outputs = command.Element("output")?.Attributes().Select(a => a.Value).ToArray() ?? [];
         if (outputs.All(string.IsNullOrEmpty))
         {
             return;
         }
 
         string name = (string)command.Attribute("name");
-        var inputs = command.Element("input")?.Attributes().Select(a => a.Value).ToArray() ?? Array.Empty<string>();
+        var inputs = command.Element("input")?.Attributes().Select(a => a.Value).ToArray() ?? [];
         if (!InputsWereRead(name, inputs))
         {
             return;
@@ -1400,7 +1391,7 @@ public class GeoGebraReader
             return null;
         }
 
-        var results = CreateCommand(name, inputs, Array.Empty<string>());
+        var results = CreateCommand(name, inputs, []);
         var result = results?.FirstOrDefault(r => r != null);
         if (result == null)
         {

@@ -144,13 +144,7 @@ public class Parser
         return leftOperand;
     }
 
-    private bool EOF
-    {
-        get
-        {
-            return current >= length;
-        }
-    }
+    private bool EOF => current >= length;
 
     private void ReportError(string error)
     {

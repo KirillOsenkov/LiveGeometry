@@ -17,18 +17,9 @@ public class RayCreator : FigureCreator
         yield return Factory.CreateRay(Drawing, FoundDependencies);
     }
 
-    public override string Name
-    {
-        get { return "Ray"; }
-    }
+    public override string Name => "Ray";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click (and release) twice to create a ray.";
-        }
-    }
+    public override string HintText => "Click (and release) twice to create a ray.";
 
     public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
     {

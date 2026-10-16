@@ -17,22 +17,10 @@ public class PointLabel : Measurement
         return (PointBase)Dependencies.ElementAt(0);
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Label";
-        }
-    }
+    protected override string Kind => "Label";
 
     /// <summary>"of A": "Label of A"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return Dependencies.Count > 0 ? "of " + ConstructionText.Of(Dependencies[0]) : null;
-        }
-    }
+    public override string Construction => Dependencies.Count > 0 ? "of " + ConstructionText.Of(Dependencies[0]) : null;
 
     public override void OnAddingToDrawing(Drawing drawing)
     {
@@ -55,13 +43,7 @@ public class PointLabel : Measurement
         return !Locked;
     }
 
-    public override Point Anchor
-    {
-        get
-        {
-            return Point(0);
-        }
-    }
+    public override Point Anchor => Point(0);
 
     /// <summary>
     /// The least room between the point's rim and the letters, in pixels: none, the name
@@ -260,33 +242,17 @@ public class PointLabel : Measurement
     [PropertyGridVisible(false)]
     public override bool Visible
     {
-        get
-        {
-            return base.Visible;
-        }
-        set
-        {
-            base.Visible = value;
-        }
+        get => base.Visible; set => base.Visible = value;
     }
 
     [PropertyGridVisible(false)]    // Handled in the point's property grid.
-    public override string Text
-    {
-        get
-        {
-            return base.Text;
-        }
-    }
+    public override string Text => base.Text;
 
     bool showName;
     [PropertyGridVisible(false)]    // Handled in the point's property grid.
     public bool ShowName
     {
-        get
-        {
-            return showName;
-        }
+        get => showName;
         set
         {
             showName = value;
@@ -298,10 +264,7 @@ public class PointLabel : Measurement
     [PropertyGridVisible(false)]    // Handled in the point's property grid.
     public bool ShowCoordinates
     {
-        get
-        {
-            return showCoordinates;
-        }
+        get => showCoordinates;
         set
         {
             showCoordinates = value;
@@ -329,10 +292,7 @@ public class PointLabel : Measurement
     [PropertyGridName("Show name")]
     public bool ShowNameDisplay
     {
-        get
-        {
-            return ShowName;
-        }
+        get => ShowName;
         set
         {
             var point = Dependencies.ElementAt(0) as PointBase;
@@ -347,10 +307,7 @@ public class PointLabel : Measurement
     [PropertyGridName("Show coordinates")]
     public bool ShowCoordinatesDisplay
     {
-        get
-        {
-            return ShowCoordinates;
-        }
+        get => ShowCoordinates;
         set
         {
             var point = Dependencies.ElementAt(0) as PointBase;

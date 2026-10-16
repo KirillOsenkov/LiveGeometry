@@ -23,13 +23,7 @@ public class IntersectionPoint : PointBase, IPoint, IConditionalProperties
     {
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Intersection point";
-        }
-    }
+    protected override string Kind => "Intersection point";
 
     /// <summary>"of line AB and circle k"</summary>
     public override string Construction
@@ -216,45 +210,45 @@ public class IntersectionPoint : PointBase, IPoint, IConditionalProperties
         // the mark of an angle is a sign, not a figure to cross (PointOnFigure.CanBeOnFigure)
         if (figure1 is AngleArc || figure2 is AngleArc)
         {
-            return new Func<IFigure, IFigure, Point>[0];
+            return [];
         }
 
         if (figure1 is ILine)
         {
             if (figure2 is ILine)
             {
-                return new Func<IFigure, IFigure, Point>[] { IntersectionAlgorithms.IntersectLineAndLine };
+                return [IntersectionAlgorithms.IntersectLineAndLine];
             }
             else if (figure2 is IEllipse)
             {
-                return new Func<IFigure, IFigure, Point>[]
-                {
+                return
+                [
                     IntersectionAlgorithms.IntersectLineAndEllipse1,
                     IntersectionAlgorithms.IntersectLineAndEllipse2
-                };
+                ];
             }
         }
         else if (figure1 is IEllipse)
         {
             if (figure2 is ILine)
             {
-                return new Func<IFigure, IFigure, Point>[]
-                {
+                return
+                [
                     IntersectionAlgorithms.IntersectEllipseAndLine1,
                     IntersectionAlgorithms.IntersectEllipseAndLine2
-                };
+                ];
             }
             else if (figure1 is ICircle && figure2 is ICircle)
             {
-                return new Func<IFigure, IFigure, Point>[]
-                {
+                return
+                [
                     IntersectionAlgorithms.IntersectCircleAndCircle1,
                     IntersectionAlgorithms.IntersectCircleAndCircle2
-                };
+                ];
             }
         }
 
-        return new Func<IFigure, IFigure, Point>[0];
+        return [];
     }
 
     public static Func<IFigure, IFigure, Point> PickCloserIntersectionPoint(

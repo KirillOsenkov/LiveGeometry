@@ -107,13 +107,7 @@ public class SerializationService : ISerializationService
         return serializer != null;
     }
 
-    public double Priority
-    {
-        get
-        {
-            return double.MaxValue;
-        }
-    }
+    public double Priority => double.MaxValue;
 }
 
 public class ComplexTypeSerializer : ISerializer
@@ -197,13 +191,7 @@ public class ComplexTypeSerializer : ISerializer
         return true;
     }
 
-    public double Priority
-    {
-        get
-        {
-            return 3.0;
-        }
-    }
+    public double Priority => 3.0;
 }
 
 public abstract class SerializerBase<T> : ISerializer
@@ -242,13 +230,7 @@ public abstract class SerializerBase<T> : ISerializer
         return value.Type == typeof(T);
     }
 
-    public virtual double Priority
-    {
-        get
-        {
-            return 1.0;
-        }
-    }
+    public virtual double Priority => 1.0;
 }
 
 public class StringSerializer : SerializerBase<string>
@@ -320,13 +302,7 @@ public class EnumSerializer : ISerializer
         return value.Type.IsEnum;
     }
 
-    public double Priority
-    {
-        get
-        {
-            return 1.5;
-        }
-    }
+    public double Priority => 1.5;
 }
 
 public class ColorSerializer : SerializerBase<Color>
@@ -455,13 +431,7 @@ public class BrushSerializer : ISerializer
         return value.Type == typeof(Brush);
     }
 
-    public double Priority
-    {
-        get
-        {
-            return 1.0;
-        }
-    }
+    public double Priority => 1.0;
 }
 
 public class SimpleTypeSerializer : ISerializer
@@ -472,7 +442,7 @@ public class SimpleTypeSerializer : ISerializer
         var toStringMethod = GetToStringMethod(value);
         if (toStringMethod != null)
         {
-            result = (string)toStringMethod.Invoke(value.GetValue<object>(), new object[] { CultureInfo.InvariantCulture });
+            result = (string)toStringMethod.Invoke(value.GetValue<object>(), [CultureInfo.InvariantCulture]);
         }
         else
         {
@@ -487,7 +457,7 @@ public class SimpleTypeSerializer : ISerializer
         object result = null;
         if (parseMethod != null)
         {
-            result = parseMethod.Invoke(null, new object[] { serialized, CultureInfo.InvariantCulture });
+            result = parseMethod.Invoke(null, [serialized, CultureInfo.InvariantCulture]);
         }
         value.SetValue<object>(result);
     }
@@ -499,12 +469,12 @@ public class SimpleTypeSerializer : ISerializer
 
     static MethodInfo GetToStringMethod(IValueProvider value)
     {
-        return value.Type.GetMethod("ToString", new[] { typeof(IFormatProvider) });
+        return value.Type.GetMethod("ToString", [typeof(IFormatProvider)]);
     }
 
     static MethodInfo GetParseMethod(IValueProvider value)
     {
-        return value.Type.GetMethod("Parse", new[] { typeof(string), typeof(IFormatProvider) });
+        return value.Type.GetMethod("Parse", [typeof(string), typeof(IFormatProvider)]);
     }
 
     public bool CanSerialize(IValueProvider value)
@@ -512,11 +482,5 @@ public class SimpleTypeSerializer : ISerializer
         return GetParseMethod(value) != null && GetToStringMethod(value) != null;
     }
 
-    public double Priority
-    {
-        get
-        {
-            return 2.0;
-        }
-    }
+    public double Priority => 2.0;
 }

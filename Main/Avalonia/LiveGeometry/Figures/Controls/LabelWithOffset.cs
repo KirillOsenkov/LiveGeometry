@@ -98,14 +98,7 @@ public abstract class Measurement : LabelWithOffset
     [PropertyGridVisible(false)]
     public override string Text
     {
-        get
-        {
-            return base.Text;
-        }
-        set
-        {
-            base.Text = value;
-        }
+        get => base.Text; set => base.Text = value;
     }
 
     /// <summary>

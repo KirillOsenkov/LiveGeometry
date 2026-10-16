@@ -189,10 +189,7 @@ public class DrawingExpression : IValueProvider
         return (T)(object)Text;
     }
 
-    public bool CanSetValue
-    {
-        get { return true; }
-    }
+    public bool CanSetValue => true;
 
     public void SetValue<T>(T value)
     {
@@ -204,22 +201,13 @@ public class DrawingExpression : IValueProvider
         (ParentFigure as FigureBase)?.RaiseConstructionChanged();
     }
 
-    public object Parent
-    {
-        get { return this; }
-    }
+    public object Parent => this;
 
-    public Type Type
-    {
-        get { return typeof(DrawingExpression); }
-    }
+    public Type Type => typeof(DrawingExpression);
 
     public string Name { get; set; }
 
-    public string DisplayName
-    {
-        get { return Name; }
-    }
+    public string DisplayName => Name;
 
     public T GetAttribute<T>() where T : Attribute
     {

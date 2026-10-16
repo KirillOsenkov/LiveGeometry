@@ -25,10 +25,7 @@ public class Command : ICommand
     bool enabled = true;
     public bool Enabled
     {
-        get
-        {
-            return enabled;
-        }
+        get => enabled;
         set
         {
             enabled = value;
@@ -43,10 +40,7 @@ public class Command : ICommand
     FrameworkElement icon;
     public FrameworkElement Icon
     {
-        get
-        {
-            return icon;
-        }
+        get => icon;
         set
         {
             icon = value;

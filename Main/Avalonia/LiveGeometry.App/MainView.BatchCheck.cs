@@ -79,7 +79,7 @@ public partial class MainView
         // and the window stayed up with the error instead of exiting
         bool isSingleFile = File.Exists(folder);
         var files = isSingleFile
-            ? new[] { folder }
+            ? [folder]
             : Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories)
                 .Where(f => f.EndsWith(".lgf", StringComparison.OrdinalIgnoreCase)
                     || f.EndsWith(".dgf", StringComparison.OrdinalIgnoreCase)
@@ -331,7 +331,7 @@ public partial class MainView
         }
     }
 
-    static readonly string[] captionLayoutAttributes ={ "Pin", "OffsetX", "OffsetY", "WrapWidth", "Backdrop" };
+    static readonly string[] captionLayoutAttributes =["Pin", "OffsetX", "OffsetY", "WrapWidth", "Backdrop"];
 
     /// <summary>
     /// The caption's pin, offsets and width are those of the window the drawing was opened in
@@ -347,7 +347,7 @@ public partial class MainView
         }
 
         var pinnedBoxes = original.Root.Element("Figures")?.Elements(nameof(ShowHideControl)).Where(e => e.Attribute("Pin") != null);
-        foreach (var box in pinnedBoxes ?? Enumerable.Empty<XElement>())
+        foreach (var box in pinnedBoxes ?? [])
         {
             KeepAttributes(box, FindFigure(rewritten, nameof(ShowHideControl), (string)box.Attribute("Name")));
         }
@@ -514,7 +514,7 @@ public partial class MainView
     /// </summary>
     static string Unwrap(string text, bool structured)
     {
-        var lines = text.Split(new[] { @"\n" }, StringSplitOptions.None);
+        var lines = text.Split([@"\n"], StringSplitOptions.None);
         var sb = new StringBuilder(lines[0]);
         for (int i = 1; i < lines.Length; i++)
         {

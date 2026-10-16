@@ -18,25 +18,13 @@ public class CaptionedMethod : IOperationDescription
         this.captions = captions;
     }
 
-    public string DisplayName
-    {
-        get { return captions.Caption(method.Name, method.DisplayName); }
-    }
+    public string DisplayName => captions.Caption(method.Name, method.DisplayName);
 
-    public string Name
-    {
-        get { return method.Name; }
-    }
+    public string Name => method.Name;
 
-    public object Parent
-    {
-        get { return method.Parent; }
-    }
+    public object Parent => method.Parent;
 
-    public IEnumerable<IValueProvider> Parameters
-    {
-        get { return method.Parameters; }
-    }
+    public IEnumerable<IValueProvider> Parameters => method.Parameters;
 
     public void Invoke(object target, IEnumerable<object> arguments)
     {

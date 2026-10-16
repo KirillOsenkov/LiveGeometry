@@ -26,10 +26,7 @@ public partial class PropertyGrid : StackPanel
     private object mSelection;
     public object Selection
     {
-        get
-        {
-            return mSelection;
-        }
+        get => mSelection;
         protected set
         {
             if (mSelection != null)
@@ -244,10 +241,7 @@ public partial class PropertyGrid : StackPanel
     protected bool mExpanded = true;
     public bool Expanded
     {
-        get
-        {
-            return mExpanded;
-        }
+        get => mExpanded;
         set
         {
             if (mExpanded == value)
@@ -653,7 +647,7 @@ public partial class PropertyGrid : StackPanel
     }
 
     /// <summary>The buttons that show and hide as their object changes (<see cref="PropertyGridLiveConditionAttribute"/>)</summary>
-    MethodCallerButton[] liveButtons = new MethodCallerButton[0];
+    MethodCallerButton[] liveButtons = [];
 
     void UpdateLiveButtons()
     {
@@ -785,13 +779,7 @@ public partial class PropertyGrid : StackPanel
 public class MessageBoxDialog : IPropertyGridHost
 {
     [PropertyGridVisible]
-    public virtual string Message
-    {
-        get
-        {
-            return MessageText;
-        }
-    }
+    public virtual string Message => MessageText;
 
     public string MessageText { get; set; }
 

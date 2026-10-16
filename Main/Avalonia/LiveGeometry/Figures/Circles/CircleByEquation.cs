@@ -5,13 +5,7 @@ namespace LiveGeometry;
 public class CircleByEquation : CircleBase, ICircle, IShapeWithInterior, IRenamableExpressions, IExpressionOwner
 {
     [PropertyGridVisible(false)]
-    public System.Collections.Generic.IEnumerable<DrawingExpression> Expressions
-    {
-        get
-        {
-            return new[] { X, Y, R };
-        }
-    }
+    public System.Collections.Generic.IEnumerable<DrawingExpression> Expressions => new[] { X, Y, R };
 
     public void RenameInExpressions(ExpressionRenamer renamer)
     {
@@ -30,10 +24,7 @@ public class CircleByEquation : CircleBase, ICircle, IShapeWithInterior, IRenama
     [PropertyGridVisible(false)]
     public System.Collections.Generic.IReadOnlyList<string> ExpressionTexts
     {
-        get
-        {
-            return new[] { X?.Text, Y?.Text, R?.Text };
-        }
+        get => new[] { X?.Text, Y?.Text, R?.Text };
         set
         {
             if (X != null && Y != null && R != null)

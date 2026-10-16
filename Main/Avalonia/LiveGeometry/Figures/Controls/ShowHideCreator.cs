@@ -328,10 +328,7 @@ public class ShowHideCreator : Behavior, IFigurePicker
         }
     }
 
-    public override string Name
-    {
-        get { return "Show/hide box"; }
-    }
+    public override string Name => "Show/hide box";
 
     public override string HintText
     {
@@ -374,13 +371,7 @@ public class ShowHideCreator : Behavior, IFigurePicker
 
         [PropertyGridVisible]
         [PropertyGridName("Shows and hides")]
-        public string Figures
-        {
-            get
-            {
-                return ShowHideControl.Describe(Tool.picked);
-            }
-        }
+        public string Figures => ShowHideControl.Describe(Tool.picked);
 
         public event PropertyChangedEventHandler PropertyChanged;
 

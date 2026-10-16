@@ -57,13 +57,7 @@ public class RightAngleMark
 
     static readonly Cursor handCursor = new Cursor(StandardCursorType.Hand);
 
-    bool CanClick
-    {
-        get
-        {
-            return owner.Drawing != null && owner.Drawing.Behavior is Dragger;
-        }
-    }
+    bool CanClick => owner.Drawing != null && owner.Drawing.Behavior is Dragger;
 
     int corner;
 
@@ -73,10 +67,7 @@ public class RightAngleMark
     /// </summary>
     public int Corner
     {
-        get
-        {
-            return corner;
-        }
+        get => corner;
         set
         {
             corner = ((value % 4) + 4) % 4;
@@ -89,10 +80,7 @@ public class RightAngleMark
     /// <summary>The user can switch the mark off for a figure</summary>
     public bool IsEnabled
     {
-        get
-        {
-            return isEnabled;
-        }
+        get => isEnabled;
         set
         {
             isEnabled = value;

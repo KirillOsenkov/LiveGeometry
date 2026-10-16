@@ -26,13 +26,13 @@ public static class LineDashes
         switch (dash)
         {
             case LineDash.Dash:
-                return new double[] { 8, 5 };
+                return [8, 5];
             case LineDash.Dot:
-                return new double[] { 2, 4 };
+                return [2, 4];
             case LineDash.DashDot:
-                return new double[] { 9, 4, 2, 4 };
+                return [9, 4, 2, 4];
             case LineDash.DashDotDot:
-                return new double[] { 9, 4, 2, 4, 2, 4 };
+                return [9, 4, 2, 4, 2, 4];
             default:
                 return null;
         }

@@ -44,14 +44,7 @@ public class LineAtAngleCreator : FigureCreator
         [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
         public double Angle
         {
-            get
-            {
-                return parent.angleSource is IAngleProvider source ? source.Angle.ToDegrees() : LastAngle;
-            }
-            set
-            {
-                LastAngle = value;
-            }
+            get => parent.angleSource is IAngleProvider source ? source.Angle.ToDegrees() : LastAngle; set => LastAngle = value;
         }
 
         /// <summary>
@@ -160,10 +153,7 @@ public class LineAtAngleCreator : FigureCreator
         base.Stopping();
     }
 
-    public override bool IsInInitialState
-    {
-        get { return angleSource == null && base.IsInInitialState; }
-    }
+    public override bool IsInInitialState => angleSource == null && base.IsInInitialState;
 
     protected override DependencyList InitExpectedDependencies()
     {
@@ -245,10 +235,7 @@ public class LineAtAngleCreator : FigureCreator
             : "set its angle in the panel, or click an angle or a slider to take the angle from it.";
     }
 
-    public override string Name
-    {
-        get { return "Line at Angle"; }
-    }
+    public override string Name => "Line at Angle";
 
     public override string HintText
     {

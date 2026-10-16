@@ -11,30 +11,18 @@ public class AngleMeasurementBase : Measurement, IAngleProvider
     [PropertyGridVisible]
     public bool Radians
     {
-        get { return radians; }
-        set 
-        { 
+        get => radians;
+        set
+        {
             radians = value;
             UpdateVisual();
         }
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Angle";
-        }
-    }
+    protected override string Kind => "Angle";
 
     /// <summary>"ABC": "Angle ABC"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return Dependencies.Count < 3 ? null : ConstructionText.Points(Dependencies[1], Dependencies[0], Dependencies[2]);
-        }
-    }
+    public override string Construction => Dependencies.Count < 3 ? null : ConstructionText.Points(Dependencies[1], Dependencies[0], Dependencies[2]);
 
     /// <summary>The number shown: the angle in the unit chosen</summary>
     public virtual double Measure
@@ -47,21 +35,9 @@ public class AngleMeasurementBase : Measurement, IAngleProvider
     }
 
     /// <summary>The angle in radians, 0 to 2π: counterclockwise from the first side to the second</summary>
-    public virtual double Angle
-    {
-        get
-        {
-            return Math.OAngle(Point(1), Point(0), Point(2));
-        }
-    }
+    public virtual double Angle => Math.OAngle(Point(1), Point(0), Point(2));
 
-    public override Point Anchor
-    {
-        get
-        {
-            return Point(0);
-        }
-    }
+    public override Point Anchor => Point(0);
 
     public override void UpdateExistence()
     {
@@ -110,10 +86,7 @@ public class AngleMeasurement : AngleMeasurementBase, IConditionalProperties, IH
     [PropertyGridVisible]
     public AngleSweep Sweep
     {
-        get
-        {
-            return sweep;
-        }
+        get => sweep;
         set
         {
             if (sweep != value)
@@ -130,13 +103,7 @@ public class AngleMeasurement : AngleMeasurementBase, IConditionalProperties, IH
     }
 
     /// <summary>The measure of the angle the sweep chooses</summary>
-    public override double Angle
-    {
-        get
-        {
-            return Sweep.Measure(base.Angle);
-        }
-    }
+    public override double Angle => Sweep.Measure(base.Angle);
 
     /// <summary>Without its arc (deleted) the number has no arcs to count</summary>
     public bool CanEdit(string propertyName)
@@ -202,30 +169,12 @@ public class AngleMeasurement : AngleMeasurementBase, IConditionalProperties, IH
 public class HorizontalAngleMeasurement : AngleMeasurementBase
 {
     /// <summary>"of AB to the x axis"</summary>
-    public override string Construction
-    {
-        get
-        {
-            return Dependencies.Count < 2 ? null : "of " + ConstructionText.Points(Dependencies[0], Dependencies[1]) + " to the x axis";
-        }
-    }
+    public override string Construction => Dependencies.Count < 2 ? null : "of " + ConstructionText.Points(Dependencies[0], Dependencies[1]) + " to the x axis";
 
     /// <summary>The angle of the segment to the x axis, counterclockwise, in radians (the base reads a third point)</summary>
-    public override double Angle
-    {
-        get
-        {
-            return Math.OHAngle(Point(0), Point(1));
-        }
-    }
+    public override double Angle => Math.OHAngle(Point(0), Point(1));
 
-    public override double Measure
-    {
-        get
-        {
-            return Radians ? Angle : Angle.ToDegrees();
-        }
-    }
+    public override double Measure => Radians ? Angle : Angle.ToDegrees();
 
     public override void UpdateVisual()
     {

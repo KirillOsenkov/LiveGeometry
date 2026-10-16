@@ -27,7 +27,7 @@ public class ShowHideControl : ControlBase, ISupportRemoveDependency
     // over the control's own Foreground; and the outline of the empty box, which is the
     // theme's and was dark on a drawing's own dark paper (a night sky) under the light theme
     static readonly string[] captionResourceKeys =
-    {
+    [
         "CheckBoxForegroundUnchecked",
         "CheckBoxForegroundUncheckedPointerOver",
         "CheckBoxForegroundUncheckedPressed",
@@ -40,24 +40,12 @@ public class ShowHideControl : ControlBase, ISupportRemoveDependency
         "CheckBoxCheckBackgroundStrokeUnchecked",
         "CheckBoxCheckBackgroundStrokeUncheckedPointerOver",
         "CheckBoxCheckBackgroundStrokeUncheckedPressed"
-    };
+    ];
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Show/hide box";
-        }
-    }
+    protected override string Kind => "Show/hide box";
 
     /// <summary>The caption, in quotes</summary>
-    public override string Construction
-    {
-        get
-        {
-            return ConstructionText.Quote(Checkbox?.Content?.ToString());
-        }
-    }
+    public override string Construction => ConstructionText.Quote(Checkbox?.Content?.ToString());
 
     /// <summary>The caption and the empty box in the text style's color, in every state (hovered, pressed, checked)</summary>
     public override void ApplyStyle()
@@ -82,10 +70,7 @@ public class ShowHideControl : ControlBase, ISupportRemoveDependency
     [PropertyGridName("Caption")]
     public string Text
     {
-        get
-        {
-            return Checkbox.Content?.ToString() ?? "";
-        }
+        get => Checkbox.Content?.ToString() ?? "";
         set
         {
             Checkbox.Content = value ?? "";
@@ -104,13 +89,7 @@ public class ShowHideControl : ControlBase, ISupportRemoveDependency
     /// <summary>What the box shows and hides, in words</summary>
     [PropertyGridVisible]
     [PropertyGridName("Shows and hides")]
-    public string ShownFigures
-    {
-        get
-        {
-            return Describe(Dependencies);
-        }
-    }
+    public string ShownFigures => Describe(Dependencies);
 
     /// <summary>"segment AB, point C and 3 more"; "nothing" for none</summary>
     public static string Describe(System.Collections.Generic.IList<IFigure> figures)
@@ -221,13 +200,7 @@ public class ShowHideControl : ControlBase, ISupportRemoveDependency
     /// <summary>Pixels from the pinned corner of the canvas to the same corner of the box</summary>
     public Point PinOffset { get; set; }
 
-    bool HasCanvas
-    {
-        get
-        {
-            return Drawing != null && Drawing.Canvas != null;
-        }
-    }
+    bool HasCanvas => Drawing != null && Drawing.Canvas != null;
 
     /// <summary>
     /// The size of the box in pixels, measured now: right after a load there was no layout

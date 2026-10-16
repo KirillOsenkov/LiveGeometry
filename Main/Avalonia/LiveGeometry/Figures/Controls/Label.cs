@@ -77,15 +77,9 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
         return !(figure is Label label) || label.IsNumber;
     }
 
-    public double Angle
-    {
-        get {return Value;}
-    }
+    public double Angle => Value;
 
-    public double Length
-    {
-        get { return Value; }
-    }
+    public double Length => Value;
 
     #region Pinning
 
@@ -102,10 +96,7 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
     [PropertyGridCustomValueProvider(typeof(PinValue))]
     public LabelPin Pin
     {
-        get
-        {
-            return pin;
-        }
+        get => pin;
         set
         {
             if (value == pin)
@@ -186,10 +177,7 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
     /// </summary>
     public double WrapWidth
     {
-        get
-        {
-            return wrapWidth;
-        }
+        get => wrapWidth;
         set
         {
             wrapWidth = value;
@@ -213,10 +201,7 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
     [PropertyGridName("Backdrop")]
     public bool Backdrop
     {
-        get
-        {
-            return backdrop;
-        }
+        get => backdrop;
         set
         {
             backdrop = value;

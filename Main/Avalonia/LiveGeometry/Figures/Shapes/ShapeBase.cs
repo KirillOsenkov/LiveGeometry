@@ -33,10 +33,7 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
     protected TShape shape;
     public TShape Shape
     {
-        get
-        {
-            return shape;
-        }
+        get => shape;
         set
         {
             shape = value;
@@ -87,10 +84,7 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
 
     public override bool Exists
     {
-        get
-        {
-            return mExists;
-        }
+        get => mExists;
         set
         {
             if (mExists == value)
@@ -135,10 +129,7 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
 
     public override bool Visible
     {
-        get
-        {
-            return mVisible;
-        }
+        get => mVisible;
         set
         {
             mVisible = value;
@@ -152,10 +143,7 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
 
     public override bool Enabled
     {
-        get
-        {
-            return mEnabled;
-        }
+        get => mEnabled;
         set
         {
             mEnabled = value;
@@ -165,10 +153,7 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
 
     public override bool Selected
     {
-        get
-        {
-            return base.Selected;
-        }
+        get => base.Selected;
         set
         {
             base.Selected = value;
@@ -179,10 +164,7 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
 
     public override bool Locked
     {
-        get
-        {
-            return base.Locked;
-        }
+        get => base.Locked;
         set
         {
             base.Locked = value;
@@ -203,22 +185,10 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
     /// asks <see cref="Visible"/>, which it isn't. Only a figure of the drawing itself: the
     /// parts of a composite follow their own rules (a vector's segment is never shown).
     /// </summary>
-    protected bool IsGhost
-    {
-        get
-        {
-            return ghost;
-        }
-    }
+    protected bool IsGhost => ghost;
 
     /// <summary>Whether the shape is on the canvas and wants its geometry kept up to date</summary>
-    protected bool IsShown
-    {
-        get
-        {
-            return Exists && (Visible || ghost);
-        }
-    }
+    protected bool IsShown => Exists && (Visible || ghost);
 
     protected void UpdateShapeVisibility()
     {

@@ -89,10 +89,7 @@ public class FreePointCreator : Behavior
     /// Whether the tool shows the X/Y panel: the Point tool while "Point by coordinates"
     /// is switched on, the Coordinates tool (<see cref="PointByCoordinatesCreator"/>) always.
     /// </summary>
-    protected virtual bool ShowsCoordinatesPanel
-    {
-        get { return Settings.Instance.EnablePointByCoordinates; }
-    }
+    protected virtual bool ShowsCoordinatesPanel => Settings.Instance.EnablePointByCoordinates;
 
     public override object PropertyBag
     {
@@ -167,13 +164,7 @@ public class FreePointCreator : Behavior
             .Canvas;
     }
 
-    public override string Name
-    {
-        get { return "Point"; }
-    }
+    public override string Name => "Point";
 
-    public override string HintText
-    {
-        get { return "Click to create a point. You can also click on a figure or an intersection."; }
-    }
+    public override string HintText => "Click to create a point. You can also click on a figure or an intersection.";
 }

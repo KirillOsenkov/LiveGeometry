@@ -59,7 +59,7 @@ public readonly struct Fraction : IEquatable<Fraction>
         // [-]digits[.digits][E[+-]digits]
         var text = value.ToString("R", CultureInfo.InvariantCulture);
         int exponent = 0;
-        int exponentStart = text.IndexOfAny(new[] { 'E', 'e' });
+        int exponentStart = text.IndexOfAny(['E', 'e']);
         if (exponentStart >= 0)
         {
             exponent = int.Parse(text.Substring(exponentStart + 1), NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);

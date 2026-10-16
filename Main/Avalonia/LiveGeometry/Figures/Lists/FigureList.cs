@@ -57,10 +57,7 @@ public abstract partial class FigureList : CollectionWithEvents<IFigure>
     private Drawing mDrawing = null;
     public Drawing Drawing
     {
-        get
-        {
-            return mDrawing;
-        }
+        get => mDrawing;
         set
         {
             if (mDrawing == value)
@@ -144,13 +141,7 @@ public abstract partial class FigureList : CollectionWithEvents<IFigure>
     /// What a hit test looks at: the figures of the list, and for a drawing's list also
     /// the axis lines that are not in it yet (<see cref="AxisLine"/>)
     /// </summary>
-    protected virtual IEnumerable<IFigure> HitTestCandidates
-    {
-        get
-        {
-            return this;
-        }
-    }
+    protected virtual IEnumerable<IFigure> HitTestCandidates => this;
 
     /// <summary>
     /// Finds any figure at the point

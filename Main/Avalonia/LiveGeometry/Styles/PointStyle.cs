@@ -33,10 +33,7 @@ public class PointStyle : ShapeStyle, IPropertyGridTabs
     [PropertyGridPreferredEditor("PointShape")]
     public PointShape Shape
     {
-        get
-        {
-            return shape;
-        }
+        get => shape;
         set
         {
             shape = value;
@@ -56,10 +53,7 @@ public class PointStyle : ShapeStyle, IPropertyGridTabs
     [PropertyGridPreferredEditor("Emoji")]
     public string Character
     {
-        get
-        {
-            return character;
-        }
+        get => character;
         set
         {
             character = string.IsNullOrEmpty(value) ? null : value;
@@ -83,10 +77,7 @@ public class PointStyle : ShapeStyle, IPropertyGridTabs
     [Domain(3, 300)]
     public double Size
     {
-        get
-        {
-            return Character != null ? characterSize : shapeSize;
-        }
+        get => Character != null ? characterSize : shapeSize;
         set
         {
             if (Character != null)
@@ -124,13 +115,13 @@ public class PointStyle : ShapeStyle, IPropertyGridTabs
     public const string ShapeTab = "Shape";
     public const string EmojiTab = "Emoji";
 
-    static readonly string[] tabs = { ShapeTab, EmojiTab };
+    static readonly string[] tabs = [ShapeTab, EmojiTab];
 
     IReadOnlyList<string> IPropertyGridTabs.Tabs => tabs;
 
-    static readonly string[] shapeTab = { ShapeTab };
-    static readonly string[] emojiTab = { EmojiTab };
-    static readonly string[] belowTabs = { };
+    static readonly string[] shapeTab = [ShapeTab];
+    static readonly string[] emojiTab = [EmojiTab];
+    static readonly string[] belowTabs = [];
 
     IReadOnlyList<string> IPropertyGridTabs.GetTabs(string memberName)
     {
@@ -154,13 +145,7 @@ public class PointStyle : ShapeStyle, IPropertyGridTabs
     /// value, an emoji picked under the dark theme opened on the Shape tab and could
     /// not be taken off again.
     /// </summary>
-    string ShownCharacter
-    {
-        get
-        {
-            return ((PointStyle)Resolve()).Character;
-        }
-    }
+    string ShownCharacter => ((PointStyle)Resolve()).Character;
 
     string IPropertyGridTabs.CurrentTab => ShownCharacter != null ? EmojiTab : ShapeTab;
 

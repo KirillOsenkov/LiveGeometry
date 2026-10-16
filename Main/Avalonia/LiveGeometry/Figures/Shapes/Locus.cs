@@ -7,22 +7,10 @@ public class Locus : Curve, ILinearFigure
 {
     private List<IFigure> figuresToRecalculate;
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Locus";
-        }
-    }
+    protected override string Kind => "Locus";
 
     /// <summary>Numbered (Locus1): "Locus of P as Q moves on circle c" says which</summary>
-    protected override bool NamedByConstruction
-    {
-        get
-        {
-            return true;
-        }
-    }
+    protected override bool NamedByConstruction => true;
 
     /// <summary>"of P as Q moves on circle c"</summary>
     public override string Construction
@@ -69,10 +57,7 @@ public class Locus : Curve, ILinearFigure
     readonly List<double> sampleParameters = new List<double>();
     readonly List<Point> samplePoints = new List<Point>();
 
-    bool HasChain
-    {
-        get { return figuresToRecalculate != null && figuresToRecalculate.Count > 0; }
-    }
+    bool HasChain => figuresToRecalculate != null && figuresToRecalculate.Count > 0;
 
     /// <summary>Where the traced point is when the sliding point is at the parameter; the caller puts the sliding point back</summary>
     /// <returns>

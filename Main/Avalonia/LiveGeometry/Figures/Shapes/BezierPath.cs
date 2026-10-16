@@ -169,13 +169,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     #region Anchors, handles and pieces
 
     /// <summary>How many anchors the path goes through</summary>
-    public int AnchorCount
-    {
-        get
-        {
-            return inHandles.Count;
-        }
-    }
+    public int AnchorCount => inHandles.Count;
 
     /// <summary>How many pieces there are: one between each two anchors, and one back to the first when closed</summary>
     public int PieceCount
@@ -224,13 +218,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     }
 
     /// <summary>Where the holes start among the dependencies: after the anchors and the points of handles</summary>
-    int HoleStart
-    {
-        get
-        {
-            return AnchorCount + HandlesInOrder.Count(h => h.Point != null);
-        }
-    }
+    int HoleStart => AnchorCount + HandlesInOrder.Count(h => h.Point != null);
 
     /// <summary>The dependencies after the points of handles, but for the figure the tension comes from (the last)</summary>
     List<IFigure> HoleList
@@ -243,42 +231,18 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     }
 
     /// <summary>The paths whose insides the inside of this one leaves out</summary>
-    public IEnumerable<BezierPath> Holes
-    {
-        get
-        {
-            return HoleList.OfType<BezierPath>();
-        }
-    }
+    public IEnumerable<BezierPath> Holes => HoleList.OfType<BezierPath>();
 
     /// <summary>Whether a handle is a point of the drawing</summary>
-    public bool HasHandlePoints
-    {
-        get
-        {
-            return Handles.Any(h => h.Point != null);
-        }
-    }
+    public bool HasHandlePoints => Handles.Any(h => h.Point != null);
 
     /// <summary>
     /// Whether the path is the image of a transformation: its handles are hidden helper
     /// points, which go with it. It isn't split or made shorter (the helpers would stay).
     /// </summary>
-    bool IsImage
-    {
-        get
-        {
-            return Handles.Any(h => h.Point is IFigure point && point.Auxiliary);
-        }
-    }
+    bool IsImage => Handles.Any(h => h.Point is IFigure point && point.Auxiliary);
 
-    public IEnumerable<BezierPathHandle> Handles
-    {
-        get
-        {
-            return inHandles.Concat(outHandles);
-        }
-    }
+    public IEnumerable<BezierPathHandle> Handles => inHandles.Concat(outHandles);
 
     Point AnchorPoint(int index)
     {
@@ -779,13 +743,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     }
 
     /// <summary>The pieces: a click selects one by itself, to be styled; the inside selects the path</summary>
-    public IEnumerable<IFigure> SelectableParts
-    {
-        get
-        {
-            return pieces;
-        }
-    }
+    public IEnumerable<IFigure> SelectableParts => pieces;
 
     /// <summary>"Side 2 of Bezier path ABC", "Handle of B toward C": the title of a part's page, what Tab says of it</summary>
     public string DescribePart(IFigure part)
@@ -848,10 +806,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
     public override bool Selected
     {
-        get
-        {
-            return selectedWhole;
-        }
+        get => selectedWhole;
         set
         {
             selectedWhole = value;
@@ -1032,10 +987,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     [PropertyGridName("Closed")]
     public bool Closed
     {
-        get
-        {
-            return closed;
-        }
+        get => closed;
         set
         {
             if (closed == value)
@@ -1058,13 +1010,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     /// The length around a closed path, its pieces added up (<see cref="Math.BezierInfo.Length"/>);
     /// NaN for an open one, which has nothing to measure (the holes are paths of their own)
     /// </summary>
-    public double Perimeter
-    {
-        get
-        {
-            return closed ? Length : double.NaN;
-        }
-    }
+    public double Perimeter => closed ? Length : double.NaN;
 
     /// <summary>
     /// The length of the pieces drawn, added up: an open path's from its first anchor to its
@@ -1095,10 +1041,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     [PropertyGridName("Filled")]
     public bool Filled
     {
-        get
-        {
-            return filled;
-        }
+        get => filled;
         set
         {
             if (filled == value)
@@ -1121,10 +1064,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     [PropertyGridName("Smoothing")]
     public BezierPathSmoothing Smoothing
     {
-        get
-        {
-            return smoothing;
-        }
+        get => smoothing;
         set
         {
             if (smoothing == value)
@@ -1232,13 +1172,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     }
 
     /// <summary>Whether a handle that bends a piece is the user's offset (not an image's handles, which are points)</summary>
-    bool CanSmoothAll
-    {
-        get
-        {
-            return !IsImage && Handles.Any(h => h.Point == null && !h.Auto && BendsPiece(h, out _, out _));
-        }
-    }
+    bool CanSmoothAll => !IsImage && Handles.Any(h => h.Point == null && !h.Auto && BendsPiece(h, out _, out _));
 
     public bool CanEdit(string propertyName)
     {
@@ -1346,7 +1280,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
         int index = Dependencies.IndexOf(anchor);
         if (index < 0 || index >= AnchorCount)
         {
-            return Enumerable.Empty<BezierPathHandle>();
+            return [];
         }
 
         return new[] { inHandles[index], outHandles[index] }.Where(h => BendsPiece(h, out _, out _));
@@ -1410,65 +1344,27 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     /// </summary>
     public override IFigureStyle Style
     {
-        get
-        {
-            return interior.Style;
-        }
-        set
-        {
-            interior.Style = value;
-        }
+        get => interior.Style; set => interior.Style = value;
     }
 
     [PropertyGridName("Fill")]
     public override IFigureStyle StyleDisplay
     {
-        get
-        {
-            return base.StyleDisplay;
-        }
-        set
-        {
-            base.StyleDisplay = value;
-        }
+        get => base.StyleDisplay; set => base.StyleDisplay = value;
     }
 
     /// <summary>All the sides at once; one of them by itself is selected with a click on it</summary>
     [PropertyGridVisible]
-    public PartStylesValue SideStyles
-    {
-        get
-        {
-            return pieces.Count > 0 ? new PartStylesValue(nameof(SideStyles), "Sides", pieces) : null;
-        }
-    }
+    public PartStylesValue SideStyles => pieces.Count > 0 ? new PartStylesValue(nameof(SideStyles), "Sides", pieces) : null;
 
     /// <summary>All the handles at once (they are not selected by themselves)</summary>
     [PropertyGridVisible]
-    public PartStylesValue HandleStyles
-    {
-        get
-        {
-            return inHandles.Count > 0 ? new PartStylesValue(nameof(HandleStyles), "Handles", Handles.ToList()) : null;
-        }
-    }
+    public PartStylesValue HandleStyles => inHandles.Count > 0 ? new PartStylesValue(nameof(HandleStyles), "Handles", Handles.ToList()) : null;
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Bezier path";
-        }
-    }
+    protected override string Kind => "Bezier path";
 
     /// <summary>Named as polygons are, when no points name it: p, q...</summary>
-    protected override string FirstLetter
-    {
-        get
-        {
-            return "p";
-        }
-    }
+    protected override string FirstLetter => "p";
 
     /// <summary>After its anchors, as a polygon (closed) or a polyline (open) is</summary>
     protected override IReadOnlyList<string> NamesFromDependencies()
@@ -1510,10 +1406,10 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
     #region Working it out
 
-    Math.BezierInfo[] curves = Array.Empty<Math.BezierInfo>();
+    Math.BezierInfo[] curves = [];
 
     // the four points of each piece: its anchor, the two handles it is pulled towards, the next anchor
-    Point[][] controls = Array.Empty<Point[]>();
+    Point[][] controls = [];
     bool curvesKnown;
 
     /// <summary>
@@ -1547,7 +1443,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
         for (int i = 0; i < count; i++)
         {
             int next = (i + 1) % anchors;
-            points[i] = new[] { AnchorPoint(i), OutPoint(i), InPoint(next), AnchorPoint(next) };
+            points[i] = [AnchorPoint(i), OutPoint(i), InPoint(next), AnchorPoint(next)];
             result[i] = new Math.BezierInfo(points[i][0], points[i][1], points[i][2], points[i][3]);
         }
 
@@ -1792,13 +1688,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     #region The inside as a region (IRegion)
 
     /// <summary>A closed path has an inside, and so has an open one that is filled (as if a straight line closed it)</summary>
-    public bool HasInside
-    {
-        get
-        {
-            return PieceCount > 0 && (closed || filled) && CurvesExist();
-        }
-    }
+    public bool HasInside => PieceCount > 0 && (closed || filled) && CurvesExist();
 
     /// <summary>The area inside the outline as drawn, the holes taken out</summary>
     public double Area
@@ -2521,13 +2411,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     /// helper points follow them. The path isn't split nor an anchor dropped then: the image
     /// would keep the old pieces.
     /// </summary>
-    bool HasImages
-    {
-        get
-        {
-            return Handles.Any(handle => handle.Dependents.Any());
-        }
-    }
+    bool HasImages => Handles.Any(handle => handle.Dependents.Any());
 
     #endregion
 
@@ -2648,7 +2532,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
         if (count < 2 || count > listed.Count || !listed.Take(count).All(d => d is IPoint))
         {
             count = listed.TakeWhile(d => d is IPoint).Count();
-            tokens = Array.Empty<string>();
+            tokens = [];
         }
 
         var ins = Enumerable.Repeat(default(HandleSpec), count).ToList();
@@ -2845,13 +2729,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
         /// </summary>
         public bool Auto { get; set; }
 
-        public HandleSpec Spec
-        {
-            get
-            {
-                return new HandleSpec(Offset, Point, Auto);
-            }
-        }
+        public HandleSpec Spec => new HandleSpec(Offset, Point, Auto);
 
         public void Set(HandleSpec spec)
         {
@@ -2883,14 +2761,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
         public override bool Visible
         {
-            get
-            {
-                return base.Visible && Owner.IsHandleShown(this);
-            }
-            set
-            {
-                base.Visible = value;
-            }
+            get => base.Visible && Owner.IsHandleShown(this); set => base.Visible = value;
         }
 
         public override bool AllowMove()

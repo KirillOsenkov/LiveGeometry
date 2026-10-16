@@ -32,10 +32,7 @@ public class TabPanel : TabItem
     BehaviorToolButton selectedToolButton;
     public BehaviorToolButton SelectedToolButton
     {
-        get
-        {
-            return selectedToolButton;
-        }
+        get => selectedToolButton;
         set
         {
             if (selectedToolButton == value)
@@ -99,10 +96,7 @@ public class TabPanel : TabItem
     WrapPanel panel;
     public WrapPanel Panel
     {
-        get
-        {
-            return panel;
-        }
+        get => panel;
         set
         {
             panel = value;
@@ -110,21 +104,12 @@ public class TabPanel : TabItem
         }
     }
 
-    IEnumerable<BehaviorToolButton> BehaviorToolButtons
-    {
-        get
-        {
-            return Panel.Children.OfType<BehaviorToolButton>();
-        }
-    }
+    IEnumerable<BehaviorToolButton> BehaviorToolButtons => Panel.Children.OfType<BehaviorToolButton>();
 
     ButtonGrid headerContent;
     public ButtonGrid HeaderContent
     {
-        get
-        {
-            return headerContent;
-        }
+        get => headerContent;
         set
         {
             headerContent = value;

@@ -175,7 +175,7 @@ public static class ConstructionText
         }
 
         var line = text.Trim();
-        int lineEnd = line.IndexOfAny(new[] { '\r', '\n' });
+        int lineEnd = line.IndexOfAny(['\r', '\n']);
         bool cut = false;
         if (lineEnd >= 0)
         {

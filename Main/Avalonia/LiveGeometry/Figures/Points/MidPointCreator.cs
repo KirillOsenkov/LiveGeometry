@@ -106,18 +106,9 @@ public class MidpointCreator : FigureCreator
         return segmentPlacement != null ? HandCursor : base.GetCursor(coordinates);
     }
 
-    public override string Name
-    {
-        get { return "Midpoint"; }
-    }
+    public override string Name => "Midpoint";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click two points (or a segment or a vector) to construct a midpoint.";
-        }
-    }
+    public override string HintText => "Click two points (or a segment or a vector) to construct a midpoint.";
 
     public override FrameworkElement CreateIcon()
     {

@@ -75,13 +75,7 @@ public class MethodDescription : IOperationDescription, ICustomPropertyProvider
         methodInfo.Invoke(target, argumentList.ToArray());
     }
 
-    public string Name
-    {
-        get
-        {
-            return methodInfo.Name;
-        }
-    }
+    public string Name => methodInfo.Name;
 
     public string DisplayName
     {
@@ -108,13 +102,7 @@ public class MethodDescription : IOperationDescription, ICustomPropertyProvider
         return methodInfo.GetCustomAttributes(typeof(T), true).Cast<T>();
     }
 
-    public object Parent
-    {
-        get
-        {
-            return null;
-        }
-    }
+    public object Parent => null;
 
     public IEnumerable<IValueProvider> GetProperties()
     {

@@ -29,13 +29,7 @@ public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthPro
     }
 
     /// <summary>Named as circles are: c, d...</summary>
-    protected override string FirstLetter
-    {
-        get
-        {
-            return "c";
-        }
-    }
+    protected override string FirstLetter => "c";
 
     /// <summary>"with center O from A to B"</summary>
     public override string Construction
@@ -56,22 +50,11 @@ public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthPro
     public PathFigure Figure { get; set; }
     protected ArcSegment ArcShape { get; set; }
 
-    public virtual double SemiMajor
-    {
-        get
-        {
-            return Math.Distance(Point(0), Point(1));
-        }
-    }
+    public virtual double SemiMajor => Math.Distance(Point(0), Point(1));
 
-    public virtual double SemiMinor
-    {
-        get
-        {
-            // as for Ellipse: the third point's distance from the long axis
-            return Math.GetDistanceToLine(Point(2), new PointPair(Point(0), Point(1)));
-        }
-    }
+    public virtual double SemiMinor =>
+        // as for Ellipse: the third point's distance from the long axis
+        Math.GetDistanceToLine(Point(2), new PointPair(Point(0), Point(1)));
 
     protected override Path CreateShape()
     {
@@ -119,10 +102,7 @@ public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthPro
     [PropertyGridVisible]
     public virtual AngleSweep Sweep
     {
-        get
-        {
-            return sweep;
-        }
+        get => sweep;
         set
         {
             if (sweep != value)
@@ -138,31 +118,13 @@ public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthPro
     }
 
     /// <summary>What a new one is: the way round the tool's clicks went (an angle's mark says the smaller angle)</summary>
-    protected virtual AngleSweep DefaultSweep
-    {
-        get
-        {
-            return AngleSweep.Counterclockwise;
-        }
-    }
+    protected virtual AngleSweep DefaultSweep => AngleSweep.Counterclockwise;
 
     /// <summary>The counterclockwise angle from the begin to the end, 0 to 2π: what the sweep chooses from</summary>
-    protected double CounterclockwiseAngle
-    {
-        get
-        {
-            return Math.OAngle(BeginLocation, Center, EndLocation);
-        }
-    }
+    protected double CounterclockwiseAngle => Math.OAngle(BeginLocation, Center, EndLocation);
 
     /// <summary>Whether the arc goes clockwise from its begin to its end right now</summary>
-    public bool IsClockwise
-    {
-        get
-        {
-            return Sweep.IsClockwise(CounterclockwiseAngle);
-        }
-    }
+    public bool IsClockwise => Sweep.IsClockwise(CounterclockwiseAngle);
 
     /// <summary>
     /// The length of the arc. An ellipse has no formula for it: Simpson's rule over the
@@ -185,13 +147,7 @@ public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthPro
     }
 
     /// <summary>The length of the arc by its own name, for expressions: s.ArcLength, of a sector too</summary>
-    public double ArcLength
-    {
-        get
-        {
-            return Length;
-        }
-    }
+    public double ArcLength => Length;
 
     /// <summary>The point half way along the arc (where a length's number sits)</summary>
     public Point ArcMiddle
@@ -337,13 +293,7 @@ public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthPro
         return Tuple.Create(a1, a2);
     }
 
-    public virtual double Inclination
-    {
-        get
-        {
-            return Math.GetAngle(Center, Point(1));
-        }
-    }
+    public virtual double Inclination => Math.GetAngle(Center, Point(1));
 
     public abstract int BeginPointIndex { get; }
     public abstract int EndPointIndex { get; }
@@ -376,34 +326,15 @@ public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthPro
         }
     }
 
-    public virtual double StartAngle
-    {
-        get
-        {
-            return Math.GetAngle(Center, BeginLocation);
-            //return Inclination;
-        }
-    }
+    public virtual double StartAngle => Math.GetAngle(Center, BeginLocation);//return Inclination;
 
-    public virtual double EndAngle
-    {
-        get
-        {
-            return Math.GetAngle(Center, EndLocation);
-        }
-    }
+    public virtual double EndAngle => Math.GetAngle(Center, EndLocation);
 
     /// <summary>
     /// The central angle of the arc, 0 to 2π: the measure of the region the sweep chooses
     /// (what a tool or an expression takes the arc for).
     /// </summary>
-    public virtual double Angle
-    {
-        get
-        {
-            return Sweep.Measure(CounterclockwiseAngle);
-        }
-    }
+    public virtual double Angle => Sweep.Measure(CounterclockwiseAngle);
 
     /// <summary>
     /// How far the arc goes around, 0 to 2π, in the angle t that parametrizes its
@@ -473,24 +404,12 @@ public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthPro
         }
     }
 
-    public override Point Center
-    {
-        get
-        {
-            return Point(0);
-        }
-    }
+    public override Point Center => Point(0);
 
     #region The inside of a sector or a segment (IRegion)
 
     /// <summary>Whether the ellipse has an area to speak of: what a sector's or a segment's inside is cut from</summary>
-    public bool HasInside
-    {
-        get
-        {
-            return SemiMajor > 0 && SemiMinor > 0;
-        }
-    }
+    public bool HasInside => SemiMajor > 0 && SemiMinor > 0;
 
     bool IsInsideEllipse(Point point)
     {
@@ -610,18 +529,9 @@ public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthPro
 public abstract partial class CircleArcBase : EllipseArcBase, ICircle
 {
 
-    public override Point BeginLocation
-    {
-        get
-        {
-            return Point(BeginPointIndex);
-        }
-    }
+    public override Point BeginLocation => Point(BeginPointIndex);
 
-    public override int BeginPointIndex
-    {
-        get { return 1; }
-    }
+    public override int BeginPointIndex => 1;
 
     public override Point EndLocation
     {
@@ -634,10 +544,7 @@ public abstract partial class CircleArcBase : EllipseArcBase, ICircle
         }
     }
 
-    public override int EndPointIndex
-    {
-        get { return 2; }
-    }
+    public override int EndPointIndex => 2;
 
     /// <summary>
     /// No arc while its radius is 0 or its end is on the center (Shift snaps both to
@@ -653,27 +560,9 @@ public abstract partial class CircleArcBase : EllipseArcBase, ICircle
         }
     }
 
-    public override double Length
-    {
-        get
-        {
-            return Radius * Angle;
-        }
-    }
+    public override double Length => Radius * Angle;
 
-    public virtual double Radius
-    {
-        get
-        {
-            return SemiMajor;
-        }
-    }
+    public virtual double Radius => SemiMajor;
 
-    public override double SemiMinor
-    {
-        get
-        {
-            return SemiMajor;
-        }
-    }
+    public override double SemiMinor => SemiMajor;
 }

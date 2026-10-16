@@ -30,10 +30,7 @@ public class LengthMeasurementPanel : ICustomPropertyProvider, ICustomMethodProv
     }
 
     /// <summary>"Measure circle c": the same whichever length is picked</summary>
-    string Title
-    {
-        get { return measurement.Dependencies.Count == 1 ? "Measure " + ConstructionText.Of(measurement.Dependencies[0]) : measurement.Title; }
-    }
+    string Title => measurement.Dependencies.Count == 1 ? "Measure " + ConstructionText.Of(measurement.Dependencies[0]) : measurement.Title;
 
     public IEnumerable<IValueProvider> GetProperties()
     {

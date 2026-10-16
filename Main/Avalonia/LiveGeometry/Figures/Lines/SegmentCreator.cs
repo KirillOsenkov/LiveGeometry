@@ -17,18 +17,9 @@ public class SegmentCreator : FigureCreator
         yield return Factory.CreateSegment(Drawing, FoundDependencies);
     }
 
-    public override string Name
-    {
-        get { return "Segment"; }
-    }
+    public override string Name => "Segment";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click (and release) twice to connect two points with a segment.";
-        }
-    }
+    public override string HintText => "Click (and release) twice to connect two points with a segment.";
 
     public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
     {

@@ -14,21 +14,9 @@ public class RegularPolygonOnSideCreator : RegularPolygonCreator
 {
     protected override bool OnSide => true;
 
-    public override string Name
-    {
-        get
-        {
-            return "Polygon on a side";
-        }
-    }
+    public override string Name => "Polygon on a side";
 
-    public override string HintText
-    {
-        get
-        {
-            return "Click two adjacent vertices: the regular polygon goes to the left of the first to the second.";
-        }
-    }
+    public override string HintText => "Click two adjacent vertices: the regular polygon goes to the left of the first to the second.";
 
     public override FrameworkElement CreateIcon()
     {

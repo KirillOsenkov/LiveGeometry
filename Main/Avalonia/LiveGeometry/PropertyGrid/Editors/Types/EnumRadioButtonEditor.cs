@@ -27,10 +27,7 @@ public class EnumRadioButtonEditor : LabeledValueEditor, IValueEditor
     private IEnumerable<string> items;
 
     /// <summary>Each choice is an undo step of its own</summary>
-    protected override bool CoalescesEdits
-    {
-        get { return false; }
-    }
+    protected override bool CoalescesEdits => false;
 
     protected override UIElement CreateEditor()
     {

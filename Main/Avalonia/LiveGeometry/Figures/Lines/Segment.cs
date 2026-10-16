@@ -19,10 +19,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
     [PropertyGridPreferredEditor("SegmentDecoration")]
     public SegmentDecoration Decoration
     {
-        get
-        {
-            return decoration;
-        }
+        get => decoration;
         set
         {
             decoration = value;
@@ -114,10 +111,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
     [PropertyGridCustomValueProvider(typeof(LengthPropertyValue))]
     public double Length
     {
-        get
-        {
-            return Coordinates.Length;
-        }
+        get => Coordinates.Length;
         set
         {
             int end = LengthEnd();
@@ -150,14 +144,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
     [PropertyGridCustomValueProvider(typeof(DirectionPropertyValue))]
     public double Direction
     {
-        get
-        {
-            return DirectionConstraint.Of(Coordinates);
-        }
-        set
-        {
-            DirectionConstraint.SetDirection(this, value);
-        }
+        get => DirectionConstraint.Of(Coordinates); set => DirectionConstraint.SetDirection(this, value);
     }
 
     public IPoint DirectionEndpoint => DirectionConstraint.Endpoint(this);
@@ -167,10 +154,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
         return (IPoint)Dependencies[index];
     }
 
-    public IList<IFigure> MeasuredFigures
-    {
-        get { return new IFigure[] { this }; }
-    }
+    public IList<IFigure> MeasuredFigures => new IFigure[] { this };
 
     /// <summary>The end holding a fixed length from the other, or null (see <see cref="LengthConstraint.FixedEnd"/>)</summary>
     TranslatedPoint FixedEnd()
@@ -368,21 +352,9 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
         return NamesFromPoints(PointOrder.Reversible);
     }
 
-    protected override string Kind
-    {
-        get
-        {
-            return "Segment";
-        }
-    }
+    protected override string Kind => "Segment";
 
-    public override string Noun
-    {
-        get
-        {
-            return "segment";
-        }
-    }
+    public override string Noun => "segment";
 
     public override string ToString()
     {

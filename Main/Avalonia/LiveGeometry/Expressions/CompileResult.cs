@@ -14,13 +14,7 @@ public class CompileResult
     public readonly List<IFigure> Dependencies = new List<IFigure>();
     public readonly List<CompileError> Errors = new List<CompileError>();
 
-    public bool IsSuccess
-    {
-        get
-        {
-            return Errors.IsEmpty() && (Expression != null || Function != null);
-        }
-    }
+    public bool IsSuccess => Errors.IsEmpty() && (Expression != null || Function != null);
 
     public void AddError(string error)
     {

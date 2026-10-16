@@ -204,7 +204,7 @@ public static class ExpressionBenchmark
     static string Row(params string[] cells)
     {
         var row = new StringBuilder();
-        int[] widths = { 16, 8, 8, 6, 9, 10, 12, 12 };
+        int[] widths = [16, 8, 8, 6, 9, 10, 12, 12];
         for (int i = 0; i < cells.Length; i++)
         {
             row.Append(i == 0 ? cells[i].PadRight(widths[i]) : cells[i].PadLeft(widths[i]));

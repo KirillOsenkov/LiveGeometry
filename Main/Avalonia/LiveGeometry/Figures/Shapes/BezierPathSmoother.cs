@@ -223,13 +223,7 @@ public static class BezierPathSmoother
             return runs;
         }
 
-        public bool AllSmooth
-        {
-            get
-            {
-                return Closed && Enumerable.Range(0, Count).All(IsSmooth);
-            }
-        }
+        public bool AllSmooth => Closed && Enumerable.Range(0, Count).All(IsSmooth);
 
         /// <summary>How far the path turns at the anchor, from the chord before to the chord after</summary>
         public double Turn(int anchor)
@@ -740,7 +734,7 @@ public static class BezierPathSmoother
                 return null;
             }
 
-            return new[] { (right[0] * d - b * right[1]) / determinant, (a * right[1] - c * right[0]) / determinant };
+            return [(right[0] * d - b * right[1]) / determinant, (a * right[1] - c * right[0]) / determinant];
         }
 
         double corner = super[count - 1];

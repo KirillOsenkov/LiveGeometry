@@ -11,30 +11,12 @@ public abstract partial class LineBase : ShapeBase<Line>, ILinearFigure
     }
 
     /// <summary>Line g, h... when no points name it</summary>
-    protected override string FirstLetter
-    {
-        get
-        {
-            return "g";
-        }
-    }
+    protected override string FirstLetter => "g";
 
     /// <summary>"to line g": a parallel or a bisector is a line to what is built on it</summary>
-    public override string Noun
-    {
-        get
-        {
-            return "line";
-        }
-    }
+    public override string Noun => "line";
 
-    public virtual PointPair OnScreenCoordinates
-    {
-        get
-        {
-            return Coordinates;
-        }
-    }
+    public virtual PointPair OnScreenCoordinates => Coordinates;
 
     public override void UpdateVisual()
     {
@@ -54,27 +36,16 @@ public abstract partial class LineBase : ShapeBase<Line>, ILinearFigure
         Shape.Visibility = Visibility.Collapsed;
     }
 
-    public virtual PointPair Coordinates
-    {
-        get { return new PointPair(Point(0), Point(1)); }
-    }
+    public virtual PointPair Coordinates => new PointPair(Point(0), Point(1));
 
     /// <summary>The name written next to the line (<see cref="FigureLabel"/>)</summary>
     [PropertyGridVisible]
     [PropertyGridName("Show name")]
     public virtual bool ShowName
-    {
-        get { return HasNameLabel; }
-        set { HasNameLabel = value; }
+    { get => HasNameLabel; set => HasNameLabel = value;
     }
 
-    public override Point Center
-    {
-        get
-        {
-            return Coordinates.Midpoint;
-        }
-    }
+    public override Point Center => Coordinates.Midpoint;
 
     public override IFigure HitTest(Avalonia.Point point)
     {
@@ -107,10 +78,7 @@ public abstract partial class LineBase : ShapeBase<Line>, ILinearFigure
 
     public virtual double Angle
     {
-        get
-        {
-            return Math.GetAngle(Coordinates.P1, Coordinates.P2).ToDegrees();
-        }
+        get => Math.GetAngle(Coordinates.P1, Coordinates.P2).ToDegrees();
         set
         {
             if (Dependencies.Count == 2)

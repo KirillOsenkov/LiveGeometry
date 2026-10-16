@@ -5,13 +5,7 @@ namespace LiveGeometry;
 
 public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
 {
-    protected override string Kind
-    {
-        get
-        {
-            return "Circle";
-        }
-    }
+    protected override string Kind => "Circle";
 
     public abstract double Radius
     {
@@ -22,9 +16,7 @@ public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
     [PropertyGridVisible]
     [PropertyGridName("Show name")]
     public bool ShowName
-    {
-        get { return HasNameLabel; }
-        set { HasNameLabel = value; }
+    { get => HasNameLabel; set => HasNameLabel = value;
     }
 
     #region Setting and fixing the radius
@@ -35,15 +27,9 @@ public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
     /// Null when it can't (a circle by equation, a radius taken from a figure): the
     /// Radius row is then read-only and the verbs are hidden.
     /// </summary>
-    protected virtual IPoint RadiusPivot
-    {
-        get { return null; }
-    }
+    protected virtual IPoint RadiusPivot => null;
 
-    protected virtual IPoint RadiusEnd
-    {
-        get { return null; }
-    }
+    protected virtual IPoint RadiusEnd => null;
 
     /// <summary>The radius, settable through the two points (<see cref="LengthConstraint.SetDistance"/>)</summary>
     [PropertyGridVisible]
@@ -53,10 +39,7 @@ public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
     [PropertyGridCustomValueProvider(typeof(LengthPropertyValue))]
     public double Length
     {
-        get
-        {
-            return Radius;
-        }
+        get => Radius;
         set
         {
             if (RadiusEnd != null)
@@ -69,19 +52,10 @@ public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
     public IPoint LengthEndpoint => RadiusEnd;
 
     /// <summary>For expressions, c.Diameter (c.Length is the radius, as the grid's row)</summary>
-    public double Diameter
-    {
-        get
-        {
-            return 2 * Radius;
-        }
-    }
+    public double Diameter => 2 * Radius;
 
     /// <summary>A measurement of the radius sits between the two radius points</summary>
-    public IList<IFigure> MeasuredFigures
-    {
-        get { return RadiusEnd == null ? null : new IFigure[] { RadiusPivot, RadiusEnd }; }
-    }
+    public IList<IFigure> MeasuredFigures => RadiusEnd == null ? null : new IFigure[] { RadiusPivot, RadiusEnd };
 
     public bool CanEdit(string propertyName)
     {
@@ -145,20 +119,11 @@ public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
 
     #endregion
 
-    public override double Inclination
-    {
-        get { return 0; }
-    }
+    public override double Inclination => 0;
 
-    public override double SemiMajor
-    {
-        get { return Radius; }
-    }
+    public override double SemiMajor => Radius;
 
-    public override double SemiMinor
-    {
-        get { return Radius; }
-    }
+    public override double SemiMinor => Radius;
 
     public override void UpdateVisual()
     {

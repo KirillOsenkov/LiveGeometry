@@ -13,10 +13,8 @@ public class ToolStorage
             }
             return instance;
         }
-        set
-        {
-            instance = value;
-        }
+
+        set => instance = value;
     }
 
     public virtual void AddTool(UserDefinedTool newBehavior)

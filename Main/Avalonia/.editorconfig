@@ -1,0 +1,10 @@
+# The code style of AGENTS.md, as far as the IDE can say it. The rest is prose there.
+
+[*.cs]
+# expression-bodied getters for trivial properties, never multi-line ones
+csharp_style_expression_bodied_properties = when_on_single_line:suggestion
+csharp_style_expression_bodied_indexers = when_on_single_line:suggestion
+csharp_style_expression_bodied_accessors = when_on_single_line:suggestion
+# collection expressions, [1, 2, 3], over new[] { 1, 2, 3 }: only where the type is an array,
+# so that nothing changes but the spelling (an interface target would get a read-only wrapper)
+dotnet_style_prefer_collection_expression = when_types_exactly_match:suggestion
