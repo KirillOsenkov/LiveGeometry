@@ -21,6 +21,11 @@ public class CircleCreator : FigureCreator
 
     public override string HintText => "Click the circle center and then click a point on a circle.";
 
+    public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+    {
+        return ClickedDependencies == 1 ? "Click a point the circle goes through." : base.ConstructionHintText(args);
+    }
+
     public override FrameworkElement CreateIcon()
     {
         return IconBuilder.BuildIcon()

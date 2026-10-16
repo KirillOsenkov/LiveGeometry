@@ -532,6 +532,14 @@ public abstract partial class FigureCreator : Behavior
     {
         var figures = CreateFigures().ToArray();
         TempResults.AddRange(figures);
+
+        // previewed in the style the click will give it: an arc's center and start are
+        // known by now, and so is whether it lies on a circle
+        foreach (var figure in figures)
+        {
+            Coincidence.StyleIfCoinciding(Drawing, figure);
+        }
+
         Drawing.ActionManager.ExecuteImmediatelyWithoutRecording = true;
         Actions.AddMany(Drawing, figures);
         Drawing.ActionManager.ExecuteImmediatelyWithoutRecording = false;
@@ -1123,6 +1131,12 @@ public abstract partial class FigureCreator : Behavior
 
             (TempPoint as IMovable).MoveTo(newPosition);
             Drawing.Recalculate();
+
+            // an arc on an arc lies over it or apart as its end moves
+            foreach (var figure in TempResults)
+            {
+                Coincidence.StyleIfCoinciding(Drawing, figure);
+            }
         }
 
         Drawing.RaiseConstructionFeedback(new Drawing.ConstructionFeedbackEventArgs()

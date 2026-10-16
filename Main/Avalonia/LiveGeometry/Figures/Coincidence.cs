@@ -20,24 +20,34 @@ public static class Coincidence
 
     /// <summary>
     /// A figure about to be added gets the style that shows through where it would have the
-    /// default line and lies on a figure the drawing shows (see <see cref="Coincidence"/>)
+    /// default line and lies on a figure the drawing shows (see <see cref="Coincidence"/>).
+    /// Asked again of the figure a tool previews, as its last point follows the cursor: it
+    /// trades that style and the default back and forth, as the figure the click would make.
+    /// A style of any other kind is left alone.
     /// </summary>
     public static void StyleIfCoinciding(Drawing drawing, IFigure figure)
     {
         var styles = drawing.StyleManager;
         var defaultStyle = styles.AssignDefaultStyle(figure);
-        if (figure.Style != null && figure.Style != defaultStyle
-            || defaultStyle?.Name != StyleManager.LineStyleName)
+        var coincident = styles.GetStyle(StyleManager.CoincidentLineStyleName);
+        if (defaultStyle?.Name != StyleManager.LineStyleName
+            || coincident == null
+            || !coincident.GetType().SupportsFigureType(figure.GetType())
+            || figure.Style != null && figure.Style != defaultStyle && figure.Style != coincident)
         {
             return;
         }
 
-        var coincident = styles.GetStyle(StyleManager.CoincidentLineStyleName);
-        if (coincident != null
-            && coincident.GetType().SupportsFigureType(figure.GetType())
-            && LiesOnShownFigure(drawing, figure))
+        if (LiesOnShownFigure(drawing, figure))
         {
-            figure.Style = coincident;
+            if (figure.Style != coincident)
+            {
+                figure.Style = coincident;
+            }
+        }
+        else if (figure.Style == coincident)
+        {
+            figure.Style = defaultStyle;
         }
     }
 

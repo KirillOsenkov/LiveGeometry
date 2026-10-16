@@ -62,6 +62,19 @@ public class CircleArcCreator : FigureCreator
 
     public override string HintText => "Click (and release) the center point and then two points (start and end of the arc, counterclockwise).";
 
+    public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+    {
+        return ClickedDependencies switch
+        {
+            1 => "Click where the arc starts: its distance from the center is the radius.",
+            2 => ArcEndHint,
+            _ => base.ConstructionHintText(args)
+        };
+    }
+
+    /// <summary>The last step of either arc</summary>
+    protected const string ArcEndHint = "Click where the arc ends, going counterclockwise from its start: only the direction from the center counts.";
+
     public override FrameworkElement CreateIcon()
     {
         const double r = 0.4;
@@ -118,6 +131,17 @@ public class EllipseArcCreator : CircleArcCreator
     public override string Name => "Elliptical Arc";
 
     public override string HintText => "Click on 5 points in order to determine the center, the semi-major axis, the semi-minor axis, the begin angle, and the end angle.";
+
+    public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+    {
+        return ClickedDependencies switch
+        {
+            1 or 2 => EllipseCreator.EllipseAxisHint(ClickedDependencies),
+            3 => "Click where the arc begins: only the direction from the center counts.",
+            4 => ArcEndHint,
+            _ => base.ConstructionHintText(args)
+        };
+    }
 
     public override FrameworkElement CreateIcon()
     {

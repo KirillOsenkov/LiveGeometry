@@ -103,6 +103,25 @@ public class EllipseCreator : FigureCreator
 
     public override string HintText => "Click the center, then the end of the long axis, then the end of the short axis.";
 
+    public override string ConstructionHintText(Drawing.ConstructionStepCompleteEventArgs args)
+    {
+        return EllipseAxisHint(ClickedDependencies) ?? base.ConstructionHintText(args);
+    }
+
+    /// <summary>
+    /// The hint of the Ellipse and Elliptical Arc tools after the center: the end of the long
+    /// axis, then of the short one; null for any other step
+    /// </summary>
+    public static string EllipseAxisHint(int pointsClicked)
+    {
+        return pointsClicked switch
+        {
+            1 => "Click the end of the long axis: how far the ellipse reaches from the center, and which way.",
+            2 => "Click the end of the short axis: only its distance from the long axis counts.",
+            _ => null
+        };
+    }
+
     public override FrameworkElement CreateIcon()
     {
         return IconBuilder.BuildIcon()
