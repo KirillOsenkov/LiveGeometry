@@ -432,6 +432,15 @@ public class FigureExplorer : Border
             return;
         }
 
+        // an expression box has the keyboard, and keeps it: the row's figure goes into the
+        // formula, hidden or not (ReferencePicker), the way a click on the figure would
+        if (drawing.InsertTarget != null)
+        {
+            ReferencePicker.TryInsert(drawing.InsertTarget, row.Figure);
+            e.Handled = true;
+            return;
+        }
+
         Focus();
 
         // a tool that picks figures takes the row as a click on its figure, hidden or not

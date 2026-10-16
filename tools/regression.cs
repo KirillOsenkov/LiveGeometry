@@ -35,6 +35,7 @@ public class Program
             ("A vector's X and Y move its end, and undo moves it back", VectorComponentsEdit),
             ("Point functions reject dependency cycles", PointFunctionsRejectCycles),
             ("Expression strategies agree", ExpressionStrategiesAgree),
+            ("A number by formula follows its figures, round trips, and says what a click inserts", NumberByFormula),
             ("Labels reject dependency cycles", LabelsRejectCycles),
             ("Clearing label text clears display", ClearLabelText),
             ("Functions reject dependency cycles", FunctionsRejectCycles),
@@ -580,7 +581,7 @@ public class Program
         double pi = System.Math.PI;
         var values = new (string Text, double Expected)[]
         {
-            ("AB", 5), ("A.X + B.Y", 4), ("dist(A, B)", 5), ("area(A, C, B)", 6), ("ang(A, C, B)", pi / 2),
+            ("AB", 5), ("A.X + B.Y", 4), ("dist(A, B)", 5), ("area(A, C, B)", 6), ("ang(A, C, B)", pi / 2), ("angle(A, C, B)", 90),
             ("sqrt(16)", 4), ("2^3^2", 512), ("-2^2", -4), ("round(2.5)", 3), ("sign(-3)", -1), ("max(1, 2)", 2),
             ("atan2(1, 1)", pi / 4), ("pi", pi), ("e", System.Math.E), ("AB * 2 + 1", 11), ("B.X^2", 9), ("ln(e)", 1),
             ("lg(100)", 2), ("sqr(9)", 3), ("clamp(5, 0, 1)", 1), ("AB.Length", 5), ("3 / 4", 0.75), ("1 - 2 - 3", -4),
@@ -631,6 +632,65 @@ public class Program
         {
             Compiler.Instance.Strategy = previous;
         }
+    }
+
+    /// <summary>
+    /// A Number with a formula (the Number tool): a figure named a with a caption on the
+    /// paper, built on what the formula names and following it; a value typed over the
+    /// formula makes it a typed number, and undo brings the formula back; a file keeps the
+    /// formula, the place and the visibility; and the texts a click puts into a formula
+    /// (ReferenceText) read as a caption would say them.
+    /// </summary>
+    static void NumberByFormula()
+    {
+        var drawing = NewDrawing();
+        var a = AddPoint(drawing, x: 0, y: 0);
+        var b = AddPoint(drawing, x: 3, y: 4);
+        var segment = Factory.CreateSegment(drawing, a, b);
+        Actions.Add(drawing, segment);
+        var number = new LiveGeometry.Number() { Drawing = drawing };
+        number.Position = new Point(1, 1);
+        number.Visible = true;
+        Actions.Add(drawing, number);
+        Require(number.Name == "a", "A number the tool makes is named " + number.Name + ", not a.");
+        Require(number.IsTyped && number.Exists, "A new number is not a typed one that exists.");
+
+        // the formula as the grid sets it
+        number.Expression.SetValue("AB * 2");
+        Require(!number.IsTyped && System.Math.Abs(number.Value - 10) < 1e-9, "The formula AB * 2 gave " + number.Value + ".");
+        Require(number.Dependencies.Contains(a) && number.Dependencies.Contains(b), "The number is not built on the points its formula names.");
+        Require(number.CaptionText == "a = 10", "The caption says " + number.CaptionText + ".");
+        Require(number.Construction == "= AB * 2", "The construction says " + number.Construction + ".");
+        b.MoveTo(new Point(6, 8));
+        b.RecalculateAllDependents();
+        Require(System.Math.Abs(number.Value - 20) < 1e-9, "The number did not follow its points: " + number.Value + ".");
+        drawing.Figures.CheckConsistency();
+
+        // a value typed over the formula, and undone
+        Set(drawing, number, nameof(LiveGeometry.Number.Value), 3.0);
+        Require(number.IsTyped && number.Value == 3 && number.Dependencies.Count == 0, "A typed value did not take the formula's place.");
+        drawing.ActionManager.Undo();
+        Require(!number.IsTyped && number.Expression.Text == "AB * 2" && System.Math.Abs(number.Value - 20) < 1e-9, "Undo did not bring the formula back: " + number.Expression.Text + " = " + number.Value);
+        drawing.Figures.CheckConsistency();
+
+        // the file
+        var copy = ReadLgf(drawing.SaveAsText());
+        var read = copy.Figures.OfType<LiveGeometry.Number>().Single();
+        Require(read.Expression.Text == "AB * 2" && System.Math.Abs(read.Value - 20) < 1e-9, "The file lost the formula: " + read.Expression.Text + " = " + read.Value);
+        Require(read.Visible && read.Position == new Point(1, 1), "The file lost the number's place or visibility.");
+        Require(copy.Figures.OfType<LiveGeometry.Number>().All(n => n.Visible || n.Auxiliary), "A number read from a file is hidden.");
+
+        // what a click puts into a formula
+        var circle = Factory.CreateCircle(drawing, new IFigure[] { a, b });
+        Actions.Add(drawing, circle);
+        Require(ReferenceText.OptionsFor(segment, InsertContext.Expression)[0].Text == "AB", "A segment is not inserted as AB.");
+        Require(ReferenceText.OptionsFor(number, InsertContext.Expression)[0].Text == "a", "A number is not inserted by its name.");
+        Require(ReferenceText.OptionsFor(a, InsertContext.PointX)[0].Text == "A.X", "A point in an X row is not inserted as A.X.");
+        Require(ReferenceText.OptionsFor(a, InsertContext.Expression)[0].Text == "A", "A point is not inserted by its name.");
+        var circleTexts = ReferenceText.OptionsFor(circle, InsertContext.Expression).Select(option => option.Text).ToList();
+        Require(circleTexts.SequenceEqual(new[] { "c.Radius", "c.Diameter", "c.Circumference", "c.Area" }), "A circle offers " + string.Join(", ", circleTexts) + ".");
+        Require(!ReferenceText.OptionsFor(segment, InsertContext.Expression).Any(option => option.Figure != segment), "An option names another figure.");
+        Require(ExpressionTextBox.IsInBrackets("The sum is [", 12) && !ExpressionTextBox.IsInBrackets("[AB] and ", 9), "The caret's place among brackets is misjudged.");
     }
 
     static void LabelsRejectCycles()

@@ -54,7 +54,7 @@ public static class FigureIcons
         [typeof(ControlBase)] = () => new LabelCreator(),
         [typeof(ShowHideControl)] = () => new ShowHideCreator(),
         [typeof(Slider)] = () => new SliderCreator(),
-        [typeof(Number)] = () => new SliderCreator(),
+        [typeof(Number)] = () => new NumberCreator(),
     };
 
     static readonly Dictionary<string, Behavior> toolsMade = new();

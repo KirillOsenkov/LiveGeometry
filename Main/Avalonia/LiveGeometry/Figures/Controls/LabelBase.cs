@@ -84,6 +84,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     [PropertyGridVisible]
     [PropertyGridMultiline]
     [PropertyGridDisallowMultiEdit]
+    [PropertyGridPreferredEditor("LabelText")]
     public virtual string Text
     {
         get => text;

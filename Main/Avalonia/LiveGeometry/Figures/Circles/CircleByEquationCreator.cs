@@ -23,16 +23,19 @@ public class CircleByEquationCreator : Behavior
         [PropertyGridVisible]
         [PropertyGridEvent("KeyDown", "Common_KeyDown")]
         [PropertyGridName("Center X = ")]
+        [PropertyGridPreferredEditor("Expression")]
         public string X { get; set; }
 
         [PropertyGridVisible]
         [PropertyGridEvent("KeyDown", "Common_KeyDown")]
         [PropertyGridName("Center Y = ")]
+        [PropertyGridPreferredEditor("Expression")]
         public string Y { get; set; }
 
         [PropertyGridVisible]
         [PropertyGridEvent("KeyDown", "Common_KeyDown")]
         [PropertyGridName("Radius = ")]
+        [PropertyGridPreferredEditor("Expression")]
         public string R { get; set; }
 
         internal void Common_KeyDown(object sender, KeyEventArgs e)

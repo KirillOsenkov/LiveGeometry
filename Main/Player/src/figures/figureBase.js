@@ -107,9 +107,14 @@ class FigureBase {
         this.lockedValue = value;
     }
 
+    /** Whether a figure of this kind is on the paper unless the file says otherwise: every figure but a Number */
+    get visibleByDefault() {
+        return true;
+    }
+
     /** The attributes every figure may have (FigureBase.ReadXml); a subclass reads its own after */
     readXml(element) {
-        this.visible = Xml.readBool(element, "Visible", true);
+        this.visible = Xml.readBool(element, "Visible", this.visibleByDefault);
         this.locked = Xml.readBool(element, "Locked", false);
         this.auxiliary = Xml.readBool(element, "Auxiliary", false);
         this.isHitTestVisible = Xml.readBool(element, "IsHitTestVisible", true);

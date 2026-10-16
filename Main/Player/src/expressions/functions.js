@@ -11,8 +11,16 @@ const Functions = {
         return a.distance(b);
     },
 
+    /** The smaller angle at b, in radians: what VB6's drawings and the gallery's compute with */
     Ang(a, b, c) {
-        return Functions.Angle(a, b, c);
+        const a1 = GeometryMath.getAngle(b, a);
+        const a2 = GeometryMath.getAngle(b, c);
+        let result = a2 < a1 ? a1 - a2 : a2 - a1;
+        if (result >= Math.PI) {
+            result = 2 * Math.PI - result;
+        }
+
+        return result;
     },
 
     /** The square root (not number.SquareRoot(), which takes the root of the absolute value) */
@@ -39,16 +47,9 @@ const Functions = {
         return Math.log(number);
     },
 
-    /** The unoriented angle at b, in [0, pi] */
+    /** The angle ABC as the Angle tool measures it: the smaller angle at b, in degrees (what a click on an angle measurement puts into a formula) */
     Angle(a, b, c) {
-        const a1 = GeometryMath.getAngle(b, a);
-        const a2 = GeometryMath.getAngle(b, c);
-        let result = a2 < a1 ? a1 - a2 : a2 - a1;
-        if (result >= Math.PI) {
-            result = 2 * Math.PI - result;
-        }
-
-        return result;
+        return GeometryMath.toDegrees(Functions.Ang(a, b, c));
     },
 
     OAngle(a, b, c) {

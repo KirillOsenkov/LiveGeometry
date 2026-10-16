@@ -52,10 +52,16 @@ public abstract class LabelWithOffset : LabelBase, IMovable
         }
     }
 
+    /// <summary>
+    /// Whether there is an anchor to measure from: something the label is built on, unless a
+    /// subclass takes its anchor from elsewhere (a number's caption from the number)
+    /// </summary>
+    protected virtual bool HasAnchor => !Dependencies.IsEmpty();
+
     /// <summary>Puts the label where its anchor and offset say; the text is the subclass's business</summary>
     public override void UpdateVisual()
     {
-        if (Dependencies.IsEmpty())
+        if (!HasAnchor)
         {
             return;
         }

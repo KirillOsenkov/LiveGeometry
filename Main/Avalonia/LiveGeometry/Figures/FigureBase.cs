@@ -763,11 +763,18 @@ public abstract partial class FigureBase :
 
     public bool Auxiliary { get; set; }
 
+    /// <summary>
+    /// Whether a figure of this kind is on the paper unless the file says otherwise: every
+    /// figure but a <see cref="Number"/>, which is a hidden helper until it is shown, so the
+    /// file says Visible="true" for one that is and nothing for the others
+    /// </summary>
+    protected virtual bool VisibleByDefault => true;
+
     public virtual void WriteXml(XmlWriter writer)
     {
-        if (!Visible)
+        if (Visible != VisibleByDefault)
         {
-            writer.WriteAttributeString("Visible", "false");
+            writer.WriteAttributeString("Visible", Visible ? "true" : "false");
         }
         if (Locked)
         {
@@ -799,7 +806,7 @@ public abstract partial class FigureBase :
 
     public virtual void ReadXml(XElement element)
     {
-        Visible = element.ReadBool("Visible", true);
+        Visible = element.ReadBool("Visible", VisibleByDefault);
         Locked = element.ReadBool("Locked", false);
         Auxiliary = element.ReadBool("Auxiliary", false);
         IsHitTestVisible = element.ReadBool("IsHitTestVisible", true);

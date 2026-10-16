@@ -102,8 +102,8 @@ public class ShowHideCreator : Behavior, IFigurePicker
 
     /// <summary>
     /// What a click on the figure picks: the figure, the one a name belongs to, the polygon
-    /// of a vertex; null for what a box can't hold - another box, an axis, a Number (nothing
-    /// to show), a helper that goes with the figure it was made for
+    /// of a vertex; null for what a box can't hold - another box, an axis, a helper that
+    /// goes with the figure it was made for (the Number of a fixed length)
     /// </summary>
     IFigure Pickable(IFigure figure)
     {
@@ -122,7 +122,6 @@ public class ShowHideCreator : Behavior, IFigurePicker
             || figure is ShowHideControl
             || figure is AxisLine
             || figure is CartesianGrid
-            || figure is Number
             || figure.Auxiliary)
         {
             return null;

@@ -20,11 +20,13 @@ public abstract class ShapeCreator : FigureCreator
         [PropertyGridFocus]
         [PropertyGridEvent("KeyDown", "X_KeyDown")]
         [PropertyGridName("X = ")]
+        [PropertyGridPreferredEditor("Expression")]
         public string X { get; set; }
 
         [PropertyGridVisible]
         [PropertyGridEvent("KeyDown", "Y_KeyDown")]
         [PropertyGridName("Y = ")]
+        [PropertyGridPreferredEditor("Expression")]
         public string Y { get; set; }
 
         internal void X_KeyDown(object sender, KeyEventArgs e)

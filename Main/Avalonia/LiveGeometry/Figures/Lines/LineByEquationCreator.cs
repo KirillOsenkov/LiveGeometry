@@ -25,11 +25,13 @@ public class LineByEquationCreator : Behavior
         [PropertyGridFocus]
         [PropertyGridEvent("KeyDown", "Common_KeyDown")]
         [PropertyGridName("m = ")]
+        [PropertyGridPreferredEditor("Expression")]
         public string m { get; set; }
 
         [PropertyGridVisible]
         [PropertyGridEvent("KeyDown", "Common_KeyDown")]
         [PropertyGridName("b = ")]
+        [PropertyGridPreferredEditor("Expression")]
         public string b { get; set; }
 
         internal void Common_KeyDown(object sender, KeyEventArgs e)

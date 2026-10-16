@@ -344,8 +344,55 @@ public abstract partial class Behavior : INotifyPropertyChanged
 
     void OfferClickOptions(MouseEventArgs e)
     {
-        Choice.Offer(SafeFindClickOptions(e));
+        // while an expression box has the keyboard, a click puts a reference into it: the
+        // options are the figures' quantities, whatever the tool would take
+        var target = Drawing?.InsertTarget;
+        Choice.Picking = target != null;
+        Choice.Offer(target != null ? FindReferenceOptions(e, target) : SafeFindClickOptions(e));
         ShowChoiceStatus();
+    }
+
+    IReadOnlyList<object> FindReferenceOptions(MouseEventArgs e, IExpressionInsertTarget target)
+    {
+        if (errorHappened || mParentCanvas == null || Drawing == null)
+        {
+            return Array.Empty<object>();
+        }
+
+        try
+        {
+            return ReferencePicker.FindOptions(Drawing, Coordinates(e, false, false, false), target);
+        }
+        catch (Exception)
+        {
+            return Array.Empty<object>();
+        }
+    }
+
+    // a press that put a reference into the box: its release is nobody's
+    bool insertedPress;
+
+    /// <summary>
+    /// A press while an expression box has the keyboard: what the hover offered (the first
+    /// quantity of the figure under the cursor, or the one chosen with Tab) goes into the box,
+    /// and the tool hears nothing of the press. False on empty paper, which the tool takes.
+    /// </summary>
+    bool TryInsertReference(MouseButtonEventArgs e)
+    {
+        var target = Drawing?.InsertTarget;
+        if (target == null || mParentCanvas == null)
+        {
+            return false;
+        }
+
+        var option = Choice.Pick(ReferencePicker.FindOptions(Drawing, Coordinates(e, false, false, false), target));
+        if (option == null)
+        {
+            return false;
+        }
+
+        target.Insert(option.Text);
+        return true;
     }
 
     void ShowChoiceStatus()
@@ -507,6 +554,13 @@ public abstract partial class Behavior : INotifyPropertyChanged
 
         try
         {
+            // a halo on the figure whose reference a click would put into the expression box
+            if (Drawing.InsertTarget != null)
+            {
+                clickPreview.Show(Drawing, null, (Choice.Current as ReferenceOption)?.Figure, null);
+                return;
+            }
+
             var angle = GetAngleToPick(e);
             if (angle != null)
             {
@@ -756,7 +810,10 @@ public abstract partial class Behavior : INotifyPropertyChanged
         Cursor cursor;
         try
         {
-            cursor = GetCursor(Coordinates(e, false, false, false));
+            // the hand where a click puts a reference into the expression box
+            cursor = Drawing.InsertTarget != null
+                ? Choice.Current != null ? HandCursor : ArrowCursor
+                : GetCursor(Coordinates(e, false, false, false));
         }
         catch (Exception)
         {
@@ -1221,6 +1278,14 @@ public abstract partial class Behavior : INotifyPropertyChanged
 
     void SafeMouseDown(object sender, MouseButtonEventArgs e)
     {
+        // (handled: the canvas doesn't take the keyboard from the box, MainView)
+        if (TryInsertReference(e))
+        {
+            insertedPress = true;
+            e.Handled = true;
+            return;
+        }
+
         try
         {
             MouseDown(sender, e);
@@ -1252,6 +1317,12 @@ public abstract partial class Behavior : INotifyPropertyChanged
     void SafeMouseUp(object sender, MouseButtonEventArgs e)
     {
         errorHappened = false;
+        if (insertedPress)
+        {
+            insertedPress = false;
+            return;
+        }
+
         try
         {
             MouseUp(sender, e);

@@ -166,9 +166,9 @@ public class SelectionRegion
     }
 
     /// <summary>
-    /// Not a hidden figure, nor what a click can't select: the grid and its axes, a Number (it
-    /// has no place), a name (it goes with its figure, as Delete takes it), the text a gallery
-    /// drawing came with (paper to the Drag tool)
+    /// Not a hidden figure, nor what a click can't select: the grid and its axes, a name (it
+    /// goes with its figure, as Delete takes it), the text a gallery drawing came with (paper
+    /// to the Drag tool)
     /// </summary>
     static bool CanBeTaken(Drawing drawing, IFigure figure)
     {
@@ -177,7 +177,6 @@ public class SelectionRegion
             && figure.IsHitTestVisible
             && !(figure is CartesianGrid)
             && !(figure is AxisLine)
-            && !(figure is Number)
             && !(figure is PointLabel)
             && !(figure is FigureLabel)
             && !(figure is ControlBase label && drawing.FixedLabels.Contains(label));

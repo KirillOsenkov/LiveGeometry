@@ -1,4 +1,5 @@
 using System.Linq;
+using Avalonia.Controls;
 
 namespace LiveGeometry;
 
@@ -16,8 +17,22 @@ public class FunctionEditorFactory : BaseValueEditorFactory<FunctionEditor, stri
     }
 }
 
-public class FunctionEditor : StringEditor
+public class FunctionEditor : StringEditor, IExpressionHost
 {
+    /// <summary>An <see cref="ExpressionTextBox"/>: a click on a figure puts a reference into the function</summary>
+    protected override TextBox CreateTextBoxCore()
+    {
+        return new ExpressionTextBox() { Host = this };
+    }
+
+    IFigure Graph => Value?.Parent as IFigure;
+
+    public Drawing Drawing => Graph?.Drawing;
+
+    public IFigure Owner => Graph;
+
+    public InsertContext Context => InsertContext.Expression;
+
     /// <summary>
     /// Valid when it compiles for every graph the row edits: one, or each of a selection,
     /// against its own graph. The row of a selection has no one figure for a parent, and

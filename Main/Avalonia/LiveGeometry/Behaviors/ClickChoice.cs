@@ -126,6 +126,12 @@ public class ClickChoice
             return firstPlacement.HasSameSources(secondPlacement);
         }
 
+        // (a reference is worked out anew at every move: the same figure and text is the same thing)
+        if (first is ReferenceOption firstReference && second is ReferenceOption secondReference)
+        {
+            return firstReference.SameAs(secondReference);
+        }
+
         return ReferenceEquals(first, second);
     }
 
@@ -154,6 +160,8 @@ public class ClickChoice
             case IFigurePart part:
                 var words = ConstructionText.Of(part);
                 return words.Length > 0 ? char.ToUpperInvariant(words[0]) + words.Substring(1) : words;
+            case ReferenceOption reference:
+                return "Insert " + reference.Text + " (" + reference.Description + ")";
             case FigureBase figure:
                 return figure.Title;
             case IFigure figure:
@@ -185,6 +193,12 @@ public class ClickChoice
     public bool DescribesSingle { get; set; }
 
     /// <summary>
+    /// Whether the options are references for an expression box (<see cref="ReferencePicker"/>),
+    /// whatever the tool: the status then says what a click puts in, also when it is one thing
+    /// </summary>
+    public bool Picking { get; set; }
+
+    /// <summary>
     /// For the status bar while there is a choice: "Segment AB (2 of 3): Tab for the next.";
     /// the one option alone with <see cref="DescribesSingle"/>; null while there is nothing
     /// </summary>
@@ -192,7 +206,7 @@ public class ClickChoice
     {
         get
         {
-            if (offered.Count == 0 || (offered.Count == 1 && !DescribesSingle))
+            if (offered.Count == 0 || (offered.Count == 1 && !DescribesSingle && !Picking))
             {
                 return null;
             }

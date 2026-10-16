@@ -242,13 +242,16 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   hover looks too, so the cursor is the hand and the figure has its halo (the Area tool
   took shapes in `Click`, and showed the cross of a free point over a filled polygon),
   and a path is hit by a part, mapped to the path (`FigureParts.Whole`);
+  Number (2026-10-15) - one click where the number goes, then a value or a formula typed
+  in the panel's Formula box (see "Numbers are figures"; while the box has the keyboard a
+  click on a figure puts a reference to it there: "Building a formula by clicking");
   Slider - where it sits, then where
   its knob starts (or press, drag, release): a number with a handle, taken wherever a tool
   asks for a length or an angle, named in expressions (a, b, c).
 - **Misc**: Bezier - four points; Locus (D) - a point that depends on a point on a figure;
   Text - a label at the click; Show/hide box (`ShowHideCreator`) - the figures selected
   when it is picked are picked already, a click on a figure picks or lets go of it (a
-  name for its figure, a vertex for its polygon; not boxes, axes, Numbers or `Auxiliary`
+  name for its figure, a vertex for its polygon; not boxes, axes or `Auxiliary`
   helpers), a click on a row of the Figure List too, the only way to a hidden figure, which
   then shows as a ghost (`IFigurePicker`: a row click picks instead of selecting, Space
   picks the keyboard's row, Delete does nothing meanwhile; the picks are selected figures,
@@ -457,6 +460,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `DOMException(..., "AbortError")` for cancel. Opening headless works the same way: copy the
   file into the served `wwwroot`, `eval` a `globalThis.showOpenFilePicker` returning one
   handle whose `getFile` gives a `File` built from `fetch('/name.ggb')`, then `key O ctrl`.
+- **A press moves the keyboard before its PointerPressed is raised**: Avalonia focuses the
+  nearest focusable control under the pointer (the drawing control, the Figure List) as
+  the press comes in, so a text box's LostFocus fires before the canvas handlers see the
+  press. The expression box keeps its role as the drawing's insert target until the press
+  has been handled (a posted clear, `ExpressionTextBox`) and takes the keyboard back after
+  it put a reference in; cleared on LostFocus at once, every click on a figure went to the
+  tool (2026-10-15).
 - **Keyboard focus drifts into tool panels.** A tool's PropertyBag panel (e.g. "Point by
   coordinates") takes focus into its TextBox after every construction step, so neither the canvas
   KeyDown nor `MainView_KeyUp` (which skips TextBox focus) sees keys then. Anything that must
@@ -756,7 +766,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   stand in where `System.Math` does what a drawing doesn't want - `round(2.5)` is 3, not
   the banker's 2; `sign` and `clamp` give "undefined" where `System.Math` throws, for the
   sign of what has no value or bounds the wrong way round); ours that take the names of
-  points (`dist`, `ang`, `area`). Everything is a double: a whole number is converted (`sign(x)`, a
+  points (`dist`, `ang`, `area`, `angle`). `angle(A, B, C)` is the angle ABC as the Angle
+  tool measures it, the smaller one in degrees (2026-10-15: what a click on an angle
+  measurement puts into a formula, see "Building a formula by clicking"; it was an alias
+  of `ang`); `ang` and `oang` stay radians, the smaller and the counterclockwise angle,
+  which the gallery and VB6's files compute with. Everything is a double: a whole number is converted (`sign(x)`, a
   polygon's `NumberOfSides` - unconverted, the first operator applied to it threw), and a
   property that is no number (`A.Name`) is an error said in words
   (`ExpressionTreeBuilder.AsNumber`). Nothing a user can type may throw, caught or not: a
@@ -1144,6 +1158,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   from 3 to 500."). The two number boxes without an error plate put the box right on commit
   instead: `SliderEditor` takes a number beyond its range to the nearest end, `UpDownEditor`
   shows the value again when the text is no number. No editor takes "Infinity" or 1e999.
+  **What an expression is worth is said under its box too** (2026-10-15;
+  `StringEditor.ValueText`, a plate in the box's own colors): "= 18.85" while the text
+  compiles, as VB6's calculator said it, for the rows of a point by coordinates, a
+  number's formula and the expression rows of the tool panels; the error plate takes its
+  place. Every box an expression is typed into is an `ExpressionTextBox` (see "Building a
+  formula by clicking").
 - **A commit sets the typed text once.** Enter commits, and leaving the box commits again:
   the editors remember the text that has gone into the property (`appliedText` in
   `StringEditor` and `UpDownEditor`) rather than compare it with the value read back, which
@@ -1231,12 +1251,58 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   side the drawing had may run the other way, and then its end is the first click), so the
   panel reads both off the polygon: a new count built on the first click as it was put the
   polygon on a point that had left.
-- **Numbers are figures** (`Figures/Values/Number.cs`): roots with no shape, named n1, n2...,
-  usable in expressions by name, a length and an angle at once. No tool makes a bare one (the
-  Slider is a Number with a handle); a typed value in the Translate tool becomes one. `Auxiliary` (any figure) marks one
+- **Numbers are figures** (`Figures/Values/Number.cs`): usable in expressions by name, a
+  length and an angle at once. Since 2026-10-15 a Number is a `CompositeFigure` whose one
+  part is a caption "a = 18.85" like a slider's (`Number.NumberCaption`, a
+  `LabelWithOffset` anchored at the number's `Position`, which a drag moves whole,
+  `IMovableParts`), and its value is typed (`Value`) or worked out by a formula over the
+  drawing (`Expression`, a `DrawingExpression` as a point by coordinates has, the Formula
+  row; `IExpressionOwner`, so renames follow): a Number with a formula is to a typed one
+  what a point by coordinates is to a free point, and the Slider is a Number with a handle.
+  The Number tool (Measure tab) makes one at the click, shown, named a, b, c from the
+  sliders' pool, and puts the keyboard into its Formula box; the helpers tools make (a
+  typed distance of a translation, a fixed length's number) stay n1, n2 and hidden: a
+  Number is hidden by default (`FigureBase.VisibleByDefault`, false for a Number: the
+  file says `Visible="true"` for a shown one and nothing for the others, so every file
+  from before reads as it did), and ticking Visible on one puts its caption at the middle
+  of the window; hidden, it is a variable of the Figure List. Typing a Value into a number
+  with a formula makes it typed again (`ValueState` restores the formula on undo); a
+  formula that doesn't compile makes the number not exist, one without a value right now
+  says "a = undefined". File: `<Number Name="a" Formula="d.ArcLength + f.ArcLength" X Y
+  Visible="true" ShowName="false" Decimals />`, `Value` instead of `Formula` for a typed
+  one. The player has the twin (`number.js`). `Auxiliary` (any figure) marks one
   created on demand for another: it is removed with its last dependent and comes back on undo.
   Every deletion goes through `RemoveFigureAction`, one figure per action inside a transaction,
   so undo restores labels and a polygon loses a vertex rather than dying.
+- **Building a formula by clicking** (2026-10-15; `Behaviors/ReferencePicker.cs`,
+  `PropertyGrid/Editors/ExpressionTextBox.cs`): every box an expression is typed into - a
+  number's formula, the X and Y of a point by coordinates, a function, the text of a label,
+  the expression rows of the tool panels (`[PropertyGridPreferredEditor("Expression")]` on
+  a string, `ExpressionStringEditor`; `"LabelText"` on a label's text) - is an
+  `ExpressionTextBox` (the one class for them all, where completion, highlighting or a
+  structured editor would go), and while it has the keyboard it is
+  `Drawing.InsertTarget`: a click on a figure puts a reference to it in at the caret
+  instead of going to the tool (`Behavior.TryInsertReference`, before `MouseDown`; the
+  press is handled, so the canvas doesn't take the keyboard, `MainView`, and a drag of the
+  paper keeps it), and so does a click on a row of the Figure List, the way to a hidden
+  figure (`FigureExplorer.Row_PointerPressed`); the hover shows the halo and the hand,
+  and the status says what a click puts in ("Insert d.ArcLength (the arc length of arc d)
+  (1 of 3): Tab for the next.", `ClickChoice.Picking`), Tab from the box steps through
+  the figure's quantities (`MainView.IsTabForPicking`). What goes in (`ReferenceText`):
+  a figure's first quantity as the Length tool would pick it, then the others -
+  `c.Radius`, `c.Diameter`, `c.Circumference`, `c.Area`; `d.ArcLength`...; `p.Area`,
+  `p.Perimeter`; a slider or a number by name; a point by name (two in a row make a
+  distance), `A.X` in an X row and `A.Y` in a Y row (the row's caption decides,
+  `InsertContexts.FromRowName`); a segment as `AB` where the two names run together into
+  that reading (checked by compiling), else `dist(A, B)`; a measurement as what it
+  measures (so the formula reads like math and outlives the measurement), an angle one as
+  its Sweep has it right now - `angle(A, B, C)`, `360 - angle(...)`, `deg(oang(...))`,
+  `360 - deg(oang(...))`, in `rad()` when it shows radians - and an area one as
+  `p.Area` or `area(A, B, C)`; into a label's text in brackets unless the caret is in a
+  `[...]` part already (an unclosed `[` counts). A figure built on the box's owner gives
+  nothing (a cycle). Lines, rays and graphs give nothing either. Clicking empty paper
+  while a box has the keyboard is the tool's as ever (a click clears the selection and
+  so the panel, a drag pans).
 - **A label is a length and an angle only when it says a number** (`Label.IsNumber`: its
   text is one, usually the value of an expression, "[AB * 2]" - what the GeoGebra reader
   makes for a computed value). Every `Label` has `ILengthProvider` and `IAngleProvider`,

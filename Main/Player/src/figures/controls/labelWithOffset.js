@@ -36,9 +36,14 @@ class LabelWithOffset extends LabelBase {
         }
     }
 
+    /** Whether there is an anchor to measure from: something the label is built on, unless a subclass takes its anchor from elsewhere */
+    get hasAnchor() {
+        return this.dependencies.length > 0;
+    }
+
     /** Puts the label where its anchor and offset say; the text is the subclass's business */
     updateVisual() {
-        if (this.dependencies.length === 0) {
+        if (!this.hasAnchor) {
             return;
         }
 

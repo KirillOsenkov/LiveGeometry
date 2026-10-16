@@ -14,9 +14,28 @@ public static class Functions
         return a.Distance(b);
     }
 
+    /// <summary>The smaller angle at b, in radians: what VB6's drawings and the gallery's compute with</summary>
     public static double Ang(Point a, Point b, Point c)
     {
-        return Angle(a, b, c);
+        var a1 = Math.GetAngle(b, a);
+        var a2 = Math.GetAngle(b, c);
+        double result;
+
+        if (a2 < a1)
+        {
+            result = a1 - a2;
+        }
+        else
+        {
+            result = a2 - a1;
+        }
+
+        if (result >= Math.PI)
+        {
+            result = 2 * Math.PI - result;
+        }
+
+        return result;
     }
 
     // (not number.SquareRoot(), which takes the root of the absolute value: sqr(-4) was 2)
@@ -51,27 +70,15 @@ public static class Functions
         return System.Math.Log(number);
     }
 
+    /// <summary>
+    /// The angle ABC as the Angle tool measures it (2026-10-15): the smaller angle at b, in
+    /// degrees, what a click on an angle measurement puts into a formula. Not <see cref="Ang"/>,
+    /// which stays radians for the drawings written with it; a measurement with another
+    /// Sweep is said as 360 - angle(...) or deg(oang(...)) (<see cref="ReferenceText"/>).
+    /// </summary>
     public static double Angle(Point a, Point b, Point c)
     {
-        var a1 = Math.GetAngle(b, a);
-        var a2 = Math.GetAngle(b, c);
-        double result;
-
-        if (a2 < a1)
-        {
-            result = a1 - a2;
-        }
-        else
-        {
-            result = a2 - a1;
-        }
-        
-        if (result >= Math.PI)
-        {
-            result = 2 * Math.PI - result;
-        }
-        
-        return result;
+        return Ang(a, b, c).ToDegrees();
     }
 
     public static double OAngle(Point a, Point b, Point c)

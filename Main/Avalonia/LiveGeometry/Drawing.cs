@@ -876,6 +876,41 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     /// </summary>
     public bool IsRecordingTransaction => ActionManager.RecordingTransaction != null;
 
+    #region The expression box with the keyboard
+
+    /// <summary>
+    /// The expression box that has the keyboard, while one does: a click on a figure puts a
+    /// reference to it there instead of going to the tool, and so does a click on a row of
+    /// the Figure List (<see cref="ReferencePicker"/>). Null otherwise.
+    /// </summary>
+    public IExpressionInsertTarget InsertTarget { get; private set; }
+
+    /// <summary>A box took the keyboard: the status says what a click does now</summary>
+    public void SetInsertTarget(IExpressionInsertTarget target)
+    {
+        if (InsertTarget == target)
+        {
+            return;
+        }
+
+        InsertTarget = target;
+        RaiseStatusNotification(ReferencePicker.Hint);
+    }
+
+    /// <summary>The box let go of the keyboard (or left the tree): clicks are the tool's again</summary>
+    public void ClearInsertTarget(IExpressionInsertTarget target)
+    {
+        if (InsertTarget != target)
+        {
+            return;
+        }
+
+        InsertTarget = null;
+        RaiseStatusNotification(Behavior?.HintText ?? "");
+    }
+
+    #endregion
+
     public event Action<Canvas> OnAttachToCanvas;
     public event Action<Canvas> OnDetachFromCanvas;
 
@@ -1301,9 +1336,8 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     {
         foreach (IFigure figure in Figures)
         {
-            // nor a Number, which has nothing on the paper: a selection shows only the
-            // rows all its figures have, and a number has no Visible or Locked
-            if (!(figure is CartesianGrid) && !(figure is Number))
+            // nor a hidden Number, which has nothing on the paper (a shown one has its caption)
+            if (!(figure is CartesianGrid) && !(figure is Number && !figure.Visible))
             {
                 figure.Selected = true;
             }

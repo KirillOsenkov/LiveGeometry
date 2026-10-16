@@ -432,6 +432,11 @@ public class ClickPreview
             // the track stands for the whole (a slider taken as a radius)
             halo = (AvaloniaShapes.Shape)CreateHalo(slider.Track);
         }
+        else if (figure is Number number)
+        {
+            // the caption is all there is of a number on the paper
+            halo = (AvaloniaShapes.Shape)CreateHalo(number.Caption);
+        }
         else if (figure is Vector vector)
         {
             // along the segment inside, the shaft, as wide as it is drawn

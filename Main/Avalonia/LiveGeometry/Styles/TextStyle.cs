@@ -5,6 +5,7 @@ namespace LiveGeometry;
 
 [StyleFor(typeof(LabelBase))]
 [StyleFor(typeof(ShowHideControl))]
+[StyleFor(typeof(Number))]
 public class TextStyle : FigureStyle
 {
     public override FrameworkElement GetSampleGlyph()

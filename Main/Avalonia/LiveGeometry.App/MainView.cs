@@ -118,9 +118,17 @@ public partial class MainView : UserControl
         KeepDrawingOfEditor();
         drawingHost.UnhandledException += (s, e) => ReportException(e.Exception);
 
-        // Give the drawing canvas keyboard focus so behaviors receive Escape/Delete/etc.
+        // Give the drawing canvas keyboard focus so behaviors receive Escape/Delete/etc. Not
+        // while an expression box has it: a click on a figure puts a reference into the box
+        // (ReferencePicker), and a drag of the paper to reach the next figure keeps it.
         drawingHost.DrawingControl.Focusable = true;
-        drawingHost.DrawingControl.PointerPressed += (s, e) => drawingHost.DrawingControl.Focus();
+        drawingHost.DrawingControl.PointerPressed += (s, e) =>
+        {
+            if (drawingHost.CurrentDrawing?.InsertTarget == null)
+            {
+                drawingHost.DrawingControl.Focus();
+            }
+        };
 
         // the tour group and the ribbon as the page at hand wants them
         UpdateTour();
@@ -1406,6 +1414,13 @@ public partial class MainView : UserControl
             && !DrawingHost.FigureExplorer.IsKeyboardFocusWithin;
     }
 
+    /// <summary>Whether the keyboard is in an expression box that takes references by a click (<see cref="ReferencePicker"/>)</summary>
+    bool IsTabForPicking()
+    {
+        var focused = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
+        return focused is ExpressionTextBox && DrawingHost.CurrentDrawing?.InsertTarget != null;
+    }
+
     bool IsPlainKeyForCanvas(Key key)
     {
         var focused = TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement();
@@ -1652,10 +1667,12 @@ public partial class MainView : UserControl
         }
 
         // Tab: the next of the figures a click at the cursor could take (ClickChoice) - not
-        // from a box, a list or the Figure List, where Tab goes on to the next control
+        // from a box, a list or the Figure List, where Tab goes on to the next control. From
+        // an expression box it is the next quantity of the figure under the cursor
+        // (ReferencePicker), where there is one; elsewhere the next control, as ever.
         if (e.Key == Key.Tab
             && (e.KeyModifiers == KeyModifiers.None || e.KeyModifiers == KeyModifiers.Shift)
-            && IsTabForCanvas()
+            && (IsTabForCanvas() || IsTabForPicking())
             && DrawingHost.CurrentDrawing.Behavior?.StepChoice(backwards: e.KeyModifiers == KeyModifiers.Shift) == true)
         {
             e.Handled = true;

@@ -21,10 +21,16 @@ public class StringEditor : LabeledValueEditor, IValueEditor
 
     protected void CreateTextBox()
     {
-        TextBox = new TextBox();
+        TextBox = CreateTextBoxCore();
         TextBox.TextChanged += StringPropertyEditor_TextChanged;
         TextBox.KeyDown += TextBox_KeyDown;
         TextBox.LostFocus += TextBox_LostFocus;
+    }
+
+    /// <summary>The box itself: a plain one, or an <see cref="ExpressionTextBox"/> for a row that holds an expression</summary>
+    protected virtual TextBox CreateTextBoxCore()
+    {
+        return new TextBox();
     }
 
     protected override void Focus()
@@ -75,6 +81,7 @@ public class StringEditor : LabeledValueEditor, IValueEditor
             ErrorText = null;
         }
 
+        OnBoxTextChanged(text);
         if (text == ShownText)
         {
             return;
@@ -88,6 +95,14 @@ public class StringEditor : LabeledValueEditor, IValueEditor
 
         appliedText = text;
         SetValue(text);
+    }
+
+    /// <summary>
+    /// The box says this now, the editor's own text or the user's: an expression editor
+    /// shows the value under the box (<see cref="ValueText"/>)
+    /// </summary>
+    protected virtual void OnBoxTextChanged(string text)
+    {
     }
 
     #region Commit and errors
@@ -135,10 +150,54 @@ public class StringEditor : LabeledValueEditor, IValueEditor
 
     Border errorBox;
     TextBlock errorBlock;
+    Border valueBox;
+    TextBlock valueBlock;
     CornerRadius? cornersWithoutError;
 
     // the text the error is about: editing it takes the error away
     string errorForText;
+
+    /// <summary>
+    /// What the text is worth right now, in a plate under the box ("= 18.85"), as VB6's
+    /// calculator said it while one typed; null or empty hides it. An error takes its place.
+    /// </summary>
+    public string ValueText
+    {
+        get => valueBlock?.Text;
+        set
+        {
+            if (valueBox == null)
+            {
+                return;
+            }
+
+            bool show = !string.IsNullOrEmpty(value);
+            valueBlock.Text = show ? value : null;
+            UpdatePlates(show);
+        }
+    }
+
+    // one plate at a time: the error over the value, and square bottom corners on the text
+    // box while either shows, so the two read as one piece
+    void UpdatePlates(bool valueWanted)
+    {
+        bool error = !string.IsNullOrEmpty(errorBlock.Text);
+        bool showValue = valueWanted && !error;
+        errorBox.IsVisible = error;
+        valueBox.IsVisible = showValue;
+        bool show = error || showValue;
+        if (show && cornersWithoutError == null)
+        {
+            var corners = TextBox.CornerRadius;
+            cornersWithoutError = corners;
+            TextBox.CornerRadius = new CornerRadius(corners.TopLeft, corners.TopRight, 0, 0);
+        }
+        else if (!show && cornersWithoutError != null)
+        {
+            TextBox.CornerRadius = cornersWithoutError.Value;
+            cornersWithoutError = null;
+        }
+    }
 
     /// <summary>
     /// What is wrong with the text, in a box attached under the text box (it can wrap and
@@ -158,29 +217,11 @@ public class StringEditor : LabeledValueEditor, IValueEditor
             bool show = !string.IsNullOrEmpty(value);
             errorBlock.Text = show ? value : null;
             errorForText = show ? TextBox.Text : null;
-            if (show == errorBox.IsVisible)
-            {
-                return;
-            }
-
-            errorBox.IsVisible = show;
-
-            // square bottom corners on the text box, so the two read as one piece
-            if (show)
-            {
-                var corners = TextBox.CornerRadius;
-                cornersWithoutError = corners;
-                TextBox.CornerRadius = new CornerRadius(corners.TopLeft, corners.TopRight, 0, 0);
-            }
-            else if (cornersWithoutError != null)
-            {
-                TextBox.CornerRadius = cornersWithoutError.Value;
-                cornersWithoutError = null;
-            }
+            UpdatePlates(!string.IsNullOrEmpty(valueBlock.Text));
         }
     }
 
-    /// <summary>The editor with room for <see cref="ErrorText"/> under it</summary>
+    /// <summary>The editor with room for <see cref="ErrorText"/> and <see cref="ValueText"/> under it</summary>
     protected UIElement WithErrorBox(Control editor)
     {
         errorBlock = new TextBlock()
@@ -188,7 +229,30 @@ public class StringEditor : LabeledValueEditor, IValueEditor
             TextWrapping = TextWrapping.Wrap
         };
         errorBlock.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.ErrorText));
-        errorBox = new Border()
+        errorBox = CreatePlate(errorBlock);
+        errorBox.BindTheme(Border.BackgroundProperty, nameof(AppTheme.ErrorBackground));
+        errorBox.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.ErrorBorder));
+
+        valueBlock = new TextBlock()
+        {
+            TextWrapping = TextWrapping.Wrap
+        };
+        valueBlock.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.TextMuted));
+        valueBox = CreatePlate(valueBlock);
+        valueBox.BindTheme(Border.BackgroundProperty, nameof(AppTheme.InputBackground));
+        valueBox.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.Separator));
+
+        var panel = new StackPanel();
+        panel.Children.Add(editor);
+        panel.Children.Add(errorBox);
+        panel.Children.Add(valueBox);
+        return panel;
+    }
+
+    /// <summary>A plate attached under the text box, hidden until it has something to say</summary>
+    static Border CreatePlate(TextBlock block)
+    {
+        return new Border()
         {
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(0, 0, 4, 4),
@@ -198,15 +262,8 @@ public class StringEditor : LabeledValueEditor, IValueEditor
             // as wide as a text box may get (PropertyGridTheme), then it wraps
             MaxWidth = PropertyGridTheme.MaxTextWidth,
             IsVisible = false,
-            Child = errorBlock
+            Child = block
         };
-        errorBox.BindTheme(Border.BackgroundProperty, nameof(AppTheme.ErrorBackground));
-        errorBox.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.ErrorBorder));
-
-        var panel = new StackPanel();
-        panel.Children.Add(editor);
-        panel.Children.Add(errorBox);
-        return panel;
     }
 
     #endregion
