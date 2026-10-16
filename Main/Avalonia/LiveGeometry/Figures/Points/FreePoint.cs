@@ -124,6 +124,7 @@ public partial class FreePoint : PointBase, IMovable, IConditionalProperties
     }
 
     [PropertyGridVisible]
+    [PropertyGridPreferredEditor("UpDown")]
     public override double X
     {
         get => base.X;
@@ -135,6 +136,7 @@ public partial class FreePoint : PointBase, IMovable, IConditionalProperties
     }
 
     [PropertyGridVisible]
+    [PropertyGridPreferredEditor("UpDown")]
     public override double Y
     {
         get => base.Y;
