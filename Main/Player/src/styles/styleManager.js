@@ -13,6 +13,7 @@ class StyleManager {
     static DependentPointStyleName = "DependentPoint";
     static LineStyleName = "Line";
     static SliderTrackStyleName = "SliderTrack";
+    static CoincidentLineStyleName = "CoincidentLine";
     static HandleStyleName = "Handle";
     static ShapeStyleName = "Shape";
     static OutlinedShapeStyleName = "OutlinedShape";
@@ -132,6 +133,14 @@ class StyleManager {
         sliderTrackStyle.strokeWidth = 6;
         sliderTrackStyle.bindToTheme("color", theme => theme.sliderTrack);
         lineStyles.push(sliderTrackStyle);
+
+        // a line drawn over another as it is built (an arc on its circle): wider and faint,
+        // so that it shows through and every one more deepens the color
+        const coincidentLineStyle = new LineStyle();
+        coincidentLineStyle.name = StyleManager.CoincidentLineStyleName;
+        coincidentLineStyle.color = Color.fromArgb(0x4F, 0x00, 0xBA, 0xD7);
+        coincidentLineStyle.strokeWidth = 4;
+        lineStyles.push(coincidentLineStyle);
 
         // Shapes: outlined with a flat fill, outlined with a gradient, and gradients without an outline
         const shapeStyle = new ShapeStyle();

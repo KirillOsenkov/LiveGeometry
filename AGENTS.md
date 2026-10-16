@@ -965,6 +965,19 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   where filled (`PolygonBase.HitTest` reads the shape as drawn; its shape has no fill of its
   own, or a line style applied first left the factory's yellow). Under side segments, an
   outline in a line style shows through them darkened: the segments are drawn over it.
+- **A figure drawn over another as it is built shows through** (`Figures/Coincidence.cs`,
+  2026-10-15): an arc on its circle, a segment on its line looked like nothing at all in
+  the same default line. When a tool adds a figure that would get the default `Line`
+  (`FigureCreator.AddFiguresAndRestart`), and it lies on a figure the drawing shows - the
+  same circle (one center, and a point of one on the other: its second point, a point on
+  it or on a figure proven the same, a crossing with it; or the same radius source), the
+  same ellipse (the same three points), the same line (both points of one on the other) -
+  and covers a part of it right now (arcs and segments on one circle or line may lie
+  apart), it gets `CoincidentLine` instead: 4 px of translucent cyan (#4F00BAD7, both
+  themes), so every one more deepens the color. Points are the same when they are one
+  figure or by `LinearForms` (see "Exact forms"); never by where they happen to be. Decided
+  once, a saved style like any; offered in the picker only to a figure that has it, and an
+  arc in it converted to a sector takes the default outline.
 - **Point shapes and emoji** (`PointStyle.Shape` / `Character`; `Size` is the shape's or the
   character's, whichever shows: the style keeps both in memory and the file only the one in
   use, so `Character` must be read before `Size`, which declaration order does): every point
@@ -2223,7 +2236,7 @@ loader still does for files from before; none of it needs extending.
   intersection point drawn green); only a custom style is carried as an element. The default
   names are the constants in `StyleManager` (`FreePoint`, `PointOnFigure`,
   `IntersectionPoint`, `Midpoint`, `DependentPoint` - `DependentPointStyle` in older files,
-  `Line`, `SliderTrack`, `Shape`, `OutlinedShape`, `Text`, `Heading`, `Hyperlink`, and the palette ones
+  `Line`, `SliderTrack`, `CoincidentLine`, `Shape`, `OutlinedShape`, `Text`, `Heading`, `Hyperlink`, and the palette ones
   named by hue: `RedLine`, `ThickRedLine`, `DashedRedLine`, `RedOutline`, `RedShape`,
   `RedPoint`, `RedBead`... - see "The default styles"; `OtherLine`, `DottedLine` and
   `OtherShape` are gone). Saved are the styles the figures name (`DrawingSerializer.Write` writes the

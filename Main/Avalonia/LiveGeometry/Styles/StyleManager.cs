@@ -221,6 +221,17 @@ public partial class StyleManager
         sliderTrackStyle.BindToTheme(nameof(LineStyle.Color), theme => theme.SliderTrack);
         lineStyles.Add(sliderTrackStyle);
 
+        // a line drawn over another as it is built (an arc on its circle, a segment on its
+        // line: Coincidence): wider and faint, so that it shows through and every one more
+        // deepens the color (offered only to the figures that have it, IsOffered)
+        var coincidentLineStyle = new LineStyle()
+        {
+            Name = CoincidentLineStyleName,
+            Color = Color.FromArgb(0x4F, 0x00, 0xBA, 0xD7),
+            StrokeWidth = 4
+        };
+        lineStyles.Add(coincidentLineStyle);
+
         // Shapes: outlined with a flat fill, outlined with a gradient, and gradients without
         // an outline - a polygon's sides are segments of their own (the shape tools draw
         // them). The fill of a new polygon is among these, yellow and flat, as it always
@@ -461,7 +472,7 @@ public partial class StyleManager
         {
             SliderTrackStyleName => figure is Slider,
             HandleStyleName => figure is BezierPath.BezierPathHandle,
-            GalleryLocusStyleName => false,
+            GalleryLocusStyleName or CoincidentLineStyleName => false,
             _ => true
         };
     }
@@ -615,6 +626,7 @@ public partial class StyleManager
     public const string DependentPointStyleName = "DependentPoint";
     public const string LineStyleName = "Line";
     public const string SliderTrackStyleName = "SliderTrack";
+    public const string CoincidentLineStyleName = "CoincidentLine";
     public const string HandleStyleName = "Handle";
     public const string ShapeStyleName = "Shape";
     public const string OutlinedShapeStyleName = "OutlinedShape";
@@ -735,7 +747,9 @@ public partial class StyleManager
         var newType = StyledType(newFigure);
         if (IsOutlinedShape(oldFigure.GetType()) != IsOutlinedShape(newType))
         {
-            var hue = HueOfDefault(style.Name);
+            // a line that shows through another is gray's line for this: the sector made
+            // of it gets the default outline
+            var hue = style.Name == CoincidentLineStyleName ? StyleHue.Gray : HueOfDefault(style.Name);
             if (hue != null)
             {
                 var counterpart = GetStyle(IsOutlinedShape(newType) ? OutlineStyleNameOf(hue) : LineStyleNameOf(hue));

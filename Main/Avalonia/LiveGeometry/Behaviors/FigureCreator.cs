@@ -215,6 +215,8 @@ public abstract partial class FigureCreator : Behavior
             {
                 if (figure != null)
                 {
+                    // an arc on its circle, a segment on its line: a style that shows through
+                    Coincidence.StyleIfCoinciding(Drawing, figure);
                     Actions.Add(Drawing, figure);
                 }
             }
