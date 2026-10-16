@@ -5,11 +5,11 @@
 const ZOrder = {
     Grid: 10,
     Axes: 20,
+    SelectionHalos: 25,
     Polygons: 30,
     Labels: 40,
     Figures: 50,
     Vectors: 55,
-    SelectionHalos: 58,
     Handles: 59,
     /** Points that a drag doesn't move by themselves: midpoints, intersections, images, points by coordinates */
     FixedPoints: 60,
@@ -55,9 +55,10 @@ const ZOrders = {
     },
 
     /**
-     * The zIndex of the layer at the Z, bottom up: the layers below the figures' band as
-     * they are, the figures' band ordered by Z and then by layer, the selection halos and the
-     * handles, the points' band ordered the same way, the layers above it over all of it
+     * The zIndex of the layer at the Z, bottom up: the layers below the figures' band (the
+     * selection halos among them) as they are, the figures' band ordered by Z and then by
+     * layer, the handles, the points' band ordered the same way, the layers above it over
+     * all of it
      */
     encode(layer, z) {
         const span = ZOrders.Stride * (2 * ZOrders.Range + 1);

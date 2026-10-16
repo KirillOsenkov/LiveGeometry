@@ -1866,9 +1866,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   applies a style to a shape by hand (sample glyphs) must call `OnApplied` too. Any enum
   property of a style or figure round-trips by name through the generic `EnumSerializer`.
 - **Z order** (`Figures/ZOrder.cs`, 2026-10-10): every figure is drawn in its kind's
-  `Layer` (the `ZOrder` enum, bottom up: Grid, Axes, Polygons - polygons, the interiors of
-  Bezier paths - Labels, Figures - lines, circles, arcs, curves,
-  the sides of paths - Vectors, SelectionHalos, Handles, FixedPoints, ConstrainedPoints,
+  `Layer` (the `ZOrder` enum, bottom up: Grid, Axes, SelectionHalos, Polygons - polygons,
+  the interiors of Bezier paths - Labels, Figures - lines, circles, arcs, curves,
+  the sides of paths - Vectors, Handles, FixedPoints, ConstrainedPoints,
   FreePoints, PointLabels, Controls). Two bands of layers are ordered by the figure's `Z`
   (`ZOrders.IsMovable`), the Z first and the layer second: the figures' band, from Polygons
   to Vectors, and the points' band (2026-10-13), from FixedPoints to FreePoints - points and
@@ -1879,10 +1879,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   sliders) over those that don't move by themselves (gray: midpoints, intersections, images,
   points by coordinates - the corners a square or a regular polygon adds). All at Z 0, so a file says nothing
   of it; Bring to front gives Z 1, over the free points, Send to back Z -1, under the fixed
-  ones. `ZIndex` is `ZOrders.Encode(Layer, Z)`: the layers under the figures' band as they
-  are, the figures' band with a stride of 1000 per Z, the halos and handles over all of it,
-  the points' band over those with the same stride (so a halo at a point's `ZIndex - 1` is
-  still over the points of the Z below), the layers over it over all of it. Every figure's
+  ones. `ZIndex` is `ZOrders.Encode(Layer, Z)`: the layers under the figures' band (the
+  selection halos among them) as they are, the figures' band with a stride of 1000 per Z,
+  the handles over all of it, the points' band over those with the same stride (so a hover
+  halo at a point's `ZIndex - 1` is still over the points of the Z below), the layers over
+  it over all of it. Every figure's
   Z is 0, so the gallery draws as it did before there was a Z (checked pixel for pixel,
   `--check` before and after; the point layers changed it only where the Kaleidoscope's
   real emoji now cover their twins), and within one ZIndex the later figure is on top (Avalonia
@@ -1920,9 +1921,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Selection is a halo, never a change of the figure** (`Figures/Shapes/SelectionHalo.cs`,
   2026-10-03): a striped band drawn from the shape's own `RenderedGeometry` under it (a
   slightly bigger silhouette for a point, a disc for an emoji), in one layer per canvas
-  (`SelectionHalo.Layer`, `ZOrder.SelectionHalos`, over every figure of the figures' band
-  and under the points' band since 2026-10-10: under its figure it was hidden by one brought to
-  front) whose opacity the halos share, so overlaps don't darken. Its brush is the theme's `SelectionHalo` (a gradient edited as
+  (`SelectionHalo.Layer`, `ZOrder.SelectionHalos`, under every figure whatever its Z since
+  2026-10-15, so the stripes never cover the stroke or fill being edited; a filled shape
+  over a selected figure hides that much of its halo. From 2026-10-10 the layer was over
+  the figures' band and under the points', and the stripes lay over every line; before
+  that each halo was under its own figure, hidden by one brought to front over it; the
+  band of a region being selected is in the same layer) whose opacity the halos share, so
+  overlaps don't darken. Its brush is the theme's `SelectionHalo` (a gradient edited as
   any on the theme page), not stretched over the figure but repeated, reflected, every
   `StripeWidth` pixels along its angle (`SelectionHalo.MakeRepeating`); the halos redraw
   when it is edited or the theme switches. It is colorless on purpose (grays: white to

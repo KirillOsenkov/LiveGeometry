@@ -214,9 +214,9 @@ public class SelectionHalo : Control
 
     /// <summary>
     /// All the halos on a canvas, together: they share the opacity, so where two overlap (a
-    /// polygon and its sides, a vector's shaft and head) the band is not darker. Over every
-    /// line, polygon and label, whatever its Z, under the points: a halo under its figure
-    /// would be hidden by a figure brought to front over it.
+    /// polygon and its sides, a vector's shaft and head) the band is not darker. Under every
+    /// figure, whatever its Z, so the stripes never cover a stroke or a fill being edited; a
+    /// filled shape over a selected figure hides that much of its halo.
     /// </summary>
     public class Layer : Canvas
     {

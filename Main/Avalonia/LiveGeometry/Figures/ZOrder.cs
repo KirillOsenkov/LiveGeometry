@@ -20,11 +20,13 @@ public enum ZOrder : int
 {
     Grid = 10,
     Axes = 20,
+
+    /// <summary>Under every figure of the figures' band, whatever its Z: the stripes never hide a stroke being edited</summary>
+    SelectionHalos = 25,
     Polygons = 30,
     Labels = 40,
     Figures = 50,
     Vectors = 55,
-    SelectionHalos = 58,
     Handles = 59,
 
     /// <summary>Points that a drag doesn't move by themselves: midpoints, intersections, images, points by coordinates</summary>
@@ -61,7 +63,7 @@ public static class ZOrders
     /// <summary>Where the figures' band starts: over the grid and the axes</summary>
     const int FigureBand = Stride;
 
-    /// <summary>Where the points' band starts: over the figures' band and the selection halos and handles between the two</summary>
+    /// <summary>Where the points' band starts: over the figures' band and the handles between the two</summary>
     const int PointBand = FigureBand + Span + Stride;
 
     /// <summary>
@@ -97,9 +99,10 @@ public static class ZOrders
     }
 
     /// <summary>
-    /// The ZIndex of the layer at the Z, bottom up: the layers below the figures' band as
-    /// they are, the figures' band ordered by Z and then by layer, the selection halos and
-    /// the handles, the points' band ordered the same way, the layers above it over all of it.
+    /// The ZIndex of the layer at the Z, bottom up: the layers below the figures' band (the
+    /// selection halos among them) as they are, the figures' band ordered by Z and then by
+    /// layer, the handles, the points' band ordered the same way, the layers above it over
+    /// all of it.
     /// </summary>
     public static int Encode(ZOrder layer, int z)
     {

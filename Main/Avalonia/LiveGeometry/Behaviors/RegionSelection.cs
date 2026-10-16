@@ -45,7 +45,7 @@ public class RegionSelection
             IsHitTestVisible = false
         };
 
-        // with the halos, which it looks like: under the points, and as faint
+        // with the halos, which it looks like: under the figures, and as faint
         SelectionHalo.Layer.Get(drawing.Canvas).Children.Add(boundary);
         takesTouched = region.TakesTouchedFigures;
         StyleBoundary();
