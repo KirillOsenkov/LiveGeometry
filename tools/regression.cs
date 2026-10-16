@@ -666,6 +666,15 @@ public class Program
         Require(System.Math.Abs(number.Value - 20) < 1e-9, "The number did not follow its points: " + number.Value + ".");
         drawing.Figures.CheckConsistency();
 
+        // the Number tool's panel: what is typed goes into the number as it compiles, a reference to the number itself is refused
+        var panel = new NumberCreator.NumberPanel(new NumberCreator(), number);
+        panel.Formula = "AB *";
+        Require(number.Expression.Text == "AB * 2", "A formula that doesn't compile went into the number.");
+        panel.Formula = "AB * 3";
+        Require(number.Expression.Text == "AB * 3" && System.Math.Abs(number.Value - 30) < 1e-9, "The panel's formula didn't go into the number: " + number.Expression.Text);
+        Require(ReferencePicker.OptionsFor(number, owner: number, InsertContext.Expression).Count == 0, "The number is offered to its own formula.");
+        panel.Formula = "AB * 2";
+
         // a value typed over the formula, and undone
         Set(drawing, number, nameof(LiveGeometry.Number.Value), 3.0);
         Require(number.IsTyped && number.Value == 3 && number.Dependencies.Count == 0, "A typed value did not take the formula's place.");

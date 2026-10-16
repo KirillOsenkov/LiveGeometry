@@ -1260,7 +1260,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   row; `IExpressionOwner`, so renames follow): a Number with a formula is to a typed one
   what a point by coordinates is to a free point, and the Slider is a Number with a handle.
   The Number tool (Measure tab) makes one at the click, shown, named a, b, c from the
-  sliders' pool, and puts the keyboard into its Formula box; the helpers tools make (a
+  sliders' pool, and opens its own panel (`NumberCreator.NumberPanel`: the Formula box
+  with the keyboard in it, and OK), where what is typed goes into the number as soon as it
+  compiles and OK, Enter, Escape or a right click are "done" (the tool goes down, the
+  panel with it; the placing is the one undo step, the typing none); the helpers tools make (a
   typed distance of a translation, a fixed length's number) stay n1, n2 and hidden: a
   Number is hidden by default (`FigureBase.VisibleByDefault`, false for a Number: the
   file says `Visible="true"` for a shown one and nothing for the others, so every file
@@ -1288,7 +1291,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   figure (`FigureExplorer.Row_PointerPressed`); the hover shows the halo and the hand,
   and the status says what a click puts in ("Insert d.ArcLength (the arc length of arc d)
   (1 of 3): Tab for the next.", `ClickChoice.Picking`), Tab from the box steps through
-  the figure's quantities (`MainView.IsTabForPicking`). What goes in (`ReferenceText`):
+  the figure's quantities (`MainView.IsTabForPicking`). While the box has the keyboard a
+  pencil sits at its right end (the box's InnerRightContent), since every click on a
+  figure is the box's then; Enter in a figure's row is "done" and gives the keyboard to
+  the canvas (`ExpressionTextBox.EndEditing`; a tool panel's Enter is its command, as
+  ever), and the status hint says so. The value under the box follows the figures it
+  names (`PropertyGrid.RefreshNumbers` asks `StringEditor.RefreshLiveValue`). What goes in (`ReferenceText`):
   a figure's first quantity as the Length tool would pick it, then the others -
   `c.Radius`, `c.Diameter`, `c.Circumference`, `c.Area`; `d.ArcLength`...; `p.Area`,
   `p.Perimeter`; a slider or a number by name; a point by name (two in a row make a

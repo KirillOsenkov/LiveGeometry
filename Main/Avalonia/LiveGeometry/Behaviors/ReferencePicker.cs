@@ -77,7 +77,7 @@ public class ReferenceOption
 public static class ReferencePicker
 {
     /// <summary>What the status says while a box takes the keyboard</summary>
-    public const string Hint = "Click a figure, or its row in the Figure List, to put it into the formula.";
+    public const string Hint = "Click a figure, or its row in the Figure List, to put it into the formula; Enter when done.";
 
     /// <summary>What a click here could put into the box, the figures as hit testing orders them, each with its quantities</summary>
     public static IReadOnlyList<ReferenceOption> FindOptions(Drawing drawing, Point coordinates, IExpressionInsertTarget target)
@@ -131,16 +131,20 @@ public static class ReferencePicker
         return drawing.Figures.FindTopLevel(hit) ?? hit;
     }
 
-    /// <summary>The figure's quantities as texts for this box; none for a figure the box's owner is built on the other way round</summary>
+    /// <summary>The figure's quantities as texts for this box; none for a figure built on the box's owner (a cycle), or the owner itself</summary>
     public static IReadOnlyList<ReferenceOption> OptionsFor(IFigure figure, IExpressionInsertTarget target)
     {
-        var owner = target.Owner;
+        return OptionsFor(figure, target.Owner, target.Context);
+    }
+
+    public static IReadOnlyList<ReferenceOption> OptionsFor(IFigure figure, IFigure owner, InsertContext context)
+    {
         if (owner != null && (figure == owner || figure.DependsOn(owner)))
         {
             return [];
         }
 
-        return ReferenceText.OptionsFor(figure, target.Context);
+        return ReferenceText.OptionsFor(figure, context);
     }
 }
 

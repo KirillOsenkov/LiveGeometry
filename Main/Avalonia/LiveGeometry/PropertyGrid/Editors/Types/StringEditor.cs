@@ -114,7 +114,19 @@ public class StringEditor : LabeledValueEditor, IValueEditor
         {
             // not handled: a tool's panel acts on Enter too (Add point), after this
             Commit();
+            OnEnter();
         }
+    }
+
+    /// <summary>Enter in a one-line box, after the commit: an expression editor of a figure's row is done with the keyboard</summary>
+    protected virtual void OnEnter()
+    {
+    }
+
+    /// <summary>What the text is worth, worked out anew: the figures it names have moved (<see cref="PropertyGrid.RefreshNumbers"/>)</summary>
+    public void RefreshLiveValue()
+    {
+        OnBoxTextChanged(TextBox.Text ?? "");
     }
 
     void TextBox_LostFocus(object sender, RoutedEventArgs e)

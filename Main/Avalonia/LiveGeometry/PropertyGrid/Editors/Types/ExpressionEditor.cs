@@ -41,6 +41,12 @@ public class ExpressionEditor : StringEditor, IExpressionHost
         ValueText = Value is CompositeValueProvider ? null : ((ExpressionTextBox)TextBox).LiveValueText(text);
     }
 
+    /// <summary>Enter is "done": the keyboard goes back to the canvas, and clicks are the tool's again</summary>
+    protected override void OnEnter()
+    {
+        ((ExpressionTextBox)TextBox).EndEditing();
+    }
+
     /// <summary>
     /// Valid when it compiles for every figure the row edits: one, or each of a selection
     /// (the X of two points), against its own figure. The row of a selection is the
@@ -82,7 +88,8 @@ public class ExpressionEditor : StringEditor, IExpressionHost
 /// Picked by <c>[PropertyGridPreferredEditor("Expression")]</c> on a string: a row of a tool's
 /// panel that holds an expression (the X of the point to add, a radius). The panel checks
 /// the text when its command runs; the box takes references by a click, and says what the
-/// text is worth. The drawing is the one the panel is shown for.
+/// text is worth. The drawing is the one the panel is shown for, unless the panel says
+/// itself whose expression it holds (<see cref="IExpressionHost"/>: the Number tool's).
 /// </summary>
 public class ExpressionStringEditorFactory : BaseValueEditorFactory<ExpressionStringEditor, string>
 {
@@ -100,11 +107,13 @@ public class ExpressionStringEditor : StringEditor, IExpressionHost
         return new ExpressionTextBox() { Host = this };
     }
 
-    public Drawing Drawing => null;
+    IExpressionHost Panel => Value?.Parent as IExpressionHost;
 
-    public IFigure Owner => null;
+    public Drawing Drawing => Panel?.Drawing;
 
-    public InsertContext Context => InsertContexts.FromRowName(Value?.DisplayName);
+    public IFigure Owner => Panel?.Owner;
+
+    public InsertContext Context => Panel?.Context ?? InsertContexts.FromRowName(Value?.DisplayName);
 
     protected override void OnBoxTextChanged(string text)
     {

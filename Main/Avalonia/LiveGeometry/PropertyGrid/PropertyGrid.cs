@@ -190,6 +190,12 @@ public partial class PropertyGrid : StackPanel
             {
                 valueEditor.Value.RaiseValueChanged();
             }
+
+            // the value under an expression box follows the figures it names
+            if (editor is StringEditor stringEditor)
+            {
+                stringEditor.RefreshLiveValue();
+            }
         }
     }
 

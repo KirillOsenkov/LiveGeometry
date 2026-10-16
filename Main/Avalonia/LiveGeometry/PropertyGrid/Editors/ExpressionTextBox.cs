@@ -37,7 +37,7 @@ public class ExpressionTextBox : TextBox, IExpressionInsertTarget
 
     public ExpressionTextBox()
     {
-        GotFocus += (s, e) => Drawing?.SetInsertTarget(this);
+        GotFocus += (s, e) => BecomeTarget();
 
         // A press on the canvas or on the Figure List takes the keyboard before its
         // PointerPressed is raised: the box stays the target until that press has been
@@ -45,12 +45,42 @@ public class ExpressionTextBox : TextBox, IExpressionInsertTarget
         LostFocus += (s, e) => Dispatcher.UIThread.Post(ClearIfUnfocused, DispatcherPriority.Input);
     }
 
+    /// <summary>
+    /// The box has the keyboard: clicks on figures put references in, and a pencil at the
+    /// box's right says so for as long as that holds
+    /// </summary>
+    void BecomeTarget()
+    {
+        Drawing?.SetInsertTarget(this);
+        if (InnerRightContent == null)
+        {
+            var mark = new Border()
+            {
+                Margin = new Thickness(0, 0, 6, 0),
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+                Child = PropertyGridIcons.Create(PropertyGridIcon.Pencil)
+            };
+            ToolTip.SetTip(mark, ReferencePicker.Hint);
+            InnerRightContent = mark;
+        }
+    }
+
     void ClearIfUnfocused()
     {
         if (!IsFocused)
         {
             Drawing?.ClearInsertTarget(this);
+            InnerRightContent = null;
         }
+    }
+
+    /// <summary>
+    /// Done with the box (Enter in a figure's row): the keyboard goes to the canvas, so that
+    /// a click on a figure is the tool's again
+    /// </summary>
+    public void EndEditing()
+    {
+        this.FindAncestorOfType<DrawingHost>()?.DrawingControl.Focus();
     }
 
     public IExpressionHost Host { get; set; }

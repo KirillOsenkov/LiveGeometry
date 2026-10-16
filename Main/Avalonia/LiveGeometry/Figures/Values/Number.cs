@@ -78,8 +78,9 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
             this.value = value;
             if (!IsTyped)
             {
+                // (raised as the grid raises it, so that a Formula box on screen empties)
                 Expression.Text = "";
-                FormulaChanged();
+                Expression.RaiseValueChanged();
                 return;
             }
 
@@ -126,10 +127,23 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
                 return;
             }
 
-            owner.Expression.Text = saved.Formula;
-            owner.Expression.Rebind();
-            owner.FormulaChanged();
+            owner.SetFormula(saved.Formula);
         }
+    }
+
+    /// <summary>
+    /// The formula as code sets it (undo of a typed value, the Number tool's panel): the
+    /// number follows it at once, and a Formula box on screen shows it
+    /// </summary>
+    public void SetFormula(string text)
+    {
+        Expression.Text = text ?? "";
+        if (!IsTyped)
+        {
+            Expression.Rebind();
+        }
+
+        Expression.RaiseValueChanged();
     }
 
     /// <summary>The Formula row was set (the grid, undo): the number follows it, or is typed again when it was cleared</summary>
