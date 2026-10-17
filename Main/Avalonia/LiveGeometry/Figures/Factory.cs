@@ -308,6 +308,11 @@ public partial class Factory
         return new Label() { Drawing = drawing };
     }
 
+    public static AttachedLabel CreateAttachedLabel(Drawing drawing, IFigure figure)
+    {
+        return new AttachedLabel() { Drawing = drawing, Dependencies = new List<IFigure>() { figure } };
+    }
+
     public static Polygon CreatePolygon(Drawing drawing, IList<IFigure> dependencies)
     {
         var result = new Polygon() { Drawing = drawing, Dependencies = dependencies };

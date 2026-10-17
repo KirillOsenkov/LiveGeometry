@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using Avalonia;
 
@@ -15,12 +16,6 @@ namespace LiveGeometry;
 /// </summary>
 public class FigureLabel : Measurement
 {
-    /// <summary>How far in from the edge of the window a line's name sits, in pixels</summary>
-    public static double EdgeInset = 24;
-
-    /// <summary>Between a segment and its name, in pixels</summary>
-    public static double SegmentGap = 6;
-
     bool placed;
 
     IFigure Figure => Dependencies.Count > 0 ? Dependencies[0] : null;
@@ -55,56 +50,15 @@ public class FigureLabel : Measurement
         return ZOrder.PointLabels;
     }
 
-    /// <summary>Where the offset is measured from: on the figure, and for a line where the eye finds it</summary>
-    public override Point Anchor
+    /// <summary>Where the offset is measured from: on the figure, and for a line where the eye finds it (<see cref="FigureAnchor"/>)</summary>
+    public override Point Anchor => FigureAnchor.Of(Figure, Drawing?.CoordinateSystem);
+
+    protected override bool KeepsClear => true;
+
+    /// <summary>A segment's name doesn't go across its segment, a circle's across its circle</summary>
+    public override IEnumerable<IFigure> FiguresThroughAnchor()
     {
-        get
-        {
-            var figure = Figure;
-            switch (figure)
-            {
-                case Segment segment:
-                    return segment.Coordinates.Midpoint;
-                case Ray ray:
-                    // the far end of what shows
-                    return Inward(ray.OnScreenCoordinates.P2, ray.OnScreenCoordinates.P1);
-                case LineBase line:
-                    {
-                        // the end of the visible part nearer the top of the window
-                        var shown = line.OnScreenCoordinates;
-                        return shown.P1.Y >= shown.P2.Y ? Inward(shown.P1, shown.P2) : Inward(shown.P2, shown.P1);
-                    }
-
-                case ICircle circle:
-                    {
-                        // upper left, as GeoGebra puts it
-                        var center = circle.Center;
-                        double radius = circle.Radius * System.Math.Sqrt(0.5);
-                        return new Point(center.X - radius, center.Y + radius);
-                    }
-
-                default:
-                    return figure != null ? figure.Center : new Point();
-            }
-        }
-    }
-
-    /// <summary>The point <see cref="EdgeInset"/> pixels from the end towards the other end, logical</summary>
-    Point Inward(Point end, Point other)
-    {
-        if (Drawing == null)
-        {
-            return end;
-        }
-
-        var from = ToPhysical(end);
-        var direction = RightAngleMark.Direction(from, ToPhysical(other));
-        if (direction == null)
-        {
-            return end;
-        }
-
-        return ToLogical(from + direction.Value * EdgeInset);
+        return Figure != null ? new[] { Figure } : Enumerable.Empty<IFigure>();
     }
 
     public override void UpdateVisual()
@@ -119,7 +73,7 @@ public class FigureLabel : Measurement
         if (!placed && !Text.IsEmpty())
         {
             placed = true;
-            Offset = DefaultOffset(figure);
+            Offset = FirstOffset(FigureAnchor.DefaultOffset(figure, MeasureSize(), Drawing.CoordinateSystem));
         }
 
         base.UpdateVisual();
@@ -127,7 +81,7 @@ public class FigureLabel : Measurement
         if (figure is LineBase && !(figure is Segment))
         {
             // a line that runs outside the window has nowhere to write its name
-            shown = shown && IsOnScreen(ToPhysical(Anchor));
+            shown = shown && FigureAnchor.IsOnScreen(ToPhysical(Anchor), Drawing.CoordinateSystem);
             if (shown)
             {
                 KeepOnScreen();
@@ -138,66 +92,16 @@ public class FigureLabel : Measurement
         Shape.IsVisible = shown;
     }
 
-    bool IsOnScreen(Point pixel)
-    {
-        var canvas = Drawing.CoordinateSystem.PhysicalSize;
-        return pixel.Exists()
-            && pixel.X >= -EdgeInset && pixel.X <= canvas.X + EdgeInset
-            && pixel.Y >= -EdgeInset && pixel.Y <= canvas.Y + EdgeInset;
-    }
-
-    /// <summary>The least room between a line's name and the edge of the window, in pixels</summary>
-    public static double EdgeMargin = 4;
-
-    /// <summary>
-    /// A line's anchor sits by the edge of the window, and the offset may put the name beyond
-    /// it: the name is pushed back in, whole. The offset itself is left alone, so the name
-    /// finds its place again when the line comes away from the edge.
-    /// </summary>
+    /// <summary>The name pushed back in, whole, where a line's anchor by the edge of the window and the offset put it past the edge (<see cref="FigureAnchor.KeptOnScreen"/>)</summary>
     void KeepOnScreen()
     {
-        var canvas = Drawing.CoordinateSystem.PhysicalSize;
-        var size = MeasureSize();
         var topLeft = ToPhysical(Coordinates);
-        var kept = new Point(
-            Clamp(topLeft.X, EdgeMargin, canvas.X - size.Width - EdgeMargin),
-            Clamp(topLeft.Y, EdgeMargin, canvas.Y - size.Height - EdgeMargin));
+        var kept = FigureAnchor.KeptOnScreen(topLeft, MeasureSize(), Drawing.CoordinateSystem);
         if (kept != topLeft && kept.Exists())
         {
             Coordinates = ToLogical(kept);
             Shape.MoveTo(kept);
         }
-    }
-
-    static double Clamp(double value, double low, double high)
-    {
-        // a name wider than the window keeps its left edge in
-        return high < low ? low : System.Math.Min(System.Math.Max(value, low), high);
-    }
-
-    /// <summary>
-    /// Where a new name goes, in pixels from the anchor: beside a segment on its left (looking
-    /// from its first point to its second), just inside a circle, to the right of a line.
-    /// </summary>
-    Point DefaultOffset(IFigure figure)
-    {
-        var size = MeasureSize();
-        if (figure is LineBase line)
-        {
-            // beside the line, clear of it, on the left looking from the first point to the second
-            var coordinates = line is Segment ? line.Coordinates : line.OnScreenCoordinates;
-            var direction = RightAngleMark.Direction(ToPhysical(coordinates.P1), ToPhysical(coordinates.P2)) ?? new Point(1, 0);
-            var normal = new Point(direction.Y, -direction.X);
-            double distance = SegmentGap + System.Math.Abs(normal.X) * size.Width / 2 + System.Math.Abs(normal.Y) * size.Height / 2;
-            return normal * distance - new Point(size.Width / 2, size.Height / 2);
-        }
-
-        if (figure is ICircle)
-        {
-            return new Point(4, 2);
-        }
-
-        return new Point(6, 2);
     }
 
     /// <summary>

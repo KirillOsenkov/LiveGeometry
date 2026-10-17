@@ -140,7 +140,7 @@ public partial class Dragger : Behavior
         lastPressed = null;
         if (e.ClickCount == 2 && InPlaceTextEditor.CanEdit(pressedBefore))
         {
-            InPlaceTextEditor.Open((Label)pressedBefore, e.GetPosition(ParentCanvas));
+            InPlaceTextEditor.Open((LabelBase)pressedBefore, e.GetPosition(ParentCanvas));
             return;
         }
 

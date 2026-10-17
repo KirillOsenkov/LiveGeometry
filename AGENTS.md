@@ -260,7 +260,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   its knob starts (or press, drag, release): a number with a handle, taken wherever a tool
   asks for a length or an angle, named in expressions (a, b, c).
 - **Misc**: Bezier - four points; Locus (D) - a point that depends on a point on a figure;
-  Text - a label at the click; Show/hide box (`ShowHideCreator`) - the figures selected
+  Text - a label at a click on the paper, or a text attached to the point, segment, line,
+  ray, vector, circle or polygon clicked (see "Texts attached to figures"; the hover's halo and hand
+  say which, Tab chooses among overlapping figures); Show/hide box (`ShowHideCreator`) - the figures selected
   when it is picked are picked already, a click on a figure picks or lets go of it (a
   name for its figure, a vertex for its polygon; not boxes, axes or `Auxiliary`
   helpers), a click on a row of the Figure List too, the only way to a hidden figure, which
@@ -1885,7 +1887,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Names of lines and circles** (`Figures/Controls/FigureLabel.cs`): "Show name" on a line,
   ray, segment or circle (`LineBase`/`CircleBase.ShowName`, over `FigureBase.HasNameLabel`)
   adds a `FigureLabel` the way a point's name is a `PointLabel`: a label depending on the
-  figure, `Offset` pixels from an anchor on it - a segment's middle, the upper left of a
+  figure, `Offset` pixels from an anchor on it (`FigureAnchor`, which a text attached to a
+  figure shares) - a segment's middle, the upper left of a
   circle, and for a line or ray a point of its visible part `EdgeInset` pixels in from the
   window's edge (the end nearer the top for a line, the far end for a ray), so the name stays
   on screen and moves along the line as the view pans. The setter adds and removes the label
@@ -1898,6 +1901,43 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   it again. (A label from a file hidden that way shows when the name is shown again.)
   Hide and Lock in the context menu take the whole selection, as Delete does. GeoGebra's `<show label>` on those
   figures turns it on, in the figure's color.
+- **Texts attached to figures** (`Figures/Controls/AttachedLabel.cs`, 2026-10-17): the
+  Text tool clicked on a point, segment, line, ray, vector, circle or polygon (inside, where
+  it is filled; on its sides a click takes the side segment) makes an `AttachedLabel`, a
+  text that hangs where a name would (`FigureAnchor`: a point itself, to its right at
+  first; a segment's middle, beside it; a polygon's centroid by area, `FigureAnchor.Centroid`,
+  centered on it, where a new area number goes too - it hung its corner at the average of
+  the vertices, which lies outside an L; one read from a file keeps its offset, from the
+  centroid now, the same point for the squares of Pythagoras) and moves with its figure, but says
+  whatever is typed, so that a name isn't made into a comment (a segment named r to show
+  "r"). It is a figure of its own - in the Figure List, deleted by Delete, gone with its
+  figure, hidden with it - edited in the grid's Text box, a plain one (not the free
+  label's, which puts references to figures in [...]: the text is plain, since [...] parts
+  would make it depend on the figures they name, and it depends on its figure alone) or by
+  a double click (`InPlaceTextEditor`). File: `<AttachedLabel Text OffsetX OffsetY>` with
+  its figure as the dependency; a file written by hand may leave the offsets out, and the
+  text goes where a new one would once the drawing is read. The player has the twin
+  (`attachedLabel.js`, `figureAnchor.js`).
+- **Names keep clear** (`Figures/Controls/NameLayout.cs`, 2026-10-17): a point's name, a
+  figure's name and an attached text are drawn where their offset puts them unless
+  something covers that place - another name, measurement or angle's number overlapping it
+  by more than `HomeDepth` (2 px) both ways (boxes have room around the letters: the Clock
+  Hands' numbers touch on a phone and stay put, but 10 and 11) or another point. Then they
+  are drawn at the nearest free place around the anchor, `Spacing` (6 px) from the other
+  names (at 2, A and B side by side read as AB), steps of 15° each way at the same
+  distance, then a ring further out, not across the lines and circles through the anchor
+  (a point's own, `FiguresThroughAnchor`; a segment's name, its segment) and clear of their
+  own point. Labels keep their size in pixels at every zoom, so names apart on a big screen
+  met on a phone. Only where they are drawn changes (`LabelWithOffset.Nudge`, not saved):
+  the offset and the file stay as the user left them, so a drawing looks as it did
+  wherever nothing collides. A name stays where it went while that is free (no flicker
+  during a drag), and goes back once its place is free: every label drawn elsewhere than
+  before has the names drawn away look again (`NameLayout.Recheck`). A name being dragged
+  is drawn under the cursor whatever it covers (`movedByHand`). A new name's first place
+  is the nearest free one to its default that no line through the anchor crosses
+  (`NameLayout.FirstPlace`: a point's name above it, but not on a vertical line through
+  it); after that, its place is the user's. Measurements and angle numbers are obstacles,
+  not moved. The player has the twin (`nameLayout.js`).
 - **Segment marks** (`Segment.Decoration`, `Figures/Lines/SegmentDecoration.cs`): one to
   three ticks across the middle, one to three chevrons along it (pointing from the first point
   to the second), or a wave - the school notation for equal and parallel sides. A passive
@@ -2954,8 +2994,10 @@ rather than by process name when more than one could exist.
 `LiveGeometry.Desktop.exe --check <folder> <out>` (`MainView.BatchCheck.cs`) opens every
 `.lgf`/`.dgf` under the folder (or the one drawing, given a file) in the real editor, zooms to fit (a captioned drawing is laid
 out by `GalleryDrawing.Fit` instead, with the ribbon folded when the window is small - so the
-sheet shows the gallery layout at whatever size the window was last closed at: `place` it,
-close it, then run the check), saves `<out>/<relative path>.png`
+sheet shows the gallery layout at whatever size the window was last closed at, or at the
+size `--size 390x645` gives the window's client area in layout pixels (an iPhone's
+viewport; the window's saved place is then neither read nor written; `--dark` and
+`--size` come in any order after `<out>`), saves `<out>/<relative path>.png`
 and `.lgf` (the conversion) and appends to `<out>/report.txt`: figure counts, `NOT EXISTING`
 (only the *root* failures - figures whose dependencies all exist - plus a dump of every point),
 load errors. It exits when done. `dotnet tools/contactsheet.cs -- <png folder> <out.png>

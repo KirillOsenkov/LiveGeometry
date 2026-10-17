@@ -1,6 +1,8 @@
-﻿using Avalonia;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using Avalonia;
 
 namespace LiveGeometry;
 
@@ -34,7 +36,79 @@ public abstract class LabelWithOffset : LabelBase, IMovable
     public override void MoveToCore(Point newPosition)
     {
         Offset = ToPhysical(newPosition).Minus(ToPhysical(Anchor));
+        movedByHand = true;
         base.MoveToCore(newPosition);
+    }
+
+    // moved by a drag: drawn where it was put, whatever it covers, until it is next drawn
+    bool movedByHand;
+
+    /// <summary>
+    /// Whether the label is drawn elsewhere when something covers its place
+    /// (<see cref="NameLayout"/>): a point's name, a figure's name, a text attached to a figure
+    /// </summary>
+    protected virtual bool KeepsClear => false;
+
+    /// <summary>The point the label belongs to, which its other places keep clear of; none but for a point's name or text</summary>
+    public virtual IFigure OwnPoint => null;
+
+    /// <summary>The lines and circles that may run through the anchor, which another place of the label must not lie across</summary>
+    public virtual IEnumerable<IFigure> FiguresThroughAnchor() => Enumerable.Empty<IFigure>();
+
+    /// <summary>
+    /// Where the label is drawn instead of its place, while that is covered: from the anchor
+    /// to the label's middle, in pixels; null at its place (<see cref="NameLayout"/>)
+    /// </summary>
+    public Point? Nudge { get; set; }
+
+    // the size measured last, and for what: measuring lays the text out again, too much to
+    // do for every other name at every redraw
+    string measuredText;
+    double measuredFontSize;
+    Size measuredSize;
+
+    /// <summary>The label's size on the canvas, in pixels, measured again only when its text or font changed</summary>
+    public Size ShownSize()
+    {
+        var text = TextBlock.Text ?? "";
+        if (text != measuredText || TextBlock.FontSize != measuredFontSize)
+        {
+            measuredSize = MeasureSize();
+            measuredText = text;
+            measuredFontSize = TextBlock.FontSize;
+        }
+
+        return measuredSize;
+    }
+
+    public override void ApplyStyle()
+    {
+        base.ApplyStyle();
+
+        // (another weight or family is another size)
+        measuredText = null;
+    }
+
+    /// <summary>Where the label is drawn on the canvas, in pixels; null while it isn't</summary>
+    public Rect? ShownBox()
+    {
+        if (!HasCanvas || !IsShown || !Shape.IsVisible)
+        {
+            return null;
+        }
+
+        var size = ShownSize();
+        var topLeft = ToPhysical(Coordinates);
+        return size.Width > 0 && size.Height > 0 && topLeft.Exists() ? new Rect(topLeft, size) : null;
+    }
+
+    // where the label was drawn last: when it changes, the labels drawn away from their place look again
+    Rect? lastShownBox;
+
+    public override void OnRemovingFromDrawing(Drawing drawing)
+    {
+        NameLayout.Forget(this, drawing);
+        base.OnRemovingFromDrawing(drawing);
     }
 
     /// <summary>The offset is the label's place: undo of a drag puts it back whatever the zoom is by then</summary>
@@ -67,7 +141,52 @@ public abstract class LabelWithOffset : LabelBase, IMovable
         }
 
         Coordinates = PlaceFromOffset();
+        if (KeepsClear)
+        {
+            KeepClear();
+        }
+
         base.UpdateVisual();
+        var shown = ShownBox();
+        if (shown != lastShownBox)
+        {
+            lastShownBox = shown;
+            NameLayout.Recheck(this);
+        }
+    }
+
+    /// <summary>
+    /// The offset a new label takes, given its default one: that, unless something covers it
+    /// or a line through the anchor runs across it, else the nearest free place
+    /// (<see cref="NameLayout.FirstPlace"/>)
+    /// </summary>
+    protected Point FirstOffset(Point offset)
+    {
+        if (!HasCanvas || Drawing.IsReading)
+        {
+            return offset;
+        }
+
+        var anchor = ToPhysical(Anchor);
+        if (!anchor.Exists())
+        {
+            return offset;
+        }
+
+        return NameLayout.FirstPlace(this, anchor.Plus(offset)).Minus(anchor);
+    }
+
+    /// <summary>Drawn elsewhere while something covers the label's place (<see cref="NameLayout"/>), unless it was just put there by hand</summary>
+    void KeepClear()
+    {
+        if (movedByHand || !HasCanvas || Drawing.IsReading)
+        {
+            movedByHand = false;
+            NameLayout.Forget(this, Drawing);
+            return;
+        }
+
+        Coordinates = ToLogical(NameLayout.Place(this, ToPhysical(Coordinates)));
     }
 
     /// <summary>

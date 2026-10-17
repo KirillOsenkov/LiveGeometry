@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 
 namespace LiveGeometry.Desktop;
 
@@ -23,10 +24,22 @@ sealed class Program
         }
         else if (args.Length >= 3 && args[0] == "--check")
         {
-            // load every drawing under a folder and write a picture and a report of each
+            // load every drawing under a folder and write a picture and a report of each;
+            // "--dark" for the dark theme, "--size 390x645" for a window of that client size
+            // (a phone's), which then leaves the window's saved place alone
             MainView.CheckFolder = System.IO.Path.GetFullPath(args[1]);
             MainView.CheckOutputFolder = System.IO.Path.GetFullPath(args[2]);
-            MainView.CheckDark = args.Length > 3 && args[3] == "--dark";
+            for (int i = 3; i < args.Length; i++)
+            {
+                if (args[i] == "--dark")
+                {
+                    MainView.CheckDark = true;
+                }
+                else if (args[i] == "--size" && i + 1 < args.Length)
+                {
+                    checkSize = Size.Parse(args[++i].Replace('x', ','));
+                }
+            }
         }
         else if (args.Length == 2 && args[0] == "--modernize")
         {
@@ -70,13 +83,26 @@ sealed class Program
         PlayerEmbed.OpenPlayerScript = () => File.ReadAllTextAsync(Path.Combine(AppContext.BaseDirectory, "player", "player.js"));
         App.MainWindowCreated = window =>
         {
-            WindowPlacementPersistence.Attach(window);
-            WindowBoundsPersistence.Attach(window);
+            if (checkSize is Size size)
+            {
+                window.WindowState = WindowState.Normal;
+                window.Width = size.Width;
+                window.Height = size.Height;
+            }
+            else
+            {
+                WindowPlacementPersistence.Attach(window);
+                WindowBoundsPersistence.Attach(window);
+            }
+
             WindowFrameTheme.Attach(window);
             MacDockIcon.Apply();
         };
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
+
+    /// <summary>"--check ... --size": the window's client size, in layout pixels</summary>
+    static Size? checkSize;
 
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()

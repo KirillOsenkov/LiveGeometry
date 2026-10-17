@@ -7,6 +7,60 @@ class LabelWithOffset extends LabelBase {
 
         /** The label's top-left corner from its anchor, in pixels */
         this.offset = new Point();
+
+        /** Where the label is drawn instead of its place, while that is covered: from the anchor to its middle, in pixels (NameLayout) */
+        this.nudge = null;
+
+        // moved by a drag: drawn where it was put, whatever it covers, until it is next drawn
+        this.movedByHand = false;
+
+        // where the label was drawn last: when it changes, the labels drawn away from their place look again
+        this.lastShownBox = null;
+    }
+
+    /** Whether the label is drawn elsewhere when something covers its place (NameLayout) */
+    get keepsClear() {
+        return false;
+    }
+
+    /** The point the label belongs to, which its other places keep clear of */
+    get ownPoint() {
+        return null;
+    }
+
+    /** The lines and circles that may run through the anchor */
+    figuresThroughAnchor() {
+        return [];
+    }
+
+    /** Where the label is drawn on the canvas, in pixels; null while it isn't */
+    shownBox() {
+        if (this.drawing == null || this.drawing.canvas == null || !this.isShown) {
+            return null;
+        }
+
+        const size = this.measureSize();
+        const topLeft = this.toPhysical(this.coordinates);
+        return size.width > 0 && size.height > 0 && topLeft.exists() ? Rect.fromPoints(topLeft, size) : null;
+    }
+
+    /** The offset a new label takes, given its default one: the nearest free place to it (NameLayout.firstPlace) */
+    firstOffset(offset) {
+        if (this.drawing == null || this.drawing.canvas == null || this.drawing.isReading) {
+            return offset;
+        }
+
+        const anchor = this.toPhysical(this.anchor);
+        if (!anchor.exists()) {
+            return offset;
+        }
+
+        return NameLayout.firstPlace(this, anchor.plus(offset)).minus(anchor);
+    }
+
+    onRemovingFromDrawing(drawing) {
+        NameLayout.forget(this, drawing);
+        super.onRemovingFromDrawing(drawing);
     }
 
     /** What the offset is measured from, in the plane */
@@ -22,6 +76,7 @@ class LabelWithOffset extends LabelBase {
     /** Moving the label changes its offset from the anchor */
     moveToCore(newPosition) {
         this.offset = this.toPhysical(newPosition).minus(this.toPhysical(this.anchor));
+        this.movedByHand = true;
         super.moveToCore(newPosition);
     }
 
@@ -48,6 +103,26 @@ class LabelWithOffset extends LabelBase {
         }
 
         this.coordinates = this.placeFromOffset();
+        if (this.keepsClear) {
+            this.keepClear();
+        }
+
+        const shown = this.shownBox();
+        if (!(shown == null ? this.lastShownBox == null : shown.equals(this.lastShownBox))) {
+            this.lastShownBox = shown;
+            NameLayout.recheck(this);
+        }
+    }
+
+    /** Drawn elsewhere while something covers the label's place, unless it was just put there by hand */
+    keepClear() {
+        if (this.movedByHand || this.drawing == null || this.drawing.canvas == null || this.drawing.isReading) {
+            this.movedByHand = false;
+            NameLayout.forget(this, this.drawing);
+            return;
+        }
+
+        this.coordinates = this.toLogical(NameLayout.place(this, this.toPhysical(this.coordinates)));
     }
 
     /** A drawing from before version 1 stored the offset in units of the plane */

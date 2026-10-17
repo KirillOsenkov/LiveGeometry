@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 
 namespace LiveGeometry;
@@ -44,6 +45,17 @@ public class PointLabel : Measurement
     }
 
     public override Point Anchor => Point(0);
+
+    protected override bool KeepsClear => true;
+
+    public override IFigure OwnPoint => Dependencies.Count > 0 ? Dependencies[0] : null;
+
+    /// <summary>The lines and circles through the point: what it is built on or on, and what is built on it</summary>
+    public override IEnumerable<IFigure> FiguresThroughAnchor()
+    {
+        var point = GetPoint();
+        return point.Dependents.Concat(point.Dependencies);
+    }
 
     /// <summary>
     /// The least room between the point's rim and the letters, in pixels: none, the name
@@ -197,13 +209,14 @@ public class PointLabel : Measurement
         UpdateText();
         if (!placed && !Text.IsEmpty())
         {
-            // a new label: centered above its point, just clear of it. Once: a label
-            // that comes back (the name shown again, undo) is where it was left.
+            // a new label: centered above its point, just clear of it, or the nearest free
+            // place to that (FirstOffset: not on a vertical line through the point). Once: a
+            // label that comes back (the name shown again, undo) is where it was left.
             placed = true;
             var size = MeasureSize();
-            Offset = new Point(
+            Offset = FirstOffset(new Point(
                 -size.Width / 2,
-                -(size.Height + GetPoint().Shape.ActualHeight / 2 + Margin));
+                -(size.Height + GetPoint().Shape.ActualHeight / 2 + Margin)));
         }
 
         base.UpdateVisual();

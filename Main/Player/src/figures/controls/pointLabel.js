@@ -35,6 +35,20 @@ class PointLabel extends Measurement {
         return this.point(0);
     }
 
+    get keepsClear() {
+        return true;
+    }
+
+    get ownPoint() {
+        return this.dependencies.length > 0 ? this.dependencies[0] : null;
+    }
+
+    /** The lines and circles through the point: what it is built on or on, and what is built on it */
+    figuresThroughAnchor() {
+        const point = this.getPoint();
+        return [...point.dependents, ...point.dependencies];
+    }
+
     /**
      * Keeps the label in orbit around its point: the center of the label may not get further
      * from the point than the label's larger dimension plus the point radius, and no part of
@@ -135,10 +149,10 @@ class PointLabel extends Measurement {
 
         this.updateText();
         if (!this.placed && this.text !== "") {
-            // a new label: centered above its point, just clear of it
+            // a new label: centered above its point, just clear of it, or the nearest free place to that
             this.placed = true;
             const size = this.measureSize();
-            this.offset = new Point(-size.width / 2, -(size.height + this.getPoint().pointSize / 2 + PointLabel.Margin));
+            this.offset = this.firstOffset(new Point(-size.width / 2, -(size.height + this.getPoint().pointSize / 2 + PointLabel.Margin)));
         }
 
         super.updateVisual();

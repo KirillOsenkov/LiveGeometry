@@ -81,10 +81,13 @@ figures/controls/lineBreaks.js
 figures/controls/labelBase.js
 figures/controls/label.js
 figures/controls/labelWithOffset.js
+figures/controls/nameLayout.js
 figures/controls/angleLabelLayout.js
 figures/controls/angleMeasurement.js
+figures/controls/figureAnchor.js
 figures/controls/figureLabel.js
 figures/controls/pointLabel.js
+figures/controls/attachedLabel.js
 figures/controls/lengthMeasurement.js
 figures/controls/areaMeasurement.js
 figures/controls/showHideControl.js

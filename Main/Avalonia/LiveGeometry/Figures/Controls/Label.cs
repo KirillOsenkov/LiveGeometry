@@ -389,7 +389,7 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
     /// XML file can't hold (a control character pasted from elsewhere) are left out:
     /// with one, Save threw and wrote nothing.
     /// </summary>
-    static string Escape(string text)
+    public static string Escape(string text)
     {
         var sb = new System.Text.StringBuilder(text.Length);
         for (int i = 0; i < text.Length; i++)
@@ -425,7 +425,7 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
         return sb.ToString();
     }
 
-    static string Unescape(string text)
+    public static string Unescape(string text)
     {
         var sb = new System.Text.StringBuilder(text.Length);
         for (int i = 0; i < text.Length; i++)

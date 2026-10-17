@@ -1,5 +1,6 @@
-﻿using Avalonia;
-using System.Linq;
+﻿using System.Linq;
+using System.Xml.Linq;
+using Avalonia;
 
 namespace LiveGeometry;
 
@@ -62,24 +63,49 @@ public class AreaMeasurement : Measurement
 
     public override Point Anchor => Origin;
 
+    // has its place: centered on the anchor when its number first showed, or the file's
+    bool placed;
+
     public override void UpdateVisual()
     {
         base.UpdateVisual();
         Text = Math.Round(Measure, DecimalsToShow).ToString();
+        if (!placed && HasCanvas && !Drawing.IsReading && !Text.IsEmpty())
+        {
+            // a new one: the number in the middle of the region (it hung its corner there)
+            placed = true;
+            var size = MeasureSize();
+            Offset = new Point(-size.Width / 2, -size.Height / 2);
+            base.UpdateVisual();
+        }
     }
 
+    public override void ReadXml(XElement element)
+    {
+        base.ReadXml(element);
+        placed = element.Attribute("OffsetX") != null || element.Attribute("OffsetY") != null;
+    }
+
+    /// <summary>
+    /// The middle of the region: a polygon's centroid by area (<see cref="FigureAnchor.Centroid"/>:
+    /// the average of the vertices lies outside an L), the center of a circle, an ellipse, a
+    /// sector or a path
+    /// </summary>
     private Point Origin
     {
         get
         {
             if (Dependencies[0] is PointBase)
             {
-                return Dependencies.ToPoints().Midpoint();
+                return FigureAnchor.Centroid(Dependencies.ToPoints());
             }
-            else
+
+            if (Dependencies[0] is PolygonBase polygon)
             {
-                return Dependencies[0].Center;
-            }               
+                return FigureAnchor.Centroid(polygon.VertexCoordinates);
+            }
+
+            return Dependencies[0].Center;
         }
     }
 }

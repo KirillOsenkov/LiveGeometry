@@ -18,7 +18,7 @@ namespace LiveGeometry;
 /// </summary>
 public class InPlaceTextEditor
 {
-    readonly Label label;
+    readonly LabelBase label;
     readonly Drawing drawing;
     readonly TextBox box;
     readonly Border frame;
@@ -29,7 +29,7 @@ public class InPlaceTextEditor
     const double FrameThickness = 1.5;
     const double FrameGap = 1.5;
 
-    InPlaceTextEditor(Label label)
+    InPlaceTextEditor(LabelBase label)
     {
         this.label = label;
         drawing = label.Drawing;
@@ -52,9 +52,9 @@ public class InPlaceTextEditor
             CornerRadius = new CornerRadius(2)
         };
         // (a width includes the padding, the label's as the box's: the lines break where they did)
-        if (label.WrapWidth > 0)
+        if (label is Label { WrapWidth: > 0 } wrapped)
         {
-            box.Width = label.WrapWidth;
+            box.Width = wrapped.WrapWidth;
         }
 
         // the box looks the same whatever the pointer and the keyboard do: Fluent's states
@@ -91,10 +91,11 @@ public class InPlaceTextEditor
     /// <summary>The editor open now, if any: one at a time</summary>
     public static InPlaceTextEditor Current { get; private set; }
 
-    /// <summary>Whether the label's text can be edited where it is: a text, not a measurement, and one that can be changed</summary>
+    /// <summary>Whether the label's text can be edited where it is: a text, free or attached to a figure, not a measurement, and one that can be changed</summary>
     public static bool CanEdit(IFigure figure)
     {
-        return figure is Label label
+        return figure is Label or AttachedLabel
+            && figure is LabelBase label
             && !label.Locked
             && label.Drawing?.Canvas != null
             && !label.Drawing.FixedLabels.Contains(label)
@@ -102,7 +103,7 @@ public class InPlaceTextEditor
     }
 
     /// <param name="caret">Where the caret goes, on the canvas (the double click); null for the end of the text</param>
-    public static void Open(Label label, Point? caret = null)
+    public static void Open(LabelBase label, Point? caret = null)
     {
         Current?.Commit();
         if (!CanEdit(label))
@@ -175,7 +176,7 @@ public class InPlaceTextEditor
         Close();
         if (text != label.Text && drawing.Figures.Contains(label))
         {
-            Actions.SetProperty(drawing.ActionManager, new PropertyValue(nameof(Label.Text), label), text);
+            Actions.SetProperty(drawing.ActionManager, new PropertyValue(nameof(LabelBase.Text), label), text);
         }
 
         drawing.RaiseSelectionChanged(drawing.GetSelectedFigures());

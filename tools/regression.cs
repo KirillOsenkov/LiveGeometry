@@ -121,6 +121,7 @@ public class Program
             ("No conversion that takes away what an expression reads; a failed expression has no value", ConversionKeepsExpressionsWhole),
             ("Fix length, Free length, Free direction and Convert to path anchor keep a point whose number an expression reads", PointKindKeepsExpressionsWhole),
             ("Fix length and Fix direction keep the number typed", FixKeepsTypedValues),
+            ("Names keep clear; a text attached to a figure moves with it", NamesKeepClear),
             ("The X row of two points and the function row of two graphs: checked for each, then set", SharedExpressionRows),
             ("No Free point while a graph reads its Parameter; a graph that stops compiling is drawn no more", ReleaseKeepsFunctionsWhole),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
@@ -3748,6 +3749,149 @@ public class Program
     /// a point on a line read as B.Parameter (it became a translated point) and Convert to path
     /// anchor of a point on a path read so (a free point); a length typed once still moves it.
     /// </summary>
+    /// <summary>
+    /// Two points so close that their names, each above its point, would cover each other: one
+    /// is drawn elsewhere, clear of the other, and neither offset (what the file says) changes;
+    /// B moved away, both are drawn at their places again. The Text tool clicked on a segment
+    /// attaches a text to it, which moves with the segment and is read back as it was saved.
+    /// </summary>
+    static void NamesKeepClear()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Viewport Left="-5" Top="5" Right="5" Bottom="-5" />
+              <Figures>
+                <FreePoint Name="A" X="0" Y="0" />
+                <FreePoint Name="B" X="0.05" Y="0" />
+                <FreePoint Name="C" X="-3" Y="-2" />
+                <Segment Name="BC">
+                  <Dependency Name="B" />
+                  <Dependency Name="C" />
+                </Segment>
+                <PointLabel Name="PointLabel1" OffsetX="-5" OffsetY="-27" ShowName="true">
+                  <Dependency Name="A" />
+                </PointLabel>
+                <PointLabel Name="PointLabel2" OffsetX="-5" OffsetY="-27" ShowName="true">
+                  <Dependency Name="B" />
+                </PointLabel>
+              </Figures>
+            </Drawing>
+            """);
+        using var window = new TestWindow(drawing.Canvas);
+        var nameA = (PointLabel)Find(drawing, "PointLabel1");
+        var nameB = (PointLabel)Find(drawing, "PointLabel2");
+        nameA.UpdateVisual();
+        nameB.UpdateVisual();
+        var boxA = nameA.ShownBox();
+        var boxB = nameB.ShownBox();
+        Require(boxA != null && boxB != null, "The names are not shown.");
+        var overlap = boxA.Value.Intersect(boxB.Value);
+        Require(!(overlap.Width > 0 && overlap.Height > 0) || overlap.Width * overlap.Height <= NameLayout.OverlapAllowance, $"The names cover each other: {boxA} and {boxB}.");
+        Require(nameA.Nudge != null || nameB.Nudge != null, "Neither name moved out of the other's way.");
+        Require(nameA.Offset == new Point(-5, -27) && nameB.Offset == new Point(-5, -27), "Keeping clear changed an offset.");
+
+        var b = (FreePoint)Find(drawing, "B");
+        b.MoveTo(new Point(4, -3));
+        b.RecalculateAndUpdateVisual();
+        b.RecalculateAllDependents();
+        Require(nameA.Nudge == null && nameB.Nudge == null, "With B moved away, a name is still drawn away from its place.");
+        var placeA = drawing.CoordinateSystem.ToPhysical(((IPoint)Find(drawing, "A")).Coordinates) + new Point(-5, -27);
+        var shownA = nameA.ShownBox();
+        Require(shownA != null && shownA.Value.TopLeft.Distance(placeA) < 0.5, "A's name is not back at its place.");
+
+        // the Text tool on the segment: a text attached to it
+        // (a quarter of the way along, clear of the points)
+        var segment = (Segment)Find(drawing, "BC");
+        drawing.Behavior = new LabelCreator();
+        var quarter = segment.Coordinates.P1 + (segment.Coordinates.P2 - segment.Coordinates.P1) * 0.25;
+        Click(drawing, drawing.CoordinateSystem.ToPhysical(quarter));
+        var attached = drawing.Figures.OfType<AttachedLabel>().SingleOrDefault();
+        Require(
+            attached != null && attached.Figure == segment,
+            "The Text tool on a segment made no text attached to it; the drawing has "
+                + string.Join(", ", drawing.Figures.Select(f => f.GetType().Name))
+                + "; under the click: "
+                + string.Join(", ", drawing.Figures.HitTestAll(quarter, f => true).Select(f => f.GetType().Name + " " + f.Name)));
+        attached.Text = "side a";
+        attached.UpdateVisual();
+        var before = attached.ShownBox();
+        Require(before != null, "The attached text is not shown.");
+
+        // moves with the segment: by as much as its middle
+        var middleBefore = drawing.CoordinateSystem.ToPhysical(segment.Coordinates.Midpoint);
+        var c = (FreePoint)Find(drawing, "C");
+        c.MoveTo(new Point(-3, -3));
+        c.RecalculateAndUpdateVisual();
+        c.RecalculateAllDependents();
+        var moved = drawing.CoordinateSystem.ToPhysical(segment.Coordinates.Midpoint) - middleBefore;
+        var after = attached.ShownBox();
+        Require(after != null && (after.Value.TopLeft - before.Value.TopLeft - moved).Length() < 0.5, $"The attached text moved by {after?.TopLeft - before.Value.TopLeft}, its segment's middle by {moved}.");
+
+        var reloaded = ReadLgf(drawing.SaveAsText());
+        var read = reloaded.Figures.OfType<AttachedLabel>().SingleOrDefault();
+        Require(read != null && read.Text == "side a" && read.Figure?.Name == "BC" && read.Offset == attached.Offset, "The attached text did not come back as it was saved.");
+        drawing.Figures.CheckConsistency();
+
+        // inside a filled polygon: a text in its middle, centered on the centroid by area (an
+        // L's vertices average to a corner outside it)
+        var shapes = ReadLgf("""
+            <Drawing Version="1">
+              <Viewport Left="-5" Top="5" Right="5" Bottom="-5" />
+              <Figures>
+                <FreePoint Name="A" X="-3" Y="-3" />
+                <FreePoint Name="B" X="3" Y="-3" />
+                <FreePoint Name="C" X="3" Y="-1" />
+                <FreePoint Name="D" X="-1" Y="-1" />
+                <FreePoint Name="E" X="-1" Y="3" />
+                <FreePoint Name="F" X="-3" Y="3" />
+                <Polygon Name="ABCDEF">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                  <Dependency Name="C" />
+                  <Dependency Name="D" />
+                  <Dependency Name="E" />
+                  <Dependency Name="F" />
+                </Polygon>
+                <FreePoint Name="G" X="0.5" Y="0.5" />
+                <FreePoint Name="H" X="4.5" Y="0.5" />
+                <FreePoint Name="I" X="2.5" Y="4.5" />
+                <Polygon Name="GHI">
+                  <Dependency Name="G" />
+                  <Dependency Name="H" />
+                  <Dependency Name="I" />
+                </Polygon>
+              </Figures>
+            </Drawing>
+            """);
+        using var shapesWindow = new TestWindow(shapes.Canvas);
+        var l = shapes.Figures.OfType<Polygon>().First();
+        Require(FigureAnchor.Centroid(l.VertexCoordinates).Distance(new Point(-0.8, -0.8)) < 1e-9, $"The L's centroid is {FigureAnchor.Centroid(l.VertexCoordinates)}.");
+
+        // (the L's centroid is next to its inner corner, whose point the text keeps clear of:
+        // the text goes into a triangle, whose middle is clear)
+        var polygon = shapes.Figures.OfType<Polygon>().Last();
+        var centroid = FigureAnchor.Centroid(polygon.VertexCoordinates);
+        shapes.Behavior = new LabelCreator();
+        Click(shapes, shapes.CoordinateSystem.ToPhysical(new Point(2.5, 1.5)));
+        var inside = shapes.Figures.OfType<AttachedLabel>().SingleOrDefault();
+        Require(inside != null && inside.Figure == polygon, "The Text tool inside a polygon made no text attached to it.");
+        inside.UpdateVisual();
+        var middle = inside.ShownBox()?.Center;
+        Require(middle != null && middle.Value.Distance(shapes.CoordinateSystem.ToPhysical(centroid)) < 0.5, $"The polygon's text is centered at {middle}, its centroid at {shapes.CoordinateSystem.ToPhysical(centroid)}.");
+
+        // a new area number is centered on the centroid too (it hung its corner at the
+        // average of the vertices, outside the L); one from a file is where the file says
+        var area = Factory.CreateAreaMeasurement(shapes, new List<IFigure>() { l });
+        Actions.Add(shapes, area);
+        area.UpdateVisual();
+        var lMiddle = shapes.CoordinateSystem.ToPhysical(FigureAnchor.Centroid(l.VertexCoordinates));
+        var numberBox = new Rect(shapes.CoordinateSystem.ToPhysical(area.Coordinates), area.MeasureSize());
+        Require(numberBox.Center.Distance(lMiddle) < 0.5, $"The L's area number is centered at {numberBox.Center}, its centroid at {lMiddle}.");
+        area.Offset = new Point(7, 9);
+        var areaRead = ReadLgf(shapes.SaveAsText()).Figures.OfType<AreaMeasurement>().Single();
+        Require(areaRead.Offset == new Point(7, 9), $"The area number read back is at {areaRead.Offset}.");
+    }
+
     /// <summary>
     /// A length or a direction typed, then fixed: the Number holds the number typed, not the
     /// one worked back out of where the end was moved (a length of 8 was 7.999999999999999),
