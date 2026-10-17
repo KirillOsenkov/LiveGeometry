@@ -18,6 +18,13 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
+  // A shared drawing (/s/<id>) is told apart from the rest of the site by its title: the
+  // page_view goes out with the title the page has once gtag.js has loaded, which may be
+  // before the page's own script has run.
+  if (/^\/s\/[a-z2-7]{8,}\/?$/i.test(location.pathname)) {
+    document.title = 'Shared drawing - Live Geometry';
+  }
+
   gtag('config', 'G-10ZM10J6RW');
 </script>
 <!-- The gallery and its drawings without .NET: the JavaScript player (/player/1/player.js)
@@ -819,7 +826,7 @@
       drawingPage.hidden = false;
       editButton.hidden = false;
       document.getElementById('gallery-button').href = '/';
-      document.title = AppTitle;
+      // the title is the head's, set before the Google tag reads it
       updateTour();
       fetch('/s/' + id + '.lgf').then(function (response) {
         if (response.status === 404) {
