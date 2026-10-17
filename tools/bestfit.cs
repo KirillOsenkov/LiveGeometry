@@ -116,14 +116,14 @@ text.AppendLine("    <PointStyle Size=\"8\" Fill=\"#FFD0D0D0\" IsFilled=\"true\"
 text.AppendLine("    <LineStyle Color=\"#FF2F7BD6\" StrokeWidth=\"2.5\" Dash=\"Solid\" Name=\"Line\" />");
 text.AppendLine("    <LineStyle Color=\"#FFD83B3B\" StrokeWidth=\"1.25\" Dash=\"Dash\" Name=\"Gap\" />");
 text.AppendLine("    <ShapeStyle Fill=\"#38D83B3B\" IsFilled=\"true\" Color=\"#70D83B3B\" StrokeWidth=\"1\" Dash=\"Solid\" Name=\"Square\" />");
-text.AppendLine("    <TextStyle FontSize=\"30\" Color=\"#FF1F4E8C\" FontFamily=\"Segoe UI\" Bold=\"true\" Italic=\"false\" Underline=\"false\" Name=\"GalleryTitle\" />");
-text.AppendLine("    <TextStyle FontSize=\"16\" Color=\"#FF2B3038\" FontFamily=\"Segoe UI\" Bold=\"false\" Italic=\"false\" Underline=\"false\" Name=\"GalleryText\" />");
+text.AppendLine("    <TextStyle FontSize=\"30\" Color=\"#FF1F4E8C\" FontFamily=\"Segoe UI\" Bold=\"true\" Italic=\"false\" Underline=\"false\" Name=\"Heading\" />");
+text.AppendLine("    <TextStyle FontSize=\"16\" Color=\"#FF2B3038\" FontFamily=\"Segoe UI\" Bold=\"false\" Italic=\"false\" Underline=\"false\" Name=\"Explanation\" />");
 text.AppendLine("    <LineStyle Color=\"#FFE0362B\" StrokeWidth=\"2.5\" Name=\"GalleryLocus\" />");
 text.AppendLine("  </Styles>");
 text.AppendLine("  <Figures>");
 text.Append(figures);
-text.AppendLine("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"Line of Best Fit\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"57.5\" WrapWidth=\"400\" Backdrop=\"true\" />");
-text.AppendLine("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"Twelve points that lie roughly along a line, like measurements from an experiment. The blue line fits them best: of all the lines you could draw, it makes the red squares, one on each point's gap to the line, as small as possible in total area. The gap is measured straight up or down — how far off the line's guess for y is — not the shortest distance to the line. Statisticians call it the least-squares line, or linear regression, and use it to read a trend out of scattered data and to predict what comes next.\\n\\ny = [Fit.X] · x + [Fit.Y]\\nTotal area of the squares: [" + squares + "]\\n\\nDrag any point and watch the line follow. Move one far away: how much does the line care?\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"105.5\" WrapWidth=\"400\" Backdrop=\"true\">");
+text.AppendLine("    <Label Name=\"Title\" Style=\"Heading\" Text=\"Line of Best Fit\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"57.5\" WrapWidth=\"400\" Backdrop=\"true\" />");
+text.AppendLine("    <Label Name=\"Description\" Style=\"Explanation\" Text=\"Twelve points that lie roughly along a line, like measurements from an experiment. The blue line fits them best: of all the lines you could draw, it makes the red squares, one on each point's gap to the line, as small as possible in total area. The gap is measured straight up or down — how far off the line's guess for y is — not the shortest distance to the line. Statisticians call it the least-squares line, or linear regression, and use it to read a trend out of scattered data and to predict what comes next.\\n\\ny = [Fit.X] · x + [Fit.Y]\\nTotal area of the squares: [" + squares + "]\\n\\nDrag any point and watch the line follow. Move one far away: how much does the line care?\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"105.5\" WrapWidth=\"400\" Backdrop=\"true\">");
 text.Append(Dependencies());
 text.AppendLine("      <Dependency Name=\"Fit\" />");
 text.AppendLine("    </Label>");

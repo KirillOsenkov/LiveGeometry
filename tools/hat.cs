@@ -652,8 +652,8 @@ StringBuilder Start()
 
 void Finish(StringBuilder text, string path, string title, string description)
 {
-    text.AppendLine("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"" + title + "\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-    text.AppendLine("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"" + description + "\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+    text.AppendLine("    <Label Name=\"Title\" Style=\"Heading\" Text=\"" + title + "\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
+    text.AppendLine("    <Label Name=\"Description\" Style=\"Explanation\" Text=\"" + description + "\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
     text.AppendLine("  </Figures>");
     text.Append("</Drawing>");
     File.WriteAllText(path, text.ToString().Replace("\r\n", "\n").Replace("\n", "\r\n"), new UTF8Encoding(false));

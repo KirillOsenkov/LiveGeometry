@@ -144,15 +144,15 @@ foreach (var piece in pieces)
     Write("    </Polygon>");
 }
 
-Write("    <ShowHideControl Name=\"SolutionBox\" Style=\"GalleryText\" Show=\"false\" Text=\"Solution\" Pin=\"TopLeft\" OffsetX=\"16\" OffsetY=\"16\">");
+Write("    <ShowHideControl Name=\"SolutionBox\" Style=\"Explanation\" Show=\"false\" Text=\"Solution\" Pin=\"TopLeft\" OffsetX=\"16\" OffsetY=\"16\">");
 foreach (var name in solutionNames)
 {
     Write($"      <Dependency Name=\"{name}\" />");
 }
 
 Write("    </ShowHideControl>");
-Write("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"Tangram\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-Write("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"Seven pieces: five triangles, a square and a parallelogram. They were cut from the dashed square in the middle. Can you put them back? It is harder than it looks.\\n\\nDrag a piece to move it; hold Shift while you drag and it snaps to the grid. Drag the small yellow knob on its edge to turn it, in steps of 45 degrees. If you give up, tick the box.\\n\\nThe tangram came from China about 200 years ago and spread around the world as a craze. With the same seven pieces people have made thousands of figures: cats, swans, runners, houses, letters. Make one of your own.\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write("    <Label Name=\"Title\" Style=\"Heading\" Text=\"Tangram\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write("    <Label Name=\"Description\" Style=\"Explanation\" Text=\"Seven pieces: five triangles, a square and a parallelogram. They were cut from the dashed square in the middle. Can you put them back? It is harder than it looks.\\n\\nDrag a piece to move it; hold Shift while you drag and it snaps to the grid. Drag the small yellow knob on its edge to turn it, in steps of 45 degrees. If you give up, tick the box.\\n\\nThe tangram came from China about 200 years ago and spread around the world as a craze. With the same seven pieces people have made thousands of figures: cats, swans, runners, houses, letters. Make one of your own.\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
 Write("  </Figures>");
 text.Append("</Drawing>");
 File.WriteAllText(args[0], text.ToString(), new UTF8Encoding(false));

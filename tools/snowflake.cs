@@ -90,10 +90,10 @@ Write("  </Viewport>");
 // the view is the scene, not the content: the snow bank reaches far out of every window
 Write("  <Scene Left=\"-4.6\" Top=\"4\" Right=\"4.6\" Bottom=\"-4.2\" />");
 Write("  <Styles>");
-Write("    <TextStyle Name=\"GalleryTitle\" FontSize=\"30\" Color=\"#FFE8F4FF\" FontFamily=\"Segoe UI\" Bold=\"true\">");
+Write("    <TextStyle Name=\"Heading\" FontSize=\"30\" Color=\"#FFE8F4FF\" FontFamily=\"Segoe UI\" Bold=\"true\">");
 Write("      <Dark Color=\"#FFE8F4FF\" />");
 Write("    </TextStyle>");
-Write("    <TextStyle Name=\"GalleryText\" FontSize=\"16\" Color=\"#FFD6E6FA\" FontFamily=\"Segoe UI\">");
+Write("    <TextStyle Name=\"Explanation\" FontSize=\"16\" Color=\"#FFD6E6FA\" FontFamily=\"Segoe UI\">");
 Write("      <Dark Color=\"#FFD6E6FA\" />");
 Write("    </TextStyle>");
 Write("    <ShapeStyle Name=\"Ice\" IsFilled=\"true\" Color=\"#00000000\" StrokeWidth=\"0.5\">");
@@ -251,8 +251,8 @@ foreach (int turn in new[] { 60, 120, 180, 240, 300 })
     }
 }
 
-Write("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"Design a Snowflake\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-Write("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"Every snowflake has six arms, and every arm is the same on both sides. So a snowflake is really one small shape, drawn twelve times: mirrored, then turned five times by 60 degrees.\\n\\nDrag the blue points. You are drawing one twelfth, between the two dashed lines, and the other eleven follow. The tip slides along the arm, the last point along the line where two arms meet.\\n\\nReal snowflakes grow their six arms at once in the same cloud, in the same air, which is why the arms match. No two snowflakes take the same trip down, which is why no two flakes match. Can you make one that looks like a real snowflake? One that looks like a flower? The snowman and his friends can be dragged around too.\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write("    <Label Name=\"Title\" Style=\"Heading\" Text=\"Design a Snowflake\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write("    <Label Name=\"Description\" Style=\"Explanation\" Text=\"Every snowflake has six arms, and every arm is the same on both sides. So a snowflake is really one small shape, drawn twelve times: mirrored, then turned five times by 60 degrees.\\n\\nDrag the blue points. You are drawing one twelfth, between the two dashed lines, and the other eleven follow. The tip slides along the arm, the last point along the line where two arms meet.\\n\\nReal snowflakes grow their six arms at once in the same cloud, in the same air, which is why the arms match. No two snowflakes take the same trip down, which is why no two flakes match. Can you make one that looks like a real snowflake? One that looks like a flower? The snowman and his friends can be dragged around too.\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
 Write("  </Figures>");
 text.Append("</Drawing>");
 File.WriteAllText(args[0], text.ToString(), new UTF8Encoding(false));

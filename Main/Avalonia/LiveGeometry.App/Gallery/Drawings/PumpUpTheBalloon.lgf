@@ -10,10 +10,10 @@
   </Viewport>
   <Scene Left="-3.4" Top="2.75" Right="2.9" Bottom="-2" />
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1A3D7C" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FF1A3D7C" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF1A3D7C" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FF22324D" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FF22324D" FontFamily="Segoe UI">
       <Dark Color="#FF22324D" />
     </TextStyle>
     <ShapeStyle Name="SunGlow" Fill="#33FFFFFF" Color="#00000000">
@@ -850,8 +850,8 @@
       <Dependency Name="Tatter3" />
       <Dependency Name="Tatter4" />
     </BezierPath>
-    <Label Name="Hint" Visible="false" Style="GalleryText" Text="The same 15 dots make the crumpled heap and the round balloon. Only where they sit changes, and how tightly the curve is pulled through them: tight when it is nearly empty, so the rubber creases, and looser when it is full, so it bulges round between them.\n\nOnce it stands up, each push adds the same amount of air, but the balloon grows taller by less and less: the new air has to spread around a bigger and bigger balloon.\n\nPopped it? Pull the handle back up." Pin="TopRight" OffsetX="16" OffsetY="300" WrapWidth="400" Backdrop="true" />
-    <ShowHideControl Name="Hint box" Style="GalleryText" Show="false" Text="Hint" X="-3.15" Y="2.4">
+    <Label Name="Hint" Visible="false" Style="Explanation" Text="The same 15 dots make the crumpled heap and the round balloon. Only where they sit changes, and how tightly the curve is pulled through them: tight when it is nearly empty, so the rubber creases, and looser when it is full, so it bulges round between them.\n\nOnce it stands up, each push adds the same amount of air, but the balloon grows taller by less and less: the new air has to spread around a bigger and bigger balloon.\n\nPopped it? Pull the handle back up." Pin="TopRight" OffsetX="16" OffsetY="300" WrapWidth="400" Backdrop="true" />
+    <ShowHideControl Name="Hint box" Style="Explanation" Show="false" Text="Hint" X="-3.15" Y="2.4">
       <Dependency Name="NeckBottomRight" />
       <Dependency Name="NeckTopRight" />
       <Dependency Name="Skin1" />
@@ -869,7 +869,7 @@
       <Dependency Name="NeckBottomLeft" />
       <Dependency Name="Hint" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Pump Up the Balloon" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Pull the red pump handle up to let the air out: the balloon flops over in a crumpled heap. Now push it down: the rubber lifts, stands up and stretches smooth, round and shiny. Keep an eye on the gauge! Drag the balloon anywhere and the hose follows.\n\nThe outline is one closed curve through 15 dots: check &quot;Hint&quot; to watch them spread apart. What happens if you push the handle all the way down?" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Pump Up the Balloon" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Pull the red pump handle up to let the air out: the balloon flops over in a crumpled heap. Now push it down: the rubber lifts, stands up and stretches smooth, round and shiny. Keep an eye on the gauge! Drag the balloon anywhere and the hose follows.\n\nThe outline is one closed curve through 15 dots: check &quot;Hint&quot; to watch them spread apart. What happens if you push the handle all the way down?" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

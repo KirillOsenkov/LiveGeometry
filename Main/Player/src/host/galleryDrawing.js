@@ -1,8 +1,8 @@
 // Port of Main/Avalonia/LiveGeometry.App/Gallery/GalleryDrawing.cs (the app's, not the
 // library's): what the drawings of the gallery have in common, a caption - a heading and an
-// explanation, two labels named "Title" and "Description", and maybe a third under them,
-// "Hint", hidden until a show/hide box brings it up - pinned to the screen, on a plate,
-// wrapped to its column. fit decides where it goes and how much room the figure gets, for
+// explanation, two labels named "Title" and "Description" or in the Heading and Explanation
+// styles (findCaptionLabel), and maybe a third under them, "Hint", hidden until a show/hide
+// box brings it up - pinned to the screen, on a plate, wrapped to its column. fit decides where it goes and how much room the figure gets, for
 // the element the drawing plays in: a column at the right in a wide one, a strip at the
 // bottom in a tall one. Without it a drawing exported from the app keeps the pin, offsets
 // and width it had in the app's window, which a small element clips. Left out: hiding the
@@ -40,9 +40,27 @@ const GalleryDrawing = {
     },
 
     findCaption(drawing) {
-        const title = drawing.figures.byName(GalleryDrawing.TitleName);
-        const description = drawing.figures.byName(GalleryDrawing.DescriptionName);
-        return title instanceof Label && description instanceof Label ? { title, description } : null;
+        const title = GalleryDrawing.findCaptionLabel(drawing, GalleryDrawing.TitleName, StyleManager.HeadingStyleName);
+        const description = GalleryDrawing.findCaptionLabel(drawing, GalleryDrawing.DescriptionName, StyleManager.ExplanationStyleName);
+        return title != null && description != null ? { title, description } : null;
+    },
+
+    /**
+     * A part of the caption: the label of its name, else the first label in its style that
+     * has none of the caption's names (the hint is in the explanation's style), so that
+     * picking the style is all it takes
+     */
+    findCaptionLabel(drawing, name, styleName) {
+        const named = drawing.figures.byName(name);
+        if (named instanceof Label) {
+            return named;
+        }
+
+        const captionNames = [GalleryDrawing.TitleName, GalleryDrawing.DescriptionName, GalleryDrawing.HintName];
+        return drawing.figures.list.find(figure => figure instanceof Label
+            && !captionNames.includes(figure.name)
+            && figure.style != null
+            && figure.style.name === styleName) ?? null;
     },
 
     /** A drawing about coordinates (a graph on the grid) has no bounds to fit: what it shows is the part of the plane its file says. Null for all other drawings. */

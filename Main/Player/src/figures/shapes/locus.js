@@ -5,7 +5,11 @@ class Locus extends Curve {
     /** Even steps of the sliding point that adaptive sampling starts from */
     static InitialSteps = 60;
 
-    /** In pixels: how far the curve may stray from the straight piece drawn between two samples */
+    /**
+     * In pixels: how far the sample in the middle of a piece may stray from the straight line
+     * between its ends for the piece to need no more samples. The middle is drawn too, so the
+     * curve strays from what is drawn about a quarter as far.
+     */
     static Tolerance = 0.5;
 
     /** In pixels: two samples still this far apart when halving the step can't bring them closer are a jump */
@@ -95,9 +99,10 @@ class Locus extends Curve {
 
     /**
      * InitialSteps even steps, then, round after round, every step halved where the curve
-     * strays from the straight piece between two samples by more than Tolerance pixels, or
-     * a gap begins or ends there - at most MaxDepth rounds and MaxSamples samples. Past the
-     * open ends of a line, a ray or a graph the steps go outward, each twice as long.
+     * strays from the straight piece between two samples by more than Tolerance pixels at its
+     * middle (which is kept either way), or a gap begins or ends there - at most MaxDepth
+     * rounds and MaxSamples samples. Past the open ends of a line, a ray or a graph the steps
+     * go outward, each twice as long.
      */
     sampleAdaptively(sliding, traced, domain) {
         const coordinateSystem = this.drawing.coordinateSystem;
@@ -165,8 +170,11 @@ class Locus extends Curve {
                 const middle = take((from.parameter + to.parameter) / 2);
                 if (fromExists && toExists && middle.point.exists()
                     && Locus.distanceToSegment(middle.point, from.point, to.point) * unitLength <= Locus.Tolerance) {
+                    // the middle stays: it is traced already, and the two halves stray a quarter as far
                     from.done = true;
+                    middle.done = true;
                     next.push(from);
+                    next.push(middle);
                     continue;
                 }
 

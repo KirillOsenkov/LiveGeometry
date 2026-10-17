@@ -12,10 +12,10 @@
   <Scene Left="-2.75" Top="1.625" Right="2.75" Bottom="-1.75" />
   <Scene Left="-2.125" Top="1.625" Right="2.125" Bottom="-1.75" />
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFFFD6F5" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FFFFD6F5" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FFFFD6F5" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
       <Dark Color="#FFE8E0FF" />
     </TextStyle>
     <ShapeStyle Name="SlimeFill" Color="#00000000">
@@ -982,7 +982,7 @@
       <Dependency Name="DropBottom" />
       <Dependency Name="DropRight" />
     </BezierPath>
-    <ShowHideControl Name="DotsBox" Style="GalleryText" Show="false" Text="Dots" X="-2.05" Y="-1.3">
+    <ShowHideControl Name="DotsBox" Style="Explanation" Show="false" Text="Dots" X="-2.05" Y="-1.3">
       <Dependency Name="SlimeTipR" />
       <Dependency Name="SlimeTopR5" />
       <Dependency Name="SlimeTopR4" />
@@ -1008,7 +1008,7 @@
       <Dependency Name="SlimeBottomR4" />
       <Dependency Name="SlimeBottomR5" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Stretchy Slime" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Grab the galaxy slime and pull! Drag the fists apart. There's only so much slime, so the longer it gets, the thinner it gets. Watch it sag, drip, and stretch its air bubbles into long ovals. Keep pulling: plop, plop! Push the fists together to squish it into a ball.\n\nIts edge is one smooth curve through 24 dots, with no corners anywhere: a spline. Check Dots to watch the dots slide as you pull." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Stretchy Slime" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Grab the galaxy slime and pull! Drag the fists apart. There's only so much slime, so the longer it gets, the thinner it gets. Watch it sag, drip, and stretch its air bubbles into long ovals. Keep pulling: plop, plop! Push the fists together to squish it into a ball.\n\nIts edge is one smooth curve through 24 dots, with no corners anywhere: a spline. Check Dots to watch the dots slide as you pull." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

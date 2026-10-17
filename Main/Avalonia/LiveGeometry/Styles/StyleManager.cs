@@ -265,28 +265,26 @@ public partial class StyleManager
             : hue == StyleHue.Green ? greenShapeStyle
             : HueShape(ShapeStyleNameOf(hue), hue, outlined: false, gradient: true)));
 
-        var hyperLinkStyle = ThemedText(HyperlinkStyleName, fontSize: 18);
+        // Text: labels and notes. Heading and Explanation: a drawing's caption (a heading in
+        // the splash's blue, the explanation in the chrome's text color; see
+        // GalleryDrawing). The locus of a gallery drawing's "drag to here" ring.
         var textStyle = ThemedText(TextStyleName, fontSize: 18);
-        var headerStyle = ThemedText(HeadingStyleName, fontSize: 40);
-
-        // the caption of a drawing of the gallery: a heading in the splash's blue, the
-        // explanation in the chrome's text color, the locus of a "drag to here" ring
-        var galleryTitleStyle = new TextStyle()
+        var headingStyle = new TextStyle()
         {
-            Name = GalleryTitleStyleName,
+            Name = HeadingStyleName,
             FontSize = 30,
             Color = Color.FromRgb(0x1F, 0x4E, 0x8C),
             FontFamily = new FontFamily("Segoe UI"),
             Bold = true
         };
-        galleryTitleStyle.SetOverride(AppTheme.Dark.Name, nameof(TextStyle.Color), Color.FromRgb(0x9C, 0xC4, 0xF0));
-        var galleryTextStyle = new TextStyle()
+        headingStyle.SetOverride(AppTheme.Dark.Name, nameof(TextStyle.Color), Color.FromRgb(0x9C, 0xC4, 0xF0));
+        var explanationStyle = new TextStyle()
         {
-            Name = GalleryTextStyleName,
+            Name = ExplanationStyleName,
             FontSize = 16,
             FontFamily = new FontFamily("Segoe UI")
         };
-        galleryTextStyle.BindToTheme(nameof(TextStyle.Color), theme => theme.Text);
+        explanationStyle.BindToTheme(nameof(TextStyle.Color), theme => theme.Text);
         var galleryLocusStyle = new LineStyle()
         {
             Name = GalleryLocusStyleName,
@@ -300,10 +298,8 @@ public partial class StyleManager
             .Concat(new IFigureStyle[]
             {
                 textStyle,
-                headerStyle,
-                hyperLinkStyle,
-                galleryTitleStyle,
-                galleryTextStyle,
+                headingStyle,
+                explanationStyle,
                 galleryLocusStyle
             })
             .ToArray();
@@ -477,6 +473,18 @@ public partial class StyleManager
         };
     }
 
+    /// <summary>What the style picker says a text style is for, under its name</summary>
+    public static string DescribeTextStyle(string name)
+    {
+        return name switch
+        {
+            TextStyleName => "Labels and notes",
+            HeadingStyleName => "The drawing's heading, beside or under the figure",
+            ExplanationStyleName => "The text under the heading",
+            _ => "A style of this drawing"
+        };
+    }
+
     /// <summary>A text style in the theme's ink</summary>
     static TextStyle ThemedText(string name, double fontSize)
     {
@@ -632,9 +640,7 @@ public partial class StyleManager
     public const string OutlinedShapeStyleName = "OutlinedShape";
     public const string TextStyleName = "Text";
     public const string HeadingStyleName = "Heading";
-    public const string HyperlinkStyleName = "Hyperlink";
-    public const string GalleryTitleStyleName = "GalleryTitle";
-    public const string GalleryTextStyleName = "GalleryText";
+    public const string ExplanationStyleName = "Explanation";
     public const string GalleryLocusStyleName = "GalleryLocus";
 
     /// <summary>What files from before 2026-09-29 call the dependent point style</summary>
@@ -654,7 +660,6 @@ public partial class StyleManager
         yield return (LegacyPoint(Color.FromRgb(0x00, 0xFF, 0x00)), PointOnFigureStyleName);
         yield return (LegacyPoint(Color.FromRgb(0xC0, 0xC0, 0xC0)), DependentPointStyleName);
         yield return (new TextStyle() { FontSize = 18, Color = black, FontFamily = new FontFamily("Segoe UI") }, TextStyleName);
-        yield return (new TextStyle() { FontSize = 40, Color = black, FontFamily = new FontFamily("Segoe UI") }, HeadingStyleName);
 
         static PointStyle LegacyPoint(Color fill)
         {

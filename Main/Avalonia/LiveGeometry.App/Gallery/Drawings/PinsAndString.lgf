@@ -61,8 +61,8 @@
     <PointLabel Name="LabelF2" OffsetX="-8" OffsetY="10" ShowName="true" ShowCoordinates="false">
       <Dependency Name="F2" />
     </PointLabel>
-    <Label Name="Title" Style="GalleryTitle" Text="Two Pins and a String" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Push two pins into a board, tie a loose loop of string around them, pull it tight with a pencil and go around. The pencil draws an ellipse. Gardeners lay out oval flower beds with two stakes and a rope exactly this way.\n\nDrag the yellow pencil around the ellipse and watch the string stay tight. The string is [string] long and the pins are [dist(F1, F2)] apart. Drag the pins closer together and the ellipse gets rounder; put them on top of each other and it's a circle. Pull them apart and it flattens, until the string can't reach any more.\n\nThe pins are the two focuses of the ellipse. Planets move on ellipses, and the Sun sits at one of the two pins." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+    <Label Name="Title" Style="Heading" Text="Two Pins and a String" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Push two pins into a board, tie a loose loop of string around them, pull it tight with a pencil and go around. The pencil draws an ellipse. Gardeners lay out oval flower beds with two stakes and a rope exactly this way.\n\nDrag the yellow pencil around the ellipse and watch the string stay tight. The string is [string] long and the pins are [dist(F1, F2)] apart. Drag the pins closer together and the ellipse gets rounder; put them on top of each other and it's a circle. Pull them apart and it flattens, until the string can't reach any more.\n\nThe pins are the two focuses of the ellipse. Planets move on ellipses, and the Sun sits at one of the two pins." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
       <Dependency Name="string" />
       <Dependency Name="F1" />
       <Dependency Name="F2" />

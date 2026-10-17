@@ -19,9 +19,7 @@ class StyleManager {
     static OutlinedShapeStyleName = "OutlinedShape";
     static TextStyleName = "Text";
     static HeadingStyleName = "Heading";
-    static HyperlinkStyleName = "Hyperlink";
-    static GalleryTitleStyleName = "GalleryTitle";
-    static GalleryTextStyleName = "GalleryText";
+    static ExplanationStyleName = "Explanation";
     static GalleryLocusStyleName = "GalleryLocus";
 
     /** What files from before 2026-09-29 call the dependent point style */
@@ -164,24 +162,22 @@ class StyleManager {
                 : hue === StyleHue.Green ? greenShapeStyle
                     : StyleManager.hueShape(hue.name + "Shape", hue, false, true)));
 
-        const hyperLinkStyle = StyleManager.themedText(StyleManager.HyperlinkStyleName, 18);
+        // Text: labels and notes. Heading and Explanation: a drawing's caption (a heading in
+        // the splash's blue, the explanation in the chrome's text color). The locus of a
+        // gallery drawing's "drag to here" ring.
         const textStyle = StyleManager.themedText(StyleManager.TextStyleName, 18);
-        const headerStyle = StyleManager.themedText(StyleManager.HeadingStyleName, 40);
-
-        // the caption of a drawing of the gallery: a heading in the splash's blue, the
-        // explanation in the chrome's text color, the locus of a "drag to here" ring
-        const galleryTitleStyle = new TextStyle();
-        galleryTitleStyle.name = StyleManager.GalleryTitleStyleName;
-        galleryTitleStyle.fontSize = 30;
-        galleryTitleStyle.color = Color.fromRgb(0x1F, 0x4E, 0x8C);
-        galleryTitleStyle.fontFamily = "Segoe UI";
-        galleryTitleStyle.bold = true;
-        galleryTitleStyle.setOverride(AppTheme.Dark.name, "color", Color.fromRgb(0x9C, 0xC4, 0xF0));
-        const galleryTextStyle = new TextStyle();
-        galleryTextStyle.name = StyleManager.GalleryTextStyleName;
-        galleryTextStyle.fontSize = 16;
-        galleryTextStyle.fontFamily = "Segoe UI";
-        galleryTextStyle.bindToTheme("color", theme => theme.text);
+        const headingStyle = new TextStyle();
+        headingStyle.name = StyleManager.HeadingStyleName;
+        headingStyle.fontSize = 30;
+        headingStyle.color = Color.fromRgb(0x1F, 0x4E, 0x8C);
+        headingStyle.fontFamily = "Segoe UI";
+        headingStyle.bold = true;
+        headingStyle.setOverride(AppTheme.Dark.name, "color", Color.fromRgb(0x9C, 0xC4, 0xF0));
+        const explanationStyle = new TextStyle();
+        explanationStyle.name = StyleManager.ExplanationStyleName;
+        explanationStyle.fontSize = 16;
+        explanationStyle.fontFamily = "Segoe UI";
+        explanationStyle.bindToTheme("color", theme => theme.text);
         const galleryLocusStyle = new LineStyle();
         galleryLocusStyle.name = StyleManager.GalleryLocusStyleName;
         galleryLocusStyle.color = Color.fromRgb(0xE0, 0x36, 0x2B);
@@ -192,10 +188,8 @@ class StyleManager {
             ...lineStyles,
             ...shapeStyles,
             textStyle,
-            headerStyle,
-            hyperLinkStyle,
-            galleryTitleStyle,
-            galleryTextStyle,
+            headingStyle,
+            explanationStyle,
             galleryLocusStyle
         ];
         for (const style of newStyles) {
@@ -393,8 +387,7 @@ class StyleManager {
             [legacyPoint(Color.fromRgb(0xFF, 0xFF, 0x00)), StyleManager.FreePointStyleName],
             [legacyPoint(Color.fromRgb(0x00, 0xFF, 0x00)), StyleManager.PointOnFigureStyleName],
             [legacyPoint(Color.fromRgb(0xC0, 0xC0, 0xC0)), StyleManager.DependentPointStyleName],
-            [legacyText(18), StyleManager.TextStyleName],
-            [legacyText(40), StyleManager.HeadingStyleName]
+            [legacyText(18), StyleManager.TextStyleName]
         ];
     }
 

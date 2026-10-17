@@ -421,7 +421,7 @@
     <PointLabel Name="IcosahedronName" Style="Name" OffsetX="-52.3" OffsetY="6" ShowName="true" ShowCoordinates="false">
       <Dependency Name="Icosahedron" />
     </PointLabel>
-    <Label Name="Title" Style="GalleryTitle" Text="The Five Platonic Solids" Pin="TopRight" OffsetX="16" OffsetY="25.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A Platonic solid is a shape whose faces are all the same regular polygon, with the same number of them meeting at every corner. There are exactly five — the ancient Greeks proved that no sixth one is possible.\n\nTetrahedron: 4 triangles. Cube: 6 squares. Octahedron: 8 triangles. Dodecahedron: 12 pentagons. Icosahedron: 20 triangles.\n\nFive of the dice in a role-playing game set — the d4, d6, d8, d12 and d20 — have exactly these shapes." Pin="TopRight" OffsetX="16" OffsetY="73.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="The Five Platonic Solids" Pin="TopRight" OffsetX="16" OffsetY="25.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="A Platonic solid is a shape whose faces are all the same regular polygon, with the same number of them meeting at every corner. There are exactly five — the ancient Greeks proved that no sixth one is possible.\n\nTetrahedron: 4 triangles. Cube: 6 squares. Octahedron: 8 triangles. Dodecahedron: 12 pentagons. Icosahedron: 20 triangles.\n\nFive of the dice in a role-playing game set — the d4, d6, d8, d12 and d20 — have exactly these shapes." Pin="TopRight" OffsetX="16" OffsetY="73.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

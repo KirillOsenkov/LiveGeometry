@@ -132,14 +132,14 @@ text.AppendLine("    <PointStyle Size=\"8\" Fill=\"#FFFFB45A\" IsFilled=\"true\"
 text.AppendLine("    <PointStyle Size=\"8\" Fill=\"#FFD0D0D0\" IsFilled=\"true\" Color=\"#64000000\" StrokeWidth=\"1\" Dash=\"Solid\" Name=\"DependentPointStyle\" />");
 text.AppendLine("    <TextStyle FontSize=\"17\" Color=\"#FF2B3038\" FontFamily=\"Segoe UI\" Bold=\"false\" Italic=\"false\" Underline=\"false\" Name=\"Name\" />");
 text.Append(styles);
-text.AppendLine("    <TextStyle FontSize=\"30\" Color=\"#FF1F4E8C\" FontFamily=\"Segoe UI\" Bold=\"true\" Italic=\"false\" Underline=\"false\" Name=\"GalleryTitle\" />");
-text.AppendLine("    <TextStyle FontSize=\"16\" Color=\"#FF2B3038\" FontFamily=\"Segoe UI\" Bold=\"false\" Italic=\"false\" Underline=\"false\" Name=\"GalleryText\" />");
+text.AppendLine("    <TextStyle FontSize=\"30\" Color=\"#FF1F4E8C\" FontFamily=\"Segoe UI\" Bold=\"true\" Italic=\"false\" Underline=\"false\" Name=\"Heading\" />");
+text.AppendLine("    <TextStyle FontSize=\"16\" Color=\"#FF2B3038\" FontFamily=\"Segoe UI\" Bold=\"false\" Italic=\"false\" Underline=\"false\" Name=\"Explanation\" />");
 text.AppendLine("    <LineStyle Color=\"#FFE0362B\" StrokeWidth=\"2.5\" Name=\"GalleryLocus\" />");
 text.AppendLine("  </Styles>");
 text.AppendLine("  <Figures>");
 text.Append(figures);
-text.AppendLine("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"The Five Platonic Solids\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"78.75\" WrapWidth=\"400\" Backdrop=\"true\" />");
-text.AppendLine("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"A Platonic solid is a shape whose faces are all the same regular polygon, with the same number of them meeting at every corner. There are exactly five — the ancient Greeks proved that no sixth one is possible.\\n\\nTetrahedron: 4 triangles. Cube: 6 squares. Octahedron: 8 triangles. Dodecahedron: 12 pentagons. Icosahedron: 20 triangles.\\n\\nFive of the dice in a role-playing game set — the d4, d6, d8, d12 and d20 — have exactly these shapes.\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"126.75\" WrapWidth=\"400\" Backdrop=\"true\" />");
+text.AppendLine("    <Label Name=\"Title\" Style=\"Heading\" Text=\"The Five Platonic Solids\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"78.75\" WrapWidth=\"400\" Backdrop=\"true\" />");
+text.AppendLine("    <Label Name=\"Description\" Style=\"Explanation\" Text=\"A Platonic solid is a shape whose faces are all the same regular polygon, with the same number of them meeting at every corner. There are exactly five — the ancient Greeks proved that no sixth one is possible.\\n\\nTetrahedron: 4 triangles. Cube: 6 squares. Octahedron: 8 triangles. Dodecahedron: 12 pentagons. Icosahedron: 20 triangles.\\n\\nFive of the dice in a role-playing game set — the d4, d6, d8, d12 and d20 — have exactly these shapes.\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"126.75\" WrapWidth=\"400\" Backdrop=\"true\" />");
 text.AppendLine("  </Figures>");
 text.Append("</Drawing>");
 File.WriteAllText(args[0], text.ToString().Replace("\r\n", "\n").Replace("\n", "\r\n"), new UTF8Encoding(false));

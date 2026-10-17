@@ -9,8 +9,8 @@
     </Background>
   </Viewport>
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFFFFFFF" FontFamily="Segoe UI" Bold="true" />
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FFE6E6EE" FontFamily="Segoe UI" />
+    <TextStyle Name="Heading" FontSize="30" Color="#FFFFFFFF" FontFamily="Segoe UI" Bold="true" />
+    <TextStyle Name="Explanation" FontSize="16" Color="#FFE6E6EE" FontFamily="Segoe UI" />
     <PointStyle Name="7" Fill="#FFB0B0B0" Color="#FF00FF00" StrokeWidth="0.7" />
     <PointStyle Name="8" Size="8" Fill="#FFB0B0B0" Color="#FF00FFFF" StrokeWidth="0.7" />
     <LineStyle Name="9" Color="#FF00FFFF" />
@@ -343,7 +343,7 @@
       <Dependency Name="MiddlePoint39" />
       <Dependency Name="MiddlePoint37" />
     </Segment>
-    <Label Name="Title" Style="GalleryTitle" Text="Sierpinski Triangle" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Take a triangle, connect the midpoints of its sides, and you get four smaller triangles. Leave the middle one empty and repeat with the other three — again and again.\n\nThe result is a fractal: it looks the same however closely you zoom in. This one has four levels.\n\nDrag the three corners." Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Sierpinski Triangle" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Take a triangle, connect the midpoints of its sides, and you get four smaller triangles. Leave the middle one empty and repeat with the other three — again and again.\n\nThe result is a fractal: it looks the same however closely you zoom in. This one has four levels.\n\nDrag the three corners." Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

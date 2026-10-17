@@ -455,8 +455,8 @@ var hint =
     "The same 15 dots make the crumpled heap and the round balloon. Only where they sit changes, and how tightly the curve is pulled through them: tight when it is nearly empty, so the rubber creases, and looser when it is full, so it bulges round between them.\n\n" +
     "Once it stands up, each push adds the same amount of air, but the balloon grows taller by less and less: the new air has to spread around a bigger and bigger balloon.\n\n" +
     "Popped it? Pull the handle back up.";
-figures.AppendLine($"    <Label Name=\"Hint\" Visible=\"false\" Style=\"GalleryText\" Text=\"{LabelText(hint)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"300\" WrapWidth=\"400\" Backdrop=\"true\" />");
-figures.AppendLine("    <ShowHideControl Name=\"Hint box\" Style=\"GalleryText\" Show=\"false\" Text=\"Hint\" X=\"-3.15\" Y=\"2.4\">");
+figures.AppendLine($"    <Label Name=\"Hint\" Visible=\"false\" Style=\"Explanation\" Text=\"{LabelText(hint)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"300\" WrapWidth=\"400\" Backdrop=\"true\" />");
+figures.AppendLine("    <ShowHideControl Name=\"Hint box\" Style=\"Explanation\" Show=\"false\" Text=\"Hint\" X=\"-3.15\" Y=\"2.4\">");
 WriteDependencies([.. skin, "Hint"]);
 figures.AppendLine("    </ShowHideControl>");
 
@@ -465,13 +465,13 @@ var title = "Pump Up the Balloon";
 var description =
     "Pull the red pump handle up to let the air out: the balloon flops over in a crumpled heap. Now push it down: the rubber lifts, stands up and stretches smooth, round and shiny. Keep an eye on the gauge! Drag the balloon anywhere and the hose follows.\n\n" +
     "The outline is one closed curve through 15 dots: check \"Hint\" to watch them spread apart. What happens if you push the handle all the way down?";
-figures.AppendLine($"    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"{LabelText(title)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-figures.AppendLine($"    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"{LabelText(description)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+figures.AppendLine($"    <Label Name=\"Title\" Style=\"Heading\" Text=\"{LabelText(title)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
+figures.AppendLine($"    <Label Name=\"Description\" Style=\"Explanation\" Text=\"{LabelText(description)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
 
 // the styles: the drawing has a paper of its own, so every style looks the same under the
 // dark theme (see Style)
-Style("TextStyle", "GalleryTitle", "FontSize=\"30\" Color=\"#FF1A3D7C\" FontFamily=\"Segoe UI\" Bold=\"true\"");
-Style("TextStyle", "GalleryText", "FontSize=\"16\" Color=\"#FF22324D\" FontFamily=\"Segoe UI\"");
+Style("TextStyle", "Heading", "FontSize=\"30\" Color=\"#FF1A3D7C\" FontFamily=\"Segoe UI\" Bold=\"true\"");
+Style("TextStyle", "Explanation", "FontSize=\"16\" Color=\"#FF22324D\" FontFamily=\"Segoe UI\"");
 Style("ShapeStyle", "SunGlow", "Fill=\"#33FFFFFF\" Color=\"#00000000\"");
 Style("ShapeStyle", "SunHalo", "Fill=\"#59FFFFFF\" Color=\"#00000000\"");
 Style("ShapeStyle", "Sun", "Color=\"#00000000\"", Gradient(ToBottomRight, ("#FFFFF59D", 0), ("#FFFFC107", 1)));

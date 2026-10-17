@@ -130,8 +130,8 @@ foreach (var gear in gears)
     Write("    </PointByCoordinates>");
 }
 
-Write("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"Gears\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-Write("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"Drag the slider to turn the yellow gear. Its teeth push the green gear the other way, and the green gear pushes the purple one back the first way: every gear in a chain turns against its neighbors.\\n\\nThe yellow gear has 12 teeth and the green one 20. The yellow gear has made [spin / 3] turns, so the green one has made [12 / 20 * spin / 3]: a big gear turns slower than a small one, by exactly the ratio of their teeth. The purple gear, with 8 teeth, has made [12 / 8 * spin / 3] turns. Watch the white dots.\\n\\nThat is how a bicycle works. Pedal a 48-tooth chainring driving a 12-tooth sprocket and the back wheel spins four times for every turn of your feet.\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\">");
+Write("    <Label Name=\"Title\" Style=\"Heading\" Text=\"Gears\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write("    <Label Name=\"Description\" Style=\"Explanation\" Text=\"Drag the slider to turn the yellow gear. Its teeth push the green gear the other way, and the green gear pushes the purple one back the first way: every gear in a chain turns against its neighbors.\\n\\nThe yellow gear has 12 teeth and the green one 20. The yellow gear has made [spin / 3] turns, so the green one has made [12 / 20 * spin / 3]: a big gear turns slower than a small one, by exactly the ratio of their teeth. The purple gear, with 8 teeth, has made [12 / 8 * spin / 3] turns. Watch the white dots.\\n\\nThat is how a bicycle works. Pedal a 48-tooth chainring driving a 12-tooth sprocket and the back wheel spins four times for every turn of your feet.\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\">");
 Write("      <Dependency Name=\"spin\" />");
 Write("    </Label>");
 Write("  </Figures>");

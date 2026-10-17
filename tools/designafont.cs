@@ -264,12 +264,12 @@ WriteLabel("DescenderName", "descender", bigLeft, Descender * BigUnit + LabelLif
 
 // the hint, hidden until its box is checked, and the caption, pinned to the window: the gallery
 // lays out the title, the description and the hint anew for the window at hand
-Write($"    <Label Name=\"Hint\" Visible=\"false\" Style=\"GalleryText\" Text=\"{LabelText(Hint)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"300\" WrapWidth=\"400\" Backdrop=\"true\" />");
-Write("    <ShowHideControl Name=\"HintBox\" Style=\"GalleryText\" Show=\"false\" Text=\"Hint\" Pin=\"TopLeft\" OffsetX=\"16\" OffsetY=\"16\">");
+Write($"    <Label Name=\"Hint\" Visible=\"false\" Style=\"Explanation\" Text=\"{LabelText(Hint)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"300\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write("    <ShowHideControl Name=\"HintBox\" Style=\"Explanation\" Show=\"false\" Text=\"Hint\" Pin=\"TopLeft\" OffsetX=\"16\" OffsetY=\"16\">");
 Write("      <Dependency Name=\"Hint\" />");
 Write("    </ShowHideControl>");
-Write($"    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"{LabelText(Title)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-Write($"    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"{LabelText(Description)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write($"    <Label Name=\"Title\" Style=\"Heading\" Text=\"{LabelText(Title)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write($"    <Label Name=\"Description\" Style=\"Explanation\" Text=\"{LabelText(Description)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
 Write("  </Figures>");
 
 // the app writes no line break after the root's closing tag

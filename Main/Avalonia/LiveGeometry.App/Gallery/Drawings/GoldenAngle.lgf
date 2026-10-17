@@ -9,10 +9,10 @@
     </Background>
   </Viewport>
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFFFD966" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FFFFD966" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FFFFD966" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
       <Dark Color="#FFE8E0FF" />
     </TextStyle>
     <LineStyle Name="Dial" Color="#50FFFFFF" StrokeWidth="1.5" Dash="Dash" />
@@ -335,12 +335,12 @@
       <Dependency Name="C" />
       <Dependency Name="Golden" />
     </Segment>
-    <ShowHideControl Name="Hint" Style="GalleryText" Show="false" Text="Hint" X="-2" Y="-1.55">
+    <ShowHideControl Name="Hint" Style="Explanation" Show="false" Text="Hint" X="-2" Y="-1.55">
       <Dependency Name="Golden" />
       <Dependency Name="GoldenRay" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Golden Angle" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Each heart sits a little farther out than the one before, and turned [deg(Turn.X)]° further around.\n\nDrag the bee to change the turn. Most turns line the hearts up in spokes or curly arms, with gaps in between. One special turn fills the circle with no gaps at all. Can you find it? Stuck? Check &quot;Hint&quot;.\n\nSunflowers know that turn: their seeds grow the same way." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+    <Label Name="Title" Style="Heading" Text="Golden Angle" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Each heart sits a little farther out than the one before, and turned [deg(Turn.X)]° further around.\n\nDrag the bee to change the turn. Most turns line the hearts up in spokes or curly arms, with gaps in between. One special turn fills the circle with no gaps at all. Can you find it? Stuck? Check &quot;Hint&quot;.\n\nSunflowers know that turn: their seeds grow the same way." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
       <Dependency Name="Turn" />
     </Label>
   </Figures>

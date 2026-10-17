@@ -11,10 +11,10 @@
   </Viewport>
   <Scene Left="-1.9" Top="2.1" Right="3.1999999999999997" Bottom="-2.65" />
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFFFE6F7" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FFFFE6F7" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FFFFE6F7" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FFDDEBFF" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FFDDEBFF" FontFamily="Segoe UI">
       <Dark Color="#FFDDEBFF" />
     </TextStyle>
     <TextStyle Name="SpinText" FontSize="14" Color="#FFFFC6EA" FontFamily="Segoe UI" />
@@ -779,7 +779,7 @@
       <Dependency Name="Sheen4" />
       <Dependency Name="Sheen5" />
     </BezierPath>
-    <ShowHideControl Name="Dots" Style="GalleryText" Show="false" Text="Dots" X="-1.75" Y="-2.3">
+    <ShowHideControl Name="Dots" Style="Explanation" Show="false" Text="Dots" X="-1.75" Y="-2.3">
       <Dependency Name="Dome0" />
       <Dependency Name="Dome1" />
       <Dependency Name="Dome2" />
@@ -804,7 +804,7 @@
       <Dependency Name="Tent3_4" />
       <Dependency Name="Tent3_5" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Moon Jelly" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Drag the pearl around its ring, and the jellyfish swims. Waves run down its tentacles (drag backward, and they run up): each dot swings like the one above it, a moment later.\n\nThe bell is one smooth curve through 18 dots. As it squeezes, the curve pulls tighter and the holes in its rings shrink. Check &quot;Dots,&quot; click a dot, then drag the pearl: its two pink handles, which steer the curve, turn by themselves." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Moon Jelly" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Drag the pearl around its ring, and the jellyfish swims. Waves run down its tentacles (drag backward, and they run up): each dot swings like the one above it, a moment later.\n\nThe bell is one smooth curve through 18 dots. As it squeezes, the curve pulls tighter and the holes in its rings shrink. Check &quot;Dots,&quot; click a dot, then drag the pearl: its two pink handles, which steer the curve, turn by themselves." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

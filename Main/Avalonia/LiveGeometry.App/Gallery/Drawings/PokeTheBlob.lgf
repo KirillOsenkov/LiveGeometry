@@ -10,10 +10,10 @@
   </Viewport>
   <Scene Left="-3.0625" Top="2.625" Right="3.0625" Bottom="-2.0625" />
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF4A2C6E" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FF4A2C6E" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF4A2C6E" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FF2E2A44" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FF2E2A44" FontFamily="Segoe UI">
       <Dark Color="#FF2E2A44" />
     </TextStyle>
     <ShapeStyle Name="Plate" Color="#00000000">
@@ -616,7 +616,7 @@
       <Dependency Name="GlintA" />
       <Dependency Name="GlintB" />
     </CircleArc>
-    <ShowHideControl Name="Dots" Style="GalleryText" Show="false" Text="Dots" X="-3" Y="-1.775">
+    <ShowHideControl Name="Dots" Style="Explanation" Show="false" Text="Dots" X="-3" Y="-1.775">
       <Dependency Name="Rim0" />
       <Dependency Name="Rim1" />
       <Dependency Name="Rim2" />
@@ -634,7 +634,7 @@
       <Dependency Name="Rim14" />
       <Dependency Name="Rim15" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Poke the Blob" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="This gummy blob's edge is one smooth curve through 16 hidden dots. Drag the pink gumball into it: nearby dots get pushed in, the rest bulge out, and the curve wraps around the ball with no corners. Check &quot;Dots&quot;: they bunch up where the curve bends most. Click one to see the two handles steering the curve.\n\nPush the gumball all the way in and... gulp! Now pull it back out (and watch that face)." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Poke the Blob" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="This gummy blob's edge is one smooth curve through 16 hidden dots. Drag the pink gumball into it: nearby dots get pushed in, the rest bulge out, and the curve wraps around the ball with no corners. Check &quot;Dots&quot;: they bunch up where the curve bends most. Click one to see the two handles steering the curve.\n\nPush the gumball all the way in and... gulp! Now pull it back out (and watch that face)." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

@@ -146,10 +146,10 @@
       <Dependency Name="L" />
       <Dependency Name="K" />
     </Segment>
-    <ShowHideControl Name="Hint" Style="GalleryText" Show="false" Text="Hint" X="-4" Y="-5">
+    <ShowHideControl Name="Hint" Style="Explanation" Show="false" Text="Hint" X="-4" Y="-5">
       <Dependency Name="Arc" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Carpenter's Square" Pin="TopRight" OffsetX="16" OffsetY="78.75" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A carpenter's square is a tool with a perfect right angle. Slide it so that its two arms always touch two fixed nails.\n\nWhat path does the corner follow? Drag it and guess, then check &quot;Hint&quot;." Pin="TopRight" OffsetX="16" OffsetY="126.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Carpenter's Square" Pin="TopRight" OffsetX="16" OffsetY="78.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="A carpenter's square is a tool with a perfect right angle. Slide it so that its two arms always touch two fixed nails.\n\nWhat path does the corner follow? Drag it and guess, then check &quot;Hint&quot;." Pin="TopRight" OffsetX="16" OffsetY="126.75" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

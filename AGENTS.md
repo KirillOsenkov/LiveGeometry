@@ -994,6 +994,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   where filled (`PolygonBase.HitTest` reads the shape as drawn; its shape has no fill of its
   own, or a line style applied first left the factory's yellow). Under side segments, an
   outline in a line style shows through them darkened: the segments are drawn over it.
+  Text styles are three (2026-10-16): `Text` for labels, `Heading` and `Explanation` for a
+  drawing's caption (the style alone makes a label part of it, see "The caption"). They
+  were `GalleryTitle` and `GalleryText`, next to a 40 px `Heading` and a `Hyperlink` that
+  nothing used, and the picker showed all five as the word "Text". It lists text styles,
+  not swatches: each its name in its own look over what it is for
+  (`StyleManager.DescribeTextStyle`).
 - **A figure drawn over another as it is built shows through** (`Figures/Coincidence.cs`,
   2026-10-15): an arc on its circle, a segment on its line looked like nothing at all in
   the same default line. When a tool adds a figure that would get the default `Line`
@@ -1703,10 +1709,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   are clamped (a coordinate of 1e300 pixels is not drawn, and exp(x²) vanished whole). A
   function that throws has no value there (it was 0). A locus has one wherever the traced
   point doesn't exist. A locus samples adaptively (`Locus.SampleAdaptively`): 60 even
-  steps, then round after round every step halved where the curve strays more than half
-  a pixel from the piece drawn, or a gap begins or ends - at most 12 rounds and 1000
-  samples, spread evenly when they run out (sin(40x) is coarse, not stuck); a piece still
-  long after every round is a jump (1/x), not joined. Past the open ends of a line, ray
+  steps, then round after round every step halved where its middle sample strays more
+  than half a pixel from the straight line between its ends, or a gap begins or ends -
+  at most 12 rounds and 1000 samples, spread evenly when they run out (sin(40x) is
+  coarse, not stuck). The middle is drawn either way, so what is drawn strays about an
+  eighth of a pixel (2026-10-16: thrown away, it left the inverse of a circle 600 px
+  across with a corner every 35 px; a tolerance of an eighth cost 1.6 to 2 times the
+  samples for the same look, the middle nothing). A piece still long after every round
+  is a jump (1/x), not joined. Past the open ends of a line, ray
   or graph (and of a locus on one) it steps outward, each step twice the last, and a
   traced point beyond 20 window sizes is a gap. Sampled evenly along the line, the image
   of a line in a circle was a hexagon on its far side with a hole at the center.
@@ -2179,19 +2189,19 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   once there are some, on the next opening of the style). The paper works the same:
   `Drawing.Overrides` holds the paper chosen for another theme, "Reset to default" under Dark
   stores a null override (that theme's paper). Both buttons are undo steps.
-  `GalleryTitle` (a Dark override in the splash's blue), `GalleryText` (the chrome's text
+  `Heading` (a Dark override in the splash's blue), `Explanation` (the chrome's text
   color) and `GalleryLocus` are defaults too. The gallery drawings' own styles got their
   Dark overrides from `dotnet tools/darken.cs -- <folder> [--apply]` (2026-09-29): a stroke,
   text or fill darker than lightness 0.35 is lightened to the same hue at 0.82 - 0.4 ×
   lightness (black lands on the ink), a drawing with a paper of its own is left alone, and a
   style that has a `<Dark>` already is never touched, so it is safe to rerun after adding a
   drawing. The three drawings with a light paper of their own (Castle, Conic, Rose) carry
-  `GalleryTitle`/`GalleryText` copies whose Dark override is the light color, so the caption
+  `Heading`/`Explanation` copies whose Dark override is the light color, so the caption
   stays dark on their paper. `--check <folder> <out> --dark` renders the pictures under the
   dark theme; a contact sheet of the gallery in each theme is the way to review. Anything
   that reads a style's color itself rather than through `Apply` must resolve it first
   (`Arrow.ApplyStyle`). A show/hide check box takes a text style like a label
-  (`ShowHideControl.ApplyStyle`, `Text` by default, `GalleryText` in the gallery) and pins
+  (`ShowHideControl.ApplyStyle`, `Text` by default, `Explanation` in the gallery) and pins
   Fluent's per-state caption resources to that color, or the hover would repaint the
   caption in Fluent's own. The gallery's tiles keep their one list of pastels: under the dark
   theme a tile deepens its pastel (`GalleryTile.Deepen`: same hue, value 0.24) and derives
@@ -2290,7 +2300,7 @@ loader still does for files from before; none of it needs extending.
   intersection point drawn green); only a custom style is carried as an element. The default
   names are the constants in `StyleManager` (`FreePoint`, `PointOnFigure`,
   `IntersectionPoint`, `Midpoint`, `DependentPoint` - `DependentPointStyle` in older files,
-  `Line`, `SliderTrack`, `CoincidentLine`, `Shape`, `OutlinedShape`, `Text`, `Heading`, `Hyperlink`, and the palette ones
+  `Line`, `SliderTrack`, `CoincidentLine`, `Shape`, `OutlinedShape`, `Text`, `Heading`, `Explanation`, and the palette ones
   named by hue: `RedLine`, `ThickRedLine`, `DashedRedLine`, `RedOutline`, `RedShape`,
   `RedPoint`, `RedBead`... - see "The default styles"; `OtherLine`, `DottedLine` and
   `OtherShape` are gone). Saved are the styles the figures name (`DrawingSerializer.Write` writes the
@@ -2514,7 +2524,7 @@ buttons and checkboxes, 3D, custom tools.
   Windows Phone samples and the DG 1.0 CD library; `tools/gallerize.cs` made that fork and must
   not be rerun (it would overwrite the hand-edited drawings). To add another CD drawing:
   `--check` it (below), take the `.lgf`, drop the old labels, add `Title`/`Description` labels
-  in the `GalleryTitle`/`GalleryText` styles (defaults, so the file needn't carry them), set
+  in the `Heading`/`Explanation` styles (defaults, so the file needn't carry them), set
   `Grid`, list it in the catalog, and `--rewrite` the folder. Drawings with `Grid="true"`
   (graphs) keep their file viewport in view (`GalleryItem.Plane`), because graphs and lines
   have no bounds. All 47 were rewritten on 2026-09-29 (`--rewrite`: loaded and saved again,
@@ -2524,8 +2534,12 @@ buttons and checkboxes, 3D, custom tools.
   (`AB` for `Segment8`). Rerunning `--rewrite` on the folder changes nothing, so a generated
   drawing (below) can be normalized the same way after regenerating.
 - **The caption** (`Title` + `Description`, which may contain live expressions - then list the
-  points as dependencies) is pinned to the screen; the files carry no X/Y and
-  `GalleryDrawing.Fit` recomputes pin, offsets and wrap width at open time: a column at the
+  points as dependencies) is pinned to the screen. Its labels are the ones named Title and
+  Description, else the first in the `Heading` and the `Explanation` style
+  (`GalleryDrawing.FindCaptionLabel`, the player's `findCaptionLabel`; 2026-10-16: a label
+  given the style and not the name was no caption, and a user had to do both). The files
+  carry no X/Y and `GalleryDrawing.Fit` recomputes pin, offsets and wrap width at open
+  time: a column at the
   right in a wide canvas, a strip at the bottom in a tall one. Labels are sized in pixels, so
   the figure gets the canvas minus the text and the zoom is computed from that in one go -
   never iterate "place text, zoom to fit": it runs away once the text needs more than its

@@ -102,7 +102,7 @@
       <Dependency Name="Point5" />
       <Dependency Name="Point2" />
     </LineTwoPoints>
-    <Label Name="Title" Style="GalleryTitle" Text="Two Reflections" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Reflect a point across one line, then reflect the image across a second line.\n\nThe result is the same as one rotation around the point where the lines cross — by twice the angle between them.\n\nDrag the points and compare the two angles." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Two Reflections" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Reflect a point across one line, then reflect the image across a second line.\n\nThe result is the same as one rotation around the point where the lines cross — by twice the angle between them.\n\nDrag the points and compare the two angles." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

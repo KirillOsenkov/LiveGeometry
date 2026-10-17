@@ -323,7 +323,7 @@
       <Dependency Name="EbbBottom" />
       <Dependency Name="Flat" />
     </LineAtAngle>
-    <ShowHideControl Name="Measure" Style="GalleryText" Show="false" Text="Measure" Pin="TopLeft" OffsetX="16" OffsetY="16">
+    <ShowHideControl Name="Measure" Style="Explanation" Show="false" Text="Measure" Pin="TopLeft" OffsetX="16" OffsetY="16">
       <Dependency Name="MullerGuideL" />
       <Dependency Name="MullerGuideR" />
       <Dependency Name="PonzoGuideL" />
@@ -339,7 +339,7 @@
       <Dependency Name="TeeFlatLength" />
       <Dependency Name="TeeUpLength" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Don't Trust Your Eyes" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Four famous illusions. In each one the two things are exactly the same size. You don't believe it, and you shouldn't have to: drag the yellow handle until they look the same to you, then tick &quot;Measure&quot; and see how far your eyes pulled you.\n\nTop left: the two lines with the fins. Bottom left: the two orange circles. Top right: the two red bars on the railroad tracks. Bottom right: the upright line and the flat one.\n\nYour brain doesn't measure what hits your eye. It guesses what is out there in the world, and fins, rings and railroad tracks are clues it can't ignore. That is why the illusions keep working even after you know the trick. Geometry is how we check." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Don't Trust Your Eyes" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Four famous illusions. In each one the two things are exactly the same size. You don't believe it, and you shouldn't have to: drag the yellow handle until they look the same to you, then tick &quot;Measure&quot; and see how far your eyes pulled you.\n\nTop left: the two lines with the fins. Bottom left: the two orange circles. Top right: the two red bars on the railroad tracks. Bottom right: the upright line and the flat one.\n\nYour brain doesn't measure what hits your eye. It guesses what is out there in the world, and fins, rings and railroad tracks are clues it can't ignore. That is why the illusions keep working even after you know the trick. Geometry is how we check." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

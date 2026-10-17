@@ -11,10 +11,10 @@
   <Scene Left="-10.5" Top="10.5" Right="10.5" Bottom="0" />
   <Scene Left="-6" Top="12.5" Right="6" Bottom="0" />
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF1F4E8C" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
       <Dark Color="#FF2B3038" />
     </TextStyle>
     <LineStyle Name="Guide" />
@@ -423,7 +423,7 @@
       <Dependency Name="Crown" />
       <Dependency Name="CrownRim" />
     </Circle>
-    <Label Name="Title" Style="GalleryTitle" Text="Castle" Pin="TopRight" OffsetX="16" OffsetY="68.25" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A landscape drawn with polygons and circles, like a page from a coloring book.\n\nThe green points slide: make the tower taller and the castle wider, raise the mountains and the tree, or walk them along the ground. The sun and the cloud go wherever you drag them." Pin="TopRight" OffsetX="16" OffsetY="116.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Castle" Pin="TopRight" OffsetX="16" OffsetY="68.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="A landscape drawn with polygons and circles, like a page from a coloring book.\n\nThe green points slide: make the tower taller and the castle wider, raise the mountains and the tree, or walk them along the ground. The sun and the cloud go wherever you drag them." Pin="TopRight" OffsetX="16" OffsetY="116.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

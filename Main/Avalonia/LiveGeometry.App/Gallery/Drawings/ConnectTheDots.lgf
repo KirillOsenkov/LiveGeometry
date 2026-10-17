@@ -10,10 +10,10 @@
   </Viewport>
   <Scene Left="-2.9" Top="2.8" Right="3.65" Bottom="-2.55" />
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1B2A4A" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FF1B2A4A" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF1B2A4A" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FF2D3557" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FF2D3557" FontFamily="Segoe UI">
       <Dark Color="#FF2D3557" />
     </TextStyle>
     <TextStyle Name="WireText" FontSize="15" Color="#FF5A6380" FontFamily="Segoe UI">
@@ -187,7 +187,7 @@
       <Dependency Name="HintCenter" />
       <Dependency Name="HintRim" />
     </Circle>
-    <Label Name="Hint" Visible="false" Style="GalleryText" Text="Pink is a Catmull-Rom spline: each dot's handles come from its two neighbors alone. Orange is a natural spline: all its handles are worked out together, so one dot nudges the whole loop. Blue is John Hobby's rule, made for drawing letters: it keeps the bend as even as it can. Spread the dots evenly around the dashed circle and the outer edges agree. The hole never quite does: four diamonds are too few, and the more dots, the closer the rules come. Dragged an arm? That blob stops following its rule there, until you press Undo." Pin="TopRight" OffsetX="16" OffsetY="300" WrapWidth="400" Backdrop="true" />
+    <Label Name="Hint" Visible="false" Style="Explanation" Text="Pink is a Catmull-Rom spline: each dot's handles come from its two neighbors alone. Orange is a natural spline: all its handles are worked out together, so one dot nudges the whole loop. Blue is John Hobby's rule, made for drawing letters: it keeps the bend as even as it can. Spread the dots evenly around the dashed circle and the outer edges agree. The hole never quite does: four diamonds are too few, and the more dots, the closer the rules come. Dragged an arm? That blob stops following its rule there, until you press Undo." Pin="TopRight" OffsetX="16" OffsetY="300" WrapWidth="400" Backdrop="true" />
     <ShowHideControl Name="PinkBox" Style="HuggerText" Show="true" Text="Pink" Pin="TopLeft" OffsetX="16" OffsetY="16">
       <Dependency Name="Hugger" />
       <Dependency Name="HoleHugger" />
@@ -200,11 +200,11 @@
       <Dependency Name="Roundy" />
       <Dependency Name="HoleRoundy" />
     </ShowHideControl>
-    <ShowHideControl Name="HintBox" Style="GalleryText" Show="false" Text="Hint" Pin="TopLeft" OffsetX="16" OffsetY="88">
+    <ShowHideControl Name="HintBox" Style="Explanation" Show="false" Text="Hint" Pin="TopLeft" OffsetX="16" OffsetY="88">
       <Dependency Name="HintCircle" />
       <Dependency Name="Hint" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Connect the Dots" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Three see-through blobs share seven dots, but each bends between them by its own rule. Drag a dot and each blob shows its handles, the hidden arms that steer its curve. On both sides, pink stays near the dashed line, orange swings out, blue bulges widest. Uncheck a color to hide its blob.\n\nThe diamonds cut a hole. Slide the bead to make every curve puffy or tight. With the bead on its mark, can you make the three outer edges agree?" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Connect the Dots" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Three see-through blobs share seven dots, but each bends between them by its own rule. Drag a dot and each blob shows its handles, the hidden arms that steer its curve. On both sides, pink stays near the dashed line, orange swings out, blue bulges widest. Uncheck a color to hide its blob.\n\nThe diamonds cut a hole. Slide the bead to make every curve puffy or tight. With the bead on its mark, can you make the three outer edges agree?" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

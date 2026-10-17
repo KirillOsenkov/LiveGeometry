@@ -119,8 +119,8 @@ WriteFace("North", "BaseNW", "BaseNE", "NorthE", "NorthW");
 WriteFace("Lid", "NorthW", "NorthE", "LidE", "LidW");
 WriteFace("East", "BaseSE", "BaseNE", "EastN", "EastS");
 
-Write("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"Fold the Cube\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-Write("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"Six squares in a cross, lying flat. Drag the slider and the four sides fold up, the lid folds over, and the cross becomes a box.\\n\\nA flat shape that folds into a solid is called a net. The cross is the famous net of the cube, but it isn't the only one: there are exactly eleven different ways to lay six squares out so that they fold into a cube. Could you draw another?\\n\\nThe paper is see-through so you can watch the far sides. Fold it all the way to see the cube closed, then back down to flat.\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write("    <Label Name=\"Title\" Style=\"Heading\" Text=\"Fold the Cube\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write("    <Label Name=\"Description\" Style=\"Explanation\" Text=\"Six squares in a cross, lying flat. Drag the slider and the four sides fold up, the lid folds over, and the cross becomes a box.\\n\\nA flat shape that folds into a solid is called a net. The cross is the famous net of the cube, but it isn't the only one: there are exactly eleven different ways to lay six squares out so that they fold into a cube. Could you draw another?\\n\\nThe paper is see-through so you can watch the far sides. Fold it all the way to see the cube closed, then back down to flat.\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
 Write("  </Figures>");
 text.Append("</Drawing>");
 File.WriteAllText(args[0], text.ToString(), new UTF8Encoding(false));

@@ -219,7 +219,7 @@
       <Dependency Name="C" />
       <Dependency Name="D" />
     </Polygon>
-    <Label Name="Title" Style="GalleryTitle" Text="Van Aubel's Theorem" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Start with any quadrilateral and build a square outward on each side. Connect the centers of opposite squares.\n\nThe two segments are always perpendicular and have the same length — even when the quadrilateral is a complete mess.\n\nDrag the yellow vertices and see." Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Van Aubel's Theorem" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Start with any quadrilateral and build a square outward on each side. Connect the centers of opposite squares.\n\nThe two segments are always perpendicular and have the same length — even when the quadrilateral is a complete mess.\n\nDrag the yellow vertices and see." Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

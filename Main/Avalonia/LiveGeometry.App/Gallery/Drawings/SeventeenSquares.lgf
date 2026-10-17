@@ -435,11 +435,11 @@
       <Dependency Name="F2" />
       <Dependency Name="F3" />
     </Segment>
-    <ShowHideControl Name="Hint" Style="GalleryText" Show="false" Text="Show the 4 × 4 box" X="-2.3377650468022755" Y="-2.5877650468022755">
+    <ShowHideControl Name="Hint" Style="Explanation" Show="false" Text="Show the 4 × 4 box" X="-2.3377650468022755" Y="-2.5877650468022755">
       <Dependency Name="Four1" />
       <Dependency Name="Four2" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Seventeen Squares" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="How small a box can hold 17 squares of side 1, without overlapping? Sixteen fill a 4 × 4 box exactly. Add one more and the neat rows have to give way.\n\nThis is the best anyone has found, by John Bidwell in the 1990s: a box 4.6755 wide, with squares tilted at two different angles and gaps all over. It looks wrong, as if a little shaking would let everything settle into something tidier, but every tidier arrangement needs a bigger box.\n\nIs it the best possible? Nobody knows yet. A computer-assisted proof from 2026 shows that a box narrower than 4.66 can never work, which leaves a gap of less than 0.02.\n\nDrag the yellow corners to turn and resize the box." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Seventeen Squares" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="How small a box can hold 17 squares of side 1, without overlapping? Sixteen fill a 4 × 4 box exactly. Add one more and the neat rows have to give way.\n\nThis is the best anyone has found, by John Bidwell in the 1990s: a box 4.6755 wide, with squares tilted at two different angles and gaps all over. It looks wrong, as if a little shaking would let everything settle into something tidier, but every tidier arrangement needs a bigger box.\n\nIs it the best possible? Nobody knows yet. A computer-assisted proof from 2026 shows that a box narrower than 4.66 can never work, which leaves a gap of less than 0.02.\n\nDrag the yellow corners to turn and resize the box." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

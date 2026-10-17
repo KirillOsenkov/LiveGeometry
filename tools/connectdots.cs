@@ -158,8 +158,8 @@ Write($"  <Scene {sceneBounds} />");
 // the styles, written out as the file has them: colors are #AARRGGBB, sizes and stroke widths
 // pixels
 Write("  <Styles>");
-TextStyle("GalleryTitle", size: 30, color: "#FF1B2A4A", bold: true);
-TextStyle("GalleryText", size: 16, color: "#FF2D3557", bold: false);
+TextStyle("Heading", size: 30, color: "#FF1B2A4A", bold: true);
+TextStyle("Explanation", size: 16, color: "#FF2D3557", bold: false);
 TextStyle("WireText", size: 15, color: "#FF5A6380", bold: false);
 
 // a blob's fill has no outline: its sides are parts of the path, in the blob's Rim style. The
@@ -297,7 +297,7 @@ Write("    <Circle Name=\"HintCircle\" Visible=\"false\" Style=\"HintCircle\">")
 Write("      <Dependency Name=\"HintCenter\" />");
 Write("      <Dependency Name=\"HintRim\" />");
 Write("    </Circle>");
-Write($"    <Label Name=\"Hint\" Visible=\"false\" Style=\"GalleryText\" Text=\"{LabelText(Hint)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"300\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write($"    <Label Name=\"Hint\" Visible=\"false\" Style=\"Explanation\" Text=\"{LabelText(Hint)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"300\" WrapWidth=\"400\" Backdrop=\"true\" />");
 
 // a check box per color, each hiding its blob and the sides of its hole (a path of its own),
 // and the Hint box under them
@@ -311,7 +311,7 @@ foreach (var blob in blobs)
     boxY += BoxSpacing;
 }
 
-Write($"    <ShowHideControl Name=\"HintBox\" Style=\"GalleryText\" Show=\"false\" Text=\"Hint\" Pin=\"TopLeft\" OffsetX=\"{BoxMargin}\" OffsetY=\"{boxY}\">");
+Write($"    <ShowHideControl Name=\"HintBox\" Style=\"Explanation\" Show=\"false\" Text=\"Hint\" Pin=\"TopLeft\" OffsetX=\"{BoxMargin}\" OffsetY=\"{boxY}\">");
 Write("      <Dependency Name=\"HintCircle\" />");
 Write("      <Dependency Name=\"Hint\" />");
 Write("    </ShowHideControl>");
@@ -319,8 +319,8 @@ Write("    </ShowHideControl>");
 // the caption, pinned to the window. When the drawing opens, the gallery lays out the title,
 // the description and the hint anew for the window at hand (pin, offsets and wrap width), so
 // the places written here for the three are only where they start
-Write($"    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"{LabelText(Title)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-Write($"    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"{LabelText(Description)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write($"    <Label Name=\"Title\" Style=\"Heading\" Text=\"{LabelText(Title)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write($"    <Label Name=\"Description\" Style=\"Explanation\" Text=\"{LabelText(Description)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
 Write("  </Figures>");
 
 // the app writes no line break after the root's closing tag
@@ -332,7 +332,7 @@ return 0;
 
 void Write(string line) => text.Append(line).Append("\r\n");
 
-// GalleryTitle and GalleryText are default styles, which follow the theme: on this paper, light
+// Heading and Explanation are default styles, which follow the theme: on this paper, light
 // under every theme, every text keeps its Light color under Dark too
 void TextStyle(string name, int size, string color, bool bold)
 {

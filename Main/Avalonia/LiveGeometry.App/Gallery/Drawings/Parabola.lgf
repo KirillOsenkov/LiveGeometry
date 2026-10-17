@@ -70,7 +70,7 @@
     <PointLabel Name="PointLabel30" OffsetX="9" OffsetY="-24.4" ShowName="true" ShowCoordinates="false">
       <Dependency Name="E" />
     </PointLabel>
-    <Label Name="Title" Style="GalleryTitle" Text="Parabola" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A parabola is the set of points that are equally far from a point (the focus F) and a line (the directrix AB).\n\nC runs along the line. E is where the perpendicular at C meets the perpendicular bisector of CF, so EC = EF. As C moves, E traces the parabola.\n\nDrag C, then move F closer to the line." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Parabola" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="A parabola is the set of points that are equally far from a point (the focus F) and a line (the directrix AB).\n\nC runs along the line. E is where the perpendicular at C meets the perpendicular bisector of CF, so EC = EF. As C moves, E traces the parabola.\n\nDrag C, then move F closer to the line." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

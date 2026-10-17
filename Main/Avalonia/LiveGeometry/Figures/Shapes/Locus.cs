@@ -141,7 +141,14 @@ public class Locus : Curve, ILinearFigure
     /// <summary>Even steps of the sliding point that adaptive sampling starts from</summary>
     const int InitialSteps = 60;
 
-    /// <summary>In pixels: how far the curve may stray from the straight piece drawn between two samples</summary>
+    /// <summary>
+    /// In pixels: how far the sample in the middle of a piece may stray from the straight
+    /// line between its ends for the piece to need no more samples. The middle is drawn
+    /// too, so the curve strays from what is drawn about a quarter as far: an eighth of a
+    /// pixel, a quarter of a pixel of the screen at 200%. A tolerance in the screen's
+    /// pixels, or a limit on the angle between pieces, would take more samples for a
+    /// difference not seen under a magnifier.
+    /// </summary>
     const double Tolerance = 0.5;
 
     /// <summary>In pixels: two samples still this far apart when halving the step can't bring them closer are a jump, not a piece of the curve</summary>
@@ -182,9 +189,10 @@ public class Locus : Curve, ILinearFigure
     /// <summary>
     /// <see cref="InitialSteps"/> even steps, then, round after round, every step halved
     /// where the curve strays from the straight piece between two samples by more than
-    /// <see cref="Tolerance"/> pixels, or a gap begins or ends there - at most
-    /// <see cref="MaxDepth"/> rounds and <see cref="MaxSamples"/> samples. Round after
-    /// round rather than one stretch at a time, so that a curve that would take more
+    /// <see cref="Tolerance"/> pixels at its middle (which is kept either way), or a gap
+    /// begins or ends there - at most <see cref="MaxDepth"/> rounds and
+    /// <see cref="MaxSamples"/> samples. Round after round rather than one stretch at a
+    /// time, so that a curve that would take more
     /// (sin(1/x), wiggling without end) is drawn evenly coarse when the samples run out,
     /// not fine at its start and in straight pieces after. The image of a line in a
     /// circle, sampled evenly along the line, was a hexagon on its far side and missed
@@ -275,8 +283,14 @@ public class Locus : Curve, ILinearFigure
                 if (fromExists && toExists && middle.Point.Exists()
                     && DistanceToSegment(middle.Point, from.Point, to.Point) * unitLength <= Tolerance)
                 {
+                    // The middle stays: it is traced already, and the two halves stray
+                    // from the curve about a quarter as far as the whole piece. Thrown
+                    // away, it left pieces half a pixel off and 35 pixels long on a
+                    // circle 600 pixels across, with a corner of 6 degrees at each end.
                     from.Done = true;
+                    middle.Done = true;
                     next.Add(from);
+                    next.Add(middle);
                     continue;
                 }
 

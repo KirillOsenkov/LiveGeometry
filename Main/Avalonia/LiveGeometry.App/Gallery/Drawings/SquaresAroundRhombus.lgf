@@ -245,7 +245,7 @@
       <Dependency Name="M" />
       <Dependency Name="P" />
     </Segment>
-    <Label Name="Title" Style="GalleryTitle" Text="Squares Around a Rhombus" Pin="TopRight" OffsetX="16" OffsetY="68.25" WrapWidth="407.5" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A rhombus is a quadrilateral with four equal sides. Build a square on each side, then connect the centers of the four squares.\n\nThe centers always form a square too!\n\nDrag the yellow points to change the rhombus." Pin="TopRight" OffsetX="16" OffsetY="116.25" WrapWidth="407.5" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Squares Around a Rhombus" Pin="TopRight" OffsetX="16" OffsetY="68.25" WrapWidth="407.5" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="A rhombus is a quadrilateral with four equal sides. Build a square on each side, then connect the centers of the four squares.\n\nThe centers always form a square too!\n\nDrag the yellow points to change the rhombus." Pin="TopRight" OffsetX="16" OffsetY="116.25" WrapWidth="407.5" Backdrop="true" />
   </Figures>
 </Drawing>

@@ -1615,7 +1615,7 @@
       <Dependency Name="P199" />
       <Dependency Name="Q199" />
     </Segment>
-    <Label Name="Title" Style="GalleryTitle" Text="Times Tables on a Circle" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="200 dots sit around the circle, numbered 0 to 199. Each dot is joined by a line to the dot with k times its number: with k at 2, dot 7 goes to dot 14, dot 50 to dot 100, and past 199 the count wraps around to 0 again.\n\nThat is all. Nobody drew the heart: it just appears out of the 2 times table. Drag the slider to 3 and the heart grows a second lobe; 4 gives three, 5 gives four. Slide slowly between the whole numbers and watch one pattern melt into the next.\n\nTry 51, 99, 101 and 199. Why does 199 look like 2? Because 199 times a number is one less than 200 times it, which wraps around to the same dot as minus one times it." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Times Tables on a Circle" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="200 dots sit around the circle, numbered 0 to 199. Each dot is joined by a line to the dot with k times its number: with k at 2, dot 7 goes to dot 14, dot 50 to dot 100, and past 199 the count wraps around to 0 again.\n\nThat is all. Nobody drew the heart: it just appears out of the 2 times table. Drag the slider to 3 and the heart grows a second lobe; 4 gives three, 5 gives four. Slide slowly between the whole numbers and watch one pattern melt into the next.\n\nTry 51, 99, 101 and 199. Why does 199 look like 2? Because 199 times a number is one less than 200 times it, which wraps around to the same dot as minus one times it." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

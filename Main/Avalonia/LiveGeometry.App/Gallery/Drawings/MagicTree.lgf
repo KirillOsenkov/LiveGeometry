@@ -11,10 +11,10 @@
   <Scene Left="-2.25" Top="1.375" Right="2" Bottom="-1.5" />
   <Scene Left="-1.5" Top="1.25" Right="1.5" Bottom="-1.5" />
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF1F4E8C" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
       <Dark Color="#FF2B3038" />
     </TextStyle>
     <ShapeStyle Name="Grass" Fill="#FF7CC56A" Color="#FF4E9A3E" StrokeWidth="2" />
@@ -1214,7 +1214,7 @@
     <FreePoint Name="Sunflower" Style="Sunflower" X="1.45" Y="-1.18" />
     <FreePoint Name="Mushroom" Style="Mushroom" X="0.45" Y="-1.28" />
     <FreePoint Name="Basket" Style="Basket" X="-0.5" Y="-1.27" />
-    <Label Name="Title" Style="GalleryTitle" Text="Magic Tree" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Every branch of this tree splits in two, and each new pair copies the first fork: it turns and shrinks the same way.\n\nDrag the owl, the bird and the chick to change the first fork, and the whole tree grows again: tall and thin, wide like an umbrella, or curled up like a fern.\n\nThe trunk splits six times, so there are 2 × 2 × 2 × 2 × 2 × 2 = 64 fruits. Count them!" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Magic Tree" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Every branch of this tree splits in two, and each new pair copies the first fork: it turns and shrinks the same way.\n\nDrag the owl, the bird and the chick to change the first fork, and the whole tree grows again: tall and thin, wide like an umbrella, or curled up like a fern.\n\nThe trunk splits six times, so there are 2 × 2 × 2 × 2 × 2 × 2 = 64 fruits. Count them!" Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

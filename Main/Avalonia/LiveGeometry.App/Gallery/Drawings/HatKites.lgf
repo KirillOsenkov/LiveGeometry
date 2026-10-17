@@ -1190,7 +1190,7 @@
       <Dependency Name="K3" />
       <Dependency Name="K4" />
     </Polygon>
-    <Label Name="Title" Style="GalleryTitle" Text="Eight Kites Make a Hat" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Cut every hexagon of a grid into six kites, from its center to the middle of each side. Each kite has angles of 60°, 90°, 120° and 90°. The hat is eight of these kites stuck together: four from one hexagon and two from each of two others, a color for each. So whenever copies of the hat cover the plane, they lie on such a grid, kite on kite.\n\nDrag the hat around: it jumps from hexagon to hexagon. Drag the green point to turn it." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Eight Kites Make a Hat" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Cut every hexagon of a grid into six kites, from its center to the middle of each side. Each kite has angles of 60°, 90°, 120° and 90°. The hat is eight of these kites stuck together: four from one hexagon and two from each of two others, a color for each. So whenever copies of the hat cover the plane, they lie on such a grid, kite on kite.\n\nDrag the hat around: it jumps from hexagon to hexagon. Drag the green point to turn it." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

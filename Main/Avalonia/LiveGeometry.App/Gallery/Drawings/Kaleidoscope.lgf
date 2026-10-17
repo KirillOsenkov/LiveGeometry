@@ -9,10 +9,10 @@
     </Background>
   </Viewport>
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFFFD966" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FFFFD966" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FFFFD966" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
       <Dark Color="#FFE8E0FF" />
     </TextStyle>
     <ShapeStyle Name="View" Color="#00000000" StrokeWidth="0.1">
@@ -784,7 +784,7 @@
       <Dependency Name="O" />
       <Dependency Name="Turn300" />
     </RotatedPoint>
-    <Label Name="Title" Style="GalleryTitle" Text="Kaleidoscope" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Only the bright slice is real. The rest are its reflections, as in the mirrors of a kaleidoscope, so every emoji has eleven twins.\n\nDrag the emoji in the bright slice and watch the twins dance. Push one onto a mirror line and its twins pair up.\n\nTo swap an emoji, click it, choose Edit this style and pick another one: all twelve change together." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Kaleidoscope" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Only the bright slice is real. The rest are its reflections, as in the mirrors of a kaleidoscope, so every emoji has eleven twins.\n\nDrag the emoji in the bright slice and watch the twins dance. Push one onto a mirror line and its twins pair up.\n\nTo swap an emoji, click it, choose Edit this style and pick another one: all twelve change together." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

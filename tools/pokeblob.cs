@@ -306,7 +306,7 @@ Point(
 Figure("CircleArc", "Glint", "Glint", ["Ball", "GlintA", "GlintB"]);
 
 // the box that shows the dots, at the lower left
-figures.AppendLine($"    <ShowHideControl Name=\"Dots\" Style=\"GalleryText\" Show=\"false\" Text=\"Dots\" X=\"{Length(-2.4)}\" Y=\"{Length(-1.42)}\">");
+figures.AppendLine($"    <ShowHideControl Name=\"Dots\" Style=\"Explanation\" Show=\"false\" Text=\"Dots\" X=\"{Length(-2.4)}\" Y=\"{Length(-1.42)}\">");
 Dependencies(rims);
 figures.AppendLine("    </ShowHideControl>");
 
@@ -314,8 +314,8 @@ figures.AppendLine("    </ShowHideControl>");
 const string Description =
     "This gummy blob's edge is one smooth curve through 16 hidden dots. Drag the pink gumball into it: nearby dots get pushed in, the rest bulge out, and the curve wraps around the ball with no corners. Check \"Dots\": they bunch up where the curve bends most. Click one to see the two handles steering the curve.\n\n" +
     "Push the gumball all the way in and... gulp! Now pull it back out (and watch that face).";
-figures.AppendLine("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"Poke the Blob\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-figures.AppendLine($"    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"{Escape(Description)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+figures.AppendLine("    <Label Name=\"Title\" Style=\"Heading\" Text=\"Poke the Blob\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
+figures.AppendLine($"    <Label Name=\"Description\" Style=\"Explanation\" Text=\"{Escape(Description)}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
 
 // The view and the scene take in the plate, the blob and the room above it for the gumball.
 // The paper is the drawing's own under every theme, so the caption's styles keep their colors
@@ -334,10 +334,10 @@ var text = $$"""
       </Viewport>
       <Scene {{view}} />
       <Styles>
-        <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF4A2C6E" FontFamily="Segoe UI" Bold="true">
+        <TextStyle Name="Heading" FontSize="30" Color="#FF4A2C6E" FontFamily="Segoe UI" Bold="true">
           <Dark Color="#FF4A2C6E" />
         </TextStyle>
-        <TextStyle Name="GalleryText" FontSize="16" Color="#FF2E2A44" FontFamily="Segoe UI">
+        <TextStyle Name="Explanation" FontSize="16" Color="#FF2E2A44" FontFamily="Segoe UI">
           <Dark Color="#FF2E2A44" />
         </TextStyle>
         <ShapeStyle Name="Plate" Color="#00000000">

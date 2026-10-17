@@ -251,7 +251,7 @@
       <Dependency Name="O" />
       <Dependency Name="Edge2" />
     </Circle>
-    <Label Name="Title" Style="GalleryTitle" Text="Flower of Life" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Draw a circle. Draw another one of the same size with its center on the first one's rim. Where the two cross, put the center of a third. Keep going: nineteen circles later you have this.\n\nIt works only because six circles fit exactly around one, with no gap and no overlap, which is true because six equilateral triangles fit exactly around a point. The same fact makes honeycombs hexagonal.\n\nThe pattern is at least 2,600 years old: it is carved into temple pillars in Egypt and Assyria, and Leonardo da Vinci filled pages of his notebooks with it. Drag R to resize it, O to move it." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Flower of Life" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Draw a circle. Draw another one of the same size with its center on the first one's rim. Where the two cross, put the center of a third. Keep going: nineteen circles later you have this.\n\nIt works only because six circles fit exactly around one, with no gap and no overlap, which is true because six equilateral triangles fit exactly around a point. The same fact makes honeycombs hexagonal.\n\nThe pattern is at least 2,600 years old: it is carved into temple pillars in Egypt and Assyria, and Leonardo da Vinci filled pages of his notebooks with it. Drag R to resize it, O to move it." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

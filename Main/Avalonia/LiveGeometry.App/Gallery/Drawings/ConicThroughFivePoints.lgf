@@ -9,10 +9,10 @@
     </Background>
   </Viewport>
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF1F4E8C" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
       <Dark Color="#FF2B3038" />
     </TextStyle>
     <LineStyle Name="8" Color="#FF0000FF" />
@@ -76,7 +76,7 @@
       <Dependency Name="A" />
       <Dependency Name="M" />
     </Locus>
-    <Label Name="Title" Style="GalleryTitle" Text="Conic Through Five Points" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Any five points (no three on a line) determine exactly one conic section — an ellipse, a parabola or a hyperbola.\n\nThe red curve is that conic, drawn with a straightedge only: as M slides along the line, Pascal's theorem places the point A on the curve.\n\nDrag the five points and watch the ellipse become a hyperbola." Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Conic Through Five Points" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Any five points (no three on a line) determine exactly one conic section — an ellipse, a parabola or a hyperbola.\n\nThe red curve is that conic, drawn with a straightedge only: as M slides along the line, Pascal's theorem places the point A on the curve.\n\nDrag the five points and watch the ellipse become a hyperbola." Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

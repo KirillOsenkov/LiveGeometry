@@ -78,8 +78,8 @@
     <PointLabel Name="PointLabel29" OffsetX="-1.5" OffsetY="-33" ShowName="true" ShowCoordinates="false">
       <Dependency Name="F" />
     </PointLabel>
-    <Label Name="Title" Style="GalleryTitle" Text="Ceva's Theorem" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Points D, E and F lie on the sides of triangle ABC. When do the segments AD, BE and CF pass through a single point?\n\nExactly when this product of ratios equals 1:\nAF/FB · BD/DC · CE/EA = [AF/FB*BD/DC*CE/EA]\n\nDrag D, E and F until the three segments meet, and watch the number." Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true">
+    <Label Name="Title" Style="Heading" Text="Ceva's Theorem" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Points D, E and F lie on the sides of triangle ABC. When do the segments AD, BE and CF pass through a single point?\n\nExactly when this product of ratios equals 1:\nAF/FB · BD/DC · CE/EA = [AF/FB*BD/DC*CE/EA]\n\nDrag D, E and F until the three segments meet, and watch the number." Pin="TopRight" OffsetX="16" OffsetY="94.75" WrapWidth="400" Backdrop="true">
       <Dependency Name="A" />
       <Dependency Name="F" />
       <Dependency Name="B" />

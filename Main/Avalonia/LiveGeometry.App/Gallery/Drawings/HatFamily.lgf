@@ -534,7 +534,7 @@
       <Dependency Name="P41" />
       <Dependency Name="P24" />
     </Polygon>
-    <Label Name="Title" Style="GalleryTitle" Text="The Hat Family" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Every side of the hat is a short or a long side of one of its kites. Give all the short sides one length a and all the long ones another length b, keep the angles, and the copies still fit together the same way. The hat's finders call such a shape Tile(a, b).\n\nSlide the green point. Every shape on the way is an aperiodic monotile, except the two ends, which tile in a repeating pattern, and Tile(1, 1) in the middle, whose sides are all equal: it can repeat too, but only with flipped copies. Bend each of its sides into the same curve, and you get the spectre: flipped copies no longer fit, and its tilings never repeat." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="The Hat Family" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Every side of the hat is a short or a long side of one of its kites. Give all the short sides one length a and all the long ones another length b, keep the angles, and the copies still fit together the same way. The hat's finders call such a shape Tile(a, b).\n\nSlide the green point. Every shape on the way is an aperiodic monotile, except the two ends, which tile in a repeating pattern, and Tile(1, 1) in the middle, whose sides are all equal: it can repeat too, but only with flipped copies. Bend each of its sides into the same curve, and you get the spectre: flipped copies no longer fit, and its tilings never repeat." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

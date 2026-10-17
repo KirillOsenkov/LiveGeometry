@@ -340,7 +340,7 @@
       <Dependency Name="V" />
       <Dependency Name="W" />
     </LineTwoPoints>
-    <Label Name="Title" Style="GalleryTitle" Text="Cavalieri's Principle" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="The area of a triangle is ½ · base · height. Why doesn't it matter where the top is?\n\nThink of the triangle as a stack of thin slices. Slide the top sideways: every slice moves but keeps its length, so the area stays the same.\n\nDrag the top vertex." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Cavalieri's Principle" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="The area of a triangle is ½ · base · height. Why doesn't it matter where the top is?\n\nThink of the triangle as a stack of thin slices. Slide the top sideways: every slice moves but keeps its length, so the area stays the same.\n\nDrag the top vertex." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

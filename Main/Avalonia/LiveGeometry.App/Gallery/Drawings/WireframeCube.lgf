@@ -566,7 +566,7 @@
       <Dependency Name="C" />
       <Dependency Name="G" />
     </Segment>
-    <Label Name="Title" Style="GalleryTitle" Text="Wireframe Cube" Pin="TopRight" OffsetX="16" OffsetY="100" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="The cube's edges are segments split into 8 equal parts. Each face is like a chessboard, 8 × 8 squares. Stretching a segment stretches each of the 8 parts proportionally." Pin="TopRight" OffsetX="16" OffsetY="148" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Wireframe Cube" Pin="TopRight" OffsetX="16" OffsetY="100" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="The cube's edges are segments split into 8 equal parts. Each face is like a chessboard, 8 × 8 squares. Stretching a segment stretches each of the 8 parts proportionally." Pin="TopRight" OffsetX="16" OffsetY="148" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

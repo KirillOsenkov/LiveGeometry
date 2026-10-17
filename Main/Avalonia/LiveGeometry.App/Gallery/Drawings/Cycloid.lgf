@@ -134,16 +134,16 @@
       <Dependency Name="F" />
       <Dependency Name="C" />
     </Locus>
-    <ShowHideControl Name="InsideBox" Style="GalleryText" Show="false" Text="Point inside" Pin="TopLeft" OffsetX="16" OffsetY="16">
+    <ShowHideControl Name="InsideBox" Style="Explanation" Show="false" Text="Point inside" Pin="TopLeft" OffsetX="16" OffsetY="16">
       <Dependency Name="Q" />
       <Dependency Name="InnerCurve" />
     </ShowHideControl>
-    <ShowHideControl Name="FlangeBox" Style="GalleryText" Show="false" Text="Train flange" Pin="TopLeft" OffsetX="16" OffsetY="40">
+    <ShowHideControl Name="FlangeBox" Style="Explanation" Show="false" Text="Train flange" Pin="TopLeft" OffsetX="16" OffsetY="40">
       <Dependency Name="F" />
       <Dependency Name="FlangeArm" />
       <Dependency Name="FlangeCurve" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Cycloid" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Drag the wheel along the road and watch the red dot on its rim. It never moves in a circle: it draws a chain of arches called a cycloid, and it comes to a dead stop every time it touches the road.\n\nEach arch is one turn of the wheel. Its length is exactly 8 times the radius, and the area under it is exactly 3 times the area of the wheel. It took Galileo and his friends decades to find that out.\n\nTick the boxes. A point inside the wheel draws a gentler wave; slide the blue dot along its spoke to move it in or out. A train's wheels have a flange that reaches below the rail: tick it and look at the little loops. While the dot is on the bottom of a loop, it is moving backwards. Some part of every train going forward is always moving backward." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Cycloid" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Drag the wheel along the road and watch the red dot on its rim. It never moves in a circle: it draws a chain of arches called a cycloid, and it comes to a dead stop every time it touches the road.\n\nEach arch is one turn of the wheel. Its length is exactly 8 times the radius, and the area under it is exactly 3 times the area of the wheel. It took Galileo and his friends decades to find that out.\n\nTick the boxes. A point inside the wheel draws a gentler wave; slide the blue dot along its spoke to move it in or out. A train's wheels have a flange that reaches below the rail: tick it and look at the little loops. While the dot is on the bottom of a loop, it is moving backwards. Some part of every train going forward is always moving backward." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

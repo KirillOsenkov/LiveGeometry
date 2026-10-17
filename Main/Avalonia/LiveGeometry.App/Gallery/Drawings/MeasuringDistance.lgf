@@ -10,10 +10,10 @@
   </Viewport>
   <Scene Left="-4.5" Top="3.55" Right="5" Bottom="-3.95" />
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1B4D2B" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FF1B4D2B" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF1B4D2B" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FF1E3324" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FF1E3324" FontFamily="Segoe UI">
       <Dark Color="#FF1E3324" />
     </TextStyle>
     <TextStyle Name="Answer" FontSize="18" Color="#FFC62828" FontFamily="Segoe UI" Bold="true">
@@ -193,18 +193,18 @@
       <Dependency Name="N" />
       <Dependency Name="M" />
     </LengthMeasurement>
-    <ShowHideControl Name="ShowHideControl1" Style="GalleryText" Show="false" Text="Help 1" Pin="TopLeft" OffsetX="16" OffsetY="16">
+    <ShowHideControl Name="ShowHideControl1" Style="Explanation" Show="false" Text="Help 1" Pin="TopLeft" OffsetX="16" OffsetY="16">
       <Dependency Name="K" />
       <Dependency Name="M" />
       <Dependency Name="N" />
     </ShowHideControl>
-    <ShowHideControl Name="ShowHideControl2" Style="GalleryText" Show="false" Text="Help 2" Pin="TopLeft" OffsetX="16" OffsetY="50">
+    <ShowHideControl Name="ShowHideControl2" Style="Explanation" Show="false" Text="Help 2" Pin="TopLeft" OffsetX="16" OffsetY="50">
       <Dependency Name="AK" />
       <Dependency Name="BK" />
       <Dependency Name="KM" />
       <Dependency Name="KN" />
     </ShowHideControl>
-    <ShowHideControl Name="ShowHideControl3" Style="GalleryText" Show="false" Text="Show" Pin="TopLeft" OffsetX="16" OffsetY="84">
+    <ShowHideControl Name="ShowHideControl3" Style="Explanation" Show="false" Text="Show" Pin="TopLeft" OffsetX="16" OffsetY="84">
       <Dependency Name="AK" />
       <Dependency Name="BK" />
       <Dependency Name="KM" />
@@ -215,7 +215,7 @@
       <Dependency Name="M" />
       <Dependency Name="Distance" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Measuring Across a Lake" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="How far is it from the tent to the cabin, when a lake is in the way and you can't walk straight across?\n\nCheck &quot;Help 1&quot; and &quot;Help 2&quot; for the trick, and &quot;Show&quot; for the answer. It uses congruent triangles — the same idea surveyors used before there were satellites.\n\nDrag the tent and the cabin." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Measuring Across a Lake" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="How far is it from the tent to the cabin, when a lake is in the way and you can't walk straight across?\n\nCheck &quot;Help 1&quot; and &quot;Help 2&quot; for the trick, and &quot;Show&quot; for the answer. It uses congruent triangles — the same idea surveyors used before there were satellites.\n\nDrag the tent and the cabin." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

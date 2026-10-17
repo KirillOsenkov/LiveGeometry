@@ -9,10 +9,10 @@
     </Background>
   </Viewport>
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FF1F4E8C" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF1F4E8C" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FF2B3038" FontFamily="Segoe UI">
       <Dark Color="#FF2B3038" />
     </TextStyle>
     <PointStyle Name="7" Size="5" Fill="#FFFFFF64" />
@@ -414,7 +414,7 @@
       <Dependency Name="K3" />
       <Dependency Name="N2" />
     </Bezier>
-    <Label Name="Title" Style="GalleryTitle" Text="A Rose" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="The petals, the leaves and the stem are all Bézier curves: smooth curves steered by a few control points. Twenty-seven of them make this rose.\n\nThis is how fonts, logos and cartoon characters are drawn on computers.\n\nDrag any point and reshape the flower." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="A Rose" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="The petals, the leaves and the stem are all Bézier curves: smooth curves steered by a few control points. Twenty-seven of them make this rose.\n\nThis is how fonts, logos and cartoon characters are drawn on computers.\n\nDrag any point and reshape the flower." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

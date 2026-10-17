@@ -7,7 +7,8 @@ namespace LiveGeometry;
 
 /// <summary>
 /// What the drawings of the gallery have in common: a caption - a heading and an explanation,
-/// two labels named "Title" and "Description", and maybe a third under them, "Hint", hidden
+/// two labels named "Title" and "Description" or in the Heading and Explanation styles
+/// (<see cref="FindCaptionLabel"/>), and maybe a third under them, "Hint", hidden
 /// until a show/hide box brings it up (its place is kept). The caption is pinned to the screen
 /// (<see cref="Label.Pin"/>), on a plate, and wraps to its column, so zooming and panning
 /// leave it alone; <see cref="Fit"/> decides where it goes and how much room the figure gets.
@@ -61,9 +62,27 @@ public static class GalleryDrawing
 
     static bool FindCaption(Drawing drawing, out Label title, out Label description)
     {
-        title = drawing.Figures[TitleName] as Label;
-        description = drawing.Figures[DescriptionName] as Label;
+        title = FindCaptionLabel(drawing, TitleName, StyleManager.HeadingStyleName);
+        description = FindCaptionLabel(drawing, DescriptionName, StyleManager.ExplanationStyleName);
         return title != null && description != null;
+    }
+
+    /// <summary>
+    /// A part of the caption: the label of its name, else the first label in its style that
+    /// has none of the caption's names (the hint is in the explanation's style), so that
+    /// picking the style is all it takes
+    /// </summary>
+    static Label FindCaptionLabel(Drawing drawing, string name, string styleName)
+    {
+        if (drawing.Figures[name] is Label named)
+        {
+            return named;
+        }
+
+        return drawing.Figures
+            .OfType<Label>()
+            .FirstOrDefault(label => label.Name is not (TitleName or DescriptionName or HintName)
+                && label.Style?.Name == styleName);
     }
 
     /// <summary>

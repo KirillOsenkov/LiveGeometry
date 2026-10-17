@@ -542,7 +542,7 @@
       <Dependency Name="W" />
     </Segment>
     <Label Name="Label60" Visible="false" Style="8" Text="The circles are actually inscribed into adjacent\ntriangles that triangulate a part of the plane." X="-4.4166666667" Y="-5.9" />
-    <ShowHideControl Name="ShowHide1" Style="GalleryText" Show="false" Text="Hint" X="-4.292" Y="-4.5">
+    <ShowHideControl Name="ShowHide1" Style="Explanation" Show="false" Text="Hint" X="-4.292" Y="-4.5">
       <Dependency Name="FJ1" />
       <Dependency Name="BF2" />
       <Dependency Name="BC" />
@@ -581,7 +581,7 @@
       <Dependency Name="J1" />
       <Dependency Name="Label60" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Bubbles" Pin="TopRight" OffsetX="16" OffsetY="89.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Drag the bubbles around. They squeeze and grow, but they seem to want to avoid overlapping. How are they made?\n\nCheck &quot;Hint&quot; to see the trick." Pin="TopRight" OffsetX="16" OffsetY="137.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Bubbles" Pin="TopRight" OffsetX="16" OffsetY="89.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Drag the bubbles around. They squeeze and grow, but they seem to want to avoid overlapping. How are they made?\n\nCheck &quot;Hint&quot; to see the trick." Pin="TopRight" OffsetX="16" OffsetY="137.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

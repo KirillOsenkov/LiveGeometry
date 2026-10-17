@@ -172,7 +172,7 @@
       <Dependency Name="Q5" />
       <Dependency Name="C" />
     </Locus>
-    <ShowHideControl Name="SecondPen" Style="GalleryText" Show="false" Text="A second pen on the arm" Pin="TopLeft" OffsetX="16" OffsetY="16">
+    <ShowHideControl Name="SecondPen" Style="Explanation" Show="false" Text="A second pen on the arm" Pin="TopLeft" OffsetX="16" OffsetY="16">
       <Dependency Name="Q" />
       <Dependency Name="Blue0" />
       <Dependency Name="Blue1" />
@@ -181,7 +181,7 @@
       <Dependency Name="Blue4" />
       <Dependency Name="Blue5" />
     </ShowHideControl>
-    <Label Name="Title" Style="GalleryTitle" Text="Spirograph" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="A small wheel rolls around the inside of a big ring. A pen is stuck through a hole in the small wheel, and the red curve is what it draws as the wheel goes round and round.\n\nDrag the yellow hub to roll the wheel. Drag the red pen along its spoke: close to the center it draws gentle waves, near the rim sharp points, and past the rim loops. The slider r is the small wheel's size. With r at 1.5 the curve closes after three laps and has seven petals; try r = 2.5, 3, 1.25 or 2 and count the petals.\n\nTick the box for a second pen on the same arm and slide it along the arm. The toy was a sensation in the 1960s. The real thing uses gears, so the small wheel can't slip, which is why its curves come out so neat." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Spirograph" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="A small wheel rolls around the inside of a big ring. A pen is stuck through a hole in the small wheel, and the red curve is what it draws as the wheel goes round and round.\n\nDrag the yellow hub to roll the wheel. Drag the red pen along its spoke: close to the center it draws gentle waves, near the rim sharp points, and past the rim loops. The slider r is the small wheel's size. With r at 1.5 the curve closes after three laps and has seven petals; try r = 2.5, 3, 1.25 or 2 and count the petals.\n\nTick the box for a second pen on the same arm and slide it along the arm. The toy was a sensation in the 1960s. The real thing uses gears, so the small wheel can't slip, which is why its curves come out so neat." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

@@ -324,11 +324,11 @@ WritePath(
     dependencies: drop);
 
 // ---- the Dots box, which shows the slime's anchors, and the caption
-WriteElement("ShowHideControl", "DotsBox", " Style=\"GalleryText\" Show=\"false\" Text=\"Dots\" X=\"-2.05\" Y=\"-1.3\"", slimeAnchors);
+WriteElement("ShowHideControl", "DotsBox", " Style=\"Explanation\" Show=\"false\" Text=\"Dots\" X=\"-2.05\" Y=\"-1.3\"", slimeAnchors);
 string title = "Stretchy Slime";
 string description = $"Grab the galaxy slime and pull! Drag the fists apart. There's only so much slime, so the longer it gets, the thinner it gets. Watch it sag, drip, and stretch its air bubbles into long ovals. Keep pulling: plop, plop! Push the fists together to squish it into a ball.\\n\\nIts edge is one smooth curve through {slimeAnchors.Count} dots, with no corners anywhere: a spline. Check Dots to watch the dots slide as you pull.";
-figures.AppendLine($"    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"{title}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-figures.AppendLine($"    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"{description}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+figures.AppendLine($"    <Label Name=\"Title\" Style=\"Heading\" Text=\"{title}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
+figures.AppendLine($"    <Label Name=\"Description\" Style=\"Explanation\" Text=\"{description}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
 
 // ---- the file: a night sky for the paper, under both themes; so the caption's styles are
 // light under both
@@ -348,10 +348,10 @@ text.AppendLine($"  <Scene Left=\"{Number(SceneLeft)}\" Top=\"{Number(SceneTop)}
 text.AppendLine($"  <Scene Left=\"{Number(PhoneLeft)}\" Top=\"{Number(SceneTop)}\" Right=\"{Number(-PhoneLeft)}\" Bottom=\"{Number(SceneBottom)}\" />");
 text.AppendLine("  <Styles>");
 text.AppendLine($"""
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFFFD6F5" FontFamily="Segoe UI" Bold="true">
+    <TextStyle Name="Heading" FontSize="30" Color="#FFFFD6F5" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FFFFD6F5" />
     </TextStyle>
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+    <TextStyle Name="Explanation" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
       <Dark Color="#FFE8E0FF" />
     </TextStyle>
     <ShapeStyle Name="SlimeFill" Color="#00000000">

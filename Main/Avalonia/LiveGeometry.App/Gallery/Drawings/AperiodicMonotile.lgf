@@ -1314,7 +1314,7 @@
       <Dependency Name="P1_3" />
       <Dependency Name="P2_4" />
     </Segment>
-    <Label Name="Title" Style="GalleryTitle" Text="Aperiodic Monotile" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="In 2023 David Smith, a retired print technician from England who loves shapes, found the hat. Its copies cover the whole plane with no gaps and no overlaps, yet the pattern never repeats: slide it any way you like, and it never lands on itself. A single tile like that is called an aperiodic monotile. Mathematicians had looked for one for more than fifty years.\n\nSome copies are flipped over, like the purple ones: roughly one in eight. The lines in the orange one show the eight kites it is made of.\n\nDrag the yellow points to turn and resize the tiles." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Aperiodic Monotile" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="In 2023 David Smith, a retired print technician from England who loves shapes, found the hat. Its copies cover the whole plane with no gaps and no overlaps, yet the pattern never repeats: slide it any way you like, and it never lands on itself. A single tile like that is called an aperiodic monotile. Mathematicians had looked for one for more than fifty years.\n\nSome copies are flipped over, like the purple ones: roughly one in eight. The lines in the orange one show the eight kites it is made of.\n\nDrag the yellow points to turn and resize the tiles." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

@@ -95,10 +95,10 @@ var names = new HashSet<string>();
 
 // Styles (their order is the style picker's). The caption is light on the dark sea under
 // either theme
-styles.AppendLine("    <TextStyle Name=\"GalleryTitle\" FontSize=\"30\" Color=\"#FFFFE6F7\" FontFamily=\"Segoe UI\" Bold=\"true\">");
+styles.AppendLine("    <TextStyle Name=\"Heading\" FontSize=\"30\" Color=\"#FFFFE6F7\" FontFamily=\"Segoe UI\" Bold=\"true\">");
 styles.AppendLine("      <Dark Color=\"#FFFFE6F7\" />");
 styles.AppendLine("    </TextStyle>");
-styles.AppendLine("    <TextStyle Name=\"GalleryText\" FontSize=\"16\" Color=\"#FFDDEBFF\" FontFamily=\"Segoe UI\">");
+styles.AppendLine("    <TextStyle Name=\"Explanation\" FontSize=\"16\" Color=\"#FFDDEBFF\" FontFamily=\"Segoe UI\">");
 styles.AppendLine("      <Dark Color=\"#FFDDEBFF\" />");
 styles.AppendLine("    </TextStyle>");
 styles.AppendLine("    <TextStyle Name=\"SpinText\" FontSize=\"14\" Color=\"#FFFFC6EA\" FontFamily=\"Segoe UI\" />");
@@ -394,7 +394,7 @@ BezierPath(
     tension: 1.6);
 
 // The Dots box: shows the anchors of the bell and of the middle tentacle, hidden at first
-figures.AppendLine("    <ShowHideControl Name=\"Dots\" Style=\"GalleryText\" Show=\"false\" Text=\"Dots\" X=\"-1.75\" Y=\"-2.3\">");
+figures.AppendLine("    <ShowHideControl Name=\"Dots\" Style=\"Explanation\" Show=\"false\" Text=\"Dots\" X=\"-1.75\" Y=\"-2.3\">");
 WriteDependencies(bellAnchors.Concat(Enumerable.Range(start: 1, count: TentacleAnchors).Select(anchor => $"Tent{MiddleTentacle}_{anchor}")));
 figures.AppendLine("    </ShowHideControl>");
 
@@ -402,8 +402,8 @@ figures.AppendLine("    </ShowHideControl>");
 const string Title = "Moon Jelly";
 const string Description = "Drag the pearl around its ring, and the jellyfish swims. Waves run down its tentacles (drag backward, and they run up): each dot swings like the one above it, a moment later.\\n\\nThe bell is one smooth curve through 18 dots. As it squeezes, the curve pulls tighter and the holes in its rings shrink. Check \"Dots,\" click a dot, then drag the pearl: its two pink handles, which steer the curve, turn by themselves.";
 string description = Description.Replace("\"", "&quot;");
-figures.AppendLine($"    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"{Title}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-figures.AppendLine($"    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"{description}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+figures.AppendLine($"    <Label Name=\"Title\" Style=\"Heading\" Text=\"{Title}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
+figures.AppendLine($"    <Label Name=\"Description\" Style=\"Explanation\" Text=\"{description}\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
 
 var drawing = new StringBuilder();
 drawing.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");

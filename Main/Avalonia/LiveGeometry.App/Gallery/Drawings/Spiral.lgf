@@ -3,8 +3,8 @@
   <Viewport Left="-170.1580965579" Top="87.107374094" Right="113.0699445268" Bottom="-36.5836219734" Color="#FF404040" />
   <Scene Left="-108" Top="112" Right="150" Bottom="-108" />
   <Styles>
-    <TextStyle Name="GalleryTitle" FontSize="30" Color="#FFFFFFFF" FontFamily="Segoe UI" Bold="true" />
-    <TextStyle Name="GalleryText" FontSize="16" Color="#FFE6E6EE" FontFamily="Segoe UI" />
+    <TextStyle Name="Heading" FontSize="30" Color="#FFFFFFFF" FontFamily="Segoe UI" Bold="true" />
+    <TextStyle Name="Explanation" FontSize="16" Color="#FFE6E6EE" FontFamily="Segoe UI" />
     <PointStyle Name="7" Fill="#FF000000" Color="#FFFFFFFF" StrokeWidth="0.7" />
     <LineStyle Name="8" Color="#FF00FFFF" />
     <PointStyle Name="9" Fill="#FF000000" Color="#FFFFFF00" StrokeWidth="0.7" />
@@ -39,7 +39,7 @@
     <Label Name="PentagonHint" Style="TargetText" Text="pentagons" X="103" Y="49.7" />
     <PointByCoordinates Name="HexagonTarget" Style="Target" X="98.68421" Y="32.129968" />
     <Label Name="HexagonHint" Style="TargetText" Text="hexagons" X="103" Y="37.1" />
-    <Label Name="Title" Style="GalleryTitle" Text="Spiral" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Point B is placed by a rule: its distance from the center is A's x-coordinate and its angle is A's y-coordinate. As A slides along the segment, B sweeps out a spiral.\n\nThe curve is drawn through 60 points, so only the height of the segment matters: it sets how far the angle turns from one point to the next. A turn of 90° makes squares, 120° triangles, 72° pentagons and 60° hexagons — drag the top end onto an orange ring and see." Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Spiral" Pin="TopRight" OffsetX="16" OffsetY="36.25" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Point B is placed by a rule: its distance from the center is A's x-coordinate and its angle is A's y-coordinate. As A slides along the segment, B sweeps out a spiral.\n\nThe curve is drawn through 60 points, so only the height of the segment matters: it sets how far the angle turns from one point to the next. A turn of 90° makes squares, 120° triangles, 72° pentagons and 60° hexagons — drag the top end onto an orange ring and see." Pin="TopRight" OffsetX="16" OffsetY="84.25" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

@@ -132,8 +132,8 @@ text.AppendLine("    <PointStyle Size=\"8\" Fill=\"#FFFFB45A\" IsFilled=\"true\"
 text.AppendLine("    <PointStyle Size=\"8\" Fill=\"#FFD0D0D0\" IsFilled=\"true\" Color=\"#64000000\" StrokeWidth=\"1\" Dash=\"Solid\" Name=\"DependentPointStyle\" />");
 text.AppendLine("    <TextStyle FontSize=\"15\" Color=\"#FF2B3038\" FontFamily=\"Segoe UI\" Bold=\"false\" Italic=\"false\" Underline=\"false\" Name=\"Number\" />");
 text.Append(styles);
-text.AppendLine("    <TextStyle FontSize=\"30\" Color=\"#FF1F4E8C\" FontFamily=\"Segoe UI\" Bold=\"true\" Italic=\"false\" Underline=\"false\" Name=\"GalleryTitle\" />");
-text.AppendLine("    <TextStyle FontSize=\"16\" Color=\"#FF2B3038\" FontFamily=\"Segoe UI\" Bold=\"false\" Italic=\"false\" Underline=\"false\" Name=\"GalleryText\" />");
+text.AppendLine("    <TextStyle FontSize=\"30\" Color=\"#FF1F4E8C\" FontFamily=\"Segoe UI\" Bold=\"true\" Italic=\"false\" Underline=\"false\" Name=\"Heading\" />");
+text.AppendLine("    <TextStyle FontSize=\"16\" Color=\"#FF2B3038\" FontFamily=\"Segoe UI\" Bold=\"false\" Italic=\"false\" Underline=\"false\" Name=\"Explanation\" />");
 text.AppendLine("    <LineStyle Color=\"#FFE0362B\" StrokeWidth=\"2.5\" Name=\"GalleryLocus\" />");
 text.AppendLine("  </Styles>");
 text.AppendLine("  <Figures>");
@@ -141,8 +141,8 @@ text.AppendLine("    <FreePoint Name=\"A\" Style=\"FreePoint\" X=\"-5\" Y=\"-3.2
 text.AppendLine("    <FreePoint Name=\"B\" Style=\"FreePoint\" X=\"-5\" Y=\"3.25\" />");
 text.Append(pointFigures);
 text.Append(figures);
-text.AppendLine("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"Fibonacci Spiral\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"57.5\" WrapWidth=\"400\" Backdrop=\"true\" />");
-text.AppendLine("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"1, 1, 2, 3, 5, 8, 13: each Fibonacci number is the sum of the two before it. Squares with these sides fit together into a rectangle — every new square is exactly as wide as the two before it side by side.\\n\\nA quarter circle in each square, corner to corner, makes a spiral. Every quarter turn it grows by about the same factor, close to 1.618, the golden ratio. A snail shell grows by a steady factor too, which is why it keeps the same shape as it grows.\\n\\nCount the spirals of seeds on a sunflower head or of scales on a pinecone: you usually get two neighbors in the Fibonacci sequence, like 8 and 13 on a pinecone or 34 and 55 on a sunflower.\\n\\nDrag the yellow points to turn and resize it.\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"105.5\" WrapWidth=\"400\" Backdrop=\"true\" />");
+text.AppendLine("    <Label Name=\"Title\" Style=\"Heading\" Text=\"Fibonacci Spiral\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"57.5\" WrapWidth=\"400\" Backdrop=\"true\" />");
+text.AppendLine("    <Label Name=\"Description\" Style=\"Explanation\" Text=\"1, 1, 2, 3, 5, 8, 13: each Fibonacci number is the sum of the two before it. Squares with these sides fit together into a rectangle — every new square is exactly as wide as the two before it side by side.\\n\\nA quarter circle in each square, corner to corner, makes a spiral. Every quarter turn it grows by about the same factor, close to 1.618, the golden ratio. A snail shell grows by a steady factor too, which is why it keeps the same shape as it grows.\\n\\nCount the spirals of seeds on a sunflower head or of scales on a pinecone: you usually get two neighbors in the Fibonacci sequence, like 8 and 13 on a pinecone or 34 and 55 on a sunflower.\\n\\nDrag the yellow points to turn and resize it.\" DecimalsToShow=\"2\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"105.5\" WrapWidth=\"400\" Backdrop=\"true\" />");
 text.AppendLine("  </Figures>");
 text.Append("</Drawing>");
 File.WriteAllText(args[0], text.ToString().Replace("\r\n", "\n").Replace("\n", "\r\n"), new UTF8Encoding(false));

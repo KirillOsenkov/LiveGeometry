@@ -208,8 +208,8 @@ foreach (var (i, j) in offsets)
     Write("    </PointByCoordinates>");
 }
 
-Write("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"Make Your Own Tessellation\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
-Write("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\"Squares cover a floor with no gaps. So does this shape, and so does any shape you can turn it into: drag the yellow points and the white squares on the one tile with the yellow points, and all the copies change with it.\\n\\nThe trick: whatever you do to the top edge happens to the bottom edge too, and the left edge copies the right one. So every bump on one side is a matching dent on the other, and the tiles still lock together.\\n\\nThe Dutch artist M. C. Escher filled whole pages this way with lizards, birds and fish. Can you make a fish shape to go with the fish? Or a bird?\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write("    <Label Name=\"Title\" Style=\"Heading\" Text=\"Make Your Own Tessellation\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"16\" WrapWidth=\"400\" Backdrop=\"true\" />");
+Write("    <Label Name=\"Description\" Style=\"Explanation\" Text=\"Squares cover a floor with no gaps. So does this shape, and so does any shape you can turn it into: drag the yellow points and the white squares on the one tile with the yellow points, and all the copies change with it.\\n\\nThe trick: whatever you do to the top edge happens to the bottom edge too, and the left edge copies the right one. So every bump on one side is a matching dent on the other, and the tiles still lock together.\\n\\nThe Dutch artist M. C. Escher filled whole pages this way with lizards, birds and fish. Can you make a fish shape to go with the fish? Or a bird?\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"64\" WrapWidth=\"400\" Backdrop=\"true\" />");
 Write("  </Figures>");
 text.Append("</Drawing>");
 File.WriteAllText(args[0], text.ToString(), new UTF8Encoding(false));

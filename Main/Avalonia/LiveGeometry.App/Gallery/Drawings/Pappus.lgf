@@ -99,7 +99,7 @@
       <Dependency Name="K" />
       <Dependency Name="M" />
     </LineTwoPoints>
-    <Label Name="Title" Style="GalleryTitle" Text="Pappus's Theorem" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Pick three points on one line and three on another, and connect them crosswise.\n\nThe three places where the connecting segments cross always lie on one straight line. Pappus of Alexandria found this about 1,700 years ago.\n\nDrag any yellow point." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Pappus's Theorem" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Pick three points on one line and three on another, and connect them crosswise.\n\nThe three places where the connecting segments cross always lie on one straight line. Pappus of Alexandria found this about 1,700 years ago.\n\nDrag any yellow point." Pin="TopRight" OffsetX="16" OffsetY="105.5" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>

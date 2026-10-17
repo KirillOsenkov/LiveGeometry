@@ -157,13 +157,13 @@ text.AppendLine("    </PointByCoordinates>");
 text.Append(points);
 text.Append(figures);
 text.AppendLine(string.Format(invariant,
-    "    <ShowHideControl Name=\"Hint\" Style=\"GalleryText\" Show=\"false\" Text=\"Show the 4 × 4 box\" X=\"{0}\" Y=\"{1}\">",
+    "    <ShowHideControl Name=\"Hint\" Style=\"Explanation\" Show=\"false\" Text=\"Show the 4 × 4 box\" X=\"{0}\" Y=\"{1}\">",
     -side / 2, -side / 2 - 0.25));
 text.AppendLine("      <Dependency Name=\"Four1\" />");
 text.AppendLine("      <Dependency Name=\"Four2\" />");
 text.AppendLine("    </ShowHideControl>");
-text.AppendLine("    <Label Name=\"Title\" Style=\"GalleryTitle\" Text=\"Seventeen Squares\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"57.5\" WrapWidth=\"400\" Backdrop=\"true\" />");
-text.AppendLine("    <Label Name=\"Description\" Style=\"GalleryText\" Text=\""
+text.AppendLine("    <Label Name=\"Title\" Style=\"Heading\" Text=\"Seventeen Squares\" Pin=\"TopRight\" OffsetX=\"16\" OffsetY=\"57.5\" WrapWidth=\"400\" Backdrop=\"true\" />");
+text.AppendLine("    <Label Name=\"Description\" Style=\"Explanation\" Text=\""
     + "How small a box can hold 17 squares of side 1, without overlapping? Sixteen fill a 4 × 4 box exactly. "
     + "Add one more and the neat rows have to give way.\\n\\n"
     + "This is the best anyone has found, by John Bidwell in the 1990s: a box 4.6755 wide, with squares tilted at two different angles and gaps all over. "

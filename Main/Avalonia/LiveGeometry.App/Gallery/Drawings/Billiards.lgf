@@ -119,7 +119,7 @@
       <Dependency Name="roll" />
       <Dependency Name="U" />
     </PointByCoordinates>
-    <Label Name="Title" Style="GalleryTitle" Text="Billiards" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="GalleryText" Text="Drag the 8 ball around the cue ball to aim, and the slider to roll the cue ball further along the dashed path. Every time it hits a cushion it bounces off at the same angle it came in, like light off a mirror.\n\nCan you sink it in a corner pocket off two cushions? Off three?\n\nThe trick the pros use: instead of bending the path at the cushion, imagine the table mirrored across that cushion and the ball going straight into the mirror table. Every bounce is one more mirror. The whole zigzag path is really one straight line, folded." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Title" Style="Heading" Text="Billiards" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Drag the 8 ball around the cue ball to aim, and the slider to roll the cue ball further along the dashed path. Every time it hits a cushion it bounces off at the same angle it came in, like light off a mirror.\n\nCan you sink it in a corner pocket off two cushions? Off three?\n\nThe trick the pros use: instead of bending the path at the cushion, imagine the table mirrored across that cushion and the ball going straight into the mirror table. Every bounce is one more mirror. The whole zigzag path is really one straight line, folded." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>
