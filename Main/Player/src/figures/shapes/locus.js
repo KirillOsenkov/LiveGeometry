@@ -15,6 +15,14 @@ class Locus extends Curve {
     /** In pixels: two samples still this far apart when halving the step can't bring them closer are a jump */
     static JumpPixels = 20;
 
+    /**
+     * A piece longer than JumpPixels needs more samples unless its middle is at least this share
+     * of its length away from either end (isLopsided): a jump that is not through infinity (an
+     * angle wrapping round) puts the middle next to one end, on the straight line between them,
+     * and passed for a straight piece.
+     */
+    static EndShare = 0.1;
+
     static MaxDepth = 12;
     static MaxSamples = 1000;
 
@@ -169,7 +177,8 @@ class Locus extends Curve {
 
                 const middle = take((from.parameter + to.parameter) / 2);
                 if (fromExists && toExists && middle.point.exists()
-                    && Locus.distanceToSegment(middle.point, from.point, to.point) * unitLength <= Locus.Tolerance) {
+                    && Locus.distanceToSegment(middle.point, from.point, to.point) * unitLength <= Locus.Tolerance
+                    && !Locus.isLopsided(from.point, middle.point, to.point, unitLength)) {
                     // the middle stays: it is traced already, and the two halves stray a quarter as far
                     from.done = true;
                     middle.done = true;
@@ -200,6 +209,13 @@ class Locus extends Curve {
                 }
             }
         }
+    }
+
+    /** Whether the middle of a piece longer than JumpPixels is nearer to one of its ends than EndShare of its length */
+    static isLopsided(from, middle, to, unitLength) {
+        const length = from.distance(to);
+        return length * unitLength > Locus.JumpPixels
+            && Math.min(from.distance(middle), middle.distance(to)) < Locus.EndShare * length;
     }
 
     static distanceToSegment(point, from, to) {

@@ -129,6 +129,7 @@ public static class DirectionConstraint
             return;
         }
 
+        TypedDimensions.RememberDirection(end, pivot, degrees);
         if (end is TranslatedPoint translated)
         {
             translated.Direction = Normalize(translated.Distance < 0 ? degrees + 180 : degrees);
@@ -151,20 +152,33 @@ public static class DirectionConstraint
     /// The end keeps its direction from the pivot from now on: it becomes a translated point
     /// from the pivot whose direction is a Number at the current one, distance free - so it
     /// slides along the line through the pivot, and the pivot carries it along. An end with a
-    /// fixed length gets its direction fixed as well. Nothing moves; one undo step.
+    /// fixed length gets its direction fixed as well. The Number holds the direction as typed,
+    /// if it was (<see cref="TypedDimensions"/>). Nothing moves; one undo step.
     /// </summary>
     public static void Fix(IPoint end, IPoint pivot)
     {
         var drawing = end.Drawing;
         if (end is TranslatedPoint translated)
         {
-            drawing.ActionManager.SetProperty(translated, nameof(TranslatedPoint.FreeDirection), false);
+            using (Transaction.Create(drawing.ActionManager, false))
+            {
+                drawing.ActionManager.SetProperty(translated, nameof(TranslatedPoint.FreeDirection), false);
+                if (translated.DirectionSource is Number number)
+                {
+                    double typed = TypedDimensions.Direction(end, pivot, number.Value);
+                    if (typed != number.Value)
+                    {
+                        drawing.ActionManager.SetProperty(number, nameof(Number.Value), typed);
+                    }
+                }
+            }
+
             return;
         }
 
         using (Transaction.Create(drawing.ActionManager, false))
         {
-            var direction = Number.CreateAuxiliary(drawing, Math.GetAngle(pivot.Coordinates, end.Coordinates).ToDegrees());
+            var direction = Number.CreateAuxiliary(drawing, TypedDimensions.Direction(end, pivot, Math.GetAngle(pivot.Coordinates, end.Coordinates).ToDegrees()));
             Actions.Add(drawing, direction);
             var fixedEnd = Factory.CreateTranslatedPoint(drawing, pivot, distanceSource: null, directionSource: direction);
             // the free distance: where the end is now

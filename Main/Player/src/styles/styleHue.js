@@ -53,8 +53,22 @@ class StyleHue {
         return new SolidColorBrush(this.lightFillEnd);
     }
 
+    /** A flat fill on the dark paper: the dark stroke DarkSolidShare of the way from the paper, at FillAlpha */
     get darkSolidFill() {
-        return new SolidColorBrush(this.darkFillLightEnd);
+        return new SolidColorBrush(StyleHue.showingOverDarkPaper(this.darkStroke, StyleHue.DarkSolidShare));
+    }
+
+    static DarkSolidShare = 0.11;
+
+    /** The paper of AppTheme.Dark, which the dark flat fill is worked out against: literal, as the hues are */
+    static DarkPaper = Color.parse("#2B2B2B");
+
+    /** A color at FillAlpha that shows over the dark paper as the color given, that share of the way from the paper */
+    static showingOverDarkPaper(color, share) {
+        const t = share * 255 / StyleHue.FillAlpha;
+        const mix = (paper, value) => Math.round(paper + t * (value - paper));
+        const paper = StyleHue.DarkPaper;
+        return Color.fromArgb(StyleHue.FillAlpha, mix(paper.r, color.r), mix(paper.g, color.g), mix(paper.b, color.b));
     }
 
     get lightFillEnd() {

@@ -77,6 +77,7 @@ figures/shapes/bezierPathSmoother.js
 figures/shapes/bezierPath.js
 figures/controls/labelPin.js
 figures/controls/controlBase.js
+figures/controls/lineBreaks.js
 figures/controls/labelBase.js
 figures/controls/label.js
 figures/controls/labelWithOffset.js

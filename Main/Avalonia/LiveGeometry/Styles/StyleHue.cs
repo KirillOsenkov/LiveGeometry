@@ -87,8 +87,32 @@ public class StyleHue
     /// <summary>A flat fill on the light paper: the lighter end of <see cref="Fill"/></summary>
     public Brush SolidFill => new SolidColorBrush(LightFillEnd);
 
-    /// <summary>A flat fill on the dark paper: the lighter end of <see cref="DarkFill"/></summary>
-    public Brush DarkSolidFill => new SolidColorBrush(DarkFillLightEnd);
+    /// <summary>
+    /// A flat fill on the dark paper: what shows is the dark stroke <see cref="DarkSolidShare"/>
+    /// of the way from the paper, about as near the paper as the light one is to its own, at
+    /// <see cref="FillAlpha"/> as every fill is, so that what is under the shape is muted on
+    /// both papers alike. The lighter end of <see cref="DarkFill"/>, which the light paper
+    /// takes, was a slab on this one: mid gray for gray, a loud red for red.
+    /// </summary>
+    public Brush DarkSolidFill => new SolidColorBrush(ShowingOverDarkPaper(DarkStroke, DarkSolidShare));
+
+    /// <summary>How much of the dark stroke a flat fill shows over the dark paper</summary>
+    const double DarkSolidShare = 0.11;
+
+    /// <summary>
+    /// The paper of <see cref="AppTheme.Dark"/>, which the dark flat fill is worked out
+    /// against. Literal, as the hues are: a tweak of the theme's paper doesn't change how a
+    /// default style looks.
+    /// </summary>
+    static readonly Color DarkPaper = Color.Parse("#2B2B2B");
+
+    /// <summary>A color at <see cref="FillAlpha"/> that shows over the dark paper as the color given, that share of the way from the paper</summary>
+    static Color ShowingOverDarkPaper(Color color, double share)
+    {
+        double t = share * 255 / FillAlpha;
+        byte Mix(byte paper, byte value) => (byte)System.Math.Round(paper + t * (value - paper), System.MidpointRounding.AwayFromZero);
+        return Color.FromArgb(FillAlpha, Mix(DarkPaper.R, color.R), Mix(DarkPaper.G, color.G), Mix(DarkPaper.B, color.B));
+    }
 
     Color LightFillEnd => Tint(lightness: 0.97, FillAlpha);
 

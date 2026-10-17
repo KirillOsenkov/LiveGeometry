@@ -107,6 +107,11 @@ class Label extends LabelBase {
         }
     }
 
+    /** Wrapped, the text keeps its expressions on one line (LineBreaks) */
+    shownText(text) {
+        return this.wrapWidthValue > 0 ? LineBreaks.keepExpressionsTogether(text) : text;
+    }
+
     /** A plate of the paper's color behind the text, so that a caption stays readable over a grid or a figure */
     get backdrop() {
         return this.backdropValue;

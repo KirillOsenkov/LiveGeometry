@@ -98,6 +98,11 @@ class LabelBase extends ControlBase {
         return this.resolvedStyle?.color ?? Color.black;
     }
 
+    /** What the label shows for a text: the text itself here; a wrapped Label keeps its expressions on one line (LineBreaks) */
+    shownText(text) {
+        return text;
+    }
+
     /** The text laid out at the font and wrap width on screen (the TextBlock's layout), measured by the canvas */
     getTextLayout() {
         const canvas = this.canvas;
@@ -106,7 +111,7 @@ class LabelBase extends ControlBase {
         }
 
         const font = this.font;
-        const text = this.processedText ?? "";
+        const text = this.shownText(this.processedText ?? "");
         if (this.textLayout == null || this.textLayout.text !== text || this.textLayout.font !== font || this.textLayout.wrapWidth !== this.wrapWidthValue) {
             this.textLayout = canvas.measureText(text, font, this.wrapWidthValue);
         }

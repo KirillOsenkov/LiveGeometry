@@ -288,6 +288,32 @@ public class SelectionRegion
         return isShown;
     }
 
+    /// <summary>
+    /// Where the figure is drawn on the canvas, in pixels, the stroke included; null for one
+    /// not drawn, or one that goes on past the window (a line has no place to be shown whole)
+    /// </summary>
+    public static Rect? FindShownBounds(IFigure figure, Canvas canvas)
+    {
+        if (IsEndless(figure) || !figure.Visible || !figure.Exists)
+        {
+            return null;
+        }
+
+        var shapes = new List<Control>();
+        CollectShapes(figure, shapes);
+        Rect? bounds = null;
+        foreach (var shape in shapes)
+        {
+            var drawn = DrawnShape.Find(shape, canvas);
+            if (drawn != null)
+            {
+                bounds = bounds?.Union(drawn.Bounds) ?? drawn.Bounds;
+            }
+        }
+
+        return bounds;
+    }
+
     /// <summary>The controls that draw the figure: its shape, or the shapes of its parts (a slider, a vector, a regular polygon, a path)</summary>
     static void CollectShapes(IFigure figure, List<Control> shapes)
     {

@@ -42,13 +42,12 @@ public partial class PropertyGrid : StackPanel
             if (mSelection != null)
             {
                 SubscribeToPropertyChangeNotifications(value);
-                UpdateVisibility(true);
             }
-            else
-            {
-                UpdateVisibility(false);
-            }
+
+            // the rows first: whoever hears of the change measures the page (the side panel
+            // goes where it covers least of what it is about)
             UpdateContents();
+            UpdateVisibility(mSelection != null);
         }
     }
 
@@ -647,6 +646,9 @@ public partial class PropertyGrid : StackPanel
             .OfType<MethodCallerButton>()
             .Where(b => b.OperationDescription.GetAttribute<PropertyGridLiveConditionAttribute>() != null)
             .ToArray();
+        liveRows = currentEditors
+            .Where(editor => (editor as IValueEditor)?.Value?.GetAttribute<PropertyGridConditionAttribute>() != null)
+            .ToArray();
         UpdateLiveButtons();
 
         return currentEditors.Concat(currentMethodButtons).ToArray();
@@ -655,12 +657,27 @@ public partial class PropertyGrid : StackPanel
     /// <summary>The buttons that show and hide as their object changes (<see cref="PropertyGridLiveConditionAttribute"/>)</summary>
     MethodCallerButton[] liveButtons = [];
 
+    /// <summary>The rows that show and hide as their object changes (<see cref="PropertyGridConditionAttribute"/> on a property)</summary>
+    UIElement[] liveRows = [];
+
     void UpdateLiveButtons()
     {
         foreach (var button in liveButtons)
         {
             button.IsVisible = button.Target is not IConditionalProperties conditions
                 || conditions.CanEdit(button.OperationDescription.Name);
+        }
+
+        foreach (var row in liveRows)
+        {
+            var value = ((IValueEditor)row).Value;
+            var condition = value.GetAttribute<PropertyGridConditionAttribute>();
+
+            // a row of several figures shows while any of them would show it
+            var owners = value is CompositeValueProvider composite
+                ? composite.InnerList.Select(inner => inner.Parent)
+                : new[] { value.Parent };
+            row.IsVisible = owners.Any(condition.Holds);
         }
     }
 

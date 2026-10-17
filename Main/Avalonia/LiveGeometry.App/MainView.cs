@@ -105,6 +105,9 @@ public partial class MainView : UserControl
         };
     }
 
+    /// <summary>The setting that says the side panel is at the left (<see cref="DrawingHost.PanelAtLeft"/>); none for the right</summary>
+    const string SidePanelKey = "SidePanel";
+
     /// <summary>The editor, the first time it is needed (see <see cref="DrawingHost"/>)</summary>
     DrawingHost CreateEditor()
     {
@@ -117,6 +120,11 @@ public partial class MainView : UserControl
         InitializeCommands();
         KeepDrawingOfEditor();
         drawingHost.UnhandledException += (s, e) => ReportException(e.Exception);
+
+        // the side the user put the side panel on, kept between runs (a left-handed or a
+        // right-to-left habit)
+        drawingHost.PanelAtLeft = SettingsStore.Current.Get(SidePanelKey) == "Left";
+        drawingHost.PanelSideChosen += () => SettingsStore.Current.Set(SidePanelKey, drawingHost.PanelAtLeft ? "Left" : null);
 
         // Give the drawing canvas keyboard focus so behaviors receive Escape/Delete/etc. Not
         // while an expression box has it: a click on a figure puts a reference into the box

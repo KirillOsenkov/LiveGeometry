@@ -199,6 +199,7 @@ public static class LengthConstraint
             return;
         }
 
+        TypedDimensions.RememberDistance(end, pivot, distance);
         var target = Math.GetDilationPoint(end.Coordinates, pivot.Coordinates, distance / current);
         ((IMovable)end).MoveTo(target);
         end.RecalculateAndUpdateVisual();
@@ -215,7 +216,8 @@ public static class LengthConstraint
     /// from the pivot at the current distance held by a Number, direction free - so it drags
     /// around the pivot and the pivot carries it along. An end on a line through the pivot
     /// takes the line's direction instead (the distance signed along it) and is fully
-    /// determined. An end already sliding along the line just has its distance fixed. Nothing
+    /// determined. An end already sliding along the line just has its distance fixed. The
+    /// Number holds the length as typed, if it was (<see cref="TypedDimensions"/>). Nothing
     /// moves; one undo step.
     /// </summary>
     public static void Fix(IPoint end, IPoint pivot)
@@ -228,16 +230,28 @@ public static class LengthConstraint
         var drawing = end.Drawing;
         if (end is TranslatedPoint sliding)
         {
-            drawing.ActionManager.SetProperty(sliding, "FreeDistance", false);
+            using (Transaction.Create(drawing.ActionManager, false))
+            {
+                drawing.ActionManager.SetProperty(sliding, "FreeDistance", false);
+                if (sliding.DistanceSource is Number number)
+                {
+                    double typed = TypedDimensions.Distance(end, pivot, number.Value);
+                    if (typed != number.Value)
+                    {
+                        drawing.ActionManager.SetProperty(number, nameof(Number.Value), typed);
+                    }
+                }
+            }
+
             return;
         }
 
         var line = end is PointOnFigure onFigure ? LineThrough(onFigure, pivot) : null;
         using (Transaction.Create(drawing.ActionManager, false))
         {
-            var distance = Number.CreateAuxiliary(drawing, line == null
+            var distance = Number.CreateAuxiliary(drawing, TypedDimensions.Distance(end, pivot, line == null
                 ? pivot.Coordinates.Distance(end.Coordinates)
-                : DistanceAlong(line, pivot.Coordinates, end.Coordinates));
+                : DistanceAlong(line, pivot.Coordinates, end.Coordinates)));
             Actions.Add(drawing, distance);
             var fixedEnd = Factory.CreateTranslatedPoint(drawing, pivot, distance, directionSource: line);
             // the free direction, if any: where the end is now

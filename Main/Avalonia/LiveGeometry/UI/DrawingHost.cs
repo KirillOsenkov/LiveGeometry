@@ -10,7 +10,7 @@ using Avalonia.VisualTree;
 
 namespace LiveGeometry;
 
-public class DrawingHost : Grid
+public partial class DrawingHost : Grid
 {
     public event EventHandler ReadyForInteraction;
     public event EventHandler<UnhandledExceptionNotificationEventArgs> UnhandledException = delegate { };
@@ -192,9 +192,13 @@ public class DrawingHost : Grid
         PropertyGrid.VisibilityChanged += PropertyGrid_VisibilityChanged;
 
         var header = new DockPanel() { Margin = new Thickness(14, 10, 8, 0) };
-        var closeButton = CreateCloseButton();
+        var closeButton = CreateHeaderButton("M0,0 L8,8 M8,0 L0,8", CloseSidePanel);
+        ToolTip.SetTip(closeButton, "Close");
         DockPanel.SetDock(closeButton, Dock.Right);
         header.Children.Add(closeButton);
+        sideButton = CreateHeaderButton(SideButtonPath(toLeft: true), MovePanelToOtherSide);
+        DockPanel.SetDock(sideButton, Dock.Right);
+        header.Children.Add(sideButton);
         header.Children.Add(title);
 
         var rows = new Border()
@@ -257,14 +261,15 @@ public class DrawingHost : Grid
 
         // a page starts at its top, not where the one before it was scrolled to
         propertyGridScrollViewer.Offset = default;
+        PlaceSidePanel();
     }
 
-    /// <summary>A small faint cross that puts the side panel away (<see cref="CloseSidePanel"/>)</summary>
-    Control CreateCloseButton()
+    /// <summary>A small faint button of the panel's header, drawn by a path: the cross that puts the panel away (<see cref="CloseSidePanel"/>)</summary>
+    Border CreateHeaderButton(string data, Action click)
     {
         var cross = new Avalonia.Controls.Shapes.Path()
         {
-            Data = Geometry.Parse("M0,0 L8,8 M8,0 L0,8"),
+            Data = Geometry.Parse(data),
             StrokeThickness = 1.5,
             StrokeLineCap = PenLineCap.Round,
             HorizontalAlignment = HorizontalAlignment.Center,
@@ -281,7 +286,6 @@ public class DrawingHost : Grid
             Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand),
             Child = cross
         };
-        ToolTip.SetTip(button, "Close");
         cross.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, nameof(AppTheme.TextFaint));
         button.PointerEntered += (s, e) =>
         {
@@ -297,7 +301,7 @@ public class DrawingHost : Grid
         {
             if (e.InitialPressMouseButton == Avalonia.Input.MouseButton.Left)
             {
-                CloseSidePanel();
+                click();
             }
         };
         return button;
@@ -583,7 +587,17 @@ public class DrawingHost : Grid
 
     protected virtual void mCurrentDrawing_SelectionChanged(object sender, Drawing.SelectionChangedEventArgs e)
     {
-        ShowSelectionProperties();
+        // what was picked is brought out from under the panel (not after undo, which shows
+        // the selection's page again without anything being picked)
+        revealSelection = true;
+        try
+        {
+            ShowSelectionProperties();
+        }
+        finally
+        {
+            revealSelection = false;
+        }
     }
 
     // a segment's length in the grid follows a drag of its end: at once, then at most

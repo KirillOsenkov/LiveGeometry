@@ -32,6 +32,9 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
         return ZOrder.Labels;
     }
 
+    /// <summary>The tint behind a selected label's text</summary>
+    protected Color SelectionColor => ((SolidColorBrush)selectionBrush).Color;
+
     protected override string Kind => "Text";
 
     /// <summary>The start of the text, in quotes: Text “Drag the point…”</summary>
@@ -90,7 +93,15 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
         get => text;
         set
         {
+            bool showedDecimals = ShowsDecimals();
             text = value ?? "";
+
+            // the Decimals row comes and goes with the text's [...] parts, as they are typed
+            if (ShowsDecimals() != showedDecimals)
+            {
+                RaisePropertyChanged(nameof(DecimalsToShow));
+            }
+
             if (ShouldProcessText)
             {
                 ProcessText();
@@ -437,13 +448,29 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
         }
     }
 
+    /// <summary>
+    /// What the label shows for a text: the text itself here; a wrapped <see cref="Label"/>
+    /// keeps its expressions on one line (<see cref="LineBreaks"/>)
+    /// </summary>
+    protected virtual string ShownText(string text) => text;
+
+    /// <summary>The text shown again, after something <see cref="ShownText"/> goes by has changed</summary>
+    protected void ShowTextAgain()
+    {
+        if (processedText != null)
+        {
+            ShowText();
+        }
+    }
+
     void ShowText()
     {
         pendingText?.Dispose();
         pendingText = null;
-        if (TextBlock.Text != processedText)
+        var shown = ShownText(processedText);
+        if (TextBlock.Text != shown)
         {
-            TextBlock.Text = processedText;
+            TextBlock.Text = shown;
             textShownAt = Stopwatch.GetTimestamp();
         }
     }
@@ -451,7 +478,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     void ShowTextSoon()
     {
         var shownFor = Stopwatch.GetElapsedTime(textShownAt);
-        if (TextBlock.Text == processedText || shownFor >= TextInterval)
+        if (TextBlock.Text == ShownText(processedText) || shownFor >= TextInterval)
         {
             ShowText();
             return;
@@ -465,12 +492,13 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     void ShowPendingText()
     {
         pendingText = null;
-        if (TextBlock.Text == processedText)
+        var shown = ShownText(processedText);
+        if (TextBlock.Text == shown)
         {
             return;
         }
 
-        TextBlock.Text = processedText;
+        TextBlock.Text = shown;
         textShownAt = Stopwatch.GetTimestamp();
 
         // a label placed by its size (a pinned caption, a point's name kept clear of its
@@ -485,6 +513,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     [PropertyGridName("Decimals")]
     [Domain(0, 10)]
     [PropertyGridVisible]
+    [PropertyGridCondition(nameof(ShowsDecimals))]
     public virtual int DecimalsToShow
     {
         get => mDecimalsToShow;
@@ -496,6 +525,12 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
                 UpdateVisual();
             }
         }
+    }
+
+    /// <summary>Whether the label shows a number, for which Decimals means something: a measurement does</summary>
+    public virtual bool ShowsDecimals()
+    {
+        return true;
     }
 
     public override void ReadXml(XElement element)

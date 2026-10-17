@@ -81,6 +81,12 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
 
     public double Length => Value;
 
+    /// <summary>A text shows numbers only in its [...] parts: without one, Decimals mean nothing</summary>
+    public override bool ShowsDecimals()
+    {
+        return FindExpressionParts(Text ?? "").Count > 0;
+    }
+
     #region Pinning
 
     LabelPin pin;
@@ -93,6 +99,7 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
     /// </summary>
     [PropertyGridVisible]
     [PropertyGridName("Pinned to")]
+    [PropertyGridGroup("Screen")]
     [PropertyGridCustomValueProvider(typeof(PinValue))]
     public LabelPin Pin
     {
@@ -183,6 +190,7 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
             wrapWidth = value;
             TextBlock.TextWrapping = wrapWidth > 0 ? TextWrapping.Wrap : TextWrapping.NoWrap;
             TextBlock.Width = wrapWidth > 0 ? wrapWidth : double.NaN;
+            ShowTextAgain();
             if (Drawing != null)
             {
                 UpdateVisual();
@@ -190,15 +198,24 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
         }
     }
 
+    /// <summary>Wrapped, the text keeps its expressions on one line (<see cref="LineBreaks"/>)</summary>
+    protected override string ShownText(string text)
+    {
+        return wrapWidth > 0 ? LineBreaks.KeepExpressionsTogether(text) : text;
+    }
+
     bool backdrop;
 
     /// <summary>
     /// A plate of the paper's color behind the text, a little larger than the text, so
     /// that a caption stays readable over a grid or a figure that zoomed under it. Only a
-    /// plain paper has a color to give; on a gradient there is no plate.
+    /// plain paper has a color to give; on a gradient there is no plate. "Background" in
+    /// the grid: "Backdrop" said nothing to a reader, and with nothing behind the text the
+    /// box changes nothing to see.
     /// </summary>
     [PropertyGridVisible]
-    [PropertyGridName("Backdrop")]
+    [PropertyGridName("Background")]
+    [PropertyGridGroup("Screen")]
     public bool Backdrop
     {
         get => backdrop;
@@ -218,7 +235,30 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
 
     void ApplyBackdrop()
     {
-        TextBlock.Background = backdrop && Drawing != null ? Drawing.Background as SolidColorBrush : null;
+        var paper = backdrop && Drawing != null ? Drawing.Background as SolidColorBrush : null;
+
+        // selected, the plate takes the tint of the selection, which it covers (a selected
+        // caption looked like any other)
+        TextBlock.Background = paper != null && Selected
+            ? new SolidColorBrush(Blend(paper.Color, SelectionColor))
+            : paper;
+    }
+
+    /// <summary>A color as it shows over the paper</summary>
+    static Color Blend(Color paper, Color over)
+    {
+        double alpha = over.A / 255.0;
+        byte Mix(byte under, byte top) => (byte)System.Math.Round(under + (top - under) * alpha);
+        return Color.FromArgb(paper.A, Mix(paper.R, over.R), Mix(paper.G, over.G), Mix(paper.B, over.B));
+    }
+
+    public override void ApplyStyle()
+    {
+        base.ApplyStyle();
+        if (backdrop)
+        {
+            ApplyBackdrop();
+        }
     }
 
     /// <summary>The top-left corner of a pinned label, in pixels</summary>

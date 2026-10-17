@@ -120,6 +120,7 @@ public class Program
             ("Any name can be said in an expression, in backticks", QuotedNames),
             ("No conversion that takes away what an expression reads; a failed expression has no value", ConversionKeepsExpressionsWhole),
             ("Fix length, Free length, Free direction and Convert to path anchor keep a point whose number an expression reads", PointKindKeepsExpressionsWhole),
+            ("Fix length and Fix direction keep the number typed", FixKeepsTypedValues),
             ("The X row of two points and the function row of two graphs: checked for each, then set", SharedExpressionRows),
             ("No Free point while a graph reads its Parameter; a graph that stops compiling is drawn no more", ReleaseKeepsFunctionsWhole),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
@@ -3747,6 +3748,87 @@ public class Program
     /// a point on a line read as B.Parameter (it became a translated point) and Convert to path
     /// anchor of a point on a path read so (a free point); a length typed once still moves it.
     /// </summary>
+    /// <summary>
+    /// A length or a direction typed, then fixed: the Number holds the number typed, not the
+    /// one worked back out of where the end was moved (a length of 8 was 7.999999999999999),
+    /// whichever end kind it was - a free point, or a translated point with the other
+    /// quantity fixed. Moved since it was typed, the end is fixed where it is.
+    /// </summary>
+    static void FixKeepsTypedValues()
+    {
+        double[] lengths = [8, 2.5, 7.1, 0.3];
+        double[] directions = [30, 100, 250, 333.3];
+        int roundedLengths = 0;
+        int roundedDirections = 0;
+        foreach (var (x, y) in new[] { (1.0, 2.0), (3.0, 7.0), (0.3, -0.1) })
+        {
+            for (int i = 0; i < lengths.Length; i++)
+            {
+                foreach (bool otherFixedFirst in new[] { false, true })
+                {
+                    var (drawing, segment) = TypedSegment(x, y);
+                    if (otherFixedFirst)
+                    {
+                        segment.FixDirection();
+                    }
+
+                    Set(drawing, segment, nameof(Segment.Length), value: lengths[i]);
+                    if (((IPoint)Find(drawing, "A")).Coordinates.Distance(((IPoint)Find(drawing, "B")).Coordinates) != lengths[i])
+                    {
+                        roundedLengths++;
+                    }
+
+                    segment.FixLength();
+                    double length = ((Number)((TranslatedPoint)Find(drawing, "B")).DistanceSource).Value;
+                    Require(length == lengths[i], $"B at ({x}, {y}), length {lengths[i]} typed and fixed{(otherFixedFirst ? " after the direction" : "")}: the Number holds {length:R}.");
+
+                    (drawing, segment) = TypedSegment(x, y);
+                    if (otherFixedFirst)
+                    {
+                        segment.FixLength();
+                    }
+
+                    Set(drawing, segment, nameof(Segment.Direction), value: directions[i]);
+                    if (segment.Direction != directions[i])
+                    {
+                        roundedDirections++;
+                    }
+
+                    segment.FixDirection();
+                    double direction = ((Number)((TranslatedPoint)Find(drawing, "B")).DirectionSource).Value;
+                    Require(direction == directions[i], $"B at ({x}, {y}), direction {directions[i]} typed and fixed{(otherFixedFirst ? " after the length" : "")}: the Number holds {direction:R}.");
+                }
+            }
+        }
+
+        // or the cases above prove nothing
+        Require(roundedLengths > 0 && roundedDirections > 0, $"Worked back out of the coordinates, {roundedLengths} lengths and {roundedDirections} directions differed from the typed ones: none to keep.");
+
+        var (moved, movedSegment) = TypedSegment(1, 2);
+        Set(moved, movedSegment, nameof(Segment.Length), value: 8.0);
+        ((IMovable)Find(moved, "B")).MoveTo(new Point(4, 5));
+        movedSegment.FixLength();
+        double movedLength = ((Number)((TranslatedPoint)Find(moved, "B")).DistanceSource).Value;
+        Require(System.Math.Abs(movedLength - System.Math.Sqrt(41)) < 1e-12, $"B moved after 8 was typed: the Number holds {movedLength:R}, not its distance √41.");
+
+        static (Drawing, Segment) TypedSegment(double x, double y)
+        {
+            var drawing = ReadLgf($"""
+                <Drawing Version="1">
+                  <Figures>
+                    <FreePoint Name="A" X="0" Y="0" />
+                    <FreePoint Name="B" X="{x}" Y="{y}" />
+                    <Segment Name="AB">
+                      <Dependency Name="A" />
+                      <Dependency Name="B" />
+                    </Segment>
+                  </Figures>
+                </Drawing>
+                """);
+            return (drawing, (Segment)Find(drawing, "AB"));
+        }
+    }
+
     static void PointKindKeepsExpressionsWhole()
     {
         foreach (var quantity in new[] { "Distance", "Direction" })

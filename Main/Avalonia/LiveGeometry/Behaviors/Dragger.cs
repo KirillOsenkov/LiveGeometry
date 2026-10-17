@@ -133,14 +133,31 @@ public partial class Dragger : Behavior
             Release(stale);
         }
 
+        // A double click on a text edits it where it is. The label is the one the first
+        // click pressed: that click selected it, and the view may have moved to bring it
+        // out from under the side panel since.
+        var pressedBefore = lastPressed;
+        lastPressed = null;
+        if (e.ClickCount == 2 && InPlaceTextEditor.CanEdit(pressedBefore))
+        {
+            InPlaceTextEditor.Open((Label)pressedBefore, e.GetPosition(ParentCanvas));
+            return;
+        }
+
         // (not on a show/hide box, which two quick clicks tick and untick)
         if (e.ClickCount == 2 && !(Drawing.Figures.HitTest(Coordinates(e, false, false, false)) is ShowHideControl))
         {
             Drawing.ZoomToFit();
             return;
         }
-        drags.Add(PrepareDrag(e));
+
+        var drag = PrepareDrag(e);
+        lastPressed = drag.Found;
+        drags.Add(drag);
     }
+
+    // what the last press found, for a double click
+    IFigure lastPressed;
 
     /// <summary>What a press here would hold: the figure under it and what a drag moves (nothing is changed)</summary>
     Drag PrepareDrag(MouseButtonEventArgs e)
@@ -615,6 +632,8 @@ public partial class Dragger : Behavior
 
     public override void Stopping()
     {
+        // (a text being edited goes in: Escape alone leaves it out)
+        InPlaceTextEditor.Current?.Commit();
         ReleaseAll();
         AbandonGesture();
         base.Stopping();
@@ -660,6 +679,13 @@ public partial class Dragger : Behavior
 
     public override bool AbandonGesture()
     {
+        // Escape in a text edited where it is leaves the label as it was
+        if (InPlaceTextEditor.Current != null)
+        {
+            InPlaceTextEditor.Current.Cancel();
+            return true;
+        }
+
         if (lasso == null)
         {
             return false;

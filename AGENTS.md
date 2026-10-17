@@ -548,7 +548,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   must not round the origin: a drag is many sub-pixel steps (0.5 px at 200% scaling) and
   rounding each one makes the plane run faster than the cursor. Labels have a fixed *pixel*
   size, so fit re-measures and refits a few times. What the user asks for as "zoom to fit"
-  (double click, H, Home, the context menu) is `Drawing.ZoomToFit`: the drawing's
+  (double click, but on a text label, H, Home, the context menu) is `Drawing.ZoomToFit`: the drawing's
   `FitToWindow` when whoever showed it set one (a drawing of the gallery:
   `GalleryDrawing.Fit`, with its plane - only there, since it lays out the caption, which
   in the user's own drawing is theirs and saved), else a scene if it has scenes, else
@@ -971,8 +971,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **The default styles** (2026-10-03) are a palette of eight hues (`Styles/StyleHue.cs`:
   gray, red, orange, brown, green, cyan, blue, purple), a column each in every style picker,
   in full rows of eight: points (the kind defaults and red, blue, purple at 8; beads, 12 with
-  a highlight), lines (thin 1.5, thick 2.5, dashed), shapes (outlined with a flat fill - the
-  lighter end of the gradient, on either paper - outlined with the gradient, and gradients
+  a highlight), lines (thin 1.5, thick 2.5, dashed), shapes (outlined with a flat fill -
+  on the light paper the gradient's lighter end, on the dark one the dark stroke 11% of the
+  way from the paper at the same alpha (`StyleHue.DarkSolidFill`, 2026-10-17: the lighter
+  end there was a slab, mid gray for `OutlinedShape`, which every sector and circular
+  segment takes), so that each sits about as near its paper (CIELAB ΔE 2-5 in Light, 6-12
+  in Dark) and mutes what is under it alike - outlined with the gradient, and gradients
   without an outline, but for the brown and green columns of that row: the fill of a new
   polygon, `Shape`, flat yellow from the theme's `ShapeFill` as it always was, and the
   classic flat green, `GreenShape`). Gray is the theme's where a default is (`Line`,
@@ -1111,7 +1115,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (label text). Rows that are editable only
   sometimes: `[PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]` on the
   property and `IConditionalProperties` on the figure (`CanEdit`, `Caption`); the same interface
-  vetoes buttons by method name. The grid refreshes a row's value on `PropertyChanged` with
+  vetoes buttons by method name. Rows that show only sometimes: `[PropertyGridCondition(name)]`
+  on the property (as on a verb, a bool method of the object), asked again on every
+  `PropertyChanged` with a name - the row is hidden, not taken away, so a box being typed in
+  keeps the keyboard (a label's Decimals show only while its text has a `[...]` part,
+  `Label.ShowsDecimals`, and come as the first one is typed; the Text setter raises the
+  change). The rows go in the order reflection gives (the class's own properties before
+  its base's), plain rows first, then the group boxes in the order of their first row: a
+  label's Text is first because its pin and Background are boxed (`"Screen"`), under Name.
+  The grid refreshes a row's value on `PropertyChanged` with
   its name, and rebuilds itself (posted) on a `PropertyChanged` with a null name: for a set
   after which the rows change shape - what is editable, a caption, which buttons (a
   translated point's Free direction). A property setter that changes the figure list (the length
@@ -1141,6 +1153,29 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   again; anything else goes away (the panel after a construction, a style, the settings:
   they may be about a figure that left), and a panel put away stays away. Every panel went
   away until 2026-10-12, a selected figure's too.
+  **Where it goes** (`DrawingHost.SidePanel.cs`, 2026-10-17): it must not cover what it is
+  about. In a wide window it is at the right, or at the left: the button by the ×
+  (`MovePanelToOtherSide`, an arrow to the edge it would go to) moves it and makes that its
+  side (`PanelAtLeft`, kept between runs by the app: `SidePanel=Left` in the settings
+  store, `MainView.SidePanelKey`). Where the drawing would keep less than
+  `MinimumRoomBeside` beside it (a phone) it goes across, at most half the height, the rows
+  wrapping and scrolling, at the top, and no button. A figure the user just picked
+  (`revealSelection`: a selection changed, not undo's page shown again) that is under the
+  panel is brought out by moving the view, gliding (`RevealInPlane`): the least move that
+  shows it whole, `RevealGap` from the panel, clear of text pinned to the screen. Not an
+  undo step (the app's move, as a fit after a resize; the history keeps a view's moves as
+  offsets, so one left out upsets nothing), and the view goes back when the panel goes,
+  unless something moved it since. What the view can't move - a caption, any label pinned to
+  the screen - or what has no room to go to, gets the panel on the other side for that page
+  (on a phone the bottom half); right after the button the panel stays where the user
+  put it. The panel is placed once the page has settled (posted at Background, unseen
+  until then: the value plates and style swatches fill in after the first layout, and the
+  rows' shared caption column settles on a second pass - measured at once, the panel came
+  out 50 px narrower than it is), with a real layout pass (`UpdateLayout`), so the grid
+  raises `VisibilityChanged` after its rows are built. Tried and left (2026-10-17, by
+  screenshots): sliding a caption out from under the panel (its plate then covered the
+  figure, and the text being edited moved), and always taking the side that covers less
+  (the panel jumped from side to side between clicks).
 - **A figure inherits the rows and buttons of its base class**, and has to take away the
   ones that are not its own: a button through `IConditionalProperties.CanEdit` (by method
   name), a row by overriding the property with `[PropertyGridVisible(false)]`, or by making
@@ -1226,7 +1261,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   constraint: the end becomes a `TranslatedPoint` from the pivot with an auxiliary `Number` at
   the current distance and a free direction (`IFixableLength`, `Figures/Lines/LengthConstraint.cs`;
   segments, vectors, circles; a regular polygon's vertex from its center or its first vertex,
-  through its panel). An end on a line that runs through the pivot
+  through its panel). The Number holds the length as typed when the end is still where the
+  typed length put it, but for rounding (`TypedDimensions`, for Fix direction too: a typed 8,
+  worked back out of the stretched end's coordinates, was fixed and saved as
+  7.999999999999999). An end on a line that runs through the pivot
   takes the line as its direction instead (the Number signed along it, so the end is fully
   determined) and Free makes it a point on the line again; an end on any other figure can't be
   stretched or fixed at all. The **direction** of a segment, a vector, a ray or a line
@@ -1375,6 +1413,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   undo, redo) recalculates what is built on it (`LabelBase.Text`); a file read or a
   re-binding doesn't come through the setter. Without it, a circle and a point on the
   label's value kept the old one until the next recalculation, and undo left them there.
+- **Wrapped text keeps an expression on one line** (`Figures/Controls/LineBreaks.cs`,
+  2026-10-17): a label with a wrap width (a caption) shows each space next to a word that
+  is all operators (`= ≠ ≈ < > ≤ ≥ + − - ± × · ÷ * /`) as a no-break space, so "AP = 8 − r"
+  no longer breaks into "AP = 8 −" and "r."; a chain of more than `LongChain` (24)
+  characters may still break before its second and later relations ("x² = AP² − AN²",
+  then "= (8 − r)² − r²"). Only on screen (`LabelBase.ShownText`, which `Label` overrides):
+  the text keeps the spaces it was typed with, and nobody types `&#160;` into a caption any
+  more. A chain with no second relation that is wider than the line is broken inside, as
+  any word that long. The player's twin is `lineBreaks.js` (`Label.shownText`).
 - **Lengths** (`Figures/Controls/LengthMeasurement.cs`, 2026-10-15): one figure,
   `LengthMeasurement`, for every length - the distance between two points, or one length
   of one figure, which one being its `Quantity` (the grid's Measure row): Distance (two
@@ -1715,8 +1762,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   coarse, not stuck). The middle is drawn either way, so what is drawn strays about an
   eighth of a pixel (2026-10-16: thrown away, it left the inverse of a circle 600 px
   across with a corner every 35 px; a tolerance of an eighth cost 1.6 to 2 times the
-  samples for the same look, the middle nothing). A piece still long after every round
-  is a jump (1/x), not joined. Past the open ends of a line, ray
+  samples for the same look, the middle nothing). A piece still long (20 px) after every
+  round is a jump (1/x), not joined; so that a jump that is not through infinity is found
+  too, a piece that long is never done while its middle sample lies within a tenth of
+  its length of an end (`Locus.IsLopsided`). Spirograph's sliding point drives an angle
+  that wraps from 2π to 0 at the end of every lap: the middle landed next to one end,
+  on the straight line, and every lap ended in a straight line back to its start, a
+  triangle over the petal at the right (until 2026-10-17; no other gallery locus takes a
+  sample more for it). Past the open ends of a line, ray
   or graph (and of a locus on one) it steps outward, each step twice the last, and a
   traced point beyond 20 window sizes is a gap. Sampled evenly along the line, the image
   of a line in a circle was a hexagon on its far side with a hole at the center.
@@ -2398,8 +2451,22 @@ loader still does for files from before; none of it needs extending.
   OffsetY` is the pixel distance from a canvas corner to the *same* corner of the label, so it
   keeps that edge while the plane zooms and pans under it. `Coordinates` always tell where it
   is in the plane right now, so hit testing, dragging and the property grid need nothing
-  special. `WrapWidth` (px) and `Backdrop` (a plate of the paper's color) exist for captions.
-  Pinned labels draw above figures, zoom to fit ignores them, thumbnails hide them.
+  special. `WrapWidth` (px) and `Backdrop` (a plate of the paper's color, "Background" in
+  the grid; selected, the plate takes the selection's tint, which it covered) exist for
+  captions. Pinned labels draw above figures, zoom to fit ignores them, thumbnails hide them.
+- **A label's text is edited where it is** (`Behaviors/InPlaceTextEditor.cs`, 2026-10-17): a
+  double click on a text label with the Drag tool (not a locked one, nor a gallery
+  drawing's own text) puts a box over it in its font, size, padding and wrap width, so the
+  lines break where they did (but for an expression `LineBreaks` keeps together: the box
+  holds the text as typed, and breaks at any space), the label hidden under it and the
+  caret where the click was.
+  The label is the one the first click pressed (`Dragger.lastPressed`): that click
+  selected it, and the view may have moved since to bring it out from under the side
+  panel. Enter or leaving the box (a click elsewhere, another tool) puts the text in, one
+  `SetProperty` undo step; Shift+Enter starts a line; Escape (`Dragger.AbandonGesture`,
+  which `MainView` asks first) leaves the label as it was. The side panel is away while the
+  box is up and comes back with the label after; the view and the panel's side stay as
+  they were meanwhile. The box follows the label when the view moves under it.
 - **Parts of a figure** (`IFigureParts`, `Figures/Shapes/FigureParts.cs`): the sides,
   handles and inside of a Bezier path are figures other figures can be built on (only the
   images of a transformation are), but not figures of the drawing: unnamed, written as

@@ -154,6 +154,18 @@ public class Locus : Curve, ILinearFigure
     /// <summary>In pixels: two samples still this far apart when halving the step can't bring them closer are a jump, not a piece of the curve</summary>
     const double JumpPixels = 20;
 
+    /// <summary>
+    /// A piece longer than <see cref="JumpPixels"/> needs more samples unless its middle is
+    /// at least this share of its length away from either end (<see cref="IsLopsided"/>).
+    /// A jump that is not through infinity - an angle wrapping round from 360 degrees to
+    /// 0 - puts the middle next to one end, which is on the straight line between the
+    /// ends: the jump passed for a straight piece and was joined by a line (Spirograph,
+    /// at the end of every lap). Halved round after round, it is found still long after
+    /// every round, as a jump through infinity is. Where the curve goes on, its middle
+    /// stays near the middle of the piece, a quarter of the way at a cusp.
+    /// </summary>
+    const double EndShare = 0.1;
+
     /// <summary>How many times a step of the samples may be halved</summary>
     const int MaxDepth = 12;
 
@@ -281,7 +293,8 @@ public class Locus : Curve, ILinearFigure
 
                 var middle = Take((from.Parameter + to.Parameter) / 2);
                 if (fromExists && toExists && middle.Point.Exists()
-                    && DistanceToSegment(middle.Point, from.Point, to.Point) * unitLength <= Tolerance)
+                    && DistanceToSegment(middle.Point, from.Point, to.Point) * unitLength <= Tolerance
+                    && !IsLopsided(from.Point, middle.Point, to.Point, unitLength))
                 {
                     // The middle stays: it is traced already, and the two halves stray
                     // from the curve about a quarter as far as the whole piece. Thrown
@@ -303,8 +316,8 @@ public class Locus : Curve, ILinearFigure
         }
 
         // Pieces still far apart after every round of halving are jumps (through
-        // infinity, across a pole): not joined. Unless the samples ran out first - a
-        // piece is long then because nobody looked into it.
+        // infinity, across a pole, where an angle wraps round): not joined. Unless the
+        // samples ran out first - a piece is long then because nobody looked into it.
         bool ranOut = samplesLeft <= 0 && halved;
         for (int i = 0; i < samples.Count; i++)
         {
@@ -322,6 +335,18 @@ public class Locus : Curve, ILinearFigure
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Whether the middle of a piece longer than <see cref="JumpPixels"/> is nearer to one
+    /// of its ends than <see cref="EndShare"/> of its length: then the piece may hide a jump
+    /// and needs more samples, however straight it looks
+    /// </summary>
+    static bool IsLopsided(Point from, Point middle, Point to, double unitLength)
+    {
+        double length = from.Distance(to);
+        return length * unitLength > JumpPixels
+            && System.Math.Min(from.Distance(middle), middle.Distance(to)) < EndShare * length;
     }
 
     static double DistanceToSegment(Point point, Point from, Point to)
