@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1" Creator="LiveGeometry.App">
+  <Viewport Left="-4.38667069" Top="8.7795813099" Right="19.5746599639" Bottom="-0.7924710919" />
+  <Styles>
+    <LineStyle Name="DashedLine" Color="#51787878" StrokeWidth="1.25" Dash="Dash">
+      <Dark Color="#519E9E9E" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" X="0" Y="0" />
+    <Number Name="n1" Auxiliary="true" Value="8" />
+    <Number Name="n2" Auxiliary="true" Value="0" />
+    <TranslatedPoint Name="B" DistanceSource="n1" DirectionSource="n2">
+      <Dependency Name="A" />
+      <Dependency Name="n1" />
+      <Dependency Name="n2" />
+    </TranslatedPoint>
+    <PointByCoordinates Name="C" X="A.Y + B.X - B.Y" Y="-A.X + B.X + B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D" X="A.X + A.Y - B.Y" Y="-A.X + A.Y + B.X">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Segment Name="AB">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="BC">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="CD">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="AD">
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </Segment>
+    <MidPoint Name="M">
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <CircleArc Name="c" Style="ThickPurpleLine">
+      <Dependency Name="M" />
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </CircleArc>
+    <CircleArc Name="d" Style="ThickRedLine">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="D" />
+    </CircleArc>
+    <PointLabel Name="PointLabel1" OffsetX="-11.249999995200028" OffsetY="6" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="PointLabel2" OffsetX="-3" OffsetY="6.000000004799972" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="PointLabel3" OffsetX="-3.2499999982078407" OffsetY="-27.000000000000057" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="C" />
+    </PointLabel>
+    <PointLabel Name="PointLabel4" OffsetX="-10.50000000537591" OffsetY="-25.999999999488125" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="D" />
+    </PointLabel>
+    <PointLabel Name="PointLabel5" OffsetX="-21.75000000076801" OffsetY="-27.000000000000057" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="M" />
+    </PointLabel>
+    <MidPoint Name="N">
+      <Dependency Name="M" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <PerpendicularLine Name="g" Style="DashedLine" RightAngleCorner="1">
+      <Dependency Name="AD" />
+      <Dependency Name="N" />
+    </PerpendicularLine>
+    <PointLabel Name="PointLabel6" OffsetX="-18.999999995903977" OffsetY="-25.499999999232045" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="N" />
+    </PointLabel>
+    <CircleByRadius Name="f" Visible="false" Style="DashedLine">
+      <Dependency Name="D" />
+      <Dependency Name="N" />
+      <Dependency Name="A" />
+    </CircleByRadius>
+    <IntersectionPoint Name="P" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="g" />
+      <Dependency Name="f" />
+    </IntersectionPoint>
+    <CircleByRadius Name="h" Style="GradientBlueOutline" Z="-1">
+      <Dependency Name="N" />
+      <Dependency Name="A" />
+      <Dependency Name="P" />
+    </CircleByRadius>
+    <PointLabel Name="PointLabel7" OffsetX="6" OffsetY="2" ShowName="true" ShowCoordinates="false">
+      <Dependency Name="P" />
+    </PointLabel>
+    <Ray Name="AP" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="P" />
+    </Ray>
+    <IntersectionPoint Name="E" Algorithm="IntersectEllipseAndLine2">
+      <Dependency Name="h" />
+      <Dependency Name="AP" />
+    </IntersectionPoint>
+    <Segment Name="AP2">
+      <Dependency Name="A" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="r">
+      <Dependency Name="P" />
+      <Dependency Name="E" />
+    </Segment>
+    <FigureLabel Name="FigureLabel1" OffsetX="-7.179188708121501" OffsetY="-24.891598520064065">
+      <Dependency Name="r" />
+    </FigureLabel>
+    <PerpendicularLine Name="k" Visible="false" RightAngleCorner="1">
+      <Dependency Name="AB" />
+      <Dependency Name="P" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="F" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AB" />
+      <Dependency Name="k" />
+    </IntersectionPoint>
+    <Segment Name="FP">
+      <Dependency Name="P" />
+      <Dependency Name="F" />
+    </Segment>
+    <LengthMeasurement Name="LengthMeasurement2" OffsetX="0" OffsetY="0">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </LengthMeasurement>
+    <Segment Name="MP">
+      <Dependency Name="M" />
+      <Dependency Name="P" />
+    </Segment>
+    <Label Name="Title" Style="GalleryTitle" Text="Circle in a square touching two arcs" Pin="TopRight" OffsetX="16" OffsetY="208" WrapWidth="538.5" Backdrop="true" />
+    <Label Name="Description" Style="GalleryText" Text="Let P be the blue circle’s center and r its radius. Let M be the midpoint of AD, the center of the purple semicircle, and let N be the foot of the perpendicular from P to AD, so AN = r and NP = x.\n\nThe blue circle touches the red quarter circle from inside, so AP = 8 − r. It touches the purple semicircle from outside, so MP = 4 + r.\n\nIn triangle ANP, with the right angle at N, x² = AP² − AN² = (8 − r)² − r² = 64 − 16r. In triangle MNP, with the right angle at N and MN = 4 − r, x² = MP² − MN² = (4 + r)² − (4 − r)² = 16r.\n\nSetting them equal gives r = 2 and x = 4√2, so AP = MP = 6 and N is the midpoint of AM. That is how P was constructed: on the dashed perpendicular to AD through N, 6 away from A." Pin="TopRight" OffsetX="16" OffsetY="252.5" WrapWidth="538.5" Backdrop="true" />
+    <Segment Name="x" Style="CoincidentLine">
+      <Dependency Name="N" />
+      <Dependency Name="P" />
+    </Segment>
+    <FigureLabel Name="FigureLabel2" OffsetX="-6.499999999592319" OffsetY="-25.00000000083844">
+      <Dependency Name="x" />
+    </FigureLabel>
+  </Figures>
+</Drawing>
