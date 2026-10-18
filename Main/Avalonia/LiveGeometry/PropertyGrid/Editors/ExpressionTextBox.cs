@@ -51,43 +51,50 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
 
     /// <summary>
     /// The box has the keyboard: clicks on figures put references in, and a pencil at the
-    /// box's right says so for as long as that holds
+    /// box's right says so for as long as that holds. In a label's text a [ ] button comes
+    /// before it, which also says that the text takes formulas at all.
     /// </summary>
     void BecomeTarget()
     {
         Drawing?.SetInsertTarget(this);
         if (InnerRightContent == null)
         {
-            pencil = CreatePencilButton();
-            InnerRightContent = pencil;
+            // the pencil: the picking off and on while the keyboard stays in the box
+            // (TogglePicking). Off, a click on a figure selects it, as it does without a
+            // box. The way out of a label's text without leaving it, since Enter there
+            // starts a line.
+            pencil = CreateButton(PropertyGridIcons.Create(PropertyGridIcon.Pencil), TogglePicking);
+            InnerRightContent = Context == InsertContext.Text
+                ? new StackPanel()
+                {
+                    Orientation = Avalonia.Layout.Orientation.Horizontal,
+                    Children = { CreateBracketsButton(), pencil }
+                }
+                : pencil;
         }
 
         ShowPicking(true);
     }
 
     /// <summary>
-    /// The pencil, a button that switches the picking off and on while the keyboard stays in
-    /// the box (<see cref="TogglePicking"/>): off, a click on a figure selects it, as it does
-    /// without a box. The way out of a label's text without leaving it, since Enter there
-    /// starts a line.
+    /// A button at the box's right end that leaves the keyboard and the caret where they are:
+    /// the box's own press would move the caret and take the pointer, and the release would
+    /// never come here
     /// </summary>
-    Border CreatePencilButton()
+    Border CreateButton(Control content, Action click)
     {
         var button = new Border()
         {
             Margin = new Thickness(0, 0, 3, 0),
             Padding = new Thickness(3),
             CornerRadius = new CornerRadius(4),
-            Background = Brushes.Transparent, // hit-testable around the pencil too
+            Background = Brushes.Transparent, // hit-testable around the icon too
             VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
             Cursor = new Cursor(StandardCursorType.Hand),
-            Child = PropertyGridIcons.Create(PropertyGridIcon.Pencil)
+            Child = content
         };
         button.PointerEntered += (s, e) => button.BindTheme(Border.BackgroundProperty, nameof(AppTheme.ButtonHover));
         button.PointerExited += (s, e) => button.BindTheme(Border.BackgroundProperty, key: null, whenNone: Brushes.Transparent);
-
-        // the box's own press would move the caret and take the pointer, and the release
-        // would never come here
         button.PointerPressed += (s, e) =>
         {
             if (e.GetCurrentPoint(button).Properties.IsLeftButtonPressed)
@@ -107,10 +114,43 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
             e.Handled = true;
             if (new Rect(button.Bounds.Size).Contains(e.GetPosition(button)))
             {
-                TogglePicking();
+                click();
             }
         };
         return button;
+    }
+
+    /// <summary>The [ ] button of a label's text, in the color the brackets of a formula take in it</summary>
+    Border CreateBracketsButton()
+    {
+        var brackets = new TextBlock()
+        {
+            Text = "[ ]",
+            FontSize = PropertyGridIcons.Size,
+            FontWeight = FontWeight.SemiBold,
+            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+        };
+        brackets.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.ExpressionBracket));
+        var button = CreateButton(brackets, InsertBrackets);
+        ToolTip.SetTip(button, "Insert formulas in [] such as [AB] or [A.X+B.X]");
+        return button;
+    }
+
+    /// <summary>
+    /// The [ ] button's click: what is selected goes in brackets, the caret after them; with
+    /// nothing selected a pair goes in at the caret, the caret between them for the formula
+    /// </summary>
+    void InsertBrackets()
+    {
+        if (IsReadOnly || !IsEnabled)
+        {
+            return;
+        }
+
+        int start = System.Math.Min(SelectionStart, SelectionEnd);
+        string selected = SelectedText ?? "";
+        SelectedText = "[" + selected + "]";
+        CaretIndex = selected.Length == 0 ? start + 1 : start + selected.Length + 2;
     }
 
     /// <summary>The pencil's click: clicks on figures stop or start putting references in, and the box keeps the keyboard</summary>
@@ -145,8 +185,8 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
 
         pencil.Child.Opacity = picking ? 1 : 0.35;
         ToolTip.SetTip(pencil, picking
-            ? "Done: a click on a figure selects it again"
-            : "Click a figure to put it in");
+            ? "Formula picker enabled: click a figure to insert it into the formula."
+            : "Click this button to enable the formula picker: click a figure to insert it into the formula.");
     }
 
     void ClearIfUnfocused()

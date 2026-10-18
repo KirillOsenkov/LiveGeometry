@@ -1392,7 +1392,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   figure is the box's then; it is a button (2026-10-17) that switches that off and on
   while the keyboard stays in the box (`ExpressionTextBox.TogglePicking`: off, the box is
   no `InsertTarget`, the pencil is faint and a click on a figure selects it), and the
-  status hint names it; the box taking the keyboard again starts with it on. Enter in a
+  status hint names it; the box taking the keyboard again starts with it on. In a label's
+  text a [ ] button comes before it, in the brackets' color (`InsertBrackets`): the
+  selection goes in brackets, or a pair goes in with the caret between - also what says
+  that a text takes formulas at all, which nothing did. Enter in a
   figure's row is "done" and gives the keyboard to the canvas (`EndEditing`; a tool
   panel's Enter is its command, as ever), but not in a label's text, where it starts a
   line: there the pencil is the way out. The value under the box follows the figures it
