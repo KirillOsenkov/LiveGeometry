@@ -34,8 +34,13 @@ public class InPlaceTextEditor
         this.label = label;
         drawing = label.Drawing;
         var text = label.TextBlock;
-        box = new TextBox()
+        box = new ColoredTextBox()
         {
+            // the [...] parts of a text in colors, as in its row of the side panel (an
+            // attached text is shown as typed)
+            Classifier = label is Label
+                ? typed => ExpressionClassifier.ClassifyLabelText(drawing, typed, figure => !figure.DependsOn(label))
+                : null,
             Text = label.Text,
             AcceptsReturn = true,
             TextWrapping = text.TextWrapping,

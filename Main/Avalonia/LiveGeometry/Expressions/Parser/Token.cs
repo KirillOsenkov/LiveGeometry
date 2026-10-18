@@ -6,7 +6,7 @@ public class Token
     public readonly TokenType Kind;
     public int Start;
 
-    /// <summary>How much of the expression's text the token takes: more than its text for a name in backticks</summary>
+    /// <summary>How much of the expression's text the token takes: more than its text for a name in backticks, less for a number written .5 (0.5)</summary>
     public readonly int Length;
 
     /// <summary>A name in backticks (`Drag me!`): the figure called exactly that, never anything else the name could read as</summary>

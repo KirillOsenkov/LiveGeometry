@@ -92,6 +92,14 @@ public class AppTheme : INotifyPropertyChanged, IConditionalProperties
         ErrorBackground = Color.Parse("#FDECEC"),
         ErrorBorder = Color.Parse("#D93B3B"),
         ErrorText = Color.Parse("#9B1C1C"),
+        ExpressionBackground = Color.Parse("#F6F8F7"),
+        ExpressionErrorBackground = Color.Parse("#FFEAE8"),
+        ExpressionBracket = Color.Parse("#1A85EE"),
+        ExpressionFigure = Color.Parse("#267F99"),
+        ExpressionProperty = Color.Parse("#A0522D"),
+        ExpressionFunction = Color.Parse("#008000"),
+        ExpressionNumber = Color.Parse("#8A2BE2"),
+        ExpressionReserved = Color.Parse("#808080"),
         Paper = Color.Parse("#FFFFFF"),
         Ink = Color.Parse("#000000"),
         Line = Color.Parse("#64000000"),
@@ -173,6 +181,14 @@ public class AppTheme : INotifyPropertyChanged, IConditionalProperties
         ErrorBackground = Color.Parse("#4A2A2A"),
         ErrorBorder = Color.Parse("#D95050"),
         ErrorText = Color.Parse("#F2A0A0"),
+        ExpressionBackground = Color.Parse("#272C34"),
+        ExpressionErrorBackground = Color.Parse("#352A31"),
+        ExpressionBracket = Color.Parse("#C586C0"),
+        ExpressionFigure = Color.Parse("#4EC9B0"),
+        ExpressionProperty = Color.Parse("#9CDCFE"),
+        ExpressionFunction = Color.Parse("#DCDCAA"),
+        ExpressionNumber = Color.Parse("#B5CEA8"),
+        ExpressionReserved = Color.Parse("#569CD6"),
         Paper = Color.Parse("#2B2B2B"),
         Ink = Color.Parse("#D0D0D0"),
         Line = Color.Parse("#D3D3D3"),
@@ -526,6 +542,69 @@ public class AppTheme : INotifyPropertyChanged, IConditionalProperties
     [PropertyGridVisible]
     [PropertyGridGroup("Notes")]
     public Color ErrorText { get => errorText; set => Set(ref errorText, value); }
+
+    // The pieces of an expression as it is typed (ColoredTextBox): the plate under a [...]
+    // part of a label's text and its brackets, then what the compiler read each name as,
+    // and the numbers
+
+    static string expressionSample = "AB is [AB.Length] long, [dist(A, B) * 2 + sin(pi / 6)] and [A.Q]";
+
+    /// <summary>
+    /// A text to see the expression colors in while they are edited, over their rows: read
+    /// against a drawing of its own (<see cref="SyntaxSampleEditor"/>), in the box of a
+    /// label's text (its size, Enter for a new line). No color, so neither kept in the
+    /// settings nor copied as code; the same for every theme.
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridGroup("Expressions")]
+    [PropertyGridName("Sample")]
+    [PropertyGridPreferredEditor("SyntaxSample")]
+    [PropertyGridMultiline]
+    public string ExpressionSample { get => expressionSample; set => expressionSample = value; }
+
+    Color expressionBackground;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Expressions")]
+    public Color ExpressionBackground { get => expressionBackground; set => Set(ref expressionBackground, value); }
+
+    /// <summary>The plate under a part that doesn't compile</summary>
+    Color expressionErrorBackground;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Expressions")]
+    public Color ExpressionErrorBackground { get => expressionErrorBackground; set => Set(ref expressionErrorBackground, value); }
+
+    Color expressionBracket;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Expressions")]
+    public Color ExpressionBracket { get => expressionBracket; set => Set(ref expressionBracket, value); }
+
+    /// <summary>A figure by its name: A in A.X, the points of AB, a slider</summary>
+    Color expressionFigure;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Expressions")]
+    public Color ExpressionFigure { get => expressionFigure; set => Set(ref expressionFigure, value); }
+
+    /// <summary>What is read off a figure: the X of A.X</summary>
+    Color expressionProperty;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Expressions")]
+    public Color ExpressionProperty { get => expressionProperty; set => Set(ref expressionProperty, value); }
+
+    Color expressionFunction;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Expressions")]
+    public Color ExpressionFunction { get => expressionFunction; set => Set(ref expressionFunction, value); }
+
+    Color expressionNumber;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Expressions")]
+    public Color ExpressionNumber { get => expressionNumber; set => Set(ref expressionNumber, value); }
+
+    /// <summary>pi, e and the x of a function</summary>
+    Color expressionReserved;
+    [PropertyGridVisible]
+    [PropertyGridGroup("Expressions")]
+    public Color ExpressionReserved { get => expressionReserved; set => Set(ref expressionReserved, value); }
 
     // The paper and what a new drawing draws on it: the default styles are built from these
     // (StyleManager.AddDefaultStyles, CartesianGrid), and so are the tool icons, which show

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -29,16 +30,15 @@ public interface IExpressionHost
 /// <see cref="Drawing.InsertTarget"/>, so a click on a figure or on its row in the Figure
 /// List puts a reference to the figure in at the caret (<see cref="ReferencePicker"/>); in
 /// the text of a label the reference goes in as a [...] part unless the caret is in one
-/// already. One class for all of them, so that completion, highlighting or a structured
-/// editor can come to every box at once.
+/// already. Its pieces are in colors, as the compiler reads them (<see cref="Classify"/>).
+/// One class for all of them, so that completion or a structured editor can come to every
+/// box at once.
 /// </summary>
-public class ExpressionTextBox : TextBox, IExpressionInsertTarget
+public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
 {
-    // (a subclass of a templated control renders invisible without this)
-    protected override Type StyleKeyOverride => typeof(TextBox);
-
     public ExpressionTextBox()
     {
+        Classifier = Classify;
         GotFocus += (s, e) => BecomeTarget();
 
         // A press on the canvas or on the Figure List takes the keyboard before its
@@ -177,11 +177,79 @@ public class ExpressionTextBox : TextBox, IExpressionInsertTarget
 
     public InsertContext Context => Host?.Context ?? InsertContext.Expression;
 
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        Watch(Drawing);
+    }
+
     // a panel rebuilt around the box takes it out of the tree without a LostFocus
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         Drawing?.ClearInsertTarget(this);
+        Watch(null);
         base.OnDetachedFromVisualTree(e);
+    }
+
+    /// <summary>
+    /// The pieces of the text as the compiler reads it in this box: an expression, a
+    /// function in x, or the [...] parts of a label's text. Only a text that compiles has
+    /// pieces (<see cref="ExpressionClassifier"/>).
+    /// </summary>
+    IReadOnlyList<ClassifiedSpan> Classify(string text)
+    {
+        var drawing = Drawing;
+        var owner = Owner;
+        Predicate<IFigure> isFigureAllowed = figure => owner == null || !figure.DependsOn(owner);
+        return Context switch
+        {
+            InsertContext.Text => ExpressionClassifier.ClassifyLabelText(drawing, text, isFigureAllowed),
+            InsertContext.Function => ExpressionClassifier.ClassifyFunction(drawing, text, isFigureAllowed),
+            _ => ExpressionClassifier.ClassifyExpression(drawing, text, isFigureAllowed)
+        };
+    }
+
+    Drawing watched;
+
+    /// <summary>
+    /// The colors follow the drawing while the box shows: what a name stands for changes
+    /// with the figures (one renamed, made, deleted), each such change an entry of the
+    /// history. At most every 300 ms, as the Figure List follows it: a drag records a move
+    /// at every step.
+    /// </summary>
+    void Watch(Drawing drawing)
+    {
+        if (watched == drawing)
+        {
+            return;
+        }
+
+        if (watched != null)
+        {
+            watched.ActionManager.CollectionChanged -= ActionManager_CollectionChanged;
+        }
+
+        watched = drawing;
+        if (watched != null)
+        {
+            watched.ActionManager.CollectionChanged += ActionManager_CollectionChanged;
+        }
+    }
+
+    void ActionManager_CollectionChanged(object sender, EventArgs e)
+    {
+        Throttle.Schedule(
+            this,
+            box => Dispatcher.UIThread.Post(() =>
+            {
+                // (gone from the screen while the post waited)
+                if (box.watched != null)
+                {
+                    box.Recolor();
+                }
+            }),
+            TimeSpan.FromMilliseconds(300),
+            ThrottleOptions.RunOnceImmediatelyIfFree);
     }
 
     /// <summary>

@@ -57,8 +57,9 @@ public class Scanner
                 case '.':
                     if (IsDigit(NextChar()))
                     {
+                        int literalStart = current;
                         current++;
-                        ScanNumericLiteralAfterPeriod("0.");
+                        ScanNumericLiteralAfterPeriod(literalStart, "0.");
                     }
                     else
                     {
@@ -228,7 +229,7 @@ public class Scanner
                 if (IsDigit(NextChar()))
                 {
                     current++;
-                    ScanNumericLiteralAfterPeriod(text.Substring(start, current - start));
+                    ScanNumericLiteralAfterPeriod(start, text.Substring(start, current - start));
                     return;
                 }
                 else
@@ -247,7 +248,9 @@ public class Scanner
         }
     }
 
-    private void ScanNumericLiteralAfterPeriod(string beforePeriod)
+    /// <param name="literalStart">Where the number begins in the text: at its first digit, or at the period of .5</param>
+    /// <param name="beforePeriod">The number up to its digits after the period, as the parser reads it: "12.", or "0." for .5</param>
+    private void ScanNumericLiteralAfterPeriod(int literalStart, string beforePeriod)
     {
         int start = current;
 
@@ -255,16 +258,9 @@ public class Scanner
         {
             current++;
 
-            if (current == length)
+            if (current == length || !IsDigit(text[current]))
             {
-                AddNumericLiteral(start, beforePeriod);
-                return;
-            }
-
-            char currentChar = text[current];
-            if (!IsDigit(currentChar))
-            {
-                AddNumericLiteral(start, beforePeriod);
+                AddNumericLiteral(literalStart, beforePeriod + text.Substring(start, current - start));
                 return;
             }
         }
@@ -272,14 +268,17 @@ public class Scanner
 
     private void AddNumericLiteral(int start)
     {
-        var token = new Token(text.Substring(start, current - start), start, TokenType.NumericLiteral);
-        AddToken(token);
+        AddNumericLiteral(start, text.Substring(start, current - start));
     }
 
-    private void AddNumericLiteral(int start, string prefix)
+    /// <summary>
+    /// The number from <paramref name="start"/> up to here, read as <paramref name="literal"/>:
+    /// its token takes its place in the text, also where it reads otherwise (.5 is 0.5).
+    /// Worked out from what it reads as, the start of .5 was -1, a character too far left.
+    /// </summary>
+    private void AddNumericLiteral(int start, string literal)
     {
-        var token = new Token(prefix + text.Substring(start, current - start), start - prefix.Length, TokenType.NumericLiteral);
-        AddToken(token);
+        AddToken(new Token(literal, start, current - start, TokenType.NumericLiteral, isQuoted: false));
     }
 
     private char NextChar()

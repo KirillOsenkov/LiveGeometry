@@ -19,6 +19,9 @@ public enum InsertContext
     /// <summary>The Y of a point by coordinates: a point goes in as its Y</summary>
     PointY,
 
+    /// <summary>The expression in x of a function graph: x is its variable, and a reference goes in as into any expression</summary>
+    Function,
+
     /// <summary>The text of a label: a reference goes in as a [...] part unless the caret is in one already</summary>
     Text
 }

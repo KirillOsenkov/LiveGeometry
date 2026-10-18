@@ -53,7 +53,7 @@ public class ExpressionTreeBuilder
                 return CreateIdentifierExpression(root);
             case NodeType.Constant:
                 // the language writes decimals with a point, whatever the user's culture
-                return new BoundConstant(double.Parse(root.Token.Text, CultureInfo.InvariantCulture));
+                return Classified(new BoundConstant(double.Parse(root.Token.Text, CultureInfo.InvariantCulture)), root.Token, ExpressionClass.Number);
             case NodeType.FunctionCall:
                 return CreateCallExpression(root);
             case NodeType.PropertyAccess:
@@ -80,11 +80,12 @@ public class ExpressionTreeBuilder
 
         // a name in backticks is the number called exactly that: never pi, e, a
         // function's x or two points run together
-        if (root.Token.IsQuoted)
+        var token = root.Token;
+        if (token.IsQuoted)
         {
             if (Binder.ResolveFigureExactly(text) is INumber quoted)
             {
-                return CreateNumberExpression(quoted, text);
+                return Classified(CreateNumberExpression(quoted, text), token, ExpressionClass.Figure);
             }
 
             Status.AddUnknownIdentifierError(text);
@@ -97,7 +98,7 @@ public class ExpressionTreeBuilder
         var exact = Binder.ResolveExactNumber(text);
         if (exact != null)
         {
-            return CreateNumberExpression(exact, text);
+            return Classified(CreateNumberExpression(exact, text), token, ExpressionClass.Figure);
         }
 
         // pi is π whatever the drawing has. Two points are read in any case (ab is the
@@ -106,29 +107,43 @@ public class ExpressionTreeBuilder
         // still is the distance.
         if (text == "pi" || text == "e")
         {
-            return Binder.Resolve(text);
+            return Classified(Binder.Resolve(text), token, ExpressionClass.Reserved);
         }
 
         BoundExpression resolveTwoPoints = ResolveTwoPoints(text);
         if (resolveTwoPoints != null)
         {
-            return resolveTwoPoints;
+            return Classified(resolveTwoPoints, token, ExpressionClass.Figure);
         }
 
         var parameter = Binder.Resolve(text);
         if (parameter != null)
         {
-            return parameter;
+            return Classified(parameter, token, ExpressionClass.Reserved);
         }
 
         // a Number in the drawing, by its name: the expression then depends on it
         if (Binder.ResolveFigure(text) is INumber number)
         {
-            return CreateNumberExpression(number, text);
+            return Classified(CreateNumberExpression(number, text), token, ExpressionClass.Figure);
         }
 
         Status.AddUnknownIdentifierError(text);
         return null;
+    }
+
+    /// <summary>
+    /// The name or number bound, its piece of the text noted as what it was read as
+    /// (<see cref="CompileResult.Classification"/>); one that didn't bind is noted as nothing
+    /// </summary>
+    BoundExpression Classified(BoundExpression bound, Token token, ExpressionClass kind)
+    {
+        if (bound != null)
+        {
+            Status.Classify(token, kind);
+        }
+
+        return bound;
     }
 
     BoundExpression CreateNumberExpression(INumber number, string text)
@@ -236,6 +251,8 @@ public class ExpressionTreeBuilder
         }
 
         Status.Dependencies.Add(figure);
+        Status.Classify(figureToken, ExpressionClass.Figure);
+        Status.Classify(root.Children[1].Token, ExpressionClass.Property);
         return new BoundProperty(figure, property);
     }
 
@@ -268,6 +285,9 @@ public class ExpressionTreeBuilder
             Status.AddMethodNotFoundError(functionName);
             return null;
         }
+
+        // (before its arguments, which come after it in the text)
+        Status.Classify(root.Token, ExpressionClass.Function);
 
         // a function of numbers (sin, sqrt, max, atan2): each argument is an expression.
         // Anything else takes points (dist, ang) - and a wrong number of arguments is an
@@ -369,6 +389,7 @@ public class ExpressionTreeBuilder
         }
 
         Status.Dependencies.Add(point);
+        Status.Classify(token, ExpressionClass.Figure);
         return point;
     }
 

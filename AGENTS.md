@@ -402,6 +402,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   its size). Checked by laying `MainView` out at a grid of sizes from 0 to 800 px on every
   page and side-panel state, with every first-chance exception logged (a temporary
   in-process probe, as for undo); Windows and headless Edge can't make windows that small.
+- **A visual invalidated during the render pass freezes the window**: `InvalidateVisual`
+  from inside a `Render` (also through something it calls that invalidates, such as a
+  presenter making its text layout) throws "Visual was invalidated during the render pass"
+  in the compositing renderer, and the renderer stops for good. The window keeps its last
+  frame, ignores nothing but shows nothing new, every thread idle; no error report is seen,
+  since it is never drawn. Invalidate from where the state changes, not where it is read
+  (`ColoredTextPresenter.InvalidateTextLayout`).
 - **`Shape.Render` is sealed** (Avalonia 12): a Shape can't draw anything but its geometry.
   `PointMarker` draws a character through an `EmojiGlyph` visual child it measures and arranges
   itself; with no geometry, `Shape.ArrangeOverride` returns size 0 and the shape collapses to
@@ -1404,6 +1411,24 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   nothing (a cycle). Lines, rays and graphs give nothing either. Clicking empty paper
   while a box has the keyboard is the tool's as ever (a click clears the selection and
   so the panel, a drag pans).
+- **Expressions are colored as the compiler reads them** (2026-10-17;
+  `Controls/ColoredTextBox.cs`, `Expressions/ExpressionClassification.cs`): every
+  `ExpressionTextBox` and the in-place editor of a text label draw the pieces of what is
+  typed in the theme's Expressions colors - the [ and ] of a label's part, figures,
+  properties, functions, numbers, pi, e and x - and each [...] part of a label's text on
+  a faint plate, a pink one where the part doesn't compile. The binder notes what each
+  token was bound to (`CompileResult.Classification`, by the token's place in the text, so
+  nothing keeps the whitespace), and only a text that compiles is colored: in a part with
+  an error only the plate says so, and a [ never closed is text like the rest. A box
+  follows its drawing's history (a name given to a figure, or taken away). A TextBox draws
+  its text in one brush: `ColoredTextPresenter` overrides `TextPresenter.CreateTextLayout`
+  and lays the text out again with runs of other brushes, in the room the base's layout
+  was given (which it keeps private). The plates are a layer of their own under it
+  (`PartPlates`, from the layout's `HitTestTextRange`): Avalonia sealed every control's
+  `Render` in 2023, and a run's background would be the box of its glyphs, drawn over the
+  selection. `ColoredTextBox`'s template is a code copy of Fluent's TextBox template of
+  Avalonia 12.1 with those two in it: compare it with Fluent's TextBox.xaml when Avalonia
+  is upgraded.
 - **A label is a length and an angle only when it says a number** (`Label.IsNumber`: its
   text is one, usually the value of an expression, "[AB * 2]" - what the GeoGebra reader
   makes for a computed value). Every `Label` has `ILengthProvider` and `IAngleProvider`,

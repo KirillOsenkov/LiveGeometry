@@ -31,7 +31,7 @@ public class FunctionEditor : StringEditor, IExpressionHost
 
     public IFigure Owner => Graph;
 
-    public InsertContext Context => InsertContext.Expression;
+    public InsertContext Context => InsertContext.Function;
 
     /// <summary>
     /// Valid when it compiles for every graph the row edits: one, or each of a selection,

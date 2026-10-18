@@ -14,7 +14,19 @@ public class CompileResult
     public readonly List<IFigure> Dependencies = new List<IFigure>();
     public readonly List<CompileError> Errors = new List<CompileError>();
 
+    /// <summary>
+    /// What the pieces of the text were read as, in the order of the text: each name as the
+    /// binder resolved it, each number as typed (<see cref="ExpressionClassifier"/>).
+    /// Operators, parentheses and commas are left out. Whole only when the text compiled.
+    /// </summary>
+    public readonly List<ClassifiedSpan> Classification = new List<ClassifiedSpan>();
+
     public bool IsSuccess => Errors.IsEmpty() && (Expression != null || Function != null);
+
+    public void Classify(Token token, ExpressionClass kind)
+    {
+        Classification.Add(new ClassifiedSpan(token.Start, token.Length, kind));
+    }
 
     public void AddError(string error)
     {

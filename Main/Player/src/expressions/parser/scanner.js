@@ -44,8 +44,9 @@ class Scanner {
                     break;
                 case ".":
                     if (Scanner.isDigit(this.nextChar())) {
+                        const literalStart = this.current;
                         this.current++;
-                        this.scanNumericLiteralAfterPeriod("0.");
+                        this.scanNumericLiteralAfterPeriod(literalStart, "0.");
                     } else {
                         this.addTokenOfType(TokenType.Dot);
                     }
@@ -158,7 +159,7 @@ class Scanner {
             if (currentChar === ".") {
                 if (Scanner.isDigit(this.nextChar())) {
                     this.current++;
-                    this.scanNumericLiteralAfterPeriod(this.text.substring(start, this.current));
+                    this.scanNumericLiteralAfterPeriod(start, this.text.substring(start, this.current));
                     return;
                 }
 
@@ -174,25 +175,21 @@ class Scanner {
         }
     }
 
-    scanNumericLiteralAfterPeriod(beforePeriod) {
+    /** literalStart: where the number begins in the text; beforePeriod: the number up to its digits after the period, as read ("12.", "0." for .5) */
+    scanNumericLiteralAfterPeriod(literalStart, beforePeriod) {
         const start = this.current;
         while (true) {
             this.current++;
-            if (this.current === this.length) {
-                this.addNumericLiteral(start, beforePeriod);
-                return;
-            }
-
-            if (!Scanner.isDigit(this.text[this.current])) {
-                this.addNumericLiteral(start, beforePeriod);
+            if (this.current === this.length || !Scanner.isDigit(this.text[this.current])) {
+                this.addNumericLiteral(literalStart, beforePeriod + this.text.substring(start, this.current));
                 return;
             }
         }
     }
 
-    addNumericLiteral(start, prefix = "") {
-        const token = new Token(prefix + this.text.substring(start, this.current), start - prefix.length, TokenType.NumericLiteral);
-        this.result.tokens.push(token);
+    /** The number from start up to here, read as literal: its token takes its place in the text, also where it reads otherwise (.5 is 0.5) */
+    addNumericLiteral(start, literal = this.text.substring(start, this.current)) {
+        this.result.tokens.push(new Token(literal, start, TokenType.NumericLiteral, this.current - start));
     }
 
     nextChar() {
