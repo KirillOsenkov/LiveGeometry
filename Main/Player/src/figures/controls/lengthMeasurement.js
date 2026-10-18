@@ -18,14 +18,10 @@ class LengthMeasurement extends Measurement {
     /** Between the outline and the number, in pixels */
     static Gap = 6;
 
-    /** How far past the edge of the window a point still counts as on screen, in pixels */
-    static EdgeInset = 24;
-
     constructor() {
         super();
         this.quantityValue = null;
         this.prefixValue = null;
-        this.placed = false;
     }
 
     get isLengthProvider() {
@@ -250,7 +246,7 @@ class LengthMeasurement extends Measurement {
     onScreenPoint(ellipse) {
         const center = ellipse.center;
         const fixedPoint = GeometryMath.pointOnEllipse(center, ellipse.semiMajor, ellipse.semiMinor, ellipse.inclination, -Math.PI / 4);
-        if (this.drawing == null || this.isOnScreen(this.toPhysical(fixedPoint))) {
+        if (this.drawing == null || FigureAnchor.isOnScreen(this.toPhysical(fixedPoint), this.drawing.coordinateSystem)) {
             return fixedPoint;
         }
 
@@ -268,40 +264,22 @@ class LengthMeasurement extends Measurement {
         return crossings.p1.distance(middle) <= crossings.p2.distance(middle) ? crossings.p1 : crossings.p2;
     }
 
-    isOnScreen(pixel) {
-        const canvas = this.drawing.coordinateSystem.physicalSize;
-        return pixel.exists()
-            && pixel.x >= -LengthMeasurement.EdgeInset && pixel.x <= canvas.x + LengthMeasurement.EdgeInset
-            && pixel.y >= -LengthMeasurement.EdgeInset && pixel.y <= canvas.y + LengthMeasurement.EdgeInset;
-    }
-
     updateVisual() {
         if (!this.hasSomethingToMeasure) {
             return;
         }
 
         this.setText(this.prefix + NumberFormat.toString(GeometryMath.round(this.length, this.decimalsToShow)));
-
-        // where the number goes is decided once, at its first redraw, whatever its quantity: a
-        // distance or a length keeps its offset (so a path closed later doesn't move it), the
-        // rest get the default place; once the canvas has a size (before the first layout the
-        // anchor of a circle could only be the fallback, and the offset worked out from it was wrong)
-        if (!this.placed && this.drawing != null && this.drawing.coordinateSystem.physicalSize.x > 0) {
-            this.placed = true;
-            if (this.placesItself) {
-                this.offset = this.defaultOffset();
-            }
-        }
-
         super.updateVisual();
     }
 
-    /** Where a new number goes, in pixels from the anchor: clear of what it measures */
+    /**
+     * Where a new number goes, in pixels from the anchor: clear of what it measures. A distance
+     * or a length keeps its offset (so a path closed later doesn't move it). Decided once, at
+     * the first redraw, whatever the quantity.
+     */
     defaultOffset() {
-        const size = this.measureSize();
-        const direction = this.outwardDirection();
-        const distance = LengthMeasurement.Gap + Math.abs(direction.x) * size.width / 2 + Math.abs(direction.y) * size.height / 2;
-        return direction.scale(distance).minus(new Point(size.width / 2, size.height / 2));
+        return this.placesItself ? FigureAnchor.beside(this.outwardDirection(), this.measureSize(), LengthMeasurement.Gap) : null;
     }
 
     /** A unit vector in pixels pointing from the anchor to where the number goes */
@@ -342,9 +320,6 @@ class LengthMeasurement extends Measurement {
 
     readXml(element) {
         super.readXml(element);
-
-        // (a file written by hand without an offset gets the default place)
-        this.placed = element.hasAttribute("OffsetX");
         this.prefixValue = element.getAttribute("Prefix");
         const quantity = element.getAttribute("Quantity");
         this.quantityValue = quantity != null && Object.hasOwn(LengthQuantity, quantity) ? LengthQuantity[quantity] : null;

@@ -85,6 +85,8 @@ figures/controls/nameLayout.js
 figures/controls/angleLabelLayout.js
 figures/controls/angleMeasurement.js
 figures/controls/figureAnchor.js
+figures/controls/anchoredLabel.js
+figures/controls/nameLabel.js
 figures/controls/figureLabel.js
 figures/controls/pointLabel.js
 figures/controls/attachedLabel.js

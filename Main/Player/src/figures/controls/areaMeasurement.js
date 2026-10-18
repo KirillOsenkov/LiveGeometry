@@ -22,20 +22,17 @@ class AreaMeasurement extends Measurement {
     }
 
     updateVisual() {
-        super.updateVisual();
-        this.setText(NumberFormat.toString(GeometryMath.round(this.measure, this.decimalsToShow)));
-        if (this.placed !== true && this.drawing != null && this.drawing.canvas != null && !this.drawing.isReading && this.text !== "") {
-            // a new one: the number in the middle of the region
-            this.placed = true;
-            const size = this.measureSize();
-            this.offset = new Point(-size.width / 2, -size.height / 2);
-            super.updateVisual();
+        if (!this.hasAnchor) {
+            return;
         }
+
+        this.setText(NumberFormat.toString(GeometryMath.round(this.measure, this.decimalsToShow)));
+        super.updateVisual();
     }
 
-    readXml(element) {
-        super.readXml(element);
-        this.placed = element.getAttribute("OffsetX") != null || element.getAttribute("OffsetY") != null;
+    /** A new one: the number in the middle of the region */
+    defaultOffset() {
+        return FigureAnchor.centered(this.measureSize());
     }
 
     /** The middle of the region: a polygon's centroid by area, the center of a circle, an ellipse, a sector or a path */

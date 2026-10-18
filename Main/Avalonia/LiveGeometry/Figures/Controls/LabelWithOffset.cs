@@ -17,8 +17,86 @@ public abstract class LabelWithOffset : LabelBase, IMovable
     /// to zooms, the text doesn't, and the gap between them shouldn't either (in units of
     /// the plane it shrank onto the point when zoomed out and drifted away when zoomed in).
     /// Files before version 1 stored it in units; see <see cref="UpgradeOffsetFromUnits"/>.
+    /// Set from anywhere (a file, a drag, undo, a reader), it is the label's place from then on
+    /// (<see cref="Placed"/>).
     /// </summary>
-    public Point Offset { get; set; }
+    public Point Offset
+    {
+        get => offset;
+        set
+        {
+            offset = value;
+            Placed = true;
+        }
+    }
+
+    Point offset;
+
+    /// <summary>
+    /// Whether the label has its place: the file's, one given to it, or the default one it got
+    /// once (<see cref="Place"/>). A label without one gets the default at its first redraw
+    /// that can work it out (<see cref="CanPlace"/>), and keeps it: one that comes back (shown
+    /// again, undo) is where it was left.
+    /// </summary>
+    protected bool Placed { get; set; }
+
+    /// <summary>Where a new label goes, in pixels from the anchor; null for one that has no default place and keeps its offset</summary>
+    protected virtual Point? DefaultOffset() => null;
+
+    /// <summary>
+    /// Whether the default place can be worked out now: there is a text to measure, the window
+    /// has a size (before the first layout a line's visible part and a circle's point on screen
+    /// are only guesses) and no file is being read (the names it keeps clear of are not all
+    /// there yet)
+    /// </summary>
+    bool CanPlace => HasCanvas
+        && !Drawing.IsReading
+        && Drawing.CoordinateSystem.PhysicalSize.X > 0
+        && !string.IsNullOrEmpty(Text);
+
+    /// <summary>
+    /// Gives the label its default place now (<see cref="DefaultOffset"/>), the nearest free one
+    /// to it where the label keeps clear (<see cref="FirstOffset"/>)
+    /// </summary>
+    void Place()
+    {
+        Placed = true;
+        var defaultOffset = DefaultOffset();
+        if (defaultOffset != null)
+        {
+            Offset = KeepsClear ? FirstOffset(defaultOffset.Value) : defaultOffset.Value;
+        }
+    }
+
+    /// <summary>
+    /// The default place now, if the label has none yet, whether or not the drawing is on
+    /// screen: for a reader that moves a new label on from there (a GeoGebra name's labelOffset)
+    /// </summary>
+    public void PlaceIfNew()
+    {
+        if (Placed)
+        {
+            return;
+        }
+
+        // the text to measure, and the place where the drawing is on screen
+        UpdateVisual();
+        if (!Placed)
+        {
+            Place();
+            UpdateVisual();
+        }
+    }
+
+    /// <summary>
+    /// The label depends on what it is attached to, and a dependent figure normally can't be
+    /// dragged (its parents move instead). But all that dragging the label changes is its
+    /// offset from the anchor - so it can, like in the original DG.
+    /// </summary>
+    public override bool AllowMove()
+    {
+        return !Locked;
+    }
 
     /// <summary>
     /// What the offset is measured from, in the plane: the point, the middle of the
@@ -132,12 +210,17 @@ public abstract class LabelWithOffset : LabelBase, IMovable
     /// </summary>
     protected virtual bool HasAnchor => !Dependencies.IsEmpty();
 
-    /// <summary>Puts the label where its anchor and offset say; the text is the subclass's business</summary>
+    /// <summary>Puts the label where its anchor and offset say, a new one at its default place; the text is the subclass's business</summary>
     public override void UpdateVisual()
     {
         if (!HasAnchor)
         {
             return;
+        }
+
+        if (!Placed && CanPlace)
+        {
+            Place();
         }
 
         Coordinates = PlaceFromOffset();
@@ -196,14 +279,18 @@ public abstract class LabelWithOffset : LabelBase, IMovable
     /// </summary>
     public void UpgradeOffsetFromUnits()
     {
+        // (the same place in other units: a label without one still gets the default)
         double unitLength = Drawing.CoordinateSystem.UnitLength;
-        Offset = new Point(Offset.X * unitLength, -Offset.Y * unitLength);
+        offset = new Point(offset.X * unitLength, -offset.Y * unitLength);
     }
 
     public override void ReadXml(XElement element)
     {
         base.ReadXml(element);
         Offset = new Point(element.ReadDouble("OffsetX"), element.ReadDouble("OffsetY"));
+
+        // a file written by hand may leave the place out: then the label goes where a new one would
+        Placed = element.Attribute("OffsetX") != null || element.Attribute("OffsetY") != null;
     }
 
     /// <summary>Whether the file says the offset: not for a label that works out its place itself</summary>
@@ -230,15 +317,5 @@ public abstract class Measurement : LabelWithOffset
     public override string Text
     {
         get => base.Text; set => base.Text = value;
-    }
-
-    /// <summary>
-    /// A measurement depends on what it measures, and a dependent figure normally can't be
-    /// dragged (its parents move instead). But all that dragging a measurement changes is the
-    /// offset of the label from its anchor - so it can, like in the original DG.
-    /// </summary>
-    public override bool AllowMove()
-    {
-        return !Locked;
     }
 }

@@ -20,9 +20,9 @@ public class ReplaceFigureAction : GeometryAction
 
     protected override void ExecuteCore()
     {
-        // I modified the following line to exclude PointLabels. When labeled points are replaced, they manage deleting and adding of labels.
-        // Without filtering out PointLabels here, UnExecuteCore will result in an eventual CheckConsistency error. - D.H.
-        Dependents = Figure.Dependents.Where(f => !(f is PointLabel)).ToArray();
+        // a point's name goes over like any other dependent, as a line's does: the label is the
+        // replacement's from then on (Actions.HandOverNameLabel)
+        Dependents = Figure.Dependents.ToArray();
         Figure.SubstituteWith(Replacement);
         RecalculateDependents();
     }

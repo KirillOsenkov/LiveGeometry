@@ -5202,10 +5202,10 @@ public class Program
         var drawing = NewDrawing();
         var point = AddPoint(drawing, x: 1, y: 2);
         Set(drawing, point, nameof(PointBase.ShowName), value: true);
-        point.Label.Visible = false;
+        point.NameLabel.Visible = false;
         Set(drawing, point, nameof(PointBase.ShowName), value: false);
         Set(drawing, point, nameof(PointBase.ShowName), value: true);
-        Require(point.Label.Visible, "Show name brought the name back hidden.");
+        Require(point.NameLabel.Visible, "Show name brought the name back hidden.");
         foreach (var type in new[] { typeof(PointLabel), typeof(FigureLabel) })
         {
             var attribute = (PropertyGridVisibleAttribute)Attribute.GetCustomAttribute(type.GetProperty(nameof(IFigure.Visible)), typeof(PropertyGridVisibleAttribute));

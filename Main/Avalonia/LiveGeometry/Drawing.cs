@@ -1193,7 +1193,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     {
         // a vertex or a side goes with its polygon: a regular polygon without one is none
         var figures = FigureParts.Wholes(figuresToDelete)
-            .Where(f => !(f is CartesianGrid) && !(f is PointLabel) && !(f is FigureLabel))
+            .Where(f => !(f is CartesianGrid) && !(f is NameLabel))
             .ToArray();
         // the Delete key reaches here twice (the tool on key down, the window on key up):
         // the second time there is nothing selected

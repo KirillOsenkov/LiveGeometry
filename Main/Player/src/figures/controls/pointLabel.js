@@ -1,7 +1,7 @@
 // Port of Main/Avalonia/LiveGeometry/Figures/Controls/PointLabel.cs: a point's name
 // (and/or coordinates), kept in an orbit around the point.
 
-class PointLabel extends Measurement {
+class PointLabel extends NameLabel {
     /** The least room between the point's rim and the letters, in pixels */
     static Clearance = 0;
 
@@ -10,43 +10,17 @@ class PointLabel extends Measurement {
 
     constructor() {
         super();
-        this.placed = false;
         this.showNameValue = false;
         this.showCoordinatesValue = false;
     }
 
     getPoint() {
-        return this.dependencies[0];
+        return this.figure;
     }
 
-    onAddingToDrawing(drawing) {
-        super.onAddingToDrawing(drawing);
-        const point = this.getPoint();
-        if (point.label == null) {
-            point.label = this;
-        }
-    }
-
-    allowMove() {
-        return !this.locked;
-    }
-
-    get anchor() {
-        return this.point(0);
-    }
-
-    get keepsClear() {
-        return true;
-    }
-
-    get ownPoint() {
-        return this.dependencies.length > 0 ? this.dependencies[0] : null;
-    }
-
-    /** The lines and circles through the point: what it is built on or on, and what is built on it */
-    figuresThroughAnchor() {
-        const point = this.getPoint();
-        return [...point.dependents, ...point.dependencies];
+    /** A hidden point keeps its name: the name is then a text that moves with the point (a clock face's numbers) */
+    get hidesWithFigure() {
+        return false;
     }
 
     /**
@@ -138,8 +112,10 @@ class PointLabel extends Measurement {
         super.moveToCore(this.clampPosition(newPosition));
     }
 
-    defaultLayer() {
-        return ZOrder.PointLabels;
+    /** A new label: centered above its point, just clear of it (or the nearest free place to that) */
+    defaultOffset() {
+        const size = this.measureSize();
+        return new Point(-size.width / 2, -(size.height + this.getPoint().pointSize / 2 + PointLabel.Margin));
     }
 
     updateVisual() {
@@ -148,13 +124,6 @@ class PointLabel extends Measurement {
         }
 
         this.updateText();
-        if (!this.placed && this.text !== "") {
-            // a new label: centered above its point, just clear of it, or the nearest free place to that
-            this.placed = true;
-            const size = this.measureSize();
-            this.offset = this.firstOffset(new Point(-size.width / 2, -(size.height + this.getPoint().pointSize / 2 + PointLabel.Margin)));
-        }
-
         super.updateVisual();
     }
 
@@ -202,7 +171,6 @@ class PointLabel extends Measurement {
         super.readXml(element);
         this.showNameValue = Xml.readBool(element, "ShowName", true);
         this.showCoordinatesValue = Xml.readBool(element, "ShowCoordinates", false);
-        this.placed = true;
         this.updateText();
     }
 }

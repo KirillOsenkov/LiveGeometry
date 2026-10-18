@@ -185,7 +185,7 @@ public class ContextMenus
 
         // A name is its figure's: what it offers is the figure's Show name (and for a
         // point Show coordinates), which hides it too; nothing else is the name's own.
-        if (figure is PointLabel or FigureLabel)
+        if (figure is NameLabel)
         {
             if (figure.Dependencies.FirstOrDefault() is IFigure owner)
             {
@@ -239,7 +239,7 @@ public class ContextMenus
     IList<IFigure> SelectedOrClicked(IFigure clicked)
     {
         var selected = FigureParts.Wholes(drawing.GetSelectedFigures())
-            .Where(f => !(f is PointLabel) && !(f is FigureLabel))
+            .Where(f => !(f is NameLabel))
             .ToList();
         if (!selected.Contains(clicked))
         {

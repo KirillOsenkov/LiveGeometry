@@ -1,7 +1,8 @@
 // Port of Main/Avalonia/LiveGeometry/Figures/Controls/FigureAnchor.cs: where a label written
-// next to a figure hangs (a figure's name, FigureLabel, and a text attached to a figure,
-// AttachedLabel): an anchor on the figure, a first offset from it, and for a line, which
-// runs past the window, a place kept on screen.
+// next to a figure hangs (AnchoredLabel: a point's or a figure's name, and a text attached to
+// a figure): an anchor on the figure, a first offset from it, and for a line, which runs past
+// the window, a place kept on screen. The measurements place their numbers with the same
+// pieces (beside, centered, isOnScreen).
 
 class FigureAnchor {
     /** How far in from the edge of the window a line's label sits, in pixels */
@@ -89,15 +90,13 @@ class FigureAnchor {
     /** Where a new label goes, in pixels from the anchor: beside a segment or a line on its left, just inside a circle, to the right of a point */
     static defaultOffset(figure, size, coordinateSystem) {
         if (figure instanceof PolygonBase) {
-            return new Point(-size.width / 2, -size.height / 2);
+            return FigureAnchor.centered(size);
         }
 
         if (figure instanceof LineBase) {
             const coordinates = figure instanceof Segment ? figure.coordinates : figure.onScreenCoordinates;
             const direction = RightAngleMark.direction(coordinateSystem.toPhysical(coordinates.p1), coordinateSystem.toPhysical(coordinates.p2)) ?? new Point(1, 0);
-            const normal = new Point(direction.y, -direction.x);
-            const distance = FigureAnchor.SegmentGap + Math.abs(normal.x) * size.width / 2 + Math.abs(normal.y) * size.height / 2;
-            return normal.scale(distance).minus(new Point(size.width / 2, size.height / 2));
+            return FigureAnchor.beside(new Point(direction.y, -direction.x), size, FigureAnchor.SegmentGap);
         }
 
         if (figure.isCircle === true) {
@@ -109,6 +108,17 @@ class FigureAnchor {
         }
 
         return new Point(6, 2);
+    }
+
+    /** The top-left corner of a label of the size, in pixels from the anchor, that puts its middle on the anchor */
+    static centered(size) {
+        return new Point(-size.width / 2, -size.height / 2);
+    }
+
+    /** The top-left corner of a label of the size, in pixels from the anchor, that puts it off the anchor in the direction (a unit vector, in pixels), its nearest edge the gap away */
+    static beside(direction, size, gap) {
+        const distance = gap + Math.abs(direction.x) * size.width / 2 + Math.abs(direction.y) * size.height / 2;
+        return direction.scale(distance).plus(FigureAnchor.centered(size));
     }
 
     /** Whether a line's anchor is near enough to the window to write its label */

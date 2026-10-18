@@ -2,7 +2,7 @@
 // of Figures/IFigureExtensions.cs that act on one figure (dependsOn, registerWithDependencies,
 // recalculateAllDependents, ...), which are methods here. Left out: the naming of new
 // figures after their points and the rename waves (a file's figures have their names), the
-// property grid, the name label (FigureLabel comes later), Clone.
+// property grid, Show name (a name label comes from the file), Clone.
 //
 // The "interfaces" a figure implements in C# (IPoint, ILine, ILinearFigure, IEllipse,
 // ICircle, ILengthProvider, IAngleProvider, INumber, IShapeWithInterior, IMovable,
@@ -27,6 +27,9 @@ class FigureBase {
         this.styleValue = null;
         this.selectedValue = false;
         this.enabled = true;
+
+        /** The label writing the figure's name next to it, while it shows one (a NameLabel: a FigureLabel, or a point's PointLabel) */
+        this.nameLabel = null;
     }
 
     /** The C# type name, which is the file's element name (FigureTypes.register sets it) */

@@ -87,23 +87,7 @@ public class Actions
             Actions.Add(drawing, newFigure);
             Actions.ReplaceWithExisting(existingFigure, newFigure);
 
-            // the name written next to the figure (Show name) went over with the other
-            // dependents: the new figure is the one that shows its name now
-            if (existingFigure is FigureBase existing && newFigure is FigureBase replacement && existing.NameLabel != null)
-            {
-                var label = existing.NameLabel;
-                drawing.ActionManager.RecordAction(new CallMethodAction(
-                    () =>
-                    {
-                        existing.NameLabel = null;
-                        replacement.NameLabel = label;
-                    },
-                    () =>
-                    {
-                        replacement.NameLabel = null;
-                        existing.NameLabel = label;
-                    }));
-            }
+            HandOverNameLabel(existingFigure, newFigure);
 
             // in the old figure's place in the list, before what is built on it, not at
             // the end: a file is written in this order
@@ -175,28 +159,8 @@ public class Actions
             Add(drawing, replacement);
             SuppressAutoLabelPoints(drawing, suppress: false);
 
-            // the label goes first: one still on the point when its other dependents move
-            // is listed with the replacement as well (SubstituteWith), a second time, and
-            // the entry left over after undo fails the consistency check
-            var label = point.Label;
-            if (label != null)
-            {
-                ReplaceDependency(label, point, replacement);
-                var handOver = new CallMethodAction(
-                    () =>
-                    {
-                        point.Label = null;
-                        replacement.Label = label;
-                    },
-                    () =>
-                    {
-                        replacement.Label = null;
-                        point.Label = label;
-                    });
-                drawing.ActionManager.RecordAction(handOver);
-            }
-
             ReplaceWithExisting(point, replacement);
+            HandOverNameLabel(point, replacement);
 
             // in the point's place in the list (the Figure List, the file), not at the end
             MoveBefore(drawing, replacement, point);
@@ -206,6 +170,33 @@ public class Actions
                 Rebind,
                 () => FigureBase.SuppressRenameInExpressions = true));
         }
+    }
+
+    /// <summary>
+    /// The name written next to a figure that is being replaced (Show name; a point's
+    /// coordinates) has gone over with the other dependents (<see cref="ReplaceWithExisting"/>):
+    /// the replacement is the one that shows it from now on. Recorded, as the swap is.
+    /// </summary>
+    static void HandOverNameLabel(IFigure existingFigure, IFigure newFigure)
+    {
+        if (existingFigure is not FigureBase existing
+            || newFigure is not FigureBase replacement
+            || existing.NameLabel is not NameLabel label)
+        {
+            return;
+        }
+
+        existing.Drawing.ActionManager.RecordAction(new CallMethodAction(
+            () =>
+            {
+                existing.NameLabel = null;
+                replacement.NameLabel = label;
+            },
+            () =>
+            {
+                replacement.NameLabel = null;
+                existing.NameLabel = label;
+            }));
     }
 
     /// <summary>

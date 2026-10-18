@@ -2,12 +2,6 @@
 // of new points, the kept label across undo (a point's label comes from the file).
 
 class PointBase extends CoordinatesShapeBase {
-    constructor() {
-        super();
-        /** The PointLabel writing the point's name next to it, while it has one */
-        this.label = null;
-    }
-
     get isPoint() {
         return true;
     }
@@ -31,9 +25,10 @@ class PointBase extends CoordinatesShapeBase {
     }
 
     onRemovingFromDrawing(drawing) {
-        if (this.label != null) {
-            drawing.figures.remove(this.label);
-            this.label = null;
+        const label = this.nameLabel;
+        if (label != null) {
+            this.nameLabel = null;
+            drawing.figures.remove(label);
         }
     }
 
@@ -76,11 +71,11 @@ class PointBase extends CoordinatesShapeBase {
     }
 
     get showName() {
-        return this.label != null && this.label.showName;
+        return this.nameLabel instanceof PointLabel && this.nameLabel.showName;
     }
 
     get showCoordinates() {
-        return this.label != null && this.label.showCoordinates;
+        return this.nameLabel instanceof PointLabel && this.nameLabel.showCoordinates;
     }
 
     render(renderer) {

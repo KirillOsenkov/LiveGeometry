@@ -65,17 +65,11 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     /// <summary>Between the outline and the number, in pixels</summary>
     public static double Gap = 6;
 
-    /// <summary>How far past the edge of the window a point still counts as on screen, in pixels</summary>
-    public static double EdgeInset = 24;
-
     /// <summary>Null: the measured figure's first quantity (<see cref="DefaultQuantity"/>)</summary>
     LengthQuantity? quantity;
 
     /// <summary>Null: the quantity's own (<see cref="DefaultPrefix"/>)</summary>
     string prefix;
-
-    /// <summary>Whether the number has its place, or gets the default one at the next redraw</summary>
-    bool placed;
 
     public LengthMeasurement()
     {
@@ -221,7 +215,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     {
         quantity = newQuantity;
         Offset = offset;
-        this.placed = placed;
+        Placed = placed;
         if (Drawing != null)
         {
             UpdateExistence();
@@ -246,7 +240,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
         public object CaptureState()
         {
             var owner = Owner;
-            return new SavedQuantity(owner.quantity, owner.Offset, owner.placed);
+            return new SavedQuantity(owner.quantity, owner.Offset, owner.Placed);
         }
 
         public void RestoreState(object state)
@@ -528,7 +522,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     {
         var center = ellipse.Center;
         var fixedPoint = Math.PointOnEllipse(center, ellipse.SemiMajor, ellipse.SemiMinor, ellipse.Inclination, -Math.PI / 4);
-        if (Drawing == null || IsOnScreen(ToPhysical(fixedPoint)))
+        if (Drawing == null || FigureAnchor.IsOnScreen(ToPhysical(fixedPoint), Drawing.CoordinateSystem))
         {
             return fixedPoint;
         }
@@ -554,14 +548,6 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
         return crossings.P1.Distance(middle) <= crossings.P2.Distance(middle) ? crossings.P1 : crossings.P2;
     }
 
-    bool IsOnScreen(Point pixel)
-    {
-        var canvas = Drawing.CoordinateSystem.PhysicalSize;
-        return pixel.Exists()
-            && pixel.X >= -EdgeInset && pixel.X <= canvas.X + EdgeInset
-            && pixel.Y >= -EdgeInset && pixel.Y <= canvas.Y + EdgeInset;
-    }
-
     public override void UpdateVisual()
     {
         if (!HasSomethingToMeasure)
@@ -570,37 +556,21 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
         }
 
         Text = Prefix + Math.Round(Length, DecimalsToShow).ToString();
-
-        // Where the number goes is decided once, at its first redraw (or by the file, or by a
-        // new quantity picked in the row), whatever its quantity: a distance or a length keeps
-        // its offset, the rest get the default place. Not decided for a length then, the
-        // number of an open path was placed the first time the path was closed, outside the
-        // undo step and only until the file was saved (read back, it had an offset).
-        // (Once the window has a size: before the first layout the anchor of a circle could
-        // only be the fallback, and the offset worked out from it was wrong.)
-        if (!placed && Drawing != null && Drawing.CoordinateSystem.PhysicalSize.X > 0)
-        {
-            placed = true;
-            if (PlacesItself)
-            {
-                Offset = DefaultOffset();
-            }
-        }
-
         base.UpdateVisual();
     }
 
     /// <summary>
     /// Where a new number goes, in pixels from the anchor: clear of what it measures - across
     /// a polygon's side away from the inside, beside a radius, under a diameter's center, and
-    /// for the rest away from the shape's center.
+    /// for the rest away from the shape's center. A distance or a length keeps its offset.
+    /// Decided once, at the first redraw (or by the file, or by a new quantity picked in the
+    /// row), whatever the quantity: not decided for a length then, the number of an open path
+    /// was placed the first time the path was closed, outside the undo step and only until
+    /// the file was saved (read back, it had an offset).
     /// </summary>
-    Point DefaultOffset()
+    protected override Point? DefaultOffset()
     {
-        var size = MeasureSize();
-        var direction = OutwardDirection();
-        double distance = Gap + System.Math.Abs(direction.X) * size.Width / 2 + System.Math.Abs(direction.Y) * size.Height / 2;
-        return direction * distance - new Point(size.Width / 2, size.Height / 2);
+        return PlacesItself ? FigureAnchor.Beside(OutwardDirection(), MeasureSize(), Gap) : null;
     }
 
     /// <summary>A unit vector in pixels pointing from the anchor to where the number goes</summary>
@@ -666,9 +636,6 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     public override void ReadXml(XElement element)
     {
         base.ReadXml(element);
-
-        // (a file written by hand without an offset gets the default place)
-        placed = element.Attribute("OffsetX") != null;
         prefix = element.ReadString("Prefix");
         quantity = System.Enum.TryParse(element.ReadString("Quantity"), out LengthQuantity read) ? read : null;
     }

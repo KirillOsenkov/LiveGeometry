@@ -404,7 +404,7 @@ public static class IFigureExtensions
 
     public static void SubstituteWith(this IFigure figure, IFigure replacement)
     {
-        List<IFigure> dependents = new List<IFigure>(figure.Dependents.Where(f => !(f is PointLabel)));
+        List<IFigure> dependents = new List<IFigure>(figure.Dependents);
         if (dependents.IsEmpty())
         {
             return;

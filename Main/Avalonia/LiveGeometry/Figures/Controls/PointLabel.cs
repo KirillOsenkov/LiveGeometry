@@ -1,61 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Avalonia;
+﻿using Avalonia;
 
 namespace LiveGeometry;
 
-public class PointLabel : Measurement
+public class PointLabel : NameLabel
 {
-    public PointLabel()
-    {
-    }
-
-    // has its place: the default one it got with its first text, or the file's
-    bool placed;
-
     PointBase GetPoint()
     {
-        return (PointBase)Dependencies.ElementAt(0);
+        return (PointBase)Figure;
     }
 
     protected override string Kind => "Label";
 
-    /// <summary>"of A": "Label of A"</summary>
-    public override string Construction => Dependencies.Count > 0 ? "of " + ConstructionText.Of(Dependencies[0]) : null;
-
-    public override void OnAddingToDrawing(Drawing drawing)
-    {
-        base.OnAddingToDrawing(drawing);
-        // The undo system can attach this label to a point but not set the point's label property.
-        // This ensures that the label property is set to this pointLabel.
-        var point = GetPoint();
-        if (point.Label == null)
-        {
-            point.Label = this;
-        }
-    }
-
     /// <summary>
-    /// A point label can be dragged around its point (like in the original VB6 DG),
-    /// even though it depends on the point.
+    /// A hidden point keeps its name: the name is then a text that moves with the point, as the
+    /// numbers of a clock face, the Fibonacci squares' sizes and the Platonic solids' names are
     /// </summary>
-    public override bool AllowMove()
-    {
-        return !Locked;
-    }
-
-    public override Point Anchor => Point(0);
-
-    protected override bool KeepsClear => true;
-
-    public override IFigure OwnPoint => Dependencies.Count > 0 ? Dependencies[0] : null;
-
-    /// <summary>The lines and circles through the point: what it is built on or on, and what is built on it</summary>
-    public override IEnumerable<IFigure> FiguresThroughAnchor()
-    {
-        var point = GetPoint();
-        return point.Dependents.Concat(point.Dependencies);
-    }
+    protected override bool HidesWithFigure => false;
 
     /// <summary>
     /// The least room between the point's rim and the letters, in pixels: none, the name
@@ -194,9 +154,14 @@ public class PointLabel : Measurement
         base.MoveToCore(ClampPosition(newPosition));
     }
 
-    protected override ZOrder DefaultLayer()
+    /// <summary>
+    /// A new label: centered above its point, just clear of it (or the nearest free place to
+    /// that, not on a vertical line through the point: <see cref="LabelWithOffset.FirstOffset"/>)
+    /// </summary>
+    protected override Point? DefaultOffset()
     {
-        return ZOrder.PointLabels;
+        var size = MeasureSize();
+        return new Point(-size.Width / 2, -(size.Height + GetPoint().Shape.ActualHeight / 2 + Margin));
     }
 
     public override void UpdateVisual()
@@ -207,18 +172,6 @@ public class PointLabel : Measurement
         }
 
         UpdateText();
-        if (!placed && !Text.IsEmpty())
-        {
-            // a new label: centered above its point, just clear of it, or the nearest free
-            // place to that (FirstOffset: not on a vertical line through the point). Once: a
-            // label that comes back (the name shown again, undo) is where it was left.
-            placed = true;
-            var size = MeasureSize();
-            Offset = FirstOffset(new Point(
-                -size.Width / 2,
-                -(size.Height + GetPoint().Shape.ActualHeight / 2 + Margin)));
-        }
-
         base.UpdateVisual();
     }
 
@@ -228,7 +181,7 @@ public class PointLabel : Measurement
         if (ShowName)
         {
             // A_1 shows as A₁
-            text = NameDisplay.Format(Dependencies.ElementAt(0).Name);
+            text = NameDisplay.Format(Figure.Name);
         }
         if (ShowCoordinates)
         {
@@ -246,20 +199,6 @@ public class PointLabel : Measurement
         }
         Text = text;
     }
-
-    /// <summary>
-    /// Not in the grid: the name shows and hides with the point's Show name. (Hidden by
-    /// itself, the label stayed hidden whatever Show name said, and a name label isn't
-    /// in the Figure List to be found again.)
-    /// </summary>
-    [PropertyGridVisible(false)]
-    public override bool Visible
-    {
-        get => base.Visible; set => base.Visible = value;
-    }
-
-    [PropertyGridVisible(false)]    // Handled in the point's property grid.
-    public override string Text => base.Text;
 
     bool showName;
     [PropertyGridVisible(false)]    // Handled in the point's property grid.
@@ -290,7 +229,6 @@ public class PointLabel : Measurement
         base.ReadXml(element);
         this.showName = element.ReadBool("ShowName", true);
         this.showCoordinates = element.ReadBool("ShowCoordinates", false);
-        placed = true;
         UpdateText();
     }
 
@@ -309,8 +247,7 @@ public class PointLabel : Measurement
         get => ShowName;
         set
         {
-            var point = Dependencies.ElementAt(0) as PointBase;
-            if (point != null)
+            if (Figure is PointBase point)
             {
                 point.ShowName = value;
             }
@@ -325,8 +262,7 @@ public class PointLabel : Measurement
         get => ShowCoordinates;
         set
         {
-            var point = Dependencies.ElementAt(0) as PointBase;
-            if (point != null)
+            if (Figure is PointBase point)
             {
                 point.ShowCoordinates = value;
             }

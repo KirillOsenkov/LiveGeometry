@@ -334,7 +334,7 @@ public class FigureExplorer : Border
     static bool IsListed(IFigure figure)
     {
         // a figure's name is part of the figure, the grid is part of the paper
-        return !(figure is CartesianGrid) && !(figure is PointLabel) && !(figure is FigureLabel);
+        return !(figure is CartesianGrid) && !(figure is NameLabel);
     }
 
     HashSet<IFigure> SelectedFigures()

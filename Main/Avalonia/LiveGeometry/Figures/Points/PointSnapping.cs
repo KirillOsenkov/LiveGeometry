@@ -242,7 +242,7 @@ public static class PointSnapping
     static IFigure[] FindBuiltOnBoth(PointBase point, IPoint target)
     {
         return point.Dependents
-            .Where(dependent => !(dependent is PointLabel) && dependent.Dependencies.Contains(target))
+            .Where(dependent => !(dependent is NameLabel) && dependent.Dependencies.Contains(target))
             .ToArray();
     }
 
@@ -259,7 +259,7 @@ public static class PointSnapping
         using (Transaction.Create(drawing.ActionManager, false))
         {
             Collapse(point, target);
-            var dependents = point.Dependents.Where(d => !(d is PointLabel)).ToArray();
+            var dependents = point.Dependents.Where(d => !(d is NameLabel)).ToArray();
 
             // Expressions that name the point ([A.X] in a label, the X of a point by
             // coordinates) name the target from now on. Compiled, they hold the point

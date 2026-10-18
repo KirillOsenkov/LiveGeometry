@@ -3,10 +3,11 @@ using Avalonia;
 namespace LiveGeometry;
 
 /// <summary>
-/// Where a label written next to a figure hangs (a figure's name, <see cref="FigureLabel"/>,
-/// and a text attached to a figure, <see cref="AttachedLabel"/>, which a polygon takes in
-/// its middle): an anchor on the figure,
-/// a first offset from it, and for a line, which runs past the window, a place kept on screen.
+/// Where a label written next to a figure hangs (<see cref="AnchoredLabel"/>: a point's or a
+/// figure's name, and a text attached to a figure, which a polygon takes in its middle): an
+/// anchor on the figure, a first offset from it, and for a line, which runs past the window, a
+/// place kept on screen. The measurements place their numbers with the same pieces
+/// (<see cref="Beside"/>, <see cref="Centered"/>, <see cref="IsOnScreen"/>).
 /// </summary>
 public static class FigureAnchor
 {
@@ -113,7 +114,7 @@ public static class FigureAnchor
     {
         if (figure is PolygonBase)
         {
-            return new Point(-size.Width / 2, -size.Height / 2);
+            return Centered(size);
         }
 
         if (figure is LineBase line)
@@ -121,9 +122,7 @@ public static class FigureAnchor
             // beside the line, clear of it
             var coordinates = line is Segment ? line.Coordinates : line.OnScreenCoordinates;
             var direction = RightAngleMark.Direction(coordinateSystem.ToPhysical(coordinates.P1), coordinateSystem.ToPhysical(coordinates.P2)) ?? new Point(1, 0);
-            var normal = new Point(direction.Y, -direction.X);
-            double distance = SegmentGap + System.Math.Abs(normal.X) * size.Width / 2 + System.Math.Abs(normal.Y) * size.Height / 2;
-            return normal * distance - new Point(size.Width / 2, size.Height / 2);
+            return Beside(new Point(direction.Y, -direction.X), size, SegmentGap);
         }
 
         if (figure is ICircle)
@@ -137,6 +136,22 @@ public static class FigureAnchor
         }
 
         return new Point(6, 2);
+    }
+
+    /// <summary>The top-left corner of a label of the size, in pixels from the anchor, that puts its middle on the anchor</summary>
+    public static Point Centered(Size size)
+    {
+        return new Point(-size.Width / 2, -size.Height / 2);
+    }
+
+    /// <summary>
+    /// The top-left corner of a label of the size, in pixels from the anchor, that puts it off
+    /// the anchor in the direction (a unit vector, in pixels), its nearest edge the gap away
+    /// </summary>
+    public static Point Beside(Point direction, Size size, double gap)
+    {
+        double distance = gap + System.Math.Abs(direction.X) * size.Width / 2 + System.Math.Abs(direction.Y) * size.Height / 2;
+        return direction * distance + Centered(size);
     }
 
     /// <summary>Whether a line's anchor is near enough to the window to write its label: a line that runs outside it has nowhere</summary>

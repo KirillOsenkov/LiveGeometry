@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Xml.Linq;
 using Avalonia;
 
 namespace LiveGeometry;
@@ -63,27 +62,21 @@ public class AreaMeasurement : Measurement
 
     public override Point Anchor => Origin;
 
-    // has its place: centered on the anchor when its number first showed, or the file's
-    bool placed;
-
     public override void UpdateVisual()
     {
-        base.UpdateVisual();
-        Text = Math.Round(Measure, DecimalsToShow).ToString();
-        if (!placed && HasCanvas && !Drawing.IsReading && !Text.IsEmpty())
+        if (!HasAnchor)
         {
-            // a new one: the number in the middle of the region (it hung its corner there)
-            placed = true;
-            var size = MeasureSize();
-            Offset = new Point(-size.Width / 2, -size.Height / 2);
-            base.UpdateVisual();
+            return;
         }
+
+        Text = Math.Round(Measure, DecimalsToShow).ToString();
+        base.UpdateVisual();
     }
 
-    public override void ReadXml(XElement element)
+    /// <summary>A new one: the number in the middle of the region (it hung its corner there)</summary>
+    protected override Point? DefaultOffset()
     {
-        base.ReadXml(element);
-        placed = element.Attribute("OffsetX") != null || element.Attribute("OffsetY") != null;
+        return FigureAnchor.Centered(MeasureSize());
     }
 
     /// <summary>

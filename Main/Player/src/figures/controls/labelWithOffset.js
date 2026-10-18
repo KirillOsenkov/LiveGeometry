@@ -4,9 +4,10 @@
 class LabelWithOffset extends LabelBase {
     constructor() {
         super();
+        this.offsetValue = new Point();
 
-        /** The label's top-left corner from its anchor, in pixels */
-        this.offset = new Point();
+        /** Whether the label has its place: the file's, one given to it, or the default one it got once */
+        this.placed = false;
 
         /** Where the label is drawn instead of its place, while that is covered: from the anchor to its middle, in pixels (NameLayout) */
         this.nudge = null;
@@ -16,6 +17,44 @@ class LabelWithOffset extends LabelBase {
 
         // where the label was drawn last: when it changes, the labels drawn away from their place look again
         this.lastShownBox = null;
+    }
+
+    /** The label's top-left corner from its anchor, in pixels; set from anywhere, it is the label's place from then on */
+    get offset() {
+        return this.offsetValue;
+    }
+
+    set offset(value) {
+        this.offsetValue = value;
+        this.placed = true;
+    }
+
+    /** Where a new label goes, in pixels from the anchor; null for one that has no default place and keeps its offset */
+    defaultOffset() {
+        return null;
+    }
+
+    /** Whether the default place can be worked out now: a text to measure, a window with a size, no file being read */
+    get canPlace() {
+        return this.drawing != null
+            && this.drawing.canvas != null
+            && !this.drawing.isReading
+            && this.drawing.coordinateSystem.physicalSize.x > 0
+            && this.text !== "";
+    }
+
+    /** Gives the label its default place now, the nearest free one to it where the label keeps clear */
+    place() {
+        this.placed = true;
+        const offset = this.defaultOffset();
+        if (offset != null) {
+            this.offset = this.keepsClear ? this.firstOffset(offset) : offset;
+        }
+    }
+
+    /** Dragging the label changes only its offset from the anchor, not what it is built on */
+    allowMove() {
+        return !this.locked;
     }
 
     /** Whether the label is drawn elsewhere when something covers its place (NameLayout) */
@@ -96,10 +135,14 @@ class LabelWithOffset extends LabelBase {
         return this.dependencies.length > 0;
     }
 
-    /** Puts the label where its anchor and offset say; the text is the subclass's business */
+    /** Puts the label where its anchor and offset say, a new one at its default place; the text is the subclass's business */
     updateVisual() {
         if (!this.hasAnchor) {
             return;
+        }
+
+        if (!this.placed && this.canPlace) {
+            this.place();
         }
 
         this.coordinates = this.placeFromOffset();
@@ -127,19 +170,20 @@ class LabelWithOffset extends LabelBase {
 
     /** A drawing from before version 1 stored the offset in units of the plane */
     upgradeOffsetFromUnits() {
+        // (the same place in other units: a label without one still gets the default)
         const unitLength = this.drawing.coordinateSystem.unitLength;
-        this.offset = new Point(this.offset.x * unitLength, -this.offset.y * unitLength);
+        this.offsetValue = new Point(this.offsetValue.x * unitLength, -this.offsetValue.y * unitLength);
     }
 
     readXml(element) {
         super.readXml(element);
         this.offset = new Point(Xml.readDouble(element, "OffsetX"), Xml.readDouble(element, "OffsetY"));
+
+        // a file written by hand may leave the place out: then the label goes where a new one would
+        this.placed = element.getAttribute("OffsetX") != null || element.getAttribute("OffsetY") != null;
     }
 }
 
-/** A label whose text is worked out from what it measures; draggable, since that only changes its offset */
+/** A label whose text is worked out from what it measures */
 class Measurement extends LabelWithOffset {
-    allowMove() {
-        return !this.locked;
-    }
 }

@@ -107,7 +107,7 @@ public class ShowHideCreator : Behavior, IFigurePicker
     /// </summary>
     IFigure Pickable(IFigure figure)
     {
-        if (figure is PointLabel || figure is FigureLabel)
+        if (figure is NameLabel)
         {
             figure = figure.Dependencies.FirstOrDefault();
         }

@@ -121,7 +121,7 @@ public static class ReferencePicker
     /// <summary>The figure a click on this stands for: a name's figure, a part's whole; null for an axis</summary>
     static IFigure Resolve(Drawing drawing, IFigure hit)
     {
-        if (hit is PointLabel || hit is FigureLabel)
+        if (hit is NameLabel)
         {
             hit = hit.Dependencies.FirstOrDefault();
         }

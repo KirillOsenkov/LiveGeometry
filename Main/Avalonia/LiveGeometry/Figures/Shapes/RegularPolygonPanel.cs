@@ -162,7 +162,7 @@ public class RegularPolygonPanel : IConditionalProperties
 
         var builtOn = made
             .SelectMany(figure => figure.Dependents)
-            .FirstOrDefault(dependent => !made.Contains(dependent) && !(dependent is PointLabel) && !(dependent is FigureLabel));
+            .FirstOrDefault(dependent => !made.Contains(dependent) && !(dependent is NameLabel));
         if (builtOn != null)
         {
             drawing.RaiseStatusNotification(builtOn.Title + " is built on " + Polygon.Title + ", which keeps its " + sides + " sides.");

@@ -563,9 +563,8 @@ public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalPrope
     /// <summary>What the Translate tool takes for each: a vector for both, a length for the distance, an angle or a line as it points for the direction</summary>
     public bool Accepts(string name, IFigure figure)
     {
-        // (nor a label that says no number: a caption is no length and no angle;
-        // LiveGeometry.Label, since here Label is the point's own name label)
-        if (figure is IPoint || !LiveGeometry.Label.GivesNumber(figure))
+        // (nor a label that says no number: a caption is no length and no angle)
+        if (figure is IPoint || !Label.GivesNumber(figure))
         {
             return false;
         }

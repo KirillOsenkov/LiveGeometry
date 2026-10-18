@@ -1530,7 +1530,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   length at the middle with the file's offset (the default offset is 0, as it always
   was; a polyline's, a curve's or a path's middle is the middle of its parameter, on it,
   not its center); the rest are placed once, at the first `UpdateVisual` with a canvas that has a size
-  (and again when a quantity is picked in the row; a file without `OffsetX` gets it too).
+  (and again when a quantity is picked in the row; a file without an offset gets it too).
   The place is decided at that first redraw whatever the quantity, so a quantity that
   changes by itself (an open path's length becoming its perimeter when it is closed)
   doesn't move the number; it did, outside the undo step and only until a reload. The row
@@ -1985,6 +1985,19 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   it again. (A label from a file hidden that way shows when the name is shown again.)
   Hide and Lock in the context menu take the whole selection, as Delete does. GeoGebra's `<show label>` on those
   figures turns it on, in the figure's color.
+  **One family of labels** (2026-10-18): `PointLabel`, `FigureLabel` and `AttachedLabel` are
+  `AnchoredLabel`s (hung on their first dependency through `FigureAnchor`, keeping clear,
+  hidden with the figure - but a point's name, which the clock face's numbers and the
+  like are - and kept on screen beside a line); the first two are `NameLabel`s, part of
+  their figure (`FigureBase.NameLabel`, a point's too, with `HasNameLabel` and its retired
+  label), and whatever leaves names out (the Figure List, Delete, a region, a show/hide
+  box, a formula, the context menu) asks `is NameLabel`. Every `LabelWithOffset` is placed
+  once the same way: an `Offset` set from anywhere (a file, a drag, undo, a reader) is its
+  place (`Placed`); one without gets `DefaultOffset()` at the first redraw with a sized
+  canvas outside a file read (`FirstOffset` where it keeps clear), and a file without
+  `OffsetX`/`OffsetY` leaves it unplaced. A reader that moves a new label on from its
+  default calls `PlaceIfNew` first. A point's name goes over to a replacement like any
+  dependent (`SubstituteWith` no longer skips it), then `Actions.HandOverNameLabel`.
 - **Texts attached to figures** (`Figures/Controls/AttachedLabel.cs`, 2026-10-17): the
   Text tool clicked on a point, segment, line, ray, vector, circle or polygon (inside, where
   it is filled; on its sides a click takes the side segment) makes an `AttachedLabel`, a

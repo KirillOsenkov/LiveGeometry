@@ -55,10 +55,9 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
     /// <summary>A point goes by its name: "through E", not "through point E"</summary>
     public override string Noun => null;
 
-    // The label the point had last. A label is added and removed with the point and by
-    // its Show name and Show coordinates, outside the undo history, so it must be the
-    // same object every time: the history may hold a drag of it, and its place is its own.
-    PointLabel keptLabel;
+    // The label (NameLabel) is added and removed with the point and by its Show name and
+    // Show coordinates, outside the undo history, so it is the same object every time
+    // (retiredNameLabel): the history may hold a drag of it, and its place is its own.
 
     // the point left the drawing with its label on (undo of adding it): it comes back with it
     bool returnsWithLabel;
@@ -90,10 +89,11 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
 
         if (returning)
         {
-            if (withLabel && Label == null && keptLabel != null && !Drawing.Figures.Contains(keptLabel))
+            if (withLabel && NameLabel == null && retiredNameLabel != null && !Drawing.Figures.Contains(retiredNameLabel))
             {
-                Label = keptLabel;
-                Drawing.Figures.Add(Label);
+                NameLabel = retiredNameLabel;
+                retiredNameLabel = null;
+                Drawing.Figures.Add(NameLabel);
             }
         }
         else if (Settings.Instance.AutoLabelPoints && IsHitTestVisible && Visible)
@@ -104,12 +104,13 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
 
     public override void OnRemovingFromDrawing(Drawing drawing)
     {
-        if (Label != null)
+        var label = NameLabel;
+        if (label != null)
         {
-            keptLabel = Label;
+            retiredNameLabel = label;
             returnsWithLabel = true;
-            Drawing.Figures.Remove(Label);
-            Label = null;
+            NameLabel = null;
+            Drawing.Figures.Remove(label);
         }
     }
 
@@ -151,18 +152,12 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
         return null;
     }
 
-    [PropertyGridVisible]
-    public override string Name
+    /// <summary>The label of the name and the coordinates, while the point shows either</summary>
+    PointLabel PointLabel => NameLabel as PointLabel;
+
+    protected override NameLabel CreateNameLabel()
     {
-        get => base.Name;
-        set
-        {
-            base.Name = value;
-            if (Label != null)
-            {
-                Label.UpdateVisual();
-            }
-        }
+        return Factory.CreatePointLabel(Drawing, new[] { this });
     }
 
     [PropertyGridVisible]
@@ -171,23 +166,17 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
     [PropertyGridSection(PropertyGridSection.Display, 10)]
     public bool ShowName
     {
-        get
-        {
-            if (Label == null)
-            {
-                return false;
-            }
-            return Label.ShowName;
-        }
+        get => PointLabel?.ShowName == true;
         set
         {
             if (ShowName == value)
             {
                 return;
             }
-            AddLabelIfNecessary();
-            Label.ShowName = value;
-            RemoveLabelIfNecessary();
+
+            HasNameLabel = true;
+            PointLabel.ShowName = value;
+            RetireLabelSayingNothing();
         }
     }
 
@@ -197,14 +186,7 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
     [PropertyGridSection(PropertyGridSection.Display, 20)]
     public bool ShowCoordinates
     {
-        get
-        {
-            if (Label == null)
-            {
-                return false;
-            }
-            return Label.ShowCoordinates;
-        }
+        get => PointLabel?.ShowCoordinates == true;
         set
         {
             if (ShowCoordinates == value)
@@ -212,34 +194,18 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
                 return;
             }
 
-            AddLabelIfNecessary();
-            Label.ShowCoordinates = value;
-            RemoveLabelIfNecessary();
+            HasNameLabel = true;
+            PointLabel.ShowCoordinates = value;
+            RetireLabelSayingNothing();
         }
     }
 
-    private void RemoveLabelIfNecessary()
+    /// <summary>The label goes when it shows neither the name nor the coordinates, and is retired: it says nothing when it comes back</summary>
+    void RetireLabelSayingNothing()
     {
-        if (Label != null && !Label.ShowName && !Label.ShowCoordinates)
+        if (PointLabel is { ShowName: false, ShowCoordinates: false })
         {
-            keptLabel = Label;
-            Drawing.Figures.Retire(Label);
-            Label = null;
-        }
-    }
-
-    private void AddLabelIfNecessary()
-    {
-        if (Label == null)
-        {
-            // the one it had, where it was, if it had one: saying nothing yet
-            Label = keptLabel ?? Factory.CreatePointLabel(Drawing, new[] { this });
-            Label.ShowName = false;
-            Label.ShowCoordinates = false;
-
-            // (one hidden by itself, in a file from before it couldn't be, shows again)
-            Label.Visible = true;
-            Drawing.Figures.Return(Label, owner: this);
+            HasNameLabel = false;
         }
     }
 
@@ -280,6 +246,4 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
     {
         return BezierPath.CanSharpenAnchor(this);
     }
-
-    public PointLabel Label;
 }

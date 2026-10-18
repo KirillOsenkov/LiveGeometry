@@ -432,19 +432,29 @@ public abstract partial class FigureBase :
         this.GenerateNewNameIfNecessary(drawing, null);
     }
 
-    /// <summary>The label writing the figure's name next to it, while it shows one (<see cref="FigureLabel"/>)</summary>
-    public FigureLabel NameLabel { get; set; }
+    /// <summary>
+    /// The label writing the figure's name next to it, while it shows one: a
+    /// <see cref="FigureLabel"/>, or a point's <see cref="PointLabel"/> (which may show its
+    /// coordinates too)
+    /// </summary>
+    public NameLabel NameLabel { get; set; }
 
     // the label the figure had last: showing the name again brings the same one back,
     // where it was dragged to, and what the undo history did to it still applies to it
-    FigureLabel retiredNameLabel;
+    protected NameLabel retiredNameLabel;
+
+    /// <summary>A new label for the figure's name, the first time it shows one</summary>
+    protected virtual NameLabel CreateNameLabel()
+    {
+        return Factory.CreateFigureLabel(Drawing, this);
+    }
 
     /// <summary>
     /// Whether the figure writes its name next to itself. Setting it adds or removes the
-    /// label directly, like a point's ShowName: the property set is the undo step. The
+    /// label directly, as Show name does: the property set is the undo step. The
     /// label taken away is kept, and comes back when the name is shown again (undo
     /// included). The figures that offer it in the grid (lines, circles) expose it as
-    /// "Show name".
+    /// "Show name"; a point has it while it shows its name or its coordinates.
     /// </summary>
     public bool HasNameLabel
     {
@@ -458,7 +468,9 @@ public abstract partial class FigureBase :
 
             if (value)
             {
-                NameLabel = retiredNameLabel ?? Factory.CreateFigureLabel(Drawing, this);
+                NameLabel = retiredNameLabel ?? CreateNameLabel();
+
+                // (one hidden by itself, in a file from before it couldn't be, shows again)
                 NameLabel.Visible = true;
                 retiredNameLabel = null;
                 Drawing.Figures.Return(NameLabel, owner: this);

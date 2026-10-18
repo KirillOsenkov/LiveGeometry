@@ -207,8 +207,7 @@ public class SelectionRegion
             && figure.IsHitTestVisible
             && !(figure is CartesianGrid)
             && !(figure is AxisLine)
-            && !(figure is PointLabel)
-            && !(figure is FigureLabel)
+            && !(figure is NameLabel)
             && !(figure is ControlBase label && drawing.FixedLabels.Contains(label));
     }
 

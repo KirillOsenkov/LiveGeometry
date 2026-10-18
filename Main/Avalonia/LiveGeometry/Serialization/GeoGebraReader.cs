@@ -2396,13 +2396,13 @@ public class GeoGebraReader
             point.Visible = visible;
             point.ShowName = visible && showLabel && mode != 2;
             point.ShowCoordinates = visible && showLabel && (mode == 1 || mode == 2 || mode == 9);
-            if (point.Label != null)
+            if (point.NameLabel != null)
             {
                 // GeoGebra writes the name in the point's color
                 var color = ReadObjectColor(element);
                 if (color != null)
                 {
-                    point.Label.Style = TextStyleFor(color.Value, defaultFontSize);
+                    point.NameLabel.Style = TextStyleFor(color.Value, defaultFontSize);
                 }
 
                 // GeoGebra starts the name's baseline a point's radius to the upper right of
@@ -2411,7 +2411,7 @@ public class GeoGebraReader
                 double offsetX = labelOffset != null ? labelOffset.ReadDouble("x") : 0;
                 double offsetY = labelOffset != null ? labelOffset.ReadDouble("y") : 0;
                 double radius = point.Style is PointStyle pointStyle ? pointStyle.Size / 2 : 5;
-                point.Label.Offset = new Point(radius + offsetX, -radius + offsetY - defaultFontSize);
+                point.NameLabel.Offset = new Point(radius + offsetX, -radius + offsetY - defaultFontSize);
             }
         }
         else if (figure is AngleMeasurement angle)
@@ -2448,15 +2448,15 @@ public class GeoGebraReader
                     named.NameLabel.Style = TextStyleFor(color.Value, defaultFontSize);
                 }
 
-                if (polygonOfSide.TryGetValue(label, out var vertices))
+                if (polygonOfSide.TryGetValue(label, out var vertices) && named.NameLabel is FigureLabel sideName)
                 {
-                    named.NameLabel.KeepOutside(vertices.Select(vertex => vertex.Coordinates).ToList());
+                    sideName.KeepOutside(vertices.Select(vertex => vertex.Coordinates).ToList());
                 }
 
                 var labelOffset = element.Element("labelOffset");
                 if (labelOffset != null)
                 {
-                    named.NameLabel.UpdateVisual();
+                    named.NameLabel.PlaceIfNew();
                     named.NameLabel.Offset += new Point(labelOffset.ReadDouble("x"), labelOffset.ReadDouble("y"));
                 }
             }

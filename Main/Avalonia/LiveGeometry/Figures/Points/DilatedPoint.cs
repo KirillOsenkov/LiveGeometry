@@ -147,7 +147,6 @@ public class DilatedPoint : PointBase, IPoint, ITiedValues, IConditionalProperti
 
     public bool Accepts(string name, IFigure figure)
     {
-        // (LiveGeometry.Label: here Label is the point's own name label)
         return !(figure is IPoint) && figure.GivesLength();
     }
 
