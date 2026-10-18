@@ -100,6 +100,7 @@ public class LineAtAngle : LineBase, ILine, ITiedValues, IConditionalProperties
 
     /// <summary>The line turned horizontal, as a segment's Horizontal does (<see cref="Align"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Horizontal")]
     [PropertyGridGroup("Angle")]
     [PropertyGridIcon(PropertyGridIcon.Horizontal)]
@@ -110,6 +111,7 @@ public class LineAtAngle : LineBase, ILine, ITiedValues, IConditionalProperties
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Vertical")]
     [PropertyGridGroup("Angle")]
     [PropertyGridIcon(PropertyGridIcon.Vertical)]

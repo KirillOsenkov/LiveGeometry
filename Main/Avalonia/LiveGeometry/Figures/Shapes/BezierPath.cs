@@ -984,6 +984,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
     /// <summary>Whether a piece goes from the last anchor back to the first</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Closed")]
     public bool Closed
     {
@@ -1038,6 +1039,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
     /// <summary>Whether the inside is filled: an open path as if a straight line closed it</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Filled")]
     public bool Filled
     {
@@ -1150,6 +1152,7 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
     /// <summary>Every handle that is an offset from its anchor left to the path again (<see cref="Smoothing"/>), in one undo step</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Smooth all anchors")]
     [PropertyGridIcon(PropertyGridIcon.Arc)]
     public void SmoothAllAnchors()

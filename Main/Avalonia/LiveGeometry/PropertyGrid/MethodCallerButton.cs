@@ -42,20 +42,7 @@ public class MethodCallerButton : Button
     /// </summary>
     static object CreateDestructiveContent(string name)
     {
-        var trashCan = new Avalonia.Controls.Shapes.Path()
-        {
-            // lid with handle, tapered body, two ribs - on a 14x14 grid
-            Data = Avalonia.Media.Geometry.Parse(
-                "M2.5,4 H11.5 M5.5,4 V2.5 H8.5 V4 M3.5,4 L4.2,12 H9.8 L10.5,4 M6,6.2 V9.8 M8,6.2 V9.8"),
-            StrokeThickness = 1.2,
-            StrokeLineCap = Avalonia.Media.PenLineCap.Round,
-            StrokeJoin = Avalonia.Media.PenLineJoin.Round,
-            Width = 14,
-            Height = 14,
-            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
-        };
-        trashCan.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, nameof(AppTheme.Destructive));
-        return CreateContent(trashCan, name, nameof(AppTheme.Destructive));
+        return CreateContent(PropertyGridIcons.TrashCan(), name, nameof(AppTheme.Destructive));
     }
 
     /// <summary>

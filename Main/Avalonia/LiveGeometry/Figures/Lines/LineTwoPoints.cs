@@ -78,6 +78,7 @@ public class LineTwoPoints : LineBase, ILine, IFixableDirection
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to ray")]
     [PropertyGridIcon(PropertyGridIcon.Ray)]
     public void ConvertToRay()
@@ -86,6 +87,7 @@ public class LineTwoPoints : LineBase, ILine, IFixableDirection
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to segment")]
     [PropertyGridIcon(PropertyGridIcon.Segment)]
     public void ConvertToSegment()
@@ -94,6 +96,7 @@ public class LineTwoPoints : LineBase, ILine, IFixableDirection
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Fix direction")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Lock)]
@@ -107,6 +110,7 @@ public class LineTwoPoints : LineBase, ILine, IFixableDirection
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Free direction")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
@@ -120,6 +124,7 @@ public class LineTwoPoints : LineBase, ILine, IFixableDirection
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Horizontal")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Horizontal)]
@@ -133,6 +138,7 @@ public class LineTwoPoints : LineBase, ILine, IFixableDirection
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Vertical")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Vertical)]

@@ -116,6 +116,7 @@ class DrawingDeserializer {
         // a file that doesn't say has no grid
         drawing.coordinateGrid.visible = Xml.readBool(viewportNode, "Grid", false);
         drawing.coordinateGrid.showAxes = Xml.readBool(viewportNode, "Axes", true);
+        drawing.coordinateGrid.showGridLines = Xml.readBool(viewportNode, "Lines", true);
         drawing.coordinateSystem.gridStep = Xml.readDouble(viewportNode, "GridStep");
         drawing.viewport = new Rect(minX, minY, maxX - minX, maxY - minY);
         drawing.coordinateSystem.setViewport(minX, maxX, minY, maxY);

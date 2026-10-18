@@ -244,6 +244,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Fix length")]
     [PropertyGridGroup("Length")]
     [PropertyGridIcon(PropertyGridIcon.Lock)]
@@ -254,6 +255,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Free length")]
     [PropertyGridGroup("Length")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
@@ -507,6 +509,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
 
     // so do Fix direction, Free direction, Horizontal and Vertical
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Fix direction")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Lock)]
@@ -517,6 +520,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Free direction")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
@@ -527,6 +531,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Horizontal")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Horizontal)]
@@ -537,6 +542,7 @@ public class Vector : CompositeFigure, ILengthProvider, IFixableLength, IFixable
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Vertical")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Vertical)]

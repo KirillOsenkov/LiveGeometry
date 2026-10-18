@@ -60,6 +60,7 @@ public abstract class PerpendicularLineBase : LineTwoPoints
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Right angle mark")]
     public bool ShowRightAngle
     {

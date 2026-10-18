@@ -25,7 +25,8 @@ public enum PropertyGridIcon
     BringToFront,
     SendToBack,
     Horizontal,
-    Vertical
+    Vertical,
+    Delete
 }
 
 /// <summary>

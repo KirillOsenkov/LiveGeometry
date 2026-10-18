@@ -26,6 +26,7 @@ class CartesianGrid extends CompositeFigure {
         super();
         this.visibleValue = false;
         this.showAxesValue = true;
+        this.showGridLinesValue = true;
 
         // the grid's own styles, in the theme's colors (not in the drawing's style list)
         this.axisStyle = new LineStyle();
@@ -129,8 +130,22 @@ class CartesianGrid extends CompositeFigure {
             this.yAxisLine.visible = value;
         }
 
-        this.gridLines.visible = value;
+        this.gridLines.visible = value && this.showGridLinesValue;
         if (value && this.drawing != null) {
+            this.updateVisual();
+        }
+    }
+
+    /** The lines of a grid that shows, as showAxes is its axes */
+    get showGridLines() {
+        return this.showGridLinesValue;
+    }
+
+    set showGridLines(value) {
+        const shown = value && this.visibleValue;
+        this.gridLines.visible = shown;
+        this.showGridLinesValue = value;
+        if (shown && this.drawing != null) {
             this.updateVisual();
         }
     }
@@ -177,7 +192,10 @@ class CartesianGrid extends CompositeFigure {
         }
 
         // the lines under the labels, the axes on top
-        this.gridLines.render(renderer);
+        if (this.showGridLinesValue) {
+            this.gridLines.render(renderer);
+        }
+
         if (this.showAxesValue) {
             this.xAxisLine.render(renderer);
             this.yAxisLine.render(renderer);

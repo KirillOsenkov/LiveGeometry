@@ -23,6 +23,10 @@ public class CommandToolButton : ToolButton
         }
         Content = buttonGrid;
         buttonGrid.PointerPressed += Content_MouseLeftButtonDown;
+        if (command.DropDown != null)
+        {
+            buttonGrid.AddDropDown(command.DropDown);
+        }
 
         if (command.IsChecked != null)
         {

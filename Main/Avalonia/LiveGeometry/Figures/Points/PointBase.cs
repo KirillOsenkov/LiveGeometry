@@ -166,6 +166,7 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Show name")]
     public bool ShowName
     {
@@ -190,6 +191,7 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Show coordinates")]
     public bool ShowCoordinates
     {
@@ -245,6 +247,7 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
     /// midpoint or a crossing as well as a point that can be dragged.
     /// </summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Smooth automatically")]
     [PropertyGridIcon(PropertyGridIcon.Arc)]
     [PropertyGridCondition(nameof(CanSmoothAnchor))]
@@ -256,6 +259,7 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
 
     /// <summary>The point, an anchor of a Bezier path, has both its handles on it: the path turns there (<see cref="BezierPath.SharpenAnchor"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Sharp corner")]
     [PropertyGridIcon(PropertyGridIcon.Angle)]
     [PropertyGridCondition(nameof(CanSharpenAnchor))]

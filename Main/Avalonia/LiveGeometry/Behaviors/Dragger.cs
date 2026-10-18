@@ -1036,12 +1036,13 @@ public partial class Dragger : Behavior
     #endregion
 
     /// <summary>
-    /// Context menu for the figure under the cursor, like the point and figure menus
-    /// of the original DG.
+    /// The menu of the figure under the cursor, or of the paper, like the point and figure
+    /// menus of the original DG (<see cref="ContextMenus"/>)
     /// </summary>
     public override void MouseRightClick(object sender, MouseButtonEventArgs e)
     {
-        var hit = Drawing.Figures.HitTest(Coordinates(e, false, false, false));
+        var coordinates = Coordinates(e, false, false, false);
+        var hit = Drawing.Figures.HitTest(coordinates);
 
         // (the figure chosen with Tab, as a click takes it)
         if (Choice.Index > 0 && Choice.Current is IFigure chosen)
@@ -1054,271 +1055,28 @@ public partial class Dragger : Behavior
             hit = null;
         }
 
-        var menu = new Avalonia.Controls.ContextMenu();
-
-        // a vertex or a side of a regular polygon is selected by itself, as a click
-        // selects it, but what the menu does (hide, lock, delete) is done to the polygon
-        var clicked = hit != null ? FigureParts.SelectionTarget(hit) : null;
-        var figure = clicked != null ? FigureParts.Whole(clicked) : null;
-
-        void Add(string header, System.Action action, bool? isChecked = null)
+        if (hit == null)
         {
-            var item = new Avalonia.Controls.MenuItem() { Header = header };
-            if (isChecked != null)
-            {
-                item.ToggleType = Avalonia.Controls.MenuItemToggleType.CheckBox;
-                item.IsChecked = isChecked.Value;
-            }
-
-            item.Click += (s, args) => action();
-            menu.Items.Add(item);
+            ContextMenus.ForPaper(Drawing).Open(ParentCanvas);
+            return;
         }
 
-        void Set(object target, string property, object value)
+        // a side of a Bezier path is selected by itself, as a click selects it, but what
+        // the menu does (hide, lock, delete) is done to the path
+        var clicked = FigureParts.SelectionTarget(hit);
+        if (!clicked.Selected)
         {
-            Actions.SetProperty(Drawing.ActionManager, new PropertyValue(property, target), value);
+            Drawing.Figures.ClearSelection();
+            clicked.Selected = true;
+            Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
         }
 
-        if (figure == null)
-        {
-            Add("Zoom to fit", () => Drawing.ZoomToFit());
-            Add("Select all", () =>
-            {
-                Drawing.SelectAll();
-                Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
-            });
-        }
-        else
-        {
-            if (!clicked.Selected)
-            {
-                Drawing.Figures.ClearSelection();
-                clicked.Selected = true;
-                Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
-            }
-
-            AddChooseFigureItems(menu, Coordinates(e, false, false, false));
-            var point = figure as PointBase ?? (figure as PointLabel)?.Dependencies.FirstOrDefault() as PointBase;
-            if (point != null)
-            {
-                Add("Show name", () => Set(point, "ShowName", !point.ShowName), point.ShowName);
-                Add("Show coordinates", () => Set(point, "ShowCoordinates", !point.ShowCoordinates), point.ShowCoordinates);
-                AddSnapItems(menu, point, Add);
-                menu.Items.Add(new Avalonia.Controls.Separator());
-            }
-
-            if (figure is ShowHideControl box)
-            {
-                Add("Edit figures…", box.EditFigures);
-                menu.Items.Add(new Avalonia.Controls.Separator());
-            }
-
-            if (figure is AttachedLabel attached)
-            {
-                Add("Detach", attached.Detach);
-                menu.Items.Add(new Avalonia.Controls.Separator());
-            }
-
-            Add("Hide", () =>
-            {
-                // A name goes the way its Show name takes it: hidden by itself, it stayed
-                // hidden with Show name ticked, ticked again or not.
-                if (figure is PointLabel && point != null)
-                {
-                    using (Transaction.Create(Drawing.ActionManager, false))
-                    {
-                        if (point.ShowName)
-                        {
-                            Set(point, nameof(PointBase.ShowName), false);
-                        }
-
-                        if (point.ShowCoordinates)
-                        {
-                            Set(point, nameof(PointBase.ShowCoordinates), false);
-                        }
-                    }
-                }
-                else if (figure is FigureLabel && figure.Dependencies.FirstOrDefault() is FigureBase named)
-                {
-                    Set(named, nameof(FigureBase.HasNameLabel), false);
-                }
-                else
-                {
-                    // the selection, as Delete takes it: hidden, the one clicked alone
-                    // went and the rest stayed selected
-                    var hidden = SelectedOrClicked(figure).Where(f => f.Visible).ToArray();
-                    using (Transaction.Create(Drawing.ActionManager, false))
-                    {
-                        foreach (var item in hidden)
-                        {
-                            Set(item, "Visible", false);
-                        }
-                    }
-
-                    foreach (var item in hidden)
-                    {
-                        item.Selected = false;
-                    }
-                }
-
-                figure.Selected = false;
-                Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
-            });
-            if (figure is ControlBase fixedLabel && Drawing.FixedLabels.Contains(fixedLabel))
-            {
-                // a label a gallery drawing came with is held as if locked: unlocked, it
-                // drags as any label does, the caption on its own
-                Add("Unlock", () =>
-                {
-                    foreach (var item in SelectedOrClicked(figure).OfType<ControlBase>())
-                    {
-                        Drawing.FixedLabels.Remove(item);
-                    }
-                });
-            }
-            else
-            {
-                Add(figure.Locked ? "Unlock" : "Lock", () =>
-                {
-                    bool locked = !figure.Locked;
-                    using (Transaction.Create(Drawing.ActionManager, false))
-                    {
-                        foreach (var item in SelectedOrClicked(figure).Where(f => f.Locked != locked))
-                        {
-                            Set(item, "Locked", locked);
-                        }
-                    }
-                });
-            }
-
-            // the selection's place among the figures it overlaps (ZOrders)
-            var ordered = SelectedOrClicked(figure);
-            bool canBringToFront = ZOrders.CanBringToFront(ordered);
-            bool canSendToBack = ZOrders.CanSendToBack(ordered);
-            if (canBringToFront || canSendToBack)
-            {
-                menu.Items.Add(new Avalonia.Controls.Separator());
-                if (canBringToFront)
-                {
-                    Add("Bring to front", () => ZOrders.BringToFront(ordered));
-                }
-
-                if (canSendToBack)
-                {
-                    Add("Send to back", () => ZOrders.SendToBack(ordered));
-                }
-            }
-
-            // (a name label goes with its "Show name", not by itself: Delete did nothing)
-            if (!(figure is PointLabel) && !(figure is FigureLabel))
-            {
-                menu.Items.Add(new Avalonia.Controls.Separator());
-                Add("Delete", () => Drawing.DeleteSelection());
-            }
-        }
-
-        menu.Open(ParentCanvas);
-    }
-
-    /// <summary>
-    /// Where figures overlap, "Choose figure" (as in the original DG) lists them all and
-    /// selects the one picked: the click selects the topmost only
-    /// </summary>
-    void AddChooseFigureItems(Avalonia.Controls.ContextMenu menu, Point coordinates)
-    {
-        var figures = Drawing.Figures
+        var choices = Drawing.Figures
             .HitTestAll(coordinates, f => f.Visible && f.IsHitTestVisible && !(f is AxisLine))
             .Select(FigureParts.SelectionTarget)
             .Distinct()
             .ToList();
-        if (figures.Count < 2)
-        {
-            return;
-        }
-
-        var choose = new Avalonia.Controls.MenuItem() { Header = "Choose figure" };
-        foreach (var candidate in figures)
-        {
-            var item = new Avalonia.Controls.MenuItem() { Header = ClickChoice.Describe(candidate) };
-            item.Click += (s, args) =>
-            {
-                Drawing.Figures.ClearSelection();
-                candidate.Selected = true;
-                Drawing.RaiseSelectionChanged(Drawing.GetSelectedFigures());
-            };
-            choose.Items.Add(item);
-        }
-
-        menu.Items.Add(choose);
-        menu.Items.Add(new Avalonia.Controls.Separator());
-    }
-
-    /// <summary>The figures selected with the one clicked, which is among them; no names of points or lines (those go with Show name)</summary>
-    IList<IFigure> SelectedOrClicked(IFigure clicked)
-    {
-        var selected = FigureParts.Wholes(Drawing.GetSelectedFigures())
-            .Where(f => !(f is PointLabel) && !(f is FigureLabel))
-            .ToList();
-        if (!selected.Contains(clicked))
-        {
-            selected.Add(clicked);
-        }
-
-        return selected;
-    }
-
-    /// <summary>
-    /// As in the original DG: "Snap to" the figure through the point (a submenu when there
-    /// are several), "Convert to point by coordinates" for a free point, and "Free point" for a point
-    /// tied to figures or to typed coordinates
-    /// </summary>
-    static void AddSnapItems(
-        Avalonia.Controls.ContextMenu menu,
-        PointBase point,
-        System.Action<string, System.Action, bool?> add)
-    {
-        var figures = point is FreePoint ? PointSnapping.FiguresToSnapTo(point) : new IFigure[0];
-        if (figures.Count == 1)
-        {
-            add("Snap to " + PointSnapping.Describe(figures[0]), () => PointSnapping.SnapTo(point, figures[0]), null);
-        }
-        else if (figures.Count > 1)
-        {
-            var snapTo = new Avalonia.Controls.MenuItem() { Header = "Snap to figure" };
-            foreach (var figure in figures)
-            {
-                var item = new Avalonia.Controls.MenuItem() { Header = PointSnapping.Describe(figure) };
-                item.Click += (s, args) => PointSnapping.SnapTo(point, figure);
-                snapTo.Items.Add(item);
-            }
-
-            menu.Items.Add(snapTo);
-        }
-
-        if (PointSnapping.CanConvertToPointByCoordinates(point))
-        {
-            add("Convert to point by coordinates", () => PointSnapping.ConvertToPointByCoordinates((FreePoint)point), null);
-        }
-
-        if (PointSnapping.CanFree(point))
-        {
-            add("Free point", () => PointSnapping.Release(point), null);
-        }
-
-        if (BezierPath.CanBecomeAnchor(point))
-        {
-            add("Convert to path anchor", () => BezierPath.ConvertToAnchor((PointOnFigure)point), null);
-        }
-
-        if (BezierPath.CanSmoothAnchor(point))
-        {
-            add("Smooth automatically", () => BezierPath.SmoothAnchor(point), null);
-        }
-
-        if (BezierPath.CanSharpenAnchor(point))
-        {
-            add("Sharp corner", () => BezierPath.SharpenAnchor(point), null);
-        }
+        ContextMenus.ForFigure(Drawing, FigureParts.Whole(clicked), choices).Open(ParentCanvas);
     }
 
     public override void KeyDown(object sender, KeyEventArgs e)

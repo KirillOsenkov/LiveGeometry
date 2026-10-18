@@ -695,7 +695,8 @@ public partial class PropertyGrid : StackPanel
         return new MethodCallerButton() { OperationDescription = m, Target = obj };
     }
 
-    private static IEnumerable<IOperationDescription> GetCallableMethods(object editableObject)
+    /// <summary>The buttons of the object's page (also what its context menu offers of them, <see cref="ContextMenus"/>)</summary>
+    public static IEnumerable<IOperationDescription> GetCallableMethods(object editableObject)
     {
         if (editableObject is ICustomMethodProvider)
         {

@@ -44,6 +44,7 @@ public partial class EllipseArc : EllipseArcBase
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to segment")]
     [PropertyGridIcon(PropertyGridIcon.CircleSegment)]
     public virtual void ConvertToEllipseSegment()
@@ -52,6 +53,7 @@ public partial class EllipseArc : EllipseArcBase
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to sector")]
     [PropertyGridIcon(PropertyGridIcon.Sector)]
     public void ConvertToEllipseSector()
@@ -65,6 +67,7 @@ public partial class CircleArc : CircleArcBase
     protected override string Kind => "Arc";
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to segment")]
     [PropertyGridIcon(PropertyGridIcon.CircleSegment)]
     public virtual void ConvertToCircleSegment()
@@ -73,6 +76,7 @@ public partial class CircleArc : CircleArcBase
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to sector")]
     [PropertyGridIcon(PropertyGridIcon.Sector)]
     public void ConvertToSector()
@@ -126,6 +130,7 @@ public partial class CircleSegment : CircleArcBase, IShapeWithInterior, IPerimet
     public double Perimeter => Length + BeginLocation.Distance(EndLocation);
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to arc")]
     [PropertyGridIcon(PropertyGridIcon.Arc)]
     public void ConvertToArc()
@@ -134,6 +139,7 @@ public partial class CircleSegment : CircleArcBase, IShapeWithInterior, IPerimet
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to sector")]
     [PropertyGridIcon(PropertyGridIcon.Sector)]
     public void ConvertToSector()
@@ -185,6 +191,7 @@ public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IPerim
     public double Area => SegmentArea;
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to arc")]
     [PropertyGridIcon(PropertyGridIcon.Arc)]
     public void ConvertToEllipseArc()
@@ -193,6 +200,7 @@ public partial class EllipseSegment : EllipseArcBase, IShapeWithInterior, IPerim
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to sector")]
     [PropertyGridIcon(PropertyGridIcon.Sector)]
     public void ConvertToEllipseSector()
@@ -265,6 +273,7 @@ public partial class CircleSector : CircleArcBase, IShapeWithInterior, IPerimete
     public double Area => SectorArea;
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to arc")]
     [PropertyGridIcon(PropertyGridIcon.Arc)]
     public void ConvertToArc()
@@ -273,6 +282,7 @@ public partial class CircleSector : CircleArcBase, IShapeWithInterior, IPerimete
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to segment")]
     [PropertyGridIcon(PropertyGridIcon.CircleSegment)]
     public virtual void ConvertToCircleSegment()
@@ -349,6 +359,7 @@ public partial class EllipseSector : EllipseArcBase, IShapeWithInterior, IPerime
     public double Area => SectorArea;
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to arc")]
     [PropertyGridIcon(PropertyGridIcon.Arc)]
     public void ConvertToEllipseArc()
@@ -357,6 +368,7 @@ public partial class EllipseSector : EllipseArcBase, IShapeWithInterior, IPerime
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to segment")]
     [PropertyGridIcon(PropertyGridIcon.CircleSegment)]
     public virtual void ConvertToEllipseSegment()

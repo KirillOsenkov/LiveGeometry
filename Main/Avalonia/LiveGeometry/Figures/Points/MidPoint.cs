@@ -35,6 +35,7 @@ public class MidPoint : PointBase, IPoint, IConditionalProperties
 
     /// <summary>Lets go of the two points: a free point where it is (<see cref="PointSnapping.Release"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Free point")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
     public void Release()

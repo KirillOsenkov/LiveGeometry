@@ -137,6 +137,7 @@ public partial class PointOnFigure : FreePoint, IPoint
 
     /// <summary>Detaches the point from its figure (<see cref="PointSnapping.Release"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Free point")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
     public void Release()
@@ -146,6 +147,7 @@ public partial class PointOnFigure : FreePoint, IPoint
 
     /// <summary>A point on a Bezier path becomes an anchor of it, where it is (<see cref="BezierPath.ConvertToAnchor"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to path anchor")]
     [PropertyGridIcon(PropertyGridIcon.Plus)]
     public void ConvertToPathAnchor()

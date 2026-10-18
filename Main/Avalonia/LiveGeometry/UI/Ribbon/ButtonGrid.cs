@@ -177,4 +177,58 @@ public class ButtonGrid : Grid
     {
         get => textBlock.Text; set => textBlock.Text = value;
     }
+
+    /// <summary>
+    /// A split button: a narrow strip with a small arrow at the right edge, inside the
+    /// button's plate, that opens a menu instead of doing what the button does. It lights
+    /// up on its own under the cursor, so that the two halves read as two targets.
+    /// </summary>
+    public void AddDropDown(System.Action<Control> open)
+    {
+        ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+        Grid.SetColumnSpan(plate, 2);
+
+        var arrow = new Avalonia.Controls.Shapes.Path()
+        {
+            Data = Geometry.Parse("M0,0 L3.5,3.5 L7,0"),
+            StrokeThickness = 1.3,
+            StrokeLineCap = PenLineCap.Round,
+            StrokeJoin = PenLineJoin.Round,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        arrow.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, nameof(AppTheme.Text));
+
+        var part = new Border()
+        {
+            Width = 15,
+            Margin = new Thickness(0, 1, 1, 1),
+            CornerRadius = new CornerRadius(0, AppTheme.ButtonCornerRadius.TopRight, AppTheme.ButtonCornerRadius.BottomRight, 0),
+            BorderThickness = new Thickness(1, 0, 0, 0),
+            Background = Brushes.Transparent,
+            BorderBrush = Brushes.Transparent,
+            Child = arrow
+        };
+        Grid.SetColumn(part, 1);
+        Grid.SetRowSpan(part, 2);
+        Children.Add(part);
+
+        // the strip's own plate, and a line between the halves, while the cursor is on the button
+        void Update(bool overPart)
+        {
+            part.BindTheme(Border.BackgroundProperty, overPart ? nameof(AppTheme.ButtonPressed) : null, whenNone: Brushes.Transparent);
+            part.BindTheme(Border.BorderBrushProperty, isHovered || overPart ? nameof(AppTheme.ButtonCheckedBorder) : null, whenNone: Brushes.Transparent);
+        }
+
+        PointerEntered += (s, e) => Update(overPart: false);
+        PointerExited += (s, e) => Update(overPart: false);
+        part.PointerEntered += (s, e) => Update(overPart: true);
+        part.PointerExited += (s, e) => Update(overPart: false);
+        part.PointerPressed += (s, e) =>
+        {
+            // not the button's press: that would toggle it
+            e.Handled = true;
+            open(this);
+        };
+    }
 }

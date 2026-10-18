@@ -105,8 +105,9 @@ public partial class DrawingHost : Grid
         {
             IsChecked = () => CurrentDrawing != null && CurrentDrawing.CoordinateGrid.Visible,
             Shortcut = "G",
-            HintText = "Show coordinate axes and grid. "
-                + "Hold Shift while placing or dragging a point to snap it to the grid, with or without the grid on screen."
+            HintText = "Show coordinate axes and grid lines; the arrow at the right shows or hides each by itself. "
+                + "Hold Shift while placing or dragging a point to snap it to the grid, with or without the grid on screen.",
+            DropDown = ShowGridMenu
         };
         CommandToggleOrtho = new Command(ToggleOrtho, ToggleIcons.Ortho(), "Ortho", BehaviorCategories.Selection)
         {
@@ -365,20 +366,28 @@ public partial class DrawingHost : Grid
 
     public void ToggleGrid()
     {
-        // the grid is the drawing's (a file says whether it shows), so this is an undo
-        // step - except in the middle of a construction, whose step is its figure's alone
-        var grid = CurrentDrawing.CoordinateGrid;
-        if (CurrentDrawing.IsRecordingTransaction)
-        {
-            grid.Visible = !grid.Visible;
-        }
-        else
-        {
-            CurrentDrawing.ActionManager.SetProperty(grid, nameof(grid.Visible), !grid.Visible);
-        }
+        CurrentDrawing.CoordinateGrid.Toggle();
 
         // the G key comes through here too, and the ribbon button must follow
         CommandToolButton.UpdateToggles();
+    }
+
+    /// <summary>The Grid button's arrow: the axes and the lines, each on or off</summary>
+    void ShowGridMenu(Control button)
+    {
+        if (CurrentDrawing == null)
+        {
+            return;
+        }
+
+        var menu = new MenuFlyout() { Placement = Avalonia.Controls.PlacementMode.BottomEdgeAlignedLeft };
+        foreach (var item in ContextMenus.GridItems(CurrentDrawing))
+        {
+            menu.Items.Add(item);
+        }
+
+        menu.Closed += (s, e) => CommandToolButton.UpdateToggles();
+        menu.ShowAt(button);
     }
 
     public void ToggleFigureExplorer()

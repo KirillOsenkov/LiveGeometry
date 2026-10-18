@@ -45,6 +45,7 @@ public class PointByCoordinates : PointBase, IPoint, IRenamableExpressions, ICon
 
     /// <summary>Lets go of the coordinates: a free point where it is (<see cref="PointSnapping.Release"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Free point")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
     public void Release()

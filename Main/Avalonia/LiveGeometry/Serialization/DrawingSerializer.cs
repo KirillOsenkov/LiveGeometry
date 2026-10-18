@@ -146,6 +146,13 @@ public partial class DrawingSerializer
             writer.WriteAttributeBool("Axes", false);
         }
 
+        // the grid's lines, as its axes, said only when off (a grid of axes alone, or
+        // what showing a hidden grid brings back)
+        if (!drawing.CoordinateGrid.ShowGridLines)
+        {
+            writer.WriteAttributeBool("Lines", false);
+        }
+
         if (drawing.CoordinateSystem.GridStep > 0)
         {
             writer.WriteAttributeDouble("GridStep", drawing.CoordinateSystem.GridStep);

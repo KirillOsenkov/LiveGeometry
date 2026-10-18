@@ -189,6 +189,7 @@ public partial class DrawingDeserializer
         // had set - so a gallery tile loaded after a graph got a grid.)
         drawing.CoordinateGrid.Visible = viewportNode.ReadBool("Grid", false);
         drawing.CoordinateGrid.ShowAxes = viewportNode.ReadBool("Axes", true);
+        drawing.CoordinateGrid.ShowGridLines = viewportNode.ReadBool("Lines", true);
         drawing.CoordinateSystem.GridStep = viewportNode.ReadDouble("GridStep");
         drawing.CoordinateSystem.SetViewport(minX, maxX, minY, maxY);
         string styleName = viewportNode.ReadString("Style");    // Don't know who uses this.  I don't. - David

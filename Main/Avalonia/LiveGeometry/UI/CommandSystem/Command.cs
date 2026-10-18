@@ -63,6 +63,12 @@ public class Command : ICommand
     /// <summary>A sentence or two under the name in the tooltip, as a tool's HintText; null for none</summary>
     public string HintText { get; set; }
 
+    /// <summary>
+    /// For a split button: opens a menu of finer choices under the button it is given
+    /// (the Grid's axes and lines); null for a plain button
+    /// </summary>
+    public Action<Avalonia.Controls.Control> DropDown { get; set; }
+
     public virtual void Execute()
     {
         if (Implementation != null)

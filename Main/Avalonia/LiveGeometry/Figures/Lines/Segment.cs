@@ -233,6 +233,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
 
     /// <summary>The segment keeps its length from now on (<see cref="LengthConstraint.Fix"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Fix length")]
     [PropertyGridGroup("Length")]
     [PropertyGridIcon(PropertyGridIcon.Lock)]
@@ -248,6 +249,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
 
     /// <summary>The opposite of <see cref="FixLength"/> (<see cref="LengthConstraint.Free"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Free length")]
     [PropertyGridGroup("Length")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
@@ -263,6 +265,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
 
     /// <summary>The segment keeps its direction from now on (<see cref="DirectionConstraint.Fix"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Fix direction")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Lock)]
@@ -274,6 +277,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
 
     /// <summary>The opposite of <see cref="FixDirection"/> (<see cref="DirectionConstraint.Free"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Free direction")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
@@ -285,6 +289,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
 
     /// <summary>The direction fixed at 0° or 180°, whichever is nearer (<see cref="DirectionConstraint.Align"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Horizontal")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Horizontal)]
@@ -296,6 +301,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
 
     /// <summary>The direction fixed at 90° or 270°, whichever is nearer</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Vertical")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Vertical)]
@@ -365,6 +371,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to line")]
     [PropertyGridIcon(PropertyGridIcon.Line)]
     public void ConvertToLine()
@@ -373,6 +380,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to ray")]
     [PropertyGridIcon(PropertyGridIcon.Ray)]
     public void ConvertToRay()

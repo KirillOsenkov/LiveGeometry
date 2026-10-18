@@ -170,8 +170,10 @@ public class GeoGebraReader
         {
             bool axes = settings.ReadBool("axes", false);
             bool grid = settings.ReadBool("grid", false);
+            // (with neither, both stay on for when the grid is shown)
             drawing.CoordinateGrid.Visible = axes || grid;
-            drawing.CoordinateGrid.ShowAxes = axes;
+            drawing.CoordinateGrid.ShowAxes = axes || !grid;
+            drawing.CoordinateGrid.ShowGridLines = grid || !axes;
         }
 
         var background = view.Element("bgColor");

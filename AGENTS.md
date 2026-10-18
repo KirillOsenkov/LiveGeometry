@@ -224,7 +224,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   the source's first vertex). The
   GeoGebra reader says `sideSegments: false`: a file has the image's sides as objects
   of their own, and the copies came out hidden.
-- **Coordinates**: Grid (G) (command); Function - an expression in x; Line - by
+- **Coordinates**: Grid (G) (command; a split button, its arrow a menu of Axes and Grid
+  lines: `Command.DropDown`, `ButtonGrid.AddDropDown`); Function - an expression in x; Line - by
   slope and intercept expressions; Circle - by center and radius expressions; Point by
   coordinates (toggle: gives the point tools an X/Y panel).
 - **Measure**: Length (2026-10-15; replaced Distance and Perimeter) - two points, or a
@@ -573,7 +574,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (`CoordinateGrid.Visible`): a new drawing starts without one and a file says. The axes
   are a second switch for a grid that shows (`ShowAxes`, `Axes="false"` in the file also
   while the grid is hidden: unticked then, it was an undo step that changed nothing saved,
-  and ticked it brought the axes up without the grid until the file was opened). An axis is
+  and ticked it brought the axes up without the grid until the file was opened), and so are
+  its lines (`ShowGridLines`, `Lines="false"`, 2026-10-18). A grid that shows shows at least
+  one of the two: the menus (Grid's arrow, the paper's context menu) set them through
+  `CartesianGrid.SetShown`, where hiding the last one hides the grid and leaves both on, and
+  showing one of a hidden grid shows it alone; G and the button (`Toggle`) hide the grid
+  and bring back what it showed. An axis is
   drawn as a vector's `Arrow` over an invisible line (`Axis`), the head where it leaves the
   window to the right or the top. There is no
   global setting: one would leak from every loaded file (each gallery tile included) into the
@@ -1186,6 +1192,21 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   screenshots): sliding a caption out from under the panel (its plate then covered the
   figure, and the text being edited moved), and always taking the side that covers less
   (the panel jumped from side to side between clicks).
+- **Context menus** (`UI/ContextMenus.cs`, 2026-10-18; the Drag tool's right click,
+  `Dragger.MouseRightClick`): fixed sections in a fixed order, a separator only between two
+  that have items (`ContextMenus.Section`). A figure: Choose figure (where figures overlap),
+  Show (check items), Verbs, Arrange (Bring to front, Send to back), State (Hide, Lock),
+  Edit (Copy, then Delete, always last). The paper: Zoom to fit, Axes, Grid lines; Paste,
+  Select all; Background…. Show and Verbs are the property grid's own rows and buttons
+  marked `[ContextMenu]`, found and vetoed as the grid finds them
+  (`PropertyGrid.GetCallableMethods`, the discovery strategy, `IConditionalProperties`,
+  `[PropertyGridCondition]`) with the grid's captions and icons, so a verb never needs
+  code in the menu; "Convert to …" verbs go into one submenu when there are two or more.
+  Several figures selected: `FigureSelection`'s rows (the ones all of them have) and verbs.
+  A name label's menu is its figure's Show items alone. Only a menu can offer: Snap to among
+  several figures, Edit text. What is marked is what is handy at the cursor (Show name,
+  Free point, Fix length, Horizontal, Convert to, Detach...); style, values and typing stay
+  in the grid.
 - **A figure inherits the rows and buttons of its base class**, and has to take away the
   ones that are not its own: a button through `IConditionalProperties.CanEdit` (by method
   name), a row by overriding the property with `[PropertyGridVisible(false)]`, or by making
@@ -2238,7 +2259,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   whose tooltip is the build. The first button is the app's mark and folds the ribbon (Ctrl+F1,
   `MainView.UpdateRibbon`): folded by default when a gallery drawing opens on a small screen
   (under 700x500), open otherwise; once pressed, the user's choice holds for the session.
-  Everything else is keys. Lost its menu entry and is unreachable for now: Lock. Not on the Selection tab (obscure for the audience; the commands and
+  Everything else is keys and the context menus (Lock among them). Not on the Selection tab (obscure for the audience; the commands and
   settings are still there in `DrawingHost`): Ortho, Polar, Snap to grid, Snap to point, Snap to
   center. Shift while dragging or clicking still snaps to the grid, and a click near the middle
   of a segment or a vector still makes a midpoint (`PointPlacement.HasMidpoint`: a vector

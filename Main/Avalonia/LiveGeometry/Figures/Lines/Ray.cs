@@ -81,6 +81,7 @@ public class Ray : LineBase, ILine, IFixableDirection
     public override string Noun => "ray";
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to line")]
     [PropertyGridIcon(PropertyGridIcon.Line)]
     public void ConvertToLine()
@@ -89,6 +90,7 @@ public class Ray : LineBase, ILine, IFixableDirection
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to segment")]
     [PropertyGridIcon(PropertyGridIcon.Segment)]
     public void ConvertToSegment()
@@ -97,6 +99,7 @@ public class Ray : LineBase, ILine, IFixableDirection
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Reverse")]
     [PropertyGridIcon(PropertyGridIcon.Reverse)]
     public void Reverse()
@@ -105,6 +108,7 @@ public class Ray : LineBase, ILine, IFixableDirection
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Fix direction")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Lock)]
@@ -115,6 +119,7 @@ public class Ray : LineBase, ILine, IFixableDirection
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Free direction")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
@@ -125,6 +130,7 @@ public class Ray : LineBase, ILine, IFixableDirection
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Horizontal")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Horizontal)]
@@ -135,6 +141,7 @@ public class Ray : LineBase, ILine, IFixableDirection
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Vertical")]
     [PropertyGridGroup("Direction")]
     [PropertyGridIcon(PropertyGridIcon.Vertical)]

@@ -152,6 +152,7 @@ public partial class PointInRegion : FreePoint, IPoint
 
     /// <summary>Lets the point go: a free point where it is (<see cref="PointSnapping.Release"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Free point")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
     public void Release()

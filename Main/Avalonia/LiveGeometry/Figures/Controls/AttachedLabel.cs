@@ -76,6 +76,7 @@ public class AttachedLabel : LabelWithOffset
 
     /// <summary>Lets go of the figure: a free text where this one is drawn (<see cref="TextAttachment.Detach"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Detach")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]
     public void Detach()

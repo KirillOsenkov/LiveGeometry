@@ -256,6 +256,7 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
 
     /// <summary>Whether the caption says the name: "a = 18.85", or "18.85" alone</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Show name")]
     public bool ShowName
     {

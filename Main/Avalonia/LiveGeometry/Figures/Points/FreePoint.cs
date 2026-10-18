@@ -17,6 +17,7 @@ public partial class FreePoint : PointBase, IMovable, IConditionalProperties
     /// context menu lists them.
     /// </summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Snap to figure")]
     [PropertyGridIcon(PropertyGridIcon.Lock)]
     public void SnapToFigure()
@@ -33,6 +34,7 @@ public partial class FreePoint : PointBase, IMovable, IConditionalProperties
     /// (<see cref="PointSnapping.ConvertToPointByCoordinates"/>)
     /// </summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Convert to point by coordinates")]
     [PropertyGridIcon(PropertyGridIcon.Pencil)]
     public void ConvertToPointByCoordinates()

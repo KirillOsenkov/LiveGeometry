@@ -14,6 +14,7 @@ public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
 
     /// <summary>The name written next to the circle (<see cref="FigureLabel"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Show name")]
     public bool ShowName
     { get => HasNameLabel; set => HasNameLabel = value;
@@ -92,6 +93,7 @@ public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
 
     /// <summary>The circle keeps its radius (<see cref="LengthConstraint.Fix"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Fix radius")]
     [PropertyGridGroup("Radius")]
     [PropertyGridIcon(PropertyGridIcon.Lock)]
@@ -105,6 +107,7 @@ public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
     }
 
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Free radius")]
     [PropertyGridGroup("Radius")]
     [PropertyGridIcon(PropertyGridIcon.Unlock)]

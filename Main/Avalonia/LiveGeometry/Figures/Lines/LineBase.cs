@@ -40,6 +40,7 @@ public abstract partial class LineBase : ShapeBase<Line>, ILinearFigure
 
     /// <summary>The name written next to the line (<see cref="FigureLabel"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Show name")]
     public virtual bool ShowName
     { get => HasNameLabel; set => HasNameLabel = value;

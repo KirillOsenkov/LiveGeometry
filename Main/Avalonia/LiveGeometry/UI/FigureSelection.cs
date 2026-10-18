@@ -23,6 +23,7 @@ public class FigureSelection : CompositePropertyProvider, IConditionalProperties
 
     /// <summary>The largest of the Bezier paths selected leaves the others out of its inside (<see cref="BezierPath.CutHoles"/>)</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Cut out holes")]
     [PropertyGridIcon(PropertyGridIcon.Polygon)]
     public void CutHoles()

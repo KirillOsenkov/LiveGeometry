@@ -88,9 +88,20 @@ public static class PropertyGridIcons
                 return Icon(
                     Shape("M1.5,1.5 H8.5 V8.5 H1.5 Z", sky, outline, thickness: 1.1),
                     Shape("M5.5,5.5 H12.5 V12.5 H5.5 Z", null, outline, thickness: 1.1));
+            case PropertyGridIcon.Delete:
+                return TrashCan();
             default:
                 return null;
         }
+    }
+
+    /// <summary>A trash can in the "careful" color: Delete, on a button and in a menu</summary>
+    public static Control TrashCan()
+    {
+        // lid with handle, tapered body, two ribs - on a 14x14 grid
+        var path = Shape("M2.5,4 H11.5 M5.5,4 V2.5 H8.5 V4 M3.5,4 L4.2,12 H9.8 L10.5,4 M6,6.2 V9.8 M8,6.2 V9.8", null, outline, thickness: 1.2);
+        path.BindTheme(Avalonia.Controls.Shapes.Shape.StrokeProperty, nameof(AppTheme.Destructive));
+        return Icon(path);
     }
 
     static readonly IBrush point = new SolidColorBrush(Color.FromRgb(0xFF, 0xFF, 0x64));

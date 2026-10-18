@@ -106,6 +106,7 @@ public class ShowHideControl : ControlBase, ISupportRemoveDependency
 
     /// <summary>Picks again what the box shows and hides, with the Show/hide box tool</summary>
     [PropertyGridVisible]
+    [ContextMenu]
     [PropertyGridName("Edit figures")]
     [PropertyGridIcon(PropertyGridIcon.Pencil)]
     public void EditFigures()

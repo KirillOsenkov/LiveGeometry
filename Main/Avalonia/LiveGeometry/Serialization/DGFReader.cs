@@ -953,6 +953,8 @@ public class DGFReader
         var showGrid = section.ReadBool("ShowGrid", false);
 
         drawing.CoordinateGrid.Visible = showAxes || showGrid;
+        drawing.CoordinateGrid.ShowAxes = showAxes || !showGrid;
+        drawing.CoordinateGrid.ShowGridLines = showGrid || !showAxes;
         drawing.Background = ReadPaper(section);
 
         var pointCount = section.ReadInt("PointCount");
