@@ -118,12 +118,16 @@ public class Parser
                 break;
             }
 
-            if (!IsOperatorToken(Current.Kind))
+            // A number right before a name or a parenthesis multiplies it, as in class: 2x,
+            // 3sin(x), 2(x + 1), 2pi. Never two names (AB is the distance of A and B), nor
+            // a name before a parenthesis (a function's call).
+            bool implicitMultiplication = IsImplicitMultiplication();
+            if (!implicitMultiplication && !IsOperatorToken(Current.Kind))
             {
                 break;
             }
 
-            var operationType = GetExpressionType(Current.Kind);
+            var operationType = implicitMultiplication ? NodeType.Multiplication : GetExpressionType(Current.Kind);
             var newPrecedence = GetPrecedence(operationType);
 
             if (newPrecedence < precedence)
@@ -136,12 +140,24 @@ public class Parser
                 break;
             }
 
-            AdvanceToken();
+            if (!implicitMultiplication)
+            {
+                AdvanceToken();
+            }
+
             var rightOperand = ParseExpression(newPrecedence);
             leftOperand = BinaryOperator(operationType, leftOperand, rightOperand);
         }
 
         return leftOperand;
+    }
+
+    /// <summary>A number just read, and a name or a parenthesis right after it</summary>
+    private bool IsImplicitMultiplication()
+    {
+        return current > 0
+            && tokens[current - 1].Kind == TokenType.NumericLiteral
+            && (Current.Kind == TokenType.Identifier || Current.Kind == TokenType.OpenParen);
     }
 
     private bool EOF => current >= length;
@@ -168,20 +184,40 @@ public class Parser
 
     private bool IsOperatorToken(TokenType tokenType)
     {
-        switch (tokenType)
+        return GetExpressionType(tokenType) switch
         {
-            case TokenType.Plus:
-            case TokenType.Minus:
-            case TokenType.Multiply:
-            case TokenType.Divide:
-            case TokenType.Power:
-                return true;
-            default:
-                return false;
-        }
+            NodeType.Addition
+                or NodeType.Subtraction
+                or NodeType.Multiplication
+                or NodeType.Division
+                or NodeType.Power
+                or NodeType.Less
+                or NodeType.LessOrEqual
+                or NodeType.Greater
+                or NodeType.GreaterOrEqual
+                or NodeType.Equal
+                or NodeType.NotEqual => true,
+            _ => false
+        };
     }
 
+    /// <summary>A term and the degree signs after it: 30°, angle(A, B, C)°, (a + b)°</summary>
     private Node ParseTerm(int precedence)
+    {
+        var term = ParsePrimary(precedence);
+        while (term != null && CurrentTokenKind == TokenType.Degree)
+        {
+            // (the sign is the node's token, to be colored as pi is)
+            var degrees = new Node(NodeType.Degrees, Current);
+            degrees.Children.Add(term);
+            term = degrees;
+            AdvanceToken();
+        }
+
+        return term;
+    }
+
+    private Node ParsePrimary(int precedence)
     {
         Node result = null;
 
@@ -218,6 +254,12 @@ public class Parser
                 AdvanceToken();
                 result = ParseExpression(0);
                 AdvanceToken(TokenType.CloseParen);
+                break;
+            case TokenType.Pipe:
+                // |x|: what is between the bars, which end it as a ) ends a parenthesis
+                AdvanceToken();
+                result = new Node(NodeType.AbsoluteValue, ParseExpression(0));
+                AdvanceToken(TokenType.Pipe);
                 break;
             default:
                 ReportError("Expected a number, a variable, a function or a parenthesized expression");
@@ -256,7 +298,7 @@ public class Parser
     {
         if (current == length || Current.Kind != tokenType)
         {
-            ReportError("Expected " + tokenType.ToString());
+            ReportError("Expected " + (tokenType == TokenType.Pipe ? "| to close |" : tokenType.ToString()));
             return;
         }
 
@@ -328,9 +370,32 @@ public class Parser
                 return NodeType.Division;
             case TokenType.Power:
                 return NodeType.Power;
+            case TokenType.Less:
+                return NodeType.Less;
+            case TokenType.LessOrEqual:
+                return NodeType.LessOrEqual;
+            case TokenType.Greater:
+                return NodeType.Greater;
+            case TokenType.GreaterOrEqual:
+                return NodeType.GreaterOrEqual;
+            case TokenType.Equal:
+                return NodeType.Equal;
+            case TokenType.NotEqual:
+                return NodeType.NotEqual;
             default:
                 return NodeType.Unknown;
         }
+    }
+
+    /// <summary>A comparison: what if(...) asks, 1 when it holds and 0 when it doesn't</summary>
+    public static bool IsComparison(NodeType nodeType)
+    {
+        return nodeType is NodeType.Less
+            or NodeType.LessOrEqual
+            or NodeType.Greater
+            or NodeType.GreaterOrEqual
+            or NodeType.Equal
+            or NodeType.NotEqual;
     }
 
     public static int GetPrecedence(NodeType nodeType)
@@ -339,20 +404,27 @@ public class Parser
         {
             case NodeType.Constant:
                 return 0;
+            case NodeType.Less:
+            case NodeType.LessOrEqual:
+            case NodeType.Greater:
+            case NodeType.GreaterOrEqual:
+            case NodeType.Equal:
+            case NodeType.NotEqual:
+                return 1;
             case NodeType.Addition:
             case NodeType.Subtraction:
-                return 1;
+                return 2;
             case NodeType.Multiplication:
             case NodeType.Division:
-                return 2;
-            case NodeType.Power:
                 return 3;
-            case NodeType.Negation:
+            case NodeType.Power:
                 return 4;
-            case NodeType.PropertyAccess:
+            case NodeType.Negation:
                 return 5;
-            case NodeType.FunctionCall:
+            case NodeType.PropertyAccess:
                 return 6;
+            case NodeType.FunctionCall:
+                return 7;
         }
 
         return 0;

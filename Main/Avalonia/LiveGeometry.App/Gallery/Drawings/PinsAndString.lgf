@@ -23,13 +23,13 @@
     <PointOnFigure Name="D" Visible="false" X="-1.500000388675198" Y="0.8660256281860526" Parameter="1.047198">
       <Dependency Name="Dial" />
     </PointOnFigure>
-    <PointByCoordinates Name="K" Visible="false" X="(string / 2) ^ 2 - (dist(F1, F2) / 2) ^ 2" Y="((D.X - F1.X) * (F2.X - F1.X) + (D.Y - F1.Y) * (F2.Y - F1.Y)) / dist(F1, F2)">
+    <PointByCoordinates Name="K" Visible="false" X="(string / 2) ^ 2 - (distance(F1, F2) / 2) ^ 2" Y="((D.X - F1.X) * (F2.X - F1.X) + (D.Y - F1.Y) * (F2.Y - F1.Y)) / distance(F1, F2)">
       <Dependency Name="string" />
       <Dependency Name="F1" />
       <Dependency Name="F2" />
       <Dependency Name="D" />
     </PointByCoordinates>
-    <PointByCoordinates Name="R" Visible="false" X="K.X / (string / 2 - dist(F1, F2) / 2 * K.Y) + 0 * sqrt(string - dist(F1, F2))" Y="0">
+    <PointByCoordinates Name="R" Visible="false" X="K.X / (string / 2 - distance(F1, F2) / 2 * K.Y) + 0 * sqrt(string - distance(F1, F2))" Y="0">
       <Dependency Name="K" />
       <Dependency Name="string" />
       <Dependency Name="F1" />
@@ -62,7 +62,7 @@
       <Dependency Name="F2" />
     </PointLabel>
     <Label Name="Title" Style="Heading" Text="Two Pins and a String" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="Explanation" Text="Push two pins into a board, tie a loose loop of string around them, pull it tight with a pencil and go around. The pencil draws an ellipse. Gardeners lay out oval flower beds with two stakes and a rope exactly this way.\n\nDrag the yellow pencil around the ellipse and watch the string stay tight. The string is [string] long and the pins are [dist(F1, F2)] apart. Drag the pins closer together and the ellipse gets rounder; put them on top of each other and it's a circle. Pull them apart and it flattens, until the string can't reach any more.\n\nThe pins are the two focuses of the ellipse. Planets move on ellipses, and the Sun sits at one of the two pins." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+    <Label Name="Description" Style="Explanation" Text="Push two pins into a board, tie a loose loop of string around them, pull it tight with a pencil and go around. The pencil draws an ellipse. Gardeners lay out oval flower beds with two stakes and a rope exactly this way.\n\nDrag the yellow pencil around the ellipse and watch the string stay tight. The string is [string] long and the pins are [distance(F1, F2)] apart. Drag the pins closer together and the ellipse gets rounder; put them on top of each other and it's a circle. Pull them apart and it flattens, until the string can't reach any more.\n\nThe pins are the two focuses of the ellipse. Planets move on ellipses, and the Sun sits at one of the two pins." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
       <Dependency Name="string" />
       <Dependency Name="F1" />
       <Dependency Name="F2" />

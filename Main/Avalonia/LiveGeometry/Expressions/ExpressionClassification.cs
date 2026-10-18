@@ -18,19 +18,19 @@ public enum ExpressionClass
     /// <summary>The [ and ] around an expression in the text of a label</summary>
     Bracket,
 
-    /// <summary>A figure by its name: A in A.X, the points of dist(A, B) and of AB, a slider, a number</summary>
+    /// <summary>A figure by its name: A in A.X, the points of distance(A, B) and of AB, a slider, a number</summary>
     Figure,
 
     /// <summary>What is read off a figure: the X of A.X, the Length of AB.Length</summary>
     Property,
 
-    /// <summary>A function: sin, sqrt, dist, angle</summary>
+    /// <summary>A function: sin, sqrt, distance, angle, log_2</summary>
     Function,
 
     /// <summary>A number as typed: 3, 0.5</summary>
     Number,
 
-    /// <summary>A name the language gives a meaning of its own: pi, e, the x of a function</summary>
+    /// <summary>What the language gives a meaning of its own: pi, π, e, the x of a function, the degree sign</summary>
     Reserved
 }
 

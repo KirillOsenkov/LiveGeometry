@@ -48,7 +48,7 @@ public class CompileResult
 
     public void AddMethodNotFoundError(string functionName)
     {
-        AddError(string.Format("Could not find method '{0}'", functionName));
+        AddError(string.Format("There is no function '{0}'", functionName));
     }
 
     /// <summary>
@@ -94,9 +94,12 @@ public class CompileResult
         AddError(string.Format("Figure '{0}' is not a point.", longestPrefix));
     }
 
-    public void AddIncorrectNumberOfArgumentsError(System.Reflection.MethodInfo method, int actualNumberOfArguments)
+    public void AddIncorrectNumberOfArgumentsError(FunctionInfo function, int actualNumberOfArguments)
     {
-        AddError(string.Format("Function '{0}' expects {1} arguments, and it was passed {2}",
-            method.Name, method.GetParameters().Length, actualNumberOfArguments));
+        AddError(string.Format("'{0}' is written {1}, and here it has {2} {3}",
+            function.Name,
+            function.Signature,
+            actualNumberOfArguments,
+            actualNumberOfArguments == 1 ? "argument" : "arguments"));
     }
 }

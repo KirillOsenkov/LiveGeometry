@@ -80,7 +80,12 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
         return !(figure is Label label) || label.IsNumber;
     }
 
-    public double Angle => Value;
+    /// <summary>
+    /// Angle providers speak radians; the number a text says is in degrees, as every angle
+    /// the drawing shows (a slider, a Number, angle(A, B, C)). It was radians, and a text
+    /// that turned a clock's hand said [rad(-30 * time)].
+    /// </summary>
+    public double Angle => Value.ToRadians();
 
     public double Length => Value;
 

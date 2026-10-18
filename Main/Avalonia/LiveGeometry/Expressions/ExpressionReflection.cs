@@ -26,20 +26,25 @@ public static class ExpressionReflection
     public static readonly MethodInfo DistanceOfPoints = typeof(Math).GetMethod(nameof(Math.Distance), [typeof(PointBase), typeof(PointBase)]);
 
     /// <summary>
-    /// The functions of System.Math are found by name, through reflection the trimmer
-    /// can't follow (a type out of a list): it kept only those the app calls itself, and
-    /// in the browser build asinh, sinh, cosh... were "Could not find method" - the
-    /// Catenary drew no curve. Kept whole here.
+    /// The functions are found by name, through reflection the trimmer can't follow: it kept
+    /// only those the app calls itself, and in the browser build asinh, sinh, cosh... were
+    /// "Could not find method" - the Catenary drew no curve. Kept whole here.
     /// </summary>
-    [DynamicDependency(DynamicallyAccessedMemberTypes.PublicMethods, typeof(System.Math))]
     [DynamicDependency(DynamicallyAccessedMemberTypes.PublicMethods, typeof(Functions))]
     static ExpressionReflection()
     {
-        // ours first: round, sign and clamp are System.Math's names, done as a drawing wants them
-        methods = typeof(Functions).GetMethods(BindingFlags.Public | BindingFlags.Static)
-            .Concat(typeof(System.Math).GetMethods(BindingFlags.Public | BindingFlags.Static))
-            .ToArray();
+        methods = typeof(Functions).GetMethods(BindingFlags.Public | BindingFlags.Static);
         KeepGetterInstantiations();
+    }
+
+    public static readonly MethodInfo LogBase = typeof(Functions).GetMethod(nameof(Functions.LogBase));
+
+    public static readonly MethodInfo Abs = typeof(Functions).GetMethod(nameof(Functions.Abs));
+
+    /// <summary>The method a comparison calls: 1 where it holds, 0 where it doesn't</summary>
+    public static MethodInfo Comparison(NodeType comparison)
+    {
+        return typeof(Functions).GetMethod(comparison.ToString());
     }
 
     // Mono's AOT compiles the generic instantiations it sees in the code, and runs one it
@@ -67,36 +72,69 @@ public static class ExpressionReflection
     static readonly ConcurrentDictionary<PropertyInfo, Func<object, double>> getters = new ConcurrentDictionary<PropertyInfo, Func<object, double>>();
 
     /// <summary>
-    /// The function called by this name with this many arguments: one that takes that
-    /// many numbers if there is one - ours first (round, sign: the ones System.Math has
-    /// in a way a drawing doesn't want), then System.Math's (sin, sqrt, max, atan2) -
-    /// else whatever goes by the name (ours that take points: dist, ang, area). Null when
-    /// there is none.
+    /// The method a function of the language (<see cref="FunctionCatalog"/>, by any of its
+    /// names) is called through with this many arguments: the one of <see cref="Functions"/>
+    /// by its name that takes that many numbers (round(x), round(x, digits)), the one of two
+    /// for any number of them (max(a, b, c) takes them two at a time), else the one of points
+    /// (distance, angle, area). Null when the language has no such function, or not with so
+    /// many arguments.
     /// </summary>
     public static MethodInfo ResolveMethod(string functionName, int argumentCount)
     {
-        return resolvedMethods.GetOrAdd((functionName.ToLowerInvariant(), argumentCount), key => FindMethod(key.Name, key.Count));
+        var function = FunctionCatalog.Find(functionName);
+        if (function == null)
+        {
+            return null;
+        }
+
+        return resolvedMethods.GetOrAdd((function.Name, argumentCount), key => FindMethod(function, key.Count));
     }
 
-    static MethodInfo FindMethod(string functionName, int argumentCount)
+    static MethodInfo FindMethod(FunctionInfo function, int argumentCount)
     {
-        foreach (var method in methods)
+        var named = methods.Where(method => method.Name.Equals(function.Name, StringComparison.OrdinalIgnoreCase)).ToList();
+        var exact = named.FirstOrDefault(method => TakesNumbers(method, argumentCount));
+        if (exact != null)
         {
-            if (method.Name.Equals(functionName, StringComparison.OrdinalIgnoreCase) && TakesNumbers(method, argumentCount))
+            return exact;
+        }
+
+        if (function.IsVariadic && argumentCount >= 2)
+        {
+            var pairwise = named.FirstOrDefault(method => TakesNumbers(method, 2));
+            if (pairwise != null)
             {
-                return method;
+                return pairwise;
             }
         }
 
-        foreach (var method in methods)
+        return named.FirstOrDefault(method => !IsNumberFunction(method)
+            && (method.GetParameters().Length == argumentCount || TakesPointArray(method) && argumentCount >= 3));
+    }
+
+    /// <summary>
+    /// log_2, log_10: the logarithm whose base the name says after the _, as Desmos writes it
+    /// (the scanner reads log_2 as one name, _ being a letter to it). Null for any other name.
+    /// </summary>
+    public static double? LogBaseOf(string functionName)
+    {
+        if (functionName == null
+            || functionName.Length < 5
+            || functionName.Length > 12
+            || !functionName.StartsWith("log_", StringComparison.OrdinalIgnoreCase)
+            || !functionName.Skip(4).All(char.IsAsciiDigit))
         {
-            if (method.Name.Equals(functionName, StringComparison.OrdinalIgnoreCase))
-            {
-                return method;
-            }
+            return null;
         }
 
-        return null;
+        return double.Parse(functionName.Substring(4), CultureInfo.InvariantCulture);
+    }
+
+    /// <summary>Whether a call by this name with this many arguments takes the names of points (distance, angle, area), not expressions</summary>
+    public static bool TakesPoints(string functionName, int argumentCount)
+    {
+        var method = ResolveMethod(functionName, argumentCount);
+        return method != null && !IsNumberFunction(method);
     }
 
     /// <summary>A function of numbers, called with as many as it takes: its arguments are expressions, not the names of points</summary>
@@ -104,6 +142,19 @@ public static class ExpressionReflection
     {
         var shape = shapes.GetOrAdd(method, m => new MethodShape(m));
         return shape.ParameterCount == argumentCount && argumentCount > 0 && shape.AllDouble;
+    }
+
+    /// <summary>A function of numbers, whatever it is called with (min of two takes three, two at a time)</summary>
+    public static bool IsNumberFunction(MethodInfo method)
+    {
+        var shape = shapes.GetOrAdd(method, m => new MethodShape(m));
+        return shape.ParameterCount > 0 && shape.AllDouble;
+    }
+
+    static bool TakesPointArray(MethodInfo method)
+    {
+        var parameters = method.GetParameters();
+        return parameters.Length == 1 && parameters[0].ParameterType == typeof(IPoint[]);
     }
 
     class MethodShape
@@ -226,9 +277,9 @@ public static class ExpressionReflection
 }
 
 /// <summary>
-/// A function of numbers (one of <see cref="Functions"/> or System.Math's) as delegates by
-/// its number of arguments: a method that takes doubles and gives one is called directly;
-/// one that gives a whole number (System.Math.ILogB) is invoked and its result converted.
+/// A function of numbers (one of <see cref="Functions"/>) as delegates by its number of
+/// arguments: a method that takes doubles and gives one is called directly; any other is
+/// invoked and its result converted.
 /// </summary>
 public class NumberFunction
 {
@@ -266,7 +317,7 @@ public class NumberFunction
 }
 
 /// <summary>
-/// A function of points (dist, ang, area: one of <see cref="Functions"/>) as a delegate,
+/// A function of points (distance, angle, area: one of <see cref="Functions"/>) as a delegate,
 /// given the points it is called with (their coordinates as they are now)
 /// </summary>
 public class PointFunction

@@ -382,7 +382,7 @@
       <Dependency Name="FistL" />
       <Dependency Name="FistR" />
     </MidPoint>
-    <PointByCoordinates Name="Frame" Visible="false" X="atan2(FistR.Y - FistL.Y, FistR.X - FistL.X)" Y="clamp(dist(FistL, FistR), 0.4, 7)">
+    <PointByCoordinates Name="Frame" Visible="false" X="atan2(FistR.Y - FistL.Y, FistR.X - FistL.X)" Y="clamp(distance(FistL, FistR), 0.4, 7)">
       <Dependency Name="FistR" />
       <Dependency Name="FistL" />
     </PointByCoordinates>

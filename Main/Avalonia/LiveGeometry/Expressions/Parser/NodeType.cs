@@ -12,5 +12,13 @@ public enum NodeType
     PropertyAccess,
     FunctionCall,
     Constant,
-    Variable
+    Variable,
+    Degrees,
+    AbsoluteValue,
+    Less,
+    LessOrEqual,
+    Greater,
+    GreaterOrEqual,
+    Equal,
+    NotEqual
 }

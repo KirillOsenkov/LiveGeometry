@@ -144,13 +144,13 @@ for (int hour = 1; hour <= 12; hour++)
 }
 
 Write("    <Slider Name=\"time\" X=\"-6\" Y=\"-5\" Value=\"2.3\" Maximum=\"12\" />");
-Write("    <Label Name=\"HourAngle\" Visible=\"false\" Text=\"[rad(-30 * time)]\" X=\"0\" Y=\"-8\">");
+Write("    <Label Name=\"HourAngle\" Visible=\"false\" Text=\"[-30 * time]\" X=\"0\" Y=\"-8\">");
 Write("      <Dependency Name=\"time\" />");
 Write("    </Label>");
-Write("    <Label Name=\"MinuteAngle\" Visible=\"false\" Text=\"[rad(-360 * time)]\" X=\"0\" Y=\"-9\">");
+Write("    <Label Name=\"MinuteAngle\" Visible=\"false\" Text=\"[-360 * time]\" X=\"0\" Y=\"-9\">");
 Write("      <Dependency Name=\"time\" />");
 Write("    </Label>");
-Write("    <Label Name=\"SecondAngle\" Visible=\"false\" Text=\"[rad(-360 * (60 * time - floor(60 * time)))]\" X=\"0\" Y=\"-10\">");
+Write("    <Label Name=\"SecondAngle\" Visible=\"false\" Text=\"[-360 * (60 * time - floor(60 * time))]\" X=\"0\" Y=\"-10\">");
 Write("      <Dependency Name=\"time\" />");
 Write("    </Label>");
 
@@ -209,7 +209,7 @@ Write("      <Dependency Name=\"O\" />");
 Write("      <Dependency Name=\"HourHand3\" />");
 Write("      <Dependency Name=\"MinuteHand3\" />");
 Write("    </AngleArc>");
-Write("    <Label Name=\"Between\" Style=\"Degrees\" Text=\"[deg(ang(HourHand3, O, MinuteHand3))]° between the hands\" DecimalsToShow=\"1\" X=\"-2.4\" Y=\"-3.85\">");
+Write("    <Label Name=\"Between\" Style=\"Degrees\" Text=\"[angle(HourHand3, O, MinuteHand3)]° between the hands\" DecimalsToShow=\"1\" X=\"-2.4\" Y=\"-3.85\">");
 Write("      <Dependency Name=\"HourHand3\" />");
 Write("      <Dependency Name=\"O\" />");
 Write("      <Dependency Name=\"MinuteHand3\" />");

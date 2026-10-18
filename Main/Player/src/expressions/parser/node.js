@@ -12,7 +12,15 @@ const NodeType = {
     PropertyAccess: "PropertyAccess",
     FunctionCall: "FunctionCall",
     Constant: "Constant",
-    Variable: "Variable"
+    Variable: "Variable",
+    Degrees: "Degrees",
+    AbsoluteValue: "AbsoluteValue",
+    Less: "Less",
+    LessOrEqual: "LessOrEqual",
+    Greater: "Greater",
+    GreaterOrEqual: "GreaterOrEqual",
+    Equal: "Equal",
+    NotEqual: "NotEqual"
 };
 
 class SyntaxNode {

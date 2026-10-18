@@ -54,8 +54,9 @@ class Label extends LabelBase {
         return !(figure instanceof Label) || figure.isNumber;
     }
 
+    /** Angle providers speak radians; the number a text says is in degrees, as every angle the drawing shows */
     get angle() {
-        return this.value;
+        return GeometryMath.toRadians(this.value);
     }
 
     get length() {

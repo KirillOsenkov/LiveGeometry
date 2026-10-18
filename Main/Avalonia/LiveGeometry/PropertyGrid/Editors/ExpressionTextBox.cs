@@ -69,16 +69,41 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
             // box. The way out of a label's text without leaving it, since Enter there
             // starts a line.
             pencil = CreateButton(PropertyGridIcons.Create(PropertyGridIcon.Pencil), TogglePicking);
-            InnerRightContent = Context == InsertContext.Text
-                ? new StackPanel()
-                {
-                    Orientation = Avalonia.Layout.Orientation.Horizontal,
-                    Children = { CreateBracketsButton(), pencil }
-                }
-                : pencil;
+            var buttons = new StackPanel() { Orientation = Avalonia.Layout.Orientation.Horizontal };
+            if (Context == InsertContext.Text)
+            {
+                buttons.Children.Add(CreateBracketsButton());
+            }
+
+            buttons.Children.Add(CreateDegreeButton());
+            buttons.Children.Add(pencil);
+            InnerRightContent = buttons;
         }
 
         ShowPicking(true);
+    }
+
+    /// <summary>The ° button: the degree sign, which no keyboard has a key for (sin(30°))</summary>
+    Border CreateDegreeButton()
+    {
+        var degree = new TextBlock()
+        {
+            Text = "°",
+            FontSize = PropertyGridIcons.Size + 2,
+            FontWeight = FontWeight.SemiBold,
+            Margin = new Thickness(2, 0),
+            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+        };
+        degree.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.ExpressionReserved));
+        var button = CreateButton(degree, () =>
+        {
+            if (!IsReadOnly && IsEnabled)
+            {
+                SelectedText = "°";
+            }
+        });
+        ToolTip.SetTip(button, "Insert the degree sign: sin(30°) is the sine of 30 degrees");
+        return button;
     }
 
     /// <summary>

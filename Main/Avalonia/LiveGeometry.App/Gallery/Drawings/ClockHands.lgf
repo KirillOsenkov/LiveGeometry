@@ -896,13 +896,13 @@
       <Dependency Name="12" />
     </PointLabel>
     <Slider Name="time" X="-6" Y="-5" Value="2.3" Maximum="12" />
-    <Label Name="HourAngle" Visible="false" Text="[rad(-30 * time)]" X="0" Y="-8">
+    <Label Name="HourAngle" Visible="false" Text="[-30 * time]" X="0" Y="-8">
       <Dependency Name="time" />
     </Label>
-    <Label Name="MinuteAngle" Visible="false" Text="[rad(-360 * time)]" X="0" Y="-9">
+    <Label Name="MinuteAngle" Visible="false" Text="[-360 * time]" X="0" Y="-9">
       <Dependency Name="time" />
     </Label>
-    <Label Name="SecondAngle" Visible="false" Text="[rad(-360 * (60 * time - floor(60 * time)))]" X="0" Y="-10">
+    <Label Name="SecondAngle" Visible="false" Text="[-360 * (60 * time - floor(60 * time))]" X="0" Y="-10">
       <Dependency Name="time" />
     </Label>
     <PointByCoordinates Name="HourHandShape0" Visible="false" X="-0.13" Y="-0.4" />
@@ -1002,7 +1002,7 @@
       <Dependency Name="HourHand3" />
       <Dependency Name="MinuteHand3" />
     </AngleArc>
-    <Label Name="Between" Style="Degrees" DecimalsToShow="1" Text="[deg(ang(HourHand3, O, MinuteHand3))]° between the hands" X="-2.4" Y="-3.85">
+    <Label Name="Between" Style="Degrees" DecimalsToShow="1" Text="[angle(HourHand3, O, MinuteHand3)]° between the hands" X="-2.4" Y="-3.85">
       <Dependency Name="HourHand3" />
       <Dependency Name="O" />
       <Dependency Name="MinuteHand3" />

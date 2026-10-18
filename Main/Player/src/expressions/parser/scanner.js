@@ -24,14 +24,52 @@ class Scanner {
                 case "+":
                     this.addTokenOfType(TokenType.Plus);
                     break;
+                // (the signs a caption writes, also when one is pasted in)
                 case "-":
+                case "−":
                     this.addTokenOfType(TokenType.Minus);
                     break;
                 case "*":
+                case "×":
+                case "·":
                     this.addTokenOfType(TokenType.Multiply);
                     break;
                 case "/":
+                case "÷":
                     this.addTokenOfType(TokenType.Divide);
+                    break;
+                case "°":
+                    this.addTokenOfType(TokenType.Degree);
+                    break;
+                case "|":
+                    this.addTokenOfType(TokenType.Pipe);
+                    break;
+                case "<":
+                    this.addTokenOfType(this.nextChar() === "=" ? TokenType.LessOrEqual : TokenType.Less, this.nextChar() === "=" ? 2 : 1);
+                    break;
+                case ">":
+                    this.addTokenOfType(this.nextChar() === "=" ? TokenType.GreaterOrEqual : TokenType.Greater, this.nextChar() === "=" ? 2 : 1);
+                    break;
+                case "≤":
+                    this.addTokenOfType(TokenType.LessOrEqual);
+                    break;
+                case "≥":
+                    this.addTokenOfType(TokenType.GreaterOrEqual);
+                    break;
+                // = as in class, == as programmers and GeoGebra write it
+                case "=":
+                    this.addTokenOfType(TokenType.Equal, this.nextChar() === "=" ? 2 : 1);
+                    break;
+                case "≠":
+                    this.addTokenOfType(TokenType.NotEqual);
+                    break;
+                case "!":
+                    if (this.nextChar() !== "=") {
+                        this.reportError("Invalid character");
+                        return;
+                    }
+
+                    this.addTokenOfType(TokenType.NotEqual, 2);
                     break;
                 case "^":
                     this.addTokenOfType(TokenType.Power);
@@ -218,8 +256,8 @@ class Scanner {
         this.result.tokens.push(new Token(this.text.substring(start, this.current), start, TokenType.Identifier));
     }
 
-    addTokenOfType(tokenType) {
-        this.result.tokens.push(new Token(this.text[this.current], this.current, tokenType));
-        this.current++;
+    addTokenOfType(tokenType, length = 1) {
+        this.result.tokens.push(new Token(this.text.substring(this.current, this.current + length), this.current, tokenType));
+        this.current += length;
     }
 }

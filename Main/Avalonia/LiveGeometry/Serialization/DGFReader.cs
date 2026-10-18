@@ -264,7 +264,7 @@ public class DGFReader
         {
             text = text.Replace('І', '²');
         }
-        drawing.ActionManager.SetProperty(label, "Text", text);
+        drawing.ActionManager.SetProperty(label, "Text", LegacyExpressions.TranslateLabelText(text, fromDG: true));
     }
 
     void ProcessFigure(IniFile.Section section)
@@ -380,8 +380,8 @@ public class DGFReader
             GetPoint(section, i);
         }
 
-        string x = section["XS"];
-        string y = section["YS"];
+        string x = LegacyExpressions.Translate(section["XS"], fromDG: true);
+        string y = LegacyExpressions.Translate(section["YS"], fromDG: true);
 
         var point = Factory.CreatePointByCoordinates(drawing, x, y);
         AddFigure(section, point);

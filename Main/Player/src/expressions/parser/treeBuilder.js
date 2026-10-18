@@ -42,7 +42,25 @@ class ExpressionTreeBuilder {
                 return this.createCallExpression(root);
             case NodeType.PropertyAccess:
                 return this.createPropertyAccessExpression(root);
+            case NodeType.Degrees: {
+                // 30°: the number in radians, what trigonometry takes
+                const operand = this.createExpressionCore(root.children[0]);
+                return operand == null ? null : new BoundBinary(BoundOperator.Multiply, operand, new BoundConstant(Math.PI / 180));
+            }
+
+            case NodeType.AbsoluteValue: {
+                const operand = this.createExpressionCore(root.children[0]);
+                return operand == null ? null : new BoundCall(ExpressionReflection.builtIn("Abs", 1), [operand]);
+            }
+
             default:
+                if (Parser.isComparison(root.kind)) {
+                    // 1 where it holds and 0 where it doesn't, for if(...)
+                    const left = this.createExpressionCore(root.children[0]);
+                    const right = left == null ? null : this.createExpressionCore(root.children[1]);
+                    return right == null ? null : new BoundCall(ExpressionReflection.builtIn(root.kind), [left, right]);
+                }
+
                 return null;
         }
     }
@@ -78,7 +96,7 @@ class ExpressionTreeBuilder {
         }
 
         // pi is π whatever the drawing has
-        if (text === "pi" || text === "e") {
+        if (text === "pi" || text === "π" || text === "e") {
             return this.binder.resolve(text);
         }
 
@@ -199,14 +217,46 @@ class ExpressionTreeBuilder {
     createCallExpression(root) {
         const functionName = root.token.text;
         const args = root.children;
-        const method = this.binder.resolveMethod(functionName, args.length);
-        if (method == null) {
+        const logBase = ExpressionReflection.logBaseOf(functionName);
+        if (logBase != null) {
+            if (args.length !== 1) {
+                this.status.addError("'" + functionName + "' takes one number: " + functionName + "(x)");
+                return null;
+            }
+
+            const value = args[0] == null ? null : this.createExpressionCore(args[0]);
+            return value == null ? null : new BoundCall(ExpressionReflection.builtIn("LogBase"), [value, new BoundConstant(logBase)]);
+        }
+
+        const function_ = FunctionCatalog.find(functionName);
+        if (function_ == null) {
             this.status.addMethodNotFoundError(functionName);
             return null;
         }
 
+        const method = this.binder.resolveMethod(functionName, args.length);
+        if (method == null) {
+            this.status.addIncorrectNumberOfArgumentsError(function_.name, args.length);
+            return null;
+        }
+
         // a function of numbers: each argument is an expression; anything else takes points
-        if (Binder.takesNumbers(method, args.length)) {
+        if (method.takesNumbers) {
+            // sin(angle(A, B, C)): the sine takes radians, the angle is in degrees
+            if (FunctionCatalog.takesRadians(function_)) {
+                for (let argument of args) {
+                    while (argument != null && argument.kind === NodeType.Negation) {
+                        argument = argument.children[0];
+                    }
+
+                    const called = argument != null && argument.kind === NodeType.FunctionCall ? FunctionCatalog.find(argument.token.text) : null;
+                    if (FunctionCatalog.givesDegrees(called)) {
+                        this.status.addError(function_.name + " works in radians, and " + called.name + " gives degrees: put ° after it, " + called.name + "(...)°.");
+                        return null;
+                    }
+                }
+            }
+
             const values = [];
             for (const node of args) {
                 const value = node == null ? null : this.createExpressionCore(node);
@@ -217,10 +267,16 @@ class ExpressionTreeBuilder {
                 values.push(value);
             }
 
-            return new BoundCall(method, values);
+            // max(a, b, c) is max(max(a, b), c)
+            let call = new BoundCall(method, values.slice(0, method.parameterCount));
+            for (const value of values.slice(method.parameterCount)) {
+                call = new BoundCall(method, [call, value]);
+            }
+
+            return call;
         }
 
-        return this.createPointFunctionCallExpression(method, args);
+        return this.createPointFunctionCallExpression(function_, method, args);
     }
 
     /** What the language calculates with is a double; anything else is an error, said here */
@@ -233,16 +289,11 @@ class ExpressionTreeBuilder {
         return false;
     }
 
-    createPointFunctionCallExpression(method, args) {
-        if (!method.takesArray && method.parameterCount !== args.length) {
-            this.status.addIncorrectNumberOfArgumentsError(method, args.length);
-            return null;
-        }
-
+    createPointFunctionCallExpression(function_, method, args) {
         const points = [];
         for (const node of args) {
-            if (node == null || node.token == null || node.token.kind !== TokenType.Identifier) {
-                this.status.addError("'" + method.name + "' takes the names of points");
+            if (node == null || node.kind !== NodeType.Variable || node.token == null || node.token.kind !== TokenType.Identifier) {
+                this.status.addError("'" + function_.name + "' takes the names of points");
                 return null;
             }
 

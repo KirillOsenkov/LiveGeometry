@@ -38,11 +38,11 @@ public interface IRenamableExpressions
 /// figure that had to give up its name): every name that meant a renamed figure under the old
 /// names is replaced by its new name, all at once, so that A and B trading names come out
 /// right. Names are read the way <see cref="ExpressionTreeBuilder"/> binds them - A.X, AB for
-/// the distance between two points, the points of ang(A, B, C) and area(...), the name of a
+/// the distance between two points, the points of angle(A, B, C) and area(...), the name of a
 /// Number, a name in backticks - and the rest of the text is left exactly as it was. A new
 /// name goes in as an expression says it (<see cref="Scanner.NameInExpression"/>: `Drag me!`,
 /// `pi`). Two points run together whose new names would read differently (PB next to a point
-/// named PB), or one of which needs backticks, become dist(P, B).
+/// named PB), or one of which needs backticks, become distance(P, B).
 /// </summary>
 public class ExpressionRenamer
 {
@@ -121,7 +121,7 @@ public class ExpressionRenamer
                 RenameFigure(node.Children[0].Token, replacements);
                 return;
             case NodeType.FunctionCall:
-                if (TakesNumbers(node))
+                if (!ExpressionReflection.TakesPoints(node.Token.Text, node.Children.Count))
                 {
                     foreach (var argument in node.Children)
                     {
@@ -131,7 +131,7 @@ public class ExpressionRenamer
                     return;
                 }
 
-                // ang(A, B, C), dist(A, B), area(A, B, C, D): the names of points
+                // angle(A, B, C), distance(A, B), area(A, B, C, D): the names of points
                 foreach (var argument in node.Children)
                 {
                     if (argument != null && argument.Kind == NodeType.Variable)
@@ -149,13 +149,6 @@ public class ExpressionRenamer
         }
     }
 
-    /// <summary>sin(...), max(..., ...): a function of numbers and not of points, as the compiler tells them apart</summary>
-    static bool TakesNumbers(Node call)
-    {
-        var method = new Binder().ResolveMethod(call.Token.Text, call.Children.Count);
-        return method != null && Binder.TakesNumbers(method, call.Children.Count);
-    }
-
     /// <summary>
     /// A bare name, in the order the compiler tries it: two points (AB, the distance), then
     /// pi, e and a function's x, then a figure (a Number)
@@ -171,6 +164,7 @@ public class ExpressionRenamer
 
         // a number called exactly this, as the compiler takes it (Binder.ResolveExactNumber)
         bool isConstant = text.Equals("pi", StringComparison.InvariantCultureIgnoreCase)
+            || text == "π"
             || text.Equals("e", StringComparison.InvariantCultureIgnoreCase)
             || isFunction && text == "x";
         var exact = isConstant ? null : TopLevel.FirstOrDefault(f => f is INumber && OldName(f) == text);
@@ -185,7 +179,7 @@ public class ExpressionRenamer
         }
 
         // pi and e in lowercase are the constants, also next to points P and I
-        if (text == "pi" || text == "e")
+        if (text == "pi" || text == "π" || text == "e")
         {
             return;
         }
@@ -210,7 +204,7 @@ public class ExpressionRenamer
                     || !Scanner.IsName(first.Name)
                     || !Scanner.IsName(second.Name))
                 {
-                    joined = "dist(" + Scanner.NameInExpression(first.Name) + ", " + Scanner.NameInExpression(second.Name) + ")";
+                    joined = "distance(" + Scanner.NameInExpression(first.Name) + ", " + Scanner.NameInExpression(second.Name) + ")";
                 }
 
                 replacements.Add((token.Start, token.Length, joined));

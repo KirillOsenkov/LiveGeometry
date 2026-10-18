@@ -13,6 +13,14 @@ const TokenType = {
     CloseParen: "CloseParen",
     Comma: "Comma",
     Dot: "Dot",
+    Degree: "Degree",
+    Pipe: "Pipe",
+    Less: "Less",
+    LessOrEqual: "LessOrEqual",
+    Greater: "Greater",
+    GreaterOrEqual: "GreaterOrEqual",
+    Equal: "Equal",
+    NotEqual: "NotEqual",
     Unknown: "Unknown"
 };
 

@@ -87,7 +87,7 @@
     <PointOnFigure Name="Big1D" Style="Knob" X="-5.792894517488763" Y="2.2071080798594735" Parameter="0.7854">
       <Dependency Name="Big1Dial" />
     </PointOnFigure>
-    <PointByCoordinates Name="Big1A" Visible="false" X="round(xangle(Big1P, Big1D) / (pi / 4)) * (pi / 4)" Y="0">
+    <PointByCoordinates Name="Big1A" Visible="false" X="rad(round(direction(Big1P, Big1D) / 45) * 45)" Y="0">
       <Dependency Name="Big1P" />
       <Dependency Name="Big1D" />
     </PointByCoordinates>
@@ -112,7 +112,7 @@
     <PointOnFigure Name="Big2D" Style="Knob" X="5.707105482511237" Y="-4.307108079859473" Parameter="-0.7854">
       <Dependency Name="Big2Dial" />
     </PointOnFigure>
-    <PointByCoordinates Name="Big2A" Visible="false" X="round(xangle(Big2P, Big2D) / (pi / 4)) * (pi / 4)" Y="0">
+    <PointByCoordinates Name="Big2A" Visible="false" X="rad(round(direction(Big2P, Big2D) / 45) * 45)" Y="0">
       <Dependency Name="Big2P" />
       <Dependency Name="Big2D" />
     </PointByCoordinates>
@@ -137,7 +137,7 @@
     <PointOnFigure Name="MediumD" Style="Knob" X="5.599996326794896" Y="3.199999999993254" Parameter="1.5708">
       <Dependency Name="MediumDial" />
     </PointOnFigure>
-    <PointByCoordinates Name="MediumA" Visible="false" X="round(xangle(MediumP, MediumD) / (pi / 4)) * (pi / 4)" Y="0">
+    <PointByCoordinates Name="MediumA" Visible="false" X="rad(round(direction(MediumP, MediumD) / 45) * 45)" Y="0">
       <Dependency Name="MediumP" />
       <Dependency Name="MediumD" />
     </PointByCoordinates>
@@ -162,7 +162,7 @@
     <PointOnFigure Name="SquareD" Style="Knob" X="-4.4" Y="-3.2" Parameter="0">
       <Dependency Name="SquareDial" />
     </PointOnFigure>
-    <PointByCoordinates Name="SquareA" Visible="false" X="round(xangle(SquareP, SquareD) / (pi / 4)) * (pi / 4)" Y="0">
+    <PointByCoordinates Name="SquareA" Visible="false" X="rad(round(direction(SquareP, SquareD) / 45) * 45)" Y="0">
       <Dependency Name="SquareP" />
       <Dependency Name="SquareD" />
     </PointByCoordinates>
@@ -192,7 +192,7 @@
     <PointOnFigure Name="Small1D" Style="Knob" X="0.1071054825112363" Y="3.692891920140527" Parameter="-0.7854">
       <Dependency Name="Small1Dial" />
     </PointOnFigure>
-    <PointByCoordinates Name="Small1A" Visible="false" X="round(xangle(Small1P, Small1D) / (pi / 4)) * (pi / 4)" Y="0">
+    <PointByCoordinates Name="Small1A" Visible="false" X="rad(round(direction(Small1P, Small1D) / 45) * 45)" Y="0">
       <Dependency Name="Small1P" />
       <Dependency Name="Small1D" />
     </PointByCoordinates>
@@ -217,7 +217,7 @@
     <PointOnFigure Name="Small2D" Style="Knob" X="-2.599999999973015" Y="-5.000007346410206" Parameter="3.1416">
       <Dependency Name="Small2Dial" />
     </PointOnFigure>
-    <PointByCoordinates Name="Small2A" Visible="false" X="round(xangle(Small2P, Small2D) / (pi / 4)) * (pi / 4)" Y="0">
+    <PointByCoordinates Name="Small2A" Visible="false" X="rad(round(direction(Small2P, Small2D) / 45) * 45)" Y="0">
       <Dependency Name="Small2P" />
       <Dependency Name="Small2D" />
     </PointByCoordinates>
@@ -242,7 +242,7 @@
     <PointOnFigure Name="ParallelogramD" Style="Knob" X="1.8928997122138602" Y="4.192886725472674" Parameter="3.927">
       <Dependency Name="ParallelogramDial" />
     </PointOnFigure>
-    <PointByCoordinates Name="ParallelogramA" Visible="false" X="round(xangle(ParallelogramP, ParallelogramD) / (pi / 4)) * (pi / 4)" Y="0">
+    <PointByCoordinates Name="ParallelogramA" Visible="false" X="rad(round(direction(ParallelogramP, ParallelogramD) / 45) * 45)" Y="0">
       <Dependency Name="ParallelogramP" />
       <Dependency Name="ParallelogramD" />
     </PointByCoordinates>

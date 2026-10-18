@@ -26,15 +26,15 @@
     <PointByCoordinates Name="Guess0" Visible="false" X="sqrt(6 * (Ratio.X - 1))" Y="0">
       <Dependency Name="Ratio" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Guess1" Visible="false" X="asinh(Ratio.X * Guess0.X)" Y="0">
+    <PointByCoordinates Name="Guess1" Visible="false" X="arcsinh(Ratio.X * Guess0.X)" Y="0">
       <Dependency Name="Ratio" />
       <Dependency Name="Guess0" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Guess2" Visible="false" X="asinh(Ratio.X * Guess1.X)" Y="0">
+    <PointByCoordinates Name="Guess2" Visible="false" X="arcsinh(Ratio.X * Guess1.X)" Y="0">
       <Dependency Name="Ratio" />
       <Dependency Name="Guess1" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Guess3" Visible="false" X="asinh(Ratio.X * Guess2.X)" Y="0">
+    <PointByCoordinates Name="Guess3" Visible="false" X="arcsinh(Ratio.X * Guess2.X)" Y="0">
       <Dependency Name="Ratio" />
       <Dependency Name="Guess2" />
     </PointByCoordinates>
@@ -58,7 +58,7 @@
       <Dependency Name="Newton4" />
       <Dependency Name="Ratio" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Params" Visible="false" X="abs(Offsets.X) / (2 * Newton5.X)" Y="(A.X + B.X) / 2 - abs(Offsets.X) / (2 * Newton5.X) * asinh(Offsets.X * Offsets.Y / (abs(Offsets.X) * Ratio.Y))">
+    <PointByCoordinates Name="Params" Visible="false" X="abs(Offsets.X) / (2 * Newton5.X)" Y="(A.X + B.X) / 2 - abs(Offsets.X) / (2 * Newton5.X) * arcsinh(Offsets.X * Offsets.Y / (abs(Offsets.X) * Ratio.Y))">
       <Dependency Name="Offsets" />
       <Dependency Name="Newton5" />
       <Dependency Name="A" />

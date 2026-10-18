@@ -186,7 +186,7 @@ public class BoundCall : BoundExpression
     }
 }
 
-/// <summary>A function of points (dist, ang, area), called with the names of points</summary>
+/// <summary>A function of points (distance, angle, area), called with the names of points</summary>
 public class BoundPointCall : BoundExpression
 {
     readonly PointFunction function;

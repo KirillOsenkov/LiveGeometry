@@ -408,15 +408,15 @@
     <PointByCoordinates Name="HoseEnd" Visible="false" X="Knot.X" Y="Knot.Y">
       <Dependency Name="Knot" />
     </PointByCoordinates>
-    <PointByCoordinates Name="HoseMid" Visible="false" X="(Outlet.X + Knot.X) / 2" Y="(Outlet.Y + Knot.Y) / 2 - min(0.3, 0.08 + 0.08 * dist(Outlet, Knot))">
+    <PointByCoordinates Name="HoseMid" Visible="false" X="(Outlet.X + Knot.X) / 2" Y="(Outlet.Y + Knot.Y) / 2 - min(0.3, 0.08 + 0.08 * distance(Outlet, Knot))">
       <Dependency Name="Outlet" />
       <Dependency Name="Knot" />
     </PointByCoordinates>
-    <PointByCoordinates Name="HoseLeave" Visible="false" X="Outlet.X + min(0.3, 0.15 * dist(Outlet, Knot))" Y="Outlet.Y">
+    <PointByCoordinates Name="HoseLeave" Visible="false" X="Outlet.X + min(0.3, 0.15 * distance(Outlet, Knot))" Y="Outlet.Y">
       <Dependency Name="Outlet" />
       <Dependency Name="Knot" />
     </PointByCoordinates>
-    <PointByCoordinates Name="HoseArrive" Visible="false" X="Knot.X" Y="Knot.Y - min(0.3, 0.15 * dist(Outlet, Knot))">
+    <PointByCoordinates Name="HoseArrive" Visible="false" X="Knot.X" Y="Knot.Y - min(0.3, 0.15 * distance(Outlet, Knot))">
       <Dependency Name="Knot" />
       <Dependency Name="Outlet" />
     </PointByCoordinates>

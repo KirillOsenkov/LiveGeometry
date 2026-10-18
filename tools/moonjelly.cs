@@ -225,7 +225,7 @@ names.Add("Home");
 // are used, so the jump of the pearl's angle at a full turn doesn't show. Body = the bell's
 // middle, bobbing and swaying a little; Size = half the width of the dome at its margin, and
 // its height; Skirt = half the width of the hem, and where it is in y
-Point("Beat", "(1 + cos(xang(Hub, Pearl))) / 2", "pi - xang(Hub, Pearl)");
+Point("Beat", "(1 + cos(rad(direction(Hub, Pearl)))) / 2", "pi - rad(direction(Hub, Pearl))");
 Point("Body", "Home.X + 0.04 * sin(Beat.Y + 0.6)", "Home.Y + 0.3 * sin(Beat.Y - 1.2)");
 Point("Size", "1.35 - 0.3 * Beat.X", "0.95 + 0.25 * Beat.X");
 Point("Skirt", "Size.X * (1 - 0.3 * Beat.X)", "Body.Y - 0.1 - 0.12 * Beat.X");

@@ -36,7 +36,7 @@
       <Dependency Name="Q" />
       <Dependency Name="O" />
     </Circle>
-    <PointByCoordinates Name="Angle" Visible="false" X="2 * acos(clamp((red - blue) / (2 * radius), -0.9999, 1))" Y="0">
+    <PointByCoordinates Name="Angle" Visible="false" X="2 * arccos(clamp((red - blue) / (2 * radius), -0.9999, 1))" Y="0">
       <Dependency Name="red" />
       <Dependency Name="blue" />
       <Dependency Name="radius" />

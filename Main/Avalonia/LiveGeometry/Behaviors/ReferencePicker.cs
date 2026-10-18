@@ -154,7 +154,7 @@ public static class ReferencePicker
 /// <summary>
 /// What an expression says for a figure's quantities: the figure's name in front of the
 /// property the language reads (c.Radius, p.Area, u.X), two points run together for a
-/// distance (AB, or dist(A, B) where the names won't run together), the functions of points
+/// distance (AB, or distance(A, B) where the names won't run together), the functions of points
 /// for an angle (angle(A, B, C) as the measurement's Sweep has it) and for the area of a list
 /// of points. A measurement is said as what it measures, so that the formula reads like math
 /// and outlives the measurement. The first option is what a click puts in.
@@ -347,7 +347,7 @@ public static class ReferenceText
 
     /// <summary>
     /// The distance between two points: their names run together (AB), as a caption says it,
-    /// where the language reads that as the two points; else dist(A, B) (a name that needs
+    /// where the language reads that as the two points; else distance(A, B) (a name that needs
     /// backticks, two names that run together into another reading)
     /// </summary>
     public static string TwoPoints(Drawing drawing, IPoint first, IPoint second)
@@ -365,13 +365,14 @@ public static class ReferenceText
             }
         }
 
-        return "dist(" + Scanner.NameInExpression(first.Name) + ", " + Scanner.NameInExpression(second.Name) + ")";
+        return "distance(" + Scanner.NameInExpression(first.Name) + ", " + Scanner.NameInExpression(second.Name) + ")";
     }
 
     /// <summary>
     /// An angle (a measurement, a mark) as its Sweep has it right now: the smaller angle is
-    /// angle(A, B, C), the larger 360 less that, the oriented ones through oang; in radians
-    /// when the measurement shows them. The vertex is the angle's first dependency.
+    /// angle(A, B, C), the larger 360 less that, the oriented ones directedangle(A, B, C) and
+    /// 360 less that; in radians when the measurement shows them. The vertex is the angle's
+    /// first dependency.
     /// </summary>
     public static string AngleText(IFigure angle)
     {
@@ -388,8 +389,8 @@ public static class ReferenceText
         string text = sweep switch
         {
             AngleSweep.Larger => "360 - angle(" + points + ")",
-            AngleSweep.Counterclockwise => "deg(oang(" + points + "))",
-            AngleSweep.Clockwise => "360 - deg(oang(" + points + "))",
+            AngleSweep.Counterclockwise => "directedangle(" + points + ")",
+            AngleSweep.Clockwise => "360 - directedangle(" + points + ")",
             _ => "angle(" + points + ")"
         };
         return angle is AngleMeasurementBase { Radians: true } ? "rad(" + text + ")" : text;

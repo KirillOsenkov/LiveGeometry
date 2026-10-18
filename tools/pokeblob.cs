@@ -82,7 +82,7 @@ Point("Ball", $"Gum.X + {Length(ShineOffset)}", $"Gum.Y - {Length(ShineOffset)}"
 Point("GumRight", $"Ball.X + {Length(BallRadius)}", "Ball.Y", ["Ball"]);
 
 // Poke.X: how far the ball is from the core; Poke.Y: which way
-Point("Poke", "dist(Ball, Core)", "atan2(Ball.Y - Core.Y, Ball.X - Core.X)", ["Ball", "Core"]);
+Point("Poke", "distance(Ball, Core)", "atan2(Ball.Y - Core.Y, Ball.X - Core.X)", ["Ball", "Core"]);
 
 // Press.Y: 1 while the skin is open around the ball, 0 once it has closed over it; Press.X: how
 // deep the ball presses, times that
@@ -131,7 +131,7 @@ for (int k = 0; k < 16; k++)
     Point(
         $"Rim{k}",
         $"Core.X + {radius} * cos({direction})",
-        $"Core.Y - {Length(Floor)} + {Length(FloorSoftness)} * log(1 + exp(({radius} * sin({direction}) + {Length(Floor)}) / {Length(FloorSoftness)}))",
+        $"Core.Y - {Length(Floor)} + {Length(FloorSoftness)} * ln(1 + exp(({radius} * sin({direction}) + {Length(Floor)}) / {Length(FloorSoftness)}))",
         ["Core", $"Skin{k}", "Press", "Squeeze", "Poke"],
         style: "Dot");
 }
@@ -146,7 +146,7 @@ foreach (var (part, rest, away) in features)
 {
     var (x, y) = Pushed(
         ($"{rest}.X", $"{rest}.Y"),
-        $"dist(Ball, {rest})",
+        $"distance(Ball, {rest})",
         Clearance,
         away,
         byPoke: true);
@@ -268,8 +268,8 @@ foreach (var side in new[] { "L", "R" })
     var pupil = "Pupil" + side;
     Point(
         pupil,
-        $"{eye}.X + {Length(0.06)} * (Ball.X - {eye}.X) / max({Length(0.05)}, dist(Ball, {eye}))",
-        $"{eye}.Y + {Length(0.06)} * (Ball.Y - {eye}.Y) / max({Length(0.05)}, dist(Ball, {eye}))",
+        $"{eye}.X + {Length(0.06)} * (Ball.X - {eye}.X) / max({Length(0.05)}, distance(Ball, {eye}))",
+        $"{eye}.Y + {Length(0.06)} * (Ball.Y - {eye}.Y) / max({Length(0.05)}, distance(Ball, {eye}))",
         [eye, "Ball"]);
     Point(pupil + "Edge", $"{pupil}.X + {Length(0.075)} - {Length(0.025)} * Mood.X", $"{pupil}.Y", [pupil, "Mood"]);
     Figure("Circle", pupil + "Disc", "Pupil", [pupil, pupil + "Edge"]);

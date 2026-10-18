@@ -115,7 +115,7 @@ foreach (var piece in pieces)
     Write($"      <Dependency Name=\"{piece.Name}Dial\" />");
     Write("    </PointOnFigure>");
     string a = piece.Name + "A";
-    Write($"    <PointByCoordinates Name=\"{a}\" Visible=\"false\" X=\"round(xangle({p}, {d}) / (pi / 4)) * (pi / 4)\" Y=\"0\">");
+    Write($"    <PointByCoordinates Name=\"{a}\" Visible=\"false\" X=\"rad(round(direction({p}, {d}) / 45) * 45)\" Y=\"0\">");
     Write($"      <Dependency Name=\"{p}\" />");
     Write($"      <Dependency Name=\"{d}\" />");
     Write("    </PointByCoordinates>");

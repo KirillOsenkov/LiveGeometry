@@ -13,5 +13,13 @@ public enum TokenType
     CloseParen,
     Comma,
     Dot,
+    Degree,
+    Pipe,
+    Less,
+    LessOrEqual,
+    Greater,
+    GreaterOrEqual,
+    Equal,
+    NotEqual,
     Unknown
 }

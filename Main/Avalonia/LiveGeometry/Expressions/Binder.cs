@@ -33,7 +33,7 @@ public class Binder
 
     BoundExpression ResolveConstant(string identifier)
     {
-        if (identifier.Equals("pi", StringComparison.InvariantCultureIgnoreCase))
+        if (identifier.Equals("pi", StringComparison.InvariantCultureIgnoreCase) || identifier == "π")
         {
             return new BoundConstant(Math.PI);
         }
@@ -44,7 +44,7 @@ public class Binder
         return null;
     }
 
-    /// <summary>pi, e or the x of a function; null for any other name</summary>
+    /// <summary>pi (or π), e or the x of a function; null for any other name</summary>
     public BoundExpression Resolve(string identifier)
     {
         return ResolveConstant(identifier) ?? ResolveParameter(identifier);

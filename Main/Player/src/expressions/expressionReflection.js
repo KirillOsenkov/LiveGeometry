@@ -4,97 +4,60 @@
 // takesNumbers, takesPoints, takesArray, invoke }.
 
 const ExpressionReflection = {
-    /** The functions of System.Math by name (as the C# finds them), with how many doubles each takes */
-    mathFunctions: [
-        ["Sin", 1, Math.sin], ["Cos", 1, Math.cos], ["Tan", 1, Math.tan],
-        ["Asin", 1, Math.asin], ["Acos", 1, Math.acos], ["Atan", 1, Math.atan], ["Atan2", 2, Math.atan2],
-        ["Sinh", 1, Math.sinh], ["Cosh", 1, Math.cosh], ["Tanh", 1, Math.tanh],
-        ["Asinh", 1, Math.asinh], ["Acosh", 1, Math.acosh], ["Atanh", 1, Math.atanh],
-        ["Sqrt", 1, Math.sqrt], ["Cbrt", 1, Math.cbrt], ["Abs", 1, Math.abs], ["Exp", 1, Math.exp],
-        ["Log", 1, Math.log], ["Log", 2, (a, newBase) => Math.log(a) / Math.log(newBase)],
-        ["Log10", 1, Math.log10], ["Log2", 1, Math.log2],
-        ["Pow", 2, Math.pow],
-        ["Floor", 1, Math.floor], ["Ceiling", 1, Math.ceil], ["Truncate", 1, Math.trunc],
-        ["Round", 1, x => Number.isNaN(x) ? NaN : (Math.abs(x % 1) === 0.5 ? 2 * Math.round(x / 2) : Math.round(x))],
-        ["Min", 2, Math.min], ["Max", 2, Math.max],
-        ["Sign", 1, Math.sign],
-        ["Clamp", 3, (value, min, max) => Math.max(min, Math.min(max, value))],
-        ["IEEERemainder", 2, (x, y) => GeometryMath.ieeeRemainder(x, y)],
-        ["CopySign", 2, (x, y) => Math.sign(y) === 0 && !Object.is(y, -0) ? Math.abs(x) : Math.abs(x) * (Object.is(y, -0) || y < 0 ? -1 : 1)],
-        ["FusedMultiplyAdd", 3, (x, y, z) => x * y + z],
-        ["ScaleB", 2, (x, n) => x * Math.pow(2, n)],
-        ["BitIncrement", 1, x => x + Number.EPSILON * Math.abs(x)],
-        ["BitDecrement", 1, x => x - Number.EPSILON * Math.abs(x)],
-        ["MaxMagnitude", 2, (x, y) => Math.abs(x) >= Math.abs(y) ? x : y],
-        ["MinMagnitude", 2, (x, y) => Math.abs(x) <= Math.abs(y) ? x : y],
-        ["ILogB", 1, x => Math.floor(Math.log2(Math.abs(x)))],
-        ["ReciprocalEstimate", 1, x => 1 / x],
-        ["ReciprocalSqrtEstimate", 1, x => 1 / Math.sqrt(x)]
-    ],
-
-    methods: null,
     resolvedMethods: new Map(),
 
-    /** The methods in the order the C# searches them: ours first, then System.Math's */
-    allMethods() {
-        if (ExpressionReflection.methods == null) {
-            const methods = [];
-            for (const name of Object.keys(Functions)) {
-                const pointCount = PointFunctionNames[name];
-                if (pointCount === undefined) {
-                    const invoke = Functions[name];
-                    methods.push({ name, parameterCount: invoke.length, takesNumbers: true, takesPoints: false, takesArray: false, invoke });
-                } else {
-                    methods.push({
-                        name,
-                        parameterCount: pointCount < 0 ? 1 : pointCount,
-                        takesNumbers: false,
-                        takesPoints: true,
-                        takesArray: pointCount < 0,
-                        invoke: Functions[name]
-                    });
-                }
-            }
-
-            for (const [name, parameterCount, invoke] of ExpressionReflection.mathFunctions) {
-                methods.push({ name, parameterCount, takesNumbers: true, takesPoints: false, takesArray: false, invoke });
-            }
-
-            ExpressionReflection.methods = methods;
-        }
-
-        return ExpressionReflection.methods;
-    },
-
     /**
-     * The function called by this name with this many arguments: one that takes that many
-     * numbers if there is one - ours first, then System.Math's - else whatever goes by the
-     * name (ours that take points). Null when there is none.
+     * The method a function of the language (FunctionCatalog, by any of its names) is called
+     * through with this many arguments: { name, parameterCount, takesNumbers, takesPoints,
+     * takesArray, invoke } - for any number of them, the one of two (max(a, b, c) takes them
+     * two at a time). Null when the language has no such function, or not with so many.
      */
     resolveMethod(functionName, argumentCount) {
-        const key = functionName.toLowerCase() + "/" + argumentCount;
+        const function_ = FunctionCatalog.find(functionName);
+        if (function_ == null) {
+            return null;
+        }
+
+        const key = function_.name + "/" + argumentCount;
         if (!ExpressionReflection.resolvedMethods.has(key)) {
-            ExpressionReflection.resolvedMethods.set(key, ExpressionReflection.findMethod(functionName, argumentCount));
+            ExpressionReflection.resolvedMethods.set(key, ExpressionReflection.findMethod(function_, argumentCount));
         }
 
         return ExpressionReflection.resolvedMethods.get(key);
     },
 
-    findMethod(functionName, argumentCount) {
-        const lower = functionName.toLowerCase();
-        for (const method of ExpressionReflection.allMethods()) {
-            if (method.name.toLowerCase() === lower && ExpressionReflection.takesNumbers(method, argumentCount)) {
-                return method;
-            }
+    findMethod(function_, argumentCount) {
+        const name = function_.name[0].toUpperCase() + function_.name.substring(1);
+        const invoke = Functions[name];
+        const pointCount = PointFunctionNames[name];
+        if (pointCount !== undefined) {
+            const takesArray = pointCount < 0;
+            return (takesArray ? argumentCount >= 3 : argumentCount === pointCount)
+                ? { name, parameterCount: takesArray ? 1 : pointCount, takesNumbers: false, takesPoints: true, takesArray, invoke }
+                : null;
         }
 
-        for (const method of ExpressionReflection.allMethods()) {
-            if (method.name.toLowerCase() === lower) {
-                return method;
-            }
+        const counts = function_.counts ?? [invoke.length];
+        if (counts.includes(argumentCount)) {
+            return { name, parameterCount: argumentCount, takesNumbers: true, takesPoints: false, takesArray: false, invoke };
+        }
+
+        if (function_.variadic && argumentCount >= 2) {
+            return { name, parameterCount: 2, takesNumbers: true, takesPoints: false, takesArray: false, invoke };
         }
 
         return null;
+    },
+
+    /** The method of a comparison, and of log_2 and |x|: called by the binder, not by name */
+    builtIn(name, parameterCount = 2) {
+        return { name, parameterCount, takesNumbers: true, takesPoints: false, takesArray: false, invoke: Functions[name] };
+    },
+
+    /** log_2, log_10: the logarithm whose base the name says after the _; null for any other name */
+    logBaseOf(functionName) {
+        const match = /^log_(\d{1,8})$/i.exec(functionName);
+        return match == null ? null : Number(match[1]);
     },
 
     /** A function of numbers, called with as many as it takes: its arguments are expressions, not the names of points */

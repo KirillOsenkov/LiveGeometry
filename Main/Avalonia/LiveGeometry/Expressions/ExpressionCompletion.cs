@@ -25,7 +25,8 @@ public class CompletionItem
         string kindText,
         IFigure figure,
         string heading,
-        Func<string> help)
+        Func<string> help,
+        IReadOnlyList<string> otherNames = null)
     {
         Text = text;
         InsertText = insertText;
@@ -34,10 +35,20 @@ public class CompletionItem
         Figure = figure;
         Heading = heading;
         this.help = help;
+        OtherNames = otherNames ?? [];
     }
 
     /// <summary>What the row shows, and what the word typed is matched against: "A", "sin", "Radius", "my point"</summary>
     public string Text { get; }
+
+    /// <summary>Other names the word typed is matched against, which a commit replaces by the text: asin for arcsin, ceiling for ceil</summary>
+    public IReadOnlyList<string> OtherNames { get; }
+
+    /// <summary>Whether a name of the row, its own or another, passes the test</summary>
+    public bool AnyName(Func<string, bool> test)
+    {
+        return test(Text) || OtherNames.Any(test);
+    }
 
     /// <summary>What a commit puts in place of the word: the text, in backticks where a name needs them</summary>
     public string InsertText { get; }
@@ -101,9 +112,9 @@ public static class ExpressionCompletion
 {
     /// <summary>
     /// The word at the caret: from the caret back and on over the characters of a name, so
-    /// that a commit in the middle of a word replaces all of it. Null where completion has
-    /// nothing to say: in a label's text outside a [...] part, inside a name in backticks,
-    /// on a number (a word that begins with a digit).
+    /// that a commit in the middle of a word replaces all of it, the digits of a number in
+    /// front of it left out (2x). Null where completion has nothing to say: in a label's
+    /// text outside a [...] part, inside a name in backticks, on a number.
     /// </summary>
     public static CompletionSpot Locate(string text, int caret, InsertContext context)
     {
@@ -140,6 +151,20 @@ public static class ExpressionCompletion
         while (end < regionEnd && Scanner.IsNamePart(text[end]))
         {
             end++;
+        }
+
+        // a number right before a name multiplies it (2x, 3sin(x)): the word is the name
+        if (start < end && char.IsAsciiDigit(text[start]))
+        {
+            while (start < end && char.IsAsciiDigit(text[start]))
+            {
+                start++;
+            }
+
+            if (start == end || start > caret)
+            {
+                return null;
+            }
         }
 
         if (start < end && !Scanner.IsNameStart(text[start]))
@@ -286,10 +311,11 @@ public static class ExpressionCompletion
                 "function",
                 figure: null,
                 function.Signature,
-                () => function.Help));
+                () => function.Help,
+                function.OtherNames));
         }
 
-        items.Add(Reserved("pi", "π, half a turn in radians: 3.14159..."));
+        items.Add(Reserved("pi", "π, half a turn in radians: 3.14159... Typed as pi or π."));
         items.Add(Reserved("e", "The base of the natural logarithm: 2.71828..."));
         if (context == InsertContext.Function)
         {
@@ -314,11 +340,12 @@ public static class ExpressionCompletion
 
     /// <summary>
     /// The rows for the word typed so far: those whose name starts with it, ignoring case,
-    /// else those that contain it; the one selected is the exact match (case first), else
-    /// the first. Firmly selected (a commit character commits) once the word has a letter;
-    /// an empty word shows every row, its first only outlined. A word that already means
-    /// something no row is - two points run together, AC - gets a row of its own, first,
-    /// or a commit character would put another name in its place (polygon ACDE).
+    /// else those that contain it - the row's own name or another (asin shows arcsin); the
+    /// one selected is the exact match (case first), else the first. Firmly selected (a
+    /// commit character commits) once the word has a letter; an empty word shows every row,
+    /// its first only outlined. A word that already means something no row is - two points
+    /// run together, AC - gets a row of its own, first, or a commit character would put
+    /// another name in its place (polygon ACDE).
     /// </summary>
     public static CompletionFilter Filter(IReadOnlyList<CompletionItem> items, CompletionSpot spot, Drawing drawing, IFigure owner)
     {
@@ -328,13 +355,13 @@ public static class ExpressionCompletion
             return new CompletionFilter(items, Selected: 0, Hard: false);
         }
 
-        var shown = items.Where(item => item.Text.StartsWith(word, StringComparison.OrdinalIgnoreCase)).ToList();
+        var shown = items.Where(item => item.AnyName(name => name.StartsWith(word, StringComparison.OrdinalIgnoreCase))).ToList();
         if (shown.Count == 0)
         {
-            shown = items.Where(item => item.Text.Contains(word, StringComparison.OrdinalIgnoreCase)).ToList();
+            shown = items.Where(item => item.AnyName(name => name.Contains(word, StringComparison.OrdinalIgnoreCase))).ToList();
         }
 
-        if (spot.MemberOf == null && !items.Any(item => item.Text.Equals(word, StringComparison.OrdinalIgnoreCase)))
+        if (spot.MemberOf == null && !items.Any(item => item.AnyName(name => name.Equals(word, StringComparison.OrdinalIgnoreCase))))
         {
             var reading = TwoPointsReading(word, drawing, owner);
             if (reading != null)
@@ -351,7 +378,7 @@ public static class ExpressionCompletion
         int selected = shown.FindIndex(item => item.Text == word);
         if (selected < 0)
         {
-            selected = shown.FindIndex(item => item.Text.Equals(word, StringComparison.OrdinalIgnoreCase));
+            selected = shown.FindIndex(item => item.AnyName(name => name.Equals(word, StringComparison.OrdinalIgnoreCase)));
         }
 
         return new CompletionFilter(shown, System.Math.Max(selected, 0), Hard: word.Any(char.IsLetter));

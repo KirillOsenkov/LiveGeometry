@@ -58,9 +58,37 @@ public class ExpressionTreeBuilder
                 return CreateCallExpression(root);
             case NodeType.PropertyAccess:
                 return CreatePropertyAccessExpression(root);
+            case NodeType.Degrees:
+                return CreateDegreesExpression(root);
+            case NodeType.AbsoluteValue:
+                return CreateAbsoluteValueExpression(root);
+            case var comparison when Parser.IsComparison(comparison):
+                return CreateComparisonExpression(root);
             default:
                 return null;
         }
+    }
+
+    /// <summary>30°, a°: the number in radians, what trigonometry takes (GeoGebra's degree sign)</summary>
+    BoundExpression CreateDegreesExpression(Node root)
+    {
+        var operand = root.Children[0] == null ? null : CreateExpressionCore(root.Children[0]);
+        return operand == null ? null : Classified(new BoundBinary(BoundOperator.Multiply, operand, new BoundConstant(Math.PI / 180)), root.Token, ExpressionClass.Reserved);
+    }
+
+    /// <summary>|x|, as abs(x)</summary>
+    BoundExpression CreateAbsoluteValueExpression(Node root)
+    {
+        var operand = root.Children[0] == null ? null : CreateExpressionCore(root.Children[0]);
+        return operand == null ? null : new BoundCall(ExpressionReflection.Abs, [operand]);
+    }
+
+    /// <summary>a &lt; b, AB = CD: 1 where it holds and 0 where it doesn't, for if(...)</summary>
+    BoundExpression CreateComparisonExpression(Node root)
+    {
+        var left = root.Children[0] == null ? null : CreateExpressionCore(root.Children[0]);
+        var right = left == null || root.Children[1] == null ? null : CreateExpressionCore(root.Children[1]);
+        return right == null ? null : new BoundCall(ExpressionReflection.Comparison(root.Kind), [left, right]);
     }
 
     BoundExpression CreateUnaryExpression(Node root)
@@ -105,7 +133,7 @@ public class ExpressionTreeBuilder
         // distance AB), so in a drawing with points P and I it was their distance, and
         // sin(pi * x) came out wrong without a word. Written as the points are, PI, it
         // still is the distance.
-        if (text == "pi" || text == "e")
+        if (text == "pi" || text == "π" || text == "e")
         {
             return Classified(Binder.Resolve(text), token, ExpressionClass.Reserved);
         }
@@ -279,10 +307,22 @@ public class ExpressionTreeBuilder
     {
         string functionName = root.Token.Text;
         var arguments = root.Children;
+        if (ExpressionReflection.LogBaseOf(functionName) is double logBase)
+        {
+            return CreateLogBaseExpression(root, logBase);
+        }
+
+        var function = FunctionCatalog.Find(functionName);
+        if (function == null)
+        {
+            Status.AddMethodNotFoundError(functionName);
+            return null;
+        }
+
         MethodInfo method = Binder.ResolveMethod(functionName, arguments.Count);
         if (method == null)
         {
-            Status.AddMethodNotFoundError(functionName);
+            Status.AddIncorrectNumberOfArgumentsError(function, arguments.Count);
             return null;
         }
 
@@ -290,11 +330,16 @@ public class ExpressionTreeBuilder
         Status.Classify(root.Token, ExpressionClass.Function);
 
         // a function of numbers (sin, sqrt, max, atan2): each argument is an expression.
-        // Anything else takes points (dist, ang) - and a wrong number of arguments is an
-        // error, not an exception out of Expression.Call. (max(x, 2) used to be told
-        // that it "takes the names of points".)
-        if (Binder.TakesNumbers(method, arguments.Count))
+        // Anything else takes points (distance, angle) - and a wrong number of arguments
+        // is an error, not an exception out of Expression.Call.
+        if (ExpressionReflection.IsNumberFunction(method))
         {
+            if (FunctionCatalog.TakesRadians(function) && DegreesArgument(arguments) is string degrees)
+            {
+                Status.AddError(string.Format("{0} works in radians, and {1} gives degrees: put ° after it, {1}(...)°.", function.Name, degrees));
+                return null;
+            }
+
             var values = new List<BoundExpression>();
             foreach (var node in arguments)
             {
@@ -307,10 +352,60 @@ public class ExpressionTreeBuilder
                 values.Add(value);
             }
 
-            return AsNumber(method.ReturnType, functionName) ? new BoundCall(method, values) : null;
+            if (!AsNumber(method.ReturnType, functionName))
+            {
+                return null;
+            }
+
+            // max(a, b, c) is max(max(a, b), c)
+            BoundExpression call = new BoundCall(method, values.Take(method.GetParameters().Length).ToList());
+            foreach (var value in values.Skip(method.GetParameters().Length))
+            {
+                call = new BoundCall(method, [call, value]);
+            }
+
+            return call;
         }
 
-        return CreatePointFunctionCallExpression(method, arguments);
+        return CreatePointFunctionCallExpression(function, method, arguments);
+    }
+
+    /// <summary>
+    /// The name of a function of points that gives degrees (angle, directedangle, direction)
+    /// when an argument is a call of it as it stands - sin(angle(A, B, C)), where the sine
+    /// takes radians: the mistake the units of the language invite. Null when there is none.
+    /// </summary>
+    static string DegreesArgument(IEnumerable<Node> arguments)
+    {
+        foreach (var argument in arguments)
+        {
+            var inner = argument;
+            while (inner != null && inner.Kind == NodeType.Negation)
+            {
+                inner = inner.Children[0];
+            }
+
+            if (inner != null && inner.Kind == NodeType.FunctionCall && FunctionCatalog.Find(inner.Token.Text) is FunctionInfo called && FunctionCatalog.GivesDegrees(called))
+            {
+                return called.Name;
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>log_2(x): the logarithm to the base its name says</summary>
+    BoundExpression CreateLogBaseExpression(Node root, double logBase)
+    {
+        if (root.Children.Count != 1)
+        {
+            Status.AddError(string.Format("'{0}' takes one number: {0}(x)", root.Token.Text));
+            return null;
+        }
+
+        Status.Classify(root.Token, ExpressionClass.Function);
+        var value = root.Children[0] == null ? null : CreateExpressionCore(root.Children[0]);
+        return value == null ? null : new BoundCall(ExpressionReflection.LogBase, [value, new BoundConstant(logBase)]);
     }
 
     /// <summary>
@@ -330,22 +425,16 @@ public class ExpressionTreeBuilder
         return false;
     }
 
-    BoundExpression CreatePointFunctionCallExpression(MethodInfo method, IEnumerable<Node> arguments)
+    BoundExpression CreatePointFunctionCallExpression(FunctionInfo function, MethodInfo method, IEnumerable<Node> arguments)
     {
-        if (method.Name != "Area" && method.GetParameters().Length != arguments.Count())
-        {
-            Status.AddIncorrectNumberOfArgumentsError(method, arguments.Count());
-            return null;
-        }
-
         List<IPoint> points = new List<IPoint>();
         foreach (var node in arguments)
         {
             // an argument that is an expression or a number, not a name (VB6 drawings have
             // those)
-            if (node.Token == null || node.Token.Kind != TokenType.Identifier)
+            if (node == null || node.Kind != NodeType.Variable || node.Token == null || node.Token.Kind != TokenType.Identifier)
             {
-                Status.AddError(string.Format("'{0}' takes the names of points", method.Name));
+                Status.AddError(string.Format("'{0}' takes the names of points: {1}", function.Name, function.Signature));
                 return null;
             }
 

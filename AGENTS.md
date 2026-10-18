@@ -328,11 +328,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   on the class did not keep its rows). A trimming break shows up as a white screen and a
   `CRASH: ...` console line (`Program.cs` prints those). Anything new that is reached only by
   reflection outside those assemblies needs its own root. The functions of the expression
-  language that are System.Math's are found by name (`Binder`, a `Type` out of a list, which
-  the trimmer can't follow): `[DynamicDependency]` on `Binder`'s static constructor keeps
-  them all. Without it the browser had only those the app also calls itself, and `asinh`,
-  `sinh`, `cosh` were "Could not find method" - the Catenary drew no curve there, while the
-  desktop (never trimmed) drew it.
+  language are found by name (`ExpressionReflection`, methods of `Functions` by the names of
+  `FunctionCatalog`, which the trimmer can't follow): `[DynamicDependency]` on its static
+  constructor keeps them all. Without it (when they were System.Math's) the browser had
+  only those the app also calls itself, and `asinh`, `sinh`, `cosh` were "Could not find
+  method" - the Catenary drew no curve there, while the desktop (never trimmed) drew it.
 - **Inherited attributes come twice in the browser**: Mono's `inherit: true` lookup on a
   property declared in a base class (`Circle.Length` from `CircleBase`) adds the base
   property's attributes again. With `AllowMultiple = true` they aren't deduplicated and
@@ -770,14 +770,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   outermost set rewrites every `IRenamableExpressions` in the dependents closure: label
   `[...]` parts, function graphs, `DrawingExpression`s (point by coordinates, line and circle
   by equation). `ExpressionRenamer` reads names as `ExpressionTreeBuilder` binds them, under
-  the old names (A.X, AB as two points, the points of ang/dist/area, a Number) and swaps them
+  the old names (A.X, AB as two points, the points of angle/distance/area, a Number) and swaps them
   all at once; two points whose new names run together would read differently (PB next to a
-  point named PB), or one of which needs backticks, become `dist(P, B)`. Only the text changes, and not through undo: undoing the rename renames back.
+  point named PB), or one of which needs backticks, become `distance(P, B)`. Only the text changes, and not through undo: undoing the rename renames back.
   **Every name can be said** (2026-10-13): as it is when it is a name of the language (a
   letter or `_`, then letters, digits and primes: A', P_1; `Scanner.IsName`), else in
-  backticks, a backtick in it doubled: `` `Drag me!`.X ``, `` dist(`my point`, B) ``.
+  backticks, a backtick in it doubled: `` `Drag me!`.X ``, `` distance(`my point`, B) ``.
   `Scanner.NameInExpression` writes a name so - the renamer and whatever puts a figure's name
-  into an expression use it - and also puts pi, e (any case) and x in backticks, which
+  into an expression use it - and also puts pi, π, e (any case) and x in backticks, which
   bare are the constants and a function's variable. A name in backticks is the top-level
   figure called exactly that (`Binder.ResolveFigureExactly`): not one differing by case, not
   a part inside a composite (a slider's knob), never a constant, two points or a function.
@@ -787,7 +787,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   label's `[...]` part steps over a name in backticks (`LabelBase.FindExpressionParts`, a
   scan, not a regular expression, which backtracked without end on a run of backticks:
   `` [`a]b`.X] `` is one part). The player reads backticks too; it renames nothing.
-  `pi` and `e` in lowercase are the constants whatever the drawing has; in any other case
+  `pi`, `π` and `e` in lowercase are the constants whatever the drawing has; in any other case
   (`PI`) the two-points reading comes first, and with points P and I that is their
   distance. (Lowercase too, until 2026-10-01: `sin(pi * x)` came out wrong without a word
   in a drawing with points P and I. Generated expressions still say `rad(45)` or the digits
@@ -800,33 +800,43 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   order - not on what the last one compiled named, appended (X = A.X, Y = A.Y, X edited:
   the point no longer followed A).
 - **Expression cycle checks include every binding form**: bare distances, point-function
-  arguments (`dist`, `ang`, `area`), numbers and property access. Labels and function graphs
+  arguments (`distance`, `angle`, `area`), numbers and property access. Labels and function graphs
   reject themselves and their descendants, just as coordinate expressions do. A function
   referencing a point on itself otherwise creates a dependency cycle.
 - **The expression language calculates as it is written in class** (`Expressions/Parser`):
   a minus in front takes everything up to the next + - * /, powers included, so `-x^2` is
   -(x²) (it was (-x)²: the parabola y = -x^2 opened upward); `^` is right-associative. A
-  function of numbers is one of ours (`Expressions/Functions.cs`) or of `System.Math` with
-  as many `double` parameters as it is given arguments (`sin`, `max(a, b)`, `atan2(y, x)`),
-  each argument an expression (`Binder.ResolveMethod` by name and count, ours first: they
-  stand in where `System.Math` does what a drawing doesn't want - `round(2.5)` is 3, not
-  the banker's 2; `sign` and `clamp` give "undefined" where `System.Math` throws, for the
-  sign of what has no value or bounds the wrong way round); ours that take the names of
-  points (`dist`, `ang`, `area`, `angle`). `angle(A, B, C)` is the angle ABC as the Angle
-  tool measures it, the smaller one in degrees (2026-10-15: what a click on an angle
-  measurement puts into a formula, see "Building a formula by clicking"; it was an alias
-  of `ang`); `ang` and `oang` stay radians, the smaller and the counterclockwise angle,
-  which the gallery and VB6's files compute with. Everything is a double: a whole number is converted (`sign(x)`, a
+  number right before a name or a parenthesis multiplies it (`2x`, `3sin(x)`, `2(x + 1)`,
+  `2AB`; 2026-10-18, as Desmos and GeoGebra read it), never two names (AB is a distance)
+  nor a name before a parenthesis (a call); `1/2x` is (1/2)x. `30°` is the number in
+  radians (a postfix, GeoGebra's), `|x|` the absolute value, and the comparisons `<` `<=`
+  `≤` `>` `>=` `≥` `=` `==` `≠` `!=` come last and give 1 or 0, numbers equal but for
+  rounding being equal (`Math.TangencyTolerance`), for `if(condition, a, b)` -
+  `if(condition, a)` has no value where it doesn't hold. `−`, `×`, `·`, `÷` are the
+  operators they look like. **The functions are a closed list** (2026-10-18:
+  `FunctionCatalog`, a method of `Functions` each, by name in any case and its other names;
+  until then every method of System.Math with doubles compiled, BitIncrement and
+  Log(a, newBase) too), named as the American classroom and Desmos name them: `log` is base
+  10 and `ln` e's (it was the European `log` = ln, `lg` = log₁₀), `log_2(x)` says its base in
+  the name, `arcsin` (`asin` too), `ceil` (`ceiling` too), `distance`, `nthroot`, `mod` (never
+  negative for a b above 0), `round(x, digits)`, `min`/`max`/`gcd`/`lcm` of any number of
+  arguments (two at a time), `sec`/`csc`/`cot`. **Units**: trigonometry takes radians, as in
+  Desmos and GeoGebra, and everything read off the drawing is in degrees, as the Angle tool
+  shows it: `angle(A, B, C)` (the smaller), `directedangle(A, B, C)` (counterclockwise, 0 up
+  to 360), `direction(A, B)` (as a segment's Direction), a slider, a Number, a label that
+  stands for an angle (`Label.Angle`; it was radians, the Clock said `[rad(-30 * time)]`).
+  `sin(angle(A, B, C))` is an error that says to write `angle(A, B, C)°`
+  (`FunctionCatalog.TakesRadians`/`GivesDegrees`, a call written right in the argument).
+  `ang`, `oang`, `xang`, `dist`, `sqr`, `int`, `sgn`, `lg`, `todeg` are no names any more:
+  `LegacyExpressions` translates them (and VB6's `ANGLE`, in radians) keeping the values,
+  for the `.dgf` reader; the gallery was rewritten with it once. Everything is a double: a whole number is converted (`sign(x)`, a
   polygon's `NumberOfSides` - unconverted, the first operator applied to it threw), and a
   property that is no number (`A.Name`) is an error said in words
   (`ExpressionTreeBuilder.AsNumber`). Nothing a user can type may throw, caught or not: a
   first-chance exception is an error report on screen. Checked with random texts built
   from the language's tokens and the drawing's names (20000 of them: compile as an
   expression and as a function, evaluate, run the renamer), next to a list of texts with
-  known values and of wrong texts that must each give an error with words in it. Left
-  as they are: `sqr` is the square root (VB's `Sqr`, for `.dgf` files; of a negative number
-  undefined - it took the root of the absolute value), `log` the natural logarithm (`lg`
-  is base 10), and `2x` is an error, not a product.
+  known values and of wrong texts that must each give an error with words in it.
 - **Exact forms** (`Expressions/LinearForm.cs`, 2026-10-13): `LinearForms` works an
   expression's bound tree (`DrawingExpression.Bound`, `CompileResult.Bound`) out as a
   constant plus coefficients times variables, all exact (`ExactNumber`: fractions
@@ -1452,10 +1462,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `p.Perimeter`; a slider or a number by name; a point by name (two in a row make a
   distance), `A.X` in an X row and `A.Y` in a Y row (the row's caption decides,
   `InsertContexts.FromRowName`); a segment as `AB` where the two names run together into
-  that reading (checked by compiling), else `dist(A, B)`; a measurement as what it
+  that reading (checked by compiling), else `distance(A, B)`; a measurement as what it
   measures (so the formula reads like math and outlives the measurement), an angle one as
-  its Sweep has it right now - `angle(A, B, C)`, `360 - angle(...)`, `deg(oang(...))`,
-  `360 - deg(oang(...))`, in `rad()` when it shows radians - and an area one as
+  its Sweep has it right now - `angle(A, B, C)`, `360 - angle(...)`, `directedangle(...)`,
+  `360 - directedangle(...)`, in `rad()` when it shows radians - and an area one as
   `p.Area` or `area(A, B, C)`; into a label's text in brackets unless the caret is in a
   `[...]` part already (an unclosed `[` counts). A figure built on the box's owner gives
   nothing (a cycle). Lines, rays and graphs give nothing either. Clicking empty paper
@@ -1486,7 +1496,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   which the regression suite tests). It opens on the first letter of a word, after a dot
   behind a figure's name (its quantities: `ReferenceText`'s, the same a click offers) and on
   Ctrl+Space (a word only one row matches is completed at once); the functions are
-  `FunctionCatalog`'s, written by hand with a line of help each. Firm selection (the word
+  `FunctionCatalog`'s, written by hand with a line of help each, a row matched by its other
+  names too (`asin` selects `arcsin`, and the commit writes arcsin), and the word after a
+  number is the name (`2si`). Every expression box has a ° button before the pencil (no
+  keyboard has the key). Firm selection (the word
   has a letter): Tab, Enter, a click and any character that can't go on a name commit, the
   character typed after. Outlined (an empty word, after a dot): only Tab and a click, so
   that `A.` then `+` types a plus. The popup is in the window's overlay
@@ -1828,7 +1841,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   bisector's direction, an arc's length and its sector's area, a point's parameter domain
   and the hit test; `IAngleProvider.Angle` is the chosen region's measure, so the sweep
   changes the number a Rotate, Line at Angle or Translate takes and never the way a
-  rotation goes (GeoGebra's rule; `ang(A, B, C)` in an expression stays the bare
+  rotation goes (GeoGebra's rule; `directedangle(A, B, C)` in an expression stays the bare
   counterclockwise θ). Defaults: the Angle and Bisector tools make `Smaller` (so the
   hover's wedge is what stays, also dragged past 180°: the creator no longer reorders the
   sides, and the name is the points as clicked), the arc tools `Counterclockwise` (an arc
@@ -2696,7 +2709,10 @@ expression also stays live as a hidden Label (shown or not in the file); later e
 refer to its `.Value`. One our language can't say, or works out to another value than the
 file has (angles up to whole turns), keeps the file's value as a fixed Number, with a line
 in the report: left out, it took everything built on it along. Ordinary
-numeric inputs to Rotate are radians, while imported angle Numbers already hold degrees.
+numeric inputs to Rotate are radians, while imported angle Numbers already hold degrees, and
+so do the hidden labels made for angles (`[deg(...)]`, read in expressions as `rad(a.Value)`).
+GeoGebra's `log` is e's and ours 10's: `log`, `lg`, `ld`, `sgn`, `nroot` are renamed
+(`ln`, `log`, `log_2`, `sign`, `nthroot`); its `If` and comparisons are ours as they are.
 Centroid uses the polygon's area-weighted centroid, not the average of its vertices.
 A bare `°` (Rotate[C, °, A]) is one degree, as in GeoGebra. Helpers are built from the
 points, not from expressions over their names, where they can be (the center of a regular
@@ -2887,7 +2903,7 @@ buttons and checkboxes, 3D, custom tools.
   circle (`ZOrder.Figures`), so a measurement over a clock face is invisible unless it is
   brought to front (`Z="1"`, see "Z order") -
   put the number in a label outside the shape or in the caption; a label as a rotation's
-  angle is read in radians (`[rad(-30 * time)]`); the `Parameter` of a point on a line is
+  angle is read in degrees (`[-30 * time]`; radians until 2026-10-18); the `Parameter` of a point on a line is
   the fraction from the line's first point to its second; a name's trailing digits draw
   as a subscript, so the Theodorus labels are "√17 " with a space.
 - **Drawings that must not fall apart** when a kid drags the wrong thing (Castle, The Falling
@@ -3224,6 +3240,8 @@ Learned from `Reference/VB6/Source` while making the CD library load (`DGFReader
   verbs it would inherit from `Ray` (Convert to line/segment, Reverse) are vetoed in
   `CanEdit`. Morley's trisectors are expressions and get the same effect from
   `SGN(pi - OANG(...)) * ANG(...)` - `OANG` is the counterclockwise angle in [0, 2pi).
+  VB6's names are translated into ours as the file is read (`LegacyExpressions`, `fromDG`:
+  VB6's `ANGLE` is radians, like `ANG`).
 - A point on a figure is placed by moving it to its saved X,Y in one `MoveTo` (setting X then Y
   projects twice from off the figure and lands elsewhere); `AuxInfo(1)` (t on a line, clockwise
   angle on a circle) is ignored.

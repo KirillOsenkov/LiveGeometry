@@ -28,7 +28,7 @@ class CompileResult {
     }
 
     addMethodNotFoundError(functionName) {
-        this.addError("Could not find method '" + functionName + "'");
+        this.addError("There is no function '" + functionName + "'");
     }
 
     /** What to show under the box the text came from: null when it compiled */
@@ -56,7 +56,7 @@ class CompileResult {
         this.addError("Figure '" + name + "' is not a point.");
     }
 
-    addIncorrectNumberOfArgumentsError(method, actualNumberOfArguments) {
-        this.addError("Function '" + method.name + "' expects " + method.parameterCount + " arguments, and it was passed " + actualNumberOfArguments);
+    addIncorrectNumberOfArgumentsError(functionName, actualNumberOfArguments) {
+        this.addError("'" + functionName + "' has " + actualNumberOfArguments + (actualNumberOfArguments === 1 ? " argument" : " arguments") + " here, which is not how it is written");
     }
 }

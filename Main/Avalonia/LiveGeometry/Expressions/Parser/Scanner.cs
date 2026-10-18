@@ -36,14 +36,69 @@ public class Scanner
                 case '+':
                     AddToken(TokenType.Plus);
                     break;
+                // (the signs a caption writes, also when one is pasted in)
                 case '-':
+                case '−':
                     AddToken(TokenType.Minus);
                     break;
                 case '*':
+                case '×':
+                case '·':
                     AddToken(TokenType.Multiply);
                     break;
                 case '/':
+                case '÷':
                     AddToken(TokenType.Divide);
+                    break;
+                case '°':
+                    AddToken(TokenType.Degree);
+                    break;
+                case '|':
+                    AddToken(TokenType.Pipe);
+                    break;
+                case '<':
+                    if (NextChar() == '=')
+                    {
+                        AddToken(TokenType.LessOrEqual, length: 2);
+                    }
+                    else
+                    {
+                        AddToken(TokenType.Less);
+                    }
+
+                    break;
+                case '>':
+                    if (NextChar() == '=')
+                    {
+                        AddToken(TokenType.GreaterOrEqual, length: 2);
+                    }
+                    else
+                    {
+                        AddToken(TokenType.Greater);
+                    }
+
+                    break;
+                case '≤':
+                    AddToken(TokenType.LessOrEqual);
+                    break;
+                case '≥':
+                    AddToken(TokenType.GreaterOrEqual);
+                    break;
+                // = as in class, == as programmers and GeoGebra write it
+                case '=':
+                    AddToken(TokenType.Equal, length: NextChar() == '=' ? 2 : 1);
+                    break;
+                case '≠':
+                    AddToken(TokenType.NotEqual);
+                    break;
+                case '!':
+                    if (NextChar() != '=')
+                    {
+                        ReportError("Invalid character");
+                        return;
+                    }
+
+                    AddToken(TokenType.NotEqual, length: 2);
                     break;
                 case '^':
                     AddToken(TokenType.Power);
@@ -162,7 +217,7 @@ public class Scanner
 
     /// <summary>
     /// The name as an expression says it: as it is when it is a name (<see cref="IsName"/>)
-    /// that no expression reads as something else - pi and e in any case are the
+    /// that no expression reads as something else - pi, π and e in any case are the
     /// constants, x is a function's variable - and in backticks otherwise, a backtick in it
     /// doubled: `Drag me!`, `e`. What a rename writes, and whatever writes a figure's name
     /// into an expression, so that every name can be said.
@@ -173,6 +228,7 @@ public class Scanner
         name ??= "";
         bool reserved = name == "x"
             || name.Equals("pi", StringComparison.OrdinalIgnoreCase)
+            || name == "π"
             || name.Equals("e", StringComparison.OrdinalIgnoreCase);
         if (IsName(name) && !reserved)
         {
@@ -332,11 +388,11 @@ public class Scanner
         AddToken(token);
     }
 
-    private void AddToken(TokenType tokenType)
+    private void AddToken(TokenType tokenType, int length = 1)
     {
-        var token = new Token(text[current].ToString(), current, tokenType);
+        var token = new Token(text.Substring(current, length), current, tokenType);
         AddToken(token);
-        current++;
+        current += length;
     }
 
     private void AddToken(Token token)

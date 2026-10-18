@@ -1,6 +1,7 @@
 // Port of Main/Avalonia/LiveGeometry/Expressions/Parser/Parser.cs: a precedence-climbing
 // parser. A minus in front takes everything up to the next + - * /, powers included; ^ is
-// right-associative; there is no implicit multiplication.
+// right-associative; a number right before a name or a parenthesis multiplies it (2x);
+// comparisons come last, ° follows a term and |x| is between bars.
 
 class Parser {
     constructor(tokens) {
@@ -68,11 +69,13 @@ class Parser {
                 break;
             }
 
-            if (!Parser.isOperatorToken(this.currentToken.kind)) {
+            // a number right before a name or a parenthesis multiplies it: 2x, 3sin(x), 2(x + 1)
+            const implicitMultiplication = this.isImplicitMultiplication();
+            if (!implicitMultiplication && !Parser.isOperatorToken(this.currentToken.kind)) {
                 break;
             }
 
-            const operationType = Parser.getExpressionType(this.currentToken.kind);
+            const operationType = implicitMultiplication ? NodeType.Multiplication : Parser.getExpressionType(this.currentToken.kind);
             const newPrecedence = Parser.getPrecedence(operationType);
             if (newPrecedence < precedence) {
                 break;
@@ -82,12 +85,22 @@ class Parser {
                 break;
             }
 
-            this.advanceToken();
+            if (!implicitMultiplication) {
+                this.advanceToken();
+            }
+
             const rightOperand = this.parseExpression(newPrecedence);
             leftOperand = new SyntaxNode(operationType, [leftOperand, rightOperand]);
         }
 
         return leftOperand;
+    }
+
+    /** A number just read, and a name or a parenthesis right after it */
+    isImplicitMultiplication() {
+        return this.current > 0
+            && this.tokens[this.current - 1].kind === TokenType.NumericLiteral
+            && (this.currentToken.kind === TokenType.Identifier || this.currentToken.kind === TokenType.OpenParen);
     }
 
     get eof() {
@@ -108,19 +121,30 @@ class Parser {
     }
 
     static isOperatorToken(tokenType) {
-        switch (tokenType) {
-            case TokenType.Plus:
-            case TokenType.Minus:
-            case TokenType.Multiply:
-            case TokenType.Divide:
-            case TokenType.Power:
+        switch (Parser.getExpressionType(tokenType)) {
+            case NodeType.Addition:
+            case NodeType.Subtraction:
+            case NodeType.Multiplication:
+            case NodeType.Division:
+            case NodeType.Power:
                 return true;
             default:
-                return false;
+                return Parser.isComparison(Parser.getExpressionType(tokenType));
         }
     }
 
+    /** A term and the degree signs after it: 30°, angle(A, B, C)°, (a + b)° */
     parseTerm(precedence) {
+        let term = this.parsePrimary(precedence);
+        while (term != null && this.currentTokenKind === TokenType.Degree) {
+            term = new SyntaxNode(NodeType.Degrees, [term]);
+            this.advanceToken();
+        }
+
+        return term;
+    }
+
+    parsePrimary(precedence) {
         let result = null;
         switch (this.currentToken.kind) {
             case TokenType.NumericLiteral:
@@ -153,6 +177,12 @@ class Parser {
                 this.advanceToken();
                 result = this.parseExpression(0);
                 this.expectToken(TokenType.CloseParen);
+                break;
+            case TokenType.Pipe:
+                // |x|: what is between the bars, which end it as a ) ends a parenthesis
+                this.advanceToken();
+                result = new SyntaxNode(NodeType.AbsoluteValue, [this.parseExpression(0)]);
+                this.expectToken(TokenType.Pipe);
                 break;
             default:
                 this.reportError("Expected a number, a variable, a function or a parenthesized expression");
@@ -232,29 +262,60 @@ class Parser {
                 return NodeType.Division;
             case TokenType.Power:
                 return NodeType.Power;
+            case TokenType.Less:
+                return NodeType.Less;
+            case TokenType.LessOrEqual:
+                return NodeType.LessOrEqual;
+            case TokenType.Greater:
+                return NodeType.Greater;
+            case TokenType.GreaterOrEqual:
+                return NodeType.GreaterOrEqual;
+            case TokenType.Equal:
+                return NodeType.Equal;
+            case TokenType.NotEqual:
+                return NodeType.NotEqual;
             default:
                 return NodeType.Unknown;
         }
     }
 
+    /** A comparison: what if(...) asks, 1 when it holds and 0 when it doesn't */
+    static isComparison(nodeType) {
+        switch (nodeType) {
+            case NodeType.Less:
+            case NodeType.LessOrEqual:
+            case NodeType.Greater:
+            case NodeType.GreaterOrEqual:
+            case NodeType.Equal:
+            case NodeType.NotEqual:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     static getPrecedence(nodeType) {
+        if (Parser.isComparison(nodeType)) {
+            return 1;
+        }
+
         switch (nodeType) {
             case NodeType.Constant:
                 return 0;
             case NodeType.Addition:
             case NodeType.Subtraction:
-                return 1;
+                return 2;
             case NodeType.Multiplication:
             case NodeType.Division:
-                return 2;
-            case NodeType.Power:
                 return 3;
-            case NodeType.Negation:
+            case NodeType.Power:
                 return 4;
-            case NodeType.PropertyAccess:
+            case NodeType.Negation:
                 return 5;
-            case NodeType.FunctionCall:
+            case NodeType.PropertyAccess:
                 return 6;
+            case NodeType.FunctionCall:
+                return 7;
             default:
                 return 0;
         }

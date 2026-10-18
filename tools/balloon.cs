@@ -262,9 +262,9 @@ Point("Ctr", "Knot.X", "Knot.Y + Sag.Y + Body.Y");
 // the knot; it leaves the nozzle to the right and comes to the knot from below, on handles
 // that are points, shorter when the ends are close
 Point("HoseEnd", "Knot.X", "Knot.Y");
-Point("HoseMid", "(Outlet.X + Knot.X) / 2", "(Outlet.Y + Knot.Y) / 2 - min(0.3, 0.08 + 0.08 * dist(Outlet, Knot))");
-Point("HoseLeave", "Outlet.X + min(0.3, 0.15 * dist(Outlet, Knot))", "Outlet.Y");
-Point("HoseArrive", "Knot.X", "Knot.Y - min(0.3, 0.15 * dist(Outlet, Knot))");
+Point("HoseMid", "(Outlet.X + Knot.X) / 2", "(Outlet.Y + Knot.Y) / 2 - min(0.3, 0.08 + 0.08 * distance(Outlet, Knot))");
+Point("HoseLeave", "Outlet.X + min(0.3, 0.15 * distance(Outlet, Knot))", "Outlet.Y");
+Point("HoseArrive", "Knot.X", "Knot.Y - min(0.3, 0.15 * distance(Outlet, Knot))");
 BezierPath(
     "Hose",
     attributes: " Smoothing=\"NaturalSpline\"",

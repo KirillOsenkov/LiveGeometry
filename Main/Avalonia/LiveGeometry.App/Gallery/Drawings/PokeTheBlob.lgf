@@ -138,7 +138,7 @@
     <PointByCoordinates Name="GumRight" Visible="false" X="Ball.X + 0.275" Y="Ball.Y">
       <Dependency Name="Ball" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Poke" Visible="false" X="dist(Ball, Core)" Y="atan2(Ball.Y - Core.Y, Ball.X - Core.X)">
+    <PointByCoordinates Name="Poke" Visible="false" X="distance(Ball, Core)" Y="atan2(Ball.Y - Core.Y, Ball.X - Core.X)">
       <Dependency Name="Ball" />
       <Dependency Name="Core" />
     </PointByCoordinates>
@@ -161,7 +161,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim0" Visible="false" Style="Dot" X="Core.X + (Skin0.X - Press.Y * ((Skin0.X - Skin0.Y) + sqrt((Skin0.X - Skin0.Y) ^ 2 + 0.01)) / 2) * cos((Squeeze.X * sin(Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin0.X - Press.Y * ((Skin0.X - Skin0.Y) + sqrt((Skin0.X - Skin0.Y) ^ 2 + 0.01)) / 2) * sin((Squeeze.X * sin(Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim0" Visible="false" Style="Dot" X="Core.X + (Skin0.X - Press.Y * ((Skin0.X - Skin0.Y) + sqrt((Skin0.X - Skin0.Y) ^ 2 + 0.01)) / 2) * cos((Squeeze.X * sin(Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin0.X - Press.Y * ((Skin0.X - Skin0.Y) + sqrt((Skin0.X - Skin0.Y) ^ 2 + 0.01)) / 2) * sin((Squeeze.X * sin(Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin0" />
       <Dependency Name="Press" />
@@ -174,7 +174,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim1" Visible="false" Style="Dot" X="Core.X + (Skin1.X - Press.Y * ((Skin1.X - Skin1.Y) + sqrt((Skin1.X - Skin1.Y) ^ 2 + 0.01)) / 2) * cos((0.3927 - Squeeze.X * sin(0.3927 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin1.X - Press.Y * ((Skin1.X - Skin1.Y) + sqrt((Skin1.X - Skin1.Y) ^ 2 + 0.01)) / 2) * sin((0.3927 - Squeeze.X * sin(0.3927 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim1" Visible="false" Style="Dot" X="Core.X + (Skin1.X - Press.Y * ((Skin1.X - Skin1.Y) + sqrt((Skin1.X - Skin1.Y) ^ 2 + 0.01)) / 2) * cos((0.3927 - Squeeze.X * sin(0.3927 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin1.X - Press.Y * ((Skin1.X - Skin1.Y) + sqrt((Skin1.X - Skin1.Y) ^ 2 + 0.01)) / 2) * sin((0.3927 - Squeeze.X * sin(0.3927 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin1" />
       <Dependency Name="Press" />
@@ -187,7 +187,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim2" Visible="false" Style="Dot" X="Core.X + (Skin2.X - Press.Y * ((Skin2.X - Skin2.Y) + sqrt((Skin2.X - Skin2.Y) ^ 2 + 0.01)) / 2) * cos((0.7854 - Squeeze.X * sin(0.7854 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin2.X - Press.Y * ((Skin2.X - Skin2.Y) + sqrt((Skin2.X - Skin2.Y) ^ 2 + 0.01)) / 2) * sin((0.7854 - Squeeze.X * sin(0.7854 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim2" Visible="false" Style="Dot" X="Core.X + (Skin2.X - Press.Y * ((Skin2.X - Skin2.Y) + sqrt((Skin2.X - Skin2.Y) ^ 2 + 0.01)) / 2) * cos((0.7854 - Squeeze.X * sin(0.7854 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin2.X - Press.Y * ((Skin2.X - Skin2.Y) + sqrt((Skin2.X - Skin2.Y) ^ 2 + 0.01)) / 2) * sin((0.7854 - Squeeze.X * sin(0.7854 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin2" />
       <Dependency Name="Press" />
@@ -200,7 +200,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim3" Visible="false" Style="Dot" X="Core.X + (Skin3.X - Press.Y * ((Skin3.X - Skin3.Y) + sqrt((Skin3.X - Skin3.Y) ^ 2 + 0.01)) / 2) * cos((1.1781 - Squeeze.X * sin(1.1781 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin3.X - Press.Y * ((Skin3.X - Skin3.Y) + sqrt((Skin3.X - Skin3.Y) ^ 2 + 0.01)) / 2) * sin((1.1781 - Squeeze.X * sin(1.1781 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim3" Visible="false" Style="Dot" X="Core.X + (Skin3.X - Press.Y * ((Skin3.X - Skin3.Y) + sqrt((Skin3.X - Skin3.Y) ^ 2 + 0.01)) / 2) * cos((1.1781 - Squeeze.X * sin(1.1781 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin3.X - Press.Y * ((Skin3.X - Skin3.Y) + sqrt((Skin3.X - Skin3.Y) ^ 2 + 0.01)) / 2) * sin((1.1781 - Squeeze.X * sin(1.1781 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin3" />
       <Dependency Name="Press" />
@@ -213,7 +213,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim4" Visible="false" Style="Dot" X="Core.X + (Skin4.X - Press.Y * ((Skin4.X - Skin4.Y) + sqrt((Skin4.X - Skin4.Y) ^ 2 + 0.01)) / 2) * cos((1.5708 - Squeeze.X * sin(1.5708 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin4.X - Press.Y * ((Skin4.X - Skin4.Y) + sqrt((Skin4.X - Skin4.Y) ^ 2 + 0.01)) / 2) * sin((1.5708 - Squeeze.X * sin(1.5708 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim4" Visible="false" Style="Dot" X="Core.X + (Skin4.X - Press.Y * ((Skin4.X - Skin4.Y) + sqrt((Skin4.X - Skin4.Y) ^ 2 + 0.01)) / 2) * cos((1.5708 - Squeeze.X * sin(1.5708 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin4.X - Press.Y * ((Skin4.X - Skin4.Y) + sqrt((Skin4.X - Skin4.Y) ^ 2 + 0.01)) / 2) * sin((1.5708 - Squeeze.X * sin(1.5708 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin4" />
       <Dependency Name="Press" />
@@ -226,7 +226,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim5" Visible="false" Style="Dot" X="Core.X + (Skin5.X - Press.Y * ((Skin5.X - Skin5.Y) + sqrt((Skin5.X - Skin5.Y) ^ 2 + 0.01)) / 2) * cos((1.9635 - Squeeze.X * sin(1.9635 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin5.X - Press.Y * ((Skin5.X - Skin5.Y) + sqrt((Skin5.X - Skin5.Y) ^ 2 + 0.01)) / 2) * sin((1.9635 - Squeeze.X * sin(1.9635 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim5" Visible="false" Style="Dot" X="Core.X + (Skin5.X - Press.Y * ((Skin5.X - Skin5.Y) + sqrt((Skin5.X - Skin5.Y) ^ 2 + 0.01)) / 2) * cos((1.9635 - Squeeze.X * sin(1.9635 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin5.X - Press.Y * ((Skin5.X - Skin5.Y) + sqrt((Skin5.X - Skin5.Y) ^ 2 + 0.01)) / 2) * sin((1.9635 - Squeeze.X * sin(1.9635 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin5" />
       <Dependency Name="Press" />
@@ -239,7 +239,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim6" Visible="false" Style="Dot" X="Core.X + (Skin6.X - Press.Y * ((Skin6.X - Skin6.Y) + sqrt((Skin6.X - Skin6.Y) ^ 2 + 0.01)) / 2) * cos((2.35619 - Squeeze.X * sin(2.35619 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin6.X - Press.Y * ((Skin6.X - Skin6.Y) + sqrt((Skin6.X - Skin6.Y) ^ 2 + 0.01)) / 2) * sin((2.35619 - Squeeze.X * sin(2.35619 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim6" Visible="false" Style="Dot" X="Core.X + (Skin6.X - Press.Y * ((Skin6.X - Skin6.Y) + sqrt((Skin6.X - Skin6.Y) ^ 2 + 0.01)) / 2) * cos((2.35619 - Squeeze.X * sin(2.35619 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin6.X - Press.Y * ((Skin6.X - Skin6.Y) + sqrt((Skin6.X - Skin6.Y) ^ 2 + 0.01)) / 2) * sin((2.35619 - Squeeze.X * sin(2.35619 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin6" />
       <Dependency Name="Press" />
@@ -252,7 +252,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim7" Visible="false" Style="Dot" X="Core.X + (Skin7.X - Press.Y * ((Skin7.X - Skin7.Y) + sqrt((Skin7.X - Skin7.Y) ^ 2 + 0.01)) / 2) * cos((2.74889 - Squeeze.X * sin(2.74889 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin7.X - Press.Y * ((Skin7.X - Skin7.Y) + sqrt((Skin7.X - Skin7.Y) ^ 2 + 0.01)) / 2) * sin((2.74889 - Squeeze.X * sin(2.74889 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim7" Visible="false" Style="Dot" X="Core.X + (Skin7.X - Press.Y * ((Skin7.X - Skin7.Y) + sqrt((Skin7.X - Skin7.Y) ^ 2 + 0.01)) / 2) * cos((2.74889 - Squeeze.X * sin(2.74889 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin7.X - Press.Y * ((Skin7.X - Skin7.Y) + sqrt((Skin7.X - Skin7.Y) ^ 2 + 0.01)) / 2) * sin((2.74889 - Squeeze.X * sin(2.74889 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin7" />
       <Dependency Name="Press" />
@@ -265,7 +265,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim8" Visible="false" Style="Dot" X="Core.X + (Skin8.X - Press.Y * ((Skin8.X - Skin8.Y) + sqrt((Skin8.X - Skin8.Y) ^ 2 + 0.01)) / 2) * cos((3.14159 - Squeeze.X * sin(3.14159 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin8.X - Press.Y * ((Skin8.X - Skin8.Y) + sqrt((Skin8.X - Skin8.Y) ^ 2 + 0.01)) / 2) * sin((3.14159 - Squeeze.X * sin(3.14159 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim8" Visible="false" Style="Dot" X="Core.X + (Skin8.X - Press.Y * ((Skin8.X - Skin8.Y) + sqrt((Skin8.X - Skin8.Y) ^ 2 + 0.01)) / 2) * cos((3.14159 - Squeeze.X * sin(3.14159 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin8.X - Press.Y * ((Skin8.X - Skin8.Y) + sqrt((Skin8.X - Skin8.Y) ^ 2 + 0.01)) / 2) * sin((3.14159 - Squeeze.X * sin(3.14159 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin8" />
       <Dependency Name="Press" />
@@ -278,7 +278,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim9" Visible="false" Style="Dot" X="Core.X + (Skin9.X - Press.Y * ((Skin9.X - Skin9.Y) + sqrt((Skin9.X - Skin9.Y) ^ 2 + 0.01)) / 2) * cos((3.53429 - Squeeze.X * sin(3.53429 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin9.X - Press.Y * ((Skin9.X - Skin9.Y) + sqrt((Skin9.X - Skin9.Y) ^ 2 + 0.01)) / 2) * sin((3.53429 - Squeeze.X * sin(3.53429 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim9" Visible="false" Style="Dot" X="Core.X + (Skin9.X - Press.Y * ((Skin9.X - Skin9.Y) + sqrt((Skin9.X - Skin9.Y) ^ 2 + 0.01)) / 2) * cos((3.53429 - Squeeze.X * sin(3.53429 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin9.X - Press.Y * ((Skin9.X - Skin9.Y) + sqrt((Skin9.X - Skin9.Y) ^ 2 + 0.01)) / 2) * sin((3.53429 - Squeeze.X * sin(3.53429 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin9" />
       <Dependency Name="Press" />
@@ -291,7 +291,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim10" Visible="false" Style="Dot" X="Core.X + (Skin10.X - Press.Y * ((Skin10.X - Skin10.Y) + sqrt((Skin10.X - Skin10.Y) ^ 2 + 0.01)) / 2) * cos((3.92699 - Squeeze.X * sin(3.92699 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin10.X - Press.Y * ((Skin10.X - Skin10.Y) + sqrt((Skin10.X - Skin10.Y) ^ 2 + 0.01)) / 2) * sin((3.92699 - Squeeze.X * sin(3.92699 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim10" Visible="false" Style="Dot" X="Core.X + (Skin10.X - Press.Y * ((Skin10.X - Skin10.Y) + sqrt((Skin10.X - Skin10.Y) ^ 2 + 0.01)) / 2) * cos((3.92699 - Squeeze.X * sin(3.92699 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin10.X - Press.Y * ((Skin10.X - Skin10.Y) + sqrt((Skin10.X - Skin10.Y) ^ 2 + 0.01)) / 2) * sin((3.92699 - Squeeze.X * sin(3.92699 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin10" />
       <Dependency Name="Press" />
@@ -304,7 +304,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim11" Visible="false" Style="Dot" X="Core.X + (Skin11.X - Press.Y * ((Skin11.X - Skin11.Y) + sqrt((Skin11.X - Skin11.Y) ^ 2 + 0.01)) / 2) * cos((4.31969 - Squeeze.X * sin(4.31969 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin11.X - Press.Y * ((Skin11.X - Skin11.Y) + sqrt((Skin11.X - Skin11.Y) ^ 2 + 0.01)) / 2) * sin((4.31969 - Squeeze.X * sin(4.31969 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim11" Visible="false" Style="Dot" X="Core.X + (Skin11.X - Press.Y * ((Skin11.X - Skin11.Y) + sqrt((Skin11.X - Skin11.Y) ^ 2 + 0.01)) / 2) * cos((4.31969 - Squeeze.X * sin(4.31969 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin11.X - Press.Y * ((Skin11.X - Skin11.Y) + sqrt((Skin11.X - Skin11.Y) ^ 2 + 0.01)) / 2) * sin((4.31969 - Squeeze.X * sin(4.31969 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin11" />
       <Dependency Name="Press" />
@@ -317,7 +317,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim12" Visible="false" Style="Dot" X="Core.X + (Skin12.X - Press.Y * ((Skin12.X - Skin12.Y) + sqrt((Skin12.X - Skin12.Y) ^ 2 + 0.01)) / 2) * cos((4.71239 - Squeeze.X * sin(4.71239 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin12.X - Press.Y * ((Skin12.X - Skin12.Y) + sqrt((Skin12.X - Skin12.Y) ^ 2 + 0.01)) / 2) * sin((4.71239 - Squeeze.X * sin(4.71239 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim12" Visible="false" Style="Dot" X="Core.X + (Skin12.X - Press.Y * ((Skin12.X - Skin12.Y) + sqrt((Skin12.X - Skin12.Y) ^ 2 + 0.01)) / 2) * cos((4.71239 - Squeeze.X * sin(4.71239 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin12.X - Press.Y * ((Skin12.X - Skin12.Y) + sqrt((Skin12.X - Skin12.Y) ^ 2 + 0.01)) / 2) * sin((4.71239 - Squeeze.X * sin(4.71239 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin12" />
       <Dependency Name="Press" />
@@ -330,7 +330,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim13" Visible="false" Style="Dot" X="Core.X + (Skin13.X - Press.Y * ((Skin13.X - Skin13.Y) + sqrt((Skin13.X - Skin13.Y) ^ 2 + 0.01)) / 2) * cos((5.10509 - Squeeze.X * sin(5.10509 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin13.X - Press.Y * ((Skin13.X - Skin13.Y) + sqrt((Skin13.X - Skin13.Y) ^ 2 + 0.01)) / 2) * sin((5.10509 - Squeeze.X * sin(5.10509 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim13" Visible="false" Style="Dot" X="Core.X + (Skin13.X - Press.Y * ((Skin13.X - Skin13.Y) + sqrt((Skin13.X - Skin13.Y) ^ 2 + 0.01)) / 2) * cos((5.10509 - Squeeze.X * sin(5.10509 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin13.X - Press.Y * ((Skin13.X - Skin13.Y) + sqrt((Skin13.X - Skin13.Y) ^ 2 + 0.01)) / 2) * sin((5.10509 - Squeeze.X * sin(5.10509 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin13" />
       <Dependency Name="Press" />
@@ -343,7 +343,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim14" Visible="false" Style="Dot" X="Core.X + (Skin14.X - Press.Y * ((Skin14.X - Skin14.Y) + sqrt((Skin14.X - Skin14.Y) ^ 2 + 0.01)) / 2) * cos((5.49779 - Squeeze.X * sin(5.49779 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin14.X - Press.Y * ((Skin14.X - Skin14.Y) + sqrt((Skin14.X - Skin14.Y) ^ 2 + 0.01)) / 2) * sin((5.49779 - Squeeze.X * sin(5.49779 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim14" Visible="false" Style="Dot" X="Core.X + (Skin14.X - Press.Y * ((Skin14.X - Skin14.Y) + sqrt((Skin14.X - Skin14.Y) ^ 2 + 0.01)) / 2) * cos((5.49779 - Squeeze.X * sin(5.49779 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin14.X - Press.Y * ((Skin14.X - Skin14.Y) + sqrt((Skin14.X - Skin14.Y) ^ 2 + 0.01)) / 2) * sin((5.49779 - Squeeze.X * sin(5.49779 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin14" />
       <Dependency Name="Press" />
@@ -356,7 +356,7 @@
       <Dependency Name="Poke" />
       <Dependency Name="Press" />
     </PointByCoordinates>
-    <PointByCoordinates Name="Rim15" Visible="false" Style="Dot" X="Core.X + (Skin15.X - Press.Y * ((Skin15.X - Skin15.Y) + sqrt((Skin15.X - Skin15.Y) ^ 2 + 0.01)) / 2) * cos((5.89049 - Squeeze.X * sin(5.89049 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * log(1 + exp(((Skin15.X - Press.Y * ((Skin15.X - Skin15.Y) + sqrt((Skin15.X - Skin15.Y) ^ 2 + 0.01)) / 2) * sin((5.89049 - Squeeze.X * sin(5.89049 - Poke.Y))) + 1.5625) / 0.1))">
+    <PointByCoordinates Name="Rim15" Visible="false" Style="Dot" X="Core.X + (Skin15.X - Press.Y * ((Skin15.X - Skin15.Y) + sqrt((Skin15.X - Skin15.Y) ^ 2 + 0.01)) / 2) * cos((5.89049 - Squeeze.X * sin(5.89049 - Poke.Y)))" Y="Core.Y - 1.5625 + 0.1 * ln(1 + exp(((Skin15.X - Press.Y * ((Skin15.X - Skin15.Y) + sqrt((Skin15.X - Skin15.Y) ^ 2 + 0.01)) / 2) * sin((5.89049 - Squeeze.X * sin(5.89049 - Poke.Y))) + 1.5625) / 0.1))">
       <Dependency Name="Core" />
       <Dependency Name="Skin15" />
       <Dependency Name="Press" />
@@ -372,17 +372,17 @@
     <PointByCoordinates Name="MouthRest" Visible="false" X="Core.X" Y="Core.Y - 0.375">
       <Dependency Name="Core" />
     </PointByCoordinates>
-    <PointByCoordinates Name="EyeL" Visible="false" X="EyeRestL.X + (0.4 * Press.X * exp(-(dist(Ball, EyeRestL) / 1.25) ^ 2) + (0.775 - dist(Ball, EyeRestL) + sqrt((0.775 - dist(Ball, EyeRestL)) ^ 2 + 0.00562)) / 2) * (EyeRestL.X - Ball.X - 0.0375) / sqrt((EyeRestL.X - Ball.X - 0.0375) ^ 2 + (EyeRestL.Y - Ball.Y) ^ 2)" Y="EyeRestL.Y + (0.4 * Press.X * exp(-(dist(Ball, EyeRestL) / 1.25) ^ 2) + (0.775 - dist(Ball, EyeRestL) + sqrt((0.775 - dist(Ball, EyeRestL)) ^ 2 + 0.00562)) / 2) * (EyeRestL.Y - Ball.Y) / sqrt((EyeRestL.X - Ball.X - 0.0375) ^ 2 + (EyeRestL.Y - Ball.Y) ^ 2)">
+    <PointByCoordinates Name="EyeL" Visible="false" X="EyeRestL.X + (0.4 * Press.X * exp(-(distance(Ball, EyeRestL) / 1.25) ^ 2) + (0.775 - distance(Ball, EyeRestL) + sqrt((0.775 - distance(Ball, EyeRestL)) ^ 2 + 0.00562)) / 2) * (EyeRestL.X - Ball.X - 0.0375) / sqrt((EyeRestL.X - Ball.X - 0.0375) ^ 2 + (EyeRestL.Y - Ball.Y) ^ 2)" Y="EyeRestL.Y + (0.4 * Press.X * exp(-(distance(Ball, EyeRestL) / 1.25) ^ 2) + (0.775 - distance(Ball, EyeRestL) + sqrt((0.775 - distance(Ball, EyeRestL)) ^ 2 + 0.00562)) / 2) * (EyeRestL.Y - Ball.Y) / sqrt((EyeRestL.X - Ball.X - 0.0375) ^ 2 + (EyeRestL.Y - Ball.Y) ^ 2)">
       <Dependency Name="EyeRestL" />
       <Dependency Name="Press" />
       <Dependency Name="Ball" />
     </PointByCoordinates>
-    <PointByCoordinates Name="EyeR" Visible="false" X="EyeRestR.X + (0.4 * Press.X * exp(-(dist(Ball, EyeRestR) / 1.25) ^ 2) + (0.775 - dist(Ball, EyeRestR) + sqrt((0.775 - dist(Ball, EyeRestR)) ^ 2 + 0.00562)) / 2) * (EyeRestR.X - Ball.X + 0.0375) / sqrt((EyeRestR.X - Ball.X + 0.0375) ^ 2 + (EyeRestR.Y - Ball.Y) ^ 2)" Y="EyeRestR.Y + (0.4 * Press.X * exp(-(dist(Ball, EyeRestR) / 1.25) ^ 2) + (0.775 - dist(Ball, EyeRestR) + sqrt((0.775 - dist(Ball, EyeRestR)) ^ 2 + 0.00562)) / 2) * (EyeRestR.Y - Ball.Y) / sqrt((EyeRestR.X - Ball.X + 0.0375) ^ 2 + (EyeRestR.Y - Ball.Y) ^ 2)">
+    <PointByCoordinates Name="EyeR" Visible="false" X="EyeRestR.X + (0.4 * Press.X * exp(-(distance(Ball, EyeRestR) / 1.25) ^ 2) + (0.775 - distance(Ball, EyeRestR) + sqrt((0.775 - distance(Ball, EyeRestR)) ^ 2 + 0.00562)) / 2) * (EyeRestR.X - Ball.X + 0.0375) / sqrt((EyeRestR.X - Ball.X + 0.0375) ^ 2 + (EyeRestR.Y - Ball.Y) ^ 2)" Y="EyeRestR.Y + (0.4 * Press.X * exp(-(distance(Ball, EyeRestR) / 1.25) ^ 2) + (0.775 - distance(Ball, EyeRestR) + sqrt((0.775 - distance(Ball, EyeRestR)) ^ 2 + 0.00562)) / 2) * (EyeRestR.Y - Ball.Y) / sqrt((EyeRestR.X - Ball.X + 0.0375) ^ 2 + (EyeRestR.Y - Ball.Y) ^ 2)">
       <Dependency Name="EyeRestR" />
       <Dependency Name="Press" />
       <Dependency Name="Ball" />
     </PointByCoordinates>
-    <PointByCoordinates Name="MouthC" Visible="false" X="MouthRest.X + (0.4 * Press.X * exp(-(dist(Ball, MouthRest) / 1.25) ^ 2) + (0.775 - dist(Ball, MouthRest) + sqrt((0.775 - dist(Ball, MouthRest)) ^ 2 + 0.00562)) / 2) * (MouthRest.X - Ball.X) / sqrt((MouthRest.X - Ball.X) ^ 2 + (MouthRest.Y - Ball.Y - 0.0375) ^ 2)" Y="MouthRest.Y + (0.4 * Press.X * exp(-(dist(Ball, MouthRest) / 1.25) ^ 2) + (0.775 - dist(Ball, MouthRest) + sqrt((0.775 - dist(Ball, MouthRest)) ^ 2 + 0.00562)) / 2) * (MouthRest.Y - Ball.Y - 0.0375) / sqrt((MouthRest.X - Ball.X) ^ 2 + (MouthRest.Y - Ball.Y - 0.0375) ^ 2)">
+    <PointByCoordinates Name="MouthC" Visible="false" X="MouthRest.X + (0.4 * Press.X * exp(-(distance(Ball, MouthRest) / 1.25) ^ 2) + (0.775 - distance(Ball, MouthRest) + sqrt((0.775 - distance(Ball, MouthRest)) ^ 2 + 0.00562)) / 2) * (MouthRest.X - Ball.X) / sqrt((MouthRest.X - Ball.X) ^ 2 + (MouthRest.Y - Ball.Y - 0.0375) ^ 2)" Y="MouthRest.Y + (0.4 * Press.X * exp(-(distance(Ball, MouthRest) / 1.25) ^ 2) + (0.775 - distance(Ball, MouthRest) + sqrt((0.775 - distance(Ball, MouthRest)) ^ 2 + 0.00562)) / 2) * (MouthRest.Y - Ball.Y - 0.0375) / sqrt((MouthRest.X - Ball.X) ^ 2 + (MouthRest.Y - Ball.Y - 0.0375) ^ 2)">
       <Dependency Name="MouthRest" />
       <Dependency Name="Press" />
       <Dependency Name="Ball" />
@@ -563,7 +563,7 @@
       <Dependency Name="Lip4" />
       <Dependency Name="Lip5" />
     </BezierPath>
-    <PointByCoordinates Name="PupilL" Visible="false" X="EyeL.X + 0.075 * (Ball.X - EyeL.X) / max(0.0625, dist(Ball, EyeL))" Y="EyeL.Y + 0.075 * (Ball.Y - EyeL.Y) / max(0.0625, dist(Ball, EyeL))">
+    <PointByCoordinates Name="PupilL" Visible="false" X="EyeL.X + 0.075 * (Ball.X - EyeL.X) / max(0.0625, distance(Ball, EyeL))" Y="EyeL.Y + 0.075 * (Ball.Y - EyeL.Y) / max(0.0625, distance(Ball, EyeL))">
       <Dependency Name="EyeL" />
       <Dependency Name="Ball" />
     </PointByCoordinates>
@@ -579,7 +579,7 @@
       <Dependency Name="PupilL" />
       <Dependency Name="PupilLEdge" />
     </PointByCoordinates>
-    <PointByCoordinates Name="PupilR" Visible="false" X="EyeR.X + 0.075 * (Ball.X - EyeR.X) / max(0.0625, dist(Ball, EyeR))" Y="EyeR.Y + 0.075 * (Ball.Y - EyeR.Y) / max(0.0625, dist(Ball, EyeR))">
+    <PointByCoordinates Name="PupilR" Visible="false" X="EyeR.X + 0.075 * (Ball.X - EyeR.X) / max(0.0625, distance(Ball, EyeR))" Y="EyeR.Y + 0.075 * (Ball.Y - EyeR.Y) / max(0.0625, distance(Ball, EyeR))">
       <Dependency Name="EyeR" />
       <Dependency Name="Ball" />
     </PointByCoordinates>

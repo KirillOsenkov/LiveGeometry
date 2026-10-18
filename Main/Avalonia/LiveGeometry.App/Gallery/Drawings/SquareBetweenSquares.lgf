@@ -121,21 +121,21 @@
     <PointOnFigure Name="M" X="0.7291666666999999" Y="-0.22916666664999985" Parameter="0.5">
       <Dependency Name="AF" />
     </PointOnFigure>
-    <PointByCoordinates Name="K" Visible="false" X="B.X + (G.X - B.X) * dist(A, M) / dist(A, F)" Y="B.Y + (G.Y - B.Y) * dist(A, M) / dist(A, F)">
+    <PointByCoordinates Name="K" Visible="false" X="B.X + (G.X - B.X) * distance(A, M) / distance(A, F)" Y="B.Y + (G.Y - B.Y) * distance(A, M) / distance(A, F)">
       <Dependency Name="B" />
       <Dependency Name="G" />
       <Dependency Name="A" />
       <Dependency Name="M" />
       <Dependency Name="F" />
     </PointByCoordinates>
-    <PointByCoordinates Name="L" Visible="false" X="D.X + (I.X - D.X) * dist(A, M) / dist(A, F)" Y="D.Y + (I.Y - D.Y) * dist(A, M) / dist(A, F)">
+    <PointByCoordinates Name="L" Visible="false" X="D.X + (I.X - D.X) * distance(A, M) / distance(A, F)" Y="D.Y + (I.Y - D.Y) * distance(A, M) / distance(A, F)">
       <Dependency Name="D" />
       <Dependency Name="I" />
       <Dependency Name="A" />
       <Dependency Name="M" />
       <Dependency Name="F" />
     </PointByCoordinates>
-    <PointByCoordinates Name="N" Visible="false" X="E.X + (J.X - E.X) * dist(A, M) / dist(A, F)" Y="E.Y + (J.Y - E.Y) * dist(A, M) / dist(A, F)">
+    <PointByCoordinates Name="N" Visible="false" X="E.X + (J.X - E.X) * distance(A, M) / distance(A, F)" Y="E.Y + (J.Y - E.Y) * distance(A, M) / distance(A, F)">
       <Dependency Name="E" />
       <Dependency Name="J" />
       <Dependency Name="A" />

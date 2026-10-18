@@ -197,7 +197,7 @@
     </PointOnFigure>
     <Label Name="SpinMe" Style="SpinText" IsHitTestVisible="false" Text="spin me!" X="2.11" Y="-2.39" />
     <FreePoint Name="Home" Visible="false" X="0" Y="0.45" />
-    <PointByCoordinates Name="Beat" Visible="false" X="(1 + cos(xang(Hub, Pearl))) / 2" Y="pi - xang(Hub, Pearl)">
+    <PointByCoordinates Name="Beat" Visible="false" X="(1 + cos(rad(direction(Hub, Pearl)))) / 2" Y="pi - rad(direction(Hub, Pearl))">
       <Dependency Name="Hub" />
       <Dependency Name="Pearl" />
     </PointByCoordinates>

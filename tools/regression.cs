@@ -53,6 +53,8 @@ public class Program
             ("Editor commits and undo", EditorUndo),
             ("GeoGebra dependent numeric stays live", GeoGebraDependentNumeric),
             ("GeoGebra untranslated numeric keeps its value", GeoGebraUntranslatedNumeric),
+            ("GeoGebra: If, comparisons and its logarithms", GeoGebraIfAndLogarithms),
+            ("Expressions of the old language and of DG 1.0 in the language as it is", LegacyExpressionsTranslate),
             ("GeoGebra worked-out numeric stays hidden", GeoGebraShownNumericStaysHidden),
             ("GeoGebra numeric rotation uses radians", GeoGebraNumericRotation),
             ("GeoGebra live expressions round trip", GeoGebraExpressionsRoundTrip),
@@ -566,7 +568,7 @@ public class Program
         var drawing = NewDrawing();
         var first = AddPoint(drawing, x: 0, y: 0);
         var second = AddPoint(drawing, x: 3, y: 4);
-        foreach (string text in new[] { "dist(A, B)", "ang(A, B, A)", "area(A, B, A)", "AB", "B.X" })
+        foreach (string text in new[] { "distance(A, B)", "angle(A, B, A)", "area(A, B, A)", "AB", "B.X" })
         {
             var result = Compiler.Instance.CompileExpression(drawing, text, figure => figure != second);
             Require(!result.IsSuccess && !string.IsNullOrWhiteSpace(result.GetErrorText()), text + " accepted a forbidden dependency.");
@@ -588,17 +590,30 @@ public class Program
         double pi = System.Math.PI;
         var values = new (string Text, double Expected)[]
         {
-            ("AB", 5), ("A.X + B.Y", 4), ("dist(A, B)", 5), ("area(A, C, B)", 6), ("ang(A, C, B)", pi / 2), ("angle(A, C, B)", 90),
+            ("AB", 5), ("A.X + B.Y", 4), ("distance(A, B)", 5), ("area(A, C, B)", 6), ("angle(A, C, B)", 90),
+            ("directedangle(A, C, B)", 270), ("direction(A, B)", System.Math.Atan2(4, 3) * 180 / pi), ("angle(A, C, B)°", pi / 2),
             ("sqrt(16)", 4), ("2^3^2", 512), ("-2^2", -4), ("round(2.5)", 3), ("sign(-3)", -1), ("max(1, 2)", 2),
-            ("atan2(1, 1)", pi / 4), ("pi", pi), ("e", System.Math.E), ("AB * 2 + 1", 11), ("B.X^2", 9), ("ln(e)", 1),
-            ("lg(100)", 2), ("sqr(9)", 3), ("clamp(5, 0, 1)", 1), ("AB.Length", 5), ("3 / 4", 0.75), ("1 - 2 - 3", -4),
-            ("2 * (3 + 4)", 14), ("deg(pi)", 180), ("abs(-2.5)", 2.5), ("floor(2.7) + ceiling(2.2)", 5)
+            ("atan2(1, 1)", pi / 4), ("pi", pi), ("π", pi), ("e", System.Math.E), ("AB * 2 + 1", 11), ("B.X^2", 9), ("ln(e)", 1),
+            ("log(100)", 2), ("log_2(8)", 3), ("clamp(5, 0, 1)", 1), ("AB.Length", 5), ("3 / 4", 0.75), ("1 - 2 - 3", -4),
+            ("2 * (3 + 4)", 14), ("deg(pi)", 180), ("abs(-2.5)", 2.5), ("floor(2.7) + ceil(2.2)", 5), ("ceiling(2.2)", 3),
+            ("30°", pi / 6), ("sin(30°)", 0.5), ("cot(45°)", 1), ("-90° + 2 * 45°", 0), ("arcsin(1)", pi / 2), ("asin(1)", pi / 2),
+            ("|-3| + |2 - 5|", 6), ("||-2| - 5|", 3), ("max(1, 5, 3)", 5), ("min(4, 2, 3, 1)", 1), ("mod(-1, 3)", 2), ("mod(7, 3)", 1),
+            ("round(3.14159, 2)", 3.14), ("round(1234, -2)", 1200), ("gcd(12, 18, 8)", 2), ("lcm(4, 6)", 12), ("nthroot(-8, 3)", -2),
+            ("if(AB > 4, 1, 2)", 1), ("if(AB = 5, 7, 0)", 7), ("if(AB == 5, 7)", 7), ("(1 < 2) + (2 <= 2) + (3 ≥ 4) + (1 != 1) + (1 ≠ 2)", 3),
+            ("2AB", 10), ("2(3 + 4)", 14), ("3pi", 3 * pi), ("2 A.X + 1", 1), ("1/2B.X", 1.5), ("2B.X^2", 18), ("-2B.X", -6),
+            ("6 ÷ 2 × 3 − 1", 8), ("0.1 + 0.2 = 0.3", 1)
         };
-        var undefined = new[] { "clamp(5, 1, 0)", "sign(0 / 0)", "sqr(-1)", "sqrt(-4)" };
-        var wrong = new[] { "foo(1)", "A.Name", "2x", "A.X +", "dist(1, 2)", "unknown", "AB(", "max(1)", "A.Visible", "ang(A, B)" };
+        var undefined = new[] { "clamp(5, 1, 0)", "sign(0 / 0)", "sqrt(-4)", "if(AB < 1, 3)", "log_10(-1)", "gcd(1.5, 3)", "mod(1, 0)", "0 / 0 < 1" };
+        var wrong = new[]
+        {
+            "foo(1)", "A.Name", "A.X +", "distance(1, 2)", "unknown", "AB(", "max(1)", "A.Visible", "angle(A, B)",
+            "sin(angle(A, C, B))", "cos(-direction(A, B))", "|A.X", "2 3", "log_2(1, 2)", "if(1)", "round(1, 2, 3)", "A!B",
+            "dist(A, B)", "ang(A, C, B)", "sqr(9)", "lg(100)", "BitIncrement(1)", "IEEERemainder(5, 3)", "distance(A°, B)"
+        };
         var functions = new (string Text, double X, double Expected)[]
         {
-            ("sin(x) + A.X", 0, 0), ("x^2 + B.X", 2, 7), ("AB * x", 3, 15), ("-x^2", 3, -9), ("round(x)", 2.5, 3)
+            ("sin(x) + A.X", 0, 0), ("x^2 + B.X", 2, 7), ("AB * x", 3, 15), ("-x^2", 3, -9), ("round(x)", 2.5, 3),
+            ("2x + 1", 3, 7), ("3sin(x)", 0, 0), ("if(x < 0, -x, x)", -2, 2), ("|x|", -3, 3), ("x°", 180, pi)
         };
         var previous = Compiler.Instance.Strategy;
         try
@@ -1376,7 +1391,7 @@ public class Program
     {
         var (drawing, reader) = ReadGeoGebraWithReport("""
             <element type="numeric" label="a"><value val="2"/></element>
-            <expression label="b" exp="If(a > 1, 5, 6)"/>
+            <expression label="b" exp="Element({5, 6}, a - 1)"/>
             <element type="numeric" label="b"><value val="5"/></element>
             <element type="point" label="O"><coords x="0" y="0" z="1"/></element>
             <command name="Circle"><input a0="O" a1="b"/><output a0="c"/></command>
@@ -1384,6 +1399,43 @@ public class Program
             """);
         Require(!reader.IsSuccess, "A number kept at its value was not reported.");
         Near(((ICircle)Find(drawing, "c")).Radius, expected: 5);
+    }
+
+    /// <summary>
+    /// GeoGebra's If and comparisons are ours too, and its functions that ours call
+    /// otherwise are translated: its log is e's (ours is 10's), lg is 10's
+    /// </summary>
+    static void GeoGebraIfAndLogarithms()
+    {
+        var drawing = ReadGeoGebra("""
+            <element type="numeric" label="a"><value val="2"/></element>
+            <expression label="b" exp="If(a > 1, 5, 6) + lg(100) + log(1)"/>
+            <element type="numeric" label="b"><value val="7"/></element>
+            <element type="point" label="O"><coords x="0" y="0" z="1"/></element>
+            <command name="Circle"><input a0="O" a1="b"/><output a0="c"/></command>
+            <element type="conic" label="c"/>
+            """);
+        Near(((ICircle)Find(drawing, "c")).Radius, expected: 7);
+        ((Number)Find(drawing, "a")).Value = 0;
+        drawing.Recalculate();
+        Near(((ICircle)Find(drawing, "c")).Radius, expected: 8);
+    }
+
+    static void LegacyExpressionsTranslate()
+    {
+        foreach (var (text, fromDG, expected) in new[]
+        {
+            ("deg(ang(A, B, C)) + dist(A,B) + log(x) + lg(x) + XANG(A,B)", false, "angle(A, B, C) + distance(A, B) + ln(x) + log(x) + rad(direction(A, B))"),
+            ("angle(A, B, C) + sqr(SGN(x)) * INT(2.5)", false, "angle(A, B, C) + sqrt(sign(x)) * floor(2.5)"),
+            ("ANGLE(A,B,C) - OANG(A, B, C)", true, "rad(angle(A, B, C)) - rad(directedangle(A, B, C))"),
+            ("sin(x) + `my point`.X", false, "sin(x) + `my point`.X")
+        })
+        {
+            var translated = LegacyExpressions.Translate(text, fromDG);
+            Require(translated == expected, text + " came out as " + translated);
+        }
+
+        Require(LegacyExpressions.TranslateLabelText("Roads: [dist(E,A)] and [log(e)]", fromDG: false) == "Roads: [distance(E, A)] and [ln(e)]", "A label's parts were not translated.");
     }
 
     static void GeoGebraShownNumericStaysHidden()
@@ -1549,7 +1601,7 @@ public class Program
         var free = AddPoint(drawing, x: 5, y: 5);
         Require(Rename(free, "Drag me!") == null && free.Name == "Drag me!", "A caption was refused for a name.");
         Require(Rename(other, "Drag me too") == null && other.Name == "Drag me too", "A name the label says in backticks was refused.");
-        Require(label.Text == "[A'.X + dist(A', `Drag me too`)]", "The label says " + label.Text);
+        Require(label.Text == "[A'.X + distance(A', `Drag me too`)]", "The label says " + label.Text);
         Near(label.Value, expected: 8);
         Near(ReadLgf(drawing.SaveAsText()).Figures.OfType<LiveGeometry.Label>().Single().Value, expected: 8);
 
@@ -3617,7 +3669,18 @@ public class Program
     {
         foreach (var function in FunctionCatalog.All)
         {
-            Require(ExpressionReflection.ResolveMethod(function.Name, function.ArgumentCount) != null, "The list offers " + function.Signature + ", which the language doesn't have.");
+            foreach (var name in function.OtherNames.Prepend(function.Name))
+            {
+                Require(ExpressionReflection.ResolveMethod(name, function.ArgumentCount) != null, "The list offers " + name + " for " + function.Signature + ", which the language doesn't have.");
+            }
+        }
+
+        // every function of the language is in the list, and nothing else is one
+        foreach (var method in typeof(Functions).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+        {
+            bool builtIn = method.Name is "LogBase" or "Less" or "LessOrEqual" or "Greater" or "GreaterOrEqual" or "Equal" or "NotEqual";
+            Require(builtIn || FunctionCatalog.Find(method.Name) != null, "Functions." + method.Name + " is not in the list.");
+            Require(!builtIn || ExpressionReflection.ResolveMethod(method.Name, method.GetParameters().Length) == null, method.Name + " can be called by name.");
         }
 
         var drawing = ReadLgf("""
@@ -3713,6 +3776,10 @@ public class Program
         Require(Selected("A", out _)?.Text == "A", "A selects the point");
         Require(Selected("AC", out _)?.Text == "AC", "AC (two points) is taken for the polygon ACDE");
         Require(Selected("sq", out _)?.Text == "sqrt", "sq selects sqrt");
+        Require(Selected("asin", out _)?.InsertText == "arcsin", "asin selects arcsin");
+        Require(Selected("ceiling", out _)?.InsertText == "ceil", "ceiling selects ceil");
+        Require(Selected("2sqr", out _)?.Text == "sqrt", "2sqr (a number before a name) selects sqrt");
+        Require(ExpressionCompletion.Locate("2x", caret: 2, InsertContext.Expression) is { Start: 1, Word: "x" }, "The word of 2x is x");
         Require(Selected("", out hard) != null && !hard, "Nothing typed: the first row, outlined");
         Require(Selected("zzz", out _) == null, "A word nothing matches selects a row");
         Require(Selected("c.Rad", out _)?.InsertText == "Radius", "c.Rad selects Radius");
@@ -3748,7 +3815,7 @@ public class Program
         {
             ("`Drag me!`.X + `a]b`.X", 4.0),
             ("`q``r`.Y * `pi`", 4.0),
-            ("dist(`Drag me!`, B) + `e`.X", 10.0),
+            ("distance(`Drag me!`, B) + `e`.X", 10.0),
             ("pi", System.Math.PI),
             ("`pi` + e.X", 7.0),
         })

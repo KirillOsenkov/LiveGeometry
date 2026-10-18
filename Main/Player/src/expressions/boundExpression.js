@@ -88,7 +88,7 @@ class BoundCall extends BoundExpression {
     }
 }
 
-/** A function of points (dist, ang, area), called with the names of points */
+/** A function of points (distance, angle, area), called with the names of points */
 class BoundPointCall extends BoundExpression {
     constructor(method, points) {
         super();

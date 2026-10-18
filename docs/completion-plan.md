@@ -58,9 +58,8 @@ filtering keeps that order):
   some). Top-level, not `Auxiliary`, not the box's figure nor anything built on it.
   Inserted as `Scanner.NameInExpression` writes them (in backticks when needed).
 - **Functions** from a catalog written by hand, with a signature and a line of help each
-  (`FunctionCatalog`, see below). Not every method of System.Math (`BigMul`, `ILogB`,
-  `ScaleB`...), and not the VB6 aliases (`distance`, `sgn`, `int`, `sqr`, `todeg`): those
-  still compile, but aren't offered.
+  (`FunctionCatalog`, see below), which is the whole language since 2026-10-18. A row is
+  matched by its other names too (`asin` shows `arcsin`); the commit writes the main one.
 - **pi** and **e**, and **x** in a function graph's function.
 
 **Members** of figure F: the quantities `ReferenceText.OptionsFor(F)` gives as `F.Name`,
@@ -215,17 +214,19 @@ The list also closes when:
 
 ## The function catalog
 
-`Expressions/FunctionCatalog.cs`, one line each: name, signature, help. The regression
-suite checks that every entry resolves through `ExpressionReflection.ResolveMethod` with its
-number of arguments, so the catalog can't promise a function the language doesn't have.
+`Expressions/FunctionCatalog.cs`, one line each: name, signature, help, other names. The
+regression suite checks that every entry and other name resolves through
+`ExpressionReflection.ResolveMethod` with its number of arguments, and that every method of
+`Functions` is an entry, so the catalog and the language are the same list.
 
 | Group | Functions |
 |---|---|
-| Trigonometry | `sin(x)`, `cos(x)`, `tan(x)` (x in radians); `asin`, `acos`, `atan` (in radians); `atan2(y, x)`; `sinh`, `cosh`, `tanh`, `asinh`, `acosh`, `atanh` |
-| Powers | `sqrt(x)`, `cbrt(x)`, `pow(x, y)`, `exp(x)`, `ln(x)`, `log(x)` (natural), `lg(x)` (base 10), `log2(x)` |
-| Rounding | `round(x)` (a half up), `floor(x)`, `ceiling(x)`, `truncate(x)`, `abs(x)`, `sign(x)`, `min(a, b)`, `max(a, b)`, `clamp(x, low, high)` |
-| Angles | `deg(radians)`, `rad(degrees)`, `angle(A, B, C)` (degrees, as the Angle tool), `ang(A, B, C)` (radians), `oang(A, B, C)` (counterclockwise, radians) |
-| Points | `dist(A, B)`, `area(A, B, C, ...)` |
+| Trigonometry | `sin(x)`, `cos(x)`, `tan(x)`, `sec`, `csc`, `cot` (x in radians: `sin(30°)`); `arcsin`, `arccos`, `arctan` (in radians); `atan2(y, x)`; `sinh`, `cosh`, `tanh`, `arcsinh`, `arccosh`, `arctanh` |
+| Powers | `sqrt(x)`, `cbrt(x)`, `nthroot(x, n)`, `exp(x)`, `ln(x)`, `log(x)` (base 10), `log_2(x)` (the base in the name) |
+| Rounding | `abs(x)`, `round(x, digits)` (a half up), `floor(x)`, `ceil(x)`, `sign(x)`, `mod(a, b)`, `min(a, b, ...)`, `max(a, b, ...)`, `clamp(x, low, high)`, `gcd(a, b, ...)`, `lcm(a, b, ...)` |
+| Angles | `deg(radians)`, `rad(degrees)` |
+| Logic | `if(condition, a, b)` |
+| Points | `distance(A, B)`, `angle(A, B, C)` (degrees, as the Angle tool), `directedangle(A, B, C)` (counterclockwise, degrees), `direction(A, B)` (degrees), `area(A, B, C, ...)` |
 
 ## Left out of the first version
 

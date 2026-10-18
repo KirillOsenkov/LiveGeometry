@@ -754,7 +754,7 @@ public class GeoGebraReader
             return null;
         }
 
-        var calculated = NumberArgument(text, isAngle: false);
+        var calculated = NumberArgument(text, isAngle);
         calculated.Auxiliary = false;
         numericExpressions.Add(calculated);
         if (isAngle)
@@ -777,7 +777,8 @@ public class GeoGebraReader
         return System.Math.Abs(difference) <= 1e-6 * System.Math.Max(1, System.Math.Abs(saved));
     }
 
-    // the Numbers that stand for angles: GeoGebra's expressions have them in radians, ours hold degrees
+    // the Numbers and labels that stand for angles: GeoGebra's expressions have them in
+    // radians, ours hold degrees
     readonly HashSet<IFigure> angleNumbers = new HashSet<IFigure>();
 
     // the numbers GeoGebra works out from others: hidden labels, named in expressions by their Value
@@ -917,7 +918,8 @@ public class GeoGebraReader
     /// <summary>
     /// What an expression of ours says for a figure's value, if it has one: a Number by name,
     /// a segment's length, a polygon's area. An angle in degrees for a text (what GeoGebra
-    /// prints), in radians inside an expression (what GeoGebra computes with).
+    /// prints, and what our angles hold), in radians inside an expression (what GeoGebra
+    /// computes with).
     /// </summary>
     string ValueExpressionOf(IFigure figure, bool degrees = true)
     {
@@ -929,12 +931,12 @@ public class GeoGebraReader
         if (figure is Label label && (numericExpressions.Contains(figure) || label.IsNumber) && IsIdentifier(figure.Name))
         {
             var value = figure.Name + ".Value";
-            return angleNumbers.Contains(figure) && degrees ? "deg(" + value + ")" : value;
+            return angleNumbers.Contains(figure) && !degrees ? "rad(" + value + ")" : value;
         }
 
         if (figure is LengthMeasurement distance && distance.Dependencies.Count == 2 && distance.Dependencies.All(d => d is IPoint && IsIdentifier(d.Name)))
         {
-            return "dist(" + distance.Dependencies[0].Name + ", " + distance.Dependencies[1].Name + ")";
+            return "distance(" + distance.Dependencies[0].Name + ", " + distance.Dependencies[1].Name + ")";
         }
 
         // a measurement of one figure (r = Radius(c), p = Perimeter(poly), a = Area(poly))
@@ -952,13 +954,13 @@ public class GeoGebraReader
 
         if (figure is Segment segment && segment.Dependencies.All(d => IsIdentifier(d.Name)))
         {
-            return "dist(" + segment.Dependencies[0].Name + ", " + segment.Dependencies[1].Name + ")";
+            return "distance(" + segment.Dependencies[0].Name + ", " + segment.Dependencies[1].Name + ")";
         }
 
         if (figure is AngleMeasurementBase angle && angle.Dependencies.All(d => IsIdentifier(d.Name)))
         {
-            var radians = "oang(" + angle.Dependencies[1].Name + ", " + angle.Dependencies[0].Name + ", " + angle.Dependencies[2].Name + ")";
-            return degrees ? "deg(" + radians + ")" : radians;
+            var inDegrees = "directedangle(" + angle.Dependencies[1].Name + ", " + angle.Dependencies[0].Name + ", " + angle.Dependencies[2].Name + ")";
+            return degrees ? inDegrees : "rad(" + inDegrees + ")";
         }
 
         if (figure is Polygon polygon && polygon.Dependencies.Count <= 10 && polygon.Dependencies.All(d => d is IPoint && IsIdentifier(d.Name)))
@@ -1183,6 +1185,19 @@ public class GeoGebraReader
 
     static readonly Regex identifier = new Regex(@"(?<![\w.'])([A-Za-z_Ͱ-Ͽ][\w']*)(?!\s*[\(\[])");
 
+    // GeoGebra's functions that ours call otherwise: its log is e's (ours is 10's), lg is
+    // 10's and ld 2's; the rest share their names (sin, sqrt, arcsin, ceil, round, If)
+    static readonly Dictionary<string, string> functionNames = new Dictionary<string, string>()
+    {
+        ["log"] = "ln",
+        ["lg"] = "log",
+        ["ld"] = "log_2",
+        ["sgn"] = "sign",
+        ["nroot"] = "nthroot"
+    };
+
+    static readonly Regex functionName = new Regex(@"(?<![\w.'])(log|lg|ld|sgn|nroot)(?=\s*\()");
+
     /// <summary>
     /// GeoGebra's expression language into ours, as far as they overlap: x(A) is A.X, a
     /// degree sign a factor, the powers written as superscripts as ^, a Distance or Angle
@@ -1192,6 +1207,7 @@ public class GeoGebraReader
     string TranslateExpression(string text)
     {
         text = text.Trim();
+        text = functionName.Replace(text, m => functionNames[m.Groups[1].Value]);
         text = coordinateFunction.Replace(text, m => NormalizeName(m.Groups[2].Value) + "." + m.Groups[1].Value.ToUpperInvariant());
 
         // rad(45), not 45 * pi / 180: with points P and I in the drawing "pi" reads as their distance
@@ -1248,10 +1264,10 @@ public class GeoGebraReader
             switch (match.Groups[1].Value)
             {
                 case "Distance" when arguments.Length == 2:
-                    value = "dist(" + arguments[0] + ", " + arguments[1] + ")";
+                    value = "distance(" + arguments[0] + ", " + arguments[1] + ")";
                     break;
                 case "Angle" when arguments.Length == 3:
-                    value = "oang(" + arguments[0] + ", " + arguments[1] + ", " + arguments[2] + ")";
+                    value = "rad(directedangle(" + arguments[0] + ", " + arguments[1] + ", " + arguments[2] + "))";
                     break;
                 case "Length":
                 case "Area":
@@ -1720,7 +1736,7 @@ public class GeoGebraReader
         if (third is IPoint p)
         {
             named.Add(p);
-            a = "(dist(" + p.Name + ", " + f1.Name + ") + dist(" + p.Name + ", " + f2.Name + ")) / 2";
+            a = "(distance(" + p.Name + ", " + f1.Name + ") + distance(" + p.Name + ", " + f2.Name + ")) / 2";
         }
         else
         {
@@ -1743,9 +1759,9 @@ public class GeoGebraReader
             }
         }
 
-        string c = "dist(" + f1.Name + ", " + f2.Name + ") / 2";
-        string ux = "(" + f2.Name + ".X - " + f1.Name + ".X) / dist(" + f1.Name + ", " + f2.Name + ")";
-        string uy = "(" + f2.Name + ".Y - " + f1.Name + ".Y) / dist(" + f1.Name + ", " + f2.Name + ")";
+        string c = "distance(" + f1.Name + ", " + f2.Name + ") / 2";
+        string ux = "(" + f2.Name + ".X - " + f1.Name + ".X) / distance(" + f1.Name + ", " + f2.Name + ")";
+        string uy = "(" + f2.Name + ".Y - " + f1.Name + ".Y) / distance(" + f1.Name + ", " + f2.Name + ")";
         string cx = "(" + f1.Name + ".X + " + f2.Name + ".X) / 2";
         string cy = "(" + f1.Name + ".Y + " + f2.Name + ".Y) / 2";
         string b = "sqrt((" + a + ")^2 - (" + c + ")^2)";
@@ -2265,7 +2281,7 @@ public class GeoGebraReader
     /// A number typed into a command - 3, 45°, 0.2 * a, -α - as a figure with that value: a
     /// Number when it is constant, a hidden label evaluating the expression when it depends
     /// on figures (a label is a length and an angle provider). Angles are radians in
-    /// GeoGebra's expressions; a Number holds degrees, a label's value is what it says.
+    /// GeoGebra's expressions; a Number and a label hold degrees.
     /// </summary>
     IFigure NumberArgument(string text, bool isAngle)
     {
@@ -2296,7 +2312,7 @@ public class GeoGebraReader
         label.Auxiliary = true;
         Add(label);
         label.DecimalsToShow = 10;
-        label.Text = "[" + expression + "]";
+        label.Text = isAngle ? "[deg(" + expression + ")]" : "[" + expression + "]";
         return label;
     }
 

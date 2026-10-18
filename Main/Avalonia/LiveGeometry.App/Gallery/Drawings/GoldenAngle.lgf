@@ -38,7 +38,7 @@
     <PointOnFigure Name="Bee" Style="Honeybee" X="-1.2693651651570586" Y="0.9740185200938397" Parameter="2.487094">
       <Dependency Name="Dial" />
     </PointOnFigure>
-    <PointByCoordinates Name="Turn" Visible="false" X="xangle(C, Bee)" Y="0">
+    <PointByCoordinates Name="Turn" Visible="false" X="rad(direction(C, Bee))" Y="0">
       <Dependency Name="C" />
       <Dependency Name="Bee" />
     </PointByCoordinates>

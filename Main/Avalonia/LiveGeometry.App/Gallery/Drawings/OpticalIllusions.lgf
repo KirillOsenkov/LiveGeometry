@@ -201,11 +201,11 @@
       <Dependency Name="EbbB8" />
       <Dependency Name="EbbB8Rim" />
     </Circle>
-    <Label Name="EbbLeft" Visible="false" Style="Answer" Text="[2 * dist(EbbA, EbbARim)] across" X="-7.1" Y="-5.05">
+    <Label Name="EbbLeft" Visible="false" Style="Answer" Text="[2 * distance(EbbA, EbbARim)] across" X="-7.1" Y="-5.05">
       <Dependency Name="EbbA" />
       <Dependency Name="EbbARim" />
     </Label>
-    <Label Name="EbbRight" Visible="false" Style="Answer" Text="[2 * dist(EbbB, EbbBRim)] across" X="-2.3" Y="-5.05">
+    <Label Name="EbbRight" Visible="false" Style="Answer" Text="[2 * distance(EbbB, EbbBRim)] across" X="-2.3" Y="-5.05">
       <Dependency Name="EbbB" />
       <Dependency Name="EbbBRim" />
     </Label>
@@ -307,11 +307,11 @@
       <Dependency Name="PonzoBottomR" />
       <Dependency Name="Upright" />
     </LineAtAngle>
-    <PointByCoordinates Name="EbbTop" Visible="false" X="EbbA.X" Y="EbbA.Y + dist(EbbA, EbbARim)">
+    <PointByCoordinates Name="EbbTop" Visible="false" X="EbbA.X" Y="EbbA.Y + distance(EbbA, EbbARim)">
       <Dependency Name="EbbA" />
       <Dependency Name="EbbARim" />
     </PointByCoordinates>
-    <PointByCoordinates Name="EbbBottom" Visible="false" X="EbbA.X" Y="EbbA.Y - dist(EbbA, EbbARim)">
+    <PointByCoordinates Name="EbbBottom" Visible="false" X="EbbA.X" Y="EbbA.Y - distance(EbbA, EbbARim)">
       <Dependency Name="EbbA" />
       <Dependency Name="EbbARim" />
     </PointByCoordinates>

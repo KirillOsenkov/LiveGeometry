@@ -41,7 +41,7 @@
       <Dependency Name="r" />
       <Dependency Name="C" />
     </CircleByRadius>
-    <PointByCoordinates Name="Turn" Visible="false" X="xangle(O, C)" Y="0">
+    <PointByCoordinates Name="Turn" Visible="false" X="rad(direction(O, C))" Y="0">
       <Dependency Name="O" />
       <Dependency Name="C" />
     </PointByCoordinates>
@@ -65,7 +65,7 @@
       <Dependency Name="P" />
       <Dependency Name="C" />
     </Locus>
-    <PointByCoordinates Name="P1" Visible="false" X="(5 - r) * cos(Turn.X + 2 * pi) + dist(C, P) * cos((5 - r) / r * (Turn.X + 2 * pi))" Y="(5 - r) * sin(Turn.X + 2 * pi) - dist(C, P) * sin((5 - r) / r * (Turn.X + 2 * pi))">
+    <PointByCoordinates Name="P1" Visible="false" X="(5 - r) * cos(Turn.X + 2 * pi) + distance(C, P) * cos((5 - r) / r * (Turn.X + 2 * pi))" Y="(5 - r) * sin(Turn.X + 2 * pi) - distance(C, P) * sin((5 - r) / r * (Turn.X + 2 * pi))">
       <Dependency Name="r" />
       <Dependency Name="Turn" />
       <Dependency Name="C" />
@@ -75,7 +75,7 @@
       <Dependency Name="P1" />
       <Dependency Name="C" />
     </Locus>
-    <PointByCoordinates Name="P2" Visible="false" X="(5 - r) * cos(Turn.X + 4 * pi) + dist(C, P) * cos((5 - r) / r * (Turn.X + 4 * pi))" Y="(5 - r) * sin(Turn.X + 4 * pi) - dist(C, P) * sin((5 - r) / r * (Turn.X + 4 * pi))">
+    <PointByCoordinates Name="P2" Visible="false" X="(5 - r) * cos(Turn.X + 4 * pi) + distance(C, P) * cos((5 - r) / r * (Turn.X + 4 * pi))" Y="(5 - r) * sin(Turn.X + 4 * pi) - distance(C, P) * sin((5 - r) / r * (Turn.X + 4 * pi))">
       <Dependency Name="r" />
       <Dependency Name="Turn" />
       <Dependency Name="C" />
@@ -85,7 +85,7 @@
       <Dependency Name="P2" />
       <Dependency Name="C" />
     </Locus>
-    <PointByCoordinates Name="P3" Visible="false" X="(5 - r) * cos(Turn.X + 6 * pi) + dist(C, P) * cos((5 - r) / r * (Turn.X + 6 * pi))" Y="(5 - r) * sin(Turn.X + 6 * pi) - dist(C, P) * sin((5 - r) / r * (Turn.X + 6 * pi))">
+    <PointByCoordinates Name="P3" Visible="false" X="(5 - r) * cos(Turn.X + 6 * pi) + distance(C, P) * cos((5 - r) / r * (Turn.X + 6 * pi))" Y="(5 - r) * sin(Turn.X + 6 * pi) - distance(C, P) * sin((5 - r) / r * (Turn.X + 6 * pi))">
       <Dependency Name="r" />
       <Dependency Name="Turn" />
       <Dependency Name="C" />
@@ -95,7 +95,7 @@
       <Dependency Name="P3" />
       <Dependency Name="C" />
     </Locus>
-    <PointByCoordinates Name="P4" Visible="false" X="(5 - r) * cos(Turn.X + 8 * pi) + dist(C, P) * cos((5 - r) / r * (Turn.X + 8 * pi))" Y="(5 - r) * sin(Turn.X + 8 * pi) - dist(C, P) * sin((5 - r) / r * (Turn.X + 8 * pi))">
+    <PointByCoordinates Name="P4" Visible="false" X="(5 - r) * cos(Turn.X + 8 * pi) + distance(C, P) * cos((5 - r) / r * (Turn.X + 8 * pi))" Y="(5 - r) * sin(Turn.X + 8 * pi) - distance(C, P) * sin((5 - r) / r * (Turn.X + 8 * pi))">
       <Dependency Name="r" />
       <Dependency Name="Turn" />
       <Dependency Name="C" />
@@ -105,7 +105,7 @@
       <Dependency Name="P4" />
       <Dependency Name="C" />
     </Locus>
-    <PointByCoordinates Name="P5" Visible="false" X="(5 - r) * cos(Turn.X + 10 * pi) + dist(C, P) * cos((5 - r) / r * (Turn.X + 10 * pi))" Y="(5 - r) * sin(Turn.X + 10 * pi) - dist(C, P) * sin((5 - r) / r * (Turn.X + 10 * pi))">
+    <PointByCoordinates Name="P5" Visible="false" X="(5 - r) * cos(Turn.X + 10 * pi) + distance(C, P) * cos((5 - r) / r * (Turn.X + 10 * pi))" Y="(5 - r) * sin(Turn.X + 10 * pi) - distance(C, P) * sin((5 - r) / r * (Turn.X + 10 * pi))">
       <Dependency Name="r" />
       <Dependency Name="Turn" />
       <Dependency Name="C" />
@@ -122,7 +122,7 @@
       <Dependency Name="Q" />
       <Dependency Name="C" />
     </Locus>
-    <PointByCoordinates Name="Q1" Visible="false" X="(5 - r) * cos(Turn.X + 2 * pi) + dist(C, Q) * cos((5 - r) / r * (Turn.X + 2 * pi))" Y="(5 - r) * sin(Turn.X + 2 * pi) - dist(C, Q) * sin((5 - r) / r * (Turn.X + 2 * pi))">
+    <PointByCoordinates Name="Q1" Visible="false" X="(5 - r) * cos(Turn.X + 2 * pi) + distance(C, Q) * cos((5 - r) / r * (Turn.X + 2 * pi))" Y="(5 - r) * sin(Turn.X + 2 * pi) - distance(C, Q) * sin((5 - r) / r * (Turn.X + 2 * pi))">
       <Dependency Name="r" />
       <Dependency Name="Turn" />
       <Dependency Name="C" />
@@ -132,7 +132,7 @@
       <Dependency Name="Q1" />
       <Dependency Name="C" />
     </Locus>
-    <PointByCoordinates Name="Q2" Visible="false" X="(5 - r) * cos(Turn.X + 4 * pi) + dist(C, Q) * cos((5 - r) / r * (Turn.X + 4 * pi))" Y="(5 - r) * sin(Turn.X + 4 * pi) - dist(C, Q) * sin((5 - r) / r * (Turn.X + 4 * pi))">
+    <PointByCoordinates Name="Q2" Visible="false" X="(5 - r) * cos(Turn.X + 4 * pi) + distance(C, Q) * cos((5 - r) / r * (Turn.X + 4 * pi))" Y="(5 - r) * sin(Turn.X + 4 * pi) - distance(C, Q) * sin((5 - r) / r * (Turn.X + 4 * pi))">
       <Dependency Name="r" />
       <Dependency Name="Turn" />
       <Dependency Name="C" />
@@ -142,7 +142,7 @@
       <Dependency Name="Q2" />
       <Dependency Name="C" />
     </Locus>
-    <PointByCoordinates Name="Q3" Visible="false" X="(5 - r) * cos(Turn.X + 6 * pi) + dist(C, Q) * cos((5 - r) / r * (Turn.X + 6 * pi))" Y="(5 - r) * sin(Turn.X + 6 * pi) - dist(C, Q) * sin((5 - r) / r * (Turn.X + 6 * pi))">
+    <PointByCoordinates Name="Q3" Visible="false" X="(5 - r) * cos(Turn.X + 6 * pi) + distance(C, Q) * cos((5 - r) / r * (Turn.X + 6 * pi))" Y="(5 - r) * sin(Turn.X + 6 * pi) - distance(C, Q) * sin((5 - r) / r * (Turn.X + 6 * pi))">
       <Dependency Name="r" />
       <Dependency Name="Turn" />
       <Dependency Name="C" />
@@ -152,7 +152,7 @@
       <Dependency Name="Q3" />
       <Dependency Name="C" />
     </Locus>
-    <PointByCoordinates Name="Q4" Visible="false" X="(5 - r) * cos(Turn.X + 8 * pi) + dist(C, Q) * cos((5 - r) / r * (Turn.X + 8 * pi))" Y="(5 - r) * sin(Turn.X + 8 * pi) - dist(C, Q) * sin((5 - r) / r * (Turn.X + 8 * pi))">
+    <PointByCoordinates Name="Q4" Visible="false" X="(5 - r) * cos(Turn.X + 8 * pi) + distance(C, Q) * cos((5 - r) / r * (Turn.X + 8 * pi))" Y="(5 - r) * sin(Turn.X + 8 * pi) - distance(C, Q) * sin((5 - r) / r * (Turn.X + 8 * pi))">
       <Dependency Name="r" />
       <Dependency Name="Turn" />
       <Dependency Name="C" />
@@ -162,7 +162,7 @@
       <Dependency Name="Q4" />
       <Dependency Name="C" />
     </Locus>
-    <PointByCoordinates Name="Q5" Visible="false" X="(5 - r) * cos(Turn.X + 10 * pi) + dist(C, Q) * cos((5 - r) / r * (Turn.X + 10 * pi))" Y="(5 - r) * sin(Turn.X + 10 * pi) - dist(C, Q) * sin((5 - r) / r * (Turn.X + 10 * pi))">
+    <PointByCoordinates Name="Q5" Visible="false" X="(5 - r) * cos(Turn.X + 10 * pi) + distance(C, Q) * cos((5 - r) / r * (Turn.X + 10 * pi))" Y="(5 - r) * sin(Turn.X + 10 * pi) - distance(C, Q) * sin((5 - r) / r * (Turn.X + 10 * pi))">
       <Dependency Name="r" />
       <Dependency Name="Turn" />
       <Dependency Name="C" />

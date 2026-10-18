@@ -22,7 +22,7 @@ class Binder {
     }
 
     resolveConstant(identifier) {
-        if (identifier.toLowerCase() === "pi") {
+        if (identifier.toLowerCase() === "pi" || identifier === "π") {
             return new BoundConstant(Math.PI);
         }
 

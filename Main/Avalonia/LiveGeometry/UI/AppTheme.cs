@@ -547,7 +547,7 @@ public class AppTheme : INotifyPropertyChanged, IConditionalProperties
     // part of a label's text and its brackets, then what the compiler read each name as,
     // and the numbers
 
-    static string expressionSample = "AB is [AB.Length] long, [dist(A, B) * 2 + sin(pi / 6)] and [A.Q]";
+    static string expressionSample = "AB is [AB.Length] long, [distance(A, B) * 2 + sin(30°)] and [A.Q]";
 
     /// <summary>
     /// A text to see the expression colors in while they are edited, over their rows: read

@@ -123,7 +123,7 @@ WriteElement("MidPoint", "Middle", " Visible=\"false\"", new[] { "FistL", "FistR
 
 // Frame: X = the angle of the pair, Y = its length D, kept between 0.4 and Cap: beyond Cap the
 // slime stays as it is, between the fists. Axis: the direction from the left fist to the right one
-Hidden("Frame", "atan2(FistR.Y - FistL.Y, FistR.X - FistL.X)", $"clamp(dist(FistL, FistR), 0.4, {Number(Cap)})");
+Hidden("Frame", "atan2(FistR.Y - FistL.Y, FistR.X - FistL.X)", $"clamp(distance(FistL, FistR), 0.4, {Number(Cap)})");
 Hidden("Axis", "cos(Frame.X)", "sin(Frame.X)");
 
 // Rope: X = H, half the distance between the middles of the two blobs; Y = w, the waist over
