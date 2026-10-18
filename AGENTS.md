@@ -1136,6 +1136,19 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   on/off rows as icon toggles right after it (`HeaderToggle`: an eye for Visible, a
   padlock for Locked; the usual state faint).
   A page without such rows (a style, a tool panel) keeps the plain title.
+- **What can be measured of a figure is on its page** (2026-10-18; `FigureQuantities`, shown
+  by `QuantitiesEditor` after the Definition rows): the lengths the Length tool takes of it
+  (`LengthMeasurement.QuantitiesOf`: a circle's radius, diameter, circumference; a polygon's
+  perimeter; an arc's length), its area where the Area tool takes it, the central angle of
+  an arc, sector or segment, a straight figure's slope, and its angle where no Direction row
+  says it. Read-only and selectable (double click takes the whole number, Ctrl+C copies it:
+  `MainView` leaves Ctrl+C to a `SelectableTextBlock` with a selection; the row's context
+  menu copies it too). A "+" puts the measurement on the drawing, one undo step, shown only
+  while the drawing has none of that kind for the figure (for a segment's length, a distance
+  between its ends counts). A quantity an editable row says (a segment's Length, a circle's
+  radius: `RowName`) has no row of its own; its "+" goes after that row's box
+  (`LabeledValueEditor.AddTrailing`). A slope and a line's angle have no measurement figure,
+  so no "+".
 - **Property grid layout is declarative** (`PropertyGrid/`): `[PropertyGridGroup]` boxes rows
   and their buttons together, `[PropertyGridDestructive]` puts a button last under a divider,
   `[PropertyGridIcon]` puts a drawn icon (`PropertyGridIcons`) in front of a caption (every verb

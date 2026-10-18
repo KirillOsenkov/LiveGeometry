@@ -55,6 +55,17 @@ public abstract partial class LabeledValueEditor : Grid
 
     protected abstract UIElement CreateEditor();
 
+    /// <summary>A small control after the editor, in a column of its own (the "+" that shows a segment's length on the drawing)</summary>
+    public void AddTrailing(Control control)
+    {
+        // right after the editor, as a value's "+" is on its own row, not at the far edge
+        ColumnDefinitions[1].Width = GridLength.Auto;
+        ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+        control.SetValue(Grid.ColumnProperty, ColumnDefinitions.Count - 1);
+        control.VerticalAlignment = VerticalAlignment.Center;
+        Children.Add(control);
+    }
+
     public TextBlock Label { get; set; }
 
     IValueProvider mValue;

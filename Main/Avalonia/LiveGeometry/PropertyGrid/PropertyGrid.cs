@@ -195,6 +195,12 @@ public partial class PropertyGrid : StackPanel
             {
                 stringEditor.RefreshLiveValue();
             }
+
+            // a figure's lengths, area and angles, and whether each is on the drawing
+            if (editor is QuantitiesEditor quantities)
+            {
+                quantities.Refresh();
+            }
         }
     }
 
@@ -762,6 +768,15 @@ public partial class PropertyGrid : StackPanel
             .Except(headerRows)
             .Select(p => CreatePropertyEditorControl(p, editableObject, ActionManager))
             .Where(c => c != null).ToArray();
+        // what can be measured of a figure, after the rows that define it (a control without
+        // a section of its own is Definition, and comes after the rows that came first)
+        var quantities = editableObject is IFigure measured ? FigureQuantities.Of(measured) : new FigureQuantity[0];
+        if (quantities.Count > 0)
+        {
+            var quantitiesEditor = new QuantitiesEditor(quantities, currentEditors.OfType<LabeledValueEditor>());
+            currentEditors = currentEditors.Append(quantitiesEditor).ToArray();
+        }
+
         CurrentEditors = currentEditors;
         var currentMethods = GetCallableMethods(editableObject);
         var currentMethodButtons = currentMethods

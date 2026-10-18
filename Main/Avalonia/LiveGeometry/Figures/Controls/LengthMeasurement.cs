@@ -386,7 +386,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     }
 
     /// <summary>The figure's length of the kind, NaN when it has none</summary>
-    static double ValueOf(IFigure measured, LengthQuantity quantity)
+    public static double ValueOf(IFigure measured, LengthQuantity quantity)
     {
         switch (quantity)
         {

@@ -69,6 +69,16 @@ public static class PropertyGridTheme
             }
         });
 
+        // a value that can be selected to copy it (a figure's area) selects as a box does
+        styles.Add(new AvaloniaStyle(x => x.OfType<SelectableTextBlock>())
+        {
+            Setters =
+            {
+                Themed(SelectableTextBlock.SelectionBrushProperty, nameof(AppTheme.ButtonChecked)),
+                Themed(SelectableTextBlock.SelectionForegroundBrushProperty, nameof(AppTheme.Text))
+            }
+        });
+
         // A grayed box (a value that can't be set: a tied angle, the exception report's
         // text) is painted by Fluent on the template's border, 20% black in Light - a medium
         // gray on the panel, far darker than anything else on it - over the box's own

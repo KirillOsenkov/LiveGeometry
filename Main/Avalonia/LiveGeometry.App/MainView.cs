@@ -1648,6 +1648,15 @@ public partial class MainView : UserControl
                 DrawingHost.DrawingControl.Focus();
             }
 
+            // a value selected on a figure's page (its area): Ctrl+C copies that text, not
+            // the selected figures
+            if (focused is SelectableTextBlock selectable
+                && e.Key == Key.C
+                && !string.IsNullOrEmpty(selectable.SelectedText))
+            {
+                return;
+            }
+
             if (redo)
             {
                 DrawingHost.DrawingControl.Redo();

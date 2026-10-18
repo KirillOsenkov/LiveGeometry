@@ -59,6 +59,11 @@ public class HeaderNameEditor : NameEditor
         // the theme styles its template on hover and focus, under these: a box shows then
         TextBox.Background = Brushes.Transparent;
         TextBox.BorderBrush = Brushes.Transparent;
+
+        // selected as the grid's boxes are (PropertyGridTheme): the header is outside the
+        // grid, where its styles don't reach
+        TextBox.BindTheme(TextBox.SelectionBrushProperty, nameof(AppTheme.ButtonChecked));
+        TextBox.BindTheme(TextBox.SelectionForegroundBrushProperty, nameof(AppTheme.Text));
         TextBox.GotFocus += (s, e) => UpdateDisplay();
         TextBox.LostFocus += (s, e) => UpdateDisplay();
 
