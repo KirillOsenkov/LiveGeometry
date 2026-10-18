@@ -25,6 +25,9 @@ public class HeaderNameEditor : NameEditor
     // a short name (A) still has a box to click into
     const double MinimumWidth = 60;
 
+    // how far the name goes below the middle of its box, to share the kind's baseline
+    const double BaselineNudge = 0.5;
+
     // the name as drawn, over the box while it isn't being edited
     TextBlock display;
 
@@ -48,7 +51,9 @@ public class HeaderNameEditor : NameEditor
         TextBox.FontWeight = FontWeight.SemiBold;
         TextBox.MinHeight = 0;
         TextBox.MinWidth = MinimumWidth;
-        TextBox.Padding = new Thickness(Inset - 1, 2, Inset - 1, 2);
+        // half a pixel lower than centered (a pixel on a screen at 200%): the box's text sat
+        // that much over the baseline of the kind before it
+        TextBox.Padding = new Thickness(Inset - 1, 2 + BaselineNudge, Inset - 1, 2 - BaselineNudge);
         TextBox.Margin = new Thickness(-Inset, 0, 0, 0);
 
         // the theme styles its template on hover and focus, under these: a box shows then
@@ -62,6 +67,8 @@ public class HeaderNameEditor : NameEditor
             FontSize = TitleFontSize,
             FontWeight = FontWeight.SemiBold,
             VerticalAlignment = VerticalAlignment.Center,
+            // centered, so twice the nudge: the same place as the box's text
+            Margin = new Thickness(0, 2 * BaselineNudge, 0, 0),
             IsHitTestVisible = false,
             IsVisible = false
         };
