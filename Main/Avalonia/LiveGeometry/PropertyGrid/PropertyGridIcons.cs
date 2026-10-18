@@ -90,6 +90,15 @@ public static class PropertyGridIcons
                     Shape("M5.5,5.5 H12.5 V12.5 H5.5 Z", null, outline, thickness: 1.1));
             case PropertyGridIcon.Delete:
                 return TrashCan();
+            case PropertyGridIcon.Eye:
+                // an almond with its pupil
+                return Icon(
+                    Shape("M1.5,7 C3.5,3.2 10.5,3.2 12.5,7 C10.5,10.8 3.5,10.8 1.5,7 Z", null, outline, thickness: 1.2),
+                    Shape("M7,5.2 A1.8,1.8 0 1 1 6.99,5.2 Z", outline, null));
+            case PropertyGridIcon.EyeHidden:
+                // the eye closed, its lashes down
+                return Icon(
+                    Shape("M1.5,6 C3.5,9.4 10.5,9.4 12.5,6 M3.4,8.1 L2.4,9.6 M7,8.9 V10.6 M10.6,8.1 L11.6,9.6", null, outline, thickness: 1.2));
             default:
                 return null;
         }

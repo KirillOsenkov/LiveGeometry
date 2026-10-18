@@ -8,6 +8,9 @@ namespace LiveGeometry;
 
 public class Label : LabelBase, IAngleProvider, ILengthProvider
 {
+    /// <summary>Nothing: the start of the text, in quotes, would sit right over the whole of it in the Text box</summary>
+    public override string ConstructionOnPage => null;
+
     public Label()
     {
         ShouldProcessText = true;
@@ -100,6 +103,7 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
     [PropertyGridVisible]
     [PropertyGridName("Pinned to")]
     [PropertyGridGroup("Screen")]
+    [PropertyGridSection(PropertyGridSection.Display, 30)]
     [PropertyGridCustomValueProvider(typeof(PinValue))]
     public LabelPin Pin
     {
@@ -216,6 +220,7 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
     [PropertyGridVisible]
     [PropertyGridName("Background")]
     [PropertyGridGroup("Screen")]
+    [PropertyGridSection(PropertyGridSection.Display, 30)]
     public bool Backdrop
     {
         get => backdrop;

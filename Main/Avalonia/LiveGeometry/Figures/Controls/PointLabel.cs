@@ -303,6 +303,7 @@ public class PointLabel : Measurement
 
     [PropertyGridVisible]
     [PropertyGridName("Show name")]
+    [PropertyGridSection(PropertyGridSection.Display, 10)]
     public bool ShowNameDisplay
     {
         get => ShowName;
@@ -318,6 +319,7 @@ public class PointLabel : Measurement
 
     [PropertyGridVisible]
     [PropertyGridName("Show coordinates")]
+    [PropertyGridSection(PropertyGridSection.Display, 20)]
     public bool ShowCoordinatesDisplay
     {
         get => ShowCoordinates;

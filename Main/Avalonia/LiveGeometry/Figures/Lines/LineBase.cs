@@ -42,6 +42,7 @@ public abstract partial class LineBase : ShapeBase<Line>, ILinearFigure
     [PropertyGridVisible]
     [ContextMenu]
     [PropertyGridName("Show name")]
+    [PropertyGridSection(PropertyGridSection.Display, 10)]
     public virtual bool ShowName
     { get => HasNameLabel; set => HasNameLabel = value;
     }

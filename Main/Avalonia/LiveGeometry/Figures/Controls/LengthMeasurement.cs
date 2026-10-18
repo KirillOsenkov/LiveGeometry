@@ -311,6 +311,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
     /// </summary>
     [PropertyGridVisible]
     [PropertyGridName("Prefix")]
+    [PropertyGridSection(PropertyGridSection.Display, 10)]
     [PropertyGridCustomValueProvider(typeof(PrefixValue))]
     public string Prefix
     {

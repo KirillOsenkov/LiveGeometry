@@ -743,7 +743,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   not on others: "on Circle₁" in one row must be found in another.
   After the title comes `Construction`, how the figure is built ("of AB", "to segment AB
   through C", "with center A and radius 3"): faded after the title in the Figure List, a
-  smaller line under it in the grid's header. It names what it is built on through
+  smaller line under it in the grid's header (`ConstructionOnPage`: not on the page of a
+  text or a show/hide box, where the Text box says it all). It names what it is built on through
   `ConstructionText`: a point by its name, anything else by its `Noun` and name (segment
   AB, line g - the plain noun, not "parallel line"), a typed value by its number, a tied
   one by what it comes from (a, AB, angle ABC). "angle ABC", not ∠: Inter, the browser's
@@ -1122,6 +1123,19 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (`[PropertyGridDisallowMultiEdit]`, as Name has). One text made every selected figure
   the same, and each needs its own checks; the X row threw, the function row saved
   "sin(" into both graphs. How figures look, Visible, Locked, Z and Delete stay.
+- **The order of a page is declared** (2026-10-18; `PropertyGridSectionAttribute`): every row
+  and button is in a section - Header, Definition, Display, Style, Verbs, Arrange, Delete,
+  the order of the context menus - at a place in it (smaller first, in tens so a class can
+  slot a row between its base's; ties in declaration order). Unmarked, a row is Definition,
+  a button Verbs, a destructive one Delete; a group box goes where its first member goes.
+  So the shared rows are marked once in the base classes (`FigureBase`: Name, Visible,
+  Locked, Style, Bring to front...) and every figure's own rows come first. The Header
+  section is not on the page but on the title's line: what the figure is
+  (`FigureBase.KindCaption`, faded), the name as a box as wide as the name, at least 60
+  (`HeaderNameEditor`: no box until hovered or focused, A₁ shown until edited as A_1), and
+  on/off rows as icon toggles right after it (`HeaderToggle`: an eye for Visible, a
+  padlock for Locked; the usual state faint).
+  A page without such rows (a style, a tool panel) keeps the plain title.
 - **Property grid layout is declarative** (`PropertyGrid/`): `[PropertyGridGroup]` boxes rows
   and their buttons together, `[PropertyGridDestructive]` puts a button last under a divider,
   `[PropertyGridIcon]` puts a drawn icon (`PropertyGridIcons`) in front of a caption (every verb
@@ -1136,10 +1150,7 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `PropertyChanged` with a name - the row is hidden, not taken away, so a box being typed in
   keeps the keyboard (a label's Decimals show only while its text has a `[...]` part,
   `Label.ShowsDecimals`, and come as the first one is typed; the Text setter raises the
-  change). The rows go in the order reflection gives (the class's own properties before
-  its base's), plain rows first, then the group boxes in the order of their first row: a
-  label's Text is first because its pin and Background are boxed (`"Screen"`), under Name.
-  The grid refreshes a row's value on `PropertyChanged` with
+  change). Where rows and buttons go: see "The order of a page is declared". The grid refreshes a row's value on `PropertyChanged` with
   its name, and rebuilds itself (posted) on a `PropertyChanged` with a null name: for a set
   after which the rows change shape - what is editable, a caption, which buttons (a
   translated point's Free direction). A property setter that changes the figure list (the length

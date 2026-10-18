@@ -34,6 +34,7 @@ public class FigureSelection : CompositePropertyProvider, IConditionalProperties
     /// <summary>All of them over every other figure of their band (<see cref="ZOrders"/>), keeping their order among themselves</summary>
     [PropertyGridVisible]
     [PropertyGridName("Bring to front")]
+    [PropertyGridSection(PropertyGridSection.Arrange, 10)]
     [PropertyGridIcon(PropertyGridIcon.BringToFront)]
     public void BringToFront()
     {
@@ -43,6 +44,7 @@ public class FigureSelection : CompositePropertyProvider, IConditionalProperties
 
     [PropertyGridVisible]
     [PropertyGridName("Send to back")]
+    [PropertyGridSection(PropertyGridSection.Arrange, 20)]
     [PropertyGridIcon(PropertyGridIcon.SendToBack)]
     public void SendToBack()
     {

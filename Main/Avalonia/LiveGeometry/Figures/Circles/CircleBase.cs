@@ -16,6 +16,7 @@ public abstract partial class CircleBase : EllipseBase, ICircle, IFixableLength
     [PropertyGridVisible]
     [ContextMenu]
     [PropertyGridName("Show name")]
+    [PropertyGridSection(PropertyGridSection.Display, 10)]
     public bool ShowName
     { get => HasNameLabel; set => HasNameLabel = value;
     }

@@ -520,6 +520,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
 
     private int mDecimalsToShow = Settings.DisplayDecimals;
     [PropertyGridName("Decimals")]
+    [PropertyGridSection(PropertyGridSection.Display, 20)]
     [Domain(0, 10)]
     [PropertyGridVisible]
     [PropertyGridCondition(nameof(ShowsDecimals))]

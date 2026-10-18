@@ -257,6 +257,7 @@ public class AngleArc : CircleArc, IConditionalProperties
     /// <summary>Radius of the (first) arc in pixels</summary>
     [PropertyGridVisible]
     [PropertyGridName("Radius")]
+    [PropertyGridSection(PropertyGridSection.Display, 20)]
     [Domain(10, 100)]
     public double Size
     {
@@ -276,6 +277,7 @@ public class AngleArc : CircleArc, IConditionalProperties
     /// </summary>
     [PropertyGridVisible]
     [PropertyGridName("Arcs")]
+    [PropertyGridSection(PropertyGridSection.Display, 10)]
     [Domain(0, 3)]
     public int ArcCount
     {

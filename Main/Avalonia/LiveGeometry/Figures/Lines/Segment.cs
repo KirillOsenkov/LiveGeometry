@@ -16,6 +16,7 @@ public class Segment : LineBase, ILengthProvider, ILine, IFixableLength, IFixabl
     /// <summary>The mark at the middle: ticks, chevrons or a wave (<see cref="SegmentDecorationMark"/>)</summary>
     [PropertyGridVisible]
     [PropertyGridName("Mark")]
+    [PropertyGridSection(PropertyGridSection.Display, 20)]
     [PropertyGridPreferredEditor("SegmentDecoration")]
     public SegmentDecoration Decoration
     {

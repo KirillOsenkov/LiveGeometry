@@ -168,6 +168,7 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
     [PropertyGridVisible]
     [ContextMenu]
     [PropertyGridName("Show name")]
+    [PropertyGridSection(PropertyGridSection.Display, 10)]
     public bool ShowName
     {
         get
@@ -193,6 +194,7 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
     [PropertyGridVisible]
     [ContextMenu]
     [PropertyGridName("Show coordinates")]
+    [PropertyGridSection(PropertyGridSection.Display, 20)]
     public bool ShowCoordinates
     {
         get

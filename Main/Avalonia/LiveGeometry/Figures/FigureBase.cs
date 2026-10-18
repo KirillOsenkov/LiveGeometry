@@ -516,6 +516,9 @@ public abstract partial class FigureBase :
     /// </summary>
     protected virtual string Kind => null;
 
+    /// <summary>What the figure is, over its name in the header of its page; null where no word fits</summary>
+    public string KindCaption => Kind;
+
     /// <summary>
     /// "Segment AB", "Triangle ABC": the kind in front of the name, for the property grid -
     /// unless the name says it already (Circle1, Bezier3), or the figure goes by what it
@@ -586,6 +589,12 @@ public abstract partial class FigureBase :
     public virtual string Construction => null;
 
     /// <summary>
+    /// The <see cref="Construction"/> under the title of the figure's page; null where a row
+    /// of the page says it in full (a text's own text)
+    /// </summary>
+    public virtual string ConstructionOnPage => Construction;
+
+    /// <summary>
     /// What another figure's <see cref="Construction"/> calls this one in front of its
     /// name: "segment", "line", "circle" - the plain word, not "parallel line". Null for a
     /// figure that goes by its name alone (a point, a number).
@@ -610,6 +619,7 @@ public abstract partial class FigureBase :
 
     protected string mName;
     [PropertyGridVisible]
+    [PropertyGridSection(PropertyGridSection.Header)]
     [PropertyGridDisallowMultiEdit]
     [PropertyGridPreferredEditor("Name")]
     public virtual string Name
@@ -743,6 +753,7 @@ public abstract partial class FigureBase :
     [PropertyGridVisible]
     [PropertyGridName("Style")]
     [PropertyGridGroup("Style")]
+    [PropertyGridSection(PropertyGridSection.Style)]
     [PropertyGridCustomValueProvider(typeof(StylePropertyValueProvider))]
     public virtual IFigureStyle StyleDisplay
     {
@@ -751,6 +762,7 @@ public abstract partial class FigureBase :
 
     protected bool mVisible = true;
     [PropertyGridVisible]
+    [PropertyGridSection(PropertyGridSection.Header, 10)]
     public virtual bool Visible
     {
         get => mVisible; set => mVisible = value;
@@ -759,6 +771,7 @@ public abstract partial class FigureBase :
     public virtual bool IsHitTestVisible { get; set; }
 
     [PropertyGridVisible]
+    [PropertyGridSection(PropertyGridSection.Header, 20)]
     public virtual bool Locked { get; set; }
 
     public bool Auxiliary { get; set; }
@@ -830,6 +843,7 @@ public abstract partial class FigureBase :
     /// <summary>Over every other figure of its band of layers (<see cref="ZOrders"/>)</summary>
     [PropertyGridVisible]
     [PropertyGridName("Bring to front")]
+    [PropertyGridSection(PropertyGridSection.Arrange, 10)]
     [PropertyGridIcon(PropertyGridIcon.BringToFront)]
     [PropertyGridCondition(nameof(CanBringToFront))]
     public void BringToFront()
@@ -840,6 +854,7 @@ public abstract partial class FigureBase :
     /// <summary>Under every other figure of its band of layers</summary>
     [PropertyGridVisible]
     [PropertyGridName("Send to back")]
+    [PropertyGridSection(PropertyGridSection.Arrange, 20)]
     [PropertyGridIcon(PropertyGridIcon.SendToBack)]
     [PropertyGridCondition(nameof(CanSendToBack))]
     public void SendToBack()
@@ -1002,6 +1017,7 @@ public abstract partial class FigureBase :
     [PropertyGridVisible]
     [PropertyGridName("Edit this style")]
     [PropertyGridGroup("Style")]
+    [PropertyGridSection(PropertyGridSection.Style)]
     [PropertyGridIcon(PropertyGridIcon.Pencil)]
     public void EditStyleButton()
     {
@@ -1021,6 +1037,7 @@ public abstract partial class FigureBase :
     [PropertyGridVisible]
     [PropertyGridName("Create new style")]
     [PropertyGridGroup("Style")]
+    [PropertyGridSection(PropertyGridSection.Style)]
     [PropertyGridIcon(PropertyGridIcon.Plus)]
     public void CreateNewStyle()
     {

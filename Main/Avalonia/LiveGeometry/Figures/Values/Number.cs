@@ -258,6 +258,7 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     [PropertyGridVisible]
     [ContextMenu]
     [PropertyGridName("Show name")]
+    [PropertyGridSection(PropertyGridSection.Display, 10)]
     public bool ShowName
     {
         get => showName;

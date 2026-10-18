@@ -292,6 +292,8 @@ public partial class PropertyGrid : StackPanel
             return;
         }
 
+        ShowHeaderRows();
+
         if (Selection is IPropertyGridTabs tabs)
         {
             AddTabs(tabs, controls);
@@ -422,18 +424,43 @@ public partial class PropertyGrid : StackPanel
     }
 
     /// <summary>
-    /// Plain editors and buttons stay in their order. Members that carry the same
+    /// Where a row or a button goes on the page (<see cref="PropertyGridSectionAttribute"/>):
+    /// unmarked, a row is what defines the figure, a button a verb, a destructive button last
+    /// </summary>
+    static (PropertyGridSection Section, int Order) GetPlace(IMetadataDescription metadata, bool isButton)
+    {
+        var attribute = metadata?.GetAttribute<PropertyGridSectionAttribute>();
+        if (attribute != null)
+        {
+            return (attribute.Section, attribute.Order);
+        }
+
+        if (isButton && metadata?.GetAttribute<PropertyGridDestructiveAttribute>() != null)
+        {
+            return (PropertyGridSection.Delete, 0);
+        }
+
+        return (isButton ? PropertyGridSection.Verbs : PropertyGridSection.Definition, 0);
+    }
+
+    /// <summary>Whether the row goes over the page, into its header (<see cref="PropertyGridSection.Header"/>)</summary>
+    static bool IsHeaderRow(IValueProvider value)
+    {
+        return GetPlace(value, isButton: false).Section == PropertyGridSection.Header;
+    }
+
+    /// <summary>
+    /// Rows and buttons by their sections and places (<see cref="PropertyGridSectionAttribute"/>),
+    /// those of one place in the order they came. Members that carry the same
     /// <see cref="PropertyGridGroupAttribute"/> are boxed together (editors, then their
-    /// buttons in a row), and destructive buttons go last, below a divider.
+    /// buttons in a row), the box where its first member goes; the Delete section goes last,
+    /// below a divider.
     /// </summary>
     static IEnumerable<UIElement> Arrange(IEnumerable<UIElement> controls)
     {
-        // in this order: plain fields, group boxes, plain buttons, destructive buttons
-        var result = new List<UIElement>();
-        var groupBoxes = new List<UIElement>();
-        var plainButtons = new List<UIElement>();
-        var groups = new List<(string Name, StackPanel Editors, WrapPanel Buttons)>();
-        var destructive = new List<UIElement>();
+        var entries = new List<(PropertyGridSection Section, int Order, int Index, UIElement Control)>();
+        var groups = new List<(string Name, StackPanel Editors, WrapPanel Buttons, int Entry)>();
+        int index = 0;
 
         foreach (var control in controls)
         {
@@ -441,24 +468,22 @@ public partial class PropertyGrid : StackPanel
             IMetadataDescription metadata = button != null
                 ? button.OperationDescription
                 : (control as IValueEditor)?.Value;
+            var (section, order) = GetPlace(metadata, button != null);
+            index++;
 
-            if (button != null && metadata?.GetAttribute<PropertyGridDestructiveAttribute>() != null)
-            {
-                destructive.Add(control);
-                continue;
-            }
-
-            string groupName = metadata?.GetAttribute<PropertyGridGroupAttribute>()?.Name;
+            string groupName = section == PropertyGridSection.Delete
+                ? null
+                : metadata?.GetAttribute<PropertyGridGroupAttribute>()?.Name;
             if (groupName == null)
             {
-                (button != null ? plainButtons : result).Add(control);
+                entries.Add((section, order, index, control));
                 continue;
             }
 
             var group = groups.FirstOrDefault(g => g.Name == groupName);
             if (group.Name == null)
             {
-                group = (groupName, new StackPanel(), new WrapPanel() { Margin = new Thickness(0, 4, 0, 0) });
+                group = (groupName, new StackPanel(), new WrapPanel() { Margin = new Thickness(0, 4, 0, 0) }, entries.Count);
                 groups.Add(group);
 
                 var content = new StackPanel();
@@ -474,7 +499,16 @@ public partial class PropertyGrid : StackPanel
                 };
                 box.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.Separator));
                 box.BindTheme(Border.BackgroundProperty, nameof(AppTheme.GroupBackground));
-                groupBoxes.Add(box);
+                entries.Add((section, order, index, box));
+            }
+            else if (button == null)
+            {
+                // the box goes where its first row goes: the rows came before the buttons
+                var first = entries[group.Entry];
+                if ((section, order, index).CompareTo((first.Section, first.Order, first.Index)) < 0)
+                {
+                    entries[group.Entry] = (section, order, index, first.Control);
+                }
             }
 
             if (button != null)
@@ -488,8 +522,19 @@ public partial class PropertyGrid : StackPanel
             }
         }
 
-        result.AddRange(groupBoxes);
-        result.AddRange(plainButtons);
+        var sorted = entries
+            .OrderBy(entry => entry.Section)
+            .ThenBy(entry => entry.Order)
+            .ThenBy(entry => entry.Index)
+            .ToList();
+        var result = sorted
+            .Where(entry => entry.Section != PropertyGridSection.Delete)
+            .Select(entry => entry.Control)
+            .ToList();
+        var destructive = sorted
+            .Where(entry => entry.Section == PropertyGridSection.Delete)
+            .Select(entry => entry.Control)
+            .ToList();
 
         if (destructive.Count > 0)
         {
@@ -551,23 +596,57 @@ public partial class PropertyGrid : StackPanel
         ShowHeader();
     }
 
-    UIElement Header { get; set; }
+    StackPanel Header { get; set; }
 
     TextBlock headerTitle;
+
+    // what the figure is ("Segment"), before its name, when the name is a box of its own
+    TextBlock headerKind;
+
+    // the name's box, in the title's place
+    HeaderNameEditor headerName;
+
+    // Visible and Locked, at the right of the title
+    StackPanel headerToggles;
+
+    // the rows that go into the header (PropertyGridSection.Header), out of the page
+    IValueProvider[] headerRows = [];
 
     // how the figure is built ("of CD"), under its title, smaller and faded
     TextBlock headerConstruction;
 
     void CreateHeader()
     {
+        headerName = null;
+        // in the title's size, as "Segment" read in "Segment AB", but plain and faded: the
+        // name after it is the part that is edited
+        headerKind = new TextBlock()
+        {
+            FontSize = HeaderNameEditor.TitleFontSize,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(0, 0, 12, 0),
+            IsVisible = false,
+            IsHitTestVisible = false
+        };
+        headerKind.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.TextMuted));
+        DockPanel.SetDock(headerKind, Dock.Left);
         headerTitle = new TextBlock()
         {
-            FontSize = 15,
+            FontSize = HeaderNameEditor.TitleFontSize,
             FontWeight = FontWeight.SemiBold,
             TextWrapping = TextWrapping.Wrap,
+            VerticalAlignment = VerticalAlignment.Center,
             IsHitTestVisible = false
         };
         headerTitle.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
+        headerToggles = new StackPanel()
+        {
+            Orientation = Orientation.Horizontal,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(8, 0, 0, 0)
+        };
+        DockPanel.SetDock(headerToggles, Dock.Right);
+        var titleRow = new DockPanel() { Children = { headerToggles, headerKind, headerTitle } };
         headerConstruction = new TextBlock()
         {
             FontSize = 12,
@@ -583,8 +662,46 @@ public partial class PropertyGrid : StackPanel
             Margin = new Thickness(0, 0, 0, 10),
             MaxWidth = PropertyGridTheme.MaxTextWidth,
             HorizontalAlignment = HorizontalAlignment.Left,
-            Children = { headerTitle, headerConstruction }
+            Children = { titleRow, headerConstruction }
         };
+        ShowHeader();
+    }
+
+    /// <summary>
+    /// The rows of the header (<see cref="PropertyGridSection.Header"/>), on the title's
+    /// line: what the figure is, then the name as a box as wide as the name, then each
+    /// on/off row (Visible, Locked) as a small toggle.
+    /// </summary>
+    void ShowHeaderRows()
+    {
+        headerToggles.Children.Clear();
+        foreach (var row in headerRows.OrderBy(row => GetPlace(row, isButton: false).Order))
+        {
+            if (row.Type == typeof(bool))
+            {
+                headerToggles.Children.Add(new HeaderToggle(row, ActionManager));
+            }
+            else if (row.Type == typeof(string) && headerName == null)
+            {
+                headerName = new HeaderNameEditor() { ActionManager = ActionManager };
+                headerName.Value = row;
+                var titleRow = (DockPanel)headerTitle.Parent;
+                titleRow.Children.Remove(headerTitle);
+                titleRow.Children.Add(headerName);
+            }
+        }
+
+        // the toggles right after the name, or after the title of several figures, all on
+        // the left: the title no longer takes the rest of the line
+        if (headerToggles.Children.Count > 0)
+        {
+            var titleRow = (DockPanel)headerToggles.Parent;
+            titleRow.Children.Remove(headerToggles);
+            DockPanel.SetDock(headerToggles, Dock.Left);
+            titleRow.Children.Add(headerToggles);
+            titleRow.LastChildFill = false;
+        }
+
         ShowHeader();
     }
 
@@ -597,6 +714,11 @@ public partial class PropertyGrid : StackPanel
             title = GetTitleString(Selection);
             construction = GetConstruction(Selection);
         }
+
+        // the name has a box of its own: what the figure is goes before it
+        string kind = headerName != null ? (Selection as FigureBase)?.KindCaption : null;
+        headerKind.Text = kind;
+        headerKind.IsVisible = !string.IsNullOrEmpty(kind);
 
         headerTitle.Text = title;
         headerConstruction.Text = construction;
@@ -611,7 +733,7 @@ public partial class PropertyGrid : StackPanel
             return null;
         }
 
-        return figure.Construction;
+        return figure is FigureBase onPage ? onPage.ConstructionOnPage : figure.Construction;
     }
 
     public string Title { get; set; }
@@ -635,7 +757,9 @@ public partial class PropertyGrid : StackPanel
     public IEnumerable<UIElement> CreateObjectControls<T>(T editableObject)
     {
         CurrentProperties = GetEditableProperties(editableObject).ToArray();
+        headerRows = CurrentProperties.Where(IsHeaderRow).ToArray();
         var currentEditors = CurrentProperties
+            .Except(headerRows)
             .Select(p => CreatePropertyEditorControl(p, editableObject, ActionManager))
             .Where(c => c != null).ToArray();
         CurrentEditors = currentEditors;

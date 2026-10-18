@@ -9,6 +9,7 @@ public class AngleMeasurementBase : Measurement, IAngleProvider
     private bool radians;
 
     [PropertyGridVisible]
+    [PropertyGridSection(PropertyGridSection.Display, 10)]
     public bool Radians
     {
         get => radians;
@@ -138,6 +139,7 @@ public class AngleMeasurement : AngleMeasurementBase, IConditionalProperties, IH
     /// </summary>
     [PropertyGridVisible]
     [PropertyGridName("Arcs")]
+    [PropertyGridSection(PropertyGridSection.Display, 30)]
     [Domain(0, 3)]
     [PropertyGridCustomValueProvider(typeof(ConditionalPropertyValue))]
     public int ArcCount
@@ -170,6 +172,7 @@ public class AngleMeasurement : AngleMeasurementBase, IConditionalProperties, IH
     /// </summary>
     [PropertyGridVisible]
     [PropertyGridName("Place automatically")]
+    [PropertyGridSection(PropertyGridSection.Display, 40)]
     [PropertyGridCustomValueProvider(typeof(PlaceValue))]
     public bool PlacesItself
     {

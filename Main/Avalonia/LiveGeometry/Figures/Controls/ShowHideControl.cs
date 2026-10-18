@@ -47,6 +47,9 @@ public class ShowHideControl : ControlBase, ISupportRemoveDependency
     /// <summary>The caption, in quotes</summary>
     public override string Construction => ConstructionText.Quote(Checkbox?.Content?.ToString());
 
+    /// <summary>Nothing: the caption, in quotes, would sit right over the whole of it in the Text box</summary>
+    public override string ConstructionOnPage => null;
+
     /// <summary>The caption and the empty box in the text style's color, in every state (hovered, pressed, checked)</summary>
     public override void ApplyStyle()
     {
