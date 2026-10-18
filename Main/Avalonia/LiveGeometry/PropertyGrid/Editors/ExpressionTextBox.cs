@@ -1,6 +1,8 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 
@@ -45,6 +47,8 @@ public class ExpressionTextBox : TextBox, IExpressionInsertTarget
         LostFocus += (s, e) => Dispatcher.UIThread.Post(ClearIfUnfocused, DispatcherPriority.Input);
     }
 
+    Border pencil;
+
     /// <summary>
     /// The box has the keyboard: clicks on figures put references in, and a pencil at the
     /// box's right says so for as long as that holds
@@ -54,15 +58,95 @@ public class ExpressionTextBox : TextBox, IExpressionInsertTarget
         Drawing?.SetInsertTarget(this);
         if (InnerRightContent == null)
         {
-            var mark = new Border()
-            {
-                Margin = new Thickness(0, 0, 6, 0),
-                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
-                Child = PropertyGridIcons.Create(PropertyGridIcon.Pencil)
-            };
-            ToolTip.SetTip(mark, ReferencePicker.Hint);
-            InnerRightContent = mark;
+            pencil = CreatePencilButton();
+            InnerRightContent = pencil;
         }
+
+        ShowPicking(true);
+    }
+
+    /// <summary>
+    /// The pencil, a button that switches the picking off and on while the keyboard stays in
+    /// the box (<see cref="TogglePicking"/>): off, a click on a figure selects it, as it does
+    /// without a box. The way out of a label's text without leaving it, since Enter there
+    /// starts a line.
+    /// </summary>
+    Border CreatePencilButton()
+    {
+        var button = new Border()
+        {
+            Margin = new Thickness(0, 0, 3, 0),
+            Padding = new Thickness(3),
+            CornerRadius = new CornerRadius(4),
+            Background = Brushes.Transparent, // hit-testable around the pencil too
+            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+            Cursor = new Cursor(StandardCursorType.Hand),
+            Child = PropertyGridIcons.Create(PropertyGridIcon.Pencil)
+        };
+        button.PointerEntered += (s, e) => button.BindTheme(Border.BackgroundProperty, nameof(AppTheme.ButtonHover));
+        button.PointerExited += (s, e) => button.BindTheme(Border.BackgroundProperty, key: null, whenNone: Brushes.Transparent);
+
+        // the box's own press would move the caret and take the pointer, and the release
+        // would never come here
+        button.PointerPressed += (s, e) =>
+        {
+            if (e.GetCurrentPoint(button).Properties.IsLeftButtonPressed)
+            {
+                e.Pointer.Capture(button);
+                e.Handled = true;
+            }
+        };
+        button.PointerReleased += (s, e) =>
+        {
+            if (e.InitialPressMouseButton != MouseButton.Left || e.Pointer.Captured != button)
+            {
+                return;
+            }
+
+            e.Pointer.Capture(null);
+            e.Handled = true;
+            if (new Rect(button.Bounds.Size).Contains(e.GetPosition(button)))
+            {
+                TogglePicking();
+            }
+        };
+        return button;
+    }
+
+    /// <summary>The pencil's click: clicks on figures stop or start putting references in, and the box keeps the keyboard</summary>
+    void TogglePicking()
+    {
+        var drawing = Drawing;
+        if (drawing == null)
+        {
+            return;
+        }
+
+        bool picking = drawing.InsertTarget != this;
+        if (picking)
+        {
+            drawing.SetInsertTarget(this);
+        }
+        else
+        {
+            drawing.ClearInsertTarget(this);
+        }
+
+        ShowPicking(picking);
+    }
+
+    /// <summary>The pencil as ink while clicks on figures come here, faint while they don't</summary>
+    void ShowPicking(bool picking)
+    {
+        if (pencil == null)
+        {
+            return;
+        }
+
+        pencil.Child.Opacity = picking ? 1 : 0.35;
+        ToolTip.SetTip(pencil, picking
+            ? "Done: a click on a figure selects it again"
+            : "Click a figure to put it in");
     }
 
     void ClearIfUnfocused()
@@ -71,6 +155,7 @@ public class ExpressionTextBox : TextBox, IExpressionInsertTarget
         {
             Drawing?.ClearInsertTarget(this);
             InnerRightContent = null;
+            pencil = null;
         }
     }
 

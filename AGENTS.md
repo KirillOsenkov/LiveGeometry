@@ -1382,9 +1382,13 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   (1 of 3): Tab for the next.", `ClickChoice.Picking`), Tab from the box steps through
   the figure's quantities (`MainView.IsTabForPicking`). While the box has the keyboard a
   pencil sits at its right end (the box's InnerRightContent), since every click on a
-  figure is the box's then; Enter in a figure's row is "done" and gives the keyboard to
-  the canvas (`ExpressionTextBox.EndEditing`; a tool panel's Enter is its command, as
-  ever), and the status hint says so. The value under the box follows the figures it
+  figure is the box's then; it is a button (2026-10-17) that switches that off and on
+  while the keyboard stays in the box (`ExpressionTextBox.TogglePicking`: off, the box is
+  no `InsertTarget`, the pencil is faint and a click on a figure selects it), and the
+  status hint names it; the box taking the keyboard again starts with it on. Enter in a
+  figure's row is "done" and gives the keyboard to the canvas (`EndEditing`; a tool
+  panel's Enter is its command, as ever), but not in a label's text, where it starts a
+  line: there the pencil is the way out. The value under the box follows the figures it
   names (`PropertyGrid.RefreshNumbers` asks `StringEditor.RefreshLiveValue`). What goes in (`ReferenceText`):
   a figure's first quantity as the Length tool would pick it, then the others -
   `c.Radius`, `c.Diameter`, `c.Circumference`, `c.Area`; `d.ArcLength`...; `p.Area`,

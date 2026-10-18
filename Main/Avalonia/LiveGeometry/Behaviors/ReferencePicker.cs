@@ -77,7 +77,7 @@ public class ReferenceOption
 public static class ReferencePicker
 {
     /// <summary>What the status says while a box takes the keyboard</summary>
-    public const string Hint = "Click a figure, or its row in the Figure List, to put it into the formula; Enter when done.";
+    public const string Hint = "Click a figure, or its row in the Figure List, to put it in; the pencil at the end of the box when done.";
 
     /// <summary>What a click here could put into the box, the figures as hit testing orders them, each with its quantities</summary>
     public static IReadOnlyList<ReferenceOption> FindOptions(Drawing drawing, Point coordinates, IExpressionInsertTarget target)
