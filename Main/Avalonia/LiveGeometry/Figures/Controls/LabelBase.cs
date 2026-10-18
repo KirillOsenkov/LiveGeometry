@@ -94,6 +94,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
         set
         {
             bool showedDecimals = ShowsDecimals();
+            string old = text;
             text = value ?? "";
 
             // the Decimals row comes and goes with the text's [...] parts, as they are typed
@@ -119,6 +120,14 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
             else
             {
                 ProcessedText = text;
+            }
+
+            // A text typed follows itself where it is quoted: the side panel's title, as it
+            // is typed (it stayed as it was until something else changed). Not the text of a
+            // measurement or a point's name, which is worked out again at every move.
+            if (ShouldProcessText && text != old)
+            {
+                RaisePropertyChanged(nameof(Text));
             }
         }
     }

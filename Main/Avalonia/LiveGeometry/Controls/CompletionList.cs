@@ -34,6 +34,9 @@ public class CompletionList
     const double MaxListWidth = 320;
     const double IconSize = 14;
 
+    // what the popup takes beside its rows: its padding and border, and room for the scroll bar
+    const double RowsSpare = 16;
+
     readonly ColoredTextBox box;
     readonly Border root;
     readonly StackPanel rowPanel;
@@ -55,6 +58,9 @@ public class CompletionList
     // reference in, undo, a paste - closes it.
     bool typing;
     bool committing;
+
+    // the width the list has had since it opened, which it keeps
+    double openWidth;
 
     public CompletionList(ColoredTextBox box)
     {
@@ -88,8 +94,6 @@ public class CompletionList
         DockPanel.SetDock(helpStrip, Dock.Bottom);
         root = new Border()
         {
-            MinWidth = MinListWidth,
-            MaxWidth = MaxListWidth,
             Padding = new Thickness(2),
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(4),
@@ -335,6 +339,14 @@ public class CompletionList
             return;
         }
 
+        // the chrome's font, not the box's (the in-place editor's is the label's); before the
+        // rows are made, whose width is measured in it
+        var window = TopLevel.GetTopLevel(box);
+        if (window != null)
+        {
+            TextElement.SetFontFamily(root, window.FontFamily);
+        }
+
         spot = found;
         if (!Refilter())
         {
@@ -349,14 +361,6 @@ public class CompletionList
 
         var start = presenter.TextLayout.HitTestTextPosition(spot.Start);
         popup.PlacementRect = new Rect(start.X, start.Y, 1, start.Height);
-
-        // the chrome's font, not the box's (the in-place editor's is the label's)
-        var window = TopLevel.GetTopLevel(box);
-        if (window != null)
-        {
-            TextElement.SetFontFamily(root, window.FontFamily);
-        }
-
         popup.IsOpen = true;
     }
 
@@ -374,13 +378,18 @@ public class CompletionList
         selected = filter.Selected;
         hard = filter.Hard;
 
-        // never narrower while open: the list doesn't jump as it is filtered
-        root.MinWidth = System.Math.Max(root.MinWidth, root.Bounds.Width);
         rowPanel.Children.Clear();
         for (int i = 0; i < shown.Count; i++)
         {
             rowPanel.Children.Add(CreateRow(shown[i], i));
         }
+
+        // As wide as the widest row, and never narrower while open; the help wraps in that.
+        // So the list jumps neither as it is filtered nor as the selection moves on to a
+        // longer help, which drove the width while the help sized it too.
+        rowPanel.Measure(Size.Infinity);
+        openWidth = System.Math.Clamp(System.Math.Max(rowPanel.DesiredSize.Width + RowsSpare, openWidth), MinListWidth, MaxListWidth);
+        root.Width = openWidth;
 
         ShowSelection();
         return true;
@@ -427,7 +436,7 @@ public class CompletionList
             popup.IsOpen = false;
         }
 
-        root.MinWidth = MinListWidth;
+        openWidth = 0;
     }
 
     void CloseIfUnfocused()
