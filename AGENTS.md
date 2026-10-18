@@ -1432,6 +1432,22 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   selection. `ColoredTextBox`'s template is a code copy of Fluent's TextBox template of
   Avalonia 12.1 with those two in it: compare it with Fluent's TextBox.xaml when Avalonia
   is upgraded.
+- **Completion** (2026-10-17; the design and its reasons, after the VS editor's, are
+  `docs/completion-plan.md`): every `ColoredTextBox` with a host - the expression boxes,
+  the in-place editor of a text, the theme page's sample - has a list of what can go at
+  the caret (`CompletionList`, the popup and the keys; `ExpressionCompletion`, the model,
+  which the regression suite tests). It opens on the first letter of a word, after a dot
+  behind a figure's name (its quantities: `ReferenceText`'s, the same a click offers) and on
+  Ctrl+Space (a word only one row matches is completed at once); the functions are
+  `FunctionCatalog`'s, written by hand with a line of help each. Firm selection (the word
+  has a letter): Tab, Enter, a click and any character that can't go on a name commit, the
+  character typed after. Outlined (an empty word, after a dot): only Tab and a click, so
+  that `A.` then `+` types a plus. The popup is in the window's overlay
+  (`ShouldUseOverlayLayer`), so it never takes the keyboard (nothing in it is focusable: a
+  click on a row leaves the keyboard in the box, which matters for the in-place editor,
+  which commits when its box loses it) and shows in `winauto shot`. `MainView_KeyDown`, a
+  tunnel handler, leaves Tab and Escape to an open list. A word that already reads as two
+  points (AC) gets a row of its own, or `+` would put polygon ACDE in its place.
 - **A label is a length and an angle only when it says a number** (`Label.IsNumber`: its
   text is one, usually the value of an expression, "[AB * 2]" - what the GeoGebra reader
   makes for a computed value). Every `Label` has `ILengthProvider` and `IAngleProvider`,

@@ -30,15 +30,14 @@ public interface IExpressionHost
 /// <see cref="Drawing.InsertTarget"/>, so a click on a figure or on its row in the Figure
 /// List puts a reference to the figure in at the caret (<see cref="ReferencePicker"/>); in
 /// the text of a label the reference goes in as a [...] part unless the caret is in one
-/// already. Its pieces are in colors, as the compiler reads them (<see cref="Classify"/>).
-/// One class for all of them, so that completion or a structured editor can come to every
-/// box at once.
+/// already. Its pieces are in colors and it has a completion list, as every
+/// <see cref="ColoredTextBox"/> does. One class for all of them, so that a structured editor
+/// can come to every box at once.
 /// </summary>
 public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
 {
     public ExpressionTextBox()
     {
-        Classifier = Classify;
         GotFocus += (s, e) => BecomeTarget();
 
         // A press on the canvas or on the Figure List takes the keyboard before its
@@ -208,14 +207,8 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
         this.FindAncestorOfType<DrawingHost>()?.DrawingControl.Focus();
     }
 
-    public IExpressionHost Host { get; set; }
-
     /// <summary>The host's drawing, or the one of the editor the box is in</summary>
-    public Drawing Drawing => Host?.Drawing ?? this.FindAncestorOfType<DrawingHost>()?.CurrentDrawing;
-
-    public IFigure Owner => Host?.Owner;
-
-    public InsertContext Context => Host?.Context ?? InsertContext.Expression;
+    public override Drawing Drawing => base.Drawing ?? this.FindAncestorOfType<DrawingHost>()?.CurrentDrawing;
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -229,24 +222,6 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
         Drawing?.ClearInsertTarget(this);
         Watch(null);
         base.OnDetachedFromVisualTree(e);
-    }
-
-    /// <summary>
-    /// The pieces of the text as the compiler reads it in this box: an expression, a
-    /// function in x, or the [...] parts of a label's text. Only a text that compiles has
-    /// pieces (<see cref="ExpressionClassifier"/>).
-    /// </summary>
-    IReadOnlyList<ClassifiedSpan> Classify(string text)
-    {
-        var drawing = Drawing;
-        var owner = Owner;
-        Predicate<IFigure> isFigureAllowed = figure => owner == null || !figure.DependsOn(owner);
-        return Context switch
-        {
-            InsertContext.Text => ExpressionClassifier.ClassifyLabelText(drawing, text, isFigureAllowed),
-            InsertContext.Function => ExpressionClassifier.ClassifyFunction(drawing, text, isFigureAllowed),
-            _ => ExpressionClassifier.ClassifyExpression(drawing, text, isFigureAllowed)
-        };
     }
 
     Drawing watched;
@@ -317,21 +292,7 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
     /// </summary>
     public static bool IsInBrackets(string text, int caret)
     {
-        caret = System.Math.Clamp(caret, 0, text.Length);
-        int open = -1;
-        for (int i = 0; i < caret; i++)
-        {
-            if (text[i] == '[')
-            {
-                open = i;
-            }
-            else if (text[i] == ']')
-            {
-                open = -1;
-            }
-        }
-
-        return open >= 0;
+        return ExpressionCompletion.OpenBracketBefore(text, caret) >= 0;
     }
 
     /// <summary>

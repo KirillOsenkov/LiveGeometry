@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Avalonia.Controls;
 
 namespace LiveGeometry;
@@ -19,17 +18,18 @@ public class SyntaxSampleEditorFactory : BaseValueEditorFactory<SyntaxSampleEdit
     }
 }
 
-public class SyntaxSampleEditor : StringEditor
+public class SyntaxSampleEditor : StringEditor, IExpressionHost
 {
     protected override TextBox CreateTextBoxCore()
     {
-        return new ColoredTextBox() { Classifier = Classify };
+        return new ColoredTextBox() { Host = this };
     }
 
-    static IReadOnlyList<ClassifiedSpan> Classify(string text)
-    {
-        return ExpressionClassifier.ClassifyLabelText(SampleDrawing, text, isFigureAllowed: null);
-    }
+    public Drawing Drawing => SampleDrawing;
+
+    public IFigure Owner => null;
+
+    public InsertContext Context => InsertContext.Text;
 
     static Drawing sampleDrawing;
 

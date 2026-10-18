@@ -126,6 +126,18 @@ public class Scanner
         return ch == '\'' || ch == '′' || ch == '″';
     }
 
+    /// <summary>Whether a name can begin with the character: a letter or _</summary>
+    public static bool IsNameStart(char ch)
+    {
+        return IsLetter(ch);
+    }
+
+    /// <summary>Whether a name can go on with the character: a letter, _, a digit or a prime</summary>
+    public static bool IsNamePart(char ch)
+    {
+        return IsLetter(ch) || IsDigit(ch) || IsPrime(ch);
+    }
+
     /// <summary>
     /// Whether an expression can say the name as it is: a letter (or _), then letters,
     /// digits and primes. Any other name it says in backticks (<see cref="NameInExpression"/>).

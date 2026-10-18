@@ -1674,6 +1674,15 @@ public partial class MainView : UserControl
             return;
         }
 
+        // An open completion list takes Tab and Escape: it is asked first, as a gesture under
+        // way is for Escape (docs/completion-plan.md). Escape then closes the list alone, and
+        // the next one does what Escape does.
+        if ((e.Key == Key.Tab || e.Key == Key.Escape)
+            && TopLevel.GetTopLevel(this)?.FocusManager?.GetFocusedElement() is ColoredTextBox { Completion.IsOpen: true })
+        {
+            return;
+        }
+
         // Tab: the next of the figures a click at the cursor could take (ClickChoice) - not
         // from a box, a list or the Figure List, where Tab goes on to the next control. From
         // an expression box it is the next quantity of the figure under the cursor

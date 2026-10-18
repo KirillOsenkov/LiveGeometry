@@ -16,7 +16,7 @@ namespace LiveGeometry;
 /// starts a new line; Escape leaves the label as it was. The side panel is put away
 /// meanwhile, since what it would say is right there, and comes back with the label after.
 /// </summary>
-public class InPlaceTextEditor
+public class InPlaceTextEditor : IExpressionHost
 {
     readonly LabelBase label;
     readonly Drawing drawing;
@@ -36,11 +36,9 @@ public class InPlaceTextEditor
         var text = label.TextBlock;
         box = new ColoredTextBox()
         {
-            // the [...] parts of a text in colors, as in its row of the side panel (an
-            // attached text is shown as typed)
-            Classifier = label is Label
-                ? typed => ExpressionClassifier.ClassifyLabelText(drawing, typed, figure => !figure.DependsOn(label))
-                : null,
+            // the [...] parts of a text in colors and with completion, as in its row of the
+            // side panel (an attached text is shown as typed)
+            Host = label is Label ? this : null,
             Text = label.Text,
             AcceptsReturn = true,
             TextWrapping = text.TextWrapping,
@@ -95,6 +93,12 @@ public class InPlaceTextEditor
 
     /// <summary>The editor open now, if any: one at a time</summary>
     public static InPlaceTextEditor Current { get; private set; }
+
+    public Drawing Drawing => drawing;
+
+    public IFigure Owner => label;
+
+    public InsertContext Context => InsertContext.Text;
 
     /// <summary>Whether the label's text can be edited where it is: a text, free or attached to a figure, not a measurement, and one that can be changed</summary>
     public static bool CanEdit(IFigure figure)

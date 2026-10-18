@@ -18,13 +18,16 @@ using AvaloniaStyle = Avalonia.Styling.Style;
 namespace LiveGeometry;
 
 /// <summary>
-/// A text box whose text is drawn in colors, each piece in the theme's color for what it is
-/// (<see cref="Classifier"/>): the box an expression is typed into (<see cref="ExpressionTextBox"/>)
-/// and the text of a label edited where it is (<see cref="InPlaceTextEditor"/>). A TextBox
-/// draws its text in one brush; the template here is Fluent's (TextBox.xaml of Avalonia
-/// 12.1) with a presenter that draws it in several (<see cref="ColoredTextPresenter"/>), and
-/// without what no box of the app uses: the placeholder texts and the data validation errors.
-/// Fluent's styles reach it as they reach a TextBox, by the names of the parts.
+/// A box an expression is typed into, its text drawn in colors - each piece in the theme's
+/// color for what the compiler reads it as (<see cref="Classify"/>) - and with a completion
+/// list (<see cref="Completion"/>): <see cref="ExpressionTextBox"/>, which also takes
+/// references by a click, the text of a label edited where it is (<see cref="InPlaceTextEditor"/>),
+/// the theme page's sample. Whose names it says and what kind of text it holds is its
+/// <see cref="Host"/>'s to say; without one it is a plain box. A TextBox draws its text in
+/// one brush; the template here is Fluent's (TextBox.xaml of Avalonia 12.1) with a presenter
+/// that draws it in several (<see cref="ColoredTextPresenter"/>) and the completion's popup,
+/// and without what no box of the app uses: the placeholder texts and the data validation
+/// errors. Fluent's styles reach it as they reach a TextBox, by the names of the parts.
 /// </summary>
 public class ColoredTextBox : TextBox
 {
@@ -34,21 +37,33 @@ public class ColoredTextBox : TextBox
     public ColoredTextBox()
     {
         Template = template;
+        Completion = new CompletionList(this);
     }
 
-    Func<string, IReadOnlyList<ClassifiedSpan>> classifier;
+    IExpressionHost host;
 
-    /// <summary>What the pieces of a text are; null draws it in one color</summary>
-    public Func<string, IReadOnlyList<ClassifiedSpan>> Classifier
+    /// <summary>Who the box types for: the drawing whose names it says, the figure whose expression it is, the kind of text; null for plain text</summary>
+    public IExpressionHost Host
     {
-        get => classifier;
+        get => host;
         set
         {
-            classifier = value;
+            host = value;
             classifiedText = null;
             presenter?.Recolor();
         }
     }
+
+    /// <summary>The drawing whose names the text says: the host's</summary>
+    public virtual Drawing Drawing => Host?.Drawing;
+
+    /// <summary>The figure whose expression is typed, which nothing it depends on may name; null for a tool's panel</summary>
+    public IFigure Owner => Host?.Owner;
+
+    public InsertContext Context => Host?.Context ?? InsertContext.Expression;
+
+    /// <summary>The list of what can go at the caret (docs/completion-plan.md)</summary>
+    public CompletionList Completion { get; }
 
     string classifiedText;
     IReadOnlyList<ClassifiedSpan> pieces = [];
@@ -87,15 +102,29 @@ public class ColoredTextBox : TextBox
         }
     }
 
+    /// <summary>
+    /// The pieces of the text as the compiler reads it in this box: an expression, a function
+    /// in x, or the [...] parts of a label's text. Only a text that compiles has pieces
+    /// (<see cref="ExpressionClassifier"/>); none without a drawing.
+    /// </summary>
     IReadOnlyList<ClassifiedSpan> Classify(string text)
     {
-        return Classifier?.Invoke(text) ?? [];
+        var drawing = Drawing;
+        var owner = Owner;
+        Predicate<IFigure> isFigureAllowed = figure => owner == null || !figure.DependsOn(owner);
+        return Context switch
+        {
+            InsertContext.Text => ExpressionClassifier.ClassifyLabelText(drawing, text, isFigureAllowed),
+            InsertContext.Function => ExpressionClassifier.ClassifyFunction(drawing, text, isFigureAllowed),
+            _ => ExpressionClassifier.ClassifyExpression(drawing, text, isFigureAllowed)
+        };
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
         presenter = e.NameScope.Find<ColoredTextPresenter>("PART_TextPresenter");
+        Completion.Attach(e.NameScope.Find<Popup>("PART_CompletionPopup"), presenter);
     }
 
     static readonly IControlTemplate template = new FuncControlTemplate<TextBox>((box, scope) =>
@@ -190,7 +219,8 @@ public class ColoredTextBox : TextBox
                             right
                         }
                     }
-                }
+                },
+                new Popup() { Name = "PART_CompletionPopup" }.RegisterInNameScope(scope)
             }
         };
     });

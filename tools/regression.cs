@@ -126,6 +126,7 @@ public class Program
             ("The X row of two points and the function row of two graphs: checked for each, then set", SharedExpressionRows),
             ("No Free point while a graph reads its Parameter; a graph that stops compiling is drawn no more", ReleaseKeepsFunctionsWhole),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
+            ("Completion: where a word is, what can go there, what a word selects", Completion),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
             ("LGF leaves out a figure built on too few figures", TooFewDependenciesLoad),
@@ -3605,6 +3606,116 @@ public class Program
             editor.TextBox.RaiseEvent(new KeyEventArgs { RoutedEvent = InputElement.KeyDownEvent, Key = Key.Enter });
             return string.IsNullOrEmpty(editor.ErrorText) ? null : editor.ErrorText;
         }
+    }
+
+    /// <summary>
+    /// The completion list's model (docs/completion-plan.md): where the word at the caret is
+    /// and which list it gets, what can go there, what the word typed so far selects and how
+    /// firmly; and every function the list offers is one the language has.
+    /// </summary>
+    static void Completion()
+    {
+        foreach (var function in FunctionCatalog.All)
+        {
+            Require(ExpressionReflection.ResolveMethod(function.Name, function.ArgumentCount) != null, "The list offers " + function.Signature + ", which the language doesn't have.");
+        }
+
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Figures>
+                <FreePoint Name="A" X="0" Y="0" />
+                <FreePoint Name="C" X="3" Y="4" />
+                <FreePoint Name="D" X="3" Y="0" />
+                <FreePoint Name="E" X="0" Y="-2" />
+                <Polygon Name="ACDE">
+                  <Dependency Name="A" />
+                  <Dependency Name="C" />
+                  <Dependency Name="D" />
+                  <Dependency Name="E" />
+                </Polygon>
+                <Segment Name="DE">
+                  <Dependency Name="D" />
+                  <Dependency Name="E" />
+                </Segment>
+                <Circle Name="c">
+                  <Dependency Name="A" />
+                  <Dependency Name="C" />
+                </Circle>
+                <Slider Name="a" X="-3" Y="2" Value="2" Maximum="5" />
+                <PointByCoordinates Name="P" X="A.X + 1" Y="A.Y">
+                  <Dependency Name="A" />
+                </PointByCoordinates>
+                <MidPoint Name="Q">
+                  <Dependency Name="P" />
+                  <Dependency Name="C" />
+                </MidPoint>
+              </Figures>
+            </Drawing>
+            """);
+
+        // where the word is
+        var word = ExpressionCompletion.Locate("A.X + si", caret: 8, InsertContext.Expression);
+        Require(word is { Start: 6, End: 8, Word: "si", MemberOf: null }, "A name after an operator");
+        word = ExpressionCompletion.Locate("sinus", caret: 2, InsertContext.Expression);
+        Require(word is { Start: 0, End: 5 }, "A word is replaced whole, also past the caret");
+        word = ExpressionCompletion.Locate("c.", caret: 2, InsertContext.Expression);
+        Require(word is { Word: "" } && word.MemberOf?.Text == "c", "The quantities after a dot");
+        Require(ExpressionCompletion.Locate("x = [A.", caret: 7, InsertContext.Text)?.MemberOf?.Text == "A", "Inside a label's [...] part");
+        foreach (var (text, context) in new[]
+        {
+            ("x = A.", InsertContext.Text),
+            ("[A.X] and A", InsertContext.Text),
+            ("`my po", InsertContext.Expression),
+            ("2.5", InsertContext.Expression),
+            ("2.", InsertContext.Expression)
+        })
+        {
+            Require(ExpressionCompletion.Locate(text, text.Length, context) == null, "A list at the end of " + text);
+        }
+
+        // what can go there: nothing built on the box's own figure (P, and Q on it)
+        var point = Find(drawing, "P");
+        var names = ExpressionCompletion.Items(ExpressionCompletion.Locate("", caret: 0, InsertContext.Expression), drawing, point, InsertContext.Expression)
+            .Select(item => item.Text)
+            .ToList();
+        foreach (var name in new[] { "A", "a", "c", "ACDE", "sin", "angle", "pi", "e" })
+        {
+            Require(names.Contains(name), "The names lack " + name);
+        }
+
+        foreach (var name in new[] { "P", "Q", "x", "sgn", "BigMul" })
+        {
+            Require(!names.Contains(name), "The names offer " + name);
+        }
+
+        var inFunction = ExpressionCompletion.Items(ExpressionCompletion.Locate("", caret: 0, InsertContext.Function), drawing, owner: null, InsertContext.Function);
+        Require(inFunction.Any(item => item.Text == "x"), "A function's names lack x");
+        var members = ExpressionCompletion.Items(ExpressionCompletion.Locate("c.", caret: 2, InsertContext.Expression), drawing, owner: null, InsertContext.Expression)
+            .Select(item => item.Text)
+            .ToList();
+        Require(members.SequenceEqual(new[] { "Area", "Circumference", "Diameter", "Radius" }), "The quantities of circle c: " + string.Join(", ", members));
+        members = ExpressionCompletion.Items(ExpressionCompletion.Locate("DE.", caret: 3, InsertContext.Expression), drawing, owner: null, InsertContext.Expression)
+            .Select(item => item.Text)
+            .ToList();
+        Require(members.SequenceEqual(new[] { "Direction", "Length" }), "The quantities of segment DE: " + string.Join(", ", members));
+        Require(ExpressionCompletion.Items(ExpressionCompletion.Locate("a.", caret: 2, InsertContext.Expression), drawing, owner: null, InsertContext.Expression).Count == 0, "A slider has quantities");
+
+        // what the word typed so far selects
+        CompletionItem Selected(string text, out bool hard)
+        {
+            var spot = ExpressionCompletion.Locate(text, text.Length, InsertContext.Expression);
+            var filter = ExpressionCompletion.Filter(ExpressionCompletion.Items(spot, drawing, owner: null, InsertContext.Expression), spot, drawing, owner: null);
+            hard = filter.Hard;
+            return filter.Selected < 0 ? null : filter.Shown[filter.Selected];
+        }
+
+        Require(Selected("a", out bool hard)?.Text == "a" && hard, "a selects the slider, firmly");
+        Require(Selected("A", out _)?.Text == "A", "A selects the point");
+        Require(Selected("AC", out _)?.Text == "AC", "AC (two points) is taken for the polygon ACDE");
+        Require(Selected("sq", out _)?.Text == "sqrt", "sq selects sqrt");
+        Require(Selected("", out hard) != null && !hard, "Nothing typed: the first row, outlined");
+        Require(Selected("zzz", out _) == null, "A word nothing matches selects a row");
+        Require(Selected("c.Rad", out _)?.InsertText == "Radius", "c.Rad selects Radius");
     }
 
     /// <summary>
