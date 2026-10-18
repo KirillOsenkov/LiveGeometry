@@ -1412,8 +1412,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   a string, `ExpressionStringEditor`; `"LabelText"` on a label's text) - is an
   `ExpressionTextBox` (the one class for them all, where completion, highlighting or a
   structured editor would go), and while it has the keyboard it is
-  `Drawing.InsertTarget`: a click on a figure puts a reference to it in at the caret
-  instead of going to the tool (`Behavior.TryInsertReference`, before `MouseDown`; the
+  `Drawing.InsertTarget` (the box keeps the drawing it registered with: taken out of the
+  tree, with a tool's panel, it can't find it through its ancestors, and stayed the target,
+  so the next tool never got a click on a figure - until 2026-10-18): a click on a figure
+  puts a reference to it in at the caret instead of going to the tool (`Behavior.TryInsertReference`, before `MouseDown`; the
   press is handled, so the canvas doesn't take the keyboard, `MainView`, and a drag of the
   paper keeps it), and so does a click on a row of the Figure List, the way to a hidden
   figure (`FigureExplorer.Row_PointerPressed`); the hover shows the halo and the hand,

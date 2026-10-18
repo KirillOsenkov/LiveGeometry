@@ -48,6 +48,12 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
 
     Border pencil;
 
+    // The drawing the box made itself the target of. Taken out of the tree (a tool's panel
+    // going away with the tool) it can't find the drawing through its ancestors any more,
+    // and stayed the target: every click on a figure went into a box no longer on screen,
+    // not to the tool (the Midpoint tool after the Coordinates tool's panel).
+    Drawing targetOf;
+
     /// <summary>
     /// The box has the keyboard: clicks on figures put references in, and a pencil at the
     /// box's right says so for as long as that holds. In a label's text a [ ] button comes
@@ -55,7 +61,7 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
     /// </summary>
     void BecomeTarget()
     {
-        Drawing?.SetInsertTarget(this);
+        SetTarget(Drawing);
         if (InnerRightContent == null)
         {
             // the pencil: the picking off and on while the keyboard stays in the box
@@ -164,14 +170,31 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
         bool picking = drawing.InsertTarget != this;
         if (picking)
         {
-            drawing.SetInsertTarget(this);
+            SetTarget(drawing);
         }
         else
         {
-            drawing.ClearInsertTarget(this);
+            ClearTarget();
         }
 
         ShowPicking(picking);
+    }
+
+    void SetTarget(Drawing drawing)
+    {
+        if (targetOf != drawing)
+        {
+            ClearTarget();
+        }
+
+        targetOf = drawing;
+        drawing?.SetInsertTarget(this);
+    }
+
+    void ClearTarget()
+    {
+        targetOf?.ClearInsertTarget(this);
+        targetOf = null;
     }
 
     /// <summary>The pencil as ink while clicks on figures come here, faint while they don't</summary>
@@ -192,7 +215,7 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
     {
         if (!IsFocused)
         {
-            Drawing?.ClearInsertTarget(this);
+            ClearTarget();
             InnerRightContent = null;
             pencil = null;
         }
@@ -219,7 +242,7 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
     // a panel rebuilt around the box takes it out of the tree without a LostFocus
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        Drawing?.ClearInsertTarget(this);
+        ClearTarget();
         Watch(null);
         base.OnDetachedFromVisualTree(e);
     }
