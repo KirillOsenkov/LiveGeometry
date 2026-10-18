@@ -38,6 +38,11 @@ public partial class Dragger : Behavior
 
         // Where the point dragged with Alt goes if dropped now; null while it is free
         public PointPlacement Snap;
+
+        // A text dragged with Alt: the figure it goes onto if dropped now, or whether an
+        // attached one lets go of its figure (over the paper)
+        public IFigure AttachTarget;
+        public bool DetachesText;
     }
 
     // the presses held right now, in the order they came
@@ -495,6 +500,17 @@ public partial class Dragger : Behavior
                     showsModifierHint = true;
                 }
             }
+
+            // a text: Alt attaches it to a figure, or lets an attached one go
+            if (found is LabelBase && !moving.IsEmpty() && !drag.DraggingSelection && e.Pointer.Type != PointerType.Touch)
+            {
+                var hint = TextHint(found);
+                if (hint != null)
+                {
+                    Drawing.RaiseStatusNotification(hint);
+                    showsModifierHint = true;
+                }
+            }
         }
         if (!moving.IsEmpty())
         {
@@ -550,6 +566,7 @@ public partial class Dragger : Behavior
                 }
             }
 
+            AimText(drag, Coordinates(e, false, false, false));
             Actions.Move(Drawing, moving, offset, drag.ToRecalculate);
         }
 
@@ -597,6 +614,18 @@ public partial class Dragger : Behavior
             else if (drag.Snap?.ExistingPoint != null && IsAltPressed() && found is BezierPath.BezierPathHandle handle && dragTransaction != null)
             {
                 handle.Owner.UsePointAsHandle(handle, drag.Snap.ExistingPoint);
+            }
+            else if (IsAltPressed() && found is LabelBase text && dragTransaction != null)
+            {
+                // (in the drag's step: one undo puts the text back as it was, where it was)
+                if (drag.AttachTarget != null)
+                {
+                    TextAttachment.Attach(text, drag.AttachTarget);
+                }
+                else if (drag.DetachesText && text is AttachedLabel attached)
+                {
+                    TextAttachment.Detach(attached);
+                }
             }
         }
         catch
@@ -744,6 +773,8 @@ public partial class Dragger : Behavior
     void EndDrag(Drag drag)
     {
         drag.Snap = null;
+        drag.AttachTarget = null;
+        drag.DetachesText = false;
 
         // (a drag whose pointer is gone without a release holds nothing: it must not
         // keep the step open)
@@ -903,6 +934,81 @@ public partial class Dragger : Behavior
             : null;
     }
 
+    /// <summary>What holding Alt does to a dragged text, for the status; null for a text it does nothing to (a caption pinned to the screen, one with [...] parts)</summary>
+    static string TextHint(IFigure text)
+    {
+        if (!TextAttachment.CanAttach(text))
+        {
+            return null;
+        }
+
+        return text is AttachedLabel
+            ? "Hold " + KeyNames.Alt + " to attach the text to another figure, or to let go of this one over the paper."
+            : "Hold " + KeyNames.Alt + " to attach the text to a figure.";
+    }
+
+    /// <summary>
+    /// With Alt held, a dragged text goes onto the figure under the cursor
+    /// (<see cref="TextAttachment"/>), or an attached one lets go of its figure over the
+    /// paper: the halo shows the figure, the status says what a drop does. Nothing changes
+    /// before the drop, as for a point dragged with Alt.
+    /// </summary>
+    void AimText(Drag drag, Point cursor)
+    {
+        var target = drag.AttachTarget;
+        bool detaches = drag.DetachesText;
+        drag.AttachTarget = null;
+        drag.DetachesText = false;
+        if (drag.DraggingSelection
+            || dragTransaction == null
+            || drag.Moving.Count != 1
+            || drag.Found is not LabelBase text)
+        {
+            return;
+        }
+
+        // (a free text with [...] parts says why Alt does nothing to it, while Alt is held)
+        if (!TextAttachment.CanAttach(text))
+        {
+            if (IsAltPressed() && TextAttachment.WhyNot(text) is string why)
+            {
+                showsModifierHint = true;
+                Drawing.RaiseStatusNotification(why);
+            }
+
+            return;
+        }
+
+        if (IsAltPressed())
+        {
+            var under = Drawing.Figures
+                .HitTestAll(cursor, figure => figure != text && figure.Visible && figure.IsHitTestVisible)
+                .Select(figure => Drawing.Figures.FindTopLevel(figure))
+                .FirstOrDefault(TextAttachment.CanAttachTo);
+            var own = (text as AttachedLabel)?.Figure;
+            if (under != null && under != own)
+            {
+                drag.AttachTarget = under;
+            }
+            else if (under == null && own != null)
+            {
+                drag.DetachesText = true;
+            }
+        }
+
+        if (drag.AttachTarget == target && drag.DetachesText == detaches)
+        {
+            return;
+        }
+
+        showsModifierHint = true;
+        Drawing.RaiseStatusNotification(drag.AttachTarget != null
+            ? "Release to attach the text to " + ConstructionText.Of(drag.AttachTarget) + "."
+            : drag.DetachesText
+                ? "Release to let go of " + ConstructionText.Of(((AttachedLabel)text).Figure) + "."
+                : TextHint(text));
+    }
+
     /// <summary>The halo and the faint point of the snap, while dragging with Alt</summary>
     protected override PointPlacement GetClickPreview(MouseEventArgs e)
     {
@@ -918,7 +1024,7 @@ public partial class Dragger : Behavior
     protected override IFigure GetFigureToPick(MouseEventArgs e)
     {
         var drag = FindDrag(e.Pointer);
-        var picked = drag?.Snap?.ExistingPoint ?? (Choice.Index > 0 ? Choice.Current as IFigure : null);
+        var picked = drag?.Snap?.ExistingPoint ?? drag?.AttachTarget ?? (Choice.Index > 0 ? Choice.Current as IFigure : null);
         if (picked != null || drag != null)
         {
             return picked;
@@ -1004,6 +1110,12 @@ public partial class Dragger : Behavior
             if (figure is ShowHideControl box)
             {
                 Add("Edit figures…", box.EditFigures);
+                menu.Items.Add(new Avalonia.Controls.Separator());
+            }
+
+            if (figure is AttachedLabel attached)
+            {
+                Add("Detach", attached.Detach);
                 menu.Items.Add(new Avalonia.Controls.Separator());
             }
 

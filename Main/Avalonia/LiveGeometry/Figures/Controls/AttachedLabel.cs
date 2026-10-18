@@ -60,6 +60,23 @@ public class AttachedLabel : LabelWithOffset
         return figure is IPoint ? figure.Dependents.Concat(figure.Dependencies) : new[] { figure };
     }
 
+    /// <summary>Puts the text with its top-left corner here, logical: from now on its place</summary>
+    public void PlaceAt(Point topLeft)
+    {
+        placed = true;
+        Offset = ToPhysical(topLeft).Minus(ToPhysical(Anchor));
+    }
+
+    /// <summary>Lets go of the figure: a free text where this one is drawn (<see cref="TextAttachment.Detach"/>)</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Detach")]
+    [PropertyGridIcon(PropertyGridIcon.Unlock)]
+    public void Detach()
+    {
+        var free = TextAttachment.Detach(this);
+        free.Drawing.RaiseDisplayProperties(free);
+    }
+
     /// <summary>A text attached to a figure is dragged by itself: that changes its offset from the anchor, not the figure</summary>
     public override bool AllowMove()
     {

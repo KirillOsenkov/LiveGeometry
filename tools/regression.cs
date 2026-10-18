@@ -122,6 +122,7 @@ public class Program
             ("Fix length, Free length, Free direction and Convert to path anchor keep a point whose number an expression reads", PointKindKeepsExpressionsWhole),
             ("Fix length and Fix direction keep the number typed", FixKeepsTypedValues),
             ("Names keep clear; a text attached to a figure moves with it", NamesKeepClear),
+            ("Alt+drag attaches a text to a figure or lets it go; Detach", TextAttachmentDrags),
             ("The X row of two points and the function row of two graphs: checked for each, then set", SharedExpressionRows),
             ("No Free point while a graph reads its Parameter; a graph that stops compiling is drawn no more", ReleaseKeepsFunctionsWhole),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
@@ -3890,6 +3891,91 @@ public class Program
         area.Offset = new Point(7, 9);
         var areaRead = ReadLgf(shapes.SaveAsText()).Figures.OfType<AreaMeasurement>().Single();
         Require(areaRead.Offset == new Point(7, 9), $"The area number read back is at {areaRead.Offset}.");
+    }
+
+    /// <summary>
+    /// A free text dragged with Alt onto a segment is attached to it where it is dropped, and
+    /// one undo puts the free text back where it was; Detach lets go where the text is, and
+    /// undo attaches it again; an attached text dragged with Alt onto the paper lets go too.
+    /// Without Alt a drag only moves a text, and a text with [...] parts stays free.
+    /// </summary>
+    static void TextAttachmentDrags()
+    {
+        var drawing = ReadLgf("""
+            <Drawing Version="1">
+              <Viewport Left="-5" Top="5" Right="5" Bottom="-5" />
+              <Figures>
+                <FreePoint Name="A" X="-4" Y="-2" />
+                <FreePoint Name="B" X="4" Y="-2" />
+                <Segment Name="AB">
+                  <Dependency Name="A" />
+                  <Dependency Name="B" />
+                </Segment>
+                <Label Name="Label1" Text="note" X="-1" Y="3" />
+                <Label Name="Label2" Text="[AB]" X="2" Y="3" />
+              </Figures>
+            </Drawing>
+            """);
+        using var window = new TestWindow(drawing.Canvas);
+        drawing.Behavior = new Dragger();
+        var coordinates = drawing.CoordinateSystem;
+        Point Middle(LabelBase label) => new Rect(coordinates.ToPhysical(label.Coordinates), label.MeasureSize()).Center;
+        var note = (LiveGeometry.Label)Find(drawing, "Label1");
+        var segment = Find(drawing, "AB");
+        var onSegment = coordinates.ToPhysical(new Point(1, -2));
+        var from = Middle(note);
+        var topLeft = coordinates.ToPhysical(note.Coordinates);
+
+        // without Alt: moved, still free
+        Drag(drawing, from, onSegment);
+        Require(drawing.Figures.Contains(note) && !drawing.Figures.OfType<AttachedLabel>().Any(), "A drag without Alt attached the text.");
+        drawing.ActionManager.Undo();
+
+        // with Alt: attached where dropped, one undo step
+        Drag(drawing, from, onSegment, KeyModifiers.Alt);
+        var attached = drawing.Figures.OfType<AttachedLabel>().SingleOrDefault();
+        Require(
+            attached != null && attached.Text == "note" && attached.Figure == segment && !drawing.Figures.Contains(note),
+            "Alt+drag onto a segment didn't attach the text to it: " + string.Join(", ", drawing.Figures.Select(f => f.GetType().Name)));
+        attached.UpdateVisual();
+        var dropped = topLeft + (onSegment - from);
+        Require(coordinates.ToPhysical(attached.Coordinates).Distance(dropped) < 1, $"The attached text is at {coordinates.ToPhysical(attached.Coordinates)}, dropped at {dropped}.");
+        drawing.ActionManager.Undo();
+        Require(
+            drawing.Figures.Contains(note) && !drawing.Figures.OfType<AttachedLabel>().Any() && coordinates.ToPhysical(note.Coordinates).Distance(topLeft) < 0.5,
+            "One undo didn't put the free text back where it was.");
+        drawing.ActionManager.Redo();
+        attached = drawing.Figures.OfType<AttachedLabel>().Single();
+
+        // Detach: a free text where the attached one was drawn; undo attaches it again
+        attached.UpdateVisual();
+        var place = coordinates.ToPhysical(attached.Coordinates);
+        attached.Detach();
+        var free = drawing.Figures.OfType<LiveGeometry.Label>().SingleOrDefault(label => label.Text == "note");
+        Require(
+            !drawing.Figures.OfType<AttachedLabel>().Any() && free != null && coordinates.ToPhysical(free.Coordinates).Distance(place) < 0.5,
+            "Detach didn't leave a free text where the attached one was.");
+        drawing.ActionManager.Undo();
+        attached = drawing.Figures.OfType<AttachedLabel>().SingleOrDefault();
+        Require(attached != null && attached.Figure == segment, "Undo of Detach didn't attach the text again.");
+
+        // an attached text dragged with Alt onto the paper lets go (laid out first: put back
+        // by undo, it has no size to be hit at until the next layout, which the app has run
+        // long before a press)
+        attached.UpdateVisual();
+        Dispatcher.UIThread.RunJobs();
+        var pressed = Middle(attached);
+        var hit = drawing.Figures.HitTest(coordinates.ToLogical(pressed));
+        Drag(drawing, pressed, coordinates.ToPhysical(new Point(-2, 2)), KeyModifiers.Alt);
+        Require(
+            !drawing.Figures.OfType<AttachedLabel>().Any() && drawing.Figures.OfType<LiveGeometry.Label>().Any(label => label.Text == "note"),
+            $"Alt+drag of an attached text onto the paper didn't let go of the segment: the press hit {hit?.GetType().Name} {hit?.Name}, the text is now at {coordinates.ToPhysical(attached.Coordinates)}, A at {((IPoint)Find(drawing, "A")).Coordinates}.");
+
+        // a text with [...] parts stays free
+        var formula = (LiveGeometry.Label)Find(drawing, "Label2");
+        Drag(drawing, Middle(formula), onSegment, KeyModifiers.Alt);
+        Require(drawing.Figures.Contains(formula) && !drawing.Figures.OfType<AttachedLabel>().Any(), "A text with [...] parts was attached.");
+        drawing.Figures.CheckConsistency();
     }
 
     /// <summary>

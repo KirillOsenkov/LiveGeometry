@@ -51,7 +51,7 @@ public class LabelCreator : Behavior
         return Drawing.Figures
             .HitTestAll(coordinates, figure => figure.Visible && figure.IsHitTestVisible)
             .Select(figure => Drawing.Figures.FindTopLevel(figure))
-            .Where(figure => figure is IPoint or ILine or ICircle or PolygonBase)
+            .Where(TextAttachment.CanAttachTo)
             .Distinct()
             .ToList();
     }

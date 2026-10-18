@@ -98,7 +98,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 (letter in parentheses):
 
 - **Selection**: Drag (Q) - drags points and figures (with Alt a point snaps onto figures and
-  lets go of them, see "Snapping and releasing points"; while a point is dragged the
+  lets go of them, see "Snapping and releasing points", and a text goes onto a figure or
+  off it, see "Texts attached to figures"; while a point is dragged the
   status says what Shift and Alt do to it, `Dragger.ModifierHint`); a press on a figure
   selected with others drags them all as one piece (`Dragger.FindSelectionRoots`: the roots
   of the whole selection, each once, by the same offset; no Alt snapping, no point jumping
@@ -1917,7 +1918,14 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   a double click (`InPlaceTextEditor`). File: `<AttachedLabel Text OffsetX OffsetY>` with
   its figure as the dependency; a file written by hand may leave the offsets out, and the
   text goes where a new one would once the drawing is read. The player has the twin
-  (`attachedLabel.js`, `figureAnchor.js`).
+  (`attachedLabel.js`, `figureAnchor.js`). Detach (grid, context menu) makes it a free
+  text where it is drawn, and a text dragged with Alt goes onto the figure under the
+  cursor at the drop, or, attached, lets go of its figure over the paper, as a point
+  snaps and is released (`Dragger.AimText`: the halo shows the figure, the status says
+  what the drop does; nothing changes before it). Both are a swap of one label for the
+  other in place, style, Visible and Locked along (`TextAttachment`), inside the drag's
+  undo step. A free text with [...] parts stays free (with Alt the status says why: it
+  would show them as typed), and so does a pinned caption.
 - **Names keep clear** (`Figures/Controls/NameLayout.cs`, 2026-10-17): a point's name, a
   figure's name and an attached text are drawn where their offset puts them unless
   something covers that place - another name, measurement or angle's number overlapping it
