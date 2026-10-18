@@ -27,7 +27,14 @@ public class AttachedLabel : LabelWithOffset
     /// <summary>"on segment AB": "Text “r” on segment AB"</summary>
     public override string Construction => Figure != null ? "on " + ConstructionText.Of(Figure) : null;
 
-    /// <summary>Plain text, not the free label's box that puts references to figures in [...]: they would not be worked out here</summary>
+    /// <summary>
+    /// Plain text, not the free label's box that puts references to figures in [...]: they
+    /// would not be worked out here. A limitation of the dependency list, not of the idea:
+    /// working out [...] parts (<see cref="LabelBase.ProcessText"/>) clears the label's
+    /// dependencies and fills them with the figures the parts name, and this text's one
+    /// dependency is the figure it hangs on. To allow them, that figure would have to stay
+    /// first and the parts' figures come after it.
+    /// </summary>
     [PropertyGridVisible]
     [PropertyGridMultiline]
     [PropertyGridDisallowMultiEdit]

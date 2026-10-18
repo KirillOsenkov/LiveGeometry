@@ -284,7 +284,19 @@ public class StringEditor : LabeledValueEditor, IValueEditor
     {
         // one line unless the property asks for more: a line break in an expression (a
         // function, a coordinate) only breaks it, and Enter belongs to the panel's button
-        TextBox.AcceptsReturn = Value.GetAttribute<PropertyGridMultilineAttribute>() != null;
+        bool multiline = Value.GetAttribute<PropertyGridMultilineAttribute>() != null;
+        TextBox.AcceptsReturn = multiline;
+
+        // a label's text is what its page is for: written larger than the other rows
+        if (multiline)
+        {
+            TextBox.FontSize = PropertyGridTheme.LabelTextFontSize;
+        }
+        else
+        {
+            TextBox.ClearValue(TextBox.FontSizeProperty);
+        }
+
         Show((GetValue() ?? "").ToString());
         // grayed, like the other editors: a read-only box looks the same as a live one
         TextBox.IsEnabled = Value.CanSetValue;

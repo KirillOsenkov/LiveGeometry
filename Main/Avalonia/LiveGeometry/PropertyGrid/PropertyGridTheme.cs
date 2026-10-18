@@ -21,6 +21,9 @@ public static class PropertyGridTheme
 {
     public const double FontSize = 12;
 
+    /// <summary>The text of a label in its box (<see cref="PropertyGridMultilineAttribute"/>): the row its page is for</summary>
+    public const double LabelTextFontSize = 16;
+
     /// <summary>
     /// How wide a text box may get before its text wraps; whatever else holds long text (the
     /// error plate under a box, the figure's construction in the header) wraps at it too
