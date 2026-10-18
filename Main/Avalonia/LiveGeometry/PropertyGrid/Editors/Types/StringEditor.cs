@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -157,11 +158,14 @@ public class StringEditor : LabeledValueEditor, IValueEditor
         if (!validation.IsValid && !string.IsNullOrEmpty(validation.Error))
         {
             ErrorText = validation.Error;
+            ShowFix(validation.FixCaption, validation.Fix);
         }
     }
 
     Border errorBox;
     TextBlock errorBlock;
+    Button fixButton;
+    Action fix;
     Border valueBox;
     TextBlock valueBlock;
     CornerRadius? cornersWithoutError;
@@ -227,10 +231,47 @@ public class StringEditor : LabeledValueEditor, IValueEditor
             }
 
             bool show = !string.IsNullOrEmpty(value);
-            errorBlock.Text = show ? value : null;
+            string text = show ? value : null;
+
+            // the same error again leaves its button be: a press on the button takes the
+            // keyboard from the box, whose commit says the error again, and a button
+            // hidden under the pointer then would not be clicked
+            if (text != errorBlock.Text)
+            {
+                ShowFix(null, null);
+            }
+
+            errorBlock.Text = text;
             errorForText = show ? TextBox.Text : null;
             UpdatePlates(!string.IsNullOrEmpty(valueBlock.Text));
         }
+    }
+
+    /// <summary>
+    /// A button on the error's plate that puts the error right (a name another figure has:
+    /// "Swap names with A"), shown with the error and gone with it; a null caption hides it
+    /// </summary>
+    void ShowFix(string caption, Action action)
+    {
+        if (fixButton == null)
+        {
+            return;
+        }
+
+        bool show = caption != null && action != null && !string.IsNullOrEmpty(errorBlock.Text);
+        fix = show ? action : null;
+        fixButton.Content = show ? caption : null;
+        fixButton.IsVisible = show;
+    }
+
+    void FixButton_Click(object sender, RoutedEventArgs e)
+    {
+        var action = fix;
+        ErrorText = null;
+        action?.Invoke();
+
+        // as after Enter: the box keeps the keyboard, the button it was given to has gone
+        TextBox.Focus();
     }
 
     /// <summary>The editor with room for <see cref="ErrorText"/> and <see cref="ValueText"/> under it</summary>
@@ -241,7 +282,14 @@ public class StringEditor : LabeledValueEditor, IValueEditor
             TextWrapping = TextWrapping.Wrap
         };
         errorBlock.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.ErrorText));
-        errorBox = CreatePlate(errorBlock);
+        fixButton = new Button()
+        {
+            Padding = new Thickness(8, 2, 8, 3),
+            Margin = new Thickness(0, 4, 0, 1),
+            IsVisible = false
+        };
+        fixButton.Click += FixButton_Click;
+        errorBox = CreatePlate(new StackPanel() { Children = { errorBlock, fixButton } });
         errorBox.BindTheme(Border.BackgroundProperty, nameof(AppTheme.ErrorBackground));
         errorBox.BindTheme(Border.BorderBrushProperty, nameof(AppTheme.ErrorBorder));
 
@@ -262,7 +310,7 @@ public class StringEditor : LabeledValueEditor, IValueEditor
     }
 
     /// <summary>A plate attached under the text box, hidden until it has something to say</summary>
-    static Border CreatePlate(TextBlock block)
+    static Border CreatePlate(Control content)
     {
         return new Border()
         {
@@ -274,7 +322,7 @@ public class StringEditor : LabeledValueEditor, IValueEditor
             // as wide as a text box may get (PropertyGridTheme), then it wraps
             MaxWidth = PropertyGridTheme.MaxTextWidth,
             IsVisible = false,
-            Child = block
+            Child = content
         };
     }
 

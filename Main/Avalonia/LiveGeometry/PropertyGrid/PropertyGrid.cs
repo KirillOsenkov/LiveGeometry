@@ -694,6 +694,12 @@ public partial class PropertyGrid : StackPanel
                 var titleRow = (DockPanel)headerTitle.Parent;
                 titleRow.Children.Remove(headerTitle);
                 titleRow.Children.Add(headerName);
+                headerName.VerticalAlignment = VerticalAlignment.Top;
+                headerKind.VerticalAlignment = VerticalAlignment.Top;
+                headerToggles.VerticalAlignment = VerticalAlignment.Top;
+                headerName.TextBox.SizeChanged += (s, e) => AlignHeaderLine();
+                headerKind.SizeChanged += (s, e) => AlignHeaderLine();
+                headerToggles.SizeChanged += (s, e) => AlignHeaderLine();
             }
         }
 
@@ -709,6 +715,29 @@ public partial class PropertyGrid : StackPanel
         }
 
         ShowHeader();
+    }
+
+    /// <summary>
+    /// The kind, the name's box and the toggles share a middle line: the box's, not the
+    /// middle of the name's editor, which grows downwards when an error shows under the box
+    /// (centered, the box went up over the kind)
+    /// </summary>
+    void AlignHeaderLine()
+    {
+        if (headerName == null)
+        {
+            return;
+        }
+
+        double kind = headerKind.Bounds.Height;
+        double box = headerName.TextBox.Bounds.Height;
+        double toggles = headerToggles.Bounds.Height;
+        double line = System.Math.Max(box, System.Math.Max(kind, toggles));
+        var margin = headerKind.Margin;
+        headerKind.Margin = new Thickness(margin.Left, (line - kind) / 2, margin.Right, 0);
+        headerName.Margin = new Thickness(0, (line - box) / 2, 0, 0);
+        margin = headerToggles.Margin;
+        headerToggles.Margin = new Thickness(margin.Left, (line - toggles) / 2, margin.Right, 0);
     }
 
     void ShowHeader()

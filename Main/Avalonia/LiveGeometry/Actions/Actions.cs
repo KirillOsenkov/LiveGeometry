@@ -312,6 +312,38 @@ public class Actions
         }
     }
 
+    /// <summary>
+    /// Gives <paramref name="figure"/> the name <paramref name="other"/> has, and that one
+    /// <paramref name="othersName"/>: the figure's own name for a swap, or another free one.
+    /// One undo step of plain renames, each to a name nobody has. The Name setter would push
+    /// the other figure aside by itself, but that rename is not recorded, and undo left the
+    /// other figure under the name it was pushed to.
+    /// </summary>
+    public static void TakeName(IFigure figure, IFigure other, string othersName)
+    {
+        var actionManager = figure.Drawing.ActionManager;
+        string name = other.Name;
+        string ownName = figure.Name;
+
+        // not delayed: each rename sees the names the one before left
+        using (Transaction.Create(actionManager, delayed: false))
+        {
+            if (othersName == ownName)
+            {
+                // through a free name: both names are taken until the figure has its new one
+                string free = other.GenerateFigureName(new List<string>() { name, ownName });
+                SetProperty(actionManager, new PropertyValue(nameof(IFigure.Name), other), free);
+                SetProperty(actionManager, new PropertyValue(nameof(IFigure.Name), figure), name);
+                SetProperty(actionManager, new PropertyValue(nameof(IFigure.Name), other), ownName);
+            }
+            else
+            {
+                SetProperty(actionManager, new PropertyValue(nameof(IFigure.Name), other), othersName);
+                SetProperty(actionManager, new PropertyValue(nameof(IFigure.Name), figure), name);
+            }
+        }
+    }
+
     public static void AddItem<T>(ActionManager actionManager, ICollection<T> list, T item)
     {
         AddItemAction<T> action = new AddItemAction<T>(list.Add, i => list.Remove(i), item);
