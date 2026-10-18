@@ -22,7 +22,9 @@ public class SegmentDecorationEditorFactory : BaseValueEditorFactory<SegmentDeco
 
 public class SegmentDecorationEditor : SelectorValueEditor
 {
-    const double SwatchWidth = 34;
+    // all eight in one row of the list (PropertyGridTheme caps it at 340), three arrows still
+    // with some segment on either side
+    const double SwatchWidth = 28;
     const double SwatchHeight = 18;
 
     protected override Selector CreateSelector()
@@ -55,7 +57,7 @@ public class SegmentDecorationEditor : SelectorValueEditor
             StrokeThickness = 1.5,
             StrokeLineCap = PenLineCap.Round,
             StrokeJoin = PenLineJoin.Round,
-            Margin = new Thickness(4, 8)
+            Margin = new Thickness(3, 8)
         };
         path.BindTheme(AvaloniaShapes.Shape.StrokeProperty, nameof(AppTheme.Ink));
         var result = new Grid() { Tag = decoration };
