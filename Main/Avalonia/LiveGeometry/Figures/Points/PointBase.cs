@@ -239,5 +239,41 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
         }
     }
 
+    /// <summary>
+    /// The point, an anchor of a Bezier path, has both its handles worked out by the path
+    /// (<see cref="BezierPath.SmoothAnchor"/>). Any kind of point: a path's anchor may be a
+    /// midpoint or a crossing as well as a point that can be dragged.
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Smooth automatically")]
+    [PropertyGridIcon(PropertyGridIcon.Arc)]
+    [PropertyGridCondition(nameof(CanSmoothAnchor))]
+    public void SmoothAnchor()
+    {
+        BezierPath.SmoothAnchor(this);
+        Drawing?.RaiseDisplayProperties(this);
+    }
+
+    /// <summary>The point, an anchor of a Bezier path, has both its handles on it: the path turns there (<see cref="BezierPath.SharpenAnchor"/>)</summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Sharp corner")]
+    [PropertyGridIcon(PropertyGridIcon.Angle)]
+    [PropertyGridCondition(nameof(CanSharpenAnchor))]
+    public void SharpenAnchor()
+    {
+        BezierPath.SharpenAnchor(this);
+        Drawing?.RaiseDisplayProperties(this);
+    }
+
+    public bool CanSmoothAnchor()
+    {
+        return BezierPath.CanSmoothAnchor(this);
+    }
+
+    public bool CanSharpenAnchor()
+    {
+        return BezierPath.CanSharpenAnchor(this);
+    }
+
     public PointLabel Label;
 }

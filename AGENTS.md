@@ -1928,8 +1928,9 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   that says a number (`ITiedValues`: the panel right after the tool, a click on a slider;
   not what a point goes on, which starts the next path), the last dependency, typed again
   when that is deleted. A tension that is no number above 0 makes the path not exist.
-  "Smooth automatically" and "Sharp corner" on an anchor (grid of a free point or a point
-  on a figure, context menu of any point), "Smooth all anchors" on the path. Convert to
+  "Smooth automatically" and "Sharp corner" on an anchor (grid and context menu of any
+  point, `PointBase`: an anchor may be a midpoint or a crossing, whose grids had neither
+  until 2026-10-17), "Smooth all anchors" on the path. Convert to
   path anchor between two automatic handles gives an automatic anchor (the curve moves a
   little), else the de Casteljau split. The tool's panel has Smoothing and Tension for the
   next path; the enum editor shows a value's `[PropertyGridName]` ("Catmull-Rom").
