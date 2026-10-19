@@ -29,6 +29,10 @@ public class ClickPreview
     public static IBrush PointHaloBrush = new SolidColorBrush(Color.FromArgb(0x48, 0x3B, 0x8E, 0xEA));
     public static IBrush TickBrush = new SolidColorBrush(Color.FromRgb(0x2F, 0x7B, 0xD6));
 
+    // the vertex a click closes the polygon being drawn on; translucent as the hover's halo,
+    // so the two mix where the hover lies over it
+    public static IBrush StartPointHaloBrush = new SolidColorBrush(Color.FromArgb(0x60, 0x2E, 0xB8, 0x4A));
+
     // an angle's mark picked (its number hovered): the hue of the coincident line, strong
     public static IBrush MarkHighlightBrush = new SolidColorBrush(Color.FromArgb(0xE0, 0x00, 0xBA, 0xD7));
     public static double MarkHighlightWidth = 6;
@@ -450,18 +454,7 @@ public class ClickPreview
         }
         else if (figure is PointBase point)
         {
-            // a disc behind the point; an outline this thin and pale would not be seen
-            var source = point.Shape;
-            var diameter = source.Width + 2 * PointHaloWidth;
-            var center = point.Drawing.CoordinateSystem.ToPhysical(point.Coordinates);
-            halo = new AvaloniaShapes.Ellipse()
-            {
-                Width = diameter,
-                Height = diameter,
-                Fill = PointHaloBrush,
-                ZIndex = source.ZIndex - 1
-            };
-            halo.CenterAt(center);
+            halo = CreatePointHalo(point, PointHaloBrush);
         }
         else if (figure is PolygonBase polygon)
         {
@@ -518,6 +511,27 @@ public class ClickPreview
         }
 
         return halo;
+    }
+
+    /// <summary>A disc behind the point, right under it; an outline this thin and pale would not be seen</summary>
+    public static AvaloniaShapes.Ellipse CreatePointHalo(PointBase point, IBrush brush)
+    {
+        var halo = new AvaloniaShapes.Ellipse()
+        {
+            Fill = brush,
+            ZIndex = point.Shape.ZIndex - 1
+        };
+        PlacePointHalo(halo, point);
+        return halo;
+    }
+
+    /// <summary>The disc of <see cref="CreatePointHalo"/> around the point as it is drawn now</summary>
+    public static void PlacePointHalo(AvaloniaShapes.Ellipse halo, PointBase point)
+    {
+        var diameter = point.Shape.Width + 2 * PointHaloWidth;
+        halo.Width = diameter;
+        halo.Height = diameter;
+        halo.CenterAt(point.Drawing.CoordinateSystem.ToPhysical(point.Coordinates));
     }
 
     static void SetHaloStroke(AvaloniaShapes.Shape halo, AvaloniaShapes.Shape source)

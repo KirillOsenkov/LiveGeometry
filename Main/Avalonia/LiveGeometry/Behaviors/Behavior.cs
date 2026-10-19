@@ -349,7 +349,37 @@ public abstract partial class Behavior : INotifyPropertyChanged
         var target = Drawing?.InsertTarget;
         Choice.Picking = target != null;
         Choice.Offer(target != null ? FindReferenceOptions(e, target) : SafeFindClickOptions(e));
+        hoverStatus = target != null ? null : SafeGetHoverStatus(e);
         ShowChoiceStatus();
+    }
+
+    // what the status says of the place under the cursor where there is no choice to make
+    string hoverStatus;
+
+    /// <summary>
+    /// What a click here does, for the status bar, where it is worth saying and there is no
+    /// choice to make there (a click on a polygon's vertex closes it). Null by default.
+    /// </summary>
+    protected virtual string GetHoverStatus(MouseEventArgs e)
+    {
+        return null;
+    }
+
+    string SafeGetHoverStatus(MouseEventArgs e)
+    {
+        if (errorHappened || mParentCanvas == null || Drawing == null)
+        {
+            return null;
+        }
+
+        try
+        {
+            return GetHoverStatus(e);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
     }
 
     IReadOnlyList<object> FindReferenceOptions(MouseEventArgs e, IExpressionInsertTarget target)
@@ -397,7 +427,7 @@ public abstract partial class Behavior : INotifyPropertyChanged
 
     void ShowChoiceStatus()
     {
-        var text = Choice.StatusText;
+        var text = Choice.StatusText ?? hoverStatus;
         if (text != shownChoiceStatus)
         {
             shownChoiceStatus = text;
@@ -408,6 +438,7 @@ public abstract partial class Behavior : INotifyPropertyChanged
     protected void ForgetChoice()
     {
         Choice.Forget();
+        hoverStatus = null;
         ShowChoiceStatus();
     }
 

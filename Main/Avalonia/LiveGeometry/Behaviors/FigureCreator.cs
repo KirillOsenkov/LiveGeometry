@@ -626,12 +626,22 @@ public abstract partial class FigureCreator : Behavior
     /// </summary>
     protected bool IsTaken(IFigure figure)
     {
-        if (figure == null || !FoundDependencies.Contains(figure))
+        if (figure == null || !FoundDependencies.Contains(figure) || FinishesOn(figure))
         {
             return false;
         }
 
         return !CanReuseDependency || IsDegenerateRepeat(figure, FoundDependencies.Where(found => found != TempPoint).ToList());
+    }
+
+    /// <summary>
+    /// Whether a click on this figure, which the construction has, finishes it (a polygon's
+    /// vertex closes the polygon): the tool's own <see cref="Click"/> takes it then, and the
+    /// hover shows it as a figure the click picks
+    /// </summary>
+    protected virtual bool FinishesOn(IFigure figure)
+    {
+        return false;
     }
 
     /// <summary>For a tool that may take a figure again: whether taking this one, which it has, as the next would make nothing</summary>

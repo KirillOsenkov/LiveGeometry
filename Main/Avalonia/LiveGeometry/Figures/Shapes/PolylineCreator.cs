@@ -14,6 +14,8 @@ public class PolylineCreator : PolygonCreator
         yield return Factory.CreatePolyline(Drawing, FoundDependencies);
     }
 
+    protected override string FinishStatus => "Click this point to finish the polyline.";
+
     public override string Name => "Polyline";
 
     public override string HintText => "Click points to construct a polyline. Double click or click on an existing polyline point to finish.";
