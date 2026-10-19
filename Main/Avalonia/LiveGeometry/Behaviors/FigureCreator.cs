@@ -201,6 +201,7 @@ public abstract partial class FigureCreator : Behavior
         RemoveTempPointIfNecessary();
         RemoveTempResultsIfNecessary();
         RemoveIntermediateFigureIfNecessary();
+        RemoveClosingHalo();
     }
 
     protected virtual void AddFiguresAndRestart()
@@ -605,6 +606,7 @@ public abstract partial class FigureCreator : Behavior
 
     protected void AdvertiseNextDependency()
     {
+        UpdateClosingHalo();
         var nextDependency = GetExpectedDependencyType();
         this.ConstructionComplete = false;
         Drawing.RaiseConstructionStepComplete(new Drawing.ConstructionStepCompleteEventArgs()
@@ -637,12 +639,86 @@ public abstract partial class FigureCreator : Behavior
     /// <summary>
     /// Whether a click on this figure, which the construction has, finishes it (a polygon's
     /// vertex closes the polygon): the tool's own <see cref="Click"/> takes it then, and the
-    /// hover shows it as a figure the click picks
+    /// hover shows it as a figure the click picks. The <see cref="ClosingPoint"/> by default.
     /// </summary>
     protected virtual bool FinishesOn(IFigure figure)
     {
-        return false;
+        return figure != null && figure == ClosingPoint;
     }
+
+    /// <summary>
+    /// The point a click closes the figure on, while it does: the first vertex of a polygon
+    /// or of a Bezier path, once there are enough. Null by default.
+    /// </summary>
+    protected virtual PointBase ClosingPoint => null;
+
+    /// <summary>What the status says over a point a click finishes the figure on (<see cref="FinishesOn"/>)</summary>
+    protected virtual string FinishStatus => null;
+
+    protected override string GetHoverStatus(MouseEventArgs e)
+    {
+        if (FinishStatus == null)
+        {
+            return null;
+        }
+
+        var point = LookForExpectedDependencyUnderCursor(Coordinates(e, false, false, false));
+        return FinishesOn(point) ? FinishStatus : null;
+    }
+
+    #region The closing point, marked
+
+    // While a click on it closes the figure, the closing point has a green halo: where to
+    // come back to. Under the hover's halo, which is translucent as it is, so the two mix
+    // where the cursor is over it.
+    Avalonia.Controls.Shapes.Ellipse closingHalo;
+    PointBase closingHaloPoint;
+    Avalonia.Controls.Canvas closingHaloCanvas;
+
+    void UpdateClosingHalo()
+    {
+        var point = ClosingPoint;
+        if (point == closingHaloPoint)
+        {
+            return;
+        }
+
+        RemoveClosingHalo();
+        if (point?.Shape == null || Drawing?.Canvas == null)
+        {
+            return;
+        }
+
+        closingHaloPoint = point;
+        closingHaloCanvas = Drawing.Canvas;
+        closingHalo = ClickPreview.CreatePointHalo(point, ClickPreview.ClosingPointHaloBrush);
+        closingHalo.IsHitTestVisible = false;
+        // under the hover's halo
+        closingHalo.ZIndex--;
+        closingHaloCanvas.Children.Add(closingHalo);
+        point.Shape.PropertyChanged += ClosingPointShape_PropertyChanged;
+    }
+
+    void RemoveClosingHalo()
+    {
+        if (closingHaloPoint != null)
+        {
+            closingHaloPoint.Shape.PropertyChanged -= ClosingPointShape_PropertyChanged;
+            closingHaloCanvas.Children.Remove(closingHalo);
+        }
+
+        closingHaloPoint = null;
+        closingHalo = null;
+        closingHaloCanvas = null;
+    }
+
+    // the point is placed anew when the view moves or zooms, and so is its halo
+    void ClosingPointShape_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        ClickPreview.PlacePointHalo(closingHalo, closingHaloPoint);
+    }
+
+    #endregion
 
     /// <summary>For a tool that may take a figure again: whether taking this one, which it has, as the next would make nothing</summary>
     /// <param name="found">What the construction has so far, without the point following the cursor</param>

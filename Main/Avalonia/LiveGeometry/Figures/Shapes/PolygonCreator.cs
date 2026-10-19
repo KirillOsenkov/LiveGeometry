@@ -55,80 +55,9 @@ public class PolygonCreator : ShapeCreator
         return CanClose && figure is IPoint && figure != TempPoint && FoundDependencies.Contains(figure);
     }
 
-    protected override string GetHoverStatus(MouseEventArgs e)
-    {
-        var point = LookForExpectedDependencyUnderCursor(Coordinates(e, false, false, false));
-        return FinishesOn(point) ? FinishStatus : null;
-    }
+    protected override PointBase ClosingPoint => CanClose ? FoundDependencies[0] as PointBase : null;
 
-    /// <summary>What the status says over a vertex a click finishes the figure on</summary>
-    protected virtual string FinishStatus => "Click this point to close the polygon.";
-
-    protected override void AddDependency(Point coordinates)
-    {
-        base.AddDependency(coordinates);
-        UpdateStartHalo();
-    }
-
-    public override void Stopping()
-    {
-        base.Stopping();
-        RemoveStartHalo();
-    }
-
-    #region The first vertex, marked
-
-    // Once a click on the first vertex closes the polygon, the vertex has a green halo for
-    // as long as the polygon is drawn: where to come back to. Under the hover's halo, which
-    // is translucent as it is, so the two mix where the cursor is over it.
-    Avalonia.Controls.Shapes.Ellipse startHalo;
-    PointBase startPoint;
-    Avalonia.Controls.Canvas startHaloCanvas;
-
-    void UpdateStartHalo()
-    {
-        var first = CanClose ? FoundDependencies[0] as PointBase : null;
-        if (first == startPoint)
-        {
-            return;
-        }
-
-        RemoveStartHalo();
-        if (first?.Shape == null || Drawing?.Canvas == null)
-        {
-            return;
-        }
-
-        startPoint = first;
-        startHaloCanvas = Drawing.Canvas;
-        startHalo = ClickPreview.CreatePointHalo(first, ClickPreview.StartPointHaloBrush);
-        startHalo.IsHitTestVisible = false;
-        // under the hover's halo
-        startHalo.ZIndex--;
-        startHaloCanvas.Children.Add(startHalo);
-        first.Shape.PropertyChanged += StartPointShape_PropertyChanged;
-    }
-
-    void RemoveStartHalo()
-    {
-        if (startPoint != null)
-        {
-            startPoint.Shape.PropertyChanged -= StartPointShape_PropertyChanged;
-            startHaloCanvas.Children.Remove(startHalo);
-        }
-
-        startPoint = null;
-        startHalo = null;
-        startHaloCanvas = null;
-    }
-
-    // the point is placed anew when the view moves or zooms, and so is its halo
-    void StartPointShape_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
-    {
-        ClickPreview.PlacePointHalo(startHalo, startPoint);
-    }
-
-    #endregion
+    protected override string FinishStatus => "Click this point to close the polygon.";
 
     /// <summary>
     /// Like in the original DG, a right-click closes the polygon once it has enough

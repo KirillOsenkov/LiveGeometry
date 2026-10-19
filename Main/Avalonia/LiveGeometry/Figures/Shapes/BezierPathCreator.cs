@@ -326,8 +326,9 @@ public class BezierPathCreator : FigureCreator
             return;
         }
 
-        var point = Drawing.Figures.HitTest<IPoint>(ClickedUnconstrainedCoordinates);
-        if (point != null && AnchorsFound >= 2 && point == FoundDependencies[0])
+        // the point the hover showed, as the base click would find it
+        var point = LookForExpectedDependencyUnderCursor(ClickedUnconstrainedCoordinates);
+        if (FinishesOn(point))
         {
             // closed at the release, after a drag sets the first anchor's handles
             closing = true;
@@ -342,6 +343,12 @@ public class BezierPathCreator : FigureCreator
             pulledAnchor = AnchorsFound - 1;
         }
     }
+
+    /// <summary>A click on the first anchor closes the path once there are two</summary>
+    protected override PointBase ClosingPoint => AnchorsFound >= 2 ? FoundDependencies[0] as PointBase : null;
+
+    // (Alt+click on it takes it for a handle)
+    protected override string FinishStatus => IsAltPressed() ? null : "Click this point to close the path.";
 
     public override void MouseDown(object sender, MouseButtonEventArgs e)
     {

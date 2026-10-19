@@ -29,9 +29,9 @@ public class ClickPreview
     public static IBrush PointHaloBrush = new SolidColorBrush(Color.FromArgb(0x48, 0x3B, 0x8E, 0xEA));
     public static IBrush TickBrush = new SolidColorBrush(Color.FromRgb(0x2F, 0x7B, 0xD6));
 
-    // the vertex a click closes the polygon being drawn on; translucent as the hover's halo,
-    // so the two mix where the hover lies over it
-    public static IBrush StartPointHaloBrush = new SolidColorBrush(Color.FromArgb(0x60, 0x2E, 0xB8, 0x4A));
+    // the point a click closes the polygon or path being drawn on; translucent as the
+    // hover's halo, so the two mix where the hover lies over it
+    public static IBrush ClosingPointHaloBrush = new SolidColorBrush(Color.FromArgb(0x60, 0x2E, 0xB8, 0x4A));
 
     // an angle's mark picked (its number hovered): the hue of the coincident line, strong
     public static IBrush MarkHighlightBrush = new SolidColorBrush(Color.FromArgb(0xE0, 0x00, 0xBA, 0xD7));
