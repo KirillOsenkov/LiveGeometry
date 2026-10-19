@@ -21,6 +21,7 @@ public partial class DrawingControl
             return;
         }
 
+        IsSteppingHistory = true;
         try
         {
             Drawing.ActionManager.Undo();
@@ -29,6 +30,10 @@ public partial class DrawingControl
         {
             ReleaseStuckAction();
             HandleException(ex);
+        }
+        finally
+        {
+            IsSteppingHistory = false;
         }
         UpdateUndoRedo();
         CommandToolButton.UpdateToggles();
@@ -44,6 +49,7 @@ public partial class DrawingControl
             return;
         }
 
+        IsSteppingHistory = true;
         try
         {
             Drawing.ActionManager.Redo();
@@ -53,10 +59,21 @@ public partial class DrawingControl
             ReleaseStuckAction();
             HandleException(ex);
         }
+        finally
+        {
+            IsSteppingHistory = false;
+        }
         UpdateUndoRedo();
         CommandToolButton.UpdateToggles();
         ShowPanelAfterHistoryStep();
     }
+
+    /// <summary>
+    /// Whether an undo or a redo is running: a selection changed by what it undoes or redoes
+    /// (a deletion redone raises one) is no pick of the user's, and opens no panel; the
+    /// panel is decided once it is done (<see cref="UndoneOrRedone"/>)
+    /// </summary>
+    public bool IsSteppingHistory { get; private set; }
 
     /// <summary>
     /// After an undo or a redo, what the side panel shows may be about a figure that left;

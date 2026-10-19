@@ -80,6 +80,9 @@ public class Program
             ("A point as a handle: followed, deleted, dropped onto, split beside", BezierPathPointHandles),
             ("A Bezier path smooths its automatic handles", BezierPathSmoothing),
             ("A Bezier path among other figures: deletion, transforms, selection, images", BezierPathWithOthers),
+            ("A polygon loses a deleted vertex, and a segment closes the gap", PolygonVertexDeletion),
+            ("A vertex deleted from a polygon or one of its images, two deep", TransformedPolygonVertexDeletion),
+            ("An anchor deleted from a Bezier path or one of its images, two deep", TransformedPathAnchorDeletion),
             ("Paste into another drawing keeps the look", PasteBringsStyles),
             ("Pasting plain text is no error", PastePlainText),
             ("The axes are lines to build on, one of each", AxisLines),
@@ -2582,12 +2585,15 @@ public class Program
         Require(!BezierPath.CanBecomeAnchor(onPath), "A path with an image can be split.");
         drawing.Figures.CheckConsistency();
 
-        // an anchor deleted: the source goes on, the image goes, its helpers with it
+        // an anchor deleted: the source goes on, and so does the image without A's image,
+        // the helper points of its handles going with it
         string imaged = drawing.SaveAsText();
         Actions.Remove(a);
         Require(drawing.Figures.Contains(path) && path.AnchorCount == 2, "Deleting A took the source.");
-        Require(drawing.Figures.OfType<BezierPath>().Count() == 1, "The image stayed without A's image.");
-        Require(!drawing.Figures.Any(figure => figure.Auxiliary), "The image's helpers stayed.");
+        var shortened = drawing.Figures.OfType<BezierPath>().SingleOrDefault(other => other != path);
+        Require(shortened != null && shortened.AnchorCount == 2, "The image did not keep going without A's image.");
+        Require(drawing.Figures.Count(figure => figure.Auxiliary) == 4, "The image's helpers: " + drawing.Figures.Count(figure => figure.Auxiliary));
+        Require(drawing.Figures.Where(figure => figure.Auxiliary).All(figure => figure.Dependents.Any(drawing.Figures.Contains)), "A helper of A's handles stayed.");
         drawing.Figures.CheckConsistency();
         drawing.ActionManager.Undo();
         Require(drawing.SaveAsText() == imaged, "Undo of deleting A.");
@@ -2623,6 +2629,357 @@ public class Program
         other.ActionManager.Undo();
         Require(other.SaveAsText() == joined, "Undo of deleting B.");
         other.Figures.CheckConsistency();
+    }
+
+    /// <summary>Pentagon ABCDE with a segment along each side, AB red</summary>
+    const string Pentagon = """
+        <Drawing Version="1">
+          <Figures>
+            <FreePoint Name="A" X="0" Y="0" />
+            <FreePoint Name="B" X="4" Y="0" />
+            <FreePoint Name="C" X="5" Y="3" />
+            <FreePoint Name="D" X="2" Y="5" />
+            <FreePoint Name="E" X="-1" Y="3" />
+            <Polygon Name="ABCDE">
+              <Dependency Name="A" />
+              <Dependency Name="B" />
+              <Dependency Name="C" />
+              <Dependency Name="D" />
+              <Dependency Name="E" />
+            </Polygon>
+            <Segment Name="AB" Style="RedLine">
+              <Dependency Name="A" />
+              <Dependency Name="B" />
+            </Segment>
+            <Segment Name="BC">
+              <Dependency Name="B" />
+              <Dependency Name="C" />
+            </Segment>
+            <Segment Name="CD">
+              <Dependency Name="C" />
+              <Dependency Name="D" />
+            </Segment>
+            <Segment Name="DE">
+              <Dependency Name="D" />
+              <Dependency Name="E" />
+            </Segment>
+            <Segment Name="AE">
+              <Dependency Name="E" />
+              <Dependency Name="A" />
+            </Segment>
+          </Figures>
+        </Drawing>
+        """;
+
+    /// <summary>
+    /// The figures are deleted (one undo step); then the drawing is checked, read back from
+    /// its text, undone and redone, and checked again; and undone, as it was
+    /// </summary>
+    static void CheckDeletion(Drawing drawing, IEnumerable<IFigure> deleted, string what, Action check)
+    {
+        string before = drawing.SaveAsText();
+        drawing.Delete(deleted);
+        drawing.Figures.CheckConsistency();
+        Require(drawing.Figures.Where(figure => figure.Auxiliary).All(figure => figure.Dependents.Any(drawing.Figures.Contains)), what + ": a helper stayed with nothing built on it.");
+        check();
+        string after = drawing.SaveAsText();
+        Require(after != before, what + ": nothing changed.");
+        var reread = ReadLgf(after);
+        Require(reread.LoadErrors == null && reread.SaveAsText() == after, what + ": the drawing did not round trip.");
+        drawing.ActionManager.Undo();
+        drawing.Figures.CheckConsistency();
+        Require(drawing.SaveAsText() == before, what + ": undo changed the drawing.");
+        drawing.ActionManager.Redo();
+        drawing.Figures.CheckConsistency();
+        Require(drawing.SaveAsText() == after, what + ": redo changed the drawing.");
+        check();
+        drawing.ActionManager.Undo();
+        Require(drawing.SaveAsText() == before, what + ": the second undo changed the drawing.");
+    }
+
+    static string Vertices(IFigure figure)
+    {
+        return string.Join("", figure.Dependencies.Select(vertex => vertex.Name));
+    }
+
+    /// <summary>
+    /// A polygon loses a deleted vertex while three are left, and a segment in the style of
+    /// the side that went closes the gap (also when two vertices go at once); with the third
+    /// from last it goes. Selected together with a vertex it goes whole. Redo brings back the
+    /// same closing segment; the Polygon tool's preview leaves nothing behind.
+    /// </summary>
+    static void PolygonVertexDeletion()
+    {
+        var drawing = ReadLgf(Pentagon);
+        var polygon = drawing.Figures.OfType<Polygon>().Single();
+        Segment closing = null;
+        CheckDeletion(drawing, new[] { Find(drawing, "B") }, "B deleted", () =>
+        {
+            Require(drawing.Figures.Contains(polygon) && Vertices(polygon) == "ACDE" && polygon.Name == "ACDE", "The polygon without B: " + Vertices(polygon) + ", " + polygon.Name);
+            var sides = drawing.Figures.OfType<Segment>().Select(segment => segment.Name).OrderBy(name => name).ToList();
+            Require(string.Join(" ", sides) == "AC AE CD DE", "The sides without B: " + string.Join(" ", sides));
+            var side = (Segment)Find(drawing, "AC");
+            Require(side.Style?.Name == "RedLine", "The closing side's style: " + side.Style?.Name);
+            Require(closing == null || closing == side, "Redo made another closing side.");
+            closing = side;
+        });
+
+        // two that go together, C and D (deleted one after the other in one step), and two
+        // in one removal: B, and C built on it
+        CheckDeletion(drawing, new[] { Find(drawing, "C"), Find(drawing, "D") }, "C and D deleted", () =>
+        {
+            Require(Vertices(polygon) == "ABE", "The polygon without C and D: " + Vertices(polygon));
+            Require(Transformer.FindSideSegment(drawing, Find(drawing, "B"), Find(drawing, "E")) != null, "Nothing closes BE.");
+        });
+        var withMidpoint = ReadLgf(Pentagon.Replace("""<FreePoint Name="C" X="5" Y="3" />""", """
+            <MidPoint Name="C">
+              <Dependency Name="B" />
+              <Dependency Name="D" />
+            </MidPoint>
+            """).Replace("""<FreePoint Name="D" X="2" Y="5" />""", "").Replace("""<FreePoint Name="B" X="4" Y="0" />""", """
+            <FreePoint Name="B" X="4" Y="0" />
+            <FreePoint Name="D" X="2" Y="5" />
+            """));
+        var shape = withMidpoint.Figures.OfType<Polygon>().Single();
+        CheckDeletion(withMidpoint, new[] { Find(withMidpoint, "B") }, "B and its midpoint C deleted", () =>
+        {
+            Require(Vertices(shape) == "ADE", "The polygon without B and C: " + Vertices(shape));
+            Require(((Segment)Find(withMidpoint, "AD")).Style?.Name == "RedLine", "AD doesn't close the gap in AB's style.");
+        });
+
+        // down to three, and then gone; a side already drawn is not drawn twice
+        Actions.Remove(Find(drawing, "B"));
+        Actions.Remove(Find(drawing, "C"));
+        Require(Vertices(polygon) == "ADE" && drawing.Figures.OfType<Segment>().Count() == 3, "A triangle with three sides is left: " + Vertices(polygon));
+        CheckDeletion(drawing, new[] { Find(drawing, "D") }, "The third from last deleted", () =>
+        {
+            Require(!drawing.Figures.Contains(polygon), "A polygon of two vertices was left.");
+            Require(string.Join(" ", drawing.Figures.OfType<Segment>().Select(segment => segment.Name)) == "AE", "The segments left: " + string.Join(" ", drawing.Figures.OfType<Segment>().Select(segment => segment.Name)));
+        });
+
+        // with a vertex, as a whole
+        var whole = ReadLgf(Pentagon);
+        CheckDeletion(whole, new[] { Find(whole, "B"), whole.Figures.OfType<Polygon>().Single() }, "The polygon and B deleted", () =>
+        {
+            Require(!whole.Figures.OfType<Polygon>().Any(), "The polygon stayed.");
+            Require(string.Join(" ", whole.Figures.OfType<Segment>().Select(segment => segment.Name).OrderBy(name => name)) == "AE CD DE", "A closing side was left.");
+        });
+
+        // the tool's preview goes with the point following the cursor, as it did
+        var drawn = NewDrawing();
+        using var window = new TestWindow(drawn.Canvas);
+        var system = drawn.CoordinateSystem;
+        var tool = new PolygonCreator();
+        drawn.Behavior = tool;
+        foreach (var at in new[] { new Point(0, 0), new Point(4, 0), new Point(4, 3), new Point(0, 3) })
+        {
+            Click(drawn, system.ToPhysical(at));
+        }
+
+        tool.KeyDown(null, new KeyEventArgs() { Key = Key.Enter });
+        Require(!drawn.IsRecordingTransaction, "Enter did not close the polygon.");
+        Require(drawn.Figures.OfType<Polygon>().Count() == 1 && drawn.Figures.OfType<Segment>().Count() == 4 && drawn.Figures.OfType<FreePoint>().Count() == 4, "The tool left " + drawn.Figures.Count + " figures.");
+        Click(drawn, system.ToPhysical(new Point(-8, -4)));
+        Click(drawn, system.ToPhysical(new Point(-4, -4)));
+        Click(drawn, system.ToPhysical(new Point(-6, -1)));
+        Click(drawn, system.ToPhysical(new Point(-8, -4)));
+        Require(drawn.Figures.OfType<Polygon>().Count() == 2 && drawn.Figures.OfType<Segment>().Count() == 7, "A click on the first vertex left " + drawn.Figures.OfType<Segment>().Count() + " segments.");
+        drawn.Figures.CheckConsistency();
+    }
+
+    /// <summary>
+    /// The images of a figure, and the images of the image: translated by u and translated
+    /// again, or reflected in line g and translated by u. Each list is a transformation's
+    /// figures, added as the tools add them; the image is the last of each.
+    /// </summary>
+    static (IFigure First, IFigure Second) AddImages(Drawing drawing, IFigure source, bool reflectFirst)
+    {
+        var u = (LiveGeometry.Vector)Find(drawing, "u");
+        IFigure Add(List<IFigure> figures)
+        {
+            foreach (var figure in figures)
+            {
+                Actions.Add(drawing, figure);
+            }
+
+            return figures.Last();
+        }
+
+        var first = reflectFirst
+            ? Add(Transformer.CreateReflectedFigure(drawing, source, Find(drawing, "g")))
+            : Add(Transformer.CreateTranslatedFigure(drawing, source, u, u));
+        var second = Add(Transformer.CreateTranslatedFigure(drawing, first, u, u));
+        return (first, second);
+    }
+
+    /// <summary>The translation of u and the line g, after the figures of <see cref="Pentagon"/></summary>
+    static string WithTransformations(string drawing)
+    {
+        return drawing.Replace("</Figures>", """
+              <FreePoint Name="U" X="10" Y="-6" />
+              <FreePoint Name="V" X="17" Y="-5" />
+              <Vector Name="u">
+                <Dependency Name="U" />
+                <Dependency Name="V" />
+              </Vector>
+              <FreePoint Name="G" X="8" Y="0" />
+              <FreePoint Name="H" X="8" Y="1" />
+              <LineTwoPoints Name="g">
+                <Dependency Name="G" />
+                <Dependency Name="H" />
+              </LineTwoPoints>
+            </Figures>
+            """);
+    }
+
+    /// <summary>
+    /// A polygon and its images, two deep: a vertex deleted from the source leaves every image
+    /// without its image, and each gets a closing side; one deleted from the first image
+    /// leaves the source whole and both images shorter; one from the last image only that one
+    /// </summary>
+    static void TransformedPolygonVertexDeletion()
+    {
+        foreach (bool reflectFirst in new[] { false, true })
+        {
+            var drawing = ReadLgf(WithTransformations(Pentagon));
+            var source = drawing.Figures.OfType<Polygon>().Single();
+            var (first, second) = AddImages(drawing, source, reflectFirst);
+            string chain = reflectFirst ? "reflected and translated" : "translated twice";
+            Require(drawing.Figures.OfType<Segment>().Count() == 15, chain + ": the images' sides were not carried over.");
+            var b = source.Dependencies[1];
+            var b1 = first.Dependencies[1];
+            var b2 = second.Dependencies[1];
+            foreach (var (deleted, lengths, where) in new (IFigure, string, string)[]
+            {
+                (b, "444", "the source"),
+                (b1, "544", "the first image"),
+                (b2, "554", "the last image")
+            })
+            {
+                CheckDeletion(drawing, new[] { deleted }, chain + ", a vertex of " + where + " deleted", () =>
+                {
+                    string counts = string.Concat(new[] { source, first, second }.Select(polygon => polygon.Dependencies.Count));
+                    Require(new[] { source, first, second }.All(drawing.Figures.Contains) && counts == lengths, chain + ", " + where + ": vertices " + counts);
+                    int sides = lengths.Sum(digit => digit - '0');
+                    Require(drawing.Figures.OfType<Segment>().Count() == sides, chain + ", " + where + ": " + drawing.Figures.OfType<Segment>().Count() + " sides for " + sides + " vertices.");
+                    foreach (var polygon in new[] { source, first, second })
+                    {
+                        var vertices = polygon.Dependencies;
+                        for (int i = 0; i < vertices.Count; i++)
+                        {
+                            Require(Transformer.FindSideSegment(drawing, vertices[i], vertices[(i + 1) % vertices.Count]) != null, chain + ", " + where + ": " + polygon.Name + " has a side not drawn.");
+                        }
+                    }
+
+                    // the images still follow: the source's A dragged
+                    var a = (FreePoint)source.Dependencies[0];
+                    var place = a.CapturePlace();
+                    var image = ((IPoint)second.Dependencies[0]).Coordinates;
+                    a.MoveTo(a.Coordinates.Plus(new Point(0.5, 0.25)));
+                    drawing.Recalculate();
+                    Require(((IPoint)second.Dependencies[0]).Coordinates != image, chain + ", " + where + ": the last image no longer follows the source.");
+                    a.RestorePlace(place);
+                    drawing.Recalculate();
+                });
+            }
+
+            // the source deleted whole: the images stay, built on the images of its vertices
+            CheckDeletion(drawing, new[] { (IFigure)source }, chain + ", the source polygon deleted", () =>
+            {
+                Require(!drawing.Figures.Contains(source) && drawing.Figures.Contains(first) && drawing.Figures.Contains(second), chain + ": deleting the source took its images.");
+            });
+        }
+    }
+
+    /// <summary>
+    /// A closed path ABCD (A, C with handles of their own, B, D automatic) and its images, two
+    /// deep: an anchor deleted from the source leaves every image without its image, the
+    /// helper points of its handles gone with it; one from the first image leaves the source
+    /// whole and both images shorter; one from the last image only that one. Each image still
+    /// follows the source's handles, and is the source moved where all three have the same
+    /// anchors. A path and a polygon on the same points, both reflected, lose B together.
+    /// </summary>
+    static void TransformedPathAnchorDeletion()
+    {
+        foreach (bool reflectFirst in new[] { false, true })
+        {
+            var drawing = ReadLgf(WithTransformations(Pentagon));
+            var anchors = new[] { "A", "B", "C", "D" }.Select(name => Find(drawing, name)).ToList();
+            var source = BezierPath.Create(
+                drawing,
+                anchors,
+                new[] { new BezierPath.HandleSpec(new Point(-1, -1), null), BezierPath.HandleSpec.Automatic, new BezierPath.HandleSpec(new Point(0, -1), null), BezierPath.HandleSpec.Automatic },
+                new[] { new BezierPath.HandleSpec(new Point(1, -1), null), BezierPath.HandleSpec.Automatic, new BezierPath.HandleSpec(new Point(0, 1), null), BezierPath.HandleSpec.Automatic },
+                holes: Array.Empty<IFigure>(),
+                closed: true,
+                filled: true);
+            Actions.Add(drawing, source);
+            var (firstFigure, secondFigure) = AddImages(drawing, source, reflectFirst);
+            var first = (BezierPath)firstFigure;
+            var second = (BezierPath)secondFigure;
+            string chain = reflectFirst ? "reflected and translated" : "translated twice";
+            var offset = ((IPoint)Find(drawing, "V")).Coordinates.Minus(((IPoint)Find(drawing, "U")).Coordinates);
+            Require(drawing.Figures.Count(figure => figure.Auxiliary) == 16, chain + ": the images' helpers: " + drawing.Figures.Count(figure => figure.Auxiliary));
+
+            // the last image is the first moved by u, at any place along it
+            void Follows(string where)
+            {
+                for (double t = 0; t < second.AnchorCount; t += 0.37)
+                {
+                    NearPoint(second.GetPointFromParameter(t), first.GetPointFromParameter(t).Plus(offset));
+                }
+            }
+
+            Follows("as made");
+            var paths = new[] { source, first, second };
+            foreach (var (deleted, counts, where) in new (IFigure, string, string)[]
+            {
+                (anchors[1], "333", "the source"),
+                (first.Dependencies[1], "433", "the first image"),
+                (second.Dependencies[1], "443", "the last image")
+            })
+            {
+                CheckDeletion(drawing, new[] { deleted }, chain + ", an anchor of " + where + " deleted", () =>
+                {
+                    string anchorCounts = string.Concat(paths.Select(path => path.AnchorCount));
+                    Require(paths.All(drawing.Figures.Contains) && anchorCounts == counts, chain + ", " + where + ": anchors " + anchorCounts);
+                    int helpers = (first.AnchorCount + second.AnchorCount) * 2;
+                    Require(drawing.Figures.Count(figure => figure.Auxiliary) == helpers, chain + ", " + where + ": " + drawing.Figures.Count(figure => figure.Auxiliary) + " helpers for " + helpers + " handles.");
+                    if (first.AnchorCount == second.AnchorCount)
+                    {
+                        Follows(where);
+                    }
+
+                    // a handle of the source's last anchor pulled: both images follow
+                    var handle = (BezierPath.BezierPathHandle)source.GetPart("Out" + source.AnchorCount);
+                    var place = handle.CapturePlace();
+                    var before = second.GetPointFromParameter(second.AnchorCount - 0.5);
+                    handle.MoveTo(handle.Coordinates.Plus(new Point(1, 2)));
+                    drawing.Recalculate();
+                    Require(second.GetPointFromParameter(second.AnchorCount - 0.5).Distance(before) > 0.01, chain + ", " + where + ": the last image no longer follows the source's handle.");
+                    if (first.AnchorCount == second.AnchorCount)
+                    {
+                        Follows(where + ", a handle pulled");
+                    }
+
+                    handle.RestorePlace(place);
+                    drawing.Recalculate();
+                });
+            }
+        }
+
+        // a path and a polygon on the same points, both with images
+        var shared = ReadLgf(WithTransformations(Pentagon));
+        var points = new[] { "A", "B", "C", "D", "E" }.Select(name => Find(shared, name)).ToList();
+        var path = BezierPath.Create(shared, points, new Point[5], new Point[5], closed: true, filled: false);
+        Actions.Add(shared, path);
+        var pathImage = (BezierPath)AddImages(shared, path, reflectFirst: true).First;
+        var polygon = shared.Figures.OfType<Polygon>().Single();
+        var polygonImage = AddImages(shared, polygon, reflectFirst: true).First;
+        CheckDeletion(shared, new[] { points[1] }, "B of a path and a polygon, both with images", () =>
+        {
+            Require(path.AnchorCount == 4 && pathImage.AnchorCount == 4 && polygon.Dependencies.Count == 4 && polygonImage.Dependencies.Count == 4, "A path and a polygon on B: not all lost B.");
+        });
     }
 
     static void Click(Drawing drawing, Point at, KeyModifiers modifiers)

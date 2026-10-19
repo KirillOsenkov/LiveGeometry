@@ -238,7 +238,9 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
     /// <summary>
     /// Whether the path is the image of a transformation: its handles are hidden helper
-    /// points, which go with it. It isn't split or made shorter (the helpers would stay).
+    /// points, which go with it. It isn't split, nor an anchor dropped into its neighbor (it
+    /// would no longer follow the source's handles); a deleted anchor leaves it as it leaves
+    /// the source (<see cref="CanRemoveDependencies"/>).
     /// </summary>
     bool IsImage => Handles.Any(h => h.Point is IFigure point && point.Auxiliary);
 
@@ -1982,8 +1984,10 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
     #region Removing an anchor, a hole or the point of a handle
 
     /// <summary>
-    /// A path keeps going without an anchor that is deleted, as long as two are left (not
-    /// an image: its helper points would stay). A hole that is deleted leaves the inside
+    /// A path keeps going without an anchor that is deleted, as long as two are left - an
+    /// image too, whose anchors are the images of the source's: it loses the image of an
+    /// anchor the source lost, and the helper points of that anchor's handles go with it
+    /// (<see cref="GetReleasedDependencies"/>). A hole that is deleted leaves the inside
     /// whole again. A point that is a handle, deleted, leaves an ordinary handle where it was.
     /// The figure the tension comes from, deleted, leaves the tension typed.
     /// </summary>
@@ -2010,7 +2014,27 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
 
         // two anchors left after the deletion, of those that go with it too (an anchor on a
         // segment through the one deleted)
-        return !losesAnchor || !IsImage && Dependencies.Take(anchors).Count(anchor => !removed.Contains(anchor)) >= 2;
+        return !losesAnchor || Dependencies.Take(anchors).Count(anchor => !removed.Contains(anchor)) >= 2;
+    }
+
+    /// <summary>
+    /// The points of the handles of the anchors that go, but those another handle still is:
+    /// an image's helper points, which go in the same deletion
+    /// </summary>
+    public IEnumerable<IFigure> GetReleasedDependencies(IList<IFigure> dependencies)
+    {
+        int count = AnchorCount;
+        var going = new HashSet<int>(Enumerable.Range(0, count).Where(i => dependencies.Contains(Dependencies[i])));
+        var kept = Enumerable.Range(0, count)
+            .Where(i => !going.Contains(i))
+            .SelectMany(i => new[] { inHandles[i].Point, outHandles[i].Point })
+            .ToHashSet();
+        return going
+            .SelectMany(i => new[] { inHandles[i].Point, outHandles[i].Point })
+            .Where(point => point != null && !kept.Contains(point))
+            .Cast<IFigure>()
+            .Distinct()
+            .ToList();
     }
 
     public IAction GetRemoveDependencyAction(IFigure dependency)

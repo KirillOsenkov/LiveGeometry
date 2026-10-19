@@ -1428,6 +1428,16 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   created on demand for another: it is removed with its last dependent and comes back on undo.
   Every deletion goes through `RemoveFigureAction`, one figure per action inside a transaction,
   so undo restores labels and a polygon loses a vertex rather than dying.
+  **A polygon loses a deleted vertex** while three are left (2026-10-18; `Polygon`'s
+  `ISupportRemoveDependency`), its images too (each a plain polygon on the images of the
+  vertices, so deleting B takes B' and B'' out of the images, deleting B' leaves ABCD whole).
+  The side segments along the gap go with the vertex, and a segment in the style of the
+  first of them closes it (none where a line on the two points is drawn already, or the
+  sides weren't segments). Not a tool's preview (`ExecuteImmediatelyWithoutRecording`): it
+  goes with the point following the cursor, or it drew its closing side outside the tool's
+  figures. `Drawing.Delete` deletes what is built on others first, so a polygon selected
+  with a vertex goes whole and leaves no closing side. `RemoveFigureAction` works out what
+  goes once and runs the same actions on redo, so redo brings back the same closing segment.
 - **Building a formula by clicking** (2026-10-15; `Behaviors/ReferencePicker.cs`,
   `PropertyGrid/Editors/ExpressionTextBox.cs`): every box an expression is typed into - a
   number's formula, the X and Y of a point by coordinates, a function, the text of a label,
@@ -1955,11 +1965,16 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   last dependencies, unfilled, still paths of their own; a
   deleted hole leaves the path. Transformations but inversion take it through its anchors
   and handles (`CreateImage`): the image's handles are all points, hidden auxiliary ones,
-  which can't be dragged; an image isn't split or shortened (`IsImage`), nor is a path
-  with an image split or an anchor dropped from it (`HasImages`: the image would keep the
-  old pieces). A deleted anchor still leaves the source (its image goes with the anchor's
-  image): the layout change runs before the image's helpers leave, so it recalculates
-  without the Debug list check (`RecalculateAndUpdateUnchecked`). A deletion counts the
+  which can't be dragged; an image isn't split nor an anchor of it dropped into another
+  (`IsImage`), nor is a path with an image split or an anchor dropped from it (`HasImages`:
+  the image would keep the old pieces). A deleted anchor leaves the source and every image
+  (2026-10-18; the image of the anchor goes, and each image loses it as the source does),
+  and an image's own anchor deleted leaves the image, the source untouched: the helper
+  points of the lost anchor's handles go in the same deletion
+  (`ISupportRemoveDependency.GetReleasedDependencies`, which `FindOrphanedAuxiliaries` takes
+  as no longer used, also two images deep). The layout change runs before the helpers
+  leave, so it recalculates without the Debug list check (`RecalculateAndUpdateUnchecked`;
+  a polygon losing a vertex does the same). A deletion counts the
   anchors left after it, also those built on the point deleted (`CanRemoveDependencies`:
   `RemoveFigureAction` asks a figure that can lose dependencies about everything the
   deletion takes at once, so a show/hide box holding A and AB goes when A is deleted).

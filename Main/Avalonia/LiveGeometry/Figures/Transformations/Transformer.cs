@@ -248,7 +248,7 @@ public class Transformer
     }
 
     /// <summary>A visible segment from one vertex to the other, either way round</summary>
-    static Segment FindSideSegment(Drawing drawing, IFigure vertex1, IFigure vertex2)
+    public static Segment FindSideSegment(Drawing drawing, IFigure vertex1, IFigure vertex2)
     {
         return drawing.Figures
             .OfType<Segment>()

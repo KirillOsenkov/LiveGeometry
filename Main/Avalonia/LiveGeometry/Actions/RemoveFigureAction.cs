@@ -23,6 +23,45 @@ public class RemoveFigureAction : GeometryAction
 
     protected override void ExecuteCore()
     {
+        // Worked out once: redo finds the drawing as it was the first time, and runs the
+        // same actions, which bring back the same figures (a side a polygon drew to close
+        // the gap of a deleted vertex: made anew, a later step held the one that had left)
+        if (Deleted == null)
+        {
+            Plan();
+        }
+
+        foreach (var item in CustomDependencyRemovers)
+        {
+            item.Execute();
+        }
+
+        Indices = new int[Deleted.Length];
+        for (int i = 0; i < Deleted.Length; i++)
+        {
+            var item = Deleted[i];
+            Indices[i] = Drawing.Figures.IndexOf(item);
+            if (Indices[i] >= 0)
+            {
+                Drawing.Figures.RemoveAt(Indices[i]);
+            }
+            else
+            {
+                item.UnregisterFromDependencies();
+            }
+        }
+
+        // Not for what a tool takes away of its own (the point following the cursor, its
+        // preview), which is never recorded: the side panel then showed whatever had been
+        // selected before the construction began, every time one was given up.
+        if (!Drawing.ActionManager.ExecuteImmediatelyWithoutRecording || Deleted.Any(FigureParts.HasSelection))
+        {
+            Drawing.RaiseSelectionChanged(new Drawing.SelectionChangedEventArgs());
+        }
+    }
+
+    void Plan()
+    {
         // What goes is decided against the whole deletion: a figure that can do without
         // some of what it is built on (ISupportRemoveDependency) is spared only when it
         // can do without everything the deletion takes from it, and what is built on it
@@ -54,12 +93,13 @@ public class RemoveFigureAction : GeometryAction
         // all made before any runs: each finds its dependency when it runs
         var removed = new HashSet<IFigure>(deleted);
         CustomDependencyRemovers = new List<IAction>();
+        var released = new List<(IFigure Figure, IFigure Dependency)>();
         foreach (var figure in spared)
         {
-            foreach (var dependency in figure.Dependencies.Where(removed.Contains).Distinct().ToList())
-            {
-                CustomDependencyRemovers.Add(((ISupportRemoveDependency)figure).GetRemoveDependencyAction(dependency));
-            }
+            var remover = (ISupportRemoveDependency)figure;
+            var dependencies = figure.Dependencies.Where(removed.Contains).Distinct().ToList();
+            CustomDependencyRemovers.AddRange(remover.GetRemoveDependencyActions(dependencies));
+            released.AddRange(remover.GetReleasedDependencies(dependencies).Select(dependency => (figure, dependency)));
         }
 
         // The parts of a composite (the handles of a Bezier path, which are built on the
@@ -69,36 +109,8 @@ public class RemoveFigureAction : GeometryAction
         // undo, they ended up in the drawing's own list, and on the canvas twice.)
         deleted.RemoveAll(figure => figure != Figure && !Drawing.Figures.Contains(figure));
         // after their dependents, so that undo brings them back first
-        deleted.AddRange(FindOrphanedAuxiliaries(deleted));
+        deleted.AddRange(FindOrphanedAuxiliaries(deleted, released));
         Deleted = deleted.ToArray();
-
-        foreach (var item in CustomDependencyRemovers)
-        {
-            item.Execute();
-        }
-
-        Indices = new int[Deleted.Length];
-        for (int i = 0; i < Deleted.Length; i++)
-        {
-            var item = Deleted[i];
-            Indices[i] = Drawing.Figures.IndexOf(item);
-            if (Indices[i] >= 0)
-            {
-                Drawing.Figures.RemoveAt(Indices[i]);
-            }
-            else
-            {
-                item.UnregisterFromDependencies();
-            }
-        }
-
-        // Not for what a tool takes away of its own (the point following the cursor, its
-        // preview), which is never recorded: the side panel then showed whatever had been
-        // selected before the construction began, every time one was given up.
-        if (!Drawing.ActionManager.ExecuteImmediatelyWithoutRecording || Deleted.Any(FigureParts.HasSelection))
-        {
-            Drawing.RaiseSelectionChanged(new Drawing.SelectionChangedEventArgs());
-        }
     }
 
     /// <summary>
@@ -106,13 +118,25 @@ public class RemoveFigureAction : GeometryAction
     /// auxiliary: it goes when its last user goes. Transitively, in case an auxiliary
     /// figure has auxiliary dependencies of its own. The two axis lines go together, once
     /// nothing is built on either, as they came (<see cref="AxisLine"/>) - also when one of
-    /// them is what is deleted.
+    /// them is what is deleted. A figure that stays and lets go of a dependency
+    /// (<paramref name="released"/>: an image path that loses an anchor, and the helper points
+    /// of its handles with it) uses it no more.
     /// </summary>
-    public static List<IFigure> FindOrphanedAuxiliaries(IEnumerable<IFigure> dying)
+    public static List<IFigure> FindOrphanedAuxiliaries(
+        IEnumerable<IFigure> dying,
+        IEnumerable<(IFigure Figure, IFigure Dependency)> released = null)
     {
         var gone = new HashSet<IFigure>(dying);
         var orphans = new List<IFigure>();
         var toVisit = new Queue<IFigure>(dying);
+        var lettingGo = new HashSet<(IFigure Figure, IFigure Dependency)>(released ?? Enumerable.Empty<(IFigure, IFigure)>());
+
+        bool IsOrphan(IFigure dependency)
+        {
+            return dependency.Auxiliary
+                && !gone.Contains(dependency)
+                && dependency.Dependents.All(dependent => gone.Contains(dependent) || lettingGo.Contains((dependent, dependency)));
+        }
 
         void Visit(IFigure orphan)
         {
@@ -136,6 +160,16 @@ public class RemoveFigureAction : GeometryAction
             VisitAxes(axisDrawing);
         }
 
+        // (one still used by another figure let go of may be freed by that one: it is
+        // looked at again from there)
+        foreach (var (_, dependency) in lettingGo)
+        {
+            if (IsOrphan(dependency))
+            {
+                Visit(dependency);
+            }
+        }
+
         while (toVisit.Count > 0)
         {
             var figure = toVisit.Dequeue();
@@ -148,9 +182,7 @@ public class RemoveFigureAction : GeometryAction
                         VisitAxes(axis.Drawing);
                     }
                 }
-                else if (dependency.Auxiliary
-                    && !gone.Contains(dependency)
-                    && dependency.Dependents.All(gone.Contains))
+                else if (IsOrphan(dependency))
                 {
                     Visit(dependency);
                 }

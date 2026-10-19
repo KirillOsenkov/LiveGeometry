@@ -1191,9 +1191,12 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     /// <summary>Several figures in one undo step, as <see cref="DeleteSelection"/> does</summary>
     public void Delete(IEnumerable<IFigure> figuresToDelete)
     {
-        // a vertex or a side goes with its polygon: a regular polygon without one is none
+        // A part goes with its whole. What is built on the others goes first: a polygon
+        // selected with one of its vertices goes whole, rather than lose the vertex (and
+        // draw the side that closes the gap) and then go, leaving that side behind.
         var figures = FigureParts.Wholes(figuresToDelete)
             .Where(f => !(f is CartesianGrid) && !(f is NameLabel))
+            .OrderByDescending(figure => Figures.IndexOf(figure))
             .ToArray();
         // the Delete key reaches here twice (the tool on key down, the window on key up):
         // the second time there is nothing selected

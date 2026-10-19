@@ -596,6 +596,14 @@ public partial class DrawingHost : Grid
 
     protected virtual void mCurrentDrawing_SelectionChanged(object sender, Drawing.SelectionChangedEventArgs e)
     {
+        // Not while undo or redo runs: a figure deleted while selected comes back selected,
+        // and a redo of another deletion then opened the panel for it, though the panel had
+        // been put away. Once the step is done, a panel that is up shows the selection again.
+        if (DrawingControl.IsSteppingHistory)
+        {
+            return;
+        }
+
         // what was picked is brought out from under the panel (not after undo, which shows
         // the selection's page again without anything being picked)
         revealSelection = true;
