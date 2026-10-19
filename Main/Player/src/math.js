@@ -710,38 +710,75 @@ const GeometryMath = {
         return levels;
     },
 
-    /** The area an even-odd fill of the polygon covers, in slabs between the heights of its vertices and crossings */
+    /** The area an even-odd fill of the polygon covers; see fillSlabs */
     filledArea(points, levels) {
+        return GeometryMath.fillSlabs(points, levels).area;
+    },
+
+    /** The middle of what an even-odd fill of a polygon whose sides cross covers; null for one whose sides don't cross, or that covers nothing */
+    filledCentroid(points) {
+        const levels = GeometryMath.crossingLevels(points);
+        if (levels == null) {
+            return null;
+        }
+
+        const { area, momentX, momentY } = GeometryMath.fillSlabs(points, levels);
+        if (!(area > 0)) {
+            return null;
+        }
+
+        return new Point(momentX / area, momentY / area);
+    },
+
+    /** The area an even-odd fill of the polygon covers and its first moment, in slabs between the heights of its vertices and crossings */
+    fillSlabs(points, levels) {
         for (const point of points) {
             levels.push(point.y);
         }
 
         levels.sort((a, b) => a - b);
         let area = 0;
+        let momentX = 0;
+        let momentY = 0;
         const crossings = [];
         for (let level = 1; level < levels.length; level++) {
-            const height = levels[level] - levels[level - 1];
+            const bottom = levels[level - 1];
+            const top = levels[level];
+            const height = top - bottom;
             if (!(height > 0)) {
                 continue;
             }
 
-            const middle = (levels[level] + levels[level - 1]) / 2;
+            const middle = (top + bottom) / 2;
             crossings.length = 0;
             for (let i = 0; i < points.length; i++) {
                 const a = points[i];
                 const b = points[(i + 1) % points.length];
                 if ((a.y < middle) !== (b.y < middle)) {
-                    crossings.push(a.x + (b.x - a.x) * (middle - a.y) / (b.y - a.y));
+                    const slope = (b.x - a.x) / (b.y - a.y);
+                    crossings.push({
+                        middle: a.x + slope * (middle - a.y),
+                        bottom: a.x + slope * (bottom - a.y),
+                        top: a.x + slope * (top - a.y)
+                    });
                 }
             }
 
-            crossings.sort((a, b) => a - b);
+            crossings.sort((first, second) => first.middle - second.middle);
             for (let i = 0; i + 1 < crossings.length; i += 2) {
-                area += (crossings[i + 1] - crossings[i]) * height;
+                const left = crossings[i];
+                const right = crossings[i + 1];
+                const bottomWidth = right.bottom - left.bottom;
+                const topWidth = right.top - left.top;
+                const bottomMiddle = (left.bottom + right.bottom) / 2;
+                const topMiddle = (left.top + right.top) / 2;
+                area += (bottomWidth + topWidth) * height / 2;
+                momentX += (2 * bottomWidth * bottomMiddle + bottomWidth * topMiddle + topWidth * bottomMiddle + 2 * topWidth * topMiddle) * height / 6;
+                momentY += (bottomWidth * (2 * bottom + top) + topWidth * (bottom + 2 * top)) * height / 6;
             }
         }
 
-        return area;
+        return { area, momentX, momentY };
     },
 
     /** The length of a polyline through the points */

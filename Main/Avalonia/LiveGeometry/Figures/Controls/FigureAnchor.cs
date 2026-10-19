@@ -62,10 +62,16 @@ public static class FigureAnchor
 
     /// <summary>
     /// The middle of a polygon's inside, weighted by area: the average of the vertices leans
-    /// towards where they crowd, and lies outside an L. That average for one with no area.
+    /// towards where they crowd, and lies outside an L. A polygon whose sides cross is taken
+    /// as it is filled (<see cref="Math.FilledCentroid"/>). That average for one with no area.
     /// </summary>
     public static Point Centroid(Point[] vertices)
     {
+        if (vertices.Length >= 4 && Math.FilledCentroid(vertices) is Point filled)
+        {
+            return filled;
+        }
+
         double area = 0;
         double x = 0;
         double y = 0;

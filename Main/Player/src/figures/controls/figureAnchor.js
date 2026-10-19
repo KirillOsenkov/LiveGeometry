@@ -51,8 +51,15 @@ class FigureAnchor {
         return figure != null ? figure.center : new Point();
     }
 
-    /** The middle of a polygon's inside, weighted by area; the average of the vertices for one with no area */
+    /** The middle of a polygon's inside, weighted by area, as it is filled where its sides cross; the average of the vertices for one with no area */
     static centroid(vertices) {
+        if (vertices.length >= 4) {
+            const filled = GeometryMath.filledCentroid(vertices);
+            if (filled != null) {
+                return filled;
+            }
+        }
+
         let area = 0;
         let x = 0;
         let y = 0;

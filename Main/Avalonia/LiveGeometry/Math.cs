@@ -1591,11 +1591,41 @@ public static partial class Math
 
     /// <summary>
     /// The area an even-odd fill of the polygon covers (how a polygon is filled on
-    /// screen), in slabs between the heights of its vertices and of the crossings of
-    /// its sides: within a slab no two sides cross, so what is filled there is a row of
-    /// trapezoids, as wide in all as they are half way up.
+    /// screen); see <see cref="FillSlabs"/>
     /// </summary>
     static double FilledArea(Point[] points, List<double> levels)
+    {
+        return FillSlabs(points, levels).Area;
+    }
+
+    /// <summary>
+    /// The middle of what an even-odd fill of a polygon whose sides cross covers; null for
+    /// a polygon whose sides don't cross, or that covers nothing. The centroid by signed
+    /// area goes off to infinity as the two halves of a bow tie come to the same size.
+    /// </summary>
+    public static Point? FilledCentroid(Point[] points)
+    {
+        var levels = CrossingLevels(points);
+        if (levels == null)
+        {
+            return null;
+        }
+
+        var (area, moment) = FillSlabs(points, levels);
+        if (!(area > 0))
+        {
+            return null;
+        }
+
+        return new Point(moment.X / area, moment.Y / area);
+    }
+
+    /// <summary>
+    /// The area an even-odd fill of the polygon covers and its first moment, in slabs
+    /// between the heights of its vertices and of the crossings of its sides: within a
+    /// slab no two sides cross, so what is filled there is a row of trapezoids.
+    /// </summary>
+    static (double Area, Point Moment) FillSlabs(Point[] points, List<double> levels)
     {
         foreach (var point in points)
         {
@@ -1604,16 +1634,20 @@ public static partial class Math
 
         levels.Sort();
         double area = 0;
-        var crossings = new List<double>();
+        double momentX = 0;
+        double momentY = 0;
+        var crossings = new List<(double Middle, double Bottom, double Top)>();
         for (int level = 1; level < levels.Count; level++)
         {
-            double height = levels[level] - levels[level - 1];
+            double bottom = levels[level - 1];
+            double top = levels[level];
+            double height = top - bottom;
             if (!(height > 0))
             {
                 continue;
             }
 
-            double middle = (levels[level] + levels[level - 1]) / 2;
+            double middle = (top + bottom) / 2;
             crossings.Clear();
             for (int i = 0; i < points.Length; i++)
             {
@@ -1621,18 +1655,32 @@ public static partial class Math
                 var b = points[(i + 1) % points.Length];
                 if ((a.Y < middle) != (b.Y < middle))
                 {
-                    crossings.Add(a.X + (b.X - a.X) * (middle - a.Y) / (b.Y - a.Y));
+                    double slope = (b.X - a.X) / (b.Y - a.Y);
+                    crossings.Add((
+                        a.X + slope * (middle - a.Y),
+                        a.X + slope * (bottom - a.Y),
+                        a.X + slope * (top - a.Y)));
                 }
             }
 
-            crossings.Sort();
+            crossings.Sort((first, second) => first.Middle.CompareTo(second.Middle));
             for (int i = 0; i + 1 < crossings.Count; i += 2)
             {
-                area += (crossings[i + 1] - crossings[i]) * height;
+                var left = crossings[i];
+                var right = crossings[i + 1];
+                // the widths and the middles of the trapezoid at the bottom and the top,
+                // each linear in y across the slab
+                double bottomWidth = right.Bottom - left.Bottom;
+                double topWidth = right.Top - left.Top;
+                double bottomMiddle = (left.Bottom + right.Bottom) / 2;
+                double topMiddle = (left.Top + right.Top) / 2;
+                area += (bottomWidth + topWidth) * height / 2;
+                momentX += (2 * bottomWidth * bottomMiddle + bottomWidth * topMiddle + topWidth * bottomMiddle + 2 * topWidth * topMiddle) * height / 6;
+                momentY += (bottomWidth * (2 * bottom + top) + topWidth * (bottom + 2 * top)) * height / 6;
             }
         }
 
-        return area;
+        return (area, new Point(momentX, momentY));
     }
 
     public static double Area(this IEnumerable<Point> vertices)
