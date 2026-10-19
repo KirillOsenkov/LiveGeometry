@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-5" Top="9" Right="13" Bottom="-5" />
   <Styles>
     <ShapeStyle Name="TileA" Fill="#FF5FB8A8" Color="#FF1E6B5E" StrokeWidth="1.5">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-8" Top="6.5" Right="8" Bottom="-7" />
   <Scene Left="-8" Top="6.5" Right="8" Bottom="-7" />
   <Styles>
@@ -81,10 +81,10 @@
       <Dependency Name="P" />
       <Dependency Name="T" />
     </Locus>
-    <PointLabel Name="LabelA" OffsetX="-14" OffsetY="-22" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelA" OffsetX="-14" OffsetY="-22">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="LabelB" OffsetX="8" OffsetY="-22" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelB" OffsetX="8" OffsetY="-22">
       <Dependency Name="B" />
     </PointLabel>
     <Label Name="Title" Style="Heading" Text="Catenary" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />

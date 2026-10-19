@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-3.4" Top="6.4" Right="8" Bottom="-6.4" />
   <Styles>
     <ShapeStyle Name="Mirror ball" Color="#FF8A94A6" StrokeWidth="3">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFF7F9FC" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFF7F9FC" />
           <GradientStop Color="#FFD3DCE8" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#FF9AA6B8">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF46536A" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FF46536A" />
             <GradientStop Color="#FF1C232E" Offset="1" />
           </LinearGradientBrush>
         </Fill>
@@ -370,22 +370,22 @@
       <Dependency Name="Mirror40" />
       <Dependency Name="Mirror44" />
     </Segment>
-    <PointLabel Name="LabelO" OffsetX="-20" OffsetY="-8" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelO" OffsetX="-20" OffsetY="-8">
       <Dependency Name="O" />
     </PointLabel>
-    <PointLabel Name="LabelP" OffsetX="-6" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelP" OffsetX="-6" OffsetY="6">
       <Dependency Name="P" />
     </PointLabel>
-    <PointLabel Name="LabelB" OffsetX="6" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelB" OffsetX="6" OffsetY="6">
       <Dependency Name="B" />
     </PointLabel>
-    <PointLabel Name="LabelP'" OffsetX="-22" OffsetY="4" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelP'" OffsetX="-22" OffsetY="4">
       <Dependency Name="P'" />
     </PointLabel>
-    <PointLabel Name="LabelM" OffsetX="-6" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelM" OffsetX="-6" OffsetY="6">
       <Dependency Name="M" />
     </PointLabel>
-    <PointLabel Name="LabelN" OffsetX="-6" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelN" OffsetX="-6" OffsetY="6">
       <Dependency Name="N" />
     </PointLabel>
     <Label Name="Title" Style="Heading" Text="Inversion in a Circle" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />

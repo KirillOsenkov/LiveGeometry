@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-7" Top="5" Right="7" Bottom="-5.5" />
   <Styles>
     <PointStyle Name="Pin" Size="13" Fill="#FFE0362B" Color="#FF7A1A14" StrokeWidth="1.5" />
@@ -55,10 +55,10 @@
       <Dependency Name="Pencil" />
       <Dependency Name="F2" />
     </Segment>
-    <PointLabel Name="LabelF1" OffsetX="-8" OffsetY="10" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelF1" OffsetX="-8" OffsetY="10">
       <Dependency Name="F1" />
     </PointLabel>
-    <PointLabel Name="LabelF2" OffsetX="-8" OffsetY="10" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelF2" OffsetX="-8" OffsetY="10">
       <Dependency Name="F2" />
     </PointLabel>
     <Label Name="Title" Style="Heading" Text="Two Pins and a String" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />

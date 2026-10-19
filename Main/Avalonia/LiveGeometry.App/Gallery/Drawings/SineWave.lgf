@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-4.2" Top="4.6" Right="4.2" Bottom="-4.6" Grid="true" Axes="true" />
   <Styles>
     <PointStyle Name="Amplitude" Size="14" Fill="#FFFFEF00" Color="#FFA05C21" StrokeWidth="2" />

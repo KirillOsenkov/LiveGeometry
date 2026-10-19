@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-6" Top="4" Right="6" Bottom="-4" />
   <Styles>
     <ShapeStyle Name="HatMain" Color="#FF3A3F47" StrokeWidth="1.5">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFFA375" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFFA375" />
           <GradientStop Color="#FFFF7448" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#FF101215">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFFFD27A" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FFFFD27A" />
             <GradientStop Color="#FFC0530A" Offset="1" />
           </LinearGradientBrush>
         </Fill>
@@ -20,15 +20,15 @@
     </ShapeStyle>
     <ShapeStyle Name="HatFlipped" Color="#FF3A3F47" StrokeWidth="1.5">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF9B7EE8" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF9B7EE8" />
           <GradientStop Color="#FF5B3BB0" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#FF101215">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFD6B4FF" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FFD6B4FF" />
             <GradientStop Color="#FF5B1FB0" Offset="1" />
           </LinearGradientBrush>
         </Fill>
@@ -36,15 +36,15 @@
     </ShapeStyle>
     <ShapeStyle Name="Hat1" Color="#FF3A3F47" StrokeWidth="1.5">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFD3EBFC" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFD3EBFC" />
           <GradientStop Color="#FFA6D0F2" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#FF101215">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF36C0FA" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FF36C0FA" />
             <GradientStop Color="#FF052C3C" Offset="1" />
           </LinearGradientBrush>
         </Fill>
@@ -52,15 +52,15 @@
     </ShapeStyle>
     <ShapeStyle Name="Hat2" Color="#FF3A3F47" StrokeWidth="1.5">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFDDF3D6" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFDDF3D6" />
           <GradientStop Color="#FFB2DFA9" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#FF101215">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF8FDFFF" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FF8FDFFF" />
             <GradientStop Color="#FF0181B3" Offset="1" />
           </LinearGradientBrush>
         </Fill>
@@ -68,15 +68,15 @@
     </ShapeStyle>
     <ShapeStyle Name="Hat3" Color="#FF3A3F47" StrokeWidth="1.5">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFFF2C8" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFFF2C8" />
           <GradientStop Color="#FFF5D98A" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#FF101215">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF3FE0C0" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3FE0C0" />
             <GradientStop Color="#FF04362E" Offset="1" />
           </LinearGradientBrush>
         </Fill>

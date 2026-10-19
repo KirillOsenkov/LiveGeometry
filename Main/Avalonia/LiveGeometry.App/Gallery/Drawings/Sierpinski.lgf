@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-13.1985798988" Top="5.1574531592" Right="9.5392158892" Bottom="-4.7725685951">
     <Background>
-      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF000000" Offset="0" />
+      <LinearGradientBrush EndPoint="0,1">
+        <GradientStop Color="#FF000000" />
         <GradientStop Color="#FFB44DB1" Offset="1" />
       </LinearGradientBrush>
     </Background>

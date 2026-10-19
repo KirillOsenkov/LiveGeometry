@@ -80,7 +80,6 @@ public partial class DrawingSerializer
         writer.WriteStartDocument();
         writer.WriteStartElement("Drawing");
         writer.WriteAttributeDouble("Version", drawing.Version);
-        writer.WriteAttributeString("Creator", Avalonia.Application.Current.ToString());
         WriteCoordinateSystem(drawing, writer);
         foreach (var scene in drawing.Scenes)
         {

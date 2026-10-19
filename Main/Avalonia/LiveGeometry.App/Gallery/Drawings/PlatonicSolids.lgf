@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-4.5" Top="3.2" Right="4.5" Bottom="-3.4" />
   <Styles>
     <TextStyle Name="Name" FontSize="17" Color="#FF2B3038" FontFamily="Segoe UI">
@@ -7,48 +7,48 @@
     </TextStyle>
     <ShapeStyle Name="TetrahedronFace0" Color="#FF7B4C41">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFB26F5E" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFB26F5E" />
           <GradientStop Color="#FFA56657" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="TetrahedronFace1" Color="#FF7B4C41">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFEEA28F" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFEEA28F" />
           <GradientStop Color="#FFD38472" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="CubeFace0" Color="#FF415A7A">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF97BEF3" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF97BEF3" />
           <GradientStop Color="#FF81AAE0" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="CubeFace1" Color="#FF415A7A">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF749DD4" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF749DD4" />
           <GradientStop Color="#FF6388BA" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="CubeFace2" Color="#FF415A7A">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF5E82B1" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF5E82B1" />
           <GradientStop Color="#FF5778A3" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="OctahedronFace0" Color="#FF41694C">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF5E986F" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF5E986F" />
           <GradientStop Color="#FF578C66" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -56,8 +56,8 @@
     </ShapeStyle>
     <ShapeStyle Name="OctahedronFace1" Color="#FF41694C">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF68A77A" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF68A77A" />
           <GradientStop Color="#FF5B926A" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -65,8 +65,8 @@
     </ShapeStyle>
     <ShapeStyle Name="OctahedronFace2" Color="#FF41694C">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF5E986F" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF5E986F" />
           <GradientStop Color="#FF578C66" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -74,8 +74,8 @@
     </ShapeStyle>
     <ShapeStyle Name="OctahedronFace3" Color="#FF41694C">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF92D3A4" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF92D3A4" />
           <GradientStop Color="#FF75B888" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -83,128 +83,128 @@
     </ShapeStyle>
     <ShapeStyle Name="DodecahedronFace0" Color="#FF625076">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF8E75AB" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF8E75AB" />
           <GradientStop Color="#FF836B9E" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="DodecahedronFace1" Color="#FF625076">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF8E75AB" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF8E75AB" />
           <GradientStop Color="#FF836B9E" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="DodecahedronFace2" Color="#FF625076">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFCBAFEC" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFCBAFEC" />
           <GradientStop Color="#FFB598D7" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="DodecahedronFace3" Color="#FF625076">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF8E75AB" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF8E75AB" />
           <GradientStop Color="#FF836B9E" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="DodecahedronFace4" Color="#FF625076">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFC8ACE9" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFC8ACE9" />
           <GradientStop Color="#FFAC8FCF" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="DodecahedronFace5" Color="#FF625076">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFA083C1" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFA083C1" />
           <GradientStop Color="#FF8C73A9" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="IcosahedronFace0" Color="#FF7D6638">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFB59451" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFB59451" />
           <GradientStop Color="#FFA7884B" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="IcosahedronFace1" Color="#FF7D6638">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFB59451" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFB59451" />
           <GradientStop Color="#FFA7884B" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="IcosahedronFace2" Color="#FF7D6638">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFC19D56" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFC19D56" />
           <GradientStop Color="#FFA8894B" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="IcosahedronFace3" Color="#FF7D6638">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFC9A35A" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFC9A35A" />
           <GradientStop Color="#FFB08F4F" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="IcosahedronFace4" Color="#FF7D6638">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFF4CE84" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFF4CE84" />
           <GradientStop Color="#FFDAB366" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="IcosahedronFace5" Color="#FF7D6638">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFB59451" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFB59451" />
           <GradientStop Color="#FFA7884B" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="IcosahedronFace6" Color="#FF7D6638">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFF8D288" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFF8D288" />
           <GradientStop Color="#FFDFB86C" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="IcosahedronFace7" Color="#FF7D6638">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFB59451" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFB59451" />
           <GradientStop Color="#FFA7884B" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="IcosahedronFace8" Color="#FF7D6638">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFF7D187" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFF7D187" />
           <GradientStop Color="#FFDEB76A" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="IcosahedronFace9" Color="#FF7D6638">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFC7A259" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFC7A259" />
           <GradientStop Color="#FFAE8D4E" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -226,7 +226,7 @@
       <Dependency Name="Tetrahedron2" />
     </Polygon>
     <PointByCoordinates Name="Tetrahedron" Visible="false" X="-2.9" Y="0.45" />
-    <PointLabel Name="TetrahedronName" Style="Name" OffsetX="-52.3" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="TetrahedronName" Style="Name" OffsetX="-52.3" OffsetY="6">
       <Dependency Name="Tetrahedron" />
     </PointLabel>
     <PointByCoordinates Name="Cube0" Visible="false" X="-0.8956" Y="-0.528" />
@@ -256,7 +256,7 @@
       <Dependency Name="Cube5" />
     </Polygon>
     <PointByCoordinates Name="Cube" Visible="false" X="0" Y="-1.25" />
-    <PointLabel Name="CubeName" Style="Name" OffsetX="-19" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="CubeName" Style="Name" OffsetX="-19" OffsetY="6">
       <Dependency Name="Cube" />
     </PointLabel>
     <PointByCoordinates Name="Octahedron0" Visible="false" X="3.8047" Y="1.8802" />
@@ -286,7 +286,7 @@
       <Dependency Name="Octahedron4" />
     </Polygon>
     <PointByCoordinates Name="Octahedron" Visible="false" X="2.9" Y="0.45" />
-    <PointLabel Name="OctahedronName" Style="Name" OffsetX="-47.5" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="OctahedronName" Style="Name" OffsetX="-47.5" OffsetY="6">
       <Dependency Name="Octahedron" />
     </PointLabel>
     <PointByCoordinates Name="Dodecahedron0" Visible="false" X="-3.6141" Y="-2.1118" />
@@ -352,7 +352,7 @@
       <Dependency Name="Dodecahedron17" />
     </Polygon>
     <PointByCoordinates Name="Dodecahedron" Visible="false" X="-2.9" Y="-2.95" />
-    <PointLabel Name="DodecahedronName" Style="Name" OffsetX="-57" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="DodecahedronName" Style="Name" OffsetX="-57" OffsetY="6">
       <Dependency Name="Dodecahedron" />
     </PointLabel>
     <PointByCoordinates Name="Icosahedron0" Visible="false" X="2.544" Y="-1.9518" />
@@ -418,7 +418,7 @@
       <Dependency Name="Icosahedron9" />
     </Polygon>
     <PointByCoordinates Name="Icosahedron" Visible="false" X="2.9" Y="-2.95" />
-    <PointLabel Name="IcosahedronName" Style="Name" OffsetX="-52.3" OffsetY="6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="IcosahedronName" Style="Name" OffsetX="-52.3" OffsetY="6">
       <Dependency Name="Icosahedron" />
     </PointLabel>
     <Label Name="Title" Style="Heading" Text="The Five Platonic Solids" Pin="TopRight" OffsetX="16" OffsetY="25.5" WrapWidth="400" Backdrop="true" />

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-4.6" Top="4" Right="4.6" Bottom="-4.2">
     <Background>
-      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF0E2A5C" Offset="0" />
+      <LinearGradientBrush EndPoint="0,1">
+        <GradientStop Color="#FF0E2A5C" />
         <GradientStop Color="#FF1A4A8C" Offset="1" />
       </LinearGradientBrush>
     </Background>
@@ -18,8 +18,8 @@
     </TextStyle>
     <ShapeStyle Name="Ice" Color="#00000000" StrokeWidth="0.5">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFFFFFF" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFFFFFF" />
           <GradientStop Color="#FFD2E6FF" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -29,8 +29,8 @@
     <PointStyle Name="Node" Size="11" Fill="#FF4FA3FF" Color="#FFFFFFFF" StrokeWidth="2" />
     <ShapeStyle Name="Snow" Color="#00000000" StrokeWidth="0.5">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#FFFFFFFF" Offset="0" />
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#FFFFFFFF" />
           <GradientStop Color="#FFF2F7FD" Offset="0.55" />
           <GradientStop Color="#FF1A4A8C" Offset="0.77" />
         </LinearGradientBrush>

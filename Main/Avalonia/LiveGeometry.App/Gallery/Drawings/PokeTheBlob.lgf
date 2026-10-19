@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-3.0625" Top="2.625" Right="3.0625" Bottom="-2.0625">
     <Background>
-      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FFFFF4E6" Offset="0" />
+      <LinearGradientBrush EndPoint="0,1">
+        <GradientStop Color="#FFFFF4E6" />
         <GradientStop Color="#FFE8E0FF" Offset="1" />
       </LinearGradientBrush>
     </Background>
@@ -18,8 +18,8 @@
     </TextStyle>
     <ShapeStyle Name="Plate" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#FFFFFFFF" Offset="0" />
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#FFFFFFFF" />
           <GradientStop Color="#FFE9E5FA" Offset="0.8" />
           <GradientStop Color="#FFBDB3E8" Offset="1" />
         </LinearGradientBrush>
@@ -27,8 +27,8 @@
     </ShapeStyle>
     <ShapeStyle Name="Plate well" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#FFE6E2F8" Offset="0" />
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#FFE6E2F8" />
           <GradientStop Color="#FFFFFFFF" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -36,8 +36,8 @@
     <LineStyle Name="No line" Color="#00000000" />
     <ShapeStyle Name="Shadow" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#304E3F8F" Offset="0" />
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#304E3F8F" />
           <GradientStop Color="#664E3F8F" Offset="0.5" />
           <GradientStop Color="#304E3F8F" Offset="1" />
         </LinearGradientBrush>
@@ -48,8 +48,8 @@
     <LineStyle Name="Bubble shine" Color="#FFFFFFFF" StrokeWidth="3.5" />
     <ShapeStyle Name="Gummy" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#C4C6FBDD" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#C4C6FBDD" />
           <GradientStop Color="#C84DD0E1" Offset="0.5" />
           <GradientStop Color="#E000A68F" Offset="0.85" />
           <GradientStop Color="#EE00A68F" Offset="1" />
@@ -63,7 +63,7 @@
     <LineStyle Name="Face line" Color="#FF00574D" StrokeWidth="2.5" />
     <ShapeStyle Name="Eye white" Color="#FF00574D" StrokeWidth="2.5">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush EndPoint="0,1">
           <GradientStop Color="#FFFFFFFF" Offset="0.3" />
           <GradientStop Color="#FFE6E0F7" Offset="1" />
         </LinearGradientBrush>
@@ -75,8 +75,8 @@
     <ShapeStyle Name="Blush" Fill="#D9FF8AB5" Color="#00000000" />
     <ShapeStyle Name="Gum" Color="#FFB0144F" StrokeWidth="2">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFFB3D9" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFFB3D9" />
           <GradientStop Color="#FFFF4F9A" Offset="0.55" />
           <GradientStop Color="#FFD81B60" Offset="1" />
         </LinearGradientBrush>
@@ -84,7 +84,7 @@
     </ShapeStyle>
     <ShapeStyle Name="Bubble film" Color="#00FFFFFF" StrokeWidth="0">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush>
           <GradientStop Color="#CCFFFFFF" Offset="0.15" />
           <GradientStop Color="#33FFFFFF" Offset="0.32" />
           <GradientStop Color="#00FFFFFF" Offset="0.45" />

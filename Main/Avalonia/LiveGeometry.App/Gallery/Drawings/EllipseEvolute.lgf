@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-5.6" Top="3.8" Right="5.6" Bottom="-3.8" Grid="true" Axes="true" />
   <Styles>
     <PointStyle Name="Runner" Size="14" Fill="#FFFFEF00" Color="#FFA05C21" StrokeWidth="2" />
@@ -79,16 +79,16 @@
       <Dependency Name="M" />
       <Dependency Name="L" />
     </Segment>
-    <PointLabel Name="aName" Style="Name" OffsetX="8" OffsetY="4" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="aName" Style="Name" OffsetX="8" OffsetY="4">
       <Dependency Name="a" />
     </PointLabel>
-    <PointLabel Name="bName" Style="Name" OffsetX="10" OffsetY="-22" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="bName" Style="Name" OffsetX="10" OffsetY="-22">
       <Dependency Name="b" />
     </PointLabel>
-    <PointLabel Name="LName" Style="Name" OffsetX="8" OffsetY="-24" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LName" Style="Name" OffsetX="8" OffsetY="-24">
       <Dependency Name="L" />
     </PointLabel>
-    <PointLabel Name="MName" Style="Name" OffsetX="8" OffsetY="4" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="MName" Style="Name" OffsetX="8" OffsetY="4">
       <Dependency Name="M" />
     </PointLabel>
     <Label Name="Title" Style="Heading" Text="Ellipse and Its Evolute" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />

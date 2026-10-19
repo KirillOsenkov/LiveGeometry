@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-4.8541666667" Top="6.4791666667" Right="5.1458333333" Bottom="-8.6875" />
   <Styles>
     <LineStyle Name="4" Color="#FF000000">
@@ -103,13 +103,13 @@
     <PointOnFigure Name="h" Visible="false" Style="FreePoint" X="1.1041666665999956" Y="-3.8177649457706546" Parameter="0.494565217443479">
       <Dependency Name="Altitude" />
     </PointOnFigure>
-    <PointLabel Name="PointLabel490" OffsetX="7.9" OffsetY="-7.9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel490" OffsetX="7.9" OffsetY="-7.9">
       <Dependency Name="h" />
     </PointLabel>
     <PointOnFigure Name="a" Visible="false" Style="FreePoint" X="-0.07763020830884226" Y="-6.7187499995999955" Parameter="0.546250000010185">
       <Dependency Name="BA2" />
     </PointOnFigure>
-    <PointLabel Name="PointLabel491" OffsetX="-13.2" OffsetY="1.6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel491" OffsetX="-13.2" OffsetY="1.6">
       <Dependency Name="a" />
     </PointLabel>
     <LineTwoPoints Name="FG" Visible="false" Locked="true" Style="4">

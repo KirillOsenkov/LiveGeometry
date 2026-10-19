@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-1" Top="2.5" Right="4.5" Bottom="-2" />
   <Styles>
     <LineStyle Name="Ground" Color="#FF8A94A6" StrokeWidth="1.5" />
@@ -64,19 +64,19 @@
       <Dependency Name="TickPi" />
       <Dependency Name="π" />
     </Segment>
-    <PointLabel Name="Mark0" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Mark0" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2">
       <Dependency Name="0" />
     </PointLabel>
-    <PointLabel Name="Mark1" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Mark1" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2">
       <Dependency Name="1" />
     </PointLabel>
-    <PointLabel Name="Mark2" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Mark2" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2">
       <Dependency Name="2" />
     </PointLabel>
-    <PointLabel Name="Mark3" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Mark3" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2">
       <Dependency Name="3" />
     </PointLabel>
-    <PointLabel Name="MarkPi" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="MarkPi" Style="Mark" IsHitTestVisible="false" OffsetX="-4" OffsetY="2">
       <Dependency Name="π" />
     </PointLabel>
     <PointByCoordinates Name="C" Visible="false" X="x" Y="0.5">

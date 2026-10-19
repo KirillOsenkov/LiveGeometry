@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-5" Top="4.5" Right="5" Bottom="-4.5" />
   <Styles>
     <ShapeStyle Name="Wedge1" Fill="#FFF19D9D" Color="#FF2B3038" StrokeWidth="1.5">
@@ -205,118 +205,118 @@
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root2" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root2" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√2 " />
     </PointLabel>
     <PointByCoordinates Name="√3 " Visible="false" X="A.X + 0.146447 * (B.X - A.X) - 0.853553 * (B.Y - A.Y)" Y="A.Y + 0.146447 * (B.Y - A.Y) + 0.853553 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root3" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root3" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√3 " />
     </PointLabel>
     <PointByCoordinates Name="√4 " Visible="false" X="A.X + -0.346353 * (B.X - A.X) - 0.938104 * (B.Y - A.Y)" Y="A.Y + -0.346353 * (B.Y - A.Y) + 0.938104 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root4" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root4" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√4 " />
     </PointLabel>
     <PointByCoordinates Name="√5 " Visible="false" X="A.X + -0.815405 * (B.X - A.X) - 0.764928 * (B.Y - A.Y)" Y="A.Y + -0.815405 * (B.Y - A.Y) + 0.764928 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root5" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root5" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√5 " />
     </PointLabel>
     <PointByCoordinates Name="√6 " Visible="false" X="A.X + -1.157491 * (B.X - A.X) - 0.400268 * (B.Y - A.Y)" Y="A.Y + -1.157491 * (B.Y - A.Y) + 0.400268 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root6" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root6" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√6 " />
     </PointLabel>
     <PointByCoordinates Name="√7 " Visible="false" X="A.X + -1.3209 * (B.X - A.X) - -0.072276 * (B.Y - A.Y)" Y="A.Y + -1.3209 * (B.Y - A.Y) + -0.072276 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root7" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root7" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√7 " />
     </PointLabel>
     <PointByCoordinates Name="√8 " Visible="false" X="A.X + -1.293582 * (B.X - A.X) - -0.571529 * (B.Y - A.Y)" Y="A.Y + -1.293582 * (B.Y - A.Y) + -0.571529 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root8" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root8" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√8 " />
     </PointLabel>
     <PointByCoordinates Name="√9 " Visible="false" X="A.X + -1.091516 * (B.X - A.X) - -1.028879 * (B.Y - A.Y)" Y="A.Y + -1.091516 * (B.Y - A.Y) + -1.028879 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root9" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root9" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√9 " />
     </PointLabel>
     <PointByCoordinates Name="√10 " Visible="false" X="A.X + -0.748556 * (B.X - A.X) - -1.392718 * (B.Y - A.Y)" Y="A.Y + -0.748556 * (B.Y - A.Y) + -1.392718 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root10" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root10" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√10 " />
     </PointLabel>
     <PointByCoordinates Name="√11 " Visible="false" X="A.X + -0.30814 * (B.X - A.X) - -1.629432 * (B.Y - A.Y)" Y="A.Y + -0.30814 * (B.Y - A.Y) + -1.629432 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root11" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root11" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√11 " />
     </PointLabel>
     <PointByCoordinates Name="√12 " Visible="false" X="A.X + 0.183152 * (B.X - A.X) - -1.72234 * (B.Y - A.Y)" Y="A.Y + 0.183152 * (B.Y - A.Y) + -1.72234 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root12" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root12" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√12 " />
     </PointLabel>
     <PointByCoordinates Name="√13 " Visible="false" X="A.X + 0.680349 * (B.X - A.X) - -1.669469 * (B.Y - A.Y)" Y="A.Y + 0.680349 * (B.Y - A.Y) + -1.669469 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root13" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root13" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√13 " />
     </PointLabel>
     <PointByCoordinates Name="√14 " Visible="false" X="A.X + 1.143376 * (B.X - A.X) - -1.480774 * (B.Y - A.Y)" Y="A.Y + 1.143376 * (B.Y - A.Y) + -1.480774 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root14" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root14" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√14 " />
     </PointLabel>
     <PointByCoordinates Name="√15 " Visible="false" X="A.X + 1.53913 * (B.X - A.X) - -1.175194 * (B.Y - A.Y)" Y="A.Y + 1.53913 * (B.Y - A.Y) + -1.175194 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root15" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root15" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√15 " />
     </PointLabel>
     <PointByCoordinates Name="√16 " Visible="false" X="A.X + 1.842563 * (B.X - A.X) - -0.777792 * (B.Y - A.Y)" Y="A.Y + 1.842563 * (B.Y - A.Y) + -0.777792 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root16" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root16" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√16 " />
     </PointLabel>
     <PointByCoordinates Name="√17 " Visible="false" X="A.X + 2.037011 * (B.X - A.X) - -0.317151 * (B.Y - A.Y)" Y="A.Y + 2.037011 * (B.Y - A.Y) + -0.317151 * (B.X - A.X)">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointLabel Name="Root17" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Root17" Style="Root" IsHitTestVisible="false" OffsetX="-11" OffsetY="-9">
       <Dependency Name="√17 " />
     </PointLabel>
-    <PointLabel Name="LabelA" OffsetX="-16" OffsetY="-6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelA" OffsetX="-16" OffsetY="-6">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="LabelB" OffsetX="8" OffsetY="-4" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="LabelB" OffsetX="8" OffsetY="-4">
       <Dependency Name="B" />
     </PointLabel>
     <Label Name="Title" Style="Heading" Text="Spiral of Theodorus" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />

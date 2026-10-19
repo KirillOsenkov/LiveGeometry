@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-3.6739647634" Top="4.6276202418" Right="24.1038130146" Bottom="-6.4690232768" />
   <Scene Left="-5.25" Top="4.125" Right="9.25" Bottom="-4.6875" />
   <Scene Left="-2" Top="3.3125" Right="6" Bottom="-4.0625" />
@@ -9,8 +9,8 @@
     <LineStyle Name="Line" Color="#FF9E7416" />
     <ShapeStyle Name="GradientBrownOutline" Color="#FFA87B05">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFDFDF5" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFDFDF5" />
           <GradientStop Color="#FFF4EBB2" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -20,16 +20,16 @@
     </TextStyle>
     <ShapeStyle Name="1" Color="#FFA87B05">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFFFAC0" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFFFAC0" />
           <GradientStop Color="#FFFFB312" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="2" Color="#FFA87B05">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFF2EEBC" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFF2EEBC" />
           <GradientStop Color="#FFD69712" Offset="1" />
         </LinearGradientBrush>
       </Fill>

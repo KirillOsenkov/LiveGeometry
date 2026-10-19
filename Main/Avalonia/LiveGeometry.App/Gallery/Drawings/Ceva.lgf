@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-8.9541660515" Top="12.653377509" Right="7.640427403" Bottom="-12.5150892302" />
   <Styles>
     <LineStyle Name="13" Color="#FF0000FF" StrokeWidth="2" />
@@ -60,22 +60,22 @@
       <Dependency Name="B" />
       <Dependency Name="C" />
     </Polygon>
-    <PointLabel Name="PointLabel24" OffsetX="-2.1" OffsetY="-33" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel24" OffsetX="-2.1" OffsetY="-33">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel25" OffsetX="4.5" OffsetY="-31.8" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel25" OffsetX="4.5" OffsetY="-31.8">
       <Dependency Name="B" />
     </PointLabel>
-    <PointLabel Name="PointLabel26" OffsetX="3.5" OffsetY="8.3" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel26" OffsetX="3.5" OffsetY="8.3">
       <Dependency Name="C" />
     </PointLabel>
-    <PointLabel Name="PointLabel27" OffsetX="10.8" OffsetY="-12.1" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel27" OffsetX="10.8" OffsetY="-12.1">
       <Dependency Name="D" />
     </PointLabel>
-    <PointLabel Name="PointLabel28" OffsetX="-14.7" OffsetY="7.3" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel28" OffsetX="-14.7" OffsetY="7.3">
       <Dependency Name="E" />
     </PointLabel>
-    <PointLabel Name="PointLabel29" OffsetX="-1.5" OffsetY="-33" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel29" OffsetX="-1.5" OffsetY="-33">
       <Dependency Name="F" />
     </PointLabel>
     <Label Name="Title" Style="Heading" Text="Ceva's Theorem" Pin="TopRight" OffsetX="16" OffsetY="46.75" WrapWidth="400" Backdrop="true" />

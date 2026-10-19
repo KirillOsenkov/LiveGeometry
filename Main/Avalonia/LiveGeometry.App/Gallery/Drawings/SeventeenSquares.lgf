@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-2.9" Top="2.9" Right="2.9" Bottom="-2.9" />
   <Styles>
     <ShapeStyle Name="Box" Fill="#00FFFFFF" Color="#00FFFFFF" />

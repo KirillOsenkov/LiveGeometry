@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-1.5" Top="6" Right="9.5" Bottom="-2.5" />
   <Styles>
     <ShapeStyle Name="Rail" Fill="#FF6B4423" Color="#FF3E2612" StrokeWidth="2" />

@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-7" Top="4.5" Right="7" Bottom="-5.8" />
   <Styles>
     <ShapeStyle Name="Frame" Color="#FF2E1A0C" StrokeWidth="1.5">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF9C6B3C" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF9C6B3C" />
           <GradientStop Color="#FF4A2E16" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="Bezel" Color="#FF6B4F14">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFF2D98A" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFF2D98A" />
           <GradientStop Color="#FF9C7A2A" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="Face" Color="#FF8A6A3A">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFFFEF8" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFFFEF8" />
           <GradientStop Color="#FFEFE3C8" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -33,8 +33,8 @@
     </TextStyle>
     <ShapeStyle Name="Hand" Color="#FF101418">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF5A6B85" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF5A6B85" />
           <GradientStop Color="#FF1A2130" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -848,51 +848,51 @@
       <Dependency Name="Tick59Out" />
     </Segment>
     <PointByCoordinates Name="1" Visible="false" X="1.19" Y="2.0611" />
-    <PointLabel Name="Numeral1" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Numeral1" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14">
       <Dependency Name="1" />
     </PointLabel>
     <PointByCoordinates Name="2" Visible="false" X="2.0611" Y="1.19" />
-    <PointLabel Name="Numeral2" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Numeral2" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14">
       <Dependency Name="2" />
     </PointLabel>
     <PointByCoordinates Name="3" Visible="false" X="2.38" Y="0" />
-    <PointLabel Name="Numeral3" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Numeral3" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14">
       <Dependency Name="3" />
     </PointLabel>
     <PointByCoordinates Name="4" Visible="false" X="2.0611" Y="-1.19" />
-    <PointLabel Name="Numeral4" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Numeral4" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14">
       <Dependency Name="4" />
     </PointLabel>
     <PointByCoordinates Name="5" Visible="false" X="1.19" Y="-2.0611" />
-    <PointLabel Name="Numeral5" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Numeral5" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14">
       <Dependency Name="5" />
     </PointLabel>
     <PointByCoordinates Name="6" Visible="false" X="0" Y="-2.38" />
-    <PointLabel Name="Numeral6" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Numeral6" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14">
       <Dependency Name="6" />
     </PointLabel>
     <PointByCoordinates Name="7" Visible="false" X="-1.19" Y="-2.0611" />
-    <PointLabel Name="Numeral7" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Numeral7" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14">
       <Dependency Name="7" />
     </PointLabel>
     <PointByCoordinates Name="8" Visible="false" X="-2.0611" Y="-1.19" />
-    <PointLabel Name="Numeral8" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Numeral8" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14">
       <Dependency Name="8" />
     </PointLabel>
     <PointByCoordinates Name="9" Visible="false" X="-2.38" Y="-0" />
-    <PointLabel Name="Numeral9" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Numeral9" Style="Numeral" IsHitTestVisible="false" OffsetX="-5.5" OffsetY="-14">
       <Dependency Name="9" />
     </PointLabel>
     <PointByCoordinates Name="10" Visible="false" X="-2.0611" Y="1.19" />
-    <PointLabel Name="Numeral10" Style="Numeral" IsHitTestVisible="false" OffsetX="-11" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Numeral10" Style="Numeral" IsHitTestVisible="false" OffsetX="-11" OffsetY="-14">
       <Dependency Name="10" />
     </PointLabel>
     <PointByCoordinates Name="11" Visible="false" X="-1.19" Y="2.0611" />
-    <PointLabel Name="Numeral11" Style="Numeral" IsHitTestVisible="false" OffsetX="-11" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Numeral11" Style="Numeral" IsHitTestVisible="false" OffsetX="-11" OffsetY="-14">
       <Dependency Name="11" />
     </PointLabel>
     <PointByCoordinates Name="12" Visible="false" X="-0" Y="2.38" />
-    <PointLabel Name="Numeral12" Style="Numeral" IsHitTestVisible="false" OffsetX="-11" OffsetY="-14" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="Numeral12" Style="Numeral" IsHitTestVisible="false" OffsetX="-11" OffsetY="-14">
       <Dependency Name="12" />
     </PointLabel>
     <Slider Name="time" X="-6" Y="-5" Value="2.3" Maximum="12" />

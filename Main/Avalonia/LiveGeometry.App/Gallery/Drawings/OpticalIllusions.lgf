@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-10" Top="5" Right="10" Bottom="-5" />
   <Styles>
     <PointStyle Name="Handle" Size="11" Fill="#FFFFE066" Color="#FF806000" StrokeWidth="1.5" />

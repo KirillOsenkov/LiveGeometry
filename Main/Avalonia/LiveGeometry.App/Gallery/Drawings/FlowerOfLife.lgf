@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-4" Top="3.6" Right="4" Bottom="-3.6" />
   <Styles>
     <ShapeStyle Name="Petal" Fill="#2A2F7BD6" Color="#FF2F7BD6" StrokeWidth="1.2">

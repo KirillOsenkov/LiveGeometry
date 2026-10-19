@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-2.8" Top="2.1" Right="2.8" Bottom="-2.1">
     <Background>
-      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF1A0B33" Offset="0" />
+      <LinearGradientBrush EndPoint="0,1">
+        <GradientStop Color="#FF1A0B33" />
         <GradientStop Color="#FF2E1250" Offset="1" />
       </LinearGradientBrush>
     </Background>
@@ -17,8 +17,8 @@
     </TextStyle>
     <ShapeStyle Name="View" Color="#00000000" StrokeWidth="0.1">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#FF241850" Offset="0" />
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#FF241850" />
           <GradientStop Color="#FF0C0820" Offset="1" />
         </LinearGradientBrush>
       </Fill>

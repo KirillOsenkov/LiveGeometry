@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-1.9" Top="2.1" Right="3.2" Bottom="-2.65">
     <Background>
-      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF12467F" Offset="0" />
+      <LinearGradientBrush EndPoint="0,1">
+        <GradientStop Color="#FF12467F" />
         <GradientStop Color="#FF0A2754" Offset="0.55" />
         <GradientStop Color="#FF050F24" Offset="1" />
       </LinearGradientBrush>
@@ -20,8 +20,8 @@
     <TextStyle Name="SpinText" FontSize="14" Color="#FFFFC6EA" FontFamily="Segoe UI" />
     <ShapeStyle Name="Beam" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#14BFE4FF" Offset="0" />
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#14BFE4FF" />
           <GradientStop Color="#09BFE4FF" Offset="0.5" />
           <GradientStop Color="#00BFE4FF" Offset="1" />
         </LinearGradientBrush>
@@ -30,7 +30,7 @@
     <ShapeStyle Name="BellFill" Color="#4080E8FF" StrokeWidth="12">
       <Fill>
         <LinearGradientBrush StartPoint="0.3,0" EndPoint="0.7,1">
-          <GradientStop Color="#E8FFD6F1" Offset="0" />
+          <GradientStop Color="#E8FFD6F1" />
           <GradientStop Color="#C8F59BDD" Offset="0.5" />
           <GradientStop Color="#A88E68F0" Offset="1" />
         </LinearGradientBrush>
@@ -39,8 +39,8 @@
     <LineStyle Name="BellRim" Color="#F0FFE6F8" StrokeWidth="2.5" />
     <ShapeStyle Name="GonadFill" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#C0FF8BD8" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#C0FF8BD8" />
           <GradientStop Color="#C0B060F0" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -49,8 +49,8 @@
     <LineStyle Name="GonadInside" Color="#60FFD4F2" />
     <ShapeStyle Name="SheenFill" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#A0FFFFFF" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#A0FFFFFF" />
           <GradientStop Color="#10FFFFFF" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -63,8 +63,8 @@
     <LineStyle Name="Tentacle5" Color="#FFFFA8DA" StrokeWidth="3" />
     <ShapeStyle Name="Dial" Color="#A0FFB3E4" StrokeWidth="2" Dash="Dot">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#1CBFE4FF" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#1CBFE4FF" />
           <GradientStop Color="#05BFE4FF" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -73,8 +73,8 @@
     <LineStyle Name="DialArrow" Color="#C0FFB3E4" StrokeWidth="2" />
     <ShapeStyle Name="DialArrowHead" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#E0FFB3E4" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#E0FFB3E4" />
           <GradientStop Color="#E0FFB3E4" Offset="1" />
         </LinearGradientBrush>
       </Fill>

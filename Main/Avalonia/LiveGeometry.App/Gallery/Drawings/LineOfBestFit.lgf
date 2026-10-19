@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-1" Top="9" Right="10.5" Bottom="-1" Grid="true" Axes="true" />
   <Styles>
     <LineStyle Name="Line" Color="#FF2F7BD6" StrokeWidth="2.5" />

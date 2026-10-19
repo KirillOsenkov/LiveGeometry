@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-2.75" Top="1.625" Right="2.75" Bottom="-1.75">
     <Background>
-      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF140F3C" Offset="0" />
+      <LinearGradientBrush EndPoint="0,1">
+        <GradientStop Color="#FF140F3C" />
         <GradientStop Color="#FF2A1A5E" Offset="0.6" />
         <GradientStop Color="#FF3B1F6E" Offset="1" />
       </LinearGradientBrush>
@@ -20,8 +20,8 @@
     </TextStyle>
     <ShapeStyle Name="SlimeFill" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-          <GradientStop Color="#FFFF6EC7" Offset="0" />
+        <LinearGradientBrush EndPoint="1,0">
+          <GradientStop Color="#FFFF6EC7" />
           <GradientStop Color="#FFB45CF5" Offset="0.3" />
           <GradientStop Color="#FF7C4DFF" Offset="0.55" />
           <GradientStop Color="#FF4D8DFF" Offset="0.78" />
@@ -31,8 +31,8 @@
     </ShapeStyle>
     <ShapeStyle Name="SlimeShade" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#00190A50" Offset="0" />
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#00190A50" />
           <GradientStop Color="#00190A50" Offset="0.45" />
           <GradientStop Color="#40190A50" Offset="1" />
         </LinearGradientBrush>
@@ -42,16 +42,16 @@
     <LineStyle Name="NoLine" Color="#00FFFFFF" StrokeWidth="0.5" />
     <ShapeStyle Name="GlossFill" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#B3FFFFFF" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#B3FFFFFF" />
           <GradientStop Color="#26FFFFFF" Offset="1" />
         </LinearGradientBrush>
       </Fill>
     </ShapeStyle>
     <ShapeStyle Name="BubbleGlass" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#B3FFFFFF" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#B3FFFFFF" />
           <GradientStop Color="#40F0D8FF" Offset="0.5" />
           <GradientStop Color="#14FFFFFF" Offset="1" />
         </LinearGradientBrush>
@@ -61,8 +61,8 @@
     <LineStyle Name="BubbleRim" Color="#CCFFFFFF" StrokeWidth="1.5" />
     <ShapeStyle Name="DropFill" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFE0A6FF" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFE0A6FF" />
           <GradientStop Color="#FF7C4DFF" Offset="1" />
         </LinearGradientBrush>
       </Fill>

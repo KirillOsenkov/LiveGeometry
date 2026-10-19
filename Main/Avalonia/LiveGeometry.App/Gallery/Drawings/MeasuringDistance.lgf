@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-4.5" Top="3.55" Right="5" Bottom="-3.95">
     <Background>
-      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FFD2EFAA" Offset="0" />
+      <LinearGradientBrush EndPoint="0,1">
+        <GradientStop Color="#FFD2EFAA" />
         <GradientStop Color="#FF8DCB6C" Offset="1" />
       </LinearGradientBrush>
     </Background>
@@ -21,8 +21,8 @@
     </TextStyle>
     <ShapeStyle Name="Beach" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#FFF6E7BC" Offset="0" />
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#FFF6E7BC" />
           <GradientStop Color="#FFE3CB8F" Offset="1" />
         </LinearGradientBrush>
       </Fill>
@@ -30,8 +30,8 @@
     <LineStyle Name="Grass edge" Color="#FF78B556" StrokeWidth="1.5" />
     <ShapeStyle Name="Water" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#FF9BE2EE" Offset="0" />
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#FF9BE2EE" />
           <GradientStop Color="#FF2675A3" Offset="1" />
         </LinearGradientBrush>
       </Fill>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-7.5" Top="6.67" Right="7.5" Bottom="-5.22" />
   <Styles>
     <ShapeStyle Name="Ink" Fill="#FF2A3140" Color="#00000000">
@@ -8,16 +8,16 @@
     <LineStyle Name="NoLine" Color="#00FFFFFF" StrokeWidth="0.5" />
     <ShapeStyle Name="TFill" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFF7AD9E" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFF7AD9E" />
           <GradientStop Color="#FFEF5B3C" Offset="0.55" />
           <GradientStop Color="#FFCB4D33" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark>
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFFFAA99" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FFFFAA99" />
             <GradientStop Color="#FFFF7D62" Offset="0.55" />
             <GradientStop Color="#FFCC644E" Offset="1" />
           </LinearGradientBrush>
@@ -38,16 +38,16 @@
     </PointStyle>
     <ShapeStyle Name="HFill" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FF97C7F0" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FF97C7F0" />
           <GradientStop Color="#FF2F8FE0" Offset="0.55" />
           <GradientStop Color="#FF287ABE" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark>
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF99CAFF" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FF99CAFF" />
             <GradientStop Color="#FF62AEFF" Offset="0.55" />
             <GradientStop Color="#FF4E8BCC" Offset="1" />
           </LinearGradientBrush>
@@ -68,16 +68,16 @@
     </PointStyle>
     <ShapeStyle Name="EFill" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFC8AAF0" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFC8AAF0" />
           <GradientStop Color="#FF9256E0" Offset="0.55" />
           <GradientStop Color="#FF7C49BE" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark>
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFCEB4FF" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FFCEB4FF" />
             <GradientStop Color="#FFB38CFF" Offset="0.55" />
             <GradientStop Color="#FF8F70CC" Offset="1" />
           </LinearGradientBrush>

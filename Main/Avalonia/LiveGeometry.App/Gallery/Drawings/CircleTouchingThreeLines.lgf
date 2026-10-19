@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-20.9374999999" Top="5.2812500002" Right="19.0625000001" Bottom="-10.6979166664" />
   <Styles>
     <LineStyle Name="GreenLine" Color="#FF2E9E4F" />

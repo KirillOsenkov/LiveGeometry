@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-4.9895833333" Top="7.5729166667" Right="5.0104166667" Bottom="-7.59375" />
   <Styles>
     <PointStyle Name="1" Size="15" Fill="#FFFFFF00" Color="#FF000000">
@@ -107,28 +107,28 @@
       <Dependency Name="E" />
       <Dependency Name="H" />
     </Segment>
-    <PointLabel Name="PointLabel65" OffsetX="-7.8" OffsetY="11.5" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel65" OffsetX="-7.8" OffsetY="11.5">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel66" OffsetX="-1.2" OffsetY="11.5" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel66" OffsetX="-1.2" OffsetY="11.5">
       <Dependency Name="B" />
     </PointLabel>
-    <PointLabel Name="PointLabel67" OffsetX="5.5" OffsetY="-31.1" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel67" OffsetX="5.5" OffsetY="-31.1">
       <Dependency Name="C" />
     </PointLabel>
-    <PointLabel Name="PointLabel68" OffsetX="0.7" OffsetY="-33" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel68" OffsetX="0.7" OffsetY="-33">
       <Dependency Name="D" />
     </PointLabel>
-    <PointLabel Name="PointLabel69" OffsetX="-4.2" OffsetY="11.5" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel69" OffsetX="-4.2" OffsetY="11.5">
       <Dependency Name="E" />
     </PointLabel>
-    <PointLabel Name="PointLabel70" OffsetX="8.9" OffsetY="-25" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel70" OffsetX="8.9" OffsetY="-25">
       <Dependency Name="F" />
     </PointLabel>
-    <PointLabel Name="PointLabel71" OffsetX="-2.2" OffsetY="-33" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel71" OffsetX="-2.2" OffsetY="-33">
       <Dependency Name="G" />
     </PointLabel>
-    <PointLabel Name="PointLabel72" OffsetX="-21.4" OffsetY="-27.2" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel72" OffsetX="-21.4" OffsetY="-27.2">
       <Dependency Name="H" />
     </PointLabel>
     <Label Name="Title" Style="Heading" Text="Square in a Square" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />

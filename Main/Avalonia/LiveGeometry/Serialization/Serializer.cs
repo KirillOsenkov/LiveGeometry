@@ -338,17 +338,30 @@ public class BrushSerializer : ISerializer
         var gradient = brush as LinearGradientBrush;
         if (gradient != null)
         {
+            // the points and offsets ParseBrush takes without them are left out
             var invariant = System.Globalization.CultureInfo.InvariantCulture;
-            var element = new XElement(
-                "LinearGradientBrush",
-                new XAttribute("StartPoint", string.Format(invariant, "{0},{1}", gradient.StartPoint.Point.X, gradient.StartPoint.Point.Y)),
-                new XAttribute("EndPoint", string.Format(invariant, "{0},{1}", gradient.EndPoint.Point.X, gradient.EndPoint.Point.Y)));
+            var element = new XElement("LinearGradientBrush");
+            var start = gradient.StartPoint.Point;
+            var end = gradient.EndPoint.Point;
+            if (start.X != 0 || start.Y != 0)
+            {
+                element.Add(new XAttribute("StartPoint", string.Format(invariant, "{0},{1}", start.X, start.Y)));
+            }
+
+            if (end.X != 1 || end.Y != 1)
+            {
+                element.Add(new XAttribute("EndPoint", string.Format(invariant, "{0},{1}", end.X, end.Y)));
+            }
+
             foreach (var stop in gradient.GradientStops)
             {
-                element.Add(new XElement(
-                    "GradientStop",
-                    new XAttribute("Color", ColorText.ToArgbHex(stop.Color)),
-                    new XAttribute("Offset", stop.Offset.ToString(invariant))));
+                var stopElement = new XElement("GradientStop", new XAttribute("Color", ColorText.ToArgbHex(stop.Color)));
+                if (stop.Offset != 0)
+                {
+                    stopElement.Add(new XAttribute("Offset", stop.Offset.ToString(invariant)));
+                }
+
+                element.Add(stopElement);
             }
 
             return element;

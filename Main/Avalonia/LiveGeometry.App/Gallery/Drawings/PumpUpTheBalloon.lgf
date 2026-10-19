@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-3.4" Top="2.75" Right="2.9" Bottom="-2">
     <Background>
-      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF9FDCFF" Offset="0" />
+      <LinearGradientBrush EndPoint="0,1">
+        <GradientStop Color="#FF9FDCFF" />
         <GradientStop Color="#FFFFF6E0" Offset="1" />
       </LinearGradientBrush>
     </Background>
@@ -24,15 +24,15 @@
     </ShapeStyle>
     <ShapeStyle Name="Sun" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFFF59D" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFFF59D" />
           <GradientStop Color="#FFFFC107" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#00000000">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFFFF59D" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FFFFF59D" />
             <GradientStop Color="#FFFFC107" Offset="1" />
           </LinearGradientBrush>
         </Fill>
@@ -43,15 +43,15 @@
     </LineStyle>
     <ShapeStyle Name="Cloud" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#FFFFFFFF" Offset="0" />
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#FFFFFFFF" />
           <GradientStop Color="#FFEAF6FF" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#00000000">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#FFFFFFFF" Offset="0" />
+          <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="#FFFFFFFF" />
             <GradientStop Color="#FFEAF6FF" Offset="1" />
           </LinearGradientBrush>
         </Fill>
@@ -59,8 +59,8 @@
     </ShapeStyle>
     <ShapeStyle Name="Grass" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#FFA5DC78" Offset="0" />
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#FFA5DC78" />
           <GradientStop Color="#FF7CC862" Offset="0.006" />
           <GradientStop Color="#FF5BAF4C" Offset="0.05" />
           <GradientStop Color="#FFD3ECBF" Offset="0.16" />
@@ -69,8 +69,8 @@
       </Fill>
       <Dark Color="#00000000">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#FFA5DC78" Offset="0" />
+          <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="#FFA5DC78" />
             <GradientStop Color="#FF7CC862" Offset="0.006" />
             <GradientStop Color="#FF5BAF4C" Offset="0.05" />
             <GradientStop Color="#FF3F8E3C" Offset="0.3" />
@@ -81,16 +81,16 @@
     </ShapeStyle>
     <ShapeStyle Name="PumpMetal" Color="#FF37474F" StrokeWidth="1.5">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-          <GradientStop Color="#FF546E7A" Offset="0" />
+        <LinearGradientBrush EndPoint="1,0">
+          <GradientStop Color="#FF546E7A" />
           <GradientStop Color="#FFB0BEC5" Offset="0.35" />
           <GradientStop Color="#FF546E7A" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#FF37474F">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-            <GradientStop Color="#FF546E7A" Offset="0" />
+          <LinearGradientBrush EndPoint="1,0">
+            <GradientStop Color="#FF546E7A" />
             <GradientStop Color="#FFB0BEC5" Offset="0.35" />
             <GradientStop Color="#FF546E7A" Offset="1" />
           </LinearGradientBrush>
@@ -117,15 +117,15 @@
     </LineStyle>
     <ShapeStyle Name="GaugeFace" Color="#FF263238" StrokeWidth="2.5">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFFFFFF" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFFFFFF" />
           <GradientStop Color="#FFDDE6EA" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#FF263238">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFFFFFFF" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FFFFFFFF" />
             <GradientStop Color="#FFDDE6EA" Offset="1" />
           </LinearGradientBrush>
         </Fill>
@@ -142,16 +142,16 @@
     </PointStyle>
     <ShapeStyle Name="BalloonFill" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFF7C9C" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFF7C9C" />
           <GradientStop Color="#FFF02848" Offset="0.5" />
           <GradientStop Color="#FFC0001E" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#00000000">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFFF7C9C" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FFFF7C9C" />
             <GradientStop Color="#FFF02848" Offset="0.5" />
             <GradientStop Color="#FFC0001E" Offset="1" />
           </LinearGradientBrush>
@@ -172,15 +172,15 @@
     </PointStyle>
     <ShapeStyle Name="BurstFill" Color="#00000000">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-          <GradientStop Color="#FFFFF59D" Offset="0" />
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#FFFFF59D" />
           <GradientStop Color="#FFFF9100" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#00000000">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#FFFFF59D" Offset="0" />
+          <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="#FFFFF59D" />
             <GradientStop Color="#FFFF9100" Offset="1" />
           </LinearGradientBrush>
         </Fill>
@@ -740,7 +740,7 @@
       <Dependency Name="Ctr" />
       <Dependency Name="PopAfter" />
     </PointByCoordinates>
-    <PointLabel Name="PopWord" Style="PopText" OffsetX="-44" OffsetY="-30" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PopWord" Style="PopText" OffsetX="-44" OffsetY="-30">
       <Dependency Name="POP!" />
     </PointLabel>
     <PointByCoordinates Name="Shred1Corner1" Visible="false" X="Ctr.X + 0.788011 * (1.4 + 4 * (Air.X - 0.93)) - 0.132403 + PopAfter.X" Y="Ctr.Y + 0.615661 * (1.4 + 4 * (Air.X - 0.93)) - 0.074795">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-6" Top="5" Right="6" Bottom="-6" />
   <Styles>
     <ShapeStyle Name="Ring" IsFilled="false" Color="#FF8A94A6" StrokeWidth="1.5" />

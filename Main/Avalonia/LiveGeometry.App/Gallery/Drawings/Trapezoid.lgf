@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-7.8891737516" Top="30.3032748778" Right="27.5015122371" Bottom="-23.3725988717" />
   <Styles>
     <PointStyle Name="10" Size="8" Fill="#FFFF4F4F" Color="#FFFF0000" StrokeWidth="0.7" />
@@ -217,40 +217,40 @@
       <Dependency Name="J" />
       <Dependency Name="G" />
     </Segment>
-    <PointLabel Name="PointLabel80" OffsetX="-20" OffsetY="-28" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel80" OffsetX="-20" OffsetY="-28">
       <Dependency Name="A" />
     </PointLabel>
-    <PointLabel Name="PointLabel81" OffsetX="9" OffsetY="-21.6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel81" OffsetX="9" OffsetY="-21.6">
       <Dependency Name="B" />
     </PointLabel>
-    <PointLabel Name="PointLabel82" OffsetX="-14.5" OffsetY="-32.5" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel82" OffsetX="-14.5" OffsetY="-32.5">
       <Dependency Name="C" />
     </PointLabel>
-    <PointLabel Name="PointLabel83" OffsetX="-3.1" OffsetY="-33" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel83" OffsetX="-3.1" OffsetY="-33">
       <Dependency Name="D" />
     </PointLabel>
-    <PointLabel Name="PointLabel84" OffsetX="-2.4" OffsetY="-33" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel84" OffsetX="-2.4" OffsetY="-33">
       <Dependency Name="E" />
     </PointLabel>
-    <PointLabel Name="PointLabel85" OffsetX="-3.1" OffsetY="-33" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel85" OffsetX="-3.1" OffsetY="-33">
       <Dependency Name="H" />
     </PointLabel>
-    <PointLabel Name="PointLabel86" OffsetX="-2.3" OffsetY="-33" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel86" OffsetX="-2.3" OffsetY="-33">
       <Dependency Name="L" />
     </PointLabel>
-    <PointLabel Name="PointLabel87" OffsetX="-4.1" OffsetY="-33" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel87" OffsetX="-4.1" OffsetY="-33">
       <Dependency Name="M" />
     </PointLabel>
-    <PointLabel Name="PointLabel88" OffsetX="-2.1" OffsetY="-32" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel88" OffsetX="-2.1" OffsetY="-32">
       <Dependency Name="F" />
     </PointLabel>
-    <PointLabel Name="PointLabel89" OffsetX="-3.2" OffsetY="-32" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel89" OffsetX="-3.2" OffsetY="-32">
       <Dependency Name="G" />
     </PointLabel>
-    <PointLabel Name="PointLabel90" OffsetX="-7.5" OffsetY="-31.6" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel90" OffsetX="-7.5" OffsetY="-31.6">
       <Dependency Name="I" />
     </PointLabel>
-    <PointLabel Name="PointLabel91" OffsetX="5.8" OffsetY="-29.5" ShowName="true" ShowCoordinates="false">
+    <PointLabel Name="PointLabel91" OffsetX="5.8" OffsetY="-29.5">
       <Dependency Name="J" />
     </PointLabel>
     <Label Name="Title" Style="Heading" Text="A Trapezoid Surprise" Pin="TopRight" OffsetX="16" OffsetY="57.5" WrapWidth="400" Backdrop="true" />

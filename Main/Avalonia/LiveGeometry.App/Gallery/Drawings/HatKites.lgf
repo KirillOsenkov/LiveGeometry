@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Drawing Version="1" Creator="LiveGeometry.App">
+<Drawing Version="1">
   <Viewport Left="-6" Top="4" Right="6" Bottom="-4" />
   <Styles>
     <ShapeStyle Name="Hexagon" Fill="#00FFFFFF" Color="#FF9BA2AC" StrokeWidth="1.5">
@@ -13,15 +13,15 @@
     </LineStyle>
     <ShapeStyle Name="Kite1" Color="#C0FFFFFF">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFFA375" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFFA375" />
           <GradientStop Color="#FFFF7448" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#90FFFFFF">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFFFD27A" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FFFFD27A" />
             <GradientStop Color="#FFC0530A" Offset="1" />
           </LinearGradientBrush>
         </Fill>
@@ -29,15 +29,15 @@
     </ShapeStyle>
     <ShapeStyle Name="Kite2" Color="#C0FFFFFF">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFFE89A" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFFE89A" />
           <GradientStop Color="#FFF5BE3C" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#90FFFFFF">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFFFF2A8" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FFFFF2A8" />
             <GradientStop Color="#FF9C7A00" Offset="1" />
           </LinearGradientBrush>
         </Fill>
@@ -45,15 +45,15 @@
     </ShapeStyle>
     <ShapeStyle Name="Kite3" Color="#C0FFFFFF">
       <Fill>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#FFFFB8C0" Offset="0" />
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFFB8C0" />
           <GradientStop Color="#FFF07A8C" Offset="1" />
         </LinearGradientBrush>
       </Fill>
       <Dark Color="#90FFFFFF">
         <Fill>
-          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FFFFB8D0" Offset="0" />
+          <LinearGradientBrush>
+            <GradientStop Color="#FFFFB8D0" />
             <GradientStop Color="#FFA02858" Offset="1" />
           </LinearGradientBrush>
         </Fill>

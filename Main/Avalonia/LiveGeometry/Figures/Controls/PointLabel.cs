@@ -235,8 +235,17 @@ public class PointLabel : NameLabel
     public override void WriteXml(System.Xml.XmlWriter writer)
     {
         base.WriteXml(writer);
-        writer.WriteAttributeBool("ShowName", ShowName);
-        writer.WriteAttributeBool("ShowCoordinates", ShowCoordinates);
+
+        // only where they differ from what ReadXml takes without them
+        if (!ShowName)
+        {
+            writer.WriteAttributeBool("ShowName", false);
+        }
+
+        if (ShowCoordinates)
+        {
+            writer.WriteAttributeBool("ShowCoordinates", true);
+        }
     }
 
     [PropertyGridVisible]
