@@ -110,12 +110,14 @@ public class DilatedPoint : PointBase, IPoint, ITiedValues, IConditionalProperti
                 return null;
             }
 
-            var factor = IsRatio
-                ? ConstructionText.Length(Dependencies[2]) + " / " + ConstructionText.Length(Dependencies[3])
-                : ConstructionText.Length(FactorSource);
-            return "of " + ConstructionText.Of(Source) + " from " + ConstructionText.Of(Center) + " by " + factor;
+            return "of " + ConstructionText.Of(Source) + " from " + ConstructionText.Of(Center) + " by " + FactorText;
         }
     }
+
+    /// <summary>The factor as the construction says it: 2 (typed), a (a slider), AB / CD (a ratio)</summary>
+    public string FactorText => IsRatio
+        ? ConstructionText.Length(Dependencies[2]) + " / " + ConstructionText.Length(Dependencies[3])
+        : ConstructionText.Length(FactorSource);
 
     protected override Shape CreateShape()
     {
@@ -178,6 +180,11 @@ public class DilatedPoint : PointBase, IPoint, ITiedValues, IConditionalProperti
     public bool Detach(string name)
     {
         return this.IsTied(name) && TieTo(name, Number.CreateAuxiliary(Drawing, Factor));
+    }
+
+    public string DescribeValue(string name)
+    {
+        return "Dilation factor";
     }
 
     #endregion

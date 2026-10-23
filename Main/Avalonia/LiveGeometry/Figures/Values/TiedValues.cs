@@ -31,7 +31,21 @@ public interface ITiedValues : IFigure
 
     /// <summary>The way back: a typed value again, at the value it has now; false when it is typed already</summary>
     bool Detach(string name);
+
+    /// <summary>
+    /// What the value is to this figure, as the kind of the Number that holds it: "Rotation
+    /// angle", "Translation distance", "Dilation factor", "Fixed length" (the Figure List
+    /// said "Number n1" of every one of them)
+    /// </summary>
+    string DescribeValue(string name);
 }
+
+/// <summary>
+/// What a <see cref="Number"/> is to the figures that take it (<see cref="TiedValues.RoleOf"/>):
+/// its kind in words, whether it is an angle (said in degrees), and whose it is, the words
+/// after its value in its construction (" of ABC about O", " of line g")
+/// </summary>
+public record TiedValueRole(string Kind, bool IsAngle, string Subject);
 
 public static class TiedValues
 {
@@ -40,6 +54,144 @@ public static class TiedValues
     {
         var source = figure.GetSource(name);
         return source != null && !(source is Number);
+    }
+
+    /// <summary>Whether the value named is an angle, in degrees: the angle of a rotation or a line, the direction of a translation</summary>
+    public static bool IsAngleValue(string name)
+    {
+        return name == "Angle" || name == "Direction";
+    }
+
+    /// <summary>
+    /// What the number is to the figures built on it, when every one of them takes it as the
+    /// same value (the vertices of one rotated triangle share their angle): null for a
+    /// number nothing takes so, or one an expression reads as well
+    /// </summary>
+    public static TiedValueRole RoleOf(Number number)
+    {
+        string kind = null;
+        bool isAngle = false;
+        var owners = new List<ITiedValues>();
+        foreach (var dependent in number.Dependents.Distinct())
+        {
+            if (dependent is not ITiedValues values)
+            {
+                return null;
+            }
+
+            var name = values.TiedValueNames.FirstOrDefault(candidate => values.GetSource(candidate) == number);
+            var described = name == null ? null : values.DescribeValue(name);
+            if (described == null || (kind != null && described != kind))
+            {
+                return null;
+            }
+
+            kind = described;
+            isAngle = IsAngleValue(name);
+            owners.Add(values);
+        }
+
+        return kind == null ? null : new TiedValueRole(kind, isAngle, Subject(owners));
+    }
+
+    /// <summary>
+    /// Whose the value is: the figure transformed with its center (" of ABC about O"), the
+    /// line at the angle, the segment whose length or direction is fixed
+    /// </summary>
+    static string Subject(List<ITiedValues> owners)
+    {
+        switch (owners[0])
+        {
+            case LineAtAngle line:
+                return " of " + ConstructionText.Of(line);
+            case BezierPath path:
+                return " of " + ConstructionText.Of(path);
+            case TranslatedPoint end when end.IsDistanceFree || end.IsDirectionFree:
+                // a fixed length or direction: the segment from the pivot to the end, if drawn
+                var pivot = end.Source;
+                var drawn = pivot == null ? null : end.Drawing?.Figures.FindLine(pivot, end);
+                return drawn != null
+                    ? " of " + ConstructionText.Of(drawn)
+                    : " of " + ConstructionText.Of(end) + " from " + ConstructionText.Of(pivot);
+            default:
+                return FigureTransformation.OfPoints(owners.Cast<IFigure>().ToList())?.DescribeSubject() ?? "";
+        }
+    }
+
+    /// <summary>
+    /// The rows of the figure's tied values, as a panel or another figure's page shows them
+    /// (<see cref="TiedValuesPanel"/>, the page of a figure that is the image of a
+    /// transformation): the figure's own, so an edit is an undo step on the figure
+    /// </summary>
+    public static IEnumerable<IValueProvider> Rows(ITiedValues values)
+    {
+        return PropertyDiscoveryStrategy.GetValuesFromProperties(values, values.TiedValueNames.ToArray());
+    }
+
+    /// <summary>
+    /// The buttons under those rows, each in the box of its value's row: "Type the ..." for
+    /// a value taken from a figure (<see cref="ITiedValues.Detach"/>), "Show the ... on the
+    /// drawing" for one held by a hidden Number (<see cref="ShowNumber"/>)
+    /// </summary>
+    /// <param name="refresh">Shows the page again after a button changed what the rows are</param>
+    public static IEnumerable<IOperationDescription> Buttons(ITiedValues values, Action refresh)
+    {
+        foreach (var name in values.TiedValueNames)
+        {
+            string valueName = name;
+            // in the box of the value's row, right under it (Distance, Direction)
+            var group = values.GetType().GetProperty(name)?.GetAttribute<PropertyGridGroupAttribute>()?.Name;
+            if (values.IsTied(name))
+            {
+                yield return new DelegateOperation(
+                    UntieVerb(name),
+                    "Type the " + name.ToLowerInvariant(),
+                    PropertyGridIcon.Pencil,
+                    () =>
+                    {
+                        if (values.Detach(valueName))
+                        {
+                            refresh();
+                        }
+                    },
+                    group);
+            }
+            else if (values.GetSource(name) is Number number && !number.Visible)
+            {
+                yield return new DelegateOperation(
+                    "Show" + name,
+                    "Show the " + name.ToLowerInvariant() + " on the drawing",
+                    PropertyGridIcon.Eye,
+                    () =>
+                    {
+                        ShowNumber(number);
+                        refresh();
+                    },
+                    group);
+            }
+        }
+    }
+
+    /// <summary>
+    /// The number's caption ("a = 45") onto the paper, one undo step: a helper made for its
+    /// figure becomes a figure of its own first, named as the Number tool names one (a, b,
+    /// c), so that it stays when its figure goes and can be read in a formula by a name that
+    /// says it is the user's
+    /// </summary>
+    public static void ShowNumber(Number number)
+    {
+        var drawing = number.Drawing;
+        var actionManager = drawing.ActionManager;
+        using (Transaction.Create(actionManager, delayed: false))
+        {
+            if (number.Auxiliary)
+            {
+                Actions.SetProperty(actionManager, new PropertyValue(nameof(FigureBase.Auxiliary), number), false);
+                Actions.SetProperty(actionManager, new PropertyValue(nameof(IFigure.Name), number), FigureBase.GenerateLetterName(number, "a", null));
+            }
+
+            Actions.SetProperty(actionManager, new PropertyValue(nameof(IFigure.Visible), number), true);
+        }
     }
 
     /// <summary>

@@ -1260,6 +1260,11 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
         return true;
     }
 
+    public string DescribeValue(string name)
+    {
+        return "Tension";
+    }
+
     #endregion
 
     #region Anchors smooth or sharp

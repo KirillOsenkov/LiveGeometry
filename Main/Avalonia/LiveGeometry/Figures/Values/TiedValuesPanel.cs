@@ -26,25 +26,15 @@ public class TiedValuesPanel : ICustomPropertyProvider, ICustomMethodProvider
 
     public IEnumerable<IValueProvider> GetProperties()
     {
-        return PropertyDiscoveryStrategy.GetValuesFromProperties(Values, Values.TiedValueNames.ToArray());
+        return TiedValues.Rows(Values);
     }
 
     public IEnumerable<IOperationDescription> GetMethods()
     {
-        foreach (var name in Values.TiedValueNames)
+        // the row becomes editable, or a number shows: the panel is shown again for that
+        foreach (var button in TiedValues.Buttons(Values, () => Values.Drawing.RaiseDisplayProperties(this)))
         {
-            if (Values.IsTied(name))
-            {
-                string valueName = name;
-                // in the box of the value's row, right under it (Distance, Direction)
-                var group = Values.GetType().GetProperty(name)?.GetAttribute<PropertyGridGroupAttribute>()?.Name;
-                yield return new DelegateOperation(
-                    TiedValues.UntieVerb(name),
-                    "Type the " + name.ToLowerInvariant(),
-                    PropertyGridIcon.Pencil,
-                    () => Untie(valueName),
-                    group);
-            }
+            yield return button;
         }
 
         // a line at an angle: Horizontal and Vertical under its angle, as a segment's panel
@@ -75,15 +65,6 @@ public class TiedValuesPanel : ICustomPropertyProvider, ICustomMethodProvider
         }
 
         yield return MethodDescription.Get<TiedValuesPanel>(nameof(OK));
-    }
-
-    // the row becomes editable: the panel is shown again for that
-    void Untie(string name)
-    {
-        if (Values.Detach(name))
-        {
-            Values.Drawing.RaiseDisplayProperties(this);
-        }
     }
 
     void Align(LineAtAngle line, double axis)

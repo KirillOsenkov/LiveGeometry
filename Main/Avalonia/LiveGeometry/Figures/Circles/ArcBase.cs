@@ -41,7 +41,8 @@ public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthPro
                 return null;
             }
 
-            return "with center " + ConstructionText.Of(Dependencies[0])
+            return FigureTransformation.Describe(this)
+                ?? "with center " + ConstructionText.Of(Dependencies[0])
                 + " from " + ConstructionText.Of(Dependencies[BeginPointIndex])
                 + " to " + ConstructionText.Of(Dependencies[EndPointIndex]);
         }

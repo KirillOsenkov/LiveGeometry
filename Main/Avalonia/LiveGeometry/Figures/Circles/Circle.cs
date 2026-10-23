@@ -18,7 +18,8 @@ public class Circle : CircleBase, IShapeWithInterior
                 return null;
             }
 
-            return "with center " + ConstructionText.Of(Dependencies[0]) + " through " + ConstructionText.Of(Dependencies[1]);
+            return FigureTransformation.Describe(this)
+                ?? "with center " + ConstructionText.Of(Dependencies[0]) + " through " + ConstructionText.Of(Dependencies[1]);
         }
     }
 

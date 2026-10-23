@@ -201,5 +201,11 @@ public class LineAtAngle : LineBase, ILine, ITiedValues, IConditionalProperties
         return this.IsTied(name) && TieTo(name, Number.CreateAuxiliary(Drawing, Angle));
     }
 
+    /// <summary>"Angle n1 = 30° of line g": the line says the rest</summary>
+    public string DescribeValue(string name)
+    {
+        return "Angle";
+    }
+
     #endregion
 }

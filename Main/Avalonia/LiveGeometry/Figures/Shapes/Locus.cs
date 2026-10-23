@@ -12,7 +12,7 @@ public class Locus : Curve, ILinearFigure
     /// <summary>Numbered (Locus1): "Locus of P as Q moves on circle c" says which</summary>
     protected override bool NamedByConstruction => true;
 
-    /// <summary>"of P as Q moves on circle c"</summary>
+    /// <summary>"of P as Q moves on circle c"; a traced image says its transformation, "inversion of line g in circle k"</summary>
     public override string Construction
     {
         get
@@ -20,6 +20,12 @@ public class Locus : Curve, ILinearFigure
             if (mDependencies.Count < 2)
             {
                 return null;
+            }
+
+            var image = FigureTransformation.Describe(this);
+            if (image != null)
+            {
+                return image;
             }
 
             var sliding = mDependencies[1];

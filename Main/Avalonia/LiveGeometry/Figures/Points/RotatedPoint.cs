@@ -160,5 +160,10 @@ public class RotatedPoint : PointBase, IPoint, ITiedValues, IConditionalProperti
         return this.IsTied(name) && TieTo(name, Number.CreateAuxiliary(Drawing, Angle));
     }
 
+    public string DescribeValue(string name)
+    {
+        return "Rotation angle";
+    }
+
     #endregion
 }

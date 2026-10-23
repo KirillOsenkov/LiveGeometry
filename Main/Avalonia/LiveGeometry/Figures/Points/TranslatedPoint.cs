@@ -408,21 +408,22 @@ public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalPrope
     /// "of A by vector u", "of A by 3 at 30°", "of A along line g" (a free distance), "of
     /// A by a" (a free direction)
     /// </summary>
-    public override string Construction
+    public override string Construction => Source == null ? null : "of " + ConstructionText.Of(Source) + MotionText;
+
+    /// <summary>
+    /// How far and which way, the words after "of A": " by vector u", " by 3 at 30°", "
+    /// along line g" (a free distance), " by a" (a free direction); empty with both free
+    /// </summary>
+    public string MotionText
     {
         get
         {
-            if (Source == null)
-            {
-                return null;
-            }
-
-            var result = "of " + ConstructionText.Of(Source);
+            var result = "";
             var distance = DistanceSource;
             var direction = DirectionSource;
             if (distance != null && distance == direction)
             {
-                return result + " by " + ConstructionText.Of(distance);
+                return " by " + ConstructionText.Of(distance);
             }
 
             if (distance != null)
@@ -627,6 +628,20 @@ public class TranslatedPoint : PointBase, IPoint, ITiedValues, IConditionalPrope
 
         double value = QuantityOf(name) == distanceQuantity ? DistanceValue : DirectionRadians.ToDegrees();
         return TieTo(name, Number.CreateAuxiliary(Drawing, value));
+    }
+
+    /// <summary>
+    /// With the other quantity free the point is a segment's end held at a length or along
+    /// a direction (Fix length, Fix direction); with both held it is the image of a translation
+    /// </summary>
+    public string DescribeValue(string name)
+    {
+        if (name == nameof(Distance))
+        {
+            return IsDirectionFree ? "Fixed length" : "Translation distance";
+        }
+
+        return IsDistanceFree ? "Fixed direction" : "Translation direction";
     }
 
     /// <summary>

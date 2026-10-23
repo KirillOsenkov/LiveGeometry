@@ -413,13 +413,28 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         return Name;
     }
 
-    protected override string Kind => "Number";
+    /// <summary>
+    /// What the number is to the figures that take it, when they all take it as the same
+    /// value: "Rotation angle", "Fixed length" (<see cref="TiedValues.RoleOf"/>); else
+    /// "Number". The name stays n1: it is what a formula says.
+    /// </summary>
+    protected override string Kind => TiedValues.RoleOf(this)?.Kind ?? "Number";
 
     /// <summary>A number goes by its name: "radius n1"</summary>
     public override string Noun => null;
 
-    /// <summary>"= 3", or "= d.ArcLength + f.ArcLength" for a formula</summary>
-    public override string Construction => "= " + (IsTyped ? ConstructionText.Number(Value) : Expression.Text);
+    /// <summary>"= 3", "= 45° of ABC about O" (a rotation's angle), or "= d.ArcLength + f.ArcLength" for a formula</summary>
+    public override string Construction
+    {
+        get
+        {
+            var role = TiedValues.RoleOf(this);
+            var value = IsTyped
+                ? ConstructionText.Number(Value) + (role != null && role.IsAngle ? "°" : "")
+                : Expression.Text;
+            return "= " + value + (role?.Subject ?? "");
+        }
+    }
 
     #endregion
 

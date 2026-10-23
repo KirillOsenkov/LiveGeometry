@@ -1788,6 +1788,32 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   starts or the tool stops; then the typed values become the tool's defaults
   (`TakeDefaultsFrom`). The pre-create panels stay (Line at Angle's angle, Rotate's and
   Dilate's dialogs, Translate's steps): OK in the post panel goes back to them.
+  **What a Number is to its figures** (2026-10-22): the helper Number stays n1 (what a
+  formula says), but its `Kind` and `Construction` say its role: each owner says it
+  (`ITiedValues.DescribeValue`: "Rotation angle", "Translation distance" / "direction",
+  "Dilation factor", "Angle" for a line at an angle, "Fixed length" / "Fixed direction"
+  for a `TranslatedPoint` with the other quantity free, "Tension"), and
+  `TiedValues.RoleOf` takes it when every dependent takes the number as the same value
+  (none when an expression reads it too: then "Number"), so the Figure List reads
+  "Rotation angle n₁ = 45° of triangle ABC about O", "Fixed length n₅ = 4 of segment DE"
+  (the degree sign from `IsAngleValue`; the subject from `FigureTransformation` or the
+  segment the end is on). A user's own number (a, from the Number tool) gets the role
+  too once only a transformation takes it. **A figure that is the image of a
+  transformation** (`Figures/Transformations/FigureTransformation.cs`): a plain polygon,
+  segment, circle, path or traced locus on points that are all rotated, translated,
+  dilated or reflected by the same sources (the `Siblings` test; a locus only when its
+  sliding point is the Transformer's auxiliary one). Its construction line says it,
+  "rotation of triangle ABC about O by 45°" (the default `FigureBase.Construction`;
+  Circle, CircleByRadius, Ellipse, ArcBase and Locus put it before their own words), the
+  source found as the figure on exactly the pre-images (`FindFigureOn`, a path also by a
+  subset: its handles may be offsets), else the points by name when three or fewer. Its
+  page gets the transformation's rows and buttons hoisted from one of its points
+  (`PropertyGrid.CreateObjectControls`, after the Definition rows, before the
+  quantities: `TiedValues.Rows`/`Buttons`, the same the `TiedValuesPanel` shows), since
+  the points share their sources an edit through one moves the whole image. A value held
+  by a hidden Number has "Show the angle on the drawing" (`TiedValues.ShowNumber`, one
+  undo step: Auxiliary off, a letter name as the Number tool gives, Visible), there and
+  in the panel after the tool. An image of an image shows the last transformation only.
 - **TranslatedPoint** (`Figures/Points/TranslatedPoint.cs`): distance and direction are each
   *tied* to a figure (vector, length/angle provider, `ILine` as it points, a Number) or *free*
   (the parameter dragging changes); both are tied values (above), `SetSource` does the swap

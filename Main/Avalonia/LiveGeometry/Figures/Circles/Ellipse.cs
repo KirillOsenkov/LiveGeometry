@@ -16,7 +16,8 @@ public class Ellipse : EllipseBase, IShapeWithInterior
                 return null;
             }
 
-            return "with center " + ConstructionText.Of(Dependencies[0])
+            return FigureTransformation.Describe(this)
+                ?? "with center " + ConstructionText.Of(Dependencies[0])
                 + " and axes to " + ConstructionText.Of(Dependencies[1])
                 + " and " + ConstructionText.Of(Dependencies[2]);
         }

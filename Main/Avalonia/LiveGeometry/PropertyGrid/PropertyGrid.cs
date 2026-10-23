@@ -797,8 +797,27 @@ public partial class PropertyGrid : StackPanel
             .Except(headerRows)
             .Select(p => CreatePropertyEditorControl(p, editableObject, ActionManager))
             .Where(c => c != null).ToArray();
-        // what can be measured of a figure, after the rows that define it (a control without
-        // a section of its own is Definition, and comes after the rows that came first)
+        var currentMethods = GetCallableMethods(editableObject);
+
+        // the values of the transformation a figure is the image of (the angle of the
+        // rotation that made this triangle), after the rows that define it (a control
+        // without a section of its own is Definition, and comes after the rows that came
+        // first): the rows and buttons of one of its points, which share their sources with
+        // the others, so an edit through them is an undo step on the point that moves the
+        // whole image
+        var image = editableObject as IFigure;
+        var transformation = FigureTransformation.Of(image);
+        if (transformation?.Values != null)
+        {
+            var values = transformation.Values;
+            var transformationRows = TiedValues.Rows(values)
+                .Select(p => CreatePropertyEditorControl(p, editableObject, ActionManager))
+                .Where(c => c != null);
+            currentEditors = currentEditors.Concat(transformationRows).ToArray();
+            currentMethods = currentMethods.Concat(TiedValues.Buttons(values, () => image.Drawing.RaiseDisplayProperties(image)));
+        }
+
+        // what can be measured of a figure
         var quantities = editableObject is IFigure measured ? FigureQuantities.Of(measured) : new FigureQuantity[0];
         if (quantities.Count > 0)
         {
@@ -807,7 +826,6 @@ public partial class PropertyGrid : StackPanel
         }
 
         CurrentEditors = currentEditors;
-        var currentMethods = GetCallableMethods(editableObject);
         var currentMethodButtons = currentMethods
             .Select(m => CreateMethodCallerControl(m, editableObject)).ToArray();
         liveButtons = currentMethodButtons

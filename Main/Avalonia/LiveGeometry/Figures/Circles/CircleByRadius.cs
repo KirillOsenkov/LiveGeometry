@@ -37,7 +37,8 @@ public class CircleByRadius : CircleBase, IShapeWithInterior
             var radius = Dependencies.Count > 2
                 ? ConstructionText.Points(Dependencies[0], Dependencies[1])
                 : ConstructionText.Length(Dependencies[0]);
-            return "with center " + ConstructionText.Of(Dependencies[Dependencies.Count - 1]) + " and radius " + radius;
+            return FigureTransformation.Describe(this)
+                ?? "with center " + ConstructionText.Of(Dependencies[Dependencies.Count - 1]) + " and radius " + radius;
         }
     }
 

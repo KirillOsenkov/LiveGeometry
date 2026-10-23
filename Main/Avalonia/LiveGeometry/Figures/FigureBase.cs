@@ -596,9 +596,12 @@ public abstract partial class FigureBase :
     /// How the figure is built, the words that follow its <see cref="Title"/>: "of CD" (a
     /// midpoint), "on circle k", "to line AB through E". Null where the title says it all
     /// (segment AB, a free point). The Figure List shows it after the title, faded, and
-    /// the property grid under the title.
+    /// the property grid under the title. A figure that is the image of a transformation
+    /// (a polygon on rotated points: nothing of its own says so) says that, "rotation of
+    /// ABC about O by 45°" (<see cref="FigureTransformation"/>); a kind with words of its
+    /// own that can be an image (a circle) puts the transformation first itself.
     /// </summary>
-    public virtual string Construction => null;
+    public virtual string Construction => FigureTransformation.Describe(this);
 
     /// <summary>
     /// The <see cref="Construction"/> under the title of the figure's page; null where a row
