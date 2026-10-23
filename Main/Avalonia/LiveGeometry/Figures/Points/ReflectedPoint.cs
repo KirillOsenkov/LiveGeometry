@@ -5,12 +5,10 @@ namespace LiveGeometry;
 
 public class ReflectedPoint : PointBase, IPoint
 {
-    [PropertyGridVisible]
-    [PropertyGridName("Reflection Of ")]
+    // (not rows of the grid: a figure-typed row is a nested grid with that figure's whole
+    // page in it, and the construction line says both)
     public IFigure Source => Dependencies.ElementAt(0);
 
-    [PropertyGridVisible]
-    [PropertyGridName("Reflected About ")]
     public IFigure Mirror => Dependencies.ElementAt(1);
 
     /// <summary>A reflection in a circle is an inversion</summary>

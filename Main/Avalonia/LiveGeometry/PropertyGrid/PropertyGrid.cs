@@ -276,6 +276,11 @@ public partial class PropertyGrid : StackPanel
         // refresh posted on a move can arrive after the grid was emptied or changed)
         CurrentProperties = null;
         CurrentEditors = null;
+        if (hoistedValues != null)
+        {
+            hoistedValues.PropertyChanged -= HoistedValuesPropertyChanged;
+            hoistedValues = null;
+        }
         tabSwitcher = null;
         tabPages.Clear();
         if (Selection == null)
@@ -815,6 +820,14 @@ public partial class PropertyGrid : StackPanel
                 .Where(c => c != null);
             currentEditors = currentEditors.Concat(transformationRows).ToArray();
             currentMethods = currentMethods.Concat(TiedValues.Buttons(values, () => image.Drawing.RaiseDisplayProperties(image)));
+
+            // the image says the point's values in its header ("by 45°"), and the point,
+            // not the image, says when they change
+            hoistedValues = values as INotifyPropertyChanged;
+            if (hoistedValues != null)
+            {
+                hoistedValues.PropertyChanged += HoistedValuesPropertyChanged;
+            }
         }
 
         // what can be measured of a figure
@@ -838,6 +851,17 @@ public partial class PropertyGrid : StackPanel
         UpdateLiveButtons();
 
         return currentEditors.Concat(currentMethodButtons).ToArray();
+    }
+
+    /// <summary>The point whose tied-value rows the page borrowed (the image of a transformation); null when none</summary>
+    INotifyPropertyChanged hoistedValues;
+
+    void HoistedValuesPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(e.PropertyName))
+        {
+            RefreshNumbers();
+        }
     }
 
     /// <summary>The buttons that show and hide as their object changes (<see cref="PropertyGridLiveConditionAttribute"/>)</summary>

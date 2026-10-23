@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Avalonia;
@@ -89,7 +90,21 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
             if (Drawing != null && !Dependents.IsEmpty())
             {
                 this.RecalculateAllDependents();
+                NotifyOwners();
             }
+        }
+    }
+
+    /// <summary>
+    /// The figures that take the number as a value say the number in their construction
+    /// ("of A about O by 45°"): typed anew, they say it anew, and a page showing one of them,
+    /// or the image built on them, reads its header again
+    /// </summary>
+    void NotifyOwners()
+    {
+        foreach (var owner in Dependents.OfType<ITiedValues>().Distinct().OfType<FigureBase>())
+        {
+            owner.RaiseConstructionChanged();
         }
     }
 
@@ -164,6 +179,7 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         if (Drawing != null && Drawing.Figures.Contains(this))
         {
             this.RecalculateAllDependents();
+            NotifyOwners();
         }
 
         RefreshCaption();
