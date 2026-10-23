@@ -75,6 +75,8 @@ figures/lines/vector.js
 figures/lines/axis.js
 figures/shapes/bezierPathSmoother.js
 figures/shapes/bezierPath.js
+figures/regions/regionBoundary.js
+figures/regions/region.js
 figures/controls/labelPin.js
 figures/controls/controlBase.js
 figures/controls/lineBreaks.js

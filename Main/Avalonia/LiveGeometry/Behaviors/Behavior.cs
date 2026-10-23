@@ -605,6 +605,7 @@ public abstract partial class Behavior : INotifyPropertyChanged
                 placement,
                 GetFigureToPick(e),
                 placement != null ? GetClickPreviewPointStyle(placement) : null);
+            clickPreview.ShowRegionGhost(Drawing, GetRegionPreview(e));
         }
         catch (Exception)
         {
@@ -632,6 +633,12 @@ public abstract partial class Behavior : INotifyPropertyChanged
 
     /// <summary>An angle a click here would measure whole (the Angle tool near a vertex). Null if there is none.</summary>
     protected virtual AngleAtVertex GetAngleToPick(MouseEventArgs e)
+    {
+        return null;
+    }
+
+    /// <summary>The region a click here would make or go on with (the Difference, Intersection and Union tools), shown tinted. Null if there is none.</summary>
+    protected virtual RegionBoundary GetRegionPreview(MouseEventArgs e)
     {
         return null;
     }

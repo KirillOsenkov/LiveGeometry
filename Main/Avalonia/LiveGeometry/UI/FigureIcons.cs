@@ -62,6 +62,11 @@ public static class FigureIcons
     /// <summary>Tells which icon the figure gets, so that a list can see when it changes (a triangle given a fourth vertex)</summary>
     public static string GetKey(IFigure figure)
     {
+        if (figure is Region region)
+        {
+            return RegionKey(region.Operation);
+        }
+
         if (figure is Polygon polygon)
         {
             var points = polygon.Dependencies.OfType<IPoint>().ToArray();
@@ -116,10 +121,30 @@ public static class FigureIcons
                 return GetTool(key, () => new TriangleCreator()).CreateIcon();
             case nameof(SquareCreator):
                 return GetTool(key, () => new SquareCreator()).CreateIcon();
+            case nameof(RegionDifferenceCreator):
+                return GetTool(key, () => new RegionDifferenceCreator()).CreateIcon();
+            case nameof(RegionIntersectionCreator):
+                return GetTool(key, () => new RegionIntersectionCreator()).CreateIcon();
+            case nameof(RegionUnionCreator):
+                return GetTool(key, () => new RegionUnionCreator()).CreateIcon();
         }
 
         var entry = tools.First(pair => pair.Key.FullName == key);
         return GetTool(key, entry.Value).CreateIcon();
+    }
+
+    /// <summary>A region's icon is the Venn diagram of its operation: the tool that makes such a region</summary>
+    static string RegionKey(RegionOperation operation)
+    {
+        switch (operation)
+        {
+            case RegionOperation.Difference:
+                return nameof(RegionDifferenceCreator);
+            case RegionOperation.Intersection:
+                return nameof(RegionIntersectionCreator);
+            default:
+                return nameof(RegionUnionCreator);
+        }
     }
 
     /// <summary>One instance of each tool, only ever asked for its icon</summary>

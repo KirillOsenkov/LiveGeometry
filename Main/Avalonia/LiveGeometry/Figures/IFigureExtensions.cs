@@ -92,7 +92,8 @@ public static class IFigureExtensions
     {
         return figure.Dependents.Any(dependent => dependent is AreaMeasurement
             || dependent is LengthMeasurement { Quantity: LengthQuantity.Perimeter }
-            || dependent is PointInRegion);
+            || dependent is PointInRegion
+            || dependent is Region);
     }
 
     /// <summary>

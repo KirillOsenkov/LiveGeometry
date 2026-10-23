@@ -359,6 +359,19 @@ public abstract partial class EllipseArcBase : ShapeBase<Path>, IArc, ILengthPro
         }
     }
 
+    /// <summary>
+    /// The arc in the parametric angle: where it begins, and how far it goes from there,
+    /// positive counterclockwise (what a <see cref="Region"/> takes for its boundary)
+    /// </summary>
+    public (double Begin, double Sweep) ParametricArc
+    {
+        get
+        {
+            double sweep = ParametricSweep;
+            return (ParametricAngle(BeginLocation), IsClockwise ? -sweep : sweep);
+        }
+    }
+
     double ParametricAngle(Point point)
     {
         var center = Center;

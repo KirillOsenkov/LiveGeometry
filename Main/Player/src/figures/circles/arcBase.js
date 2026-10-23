@@ -360,6 +360,12 @@ class EllipseArcBase extends ShapeBase {
         return AngleSweep.measure(this.sweep, this.counterclockwiseAngle);
     }
 
+    /** The arc in the parametric angle: where it begins, and how far it goes from there, positive counterclockwise (what a Region takes for its boundary) */
+    get parametricArc() {
+        const sweep = this.parametricSweep;
+        return [this.parametricAngle(this.beginLocation), this.isClockwise ? -sweep : sweep];
+    }
+
     /** How far the arc goes around, 0 to 2π, in the angle t that parametrizes its ellipse */
     get parametricSweep() {
         const begin = this.parametricAngle(this.beginLocation);

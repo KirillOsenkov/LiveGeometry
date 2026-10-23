@@ -226,5 +226,24 @@
       <Dependency Name="Blob" />
       <Dependency Name="F1G1" />
     </IntersectionPoint>
+    <Region Name="r" Operation="Difference">
+      <Dependency Name="Blob" />
+      <Dependency Name="c" />
+    </Region>
+    <FreePoint Name="J1" X="-1" Y="0.5" />
+    <FreePoint Name="K1" X="0.5" Y="0.5" />
+    <Circle Name="c2">
+      <Dependency Name="J1" />
+      <Dependency Name="K1" />
+    </Circle>
+    <Region Name="s" Operation="Intersection">
+      <Dependency Name="Lens" />
+      <Dependency Name="c2" />
+    </Region>
+    <Region Name="t" Operation="Union">
+      <Dependency Name="Sector" />
+      <Dependency Name="c" />
+      <Dependency Name="r" />
+    </Region>
   </Figures>
 </Drawing>

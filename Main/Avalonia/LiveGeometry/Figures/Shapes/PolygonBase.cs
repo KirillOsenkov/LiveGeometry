@@ -95,7 +95,7 @@ public abstract class PolygonBase : ShapeBase<Avalonia.Controls.Shapes.Polygon>,
     public bool HasInside => vertices != null && vertices.Length >= 3;
 
     /// <summary>The vertices as they are right now (the cache of <see cref="VertexCoordinates"/> is the last visual's)</summary>
-    Point[] CurrentVertexCoordinates()
+    public Point[] CurrentVertexCoordinates()
     {
         if (vertices == null)
         {

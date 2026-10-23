@@ -347,6 +347,12 @@ public partial class Factory
         return new AreaMeasurement() { Drawing = drawing, Dependencies = dependencies };
     }
 
+    /// <summary>A region made of figures with an inside (<see cref="Region"/>): the first without the others, what they share, or all together</summary>
+    public static Region CreateRegion(Drawing drawing, RegionOperation operation, IList<IFigure> dependencies)
+    {
+        return new Region() { Drawing = drawing, Operation = operation, Dependencies = dependencies };
+    }
+
     public static PointByCoordinates CreatePointByCoordinates(Drawing drawing, IList<IFigure> dependencies)
     {
         return new PointByCoordinates() { Drawing = drawing, Dependencies = dependencies };

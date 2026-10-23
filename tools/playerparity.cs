@@ -313,6 +313,11 @@ public class Program
             {
                 entry["value"] = Number(number.Value);
             }
+            else if (figure is Region region)
+            {
+                entry["area"] = Number(region.Area);
+                entry["perimeter"] = Number(region.Perimeter);
+            }
 
             result.Add(entry);
         }

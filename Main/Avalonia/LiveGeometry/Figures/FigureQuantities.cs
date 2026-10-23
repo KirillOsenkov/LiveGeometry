@@ -101,7 +101,7 @@ public static class FigureQuantities
         // what the Length tool takes (LengthMeasurement.IsMeasurable), also while it has no
         // length right now: not a number, a label or a measurement, lengths with nothing to
         // measure, nor an angle's mark, an arc sized in pixels
-        bool measurable = figure is Segment or Vector or Polyline or Bezier or BezierPath or EllipseArcBase or EllipseBase or PolygonBase
+        bool measurable = figure is Segment or Vector or Polyline or Bezier or BezierPath or EllipseArcBase or EllipseBase or PolygonBase or Region
             && figure is not AngleArc;
         if (!measurable)
         {

@@ -109,6 +109,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
             case EllipseArcBase:
             case EllipseBase:
             case PolygonBase:
+            case Region:
                 var quantities = QuantitiesOf(figure);
                 return quantities.Count > 0 && ValueOf(figure, quantities[0]).IsValidValue();
             default:
@@ -513,6 +514,12 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
                 return arc.ArcMiddle;
             case BezierPath path:
                 return path.GetPointFromParameter(0.5);
+            case Region region:
+                {
+                    var pieces = region.Boundary.Pieces;
+                    return pieces.Count > 0 ? pieces[0].Middle : measured.Center;
+                }
+
             default:
                 return measured.Center;
         }

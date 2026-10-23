@@ -137,7 +137,8 @@ public class Transformer
             return path.CanBeTransformed(dependency => CanBeTransformSource(dependency, keepsLengths));
         }
 
-        if (!(figure is ILine || figure is IEllipse || figure is IPolygonalChain))
+        // (a region is transformed through the figures it is made of: a region on their images)
+        if (!(figure is ILine || figure is IEllipse || figure is IPolygonalChain || figure is Region))
         {
             return false;
         }
@@ -362,7 +363,7 @@ public class Transformer
         {
             result.AddRange(path.CreateImage(point => CreateReflectedFigure(drawing, point, mirror)));
         }
-        else if ((source is ILine || source is IEllipse || source is IPolygonalChain) && !(mirror is ICircle))
+        else if ((source is ILine || source is IEllipse || source is IPolygonalChain || source is Region) && !(mirror is ICircle))
         {
             var dependencies = new List<IFigure>();
             foreach (var dependency in source.Dependencies)
@@ -463,7 +464,7 @@ public class Transformer
         {
             result.AddRange(path.CreateImage(point => CreateDilatedFigure(drawing, point, center, lengthProvider1, lengthProvider2)));
         }
-        else if (source is ILine || source is IEllipse || source is IPolygonalChain)
+        else if (source is ILine || source is IEllipse || source is IPolygonalChain || source is Region)
         {
             var dependencies = new List<IFigure>();
             foreach (var dependency in source.Dependencies)
@@ -546,7 +547,7 @@ public class Transformer
         {
             result.AddRange(path.CreateImage(point => CreateRotatedFigure(drawing, point, center, angleProvider)));
         }
-        else if (source is ILine || source is IEllipse || source is IPolygonalChain)
+        else if (source is ILine || source is IEllipse || source is IPolygonalChain || source is Region)
         {
             var dependencies = new List<IFigure>();
             foreach (var dependency in source.Dependencies)
@@ -624,7 +625,7 @@ public class Transformer
         {
             result.AddRange(path.CreateImage(point => CreateTranslatedFigure(drawing, point, distanceSource, directionSource)));
         }
-        else if (source is ILine || source is IEllipse || source is IPolygonalChain)
+        else if (source is ILine || source is IEllipse || source is IPolygonalChain || source is Region)
         {
             var dependencies = new List<IFigure>();
             foreach (var dependency in source.Dependencies)

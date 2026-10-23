@@ -132,6 +132,7 @@ public class Program
             ("No Free point while a graph reads its Parameter; a graph that stops compiling is drawn no more", ReleaseKeepsFunctionsWhole),
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
             ("Completion: where a word is, what can go there, what a word selects", Completion),
+            ("Regions: the classic shaded areas come out exact, with their identities, round trip, undo, transforms and a point inside", Regions),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
             ("LGF leaves out a figure built on too few figures", TooFewDependenciesLoad),
@@ -6399,6 +6400,241 @@ public class Program
             var style = Find(reloaded, name).Style as PointStyle;
             Require(style != null && style.Size == size, $"Point {name} came back at size {style?.Size}, not {size}.");
         }
+    }
+
+    static void Regions()
+    {
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var system = drawing.CoordinateSystem;
+        double pi = System.Math.PI;
+        double root3 = System.Math.Sqrt(3);
+
+        Region Make(RegionOperation operation, params IFigure[] operands)
+        {
+            var region = Factory.CreateRegion(drawing, operation, operands.ToList());
+            Actions.Add(drawing, region);
+            return region;
+        }
+
+        Circle Circle(double x, double y, double radius)
+        {
+            var circle = Factory.CreateCircle(drawing, new IFigure[] { AddPoint(drawing, x, y), AddPoint(drawing, x + radius, y) });
+            Actions.Add(drawing, circle);
+            return circle;
+        }
+
+        Polygon Square(double left, double bottom, double side)
+        {
+            var polygon = Factory.CreatePolygon(drawing, new IFigure[]
+            {
+                AddPoint(drawing, left, bottom),
+                AddPoint(drawing, left + side, bottom),
+                AddPoint(drawing, left + side, bottom + side),
+                AddPoint(drawing, left, bottom + side)
+            });
+            Actions.Add(drawing, polygon);
+            return polygon;
+        }
+
+        static void NearTo(double actual, double expected, double tolerance, string what)
+        {
+            Require(double.IsFinite(actual) && System.Math.Abs(actual - expected) <= tolerance, what + $": expected {expected:R}, got {actual:R}.");
+        }
+
+        // the square with its inscribed circle: 4 - π, the four touches no crossings
+        var square = Square(-1, -1, 2);
+        var inscribed = Circle(0, 0, 1);
+        var squareMinusCircle = Make(RegionOperation.Difference, square, inscribed);
+        NearTo(squareMinusCircle.Area, 4 - pi, 1e-10, "square minus inscribed circle");
+        NearTo(squareMinusCircle.Perimeter, 8 + 2 * pi, 1e-10, "its perimeter");
+        Require(squareMinusCircle.Boundary.Loops.Count == 2, "The square with a hole has " + squareMinusCircle.Boundary.Loops.Count + " loops, not 2.");
+        Require(squareMinusCircle.ContainsPoint(new Point(0.9, 0.9)) && !squareMinusCircle.ContainsPoint(new Point(0.2, 0.3)), "The corner is in and the middle is out.");
+        Require(squareMinusCircle.Construction == "square ABCD without circle c", "Construction: " + squareMinusCircle.Construction);
+
+        // the lens of two unit circles through each other's centers
+        var left = Circle(10, 0, 1);
+        var right = Circle(11, 0, 1);
+        var lens = Make(RegionOperation.Intersection, left, right);
+        NearTo(lens.Area, 2 * pi / 3 - root3 / 2, 1e-10, "lens");
+        NearTo(lens.Perimeter, 4 * pi / 3, 1e-10, "lens perimeter");
+        Require(lens.Boundary.Loops.Count == 1, "The lens is one loop.");
+        NearTo(lens.Center.X, 10.5, 1e-9, "the lens's middle");
+        NearTo(lens.Center.Y, 0, 1e-9, "the lens's middle");
+
+        // inclusion and exclusion: the union is the sum less the lens, the difference the circle less the lens
+        var both = Make(RegionOperation.Union, left, right);
+        NearTo(both.Area, 2 * pi - lens.Area, 1e-10, "union of the two circles");
+        var leftOnly = Make(RegionOperation.Difference, left, right);
+        NearTo(leftOnly.Area, pi - lens.Area, 1e-10, "circle without the other");
+        NearTo(leftOnly.Perimeter, 2 * pi * 2 / 3 + 2 * pi / 3, 1e-10, "crescent perimeter");
+
+        // the Reuleaux triangle: three unit circles about the corners of a unit triangle
+        var top = Circle(10.5, root3 / 2, 1);
+        var reuleaux = Make(RegionOperation.Intersection, left, right, top);
+        NearTo(reuleaux.Area, (pi - root3) / 2, 1e-10, "Reuleaux triangle");
+        NearTo(reuleaux.Perimeter, pi, 1e-10, "its perimeter");
+
+        // an annulus: no crossings at all, the inner circle a hole
+        var outer = Circle(20, 0, 2);
+        var inner = Circle(20, 0, 1);
+        var annulus = Make(RegionOperation.Difference, outer, inner);
+        NearTo(annulus.Area, 3 * pi, 1e-10, "annulus");
+        NearTo(annulus.Perimeter, 6 * pi, 1e-10, "annulus perimeter");
+        Require(!annulus.ContainsPoint(new Point(20, 0)) && annulus.ContainsPoint(new Point(21.5, 0)), "The hole is out, the ring is in.");
+        var nearest = annulus.NearestPointInside(new Point(20, 0.2));
+        NearTo(nearest.Distance(new Point(20, 0)), 1, 1e-9, "the nearest point of the ring to its center is on the inner circle");
+
+        // shared sides: two squares side by side, and a square with a corner cut out
+        var one = Square(30, 0, 1);
+        var two = Square(31, 0, 1);
+        NearTo(Make(RegionOperation.Union, one, two).Area, 2, 1e-10, "two squares side by side");
+        NearTo(Make(RegionOperation.Intersection, one, two).Area, 0, 1e-10, "their overlap is nothing");
+        var big = Square(40, 0, 2);
+        var corner = Square(40, 0, 1);
+        var notched = Make(RegionOperation.Difference, big, corner);
+        NearTo(notched.Area, 3, 1e-10, "a square with a corner cut out");
+        NearTo(notched.Perimeter, 8, 1e-10, "its perimeter");
+        Require(notched.Boundary.Loops.Count == 1 && notched.Boundary.Pieces.Count == 6, "The notched square has " + notched.Boundary.Pieces.Count + " sides, not 6.");
+
+        // overlapping squares, and a sector inside a square
+        NearTo(Make(RegionOperation.Union, Square(50, 0, 1), Square(50.5, 0.5, 1)).Area, 1.75, 1e-10, "two squares overlapping");
+        var unit = Square(60, 0, 1);
+        var quarter = Factory.CreateCircleSector(drawing, new IFigure[] { AddPoint(drawing, 60, 0), AddPoint(drawing, 61, 0), AddPoint(drawing, 60, 1) });
+        Actions.Add(drawing, quarter);
+        NearTo(Make(RegionOperation.Intersection, unit, quarter).Area, pi / 4, 1e-10, "quarter disc in the square");
+        NearTo(Make(RegionOperation.Difference, unit, quarter).Area, 1 - pi / 4, 1e-10, "square without the quarter disc");
+
+        // nothing: two circles apart; and a region of a region
+        var apart = Make(RegionOperation.Intersection, Circle(70, 0, 1), Circle(75, 0, 1));
+        Require(apart.Exists && !apart.HasInside && apart.Area == 0, "Two circles apart share nothing.");
+        var nested = Make(RegionOperation.Union, squareMinusCircle, Circle(5, 0, 0.5));
+        NearTo(nested.Area, 4 - pi + pi / 4, 1e-10, "a region united with a circle");
+        Require(nested.Boundary.Loops.Count == 3, "The nested region has " + nested.Boundary.Loops.Count + " loops, not 3.");
+
+        // ellipses: a hole, a half, and the identities that hold for any two shapes
+        var ellipse = Factory.CreateEllipse(drawing, new IFigure[] { AddPoint(drawing, 80, 0), AddPoint(drawing, 82, 0), AddPoint(drawing, 80, 1) });
+        Actions.Add(drawing, ellipse);
+        NearTo(Make(RegionOperation.Difference, ellipse, Circle(80, 0, 0.5)).Area, 2 * pi - pi / 4, 1e-10, "ellipse with a hole");
+        var rightHalf = Factory.CreatePolygon(drawing, new IFigure[] { AddPoint(drawing, 80, -3), AddPoint(drawing, 85, -3), AddPoint(drawing, 85, 3), AddPoint(drawing, 80, 3) });
+        Actions.Add(drawing, rightHalf);
+        NearTo(Make(RegionOperation.Intersection, ellipse, rightHalf).Area, pi, 1e-10, "half an ellipse");
+        var tilted = Factory.CreateEllipse(drawing, new IFigure[] { AddPoint(drawing, 80.5, 0.3), AddPoint(drawing, 81.5, 1.8), AddPoint(drawing, 80, 0.8) });
+        Actions.Add(drawing, tilted);
+        var ellipsesUnion = Make(RegionOperation.Union, ellipse, tilted);
+        var ellipsesOverlap = Make(RegionOperation.Intersection, ellipse, tilted);
+        var ellipseOnly = Make(RegionOperation.Difference, ellipse, tilted);
+        NearTo(ellipsesUnion.Area + ellipsesOverlap.Area, ellipse.Area + tilted.Area, 1e-9, "union + intersection = sum, for ellipses");
+        NearTo(ellipseOnly.Area + ellipsesOverlap.Area, ellipse.Area, 1e-9, "difference + intersection = the first, for ellipses");
+        Require(ellipsesOverlap.Area > 0.5 && ellipsesOverlap.Area < tilted.Area, "The two ellipses overlap in part: " + ellipsesOverlap.Area);
+
+        // the file keeps the operation, and the area comes back
+        var text = drawing.SaveAsText();
+        var loaded = ReadLgf(text);
+        Require(loaded.LoadErrors == null, "Reload: " + loaded.LoadErrors);
+        var loadedLens = loaded.Figures.OfType<Region>().First(r => r.Name == lens.Name);
+        Require(loadedLens.Operation == RegionOperation.Intersection, "The operation was not kept.");
+        NearTo(loadedLens.Area, lens.Area, 1e-10, "the lens read back");
+        Require(loaded.SaveAsText() == text, "The drawing with regions doesn't round trip.");
+
+        // the tools: a click on each shape, Enter; the first click of a difference is what is
+        // cut from, and a click inside both the square and its circle takes the smaller
+        var toolSquare = Square(89, -1, 2);
+        var toolCircle = Circle(90, 0, 1);
+        drawing.Behavior = new RegionDifferenceCreator();
+        Click(drawing, system.ToPhysical(new Point(89.1, 0.9)));
+        Click(drawing, system.ToPhysical(new Point(90, 0)));
+        var tool = (RegionCreator)drawing.Behavior;
+        tool.KeyDown(drawing.Canvas, new KeyEventArgs { Key = Key.Enter });
+        var made = drawing.Figures.OfType<Region>().Last();
+        Require(made.Dependencies.SequenceEqual(new IFigure[] { toolSquare, toolCircle }), "The Difference tool did not make the square without the circle: " + made.Construction);
+        NearTo(made.Area, 4 - pi, 1e-10, "the tool's region");
+        string withTool = drawing.SaveAsText();
+        drawing.ActionManager.Undo();
+        Require(!drawing.Figures.Contains(made), "Undo did not take the region away.");
+        drawing.ActionManager.Redo();
+        Require(drawing.SaveAsText() == withTool, "Redo did not bring the region back as it was.");
+
+        // a click on the paper finishes too, and the operation can be changed after
+        Circle(100, 0, 1);
+        Circle(103, 0, 1);
+        drawing.Behavior = new RegionUnionCreator();
+        Click(drawing, system.ToPhysical(new Point(100, 0)));
+        Click(drawing, system.ToPhysical(new Point(103, 0)));
+        Click(drawing, system.ToPhysical(new Point(101.5, 3)));
+        var union = drawing.Figures.OfType<Region>().Last();
+        Require(union.Operation == RegionOperation.Union && union.Dependencies.Count == 2, "The Union tool did not finish on the paper.");
+        NearTo(union.Area, 2 * pi, 1e-10, "the tool's union of two circles apart");
+        Require(union.Boundary.Loops.Count == 2, "The union of two circles apart is two loops.");
+        Set(drawing, union, nameof(Region.Operation), RegionOperation.Intersection);
+        Require(union.Area == 0 && !union.HasInside, "The operation changed to the intersection leaves nothing.");
+        drawing.ActionManager.Undo();
+        NearTo(union.Area, 2 * pi, 1e-10, "undo of the operation");
+
+        // a point kept inside the annulus, and the region dragged along
+        drawing.Behavior = new PointInRegionCreator();
+        Click(drawing, system.ToPhysical(new Point(21.5, 0)));
+        var kept = drawing.Figures.OfType<PointInRegion>().Single();
+        Require(kept.Dependencies[0] == annulus, "The click inside the ring made no point inside it.");
+        drawing.Behavior = new Dragger();
+        Drag(drawing, system.ToPhysical(kept.Coordinates), system.ToPhysical(new Point(20.1, 0)));
+        NearTo(kept.Coordinates.Distance(new Point(20, 0)), 1, 1e-9, "the point stays out of the hole");
+        drawing.ActionManager.Undo();
+
+        // the image of a region: a region on the images of its shapes, the same area
+        var mirror = Factory.CreateLineTwoPoints(drawing, new IFigure[] { AddPoint(drawing, 0, 5), AddPoint(drawing, 1, 5) });
+        Actions.Add(drawing, mirror);
+        var images = Transformer.CreateReflectedFigure(drawing, lens, mirror);
+        using (GuiLabs.Undo.Transaction.Create(drawing.ActionManager, delayed: false))
+        {
+            foreach (var image in images)
+            {
+                Actions.Add(drawing, image);
+            }
+        }
+
+        var reflected = images.OfType<Region>().Single();
+        NearTo(reflected.Area, lens.Area, 1e-10, "the reflected lens");
+        NearTo(reflected.Center.Y, 10, 1e-9, "the reflected lens is across the mirror");
+        Require(reflected.Operation == RegionOperation.Intersection, "The image lost the operation.");
+
+        // a circle dragged through the side of a square, touching it from outside, crossing,
+        // touching from inside: the area never jumps (a touch is no crossing, a near touch is
+        // a tiny piece judged right)
+        var slab = Square(110, 0, 2);
+        var centerPoint = AddPoint(drawing, 109, 1);
+        var rimPoint = AddPoint(drawing, 110, 1);
+        var roller = Factory.CreateCircle(drawing, new IFigure[] { centerPoint, rimPoint });
+        Actions.Add(drawing, roller);
+        var rolled = Make(RegionOperation.Difference, slab, roller);
+        double previous = rolled.Area;
+        NearTo(previous, 4, 1e-10, "the circle touching the square from outside takes nothing");
+        for (int step = 1; step <= 400; step++)
+        {
+            double x = 109 + step * 0.005;
+            centerPoint.MoveTo(new Point(x, 1));
+            rimPoint.MoveTo(new Point(x + 1, 1));
+            drawing.Recalculate();
+            double area = rolled.Area;
+            Require(area <= previous + 1e-9 && previous - area < 0.02, $"The area jumped from {previous:R} to {area:R} with the circle at x = {x:R}.");
+            previous = area;
+        }
+
+        NearTo(previous, 4 - pi, 1e-10, "the circle touching the far side from inside is a hole");
+        NearTo(roller.Center.X, 111, 1e-12, "the circle ended at the far side");
+
+        // a bow tie is what its even-odd fill covers
+        var bowTie = Factory.CreatePolygon(drawing, new IFigure[] { AddPoint(drawing, 120, 0), AddPoint(drawing, 122, 2), AddPoint(drawing, 122, 0), AddPoint(drawing, 120, 2) });
+        Actions.Add(drawing, bowTie);
+        var bowTieRegion = Make(RegionOperation.Union, bowTie, Circle(130, 0, 1));
+        NearTo(bowTieRegion.Area, 2 + pi, 1e-10, "a bow tie and a circle");
+        NearTo(Make(RegionOperation.Intersection, bowTie, Square(120, 0, 1)).Area, 0.5, 1e-10, "the lower half of the bow tie's left lobe");
+
+        // the Area tool takes a region
+        var measurement = Factory.CreateAreaMeasurement(drawing, new IFigure[] { reuleaux });
+        Actions.Add(drawing, measurement);
+        NearTo(measurement.Measure, reuleaux.Area, 1e-10, "the area measurement of a region");
+        Require(AreaMeasurement.IsMeasurable(reuleaux) && LengthMeasurement.IsMeasurable(reuleaux), "A region is not measurable.");
     }
 
     static void GalleryRoundTrips()

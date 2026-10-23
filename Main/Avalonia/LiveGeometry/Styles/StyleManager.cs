@@ -713,6 +713,17 @@ public partial class StyleManager
             }
         }
 
+        // a region lies over the shapes it is made of, and in the polygon's yellow it was
+        // not to be told from them: the blue fill, as a textbook shades the region asked for
+        if (typeof(Region).IsAssignableFrom(figureType))
+        {
+            var blue = supportedStyles.FirstOrDefault(style => style.Name == "BlueShape");
+            if (blue != null)
+            {
+                return blue;
+            }
+        }
+
         var preferred = typeof(ILinearFigure).IsAssignableFrom(figureType) ? LineStyleName : ShapeStyleName;
         return supportedStyles.FirstOrDefault(style => style.Name == preferred)
             ?? supportedStyles.FirstOrDefault(style => style.Name == LineStyleName || style.Name == ShapeStyleName)

@@ -1669,8 +1669,8 @@ public class BezierPath : CompositeFigure, IFigureParts, ILinearFigure, IPerimet
         return new CombinedGeometry(GeometryCombineMode.Exclude, outline, group);
     }
 
-    /// <summary>The outline as a polygon through the points the pieces are drawn through</summary>
-    List<Point> OutlinePolygon()
+    /// <summary>The outline as a polygon through the points the pieces are drawn through (what a <see cref="Region"/> takes for its boundary)</summary>
+    public List<Point> OutlinePolygon()
     {
         var result = new List<Point>();
         foreach (var curve in Curves)

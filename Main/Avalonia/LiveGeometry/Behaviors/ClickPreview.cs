@@ -117,6 +117,46 @@ public class ClickPreview
         }
     }
 
+    // the region the Difference, Intersection and Union tools would make: tinted as a halo
+    // is, but whole, since what a click adds or takes away is an area
+    public static IBrush RegionGhostBrush = new SolidColorBrush(Color.FromArgb(0x38, 0x3B, 0x8E, 0xEA));
+
+    Control regionGhost;
+
+    /// <summary>
+    /// The region a click would make, tinted over the figures (<see cref="Behavior.GetRegionPreview"/>);
+    /// nothing takes the tint away. Made anew on every move: the region changes with the
+    /// figure under the cursor.
+    /// </summary>
+    public void ShowRegionGhost(Drawing drawing, RegionBoundary boundary)
+    {
+        if (regionGhost != null)
+        {
+            visuals.Remove(regionGhost);
+            (regionGhost.Parent as Canvas)?.Children.Remove(regionGhost);
+            regionGhost = null;
+        }
+
+        if (drawing == null || drawing.Canvas == null || boundary == null || !boundary.HasInside)
+        {
+            return;
+        }
+
+        if (canvas != null && canvas != drawing.Canvas)
+        {
+            Clear();
+        }
+
+        canvas = drawing.Canvas;
+        regionGhost = new AvaloniaShapes.Path()
+        {
+            Data = boundary.CreateGeometry(drawing.CoordinateSystem),
+            Fill = RegionGhostBrush,
+            ZIndex = ZOrders.Default(ZOrder.Polygons) + 1
+        };
+        Add(regionGhost);
+    }
+
     /// <summary>An angle's number picked has its mark lit up with it: which angle the number says</summary>
     static IReadOnlyList<IFigure> WithAngleMark(IFigure picked)
     {
@@ -138,6 +178,7 @@ public class ClickPreview
         visuals.Clear();
         canvas = null;
         ghost = null;
+        regionGhost = null;
         shownSources = null;
         shownKind = null;
         shownAngle = null;

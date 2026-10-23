@@ -305,6 +305,9 @@ class Drawing {
                 entry.text = figure.processedText;
             } else if (figure.isNumber === true) {
                 entry.value = number(figure.value);
+            } else if (figure.isRegionFigure === true) {
+                entry.area = number(figure.area);
+                entry.perimeter = number(figure.perimeter);
             }
 
             result.push(entry);

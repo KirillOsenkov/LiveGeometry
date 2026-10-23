@@ -33,6 +33,7 @@ public static class BehaviorShortcuts
         { Key.W, typeof(PolygonCreator) },
         { Key.J, typeof(AngleMeasurementCreator) },
         { Key.K, typeof(AreaMeasurementCreator) },
+        { Key.U, typeof(RegionUnionCreator) },
     };
 
     /// <returns>The type of the tool the key selects, or null</returns>

@@ -186,7 +186,15 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   style), except where a visible segment, ray, line or vector on the two points is there
   already (`FindLine`; not any line that depends on both - a perpendicular bisector of the
   two took the side's place and left it undrawn). (Polygon intersection
-  exists but is `[Ignore]`d.) Bezier path (last, no letter): see "Bezier paths".
+  exists but is `[Ignore]`d.) Bezier path (no letter): see "Bezier paths". Difference,
+  Intersection, Union (U) (2026-10-23; `RegionCreator` and its three subclasses, Venn icons):
+  a click on each shape with an inside (inside it, the smallest of nested ones first and Tab
+  for the next, or on its edge), then Enter, a right click, a click on the paper or on a
+  shape taken already makes a `Region` of them (see "Regions"), once there are two; the
+  first click of Difference is what the rest is cut out of. From the first click on the
+  hover tints what the region would be with the shape under the cursor
+  (`Behavior.GetRegionPreview`, `ClickPreview.ShowRegionGhost`). The region's page shows
+  after it (the Operation row, its area and perimeter).
 - **Transform** (the tools are verbs, as the tab is; the classes stay `ReflectionCreator`...):
   Reflect (T) - source figure, then a mirror (point, line, segment, ray, or a
   circle for a point source); Rotate - source, center, angle (a figure with an angle, a
@@ -912,6 +920,42 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   Why an offset and not a Dragger rule: a drag of a triangle moves A, then B, then C, each
   with its own recalculation, so a point that watched its parent for a translation never
   saw one; and a rule in the Dragger would miss every move that isn't a drag.
+- **Regions** (`Figures/Regions/`, 2026-10-23): a `Region` is a set made of figures with an
+  inside (`IRegion`: polygons, circles, ellipses, sectors, circular segments, Bezier paths,
+  other regions) by an `Operation` - Difference (the first without the others), Intersection,
+  Union - with no edge of its own: the inside alone, filled (the palette's `BlueShape` by
+  default, so that it is told from the yellow polygon it lies over; an outlined style
+  draws its true edge), in the Polygons layer, `<Region Operation="Union">` with its
+  operands as dependencies. Disjoint parts are one region (a union of two circles apart);
+  a set that comes to nothing (an intersection pulled apart) exists with area 0 and draws
+  nothing, and a point inside it doesn't exist. Everything comes from one tracer,
+  `RegionBoundary.Trace`: every operand's boundary in pieces (`BoundaryPiece`: segments,
+  and arcs of ellipses in at most quarter turns - a circle is an ellipse, a sector is its
+  arc and two radii, a path is the polygon through its samples as `BezierPath.Area` has
+  it, a nested region its own kept pieces), cut at every crossing (segment-segment,
+  segment-ellipse and circle-circle through `Math`, with its tangency tolerance, so a
+  touch by construction is one point and no crossing; an ellipse against another arc by
+  sampling and bisection; two stretches on one line or circle cut at each other's ends),
+  each piece turned so that its own operand is on its left (judged a hair off its middle,
+  inside and out: a self-crossing polygon's even-odd lobes come out right), and kept when
+  the operation holds on one side of it and not the other - the other operands judged at
+  the piece's middle itself, which lies on no other boundary once the pieces are cut, but
+  for a stretch two operands share, which goes by the other's side of it (`IsSameAs`);
+  two kept copies of one stretch are one. The kept pieces, the result on their left, give
+  the area by Green's theorem (exact for segments and arcs: `AreaTerm`, taken from a
+  nearby origin), the perimeter, the loops to draw (`Chain`; any pairing where several
+  meet will do, even-odd goes by the pieces), the centroid (`Center`, what a point inside
+  keeps its offset from) and the nearest point of the edge. `ContainsPoint` is the
+  operation over the operands' own. Checked by the regression suite on the classic
+  puzzles (the square and its inscribed circle, the lens, the Reuleaux triangle, an
+  annulus, a notched square, a bow tie), on the identities every pair obeys (union plus
+  intersection is the sum, for tilted ellipses too) and on a circle dragged through a
+  side, touching from outside, crossing and touching from inside, where the area must not
+  jump. A region is transformed through its operands (`Transformer`: a region on their
+  images; not in a circle), measured by the Area and Length tools, read in expressions
+  (`r.Area`, `r.Perimeter`), and holds its operands' kinds (`IsUsedForArea`: no Convert to
+  arc under a region). The player has the twin (`regions/regionBoundary.js`, `region.js`;
+  `Main/Player/dev/kinds.lgf` has three), and `playerparity` compares areas and perimeters.
 - **Snapping and releasing points** (`Figures/Points/PointSnapping.cs`) swap a point for another
   kind where it is through `Actions.ReplacePoint` (name, label, dependents, lock, a chosen style
   go along). Snap: a free point onto a figure through it - "Snap to line AB" in the grid when
