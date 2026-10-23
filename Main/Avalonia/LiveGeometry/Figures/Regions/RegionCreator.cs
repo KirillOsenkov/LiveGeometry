@@ -15,11 +15,52 @@ namespace LiveGeometry;
 /// paper or a click on a shape taken already makes the region of what was clicked, once
 /// there are two. The hover shows the shape a click would take, and from the first click
 /// on, what the region would be, tinted. For Difference the first click is the shape and
-/// the rest is cut out of it; the other two take their shapes in any order.
+/// the rest is cut out of it; the other two take their shapes in any order. Once there are
+/// two, the side panel says what the region would read as and offers Done
+/// (<see cref="RegionPanel"/>), so that the way to finish is in sight.
 /// </summary>
 public abstract class RegionCreator : FigureCreator
 {
     protected abstract RegionOperation Operation { get; }
+
+    /// <summary>
+    /// The tool's panel while a region can be made of what was clicked: the shapes so far, as
+    /// the region will read, and Done. A new one at every step, so that the row says the
+    /// latest shape. None before the second shape, none once the region is made
+    /// ("construction complete" re-reads it before the found figures are cleared, but after
+    /// the transaction is gone).
+    /// </summary>
+    public override object PropertyBag => Transaction != null && CanFinish ? new RegionPanel(this) : null;
+
+    [PropertyGridNoUndo]
+    public class RegionPanel
+    {
+        readonly RegionCreator tool;
+
+        public RegionPanel(RegionCreator tool)
+        {
+            this.tool = tool;
+        }
+
+        /// <summary>The shapes clicked so far, as the region will read: "square ABCD without circle c"</summary>
+        [PropertyGridVisible]
+        [PropertyGridName("Region")]
+        public string Shapes => Region.Describe(tool.Operation, tool.FoundDependencies);
+
+        /// <summary>Makes the region of the shapes clicked so far</summary>
+        [PropertyGridVisible]
+        [PropertyGridIcon(PropertyGridIcon.Check)]
+        public void Done()
+        {
+            tool.TryFinish();
+        }
+
+        /// <summary>The panel's title: the tool's name</summary>
+        public override string ToString()
+        {
+            return tool.Name;
+        }
+    }
 
     protected override DependencyList InitExpectedDependencies()
     {
@@ -82,7 +123,7 @@ public abstract class RegionCreator : FigureCreator
         return figure != null && CanFinish && FoundDependencies.Contains(figure);
     }
 
-    protected override string FinishStatus => "Click here again, press Enter or right-click to make the region.";
+    protected override string FinishStatus => "Click here again, press Done or Enter to make the region.";
 
     /// <summary>A click on the paper, or on a shape taken already, finishes; any other goes on</summary>
     protected override void Click(Point coordinates)
@@ -174,7 +215,7 @@ public abstract class RegionCreator : FigureCreator
             return NextShapeHint(FoundDependencies[0]);
         }
 
-        return "Click more shapes, or press Enter (or click the paper) to make the region.";
+        return "Click more shapes, or press Done (or Enter) to make the region.";
     }
 
     /// <summary>What the second click takes, with the first shape named</summary>

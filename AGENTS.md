@@ -193,8 +193,11 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   shape taken already makes a `Region` of them (see "Regions"), once there are two; the
   first click of Difference is what the rest is cut out of. From the first click on the
   hover tints what the region would be with the shape under the cursor
-  (`Behavior.GetRegionPreview`, `ClickPreview.ShowRegionGhost`). The region's page shows
-  after it (the Operation row, its area and perimeter).
+  (`Behavior.GetRegionPreview`, `ClickPreview.ShowRegionGhost`), and from the second the
+  side panel says what the region would read as ("square ABCD without circle c") and
+  offers Done (`RegionCreator.RegionPanel`, the tool's `PropertyBag` while there are two
+  and the transaction is open). The region's page shows after it (the Operation row, its
+  area and perimeter).
 - **Transform** (the tools are verbs, as the tab is; the classes stay `ReflectionCreator`...):
   Reflect (T) - source figure, then a mirror (point, line, segment, ray, or a
   circle for a point source); Rotate - source, center, angle (a figure with an angle, a

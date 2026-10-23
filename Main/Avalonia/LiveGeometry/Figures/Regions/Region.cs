@@ -27,25 +27,25 @@ public class Region : ShapeBase<Path>, IShapeWithInterior, IPerimeter, IRegion
     protected override string FirstLetter => "r";
 
     /// <summary>"c without ABCD", "intersection of c and d", "union of c, d and e"</summary>
-    public override string Construction
-    {
-        get
-        {
-            if (Dependencies.Count == 0)
-            {
-                return null;
-            }
+    public override string Construction => Describe(operation, Dependencies);
 
-            var names = Dependencies.Select(ConstructionText.Of).ToList();
-            switch (operation)
-            {
-                case RegionOperation.Difference:
-                    return names.Count == 1 ? names[0] : names[0] + " without " + Join(names.Skip(1).ToList());
-                case RegionOperation.Intersection:
-                    return "intersection of " + Join(names);
-                default:
-                    return "union of " + Join(names);
-            }
+    /// <summary>What a region of the operands would say of itself (the tool's panel says it before the region is made); null without any</summary>
+    public static string Describe(RegionOperation operation, IList<IFigure> operands)
+    {
+        if (operands.Count == 0)
+        {
+            return null;
+        }
+
+        var names = operands.Select(ConstructionText.Of).ToList();
+        switch (operation)
+        {
+            case RegionOperation.Difference:
+                return names.Count == 1 ? names[0] : names[0] + " without " + Join(names.Skip(1).ToList());
+            case RegionOperation.Intersection:
+                return "intersection of " + Join(names);
+            default:
+                return "union of " + Join(names);
         }
     }
 
