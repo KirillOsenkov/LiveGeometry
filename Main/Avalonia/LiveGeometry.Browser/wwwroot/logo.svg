@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 64 64">
+  <!-- The Live Geometry mark as a file, for directories and pages elsewhere that list the
+       site (logo-512.png is the same picture). The app draws it from AppIcon.cs: a change
+       there wants the same change here, and the PNG rendered again. -->
+  <defs>
+    <linearGradient id="marble" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F4F2EE"/>
+      <stop offset="0.45" stop-color="#D9D6D0"/>
+      <stop offset="1" stop-color="#9A9690"/>
+    </linearGradient>
+    <linearGradient id="yellow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF4A0"/>
+      <stop offset="0.5" stop-color="#FFE538"/>
+      <stop offset="1" stop-color="#F6CC1A"/>
+    </linearGradient>
+  </defs>
+  <g stroke-linejoin="round" stroke-linecap="round">
+    <path d="M30,60 L62,60 L60,63 L28,63 Z" fill="#000" fill-opacity="0.19"/>
+    <g fill="url(#marble)" stroke="#5C5852" stroke-width="1.3">
+      <path d="M3,56 H27 V61 H3 Z"/>
+      <path d="M5,52 H25 V56 H5 Z"/>
+      <path d="M8,12 H22 V52 H8 Z"/>
+      <path d="M6,9 Q15,5 24,9 V12 H6 Z"/>
+      <path d="M3,4 H27 V9 H3 Z"/>
+    </g>
+    <path d="M11.5,13.5 V50.5 M15,13.5 V50.5 M18.5,13.5 V50.5" fill="none" stroke="#5C5852" stroke-opacity="0.376" stroke-width="1.2"/>
+    <path d="M33,3 L63,60 L33,60 Z M38,24 L38,54 L54,54 Z" fill="url(#yellow)" fill-rule="evenodd" stroke="#9E8000" stroke-width="1.6"/>
+    <path d="M33,8 H34.43 M33,12.8 H35.5 M33,17.6 H35.5 M33,22.4 H35.5 M33,27.2 H35.5 M33,32 H37.5 M33,36.8 H35.5 M33,41.6 H35.5 M33,46.4 H35.5 M33,51.2 H35.5 M33,56 H37.5" fill="none" stroke="#7E6600" stroke-width="1.1"/>
+  </g>
+</svg>
