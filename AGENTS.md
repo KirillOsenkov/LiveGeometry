@@ -3213,6 +3213,23 @@ else - no ribbon, grid, list or gallery, no undo, no selection.
 - Entry files are `no-cache` with an ETag that changes on every deploy, so a browser holding the
   previous version picks up the new one on a plain reload. If something looks stale, check the
   commit stamp and the Actions run before suspecting the cache.
+- **Link previews** (2026-10-24): a site that shows a link's preview (X, Facebook, Discord,
+  Slack, a search engine) reads the page's HTML and never runs its script, so every
+  `/gallery/<slug>` was the same "Live Geometry" card. The `WriteGalleryIndex` task of the
+  Browser csproj also writes `wwwroot/gallery/<slug>.html` for each catalog item: the app's
+  `index.html` with the drawing's title, the first sentences of its explanation that have no
+  `[...]` part, `og:image`, `twitter:card` and a canonical link in the head, and the title and
+  sentences on the splash (what a search engine indexes). It fails the build when
+  `index.html` no longer has one place for each tag it replaces. `web.config` serves the page
+  for `/gallery/<slug>` (`tools/serve.cs` does by its `<path>.html` rule); it writes
+  `/sitemap.xml` too, which `wwwroot/robots.txt` names. The pictures are made after the
+  publish, in CI: `dotnet run tools/previews.cs -- <publish>/wwwroot` plays each drawing in
+  the player in headless Chrome (Edge on Windows) as its tile shows it, on its paper, into
+  `gallery/previews/<File>.png` (1200 x 630), revalidated like the `.lgf` files. A new
+  drawing needs nothing more than its catalog line. A local publish has the pages but no
+  pictures until the tool is run on it. To see what a site sees after a deploy: the
+  page's source (`curl -s https://livegeometry.com/gallery/<slug>`) and each site's card
+  validator.
 - **`/history`** is a static page of its own (`history/index.html` at the repo root, no build
   step, everything inline but the Google Fonts; a relative URL in it would resolve against
   `/`, since `/history` has no trailing slash): the Browser csproj links the folder into

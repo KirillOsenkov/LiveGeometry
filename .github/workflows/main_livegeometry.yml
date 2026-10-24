@@ -38,6 +38,13 @@ jobs:
         # share links; without it the app has no Copy share link.
         run: dotnet publish Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj -c Release -o "${{ github.workspace }}/publish" -p:ShareService=${{ vars.SHARE_SERVICE }}
 
+      - name: Render the gallery's link previews
+        # The picture each drawing's page (/gallery/<slug>) names as its og:image, into
+        # wwwroot/gallery/previews: the drawings played by the JavaScript player in the
+        # runner's Chrome (tools/previews.cs).
+        timeout-minutes: 10
+        run: dotnet run tools/previews.cs -- "${{ github.workspace }}/publish/wwwroot"
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:

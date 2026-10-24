@@ -67,6 +67,8 @@
     <Content Include="..\LiveGeometry.App\Gallery\Drawings\*.lgf" Link="wwwroot\gallery\%(Filename)%(Extension)" />
     <!-- the catalog as the embed page's picker reads it (WriteGalleryIndex below) -->
     <Content Include="$(GalleryIndexOutput)" Link="wwwroot\gallery\index.json" />
+    <!-- every page of the site for search engines (WriteGalleryIndex below; robots.txt names it) -->
+    <Content Include="$(SitemapOutput)" Link="wwwroot\sitemap.xml" />
     <!-- the embed page, a static site of its own at /embed (web.config routes it), like /history -->
     <Content Include="..\..\..\embed\**" Link="wwwroot\embed\%(RecursiveDir)%(Filename)%(Extension)" />
     <!-- the gallery and its drawings played by the player, no .NET: /web and /web/<slug>
@@ -77,24 +79,147 @@
   <PropertyGroup>
     <GalleryCatalogSource>$(MSBuildProjectDirectory)\..\LiveGeometry.App\Gallery\GalleryCatalog.cs</GalleryCatalogSource>
     <GalleryIndexOutput>$(MSBuildProjectDirectory)\obj\gallery\index.json</GalleryIndexOutput>
+    <GalleryPagesOutput>$(MSBuildProjectDirectory)\obj\gallery\pages</GalleryPagesOutput>
+    <SitemapOutput>$(MSBuildProjectDirectory)\obj\gallery\sitemap.xml</SitemapOutput>
+    <!-- where the site is, for the absolute addresses link previews and the sitemap need -->
+    <SiteUrl Condition="'$(SiteUrl)' == ''">https://livegeometry.com</SiteUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <GalleryIndexInput Include="$(MSBuildProjectFullPath);$(GalleryCatalogSource);wwwroot\index.html;..\LiveGeometry.App\Gallery\Drawings\*.lgf" />
+  </ItemGroup>
 
   <!-- /gallery/index.json: the slugs, titles and files of the catalog in its order, read
        off GalleryCatalog.cs (its Item("slug", "Title"[, "File"][, stackedFigureShare: n])
        lines), so that the embed page and the /web page list the gallery as the app does
-       without a copy of the list to keep in step. -->
+       without a copy of the list to keep in step.
+       /gallery/<slug>.html: the app's index.html for each drawing, with the drawing's title,
+       the start of its explanation and its preview picture (/gallery/previews/<File>.png,
+       made after the publish by tools/previews.cs) in the head and on the splash. Sites that
+       show a link's preview read only the page's HTML, never what its script draws, and
+       every /gallery/<slug> was the same page (web.config serves these in its place).
+       /sitemap.xml: the site's pages, the drawings among them. -->
   <UsingTask TaskName="WriteGalleryIndex" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <Source ParameterType="System.String" Required="true" />
       <OutputFile ParameterType="System.String" Required="true" />
+      <Template ParameterType="System.String" Required="true" />
+      <DrawingsFolder ParameterType="System.String" Required="true" />
+      <PagesFolder ParameterType="System.String" Required="true" />
+      <SitemapFile ParameterType="System.String" Required="true" />
+      <SiteUrl ParameterType="System.String" Required="true" />
     </ParameterGroup>
     <Task>
       <Using Namespace="System" />
+      <Using Namespace="System.Collections.Generic" />
       <Using Namespace="System.IO" />
       <Using Namespace="System.Linq" />
       <Using Namespace="System.Text" />
       <Using Namespace="System.Text.RegularExpressions" />
+      <Using Namespace="System.Xml.Linq" />
       <Code Type="Fragment" Language="cs"><![CDATA[
+        // The first whole sentences of the drawing's explanation that say no live value ([AB]
+        // is worked out as the drawing is played), paragraph by paragraph until there are a
+        // hundred characters or so. A paragraph that ends in a colon ends it, with a period: what
+        // comes after it (a list, a formula) is no description.
+        string Describe(string path)
+        {
+            var labels = XDocument.Load(path).Descendants("Label").ToList();
+            var label = labels.FirstOrDefault(l => (string)l.Attribute("Name") == "Description")
+                ?? labels.FirstOrDefault(l => (string)l.Attribute("Style") == "Explanation");
+            string text = (string)label?.Attribute("Text");
+            if (text == null)
+            {
+                return null;
+            }
+
+            // a line break in a label's text is the two characters \n, a backslash two backslashes
+            var unescaped = new StringBuilder();
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (text[i] == '\\' && i + 1 < text.Length)
+                {
+                    i++;
+                    unescaped.Append(text[i] == 'n' ? '\n' : text[i]);
+                }
+                else
+                {
+                    unescaped.Append(text[i]);
+                }
+            }
+
+            var said = new StringBuilder();
+            foreach (string paragraph in unescaped.ToString().Split(new[] { "\n\n" }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                var part = new StringBuilder();
+                bool cutShort = false;
+                bool done = false;
+                foreach (string sentence in Regex.Split(Regex.Replace(paragraph, "\\s+", " ").Trim(), "(?<=[.!?][\"')]?)\\s+"))
+                {
+                    string whole = sentence.EndsWith(":") ? sentence.Substring(0, sentence.Length - 1) + "." : sentence;
+                    if (whole.Contains("[") || !Regex.IsMatch(whole, "[.!?][\"')]?$"))
+                    {
+                        cutShort = true;
+                        break;
+                    }
+
+                    if (said.Length + part.Length + whole.Length > 300 && said.Length + part.Length > 0)
+                    {
+                        done = true;
+                        break;
+                    }
+
+                    part.Append(part.Length > 0 ? " " : "").Append(whole);
+                    if (whole != sentence)
+                    {
+                        done = true;
+                        break;
+                    }
+                }
+
+                // a sentence or two before a live value may not stand on their own ("C is their product.")
+                if (part.Length > 0 && !(cutShort && part.Length < 40))
+                {
+                    said.Append(said.Length > 0 ? " " : "").Append(part);
+                }
+
+                if (done || said.Length >= 100)
+                {
+                    break;
+                }
+            }
+
+            return said.Length > 0 ? said.ToString() : null;
+        }
+
+        string Escape(string text) => text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;");
+
+        // index.html changed so that a pattern no longer finds its one place: say so, rather
+        // than give the drawings pages without their own tags
+        string ReplaceOnce(string text, string pattern, Func<Match, string> replacement)
+        {
+            var regex = new Regex(pattern, RegexOptions.Singleline);
+            if (regex.Matches(text).Count != 1)
+            {
+                throw new InvalidOperationException(Template + " no longer has exactly one match of " + pattern + ": update the WriteGalleryIndex task in LiveGeometry.Browser.csproj.");
+            }
+
+            return regex.Replace(text, match => replacement(match), 1);
+        }
+
+        string template = File.ReadAllText(Template);
+        Directory.CreateDirectory(PagesFolder);
+        foreach (string stale in Directory.GetFiles(PagesFolder, "*.html"))
+        {
+            File.Delete(stale);
+        }
+
+        var sitemap = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
+        foreach (string page in new[] { "/", "/history", "/history/tabula", "/embed" })
+        {
+            sitemap.Append("  <url><loc>").Append(SiteUrl).Append(page).Append("</loc></url>\n");
+        }
+
         var items = new StringBuilder();
         foreach (Match match in Regex.Matches(File.ReadAllText(Source), "Item\\(\"([^\"]+)\",\\s*\"([^\"]+)\"(?:,\\s*\"([^\"]+)\")?(?:,\\s*stackedFigureShare:\\s*([0-9.]+))?"))
         {
@@ -103,6 +228,39 @@
             string file = match.Groups[3].Success
                 ? match.Groups[3].Value
                 : string.Concat(slug.Split('-').Select(word => char.ToUpperInvariant(word[0]) + word.Substring(1)));
+            string url = SiteUrl + "/gallery/" + slug;
+            string description = Escape(Describe(Path.Combine(DrawingsFolder, file + ".lgf")) ?? title + ": an interactive geometry drawing with figures you can drag around.");
+            string escapedTitle = Escape(title);
+            string html = template;
+            try
+            {
+                html = ReplaceOnce(html, "<title>[^<]*</title>", m => "<title>" + escapedTitle + " · Live Geometry</title>");
+                html = ReplaceOnce(html, "<meta name=\"description\" content=\"[^\"]*\">", m => "<meta name=\"description\" content=\"" + description + "\">");
+                html = ReplaceOnce(html, "<meta property=\"og:title\" content=\"[^\"]*\">", m => "<meta property=\"og:title\" content=\"" + escapedTitle + "\">");
+                html = ReplaceOnce(html, "<meta property=\"og:description\" content=\"[^\"]*\">", m => "<meta property=\"og:description\" content=\"" + description + "\">");
+                html = ReplaceOnce(html, "<meta property=\"og:url\" content=\"[^\"]*\">", m => "<meta property=\"og:url\" content=\"" + url + "\">");
+                html = ReplaceOnce(html, "(\\s*)<meta property=\"og:type\" content=\"[^\"]*\">", m =>
+                {
+                    string indent = m.Groups[1].Value;
+                    return m.Value
+                        + indent + "<meta property=\"og:site_name\" content=\"Live Geometry\">"
+                        + indent + "<meta property=\"og:image\" content=\"" + SiteUrl + "/gallery/previews/" + file + ".png\">"
+                        + indent + "<meta property=\"og:image:width\" content=\"1200\">"
+                        + indent + "<meta property=\"og:image:height\" content=\"630\">"
+                        + indent + "<meta name=\"twitter:card\" content=\"summary_large_image\">"
+                        + indent + "<link rel=\"canonical\" href=\"" + url + "\">";
+                });
+                // the splash says what the drawing is while the app loads, and is the text a search engine indexes
+                html = ReplaceOnce(html, "<h1>[^<]*</h1>(\\s*)<p>.*?</p>", m => "<h1>" + escapedTitle + "</h1>" + m.Groups[1].Value + "<p>" + description + "</p>");
+            }
+            catch (InvalidOperationException ex)
+            {
+                Log.LogError(ex.Message);
+                return false;
+            }
+
+            File.WriteAllText(Path.Combine(PagesFolder, slug + ".html"), html, new UTF8Encoding(false));
+            sitemap.Append("  <url><loc>").Append(url).Append("</loc></url>\n");
             items.Append(items.Length == 0 ? "[\n" : ",\n");
             items.Append("  {\"slug\": \"").Append(slug).Append("\", \"title\": \"").Append(title.Replace("\\", "\\\\").Replace("\"", "\\\"")).Append("\", \"file\": \"").Append(file).Append(".lgf\"");
             if (match.Groups[4].Success)
@@ -116,12 +274,30 @@
         items.Append("\n]\n");
         Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
         File.WriteAllText(OutputFile, items.ToString(), new UTF8Encoding(false));
+        sitemap.Append("</urlset>\n");
+        File.WriteAllText(SitemapFile, sitemap.ToString(), new UTF8Encoding(false));
       ]]></Code>
     </Task>
   </UsingTask>
 
-  <Target Name="WriteGalleryIndex" BeforeTargets="BeforeBuild;AssignTargetPaths" Inputs="$(GalleryCatalogSource)" Outputs="$(GalleryIndexOutput)">
-    <WriteGalleryIndex Source="$(GalleryCatalogSource)" OutputFile="$(GalleryIndexOutput)" />
+  <Target Name="WriteGalleryIndex" BeforeTargets="BeforeBuild;AssignTargetPaths" Inputs="@(GalleryIndexInput)" Outputs="$(GalleryIndexOutput);$(SitemapOutput)">
+    <WriteGalleryIndex
+      Source="$(GalleryCatalogSource)"
+      OutputFile="$(GalleryIndexOutput)"
+      Template="$(MSBuildProjectDirectory)\wwwroot\index.html"
+      DrawingsFolder="$(MSBuildProjectDirectory)\..\LiveGeometry.App\Gallery\Drawings"
+      PagesFolder="$(GalleryPagesOutput)"
+      SitemapFile="$(SitemapOutput)"
+      SiteUrl="$(SiteUrl)" />
+  </Target>
+
+  <!-- the pages are known only once they are written, so they are taken in here and not with
+       the other files above: as /gallery/<slug>.html beside the drawings' files -->
+  <Target Name="IncludeGalleryPages" DependsOnTargets="WriteGalleryIndex" BeforeTargets="BeforeBuild;AssignTargetPaths">
+    <ItemGroup>
+      <GalleryPage Include="$(GalleryPagesOutput)\*.html" />
+      <Content Include="@(GalleryPage)" Link="wwwroot\gallery\%(GalleryPage.Filename)%(GalleryPage.Extension)" />
+    </ItemGroup>
   </Target>
 
   <ItemGroup>
