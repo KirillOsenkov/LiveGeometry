@@ -2,8 +2,6 @@
 // expressions, pinned to a corner of the canvas or placed in the plane.
 
 class Label extends LabelBase {
-    static BackdropPadding = 8;
-
     constructor() {
         super();
         this.shouldProcessText = true;
@@ -11,7 +9,6 @@ class Label extends LabelBase {
 
         /** Pixels from the pinned corner of the canvas to the same corner of the label */
         this.pinOffset = new Point();
-        this.backdropValue = false;
     }
 
     get isLengthProvider() {
@@ -91,10 +88,6 @@ class Label extends LabelBase {
         }
     }
 
-    get hasCanvas() {
-        return this.drawing != null && this.drawing.canvas != null;
-    }
-
     /** The width of the label in pixels, its text wrapping to fit; 0 lets every line run as long as it is */
     get wrapWidth() {
         return this.wrapWidthValue;
@@ -111,30 +104,6 @@ class Label extends LabelBase {
     /** Wrapped, the text keeps its expressions on one line (LineBreaks) */
     shownText(text) {
         return this.wrapWidthValue > 0 ? LineBreaks.keepExpressionsTogether(text) : text;
-    }
-
-    /** A plate of the paper's color behind the text, so that a caption stays readable over a grid or a figure */
-    get backdrop() {
-        return this.backdropValue;
-    }
-
-    set backdrop(value) {
-        this.backdropValue = value;
-        this.padding = value ? Label.BackdropPadding : 0;
-        this.textLayout = null;
-        if (this.hasCanvas) {
-            this.updateVisual();
-        }
-    }
-
-    /** Only a plain paper has a color to give; on a gradient there is no plate */
-    get backdropBrush() {
-        if (!this.backdropValue || this.drawing == null) {
-            return null;
-        }
-
-        const paper = this.drawing.background;
-        return paper instanceof SolidColorBrush ? paper : null;
     }
 
     pinnedTopLeft(size) {
@@ -202,7 +171,6 @@ class Label extends LabelBase {
         super.readXml(element);
         this.text = Label.unescape(element.getAttribute("Text") ?? "");
         this.wrapWidth = Xml.readDouble(element, "WrapWidth");
-        this.backdrop = Xml.readBool(element, "Backdrop", false);
         const readPin = Pinning.parse(element.getAttribute("Pin"));
         if (readPin !== LabelPin.None) {
             this.pinOffset = new Point(Xml.readDouble(element, "OffsetX"), Xml.readDouble(element, "OffsetY"));

@@ -95,6 +95,15 @@ class SegmentPiece extends BoundaryPiece {
 class ArcPiece extends BoundaryPiece {
     constructor(center, semiMajor, semiMinor, inclination, from, to) {
         super();
+
+        // a circle's inclination is only where its parametrization starts: folded into the
+        // angles, so that every arc of one circle has one parametrization
+        if (semiMajor === semiMinor && inclination !== 0) {
+            from += inclination;
+            to += inclination;
+            inclination = 0;
+        }
+
         this.center = center;
         this.semiMajor = semiMajor;
         this.semiMinor = semiMinor;
@@ -112,7 +121,7 @@ class ArcPiece extends BoundaryPiece {
     }
 
     get isCircle() {
-        return this.semiMajor === this.semiMinor && this.inclination === 0;
+        return this.semiMajor === this.semiMinor;
     }
 
     get start() {
@@ -315,15 +324,16 @@ class RegionBoundary {
 
     // Tracing
 
+    /** The boundary of the set the operation makes of the operands as they are now; an operand that doesn't exist is the empty set */
     static trace(operation, operands) {
         const result = new RegionBoundary();
-        if (operands.length === 0 || operands.some(operand => operand == null || !operand.exists)) {
+        if (operands.length === 0) {
             return result;
         }
 
         let pieces = [];
         for (let i = 0; i < operands.length; i++) {
-            if (operands[i].hasInside) {
+            if (operands[i] != null && operands[i].exists && operands[i].hasInside) {
                 for (const piece of RegionBoundary.piecesOf(operands[i])) {
                     pieces.push({ piece, operand: i });
                 }
@@ -382,13 +392,18 @@ class RegionBoundary {
         }
 
         result.pieces = kept;
-        result.loops = RegionBoundary.chain(kept, tolerance);
+        result.loops = RegionBoundary.chain(kept, RegionBoundary.chainTolerance(scale));
         result.measure();
         return result;
     }
 
     static tolerance(scale) {
         return 1e-9 * scale;
+    }
+
+    /** Wider than the cutting tolerance: a sliver too short to be judged leaves no gap that a straight line would close */
+    static chainTolerance(scale) {
+        return 1e-6 * scale;
     }
 
     static scaleOf(pieces) {
@@ -402,7 +417,7 @@ class RegionBoundary {
     }
 
     static isInside(operand, point) {
-        return operand.hasInside && operand.containsPoint(point);
+        return operand != null && operand.exists && operand.hasInside && operand.containsPoint(point);
     }
 
     /** The piece with its operand on the left, or null when the operand is on neither side or on both */

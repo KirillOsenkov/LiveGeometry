@@ -46,6 +46,32 @@ pizza slices, spin the die, fold the cube, two-point perspective, what is π. St
 below: pendulum, rotation and dilation playgrounds, Islamic star, Dudeney's dissection,
 proofs without words, the missing square, cross sections, the shadow of a stick.
 
+**Built on 2026-10-23** (the regions batch, at the end of the gallery): the lunes of
+Hippocrates, the arbelos, yin and yang, three shaded squares (leaf, flower, star), the
+grazing goat, and Arc Plus Arc (the S of two half circles as long as the big one). The
+candidates weighed and left out, for a later batch:
+
+- **The ring and the stick.** An annulus with a chord of the outer circle tangent to the
+  inner one: the ring's area is π (half the chord)², whatever the two radii. Drag the
+  inner radius, the chord follows, the number never moves. A Difference with a hole and a
+  live identity; left out as the least visual of the set.
+- **The salinon.** Archimedes' other shape: a big semicircle, two equal small semicircles
+  cut out of its ends and one added back in the middle; its area is the circle on its
+  axis of symmetry. The arbelos's sibling, one drawing too many of the same kind.
+- **Archimedes' twin circles.** In the arbelos, the two circles tangent to the altitude and
+  the big and a small semicircle are equal. Needs a tangent-circle construction (a
+  circle by two tangencies), which no tool makes yet.
+- **The crescent moon.** Two circles, a slider for the offset, the lune's area and
+  perimeter read off live; the moon's phases as a region. Pretty but says nothing.
+- **Four circles in a square.** Four equal circles in the corners of a square and the
+  gap in the middle (the square without the four), the "shaded area" puzzle every book
+  has; the star in Shaded Squares covers the same ground.
+- **A Venn diagram with three sliders.** Three circles whose overlaps are regions, the
+  seven pieces counted and their areas added: a drawing about sets rather than shapes.
+- **The pizza theorem.** A pizza cut by four lines through any inside point at 45°: the
+  alternate slices add up to half. Regions of sectors cut by lines; a fine one, held back
+  because its proof is far beyond the audience and the picture is busy.
+
 Roughly by spark per hour of work. "Generated" means a `tools/<name>.cs` writes the
 `.lgf`, as the slime and the Platonic solids are made.
 

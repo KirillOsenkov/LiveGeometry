@@ -75,10 +75,76 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
 
         this.Apply(TextBlock, Style);
         selection.Background = Selected ? selectionBrush : null;
+        if (backdrop)
+        {
+            ApplyBackdrop();
+        }
+
         if (Drawing != null)
         {
             UpdateVisual();
         }
+    }
+
+    bool backdrop;
+
+    /// <summary>
+    /// A plate of the paper's color behind the text, a little larger than the text, so
+    /// that a caption stays readable over a grid or a figure that zoomed under it, and a
+    /// number over a busy spot. Only a plain paper has a color to give; on a gradient there
+    /// is no plate. "Background" in the grid: "Backdrop" said nothing to a reader, and with
+    /// nothing behind the text the box changes nothing to see. (A plain row: in a "Screen"
+    /// box with a free text's pin it was a box of one row on every other label.)
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Background")]
+    [PropertyGridSection(PropertyGridSection.Display, 30)]
+    public bool Backdrop
+    {
+        get => backdrop;
+        set
+        {
+            backdrop = value;
+            TextBlock.Padding = backdrop ? new Thickness(BackdropPadding) : new Thickness();
+            ApplyBackdrop();
+            if (HasCanvas)
+            {
+                UpdateVisual();
+            }
+        }
+    }
+
+    public const double BackdropPadding = 8;
+
+    /// <summary>The plate as the paper is now (a theme switch, the paper of a file read after its figures); none without the backdrop</summary>
+    protected void ApplyBackdrop()
+    {
+        var paper = backdrop && Drawing != null ? Drawing.Background as SolidColorBrush : null;
+
+        // selected, the plate takes the tint of the selection, which it covers (a selected
+        // caption looked like any other)
+        TextBlock.Background = paper != null && Selected
+            ? new SolidColorBrush(Blend(paper.Color, SelectionColor))
+            : paper;
+    }
+
+    /// <summary>A color as it shows over the paper</summary>
+    static Color Blend(Color paper, Color over)
+    {
+        double alpha = over.A / 255.0;
+        byte Mix(byte under, byte top) => (byte)System.Math.Round(under + (top - under) * alpha);
+        return Color.FromArgb(paper.A, Mix(paper.R, over.R), Mix(paper.G, over.G), Mix(paper.B, over.B));
+    }
+
+    /// <summary>The plate follows the paper, which may have changed since the label was made</summary>
+    public override void UpdateVisual()
+    {
+        if (backdrop)
+        {
+            ApplyBackdrop();
+        }
+
+        base.UpdateVisual();
     }
 
     protected string text;
@@ -551,6 +617,8 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
         {
             DecimalsToShow = (int)element.ReadDouble("DecimalsToShow");
         }
+
+        Backdrop = element.ReadBool("Backdrop", false);
     }
 
     public override void WriteXml(XmlWriter writer)
@@ -559,6 +627,25 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
         if (DecimalsToShow != Settings.DisplayDecimals)
         {
             writer.WriteAttributeDouble("DecimalsToShow", (double)DecimalsToShow);
+        }
+
+        if (!WritesBackdropLast)
+        {
+            WriteBackdropAttribute(writer);
+        }
+    }
+
+    /// <summary>
+    /// Whether the subclass writes <c>Backdrop</c> after its own attributes
+    /// (<see cref="WriteBackdropAttribute"/>) rather than the base here, before them
+    /// </summary>
+    protected virtual bool WritesBackdropLast => false;
+
+    protected void WriteBackdropAttribute(XmlWriter writer)
+    {
+        if (backdrop)
+        {
+            writer.WriteAttributeBool("Backdrop", true);
         }
     }
 

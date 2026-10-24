@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1" Top="3.5" Right="12" Bottom="-2" />
+  <Styles>
+    <LineStyle Name="Frame" Color="#FF4A4F58" StrokeWidth="1.5">
+      <Dark Color="#FFC8CCD4" />
+    </LineStyle>
+    <ShapeStyle Name="Leaf" Fill="#B0B4E8C2" Color="#FF2E9E4F" StrokeWidth="1.5">
+      <Dark Fill="#B02E7A45" Color="#FF4CD27A" />
+    </ShapeStyle>
+    <ShapeStyle Name="Flower" Fill="#B0E4CCF6" Color="#FF9B59D0" StrokeWidth="1.5">
+      <Dark Fill="#B06A3F9A" Color="#FFC79BF0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Star" Fill="#B0FFD88C" Color="#FFE08A00" StrokeWidth="1.5">
+      <Dark Fill="#B0A6610E" Color="#FFFFB84D" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <Slider Name="s" X="0" Y="-1" Value="2" Minimum="1" Maximum="3" />
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="s" Y="0">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C" Visible="false" X="s" Y="s">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D" Visible="false" X="0" Y="s">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <Polygon Name="ABCD" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Polygon>
+    <CircleSector Name="QuarterA" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="D" />
+    </CircleSector>
+    <CircleSector Name="QuarterC" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </CircleSector>
+    <Region Name="Leaf" Style="Leaf" Operation="Intersection">
+      <Dependency Name="QuarterA" />
+      <Dependency Name="QuarterC" />
+    </Region>
+    <PointByCoordinates Name="E" Visible="false" X="s + 1" Y="0">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F" Visible="false" X="2 * s + 1" Y="0">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="G" Visible="false" X="2 * s + 1" Y="s">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="H" Visible="false" X="s + 1" Y="s">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <Polygon Name="EFGH" Style="Frame">
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+    </Polygon>
+    <PointByCoordinates Name="BottomMid" Visible="false" X="1.5 * s + 1" Y="0">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="RightMid" Visible="false" X="2 * s + 1" Y="s / 2">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="TopMid" Visible="false" X="1.5 * s + 1" Y="s">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LeftMid" Visible="false" X="s + 1" Y="s / 2">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <CircleSegment Name="HalfBottom" Visible="false">
+      <Dependency Name="BottomMid" />
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </CircleSegment>
+    <CircleSegment Name="HalfRight" Visible="false">
+      <Dependency Name="RightMid" />
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+    </CircleSegment>
+    <CircleSegment Name="HalfTop" Visible="false">
+      <Dependency Name="TopMid" />
+      <Dependency Name="H" />
+      <Dependency Name="G" />
+    </CircleSegment>
+    <CircleSegment Name="HalfLeft" Visible="false">
+      <Dependency Name="LeftMid" />
+      <Dependency Name="E" />
+      <Dependency Name="H" />
+    </CircleSegment>
+    <Region Name="Petal1" Visible="false" Operation="Intersection">
+      <Dependency Name="HalfBottom" />
+      <Dependency Name="HalfRight" />
+    </Region>
+    <Region Name="Petal2" Visible="false" Operation="Intersection">
+      <Dependency Name="HalfRight" />
+      <Dependency Name="HalfTop" />
+    </Region>
+    <Region Name="Petal3" Visible="false" Operation="Intersection">
+      <Dependency Name="HalfTop" />
+      <Dependency Name="HalfLeft" />
+    </Region>
+    <Region Name="Petal4" Visible="false" Operation="Intersection">
+      <Dependency Name="HalfLeft" />
+      <Dependency Name="HalfBottom" />
+    </Region>
+    <Region Name="Flower" Style="Flower" Operation="Union">
+      <Dependency Name="Petal1" />
+      <Dependency Name="Petal2" />
+      <Dependency Name="Petal3" />
+      <Dependency Name="Petal4" />
+    </Region>
+    <PointByCoordinates Name="I" Visible="false" X="2 * s + 2" Y="0">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="J" Visible="false" X="3 * s + 2" Y="0">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K" Visible="false" X="3 * s + 2" Y="s">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L" Visible="false" X="2 * s + 2" Y="s">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <Polygon Name="IJKL" Style="Frame">
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </Polygon>
+    <PointByCoordinates Name="IJ" Visible="false" X="2.5 * s + 2" Y="0">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="JK" Visible="false" X="3 * s + 2" Y="s / 2">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="KL" Visible="false" X="2.5 * s + 2" Y="s">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LI" Visible="false" X="2 * s + 2" Y="s / 2">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <CircleSector Name="CornerI" Visible="false">
+      <Dependency Name="I" />
+      <Dependency Name="IJ" />
+      <Dependency Name="LI" />
+    </CircleSector>
+    <CircleSector Name="CornerJ" Visible="false">
+      <Dependency Name="J" />
+      <Dependency Name="JK" />
+      <Dependency Name="IJ" />
+    </CircleSector>
+    <CircleSector Name="CornerK" Visible="false">
+      <Dependency Name="K" />
+      <Dependency Name="KL" />
+      <Dependency Name="JK" />
+    </CircleSector>
+    <CircleSector Name="CornerL" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="LI" />
+      <Dependency Name="KL" />
+    </CircleSector>
+    <Region Name="Star" Style="Star" Operation="Difference">
+      <Dependency Name="IJKL" />
+      <Dependency Name="CornerI" />
+      <Dependency Name="CornerJ" />
+      <Dependency Name="CornerK" />
+      <Dependency Name="CornerL" />
+    </Region>
+    <AreaMeasurement Name="LeafArea" OffsetX="-16.75" OffsetY="-12">
+      <Dependency Name="Leaf" />
+    </AreaMeasurement>
+    <AreaMeasurement Name="FlowerArea" OffsetX="11.25" OffsetY="-40">
+      <Dependency Name="Flower" />
+    </AreaMeasurement>
+    <AreaMeasurement Name="StarArea" OffsetX="-16.75" OffsetY="-12">
+      <Dependency Name="Star" />
+    </AreaMeasurement>
+    <Label Name="Title" Style="Heading" Text="Shaded Squares" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Three puzzles from the back of every geometry book: find the shaded area. In the first square, two quarter circles overlap in a leaf. In the second, four half circles overlap in a flower. In the third, four quarter circles leave a star in the middle.\n\nDrag the slider to change the side. The leaf and the flower always have the same area, (π/2 − 1) of the square: [(pi / 2 - 1) * s^2]. The star is what is left when a whole circle's worth of quarters is taken away, (1 − π/4) of the square: [(1 - pi / 4) * s^2].\n\nThe shaded shapes are made with Intersection (the leaf, and each petal), Union (the flower from its petals) and Difference (the star)." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="s" />
+    </Label>
+  </Figures>
+</Drawing>

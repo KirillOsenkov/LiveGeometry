@@ -167,6 +167,12 @@ public static class GalleryCatalog
         Item("what-is-pi", "What Is π?"),
         Item("slice-the-pizza", "Slice the Pizza", stackedFigureShare: 0.5),
         Item("honeycomb-facts", "Honeycomb Facts", stackedFigureShare: 0.5),
+        Item("lunes-of-hippocrates", "Two Moons and a Triangle"),
+        Item("arbelos", "The Shoemaker's Knife"),
+        Item("yin-yang", "Yin and Yang"),
+        Item("shaded-squares", "Shaded Squares"),
+        Item("grazing-goat", "The Grazing Goat"),
+        Item("arc-plus-arc", "Arc Plus Arc"),
     };
 
     /// <summary>

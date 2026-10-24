@@ -151,6 +151,18 @@ public class ArcPiece : BoundaryPiece
         double from,
         double to)
     {
+        // A circle's inclination is only where its parametrization starts (a sector's is
+        // the angle to its first point): folded into the angles, so that every arc of one
+        // circle has one parametrization. Judged by their inclinations, an arc of a circular
+        // segment and an arc of its circle were taken for different ellipses, and the search
+        // for crossings between them cut both into slivers at random.
+        if (semiMajor == semiMinor && inclination != 0)
+        {
+            from += inclination;
+            to += inclination;
+            inclination = 0;
+        }
+
         Center = center;
         SemiMajor = semiMajor;
         SemiMinor = semiMinor;
@@ -176,7 +188,7 @@ public class ArcPiece : BoundaryPiece
 
     public bool IsCounterclockwise => To >= From;
 
-    public bool IsCircle => SemiMajor == SemiMinor && Inclination == 0;
+    public bool IsCircle => SemiMajor == SemiMinor;
 
     public override Point Start => At(From);
 

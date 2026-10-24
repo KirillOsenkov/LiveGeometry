@@ -63,7 +63,11 @@ class LabelBase extends ControlBase {
         this.textLayout = null;
         this.padding = 0;
         this.wrapWidthValue = 0;
+        this.backdropValue = false;
     }
+
+    /** The room a plate leaves around the text, in pixels */
+    static BackdropPadding = 8;
 
     get isLabel() {
         return true;
@@ -252,6 +256,8 @@ class LabelBase extends ControlBase {
         if (element.hasAttribute("DecimalsToShow")) {
             this.decimalsToShow = Math.trunc(Xml.readDouble(element, "DecimalsToShow"));
         }
+
+        this.backdrop = Xml.readBool(element, "Backdrop", false);
     }
 
     render(renderer) {
@@ -272,8 +278,31 @@ class LabelBase extends ControlBase {
         renderer.drawText(layout, topLeft, this.font, this.textColor, this.padding, this.backdropBrush, this.resolvedStyle?.underline === true);
     }
 
-    /** The plate behind the text, if any (Label.Backdrop) */
+    /** A plate of the paper's color behind the text (Backdrop in C#): a caption over a grid, a number over a busy spot */
+    get backdrop() {
+        return this.backdropValue;
+    }
+
+    set backdrop(value) {
+        this.backdropValue = value;
+        this.padding = value ? LabelBase.BackdropPadding : 0;
+        this.textLayout = null;
+        if (this.hasCanvas) {
+            this.updateVisual();
+        }
+    }
+
+    get hasCanvas() {
+        return this.drawing != null && this.drawing.canvas != null;
+    }
+
+    /** The plate behind the text: the paper where it is a plain color (on a gradient there is no plate), none without the backdrop */
     get backdropBrush() {
-        return null;
+        if (!this.backdropValue || this.drawing == null) {
+            return null;
+        }
+
+        const paper = this.drawing.background;
+        return paper instanceof SolidColorBrush ? paper : null;
     }
 }

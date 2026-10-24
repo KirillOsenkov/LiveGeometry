@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-7" Top="6" Right="7" Bottom="-7" />
+  <Scene Left="-5.5" Top="5.5" Right="5.75" Bottom="-6.25" />
+  <Styles>
+    <ShapeStyle Name="Barn" Fill="#FFD9A066" Color="#FF8A5A2B" StrokeWidth="2">
+      <Dark Fill="#FF8A5A2B" Color="#FFE0B080" />
+    </ShapeStyle>
+    <TextStyle Name="BarnName" FontSize="18" Color="#FF5A3A14" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFF0D8B0" />
+    </TextStyle>
+    <ShapeStyle Name="Grass" Fill="#B0BDEFB0" Color="#FF4CA85A" StrokeWidth="1.5">
+      <Dark Fill="#B02E6A3A" Color="#FF6FD08A" />
+    </ShapeStyle>
+    <PointStyle Name="Peg" Size="8" Fill="#FF3B4250" Color="#FF3B4250">
+      <Dark Fill="#FFD8DCE4" Color="#FFD8DCE4" />
+    </PointStyle>
+    <PointStyle Name="Goat" Character="🐐" Size="40" Fill="#FFFFFFFF" />
+  </Styles>
+  <Figures>
+    <Slider Name="r" X="-5" Y="-5.4" Value="4" Maximum="5" />
+    <PointByCoordinates Name="A" Style="Peg" X="0" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="3" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="3" Y="2" />
+    <PointByCoordinates Name="D" Visible="false" X="0" Y="2" />
+    <Polygon Name="Barn" Style="Barn" Z="1">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Polygon>
+    <AttachedLabel Name="BarnLabel" Style="BarnName" OffsetX="-19.75" OffsetY="-12" Text="Barn">
+      <Dependency Name="Barn" />
+    </AttachedLabel>
+    <PointByCoordinates Name="FrontUp" Visible="false" X="0" Y="r">
+      <Dependency Name="r" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FrontRight" Visible="false" X="r" Y="0">
+      <Dependency Name="r" />
+    </PointByCoordinates>
+    <CircleSector Name="Front" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="FrontUp" />
+      <Dependency Name="FrontRight" />
+    </CircleSector>
+    <PointByCoordinates Name="SideOut" Visible="false" X="3 + max(r - 3, 0)" Y="0">
+      <Dependency Name="r" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SideUp" Visible="false" X="3" Y="max(r - 3, 0)">
+      <Dependency Name="r" />
+    </PointByCoordinates>
+    <CircleSector Name="Side" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="SideOut" />
+      <Dependency Name="SideUp" />
+    </CircleSector>
+    <PointByCoordinates Name="BackOut" Visible="false" X="max(r - 2, 0)" Y="2">
+      <Dependency Name="r" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BackUp" Visible="false" X="0" Y="2 + max(r - 2, 0)">
+      <Dependency Name="r" />
+    </PointByCoordinates>
+    <CircleSector Name="Back" Visible="false">
+      <Dependency Name="D" />
+      <Dependency Name="BackOut" />
+      <Dependency Name="BackUp" />
+    </CircleSector>
+    <Region Name="Grass" Style="Grass" Operation="Union">
+      <Dependency Name="Front" />
+      <Dependency Name="Side" />
+      <Dependency Name="Back" />
+    </Region>
+    <PointInRegion Name="Goat" Style="Goat" X="-2" Y="-1.5000000000000027" OffsetX="-1.6168040655898297" OffsetY="-1.2111436882313393">
+      <Dependency Name="Grass" />
+    </PointInRegion>
+    <Label Name="Title" Style="Heading" Text="The Grazing Goat" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="A goat is tied to the corner of a barn with a rope. How much grass can it reach? Drag the slider to let out more rope. In front of the barn the goat sweeps three quarters of a circle; where the rope bends around a corner, what is left of it sweeps a quarter circle more.\n\nGrass it can reach: [Grass.Area]. The formula, 3/4 of π r² plus a quarter circle for each corner the rope gets around: [3 / 4 * pi * r^2 + pi / 4 * max(r - 3, 0)^2 + pi / 4 * max(r - 2, 0)^2]. The barn is 3 by 2.\n\nThe reach is a Union of three sectors, and the goat is a point kept inside it: drag it anywhere on the grass, but not into the barn." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="Grass" />
+      <Dependency Name="r" />
+    </Label>
+  </Figures>
+</Drawing>

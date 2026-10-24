@@ -133,6 +133,7 @@ public class Program
             ("An emoji of a shape's default size keeps its size", EmojiSizeRoundTrips),
             ("Completion: where a word is, what can go there, what a word selects", Completion),
             ("Regions: the classic shaded areas come out exact, with their identities, round trip, undo, transforms and a point inside", Regions),
+            ("Regions stay closed while a yin-yang of circular segments spins", RegionsStayClosed),
             ("LGF partial load", PartialLoad),
             ("LGF rejects abstract figures", AbstractFigureLoad),
             ("LGF leaves out a figure built on too few figures", TooFewDependenciesLoad),
@@ -6623,6 +6624,24 @@ public class Program
         NearTo(previous, 4 - pi, 1e-10, "the circle touching the far side from inside is a hole");
         NearTo(roller.Center.X, 111, 1e-12, "the circle ended at the far side");
 
+        // an operand that doesn't exist is the empty set: a sector of radius 0 in a union, or cut
+        // out of a difference, changes nothing; the first of a difference gone takes the region
+        var reachCenter = AddPoint(drawing, 140, 0);
+        var reachBegin = AddPoint(drawing, 140, 0);
+        var reachEnd = AddPoint(drawing, 140, 0);
+        var reach = Factory.CreateCircleSector(drawing, new IFigure[] { reachCenter, reachBegin, reachEnd });
+        Actions.Add(drawing, reach);
+        Require(!reach.Exists, "A sector of radius 0 exists.");
+        var paddock = Circle(145, 0, 1);
+        var withReach = Make(RegionOperation.Union, paddock, reach);
+        NearTo(withReach.Area, pi, 1e-10, "a union with a sector of radius 0");
+        NearTo(Make(RegionOperation.Difference, paddock, reach).Area, pi, 1e-10, "a difference with a sector of radius 0 cut out");
+        Require(!Make(RegionOperation.Difference, reach, paddock).Exists && !Make(RegionOperation.Intersection, paddock, reach).Exists, "A difference from nothing, or an intersection with it, exists.");
+        reachBegin.MoveTo(new Point(141, 0));
+        reachEnd.MoveTo(new Point(140, 1));
+        drawing.Recalculate();
+        NearTo(withReach.Area, pi + pi / 4, 1e-10, "the union once the sector has a radius");
+
         // a bow tie is what its even-odd fill covers
         var bowTie = Factory.CreatePolygon(drawing, new IFigure[] { AddPoint(drawing, 120, 0), AddPoint(drawing, 122, 2), AddPoint(drawing, 122, 0), AddPoint(drawing, 120, 2) });
         Actions.Add(drawing, bowTie);
@@ -6635,6 +6654,76 @@ public class Program
         Actions.Add(drawing, measurement);
         NearTo(measurement.Measure, reuleaux.Area, 1e-10, "the area measurement of a region");
         Require(AreaMeasurement.IsMeasurable(reuleaux) && LengthMeasurement.IsMeasurable(reuleaux), "A region is not measurable.");
+    }
+
+    /// <summary>
+    /// A yin-yang whose dividing chord is across the line of the small circles (the first
+    /// attempt at the gallery's): a half disc, which is a circular segment of the big circle
+    /// and so has an inclination of its own, two circles touching each other at the center
+    /// and the big circle at its rim, a region three deep and the circle without it. Spun
+    /// through a full turn, every loop of every region closes and the two halves add up to
+    /// the circle. (An arc of the segment was taken for another ellipse than the circle's,
+    /// and the search for crossings between them cut slivers at random: the halves flashed
+    /// with straight edges while the point was dragged.)
+    /// </summary>
+    static void RegionsStayClosed()
+    {
+        var drawing = NewDrawing();
+        var o = AddPoint(drawing, 0, 0);
+        o.Name = "O";
+        var r = AddPoint(drawing, 0, 3);
+        r.Name = "R";
+        var big = Factory.CreateCircle(drawing, new IFigure[] { o, r });
+        Actions.Add(drawing, big);
+        var upper = Factory.CreatePointByCoordinates(drawing, "(O.X + R.X) / 2", "(O.Y + R.Y) / 2");
+        Actions.Add(drawing, upper);
+        var lower = Factory.CreatePointByCoordinates(drawing, "(3 * O.X - R.X) / 2", "(3 * O.Y - R.Y) / 2");
+        Actions.Add(drawing, lower);
+        var p1 = Factory.CreatePointByCoordinates(drawing, "O.X - (R.Y - O.Y)", "O.Y + (R.X - O.X)");
+        Actions.Add(drawing, p1);
+        var p2 = Factory.CreatePointByCoordinates(drawing, "O.X + (R.Y - O.Y)", "O.Y - (R.X - O.X)");
+        Actions.Add(drawing, p2);
+        var half = Factory.CreateCircleSegment(drawing, new IFigure[] { o, p1, p2 });
+        Actions.Add(drawing, half);
+        var upperCircle = Factory.CreateCircle(drawing, new IFigure[] { upper, o });
+        Actions.Add(drawing, upperCircle);
+        var lowerCircle = Factory.CreateCircle(drawing, new IFigure[] { lower, o });
+        Actions.Add(drawing, lowerCircle);
+        var body = Factory.CreateRegion(drawing, RegionOperation.Difference, new IFigure[] { half, lowerCircle });
+        Actions.Add(drawing, body);
+        var yin = Factory.CreateRegion(drawing, RegionOperation.Union, new IFigure[] { body, upperCircle });
+        Actions.Add(drawing, yin);
+        var yang = Factory.CreateRegion(drawing, RegionOperation.Difference, new IFigure[] { big, yin });
+        Actions.Add(drawing, yang);
+
+        int gaps = 0;
+        string first = null;
+        for (int step = 0; step < 720; step++)
+        {
+            double angle = step * System.Math.PI / 360;
+            r.MoveTo(new Point(3 * System.Math.Cos(angle), 3 * System.Math.Sin(angle)));
+            drawing.Recalculate();
+            foreach (var region in new[] { body, yin, yang })
+            {
+                foreach (var loop in region.Boundary.Loops)
+                {
+                    for (int i = 0; i < loop.Count; i++)
+                    {
+                        double gap = loop[i].End.Distance(loop[(i + 1) % loop.Count].Start);
+                        if (gap > 1e-7)
+                        {
+                            gaps++;
+                            first ??= $"{region.Name} at {step / 2.0}°: a gap of {gap:G3} after piece {i} of {loop.Count}";
+                        }
+                    }
+                }
+            }
+
+            Require(System.Math.Abs(yin.Area + yang.Area - big.Area) < 1e-9, $"At {step / 2.0}° the halves add up to {yin.Area + yang.Area:R}, the circle is {big.Area:R}.");
+            Require(System.Math.Abs(yin.Area - yang.Area) < 1e-9, $"At {step / 2.0}° the halves differ: {yin.Area:R} and {yang.Area:R}.");
+        }
+
+        Require(gaps == 0, gaps + " loops did not close; the first: " + first);
     }
 
     static void GalleryRoundTrips()

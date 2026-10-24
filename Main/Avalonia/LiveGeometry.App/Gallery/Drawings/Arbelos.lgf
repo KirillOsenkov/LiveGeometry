@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-7" Top="5" Right="7" Bottom="-3" />
+  <Scene Left="-4.75" Top="4.75" Right="4.75" Bottom="-1.25" />
+  <Styles>
+    <LineStyle Name="Base" Color="#FF3B4250" StrokeWidth="2">
+      <Dark Color="#FFD8DCE4" />
+    </LineStyle>
+    <LineStyle Name="Altitude" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Dash">
+      <Dark Color="#FF62AEFF" />
+    </LineStyle>
+    <ShapeStyle Name="Knife" Fill="#D0F5C98A" Color="#FFB7791F" StrokeWidth="1.5">
+      <Dark Fill="#D0A06A1E" Color="#FFE8B45A" />
+    </ShapeStyle>
+    <ShapeStyle Name="Twin" Fill="#5070A8E8" Color="#FF2F7BD6" StrokeWidth="2">
+      <Dark Fill="#604F7AB8" Color="#FF62AEFF" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" X="-4" Y="0" />
+    <FreePoint Name="B" X="4" Y="0" />
+    <Segment Name="AB" Style="Base">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PointOnFigure Name="C" X="-1.2000000000000002" Y="0" Parameter="0.35">
+      <Dependency Name="AB" />
+    </PointOnFigure>
+    <MidPoint Name="M" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="M1" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="M2" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <CircleSegment Name="Big" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <CircleSegment Name="Left" Visible="false">
+      <Dependency Name="M1" />
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <CircleSegment Name="Right" Visible="false">
+      <Dependency Name="M2" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </CircleSegment>
+    <Region Name="Knife" Style="Knife" Operation="Difference">
+      <Dependency Name="Big" />
+      <Dependency Name="Left" />
+      <Dependency Name="Right" />
+    </Region>
+    <PointByCoordinates Name="D" X="C.X - sqrt(distance(A, C) * distance(C, B)) * (B.Y - A.Y) / distance(A, B)" Y="C.Y + sqrt(distance(A, C) * distance(C, B)) * (B.X - A.X) / distance(A, B)">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Segment Name="CD" Style="Altitude">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <MidPoint Name="N" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <Circle Name="Twin" Style="Twin">
+      <Dependency Name="N" />
+      <Dependency Name="C" />
+    </Circle>
+    <PointLabel Name="LabelA" OffsetX="-16" OffsetY="4">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="LabelB" OffsetX="8" OffsetY="4">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="LabelC" OffsetX="-5" OffsetY="14">
+      <Dependency Name="C" />
+    </PointLabel>
+    <PointLabel Name="LabelD" OffsetX="6" OffsetY="-22">
+      <Dependency Name="D" />
+    </PointLabel>
+    <Label Name="Title" Style="Heading" Text="The Shoemaker's Knife" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Archimedes called this shape the arbelos, a shoemaker's knife: a big half circle with two smaller ones cut out of it, meeting at C. Its area is hard to guess, so he found a circle with exactly the same area: the one whose diameter is the line from C up to the big arc.\n\nThe knife: [Knife.Area]. The circle: [Twin.Area].\n\nSlide C along the base, or drag A and B, and the two never differ. The knife is one Difference: the big half circle without the two small ones." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="Knife" />
+      <Dependency Name="Twin" />
+    </Label>
+  </Figures>
+</Drawing>

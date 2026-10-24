@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-6" Top="4.5" Right="6" Bottom="-4.5" />
+  <Styles>
+    <LineStyle Name="Rim" Color="#FF2B2F38" StrokeWidth="1.5">
+      <Dark Color="#FFD8DCE4" />
+    </LineStyle>
+    <ShapeStyle Name="Yin" Fill="#FF2B2F38" Color="#00000000">
+      <Dark Fill="#FF0E1014" />
+    </ShapeStyle>
+    <ShapeStyle Name="Yang" Fill="#FFF7F8FA" Color="#00000000">
+      <Dark Fill="#FFD8DCE4" />
+    </ShapeStyle>
+    <PointStyle Name="Pivot" Size="9" Fill="#FFFFE066" Color="#FF806000" StrokeWidth="1.5" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="O" Style="Pivot" X="0" Y="0" />
+    <FreePoint Name="R" Style="Pivot" X="0" Y="3" />
+    <Circle Name="Big" Style="Rim">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </Circle>
+    <PointByCoordinates Name="U" Visible="false" X="(O.X + R.X) / 2" Y="(O.Y + R.Y) / 2">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L" Visible="false" X="(3 * O.X - R.X) / 2" Y="(3 * O.Y - R.Y) / 2">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R2" Visible="false" X="2 * O.X - R.X" Y="2 * O.Y - R.Y">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="EU" Visible="false" X="U.X + (R.X - O.X) / 6" Y="U.Y + (R.Y - O.Y) / 6">
+      <Dependency Name="U" />
+      <Dependency Name="R" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="EL" Visible="false" X="L.X + (R.X - O.X) / 6" Y="L.Y + (R.Y - O.Y) / 6">
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <CircleSegment Name="Half" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+      <Dependency Name="R2" />
+    </CircleSegment>
+    <Circle Name="CU" Visible="false">
+      <Dependency Name="U" />
+      <Dependency Name="O" />
+    </Circle>
+    <Circle Name="CL" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="O" />
+    </Circle>
+    <Circle Name="EyeU" Visible="false">
+      <Dependency Name="U" />
+      <Dependency Name="EU" />
+    </Circle>
+    <Circle Name="EyeL" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="EL" />
+    </Circle>
+    <Region Name="YinBody" Visible="false" Operation="Difference">
+      <Dependency Name="Half" />
+      <Dependency Name="CL" />
+    </Region>
+    <Region Name="YinFull" Visible="false" Operation="Union">
+      <Dependency Name="YinBody" />
+      <Dependency Name="CU" />
+      <Dependency Name="EyeL" />
+    </Region>
+    <Region Name="Yin" Style="Yin" Operation="Difference">
+      <Dependency Name="YinFull" />
+      <Dependency Name="EyeU" />
+    </Region>
+    <Region Name="Yang" Style="Yang" Operation="Difference">
+      <Dependency Name="Big" />
+      <Dependency Name="Yin" />
+    </Region>
+    <Label Name="Title" Style="Heading" Text="Yin and Yang" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="The old Chinese sign of two halves that fit together, dark and light. Every curve in it is a circle: the big one, two half-size circles, and two small eyes. Drag the top point to turn it or make it bigger, the middle one to move it.\n\nThe dark half is built with set operations: half of the big circle, without the lower small circle, together with the upper one and one eye, without the other eye. The light half is what is left of the big circle.\n\nDark: [Yin.Area]. Light: [Yang.Area]. Always the same: each is exactly half the circle, [Big.Area / 2]." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="Yin" />
+      <Dependency Name="Yang" />
+      <Dependency Name="Big" />
+    </Label>
+  </Figures>
+</Drawing>

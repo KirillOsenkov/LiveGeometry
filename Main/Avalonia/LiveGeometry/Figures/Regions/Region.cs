@@ -104,13 +104,33 @@ public class Region : ShapeBase<Path>, IShapeWithInterior, IPerimeter, IRegion
         };
     }
 
-    /// <summary>Not while a dependency is no figure with an inside (a sector turned into an arc)</summary>
+    /// <summary>
+    /// Not while a dependency is no figure with an inside (a sector turned into an arc). An
+    /// operand that doesn't exist right now is the empty set, and the region goes on as the
+    /// operation does without it: a union of what is left, a difference without that
+    /// subtrahend - a goat's reach around a corner is a sector whose radius is 0 until the
+    /// rope is long enough. A difference whose first operand is gone, or an intersection
+    /// missing any, is gone too.
+    /// </summary>
     public override void UpdateExistence()
     {
-        base.UpdateExistence();
-        if (Exists && (Dependencies.Count == 0 || Dependencies.Any(dependency => !(dependency is IRegion))))
+        if (Dependencies.Count == 0 || Dependencies.Any(dependency => !(dependency is IRegion)))
         {
             Exists = false;
+            return;
+        }
+
+        switch (operation)
+        {
+            case RegionOperation.Difference:
+                Exists = Dependencies[0].Exists;
+                break;
+            case RegionOperation.Intersection:
+                Exists = Dependencies.All(dependency => dependency.Exists);
+                break;
+            default:
+                Exists = Dependencies.Any(dependency => dependency.Exists);
+                break;
         }
     }
 

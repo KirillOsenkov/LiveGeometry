@@ -107,7 +107,6 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
     /// </summary>
     [PropertyGridVisible]
     [PropertyGridName("Pinned to")]
-    [PropertyGridGroup("Screen")]
     [PropertyGridSection(PropertyGridSection.Display, 30)]
     [PropertyGridCustomValueProvider(typeof(PinValue))]
     public LabelPin Pin
@@ -213,64 +212,6 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
         return wrapWidth > 0 ? LineBreaks.KeepExpressionsTogether(text) : text;
     }
 
-    bool backdrop;
-
-    /// <summary>
-    /// A plate of the paper's color behind the text, a little larger than the text, so
-    /// that a caption stays readable over a grid or a figure that zoomed under it. Only a
-    /// plain paper has a color to give; on a gradient there is no plate. "Background" in
-    /// the grid: "Backdrop" said nothing to a reader, and with nothing behind the text the
-    /// box changes nothing to see.
-    /// </summary>
-    [PropertyGridVisible]
-    [PropertyGridName("Background")]
-    [PropertyGridGroup("Screen")]
-    [PropertyGridSection(PropertyGridSection.Display, 30)]
-    public bool Backdrop
-    {
-        get => backdrop;
-        set
-        {
-            backdrop = value;
-            TextBlock.Padding = backdrop ? new Thickness(BackdropPadding) : new Thickness();
-            ApplyBackdrop();
-            if (HasCanvas)
-            {
-                UpdateVisual();
-            }
-        }
-    }
-
-    public const double BackdropPadding = 8;
-
-    void ApplyBackdrop()
-    {
-        var paper = backdrop && Drawing != null ? Drawing.Background as SolidColorBrush : null;
-
-        // selected, the plate takes the tint of the selection, which it covers (a selected
-        // caption looked like any other)
-        TextBlock.Background = paper != null && Selected
-            ? new SolidColorBrush(Blend(paper.Color, SelectionColor))
-            : paper;
-    }
-
-    /// <summary>A color as it shows over the paper</summary>
-    static Color Blend(Color paper, Color over)
-    {
-        double alpha = over.A / 255.0;
-        byte Mix(byte under, byte top) => (byte)System.Math.Round(under + (top - under) * alpha);
-        return Color.FromArgb(paper.A, Mix(paper.R, over.R), Mix(paper.G, over.G), Mix(paper.B, over.B));
-    }
-
-    public override void ApplyStyle()
-    {
-        base.ApplyStyle();
-        if (backdrop)
-        {
-            ApplyBackdrop();
-        }
-    }
-
     /// <summary>The top-left corner of a pinned label, in pixels</summary>
     Point PinnedTopLeft(Size size)
     {
@@ -285,13 +226,6 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
 
     public override void UpdateVisual()
     {
-        // the paper may have changed since (a theme switch, the paper of a file, which
-        // is read after its figures): a label's plate was the paper it was made on
-        if (backdrop)
-        {
-            ApplyBackdrop();
-        }
-
         if (pin == LabelPin.None)
         {
             base.UpdateVisual();
@@ -301,6 +235,14 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
         if (!HasCanvas)
         {
             return;
+        }
+
+        // the paper may have changed since (a theme switch, the paper of a file, which
+        // is read after its figures): a label's plate was the paper it was made on (the
+        // base does the same for an unpinned label)
+        if (Backdrop)
+        {
+            ApplyBackdrop();
         }
 
         var topLeft = PinnedTopLeft(MeasureSize());
@@ -375,7 +317,6 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
         base.ReadXml(element);
         text = Unescape(element.ReadString("Text") ?? "");
         WrapWidth = element.ReadDouble("WrapWidth");
-        Backdrop = element.ReadBool("Backdrop", false);
         var pinName = element.ReadString("Pin");
         if (pinName != null && Enum.TryParse(pinName, out LabelPin readPin) && readPin != LabelPin.None)
         {
@@ -476,9 +417,9 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
             writer.WriteAttributeDouble("WrapWidth", wrapWidth);
         }
 
-        if (backdrop)
-        {
-            writer.WriteAttributeBool("Backdrop", true);
-        }
+        WriteBackdropAttribute(writer);
     }
+
+    /// <summary>After the text, the pin and the width: the gallery's files have it there</summary>
+    protected override bool WritesBackdropLast => true;
 }

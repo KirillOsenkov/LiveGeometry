@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-7" Top="5" Right="7" Bottom="-4" />
+  <Scene Left="-4.5" Top="4.75" Right="4.5" Bottom="-3.5" />
+  <Styles>
+    <LineStyle Name="Frame" Color="#FF8A94A6" StrokeWidth="1.5" />
+    <LineStyle Name="Edge" Color="#FF3B4250" StrokeWidth="2">
+      <Dark Color="#FFD8DCE4" />
+    </LineStyle>
+    <ShapeStyle Name="Sand" Fill="#C0F6E3B4" Color="#00000000">
+      <Dark Fill="#C08A6A2A" />
+    </ShapeStyle>
+    <ShapeStyle Name="Moon" Fill="#D8D2E6FA" Color="#FF3A6EA5" StrokeWidth="1.5">
+      <Dark Fill="#D82F4E78" Color="#FF8FB8E8" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="O" X="0" Y="0" />
+    <FreePoint Name="A" X="-3" Y="0" />
+    <PointByCoordinates Name="B" X="2 * O.X - A.X" Y="2 * O.Y - A.Y">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <Circle Name="Big" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </Circle>
+    <PointOnFigure Name="C" X="-1.2484405096414273" Y="2.727892280477045" Parameter="2">
+      <Dependency Name="Big" />
+    </PointOnFigure>
+    <Polygon Name="ABC" Style="Sand">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Segment Name="AB" Style="Edge">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="BC" Style="Edge">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="AC" Style="Edge">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <AngleArc Name="RightAngle">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </AngleArc>
+    <MidPoint Name="M1" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="M2" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <Circle Name="OnAC" Visible="false">
+      <Dependency Name="M1" />
+      <Dependency Name="A" />
+    </Circle>
+    <Circle Name="OnBC" Visible="false">
+      <Dependency Name="M2" />
+      <Dependency Name="B" />
+    </Circle>
+    <Region Name="Moon1" Style="Moon" Operation="Difference">
+      <Dependency Name="OnAC" />
+      <Dependency Name="Big" />
+    </Region>
+    <Region Name="Moon2" Style="Moon" Operation="Difference">
+      <Dependency Name="OnBC" />
+      <Dependency Name="Big" />
+    </Region>
+    <PointLabel Name="LabelA" OffsetX="-16" OffsetY="4">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="LabelB" OffsetX="8" OffsetY="4">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="LabelC" OffsetX="-28" OffsetY="-28">
+      <Dependency Name="C" />
+    </PointLabel>
+    <Label Name="Title" Style="Heading" Text="Two Moons and a Triangle" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Hippocrates of Chios found this 2,400 years ago, long before anyone could work out a curved area. C is on the circle, so the angle at C is a right angle. Draw a half circle on each short side: the two moons left outside the big circle have exactly the area of the triangle.\n\nThe two moons together: [Moon1.Area + Moon2.Area]. The triangle: [ABC.Area].\n\nDrag C around the circle, or A to resize. The moons change shape, but the two numbers never part. Each moon is a Difference: a half circle with the big circle cut away." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="Moon1" />
+      <Dependency Name="Moon2" />
+      <Dependency Name="ABC" />
+    </Label>
+  </Figures>
+</Drawing>

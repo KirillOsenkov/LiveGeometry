@@ -44,11 +44,23 @@ class Region extends ShapeBase {
         this.operation = Object.values(RegionOperation).includes(operation) ? operation : RegionOperation.Difference;
     }
 
-    /** Not while a dependency is no figure with an inside */
+    /** Not while a dependency is no figure with an inside; an operand that doesn't exist is the empty set, and the region goes on as the operation does without it */
     updateExistence() {
-        super.updateExistence();
-        if (this.exists && (this.dependencies.length === 0 || this.dependencies.some(dependency => dependency.isRegion !== true))) {
+        if (this.dependencies.length === 0 || this.dependencies.some(dependency => dependency.isRegion !== true)) {
             this.exists = false;
+            return;
+        }
+
+        switch (this.operation) {
+            case RegionOperation.Difference:
+                this.exists = this.dependencies[0].exists;
+                break;
+            case RegionOperation.Intersection:
+                this.exists = this.dependencies.every(dependency => dependency.exists);
+                break;
+            default:
+                this.exists = this.dependencies.some(dependency => dependency.exists);
+                break;
         }
     }
 

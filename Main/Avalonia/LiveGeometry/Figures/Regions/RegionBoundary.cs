@@ -139,11 +139,16 @@ public class RegionBoundary
 
     #region Tracing
 
-    /// <summary>The boundary of the set the operation makes of the operands as they are now</summary>
+    /// <summary>
+    /// The boundary of the set the operation makes of the operands as they are now. An
+    /// operand that doesn't exist (a sector whose radius came to 0) is the empty set: a
+    /// union goes on without it, a difference without a subtrahend; the region itself says
+    /// whether it exists at all (<see cref="Region.UpdateExistence"/>).
+    /// </summary>
     public static RegionBoundary Trace(RegionOperation operation, IReadOnlyList<IRegion> operands)
     {
         var result = new RegionBoundary();
-        if (operands.Count == 0 || operands.Any(operand => operand == null || !operand.Exists))
+        if (operands.Count == 0)
         {
             return result;
         }
@@ -152,7 +157,7 @@ public class RegionBoundary
         var pieces = new List<(BoundaryPiece Piece, int Operand)>();
         for (int i = 0; i < operands.Count; i++)
         {
-            if (operands[i].HasInside)
+            if (operands[i] != null && operands[i].Exists && operands[i].HasInside)
             {
                 foreach (var piece in PiecesOf(operands[i]))
                 {
@@ -234,7 +239,7 @@ public class RegionBoundary
         }
 
         result.Pieces = kept;
-        result.Loops = Chain(kept, tolerance);
+        result.Loops = Chain(kept, ChainTolerance(scale));
         result.Measure();
         return result;
     }
@@ -243,6 +248,16 @@ public class RegionBoundary
     static double Tolerance(double scale)
     {
         return 1e-9 * scale;
+    }
+
+    /// <summary>
+    /// How far apart a piece's end and the next's start may be and still be chained: wider
+    /// than the tolerance the pieces are cut with, so that a sliver too short to be judged
+    /// (dropped, or kept the wrong way round) leaves no gap that a straight line would close
+    /// </summary>
+    static double ChainTolerance(double scale)
+    {
+        return 1e-6 * scale;
     }
 
     static double ScaleOf(IEnumerable<BoundaryPiece> pieces)
@@ -261,7 +276,7 @@ public class RegionBoundary
 
     static bool IsInside(IRegion operand, Point point)
     {
-        return operand.HasInside && operand.ContainsPoint(point);
+        return operand != null && operand.Exists && operand.HasInside && operand.ContainsPoint(point);
     }
 
     /// <summary>

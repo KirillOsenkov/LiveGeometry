@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-9" Top="7" Right="9" Bottom="-6" />
+  <Scene Left="-5.5" Top="5.75" Right="5.5" Bottom="-5.5" />
+  <Styles>
+    <LineStyle Name="Base" Color="#FF8A94A6" StrokeWidth="1.5" />
+    <LineStyle Name="SmallArc" Color="#FF2F7BD6" StrokeWidth="4">
+      <Dark Color="#FF6AA5FF" />
+    </LineStyle>
+    <LineStyle Name="BigArc" Color="#FF8854D0" StrokeWidth="4">
+      <Dark Color="#FFB48CFF" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" X="-5" Y="0" />
+    <FreePoint Name="B" X="5" Y="0" />
+    <Segment Name="AB" Style="Base">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <MidPoint Name="C" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <PointOnFigure Name="D" X="-1.6999999999999997" Y="0" Parameter="0.33">
+      <Dependency Name="AB" />
+    </PointOnFigure>
+    <MidPoint Name="E" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <MidPoint Name="F" Visible="false">
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <CircleSegment Name="Top" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <CircleSegment Name="Bottom" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </CircleSegment>
+    <CircleSegment Name="LeftBump" Visible="false">
+      <Dependency Name="E" />
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <CircleSegment Name="RightBump" Visible="false">
+      <Dependency Name="F" />
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </CircleSegment>
+    <Region Name="TopWithoutBump" Visible="false" Operation="Difference">
+      <Dependency Name="Top" />
+      <Dependency Name="LeftBump" />
+    </Region>
+    <Region Name="Upper" Style="GradientPurpleOutline" Operation="Union">
+      <Dependency Name="TopWithoutBump" />
+      <Dependency Name="RightBump" />
+    </Region>
+    <Region Name="BottomWithoutBump" Visible="false" Operation="Difference">
+      <Dependency Name="Bottom" />
+      <Dependency Name="RightBump" />
+    </Region>
+    <Region Name="Lower" Style="GradientCyanOutline" Operation="Union">
+      <Dependency Name="LeftBump" />
+      <Dependency Name="BottomWithoutBump" />
+    </Region>
+    <CircleArc Name="ArcAD" Style="SmallArc">
+      <Dependency Name="E" />
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </CircleArc>
+    <CircleArc Name="ArcDB" Style="SmallArc">
+      <Dependency Name="F" />
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </CircleArc>
+    <CircleArc Name="ArcAB" Style="BigArc">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </CircleArc>
+    <LengthMeasurement Name="BigLength" OffsetX="-21.5" OffsetY="-30">
+      <Dependency Name="ArcAB" />
+    </LengthMeasurement>
+    <LengthMeasurement Name="LeftLength" OffsetX="-16.75" OffsetY="-30">
+      <Dependency Name="ArcAD" />
+    </LengthMeasurement>
+    <LengthMeasurement Name="RightLength" OffsetX="-21.5" OffsetY="6">
+      <Dependency Name="ArcDB" />
+    </LengthMeasurement>
+    <PointLabel Name="LabelA" OffsetX="-18" OffsetY="-8">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="LabelB" OffsetX="8" OffsetY="-8">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="LabelD" OffsetX="6" OffsetY="-22">
+      <Dependency Name="D" />
+    </PointLabel>
+    <Label Name="Title" Style="Heading" Text="Arc Plus Arc" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="A half circle on AB, and an S made of two smaller half circles: one bulging up over AD, the other down under DB. Slide D along the base. The S is always exactly as long as the big arc, however lopsided it gets: [ArcAB.ArcLength] = [ArcAD.ArcLength] + [ArcDB.ArcLength].\n\nA half circle is π times its radius long, and the two small radii add up to the big one, so the lengths add up too. Split AB into ten pieces, or a hundred, and a wiggle of a hundred half circles still has the big arc's length, even when it hugs the straight line AB, which is shorter. Lengths don't behave like areas: the two colored parts do grow and shrink, [Upper.Area] and [Lower.Area]." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="ArcAB" />
+      <Dependency Name="ArcAD" />
+      <Dependency Name="ArcDB" />
+      <Dependency Name="Upper" />
+      <Dependency Name="Lower" />
+    </Label>
+  </Figures>
+</Drawing>

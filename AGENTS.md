@@ -931,11 +931,19 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   draws its true edge), in the Polygons layer, `<Region Operation="Union">` with its
   operands as dependencies. Disjoint parts are one region (a union of two circles apart);
   a set that comes to nothing (an intersection pulled apart) exists with area 0 and draws
-  nothing, and a point inside it doesn't exist. Everything comes from one tracer,
+  nothing, and a point inside it doesn't exist. An operand that doesn't exist (a sector
+  whose radius came to 0) is the empty set: a union goes on without it, a difference
+  without that subtrahend; a difference whose first operand is gone, or an intersection
+  missing any, is gone (`Region.UpdateExistence`; the goat's reach around a corner is
+  such a sector until the rope is long enough). Everything comes from one tracer,
   `RegionBoundary.Trace`: every operand's boundary in pieces (`BoundaryPiece`: segments,
   and arcs of ellipses in at most quarter turns - a circle is an ellipse, a sector is its
   arc and two radii, a path is the polygon through its samples as `BezierPath.Area` has
-  it, a nested region its own kept pieces), cut at every crossing (segment-segment,
+  it, a nested region its own kept pieces; a circle's inclination, which a sector or a
+  segment has from its first point, is folded into the angles, or an arc of a circular
+  segment and an arc of its circle were taken for different ellipses and the search for
+  crossings between them cut slivers at random - the yin-yang flashed straight edges while
+  it was spun), cut at every crossing (segment-segment,
   segment-ellipse and circle-circle through `Math`, with its tangency tolerance, so a
   touch by construction is one point and no crossing; an ellipse against another arc by
   sampling and bisection; two stretches on one line or circle cut at each other's ends),
@@ -946,8 +954,10 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   for a stretch two operands share, which goes by the other's side of it (`IsSameAs`);
   two kept copies of one stretch are one. The kept pieces, the result on their left, give
   the area by Green's theorem (exact for segments and arcs: `AreaTerm`, taken from a
-  nearby origin), the perimeter, the loops to draw (`Chain`; any pairing where several
-  meet will do, even-odd goes by the pieces), the centroid (`Center`, what a point inside
+  nearby origin), the perimeter, the loops to draw (`Chain`, chained within 1e-6 of the
+  scale where the pieces are cut within 1e-9: a sliver too short to be judged leaves no
+  gap that a straight line would close; any pairing where several meet will do, even-odd
+  goes by the pieces), the centroid (`Center`, what a point inside
   keeps its offset from) and the nearest point of the edge. `ContainsPoint` is the
   operation over the operands' own. Checked by the regression suite on the classic
   puzzles (the square and its inscribed circle, the lens, the Reuleaux triangle, an
@@ -2709,9 +2719,12 @@ loader still does for files from before; none of it needs extending.
   OffsetY` is the pixel distance from a canvas corner to the *same* corner of the label, so it
   keeps that edge while the plane zooms and pans under it. `Coordinates` always tell where it
   is in the plane right now, so hit testing, dragging and the property grid need nothing
-  special. `WrapWidth` (px) and `Backdrop` (a plate of the paper's color, "Background" in
-  the grid; selected, the plate takes the selection's tint, which it covered) exist for
-  captions. Pinned labels draw above figures, zoom to fit ignores them, thumbnails hide them.
+  special. `WrapWidth` (px) exists for captions, and so does `Backdrop` (a plate of the
+  paper's color, "Background" in the grid; selected, the plate takes the selection's tint,
+  which it covered) - since 2026-10-23 on every label (`LabelBase`), so a measurement or
+  a name can sit on one over a busy spot; a free text writes the attribute after its own,
+  as the gallery's files have it (`WritesBackdropLast`). Pinned labels draw above figures,
+  zoom to fit ignores them, thumbnails hide them.
 - **A label's text is edited where it is** (`Behaviors/InPlaceTextEditor.cs`, 2026-10-17): a
   double click on a text label with the Drag tool (not a locked one, nor a gallery
   drawing's own text) puts a box over it in its font, size, padding and wrap width, so the
@@ -2994,6 +3007,36 @@ buttons and checkboxes, 3D, custom tools.
   angle is read in degrees (`[-30 * time]`; radians until 2026-10-18); the `Parameter` of a point on a line is
   the fraction from the line's first point to its second; a name's trailing digits draw
   as a subscript, so the Theodorus labels are "√17 " with a space.
+- **The regions batch** (2026-10-23, five hand-written drawings at the end of the gallery,
+  the classic shaded-area puzzles made with the region tools): Two Moons and a Triangle
+  (`LunesOfHippocrates.lgf`: each lune is a circle on a leg without the circumcircle, C a
+  point on the circle, the caption adds the two areas live), The Shoemaker's Knife
+  (`Arbelos.lgf`: the big semicircle without the two small ones, all three `CircleSegment`s
+  on the midpoints, hidden; D by coordinates as the geometric mean along the normal, so
+  it needs no intersection), Yin and Yang (`YinYang.lgf`: three regions deep, the dark
+  half out of a half disc, the two half-size circles and the eyes, the light half the
+  circle without it; R turns and sizes it; the half disc's chord runs through R and the
+  small circles' centers, which makes the S-curve - across them it was two stacked rings;
+  the regression suite spins that wrong one too, since it is the harder geometry), Shaded Squares (`ShadedSquares.lgf`: the leaf
+  as an intersection of two quarter discs, the flower as a union of four petals that are
+  intersections of semicircles, the star as a square without four quarter discs, all over
+  a slider for the side), The Grazing Goat (`GrazingGoat.lgf`: a union of three sectors,
+  two of which have radius `max(r - w, 0)` and so don't exist until the rope reaches
+  the corner; the goat is a point kept inside, an emoji), Arc Plus Arc (`ArcPlusArc.lgf`,
+  the maintainer's: an S of two half circles over AD and DB as long as the half circle
+  over AB, D sliding; the two colored parts are a half disc without one bump plus the
+  other). A semicircle is a
+  `CircleSegment` with the center at the side's middle, begun at the end the
+  counterclockwise way round reaches the inside from (bottom side: from the right end to
+  the left). A region's extent isn't content for the fit, so the lunes, the knife, the
+  goat and Arc Plus Arc have a `<Scene>`. The flower's area number is offset onto its
+  upper right petal (28 px up and right of the middle, where the four arcs crossed under
+  the digits; below the square it fell off a phone's screen, and a plate of the paper
+  behind it hid the middle of the flower). A point the reader is to drag must have its name's box
+  clear of the point: a `PointLabel` is hit before its point (the labels' layer is over
+  the points'), and C's name at `OffsetX="-4" OffsetY="-22"` covered C, so a drag on C
+  dragged the name. Check with a hover under the Drag tool: the status must name the
+  point first.
 - **Drawings that must not fall apart** when a kid drags the wrong thing (Castle, The Falling
   Ladder): fixed points are `PointByCoordinates` with constant coordinates (a polygon of those
   has no free point, so dragging it does nothing), and the only things that move are
