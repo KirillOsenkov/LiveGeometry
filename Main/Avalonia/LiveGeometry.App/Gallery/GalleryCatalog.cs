@@ -178,6 +178,7 @@ public static class GalleryCatalog
         Item("twin-circles", "Archimedes' Twin Circles"),
         Item("counting-overlaps", "Counting Overlaps"),
         Item("pizza-theorem", "The Pizza Theorem"),
+        Item("square-around-four-points", "Square Around Four Points"),
     };
 
     /// <summary>

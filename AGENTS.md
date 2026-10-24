@@ -3040,7 +3040,11 @@ buttons and checkboxes, 3D, custom tools.
   sets the first cut - a slider in degrees was 90 units long, a slider's value being its
   track - the eight slices as the disc cut with wedge triangles reaching far out, and
   emoji toppings kept inside their slices; no olives, Twemoji's 🫒 is a sprig like the
-  herb). A semicircle is a
+  herb). Square Around Four Points (`SquareAroundFourPoints.lgf`, the same day, hand-written:
+  the CD library's Problem 6.21.1 rebuilt - DF is AC turned a quarter turn, hung from D,
+  and the line BF is a side; the construction lines are a faint `Guide` style, the two
+  transferred lengths a blue `Transfer` one, and the square's sides `ThickLine` segments
+  over the yellow polygon, since in the default line they vanished on the guide lines). A semicircle is a
   `CircleSegment` with the center at the side's middle, begun at the end the
   counterclockwise way round reaches the inside from (bottom side: from the right end to
   the left). A region's extent isn't content for the fit, so the lunes, the knife, the

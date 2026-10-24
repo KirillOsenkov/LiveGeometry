@@ -98,6 +98,11 @@ public partial class PointBase : CoordinatesShapeBase<Shape>, IPoint
         }
         else if (Settings.Instance.AutoLabelPoints && IsHitTestVisible && Visible)
         {
+            // a constructed point (a midpoint, a crossing) is where its figures put it only
+            // once it is worked out, which the list does after this: the name's first place
+            // is worked out from where the point is, and went to the origin
+            UpdateExistence();
+            Recalculate();
             ShowName = true;
         }
     }

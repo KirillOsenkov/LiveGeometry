@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-14" Top="7" Right="1" Bottom="-6" />
+  <Styles>
+    <LineStyle Name="Guide" Color="#30000000">
+      <Dark Color="#30FFFFFF" />
+    </LineStyle>
+    <LineStyle Name="Transfer" Color="#FF2F7BD6" StrokeWidth="2.5">
+      <Dark Color="#FF6AA5FF" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" X="-11.125" Y="-0.6145833333" />
+    <PointLabel Name="LabelA" OffsetX="-15.75" OffsetY="-28.5">
+      <Dependency Name="A" />
+    </PointLabel>
+    <FreePoint Name="B" X="-8.4375" Y="5.03125" />
+    <PointLabel Name="LabelB" OffsetX="-6" OffsetY="-27">
+      <Dependency Name="B" />
+    </PointLabel>
+    <FreePoint Name="C" X="-2.5520833333" Y="0.0833333333" />
+    <PointLabel Name="LabelC" OffsetX="4.25" OffsetY="-24">
+      <Dependency Name="C" />
+    </PointLabel>
+    <FreePoint Name="D" X="-7" Y="-3.6979166667" />
+    <PointLabel Name="LabelD" OffsetX="2" OffsetY="1">
+      <Dependency Name="D" />
+    </PointLabel>
+    <Segment Name="AC" Style="Transfer">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <PerpendicularLine Name="g" Style="Guide" RightAngleCorner="3">
+      <Dependency Name="AC" />
+      <Dependency Name="D" />
+    </PerpendicularLine>
+    <CircleByRadius Name="c" Style="DashedLine">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </CircleByRadius>
+    <IntersectionPoint Name="F" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="g" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <PointLabel Name="LabelF" OffsetX="3.5" OffsetY="-26.5">
+      <Dependency Name="F" />
+    </PointLabel>
+    <Segment Name="DF" Style="Transfer">
+      <Dependency Name="D" />
+      <Dependency Name="F" />
+    </Segment>
+    <LengthMeasurement Name="LengthAC" OffsetX="-42" OffsetY="6">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </LengthMeasurement>
+    <LengthMeasurement Name="LengthDF" OffsetX="8" OffsetY="-34">
+      <Dependency Name="D" />
+      <Dependency Name="F" />
+    </LengthMeasurement>
+    <LineTwoPoints Name="BF" Style="Guide">
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </LineTwoPoints>
+    <ParallelLine Name="h" Style="Guide">
+      <Dependency Name="BF" />
+      <Dependency Name="D" />
+    </ParallelLine>
+    <PerpendicularLine Name="k" Style="Guide" RightAngleCorner="0">
+      <Dependency Name="h" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="m" Style="Guide" RightAngleCorner="1">
+      <Dependency Name="h" />
+      <Dependency Name="C" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="E" Algorithm="IntersectLineAndLine">
+      <Dependency Name="BF" />
+      <Dependency Name="k" />
+    </IntersectionPoint>
+    <PointLabel Name="LabelE" OffsetX="-12" OffsetY="-27">
+      <Dependency Name="E" />
+    </PointLabel>
+    <IntersectionPoint Name="G" Algorithm="IntersectLineAndLine">
+      <Dependency Name="BF" />
+      <Dependency Name="m" />
+    </IntersectionPoint>
+    <PointLabel Name="LabelG" OffsetX="3.75" OffsetY="-28.5">
+      <Dependency Name="G" />
+    </PointLabel>
+    <IntersectionPoint Name="H" Algorithm="IntersectLineAndLine">
+      <Dependency Name="h" />
+      <Dependency Name="m" />
+    </IntersectionPoint>
+    <PointLabel Name="LabelH" OffsetX="7.75" OffsetY="-24">
+      <Dependency Name="H" />
+    </PointLabel>
+    <IntersectionPoint Name="I" Algorithm="IntersectLineAndLine">
+      <Dependency Name="h" />
+      <Dependency Name="k" />
+    </IntersectionPoint>
+    <PointLabel Name="LabelI" OffsetX="-15.5" OffsetY="0.5">
+      <Dependency Name="I" />
+    </PointLabel>
+    <Polygon Name="EGHI">
+      <Dependency Name="E" />
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </Polygon>
+    <Segment Name="EG" Style="ThickLine">
+      <Dependency Name="E" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="GH" Style="ThickLine">
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+    </Segment>
+    <Segment Name="HI" Style="ThickLine">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="EI" Style="ThickLine">
+      <Dependency Name="I" />
+      <Dependency Name="E" />
+    </Segment>
+    <Label Name="Title" Style="Heading" Text="Square Around Four Points" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="A, B, C and D sit on the four sides of a square, one on each side, in order around it. The square itself is gone. Here is how to get it back from the points alone.\n\nDraw AC. Through D draw the perpendicular to AC and mark F on it so that DF = AC (the dashed circle finds it). The line BF is one side of the square. The parallel to it through D is the opposite side, and the perpendiculars through A and C are the other two. EGHI is the square.\n\nWhy it works: AC goes from the left side to the right side, so across the square it spans exactly one side length. Turned a quarter turn, it spans one side length up and down instead: from the bottom side, where D is, it reaches exactly the top side, where B is.\n\nDrag the points. The circle crosses the perpendicular twice and the drawing always takes the same crossing, so it works for nice points, not for all." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>
