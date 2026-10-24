@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-7" Top="5" Right="7" Bottom="-7" />
+  <Styles>
+    <LineStyle Name="Frame" Color="#FF3B4250" StrokeWidth="1.5">
+      <Dark Color="#FFD8DCE4" />
+    </LineStyle>
+    <ShapeStyle Name="OnlyA" Fill="#C0F6B4B4" Color="#00000000">
+      <Dark Fill="#C08A3030" />
+    </ShapeStyle>
+    <ShapeStyle Name="OnlyB" Fill="#C0B4CCF6" Color="#00000000">
+      <Dark Fill="#C02E4E8A" />
+    </ShapeStyle>
+    <ShapeStyle Name="OnlyC" Fill="#C0F6E8A0" Color="#00000000">
+      <Dark Fill="#C08A7A1E" />
+    </ShapeStyle>
+    <ShapeStyle Name="AandB" Fill="#C0D2B4F0" Color="#00000000">
+      <Dark Fill="#C06A3F9A" />
+    </ShapeStyle>
+    <ShapeStyle Name="BandC" Fill="#C0B4E8C2" Color="#00000000">
+      <Dark Fill="#C02E7A45" />
+    </ShapeStyle>
+    <ShapeStyle Name="AandC" Fill="#C0F6C6A0" Color="#00000000">
+      <Dark Fill="#C08A4A1A" />
+    </ShapeStyle>
+    <ShapeStyle Name="All3" Fill="#D0C8C8C8" Color="#00000000">
+      <Dark Fill="#D0707070" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <Slider Name="a" X="-6" Y="-4" Value="2.2" Minimum="0.2" Maximum="4" />
+    <Slider Name="b" X="-1.5" Y="-4" Value="2.2" Minimum="0.2" Maximum="4" />
+    <Slider Name="c" X="3" Y="-4" Value="2.2" Minimum="0.2" Maximum="4" />
+    <FreePoint Name="A" X="-1.3" Y="-0.8" />
+    <FreePoint Name="B" X="1.3" Y="-0.8" />
+    <FreePoint Name="C" X="0" Y="1.4" />
+    <PointByCoordinates Name="A1" Visible="false" X="A.X + a" Y="A.Y">
+      <Dependency Name="A" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="B1" Visible="false" X="B.X + b" Y="B.Y">
+      <Dependency Name="B" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C1" Visible="false" X="C.X + c" Y="C.Y">
+      <Dependency Name="C" />
+      <Dependency Name="c" />
+    </PointByCoordinates>
+    <Circle Name="Ka" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="A1" />
+    </Circle>
+    <Circle Name="Kb" Style="Frame">
+      <Dependency Name="B" />
+      <Dependency Name="B1" />
+    </Circle>
+    <Circle Name="Kc" Style="Frame">
+      <Dependency Name="C" />
+      <Dependency Name="C1" />
+    </Circle>
+    <Region Name="AB" Visible="false" Operation="Intersection">
+      <Dependency Name="Ka" />
+      <Dependency Name="Kb" />
+    </Region>
+    <Region Name="BC" Visible="false" Operation="Intersection">
+      <Dependency Name="Kb" />
+      <Dependency Name="Kc" />
+    </Region>
+    <Region Name="AC" Visible="false" Operation="Intersection">
+      <Dependency Name="Ka" />
+      <Dependency Name="Kc" />
+    </Region>
+    <Region Name="ABC" Style="All3" Operation="Intersection">
+      <Dependency Name="Ka" />
+      <Dependency Name="Kb" />
+      <Dependency Name="Kc" />
+    </Region>
+    <Region Name="ABonly" Style="AandB" Operation="Difference">
+      <Dependency Name="AB" />
+      <Dependency Name="Kc" />
+    </Region>
+    <Region Name="BConly" Style="BandC" Operation="Difference">
+      <Dependency Name="BC" />
+      <Dependency Name="Ka" />
+    </Region>
+    <Region Name="AConly" Style="AandC" Operation="Difference">
+      <Dependency Name="AC" />
+      <Dependency Name="Kb" />
+    </Region>
+    <Region Name="Aonly" Style="OnlyA" Operation="Difference">
+      <Dependency Name="Ka" />
+      <Dependency Name="Kb" />
+      <Dependency Name="Kc" />
+    </Region>
+    <Region Name="Bonly" Style="OnlyB" Operation="Difference">
+      <Dependency Name="Kb" />
+      <Dependency Name="Ka" />
+      <Dependency Name="Kc" />
+    </Region>
+    <Region Name="Conly" Style="OnlyC" Operation="Difference">
+      <Dependency Name="Kc" />
+      <Dependency Name="Ka" />
+      <Dependency Name="Kb" />
+    </Region>
+    <Region Name="Everything" Visible="false" Operation="Union">
+      <Dependency Name="Ka" />
+      <Dependency Name="Kb" />
+      <Dependency Name="Kc" />
+    </Region>
+    <PointLabel Name="LabelA" OffsetX="-16" OffsetY="4">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="LabelB" OffsetX="8" OffsetY="4">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="LabelC" OffsetX="-4" OffsetY="-22">
+      <Dependency Name="C" />
+    </PointLabel>
+    <Label Name="Title" Style="Heading" Text="Counting Overlaps" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Three circles cut the paper into seven pieces: in one circle only, in two of them, and in all three. Add up the areas of the three circles and every piece shared by two circles is counted twice, and the middle piece three times.\n\nThe three circles added up: [Ka.Area + Kb.Area + Kc.Area]. The seven pieces, the shared ones twice and the middle one three times: [Aonly.Area + Bonly.Area + Conly.Area + 2 * (ABonly.Area + BConly.Area + AConly.Area) + 3 * ABC.Area].\n\nSo to find how much paper the circles cover, add the three circles, take away each overlap of two (the middle piece goes out three times with them), and put the middle piece back once: [Ka.Area + Kb.Area + Kc.Area - AB.Area - BC.Area - AC.Area + ABC.Area]. The paper under the circles: [Everything.Area].\n\nDrag A, B and C, or the sliders for the sizes; pull a circle clear of the others and see which numbers change. Each piece is an Intersection with a Difference." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="Ka" />
+      <Dependency Name="Kb" />
+      <Dependency Name="Kc" />
+      <Dependency Name="Aonly" />
+      <Dependency Name="Bonly" />
+      <Dependency Name="Conly" />
+      <Dependency Name="ABonly" />
+      <Dependency Name="BConly" />
+      <Dependency Name="AConly" />
+      <Dependency Name="ABC" />
+      <Dependency Name="AB" />
+      <Dependency Name="BC" />
+      <Dependency Name="AC" />
+      <Dependency Name="Everything" />
+    </Label>
+  </Figures>
+</Drawing>

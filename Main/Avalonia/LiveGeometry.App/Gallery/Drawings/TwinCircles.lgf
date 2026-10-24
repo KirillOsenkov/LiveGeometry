@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-7" Top="5" Right="7" Bottom="-3" />
+  <Scene Left="-4.75" Top="4.75" Right="4.75" Bottom="-1.25" />
+  <Styles>
+    <LineStyle Name="Base" Color="#FF3B4250" StrokeWidth="2">
+      <Dark Color="#FFD8DCE4" />
+    </LineStyle>
+    <LineStyle Name="Altitude" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Dash">
+      <Dark Color="#FF62AEFF" />
+    </LineStyle>
+    <ShapeStyle Name="Knife" Fill="#D0F5C98A" Color="#FFB7791F" StrokeWidth="1.5">
+      <Dark Fill="#D0A06A1E" Color="#FFE8B45A" />
+    </ShapeStyle>
+    <ShapeStyle Name="Twin" Fill="#A070A8E8" Color="#FF2F7BD6" StrokeWidth="2">
+      <Dark Fill="#A04F7AB8" Color="#FF62AEFF" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="A" X="-4" Y="0" />
+    <PointByCoordinates Name="B" X="4" Y="0" />
+    <Segment Name="AB" Style="Base">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PointOnFigure Name="C" X="-1.2000000000000002" Y="0" Parameter="0.35">
+      <Dependency Name="AB" />
+    </PointOnFigure>
+    <MidPoint Name="M1" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="M2" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <CircleSegment Name="Big" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <CircleSegment Name="Left" Visible="false">
+      <Dependency Name="M1" />
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <CircleSegment Name="Right" Visible="false">
+      <Dependency Name="M2" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </CircleSegment>
+    <Region Name="Knife" Style="Knife" Operation="Difference">
+      <Dependency Name="Big" />
+      <Dependency Name="Left" />
+      <Dependency Name="Right" />
+    </Region>
+    <PointByCoordinates Name="D" Visible="false" X="C.X" Y="sqrt(16 - C.X^2)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="CD" Style="Altitude">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <Number Name="t" Formula="(16 - C.X^2) / 16" X="0" Y="0">
+      <Dependency Name="C" />
+    </Number>
+    <PointByCoordinates Name="E" Visible="false" X="C.X - t" Y="sqrt((4 - t)^2 - (C.X - t)^2)">
+      <Dependency Name="C" />
+      <Dependency Name="t" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E1" Visible="false" X="E.X" Y="E.Y + t">
+      <Dependency Name="E" />
+      <Dependency Name="t" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F" Visible="false" X="C.X + t" Y="sqrt((4 - t)^2 - (C.X + t)^2)">
+      <Dependency Name="C" />
+      <Dependency Name="t" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F1" Visible="false" X="F.X" Y="F.Y + t">
+      <Dependency Name="F" />
+      <Dependency Name="t" />
+    </PointByCoordinates>
+    <Circle Name="Twin1" Style="Twin">
+      <Dependency Name="E" />
+      <Dependency Name="E1" />
+    </Circle>
+    <Circle Name="Twin2" Style="Twin">
+      <Dependency Name="F" />
+      <Dependency Name="F1" />
+    </Circle>
+    <PointLabel Name="LabelA" OffsetX="-16" OffsetY="4">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="LabelB" OffsetX="8" OffsetY="4">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="LabelC" OffsetX="-5" OffsetY="14">
+      <Dependency Name="C" />
+    </PointLabel>
+    <Label Name="Title" Style="Heading" Text="Archimedes' Twin Circles" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Inside the shoemaker's knife, draw the line straight up from C. On each side of it there is exactly one circle that touches the line, the big arc and the small arc. Archimedes showed that the two are always the same size, wherever C is.\n\nThe left twin: [Twin1.Area]. The right twin: [Twin2.Area].\n\nSlide C along the base: the twins grow and shrink together, and swap sizes with nothing. The knife is the Difference of the big half disc and the two small ones." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="Twin1" />
+      <Dependency Name="Twin2" />
+    </Label>
+  </Figures>
+</Drawing>

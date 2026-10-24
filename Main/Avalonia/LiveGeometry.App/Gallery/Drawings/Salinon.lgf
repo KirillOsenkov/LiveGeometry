@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-7" Top="5.5" Right="7" Bottom="-4" />
+  <Scene Left="-4.75" Top="4.75" Right="4.75" Bottom="-3.25" />
+  <Styles>
+    <LineStyle Name="Base" Color="#FF3B4250" StrokeWidth="2">
+      <Dark Color="#FFD8DCE4" />
+    </LineStyle>
+    <ShapeStyle Name="Salt" Fill="#D0F5C98A" Color="#FFB7791F" StrokeWidth="1.5">
+      <Dark Fill="#D0A06A1E" Color="#FFE8B45A" />
+    </ShapeStyle>
+    <LineStyle Name="Twin" Color="#FF2F7BD6" StrokeWidth="2">
+      <Dark Color="#FF62AEFF" />
+    </LineStyle>
+    <LineStyle Name="Axis" Color="#FF2F7BD6" StrokeWidth="1.5" Dash="Dash">
+      <Dark Color="#FF62AEFF" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="A" X="-4" Y="0" />
+    <PointByCoordinates Name="B" X="4" Y="0" />
+    <Segment Name="AB" Style="Base">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="AO" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </Segment>
+    <PointOnFigure Name="P" X="-2.6" Y="0" Parameter="0.35">
+      <Dependency Name="AO" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Q" Visible="false" X="-P.X" Y="0">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <MidPoint Name="M1" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="P" />
+    </MidPoint>
+    <MidPoint Name="M2" Visible="false">
+      <Dependency Name="Q" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <CircleSegment Name="Big" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <CircleSegment Name="Left" Visible="false">
+      <Dependency Name="M1" />
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <CircleSegment Name="Right" Visible="false">
+      <Dependency Name="M2" />
+      <Dependency Name="B" />
+      <Dependency Name="Q" />
+    </CircleSegment>
+    <CircleSegment Name="Middle" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </CircleSegment>
+    <Region Name="Cut" Visible="false" Operation="Difference">
+      <Dependency Name="Big" />
+      <Dependency Name="Left" />
+      <Dependency Name="Right" />
+    </Region>
+    <Region Name="Salinon" Style="Salt" Operation="Union">
+      <Dependency Name="Cut" />
+      <Dependency Name="Middle" />
+    </Region>
+    <PointByCoordinates Name="T" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="U" Visible="false" X="0" Y="P.X">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Segment Name="TU" Style="Axis">
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </Segment>
+    <MidPoint Name="N" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </MidPoint>
+    <Circle Name="AxisCircle" Style="Twin">
+      <Dependency Name="N" />
+      <Dependency Name="T" />
+    </Circle>
+    <PointLabel Name="LabelA" OffsetX="-16" OffsetY="4">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="LabelB" OffsetX="8" OffsetY="4">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="LabelP" OffsetX="-5" OffsetY="14">
+      <Dependency Name="P" />
+    </PointLabel>
+    <Label Name="Title" Style="Heading" Text="The Salt Cellar" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Archimedes' other shape, the salinon, a salt cellar: a big half circle with two equal small half circles cut out of its ends, and one more half circle between them, bulging the other way. Its area is that of the circle on its axis, the dashed line from the top of the big arc down to the bottom of the middle one.\n\nThe salt cellar: [Salinon.Area]. The circle: [AxisCircle.Area].\n\nSlide P to change the small half circles; the circle shrinks and grows with the shape. The shape is a Difference and a Union: the big half disc without the two small ones, with the middle one put in." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="Salinon" />
+      <Dependency Name="AxisCircle" />
+    </Label>
+  </Figures>
+</Drawing>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-6" Top="5.5" Right="14" Bottom="-5.5" />
+  <Styles>
+    <LineStyle Name="Frame" Color="#FF8A94A6" StrokeWidth="1.5" />
+    <ShapeStyle Name="Ring" Fill="#C0F6C6A0" Color="#FFC2762A" StrokeWidth="1.5">
+      <Dark Fill="#C08A4A1A" Color="#FFE8A060" />
+    </ShapeStyle>
+    <LineStyle Name="Stick" Color="#FF3B4250" StrokeWidth="5">
+      <Dark Color="#FFD8DCE4" />
+    </LineStyle>
+    <ShapeStyle Name="Twin" Fill="#5070A8E8" Color="#FF2F7BD6" StrokeWidth="2">
+      <Dark Fill="#604F7AB8" Color="#FF62AEFF" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" X="0" Y="0" />
+    <PointByCoordinates Name="Far" Visible="false" X="20" Y="0" />
+    <Ray Name="Axis" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="Far" />
+    </Ray>
+    <PointOnFigure Name="A" X="4" Y="0" Parameter="0.2">
+      <Dependency Name="Axis" />
+    </PointOnFigure>
+    <Segment Name="AO" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </Segment>
+    <PointOnFigure Name="P" X="2.4" Y="0" Parameter="0.6">
+      <Dependency Name="AO" />
+    </PointOnFigure>
+    <Circle Name="Outer" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </Circle>
+    <Circle Name="Inner" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+    </Circle>
+    <Region Name="Ring" Style="Ring" Operation="Difference">
+      <Dependency Name="Outer" />
+      <Dependency Name="Inner" />
+    </Region>
+    <PointByCoordinates Name="K" Visible="false" X="-sqrt(distance(O, A)^2 - distance(O, P)^2)" Y="distance(O, P)">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L" Visible="false" X="sqrt(distance(O, A)^2 - distance(O, P)^2)" Y="distance(O, P)">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Segment Name="KL" Style="Stick">
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </Segment>
+    <PointByCoordinates Name="N" Visible="false" X="distance(O, A) + sqrt(distance(O, A)^2 - distance(O, P)^2) + 1" Y="0">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="N1" Visible="false" X="distance(O, A) + 2 * sqrt(distance(O, A)^2 - distance(O, P)^2) + 1" Y="0">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Circle Name="Twin" Style="Twin">
+      <Dependency Name="N" />
+      <Dependency Name="N1" />
+    </Circle>
+    <PointLabel Name="LabelA" OffsetX="8" OffsetY="4">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="LabelP" OffsetX="8" OffsetY="4">
+      <Dependency Name="P" />
+    </PointLabel>
+    <Label Name="Title" Style="Heading" Text="The Ring and the Stick" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="A ring, and a stick laid across it that just touches the hole. However wide the hole is, the ring has exactly the area of a circle with the stick as its diameter: the blue circle beside it.\n\nThe ring: [Ring.Area]. The blue circle: [Twin.Area].\n\nDrag P to widen the hole, or A to resize everything: the stick follows, and the two numbers stay equal. The ring is a Difference, the outer circle without the inner one." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="Ring" />
+      <Dependency Name="Twin" />
+    </Label>
+  </Figures>
+</Drawing>

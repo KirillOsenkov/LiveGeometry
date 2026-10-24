@@ -173,6 +173,11 @@ public static class GalleryCatalog
         Item("shaded-squares", "Shaded Squares"),
         Item("grazing-goat", "The Grazing Goat"),
         Item("arc-plus-arc", "Arc Plus Arc"),
+        Item("ring-and-stick", "The Ring and the Stick"),
+        Item("salinon", "The Salt Cellar"),
+        Item("twin-circles", "Archimedes' Twin Circles"),
+        Item("counting-overlaps", "Counting Overlaps"),
+        Item("pizza-theorem", "The Pizza Theorem"),
     };
 
     /// <summary>

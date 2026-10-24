@@ -3025,7 +3025,22 @@ buttons and checkboxes, 3D, custom tools.
   the corner; the goat is a point kept inside, an emoji), Arc Plus Arc (`ArcPlusArc.lgf`,
   the maintainer's: an S of two half circles over AD and DB as long as the half circle
   over AB, D sliding; the two colored parts are a half disc without one bump plus the
-  other). A semicircle is a
+  other), and five more the same day, the ones first weighed and left out: The Ring and
+  the Stick (`RingAndStick.lgf`: an annulus with a chord tangent to the hole, a circle on
+  the chord beside it with the same area), The Salt Cellar (`Salinon.lgf`: the big half
+  disc without the two small ones, in a Union with the middle one; the circle on its
+  axis drawn as an outline over it, filled it hid the shape), Archimedes' Twin Circles
+  (`TwinCircles.lgf`: the arbelos again, the twins by their closed-form radius r₁r₂/R
+  in a hidden `Number` and centers by coordinates, so no tangent-circle tool), Counting
+  Overlaps (`CountingOverlaps.lgf`: the seven pieces of three circles as regions, each
+  an Intersection cut by a Difference, the three circles' sum against the pieces
+  counted twice and three times, then inclusion-exclusion down to the union, which is
+  the trivial reading and no caption line of its own), The Pizza Theorem
+  (`PizzaTheorem.lgf`: a point kept inside the pizza, a knife emoji on the crust that
+  sets the first cut - a slider in degrees was 90 units long, a slider's value being its
+  track - the eight slices as the disc cut with wedge triangles reaching far out, and
+  emoji toppings kept inside their slices; no olives, Twemoji's 🫒 is a sprig like the
+  herb). A semicircle is a
   `CircleSegment` with the center at the side's middle, begun at the end the
   counterclockwise way round reaches the inside from (bottom side: from the right end to
   the left). A region's extent isn't content for the fit, so the lunes, the knife, the

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-7" Top="5.5" Right="7" Bottom="-5.5" />
+  <Scene Left="-4.75" Top="4.75" Right="4.75" Bottom="-4.75" />
+  <Styles>
+    <LineStyle Name="Crust" Color="#FFB7791F" StrokeWidth="3">
+      <Dark Color="#FFE8B45A" />
+    </LineStyle>
+    <ShapeStyle Name="Cheese" Fill="#E0FFD88C" Color="#FFC29A1E" StrokeWidth="1.5">
+      <Dark Fill="#E0A6610E" Color="#FFFFB84D" />
+    </ShapeStyle>
+    <ShapeStyle Name="Pepperoni" Fill="#E0F0A090" Color="#FFC0442A" StrokeWidth="1.5">
+      <Dark Fill="#E08A3020" Color="#FFFF8A70" />
+    </ShapeStyle>
+    <PointStyle Name="Pivot" Fill="#FF3B4250" Color="#FFFFFFFF">
+      <Dark Fill="#FFD8DCE4" Color="#FF202020" />
+    </PointStyle>
+    <PointStyle Name="Knife" Character="🔪" Size="34" Fill="#FFFFFFFF" />
+    <PointStyle Name="Mushroom" Character="🍄" Size="28" Fill="#FFFFFFFF" />
+    <PointStyle Name="Pineapple" Character="🍍" Size="26" Fill="#FFFFFFFF" />
+    <PointStyle Name="Onion" Character="🧅" Fill="#FFFFFFFF" />
+    <PointStyle Name="Tomato" Character="🍅" Size="26" Fill="#FFFFFFFF" />
+    <PointStyle Name="Herb" Character="🌿" Size="26" Fill="#FFFFFFFF" />
+    <PointStyle Name="HotPepper" Character="🌶️" Size="26" Fill="#FFFFFFFF" />
+    <PointStyle Name="CheeseWedge" Character="🧀" Size="26" Fill="#FFFFFFFF" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Rim" Visible="false" X="4" Y="0" />
+    <Circle Name="Pizza" Style="Crust">
+      <Dependency Name="O" />
+      <Dependency Name="Rim" />
+    </Circle>
+    <PointInRegion Name="P" Style="Pivot" X="1.2" Y="0.7" OffsetX="1.2" OffsetY="0.7">
+      <Dependency Name="Pizza" />
+    </PointInRegion>
+    <PointOnFigure Name="Q" Style="Knife" X="3.7574908513895156" Y="1.3715912298218054" Parameter="0.35">
+      <Dependency Name="Pizza" />
+    </PointOnFigure>
+    <PointByCoordinates Name="W0" Visible="false" X="P.X + 20 * cos(rad(direction(P, Q)))" Y="P.Y + 20 * sin(rad(direction(P, Q)))">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W1" Visible="false" X="P.X + 20 * cos(rad(direction(P, Q) + 45))" Y="P.Y + 20 * sin(rad(direction(P, Q) + 45))">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W2" Visible="false" X="P.X + 20 * cos(rad(direction(P, Q) + 90))" Y="P.Y + 20 * sin(rad(direction(P, Q) + 90))">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W3" Visible="false" X="P.X + 20 * cos(rad(direction(P, Q) + 135))" Y="P.Y + 20 * sin(rad(direction(P, Q) + 135))">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W4" Visible="false" X="P.X + 20 * cos(rad(direction(P, Q) + 180))" Y="P.Y + 20 * sin(rad(direction(P, Q) + 180))">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W5" Visible="false" X="P.X + 20 * cos(rad(direction(P, Q) + 225))" Y="P.Y + 20 * sin(rad(direction(P, Q) + 225))">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W6" Visible="false" X="P.X + 20 * cos(rad(direction(P, Q) + 270))" Y="P.Y + 20 * sin(rad(direction(P, Q) + 270))">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W7" Visible="false" X="P.X + 20 * cos(rad(direction(P, Q) + 315))" Y="P.Y + 20 * sin(rad(direction(P, Q) + 315))">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <Polygon Name="Wedge0" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="W0" />
+      <Dependency Name="W1" />
+    </Polygon>
+    <Polygon Name="Wedge1" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="W1" />
+      <Dependency Name="W2" />
+    </Polygon>
+    <Polygon Name="Wedge2" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="W2" />
+      <Dependency Name="W3" />
+    </Polygon>
+    <Polygon Name="Wedge3" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="W3" />
+      <Dependency Name="W4" />
+    </Polygon>
+    <Polygon Name="Wedge4" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="W4" />
+      <Dependency Name="W5" />
+    </Polygon>
+    <Polygon Name="Wedge5" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="W5" />
+      <Dependency Name="W6" />
+    </Polygon>
+    <Polygon Name="Wedge6" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="W6" />
+      <Dependency Name="W7" />
+    </Polygon>
+    <Polygon Name="Wedge7" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="W7" />
+      <Dependency Name="W0" />
+    </Polygon>
+    <Region Name="S0" Style="Cheese" Operation="Intersection">
+      <Dependency Name="Pizza" />
+      <Dependency Name="Wedge0" />
+    </Region>
+    <Region Name="S1" Style="Pepperoni" Operation="Intersection">
+      <Dependency Name="Pizza" />
+      <Dependency Name="Wedge1" />
+    </Region>
+    <Region Name="S2" Style="Cheese" Operation="Intersection">
+      <Dependency Name="Pizza" />
+      <Dependency Name="Wedge2" />
+    </Region>
+    <Region Name="S3" Style="Pepperoni" Operation="Intersection">
+      <Dependency Name="Pizza" />
+      <Dependency Name="Wedge3" />
+    </Region>
+    <Region Name="S4" Style="Cheese" Operation="Intersection">
+      <Dependency Name="Pizza" />
+      <Dependency Name="Wedge4" />
+    </Region>
+    <Region Name="S5" Style="Pepperoni" Operation="Intersection">
+      <Dependency Name="Pizza" />
+      <Dependency Name="Wedge5" />
+    </Region>
+    <Region Name="S6" Style="Cheese" Operation="Intersection">
+      <Dependency Name="Pizza" />
+      <Dependency Name="Wedge6" />
+    </Region>
+    <Region Name="S7" Style="Pepperoni" Operation="Intersection">
+      <Dependency Name="Pizza" />
+      <Dependency Name="Wedge7" />
+    </Region>
+    <PointInRegion Name="Topping0" Style="Mushroom" X="2.64" Y="1.79" OffsetX="0.0838103108025332" OffsetY="0.045811642054762736">
+      <Dependency Name="S0" />
+    </PointInRegion>
+    <PointInRegion Name="Topping1" Style="Pineapple" X="1.45" Y="2.48" OffsetX="0.0690745337735974" OffsetY="-0.18422578604084539">
+      <Dependency Name="S1" />
+    </PointInRegion>
+    <PointInRegion Name="Topping2" Style="Tomato" X="0.12" Y="2.14" OffsetX="0.5962345787150064" OffsetY="-0.5307222010769101">
+      <Dependency Name="S2" />
+    </PointInRegion>
+    <PointInRegion Name="Topping3" Style="Herb" X="-0.5800000000000001" Y="0.95" OffsetX="1.4469513808014076" OffsetY="-0.08294208402866476">
+      <Dependency Name="S3" />
+    </PointInRegion>
+    <PointInRegion Name="Topping4" Style="HotPepper" X="-0.7" Y="-0.6" OffsetX="0.8701867905274352" OffsetY="0.7760609781854514">
+      <Dependency Name="S4" />
+    </PointInRegion>
+    <PointInRegion Name="Topping5" Style="CheeseWedge" X="0.95" Y="-1.3" OffsetX="0.29512504054315136" OffsetY="1.0183085490331616">
+      <Dependency Name="S5" />
+    </PointInRegion>
+    <PointInRegion Name="Topping6" Style="Mushroom" X="2.4" Y="-0.9" OffsetX="-0.12625674309527746" OffsetY="0.3650117911825287">
+      <Dependency Name="S6" />
+    </PointInRegion>
+    <PointInRegion Name="Topping7" Style="Onion" X="2.98" Y="0.45" OffsetX="-0.04309036528205645" OffsetY="0.06324258810055261">
+      <Dependency Name="S7" />
+    </PointInRegion>
+    <Label Name="Title" Style="Heading" Text="The Pizza Theorem" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Pick any point on a pizza and make four straight cuts through it, each 45° from the last, so there are eight slices. Take every other slice. You get exactly half the pizza, however far from the middle the point is.\n\nThe four yellow slices: [S0.Area + S2.Area + S4.Area + S6.Area]. The four red ones: [S1.Area + S3.Area + S5.Area + S7.Area]. Half the pizza: [Pizza.Area / 2].\n\nDrag the point where the cuts meet anywhere on the pizza, or the knife around the crust to turn the cuts. The toppings stay on their slices: drag one, and it won't leave. The proof is a famous hard one; the picture is not. Each slice is an Intersection, the pizza with a wedge." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="S0" />
+      <Dependency Name="S2" />
+      <Dependency Name="S4" />
+      <Dependency Name="S6" />
+      <Dependency Name="S1" />
+      <Dependency Name="S3" />
+      <Dependency Name="S5" />
+      <Dependency Name="S7" />
+      <Dependency Name="Pizza" />
+    </Label>
+  </Figures>
+</Drawing>
