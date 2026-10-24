@@ -1,0 +1,2276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-11" Top="5" Right="12" Bottom="-7" Color="#FF0A0B16" />
+  <Scene Left="-10.5" Top="3.2" Right="11" Bottom="-6.2" />
+  <Styles>
+    <TextStyle Name="Text" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <TextStyle Name="Heading" FontSize="30" Color="#FFFFD966" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFFD966" />
+    </TextStyle>
+    <TextStyle Name="Explanation" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <PointStyle Name="Knob" Size="13" Fill="#FFFFD966" Color="#FFFFFFFF" StrokeWidth="2" />
+    <ShapeStyle Name="Prism" Color="#E0DDF4FF" StrokeWidth="2">
+      <Fill>
+        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+          <GradientStop Color="#40E8F8FF" />
+          <GradientStop Color="#2080B0E0" Offset="0.7" />
+          <GradientStop Color="#40B8E0FF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Lamp" Color="#FF9AA4B8" StrokeWidth="1.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FF5A6478" />
+          <GradientStop Color="#FF2A3040" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="LampGlass" Color="#FFFFFFF0" StrokeWidth="5" />
+    <LineStyle Name="WhiteGlow" Color="#40FFFFFF" StrokeWidth="14" />
+    <LineStyle Name="White" Color="#FFFFFFFF" StrokeWidth="3" />
+    <LineStyle Name="RedGlow" Color="#50FF3B3B" StrokeWidth="10" />
+    <LineStyle Name="Red" Color="#FFFF3B3B" StrokeWidth="2.2" />
+    <LineStyle Name="RedInside" Color="#90FF3B3B" StrokeWidth="1.5" />
+    <LineStyle Name="OrangeGlow" Color="#50FF9A1F" StrokeWidth="10" />
+    <LineStyle Name="Orange" Color="#FFFF9A1F" StrokeWidth="2.2" />
+    <LineStyle Name="OrangeInside" Color="#90FF9A1F" StrokeWidth="1.5" />
+    <LineStyle Name="YellowGlow" Color="#50FFE83A" StrokeWidth="10" />
+    <LineStyle Name="Yellow" Color="#FFFFE83A" StrokeWidth="2.2" />
+    <LineStyle Name="YellowInside" Color="#90FFE83A" StrokeWidth="1.5" />
+    <LineStyle Name="GreenGlow" Color="#503BE06A" StrokeWidth="10" />
+    <LineStyle Name="Green" Color="#FF3BE06A" StrokeWidth="2.2" />
+    <LineStyle Name="GreenInside" Color="#903BE06A" StrokeWidth="1.5" />
+    <LineStyle Name="BlueGlow" Color="#502FA8FF" StrokeWidth="10" />
+    <LineStyle Name="Blue" Color="#FF2FA8FF" StrokeWidth="2.2" />
+    <LineStyle Name="BlueInside" Color="#902FA8FF" StrokeWidth="1.5" />
+    <LineStyle Name="IndigoGlow" Color="#506A6CFF" StrokeWidth="10" />
+    <LineStyle Name="Indigo" Color="#FF6A6CFF" StrokeWidth="2.2" />
+    <LineStyle Name="IndigoInside" Color="#906A6CFF" StrokeWidth="1.5" />
+    <LineStyle Name="VioletGlow" Color="#50C05CFF" StrokeWidth="10" />
+    <LineStyle Name="Violet" Color="#FFC05CFF" StrokeWidth="2.2" />
+    <LineStyle Name="VioletInside" Color="#90C05CFF" StrokeWidth="1.5" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="M" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="PrismReach" Visible="false" X="M.X + 2.6" Y="M.Y">
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <Circle Name="PrismTurn" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="PrismReach" />
+    </Circle>
+    <PointOnFigure Name="K" Style="Knob" X="8.496667309991598E-07" Y="2.599999999999861" Parameter="1.570796">
+      <Dependency Name="PrismTurn" />
+    </PointOnFigure>
+    <PointByCoordinates Name="K2" Visible="false" X="M.X - 0.5 * (K.X - M.X) - 0.866025403784 * (K.Y - M.Y)" Y="M.Y + 0.866025403784 * (K.X - M.X) - 0.5 * (K.Y - M.Y)">
+      <Dependency Name="M" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K3" Visible="false" X="M.X - 0.5 * (K.X - M.X) + 0.866025403784 * (K.Y - M.Y)" Y="M.Y - 0.866025403784 * (K.X - M.X) - 0.5 * (K.Y - M.Y)">
+      <Dependency Name="M" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <Polygon Name="Glass" Style="Prism">
+      <Dependency Name="K" />
+      <Dependency Name="K2" />
+      <Dependency Name="K3" />
+    </Polygon>
+    <Number Name="s1x" Formula="K2.X - K.X">
+      <Dependency Name="K2" />
+      <Dependency Name="K" />
+    </Number>
+    <Number Name="s1y" Formula="K2.Y - K.Y">
+      <Dependency Name="K2" />
+      <Dependency Name="K" />
+    </Number>
+    <Number Name="n1x" Formula="s1y / 4.503332">
+      <Dependency Name="s1y" />
+    </Number>
+    <Number Name="n1y" Formula="-s1x / 4.503332">
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="s2x" Formula="K3.X - K2.X">
+      <Dependency Name="K3" />
+      <Dependency Name="K2" />
+    </Number>
+    <Number Name="s2y" Formula="K3.Y - K2.Y">
+      <Dependency Name="K3" />
+      <Dependency Name="K2" />
+    </Number>
+    <Number Name="n2x" Formula="s2y / 4.503332">
+      <Dependency Name="s2y" />
+    </Number>
+    <Number Name="n2y" Formula="-s2x / 4.503332">
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="s3x" Formula="K.X - K3.X">
+      <Dependency Name="K" />
+      <Dependency Name="K3" />
+    </Number>
+    <Number Name="s3y" Formula="K.Y - K3.Y">
+      <Dependency Name="K" />
+      <Dependency Name="K3" />
+    </Number>
+    <Number Name="n3x" Formula="s3y / 4.503332">
+      <Dependency Name="s3y" />
+    </Number>
+    <Number Name="n3y" Formula="-s3x / 4.503332">
+      <Dependency Name="s3x" />
+    </Number>
+    <FreePoint Name="Lamp" Style="Knob" X="-8.819666" Y="-4.394298" />
+    <PointByCoordinates Name="AimReach" Visible="false" X="Lamp.X + 1.4" Y="Lamp.Y">
+      <Dependency Name="Lamp" />
+    </PointByCoordinates>
+    <Circle Name="AimTurn" Visible="false">
+      <Dependency Name="Lamp" />
+      <Dependency Name="AimReach" />
+    </Circle>
+    <PointOnFigure Name="Aim" Style="Knob" X="-7.648865400014629" Y="-3.6266874509102305" Parameter="0.580322">
+      <Dependency Name="AimTurn" />
+    </PointOnFigure>
+    <Number Name="bx" Formula="(Aim.X - Lamp.X) / 1.4">
+      <Dependency Name="Aim" />
+      <Dependency Name="Lamp" />
+    </Number>
+    <Number Name="by" Formula="(Aim.Y - Lamp.Y) / 1.4">
+      <Dependency Name="Aim" />
+      <Dependency Name="Lamp" />
+    </Number>
+    <PointByCoordinates Name="Lamp1" Visible="false" X="Lamp.X + 0 * bx - 0.48 * by" Y="Lamp.Y + 0 * by + 0.48 * bx">
+      <Dependency Name="Lamp" />
+      <Dependency Name="bx" />
+      <Dependency Name="by" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Lamp2" Visible="false" X="Lamp.X + -0.6 * bx - 0.48 * by" Y="Lamp.Y + -0.6 * by + 0.48 * bx">
+      <Dependency Name="Lamp" />
+      <Dependency Name="bx" />
+      <Dependency Name="by" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Lamp3" Visible="false" X="Lamp.X + -0.85 * bx - 0.3 * by" Y="Lamp.Y + -0.85 * by + 0.3 * bx">
+      <Dependency Name="Lamp" />
+      <Dependency Name="bx" />
+      <Dependency Name="by" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Lamp4" Visible="false" X="Lamp.X + -2.3 * bx - 0.3 * by" Y="Lamp.Y + -2.3 * by + 0.3 * bx">
+      <Dependency Name="Lamp" />
+      <Dependency Name="bx" />
+      <Dependency Name="by" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Lamp5" Visible="false" X="Lamp.X + -2.3 * bx - -0.3 * by" Y="Lamp.Y + -2.3 * by + -0.3 * bx">
+      <Dependency Name="Lamp" />
+      <Dependency Name="bx" />
+      <Dependency Name="by" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Lamp6" Visible="false" X="Lamp.X + -0.85 * bx - -0.3 * by" Y="Lamp.Y + -0.85 * by + -0.3 * bx">
+      <Dependency Name="Lamp" />
+      <Dependency Name="bx" />
+      <Dependency Name="by" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Lamp7" Visible="false" X="Lamp.X + -0.6 * bx - -0.48 * by" Y="Lamp.Y + -0.6 * by + -0.48 * bx">
+      <Dependency Name="Lamp" />
+      <Dependency Name="bx" />
+      <Dependency Name="by" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Lamp8" Visible="false" X="Lamp.X + 0 * bx - -0.48 * by" Y="Lamp.Y + 0 * by + -0.48 * bx">
+      <Dependency Name="Lamp" />
+      <Dependency Name="bx" />
+      <Dependency Name="by" />
+    </PointByCoordinates>
+    <Polygon Name="LampBody" Style="Lamp">
+      <Dependency Name="Lamp1" />
+      <Dependency Name="Lamp2" />
+      <Dependency Name="Lamp3" />
+      <Dependency Name="Lamp4" />
+      <Dependency Name="Lamp5" />
+      <Dependency Name="Lamp6" />
+      <Dependency Name="Lamp7" />
+      <Dependency Name="Lamp8" />
+    </Polygon>
+    <Segment Name="LampFront" Style="LampGlass">
+      <Dependency Name="Lamp1" />
+      <Dependency Name="Lamp8" />
+    </Segment>
+    <Number Name="wden1" Formula="if(abs(bx * s1y - by * s1x) &lt; 0.000000000001, 0.000000000001, bx * s1y - by * s1x)">
+      <Dependency Name="bx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="by" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="wt1" Formula="if((((K.X - Lamp.X) * s1y - (K.Y - Lamp.Y) * s1x) / wden1 &gt; 0.0000001) * (((K.X - Lamp.X) * by - (K.Y - Lamp.Y) * bx) / wden1 &gt;= 0) * (((K.X - Lamp.X) * by - (K.Y - Lamp.Y) * bx) / wden1 &lt;= 1), ((K.X - Lamp.X) * s1y - (K.Y - Lamp.Y) * s1x) / wden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="Lamp" />
+      <Dependency Name="s1y" />
+      <Dependency Name="s1x" />
+      <Dependency Name="wden1" />
+      <Dependency Name="by" />
+      <Dependency Name="bx" />
+    </Number>
+    <Number Name="wden2" Formula="if(abs(bx * s2y - by * s2x) &lt; 0.000000000001, 0.000000000001, bx * s2y - by * s2x)">
+      <Dependency Name="bx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="by" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="wt2" Formula="if((((K2.X - Lamp.X) * s2y - (K2.Y - Lamp.Y) * s2x) / wden2 &gt; 0.0000001) * (((K2.X - Lamp.X) * by - (K2.Y - Lamp.Y) * bx) / wden2 &gt;= 0) * (((K2.X - Lamp.X) * by - (K2.Y - Lamp.Y) * bx) / wden2 &lt;= 1), ((K2.X - Lamp.X) * s2y - (K2.Y - Lamp.Y) * s2x) / wden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="Lamp" />
+      <Dependency Name="s2y" />
+      <Dependency Name="s2x" />
+      <Dependency Name="wden2" />
+      <Dependency Name="by" />
+      <Dependency Name="bx" />
+    </Number>
+    <Number Name="wden3" Formula="if(abs(bx * s3y - by * s3x) &lt; 0.000000000001, 0.000000000001, bx * s3y - by * s3x)">
+      <Dependency Name="bx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="by" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="wt3" Formula="if((((K3.X - Lamp.X) * s3y - (K3.Y - Lamp.Y) * s3x) / wden3 &gt; 0.0000001) * (((K3.X - Lamp.X) * by - (K3.Y - Lamp.Y) * bx) / wden3 &gt;= 0) * (((K3.X - Lamp.X) * by - (K3.Y - Lamp.Y) * bx) / wden3 &lt;= 1), ((K3.X - Lamp.X) * s3y - (K3.Y - Lamp.Y) * s3x) / wden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="Lamp" />
+      <Dependency Name="s3y" />
+      <Dependency Name="s3x" />
+      <Dependency Name="wden3" />
+      <Dependency Name="by" />
+      <Dependency Name="bx" />
+    </Number>
+    <Number Name="wt" Formula="min(wt1, wt2, wt3)">
+      <Dependency Name="wt1" />
+      <Dependency Name="wt2" />
+      <Dependency Name="wt3" />
+    </Number>
+    <Number Name="wx" Formula="Lamp.X + wt * bx">
+      <Dependency Name="Lamp" />
+      <Dependency Name="wt" />
+      <Dependency Name="bx" />
+    </Number>
+    <Number Name="wy" Formula="Lamp.Y + wt * by">
+      <Dependency Name="Lamp" />
+      <Dependency Name="wt" />
+      <Dependency Name="by" />
+    </Number>
+    <Number Name="wnx" Formula="(wt == wt1) * n1x + (wt == wt2) * n2x + (wt == wt3) * n3x">
+      <Dependency Name="wt" />
+      <Dependency Name="wt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="wt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="wt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="wny" Formula="(wt == wt1) * n1y + (wt == wt2) * n2y + (wt == wt3) * n3y">
+      <Dependency Name="wt" />
+      <Dependency Name="wt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="wt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="wt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="lit" Formula="wt &lt; 100000">
+      <Dependency Name="wt" />
+    </Number>
+    <PointByCoordinates Name="Entry" Visible="false" X="wx" Y="wy">
+      <Dependency Name="wx" />
+      <Dependency Name="wy" />
+    </PointByCoordinates>
+    <Segment Name="WhiteBeamGlow" Style="WhiteGlow">
+      <Dependency Name="Lamp" />
+      <Dependency Name="Entry" />
+    </Segment>
+    <Segment Name="WhiteBeam" Style="White">
+      <Dependency Name="Lamp" />
+      <Dependency Name="Entry" />
+    </Segment>
+    <Number Name="redci" Formula="-(bx * wnx + by * wny)">
+      <Dependency Name="bx" />
+      <Dependency Name="wnx" />
+      <Dependency Name="by" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="redsq" Formula="sqrt(1 - 0.563889^2 * (1 - redci^2))">
+      <Dependency Name="redci" />
+    </Number>
+    <Number Name="redix" Formula="0.563889 * bx + (0.563889 * redci - redsq) * wnx">
+      <Dependency Name="bx" />
+      <Dependency Name="redci" />
+      <Dependency Name="redsq" />
+      <Dependency Name="wnx" />
+    </Number>
+    <Number Name="rediy" Formula="0.563889 * by + (0.563889 * redci - redsq) * wny">
+      <Dependency Name="by" />
+      <Dependency Name="redci" />
+      <Dependency Name="redsq" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="redAden1" Formula="if(abs(redix * s1y - rediy * s1x) &lt; 0.000000000001, 0.000000000001, redix * s1y - rediy * s1x)">
+      <Dependency Name="redix" />
+      <Dependency Name="s1y" />
+      <Dependency Name="rediy" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="redAt1" Formula="if((((K.X - wx) * s1y - (K.Y - wy) * s1x) / redAden1 &gt; 0.0000001) * (((K.X - wx) * rediy - (K.Y - wy) * redix) / redAden1 &gt;= 0) * (((K.X - wx) * rediy - (K.Y - wy) * redix) / redAden1 &lt;= 1), ((K.X - wx) * s1y - (K.Y - wy) * s1x) / redAden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="wx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="redAden1" />
+      <Dependency Name="rediy" />
+      <Dependency Name="redix" />
+    </Number>
+    <Number Name="redAden2" Formula="if(abs(redix * s2y - rediy * s2x) &lt; 0.000000000001, 0.000000000001, redix * s2y - rediy * s2x)">
+      <Dependency Name="redix" />
+      <Dependency Name="s2y" />
+      <Dependency Name="rediy" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="redAt2" Formula="if((((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / redAden2 &gt; 0.0000001) * (((K2.X - wx) * rediy - (K2.Y - wy) * redix) / redAden2 &gt;= 0) * (((K2.X - wx) * rediy - (K2.Y - wy) * redix) / redAden2 &lt;= 1), ((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / redAden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="wx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="redAden2" />
+      <Dependency Name="rediy" />
+      <Dependency Name="redix" />
+    </Number>
+    <Number Name="redAden3" Formula="if(abs(redix * s3y - rediy * s3x) &lt; 0.000000000001, 0.000000000001, redix * s3y - rediy * s3x)">
+      <Dependency Name="redix" />
+      <Dependency Name="s3y" />
+      <Dependency Name="rediy" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="redAt3" Formula="if((((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / redAden3 &gt; 0.0000001) * (((K3.X - wx) * rediy - (K3.Y - wy) * redix) / redAden3 &gt;= 0) * (((K3.X - wx) * rediy - (K3.Y - wy) * redix) / redAden3 &lt;= 1), ((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / redAden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="wx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="redAden3" />
+      <Dependency Name="rediy" />
+      <Dependency Name="redix" />
+    </Number>
+    <Number Name="redAt" Formula="min(redAt1, redAt2, redAt3)">
+      <Dependency Name="redAt1" />
+      <Dependency Name="redAt2" />
+      <Dependency Name="redAt3" />
+    </Number>
+    <Number Name="redAx" Formula="wx + redAt * redix">
+      <Dependency Name="wx" />
+      <Dependency Name="redAt" />
+      <Dependency Name="redix" />
+    </Number>
+    <Number Name="redAy" Formula="wy + redAt * rediy">
+      <Dependency Name="wy" />
+      <Dependency Name="redAt" />
+      <Dependency Name="rediy" />
+    </Number>
+    <Number Name="redAnx" Formula="(redAt == redAt1) * n1x + (redAt == redAt2) * n2x + (redAt == redAt3) * n3x">
+      <Dependency Name="redAt" />
+      <Dependency Name="redAt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="redAt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="redAt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="redAny" Formula="(redAt == redAt1) * n1y + (redAt == redAt2) * n2y + (redAt == redAt3) * n3y">
+      <Dependency Name="redAt" />
+      <Dependency Name="redAt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="redAt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="redAt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="redAco" Formula="redix * redAnx + rediy * redAny">
+      <Dependency Name="redix" />
+      <Dependency Name="redAnx" />
+      <Dependency Name="rediy" />
+      <Dependency Name="redAny" />
+    </Number>
+    <Number Name="redAk" Formula="1 - 3.144948 * (1 - redAco^2)">
+      <Dependency Name="redAco" />
+    </Number>
+    <Number Name="redbounce" Formula="redAk &lt; 0">
+      <Dependency Name="redAk" />
+    </Number>
+    <Number Name="redrx" Formula="redix - 2 * redAco * redAnx">
+      <Dependency Name="redix" />
+      <Dependency Name="redAco" />
+      <Dependency Name="redAnx" />
+    </Number>
+    <Number Name="redry" Formula="rediy - 2 * redAco * redAny">
+      <Dependency Name="rediy" />
+      <Dependency Name="redAco" />
+      <Dependency Name="redAny" />
+    </Number>
+    <Number Name="redox" Formula="1.7734 * redix - (1.7734 * redAco - sqrt(max(redAk, 0))) * redAnx">
+      <Dependency Name="redix" />
+      <Dependency Name="redAco" />
+      <Dependency Name="redAk" />
+      <Dependency Name="redAnx" />
+    </Number>
+    <Number Name="redoy" Formula="1.7734 * rediy - (1.7734 * redAco - sqrt(max(redAk, 0))) * redAny">
+      <Dependency Name="rediy" />
+      <Dependency Name="redAco" />
+      <Dependency Name="redAk" />
+      <Dependency Name="redAny" />
+    </Number>
+    <Number Name="redBden1" Formula="if(abs(redrx * s1y - redry * s1x) &lt; 0.000000000001, 0.000000000001, redrx * s1y - redry * s1x)">
+      <Dependency Name="redrx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="redry" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="redBt1" Formula="if((((K.X - redAx) * s1y - (K.Y - redAy) * s1x) / redBden1 &gt; 0.0000001) * (((K.X - redAx) * redry - (K.Y - redAy) * redrx) / redBden1 &gt;= 0) * (((K.X - redAx) * redry - (K.Y - redAy) * redrx) / redBden1 &lt;= 1), ((K.X - redAx) * s1y - (K.Y - redAy) * s1x) / redBden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="redAx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="redAy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="redBden1" />
+      <Dependency Name="redry" />
+      <Dependency Name="redrx" />
+    </Number>
+    <Number Name="redBden2" Formula="if(abs(redrx * s2y - redry * s2x) &lt; 0.000000000001, 0.000000000001, redrx * s2y - redry * s2x)">
+      <Dependency Name="redrx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="redry" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="redBt2" Formula="if((((K2.X - redAx) * s2y - (K2.Y - redAy) * s2x) / redBden2 &gt; 0.0000001) * (((K2.X - redAx) * redry - (K2.Y - redAy) * redrx) / redBden2 &gt;= 0) * (((K2.X - redAx) * redry - (K2.Y - redAy) * redrx) / redBden2 &lt;= 1), ((K2.X - redAx) * s2y - (K2.Y - redAy) * s2x) / redBden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="redAx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="redAy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="redBden2" />
+      <Dependency Name="redry" />
+      <Dependency Name="redrx" />
+    </Number>
+    <Number Name="redBden3" Formula="if(abs(redrx * s3y - redry * s3x) &lt; 0.000000000001, 0.000000000001, redrx * s3y - redry * s3x)">
+      <Dependency Name="redrx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="redry" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="redBt3" Formula="if((((K3.X - redAx) * s3y - (K3.Y - redAy) * s3x) / redBden3 &gt; 0.0000001) * (((K3.X - redAx) * redry - (K3.Y - redAy) * redrx) / redBden3 &gt;= 0) * (((K3.X - redAx) * redry - (K3.Y - redAy) * redrx) / redBden3 &lt;= 1), ((K3.X - redAx) * s3y - (K3.Y - redAy) * s3x) / redBden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="redAx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="redAy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="redBden3" />
+      <Dependency Name="redry" />
+      <Dependency Name="redrx" />
+    </Number>
+    <Number Name="redBt" Formula="min(redBt1, redBt2, redBt3)">
+      <Dependency Name="redBt1" />
+      <Dependency Name="redBt2" />
+      <Dependency Name="redBt3" />
+    </Number>
+    <Number Name="redBx" Formula="redAx + redBt * redrx">
+      <Dependency Name="redAx" />
+      <Dependency Name="redBt" />
+      <Dependency Name="redrx" />
+    </Number>
+    <Number Name="redBy" Formula="redAy + redBt * redry">
+      <Dependency Name="redAy" />
+      <Dependency Name="redBt" />
+      <Dependency Name="redry" />
+    </Number>
+    <Number Name="redBnx" Formula="(redBt == redBt1) * n1x + (redBt == redBt2) * n2x + (redBt == redBt3) * n3x">
+      <Dependency Name="redBt" />
+      <Dependency Name="redBt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="redBt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="redBt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="redBny" Formula="(redBt == redBt1) * n1y + (redBt == redBt2) * n2y + (redBt == redBt3) * n3y">
+      <Dependency Name="redBt" />
+      <Dependency Name="redBt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="redBt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="redBt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="redBco" Formula="redrx * redBnx + redry * redBny">
+      <Dependency Name="redrx" />
+      <Dependency Name="redBnx" />
+      <Dependency Name="redry" />
+      <Dependency Name="redBny" />
+    </Number>
+    <Number Name="redBk" Formula="1 - 3.144948 * (1 - redBco^2)">
+      <Dependency Name="redBco" />
+    </Number>
+    <Number Name="redqx" Formula="1.7734 * redrx - (1.7734 * redBco - sqrt(redBk)) * redBnx">
+      <Dependency Name="redrx" />
+      <Dependency Name="redBco" />
+      <Dependency Name="redBk" />
+      <Dependency Name="redBnx" />
+    </Number>
+    <Number Name="redqy" Formula="1.7734 * redry - (1.7734 * redBco - sqrt(redBk)) * redBny">
+      <Dependency Name="redry" />
+      <Dependency Name="redBco" />
+      <Dependency Name="redBk" />
+      <Dependency Name="redBny" />
+    </Number>
+    <PointByCoordinates Name="RedA" Visible="false" X="redAx + 0 * sqrt(lit - 0.5)" Y="redAy + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="redAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="redAy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="RedB" Visible="false" X="if(redbounce, redBx, redAx) + 0 * sqrt(lit - 0.5)" Y="if(redbounce, redBy, redAy) + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="redbounce" />
+      <Dependency Name="redBx" />
+      <Dependency Name="redAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="redBy" />
+      <Dependency Name="redAy" />
+    </PointByCoordinates>
+    <Number Name="redfx" Formula="if(redbounce, redqx, redox)">
+      <Dependency Name="redbounce" />
+      <Dependency Name="redqx" />
+      <Dependency Name="redox" />
+    </Number>
+    <Number Name="redfy" Formula="if(redbounce, redqy, redoy)">
+      <Dependency Name="redbounce" />
+      <Dependency Name="redqy" />
+      <Dependency Name="redoy" />
+    </Number>
+    <PointByCoordinates Name="RedOn" Visible="false" X="RedB.X + redfx" Y="RedB.Y + redfy">
+      <Dependency Name="RedB" />
+      <Dependency Name="redfx" />
+      <Dependency Name="redfy" />
+    </PointByCoordinates>
+    <Segment Name="RedInside" Style="RedInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="RedA" />
+    </Segment>
+    <Segment Name="RedBounce" Style="RedInside">
+      <Dependency Name="RedA" />
+      <Dependency Name="RedB" />
+    </Segment>
+    <Ray Name="RedOutGlow" Style="RedGlow">
+      <Dependency Name="RedB" />
+      <Dependency Name="RedOn" />
+    </Ray>
+    <Ray Name="RedOut" Style="Red">
+      <Dependency Name="RedB" />
+      <Dependency Name="RedOn" />
+    </Ray>
+    <Number Name="orangeci" Formula="-(bx * wnx + by * wny)">
+      <Dependency Name="bx" />
+      <Dependency Name="wnx" />
+      <Dependency Name="by" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="orangesq" Formula="sqrt(1 - 0.56123^2 * (1 - orangeci^2))">
+      <Dependency Name="orangeci" />
+    </Number>
+    <Number Name="orangeix" Formula="0.56123 * bx + (0.56123 * orangeci - orangesq) * wnx">
+      <Dependency Name="bx" />
+      <Dependency Name="orangeci" />
+      <Dependency Name="orangesq" />
+      <Dependency Name="wnx" />
+    </Number>
+    <Number Name="orangeiy" Formula="0.56123 * by + (0.56123 * orangeci - orangesq) * wny">
+      <Dependency Name="by" />
+      <Dependency Name="orangeci" />
+      <Dependency Name="orangesq" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="orangeAden1" Formula="if(abs(orangeix * s1y - orangeiy * s1x) &lt; 0.000000000001, 0.000000000001, orangeix * s1y - orangeiy * s1x)">
+      <Dependency Name="orangeix" />
+      <Dependency Name="s1y" />
+      <Dependency Name="orangeiy" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="orangeAt1" Formula="if((((K.X - wx) * s1y - (K.Y - wy) * s1x) / orangeAden1 &gt; 0.0000001) * (((K.X - wx) * orangeiy - (K.Y - wy) * orangeix) / orangeAden1 &gt;= 0) * (((K.X - wx) * orangeiy - (K.Y - wy) * orangeix) / orangeAden1 &lt;= 1), ((K.X - wx) * s1y - (K.Y - wy) * s1x) / orangeAden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="wx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="orangeAden1" />
+      <Dependency Name="orangeiy" />
+      <Dependency Name="orangeix" />
+    </Number>
+    <Number Name="orangeAden2" Formula="if(abs(orangeix * s2y - orangeiy * s2x) &lt; 0.000000000001, 0.000000000001, orangeix * s2y - orangeiy * s2x)">
+      <Dependency Name="orangeix" />
+      <Dependency Name="s2y" />
+      <Dependency Name="orangeiy" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="orangeAt2" Formula="if((((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / orangeAden2 &gt; 0.0000001) * (((K2.X - wx) * orangeiy - (K2.Y - wy) * orangeix) / orangeAden2 &gt;= 0) * (((K2.X - wx) * orangeiy - (K2.Y - wy) * orangeix) / orangeAden2 &lt;= 1), ((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / orangeAden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="wx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="orangeAden2" />
+      <Dependency Name="orangeiy" />
+      <Dependency Name="orangeix" />
+    </Number>
+    <Number Name="orangeAden3" Formula="if(abs(orangeix * s3y - orangeiy * s3x) &lt; 0.000000000001, 0.000000000001, orangeix * s3y - orangeiy * s3x)">
+      <Dependency Name="orangeix" />
+      <Dependency Name="s3y" />
+      <Dependency Name="orangeiy" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="orangeAt3" Formula="if((((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / orangeAden3 &gt; 0.0000001) * (((K3.X - wx) * orangeiy - (K3.Y - wy) * orangeix) / orangeAden3 &gt;= 0) * (((K3.X - wx) * orangeiy - (K3.Y - wy) * orangeix) / orangeAden3 &lt;= 1), ((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / orangeAden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="wx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="orangeAden3" />
+      <Dependency Name="orangeiy" />
+      <Dependency Name="orangeix" />
+    </Number>
+    <Number Name="orangeAt" Formula="min(orangeAt1, orangeAt2, orangeAt3)">
+      <Dependency Name="orangeAt1" />
+      <Dependency Name="orangeAt2" />
+      <Dependency Name="orangeAt3" />
+    </Number>
+    <Number Name="orangeAx" Formula="wx + orangeAt * orangeix">
+      <Dependency Name="wx" />
+      <Dependency Name="orangeAt" />
+      <Dependency Name="orangeix" />
+    </Number>
+    <Number Name="orangeAy" Formula="wy + orangeAt * orangeiy">
+      <Dependency Name="wy" />
+      <Dependency Name="orangeAt" />
+      <Dependency Name="orangeiy" />
+    </Number>
+    <Number Name="orangeAnx" Formula="(orangeAt == orangeAt1) * n1x + (orangeAt == orangeAt2) * n2x + (orangeAt == orangeAt3) * n3x">
+      <Dependency Name="orangeAt" />
+      <Dependency Name="orangeAt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="orangeAt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="orangeAt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="orangeAny" Formula="(orangeAt == orangeAt1) * n1y + (orangeAt == orangeAt2) * n2y + (orangeAt == orangeAt3) * n3y">
+      <Dependency Name="orangeAt" />
+      <Dependency Name="orangeAt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="orangeAt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="orangeAt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="orangeAco" Formula="orangeix * orangeAnx + orangeiy * orangeAny">
+      <Dependency Name="orangeix" />
+      <Dependency Name="orangeAnx" />
+      <Dependency Name="orangeiy" />
+      <Dependency Name="orangeAny" />
+    </Number>
+    <Number Name="orangeAk" Formula="1 - 3.174811 * (1 - orangeAco^2)">
+      <Dependency Name="orangeAco" />
+    </Number>
+    <Number Name="orangebounce" Formula="orangeAk &lt; 0">
+      <Dependency Name="orangeAk" />
+    </Number>
+    <Number Name="orangerx" Formula="orangeix - 2 * orangeAco * orangeAnx">
+      <Dependency Name="orangeix" />
+      <Dependency Name="orangeAco" />
+      <Dependency Name="orangeAnx" />
+    </Number>
+    <Number Name="orangery" Formula="orangeiy - 2 * orangeAco * orangeAny">
+      <Dependency Name="orangeiy" />
+      <Dependency Name="orangeAco" />
+      <Dependency Name="orangeAny" />
+    </Number>
+    <Number Name="orangeox" Formula="1.7818 * orangeix - (1.7818 * orangeAco - sqrt(max(orangeAk, 0))) * orangeAnx">
+      <Dependency Name="orangeix" />
+      <Dependency Name="orangeAco" />
+      <Dependency Name="orangeAk" />
+      <Dependency Name="orangeAnx" />
+    </Number>
+    <Number Name="orangeoy" Formula="1.7818 * orangeiy - (1.7818 * orangeAco - sqrt(max(orangeAk, 0))) * orangeAny">
+      <Dependency Name="orangeiy" />
+      <Dependency Name="orangeAco" />
+      <Dependency Name="orangeAk" />
+      <Dependency Name="orangeAny" />
+    </Number>
+    <Number Name="orangeBden1" Formula="if(abs(orangerx * s1y - orangery * s1x) &lt; 0.000000000001, 0.000000000001, orangerx * s1y - orangery * s1x)">
+      <Dependency Name="orangerx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="orangery" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="orangeBt1" Formula="if((((K.X - orangeAx) * s1y - (K.Y - orangeAy) * s1x) / orangeBden1 &gt; 0.0000001) * (((K.X - orangeAx) * orangery - (K.Y - orangeAy) * orangerx) / orangeBden1 &gt;= 0) * (((K.X - orangeAx) * orangery - (K.Y - orangeAy) * orangerx) / orangeBden1 &lt;= 1), ((K.X - orangeAx) * s1y - (K.Y - orangeAy) * s1x) / orangeBden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="orangeAx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="orangeAy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="orangeBden1" />
+      <Dependency Name="orangery" />
+      <Dependency Name="orangerx" />
+    </Number>
+    <Number Name="orangeBden2" Formula="if(abs(orangerx * s2y - orangery * s2x) &lt; 0.000000000001, 0.000000000001, orangerx * s2y - orangery * s2x)">
+      <Dependency Name="orangerx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="orangery" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="orangeBt2" Formula="if((((K2.X - orangeAx) * s2y - (K2.Y - orangeAy) * s2x) / orangeBden2 &gt; 0.0000001) * (((K2.X - orangeAx) * orangery - (K2.Y - orangeAy) * orangerx) / orangeBden2 &gt;= 0) * (((K2.X - orangeAx) * orangery - (K2.Y - orangeAy) * orangerx) / orangeBden2 &lt;= 1), ((K2.X - orangeAx) * s2y - (K2.Y - orangeAy) * s2x) / orangeBden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="orangeAx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="orangeAy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="orangeBden2" />
+      <Dependency Name="orangery" />
+      <Dependency Name="orangerx" />
+    </Number>
+    <Number Name="orangeBden3" Formula="if(abs(orangerx * s3y - orangery * s3x) &lt; 0.000000000001, 0.000000000001, orangerx * s3y - orangery * s3x)">
+      <Dependency Name="orangerx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="orangery" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="orangeBt3" Formula="if((((K3.X - orangeAx) * s3y - (K3.Y - orangeAy) * s3x) / orangeBden3 &gt; 0.0000001) * (((K3.X - orangeAx) * orangery - (K3.Y - orangeAy) * orangerx) / orangeBden3 &gt;= 0) * (((K3.X - orangeAx) * orangery - (K3.Y - orangeAy) * orangerx) / orangeBden3 &lt;= 1), ((K3.X - orangeAx) * s3y - (K3.Y - orangeAy) * s3x) / orangeBden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="orangeAx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="orangeAy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="orangeBden3" />
+      <Dependency Name="orangery" />
+      <Dependency Name="orangerx" />
+    </Number>
+    <Number Name="orangeBt" Formula="min(orangeBt1, orangeBt2, orangeBt3)">
+      <Dependency Name="orangeBt1" />
+      <Dependency Name="orangeBt2" />
+      <Dependency Name="orangeBt3" />
+    </Number>
+    <Number Name="orangeBx" Formula="orangeAx + orangeBt * orangerx">
+      <Dependency Name="orangeAx" />
+      <Dependency Name="orangeBt" />
+      <Dependency Name="orangerx" />
+    </Number>
+    <Number Name="orangeBy" Formula="orangeAy + orangeBt * orangery">
+      <Dependency Name="orangeAy" />
+      <Dependency Name="orangeBt" />
+      <Dependency Name="orangery" />
+    </Number>
+    <Number Name="orangeBnx" Formula="(orangeBt == orangeBt1) * n1x + (orangeBt == orangeBt2) * n2x + (orangeBt == orangeBt3) * n3x">
+      <Dependency Name="orangeBt" />
+      <Dependency Name="orangeBt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="orangeBt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="orangeBt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="orangeBny" Formula="(orangeBt == orangeBt1) * n1y + (orangeBt == orangeBt2) * n2y + (orangeBt == orangeBt3) * n3y">
+      <Dependency Name="orangeBt" />
+      <Dependency Name="orangeBt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="orangeBt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="orangeBt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="orangeBco" Formula="orangerx * orangeBnx + orangery * orangeBny">
+      <Dependency Name="orangerx" />
+      <Dependency Name="orangeBnx" />
+      <Dependency Name="orangery" />
+      <Dependency Name="orangeBny" />
+    </Number>
+    <Number Name="orangeBk" Formula="1 - 3.174811 * (1 - orangeBco^2)">
+      <Dependency Name="orangeBco" />
+    </Number>
+    <Number Name="orangeqx" Formula="1.7818 * orangerx - (1.7818 * orangeBco - sqrt(orangeBk)) * orangeBnx">
+      <Dependency Name="orangerx" />
+      <Dependency Name="orangeBco" />
+      <Dependency Name="orangeBk" />
+      <Dependency Name="orangeBnx" />
+    </Number>
+    <Number Name="orangeqy" Formula="1.7818 * orangery - (1.7818 * orangeBco - sqrt(orangeBk)) * orangeBny">
+      <Dependency Name="orangery" />
+      <Dependency Name="orangeBco" />
+      <Dependency Name="orangeBk" />
+      <Dependency Name="orangeBny" />
+    </Number>
+    <PointByCoordinates Name="OrangeA" Visible="false" X="orangeAx + 0 * sqrt(lit - 0.5)" Y="orangeAy + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="orangeAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="orangeAy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="OrangeB" Visible="false" X="if(orangebounce, orangeBx, orangeAx) + 0 * sqrt(lit - 0.5)" Y="if(orangebounce, orangeBy, orangeAy) + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="orangebounce" />
+      <Dependency Name="orangeBx" />
+      <Dependency Name="orangeAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="orangeBy" />
+      <Dependency Name="orangeAy" />
+    </PointByCoordinates>
+    <Number Name="orangefx" Formula="if(orangebounce, orangeqx, orangeox)">
+      <Dependency Name="orangebounce" />
+      <Dependency Name="orangeqx" />
+      <Dependency Name="orangeox" />
+    </Number>
+    <Number Name="orangefy" Formula="if(orangebounce, orangeqy, orangeoy)">
+      <Dependency Name="orangebounce" />
+      <Dependency Name="orangeqy" />
+      <Dependency Name="orangeoy" />
+    </Number>
+    <PointByCoordinates Name="OrangeOn" Visible="false" X="OrangeB.X + orangefx" Y="OrangeB.Y + orangefy">
+      <Dependency Name="OrangeB" />
+      <Dependency Name="orangefx" />
+      <Dependency Name="orangefy" />
+    </PointByCoordinates>
+    <Segment Name="OrangeInside" Style="OrangeInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="OrangeA" />
+    </Segment>
+    <Segment Name="OrangeBounce" Style="OrangeInside">
+      <Dependency Name="OrangeA" />
+      <Dependency Name="OrangeB" />
+    </Segment>
+    <Ray Name="OrangeOutGlow" Style="OrangeGlow">
+      <Dependency Name="OrangeB" />
+      <Dependency Name="OrangeOn" />
+    </Ray>
+    <Ray Name="OrangeOut" Style="Orange">
+      <Dependency Name="OrangeB" />
+      <Dependency Name="OrangeOn" />
+    </Ray>
+    <Number Name="yellowci" Formula="-(bx * wnx + by * wny)">
+      <Dependency Name="bx" />
+      <Dependency Name="wnx" />
+      <Dependency Name="by" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="yellowsq" Formula="sqrt(1 - 0.559816^2 * (1 - yellowci^2))">
+      <Dependency Name="yellowci" />
+    </Number>
+    <Number Name="yellowix" Formula="0.559816 * bx + (0.559816 * yellowci - yellowsq) * wnx">
+      <Dependency Name="bx" />
+      <Dependency Name="yellowci" />
+      <Dependency Name="yellowsq" />
+      <Dependency Name="wnx" />
+    </Number>
+    <Number Name="yellowiy" Formula="0.559816 * by + (0.559816 * yellowci - yellowsq) * wny">
+      <Dependency Name="by" />
+      <Dependency Name="yellowci" />
+      <Dependency Name="yellowsq" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="yellowAden1" Formula="if(abs(yellowix * s1y - yellowiy * s1x) &lt; 0.000000000001, 0.000000000001, yellowix * s1y - yellowiy * s1x)">
+      <Dependency Name="yellowix" />
+      <Dependency Name="s1y" />
+      <Dependency Name="yellowiy" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="yellowAt1" Formula="if((((K.X - wx) * s1y - (K.Y - wy) * s1x) / yellowAden1 &gt; 0.0000001) * (((K.X - wx) * yellowiy - (K.Y - wy) * yellowix) / yellowAden1 &gt;= 0) * (((K.X - wx) * yellowiy - (K.Y - wy) * yellowix) / yellowAden1 &lt;= 1), ((K.X - wx) * s1y - (K.Y - wy) * s1x) / yellowAden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="wx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="yellowAden1" />
+      <Dependency Name="yellowiy" />
+      <Dependency Name="yellowix" />
+    </Number>
+    <Number Name="yellowAden2" Formula="if(abs(yellowix * s2y - yellowiy * s2x) &lt; 0.000000000001, 0.000000000001, yellowix * s2y - yellowiy * s2x)">
+      <Dependency Name="yellowix" />
+      <Dependency Name="s2y" />
+      <Dependency Name="yellowiy" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="yellowAt2" Formula="if((((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / yellowAden2 &gt; 0.0000001) * (((K2.X - wx) * yellowiy - (K2.Y - wy) * yellowix) / yellowAden2 &gt;= 0) * (((K2.X - wx) * yellowiy - (K2.Y - wy) * yellowix) / yellowAden2 &lt;= 1), ((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / yellowAden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="wx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="yellowAden2" />
+      <Dependency Name="yellowiy" />
+      <Dependency Name="yellowix" />
+    </Number>
+    <Number Name="yellowAden3" Formula="if(abs(yellowix * s3y - yellowiy * s3x) &lt; 0.000000000001, 0.000000000001, yellowix * s3y - yellowiy * s3x)">
+      <Dependency Name="yellowix" />
+      <Dependency Name="s3y" />
+      <Dependency Name="yellowiy" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="yellowAt3" Formula="if((((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / yellowAden3 &gt; 0.0000001) * (((K3.X - wx) * yellowiy - (K3.Y - wy) * yellowix) / yellowAden3 &gt;= 0) * (((K3.X - wx) * yellowiy - (K3.Y - wy) * yellowix) / yellowAden3 &lt;= 1), ((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / yellowAden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="wx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="yellowAden3" />
+      <Dependency Name="yellowiy" />
+      <Dependency Name="yellowix" />
+    </Number>
+    <Number Name="yellowAt" Formula="min(yellowAt1, yellowAt2, yellowAt3)">
+      <Dependency Name="yellowAt1" />
+      <Dependency Name="yellowAt2" />
+      <Dependency Name="yellowAt3" />
+    </Number>
+    <Number Name="yellowAx" Formula="wx + yellowAt * yellowix">
+      <Dependency Name="wx" />
+      <Dependency Name="yellowAt" />
+      <Dependency Name="yellowix" />
+    </Number>
+    <Number Name="yellowAy" Formula="wy + yellowAt * yellowiy">
+      <Dependency Name="wy" />
+      <Dependency Name="yellowAt" />
+      <Dependency Name="yellowiy" />
+    </Number>
+    <Number Name="yellowAnx" Formula="(yellowAt == yellowAt1) * n1x + (yellowAt == yellowAt2) * n2x + (yellowAt == yellowAt3) * n3x">
+      <Dependency Name="yellowAt" />
+      <Dependency Name="yellowAt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="yellowAt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="yellowAt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="yellowAny" Formula="(yellowAt == yellowAt1) * n1y + (yellowAt == yellowAt2) * n2y + (yellowAt == yellowAt3) * n3y">
+      <Dependency Name="yellowAt" />
+      <Dependency Name="yellowAt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="yellowAt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="yellowAt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="yellowAco" Formula="yellowix * yellowAnx + yellowiy * yellowAny">
+      <Dependency Name="yellowix" />
+      <Dependency Name="yellowAnx" />
+      <Dependency Name="yellowiy" />
+      <Dependency Name="yellowAny" />
+    </Number>
+    <Number Name="yellowAk" Formula="1 - 3.190868 * (1 - yellowAco^2)">
+      <Dependency Name="yellowAco" />
+    </Number>
+    <Number Name="yellowbounce" Formula="yellowAk &lt; 0">
+      <Dependency Name="yellowAk" />
+    </Number>
+    <Number Name="yellowrx" Formula="yellowix - 2 * yellowAco * yellowAnx">
+      <Dependency Name="yellowix" />
+      <Dependency Name="yellowAco" />
+      <Dependency Name="yellowAnx" />
+    </Number>
+    <Number Name="yellowry" Formula="yellowiy - 2 * yellowAco * yellowAny">
+      <Dependency Name="yellowiy" />
+      <Dependency Name="yellowAco" />
+      <Dependency Name="yellowAny" />
+    </Number>
+    <Number Name="yellowox" Formula="1.7863 * yellowix - (1.7863 * yellowAco - sqrt(max(yellowAk, 0))) * yellowAnx">
+      <Dependency Name="yellowix" />
+      <Dependency Name="yellowAco" />
+      <Dependency Name="yellowAk" />
+      <Dependency Name="yellowAnx" />
+    </Number>
+    <Number Name="yellowoy" Formula="1.7863 * yellowiy - (1.7863 * yellowAco - sqrt(max(yellowAk, 0))) * yellowAny">
+      <Dependency Name="yellowiy" />
+      <Dependency Name="yellowAco" />
+      <Dependency Name="yellowAk" />
+      <Dependency Name="yellowAny" />
+    </Number>
+    <Number Name="yellowBden1" Formula="if(abs(yellowrx * s1y - yellowry * s1x) &lt; 0.000000000001, 0.000000000001, yellowrx * s1y - yellowry * s1x)">
+      <Dependency Name="yellowrx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="yellowry" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="yellowBt1" Formula="if((((K.X - yellowAx) * s1y - (K.Y - yellowAy) * s1x) / yellowBden1 &gt; 0.0000001) * (((K.X - yellowAx) * yellowry - (K.Y - yellowAy) * yellowrx) / yellowBden1 &gt;= 0) * (((K.X - yellowAx) * yellowry - (K.Y - yellowAy) * yellowrx) / yellowBden1 &lt;= 1), ((K.X - yellowAx) * s1y - (K.Y - yellowAy) * s1x) / yellowBden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="yellowAx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="yellowAy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="yellowBden1" />
+      <Dependency Name="yellowry" />
+      <Dependency Name="yellowrx" />
+    </Number>
+    <Number Name="yellowBden2" Formula="if(abs(yellowrx * s2y - yellowry * s2x) &lt; 0.000000000001, 0.000000000001, yellowrx * s2y - yellowry * s2x)">
+      <Dependency Name="yellowrx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="yellowry" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="yellowBt2" Formula="if((((K2.X - yellowAx) * s2y - (K2.Y - yellowAy) * s2x) / yellowBden2 &gt; 0.0000001) * (((K2.X - yellowAx) * yellowry - (K2.Y - yellowAy) * yellowrx) / yellowBden2 &gt;= 0) * (((K2.X - yellowAx) * yellowry - (K2.Y - yellowAy) * yellowrx) / yellowBden2 &lt;= 1), ((K2.X - yellowAx) * s2y - (K2.Y - yellowAy) * s2x) / yellowBden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="yellowAx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="yellowAy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="yellowBden2" />
+      <Dependency Name="yellowry" />
+      <Dependency Name="yellowrx" />
+    </Number>
+    <Number Name="yellowBden3" Formula="if(abs(yellowrx * s3y - yellowry * s3x) &lt; 0.000000000001, 0.000000000001, yellowrx * s3y - yellowry * s3x)">
+      <Dependency Name="yellowrx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="yellowry" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="yellowBt3" Formula="if((((K3.X - yellowAx) * s3y - (K3.Y - yellowAy) * s3x) / yellowBden3 &gt; 0.0000001) * (((K3.X - yellowAx) * yellowry - (K3.Y - yellowAy) * yellowrx) / yellowBden3 &gt;= 0) * (((K3.X - yellowAx) * yellowry - (K3.Y - yellowAy) * yellowrx) / yellowBden3 &lt;= 1), ((K3.X - yellowAx) * s3y - (K3.Y - yellowAy) * s3x) / yellowBden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="yellowAx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="yellowAy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="yellowBden3" />
+      <Dependency Name="yellowry" />
+      <Dependency Name="yellowrx" />
+    </Number>
+    <Number Name="yellowBt" Formula="min(yellowBt1, yellowBt2, yellowBt3)">
+      <Dependency Name="yellowBt1" />
+      <Dependency Name="yellowBt2" />
+      <Dependency Name="yellowBt3" />
+    </Number>
+    <Number Name="yellowBx" Formula="yellowAx + yellowBt * yellowrx">
+      <Dependency Name="yellowAx" />
+      <Dependency Name="yellowBt" />
+      <Dependency Name="yellowrx" />
+    </Number>
+    <Number Name="yellowBy" Formula="yellowAy + yellowBt * yellowry">
+      <Dependency Name="yellowAy" />
+      <Dependency Name="yellowBt" />
+      <Dependency Name="yellowry" />
+    </Number>
+    <Number Name="yellowBnx" Formula="(yellowBt == yellowBt1) * n1x + (yellowBt == yellowBt2) * n2x + (yellowBt == yellowBt3) * n3x">
+      <Dependency Name="yellowBt" />
+      <Dependency Name="yellowBt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="yellowBt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="yellowBt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="yellowBny" Formula="(yellowBt == yellowBt1) * n1y + (yellowBt == yellowBt2) * n2y + (yellowBt == yellowBt3) * n3y">
+      <Dependency Name="yellowBt" />
+      <Dependency Name="yellowBt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="yellowBt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="yellowBt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="yellowBco" Formula="yellowrx * yellowBnx + yellowry * yellowBny">
+      <Dependency Name="yellowrx" />
+      <Dependency Name="yellowBnx" />
+      <Dependency Name="yellowry" />
+      <Dependency Name="yellowBny" />
+    </Number>
+    <Number Name="yellowBk" Formula="1 - 3.190868 * (1 - yellowBco^2)">
+      <Dependency Name="yellowBco" />
+    </Number>
+    <Number Name="yellowqx" Formula="1.7863 * yellowrx - (1.7863 * yellowBco - sqrt(yellowBk)) * yellowBnx">
+      <Dependency Name="yellowrx" />
+      <Dependency Name="yellowBco" />
+      <Dependency Name="yellowBk" />
+      <Dependency Name="yellowBnx" />
+    </Number>
+    <Number Name="yellowqy" Formula="1.7863 * yellowry - (1.7863 * yellowBco - sqrt(yellowBk)) * yellowBny">
+      <Dependency Name="yellowry" />
+      <Dependency Name="yellowBco" />
+      <Dependency Name="yellowBk" />
+      <Dependency Name="yellowBny" />
+    </Number>
+    <PointByCoordinates Name="YellowA" Visible="false" X="yellowAx + 0 * sqrt(lit - 0.5)" Y="yellowAy + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="yellowAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="yellowAy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="YellowB" Visible="false" X="if(yellowbounce, yellowBx, yellowAx) + 0 * sqrt(lit - 0.5)" Y="if(yellowbounce, yellowBy, yellowAy) + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="yellowbounce" />
+      <Dependency Name="yellowBx" />
+      <Dependency Name="yellowAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="yellowBy" />
+      <Dependency Name="yellowAy" />
+    </PointByCoordinates>
+    <Number Name="yellowfx" Formula="if(yellowbounce, yellowqx, yellowox)">
+      <Dependency Name="yellowbounce" />
+      <Dependency Name="yellowqx" />
+      <Dependency Name="yellowox" />
+    </Number>
+    <Number Name="yellowfy" Formula="if(yellowbounce, yellowqy, yellowoy)">
+      <Dependency Name="yellowbounce" />
+      <Dependency Name="yellowqy" />
+      <Dependency Name="yellowoy" />
+    </Number>
+    <PointByCoordinates Name="YellowOn" Visible="false" X="YellowB.X + yellowfx" Y="YellowB.Y + yellowfy">
+      <Dependency Name="YellowB" />
+      <Dependency Name="yellowfx" />
+      <Dependency Name="yellowfy" />
+    </PointByCoordinates>
+    <Segment Name="YellowInside" Style="YellowInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="YellowA" />
+    </Segment>
+    <Segment Name="YellowBounce" Style="YellowInside">
+      <Dependency Name="YellowA" />
+      <Dependency Name="YellowB" />
+    </Segment>
+    <Ray Name="YellowOutGlow" Style="YellowGlow">
+      <Dependency Name="YellowB" />
+      <Dependency Name="YellowOn" />
+    </Ray>
+    <Ray Name="YellowOut" Style="Yellow">
+      <Dependency Name="YellowB" />
+      <Dependency Name="YellowOn" />
+    </Ray>
+    <Number Name="greenci" Formula="-(bx * wnx + by * wny)">
+      <Dependency Name="bx" />
+      <Dependency Name="wnx" />
+      <Dependency Name="by" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="greensq" Formula="sqrt(1 - 0.556886^2 * (1 - greenci^2))">
+      <Dependency Name="greenci" />
+    </Number>
+    <Number Name="greenix" Formula="0.556886 * bx + (0.556886 * greenci - greensq) * wnx">
+      <Dependency Name="bx" />
+      <Dependency Name="greenci" />
+      <Dependency Name="greensq" />
+      <Dependency Name="wnx" />
+    </Number>
+    <Number Name="greeniy" Formula="0.556886 * by + (0.556886 * greenci - greensq) * wny">
+      <Dependency Name="by" />
+      <Dependency Name="greenci" />
+      <Dependency Name="greensq" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="greenAden1" Formula="if(abs(greenix * s1y - greeniy * s1x) &lt; 0.000000000001, 0.000000000001, greenix * s1y - greeniy * s1x)">
+      <Dependency Name="greenix" />
+      <Dependency Name="s1y" />
+      <Dependency Name="greeniy" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="greenAt1" Formula="if((((K.X - wx) * s1y - (K.Y - wy) * s1x) / greenAden1 &gt; 0.0000001) * (((K.X - wx) * greeniy - (K.Y - wy) * greenix) / greenAden1 &gt;= 0) * (((K.X - wx) * greeniy - (K.Y - wy) * greenix) / greenAden1 &lt;= 1), ((K.X - wx) * s1y - (K.Y - wy) * s1x) / greenAden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="wx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="greenAden1" />
+      <Dependency Name="greeniy" />
+      <Dependency Name="greenix" />
+    </Number>
+    <Number Name="greenAden2" Formula="if(abs(greenix * s2y - greeniy * s2x) &lt; 0.000000000001, 0.000000000001, greenix * s2y - greeniy * s2x)">
+      <Dependency Name="greenix" />
+      <Dependency Name="s2y" />
+      <Dependency Name="greeniy" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="greenAt2" Formula="if((((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / greenAden2 &gt; 0.0000001) * (((K2.X - wx) * greeniy - (K2.Y - wy) * greenix) / greenAden2 &gt;= 0) * (((K2.X - wx) * greeniy - (K2.Y - wy) * greenix) / greenAden2 &lt;= 1), ((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / greenAden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="wx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="greenAden2" />
+      <Dependency Name="greeniy" />
+      <Dependency Name="greenix" />
+    </Number>
+    <Number Name="greenAden3" Formula="if(abs(greenix * s3y - greeniy * s3x) &lt; 0.000000000001, 0.000000000001, greenix * s3y - greeniy * s3x)">
+      <Dependency Name="greenix" />
+      <Dependency Name="s3y" />
+      <Dependency Name="greeniy" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="greenAt3" Formula="if((((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / greenAden3 &gt; 0.0000001) * (((K3.X - wx) * greeniy - (K3.Y - wy) * greenix) / greenAden3 &gt;= 0) * (((K3.X - wx) * greeniy - (K3.Y - wy) * greenix) / greenAden3 &lt;= 1), ((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / greenAden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="wx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="greenAden3" />
+      <Dependency Name="greeniy" />
+      <Dependency Name="greenix" />
+    </Number>
+    <Number Name="greenAt" Formula="min(greenAt1, greenAt2, greenAt3)">
+      <Dependency Name="greenAt1" />
+      <Dependency Name="greenAt2" />
+      <Dependency Name="greenAt3" />
+    </Number>
+    <Number Name="greenAx" Formula="wx + greenAt * greenix">
+      <Dependency Name="wx" />
+      <Dependency Name="greenAt" />
+      <Dependency Name="greenix" />
+    </Number>
+    <Number Name="greenAy" Formula="wy + greenAt * greeniy">
+      <Dependency Name="wy" />
+      <Dependency Name="greenAt" />
+      <Dependency Name="greeniy" />
+    </Number>
+    <Number Name="greenAnx" Formula="(greenAt == greenAt1) * n1x + (greenAt == greenAt2) * n2x + (greenAt == greenAt3) * n3x">
+      <Dependency Name="greenAt" />
+      <Dependency Name="greenAt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="greenAt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="greenAt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="greenAny" Formula="(greenAt == greenAt1) * n1y + (greenAt == greenAt2) * n2y + (greenAt == greenAt3) * n3y">
+      <Dependency Name="greenAt" />
+      <Dependency Name="greenAt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="greenAt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="greenAt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="greenAco" Formula="greenix * greenAnx + greeniy * greenAny">
+      <Dependency Name="greenix" />
+      <Dependency Name="greenAnx" />
+      <Dependency Name="greeniy" />
+      <Dependency Name="greenAny" />
+    </Number>
+    <Number Name="greenAk" Formula="1 - 3.224538 * (1 - greenAco^2)">
+      <Dependency Name="greenAco" />
+    </Number>
+    <Number Name="greenbounce" Formula="greenAk &lt; 0">
+      <Dependency Name="greenAk" />
+    </Number>
+    <Number Name="greenrx" Formula="greenix - 2 * greenAco * greenAnx">
+      <Dependency Name="greenix" />
+      <Dependency Name="greenAco" />
+      <Dependency Name="greenAnx" />
+    </Number>
+    <Number Name="greenry" Formula="greeniy - 2 * greenAco * greenAny">
+      <Dependency Name="greeniy" />
+      <Dependency Name="greenAco" />
+      <Dependency Name="greenAny" />
+    </Number>
+    <Number Name="greenox" Formula="1.7957 * greenix - (1.7957 * greenAco - sqrt(max(greenAk, 0))) * greenAnx">
+      <Dependency Name="greenix" />
+      <Dependency Name="greenAco" />
+      <Dependency Name="greenAk" />
+      <Dependency Name="greenAnx" />
+    </Number>
+    <Number Name="greenoy" Formula="1.7957 * greeniy - (1.7957 * greenAco - sqrt(max(greenAk, 0))) * greenAny">
+      <Dependency Name="greeniy" />
+      <Dependency Name="greenAco" />
+      <Dependency Name="greenAk" />
+      <Dependency Name="greenAny" />
+    </Number>
+    <Number Name="greenBden1" Formula="if(abs(greenrx * s1y - greenry * s1x) &lt; 0.000000000001, 0.000000000001, greenrx * s1y - greenry * s1x)">
+      <Dependency Name="greenrx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="greenry" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="greenBt1" Formula="if((((K.X - greenAx) * s1y - (K.Y - greenAy) * s1x) / greenBden1 &gt; 0.0000001) * (((K.X - greenAx) * greenry - (K.Y - greenAy) * greenrx) / greenBden1 &gt;= 0) * (((K.X - greenAx) * greenry - (K.Y - greenAy) * greenrx) / greenBden1 &lt;= 1), ((K.X - greenAx) * s1y - (K.Y - greenAy) * s1x) / greenBden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="greenAx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="greenAy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="greenBden1" />
+      <Dependency Name="greenry" />
+      <Dependency Name="greenrx" />
+    </Number>
+    <Number Name="greenBden2" Formula="if(abs(greenrx * s2y - greenry * s2x) &lt; 0.000000000001, 0.000000000001, greenrx * s2y - greenry * s2x)">
+      <Dependency Name="greenrx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="greenry" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="greenBt2" Formula="if((((K2.X - greenAx) * s2y - (K2.Y - greenAy) * s2x) / greenBden2 &gt; 0.0000001) * (((K2.X - greenAx) * greenry - (K2.Y - greenAy) * greenrx) / greenBden2 &gt;= 0) * (((K2.X - greenAx) * greenry - (K2.Y - greenAy) * greenrx) / greenBden2 &lt;= 1), ((K2.X - greenAx) * s2y - (K2.Y - greenAy) * s2x) / greenBden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="greenAx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="greenAy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="greenBden2" />
+      <Dependency Name="greenry" />
+      <Dependency Name="greenrx" />
+    </Number>
+    <Number Name="greenBden3" Formula="if(abs(greenrx * s3y - greenry * s3x) &lt; 0.000000000001, 0.000000000001, greenrx * s3y - greenry * s3x)">
+      <Dependency Name="greenrx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="greenry" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="greenBt3" Formula="if((((K3.X - greenAx) * s3y - (K3.Y - greenAy) * s3x) / greenBden3 &gt; 0.0000001) * (((K3.X - greenAx) * greenry - (K3.Y - greenAy) * greenrx) / greenBden3 &gt;= 0) * (((K3.X - greenAx) * greenry - (K3.Y - greenAy) * greenrx) / greenBden3 &lt;= 1), ((K3.X - greenAx) * s3y - (K3.Y - greenAy) * s3x) / greenBden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="greenAx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="greenAy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="greenBden3" />
+      <Dependency Name="greenry" />
+      <Dependency Name="greenrx" />
+    </Number>
+    <Number Name="greenBt" Formula="min(greenBt1, greenBt2, greenBt3)">
+      <Dependency Name="greenBt1" />
+      <Dependency Name="greenBt2" />
+      <Dependency Name="greenBt3" />
+    </Number>
+    <Number Name="greenBx" Formula="greenAx + greenBt * greenrx">
+      <Dependency Name="greenAx" />
+      <Dependency Name="greenBt" />
+      <Dependency Name="greenrx" />
+    </Number>
+    <Number Name="greenBy" Formula="greenAy + greenBt * greenry">
+      <Dependency Name="greenAy" />
+      <Dependency Name="greenBt" />
+      <Dependency Name="greenry" />
+    </Number>
+    <Number Name="greenBnx" Formula="(greenBt == greenBt1) * n1x + (greenBt == greenBt2) * n2x + (greenBt == greenBt3) * n3x">
+      <Dependency Name="greenBt" />
+      <Dependency Name="greenBt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="greenBt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="greenBt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="greenBny" Formula="(greenBt == greenBt1) * n1y + (greenBt == greenBt2) * n2y + (greenBt == greenBt3) * n3y">
+      <Dependency Name="greenBt" />
+      <Dependency Name="greenBt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="greenBt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="greenBt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="greenBco" Formula="greenrx * greenBnx + greenry * greenBny">
+      <Dependency Name="greenrx" />
+      <Dependency Name="greenBnx" />
+      <Dependency Name="greenry" />
+      <Dependency Name="greenBny" />
+    </Number>
+    <Number Name="greenBk" Formula="1 - 3.224538 * (1 - greenBco^2)">
+      <Dependency Name="greenBco" />
+    </Number>
+    <Number Name="greenqx" Formula="1.7957 * greenrx - (1.7957 * greenBco - sqrt(greenBk)) * greenBnx">
+      <Dependency Name="greenrx" />
+      <Dependency Name="greenBco" />
+      <Dependency Name="greenBk" />
+      <Dependency Name="greenBnx" />
+    </Number>
+    <Number Name="greenqy" Formula="1.7957 * greenry - (1.7957 * greenBco - sqrt(greenBk)) * greenBny">
+      <Dependency Name="greenry" />
+      <Dependency Name="greenBco" />
+      <Dependency Name="greenBk" />
+      <Dependency Name="greenBny" />
+    </Number>
+    <PointByCoordinates Name="GreenA" Visible="false" X="greenAx + 0 * sqrt(lit - 0.5)" Y="greenAy + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="greenAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="greenAy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GreenB" Visible="false" X="if(greenbounce, greenBx, greenAx) + 0 * sqrt(lit - 0.5)" Y="if(greenbounce, greenBy, greenAy) + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="greenbounce" />
+      <Dependency Name="greenBx" />
+      <Dependency Name="greenAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="greenBy" />
+      <Dependency Name="greenAy" />
+    </PointByCoordinates>
+    <Number Name="greenfx" Formula="if(greenbounce, greenqx, greenox)">
+      <Dependency Name="greenbounce" />
+      <Dependency Name="greenqx" />
+      <Dependency Name="greenox" />
+    </Number>
+    <Number Name="greenfy" Formula="if(greenbounce, greenqy, greenoy)">
+      <Dependency Name="greenbounce" />
+      <Dependency Name="greenqy" />
+      <Dependency Name="greenoy" />
+    </Number>
+    <PointByCoordinates Name="GreenOn" Visible="false" X="GreenB.X + greenfx" Y="GreenB.Y + greenfy">
+      <Dependency Name="GreenB" />
+      <Dependency Name="greenfx" />
+      <Dependency Name="greenfy" />
+    </PointByCoordinates>
+    <Segment Name="GreenInside" Style="GreenInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="GreenA" />
+    </Segment>
+    <Segment Name="GreenBounce" Style="GreenInside">
+      <Dependency Name="GreenA" />
+      <Dependency Name="GreenB" />
+    </Segment>
+    <Ray Name="GreenOutGlow" Style="GreenGlow">
+      <Dependency Name="GreenB" />
+      <Dependency Name="GreenOn" />
+    </Ray>
+    <Ray Name="GreenOut" Style="Green">
+      <Dependency Name="GreenB" />
+      <Dependency Name="GreenOn" />
+    </Ray>
+    <Number Name="blueci" Formula="-(bx * wnx + by * wny)">
+      <Dependency Name="bx" />
+      <Dependency Name="wnx" />
+      <Dependency Name="by" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="bluesq" Formula="sqrt(1 - 0.552151^2 * (1 - blueci^2))">
+      <Dependency Name="blueci" />
+    </Number>
+    <Number Name="blueix" Formula="0.552151 * bx + (0.552151 * blueci - bluesq) * wnx">
+      <Dependency Name="bx" />
+      <Dependency Name="blueci" />
+      <Dependency Name="bluesq" />
+      <Dependency Name="wnx" />
+    </Number>
+    <Number Name="blueiy" Formula="0.552151 * by + (0.552151 * blueci - bluesq) * wny">
+      <Dependency Name="by" />
+      <Dependency Name="blueci" />
+      <Dependency Name="bluesq" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="blueAden1" Formula="if(abs(blueix * s1y - blueiy * s1x) &lt; 0.000000000001, 0.000000000001, blueix * s1y - blueiy * s1x)">
+      <Dependency Name="blueix" />
+      <Dependency Name="s1y" />
+      <Dependency Name="blueiy" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="blueAt1" Formula="if((((K.X - wx) * s1y - (K.Y - wy) * s1x) / blueAden1 &gt; 0.0000001) * (((K.X - wx) * blueiy - (K.Y - wy) * blueix) / blueAden1 &gt;= 0) * (((K.X - wx) * blueiy - (K.Y - wy) * blueix) / blueAden1 &lt;= 1), ((K.X - wx) * s1y - (K.Y - wy) * s1x) / blueAden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="wx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="blueAden1" />
+      <Dependency Name="blueiy" />
+      <Dependency Name="blueix" />
+    </Number>
+    <Number Name="blueAden2" Formula="if(abs(blueix * s2y - blueiy * s2x) &lt; 0.000000000001, 0.000000000001, blueix * s2y - blueiy * s2x)">
+      <Dependency Name="blueix" />
+      <Dependency Name="s2y" />
+      <Dependency Name="blueiy" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="blueAt2" Formula="if((((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / blueAden2 &gt; 0.0000001) * (((K2.X - wx) * blueiy - (K2.Y - wy) * blueix) / blueAden2 &gt;= 0) * (((K2.X - wx) * blueiy - (K2.Y - wy) * blueix) / blueAden2 &lt;= 1), ((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / blueAden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="wx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="blueAden2" />
+      <Dependency Name="blueiy" />
+      <Dependency Name="blueix" />
+    </Number>
+    <Number Name="blueAden3" Formula="if(abs(blueix * s3y - blueiy * s3x) &lt; 0.000000000001, 0.000000000001, blueix * s3y - blueiy * s3x)">
+      <Dependency Name="blueix" />
+      <Dependency Name="s3y" />
+      <Dependency Name="blueiy" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="blueAt3" Formula="if((((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / blueAden3 &gt; 0.0000001) * (((K3.X - wx) * blueiy - (K3.Y - wy) * blueix) / blueAden3 &gt;= 0) * (((K3.X - wx) * blueiy - (K3.Y - wy) * blueix) / blueAden3 &lt;= 1), ((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / blueAden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="wx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="blueAden3" />
+      <Dependency Name="blueiy" />
+      <Dependency Name="blueix" />
+    </Number>
+    <Number Name="blueAt" Formula="min(blueAt1, blueAt2, blueAt3)">
+      <Dependency Name="blueAt1" />
+      <Dependency Name="blueAt2" />
+      <Dependency Name="blueAt3" />
+    </Number>
+    <Number Name="blueAx" Formula="wx + blueAt * blueix">
+      <Dependency Name="wx" />
+      <Dependency Name="blueAt" />
+      <Dependency Name="blueix" />
+    </Number>
+    <Number Name="blueAy" Formula="wy + blueAt * blueiy">
+      <Dependency Name="wy" />
+      <Dependency Name="blueAt" />
+      <Dependency Name="blueiy" />
+    </Number>
+    <Number Name="blueAnx" Formula="(blueAt == blueAt1) * n1x + (blueAt == blueAt2) * n2x + (blueAt == blueAt3) * n3x">
+      <Dependency Name="blueAt" />
+      <Dependency Name="blueAt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="blueAt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="blueAt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="blueAny" Formula="(blueAt == blueAt1) * n1y + (blueAt == blueAt2) * n2y + (blueAt == blueAt3) * n3y">
+      <Dependency Name="blueAt" />
+      <Dependency Name="blueAt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="blueAt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="blueAt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="blueAco" Formula="blueix * blueAnx + blueiy * blueAny">
+      <Dependency Name="blueix" />
+      <Dependency Name="blueAnx" />
+      <Dependency Name="blueiy" />
+      <Dependency Name="blueAny" />
+    </Number>
+    <Number Name="blueAk" Formula="1 - 3.280083 * (1 - blueAco^2)">
+      <Dependency Name="blueAco" />
+    </Number>
+    <Number Name="bluebounce" Formula="blueAk &lt; 0">
+      <Dependency Name="blueAk" />
+    </Number>
+    <Number Name="bluerx" Formula="blueix - 2 * blueAco * blueAnx">
+      <Dependency Name="blueix" />
+      <Dependency Name="blueAco" />
+      <Dependency Name="blueAnx" />
+    </Number>
+    <Number Name="bluery" Formula="blueiy - 2 * blueAco * blueAny">
+      <Dependency Name="blueiy" />
+      <Dependency Name="blueAco" />
+      <Dependency Name="blueAny" />
+    </Number>
+    <Number Name="blueox" Formula="1.8111 * blueix - (1.8111 * blueAco - sqrt(max(blueAk, 0))) * blueAnx">
+      <Dependency Name="blueix" />
+      <Dependency Name="blueAco" />
+      <Dependency Name="blueAk" />
+      <Dependency Name="blueAnx" />
+    </Number>
+    <Number Name="blueoy" Formula="1.8111 * blueiy - (1.8111 * blueAco - sqrt(max(blueAk, 0))) * blueAny">
+      <Dependency Name="blueiy" />
+      <Dependency Name="blueAco" />
+      <Dependency Name="blueAk" />
+      <Dependency Name="blueAny" />
+    </Number>
+    <Number Name="blueBden1" Formula="if(abs(bluerx * s1y - bluery * s1x) &lt; 0.000000000001, 0.000000000001, bluerx * s1y - bluery * s1x)">
+      <Dependency Name="bluerx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="bluery" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="blueBt1" Formula="if((((K.X - blueAx) * s1y - (K.Y - blueAy) * s1x) / blueBden1 &gt; 0.0000001) * (((K.X - blueAx) * bluery - (K.Y - blueAy) * bluerx) / blueBden1 &gt;= 0) * (((K.X - blueAx) * bluery - (K.Y - blueAy) * bluerx) / blueBden1 &lt;= 1), ((K.X - blueAx) * s1y - (K.Y - blueAy) * s1x) / blueBden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="blueAx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="blueAy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="blueBden1" />
+      <Dependency Name="bluery" />
+      <Dependency Name="bluerx" />
+    </Number>
+    <Number Name="blueBden2" Formula="if(abs(bluerx * s2y - bluery * s2x) &lt; 0.000000000001, 0.000000000001, bluerx * s2y - bluery * s2x)">
+      <Dependency Name="bluerx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="bluery" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="blueBt2" Formula="if((((K2.X - blueAx) * s2y - (K2.Y - blueAy) * s2x) / blueBden2 &gt; 0.0000001) * (((K2.X - blueAx) * bluery - (K2.Y - blueAy) * bluerx) / blueBden2 &gt;= 0) * (((K2.X - blueAx) * bluery - (K2.Y - blueAy) * bluerx) / blueBden2 &lt;= 1), ((K2.X - blueAx) * s2y - (K2.Y - blueAy) * s2x) / blueBden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="blueAx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="blueAy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="blueBden2" />
+      <Dependency Name="bluery" />
+      <Dependency Name="bluerx" />
+    </Number>
+    <Number Name="blueBden3" Formula="if(abs(bluerx * s3y - bluery * s3x) &lt; 0.000000000001, 0.000000000001, bluerx * s3y - bluery * s3x)">
+      <Dependency Name="bluerx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="bluery" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="blueBt3" Formula="if((((K3.X - blueAx) * s3y - (K3.Y - blueAy) * s3x) / blueBden3 &gt; 0.0000001) * (((K3.X - blueAx) * bluery - (K3.Y - blueAy) * bluerx) / blueBden3 &gt;= 0) * (((K3.X - blueAx) * bluery - (K3.Y - blueAy) * bluerx) / blueBden3 &lt;= 1), ((K3.X - blueAx) * s3y - (K3.Y - blueAy) * s3x) / blueBden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="blueAx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="blueAy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="blueBden3" />
+      <Dependency Name="bluery" />
+      <Dependency Name="bluerx" />
+    </Number>
+    <Number Name="blueBt" Formula="min(blueBt1, blueBt2, blueBt3)">
+      <Dependency Name="blueBt1" />
+      <Dependency Name="blueBt2" />
+      <Dependency Name="blueBt3" />
+    </Number>
+    <Number Name="blueBx" Formula="blueAx + blueBt * bluerx">
+      <Dependency Name="blueAx" />
+      <Dependency Name="blueBt" />
+      <Dependency Name="bluerx" />
+    </Number>
+    <Number Name="blueBy" Formula="blueAy + blueBt * bluery">
+      <Dependency Name="blueAy" />
+      <Dependency Name="blueBt" />
+      <Dependency Name="bluery" />
+    </Number>
+    <Number Name="blueBnx" Formula="(blueBt == blueBt1) * n1x + (blueBt == blueBt2) * n2x + (blueBt == blueBt3) * n3x">
+      <Dependency Name="blueBt" />
+      <Dependency Name="blueBt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="blueBt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="blueBt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="blueBny" Formula="(blueBt == blueBt1) * n1y + (blueBt == blueBt2) * n2y + (blueBt == blueBt3) * n3y">
+      <Dependency Name="blueBt" />
+      <Dependency Name="blueBt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="blueBt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="blueBt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="blueBco" Formula="bluerx * blueBnx + bluery * blueBny">
+      <Dependency Name="bluerx" />
+      <Dependency Name="blueBnx" />
+      <Dependency Name="bluery" />
+      <Dependency Name="blueBny" />
+    </Number>
+    <Number Name="blueBk" Formula="1 - 3.280083 * (1 - blueBco^2)">
+      <Dependency Name="blueBco" />
+    </Number>
+    <Number Name="blueqx" Formula="1.8111 * bluerx - (1.8111 * blueBco - sqrt(blueBk)) * blueBnx">
+      <Dependency Name="bluerx" />
+      <Dependency Name="blueBco" />
+      <Dependency Name="blueBk" />
+      <Dependency Name="blueBnx" />
+    </Number>
+    <Number Name="blueqy" Formula="1.8111 * bluery - (1.8111 * blueBco - sqrt(blueBk)) * blueBny">
+      <Dependency Name="bluery" />
+      <Dependency Name="blueBco" />
+      <Dependency Name="blueBk" />
+      <Dependency Name="blueBny" />
+    </Number>
+    <PointByCoordinates Name="BlueA" Visible="false" X="blueAx + 0 * sqrt(lit - 0.5)" Y="blueAy + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="blueAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="blueAy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BlueB" Visible="false" X="if(bluebounce, blueBx, blueAx) + 0 * sqrt(lit - 0.5)" Y="if(bluebounce, blueBy, blueAy) + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="bluebounce" />
+      <Dependency Name="blueBx" />
+      <Dependency Name="blueAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="blueBy" />
+      <Dependency Name="blueAy" />
+    </PointByCoordinates>
+    <Number Name="bluefx" Formula="if(bluebounce, blueqx, blueox)">
+      <Dependency Name="bluebounce" />
+      <Dependency Name="blueqx" />
+      <Dependency Name="blueox" />
+    </Number>
+    <Number Name="bluefy" Formula="if(bluebounce, blueqy, blueoy)">
+      <Dependency Name="bluebounce" />
+      <Dependency Name="blueqy" />
+      <Dependency Name="blueoy" />
+    </Number>
+    <PointByCoordinates Name="BlueOn" Visible="false" X="BlueB.X + bluefx" Y="BlueB.Y + bluefy">
+      <Dependency Name="BlueB" />
+      <Dependency Name="bluefx" />
+      <Dependency Name="bluefy" />
+    </PointByCoordinates>
+    <Segment Name="BlueInside" Style="BlueInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="BlueA" />
+    </Segment>
+    <Segment Name="BlueBounce" Style="BlueInside">
+      <Dependency Name="BlueA" />
+      <Dependency Name="BlueB" />
+    </Segment>
+    <Ray Name="BlueOutGlow" Style="BlueGlow">
+      <Dependency Name="BlueB" />
+      <Dependency Name="BlueOn" />
+    </Ray>
+    <Ray Name="BlueOut" Style="Blue">
+      <Dependency Name="BlueB" />
+      <Dependency Name="BlueOn" />
+    </Ray>
+    <Number Name="indigoci" Formula="-(bx * wnx + by * wny)">
+      <Dependency Name="bx" />
+      <Dependency Name="wnx" />
+      <Dependency Name="by" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="indigosq" Formula="sqrt(1 - 0.549602^2 * (1 - indigoci^2))">
+      <Dependency Name="indigoci" />
+    </Number>
+    <Number Name="indigoix" Formula="0.549602 * bx + (0.549602 * indigoci - indigosq) * wnx">
+      <Dependency Name="bx" />
+      <Dependency Name="indigoci" />
+      <Dependency Name="indigosq" />
+      <Dependency Name="wnx" />
+    </Number>
+    <Number Name="indigoiy" Formula="0.549602 * by + (0.549602 * indigoci - indigosq) * wny">
+      <Dependency Name="by" />
+      <Dependency Name="indigoci" />
+      <Dependency Name="indigosq" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="indigoAden1" Formula="if(abs(indigoix * s1y - indigoiy * s1x) &lt; 0.000000000001, 0.000000000001, indigoix * s1y - indigoiy * s1x)">
+      <Dependency Name="indigoix" />
+      <Dependency Name="s1y" />
+      <Dependency Name="indigoiy" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="indigoAt1" Formula="if((((K.X - wx) * s1y - (K.Y - wy) * s1x) / indigoAden1 &gt; 0.0000001) * (((K.X - wx) * indigoiy - (K.Y - wy) * indigoix) / indigoAden1 &gt;= 0) * (((K.X - wx) * indigoiy - (K.Y - wy) * indigoix) / indigoAden1 &lt;= 1), ((K.X - wx) * s1y - (K.Y - wy) * s1x) / indigoAden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="wx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="indigoAden1" />
+      <Dependency Name="indigoiy" />
+      <Dependency Name="indigoix" />
+    </Number>
+    <Number Name="indigoAden2" Formula="if(abs(indigoix * s2y - indigoiy * s2x) &lt; 0.000000000001, 0.000000000001, indigoix * s2y - indigoiy * s2x)">
+      <Dependency Name="indigoix" />
+      <Dependency Name="s2y" />
+      <Dependency Name="indigoiy" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="indigoAt2" Formula="if((((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / indigoAden2 &gt; 0.0000001) * (((K2.X - wx) * indigoiy - (K2.Y - wy) * indigoix) / indigoAden2 &gt;= 0) * (((K2.X - wx) * indigoiy - (K2.Y - wy) * indigoix) / indigoAden2 &lt;= 1), ((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / indigoAden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="wx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="indigoAden2" />
+      <Dependency Name="indigoiy" />
+      <Dependency Name="indigoix" />
+    </Number>
+    <Number Name="indigoAden3" Formula="if(abs(indigoix * s3y - indigoiy * s3x) &lt; 0.000000000001, 0.000000000001, indigoix * s3y - indigoiy * s3x)">
+      <Dependency Name="indigoix" />
+      <Dependency Name="s3y" />
+      <Dependency Name="indigoiy" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="indigoAt3" Formula="if((((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / indigoAden3 &gt; 0.0000001) * (((K3.X - wx) * indigoiy - (K3.Y - wy) * indigoix) / indigoAden3 &gt;= 0) * (((K3.X - wx) * indigoiy - (K3.Y - wy) * indigoix) / indigoAden3 &lt;= 1), ((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / indigoAden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="wx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="indigoAden3" />
+      <Dependency Name="indigoiy" />
+      <Dependency Name="indigoix" />
+    </Number>
+    <Number Name="indigoAt" Formula="min(indigoAt1, indigoAt2, indigoAt3)">
+      <Dependency Name="indigoAt1" />
+      <Dependency Name="indigoAt2" />
+      <Dependency Name="indigoAt3" />
+    </Number>
+    <Number Name="indigoAx" Formula="wx + indigoAt * indigoix">
+      <Dependency Name="wx" />
+      <Dependency Name="indigoAt" />
+      <Dependency Name="indigoix" />
+    </Number>
+    <Number Name="indigoAy" Formula="wy + indigoAt * indigoiy">
+      <Dependency Name="wy" />
+      <Dependency Name="indigoAt" />
+      <Dependency Name="indigoiy" />
+    </Number>
+    <Number Name="indigoAnx" Formula="(indigoAt == indigoAt1) * n1x + (indigoAt == indigoAt2) * n2x + (indigoAt == indigoAt3) * n3x">
+      <Dependency Name="indigoAt" />
+      <Dependency Name="indigoAt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="indigoAt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="indigoAt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="indigoAny" Formula="(indigoAt == indigoAt1) * n1y + (indigoAt == indigoAt2) * n2y + (indigoAt == indigoAt3) * n3y">
+      <Dependency Name="indigoAt" />
+      <Dependency Name="indigoAt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="indigoAt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="indigoAt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="indigoAco" Formula="indigoix * indigoAnx + indigoiy * indigoAny">
+      <Dependency Name="indigoix" />
+      <Dependency Name="indigoAnx" />
+      <Dependency Name="indigoiy" />
+      <Dependency Name="indigoAny" />
+    </Number>
+    <Number Name="indigoAk" Formula="1 - 3.31058 * (1 - indigoAco^2)">
+      <Dependency Name="indigoAco" />
+    </Number>
+    <Number Name="indigobounce" Formula="indigoAk &lt; 0">
+      <Dependency Name="indigoAk" />
+    </Number>
+    <Number Name="indigorx" Formula="indigoix - 2 * indigoAco * indigoAnx">
+      <Dependency Name="indigoix" />
+      <Dependency Name="indigoAco" />
+      <Dependency Name="indigoAnx" />
+    </Number>
+    <Number Name="indigory" Formula="indigoiy - 2 * indigoAco * indigoAny">
+      <Dependency Name="indigoiy" />
+      <Dependency Name="indigoAco" />
+      <Dependency Name="indigoAny" />
+    </Number>
+    <Number Name="indigoox" Formula="1.8195 * indigoix - (1.8195 * indigoAco - sqrt(max(indigoAk, 0))) * indigoAnx">
+      <Dependency Name="indigoix" />
+      <Dependency Name="indigoAco" />
+      <Dependency Name="indigoAk" />
+      <Dependency Name="indigoAnx" />
+    </Number>
+    <Number Name="indigooy" Formula="1.8195 * indigoiy - (1.8195 * indigoAco - sqrt(max(indigoAk, 0))) * indigoAny">
+      <Dependency Name="indigoiy" />
+      <Dependency Name="indigoAco" />
+      <Dependency Name="indigoAk" />
+      <Dependency Name="indigoAny" />
+    </Number>
+    <Number Name="indigoBden1" Formula="if(abs(indigorx * s1y - indigory * s1x) &lt; 0.000000000001, 0.000000000001, indigorx * s1y - indigory * s1x)">
+      <Dependency Name="indigorx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="indigory" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="indigoBt1" Formula="if((((K.X - indigoAx) * s1y - (K.Y - indigoAy) * s1x) / indigoBden1 &gt; 0.0000001) * (((K.X - indigoAx) * indigory - (K.Y - indigoAy) * indigorx) / indigoBden1 &gt;= 0) * (((K.X - indigoAx) * indigory - (K.Y - indigoAy) * indigorx) / indigoBden1 &lt;= 1), ((K.X - indigoAx) * s1y - (K.Y - indigoAy) * s1x) / indigoBden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="indigoAx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="indigoAy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="indigoBden1" />
+      <Dependency Name="indigory" />
+      <Dependency Name="indigorx" />
+    </Number>
+    <Number Name="indigoBden2" Formula="if(abs(indigorx * s2y - indigory * s2x) &lt; 0.000000000001, 0.000000000001, indigorx * s2y - indigory * s2x)">
+      <Dependency Name="indigorx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="indigory" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="indigoBt2" Formula="if((((K2.X - indigoAx) * s2y - (K2.Y - indigoAy) * s2x) / indigoBden2 &gt; 0.0000001) * (((K2.X - indigoAx) * indigory - (K2.Y - indigoAy) * indigorx) / indigoBden2 &gt;= 0) * (((K2.X - indigoAx) * indigory - (K2.Y - indigoAy) * indigorx) / indigoBden2 &lt;= 1), ((K2.X - indigoAx) * s2y - (K2.Y - indigoAy) * s2x) / indigoBden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="indigoAx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="indigoAy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="indigoBden2" />
+      <Dependency Name="indigory" />
+      <Dependency Name="indigorx" />
+    </Number>
+    <Number Name="indigoBden3" Formula="if(abs(indigorx * s3y - indigory * s3x) &lt; 0.000000000001, 0.000000000001, indigorx * s3y - indigory * s3x)">
+      <Dependency Name="indigorx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="indigory" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="indigoBt3" Formula="if((((K3.X - indigoAx) * s3y - (K3.Y - indigoAy) * s3x) / indigoBden3 &gt; 0.0000001) * (((K3.X - indigoAx) * indigory - (K3.Y - indigoAy) * indigorx) / indigoBden3 &gt;= 0) * (((K3.X - indigoAx) * indigory - (K3.Y - indigoAy) * indigorx) / indigoBden3 &lt;= 1), ((K3.X - indigoAx) * s3y - (K3.Y - indigoAy) * s3x) / indigoBden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="indigoAx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="indigoAy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="indigoBden3" />
+      <Dependency Name="indigory" />
+      <Dependency Name="indigorx" />
+    </Number>
+    <Number Name="indigoBt" Formula="min(indigoBt1, indigoBt2, indigoBt3)">
+      <Dependency Name="indigoBt1" />
+      <Dependency Name="indigoBt2" />
+      <Dependency Name="indigoBt3" />
+    </Number>
+    <Number Name="indigoBx" Formula="indigoAx + indigoBt * indigorx">
+      <Dependency Name="indigoAx" />
+      <Dependency Name="indigoBt" />
+      <Dependency Name="indigorx" />
+    </Number>
+    <Number Name="indigoBy" Formula="indigoAy + indigoBt * indigory">
+      <Dependency Name="indigoAy" />
+      <Dependency Name="indigoBt" />
+      <Dependency Name="indigory" />
+    </Number>
+    <Number Name="indigoBnx" Formula="(indigoBt == indigoBt1) * n1x + (indigoBt == indigoBt2) * n2x + (indigoBt == indigoBt3) * n3x">
+      <Dependency Name="indigoBt" />
+      <Dependency Name="indigoBt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="indigoBt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="indigoBt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="indigoBny" Formula="(indigoBt == indigoBt1) * n1y + (indigoBt == indigoBt2) * n2y + (indigoBt == indigoBt3) * n3y">
+      <Dependency Name="indigoBt" />
+      <Dependency Name="indigoBt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="indigoBt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="indigoBt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="indigoBco" Formula="indigorx * indigoBnx + indigory * indigoBny">
+      <Dependency Name="indigorx" />
+      <Dependency Name="indigoBnx" />
+      <Dependency Name="indigory" />
+      <Dependency Name="indigoBny" />
+    </Number>
+    <Number Name="indigoBk" Formula="1 - 3.31058 * (1 - indigoBco^2)">
+      <Dependency Name="indigoBco" />
+    </Number>
+    <Number Name="indigoqx" Formula="1.8195 * indigorx - (1.8195 * indigoBco - sqrt(indigoBk)) * indigoBnx">
+      <Dependency Name="indigorx" />
+      <Dependency Name="indigoBco" />
+      <Dependency Name="indigoBk" />
+      <Dependency Name="indigoBnx" />
+    </Number>
+    <Number Name="indigoqy" Formula="1.8195 * indigory - (1.8195 * indigoBco - sqrt(indigoBk)) * indigoBny">
+      <Dependency Name="indigory" />
+      <Dependency Name="indigoBco" />
+      <Dependency Name="indigoBk" />
+      <Dependency Name="indigoBny" />
+    </Number>
+    <PointByCoordinates Name="IndigoA" Visible="false" X="indigoAx + 0 * sqrt(lit - 0.5)" Y="indigoAy + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="indigoAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="indigoAy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="IndigoB" Visible="false" X="if(indigobounce, indigoBx, indigoAx) + 0 * sqrt(lit - 0.5)" Y="if(indigobounce, indigoBy, indigoAy) + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="indigobounce" />
+      <Dependency Name="indigoBx" />
+      <Dependency Name="indigoAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="indigoBy" />
+      <Dependency Name="indigoAy" />
+    </PointByCoordinates>
+    <Number Name="indigofx" Formula="if(indigobounce, indigoqx, indigoox)">
+      <Dependency Name="indigobounce" />
+      <Dependency Name="indigoqx" />
+      <Dependency Name="indigoox" />
+    </Number>
+    <Number Name="indigofy" Formula="if(indigobounce, indigoqy, indigooy)">
+      <Dependency Name="indigobounce" />
+      <Dependency Name="indigoqy" />
+      <Dependency Name="indigooy" />
+    </Number>
+    <PointByCoordinates Name="IndigoOn" Visible="false" X="IndigoB.X + indigofx" Y="IndigoB.Y + indigofy">
+      <Dependency Name="IndigoB" />
+      <Dependency Name="indigofx" />
+      <Dependency Name="indigofy" />
+    </PointByCoordinates>
+    <Segment Name="IndigoInside" Style="IndigoInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="IndigoA" />
+    </Segment>
+    <Segment Name="IndigoBounce" Style="IndigoInside">
+      <Dependency Name="IndigoA" />
+      <Dependency Name="IndigoB" />
+    </Segment>
+    <Ray Name="IndigoOutGlow" Style="IndigoGlow">
+      <Dependency Name="IndigoB" />
+      <Dependency Name="IndigoOn" />
+    </Ray>
+    <Ray Name="IndigoOut" Style="Indigo">
+      <Dependency Name="IndigoB" />
+      <Dependency Name="IndigoOn" />
+    </Ray>
+    <Number Name="violetci" Formula="-(bx * wnx + by * wny)">
+      <Dependency Name="bx" />
+      <Dependency Name="wnx" />
+      <Dependency Name="by" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="violetsq" Formula="sqrt(1 - 0.545316^2 * (1 - violetci^2))">
+      <Dependency Name="violetci" />
+    </Number>
+    <Number Name="violetix" Formula="0.545316 * bx + (0.545316 * violetci - violetsq) * wnx">
+      <Dependency Name="bx" />
+      <Dependency Name="violetci" />
+      <Dependency Name="violetsq" />
+      <Dependency Name="wnx" />
+    </Number>
+    <Number Name="violetiy" Formula="0.545316 * by + (0.545316 * violetci - violetsq) * wny">
+      <Dependency Name="by" />
+      <Dependency Name="violetci" />
+      <Dependency Name="violetsq" />
+      <Dependency Name="wny" />
+    </Number>
+    <Number Name="violetAden1" Formula="if(abs(violetix * s1y - violetiy * s1x) &lt; 0.000000000001, 0.000000000001, violetix * s1y - violetiy * s1x)">
+      <Dependency Name="violetix" />
+      <Dependency Name="s1y" />
+      <Dependency Name="violetiy" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="violetAt1" Formula="if((((K.X - wx) * s1y - (K.Y - wy) * s1x) / violetAden1 &gt; 0.0000001) * (((K.X - wx) * violetiy - (K.Y - wy) * violetix) / violetAden1 &gt;= 0) * (((K.X - wx) * violetiy - (K.Y - wy) * violetix) / violetAden1 &lt;= 1), ((K.X - wx) * s1y - (K.Y - wy) * s1x) / violetAden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="wx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="violetAden1" />
+      <Dependency Name="violetiy" />
+      <Dependency Name="violetix" />
+    </Number>
+    <Number Name="violetAden2" Formula="if(abs(violetix * s2y - violetiy * s2x) &lt; 0.000000000001, 0.000000000001, violetix * s2y - violetiy * s2x)">
+      <Dependency Name="violetix" />
+      <Dependency Name="s2y" />
+      <Dependency Name="violetiy" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="violetAt2" Formula="if((((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / violetAden2 &gt; 0.0000001) * (((K2.X - wx) * violetiy - (K2.Y - wy) * violetix) / violetAden2 &gt;= 0) * (((K2.X - wx) * violetiy - (K2.Y - wy) * violetix) / violetAden2 &lt;= 1), ((K2.X - wx) * s2y - (K2.Y - wy) * s2x) / violetAden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="wx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="violetAden2" />
+      <Dependency Name="violetiy" />
+      <Dependency Name="violetix" />
+    </Number>
+    <Number Name="violetAden3" Formula="if(abs(violetix * s3y - violetiy * s3x) &lt; 0.000000000001, 0.000000000001, violetix * s3y - violetiy * s3x)">
+      <Dependency Name="violetix" />
+      <Dependency Name="s3y" />
+      <Dependency Name="violetiy" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="violetAt3" Formula="if((((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / violetAden3 &gt; 0.0000001) * (((K3.X - wx) * violetiy - (K3.Y - wy) * violetix) / violetAden3 &gt;= 0) * (((K3.X - wx) * violetiy - (K3.Y - wy) * violetix) / violetAden3 &lt;= 1), ((K3.X - wx) * s3y - (K3.Y - wy) * s3x) / violetAden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="wx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="wy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="violetAden3" />
+      <Dependency Name="violetiy" />
+      <Dependency Name="violetix" />
+    </Number>
+    <Number Name="violetAt" Formula="min(violetAt1, violetAt2, violetAt3)">
+      <Dependency Name="violetAt1" />
+      <Dependency Name="violetAt2" />
+      <Dependency Name="violetAt3" />
+    </Number>
+    <Number Name="violetAx" Formula="wx + violetAt * violetix">
+      <Dependency Name="wx" />
+      <Dependency Name="violetAt" />
+      <Dependency Name="violetix" />
+    </Number>
+    <Number Name="violetAy" Formula="wy + violetAt * violetiy">
+      <Dependency Name="wy" />
+      <Dependency Name="violetAt" />
+      <Dependency Name="violetiy" />
+    </Number>
+    <Number Name="violetAnx" Formula="(violetAt == violetAt1) * n1x + (violetAt == violetAt2) * n2x + (violetAt == violetAt3) * n3x">
+      <Dependency Name="violetAt" />
+      <Dependency Name="violetAt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="violetAt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="violetAt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="violetAny" Formula="(violetAt == violetAt1) * n1y + (violetAt == violetAt2) * n2y + (violetAt == violetAt3) * n3y">
+      <Dependency Name="violetAt" />
+      <Dependency Name="violetAt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="violetAt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="violetAt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="violetAco" Formula="violetix * violetAnx + violetiy * violetAny">
+      <Dependency Name="violetix" />
+      <Dependency Name="violetAnx" />
+      <Dependency Name="violetiy" />
+      <Dependency Name="violetAny" />
+    </Number>
+    <Number Name="violetAk" Formula="1 - 3.362822 * (1 - violetAco^2)">
+      <Dependency Name="violetAco" />
+    </Number>
+    <Number Name="violetbounce" Formula="violetAk &lt; 0">
+      <Dependency Name="violetAk" />
+    </Number>
+    <Number Name="violetrx" Formula="violetix - 2 * violetAco * violetAnx">
+      <Dependency Name="violetix" />
+      <Dependency Name="violetAco" />
+      <Dependency Name="violetAnx" />
+    </Number>
+    <Number Name="violetry" Formula="violetiy - 2 * violetAco * violetAny">
+      <Dependency Name="violetiy" />
+      <Dependency Name="violetAco" />
+      <Dependency Name="violetAny" />
+    </Number>
+    <Number Name="violetox" Formula="1.8338 * violetix - (1.8338 * violetAco - sqrt(max(violetAk, 0))) * violetAnx">
+      <Dependency Name="violetix" />
+      <Dependency Name="violetAco" />
+      <Dependency Name="violetAk" />
+      <Dependency Name="violetAnx" />
+    </Number>
+    <Number Name="violetoy" Formula="1.8338 * violetiy - (1.8338 * violetAco - sqrt(max(violetAk, 0))) * violetAny">
+      <Dependency Name="violetiy" />
+      <Dependency Name="violetAco" />
+      <Dependency Name="violetAk" />
+      <Dependency Name="violetAny" />
+    </Number>
+    <Number Name="violetBden1" Formula="if(abs(violetrx * s1y - violetry * s1x) &lt; 0.000000000001, 0.000000000001, violetrx * s1y - violetry * s1x)">
+      <Dependency Name="violetrx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="violetry" />
+      <Dependency Name="s1x" />
+    </Number>
+    <Number Name="violetBt1" Formula="if((((K.X - violetAx) * s1y - (K.Y - violetAy) * s1x) / violetBden1 &gt; 0.0000001) * (((K.X - violetAx) * violetry - (K.Y - violetAy) * violetrx) / violetBden1 &gt;= 0) * (((K.X - violetAx) * violetry - (K.Y - violetAy) * violetrx) / violetBden1 &lt;= 1), ((K.X - violetAx) * s1y - (K.Y - violetAy) * s1x) / violetBden1, 1000000)">
+      <Dependency Name="K" />
+      <Dependency Name="violetAx" />
+      <Dependency Name="s1y" />
+      <Dependency Name="violetAy" />
+      <Dependency Name="s1x" />
+      <Dependency Name="violetBden1" />
+      <Dependency Name="violetry" />
+      <Dependency Name="violetrx" />
+    </Number>
+    <Number Name="violetBden2" Formula="if(abs(violetrx * s2y - violetry * s2x) &lt; 0.000000000001, 0.000000000001, violetrx * s2y - violetry * s2x)">
+      <Dependency Name="violetrx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="violetry" />
+      <Dependency Name="s2x" />
+    </Number>
+    <Number Name="violetBt2" Formula="if((((K2.X - violetAx) * s2y - (K2.Y - violetAy) * s2x) / violetBden2 &gt; 0.0000001) * (((K2.X - violetAx) * violetry - (K2.Y - violetAy) * violetrx) / violetBden2 &gt;= 0) * (((K2.X - violetAx) * violetry - (K2.Y - violetAy) * violetrx) / violetBden2 &lt;= 1), ((K2.X - violetAx) * s2y - (K2.Y - violetAy) * s2x) / violetBden2, 1000000)">
+      <Dependency Name="K2" />
+      <Dependency Name="violetAx" />
+      <Dependency Name="s2y" />
+      <Dependency Name="violetAy" />
+      <Dependency Name="s2x" />
+      <Dependency Name="violetBden2" />
+      <Dependency Name="violetry" />
+      <Dependency Name="violetrx" />
+    </Number>
+    <Number Name="violetBden3" Formula="if(abs(violetrx * s3y - violetry * s3x) &lt; 0.000000000001, 0.000000000001, violetrx * s3y - violetry * s3x)">
+      <Dependency Name="violetrx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="violetry" />
+      <Dependency Name="s3x" />
+    </Number>
+    <Number Name="violetBt3" Formula="if((((K3.X - violetAx) * s3y - (K3.Y - violetAy) * s3x) / violetBden3 &gt; 0.0000001) * (((K3.X - violetAx) * violetry - (K3.Y - violetAy) * violetrx) / violetBden3 &gt;= 0) * (((K3.X - violetAx) * violetry - (K3.Y - violetAy) * violetrx) / violetBden3 &lt;= 1), ((K3.X - violetAx) * s3y - (K3.Y - violetAy) * s3x) / violetBden3, 1000000)">
+      <Dependency Name="K3" />
+      <Dependency Name="violetAx" />
+      <Dependency Name="s3y" />
+      <Dependency Name="violetAy" />
+      <Dependency Name="s3x" />
+      <Dependency Name="violetBden3" />
+      <Dependency Name="violetry" />
+      <Dependency Name="violetrx" />
+    </Number>
+    <Number Name="violetBt" Formula="min(violetBt1, violetBt2, violetBt3)">
+      <Dependency Name="violetBt1" />
+      <Dependency Name="violetBt2" />
+      <Dependency Name="violetBt3" />
+    </Number>
+    <Number Name="violetBx" Formula="violetAx + violetBt * violetrx">
+      <Dependency Name="violetAx" />
+      <Dependency Name="violetBt" />
+      <Dependency Name="violetrx" />
+    </Number>
+    <Number Name="violetBy" Formula="violetAy + violetBt * violetry">
+      <Dependency Name="violetAy" />
+      <Dependency Name="violetBt" />
+      <Dependency Name="violetry" />
+    </Number>
+    <Number Name="violetBnx" Formula="(violetBt == violetBt1) * n1x + (violetBt == violetBt2) * n2x + (violetBt == violetBt3) * n3x">
+      <Dependency Name="violetBt" />
+      <Dependency Name="violetBt1" />
+      <Dependency Name="n1x" />
+      <Dependency Name="violetBt2" />
+      <Dependency Name="n2x" />
+      <Dependency Name="violetBt3" />
+      <Dependency Name="n3x" />
+    </Number>
+    <Number Name="violetBny" Formula="(violetBt == violetBt1) * n1y + (violetBt == violetBt2) * n2y + (violetBt == violetBt3) * n3y">
+      <Dependency Name="violetBt" />
+      <Dependency Name="violetBt1" />
+      <Dependency Name="n1y" />
+      <Dependency Name="violetBt2" />
+      <Dependency Name="n2y" />
+      <Dependency Name="violetBt3" />
+      <Dependency Name="n3y" />
+    </Number>
+    <Number Name="violetBco" Formula="violetrx * violetBnx + violetry * violetBny">
+      <Dependency Name="violetrx" />
+      <Dependency Name="violetBnx" />
+      <Dependency Name="violetry" />
+      <Dependency Name="violetBny" />
+    </Number>
+    <Number Name="violetBk" Formula="1 - 3.362822 * (1 - violetBco^2)">
+      <Dependency Name="violetBco" />
+    </Number>
+    <Number Name="violetqx" Formula="1.8338 * violetrx - (1.8338 * violetBco - sqrt(violetBk)) * violetBnx">
+      <Dependency Name="violetrx" />
+      <Dependency Name="violetBco" />
+      <Dependency Name="violetBk" />
+      <Dependency Name="violetBnx" />
+    </Number>
+    <Number Name="violetqy" Formula="1.8338 * violetry - (1.8338 * violetBco - sqrt(violetBk)) * violetBny">
+      <Dependency Name="violetry" />
+      <Dependency Name="violetBco" />
+      <Dependency Name="violetBk" />
+      <Dependency Name="violetBny" />
+    </Number>
+    <PointByCoordinates Name="VioletA" Visible="false" X="violetAx + 0 * sqrt(lit - 0.5)" Y="violetAy + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="violetAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="violetAy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="VioletB" Visible="false" X="if(violetbounce, violetBx, violetAx) + 0 * sqrt(lit - 0.5)" Y="if(violetbounce, violetBy, violetAy) + 0 * sqrt(lit - 0.5)">
+      <Dependency Name="violetbounce" />
+      <Dependency Name="violetBx" />
+      <Dependency Name="violetAx" />
+      <Dependency Name="lit" />
+      <Dependency Name="violetBy" />
+      <Dependency Name="violetAy" />
+    </PointByCoordinates>
+    <Number Name="violetfx" Formula="if(violetbounce, violetqx, violetox)">
+      <Dependency Name="violetbounce" />
+      <Dependency Name="violetqx" />
+      <Dependency Name="violetox" />
+    </Number>
+    <Number Name="violetfy" Formula="if(violetbounce, violetqy, violetoy)">
+      <Dependency Name="violetbounce" />
+      <Dependency Name="violetqy" />
+      <Dependency Name="violetoy" />
+    </Number>
+    <PointByCoordinates Name="VioletOn" Visible="false" X="VioletB.X + violetfx" Y="VioletB.Y + violetfy">
+      <Dependency Name="VioletB" />
+      <Dependency Name="violetfx" />
+      <Dependency Name="violetfy" />
+    </PointByCoordinates>
+    <Segment Name="VioletInside" Style="VioletInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="VioletA" />
+    </Segment>
+    <Segment Name="VioletBounce" Style="VioletInside">
+      <Dependency Name="VioletA" />
+      <Dependency Name="VioletB" />
+    </Segment>
+    <Ray Name="VioletOutGlow" Style="VioletGlow">
+      <Dependency Name="VioletB" />
+      <Dependency Name="VioletOn" />
+    </Ray>
+    <Ray Name="VioletOut" Style="Violet">
+      <Dependency Name="VioletB" />
+      <Dependency Name="VioletOn" />
+    </Ray>
+    <Number Name="spread" Formula="deg(arccos(min(1, redfx * violetfx + redfy * violetfy)))">
+      <Dependency Name="redfx" />
+      <Dependency Name="violetfx" />
+      <Dependency Name="redfy" />
+      <Dependency Name="violetfy" />
+    </Number>
+    <Label Name="Title" Style="Heading" Text="Make a Rainbow" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" DecimalsToShow="1" Text="White light is really all the colors mixed together. Glass bends each color by a different amount, violet the most and red the least, so a prism pulls them apart into a rainbow.\n\nTurn the prism by its top corner, or drag it. Aim the lamp with the knob in front of it, or move the lamp. At one angle the colors bend the least, and there they are brightest. Turn too far and the light can't get out where it first meets a side: it bounces off the inside like off a mirror and leaves through the next side, and there the colors bend back together, almost white again.\n\nThis prism is heavy flint glass, which spreads the colors more than window glass. Red to violet: [spread]°.\n\nIsaac Newton did this in 1666 with sunlight through a hole in his shutter, and was the first to say that the colors were in the white light all along." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="spread" />
+    </Label>
+  </Figures>
+</Drawing>

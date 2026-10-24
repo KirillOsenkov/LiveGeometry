@@ -1,0 +1,935 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-13" Top="4.5" Right="13" Bottom="-4.5" Color="#FF10142E" />
+  <Scene Left="-12.5" Top="3.9999999999999996" Right="12.5" Bottom="-3.6" />
+  <Styles>
+    <TextStyle Name="Text" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <TextStyle Name="Heading" FontSize="30" Color="#FFFFD966" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFFD966" />
+    </TextStyle>
+    <TextStyle Name="Explanation" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <PointStyle Name="Knob" Size="13" Fill="#FFFFD966" Color="#FFFFFFFF" StrokeWidth="2" />
+    <PointStyle Name="LensKnob" Shape="Diamond" Size="14" Fill="#FF7FE8FF" Color="#FFFFFFFF" StrokeWidth="2" />
+    <ShapeStyle Name="Glass" Color="#D0BDF2FF" StrokeWidth="2">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#70D8F6FF" />
+          <GradientStop Color="#3060B8F0" Offset="0.6" />
+          <GradientStop Color="#5090E0FF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="Axis" Color="#50B8C8FF" Dash="Dash" />
+    <PointStyle Name="Focus" Size="9" Fill="#FFFF8FD8" Color="#FFFFFFFF" StrokeWidth="1.5" />
+    <ShapeStyle Name="Wax" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush EndPoint="1,0">
+          <GradientStop Color="#FFF7E7C4" />
+          <GradientStop Color="#FFFFF8EC" Offset="0.45" />
+          <GradientStop Color="#FFD8BE8E" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Flame" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#FFFF5A1F" />
+          <GradientStop Color="#FFFFB13B" Offset="0.6" />
+          <GradientStop Color="#FFFFE27A" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="FlameCore" Fill="#FFFFFBE0" Color="#00000000" />
+    <LineStyle Name="Wick" Color="#FF3A2A1A" StrokeWidth="2.5" />
+    <ShapeStyle Name="WaxPicture" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush EndPoint="1,0">
+          <GradientStop Color="#D0F7E7C4" />
+          <GradientStop Color="#D0FFF8EC" Offset="0.45" />
+          <GradientStop Color="#D0D8BE8E" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="FlamePicture" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#E0FFE27A" />
+          <GradientStop Color="#E0FFB13B" Offset="0.4" />
+          <GradientStop Color="#E0FF5A1F" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="WaxGhost" Fill="#50F7E7C4" Color="#C0FFF0D0" StrokeWidth="1.5" Dash="Dash" />
+    <ShapeStyle Name="FlameGhost" Fill="#70FF9A3B" Color="#C0FFC070" StrokeWidth="1.5" Dash="Dash" />
+    <ShapeStyle Name="Screen" Fill="#22FFFFFF" Color="#55FFFFFF" />
+    <ShapeStyle Name="Light" Fill="#26FFB040" Color="#00000000" />
+    <PointStyle Name="Eye" Character="👁️" Size="34" Fill="#FFFFFFFF" />
+    <LineStyle Name="RedGlow" Color="#60FF6B6B" StrokeWidth="11" />
+    <LineStyle Name="Red" Color="#FFFF6B6B" StrokeWidth="2.4" />
+    <LineStyle Name="RedDash" Color="#B0FF6B6B" StrokeWidth="1.5" Dash="Dash" />
+    <LineStyle Name="GoldGlow" Color="#60FFD84D" StrokeWidth="11" />
+    <LineStyle Name="Gold" Color="#FFFFD84D" StrokeWidth="2.4" />
+    <LineStyle Name="GoldDash" Color="#B0FFD84D" StrokeWidth="1.5" Dash="Dash" />
+    <LineStyle Name="SkyGlow" Color="#604DD2FF" StrokeWidth="11" />
+    <LineStyle Name="Sky" Color="#FF4DD2FF" StrokeWidth="2.4" />
+    <LineStyle Name="SkyDash" Color="#B04DD2FF" StrokeWidth="1.5" Dash="Dash" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="L" Style="LensKnob" X="0" Y="0" />
+    <PointByCoordinates Name="AxisLeft" Visible="false" X="L.X - 60" Y="L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="AxisRight" Visible="false" X="L.X + 60" Y="L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <LineTwoPoints Name="Axis" Style="Axis">
+      <Dependency Name="AxisLeft" />
+      <Dependency Name="AxisRight" />
+    </LineTwoPoints>
+    <PointByCoordinates Name="BulgeFrom" Visible="false" X="L.X + 0.15" Y="L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BulgeTo" Visible="false" X="L.X + 1.6" Y="L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <Segment Name="BulgeRail" Visible="false">
+      <Dependency Name="BulgeFrom" />
+      <Dependency Name="BulgeTo" />
+    </Segment>
+    <PointOnFigure Name="W" Style="Knob" X="0.7499998500000001" Y="0" Parameter="0.413793">
+      <Dependency Name="BulgeRail" />
+    </PointOnFigure>
+    <Number Name="w" Formula="W.X - L.X">
+      <Dependency Name="W" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="f" Formula="(6.76 + w^2) / (2 * w)">
+      <Dependency Name="w" />
+    </Number>
+    <PointByCoordinates Name="LeftTop" Visible="false" X="L.X - w" Y="L.Y">
+      <Dependency Name="L" />
+      <Dependency Name="w" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LeftCenter" Visible="false" X="L.X - w + f" Y="L.Y">
+      <Dependency Name="L" />
+      <Dependency Name="w" />
+      <Dependency Name="f" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="RightCenter" Visible="false" X="L.X + w - f" Y="L.Y">
+      <Dependency Name="L" />
+      <Dependency Name="w" />
+      <Dependency Name="f" />
+    </PointByCoordinates>
+    <Circle Name="LeftSide" Visible="false">
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="LeftTop" />
+    </Circle>
+    <Circle Name="RightSide" Visible="false">
+      <Dependency Name="RightCenter" />
+      <Dependency Name="W" />
+    </Circle>
+    <PointByCoordinates Name="F" Style="Focus" X="L.X - f" Y="L.Y">
+      <Dependency Name="L" />
+      <Dependency Name="f" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F'" Style="Focus" X="L.X + f" Y="L.Y">
+      <Dependency Name="L" />
+      <Dependency Name="f" />
+    </PointByCoordinates>
+    <FreePoint Name="Candle" Style="Knob" X="-11" Y="0" />
+    <Number Name="u" Formula="L.X - Candle.X">
+      <Dependency Name="L" />
+      <Dependency Name="Candle" />
+    </Number>
+    <Number Name="v" Formula="u * f / (u - f)">
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+    </Number>
+    <Number Name="m" Formula="f / (f - u)">
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+    </Number>
+    <PointByCoordinates Name="Tip" Visible="false" X="Candle.X" Y="Candle.Y + 2.2">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="TipPicture" Visible="false" X="L.X + v" Y="L.Y + (Tip.Y - L.Y) * f / (f - u)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="Tip" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="TipMeet" Visible="false" X="TipPicture.X + 0 * sqrt(u - f)" Y="TipPicture.Y + 0 * sqrt(u - f)">
+      <Dependency Name="TipPicture" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="TipBehind" Visible="false" X="TipPicture.X + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="TipPicture.Y + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="TipPicture" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LensTop" Visible="false" X="L.X" Y="L.Y + 2.6">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LensBottom" Visible="false" X="L.X" Y="L.Y - 2.6">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <Polygon Name="LightIn" Style="Light">
+      <Dependency Name="Tip" />
+      <Dependency Name="LensTop" />
+      <Dependency Name="LensBottom" />
+    </Polygon>
+    <Polygon Name="LightOut" Style="Light">
+      <Dependency Name="LensTop" />
+      <Dependency Name="TipMeet" />
+      <Dependency Name="LensBottom" />
+    </Polygon>
+    <Region Name="Lens" Style="Glass" Operation="Intersection">
+      <Dependency Name="LeftSide" />
+      <Dependency Name="RightSide" />
+    </Region>
+    <PointByCoordinates Name="ScreenA" Visible="false" X="L.X + v + 0.12 + 0 * sqrt(u - f)" Y="L.Y - 2.8">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ScreenB" Visible="false" X="L.X + v + 0.3 + 0 * sqrt(u - f)" Y="L.Y - 2.8">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ScreenC" Visible="false" X="L.X + v + 0.3 + 0 * sqrt(u - f)" Y="L.Y + 2.8">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ScreenD" Visible="false" X="L.X + v + 0.12 + 0 * sqrt(u - f)" Y="L.Y + 2.8">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+    </PointByCoordinates>
+    <Polygon Name="Screen" Style="Screen">
+      <Dependency Name="ScreenA" />
+      <Dependency Name="ScreenB" />
+      <Dependency Name="ScreenC" />
+      <Dependency Name="ScreenD" />
+    </Polygon>
+    <PointByCoordinates Name="Wax1" Visible="false" X="Candle.X + -0.3" Y="Candle.Y + 0">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Wax2" Visible="false" X="Candle.X + 0.3" Y="Candle.Y + 0">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Wax3" Visible="false" X="Candle.X + 0.3" Y="Candle.Y + 1.25">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Wax4" Visible="false" X="Candle.X + 0.22" Y="Candle.Y + 1.29">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Wax5" Visible="false" X="Candle.X + -0.3" Y="Candle.Y + 1.25">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <Polygon Name="Wax" Style="Wax">
+      <Dependency Name="Wax1" />
+      <Dependency Name="Wax2" />
+      <Dependency Name="Wax3" />
+      <Dependency Name="Wax4" />
+      <Dependency Name="Wax5" />
+    </Polygon>
+    <PointByCoordinates Name="Flame1" Visible="false" X="Candle.X + 0" Y="Candle.Y + 2.2">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame2" Visible="false" X="Candle.X + 0.07" Y="Candle.Y + 2.05">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame3" Visible="false" X="Candle.X + 0.14" Y="Candle.Y + 1.88">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame4" Visible="false" X="Candle.X + 0.195" Y="Candle.Y + 1.72">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame5" Visible="false" X="Candle.X + 0.2" Y="Candle.Y + 1.6">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame6" Visible="false" X="Candle.X + 0.16" Y="Candle.Y + 1.5">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame7" Visible="false" X="Candle.X + 0.08" Y="Candle.Y + 1.44">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame8" Visible="false" X="Candle.X + 0" Y="Candle.Y + 1.42">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame9" Visible="false" X="Candle.X + -0.08" Y="Candle.Y + 1.44">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame10" Visible="false" X="Candle.X + -0.16" Y="Candle.Y + 1.5">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame11" Visible="false" X="Candle.X + -0.2" Y="Candle.Y + 1.6">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame12" Visible="false" X="Candle.X + -0.195" Y="Candle.Y + 1.72">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame13" Visible="false" X="Candle.X + -0.14" Y="Candle.Y + 1.88">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Flame14" Visible="false" X="Candle.X + -0.07" Y="Candle.Y + 2.05">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <Polygon Name="Flame" Style="Flame">
+      <Dependency Name="Flame1" />
+      <Dependency Name="Flame2" />
+      <Dependency Name="Flame3" />
+      <Dependency Name="Flame4" />
+      <Dependency Name="Flame5" />
+      <Dependency Name="Flame6" />
+      <Dependency Name="Flame7" />
+      <Dependency Name="Flame8" />
+      <Dependency Name="Flame9" />
+      <Dependency Name="Flame10" />
+      <Dependency Name="Flame11" />
+      <Dependency Name="Flame12" />
+      <Dependency Name="Flame13" />
+      <Dependency Name="Flame14" />
+    </Polygon>
+    <PointByCoordinates Name="Core1" Visible="false" X="Candle.X + 0" Y="Candle.Y + 1.86">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core2" Visible="false" X="Candle.X + 0.035" Y="Candle.Y + 1.785">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core3" Visible="false" X="Candle.X + 0.07" Y="Candle.Y + 1.7">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core4" Visible="false" X="Candle.X + 0.0975" Y="Candle.Y + 1.62">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core5" Visible="false" X="Candle.X + 0.1" Y="Candle.Y + 1.56">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core6" Visible="false" X="Candle.X + 0.08" Y="Candle.Y + 1.51">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core7" Visible="false" X="Candle.X + 0.04" Y="Candle.Y + 1.48">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core8" Visible="false" X="Candle.X + 0" Y="Candle.Y + 1.47">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core9" Visible="false" X="Candle.X + -0.04" Y="Candle.Y + 1.48">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core10" Visible="false" X="Candle.X + -0.08" Y="Candle.Y + 1.51">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core11" Visible="false" X="Candle.X + -0.1" Y="Candle.Y + 1.56">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core12" Visible="false" X="Candle.X + -0.0975" Y="Candle.Y + 1.62">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core13" Visible="false" X="Candle.X + -0.07" Y="Candle.Y + 1.7">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Core14" Visible="false" X="Candle.X + -0.035" Y="Candle.Y + 1.785">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <Polygon Name="FlameCore" Style="FlameCore">
+      <Dependency Name="Core1" />
+      <Dependency Name="Core2" />
+      <Dependency Name="Core3" />
+      <Dependency Name="Core4" />
+      <Dependency Name="Core5" />
+      <Dependency Name="Core6" />
+      <Dependency Name="Core7" />
+      <Dependency Name="Core8" />
+      <Dependency Name="Core9" />
+      <Dependency Name="Core10" />
+      <Dependency Name="Core11" />
+      <Dependency Name="Core12" />
+      <Dependency Name="Core13" />
+      <Dependency Name="Core14" />
+    </Polygon>
+    <PointByCoordinates Name="WickBottom" Visible="false" X="Candle.X" Y="Candle.Y + 1.25">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WickTop" Visible="false" X="Candle.X" Y="Candle.Y + 1.45">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <Segment Name="Wick" Style="Wick">
+      <Dependency Name="WickBottom" />
+      <Dependency Name="WickTop" />
+    </Segment>
+    <PointByCoordinates Name="WaxPicture1" Visible="false" X="L.X + v + -0.3 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 0 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WaxPicture2" Visible="false" X="L.X + v + 0.3 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 0 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WaxPicture3" Visible="false" X="L.X + v + 0.3 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.25 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WaxPicture4" Visible="false" X="L.X + v + 0.22 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.29 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WaxPicture5" Visible="false" X="L.X + v + -0.3 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.25 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <Polygon Name="WaxPicture" Style="WaxPicture">
+      <Dependency Name="WaxPicture1" />
+      <Dependency Name="WaxPicture2" />
+      <Dependency Name="WaxPicture3" />
+      <Dependency Name="WaxPicture4" />
+      <Dependency Name="WaxPicture5" />
+    </Polygon>
+    <PointByCoordinates Name="FlamePicture1" Visible="false" X="L.X + v + 0 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 2.2 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture2" Visible="false" X="L.X + v + 0.07 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 2.05 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture3" Visible="false" X="L.X + v + 0.14 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.88 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture4" Visible="false" X="L.X + v + 0.195 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.72 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture5" Visible="false" X="L.X + v + 0.2 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.6 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture6" Visible="false" X="L.X + v + 0.16 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.5 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture7" Visible="false" X="L.X + v + 0.08 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.44 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture8" Visible="false" X="L.X + v + 0 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.42 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture9" Visible="false" X="L.X + v + -0.08 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.44 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture10" Visible="false" X="L.X + v + -0.16 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.5 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture11" Visible="false" X="L.X + v + -0.2 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.6 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture12" Visible="false" X="L.X + v + -0.195 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.72 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture13" Visible="false" X="L.X + v + -0.14 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.88 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlamePicture14" Visible="false" X="L.X + v + -0.07 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 2.05 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <Polygon Name="FlamePicture" Style="FlamePicture">
+      <Dependency Name="FlamePicture1" />
+      <Dependency Name="FlamePicture2" />
+      <Dependency Name="FlamePicture3" />
+      <Dependency Name="FlamePicture4" />
+      <Dependency Name="FlamePicture5" />
+      <Dependency Name="FlamePicture6" />
+      <Dependency Name="FlamePicture7" />
+      <Dependency Name="FlamePicture8" />
+      <Dependency Name="FlamePicture9" />
+      <Dependency Name="FlamePicture10" />
+      <Dependency Name="FlamePicture11" />
+      <Dependency Name="FlamePicture12" />
+      <Dependency Name="FlamePicture13" />
+      <Dependency Name="FlamePicture14" />
+    </Polygon>
+    <PointByCoordinates Name="CorePicture1" Visible="false" X="L.X + v + 0 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.86 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture2" Visible="false" X="L.X + v + 0.035 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.785 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture3" Visible="false" X="L.X + v + 0.07 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.7 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture4" Visible="false" X="L.X + v + 0.0975 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.62 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture5" Visible="false" X="L.X + v + 0.1 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.56 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture6" Visible="false" X="L.X + v + 0.08 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.51 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture7" Visible="false" X="L.X + v + 0.04 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.48 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture8" Visible="false" X="L.X + v + 0 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.47 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture9" Visible="false" X="L.X + v + -0.04 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.48 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture10" Visible="false" X="L.X + v + -0.08 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.51 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture11" Visible="false" X="L.X + v + -0.1 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.56 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture12" Visible="false" X="L.X + v + -0.0975 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.62 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture13" Visible="false" X="L.X + v + -0.07 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.7 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CorePicture14" Visible="false" X="L.X + v + -0.035 * abs(m) + 0 * sqrt(u - f)" Y="L.Y + (Candle.Y + 1.785 - L.Y) * m + 0 * sqrt(u - f)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="u" />
+      <Dependency Name="f" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <Polygon Name="CorePicture" Style="FlameCore">
+      <Dependency Name="CorePicture1" />
+      <Dependency Name="CorePicture2" />
+      <Dependency Name="CorePicture3" />
+      <Dependency Name="CorePicture4" />
+      <Dependency Name="CorePicture5" />
+      <Dependency Name="CorePicture6" />
+      <Dependency Name="CorePicture7" />
+      <Dependency Name="CorePicture8" />
+      <Dependency Name="CorePicture9" />
+      <Dependency Name="CorePicture10" />
+      <Dependency Name="CorePicture11" />
+      <Dependency Name="CorePicture12" />
+      <Dependency Name="CorePicture13" />
+      <Dependency Name="CorePicture14" />
+    </Polygon>
+    <PointByCoordinates Name="WaxBehind1" Visible="false" X="L.X + v + -0.3 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 0 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WaxBehind2" Visible="false" X="L.X + v + 0.3 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 0 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WaxBehind3" Visible="false" X="L.X + v + 0.3 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.25 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WaxBehind4" Visible="false" X="L.X + v + 0.22 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.29 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WaxBehind5" Visible="false" X="L.X + v + -0.3 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.25 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <Polygon Name="WaxBehind" Style="WaxGhost">
+      <Dependency Name="WaxBehind1" />
+      <Dependency Name="WaxBehind2" />
+      <Dependency Name="WaxBehind3" />
+      <Dependency Name="WaxBehind4" />
+      <Dependency Name="WaxBehind5" />
+    </Polygon>
+    <PointByCoordinates Name="FlameBehind1" Visible="false" X="L.X + v + 0 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 2.2 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind2" Visible="false" X="L.X + v + 0.07 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 2.05 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind3" Visible="false" X="L.X + v + 0.14 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.88 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind4" Visible="false" X="L.X + v + 0.195 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.72 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind5" Visible="false" X="L.X + v + 0.2 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.6 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind6" Visible="false" X="L.X + v + 0.16 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.5 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind7" Visible="false" X="L.X + v + 0.08 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.44 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind8" Visible="false" X="L.X + v + 0 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.42 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind9" Visible="false" X="L.X + v + -0.08 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.44 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind10" Visible="false" X="L.X + v + -0.16 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.5 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind11" Visible="false" X="L.X + v + -0.2 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.6 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind12" Visible="false" X="L.X + v + -0.195 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.72 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind13" Visible="false" X="L.X + v + -0.14 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 1.88 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="FlameBehind14" Visible="false" X="L.X + v + -0.07 * abs(m) + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + (Candle.Y + 2.05 - L.Y) * m + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)">
+      <Dependency Name="L" />
+      <Dependency Name="v" />
+      <Dependency Name="m" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <Polygon Name="FlameBehind" Style="FlameGhost">
+      <Dependency Name="FlameBehind1" />
+      <Dependency Name="FlameBehind2" />
+      <Dependency Name="FlameBehind3" />
+      <Dependency Name="FlameBehind4" />
+      <Dependency Name="FlameBehind5" />
+      <Dependency Name="FlameBehind6" />
+      <Dependency Name="FlameBehind7" />
+      <Dependency Name="FlameBehind8" />
+      <Dependency Name="FlameBehind9" />
+      <Dependency Name="FlameBehind10" />
+      <Dependency Name="FlameBehind11" />
+      <Dependency Name="FlameBehind12" />
+      <Dependency Name="FlameBehind13" />
+      <Dependency Name="FlameBehind14" />
+    </Polygon>
+    <PointByCoordinates Name="Level" Visible="false" X="L.X" Y="Tip.Y">
+      <Dependency Name="L" />
+      <Dependency Name="Tip" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ThroughF" Visible="false" X="L.X" Y="L.Y + (Tip.Y - L.Y) * f / (f - u)">
+      <Dependency Name="L" />
+      <Dependency Name="Tip" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ThroughFOn" Visible="false" X="ThroughF.X + 1" Y="ThroughF.Y">
+      <Dependency Name="ThroughF" />
+    </PointByCoordinates>
+    <Segment Name="RedInGlow" Style="RedGlow">
+      <Dependency Name="Tip" />
+      <Dependency Name="Level" />
+    </Segment>
+    <Segment Name="RedIn" Style="Red">
+      <Dependency Name="Tip" />
+      <Dependency Name="Level" />
+    </Segment>
+    <Ray Name="RedOutGlow" Style="RedGlow">
+      <Dependency Name="Level" />
+      <Dependency Name="F'" />
+    </Ray>
+    <Ray Name="RedOut" Style="Red">
+      <Dependency Name="Level" />
+      <Dependency Name="F'" />
+    </Ray>
+    <Ray Name="GoldRayGlow" Style="GoldGlow">
+      <Dependency Name="Tip" />
+      <Dependency Name="L" />
+    </Ray>
+    <Ray Name="GoldRay" Style="Gold">
+      <Dependency Name="Tip" />
+      <Dependency Name="L" />
+    </Ray>
+    <Segment Name="SkyInGlow" Style="SkyGlow">
+      <Dependency Name="Tip" />
+      <Dependency Name="ThroughF" />
+    </Segment>
+    <Segment Name="SkyIn" Style="Sky">
+      <Dependency Name="Tip" />
+      <Dependency Name="ThroughF" />
+    </Segment>
+    <Ray Name="SkyOutGlow" Style="SkyGlow">
+      <Dependency Name="ThroughF" />
+      <Dependency Name="ThroughFOn" />
+    </Ray>
+    <Ray Name="SkyOut" Style="Sky">
+      <Dependency Name="ThroughF" />
+      <Dependency Name="ThroughFOn" />
+    </Ray>
+    <Segment Name="RedBack" Style="RedDash">
+      <Dependency Name="Level" />
+      <Dependency Name="TipBehind" />
+    </Segment>
+    <Segment Name="GoldBack" Style="GoldDash">
+      <Dependency Name="L" />
+      <Dependency Name="TipBehind" />
+    </Segment>
+    <Segment Name="SkyBack" Style="SkyDash">
+      <Dependency Name="ThroughF" />
+      <Dependency Name="TipBehind" />
+    </Segment>
+    <PointByCoordinates Name="Eye" Style="Eye" X="L.X + 4.5 + 0 * sqrt(f - u) + 0 * sqrt(u - 0.3)" Y="L.Y + 0.9">
+      <Dependency Name="L" />
+      <Dependency Name="f" />
+      <Dependency Name="u" />
+    </PointByCoordinates>
+    <PointLabel Name="FLabel" OffsetX="-6" OffsetY="10">
+      <Dependency Name="F" />
+    </PointLabel>
+    <PointLabel Name="F'Label" OffsetX="-6" OffsetY="10">
+      <Dependency Name="F'" />
+    </PointLabel>
+    <Label Name="Title" Style="Heading" Text="The Upside-Down Candle" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" DecimalsToShow="1" Text="A lens bends the light from the flame so that the rays meet again on the other side, and there they draw a picture of the candle. Upside down! Hold a sheet of paper there and you would see it glowing.\n\nThree rays are easy to follow: the red one comes in level and leaves through the focus F′, the yellow one goes straight through the middle, and the blue one comes in through the focus F and leaves level.\n\nSlide the candle toward the lens: the picture grows and runs away. Inside F the rays never meet. Look back through the lens instead and you see a big candle the right way up: a magnifying glass.\n\nPull the handle on the lens to make it fatter. A fatter lens bends light more and its focus comes closer.\n\nCandle to lens: [u]. Lens to picture: [v]. Focus: [f]." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="u" />
+      <Dependency Name="v" />
+      <Dependency Name="f" />
+    </Label>
+  </Figures>
+</Drawing>

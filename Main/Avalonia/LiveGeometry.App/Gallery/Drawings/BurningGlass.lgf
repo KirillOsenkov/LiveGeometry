@@ -1,0 +1,3129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-13" Top="5" Right="13" Bottom="-5" Color="#FF161632" />
+  <Scene Left="-10.8" Top="4.1" Right="9.599999999999998" Bottom="-3.6" />
+  <Styles>
+    <TextStyle Name="Text" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <TextStyle Name="Heading" FontSize="30" Color="#FFFFD966" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFFD966" />
+    </TextStyle>
+    <TextStyle Name="Explanation" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <PointStyle Name="Knob" Size="13" Fill="#FFFFD966" Color="#FFFFFFFF" StrokeWidth="2" />
+    <PointStyle Name="LensKnob" Shape="Diamond" Size="14" Fill="#FF7FE8FF" Color="#FFFFFFFF" StrokeWidth="2" />
+    <ShapeStyle Name="Glass" Color="#D0BDF2FF" StrokeWidth="2">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#70D8F6FF" />
+          <GradientStop Color="#3060B8F0" Offset="0.6" />
+          <GradientStop Color="#5090E0FF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <PointStyle Name="Sun" Character="☀️" Size="60" Fill="#FFFFFFFF" />
+    <PointStyle Name="Fire" Character="🔥" Size="52" Fill="#FFFFFFFF" />
+    <ShapeStyle Name="Wax" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush EndPoint="1,0">
+          <GradientStop Color="#FFE84A5F" />
+          <GradientStop Color="#FFFF8A9A" Offset="0.45" />
+          <GradientStop Color="#FFB02A40" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="Wick" Color="#FF2A2020" StrokeWidth="3" />
+    <ShapeStyle Name="Saucer" Fill="#FF8A94A6" Color="#FFC8D0DC" StrokeWidth="1.5" />
+    <LineStyle Name="SunbeamGlow" Color="#38FFE27A" StrokeWidth="8" />
+    <LineStyle Name="Sunbeam" Color="#E8FFE27A" StrokeWidth="1.6" />
+    <LineStyle Name="WarmGlow" Color="#40FFB347" StrokeWidth="8" />
+    <LineStyle Name="Warm" Color="#F0FFB347" StrokeWidth="1.6" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="Sun" Style="Sun" X="-9.8" Y="0.8" />
+    <FreePoint Name="L" Style="LensKnob" X="0" Y="0" />
+    <PointByCoordinates Name="BulgeFrom" Visible="false" X="L.X + 0.2" Y="L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BulgeTo" Visible="false" X="L.X + 1.7" Y="L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <Segment Name="BulgeRail" Visible="false">
+      <Dependency Name="BulgeFrom" />
+      <Dependency Name="BulgeTo" />
+    </Segment>
+    <PointOnFigure Name="W" Style="Knob" X="0.4500005" Y="0" Parameter="0.166667">
+      <Dependency Name="BulgeRail" />
+    </PointOnFigure>
+    <Number Name="w" Formula="W.X - L.X">
+      <Dependency Name="W" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="R" Formula="(5.76 + w^2) / (2 * w)">
+      <Dependency Name="w" />
+    </Number>
+    <PointByCoordinates Name="LeftTop" Visible="false" X="L.X - w" Y="L.Y">
+      <Dependency Name="L" />
+      <Dependency Name="w" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="LeftCenter" Visible="false" X="L.X - w + R" Y="L.Y">
+      <Dependency Name="L" />
+      <Dependency Name="w" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="RightCenter" Visible="false" X="L.X + w - R" Y="L.Y">
+      <Dependency Name="L" />
+      <Dependency Name="w" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Circle Name="LeftSide" Visible="false">
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="LeftTop" />
+    </Circle>
+    <Circle Name="RightSide" Visible="false">
+      <Dependency Name="RightCenter" />
+      <Dependency Name="W" />
+    </Circle>
+    <Region Name="Lens" Style="Glass" Operation="Intersection">
+      <Dependency Name="LeftSide" />
+      <Dependency Name="RightSide" />
+    </Region>
+    <Number Name="dx" Formula="(L.X - Sun.X) / distance(Sun, L)">
+      <Dependency Name="L" />
+      <Dependency Name="Sun" />
+    </Number>
+    <Number Name="dy" Formula="(L.Y - Sun.Y) / distance(Sun, L)">
+      <Dependency Name="L" />
+      <Dependency Name="Sun" />
+    </Number>
+    <FreePoint Name="Candle" Style="Knob" X="7.6" Y="-1.6" />
+    <PointByCoordinates Name="SaucerA" Visible="false" X="Candle.X - 0.75" Y="Candle.Y">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SaucerB" Visible="false" X="Candle.X + 0.75" Y="Candle.Y">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SaucerC" Visible="false" X="Candle.X + 0.55" Y="Candle.Y - 0.18">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SaucerD" Visible="false" X="Candle.X - 0.55" Y="Candle.Y - 0.18">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WaxA" Visible="false" X="Candle.X - 0.28" Y="Candle.Y">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WaxB" Visible="false" X="Candle.X + 0.28" Y="Candle.Y">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WaxC" Visible="false" X="Candle.X + 0.28" Y="Candle.Y + 1.1">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WaxD" Visible="false" X="Candle.X - 0.28" Y="Candle.Y + 1.1">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="WickBottom" Visible="false" X="Candle.X" Y="Candle.Y + 1.1">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Wick" Visible="false" X="Candle.X" Y="Candle.Y + 1.3">
+      <Dependency Name="Candle" />
+    </PointByCoordinates>
+    <Number Name="r1ox" Formula="Sun.X - dy * -2.1">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r1oy" Formula="Sun.Y + dx * -2.1">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r1b" Formula="(r1ox - LeftCenter.X) * dx + (r1oy - L.Y) * dy">
+      <Dependency Name="r1ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r1oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r1disc" Formula="r1b^2 - (r1ox - LeftCenter.X)^2 - (r1oy - L.Y)^2 + R^2">
+      <Dependency Name="r1b" />
+      <Dependency Name="r1ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r1oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r1t" Formula="-r1b - sqrt(max(r1disc, 0))">
+      <Dependency Name="r1b" />
+      <Dependency Name="r1disc" />
+    </Number>
+    <Number Name="r1hx" Formula="r1ox + r1t * dx">
+      <Dependency Name="r1ox" />
+      <Dependency Name="r1t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r1hy" Formula="r1oy + r1t * dy">
+      <Dependency Name="r1oy" />
+      <Dependency Name="r1t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r1hit" Formula="(r1disc &gt; 0) * (abs(r1hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r1disc" />
+      <Dependency Name="r1hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r1nx" Formula="(r1hx - LeftCenter.X) / R">
+      <Dependency Name="r1hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r1ny" Formula="(r1hy - L.Y) / R">
+      <Dependency Name="r1hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r1ci" Formula="-(dx * r1nx + dy * r1ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r1nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r1ny" />
+    </Number>
+    <Number Name="r1sq" Formula="sqrt(1 - 0.666667^2 * (1 - r1ci^2))">
+      <Dependency Name="r1ci" />
+    </Number>
+    <Number Name="r1ex" Formula="0.666667 * dx + (0.666667 * r1ci - r1sq) * r1nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r1ci" />
+      <Dependency Name="r1sq" />
+      <Dependency Name="r1nx" />
+    </Number>
+    <Number Name="r1ey" Formula="0.666667 * dy + (0.666667 * r1ci - r1sq) * r1ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r1ci" />
+      <Dependency Name="r1sq" />
+      <Dependency Name="r1ny" />
+    </Number>
+    <Number Name="r1b2" Formula="(r1hx - RightCenter.X) * r1ex + (r1hy - L.Y) * r1ey">
+      <Dependency Name="r1hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r1ex" />
+      <Dependency Name="r1hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r1ey" />
+    </Number>
+    <Number Name="r1t2" Formula="-r1b2 + sqrt(max(r1b2^2 - (r1hx - RightCenter.X)^2 - (r1hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r1b2" />
+      <Dependency Name="r1hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r1hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r1gx" Formula="r1hx + r1t2 * r1ex">
+      <Dependency Name="r1hx" />
+      <Dependency Name="r1t2" />
+      <Dependency Name="r1ex" />
+    </Number>
+    <Number Name="r1gy" Formula="r1hy + r1t2 * r1ey">
+      <Dependency Name="r1hy" />
+      <Dependency Name="r1t2" />
+      <Dependency Name="r1ey" />
+    </Number>
+    <Number Name="r1mx" Formula="(r1gx - RightCenter.X) / R">
+      <Dependency Name="r1gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r1my" Formula="(r1gy - L.Y) / R">
+      <Dependency Name="r1gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r1co" Formula="r1ex * r1mx + r1ey * r1my">
+      <Dependency Name="r1ex" />
+      <Dependency Name="r1mx" />
+      <Dependency Name="r1ey" />
+      <Dependency Name="r1my" />
+    </Number>
+    <Number Name="r1k" Formula="1 - 2.25 * (1 - r1co^2)">
+      <Dependency Name="r1co" />
+    </Number>
+    <Number Name="r1fx" Formula="1.5 * r1ex - (1.5 * r1co - sqrt(r1k)) * r1mx">
+      <Dependency Name="r1ex" />
+      <Dependency Name="r1co" />
+      <Dependency Name="r1k" />
+      <Dependency Name="r1mx" />
+    </Number>
+    <Number Name="r1fy" Formula="1.5 * r1ey - (1.5 * r1co - sqrt(r1k)) * r1my">
+      <Dependency Name="r1ey" />
+      <Dependency Name="r1co" />
+      <Dependency Name="r1k" />
+      <Dependency Name="r1my" />
+    </Number>
+    <PointByCoordinates Name="r1O" Visible="false" X="r1ox" Y="r1oy">
+      <Dependency Name="r1ox" />
+      <Dependency Name="r1oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r1In" Visible="false" X="if(r1hit, r1hx, r1ox + dx)" Y="if(r1hit, r1hy, r1oy + dy)">
+      <Dependency Name="r1hit" />
+      <Dependency Name="r1hx" />
+      <Dependency Name="r1ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r1hy" />
+      <Dependency Name="r1oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r1Out" Visible="false" X="if(r1hit, r1gx, r1ox + dx)" Y="if(r1hit, r1gy, r1oy + dy)">
+      <Dependency Name="r1hit" />
+      <Dependency Name="r1gx" />
+      <Dependency Name="r1ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r1gy" />
+      <Dependency Name="r1oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r1On" Visible="false" X="if(r1hit, r1gx + r1fx, r1ox + 2 * dx)" Y="if(r1hit, r1gy + r1fy, r1oy + 2 * dy)">
+      <Dependency Name="r1hit" />
+      <Dependency Name="r1gx" />
+      <Dependency Name="r1fx" />
+      <Dependency Name="r1ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r1gy" />
+      <Dependency Name="r1fy" />
+      <Dependency Name="r1oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r1SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r1O" />
+      <Dependency Name="r1In" />
+    </Segment>
+    <Segment Name="r1Sun" Style="Sunbeam">
+      <Dependency Name="r1O" />
+      <Dependency Name="r1In" />
+    </Segment>
+    <Segment Name="r1GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r1In" />
+      <Dependency Name="r1Out" />
+    </Segment>
+    <Segment Name="r1Glass" Style="Sunbeam">
+      <Dependency Name="r1In" />
+      <Dependency Name="r1Out" />
+    </Segment>
+    <Ray Name="r1HotGlow" Style="WarmGlow">
+      <Dependency Name="r1Out" />
+      <Dependency Name="r1On" />
+    </Ray>
+    <Ray Name="r1Hot" Style="Warm">
+      <Dependency Name="r1Out" />
+      <Dependency Name="r1On" />
+    </Ray>
+    <Number Name="r1heat" Formula="if(r1hit * (r1k &gt; 0), (abs((Wick.X - r1gx) * r1fy - (Wick.Y - r1gy) * r1fx) &lt; 0.25) * ((Wick.X - r1gx) * r1fx + (Wick.Y - r1gy) * r1fy &gt; 0), 0)">
+      <Dependency Name="r1hit" />
+      <Dependency Name="r1k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r1gx" />
+      <Dependency Name="r1fy" />
+      <Dependency Name="r1gy" />
+      <Dependency Name="r1fx" />
+    </Number>
+    <Number Name="r2ox" Formula="Sun.X - dy * -1.8">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r2oy" Formula="Sun.Y + dx * -1.8">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r2b" Formula="(r2ox - LeftCenter.X) * dx + (r2oy - L.Y) * dy">
+      <Dependency Name="r2ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r2oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r2disc" Formula="r2b^2 - (r2ox - LeftCenter.X)^2 - (r2oy - L.Y)^2 + R^2">
+      <Dependency Name="r2b" />
+      <Dependency Name="r2ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r2oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r2t" Formula="-r2b - sqrt(max(r2disc, 0))">
+      <Dependency Name="r2b" />
+      <Dependency Name="r2disc" />
+    </Number>
+    <Number Name="r2hx" Formula="r2ox + r2t * dx">
+      <Dependency Name="r2ox" />
+      <Dependency Name="r2t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r2hy" Formula="r2oy + r2t * dy">
+      <Dependency Name="r2oy" />
+      <Dependency Name="r2t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r2hit" Formula="(r2disc &gt; 0) * (abs(r2hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r2disc" />
+      <Dependency Name="r2hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r2nx" Formula="(r2hx - LeftCenter.X) / R">
+      <Dependency Name="r2hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r2ny" Formula="(r2hy - L.Y) / R">
+      <Dependency Name="r2hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r2ci" Formula="-(dx * r2nx + dy * r2ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r2nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r2ny" />
+    </Number>
+    <Number Name="r2sq" Formula="sqrt(1 - 0.666667^2 * (1 - r2ci^2))">
+      <Dependency Name="r2ci" />
+    </Number>
+    <Number Name="r2ex" Formula="0.666667 * dx + (0.666667 * r2ci - r2sq) * r2nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r2ci" />
+      <Dependency Name="r2sq" />
+      <Dependency Name="r2nx" />
+    </Number>
+    <Number Name="r2ey" Formula="0.666667 * dy + (0.666667 * r2ci - r2sq) * r2ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r2ci" />
+      <Dependency Name="r2sq" />
+      <Dependency Name="r2ny" />
+    </Number>
+    <Number Name="r2b2" Formula="(r2hx - RightCenter.X) * r2ex + (r2hy - L.Y) * r2ey">
+      <Dependency Name="r2hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r2ex" />
+      <Dependency Name="r2hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r2ey" />
+    </Number>
+    <Number Name="r2t2" Formula="-r2b2 + sqrt(max(r2b2^2 - (r2hx - RightCenter.X)^2 - (r2hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r2b2" />
+      <Dependency Name="r2hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r2hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r2gx" Formula="r2hx + r2t2 * r2ex">
+      <Dependency Name="r2hx" />
+      <Dependency Name="r2t2" />
+      <Dependency Name="r2ex" />
+    </Number>
+    <Number Name="r2gy" Formula="r2hy + r2t2 * r2ey">
+      <Dependency Name="r2hy" />
+      <Dependency Name="r2t2" />
+      <Dependency Name="r2ey" />
+    </Number>
+    <Number Name="r2mx" Formula="(r2gx - RightCenter.X) / R">
+      <Dependency Name="r2gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r2my" Formula="(r2gy - L.Y) / R">
+      <Dependency Name="r2gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r2co" Formula="r2ex * r2mx + r2ey * r2my">
+      <Dependency Name="r2ex" />
+      <Dependency Name="r2mx" />
+      <Dependency Name="r2ey" />
+      <Dependency Name="r2my" />
+    </Number>
+    <Number Name="r2k" Formula="1 - 2.25 * (1 - r2co^2)">
+      <Dependency Name="r2co" />
+    </Number>
+    <Number Name="r2fx" Formula="1.5 * r2ex - (1.5 * r2co - sqrt(r2k)) * r2mx">
+      <Dependency Name="r2ex" />
+      <Dependency Name="r2co" />
+      <Dependency Name="r2k" />
+      <Dependency Name="r2mx" />
+    </Number>
+    <Number Name="r2fy" Formula="1.5 * r2ey - (1.5 * r2co - sqrt(r2k)) * r2my">
+      <Dependency Name="r2ey" />
+      <Dependency Name="r2co" />
+      <Dependency Name="r2k" />
+      <Dependency Name="r2my" />
+    </Number>
+    <PointByCoordinates Name="r2O" Visible="false" X="r2ox" Y="r2oy">
+      <Dependency Name="r2ox" />
+      <Dependency Name="r2oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r2In" Visible="false" X="if(r2hit, r2hx, r2ox + dx)" Y="if(r2hit, r2hy, r2oy + dy)">
+      <Dependency Name="r2hit" />
+      <Dependency Name="r2hx" />
+      <Dependency Name="r2ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r2hy" />
+      <Dependency Name="r2oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r2Out" Visible="false" X="if(r2hit, r2gx, r2ox + dx)" Y="if(r2hit, r2gy, r2oy + dy)">
+      <Dependency Name="r2hit" />
+      <Dependency Name="r2gx" />
+      <Dependency Name="r2ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r2gy" />
+      <Dependency Name="r2oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r2On" Visible="false" X="if(r2hit, r2gx + r2fx, r2ox + 2 * dx)" Y="if(r2hit, r2gy + r2fy, r2oy + 2 * dy)">
+      <Dependency Name="r2hit" />
+      <Dependency Name="r2gx" />
+      <Dependency Name="r2fx" />
+      <Dependency Name="r2ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r2gy" />
+      <Dependency Name="r2fy" />
+      <Dependency Name="r2oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r2SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r2O" />
+      <Dependency Name="r2In" />
+    </Segment>
+    <Segment Name="r2Sun" Style="Sunbeam">
+      <Dependency Name="r2O" />
+      <Dependency Name="r2In" />
+    </Segment>
+    <Segment Name="r2GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r2In" />
+      <Dependency Name="r2Out" />
+    </Segment>
+    <Segment Name="r2Glass" Style="Sunbeam">
+      <Dependency Name="r2In" />
+      <Dependency Name="r2Out" />
+    </Segment>
+    <Ray Name="r2HotGlow" Style="WarmGlow">
+      <Dependency Name="r2Out" />
+      <Dependency Name="r2On" />
+    </Ray>
+    <Ray Name="r2Hot" Style="Warm">
+      <Dependency Name="r2Out" />
+      <Dependency Name="r2On" />
+    </Ray>
+    <Number Name="r2heat" Formula="if(r2hit * (r2k &gt; 0), (abs((Wick.X - r2gx) * r2fy - (Wick.Y - r2gy) * r2fx) &lt; 0.25) * ((Wick.X - r2gx) * r2fx + (Wick.Y - r2gy) * r2fy &gt; 0), 0)">
+      <Dependency Name="r2hit" />
+      <Dependency Name="r2k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r2gx" />
+      <Dependency Name="r2fy" />
+      <Dependency Name="r2gy" />
+      <Dependency Name="r2fx" />
+    </Number>
+    <Number Name="r3ox" Formula="Sun.X - dy * -1.5">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r3oy" Formula="Sun.Y + dx * -1.5">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r3b" Formula="(r3ox - LeftCenter.X) * dx + (r3oy - L.Y) * dy">
+      <Dependency Name="r3ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r3oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r3disc" Formula="r3b^2 - (r3ox - LeftCenter.X)^2 - (r3oy - L.Y)^2 + R^2">
+      <Dependency Name="r3b" />
+      <Dependency Name="r3ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r3oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r3t" Formula="-r3b - sqrt(max(r3disc, 0))">
+      <Dependency Name="r3b" />
+      <Dependency Name="r3disc" />
+    </Number>
+    <Number Name="r3hx" Formula="r3ox + r3t * dx">
+      <Dependency Name="r3ox" />
+      <Dependency Name="r3t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r3hy" Formula="r3oy + r3t * dy">
+      <Dependency Name="r3oy" />
+      <Dependency Name="r3t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r3hit" Formula="(r3disc &gt; 0) * (abs(r3hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r3disc" />
+      <Dependency Name="r3hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r3nx" Formula="(r3hx - LeftCenter.X) / R">
+      <Dependency Name="r3hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r3ny" Formula="(r3hy - L.Y) / R">
+      <Dependency Name="r3hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r3ci" Formula="-(dx * r3nx + dy * r3ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r3nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r3ny" />
+    </Number>
+    <Number Name="r3sq" Formula="sqrt(1 - 0.666667^2 * (1 - r3ci^2))">
+      <Dependency Name="r3ci" />
+    </Number>
+    <Number Name="r3ex" Formula="0.666667 * dx + (0.666667 * r3ci - r3sq) * r3nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r3ci" />
+      <Dependency Name="r3sq" />
+      <Dependency Name="r3nx" />
+    </Number>
+    <Number Name="r3ey" Formula="0.666667 * dy + (0.666667 * r3ci - r3sq) * r3ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r3ci" />
+      <Dependency Name="r3sq" />
+      <Dependency Name="r3ny" />
+    </Number>
+    <Number Name="r3b2" Formula="(r3hx - RightCenter.X) * r3ex + (r3hy - L.Y) * r3ey">
+      <Dependency Name="r3hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r3ex" />
+      <Dependency Name="r3hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r3ey" />
+    </Number>
+    <Number Name="r3t2" Formula="-r3b2 + sqrt(max(r3b2^2 - (r3hx - RightCenter.X)^2 - (r3hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r3b2" />
+      <Dependency Name="r3hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r3hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r3gx" Formula="r3hx + r3t2 * r3ex">
+      <Dependency Name="r3hx" />
+      <Dependency Name="r3t2" />
+      <Dependency Name="r3ex" />
+    </Number>
+    <Number Name="r3gy" Formula="r3hy + r3t2 * r3ey">
+      <Dependency Name="r3hy" />
+      <Dependency Name="r3t2" />
+      <Dependency Name="r3ey" />
+    </Number>
+    <Number Name="r3mx" Formula="(r3gx - RightCenter.X) / R">
+      <Dependency Name="r3gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r3my" Formula="(r3gy - L.Y) / R">
+      <Dependency Name="r3gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r3co" Formula="r3ex * r3mx + r3ey * r3my">
+      <Dependency Name="r3ex" />
+      <Dependency Name="r3mx" />
+      <Dependency Name="r3ey" />
+      <Dependency Name="r3my" />
+    </Number>
+    <Number Name="r3k" Formula="1 - 2.25 * (1 - r3co^2)">
+      <Dependency Name="r3co" />
+    </Number>
+    <Number Name="r3fx" Formula="1.5 * r3ex - (1.5 * r3co - sqrt(r3k)) * r3mx">
+      <Dependency Name="r3ex" />
+      <Dependency Name="r3co" />
+      <Dependency Name="r3k" />
+      <Dependency Name="r3mx" />
+    </Number>
+    <Number Name="r3fy" Formula="1.5 * r3ey - (1.5 * r3co - sqrt(r3k)) * r3my">
+      <Dependency Name="r3ey" />
+      <Dependency Name="r3co" />
+      <Dependency Name="r3k" />
+      <Dependency Name="r3my" />
+    </Number>
+    <PointByCoordinates Name="r3O" Visible="false" X="r3ox" Y="r3oy">
+      <Dependency Name="r3ox" />
+      <Dependency Name="r3oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r3In" Visible="false" X="if(r3hit, r3hx, r3ox + dx)" Y="if(r3hit, r3hy, r3oy + dy)">
+      <Dependency Name="r3hit" />
+      <Dependency Name="r3hx" />
+      <Dependency Name="r3ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r3hy" />
+      <Dependency Name="r3oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r3Out" Visible="false" X="if(r3hit, r3gx, r3ox + dx)" Y="if(r3hit, r3gy, r3oy + dy)">
+      <Dependency Name="r3hit" />
+      <Dependency Name="r3gx" />
+      <Dependency Name="r3ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r3gy" />
+      <Dependency Name="r3oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r3On" Visible="false" X="if(r3hit, r3gx + r3fx, r3ox + 2 * dx)" Y="if(r3hit, r3gy + r3fy, r3oy + 2 * dy)">
+      <Dependency Name="r3hit" />
+      <Dependency Name="r3gx" />
+      <Dependency Name="r3fx" />
+      <Dependency Name="r3ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r3gy" />
+      <Dependency Name="r3fy" />
+      <Dependency Name="r3oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r3SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r3O" />
+      <Dependency Name="r3In" />
+    </Segment>
+    <Segment Name="r3Sun" Style="Sunbeam">
+      <Dependency Name="r3O" />
+      <Dependency Name="r3In" />
+    </Segment>
+    <Segment Name="r3GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r3In" />
+      <Dependency Name="r3Out" />
+    </Segment>
+    <Segment Name="r3Glass" Style="Sunbeam">
+      <Dependency Name="r3In" />
+      <Dependency Name="r3Out" />
+    </Segment>
+    <Ray Name="r3HotGlow" Style="WarmGlow">
+      <Dependency Name="r3Out" />
+      <Dependency Name="r3On" />
+    </Ray>
+    <Ray Name="r3Hot" Style="Warm">
+      <Dependency Name="r3Out" />
+      <Dependency Name="r3On" />
+    </Ray>
+    <Number Name="r3heat" Formula="if(r3hit * (r3k &gt; 0), (abs((Wick.X - r3gx) * r3fy - (Wick.Y - r3gy) * r3fx) &lt; 0.25) * ((Wick.X - r3gx) * r3fx + (Wick.Y - r3gy) * r3fy &gt; 0), 0)">
+      <Dependency Name="r3hit" />
+      <Dependency Name="r3k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r3gx" />
+      <Dependency Name="r3fy" />
+      <Dependency Name="r3gy" />
+      <Dependency Name="r3fx" />
+    </Number>
+    <Number Name="r4ox" Formula="Sun.X - dy * -1.2">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r4oy" Formula="Sun.Y + dx * -1.2">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r4b" Formula="(r4ox - LeftCenter.X) * dx + (r4oy - L.Y) * dy">
+      <Dependency Name="r4ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r4oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r4disc" Formula="r4b^2 - (r4ox - LeftCenter.X)^2 - (r4oy - L.Y)^2 + R^2">
+      <Dependency Name="r4b" />
+      <Dependency Name="r4ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r4oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r4t" Formula="-r4b - sqrt(max(r4disc, 0))">
+      <Dependency Name="r4b" />
+      <Dependency Name="r4disc" />
+    </Number>
+    <Number Name="r4hx" Formula="r4ox + r4t * dx">
+      <Dependency Name="r4ox" />
+      <Dependency Name="r4t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r4hy" Formula="r4oy + r4t * dy">
+      <Dependency Name="r4oy" />
+      <Dependency Name="r4t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r4hit" Formula="(r4disc &gt; 0) * (abs(r4hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r4disc" />
+      <Dependency Name="r4hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r4nx" Formula="(r4hx - LeftCenter.X) / R">
+      <Dependency Name="r4hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r4ny" Formula="(r4hy - L.Y) / R">
+      <Dependency Name="r4hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r4ci" Formula="-(dx * r4nx + dy * r4ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r4nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r4ny" />
+    </Number>
+    <Number Name="r4sq" Formula="sqrt(1 - 0.666667^2 * (1 - r4ci^2))">
+      <Dependency Name="r4ci" />
+    </Number>
+    <Number Name="r4ex" Formula="0.666667 * dx + (0.666667 * r4ci - r4sq) * r4nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r4ci" />
+      <Dependency Name="r4sq" />
+      <Dependency Name="r4nx" />
+    </Number>
+    <Number Name="r4ey" Formula="0.666667 * dy + (0.666667 * r4ci - r4sq) * r4ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r4ci" />
+      <Dependency Name="r4sq" />
+      <Dependency Name="r4ny" />
+    </Number>
+    <Number Name="r4b2" Formula="(r4hx - RightCenter.X) * r4ex + (r4hy - L.Y) * r4ey">
+      <Dependency Name="r4hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r4ex" />
+      <Dependency Name="r4hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r4ey" />
+    </Number>
+    <Number Name="r4t2" Formula="-r4b2 + sqrt(max(r4b2^2 - (r4hx - RightCenter.X)^2 - (r4hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r4b2" />
+      <Dependency Name="r4hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r4hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r4gx" Formula="r4hx + r4t2 * r4ex">
+      <Dependency Name="r4hx" />
+      <Dependency Name="r4t2" />
+      <Dependency Name="r4ex" />
+    </Number>
+    <Number Name="r4gy" Formula="r4hy + r4t2 * r4ey">
+      <Dependency Name="r4hy" />
+      <Dependency Name="r4t2" />
+      <Dependency Name="r4ey" />
+    </Number>
+    <Number Name="r4mx" Formula="(r4gx - RightCenter.X) / R">
+      <Dependency Name="r4gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r4my" Formula="(r4gy - L.Y) / R">
+      <Dependency Name="r4gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r4co" Formula="r4ex * r4mx + r4ey * r4my">
+      <Dependency Name="r4ex" />
+      <Dependency Name="r4mx" />
+      <Dependency Name="r4ey" />
+      <Dependency Name="r4my" />
+    </Number>
+    <Number Name="r4k" Formula="1 - 2.25 * (1 - r4co^2)">
+      <Dependency Name="r4co" />
+    </Number>
+    <Number Name="r4fx" Formula="1.5 * r4ex - (1.5 * r4co - sqrt(r4k)) * r4mx">
+      <Dependency Name="r4ex" />
+      <Dependency Name="r4co" />
+      <Dependency Name="r4k" />
+      <Dependency Name="r4mx" />
+    </Number>
+    <Number Name="r4fy" Formula="1.5 * r4ey - (1.5 * r4co - sqrt(r4k)) * r4my">
+      <Dependency Name="r4ey" />
+      <Dependency Name="r4co" />
+      <Dependency Name="r4k" />
+      <Dependency Name="r4my" />
+    </Number>
+    <PointByCoordinates Name="r4O" Visible="false" X="r4ox" Y="r4oy">
+      <Dependency Name="r4ox" />
+      <Dependency Name="r4oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r4In" Visible="false" X="if(r4hit, r4hx, r4ox + dx)" Y="if(r4hit, r4hy, r4oy + dy)">
+      <Dependency Name="r4hit" />
+      <Dependency Name="r4hx" />
+      <Dependency Name="r4ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r4hy" />
+      <Dependency Name="r4oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r4Out" Visible="false" X="if(r4hit, r4gx, r4ox + dx)" Y="if(r4hit, r4gy, r4oy + dy)">
+      <Dependency Name="r4hit" />
+      <Dependency Name="r4gx" />
+      <Dependency Name="r4ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r4gy" />
+      <Dependency Name="r4oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r4On" Visible="false" X="if(r4hit, r4gx + r4fx, r4ox + 2 * dx)" Y="if(r4hit, r4gy + r4fy, r4oy + 2 * dy)">
+      <Dependency Name="r4hit" />
+      <Dependency Name="r4gx" />
+      <Dependency Name="r4fx" />
+      <Dependency Name="r4ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r4gy" />
+      <Dependency Name="r4fy" />
+      <Dependency Name="r4oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r4SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r4O" />
+      <Dependency Name="r4In" />
+    </Segment>
+    <Segment Name="r4Sun" Style="Sunbeam">
+      <Dependency Name="r4O" />
+      <Dependency Name="r4In" />
+    </Segment>
+    <Segment Name="r4GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r4In" />
+      <Dependency Name="r4Out" />
+    </Segment>
+    <Segment Name="r4Glass" Style="Sunbeam">
+      <Dependency Name="r4In" />
+      <Dependency Name="r4Out" />
+    </Segment>
+    <Ray Name="r4HotGlow" Style="WarmGlow">
+      <Dependency Name="r4Out" />
+      <Dependency Name="r4On" />
+    </Ray>
+    <Ray Name="r4Hot" Style="Warm">
+      <Dependency Name="r4Out" />
+      <Dependency Name="r4On" />
+    </Ray>
+    <Number Name="r4heat" Formula="if(r4hit * (r4k &gt; 0), (abs((Wick.X - r4gx) * r4fy - (Wick.Y - r4gy) * r4fx) &lt; 0.25) * ((Wick.X - r4gx) * r4fx + (Wick.Y - r4gy) * r4fy &gt; 0), 0)">
+      <Dependency Name="r4hit" />
+      <Dependency Name="r4k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r4gx" />
+      <Dependency Name="r4fy" />
+      <Dependency Name="r4gy" />
+      <Dependency Name="r4fx" />
+    </Number>
+    <Number Name="r5ox" Formula="Sun.X - dy * -0.9">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r5oy" Formula="Sun.Y + dx * -0.9">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r5b" Formula="(r5ox - LeftCenter.X) * dx + (r5oy - L.Y) * dy">
+      <Dependency Name="r5ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r5oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r5disc" Formula="r5b^2 - (r5ox - LeftCenter.X)^2 - (r5oy - L.Y)^2 + R^2">
+      <Dependency Name="r5b" />
+      <Dependency Name="r5ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r5oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r5t" Formula="-r5b - sqrt(max(r5disc, 0))">
+      <Dependency Name="r5b" />
+      <Dependency Name="r5disc" />
+    </Number>
+    <Number Name="r5hx" Formula="r5ox + r5t * dx">
+      <Dependency Name="r5ox" />
+      <Dependency Name="r5t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r5hy" Formula="r5oy + r5t * dy">
+      <Dependency Name="r5oy" />
+      <Dependency Name="r5t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r5hit" Formula="(r5disc &gt; 0) * (abs(r5hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r5disc" />
+      <Dependency Name="r5hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r5nx" Formula="(r5hx - LeftCenter.X) / R">
+      <Dependency Name="r5hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r5ny" Formula="(r5hy - L.Y) / R">
+      <Dependency Name="r5hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r5ci" Formula="-(dx * r5nx + dy * r5ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r5nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r5ny" />
+    </Number>
+    <Number Name="r5sq" Formula="sqrt(1 - 0.666667^2 * (1 - r5ci^2))">
+      <Dependency Name="r5ci" />
+    </Number>
+    <Number Name="r5ex" Formula="0.666667 * dx + (0.666667 * r5ci - r5sq) * r5nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r5ci" />
+      <Dependency Name="r5sq" />
+      <Dependency Name="r5nx" />
+    </Number>
+    <Number Name="r5ey" Formula="0.666667 * dy + (0.666667 * r5ci - r5sq) * r5ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r5ci" />
+      <Dependency Name="r5sq" />
+      <Dependency Name="r5ny" />
+    </Number>
+    <Number Name="r5b2" Formula="(r5hx - RightCenter.X) * r5ex + (r5hy - L.Y) * r5ey">
+      <Dependency Name="r5hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r5ex" />
+      <Dependency Name="r5hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r5ey" />
+    </Number>
+    <Number Name="r5t2" Formula="-r5b2 + sqrt(max(r5b2^2 - (r5hx - RightCenter.X)^2 - (r5hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r5b2" />
+      <Dependency Name="r5hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r5hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r5gx" Formula="r5hx + r5t2 * r5ex">
+      <Dependency Name="r5hx" />
+      <Dependency Name="r5t2" />
+      <Dependency Name="r5ex" />
+    </Number>
+    <Number Name="r5gy" Formula="r5hy + r5t2 * r5ey">
+      <Dependency Name="r5hy" />
+      <Dependency Name="r5t2" />
+      <Dependency Name="r5ey" />
+    </Number>
+    <Number Name="r5mx" Formula="(r5gx - RightCenter.X) / R">
+      <Dependency Name="r5gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r5my" Formula="(r5gy - L.Y) / R">
+      <Dependency Name="r5gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r5co" Formula="r5ex * r5mx + r5ey * r5my">
+      <Dependency Name="r5ex" />
+      <Dependency Name="r5mx" />
+      <Dependency Name="r5ey" />
+      <Dependency Name="r5my" />
+    </Number>
+    <Number Name="r5k" Formula="1 - 2.25 * (1 - r5co^2)">
+      <Dependency Name="r5co" />
+    </Number>
+    <Number Name="r5fx" Formula="1.5 * r5ex - (1.5 * r5co - sqrt(r5k)) * r5mx">
+      <Dependency Name="r5ex" />
+      <Dependency Name="r5co" />
+      <Dependency Name="r5k" />
+      <Dependency Name="r5mx" />
+    </Number>
+    <Number Name="r5fy" Formula="1.5 * r5ey - (1.5 * r5co - sqrt(r5k)) * r5my">
+      <Dependency Name="r5ey" />
+      <Dependency Name="r5co" />
+      <Dependency Name="r5k" />
+      <Dependency Name="r5my" />
+    </Number>
+    <PointByCoordinates Name="r5O" Visible="false" X="r5ox" Y="r5oy">
+      <Dependency Name="r5ox" />
+      <Dependency Name="r5oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r5In" Visible="false" X="if(r5hit, r5hx, r5ox + dx)" Y="if(r5hit, r5hy, r5oy + dy)">
+      <Dependency Name="r5hit" />
+      <Dependency Name="r5hx" />
+      <Dependency Name="r5ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r5hy" />
+      <Dependency Name="r5oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r5Out" Visible="false" X="if(r5hit, r5gx, r5ox + dx)" Y="if(r5hit, r5gy, r5oy + dy)">
+      <Dependency Name="r5hit" />
+      <Dependency Name="r5gx" />
+      <Dependency Name="r5ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r5gy" />
+      <Dependency Name="r5oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r5On" Visible="false" X="if(r5hit, r5gx + r5fx, r5ox + 2 * dx)" Y="if(r5hit, r5gy + r5fy, r5oy + 2 * dy)">
+      <Dependency Name="r5hit" />
+      <Dependency Name="r5gx" />
+      <Dependency Name="r5fx" />
+      <Dependency Name="r5ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r5gy" />
+      <Dependency Name="r5fy" />
+      <Dependency Name="r5oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r5SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r5O" />
+      <Dependency Name="r5In" />
+    </Segment>
+    <Segment Name="r5Sun" Style="Sunbeam">
+      <Dependency Name="r5O" />
+      <Dependency Name="r5In" />
+    </Segment>
+    <Segment Name="r5GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r5In" />
+      <Dependency Name="r5Out" />
+    </Segment>
+    <Segment Name="r5Glass" Style="Sunbeam">
+      <Dependency Name="r5In" />
+      <Dependency Name="r5Out" />
+    </Segment>
+    <Ray Name="r5HotGlow" Style="WarmGlow">
+      <Dependency Name="r5Out" />
+      <Dependency Name="r5On" />
+    </Ray>
+    <Ray Name="r5Hot" Style="Warm">
+      <Dependency Name="r5Out" />
+      <Dependency Name="r5On" />
+    </Ray>
+    <Number Name="r5heat" Formula="if(r5hit * (r5k &gt; 0), (abs((Wick.X - r5gx) * r5fy - (Wick.Y - r5gy) * r5fx) &lt; 0.25) * ((Wick.X - r5gx) * r5fx + (Wick.Y - r5gy) * r5fy &gt; 0), 0)">
+      <Dependency Name="r5hit" />
+      <Dependency Name="r5k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r5gx" />
+      <Dependency Name="r5fy" />
+      <Dependency Name="r5gy" />
+      <Dependency Name="r5fx" />
+    </Number>
+    <Number Name="r6ox" Formula="Sun.X - dy * -0.6">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r6oy" Formula="Sun.Y + dx * -0.6">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r6b" Formula="(r6ox - LeftCenter.X) * dx + (r6oy - L.Y) * dy">
+      <Dependency Name="r6ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r6oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r6disc" Formula="r6b^2 - (r6ox - LeftCenter.X)^2 - (r6oy - L.Y)^2 + R^2">
+      <Dependency Name="r6b" />
+      <Dependency Name="r6ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r6oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r6t" Formula="-r6b - sqrt(max(r6disc, 0))">
+      <Dependency Name="r6b" />
+      <Dependency Name="r6disc" />
+    </Number>
+    <Number Name="r6hx" Formula="r6ox + r6t * dx">
+      <Dependency Name="r6ox" />
+      <Dependency Name="r6t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r6hy" Formula="r6oy + r6t * dy">
+      <Dependency Name="r6oy" />
+      <Dependency Name="r6t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r6hit" Formula="(r6disc &gt; 0) * (abs(r6hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r6disc" />
+      <Dependency Name="r6hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r6nx" Formula="(r6hx - LeftCenter.X) / R">
+      <Dependency Name="r6hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r6ny" Formula="(r6hy - L.Y) / R">
+      <Dependency Name="r6hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r6ci" Formula="-(dx * r6nx + dy * r6ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r6nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r6ny" />
+    </Number>
+    <Number Name="r6sq" Formula="sqrt(1 - 0.666667^2 * (1 - r6ci^2))">
+      <Dependency Name="r6ci" />
+    </Number>
+    <Number Name="r6ex" Formula="0.666667 * dx + (0.666667 * r6ci - r6sq) * r6nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r6ci" />
+      <Dependency Name="r6sq" />
+      <Dependency Name="r6nx" />
+    </Number>
+    <Number Name="r6ey" Formula="0.666667 * dy + (0.666667 * r6ci - r6sq) * r6ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r6ci" />
+      <Dependency Name="r6sq" />
+      <Dependency Name="r6ny" />
+    </Number>
+    <Number Name="r6b2" Formula="(r6hx - RightCenter.X) * r6ex + (r6hy - L.Y) * r6ey">
+      <Dependency Name="r6hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r6ex" />
+      <Dependency Name="r6hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r6ey" />
+    </Number>
+    <Number Name="r6t2" Formula="-r6b2 + sqrt(max(r6b2^2 - (r6hx - RightCenter.X)^2 - (r6hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r6b2" />
+      <Dependency Name="r6hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r6hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r6gx" Formula="r6hx + r6t2 * r6ex">
+      <Dependency Name="r6hx" />
+      <Dependency Name="r6t2" />
+      <Dependency Name="r6ex" />
+    </Number>
+    <Number Name="r6gy" Formula="r6hy + r6t2 * r6ey">
+      <Dependency Name="r6hy" />
+      <Dependency Name="r6t2" />
+      <Dependency Name="r6ey" />
+    </Number>
+    <Number Name="r6mx" Formula="(r6gx - RightCenter.X) / R">
+      <Dependency Name="r6gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r6my" Formula="(r6gy - L.Y) / R">
+      <Dependency Name="r6gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r6co" Formula="r6ex * r6mx + r6ey * r6my">
+      <Dependency Name="r6ex" />
+      <Dependency Name="r6mx" />
+      <Dependency Name="r6ey" />
+      <Dependency Name="r6my" />
+    </Number>
+    <Number Name="r6k" Formula="1 - 2.25 * (1 - r6co^2)">
+      <Dependency Name="r6co" />
+    </Number>
+    <Number Name="r6fx" Formula="1.5 * r6ex - (1.5 * r6co - sqrt(r6k)) * r6mx">
+      <Dependency Name="r6ex" />
+      <Dependency Name="r6co" />
+      <Dependency Name="r6k" />
+      <Dependency Name="r6mx" />
+    </Number>
+    <Number Name="r6fy" Formula="1.5 * r6ey - (1.5 * r6co - sqrt(r6k)) * r6my">
+      <Dependency Name="r6ey" />
+      <Dependency Name="r6co" />
+      <Dependency Name="r6k" />
+      <Dependency Name="r6my" />
+    </Number>
+    <PointByCoordinates Name="r6O" Visible="false" X="r6ox" Y="r6oy">
+      <Dependency Name="r6ox" />
+      <Dependency Name="r6oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r6In" Visible="false" X="if(r6hit, r6hx, r6ox + dx)" Y="if(r6hit, r6hy, r6oy + dy)">
+      <Dependency Name="r6hit" />
+      <Dependency Name="r6hx" />
+      <Dependency Name="r6ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r6hy" />
+      <Dependency Name="r6oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r6Out" Visible="false" X="if(r6hit, r6gx, r6ox + dx)" Y="if(r6hit, r6gy, r6oy + dy)">
+      <Dependency Name="r6hit" />
+      <Dependency Name="r6gx" />
+      <Dependency Name="r6ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r6gy" />
+      <Dependency Name="r6oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r6On" Visible="false" X="if(r6hit, r6gx + r6fx, r6ox + 2 * dx)" Y="if(r6hit, r6gy + r6fy, r6oy + 2 * dy)">
+      <Dependency Name="r6hit" />
+      <Dependency Name="r6gx" />
+      <Dependency Name="r6fx" />
+      <Dependency Name="r6ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r6gy" />
+      <Dependency Name="r6fy" />
+      <Dependency Name="r6oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r6SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r6O" />
+      <Dependency Name="r6In" />
+    </Segment>
+    <Segment Name="r6Sun" Style="Sunbeam">
+      <Dependency Name="r6O" />
+      <Dependency Name="r6In" />
+    </Segment>
+    <Segment Name="r6GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r6In" />
+      <Dependency Name="r6Out" />
+    </Segment>
+    <Segment Name="r6Glass" Style="Sunbeam">
+      <Dependency Name="r6In" />
+      <Dependency Name="r6Out" />
+    </Segment>
+    <Ray Name="r6HotGlow" Style="WarmGlow">
+      <Dependency Name="r6Out" />
+      <Dependency Name="r6On" />
+    </Ray>
+    <Ray Name="r6Hot" Style="Warm">
+      <Dependency Name="r6Out" />
+      <Dependency Name="r6On" />
+    </Ray>
+    <Number Name="r6heat" Formula="if(r6hit * (r6k &gt; 0), (abs((Wick.X - r6gx) * r6fy - (Wick.Y - r6gy) * r6fx) &lt; 0.25) * ((Wick.X - r6gx) * r6fx + (Wick.Y - r6gy) * r6fy &gt; 0), 0)">
+      <Dependency Name="r6hit" />
+      <Dependency Name="r6k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r6gx" />
+      <Dependency Name="r6fy" />
+      <Dependency Name="r6gy" />
+      <Dependency Name="r6fx" />
+    </Number>
+    <Number Name="r7ox" Formula="Sun.X - dy * -0.3">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r7oy" Formula="Sun.Y + dx * -0.3">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r7b" Formula="(r7ox - LeftCenter.X) * dx + (r7oy - L.Y) * dy">
+      <Dependency Name="r7ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r7oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r7disc" Formula="r7b^2 - (r7ox - LeftCenter.X)^2 - (r7oy - L.Y)^2 + R^2">
+      <Dependency Name="r7b" />
+      <Dependency Name="r7ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r7oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r7t" Formula="-r7b - sqrt(max(r7disc, 0))">
+      <Dependency Name="r7b" />
+      <Dependency Name="r7disc" />
+    </Number>
+    <Number Name="r7hx" Formula="r7ox + r7t * dx">
+      <Dependency Name="r7ox" />
+      <Dependency Name="r7t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r7hy" Formula="r7oy + r7t * dy">
+      <Dependency Name="r7oy" />
+      <Dependency Name="r7t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r7hit" Formula="(r7disc &gt; 0) * (abs(r7hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r7disc" />
+      <Dependency Name="r7hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r7nx" Formula="(r7hx - LeftCenter.X) / R">
+      <Dependency Name="r7hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r7ny" Formula="(r7hy - L.Y) / R">
+      <Dependency Name="r7hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r7ci" Formula="-(dx * r7nx + dy * r7ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r7nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r7ny" />
+    </Number>
+    <Number Name="r7sq" Formula="sqrt(1 - 0.666667^2 * (1 - r7ci^2))">
+      <Dependency Name="r7ci" />
+    </Number>
+    <Number Name="r7ex" Formula="0.666667 * dx + (0.666667 * r7ci - r7sq) * r7nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r7ci" />
+      <Dependency Name="r7sq" />
+      <Dependency Name="r7nx" />
+    </Number>
+    <Number Name="r7ey" Formula="0.666667 * dy + (0.666667 * r7ci - r7sq) * r7ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r7ci" />
+      <Dependency Name="r7sq" />
+      <Dependency Name="r7ny" />
+    </Number>
+    <Number Name="r7b2" Formula="(r7hx - RightCenter.X) * r7ex + (r7hy - L.Y) * r7ey">
+      <Dependency Name="r7hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r7ex" />
+      <Dependency Name="r7hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r7ey" />
+    </Number>
+    <Number Name="r7t2" Formula="-r7b2 + sqrt(max(r7b2^2 - (r7hx - RightCenter.X)^2 - (r7hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r7b2" />
+      <Dependency Name="r7hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r7hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r7gx" Formula="r7hx + r7t2 * r7ex">
+      <Dependency Name="r7hx" />
+      <Dependency Name="r7t2" />
+      <Dependency Name="r7ex" />
+    </Number>
+    <Number Name="r7gy" Formula="r7hy + r7t2 * r7ey">
+      <Dependency Name="r7hy" />
+      <Dependency Name="r7t2" />
+      <Dependency Name="r7ey" />
+    </Number>
+    <Number Name="r7mx" Formula="(r7gx - RightCenter.X) / R">
+      <Dependency Name="r7gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r7my" Formula="(r7gy - L.Y) / R">
+      <Dependency Name="r7gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r7co" Formula="r7ex * r7mx + r7ey * r7my">
+      <Dependency Name="r7ex" />
+      <Dependency Name="r7mx" />
+      <Dependency Name="r7ey" />
+      <Dependency Name="r7my" />
+    </Number>
+    <Number Name="r7k" Formula="1 - 2.25 * (1 - r7co^2)">
+      <Dependency Name="r7co" />
+    </Number>
+    <Number Name="r7fx" Formula="1.5 * r7ex - (1.5 * r7co - sqrt(r7k)) * r7mx">
+      <Dependency Name="r7ex" />
+      <Dependency Name="r7co" />
+      <Dependency Name="r7k" />
+      <Dependency Name="r7mx" />
+    </Number>
+    <Number Name="r7fy" Formula="1.5 * r7ey - (1.5 * r7co - sqrt(r7k)) * r7my">
+      <Dependency Name="r7ey" />
+      <Dependency Name="r7co" />
+      <Dependency Name="r7k" />
+      <Dependency Name="r7my" />
+    </Number>
+    <PointByCoordinates Name="r7O" Visible="false" X="r7ox" Y="r7oy">
+      <Dependency Name="r7ox" />
+      <Dependency Name="r7oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r7In" Visible="false" X="if(r7hit, r7hx, r7ox + dx)" Y="if(r7hit, r7hy, r7oy + dy)">
+      <Dependency Name="r7hit" />
+      <Dependency Name="r7hx" />
+      <Dependency Name="r7ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r7hy" />
+      <Dependency Name="r7oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r7Out" Visible="false" X="if(r7hit, r7gx, r7ox + dx)" Y="if(r7hit, r7gy, r7oy + dy)">
+      <Dependency Name="r7hit" />
+      <Dependency Name="r7gx" />
+      <Dependency Name="r7ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r7gy" />
+      <Dependency Name="r7oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r7On" Visible="false" X="if(r7hit, r7gx + r7fx, r7ox + 2 * dx)" Y="if(r7hit, r7gy + r7fy, r7oy + 2 * dy)">
+      <Dependency Name="r7hit" />
+      <Dependency Name="r7gx" />
+      <Dependency Name="r7fx" />
+      <Dependency Name="r7ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r7gy" />
+      <Dependency Name="r7fy" />
+      <Dependency Name="r7oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r7SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r7O" />
+      <Dependency Name="r7In" />
+    </Segment>
+    <Segment Name="r7Sun" Style="Sunbeam">
+      <Dependency Name="r7O" />
+      <Dependency Name="r7In" />
+    </Segment>
+    <Segment Name="r7GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r7In" />
+      <Dependency Name="r7Out" />
+    </Segment>
+    <Segment Name="r7Glass" Style="Sunbeam">
+      <Dependency Name="r7In" />
+      <Dependency Name="r7Out" />
+    </Segment>
+    <Ray Name="r7HotGlow" Style="WarmGlow">
+      <Dependency Name="r7Out" />
+      <Dependency Name="r7On" />
+    </Ray>
+    <Ray Name="r7Hot" Style="Warm">
+      <Dependency Name="r7Out" />
+      <Dependency Name="r7On" />
+    </Ray>
+    <Number Name="r7heat" Formula="if(r7hit * (r7k &gt; 0), (abs((Wick.X - r7gx) * r7fy - (Wick.Y - r7gy) * r7fx) &lt; 0.25) * ((Wick.X - r7gx) * r7fx + (Wick.Y - r7gy) * r7fy &gt; 0), 0)">
+      <Dependency Name="r7hit" />
+      <Dependency Name="r7k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r7gx" />
+      <Dependency Name="r7fy" />
+      <Dependency Name="r7gy" />
+      <Dependency Name="r7fx" />
+    </Number>
+    <Number Name="r8ox" Formula="Sun.X - dy * 0">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r8oy" Formula="Sun.Y + dx * 0">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r8b" Formula="(r8ox - LeftCenter.X) * dx + (r8oy - L.Y) * dy">
+      <Dependency Name="r8ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r8oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r8disc" Formula="r8b^2 - (r8ox - LeftCenter.X)^2 - (r8oy - L.Y)^2 + R^2">
+      <Dependency Name="r8b" />
+      <Dependency Name="r8ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r8oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r8t" Formula="-r8b - sqrt(max(r8disc, 0))">
+      <Dependency Name="r8b" />
+      <Dependency Name="r8disc" />
+    </Number>
+    <Number Name="r8hx" Formula="r8ox + r8t * dx">
+      <Dependency Name="r8ox" />
+      <Dependency Name="r8t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r8hy" Formula="r8oy + r8t * dy">
+      <Dependency Name="r8oy" />
+      <Dependency Name="r8t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r8hit" Formula="(r8disc &gt; 0) * (abs(r8hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r8disc" />
+      <Dependency Name="r8hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r8nx" Formula="(r8hx - LeftCenter.X) / R">
+      <Dependency Name="r8hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r8ny" Formula="(r8hy - L.Y) / R">
+      <Dependency Name="r8hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r8ci" Formula="-(dx * r8nx + dy * r8ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r8nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r8ny" />
+    </Number>
+    <Number Name="r8sq" Formula="sqrt(1 - 0.666667^2 * (1 - r8ci^2))">
+      <Dependency Name="r8ci" />
+    </Number>
+    <Number Name="r8ex" Formula="0.666667 * dx + (0.666667 * r8ci - r8sq) * r8nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r8ci" />
+      <Dependency Name="r8sq" />
+      <Dependency Name="r8nx" />
+    </Number>
+    <Number Name="r8ey" Formula="0.666667 * dy + (0.666667 * r8ci - r8sq) * r8ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r8ci" />
+      <Dependency Name="r8sq" />
+      <Dependency Name="r8ny" />
+    </Number>
+    <Number Name="r8b2" Formula="(r8hx - RightCenter.X) * r8ex + (r8hy - L.Y) * r8ey">
+      <Dependency Name="r8hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r8ex" />
+      <Dependency Name="r8hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r8ey" />
+    </Number>
+    <Number Name="r8t2" Formula="-r8b2 + sqrt(max(r8b2^2 - (r8hx - RightCenter.X)^2 - (r8hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r8b2" />
+      <Dependency Name="r8hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r8hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r8gx" Formula="r8hx + r8t2 * r8ex">
+      <Dependency Name="r8hx" />
+      <Dependency Name="r8t2" />
+      <Dependency Name="r8ex" />
+    </Number>
+    <Number Name="r8gy" Formula="r8hy + r8t2 * r8ey">
+      <Dependency Name="r8hy" />
+      <Dependency Name="r8t2" />
+      <Dependency Name="r8ey" />
+    </Number>
+    <Number Name="r8mx" Formula="(r8gx - RightCenter.X) / R">
+      <Dependency Name="r8gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r8my" Formula="(r8gy - L.Y) / R">
+      <Dependency Name="r8gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r8co" Formula="r8ex * r8mx + r8ey * r8my">
+      <Dependency Name="r8ex" />
+      <Dependency Name="r8mx" />
+      <Dependency Name="r8ey" />
+      <Dependency Name="r8my" />
+    </Number>
+    <Number Name="r8k" Formula="1 - 2.25 * (1 - r8co^2)">
+      <Dependency Name="r8co" />
+    </Number>
+    <Number Name="r8fx" Formula="1.5 * r8ex - (1.5 * r8co - sqrt(r8k)) * r8mx">
+      <Dependency Name="r8ex" />
+      <Dependency Name="r8co" />
+      <Dependency Name="r8k" />
+      <Dependency Name="r8mx" />
+    </Number>
+    <Number Name="r8fy" Formula="1.5 * r8ey - (1.5 * r8co - sqrt(r8k)) * r8my">
+      <Dependency Name="r8ey" />
+      <Dependency Name="r8co" />
+      <Dependency Name="r8k" />
+      <Dependency Name="r8my" />
+    </Number>
+    <PointByCoordinates Name="r8O" Visible="false" X="r8ox" Y="r8oy">
+      <Dependency Name="r8ox" />
+      <Dependency Name="r8oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r8In" Visible="false" X="if(r8hit, r8hx, r8ox + dx)" Y="if(r8hit, r8hy, r8oy + dy)">
+      <Dependency Name="r8hit" />
+      <Dependency Name="r8hx" />
+      <Dependency Name="r8ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r8hy" />
+      <Dependency Name="r8oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r8Out" Visible="false" X="if(r8hit, r8gx, r8ox + dx)" Y="if(r8hit, r8gy, r8oy + dy)">
+      <Dependency Name="r8hit" />
+      <Dependency Name="r8gx" />
+      <Dependency Name="r8ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r8gy" />
+      <Dependency Name="r8oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r8On" Visible="false" X="if(r8hit, r8gx + r8fx, r8ox + 2 * dx)" Y="if(r8hit, r8gy + r8fy, r8oy + 2 * dy)">
+      <Dependency Name="r8hit" />
+      <Dependency Name="r8gx" />
+      <Dependency Name="r8fx" />
+      <Dependency Name="r8ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r8gy" />
+      <Dependency Name="r8fy" />
+      <Dependency Name="r8oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r8SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r8O" />
+      <Dependency Name="r8In" />
+    </Segment>
+    <Segment Name="r8Sun" Style="Sunbeam">
+      <Dependency Name="r8O" />
+      <Dependency Name="r8In" />
+    </Segment>
+    <Segment Name="r8GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r8In" />
+      <Dependency Name="r8Out" />
+    </Segment>
+    <Segment Name="r8Glass" Style="Sunbeam">
+      <Dependency Name="r8In" />
+      <Dependency Name="r8Out" />
+    </Segment>
+    <Ray Name="r8HotGlow" Style="WarmGlow">
+      <Dependency Name="r8Out" />
+      <Dependency Name="r8On" />
+    </Ray>
+    <Ray Name="r8Hot" Style="Warm">
+      <Dependency Name="r8Out" />
+      <Dependency Name="r8On" />
+    </Ray>
+    <Number Name="r8heat" Formula="if(r8hit * (r8k &gt; 0), (abs((Wick.X - r8gx) * r8fy - (Wick.Y - r8gy) * r8fx) &lt; 0.25) * ((Wick.X - r8gx) * r8fx + (Wick.Y - r8gy) * r8fy &gt; 0), 0)">
+      <Dependency Name="r8hit" />
+      <Dependency Name="r8k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r8gx" />
+      <Dependency Name="r8fy" />
+      <Dependency Name="r8gy" />
+      <Dependency Name="r8fx" />
+    </Number>
+    <Number Name="r9ox" Formula="Sun.X - dy * 0.3">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r9oy" Formula="Sun.Y + dx * 0.3">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r9b" Formula="(r9ox - LeftCenter.X) * dx + (r9oy - L.Y) * dy">
+      <Dependency Name="r9ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r9oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r9disc" Formula="r9b^2 - (r9ox - LeftCenter.X)^2 - (r9oy - L.Y)^2 + R^2">
+      <Dependency Name="r9b" />
+      <Dependency Name="r9ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r9oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r9t" Formula="-r9b - sqrt(max(r9disc, 0))">
+      <Dependency Name="r9b" />
+      <Dependency Name="r9disc" />
+    </Number>
+    <Number Name="r9hx" Formula="r9ox + r9t * dx">
+      <Dependency Name="r9ox" />
+      <Dependency Name="r9t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r9hy" Formula="r9oy + r9t * dy">
+      <Dependency Name="r9oy" />
+      <Dependency Name="r9t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r9hit" Formula="(r9disc &gt; 0) * (abs(r9hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r9disc" />
+      <Dependency Name="r9hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r9nx" Formula="(r9hx - LeftCenter.X) / R">
+      <Dependency Name="r9hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r9ny" Formula="(r9hy - L.Y) / R">
+      <Dependency Name="r9hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r9ci" Formula="-(dx * r9nx + dy * r9ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r9nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r9ny" />
+    </Number>
+    <Number Name="r9sq" Formula="sqrt(1 - 0.666667^2 * (1 - r9ci^2))">
+      <Dependency Name="r9ci" />
+    </Number>
+    <Number Name="r9ex" Formula="0.666667 * dx + (0.666667 * r9ci - r9sq) * r9nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r9ci" />
+      <Dependency Name="r9sq" />
+      <Dependency Name="r9nx" />
+    </Number>
+    <Number Name="r9ey" Formula="0.666667 * dy + (0.666667 * r9ci - r9sq) * r9ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r9ci" />
+      <Dependency Name="r9sq" />
+      <Dependency Name="r9ny" />
+    </Number>
+    <Number Name="r9b2" Formula="(r9hx - RightCenter.X) * r9ex + (r9hy - L.Y) * r9ey">
+      <Dependency Name="r9hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r9ex" />
+      <Dependency Name="r9hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r9ey" />
+    </Number>
+    <Number Name="r9t2" Formula="-r9b2 + sqrt(max(r9b2^2 - (r9hx - RightCenter.X)^2 - (r9hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r9b2" />
+      <Dependency Name="r9hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r9hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r9gx" Formula="r9hx + r9t2 * r9ex">
+      <Dependency Name="r9hx" />
+      <Dependency Name="r9t2" />
+      <Dependency Name="r9ex" />
+    </Number>
+    <Number Name="r9gy" Formula="r9hy + r9t2 * r9ey">
+      <Dependency Name="r9hy" />
+      <Dependency Name="r9t2" />
+      <Dependency Name="r9ey" />
+    </Number>
+    <Number Name="r9mx" Formula="(r9gx - RightCenter.X) / R">
+      <Dependency Name="r9gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r9my" Formula="(r9gy - L.Y) / R">
+      <Dependency Name="r9gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r9co" Formula="r9ex * r9mx + r9ey * r9my">
+      <Dependency Name="r9ex" />
+      <Dependency Name="r9mx" />
+      <Dependency Name="r9ey" />
+      <Dependency Name="r9my" />
+    </Number>
+    <Number Name="r9k" Formula="1 - 2.25 * (1 - r9co^2)">
+      <Dependency Name="r9co" />
+    </Number>
+    <Number Name="r9fx" Formula="1.5 * r9ex - (1.5 * r9co - sqrt(r9k)) * r9mx">
+      <Dependency Name="r9ex" />
+      <Dependency Name="r9co" />
+      <Dependency Name="r9k" />
+      <Dependency Name="r9mx" />
+    </Number>
+    <Number Name="r9fy" Formula="1.5 * r9ey - (1.5 * r9co - sqrt(r9k)) * r9my">
+      <Dependency Name="r9ey" />
+      <Dependency Name="r9co" />
+      <Dependency Name="r9k" />
+      <Dependency Name="r9my" />
+    </Number>
+    <PointByCoordinates Name="r9O" Visible="false" X="r9ox" Y="r9oy">
+      <Dependency Name="r9ox" />
+      <Dependency Name="r9oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r9In" Visible="false" X="if(r9hit, r9hx, r9ox + dx)" Y="if(r9hit, r9hy, r9oy + dy)">
+      <Dependency Name="r9hit" />
+      <Dependency Name="r9hx" />
+      <Dependency Name="r9ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r9hy" />
+      <Dependency Name="r9oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r9Out" Visible="false" X="if(r9hit, r9gx, r9ox + dx)" Y="if(r9hit, r9gy, r9oy + dy)">
+      <Dependency Name="r9hit" />
+      <Dependency Name="r9gx" />
+      <Dependency Name="r9ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r9gy" />
+      <Dependency Name="r9oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r9On" Visible="false" X="if(r9hit, r9gx + r9fx, r9ox + 2 * dx)" Y="if(r9hit, r9gy + r9fy, r9oy + 2 * dy)">
+      <Dependency Name="r9hit" />
+      <Dependency Name="r9gx" />
+      <Dependency Name="r9fx" />
+      <Dependency Name="r9ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r9gy" />
+      <Dependency Name="r9fy" />
+      <Dependency Name="r9oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r9SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r9O" />
+      <Dependency Name="r9In" />
+    </Segment>
+    <Segment Name="r9Sun" Style="Sunbeam">
+      <Dependency Name="r9O" />
+      <Dependency Name="r9In" />
+    </Segment>
+    <Segment Name="r9GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r9In" />
+      <Dependency Name="r9Out" />
+    </Segment>
+    <Segment Name="r9Glass" Style="Sunbeam">
+      <Dependency Name="r9In" />
+      <Dependency Name="r9Out" />
+    </Segment>
+    <Ray Name="r9HotGlow" Style="WarmGlow">
+      <Dependency Name="r9Out" />
+      <Dependency Name="r9On" />
+    </Ray>
+    <Ray Name="r9Hot" Style="Warm">
+      <Dependency Name="r9Out" />
+      <Dependency Name="r9On" />
+    </Ray>
+    <Number Name="r9heat" Formula="if(r9hit * (r9k &gt; 0), (abs((Wick.X - r9gx) * r9fy - (Wick.Y - r9gy) * r9fx) &lt; 0.25) * ((Wick.X - r9gx) * r9fx + (Wick.Y - r9gy) * r9fy &gt; 0), 0)">
+      <Dependency Name="r9hit" />
+      <Dependency Name="r9k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r9gx" />
+      <Dependency Name="r9fy" />
+      <Dependency Name="r9gy" />
+      <Dependency Name="r9fx" />
+    </Number>
+    <Number Name="r10ox" Formula="Sun.X - dy * 0.6">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r10oy" Formula="Sun.Y + dx * 0.6">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r10b" Formula="(r10ox - LeftCenter.X) * dx + (r10oy - L.Y) * dy">
+      <Dependency Name="r10ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r10oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r10disc" Formula="r10b^2 - (r10ox - LeftCenter.X)^2 - (r10oy - L.Y)^2 + R^2">
+      <Dependency Name="r10b" />
+      <Dependency Name="r10ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r10oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r10t" Formula="-r10b - sqrt(max(r10disc, 0))">
+      <Dependency Name="r10b" />
+      <Dependency Name="r10disc" />
+    </Number>
+    <Number Name="r10hx" Formula="r10ox + r10t * dx">
+      <Dependency Name="r10ox" />
+      <Dependency Name="r10t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r10hy" Formula="r10oy + r10t * dy">
+      <Dependency Name="r10oy" />
+      <Dependency Name="r10t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r10hit" Formula="(r10disc &gt; 0) * (abs(r10hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r10disc" />
+      <Dependency Name="r10hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r10nx" Formula="(r10hx - LeftCenter.X) / R">
+      <Dependency Name="r10hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r10ny" Formula="(r10hy - L.Y) / R">
+      <Dependency Name="r10hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r10ci" Formula="-(dx * r10nx + dy * r10ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r10nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r10ny" />
+    </Number>
+    <Number Name="r10sq" Formula="sqrt(1 - 0.666667^2 * (1 - r10ci^2))">
+      <Dependency Name="r10ci" />
+    </Number>
+    <Number Name="r10ex" Formula="0.666667 * dx + (0.666667 * r10ci - r10sq) * r10nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r10ci" />
+      <Dependency Name="r10sq" />
+      <Dependency Name="r10nx" />
+    </Number>
+    <Number Name="r10ey" Formula="0.666667 * dy + (0.666667 * r10ci - r10sq) * r10ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r10ci" />
+      <Dependency Name="r10sq" />
+      <Dependency Name="r10ny" />
+    </Number>
+    <Number Name="r10b2" Formula="(r10hx - RightCenter.X) * r10ex + (r10hy - L.Y) * r10ey">
+      <Dependency Name="r10hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r10ex" />
+      <Dependency Name="r10hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r10ey" />
+    </Number>
+    <Number Name="r10t2" Formula="-r10b2 + sqrt(max(r10b2^2 - (r10hx - RightCenter.X)^2 - (r10hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r10b2" />
+      <Dependency Name="r10hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r10hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r10gx" Formula="r10hx + r10t2 * r10ex">
+      <Dependency Name="r10hx" />
+      <Dependency Name="r10t2" />
+      <Dependency Name="r10ex" />
+    </Number>
+    <Number Name="r10gy" Formula="r10hy + r10t2 * r10ey">
+      <Dependency Name="r10hy" />
+      <Dependency Name="r10t2" />
+      <Dependency Name="r10ey" />
+    </Number>
+    <Number Name="r10mx" Formula="(r10gx - RightCenter.X) / R">
+      <Dependency Name="r10gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r10my" Formula="(r10gy - L.Y) / R">
+      <Dependency Name="r10gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r10co" Formula="r10ex * r10mx + r10ey * r10my">
+      <Dependency Name="r10ex" />
+      <Dependency Name="r10mx" />
+      <Dependency Name="r10ey" />
+      <Dependency Name="r10my" />
+    </Number>
+    <Number Name="r10k" Formula="1 - 2.25 * (1 - r10co^2)">
+      <Dependency Name="r10co" />
+    </Number>
+    <Number Name="r10fx" Formula="1.5 * r10ex - (1.5 * r10co - sqrt(r10k)) * r10mx">
+      <Dependency Name="r10ex" />
+      <Dependency Name="r10co" />
+      <Dependency Name="r10k" />
+      <Dependency Name="r10mx" />
+    </Number>
+    <Number Name="r10fy" Formula="1.5 * r10ey - (1.5 * r10co - sqrt(r10k)) * r10my">
+      <Dependency Name="r10ey" />
+      <Dependency Name="r10co" />
+      <Dependency Name="r10k" />
+      <Dependency Name="r10my" />
+    </Number>
+    <PointByCoordinates Name="r10O" Visible="false" X="r10ox" Y="r10oy">
+      <Dependency Name="r10ox" />
+      <Dependency Name="r10oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r10In" Visible="false" X="if(r10hit, r10hx, r10ox + dx)" Y="if(r10hit, r10hy, r10oy + dy)">
+      <Dependency Name="r10hit" />
+      <Dependency Name="r10hx" />
+      <Dependency Name="r10ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r10hy" />
+      <Dependency Name="r10oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r10Out" Visible="false" X="if(r10hit, r10gx, r10ox + dx)" Y="if(r10hit, r10gy, r10oy + dy)">
+      <Dependency Name="r10hit" />
+      <Dependency Name="r10gx" />
+      <Dependency Name="r10ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r10gy" />
+      <Dependency Name="r10oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r10On" Visible="false" X="if(r10hit, r10gx + r10fx, r10ox + 2 * dx)" Y="if(r10hit, r10gy + r10fy, r10oy + 2 * dy)">
+      <Dependency Name="r10hit" />
+      <Dependency Name="r10gx" />
+      <Dependency Name="r10fx" />
+      <Dependency Name="r10ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r10gy" />
+      <Dependency Name="r10fy" />
+      <Dependency Name="r10oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r10SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r10O" />
+      <Dependency Name="r10In" />
+    </Segment>
+    <Segment Name="r10Sun" Style="Sunbeam">
+      <Dependency Name="r10O" />
+      <Dependency Name="r10In" />
+    </Segment>
+    <Segment Name="r10GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r10In" />
+      <Dependency Name="r10Out" />
+    </Segment>
+    <Segment Name="r10Glass" Style="Sunbeam">
+      <Dependency Name="r10In" />
+      <Dependency Name="r10Out" />
+    </Segment>
+    <Ray Name="r10HotGlow" Style="WarmGlow">
+      <Dependency Name="r10Out" />
+      <Dependency Name="r10On" />
+    </Ray>
+    <Ray Name="r10Hot" Style="Warm">
+      <Dependency Name="r10Out" />
+      <Dependency Name="r10On" />
+    </Ray>
+    <Number Name="r10heat" Formula="if(r10hit * (r10k &gt; 0), (abs((Wick.X - r10gx) * r10fy - (Wick.Y - r10gy) * r10fx) &lt; 0.25) * ((Wick.X - r10gx) * r10fx + (Wick.Y - r10gy) * r10fy &gt; 0), 0)">
+      <Dependency Name="r10hit" />
+      <Dependency Name="r10k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r10gx" />
+      <Dependency Name="r10fy" />
+      <Dependency Name="r10gy" />
+      <Dependency Name="r10fx" />
+    </Number>
+    <Number Name="r11ox" Formula="Sun.X - dy * 0.9">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r11oy" Formula="Sun.Y + dx * 0.9">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r11b" Formula="(r11ox - LeftCenter.X) * dx + (r11oy - L.Y) * dy">
+      <Dependency Name="r11ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r11oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r11disc" Formula="r11b^2 - (r11ox - LeftCenter.X)^2 - (r11oy - L.Y)^2 + R^2">
+      <Dependency Name="r11b" />
+      <Dependency Name="r11ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r11oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r11t" Formula="-r11b - sqrt(max(r11disc, 0))">
+      <Dependency Name="r11b" />
+      <Dependency Name="r11disc" />
+    </Number>
+    <Number Name="r11hx" Formula="r11ox + r11t * dx">
+      <Dependency Name="r11ox" />
+      <Dependency Name="r11t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r11hy" Formula="r11oy + r11t * dy">
+      <Dependency Name="r11oy" />
+      <Dependency Name="r11t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r11hit" Formula="(r11disc &gt; 0) * (abs(r11hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r11disc" />
+      <Dependency Name="r11hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r11nx" Formula="(r11hx - LeftCenter.X) / R">
+      <Dependency Name="r11hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r11ny" Formula="(r11hy - L.Y) / R">
+      <Dependency Name="r11hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r11ci" Formula="-(dx * r11nx + dy * r11ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r11nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r11ny" />
+    </Number>
+    <Number Name="r11sq" Formula="sqrt(1 - 0.666667^2 * (1 - r11ci^2))">
+      <Dependency Name="r11ci" />
+    </Number>
+    <Number Name="r11ex" Formula="0.666667 * dx + (0.666667 * r11ci - r11sq) * r11nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r11ci" />
+      <Dependency Name="r11sq" />
+      <Dependency Name="r11nx" />
+    </Number>
+    <Number Name="r11ey" Formula="0.666667 * dy + (0.666667 * r11ci - r11sq) * r11ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r11ci" />
+      <Dependency Name="r11sq" />
+      <Dependency Name="r11ny" />
+    </Number>
+    <Number Name="r11b2" Formula="(r11hx - RightCenter.X) * r11ex + (r11hy - L.Y) * r11ey">
+      <Dependency Name="r11hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r11ex" />
+      <Dependency Name="r11hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r11ey" />
+    </Number>
+    <Number Name="r11t2" Formula="-r11b2 + sqrt(max(r11b2^2 - (r11hx - RightCenter.X)^2 - (r11hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r11b2" />
+      <Dependency Name="r11hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r11hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r11gx" Formula="r11hx + r11t2 * r11ex">
+      <Dependency Name="r11hx" />
+      <Dependency Name="r11t2" />
+      <Dependency Name="r11ex" />
+    </Number>
+    <Number Name="r11gy" Formula="r11hy + r11t2 * r11ey">
+      <Dependency Name="r11hy" />
+      <Dependency Name="r11t2" />
+      <Dependency Name="r11ey" />
+    </Number>
+    <Number Name="r11mx" Formula="(r11gx - RightCenter.X) / R">
+      <Dependency Name="r11gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r11my" Formula="(r11gy - L.Y) / R">
+      <Dependency Name="r11gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r11co" Formula="r11ex * r11mx + r11ey * r11my">
+      <Dependency Name="r11ex" />
+      <Dependency Name="r11mx" />
+      <Dependency Name="r11ey" />
+      <Dependency Name="r11my" />
+    </Number>
+    <Number Name="r11k" Formula="1 - 2.25 * (1 - r11co^2)">
+      <Dependency Name="r11co" />
+    </Number>
+    <Number Name="r11fx" Formula="1.5 * r11ex - (1.5 * r11co - sqrt(r11k)) * r11mx">
+      <Dependency Name="r11ex" />
+      <Dependency Name="r11co" />
+      <Dependency Name="r11k" />
+      <Dependency Name="r11mx" />
+    </Number>
+    <Number Name="r11fy" Formula="1.5 * r11ey - (1.5 * r11co - sqrt(r11k)) * r11my">
+      <Dependency Name="r11ey" />
+      <Dependency Name="r11co" />
+      <Dependency Name="r11k" />
+      <Dependency Name="r11my" />
+    </Number>
+    <PointByCoordinates Name="r11O" Visible="false" X="r11ox" Y="r11oy">
+      <Dependency Name="r11ox" />
+      <Dependency Name="r11oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r11In" Visible="false" X="if(r11hit, r11hx, r11ox + dx)" Y="if(r11hit, r11hy, r11oy + dy)">
+      <Dependency Name="r11hit" />
+      <Dependency Name="r11hx" />
+      <Dependency Name="r11ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r11hy" />
+      <Dependency Name="r11oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r11Out" Visible="false" X="if(r11hit, r11gx, r11ox + dx)" Y="if(r11hit, r11gy, r11oy + dy)">
+      <Dependency Name="r11hit" />
+      <Dependency Name="r11gx" />
+      <Dependency Name="r11ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r11gy" />
+      <Dependency Name="r11oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r11On" Visible="false" X="if(r11hit, r11gx + r11fx, r11ox + 2 * dx)" Y="if(r11hit, r11gy + r11fy, r11oy + 2 * dy)">
+      <Dependency Name="r11hit" />
+      <Dependency Name="r11gx" />
+      <Dependency Name="r11fx" />
+      <Dependency Name="r11ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r11gy" />
+      <Dependency Name="r11fy" />
+      <Dependency Name="r11oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r11SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r11O" />
+      <Dependency Name="r11In" />
+    </Segment>
+    <Segment Name="r11Sun" Style="Sunbeam">
+      <Dependency Name="r11O" />
+      <Dependency Name="r11In" />
+    </Segment>
+    <Segment Name="r11GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r11In" />
+      <Dependency Name="r11Out" />
+    </Segment>
+    <Segment Name="r11Glass" Style="Sunbeam">
+      <Dependency Name="r11In" />
+      <Dependency Name="r11Out" />
+    </Segment>
+    <Ray Name="r11HotGlow" Style="WarmGlow">
+      <Dependency Name="r11Out" />
+      <Dependency Name="r11On" />
+    </Ray>
+    <Ray Name="r11Hot" Style="Warm">
+      <Dependency Name="r11Out" />
+      <Dependency Name="r11On" />
+    </Ray>
+    <Number Name="r11heat" Formula="if(r11hit * (r11k &gt; 0), (abs((Wick.X - r11gx) * r11fy - (Wick.Y - r11gy) * r11fx) &lt; 0.25) * ((Wick.X - r11gx) * r11fx + (Wick.Y - r11gy) * r11fy &gt; 0), 0)">
+      <Dependency Name="r11hit" />
+      <Dependency Name="r11k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r11gx" />
+      <Dependency Name="r11fy" />
+      <Dependency Name="r11gy" />
+      <Dependency Name="r11fx" />
+    </Number>
+    <Number Name="r12ox" Formula="Sun.X - dy * 1.2">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r12oy" Formula="Sun.Y + dx * 1.2">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r12b" Formula="(r12ox - LeftCenter.X) * dx + (r12oy - L.Y) * dy">
+      <Dependency Name="r12ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r12oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r12disc" Formula="r12b^2 - (r12ox - LeftCenter.X)^2 - (r12oy - L.Y)^2 + R^2">
+      <Dependency Name="r12b" />
+      <Dependency Name="r12ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r12oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r12t" Formula="-r12b - sqrt(max(r12disc, 0))">
+      <Dependency Name="r12b" />
+      <Dependency Name="r12disc" />
+    </Number>
+    <Number Name="r12hx" Formula="r12ox + r12t * dx">
+      <Dependency Name="r12ox" />
+      <Dependency Name="r12t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r12hy" Formula="r12oy + r12t * dy">
+      <Dependency Name="r12oy" />
+      <Dependency Name="r12t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r12hit" Formula="(r12disc &gt; 0) * (abs(r12hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r12disc" />
+      <Dependency Name="r12hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r12nx" Formula="(r12hx - LeftCenter.X) / R">
+      <Dependency Name="r12hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r12ny" Formula="(r12hy - L.Y) / R">
+      <Dependency Name="r12hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r12ci" Formula="-(dx * r12nx + dy * r12ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r12nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r12ny" />
+    </Number>
+    <Number Name="r12sq" Formula="sqrt(1 - 0.666667^2 * (1 - r12ci^2))">
+      <Dependency Name="r12ci" />
+    </Number>
+    <Number Name="r12ex" Formula="0.666667 * dx + (0.666667 * r12ci - r12sq) * r12nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r12ci" />
+      <Dependency Name="r12sq" />
+      <Dependency Name="r12nx" />
+    </Number>
+    <Number Name="r12ey" Formula="0.666667 * dy + (0.666667 * r12ci - r12sq) * r12ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r12ci" />
+      <Dependency Name="r12sq" />
+      <Dependency Name="r12ny" />
+    </Number>
+    <Number Name="r12b2" Formula="(r12hx - RightCenter.X) * r12ex + (r12hy - L.Y) * r12ey">
+      <Dependency Name="r12hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r12ex" />
+      <Dependency Name="r12hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r12ey" />
+    </Number>
+    <Number Name="r12t2" Formula="-r12b2 + sqrt(max(r12b2^2 - (r12hx - RightCenter.X)^2 - (r12hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r12b2" />
+      <Dependency Name="r12hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r12hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r12gx" Formula="r12hx + r12t2 * r12ex">
+      <Dependency Name="r12hx" />
+      <Dependency Name="r12t2" />
+      <Dependency Name="r12ex" />
+    </Number>
+    <Number Name="r12gy" Formula="r12hy + r12t2 * r12ey">
+      <Dependency Name="r12hy" />
+      <Dependency Name="r12t2" />
+      <Dependency Name="r12ey" />
+    </Number>
+    <Number Name="r12mx" Formula="(r12gx - RightCenter.X) / R">
+      <Dependency Name="r12gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r12my" Formula="(r12gy - L.Y) / R">
+      <Dependency Name="r12gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r12co" Formula="r12ex * r12mx + r12ey * r12my">
+      <Dependency Name="r12ex" />
+      <Dependency Name="r12mx" />
+      <Dependency Name="r12ey" />
+      <Dependency Name="r12my" />
+    </Number>
+    <Number Name="r12k" Formula="1 - 2.25 * (1 - r12co^2)">
+      <Dependency Name="r12co" />
+    </Number>
+    <Number Name="r12fx" Formula="1.5 * r12ex - (1.5 * r12co - sqrt(r12k)) * r12mx">
+      <Dependency Name="r12ex" />
+      <Dependency Name="r12co" />
+      <Dependency Name="r12k" />
+      <Dependency Name="r12mx" />
+    </Number>
+    <Number Name="r12fy" Formula="1.5 * r12ey - (1.5 * r12co - sqrt(r12k)) * r12my">
+      <Dependency Name="r12ey" />
+      <Dependency Name="r12co" />
+      <Dependency Name="r12k" />
+      <Dependency Name="r12my" />
+    </Number>
+    <PointByCoordinates Name="r12O" Visible="false" X="r12ox" Y="r12oy">
+      <Dependency Name="r12ox" />
+      <Dependency Name="r12oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r12In" Visible="false" X="if(r12hit, r12hx, r12ox + dx)" Y="if(r12hit, r12hy, r12oy + dy)">
+      <Dependency Name="r12hit" />
+      <Dependency Name="r12hx" />
+      <Dependency Name="r12ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r12hy" />
+      <Dependency Name="r12oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r12Out" Visible="false" X="if(r12hit, r12gx, r12ox + dx)" Y="if(r12hit, r12gy, r12oy + dy)">
+      <Dependency Name="r12hit" />
+      <Dependency Name="r12gx" />
+      <Dependency Name="r12ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r12gy" />
+      <Dependency Name="r12oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r12On" Visible="false" X="if(r12hit, r12gx + r12fx, r12ox + 2 * dx)" Y="if(r12hit, r12gy + r12fy, r12oy + 2 * dy)">
+      <Dependency Name="r12hit" />
+      <Dependency Name="r12gx" />
+      <Dependency Name="r12fx" />
+      <Dependency Name="r12ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r12gy" />
+      <Dependency Name="r12fy" />
+      <Dependency Name="r12oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r12SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r12O" />
+      <Dependency Name="r12In" />
+    </Segment>
+    <Segment Name="r12Sun" Style="Sunbeam">
+      <Dependency Name="r12O" />
+      <Dependency Name="r12In" />
+    </Segment>
+    <Segment Name="r12GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r12In" />
+      <Dependency Name="r12Out" />
+    </Segment>
+    <Segment Name="r12Glass" Style="Sunbeam">
+      <Dependency Name="r12In" />
+      <Dependency Name="r12Out" />
+    </Segment>
+    <Ray Name="r12HotGlow" Style="WarmGlow">
+      <Dependency Name="r12Out" />
+      <Dependency Name="r12On" />
+    </Ray>
+    <Ray Name="r12Hot" Style="Warm">
+      <Dependency Name="r12Out" />
+      <Dependency Name="r12On" />
+    </Ray>
+    <Number Name="r12heat" Formula="if(r12hit * (r12k &gt; 0), (abs((Wick.X - r12gx) * r12fy - (Wick.Y - r12gy) * r12fx) &lt; 0.25) * ((Wick.X - r12gx) * r12fx + (Wick.Y - r12gy) * r12fy &gt; 0), 0)">
+      <Dependency Name="r12hit" />
+      <Dependency Name="r12k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r12gx" />
+      <Dependency Name="r12fy" />
+      <Dependency Name="r12gy" />
+      <Dependency Name="r12fx" />
+    </Number>
+    <Number Name="r13ox" Formula="Sun.X - dy * 1.5">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r13oy" Formula="Sun.Y + dx * 1.5">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r13b" Formula="(r13ox - LeftCenter.X) * dx + (r13oy - L.Y) * dy">
+      <Dependency Name="r13ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r13oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r13disc" Formula="r13b^2 - (r13ox - LeftCenter.X)^2 - (r13oy - L.Y)^2 + R^2">
+      <Dependency Name="r13b" />
+      <Dependency Name="r13ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r13oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r13t" Formula="-r13b - sqrt(max(r13disc, 0))">
+      <Dependency Name="r13b" />
+      <Dependency Name="r13disc" />
+    </Number>
+    <Number Name="r13hx" Formula="r13ox + r13t * dx">
+      <Dependency Name="r13ox" />
+      <Dependency Name="r13t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r13hy" Formula="r13oy + r13t * dy">
+      <Dependency Name="r13oy" />
+      <Dependency Name="r13t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r13hit" Formula="(r13disc &gt; 0) * (abs(r13hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r13disc" />
+      <Dependency Name="r13hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r13nx" Formula="(r13hx - LeftCenter.X) / R">
+      <Dependency Name="r13hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r13ny" Formula="(r13hy - L.Y) / R">
+      <Dependency Name="r13hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r13ci" Formula="-(dx * r13nx + dy * r13ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r13nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r13ny" />
+    </Number>
+    <Number Name="r13sq" Formula="sqrt(1 - 0.666667^2 * (1 - r13ci^2))">
+      <Dependency Name="r13ci" />
+    </Number>
+    <Number Name="r13ex" Formula="0.666667 * dx + (0.666667 * r13ci - r13sq) * r13nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r13ci" />
+      <Dependency Name="r13sq" />
+      <Dependency Name="r13nx" />
+    </Number>
+    <Number Name="r13ey" Formula="0.666667 * dy + (0.666667 * r13ci - r13sq) * r13ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r13ci" />
+      <Dependency Name="r13sq" />
+      <Dependency Name="r13ny" />
+    </Number>
+    <Number Name="r13b2" Formula="(r13hx - RightCenter.X) * r13ex + (r13hy - L.Y) * r13ey">
+      <Dependency Name="r13hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r13ex" />
+      <Dependency Name="r13hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r13ey" />
+    </Number>
+    <Number Name="r13t2" Formula="-r13b2 + sqrt(max(r13b2^2 - (r13hx - RightCenter.X)^2 - (r13hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r13b2" />
+      <Dependency Name="r13hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r13hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r13gx" Formula="r13hx + r13t2 * r13ex">
+      <Dependency Name="r13hx" />
+      <Dependency Name="r13t2" />
+      <Dependency Name="r13ex" />
+    </Number>
+    <Number Name="r13gy" Formula="r13hy + r13t2 * r13ey">
+      <Dependency Name="r13hy" />
+      <Dependency Name="r13t2" />
+      <Dependency Name="r13ey" />
+    </Number>
+    <Number Name="r13mx" Formula="(r13gx - RightCenter.X) / R">
+      <Dependency Name="r13gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r13my" Formula="(r13gy - L.Y) / R">
+      <Dependency Name="r13gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r13co" Formula="r13ex * r13mx + r13ey * r13my">
+      <Dependency Name="r13ex" />
+      <Dependency Name="r13mx" />
+      <Dependency Name="r13ey" />
+      <Dependency Name="r13my" />
+    </Number>
+    <Number Name="r13k" Formula="1 - 2.25 * (1 - r13co^2)">
+      <Dependency Name="r13co" />
+    </Number>
+    <Number Name="r13fx" Formula="1.5 * r13ex - (1.5 * r13co - sqrt(r13k)) * r13mx">
+      <Dependency Name="r13ex" />
+      <Dependency Name="r13co" />
+      <Dependency Name="r13k" />
+      <Dependency Name="r13mx" />
+    </Number>
+    <Number Name="r13fy" Formula="1.5 * r13ey - (1.5 * r13co - sqrt(r13k)) * r13my">
+      <Dependency Name="r13ey" />
+      <Dependency Name="r13co" />
+      <Dependency Name="r13k" />
+      <Dependency Name="r13my" />
+    </Number>
+    <PointByCoordinates Name="r13O" Visible="false" X="r13ox" Y="r13oy">
+      <Dependency Name="r13ox" />
+      <Dependency Name="r13oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r13In" Visible="false" X="if(r13hit, r13hx, r13ox + dx)" Y="if(r13hit, r13hy, r13oy + dy)">
+      <Dependency Name="r13hit" />
+      <Dependency Name="r13hx" />
+      <Dependency Name="r13ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r13hy" />
+      <Dependency Name="r13oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r13Out" Visible="false" X="if(r13hit, r13gx, r13ox + dx)" Y="if(r13hit, r13gy, r13oy + dy)">
+      <Dependency Name="r13hit" />
+      <Dependency Name="r13gx" />
+      <Dependency Name="r13ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r13gy" />
+      <Dependency Name="r13oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r13On" Visible="false" X="if(r13hit, r13gx + r13fx, r13ox + 2 * dx)" Y="if(r13hit, r13gy + r13fy, r13oy + 2 * dy)">
+      <Dependency Name="r13hit" />
+      <Dependency Name="r13gx" />
+      <Dependency Name="r13fx" />
+      <Dependency Name="r13ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r13gy" />
+      <Dependency Name="r13fy" />
+      <Dependency Name="r13oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r13SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r13O" />
+      <Dependency Name="r13In" />
+    </Segment>
+    <Segment Name="r13Sun" Style="Sunbeam">
+      <Dependency Name="r13O" />
+      <Dependency Name="r13In" />
+    </Segment>
+    <Segment Name="r13GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r13In" />
+      <Dependency Name="r13Out" />
+    </Segment>
+    <Segment Name="r13Glass" Style="Sunbeam">
+      <Dependency Name="r13In" />
+      <Dependency Name="r13Out" />
+    </Segment>
+    <Ray Name="r13HotGlow" Style="WarmGlow">
+      <Dependency Name="r13Out" />
+      <Dependency Name="r13On" />
+    </Ray>
+    <Ray Name="r13Hot" Style="Warm">
+      <Dependency Name="r13Out" />
+      <Dependency Name="r13On" />
+    </Ray>
+    <Number Name="r13heat" Formula="if(r13hit * (r13k &gt; 0), (abs((Wick.X - r13gx) * r13fy - (Wick.Y - r13gy) * r13fx) &lt; 0.25) * ((Wick.X - r13gx) * r13fx + (Wick.Y - r13gy) * r13fy &gt; 0), 0)">
+      <Dependency Name="r13hit" />
+      <Dependency Name="r13k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r13gx" />
+      <Dependency Name="r13fy" />
+      <Dependency Name="r13gy" />
+      <Dependency Name="r13fx" />
+    </Number>
+    <Number Name="r14ox" Formula="Sun.X - dy * 1.8">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r14oy" Formula="Sun.Y + dx * 1.8">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r14b" Formula="(r14ox - LeftCenter.X) * dx + (r14oy - L.Y) * dy">
+      <Dependency Name="r14ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r14oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r14disc" Formula="r14b^2 - (r14ox - LeftCenter.X)^2 - (r14oy - L.Y)^2 + R^2">
+      <Dependency Name="r14b" />
+      <Dependency Name="r14ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r14oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r14t" Formula="-r14b - sqrt(max(r14disc, 0))">
+      <Dependency Name="r14b" />
+      <Dependency Name="r14disc" />
+    </Number>
+    <Number Name="r14hx" Formula="r14ox + r14t * dx">
+      <Dependency Name="r14ox" />
+      <Dependency Name="r14t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r14hy" Formula="r14oy + r14t * dy">
+      <Dependency Name="r14oy" />
+      <Dependency Name="r14t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r14hit" Formula="(r14disc &gt; 0) * (abs(r14hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r14disc" />
+      <Dependency Name="r14hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r14nx" Formula="(r14hx - LeftCenter.X) / R">
+      <Dependency Name="r14hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r14ny" Formula="(r14hy - L.Y) / R">
+      <Dependency Name="r14hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r14ci" Formula="-(dx * r14nx + dy * r14ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r14nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r14ny" />
+    </Number>
+    <Number Name="r14sq" Formula="sqrt(1 - 0.666667^2 * (1 - r14ci^2))">
+      <Dependency Name="r14ci" />
+    </Number>
+    <Number Name="r14ex" Formula="0.666667 * dx + (0.666667 * r14ci - r14sq) * r14nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r14ci" />
+      <Dependency Name="r14sq" />
+      <Dependency Name="r14nx" />
+    </Number>
+    <Number Name="r14ey" Formula="0.666667 * dy + (0.666667 * r14ci - r14sq) * r14ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r14ci" />
+      <Dependency Name="r14sq" />
+      <Dependency Name="r14ny" />
+    </Number>
+    <Number Name="r14b2" Formula="(r14hx - RightCenter.X) * r14ex + (r14hy - L.Y) * r14ey">
+      <Dependency Name="r14hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r14ex" />
+      <Dependency Name="r14hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r14ey" />
+    </Number>
+    <Number Name="r14t2" Formula="-r14b2 + sqrt(max(r14b2^2 - (r14hx - RightCenter.X)^2 - (r14hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r14b2" />
+      <Dependency Name="r14hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r14hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r14gx" Formula="r14hx + r14t2 * r14ex">
+      <Dependency Name="r14hx" />
+      <Dependency Name="r14t2" />
+      <Dependency Name="r14ex" />
+    </Number>
+    <Number Name="r14gy" Formula="r14hy + r14t2 * r14ey">
+      <Dependency Name="r14hy" />
+      <Dependency Name="r14t2" />
+      <Dependency Name="r14ey" />
+    </Number>
+    <Number Name="r14mx" Formula="(r14gx - RightCenter.X) / R">
+      <Dependency Name="r14gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r14my" Formula="(r14gy - L.Y) / R">
+      <Dependency Name="r14gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r14co" Formula="r14ex * r14mx + r14ey * r14my">
+      <Dependency Name="r14ex" />
+      <Dependency Name="r14mx" />
+      <Dependency Name="r14ey" />
+      <Dependency Name="r14my" />
+    </Number>
+    <Number Name="r14k" Formula="1 - 2.25 * (1 - r14co^2)">
+      <Dependency Name="r14co" />
+    </Number>
+    <Number Name="r14fx" Formula="1.5 * r14ex - (1.5 * r14co - sqrt(r14k)) * r14mx">
+      <Dependency Name="r14ex" />
+      <Dependency Name="r14co" />
+      <Dependency Name="r14k" />
+      <Dependency Name="r14mx" />
+    </Number>
+    <Number Name="r14fy" Formula="1.5 * r14ey - (1.5 * r14co - sqrt(r14k)) * r14my">
+      <Dependency Name="r14ey" />
+      <Dependency Name="r14co" />
+      <Dependency Name="r14k" />
+      <Dependency Name="r14my" />
+    </Number>
+    <PointByCoordinates Name="r14O" Visible="false" X="r14ox" Y="r14oy">
+      <Dependency Name="r14ox" />
+      <Dependency Name="r14oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r14In" Visible="false" X="if(r14hit, r14hx, r14ox + dx)" Y="if(r14hit, r14hy, r14oy + dy)">
+      <Dependency Name="r14hit" />
+      <Dependency Name="r14hx" />
+      <Dependency Name="r14ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r14hy" />
+      <Dependency Name="r14oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r14Out" Visible="false" X="if(r14hit, r14gx, r14ox + dx)" Y="if(r14hit, r14gy, r14oy + dy)">
+      <Dependency Name="r14hit" />
+      <Dependency Name="r14gx" />
+      <Dependency Name="r14ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r14gy" />
+      <Dependency Name="r14oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r14On" Visible="false" X="if(r14hit, r14gx + r14fx, r14ox + 2 * dx)" Y="if(r14hit, r14gy + r14fy, r14oy + 2 * dy)">
+      <Dependency Name="r14hit" />
+      <Dependency Name="r14gx" />
+      <Dependency Name="r14fx" />
+      <Dependency Name="r14ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r14gy" />
+      <Dependency Name="r14fy" />
+      <Dependency Name="r14oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r14SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r14O" />
+      <Dependency Name="r14In" />
+    </Segment>
+    <Segment Name="r14Sun" Style="Sunbeam">
+      <Dependency Name="r14O" />
+      <Dependency Name="r14In" />
+    </Segment>
+    <Segment Name="r14GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r14In" />
+      <Dependency Name="r14Out" />
+    </Segment>
+    <Segment Name="r14Glass" Style="Sunbeam">
+      <Dependency Name="r14In" />
+      <Dependency Name="r14Out" />
+    </Segment>
+    <Ray Name="r14HotGlow" Style="WarmGlow">
+      <Dependency Name="r14Out" />
+      <Dependency Name="r14On" />
+    </Ray>
+    <Ray Name="r14Hot" Style="Warm">
+      <Dependency Name="r14Out" />
+      <Dependency Name="r14On" />
+    </Ray>
+    <Number Name="r14heat" Formula="if(r14hit * (r14k &gt; 0), (abs((Wick.X - r14gx) * r14fy - (Wick.Y - r14gy) * r14fx) &lt; 0.25) * ((Wick.X - r14gx) * r14fx + (Wick.Y - r14gy) * r14fy &gt; 0), 0)">
+      <Dependency Name="r14hit" />
+      <Dependency Name="r14k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r14gx" />
+      <Dependency Name="r14fy" />
+      <Dependency Name="r14gy" />
+      <Dependency Name="r14fx" />
+    </Number>
+    <Number Name="r15ox" Formula="Sun.X - dy * 2.1">
+      <Dependency Name="Sun" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r15oy" Formula="Sun.Y + dx * 2.1">
+      <Dependency Name="Sun" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r15b" Formula="(r15ox - LeftCenter.X) * dx + (r15oy - L.Y) * dy">
+      <Dependency Name="r15ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="dx" />
+      <Dependency Name="r15oy" />
+      <Dependency Name="L" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r15disc" Formula="r15b^2 - (r15ox - LeftCenter.X)^2 - (r15oy - L.Y)^2 + R^2">
+      <Dependency Name="r15b" />
+      <Dependency Name="r15ox" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="r15oy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r15t" Formula="-r15b - sqrt(max(r15disc, 0))">
+      <Dependency Name="r15b" />
+      <Dependency Name="r15disc" />
+    </Number>
+    <Number Name="r15hx" Formula="r15ox + r15t * dx">
+      <Dependency Name="r15ox" />
+      <Dependency Name="r15t" />
+      <Dependency Name="dx" />
+    </Number>
+    <Number Name="r15hy" Formula="r15oy + r15t * dy">
+      <Dependency Name="r15oy" />
+      <Dependency Name="r15t" />
+      <Dependency Name="dy" />
+    </Number>
+    <Number Name="r15hit" Formula="(r15disc &gt; 0) * (abs(r15hy - L.Y) &lt; 2.4)">
+      <Dependency Name="r15disc" />
+      <Dependency Name="r15hy" />
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="r15nx" Formula="(r15hx - LeftCenter.X) / R">
+      <Dependency Name="r15hx" />
+      <Dependency Name="LeftCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r15ny" Formula="(r15hy - L.Y) / R">
+      <Dependency Name="r15hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r15ci" Formula="-(dx * r15nx + dy * r15ny)">
+      <Dependency Name="dx" />
+      <Dependency Name="r15nx" />
+      <Dependency Name="dy" />
+      <Dependency Name="r15ny" />
+    </Number>
+    <Number Name="r15sq" Formula="sqrt(1 - 0.666667^2 * (1 - r15ci^2))">
+      <Dependency Name="r15ci" />
+    </Number>
+    <Number Name="r15ex" Formula="0.666667 * dx + (0.666667 * r15ci - r15sq) * r15nx">
+      <Dependency Name="dx" />
+      <Dependency Name="r15ci" />
+      <Dependency Name="r15sq" />
+      <Dependency Name="r15nx" />
+    </Number>
+    <Number Name="r15ey" Formula="0.666667 * dy + (0.666667 * r15ci - r15sq) * r15ny">
+      <Dependency Name="dy" />
+      <Dependency Name="r15ci" />
+      <Dependency Name="r15sq" />
+      <Dependency Name="r15ny" />
+    </Number>
+    <Number Name="r15b2" Formula="(r15hx - RightCenter.X) * r15ex + (r15hy - L.Y) * r15ey">
+      <Dependency Name="r15hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r15ex" />
+      <Dependency Name="r15hy" />
+      <Dependency Name="L" />
+      <Dependency Name="r15ey" />
+    </Number>
+    <Number Name="r15t2" Formula="-r15b2 + sqrt(max(r15b2^2 - (r15hx - RightCenter.X)^2 - (r15hy - L.Y)^2 + R^2, 0))">
+      <Dependency Name="r15b2" />
+      <Dependency Name="r15hx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="r15hy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r15gx" Formula="r15hx + r15t2 * r15ex">
+      <Dependency Name="r15hx" />
+      <Dependency Name="r15t2" />
+      <Dependency Name="r15ex" />
+    </Number>
+    <Number Name="r15gy" Formula="r15hy + r15t2 * r15ey">
+      <Dependency Name="r15hy" />
+      <Dependency Name="r15t2" />
+      <Dependency Name="r15ey" />
+    </Number>
+    <Number Name="r15mx" Formula="(r15gx - RightCenter.X) / R">
+      <Dependency Name="r15gx" />
+      <Dependency Name="RightCenter" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r15my" Formula="(r15gy - L.Y) / R">
+      <Dependency Name="r15gy" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <Number Name="r15co" Formula="r15ex * r15mx + r15ey * r15my">
+      <Dependency Name="r15ex" />
+      <Dependency Name="r15mx" />
+      <Dependency Name="r15ey" />
+      <Dependency Name="r15my" />
+    </Number>
+    <Number Name="r15k" Formula="1 - 2.25 * (1 - r15co^2)">
+      <Dependency Name="r15co" />
+    </Number>
+    <Number Name="r15fx" Formula="1.5 * r15ex - (1.5 * r15co - sqrt(r15k)) * r15mx">
+      <Dependency Name="r15ex" />
+      <Dependency Name="r15co" />
+      <Dependency Name="r15k" />
+      <Dependency Name="r15mx" />
+    </Number>
+    <Number Name="r15fy" Formula="1.5 * r15ey - (1.5 * r15co - sqrt(r15k)) * r15my">
+      <Dependency Name="r15ey" />
+      <Dependency Name="r15co" />
+      <Dependency Name="r15k" />
+      <Dependency Name="r15my" />
+    </Number>
+    <PointByCoordinates Name="r15O" Visible="false" X="r15ox" Y="r15oy">
+      <Dependency Name="r15ox" />
+      <Dependency Name="r15oy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r15In" Visible="false" X="if(r15hit, r15hx, r15ox + dx)" Y="if(r15hit, r15hy, r15oy + dy)">
+      <Dependency Name="r15hit" />
+      <Dependency Name="r15hx" />
+      <Dependency Name="r15ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r15hy" />
+      <Dependency Name="r15oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r15Out" Visible="false" X="if(r15hit, r15gx, r15ox + dx)" Y="if(r15hit, r15gy, r15oy + dy)">
+      <Dependency Name="r15hit" />
+      <Dependency Name="r15gx" />
+      <Dependency Name="r15ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r15gy" />
+      <Dependency Name="r15oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="r15On" Visible="false" X="if(r15hit, r15gx + r15fx, r15ox + 2 * dx)" Y="if(r15hit, r15gy + r15fy, r15oy + 2 * dy)">
+      <Dependency Name="r15hit" />
+      <Dependency Name="r15gx" />
+      <Dependency Name="r15fx" />
+      <Dependency Name="r15ox" />
+      <Dependency Name="dx" />
+      <Dependency Name="r15gy" />
+      <Dependency Name="r15fy" />
+      <Dependency Name="r15oy" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <Segment Name="r15SunGlow" Style="SunbeamGlow">
+      <Dependency Name="r15O" />
+      <Dependency Name="r15In" />
+    </Segment>
+    <Segment Name="r15Sun" Style="Sunbeam">
+      <Dependency Name="r15O" />
+      <Dependency Name="r15In" />
+    </Segment>
+    <Segment Name="r15GlassGlow" Style="SunbeamGlow">
+      <Dependency Name="r15In" />
+      <Dependency Name="r15Out" />
+    </Segment>
+    <Segment Name="r15Glass" Style="Sunbeam">
+      <Dependency Name="r15In" />
+      <Dependency Name="r15Out" />
+    </Segment>
+    <Ray Name="r15HotGlow" Style="WarmGlow">
+      <Dependency Name="r15Out" />
+      <Dependency Name="r15On" />
+    </Ray>
+    <Ray Name="r15Hot" Style="Warm">
+      <Dependency Name="r15Out" />
+      <Dependency Name="r15On" />
+    </Ray>
+    <Number Name="r15heat" Formula="if(r15hit * (r15k &gt; 0), (abs((Wick.X - r15gx) * r15fy - (Wick.Y - r15gy) * r15fx) &lt; 0.25) * ((Wick.X - r15gx) * r15fx + (Wick.Y - r15gy) * r15fy &gt; 0), 0)">
+      <Dependency Name="r15hit" />
+      <Dependency Name="r15k" />
+      <Dependency Name="Wick" />
+      <Dependency Name="r15gx" />
+      <Dependency Name="r15fy" />
+      <Dependency Name="r15gy" />
+      <Dependency Name="r15fx" />
+    </Number>
+    <Number Name="beams" Formula="r1heat + r2heat + r3heat + r4heat + r5heat + r6heat + r7heat + r8heat + r9heat + r10heat + r11heat + r12heat + r13heat + r14heat + r15heat">
+      <Dependency Name="r1heat" />
+      <Dependency Name="r2heat" />
+      <Dependency Name="r3heat" />
+      <Dependency Name="r4heat" />
+      <Dependency Name="r5heat" />
+      <Dependency Name="r6heat" />
+      <Dependency Name="r7heat" />
+      <Dependency Name="r8heat" />
+      <Dependency Name="r9heat" />
+      <Dependency Name="r10heat" />
+      <Dependency Name="r11heat" />
+      <Dependency Name="r12heat" />
+      <Dependency Name="r13heat" />
+      <Dependency Name="r14heat" />
+      <Dependency Name="r15heat" />
+    </Number>
+    <Polygon Name="Saucer" Style="Saucer">
+      <Dependency Name="SaucerA" />
+      <Dependency Name="SaucerB" />
+      <Dependency Name="SaucerC" />
+      <Dependency Name="SaucerD" />
+    </Polygon>
+    <Polygon Name="Wax" Style="Wax">
+      <Dependency Name="WaxA" />
+      <Dependency Name="WaxB" />
+      <Dependency Name="WaxC" />
+      <Dependency Name="WaxD" />
+    </Polygon>
+    <Segment Name="WickLine" Style="Wick">
+      <Dependency Name="WickBottom" />
+      <Dependency Name="Wick" />
+    </Segment>
+    <PointByCoordinates Name="Fire" Style="Fire" X="Wick.X + 0 * sqrt(beams - 10.5)" Y="Wick.Y + 0.4">
+      <Dependency Name="Wick" />
+      <Dependency Name="beams" />
+    </PointByCoordinates>
+    <Label Name="Title" Style="Heading" Text="Light It with the Sun" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" DecimalsToShow="0" Text="Sunlight comes in parallel beams. A lens bends each beam a little, the outer ones more, so that they all squeeze together in one bright, hot spot: the focus. Get enough sunlight onto the wick and the candle lights!\n\nMove the candle, or the lens, until the beams meet right at the wick. Drag the sun up or down and watch the spot move. Pull the handle on the lens: a fatter lens bends harder and its focus comes closer.\n\nLook closely and the beams don't meet in one point: the outer ones cross a bit nearer the lens. Every lens with round sides does that.\n\nBeams on the wick: [beams]. It takes 11.\n\nThe Olympic flame is lit this way at Olympia in Greece, with a curved mirror and the sun." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true">
+      <Dependency Name="beams" />
+    </Label>
+  </Figures>
+</Drawing>

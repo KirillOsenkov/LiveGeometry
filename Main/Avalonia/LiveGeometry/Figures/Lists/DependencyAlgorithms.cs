@@ -69,9 +69,10 @@ public static partial class DependencyAlgorithms
     public static IEnumerable<T> FindRoots<T>(Func<T, IEnumerable<T>> childrenSelector, IEnumerable<T> list)
     {
         List<T> result = new List<T>();
+        var visited = new HashSet<T>();
         foreach (var figure in list)
         {
-            FindRoots(childrenSelector, figure, result.Add);
+            FindRoots(childrenSelector, figure, result.Add, visited);
         }
 
         return result.Distinct();
@@ -82,6 +83,16 @@ public static partial class DependencyAlgorithms
     /// </summary>
     public static void FindRoots<T>(Func<T, IEnumerable<T>> childrenSelector, T figure, Action<T> collector)
     {
+        FindRoots(childrenSelector, figure, collector, new HashSet<T>());
+    }
+
+    /// <summary>
+    /// Each figure once: what two figures are both built on was walked again for each of
+    /// them, and a drawing of numbers worked out from numbers in long chains of such
+    /// diamonds (a ray traced through a prism) took seconds at every press of the mouse.
+    /// </summary>
+    static void FindRoots<T>(Func<T, IEnumerable<T>> childrenSelector, T figure, Action<T> collector, HashSet<T> visited)
+    {
         Stack<T> stack = new Stack<T>();
         stack.Push(figure);
         while (!stack.IsEmpty())
@@ -91,6 +102,10 @@ public static partial class DependencyAlgorithms
                 throw new InvalidOperationException("Weird, we hit a cycle in a DAG, need to investigate this bug");
             }
             figure = stack.Pop();
+            if (!visited.Add(figure))
+            {
+                continue;
+            }
             var children = childrenSelector(figure);
             if (children.IsEmpty())
             {
@@ -108,23 +123,39 @@ public static partial class DependencyAlgorithms
 
     public static bool FigureCompletelyDependsOnFigures(IFigure figure, IEnumerable<IFigure> set)
     {
-        if (set.Contains(figure))
+        return FigureCompletelyDependsOnFigures(figure, set, new Dictionary<IFigure, bool>());
+    }
+
+    // (the answer for each figure once, as FindRoots walks each figure once)
+    static bool FigureCompletelyDependsOnFigures(IFigure figure, IEnumerable<IFigure> set, Dictionary<IFigure, bool> known)
+    {
+        if (known.TryGetValue(figure, out var answer))
         {
-            return true;
+            return answer;
         }
-        if (figure.Dependencies.IsEmpty())
+
+        answer = true;
+        if (!set.Contains(figure))
         {
-            return false;
-        }
-        foreach (var dependency in figure.Dependencies)
-        {
-            var result = FigureCompletelyDependsOnFigures(dependency, set);
-            if (!result)
+            if (figure.Dependencies.IsEmpty())
             {
-                return false;
+                answer = false;
+            }
+            else
+            {
+                foreach (var dependency in figure.Dependencies)
+                {
+                    if (!FigureCompletelyDependsOnFigures(dependency, set, known))
+                    {
+                        answer = false;
+                        break;
+                    }
+                }
             }
         }
-        return true;
+
+        known[figure] = answer;
+        return answer;
     }
 
     public static List<IFigure> FindImpactedDependencyChain(IFigure source, IFigure sink)

@@ -1158,6 +1158,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   tool that records a figure while its last point is still the one following the cursor
   (the Angle tool added its arc with the preview; both figures are made at the end now).
   `Actions.MoveBefore` is the repair, and knows parts (`RootFigureList.FindTopLevel`).
+- **A walk over dependencies visits each figure once** (a visited set, or an answer kept
+  per figure): the graph is a DAG full of diamonds, and a walk that goes down every path
+  takes a time that doubles with each link of a chain of them. Numbers worked out from
+  numbers (a ray traced through a prism, 2026-10-24) hung the window on loading in
+  `DependsOn`, the cycle check of every name an expression compiles, and took seconds at
+  each press in `DependencyAlgorithms.FindRoots`. The player's `dependsOn` is the same.
 - **The figure list checks itself in Debug builds only** (`CheckConsistencyInDebug`: after a
   click of a tool, a recalculation of what is built on a figure, a file read): every
   dependency and dependent of a figure is in the drawing and registered both ways. A
@@ -3056,6 +3062,28 @@ buttons and checkboxes, 3D, custom tools.
   the points'), and C's name at `OffsetX="-4" OffsetY="-22"` covered C, so a drag on C
   dragged the name. Check with a hover under the Drag tool: the status must name the
   point first.
+- **The optics batch** (2026-10-24, five drawings at the end of the gallery, all written by
+  `dotnet tools/optics.cs -- <the Drawings folder>` and a `--rewrite`): The Upside-Down
+  Candle (`UpsideDownCandle.lgf`: a thin lens whose sides are two circles, their
+  Intersection the glass, focus = radius for n = 1.5; the picture is the candle scaled by
+  m = f / (f - u) at the image distance, shown real past the lens or as a dashed ghost
+  behind it, each gated by `0 * sqrt(...)`), Light It with the Sun (`BurningGlass.lgf`:
+  15 sunbeams refracted exactly at both circular faces by Snell's law in vector form, each
+  step a hidden `Number`; a 🔥 exists once enough beams pass the wick), Make a Rainbow
+  (`Prism.lgf`: heavy flint indices per color, a beam traced to whichever side it meets
+  first, reflected inside where it can't get out, out through the next side), Inside a
+  Raindrop (`Raindrop.lgf`: the chords of a ray in a drop by their central angles, a
+  show/hide box of many rays and one of the second bounce), Chase the Rainbow
+  (`ChaseTheRainbow.lgf`: the view ahead in units of 10°, the bands Differences of circles
+  around the antisolar point, clipped at the horizon by a hidden polygon; the bands are
+  wider than a real rainbow's). Learned on the way: the expression language has no
+  exponents, `1e-7` reads as 1·e - 7, so the tool writes small numbers in full and refuses
+  an exponent; a guard must not compare a NaN (a comparison with NaN is NaN, and `if` of a
+  NaN is NaN), so a square root is taken of `max(..., 0)` and the miss decided apart; a
+  figure that is dragged by its body must have a free point among its roots (a lens whose
+  middle was a point on a fixed axis could not be dragged at all: its roots were points by
+  coordinates); and with a gradient paper a caption has no plate, so drawings with rays
+  that run under the caption have a plain paper.
 - **Drawings that must not fall apart** when a kid drags the wrong thing (Castle, The Falling
   Ladder): fixed points are `PointByCoordinates` with constant coordinates (a polygon of those
   has no free point, so dragging it does nothing), and the only things that move are

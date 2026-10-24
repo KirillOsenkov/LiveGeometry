@@ -179,6 +179,11 @@ public static class GalleryCatalog
         Item("counting-overlaps", "Counting Overlaps"),
         Item("pizza-theorem", "The Pizza Theorem"),
         Item("square-around-four-points", "Square Around Four Points"),
+        Item("upside-down-candle", "The Upside-Down Candle"),
+        Item("light-it-with-the-sun", "Light It with the Sun", "BurningGlass"),
+        Item("make-a-rainbow", "Make a Rainbow", "Prism", stackedFigureShare: 0.45),
+        Item("inside-a-raindrop", "Inside a Raindrop", "Raindrop", stackedFigureShare: 0.5),
+        Item("chase-the-rainbow", "Chase the Rainbow", stackedFigureShare: 0.55),
     };
 
     /// <summary>

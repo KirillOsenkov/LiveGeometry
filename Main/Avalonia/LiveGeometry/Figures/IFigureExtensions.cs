@@ -36,16 +36,31 @@ public static class IFigureExtensions
             return true;
         }
 
-        // if that failed, go deeper using recursion
-        foreach (var directDependency in figure.Dependencies)
+        // if that failed, go deeper, each figure once: what two figures are both built on
+        // was searched again for each of them, and a drawing whose numbers are worked out
+        // from numbers in long chains of such diamonds (a ray traced through a prism) took
+        // a time that doubled with every link to compile, and hung the window on loading
+        var visited = new HashSet<IFigure> { figure };
+        var pending = new Stack<IFigure>(figure.Dependencies);
+        while (pending.Count > 0)
         {
-            if (directDependency.DependsOn(possibleDependency))
+            var dependency = pending.Pop();
+            if (!visited.Add(dependency))
+            {
+                continue;
+            }
+
+            if (dependency == possibleDependency)
             {
                 return true;
             }
+
+            foreach (var next in dependency.Dependencies)
+            {
+                pending.Push(next);
+            }
         }
 
-        // depth-first search didn't find anything
         return false;
     }
 

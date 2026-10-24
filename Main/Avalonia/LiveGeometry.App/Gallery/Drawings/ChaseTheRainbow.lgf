@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-9.5" Top="6.5" Right="9.5" Bottom="-4.6">
+    <Background>
+      <LinearGradientBrush EndPoint="0,1">
+        <GradientStop Color="#FF3A4560" />
+        <GradientStop Color="#FF5C6C8C" Offset="0.45" />
+        <GradientStop Color="#FF9CB2CC" Offset="0.62" />
+        <GradientStop Color="#FF4E8A3A" Offset="0.63" />
+      </LinearGradientBrush>
+    </Background>
+  </Viewport>
+  <Scene Left="-9.2" Top="6.6" Right="9.2" Bottom="-4.4" />
+  <Scene Left="-6.6" Top="6.6000000000000005" Right="6.4" Bottom="-4.2" />
+  <Styles>
+    <TextStyle Name="Text" FontSize="16" Color="#FFF4F6FF" FontFamily="Segoe UI">
+      <Dark Color="#FFF4F6FF" />
+    </TextStyle>
+    <TextStyle Name="Heading" FontSize="30" Color="#FFFFE27A" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFFE27A" />
+    </TextStyle>
+    <TextStyle Name="Explanation" FontSize="16" Color="#FFF4F6FF" FontFamily="Segoe UI">
+      <Dark Color="#FFF4F6FF" />
+    </TextStyle>
+    <ShapeStyle Name="Ground" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#FF7CC45A" />
+          <GradientStop Color="#FF4E9A3C" Offset="0.4" />
+          <GradientStop Color="#FF2E6A2A" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="FarHills" Color="#00000000">
+      <Fill>
+        <LinearGradientBrush EndPoint="0,1">
+          <GradientStop Color="#FF6A9A8A" />
+          <GradientStop Color="#FF5A8A6A" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Glow" Fill="#30FFFFFF" Color="#00000000" />
+    <ShapeStyle Name="DarkBand" Fill="#28101828" Color="#00000000" />
+    <ShapeStyle Name="Shadow" Fill="#50102010" Color="#00000000" />
+    <LineStyle Name="ShadowBody" Color="#50102010" StrokeWidth="12" />
+    <PointStyle Name="You" Character="🧍" Size="64" Fill="#FFFFFFFF" />
+    <PointStyle Name="Gold" Character="💰" Size="40" Fill="#FFFFFFFF" />
+    <PointStyle Name="Cloud" Character="🌧️" Size="44" Fill="#E0FFFFFF" />
+    <PointStyle Name="Tree" Character="🌳" Size="34" Fill="#FFFFFFFF" />
+    <PointStyle Name="House" Character="🏡" Size="38" Fill="#FFFFFFFF" />
+    <PointStyle Name="Sun" Character="☀️" Size="34" Fill="#FFFFFFFF" />
+    <PointStyle Name="Small you" Character="🧍" Size="22" Fill="#FFFFFFFF" />
+    <LineStyle Name="DialTrack" Color="#90FFE27A" StrokeWidth="2" Dash="Dot" />
+    <LineStyle Name="SunLine" Color="#C0FFE27A" StrokeWidth="1.5" Dash="Dash" />
+    <LineStyle Name="BowLine" Color="#FFFF6A6A" StrokeWidth="2" />
+    <LineStyle Name="DialGround" Color="#FF4E9A3C" StrokeWidth="3" />
+    <TextStyle Name="DialText" FontSize="15" Color="#FFFFFFFF" FontFamily="Segoe UI" Bold="true" />
+    <LineStyle Name="AngleMark" Color="#FFFFFFFF" StrokeWidth="1.5" />
+    <ShapeStyle Name="RedBand" Fill="#C8FF3B3B" Color="#00000000" />
+    <ShapeStyle Name="RedFaint" Fill="#48FF3B3B" Color="#00000000" />
+    <ShapeStyle Name="OrangeBand" Fill="#C8FF9A1F" Color="#00000000" />
+    <ShapeStyle Name="OrangeFaint" Fill="#48FF9A1F" Color="#00000000" />
+    <ShapeStyle Name="YellowBand" Fill="#C8FFE83A" Color="#00000000" />
+    <ShapeStyle Name="YellowFaint" Fill="#48FFE83A" Color="#00000000" />
+    <ShapeStyle Name="GreenBand" Fill="#C83BE06A" Color="#00000000" />
+    <ShapeStyle Name="GreenFaint" Fill="#483BE06A" Color="#00000000" />
+    <ShapeStyle Name="BlueBand" Fill="#C82FA8FF" Color="#00000000" />
+    <ShapeStyle Name="BlueFaint" Fill="#482FA8FF" Color="#00000000" />
+    <ShapeStyle Name="IndigoBand" Fill="#C86A6CFF" Color="#00000000" />
+    <ShapeStyle Name="IndigoFaint" Fill="#486A6CFF" Color="#00000000" />
+    <ShapeStyle Name="VioletBand" Fill="#C8C05CFF" Color="#00000000" />
+    <ShapeStyle Name="VioletFaint" Fill="#48C05CFF" Color="#00000000" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="Dial" Visible="false" X="-4.6" Y="4.8" />
+    <PointByCoordinates Name="DialLeft" Visible="false" X="Dial.X - 1.9" Y="Dial.Y">
+      <Dependency Name="Dial" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="DialRight" Visible="false" X="Dial.X + 1.9" Y="Dial.Y">
+      <Dependency Name="Dial" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="DialHigh" Visible="false" X="Dial.X - 1.6 * cos(rad(80))" Y="Dial.Y + 1.6 * sin(rad(80))">
+      <Dependency Name="Dial" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="DialLow" Visible="false" X="Dial.X - 1.6" Y="Dial.Y">
+      <Dependency Name="Dial" />
+    </PointByCoordinates>
+    <CircleArc Name="SunTrack" Style="DialTrack">
+      <Dependency Name="Dial" />
+      <Dependency Name="DialHigh" />
+      <Dependency Name="DialLow" />
+    </CircleArc>
+    <PointOnFigure Name="Sun" Style="Sun" X="-6.083494036553516" Y="5.399370873091241" Parameter="2.75762">
+      <Dependency Name="SunTrack" />
+    </PointOnFigure>
+    <Number Name="s" Formula="deg(atan2(Sun.Y - Dial.Y, Dial.X - Sun.X))">
+      <Dependency Name="Sun" />
+      <Dependency Name="Dial" />
+    </Number>
+    <Segment Name="DialHorizon" Style="DialGround">
+      <Dependency Name="DialLeft" />
+      <Dependency Name="DialRight" />
+    </Segment>
+    <PointByCoordinates Name="DialPerson" Style="Small you" X="Dial.X" Y="Dial.Y + 0.25">
+      <Dependency Name="Dial" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="DialShadow" Visible="false" X="Dial.X + 1.9 * cos(rad(s))" Y="Dial.Y - 1.9 * sin(rad(s))">
+      <Dependency Name="Dial" />
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="DialBow" Visible="false" X="Dial.X + 1.9 * cos(rad(42 - s))" Y="Dial.Y + 1.9 * sin(rad(42 - s))">
+      <Dependency Name="Dial" />
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <Segment Name="SunToShadow" Style="SunLine">
+      <Dependency Name="Sun" />
+      <Dependency Name="DialShadow" />
+    </Segment>
+    <Segment Name="ToBow" Style="BowLine">
+      <Dependency Name="Dial" />
+      <Dependency Name="DialBow" />
+    </Segment>
+    <AngleArc Name="DialAngleMark" Style="AngleMark">
+      <Dependency Name="Dial" />
+      <Dependency Name="DialShadow" />
+      <Dependency Name="DialBow" />
+    </AngleArc>
+    <AngleMeasurement Name="DialAngle" Style="DialText" DecimalsToShow="0">
+      <Dependency Name="Dial" />
+      <Dependency Name="DialShadow" />
+      <Dependency Name="DialBow" />
+    </AngleMeasurement>
+    <PointByCoordinates Name="WalkLeft" Visible="false" X="-7.5" Y="-3.1" />
+    <PointByCoordinates Name="WalkRight" Visible="false" X="7.5" Y="-3.1" />
+    <Segment Name="Walk" Visible="false">
+      <Dependency Name="WalkLeft" />
+      <Dependency Name="WalkRight" />
+    </Segment>
+    <PointOnFigure Name="You" Style="You" X="-1.0000049999999998" Y="-3.1" Parameter="0.433333">
+      <Dependency Name="Walk" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Center" Visible="false" X="You.X" Y="-s / 10">
+      <Dependency Name="You" />
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Below" Visible="false" X="-40" Y="0" />
+    <PointByCoordinates Name="Below2" Visible="false" X="40" Y="0" />
+    <PointByCoordinates Name="Below3" Visible="false" X="40" Y="-40" />
+    <PointByCoordinates Name="Below4" Visible="false" X="-40" Y="-40" />
+    <Polygon Name="BelowHorizon" Visible="false">
+      <Dependency Name="Below" />
+      <Dependency Name="Below2" />
+      <Dependency Name="Below3" />
+      <Dependency Name="Below4" />
+    </Polygon>
+    <PointByCoordinates Name="Ring1Edge" Visible="false" X="Center.X + 3.76" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring1" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring1Edge" />
+    </Circle>
+    <Region Name="Brighter" Style="Glow" Operation="Difference">
+      <Dependency Name="Ring1" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring2Edge" Visible="false" X="Center.X + 5.1" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring2" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring2Edge" />
+    </Circle>
+    <PointByCoordinates Name="Ring3Edge" Visible="false" X="Center.X + 4.25" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring3" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring3Edge" />
+    </Circle>
+    <Region Name="Alexander" Style="DarkBand" Operation="Difference">
+      <Dependency Name="Ring2" />
+      <Dependency Name="Ring3" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring4Edge" Visible="false" X="Center.X + 4.18" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring4" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring4Edge" />
+    </Circle>
+    <Region Name="RedBow" Style="RedBand" Operation="Difference">
+      <Dependency Name="Ring3" />
+      <Dependency Name="Ring4" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring5Edge" Visible="false" X="Center.X + 5.17" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring5" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring5Edge" />
+    </Circle>
+    <Region Name="RedBow2" Style="RedFaint" Operation="Difference">
+      <Dependency Name="Ring5" />
+      <Dependency Name="Ring2" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring6Edge" Visible="false" X="Center.X + 4.11" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring6" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring6Edge" />
+    </Circle>
+    <Region Name="OrangeBow" Style="OrangeBand" Operation="Difference">
+      <Dependency Name="Ring4" />
+      <Dependency Name="Ring6" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring7Edge" Visible="false" X="Center.X + 5.24" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring7" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring7Edge" />
+    </Circle>
+    <Region Name="OrangeBow2" Style="OrangeFaint" Operation="Difference">
+      <Dependency Name="Ring7" />
+      <Dependency Name="Ring5" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring8Edge" Visible="false" X="Center.X + 4.04" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring8" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring8Edge" />
+    </Circle>
+    <Region Name="YellowBow" Style="YellowBand" Operation="Difference">
+      <Dependency Name="Ring6" />
+      <Dependency Name="Ring8" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring9Edge" Visible="false" X="Center.X + 5.31" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring9" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring9Edge" />
+    </Circle>
+    <Region Name="YellowBow2" Style="YellowFaint" Operation="Difference">
+      <Dependency Name="Ring9" />
+      <Dependency Name="Ring7" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring10Edge" Visible="false" X="Center.X + 3.97" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring10" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring10Edge" />
+    </Circle>
+    <Region Name="GreenBow" Style="GreenBand" Operation="Difference">
+      <Dependency Name="Ring8" />
+      <Dependency Name="Ring10" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring11Edge" Visible="false" X="Center.X + 5.38" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring11" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring11Edge" />
+    </Circle>
+    <Region Name="GreenBow2" Style="GreenFaint" Operation="Difference">
+      <Dependency Name="Ring11" />
+      <Dependency Name="Ring9" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring12Edge" Visible="false" X="Center.X + 3.9" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring12" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring12Edge" />
+    </Circle>
+    <Region Name="BlueBow" Style="BlueBand" Operation="Difference">
+      <Dependency Name="Ring10" />
+      <Dependency Name="Ring12" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring13Edge" Visible="false" X="Center.X + 5.45" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring13" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring13Edge" />
+    </Circle>
+    <Region Name="BlueBow2" Style="BlueFaint" Operation="Difference">
+      <Dependency Name="Ring13" />
+      <Dependency Name="Ring11" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring14Edge" Visible="false" X="Center.X + 3.83" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring14" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring14Edge" />
+    </Circle>
+    <Region Name="IndigoBow" Style="IndigoBand" Operation="Difference">
+      <Dependency Name="Ring12" />
+      <Dependency Name="Ring14" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring15Edge" Visible="false" X="Center.X + 5.52" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring15" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring15Edge" />
+    </Circle>
+    <Region Name="IndigoBow2" Style="IndigoFaint" Operation="Difference">
+      <Dependency Name="Ring15" />
+      <Dependency Name="Ring13" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <Region Name="VioletBow" Style="VioletBand" Operation="Difference">
+      <Dependency Name="Ring14" />
+      <Dependency Name="Ring1" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Ring16Edge" Visible="false" X="Center.X + 5.59" Y="Center.Y">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Circle Name="Ring16" Visible="false">
+      <Dependency Name="Center" />
+      <Dependency Name="Ring16Edge" />
+    </Circle>
+    <Region Name="VioletBow2" Style="VioletFaint" Operation="Difference">
+      <Dependency Name="Ring16" />
+      <Dependency Name="Ring15" />
+      <Dependency Name="BelowHorizon" />
+    </Region>
+    <PointByCoordinates Name="Hill1" Visible="false" X="-40" Y="-0.1" />
+    <PointByCoordinates Name="Hill2" Visible="false" X="-9.5" Y="-0.1" />
+    <PointByCoordinates Name="Hill3" Visible="false" X="-8" Y="0.35" />
+    <PointByCoordinates Name="Hill4" Visible="false" X="-6.5" Y="0.15" />
+    <PointByCoordinates Name="Hill5" Visible="false" X="-5.2" Y="0.5" />
+    <PointByCoordinates Name="Hill6" Visible="false" X="-3.5" Y="0.05" />
+    <PointByCoordinates Name="Hill7" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="Hill8" Visible="false" X="1.5" Y="0.1" />
+    <PointByCoordinates Name="Hill9" Visible="false" X="3" Y="0.42" />
+    <PointByCoordinates Name="Hill10" Visible="false" X="4.6" Y="0.12" />
+    <PointByCoordinates Name="Hill11" Visible="false" X="6.4" Y="0.55" />
+    <PointByCoordinates Name="Hill12" Visible="false" X="8.2" Y="0.2" />
+    <PointByCoordinates Name="Hill13" Visible="false" X="9.5" Y="0.3" />
+    <PointByCoordinates Name="Hill14" Visible="false" X="40" Y="-0.1" />
+    <PointByCoordinates Name="Hill15" Visible="false" X="40" Y="-40" />
+    <PointByCoordinates Name="Hill16" Visible="false" X="-40" Y="-40" />
+    <Polygon Name="FarHills" Style="FarHills">
+      <Dependency Name="Hill1" />
+      <Dependency Name="Hill2" />
+      <Dependency Name="Hill3" />
+      <Dependency Name="Hill4" />
+      <Dependency Name="Hill5" />
+      <Dependency Name="Hill6" />
+      <Dependency Name="Hill7" />
+      <Dependency Name="Hill8" />
+      <Dependency Name="Hill9" />
+      <Dependency Name="Hill10" />
+      <Dependency Name="Hill11" />
+      <Dependency Name="Hill12" />
+      <Dependency Name="Hill13" />
+      <Dependency Name="Hill14" />
+      <Dependency Name="Hill15" />
+      <Dependency Name="Hill16" />
+    </Polygon>
+    <PointByCoordinates Name="Meadow1" Visible="false" X="-40" Y="-0.6" />
+    <PointByCoordinates Name="Meadow2" Visible="false" X="-6" Y="-0.45" />
+    <PointByCoordinates Name="Meadow3" Visible="false" X="-2" Y="-0.75" />
+    <PointByCoordinates Name="Meadow4" Visible="false" X="2.5" Y="-0.5" />
+    <PointByCoordinates Name="Meadow5" Visible="false" X="7" Y="-0.8" />
+    <PointByCoordinates Name="Meadow6" Visible="false" X="40" Y="-0.6" />
+    <PointByCoordinates Name="Meadow7" Visible="false" X="40" Y="-40" />
+    <PointByCoordinates Name="Meadow8" Visible="false" X="-40" Y="-40" />
+    <Polygon Name="Meadow" Style="Ground">
+      <Dependency Name="Meadow1" />
+      <Dependency Name="Meadow2" />
+      <Dependency Name="Meadow3" />
+      <Dependency Name="Meadow4" />
+      <Dependency Name="Meadow5" />
+      <Dependency Name="Meadow6" />
+      <Dependency Name="Meadow7" />
+      <Dependency Name="Meadow8" />
+    </Polygon>
+    <PointByCoordinates Name="Feet" Visible="false" X="You.X" Y="You.Y - 0.55">
+      <Dependency Name="You" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Head" Visible="false" X="Center.X" Y="Center.Y + 0 * sqrt(Center.Y + 2.6)">
+      <Dependency Name="Center" />
+    </PointByCoordinates>
+    <Segment Name="ShadowLine" Style="ShadowBody">
+      <Dependency Name="Feet" />
+      <Dependency Name="Head" />
+    </Segment>
+    <PointByCoordinates Name="HeadSide" Visible="false" X="Head.X + 0.32" Y="Head.Y">
+      <Dependency Name="Head" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="HeadTop" Visible="false" X="Head.X" Y="Head.Y + 0.14">
+      <Dependency Name="Head" />
+    </PointByCoordinates>
+    <Ellipse Name="HeadShadow" Style="Shadow">
+      <Dependency Name="Head" />
+      <Dependency Name="HeadSide" />
+      <Dependency Name="HeadTop" />
+    </Ellipse>
+    <FreePoint Name="Gold" Style="Gold" X="3.6" Y="-0.55" />
+    <FreePoint Name="House" Style="House" X="-6.1" Y="0.35" />
+    <FreePoint Name="Tree1" Style="Tree" X="-4.6" Y="0.55" />
+    <FreePoint Name="Tree2" Style="Tree" X="6.9" Y="0.75" />
+    <FreePoint Name="Cloud1" Style="Cloud" X="0.4" Y="5.9" />
+    <FreePoint Name="Cloud2" Style="Cloud" X="3.3" Y="6.2" />
+    <FreePoint Name="Cloud3" Style="Cloud" X="5.6" Y="5.6" />
+    <Label Name="Title" Style="Heading" Text="Chase the Rainbow" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Every rainbow is a circle, and you are standing on the line through its middle. The middle is the shadow of your head: the point straight opposite the sun, which is behind you. The red light comes to you from raindrops 42° away from that point, all the way round. The ground cuts off the bottom of the circle.\n\nDrag the sun in the corner. A low sun gives a tall rainbow; when it climbs past 42° the rainbow sinks out of sight. That is why rainbows come early or late in the day.\n\nNow walk toward the pot of gold. The rainbow walks with you, since it is made by whichever drops are at the right angle from your own eyes. Nobody has ever reached its end.\n\nAbove it, a second bow with its colors reversed, and a darker sky between the two." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

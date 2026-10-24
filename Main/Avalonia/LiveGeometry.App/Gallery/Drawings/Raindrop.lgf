@@ -1,0 +1,2679 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-13" Top="5.5" Right="9" Bottom="-8" Color="#FF121C3E" />
+  <Scene Left="-12.5" Top="4.4" Right="5" Bottom="-7.6" />
+  <Styles>
+    <TextStyle Name="Text" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <TextStyle Name="Heading" FontSize="30" Color="#FFFFD966" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFFD966" />
+    </TextStyle>
+    <TextStyle Name="Explanation" FontSize="16" Color="#FFE8E0FF" FontFamily="Segoe UI">
+      <Dark Color="#FFE8E0FF" />
+    </TextStyle>
+    <ShapeStyle Name="Drop" Color="#C0A8E4FF" StrokeWidth="2">
+      <Fill>
+        <LinearGradientBrush StartPoint="0.2,0.1" EndPoint="0.8,1">
+          <GradientStop Color="#55C8EEFF" />
+          <GradientStop Color="#2238A0E8" Offset="0.6" />
+          <GradientStop Color="#40306AC8" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Shine" Fill="#60FFFFFF" Color="#00000000" />
+    <PointStyle Name="Sun" Character="☀️" Size="56" Fill="#FFFFFFFF" />
+    <LineStyle Name="Back" Color="#70FFFFFF" StrokeWidth="1.5" Dash="Dash" />
+    <LineStyle Name="AngleMark" Color="#FFFF8A8A" StrokeWidth="1.5" />
+    <TextStyle Name="AngleText" FontSize="20" Color="#FFFF9A9A" FontFamily="Segoe UI" Bold="true" />
+    <LineStyle Name="ManySun" Color="#50FFFFFF" />
+    <LineStyle Name="WhiteGlow" Color="#40FFFFFF" StrokeWidth="14" />
+    <LineStyle Name="White" Color="#FFFFFFFF" StrokeWidth="3" />
+    <LineStyle Name="RedGlow" Color="#40FF3B3B" StrokeWidth="8" />
+    <LineStyle Name="Red" Color="#FFFF3B3B" StrokeWidth="1.8" />
+    <LineStyle Name="RedInside" Color="#A0FF3B3B" StrokeWidth="1.2" />
+    <LineStyle Name="RedFaint" Color="#70FF3B3B" StrokeWidth="1.2" />
+    <LineStyle Name="RedMany" Color="#80FF3B3B" StrokeWidth="1.2" />
+    <LineStyle Name="RedManyInside" Color="#28FF3B3B" />
+    <LineStyle Name="OrangeGlow" Color="#40FF9A1F" StrokeWidth="8" />
+    <LineStyle Name="Orange" Color="#FFFF9A1F" StrokeWidth="1.8" />
+    <LineStyle Name="OrangeInside" Color="#A0FF9A1F" StrokeWidth="1.2" />
+    <LineStyle Name="OrangeFaint" Color="#70FF9A1F" StrokeWidth="1.2" />
+    <LineStyle Name="OrangeMany" Color="#80FF9A1F" StrokeWidth="1.2" />
+    <LineStyle Name="OrangeManyInside" Color="#28FF9A1F" />
+    <LineStyle Name="YellowGlow" Color="#40FFE83A" StrokeWidth="8" />
+    <LineStyle Name="Yellow" Color="#FFFFE83A" StrokeWidth="1.8" />
+    <LineStyle Name="YellowInside" Color="#A0FFE83A" StrokeWidth="1.2" />
+    <LineStyle Name="YellowFaint" Color="#70FFE83A" StrokeWidth="1.2" />
+    <LineStyle Name="YellowMany" Color="#80FFE83A" StrokeWidth="1.2" />
+    <LineStyle Name="YellowManyInside" Color="#28FFE83A" />
+    <LineStyle Name="GreenGlow" Color="#403BE06A" StrokeWidth="8" />
+    <LineStyle Name="Green" Color="#FF3BE06A" StrokeWidth="1.8" />
+    <LineStyle Name="GreenInside" Color="#A03BE06A" StrokeWidth="1.2" />
+    <LineStyle Name="GreenFaint" Color="#703BE06A" StrokeWidth="1.2" />
+    <LineStyle Name="GreenMany" Color="#803BE06A" StrokeWidth="1.2" />
+    <LineStyle Name="GreenManyInside" Color="#283BE06A" />
+    <LineStyle Name="BlueGlow" Color="#402FA8FF" StrokeWidth="8" />
+    <LineStyle Name="Blue" Color="#FF2FA8FF" StrokeWidth="1.8" />
+    <LineStyle Name="BlueInside" Color="#A02FA8FF" StrokeWidth="1.2" />
+    <LineStyle Name="BlueFaint" Color="#702FA8FF" StrokeWidth="1.2" />
+    <LineStyle Name="BlueMany" Color="#802FA8FF" StrokeWidth="1.2" />
+    <LineStyle Name="BlueManyInside" Color="#282FA8FF" />
+    <LineStyle Name="IndigoGlow" Color="#406A6CFF" StrokeWidth="8" />
+    <LineStyle Name="Indigo" Color="#FF6A6CFF" StrokeWidth="1.8" />
+    <LineStyle Name="IndigoInside" Color="#A06A6CFF" StrokeWidth="1.2" />
+    <LineStyle Name="IndigoFaint" Color="#706A6CFF" StrokeWidth="1.2" />
+    <LineStyle Name="IndigoMany" Color="#806A6CFF" StrokeWidth="1.2" />
+    <LineStyle Name="IndigoManyInside" Color="#286A6CFF" />
+    <LineStyle Name="VioletGlow" Color="#40C05CFF" StrokeWidth="8" />
+    <LineStyle Name="Violet" Color="#FFC05CFF" StrokeWidth="1.8" />
+    <LineStyle Name="VioletInside" Color="#A0C05CFF" StrokeWidth="1.2" />
+    <LineStyle Name="VioletFaint" Color="#70C05CFF" StrokeWidth="1.2" />
+    <LineStyle Name="VioletMany" Color="#80C05CFF" StrokeWidth="1.2" />
+    <LineStyle Name="VioletManyInside" Color="#28C05CFF" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="C" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Rim" Visible="false" X="3.6" Y="0" />
+    <Circle Name="Drop" Style="Drop">
+      <Dependency Name="C" />
+      <Dependency Name="Rim" />
+    </Circle>
+    <PointByCoordinates Name="ShineA" Visible="false" X="C.X - 2.1" Y="C.Y + 2.2">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ShineB" Visible="false" X="C.X - 1.75" Y="C.Y + 2.55">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ShineC" Visible="false" X="C.X - 1.2" Y="C.Y + 2.85">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Ellipse Name="Shine" Style="Shine">
+      <Dependency Name="ShineB" />
+      <Dependency Name="ShineC" />
+      <Dependency Name="ShineA" />
+    </Ellipse>
+    <PointByCoordinates Name="RailBottom" Visible="false" X="-10.5" Y="0.02" />
+    <PointByCoordinates Name="RailTop" Visible="false" X="-10.5" Y="3.58" />
+    <Segment Name="Rail" Visible="false">
+      <Dependency Name="RailBottom" />
+      <Dependency Name="RailTop" />
+    </Segment>
+    <PointOnFigure Name="Sun" Style="Sun" X="-10.5" Y="3.0960001999999998" Parameter="0.864045">
+      <Dependency Name="Rail" />
+    </PointOnFigure>
+    <Number Name="b" Formula="(Sun.Y - C.Y) / 3.6">
+      <Dependency Name="Sun" />
+      <Dependency Name="C" />
+    </Number>
+    <Number Name="i" Formula="arcsin(b)">
+      <Dependency Name="b" />
+    </Number>
+    <PointByCoordinates Name="Entry" Visible="false" X="C.X - 3.6 * cos(i)" Y="C.Y + 3.6 * sin(i)">
+      <Dependency Name="C" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="SunlightGlow" Style="WhiteGlow">
+      <Dependency Name="Sun" />
+      <Dependency Name="Entry" />
+    </Segment>
+    <Segment Name="Sunlight" Style="White">
+      <Dependency Name="Sun" />
+      <Dependency Name="Entry" />
+    </Segment>
+    <Number Name="redt" Formula="arcsin(b / 1.3311)">
+      <Dependency Name="b" />
+    </Number>
+    <PointByCoordinates Name="RedBack" Visible="false" X="C.X + 3.6 * cos(2 * redt - i)" Y="C.Y + 3.6 * sin(2 * redt - i)">
+      <Dependency Name="C" />
+      <Dependency Name="redt" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="RedExit" Visible="false" X="C.X + 3.6 * cos(4 * redt - i - pi)" Y="C.Y + 3.6 * sin(4 * redt - i - pi)">
+      <Dependency Name="C" />
+      <Dependency Name="redt" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="RedOn" Visible="false" X="RedExit.X + cos(4 * redt - 2 * i - pi)" Y="RedExit.Y + sin(4 * redt - 2 * i - pi)">
+      <Dependency Name="RedExit" />
+      <Dependency Name="redt" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="RedIn" Style="RedInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="RedBack" />
+    </Segment>
+    <Segment Name="RedBounce" Style="RedInside">
+      <Dependency Name="RedBack" />
+      <Dependency Name="RedExit" />
+    </Segment>
+    <Ray Name="RedOutGlow" Style="RedGlow">
+      <Dependency Name="RedExit" />
+      <Dependency Name="RedOn" />
+    </Ray>
+    <Ray Name="RedOut" Style="Red">
+      <Dependency Name="RedExit" />
+      <Dependency Name="RedOn" />
+    </Ray>
+    <PointByCoordinates Name="RedExit2" Visible="false" X="C.X + 3.6 * cos(6 * redt - i - 2 * pi)" Y="C.Y + 3.6 * sin(6 * redt - i - 2 * pi)">
+      <Dependency Name="C" />
+      <Dependency Name="redt" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="RedOn2" Visible="false" X="RedExit2.X + cos(6 * redt - 2 * i)" Y="RedExit2.Y + sin(6 * redt - 2 * i)">
+      <Dependency Name="RedExit2" />
+      <Dependency Name="redt" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="RedBounce2" Visible="false" Style="RedInside">
+      <Dependency Name="RedExit" />
+      <Dependency Name="RedExit2" />
+    </Segment>
+    <Ray Name="RedOut2" Visible="false" Style="RedFaint">
+      <Dependency Name="RedExit2" />
+      <Dependency Name="RedOn2" />
+    </Ray>
+    <Number Name="oranget" Formula="arcsin(b / 1.3324)">
+      <Dependency Name="b" />
+    </Number>
+    <PointByCoordinates Name="OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * oranget - i)" Y="C.Y + 3.6 * sin(2 * oranget - i)">
+      <Dependency Name="C" />
+      <Dependency Name="oranget" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * oranget - i - pi)" Y="C.Y + 3.6 * sin(4 * oranget - i - pi)">
+      <Dependency Name="C" />
+      <Dependency Name="oranget" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="OrangeOn" Visible="false" X="OrangeExit.X + cos(4 * oranget - 2 * i - pi)" Y="OrangeExit.Y + sin(4 * oranget - 2 * i - pi)">
+      <Dependency Name="OrangeExit" />
+      <Dependency Name="oranget" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="OrangeIn" Style="OrangeInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="OrangeBack" />
+    </Segment>
+    <Segment Name="OrangeBounce" Style="OrangeInside">
+      <Dependency Name="OrangeBack" />
+      <Dependency Name="OrangeExit" />
+    </Segment>
+    <Ray Name="OrangeOutGlow" Style="OrangeGlow">
+      <Dependency Name="OrangeExit" />
+      <Dependency Name="OrangeOn" />
+    </Ray>
+    <Ray Name="OrangeOut" Style="Orange">
+      <Dependency Name="OrangeExit" />
+      <Dependency Name="OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="OrangeExit2" Visible="false" X="C.X + 3.6 * cos(6 * oranget - i - 2 * pi)" Y="C.Y + 3.6 * sin(6 * oranget - i - 2 * pi)">
+      <Dependency Name="C" />
+      <Dependency Name="oranget" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="OrangeOn2" Visible="false" X="OrangeExit2.X + cos(6 * oranget - 2 * i)" Y="OrangeExit2.Y + sin(6 * oranget - 2 * i)">
+      <Dependency Name="OrangeExit2" />
+      <Dependency Name="oranget" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="OrangeBounce2" Visible="false" Style="OrangeInside">
+      <Dependency Name="OrangeExit" />
+      <Dependency Name="OrangeExit2" />
+    </Segment>
+    <Ray Name="OrangeOut2" Visible="false" Style="OrangeFaint">
+      <Dependency Name="OrangeExit2" />
+      <Dependency Name="OrangeOn2" />
+    </Ray>
+    <Number Name="yellowt" Formula="arcsin(b / 1.3332)">
+      <Dependency Name="b" />
+    </Number>
+    <PointByCoordinates Name="YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * yellowt - i)" Y="C.Y + 3.6 * sin(2 * yellowt - i)">
+      <Dependency Name="C" />
+      <Dependency Name="yellowt" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * yellowt - i - pi)" Y="C.Y + 3.6 * sin(4 * yellowt - i - pi)">
+      <Dependency Name="C" />
+      <Dependency Name="yellowt" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="YellowOn" Visible="false" X="YellowExit.X + cos(4 * yellowt - 2 * i - pi)" Y="YellowExit.Y + sin(4 * yellowt - 2 * i - pi)">
+      <Dependency Name="YellowExit" />
+      <Dependency Name="yellowt" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="YellowIn" Style="YellowInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="YellowBack" />
+    </Segment>
+    <Segment Name="YellowBounce" Style="YellowInside">
+      <Dependency Name="YellowBack" />
+      <Dependency Name="YellowExit" />
+    </Segment>
+    <Ray Name="YellowOutGlow" Style="YellowGlow">
+      <Dependency Name="YellowExit" />
+      <Dependency Name="YellowOn" />
+    </Ray>
+    <Ray Name="YellowOut" Style="Yellow">
+      <Dependency Name="YellowExit" />
+      <Dependency Name="YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="YellowExit2" Visible="false" X="C.X + 3.6 * cos(6 * yellowt - i - 2 * pi)" Y="C.Y + 3.6 * sin(6 * yellowt - i - 2 * pi)">
+      <Dependency Name="C" />
+      <Dependency Name="yellowt" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="YellowOn2" Visible="false" X="YellowExit2.X + cos(6 * yellowt - 2 * i)" Y="YellowExit2.Y + sin(6 * yellowt - 2 * i)">
+      <Dependency Name="YellowExit2" />
+      <Dependency Name="yellowt" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="YellowBounce2" Visible="false" Style="YellowInside">
+      <Dependency Name="YellowExit" />
+      <Dependency Name="YellowExit2" />
+    </Segment>
+    <Ray Name="YellowOut2" Visible="false" Style="YellowFaint">
+      <Dependency Name="YellowExit2" />
+      <Dependency Name="YellowOn2" />
+    </Ray>
+    <Number Name="greent" Formula="arcsin(b / 1.3349)">
+      <Dependency Name="b" />
+    </Number>
+    <PointByCoordinates Name="GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * greent - i)" Y="C.Y + 3.6 * sin(2 * greent - i)">
+      <Dependency Name="C" />
+      <Dependency Name="greent" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * greent - i - pi)" Y="C.Y + 3.6 * sin(4 * greent - i - pi)">
+      <Dependency Name="C" />
+      <Dependency Name="greent" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GreenOn" Visible="false" X="GreenExit.X + cos(4 * greent - 2 * i - pi)" Y="GreenExit.Y + sin(4 * greent - 2 * i - pi)">
+      <Dependency Name="GreenExit" />
+      <Dependency Name="greent" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="GreenIn" Style="GreenInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="GreenBack" />
+    </Segment>
+    <Segment Name="GreenBounce" Style="GreenInside">
+      <Dependency Name="GreenBack" />
+      <Dependency Name="GreenExit" />
+    </Segment>
+    <Ray Name="GreenOutGlow" Style="GreenGlow">
+      <Dependency Name="GreenExit" />
+      <Dependency Name="GreenOn" />
+    </Ray>
+    <Ray Name="GreenOut" Style="Green">
+      <Dependency Name="GreenExit" />
+      <Dependency Name="GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="GreenExit2" Visible="false" X="C.X + 3.6 * cos(6 * greent - i - 2 * pi)" Y="C.Y + 3.6 * sin(6 * greent - i - 2 * pi)">
+      <Dependency Name="C" />
+      <Dependency Name="greent" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="GreenOn2" Visible="false" X="GreenExit2.X + cos(6 * greent - 2 * i)" Y="GreenExit2.Y + sin(6 * greent - 2 * i)">
+      <Dependency Name="GreenExit2" />
+      <Dependency Name="greent" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="GreenBounce2" Visible="false" Style="GreenInside">
+      <Dependency Name="GreenExit" />
+      <Dependency Name="GreenExit2" />
+    </Segment>
+    <Ray Name="GreenOut2" Visible="false" Style="GreenFaint">
+      <Dependency Name="GreenExit2" />
+      <Dependency Name="GreenOn2" />
+    </Ray>
+    <Number Name="bluet" Formula="arcsin(b / 1.3373)">
+      <Dependency Name="b" />
+    </Number>
+    <PointByCoordinates Name="BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * bluet - i)" Y="C.Y + 3.6 * sin(2 * bluet - i)">
+      <Dependency Name="C" />
+      <Dependency Name="bluet" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * bluet - i - pi)" Y="C.Y + 3.6 * sin(4 * bluet - i - pi)">
+      <Dependency Name="C" />
+      <Dependency Name="bluet" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BlueOn" Visible="false" X="BlueExit.X + cos(4 * bluet - 2 * i - pi)" Y="BlueExit.Y + sin(4 * bluet - 2 * i - pi)">
+      <Dependency Name="BlueExit" />
+      <Dependency Name="bluet" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="BlueIn" Style="BlueInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="BlueBack" />
+    </Segment>
+    <Segment Name="BlueBounce" Style="BlueInside">
+      <Dependency Name="BlueBack" />
+      <Dependency Name="BlueExit" />
+    </Segment>
+    <Ray Name="BlueOutGlow" Style="BlueGlow">
+      <Dependency Name="BlueExit" />
+      <Dependency Name="BlueOn" />
+    </Ray>
+    <Ray Name="BlueOut" Style="Blue">
+      <Dependency Name="BlueExit" />
+      <Dependency Name="BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="BlueExit2" Visible="false" X="C.X + 3.6 * cos(6 * bluet - i - 2 * pi)" Y="C.Y + 3.6 * sin(6 * bluet - i - 2 * pi)">
+      <Dependency Name="C" />
+      <Dependency Name="bluet" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BlueOn2" Visible="false" X="BlueExit2.X + cos(6 * bluet - 2 * i)" Y="BlueExit2.Y + sin(6 * bluet - 2 * i)">
+      <Dependency Name="BlueExit2" />
+      <Dependency Name="bluet" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="BlueBounce2" Visible="false" Style="BlueInside">
+      <Dependency Name="BlueExit" />
+      <Dependency Name="BlueExit2" />
+    </Segment>
+    <Ray Name="BlueOut2" Visible="false" Style="BlueFaint">
+      <Dependency Name="BlueExit2" />
+      <Dependency Name="BlueOn2" />
+    </Ray>
+    <Number Name="indigot" Formula="arcsin(b / 1.339)">
+      <Dependency Name="b" />
+    </Number>
+    <PointByCoordinates Name="IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * indigot - i)" Y="C.Y + 3.6 * sin(2 * indigot - i)">
+      <Dependency Name="C" />
+      <Dependency Name="indigot" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * indigot - i - pi)" Y="C.Y + 3.6 * sin(4 * indigot - i - pi)">
+      <Dependency Name="C" />
+      <Dependency Name="indigot" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="IndigoOn" Visible="false" X="IndigoExit.X + cos(4 * indigot - 2 * i - pi)" Y="IndigoExit.Y + sin(4 * indigot - 2 * i - pi)">
+      <Dependency Name="IndigoExit" />
+      <Dependency Name="indigot" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="IndigoIn" Style="IndigoInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="IndigoBack" />
+    </Segment>
+    <Segment Name="IndigoBounce" Style="IndigoInside">
+      <Dependency Name="IndigoBack" />
+      <Dependency Name="IndigoExit" />
+    </Segment>
+    <Ray Name="IndigoOutGlow" Style="IndigoGlow">
+      <Dependency Name="IndigoExit" />
+      <Dependency Name="IndigoOn" />
+    </Ray>
+    <Ray Name="IndigoOut" Style="Indigo">
+      <Dependency Name="IndigoExit" />
+      <Dependency Name="IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="IndigoExit2" Visible="false" X="C.X + 3.6 * cos(6 * indigot - i - 2 * pi)" Y="C.Y + 3.6 * sin(6 * indigot - i - 2 * pi)">
+      <Dependency Name="C" />
+      <Dependency Name="indigot" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="IndigoOn2" Visible="false" X="IndigoExit2.X + cos(6 * indigot - 2 * i)" Y="IndigoExit2.Y + sin(6 * indigot - 2 * i)">
+      <Dependency Name="IndigoExit2" />
+      <Dependency Name="indigot" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="IndigoBounce2" Visible="false" Style="IndigoInside">
+      <Dependency Name="IndigoExit" />
+      <Dependency Name="IndigoExit2" />
+    </Segment>
+    <Ray Name="IndigoOut2" Visible="false" Style="IndigoFaint">
+      <Dependency Name="IndigoExit2" />
+      <Dependency Name="IndigoOn2" />
+    </Ray>
+    <Number Name="violett" Formula="arcsin(b / 1.3435)">
+      <Dependency Name="b" />
+    </Number>
+    <PointByCoordinates Name="VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * violett - i)" Y="C.Y + 3.6 * sin(2 * violett - i)">
+      <Dependency Name="C" />
+      <Dependency Name="violett" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * violett - i - pi)" Y="C.Y + 3.6 * sin(4 * violett - i - pi)">
+      <Dependency Name="C" />
+      <Dependency Name="violett" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="VioletOn" Visible="false" X="VioletExit.X + cos(4 * violett - 2 * i - pi)" Y="VioletExit.Y + sin(4 * violett - 2 * i - pi)">
+      <Dependency Name="VioletExit" />
+      <Dependency Name="violett" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="VioletIn" Style="VioletInside">
+      <Dependency Name="Entry" />
+      <Dependency Name="VioletBack" />
+    </Segment>
+    <Segment Name="VioletBounce" Style="VioletInside">
+      <Dependency Name="VioletBack" />
+      <Dependency Name="VioletExit" />
+    </Segment>
+    <Ray Name="VioletOutGlow" Style="VioletGlow">
+      <Dependency Name="VioletExit" />
+      <Dependency Name="VioletOn" />
+    </Ray>
+    <Ray Name="VioletOut" Style="Violet">
+      <Dependency Name="VioletExit" />
+      <Dependency Name="VioletOn" />
+    </Ray>
+    <PointByCoordinates Name="VioletExit2" Visible="false" X="C.X + 3.6 * cos(6 * violett - i - 2 * pi)" Y="C.Y + 3.6 * sin(6 * violett - i - 2 * pi)">
+      <Dependency Name="C" />
+      <Dependency Name="violett" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="VioletOn2" Visible="false" X="VioletExit2.X + cos(6 * violett - 2 * i)" Y="VioletExit2.Y + sin(6 * violett - 2 * i)">
+      <Dependency Name="VioletExit2" />
+      <Dependency Name="violett" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="VioletBounce2" Visible="false" Style="VioletInside">
+      <Dependency Name="VioletExit" />
+      <Dependency Name="VioletExit2" />
+    </Segment>
+    <Ray Name="VioletOut2" Visible="false" Style="VioletFaint">
+      <Dependency Name="VioletExit2" />
+      <Dependency Name="VioletOn2" />
+    </Ray>
+    <PointByCoordinates Name="TowardSun" Visible="false" X="RedExit.X - 3" Y="RedExit.Y">
+      <Dependency Name="RedExit" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="AlongRed" Visible="false" X="RedExit.X + 3 * cos(4 * redt - 2 * i - pi)" Y="RedExit.Y + 3 * sin(4 * redt - 2 * i - pi)">
+      <Dependency Name="RedExit" />
+      <Dependency Name="redt" />
+      <Dependency Name="i" />
+    </PointByCoordinates>
+    <Segment Name="BackToSun" Style="Back">
+      <Dependency Name="RedExit" />
+      <Dependency Name="TowardSun" />
+    </Segment>
+    <AngleArc Name="RedAngleMark" Style="AngleMark">
+      <Dependency Name="RedExit" />
+      <Dependency Name="TowardSun" />
+      <Dependency Name="AlongRed" />
+    </AngleArc>
+    <AngleMeasurement Name="RedAngle" Style="AngleText" DecimalsToShow="1">
+      <Dependency Name="RedExit" />
+      <Dependency Name="TowardSun" />
+      <Dependency Name="AlongRed" />
+    </AngleMeasurement>
+    <PointByCoordinates Name="Many1In" Visible="false" X="C.X - 3.6 * cos(0.076999)" Y="C.Y + 3.6 * sin(0.076999)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1Start" Visible="false" X="-10.5" Y="C.Y + 3.6 * sin(0.076999)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="Many1Sun" Visible="false" Style="ManySun">
+      <Dependency Name="Many1Start" />
+      <Dependency Name="Many1In" />
+    </Segment>
+    <PointByCoordinates Name="Many1RedBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.057821 - 0.076999)" Y="C.Y + 3.6 * sin(2 * 0.057821 - 0.076999)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1RedExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.057821 - 0.076999 - pi)" Y="C.Y + 3.6 * sin(4 * 0.057821 - 0.076999 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1RedOn" Visible="false" X="Many1RedExit.X + cos(4 * 0.057821 - 2 * 0.076999 - pi)" Y="Many1RedExit.Y + sin(4 * 0.057821 - 2 * 0.076999 - pi)">
+      <Dependency Name="Many1RedExit" />
+    </PointByCoordinates>
+    <Segment Name="Many1RedPath" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many1In" />
+      <Dependency Name="Many1RedBack" />
+    </Segment>
+    <Segment Name="Many1RedPath2" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many1RedBack" />
+      <Dependency Name="Many1RedExit" />
+    </Segment>
+    <Ray Name="Many1RedOut" Visible="false" Style="RedMany">
+      <Dependency Name="Many1RedExit" />
+      <Dependency Name="Many1RedOn" />
+    </Ray>
+    <PointByCoordinates Name="Many1OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.057765 - 0.076999)" Y="C.Y + 3.6 * sin(2 * 0.057765 - 0.076999)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.057765 - 0.076999 - pi)" Y="C.Y + 3.6 * sin(4 * 0.057765 - 0.076999 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1OrangeOn" Visible="false" X="Many1OrangeExit.X + cos(4 * 0.057765 - 2 * 0.076999 - pi)" Y="Many1OrangeExit.Y + sin(4 * 0.057765 - 2 * 0.076999 - pi)">
+      <Dependency Name="Many1OrangeExit" />
+    </PointByCoordinates>
+    <Segment Name="Many1OrangePath" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many1In" />
+      <Dependency Name="Many1OrangeBack" />
+    </Segment>
+    <Segment Name="Many1OrangePath2" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many1OrangeBack" />
+      <Dependency Name="Many1OrangeExit" />
+    </Segment>
+    <Ray Name="Many1OrangeOut" Visible="false" Style="OrangeMany">
+      <Dependency Name="Many1OrangeExit" />
+      <Dependency Name="Many1OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="Many1YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.05773 - 0.076999)" Y="C.Y + 3.6 * sin(2 * 0.05773 - 0.076999)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.05773 - 0.076999 - pi)" Y="C.Y + 3.6 * sin(4 * 0.05773 - 0.076999 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1YellowOn" Visible="false" X="Many1YellowExit.X + cos(4 * 0.05773 - 2 * 0.076999 - pi)" Y="Many1YellowExit.Y + sin(4 * 0.05773 - 2 * 0.076999 - pi)">
+      <Dependency Name="Many1YellowExit" />
+    </PointByCoordinates>
+    <Segment Name="Many1YellowPath" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many1In" />
+      <Dependency Name="Many1YellowBack" />
+    </Segment>
+    <Segment Name="Many1YellowPath2" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many1YellowBack" />
+      <Dependency Name="Many1YellowExit" />
+    </Segment>
+    <Ray Name="Many1YellowOut" Visible="false" Style="YellowMany">
+      <Dependency Name="Many1YellowExit" />
+      <Dependency Name="Many1YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="Many1GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.057657 - 0.076999)" Y="C.Y + 3.6 * sin(2 * 0.057657 - 0.076999)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.057657 - 0.076999 - pi)" Y="C.Y + 3.6 * sin(4 * 0.057657 - 0.076999 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1GreenOn" Visible="false" X="Many1GreenExit.X + cos(4 * 0.057657 - 2 * 0.076999 - pi)" Y="Many1GreenExit.Y + sin(4 * 0.057657 - 2 * 0.076999 - pi)">
+      <Dependency Name="Many1GreenExit" />
+    </PointByCoordinates>
+    <Segment Name="Many1GreenPath" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many1In" />
+      <Dependency Name="Many1GreenBack" />
+    </Segment>
+    <Segment Name="Many1GreenPath2" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many1GreenBack" />
+      <Dependency Name="Many1GreenExit" />
+    </Segment>
+    <Ray Name="Many1GreenOut" Visible="false" Style="GreenMany">
+      <Dependency Name="Many1GreenExit" />
+      <Dependency Name="Many1GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="Many1BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.057553 - 0.076999)" Y="C.Y + 3.6 * sin(2 * 0.057553 - 0.076999)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.057553 - 0.076999 - pi)" Y="C.Y + 3.6 * sin(4 * 0.057553 - 0.076999 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1BlueOn" Visible="false" X="Many1BlueExit.X + cos(4 * 0.057553 - 2 * 0.076999 - pi)" Y="Many1BlueExit.Y + sin(4 * 0.057553 - 2 * 0.076999 - pi)">
+      <Dependency Name="Many1BlueExit" />
+    </PointByCoordinates>
+    <Segment Name="Many1BluePath" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many1In" />
+      <Dependency Name="Many1BlueBack" />
+    </Segment>
+    <Segment Name="Many1BluePath2" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many1BlueBack" />
+      <Dependency Name="Many1BlueExit" />
+    </Segment>
+    <Ray Name="Many1BlueOut" Visible="false" Style="BlueMany">
+      <Dependency Name="Many1BlueExit" />
+      <Dependency Name="Many1BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="Many1IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.05748 - 0.076999)" Y="C.Y + 3.6 * sin(2 * 0.05748 - 0.076999)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.05748 - 0.076999 - pi)" Y="C.Y + 3.6 * sin(4 * 0.05748 - 0.076999 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1IndigoOn" Visible="false" X="Many1IndigoExit.X + cos(4 * 0.05748 - 2 * 0.076999 - pi)" Y="Many1IndigoExit.Y + sin(4 * 0.05748 - 2 * 0.076999 - pi)">
+      <Dependency Name="Many1IndigoExit" />
+    </PointByCoordinates>
+    <Segment Name="Many1IndigoPath" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many1In" />
+      <Dependency Name="Many1IndigoBack" />
+    </Segment>
+    <Segment Name="Many1IndigoPath2" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many1IndigoBack" />
+      <Dependency Name="Many1IndigoExit" />
+    </Segment>
+    <Ray Name="Many1IndigoOut" Visible="false" Style="IndigoMany">
+      <Dependency Name="Many1IndigoExit" />
+      <Dependency Name="Many1IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="Many1VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.057287 - 0.076999)" Y="C.Y + 3.6 * sin(2 * 0.057287 - 0.076999)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.057287 - 0.076999 - pi)" Y="C.Y + 3.6 * sin(4 * 0.057287 - 0.076999 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many1VioletOn" Visible="false" X="Many1VioletExit.X + cos(4 * 0.057287 - 2 * 0.076999 - pi)" Y="Many1VioletExit.Y + sin(4 * 0.057287 - 2 * 0.076999 - pi)">
+      <Dependency Name="Many1VioletExit" />
+    </PointByCoordinates>
+    <Segment Name="Many1VioletPath" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many1In" />
+      <Dependency Name="Many1VioletBack" />
+    </Segment>
+    <Segment Name="Many1VioletPath2" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many1VioletBack" />
+      <Dependency Name="Many1VioletExit" />
+    </Segment>
+    <Ray Name="Many1VioletOut" Visible="false" Style="VioletMany">
+      <Dependency Name="Many1VioletExit" />
+      <Dependency Name="Many1VioletOn" />
+    </Ray>
+    <PointByCoordinates Name="Many2In" Visible="false" X="C.X - 3.6 * cos(0.15446)" Y="C.Y + 3.6 * sin(0.15446)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2Start" Visible="false" X="-10.5" Y="C.Y + 3.6 * sin(0.15446)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="Many2Sun" Visible="false" Style="ManySun">
+      <Dependency Name="Many2Start" />
+      <Dependency Name="Many2In" />
+    </Segment>
+    <PointByCoordinates Name="Many2RedBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.115837 - 0.15446)" Y="C.Y + 3.6 * sin(2 * 0.115837 - 0.15446)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2RedExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.115837 - 0.15446 - pi)" Y="C.Y + 3.6 * sin(4 * 0.115837 - 0.15446 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2RedOn" Visible="false" X="Many2RedExit.X + cos(4 * 0.115837 - 2 * 0.15446 - pi)" Y="Many2RedExit.Y + sin(4 * 0.115837 - 2 * 0.15446 - pi)">
+      <Dependency Name="Many2RedExit" />
+    </PointByCoordinates>
+    <Segment Name="Many2RedPath" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many2In" />
+      <Dependency Name="Many2RedBack" />
+    </Segment>
+    <Segment Name="Many2RedPath2" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many2RedBack" />
+      <Dependency Name="Many2RedExit" />
+    </Segment>
+    <Ray Name="Many2RedOut" Visible="false" Style="RedMany">
+      <Dependency Name="Many2RedExit" />
+      <Dependency Name="Many2RedOn" />
+    </Ray>
+    <PointByCoordinates Name="Many2OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.115724 - 0.15446)" Y="C.Y + 3.6 * sin(2 * 0.115724 - 0.15446)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.115724 - 0.15446 - pi)" Y="C.Y + 3.6 * sin(4 * 0.115724 - 0.15446 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2OrangeOn" Visible="false" X="Many2OrangeExit.X + cos(4 * 0.115724 - 2 * 0.15446 - pi)" Y="Many2OrangeExit.Y + sin(4 * 0.115724 - 2 * 0.15446 - pi)">
+      <Dependency Name="Many2OrangeExit" />
+    </PointByCoordinates>
+    <Segment Name="Many2OrangePath" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many2In" />
+      <Dependency Name="Many2OrangeBack" />
+    </Segment>
+    <Segment Name="Many2OrangePath2" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many2OrangeBack" />
+      <Dependency Name="Many2OrangeExit" />
+    </Segment>
+    <Ray Name="Many2OrangeOut" Visible="false" Style="OrangeMany">
+      <Dependency Name="Many2OrangeExit" />
+      <Dependency Name="Many2OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="Many2YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.115654 - 0.15446)" Y="C.Y + 3.6 * sin(2 * 0.115654 - 0.15446)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.115654 - 0.15446 - pi)" Y="C.Y + 3.6 * sin(4 * 0.115654 - 0.15446 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2YellowOn" Visible="false" X="Many2YellowExit.X + cos(4 * 0.115654 - 2 * 0.15446 - pi)" Y="Many2YellowExit.Y + sin(4 * 0.115654 - 2 * 0.15446 - pi)">
+      <Dependency Name="Many2YellowExit" />
+    </PointByCoordinates>
+    <Segment Name="Many2YellowPath" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many2In" />
+      <Dependency Name="Many2YellowBack" />
+    </Segment>
+    <Segment Name="Many2YellowPath2" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many2YellowBack" />
+      <Dependency Name="Many2YellowExit" />
+    </Segment>
+    <Ray Name="Many2YellowOut" Visible="false" Style="YellowMany">
+      <Dependency Name="Many2YellowExit" />
+      <Dependency Name="Many2YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="Many2GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.115506 - 0.15446)" Y="C.Y + 3.6 * sin(2 * 0.115506 - 0.15446)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.115506 - 0.15446 - pi)" Y="C.Y + 3.6 * sin(4 * 0.115506 - 0.15446 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2GreenOn" Visible="false" X="Many2GreenExit.X + cos(4 * 0.115506 - 2 * 0.15446 - pi)" Y="Many2GreenExit.Y + sin(4 * 0.115506 - 2 * 0.15446 - pi)">
+      <Dependency Name="Many2GreenExit" />
+    </PointByCoordinates>
+    <Segment Name="Many2GreenPath" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many2In" />
+      <Dependency Name="Many2GreenBack" />
+    </Segment>
+    <Segment Name="Many2GreenPath2" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many2GreenBack" />
+      <Dependency Name="Many2GreenExit" />
+    </Segment>
+    <Ray Name="Many2GreenOut" Visible="false" Style="GreenMany">
+      <Dependency Name="Many2GreenExit" />
+      <Dependency Name="Many2GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="Many2BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.115298 - 0.15446)" Y="C.Y + 3.6 * sin(2 * 0.115298 - 0.15446)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.115298 - 0.15446 - pi)" Y="C.Y + 3.6 * sin(4 * 0.115298 - 0.15446 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2BlueOn" Visible="false" X="Many2BlueExit.X + cos(4 * 0.115298 - 2 * 0.15446 - pi)" Y="Many2BlueExit.Y + sin(4 * 0.115298 - 2 * 0.15446 - pi)">
+      <Dependency Name="Many2BlueExit" />
+    </PointByCoordinates>
+    <Segment Name="Many2BluePath" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many2In" />
+      <Dependency Name="Many2BlueBack" />
+    </Segment>
+    <Segment Name="Many2BluePath2" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many2BlueBack" />
+      <Dependency Name="Many2BlueExit" />
+    </Segment>
+    <Ray Name="Many2BlueOut" Visible="false" Style="BlueMany">
+      <Dependency Name="Many2BlueExit" />
+      <Dependency Name="Many2BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="Many2IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.115151 - 0.15446)" Y="C.Y + 3.6 * sin(2 * 0.115151 - 0.15446)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.115151 - 0.15446 - pi)" Y="C.Y + 3.6 * sin(4 * 0.115151 - 0.15446 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2IndigoOn" Visible="false" X="Many2IndigoExit.X + cos(4 * 0.115151 - 2 * 0.15446 - pi)" Y="Many2IndigoExit.Y + sin(4 * 0.115151 - 2 * 0.15446 - pi)">
+      <Dependency Name="Many2IndigoExit" />
+    </PointByCoordinates>
+    <Segment Name="Many2IndigoPath" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many2In" />
+      <Dependency Name="Many2IndigoBack" />
+    </Segment>
+    <Segment Name="Many2IndigoPath2" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many2IndigoBack" />
+      <Dependency Name="Many2IndigoExit" />
+    </Segment>
+    <Ray Name="Many2IndigoOut" Visible="false" Style="IndigoMany">
+      <Dependency Name="Many2IndigoExit" />
+      <Dependency Name="Many2IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="Many2VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.114763 - 0.15446)" Y="C.Y + 3.6 * sin(2 * 0.114763 - 0.15446)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.114763 - 0.15446 - pi)" Y="C.Y + 3.6 * sin(4 * 0.114763 - 0.15446 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many2VioletOn" Visible="false" X="Many2VioletExit.X + cos(4 * 0.114763 - 2 * 0.15446 - pi)" Y="Many2VioletExit.Y + sin(4 * 0.114763 - 2 * 0.15446 - pi)">
+      <Dependency Name="Many2VioletExit" />
+    </PointByCoordinates>
+    <Segment Name="Many2VioletPath" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many2In" />
+      <Dependency Name="Many2VioletBack" />
+    </Segment>
+    <Segment Name="Many2VioletPath2" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many2VioletBack" />
+      <Dependency Name="Many2VioletExit" />
+    </Segment>
+    <Ray Name="Many2VioletOut" Visible="false" Style="VioletMany">
+      <Dependency Name="Many2VioletExit" />
+      <Dependency Name="Many2VioletOn" />
+    </Ray>
+    <PointByCoordinates Name="Many3In" Visible="false" X="C.X - 3.6 * cos(0.232868)" Y="C.Y + 3.6 * sin(0.232868)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3Start" Visible="false" X="-10.5" Y="C.Y + 3.6 * sin(0.232868)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="Many3Sun" Visible="false" Style="ManySun">
+      <Dependency Name="Many3Start" />
+      <Dependency Name="Many3In" />
+    </Segment>
+    <PointByCoordinates Name="Many3RedBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.174248 - 0.232868)" Y="C.Y + 3.6 * sin(2 * 0.174248 - 0.232868)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3RedExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.174248 - 0.232868 - pi)" Y="C.Y + 3.6 * sin(4 * 0.174248 - 0.232868 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3RedOn" Visible="false" X="Many3RedExit.X + cos(4 * 0.174248 - 2 * 0.232868 - pi)" Y="Many3RedExit.Y + sin(4 * 0.174248 - 2 * 0.232868 - pi)">
+      <Dependency Name="Many3RedExit" />
+    </PointByCoordinates>
+    <Segment Name="Many3RedPath" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many3In" />
+      <Dependency Name="Many3RedBack" />
+    </Segment>
+    <Segment Name="Many3RedPath2" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many3RedBack" />
+      <Dependency Name="Many3RedExit" />
+    </Segment>
+    <Ray Name="Many3RedOut" Visible="false" Style="RedMany">
+      <Dependency Name="Many3RedExit" />
+      <Dependency Name="Many3RedOn" />
+    </Ray>
+    <PointByCoordinates Name="Many3OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.174076 - 0.232868)" Y="C.Y + 3.6 * sin(2 * 0.174076 - 0.232868)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.174076 - 0.232868 - pi)" Y="C.Y + 3.6 * sin(4 * 0.174076 - 0.232868 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3OrangeOn" Visible="false" X="Many3OrangeExit.X + cos(4 * 0.174076 - 2 * 0.232868 - pi)" Y="Many3OrangeExit.Y + sin(4 * 0.174076 - 2 * 0.232868 - pi)">
+      <Dependency Name="Many3OrangeExit" />
+    </PointByCoordinates>
+    <Segment Name="Many3OrangePath" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many3In" />
+      <Dependency Name="Many3OrangeBack" />
+    </Segment>
+    <Segment Name="Many3OrangePath2" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many3OrangeBack" />
+      <Dependency Name="Many3OrangeExit" />
+    </Segment>
+    <Ray Name="Many3OrangeOut" Visible="false" Style="OrangeMany">
+      <Dependency Name="Many3OrangeExit" />
+      <Dependency Name="Many3OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="Many3YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.17397 - 0.232868)" Y="C.Y + 3.6 * sin(2 * 0.17397 - 0.232868)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.17397 - 0.232868 - pi)" Y="C.Y + 3.6 * sin(4 * 0.17397 - 0.232868 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3YellowOn" Visible="false" X="Many3YellowExit.X + cos(4 * 0.17397 - 2 * 0.232868 - pi)" Y="Many3YellowExit.Y + sin(4 * 0.17397 - 2 * 0.232868 - pi)">
+      <Dependency Name="Many3YellowExit" />
+    </PointByCoordinates>
+    <Segment Name="Many3YellowPath" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many3In" />
+      <Dependency Name="Many3YellowBack" />
+    </Segment>
+    <Segment Name="Many3YellowPath2" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many3YellowBack" />
+      <Dependency Name="Many3YellowExit" />
+    </Segment>
+    <Ray Name="Many3YellowOut" Visible="false" Style="YellowMany">
+      <Dependency Name="Many3YellowExit" />
+      <Dependency Name="Many3YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="Many3GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.173747 - 0.232868)" Y="C.Y + 3.6 * sin(2 * 0.173747 - 0.232868)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.173747 - 0.232868 - pi)" Y="C.Y + 3.6 * sin(4 * 0.173747 - 0.232868 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3GreenOn" Visible="false" X="Many3GreenExit.X + cos(4 * 0.173747 - 2 * 0.232868 - pi)" Y="Many3GreenExit.Y + sin(4 * 0.173747 - 2 * 0.232868 - pi)">
+      <Dependency Name="Many3GreenExit" />
+    </PointByCoordinates>
+    <Segment Name="Many3GreenPath" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many3In" />
+      <Dependency Name="Many3GreenBack" />
+    </Segment>
+    <Segment Name="Many3GreenPath2" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many3GreenBack" />
+      <Dependency Name="Many3GreenExit" />
+    </Segment>
+    <Ray Name="Many3GreenOut" Visible="false" Style="GreenMany">
+      <Dependency Name="Many3GreenExit" />
+      <Dependency Name="Many3GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="Many3BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.173432 - 0.232868)" Y="C.Y + 3.6 * sin(2 * 0.173432 - 0.232868)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.173432 - 0.232868 - pi)" Y="C.Y + 3.6 * sin(4 * 0.173432 - 0.232868 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3BlueOn" Visible="false" X="Many3BlueExit.X + cos(4 * 0.173432 - 2 * 0.232868 - pi)" Y="Many3BlueExit.Y + sin(4 * 0.173432 - 2 * 0.232868 - pi)">
+      <Dependency Name="Many3BlueExit" />
+    </PointByCoordinates>
+    <Segment Name="Many3BluePath" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many3In" />
+      <Dependency Name="Many3BlueBack" />
+    </Segment>
+    <Segment Name="Many3BluePath2" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many3BlueBack" />
+      <Dependency Name="Many3BlueExit" />
+    </Segment>
+    <Ray Name="Many3BlueOut" Visible="false" Style="BlueMany">
+      <Dependency Name="Many3BlueExit" />
+      <Dependency Name="Many3BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="Many3IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.173209 - 0.232868)" Y="C.Y + 3.6 * sin(2 * 0.173209 - 0.232868)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.173209 - 0.232868 - pi)" Y="C.Y + 3.6 * sin(4 * 0.173209 - 0.232868 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3IndigoOn" Visible="false" X="Many3IndigoExit.X + cos(4 * 0.173209 - 2 * 0.232868 - pi)" Y="Many3IndigoExit.Y + sin(4 * 0.173209 - 2 * 0.232868 - pi)">
+      <Dependency Name="Many3IndigoExit" />
+    </PointByCoordinates>
+    <Segment Name="Many3IndigoPath" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many3In" />
+      <Dependency Name="Many3IndigoBack" />
+    </Segment>
+    <Segment Name="Many3IndigoPath2" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many3IndigoBack" />
+      <Dependency Name="Many3IndigoExit" />
+    </Segment>
+    <Ray Name="Many3IndigoOut" Visible="false" Style="IndigoMany">
+      <Dependency Name="Many3IndigoExit" />
+      <Dependency Name="Many3IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="Many3VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.172623 - 0.232868)" Y="C.Y + 3.6 * sin(2 * 0.172623 - 0.232868)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.172623 - 0.232868 - pi)" Y="C.Y + 3.6 * sin(4 * 0.172623 - 0.232868 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many3VioletOn" Visible="false" X="Many3VioletExit.X + cos(4 * 0.172623 - 2 * 0.232868 - pi)" Y="Many3VioletExit.Y + sin(4 * 0.172623 - 2 * 0.232868 - pi)">
+      <Dependency Name="Many3VioletExit" />
+    </PointByCoordinates>
+    <Segment Name="Many3VioletPath" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many3In" />
+      <Dependency Name="Many3VioletBack" />
+    </Segment>
+    <Segment Name="Many3VioletPath2" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many3VioletBack" />
+      <Dependency Name="Many3VioletExit" />
+    </Segment>
+    <Ray Name="Many3VioletOut" Visible="false" Style="VioletMany">
+      <Dependency Name="Many3VioletExit" />
+      <Dependency Name="Many3VioletOn" />
+    </Ray>
+    <PointByCoordinates Name="Many4In" Visible="false" X="C.X - 3.6 * cos(0.312767)" Y="C.Y + 3.6 * sin(0.312767)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4Start" Visible="false" X="-10.5" Y="C.Y + 3.6 * sin(0.312767)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="Many4Sun" Visible="false" Style="ManySun">
+      <Dependency Name="Many4Start" />
+      <Dependency Name="Many4In" />
+    </Segment>
+    <PointByCoordinates Name="Many4RedBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.233266 - 0.312767)" Y="C.Y + 3.6 * sin(2 * 0.233266 - 0.312767)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4RedExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.233266 - 0.312767 - pi)" Y="C.Y + 3.6 * sin(4 * 0.233266 - 0.312767 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4RedOn" Visible="false" X="Many4RedExit.X + cos(4 * 0.233266 - 2 * 0.312767 - pi)" Y="Many4RedExit.Y + sin(4 * 0.233266 - 2 * 0.312767 - pi)">
+      <Dependency Name="Many4RedExit" />
+    </PointByCoordinates>
+    <Segment Name="Many4RedPath" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many4In" />
+      <Dependency Name="Many4RedBack" />
+    </Segment>
+    <Segment Name="Many4RedPath2" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many4RedBack" />
+      <Dependency Name="Many4RedExit" />
+    </Segment>
+    <Ray Name="Many4RedOut" Visible="false" Style="RedMany">
+      <Dependency Name="Many4RedExit" />
+      <Dependency Name="Many4RedOn" />
+    </Ray>
+    <PointByCoordinates Name="Many4OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.233034 - 0.312767)" Y="C.Y + 3.6 * sin(2 * 0.233034 - 0.312767)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.233034 - 0.312767 - pi)" Y="C.Y + 3.6 * sin(4 * 0.233034 - 0.312767 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4OrangeOn" Visible="false" X="Many4OrangeExit.X + cos(4 * 0.233034 - 2 * 0.312767 - pi)" Y="Many4OrangeExit.Y + sin(4 * 0.233034 - 2 * 0.312767 - pi)">
+      <Dependency Name="Many4OrangeExit" />
+    </PointByCoordinates>
+    <Segment Name="Many4OrangePath" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many4In" />
+      <Dependency Name="Many4OrangeBack" />
+    </Segment>
+    <Segment Name="Many4OrangePath2" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many4OrangeBack" />
+      <Dependency Name="Many4OrangeExit" />
+    </Segment>
+    <Ray Name="Many4OrangeOut" Visible="false" Style="OrangeMany">
+      <Dependency Name="Many4OrangeExit" />
+      <Dependency Name="Many4OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="Many4YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.232892 - 0.312767)" Y="C.Y + 3.6 * sin(2 * 0.232892 - 0.312767)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.232892 - 0.312767 - pi)" Y="C.Y + 3.6 * sin(4 * 0.232892 - 0.312767 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4YellowOn" Visible="false" X="Many4YellowExit.X + cos(4 * 0.232892 - 2 * 0.312767 - pi)" Y="Many4YellowExit.Y + sin(4 * 0.232892 - 2 * 0.312767 - pi)">
+      <Dependency Name="Many4YellowExit" />
+    </PointByCoordinates>
+    <Segment Name="Many4YellowPath" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many4In" />
+      <Dependency Name="Many4YellowBack" />
+    </Segment>
+    <Segment Name="Many4YellowPath2" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many4YellowBack" />
+      <Dependency Name="Many4YellowExit" />
+    </Segment>
+    <Ray Name="Many4YellowOut" Visible="false" Style="YellowMany">
+      <Dependency Name="Many4YellowExit" />
+      <Dependency Name="Many4YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="Many4GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.23259 - 0.312767)" Y="C.Y + 3.6 * sin(2 * 0.23259 - 0.312767)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.23259 - 0.312767 - pi)" Y="C.Y + 3.6 * sin(4 * 0.23259 - 0.312767 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4GreenOn" Visible="false" X="Many4GreenExit.X + cos(4 * 0.23259 - 2 * 0.312767 - pi)" Y="Many4GreenExit.Y + sin(4 * 0.23259 - 2 * 0.312767 - pi)">
+      <Dependency Name="Many4GreenExit" />
+    </PointByCoordinates>
+    <Segment Name="Many4GreenPath" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many4In" />
+      <Dependency Name="Many4GreenBack" />
+    </Segment>
+    <Segment Name="Many4GreenPath2" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many4GreenBack" />
+      <Dependency Name="Many4GreenExit" />
+    </Segment>
+    <Ray Name="Many4GreenOut" Visible="false" Style="GreenMany">
+      <Dependency Name="Many4GreenExit" />
+      <Dependency Name="Many4GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="Many4BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.232165 - 0.312767)" Y="C.Y + 3.6 * sin(2 * 0.232165 - 0.312767)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.232165 - 0.312767 - pi)" Y="C.Y + 3.6 * sin(4 * 0.232165 - 0.312767 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4BlueOn" Visible="false" X="Many4BlueExit.X + cos(4 * 0.232165 - 2 * 0.312767 - pi)" Y="Many4BlueExit.Y + sin(4 * 0.232165 - 2 * 0.312767 - pi)">
+      <Dependency Name="Many4BlueExit" />
+    </PointByCoordinates>
+    <Segment Name="Many4BluePath" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many4In" />
+      <Dependency Name="Many4BlueBack" />
+    </Segment>
+    <Segment Name="Many4BluePath2" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many4BlueBack" />
+      <Dependency Name="Many4BlueExit" />
+    </Segment>
+    <Ray Name="Many4BlueOut" Visible="false" Style="BlueMany">
+      <Dependency Name="Many4BlueExit" />
+      <Dependency Name="Many4BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="Many4IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.231865 - 0.312767)" Y="C.Y + 3.6 * sin(2 * 0.231865 - 0.312767)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.231865 - 0.312767 - pi)" Y="C.Y + 3.6 * sin(4 * 0.231865 - 0.312767 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4IndigoOn" Visible="false" X="Many4IndigoExit.X + cos(4 * 0.231865 - 2 * 0.312767 - pi)" Y="Many4IndigoExit.Y + sin(4 * 0.231865 - 2 * 0.312767 - pi)">
+      <Dependency Name="Many4IndigoExit" />
+    </PointByCoordinates>
+    <Segment Name="Many4IndigoPath" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many4In" />
+      <Dependency Name="Many4IndigoBack" />
+    </Segment>
+    <Segment Name="Many4IndigoPath2" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many4IndigoBack" />
+      <Dependency Name="Many4IndigoExit" />
+    </Segment>
+    <Ray Name="Many4IndigoOut" Visible="false" Style="IndigoMany">
+      <Dependency Name="Many4IndigoExit" />
+      <Dependency Name="Many4IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="Many4VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.231074 - 0.312767)" Y="C.Y + 3.6 * sin(2 * 0.231074 - 0.312767)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.231074 - 0.312767 - pi)" Y="C.Y + 3.6 * sin(4 * 0.231074 - 0.312767 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many4VioletOn" Visible="false" X="Many4VioletExit.X + cos(4 * 0.231074 - 2 * 0.312767 - pi)" Y="Many4VioletExit.Y + sin(4 * 0.231074 - 2 * 0.312767 - pi)">
+      <Dependency Name="Many4VioletExit" />
+    </PointByCoordinates>
+    <Segment Name="Many4VioletPath" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many4In" />
+      <Dependency Name="Many4VioletBack" />
+    </Segment>
+    <Segment Name="Many4VioletPath2" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many4VioletBack" />
+      <Dependency Name="Many4VioletExit" />
+    </Segment>
+    <Ray Name="Many4VioletOut" Visible="false" Style="VioletMany">
+      <Dependency Name="Many4VioletExit" />
+      <Dependency Name="Many4VioletOn" />
+    </Ray>
+    <PointByCoordinates Name="Many5In" Visible="false" X="C.X - 3.6 * cos(0.394791)" Y="C.Y + 3.6 * sin(0.394791)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5Start" Visible="false" X="-10.5" Y="C.Y + 3.6 * sin(0.394791)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="Many5Sun" Visible="false" Style="ManySun">
+      <Dependency Name="Many5Start" />
+      <Dependency Name="Many5In" />
+    </Segment>
+    <PointByCoordinates Name="Many5RedBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.293125 - 0.394791)" Y="C.Y + 3.6 * sin(2 * 0.293125 - 0.394791)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5RedExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.293125 - 0.394791 - pi)" Y="C.Y + 3.6 * sin(4 * 0.293125 - 0.394791 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5RedOn" Visible="false" X="Many5RedExit.X + cos(4 * 0.293125 - 2 * 0.394791 - pi)" Y="Many5RedExit.Y + sin(4 * 0.293125 - 2 * 0.394791 - pi)">
+      <Dependency Name="Many5RedExit" />
+    </PointByCoordinates>
+    <Segment Name="Many5RedPath" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many5In" />
+      <Dependency Name="Many5RedBack" />
+    </Segment>
+    <Segment Name="Many5RedPath2" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many5RedBack" />
+      <Dependency Name="Many5RedExit" />
+    </Segment>
+    <Ray Name="Many5RedOut" Visible="false" Style="RedMany">
+      <Dependency Name="Many5RedExit" />
+      <Dependency Name="Many5RedOn" />
+    </Ray>
+    <PointByCoordinates Name="Many5OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.292831 - 0.394791)" Y="C.Y + 3.6 * sin(2 * 0.292831 - 0.394791)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.292831 - 0.394791 - pi)" Y="C.Y + 3.6 * sin(4 * 0.292831 - 0.394791 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5OrangeOn" Visible="false" X="Many5OrangeExit.X + cos(4 * 0.292831 - 2 * 0.394791 - pi)" Y="Many5OrangeExit.Y + sin(4 * 0.292831 - 2 * 0.394791 - pi)">
+      <Dependency Name="Many5OrangeExit" />
+    </PointByCoordinates>
+    <Segment Name="Many5OrangePath" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many5In" />
+      <Dependency Name="Many5OrangeBack" />
+    </Segment>
+    <Segment Name="Many5OrangePath2" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many5OrangeBack" />
+      <Dependency Name="Many5OrangeExit" />
+    </Segment>
+    <Ray Name="Many5OrangeOut" Visible="false" Style="OrangeMany">
+      <Dependency Name="Many5OrangeExit" />
+      <Dependency Name="Many5OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="Many5YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.29265 - 0.394791)" Y="C.Y + 3.6 * sin(2 * 0.29265 - 0.394791)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.29265 - 0.394791 - pi)" Y="C.Y + 3.6 * sin(4 * 0.29265 - 0.394791 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5YellowOn" Visible="false" X="Many5YellowExit.X + cos(4 * 0.29265 - 2 * 0.394791 - pi)" Y="Many5YellowExit.Y + sin(4 * 0.29265 - 2 * 0.394791 - pi)">
+      <Dependency Name="Many5YellowExit" />
+    </PointByCoordinates>
+    <Segment Name="Many5YellowPath" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many5In" />
+      <Dependency Name="Many5YellowBack" />
+    </Segment>
+    <Segment Name="Many5YellowPath2" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many5YellowBack" />
+      <Dependency Name="Many5YellowExit" />
+    </Segment>
+    <Ray Name="Many5YellowOut" Visible="false" Style="YellowMany">
+      <Dependency Name="Many5YellowExit" />
+      <Dependency Name="Many5YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="Many5GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.292266 - 0.394791)" Y="C.Y + 3.6 * sin(2 * 0.292266 - 0.394791)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.292266 - 0.394791 - pi)" Y="C.Y + 3.6 * sin(4 * 0.292266 - 0.394791 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5GreenOn" Visible="false" X="Many5GreenExit.X + cos(4 * 0.292266 - 2 * 0.394791 - pi)" Y="Many5GreenExit.Y + sin(4 * 0.292266 - 2 * 0.394791 - pi)">
+      <Dependency Name="Many5GreenExit" />
+    </PointByCoordinates>
+    <Segment Name="Many5GreenPath" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many5In" />
+      <Dependency Name="Many5GreenBack" />
+    </Segment>
+    <Segment Name="Many5GreenPath2" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many5GreenBack" />
+      <Dependency Name="Many5GreenExit" />
+    </Segment>
+    <Ray Name="Many5GreenOut" Visible="false" Style="GreenMany">
+      <Dependency Name="Many5GreenExit" />
+      <Dependency Name="Many5GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="Many5BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.291726 - 0.394791)" Y="C.Y + 3.6 * sin(2 * 0.291726 - 0.394791)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.291726 - 0.394791 - pi)" Y="C.Y + 3.6 * sin(4 * 0.291726 - 0.394791 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5BlueOn" Visible="false" X="Many5BlueExit.X + cos(4 * 0.291726 - 2 * 0.394791 - pi)" Y="Many5BlueExit.Y + sin(4 * 0.291726 - 2 * 0.394791 - pi)">
+      <Dependency Name="Many5BlueExit" />
+    </PointByCoordinates>
+    <Segment Name="Many5BluePath" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many5In" />
+      <Dependency Name="Many5BlueBack" />
+    </Segment>
+    <Segment Name="Many5BluePath2" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many5BlueBack" />
+      <Dependency Name="Many5BlueExit" />
+    </Segment>
+    <Ray Name="Many5BlueOut" Visible="false" Style="BlueMany">
+      <Dependency Name="Many5BlueExit" />
+      <Dependency Name="Many5BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="Many5IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.291345 - 0.394791)" Y="C.Y + 3.6 * sin(2 * 0.291345 - 0.394791)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.291345 - 0.394791 - pi)" Y="C.Y + 3.6 * sin(4 * 0.291345 - 0.394791 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5IndigoOn" Visible="false" X="Many5IndigoExit.X + cos(4 * 0.291345 - 2 * 0.394791 - pi)" Y="Many5IndigoExit.Y + sin(4 * 0.291345 - 2 * 0.394791 - pi)">
+      <Dependency Name="Many5IndigoExit" />
+    </PointByCoordinates>
+    <Segment Name="Many5IndigoPath" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many5In" />
+      <Dependency Name="Many5IndigoBack" />
+    </Segment>
+    <Segment Name="Many5IndigoPath2" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many5IndigoBack" />
+      <Dependency Name="Many5IndigoExit" />
+    </Segment>
+    <Ray Name="Many5IndigoOut" Visible="false" Style="IndigoMany">
+      <Dependency Name="Many5IndigoExit" />
+      <Dependency Name="Many5IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="Many5VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.290341 - 0.394791)" Y="C.Y + 3.6 * sin(2 * 0.290341 - 0.394791)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.290341 - 0.394791 - pi)" Y="C.Y + 3.6 * sin(4 * 0.290341 - 0.394791 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many5VioletOn" Visible="false" X="Many5VioletExit.X + cos(4 * 0.290341 - 2 * 0.394791 - pi)" Y="Many5VioletExit.Y + sin(4 * 0.290341 - 2 * 0.394791 - pi)">
+      <Dependency Name="Many5VioletExit" />
+    </PointByCoordinates>
+    <Segment Name="Many5VioletPath" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many5In" />
+      <Dependency Name="Many5VioletBack" />
+    </Segment>
+    <Segment Name="Many5VioletPath2" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many5VioletBack" />
+      <Dependency Name="Many5VioletExit" />
+    </Segment>
+    <Ray Name="Many5VioletOut" Visible="false" Style="VioletMany">
+      <Dependency Name="Many5VioletExit" />
+      <Dependency Name="Many5VioletOn" />
+    </Ray>
+    <PointByCoordinates Name="Many6In" Visible="false" X="C.X - 3.6 * cos(0.479729)" Y="C.Y + 3.6 * sin(0.479729)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6Start" Visible="false" X="-10.5" Y="C.Y + 3.6 * sin(0.479729)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="Many6Sun" Visible="false" Style="ManySun">
+      <Dependency Name="Many6Start" />
+      <Dependency Name="Many6In" />
+    </Segment>
+    <PointByCoordinates Name="Many6RedBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.354088 - 0.479729)" Y="C.Y + 3.6 * sin(2 * 0.354088 - 0.479729)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6RedExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.354088 - 0.479729 - pi)" Y="C.Y + 3.6 * sin(4 * 0.354088 - 0.479729 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6RedOn" Visible="false" X="Many6RedExit.X + cos(4 * 0.354088 - 2 * 0.479729 - pi)" Y="Many6RedExit.Y + sin(4 * 0.354088 - 2 * 0.479729 - pi)">
+      <Dependency Name="Many6RedExit" />
+    </PointByCoordinates>
+    <Segment Name="Many6RedPath" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many6In" />
+      <Dependency Name="Many6RedBack" />
+    </Segment>
+    <Segment Name="Many6RedPath2" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many6RedBack" />
+      <Dependency Name="Many6RedExit" />
+    </Segment>
+    <Ray Name="Many6RedOut" Visible="false" Style="RedMany">
+      <Dependency Name="Many6RedExit" />
+      <Dependency Name="Many6RedOn" />
+    </Ray>
+    <PointByCoordinates Name="Many6OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.353727 - 0.479729)" Y="C.Y + 3.6 * sin(2 * 0.353727 - 0.479729)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.353727 - 0.479729 - pi)" Y="C.Y + 3.6 * sin(4 * 0.353727 - 0.479729 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6OrangeOn" Visible="false" X="Many6OrangeExit.X + cos(4 * 0.353727 - 2 * 0.479729 - pi)" Y="Many6OrangeExit.Y + sin(4 * 0.353727 - 2 * 0.479729 - pi)">
+      <Dependency Name="Many6OrangeExit" />
+    </PointByCoordinates>
+    <Segment Name="Many6OrangePath" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many6In" />
+      <Dependency Name="Many6OrangeBack" />
+    </Segment>
+    <Segment Name="Many6OrangePath2" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many6OrangeBack" />
+      <Dependency Name="Many6OrangeExit" />
+    </Segment>
+    <Ray Name="Many6OrangeOut" Visible="false" Style="OrangeMany">
+      <Dependency Name="Many6OrangeExit" />
+      <Dependency Name="Many6OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="Many6YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.353505 - 0.479729)" Y="C.Y + 3.6 * sin(2 * 0.353505 - 0.479729)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.353505 - 0.479729 - pi)" Y="C.Y + 3.6 * sin(4 * 0.353505 - 0.479729 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6YellowOn" Visible="false" X="Many6YellowExit.X + cos(4 * 0.353505 - 2 * 0.479729 - pi)" Y="Many6YellowExit.Y + sin(4 * 0.353505 - 2 * 0.479729 - pi)">
+      <Dependency Name="Many6YellowExit" />
+    </PointByCoordinates>
+    <Segment Name="Many6YellowPath" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many6In" />
+      <Dependency Name="Many6YellowBack" />
+    </Segment>
+    <Segment Name="Many6YellowPath2" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many6YellowBack" />
+      <Dependency Name="Many6YellowExit" />
+    </Segment>
+    <Ray Name="Many6YellowOut" Visible="false" Style="YellowMany">
+      <Dependency Name="Many6YellowExit" />
+      <Dependency Name="Many6YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="Many6GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.353035 - 0.479729)" Y="C.Y + 3.6 * sin(2 * 0.353035 - 0.479729)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.353035 - 0.479729 - pi)" Y="C.Y + 3.6 * sin(4 * 0.353035 - 0.479729 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6GreenOn" Visible="false" X="Many6GreenExit.X + cos(4 * 0.353035 - 2 * 0.479729 - pi)" Y="Many6GreenExit.Y + sin(4 * 0.353035 - 2 * 0.479729 - pi)">
+      <Dependency Name="Many6GreenExit" />
+    </PointByCoordinates>
+    <Segment Name="Many6GreenPath" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many6In" />
+      <Dependency Name="Many6GreenBack" />
+    </Segment>
+    <Segment Name="Many6GreenPath2" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many6GreenBack" />
+      <Dependency Name="Many6GreenExit" />
+    </Segment>
+    <Ray Name="Many6GreenOut" Visible="false" Style="GreenMany">
+      <Dependency Name="Many6GreenExit" />
+      <Dependency Name="Many6GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="Many6BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.352374 - 0.479729)" Y="C.Y + 3.6 * sin(2 * 0.352374 - 0.479729)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.352374 - 0.479729 - pi)" Y="C.Y + 3.6 * sin(4 * 0.352374 - 0.479729 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6BlueOn" Visible="false" X="Many6BlueExit.X + cos(4 * 0.352374 - 2 * 0.479729 - pi)" Y="Many6BlueExit.Y + sin(4 * 0.352374 - 2 * 0.479729 - pi)">
+      <Dependency Name="Many6BlueExit" />
+    </PointByCoordinates>
+    <Segment Name="Many6BluePath" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many6In" />
+      <Dependency Name="Many6BlueBack" />
+    </Segment>
+    <Segment Name="Many6BluePath2" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many6BlueBack" />
+      <Dependency Name="Many6BlueExit" />
+    </Segment>
+    <Ray Name="Many6BlueOut" Visible="false" Style="BlueMany">
+      <Dependency Name="Many6BlueExit" />
+      <Dependency Name="Many6BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="Many6IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.351907 - 0.479729)" Y="C.Y + 3.6 * sin(2 * 0.351907 - 0.479729)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.351907 - 0.479729 - pi)" Y="C.Y + 3.6 * sin(4 * 0.351907 - 0.479729 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6IndigoOn" Visible="false" X="Many6IndigoExit.X + cos(4 * 0.351907 - 2 * 0.479729 - pi)" Y="Many6IndigoExit.Y + sin(4 * 0.351907 - 2 * 0.479729 - pi)">
+      <Dependency Name="Many6IndigoExit" />
+    </PointByCoordinates>
+    <Segment Name="Many6IndigoPath" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many6In" />
+      <Dependency Name="Many6IndigoBack" />
+    </Segment>
+    <Segment Name="Many6IndigoPath2" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many6IndigoBack" />
+      <Dependency Name="Many6IndigoExit" />
+    </Segment>
+    <Ray Name="Many6IndigoOut" Visible="false" Style="IndigoMany">
+      <Dependency Name="Many6IndigoExit" />
+      <Dependency Name="Many6IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="Many6VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.350678 - 0.479729)" Y="C.Y + 3.6 * sin(2 * 0.350678 - 0.479729)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.350678 - 0.479729 - pi)" Y="C.Y + 3.6 * sin(4 * 0.350678 - 0.479729 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many6VioletOn" Visible="false" X="Many6VioletExit.X + cos(4 * 0.350678 - 2 * 0.479729 - pi)" Y="Many6VioletExit.Y + sin(4 * 0.350678 - 2 * 0.479729 - pi)">
+      <Dependency Name="Many6VioletExit" />
+    </PointByCoordinates>
+    <Segment Name="Many6VioletPath" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many6In" />
+      <Dependency Name="Many6VioletBack" />
+    </Segment>
+    <Segment Name="Many6VioletPath2" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many6VioletBack" />
+      <Dependency Name="Many6VioletExit" />
+    </Segment>
+    <Ray Name="Many6VioletOut" Visible="false" Style="VioletMany">
+      <Dependency Name="Many6VioletExit" />
+      <Dependency Name="Many6VioletOn" />
+    </Ray>
+    <PointByCoordinates Name="Many7In" Visible="false" X="C.X - 3.6 * cos(0.56861)" Y="C.Y + 3.6 * sin(0.56861)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7Start" Visible="false" X="-10.5" Y="C.Y + 3.6 * sin(0.56861)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="Many7Sun" Visible="false" Style="ManySun">
+      <Dependency Name="Many7Start" />
+      <Dependency Name="Many7In" />
+    </Segment>
+    <PointByCoordinates Name="Many7RedBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.416458 - 0.56861)" Y="C.Y + 3.6 * sin(2 * 0.416458 - 0.56861)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7RedExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.416458 - 0.56861 - pi)" Y="C.Y + 3.6 * sin(4 * 0.416458 - 0.56861 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7RedOn" Visible="false" X="Many7RedExit.X + cos(4 * 0.416458 - 2 * 0.56861 - pi)" Y="Many7RedExit.Y + sin(4 * 0.416458 - 2 * 0.56861 - pi)">
+      <Dependency Name="Many7RedExit" />
+    </PointByCoordinates>
+    <Segment Name="Many7RedPath" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many7In" />
+      <Dependency Name="Many7RedBack" />
+    </Segment>
+    <Segment Name="Many7RedPath2" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many7RedBack" />
+      <Dependency Name="Many7RedExit" />
+    </Segment>
+    <Ray Name="Many7RedOut" Visible="false" Style="RedMany">
+      <Dependency Name="Many7RedExit" />
+      <Dependency Name="Many7RedOn" />
+    </Ray>
+    <PointByCoordinates Name="Many7OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.416026 - 0.56861)" Y="C.Y + 3.6 * sin(2 * 0.416026 - 0.56861)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.416026 - 0.56861 - pi)" Y="C.Y + 3.6 * sin(4 * 0.416026 - 0.56861 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7OrangeOn" Visible="false" X="Many7OrangeExit.X + cos(4 * 0.416026 - 2 * 0.56861 - pi)" Y="Many7OrangeExit.Y + sin(4 * 0.416026 - 2 * 0.56861 - pi)">
+      <Dependency Name="Many7OrangeExit" />
+    </PointByCoordinates>
+    <Segment Name="Many7OrangePath" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many7In" />
+      <Dependency Name="Many7OrangeBack" />
+    </Segment>
+    <Segment Name="Many7OrangePath2" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many7OrangeBack" />
+      <Dependency Name="Many7OrangeExit" />
+    </Segment>
+    <Ray Name="Many7OrangeOut" Visible="false" Style="OrangeMany">
+      <Dependency Name="Many7OrangeExit" />
+      <Dependency Name="Many7OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="Many7YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.415761 - 0.56861)" Y="C.Y + 3.6 * sin(2 * 0.415761 - 0.56861)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.415761 - 0.56861 - pi)" Y="C.Y + 3.6 * sin(4 * 0.415761 - 0.56861 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7YellowOn" Visible="false" X="Many7YellowExit.X + cos(4 * 0.415761 - 2 * 0.56861 - pi)" Y="Many7YellowExit.Y + sin(4 * 0.415761 - 2 * 0.56861 - pi)">
+      <Dependency Name="Many7YellowExit" />
+    </PointByCoordinates>
+    <Segment Name="Many7YellowPath" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many7In" />
+      <Dependency Name="Many7YellowBack" />
+    </Segment>
+    <Segment Name="Many7YellowPath2" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many7YellowBack" />
+      <Dependency Name="Many7YellowExit" />
+    </Segment>
+    <Ray Name="Many7YellowOut" Visible="false" Style="YellowMany">
+      <Dependency Name="Many7YellowExit" />
+      <Dependency Name="Many7YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="Many7GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.415199 - 0.56861)" Y="C.Y + 3.6 * sin(2 * 0.415199 - 0.56861)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.415199 - 0.56861 - pi)" Y="C.Y + 3.6 * sin(4 * 0.415199 - 0.56861 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7GreenOn" Visible="false" X="Many7GreenExit.X + cos(4 * 0.415199 - 2 * 0.56861 - pi)" Y="Many7GreenExit.Y + sin(4 * 0.415199 - 2 * 0.56861 - pi)">
+      <Dependency Name="Many7GreenExit" />
+    </PointByCoordinates>
+    <Segment Name="Many7GreenPath" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many7In" />
+      <Dependency Name="Many7GreenBack" />
+    </Segment>
+    <Segment Name="Many7GreenPath2" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many7GreenBack" />
+      <Dependency Name="Many7GreenExit" />
+    </Segment>
+    <Ray Name="Many7GreenOut" Visible="false" Style="GreenMany">
+      <Dependency Name="Many7GreenExit" />
+      <Dependency Name="Many7GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="Many7BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.414408 - 0.56861)" Y="C.Y + 3.6 * sin(2 * 0.414408 - 0.56861)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.414408 - 0.56861 - pi)" Y="C.Y + 3.6 * sin(4 * 0.414408 - 0.56861 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7BlueOn" Visible="false" X="Many7BlueExit.X + cos(4 * 0.414408 - 2 * 0.56861 - pi)" Y="Many7BlueExit.Y + sin(4 * 0.414408 - 2 * 0.56861 - pi)">
+      <Dependency Name="Many7BlueExit" />
+    </PointByCoordinates>
+    <Segment Name="Many7BluePath" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many7In" />
+      <Dependency Name="Many7BlueBack" />
+    </Segment>
+    <Segment Name="Many7BluePath2" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many7BlueBack" />
+      <Dependency Name="Many7BlueExit" />
+    </Segment>
+    <Ray Name="Many7BlueOut" Visible="false" Style="BlueMany">
+      <Dependency Name="Many7BlueExit" />
+      <Dependency Name="Many7BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="Many7IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.41385 - 0.56861)" Y="C.Y + 3.6 * sin(2 * 0.41385 - 0.56861)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.41385 - 0.56861 - pi)" Y="C.Y + 3.6 * sin(4 * 0.41385 - 0.56861 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7IndigoOn" Visible="false" X="Many7IndigoExit.X + cos(4 * 0.41385 - 2 * 0.56861 - pi)" Y="Many7IndigoExit.Y + sin(4 * 0.41385 - 2 * 0.56861 - pi)">
+      <Dependency Name="Many7IndigoExit" />
+    </PointByCoordinates>
+    <Segment Name="Many7IndigoPath" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many7In" />
+      <Dependency Name="Many7IndigoBack" />
+    </Segment>
+    <Segment Name="Many7IndigoPath2" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many7IndigoBack" />
+      <Dependency Name="Many7IndigoExit" />
+    </Segment>
+    <Ray Name="Many7IndigoOut" Visible="false" Style="IndigoMany">
+      <Dependency Name="Many7IndigoExit" />
+      <Dependency Name="Many7IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="Many7VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.412379 - 0.56861)" Y="C.Y + 3.6 * sin(2 * 0.412379 - 0.56861)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.412379 - 0.56861 - pi)" Y="C.Y + 3.6 * sin(4 * 0.412379 - 0.56861 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many7VioletOn" Visible="false" X="Many7VioletExit.X + cos(4 * 0.412379 - 2 * 0.56861 - pi)" Y="Many7VioletExit.Y + sin(4 * 0.412379 - 2 * 0.56861 - pi)">
+      <Dependency Name="Many7VioletExit" />
+    </PointByCoordinates>
+    <Segment Name="Many7VioletPath" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many7In" />
+      <Dependency Name="Many7VioletBack" />
+    </Segment>
+    <Segment Name="Many7VioletPath2" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many7VioletBack" />
+      <Dependency Name="Many7VioletExit" />
+    </Segment>
+    <Ray Name="Many7VioletOut" Visible="false" Style="VioletMany">
+      <Dependency Name="Many7VioletExit" />
+      <Dependency Name="Many7VioletOn" />
+    </Ray>
+    <PointByCoordinates Name="Many8In" Visible="false" X="C.X - 3.6 * cos(0.662874)" Y="C.Y + 3.6 * sin(0.662874)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8Start" Visible="false" X="-10.5" Y="C.Y + 3.6 * sin(0.662874)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="Many8Sun" Visible="false" Style="ManySun">
+      <Dependency Name="Many8Start" />
+      <Dependency Name="Many8In" />
+    </Segment>
+    <PointByCoordinates Name="Many8RedBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.480602 - 0.662874)" Y="C.Y + 3.6 * sin(2 * 0.480602 - 0.662874)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8RedExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.480602 - 0.662874 - pi)" Y="C.Y + 3.6 * sin(4 * 0.480602 - 0.662874 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8RedOn" Visible="false" X="Many8RedExit.X + cos(4 * 0.480602 - 2 * 0.662874 - pi)" Y="Many8RedExit.Y + sin(4 * 0.480602 - 2 * 0.662874 - pi)">
+      <Dependency Name="Many8RedExit" />
+    </PointByCoordinates>
+    <Segment Name="Many8RedPath" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many8In" />
+      <Dependency Name="Many8RedBack" />
+    </Segment>
+    <Segment Name="Many8RedPath2" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many8RedBack" />
+      <Dependency Name="Many8RedExit" />
+    </Segment>
+    <Ray Name="Many8RedOut" Visible="false" Style="RedMany">
+      <Dependency Name="Many8RedExit" />
+      <Dependency Name="Many8RedOn" />
+    </Ray>
+    <PointByCoordinates Name="Many8OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.480093 - 0.662874)" Y="C.Y + 3.6 * sin(2 * 0.480093 - 0.662874)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.480093 - 0.662874 - pi)" Y="C.Y + 3.6 * sin(4 * 0.480093 - 0.662874 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8OrangeOn" Visible="false" X="Many8OrangeExit.X + cos(4 * 0.480093 - 2 * 0.662874 - pi)" Y="Many8OrangeExit.Y + sin(4 * 0.480093 - 2 * 0.662874 - pi)">
+      <Dependency Name="Many8OrangeExit" />
+    </PointByCoordinates>
+    <Segment Name="Many8OrangePath" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many8In" />
+      <Dependency Name="Many8OrangeBack" />
+    </Segment>
+    <Segment Name="Many8OrangePath2" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many8OrangeBack" />
+      <Dependency Name="Many8OrangeExit" />
+    </Segment>
+    <Ray Name="Many8OrangeOut" Visible="false" Style="OrangeMany">
+      <Dependency Name="Many8OrangeExit" />
+      <Dependency Name="Many8OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="Many8YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.479781 - 0.662874)" Y="C.Y + 3.6 * sin(2 * 0.479781 - 0.662874)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.479781 - 0.662874 - pi)" Y="C.Y + 3.6 * sin(4 * 0.479781 - 0.662874 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8YellowOn" Visible="false" X="Many8YellowExit.X + cos(4 * 0.479781 - 2 * 0.662874 - pi)" Y="Many8YellowExit.Y + sin(4 * 0.479781 - 2 * 0.662874 - pi)">
+      <Dependency Name="Many8YellowExit" />
+    </PointByCoordinates>
+    <Segment Name="Many8YellowPath" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many8In" />
+      <Dependency Name="Many8YellowBack" />
+    </Segment>
+    <Segment Name="Many8YellowPath2" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many8YellowBack" />
+      <Dependency Name="Many8YellowExit" />
+    </Segment>
+    <Ray Name="Many8YellowOut" Visible="false" Style="YellowMany">
+      <Dependency Name="Many8YellowExit" />
+      <Dependency Name="Many8YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="Many8GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.479118 - 0.662874)" Y="C.Y + 3.6 * sin(2 * 0.479118 - 0.662874)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.479118 - 0.662874 - pi)" Y="C.Y + 3.6 * sin(4 * 0.479118 - 0.662874 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8GreenOn" Visible="false" X="Many8GreenExit.X + cos(4 * 0.479118 - 2 * 0.662874 - pi)" Y="Many8GreenExit.Y + sin(4 * 0.479118 - 2 * 0.662874 - pi)">
+      <Dependency Name="Many8GreenExit" />
+    </PointByCoordinates>
+    <Segment Name="Many8GreenPath" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many8In" />
+      <Dependency Name="Many8GreenBack" />
+    </Segment>
+    <Segment Name="Many8GreenPath2" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many8GreenBack" />
+      <Dependency Name="Many8GreenExit" />
+    </Segment>
+    <Ray Name="Many8GreenOut" Visible="false" Style="GreenMany">
+      <Dependency Name="Many8GreenExit" />
+      <Dependency Name="Many8GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="Many8BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.478186 - 0.662874)" Y="C.Y + 3.6 * sin(2 * 0.478186 - 0.662874)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.478186 - 0.662874 - pi)" Y="C.Y + 3.6 * sin(4 * 0.478186 - 0.662874 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8BlueOn" Visible="false" X="Many8BlueExit.X + cos(4 * 0.478186 - 2 * 0.662874 - pi)" Y="Many8BlueExit.Y + sin(4 * 0.478186 - 2 * 0.662874 - pi)">
+      <Dependency Name="Many8BlueExit" />
+    </PointByCoordinates>
+    <Segment Name="Many8BluePath" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many8In" />
+      <Dependency Name="Many8BlueBack" />
+    </Segment>
+    <Segment Name="Many8BluePath2" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many8BlueBack" />
+      <Dependency Name="Many8BlueExit" />
+    </Segment>
+    <Ray Name="Many8BlueOut" Visible="false" Style="BlueMany">
+      <Dependency Name="Many8BlueExit" />
+      <Dependency Name="Many8BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="Many8IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.477528 - 0.662874)" Y="C.Y + 3.6 * sin(2 * 0.477528 - 0.662874)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.477528 - 0.662874 - pi)" Y="C.Y + 3.6 * sin(4 * 0.477528 - 0.662874 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8IndigoOn" Visible="false" X="Many8IndigoExit.X + cos(4 * 0.477528 - 2 * 0.662874 - pi)" Y="Many8IndigoExit.Y + sin(4 * 0.477528 - 2 * 0.662874 - pi)">
+      <Dependency Name="Many8IndigoExit" />
+    </PointByCoordinates>
+    <Segment Name="Many8IndigoPath" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many8In" />
+      <Dependency Name="Many8IndigoBack" />
+    </Segment>
+    <Segment Name="Many8IndigoPath2" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many8IndigoBack" />
+      <Dependency Name="Many8IndigoExit" />
+    </Segment>
+    <Ray Name="Many8IndigoOut" Visible="false" Style="IndigoMany">
+      <Dependency Name="Many8IndigoExit" />
+      <Dependency Name="Many8IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="Many8VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.475796 - 0.662874)" Y="C.Y + 3.6 * sin(2 * 0.475796 - 0.662874)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.475796 - 0.662874 - pi)" Y="C.Y + 3.6 * sin(4 * 0.475796 - 0.662874 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many8VioletOn" Visible="false" X="Many8VioletExit.X + cos(4 * 0.475796 - 2 * 0.662874 - pi)" Y="Many8VioletExit.Y + sin(4 * 0.475796 - 2 * 0.662874 - pi)">
+      <Dependency Name="Many8VioletExit" />
+    </PointByCoordinates>
+    <Segment Name="Many8VioletPath" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many8In" />
+      <Dependency Name="Many8VioletBack" />
+    </Segment>
+    <Segment Name="Many8VioletPath2" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many8VioletBack" />
+      <Dependency Name="Many8VioletExit" />
+    </Segment>
+    <Ray Name="Many8VioletOut" Visible="false" Style="VioletMany">
+      <Dependency Name="Many8VioletExit" />
+      <Dependency Name="Many8VioletOn" />
+    </Ray>
+    <PointByCoordinates Name="Many9In" Visible="false" X="C.X - 3.6 * cos(0.764682)" Y="C.Y + 3.6 * sin(0.764682)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9Start" Visible="false" X="-10.5" Y="C.Y + 3.6 * sin(0.764682)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="Many9Sun" Visible="false" Style="ManySun">
+      <Dependency Name="Many9Start" />
+      <Dependency Name="Many9In" />
+    </Segment>
+    <PointByCoordinates Name="Many9RedBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.54697 - 0.764682)" Y="C.Y + 3.6 * sin(2 * 0.54697 - 0.764682)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9RedExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.54697 - 0.764682 - pi)" Y="C.Y + 3.6 * sin(4 * 0.54697 - 0.764682 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9RedOn" Visible="false" X="Many9RedExit.X + cos(4 * 0.54697 - 2 * 0.764682 - pi)" Y="Many9RedExit.Y + sin(4 * 0.54697 - 2 * 0.764682 - pi)">
+      <Dependency Name="Many9RedExit" />
+    </PointByCoordinates>
+    <Segment Name="Many9RedPath" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many9In" />
+      <Dependency Name="Many9RedBack" />
+    </Segment>
+    <Segment Name="Many9RedPath2" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many9RedBack" />
+      <Dependency Name="Many9RedExit" />
+    </Segment>
+    <Ray Name="Many9RedOut" Visible="false" Style="RedMany">
+      <Dependency Name="Many9RedExit" />
+      <Dependency Name="Many9RedOn" />
+    </Ray>
+    <PointByCoordinates Name="Many9OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.546376 - 0.764682)" Y="C.Y + 3.6 * sin(2 * 0.546376 - 0.764682)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.546376 - 0.764682 - pi)" Y="C.Y + 3.6 * sin(4 * 0.546376 - 0.764682 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9OrangeOn" Visible="false" X="Many9OrangeExit.X + cos(4 * 0.546376 - 2 * 0.764682 - pi)" Y="Many9OrangeExit.Y + sin(4 * 0.546376 - 2 * 0.764682 - pi)">
+      <Dependency Name="Many9OrangeExit" />
+    </PointByCoordinates>
+    <Segment Name="Many9OrangePath" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many9In" />
+      <Dependency Name="Many9OrangeBack" />
+    </Segment>
+    <Segment Name="Many9OrangePath2" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many9OrangeBack" />
+      <Dependency Name="Many9OrangeExit" />
+    </Segment>
+    <Ray Name="Many9OrangeOut" Visible="false" Style="OrangeMany">
+      <Dependency Name="Many9OrangeExit" />
+      <Dependency Name="Many9OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="Many9YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.546011 - 0.764682)" Y="C.Y + 3.6 * sin(2 * 0.546011 - 0.764682)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.546011 - 0.764682 - pi)" Y="C.Y + 3.6 * sin(4 * 0.546011 - 0.764682 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9YellowOn" Visible="false" X="Many9YellowExit.X + cos(4 * 0.546011 - 2 * 0.764682 - pi)" Y="Many9YellowExit.Y + sin(4 * 0.546011 - 2 * 0.764682 - pi)">
+      <Dependency Name="Many9YellowExit" />
+    </PointByCoordinates>
+    <Segment Name="Many9YellowPath" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many9In" />
+      <Dependency Name="Many9YellowBack" />
+    </Segment>
+    <Segment Name="Many9YellowPath2" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many9YellowBack" />
+      <Dependency Name="Many9YellowExit" />
+    </Segment>
+    <Ray Name="Many9YellowOut" Visible="false" Style="YellowMany">
+      <Dependency Name="Many9YellowExit" />
+      <Dependency Name="Many9YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="Many9GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.545238 - 0.764682)" Y="C.Y + 3.6 * sin(2 * 0.545238 - 0.764682)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.545238 - 0.764682 - pi)" Y="C.Y + 3.6 * sin(4 * 0.545238 - 0.764682 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9GreenOn" Visible="false" X="Many9GreenExit.X + cos(4 * 0.545238 - 2 * 0.764682 - pi)" Y="Many9GreenExit.Y + sin(4 * 0.545238 - 2 * 0.764682 - pi)">
+      <Dependency Name="Many9GreenExit" />
+    </PointByCoordinates>
+    <Segment Name="Many9GreenPath" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many9In" />
+      <Dependency Name="Many9GreenBack" />
+    </Segment>
+    <Segment Name="Many9GreenPath2" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many9GreenBack" />
+      <Dependency Name="Many9GreenExit" />
+    </Segment>
+    <Ray Name="Many9GreenOut" Visible="false" Style="GreenMany">
+      <Dependency Name="Many9GreenExit" />
+      <Dependency Name="Many9GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="Many9BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.54415 - 0.764682)" Y="C.Y + 3.6 * sin(2 * 0.54415 - 0.764682)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.54415 - 0.764682 - pi)" Y="C.Y + 3.6 * sin(4 * 0.54415 - 0.764682 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9BlueOn" Visible="false" X="Many9BlueExit.X + cos(4 * 0.54415 - 2 * 0.764682 - pi)" Y="Many9BlueExit.Y + sin(4 * 0.54415 - 2 * 0.764682 - pi)">
+      <Dependency Name="Many9BlueExit" />
+    </PointByCoordinates>
+    <Segment Name="Many9BluePath" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many9In" />
+      <Dependency Name="Many9BlueBack" />
+    </Segment>
+    <Segment Name="Many9BluePath2" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many9BlueBack" />
+      <Dependency Name="Many9BlueExit" />
+    </Segment>
+    <Ray Name="Many9BlueOut" Visible="false" Style="BlueMany">
+      <Dependency Name="Many9BlueExit" />
+      <Dependency Name="Many9BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="Many9IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.543381 - 0.764682)" Y="C.Y + 3.6 * sin(2 * 0.543381 - 0.764682)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.543381 - 0.764682 - pi)" Y="C.Y + 3.6 * sin(4 * 0.543381 - 0.764682 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9IndigoOn" Visible="false" X="Many9IndigoExit.X + cos(4 * 0.543381 - 2 * 0.764682 - pi)" Y="Many9IndigoExit.Y + sin(4 * 0.543381 - 2 * 0.764682 - pi)">
+      <Dependency Name="Many9IndigoExit" />
+    </PointByCoordinates>
+    <Segment Name="Many9IndigoPath" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many9In" />
+      <Dependency Name="Many9IndigoBack" />
+    </Segment>
+    <Segment Name="Many9IndigoPath2" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many9IndigoBack" />
+      <Dependency Name="Many9IndigoExit" />
+    </Segment>
+    <Ray Name="Many9IndigoOut" Visible="false" Style="IndigoMany">
+      <Dependency Name="Many9IndigoExit" />
+      <Dependency Name="Many9IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="Many9VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.54136 - 0.764682)" Y="C.Y + 3.6 * sin(2 * 0.54136 - 0.764682)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.54136 - 0.764682 - pi)" Y="C.Y + 3.6 * sin(4 * 0.54136 - 0.764682 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many9VioletOn" Visible="false" X="Many9VioletExit.X + cos(4 * 0.54136 - 2 * 0.764682 - pi)" Y="Many9VioletExit.Y + sin(4 * 0.54136 - 2 * 0.764682 - pi)">
+      <Dependency Name="Many9VioletExit" />
+    </PointByCoordinates>
+    <Segment Name="Many9VioletPath" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many9In" />
+      <Dependency Name="Many9VioletBack" />
+    </Segment>
+    <Segment Name="Many9VioletPath2" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many9VioletBack" />
+      <Dependency Name="Many9VioletExit" />
+    </Segment>
+    <Ray Name="Many9VioletOut" Visible="false" Style="VioletMany">
+      <Dependency Name="Many9VioletExit" />
+      <Dependency Name="Many9VioletOn" />
+    </Ray>
+    <PointByCoordinates Name="Many10In" Visible="false" X="C.X - 3.6 * cos(0.877636)" Y="C.Y + 3.6 * sin(0.877636)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10Start" Visible="false" X="-10.5" Y="C.Y + 3.6 * sin(0.877636)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="Many10Sun" Visible="false" Style="ManySun">
+      <Dependency Name="Many10Start" />
+      <Dependency Name="Many10In" />
+    </Segment>
+    <PointByCoordinates Name="Many10RedBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.616142 - 0.877636)" Y="C.Y + 3.6 * sin(2 * 0.616142 - 0.877636)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10RedExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.616142 - 0.877636 - pi)" Y="C.Y + 3.6 * sin(4 * 0.616142 - 0.877636 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10RedOn" Visible="false" X="Many10RedExit.X + cos(4 * 0.616142 - 2 * 0.877636 - pi)" Y="Many10RedExit.Y + sin(4 * 0.616142 - 2 * 0.877636 - pi)">
+      <Dependency Name="Many10RedExit" />
+    </PointByCoordinates>
+    <Segment Name="Many10RedPath" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many10In" />
+      <Dependency Name="Many10RedBack" />
+    </Segment>
+    <Segment Name="Many10RedPath2" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many10RedBack" />
+      <Dependency Name="Many10RedExit" />
+    </Segment>
+    <Ray Name="Many10RedOut" Visible="false" Style="RedMany">
+      <Dependency Name="Many10RedExit" />
+      <Dependency Name="Many10RedOn" />
+    </Ray>
+    <PointByCoordinates Name="Many10OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.615451 - 0.877636)" Y="C.Y + 3.6 * sin(2 * 0.615451 - 0.877636)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.615451 - 0.877636 - pi)" Y="C.Y + 3.6 * sin(4 * 0.615451 - 0.877636 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10OrangeOn" Visible="false" X="Many10OrangeExit.X + cos(4 * 0.615451 - 2 * 0.877636 - pi)" Y="Many10OrangeExit.Y + sin(4 * 0.615451 - 2 * 0.877636 - pi)">
+      <Dependency Name="Many10OrangeExit" />
+    </PointByCoordinates>
+    <Segment Name="Many10OrangePath" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many10In" />
+      <Dependency Name="Many10OrangeBack" />
+    </Segment>
+    <Segment Name="Many10OrangePath2" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many10OrangeBack" />
+      <Dependency Name="Many10OrangeExit" />
+    </Segment>
+    <Ray Name="Many10OrangeOut" Visible="false" Style="OrangeMany">
+      <Dependency Name="Many10OrangeExit" />
+      <Dependency Name="Many10OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="Many10YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.615027 - 0.877636)" Y="C.Y + 3.6 * sin(2 * 0.615027 - 0.877636)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.615027 - 0.877636 - pi)" Y="C.Y + 3.6 * sin(4 * 0.615027 - 0.877636 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10YellowOn" Visible="false" X="Many10YellowExit.X + cos(4 * 0.615027 - 2 * 0.877636 - pi)" Y="Many10YellowExit.Y + sin(4 * 0.615027 - 2 * 0.877636 - pi)">
+      <Dependency Name="Many10YellowExit" />
+    </PointByCoordinates>
+    <Segment Name="Many10YellowPath" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many10In" />
+      <Dependency Name="Many10YellowBack" />
+    </Segment>
+    <Segment Name="Many10YellowPath2" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many10YellowBack" />
+      <Dependency Name="Many10YellowExit" />
+    </Segment>
+    <Ray Name="Many10YellowOut" Visible="false" Style="YellowMany">
+      <Dependency Name="Many10YellowExit" />
+      <Dependency Name="Many10YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="Many10GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.614128 - 0.877636)" Y="C.Y + 3.6 * sin(2 * 0.614128 - 0.877636)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.614128 - 0.877636 - pi)" Y="C.Y + 3.6 * sin(4 * 0.614128 - 0.877636 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10GreenOn" Visible="false" X="Many10GreenExit.X + cos(4 * 0.614128 - 2 * 0.877636 - pi)" Y="Many10GreenExit.Y + sin(4 * 0.614128 - 2 * 0.877636 - pi)">
+      <Dependency Name="Many10GreenExit" />
+    </PointByCoordinates>
+    <Segment Name="Many10GreenPath" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many10In" />
+      <Dependency Name="Many10GreenBack" />
+    </Segment>
+    <Segment Name="Many10GreenPath2" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many10GreenBack" />
+      <Dependency Name="Many10GreenExit" />
+    </Segment>
+    <Ray Name="Many10GreenOut" Visible="false" Style="GreenMany">
+      <Dependency Name="Many10GreenExit" />
+      <Dependency Name="Many10GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="Many10BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.612863 - 0.877636)" Y="C.Y + 3.6 * sin(2 * 0.612863 - 0.877636)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.612863 - 0.877636 - pi)" Y="C.Y + 3.6 * sin(4 * 0.612863 - 0.877636 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10BlueOn" Visible="false" X="Many10BlueExit.X + cos(4 * 0.612863 - 2 * 0.877636 - pi)" Y="Many10BlueExit.Y + sin(4 * 0.612863 - 2 * 0.877636 - pi)">
+      <Dependency Name="Many10BlueExit" />
+    </PointByCoordinates>
+    <Segment Name="Many10BluePath" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many10In" />
+      <Dependency Name="Many10BlueBack" />
+    </Segment>
+    <Segment Name="Many10BluePath2" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many10BlueBack" />
+      <Dependency Name="Many10BlueExit" />
+    </Segment>
+    <Ray Name="Many10BlueOut" Visible="false" Style="BlueMany">
+      <Dependency Name="Many10BlueExit" />
+      <Dependency Name="Many10BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="Many10IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.611971 - 0.877636)" Y="C.Y + 3.6 * sin(2 * 0.611971 - 0.877636)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.611971 - 0.877636 - pi)" Y="C.Y + 3.6 * sin(4 * 0.611971 - 0.877636 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10IndigoOn" Visible="false" X="Many10IndigoExit.X + cos(4 * 0.611971 - 2 * 0.877636 - pi)" Y="Many10IndigoExit.Y + sin(4 * 0.611971 - 2 * 0.877636 - pi)">
+      <Dependency Name="Many10IndigoExit" />
+    </PointByCoordinates>
+    <Segment Name="Many10IndigoPath" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many10In" />
+      <Dependency Name="Many10IndigoBack" />
+    </Segment>
+    <Segment Name="Many10IndigoPath2" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many10IndigoBack" />
+      <Dependency Name="Many10IndigoExit" />
+    </Segment>
+    <Ray Name="Many10IndigoOut" Visible="false" Style="IndigoMany">
+      <Dependency Name="Many10IndigoExit" />
+      <Dependency Name="Many10IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="Many10VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.609622 - 0.877636)" Y="C.Y + 3.6 * sin(2 * 0.609622 - 0.877636)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.609622 - 0.877636 - pi)" Y="C.Y + 3.6 * sin(4 * 0.609622 - 0.877636 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many10VioletOn" Visible="false" X="Many10VioletExit.X + cos(4 * 0.609622 - 2 * 0.877636 - pi)" Y="Many10VioletExit.Y + sin(4 * 0.609622 - 2 * 0.877636 - pi)">
+      <Dependency Name="Many10VioletExit" />
+    </PointByCoordinates>
+    <Segment Name="Many10VioletPath" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many10In" />
+      <Dependency Name="Many10VioletBack" />
+    </Segment>
+    <Segment Name="Many10VioletPath2" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many10VioletBack" />
+      <Dependency Name="Many10VioletExit" />
+    </Segment>
+    <Ray Name="Many10VioletOut" Visible="false" Style="VioletMany">
+      <Dependency Name="Many10VioletExit" />
+      <Dependency Name="Many10VioletOn" />
+    </Ray>
+    <PointByCoordinates Name="Many11In" Visible="false" X="C.X - 3.6 * cos(1.008727)" Y="C.Y + 3.6 * sin(1.008727)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11Start" Visible="false" X="-10.5" Y="C.Y + 3.6 * sin(1.008727)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="Many11Sun" Visible="false" Style="ManySun">
+      <Dependency Name="Many11Start" />
+      <Dependency Name="Many11In" />
+    </Segment>
+    <PointByCoordinates Name="Many11RedBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.688889 - 1.008727)" Y="C.Y + 3.6 * sin(2 * 0.688889 - 1.008727)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11RedExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.688889 - 1.008727 - pi)" Y="C.Y + 3.6 * sin(4 * 0.688889 - 1.008727 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11RedOn" Visible="false" X="Many11RedExit.X + cos(4 * 0.688889 - 2 * 1.008727 - pi)" Y="Many11RedExit.Y + sin(4 * 0.688889 - 2 * 1.008727 - pi)">
+      <Dependency Name="Many11RedExit" />
+    </PointByCoordinates>
+    <Segment Name="Many11RedPath" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many11In" />
+      <Dependency Name="Many11RedBack" />
+    </Segment>
+    <Segment Name="Many11RedPath2" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many11RedBack" />
+      <Dependency Name="Many11RedExit" />
+    </Segment>
+    <Ray Name="Many11RedOut" Visible="false" Style="RedMany">
+      <Dependency Name="Many11RedExit" />
+      <Dependency Name="Many11RedOn" />
+    </Ray>
+    <PointByCoordinates Name="Many11OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.688086 - 1.008727)" Y="C.Y + 3.6 * sin(2 * 0.688086 - 1.008727)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.688086 - 1.008727 - pi)" Y="C.Y + 3.6 * sin(4 * 0.688086 - 1.008727 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11OrangeOn" Visible="false" X="Many11OrangeExit.X + cos(4 * 0.688086 - 2 * 1.008727 - pi)" Y="Many11OrangeExit.Y + sin(4 * 0.688086 - 2 * 1.008727 - pi)">
+      <Dependency Name="Many11OrangeExit" />
+    </PointByCoordinates>
+    <Segment Name="Many11OrangePath" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many11In" />
+      <Dependency Name="Many11OrangeBack" />
+    </Segment>
+    <Segment Name="Many11OrangePath2" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many11OrangeBack" />
+      <Dependency Name="Many11OrangeExit" />
+    </Segment>
+    <Ray Name="Many11OrangeOut" Visible="false" Style="OrangeMany">
+      <Dependency Name="Many11OrangeExit" />
+      <Dependency Name="Many11OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="Many11YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.687593 - 1.008727)" Y="C.Y + 3.6 * sin(2 * 0.687593 - 1.008727)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.687593 - 1.008727 - pi)" Y="C.Y + 3.6 * sin(4 * 0.687593 - 1.008727 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11YellowOn" Visible="false" X="Many11YellowExit.X + cos(4 * 0.687593 - 2 * 1.008727 - pi)" Y="Many11YellowExit.Y + sin(4 * 0.687593 - 2 * 1.008727 - pi)">
+      <Dependency Name="Many11YellowExit" />
+    </PointByCoordinates>
+    <Segment Name="Many11YellowPath" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many11In" />
+      <Dependency Name="Many11YellowBack" />
+    </Segment>
+    <Segment Name="Many11YellowPath2" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many11YellowBack" />
+      <Dependency Name="Many11YellowExit" />
+    </Segment>
+    <Ray Name="Many11YellowOut" Visible="false" Style="YellowMany">
+      <Dependency Name="Many11YellowExit" />
+      <Dependency Name="Many11YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="Many11GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.686547 - 1.008727)" Y="C.Y + 3.6 * sin(2 * 0.686547 - 1.008727)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.686547 - 1.008727 - pi)" Y="C.Y + 3.6 * sin(4 * 0.686547 - 1.008727 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11GreenOn" Visible="false" X="Many11GreenExit.X + cos(4 * 0.686547 - 2 * 1.008727 - pi)" Y="Many11GreenExit.Y + sin(4 * 0.686547 - 2 * 1.008727 - pi)">
+      <Dependency Name="Many11GreenExit" />
+    </PointByCoordinates>
+    <Segment Name="Many11GreenPath" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many11In" />
+      <Dependency Name="Many11GreenBack" />
+    </Segment>
+    <Segment Name="Many11GreenPath2" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many11GreenBack" />
+      <Dependency Name="Many11GreenExit" />
+    </Segment>
+    <Ray Name="Many11GreenOut" Visible="false" Style="GreenMany">
+      <Dependency Name="Many11GreenExit" />
+      <Dependency Name="Many11GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="Many11BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.685077 - 1.008727)" Y="C.Y + 3.6 * sin(2 * 0.685077 - 1.008727)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.685077 - 1.008727 - pi)" Y="C.Y + 3.6 * sin(4 * 0.685077 - 1.008727 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11BlueOn" Visible="false" X="Many11BlueExit.X + cos(4 * 0.685077 - 2 * 1.008727 - pi)" Y="Many11BlueExit.Y + sin(4 * 0.685077 - 2 * 1.008727 - pi)">
+      <Dependency Name="Many11BlueExit" />
+    </PointByCoordinates>
+    <Segment Name="Many11BluePath" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many11In" />
+      <Dependency Name="Many11BlueBack" />
+    </Segment>
+    <Segment Name="Many11BluePath2" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many11BlueBack" />
+      <Dependency Name="Many11BlueExit" />
+    </Segment>
+    <Ray Name="Many11BlueOut" Visible="false" Style="BlueMany">
+      <Dependency Name="Many11BlueExit" />
+      <Dependency Name="Many11BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="Many11IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.684041 - 1.008727)" Y="C.Y + 3.6 * sin(2 * 0.684041 - 1.008727)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.684041 - 1.008727 - pi)" Y="C.Y + 3.6 * sin(4 * 0.684041 - 1.008727 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11IndigoOn" Visible="false" X="Many11IndigoExit.X + cos(4 * 0.684041 - 2 * 1.008727 - pi)" Y="Many11IndigoExit.Y + sin(4 * 0.684041 - 2 * 1.008727 - pi)">
+      <Dependency Name="Many11IndigoExit" />
+    </PointByCoordinates>
+    <Segment Name="Many11IndigoPath" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many11In" />
+      <Dependency Name="Many11IndigoBack" />
+    </Segment>
+    <Segment Name="Many11IndigoPath2" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many11IndigoBack" />
+      <Dependency Name="Many11IndigoExit" />
+    </Segment>
+    <Ray Name="Many11IndigoOut" Visible="false" Style="IndigoMany">
+      <Dependency Name="Many11IndigoExit" />
+      <Dependency Name="Many11IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="Many11VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.681313 - 1.008727)" Y="C.Y + 3.6 * sin(2 * 0.681313 - 1.008727)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.681313 - 1.008727 - pi)" Y="C.Y + 3.6 * sin(4 * 0.681313 - 1.008727 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many11VioletOn" Visible="false" X="Many11VioletExit.X + cos(4 * 0.681313 - 2 * 1.008727 - pi)" Y="Many11VioletExit.Y + sin(4 * 0.681313 - 2 * 1.008727 - pi)">
+      <Dependency Name="Many11VioletExit" />
+    </PointByCoordinates>
+    <Segment Name="Many11VioletPath" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many11In" />
+      <Dependency Name="Many11VioletBack" />
+    </Segment>
+    <Segment Name="Many11VioletPath2" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many11VioletBack" />
+      <Dependency Name="Many11VioletExit" />
+    </Segment>
+    <Ray Name="Many11VioletOut" Visible="false" Style="VioletMany">
+      <Dependency Name="Many11VioletExit" />
+      <Dependency Name="Many11VioletOn" />
+    </Ray>
+    <PointByCoordinates Name="Many12In" Visible="false" X="C.X - 3.6 * cos(1.176005)" Y="C.Y + 3.6 * sin(1.176005)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12Start" Visible="false" X="-10.5" Y="C.Y + 3.6 * sin(1.176005)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Segment Name="Many12Sun" Visible="false" Style="ManySun">
+      <Dependency Name="Many12Start" />
+      <Dependency Name="Many12In" />
+    </Segment>
+    <PointByCoordinates Name="Many12RedBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.766293 - 1.176005)" Y="C.Y + 3.6 * sin(2 * 0.766293 - 1.176005)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12RedExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.766293 - 1.176005 - pi)" Y="C.Y + 3.6 * sin(4 * 0.766293 - 1.176005 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12RedOn" Visible="false" X="Many12RedExit.X + cos(4 * 0.766293 - 2 * 1.176005 - pi)" Y="Many12RedExit.Y + sin(4 * 0.766293 - 2 * 1.176005 - pi)">
+      <Dependency Name="Many12RedExit" />
+    </PointByCoordinates>
+    <Segment Name="Many12RedPath" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many12In" />
+      <Dependency Name="Many12RedBack" />
+    </Segment>
+    <Segment Name="Many12RedPath2" Visible="false" Style="RedManyInside">
+      <Dependency Name="Many12RedBack" />
+      <Dependency Name="Many12RedExit" />
+    </Segment>
+    <Ray Name="Many12RedOut" Visible="false" Style="RedMany">
+      <Dependency Name="Many12RedExit" />
+      <Dependency Name="Many12RedOn" />
+    </Ray>
+    <PointByCoordinates Name="Many12OrangeBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.765354 - 1.176005)" Y="C.Y + 3.6 * sin(2 * 0.765354 - 1.176005)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12OrangeExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.765354 - 1.176005 - pi)" Y="C.Y + 3.6 * sin(4 * 0.765354 - 1.176005 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12OrangeOn" Visible="false" X="Many12OrangeExit.X + cos(4 * 0.765354 - 2 * 1.176005 - pi)" Y="Many12OrangeExit.Y + sin(4 * 0.765354 - 2 * 1.176005 - pi)">
+      <Dependency Name="Many12OrangeExit" />
+    </PointByCoordinates>
+    <Segment Name="Many12OrangePath" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many12In" />
+      <Dependency Name="Many12OrangeBack" />
+    </Segment>
+    <Segment Name="Many12OrangePath2" Visible="false" Style="OrangeManyInside">
+      <Dependency Name="Many12OrangeBack" />
+      <Dependency Name="Many12OrangeExit" />
+    </Segment>
+    <Ray Name="Many12OrangeOut" Visible="false" Style="OrangeMany">
+      <Dependency Name="Many12OrangeExit" />
+      <Dependency Name="Many12OrangeOn" />
+    </Ray>
+    <PointByCoordinates Name="Many12YellowBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.764778 - 1.176005)" Y="C.Y + 3.6 * sin(2 * 0.764778 - 1.176005)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12YellowExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.764778 - 1.176005 - pi)" Y="C.Y + 3.6 * sin(4 * 0.764778 - 1.176005 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12YellowOn" Visible="false" X="Many12YellowExit.X + cos(4 * 0.764778 - 2 * 1.176005 - pi)" Y="Many12YellowExit.Y + sin(4 * 0.764778 - 2 * 1.176005 - pi)">
+      <Dependency Name="Many12YellowExit" />
+    </PointByCoordinates>
+    <Segment Name="Many12YellowPath" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many12In" />
+      <Dependency Name="Many12YellowBack" />
+    </Segment>
+    <Segment Name="Many12YellowPath2" Visible="false" Style="YellowManyInside">
+      <Dependency Name="Many12YellowBack" />
+      <Dependency Name="Many12YellowExit" />
+    </Segment>
+    <Ray Name="Many12YellowOut" Visible="false" Style="YellowMany">
+      <Dependency Name="Many12YellowExit" />
+      <Dependency Name="Many12YellowOn" />
+    </Ray>
+    <PointByCoordinates Name="Many12GreenBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.763557 - 1.176005)" Y="C.Y + 3.6 * sin(2 * 0.763557 - 1.176005)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12GreenExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.763557 - 1.176005 - pi)" Y="C.Y + 3.6 * sin(4 * 0.763557 - 1.176005 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12GreenOn" Visible="false" X="Many12GreenExit.X + cos(4 * 0.763557 - 2 * 1.176005 - pi)" Y="Many12GreenExit.Y + sin(4 * 0.763557 - 2 * 1.176005 - pi)">
+      <Dependency Name="Many12GreenExit" />
+    </PointByCoordinates>
+    <Segment Name="Many12GreenPath" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many12In" />
+      <Dependency Name="Many12GreenBack" />
+    </Segment>
+    <Segment Name="Many12GreenPath2" Visible="false" Style="GreenManyInside">
+      <Dependency Name="Many12GreenBack" />
+      <Dependency Name="Many12GreenExit" />
+    </Segment>
+    <Ray Name="Many12GreenOut" Visible="false" Style="GreenMany">
+      <Dependency Name="Many12GreenExit" />
+      <Dependency Name="Many12GreenOn" />
+    </Ray>
+    <PointByCoordinates Name="Many12BlueBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.76184 - 1.176005)" Y="C.Y + 3.6 * sin(2 * 0.76184 - 1.176005)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12BlueExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.76184 - 1.176005 - pi)" Y="C.Y + 3.6 * sin(4 * 0.76184 - 1.176005 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12BlueOn" Visible="false" X="Many12BlueExit.X + cos(4 * 0.76184 - 2 * 1.176005 - pi)" Y="Many12BlueExit.Y + sin(4 * 0.76184 - 2 * 1.176005 - pi)">
+      <Dependency Name="Many12BlueExit" />
+    </PointByCoordinates>
+    <Segment Name="Many12BluePath" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many12In" />
+      <Dependency Name="Many12BlueBack" />
+    </Segment>
+    <Segment Name="Many12BluePath2" Visible="false" Style="BlueManyInside">
+      <Dependency Name="Many12BlueBack" />
+      <Dependency Name="Many12BlueExit" />
+    </Segment>
+    <Ray Name="Many12BlueOut" Visible="false" Style="BlueMany">
+      <Dependency Name="Many12BlueExit" />
+      <Dependency Name="Many12BlueOn" />
+    </Ray>
+    <PointByCoordinates Name="Many12IndigoBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.76063 - 1.176005)" Y="C.Y + 3.6 * sin(2 * 0.76063 - 1.176005)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12IndigoExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.76063 - 1.176005 - pi)" Y="C.Y + 3.6 * sin(4 * 0.76063 - 1.176005 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12IndigoOn" Visible="false" X="Many12IndigoExit.X + cos(4 * 0.76063 - 2 * 1.176005 - pi)" Y="Many12IndigoExit.Y + sin(4 * 0.76063 - 2 * 1.176005 - pi)">
+      <Dependency Name="Many12IndigoExit" />
+    </PointByCoordinates>
+    <Segment Name="Many12IndigoPath" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many12In" />
+      <Dependency Name="Many12IndigoBack" />
+    </Segment>
+    <Segment Name="Many12IndigoPath2" Visible="false" Style="IndigoManyInside">
+      <Dependency Name="Many12IndigoBack" />
+      <Dependency Name="Many12IndigoExit" />
+    </Segment>
+    <Ray Name="Many12IndigoOut" Visible="false" Style="IndigoMany">
+      <Dependency Name="Many12IndigoExit" />
+      <Dependency Name="Many12IndigoOn" />
+    </Ray>
+    <PointByCoordinates Name="Many12VioletBack" Visible="false" X="C.X + 3.6 * cos(2 * 0.757447 - 1.176005)" Y="C.Y + 3.6 * sin(2 * 0.757447 - 1.176005)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12VioletExit" Visible="false" X="C.X + 3.6 * cos(4 * 0.757447 - 1.176005 - pi)" Y="C.Y + 3.6 * sin(4 * 0.757447 - 1.176005 - pi)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Many12VioletOn" Visible="false" X="Many12VioletExit.X + cos(4 * 0.757447 - 2 * 1.176005 - pi)" Y="Many12VioletExit.Y + sin(4 * 0.757447 - 2 * 1.176005 - pi)">
+      <Dependency Name="Many12VioletExit" />
+    </PointByCoordinates>
+    <Segment Name="Many12VioletPath" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many12In" />
+      <Dependency Name="Many12VioletBack" />
+    </Segment>
+    <Segment Name="Many12VioletPath2" Visible="false" Style="VioletManyInside">
+      <Dependency Name="Many12VioletBack" />
+      <Dependency Name="Many12VioletExit" />
+    </Segment>
+    <Ray Name="Many12VioletOut" Visible="false" Style="VioletMany">
+      <Dependency Name="Many12VioletExit" />
+      <Dependency Name="Many12VioletOn" />
+    </Ray>
+    <ShowHideControl Name="ShowMany" Style="Explanation" Show="false" Text="Show many rays" X="-12.2" Y="-1.3">
+      <Dependency Name="Many1Sun" />
+      <Dependency Name="Many1RedPath" />
+      <Dependency Name="Many1RedPath2" />
+      <Dependency Name="Many1RedOut" />
+      <Dependency Name="Many1OrangePath" />
+      <Dependency Name="Many1OrangePath2" />
+      <Dependency Name="Many1OrangeOut" />
+      <Dependency Name="Many1YellowPath" />
+      <Dependency Name="Many1YellowPath2" />
+      <Dependency Name="Many1YellowOut" />
+      <Dependency Name="Many1GreenPath" />
+      <Dependency Name="Many1GreenPath2" />
+      <Dependency Name="Many1GreenOut" />
+      <Dependency Name="Many1BluePath" />
+      <Dependency Name="Many1BluePath2" />
+      <Dependency Name="Many1BlueOut" />
+      <Dependency Name="Many1IndigoPath" />
+      <Dependency Name="Many1IndigoPath2" />
+      <Dependency Name="Many1IndigoOut" />
+      <Dependency Name="Many1VioletPath" />
+      <Dependency Name="Many1VioletPath2" />
+      <Dependency Name="Many1VioletOut" />
+      <Dependency Name="Many2Sun" />
+      <Dependency Name="Many2RedPath" />
+      <Dependency Name="Many2RedPath2" />
+      <Dependency Name="Many2RedOut" />
+      <Dependency Name="Many2OrangePath" />
+      <Dependency Name="Many2OrangePath2" />
+      <Dependency Name="Many2OrangeOut" />
+      <Dependency Name="Many2YellowPath" />
+      <Dependency Name="Many2YellowPath2" />
+      <Dependency Name="Many2YellowOut" />
+      <Dependency Name="Many2GreenPath" />
+      <Dependency Name="Many2GreenPath2" />
+      <Dependency Name="Many2GreenOut" />
+      <Dependency Name="Many2BluePath" />
+      <Dependency Name="Many2BluePath2" />
+      <Dependency Name="Many2BlueOut" />
+      <Dependency Name="Many2IndigoPath" />
+      <Dependency Name="Many2IndigoPath2" />
+      <Dependency Name="Many2IndigoOut" />
+      <Dependency Name="Many2VioletPath" />
+      <Dependency Name="Many2VioletPath2" />
+      <Dependency Name="Many2VioletOut" />
+      <Dependency Name="Many3Sun" />
+      <Dependency Name="Many3RedPath" />
+      <Dependency Name="Many3RedPath2" />
+      <Dependency Name="Many3RedOut" />
+      <Dependency Name="Many3OrangePath" />
+      <Dependency Name="Many3OrangePath2" />
+      <Dependency Name="Many3OrangeOut" />
+      <Dependency Name="Many3YellowPath" />
+      <Dependency Name="Many3YellowPath2" />
+      <Dependency Name="Many3YellowOut" />
+      <Dependency Name="Many3GreenPath" />
+      <Dependency Name="Many3GreenPath2" />
+      <Dependency Name="Many3GreenOut" />
+      <Dependency Name="Many3BluePath" />
+      <Dependency Name="Many3BluePath2" />
+      <Dependency Name="Many3BlueOut" />
+      <Dependency Name="Many3IndigoPath" />
+      <Dependency Name="Many3IndigoPath2" />
+      <Dependency Name="Many3IndigoOut" />
+      <Dependency Name="Many3VioletPath" />
+      <Dependency Name="Many3VioletPath2" />
+      <Dependency Name="Many3VioletOut" />
+      <Dependency Name="Many4Sun" />
+      <Dependency Name="Many4RedPath" />
+      <Dependency Name="Many4RedPath2" />
+      <Dependency Name="Many4RedOut" />
+      <Dependency Name="Many4OrangePath" />
+      <Dependency Name="Many4OrangePath2" />
+      <Dependency Name="Many4OrangeOut" />
+      <Dependency Name="Many4YellowPath" />
+      <Dependency Name="Many4YellowPath2" />
+      <Dependency Name="Many4YellowOut" />
+      <Dependency Name="Many4GreenPath" />
+      <Dependency Name="Many4GreenPath2" />
+      <Dependency Name="Many4GreenOut" />
+      <Dependency Name="Many4BluePath" />
+      <Dependency Name="Many4BluePath2" />
+      <Dependency Name="Many4BlueOut" />
+      <Dependency Name="Many4IndigoPath" />
+      <Dependency Name="Many4IndigoPath2" />
+      <Dependency Name="Many4IndigoOut" />
+      <Dependency Name="Many4VioletPath" />
+      <Dependency Name="Many4VioletPath2" />
+      <Dependency Name="Many4VioletOut" />
+      <Dependency Name="Many5Sun" />
+      <Dependency Name="Many5RedPath" />
+      <Dependency Name="Many5RedPath2" />
+      <Dependency Name="Many5RedOut" />
+      <Dependency Name="Many5OrangePath" />
+      <Dependency Name="Many5OrangePath2" />
+      <Dependency Name="Many5OrangeOut" />
+      <Dependency Name="Many5YellowPath" />
+      <Dependency Name="Many5YellowPath2" />
+      <Dependency Name="Many5YellowOut" />
+      <Dependency Name="Many5GreenPath" />
+      <Dependency Name="Many5GreenPath2" />
+      <Dependency Name="Many5GreenOut" />
+      <Dependency Name="Many5BluePath" />
+      <Dependency Name="Many5BluePath2" />
+      <Dependency Name="Many5BlueOut" />
+      <Dependency Name="Many5IndigoPath" />
+      <Dependency Name="Many5IndigoPath2" />
+      <Dependency Name="Many5IndigoOut" />
+      <Dependency Name="Many5VioletPath" />
+      <Dependency Name="Many5VioletPath2" />
+      <Dependency Name="Many5VioletOut" />
+      <Dependency Name="Many6Sun" />
+      <Dependency Name="Many6RedPath" />
+      <Dependency Name="Many6RedPath2" />
+      <Dependency Name="Many6RedOut" />
+      <Dependency Name="Many6OrangePath" />
+      <Dependency Name="Many6OrangePath2" />
+      <Dependency Name="Many6OrangeOut" />
+      <Dependency Name="Many6YellowPath" />
+      <Dependency Name="Many6YellowPath2" />
+      <Dependency Name="Many6YellowOut" />
+      <Dependency Name="Many6GreenPath" />
+      <Dependency Name="Many6GreenPath2" />
+      <Dependency Name="Many6GreenOut" />
+      <Dependency Name="Many6BluePath" />
+      <Dependency Name="Many6BluePath2" />
+      <Dependency Name="Many6BlueOut" />
+      <Dependency Name="Many6IndigoPath" />
+      <Dependency Name="Many6IndigoPath2" />
+      <Dependency Name="Many6IndigoOut" />
+      <Dependency Name="Many6VioletPath" />
+      <Dependency Name="Many6VioletPath2" />
+      <Dependency Name="Many6VioletOut" />
+      <Dependency Name="Many7Sun" />
+      <Dependency Name="Many7RedPath" />
+      <Dependency Name="Many7RedPath2" />
+      <Dependency Name="Many7RedOut" />
+      <Dependency Name="Many7OrangePath" />
+      <Dependency Name="Many7OrangePath2" />
+      <Dependency Name="Many7OrangeOut" />
+      <Dependency Name="Many7YellowPath" />
+      <Dependency Name="Many7YellowPath2" />
+      <Dependency Name="Many7YellowOut" />
+      <Dependency Name="Many7GreenPath" />
+      <Dependency Name="Many7GreenPath2" />
+      <Dependency Name="Many7GreenOut" />
+      <Dependency Name="Many7BluePath" />
+      <Dependency Name="Many7BluePath2" />
+      <Dependency Name="Many7BlueOut" />
+      <Dependency Name="Many7IndigoPath" />
+      <Dependency Name="Many7IndigoPath2" />
+      <Dependency Name="Many7IndigoOut" />
+      <Dependency Name="Many7VioletPath" />
+      <Dependency Name="Many7VioletPath2" />
+      <Dependency Name="Many7VioletOut" />
+      <Dependency Name="Many8Sun" />
+      <Dependency Name="Many8RedPath" />
+      <Dependency Name="Many8RedPath2" />
+      <Dependency Name="Many8RedOut" />
+      <Dependency Name="Many8OrangePath" />
+      <Dependency Name="Many8OrangePath2" />
+      <Dependency Name="Many8OrangeOut" />
+      <Dependency Name="Many8YellowPath" />
+      <Dependency Name="Many8YellowPath2" />
+      <Dependency Name="Many8YellowOut" />
+      <Dependency Name="Many8GreenPath" />
+      <Dependency Name="Many8GreenPath2" />
+      <Dependency Name="Many8GreenOut" />
+      <Dependency Name="Many8BluePath" />
+      <Dependency Name="Many8BluePath2" />
+      <Dependency Name="Many8BlueOut" />
+      <Dependency Name="Many8IndigoPath" />
+      <Dependency Name="Many8IndigoPath2" />
+      <Dependency Name="Many8IndigoOut" />
+      <Dependency Name="Many8VioletPath" />
+      <Dependency Name="Many8VioletPath2" />
+      <Dependency Name="Many8VioletOut" />
+      <Dependency Name="Many9Sun" />
+      <Dependency Name="Many9RedPath" />
+      <Dependency Name="Many9RedPath2" />
+      <Dependency Name="Many9RedOut" />
+      <Dependency Name="Many9OrangePath" />
+      <Dependency Name="Many9OrangePath2" />
+      <Dependency Name="Many9OrangeOut" />
+      <Dependency Name="Many9YellowPath" />
+      <Dependency Name="Many9YellowPath2" />
+      <Dependency Name="Many9YellowOut" />
+      <Dependency Name="Many9GreenPath" />
+      <Dependency Name="Many9GreenPath2" />
+      <Dependency Name="Many9GreenOut" />
+      <Dependency Name="Many9BluePath" />
+      <Dependency Name="Many9BluePath2" />
+      <Dependency Name="Many9BlueOut" />
+      <Dependency Name="Many9IndigoPath" />
+      <Dependency Name="Many9IndigoPath2" />
+      <Dependency Name="Many9IndigoOut" />
+      <Dependency Name="Many9VioletPath" />
+      <Dependency Name="Many9VioletPath2" />
+      <Dependency Name="Many9VioletOut" />
+      <Dependency Name="Many10Sun" />
+      <Dependency Name="Many10RedPath" />
+      <Dependency Name="Many10RedPath2" />
+      <Dependency Name="Many10RedOut" />
+      <Dependency Name="Many10OrangePath" />
+      <Dependency Name="Many10OrangePath2" />
+      <Dependency Name="Many10OrangeOut" />
+      <Dependency Name="Many10YellowPath" />
+      <Dependency Name="Many10YellowPath2" />
+      <Dependency Name="Many10YellowOut" />
+      <Dependency Name="Many10GreenPath" />
+      <Dependency Name="Many10GreenPath2" />
+      <Dependency Name="Many10GreenOut" />
+      <Dependency Name="Many10BluePath" />
+      <Dependency Name="Many10BluePath2" />
+      <Dependency Name="Many10BlueOut" />
+      <Dependency Name="Many10IndigoPath" />
+      <Dependency Name="Many10IndigoPath2" />
+      <Dependency Name="Many10IndigoOut" />
+      <Dependency Name="Many10VioletPath" />
+      <Dependency Name="Many10VioletPath2" />
+      <Dependency Name="Many10VioletOut" />
+      <Dependency Name="Many11Sun" />
+      <Dependency Name="Many11RedPath" />
+      <Dependency Name="Many11RedPath2" />
+      <Dependency Name="Many11RedOut" />
+      <Dependency Name="Many11OrangePath" />
+      <Dependency Name="Many11OrangePath2" />
+      <Dependency Name="Many11OrangeOut" />
+      <Dependency Name="Many11YellowPath" />
+      <Dependency Name="Many11YellowPath2" />
+      <Dependency Name="Many11YellowOut" />
+      <Dependency Name="Many11GreenPath" />
+      <Dependency Name="Many11GreenPath2" />
+      <Dependency Name="Many11GreenOut" />
+      <Dependency Name="Many11BluePath" />
+      <Dependency Name="Many11BluePath2" />
+      <Dependency Name="Many11BlueOut" />
+      <Dependency Name="Many11IndigoPath" />
+      <Dependency Name="Many11IndigoPath2" />
+      <Dependency Name="Many11IndigoOut" />
+      <Dependency Name="Many11VioletPath" />
+      <Dependency Name="Many11VioletPath2" />
+      <Dependency Name="Many11VioletOut" />
+      <Dependency Name="Many12Sun" />
+      <Dependency Name="Many12RedPath" />
+      <Dependency Name="Many12RedPath2" />
+      <Dependency Name="Many12RedOut" />
+      <Dependency Name="Many12OrangePath" />
+      <Dependency Name="Many12OrangePath2" />
+      <Dependency Name="Many12OrangeOut" />
+      <Dependency Name="Many12YellowPath" />
+      <Dependency Name="Many12YellowPath2" />
+      <Dependency Name="Many12YellowOut" />
+      <Dependency Name="Many12GreenPath" />
+      <Dependency Name="Many12GreenPath2" />
+      <Dependency Name="Many12GreenOut" />
+      <Dependency Name="Many12BluePath" />
+      <Dependency Name="Many12BluePath2" />
+      <Dependency Name="Many12BlueOut" />
+      <Dependency Name="Many12IndigoPath" />
+      <Dependency Name="Many12IndigoPath2" />
+      <Dependency Name="Many12IndigoOut" />
+      <Dependency Name="Many12VioletPath" />
+      <Dependency Name="Many12VioletPath2" />
+      <Dependency Name="Many12VioletOut" />
+    </ShowHideControl>
+    <ShowHideControl Name="ShowSecond" Style="Explanation" Show="false" Text="Show the second bounce" X="-12.2" Y="-2.5">
+      <Dependency Name="RedBounce2" />
+      <Dependency Name="RedOut2" />
+      <Dependency Name="OrangeBounce2" />
+      <Dependency Name="OrangeOut2" />
+      <Dependency Name="YellowBounce2" />
+      <Dependency Name="YellowOut2" />
+      <Dependency Name="GreenBounce2" />
+      <Dependency Name="GreenOut2" />
+      <Dependency Name="BlueBounce2" />
+      <Dependency Name="BlueOut2" />
+      <Dependency Name="IndigoBounce2" />
+      <Dependency Name="IndigoOut2" />
+      <Dependency Name="VioletBounce2" />
+      <Dependency Name="VioletOut2" />
+    </ShowHideControl>
+    <Label Name="Title" Style="Heading" Text="Inside a Raindrop" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Sunlight goes into a drop of rain, bounces off the back of it and comes out again, heading back toward the sun. On the way in and on the way out it bends, and every color bends by its own amount, so the colors come out a little apart.\n\nSlide the sun up and down to send its light into another part of the drop. However you aim, the red light never comes out at more than 42° from the way back to the sun, and violet never more than 40.5°. Show many rays at once: right at that largest angle they pile up and shine brightest. That is where you see the rainbow.\n\nSome light bounces twice before it gets out. It makes a second, fainter rainbow outside the first, with its colors the other way round." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

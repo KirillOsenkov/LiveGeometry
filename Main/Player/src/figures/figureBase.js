@@ -362,10 +362,22 @@ class FigureBase {
             return true;
         }
 
-        for (const directDependency of this.dependencies) {
-            if (directDependency.dependsOn(possibleDependency)) {
+        // each figure once: searched again through every path to it, chains of diamonds
+        // took a time that doubled with every link (see IFigureExtensions.DependsOn)
+        const visited = new Set([this]);
+        const pending = [...this.dependencies];
+        while (pending.length > 0) {
+            const dependency = pending.pop();
+            if (visited.has(dependency)) {
+                continue;
+            }
+
+            visited.add(dependency);
+            if (dependency === possibleDependency) {
                 return true;
             }
+
+            pending.push(...dependency.dependencies);
         }
 
         return false;
