@@ -33,15 +33,20 @@ const DependencyAlgorithms = {
     /** The nodes with no children, reached from the list, each once */
     findRoots(childrenSelector, list) {
         const result = [];
+        const visited = new Set();
         for (const figure of list) {
-            DependencyAlgorithms.findRootsOf(childrenSelector, figure, root => result.push(root));
+            DependencyAlgorithms.findRootsOf(childrenSelector, figure, root => result.push(root), visited);
         }
 
         return [...new Set(result)];
     },
 
-    /** Doesn't use recursion because deep figures could overflow the stack */
-    findRootsOf(childrenSelector, figure, collector) {
+    /**
+     * Doesn't use recursion because deep figures could overflow the stack. Each figure
+     * once: walked again through every path to it, a chain of diamonds (a ray traced
+     * through a prism) took seconds at every press of the mouse
+     */
+    findRootsOf(childrenSelector, figure, collector, visited = new Set()) {
         const stack = [figure];
         while (stack.length > 0) {
             if (stack.length > 10000) {
@@ -49,6 +54,11 @@ const DependencyAlgorithms = {
             }
 
             figure = stack.pop();
+            if (visited.has(figure)) {
+                continue;
+            }
+
+            visited.add(figure);
             const children = childrenSelector(figure);
             if (children == null || children.length === 0) {
                 collector(figure);
@@ -60,22 +70,28 @@ const DependencyAlgorithms = {
         }
     },
 
-    figureCompletelyDependsOnFigures(figure, set) {
-        if (set.includes(figure)) {
-            return true;
+    /** (the answer for each figure once, as findRoots walks each figure once) */
+    figureCompletelyDependsOnFigures(figure, set, known = new Map()) {
+        if (known.has(figure)) {
+            return known.get(figure);
         }
 
-        if (figure.dependencies.length === 0) {
-            return false;
-        }
-
-        for (const dependency of figure.dependencies) {
-            if (!DependencyAlgorithms.figureCompletelyDependsOnFigures(dependency, set)) {
-                return false;
+        let answer = true;
+        if (!set.includes(figure)) {
+            if (figure.dependencies.length === 0) {
+                answer = false;
+            } else {
+                for (const dependency of figure.dependencies) {
+                    if (!DependencyAlgorithms.figureCompletelyDependsOnFigures(dependency, set, known)) {
+                        answer = false;
+                        break;
+                    }
+                }
             }
         }
 
-        return true;
+        known.set(figure, answer);
+        return answer;
     },
 
     /** The figures between the source and the sink that the sink is built on through the source, in dependency order */
