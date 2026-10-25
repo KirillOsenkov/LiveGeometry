@@ -3,7 +3,7 @@
 Status: 2026-10-07, phases 1 to 6 built (the port of every kind the library reads but the
 two excluded ones, the bundle, the export items, the hosting rules, `tools/playerparity.cs`,
 the AGENTS.md section); phase 7 and the cleanup of the Silverlight-era defines remain.
-AGENTS.md ("The JavaScript player") is the current description; this is the plan it came from.
+docs/player.md is the current description; this is the plan it came from.
 
 ## Goal
 

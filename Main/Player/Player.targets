@@ -1,6 +1,6 @@
 <Project>
 
-  <!-- The JavaScript player (see AGENTS.md, "The JavaScript player"): the files of src/ in
+  <!-- The JavaScript player (see docs/player.md): the files of src/ in
        the order of files.txt, concatenated into one script, wrapped so that the host page
        sees one global (LiveGeometry). Imported by the Browser project (served as
        /player/<version>/player.js) and the Desktop project (copied beside the exe, for

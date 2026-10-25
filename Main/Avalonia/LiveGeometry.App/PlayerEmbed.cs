@@ -13,7 +13,7 @@ namespace LiveGeometry;
 /// </summary>
 public static class PlayerEmbed
 {
-    /// <summary>The player's version folder: a new one when the .lgf format breaks the old player (AGENTS.md, "The JavaScript player")</summary>
+    /// <summary>The player's version folder: a new one when the .lgf format breaks the old player (docs/player.md)</summary>
     public const string Version = "1";
 
     public const string ScriptUrl = "https://livegeometry.com/player/" + Version + "/player.js";
