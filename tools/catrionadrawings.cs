@@ -182,13 +182,20 @@ class Lgf
 
     // ---------- styles ----------
 
-    /// <summary>A filled shape: a diagonal gradient from a lighter tint of the color to the color, outlined in ink (or the given color)</summary>
+    /// <summary>
+    /// What she colored the drawing with, the Texture of its fills: "Crayon" (colored pencil)
+    /// or "FeltTip"; null for a diagonal gradient from a lighter tint of the color to the color
+    /// </summary>
+    public string Texture = "Crayon";
+
+    /// <summary>A filled shape, the color laid down as she colored it (<see cref="Texture"/>), outlined in ink (or the given color)</summary>
     public string Fill(string name, string color, string outline = Ink, double width = 2.5, double tint = 0.3)
     {
         if (styleNames.Add(name))
         {
             var style = new XElement("ShapeStyle", new XAttribute("Name", name), new XAttribute("Color", outline == null ? "#00000000" : outline), new XAttribute("StrokeWidth", N(width)),
-                new XElement("Fill", Gradient(Mix(color, "#FFFFFFFF", tint), color)));
+                Texture != null ? new XAttribute("Fill", color) : new XElement("Fill", Gradient(Mix(color, "#FFFFFFFF", tint), color)),
+                Texture != null ? new XAttribute("Texture", Texture) : null);
             var dark = new XElement("Dark");
             if (outline != null)
             {
@@ -601,6 +608,7 @@ static class Puzzles
     // three, and the pink one stays four times the orange one.
     public static void ThreeHexagonsOnACircle(Lgf d)
     {
+        d.Texture = "FeltTip";
         const double R = 5;
         var o = d.Pt(0, 0, "O");
         var rim = d.Pt(R, 0);
@@ -613,9 +621,9 @@ static class Puzzles
         string pink = d.Num($"-{b} + sqrt({b} ^ 2 - ({yellow[4].X} ^ 2 + {yellow[4].Y} ^ 2 - {R * R}))", "pk");
         var small = HexagonFromLeft(d, yellow[2], orange);
         var big = HexagonFromLeft(d, yellow[4], pink);
-        d.Polygon(d.Fill("Yellow", "#FFFFE000"), yellow);
+        d.Polygon(d.Fill("Yellow", "#FFFEE400"), yellow);
         d.Polygon(d.Fill("Orange", "#FFF26313"), small);
-        d.Polygon(d.Fill("Pink", "#FFF5589B"), big);
+        d.Polygon(d.Fill("Pink", "#FFFD66A4"), big);
         d.Label("6", Mid(d, small[0], small[3]), d.ShapeText());
         d.Label("?", Mid(d, big[0], big[3]), d.ShapeText());
         d.Scene(-5.6, 5.7, 6.4, -5.8);
@@ -634,9 +642,9 @@ static class Puzzles
         var bottomRight = d.Pt(2, -4 * S3);
         var h = d.Slider(V.At(-4, 0), V.At(-0.8, 0), 0.5, (-2.4, 0), "H");
         var i = d.Pt(topLeft + (h - topLeft).Turn(60), "I");
-        d.Polygon(d.Fill("LightGreen", "#FFD3F7A6"), left, right, topRight, topLeft);
-        d.Polygon(d.Fill("Green", "#FF7FD8B6"), left, bottomLeft, bottomRight, right);
-        d.Polygon(d.Fill("Purple", "#FFC29BF0"), topLeft, h, i);
+        d.Polygon(d.Fill("LightGreen", "#FFDFFCB5"), left, right, topRight, topLeft);
+        d.Polygon(d.Fill("Green", "#FF9AEBD1"), left, bottomLeft, bottomRight, right);
+        d.Polygon(d.Fill("Purple", "#FFDEBAFA"), topLeft, h, i);
         string blue = d.Line("Blue", "#FF1D3C99", 2.5);
         d.Segment(blue, i, topRight);
         d.Angle(blue, topRight, i, right, 30);
@@ -660,8 +668,8 @@ static class Puzzles
         string dx = d.Num($"(K.X - P.X) / {length}", "dx");
         string dy = d.Num($"(K.Y - P.Y) / {length}", "dy");
         var s = d.Pt(new V($"K.X + 4 * {dx} ^ 2", $"K.Y + 4 * {dx} * {dy}"), "S");
-        d.Arc("CircleSector", d.Fill("Orange", "#FFF9B46A"), q, t, a);
-        d.Arc("CircleSector", d.Fill("Yellow", "#FFFDF35A"), m, q, t);
+        d.Arc("CircleSector", d.Fill("Orange", "#FFFCCE7A"), q, t, a);
+        d.Arc("CircleSector", d.Fill("Yellow", "#FFFDFD5B"), m, q, t);
         string red = d.Line("Red", "#FFE8402A", 2.5);
         d.Segment(red, a, p);
         d.Segment(red, p, t);
@@ -688,8 +696,8 @@ static class Puzzles
         var side = w - v0;
         var x = d.Pt(v0 + new V(side.Y, V.Neg(side.X)));
         var y = d.Pt(w + new V(side.Y, V.Neg(side.X)));
-        d.Polygon(d.Fill("Lavender", "#FFC2BDEA"), v0, x, y, w);
-        string pink = d.Fill("Pink", "#FFF7C1EB");
+        d.Polygon(d.Fill("Lavender", "#FFC4C2E8"), v0, x, y, w);
+        string pink = d.Fill("Pink", "#FFFDD3FB");
         foreach (var (i, j) in new[] { (0, 0), (0, 1), (1, 1), (1, 2), (1, 3), (2, 2) })
         {
             d.Box(pink, V.At(i, j), V.At(i + 1, j + 1));
@@ -715,12 +723,12 @@ static class Puzzles
         string b = d.Num("-H.X - H.Y", "b");
         string r = d.Num("2 * H.Y + H.X", "r");
         string g = d.Num($"2 * {b}", "g");
-        d.Box(d.Fill("Yellow", "#FFFCEE18"), new V($"-{g}", "0"), new V("0", g));
-        d.Box(d.Fill("Green", "#FF14B67F"), new V($"-{g}", g), new V("0", $"2 * {g}"));
-        d.Box(d.Fill("Red", "#FFFD4246"), new V($"-{g} - {r}", "0"), new V($"-{g}", r));
-        d.Box(d.Fill("Blue", "#FF22D4F5"), new V($"-{g} - {r}", r), new V($"-{g} - {r} + {b}", $"{r} + {b}"));
+        d.Box(d.Fill("Yellow", "#FFFDF301"), new V($"-{g}", "0"), new V("0", g));
+        d.Box(d.Fill("Green", "#FF01BB7C"), new V($"-{g}", g), new V("0", $"2 * {g}"));
+        d.Box(d.Fill("Red", "#FFFE3B3E"), new V($"-{g} - {r}", "0"), new V($"-{g}", r));
+        d.Box(d.Fill("Blue", "#FF00DFFD"), new V($"-{g} - {r}", r), new V($"-{g} - {r} + {b}", $"{r} + {b}"));
         d.Box(d.Fill("Purple", "#FFA98BE0"), new V($"-{g} - {r}", $"{r} + {b}"), new V($"-{g} - {r} + {b}", $"{r} + 2 * {b}"));
-        d.Box(d.Fill("Orange", "#FFFDA94E"), new V($"-{g} - {r} + {b}", r), new V($"-{g}", $"2 * {r} - {b}"));
+        d.Box(d.Fill("Orange", "#FFFEA64A"), new V($"-{g} - {r} + {b}", r), new V($"-{g}", $"2 * {r} - {b}"));
         d.Arc("CircleSector", d.Outline("Frame", Lgf.Ink, 3), c, top, left);
         d.Label("2", new V($"-{g} - {r} + {b} / 2", $"{r} + {b} / 2"), d.ShapeText());
         d.Label("?", new V($"-{g} / 2", $"{g} / 2"), d.ShapeText());
@@ -736,8 +744,8 @@ static class Puzzles
         var br = d.Pt(w, 0);
         var tr = d.Pt(w, h);
         var tl = d.Pt(0, h);
-        d.Polygon(d.Fill("LightBlue", "#FF2FD3F8"), tl, tr, br);
-        d.Polygon(d.Fill("Blue", "#FF178EE8"), tl, br, bl);
+        d.Polygon(d.Fill("LightBlue", "#FF04DBFC"), tl, tr, br);
+        d.Polygon(d.Fill("Blue", "#FF0894F2"), tl, br, bl);
         string paper = d.PaperFill();
         foreach (var (cx, cy, sign) in new[] { (S3 * s, s, 1.0), (w - S3 * s, h - s, -1.0) })
         {
@@ -760,9 +768,9 @@ static class Puzzles
         var t = d.Pt(new V($"A.X + {w}", $"2 * {h}"), "T");
         var br = d.Pt(new V($"A.X + {w}", h), "Br");
         var dl = d.Pt(new V(w, $"{h} - {w}"), "Dl");
-        d.Box(d.Fill("Blue", "#FF3CD2F5"), a, t);
-        d.Box(d.Fill("LightGreen", "#FF9BEB74"), o, corner);
-        d.Box(d.Fill("Green", "#FF3CCBA3"), dl, new V($"{w} + {h}", h));
+        d.Box(d.Fill("Blue", "#FF3EE4FA"), a, t);
+        d.Box(d.Fill("LightGreen", "#FF9EF47C"), o, corner);
+        d.Box(d.Fill("Green", "#FF4BDCB3"), dl, new V($"{w} + {h}", h));
         string paper = d.PaperFill();
         d.Polygon(paper, t, a, o);
         d.Polygon(paper, t, br, dl);
@@ -784,9 +792,9 @@ static class Puzzles
         string ink = d.Line("Ink");
         d.Segment(ink, o, t);
         d.Segment(ink, o, k);
-        d.Arc("CircleSector", d.Fill("Pink", "#FFFBA6CC"), f, p, o);
-        d.Arc("CircleSector", d.Fill("Red", "#FFD97689"), c1, t, p);
-        d.Arc("CircleSector", d.Fill("Orange", "#FFF9C268"), k, e, p);
+        d.Arc("CircleSector", d.Fill("Pink", "#FFFBB0D1"), f, p, o);
+        d.Arc("CircleSector", d.Fill("Red", "#FFD88F98"), c1, t, p);
+        d.Arc("CircleSector", d.Fill("Orange", "#FFFBCC76"), k, e, p);
         d.Arc("CircleArc", ink, o, k, t);
         d.Label("12", c1 + 0.42 * ((t - c1) + (p - c1)), d.ShapeText());
         d.Label("?", k + 0.42 * ((e - k) + (p - k)), d.ShapeText());
@@ -798,6 +806,7 @@ static class Puzzles
     // the legs stay the radius.
     public static void TwoTrianglesInASemiCircle(Lgf d)
     {
+        d.Texture = "FeltTip";
         const double R = 4;
         var m = d.Pt(0, 0, "M");
         var c = d.Pt(R, 0, "C");
@@ -810,8 +819,8 @@ static class Puzzles
         var b1 = d.Pt(new V($"C.X - {R} * ({ux} ^ 2 - {uy} ^ 2)", $"-{2 * R} * {ux} * {uy}"), "B");
         var b2 = d.Pt(new V($"C.X + {R} * {ux}", $"{R} * {uy}"), "B2");
         var a2 = d.Pt(new V($"C.X - {length}", "0"), "A2");
-        d.Polygon(d.Fill("Blue", "#FF1689F2"), a1, b1, c);
-        d.Polygon(d.Fill("Purple", "#FF8A12B5"), a2, b2, c);
+        d.Polygon(d.Fill("Blue", "#FF0187FA"), a1, b1, c);
+        d.Polygon(d.Fill("Purple", "#FF8402AE"), a2, b2, c);
         d.Dimension(d.Line("PurpleArrow", "#FF8A12B5", 2.5), d.Text("PurpleMark", "#FF8A12B5", 26), a2, b2, 0.4, "4", 0.42);
         d.Scene(-4.4, 4.4, 4.4, -0.5);
     }
@@ -820,6 +829,7 @@ static class Puzzles
     // top yellow one's, its side through the left yellow one's corner. Nothing to drag: the condition fixes it.
     public static void FourSquaresX(Lgf d)
     {
+        d.Texture = "FeltTip";
         const double a = 3;
         double b = a * Math.Sqrt(2);
         var o = d.Pt(0, 0);
@@ -827,8 +837,8 @@ static class Puzzles
         var u = d.Pt(a - (a + b), a + b + a);
         var w = d.Pt(-(a + b), a);
         d.Polygon(d.PaperFill(), o, v, u, w);
-        d.Box(d.Fill("Blue", "#FF06BEF8"), V.At(0, 0), V.At(b, b));
-        string yellow = d.Fill("Yellow", "#FFFCF51E");
+        d.Box(d.Fill("Blue", "#FF03C2FB"), V.At(0, 0), V.At(b, b));
+        string yellow = d.Fill("Yellow", "#FFFDFD18");
         d.Box(yellow, V.At(0, b), V.At(a, b + a));
         d.Box(yellow, V.At(-a, b - a), V.At(0, b));
         d.Segment(d.Line("Ink"), o, v);
@@ -848,7 +858,7 @@ static class Puzzles
         var top = d.Pt(2.8, 3.6);
         var bottom = d.Pt(4.4, -1.2);
         var origin = d.Pt(0, 0);
-        d.Polygon(d.Fill("Green", "#FF62D3AF"), w, bottom, v, top);
+        d.Polygon(d.Fill("Green", "#FF71D9B8"), w, bottom, v, top);
         string frame = d.Outline("Frame");
         d.Box(frame, V.At(0, 0), V.At(2, 2));
         d.Box(frame, V.At(2, 0), V.At(4, 2));
@@ -888,12 +898,12 @@ static class Puzzles
         var center = Mid(d, y0, r0);
         var blue = Enumerable.Range(0, 6).Select(i => i == 0 ? y0 : i == 3 ? r0 : d.Pt(center + (y0 - center).Turn(60 * i))).ToArray();
         string none = null;
-        string yellowShape = d.Polygon(d.Fill("Yellow", "#FFFCF56E", none), yellow);
-        string redShape = d.Polygon(d.Fill("Red", "#FFE56F9B", none), red);
-        string blueShape = d.Polygon(d.Fill("Blue", "#FF68CCF7", none), blue);
+        string yellowShape = d.Polygon(d.Fill("Yellow", "#FFFDFD80", none), yellow);
+        string redShape = d.Polygon(d.Fill("Red", "#FFE97FA8", none), red);
+        string blueShape = d.Polygon(d.Fill("Blue", "#FF77D5FB", none), blue);
         d.Region(d.Fill("Green", "#FFC2E58A", none), "Intersection", blueShape, yellowShape);
-        d.Region(d.Fill("Purple", "#FF8E6FDF", none), "Intersection", blueShape, redShape);
-        d.Region(d.Fill("Orange", "#FFF8B377", none), "Intersection", redShape, yellowShape);
+        d.Region(d.Fill("Purple", "#FF977BE7", none), "Intersection", blueShape, redShape);
+        d.Region(d.Fill("Orange", "#FFFABE85", none), "Intersection", redShape, yellowShape);
         d.Region(d.PaperFill("Hole", none), "Intersection", blueShape, redShape, yellowShape);
         string frame = d.Outline("Frame");
         d.Polygon(frame, yellow);
@@ -911,6 +921,7 @@ static class Puzzles
     // that end along the arc: the shaded parts change, together they stay half.
     public static void FourQuarterCirclesII(Lgf d)
     {
+        d.Texture = "FeltTip";
         const double R = 6;
         var o = d.Pt(0, 0, "O");
         var east = d.Pt(R, 0);
@@ -924,7 +935,7 @@ static class Puzzles
         string white = d.Arc("CircleSector", null, corner, foot, q, visible: false);
         string leftQuarter = d.Arc("CircleSector", null, o, north, west, visible: false);
         string innerQuarter = d.Arc("CircleSector", null, o, corner, inner, visible: false);
-        string pink = d.Fill("Pink", "#FFF9A4F1", null);
+        string pink = d.Fill("Pink", "#FFFEB6FE", null);
         d.Region(pink, "Difference", rightQuarter, white);
         d.Region(pink, "Difference", leftQuarter, innerQuarter);
         string ink = d.Line("Ink");
@@ -940,6 +951,7 @@ static class Puzzles
     // dragged: the fraction stays.
     public static void SubdividedTriangleII(Lgf d)
     {
+        d.Texture = "FeltTip";
         var a = d.Free(0, 0, "A");
         var t = d.Free(5.25, 4.2, "T");
         var c = d.Free(9.4, 0, "C");
@@ -947,7 +959,7 @@ static class Puzzles
         var m = d.DotAt(Mid(d, a, t), "M");
         var p1 = d.DotAt(t + (1.0 / 3) * (c - t), "P1");
         var p2 = d.DotAt(t + (2.0 / 3) * (c - t), "P2");
-        d.Polygon(d.Fill("Orange", "#FFFE9001", null), a, m, p1, p2);
+        d.Polygon(d.Fill("Orange", "#FFFE9201", null), a, m, p1, p2);
         string ink = d.Line("Ink");
         d.Segment(ink, a, m, "TwoTicks");
         d.Segment(ink, m, t, "TwoTicks");
@@ -966,7 +978,7 @@ static class Puzzles
         string s = "H.X";
         var v = d.Pt(L, L, "V");
         d.Box(d.PaperFill(), V.At(0, 0), V.At(L, L));
-        string purple = d.Fill("Purple", "#FFEBB7F6", "#FF4A2793");
+        string purple = d.Fill("Purple", "#FFF3C9F9", "#FF4A2793");
         d.Box(purple, new V("0", s), new V(s, $"2 * {s}"));
         d.Box(purple, new V($"{L} - 2 * {s}", "0"), new V($"{L} - {s}", s));
         d.Box(purple, new V($"{L} - {s}", "0"), V.At(L, 0) + new V("0", s));
@@ -1003,9 +1015,9 @@ static class Puzzles
         var side = br - m;
         var g2 = d.Pt(m + new V(V.Neg(side.Y), side.X));
         var g3 = d.Pt(br + new V(V.Neg(side.Y), side.X));
-        d.Polygon(d.Fill("Green", "#FFC8E89A", teal), m, br, g3, g2);
-        d.Polygon(d.Fill("DarkBlue", "#FF5E99DA", navy), tl, midLeft, m, topRight);
-        d.Polygon(d.Fill("LightBlue", "#FF9ECCF0", navy), midLeft, q, bottomRight, m);
+        d.Polygon(d.Fill("Green", "#FFD0EC9F", teal), m, br, g3, g2);
+        d.Polygon(d.Fill("DarkBlue", "#FF6FA5DE", navy), tl, midLeft, m, topRight);
+        d.Polygon(d.Fill("LightBlue", "#FFA4D3F2", navy), midLeft, q, bottomRight, m);
         d.Label("12", Mid(d, midLeft, bottomRight), d.ShapeText("NavyMark", navy));
         d.Label("?", Mid(d, m, g3), d.ShapeText("TealMark", teal));
         d.Scene(-0.6, 9.8, 13.6, -0.6);
@@ -1015,10 +1027,11 @@ static class Puzzles
     // points. Its area? Nothing to drag: the grid decides it.
     public static void FourSquaresAndAnIsoscelesTriangle(Lgf d)
     {
+        d.Texture = "FeltTip";
         var v = d.Pt(3, 3);
         var p = d.Pt(-1, 1);
         var q = d.Pt(1, -1);
-        d.Polygon(d.Fill("Blue", "#FF0A93CF"), v, p, q);
+        d.Polygon(d.Fill("Blue", "#FF0394D0"), v, p, q);
         string frame = d.Outline("Frame");
         foreach (var (i, j) in new[] { (0, 0), (1, 0), (0, 1), (1, 1) })
         {
@@ -1036,6 +1049,7 @@ static class Puzzles
     // the angle stays.
     public static void TwoTrianglesAndAQuarterCircle(Lgf d)
     {
+        d.Texture = "FeltTip";
         const double H = 4;
         var o = d.Pt(0, 0, "O");
         var t = d.Pt(0, H, "T");
@@ -1046,7 +1060,7 @@ static class Puzzles
         var apex = d.Pt(new V($"2 * B.X", Lgf.N(H)), "G");
         string k = d.Num($"2 * {w} ^ 2 / ({w} ^ 2 + {H * H})", "k");
         var x = d.Pt(new V($"G.X + {k} * {w}", $"{Lgf.N(H)} - {k} * {Lgf.N(H)}"), "X");
-        string teal = d.Fill("Teal", "#FF4C9EA3", "#FF1D5458");
+        string teal = d.Fill("Teal", "#FF549EA4", "#FF1D5458");
         d.Polygon(teal, far, b, apex);
         d.Polygon(teal, b, o, t);
         d.Arc("CircleArc", d.Line("Green", "#FF79C96A", 2.5), o, t, west);
@@ -1070,9 +1084,9 @@ static class Puzzles
         var h = d.Slider(V.At(-1.5, 1.5), V.At(-5.6, 5.6), (4 - 1.5) / 4.1, (-4, 4), "H");
         string k = d.Num($"sqrt({L * L} - H.Y ^ 2)", "k");
         d.Box(d.PaperFill("Frame", blue), V.At(-L, 0), V.At(0, L));
-        d.Polygon(d.Fill("Yellow", "#FFFCF886", null),
+        d.Polygon(d.Fill("Yellow", "#FFFEFE92", null),
             d.Pt(-L, 0), d.Pt(new V($"-{k}", "0")), d.Pt(new V($"-{k}", k)), d.Pt(new V("0", k)), d.Pt(0, L), d.Pt(-L, L));
-        d.Box(d.Fill("Red", "#FFDC6F93", blue), new V("H.X", "0"), new V("0", "H.Y"));
+        d.Box(d.Fill("Red", "#FFDE7999", blue), new V("H.X", "0"), new V("0", "H.Y"));
         string line = d.Line("Line", blue, 2.5);
         d.Segment(line, d.Pt(new V("H.X", "0")), d.Pt(new V("H.X", Lgf.N(L))));
         d.Segment(line, d.Pt(new V(Lgf.N(-L), "H.Y")), d.Pt(new V("0", "H.Y")));
@@ -1087,6 +1101,7 @@ static class Puzzles
     // Every square's corner can be dragged to resize it: the fraction stays.
     public static void FiveSquaresII(Lgf d)
     {
+        d.Texture = "FeltTip";
         var p = d.Pt(0, 0, "P");
         var h3 = d.Slider(V.At(1.5, 1.5), V.At(6.5, 6.5), (4.9 - 1.5) / 5, (4.9, 4.9), "S3");
         var h2 = d.Slider(V.At(-1.5, 1.5), V.At(-6, 6), (3.8 - 1.5) / 4.5, (-3.8, 3.8), "S2");
@@ -1100,11 +1115,11 @@ static class Puzzles
         d.Box(paper, V.At(0, 0), new V(s3, s3));
         d.Box(paper, new V(s3, "0"), new V($"{s3} + {s4}", s4));
         d.Box(paper, new V($"{s3} + {s4}", "0"), new V($"{s3} + {s4} + {s5}", s5));
-        d.Polygon(d.Fill("Blue", "#FF1A2C9C", tint: 0.2), d.Pt(new V($"-{s2} - {s1}", s1)), d.Pt(new V($"-{s2}", s1)), p);
-        d.Polygon(d.Fill("Purple", "#FFA3127F", tint: 0.2), d.Pt(new V($"-{s2}", s2)), d.Pt(new V("0", s2)), p);
-        d.Polygon(d.Fill("Red", "#FFE5332A", tint: 0.2), d.Pt(new V(s3, s3)), d.Pt(new V(s3, s4)), p);
-        d.Polygon(d.Fill("Orange", "#FFEE7D2C", tint: 0.2), d.Pt(new V($"{s3} + {s4}", s4)), d.Pt(new V($"{s3} + {s4}", s5)), p);
-        d.Polygon(d.Fill("Yellow", "#FFE8E60C", tint: 0.2), d.Pt(new V($"{s3} + {s4} + {s5}", s5)), d.Pt(new V($"{s3} + {s4} + {s5}", "0")), p);
+        d.Polygon(d.Fill("Blue", "#FF041A96", tint: 0.2), d.Pt(new V($"-{s2} - {s1}", s1)), d.Pt(new V($"-{s2}", s1)), p);
+        d.Polygon(d.Fill("Purple", "#FFA2017D", tint: 0.2), d.Pt(new V($"-{s2}", s2)), d.Pt(new V("0", s2)), p);
+        d.Polygon(d.Fill("Red", "#FFE52F22", tint: 0.2), d.Pt(new V(s3, s3)), d.Pt(new V(s3, s4)), p);
+        d.Polygon(d.Fill("Orange", "#FFEE7A27", tint: 0.2), d.Pt(new V($"{s3} + {s4}", s4)), d.Pt(new V($"{s3} + {s4}", s5)), p);
+        d.Polygon(d.Fill("Yellow", "#FFE2E208", tint: 0.2), d.Pt(new V($"{s3} + {s4} + {s5}", s5)), d.Pt(new V($"{s3} + {s4} + {s5}", "0")), p);
         d.Scene(-6.7, 5.4, 10.6, -0.4);
     }
 }

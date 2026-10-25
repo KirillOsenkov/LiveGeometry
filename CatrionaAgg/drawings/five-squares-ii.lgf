@@ -9,49 +9,19 @@
     <ShapeStyle Name="Paper" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFFFFFF">
       <Dark Color="#FFE6E6E6" Fill="#FF2B2B2B" />
     </ShapeStyle>
-    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FF4856B0" />
-          <GradientStop Color="#FF1A2C9C" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF041A96" Texture="FeltTip">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
-    <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFB54199" />
-          <GradientStop Color="#FFA3127F" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFA2017D" Texture="FeltTip">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
-    <ShapeStyle Name="Red" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFEA5C55" />
-          <GradientStop Color="#FFE5332A" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Red" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFE52F22" Texture="FeltTip">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
-    <ShapeStyle Name="Orange" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFF19756" />
-          <GradientStop Color="#FFEE7D2C" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Orange" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFEE7A27" Texture="FeltTip">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
-    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFEDEB3D" />
-          <GradientStop Color="#FFE8E60C" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFE2E208" Texture="FeltTip">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
   </Styles>

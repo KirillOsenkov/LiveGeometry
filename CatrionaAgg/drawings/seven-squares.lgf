@@ -6,22 +6,10 @@
     <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
-    <ShapeStyle Name="Lavender" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFD4D1F0" />
-          <GradientStop Color="#FFC2BDEA" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Lavender" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFC4C2E8" Texture="Crayon">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
-    <ShapeStyle Name="Pink" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFF9D4F1" />
-          <GradientStop Color="#FFF7C1EB" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Pink" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFDD3FB" Texture="Crayon">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
     <LineStyle Name="Blue" Color="#FF2A2AB0" StrokeWidth="2.5">

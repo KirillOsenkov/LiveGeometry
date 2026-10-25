@@ -3,22 +3,10 @@
   <Viewport Left="-1.0622177826" Top="6.0622177826" Right="9.7224718205" Bottom="-1.0622177826" />
   <Scene Left="-1.0622177826" Top="6.0622177826" Right="9.7224718205" Bottom="-1.0622177826" />
   <Styles>
-    <ShapeStyle Name="LightBlue" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FF6DE0FA" />
-          <GradientStop Color="#FF2FD3F8" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="LightBlue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF04DBFC" Texture="Crayon">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
-    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FF5DB0EF" />
-          <GradientStop Color="#FF178EE8" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF0894F2" Texture="Crayon">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
     <ShapeStyle Name="Paper" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFFFFFF">

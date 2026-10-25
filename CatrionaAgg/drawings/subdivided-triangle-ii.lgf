@@ -12,14 +12,7 @@
     <PointStyle Name="Dot" Size="8" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
       <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
     </PointStyle>
-    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFFEB14D" />
-          <GradientStop Color="#FFFE9001" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
-    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFE9201" Texture="FeltTip" />
     <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Color="#FFE6E6E6" />
     </LineStyle>

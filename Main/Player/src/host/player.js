@@ -250,6 +250,8 @@ class Player {
 
     render() {
         const drawing = this.drawing;
+        // the paper a textured fill shows through its flecks, painted here or not
+        this.renderer.paperColor = drawing != null ? TexturedBrush.colorOf(drawing.background) : null;
         this.renderer.beginFrame(this.canvas.width, this.canvas.height, this.pixelRatio, drawing != null && drawing.paintsPaper ? drawing.paperForCanvas : null);
         if (drawing != null) {
             drawing.render(this.renderer);

@@ -50,6 +50,19 @@ public class ShapeStyle : LineStyle
         }
     }
 
+    FillTexture mTexture = FillTexture.None;
+    /// <summary>How the fill is laid down: poured (its brush as it is), or by hand in the fill's color, with a colored pencil or a felt-tip pen (<see cref="FillTextures"/>)</summary>
+    [PropertyGridVisible]
+    public FillTexture Texture
+    {
+        get => mTexture;
+        set
+        {
+            mTexture = value;
+            OnPropertyChanged("Texture");
+        }
+    }
+
     /// <summary>
     /// How much of the stroke's color the fill of <see cref="WithStrokeOf"/> has: a hint,
     /// as the outline styles had before the palette
@@ -88,10 +101,16 @@ public class ShapeStyle : LineStyle
     protected override void ApplyToWpfStyle(Style existingStyle, IFigure figure)
     {
         base.ApplyToWpfStyle(existingStyle, figure);
-        var brush = Fill;
+        IBrush brush = Fill;
         if (!IsFilled)
         {
             brush = null;
+        }
+        else if (Texture != FillTexture.None && Fill != null)
+        {
+            // the pale spots show the paper the figure is on (a sample glyph: the theme's)
+            var paper = figure?.Drawing?.Background;
+            brush = FillTextures.Brush(Texture, FillTextures.ColorOf(Fill), paper != null ? FillTextures.ColorOf(paper) : AppTheme.Current.Paper);
         }
         var fillSetter = new Setter(Shape.FillProperty, brush);
         existingStyle.Setters.Add(fillSetter);

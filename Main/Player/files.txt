@@ -9,6 +9,9 @@ styles/lineDash.js
 styles/styleHue.js
 styles/figureStyle.js
 styles/lineStyle.js
+styles/crayonTile.js
+styles/feltTipTile.js
+styles/fillTextures.js
 styles/shapeStyle.js
 styles/pointStyle.js
 styles/textStyle.js

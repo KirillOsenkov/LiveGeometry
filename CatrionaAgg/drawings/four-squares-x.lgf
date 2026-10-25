@@ -6,22 +6,10 @@
     <ShapeStyle Name="Paper" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFFFFFF">
       <Dark Color="#FFE6E6E6" Fill="#FF2B2B2B" />
     </ShapeStyle>
-    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FF51D2FA" />
-          <GradientStop Color="#FF06BEF8" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF03C2FB" Texture="FeltTip">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
-    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFFDF862" />
-          <GradientStop Color="#FFFCF51E" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFDFD18" Texture="FeltTip">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
     <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">

@@ -7,10 +7,11 @@ class ShapeStyle extends LineStyle {
         super();
         this.fill = new SolidColorBrush(Color.fromArgb(100, 255, 255, 200));
         this.isFilled = true;
+        this.texture = FillTexture.None;
     }
 
     static get properties() {
-        return [["name", "string"], ["fill", "brush"], ["isFilled", "bool"], ["color", "color"], ["strokeWidth", "double"], ["dash", "enum"]];
+        return [["name", "string"], ["fill", "brush"], ["isFilled", "bool"], ["texture", "enum"], ["color", "color"], ["strokeWidth", "double"], ["dash", "enum"]];
     }
 
     /** [StyleFor(IShapeWithInterior)], Bezier, BezierPathInterior, AngleArc (which fills the angle under its mark) */
@@ -18,8 +19,16 @@ class ShapeStyle extends LineStyle {
         return figure.isShapeWithInterior === true || figure.isBezier === true || figure.isBezierPathInterior === true || figure.isAngleArc === true;
     }
 
-    /** The brush a shape is filled with right now: none while not filled */
+    /** The brush a shape is filled with right now: none while not filled, the fill's color laid down with the texture when the style has one */
     get fillBrush() {
-        return this.isFilled ? this.fill : null;
+        if (!this.isFilled) {
+            return null;
+        }
+
+        if ((this.texture === FillTexture.Crayon || this.texture === FillTexture.FeltTip) && this.fill != null) {
+            return new TexturedBrush(TexturedBrush.colorOf(this.fill), this.texture);
+        }
+
+        return this.fill;
     }
 }

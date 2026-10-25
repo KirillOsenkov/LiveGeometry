@@ -9,21 +9,8 @@
     <ShapeStyle Name="Frame" Color="#FF2B3FA0" StrokeWidth="2.5" Fill="#FFFFFFFF">
       <Dark Color="#FF8A95CB" Fill="#FF2B2B2B" />
     </ShapeStyle>
-    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFFDFAAA" />
-          <GradientStop Color="#FFFCF886" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
-    </ShapeStyle>
-    <ShapeStyle Name="Red" Color="#FF2B3FA0" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFE69AB3" />
-          <GradientStop Color="#FFDC6F93" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFEFE92" Texture="Crayon" />
+    <ShapeStyle Name="Red" Color="#FF2B3FA0" StrokeWidth="2.5" Fill="#FFDE7999" Texture="Crayon">
       <Dark Color="#FF8A95CB" />
     </ShapeStyle>
     <LineStyle Name="Line" Color="#FF2B3FA0" StrokeWidth="2.5">

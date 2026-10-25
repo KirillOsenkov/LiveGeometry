@@ -3,13 +3,7 @@
   <Viewport Left="-1.785" Top="3.785" Right="4.485" Bottom="-1.785" />
   <Scene Left="-1.785" Top="3.785" Right="4.485" Bottom="-1.785" />
   <Styles>
-    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FF54B3DD" />
-          <GradientStop Color="#FF0A93CF" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF0394D0" Texture="FeltTip">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
     <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">

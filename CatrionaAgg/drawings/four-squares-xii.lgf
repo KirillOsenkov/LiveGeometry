@@ -9,13 +9,7 @@
     <ShapeStyle Name="Paper" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFFFFFF">
       <Dark Color="#FFE6E6E6" Fill="#FF2B2B2B" />
     </ShapeStyle>
-    <ShapeStyle Name="Purple" Color="#FF4A2793" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFF1CDF9" />
-          <GradientStop Color="#FFEBB7F6" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Purple" Color="#FF4A2793" StrokeWidth="2.5" Fill="#FFF3C9F9" Texture="Crayon">
       <Dark Color="#FF9B88C4" />
     </ShapeStyle>
     <LineStyle Name="Magenta" Color="#FFC4269B" StrokeWidth="2.5">

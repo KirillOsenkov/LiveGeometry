@@ -6,31 +6,13 @@
     <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
-    <ShapeStyle Name="LightGreen" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFE0F9C1" />
-          <GradientStop Color="#FFD3F7A6" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="LightGreen" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFDFFCB5" Texture="Crayon">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
-    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFA5E4CC" />
-          <GradientStop Color="#FF7FD8B6" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF9AEBD1" Texture="Crayon">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
-    <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFD4B9F4" />
-          <GradientStop Color="#FFC29BF0" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFDEBAFA" Texture="Crayon">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
     <LineStyle Name="Blue" Color="#FF1D3C99" StrokeWidth="2.5">

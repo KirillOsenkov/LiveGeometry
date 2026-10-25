@@ -2243,6 +2243,28 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   `StrokeDashArray` counts in stroke widths. Anything that
   applies a style to a shape by hand (sample glyphs) must call `OnApplied` too. Any enum
   property of a style or figure round-trips by name through the generic `EnumSerializer`.
+- **Textured fills** (`Styles/FillTextures.cs`, 2026-10-25; the player's twin is
+  `styles/fillTextures.js`): a shape style's `Texture="Crayon"` lays its fill down as a
+  colored pencil does, `Texture="FeltTip"` as a felt-tip pen does. Each tile is a scan:
+  `CrayonTile`, `FeltTipTile` (`Styles/<Name>Tile.cs`, `styles/<name>Tile.js`, both written by
+  `dotnet run tools/texturetile.cs -- <Name> <png> <x> <y>`; the tool's header has the
+  commands that made them) are bytes of pigment density against the average (128) from an
+  evenly colored patch of one of Catriona Agg's drawings, measured from the paper's white,
+  the photo's light divided out (`--flatten`: the felt tip keeps its stroke bands), specks
+  clamped, and the edges cross-faded so it repeats without a seam. The felt tip is the
+  bright yellow hexagon of Three Hexagons on a Circle, whose ink nearly saturates the scan,
+  its variation scaled up (`--spread 0.09`) to what her pink measures; no clean pink area is
+  big enough. A fill is the
+  paper moved toward the fill's one color (a gradient's middle) by the density, so it
+  averages to the color, flecks fade to the paper and dense spots deepen; pick the color
+  as the average of the area to match. A procedural tooth (value noise) was tried first and
+  looked sharper and sparser than pencil. The tile is opaque on the drawing's paper (a
+  fleck shows the paper, not the shape under it: one region of a pencil drawing is colored
+  on the paper, not over another), so the brush is per color and paper, cached; the
+  player's renderer takes the paper per frame (`paperColor`) and anchors the pattern to the
+  canvas, the app's `ImageBrush` to the shape, one tile pixel per canvas pixel (drawn
+  smaller it blurred and lost its grain). A paper changed by hand re-textures at the next
+  style application (a theme switch does).
 - **Z order** (`Figures/ZOrder.cs`, 2026-10-10): every figure is drawn in its kind's
   `Layer` (the `ZOrder` enum, bottom up: Grid, Axes, SelectionHalos, Polygons - polygons,
   the interiors of Bezier paths - Labels, Figures - lines, circles, arcs, curves,
@@ -3229,7 +3251,9 @@ page shows it), never copied.
   construction over one or two handles (points on hidden segments or arcs that keep them in
   range) so that what the puzzle says holds while it is dragged - for an invariance puzzle the
   answer stays put. Hidden points by coordinates over the handles carry the geometry; a puzzle
-  the conditions fix has no handle. Her colors (sampled from the originals) as gradients,
+  the conditions fix has no handle. Her colors (the averages of the originals' areas) in
+  pencil or felt tip as she used them (`Lgf.Texture` per drawing, see "Textured fills"; null
+  for a gradient),
   outlines in ink with a light Dark override, text on a filled shape the same in both themes.
   Traps met: a point on an arc keeps its angle from the center as its parameter (absolute, not
   from the arc's start); a text attached to a point hides with the point, so a text hangs on a

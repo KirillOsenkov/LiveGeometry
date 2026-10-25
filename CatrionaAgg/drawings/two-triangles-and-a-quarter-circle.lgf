@@ -6,13 +6,7 @@
     <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
-    <ShapeStyle Name="Teal" Color="#FF1D5458" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FF82BBBF" />
-          <GradientStop Color="#FF4C9EA3" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Teal" Color="#FF1D5458" StrokeWidth="2.5" Fill="#FF549EA4" Texture="FeltTip">
       <Dark Color="#FF83A1A3" />
     </ShapeStyle>
     <LineStyle Name="Green" Color="#FF79C96A" StrokeWidth="2.5">

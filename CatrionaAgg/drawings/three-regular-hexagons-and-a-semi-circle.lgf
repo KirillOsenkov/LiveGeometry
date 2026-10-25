@@ -6,54 +6,12 @@
     <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
-    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFFDF89A" />
-          <GradientStop Color="#FFFCF56E" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
-    </ShapeStyle>
-    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFED9AB9" />
-          <GradientStop Color="#FFE56F9B" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
-    </ShapeStyle>
-    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FF95DBF9" />
-          <GradientStop Color="#FF68CCF7" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
-    </ShapeStyle>
-    <ShapeStyle Name="Green" Color="#00000000" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFD4EDAD" />
-          <GradientStop Color="#FFC2E58A" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
-    </ShapeStyle>
-    <ShapeStyle Name="Purple" Color="#00000000" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFB09AE9" />
-          <GradientStop Color="#FF8E6FDF" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
-    </ShapeStyle>
-    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FFFACAA0" />
-          <GradientStop Color="#FFF8B377" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
-    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFDFD80" Texture="Crayon" />
+    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5" Fill="#FFE97FA8" Texture="Crayon" />
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF77D5FB" Texture="Crayon" />
+    <ShapeStyle Name="Green" Color="#00000000" StrokeWidth="2.5" Fill="#FFC2E58A" Texture="Crayon" />
+    <ShapeStyle Name="Purple" Color="#00000000" StrokeWidth="2.5" Fill="#FF977BE7" Texture="Crayon" />
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFABE85" Texture="Crayon" />
     <ShapeStyle Name="Hole" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFFFFF">
       <Dark Fill="#FF2B2B2B" />
     </ShapeStyle>

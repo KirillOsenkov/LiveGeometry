@@ -3,13 +3,7 @@
   <Viewport Left="-0.876" Top="4.476" Right="6.876" Bottom="-2.076" />
   <Scene Left="-0.876" Top="4.476" Right="6.876" Bottom="-2.076" />
   <Styles>
-    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#FF91E0C7" />
-          <GradientStop Color="#FF62D3AF" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF71D9B8" Texture="Crayon">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
     <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">

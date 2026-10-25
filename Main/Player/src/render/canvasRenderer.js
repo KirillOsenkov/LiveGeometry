@@ -50,7 +50,30 @@ class CanvasRenderer {
             return gradient;
         }
 
+        if (brush instanceof TexturedBrush) {
+            return this.texturePattern(brush);
+        }
+
         return "transparent";
+    }
+
+    /**
+     * A textured fill: its tile repeating from the canvas's corner (the paper's tooth stays
+     * where it is while a shape moves over it, as on paper), its flecks the paper's color
+     * (paperColor, which the player sets per frame)
+     */
+    texturePattern(brush) {
+        const tile = FillTextures.tile(brush.texture, brush.color, this.paperColor ?? null);
+        this.patterns ??= new WeakMap();
+        let pattern = this.patterns.get(tile);
+        if (pattern == null) {
+            pattern = this.context.createPattern(tile, "repeat");
+            const scale = FillTextures.TileScale;
+            pattern.setTransform?.(new DOMMatrix([scale, 0, 0, scale, 0, 0]));
+            this.patterns.set(tile, pattern);
+        }
+
+        return pattern;
     }
 
     applyStroke(stroke) {
